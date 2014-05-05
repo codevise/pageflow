@@ -148,22 +148,6 @@ things do not look too blank in development mode.
 # Configuration
 
 Pageflow stores files in S3 buckets also in development
-mode. Otherwise there's no way to have Zencoder encode them. There is
-a small guide on how to [setup external services](https://github.com/codevise/pageflow/wiki/Setting-up-External-Services). Once AWS and
-Zencoder are in shape, you can tell Pageflow your credentials in
-`config/initializers/pageflow.rb`.
-
-Eventually you might be interested in some of these advanced
-configuration possibilities:
-
-* [Routing constraints to restrict access to non-public sites](https://github.com/codevise/pageflow/wiki/Setting-up-Routing-Constraints)
-* [Advanced CDN configuration](https://github.com/codevise/pageflow/wiki/Advanced-CDN-Configuration)
-* [Increase upload speed using Nginx](https://github.com/codevise/pageflow/wiki/Nginx-Upload-Module-Configuration)
-
-# Extending Pageflow
-
-Pageflow's functionality can be extended:
-
-* [Customizing themes for accounts](https://github.com/codevise/pageflow/wiki/Customizing-Themes-for-Accounts)
-* [Customizing views](https://github.com/codevise/pageflow/wiki/Customizing-Views)
-* [Adding new page types](https://github.com/codevise/pageflow/wiki/Adding-New-Page-Types)
+mode. Otherwise there's no way to have Zencoder encode them. See the
+comments in `config/initializers/pageflow.rb` for details on how to
+configure external services.
