@@ -1,6 +1,6 @@
 # Pageflow
 
-Multimedia story telling for the web. 
+Multimedia story telling for the web.
 
 For a high level introduction and example Pageflow stories see
 [pageflow.io](http://pageflow.io) (German only at the moment).
@@ -19,13 +19,14 @@ components:
 
 Pageflow assumes the following choice of libraries:
 
-* [Devise](#) for authentication
-* [CanCan](#) for authorization
-* [Active](#) Admin for administration 
-* [Resque](#) for background jobs
-* [FriendlyId](#) for pretty URLs
-* [Paperclip](#) for attachment handling
-* [Backbone](#) Marionette for client side development
+* [Devise](https://github.com/plataformatec/devise) for authentication
+* [CanCan](https://github.com/ryanb/cancan) for authorization
+* [ActiveAdmin](http://activeadmin.info/) for administration
+* [Resque](https://github.com/resque/resque) for background jobs
+* [FriendlyId](https://github.com/norman/friendly_id) for pretty URLs
+* [Paperclip](https://github.com/thoughtbot/paperclip) for attachment handling
+* [Backbone](http://backbonejs.org/) [Marionette](http://marionettejs.com/) for client side development
+
 
 # Requirements
 
@@ -82,14 +83,14 @@ configuration section.
 Let's look at the steps one at a time.
 
     $ rails generate active_admin:devise User
-    
+
 Install devise and configure it to play nice with Active
 Admin. Pageflow uses only a single `User` model with a configurable
 role. So we tell Active Admin not create its default `AdminUser` model
 but authenticate a `User` instead.
 
     $ rails generate active_admin:install --skip-users
-    
+
 This creates an initialzer for Active Admin and configures
 routing. Pageflow brings its own user admin component. So there's no
 need for the default user admin.
@@ -99,29 +100,29 @@ need for the default user admin.
 Invoke the Friendly Id generator.
 
     $ rails generate pageflow:resque
-    
+
 Create initializers to configure Resque under
 `config/initializers/resque_*`. Inside the initializers you find some
 more explanations for the individual choices made.
 
     $ rails generate pageflow:assets
-    
+
 Create javascript and stylesheet files. Those mostly contain a single
 `require` or `import` and are the place to include further Pageflow
 extensions.
 
     $ rails generate pageflow:initializer
-    
+
 Create the Pageflow initializer which contains all configuration
 options. All available settings are described inside the file.
-    
+
     $ rails generate pageflow:routes
 
 Inject the routes helper into `config/routes.rb`. Pageflow runs at the
 root url by default.
 
     $ rails generate pageflow:cancan
-    
+
 Configure Active Admin to use the CanCan authorization adapter. And
 create an `Ability` class.
 
@@ -143,7 +144,7 @@ Finally, you can populate the database with some example data, so
 things do not look too blank in development mode.
 
     $ rake db:seed
-    
+
 # Configuration
 
 Pageflow stores files in S3 buckets also in development
