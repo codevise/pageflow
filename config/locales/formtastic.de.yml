@@ -1,0 +1,10 @@
+de:
+  formtastic:
+    :yes: 'Ja'
+    :no: 'Nein'
+    :create: '%{model} speichern'
+    :update: '%{model} speichern'
+    :submit: '%{model} speichern'
+    :cancel: 'Abbrechen'
+    :reset: '%{model} zurücksetzen'
+    :required: 'erforderlich'

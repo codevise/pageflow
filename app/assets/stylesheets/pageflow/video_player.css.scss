@@ -1,0 +1,15 @@
+.video-js p {
+  position: absolute;
+  top: 30%;
+  left: 20%;
+  width: 60%;
+  max-width: 5000px;
+
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  z-index: 1;
+
+  background-color: #000;
+  color: #fff;
+}

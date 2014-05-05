@@ -1,0 +1,13 @@
+<% if video_file %>
+  <%= link_to 'Video ansehen', short_video_file_path(video_file.entry, video_file), :class => 'hint'%>
+<% end %>
+
+<%= content_tag :script, :type => 'text/html', :data => script_tag_data do %>
+  <%= content_tag :video, options do %>
+    <% if video_file %>
+      <% video_file_sources(video_file, url_options).map do |v| %>
+        <%= tag(:source, :src => v[:src], :type => v[:type], :data => {:high_src => v[:high_src]}) %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

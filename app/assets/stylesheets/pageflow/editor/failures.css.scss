@@ -1,0 +1,36 @@
+.failure {
+  @include background-icon-left($color: #d00, $top: 25px);
+  @include attention-icon;
+
+  padding: 10px 0 0 40px;
+  display: none;
+
+  .retry {
+    text-decoration: underline;
+  }
+
+  p {
+    margin-bottom: 5px;
+  }
+}
+
+.failed > .failure {
+  display: block;
+}
+
+.failure_icon {
+  @include attention-icon;
+  @include background-icon-center($color: #d00);
+
+  display: none;
+  position: absolute;
+  right: 25px;
+  top: 2px;
+  width: 30px;
+  height: 30px;
+}
+
+.failed > ul.menu > li > .failure_icon,
+.failed > a > .failure_icon {
+  display: block;
+}

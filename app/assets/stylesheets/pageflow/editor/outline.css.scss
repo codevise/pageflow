@@ -1,0 +1,107 @@
+ul.outline {
+  &.navigatable li a:first-child {
+    @include right-open-icon;
+    @include background-icon-right($color: #888);
+  }
+
+  li {
+    position: relative;
+    background-color: #fff;
+
+    a:first-child {
+      display: block;
+      padding: 10px 10px 10px 70px;
+      background-color: #efefef;
+    }
+
+    &.creating > a:first-child {
+      @include arrows-ccw-icon;
+      @include background-icon-animation(blink);
+    }
+
+    &.destroying > a:first-child{
+      @include trash-icon;
+      @include background-icon-animation(blink);
+    }
+
+    &.active > a {
+      background-color: #D2E5FA;
+    }
+
+    &.draggable > a {
+      cursor: move;
+    }
+
+    .type_pictogram {
+      content: ' ';
+      position: absolute;
+      top: 0;
+      left: 37px;
+      height: 100%;
+      width: 35px;
+      background-repeat: no-repeat;
+      background-position: 3px 45%;
+      opacity: 0.2;
+      cursor: move;
+    }
+
+    .page_thumbnail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 35px;
+      cursor: move;
+
+      .thumbnail {
+        height: 100%;
+      }
+
+      .pictogram:before {
+        font-size: 20px;
+      }
+    }
+
+    &.display_in_navigation .type_pictogram {
+      opacity: 0.5;
+    }
+  }
+}
+
+ul.chapters {
+  > li {
+    margin-bottom: 10px;
+    padding: 0 10px 10px 30px;
+
+    > a > .pictogram {
+      background-image: image-url("pageflow/chapter_pictogram_small.png");
+    }
+
+    > a:first-child {
+      margin: 0 -10px 0 -30px;
+      padding-left: 30px;
+    }
+
+    .number {
+      font-weight: bold;
+    }
+  }
+}
+
+ul.pages {
+  margin: 20px 0 10px 0;
+
+  > li {
+    margin-bottom: 2px;
+  }
+}
+
+ul.dragged {
+  margin: 0;
+  padding: 0;
+}
+
+.sortable-placeholder {
+  outline: 1px dotted #aaa;
+  background-color: inherit !important;
+}

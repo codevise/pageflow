@@ -1,0 +1,15 @@
+.header {
+  .non_js_notice {
+    position: absolute;
+    top: 0;
+    left: 25%;
+    right: 25%;
+    z-index: 10;
+    text-align: center;
+    line-height: 25px;
+
+    font-weight: bold;
+    background-color: #fff;
+    color: #444;
+  }
+}

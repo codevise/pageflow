@@ -1,0 +1,6 @@
+@mixin pressed {
+  body.has_mobile_platform &.pressed,
+  body.has_no_mobile_platform &.pressed {
+    @content;
+  }
+}

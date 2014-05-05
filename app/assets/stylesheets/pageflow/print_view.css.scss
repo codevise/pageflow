@@ -1,0 +1,185 @@
+body {
+
+  #outer_wrapper {
+    overflow: visible !important;
+  }
+  background-color: white !important;
+  height: !important;
+  overflow: visible !important;
+
+  .slideshow {
+    overflow: visible;
+  }
+
+  .navigation, .navigation_mobile, .scroll_indicator {
+    display: none !important;
+  }
+
+  .print_image, .print_only {
+    display: block;
+  }
+  .print_only.page_url {
+    padding-left: 17px;
+  }
+
+  sidebar {
+    display: none;
+  }
+
+  .print_copyright {
+    float: right;
+    padding-right: 8%;
+  }
+
+  section.page, .slideshow section.page {
+    position: relative;
+    width: 100%;
+    height: auto;
+    background-color: white;
+    color: black !important;
+    display: block;
+
+    > * {
+      position: absolute;
+      z-index: 1;
+    }
+
+    &:first-child {
+      .content_and_background .scroller > div:after {
+        content: " ";
+        position: absolute;
+        width: 109px;
+        height: 32px;
+        background-image: none;
+        background-repeat: no-repeat;
+        top: 30px;
+        z-index: 200;
+      }
+    }
+
+    .print_image, .print_only {
+      display: block;
+      width: auto;
+      height: auto;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 1em;
+      page-break-inside: avoid !important;
+    }
+
+    .page_header {
+      page-break-inside: avoid !important;
+    }
+
+    .contentText, .videoPage .contentText, .audioPage .contentText {
+      margin-bottom: 20px;
+    }
+
+    .videoPage .vjs-control-bar, .audioPage .-vjs-control-bar {
+      display: none !important;
+    }
+
+    .vjs-control-bar {
+      display: none !important;
+    }
+
+    .shadow {
+      display: none;
+    }
+
+    section, .page, .scroller, .fade-out, .fade-out > *, * {
+      opacity: 1 !important;
+      visibility: visible !important;
+      -webkit-backface-visibility: initial;
+    }
+
+    .scroller > div, .content_and_background > .page_header {
+      padding: 10px 8% 5% 8%;
+      width: 100%;
+    }
+
+
+    .content_and_background {
+      width:100%;
+      min-height: auto;
+      position: initial;
+    }
+
+    .content {
+      width: 100%;
+      position: relative;
+      font-size: 9pt;
+    }
+
+    h1, h2, h3, p {
+    max-width: initial;
+    }
+
+
+    .backgroundArea {
+      width: initial;
+      height: initial;
+      position: absolute;
+      background-color: white;
+    }
+    .scroller, .content .scroller {
+      opacity: 1 !important;
+      visibility: visible !important;
+      height: auto;
+      position: relative;
+    }
+    .scroller > div {
+      transform: translate3d(0,0,0) !important;
+      -ms-transform: translate3d(0,0,0) !important; /* IE 9 */
+      -webkit-transform: translate3d(0,0,0) !important; /* Safari and Chrome */
+      transform: translate(0,0) !important;
+      -ms-transform: translate(0,0) !important; /* IE 9 */
+      -webkit-transform: translate(0,0) !important; /* Safari and Chrome */
+      top: 0 !important;
+    }
+    .scroller  > div {
+      position: relative;
+    }
+    .scroller.fade-out, .scroller.fade-in {
+      visibility: visible !important;
+      opacity: 1 !important;
+      color: black;
+    }
+  }
+
+  .blackLayer {
+    display: none !important;
+  }
+
+  * {
+    background-color: white !important;
+  }
+
+  .page[data-template="video"] {
+    background-color: white !important;
+  }
+
+  section.page  {
+    display: block;
+    background-color: white !important;
+  }
+
+  &.js .page:first-child.invert .content_and_background .scroller > div:after {
+    background-image: none !important;
+  }
+
+  &.js .controls, .add_info_box  {
+    position: relative !important;
+    bottom: initial;
+    top: 0 !important;
+  }
+
+  &.js .controls .add_info_box:before {
+    background-color: transparent;
+  };
+
+  .video-js {
+    display: none !important;
+  }
+
+}

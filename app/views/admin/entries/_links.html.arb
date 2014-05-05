@@ -1,0 +1,8 @@
+para do
+  if authorized?(:edit, Pageflow::Entry)
+    span(link_to(I18n.t("admin.entries.editor"), pageflow.edit_entry_path(entry), :class => 'button'))
+  end
+  if entry.published?
+    span(link_to(I18n.t("admin.entries.show_public"), pageflow.short_entry_path(entry), :class => 'button'))
+  end
+end

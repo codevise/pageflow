@@ -1,0 +1,35 @@
+@include keyframes(scroll-in-forwards) {
+  from {
+    @include transform(translateY(100%));
+  }
+  to {
+    @include transform(translateY(0));
+  }
+}
+
+@include keyframes(scroll-in-backwards) {
+  from {
+    @include transform(translateY(-100%));
+  }
+  to {
+    @include transform(translateY(0));
+  }
+}
+
+@include keyframes(scroll-out-forwards) {
+  from {
+    @include transform(translateY(0));
+  }
+  to {
+    @include transform(translateY(-100%));
+  }
+}
+
+@include keyframes(scroll-out-backwards) {
+  from {
+    @include transform(translateY(0));
+  }
+  to {
+    @include transform(translateY(100%));
+  }
+}

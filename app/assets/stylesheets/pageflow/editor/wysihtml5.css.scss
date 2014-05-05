@@ -1,0 +1,83 @@
+.toolbar {
+  margin-left: -2px;
+  margin-top: 3px;
+  position: relative;
+
+  > a {
+    @include background-icon-center($font-size: 12px);
+    @include hidden-text;
+
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+
+    border: solid 1px #eee;
+
+    &:hover {
+      background-color: #eee;
+    }
+  }
+
+  .wysihtml5-command-active {
+    border: solid 1px #bbb;
+    background-color: #ddd;
+  }
+
+
+  [data-wysihtml5-command="bold"] {
+    @include font-bold-icon;
+  }
+
+  [data-wysihtml5-command="italic"] {
+    @include font-italic-icon;
+  }
+
+  [data-wysihtml5-command="underline"] {
+    @include font-underline-icon;
+  }
+
+  [data-wysihtml5-command="createLink"] {
+    @include link-icon;
+  }
+
+  .dialog {
+    position: absolute;
+    bottom: 30px;
+    left: -2px;
+    right: -6px;
+    padding: 5px 10px;
+
+    background-color: #fff;
+    border: solid 1px #444;
+
+    a {
+      @include button;
+      padding: 5px 10px;
+      margin-top: 5px;
+    }
+  }
+
+  .dialog:before {
+    content: " ";
+    position: absolute;
+    bottom: -20px;
+    left: 97px;
+    pointer-events: none;
+    border-top: solid 10px #222;
+    border-right: solid 10px transparent;
+    border-bottom: solid 10px transparent;
+    border-left: solid 10px transparent;
+  }
+
+  .dialog:after {
+    content: " ";
+    position: absolute;
+    bottom: -18px;
+    left: 98px;
+    pointer-events: none;
+    border-top: solid 9px #fff;
+    border-right: solid 9px transparent;
+    border-bottom: solid 9px transparent;
+    border-left: solid 9px transparent;
+  }
+}

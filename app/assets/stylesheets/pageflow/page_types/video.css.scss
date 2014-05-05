@@ -1,0 +1,221 @@
+.videoWrapper {
+  @include desktop {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+  @include pad_portrait {
+    margin-right: 0;
+    position: initial;
+    height: initial;
+  }
+}
+
+.js .videoWrapper {
+  @include desktop {
+    position: relative;
+    height: 100%;
+    width: auto;
+    margin-right: 85px;
+  }
+  @include pad_portrait {
+    margin-right: 0;
+  }
+}
+
+.has_phone_platform .page .videoPage .videoWrapper {
+  margin-right: 0;
+  position: initial;
+  height: 100%;
+
+  video {
+    width: 1px;
+    height: 1px;
+    left: -1;
+  }
+}
+
+.video-js.player {
+  position: relative;
+}
+
+.js .video-js.player {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.page[data-template="video"] {
+  background-color: #000000;
+}
+
+.video-js {
+  .vjs-big-play-button {
+    display: none;
+  }
+}
+
+.videoPage .video-js {
+  background-color: transparent;
+
+  .vjs-tech {
+    height: auto;
+  }
+}
+
+.page .videoPage {
+  .shadow {
+    display: none;
+  }
+
+  .contentText {
+    padding-top: 2em;
+  }
+
+  .scroller.vjs-fade-out {
+    visibility: initial;
+  }
+
+  .scroller {
+    /* required for IE 10 to enable mouse events */
+    background-image: image-url('pageflow/empty.png');
+  }
+
+  .vjs-poster-mobile {
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+    cursor: pointer;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 100%;
+  }
+
+  .vjs-poster {
+    background-color: black;
+  }
+
+  .backgroundArea {
+    height: initial;
+  }
+
+  video {
+    height: auto;
+    width: 100%;
+  }
+}
+
+.js .page .videoPage {
+  .contentText {
+    padding-top: initial;
+    margin-bottom: 200px;
+  }
+
+  .shadow {
+    display: block;
+  }
+
+  .backgroundArea {
+    height: 100%;
+  }
+
+  .vjs-control-bar {
+    @include transform(translate3d(-50%, 0, 0));
+  }
+  .vjs-tech {
+    height: 100%;
+  }
+
+  /* overwriting video js auto hiding control rules */
+  /* Fading sytles, used to fade control bar. */
+  .vjs-fade-in {
+    display: initial !important;
+    visibility: initial;
+    /* Needed to make sure things hide in older browsers too. */
+    opacity: initial;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none }
+
+  .vjs-fade-out {
+    display: initial!important;
+    visibility: initial;
+    opacity: initial;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+    /* Wait a moment before fading out the control bar */
+    -webkit-transition-delay: none;
+    -moz-transition-delay: none;
+    -ms-transition-delay: none;
+    -o-transition-delay: none;
+    transition-delay: none; }
+
+  /* Hide disabled or unsupported controls */
+  .vjs-default-skin .vjs-hidden {
+    display: initial; }
+
+  .vjs-lock-showing {
+    display: initial !important;
+    opacity: initial;
+    visibility: initial; }
+
+    /* Fading sytles, used to fade control bar. */
+  .fade-in {
+    display: block !important;
+    /* Needed to make sure things hide in older browsers too. */
+    opacity: 1;
+    -webkit-transition: 0.1s;
+    -moz-transition: 0.1s;
+    -ms-transition: 0.1s;
+    -o-transition: 0.1s;
+    transition: 0.1s;
+  }
+
+  .fade-out {
+    display: block !important;
+    opacity: 0 !important;
+    -webkit-transition: 1.5s;
+    -moz-transition: 1.5s;
+    -ms-transition: 1.5s;
+    -o-transition: 1.5s;
+    transition: 1.5s;
+    /* Wait a moment before fading out the control bar */
+    -webkit-transition-delay: 2s;
+    -moz-transition-delay: 2s;
+    -ms-transition-delay: 2s;
+    -o-transition-delay: 2s;
+    transition-delay: 2s; }
+
+  /* Hide disabled or unsupported controls */
+  .vjs-default-skin .vjs-hidden {
+    display: none; }
+
+  .lock-showing {
+    display: block !important;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.non_js .text_position_right .videoPage {
+  .page_header {
+    margin-left: 0;
+    max-width: initial;
+
+    > * {
+      max-width: 500px;
+      width: 60%;
+      margin-left: auto;
+    }
+  }
+}

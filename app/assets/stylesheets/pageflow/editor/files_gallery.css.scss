@@ -1,0 +1,54 @@
+ul.files_gallery {
+  margin-top: 10px;
+
+  > li {
+    background-color: #eee;
+    margin-bottom: 2px;
+    position: relative;
+    overflow: hidden;
+    float: left;
+    text-align: center;
+    padding: 10px 5px 5px 5px;
+
+    width: 20%;
+    min-width: 110px;
+    max-width: 180px;
+
+    cursor: pointer;
+
+    &.active {
+      background-color: $highlight-color;
+    }
+
+    &.disabled {
+      opacity: 0.5;
+
+      cursor: default;
+
+      @include background-icon-right(#18A507, 22px, 18px);
+      @include check-icon;
+    }
+  }
+
+  li.blank_slate {
+    text-align: center;
+    padding: 10px 5px 20px 5px;
+    color: #888;
+  }
+
+  .file_thumbnail {
+    height: 100px;
+    width: 100px;
+    display: block;
+    margin: auto;
+  }
+
+  .file_name {
+    margin-top: 5px;
+    display: block;
+
+    height: 1.3em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

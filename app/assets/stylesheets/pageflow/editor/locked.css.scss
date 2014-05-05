@@ -1,0 +1,56 @@
+.locked {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  z-index: 5;
+
+  &:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-color: #000;
+    opacity: 0.8;
+  }
+
+  .checking.notice {
+    display: none;
+  }
+
+  &.checking {
+    .checking {
+      display: block;
+    }
+
+    .error {
+      display: none;
+    }
+  }
+
+  .notice {
+    position: relative;
+    max-width: 400px;
+    top: 20%;
+    border: solid 1px #aaa;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+  }
+
+  a.close {
+    @include cancel-icon;
+    @include icon-button;
+  }
+
+  a.break {
+    @include minus-circled-icon;
+    @include icon-button($base-color: #d00);
+    float: right;
+  }
+}

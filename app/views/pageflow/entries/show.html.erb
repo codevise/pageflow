@@ -1,0 +1,23 @@
+<% @page_title = @entry.title %>
+
+<% content_for(:head) do %>
+    <%= entry_theme_stylesheet_link_tag(@entry) %>
+    <%= entry_stylesheet_link_tag(@entry) %>
+    <%= render 'pageflow/entries/social_meta_tags', :entry => @entry %>
+    <%= tag :link, :rel => 'icon', :href => image_path("#{@entry.theme.name}/favicon.ico"), :type => 'image/ico' %>
+<% end %>
+
+<%= cache @entry do %>
+
+    <%= render 'pageflow/entries/ie8_hint' %>
+    <%= render 'pageflow/entries/loading_spinner' %>
+    <%= render 'pageflow/entries/multimedia_alert' %>
+    <%= render @entry %>
+
+    <script>
+        pageflow.manualStart.enabled = <%= @entry.manual_start ? 'true' : 'false' %>;
+        pageflow.pages = <%= @entry.pages.to_json(:only => [:id, :perma_id, :configuration]).html_safe %>;
+    </script>
+
+    <%= render 'pageflow/entries/analytics', :entry => @entry %>
+<% end %>

@@ -1,0 +1,344 @@
+@include phone {
+  .navigation {
+    &, & > * {
+      display: none;
+    }
+  }
+  .navigation_mobile {
+    display: block;
+  }
+}
+
+@include desktop {
+  .navigation, .header {
+    display: block;
+  }
+  .navigation_mobile {
+    &, & > * {
+      display: none;
+    }
+  }
+}
+
+@include pad_portrait {
+  .navigation {
+    &, & > * {
+      display: none;
+    }
+  }
+  .navigation_mobile {
+    &, & > * {
+      display: block;
+    }
+  }
+}
+
+.has_ie .navigation_mobile {
+  visibility: hidden;
+}
+
+.navigation_mobile {
+  z-index: 1;
+  color: #fff;
+  font-family: sourcesanspro;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 0;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  @include transition(visibility 200ms);
+
+  &:after {
+    width: 100%;
+    height: 100%;
+    content: " ";
+    position: absolute;
+    top: 0;
+    right :0;
+    background-color: black;
+    z-index: -1;
+    @include transition(opacity 200ms);
+    opacity: 0;
+
+  }
+  &.active:after {
+      opacity: 0.85;
+  }
+
+  .menu {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    background-image: image-url('pageflow/menu_mobile_sprite3.png');
+    background-position: -45px 0px;
+    background-size: auto 100%;
+    right: 10px;
+    pointer-events: all;
+    @include transition(opacity 500ms, right 250ms);
+
+    &.index {
+      visibility: visible;
+      top: 16px;
+    }
+    &.imprint {
+      opacity: 0;
+      pointer-events: none;
+      bottom: 16px;
+      background-image: image-url('pageflow/menu_mobile_imprint.png');
+    }
+    &.sharing {
+      top: 80px;
+      opacity: 0;
+      pointer-events: none;
+      background-image: image-url('pageflow/menu_mobile_sharing.png');
+    }
+  }
+
+  .overview_mobile, .imprint_mobile, .sharing_mobile {
+    position: absolute;
+    top: 0;
+    right: -270px;
+    visibility: hidden;
+    bottom: 0;
+    width: 0;
+    overflow: hidden;
+    background-color: #232323;
+    @include transition(visibility 250ms, right 250ms, width 0s 250ms);
+
+    .navigation_site_detail {
+      display: none;
+    }
+
+    .credits {
+      font-family: "sourcesanspro";
+
+      a {
+        margin-top: 1em;
+        color: #b4c552;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
+
+    &:after {
+      content: " ";
+
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 10px;
+
+      background-image: image-url('pageflow/overview_mobile_mask.png');
+      background-position: left;
+      background-repeat: repeat-y;
+    }
+
+    .heading-1 {
+      display: block;
+      height: 40px;
+      margin: 10px;
+      font-size: 2em;
+      font-weight: bold;
+      display: none;
+    }
+
+    a {
+      display: block;
+    }
+  }
+
+  .imprint_mobile, .sharing_mobile {
+    visibility: visible;
+    width: 200px;
+  }
+
+  .wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+
+    ul {
+      padding: 0;
+      position: absolute;
+      list-style-type: none;
+
+      -webkit-margin-before: 0;
+      -webkit-margin-after: 0;
+      -webkit-margin-start: 0;
+      -webkit-margin-end: 0;
+      -webkit-padding-start: 0;
+
+      -moz-margin-before: 0;
+      -moz-margin-after: 0;
+      -moz-margin-start: 0;
+      -moz-margin-end: 0;
+      -moz-padding-start: 0;
+    }
+
+    li {
+      position: relative;
+
+      @mixin pseudo {
+        content: " ";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+      }
+
+      &:after {
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 38px;
+        height: 38px;
+        margin: 38px 85px;
+
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        background-size: 76px 100%;
+      }
+
+      &.touched {
+        &:after {
+          background-position: -38px 0;
+        }
+
+        &:before {
+          @include pseudo;
+          background-color: #fff;
+          opacity: 0.2;
+          z-index: 1;
+        }
+      }
+
+      img {
+        border: 1px solid #3e3e3e;
+        display: block;
+        margin-bottom: 3px;
+        width: 200px;
+        height: 112px;
+      }
+    }
+
+    a.active {
+      border-left: 5px solid #A6D513;
+    }
+
+    .credits {
+      padding: 15px;
+      color: grey;
+    }
+  }
+
+  &.active {
+    pointer-events: all;
+    visibility: visible;
+
+    &:before {
+      top: 18px;
+      left: auto;
+      right: 20px;
+      width: 63px;
+      height: 18px;
+      background-image: image-url('pageflow/logo_mobile.png');
+      background-size: auto 100%;
+    }
+
+    .menu {
+      right: 200px;
+
+      &.sharing, &.imprint {
+        pointer-events: all;
+        opacity: 1;
+      }
+    }
+
+    .menu.index {
+      background-position: 0px 0px;
+    }
+    &.sharing .menu.index, &.imprint .menu.index {
+      background-position: -45px 0px;
+    }
+
+    &.sharing .menu.sharing {
+      background-position: 0px 0px;
+    }
+    &.imprint .menu.imprint {
+      background-position: 0px 0px;
+    }
+    &.sharing .sharing_mobile {
+      right: 0px;
+      width: 200px;
+      visibility: visible;
+    }
+    &.imprint .imprint_mobile {
+      right: 0px;
+      width: 200px;
+      visibility: visible;
+    }
+
+
+    .overview_mobile {
+      @include transition-delay(0s);
+      width: 200px;
+      right: 0;
+      visibility: visible;
+    }
+
+    .sharing_mobile {
+      .wrapper {
+        top: 0;
+      }
+      li {
+        width: 200px;
+        height: 88px;
+        border-bottom: 1px solid #465b73;
+
+        a {
+          margin-left: 78px;
+          color: white;
+          text-decoration: none;
+          font-size: 24px;
+          padding-top: 12px;
+
+          &:before {
+            content: "";
+            position: absolute;
+            width: 42px;
+            height: 37px;
+            background-image: image-url('pageflow/mobile_sharing.png');
+            background-size: 100% auto;
+            left: 30px;
+            top: 30px;
+          }
+
+          &.facebook:before {
+            background-position: center top;
+          }
+          &.twitter:before {
+            background-position: center 122px;
+          }
+          &.google:before {
+            background-position: center bottom;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+.hideText .navigation_mobile .menu.index {
+  display: none;
+ }

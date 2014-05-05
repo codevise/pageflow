@@ -1,0 +1,23 @@
+<label>
+  <span class="name"></span>
+  <span class="inline_help"></span>
+</label>
+
+<!-- inline style for wysihtml5 to pick up -->
+<textarea style="width: 100%;"></textarea>
+
+<div class="toolbar">
+  <a data-wysihtml5-command="bold" title="Fett">bold</a>
+  <a data-wysihtml5-command="italic" title="Kursiv">italic</a>
+  <a data-wysihtml5-command="underline" title="Unterstrichen">underline</a>
+  <a data-wysihtml5-command="createLink" title="Link einfügen"></a>
+
+  <div data-wysihtml5-dialog="createLink" class="dialog" style="display: none;">
+    <label>
+      URL:
+      <input data-wysihtml5-dialog-field="href" value="http://">
+    </label>
+    <a data-wysihtml5-dialog-action="save">OK</a>
+    <a data-wysihtml5-dialog-action="cancel">Abbrechen</a>
+  </div>
+</div>

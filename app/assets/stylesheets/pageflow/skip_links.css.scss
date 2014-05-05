@@ -1,0 +1,56 @@
+@mixin position {
+  position: absolute;
+  top: -1000em;
+  left: -1000em;
+  white-space: nowrap;
+}
+
+@mixin focus {
+  background-color: #fff;
+  color: #000;
+  padding: 0 .25em;
+  z-index: 1000;
+}
+
+a:focus {
+  outline: 3px solid #c1c1c1;
+  text-decoration: none;
+}
+
+input:focus {
+  outline: 3px solid #065195;
+}
+
+#skipLinks {
+  position: absolute;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  li {
+    list-style: none;
+  }
+
+  a {
+    @include position;
+
+    &:focus {
+      @include focus;
+      top: 150px;
+      left: 8%;
+    }
+  }
+}
+
+a.to_top {
+  @include position;
+
+  &:focus {
+    @include focus;
+    top: auto;
+    left: auto;
+    right: 100px;
+    bottom: 30px;
+  }
+
+}

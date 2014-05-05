@@ -1,0 +1,6 @@
+rvm:
+  - 1.9.3
+
+script:
+  - "RAILS_ENV=test bundle exec rake db:schema:load"
+  - "bundle exec rspec --tag ~js"

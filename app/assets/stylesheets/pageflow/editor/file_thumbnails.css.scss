@@ -1,0 +1,79 @@
+.file_thumbnail {
+  background-size: cover;
+
+  .pictogram {
+    width: 100%;
+    height: 100%;
+  }
+
+  .pictogram:hover {
+    background-color: #333;
+  }
+
+  .pictogram {
+    background-color: #444;
+    @include background-icon-center($color: #eee, $font-size: 30px);
+
+    &.audio {
+      @include note-icon;
+    }
+
+    &.uploading {
+      @include up-bold-icon;
+      @include background-icon-animation(blink);
+    }
+
+    &.uploading_to_s3 {
+      @include cloud-icon;
+      @include background-icon-animation(blink);
+    }
+
+    &.processing,
+    &.encoding {
+      @include cog-icon;
+      @include background-icon-animation(blink);
+    }
+
+    &.empty {
+      @include picture-icon;
+    }
+
+    &.failed {
+      @include background-icon-animation(none);
+      @include attention-icon;
+    }
+  }
+
+  &.ready {
+    .pictogram {
+      display: none;
+    }
+  }
+
+  &.always_picogram {
+    .pictogram {
+      display: block;
+    }
+  }
+}
+
+.expandable {
+  .file_thumbnail {
+    @include background-icon-left($color: #fff, $left: 70%, $top: 85%);
+    @include down-open-icon;
+
+    &:before {
+      z-index: 1;
+      opacity: 0.4;
+      text-shadow: #000 1px 0px 4px;
+    }
+
+    &:hover:before {
+      opacity: 1;
+    }
+  }
+
+  .expanded .file_thumbnail {
+    @include up-open-icon;
+  }
+}

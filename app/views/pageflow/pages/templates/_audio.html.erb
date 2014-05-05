@@ -1,0 +1,55 @@
+<div class="blackLayer"></div>
+<div class="content_and_background audioPage">
+
+  <div class="backgroundArea">
+    <%= background_image_div(configuration, 'background_image') %>
+    <%= shadow_div :opacity => configuration['gradient_opacity'] %>
+  </div>
+
+  <div class="page_header">
+    <h2>
+      <span class="tagline"><%= configuration['tagline'] %></span>
+      <span class="title"><%= configuration['title'] %></span>
+      <span class="subtitle"><%= configuration['subtitle'] %></span>
+    </h2>
+    <%= background_image_tag(configuration['background_image_id'], {"class" => "print_image"}) %>
+  </div>
+
+  <div class="content">
+    <div class="controls">
+      <span class="hint">Audio</span>
+      <%= info_box(configuration) %>
+      <div class="vjs-control-bar">
+        <div class="vjs-controls vjs-default-skin vjs-player">
+          <a class="vjs-play-control vjs-play vjs-control" tabindex="4"><span></span></a>
+          <div class="vjs-progress-control">
+            <div class="vjs-progress-holder">
+              <div class="vjs-load-progress"></div>
+              <div class="vjs-play-progress"></div>
+              <div class="vjs-slider-handle"></div>
+            </div>
+          </div>
+          <div class="vjs-current-time vjs-time-controls vjs-control">
+            <span class="vjs-current-time-display">00:00</span>
+          </div>
+          <span class="vjs-time-divider">/</span>
+          <div class="vjs-duration vjs-time-controls vjs-control">
+            <span class="vjs-duration-display">03:12</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroller">
+      <div>
+        <div class="contentWrapper">
+          <div class="audio-js-box">
+            <%= audio_tag(configuration['audio_file_id'], :unique_id => page.id) %>
+          </div>
+          <div class="contentText audioPage">
+           <p><%= raw configuration['text'] %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

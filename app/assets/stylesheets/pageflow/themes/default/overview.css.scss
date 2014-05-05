@@ -1,0 +1,74 @@
+$overview-color: $main-color;
+$overview-font: $standard-font;
+$overview-header-font: $standard-font;
+
+.overview {
+  font-family: $standard-font;
+
+  .content h2 {
+    font-family: $standard-font;
+  }
+  .button {
+    display: block;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+
+    &:hover {
+      background-position: -32px 0;
+    }
+  }
+
+  .close {
+    background-image: image-url('pageflow/themes/#{$theme-name}/close_sprite.png');
+
+    &:before {
+      content: " ";
+      position: absolute;
+      top: 3px;
+      right: 45px;
+
+      width: 100px;
+      height: 30px;
+
+      background-image: image-url('pageflow/close_text.png');
+    }
+  }
+
+  .scroll_indicator {
+    &.left {
+      background-image: image-url('pageflow/themes/#{$theme-name}/arrow_left_sprite.png');
+    }
+
+    &.right {
+      background-image: image-url('pageflow/themes/#{$theme-name}/arrow_right_sprite.png');
+    }
+  }
+
+  .ov_page {
+    &.background_image .pictogram {
+      background-image: image-url('pageflow/ov-image.png');
+    }
+
+    &.background_video .pictogram {
+      background-image: image-url('pageflow/ov-image.png');
+    }
+
+    &.video .pictogram {
+      background-image: image-url('pageflow/ov-video.png');
+    }
+
+    &.audio .pictogram {
+      background-image: image-url('pageflow/ov-audio.png');
+    }
+  }
+
+  .content .ov_chapter .ov_page.active {
+    border-color: $overview-color;
+  }
+}
+
+.overview .content .ov_chapter .ov_page_description {
+  background-color: $overview-color;
+}

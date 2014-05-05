@@ -1,0 +1,127 @@
+#folders_sidebar_section {
+  position: relative;
+
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    list-style: none;
+    position: relative;
+  }
+
+  .folders {
+    margin-bottom: 10px;
+
+    .name {
+      @include background-icon-left;
+      @include folder-icon;
+
+      display: block;
+      padding: 5px 10px 5px 35px;
+      margin: 3px 0;
+
+      text-decoration: none;
+    }
+
+    span.name {
+      @include highlight-gradient;
+      @include background-icon-color(#eee);
+      color: #fff;
+      font-weight: bold;
+      cursor: default;
+    }
+
+    .edit_folder,
+    .delete {
+      @include background-icon-center(#444);
+      @include hide-text;
+
+      position: absolute;
+      top: 0;
+      width: 30px;
+      height: 26px;
+    }
+
+    .edit_folder {
+      @include pencil-icon;
+      right: 30px;
+    }
+
+    .delete {
+      @include trash-icon;
+      right: 0;
+    }
+
+    .drop_target {
+      background-color: #fff;
+    }
+
+    .drop_over {
+      outline: solid 1px #444;
+    }
+  }
+
+  h4 {
+    margin: 0px 0 5px 0;
+    font-size: 13px;
+    font-weight: bold;
+    color: #888;
+  }
+
+  .new {
+    @include background-icon-left;
+    @include plus-circled-icon;
+
+    display: block;
+    padding: 5px 10px 5px 35px;
+    margin: 0 0 10px 0;
+    border-bottom: solid 1px #ddd;
+  }
+
+  .delete,
+  .new,
+  .edit_folder,
+  .edit_toggle.done {
+    display: none;
+  }
+
+  &.editable {
+    .delete,
+    .edit_folder,
+    .new,
+    .edit_toggle.done {
+      display: block;
+    }
+
+    .edit_toggle.edit {
+      display: none;
+    }
+  }
+
+  .edit_toggle {
+    @include background-icon-center(#444);
+
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 30px;
+
+    &.done {
+      @include check-icon;
+    }
+
+    &.edit {
+      @include pencil-icon;
+    }
+  }
+}
+
+.dragged_entry {
+  border: solid 1px #888;
+  background-color: #eee;
+  padding: 15px;
+  z-index: 1000;
+}

@@ -1,0 +1,45 @@
+.select_button {
+  position: relative;
+  float: right;
+
+  button {
+    @include icon-button;
+    @include up-icon;
+  }
+
+  .dropdown {
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+    @include transition(visibility 200ms, opacity 200ms, top 200ms);
+
+    position: absolute;
+
+    padding: 10px;
+
+    top: 8px;
+    left: -9px;
+  }
+
+  .dropdown-menu {
+    position: relative;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+
+    li {
+      padding: 5px;
+      cursor: pointer;
+    }
+  }
+
+
+  &:hover .dropdown {
+    @include transition(visibility 0ms, opacity 100ms, top 200ms);
+    visibility: visible;
+    pointer-events: all;
+
+    top: 18px;
+    opacity: 1;
+  }
+}

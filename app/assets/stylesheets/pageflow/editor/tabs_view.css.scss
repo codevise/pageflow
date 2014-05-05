@@ -1,0 +1,31 @@
+.tabs_view {
+  > ul {
+    background-color: #e5e5e5;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  > ul > li {
+    display: inline-block;
+    padding: 10px 10px;
+    background-color: #e5e5e5;
+    cursor: pointer;
+
+    &.active {
+      background-color: #fff;
+    }
+  }
+
+  > div {
+    background-color: #fff;
+    padding: 10px;
+  }
+
+  > ul > li.spinner {
+    padding-left: 27px;
+    @include background-icon-left;
+    @include background-icon-animation(blink);
+    @include up-bold-icon;
+  }
+}

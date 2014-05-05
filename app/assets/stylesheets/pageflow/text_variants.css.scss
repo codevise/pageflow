@@ -1,0 +1,19 @@
+.text_position_right {
+  &.page .contentText > * {
+    margin-left: auto;
+  }
+
+  .internal_links_page nav {
+    margin-left: auto;
+  }
+
+  .page_header {
+    max-width: 500px;
+    margin-left: auto;
+    width: 60%;
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+}

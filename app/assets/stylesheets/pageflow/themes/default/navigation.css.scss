@@ -1,0 +1,323 @@
+$nav-color: $main-color;
+$nav-font: $standard-font;
+
+$nav-bg-color: $basic-background-color;
+$nav-bg-color-transparent: $basic-background-color-transparent;
+
+
+
+
+.navigation {
+  .button, .navigation_mute, .navigation_share {
+    background-image: image-url("pageflow/themes/#{$theme-name}/menu_sprite.png");
+    height: 42px;
+    width: 42px;
+  }
+
+  $normalOffset: -30px;
+  $mousedownOffset: -140px;
+  $hoverOffset: -85px;
+  $deactiveOffset: -195px;
+
+  .navigation_main {
+    $main: -22px;
+    .button {
+      background-position: $main $normalOffset;
+
+      @include hover {
+        background-position: $main $hoverOffset;
+      }
+
+      @include pressed {
+        background-position: $main $mousedownOffset;
+      }
+    }
+    &.active .button {
+      $mainActive: -89px;
+      background-position: $mainActive $normalOffset;
+
+      @include hover {
+        background-position: $mainActive $hoverOffset;
+      }
+
+      @include pressed {
+        background-position: $mainActive $mousedownOffset;
+      }
+    }
+  }
+
+  $home: -155px;
+  .navigation_home .button {
+    background-position: $home $normalOffset;
+
+    @include hover {
+      background-position: $home $hoverOffset;
+    }
+
+    @include pressed {
+      background-position: $home $mousedownOffset;
+    }
+  }
+  .navigation_home.deactivated .button {
+    @include hover {
+      background-position: $home $deactiveOffset;
+    }
+    background-position: $home $deactiveOffset;
+
+    cursor: default;
+  }
+
+  .navigation_index {
+    $index: -222px;
+    .button {
+      background-position: $index $normalOffset;
+
+      @include hover {
+        background-position: $index $hoverOffset;
+      }
+
+      @include pressed {
+        background-position: $index $mousedownOffset;
+      }
+    }
+
+    &.active .button {
+      background-position: $index $hoverOffset;
+
+      @include pressed {
+        background-position: $index $mousedownOffset;
+      }
+    }
+  }
+  $fullscreen: -289px;
+  .navigation_fullscreen .button {
+    background-position: $fullscreen $normalOffset;
+
+    @include hover {
+      background-position: $fullscreen $hoverOffset;
+    }
+
+    @include pressed {
+      background-position: $fullscreen $mousedownOffset;
+    }
+  }
+  .navigation_fullscreen.active .button {
+    background-position: $fullscreen $hoverOffset;
+
+    @include pressed {
+      background-position: $fullscreen $mousedownOffset;
+    }
+  }
+
+  $hide_text: -670px;
+  .navigation_hide_text .button {
+    background-position: $hide_text $normalOffset;
+
+    @include hover {
+      background-position: $hide_text $hoverOffset;
+    }
+
+    @include pressed {
+      background-position: $hide_text -141px;
+    }
+  }
+  .navigation_hide_text.active .button {
+    background-position: $hide_text $hoverOffset;
+
+    @include pressed {
+      background-position: $hide_text -141px;
+    }
+  }
+
+  .navigation_mute {
+    background-position: -355px $normalOffset;
+  }
+  .navigation_mute.muted {
+    background-position: -489px $normalOffset;
+  }
+  .navigation_volume_box {
+    @include hover {
+      + a .navigation_mute {
+        background-position: -355px $hoverOffset;
+      }
+    }
+  }
+  .navigation_volume_box {
+    @include hover {
+      + a .navigation_mute.muted {
+        background-position: -489px $hoverOffset;
+      }
+    }
+  }
+  .navigation_share {
+    background-position: -555px $normalOffset;
+  }
+  .navigation_share_box {
+    @include hover {
+      + a .navigation_share {
+        background-position: -555px $hoverOffset;
+      }
+    }
+  }
+  .navigation_credits.button {
+    $credits: -622px;
+    background-position: $credits $normalOffset;
+
+    @include hover {
+      background-position: $credits $hoverOffset;
+    }
+
+    @include pressed {
+      background-position: $credits -141px;
+    }
+  }
+  .share_google {
+    background-position: -855px -39px;
+  }
+  .share_twitter {
+    background-position: -789px -39px;
+  }
+  .share_facebook {
+    background-position: -718px -39px;
+  }
+
+  a {
+    .navigation_mute {
+      @include pressed {
+        background-position: -355px $mousedownOffset;
+      }
+
+      &.muted {
+        @include pressed {
+          background-position: -489px $mousedownOffset;
+        }
+      }
+    }
+    .navigation_share {
+      @include pressed {
+        background-position: -555px $mousedownOffset;
+      }
+    }
+    .share_google {
+      @include pressed {
+        background-position: -855px -145px;
+      }
+    }
+    .share_twitter {
+      @include pressed {
+        background-position: -789px -145px;
+      }
+    }
+    .share_facebook {
+      @include pressed {
+        background-position: -718px -145px;
+      }
+    }
+
+    @include hover {
+      .navigation_mute {
+        background-position: -355px $hoverOffset;
+
+        &.muted {
+          background-position: -489px $hoverOffset;
+        }
+      }
+      .navigation_share {
+        background-position: -555px $hoverOffset;
+      }
+      .share_google {
+        background-position: -855px -92px;
+      }
+      .share_twitter {
+        background-position: -789px -92px;
+      }
+      .share_facebook {
+        background-position: -718px -92px;
+      }
+    }
+  }
+}
+
+.navigation_mobile {
+  .background_image:after {
+    background-image: image-url('pageflow/themes/#{$theme-name}/image_sprite.png');
+  }
+  .background_video:after {
+    background-image: image-url('pageflow/themes/#{$theme-name}/image_sprite.png');
+  }
+  .video:after {
+    background-image: image-url('pageflow/themes/#{$theme-name}/video_sprite.png');
+  }
+  .audio:after {
+    background-image: image-url('pageflow/themes/#{$theme-name}/audio_sprite.png');
+  }
+  .internal_links:after {
+    background-image: image-url('pageflow/themes/#{$theme-name}/internal_links_sprite.png');
+  }
+}
+
+.navigation.js .scroller ul a.active img, .navigation_mobile .wrapper a.active {
+  border-left: 5px solid $nav-color;
+}
+
+.navigation.js .scroller:after, .navigation.js .navigation_bar_top:after, .navigation .navigation_bar_top, .navigation .navigation_bar_bottom {
+  opacity: 0.9;
+  background-color: $nav-bg-color;
+}
+
+.navigation.js .navigation_bar_bottom > li > a,
+.navigation.js .navigation_bar_bottom .indicator,
+.navigation .navigation_bullet {
+  background-color: $nav-bg-color;
+}
+.navigation .navigation_credits_box,
+.navigation .navigation_site_detail {
+  font-family: $nav-font;
+}
+
+.navigation a,
+.navigation .navigation_credits_box a {
+  color: $nav-color;
+}
+
+.overview_mobile .credits a:before, .navigation_credits_box a:before {
+  background-image: image-url('pageflow/themes/#{$theme-name}/anchor_einslive.png');
+}
+
+.navigation .navigation_home.deactivated .button {
+  background-position: -155px -140px
+}
+
+div.navigation > ul.navigation_bar_top > li:nth-child(1) {
+  display: none !important;
+}
+div.navigation .menu_li {
+  display: none;
+}
+.navigation_bullet.navigation_home {
+  padding-top: 20px;
+}
+
+.navigation.js .volume-control .volume-level {
+  background-color: $nav-color;
+}
+
+.navigation_mobile, .navigation_mobile .overview_mobile .credits, .navigation_mobile .imprint_mobile .credits, .navigation_mobile .sharing_mobile .credits {
+  font-family: $nav-font;
+}
+
+.navigation_mobile .overview_mobile .credits a, .navigation_mobile .imprint_mobile .credits a, .navigation_mobile .sharing_mobile .credits a {
+  color: $nav-font;
+}
+
+.has_no_mobile_platform .navigation .navigation_home.deactivated .button:hover {
+  background-position: -155px -140px;
+}
+
+.js.navigation .navigation_bar_bottom .fullscreen {
+  background-color: $nav-bg-color;
+}
+.navigation .scroller ul a, .navigation.js .scroller ul a {
+  background-color: $nav-bg-color;
+  background-color: $nav-bg-color-transparent;
+}

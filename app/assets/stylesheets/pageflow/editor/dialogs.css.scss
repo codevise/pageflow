@@ -1,0 +1,41 @@
+.dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+
+  &:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.5;
+  }
+
+  .box {
+    position: relative;
+    border: solid 1px #aaa;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+  }
+
+  h2, h3 {
+    margin: 0 0 10px 0;
+  }
+
+  .footer {
+    clear: left;
+    text-align: right;
+  }
+
+  a.close {
+    @include cancel-icon;
+    @include icon-button;
+  }
+}

@@ -1,0 +1,12 @@
+.other_entry_item {
+  width: 100%;
+  padding: 4px 0;
+
+  &.active {
+    background-color: $highlight-color;
+  }
+
+  a {
+    padding-left: 4px;
+  }
+}

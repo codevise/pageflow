@@ -1,0 +1,45 @@
+@import "pageflow/mixins";
+
+@import "pageflow/admin/columns";
+@import "pageflow/admin/entries";
+
+#wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+form {
+  fieldset p {
+    margin-left: 20%;
+    max-width: 550px;
+  }
+
+  fieldset.actions .link_action {
+    padding: 5px;
+
+    &.cancel {
+      padding: 0;
+    }
+  }
+}
+
+.action_items {
+  form, div {
+    display: inline;
+  }
+
+  input[type="submit"] {
+    @include light-button;
+    padding: 12px 17px 10px;
+    span.icon { vertical-align: bottom; margin-right: 4px;}
+    margin: 0px;
+
+    &:hover{
+      @include icon-color(#000);
+    }
+  }
+}
+
+.blank_slate_container {
+  margin: 10px 0;
+}

@@ -1,0 +1,41 @@
+<a class="back">Gliederung</a>
+
+<div class="files_pending notice">
+  <p>Bitte warten Sie bis alle Dateien des Beitrags verarbeitet wurden und überprüfen Sie das Ergebnis. Der Beitrag kann dann veröffentlicht werden.</p>
+  <p><a href="#files">Dateien anzeigen</a></p>
+</div>
+
+<div>
+  <div class="published notice">
+    <p>Eine Revision dieses Beitrags ist zur Zeit veröffentlicht.</p>
+    <p><a href="" target="_blank">Revisionen ansehen</a></p>
+  </div>
+
+  <div class="not_published notice">
+    Dieser Beitrag ist zur Zeit nicht veröffentlicht.
+  </div>
+
+  <h2>Akuellen Stand veröffentlichen</h2>
+
+  <div class="radio_input">
+    <input id="publish_entry_forever" type="radio" name="mode" value="publish_forever">
+    <label for="publish_entry_forever">Unbegrenzt</label>
+  </div>
+
+  <div class="radio_input">
+    <input id="publish_entry_until" type="radio" name="mode" value="publish_until">
+    <label for="publish_entry_until">Bis einschließlich</label>
+
+    <div class="publish_until_fields disabled">
+      <label>Datum
+        <input type="text" name="publish_until">
+      </label>
+
+      <label>Uhrzeit
+        <input type="text" name="publish_until_time" value="00:00">
+      </label>
+    </div>
+  </div>
+
+  <button class="save" disabled>Veröffentlichen</a>
+</div>

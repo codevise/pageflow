@@ -1,0 +1,153 @@
+.vjs-control-bar {
+  /* Make sure control bar is centered, since translateX(-50%) does not work. */
+  margin-left: -217px !important;
+
+  &:before {
+    display: none !important;
+  }
+}
+
+.vjs-tech {
+  /* Centering Video with translateY(-50%) does not work. */
+  top: auto !important;
+}
+
+.navigation .navigation_site_detail:before {
+  /* IE 8 fails to render the small arrows on the navigation detail
+     boxes correctly. Hide. */
+  display: none !important;
+}
+
+.entry .scroll_indicator:before {
+ /* background-image: image-url('pageflow/down_small.png'); */
+}
+
+.entry .scroll_indicator.invert:before {
+ /* background-image: image-url('pageflow/down_small_invert.png'); */
+}
+
+.page .scroller > div {
+  /* IE 8 does not trigger mouse events on div without a background - duh */
+  background-image: url('.');
+}
+
+.entry .scroll_indicator {
+  /* IE 8 does not know opacity */
+  display: none;
+  text-indent: -9999px;
+
+  &.visible {
+    display: block;
+  }
+}
+
+.js .header {
+  visibility: visible !important;
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+
+.slideshow section.page {
+  &.animate-out-forwards,
+  &.animate-out-backwards {
+    display: none;
+  }
+
+  &.animate-in-forwards,
+  &.animate-in-backwards {
+    display: block;
+  }
+}
+
+.videoPage {
+  .fade-in {
+    visibility: visible !important;
+  }
+
+  .fade-out {
+    visibility: hidden !important;
+  }
+}
+
+.js .page .videoPage .add_info_box, .js .audioPage .add_info_box {
+  margin: 0 0 63px -214px;
+  max-width: 434px;
+}
+
+.navigation {
+  /* IE 8 displays images in front of pseudo elements of parent */
+  .navigation_thumbnails a {
+    z-index: 1;
+
+    &:focus:after {
+      z-index: 2;
+    }
+
+    img {
+      position: relative;
+      z-index: -1;
+    }
+  }
+}
+
+.ie8_hint {
+  font-family: sourcesanspro;
+  position: absolute;
+  top: 0;
+  left: 25%;
+  right: 25%;
+  z-index: 1000;
+  line-height: 25px;
+  padding: 10px 50px;
+
+  font-weight: bold;
+  background-color: #fff;
+  color: #444;
+
+  a {
+    color: #000;
+    text-decoration: none;
+    position: relative;
+    margin-left: 21px;
+    margin-right: 6px;
+  }
+
+  a:before {
+    left: -16px;
+    top: 5px;
+    position: absolute;
+    background-image: image-url('pageflow/anchor_black.png');
+    width: 10px;
+    height: 12px;
+    content: "";
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+
+.internal_links_page {
+  .thumbnail, .placeholder {
+    &:after, span {
+      visibility: hidden;
+    }
+  }
+}
+
+
+
+.hideText .slideshow .content .contentWrapper, .hidden_text_indicator {
+  display: none;
+}
+
+.js .page .close_button {
+  background-image: image-url('close_sprite_shadow_ie8.png') !important;
+}

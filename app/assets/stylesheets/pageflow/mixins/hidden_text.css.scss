@@ -1,0 +1,9 @@
+@mixin hidden-text {
+  overflow: hidden;
+  text-indent: 100px;
+  position: relative;
+
+  &:before {
+    text-indent: 0;
+  }
+}

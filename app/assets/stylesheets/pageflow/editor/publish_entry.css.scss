@@ -1,0 +1,94 @@
+.publish_entry {
+  .notice.files_pending,
+  .notice.published,
+  &.published .notice.not_published {
+    display: none;
+  }
+
+  &.files_pending {
+    > div {
+      display: none;
+    }
+
+    .notice.files_pending {
+      display: block;
+    }
+  }
+
+  &.published .notice.published {
+    display: block;
+  }
+
+  .notice {
+    @include background-icon-left($left: 10px, $top: 18px);
+
+    padding: 10px 10px 10px 40px;
+    margin-top: 10px;
+    border-bottom: solid 1px #aaa;
+
+    &.files_pending {
+      @include hourglass-icon;
+    }
+
+    &.not_published {
+      @include lock-icon;
+    }
+
+    &.published {
+      @include eye-icon;
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  input[type=text] {
+    display: block;
+    width: auto;
+    margin: 5px 0 0 0;
+
+    &.invalid {
+      border: 1px solid red;
+    }
+  }
+
+
+  .radio_input {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  label {
+    padding: 0;
+  }
+
+  input[type=radio] {
+    position: absolute;
+    vertical-align: top;
+    left: 7px;
+    top: 11px;
+  }
+
+  .publish_until_fields {
+    &.disabled {
+      opacity: 0.5;
+    }
+  }
+
+  .save {
+    @include icon-button;
+    @include check-icon;
+
+    margin-top: 15px;
+  }
+
+  &.publishing .save {
+    @include hourglass-icon;
+    @include icon-button($base-color: #aaa);
+  }
+}

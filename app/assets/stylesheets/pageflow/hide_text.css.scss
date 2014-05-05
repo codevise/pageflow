@@ -1,0 +1,39 @@
+.slideshow .content .contentWrapper, .shadow {
+  -webkit-transition: 0.8s ease !important;
+  -moz-transition: 0.8s ease !important;
+  -ms-transition: 0.8s ease !important;
+  transition: 0.8s ease !important;
+}
+
+.js .text_hidden_only {
+  visibility: hidden;
+}
+
+.hideText {
+  .shadow {
+    opacity: 0 !important;
+    -webkit-transition: 0.8s ease !important;
+    -moz-transition: 0.8s ease !important;
+    -ms-transition: 0.8s ease !important;
+    transition: 0.8s ease !important;
+    visibility: hidden;
+  }
+
+  .slideshow .content .contentWrapper {
+    @include transform(translate3d(-200%,0,0));
+  }
+
+  .entry .scroll_indicator {
+    left: -100%;
+  }
+
+  .hide_content_with_text .content {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .text_hidden_only {
+    visibility: visible;
+  }
+}

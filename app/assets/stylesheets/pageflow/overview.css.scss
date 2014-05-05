@@ -1,0 +1,261 @@
+.overview {
+  @include unselectable;
+  visibility: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: sourcesanspro;
+  position: absolute;
+  top: 0;
+  left: 0;
+  @include transition(visibility 0.5s);
+
+  &.active {
+    visibility: visible;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background-color: black;
+    opacity: 0;
+    @include transition(0.5s ease);
+  }
+
+  &.active:after {
+    opacity: 0.4;
+  }
+
+  &.active .content {
+    @include transform(translate(0,0));
+  }
+
+  .scroll_indicator {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+
+    &.left {
+      left: 10px;
+    }
+
+    &.right {
+      right: 0;
+    }
+
+    &:active {
+      outline: none;
+    }
+  }
+
+  .content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 8%;
+    right: 120px;
+    height: 535px;
+    color: #fff;
+    overflow: hidden;
+    z-index: 2;
+    margin: auto;
+    @include transition(0.5s ease);
+    @include transform(translate(200%,0));
+
+    h2 {
+      margin-left: 10px;
+      margin-bottom: 0;
+      font-size: 3em;
+      margin-top: 0;
+    }
+
+    .close {
+      position: absolute;
+      right: 0;
+      top: 20px;
+    }
+
+    .scroller {
+      overflow: hidden;
+      height: 465px;
+      position: relative;
+    }
+
+    .ov_chapter {
+      position: relative;
+      float: left;
+      width: 265px;
+      height: 395px;
+      margin-top: 25px;
+      margin-right: 10px;
+      background-image: image-url('pageflow/chapter_bg.png');
+      background-repeat: repeat-y;
+
+      &:before, &:after {
+        content: " ";
+        position: absolute;
+
+        width: 265px;
+        height: 10px;
+      }
+
+      &:before {
+        top: -10px;
+        left: 0;
+        background-image: image-url('pageflow/chapter_top.png');
+      }
+
+      &:after {
+        bottom: -10px;
+        left: 0;
+        background-image: image-url('pageflow/chapter_bottom.png');
+      }
+
+      .heading-4 {
+        display: block;
+        font-weight: bold;
+        margin: 10px 17px;
+        margin-top: 0;
+        height: 20px;
+        font-size: 1.1em;
+        margin-bottom: 21px;
+      }
+
+      .heading-5 {
+        display: block;
+        margin: 5px 17px;
+        height: 20px;
+        font-size: 1em;
+        text-transform: uppercase;
+        font-weight: normal;
+      }
+
+      @mixin dimensions {
+        width: 230px;
+        height: 72px;
+      }
+
+      .ov_page {
+        @include transform-style(preserve-3d);
+        @include perspective(700px);
+        @include perspective-origin(left 50%);
+
+        display:block;
+
+        @include dimensions;
+        position: relative;
+        margin-left: 15px;
+        margin-bottom: 5px;
+        border: 1px solid #505050;
+        color: #fff;
+
+
+        &.active {
+          cursor: default;
+          border-color: #ddd;
+        }
+
+        &:active {
+          outline: none;
+        }
+
+        img {
+          @include dimensions;
+          position: absolute;
+          top: 0;
+          left: 0;
+          opacity: 0.8;
+          border: none;
+        }
+
+        &:hover img, &.touched img {
+          opacity: 1;
+        }
+
+        .pictogram {
+          @include transition(background-position 350ms);
+          @include dimensions;
+          position: absolute;
+          top: 0;
+          left: 0;
+          background-position: 0;
+        }
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+
+        &:hover {
+          opacity: 1;
+
+          .ov_page_description {
+            opacity: 1;
+
+            @include transform(rotateY(0deg));
+            -webkit-transition: -webkit-transform 400ms, opacity 100ms;
+            -moz-transition: -moz-transform 400ms, opacity 100ms;
+            transition: transform 400ms, opacity 100ms;
+          }
+
+          .pictogram {
+            @include transition(background-position 250ms);
+            background-position: 79px;
+          }
+        }
+
+        .has_touch_support & {
+          opacity: 1;
+
+          .ov_page_description {
+            opacity: 0.8;
+            @include transform(rotateY(0deg));
+          }
+
+          .pictogram {
+            @include transition(background-position 250ms);
+            background-position: 79px;
+          }
+        }
+      }
+
+      .ov_page_description {
+        position: absolute;
+        z-index: 1;
+        top: 0px;
+        left: 0px;
+        padding: 5px;
+        width: 149px;
+        height: 62px;
+        background-color: #5d6c0c;
+        border-right: 1px solid #505050;
+        overflow: hidden;
+        opacity: 0;
+
+        @include backface-visibility(hidden);
+        @include transform-origin(0 0);
+        @include transform(rotateY(-90deg));
+        -webkit-transition: -webkit-transform 400ms, opacity 100ms 300ms;
+        -moz-transition: -moz-transform 400ms, opacity 100ms 300ms;
+        transition: transform 400ms, opacity 100ms 300ms;
+
+        p {
+          margin: 0;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .ov_chapter:first-of-type:before {
+      background-image: image-url('pageflow/chapter_start.png');
+    }
+
+    .ov_chapter:last-of-type:after {
+      background-image: image-url('pageflow/chapter_end.png');
+    }
+  }
+}

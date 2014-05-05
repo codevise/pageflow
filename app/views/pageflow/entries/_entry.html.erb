@@ -1,0 +1,16 @@
+<div id="outer_wrapper">
+  <%= render 'pageflow/entries/skip_links' %>
+  <h1 class="hidden"><%= entry.title %></h1>
+  <img src="<%= image_path('pageflow/logo_print.png') %>" class="print_image" alt="Logo image for print version">
+  <span class="print_only page_url"><%= request.original_url %></span>
+  <%= content_tag :div, :id => 'content', :class => 'entry', :data => {:role => 'slideshow'} do %>
+    <%= render entry.pages %>
+
+    <div class="scroll_indicator indicator">Scrollen, um weiterzulesen</div>
+    <div class="hidden_text_indicator indicator">Wischen um Text wieder einzublenden</div>
+  <% end %>
+
+  <%= render 'pageflow/entries/header', :entry => entry %>
+  <%= render 'pageflow/entries/navigation', :entry => entry %>
+  <%= render 'pageflow/entries/overview', :entry => entry %>
+</div>

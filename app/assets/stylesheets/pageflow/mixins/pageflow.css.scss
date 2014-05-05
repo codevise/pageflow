@@ -1,0 +1,5 @@
+@mixin pageflow-page-type($name) {
+  .#{$name} .type_pictogram {
+    background-image: image-url("pageflow/#{$name}_pictogram_small.png");
+  }
+}

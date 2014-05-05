@@ -1,0 +1,5 @@
+de:
+  pageflow:
+    user_mailer:
+      invitation:
+        subject: "Ihre Pageflow Einladung"

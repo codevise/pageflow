@@ -1,0 +1,55 @@
+@mixin background-icon-right($color: #444, $font-size: 19px, $right: 7px, $top: 7px) {
+  position: relative;
+
+  &:before {
+    position: absolute;
+    right: $right;
+    top: $top;
+
+    color: $color;
+    font-size: $font-size;
+  }
+}
+
+@mixin background-icon-left($color: #444, $font-size: 19px, $left: 7px, $top: 49%) {
+  position: relative;
+
+  &:before {
+    position: absolute;
+    left: $left;
+    top: $top;
+
+    @include transform(translateY(-50%));
+    text-indent: 0;
+
+    color: $color;
+    font-size: $font-size;
+  }
+}
+
+@mixin background-icon-center($color: #444, $font-size: 19px, $left: 50%, $top: 50%) {
+  position: relative;
+
+  &:before {
+    position: absolute;
+    top: $top;
+    left: $left;
+
+    @include transform(translateX(-50%) translateY(-50%));
+
+    color: $color;
+    font-size: $font-size;
+  }
+}
+
+@mixin background-icon-color($color) {
+  &:before {
+    color: $color
+  }
+}
+
+@mixin background-icon-animation($name, $duration: 1.5s) {
+  &:before {
+    @include animation($name $duration ease infinite);
+  }
+}

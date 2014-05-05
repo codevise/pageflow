@@ -1,0 +1,63 @@
+<ul class="navigation_bar_top">
+  <li class="menu_li">
+    <a id="navigation" class="navigation_bullet navigation_main" tabindex="2" title="Dachnavigation anzeigen" data-active-title="Dachnavigation schließen">
+      <span class="hint">zur Navigation</span>
+      <span class="button"></span>
+    </a>
+  </li>
+  <li>
+    <a class="navigation_bullet navigation_home" <%= "href=##{entry.pages.first.perma_id} data-link=#{entry.pages.first.id}" unless entry.pages.nil? || entry.pages.first.nil? %> tabindex="2" title="Startseite anzeigen">
+      <span class="hint">zum Anfang</span>
+      <span class="button"></span>
+    </a>
+  </li>
+  <li>
+    <a class="navigation_bullet navigation_index" tabindex="2" title="Übersicht anzeigen" data-active-title="Übersicht schließen">
+      <span class="hint">zur Übersicht</span>
+      <span class="button"></span>
+    </a>
+  </li>
+  <li class="navigation_menu" tabindex="2">
+    <div class="navigation_menu_box navigation_share_box">
+      <%= link_to "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}&p%5Btitle%5D=#{ERB::Util.url_encode(entry.title)}", :target => "_blank", :tabindex => "2", :class => "share facebook" do %>
+          <span class="hint">über facebook teilen</span>
+          <span class="share_facebook button"></span>
+          <p>facebook</p>
+      <% end %>
+      <%= link_to "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share twitter" do %>
+          <span class="hint">über twitter teilen</span>
+          <span class="share_twitter button"></span>
+          <p>twitter</p>
+      <% end %>
+      <%= link_to "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share google" do %>
+          <span class="hint">über Google+ teilen</span>
+          <span class="share_google button"></span>
+          <p>google</p>
+      <% end %>
+    </div>
+    <a title="Angebot weiterempfehlen">
+      <span class="hint">teilen</span>
+      <span class="navigation_bg navigation_share button"></span>
+    </a>
+  </li>
+  <li class="navigation_menu" tabindex="2">
+    <div class="navigation_menu_box navigation_credits_box">
+      <%= raw entry.credits %>
+      <p class="rights">
+        Bildrechte:
+        <%= entry_file_rights(entry) %>
+      </p>
+
+      <h2 class="hidden">Globale Links</h2>
+      <%= link_to(raw(entry.theme.imprint_link_label), entry.theme.imprint_link_url, :target => '_blank', :tabindex => 2, :class => 'legal') %>
+      <%= link_to(raw(entry.theme.copyright_link_label), entry.theme.copyright_link_url, :target => '_blank', :tabindex => 2, :class => 'copy') %>
+    </div>
+    <a title="Impressum">
+      <span class="hint">impressum</span>
+      <span class="navigation_bg navigation_credits button"></span>
+    </a>
+  </li>
+</ul>
+<a class="scroll_indicator top" tabindex="2">
+  <span class="hint">hoch scrollen</span>
+</a>

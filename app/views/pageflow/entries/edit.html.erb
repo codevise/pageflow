@@ -1,0 +1,48 @@
+<% content_for(:head) do %>
+    <%= entry_theme_stylesheet_link_tag(@entry) %>
+    <%= stylesheet_link_tag 'pageflow/editor', media: "all" %>
+    <%= javascript_include_tag 'pageflow/editor' %>
+<% end %>
+
+<main class="ui-layout-center">
+</main>
+
+<sidebar class="ui-layout-east editor">
+  <div class="scrolling">
+    <div class="notifications_container"></div>
+    <div class="container"></div>
+  </div>
+  <div class="help_button_container"></div>
+</sidebar>
+
+<div class="dialog_container">
+</div>
+
+<%= form_for [:editor, @entry, Pageflow::ImageFile.new], :html => {:multipart => true, :id => 'upload'} do |f| %>
+  <%= f.file_field :attachment, :multiple => true, :name => 'image_file[attachment]' %>
+<% end %>
+
+<script>
+  I18n.defaultLocale = "<%= I18n.default_locale %>";
+  I18n.locale = "<%= I18n.locale %>";
+
+  jQuery(function() {
+    pageflow.features.detect().then(function() {
+      pageflow.app.start({
+        root: '<%= edit_entry_path(@entry).html_safe %>',
+
+        entry: <%= render_json_seed(@entry) %>,
+        chapters: <%= @entry.chapters.to_json.html_safe %>,
+        pages: <%= @entry.pages.to_json.html_safe %>,
+
+        imageFiles: <%= render_json_seed(@entry.image_files.with_usage_id) %>,
+        videoFiles: <%= render_json_seed(@entry.video_files.with_usage_id) %>,
+        audioFiles: <%= render_json_seed(@entry.audio_files.with_usage_id) %>,
+
+        page_types: <%= page_type_json_seeds %>,
+      });
+    });
+  });
+</script>
+
+<%= page_type_templates %>

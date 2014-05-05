@@ -1,0 +1,79 @@
+ul.files {
+  margin-top: 10px;
+
+  > li {
+    background-color: #eee;
+    margin-bottom: 2px;
+    position: relative;
+    padding: 37px 10px 0 70px;
+    white-space: nowrap;
+    overflow: hidden;
+    height: 23px;
+  }
+
+  > li.expanded {
+    height: auto;
+  }
+
+  li.blank_slate {
+    text-align: center;
+    padding: 10px 5px 20px 5px;
+    color: #888;
+  }
+
+  .file_thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 60px;
+    width: 60px;
+    vertical-align: middle;
+  }
+
+  .file_name {
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .actions {
+    position: absolute;
+    right: 10px;
+    top: 3px;
+    text-align: right;
+
+    a {
+      float: left;
+      margin-left: 5px;
+    }
+  }
+
+  a.cancel,
+  a.remove,
+  a.retry {
+    @include icon-only-button(#aaa);
+  }
+
+  a.remove {
+    @include trash-icon;
+  }
+
+  a.cancel {
+    @include cancel-icon;
+  }
+
+  a.retry {
+    @include arrows-ccw-icon;
+  }
+
+  a.select {
+    @include button(#590);
+
+    padding-left: 5px;
+    padding-right: 5px;
+    vertical-align: middle;
+
+    position: absolute;
+    top: 3px;
+    left: 70px;
+  }
+}

@@ -1,0 +1,59 @@
+.loading_spinner {
+  background-color: #252526;
+  background-image: image-url('pageflow/loading_spinner_glow.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  .loading_spinner_inner {
+    left: 50%;
+    top: 50%;
+    width: 204px;
+    height: 202px;
+    margin-left: -102px;
+    margin-top: -101px;
+    position: absolute;
+
+    &:before {
+      content: " ";
+      width: 204px;
+      height: 202px;
+      position: absolute;
+      background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner_bg.png');
+    }
+
+    div {
+      width: 204px;
+      height: 202px;
+      position: absolute;
+      background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner.png');
+      @include animation-duration (1.5s);
+      @include animation-name(rotateSpinner);
+      @include animation-iteration-count(infinite);
+      @include animation-timing-function(linear);
+    }
+  }
+}
+
+@include keyframes(rotateSpinner) {
+  from {
+    @include transform(rotate(0deg));
+  }
+  to {
+    @include transform(rotate(359deg));
+  }
+}
+
+  .js .vjs-default-skin {
+    .vjs-loading-spinner {
+      top: 29px;
+      left: 30px;
+      opacity: 1;
+      margin-left: -39px;
+      margin-top: -39px;
+
+      &:before {
+        content: " ";
+        background-image: image-url('pageflow/themes/#{$theme-name}/loading_small.png');
+      }
+    }
+  }

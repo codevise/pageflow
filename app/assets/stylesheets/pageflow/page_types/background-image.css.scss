@@ -1,0 +1,19 @@
+.page {
+  .background_image {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    background-position: center center;
+    background-repeat:  no-repeat;
+    background-attachment: fixed;
+    @include background-size(cover);
+  }
+}
+
+.js .page .background_image {
+    -webkit-backface-visibility: hidden;
+}

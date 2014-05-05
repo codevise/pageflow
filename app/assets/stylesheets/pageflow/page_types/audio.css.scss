@@ -1,0 +1,67 @@
+.video-js.player {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.audioPage .vjs-control-bar {
+  position: absolute;
+  left: 50%;
+  @include transform(translate(-50%, 0));
+}
+
+.audioPage {
+  .vjs-controls.vjs-player {
+    display: none;
+  }
+  .audio-js-box {
+    margin-bottom: 3em;
+  }
+  audio {
+    pointer-events: all;
+  }
+}
+
+.js .audioPage {
+  .contentText {
+    margin-bottom: 200px;
+
+    @include phone {
+      margin-bottom: 100px;
+    }
+  }
+
+  .audio-js-box {
+    margin-bottom: 0;
+  }
+
+  audio {
+    visibility: hidden;
+  }
+
+  .vjs-slider-handle {
+    margin-left:-17px;
+  }
+}
+
+.non_js .text_position_right .audioPage {
+  .page_header {
+    margin-left: 0;
+    max-width: initial;
+
+    > * {
+      max-width: 500px;
+      width: 60%;
+      margin-left: auto;
+    }
+  }
+  audio {
+    max-width: 500px;
+    width: 60%;
+    margin-left: auto;
+    display: block;
+  }
+}

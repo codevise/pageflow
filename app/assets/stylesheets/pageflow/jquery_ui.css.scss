@@ -1,0 +1,15 @@
+@import "jquery-layout-default";
+@import "jquery.ui.slider";
+@import "jquery.ui.datepicker";
+
+div.ui-datepicker{
+ font-size: 12px;
+}
+
+.ui-draggable-dragging {
+  z-index: 100;
+}
+
+.ui-state-disabled {
+  opacity: 1;
+}

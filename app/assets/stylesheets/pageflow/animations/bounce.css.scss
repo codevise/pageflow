@@ -1,0 +1,11 @@
+@include keyframes(bounce) {
+  0% {
+    @include transform(translateY(0));
+  }
+  10% {
+    @include transform(translateY(-30px));
+  }
+  100% {
+    @include transform(translateY(0));
+  }
+}

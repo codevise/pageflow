@@ -1,0 +1,40 @@
+pageflow.FileStageItemView = Backbone.Marionette.ItemView.extend({
+  tagName: 'li',
+  className: 'file_stage_item',
+  template: 'templates/file_stage_item',
+
+  ui: {
+    description: '.description',
+    percent: '.percent',
+    errorMessage: '.error_message'
+  },
+
+  modelEvents: {
+    'change': 'update'
+  },
+
+  onRender: function() {
+    this.update();
+    this.$el.addClass(this.model.get('name'));
+  },
+
+  update: function() {
+    this.ui.description.text(this.model.localizedDescription());
+
+    if (typeof this.model.get('progress') === 'number' &&
+        this.model.get('active')) {
+      this.ui.percent.text(this.model.get('progress') + '%');
+    }
+    else {
+      this.ui.percent.text('');
+    }
+
+    this.ui.errorMessage
+      .toggle(!!this.model.get('error_message'))
+      .text(this.model.get('error_message'));
+
+    this.$el.toggleClass('active', this.model.get('active'));
+    this.$el.toggleClass('finished', this.model.get('finished'));
+    this.$el.toggleClass('failed', this.model.get('failed'));
+  }
+});

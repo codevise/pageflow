@@ -1,0 +1,149 @@
+.image_positioning {
+  .box {
+    top: 5%;
+    width: 90%;
+    max-width: 800px;
+    padding-bottom: 20px;
+    overflow: hidden;
+  }
+
+  label {
+    float: left;
+    margin-right: 10px;
+    top: 12px;
+    position: relative;
+    font-size: 12px;
+  }
+
+  ul.screens {
+    border-bottom: solid 1px #aaa;
+    padding: 0;
+
+    li {
+      display: inline-block;
+      list-style: none;
+      padding: 5px 10px;
+      margin-bottom: 1px;
+      background-color: #eee;
+
+      a {
+        text-decoration: none;
+        color: #000;
+      }
+
+      &:hover {
+        background-color: #ddd;
+      }
+
+      &.active {
+        background-color: #D2E5FA;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .wrapper {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .container {
+    display: inline-block;
+    position: relative;
+    height: 100%;
+
+    img {
+      border: solid 1px #444;
+      display: block;
+      max-height: 500px;
+      max-width: 800px;
+    }
+  }
+
+  .mask {
+    position: absolute;
+    background-color: #000;
+    opacity: 0.3;
+
+    &.left {
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 200px;
+      border-right: solid 1px #eee;
+    }
+
+    &.top {
+      top: 0;
+      left: 0;
+      height: 100px;
+      border-bottom: solid 1px #eee;
+      width: 100%;
+    }
+
+    &.right {
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 200px;
+      border-left: solid 1px #eee;
+    }
+
+    &.bottom {
+      bottom: 0;
+      left: 0;
+      height: 100px;
+      width: 100%;
+      border-top: solid 1px #eee;
+    }
+  }
+
+  .slider {
+    position: absolute;
+    border: none;
+
+    &.horizontal {
+      bottom: 0;
+      left: 50px;
+      right: 50px;
+      height: 0;
+    }
+
+    &.vertical {
+      right: 0;
+      top: 50px;
+      bottom: 50px;
+      width: 0;
+      height: auto;
+    }
+  }
+
+  .slider a {
+    @include background-icon-center($font-size: 20px);
+    @include arrow-combo-icon;
+    position: absolute;
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin-left: -20px;
+    margin-top: -20px;
+    background-color: #fff;
+    border: solid 1px #888;
+    border-radius: 4px;
+    left: auto;
+    top: auto;
+  }
+
+  .slider.horizontal a {
+    @include transform(rotate(90deg));
+  }
+
+  a.save {
+    @include check-icon;
+    @include icon-button;
+  }
+
+  a.close {
+    @include icon-button(#888);
+  }
+}

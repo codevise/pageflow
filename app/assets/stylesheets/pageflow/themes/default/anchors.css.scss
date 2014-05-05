@@ -1,0 +1,64 @@
+
+$anchor-color: $main-color;
+
+.contentText a,
+.overview_mobile .credits a,
+.navigation_credits_box a  {
+  color: white;
+  text-decoration: none;
+  pointer-events: all;
+  position: relative;
+  margin-left: 21px;
+  margin-right: 6px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  @include phone {
+    margin-left: 15px;
+    margin-right: 5px;
+  }
+
+  &:before {
+    left: -16px;
+    top: 7px;
+    position: absolute;
+    background-image: image-url('pageflow/anchor_white.png');
+    width: 10px;
+    height: 12px;
+    content: "";
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
+
+
+    @include phone {
+      left: -12px;
+      top: 3px;
+    }
+  }
+}
+
+.invert .contentText a {
+  color: black;
+  &:before {
+    background-image: image-url('pageflow/anchor_black.png');
+  }
+}
+
+.overview_mobile .credits a,
+.navigation_credits_box a {
+  color: $anchor_color;
+  text-decoration: none;
+
+  &:before {
+    background-image: image-url('pageflow/themes/#{$theme-name}/anchor_main_color.png');
+    top: 4px;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    color: $anchor_color;
+  }
+}

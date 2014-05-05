@@ -1,0 +1,63 @@
+.admin_entries {
+  $published-color: #BEEBB8;
+
+  table.revisions {
+    tr {
+      color: #888;
+    }
+
+    a.show {
+      padding-right: 7px;
+    }
+
+    .published td {
+      background-color: $published-color;
+      color: #000;
+    }
+  }
+
+  .snapshot {
+    float: right;
+  }
+
+  span[title] {
+    border-bottom: 1px #aaa dotted;
+    cursor: default;
+  }
+
+  .legend {
+    float: left;
+    position: relative;
+    padding: 0 15px 0 22px;
+
+    &:before {
+      content: " ";
+      position: absolute;
+      display: block;
+      left: 0;
+      top: 0;
+      width: 14px;
+      height: 14px;
+      border: solid 1px #999;
+    }
+
+    &.published:before {
+      background-color: $published-color;
+    }
+  }
+
+  form {
+    clear: both;
+  }
+
+  td.buttons {
+    padding: 5px;
+  }
+
+  td.members {
+    max-width: 130px;
+  }
+
+  @import './entries/folders';
+  @import './entries/user_badge_list';
+}

@@ -1,0 +1,49 @@
+.file_stage_items {
+  border-top: solid 1px #aaa;
+  border-bottom: solid 1px #aaa;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+.file_stage_item {
+  @include background-icon-center($left: 20px, $color: #bbb);
+  margin-left: -60px;
+  padding: 10px 0 5px 60px;
+  white-space: normal;
+
+  &.active {
+    @include background-icon-color(#444);
+    @include background-icon-animation(blink);
+  }
+
+  &.finished {
+    @include background-icon-color(#444);
+  }
+
+  &.failed {
+    @include background-icon-color(#c22);
+  }
+
+  .percent {
+    color: #444;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .error_message {
+    margin-top: 5px;
+  }
+
+  &.uploading {
+    @include up-bold-icon;
+  }
+
+  &.uploading_to_s3 {
+    @include cloud-icon;
+  }
+
+  &.processing,
+  &.encoding {
+    @include cog-icon;
+  }
+}

@@ -1,0 +1,66 @@
+html, body, #outer_wrapper {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-tap-highlight-color: transparent; /* we need this for some Android browsers */
+}
+
+html {
+  background-color: black;
+}
+
+body {
+  -ms-touch-action: none;
+}
+
+.ios7.ipad body {
+  @media screen and (orientation: landscape) {
+    position: fixed;
+    margin-top: 0px;
+  }
+}
+
+body.js, .js #outer_wrapper {
+  overflow: hidden;
+}
+
+a {
+  cursor: pointer;
+}
+
+.hidden {
+  position: absolute;
+  top: -1000em;
+  left: -1000em;
+  line-height: 0;
+  height: 0;
+  font-size: 0;
+  color: transparent;
+  border: 0 none;
+}
+
+@import "video-js";
+
+@import "bourbon";
+@import "./mixins";
+@import "./animations";
+
+@import "./fonts";
+@import "./loading_spinner";
+@import "./entries";
+@import "./page";
+@import "./page_types";
+@import "./slideshow";
+@import "./navigation_bar";
+@import "./navigation_mobile";
+@import "./overview";
+@import "./header";
+@import "./skip_links";
+@import "./video_player";
+@import "./player_controls";
+@import "./text_variants";
+@import "./multimedia_alert";
+@import "./hide_text";

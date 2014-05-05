@@ -1,0 +1,3 @@
+@include font-face(SourceSansPro, 'pageflow/sourcesanspro-regular-webfont', normal, $asset-pipeline: true);
+@include font-face(SourceSansPro, 'pageflow/sourcesanspro-bold-webfont', bold, $asset-pipeline: true);
+@include font-face(SourceSansProLight, 'pageflow/sourcesanspro-light-webfont', normal, $asset-pipeline: true);

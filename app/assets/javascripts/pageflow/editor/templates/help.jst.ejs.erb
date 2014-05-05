@@ -1,0 +1,160 @@
+<div class="box">
+  <h2>Hilfe</h2>
+
+  <ul>
+    <li data-section="intro"><a href="">Übersicht</a></li>
+    <li data-section="outline"><a href="">Kapitel und Seiten verwalten</a></li>
+    <li data-section="page"><a href="">Seiten konfigierieren</a></li>
+    <li data-section="files"><a href="">Dateien hochladen und verwalten</a></li>
+    <li data-section="reusing_files"><a href="">Dateien wiederverwenden</a></li>
+    <li data-section="options"><a href="">Weitere Optionen</a></li>
+    <li data-section="publish"><a href="">Reportage veröffentlichen</a></li>
+  </ul>
+
+  <section data-name="intro">
+    <h3>Übersicht</h3>
+    <p>
+      Dies ist der Editor zum Bearbeiten einer Reportage. In der
+      Leiste auf der rechten Seite können Seiten und Kapitel
+      hinzugefügt und bearbeitet werden. Außerdem gibt es die
+      Möglichkeit, Bilder, Videos und Audiodateien zur Verwendung in
+      der Reportage hochzuladen. Auf der linken Seite befindet sich eine
+      Vorschau der Reportage, die sich bei Änderungen automatisch
+      aktualisiert.
+    </p>
+    <%= image_tag('pageflow/editor/help/hide_sidebar.png', :width => 150, :height => 150) %>
+    <p>
+      Die Seitenleiste kann durch einen Klick auf den Anfasser zur
+      Größenänderung ein- und ausgeblendet werden.
+    </p>
+    <p>
+      Sollte eine Reportage bereits veröffentlicht sein, bleiben
+      Änderungen solange öffentlich unsichtbar, bis die Reportage
+      erneut veröffentlicht wird. Eine Reportage kann stets nur von
+      einem Redakteur zur gleichen Zeit bearbeitet werden.
+    </p>
+  </section>
+
+  <section data-name="outline">
+    <h3>Kapitel und Seiten verwalten</h3>
+    <%= image_tag('pageflow/editor/help/moving_pages.png', :height => 130) %>
+    <p>
+      In der <em>Gliederung</em> werden die Kapitel und Seiten der
+      Reportage angezeigt. Mit den Schaltflächen <em>Neues
+      Kapitel</em> und <em>Neue Seite</em> können weitere Einträge
+      hinzugefügt werden.
+    </p>
+    <p>
+      Ein Klick auf einen der Gliederungseinträge führt zu den
+      Einstellungen des Kapitels bzw. der Seite. Dort gibt es auch
+      eine <em>Löschen</em>-Schaltfläche, mit der Einträge entfernt
+      werden können.
+    </p>
+    <p>
+      Reihenfolgeänderungen innerhalb der Gliederungen sind
+      per <em>Drag and Drop</em> möglich.
+    </p>
+  </section>
+
+  <section data-name="page">
+    <h3>Seiten konfigierieren</h3>
+
+    <p>
+      Wählen Sie zunächst einen Seitentyp.
+      <em>Hintergrundbild:</em> Statische Seite mit Text und einem
+      Hintegrundbild.
+      <em>Video:</em> Auf der Seite wird ein Video angezeigt, das
+      durch Steuerelemente gestartet und gestoppt werden kann.
+      <em>Hintergrund-Video:</em> Ähnlich der Hintergrundbild-Seite. Im
+      Hintergrund läuft allerdings ein Video-Loop.
+      <em>Audio:</em> Auf der Seite wird ein Player zur Wiedergabe
+      einer Audiodatei angezeigt.
+    </p>
+
+    <p>
+      Je nach Seitentyp stehen verschiedene Einstellungen zur
+      Verfügung. Im Reiter <em>Allgemein</em> können Texte für die
+      Seite festgelegt werden. Im Reiter <em>Dateien</em> wählt man
+      Bild- und Tonmateral aus. Unter <em>Optionen</em> kann
+      z.B. festgelegt werden, ob die Seite in der Navigationsleiste
+      erscheint und welche Animation für Seitenwechsel verwendet
+      werden soll.
+    </p>
+  </section>
+
+  <section data-name="files">
+    <h3>Dateien hochladen und verwalten</h3>
+
+    <p>
+      Von der Gliederung führt der Menüpunkt <em>Dateien
+        verwalten</em> zur Liste der bereits hochgeladenen
+      Dateien. Über die Schaltfläche <em>Hinzufügen > Hochladen</em> fügt man
+      weitere Dateien hinzu.
+    </p>
+    <p>
+      Nach dem Hochladen werden die Dateien zunächst auf dem Server
+      verarbeitet. Dies kann bei längeren Videos einige Minuten in
+      Anspruch nehmen. Klicken Sie auf das Thumbnail einer Datei, um
+      den aktuellen Verarbeitungsstatus einzublenden.
+    </p>
+    <p>
+      Dateien können bereits in Seiten verwendet werden, auch wenn die
+      Verarbeitung noch nicht abgeschlossen sein sollte.
+    </p>
+  </section>
+
+  <section data-name="reusing_files">
+    <h3>Dateien wiederverwenden</h3>
+
+    <p>
+      Dateien wie Videos, Audios und Bilder können in mehr als einem
+      Beitrag verwendet werden. So müssen z.B. Videos nicht mehrfach
+      verarbeitet werden.
+    </p>
+    <p>
+      Klicken Sie unter <em>Dateien verwalten</em> auf <em>Hinzufügen
+      > Wiederverwenden</em>, um andere Beiträge nach Dateien zu
+      durchsuchen und sie in den bearbeiteten Beitrag zu übernehmen.
+    </p>
+    <p>
+      Bitte beachten Sie, dass Änderungen an
+      der <em>Rechte</em>-Eigenschaft einer Datei sich auch auf alle
+      Beiträge auswirken, in denen die Datei verwendet wird.
+    </p>
+  </section>
+
+  <section data-name="options">
+    <h3>Titel und Optionen</h3>
+
+    <p>
+      Von der Gliederung aus können unter dem Menüpunkt <em>Titel und
+      Optionen</em> Texte festgelegt werden, die beim Teilen des
+      Beitrags über Social Media Dienste angezeigt werden sollen.
+    </p>
+    <p>
+      Außerdem kann eingestellt werden, dass beim Öffnen der Reportage
+      ein Hinweis eingeblendet wird, der dem Besucher das
+      Bedienkonzept erläutert.
+    </p>
+  </section>
+
+  <section data-name="publish">
+    <h3>Reportage veröffentlichen</h3>
+
+    <p>
+      Klicken Sie in der Gliederung auf die
+      Schaltfläche <em>Veröffentlichen</em>. Eine Reportage kann
+      entweder unbegrenzt oder bis zu einem bestimmten Stichtag
+      veröffentlicht werden.
+    </p>
+    <p>
+      Bei der Veröffentlichung wird ein Schnappschuss des aktuellen
+      Stands der Reportage online gestellt. Weitere Änderungen werden
+      erst durch das erneute Veröffentlichen der Reportage sichtbar.
+    </p>
+  </section>
+
+  <div class="footer">
+    <a class="close" href="#">Schließen</a>
+  </div>
+</div>

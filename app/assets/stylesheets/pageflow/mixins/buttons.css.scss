@@ -1,0 +1,28 @@
+@mixin icon-button($style: simple, $base-color: #6AACF7) {
+  @include button($style, $base-color);
+
+  color: #fff;
+  padding-top: 5px;
+  padding-bottom: 4px;
+  padding-left: 12px;
+
+  &:before {
+    font-size: 16px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+}
+
+@mixin icon-only-button($style: simple, $base-color: #6AACF7) {
+  @include button($style, $base-color);
+
+  padding-top: 5px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  &:before {
+    font-size: 16px;
+    vertical-align: middle;
+  }
+}

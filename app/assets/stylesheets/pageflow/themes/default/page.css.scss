@@ -1,0 +1,135 @@
+$page-font: $standard-font;
+$page-color: $main-color;
+
+.page {
+  font-size: 16px;
+  color: #fff;
+  background-color: #000;
+  font-family: $page-font;
+
+  .content {
+    font-size: 1em;
+
+    @include phone {
+      font-size: 0.7em;
+    }
+  }
+
+  .shadow {
+    @include shadow(#000);
+  }
+
+  &.invert {
+    color: #000;
+    background-color: #fff;
+
+    .shadow {
+      @include shadow(#fff);
+    }
+  }
+
+  h2 {
+    font-size: 1.375em;
+  }
+
+  h2 .tagline {
+      display: block;
+      font-size: 1em;
+      font-weight: normal;
+      margin-top: 0;
+      letter-spacing: 0em;
+      text-transform: uppercase;
+  }
+
+  h2 .title {
+      font-family: $page-font;
+      display: block;
+      font-size: 2.3em;
+      font-weight: normal;
+      margin-top: 0.4em;
+      margin-bottom: 0.4em;
+      letter-spacing: 0em;
+      line-height: 1em;
+      text-transform: uppercase;
+      @include phone {
+        font-size: 1.8em;
+      }
+  }
+
+  h2 .subtitle {
+      display: block;
+      font-size: 1em;
+      font-weight: normal;
+      margin-top: 0;
+      margin-bottom: 1.875em;
+  }
+
+  .contentText > * {
+    font-size: 1.2em;
+    line-height: 1.5em;
+  }
+  p {
+    margin-top: 0;
+  }
+
+}
+
+.js .page:first-child {
+
+  .content_and_background .scroller > div:after {
+    content: " ";
+    position: absolute;
+    background-image: image-url("pageflow/themes/#{$theme-name}/logo.png");
+    background-repeat: no-repeat;
+    top: 50px;
+    z-index: 200;
+    background-size: auto;
+    background-size: 100% auto;
+    padding-top: 25.8%;
+    min-width: 100px;
+    max-width: 221px;
+    background-size: 100% auto;
+    width: 13%;
+  }
+
+  &.invert .content_and_background .scroller > div:after {
+    background-image: image-url("pageflow/themes/#{$theme-name}/logo_inverted.png");
+  }
+
+  .scroller > div, .content_and_background > .page_header {
+    @include mobile {
+      padding: 110px 12% 5% 8%;
+      width: 100%;
+      @media (orientation: landscape) {
+        padding: 100px 12% 5% 8%;
+      }
+    }
+  }
+
+  h2 .title {
+    font-size: 2.5em;
+    letter-spacing: 0em;
+    line-height: 1em;
+    @include phone {
+        font-size: 2em;
+    }
+  }
+}
+
+.js .vjs-current-time,
+.js .vjs-time-divider,
+.js .vjs-duration,
+.vjs-duration,
+.vjs-time-divider,
+.vjs-current-time {
+  font-family: $page-font;
+  color: white;
+}
+
+.js .vjs-play-control {
+  background-image: image-url('pageflow/themes/#{$theme-name}/video_controls.png');
+}
+
+.js .vjs-progress-control .vjs-play-progress, .js .vjs-progress-control.vjs-fade-out .vjs-play-progress {
+  background-color: $main-color;
+}

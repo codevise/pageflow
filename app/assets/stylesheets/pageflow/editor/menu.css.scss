@@ -1,0 +1,17 @@
+ul.menu {
+  margin-top: 10px;
+  border-top: 1px solid #bbb;
+
+  li {
+    position: relative;
+  }
+
+  a:first-child {
+    @include right-open-icon;
+    @include background-icon-right($color: #888);
+
+    border-bottom: 1px solid #bbb;
+    display: block;
+    padding: 10px 10px;
+  }
+}

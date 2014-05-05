@@ -1,0 +1,9 @@
+<% chapter.pages.in_groups_of(4, false).each_with_index do |page_group, index| %>
+
+    <div class="ov_chapter">
+      <span class="heading-5"><%= "Kapitel #{chapter.position + 1}" if index == 0 %></span>
+      <span class="heading-4"><%= chapter.title if index == 0 %></span>
+      <%= render :partial => 'pageflow/entries/overview/page', :collection => page_group, :locals => {:chapter => chapter} %>
+    </div>
+
+<% end %>

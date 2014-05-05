@@ -1,0 +1,62 @@
+.notifications {
+  background-color: #fff;
+  border-bottom: solid 1px #ccc;
+  color: #888;
+  font-size: 11px;
+
+  margin: -10px -10px 10px -10px;
+
+  &.uploading li.uploading,
+  &.saving li.saving,
+  &.failed li.failed {
+    display: block;
+  }
+
+  &.uploading li.saved,
+  &.saving li.saved,
+  &.failed li.saved,
+  &.saving li.failed,{
+    display: none;
+  }
+
+  .count {
+    font-weight: bold;
+  }
+
+  .retry {
+    text-decoration: underline;
+  }
+
+  li {
+    @include background-icon-left($font-size: 15px, $left: 15px, $color: #888);
+    padding: 4px 10px 4px 35px;
+  }
+
+  li.uploading {
+    @include background-icon-animation(blink);
+    @include background-icon-color(#444);
+    @include up-bold-icon;
+    color: #444;
+    display: none;
+  }
+
+  li.saving {
+    @include background-icon-animation(blink);
+    @include background-icon-color(#444);
+    @include arrows-ccw-icon;
+    color: #444;
+    display: none;
+  }
+
+  li.failed {
+    @include background-icon-animation(blink);
+    @include background-icon-color(#d00);
+    @include attention-icon;
+    color: #444;
+    display: none;
+  }
+
+  li.saved {
+    @include check-icon;
+  }
+}

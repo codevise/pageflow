@@ -1,0 +1,13 @@
+<%= semantic_form_for current_user, :url => me_admin_users_path, :html => {:class => 'profile'} do |form| %>
+  <%= form.inputs :first_name, :last_name %>
+  <%= form.inputs do %>
+    <%= form.input :current_password, :hint => t('.change_password_hint') %>
+    <%= form.input :password %>
+    <%= form.input :password_confirmation %>
+  <% end %>
+  <%= form.actions %>
+  <p>
+    <%= t('.delete_account_hint') %>
+    <%= link_to(t('.delete_account'), delete_me_admin_users_path, :class => 'delete_account') %>
+  </p>
+<% end %>

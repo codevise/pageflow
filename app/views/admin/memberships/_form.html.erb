@@ -1,0 +1,14 @@
+<%= semantic_form_for [:admin, parent, resource] do |f| %>
+  <%= f.inputs do %>
+    <%= f.input :user,
+                :input_html => { :disabled => (parent_type == :user) },
+                :collection => user_collection_for_parent(parent) %>
+    <%= f.input :entry,
+                :input_html => { :disabled => (parent_type == :entry) },
+                :collection => entry_collection_for_parent(parent) %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action(:submit) %>
+    <%= f.action(:cancel, :wrapper_html => {:class => 'cancel'}) %>
+  <% end %>
+<% end %>

@@ -1,0 +1,24 @@
+<%= semantic_form_for [:admin, resource] do |f| %>
+  <%= f.inputs do %>
+    <%= f.input(:published_until,
+                :as => :string,
+                :hint => t('admin.revisions.published_until_hint'),
+                :input_html => {
+                  :value => f.object.published_until && I18n.l(f.object.published_until.to_date)
+                }) %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action(:submit) %>
+    <%= f.action(:cancel, :wrapper_html => {:class => 'cancel'}) %>
+  <% end %>
+<% end %>
+
+<script>
+  jQuery(function($) {
+    $('#revision_published_until').datepicker({
+      dateFormat: 'dd.mm.yy',
+      constrainInput: true,
+      minDate: new Date()
+    })
+  })
+</script>

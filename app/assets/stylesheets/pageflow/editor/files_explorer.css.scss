@@ -1,0 +1,38 @@
+.files_explorer {
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .entries_panel, .files_panel {
+    display: inline-block;
+    vertical-align: top;
+
+    border: 1px solid #ddd;
+  }
+
+  .entries_panel {
+    width: 20%;
+  }
+
+  .files_panel {
+    width: 77%;
+  }
+
+  .footer {
+    width: 98%;
+    margin-top: 10px;
+  }
+
+  .close {
+    @include cancel-icon;
+    @include icon-button(#888);
+  }
+
+  .ok {
+    @include check-icon;
+    @include icon-button();
+  }
+}

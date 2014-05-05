@@ -1,0 +1,3 @@
+@mixin text-size-adjust($value) {
+  @include prefixer(text-size-adjust, $value, webkit moz ms o spec);
+}

@@ -1,0 +1,22 @@
+{
+  "browser": true,
+  "undef": true,
+  "immed": true,
+  "trailing": true,
+  "globals": {
+    "jQuery": true,
+    "$": true,
+    "Backbone": true,
+    "Cocktail": true,
+    "_": true,
+    "vjs": true,
+    "Audio5js": true,
+    "I18n": true,
+
+    "pageflow": true,
+    "editor": true,
+    
+    "confirm": true,
+    "alert": true
+  }
+}

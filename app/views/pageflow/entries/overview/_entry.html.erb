@@ -1,0 +1,16 @@
+<section class="overview">
+  <div class="content">
+    <a class="close button"></a>
+    <h2>Übersicht</h2>
+
+    <a class="scroll_indicator left button" tabindex="1" title="Nach links scrollen"><span class="hint">Nach links scrollen</span></a>
+
+    <div class="wrapper">
+      <div class="scroller">
+        <%= render :partial => 'pageflow/entries/overview/chapter', :collection => entry.chapters %>
+      </div>
+    </div>
+
+    <a class="scroll_indicator right button" tabindex="1" title="Nach rechts scrollen"><span class="hint">Nach rechts scrollen</span></a>
+  </div>
+</section>
