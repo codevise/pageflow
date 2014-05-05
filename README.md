@@ -48,7 +48,7 @@ Accounts of the following cloud services have to be registered:
 Add this line to your application's Gemfile:
 
     # Gemfile
-    gem 'pagflow'
+    gem 'pageflow'
 
 At the moment, Pageflow depends on a frozen version of Active Admin
 since, back when development started, no Rails 4 compatible version of
