@@ -7,6 +7,7 @@ module Pageflow
         inject_into_file 'config/initializers/active_admin.rb', after: "ActiveAdmin.setup do |config|\n" do
           <<-RUBY
   config.namespace :admin do |admin|
+    # Place a user user profile button next to the sign out link.
     admin.build_menu :utility_navigation do |menu|
       menu.add(:label => proc { display_name current_active_admin_user },
                :id => 'current_user',

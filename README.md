@@ -31,7 +31,7 @@ Pageflow assumes the following choice of libraries:
 * [Backbone](http://backbonejs.org/) [Marionette](http://marionettejs.com/) for client side development
 
 
-# Requirements
+## Requirements
 
 Pageflow runs in environments with:
 
@@ -46,7 +46,7 @@ Accounts of the following cloud services have to be registered:
   (optionally) Cloudfront content delivery
 * [Zencoder](http://zencoder.com) for video/audio encoding
 
-# Installation
+## Installation
 
 Add this line to your application's Gemfile:
 
@@ -67,92 +67,41 @@ Run bundler to install dependencies:
 
     $ bundle install
 
-## One Stop Generator
+### Running the Generator
 
 Now you can run the generator to setup Pageflow and its dependencies:
 
     $ rails generate pageflow:install
 
-The geneator will invoke Active Admin and Devise generators in turn
+The generator will invoke Active Admin and Devise generators in turn
 and apply some configuration changes.
 
-## Step by Step Generators
-
 To better understand Pageflow's configuration choices, you can run the
-single steps of the `install` generator one by one. If you'd rather
-not look behind the scenes for now, you can safely skip to the
-configuration section.
+single steps of the `install` generator one by one. See the wiki page
+[The-Install-Generator-in-Detail](https://github.com/codevise/pageflow/wiki/The-Install-Generator-in-Detail)
+for more. If you'd rather not look behind the scenes for now, you can
+safely read on for now.
 
-Let's look at the steps one at a time.
+## Database Setup
 
-    $ rails generate active_admin:devise User
+Now it's time to migrate the database.
 
-Install devise and configure it to play nice with Active
-Admin. Pageflow uses only a single `User` model with a configurable
-role. So we tell Active Admin not create its default `AdminUser` model
-but authenticate a `User` instead.
-
-    $ rails generate active_admin:install --skip-users
-
-This creates an initialzer for Active Admin and configures
-routing. Pageflow brings its own user admin component. So there's no
-need for the default user admin.
-
-    $ rails generate friendly_id
-
-Invoke the Friendly Id generator.
-
-    $ rails generate pageflow:resque
-
-Create initializers to configure Resque under
-`config/initializers/resque_*`. Inside the initializers you find some
-more explanations for the individual choices made.
-
-    $ rails generate pageflow:assets
-
-Create javascript and stylesheet files. Those mostly contain a single
-`require` or `import` and are the place to include further Pageflow
-extensions.
-
-    $ rails generate pageflow:initializer
-
-Create the Pageflow initializer which contains all configuration
-options. All available settings are described inside the file.
-
-    $ rails generate pageflow:routes
-
-Inject the routes helper into `config/routes.rb`. Pageflow runs at the
-root url by default.
-
-    $ rails generate pageflow:cancan
-
-Configure Active Admin to use the CanCan authorization adapter. And
-create an `Ability` class.
-
-    $ rails generate pageflow:user
-
-Inject the Pageflow user mixin into the user class. As you can see
-Pageflow works with `User` and `Ability` class that live in your
-app. That way you can easily integrate new features into your app that
-rely on Pageflow's user management.
-
-    $ rake pageflow:install:migrations
     $ rake db:create db:migrate
 
-Now it's time to migrate the database. If you do not like Rails'
-default database choices you might have to alter your `database.yml`
-first.
+If you do not like Rails' default database choices you might have to
+alter your `database.yml` first.
 
 Finally, you can populate the database with some example data, so
 things do not look too blank in development mode.
 
     $ rake db:seed
 
-# Configuration
+## Configuration
 
 Pageflow stores files in S3 buckets also in development
 mode. Otherwise there's no way to have Zencoder encode them. See the
 wiki page [Setting up external services](https://github.com/codevise/pageflow/wiki/Setting-up-External-Services).
 
-For available configuration options and examples see the inline docs in `config/initializers/pageflow.rb` in your generated rails app.
+For available configuration options and examples see the inline docs
+in `config/initializers/pageflow.rb` in your generated rails app.
 
