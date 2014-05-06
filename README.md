@@ -1,5 +1,8 @@
 # Pageflow
 
+[![Gem Version](https://badge.fury.io/rb/pageflow.svg)](http://badge.fury.io/rb/pageflow)
+[![Build Status](https://travis-ci.org/codevise/pageflow.svg?branch=master)](https://travis-ci.org/codevise/pageflow)
+
 Multimedia story telling for the web.
 
 For a high level introduction and example Pageflow stories see
