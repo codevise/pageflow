@@ -2,7 +2,7 @@ require 'socket'
 
 Pageflow.configure do |config|
   config.paperclip_attachments_version = 'v1'
-  config.paperclip_filesystem_root = Rails.root.join(':rails_roottmp/attachments/production/')
+  config.paperclip_filesystem_root = Rails.root.join('tmp/attachments/production/')
 
   if Rails.env.test?
     config.paperclip_s3_default_options = {

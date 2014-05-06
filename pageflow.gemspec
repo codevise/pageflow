@@ -59,10 +59,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'jquery-layout-rails'
   s.add_dependency 'jquery-fileupload-rails'
 
-  s.add_dependency 'backbone-rails'
+  s.add_dependency 'backbone-rails', '~> 1.0.0'
 
   # Further helpers and conventions on top of Backbone
-  s.add_dependency 'marionette-rails'
+  s.add_dependency 'marionette-rails', '~> 1.1.0'
+
 
   # Templating engine used to render jst tempaltes.
   s.add_dependency 'ejs'
