@@ -6,7 +6,7 @@ module Pageflow
 
       def generate_all
         generate 'active_admin:install User --skip-users'
-        generate 'active_admin:devise User'
+        generate 'active_admin:devise User --no-default-user'
         generate 'friendly_id'
 
         invoke 'pageflow:cancan'
