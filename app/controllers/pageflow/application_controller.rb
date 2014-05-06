@@ -13,7 +13,7 @@ module Pageflow
 
     rescue_from ActiveRecord::RecordNotFound do
       respond_to do |format|
-        format.html { render :file => 'public/pageflow/404.html', :status => :not_found }
+        format.html { render :file => Rails.root.join('public/404.html'), :status => :not_found }
         format.any(:json, :css) { head :not_found }
       end
     end
