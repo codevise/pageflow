@@ -1,7 +1,8 @@
 pageflow.assetUrls = {
   largeBandwidthProbe: '<%= Rails.env.test? ? asset_path("bandwidth_probe_large.png") : "http://#{File.join(Pageflow.config.zencoder_options[:s3_host_alias], "bandwidth_probe_large.png")}" %>',
+
   smallBandwidthProbe: '<%= Rails.env.test? ? asset_path("bandwidth_probe_small.png") : "http://#{File.join(Pageflow.config.zencoder_options[:s3_host_alias], "bandwidth_probe_small.png")}" %>',
-  audioSwf: '<%= asset_path "audio5js.swf" %>',
-  emptyMp4: '<%= asset_path "empty.mp4" %>',
-  emptyWebm: '<%= asset_path "empty.webm" %>'
+  audioSwf: '<%= asset_path "pageflow/audio5js.swf" %>',
+  emptyMp4: '<%= asset_path "pageflow/empty.mp4" %>',
+  emptyWebm: '<%= asset_path "pageflow/empty.webm" %>'
 };
