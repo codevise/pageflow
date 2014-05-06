@@ -78,7 +78,7 @@ and apply some configuration changes.
 
 To better understand Pageflow's configuration choices, you can run the
 single steps of the `install` generator one by one. See the wiki page
-[The-Install-Generator-in-Detail](https://github.com/codevise/pageflow/wiki/The-Install-Generator-in-Detail)
+[The Install Generator in Detail](https://github.com/codevise/pageflow/wiki/The-Install-Generator-in-Detail)
 for more. If you'd rather not look behind the scenes for now, you can
 safely read on for now.
 
