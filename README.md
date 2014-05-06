@@ -149,5 +149,7 @@ things do not look too blank in development mode.
 
 Pageflow stores files in S3 buckets also in development
 mode. Otherwise there's no way to have Zencoder encode them. See the
-comments in `config/initializers/pageflow.rb` for details on how to
-configure external services.
+wiki page [Setting up external services](https://github.com/codevise/pageflow/wiki/Setting-up-External-Services).
+
+For available configuration options and examples see the inline docs in `config/initializers/pageflow.rb` in your generated rails app.
+
