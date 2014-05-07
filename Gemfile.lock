@@ -20,11 +20,11 @@ GIT
 PATH
   remote: .
   specs:
-    pageflow (0.0.3)
+    pageflow (0.0.4)
       activeadmin
       ar_after_transaction
       aws-sdk
-      backbone-rails
+      backbone-rails (~> 1.0.0)
       bourbon (~> 3.1.8)
       cancan
       devise (~> 3.0.2)
@@ -37,7 +37,7 @@ PATH
       jquery-layout-rails
       jquery-rails
       jquery-ui-rails
-      marionette-rails
+      marionette-rails (~> 1.1.0)
       paperclip (~> 3.5)
       rails (~> 4.0.2)
       redis
@@ -86,10 +86,10 @@ GEM
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (4.0.2)
-    aws-sdk (1.39.0)
+    aws-sdk (1.40.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
-    backbone-rails (1.1.0)
+    backbone-rails (1.0.0.1)
       rails (>= 3.0.0)
     bcrypt (3.1.7)
     bcrypt-ruby (3.1.5)
@@ -179,8 +179,8 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    marionette-rails (1.8.3)
-      railties (>= 3.1)
+    marionette-rails (1.1.0)
+      rails (>= 3.1.0)
     mime-types (1.25.1)
     mini_portile (0.5.2)
     minitest (4.7.5)
