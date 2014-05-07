@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://www.pageflow.io'
   s.summary     = 'Multimedia story telling for the web.'
 
-  s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.rdoc']
+  s.files = Dir['{admins,app,config,db,lib,vendor}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.rdoc']
   s.test_files = Dir['test/**/*']
 
   s.add_dependency 'rails', '~> 4.0.2'
