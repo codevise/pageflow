@@ -105,3 +105,7 @@ wiki page [Setting up external services](https://github.com/codevise/pageflow/wi
 For available configuration options and examples see the inline docs
 in `config/initializers/pageflow.rb` in your generated rails app.
 
+## Troubleshooting
+
+If you run into problems during the installation of Pageflow, please refer to the [Troubleshooting](https://github.com/codevise/pageflow/wiki/Troubleshooting) wiki 
+page. If that doesn't help, consider [filing an issue](https://github.com/codevise/pageflow/issues?state=open).
