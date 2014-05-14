@@ -136,5 +136,32 @@ module Pageflow
 
       expect(video_file).to have_received(:meta_data_attributes=).with(meta_data)
     end
+
+    it 'invokes :file_encoded hook' do
+      video_file = build(:video_file, :job_id => 43)
+      subscriber = double('subscriber', :call => nil)
+
+      Pageflow.config.on(:file_encoded, subscriber)
+      allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+      stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
+        .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
+
+      PollZencoderJob.perform_with_result(video_file, {})
+
+      expect(subscriber).to have_received(:call).with({file: video_file})
+    end
+
+    it 'does not invoke :file_encoded hook if thumbnail is not there yet' do
+      video_file = build(:video_file)
+      subscriber = double('subscriber', :call => nil)
+
+      Pageflow.config.on(:file_encoded, subscriber)
+      allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+      stub_request(:get, /.*amazonaws\.com/).to_return(:status => 404)
+
+      PollZencoderJob.perform_with_result(video_file, {})
+
+      expect(subscriber).not_to have_received(:call)
+    end
   end
 end

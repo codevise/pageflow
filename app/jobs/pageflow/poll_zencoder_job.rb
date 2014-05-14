@@ -9,6 +9,9 @@ module Pageflow
         poll_zencoder(file, api)
         fetch_input_details(file, api)
         fetch_thumbnail(file)
+
+        Pageflow.config.hooks.invoke(:file_encoded, file: file)
+
         :ok
       end
     ensure
