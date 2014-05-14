@@ -29,11 +29,19 @@ module Pageflow
     # CNAMES are used to access the public end points of pageflow.
     attr_accessor :editor_route_constraint
 
+    attr_reader :hooks
+
     def initialize
       @paperclip_filesystem_default_options = {}
       @paperclip_s3_default_options = {}
 
       @zencoder_options = {}
+
+      @hooks = Hooks.new
+    end
+
+    def on(*args)
+      hooks.on(*args)
     end
 
     # Make a page type available for use in the system.
