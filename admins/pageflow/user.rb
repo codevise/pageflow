@@ -104,18 +104,7 @@ module Pageflow
       end
     end
 
-    form do |f|
-      f.inputs "Details" do
-        f.input :email, :hint => f.object.new_record? && I18n.t('admin.users.email_invitation_hint')
-        f.input :first_name
-        f.input :last_name
-        if authorized?(:read, Account)
-          f.input :account, :include_blank => false
-        end
-        f.input :role, :collection => collection_for_user_roles, :include_blank => false, :hint => authorized?(:read, Account) ? I18n.t('admin.users.role_hint.admin') : I18n.t('admin.users.role_hint.other')
-      end
-      f.actions
-    end
+    form(:partial => 'form')
 
     collection_action 'me', :title => 'Profil', :method => [:get, :patch] do
       if request.patch?
@@ -150,12 +139,20 @@ module Pageflow
     end
 
     controller do
+      include Pageflow::QuotaVerification
+
       helper Pageflow::UsersHelper
+      helper Pageflow::QuotaHelper
 
       def build_new_resource
         user = InvitedUser.new(permitted_params[:user])
         user.account ||= current_user.account
         user
+      end
+
+      def create_resource(user)
+        verify_quota!(:users, resource.account)
+        super
       end
 
       def user_profile_params

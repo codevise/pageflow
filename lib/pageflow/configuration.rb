@@ -29,7 +29,18 @@ module Pageflow
     # CNAMES are used to access the public end points of pageflow.
     attr_accessor :editor_route_constraint
 
+    # Subscribe to hooks in order to be notified of events. Any object
+    # with a call method can be a subscriber
+    #
+    # Example:
+    #
+    #     config.hooks.subscribe(:submit_file, -> { do_something })
+    #
     attr_reader :hooks
+
+    # Limit the use of certain resources. Any object implementing the
+    # interface of Pageflow::Quota is allowed.
+    attr_accessor :quota
 
     def initialize
       @paperclip_filesystem_default_options = {}
@@ -38,6 +49,7 @@ module Pageflow
       @zencoder_options = {}
 
       @hooks = Hooks.new
+      @quota = Quota::Unlimited.new
     end
 
     def on(*args)
