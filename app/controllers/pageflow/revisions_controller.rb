@@ -1,13 +1,18 @@
 module Pageflow
   class RevisionsController < Pageflow::ApplicationController
+    include QuotaVerification
+
     before_filter :authenticate_user!, :unless => lambda { |controller| controller.request.format.css? }
 
     respond_to :json
 
     def create
       entry = Entry.find(params[:entry_id])
+
       authorize!(:publish, entry)
       verify_edit_lock!(entry)
+      verify_quota!(:published_entries, entry.account)
+
       @revision = entry.publish(revision_params.merge(:creator => current_user))
     end
 
