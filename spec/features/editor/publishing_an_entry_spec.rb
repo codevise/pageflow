@@ -8,7 +8,7 @@ feature 'publishing an entry', :js => true do
     visit(pageflow.edit_entry_path(entry))
     editor_sidebar = Dom::Editor::Sidebar.first
     editor_sidebar.publish_button.click
-    Dom::Editor::PublishEntryPanel.first.publish
+    Dom::Editor::PublishEntryPanel.find!.publish
     visit(admin_entry_path(entry))
 
     expect(Dom::Admin::EntryRevision.published).to be_present
@@ -21,7 +21,7 @@ feature 'publishing an entry', :js => true do
     visit(pageflow.edit_entry_path(entry))
     editor_sidebar = Dom::Editor::Sidebar.first
     editor_sidebar.publish_button.click
-    Dom::Editor::PublishEntryPanel.first.publish_until(1.month.from_now)
+    Dom::Editor::PublishEntryPanel.find!.publish_until(1.month.from_now)
 
     visit(admin_entry_path(entry))
 
@@ -35,7 +35,7 @@ feature 'publishing an entry', :js => true do
     visit(pageflow.edit_entry_path(entry))
     editor_sidebar = Dom::Editor::Sidebar.first
     editor_sidebar.publish_button.click
-    publish_panel =  Dom::Editor::PublishEntryPanel.first
+    publish_panel =  Dom::Editor::PublishEntryPanel.find!
 
     publish_panel.activate_publish_until
     publish_panel.set_depublication_date(1.month.from_now.strftime('%d.%m.%Y'), '40:30')

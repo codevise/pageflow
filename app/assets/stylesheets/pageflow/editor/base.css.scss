@@ -59,6 +59,7 @@
   @import "./publish_entry";
   @import "./other_entry_item";
   @import "./select_button";
+  @import "./quotas";
 
   a.publish {
     @include eye-icon;

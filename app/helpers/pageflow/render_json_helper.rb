@@ -21,6 +21,12 @@ module Pageflow
       end
     end
 
+    def render_html_partial(*args)
+      render_with_format(:html) do
+        render(*args)
+      end
+    end
+
     def render_with_format(format, &block)
       old_formats = formats
       self.formats = [format] # hack so partials resolve with json not html format

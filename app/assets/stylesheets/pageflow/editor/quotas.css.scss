@@ -1,0 +1,17 @@
+.quota_decorator {
+  .exceeded_message {
+    margin: 10px 0;
+
+    p {
+      margin-bottom: 10px;
+    }
+  }
+
+  .quota_state {
+    @include background-icon-left($left: 7px, $top: 18px);
+    @include gauge-icon;
+
+    padding: 10px 10px 10px 40px;
+    border-bottom: solid 1px #aaa;
+  }
+}

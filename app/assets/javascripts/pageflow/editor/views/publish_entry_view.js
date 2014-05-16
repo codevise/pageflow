@@ -14,8 +14,6 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
   },
 
   events: {
-    'click a.back': 'goBack',
-
     'click button.save': 'save',
 
     'click input#publish_entry_forever': 'enablePublishForever',
@@ -70,10 +68,6 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
         return ("0" + val).slice(-2);
       }
     }
-  },
-
-  goBack: function() {
-    editor.navigate('/', {trigger: true});
   },
 
   save: function() {
@@ -189,3 +183,12 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
     return true;
   }
 });
+
+pageflow.PublishEntryView.create = function(options) {
+  return new pageflow.BackButtonDecoratorView({
+    view: new pageflow.QuotaDecoratorView({
+      model: pageflow.Quota.byName('published_entries'),
+      view: new pageflow.PublishEntryView(options)
+    })
+  });
+};

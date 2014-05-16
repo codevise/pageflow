@@ -37,6 +37,8 @@ Pageflow::Engine.routes.draw do
 
       resources :file_usages, :only => [:create, :destroy]
     end
+
+    resources :quotas, :only => [:show]
   end
 
   root :to => redirect('/admin')
