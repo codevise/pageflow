@@ -79,7 +79,7 @@ $page-color: $main-color;
   .content_and_background .scroller > div:after {
     content: " ";
     position: absolute;
-    background-image: image-url("pageflow/themes/#{$theme-name}/logo.png");
+    background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.png");
     background-repeat: no-repeat;
     top: 50px;
     z-index: 200;
@@ -93,7 +93,7 @@ $page-color: $main-color;
   }
 
   &.invert .content_and_background .scroller > div:after {
-    background-image: image-url("pageflow/themes/#{$theme-name}/logo_inverted.png");
+    background-image: image-url("pageflow/themes/#{$theme-name}/logo_header_invert.png");
   }
 
   .scroller > div, .content_and_background > .page_header {

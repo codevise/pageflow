@@ -47,6 +47,14 @@ module Pageflow
       config.i18n.reload!
     end
 
+    # Precompile additional assets. pageflow/editor.* has to be
+    # provided by the main app.
+    config.assets.precompile += %w(pageflow/editor.js pageflow/editor.css
+                                   pageflow/print_view.css
+                                   pageflow/themes/default.css
+                                   pageflow/lt_ie9.js pageflow/lt_ie9.css pageflow/ie9.js pageflow/ie9.css
+                                   video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff)
+
     # Make sure the configuration is recreated when classes are
     # reloded. Otherwise registered page types might still point to
     # unloaded classes in development mode.
