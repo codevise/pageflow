@@ -29,6 +29,10 @@ module Pageflow
     # CNAMES are used to access the public end points of pageflow.
     attr_accessor :editor_route_constraint
 
+    # The email address to use as from header in invitation mails to
+    # new users
+    attr_accessor :mailer_sender
+
     # Subscribe to hooks in order to be notified of events. Any object
     # with a call method can be a subscriber
     #
@@ -47,6 +51,8 @@ module Pageflow
       @paperclip_s3_default_options = {}
 
       @zencoder_options = {}
+
+      @mailer_sender = 'pageflow@example.com'
 
       @hooks = Hooks.new
       @quota = Quota::Unlimited.new
