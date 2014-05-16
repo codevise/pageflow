@@ -8,3 +8,5 @@ gem 'activeadmin', :git => 'https://github.com/codevise/active_admin.git', :bran
 gem 'ransack'
 gem 'inherited_resources', '1.4.1'
 gem 'formtastic', '2.3.0.rc2'
+
+gem "spring-commands-rspec", group: :development
