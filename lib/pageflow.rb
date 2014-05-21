@@ -28,6 +28,7 @@ module Pageflow
 
   def self.finalize!
     @finalized = true
+    configure!
   end
 
   def self.after_configure(&block)

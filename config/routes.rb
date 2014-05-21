@@ -1,47 +1,49 @@
 Pageflow::Engine.routes.draw do
-  resources :entries, :only => [:edit, :update], :shallow => true do
-    get :partials, :on => :member
+  constraints Pageflow.config.editor_route_constraint do
+    resources :entries, :only => [:edit, :update], :shallow => true do
+      get :partials, :on => :member
 
-    resources :revisions, :only => [:show, :create] do
-      delete :current, :to => 'revisions#depublish_current', :on => :collection
-    end
-
-    resources :chapters, :only => [:create, :update, :destroy] do
-      collection do
-        patch :order
+      resources :revisions, :only => [:show, :create] do
+        delete :current, :to => 'revisions#depublish_current', :on => :collection
       end
 
-      resources :pages, :only => [:create, :update, :destroy] do
+      resources :chapters, :only => [:create, :update, :destroy] do
         collection do
           patch :order
         end
+
+        resources :pages, :only => [:create, :update, :destroy] do
+          collection do
+            patch :order
+          end
+        end
       end
+
+      resource :edit_lock
     end
 
-    resource :edit_lock
-  end
+    namespace :editor do
+      resources :entries, :only => :index, :shallow => true do
+        resources :image_files, :only => [:index, :create, :update] do
+          get :retry, :on => :member
+        end
 
-  namespace :editor do
-    resources :entries, :only => :index, :shallow => true do
-      resources :image_files, :only => [:index, :create, :update] do
-        get :retry, :on => :member
+        resources :video_files, :only => [:index, :create, :update] do
+          get :retry, :on => :member
+        end
+
+        resources :audio_files, :only => [:index, :create, :update] do
+          get :retry, :on => :member
+        end
+
+        resources :file_usages, :only => [:create, :destroy]
       end
 
-      resources :video_files, :only => [:index, :create, :update] do
-        get :retry, :on => :member
-      end
-
-      resources :audio_files, :only => [:index, :create, :update] do
-        get :retry, :on => :member
-      end
-
-      resources :file_usages, :only => [:create, :destroy]
+      resources :quotas, :only => [:show]
     end
 
-    resources :quotas, :only => [:show]
+    root :to => redirect('/admin')
   end
-
-  root :to => redirect('/admin')
 
   get ':entry_id/videos/:id', :to => 'video_files#show', :as => :short_video_file
 

@@ -51,6 +51,14 @@ module Pageflow
     #
     attr_accessor :quotas
 
+    # Either a lambda or an object with a `match?` method, to restrict
+    # access to the editor routes defined by Pageflow.
+    #
+    # This can be used if published entries shall be available under
+    # different CNAMES but the admin and the editor shall only be
+    # accessible via one official url.
+    attr_accessor :editor_routing_constraint
+
     def initialize
       @paperclip_filesystem_default_options = {}
       @paperclip_s3_default_options = {}
