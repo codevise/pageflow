@@ -61,5 +61,10 @@ module Pageflow
     config.to_prepare do
       Pageflow.configure!
     end
+
+    # Make pageflow factories available to main app specs
+    initializer "pageflow.factories", :after => "factory_girl.set_factory_paths" do
+      FactoryGirl.definition_file_paths.unshift(Engine.root.join('spec', 'factories')) if defined?(FactoryGirl)
+    end
   end
 end
