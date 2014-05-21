@@ -71,10 +71,6 @@ module Pageflow
       @quotas = Quotas.new
     end
 
-    def on(*args)
-      hooks.on(*args)
-    end
-
     # Make a page type available for use in the system.
     def register_page_type(page_type)
       page_types << page_type

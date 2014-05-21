@@ -16,7 +16,7 @@ module Pageflow
       file = create(:video_file)
       subscriber = double('subscriber', :call => nil)
 
-      Pageflow.config.on(:file_submitted, subscriber)
+      Pageflow.config.hooks.on(:file_submitted, subscriber)
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.creating_job_with_id(43))
 
       SubmitFileToZencoderJob.perform_with_result(file, {})

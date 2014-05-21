@@ -141,7 +141,7 @@ module Pageflow
       video_file = build(:video_file, :job_id => 43)
       subscriber = double('subscriber', :call => nil)
 
-      Pageflow.config.on(:file_encoded, subscriber)
+      Pageflow.config.hooks.on(:file_encoded, subscriber)
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
@@ -155,7 +155,7 @@ module Pageflow
       video_file = build(:video_file)
       subscriber = double('subscriber', :call => nil)
 
-      Pageflow.config.on(:file_encoded, subscriber)
+      Pageflow.config.hooks.on(:file_encoded, subscriber)
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
       stub_request(:get, /.*amazonaws\.com/).to_return(:status => 404)
 
