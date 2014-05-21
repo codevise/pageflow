@@ -1,7 +1,7 @@
 module Pageflow
   module QuotaHelper
     def quota_state_description(name, account)
-      description = Pageflow.config.quota.state_description(:users, @user.account)
+      description = Pageflow.config.quotas.get(:users, @user.account).state_description
 
       if description
         content_tag(:p, description, :class => 'quota_state')

@@ -1,5 +1,5 @@
-<% if @user.new_record? && Pageflow.config.quota.exceeded?(:users, @user.account) %>
-  <%= render 'admin/users/quota_exceeded' %>
+<% if @user.new_record? && Pageflow.config.quotas.get(:users, @user.account).exhausted? %>
+  <%= render 'admin/users/quota_exhausted' %>
 <% else %>
   <%= semantic_form_for([:admin, @user.becomes(User)]) do |f| %>
     <%= f.inputs "Details" do %>

@@ -1,33 +1,50 @@
 module Pageflow
-  module Quota
-    class ExceededError < RuntimeError
-      attr_reader :quota_name
+  class Quota
+    class ExhaustedError < RuntimeError
+      attr_reader :quota
 
-      def initialize(quota_name)
-        @quota_name = quota_name
+      def initialize(quota)
+        @quota = quota
       end
     end
 
-    def exceeded?(name, account)
-      raise(NotImplementedError, 'Quota#exceeded? must be implemented.')
+    attr_reader :name, :account
+
+    def initialize(name, account)
+      @name = name
+      @account = account
     end
 
-    def state_description(name, account)
+    def state
+      raise(NotImplementedError, 'Quota#state must be implemented and return either "available", "exhausted" or "exceeded".')
+    end
+
+    def state_description
       raise(NotImplementedError, 'Quota#state_description must be implemented.')
     end
 
-    def verify!(name, account)
-      raise(ExceededError.new(name), "Quota #{name} exceeded.") if exceeded?(name, account)
+    def available?
+      state == 'available'
     end
 
-    class Unlimited
-      include Quota
+    def exhausted?
+      !available?
+    end
 
-      def exceeded?(name, account)
-        false
+    def exceeded?
+      state == 'exceeded'
+    end
+
+    def verify_available!
+      raise(ExhaustedError.new(self), "Quota '#{name}' exhausted.") unless available?
+    end
+
+    class Unlimited < Quota
+      def state
+        'available'
       end
 
-      def state_description(name, account)
+      def state_description
         nil
       end
     end

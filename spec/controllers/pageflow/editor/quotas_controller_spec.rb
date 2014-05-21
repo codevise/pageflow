@@ -10,14 +10,13 @@ module Pageflow
         it 'responds with quota state and description' do
           user = create(:user)
 
-          allow(Pageflow.config.quota).to receive(:exceeded?).with('entries', user.account).and_return(false)
-          allow(Pageflow.config.quota).to receive(:state_description).with('entries', user.account).and_return('All is good')
+          Pageflow.config.quotas.register(:entries, QuotaDouble.available)
 
           sign_in(user)
           get(:show, :id => 'entries', :format => 'json')
 
-          expect(json_response(:path => :state)).to eq('ok')
-          expect(json_response(:path => :state_description)).to eq('All is good')
+          expect(json_response(:path => :state)).to eq('available')
+          expect(json_response(:path => :state_description)).to eq('Quota available')
         end
 
         it 'requires authentication' do

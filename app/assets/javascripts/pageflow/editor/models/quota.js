@@ -6,8 +6,8 @@ pageflow.Quota = Backbone.Model.extend({
     return '/editor/quotas/' + this.id;
   },
 
-  isExceeded: function() {
-    return this.get('state') === 'exceeded';
+  isExhausted: function() {
+    return this.get('state') !== 'available';
   }
 });
 

@@ -5,8 +5,7 @@ module Pageflow
 
       def show
         @account = current_user.account
-        @quota_name = params[:id]
-        @quota = Pageflow.config.quota
+        @quota = Pageflow.config.quotas.get(params[:id], @account)
       end
     end
   end

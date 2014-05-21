@@ -8,18 +8,18 @@ module Pageflow
       it 'displays quota state description' do
         account = create(:account)
 
-        allow(Pageflow.config.quota).to receive(:state_description).with(:users, anything).and_return('You can still invite 8 users.')
+        Pageflow.config.quotas.register(:users, QuotaDouble.available)
 
         sign_in(create(:user, :account_manager, :account => account))
         get(:new)
 
-        expect(response.body).to have_content('You can still invite 8 users.')
+        expect(response.body).to have_content('Quota available')
       end
 
-      it 'does not render form if quota is exceeded' do
+      it 'does not render form if quota is exhausted' do
         account = create(:account)
 
-        allow(Pageflow.config.quota).to receive(:exceeded?).with(:users, anything).and_return(true)
+        Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
 
         sign_in(create(:user, :account_manager, :account => account))
         get(:new)
@@ -78,10 +78,11 @@ module Pageflow
         }.to change { account.users.count }
       end
 
-      it 'does create user if quota is exceeded' do
+      it 'does not create user if quota is exhausted' do
         account = create(:account)
         user = create(:user, :editor, :account => account)
 
+        Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
         sign_in(create(:user, :account_manager, :account => account))
 
         expect {
@@ -90,16 +91,16 @@ module Pageflow
         }.not_to change { User.admins.count }
       end
 
-      it 'redirects with flash if :users quota is exceeded' do
+      it 'redirects with flash if :users quota is exhausted' do
         account = create(:account)
 
-        allow(Pageflow.config.quota).to receive(:exceeded?).with(:users, anything).and_return(true)
+        Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
 
         sign_in(create(:user, :account_manager, :account => account))
         request.env['HTTP_REFERER'] = admin_users_path
         post(:create, :user => attributes_for(:valid_user))
 
-        expect(flash[:alert]).to eq(I18n.t('quotas.exceeded'))
+        expect(flash[:alert]).to eq(I18n.t('quotas.exhausted'))
       end
     end
 

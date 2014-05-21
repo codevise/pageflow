@@ -76,11 +76,11 @@ module Pageflow
         expect(response.status).to eq(401)
       end
 
-      it 'responds with forbidden if :published_entries quota is exceeded' do
+      it 'responds with forbidden if :published_entries quota is exhausted' do
         user = create(:user)
         entry = create(:entry, :with_member => user)
 
-        allow(Pageflow.config.quota).to receive(:exceeded?).with(:published_entries, anything).and_return(true)
+        Pageflow.config.quotas.register(:published_entries, QuotaDouble.exhausted)
 
         sign_in(user)
         aquire_edit_lock(user, entry)

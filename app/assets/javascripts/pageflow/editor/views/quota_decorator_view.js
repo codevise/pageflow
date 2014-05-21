@@ -8,21 +8,21 @@ pageflow.QuotaDecoratorView = Backbone.Marionette.Layout.extend({
 
   ui: {
     state: '.quota_state',
-    exceededMessage: '.exceeded_message'
+    exhaustedMessage: '.exhausted_message'
   },
 
   onRender: function() {
     var view = this;
 
     view.ui.state.text(I18n.t('editor.quotas.loading'));
-    view.ui.exceededMessage.html('');
+    view.ui.exhaustedMessage.html('');
     view.outlet.close();
 
     view.model.fetch({
       success: function() {
-        if (view.model.isExceeded()) {
+        if (view.model.isExhausted()) {
           view.ui.state.hide();
-          view.ui.exceededMessage.html(view.model.get('exceeded_html'));
+          view.ui.exhaustedMessage.html(view.model.get('exhausted_html'));
         }
         else {
           if (view.model.get('state_description')) {

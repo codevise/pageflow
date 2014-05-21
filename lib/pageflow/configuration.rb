@@ -43,8 +43,13 @@ module Pageflow
     attr_reader :hooks
 
     # Limit the use of certain resources. Any object implementing the
-    # interface of Pageflow::Quota is allowed.
-    attr_accessor :quota
+    # interface of Pageflow::Quota can be registered.
+    #
+    # Example:
+    #
+    #     config.quotas.register(:users, UserQuota)
+    #
+    attr_accessor :quotas
 
     def initialize
       @paperclip_filesystem_default_options = {}
@@ -55,7 +60,7 @@ module Pageflow
       @mailer_sender = 'pageflow@example.com'
 
       @hooks = Hooks.new
-      @quota = Quota::Unlimited.new
+      @quotas = Quotas.new
     end
 
     def on(*args)
