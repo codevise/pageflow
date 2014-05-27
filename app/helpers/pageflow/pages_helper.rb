@@ -140,9 +140,9 @@ module Pageflow
     end
 
     def page_thumbnail_image_class(page, hero)
-      model, attachment, property = page.thumbnail_definition
+      model, attachment, property, model_class = page.thumbnail_definition
       size = hero ? 'large_' : ''
-      "#{model}_link_thumbnail_#{size}#{page.configuration[property]}"
+      "#{model_class}_link_thumbnail_#{size}#{page.configuration[property]}"
     end
   end
 end

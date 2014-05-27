@@ -17,7 +17,7 @@ module Pageflow
     end
 
     def thumbnail
-      model_name, attachment, property = thumbnail_definition
+      model_name, attachment, property, model_class = thumbnail_definition
 
       begin
         model_name.to_s.camelcase.constantize.find(configuration[property]).send(attachment)
@@ -30,17 +30,17 @@ module Pageflow
       # TODO: this has to be refactored to be page type agnostic
       if template == 'video' || template == 'background_video'
         if configuration['poster_image_id'].present?
-          ['pageflow/image_file', :attachment, 'poster_image_id']
+          ['pageflow/image_file', :attachment, 'poster_image_id', 'image_file']
         else
-          ['pageflow/video_file', :poster, 'video_file_id']
+          ['pageflow/video_file', :poster, 'video_file_id', 'video_file']
         end
       else
         if configuration['thumbnail_image_id'].present?
-          ['pageflow/image_file', :attachment, 'thumbnail_image_id']
+          ['pageflow/image_file', :attachment, 'thumbnail_image_id', 'image_file']
         elsif configuration['after_image_id'].present?
-          ['pageflow/image_file', :attachment, 'after_image_id']
+          ['pageflow/image_file', :attachment, 'after_image_id','image_file']
         else
-          ['pageflow/image_file', :attachment, 'background_image_id']
+          ['pageflow/image_file', :attachment, 'background_image_id', 'image_file']
         end
       end
     end
