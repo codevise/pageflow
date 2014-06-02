@@ -25,7 +25,7 @@ module Pageflow
     end
 
     def entry_theme_stylesheet_link_tag(entry)
-      stylesheet_link_tag("pageflow/themes/#{entry.theme.name}.css", :media => 'all')
+      stylesheet_link_tag("pageflow/themes/#{entry.theming.theme.css_dir}.css", :media => 'all')
     end
 
     def entry_stylesheet_link_tag(entry)

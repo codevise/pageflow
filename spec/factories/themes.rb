@@ -1,7 +1,7 @@
 module Pageflow
   FactoryGirl.define do
-    factory :theme, :class => Theme do
-      name "default"
+    factory :theme, :class => Pageflow::Theme do
+      css_dir "default"
     end
   end
 end

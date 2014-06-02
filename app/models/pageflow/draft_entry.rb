@@ -5,7 +5,7 @@ module Pageflow
     attr_reader :entry, :draft
 
     delegate(:id,
-             :edit_lock, :account, :theme, :slug,
+             :edit_lock, :account, :theming, :slug,
              :published_until, :published?,
              :to_model, :to_key, :persisted?, :to_json,
              :to => :entry)

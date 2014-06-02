@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-module Admin
-describe EntriesController do
+describe Admin::EntriesController do
   describe '#create' do
     it 'does not allow account manager to create entries for other account' do
       account = create(:account)
@@ -13,15 +12,15 @@ describe EntriesController do
       }.not_to change { account.entries.count }
     end
 
-    it 'does not allow account manager to create entries with custom theme' do
-      theme = create(:theme)
+    it 'does not allow account manager to create entries with custom theming' do
+      theming = create(:theming)
 
       sign_in(create(:user, :account_manager))
 
-      post :create, :entry => attributes_for(:entry, :theme_id => theme)
+      post :create, :entry => attributes_for(:entry, :theming_id => theming)
       entry = Pageflow::Entry.last
 
-      expect(entry.theme).to eq(entry.account.default_theme)
+      expect(entry.theming).to eq(entry.account.default_theming)
     end
 
     it 'allows account manager to create entries for own account' do
@@ -44,24 +43,24 @@ describe EntriesController do
       }.to change { account.entries.count }
     end
 
-    it 'allows admin to create entries with custom theme' do
-      theme = create(:theme)
+    it 'allows admin to create entries with custom theming' do
+      theming = create(:theming)
 
       sign_in(create(:user, :admin))
 
-      post :create, :entry => attributes_for(:entry, :theme_id => theme)
+      post :create, :entry => attributes_for(:entry, :theming_id => theming)
       entry = Pageflow::Entry.last
 
-      expect(entry.theme).to eq(theme)
+      expect(entry.theming).to eq(theming)
     end
 
-    it 'sets entry theme to default theme of account' do
+    it 'sets entry theming to default theming of account' do
       account = create(:account)
 
       sign_in(create(:user, :admin))
       post :create, :entry => attributes_for(:entry, :account_id => account)
 
-      expect(Pageflow::Entry.last.theme).to eq(account.default_theme)
+      expect(Pageflow::Entry.last.theming).to eq(account.default_theming)
     end
   end
 
@@ -88,26 +87,26 @@ describe EntriesController do
       expect(entry.reload.account).to eq(other_account)
     end
 
-    it 'does not allow account manager to change theme' do
-      theme = create(:theme)
-      other_theme = create(:theme)
-      entry = create(:entry, :theme => theme)
+    it 'does not allow account manager to change theming' do
+      theming = create(:theming)
+      other_theming = create(:theming)
+      entry = create(:entry, :theming => theming)
 
       sign_in(create(:user, :account_manager, :account => entry.account))
-      patch :update, :id => entry, :entry => {:theme_id => other_theme}
+      patch :update, :id => entry, :entry => {:theming_id => other_theming}
 
-      expect(entry.reload.theme).to eq(theme)
+      expect(entry.reload.theming).to eq(theming)
     end
 
-    it 'allows admin to change theme' do
-      theme = create(:theme)
-      other_theme = create(:theme)
-      entry = create(:entry, :theme => theme)
+    it 'allows admin to change theming' do
+      theming = create(:theming)
+      other_theming = create(:theming)
+      entry = create(:entry, :theming => theming)
 
       sign_in(create(:user, :admin))
-      patch :update, :id => entry, :entry => {:theme_id => other_theme}
+      patch :update, :id => entry, :entry => {:theming_id => other_theming}
 
-      expect(entry.reload.theme).to eq(other_theme)
+      expect(entry.reload.theming).to eq(other_theming)
     end
 
     it 'does not allow editor to change folder' do
@@ -215,5 +214,4 @@ describe EntriesController do
       }.not_to change { entry.revisions.count }
     end
   end
-end
 end

@@ -4,9 +4,9 @@ module Pageflow
     has_many :entries
     has_many :folders
 
-    belongs_to :default_theme, :class_name => 'Theme'
+    belongs_to :default_theming, :class_name => 'Theming'
 
-    validates :default_theme, :presence => true
+    validates :default_theming, :presence => true
 
     scope :with_landing_page, -> { where.not(:landing_page_name => '') }
 

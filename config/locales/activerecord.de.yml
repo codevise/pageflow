@@ -51,7 +51,7 @@ de:
         name: "Name"
         default_file_rights: "Standard Urheber"
         cname: "CNAME"
-        default_theme: "Standard Theme"
+        default_theming: "Standard Theming"
         landing_page_name: "Einstiegsseite"
       user:
         email: "E-Mail-Adresse"

@@ -17,7 +17,7 @@ module Pageflow
         f.input :name
         f.input :default_file_rights
         f.input :cname, :hint => I18n.t('admin.accounts.cname_hint')
-        f.input :default_theme, :include_blank => false
+        f.input :default_theming, :include_blank => false
       end
       f.actions
     end
@@ -27,7 +27,7 @@ module Pageflow
         row :name, :class => 'name'
         row :default_file_rights, :class => 'default_file_rights'
         row :cname, :class => 'cname'
-        row :default_theme, :class => 'default_theme'
+        row :default_theming, :class => 'default_theming'
         row :created_at
       end
 
@@ -68,7 +68,7 @@ module Pageflow
 
     controller do
       def permitted_params
-        params.permit(:account => [:name, :default_file_rights, :cname, :default_theme_id])
+        params.permit(:account => [:name, :default_file_rights, :cname, :default_theming_id])
       end
     end
   end
