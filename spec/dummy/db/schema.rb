@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140602124054) do
+ActiveRecord::Schema.define(version: 20140604131757) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -52,6 +52,11 @@ ActiveRecord::Schema.define(version: 20140602124054) do
   end
 
   add_index "pageflow_accounts", ["cname"], name: "index_pageflow_accounts_on_cname"
+
+  create_table "pageflow_accounts_themes", id: false, force: true do |t|
+    t.integer "account_id"
+    t.integer "theme_id"
+  end
 
   create_table "pageflow_audio_files", force: true do |t|
     t.integer  "entry_id"
