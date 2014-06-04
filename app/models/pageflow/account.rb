@@ -10,9 +10,5 @@ module Pageflow
     validates :default_theming, :presence => true
 
     scope :with_landing_page, -> { where.not(:landing_page_name => '') }
-
-    def cname_domain
-      cname.split('.').pop(2).join('.')
-    end
   end
 end

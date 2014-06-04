@@ -1,8 +1,6 @@
 <%= semantic_form_for([:admin, resource]) do |f| %>
   <%= f.inputs do %>
-    <%= f.semantic_fields_for :account do |account| %>
-      <%= account.input :cname %>
-    <% end %>
+    <%= f.input :cname, :hint => I18n.t('admin.themings.cname_hint') %>
     <%= f.input :copyright_link_label %>
     <%= f.input :copyright_link_url %>
     <%= f.input :imprint_link_label %>

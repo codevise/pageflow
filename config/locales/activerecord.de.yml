@@ -50,7 +50,6 @@ de:
       account:
         name: "Name"
         default_file_rights: "Standard Urheber"
-        cname: "CNAME"
         default_theming: "Standard Theming"
         landing_page_name: "Einstiegsseite"
       user:
@@ -133,6 +132,8 @@ de:
       audio_file:
         format: "Format"
         duration: "Länge"
+      theming:
+        cname: "CNAME"
     values:
       page:
         template:

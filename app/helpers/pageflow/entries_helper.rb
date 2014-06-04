@@ -1,8 +1,8 @@
 module Pageflow
   module EntriesHelper
     def pretty_entry_url(entry)
-      if entry.account.cname.present?
-        short_entry_url(entry.to_model, :host => entry.account.cname)
+      if entry.theming.cname.present?
+        short_entry_url(entry.to_model, :host => entry.theming.cname)
       else
         short_entry_url(entry.to_model)
       end

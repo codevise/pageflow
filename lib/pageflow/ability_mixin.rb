@@ -56,7 +56,8 @@ module Pageflow
         can :manage, Entry, :account_id => user.account.id
         can :manage, ::User, :account_id => user.account.id
         can :manage, Revision, :entry => {:account_id => user.account.id}
-        can :edit, Theming, :account_id => user.account.id
+
+        can [:read, :update], Theming, :id => user.account.default_theming_id
 
         can :destroy, Membership, :entry => {:account_id => user.account.id}
         can :destroy, Membership, :user => {:account_id => user.account.id}

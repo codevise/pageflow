@@ -9,14 +9,12 @@ module Pageflow
       column :name do |account|
         link_to account.name, admin_account_path(account)
       end
-      column :cname
     end
 
     form do |f|
       f.inputs do
         f.input :name
         f.input :default_file_rights
-        f.input :cname, :hint => I18n.t('admin.accounts.cname_hint')
         f.input :default_theming, :include_blank => false
       end
       f.actions
@@ -26,7 +24,6 @@ module Pageflow
       attributes_table_for account do
         row :name, :class => 'name'
         row :default_file_rights, :class => 'default_file_rights'
-        row :cname, :class => 'cname'
         row :default_theming, :class => 'default_theming'
         row :created_at
       end
@@ -68,7 +65,7 @@ module Pageflow
 
     controller do
       def permitted_params
-        params.permit(:account => [:name, :default_file_rights, :cname, :default_theming_id])
+        params.permit(:account => [:name, :default_file_rights, :default_theming_id])
       end
     end
   end

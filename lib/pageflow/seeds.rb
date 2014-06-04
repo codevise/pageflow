@@ -20,6 +20,7 @@ module Pageflow
 
   if Account.any?
     default_account = Account.first
+    default_account.default_theming = default_theming if default_account.default_theming.blank?
     puts "   Account exists."
   else
     default_account = Account.create!(:name => 'Pageflow', :default_theming_id => default_theming.id)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140604131757) do
+ActiveRecord::Schema.define(version: 20140604144526) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -46,12 +46,9 @@ ActiveRecord::Schema.define(version: 20140604131757) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "default_file_rights", default: "", null: false
-    t.string   "cname",               default: "", null: false
     t.string   "landing_page_name",   default: "", null: false
     t.integer  "default_theming_id"
   end
-
-  add_index "pageflow_accounts", ["cname"], name: "index_pageflow_accounts_on_cname"
 
   create_table "pageflow_accounts_themes", id: false, force: true do |t|
     t.integer "account_id"
@@ -214,8 +211,10 @@ ActiveRecord::Schema.define(version: 20140604131757) do
     t.string   "copyright_link_url"
     t.string   "copyright_link_label"
     t.integer  "theme_id"
+    t.string   "cname",                default: "", null: false
   end
 
+  add_index "pageflow_themings", ["cname"], name: "index_pageflow_themings_on_cname"
   add_index "pageflow_themings", ["theme_id"], name: "index_pageflow_themings_on_theme_id"
 
   create_table "pageflow_video_files", force: true do |t|
