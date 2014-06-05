@@ -47,7 +47,7 @@ module Pageflow
           resources :memberships
         end
 
-        resources :themings, :only => [:show, :edit, :update]
+        resources :themings
       end
 
       mount Pageflow::Engine, at: '/'

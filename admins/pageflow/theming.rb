@@ -1,21 +1,36 @@
 module Pageflow
   ActiveAdmin.register Theming, :as => 'Theming' do
-    menu false
+    actions :index, :show, :edit, :update
 
-    actions :show, :edit, :update
+    config.batch_actions = false
+    config.clear_sidebar_sections!
 
-    form :partial => 'form'
+    index :pagination_total => false, :download_links => false do
+      if authorized?(:read, Pageflow::Account)
+        column :account do |theming|
+          link_to theming.account.name, admin_account_path(theming.account)
+        end
+      end
+      column :theme do |theming|
+        theming.theme.css_dir
+      end
+      column do |theming|
+        link_to t('admin.themings.show'), admin_theming_path(theming)
+      end
+    end
 
     show do |theming|
       attributes_table_for theming do
-        row :imprint_link_label
-        row :imprint_link_url
-        row :copyright_link_label
-        row :copyright_link_url
+        row :imprint_link_label, :class => 'imprint-label'
+        row :imprint_link_url, :class => 'imprint-url'
+        row :copyright_link_label, :class => 'copyright-label'
+        row :copyright_link_url, :class => 'copyright-url'
         row :cname, :class => 'cname'
         row :created_at
       end
     end
+
+    form :partial => 'form'
 
     controller do
       def permitted_params

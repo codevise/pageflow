@@ -46,6 +46,9 @@ de:
       revision:
         one: "Revision"
         other: "Revisionen"
+      theming:
+        one: "Theming"
+        other: "Themings"
     attributes:
       account:
         name: "Name"
