@@ -15,7 +15,7 @@ module Pageflow
       f.inputs do
         f.input :name
         f.input :default_file_rights
-        f.input :default_theming, :include_blank => false
+        f.input :theme, :include_blank => false, :collection => Theme.all, :member_label => :css_dir
       end
       f.actions
     end
@@ -64,8 +64,15 @@ module Pageflow
     end
 
     controller do
+      def create
+        account = Account.new(permitted_params[:account])
+        account.default_theming = Theming.create!(:theme_id => params[:account][:theme])
+        account.save!
+        redirect_to(admin_accounts_path)
+      end
+
       def permitted_params
-        params.permit(:account => [:name, :default_file_rights, :default_theming_id])
+        params.permit(:account => [:name, :default_file_rights])
       end
     end
   end
