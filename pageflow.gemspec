@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
 
   # Resque jobs and queues
   s.add_dependency 'resque'
-  s.add_dependency 'resque-scheduler'
+  s.add_dependency 'resque-scheduler', '~> 2.5.5'
   s.add_dependency 'resque-logger'
   s.add_dependency 'resque_mailer'
   s.add_dependency 'ar_after_transaction'

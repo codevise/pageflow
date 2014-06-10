@@ -1,5 +1,5 @@
 Pageflow::Engine.routes.draw do
-  constraints Pageflow.config.editor_route_constraint do
+  constraints Pageflow.config(:ignore_not_configured => true).editor_route_constraint do
     resources :entries, :only => [:edit, :update], :shallow => true do
       get :partials, :on => :member
 
