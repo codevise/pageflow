@@ -44,7 +44,7 @@ PATH
       redis-namespace
       resque
       resque-logger
-      resque-scheduler
+      resque-scheduler (~> 2.5.5)
       resque_mailer
       state_machine
       state_machine_job
@@ -241,10 +241,11 @@ GEM
       vegas (~> 0.1.2)
     resque-logger (0.2.0)
       resque
-    resque-scheduler (2.0.1)
-      redis (>= 2.0.1)
-      resque (>= 1.20.0)
-      rufus-scheduler
+    resque-scheduler (2.5.5)
+      mono_logger (~> 1.0)
+      redis (~> 3.0.4)
+      resque (~> 1.25.1)
+      rufus-scheduler (~> 2.0.24)
     resque_mailer (2.2.6)
       actionmailer (>= 3.0)
     rspec-core (2.14.4)

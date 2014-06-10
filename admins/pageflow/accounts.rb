@@ -11,14 +11,7 @@ module Pageflow
       end
     end
 
-    form do |f|
-      f.inputs do
-        f.input :name
-        f.input :default_file_rights
-        f.input :theme, :include_blank => false, :collection => Theme.all, :member_label => :css_dir
-      end
-      f.actions
-    end
+    form :partial => 'form'
 
     show :title => :name do |account|
       attributes_table_for account do
@@ -26,6 +19,13 @@ module Pageflow
         row :default_file_rights, :class => 'default_file_rights'
         row :default_theming, :class => 'default_theming'
         row :created_at
+      end
+
+      attributes_table_for account.default_theming do
+        row :cname, :class => 'cname'
+        row :theme, :class => 'theme' do
+          account.default_theming.theme.css_dir
+        end
       end
 
       div :class => 'columns' do
@@ -64,15 +64,19 @@ module Pageflow
     end
 
     controller do
+      def new
+        @account = Account.new
+        @account.default_theming = Theming.new
+      end
+
       def create
-        account = Account.new(permitted_params[:account])
-        account.default_theming = Theming.create!(:theme_id => params[:account][:theme])
-        account.save!
-        redirect_to(admin_accounts_path)
+        @account = Account.new(permitted_params[:account])
+        @account.build_default_theming(:theme_id => permitted_params[:account][:default_theming_attributes][:theme_id])
+        super
       end
 
       def permitted_params
-        params.permit(:account => [:name, :default_file_rights])
+        params.permit(:account => [:name, :default_file_rights, :default_theming_attributes => [:cname, :theme_id]])
       end
     end
   end

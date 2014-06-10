@@ -9,7 +9,7 @@ module Pageflow
 
     validates :default_theming, :presence => true
 
-    attr_accessor :theme
+    accepts_nested_attributes_for :default_theming
 
     scope :with_landing_page, -> { where.not(:landing_page_name => '') }
   end

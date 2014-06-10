@@ -52,8 +52,6 @@ module Pageflow
         resources :entries do
           resources :memberships
         end
-
-        resources :themings
       end
 
       mount Pageflow::Engine, at: '/'

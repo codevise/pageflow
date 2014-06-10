@@ -48,7 +48,6 @@ module Pageflow
         can :manage, [Entry, Revision]
         can :manage, [Chapter, Page]
         can :manage, [ImageFile, VideoFile, AudioFile]
-        can :manage, Theming
 
         can :manage, Resque
       elsif user.account_manager?
@@ -56,8 +55,6 @@ module Pageflow
         can :manage, Entry, :account_id => user.account.id
         can :manage, ::User, :account_id => user.account.id
         can :manage, Revision, :entry => {:account_id => user.account.id}
-
-        can [:read, :update], Theming, :id => user.account.default_theming_id
 
         can :destroy, Membership, :entry => {:account_id => user.account.id}
         can :destroy, Membership, :user => {:account_id => user.account.id}

@@ -1,0 +1,14 @@
+<%= semantic_form_for [:admin, resource] do |f| %>
+  <%= f.inputs do %>
+    <%= f.input :name %>
+    <%= f.input :default_file_rights %>
+    <%= f.semantic_fields_for :default_theming do |theming| %>
+      <%= theming.input :cname %>
+      <%= theming.input :theme, :include_blank => false, :collection => Pageflow::Theme.all, :member_label => :css_dir %>
+    <% end %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action(:submit) %>
+    <%= f.action(:cancel, :wrapper_html => {:class => 'cancel'}) %>
+  <% end %>
+<% end %>
