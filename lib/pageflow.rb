@@ -1,8 +1,14 @@
 require "pageflow/engine"
 
 module Pageflow
-  def self.config
-    raise('Pageflow has not been configured yet') unless @config
+  def self.config(options = {})
+    unless @config
+      if options[:ignore_not_configured]
+        return Configuration.new
+      else
+        raise('Pageflow has not been configured yet')
+      end
+    end
     @config
   end
 
