@@ -1,5 +1,6 @@
 <% content_for(:head) do %>
     <%= entry_theme_stylesheet_link_tag(@entry) %>
+    <%= entry_stylesheet_link_tag(@entry) %>
     <%= stylesheet_link_tag 'pageflow/editor', media: "all" %>
     <%= javascript_include_tag 'pageflow/editor' %>
 <% end %>

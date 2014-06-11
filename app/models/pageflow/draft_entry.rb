@@ -62,6 +62,10 @@ module Pageflow
       end
     end
 
+    def stylesheet_model
+      @draft
+    end
+
     private
 
     def collection_containing(file)
