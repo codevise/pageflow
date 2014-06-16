@@ -30,17 +30,17 @@ module Pageflow
       # TODO: this has to be refactored to be page type agnostic
       if template == 'video' || template == 'background_video'
         if configuration['poster_image_id'].present?
-          ['pageflow/image_file', :attachment, 'poster_image_id', 'image_file']
+          ['pageflow/image_file', :processed_attachment, 'poster_image_id', 'image_file']
         else
           ['pageflow/video_file', :poster, 'video_file_id', 'video_file']
         end
       else
         if configuration['thumbnail_image_id'].present?
-          ['pageflow/image_file', :attachment, 'thumbnail_image_id', 'image_file']
+          ['pageflow/image_file', :processed_attachment, 'thumbnail_image_id', 'image_file']
         elsif configuration['after_image_id'].present?
-          ['pageflow/image_file', :attachment, 'after_image_id','image_file']
+          ['pageflow/image_file', :processed_attachment, 'after_image_id','image_file']
         else
-          ['pageflow/image_file', :attachment, 'background_image_id', 'image_file']
+          ['pageflow/image_file', :processed_attachment, 'background_image_id', 'image_file']
         end
       end
     end
