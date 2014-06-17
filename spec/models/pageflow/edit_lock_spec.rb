@@ -2,6 +2,13 @@ require 'spec_helper'
 
 module Pageflow
   describe EditLock do
+    describe 'active' do
+      it 'excludes timed out EditLocks' do
+        lock = create(:edit_lock, updated_at: (EditLock::TIME_TO_LIVE + 1.minute).ago)
+
+        expect(EditLock.active).not_to include(lock)
+      end
+    end
     describe '#aquire' do
       context 'when held by other user' do
         it 'raises HeldByOtherUserError' do
