@@ -6,5 +6,9 @@ module Pageflow
     def cname_domain
       cname.split('.').pop(2).join('.')
     end
+
+    def name
+      I18n.t('admin.themings.name')
+    end
   end
 end
