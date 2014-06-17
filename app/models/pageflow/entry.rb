@@ -29,6 +29,7 @@ module Pageflow
     validate :folder_belongs_to_same_account
 
     scope :published, -> { joins(:published_revision) }
+    scope :editing, -> { joins(:edit_lock).merge(Pageflow::EditLock.active) }
 
     after_create :create_draft!
 
