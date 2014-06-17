@@ -4,6 +4,8 @@ module Dom
       selector '.admin_accounts'
 
       attribute :name, '.attributes_table.pageflow_account .name td'
+      attribute :cname, '.attributes_table.pageflow_theming .cname td'
+      attribute :theme, '.attributes_table.pageflow_theming .theme td'
 
       def edit_link
         within(node) do

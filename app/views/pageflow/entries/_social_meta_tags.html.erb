@@ -2,8 +2,8 @@
 
 <%= tag :meta, :property => "og:image:url", :content => entry.thumbnail.url(:medium).gsub('https://', 'http://') %>
 
-<%= tag :meta, :property => "og:title", :content => "#{entry.title} - #{entry.account.cname_domain}" %>
+<%= tag :meta, :property => "og:title", :content => "#{entry.title} - #{entry.theming.cname_domain}" %>
 <%= tag :meta, :property => "og:description", :content => entry_summary(entry) %>
 <%= tag :meta, :property => "og:url", :content => pretty_entry_url(entry) %>
-<%= tag :meta, :property => "og:site_name", :content => entry.account.cname_domain %>
+<%= tag :meta, :property => "og:site_name", :content => entry.theming.cname_domain %>
 <%= tag :meta, :property => "og:type", :content => "article" %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140501152252) do
+ActiveRecord::Schema.define(version: 20140604144526) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -43,15 +43,17 @@ ActiveRecord::Schema.define(version: 20140501152252) do
 
   create_table "pageflow_accounts", force: true do |t|
     t.string   "name",                default: "", null: false
-    t.integer  "default_theme_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "default_file_rights", default: "", null: false
-    t.string   "cname",               default: "", null: false
     t.string   "landing_page_name",   default: "", null: false
+    t.integer  "default_theming_id"
   end
 
-  add_index "pageflow_accounts", ["cname"], name: "index_pageflow_accounts_on_cname"
+  create_table "pageflow_accounts_themes", id: false, force: true do |t|
+    t.integer "account_id"
+    t.integer "theme_id"
+  end
 
   create_table "pageflow_audio_files", force: true do |t|
     t.integer  "entry_id"
@@ -103,14 +105,14 @@ ActiveRecord::Schema.define(version: 20140501152252) do
     t.datetime "updated_at"
     t.string   "slug",                    null: false
     t.integer  "account_id"
-    t.integer  "theme_id"
     t.integer  "folder_id"
+    t.integer  "theming_id"
   end
 
   add_index "pageflow_entries", ["account_id"], name: "index_pageflow_entries_on_account_id"
   add_index "pageflow_entries", ["folder_id"], name: "index_pageflow_entries_on_folder_id"
   add_index "pageflow_entries", ["slug"], name: "index_pageflow_entries_on_slug", unique: true
-  add_index "pageflow_entries", ["theme_id"], name: "index_pageflow_entries_on_theme_id"
+  add_index "pageflow_entries", ["theming_id"], name: "index_pageflow_entries_on_theming_id"
 
   create_table "pageflow_file_usages", force: true do |t|
     t.integer  "revision_id"
@@ -195,14 +197,25 @@ ActiveRecord::Schema.define(version: 20140501152252) do
   add_index "pageflow_revisions", ["restored_from_id"], name: "index_pageflow_revisions_on_restored_from_id"
 
   create_table "pageflow_themes", force: true do |t|
-    t.string   "name",                 default: "", null: false
+    t.string   "css_dir",    default: "",    null: false
+    t.boolean  "global",     default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pageflow_themings", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "imprint_link_url"
     t.string   "imprint_link_label"
     t.string   "copyright_link_url"
     t.string   "copyright_link_label"
+    t.integer  "theme_id"
+    t.string   "cname",                default: "", null: false
   end
+
+  add_index "pageflow_themings", ["cname"], name: "index_pageflow_themings_on_cname"
+  add_index "pageflow_themings", ["theme_id"], name: "index_pageflow_themings_on_theme_id"
 
   create_table "pageflow_video_files", force: true do |t|
     t.integer  "entry_id"

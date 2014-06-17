@@ -9,26 +9,23 @@ module Pageflow
       column :name do |account|
         link_to account.name, admin_account_path(account)
       end
-      column :cname
     end
 
-    form do |f|
-      f.inputs do
-        f.input :name
-        f.input :default_file_rights
-        f.input :cname, :hint => I18n.t('admin.accounts.cname_hint')
-        f.input :default_theme, :include_blank => false
-      end
-      f.actions
-    end
+    form :partial => 'form'
 
     show :title => :name do |account|
       attributes_table_for account do
         row :name, :class => 'name'
         row :default_file_rights, :class => 'default_file_rights'
-        row :cname, :class => 'cname'
-        row :default_theme, :class => 'default_theme'
+        row :default_theming, :class => 'default_theming'
         row :created_at
+      end
+
+      attributes_table_for account.default_theming do
+        row :cname, :class => 'cname'
+        row :theme, :class => 'theme' do
+          account.default_theming.theme.css_dir
+        end
       end
 
       div :class => 'columns' do
@@ -67,8 +64,19 @@ module Pageflow
     end
 
     controller do
+      def new
+        @account = Account.new
+        @account.default_theming = Theming.new
+      end
+
+      def create
+        @account = Account.new(permitted_params[:account])
+        @account.build_default_theming(:theme_id => permitted_params[:account][:default_theming_attributes][:theme_id])
+        super
+      end
+
       def permitted_params
-        params.permit(:account => [:name, :default_file_rights, :cname, :default_theme_id])
+        params.permit(:account => [:name, :default_file_rights, :default_theming_attributes => [:cname, :theme_id]])
       end
     end
   end

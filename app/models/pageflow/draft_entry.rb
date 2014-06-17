@@ -5,7 +5,7 @@ module Pageflow
     attr_reader :entry, :draft
 
     delegate(:id,
-             :edit_lock, :account, :theme, :slug,
+             :edit_lock, :account, :theming, :slug,
              :published_until, :published?,
              :to_model, :to_key, :persisted?, :to_json,
              :to => :entry)
@@ -60,6 +60,10 @@ module Pageflow
       Entry.accessible_by(ability, action).map do |entry|
         DraftEntry.new(entry)
       end
+    end
+
+    def stylesheet_model
+      @draft
     end
 
     private

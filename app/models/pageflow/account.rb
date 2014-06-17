@@ -3,15 +3,14 @@ module Pageflow
     has_many :users
     has_many :entries
     has_many :folders
+    has_and_belongs_to_many :themes, :join_table => 'pageflow_accounts_themes'
 
-    belongs_to :default_theme, :class_name => 'Theme'
+    belongs_to :default_theming, :class_name => 'Theming'
 
-    validates :default_theme, :presence => true
+    validates :default_theming, :presence => true
+
+    accepts_nested_attributes_for :default_theming
 
     scope :with_landing_page, -> { where.not(:landing_page_name => '') }
-
-    def cname_domain
-      cname.split('.').pop(2).join('.')
-    end
   end
 end

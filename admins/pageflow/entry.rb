@@ -44,7 +44,7 @@ module Pageflow
           f.input :account, :include_blank => false
 
           unless f.object.new_record?
-            f.input :theme, :include_blank => false
+            f.input :theming, :include_blank => false
           end
         end
         if authorized?(:manage, Folder)
@@ -91,12 +91,12 @@ module Pageflow
       def build_new_resource
         super.tap do |entry|
           entry.account ||= current_user.account
-          entry.theme ||= entry.account.default_theme
+          entry.theming ||= entry.account.default_theming
         end
       end
 
       def permitted_params
-        result = params.permit(:entry => [:title, :account_id, :theme_id, :folder_id])
+        result = params.permit(:entry => [:title, :account_id, :theming_id, :folder_id])
         restrict_attributes(params[:id], result[:entry]) if result[:entry]
         result
       end
@@ -104,7 +104,7 @@ module Pageflow
       private
 
       def restrict_attributes(id, attributes)
-        attributes.except!(:account_id, :theme_id) unless authorized?(:read, Account)
+        attributes.except!(:account_id, :theming_id) unless authorized?(:read, Account)
         attributes.except!(:folder_id) unless authorized?(:manage, Folder)
       end
     end

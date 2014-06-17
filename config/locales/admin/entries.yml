@@ -36,3 +36,6 @@ de:
       not_published: "Nicht veröffentlicht"
 
       add_folder: "Ordner hinzufügen"
+
+      edit_config: "Konfiguration ändern"
+      remove_logo: "Logo löschen"

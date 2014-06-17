@@ -14,7 +14,7 @@ module Pageflow
       has_many :memberships, :dependent => :destroy, :class_name => 'Pageflow::Membership'
       has_many :entries, :through => :memberships, :class_name => 'Pageflow::Entry'
 
-      has_many :revisions, :class_name => 'Pageflow::Revision'
+      has_many :revisions, :class_name => 'Pageflow::Revision', :foreign_key => :creator_id
 
       validates :first_name, :last_name, :presence => true
       validates :role, :inclusion => ROLES

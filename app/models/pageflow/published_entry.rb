@@ -5,7 +5,7 @@ module Pageflow
 
     attr_reader :entry, :revision
 
-    delegate(:account, :theme, :to_model, :to_key, :persisted?, :to => :entry)
+    delegate(:account, :theming, :to_model, :to_key, :persisted?, :to => :entry)
 
     delegate(:chapters, :pages,
              :image_files, :video_files, :audio_files,

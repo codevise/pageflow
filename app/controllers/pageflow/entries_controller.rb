@@ -11,7 +11,8 @@ module Pageflow
     helper RenderJsonHelper
 
     def index
-      @account = Account.with_landing_page.find_by_cname!(request.host)
+      theming = Theming.find_by_cname!(request.host)
+      @account = Account.with_landing_page.find_by_theming!(theming)
 
       respond_to do |format|
         format.html {

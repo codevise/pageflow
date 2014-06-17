@@ -60,8 +60,8 @@
               Bildrechte:
               <%= entry_file_rights(entry) %>
             </p>
-            <%= link_to(raw(entry.theme.imprint_link_label), entry.theme.imprint_link_url, :target => '_blank') %>
-            <%= link_to(raw(entry.theme.copyright_link_label), entry.theme.copyright_link_url, :target => '_blank', :class => 'copy') %>
+            <%= link_to(raw(entry.theming.imprint_link_label), entry.theming.imprint_link_url, :target => '_blank') %>
+            <%= link_to(raw(entry.theming.copyright_link_label), entry.theming.copyright_link_url, :target => '_blank', :class => 'copy') %>
           </li>
         </ul>
       </div>

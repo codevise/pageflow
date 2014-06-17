@@ -5,7 +5,7 @@ module Pageflow
 
     belongs_to :account
     belongs_to :folder
-    belongs_to :theme
+    belongs_to :theming
 
     has_many :revisions, -> { order('frozen_at DESC') }
 
@@ -19,13 +19,13 @@ module Pageflow
     has_many :video_files
     has_many :audio_files
 
-
+    has_one :theme, :through => :theming
     has_one :draft, -> { editable }, :class_name => 'Revision'
     has_one :published_revision, -> { published }, :class_name => 'Revision'
 
     has_one :edit_lock, :dependent => :destroy
 
-    validates :account, :theme, :presence => true
+    validates :account, :theming, :presence => true
     validate :folder_belongs_to_same_account
 
     scope :published, -> { joins(:published_revision) }

@@ -8,7 +8,7 @@ module Pageflow
       title
 
       account
-      theme
+      theming
 
       # inline membership creation
 

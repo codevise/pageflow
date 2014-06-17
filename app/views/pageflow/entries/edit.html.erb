@@ -1,5 +1,6 @@
 <% content_for(:head) do %>
     <%= entry_theme_stylesheet_link_tag(@entry) %>
+    <%= entry_stylesheet_link_tag(@entry) %>
     <%= stylesheet_link_tag 'pageflow/editor', media: "all" %>
     <%= javascript_include_tag 'pageflow/editor' %>
 <% end %>
@@ -39,7 +40,7 @@
         videoFiles: <%= render_json_seed(@entry.video_files.with_usage_id) %>,
         audioFiles: <%= render_json_seed(@entry.audio_files.with_usage_id) %>,
 
-        page_types: <%= page_type_json_seeds %>,
+        page_types: <%= page_type_json_seeds %>
       });
     });
   });

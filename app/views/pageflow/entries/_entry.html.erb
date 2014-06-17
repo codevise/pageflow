@@ -1,7 +1,7 @@
 <div id="outer_wrapper">
   <%= render 'pageflow/entries/skip_links' %>
   <h1 class="hidden"><%= entry.title %></h1>
-  <img src="<%= image_path("pageflow/themes/#{entry.theme.name}/logo_print.png") %>" class="print_image" alt="Logo image for print version">
+  <img src="<%= image_path("pageflow/themes/#{entry.theming.theme.css_dir}/logo_print.png") %>" class="print_image" alt="Logo image for print version">
   <span class="print_only page_url"><%= request.original_url %></span>
   <%= content_tag :div, :id => 'content', :class => 'entry', :data => {:role => 'slideshow'} do %>
     <%= render entry.pages %>
