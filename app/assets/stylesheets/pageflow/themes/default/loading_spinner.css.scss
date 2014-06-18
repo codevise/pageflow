@@ -12,6 +12,8 @@
     margin-left: -102px;
     margin-top: -101px;
     position: absolute;
+    z-index: 0;
+    background-color: $main-color;
 
     &:before {
       content: " ";
@@ -19,11 +21,12 @@
       height: 202px;
       position: absolute;
       background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner_bg.png');
+      z-index: 1;
     }
 
     div {
       width: 204px;
-      height: 202px;
+      height: 204px;
       position: absolute;
       background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner.png');
       @include animation-duration (1.5s);
@@ -45,15 +48,33 @@
 
   .js .vjs-default-skin {
     .vjs-loading-spinner {
-      top: 29px;
+      top: 30px;
       left: 30px;
       opacity: 1;
       margin-left: -31px;
       margin-top: -32px;
 
+      @include phone {
+        top: 62px;
+        left: 62px;
+        width: auto;
+        height: auto;
+      }
+
       &:before {
-        content: " ";
-        background-image: image-url('pageflow/themes/#{$theme-name}/loading_small.png');
+        top: 11px;
+        left: 11px;
+        content: "\f013";
+        font-family: "FontAwesome";
+        font-size: 43px;
+        color: $main-color;
+        background-image: none;
+
+        @include phone {
+          top: -20px;
+          left: -20px;
+          font-size: 40px;
+        }
       }
     }
   }

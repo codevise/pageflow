@@ -83,12 +83,10 @@ $page-color: $main-color;
     background-repeat: no-repeat;
     top: 50px;
     z-index: 200;
-    background-size: auto;
-    background-size: 100% auto;
-    padding-top: 25.8%;
+    background-size: contain;
+    padding-top: 6.8%;
     min-width: 100px;
     max-width: 221px;
-    background-size: 100% auto;
     width: 13%;
   }
 
