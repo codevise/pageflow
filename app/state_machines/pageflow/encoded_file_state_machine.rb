@@ -8,6 +8,7 @@ module Pageflow
 
         state 'not_uploaded_to_s3'
         state 'uploading_to_s3'
+        state 'waiting_for_confirmation'
         state 'waiting_for_encoding'
         state 'encoding'
         state 'encoded'
@@ -28,8 +29,15 @@ module Pageflow
         job UploadFileToS3Job do
           on_enter 'uploading_to_s3'
           result :pending, :retry_after => 30.seconds
-          result :ok => 'waiting_for_encoding'
+
+          result :ok, :state => 'waiting_for_confirmation', :if => lambda { Pageflow.config.confirm_encoding_jobs }
+          result :ok, :state => 'waiting_for_encoding'
+
           result :error => 'uploading_to_s3_failed'
+        end
+
+        event :confirm_encoding do
+          transition 'waiting_for_confirmation' => 'waiting_for_encoding'
         end
 
         job SubmitFileToZencoderJob do

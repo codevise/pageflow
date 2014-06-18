@@ -11,34 +11,69 @@ shared_examples 'encoded file state machine' do |model|
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
     end
 
-    it 'creates zencoder job for file' do
-      file = create(model, :on_filesystem)
+    context 'with disabled confirm_encoding_jobs option' do
+      it 'creates zencoder job for file' do
+        file = create(model, :on_filesystem)
 
-      allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
-      file.publish
+        file.publish
 
-      expect(Pageflow::ZencoderApi.instance).to have_received(:create_job).with(file.reload.output_definition)
+        expect(Pageflow::ZencoderApi.instance).to have_received(:create_job).with(file.reload.output_definition)
+      end
+
+      it 'polls zencoder' do
+        file = create(model, :on_filesystem)
+
+        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
+
+        file.publish
+
+        expect(Pageflow::ZencoderApi.instance).to have_received(:get_info).with(file.reload.job_id).twice
+      end
+
+      it 'sets state to encoded after job has finished' do
+        file = create(model, :on_filesystem)
+
+        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+
+        file.publish
+
+        expect(file.reload.state).to eq('encoded')
+      end
     end
 
-    it 'polls zencoder' do
-      file = create(model, :on_filesystem)
+    context 'with enabled confirm_encoding_jobs option' do
+      before do
+        Pageflow.config.confirm_encoding_jobs = true
+      end
 
-      allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
+      it 'sets state to waiting_for_confirmation' do
+        file = create(model, :on_filesystem)
 
-      file.publish
+        file.publish
 
-      expect(Pageflow::ZencoderApi.instance).to have_received(:get_info).with(file.reload.job_id).twice
+        expect(file.reload.state).to eq('waiting_for_confirmation')
+      end
+    end
+  end
+
+  describe '#confirm_encoding event', :inline_resque => true do
+    before do
+      stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
+        .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
     end
 
-    it 'sets state to encoded after job has finished' do
-      file = create(model, :on_filesystem)
+    context 'when waiting for confirmation' do
+      it 'sets state to encoded after job has finished' do
+        file = create(model, :waiting_for_confirmation)
 
-      allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
-      file.publish
+        file.confirm_encoding!
 
-      expect(file.reload.state).to eq('encoded')
+        expect(file.reload.state).to eq('encoded')
+      end
     end
   end
 

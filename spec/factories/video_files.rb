@@ -31,6 +31,10 @@ module Pageflow
         state 'upload_to_s3_failed'
       end
 
+      trait :waiting_for_confirmation do
+        state 'waiting_for_confirmation'
+      end
+
       trait :encoding_failed do
         state 'encoding_failed'
       end
