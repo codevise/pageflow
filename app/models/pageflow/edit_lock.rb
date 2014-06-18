@@ -2,6 +2,8 @@ module Pageflow
   class EditLock < ActiveRecord::Base
     TIME_TO_LIVE = 10.seconds
 
+    scope :active, ->(time = Time.now - TIME_TO_LIVE) { where('pageflow_edit_locks.updated_at >= ?', time) }
+
     class Error < RuntimeError
       def code
         self.class.name.split('::').last.underscore
