@@ -73,5 +73,14 @@ module Pageflow
         expect(quota).to be_exhausted
       end
     end
+
+    describe '#assume' do
+      it 'returns same quota by default' do
+        account = build(:account)
+        quota = TestQuota.new(account, 'available')
+
+        expect(quota.assume(some: 'information')).to be_available
+      end
+    end
   end
 end
