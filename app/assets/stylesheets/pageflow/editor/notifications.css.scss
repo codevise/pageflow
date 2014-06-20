@@ -8,7 +8,8 @@
 
   &.uploading li.uploading,
   &.saving li.saving,
-  &.failed li.failed {
+  &.failed li.failed,
+  &.has_confirmable_files li.confirmable_files {
     display: block;
   }
 
@@ -23,8 +24,14 @@
     font-weight: bold;
   }
 
+  .display_confirmable_files,
   .retry {
     text-decoration: underline;
+  }
+
+  .display_confirmable_files {
+    display: block;
+    margin: 8px 0;
   }
 
   li {
@@ -53,6 +60,16 @@
     @include background-icon-color(#d00);
     @include attention-icon;
     color: #444;
+    display: none;
+  }
+
+  li.confirmable_files {
+    @include background-icon-left($font-size: 15px, $top: 15px, $left: 15px, $color: #888);
+    @include background-icon-animation(blink);
+    @include bell-icon;
+    background-color: #D2E5FA;
+    color: #000;
+    padding-top: 8px;
     display: none;
   }
 

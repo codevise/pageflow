@@ -21,6 +21,10 @@ pageflow.encodedFile = {
     return this.get('state') === 'encoded';
   },
 
+  isConfirmable: function() {
+    return this.get('state') === 'waiting_for_confirmation';
+  },
+
   isFailed: function() {
     return this.get('state').match(/_failed$/);
   },

@@ -34,6 +34,10 @@ pageflow.ImageFile = Backbone.Model.extend({
     return this.get('state') === 'processing_failed';
   },
 
+  isConfirmable: function() {
+    return false;
+  },
+
   isPositionable: function() {
     return this.isReady();
   }

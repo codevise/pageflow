@@ -23,6 +23,10 @@ pageflow.filesCountWatcher = {
       return file.isUploading();
     });
 
+    this.updateFilesCount('confirmable', name, collection, function(file) {
+      return file.isConfirmable();
+    });
+
     this.updateFilesCount('pending', name, collection, function(file) {
       return file.isPending();
     });
