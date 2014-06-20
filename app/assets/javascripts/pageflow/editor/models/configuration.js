@@ -1,5 +1,6 @@
 pageflow.Configuration = Backbone.Model.extend({
   modelName: 'page',
+  i18nKey: 'pageflow/page',
 
   mixins: [pageflow.transientReferences],
 

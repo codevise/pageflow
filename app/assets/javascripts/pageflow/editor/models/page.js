@@ -1,6 +1,7 @@
 pageflow.Page = Backbone.Model.extend({
   modelName: 'page',
   paramRoot: 'page',
+  i18nKey: 'pageflow/page',
 
   defaults: {
     template: 'background_image',

@@ -12,7 +12,7 @@ module Pageflow
     end
 
     def translation_key
-      "activerecord.values.page.template.#{name}"
+      "activerecord.values.pageflow/page.template.#{name}"
     end
 
     # Factory methods to decouple Pageflow initializers from concrete

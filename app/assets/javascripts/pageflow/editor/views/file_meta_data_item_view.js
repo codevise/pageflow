@@ -13,7 +13,7 @@ pageflow.FileMetaDataItemView = Backbone.Marionette.ItemView.extend({
   },
 
   update: function() {
-    this.ui.label.text(I18n.t('activerecord.attributes.' + this.model.modelName + '.' + this.options.attribute));
+    this.ui.label.text(I18n.t('activerecord.attributes.' + this.model.i18nKey + '.' + this.options.attribute));
     this.ui.value.text(this.model.get(this.options.attribute));
   }
 });
