@@ -50,7 +50,7 @@ de:
         one: "Theming"
         other: "Themings"
     attributes:
-      account:
+      "pageflow/account":
         name: "Name"
         default_file_rights: "Standard Urheber"
         default_theming: "Standard Theming"
@@ -75,7 +75,7 @@ de:
         membership: "Mitgliedschaft"
         role: "Rolle"
         account: "Konto"
-      entry:
+      "pageflow/entry":
         title: "Titel"
         summary: "Zusammenfassung"
         credits: "Credits"
@@ -85,13 +85,13 @@ de:
         url: "Permalink"
         account: "Konto"
         manual_start: "Multimedia Hinweis vor dem Start anzeigen"
-      folder:
+      "pageflow/folder":
         account: "Konto"
         name: "Name"
-      membership:
+      "pageflow/membership":
         user: "Redakteur"
         entry: "Beitrag"
-      revision:
+      "pageflow/revision":
         created_at: "Erstellt am"
         updated_at: "Geändert am"
         published_at: "Publiziert am"
@@ -99,9 +99,9 @@ de:
         creator: "Erstellt von"
         frozen_at: "Stand vom"
         created_with: "Erstellt durch"
-      chapter:
+      "pageflow/chapter":
         title: "Titel"
-      page:
+      "pageflow/page":
         template: "Seitentyp"
         text: "Text"
         tagline: "Tagline"
@@ -126,16 +126,16 @@ de:
         linked_pages_layout: "Hervorgehobenes Element"
         hide_title: "Titel ausblenden"
         text_position: "Textposition"
-      image_file:
+      "pageflow/image_file":
         dimensions: "Maße"
-      video_file:
+      "pageflow/video_file":
         format: "Format"
         dimensions: "Maße"
         duration: "Länge"
-      audio_file:
+      "pageflow/audio_file":
         format: "Format"
         duration: "Länge"
-      theming:
+      "pageflow/theming":
         cname: "CNAME"
     values:
       page:

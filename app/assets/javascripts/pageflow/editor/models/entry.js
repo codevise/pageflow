@@ -2,6 +2,7 @@ pageflow.Entry = Backbone.Model.extend({
   paramRoot: 'entry',
   urlRoot: '/entries',
   modelName: 'entry',
+  i18nKey: 'pageflow/entry',
 
   mixins: [pageflow.filesCountWatcher, pageflow.polling, pageflow.failureTracking],
 
