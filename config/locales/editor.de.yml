@@ -27,6 +27,7 @@ de:
           failed: "Fehler beim übertragen zu S3."
         encoding:
           pending: "Noch nicht encodiert."
+          action_required: "Bestätigung erforderlich."
           active: "Encoding läuft."
           finished: "Erfolgreich encodiert."
           failed: "Fehler beim Encoding."

@@ -42,6 +42,11 @@
       @include background-icon-animation(none);
       @include attention-icon;
     }
+
+    &.action_required {
+      @include bell-icon;
+      @include background-icon-animation(blink);
+    }
   }
 
   &.ready {

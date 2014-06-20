@@ -11,7 +11,7 @@ pageflow.stageProvider = {
 
   currentStage: function() {
     return this.stages.find(function(stage) {
-      return stage.get('active') || stage.get('failed');
+      return stage.get('active') || stage.get('action_required') || stage.get('failed');
     });
   }
 };

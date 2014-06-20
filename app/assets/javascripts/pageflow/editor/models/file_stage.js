@@ -5,6 +5,7 @@ pageflow.FileStage = Backbone.Model.extend({
     this.activeStates = options.activeStates;
     this.finishedStates = options.finishedStates;
     this.failedStates = options.failedStates;
+    this.actionRequiredStates = options.actionRequiredStates || [];
 
     this.update();
     this.listenTo(this.file, 'change:state', this.update);
@@ -24,6 +25,7 @@ pageflow.FileStage = Backbone.Model.extend({
     this.set('active', this.activeStates.indexOf(state) >= 0);
     this.set('finished', this.finishedStates.indexOf(state) >= 0);
     this.set('failed', this.failedStates.indexOf(state) >= 0);
+    this.set('action_required', this.actionRequiredStates.indexOf(state) >= 0);
 
     if (this.get('active')) {
       this.set('state', 'active');
@@ -33,6 +35,9 @@ pageflow.FileStage = Backbone.Model.extend({
     }
     else if (this.get('failed')) {
       this.set('state', 'failed');
+    }
+    else if (this.get('action_required')) {
+      this.set('state', 'action_required');
     }
     else {
       this.set('state', 'pending');

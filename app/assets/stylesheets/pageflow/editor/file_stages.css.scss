@@ -11,6 +11,7 @@
   padding: 10px 0 5px 60px;
   white-space: normal;
 
+  &.action_required,
   &.active {
     @include background-icon-color(#444);
     @include background-icon-animation(blink);

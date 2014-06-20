@@ -36,5 +36,6 @@ pageflow.FileStageItemView = Backbone.Marionette.ItemView.extend({
     this.$el.toggleClass('active', this.model.get('active'));
     this.$el.toggleClass('finished', this.model.get('finished'));
     this.$el.toggleClass('failed', this.model.get('failed'));
+    this.$el.toggleClass('action_required', this.model.get('action_required'));
   }
 });
