@@ -31,6 +31,12 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
     }));
   },
 
+  confirmableFiles: function() {
+    this.region.show(pageflow.ConfirmEncodingView.create({
+      model: new pageflow.EncodingConfirmation()
+    }));
+  },
+
   metaData: function() {
     this.region.show(new pageflow.EditMetaDataView({
       model: this.entry
