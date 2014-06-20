@@ -9,7 +9,7 @@ module Pageflow
 
       can [:read, :use_files], Entry, :id => user.entry_ids
 
-      can [:edit, :update, :edit_outline, :publish, :restore, :snapshot], Entry do |entry|
+      can [:edit, :update, :edit_outline, :publish, :restore, :snapshot, :confirm_encoding], Entry do |entry|
         can_edit_entry?(user, entry)
       end
 
