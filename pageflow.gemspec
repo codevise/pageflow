@@ -50,8 +50,9 @@ Gem::Specification.new do |s|
   # Amazon AWS
   s.add_dependency 'aws-sdk'
 
-  # VideoJS for Asset Pipeline
-  s.add_dependency 'videojs_rails'
+  # VideoJS for Asset Pipeline, version fixed at 4.1.0
+  # Recommendation: Do not change
+  s.add_dependency 'videojs_rails', '4.1.0'
 
   # Use jquery as the JavaScript library
   s.add_dependency 'jquery-rails'
