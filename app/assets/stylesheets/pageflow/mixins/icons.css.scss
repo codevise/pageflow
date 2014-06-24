@@ -1,26 +1,6 @@
 @charset 'UTF-8';
 
-@font-face {
-  font-family: 'entypo';
-  font-style: 'normal';
-  font-weight: 'normal';
-  src: url('http://weloveiconfonts.com/api/fonts/entypo/entypo.eot');
-  src: url('http://weloveiconfonts.com/api/fonts/entypo/entypo.eot?#iefix') format('eot'),
-       url('http://weloveiconfonts.com/api/fonts/entypo/entypo.woff') format('woff'),
-       url('http://weloveiconfonts.com/api/fonts/entypo/entypo.ttf') format('truetype'),
-       url('http://weloveiconfonts.com/api/fonts/entypo/entypo.svg#entypo') format('svg');
-}
-
-@font-face {
-  font-family: 'FontAwesome';
-  font-style: 'normal';
-  font-weight: 'normal';
-  src: url('http://weloveiconfonts.com/api/fonts/fontawesome/fontawesome-webfont.eot');
-  src: url('http://weloveiconfonts.com/api/fonts/fontawesome/fontawesome-webfont.eot?#iefix') format('eot'),
-       url('http://weloveiconfonts.com/api/fonts/fontawesome/fontawesome-webfont.woff') format('woff'),
-       url('http://weloveiconfonts.com/api/fonts/fontawesome/fontawesome-webfont.ttf') format('truetype'),
-       url('http://weloveiconfonts.com/api/fonts/fontawesome/fontawesome-webfont.svg#FontAwesomeRegular') format('svg');
-}
+@import "font-awesome";
 
 @mixin icon($char) {
   &:before {
