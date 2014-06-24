@@ -48,33 +48,27 @@
 
   .js .vjs-default-skin {
     .vjs-loading-spinner {
-      top: 30px;
-      left: 30px;
+      top: 8px;
+      left: 10px;
       opacity: 1;
-      margin-left: -31px;
-      margin-top: -32px;
+      width: 43px;
+      height: 43px;
+      margin-left: 0;
+      margin-top: 0;
 
       @include phone {
-        top: 62px;
-        left: 62px;
-        width: auto;
-        height: auto;
       }
 
       &:before {
-        top: 11px;
-        left: 11px;
+        width: 43px;
+        height: 43px;
+        top: 0;
+        left: 0;
         content: "\f013";
         font-family: "FontAwesome";
         font-size: 43px;
         color: $main-color;
         background-image: none;
-
-        @include phone {
-          top: -20px;
-          left: -20px;
-          font-size: 40px;
-        }
       }
     }
   }
