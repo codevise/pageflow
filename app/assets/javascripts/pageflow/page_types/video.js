@@ -157,7 +157,6 @@ pageflow.pageType.register('video', _.extend({
 
       if (pageflow.features.has('phone platform')) {
         // alternate poster image handling
-        video.attr("style", "visibility:hidden");
         $("<div class='vjs-poster-mobile' style='" +
           poster.attr('style') +
           "display:block; background-size: coverr;'></div>").appendTo(pageElement.find(".videoWrapper"));
