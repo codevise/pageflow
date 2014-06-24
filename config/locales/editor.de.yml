@@ -36,17 +36,17 @@ de:
           finished: "Erfolgreich verarbeitet."
           failed: "Fehler beim Verarbeiten."
     inline_help:
-      page:
+      "pageflow/page":
         invert: "Dunkle Schrift und helle Schattierung anzeigen."
         gradient_opacity: "Wählen Sie die Intensität des Farbverlaufs so, dass ein ausreichender Kontrast zwischen Text und Hintegrund gewährleistet ist."
         description: "Dieser Text wird auf der Übersichtseite angezeigt, wenn Sie den Mauszeiger über dem Vorschaubild einer Seite platzieren."
         additional_title: "Die Infobox wird über den Steuerelementen zum Starten und Stoppen der Wiedegabe angezeigt."
         text: "Empfohlene Textlänge: 220 Zeichen"
         thumbnail_image_id: "Dieses Bild wird in der Navigationsleiste und anderen Verweisen auf die Seite gezeigt."
-      entry:
+      "pageflow/entry":
         title: "Vom Browser angezeigter Titel der Seite."
         summary: "Zusammenfassung die an Soziale Netzwerke weitergeben wird."
         credits: "Text wird zusammen mit dem Impressumsverweis angezeigt."
         manual_start: "Besucher muss den Start des Beitrags durch einen Klick bestätigen."
-      chapter:
+      "pageflow/chapter":
         title: "Wird auf der Übersichtsseite angezeigt."

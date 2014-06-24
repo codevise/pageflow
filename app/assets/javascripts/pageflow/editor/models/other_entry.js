@@ -2,6 +2,7 @@ pageflow.OtherEntry = Backbone.Model.extend({
   paramRoot: 'entry',
   urlRoot: '/entries',
   modelName: 'entry',
+  i18nKey: 'pageflow/entry',
 
   initialize: function() {
     this.imageFiles = new pageflow.ImageFilesCollection([], {entry: this});
