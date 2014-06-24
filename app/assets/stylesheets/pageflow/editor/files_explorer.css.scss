@@ -1,4 +1,13 @@
 .files_explorer {
+  .box {
+    height: 100%;
+    @include box-sizing(border-box);
+
+    h2 {
+      margin: 0;
+      position: absolute;
+    }
+  }
 
   ul {
     padding: 0;
@@ -6,11 +15,20 @@
     list-style: none;
   }
 
+
+  .panels {
+    padding-top: 30px;
+    padding-bottom: 50px;
+    height: 100%;
+    @include box-sizing(border-box);
+  }
+
   .entries_panel, .files_panel {
+    height: 100%;
     display: inline-block;
     vertical-align: top;
-
     border: 1px solid #ddd;
+    overflow: auto;
   }
 
   .entries_panel {
@@ -19,11 +37,21 @@
 
   .files_panel {
     width: 77%;
+
+    .tabs_view {
+      height: 100%;
+      position: relative;
+
+      > div {
+        @include position(absolute, 37px  0 0px 0);
+        height: auto;
+      }
+    }
   }
 
   .footer {
     width: 98%;
-    margin-top: 10px;
+    @include position(absolute, 0 37px 14px 0);
   }
 
   .close {

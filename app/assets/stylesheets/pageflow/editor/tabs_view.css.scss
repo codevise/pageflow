@@ -20,6 +20,8 @@
   > div {
     background-color: #fff;
     padding: 10px;
+    overflow: auto;
+    height: 100%;
   }
 
   > ul > li.spinner {
