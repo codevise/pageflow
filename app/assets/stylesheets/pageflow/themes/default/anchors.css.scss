@@ -21,21 +21,16 @@ $anchor-color: $main-color;
   }
 
   &:before {
-    left: -16px;
     top: 7px;
-    position: absolute;
-    background-image: image-url('pageflow/anchor_white.png');
+    content: "\f0da";
     width: 10px;
     height: 12px;
-    content: "";
     display: inline-block;
     background-repeat: no-repeat;
     background-position: center;
-
+    font-family: "FontAwesome";
 
     @include phone {
-      left: -12px;
-      top: 3px;
     }
   }
 }
@@ -59,6 +54,6 @@ $anchor-color: $main-color;
 
   &:hover {
     text-decoration: underline;
-    color: $anchor_color;
+    color: $anchor-color;
   }
 }
