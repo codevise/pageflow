@@ -12,6 +12,13 @@ In addition to this README, there is also a [Getting Started Wiki page](https://
 to guide you through the steps of setting up a Rails application with Pageflow 
 on your development machine.
 
+## Updating
+
+For instructions on how to update from a prior version of the gem see
+the
+[Updating Pageflow](https://github.com/codevise/pageflow/wiki/Updating-Pageflow)
+wiki page.
+
 ## Ingredients
 
 Pageflow is a Rails engine which roughly consists of the following
