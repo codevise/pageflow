@@ -7,7 +7,7 @@ module Pageflow
     default_theming = Theming.first
     puts "   Theming exists."
   else
-    theme = Theme.create(:css_dir => 'default', :global => true)
+    theme = Theme.create(:css_dir => 'default')
     default_theming = Theming.create!(:theme_id => theme.id,
       :imprint_link_label => 'Impressum',
       :imprint_link_url => 'http://example.com/impressum.html',
