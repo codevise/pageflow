@@ -1,6 +1,7 @@
 pageflow.Chapter = Backbone.Model.extend({
   modelName: 'chapter',
   paramRoot: 'chapter',
+  i18nKey: 'pageflow/chapter',
 
   mixins: [pageflow.failureTracking, pageflow.delayedDestroying],
 

@@ -16,10 +16,10 @@ pageflow.inputView = {
   },
 
   localizedAttributeName: function() {
-    return I18n.t('activerecord.attributes.' + this.model.modelName + '.' + this.options.propertyName);
+    return I18n.t('activerecord.attributes.' + this.model.i18nKey + '.' + this.options.propertyName);
   },
 
   inlineHelpText: function() {
-    return I18n.t('editor.inline_help.' + this.model.modelName + '.' + this.options.propertyName, {defaultValue: ''});
+    return I18n.t('editor.inline_help.' + this.model.i18nKey + '.' + this.options.propertyName, {defaultValue: ''});
   }
 };
