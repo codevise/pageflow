@@ -33,6 +33,8 @@ ul.files {
   .file_name {
     margin-bottom: 10px;
     display: block;
+
+    @include label;
   }
 
   .actions {
