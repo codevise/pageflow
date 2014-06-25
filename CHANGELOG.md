@@ -10,6 +10,7 @@
   database.
 
 - Bug fix: Improve video playback support on iOS and Android.
+- Bug fix: Missing translations for attribute/model names in admin.
 
 ### Version 0.1.0
 
