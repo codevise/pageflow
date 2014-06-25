@@ -17,7 +17,6 @@ module Pageflow
       attributes_table_for account do
         row :name, :class => 'name'
         row :default_file_rights, :class => 'default_file_rights'
-        row :default_theming, :class => 'default_theming'
         row :created_at
       end
 
