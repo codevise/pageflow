@@ -20,15 +20,15 @@ $anchor-color: $main-color;
     margin-right: 5px;
   }
 
+  @include fa-caret-right;
+
   &:before {
     top: 7px;
-    content: "\f0da";
     width: 10px;
     height: 12px;
     display: inline-block;
     background-repeat: no-repeat;
     background-position: center;
-    font-family: "FontAwesome";
 
     @include phone {
     }

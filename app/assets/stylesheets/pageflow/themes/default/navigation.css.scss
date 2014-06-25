@@ -61,16 +61,12 @@ $nav-bg-color-transparent: $basic-background-color-transparent;
       border-bottom: 0;
       font-weight: bold;
 
-      &:before {
-        content: "\f015";
-      }
+      @include fa-home;
     }
   }
   .navigation_bullet.navigation_index {
     .button {
-      &:before {
-        content: "\f00a";
-      }
+      @include fa-th;
     }
   }
 
@@ -82,30 +78,26 @@ $nav-bg-color-transparent: $basic-background-color-transparent;
 
     .button {
       font-weight: bold;
-
-      &:before {
-        content: "\f065";
-      }
+      @include fa-expand;
     }
   }
   .navigation_bullet.navigation_hide_text {
     .button {
       font-weight: bold;
 
-      &:before {
-        content: "\f03e";
-      }
+      @include fa-photo;
     }
   }
   .navigation_menu {
     .navigation_mute {
       font-weight: bold;
 
-      &:before {
-        content: "\f028";
+      @include fa-volume-up;
+
+      &.muted {
+        @include fa-volume-off;
       }
       &.muted:before {
-        content: "\f026";
         margin-right: 2px;
       }
     }
@@ -114,19 +106,17 @@ $nav-bg-color-transparent: $basic-background-color-transparent;
     .navigation_share {
       font-weight: bold;
 
+      @include fa-share;
+
       &:before {
         margin-left: 1px;
-        content: "\f064";
       }
     }
   }
   .navigation_menu {
     .navigation_credits {
       font-weight: bold;
-
-      &:before {
-        content: "\f129";
-      }
+      @include fa-info;
     }
   }
 
@@ -162,19 +152,13 @@ $nav-bg-color-transparent: $basic-background-color-transparent;
     }
 
     .share_google {
-      &:before {
-        content: "\f0d5";
-      }
+      @include fa-google-plus;
     }
     .share_facebook {
-      &:before {
-        content: "\f09a";
-      }
+      @include fa-facebook;
     }
     .share_twitter {
-      &:before {
-        content: "\f099";
-      }
+      @include fa-twitter;
     }
   }
 }
@@ -228,6 +212,10 @@ $nav-bg-color-transparent: $basic-background-color-transparent;
 
 .navigation .navigation_home.deactivated .button {
   background-position: -155px -140px;
+}
+
+.navigation .navigation_home.deactivated {
+  pointer-events: none;
 }
 
 div.navigation > ul.navigation_bar_top > li:nth-child(1) {

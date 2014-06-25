@@ -5,10 +5,10 @@
   margin-top: 12px;
   margin-left: 13px;
 
+  @include fa-play;
+
   &:before {
-    content: "\f04b";
     color: white;
-    font-family: "FontAwesome";
     font-size: 34px;
     top: -15px;
     left: 3px;
@@ -17,9 +17,9 @@
 
   &.vjs-playing, &.vjs-pause {
     &:before {
-      content: "\f04c";
       left: 0px;
     }
+    @include fa-pause;
   }
 
   &:hover, &:active {
