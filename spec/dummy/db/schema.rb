@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140604144526) do
+ActiveRecord::Schema.define(version: 20140625074028) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -49,6 +49,8 @@ ActiveRecord::Schema.define(version: 20140604144526) do
     t.string   "landing_page_name",   default: "", null: false
     t.integer  "default_theming_id"
   end
+
+  add_index "pageflow_accounts", ["default_theming_id"], name: "index_pageflow_accounts_on_default_theming_id"
 
   create_table "pageflow_accounts_themes", id: false, force: true do |t|
     t.integer "account_id"
@@ -197,25 +199,24 @@ ActiveRecord::Schema.define(version: 20140604144526) do
   add_index "pageflow_revisions", ["restored_from_id"], name: "index_pageflow_revisions_on_restored_from_id"
 
   create_table "pageflow_themes", force: true do |t|
-    t.string   "css_dir",    default: "",    null: false
-    t.boolean  "global",     default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "css_dir"
   end
 
   create_table "pageflow_themings", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "imprint_link_url"
     t.string   "imprint_link_label"
     t.string   "copyright_link_url"
     t.string   "copyright_link_label"
+    t.integer  "account_id"
     t.integer  "theme_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "cname",                default: "", null: false
   end
 
   add_index "pageflow_themings", ["cname"], name: "index_pageflow_themings_on_cname"
-  add_index "pageflow_themings", ["theme_id"], name: "index_pageflow_themings_on_theme_id"
 
   create_table "pageflow_video_files", force: true do |t|
     t.integer  "entry_id"
