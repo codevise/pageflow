@@ -5,7 +5,7 @@
   margin-top: 12px;
   margin-left: 13px;
 
-  @include fa-play;
+  @include fa-play-icon;
 
   &:before {
     color: white;
@@ -19,7 +19,7 @@
     &:before {
       left: 0px;
     }
-    @include fa-pause;
+    @include fa-pause-icon;
   }
 
   &:hover, &:active {

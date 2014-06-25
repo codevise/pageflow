@@ -20,7 +20,7 @@ $anchor-color: $main-color;
     margin-right: 5px;
   }
 
-  @include fa-caret-right;
+  @include fa-caret-right-icon;
 
   &:before {
     top: 7px;
