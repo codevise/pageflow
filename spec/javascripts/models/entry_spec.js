@@ -1,0 +1,3 @@
+describe('Entry', function() {
+
+});
