@@ -3,11 +3,16 @@ require 'spec_helper'
 module Admin
   describe AccountsController do
     describe '#create' do
-      it 'creates nested default_theming with given theme_name' do
+      it 'creates nested default_theming' do
         Pageflow.config.themes.register(:custom)
 
         sign_in(create(:user, :admin))
-        post(:create, :account => {:default_theming_attributes => {:theme_name => 'custom'}})
+        post(:create, :account => {
+               :default_theming_attributes => {
+                 :theme_name => 'custom',
+                 :imprint_link_url => 'http://example.com/new'
+               }
+             })
 
         expect(Pageflow::Account.last.default_theming.theme_name).to eq('custom')
       end
@@ -20,9 +25,15 @@ module Admin
         account = create(:account, :default_theming => theming)
 
         sign_in(create(:user, :admin))
-        put(:update, :id => account.id, :account => {:default_theming_attributes => {:theme_name => 'custom'}})
+        put(:update, :id => account.id, :account => {
+              :default_theming_attributes => {
+                :theme_name => 'custom',
+                :imprint_link_url => 'http://example.com/new'
+              }
+            })
 
         expect(theming.reload.theme_name).to eq('custom')
+        expect(theming.imprint_link_url).to eq('http://example.com/new')
       end
     end
 

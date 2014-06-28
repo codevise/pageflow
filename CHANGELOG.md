@@ -16,6 +16,7 @@
   * Install and run the migrations to convert your database.
 
 - Theme CSS files are automatically registered for asset precompilation.
+- Theming attributes can now be edited via the accounts admin.
 - `pageflow:theme` generator to copy theme template to main application.
 
 - Bug fix: Improve video playback support on iOS and Android.

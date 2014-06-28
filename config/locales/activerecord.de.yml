@@ -55,6 +55,7 @@ de:
         default_file_rights: "Standard Urheber"
         default_theming: "Standard Theming"
         landing_page_name: "Einstiegsseite"
+        created_at : "Erstellt am"
       user:
         email: "E-Mail-Adresse"
         unconfirmed_email: "Noch nicht bestätigte E-Mail-Adresse"
@@ -137,6 +138,11 @@ de:
         duration: "Länge"
       "pageflow/theming":
         cname: "CNAME"
+        theme_name: "Theme"
+        imprint_link_label: "Impressum-Link Text"
+        imprint_link_url: "Impressum-Link URL"
+        copyright_link_label: "Copyright-Link Text"
+        copyright_link_url: "Copyright-Link URL"
     values:
       "pageflow/page":
         template:
