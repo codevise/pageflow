@@ -3,11 +3,17 @@
 ### Changes on `master`
 
 - **Breaking Change**: Themes have been splitted in Themes and Themings. Themings
-  exist per account containing configuration like copyright/imprint
-  link urls and reference a theme. Themes now exclusively represent
-  the available CSS themes and correspond directly to directories
-  under `pageflow/themes`. Run the migrations to convert your
-  database.
+  exist per account in the database containing configuration like
+  copyright/imprint link urls and reference a theme. Themes represent
+  available CSS and correspond directly to directories under
+  `pageflow/themes`. Themes are registered in the Pageflow
+  initializer. To update your application:
+
+  * Add the following line to your `config/initializers/pageflow.rb`:
+
+        config.themes.register(:default)
+
+  * Install and run the migrations to convert your database.
 
 - Bug fix: Improve video playback support on iOS and Android.
 - Bug fix: Missing translations for attribute/model names in admin.

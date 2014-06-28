@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140625074028) do
+ActiveRecord::Schema.define(version: 20140626140004) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -198,22 +198,16 @@ ActiveRecord::Schema.define(version: 20140625074028) do
 
   add_index "pageflow_revisions", ["restored_from_id"], name: "index_pageflow_revisions_on_restored_from_id"
 
-  create_table "pageflow_themes", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "css_dir"
-  end
-
   create_table "pageflow_themings", force: true do |t|
     t.string   "imprint_link_url"
     t.string   "imprint_link_label"
     t.string   "copyright_link_url"
     t.string   "copyright_link_label"
     t.integer  "account_id"
-    t.integer  "theme_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "cname",                default: "", null: false
+    t.string   "theme_name"
   end
 
   add_index "pageflow_themings", ["cname"], name: "index_pageflow_themings_on_cname"

@@ -13,16 +13,16 @@ feature 'editing an account' do
   end
 
   scenario 'changing nested theming' do
-    theme = create(:theme, :css_dir => 'foo')
-    another_theme = create(:theme, :css_dir => 'bar')
+    Pageflow.config.themes.register(:foo)
+    Pageflow.config.themes.register(:bar)
 
-    theming = create(:theming, :theme => theme)
+    theming = create(:theming, :theme_name => 'foo')
     account = create(:account, :default_theming => theming)
 
     Dom::Admin::Page.sign_in_as(:admin)
     visit(admin_account_path(account))
     Dom::Admin::AccountPage.first.edit_link.click
-    Dom::Admin::AccountForm.first.submit_with(:theme_id => another_theme.id)
+    Dom::Admin::AccountForm.first.submit_with(:theme_name => 'bar')
 
     expect(Dom::Admin::AccountPage.first.theme).to eq('bar')
   end

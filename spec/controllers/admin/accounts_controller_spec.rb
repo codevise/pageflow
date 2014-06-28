@@ -3,26 +3,26 @@ require 'spec_helper'
 module Admin
   describe AccountsController do
     describe '#create' do
-      it 'creates nested default_theming with given theme' do
-        theme = create(:theme)
+      it 'creates nested default_theming with given theme_name' do
+        Pageflow.config.themes.register(:custom)
 
         sign_in(create(:user, :admin))
-        post(:create, :account => {:default_theming_attributes => {:theme_id => theme.id}})
+        post(:create, :account => {:default_theming_attributes => {:theme_name => 'custom'}})
 
-        expect(Pageflow::Account.last.default_theming.theme).to eq(theme)
+        expect(Pageflow::Account.last.default_theming.theme_name).to eq('custom')
       end
     end
 
     describe '#update' do
       it 'updates nested default_theming' do
+        Pageflow.config.themes.register(:custom)
         theming = create(:theming)
         account = create(:account, :default_theming => theming)
-        other_theme = create(:theme)
 
         sign_in(create(:user, :admin))
-        put(:update, :id => account.id, :account => {:default_theming_attributes => {:theme_id => other_theme.id}})
+        put(:update, :id => account.id, :account => {:default_theming_attributes => {:theme_name => 'custom'}})
 
-        expect(theming.reload.theme).to eq(other_theme)
+        expect(theming.reload.theme_name).to eq('custom')
       end
     end
 

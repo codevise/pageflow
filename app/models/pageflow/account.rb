@@ -3,7 +3,6 @@ module Pageflow
     has_many :users
     has_many :entries
     has_many :folders
-    has_and_belongs_to_many :themes, :join_table => 'pageflow_accounts_themes'
 
     belongs_to :default_theming, :class_name => 'Theming'
 
