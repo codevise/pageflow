@@ -1,7 +1,8 @@
 module Pageflow
   class Theming < ActiveRecord::Base
-    has_one :account, :foreign_key => :default_theming_id, :inverse_of => :default_theming
+    belongs_to :account
 
+    validates :account, :presence => true
     validates_inclusion_of :theme_name, :in => ->(_) { Pageflow.config.themes.names }
 
     def cname_domain
@@ -13,7 +14,7 @@ module Pageflow
     end
 
     def name
-      I18n.t('admin.themings.name')
+      I18n.t('admin.themings.name', :account_name => account.name, :theme_name => theme_name)
     end
   end
 end
