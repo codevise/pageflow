@@ -51,9 +51,14 @@ module Pageflow
     # provided by the main app.
     config.assets.precompile += %w(pageflow/editor.js pageflow/editor.css
                                    pageflow/print_view.css
-                                   pageflow/themes/default.css
                                    pageflow/lt_ie9.js pageflow/lt_ie9.css pageflow/ie9.js pageflow/ie9.css
                                    video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff)
+
+    config.assets.precompile << lambda do |path|
+      Pageflow.config.themes.any? do |theme|
+        path == theme.stylesheet_path
+      end
+    end
 
     # Make sure the configuration is recreated when classes are
     # reloded. Otherwise registered page types might still point to

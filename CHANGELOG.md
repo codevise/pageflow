@@ -15,6 +15,8 @@
 
   * Install and run the migrations to convert your database.
 
+- Theme CSS files are automatically registered for asset precompilation.
+
 - Bug fix: Improve video playback support on iOS and Android.
 - Bug fix: Missing translations for attribute/model names in admin.
 
