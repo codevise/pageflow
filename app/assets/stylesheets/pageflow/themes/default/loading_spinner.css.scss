@@ -17,11 +17,13 @@
 
     &:before {
       content: " ";
-      width: 204px;
-      height: 202px;
+      width: 208px;
+      height: 208px;
       position: absolute;
       background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner_bg.png');
       z-index: 1;
+      top:-2px;
+      left: -2px;
     }
 
     div {
