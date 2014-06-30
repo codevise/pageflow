@@ -8,7 +8,7 @@ class DropThemes < ActiveRecord::Migration
         (SELECT css_dir FROM pageflow_themes WHERE pageflow_themes.id = pageflow_themings.theme_id);
     SQL
 
-    remove_reference :pageflow_themings, :theme_id
+    remove_reference :pageflow_themings, :theme
     drop_table :pageflow_themes
   end
 end
