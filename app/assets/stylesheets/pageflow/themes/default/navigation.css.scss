@@ -74,6 +74,10 @@ $nav-bg-color-transparent: $basic-background-color-transparent;
     height: auto;
   }
 
+  &.js a.scroll_indicator {
+    background-image: image-url('pageflow/themes/default/scroll_indicator_sprite.png');
+  }
+
   .navigation_bullet.navigation_fullscreen {
 
     .button {
