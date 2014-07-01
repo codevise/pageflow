@@ -9,24 +9,33 @@ module Pageflow
         entry = DraftEntry.find(params[:entry_id])
 
         authorize!(:confirm_encoding, entry.to_model)
-
-        confirm_files(entry, :video_files, confirmation_params[:video_file_ids])
-        confirm_files(entry, :audio_files, confirmation_params[:audio_file_ids])
+        @encoding_confirmation = build_encoding_confirmation(entry)
+        @encoding_confirmation.save!
 
         head :ok
+      rescue EncodingConfirmation::QuotaExceededError
+        render(action: :check, status: :forbidden)
+      end
+
+      def check
+        entry = DraftEntry.find(params[:entry_id])
+
+        authorize!(:confirm_encoding, entry.to_model)
+        @encoding_confirmation = build_encoding_confirmation(entry)
       end
 
       private
 
-      def confirm_files(entry, collection_name, ids)
-        ids ||= []
-        ids.each_with_index do |id, index|
-          entry.send(collection_name).find(id).confirm_encoding!
-        end
+      def build_encoding_confirmation(entry)
+        EncodingConfirmation.new(entry, encoding_confirmation_params, encoding_quota)
       end
 
-      def confirmation_params
-        params.require(:encoding_confirmation)
+      def encoding_confirmation_params
+        params.require(:encoding_confirmation).permit(video_file_ids: [], audio_file_ids: [])
+      end
+
+      def encoding_quota
+        Pageflow.config.quotas.get(:encoding, current_user.account)
       end
     end
   end
