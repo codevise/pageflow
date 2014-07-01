@@ -5,6 +5,8 @@ pageflow.ConfirmEncodingView = Backbone.Marionette.ItemView.extend({
     blankSlate: '.blank_slate',
     videoFilesPanel: '.video_files_panel',
     audioFilesPanel: '.audio_files_panel',
+
+    summary: '.summary',
     confirmButton: 'button'
   },
 
@@ -20,7 +22,7 @@ pageflow.ConfirmEncodingView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.listenTo(this.model, 'change:empty', this.updateConfirmButton);
+    this.listenTo(this.model, 'change:empty change:exceeding change:checking', this.updateSummary);
 
     this.listenTo(this.confirmableAudioFiles, 'add remove', this.update);
     this.listenTo(this.confirmableVideoFiles, 'add remove', this.update);
@@ -52,12 +54,13 @@ pageflow.ConfirmEncodingView = Backbone.Marionette.ItemView.extend({
     this.ui.blankSlate.toggle(!this.confirmableVideoFiles.length && !this.confirmableAudioFiles.length);
     this.ui.videoFilesPanel.toggle(!!this.confirmableVideoFiles.length);
     this.ui.audioFilesPanel.toggle(!!this.confirmableAudioFiles.length);
-
-    this.updateConfirmButton();
   },
 
-  updateConfirmButton: function(enabled) {
-    if (this.model.get('empty')) {
+  updateSummary: function(enabled) {
+    this.ui.summary.html(this.model.get('summary_html'));
+    this.ui.confirmButton.toggleClass('checking', !!this.model.get('checking'));
+
+    if (this.model.get('empty') || this.model.get('exceeding') || this.model.get('checking')) {
       this.ui.confirmButton.attr('disabled', true);
     }
     else {

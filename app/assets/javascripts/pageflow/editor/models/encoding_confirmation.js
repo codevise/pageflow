@@ -5,17 +5,31 @@ pageflow.EncodingConfirmation = Backbone.Model.extend({
     this.videoFiles = new Backbone.Collection();
     this.audioFiles = new Backbone.Collection();
 
-    this.watchEmpty();
+    this.watchCollections();
   },
 
-  watchEmpty: function() {
-    this.listenTo(this.videoFiles, 'add remove', this.updateEmpty);
-    this.listenTo(this.audioFiles, 'add remove', this.updateEmpty);
-    this.updateEmpty();
+  watchCollections: function() {
+    this.listenTo(this.videoFiles, 'add remove', this.check);
+    this.listenTo(this.audioFiles, 'add remove', this.check);
+
+    this.check();
   },
 
-  updateEmpty: function() {
+  check: function() {
+    var model = this;
+
     this.set('empty', this.videoFiles.length === 0 && this.audioFiles.length === 0);
+    this.set('checking', true);
+
+    this.save({}, {
+      url: this.url() + '/check',
+      success: function() {
+        model.set('checking', false);
+      },
+      error: function() {
+        model.set('checking', false);
+      }
+    });
   },
 
   url: function() {

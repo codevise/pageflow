@@ -55,3 +55,13 @@ ul.confirmable_files {
     @include trash-icon;
   }
 }
+
+button.confirm_encoding {
+  @include icon-button;
+  @include check-icon;
+
+  &.checking {
+    @include arrows-ccw-icon;
+    @include background-icon-animation(blink);
+  }
+}

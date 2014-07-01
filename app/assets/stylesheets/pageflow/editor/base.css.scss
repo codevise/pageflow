@@ -84,11 +84,6 @@
     @include icon-button;
   }
 
-  button.confirm_encoding {
-    @include check-icon;
-    @include icon-button;
-  }
-
   a.destroy {
     @include icon-button(#d00);
     @include trash-icon;
