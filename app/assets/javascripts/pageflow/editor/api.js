@@ -6,8 +6,20 @@
  */
 pageflow.EditorApi = pageflow.Object.extend({
   initialize: function() {
+    this.sideBarRoutings = [];
     this.mainMenuItems = [];
     this.initializers = [];
+
+    /**
+     * Register additional router and controller for sidebar.
+     *
+     * Supported options:
+     * - router: constructor function of Backbone Marionette app router
+     * - controller: constructor function of Backbone Marionette controller
+     */
+    this.registerSideBarRouting = function(options) {
+      this.sideBarRoutings.push(options);
+    };
 
     /**
      * Register additional menu item to be displayed on the root sidebar
