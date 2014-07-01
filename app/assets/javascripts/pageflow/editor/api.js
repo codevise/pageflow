@@ -6,7 +6,20 @@
  */
 pageflow.EditorApi = pageflow.Object.extend({
   initialize: function() {
+    this.mainMenuItems = [];
     this.initializers = [];
+
+    /**
+     * Register additional menu item to be displayed on the root sidebar
+     * view.
+     *
+     * Supported options:
+     * - translationKey: for the label
+     * - path: route to link to
+     */
+    this.registerMainMenuItem = function(options) {
+      this.mainMenuItems.push(options);
+    };
 
     /**
      * Register a custom initializer which will be run before the boot
