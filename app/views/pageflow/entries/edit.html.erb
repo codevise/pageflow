@@ -31,6 +31,7 @@
     pageflow.features.detect().then(function() {
       pageflow.app.start({
         root: '<%= edit_entry_path(@entry).html_safe %>',
+        config: <%= editor_config_seeds %>,
 
         entry: <%= render_json_seed(@entry) %>,
         chapters: <%= @entry.chapters.to_json.html_safe %>,
