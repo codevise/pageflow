@@ -8,232 +8,161 @@ $nav-bg-color-transparent: $basic-background-color-transparent;
 
 
 .navigation {
+
+  .navigation_bullet, .navigation_menu > a {
+    font-size: 16px;
+    width: 28px;
+    height: 28px;
+    display: block;
+    background: -webkit-linear-gradient(-75deg, rgba(255, 255, 255, 0.71), rgba(0, 0, 0, 0.32));
+    background-color: #03818c !important;
+    box-shadow: 1px 2px 1px 0px rgba(0,0,0,0.2);
+    border-radius: 18px;
+    color: rgba(255,255,255,0.8);
+    cursor: pointer;
+    margin: 13px 28px;
+    position: relative;
+    background-color: rgb(219, 219, 219) !important;
+    @include shine-gradient;
+
+    &:hover, &.active {
+        background-color: $nav-color !important;
+        -webkit-mask-image: none;
+
+        .button, .navigation_mute, .navigation_share {
+          color: rgba(255,255,255,0.9);
+          text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.2);
+        }
+    }
+    &:active {
+      box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.2);
+      -webkit-transform: translate(1px,1px);
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%,rgba(0,0,0,0.2) 40%,rgba(0,0,0,0.2) 100%);
+    }
+  }
+
   .button, .navigation_mute, .navigation_share {
-    background-image: image-url("pageflow/themes/#{$theme-name}/menu_sprite.png");
-    height: 42px;
-    width: 42px;
+    font-family: "FontAwesome";
+    font-size: 1em;
+    color: rgba(0,0,0,0.75);
+    text-shadow: -1px -1px 1px rgba(255, 255, 255, 0.6);
+    margin: 1px 0px 0px 0px !important;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    line-height: 28px;
+    border-bottom: 0px !important;
+
   }
 
-  $normalOffset: -30px;
-  $mousedownOffset: -140px;
-  $hoverOffset: -85px;
-  $deactiveOffset: -195px;
-
-  .navigation_main {
-    $main: -22px;
+  .navigation_bullet.navigation_home {
+    padding-top: 0;
     .button {
-      background-position: $main $normalOffset;
+      border-bottom: 0;
+      font-weight: bold;
 
-      @include hover {
-        background-position: $main $hoverOffset;
-      }
-
-      @include pressed {
-        background-position: $main $mousedownOffset;
-      }
-    }
-    &.active .button {
-      $mainActive: -89px;
-      background-position: $mainActive $normalOffset;
-
-      @include hover {
-        background-position: $mainActive $hoverOffset;
-      }
-
-      @include pressed {
-        background-position: $mainActive $mousedownOffset;
-      }
+      @include fa-home-icon;
     }
   }
-
-  $home: -155px;
-  .navigation_home .button {
-    background-position: $home $normalOffset;
-
-    @include hover {
-      background-position: $home $hoverOffset;
-    }
-
-    @include pressed {
-      background-position: $home $mousedownOffset;
-    }
-  }
-  .navigation_home.deactivated .button {
-    @include hover {
-      background-position: $home $deactiveOffset;
-    }
-    background-position: $home $deactiveOffset;
-
-    cursor: default;
-  }
-
-  .navigation_index {
-    $index: -222px;
+  .navigation_bullet.navigation_index {
     .button {
-      background-position: $index $normalOffset;
-
-      @include hover {
-        background-position: $index $hoverOffset;
-      }
-
-      @include pressed {
-        background-position: $index $mousedownOffset;
-      }
-    }
-
-    &.active .button {
-      background-position: $index $hoverOffset;
-
-      @include pressed {
-        background-position: $index $mousedownOffset;
-      }
-    }
-  }
-  $fullscreen: -289px;
-  .navigation_fullscreen .button {
-    background-position: $fullscreen $normalOffset;
-
-    @include hover {
-      background-position: $fullscreen $hoverOffset;
-    }
-
-    @include pressed {
-      background-position: $fullscreen $mousedownOffset;
-    }
-  }
-  .navigation_fullscreen.active .button {
-    background-position: $fullscreen $hoverOffset;
-
-    @include pressed {
-      background-position: $fullscreen $mousedownOffset;
+      @include fa-th-icon;
     }
   }
 
-  $hide_text: -670px;
-  .navigation_hide_text .button {
-    background-position: $hide_text $normalOffset;
-
-    @include hover {
-      background-position: $hide_text $hoverOffset;
-    }
-
-    @include pressed {
-      background-position: $hide_text -141px;
-    }
-  }
-  .navigation_hide_text.active .button {
-    background-position: $hide_text $hoverOffset;
-
-    @include pressed {
-      background-position: $hide_text -141px;
-    }
+  &.js .navigation_bar_bottom li.fullscreen {
+    height: auto;
   }
 
-  .navigation_mute {
-    background-position: -355px $normalOffset;
-  }
-  .navigation_mute.muted {
-    background-position: -489px $normalOffset;
-  }
-  .navigation_volume_box {
-    @include hover {
-      + a .navigation_mute {
-        background-position: -355px $hoverOffset;
-      }
-    }
-  }
-  .navigation_volume_box {
-    @include hover {
-      + a .navigation_mute.muted {
-        background-position: -489px $hoverOffset;
-      }
-    }
-  }
-  .navigation_share {
-    background-position: -555px $normalOffset;
-  }
-  .navigation_share_box {
-    @include hover {
-      + a .navigation_share {
-        background-position: -555px $hoverOffset;
-      }
-    }
-  }
-  .navigation_credits.button {
-    $credits: -622px;
-    background-position: $credits $normalOffset;
-
-    @include hover {
-      background-position: $credits $hoverOffset;
-    }
-
-    @include pressed {
-      background-position: $credits -141px;
-    }
-  }
-  .share_google {
-    background-position: -855px -39px;
-  }
-  .share_twitter {
-    background-position: -789px -39px;
-  }
-  .share_facebook {
-    background-position: -718px -39px;
+  &.js a.scroll_indicator {
+    background-image: image-url('pageflow/themes/default/scroll_indicator_sprite.png');
   }
 
-  a {
+  .navigation_bullet.navigation_fullscreen {
+
+    .button {
+      font-weight: bold;
+      @include fa-expand-icon;
+    }
+  }
+  .navigation_bullet.navigation_hide_text {
+    .button {
+      font-weight: bold;
+
+      @include fa-photo-icon;
+    }
+  }
+  .navigation_menu {
     .navigation_mute {
-      @include pressed {
-        background-position: -355px $mousedownOffset;
-      }
+      font-weight: bold;
+
+      @include fa-volume-up-icon;
 
       &.muted {
-        @include pressed {
-          background-position: -489px $mousedownOffset;
+        @include fa-volume-off-icon;
+      }
+      &.muted:before {
+        margin-right: 2px;
+      }
+    }
+  }
+  .navigation_menu {
+    .navigation_share {
+      font-weight: bold;
+
+      @include fa-share-icon;
+
+      &:before {
+        margin-left: 1px;
+      }
+    }
+  }
+  .navigation_menu {
+    .navigation_credits {
+      font-weight: bold;
+      @include fa-info-icon;
+    }
+  }
+
+  .navigation_share_box {
+    a {
+      text-align: center;
+
+      p {
+        font-family: SourceSansPro;
+        font-size: 12px;
+      }
+    }
+
+    .share_google, .share_facebook, .share_twitter {
+      font-size: 1.5em;
+      &:before {
+        font-family: "FontAwesome";
+        color: white;
+        text-shadow: none;
+      }
+    }
+
+    a:hover {
+      p {
+        color: $nav-color;
+      }
+
+      .share_google, .share_facebook, .share_twitter {
+        &:before {
+          color: $nav-color;
         }
       }
     }
-    .navigation_share {
-      @include pressed {
-        background-position: -555px $mousedownOffset;
-      }
-    }
+
     .share_google {
-      @include pressed {
-        background-position: -855px -145px;
-      }
-    }
-    .share_twitter {
-      @include pressed {
-        background-position: -789px -145px;
-      }
+      @include fa-google-plus-icon;
     }
     .share_facebook {
-      @include pressed {
-        background-position: -718px -145px;
-      }
+      @include fa-facebook-icon;
     }
-
-    @include hover {
-      .navigation_mute {
-        background-position: -355px $hoverOffset;
-
-        &.muted {
-          background-position: -489px $hoverOffset;
-        }
-      }
-      .navigation_share {
-        background-position: -555px $hoverOffset;
-      }
-      .share_google {
-        background-position: -855px -92px;
-      }
-      .share_twitter {
-        background-position: -789px -92px;
-      }
-      .share_facebook {
-        background-position: -718px -92px;
-      }
+    .share_twitter {
+      @include fa-twitter-icon;
     }
   }
 }
@@ -281,11 +210,16 @@ $nav-bg-color-transparent: $basic-background-color-transparent;
 }
 
 .overview_mobile .credits a:before, .navigation_credits_box a:before {
-  background-image: image-url('pageflow/themes/#{$theme-name}/anchor_main_color.png');
+  background-image: none;
+  top: 1px;
 }
 
 .navigation .navigation_home.deactivated .button {
-  background-position: -155px -140px
+  background-position: -155px -140px;
+}
+
+.navigation .navigation_home.deactivated {
+  pointer-events: none;
 }
 
 div.navigation > ul.navigation_bar_top > li:nth-child(1) {
@@ -318,6 +252,17 @@ div.navigation .menu_li {
   background-color: $nav-bg-color;
 }
 .navigation .scroller ul a, .navigation.js .scroller ul a {
-  background-color: $nav-bg-color;
-  background-color: $nav-bg-color-transparent;
+  background-color: transparent;
+
+  &:after {
+    content: "";
+    background-color: $nav-bg-color;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    opacity: 0.9;
+  }
 }

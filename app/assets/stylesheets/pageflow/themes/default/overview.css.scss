@@ -21,7 +21,11 @@ $overview-header-font: $standard-font;
   }
 
   .close {
-    background-image: image-url('pageflow/themes/#{$theme-name}/close_sprite.png');
+    background-image: none;
+    background-color: #dbdbdb !important;
+    border-radius: 20px;
+    text-align: center;
+    @include shine-gradient;
 
     &:before {
       content: " ";
@@ -34,15 +38,53 @@ $overview-header-font: $standard-font;
 
       background-image: image-url('pageflow/close_text.png');
     }
+    &:after {
+      content: "\F00d";
+      font-family: "FontAwesome";
+      line-height: 31px;
+      font-size: 22px;
+      color: black;
+    }
+    &:hover {
+      background-color: $overview-color !important;
+
+      &:after {
+        color: white;
+      }
+    }
   }
 
   .scroll_indicator {
-    &.left {
-      background-image: image-url('pageflow/themes/#{$theme-name}/arrow_left_sprite.png');
-    }
+    &.left, &.right {
+      background-image: none;
+      background-color: #dbdbdb !important;
+      border-radius: 20px;
+      text-align: center;
+      @include shine-gradient;
 
-    &.right {
-      background-image: image-url('pageflow/themes/#{$theme-name}/arrow_right_sprite.png');
+      &:after {
+        font-family: "FontAwesome";
+        line-height: 31px;
+        font-size: 29px;
+        color: black;
+        font-weight: bold;
+      }
+
+      &:hover {
+        background-color: $overview-color !important;
+
+        &:after {
+          color: white;
+        }
+      }
+    }
+    &.left:after {
+      content: "\f104";
+      margin-right: 3px;
+    }
+    &.right:after {
+      content: "\f105";
+      margin-left: 4px;
     }
   }
 
