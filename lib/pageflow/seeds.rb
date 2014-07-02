@@ -3,27 +3,21 @@
 module Pageflow
   # Default Account
 
-  if Theming.any?
-    default_theming = Theming.first
-    puts "   Theming exists."
-  else
-    theme = Theme.create(:css_dir => 'default')
-    default_theming = Theming.create!(:theme_id => theme.id,
-      :imprint_link_label => 'Impressum',
-      :imprint_link_url => 'http://example.com/impressum.html',
-      :copyright_link_label => '&copy; Pageflow 2014',
-      :copyright_link_url => 'http://www.example.com/copyright.html')
-    puts "   Created theming."
-  end
-
-  # Default Account
-
   if Account.any?
     default_account = Account.first
-    default_account.default_theming = default_theming if default_account.default_theming.blank?
     puts "   Account exists."
   else
-    default_account = Account.create!(:name => 'Pageflow', :default_theming_id => default_theming.id)
+    default_account = Account.create!(:name => 'Pageflow') do |account|
+      account.build_default_theming do |theming|
+        theming.theme_name = Pageflow.config.themes.names.first
+
+        theming.imprint_link_label = 'Impressum'
+        theming.imprint_link_url = 'http://example.com/impressum.html'
+        theming.copyright_link_label = '&copy; Pageflow 2014'
+        theming.copyright_link_url = 'http://www.example.com/copyright.html'
+      end
+    end
+
     puts "   Created default account."
   end
 
@@ -66,7 +60,7 @@ module Pageflow
   # Sample entry
 
   unless Entry.any?
-    entry = default_account.entries.create!(:title => 'Fiese Flut', :theming_id => default_theming.id)
+    entry = default_account.entries.create!(:title => 'Fiese Flut', :theming_id => default_account.default_theming.id)
 
     chapter = entry.draft.chapters.create!(:title => 'Kapitel 1')
     chapter.pages.create!(:template => 'background_image')

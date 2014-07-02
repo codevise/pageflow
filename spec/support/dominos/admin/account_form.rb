@@ -7,7 +7,7 @@ module Dom
         within(node) do
           fill_in('account_name', :with => options[:name]) if options[:name]
           fill_in('account_default_theming_attributes_cname', :with => options[:cname]) if options[:cname]
-          select(Pageflow::Theme.find(options[:theme_id]).css_dir, :from => 'account_default_theming_attributes_theme_id') if options[:theme_id]
+          select(options[:theme_name], :from => 'account_default_theming_attributes_theme_name') if options[:theme_name]
 
           find('[name="commit"]').click
         end

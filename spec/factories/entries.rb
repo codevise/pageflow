@@ -8,7 +8,10 @@ module Pageflow
       title
 
       account
-      theming
+
+      after(:build) do |entry|
+        entry.theming ||= entry.account.default_theming
+      end
 
       # inline membership creation
 

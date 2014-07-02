@@ -23,7 +23,7 @@ module Pageflow
       attributes_table_for account.default_theming do
         row :cname, :class => 'cname'
         row :theme, :class => 'theme' do
-          account.default_theming.theme.css_dir
+          account.default_theming.theme.name
         end
       end
 
@@ -70,12 +70,12 @@ module Pageflow
 
       def create
         @account = Account.new(permitted_params[:account])
-        @account.build_default_theming(:theme_id => permitted_params[:account][:default_theming_attributes][:theme_id])
+        @account.build_default_theming(permitted_params[:account][:default_theming_attributes])
         super
       end
 
       def permitted_params
-        params.permit(:account => [:name, :default_file_rights, :default_theming_attributes => [:cname, :theme_id]])
+        params.permit(:account => [:name, :default_file_rights, :default_theming_attributes => [:cname, :theme_name, :imprint_link_url, :imprint_link_label, :copyright_link_url, :copyright_link_label]])
       end
     end
   end

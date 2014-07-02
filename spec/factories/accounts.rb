@@ -1,6 +1,9 @@
 FactoryGirl.define do
   factory :account, :class => Pageflow::Account do
     name "Account Name"
-    default_theming :factory => :theming
+
+    after(:build) do |account|
+      account.default_theming ||= build(:theming, :account => account)
+    end
   end
 end

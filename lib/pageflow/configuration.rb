@@ -51,6 +51,15 @@ module Pageflow
     #
     attr_accessor :quotas
 
+    # Additional themes can be registered to use custom css.
+    #
+    # Example:
+    #
+    #     config.themes.register(:custom)
+    #
+    # @return [Themes]
+    attr_reader :themes
+
     # Either a lambda or an object with a `match?` method, to restrict
     # access to the editor routes defined by Pageflow.
     #
@@ -69,6 +78,7 @@ module Pageflow
 
       @hooks = Hooks.new
       @quotas = Quotas.new
+      @themes = Themes.new
     end
 
     # Make a page type available for use in the system.

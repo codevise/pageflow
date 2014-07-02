@@ -4,7 +4,11 @@
     <%= f.input :default_file_rights %>
     <%= f.semantic_fields_for :default_theming do |theming| %>
       <%= theming.input :cname %>
-      <%= theming.input :theme, :include_blank => false, :collection => Pageflow::Theme.all, :member_label => :css_dir %>
+      <%= theming.input :theme_name, :include_blank => false, :collection => Pageflow.config.themes.names %>
+      <%= theming.input :imprint_link_label %>
+      <%= theming.input :imprint_link_url %>
+      <%= theming.input :copyright_link_label %>
+      <%= theming.input :copyright_link_url %>
     <% end %>
   <% end %>
   <%= f.actions do %>

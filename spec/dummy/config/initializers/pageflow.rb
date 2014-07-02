@@ -7,6 +7,8 @@ Pageflow.configure do |config|
   config.register_page_type(Pageflow::BuiltInPageType.new('audio'))
   config.register_page_type(Pageflow::BuiltInPageType.new('internal_links'))
 
+  config.themes.register(:default)
+
   config.paperclip_attachments_version = 'v1'
   config.paperclip_filesystem_root = 'tmp/attachments/production'
 
