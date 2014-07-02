@@ -25,6 +25,11 @@ de:
           active: "Wird zu S3 übertragen."
           finished: "Erfolgreich zu S3 übertragen."
           failed: "Fehler beim übertragen zu S3."
+        fetching_meta_data:
+          pending: "Metadaten noch nicht abgerufen."
+          active: "Metadaten werden abgerufen."
+          finished: "Metadaten erfolgreich abgerufen."
+          failed: "Fehler beim Abrufen der Metadaten."
         encoding:
           pending: "Noch nicht encodiert."
           action_required: "Bestätigung erforderlich."

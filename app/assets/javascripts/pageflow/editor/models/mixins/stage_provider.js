@@ -1,6 +1,6 @@
 pageflow.stageProvider = {
   initialize: function() {
-    this.stages = new Backbone.Collection(_.chain(this.stageMapping).pairs().map(function (pair) {
+    this.stages = new Backbone.Collection(_.chain(this).result('stageMapping').pairs().map(function (pair) {
       var name = pair[0];
       var options = pair[1];
 

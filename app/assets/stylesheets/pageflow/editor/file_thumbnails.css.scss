@@ -28,6 +28,11 @@
       @include background-icon-animation(blink);
     }
 
+    &.fetching_meta_data {
+      @include clipboard-icon;
+      @include background-icon-animation(blink);
+    }
+
     &.processing,
     &.encoding {
       @include cog-icon;

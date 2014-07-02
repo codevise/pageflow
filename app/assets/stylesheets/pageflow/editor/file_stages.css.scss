@@ -43,6 +43,10 @@
     @include cloud-icon;
   }
 
+  &.fetching_meta_data {
+    @include clipboard-icon;
+  }
+
   &.processing,
   &.encoding {
     @include cog-icon;
