@@ -77,6 +77,17 @@ module Pageflow
       expect(result).to eq(:pending)
     end
 
+    it 'returns ok if thumbnail is not there yet but skip_thumbnail option is set' do
+      video_file = build(:video_file)
+
+      allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+      stub_request(:get, /.*amazonaws\.com/).to_return(:status => 404)
+
+      result = PollZencoderJob.perform_with_result(video_file, {:skip_thumbnail => true})
+
+      expect(result).to eq(:ok)
+    end
+
     it 'returns ok if thumbnail can be downloaded' do
       video_file = build(:video_file)
 

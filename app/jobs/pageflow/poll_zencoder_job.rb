@@ -5,12 +5,14 @@ module Pageflow
     extend StateMachineJob
 
     def self.perform_with_result(file, options, api = ZencoderApi.instance)
+      options ||= {}
+
       result = catch(:halt) do
         poll_zencoder(file, api)
         fetch_input_details(file, api)
-        fetch_thumbnail(file)
+        fetch_thumbnail(file) unless options[:skip_thumbnail]
 
-        Pageflow.config.hooks.invoke(:file_encoded, file: file)
+        Pageflow.config.hooks.invoke(:file_encoded, file: file) unless options[:skip_thumbnail]
 
         :ok
       end

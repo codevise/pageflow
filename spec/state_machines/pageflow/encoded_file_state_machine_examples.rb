@@ -6,12 +6,12 @@ shared_examples 'encoded file state machine' do |model|
   end
 
   describe '#publish event', :inline_resque => true do
-    before do
-      stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
-        .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
-    end
-
     context 'with disabled confirm_encoding_jobs option' do
+      before do
+        stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
+          .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
+      end
+
       it 'creates zencoder job for file' do
         file = create(model, :on_filesystem)
 
@@ -48,8 +48,30 @@ shared_examples 'encoded file state machine' do |model|
         Pageflow.config.confirm_encoding_jobs = true
       end
 
+      it 'creates zencoder job for file meta data' do
+        file = create(model, :on_filesystem)
+
+        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+
+        file.publish
+
+        expect(Pageflow::ZencoderApi.instance).to have_received(:create_job).with(Pageflow::ZencoderMetaDataOutputDefinition.new(file.reload))
+      end
+
+      it 'polls zencoder' do
+        file = create(model, :on_filesystem)
+
+        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
+
+        file.publish
+
+        expect(Pageflow::ZencoderApi.instance).to have_received(:get_info).with(file.reload.job_id).twice
+      end
+
       it 'sets state to waiting_for_confirmation' do
         file = create(model, :on_filesystem)
+
+        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
         file.publish
 
