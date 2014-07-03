@@ -16,10 +16,14 @@ module Pageflow
     end
 
     def save!
-      raise(QuotaExceededError) if exceeding?
+      ActiveRecord::Base.transaction do
+        raise(QuotaExceededError) if exceeding?
 
-      files.each do |file|
-        file.confirm_encoding!
+        files.each do |file|
+          file.confirm_encoding!
+        end
+
+        Pageflow.config.hooks.invoke(:encoding_confirmed, files: @encoding_confirmation.files)
       end
     end
 
