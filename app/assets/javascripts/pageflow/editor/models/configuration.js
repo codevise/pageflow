@@ -13,6 +13,14 @@ pageflow.Configuration = Backbone.Model.extend({
     hide_title: false
   },
 
+  /**
+   * Used by views (i.e. FileInputView) to get id which can be used in
+   * routes to lookup configuration via its page.
+   */
+  getRoutableId: function() {
+    return this.page.id;
+  },
+
   getImageFileUrl: function(attribute) {
     var file = this.getImageFile(attribute);
 

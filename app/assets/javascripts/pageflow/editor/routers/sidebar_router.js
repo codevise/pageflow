@@ -4,9 +4,9 @@ pageflow.SidebarRouter = Backbone.Marionette.AppRouter.extend({
     'pages/:id/:tab': 'page',
     'chapters/:id': 'chapter',
 
-    'files/image_files?page=:page_id&attribute=:attribute': 'imageFiles',
-    'files/video_files?page=:page_id&attribute=:attribute': 'videoFiles',
-    'files/audio_files?page=:page_id&attribute=:attribute': 'audioFiles',
+    'files/image_files?handler=:handler&payload=:payload': 'imageFiles',
+    'files/video_files?handler=:handler&payload=:payload': 'videoFiles',
+    'files/audio_files?handler=:handler&payload=:payload': 'audioFiles',
 
     'files/image_files': 'imageFiles',
     'files/video_files': 'videoFiles',

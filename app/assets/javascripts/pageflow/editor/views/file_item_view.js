@@ -23,7 +23,8 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click .select': function() {
-      this.$el.trigger('file-selected', this.model);
+      this.options.selectionHandler.call(this.model);
+      pageflow.editor.navigate(this.options.selectionHandler.getReferer(), {trigger: true});
       return false;
     },
 

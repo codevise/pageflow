@@ -61,7 +61,7 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
         collection: options.collection,
         itemViewConstructor: options.itemView,
         itemViewOptions: {
-          selectable: this.options.tabName === name
+          selectionHandler: this.options.tabName === name && this.options.selectionHandler
         },
         blankSlateViewConstructor: Backbone.Marionette.ItemView.extend({
           template: 'templates/files_blank_slate'
@@ -75,8 +75,8 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
   },
 
   goBack: function() {
-    if (this.options.page) {
-      editor.navigate('/pages/' + this.options.page.id + '/files', {trigger: true});
+    if (this.options.selectionHandler) {
+      editor.navigate(this.options.selectionHandler.getReferer(), {trigger: true});
     }
     else {
       editor.navigate('/', {trigger: true});
@@ -85,12 +85,5 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
 
   upload: function() {
     pageflow.app.trigger('request-upload');
-  },
-
-  updatePage: function(event, file) {
-    if (this.options.page) {
-      this.options.page.configuration.setReference(this.options.pageAttributeName, file);
-      this.goBack();
-    }
   }
 });

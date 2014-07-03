@@ -9,6 +9,7 @@ pageflow.EditorApi = pageflow.Object.extend({
     this.sideBarRoutings = [];
     this.mainMenuItems = [];
     this.initializers = [];
+    this.fileSelectionHandlers = {};
 
     /**
      * Register additional router and controller for sidebar.
@@ -46,6 +47,74 @@ pageflow.EditorApi = pageflow.Object.extend({
      */
     this.navigate = function(path, options) {
       editor.navigate(path, options);
+    };
+
+    /**
+     * Extend the interface of page configuration objects. This is
+     * especially convenient to wrap structured data from the page
+     * configuration as Backbone objects.
+     *
+     * Example:
+     *
+     *     pageflow.editor.registerPageConfigurationMixin({
+     *       externalLinks: function() {
+     *         return new Backbone.Collection(this.get('external_links'));
+     *       }
+     *     }
+     *
+     *     pageflow.pages.get(1).configuration.externalLinks().each(...);
+     */
+    this.registerPageConfigurationMixin = function(mixin) {
+      Cocktail.mixin(pageflow.Configuration, mixin);
+    };
+
+    /**
+     * File selection handlers let editor extensions use the files view
+     * to select files for usage in their custom models.
+     *
+     * See selectFile method for details how to trigger file selection.
+     *
+     * Example:
+     *
+     *     function MyFileSelectionHandler(options) {
+     *       this.call = function(file) {
+     *         // invoked with the selected file
+     *       };
+     *
+     *       this.getReferer = function() {
+     *         // the path to return to when the back button is clicked
+     *         // or after file selection
+     *         return '/some/path';
+     *       }
+     *     }
+     *
+     *     pageflow.editor.registerFileSelectionHandler('my_file_selection_handler', MyFileSelectionHandler);
+     */
+    this.registerFileSelectionHandler = function(name, handler) {
+      this.fileSelectionHandlers[name] = handler;
+    };
+
+    /**
+     * Trigger selection of the given file type with the given
+     * handler. Payload hash is passed to selection handler as options.
+     *
+     * Example:
+     *
+     *     pageflow.editor.selectFile('image_files', 'my_file_selection_handler', {some: 'option for handler'});
+     */
+    this.selectFile = function(fileType, handlerName, payload) {
+      this.navigate('/files/' + fileType + '?handler=' + handlerName + '&payload=' + encodeURIComponent(JSON.stringify(payload)), {trigger: true});
+    };
+
+    /** @private */
+    this.createFileSelectionHandler = function(handlerName, encodedPayload) {
+      /** @private */
+      if (!this.fileSelectionHandlers[handlerName]) {
+        throw 'Unknown FileSelectionHandler ' + handlerName;
+      }
+
+      var payloadJson = JSON.parse(decodeURIComponent(encodedPayload));
+      return new this.fileSelectionHandlers[handlerName](payloadJson);
     };
   }
 });
