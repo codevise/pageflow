@@ -142,5 +142,9 @@ module Pageflow
     def page_type_names
       page_types.map(&:name)
     end
+
+    def revision_components
+      page_types.map(&:revision_components).flatten.uniq
+    end
   end
 end

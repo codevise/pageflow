@@ -74,6 +74,12 @@ module Pageflow
         file_usage.copy_to(revision)
       end
 
+      Pageflow.config.revision_components.each do |model|
+        model.all_for_revision(self).each do |record|
+          record.copy_to(revision)
+        end
+      end
+
       revision.save!
       revision
     end

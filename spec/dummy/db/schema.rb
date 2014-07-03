@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140704112019) do
+ActiveRecord::Schema.define(version: 20140813133611) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -240,6 +240,12 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.string   "thumbnail_content_type"
     t.string   "rights",                                                                  default: "", null: false
     t.integer  "confirmed_by_id"
+  end
+
+  create_table "test_revision_components", force: true do |t|
+    t.integer "revision_id"
+    t.integer "perma_id"
+    t.string  "text"
   end
 
   create_table "users", force: true do |t|

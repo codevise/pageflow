@@ -41,6 +41,31 @@ module Pageflow
       []
     end
 
+
+    # ActiveRecord models to be copied together with a revision.
+    #
+    # This allows authors of PageTypes to attach models to the Pageflow
+    # revision mechanism.
+    #
+    # Example:
+    #     class Rainbow < ActiveRecord::Base
+    #       include Pageflow::RevisionComponent
+    #
+    #       [...]
+    #     end
+    #
+    #     class RainbowPageType < Pageflow::PageType
+    #       name 'rainbow'
+    #
+    #       def revision_components
+    #         [Rainbow]
+    #       end
+    #     end
+    #
+    def revision_components
+      []
+    end
+
     # View path of a template containing additional json to pass to
     # the editor. The data is available in the javascript definition
     # of the page type's configuration editor. By default nothing is
