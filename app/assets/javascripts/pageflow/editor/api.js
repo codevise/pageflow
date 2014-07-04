@@ -106,6 +106,22 @@ pageflow.EditorApi = pageflow.Object.extend({
       this.navigate('/files/' + fileType + '?handler=' + handlerName + '&payload=' + encodeURIComponent(JSON.stringify(payload)), {trigger: true});
     };
 
+    /**
+     * Failures API
+     *
+     * Can watch collections for errors saving models and display the error
+     * allong with a retry button.
+     *
+     *     pageflow.editor.failures.watch(collection);
+     *
+     * It's possible to add failures to the UI by adding instances of subclasses of pageflow.Failure:
+     *
+     *     pageflow.editor.failures.add(new pageflow.OrderingFailure(model, collection));
+     *
+     */
+    this.failures = new pageflow.FailuresAPI();
+
+
     /** @private */
     this.createFileSelectionHandler = function(handlerName, encodedPayload) {
       /** @private */
