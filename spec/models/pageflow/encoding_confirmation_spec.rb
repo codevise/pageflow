@@ -5,13 +5,14 @@ module Pageflow
     describe '#exceeding?' do
       it 'passes files to quotas #assume method' do
         entry = create(:entry)
+        user = create(:user)
         audio_file = create(:audio_file, :waiting_for_confirmation, used_in: entry.draft)
         video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
-        quota = TestQuota.new(entry.account, 'available')
+        quota = QuotaDouble.available.new(:encoding, entry.account)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
                                              video_file_ids: [video_file.id],
                                              audio_file_ids: [audio_file.id]
-                                           }, quota)
+                                           }, quota, user)
 
         expect(quota).to receive(:assume).with(files: [video_file, audio_file]).and_return(quota)
 
@@ -20,12 +21,13 @@ module Pageflow
 
       it 'returns true if assumed quota is exceeded' do
         entry = create(:entry)
-        quota = TestQuota.new(entry.account, 'available')
-        assumed_quota = TestQuota.new(entry.account, 'exceeded')
+        user = create(:user)
+        quota = QuotaDouble.available.new(:encoding, entry.account)
+        assumed_quota = QuotaDouble.exceeded.new(:encoding, entry.account)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
                                              video_file_ids: [],
                                              audio_file_ids: []
-                                           }, quota)
+                                           }, quota, user)
 
         allow(quota).to receive(:assume).and_return(assumed_quota)
 
@@ -34,12 +36,13 @@ module Pageflow
 
       it 'returns false if assumed quota is exhausted' do
         entry = create(:entry)
-        quota = TestQuota.new(entry.account, 'available')
-        assumed_quota = TestQuota.new(entry.account, 'exhausted')
+        user = create(:user)
+        quota = QuotaDouble.available.new(:encoding, entry.account)
+        assumed_quota = QuotaDouble.exhausted.new(:encoding, entry.account)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
                                              video_file_ids: [],
                                              audio_file_ids: []
-                                           }, quota)
+                                           }, quota, user)
 
         allow(quota).to receive(:assume).and_return(assumed_quota)
 
@@ -48,22 +51,24 @@ module Pageflow
 
       it 'returns false if assumed quota is available' do
         entry = create(:entry)
-        quota = TestQuota.new(entry.account, 'available')
+        user = create(:user)
+        quota = QuotaDouble.available.new(:encoding, entry.account)
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
                                              video_file_ids: [],
                                              audio_file_ids: []
-                                           }, quota)
+                                           }, quota, user)
 
         expect(encoding_confirmation).not_to be_exceeding
       end
 
       it 'raises RecordNotFound exceptions for files not used in entry' do
         entry = create(:entry)
+        user = create(:user)
+        quota = QuotaDouble.available.new(:encoding, entry.account)
         audio_file = create(:audio_file, :waiting_for_confirmation)
-        quota = TestQuota.new(entry.account, 'available')
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
                                              audio_file_ids: [audio_file.id]
-                                           }, quota)
+                                           }, quota, user)
 
         expect {
           encoding_confirmation.exceeding?
@@ -74,13 +79,14 @@ module Pageflow
     describe '#save!' do
       it 'passes files to quotas #assume method' do
         entry = create(:entry)
+        user = create(:user)
+        quota = QuotaDouble.available.new(:encoding, entry.account)
         audio_file = create(:audio_file, :waiting_for_confirmation, used_in: entry.draft)
         video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
-        quota = TestQuota.new(entry.account, 'available')
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
                                              video_file_ids: [video_file.id],
                                              audio_file_ids: [audio_file.id]
-                                           }, quota)
+                                           }, quota, user)
 
         expect(quota).to receive(:assume).with(files: [video_file, audio_file]).and_return(quota)
 
@@ -89,13 +95,14 @@ module Pageflow
 
       it 'confirms encoding of files' do
         entry = create(:entry)
+        user = create(:user)
+        quota = QuotaDouble.available.new(:encoding, entry.account)
         audio_file = create(:audio_file, :waiting_for_confirmation, used_in: entry.draft)
         video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
-        quota = TestQuota.new(entry.account, 'available')
         encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
                                              video_file_ids: [video_file.id],
                                              audio_file_ids: [audio_file.id]
-                                           }, quota)
+                                           }, quota, user)
 
         encoding_confirmation.save!
 
@@ -103,11 +110,29 @@ module Pageflow
         expect(audio_file.reload.state).to eq('waiting_for_encoding')
       end
 
+      it 'saves user confirming the files' do
+        entry = create(:entry)
+        user = create(:user)
+        quota = QuotaDouble.available.new(:encoding, entry.account)
+        audio_file = create(:audio_file, :waiting_for_confirmation, used_in: entry.draft)
+        video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
+        encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {
+                                             video_file_ids: [video_file.id],
+                                             audio_file_ids: [audio_file.id]
+                                           }, quota, user)
+
+        encoding_confirmation.save!
+
+        expect(video_file.reload.confirmed_by).to eq(user)
+        expect(audio_file.reload.confirmed_by).to eq(user)
+      end
+
       it 'raises QuotaExceededError if assumed quota is exceeded' do
         entry = create(:entry)
-        quota = TestQuota.new(entry.account, 'available')
-        assumed_quota = TestQuota.new(entry.account, 'exceeded')
-        encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {}, quota)
+        user = create(:user)
+        quota = QuotaDouble.available.new(:encoding, entry.account)
+        assumed_quota = QuotaDouble.exceeded.new(:encoding, entry.account)
+        encoding_confirmation = EncodingConfirmation.new(DraftEntry.new(entry), {}, quota, user)
 
         allow(quota).to receive(:assume).and_return(assumed_quota)
 

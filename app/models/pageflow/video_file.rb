@@ -3,6 +3,8 @@ module Pageflow
     include EncodedFileStateMachine
     include UploadedFile
 
+    belongs_to :confirmed_by, :class_name => 'User'
+
     has_attached_file(:attachment_on_filesystem, Pageflow.config.paperclip_filesystem_default_options)
 
     has_attached_file(:attachment_on_s3, Pageflow.config.paperclip_s3_default_options)

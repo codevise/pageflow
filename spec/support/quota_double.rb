@@ -22,4 +22,16 @@ module QuotaDouble
       end
     end
   end
+
+  def self.exceeded
+    Class.new(Pageflow::Quota) do
+      def state
+        'exceeded'
+      end
+
+      def state_description
+        'Quota exceeded'
+      end
+    end
+  end
 end

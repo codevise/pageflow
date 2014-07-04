@@ -3,12 +3,13 @@ module Pageflow
     class QuotaExceededError < RuntimeError
     end
 
-    attr_reader :entry, :attributes, :encoding_quota
+    attr_reader :entry, :attributes, :encoding_quota, :user
 
-    def initialize(entry, attributes, encoding_quota)
+    def initialize(entry, attributes, encoding_quota, user)
       @entry = entry
       @attributes = attributes
       @encoding_quota = encoding_quota
+      @user = user
     end
 
     def exceeding?
@@ -20,6 +21,7 @@ module Pageflow
         raise(QuotaExceededError) if exceeding?
 
         files.each do |file|
+          file.confirmed_by = user
           file.confirm_encoding!
         end
       end

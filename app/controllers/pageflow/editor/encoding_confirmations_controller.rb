@@ -27,7 +27,10 @@ module Pageflow
       private
 
       def build_encoding_confirmation(entry)
-        EncodingConfirmation.new(entry, encoding_confirmation_params, encoding_quota)
+        EncodingConfirmation.new(entry,
+                                 encoding_confirmation_params,
+                                 encoding_quota,
+                                 current_user)
       end
 
       def encoding_confirmation_params

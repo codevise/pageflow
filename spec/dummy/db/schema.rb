@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140626140004) do
+ActiveRecord::Schema.define(version: 20140704112019) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20140626140004) do
 
   create_table "pageflow_accounts_themes", id: false, force: true do |t|
     t.integer "account_id"
-    t.integer "theme_id"
+    t.integer "theme_name"
   end
 
   create_table "pageflow_audio_files", force: true do |t|
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 20140626140004) do
     t.integer  "duration_in_ms"
     t.string   "format"
     t.string   "rights",                                                                  default: "", null: false
+    t.integer  "confirmed_by_id"
   end
 
   create_table "pageflow_chapters", force: true do |t|
@@ -238,6 +239,7 @@ ActiveRecord::Schema.define(version: 20140626140004) do
     t.string   "poster_content_type"
     t.string   "thumbnail_content_type"
     t.string   "rights",                                                                  default: "", null: false
+    t.integer  "confirmed_by_id"
   end
 
   create_table "users", force: true do |t|
