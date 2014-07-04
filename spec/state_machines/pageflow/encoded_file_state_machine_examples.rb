@@ -157,34 +157,50 @@ shared_examples 'encoded file state machine' do |model|
     end
 
     context 'when encoding failed' do
-      it 'creates zencoder job for file' do
-        file = create(model, :encoding_failed)
+      context 'with disabled confirm_encoding_jobs option' do
+        it 'creates zencoder job for file' do
+          file = create(model, :encoding_failed)
 
-        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+          allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
-        file.retry!
+          file.retry!
 
-        expect(Pageflow::ZencoderApi.instance).to have_received(:create_job).with(file.reload.output_definition)
+          expect(Pageflow::ZencoderApi.instance).to have_received(:create_job).with(file.reload.output_definition)
+        end
+
+        it 'polls zencoder' do
+          file = create(model, :encoding_failed)
+
+          allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
+
+          file.retry!
+
+          expect(Pageflow::ZencoderApi.instance).to have_received(:get_info).with(file.reload.job_id).twice
+        end
+
+        it 'sets state to encoded after job has finished' do
+          file = create(model, :encoding_failed)
+
+          allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+
+          file.retry
+
+          expect(file.reload.state).to eq('encoded')
+        end
       end
 
-      it 'polls zencoder' do
-        file = create(model, :encoding_failed)
+      context 'with enabled confirm_encoding_jobs option' do
+        before do
+          Pageflow.config.confirm_encoding_jobs = true
+        end
 
-        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
+        it 'sets state to waiting_for_confirmation' do
+          file = create(model, :encoding_failed)
 
-        file.retry!
+          file.retry
 
-        expect(Pageflow::ZencoderApi.instance).to have_received(:get_info).with(file.reload.job_id).twice
-      end
-
-      it 'sets state to encoded after job has finished' do
-        file = create(model, :encoding_failed)
-
-        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
-
-        file.retry
-
-        expect(file.reload.state).to eq('encoded')
+          expect(file.reload.state).to eq('waiting_for_confirmation')
+        end
       end
     end
   end

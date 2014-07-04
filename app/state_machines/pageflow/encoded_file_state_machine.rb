@@ -25,6 +25,10 @@ module Pageflow
 
         event :retry do
           transition 'upload_to_s3_failed' => 'uploading_to_s3'
+
+          transition 'encoding_failed' => 'waiting_for_confirmation', :if => lambda { Pageflow.config.confirm_encoding_jobs }
+          transition 'encoded' => 'waiting_for_confirmation', :if => lambda { Pageflow.config.confirm_encoding_jobs }
+
           transition 'encoding_failed' => 'waiting_for_encoding'
           transition 'encoded' => 'waiting_for_encoding'
         end
