@@ -28,6 +28,11 @@
       @include background-icon-animation(blink);
     }
 
+    &.fetching_meta_data {
+      @include clipboard-icon;
+      @include background-icon-animation(blink);
+    }
+
     &.processing,
     &.encoding {
       @include cog-icon;
@@ -41,6 +46,11 @@
     &.failed {
       @include background-icon-animation(none);
       @include attention-icon;
+    }
+
+    &.action_required {
+      @include bell-icon;
+      @include background-icon-animation(blink);
     }
   }
 

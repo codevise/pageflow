@@ -28,6 +28,17 @@ pageflow.SubsetCollection = Backbone.Collection.extend({
       adding = false;
     });
 
+    if (options.watchAttribute) {
+      this.listenTo(this.parent, 'change:' + options.watchAttribute, function(model) {
+        if (this.filter(model)) {
+          this.add(model);
+        }
+        else {
+          this.remove(model);
+        }
+      });
+    }
+
     this.listenTo(this, 'sort', function() {
       this.parent.sort();
     });

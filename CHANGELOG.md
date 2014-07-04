@@ -19,6 +19,10 @@
 - Theming attributes can now be edited via the accounts admin.
 - `pageflow:theme` generator to copy theme template to main application.
 
+- More configurable default theme.
+- Option to require explicit confirmation of video/audio encoding by user
+  before submitting jobs to Zencoder.
+
 - Bug fix: Improve video playback support on iOS and Android.
 - Bug fix: Missing translations for attribute/model names in admin.
 

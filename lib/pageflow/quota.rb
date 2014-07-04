@@ -39,6 +39,10 @@ module Pageflow
       raise(ExhaustedError.new(self), "Quota '#{name}' exhausted.") unless available?
     end
 
+    def assume(assumptions)
+      self
+    end
+
     class Unlimited < Quota
       def state
         'available'

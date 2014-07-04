@@ -20,6 +20,7 @@ pageflow.FileThumbnailView = Backbone.Marionette.ItemView.extend({
 
       if (stage) {
         this.setStageClassName(stage.get('name'));
+        this.ui.pictogram.toggleClass('action_required', stage.get('action_required'));
         this.ui.pictogram.toggleClass('failed', stage.get('failed'));
       }
       else {

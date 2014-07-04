@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'state_machine'
 
   # Trigger resque jobs with a state machine
-  s.add_dependency 'state_machine_job'
+  s.add_dependency 'state_machine_job', '~> 0.2'
 
   # File attachments
   s.add_dependency 'paperclip', '~> 3.5'

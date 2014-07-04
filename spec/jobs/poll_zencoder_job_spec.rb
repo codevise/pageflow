@@ -77,6 +77,17 @@ module Pageflow
       expect(result).to eq(:pending)
     end
 
+    it 'returns ok if thumbnail is not there yet but skip_thumbnail option is set' do
+      video_file = build(:video_file)
+
+      allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+      stub_request(:get, /.*amazonaws\.com/).to_return(:status => 404)
+
+      result = PollZencoderJob.perform_with_result(video_file, {:skip_thumbnail => true})
+
+      expect(result).to eq(:ok)
+    end
+
     it 'returns ok if thumbnail can be downloaded' do
       video_file = build(:video_file)
 
@@ -135,33 +146,6 @@ module Pageflow
       result = PollZencoderJob.perform_with_result(video_file, {})
 
       expect(video_file).to have_received(:meta_data_attributes=).with(meta_data)
-    end
-
-    it 'invokes :file_encoded hook' do
-      video_file = build(:video_file, :job_id => 43)
-      subscriber = double('subscriber', :call => nil)
-
-      Pageflow.config.hooks.on(:file_encoded, subscriber)
-      allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
-      stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
-        .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
-
-      PollZencoderJob.perform_with_result(video_file, {})
-
-      expect(subscriber).to have_received(:call).with({file: video_file})
-    end
-
-    it 'does not invoke :file_encoded hook if thumbnail is not there yet' do
-      video_file = build(:video_file)
-      subscriber = double('subscriber', :call => nil)
-
-      Pageflow.config.hooks.on(:file_encoded, subscriber)
-      allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
-      stub_request(:get, /.*amazonaws\.com/).to_return(:status => 404)
-
-      PollZencoderJob.perform_with_result(video_file, {})
-
-      expect(subscriber).not_to have_received(:call)
     end
   end
 end

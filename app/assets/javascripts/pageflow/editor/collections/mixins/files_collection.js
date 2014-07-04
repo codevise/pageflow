@@ -18,6 +18,17 @@ pageflow.filesCollection = {
     return this.entry || pageflow.entry;
   },
 
+  confirmable: function() {
+    return new pageflow.SubsetCollection({
+      parent: this,
+      watchAttribute: 'state',
+
+      filter: function(item) {
+        return item.get('state') === 'waiting_for_confirmation';
+      },
+    });
+  },
+
   fileType: function() {
     var plural = _.map(this.name.split('_'), upperCaseFirst).join('');
 

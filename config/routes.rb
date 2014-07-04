@@ -37,6 +37,9 @@ Pageflow::Engine.routes.draw do
         end
 
         resources :file_usages, :only => [:create, :destroy]
+        resources :encoding_confirmations, :only => [:create] do
+          post :check, :on => :collection
+        end
       end
 
       resources :quotas, :only => [:show]

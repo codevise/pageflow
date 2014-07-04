@@ -1,6 +1,6 @@
 pageflow.stageProvider = {
   initialize: function() {
-    this.stages = new Backbone.Collection(_.chain(this.stageMapping).pairs().map(function (pair) {
+    this.stages = new Backbone.Collection(_.chain(this).result('stageMapping').pairs().map(function (pair) {
       var name = pair[0];
       var options = pair[1];
 
@@ -11,7 +11,7 @@ pageflow.stageProvider = {
 
   currentStage: function() {
     return this.stages.find(function(stage) {
-      return stage.get('active') || stage.get('failed');
+      return stage.get('active') || stage.get('action_required') || stage.get('failed');
     });
   }
 };

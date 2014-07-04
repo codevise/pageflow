@@ -68,6 +68,10 @@ module Pageflow
     # accessible via one official url.
     attr_accessor :editor_routing_constraint
 
+    # Submit video/audio encoding jobs only after the user has
+    # explicitly confirmed in the editor. Defaults to false.
+    attr_accessor :confirm_encoding_jobs
+
     def initialize
       @paperclip_filesystem_default_options = {}
       @paperclip_s3_default_options = {}
@@ -79,6 +83,8 @@ module Pageflow
       @hooks = Hooks.new
       @quotas = Quotas.new
       @themes = Themes.new
+
+      @confirm_encoding_jobs = false
     end
 
     # Make a page type available for use in the system.

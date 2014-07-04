@@ -35,6 +35,7 @@
 //= require_tree ./views/configuration_editors
 //= require_tree ./views
 
+//= require ./initializers/setup_config
 //= require ./initializers/setup_collections
 //= require ./initializers/setup_page_types
 //= require ./initializers/edit_lock

@@ -11,6 +11,7 @@
   padding: 10px 0 5px 60px;
   white-space: normal;
 
+  &.action_required,
   &.active {
     @include background-icon-color(#444);
     @include background-icon-animation(blink);
@@ -40,6 +41,10 @@
 
   &.uploading_to_s3 {
     @include cloud-icon;
+  }
+
+  &.fetching_meta_data {
+    @include clipboard-icon;
   }
 
   &.processing,
