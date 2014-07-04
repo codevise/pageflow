@@ -41,6 +41,32 @@ shared_examples 'encoded file state machine' do |model|
 
         expect(file.reload.state).to eq('encoded')
       end
+
+      it 'invokes file_encoded hook' do
+        file = create(model, :on_filesystem)
+        subscriber = double('subscriber', :call => nil)
+
+        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+
+        Pageflow.config.hooks.on(:file_encoded, subscriber)
+        file.publish
+
+        expect(subscriber).to have_received(:call).with({file: file})
+      end
+
+      context 'when encoding fails' do
+        it 'invokes file_encoding_failed hook' do
+          file = create(model, :on_filesystem)
+          subscriber = double('subscriber', :call => nil)
+
+          allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished_but_failed)
+
+          Pageflow.config.hooks.on(:file_encoding_failed, subscriber)
+          file.publish
+
+          expect(subscriber).to have_received(:call).with({file: file})
+        end
+      end
     end
 
     context 'with enabled confirm_encoding_jobs option' do
@@ -95,6 +121,19 @@ shared_examples 'encoded file state machine' do |model|
         file.confirm_encoding!
 
         expect(file.reload.state).to eq('encoded')
+      end
+
+      it 'invokes file_encoding_confirmed hook' do
+        file = create(model, :waiting_for_confirmation)
+        user = create(:user)
+        subscriber = double('subscriber', :call => nil)
+
+        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
+
+        Pageflow.config.hooks.on(:file_encoding_confirmed, subscriber)
+        file.confirm_encoding!
+
+        expect(subscriber).to have_received(:call).with({file: file})
       end
     end
   end

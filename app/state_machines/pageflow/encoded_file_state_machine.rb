@@ -56,6 +56,10 @@ module Pageflow
           transition 'waiting_for_confirmation' => 'waiting_for_encoding'
         end
 
+        after_transition 'waiting_for_confirmation' => 'waiting_for_encoding' do |file|
+          Pageflow.config.hooks.invoke(:file_encoding_confirmed, :file => file)
+        end
+
         job SubmitFileToZencoderJob do
           on_enter 'waiting_for_encoding'
           result :ok => 'encoding'
@@ -67,6 +71,14 @@ module Pageflow
           result :pending, :retry_after => 2.seconds
           result :ok => 'encoded'
           result :error => 'encoding_failed'
+        end
+
+        after_transition any => 'encoded' do |file|
+          Pageflow.config.hooks.invoke(:file_encoded, :file => file)
+        end
+
+        after_transition any => 'encoding_failed' do |file|
+          Pageflow.config.hooks.invoke(:file_encoding_failed, :file => file)
         end
       end
     end

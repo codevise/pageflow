@@ -8,8 +8,6 @@ module Pageflow
       file.job_id = api.create_job(file.output_definition)
       file.save!
 
-      Pageflow.config.hooks.invoke(:file_submitted, file: file)
-
       :ok
     end
   end

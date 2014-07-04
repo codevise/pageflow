@@ -12,8 +12,6 @@ module Pageflow
         fetch_input_details(file, api)
         fetch_thumbnail(file) unless options[:skip_thumbnail]
 
-        Pageflow.config.hooks.invoke(:file_encoded, file: file) unless options[:skip_thumbnail]
-
         :ok
       end
     ensure

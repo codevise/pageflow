@@ -22,8 +22,6 @@ module Pageflow
         files.each do |file|
           file.confirm_encoding!
         end
-
-        Pageflow.config.hooks.invoke(:encoding_confirmed, files: @encoding_confirmation.files)
       end
     end
 
