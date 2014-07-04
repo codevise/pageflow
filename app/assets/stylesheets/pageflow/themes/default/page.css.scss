@@ -38,7 +38,6 @@ $page-color: $main-color;
       font-weight: normal;
       margin-top: 0;
       letter-spacing: 0em;
-      text-transform: uppercase;
   }
 
   h2 .title {
@@ -50,7 +49,6 @@ $page-color: $main-color;
       margin-bottom: 0.4em;
       letter-spacing: 0em;
       line-height: 1em;
-      text-transform: uppercase;
       @include phone {
         font-size: 1.8em;
       }
@@ -84,6 +82,7 @@ $page-color: $main-color;
     top: 50px;
     z-index: 200;
     background-size: contain;
+    background-position: left top;
     padding-top: 6.8%;
     min-width: 100px;
     max-width: 221px;
