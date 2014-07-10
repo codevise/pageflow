@@ -84,7 +84,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'jbuilder', '~> 1.2'
 
   # Used by the dummy rails application
-  s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'mysql2'
 
   # Testing framework
   s.add_development_dependency 'rspec-rails', '~> 2.0'

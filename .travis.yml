@@ -1,6 +1,10 @@
+language: ruby
 rvm:
   - 1.9.3
 
 script:
   - "RAILS_ENV=test bundle exec rake db:schema:load"
   - "bundle exec rspec --tag ~js"
+
+before_script:
+    - mysql -e 'create database pageflow_dummy_test;
