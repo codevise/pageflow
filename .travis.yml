@@ -7,4 +7,4 @@ script:
   - "bundle exec rspec --tag ~js"
 
 before_script:
-    - mysql -e 'create database pageflow_dummy_test;
+    - mysql -e 'create database pageflow_dummy_test;'
