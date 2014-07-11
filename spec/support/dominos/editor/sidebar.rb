@@ -18,6 +18,10 @@ module Dom
       def publish_button
         node.find('.publish')
       end
+
+      def manage_files_menu_item
+        node.find('.menu .manage_files')
+      end
     end
   end
 end

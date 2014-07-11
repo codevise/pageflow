@@ -32,6 +32,7 @@
 
 - Bug fix: Improve video playback support on iOS and Android.
 - Bug fix: Missing translations for attribute/model names in admin.
+- Bug fix: Reusing files from other entries was broken in editor.
 
 ### Version 0.1.0
 
