@@ -24,9 +24,9 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.datetime "updated_at"
   end
 
-  add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
-  add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace"
-  add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+  add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
+  add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
+  add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
   create_table "friendly_id_slugs", force: true do |t|
     t.string   "slug",                      null: false
@@ -36,10 +36,10 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.datetime "created_at"
   end
 
-  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
-  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
-  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
-  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, using: :btree
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
+  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
+  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
   create_table "pageflow_accounts", force: true do |t|
     t.string   "name",                default: "", null: false
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.integer  "default_theming_id"
   end
 
-  add_index "pageflow_accounts", ["default_theming_id"], name: "index_pageflow_accounts_on_default_theming_id"
+  add_index "pageflow_accounts", ["default_theming_id"], name: "index_pageflow_accounts_on_default_theming_id", using: :btree
 
   create_table "pageflow_accounts_themes", id: false, force: true do |t|
     t.integer "account_id"
@@ -89,8 +89,8 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.integer  "revision_id"
   end
 
-  add_index "pageflow_chapters", ["entry_id"], name: "index_pageflow_chapters_on_entry_id"
-  add_index "pageflow_chapters", ["revision_id"], name: "index_pageflow_chapters_on_revision_id"
+  add_index "pageflow_chapters", ["entry_id"], name: "index_pageflow_chapters_on_entry_id", using: :btree
+  add_index "pageflow_chapters", ["revision_id"], name: "index_pageflow_chapters_on_revision_id", using: :btree
 
   create_table "pageflow_edit_locks", force: true do |t|
     t.integer  "user_id"
@@ -99,8 +99,8 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.datetime "updated_at"
   end
 
-  add_index "pageflow_edit_locks", ["entry_id"], name: "index_pageflow_edit_locks_on_entry_id"
-  add_index "pageflow_edit_locks", ["user_id"], name: "index_pageflow_edit_locks_on_user_id"
+  add_index "pageflow_edit_locks", ["entry_id"], name: "index_pageflow_edit_locks_on_entry_id", using: :btree
+  add_index "pageflow_edit_locks", ["user_id"], name: "index_pageflow_edit_locks_on_user_id", using: :btree
 
   create_table "pageflow_entries", force: true do |t|
     t.string   "title",      default: "", null: false
@@ -112,10 +112,10 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.integer  "theming_id"
   end
 
-  add_index "pageflow_entries", ["account_id"], name: "index_pageflow_entries_on_account_id"
-  add_index "pageflow_entries", ["folder_id"], name: "index_pageflow_entries_on_folder_id"
-  add_index "pageflow_entries", ["slug"], name: "index_pageflow_entries_on_slug", unique: true
-  add_index "pageflow_entries", ["theming_id"], name: "index_pageflow_entries_on_theming_id"
+  add_index "pageflow_entries", ["account_id"], name: "index_pageflow_entries_on_account_id", using: :btree
+  add_index "pageflow_entries", ["folder_id"], name: "index_pageflow_entries_on_folder_id", using: :btree
+  add_index "pageflow_entries", ["slug"], name: "index_pageflow_entries_on_slug", unique: true, using: :btree
+  add_index "pageflow_entries", ["theming_id"], name: "index_pageflow_entries_on_theming_id", using: :btree
 
   create_table "pageflow_file_usages", force: true do |t|
     t.integer  "revision_id"
@@ -125,8 +125,8 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.datetime "updated_at"
   end
 
-  add_index "pageflow_file_usages", ["file_id", "file_type"], name: "index_pageflow_file_usages_on_file_id_and_file_type"
-  add_index "pageflow_file_usages", ["revision_id"], name: "index_pageflow_file_usages_on_revision_id"
+  add_index "pageflow_file_usages", ["file_id", "file_type"], name: "index_pageflow_file_usages_on_file_id_and_file_type", using: :btree
+  add_index "pageflow_file_usages", ["revision_id"], name: "index_pageflow_file_usages_on_revision_id", using: :btree
 
   create_table "pageflow_folders", force: true do |t|
     t.string   "name"
@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.datetime "updated_at"
   end
 
-  add_index "pageflow_folders", ["account_id"], name: "index_pageflow_folders_on_account_id"
+  add_index "pageflow_folders", ["account_id"], name: "index_pageflow_folders_on_account_id", using: :btree
 
   create_table "pageflow_image_files", force: true do |t|
     t.integer  "entry_id"
@@ -164,8 +164,8 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.datetime "updated_at"
   end
 
-  add_index "pageflow_memberships", ["entry_id"], name: "index_pageflow_memberships_on_entry_id"
-  add_index "pageflow_memberships", ["user_id"], name: "index_pageflow_memberships_on_user_id"
+  add_index "pageflow_memberships", ["entry_id"], name: "index_pageflow_memberships_on_entry_id", using: :btree
+  add_index "pageflow_memberships", ["user_id"], name: "index_pageflow_memberships_on_user_id", using: :btree
 
   create_table "pageflow_pages", force: true do |t|
     t.integer  "chapter_id"
@@ -178,8 +178,8 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.integer  "perma_id"
   end
 
-  add_index "pageflow_pages", ["chapter_id"], name: "index_pageflow_pages_on_chapter_id"
-  add_index "pageflow_pages", ["perma_id"], name: "index_pageflow_pages_on_perma_id"
+  add_index "pageflow_pages", ["chapter_id"], name: "index_pageflow_pages_on_chapter_id", using: :btree
+  add_index "pageflow_pages", ["perma_id"], name: "index_pageflow_pages_on_perma_id", using: :btree
 
   create_table "pageflow_revisions", force: true do |t|
     t.integer  "entry_id"
@@ -197,7 +197,7 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.string   "snapshot_type"
   end
 
-  add_index "pageflow_revisions", ["restored_from_id"], name: "index_pageflow_revisions_on_restored_from_id"
+  add_index "pageflow_revisions", ["restored_from_id"], name: "index_pageflow_revisions_on_restored_from_id", using: :btree
 
   create_table "pageflow_themings", force: true do |t|
     t.string   "imprint_link_url"
@@ -211,7 +211,7 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.string   "theme_name"
   end
 
-  add_index "pageflow_themings", ["cname"], name: "index_pageflow_themings_on_cname"
+  add_index "pageflow_themings", ["cname"], name: "index_pageflow_themings_on_cname", using: :btree
 
   create_table "pageflow_video_files", force: true do |t|
     t.integer  "entry_id"
@@ -264,9 +264,9 @@ ActiveRecord::Schema.define(version: 20140704112019) do
     t.string   "role",                   default: "editor", null: false
   end
 
-  add_index "users", ["account_id"], name: "index_pageflow_users_on_account_id"
-  add_index "users", ["email"], name: "index_pageflow_users_on_email", unique: true
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["account_id"], name: "index_pageflow_users_on_account_id", using: :btree
+  add_index "users", ["email"], name: "index_pageflow_users_on_email", unique: true, using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
