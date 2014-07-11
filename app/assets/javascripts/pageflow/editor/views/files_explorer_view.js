@@ -111,17 +111,17 @@ pageflow.FilesExplorerView = Backbone.Marionette.ItemView.extend({
         file;
 
     if ((file = sel.get('image_file'))) {
-      file.set('typeName', 'ImageFile');
+      file.set('typeName', 'Pageflow::ImageFile');
       return file;
     }
 
     if ((file = sel.get('audio_file'))) {
-      file.set('typeName', 'AudioFile');
+      file.set('typeName', 'Pageflow::AudioFile');
       return file;
     }
 
     if ((file = sel.get('video_file'))) {
-      file.set('typeName', 'VideoFile');
+      file.set('typeName', 'Pageflow::VideoFile');
       return file;
     }
   }

@@ -3,6 +3,8 @@ module Dom
     class PublishEntryPanel < Domino
       selector 'div.publish_entry'
 
+      attribute :exhausted_message, '.exhausted_message'
+
       def save_button
         node.find('button.save')
       end

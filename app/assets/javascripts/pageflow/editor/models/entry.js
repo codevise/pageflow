@@ -85,7 +85,11 @@ pageflow.Entry = Backbone.Model.extend({
   },
 
   getFileCollection: function(filetype) {
-    return this[lowerCaseFirst(filetype) + 's'];
+    return this[lowerCaseFirst(removeNamespace(filetype)) + 's'];
+
+    function removeNamespace(string) {
+      return string.split('::').pop();
+    }
 
     function lowerCaseFirst(string) {
       return string.charAt(0).toLowerCase() + string.slice(1);
