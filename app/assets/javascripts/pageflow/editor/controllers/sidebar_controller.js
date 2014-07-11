@@ -45,7 +45,8 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
 
   publish: function() {
     this.region.show(pageflow.PublishEntryView.create({
-      model: this.entry
+      model: this.entry,
+      entryPublication: new pageflow.EntryPublication()
     }));
   },
 

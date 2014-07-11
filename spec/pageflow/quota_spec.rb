@@ -28,6 +28,26 @@ module Pageflow
       end
     end
 
+    describe '#verify_not_exceeded!' do
+      it 'raises ExceededError for exceeded quota' do
+        account = build(:account)
+        quota = TestQuota.new(account, 'exceeded')
+
+        expect {
+          quota.verify_not_exceeded!
+        }.to raise_error(Quota::ExceededError)
+      end
+
+      it 'does not raise for exhausted quota' do
+        account = build(:account)
+        quota = TestQuota.new(account, 'exhausted')
+
+        expect {
+          quota.verify_not_exceeded!
+        }.not_to raise_error
+      end
+    end
+
     describe '#available?' do
       it 'returns true for available quota' do
         account = build(:account)

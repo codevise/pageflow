@@ -8,6 +8,8 @@ module Pageflow
       end
     end
 
+    class ExceededError < ExhaustedError; end
+
     attr_reader :name, :account
 
     def initialize(name, account)
@@ -37,6 +39,10 @@ module Pageflow
 
     def verify_available!
       raise(ExhaustedError.new(self), "Quota '#{name}' exhausted.") unless available?
+    end
+
+    def verify_not_exceeded!
+      raise(ExceededError.new(self), "Quota '#{name}' exceeded.") if exceeded?
     end
 
     def assume(assumptions)
