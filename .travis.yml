@@ -7,6 +7,9 @@ env:
   - PAGEFLOW_RAILS_VERSION=4.0.4
   - PAGEFLOW_RAILS_VERSION=4.1.6
 
+services:
+  - redis-server
+
 script:
   - "xvfb-run bundle exec rspec"
 
