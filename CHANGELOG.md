@@ -2,6 +2,13 @@
 
 ### Changes on `master`
 
+- Tests now use MySQL.
+  The dummy application used to test the Pageflow Gem against now uses MySQL.
+  To run the testsuite you need to have a MySQL database called `pageflow_dummy_test`
+  You can configure user and password by setting the environment variables
+  `PAGEFLOW_DB_USER` and `PAGEFLOW_DB_PASSWORD`. If they are not present `root` is
+  assumed as user and the password is left blank.
+
 - **Breaking Change**: Themes have been splitted in Themes and Themings. Themings
   exist per account in the database containing configuration like
   copyright/imprint link urls and reference a theme. Themes represent
