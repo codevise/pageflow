@@ -8,7 +8,7 @@ env:
   - PAGEFLOW_RAILS_VERSION=4.1.6
 
 script:
-  - "bundle exec rspec --tag ~js"
+  - "xvfb-run bundle exec rspec"
 
 before_script:
     - mysql -e 'create database pageflow_dummy_test;'
