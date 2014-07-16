@@ -9,6 +9,9 @@ Pageflow.after_configure do
 
   Pageflow::ZencoderOutputDefinition.default_output_bucket_name = zencoder_options.fetch(:output_bucket) { raise "Missing output_bucket option in Pageflow.config.zencoder_options." }
   Pageflow::ZencoderOutputDefinition.default_sftp_host = zencoder_options[:sftp_host]
+  Pageflow::ZencoderOutputDefinition.default_akamai_host = zencoder_options[:akamai_host]
+  Pageflow::ZencoderOutputDefinition.default_akamai_credentials = zencoder_options[:akamai_credentials]
+  Pageflow::ZencoderVideoOutputDefinition.skip_hls = zencoder_options.fetch(:skip_hls, false)
 
   raise "Missing s3_host_alias option in Pageflow.config.zencoder_options." unless zencoder_options.has_key?(:s3_host_alias)
   raise "Missing s3_protocol option in Pageflow.config.zencoder_options." unless zencoder_options.has_key?(:s3_protocol)
