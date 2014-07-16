@@ -39,5 +39,37 @@ module Pageflow
         expect(published_entry.stylesheet_model).to be(revision)
       end
     end
+
+    describe '.find' do
+      it 'finds published entry' do
+        entry = create(:entry, :published)
+
+        expect(PublishedEntry.find(entry.id).to_model).to eq(entry)
+      end
+
+      it 'finds entry in scope' do
+        account = create(:account)
+        entry = create(:entry, :published, account: account)
+
+        expect(PublishedEntry.find(entry.id, account.entries).to_model).to eq(entry)
+      end
+
+      it 'does not find entries not in scope' do
+        account = create(:account)
+        entry = create(:entry, :published)
+
+        expect {
+          PublishedEntry.find(entry.id, account.entries)
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'does not find not published entries' do
+        entry = create(:entry)
+
+        expect {
+          PublishedEntry.find(entry.id)
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 end
