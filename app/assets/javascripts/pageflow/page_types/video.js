@@ -163,7 +163,7 @@ pageflow.pageType.register('video', _.extend({
         // alternate poster image handling
         $("<div class='vjs-poster-mobile' style='" +
           poster.attr('style') +
-          "display:block; background-size: coverr;'></div>").appendTo(pageElement.find(".videoWrapper"));
+          "display:block; background-size: cover;'></div>").appendTo(pageElement.find(".videoWrapper"));
         poster.removeClass('vjs-poster').addClass('vjs-poster-mobile');
 
         // listening for exit fullscreen to force pausing

@@ -126,6 +126,10 @@
 
   .vjs-control-bar {
     @include transform(translate3d(-50%, 0, 0));
+
+    @include phone {
+      @include transform(translate3d(0, 0, 0));
+    }
   }
   .vjs-tech {
     height: 100%;
