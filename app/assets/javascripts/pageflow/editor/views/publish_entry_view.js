@@ -96,12 +96,13 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
 
     var that = this;
 
-    this.model.publish({published_until: publishedUntil})
-      .done()
+    this.options.entryPublication.publish({published_until: publishedUntil})
       .fail(function() {
         alert('Beim Veröffentlichen ist ein Fehler aufgetreten');
       })
       .always(function() {
+        if (that.isClosed) { return; }
+
         that.$el.removeClass('publishing');
         that.$('input').removeAttr('disabled');
         that.enableSave();
@@ -186,8 +187,8 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
 
 pageflow.PublishEntryView.create = function(options) {
   return new pageflow.BackButtonDecoratorView({
-    view: new pageflow.QuotaDecoratorView({
-      model: pageflow.Quota.byName('published_entries'),
+    view: new pageflow.EntryPublicationQuotaDecoratorView({
+      model: options.entryPublication,
       view: new pageflow.PublishEntryView(options)
     })
   });

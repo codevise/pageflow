@@ -3,7 +3,7 @@ Pageflow::Engine.routes.draw do
     resources :entries, :only => [:edit, :update], :shallow => true do
       get :partials, :on => :member
 
-      resources :revisions, :only => [:show, :create] do
+      resources :revisions, :only => [:show] do
         delete :current, :to => 'revisions#depublish_current', :on => :collection
       end
 
@@ -40,9 +40,11 @@ Pageflow::Engine.routes.draw do
         resources :encoding_confirmations, :only => [:create] do
           post :check, :on => :collection
         end
-      end
 
-      resources :quotas, :only => [:show]
+        resources :entry_publications, :only => [:create] do
+          post :check, :on => :collection
+        end
+      end
     end
 
     root :to => redirect('/admin')

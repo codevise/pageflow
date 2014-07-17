@@ -104,19 +104,6 @@ pageflow.Entry = Backbone.Model.extend({
     this.togglePolling(this.get('pending_files_count') > 0);
   },
 
-  publish: function(attrs) {
-    var model = this;
-
-    return Backbone.sync('create', this, {
-      url: this.url() + '/revisions',
-      attrs: attrs,
-
-      success: function(response) {
-        model.parse(response);
-      }
-    });
-  },
-
   parse: function(response, options) {
     if (response) {
       this.set(_.pick(response, 'published', 'published_until'));

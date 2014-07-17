@@ -6,16 +6,6 @@ module Pageflow
 
     respond_to :json
 
-    def create
-      entry = Entry.find(params[:entry_id])
-
-      authorize!(:publish, entry)
-      verify_edit_lock!(entry)
-      verify_quota!(:published_entries, entry.account)
-
-      @revision = entry.publish(revision_params.merge(:creator => current_user))
-    end
-
     def show
       revision = Revision.find(params[:id])
       authorize!(:show, revision) unless request.format.css?
