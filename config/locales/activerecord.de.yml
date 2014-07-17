@@ -150,6 +150,7 @@ de:
           background_video: "Hintergrund-Video"
           video: "Video"
           audio: "Audio"
+          audio_loop: "Hintergrund-Audio"
           internal_links: "Seiten-Verweise"
         transition:
           scroll: "Scrollen"
