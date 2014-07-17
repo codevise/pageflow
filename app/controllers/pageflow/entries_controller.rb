@@ -24,7 +24,7 @@ module Pageflow
     def show
       respond_to do |format|
         format.any(:html, :css) do
-          @entry = PublishedEntry.find(params[:id])
+          @entry = PublishedEntry.find(params[:id], entry_request_scope)
         end
         format.json do
           authenticate_user!
@@ -38,7 +38,7 @@ module Pageflow
     end
 
     def page
-      entry = PublishedEntry.find(params[:id])
+      entry = PublishedEntry.find(params[:id], entry_request_scope)
       index = params[:page_index].split('-').first.to_i
 
       redirect_to(short_entry_path(entry.to_model, :anchor => entry.pages[index].try(:perma_id)))
@@ -72,6 +72,10 @@ module Pageflow
 
     def entry_params
       params.require(:entry).permit(:title, :summary, :credits, :manual_start)
+    end
+
+    def entry_request_scope
+      Pageflow.config.public_entry_request_scope.call(Entry, request)
     end
   end
 end

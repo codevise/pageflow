@@ -29,6 +29,8 @@
 - More configurable default theme.
 - Option to require explicit confirmation of video/audio encoding by user
   before submitting jobs to Zencoder.
+- `public_entry_request_scope` option to restrict the published
+  entries available under a certain host name.
 - Preview draft revision via admin.
 
 - Bug fix: Improve video playback support on iOS and Android.

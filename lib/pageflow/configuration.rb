@@ -68,6 +68,22 @@ module Pageflow
     # accessible via one official url.
     attr_accessor :editor_routing_constraint
 
+    # Either a lambda or an object with a `call` method taking two
+    # parameters: An `ActiveRecord` scope of `Pageflow::Entry` records
+    # and an `ActionDispatch::Request` object. Has to return the scope
+    # in which to find entries.
+    #
+    # Used by all public actions that display entires to restrict the
+    # available entries by hostname or other request attributes.
+    #
+    # Example:
+    #
+    #     # Only make entries of one account available under <account.name>.example.com
+    #     config.public_entry_request_scope = lambda do |entries, request|
+    #       entries.includes(:account).where(pageflow_accounts: {name: request.subdomain})
+    #     end
+    attr_accessor :public_entry_request_scope
+
     # Submit video/audio encoding jobs only after the user has
     # explicitly confirmed in the editor. Defaults to false.
     attr_accessor :confirm_encoding_jobs
@@ -83,6 +99,8 @@ module Pageflow
       @hooks = Hooks.new
       @quotas = Quotas.new
       @themes = Themes.new
+
+      @public_entry_request_scope = lambda { |entries, request| entries }
 
       @confirm_encoding_jobs = false
     end

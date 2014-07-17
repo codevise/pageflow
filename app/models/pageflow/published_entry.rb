@@ -26,8 +26,8 @@ module Pageflow
       pages.first.try(:thumbnail) || ImageFile.new.processed_attachment
     end
 
-    def self.find(id)
-      PublishedEntry.new(Entry.published.find(id))
+    def self.find(id, scope = Entry)
+      PublishedEntry.new(scope.published.find(id))
     end
 
     def cache_key

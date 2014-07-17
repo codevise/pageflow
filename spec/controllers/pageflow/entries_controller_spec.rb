@@ -101,6 +101,33 @@ module Pageflow
 
           expect(response.status).to eq(404)
         end
+
+        context 'with configured entry_request_scope' do
+          before do
+            Pageflow.config.public_entry_request_scope = lambda do |entries, request|
+              entries.includes(:account).where(pageflow_accounts: {name: request.subdomain})
+            end
+          end
+
+          it 'responds with success for matching entry' do
+            account = create(:account, :name => 'news')
+            entry = create(:entry, :published, :account => account)
+
+            request.host = 'news.example.com'
+            get(:show, :id => entry)
+
+            expect(response.status).to eq(200)
+          end
+
+          it 'responds with not found for non matching entry' do
+            entry = create(:entry, :published)
+
+            request.host = 'news.example.com'
+            get(:show, :id => entry)
+
+            expect(response.status).to eq(404)
+          end
+        end
       end
 
       context 'with format css' do
@@ -201,6 +228,35 @@ module Pageflow
         get(:page, :id => entry, :page_index => '100-not-there')
 
         expect(response).to redirect_to("/report")
+      end
+
+      context 'with configured entry_request_scope' do
+        before do
+          Pageflow.config.public_entry_request_scope = lambda do |entries, request|
+            entries.includes(:account).where(pageflow_accounts: {name: request.subdomain})
+          end
+        end
+
+        it 'responds with redirect for matching entry' do
+          account = create(:account, :name => 'news')
+          entry = create(:entry, :published, :account => account, :title => 'report')
+          chapter = create(:chapter, :revision => entry.published_revision)
+          page = create(:page, :chapter => chapter)
+
+          request.host = 'news.example.com'
+          get(:page, :id => entry, :page_index => 0)
+
+          expect(response).to redirect_to("/report##{page.perma_id}")
+        end
+
+        it 'responds with not found for non matching entry' do
+          entry = create(:entry, :published)
+
+          request.host = 'news.example.com'
+          get(:page, :id => entry, :page_index => 0)
+
+          expect(response.status).to eq(404)
+        end
       end
     end
   end
