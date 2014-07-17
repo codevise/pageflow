@@ -104,6 +104,9 @@ $overview-header-font: $standard-font;
     &.audio .pictogram {
       background-image: image-url('pageflow/ov-audio.png');
     }
+    &.audio_loop .pictogram {
+      background-image: image-url('pageflow/ov-image.png');
+    }
   }
 
   .content .ov_chapter .ov_page.active {

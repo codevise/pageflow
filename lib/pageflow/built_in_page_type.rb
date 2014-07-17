@@ -38,5 +38,9 @@ module Pageflow
     def self.video
       new('video')
     end
+
+    def self.audio_loop
+      new('audio_loop')
+    end
   end
 end
