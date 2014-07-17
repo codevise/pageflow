@@ -30,6 +30,9 @@
 - Option to require explicit confirmation of video/audio encoding by user
   before submitting jobs to Zencoder.
 
+- The Accounts admin show template has been splitted into multiple
+  partials.
+
 - Bug fix: Improve video playback support on iOS and Android.
 - Bug fix: Missing translations for attribute/model names in admin.
 - Bug fix: Reusing files from other entries was broken in editor.

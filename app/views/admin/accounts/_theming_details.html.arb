@@ -1,0 +1,6 @@
+attributes_table_for account.default_theming do
+  row :cname, :class => 'cname'
+  row :theme, :class => 'theme' do
+    account.default_theming.theme.name
+  end
+end
