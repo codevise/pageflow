@@ -3,7 +3,7 @@ de:
     entries:
       entries: "Beiträge"
       title_hint: "Dieses Feld bestimmt die URL, unter der der Beitrag öffentlich erreichbar ist."
-      editor: "Editor öffnen"
+      editor: "Editor"
       remove: "Entfernen"
       edit: "Bearbeiten"
       depublish: "Beitrag depublizieren"
@@ -11,7 +11,8 @@ de:
       show: "Anzeigen"
       restore: "Wiederherstellen"
       confirm_restore: "Soll der Beitrag wirklich auf den Stand dieser Revision zurückgesetzt werden? Vor dem Zurücksetzen wird eine automatische Sicherung des aktuellen Standes erstellt."
-      show_public: "Öffentliche Seite anzeigen"
+      show_public: "Öffentlich"
+      preview: "Vorschau"
       members: "Redakteure"
       no_members: "Es sind keine Redakteure zugeordnet."
 

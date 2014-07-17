@@ -154,6 +154,28 @@ describe Admin::EntriesController do
     end
   end
 
+  describe '#preview' do
+    it 'responds redirects to draft revision' do
+      user = create(:user)
+      entry = create(:entry, :with_member => user)
+
+      sign_in(user)
+      get(:preview, :id => entry)
+
+      expect(response).to redirect_to("/revisions/#{entry.draft.id}")
+    end
+
+    it 'requires the signed in user to be member of the parent entry' do
+      user = create(:user)
+      entry = create(:entry)
+
+      sign_in(user)
+      get(:preview, :id => entry)
+
+      expect(response).to redirect_to(admin_root_path)
+    end
+  end
+
   describe '#snapshot' do
     it 'does not allow account manager to snapshot entries of other account' do
       account = create(:account)

@@ -21,10 +21,11 @@ module Pageflow
       column :updated_at
       column :class => 'buttons' do |entry|
         if authorized?(:edit, Entry)
-          span(link_to(I18n.t("admin.entries.editor"), pageflow.edit_entry_path(entry), :class => 'button'))
+          span(link_to(I18n.t("admin.entries.editor"), pageflow.edit_entry_path(entry), :class => 'editor button'))
         end
+        span(link_to(I18n.t("admin.entries.preview"), preview_admin_entry_path(entry), :class => 'preview button'))
         if entry.published?
-          span(link_to(I18n.t("admin.entries.show_public"), pageflow.entry_path(entry), :class => 'button'))
+          span(link_to(I18n.t("admin.entries.show_public"), pageflow.entry_path(entry), :class => 'show_public button'))
         end
       end
     end
@@ -68,6 +69,12 @@ module Pageflow
       authorize!(:snapshot, entry)
       entry.snapshot(:creator => current_user, :type => 'user')
       redirect_to(admin_entry_path(entry))
+    end
+
+    member_action :preview do
+      entry = Entry.find(params[:id])
+      authorize!(:show, entry.draft)
+      redirect_to(pageflow.revision_path(entry.draft))
     end
 
     show :title => :title do |entry|
