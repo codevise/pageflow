@@ -13,7 +13,7 @@
 
   h3 {
     margin: 15px 3%;
-    width: 100%;
+    width: 94%;
   }
 
   &.empty {
@@ -43,9 +43,12 @@
   .controls {
     position: absolute;
     bottom: 10%;
-    left: 0;
-    width: 100%;
+    left: 50%;
     z-index: 2;
+
+    @include phone {
+      left: 5%;
+    }
 
     .control_bar_text {
       position: absolute;
@@ -70,7 +73,6 @@
     @include transform(translate3d(-50%, 0,0));
     z-index: 2;
     font-size: 0.8em;
-    max-width: 90%;
   }
 
   .vjs-control-bar {
@@ -246,11 +248,12 @@
       height: 60px;
       border: none;
       background: none;
-      width: 90%;
-      left: 50%;
+      width: 60px;
+      left: 0;
       margin-left: -4px;
       max-width: 435px;
       pointer-events: none;
+      @include transform(translate3d(0,0,0));
     }
 
     .add_info_box {
@@ -264,6 +267,10 @@
 
       &.empty {
         display: block;
+        width: 60px;
+        @include transform(translate3d(0,0,0));
+        left: 0;
+        min-width: 0;
 
         &:before {
           display: none;
@@ -296,6 +303,52 @@
   @include phone_portrait {
     .controls {
       bottom: 50px;
+    }
+  }
+
+/* Controlbar used to toggle embedded media views */
+
+  .controls {
+    pointer-events: none;
+
+    a, .vjs-control-bar {
+      pointer-events: all;
+    }
+
+    @include phone {
+      max-width: 90%;
+
+      .hint {
+        display: block;
+      }
+
+    }
+
+
+  }
+
+  .vjs-control-bar.view-control {
+    .control_bar_text {
+      top: 20px;
+    }
+
+    @include phone {
+      display: block;
+      top: 50%;
+      margin-top: -31px;
+      bottom: auto;
+      height: 60px;
+      width: 60px;
+      left: 0;
+      margin-left: -3px;
+      max-width: 435px;
+      pointer-events: all;
+      @include transform(translate3d(0, 0, 0));
+
+
+      .control_bar_text {
+        display: none;
+      }
     }
   }
 }
