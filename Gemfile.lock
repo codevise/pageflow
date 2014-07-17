@@ -33,10 +33,10 @@ PATH
       friendly_id (~> 5.0)
       i18n-js
       jbuilder (~> 1.2)
-      jquery-fileupload-rails
-      jquery-layout-rails
-      jquery-rails
-      jquery-ui-rails
+      jquery-fileupload-rails (~> 0.4.1)
+      jquery-layout-rails (~> 0.1.0)
+      jquery-rails (~> 3.0)
+      jquery-ui-rails (~> 4.2)
       marionette-rails (~> 1.1.0)
       paperclip (~> 3.5)
       rails (~> 4.0.2)
