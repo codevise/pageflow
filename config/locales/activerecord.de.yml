@@ -28,27 +28,36 @@ de:
         too_short: ist zu kurz (nicht weniger als %{count} Zeichen)
         wrong_length: hat die falsche Länge (muss genau %{count} Zeichen haben)
     models:
-      account:
-        one: "Konto"
-        other: "Konten"
-      membership:
-        one: "Mitgliedschaft"
-        other: "Mitgliedschaften"
-      entry:
-        one: "Beitrag"
-        other: "Beiträge"
-      folder:
-        one: "Ordner"
-        other: "Ordner"
       user:
         one: "Nutzer"
         other: "Nutzer"
-      revision:
+
+      "pageflow/account": &pageflow_account
+        one: "Konto"
+        other: "Konten"
+      "pageflow/membership": &pageflow_membership
+        one: "Mitgliedschaft"
+        other: "Mitgliedschaften"
+      "pageflow/entry": &pageflow_entry
+        one: "Beitrag"
+        other: "Beiträge"
+      "pageflow/folder": &pageflow_folder
+        one: "Ordner"
+        other: "Ordner"
+      "pageflow/revision": &pageflow_revision
         one: "Revision"
         other: "Revisionen"
-      theming:
+      "pageflow/theming": &pageflow_theming
         one: "Theming"
         other: "Themings"
+
+      # Active Admin expects non namespaced translation keys
+      account: *pageflow_account
+      membership: *pageflow_membership
+      entry: *pageflow_entry
+      folder: *pageflow_folder
+      revision: *pageflow_revision
+      theming: *pageflow_theming
     attributes:
       "pageflow/account":
         name: "Name"
@@ -56,7 +65,7 @@ de:
         default_theming: "Standard Theming"
         landing_page_name: "Einstiegsseite"
         created_at : "Erstellt am"
-      user:
+      "user":
         email: "E-Mail-Adresse"
         unconfirmed_email: "Noch nicht bestätigte E-Mail-Adresse"
         full_name: "Name"
