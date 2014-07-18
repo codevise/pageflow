@@ -20,7 +20,7 @@ GIT
 PATH
   remote: .
   specs:
-    pageflow (0.1.0)
+    pageflow (0.2.0)
       activeadmin
       ar_after_transaction
       aws-sdk
@@ -86,7 +86,7 @@ GEM
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (4.0.2)
-    aws-sdk (1.45.0)
+    aws-sdk (1.48.1)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
     backbone-rails (1.0.0.1)
