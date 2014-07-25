@@ -45,7 +45,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'paperclip', '~> 3.5'
 
   # zencoder
-  s.add_dependency 'zencoder'
+  s.add_dependency 'zencoder', '~> 2.5'
 
   # Amazon AWS
   s.add_dependency 'aws-sdk'
