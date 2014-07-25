@@ -6,7 +6,7 @@ None so far.
 
 ### Version 0.2.1
 
-- Update Zencoder gem to fix [Zencoder SSL issue](http://status.zencoder.com/events/84).
+- Update Zencoder gem to fix [Zencoder SSL issue](http://status.zencoder.com/events/84) ([#70](https://github.com/codevise/pageflow/pull/70)).
 
 ### Version 0.2.0
 
