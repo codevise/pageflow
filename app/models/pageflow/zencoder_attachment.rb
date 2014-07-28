@@ -1,16 +1,20 @@
 module Pageflow
   class ZencoderAttachment
-    PATH = "/:zencoder_asset_version/:host/:class/:id_partition/:filename"
-    URL = ":zencoder_protocol://:zencoder_host_alias#{PATH}"
-    HLS_URL = ":zencoder_protocol://:zencoder_hls_host_alias#{PATH}"
-    HLS_ORIGIN_URL = ":zencoder_protocol://:zencoder_hls_origin_host_alias#{PATH}"
+
+    cattr_accessor :default_options
+    self.default_options = {
+      path: "/:zencoder_asset_version/:host/:class/:id_partition/:filename",
+      url: ":zencoder_protocol://:zencoder_host_alias:zencoder_path",
+      hls_url: ":zencoder_protocol://:zencoder_hls_host_alias:zencoder_path",
+      hls_origin_url: ":zencoder_protocol://:zencoder_hls_origin_host_alias:zencoder_path"
+    }
 
     attr_reader :file_name_pattern, :instance, :options, :styles
 
     def initialize(instance, file_name_pattern, options = {})
       @instance = instance
       @file_name_pattern = file_name_pattern
-      @options = options
+      @options = options.merge(default_options)
 
       @styles = {}
     end
@@ -32,18 +36,18 @@ module Pageflow
     end
 
     def path
-      Paperclip::Interpolations.interpolate(PATH, self, 'default')
+      Paperclip::Interpolations.interpolate(options[:path], self, 'default')
     end
 
     def url(url_options = {})
       base_url =
         case (url_options[:host] || options[:host])
         when :hls
-          HLS_URL
+          options[:hls_url]
         when :hls_origin
-          HLS_ORIGIN_URL
+          options[:hls_origin_url]
         else
-          URL
+          options[:url]
         end
 
       Paperclip::Interpolations.interpolate(base_url + suffix(url_options), self, 'default')
