@@ -1,90 +1,172 @@
-# Require this file in db/seeds.rb to create example records for development mode.
-
 module Pageflow
-  # Default Account
+  # Provides a DSL for seeding the database with Pageflow
+  # models. Include this module in your `db/seeds.rb` file.
+  #
+  # @example
+  #
+  #   # db/seeds.rb
+  #   include Pageflow::Seeds
+  #
+  #   default_password 'supersecret'
+  #
+  #   account(name: 'example') do |account|
+  #     user(account: account,
+  #          email: 'admin@example.com',
+  #          role: 'admin',
+  #          first_name: 'John',
+  #          last_name: 'Doe')
+  #   end
+  module Seeds
+    DEFAULT_USER_PASSWORD = '!Pass123'
 
-  if Account.any?
-    default_account = Account.first
-    puts "   Account exists."
-  else
-    default_account = Account.create!(:name => 'Pageflow') do |account|
-      account.build_default_theming do |theming|
-        theming.theme_name = Pageflow.config.themes.names.first
+    # Create an {Account} with a default {Theming} if no account by
+    # that name exists.
+    #
+    # @param [Hash] attributes  attributes to override defaults
+    # @option attributes [String] :name  required
+    # @yield [account] a block to be called before the account is saved
+    # @return [Account] newly created account
+    def account(attributes, &block)
+      Account.find_or_create_by!(attributes.slice(:name)) do |account|
+        account.attributes = attributes.reverse_merge(name: 'Pageflow')
 
-        theming.imprint_link_label = 'Impressum'
-        theming.imprint_link_url = 'http://example.com/impressum.html'
-        theming.copyright_link_label = '&copy; Pageflow 2014'
-        theming.copyright_link_url = 'http://www.example.com/copyright.html'
+        build_default_theming_for(account)
+
+        say_creating_account(account)
+        yield(account) if block_given?
       end
     end
 
-    puts "   Created default account."
-  end
+    # Build a default {Theming} for an {Account}. To be used inside a
+    # block passed to {#account}.
+    #
+    # @example
+    #
+    #   account(name: 'example') do |account|
+    #     build_default_theming_for(account) do |theming|
+    #       theming.theme_name = 'mdr'
+    #     end
+    #   end
+    #
+    # @param [Account] account  the account to build a default themeing for
+    # @param [Hash] attributes  further attributes to override defaults
+    # @yield [theming] a block which is passed the newly built theming
+    # @return [Theming] newly built theming
+    def build_default_theming_for(account, attributes = {}, &block)
+      default_attributes = {
+        theme_name: Pageflow.config.themes.names.first,
 
-  # Users
+        imprint_link_label: 'Impressum',
+        imprint_link_url: 'http://example.com/impressum.html',
+        copyright_link_label: '&copy; Pageflow 2014',
+        copyright_link_url: 'http://www.example.com/copyright.html'
+      }
 
-  def self.create_user(options)
-    options[:password_confirmation] = options[:password]
-    Account.first.users.create!(options)
+      account.build_default_theming(default_attributes.merge(attributes), &block)
+    end
 
-    puts <<-END
-   Created #{options[:admin] ? 'admin' : 'editor'} user:
+    # Create a {User} if non with the given email exists yet.
+    #
+    # @param [Hash] attributes  attributes to override defaults
+    # @option attributes [String] :email  required
+    # @yield [user] a block to be called before the user is saved
+    # @return [User] newly created user
+    def user(attributes, &block)
+      default_attributes = {
+        password: default_user_password,
+        first_name: 'Elliot',
+        last_name: 'Example'
+      }
 
-     email:     #{options[:email]}
-     password:  #{options[:password]}
+      User.find_or_create_by!(attributes.slice(:email)) do |user|
+        user.attributes = default_attributes.merge(attributes)
+        user.password_confirmation = user.password
 
-  END
-  end
+        say_creating_user(user)
+        yield(user) if block_given?
+      end
+    end
 
-  if default_account.users.none?
-    create_user(:email => 'admin@example.com',
-                :password => '!Pass123',
-                :first_name => 'Alice',
-                :last_name => 'Adminson',
-                :role => 'admin')
+    # Set the default password to use for created users. Call before
+    # using {#user}.
+    #
+    # @param [String] password
+    def default_user_password(password = nil)
+      if password
+        @default_user_password = password
+      else
+        @default_user_password || DEFAULT_USER_PASSWORD
+      end
+    end
 
-    create_user(:email => 'accountmanager@example.com',
-                :password => '!Pass123',
-                :first_name => 'Alfred',
-                :last_name => 'Mc Count',
-                :role => 'account_manager')
+    # Create a sample {Entry} with some chapter and pages if no
+    # entry with that title exists in the given account.
+    #
+    # @param [Hash] attributes  attributes to override defaults
+    # @option attributes [Account] :account  required
+    # @option attributes [title] :title  required
+    # @yield [entry] a block to be called before the entry is saved
+    # @return [Entry] newly created entry
+    def sample_entry(attributes)
+      entry = Entry.where(attributes.slice(:account, :title)).first
 
-    create_user(:email => 'editor@example.com',
-                :password => '!Pass123',
-                :first_name => 'Ed',
-                :last_name => 'Edison')
-  else
-    puts "   Users exist."
-  end
+      if entry.nil?
+        entry = Entry.create!(attributes) do |entry|
+          entry.theming = attributes.fetch(:account).default_theming
 
-  # Sample entry
+          say_creating_entry(entry)
+          yield(entry) if block_given?
+        end
 
-  unless Entry.any?
-    entry = default_account.entries.create!(:title => 'Fiese Flut', :theming_id => default_account.default_theming.id)
+        chapter = entry.draft.chapters.create!(title: 'Kapitel 1')
+        chapter.pages.create!(template: 'background_image')
+        chapter.pages.create!(template: 'background_image')
 
-    chapter = entry.draft.chapters.create!(:title => 'Kapitel 1')
-    chapter.pages.create!(:template => 'background_image')
-    chapter.pages.create!(:template => 'background_image')
+        chapter = entry.draft.chapters.create!(title: 'Kapitel 2')
+        chapter.pages.create!(template: 'video')
+      end
 
-    chapter = entry.draft.chapters.create!(:title => 'Kapitel 2')
-    chapter.pages.create!(:template => 'video')
+      entry
+    end
 
-    puts "   Created sample entry."
-  end
+    # Create a {Membership} for the given user and entry.
+    #
+    # @param [Hash] attributes  attributes to override defaults
+    # @option attributes [User] :user  required
+    # @option attributes [Entry] :entry  required
+    # @return [Membership] newly created membership
+    def membership(attributes)
+      Membership.find_or_create_by!(attributes) do |membership|
+        say_creating_membership(membership)
+      end
+    end
 
-  # Sample membership
+    private
 
-  unless Membership.any?
-    membership = Membership.create!(:user => default_account.users.editors.first,
-      :entry => Entry.first)
-    puts "   Created sample membership."
-  end
+    def say_creating_account(account)
+      say("\n-- creating account '#{account.name}'\n\n")
+    end
 
-  # Sample revision
+    def say_creating_user(user)
+     say(<<-END)
+   #{user.role} user:
 
-  unless Revision.any?
-    revision = Revision.create!(:creator => default_account.users.editors.first,
-      :entry => Entry.first)
-    puts "   Created sample revision."
+     email:     #{user.email}
+     password:  #{user.password}
+
+END
+    end
+
+    def say_creating_entry(entry)
+      say("   sample entry '#{entry.title}'")
+    end
+
+    def say_creating_membership(membership)
+      say("   membership for user '#{membership.user.email}' and entry '#{membership.entry.title}'")
+    end
+
+    def say(text)
+      puts(text) unless Rails.env.test?
+    end
   end
 end

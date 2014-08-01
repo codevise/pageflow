@@ -3,10 +3,10 @@ module Pageflow
     class SeedsGenerator < Rails::Generators::Base
       desc "Requires the pageflow seeds in db/seeds.rb"
 
-      def add_route
-        append_to_file 'db/seeds.rb' do
-          "require 'pageflow/seeds'\n"
-        end
+      source_root File.expand_path("../templates", __FILE__)
+
+      def create_initializer
+        template 'seeds.rb', 'db/seeds.rb'
       end
     end
   end
