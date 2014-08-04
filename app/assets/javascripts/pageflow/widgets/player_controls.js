@@ -21,8 +21,9 @@ jQuery.widget('pageflow.playerControls', {
 
     player.on('timeupdate', function (position, duration) {
       var percent = duration > 0 ? (player.position / player.duration) * 100 : 0;
-      if(!isNaN(position)) {
-        if(durationDisplay.html().length === 5 && durationDisplay.html().charAt(0) === "0") {
+
+      if (!isNaN(position)) {
+        if (player.duration < 600) {
           $(currentTimeDisplay).html(player.formatTime(position).substr(1));
           $(durationDisplay).html(player.formatTime(duration).substr(1));
         }
