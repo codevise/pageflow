@@ -2,7 +2,17 @@
 
 ### Changes on `master`
 
-None so far.
+##### Breaking Changes
+
+- Requiring `pageflow/seeds` in your `db/seeds.rb` file no longer
+  automatically creates database records. Instead, you can include the
+  `Pageflow::Seeds` module to configure your database seed via a DSL.
+  To keep seeding your database with the same default users and sample
+  entry as before, re-running the `pagflow:seeds` generator and choose
+  to overwrite your your `db/seeds.rb` file:
+
+      $ cd your_pageflow_app/
+      $ rails generate pageflow:seeds
 
 ### Version 0.2.1
 
