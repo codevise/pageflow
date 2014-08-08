@@ -20,6 +20,8 @@
 
 - Bug fix: Audio player timestamps were flickering on play.
   ([#74](https://github.com/codevise/pageflow/pull/74))
+- Bug fix: IE9 display errors.
+  ([#77](https://github.com/codevise/pageflow/pull/77), [#80](https://github.com/codevise/pageflow/pull/80))
 
 ##### Rails Engine
 
@@ -27,6 +29,8 @@
   ([#71](https://github.com/codevise/pageflow/pull/71))
 - Zencoder output to Akamai NetStorage.
   ([#78](https://github.com/codevise/pageflow/pull/78))
+- Bug fix: Update jbuilder gem dependency
+  ([#79](https://github.com/codevise/pageflow/pull/79))
 
 ### Version 0.2.1
 
