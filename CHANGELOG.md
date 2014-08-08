@@ -20,8 +20,8 @@
 
 - Bug fix: Audio player timestamps were flickering on play.
   ([#74](https://github.com/codevise/pageflow/pull/74))
-- Bug fix: IE9 display errors.
-  ([#77](https://github.com/codevise/pageflow/pull/77), [#80](https://github.com/codevise/pageflow/pull/80))
+- Bug fix: Link IE stylesheets/javascripts correctly.
+  ([#81](https://github.com/codevise/pageflow/pull/81))
 
 ##### Rails Engine
 

@@ -11,18 +11,13 @@
   background-image: url('.');
 }
 
-.page .shadow {
-  /* Gradient is done with filter property. */
-  background-image: url('.') !important;
-}
-
 /* Make sure controls are centered, since translateX(-50%) does not work. */
 
 .vjs-control-bar {
-  margin-left: -217px !important;
+  -ms-transform: translate(-50%, 0);
 }
 
 .js .add_info_box {
-  margin: 0 0 63px -214px;
+  -ms-transform: translate(-50%, 0);
   max-width: 434px;
 }
