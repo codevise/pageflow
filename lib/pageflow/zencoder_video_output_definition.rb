@@ -1,5 +1,7 @@
 module Pageflow
   class ZencoderVideoOutputDefinition < ZencoderOutputDefinition
+    cattr_accessor :skip_hls
+
     attr_reader :video_file
 
     def initialize(video_file, options = {})
@@ -13,16 +15,15 @@ module Pageflow
 
     def outputs
       [
-        s3_and_transfer(webm_high_definition),
-        s3_and_transfer(webm_medium_definition),
-        s3_and_transfer(mp4_high_definition),
-        s3_and_transfer(mp4_medium_definition),
-        s3_and_transfer(mp4_low_definition),
-        s3_and_sftp(hls_high_definition),
-        s3_and_sftp(hls_medium_definition),
-        s3_and_sftp(hls_low_definition),
-        s3_and_sftp(hls_playlist_definition),
-        s3_and_sftp(smil_definition),
+        transferable(webm_high_definition),
+        transferable(webm_medium_definition),
+        transferable(mp4_high_definition),
+        transferable(mp4_medium_definition),
+        transferable(mp4_low_definition),
+
+        hls_definitions,
+        non_transferable(smil_definition),
+
         thumbnails_definitions
       ].flatten
     end
@@ -104,6 +105,17 @@ module Pageflow
       }
     end
 
+
+    def hls_definitions
+      return [] if skip_hls
+
+      [
+        non_transferable(hls_high_definition),
+        non_transferable(hls_medium_definition),
+        non_transferable(hls_low_definition),
+        non_transferable(hls_playlist_definition)
+      ]
+    end
 
     def hls_low_definition
       {
@@ -199,31 +211,35 @@ module Pageflow
     end
 
     def thumbnails_definitions
-      result = [thumbnails_definition(method(:s3_url))]
-      result << thumbnails_definition(method(:sftp_url)) if sftp_configured?
+      if akamai_configured?
+        result = [thumbnails_definition(method(:akamai_url))]
+      else
+        result = [thumbnails_definition(method(:s3_url))]
+        result << thumbnails_definition(method(:sftp_url)) if sftp_configured?
+      end
       result
     end
 
     def thumbnails_definition(url_helper)
       {
         :thumbnails => [
-          {
-            :label => 'poster',
-            :format => video_file.zencoder_poster.format,
-            :number => 1,
-            :start_at_first_frame => true,
-            :filename => video_file.zencoder_poster.base_name_pattern,
-            :base_url => url_helper.call(video_file.zencoder_poster.dir_name),
-            :public => 1
-          },
-          {
-            :label => 'thumbnail',
-            :format => video_file.zencoder_thumbnail.format,
-            :number => 1,
-            :filename => video_file.zencoder_thumbnail.base_name_pattern,
-            :base_url => url_helper.call(video_file.zencoder_thumbnail.dir_name),
-            :public => 1
-          }
+          with_credentials({
+                             :label => 'poster',
+                             :format => video_file.zencoder_poster.format,
+                             :number => 1,
+                             :start_at_first_frame => true,
+                             :filename => video_file.zencoder_poster.base_name_pattern,
+                             :base_url => url_helper.call(video_file.zencoder_poster.dir_name),
+                             :public => 1
+                           }),
+          with_credentials({
+                             :label => 'thumbnail',
+                             :format => video_file.zencoder_thumbnail.format,
+                             :number => 1,
+                             :filename => video_file.zencoder_thumbnail.base_name_pattern,
+                             :base_url => url_helper.call(video_file.zencoder_thumbnail.dir_name),
+                             :public => 1
+                           })
         ]
       }
     end

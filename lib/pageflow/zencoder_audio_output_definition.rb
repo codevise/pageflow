@@ -13,9 +13,9 @@ module Pageflow
 
     def outputs
       [
-        s3_and_transfer(m4a_definition),
-        s3_and_transfer(mp3_definition),
-        s3_and_transfer(ogg_definition)
+        transferable(m4a_definition),
+        transferable(mp3_definition),
+        transferable(ogg_definition)
       ].flatten
     end
 
