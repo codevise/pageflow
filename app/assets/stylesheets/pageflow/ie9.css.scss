@@ -1,13 +1,19 @@
-.page .scroller {
-  /* IE 9 does not trigger mouse events on div without a background - duh */
-  background-image: url('.');
-}
-
 .slideshow section.page {
   &.animate-out-forwards,
   &.animate-out-backwards {
     opacity: 0 !important;
   }
+}
+
+/* IE 9 does not trigger mouse events on div without a background - duh */
+
+.page .scroller {
+  background-image: url('.');
+}
+
+.page .shadow {
+  /* Gradient is done with filter property. */
+  background-image: url('.') !important;
 }
 
 /* Make sure controls are centered, since translateX(-50%) does not work. */
