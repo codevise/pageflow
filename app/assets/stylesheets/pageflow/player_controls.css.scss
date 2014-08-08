@@ -67,6 +67,7 @@
     margin-bottom: 63px;
     position: absolute;
     left: 50%;
+    @include transform(translate(-50%, 0));
     @include transform(translate3d(-50%, 0,0));
     z-index: 2;
     font-size: 0.8em;
@@ -82,6 +83,7 @@
     border: 3px solid #505050;
     left: 50%;
     z-index: 2;
+    @include transform(translate(-50%, 0));
     @include transform(translate3d(-50%, 0, 0));
     display: block;
   }
