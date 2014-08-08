@@ -32,7 +32,7 @@ PATH
       ejs
       friendly_id (~> 5.0)
       i18n-js
-      jbuilder (~> 1.2)
+      jbuilder (~> 1.5)
       jquery-fileupload-rails (~> 0.4.1)
       jquery-layout-rails (~> 0.1.0)
       jquery-rails (~> 3.0)
