@@ -146,7 +146,7 @@ module Pageflow
           self.table_name = :test_revision_components
         end
 
-        class TestPageType < PageType
+        class RevisionTestPageType < PageType
           name :test
 
           def revision_components
@@ -155,7 +155,7 @@ module Pageflow
         end
 
         it 'copies registered RevisionComponents' do
-          Pageflow.config.register_page_type(TestPageType.new)
+          Pageflow.config.register_page_type(RevisionTestPageType.new)
           revision = create(:revision)
           TestRevisionComponent.create!(revision: revision)
 
