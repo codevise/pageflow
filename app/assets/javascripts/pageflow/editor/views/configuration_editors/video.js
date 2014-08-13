@@ -16,6 +16,7 @@ pageflow.ConfigurationEditorView.register('video', {
     });
 
     this.tab('options', function() {
+      this.input('autoplay', pageflow.CheckBoxInputView);
       this.group('options');
     });
   }

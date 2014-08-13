@@ -56,11 +56,15 @@ pageflow.pageType.register('video', _.extend({
       videoPlayer.prebuffer().done(function() {
         videoPlayer.hidePosterImage();
 
-        that.fadeInTimeout = setTimeout(function() {
-          videoPlayer.volume(0);
-          videoPlayer.play();
-          that.fadeSound(videoPlayer, pageflow.settings.get('volume'), 1000);
-        }, 1000);
+        if (configuration.autoplay === false) {
+          videoPlayer.volume(pageflow.settings.get('volume'));
+        } else {
+          that.fadeInTimeout = setTimeout(function() {
+            videoPlayer.volume(0);
+            videoPlayer.play();
+            that.fadeSound(videoPlayer, pageflow.settings.get('volume'), 1000);
+          }, 1000);
+        }
       });
     }
   },

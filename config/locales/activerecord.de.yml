@@ -136,6 +136,7 @@ de:
         linked_pages_layout: "Hervorgehobenes Element"
         hide_title: "Titel ausblenden"
         text_position: "Textposition"
+        autoplay: "Automatische Wiedergabe"
       "pageflow/image_file":
         dimensions: "Maße"
       "pageflow/video_file":

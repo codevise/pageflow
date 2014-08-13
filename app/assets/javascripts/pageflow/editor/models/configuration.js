@@ -10,7 +10,8 @@ pageflow.Configuration = Backbone.Model.extend({
     transition: 'fade',
     text_position: 'left',
     invert: false,
-    hide_title: false
+    hide_title: false,
+    autoplay: true
   },
 
   getImageFileUrl: function(attribute) {
