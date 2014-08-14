@@ -4,9 +4,9 @@ module Pageflow
     cattr_accessor :default_options
     self.default_options = {
       path: "/:zencoder_asset_version/:host/:class/:id_partition/:filename",
-      url: ":zencoder_protocol://:zencoder_host_alias:zencoder_path",
-      hls_url: ":zencoder_protocol://:zencoder_hls_host_alias:zencoder_path",
-      hls_origin_url: ":zencoder_protocol://:zencoder_hls_origin_host_alias:zencoder_path"
+      url: ":zencoder_protocol//:zencoder_host_alias:zencoder_path",
+      hls_url: ":zencoder_protocol//:zencoder_hls_host_alias:zencoder_path",
+      hls_origin_url: ":zencoder_protocol//:zencoder_hls_origin_host_alias:zencoder_path"
     }
 
     attr_reader :file_name_pattern, :instance, :options, :styles

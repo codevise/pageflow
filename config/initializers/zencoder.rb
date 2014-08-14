@@ -32,7 +32,8 @@ Paperclip.interpolates(:zencoder_hls_origin_host_alias) do |attachment, style|
 end
 
 Paperclip.interpolates(:zencoder_protocol) do |attachment, style|
-  Pageflow.config.zencoder_options.fetch(:s3_protocol)
+  protocol = Pageflow.config.zencoder_options.fetch(:s3_protocol)
+  protocol.empty? ? protocol : "#{protocol}:"
 end
 
 Paperclip.interpolates(:zencoder_asset_version) do |attachment, style|

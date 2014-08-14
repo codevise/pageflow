@@ -61,6 +61,14 @@ module Pageflow
         expect(attachment.url).to eq("#{zencoder_options[:s3_protocol]}://#{zencoder_options[:s3_host_alias]}/#{version}/test-host/files/000/000/005/video.mp4")
       end
 
+      it 'supports protocol relative urls' do
+        Pageflow.config.zencoder_options[:s3_protocol] = ''
+        file = double('File', :id => 5, :class => double(:to_s => 'File'))
+        attachment = ZencoderAttachment.new(file, 'video.mp4')
+
+        expect(attachment.url).to eq("//#{zencoder_options[:s3_host_alias]}/#{version}/test-host/files/000/000/005/video.mp4")
+      end
+
       it 'can append unique id to url' do
         file = double('File', :id => 5, :class => double(:to_s => 'File'))
         attachment = ZencoderAttachment.new(file, 'video.mp4')
