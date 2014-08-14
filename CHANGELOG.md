@@ -31,6 +31,7 @@
   ([#78](https://github.com/codevise/pageflow/pull/78))
 - Bug fix: Update jbuilder gem dependency
   ([#79](https://github.com/codevise/pageflow/pull/79))
+- `public_entry_url_options` option to configure urls of published entries.
 
 ### Version 0.2.1
 
