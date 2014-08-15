@@ -2,7 +2,7 @@ module Pageflow
   class EntriesController < Pageflow::ApplicationController
     before_filter :authenticate_user!, :except => [:index, :show, :page]
 
-#    before_filter :prevent_ssl, :only => [:index, :show], :unless => lambda { |controller| controller.request.format.json? }
+    before_filter :prevent_ssl, :only => [:index, :show], :unless => lambda { |controller| controller.request.format.json? }
 
     helper_method :render_to_string
 
