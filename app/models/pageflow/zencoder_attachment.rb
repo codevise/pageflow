@@ -40,26 +40,40 @@ module Pageflow
     end
 
     def url(url_options = {})
-      base_url =
-        case (url_options[:host] || options[:host])
-        when :hls
-          options[:hls_url]
-        when :hls_origin
-          options[:hls_origin_url]
-        else
-          options[:url]
-        end
-
-      Paperclip::Interpolations.interpolate(base_url + suffix(url_options), self, 'default')
+      ensure_default_protocol(interpolate(url_pattern(url_options)),
+                              url_options)
     end
 
     private
+
+    def ensure_default_protocol(url, url_options)
+      url =~ /^http/ ? url : [url_options[:default_protocol], url].compact.join(':')
+    end
+
+    def url_pattern(url_options)
+      base_url(url_options) + suffix(url_options)
+    end
+
+    def base_url(url_options)
+      case (url_options[:host] || options[:host])
+      when :hls
+        options[:hls_url]
+      when :hls_origin
+        options[:hls_origin_url]
+      else
+        options[:url]
+      end
+    end
 
     def suffix(url_options)
       [
         options[:url_suffix],
         url_options[:unique_id] ? "?n=#{url_options[:unique_id]}" : nil
       ].compact.join
+    end
+
+    def interpolate(url)
+      Paperclip::Interpolations.interpolate(url, self, 'default')
     end
   end
 end

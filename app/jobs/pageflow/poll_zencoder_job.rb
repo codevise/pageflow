@@ -41,8 +41,8 @@ module Pageflow
 
     def self.fetch_thumbnail(file)
       return unless file.respond_to?(:thumbnail)
-      file.thumbnail = URI.parse(file.zencoder_thumbnail.url)
-      file.poster = URI.parse(file.zencoder_poster.url)
+      file.thumbnail = URI.parse(file.zencoder_thumbnail.url(default_protocol: 'http'))
+      file.poster = URI.parse(file.zencoder_poster.url(default_protocol: 'http'))
     rescue OpenURI::HTTPError
       throw(:halt, :pending)
     end
