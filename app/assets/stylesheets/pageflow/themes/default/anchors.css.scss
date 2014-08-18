@@ -37,9 +37,6 @@ $anchor-color: $main-color;
 
 .invert .contentText a {
   color: black;
-  &:before {
-    background-image: image-url('pageflow/anchor_black.png');
-  }
 }
 
 .overview_mobile .credits a,
