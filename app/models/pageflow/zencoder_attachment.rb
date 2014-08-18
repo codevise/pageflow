@@ -4,9 +4,9 @@ module Pageflow
     cattr_accessor :default_options
     self.default_options = {
       path: "/:zencoder_asset_version/:host/:class/:id_partition/:filename",
-      url: ":zencoder_protocol://:zencoder_host_alias:zencoder_path",
-      hls_url: ":zencoder_protocol://:zencoder_hls_host_alias:zencoder_path",
-      hls_origin_url: ":zencoder_protocol://:zencoder_hls_origin_host_alias:zencoder_path"
+      url: ":zencoder_protocol//:zencoder_host_alias:zencoder_path",
+      hls_url: ":zencoder_protocol//:zencoder_hls_host_alias:zencoder_path",
+      hls_origin_url: ":zencoder_protocol//:zencoder_hls_origin_host_alias:zencoder_path"
     }
 
     attr_reader :file_name_pattern, :instance, :options, :styles
@@ -40,26 +40,40 @@ module Pageflow
     end
 
     def url(url_options = {})
-      base_url =
-        case (url_options[:host] || options[:host])
-        when :hls
-          options[:hls_url]
-        when :hls_origin
-          options[:hls_origin_url]
-        else
-          options[:url]
-        end
-
-      Paperclip::Interpolations.interpolate(base_url + suffix(url_options), self, 'default')
+      ensure_default_protocol(interpolate(url_pattern(url_options)),
+                              url_options)
     end
 
     private
+
+    def ensure_default_protocol(url, url_options)
+      url =~ /^http/ ? url : [url_options[:default_protocol], url].compact.join(':')
+    end
+
+    def url_pattern(url_options)
+      base_url(url_options) + suffix(url_options)
+    end
+
+    def base_url(url_options)
+      case (url_options[:host] || options[:host])
+      when :hls
+        options[:hls_url]
+      when :hls_origin
+        options[:hls_origin_url]
+      else
+        options[:url]
+      end
+    end
 
     def suffix(url_options)
       [
         options[:url_suffix],
         url_options[:unique_id] ? "?n=#{url_options[:unique_id]}" : nil
       ].compact.join
+    end
+
+    def interpolate(url)
+      Paperclip::Interpolations.interpolate(url, self, 'default')
     end
   end
 end

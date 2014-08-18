@@ -6,7 +6,7 @@
 
 - Requiring `pageflow/seeds` in your `db/seeds.rb` file no longer
   automatically creates database records. Instead, you can include the
-  `Pageflow::Seeds` module to configure your database seed via a DSL. 
+  `Pageflow::Seeds` module to configure your database seed via a DSL.
   ([#73](https://github.com/codevise/pageflow/pull/73))
 
   To keep seeding your database with the same default users and sample
@@ -29,6 +29,8 @@
   ([#71](https://github.com/codevise/pageflow/pull/71))
 - Zencoder output to Akamai NetStorage.
   ([#78](https://github.com/codevise/pageflow/pull/78))
+- Generate protocol relative Zencoder urls when `:s3_protocol` in
+  `zencoder_options` is empty string.
 - Bug fix: Update jbuilder gem dependency
   ([#79](https://github.com/codevise/pageflow/pull/79))
 
