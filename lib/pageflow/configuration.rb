@@ -76,6 +76,9 @@ module Pageflow
     # Used by all public actions that display entires to restrict the
     # available entries by hostname or other request attributes.
     #
+    # Use {#public_entry_url_options} to make sure urls of published
+    # entries conform twith the restrictions.
+    #
     # Example:
     #
     #     # Only make entries of one account available under <account.name>.example.com
@@ -83,6 +86,20 @@ module Pageflow
     #       entries.includes(:account).where(pageflow_accounts: {name: request.subdomain})
     #     end
     attr_accessor :public_entry_request_scope
+
+    # Either a lambda or an object with a `call` method taking an
+    # {Entry} as paramater and returing a hash of options used to
+    # construct the url of a published entry.
+    #
+    # Can be used to change the host of the url under which entries
+    # are available.
+    #
+    # Example:
+    #
+    #     config.public_entry_url_options = lambda do |entry|
+    #       {host: "#{entry.account.name}.example.com"}
+    #     end
+    attr_accessor :public_entry_url_options
 
     # Submit video/audio encoding jobs only after the user has
     # explicitly confirmed in the editor. Defaults to false.
@@ -101,6 +118,7 @@ module Pageflow
       @themes = Themes.new
 
       @public_entry_request_scope = lambda { |entries, request| entries }
+      @public_entry_url_options = Pageflow::EntriesHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
 
       @confirm_encoding_jobs = false
     end

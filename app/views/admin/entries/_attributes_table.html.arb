@@ -19,6 +19,6 @@ attributes_table_for entry do
     end
   end
   row :url do
-    pageflow.short_entry_url(entry)
+    pretty_entry_url(entry)
   end
 end

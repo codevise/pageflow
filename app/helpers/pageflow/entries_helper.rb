@@ -1,11 +1,14 @@
 module Pageflow
   module EntriesHelper
+    DEFAULT_PUBLIC_ENTRY_OPTIONS = lambda do |entry|
+      entry.theming.cname.present? ? {host: entry.theming.cname} : nil
+    end
+
     def pretty_entry_url(entry)
-      if entry.theming.cname.present?
-        short_entry_url(entry.to_model, :host => entry.theming.cname)
-      else
-        short_entry_url(entry.to_model)
-      end
+      options = Pageflow.config.public_entry_url_options
+      options = options.call(entry) if options.respond_to?(:call)
+
+      pageflow.short_entry_url(entry.to_model, options)
     end
 
     def entry_collection_for_parent(parent)

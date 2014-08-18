@@ -25,7 +25,7 @@ module Pageflow
         end
         span(link_to(I18n.t("admin.entries.preview"), preview_admin_entry_path(entry), :class => 'preview button'))
         if entry.published?
-          span(link_to(I18n.t("admin.entries.show_public"), pageflow.entry_path(entry), :class => 'show_public button'))
+          span(link_to(I18n.t("admin.entries.show_public"), pretty_entry_url(entry), :class => 'show_public button'))
         end
       end
     end
@@ -89,6 +89,7 @@ module Pageflow
 
     controller do
       helper FoldersHelper
+      helper EntriesHelper
       helper Admin::RevisionsHelper
 
       def scoped_collection
