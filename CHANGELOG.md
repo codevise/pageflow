@@ -22,6 +22,8 @@
   ([#74](https://github.com/codevise/pageflow/pull/74))
 - Bug fix: Link IE stylesheets/javascripts correctly.
   ([#81](https://github.com/codevise/pageflow/pull/81))
+- Bug fix: Improve SSL support
+  ([#88](https://github.com/codevise/pageflow/pull/88))
 
 ##### Rails Engine
 
@@ -31,9 +33,11 @@
   ([#78](https://github.com/codevise/pageflow/pull/78))
 - Generate protocol relative Zencoder urls when `:s3_protocol` in
   `zencoder_options` is empty string.
+  ([#83](https://github.com/codevise/pageflow/pull/83))
+- `public_entry_url_options` option to configure urls of published entries.
+  ([#84](https://github.com/codevise/pageflow/pull/84))
 - Bug fix: Update jbuilder gem dependency
   ([#79](https://github.com/codevise/pageflow/pull/79))
-- `public_entry_url_options` option to configure urls of published entries.
 
 ### Version 0.2.1
 
