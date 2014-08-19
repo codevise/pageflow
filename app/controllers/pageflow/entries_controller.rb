@@ -11,14 +11,9 @@ module Pageflow
     helper RenderJsonHelper
 
     def index
-      theming = Theming.find_by_cname!(request.host)
-      @account = Account.with_landing_page.find_by_theming!(theming)
+      theming = Theming.for_request(request).with_home_url.first!
 
-      respond_to do |format|
-        format.html {
-          render :template => "pageflow/entries/index/#{@account.landing_page_name}", :layout => "pageflow/basic"
-        }
-      end
+      redirect_to(theming.home_url)
     end
 
     def show
