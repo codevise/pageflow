@@ -153,6 +153,8 @@ de:
         imprint_link_url: "Impressum-Link URL"
         copyright_link_label: "Copyright-Link Text"
         copyright_link_url: "Copyright-Link URL"
+        home_url: "Redirect URL"
+        home_button_enabled_by_default: "Home-Button in neuen Beiträgen anzeigen"
     values:
       "pageflow/page":
         template:
