@@ -51,3 +51,16 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
     this.ui.textarea.val(this.model.get(this.options.propertyName));
   }
 });
+
+(function() {
+  var isIE11 = navigator.userAgent.indexOf("Trident") !== -1;
+  // This browser detections is copied from wysihtml5.
+  var isGecko = navigator.userAgent.indexOf("Gecko") !== -1 && navigator.userAgent.indexOf("KHTML") === -1;
+
+  wysihtml5.browser.insertsLineBreaksOnReturn = function() {
+    // Used to be only isGecko. Unfortunately IE 11 is detected as
+    // Gecko since it says "like Gecko" in its user agent. Make sure
+    // we really are not IE 11.
+    return isGecko && !isIE11;
+  };
+}());
