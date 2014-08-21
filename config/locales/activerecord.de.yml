@@ -95,6 +95,8 @@ de:
         url: "Permalink"
         account: "Konto"
         manual_start: "Multimedia Hinweis vor dem Start anzeigen"
+        home_url: "Home-Button URL"
+        home_button_enabled: "Home-Button anzeigen"
       "pageflow/folder":
         account: "Konto"
         name: "Name"

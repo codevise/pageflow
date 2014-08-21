@@ -20,6 +20,16 @@ pageflow.EditMetaDataView = Backbone.Marionette.ItemView.extend({
       propertyName: 'title'
     })).el);
 
+    this.ui.form.append(this.subview(new pageflow.TextInputView({
+      model: this.model,
+      propertyName: 'home_url'
+    })).el);
+
+    this.ui.form.append(this.subview(new pageflow.CheckBoxInputView({
+      model: this.model,
+      propertyName: 'home_button_enabled'
+    })).el);
+
     this.ui.form.append(this.subview(new pageflow.TextAreaInputView({
       model: this.model,
       propertyName: 'summary'
