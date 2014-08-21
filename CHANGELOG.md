@@ -18,7 +18,16 @@
 
 - DOM change: `.navigation a.navigation_home` has been renamed to
   `.navigation a.navigation_top`. You need to update corresponding
-  selectors inside custom themes.
+  selectors inside custom themes. Instead, a new `.navigation
+  a.navigation_home` button is now supported, which links to a
+  configurable external site. If you do not wish to use this new home
+  button with your custom theme, you can disable it when registering
+  themes in your `config/initializers/pageflow.rb`:
+
+          config.themes.register(:custom, no_home_button: true)
+
+  This will cause Pageflow to only render the `a.navigation_top` link
+  in entries using your theme.
 
 ##### Public Site
 

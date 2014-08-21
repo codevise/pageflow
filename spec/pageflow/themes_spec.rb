@@ -14,9 +14,9 @@ module Pageflow
       it 'allows passing options' do
         themes = Themes.new
 
-        themes.register(:custom, home_button: true)
+        themes.register(:custom, no_home_button: true)
 
-        expect(themes.get(:custom)).to have_home_button
+        expect(themes.get(:custom)).not_to have_home_button
       end
     end
 

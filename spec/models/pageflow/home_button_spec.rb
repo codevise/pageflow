@@ -22,7 +22,7 @@ module Pageflow
 
     describe '#enabled?' do
       it 'is true if home_button is enabled, configured in revision and supported by theme' do
-        Pageflow.config.themes.register(:with_home_button, home_button: true)
+        Pageflow.config.themes.register(:with_home_button)
         revision = Revision.new(home_url: 'http://example.com', home_button_enabled: true)
         theming = Theming.new(theme_name: 'with_home_button')
         home_button = HomeButton.new(revision, theming)
@@ -31,7 +31,7 @@ module Pageflow
       end
 
       it 'is true if home_button is enabled, configured in theming and supported by theme' do
-        Pageflow.config.themes.register(:with_home_button, home_button: true)
+        Pageflow.config.themes.register(:with_home_button)
         revision = Revision.new(home_url: '', home_button_enabled: true)
         theming = Theming.new(theme_name: 'with_home_button', home_url: 'http://example.com', cname: 'pageflow.exmaple.com')
         home_button = HomeButton.new(revision, theming)
@@ -40,7 +40,7 @@ module Pageflow
       end
 
       it 'is false if home_button is disabled' do
-        Pageflow.config.themes.register(:with_home_button, home_button: true)
+        Pageflow.config.themes.register(:with_home_button)
         revision = Revision.new(home_url: 'http://example.com', home_button_enabled: false)
         theming = Theming.new(theme_name: 'with_home_button')
         home_button = HomeButton.new(revision, theming)
@@ -49,7 +49,7 @@ module Pageflow
       end
 
       it 'is false if no home_url is configured' do
-        Pageflow.config.themes.register(:with_home_button, home_button: true)
+        Pageflow.config.themes.register(:with_home_button)
         revision = Revision.new(home_button_enabled: true)
         theming = Theming.new(theme_name: 'with_home_button')
         home_button = HomeButton.new(revision, theming)
@@ -58,7 +58,7 @@ module Pageflow
       end
 
       it 'is false if theme does not support home button' do
-        Pageflow.config.themes.register(:no_home_button, home_button: false)
+        Pageflow.config.themes.register(:no_home_button, no_home_button: true)
         revision = Revision.new(home_url: 'http://example.com', home_button_enabled: true)
         theming = Theming.new(theme_name: 'no_home_button')
         home_button = HomeButton.new(revision, theming)

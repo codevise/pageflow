@@ -13,7 +13,7 @@ module Pageflow
     end
 
     def has_home_button?
-      @options[:home_button]
+      !@options[:no_home_button]
     end
   end
 end

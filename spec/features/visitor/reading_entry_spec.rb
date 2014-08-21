@@ -12,12 +12,10 @@ feature 'reading entry' do
   end
 
   scenario 'sees the configured home button if supported by theme' do
-    Pageflow.config.themes.register(:with_home_button, home_button: true)
     entry = create(:entry, :published, published_revision_attributes: {
                      home_url: 'http://example.com',
                      home_button_enabled: true
                    })
-    entry.theming.update(theme_name: 'with_home_button')
 
     visit(pageflow.entry_path(entry))
 

@@ -17,7 +17,7 @@ jQuery(function($) {
     }
 
     function selectedThemeSupportsHomeButton() {
-      return themeOptions[themeSelect.val()].home_button;
+      return !themeOptions[themeSelect.val()].no_home_button;
     }
   });
 });
