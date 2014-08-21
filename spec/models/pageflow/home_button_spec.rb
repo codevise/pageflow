@@ -16,7 +16,7 @@ module Pageflow
         theming = Theming.new(cname: 'pageflow.example.com', home_url: 'http://example.com')
         home_button = HomeButton.new(revision, theming)
 
-        expect(home_button.url).to eq('//pageflow.example.com')
+        expect(home_button.url).to eq(host: 'pageflow.example.com', controller: 'entries', action: 'index')
       end
     end
 

@@ -29,7 +29,7 @@ module Pageflow
 
     def theming_home_button_url
       if theming.home_url.present?
-        "//#{theming.cname}"
+        Pageflow.config.theming_url_options(theming).merge(controller: 'entries', action: 'index')
       end
     end
   end
