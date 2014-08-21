@@ -61,6 +61,15 @@ $nav-bg-color-transparent: $basic-background-color-transparent;
       border-bottom: 0;
       font-weight: bold;
 
+      @include fa-arrow-circle-up-icon;
+    }
+  }
+  .navigation_bullet.navigation_home {
+    padding-top: 0;
+    .button {
+      border-bottom: 0;
+      font-weight: bold;
+
       @include fa-home-icon;
     }
   }
