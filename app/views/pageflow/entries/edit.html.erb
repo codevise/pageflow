@@ -41,6 +41,7 @@
         videoFiles: <%= render_json_seed(@entry.video_files.with_usage_id) %>,
         audioFiles: <%= render_json_seed(@entry.audio_files.with_usage_id) %>,
 
+        theming: <%= render_json_seed(@entry.theming) %>,
         page_types: <%= page_type_json_seeds %>
       });
     });
