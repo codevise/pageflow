@@ -24,6 +24,8 @@ module Pageflow
     end
 
     controller do
+      helper ThemesHelper
+
       def new
         @account = Account.new
         @account.default_theming = Theming.new

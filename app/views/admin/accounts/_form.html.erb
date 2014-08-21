@@ -23,4 +23,8 @@
     <%= f.action(:submit) %>
     <%= f.action(:cancel, :wrapper_html => {:class => 'cancel'}) %>
   <% end %>
+
+  <script id="theme_options" type="application/json">
+    <%= themes_options_json_seed %>
+  </script>
 <% end %>
