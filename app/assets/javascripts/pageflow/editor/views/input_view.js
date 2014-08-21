@@ -13,6 +13,8 @@ pageflow.inputView = {
     if (!this.inlineHelpText()) {
       this.ui.inlineHelp.hide();
     }
+
+    this.updateDisabled();
   },
 
   localizedAttributeName: function() {
@@ -20,6 +22,28 @@ pageflow.inputView = {
   },
 
   inlineHelpText: function() {
-    return I18n.t('editor.inline_help.' + this.model.i18nKey + '.' + this.options.propertyName, {defaultValue: ''});
+    var key = 'editor.inline_help.' + this.model.i18nKey + '.' + this.options.propertyName;
+    var text = I18n.t(key, {defaultValue: ''});
+
+    if (this.options.disabled) {
+      text = I18n.t(key + '_disabled', {defaultValue: text});
+    }
+
+    return text;
+  },
+
+  updateDisabled: function() {
+    if (this.ui.input) {
+      this.updateDisabledAttribute(this.ui.input);
+    }
+  },
+
+  updateDisabledAttribute: function(element) {
+    if (this.options.disabled) {
+      element.attr('disabled', true);
+    }
+    else {
+      element.removeAttr('disabled');
+    }
   }
 };
