@@ -6,6 +6,7 @@ de:
         files: "Dateien"
         options: "Optionen"
         links: "Verweise"
+        widgets: "Erscheinungsbild"
     screens:
       ratio16to9: "16:9"
       ratio4to3: "4:3"
@@ -54,5 +55,9 @@ de:
         summary: "Zusammenfassung die an Soziale Netzwerke weitergeben wird."
         credits: "Text wird zusammen mit dem Impressumsverweis angezeigt."
         manual_start: "Besucher muss den Start des Beitrags durch einen Klick bestätigen."
+        home_button_enabled: "Link zu einer Übersichtsseite anzeigen."
+        home_button_enabled_disabled: "Diese Funktion steht in diesem Theme nicht zur Verfügung."
+        home_url: "URL der Übersichtseite. Leer lassen, um Standard zu übernehmen."
+        home_url_disabled: "Diese Funktion steht in diesem Theme nicht zur Verfügung."
       "pageflow/chapter":
         title: "Wird auf der Übersichtsseite angezeigt."
