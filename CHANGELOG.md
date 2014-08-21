@@ -16,6 +16,10 @@
       $ cd your_pageflow_app/
       $ rails generate pageflow:seeds
 
+- DOM change: `.navigation a.navigation_home` has been renamed to
+  `.navigation a.navigation_top`. You need to update corresponding
+  selectors inside custom themes.
+
 ##### Public Site
 
 - Bug fix: Audio player timestamps were flickering on play.

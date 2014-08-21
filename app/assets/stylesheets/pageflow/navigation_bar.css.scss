@@ -46,7 +46,7 @@ $nav-color: #9c9c9c;
     border: none;
   }
 
-  a.navigation_main, a.navigation_home, a.navigation_index {
+  a.navigation_main, a.navigation_home, a.navigation_top, a.navigation_index {
     display: none;
   }
 
@@ -295,7 +295,7 @@ $nav-color: #9c9c9c;
       top: 0;
       height: 180px;
 
-      a.navigation_main, a.navigation_home, a.navigation_index {
+      a.navigation_main, a.navigation_top, a.navigation_index {
         display: block;
       }
 

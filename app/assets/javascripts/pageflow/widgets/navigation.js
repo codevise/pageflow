@@ -9,7 +9,7 @@
 
       this.element.addClass('js').append(overlays);
 
-      $('a.navigation_home', this.element).homeButton();
+      $('a.navigation_top', this.element).topButton();
 
       $('.navigation_bar_bottom', this.element)
         .append($('.navigation_bar_top > li', this.element).slice(3));
