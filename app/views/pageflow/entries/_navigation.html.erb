@@ -1,4 +1,4 @@
-<div class="navigation">
+<%= content_tag :div, class: ["navigation", entry.home_button.enabled? ? 'with_home_button' : nil].compact.join(' ') do %>
   <%= render 'pageflow/entries/navigation/bar_top', :entry => entry %>
   <div class="scroller">
     <ul class="navigation_thumbnails">
@@ -66,4 +66,4 @@
         </ul>
       </div>
   </div>
-</div>
+<% end %>

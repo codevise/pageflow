@@ -38,6 +38,10 @@ module Pageflow
       "#{self.class.model_name.cache_key}/#{entry.cache_key}-#{revision.cache_key}"
     end
 
+    def home_button
+      HomeButton.new(revision, theming)
+    end
+
     private
 
     def custom_revision?
