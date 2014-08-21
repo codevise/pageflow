@@ -54,6 +54,7 @@ Pageflow::Engine.routes.draw do
 
   resources :entries, :only => [:show]
   get ':id', :to => 'entries#show', :as => :short_entry
+  get '/', :to => 'entries#index', :as => :public_root
 
   get ':id/pages/:page_index', :to => 'entries#page'
 end
