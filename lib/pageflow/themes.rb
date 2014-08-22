@@ -6,8 +6,8 @@ module Pageflow
       @themes = HashWithIndifferentAccess.new
     end
 
-    def register(name)
-      @themes[name] = Theme.new(name)
+    def register(name, options = {})
+      @themes[name] = Theme.new(name, options)
     end
 
     def get(name)

@@ -6,6 +6,7 @@ pageflow.app.addInitializer(function(options) {
   pageflow.pages = new pageflow.PagesCollection(options.pages);
   pageflow.chapters = new pageflow.ChaptersCollection(options.chapters);
   pageflow.entry = new pageflow.Entry(options.entry);
+  pageflow.theming = new pageflow.Theming(options.theming);
 
   pageflow.pages.sort();
 

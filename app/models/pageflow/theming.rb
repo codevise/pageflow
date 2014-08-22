@@ -2,6 +2,9 @@ module Pageflow
   class Theming < ActiveRecord::Base
     belongs_to :account
 
+    scope :with_home_url, -> { where.not(home_url: '') }
+    scope :for_request, ->(request) { Pageflow.config.theming_request_scope.call(all, request) }
+
     validates :account, :presence => true
     validates_inclusion_of :theme_name, :in => ->(_) { Pageflow.config.themes.names }
 

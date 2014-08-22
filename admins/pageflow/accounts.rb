@@ -24,6 +24,8 @@ module Pageflow
     end
 
     controller do
+      helper ThemesHelper
+
       def new
         @account = Account.new
         @account.default_theming = Theming.new
@@ -36,7 +38,7 @@ module Pageflow
       end
 
       def permitted_params
-        params.permit(:account => [:name, :default_file_rights, :default_theming_attributes => [:cname, :theme_name, :imprint_link_url, :imprint_link_label, :copyright_link_url, :copyright_link_label]])
+        params.permit(:account => [:name, :default_file_rights, :default_theming_attributes => [:cname, :theme_name, :imprint_link_url, :imprint_link_label, :copyright_link_url, :copyright_link_label, :home_url, :home_button_enabled_by_default]])
       end
     end
   end

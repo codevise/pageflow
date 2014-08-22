@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140813133611) do
+ActiveRecord::Schema.define(version: 20140819121523) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -189,12 +189,14 @@ ActiveRecord::Schema.define(version: 20140813133611) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "credits"
-    t.string   "title",            default: "",    null: false
+    t.string   "title",               default: "",    null: false
     t.text     "summary"
-    t.boolean  "manual_start",     default: false
+    t.boolean  "manual_start",        default: false
     t.integer  "restored_from_id"
     t.datetime "frozen_at"
     t.string   "snapshot_type"
+    t.string   "home_url",            default: "",    null: false
+    t.boolean  "home_button_enabled", default: false, null: false
   end
 
   add_index "pageflow_revisions", ["restored_from_id"], name: "index_pageflow_revisions_on_restored_from_id", using: :btree
@@ -207,8 +209,10 @@ ActiveRecord::Schema.define(version: 20140813133611) do
     t.integer  "account_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "cname",                default: "", null: false
+    t.string   "cname",                          default: "",   null: false
     t.string   "theme_name"
+    t.string   "home_url",                       default: "",   null: false
+    t.boolean  "home_button_enabled_by_default", default: true, null: false
   end
 
   add_index "pageflow_themings", ["cname"], name: "index_pageflow_themings_on_cname", using: :btree

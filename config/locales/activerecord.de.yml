@@ -95,6 +95,8 @@ de:
         url: "Permalink"
         account: "Konto"
         manual_start: "Multimedia Hinweis vor dem Start anzeigen"
+        home_url: "Home-Button URL"
+        home_button_enabled: "Home-Button anzeigen"
       "pageflow/folder":
         account: "Konto"
         name: "Name"
@@ -153,6 +155,8 @@ de:
         imprint_link_url: "Impressum-Link URL"
         copyright_link_label: "Copyright-Link Text"
         copyright_link_url: "Copyright-Link URL"
+        home_url: "Redirect URL"
+        home_button_enabled_by_default: "Home-Button in neuen Beiträgen anzeigen"
     values:
       "pageflow/page":
         template:

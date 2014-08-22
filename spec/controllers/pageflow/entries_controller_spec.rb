@@ -9,6 +9,70 @@ module Pageflow
       Rails.application.class.routes.url_helpers
     end
 
+    describe '#index' do
+      it 'redirects to home url of theming with matching cname' do
+        theming = create(:theming, cname: 'pageflow.example.com', home_url: 'http://example.com/overview')
+
+        request.env['HTTP_HOST'] = 'pageflow.example.com'
+        get(:index)
+
+        expect(response).to redirect_to('http://example.com/overview')
+      end
+
+      it 'responds with not found if no theming matches cname' do
+        request.env['HTTP_HOST'] = 'unknown.example.com'
+        get(:index)
+
+        expect(response.status).to eq(404)
+      end
+
+      it 'responds with not found if theming with matching cname does not have home_url' do
+        theming = create(:theming, cname: 'pageflow.example.com')
+
+        request.env['HTTP_HOST'] = 'pageflow.example.com'
+        get(:index)
+
+        expect(response.status).to eq(404)
+      end
+
+      it 'uses configures theming_request_scope' do
+        Pageflow.config.theming_request_scope = lambda do |themings, request|
+          themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
+        end
+        theming = create(:theming, home_url: 'http://example.com')
+        account = create(:account, name: 'some-example', default_theming: theming)
+
+        request.env['HTTP_HOST'] = 'some-example.pageflow.io'
+        get(:index)
+
+        expect(response).to redirect_to('http://example.com')
+      end
+
+      it 'responds with not found if theming_request_scope raises RecordNotFound' do
+        Pageflow.config.theming_request_scope = lambda do |themings, request|
+          themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
+        end
+
+        request.env['HTTP_HOST'] = 'none.pageflow.io'
+        get(:index)
+
+        expect(response.status).to eq(404)
+      end
+
+      it 'responds with not found if theming_request_scope returns theming with blank home_url' do
+        Pageflow.config.theming_request_scope = lambda do |themings, request|
+          themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
+        end
+        theming = create(:theming)
+        account = create(:account, name: 'some-example', default_theming: theming)
+
+        request.env['HTTP_HOST'] = 'some-example.pageflow.io'
+        get(:index)
+
+        expect(response.status).to eq(404)
+      end
+    end
+
     describe '#edit' do
       it 'reponds with success for members of the entry' do
         user = create(:user)

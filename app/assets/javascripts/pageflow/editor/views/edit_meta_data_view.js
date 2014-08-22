@@ -1,13 +1,13 @@
 /*global editor*/
 
-pageflow.EditMetaDataView = Backbone.Marionette.ItemView.extend({
+pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
   template: 'templates/edit_meta_data',
   className: 'edit_meta_data',
 
   mixins: [pageflow.failureIndicatingView],
 
-  ui: {
-    form: '.form_fields'
+  regions: {
+    formContainer: '.form_fields'
   },
 
   events: {
@@ -15,25 +15,31 @@ pageflow.EditMetaDataView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.ui.form.append(this.subview(new pageflow.TextInputView({
-      model: this.model,
-      propertyName: 'title'
-    })).el);
+    var configurationEditor = new pageflow.ConfigurationEditorView({
+      model: this.model
+    });
 
-    this.ui.form.append(this.subview(new pageflow.TextAreaInputView({
-      model: this.model,
-      propertyName: 'summary'
-    })).el);
+    configurationEditor.tab('general', function() {
+      this.input('title', pageflow.TextInputView);
+      this.input('summary', pageflow.TextAreaInputView);
+      this.input('credits', pageflow.TextAreaInputView);
+    });
 
-    this.ui.form.append(this.subview(new pageflow.TextAreaInputView({
-      model: this.model,
-      propertyName: 'credits'
-    })).el);
+    configurationEditor.tab('widgets', function() {
+      this.input('manual_start', pageflow.CheckBoxInputView);
+      this.input('home_button_enabled', pageflow.CheckBoxInputView, {
+        disabled: !pageflow.theming.hasHomeButton(),
+        displayUncheckedIfDisabled: true
+      });
+      if (pageflow.theming.hasHomeButton()) {
+        this.input('home_url', pageflow.TextInputView, {
+          placeholder: pageflow.theming.get('pretty_url'),
+          visibleBinding: 'home_button_enabled'
+        });
+      }
+    });
 
-    this.ui.form.append(this.subview(new pageflow.CheckBoxInputView({
-      model: this.model,
-      propertyName: 'manual_start'
-    })).el);
+    this.formContainer.show(configurationEditor);
   },
 
   goBack: function() {

@@ -5,8 +5,9 @@
       <span class="button"></span>
     </a>
   </li>
+  <%= render('pageflow/entries/navigation/home_button', home_button: entry.home_button) %>
   <li>
-    <a class="navigation_bullet navigation_home" <%= "href=##{entry.pages.first.perma_id} data-link=#{entry.pages.first.id}" unless entry.pages.nil? || entry.pages.first.nil? %> tabindex="2" title="Startseite anzeigen">
+    <a class="navigation_bullet navigation_top" <%= "href=##{entry.pages.first.perma_id} data-link=#{entry.pages.first.id}" unless entry.pages.nil? || entry.pages.first.nil? %> tabindex="2" title="Zur ersten Seite">
       <span class="hint">zum Anfang</span>
       <span class="button"></span>
     </a>

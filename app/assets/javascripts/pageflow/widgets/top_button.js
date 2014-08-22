@@ -1,5 +1,5 @@
 (function($) {
-  $.widget('pageflow.homeButton', {
+  $.widget('pageflow.topButton', {
     _create: function() {
       var element = this.element;
 
@@ -16,10 +16,10 @@
 
       function toggle(currentPage) {
         var currentPageId = currentPage.data('id');
-        var onHomePage = (currentPageId === element.data('link'));
+        var onFirstPage = (currentPageId === element.data('link'));
 
-        element.toggleClass('deactivated', onHomePage);
-        element.attr('tabindex', onHomePage ? '-1' : '2');
+        element.toggleClass('deactivated', onFirstPage);
+        element.attr('tabindex', onFirstPage ? '-1' : '2');
       }
     }
   });

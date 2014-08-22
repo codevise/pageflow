@@ -69,11 +69,28 @@ module Pageflow
     attr_accessor :editor_routing_constraint
 
     # Either a lambda or an object with a `call` method taking two
+    # parameters: An `ActiveRecord` scope of {Pageflow::Theming} records
+    # and an {ActionDispatch::Request} object. Has to return the scope
+    # in which to find themings.
+    #
+    # Defaults to {CnameThemingRequestScope} which finds themings
+    # based on the request subdomain. Can be used to alter the logic
+    # of finding a theming whose home_url to redirect to when visiting
+    # the public root path.
+    #
+    # Example:
+    #
+    #     config.theming_request_scope = lambda do |themings, request|
+    #       themings.where(id: Pageflow::Account.find_by_name!(request.subdomain).default_theming_id)
+    #     end
+    attr_accessor :theming_request_scope
+
+    # Either a lambda or an object with a `call` method taking two
     # parameters: An `ActiveRecord` scope of `Pageflow::Entry` records
     # and an `ActionDispatch::Request` object. Has to return the scope
     # in which to find entries.
     #
-    # Used by all public actions that display entires to restrict the
+    # Used by all public actions that display entries to restrict the
     # available entries by hostname or other request attributes.
     #
     # Use {#public_entry_url_options} to make sure urls of published
@@ -117,6 +134,7 @@ module Pageflow
       @quotas = Quotas.new
       @themes = Themes.new
 
+      @theming_request_scope = CnameThemingRequestScope.new
       @public_entry_request_scope = lambda { |entries, request| entries }
       @public_entry_url_options = Pageflow::ThemingsHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
 

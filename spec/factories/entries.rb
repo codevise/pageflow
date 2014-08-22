@@ -24,8 +24,12 @@ module Pageflow
       end
 
       trait :published do
-        after(:create) do |entry|
-          create(:revision, :published, :entry => entry)
+        ignore do
+          published_revision_attributes({})
+        end
+
+        after(:create) do |entry, evaluator|
+          create(:revision, :published, evaluator.published_revision_attributes.merge(entry: entry))
         end
       end
     end

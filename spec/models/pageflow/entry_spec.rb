@@ -8,6 +8,13 @@ module Pageflow
 
         expect(entry.draft).to be_present
       end
+
+      it 'sets draft home_button_enabled to home_button_enabled_by_default of accounts default_theming' do
+        theming = create(:theming, home_button_enabled_by_default: true)
+        entry = create(:entry, theming: theming)
+
+        expect(entry.draft.home_button_enabled).to eq(theming.home_button_enabled_by_default)
+      end
     end
 
     context 'validation' do

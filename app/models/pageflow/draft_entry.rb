@@ -70,6 +70,10 @@ module Pageflow
       draft.cache_key
     end
 
+    def home_button
+      HomeButton.new(draft, theming)
+    end
+
     private
 
     def collection_containing(file)

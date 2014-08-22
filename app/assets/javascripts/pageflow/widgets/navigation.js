@@ -5,14 +5,15 @@
     _create: function() {
       var overlays = this.element.find('.navigation_site_detail'),
           that = this,
+          hasHomeButton = !!this.element.find('.navigation_home').length,
           toggleIndicators = function() {};
 
       this.element.addClass('js').append(overlays);
 
-      $('a.navigation_home', this.element).homeButton();
+      $('a.navigation_top', this.element).topButton();
 
       $('.navigation_bar_bottom', this.element)
-        .append($('.navigation_bar_top > li', this.element).slice(3));
+        .append($('.navigation_bar_top > li', this.element).slice(hasHomeButton ? 4 : 3));
 
       /* Volume */
 

@@ -2,9 +2,17 @@
   <%= f.inputs do %>
     <%= f.input :name %>
     <%= f.input :default_file_rights %>
-    <%= f.semantic_fields_for :default_theming do |theming| %>
-      <%= theming.input :cname %>
+  <% end %>
+
+  <%= f.semantic_fields_for :default_theming do |theming| %>
+    <%= f.inputs do %>
       <%= theming.input :theme_name, :include_blank => false, :collection => Pageflow.config.themes.names %>
+      <%= theming.input :cname %>
+      <%= theming.input :home_url %>
+    <% end %>
+
+    <%= f.inputs do %>
+      <%= theming.input :home_button_enabled_by_default %>
       <%= theming.input :imprint_link_label %>
       <%= theming.input :imprint_link_url %>
       <%= theming.input :copyright_link_label %>
@@ -15,4 +23,8 @@
     <%= f.action(:submit) %>
     <%= f.action(:cancel, :wrapper_html => {:class => 'cancel'}) %>
   <% end %>
+
+  <script id="theme_options" type="application/json">
+    <%= themes_options_json_seed %>
+  </script>
 <% end %>
