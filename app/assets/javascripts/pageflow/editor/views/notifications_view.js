@@ -11,7 +11,7 @@ pageflow.NotificationsView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click .retry': function() {
-      pageflow.failedRecords.retry();
+      pageflow.editor.failures.retry();
     }
   },
 
@@ -19,19 +19,20 @@ pageflow.NotificationsView = Backbone.Marionette.ItemView.extend({
     this.listenTo(pageflow.entry, 'change:uploading_files_count', this.notifyUploadCount);
     this.listenTo(pageflow.entry, 'change:confirmable_files_count', this.notifyConfirmableFilesCount);
 
-    this.listenTo(pageflow.failedRecords, 'add', this.update);
-    this.listenTo(pageflow.failedRecords, 'remove', this.update);
     this.listenTo(pageflow.savingRecords, 'add', this.update);
     this.listenTo(pageflow.savingRecords, 'remove', this.update);
+
+    this.listenTo(pageflow.editor.failures, 'add', this.update);
+    this.listenTo(pageflow.editor.failures, 'remove', this.update);
 
     this.update();
     this.notifyConfirmableFilesCount();
   },
 
   update: function() {
-    this.$el.toggleClass('failed', !pageflow.failedRecords.isEmpty());
+    this.$el.toggleClass('failed', !pageflow.editor.failures.isEmpty());
     this.$el.toggleClass('saving', !pageflow.savingRecords.isEmpty());
-    this.ui.failedCount.text(pageflow.failedRecords.length);
+    this.ui.failedCount.text(pageflow.editor.failures.count());
   },
 
   notifyUploadCount: function(model, uploadCount) {

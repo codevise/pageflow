@@ -10,13 +10,6 @@ pageflow.app.addInitializer(function(options) {
   pageflow.app.notificationsRegion.show(new pageflow.NotificationsView().render());
   pageflow.app.helpButtonRegion.show(new pageflow.HelpButtonView().render());
 
-  window.editor = new pageflow.SidebarRouter({
-    controller: new pageflow.SidebarController({
-      region: pageflow.app.sidebarRegion,
-      entry: pageflow.entry
-    })
-  });
-
   Backbone.history.start({root: options.root});
 });
 

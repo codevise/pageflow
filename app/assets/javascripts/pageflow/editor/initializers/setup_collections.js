@@ -9,10 +9,9 @@ pageflow.app.addInitializer(function(options) {
 
   pageflow.pages.sort();
 
-  pageflow.failedRecords = new pageflow.FailedRecordsCollection();
-  pageflow.failedRecords.watch(pageflow.entry);
-  pageflow.failedRecords.watch(pageflow.pages);
-  pageflow.failedRecords.watch(pageflow.chapters);
+  pageflow.editor.failures.watch(pageflow.entry);
+  pageflow.editor.failures.watch(pageflow.pages);
+  pageflow.editor.failures.watch(pageflow.chapters);
 
   pageflow.savingRecords = new pageflow.SavingRecordsCollection();
   pageflow.savingRecords.watch(pageflow.pages);

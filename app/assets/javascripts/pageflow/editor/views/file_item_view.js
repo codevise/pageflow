@@ -23,7 +23,8 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click .select': function() {
-      this.$el.trigger('file-selected', this.model);
+      this.options.selectionHandler.call(this.model);
+      pageflow.editor.navigate(this.options.selectionHandler.getReferer(), {trigger: true});
       return false;
     },
 
@@ -71,7 +72,7 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
     this.ui.downloadLink.attr('href', this.model.get('url'));
     this.ui.downloads.toggle(this.model.isUploaded());
 
-    this.ui.selectButton.toggle(this.options.selectable);
+    this.ui.selectButton.toggle(!!this.options.selectionHandler);
 
     this.ui.cancelButton.toggle(this.model.isUploading());
     this.ui.removeButton.toggle(!this.model.isUploading());

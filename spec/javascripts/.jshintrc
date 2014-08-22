@@ -1,0 +1,22 @@
+{
+  "browser": true,
+  "undef": true,
+  "immed": true,
+  "trailing": true,
+  "expr": true,
+  "globals": {
+    "jQuery": true,
+    "Backbone": true,
+    "I18n": true,
+    "pageflow": true,
+
+    "chai": true,
+    "sinon": true,
+
+    "describe": true,
+    "it": true,
+    "before": true,
+    "after": true,
+    "expect": true
+  }
+}

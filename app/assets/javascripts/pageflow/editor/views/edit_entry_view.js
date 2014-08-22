@@ -4,7 +4,8 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.failureIndicatingView],
 
   ui: {
-    publicationStateButton: 'a.publication_state'
+    publicationStateButton: 'a.publication_state',
+    menu: '.menu'
   },
 
   events: {
@@ -19,22 +20,19 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
       return false;
     },
 
-    'click a.edit_entry_meta_data': function() {
-      editor.navigate('/meta_data', {trigger: true});
-      return false;
-    },
-
-    'click a.manage_files': function() {
-      editor.navigate('/files', {trigger: true});
-      return false;
-    },
-
     'click a.add_chapter': function() {
       this.model.addChapter();
+    },
+
+    'click .menu a': function(event) {
+      editor.navigate($(event.target).data('path'), {trigger: true});
+      return false;
     }
   },
 
   onRender: function() {
+    this._addMenuItems();
+
     this.subview(new pageflow.SortableCollectionView({
       el: this.$('ul.chapters'),
       collection: this.model.chapters,
@@ -45,5 +43,19 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
         }
       }
     }));
+  },
+
+  _addMenuItems: function() {
+    var view = this;
+
+    _.each(pageflow.editor.mainMenuItems, function(options) {
+      var item = $('<li><a href="#"></a></li>');
+      var link = item.find('a');
+
+      link.data('path', options.path);
+      link.text(I18n.t(options.translationKey));
+
+      view.ui.menu.append(item);
+    });
   }
 });

@@ -1,11 +1,11 @@
 pageflow.failureIndicatingView = {
   modelEvents: {
-    'change:failed': 'updateFailIndicator',
+    'change:failed': 'updateFailIndicator'
   },
 
   events: {
     'click .retry': function() {
-      pageflow.failedRecords.retry();
+      pageflow.editor.failures.retry();
       return false;
     }
   },

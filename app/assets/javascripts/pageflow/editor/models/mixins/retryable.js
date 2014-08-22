@@ -12,5 +12,5 @@ pageflow.retryable = {
     };
     options.url = this.url() + '/retry';
     return this.sync('post', this, options);
-  },
+  }
 };
