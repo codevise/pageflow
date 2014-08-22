@@ -20,11 +20,14 @@
   `.navigation a.navigation_top`. You need to update corresponding
   selectors inside custom themes. Instead, a new `.navigation
   a.navigation_home` button is now supported, which links to a
-  configurable external site. If you do not wish to use this new home
-  button with your custom theme, you can disable it when registering
-  themes in your `config/initializers/pageflow.rb`:
+  configurable external site.
+  ([#98](https://github.com/codevise/pageflow/pull/98))
 
-          config.themes.register(:custom, no_home_button: true)
+  If you do not wish to use this new home button with your custom
+  theme, you can disable it when registering themes in your
+  `config/initializers/pageflow.rb`:
+
+      config.themes.register(:custom, no_home_button: true)
 
   This will cause Pageflow to only render the `a.navigation_top` link
   in entries using your theme.
@@ -34,9 +37,19 @@
 - Bug fix: Audio player timestamps were flickering on play.
   ([#74](https://github.com/codevise/pageflow/pull/74))
 - Bug fix: Link IE stylesheets/javascripts correctly.
-  ([#81](https://github.com/codevise/pageflow/pull/81))
+  ([#81](https://github.com/codevise/pageflow/pull/81), [#92](https://github.com/codevise/pageflow/pull/92))
 - Bug fix: Improve SSL support
   ([#88](https://github.com/codevise/pageflow/pull/88))
+- Bug fix: Ensure entry stylesheets are not cached after
+  re-publication.
+  ([#94](https://github.com/codevise/pageflow/pull/94))
+
+##### Admin/Editor
+
+- Audio/video autoplay is now configurable.
+  ([#95](https://github.com/codevise/pageflow/pull/95))
+- Bug fix: Rich text editor added `<p>` instead of `<br>` tags in IE 11.
+  ([#91](https://github.com/codevise/pageflow/pull/91))
 
 ##### Rails Engine
 
@@ -48,7 +61,11 @@
   `zencoder_options` is empty string.
   ([#83](https://github.com/codevise/pageflow/pull/83))
 - `public_entry_url_options` option to configure urls of published entries.
-  ([#84](https://github.com/codevise/pageflow/pull/84))
+  ([#84](https://github.com/codevise/pageflow/pull/84), [#97](https://github.com/codevise/pageflow/pull/97))
+- Placeholder partial to integrate analytics in editor.
+  ([#93](https://github.com/codevise/pageflow/pull/93))
+- Editor JavaScript API to allow new page types to provide new editor features.
+  ([#96](https://github.com/codevise/pageflow/pull/96))
 - Bug fix: Update jbuilder gem dependency
   ([#79](https://github.com/codevise/pageflow/pull/79))
 
