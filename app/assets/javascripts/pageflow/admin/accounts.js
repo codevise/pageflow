@@ -8,16 +8,23 @@ jQuery(function($) {
     themeSelect.on('change', updateThemeFeatures);
 
     function updateThemeFeatures() {
-      if (selectedThemeSupportsHomeButton()) {
-        homeButtonCheckBox.removeAttr('disabled');
-      }
-      else {
-        homeButtonCheckBox.attr('disabled', true);
-      }
+      toggleDisabled(homeButtonCheckBox, !selectedThemeSupportsHomeButton());
     }
 
     function selectedThemeSupportsHomeButton() {
       return !themeOptions[themeSelect.val()].no_home_button;
+    }
+
+    function toggleDisabled(checkBox, disabled) {
+      if (disabled) {
+        checkBox.data('wasChecked', checkBox.is(':checked'));
+        checkBox.prop('checked', false);
+        checkBox.prop('disabled', true);
+      }
+      else {
+        checkBox.removeAttr('disabled');
+        checkBox.prop('checked', checkBox.data('wasChecked'));
+      }
     }
   });
 });
