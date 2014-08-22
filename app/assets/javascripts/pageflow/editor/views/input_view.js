@@ -15,6 +15,7 @@ pageflow.inputView = {
     }
 
     this.updateDisabled();
+    this.setupVisibleBinding();
   },
 
   localizedAttributeName: function() {
@@ -44,6 +45,19 @@ pageflow.inputView = {
     }
     else {
       element.removeAttr('disabled');
+    }
+  },
+
+  setupVisibleBinding: function() {
+    var view = this;
+
+    if (this.options.visibleBinding) {
+      this.listenTo(this.model, 'change:' + this.options.visibleBinding, updateVisible);
+      updateVisible(this.model, this.model.get(this.options.visibleBinding));
+    }
+
+    function updateVisible(model, value) {
+      view.$el.toggle(!!value);
     }
   }
 };

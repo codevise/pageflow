@@ -18,9 +18,6 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
     var configurationEditor = new pageflow.ConfigurationEditorView({
       model: this.model
     });
-    var homeButtonOptions = {
-      disabled: !pageflow.theming.hasHomeButton()
-    };
 
     configurationEditor.tab('general', function() {
       this.input('title', pageflow.TextInputView);
@@ -30,11 +27,16 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
 
     configurationEditor.tab('widgets', function() {
       this.input('manual_start', pageflow.CheckBoxInputView);
-      this.input('home_button_enabled', pageflow.CheckBoxInputView, homeButtonOptions);
-      this.input('home_url', pageflow.TextInputView, _.extend(homeButtonOptions, {
-        placeholder: pageflow.theming.get('pretty_url'),
-        hidePlaceholderIfDisabled: true
-      }));
+      this.input('home_button_enabled', pageflow.CheckBoxInputView, {
+        disabled: !pageflow.theming.hasHomeButton(),
+        displayUncheckedIfDisabled: true
+      });
+      if (pageflow.theming.hasHomeButton()) {
+        this.input('home_url', pageflow.TextInputView, {
+          placeholder: pageflow.theming.get('pretty_url'),
+          visibleBinding: 'home_button_enabled'
+        });
+      }
     });
 
     this.formContainer.show(configurationEditor);

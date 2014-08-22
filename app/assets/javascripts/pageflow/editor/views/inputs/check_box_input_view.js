@@ -20,10 +20,21 @@ pageflow.CheckBoxInputView = Backbone.Marionette.ItemView.extend({
   },
 
   save: function() {
-    this.model.set(this.options.propertyName, this.ui.input.is(':checked'));
+    if (!this.options.disabled) {
+      this.model.set(this.options.propertyName, this.ui.input.is(':checked'));
+    }
   },
 
   load: function() {
-    this.ui.input.attr('checked', this.model.get(this.options.propertyName));
+    this.ui.input.attr('checked', this.displayValue());
+  },
+
+  displayValue: function() {
+    if (this.options.disabled && this.options.displayUncheckedIfDisabled) {
+      return false;
+    }
+    else {
+      return this.model.get(this.options.propertyName);
+    }
   }
 });
