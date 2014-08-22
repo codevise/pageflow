@@ -22,6 +22,10 @@ module Pageflow
       custom_revision? ? revision : entry
     end
 
+    def stylesheet_cache_key
+      revision.cache_key
+    end
+
     def thumbnail
       pages.first.try(:thumbnail) || ImageFile.new.processed_attachment
     end

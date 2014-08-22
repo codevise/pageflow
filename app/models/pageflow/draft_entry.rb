@@ -63,7 +63,11 @@ module Pageflow
     end
 
     def stylesheet_model
-      @draft
+      draft
+    end
+
+    def stylesheet_cache_key
+      draft.cache_key
     end
 
     private
