@@ -13,6 +13,7 @@ pageflow.ConfigurationEditorView.register('audio', {
     });
 
     this.tab('options', function() {
+      this.input('autoplay', pageflow.CheckBoxInputView);
       this.group('options');
     });
   }

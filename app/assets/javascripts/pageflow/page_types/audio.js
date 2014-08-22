@@ -45,13 +45,18 @@ pageflow.pageType.register('audio', _.extend({
   activated: function(pageElement, configuration) {
     var that = this;
     if(!pageflow.features.has('mobile platform')) {
-      this.fadeInTimeout = setTimeout(function() {
-        that.audioPlayer.readyPromise.then(function() {
-          that.audioPlayer.volume(0);
-          that.audioPlayer.play();
-          that.fadeSound(that.audioPlayer, pageflow.settings.get('volume'), 1000);
-        });
-      }, 1000);
+
+      if (configuration.autoplay === false) {
+        that.audioPlayer.volume(pageflow.settings.get('volume'));
+      } else {
+        this.fadeInTimeout = setTimeout(function() {
+          that.audioPlayer.readyPromise.then(function() {
+            that.audioPlayer.volume(0);
+            that.audioPlayer.play();
+            that.fadeSound(that.audioPlayer, pageflow.settings.get('volume'), 1000);
+          });
+        }, 1000);
+      }
     }
   },
 
