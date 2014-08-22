@@ -2,6 +2,10 @@
 
 ### Changes on `master`
 
+None so far.
+
+### Version 0.3.0
+
 ##### Breaking Changes
 
 - Requiring `pageflow/seeds` in your `db/seeds.rb` file no longer
