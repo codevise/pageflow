@@ -87,8 +87,8 @@ module Pageflow
     #     end
     attr_accessor :public_entry_request_scope
 
-    # Either a lambda or an object with a `call` method taking an
-    # {Entry} as paramater and returing a hash of options used to
+    # Either a lambda or an object with a `call` method taking a
+    # {Theming} as paramater and returing a hash of options used to
     # construct the url of a published entry.
     #
     # Can be used to change the host of the url under which entries
@@ -96,8 +96,8 @@ module Pageflow
     #
     # Example:
     #
-    #     config.public_entry_url_options = lambda do |entry|
-    #       {host: "#{entry.account.name}.example.com"}
+    #     config.public_entry_url_options = lambda do |theming|
+    #       {host: "#{theming.account.name}.example.com"}
     #     end
     attr_accessor :public_entry_url_options
 
@@ -118,7 +118,7 @@ module Pageflow
       @themes = Themes.new
 
       @public_entry_request_scope = lambda { |entries, request| entries }
-      @public_entry_url_options = Pageflow::EntriesHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
+      @public_entry_url_options = Pageflow::ThemingsHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
 
       @confirm_encoding_jobs = false
     end
@@ -145,6 +145,12 @@ module Pageflow
 
     def revision_components
       page_types.map(&:revision_components).flatten.uniq
+    end
+
+    # @api private
+    def theming_url_options(theming)
+      options = public_entry_url_options
+      options.respond_to?(:call) ? options.call(theming) : options
     end
   end
 end

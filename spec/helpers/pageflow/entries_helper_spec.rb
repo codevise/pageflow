@@ -31,7 +31,7 @@ module Pageflow
       end
 
       it 'can be configured via lambda in public_entry_url_options' do
-        Pageflow.config.public_entry_url_options = lambda { |entry| {host: "#{entry.account.name}.example.com" } }
+        Pageflow.config.public_entry_url_options = lambda { |theming| {host: "#{theming.account.name}.example.com" } }
         account = create(:account, name: 'myaccount')
         entry = PublishedEntry.new(create(:entry, title: 'test', account: account),
                                    create(:revision))
