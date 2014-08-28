@@ -2,7 +2,7 @@
 
 ### Changes on `master`
 
-None so far.
+- Improved generation of of credits box.
 
 ### Version 0.3.0
 
