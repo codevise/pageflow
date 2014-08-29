@@ -43,15 +43,7 @@
   </li>
   <li class="navigation_menu" tabindex="2">
     <div class="navigation_menu_box navigation_credits_box">
-      <%= raw entry.credits %>
-      <p class="rights">
-        Bildrechte:
-        <%= entry_file_rights(entry) %>
-      </p>
-
-      <h2 class="hidden">Globale Links</h2>
-      <%= link_to(raw(entry.theming.imprint_link_label), entry.theming.imprint_link_url, :target => '_blank', :tabindex => 2, :class => 'legal') %>
-      <%= link_to(raw(entry.theming.copyright_link_label), entry.theming.copyright_link_url, :target => '_blank', :tabindex => 2, :class => 'copy') %>
+      <%= render 'pageflow/entries/navigation/credits_box_content', :entry => entry %>
     </div>
     <a title="Impressum">
       <span class="hint">impressum</span>

@@ -55,13 +55,7 @@
       <div class="wrapper">
         <ul>
           <li class="credits">
-            <%= raw entry.credits %>
-            <p class="rights">
-              Bildrechte:
-              <%= entry_file_rights(entry) %>
-            </p>
-            <%= link_to(raw(entry.theming.imprint_link_label), entry.theming.imprint_link_url, :target => '_blank') %>
-            <%= link_to(raw(entry.theming.copyright_link_label), entry.theming.copyright_link_url, :target => '_blank', :class => 'copy') %>
+            <%= render 'pageflow/entries/navigation/credits_box_content', :entry =>  entry %>
           </li>
         </ul>
       </div>

@@ -176,6 +176,10 @@ $nav-color: #9c9c9c;
         -webkit-mask-image: none;
       }
     }
+
+    p {
+      margin: 0 0 0.5em;
+    }
   }
 
   .navigation_share_box {
@@ -213,12 +217,8 @@ $nav-color: #9c9c9c;
       color: #b4c552;
     }
 
-    a.legal {
+    a.legal, a.copy {
       float: left;
-    }
-
-    a.copy {
-      float: right;
     }
   }
 

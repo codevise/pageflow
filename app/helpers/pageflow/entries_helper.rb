@@ -13,11 +13,35 @@ module Pageflow
     end
 
     def entry_file_rights(entry)
-      [:audio_files, :image_files, :video_files].map do |collection|
+      rights = [:audio_files, :image_files, :video_files].map do |collection|
         entry.send(collection).map do |file|
           file.rights.presence || entry.account.default_file_rights
         end
-      end.flatten.sort.uniq * ', '
+      end.flatten.sort.uniq
+
+      if rights.any?
+        content_tag :p, class: 'rights' do
+          "Bildrechte: " + rights * ', '
+        end
+      else
+        ''
+      end
+    end
+
+    def entry_global_links(entry)
+      links = []
+      if entry.theming.imprint_link_label.present? && entry.theming.imprint_link_url.present?
+        links << link_to(raw(entry.theming.imprint_link_label), entry.theming.imprint_link_url, :target => '_blank', :tabindex => 2, :class => 'legal')
+      end
+      if entry.theming.copyright_link_label.present? && entry.theming.copyright_link_url.present?
+        links << link_to(raw(entry.theming.copyright_link_label), entry.theming.copyright_link_url, :target => '_blank', :tabindex => 2, :class => 'copy')
+      end
+
+      if links.any?
+        content_tag(:h2, 'Globale Links', :class => 'hidden') + safe_join(links, ''.html_safe)
+      else
+        ''
+      end
     end
 
     def entry_theme_stylesheet_link_tag(entry)
