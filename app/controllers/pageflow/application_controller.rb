@@ -11,6 +11,10 @@ module Pageflow
 
     include EditLocking
 
+    rescue_from ActionController::UnknownFormat do
+      render(status: 404, text: 'Not found')
+    end
+
     rescue_from ActiveRecord::RecordNotFound do
       respond_to do |format|
         format.html { render :file => Rails.root.join('public/404.html'), :status => :not_found }
