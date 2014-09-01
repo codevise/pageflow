@@ -3,6 +3,7 @@
 ### Changes on `master`
 
 - Improved generation of of credits box.
+- Bug fix: Respond with 404 for unknown format.
 
 ### Version 0.3.0
 

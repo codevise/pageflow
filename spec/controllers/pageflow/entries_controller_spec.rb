@@ -254,9 +254,17 @@ module Pageflow
         end
       end
 
-      context 'with other format' do
+      context 'with other known format' do
         it 'responds with not found' do
           get(:show, :id => 1, :format => 'png')
+
+          expect(response.status).to eq(404)
+        end
+      end
+
+      context 'with unknown format' do
+        it 'responds with not found' do
+          get(:show, :id => 1, :format => 'php')
 
           expect(response.status).to eq(404)
         end
