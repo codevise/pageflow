@@ -1,4 +1,17 @@
 pageflow.orderedCollection = {
+  initialize: function() {
+    this.listenTo(this, 'remove', function() {
+      this.consolidatePositions();
+      this.saveOrder();
+    });
+  },
+
+  consolidatePositions: function() {
+    this.each(function(item, index) {
+      item.set('position', index);
+    });
+  },
+
   saveOrder: function() {
     var parentModel = this.parentModel;
     var collection = this;
