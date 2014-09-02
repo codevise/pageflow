@@ -4,4 +4,8 @@
 
 //= require application
 
+//= require_self
+//= require support/use_fake_xhr
+
+window.support = {};
 window.expect = chai.expect;
