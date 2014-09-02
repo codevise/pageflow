@@ -7,7 +7,8 @@ pageflow.filesCollection = {
   },
 
   comparator: function(file) {
-    return file.get('file_name');
+    var fileName = file.get('file_name');
+    return fileName.toLowerCase ? fileName.toLowerCase() : fileName;
   },
 
   url: function() {
