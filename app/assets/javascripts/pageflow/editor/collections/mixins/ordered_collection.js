@@ -3,6 +3,10 @@ pageflow.orderedCollection = {
     var parentModel = this.parentModel;
     var collection = this;
 
+    if (collection.isEmpty()) {
+      return $.Deferred().resolve().promise();
+    }
+
     return Backbone.sync('patch', parentModel, {
       url: collection.url() + '/order',
       attrs: {ids: collection.pluck('id')},
