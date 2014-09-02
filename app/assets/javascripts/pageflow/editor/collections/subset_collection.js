@@ -1,6 +1,4 @@
 pageflow.SubsetCollection = Backbone.Collection.extend({
-  mixins: [pageflow.orderedCollection],
-
   constructor: function(options) {
     var adding = false;
 

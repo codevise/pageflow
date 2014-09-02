@@ -26,6 +26,7 @@
 //= require_tree ./models
 //= require_tree ./collections/mixins
 //= require ./collections/multi_collection
+//= require ./collections/subset_collection
 //= require_tree ./collections
 //= require_tree ./routers
 //= require_tree ./controllers
