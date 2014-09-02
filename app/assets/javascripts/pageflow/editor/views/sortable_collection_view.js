@@ -17,8 +17,6 @@ pageflow.SortableCollectionView = pageflow.CollectionView.extend({
       receive: _.bind(function(event, ui) {
         var view = ui.item.data('view');
 
-        this.updateOrder();
-
         this.itemViews.add(view);
         this.collection.add(view.model);
       }, this),
