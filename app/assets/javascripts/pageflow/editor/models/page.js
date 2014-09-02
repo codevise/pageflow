@@ -3,11 +3,13 @@ pageflow.Page = Backbone.Model.extend({
   paramRoot: 'page',
   i18nKey: 'pageflow/page',
 
-  defaults: {
-    template: 'background_image',
-    configuration: {},
-    active: false,
-    perma_id: ''
+  defaults: function() {
+    return {
+      template: 'background_image',
+      configuration: {},
+      active: false,
+      perma_id: ''
+    };
   },
 
   mixins: [pageflow.failureTracking, pageflow.delayedDestroying],
