@@ -4,14 +4,6 @@ module Pageflow
       pageflow.short_entry_url(entry.to_model, Pageflow.config.theming_url_options(entry.theming))
     end
 
-    def entry_collection_for_parent(parent)
-      if parent.is_a?(User)
-        parent.account.entries - parent.entries
-      else
-        parent.account.entries
-      end
-    end
-
     def entry_file_rights(entry)
       rights = [:audio_files, :image_files, :video_files].map do |collection|
         entry.send(collection).map do |file|
