@@ -4,16 +4,33 @@
 
 ##### Public Site
 
-- Improved generation of of credits box.
+- Improve generation of of credits box.
+  ([#99](https://github.com/codevise/pageflow/pull/99))
 - Bug fix: Respond with 404 for unknown format.
+  ([#101](https://github.com/codevise/pageflow/pull/101))
 - Bug fix: Decrease margin of links in text in default theme.
+  ([#108](https://github.com/codevise/pageflow/pull/108))
 - Bug fix: Ensure top margin in additional info box even if no title
   is present.
+  ([#109](https://github.com/codevise/pageflow/pull/109))
 
 ##### Admin/Editor
 
-- Improve sorting in membership form.
+- Improve order of files in editor.
+  ([#105](https://github.com/codevise/pageflow/pull/105))
+- Improve order of items in select boxes of membership form.
+  ([#107](https://github.com/codevise/pageflow/pull/107))
+- Bug fix: Editing a newly created page altered the default attribute
+  values of subsequently created pages.
+  ([#103](https://github.com/codevise/pageflow/pull/103))
+- Bug fix: Update positions of chapters and pages when an item is
+  removed.
+  ([#104](https://github.com/codevise/pageflow/pull/104))
+- Bug fix: Do not send bad request by trying to save order of empty
+  chapter.
+  ([#104](https://github.com/codevise/pageflow/pull/104))
 - Bug fix: Link dialog of rich text editor was broken.
+  ([#108](https://github.com/codevise/pageflow/pull/108))
 
 ### Version 0.3.0
 
