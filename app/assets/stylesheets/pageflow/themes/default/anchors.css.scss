@@ -8,7 +8,7 @@ $anchor-color: $main-color;
   text-decoration: none;
   pointer-events: all;
   position: relative;
-  margin-left: 21px;
+  margin-left: 6px;
   margin-right: 6px;
 
   &:hover {
@@ -16,7 +16,7 @@ $anchor-color: $main-color;
   }
 
   @include phone {
-    margin-left: 15px;
+    margin-left: 5px;
     margin-right: 5px;
   }
 
