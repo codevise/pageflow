@@ -7,6 +7,8 @@
 - Improved generation of of credits box.
 - Bug fix: Respond with 404 for unknown format.
 - Bug fix: Decrease margin of links in text in default theme.
+- Bug fix: Ensure top margin in additional info box even if no title
+  is present.
 
 ##### Admin/Editor
 
