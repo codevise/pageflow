@@ -17,6 +17,8 @@ pageflow.SortableCollectionView = pageflow.CollectionView.extend({
       receive: _.bind(function(event, ui) {
         var view = ui.item.data('view');
 
+        this.reindexPositions();
+
         this.itemViews.add(view);
         this.collection.add(view.model);
       }, this),
@@ -45,11 +47,15 @@ pageflow.SortableCollectionView = pageflow.CollectionView.extend({
   },
 
   updateOrder: function() {
-    this.$el.children().each(function(index) {
-      $(this).data('view').model.set('position', index);
-    });
+    this.reindexPositions();
 
     this.collection.sort();
     this.collection.saveOrder();
+  },
+
+  reindexPositions: function() {
+    this.$el.children().each(function(index) {
+      $(this).data('view').model.set('position', index);
+    });
   }
 });
