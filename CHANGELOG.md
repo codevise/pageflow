@@ -2,8 +2,14 @@
 
 ### Changes on `master`
 
+##### Public Site
+
 - Improved generation of of credits box.
 - Bug fix: Respond with 404 for unknown format.
+
+##### Admin/Editor
+
+- Improve sorting in membership form.
 
 ### Version 0.3.0
 

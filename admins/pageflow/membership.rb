@@ -10,8 +10,7 @@ module Pageflow
       belongs_to :entry, :parent_class => Pageflow::Entry, :polymorphic => true
       belongs_to :user, :parent_class => User, :polymorphic => true
 
-      helper Pageflow::UsersHelper
-      helper Pageflow::EntriesHelper
+      helper Pageflow::Admin::MembershipsHelper
 
       def permitted_params
         params.permit(:membership => [:user_id, :entry_id])
