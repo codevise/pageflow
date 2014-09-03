@@ -6,35 +6,13 @@ pageflow.Chapter = Backbone.Model.extend({
   mixins: [pageflow.failureTracking, pageflow.delayedDestroying],
 
   initialize: function(attributes, options) {
-    this.pages = new pageflow.SubsetCollection({
-      parent: pageflow.pages,
-      parentModel: this,
-
-      filter: function(item) {
-        return item.get('chapter_id') === attributes.id;
-      },
-
-      comparator: function(item) {
-        return item.get('position');
-      }
+    this.pages = new pageflow.ChapterPagesCollection({
+      pages: options.pages || pageflow.pages,
+      chapter: this
     });
-
-    this.pages.each(function(page) { page.chapter = this; }, this);
 
     this.listenTo(this, 'change:title', function() {
       this.save();
-    });
-
-    this.listenTo(this.pages, 'add', function(model) {
-      model.chapter = this;
-    });
-
-    this.listenTo(this.pages, 'remove', function(model) {
-      model.chapter = null;
-    });
-
-    this.listenTo(this, 'destroy', function() {
-      this.pages.clear();
     });
 
     return attributes;
