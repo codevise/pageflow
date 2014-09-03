@@ -6,10 +6,12 @@
 
 - Improved generation of of credits box.
 - Bug fix: Respond with 404 for unknown format.
+- Bug fix: Decrease margin of links in text in default theme.
 
 ##### Admin/Editor
 
 - Improve sorting in membership form.
+- Bug fix: Link dialog of rich text editor was broken.
 
 ### Version 0.3.0
 
