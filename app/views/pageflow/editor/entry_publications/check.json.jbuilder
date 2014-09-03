@@ -7,5 +7,6 @@ json.entry do
   json.published(@entry_publication.entry.published?)
 end
 json.exhausted_html(render_html_partial('pageflow/editor/quotas/published_entries_exhausted',
+                                        entry: @entry_publication.entry,
                                         quota: @entry_publication.quota,
                                         account: @entry_publication.quota.account))
