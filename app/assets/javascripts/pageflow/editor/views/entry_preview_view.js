@@ -14,7 +14,8 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
     this.pageViews = this.subview(new pageflow.CollectionView({
       el: this.ui.entry,
       collection: this.model.pages,
-      itemViewConstructor: pageflow.PagePreviewView
+      itemViewConstructor: pageflow.PagePreviewView,
+      blankSlateViewConstructor: pageflow.BlankEntryView
     }));
 
     this.ui.entry.append($('<div class="scroll_indicator indicator">Scrollen, um weiterzulesen</div>'));

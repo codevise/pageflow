@@ -1,0 +1,46 @@
+.blank_entry {
+  margin: 0 auto;
+  top: 5%;
+  position: relative;
+  font-family: "SourceSansPro";
+  font-size: 17px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  width: 50%;
+  color: #333;
+
+  h2 {
+    font-size: 30px;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #999;
+
+    &:before {
+      content: "";
+      display: block;
+      margin: 0 auto 30px auto;
+      width: 61px;
+      height: 60px;
+      background-image: image-url('pageflow/themes/default/logo_header.png');
+      opacity: 0.3;
+    }
+  }
+
+  em {
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  ol {
+    display: inline-block;
+    text-align: left;
+    padding: 20px 50px;
+    border-bottom: solid 1px #aaa;
+    border-top: solid 1px #aaa;
+  }
+
+  li {
+    padding: 15px 0;
+  }
+}
