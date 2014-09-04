@@ -20,6 +20,7 @@ pageflow.ConfirmableFileItemView = Backbone.Marionette.ItemView.extend({
   onRender: function() {
     this.ui.label.attr('for', this.cid);
     this.ui.checkBox.attr('id', this.cid);
+    this.ui.checkBox.prop('checked', this.options.selectedFiles.contains(this.model));
 
     this.ui.fileName.text(this.model.get('file_name') || '(Unbekannt)');
     this.ui.duration.text(this.model.get('duration') || '-');

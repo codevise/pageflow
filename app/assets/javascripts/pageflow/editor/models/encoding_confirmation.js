@@ -43,3 +43,18 @@ pageflow.EncodingConfirmation = Backbone.Model.extend({
     };
   }
 });
+
+pageflow.EncodingConfirmation.createWithPreselection = function(options) {
+  var model = new pageflow.EncodingConfirmation();
+
+  if (options.fileId) {
+    if (options.fileType === 'video_file') {
+      model.videoFiles.add(pageflow.videoFiles.get(options.fileId));
+    }
+    else {
+      model.audioFiles.add(pageflow.audioFiles.get(options.fileId));
+    }
+  }
+
+  return model;
+};

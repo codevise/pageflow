@@ -15,6 +15,7 @@ pageflow.SidebarRouter = Backbone.Marionette.AppRouter.extend({
     'files?page=:page_id&attribute=:attribute': 'files',
     'files': 'files',
 
+    'confirmable_files?type=:type&id=:id': 'confirmableFiles',
     'confirmable_files': 'confirmableFiles',
 
     'meta_data': 'metaData',

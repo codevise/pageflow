@@ -30,9 +30,12 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
     }));
   },
 
-  confirmableFiles: function() {
+  confirmableFiles: function(preselectedFileType, preselectedFileId) {
     this.region.show(pageflow.ConfirmEncodingView.create({
-      model: new pageflow.EncodingConfirmation()
+      model: pageflow.EncodingConfirmation.createWithPreselection({
+        fileType: preselectedFileType,
+        fileId: preselectedFileId
+      })
     }));
   },
 
