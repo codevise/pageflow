@@ -1,5 +1,6 @@
 pageflow.ConfirmEncodingView = Backbone.Marionette.ItemView.extend({
   template: 'templates/confirm_encoding',
+  className: 'confirm_encoding',
 
   ui: {
     blankSlate: '.blank_slate',

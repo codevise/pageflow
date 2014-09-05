@@ -1,0 +1,84 @@
+.confirm_encoding {
+  .blank_slate {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 20px 0;
+
+    p {
+      margin: 10px 5px;
+      text-align: center;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  ul.confirmable_files {
+    margin-bottom: 15px;
+
+    li {
+      background-color: #eee;
+      margin-bottom: 2px;
+      position: relative;
+      padding: 10px 10px 0 30px;
+      white-space: nowrap;
+      overflow: hidden;
+      height: 23px;
+    }
+
+    input[type=checkbox] {
+      display: block;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: auto;
+      height: auto;
+    }
+
+    .file_name {
+      position: absolute;
+      left: 30px;
+      top: 9px;
+      right: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      font-weight: normal;
+      font-size: 13px;
+    }
+
+    .duration {
+      position: absolute;
+      right: 50px;
+      top: 9px;
+    }
+
+    .actions {
+      position: absolute;
+      right: 10px;
+      top: 3px;
+      text-align: right;
+
+      a {
+        float: left;
+        margin-left: 5px;
+      }
+    }
+
+    a.remove {
+      @include icon-only-button(#aaa);
+      @include trash-icon;
+    }
+  }
+
+  button.confirm {
+    @include icon-button;
+    @include check-icon;
+
+    &.checking {
+      @include arrows-ccw-icon;
+      @include background-icon-animation(blink);
+    }
+  }
+}
