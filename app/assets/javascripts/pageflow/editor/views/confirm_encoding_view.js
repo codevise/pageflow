@@ -13,7 +13,7 @@ pageflow.ConfirmEncodingView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click button': function() {
-      this.model.save();
+      this.model.saveAndReset();
     }
   },
 
@@ -23,10 +23,10 @@ pageflow.ConfirmEncodingView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.listenTo(this.model, 'change:empty change:exceeding change:checking', this.updateSummary);
+    this.listenTo(this.model, 'change', this.updateSummary);
 
-    this.listenTo(this.confirmableAudioFiles, 'add remove', this.update);
-    this.listenTo(this.confirmableVideoFiles, 'add remove', this.update);
+    this.listenTo(this.confirmableAudioFiles, 'add remove', this.updateBlankSlate);
+    this.listenTo(this.confirmableVideoFiles, 'add remove', this.updateBlankSlate);
 
     this.ui.videoFilesPanel.append(this.subview(new pageflow.CollectionView({
       tagName: 'ul',
@@ -52,6 +52,11 @@ pageflow.ConfirmEncodingView = Backbone.Marionette.ItemView.extend({
   },
 
   update: function() {
+    this.updateBlankSlate();
+    this.updateSummary();
+  },
+
+  updateBlankSlate: function() {
     this.ui.blankSlate.toggle(!this.confirmableVideoFiles.length && !this.confirmableAudioFiles.length);
     this.ui.videoFilesPanel.toggle(!!this.confirmableVideoFiles.length);
     this.ui.audioFilesPanel.toggle(!!this.confirmableAudioFiles.length);
