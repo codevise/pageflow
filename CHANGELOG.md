@@ -2,6 +2,13 @@
 
 ### Changes on `master`
 
+##### Breaking Changes
+
+- The `<meta name="description" />` tag now uses the `Entry#summary`
+  attribute which can be edited in the editor. If you have a custom
+  `layouts/pageflow/_meta_tags.html.erb` partial in your project,
+  remove the description meta tag there to prevent duplicate tags.
+
 ##### Public Site
 
 - Improve generation of of credits box.
