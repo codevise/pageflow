@@ -29,6 +29,8 @@
   ([#107](https://github.com/codevise/pageflow/pull/107))
 - Improve encoding confirmation in editor.
   ([#113](https://github.com/codevise/pageflow/pull/113))
+- Blank slate for editor.
+  ([#110](https://github.com/codevise/pageflow/pull/110))
 - Bug fix: Editing a newly created page altered the default attribute
   values of subsequently created pages.
   ([#103](https://github.com/codevise/pageflow/pull/103))
