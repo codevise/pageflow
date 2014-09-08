@@ -2,6 +2,10 @@
 
 ### Changes on `master`
 
+None so far.
+
+### Version 0.4.0
+
 ##### Breaking Changes
 
 - The `<meta name="description" />` tag now uses the `Entry#summary`
