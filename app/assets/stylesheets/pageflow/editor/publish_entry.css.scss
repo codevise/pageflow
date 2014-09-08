@@ -1,6 +1,7 @@
 .publish_entry {
   .notice.files_pending,
   .notice.published,
+  .notice.success,
   &.published .notice.not_published {
     display: none;
   }
@@ -19,6 +20,16 @@
     display: block;
   }
 
+  &.succeeded {
+    > div {
+      display: none;
+    }
+
+    .notice.success {
+      display: block;
+    }
+  }
+
   .notice {
     @include background-icon-left($left: 10px, $top: 18px);
 
@@ -35,6 +46,10 @@
 
     &.published {
       @include eye-icon;
+    }
+
+    &.success {
+      @include check-icon;
     }
 
     p {
