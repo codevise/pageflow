@@ -40,6 +40,7 @@ module Pageflow
 
     def publish(options = {})
       revisions.depublish_all
+      association(:published_revision).reset
 
       draft.copy do |revision|
         revision.creator = options[:creator]

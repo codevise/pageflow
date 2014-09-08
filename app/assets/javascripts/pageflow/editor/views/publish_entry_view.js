@@ -10,7 +10,8 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
     publishForeverRadioBox: 'input[value=publish_forever]',
     revisionsLink: '.published.notice a',
     publishedNotice: '.published.notice',
-    saveButton: 'button.save'
+    saveButton: 'button.save',
+    successLink: '.success a'
   },
 
   events: {
@@ -53,6 +54,8 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
     this.$el.toggleClass('published', this.model.get('published'));
 
     this.ui.revisionsLink.attr('href', '/admin/entries/' + this.model.id);
+    this.ui.successLink.attr('href', this.model.get('pretty_url'));
+    this.ui.successLink.text(this.model.get('pretty_url'));
 
     var publishedUntil = new Date(this.model.get('published_until'));
     if (publishedUntil > new Date()) {
@@ -104,6 +107,7 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
         if (that.isClosed) { return; }
 
         that.$el.removeClass('publishing');
+        that.$el.addClass('succeeded');
         that.$('input').removeAttr('disabled');
         that.enableSave();
       });

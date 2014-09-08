@@ -8,7 +8,7 @@ module Pageflow
     describe '#index' do
       it 'returns entries json' do
         user = create(:user)
-        entry = DraftEntry.new(build_stubbed(:entry), build_stubbed(:revision))
+        entry = DraftEntry.new(create(:entry), build_stubbed(:revision))
         allow(DraftEntry).to receive(:accessible_by).and_return([entry])
 
         sign_in(user)
