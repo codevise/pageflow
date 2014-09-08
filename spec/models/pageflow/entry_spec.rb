@@ -47,6 +47,16 @@ module Pageflow
         expect(entry).to be_published
       end
 
+      it 'resets cached published_revision' do
+        creator = create(:user)
+        entry = create(:entry, :published)
+
+        revision = entry.published_revision
+        entry.publish(:creator => creator)
+
+        expect(entry.published_revision).not_to eq(revision)
+      end
+
       it 'depublishes eariler revisions' do
         creator = create(:user)
         entry = create(:entry)
