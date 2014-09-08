@@ -8,6 +8,7 @@
   attribute which can be edited in the editor. If you have a custom
   `layouts/pageflow/_meta_tags.html.erb` partial in your project,
   remove the description meta tag there to prevent duplicate tags.
+  ([#112](https://github.com/codevise/pageflow/pull/112))
 
 ##### Public Site
 
@@ -20,6 +21,8 @@
 - Bug fix: Ensure top margin in additional info box even if no title
   is present.
   ([#109](https://github.com/codevise/pageflow/pull/109))
+- Bug fix: Logo was no longer left aligned at certain window widths.
+  ([#111](https://github.com/codevise/pageflow/pull/111))
 
 ##### Admin/Editor
 
@@ -27,10 +30,12 @@
   ([#105](https://github.com/codevise/pageflow/pull/105))
 - Improve order of items in select boxes of membership form.
   ([#107](https://github.com/codevise/pageflow/pull/107))
-- Improve encoding confirmation in editor.
-  ([#113](https://github.com/codevise/pageflow/pull/113))
 - Blank slate for editor.
   ([#110](https://github.com/codevise/pageflow/pull/110))
+- Improve encoding confirmation workflow in editor.
+  ([#113](https://github.com/codevise/pageflow/pull/113))
+- Improve entry publication workflow in editor.
+  ([#114](https://github.com/codevise/pageflow/pull/114))
 - Bug fix: Editing a newly created page altered the default attribute
   values of subsequently created pages.
   ([#103](https://github.com/codevise/pageflow/pull/103))
