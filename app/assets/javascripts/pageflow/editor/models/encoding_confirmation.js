@@ -5,6 +5,7 @@ pageflow.EncodingConfirmation = Backbone.Model.extend({
     this.videoFiles = new Backbone.Collection();
     this.audioFiles = new Backbone.Collection();
 
+    this.updateEmpty();
     this.watchCollections();
   },
 
@@ -12,17 +13,18 @@ pageflow.EncodingConfirmation = Backbone.Model.extend({
     this.listenTo(this.videoFiles, 'add remove', this.check);
     this.listenTo(this.audioFiles, 'add remove', this.check);
 
-    this.check();
+    this.listenTo(this.videoFiles, 'reset', this.updateEmpty);
+    this.listenTo(this.audioFiles, 'reset', this.updateEmpty);
   },
 
   check: function() {
     var model = this;
 
-    this.set('empty', this.videoFiles.length === 0 && this.audioFiles.length === 0);
-    this.set('checking', true);
+    model.updateEmpty();
+    model.set('checking', true);
 
-    this.save({}, {
-      url: this.url() + '/check',
+    model.save({}, {
+      url: model.url() + '/check',
       success: function() {
         model.set('checking', false);
       },
@@ -30,6 +32,23 @@ pageflow.EncodingConfirmation = Backbone.Model.extend({
         model.set('checking', false);
       }
     });
+  },
+
+  saveAndReset: function() {
+    var model = this;
+
+    model.save({}, {
+      success: function() {
+        model.set('summary_html', '');
+
+        model.videoFiles.reset();
+        model.audioFiles.reset();
+      }
+    });
+  },
+
+  updateEmpty: function() {
+    this.set('empty', this.videoFiles.length === 0 && this.audioFiles.length === 0);
   },
 
   url: function() {
@@ -43,3 +62,18 @@ pageflow.EncodingConfirmation = Backbone.Model.extend({
     };
   }
 });
+
+pageflow.EncodingConfirmation.createWithPreselection = function(options) {
+  var model = new pageflow.EncodingConfirmation();
+
+  if (options.fileId) {
+    if (options.fileType === 'video_file') {
+      model.videoFiles.add(pageflow.videoFiles.get(options.fileId));
+    }
+    else {
+      model.audioFiles.add(pageflow.audioFiles.get(options.fileId));
+    }
+  }
+
+  return model;
+};

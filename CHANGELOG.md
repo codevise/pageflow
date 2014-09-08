@@ -27,6 +27,8 @@
   ([#105](https://github.com/codevise/pageflow/pull/105))
 - Improve order of items in select boxes of membership form.
   ([#107](https://github.com/codevise/pageflow/pull/107))
+- Improve encoding confirmation in editor.
+  ([#113](https://github.com/codevise/pageflow/pull/113))
 - Bug fix: Editing a newly created page altered the default attribute
   values of subsequently created pages.
   ([#103](https://github.com/codevise/pageflow/pull/103))

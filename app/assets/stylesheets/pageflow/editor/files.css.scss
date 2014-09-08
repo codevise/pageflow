@@ -50,6 +50,7 @@ ul.files {
   }
 
   a.cancel,
+  a.confirm,
   a.remove,
   a.retry {
     @include icon-only-button(#aaa);
@@ -61,6 +62,10 @@ ul.files {
 
   a.cancel {
     @include cancel-icon;
+  }
+
+  a.confirm {
+    @include check-icon;
   }
 
   a.retry {

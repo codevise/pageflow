@@ -12,7 +12,7 @@ module Pageflow
         @encoding_confirmation = build_encoding_confirmation(entry)
         @encoding_confirmation.save!
 
-        head :ok
+        render(json: {})
       rescue EncodingConfirmation::QuotaExceededError
         render(action: :check, status: :forbidden)
       end

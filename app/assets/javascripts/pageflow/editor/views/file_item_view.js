@@ -9,6 +9,7 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
 
     selectButton: '.select',
     removeButton: '.remove',
+    confirmButton: '.confirm',
     cancelButton: '.cancel',
     retryButton: '.retry',
 
@@ -29,6 +30,8 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
     },
 
     'click .cancel': 'cancel',
+
+    'click .confirm': 'confirm',
 
     'click .remove': 'destroy',
 
@@ -75,6 +78,7 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
     this.ui.selectButton.toggle(!!this.options.selectionHandler);
 
     this.ui.cancelButton.toggle(this.model.isUploading());
+    this.ui.confirmButton.toggle(this.model.isConfirmable());
     this.ui.removeButton.toggle(!this.model.isUploading());
     this.ui.retryButton.toggle(this.model.isRetryable());
 
@@ -108,6 +112,10 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
 
   cancel: function() {
     this.model.cancelUpload();
+  },
+
+  confirm: function() {
+    pageflow.editor.navigate('/confirmable_files?type=' + this.model.modelName + '&id=' + this.model.id, {trigger: true});
   },
 
   retry: function() {
