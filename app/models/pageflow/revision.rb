@@ -33,6 +33,13 @@ module Pageflow
     validate :published_until_unchanged, :if => :published_until_was_in_past?
     validate :published_until_blank, :if => :published_at_blank?
 
+    def files(model)
+      model
+        .select("#{model.table_name}.*, pageflow_file_usages.id AS usage_id")
+        .joins(:usages)
+        .where(pageflow_file_usages: {revision_id: id})
+    end
+
     def creator
       super || NullUser.new
     end

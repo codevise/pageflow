@@ -200,6 +200,41 @@ module Pageflow
       end
     end
 
+    describe '#files' do
+      it 'returns files of given type' do
+        entry = create(:entry)
+        revision = entry.draft
+        image_file = create(:image_file)
+        revision.image_files << image_file
+
+        result = revision.files(Pageflow::ImageFile)
+
+        expect(result).to eq([image_file])
+      end
+
+      it 'does not return files of other type' do
+        entry = create(:entry)
+        revision = entry.draft
+        image_file = create(:image_file)
+        revision.image_files << image_file
+
+        result = revision.files(Pageflow::VideoFile)
+
+        expect(result).to eq([])
+      end
+
+      it 'includes usage_ids' do
+        entry = create(:entry)
+        revision = entry.draft
+        image_file = create(:image_file)
+        revision.image_files << image_file
+
+        result = revision.files(Pageflow::ImageFile)
+
+        expect(result.first.usage_id).to be_present
+      end
+    end
+
     describe '#pages' do
       it 'orders by chapter position first then by page position' do
         revision = create(:revision)

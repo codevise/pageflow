@@ -12,6 +12,7 @@ module Pageflow
 
     delegate(:title, :summary, :credits, :manual_start,
              :chapters, :pages,
+             :files,
              :image_files, :video_files, :audio_files,
              :to => :draft)
 
@@ -32,7 +33,7 @@ module Pageflow
     end
 
     def remove_file(file)
-      collection_containing(file).destroy(file)
+      draft.file_usages.where(file: file).destroy_all
       file.destroy if file.usages.empty?
     end
 
@@ -72,16 +73,6 @@ module Pageflow
 
     def home_button
       HomeButton.new(draft, theming)
-    end
-
-    private
-
-    def collection_containing(file)
-      collection_for(file.class.name)
-    end
-
-    def collection_for(model_name)
-      draft.send(model_name.to_s.underscore.split('/').last.pluralize)
     end
   end
 end
