@@ -129,7 +129,7 @@ de:
         allow_full_screen: "Vollbild Anzeige erlauben"
         autoplay: "automatisch abspielen"
         background_image_id: "Hintergrundbild"
-        thumbnail_image_id: "Hintergrundbild"
+        thumbnail_image_id: "Thumbnail"
         background_video_id: "Hintergrundvideo"
         video_file_id: "Video"
         audio_file_id: "Audio"
