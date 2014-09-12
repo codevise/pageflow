@@ -66,6 +66,12 @@ module Pageflow
       []
     end
 
+    # File types to enable when this page type is registered..
+    # @returns {Array<FileType>}
+    def file_types
+      []
+    end
+
     # View path of a template containing additional json to pass to
     # the editor. The data is available in the javascript definition
     # of the page type's configuration editor. By default nothing is
