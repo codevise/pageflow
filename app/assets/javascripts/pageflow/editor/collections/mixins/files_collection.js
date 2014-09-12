@@ -12,7 +12,7 @@ pageflow.filesCollection = {
   },
 
   url: function() {
-    return '/editor/entries/' + this.getEntry().get('id') + '/' + this.name;
+    return '/editor/entries/files/' + this.getEntry().get('id') + '/' + this.name;
   },
 
   getEntry: function() {

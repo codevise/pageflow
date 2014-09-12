@@ -1,1 +1,1 @@
-json.partial!(:object => @file, :partial => "pageflow/editor/#{@collection_name}/#{@model_name.to_s}")
+json.partial!(:object => @file, :partial => file_type.editor_partial)

@@ -9,9 +9,7 @@ module Pageflow
         entry = DraftEntry.find(params[:entry_id])
 
         authorize!(:use_files, entry.to_model)
-        @files = entry.send(collection_name).with_usage_id
-        @model_name = model_name
-        @collection_name = collection_name.to_s
+        @files = entry.files(file_type.model)
 
         respond_with(:editor, @files)
       end
@@ -21,27 +19,24 @@ module Pageflow
         authorize!(:edit, entry.to_model)
         verify_edit_lock!(entry)
 
-        @file = entry.create_file(model, file_params)
+        @file = entry.create_file(file_type.model, file_params)
         @file.publish!
-
-        @model_name = model_name
-        @collection_name = collection_name.to_s
 
         respond_with(:editor, @file)
       end
 
       def retry
-        file = model.find(params[:id])
+        file = file_type.model.find(params[:id])
 
         authorize!(:retry, file)
         verify_edit_lock!(file.entry)
         file.retry!
 
-        respond_with(:editor, file)
+        respond_with(:editor, file, location: editor_file_url(file, collection_name: params[:collection_name]))
       end
 
       def update
-        file = model.find(params[:id])
+        file = file_type.model.find(params[:id])
 
         authorize!(:update, file)
         verify_edit_lock!(file.entry)
@@ -50,30 +45,22 @@ module Pageflow
         head(:no_content)
       end
 
-      protected
-
-      def model
-        raise NotImplementedError
-      end
-
       private
 
-      def collection_name
-        model.name.underscore.split('/').last.pluralize.to_sym
+      def file_type
+        @file_type ||= Pageflow.config.file_types.find_by_collection_name!(params[:collection_name])
       end
 
-      def model_name
-        model.name.underscore.split('/').last.to_sym
-      end
+      helper_method :file_type
 
       def file_params
-        params.require(model_name)
+        params.require(file_type.param_key)
           .permit(:attachment => [:tmp_path, :original_name, :content_type])
-          .merge(params.require(model_name).permit(:attachment))
+          .merge(params.require(file_type.param_key).permit(:attachment))
       end
 
       def update_params
-        params.require(model_name).permit(:rights)
+        params.require(file_type.param_key).permit(:rights)
       end
     end
   end

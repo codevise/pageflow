@@ -19,7 +19,7 @@ pageflow.ImageFile = Backbone.Model.extend({
   },
 
   urlRoot: function() {
-    return this.isNew() ? this.collection.url() : '/editor/image_files';
+    return this.isNew() ? this.collection.url() : '/editor/files/image_files';
   },
 
   isReady: function() {

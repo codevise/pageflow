@@ -8,7 +8,7 @@ pageflow.AudioFile = Backbone.Model.extend({
   thumbnailPictogram: 'audio',
 
   urlRoot: function() {
-    return this.isNew() ? this.collection.url() : '/editor/audio_files';
+    return this.isNew() ? this.collection.url() : '/editor/files/audio_files';
   },
 
   isPositionable: function() {
