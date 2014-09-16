@@ -27,5 +27,9 @@ pageflow.file = {
     usage.destroy();
 
     this.trigger('destroy', this, this.collection, {});
+  },
+
+  fileType: function() {
+    return this.collection.fileType;
   }
 };

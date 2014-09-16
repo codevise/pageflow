@@ -37,9 +37,11 @@
         chapters: <%= @entry.chapters.to_json.html_safe %>,
         pages: <%= @entry.pages.to_json.html_safe %>,
 
-        <% Pageflow.config.file_types.each do |file_type| %>
-          <%= file_type.collection_name %>: <%= render_json_partial(file_type.editor_partial, collection: @entry.files(file_type.model), as: file_type.short_name) %>,
-        <% end %>
+        files: {
+          <% Pageflow.config.file_types.each do |file_type| %>
+            <%= file_type.collection_name %>: <%= render_json_partial(file_type.editor_partial, collection: @entry.files(file_type.model), as: file_type.short_name) %>,
+          <% end %>
+        },
 
         theming: <%= render_json_seed(@entry.theming) %>,
         page_types: <%= page_type_json_seeds %>
