@@ -8,8 +8,8 @@ vjs.Player.prototype.buffered = function(){
 
   if (buffered && buffered.length > 0) {
     for (var i = 0; i < buffered.length; i++) {
-      if (buffered.end(i) > max) {
-        max = buffered.end(i);
+      if (getEnd(buffered, i) > max) {
+        max = getEnd(buffered, i);
       }
     }
 
@@ -21,6 +21,17 @@ vjs.Player.prototype.buffered = function(){
   }
 
   return vjs.createTimeRange(start, end);
+
+  function getEnd(buffered, i) {
+    // Firefox 32 sometimes reports negative values as start and
+    // end. If both are negative, treat difference as end time stamp.
+    if (buffered.start(i) < 0 && buffered.end(i) < 0) {
+      return buffered.end(i) - buffered.start(i);
+    }
+    else {
+      return buffered.end(i);
+    }
+  }
 };
 
 // If end is after duration return buffered percent 0
