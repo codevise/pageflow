@@ -2,7 +2,12 @@
 
 ### Changes on `master`
 
-None so far.
+##### Public Site
+
+- Improve playback of certain videos in Firefox.
+  ([#116](https://github.com/codevise/pageflow/pull/116))
+- Bug fix: Correct color of links in additional info box.
+  ([#117](https://github.com/codevise/pageflow/pull/117))
 
 ### Version 0.4.0
 
