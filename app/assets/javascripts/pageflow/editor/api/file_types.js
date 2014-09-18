@@ -24,10 +24,22 @@ pageflow.FileTypes = pageflow.Object.extend({
 
       return new pageflow.FileType(_.extend({}, serverSideConfig, clientSideConfig));
     });
+  },
+
+  findByUpload: function(upload) {
+    var result = this.find(function(fileType) {
+      return fileType.matchUpload(upload);
+    });
+
+    if (!result) {
+      throw(new pageflow.FileTypes.UnmatchedUploadError(upload));
+    }
+
+    return result;
   }
 });
 
-_.each(['each', 'map', 'reduce', 'first'], function(method) {
+_.each(['each', 'map', 'reduce', 'first', 'find'], function(method) {
   pageflow.FileTypes.prototype[method] = function() {
     if (!this._setup) {
       throw  'File types are not yet set up.';
@@ -37,4 +49,13 @@ _.each(['each', 'map', 'reduce', 'first'], function(method) {
     args.unshift(this.fileTypes);
     return _[method].apply(_, args);
   };
+});
+
+pageflow.FileTypes.UnmatchedUploadError = pageflow.Object.extend({
+  name: 'UnmatchedUploadError',
+
+  initialize: function(upload) {
+    this.upload = upload;
+    this.message = 'No matching file type found for upload "' + upload.name + '" of type "' + upload.type +'".';
+  }
 });
