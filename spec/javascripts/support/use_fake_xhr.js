@@ -1,14 +1,10 @@
 support.useFakeXhr = function(fn) {
   beforeEach(function() {
-    this.xhr = sinon.useFakeXMLHttpRequest();
-    var requests = this.requests = [];
-
-    this.xhr.onCreate = function(request) {
-      requests.push(request);
-    };
+    this.server = sinon.fakeServer.create();
+    this.requests = this.server.requests;
   });
 
   afterEach(function() {
-    this.xhr.restore();
+    this.server.restore();
   });
 };
