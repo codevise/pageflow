@@ -20,7 +20,7 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
       dataType: 'json',
 
       add: function(event, data) {
-        data.record = pageflow.entry.addFile(data.files[0]);
+        data.record = pageflow.entry.addFileUpload(data.files[0]);
         var xhr = data.submit();
 
         that.listenTo(data.record, 'uploadCancelled', function() {
