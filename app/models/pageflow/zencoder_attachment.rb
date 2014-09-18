@@ -14,7 +14,7 @@ module Pageflow
     def initialize(instance, file_name_pattern, options = {})
       @instance = instance
       @file_name_pattern = file_name_pattern
-      @options = options.merge(default_options)
+      @options = options.reverse_merge(default_options)
 
       @styles = {}
     end
@@ -47,7 +47,7 @@ module Pageflow
     private
 
     def ensure_default_protocol(url, url_options)
-      url =~ /^http/ ? url : [url_options[:default_protocol], url].compact.join(':')
+      url =~ %r'^//' ? [url_options[:default_protocol], url].compact.join(':') : url
     end
 
     def url_pattern(url_options)

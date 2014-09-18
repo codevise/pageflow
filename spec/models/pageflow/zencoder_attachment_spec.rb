@@ -70,12 +70,20 @@ module Pageflow
       end
 
       context 'with default_protocol options ' do
-        it 'prepends protocol if url would protocol relative' do
+        it 'prepends protocol if url would be protocol relative' do
           Pageflow.config.zencoder_options[:s3_protocol] = ''
           file = double('File', :id => 5, :class => double(:to_s => 'File'))
           attachment = ZencoderAttachment.new(file, 'video.mp4')
 
           expect(attachment.url(default_protocol: 'http')).to eq("http://#{zencoder_options[:s3_host_alias]}/#{version}/test-host/files/000/000/005/video.mp4")
+        end
+
+        it 'does not alter relative urls' do
+          Pageflow.config.zencoder_options[:s3_protocol] = ''
+          file = double('File', :id => 5, :class => double(:to_s => 'File'))
+          attachment = ZencoderAttachment.new(file, 'video.mp4', {url: ':filename'})
+
+          expect(attachment.url(default_protocol: 'http')).to eq("video.mp4")
         end
 
         it 'does not alter protocol if configured' do
