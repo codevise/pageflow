@@ -4,6 +4,8 @@ pageflow.ExplorerFileItemView = Backbone.Marionette.ItemView.extend({
 
   mixins: [pageflow.loadable, pageflow.selectableView],
 
+  selectionAttribute: 'file',
+
   ui: {
     fileName: '.file_name',
 
