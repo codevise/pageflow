@@ -169,15 +169,15 @@ module Pageflow
     def hls_stream_definitions
       [
         {
-          :path => video_file.hls_medium.url(default_protocol: 'http'),
+          :path => video_file.hls_medium.url(host: :hls_origin, default_protocol: 'http'),
           :bandwidth => 2250
         },
         {
-          :path => video_file.hls_low.url(default_protocol: 'http'),
+          :path => video_file.hls_low.url(host: :hls_origin, default_protocol: 'http'),
           :bandwidth => 256
         },
         {
-          :path => video_file.hls_high.url(default_protocol: 'http'),
+          :path => video_file.hls_high.url(host: :hls_origin, default_protocol: 'http'),
           :bandwidth => 3750
         }
       ]
