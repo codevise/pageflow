@@ -10,10 +10,13 @@ pageflow.FileType = pageflow.Object.extend({
     if (typeof options.matchUpload === 'function') {
       this.matchUpload = options.matchUpload;
     }
-    else {
+    else if (options.matchUpload instanceof RegExp)  {
       this.matchUpload = function(upload) {
         return upload.type.match(options.matchUpload);
       };
+    }
+    else {
+      throw 'matchUpload option of FileType "' + this.collectionName + '" must either be a function or a RegExp.';
     }
   }
 });

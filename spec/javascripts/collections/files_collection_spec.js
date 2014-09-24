@@ -3,7 +3,7 @@ describe('FileCollection', function() {
     var Model = Backbone.Model.extend({});
 
     it('creates file collections index by collection name', function() {
-      var fileTypes = [new pageflow.FileType({collectionName: 'image_files', model: Model})];
+      var fileTypes = [new pageflow.FileType({collectionName: 'image_files', model: Model, matchUpload: /^image/})];
       var files = {
         image_files: [{file_name: 'image.png'}]
       };
@@ -14,7 +14,7 @@ describe('FileCollection', function() {
     });
 
     it('allows passing options to collection constructors', function() {
-      var fileTypes = [new pageflow.FileType({collectionName: 'image_files', model: Model})];
+      var fileTypes = [new pageflow.FileType({collectionName: 'image_files', model: Model, matchUpload: /^image/})];
       var files = {
         image_files: [{file_name: 'image.png'}]
       };

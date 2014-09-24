@@ -3,7 +3,7 @@ describe('FileTypes', function() {
     it('creates file types for given server side configs from registered client side configs', function() {
       var fileTypes = new pageflow.FileTypes();
 
-      fileTypes.register('image_files', {model: pageflow.ImageFile});
+      fileTypes.register('image_files', {model: pageflow.ImageFile, matchUpload: /^image/});
       fileTypes.setup([{collectionName: 'image_files'}]);
 
       expect(fileTypes.first().collectionName).to.eq('image_files');
