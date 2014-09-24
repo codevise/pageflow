@@ -13,12 +13,24 @@ pageflow.file = {
     this.trigger('uploadFailed');
   },
 
+  isPending: function() {
+    return !this.isReady() && !this.isFailed();
+  },
+
   isUploading: function() {
     return this.get('state') === 'uploading';
   },
 
   isUploaded: function() {
     return this.get('state') !== 'uploading' && this.get('state') !== 'upload_failed';
+  },
+
+  isReady: function() {
+    return this.get('state') === this.readyState;
+  },
+
+  isFailed: function() {
+    return this.get('state') && !!this.get('state').match(/_failed$/);
   },
 
   destroyUsage: function() {

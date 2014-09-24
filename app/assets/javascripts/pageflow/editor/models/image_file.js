@@ -25,14 +25,6 @@ pageflow.ImageFile = Backbone.Model.extend({
     return this.isNew() ? this.collection.url() : '/editor/files/image_files';
   },
 
-  isReady: function() {
-    return this.get('state') === 'processed';
-  },
-
-  isPending: function() {
-    return this.get('state') === 'processing';
-  },
-
   isRetryable: function() {
     return this.get('state') === 'processing_failed';
   },

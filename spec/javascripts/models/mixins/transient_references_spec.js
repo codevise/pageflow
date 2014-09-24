@@ -1,4 +1,4 @@
-describe('filesCountWatcher', function() {
+describe('transientReferences', function() {
   var Model = Backbone.Model.extend({
     mixins: [pageflow.transientReferences]
   });

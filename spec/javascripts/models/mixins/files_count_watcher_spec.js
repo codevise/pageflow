@@ -6,9 +6,7 @@ describe('filesCountWatcher', function() {
   var FileModel = Backbone.Model.extend({
     mixins: [pageflow.file],
 
-    isPending: function() {
-      return this.get('state') === 'processing';
-    },
+    readyState: 'processed',
 
     isConfirmable: function() {
       return false;

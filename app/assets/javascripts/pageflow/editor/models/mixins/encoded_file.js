@@ -26,14 +26,6 @@ pageflow.encodedFile = {
     return this.get('state') === 'waiting_for_confirmation';
   },
 
-  isFailed: function() {
-    return this.get('state').match(/_failed$/);
-  },
-
-  isPending: function() {
-    return !this.isUploading() && !this.isReady() && !this.isFailed();
-  },
-
   isRetryable: function() {
     return ['upload_to_s3_failed', 'encoding_failed'].indexOf(this.get('state')) >= 0;
   },

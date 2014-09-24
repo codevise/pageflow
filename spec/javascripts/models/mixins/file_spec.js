@@ -1,6 +1,8 @@
 describe('file', function() {
   var File = Backbone.Model.extend({
-    mixins: [pageflow.file]
+    mixins: [pageflow.file],
+
+    readyState: 'ready'
   });
 
   var FilesCollection = Backbone.Collection.extend({
@@ -40,4 +42,45 @@ describe('file', function() {
     });
   });
 
+  describe('#isReady', function() {
+    it('returns true if state equals readyState', function() {
+      var file = new File({state: 'ready'});
+
+      expect(file.isReady()).to.eq(true);
+    });
+  });
+
+  describe('#isFailed', function() {
+    it('returns true if state ends with _failed', function() {
+      var file = new File({state: 'upload_failed'});
+
+      expect(file.isFailed()).to.eq(true);
+    });
+
+    it('returns false if state does not end with _failed', function() {
+      var file = new File({state: 'uploading'});
+
+      expect(file.isFailed()).to.eq(false);
+    });
+  });
+
+  describe('#isPending', function() {
+    it('returns true if neither ready nor failed ', function() {
+      var file = new File({state: 'processing'});
+
+      expect(file.isPending()).to.eq(true);
+    });
+
+    it('returns false if ready', function() {
+      var file = new File({state: 'ready'});
+
+      expect(file.isPending()).to.eq(false);
+    });
+
+    it('returns false if failed', function() {
+      var file = new File({state: 'processing_failed'});
+
+      expect(file.isPending()).to.eq(false);
+    });
+  });
 });
