@@ -45,5 +45,14 @@ module Pageflow
         expect(file_type.type_name).to eq('Pageflow::ImageFile')
       end
     end
+
+    describe '#i18n_key' do
+      it 'returns fully qualified underscored name of ruby model' do
+        file_type = FileType.new(model: ImageFile,
+                                 editor_partial: 'pageflow/editor/image_files/image_file')
+
+        expect(file_type.i18n_key).to eq(:'pageflow/image_file')
+      end
+    end
   end
 end

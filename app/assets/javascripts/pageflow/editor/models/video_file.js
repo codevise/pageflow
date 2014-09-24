@@ -5,10 +5,6 @@ pageflow.VideoFile = Backbone.Model.extend({
 
   mixins: [pageflow.file, pageflow.encodedFile, pageflow.stageProvider, pageflow.retryable],
 
-  urlRoot: function() {
-    return this.isNew() ? this.collection.url() : '/editor/files/video_files';
-  },
-
   isPositionable: function() {
     return false;
   }

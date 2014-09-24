@@ -47,8 +47,14 @@ module Pageflow
     # @api private
     alias_method :short_name, :param_key
 
+    # @api private
     def type_name
       model.name
+    end
+
+    # @api private
+    def i18n_key
+      model.model_name.i18n_key
     end
   end
 end

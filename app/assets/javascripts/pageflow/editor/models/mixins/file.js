@@ -1,4 +1,16 @@
 pageflow.file = {
+  initialize: function() {
+    if (this.fileType()) {
+      this.modelName = this.fileType().paramKey;
+      this.paramRoot = this.fileType().paramKey;
+      this.i18nKey = this.fileType().i18nKey;
+    }
+  },
+
+  urlRoot: function() {
+    return this.isNew() ? this.collection.url() : '/editor/files/' + this.collection.name;
+  },
+
   cancelUpload: function() {
     if (this.get('state') === 'uploading') {
       this.trigger('uploadCancelled');
@@ -33,6 +45,10 @@ pageflow.file = {
     return this.get('state') && !!this.get('state').match(/_failed$/);
   },
 
+  isRetryable: function() {
+    return !!this.get('retryable');
+  },
+
   destroyUsage: function() {
     var usage = new pageflow.FileUsage({id: this.get('usage_id')});
 
@@ -42,6 +58,6 @@ pageflow.file = {
   },
 
   fileType: function() {
-    return this.collection.fileType;
+    return this.collection && this.collection.fileType;
   }
 };

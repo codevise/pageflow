@@ -4,6 +4,7 @@ pageflow.FileType = pageflow.Object.extend({
 
     this.typeName = options.typeName;
     this.collectionName = options.collectionName;
+    this.paramKey = options.paramKey;
 
     this.metaDataAttributes = options.metaDataAttributes || [];
 

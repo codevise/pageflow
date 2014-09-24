@@ -24,9 +24,5 @@ pageflow.encodedFile = {
 
   isConfirmable: function() {
     return this.get('state') === 'waiting_for_confirmation';
-  },
-
-  isRetryable: function() {
-    return ['upload_to_s3_failed', 'encoding_failed'].indexOf(this.get('state')) >= 0;
-  },
+  }
 };
