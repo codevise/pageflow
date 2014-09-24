@@ -7,6 +7,8 @@ pageflow.FileStage = Backbone.Model.extend({
     this.failedStates = options.failedStates;
     this.actionRequiredStates = options.actionRequiredStates || [];
 
+    this.nonFinishedStates = this.activeStates.concat(this.failedStates, this.actionRequiredStates);
+
     this.update();
     this.listenTo(this.file, 'change:state', this.update);
     this.listenTo(this.file, 'change:encoding_progress', this.update);

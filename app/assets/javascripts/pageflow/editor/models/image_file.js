@@ -5,18 +5,21 @@ pageflow.ImageFile = Backbone.Model.extend({
 
   mixins: [pageflow.file, pageflow.stageProvider, pageflow.retryable],
 
-  stageMapping: {
-    uploading: {
+  stages: [
+    {
+      name: 'uploading',
       activeStates: ['uploading'],
-      finishedStates: ['processing', 'processed', 'processing_failed'],
       failedStates: ['upload_failed']
     },
-    processing: {
+    {
+      name: 'processing',
       activeStates: ['processing'],
       finishedStates: ['processed'],
       failedStates: ['processing_failed']
     }
-  },
+  ],
+
+  readyState: 'processed',
 
   urlRoot: function() {
     return this.isNew() ? this.collection.url() : '/editor/files/image_files';

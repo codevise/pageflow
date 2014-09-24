@@ -1,37 +1,26 @@
 pageflow.encodedFile = {
-  stageMapping: function() {
-    var mapping = {
-      uploading: {
-        activeStates: ['uploading'],
-        finishedStates: ['not_uploaded_to_s3', 'upload_to_s3', 'uploading_to_s3', 'upload_to_s3_failed', 'waiting_for_meta_data', 'fetching_meta_data', 'fetching_meta_data_failed', 'waiting_for_confirmation', 'waiting_for_encoding', 'encoding', 'encoded', 'encoding_failed'],
-        failedStates: ['upload_failed']
-      },
-      uploading_to_s3: {
-        activeStates: ['uploading_to_s3'],
-        finishedStates: ['waiting_for_meta_data', 'fetching_meta_data', 'fetching_meta_data_failed', 'waiting_for_confirmation', 'waiting_for_encoding', 'encoding', 'encoded', 'encoding_failed'],
-        failedStates: ['upload_to_s3_failed']},
-      fetching_meta_data: {
-        activeStates: ['waiting_for_meta_data', 'fetching_meta_data'],
-        finishedStates: ['waiting_for_confirmation', 'waiting_for_encoding', 'encoding', 'encoded', 'encoding_failed'],
-        failedStates: ['fetching_meta_data_failed']},
-      encoding: {
-        actionRequiredStates: ['waiting_for_confirmation'],
-        activeStates: ['waiting_for_encoding', 'encoding'],
-        finishedStates: ['encoded'],
-        failedStates: ['fetching_meta_data_failed', 'encoding_failed']
-      }
-    };
+  stages: function() {
+    var stages = [];
 
-    if (!pageflow.config.confirmEncodingJobs) {
-      delete mapping.fetching_meta_data;
+    if (pageflow.config.confirmEncodingJobs) {
+      stages.push({
+        name: 'fetching_meta_data',
+        activeStates: ['waiting_for_meta_data', 'fetching_meta_data'],
+        failedStates: ['fetching_meta_data_failed']
+      });
     }
 
-    return mapping;
+    stages.push({
+      name: 'encoding',
+      actionRequiredStates: ['waiting_for_confirmation'],
+      activeStates: ['waiting_for_encoding', 'encoding'],
+      failedStates: ['fetching_meta_data_failed', 'encoding_failed']
+    });
+
+    return stages;
   },
 
-  isReady: function() {
-    return this.get('state') === 'encoded';
-  },
+  readyState: 'encoded',
 
   isConfirmable: function() {
     return this.get('state') === 'waiting_for_confirmation';

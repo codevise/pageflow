@@ -1,12 +1,18 @@
 pageflow.stageProvider = {
   initialize: function() {
-    this.stages = new Backbone.Collection(_.chain(this).result('stageMapping').pairs().map(function (pair) {
-      var name = pair[0];
-      var options = pair[1];
+    var finishedStates = [this.readyState];
+
+    this.stages = new Backbone.Collection(_.chain(this).result('stages').slice().reverse().map(function (options) {
+      var name = options.name;
 
       options.file = this;
-      return new pageflow.FileStage({name: name}, options);
-    }, this).value());
+      options.finishedStates = finishedStates;
+
+      var fileStage = new pageflow.FileStage({name: name}, options);
+      finishedStates = finishedStates.concat(fileStage.nonFinishedStates);
+
+      return fileStage;
+    }, this).reverse().value());
   },
 
   currentStage: function() {
