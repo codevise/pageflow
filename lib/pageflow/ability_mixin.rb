@@ -17,7 +17,7 @@ module Pageflow
         can_edit_entry?(user, record.entry)
       end
 
-      can :manage, [ImageFile, VideoFile, AudioFile] do |record|
+      can :manage, Pageflow.config.file_types.map(&:model) do |record|
         can_edit_any_entry_using_file?(user, record)
       end
 
@@ -47,7 +47,7 @@ module Pageflow
         can :manage, Folder
         can :manage, [Entry, Revision]
         can :manage, [Chapter, Page]
-        can :manage, [ImageFile, VideoFile, AudioFile]
+        can :manage, Pageflow.config.file_types.map(&:model)
 
         can :manage, Resque
       elsif user.account_manager?
