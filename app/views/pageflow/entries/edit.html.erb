@@ -39,7 +39,7 @@
 
         files: {
           <% Pageflow.config.file_types.each do |file_type| %>
-            <%= file_type.collection_name %>: <%= render_json_partial(file_type.editor_partial, collection: @entry.files(file_type.model), as: file_type.short_name) %>,
+            <%= file_type.collection_name %>: <%= render_json_partial(partial: 'pageflow/editor/files/file', collection: @entry.files(file_type.model), locals: {file_type: file_type}, as: :file) %>,
           <% end %>
         },
 

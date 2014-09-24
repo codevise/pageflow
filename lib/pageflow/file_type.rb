@@ -28,14 +28,14 @@ module Pageflow
     # @param [Hash] options
     # @option options [ActiveRecord::Base] :model  Required. Model
     #   representing the file.
-    # @option options [String] :editor_partial  Required. Path of the
-    #   partial used to render a json representation of the file.
+    # @option options [String] :editor_partial  Optional. Path of a
+    #   partial to include in json representations of the file.
     # @option options [String] :collection_name  Optional. String to
     #   be used in routes. Defaults to `"pageflow_rainbow_file"` for
     #   model `Pageflow::Rainbow::File`.
     def initialize(options)
       @model = options.fetch(:model)
-      @editor_partial = options.fetch(:editor_partial)
+      @editor_partial = options.fetch(:editor_partial, nil)
       @collection_name = options.fetch(:collection_name, model.model_name.plural)
     end
 

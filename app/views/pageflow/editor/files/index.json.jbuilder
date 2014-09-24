@@ -1,1 +1,4 @@
-json.array!(@files, partial: file_type.editor_partial, as: file_type.short_name)
+json.partial!(collection: @files,
+              partial: 'pageflow/editor/files/file',
+              locals: {file_type: file_type},
+              as: :file)

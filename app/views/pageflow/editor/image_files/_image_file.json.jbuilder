@@ -1,6 +1,4 @@
-json.(image_file, :id, :state, :rights, :usage_id, :width, :height)
-json.file_name(image_file.attachment.original_filename)
-json.url(image_file.attachment.url(:large))
+json.(image_file, :width, :height)
 
 json.dimensions(file_dimensions(image_file))
 

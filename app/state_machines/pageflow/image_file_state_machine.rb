@@ -32,5 +32,9 @@ module Pageflow
     def publish!
       process!
     end
+
+    def can_retry?
+      processing_failed?
+    end
   end
 end

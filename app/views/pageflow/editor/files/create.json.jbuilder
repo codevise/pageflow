@@ -1,1 +1,1 @@
-json.partial!(:object => @file, :partial => file_type.editor_partial)
+json.partial!(partial: 'pageflow/editor/files/file', object: @file, locals: {file_type: file_type})
