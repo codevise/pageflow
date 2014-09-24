@@ -37,6 +37,12 @@ module Pageflow
       self.unprocessed_attachment = value
     end
 
+    def url
+      if processed_attachment.present?
+        attachment.url(:large)
+      end
+    end
+
     private
 
     def save_image_dimensions
