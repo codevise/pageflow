@@ -45,6 +45,12 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
     this.options = _.extend({
       imagePositioning: true
     }, this.options);
+
+    if (typeof this.options.collection === 'string') {
+      this.options.collection = pageflow.entry.getFileCollection(
+        pageflow.editor.fileTypes.findByCollectionName(this.options.collection)
+      );
+    }
   },
 
   onRender: function() {

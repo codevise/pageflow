@@ -75,4 +75,35 @@ describe('FileTypes', function() {
       }).to.throw(pageflow.FileTypes.UnmatchedUploadError);
     });
   });
+
+  describe('#findByCollectionName', function() {
+    it('returns file type with given collection name', function() {
+      var fileTypes = new pageflow.FileTypes();
+
+      fileTypes.register('image_files', {
+        matchUpload: /^image/
+      });
+      fileTypes.register('video_files', {
+        matchUpload: /^video/
+      });
+      fileTypes.setup([
+        {collectionName: 'image_files'},
+        {collectionName: 'video_files'}
+      ]);
+
+      var result = fileTypes.findByCollectionName('video_files');
+
+      expect(result.collectionName).to.eq('video_files');
+    });
+
+    it('throws exception if no file type with collection name exists', function() {
+      var fileTypes = new pageflow.FileTypes();
+
+      fileTypes.setup([]);
+
+      expect(function() {
+        fileTypes.findByCollectionName('video_files');
+      }).to.throw('Could not find file type');
+    });
+  });
 });

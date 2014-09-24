@@ -36,6 +36,18 @@ pageflow.FileTypes = pageflow.Object.extend({
     }
 
     return result;
+  },
+
+  findByCollectionName: function(collectionName) {
+    var result = this.find(function(fileType) {
+      return fileType.collectionName === collectionName;
+    });
+
+    if (!result) {
+      throw('Could not find file type by collection name "' + collectionName +'"');
+    }
+
+    return result;
   }
 });
 
