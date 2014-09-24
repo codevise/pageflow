@@ -20,16 +20,18 @@ module Pageflow
   def self.configure!
     return unless @finalized
 
-    @config = Configuration.new
+    config = Configuration.new
     @configure_blocks ||= []
 
     @configure_blocks.each do |block|
-      block.call(@config)
+      block.call(config)
     end
 
     @after_configure_blocks.each do |block|
-      block.call(@config)
+      block.call(config)
     end
+
+    @config = config
   end
 
   def self.finalize!

@@ -1,8 +1,8 @@
 require 'zencoder'
 require 'pageflow/zencoder_api'
 
-Pageflow.after_configure do
-  zencoder_options = Pageflow.config.zencoder_options
+Pageflow.after_configure do |config|
+  zencoder_options = config.zencoder_options
   zencoder_options.reverse_merge!(:attachments_version => 'v1')
 
   Zencoder.api_key = zencoder_options.fetch(:api_key) { raise "Missing api_key option in Pageflow.config.zencoder_options." }
