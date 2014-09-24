@@ -1,6 +1,4 @@
-pageflow.HostedFile = Backbone.Model.extend({
-  mixins: [pageflow.file, pageflow.stageProvider, pageflow.retryable],
-
+pageflow.HostedFile = pageflow.UploadedFile.extend({
   stages: function() {
     return [
       {
@@ -18,13 +16,5 @@ pageflow.HostedFile = Backbone.Model.extend({
 
   processingStages: [],
 
-  readyState: 'uploaded_to_s3',
-
-  isConfirmable: function() {
-    return false;
-  },
-
-  isPositionable: function() {
-    return false;
-  }
+  readyState: 'uploaded_to_s3'
 });

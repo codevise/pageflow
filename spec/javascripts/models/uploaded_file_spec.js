@@ -1,7 +1,5 @@
-describe('file', function() {
-  var File = Backbone.Model.extend({
-    mixins: [pageflow.file],
-
+describe('UploadedFile', function() {
+  var File = pageflow.UploadedFile.extend({
     readyState: 'ready'
   });
 

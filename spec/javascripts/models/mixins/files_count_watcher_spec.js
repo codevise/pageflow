@@ -3,14 +3,8 @@ describe('filesCountWatcher', function() {
     mixins: [pageflow.filesCountWatcher]
   });
 
-  var FileModel = Backbone.Model.extend({
-    mixins: [pageflow.file],
-
-    readyState: 'processed',
-
-    isConfirmable: function() {
-      return false;
-    }
+  var FileModel = pageflow.UploadedFile.extend({
+    readyState: 'processed'
   });
 
   function createFilesCollection(items) {
