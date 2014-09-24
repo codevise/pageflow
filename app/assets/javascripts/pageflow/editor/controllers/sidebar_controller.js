@@ -10,23 +10,11 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
     }));
   },
 
-  imageFiles: function(handler, payload) {
-    this.files(handler, payload, 'image_files');
-  },
-
-  videoFiles: function(handler, payload) {
-    this.files(handler, payload, 'video_files');
-  },
-
-  audioFiles: function(handler, payload) {
-    this.files(handler, payload, 'audio_files');
-  },
-
-  files: function(handler, payload, tabName) {
+  files: function(collectionName, handler, payload) {
     this.region.show(new pageflow.FilesView({
       model: this.entry,
       selectionHandler: handler && pageflow.editor.createFileSelectionHandler(handler, payload),
-      tabName: tabName
+      tabName: collectionName
     }));
   },
 
