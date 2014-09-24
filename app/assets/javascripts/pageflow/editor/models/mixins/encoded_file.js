@@ -1,5 +1,5 @@
 pageflow.encodedFile = {
-  stages: function() {
+  processingStages: function() {
     var stages = [];
 
     if (pageflow.config.confirmEncodingJobs) {
@@ -24,5 +24,9 @@ pageflow.encodedFile = {
 
   isConfirmable: function() {
     return this.get('state') === 'waiting_for_confirmation';
+  },
+
+  isPositionable: function() {
+    return false;
   }
 };

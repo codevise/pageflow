@@ -23,6 +23,7 @@
 //= require_self
 
 //= require_tree ./models/mixins
+//= require ./models/hosted_file
 //= require_tree ./models
 //= require_tree ./collections/mixins
 //= require ./collections/multi_collection
