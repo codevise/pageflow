@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140819121523) do
+ActiveRecord::Schema.define(version: 20140922111100) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -245,6 +245,26 @@ ActiveRecord::Schema.define(version: 20140819121523) do
     t.string   "rights",                                                                  default: "", null: false
     t.integer  "confirmed_by_id"
   end
+
+  create_table "test_hosted_files", force: true do |t|
+    t.integer  "entry_id"
+    t.integer  "uploader_id"
+    t.string   "state"
+    t.string   "rights"
+    t.string   "attachment_on_filesystem_file_name"
+    t.string   "attachment_on_filesystem_content_type"
+    t.integer  "attachment_on_filesystem_file_size",    limit: 8
+    t.datetime "attachment_on_filesystem_updated_at"
+    t.string   "attachment_on_s3_file_name"
+    t.string   "attachment_on_s3_content_type"
+    t.integer  "attachment_on_s3_file_size",            limit: 8
+    t.datetime "attachment_on_s3_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "test_hosted_files", ["entry_id"], name: "index_test_hosted_files_on_entry_id", using: :btree
+  add_index "test_hosted_files", ["uploader_id"], name: "index_test_hosted_files_on_uploader_id", using: :btree
 
   create_table "test_revision_components", force: true do |t|
     t.integer "revision_id"
