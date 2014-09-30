@@ -8,6 +8,7 @@
   ([#116](https://github.com/codevise/pageflow/pull/116))
 - Bug fix: Correct color of links in additional info box.
   ([#117](https://github.com/codevise/pageflow/pull/117))
+- Bug fix: iOS 8 window.onload bug workaround.
 
 ### Version 0.4.0
 
