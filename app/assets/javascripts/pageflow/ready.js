@@ -1,5 +1,5 @@
 pageflow.ready = new $.Deferred(function(readyDeferred) {
-  window.onload = function() {
+  onLoadWithTimeout(function() {
     pageflow.features.detect().then(function() {
       $('body').one('pagepreloaded', function() {
         readyDeferred.resolve();
@@ -44,5 +44,24 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
         return false; }
       );
     });
-  };
+  });
+
+  function onLoadWithTimeout(callback) {
+    var invoked = false;
+    var invokeOnce = function() {
+      clearTimeout(timeout);
+
+      if (!invoked) {
+        callback();
+        invoked = true;
+      }
+    };
+
+    var iOS8 = navigator.userAgent.match(/(iPad|iPhone|iPod).*OS 8_\d/i);
+
+    // iOS 8 fails to trigger window.onload when audio tags are present
+    // on the page. Make sure we do not get stuck at the loading spinner.
+    var timeout = setTimeout(invokeOnce, iOS8 ? 3000 : 10000);
+    window.onload = invokeOnce;
+  }
 }).promise();
