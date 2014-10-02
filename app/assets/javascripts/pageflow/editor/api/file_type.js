@@ -19,5 +19,13 @@ pageflow.FileType = pageflow.Object.extend({
     else {
       throw 'matchUpload option of FileType "' + this.collectionName + '" must either be a function or a RegExp.';
     }
+
+    this.setupModelNaming();
+  },
+
+  setupModelNaming: function() {
+    this.model.prototype.modelName = this.model.prototype.modelName || this.paramKey;
+    this.model.prototype.paramRoot = this.model.prototype.paramRoot || this.paramKey;
+    this.model.prototype.i18nKey = this.model.prototype.i18nKey || this.i18nKey;
   }
 });

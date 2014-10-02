@@ -1,14 +1,6 @@
 pageflow.UploadedFile = Backbone.Model.extend({
   mixins: [pageflow.stageProvider, pageflow.retryable],
 
-  initialize: function() {
-    if (this.fileType()) {
-      this.modelName = this.fileType().paramKey;
-      this.paramRoot = this.fileType().paramKey;
-      this.i18nKey = this.fileType().i18nKey;
-    }
-  },
-
   urlRoot: function() {
     return this.isNew() ? this.collection.url() : '/editor/files/' + this.fileType().collectionName;
   },
