@@ -146,7 +146,7 @@ shared_examples 'encoded file state machine' do |model|
 
     context 'when upload to s3 failed' do
       it 'sets state to encoded after job has finished' do
-        file = create(model, :upload_to_s3_failed)
+        file = create(model, :uploading_to_s3_failed)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 

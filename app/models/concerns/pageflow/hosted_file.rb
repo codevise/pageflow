@@ -13,21 +13,21 @@ module Pageflow
         state 'not_uploaded_to_s3'
         state 'uploading_to_s3'
         state 'uploaded_to_s3'
-        state 'upload_to_s3_failed'
+        state 'uploading_to_s3_failed'
 
         event :publish do
           transition 'not_uploaded_to_s3' => 'uploading_to_s3'
         end
 
         event :retry do
-          transition 'upload_to_s3_failed' => 'uploading_to_s3'
+          transition 'uploading_to_s3_failed' => 'uploading_to_s3'
         end
 
         job UploadFileToS3Job do
           on_enter 'uploading_to_s3'
           result :pending, retry_after: 30.seconds
           result :ok, state: 'uploaded_to_s3'
-          result :error, state: 'upload_to_s3_failed'
+          result :error, state: 'uploading_to_s3_failed'
         end
 
         event :process

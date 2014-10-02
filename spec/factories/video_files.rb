@@ -25,10 +25,10 @@ module Pageflow
         state 'not_uploaded_to_s3'
       end
 
-      trait :upload_to_s3_failed do
+      trait :uploading_to_s3_failed do
         attachment_on_filesystem File.open(Engine.root.join('spec', 'fixtures', 'video.mp4'))
         attachment_on_s3 nil
-        state 'upload_to_s3_failed'
+        state 'uploading_to_s3_failed'
       end
 
       trait :waiting_for_confirmation do

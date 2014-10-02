@@ -9,7 +9,7 @@ pageflow.HostedFile = pageflow.UploadedFile.extend({
       {
         name: 'uploading_to_s3',
         activeStates: ['uploading_to_s3'],
-        failedStates: ['upload_to_s3_failed']
+        failedStates: ['uploading_to_s3_failed']
       }
     ].concat(_.result(this, 'processingStages'));
   },

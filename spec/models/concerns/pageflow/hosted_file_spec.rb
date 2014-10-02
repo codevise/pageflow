@@ -26,14 +26,14 @@ module Pageflow
         expect(hosted_file.reload.state).to eq('uploaded_to_s3')
       end
 
-      it 'transitions to upload_to_s3_failed state on result :error' do
+      it 'transitions to uploading_to_s3_failed state on result :error' do
         hosted_file = TestHostedFile.create!
 
         allow(UploadFileToS3Job).to receive(:perform_with_result).and_return(:error)
 
         hosted_file.publish!
 
-        expect(hosted_file.reload.state).to eq('upload_to_s3_failed')
+        expect(hosted_file.reload.state).to eq('uploading_to_s3_failed')
       end
 
       it 're-schedules the job on result :pending' do
@@ -59,7 +59,7 @@ module Pageflow
 
     describe '#retryable?' do
       it 'returns true if failed' do
-        hosted_file = TestHostedFile.create!(state: 'upload_to_s3_failed')
+        hosted_file = TestHostedFile.create!(state: 'uploading_to_s3_failed')
 
         expect(hosted_file).to be_retryable
       end
