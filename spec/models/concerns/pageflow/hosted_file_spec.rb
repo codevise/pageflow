@@ -57,6 +57,20 @@ module Pageflow
       end
     end
 
+    describe '#retryable?' do
+      it 'returns true if failed' do
+        hosted_file = TestHostedFile.create!(state: 'upload_to_s3_failed')
+
+        expect(hosted_file).to be_retryable
+      end
+
+      it 'returns false if uploaded to s3' do
+        hosted_file = TestHostedFile.create!(state: 'uploaded_to_s3')
+
+        expect(hosted_file).not_to be_retryable
+      end
+    end
+
     context 'with processing_state_machine' do
       class ProcessedTestHostedFile < ActiveRecord::Base
         self.table_name = :test_hosted_files

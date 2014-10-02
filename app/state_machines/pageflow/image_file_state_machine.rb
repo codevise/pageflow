@@ -33,7 +33,7 @@ module Pageflow
       process!
     end
 
-    def can_retry?
+    def retryable?
       processing_failed?
     end
   end

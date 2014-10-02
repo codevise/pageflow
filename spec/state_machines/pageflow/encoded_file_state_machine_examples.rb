@@ -203,5 +203,19 @@ shared_examples 'encoded file state machine' do |model|
         end
       end
     end
+
+    describe '#retryable?' do
+      it 'returns true if failed' do
+        file = create(model, :encoding_failed)
+
+        expect(file).to be_retryable
+      end
+
+      it 'returns false if encoded' do
+        file = create(model, :encoded)
+
+        expect(file).not_to be_retryable
+      end
+    end
   end
 end

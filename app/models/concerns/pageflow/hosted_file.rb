@@ -46,6 +46,10 @@ module Pageflow
       false
     end
 
+    def retryable?
+      can_retry?
+    end
+
     def url
       if attachment_on_s3.present?
         attachment.url

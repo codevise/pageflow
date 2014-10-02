@@ -70,5 +70,9 @@ module Pageflow
         end
       end
     end
+
+    def retryable?
+      can_retry? && !encoded?
+    end
   end
 end

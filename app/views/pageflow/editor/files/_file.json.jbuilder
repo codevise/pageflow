@@ -1,5 +1,5 @@
 json.(file, :id, :state, :rights, :usage_id)
-json.retryable(file.can_retry?)
+json.retryable(file.retryable?)
 json.file_name(file.attachment.original_filename)
 
 if file.url.present?
