@@ -31,11 +31,18 @@ pageflow.FileStageItemView = Backbone.Marionette.ItemView.extend({
 
     this.ui.errorMessage
       .toggle(!!this.model.get('error_message'))
-      .text(this.model.get('error_message'));
+      .text(this._translatedErrorMessage());
 
     this.$el.toggleClass('active', this.model.get('active'));
     this.$el.toggleClass('finished', this.model.get('finished'));
     this.$el.toggleClass('failed', this.model.get('failed'));
     this.$el.toggleClass('action_required', this.model.get('action_required'));
+  },
+
+  _translatedErrorMessage: function() {
+    return this.model.get('error_message') &&
+      I18n.t(this.model.get('error_message'), {
+        defaultValue: this.model.get('error_message')
+      });
   }
 });
