@@ -1,3 +1,2 @@
-pageflow.VideoFile = pageflow.HostedFile.extend({
-  mixins: [pageflow.encodedFile],
+pageflow.VideoFile = pageflow.EncodedFile.extend({
 });

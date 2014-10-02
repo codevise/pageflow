@@ -1,5 +1,3 @@
-pageflow.AudioFile = pageflow.HostedFile.extend({
-  mixins: [pageflow.encodedFile],
-
+pageflow.AudioFile = pageflow.EncodedFile.extend({
   thumbnailPictogram: 'audio',
 });

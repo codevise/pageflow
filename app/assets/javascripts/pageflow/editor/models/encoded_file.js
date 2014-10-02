@@ -1,4 +1,4 @@
-pageflow.encodedFile = {
+pageflow.EncodedFile = pageflow.HostedFile.extend({
   processingStages: function() {
     var stages = [];
 
@@ -29,4 +29,4 @@ pageflow.encodedFile = {
   isPositionable: function() {
     return false;
   }
-};
+});
