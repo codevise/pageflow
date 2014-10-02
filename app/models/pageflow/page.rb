@@ -27,17 +27,19 @@ module Pageflow
     end
 
     def thumbnail_definition
-      # TODO: this has to be refactored to be page type agnostic
-      if template == 'video' || template == 'background_video'
+      # TODO Refactor to be page type agonostic
+      if configuration['thumbnail_image_id'].present?
+        ['pageflow/image_file', :processed_attachment, 'thumbnail_image_id', 'image_file']
+      elsif template == 'panorama'
+        ['pageflow/panorama/package', :thumbnail, 'panorama_package_id', 'package']
+      elsif template == 'video' || template == 'background_video'
         if configuration['poster_image_id'].present?
           ['pageflow/image_file', :processed_attachment, 'poster_image_id', 'image_file']
         else
           ['pageflow/video_file', :poster, 'video_file_id', 'video_file']
         end
       else
-        if configuration['thumbnail_image_id'].present?
-          ['pageflow/image_file', :processed_attachment, 'thumbnail_image_id', 'image_file']
-        elsif configuration['after_image_id'].present?
+        if configuration['after_image_id'].present?
           ['pageflow/image_file', :processed_attachment, 'after_image_id','image_file']
         else
           ['pageflow/image_file', :processed_attachment, 'background_image_id', 'image_file']
