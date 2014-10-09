@@ -36,7 +36,7 @@ module Pageflow
       end
 
       it 'includes thumbnail_candidates' do
-        class TestPageType < Pageflow::PageType
+        page_type_class = Class.new(Pageflow::PageType) do
           name 'test'
 
           def thumbnail_candidates
@@ -44,7 +44,7 @@ module Pageflow
           end
         end
 
-        allow(Pageflow.config).to receive(:page_types).and_return([TestPageType.new])
+        allow(Pageflow.config).to receive(:page_types).and_return([page_type_class.new])
 
         result = JSON.parse(helper.page_type_json_seeds)
 
