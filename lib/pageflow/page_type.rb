@@ -72,6 +72,31 @@ module Pageflow
       []
     end
 
+    # A list of hashes used to determine a thumbnail for a page. Each
+    # hash in the list must contain two keys: `attribute` and
+    # `file_collection`.
+    #
+    # For each item, the given attribute is fetched from the page
+    # configuration and used to find a file from the given
+    # collection. `file_collection` must equal the collection_name of
+    # a registered {FileType}. The first file found is used as
+    # thumbnail.
+    #
+    # @example Default return value
+    #
+    #     [
+    #       {attribute: 'thumbnail_image_id', file_collection: 'image_files'},
+    #       {attribute: 'background_image_id', file_collection: 'image_files'}
+    #     ]
+    #
+    # @returns {Array<Hash>}
+    def thumbnail_candidates
+      [
+        {attribute: 'thumbnail_image_id', file_collection: 'image_files'},
+        {attribute: 'background_image_id', file_collection: 'image_files'}
+      ]
+    end
+
     # View path of a template containing additional json to pass to
     # the editor. The data is available in the javascript definition
     # of the page type's configuration editor. By default nothing is

@@ -64,6 +64,15 @@ module Pageflow
     # @return [FileTypes]
     attr_reader :file_types
 
+    # Paperclip style definitions of thumbnails used by Pageflow.
+    # @return Hash
+    attr_accessor :thumbnail_styles
+
+    # Names of Paperclip styles that shall be rendered into entry
+    # specific stylesheets.
+    # @return Array<Symbol>
+    attr_accessor :css_rendered_thumbnail_styles
+
     # Either a lambda or an object with a `match?` method, to restrict
     # access to the editor routes defined by Pageflow.
     #
@@ -138,6 +147,9 @@ module Pageflow
       @quotas = Quotas.new
       @themes = Themes.new
       @file_types = FileTypes.new(page_types)
+
+      @thumbnail_styles = {}
+      @css_rendered_thumbnail_styles = Pageflow::PagesHelper::CSS_RENDERED_THUMBNAIL_STYLES
 
       @theming_request_scope = CnameThemingRequestScope.new
       @public_entry_request_scope = lambda { |entries, request| entries }

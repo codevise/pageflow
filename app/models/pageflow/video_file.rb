@@ -44,6 +44,10 @@ module Pageflow
                                  :large => "-quality 60 -interlace Plane"
                                }))
 
+    def thumbnail_url(*args)
+      poster.url(*args)
+    end
+
     def attachment_s3_url
       "s3://#{File.join(attachment_on_s3.bucket_name, attachment_on_s3.path)}"
     end

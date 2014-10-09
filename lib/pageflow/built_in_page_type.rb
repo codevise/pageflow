@@ -6,6 +6,7 @@ module Pageflow
     def initialize(name, options = {})
       @name = name.to_s
       @file_type_models = options.fetch(:file_type_models, [])
+      @thumbnail_candidates = options.fetch(:thumbnail_candidates, nil)
     end
 
     def file_types
@@ -27,6 +28,10 @@ module Pageflow
       "activerecord.values.pageflow/page.template.#{name}"
     end
 
+    def thumbnail_candidates
+      @thumbnail_candidates.presence || super
+    end
+
     # Factory methods to decouple Pageflow initializers from concrete
     # page type classes, so we might decide later to create a
     # VideoPageType subclass etc.
@@ -44,7 +49,9 @@ module Pageflow
     end
 
     def self.background_video
-      new('background_video', file_type_models: ['Pageflow::ImageFile', 'Pageflow::VideoFile'])
+      new('background_video',
+          file_type_models: ['Pageflow::ImageFile', 'Pageflow::VideoFile'],
+          thumbnail_candidates: video_thumbnail_candidates)
     end
 
     def self.internal_links
@@ -52,7 +59,17 @@ module Pageflow
     end
 
     def self.video
-      new('video', file_type_models: ['Pageflow::ImageFile', 'Pageflow::VideoFile'])
+      new('video',
+          file_type_models: ['Pageflow::ImageFile', 'Pageflow::VideoFile'],
+          thumbnail_candidates: video_thumbnail_candidates)
+    end
+
+    def self.video_thumbnail_candidates
+      [
+        {file_collection: 'image_files', attribute: 'thumbnail_image_id'},
+        {file_collection: 'image_files', attribute: 'poster_image_id'},
+        {file_collection: 'video_files', attribute: 'video_file_id'}
+      ]
     end
   end
 end

@@ -37,6 +37,10 @@ module Pageflow
       self.unprocessed_attachment = value
     end
 
+    def thumbnail_url(*args)
+      processed_attachment.url(*args)
+    end
+
     def url
       if processed_attachment.present?
         attachment.url(:large)

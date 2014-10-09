@@ -2,6 +2,6 @@
     <div class="ov_page_description">
       <p><%= raw(page.configuration['description']) unless page.configuration.blank? %></p>
     </div>
-    <%= image_tag("#{page.thumbnail.url(:thumbnail_overview_desktop)}") %>
+    <%= image_tag("#{page.thumbnail_url(:thumbnail_overview_desktop)}") %>
     <div class="pictogram"></div>
 <% end %>

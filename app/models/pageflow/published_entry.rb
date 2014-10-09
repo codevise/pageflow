@@ -8,6 +8,7 @@ module Pageflow
     delegate(:account, :theming, :to_model, :to_key, :persisted?, :to => :entry)
 
     delegate(:chapters, :pages,
+             :files,
              :image_files, :video_files, :audio_files,
              :title, :summary, :credits, :manual_start,
              :to => :revision)
@@ -26,8 +27,8 @@ module Pageflow
       revision.cache_key
     end
 
-    def thumbnail
-      pages.first.try(:thumbnail) || ImageFile.new.processed_attachment
+    def thumbnail_url(*args)
+      pages.first.try(:thumbnail_url, *args) || ImageFile.new.processed_attachment.url(*args)
     end
 
     def self.find(id, scope = Entry)
