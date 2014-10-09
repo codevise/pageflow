@@ -48,17 +48,15 @@ pageflow.Page = Backbone.Model.extend({
   },
 
   thumbnailFile: function() {
-    if (_.contains(['video', 'background_video'], this.get('template'))) {
-      if (this.configuration.get('poster_image_id')) {
-        return this.configuration.getImageFile('poster_image_id');
-      }
-      else {
-        return this.configuration.getVideoFile('video_file_id');
-      }
-    }
-    else {
-      return this.configuration.getImageFile('background_image_id');
-    }
+    var configuration = this.configuration;
+
+    return _.reduce(this.pageType().thumbnail_candidates, function(result, candidate) {
+      return result || configuration.getReference(candidate.attribute, candidate.file_collection);
+    }, null);
+  },
+
+  pageType: function() {
+    return pageflow.Page.typesByName[this.get('template')];
   },
 
   toJSON: function() {
