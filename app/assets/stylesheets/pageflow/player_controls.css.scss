@@ -271,7 +271,8 @@
       padding-left: 0;
       max-width: 435px;
       min-height: 60px;
-      width: 90%;
+      width: 100%;
+      min-width: 260px;
 
       &.empty {
         display: block;
