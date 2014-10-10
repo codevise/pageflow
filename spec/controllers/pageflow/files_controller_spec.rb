@@ -1,17 +1,27 @@
 require 'spec_helper'
 
 module Pageflow
-  describe VideoFilesController do
+  describe FilesController do
     describe '#show' do
       routes { Engine.routes }
       render_views
 
-      it 'responds with success for published entry' do
+      it 'responds with success for video file of published entry' do
         entry = create(:entry, :published)
         video_file = create(:video_file, :entry => entry)
         create(:file_usage, :revision => entry.published_revision, :file => video_file)
 
-        get(:show, :entry_id => entry, :id => video_file.id)
+        get(:show, :entry_id => entry, :collection_name => 'video_files', :id => video_file.id)
+
+        expect(response.status).to eq(200)
+      end
+
+      it 'responds with success for audio file of published entry' do
+        entry = create(:entry, :published)
+        audio_file = create(:audio_file, :entry => entry)
+        create(:file_usage, :revision => entry.published_revision, :file => audio_file)
+
+        get(:show, :entry_id => entry, :collection_name => 'audio_files', :id => audio_file.id)
 
         expect(response.status).to eq(200)
       end
@@ -21,7 +31,7 @@ module Pageflow
         video_file = create(:video_file, :entry => entry)
         create(:file_usage, :revision => entry.draft, :file => video_file)
 
-        get(:show, :entry_id => entry, :id => video_file.id)
+        get(:show, :entry_id => entry, :collection_name => 'video_files', :id => video_file.id)
 
         expect(response.status).to eq(404)
       end
@@ -39,7 +49,7 @@ module Pageflow
           video_file = create(:video_file, :entry => entry, :used_in => entry.published_revision)
 
           request.host = 'news.example.com'
-          get(:show, :entry_id => entry.id, :id => video_file.id)
+          get(:show, :entry_id => entry.id, :collection_name => 'video_files', :id => video_file.id)
 
           expect(response.status).to eq(200)
         end
@@ -49,7 +59,7 @@ module Pageflow
           video_file = create(:video_file, :entry => entry, :used_in => entry.published_revision)
 
           request.host = 'news.example.com'
-          get(:show, :entry_id => entry.id, :id => video_file.id)
+          get(:show, :entry_id => entry.id, :collection_name => 'video_files', :id => video_file.id)
 
           expect(response.status).to eq(404)
         end
