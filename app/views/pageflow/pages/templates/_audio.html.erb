@@ -1,6 +1,5 @@
 <div class="blackLayer"></div>
 <div class="content_and_background audioPage">
-
   <div class="backgroundArea">
     <%= background_image_div(configuration, 'background_image') %>
     <%= shadow_div :opacity => configuration['gradient_opacity'] %>
@@ -42,14 +41,16 @@
     <div class="scroller">
       <div>
         <div class="contentWrapper">
-          <div class="audio-js-box">
-            <%= audio_tag(configuration['audio_file_id'], :unique_id => page.id) %>
-          </div>
           <div class="contentText audioPage">
-           <p><%= raw configuration['text'] %></p>
+            <p class="non_js_audio">
+              <%= audio_file_non_js_link(configuration['audio_file_id']) %>
+            </p>
+            <p><%= raw configuration['text'] %></p>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <%= audio_file_script_tag(configuration['audio_file_id'], :unique_id => page.id) %>
 </div>

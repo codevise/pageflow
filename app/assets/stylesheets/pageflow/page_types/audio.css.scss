@@ -16,12 +16,6 @@
   .vjs-controls.vjs-player {
     display: none;
   }
-  .audio-js-box {
-    margin-bottom: 3em;
-  }
-  audio {
-    pointer-events: all;
-  }
 }
 
 .js .audioPage {
@@ -33,12 +27,8 @@
     }
   }
 
-  .audio-js-box {
-    margin-bottom: 0;
-  }
-
-  audio {
-    visibility: hidden;
+  .non_js_audio {
+    display: none;
   }
 
   .vjs-slider-handle {
