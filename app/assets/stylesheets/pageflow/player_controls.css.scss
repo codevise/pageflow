@@ -6,6 +6,10 @@
   font-size: 0.8em;
   color: white;
 
+  @include phone {
+    font-size: 1.2em;
+  }
+
   h3,
   p {
     margin: 15px 3%;
@@ -73,6 +77,10 @@
     @include transform(translate3d(-50%, 0,0));
     z-index: 2;
     font-size: 0.8em;
+
+    @include phone {
+      font-size: 1.2em;
+    }
   }
 
   .vjs-control-bar {
