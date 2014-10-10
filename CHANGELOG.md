@@ -22,7 +22,7 @@
 
 ##### Public Site
 
-- Improve generation of of credits box.
+- Improve generation of credits box.
   ([#99](https://github.com/codevise/pageflow/pull/99))
 - Bug fix: Respond with 404 for unknown format.
   ([#101](https://github.com/codevise/pageflow/pull/101))
