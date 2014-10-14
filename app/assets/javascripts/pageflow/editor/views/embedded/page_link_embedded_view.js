@@ -108,7 +108,7 @@ pageflow.PageLinkEmbeddedView = Backbone.Marionette.ItemView.extend({
   updateTitle: function() {
     var linkedPage = this.linkedPage();
 
-    this.ui.title.text(linkedPage ? linkedPage.configuration.get('description') : '');
+    this.ui.title.html(linkedPage ? linkedPage.configuration.get('description') : '');
   },
 
   updateThumbnailView: function() {
