@@ -51,6 +51,7 @@
 //= require ./initializers/edit_lock
 //= require ./initializers/files_polling
 //= require ./initializers/routing
+//= require ./initializers/error_listener
 //= require ./initializers/additional_initializers
 //= require ./initializers/boot
 
