@@ -81,7 +81,7 @@ pageflow.pageType.register('audio_loop', _.extend({
   },
 
   _ensureAudioPlayer: function(pageElement) {
-    this.audioPlayer = this.audioPlayer || pageflow.AudioPlayer.fromAudioTag(pageElement.find('audio'), true);
+    this.audioPlayer = this.audioPlayer || pageflow.AudioPlayer.fromScriptTag(pageElement.find('script[data-audio]'));
 
     pageElement.find('.vjs-controls').playerControls({
       player: this.audioPlayer
