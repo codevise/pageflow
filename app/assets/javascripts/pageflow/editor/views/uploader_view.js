@@ -20,12 +20,22 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
       dataType: 'json',
 
       add: function(event, data) {
-        data.record = pageflow.entry.addFileUpload(data.files[0]);
-        var xhr = data.submit();
+        try {
+          data.record = pageflow.entry.addFileUpload(data.files[0]);
+          var xhr = data.submit();
 
-        that.listenTo(data.record, 'uploadCancelled', function() {
-          xhr.abort();
-        });
+          that.listenTo(data.record, 'uploadCancelled', function() {
+            xhr.abort();
+          });
+        }
+        catch(e) {
+          if (e instanceof pageflow.FileTypes.UnmatchedUploadError) {
+            pageflow.app.trigger('error', e);
+          }
+          else {
+            throw(e);
+          }
+        }
       },
 
       progress: function(event, data) {
