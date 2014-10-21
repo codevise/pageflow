@@ -1,1 +1,4 @@
-json.array!(@files, :partial => "pageflow/editor/#{@collection_name}/#{@model_name.to_s}", :as => @model_name)
+json.partial!(collection: @files,
+              partial: 'pageflow/editor/files/file',
+              locals: {file_type: file_type},
+              as: :file)

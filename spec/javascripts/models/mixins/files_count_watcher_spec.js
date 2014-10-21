@@ -3,10 +3,23 @@ describe('filesCountWatcher', function() {
     mixins: [pageflow.filesCountWatcher]
   });
 
+  var FileModel = pageflow.UploadedFile.extend({
+    readyState: 'processed'
+  });
+
+  function createFilesCollection(items) {
+    return new pageflow.FilesCollection(items, {
+      model: FileModel,
+      fileType: {
+        collectionName: 'image_files'
+      }
+    });
+  }
+
   it('initializes uploading files count', function() {
     var record = new Model();
 
-    record.imageFiles = new pageflow.ImageFilesCollection([
+    record.imageFiles = createFilesCollection([
       {state: 'uploading'},
       {state: 'processed'}
     ]);
@@ -18,7 +31,7 @@ describe('filesCountWatcher', function() {
   it('initializes pending files count', function() {
     var record = new Model();
 
-    record.imageFiles = new pageflow.ImageFilesCollection([
+    record.imageFiles = createFilesCollection([
       {state: 'processing'},
       {state: 'processed'}
     ]);
@@ -30,7 +43,7 @@ describe('filesCountWatcher', function() {
   it('updates uploading files count when file state changes', function() {
     var record = new Model();
 
-    record.imageFiles = new pageflow.ImageFilesCollection([
+    record.imageFiles = createFilesCollection([
       {state: 'uploading'},
       {state: 'processed'}
     ]);
@@ -43,7 +56,7 @@ describe('filesCountWatcher', function() {
   it('updates pending files count when file state changes', function() {
     var record = new Model();
 
-    record.imageFiles = new pageflow.ImageFilesCollection([
+    record.imageFiles = createFilesCollection([
       {state: 'processing'},
       {state: 'processed'}
     ]);
@@ -56,7 +69,7 @@ describe('filesCountWatcher', function() {
   it('updates uploading files count when adding a file', function() {
     var record = new Model();
 
-    record.imageFiles = new pageflow.ImageFilesCollection();
+    record.imageFiles = createFilesCollection();
     record.watchFileCollection('image_files', record.imageFiles);
     record.imageFiles.add({state: 'uploading'});
 
@@ -66,7 +79,7 @@ describe('filesCountWatcher', function() {
   it('updates uploading files count when removing a file', function() {
     var record = new Model();
 
-    record.imageFiles = new pageflow.ImageFilesCollection([
+    record.imageFiles = createFilesCollection([
       {state: 'uploading'},
       {state: 'uploading'}
     ]);
@@ -79,11 +92,11 @@ describe('filesCountWatcher', function() {
   it('updates uploading_files_count to sum of uploading files counts', function() {
     var record = new Model();
 
-    record.imageFiles = new pageflow.ImageFilesCollection([
+    record.imageFiles = createFilesCollection([
       {state: 'uploading'},
       {state: 'uploading'}
     ]);
-    record.videoFiles = new pageflow.ImageFilesCollection([
+    record.videoFiles = createFilesCollection([
       {state: 'uploading'}
     ]);
     record.watchFileCollection('image_files', record.imageFiles);

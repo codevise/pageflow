@@ -6,14 +6,21 @@ pageflow.Entry = Backbone.Model.extend({
 
   mixins: [pageflow.filesCountWatcher, pageflow.polling, pageflow.failureTracking],
 
-  initialize: function() {
-    this.chapters = pageflow.chapters;
+  initialize: function(attributes, options) {
+    options = options || {};
+
+    this.files = options.files || pageflow.files;
+    this.chapters = options.chapters || pageflow.chapters;
     this.chapters.parentModel = this;
     this.pages = pageflow.pages;
 
     this.imageFiles = pageflow.imageFiles;
     this.videoFiles = pageflow.videoFiles;
     this.audioFiles = pageflow.audioFiles;
+
+    pageflow.editor.fileTypes.each(function(fileType) {
+      this.watchFileCollection(fileType.collectionName, this.getFileCollection(fileType));
+    }, this);
 
     this.listenTo(this.chapters, 'sort', function() {
       this.pages.sort();
@@ -22,10 +29,6 @@ pageflow.Entry = Backbone.Model.extend({
     this.listenTo(this, 'change:title change:summary change:credits change:manual_start change:home_url change:home_button_enabled', function() {
       this.save();
     });
-
-    this.watchFileCollection('image_files', this.imageFiles);
-    this.watchFileCollection('video_files', this.videoFiles);
-    this.watchFileCollection('audio_files', this.audioFiles);
   },
 
   addChapter: function() {
@@ -35,65 +38,31 @@ pageflow.Entry = Backbone.Model.extend({
     });
   },
 
-  addFile: function(file) {
-    var record;
+  addFileUpload: function(upload) {
+    var fileType = pageflow.editor.fileTypes.findByUpload(upload);
+    var file = new fileType.model({
+      state: 'uploading',
+      file_name: upload.name
+    });
 
-    if (file.type.match(/^image/)) {
-      record = new pageflow.ImageFile({
-        state: 'uploading',
-        file_name: file.name
-      });
-      pageflow.imageFiles.add(record);
-    }
-    else if (file.type.match(/^video/)) {
-      record = new pageflow.VideoFile({
-        state: 'uploading',
-        file_name: file.name
-      });
-      pageflow.videoFiles.add(record);
-    }
-    else if (file.type.match(/^audio/)) {
-      record = new pageflow.AudioFile({
-        state: 'uploading',
-        file_name: file.name
-      });
-      pageflow.audioFiles.add(record);
-    }
+    this.getFileCollection(fileType).add(file);
 
-    return record;
+    return file;
   },
 
   addFileUsage: function(file) {
-    this.createFileUsage(file, { success: function(usage) {
+    var fileUsages = new pageflow.FileUsagesCollection([], {
+      entry: this
+    });
+
+    fileUsages.createForFile(file, { success: function(usage) {
       file.set('usage_id', usage.get('id'));
-      this.addFileToCollection(file);
+      this.getFileCollection(file.fileType()).add(file);
     }.bind(this)});
   },
 
-  createFileUsage: function(file, options) {
-    var file_usages = new pageflow.FileUsagesCollection();
-
-    return file_usages.create({
-      file_id: file.get('id'),
-      file_type: file.get('typeName')
-    }, options);
-
-  },
-
-  addFileToCollection: function (file) {
-    this.getFileCollection(file.get('typeName')).add(file);
-  },
-
-  getFileCollection: function(filetype) {
-    return this[lowerCaseFirst(removeNamespace(filetype)) + 's'];
-
-    function removeNamespace(string) {
-      return string.split('::').pop();
-    }
-
-    function lowerCaseFirst(string) {
-      return string.charAt(0).toLowerCase() + string.slice(1);
-    }
+  getFileCollection: function(fileType) {
+    return this.files[fileType.collectionName];
   },
 
   pollForPendingFiles: function() {
@@ -108,13 +77,10 @@ pageflow.Entry = Backbone.Model.extend({
     if (response) {
       this.set(_.pick(response, 'published', 'published_until'));
 
-      this.imageFiles.set(response.image_files, {add: false, remove: false});
-      this.videoFiles.set(response.video_files, {add: false, remove: false});
-      this.audioFiles.set(response.audio_files, {add: false, remove: false});
-
-      delete response.image_files;
-      delete response.video_files;
-      delete response.audio_files;
+      pageflow.editor.fileTypes.each(function(fileType) {
+        this.getFileCollection(fileType).set(response[fileType.collectionName], {add: false, remove: false});
+        delete response[fileType.collectionName];
+      }, this);
     }
 
     return response;

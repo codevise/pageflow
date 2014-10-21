@@ -2,6 +2,19 @@ require 'spec_helper'
 
 module Pageflow
   describe DraftEntry do
+    describe '#files' do
+      it 'returns files of given type' do
+        entry = create(:entry)
+        image_file = create(:image_file)
+        entry.draft.image_files << image_file
+        draft_entry = DraftEntry.new(entry)
+
+        result = draft_entry.files(Pageflow::ImageFile)
+
+        expect(result).to eq([image_file])
+      end
+    end
+
     describe '#create_file' do
       it 'creates image_file on draft' do
         entry = create(:entry)
@@ -34,7 +47,7 @@ module Pageflow
       end
     end
 
-    describe '#remove_image_file' do
+    describe '#remove_file' do
       it 'removes file from files used by draft' do
         entry = create(:entry)
         image_file = create(:image_file)

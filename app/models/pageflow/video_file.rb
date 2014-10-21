@@ -1,13 +1,9 @@
 module Pageflow
   class VideoFile < ActiveRecord::Base
+    include HostedFile
     include EncodedFileStateMachine
-    include UploadedFile
 
     belongs_to :confirmed_by, :class_name => 'User'
-
-    has_attached_file(:attachment_on_filesystem, Pageflow.config.paperclip_filesystem_default_options)
-
-    has_attached_file(:attachment_on_s3, Pageflow.config.paperclip_s3_default_options)
 
     has_attached_file(:poster, Pageflow.config.paperclip_s3_default_options
                         .merge(:default_url => ':pageflow_placeholder',
@@ -47,14 +43,6 @@ module Pageflow
                                  :medium => "-quality 60 -interlace Plane",
                                  :large => "-quality 60 -interlace Plane"
                                }))
-
-    def attachment
-      attachment_on_s3.present? ? attachment_on_s3 : attachment_on_filesystem
-    end
-
-    def attachment=(value)
-      self.attachment_on_filesystem = value
-    end
 
     def attachment_s3_url
       "s3://#{File.join(attachment_on_s3.bucket_name, attachment_on_s3.path)}"

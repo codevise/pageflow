@@ -1,7 +1,9 @@
 pageflow.app.addInitializer(function(options) {
-  pageflow.imageFiles = new pageflow.ImageFilesCollection(options.imageFiles);
-  pageflow.videoFiles = new pageflow.VideoFilesCollection(options.videoFiles);
-  pageflow.audioFiles = new pageflow.AudioFilesCollection(options.audioFiles);
+  pageflow.files = pageflow.FilesCollection.createForFileTypes(pageflow.editor.fileTypes, options.files);
+
+  pageflow.imageFiles = pageflow.files.image_files;
+  pageflow.videoFiles = pageflow.files.video_files;
+  pageflow.audioFiles = pageflow.files.audio_files;
 
   pageflow.pages = new pageflow.PagesCollection(options.pages);
   pageflow.chapters = new pageflow.ChaptersCollection(options.chapters);

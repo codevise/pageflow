@@ -5,7 +5,7 @@ shared_examples 'encoded file state machine' do |model|
     Pageflow.config.zencoder_options
   end
 
-  describe '#publish event', :inline_resque => true do
+  describe '#publish event', inline_resque: true, stub_paperclip: true do
     context 'with disabled confirm_encoding_jobs option' do
       before do
         stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
@@ -106,7 +106,7 @@ shared_examples 'encoded file state machine' do |model|
     end
   end
 
-  describe '#confirm_encoding event', :inline_resque => true do
+  describe '#confirm_encoding event', inline_resque: true, stub_paperclip: true do
     before do
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
@@ -138,7 +138,7 @@ shared_examples 'encoded file state machine' do |model|
     end
   end
 
-  describe '#retry event', :inline_resque => true do
+  describe '#retry event', inline_resque: true, stub_paperclip: true do
     before do
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
@@ -146,7 +146,7 @@ shared_examples 'encoded file state machine' do |model|
 
     context 'when upload to s3 failed' do
       it 'sets state to encoded after job has finished' do
-        file = create(model, :upload_to_s3_failed)
+        file = create(model, :uploading_to_s3_failed)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
@@ -201,6 +201,20 @@ shared_examples 'encoded file state machine' do |model|
 
           expect(file.reload.state).to eq('waiting_for_confirmation')
         end
+      end
+    end
+
+    describe '#retryable?' do
+      it 'returns true if failed' do
+        file = create(model, :encoding_failed)
+
+        expect(file).to be_retryable
+      end
+
+      it 'returns false if encoded' do
+        file = create(model, :encoded)
+
+        expect(file).not_to be_retryable
       end
     end
   end

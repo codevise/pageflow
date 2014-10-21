@@ -23,6 +23,9 @@
 //= require_self
 
 //= require_tree ./models/mixins
+//= require ./models/uploaded_file
+//= require ./models/hosted_file
+//= require ./models/encoded_file
 //= require_tree ./models
 //= require_tree ./collections/mixins
 //= require ./collections/multi_collection
@@ -42,6 +45,7 @@
 //= require_tree ./views
 
 //= require ./initializers/setup_config
+//= require ./initializers/setup_file_types
 //= require ./initializers/setup_collections
 //= require ./initializers/setup_page_types
 //= require ./initializers/edit_lock

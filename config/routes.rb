@@ -24,19 +24,12 @@ Pageflow::Engine.routes.draw do
 
     namespace :editor do
       resources :entries, :only => :index, :shallow => true do
-        resources :image_files, :only => [:index, :create, :update] do
-          get :retry, :on => :member
-        end
-
-        resources :video_files, :only => [:index, :create, :update] do
-          get :retry, :on => :member
-        end
-
-        resources :audio_files, :only => [:index, :create, :update] do
+        resources :files, :path => 'files/:collection_name', :only => [:index, :create, :update] do
           get :retry, :on => :member
         end
 
         resources :file_usages, :only => [:create, :destroy]
+
         resources :encoding_confirmations, :only => [:create] do
           post :check, :on => :collection
         end

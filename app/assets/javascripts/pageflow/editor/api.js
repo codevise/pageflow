@@ -121,6 +121,10 @@ pageflow.EditorApi = pageflow.Object.extend({
      */
     this.failures = new pageflow.FailuresAPI();
 
+    /**
+     *
+     */
+    this.fileTypes = new pageflow.FileTypes();
 
     /** @private */
     this.createFileSelectionHandler = function(handlerName, encodedPayload) {

@@ -3,3 +3,12 @@
     background-image: image-url("pageflow/#{$name}_pictogram_small.png");
   }
 }
+
+@mixin pageflow-hosted-file-stage($stage-name) {
+  .editor {
+    .file_thumbnail .pictogram.#{$stage-name},
+    .file_stage_item.#{$stage-name} {
+      @content;
+    }
+  }
+}

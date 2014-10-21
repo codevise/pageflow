@@ -47,6 +47,11 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
     }, this);
 
     this.load();
+
+    if (this.options.ensureValueDefined && !this.ui.select.val()) {
+      this.ui.select.val(this.options.values[0]);
+      this.save();
+    }
   },
 
   save: function() {

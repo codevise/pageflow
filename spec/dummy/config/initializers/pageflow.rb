@@ -1,11 +1,11 @@
 ActiveAdmin.application.load_paths.unshift(Dir[Pageflow::Engine.root.join('admins')])
 
 Pageflow.configure do |config|
-  config.register_page_type(Pageflow::BuiltInPageType.new('background_image'))
-  config.register_page_type(Pageflow::BuiltInPageType.new('background_video'))
-  config.register_page_type(Pageflow::BuiltInPageType.new('video'))
-  config.register_page_type(Pageflow::BuiltInPageType.new('audio'))
-  config.register_page_type(Pageflow::BuiltInPageType.new('internal_links'))
+  config.register_page_type(Pageflow::BuiltInPageType.background_image)
+  config.register_page_type(Pageflow::BuiltInPageType.background_video)
+  config.register_page_type(Pageflow::BuiltInPageType.video)
+  config.register_page_type(Pageflow::BuiltInPageType.audio)
+  config.register_page_type(Pageflow::BuiltInPageType.internal_links)
 
   config.themes.register(:default)
 

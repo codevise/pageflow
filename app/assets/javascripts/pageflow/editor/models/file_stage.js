@@ -2,15 +2,16 @@ pageflow.FileStage = Backbone.Model.extend({
   initialize: function(attributes,  options) {
     this.file = options.file;
 
-    this.activeStates = options.activeStates;
-    this.finishedStates = options.finishedStates;
-    this.failedStates = options.failedStates;
+    this.activeStates = options.activeStates || [];
+    this.finishedStates = options.finishedStates || [];
+    this.failedStates = options.failedStates || [];
     this.actionRequiredStates = options.actionRequiredStates || [];
+
+    this.nonFinishedStates = this.activeStates.concat(this.failedStates, this.actionRequiredStates);
 
     this.update();
     this.listenTo(this.file, 'change:state', this.update);
-    this.listenTo(this.file, 'change:encoding_progress', this.update);
-    this.listenTo(this.file, 'change:uploading_progress', this.update);
+    this.listenTo(this.file, 'change:' + this.get('name') + '_progress', this.update);
   },
 
   update: function() {
@@ -49,7 +50,7 @@ pageflow.FileStage = Backbone.Model.extend({
   },
 
   updateErrorMessage: function() {
-    var errorMessageAttribute = this.get('name').replace('_failed', '') + '_error_message';
+    var errorMessageAttribute = this.get('name') + '_error_message';
     this.set('error_message', this.file.get(errorMessageAttribute));
   },
 

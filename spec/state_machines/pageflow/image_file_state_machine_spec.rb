@@ -55,5 +55,19 @@ module Pageflow
         end
       end
     end
+
+    describe '#retryable?' do
+      it 'returns true if failed' do
+        file = create(:image_file, :failed)
+
+        expect(file).to be_retryable
+      end
+
+      it 'returns false if processed' do
+        file = create(:image_file)
+
+        expect(file).not_to be_retryable
+      end
+    end
   end
 end

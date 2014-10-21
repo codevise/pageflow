@@ -5,6 +5,11 @@ pageflow.transientReferences = {
   },
 
   getReference: function(attribute, collection) {
+    if (typeof collection === 'string') {
+      var fileType = pageflow.editor.fileTypes.findByCollectionName(collection);
+      collection = pageflow.entry.getFileCollection(fileType);
+    }
+
     return this.transientReferences[attribute] ||
       collection.get(this.get(attribute));
   },

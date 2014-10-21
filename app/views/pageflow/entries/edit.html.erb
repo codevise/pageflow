@@ -19,7 +19,7 @@
 <div class="dialog_container">
 </div>
 
-<%= form_for [:editor, @entry, Pageflow::ImageFile.new], :html => {:multipart => true, :id => 'upload'} do |f| %>
+<%= form_for editor_entry_files_path(@entry, collection_name: 'image_files'), :html => {:multipart => true, :id => 'upload'} do |f| %>
   <%= f.file_field :attachment, :multiple => true, :name => 'image_file[attachment]' %>
 <% end %>
 
@@ -37,9 +37,11 @@
         chapters: <%= @entry.chapters.to_json.html_safe %>,
         pages: <%= @entry.pages.to_json.html_safe %>,
 
-        imageFiles: <%= render_json_seed(@entry.image_files.with_usage_id) %>,
-        videoFiles: <%= render_json_seed(@entry.video_files.with_usage_id) %>,
-        audioFiles: <%= render_json_seed(@entry.audio_files.with_usage_id) %>,
+        files: {
+          <% Pageflow.config.file_types.each do |file_type| %>
+            <%= file_type.collection_name %>: <%= render_json_partial(partial: 'pageflow/editor/files/file', collection: @entry.files(file_type.model), locals: {file_type: file_type}, as: :file) %>,
+          <% end %>
+        },
 
         theming: <%= render_json_seed(@entry.theming) %>,
         page_types: <%= page_type_json_seeds %>

@@ -60,6 +60,10 @@ module Pageflow
     # @return [Themes]
     attr_reader :themes
 
+    # List of {FileType} instances provided by page types.
+    # @return [FileTypes]
+    attr_reader :file_types
+
     # Either a lambda or an object with a `match?` method, to restrict
     # access to the editor routes defined by Pageflow.
     #
@@ -133,6 +137,7 @@ module Pageflow
       @hooks = Hooks.new
       @quotas = Quotas.new
       @themes = Themes.new
+      @file_types = FileTypes.new(page_types)
 
       @theming_request_scope = CnameThemingRequestScope.new
       @public_entry_request_scope = lambda { |entries, request| entries }

@@ -35,33 +35,23 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
       defaultTab: this.options.tabName
     });
 
-    this.tab('image_files', {
-      collection: this.model.imageFiles,
-      itemView: pageflow.ImageFileItemView
-    });
-
-    this.tab('video_files', {
-      collection: this.model.videoFiles,
-      itemView: pageflow.VideoFileItemView
-    });
-
-    this.tab('audio_files', {
-      collection: this.model.audioFiles,
-      itemView: pageflow.AudioFileItemView
-    });
+    pageflow.editor.fileTypes.each(function(fileType) {
+      this.tab(fileType);
+    }, this);
 
     this.$el.append(this.subview(this.tabsView).el);
   },
 
-  tab: function(name, options) {
-    this.tabsView.tab(name, _.bind(function() {
+  tab: function(fileType) {
+    this.tabsView.tab(fileType.collectionName, _.bind(function() {
       return this.subview(new pageflow.CollectionView({
         tagName: 'ul',
         className: 'files expandable',
-        collection: options.collection,
-        itemViewConstructor: options.itemView,
+        collection: pageflow.entry.getFileCollection(fileType),
+        itemViewConstructor: pageflow.FileItemView,
         itemViewOptions: {
-          selectionHandler: this.options.tabName === name && this.options.selectionHandler
+          metaDataAttributes: fileType.metaDataAttributes,
+          selectionHandler: this.options.tabName === fileType.collectionName && this.options.selectionHandler
         },
         blankSlateViewConstructor: Backbone.Marionette.ItemView.extend({
           template: 'templates/files_blank_slate'
@@ -69,8 +59,8 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
       }));
     }, this));
 
-    this.listenTo(this.model, 'change:uploading_' + name +'_count', function(model, value) {
-      this.tabsView.toggleSpinnerOnTab(name, value > 0);
+    this.listenTo(this.model, 'change:uploading_' + fileType.collectionName +'_count', function(model, value) {
+      this.tabsView.toggleSpinnerOnTab(fileType.collectionName, value > 0);
     });
   },
 
