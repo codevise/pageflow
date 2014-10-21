@@ -124,6 +124,10 @@
         height: 20px;
         font-size: 1.1em;
         margin-bottom: 21px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 87%;
+        overflow: hidden;
       }
 
       .heading-5 {
