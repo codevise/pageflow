@@ -16,35 +16,16 @@ module Pageflow
       configuration['title'].presence || configuration['additional_title']
     end
 
-    def thumbnail
-      model_name, attachment, property, model_class = thumbnail_definition
-
-      begin
-        model_name.to_s.camelcase.constantize.find(configuration[property]).send(attachment)
-      rescue ActiveRecord::RecordNotFound
-        ImageFile.new.processed_attachment
-      end
+    def thumbnail_url(*args)
+      thumbnail_file.thumbnail_url(*args)
     end
 
-    def thumbnail_definition
-      # TODO Refactor to be page type agonostic
-      if configuration['thumbnail_image_id'].present?
-        ['pageflow/image_file', :processed_attachment, 'thumbnail_image_id', 'image_file']
-      elsif template == 'panorama'
-        ['pageflow/panorama/package', :thumbnail, 'panorama_package_id', 'package']
-      elsif template == 'video' || template == 'background_video'
-        if configuration['poster_image_id'].present?
-          ['pageflow/image_file', :processed_attachment, 'poster_image_id', 'image_file']
-        else
-          ['pageflow/video_file', :poster, 'video_file_id', 'video_file']
-        end
-      else
-        if configuration['after_image_id'].present?
-          ['pageflow/image_file', :processed_attachment, 'after_image_id','image_file']
-        else
-          ['pageflow/image_file', :processed_attachment, 'background_image_id', 'image_file']
-        end
-      end
+    def thumbnail_file
+      ThumbnailFileResolver.new(page_type.thumbnail_candidates, configuration).find
+    end
+
+    def page_type
+      Pageflow.config.lookup_page_type(template)
     end
 
     def configuration

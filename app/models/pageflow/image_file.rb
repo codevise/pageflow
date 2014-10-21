@@ -7,20 +7,10 @@ module Pageflow
 
     has_attached_file(:processed_attachment, Pageflow.config.paperclip_s3_default_options
                         .merge(:default_url => ':pageflow_placeholder',
-                               :styles => {
-                                 :thumbnail => ["100x100#", :JPG],
-                                 :navigation_thumbnail_small => ['85x47#', :JPG],
-                                 :navigation_thumbnail_large => ['170x95#', :JPG],
-                                 :thumbnail_overview_desktop => ['230x72#', :JPG],
-                                 :thumbnail_overview_mobile => ['200x112#', :JPG],
-
-                                 :link_thumbnail => ['192x108#', :JPG],
-                                 :link_thumbnail_large => ['394x226#', :JPG],
-
-                                 :print => ['300x300>', :JPG],
-                                 :medium => ['1024x1024>', :JPG],
-                                 :large => ['1920x1920>', :JPG]
-                               },
+                               :styles => Pageflow.config.thumbnail_styles
+                                 .merge(:print => ['300x300>', :JPG],
+                                        :medium => ['1024x1024>', :JPG],
+                                        :large => ['1920x1920>', :JPG]),
                                :convert_options => {
                                  :print => "-quality 10 -interlace Plane",
                                  :medium => "-quality 70 -interlace Plane",
@@ -35,6 +25,10 @@ module Pageflow
 
     def attachment=(value)
       self.unprocessed_attachment = value
+    end
+
+    def thumbnail_url(*args)
+      processed_attachment.url(*args)
     end
 
     def url

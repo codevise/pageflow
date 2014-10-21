@@ -32,6 +32,38 @@ Pageflow.configure do |config|
     :path => ':pageflow_filesystem_root/:class/:attachment/:id_partition/:style/:filename',
     :url => 'not_uploaded_yet'
   }
+
+  config.thumbnail_styles = {
+    thumbnail: {
+      geometry: '100x100#',
+      format: :JPG
+    },
+    navigation_thumbnail_small: {
+      geometry: '85x47#',
+      format: :JPG
+    },
+    navigation_thumbnail_large: {
+      geometry: '170x95#',
+      format: :JPG
+    },
+    thumbnail_overview_desktop: {
+      geometry: '230x72#',
+      format: :JPG
+    },
+    thumbnail_overview_mobile: {
+      geometry: '200x112#',
+      format: :JPG
+    },
+
+    link_thumbnail: {
+      geometry: '192x108#',
+      format: :JPG
+    },
+    link_thumbnail_large: {
+      geometry: '394x226#',
+      format: :JPG
+    }
+  }
 end
 
 if Rails.env.development?

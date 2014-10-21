@@ -1,10 +1,10 @@
 <li class="<%= page.template %>">
   <%= link_to "##{page.perma_id}", :data => {:link => page.id} do %>
-      <%= image_tag(page.thumbnail.url(image_style), :width => image_width) %>
+      <%= image_tag(page.thumbnail_url(image_style), :width => image_width) %>
   <% end %>
   <div class="navigation_site_detail">
     <%= page.title %>
 
-    <%= image_tag("pageflow/#{page.template}_pictogram.png", :style => "background-image: url('#{page.thumbnail.url(:navigation_thumbnail_large)}')") %>
+    <%= image_tag("pageflow/#{page.template}_pictogram.png", :style => "background-image: url('#{page.thumbnail_url(:navigation_thumbnail_large)}')") %>
   </div>
 </li>

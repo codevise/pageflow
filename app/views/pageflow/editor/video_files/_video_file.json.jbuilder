@@ -12,7 +12,5 @@ if video_file.state == 'encoded'
 end
 
 if video_file.poster.present?
-  json.thumbnail_url(video_file.poster.url(:thumbnail))
-  json.link_thumbnail_url(video_file.poster.url(:link_thumbnail_large))
   json.poster_url(video_file.poster.url(:large))
 end

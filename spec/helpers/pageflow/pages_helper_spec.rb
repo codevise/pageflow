@@ -30,5 +30,18 @@ module Pageflow
         expect(css_classes).to include('text_position_right')
       end
     end
+
+    describe '#page_thumbnail_image_class' do
+      before { helper.extend(FileThumbnailsHelper) }
+
+      it 'returns file_thumbnail_css_class of thumbnail_file of page' do
+        image_file = create(:image_file)
+        page = build(:page, template: 'background_image', configuration: {'thumbnail_image_id' => image_file.id})
+
+        css_class = helper.page_thumbnail_image_class(page, false)
+
+        expect(css_class).to eq("pageflow_image_file_link_thumbnail_large_#{image_file.id}")
+      end
+    end
   end
 end

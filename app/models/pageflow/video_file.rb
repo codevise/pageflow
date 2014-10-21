@@ -7,20 +7,10 @@ module Pageflow
 
     has_attached_file(:poster, Pageflow.config.paperclip_s3_default_options
                         .merge(:default_url => ':pageflow_placeholder',
-                               :styles => {
-                                 :thumbnail  => ["100x100#", :JPG],
-                                 :navigation_thumbnail_small => ['85x47#', :JPG],
-                                 :navigation_thumbnail_large => ['170x95#', :JPG],
-                                 :thumbnail_overview_desktop => ['230x72#', :JPG],
-                                 :thumbnail_overview_mobile => ['200x112#', :JPG],
-
-                                 :link_thumbnail => ['192x108#', :JPG],
-                                 :link_thumbnail_large => ['394x226#', :JPG],
-
-                                 :medium => ['1920x1920>', :JPG],
-                                 :large => ['1024x1024>', :JPG],
-                                 :print => ['300x300>', :JPG]
-                               },
+                               :styles => Pageflow.config.thumbnail_styles
+                                 .merge(:medium => ['1920x1920>', :JPG],
+                                        :large => ['1024x1024>', :JPG],
+                                        :print => ['300x300>', :JPG]),
                                :convert_options => {
                                  :medium => "-quality 90 -interlace Plane",
                                  :large => "-quality 90 -interlace Plane",
@@ -30,19 +20,17 @@ module Pageflow
     has_attached_file(:thumbnail, Pageflow.config.paperclip_s3_default_options
                         .merge(:default_url => ':pageflow_placeholder',
                                :default_style => :thumbnail,
-                               :styles => {
-                                 :thumbnail  => ["100x100#", :JPG],
-                                 :navigation_thumbnail_small => ['85x47#', :JPG],
-                                 :navigation_thumbnail_large => ['170x95#', :JPG],
-                                 :thumbnail_overview_desktop => ['230x72#', :JPG],
-                                 :thumbnail_overview_mobile => ['200x112#', :JPG],
-                                 :medium => ['1920x1920>', :JPG],
-                                 :large => ['1024x1024>', :JPG],
-                               },
+                               :styles => Pageflow.config.thumbnail_styles
+                                 .merge(:medium => ['1920x1920>', :JPG],
+                                        :large => ['1024x1024>', :JPG]),
                                :convert_options => {
                                  :medium => "-quality 60 -interlace Plane",
                                  :large => "-quality 60 -interlace Plane"
                                }))
+
+    def thumbnail_url(*args)
+      poster.url(*args)
+    end
 
     def attachment_s3_url
       "s3://#{File.join(attachment_on_s3.bucket_name, attachment_on_s3.path)}"

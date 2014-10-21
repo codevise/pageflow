@@ -16,26 +16,6 @@
       <% end %>
     <% end %>
 
-    <% @entry.image_files.each do |image_file| %>
-      .image_file_link_thumbnail_<%= image_file.id %> {
-        background-image: url('<%= image_file.attachment.url(:link_thumbnail) %>');
-      }
-
-      .image_file_link_thumbnail_large_<%= image_file.id %> {
-        background-image: url('<%= image_file.attachment.url(:link_thumbnail_large) %>');
-      }
-    <% end %>
-
-    <% @entry.video_files.each do |video_file| %>
-      .video_file_link_thumbnail_<%= video_file.id %> {
-        background-image: url('<%= video_file.poster.url(:link_thumbnail) %>');
-      }
-
-      .video_file_link_thumbnail_large_<%= video_file.id %> {
-        background-image: url('<%= video_file.poster.url(:link_thumbnail_large) %>');
-      }
-    <% end %>
-
+    <%= file_thumbnails_css(@entry) %>
     <%= render 'pageflow/entries/theming' %>
-
 <% end %>

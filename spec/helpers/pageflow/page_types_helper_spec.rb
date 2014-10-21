@@ -34,6 +34,22 @@ module Pageflow
 
         expect(result).to include('"name":"test"')
       end
+
+      it 'includes thumbnail_candidates' do
+        page_type_class = Class.new(Pageflow::PageType) do
+          name 'test'
+
+          def thumbnail_candidates
+            [{attribute: 'thumbnail_image_id', file_collection: 'image_files'}]
+          end
+        end
+
+        allow(Pageflow.config).to receive(:page_types).and_return([page_type_class.new])
+
+        result = JSON.parse(helper.page_type_json_seeds)
+
+        expect(result[0]['thumbnail_candidates']).to eq([{'attribute' => 'thumbnail_image_id', 'file_collection' => 'image_files'}])
+      end
     end
 
     describe '#page_type_templates' do

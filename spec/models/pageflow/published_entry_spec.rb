@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Pageflow
   describe PublishedEntry do
-    describe '#thumbnail' do
+    describe '#thumbnail_url' do
       it 'returns thumbnail of first page of published revision' do
         entry = create(:entry)
         revision = create(:revision, :published, :entry => entry)
@@ -10,7 +10,7 @@ module Pageflow
         page = create(:page, :chapter => chapter)
         published_entry = PublishedEntry.new(entry)
 
-        expect(published_entry.thumbnail.url).to eq(page.thumbnail.url)
+        expect(published_entry.thumbnail_url).to eq(page.thumbnail_url)
       end
 
       it 'returns blank attachment for published revision without pages' do
@@ -18,7 +18,7 @@ module Pageflow
         revision = create(:revision, :published, :entry => entry)
         published_entry = PublishedEntry.new(entry)
 
-        expect(published_entry.thumbnail.url).to eq(ImageFile.new.processed_attachment.url)
+        expect(published_entry.thumbnail_url).to eq(ImageFile.new.thumbnail_url)
       end
     end
 

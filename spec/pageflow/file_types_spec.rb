@@ -56,5 +56,25 @@ module Pageflow
         }.to raise_error(FileType::NotFoundError)
       end
     end
+
+    describe '#with_thumbnail_support' do
+      it 'includes file types whose models have thumbnail_url instance method' do
+        file_type = FileType.new(model: ImageFile)
+        file_types = FileTypes.new([page_type_class.new(file_types: [file_type])])
+
+        result = file_types.with_thumbnail_support
+
+        expect(result).to include(file_type)
+      end
+
+      it 'does not include file types whose models do not have thumbnail_url instance method' do
+        file_type = FileType.new(model: AudioFile)
+        file_types = FileTypes.new([page_type_class.new(file_types: [file_type])])
+
+        result = file_types.with_thumbnail_support
+
+        expect(result).not_to include(file_type)
+      end
+    end
   end
 end

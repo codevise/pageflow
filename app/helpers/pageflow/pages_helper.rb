@@ -140,9 +140,9 @@ module Pageflow
     end
 
     def page_thumbnail_image_class(page, hero)
-      model, attachment, property, model_class = page.thumbnail_definition
-      size = hero ? 'large_' : ''
-      "#{model_class}_link_thumbnail_#{size}#{page.configuration[property]}"
+      file_thumbnail_css_class(page.thumbnail_file, hero ? :link_thumbnail : :link_thumbnail_large)
     end
+
+    CSS_RENDERED_THUMBNAIL_STYLES = [:link_thumbnail, :link_thumbnail_large]
   end
 end

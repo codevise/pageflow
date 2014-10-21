@@ -13,5 +13,24 @@ module Pageflow
         expect(file_type.editor_partial).to eq('pageflow/editor/image_files/image_file')
       end
     end
+
+    describe '#thumbnail_candidate' do
+      it 'returns default candidates' do
+        page_type = BuiltInPageType.new('background_image')
+
+        expect(page_type.thumbnail_candidates).to be_present
+      end
+
+      it 'allows overriding via option' do
+        thumbnail_candidates = [
+          {file_collection: 'image_files', attribute: 'poster_image_id'},
+          {file_collection: 'video_files', attribute: 'video_file_id'}
+        ]
+        page_type = BuiltInPageType.new('video',
+                                        thumbnail_candidates: thumbnail_candidates)
+
+        expect(page_type.thumbnail_candidates).to eq(thumbnail_candidates)
+      end
+    end
   end
 end

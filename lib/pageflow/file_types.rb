@@ -15,5 +15,11 @@ module Pageflow
         file_type.collection_name == collection_name
       end || raise(FileType::NotFoundError, "No file type found for collection name '#{collection_name}'.")
     end
+
+    def with_thumbnail_support
+      select do |file_type|
+        file_type.model.instance_methods.include?(:thumbnail_url)
+      end
+    end
   end
 end
