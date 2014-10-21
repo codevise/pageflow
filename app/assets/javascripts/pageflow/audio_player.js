@@ -67,3 +67,8 @@ pageflow.AudioPlayer.fromAudioTag = function(element) {
     };
   }).get(), element[0]);
 };
+
+pageflow.AudioPlayer.fromScriptTag = function(element) {
+  var sources = element.length ? JSON.parse(element.text()) : [];
+  return new pageflow.AudioPlayer(sources);
+};

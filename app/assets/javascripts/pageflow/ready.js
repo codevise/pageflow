@@ -57,11 +57,7 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
       }
     };
 
-    var iOS8 = navigator.userAgent.match(/(iPad|iPhone|iPod).*OS 8_\d/i);
-
-    // iOS 8 fails to trigger window.onload when audio tags are present
-    // on the page. Make sure we do not get stuck at the loading spinner.
-    var timeout = setTimeout(invokeOnce, iOS8 ? 3000 : 10000);
+    var timeout = setTimeout(invokeOnce, 10000);
     window.onload = invokeOnce;
   }
 }).promise();

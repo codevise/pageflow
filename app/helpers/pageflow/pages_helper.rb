@@ -86,27 +86,6 @@ module Pageflow
         }]
     end
 
-    def audio_tag(audio_id, options = {})
-      defaults = {:class => ['audio-js', options.delete(:class)].compact * ' ',
-        :controls => true, :preload => 'none'}
-      options.merge! defaults
-      url_options = {:unique_id => options.delete(:unique_id)}
-
-      if (audio = AudioFile.find_by_id(audio_id))
-        content_tag :audio, options do
-          audio_file_sources(audio, url_options).map do |v|
-            concat tag(:source, :src => v[:src], :type => v[:type])
-          end
-        end
-      end
-    end
-
-    def audio_file_sources(audio_file, options = {})
-      [{:type => 'audio/ogg', :src => audio_file.ogg.url(options)},
-        {:type => 'audio/mp4', :src => audio_file.m4a.url(options)},
-        {:type => 'audio/mpeg', :src => audio_file.mp3.url(options)}]
-    end
-
     def page_media_breakpoints
       {
         :large => :default,
