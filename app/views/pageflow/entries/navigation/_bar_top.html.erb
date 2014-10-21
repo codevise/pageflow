@@ -18,7 +18,7 @@
       <span class="button"></span>
     </a>
   </li>
-  <li class="navigation_menu" tabindex="2">
+  <li class="navigation_menu share" tabindex="2">
     <div class="navigation_menu_box navigation_share_box">
       <%= link_to "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}&p%5Btitle%5D=#{ERB::Util.url_encode(entry.title)}", :target => "_blank", :tabindex => "2", :class => "share facebook" do %>
           <span class="hint">über facebook teilen</span>
