@@ -6,6 +6,10 @@ pageflow.ConfigurationEditorView.register('background_image', {
 
     this.tab('files', function() {
       this.input('background_image_id', pageflow.FileInputView, {collection: pageflow.imageFiles});
+      this.input('thumbnail_image_id', pageflow.FileInputView, {
+        collection: pageflow.imageFiles,
+        imagePositioning: false
+      });
     });
 
     this.tab('options', function() {

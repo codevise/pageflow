@@ -13,6 +13,10 @@ pageflow.ConfigurationEditorView.register('video', {
         collection: pageflow.imageFiles,
         imagePositioning: false
       });
+      this.input('thumbnail_image_id', pageflow.FileInputView, {
+        collection: pageflow.imageFiles,
+        imagePositioning: false
+      });
     });
 
     this.tab('options', function() {
