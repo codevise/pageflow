@@ -7,7 +7,8 @@
 
     <div class="wrapper">
       <div class="scroller">
-        <%= render :partial => 'pageflow/entries/overview/chapter', :collection => entry.chapters %>
+        <%= render :partial => 'pageflow/entries/overview/chapter', :collection => entry.chapters,
+                   :locals => {:chapters_count => entry.chapters.count} %>
       </div>
     </div>
 
