@@ -6,9 +6,51 @@
 
 - Improve playback of certain videos in Firefox.
   ([#116](https://github.com/codevise/pageflow/pull/116))
+- Add audio loop page type.
+  ([#120](https://github.com/codevise/pageflow/pull/120))
+- Allow page thumbnails to be explictly defined.
+  ([#121](https://github.com/codevise/pageflow/pull/121))
+- Reword multimedia alert.
+  ([#122](https://github.com/codevise/pageflow/pull/122))
+- Background shadow position always left on phones.
+  ([#123](https://github.com/codevise/pageflow/pull/123))
+- Do not display chapter headings in overview if only one chapter
+  exists. Improve display of multiline chapter titles in overview.
+  ([#130](https://github.com/codevise/pageflow/pull/130))
+- Improve styling of player controls on mobile platforms.
+  ([#132](https://github.com/codevise/pageflow/pull/132))
+- Allow hiding social media links in themes by adding a CSS class.
+  ([#135](https://github.com/codevise/pageflow/pull/135))
+- Add `data-theme` attribute to DOM so page types can determine the
+  current theme name.
+  ([#136](https://github.com/codevise/pageflow/pull/136))
 - Bug fix: Correct color of links in additional info box.
   ([#117](https://github.com/codevise/pageflow/pull/117))
 - Bug fix: iOS 8 window.onload bug workaround.
+  ([#119](https://github.com/codevise/pageflow/pull/119),
+  [#131](https://github.com/codevise/pageflow/pull/131))
+- Bug fix: Add missing overview pictogram for internal links page.
+  ([#137](https://github.com/codevise/pageflow/pull/137))
+
+##### Admin/Editor
+
+- Display an error message if an uploaded file cannot be matched to a
+  file type.
+  ([#133](https://github.com/codevise/pageflow/pull/133))
+- Bug fix: Spelling error in form input label.
+  ([#128](https://github.com/codevise/pageflow/pull/128))
+- Bug fix: Do not escape HTML in preview of thumbnail hover texts in
+  internal links page.
+  ([#134](https://github.com/codevise/pageflow/pull/134))
+
+##### Rails Engine
+
+- Allow page types to introduce new file types.
+  ([#124](https://github.com/codevise/pageflow/pull/124))
+- Allow page types to customize their thumbnail representation.
+  ([#138](https://github.com/codevise/pageflow/pull/138))
+- Remove some unused images from default theme.
+  ([#139](https://github.com/codevise/pageflow/pull/139))
 
 ### Version 0.4.0
 
