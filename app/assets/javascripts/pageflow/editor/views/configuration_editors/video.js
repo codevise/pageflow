@@ -17,6 +17,10 @@ pageflow.ConfigurationEditorView.register('video', {
         collection: pageflow.imageFiles,
         imagePositioning: false
       });
+      this.input('mobile_poster_image_id', pageflow.FileInputView, {
+        collection: pageflow.imageFiles,
+        imagePositioning: false
+      });
     });
 
     this.tab('options', function() {

@@ -50,6 +50,7 @@ de:
         additional_title: "Die Infobox wird über den Steuerelementen zum Starten und Stoppen der Wiedegabe angezeigt."
         text: "Empfohlene Textlänge: 220 Zeichen"
         thumbnail_image_id: "Dieses Bild wird in der Navigationsleiste und anderen Verweisen auf die Seite gezeigt."
+        mobile_poster_image_id: "Dieses Bild wird in der Mobilvariante der Seite als Posterbild gezeigt."
       "pageflow/entry":
         title: "Vom Browser angezeigter Titel der Seite."
         summary: "Zusammenfassung die an Soziale Netzwerke weitergeben wird."
