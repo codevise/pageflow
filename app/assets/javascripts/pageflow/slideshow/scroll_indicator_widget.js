@@ -2,7 +2,7 @@
   $.widget('pageflow.scrollIndicator', {
     _create: function() {
       var parent = this.options.parent,
-          that = this;
+        that = this;
 
       parent.on('pageactivate', function(event) {
         that.element.toggleClass('invert', $(event.target).hasClass('invert'));
@@ -26,6 +26,16 @@
       parent.on('scrollernotnearbottom slideshowchangepage', function() {
         that.element.removeClass('visible');
       });
+
+      $.when(pageflow.ready, pageflow.manualStart).done(function() {
+        setTimeout(function() {
+          that.element.addClass('attract');
+          setTimeout(function() {
+            that.element.removeClass('attract');
+          }, 1500);
+        }, 3000);
+      });
+
     }
   });
 }(jQuery));
