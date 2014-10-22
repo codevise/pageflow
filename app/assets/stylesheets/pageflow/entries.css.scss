@@ -50,6 +50,11 @@
       @include animation(bounce 0.5s ease);
     }
 
+    &.attract {
+      @include animation(bounce 0.5s ease);
+      @include animation-iteration-count(3)
+    }
+
     &:before {
       background-size: 100% auto;
       background-position: top left;
