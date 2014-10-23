@@ -1,7 +1,7 @@
 pageflow.CheckBoxInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 
-  template: 'templates/inputs/check_box',
+  template: 'pageflow/ui/templates/inputs/check_box',
   className: 'check_box_input',
 
   events: {

@@ -1,5 +1,5 @@
 pageflow.TabsView = Backbone.Marionette.Layout.extend({
-  template: 'templates/tabs_view',
+  template: 'pageflow/ui/templates/tabs_view',
   className: 'tabs_view',
 
   ui: {

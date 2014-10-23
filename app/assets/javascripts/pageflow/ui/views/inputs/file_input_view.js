@@ -3,7 +3,7 @@
 pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 
-  template: 'templates/inputs/file_input',
+  template: 'pageflow/ui/templates/inputs/file_input',
   className: 'file_input',
 
   ui: {
