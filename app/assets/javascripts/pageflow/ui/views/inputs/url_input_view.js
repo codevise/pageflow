@@ -1,7 +1,7 @@
 pageflow.UrlInputView = Backbone.Marionette.Layout.extend({
   mixins: [pageflow.inputView],
 
-  template: 'templates/inputs/url_input',
+  template: 'pageflow/ui/templates/inputs/url_input',
 
   ui: {
     input: 'input',

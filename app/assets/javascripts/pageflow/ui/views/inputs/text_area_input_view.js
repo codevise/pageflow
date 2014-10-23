@@ -3,7 +3,7 @@
 pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 
-  template: 'templates/inputs/text_area_input',
+  template: 'pageflow/ui/templates/inputs/text_area_input',
 
   ui: {
     textarea: 'textarea',

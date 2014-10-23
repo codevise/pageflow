@@ -1,7 +1,7 @@
 pageflow.TextInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 
-  template: 'templates/inputs/text_input',
+  template: 'pageflow/ui/templates/inputs/text_input',
 
   ui: {
     input: 'input'
