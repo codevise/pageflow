@@ -20,11 +20,10 @@ gsub_file('config/database.yml',
           /^  password:.*\n/,
           "  password: \"<%= ENV.fetch('PAGEFLOW_DB_PASSWORD', '') %>\"\n")
 
-begin
-  rake 'db:drop'
-rescue Exception => e
-  # ignore if db does not exist yet
-end
+# Recreate db. Ignore if it does not exist.
+
+log :rake, 'db:drop'
+in_root { run('rake db:drop RAILS_ENV=test 2> /dev/null', verbose: false) }
 
 rake 'db:create'
 
