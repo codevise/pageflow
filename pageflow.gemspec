@@ -87,7 +87,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mysql2'
 
   # Testing framework
-  s.add_development_dependency 'rspec-rails', '~> 2.0'
+  s.add_development_dependency 'rspec-rails', '~> 2.14.0'
 
   # Browser like integration testing
   s.add_development_dependency 'capybara'
