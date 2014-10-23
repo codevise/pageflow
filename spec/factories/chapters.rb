@@ -5,7 +5,7 @@ module Pageflow
     factory :chapter, :class => Chapter do
       revision
 
-      ignore do
+      transient do
         entry nil
       end
 

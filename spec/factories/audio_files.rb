@@ -6,7 +6,7 @@ module Pageflow
 
       attachment_on_s3 File.open(Engine.root.join('spec', 'fixtures', 'et.ogg'))
 
-      ignore do
+      transient do
         used_in nil
       end
 
