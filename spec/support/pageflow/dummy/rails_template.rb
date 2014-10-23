@@ -22,7 +22,7 @@ gsub_file('config/database.yml',
 
 begin
   rake 'db:drop'
-rescue
+rescue Exception => e
   # ignore if db does not exist yet
 end
 

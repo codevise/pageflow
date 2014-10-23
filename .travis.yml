@@ -8,7 +8,6 @@ env:
   - PAGEFLOW_RAILS_VERSION=4.1.6
 
 script:
-  - "RAILS_ENV=test bundle exec rake db:schema:load"
   - "bundle exec rspec --tag ~js"
 
 before_script:
