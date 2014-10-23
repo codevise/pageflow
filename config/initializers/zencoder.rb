@@ -16,7 +16,7 @@ Pageflow.after_configure do |config|
   raise "Missing s3_host_alias option in Pageflow.config.zencoder_options." unless zencoder_options.has_key?(:s3_host_alias)
   raise "Missing s3_protocol option in Pageflow.config.zencoder_options." unless zencoder_options.has_key?(:s3_protocol)
 
-  Pageflow::ZencoderAttachment.default_options.merge!(zencoder_options.slice(:path))
+  Pageflow::ZencoderAttachment.default_options.merge!(zencoder_options.slice(:path, :url, :hls_url, :hls_origin_url))
 end
 
 Paperclip.interpolates(:zencoder_host_alias) do |attachment, style|
