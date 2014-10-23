@@ -1,7 +1,7 @@
 //= require cocktail
 //= require backbone.marionette
+//= require pageflow/ui
 //= require ./sync
-//= require ./renderer
 
 //= require jquery.ui.all
 //= require jquery/layout
@@ -11,13 +11,6 @@
 //= require jquery-fileupload/jquery.fileupload
 //= require jquery-fileupload/jquery.fileupload-fp
 
-//= require wysihtml5
-//= require parser_rules/simple
-
-//= require i18n
-//= require i18n/translations
-
-//= require ./object
 //= require ./api
 
 //= require_self
@@ -39,8 +32,6 @@
 //= require ./views/file_item_view
 //= require ./views/chapter_item_view
 //= require ./views/page_item_view
-//= require ./views/configuration_editor_tab_view
-//= require ./views/configuration_editor_view
 //= require_tree ./views/configuration_editors
 //= require_tree ./views
 
