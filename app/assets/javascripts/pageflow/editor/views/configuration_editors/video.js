@@ -8,14 +8,17 @@ pageflow.ConfigurationEditorView.register('video', {
     });
 
     this.tab('files', function() {
-      this.input('video_file_id', pageflow.FileInputView, {collection: pageflow.videoFiles});
+      this.input('video_file_id', pageflow.FileInputView, {
+        collection: pageflow.videoFiles,
+        positioning: false
+      });
       this.input('poster_image_id', pageflow.FileInputView, {
         collection: pageflow.imageFiles,
-        imagePositioning: false
+        positioning: false
       });
       this.input('thumbnail_image_id', pageflow.FileInputView, {
         collection: pageflow.imageFiles,
-        imagePositioning: false
+        positioning: false
       });
       this.input('mobile_poster_image_id', pageflow.FileInputView, {
         collection: pageflow.imageFiles,

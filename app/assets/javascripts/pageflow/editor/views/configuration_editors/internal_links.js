@@ -8,7 +8,7 @@ pageflow.ConfigurationEditorView.register('internal_links', {
       this.input('background_image_id', pageflow.FileInputView, {collection: pageflow.imageFiles});
       this.input('thumbnail_image_id', pageflow.FileInputView, {
         collection: pageflow.imageFiles,
-        imagePositioning: false
+        positioning: false
       });
     });
 
