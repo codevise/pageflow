@@ -1,10 +1,12 @@
 ENV['RAILS_ENV'] ||= 'test'
 
-require File.expand_path("../dummy/config/environment.rb",  __FILE__)
+require 'pageflow/support'
+Pageflow::Dummy.setup
+
 require 'rspec/rails'
 require 'domino'
 
-Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each { |file| require(file) }
+Dir[File.join(File.dirname(__FILE__), 'support/{config,dominos,helpers}/**/*.rb')].each { |file| require(file) }
 Dir[Pageflow::Engine.root.join("spec/**/*_examples.rb")].each { |file| require(file) }
 
 RSpec.configure do |config|

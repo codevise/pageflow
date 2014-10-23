@@ -14,7 +14,8 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-APP_RAKEFILE = File.expand_path("../spec/dummy/Rakefile", __FILE__)
+require File.expand_path('spec/support/pageflow/rails_version', File.dirname(__FILE__))
+APP_RAKEFILE = File.expand_path("../spec/dummy/rails-#{Pageflow::RailsVersion.detect}/Rakefile", __FILE__)
 load 'rails/tasks/engine.rake'
 
 Bundler::GemHelper.install_tasks
