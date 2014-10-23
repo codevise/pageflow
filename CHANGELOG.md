@@ -51,6 +51,8 @@
   ([#138](https://github.com/codevise/pageflow/pull/138))
 - Remove some unused images from default theme.
   ([#139](https://github.com/codevise/pageflow/pull/139))
+- Make zencoder urls configurable.
+  ([#145](https://github.com/codevise/pageflow/pull/145))
 
 ### Version 0.4.0
 
