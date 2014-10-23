@@ -36,17 +36,17 @@ pageflow.Configuration = Backbone.Model.extend({
     return this.getReference(attribute, pageflow.imageFiles);
   },
 
-  getImageFilePosition: function(attribute, coord) {
-    var propertyName = this._imageFilePositionProperty(attribute, coord);
+  getFilePosition: function(attribute, coord) {
+    var propertyName = this._filePositionProperty(attribute, coord);
     return this.has(propertyName) ? this.get(propertyName) : 50;
   },
 
-  setImageFilePosition: function(attribute, coord, value) {
-    var propertyName = this._imageFilePositionProperty(attribute, coord);
+  setFilePosition: function(attribute, coord, value) {
+    var propertyName = this._filePositionProperty(attribute, coord);
     this.set(propertyName, value);
   },
 
-  _imageFilePositionProperty: function(attribute, coord) {
+  _filePositionProperty: function(attribute, coord) {
     return attribute.replace(/_id$/, '_' + coord);
   },
 
