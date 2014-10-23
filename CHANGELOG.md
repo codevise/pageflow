@@ -2,6 +2,13 @@
 
 ### Changes on `master`
 
+##### Manual Update Step
+
+To enable the new built in audio loop page type, you need to add the
+following line to your `config/initializers/pageflow.rb` file:
+
+      config.register_page_type(Pageflow::BuiltInPageType.audio_loop)
+
 ##### Public Site
 
 - Improve playback of certain videos in Firefox.
