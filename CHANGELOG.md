@@ -2,6 +2,10 @@
 
 ### Changes on `master`
 
+None so far.
+
+### 0.5.0
+
 ##### Manual Update Step
 
 To enable the new built in audio loop page type, you need to add the
