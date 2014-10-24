@@ -14,7 +14,8 @@ pageflow.ConfigurationEditorView = Backbone.Marionette.View.extend({
   tab: function(name, callback) {
     this.tabsView.tab(name, _.bind(function() {
       var tabView = new pageflow.ConfigurationEditorTabView({
-        model: this.model
+        model: this.model,
+        placeholderModel: this.options.placeholderModel
       });
 
       callback.call(tabView);
