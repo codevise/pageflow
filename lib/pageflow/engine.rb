@@ -28,6 +28,7 @@ module Pageflow
     isolate_namespace Pageflow
 
     config.autoload_paths << File.join(config.root, 'lib')
+    config.autoload_paths << File.join(config.root, 'app', 'views', 'components')
 
     config.i18n.load_path += Dir[config.root.join('config', 'locales', '**', '*.yml').to_s]
     config.i18n.default_locale = :de
