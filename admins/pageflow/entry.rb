@@ -90,7 +90,7 @@ module Pageflow
     controller do
       helper FoldersHelper
       helper EntriesHelper
-      helper Admin::RevisionsHelper
+      helper Pageflow::Admin::RevisionsHelper
 
       def scoped_collection
         params.key?(:folder_id) ? super.where(:folder_id => params[:folder_id]) : super
