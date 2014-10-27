@@ -1,5 +1,6 @@
 pageflow.AudioPlayer = function(sources, options) {
   options = options || {};
+
   var codecMapping = {
     vorbis: 'audio/ogg',
     mp4: 'audio/mp4',
@@ -7,6 +8,8 @@ pageflow.AudioPlayer = function(sources, options) {
   };
 
   var ready = new $.Deferred();
+  var loaded = new $.Deferred();
+
   var audio = new Audio5js({
     reusedTag: options.tag,
     swf_path: pageflow.assetUrls.audioSwf,
@@ -18,6 +21,10 @@ pageflow.AudioPlayer = function(sources, options) {
   });
 
   audio.readyPromise = ready.promise();
+  audio.loadedPromise = loaded.promise();
+
+  audio.on('load', loaded.resolve);
+
   audio.src = function(sources) {
     ready.then(function() {
       var source = _.detect(sources || [], function(source) {
