@@ -26,27 +26,39 @@ pageflow.pageType.register('audio_loop', _.extend({
     this.audioPlayer.readyPromise.then(function() {
       that.audioPlayer.volume(pageflow.settings.get('volume'));
       that.listenTo(pageflow.settings, "change:volume", function(model, value) {
-        that.fadeSound(that.audioPlayer, value, 40);
+        that.audioPlayer.loadedPromise.then(function() {
+          that.fadeSound(that.audioPlayer, value, 40);
+        });
       });
     });
   },
 
   activated: function(pageElement, configuration) {
+    this.active = true;
     var that = this;
+
     this.fadeInTimeout = setTimeout(function() {
       that.audioPlayer.readyPromise.then(function() {
-        that.audioPlayer.volume(0);
-        that.audioPlayer.play();
-        that.fadeSound(that.audioPlayer, pageflow.settings.get('volume'), 1000);
+        if (that.active) {
+          that.audioPlayer.volume(0);
+          that.audioPlayer.play();
+          that.audioPlayer.loadedPromise.then(function() {
+            that.fadeSound(that.audioPlayer, pageflow.settings.get('volume'), 1000);
+          });
+        }
       });
     }, 1000);
   },
 
   deactivating: function(pageElement, configuration) {
+    this.active = false;
+    var that = this;
+
     clearTimeout(this.fadeInTimeout);
-    this.fadeSound(this.audioPlayer, 0, 400);
+    this.audioPlayer.loadedPromise.then(function() {
+      that.fadeSound(that.audioPlayer, 0, 400);
+    });
     this.stopListening();
-    $('body').off('keyup');
   },
 
   deactivated: function(pageElement, configuration) {
