@@ -81,10 +81,9 @@ module Pageflow
       render 'attributes_table', :entry => entry
       render 'links', :entry => entry
 
-      div :class => 'columns' do
-        render 'members', :entry => entry
-        render 'revisions', :entry => entry
-      end
+      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(:entry),
+                :i18n => 'pageflow.admin.resource_tabs',
+                :build_args => [entry])
     end
 
     controller do

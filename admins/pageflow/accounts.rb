@@ -17,10 +17,9 @@ module Pageflow
       render 'account_details', :account => account
       render 'theming_details', :account => account
 
-      div :class => 'columns' do
-        render 'entries_panel', :account => account
-        render 'users_panel', :account => account
-      end
+      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(:theming),
+                :i18n => 'pageflow.admin.resource_tabs',
+                :build_args => [account.default_theming])
     end
 
     controller do
