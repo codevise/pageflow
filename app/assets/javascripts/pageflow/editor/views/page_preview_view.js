@@ -7,6 +7,8 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
 
     'change:configuration': 'update',
 
+    'change:position': 'updateChapterBeginningClass',
+
     'sync': function() {
       this.$el.attr('data-id', this.model.id);
       this.$el.attr('data-perma-id', this.model.get('perma_id'));
@@ -31,6 +33,7 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
     this.$el.data('configuration', this.model.get('configuration'));
 
     this.$el.page();
+    this.updateChapterBeginningClass();
     this.update();
     this.$el.page('reactivate');
 
@@ -47,6 +50,7 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
     this.$el.data('configuration', this.model.get('configuration'));
 
     this.$el.page('reinit');
+    this.updateChapterBeginningClass();
     this.update();
     this.$el.page('reactivate');
 
@@ -58,6 +62,11 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
     this.pageType().update(this.$el, this.model.configuration);
     _.extend(this.$el.data('configuration'), this.model.configuration.attributes);
     this.refreshScroller();
+  },
+
+  updateChapterBeginningClass: function() {
+    var chapterBeginning = this.model.get('position') === 0;
+    this.$el.toggleClass('chapter_beginning', chapterBeginning);
   },
 
   pageType: function() {
