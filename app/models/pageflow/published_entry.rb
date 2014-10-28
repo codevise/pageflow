@@ -7,7 +7,7 @@ module Pageflow
 
     delegate(:account, :theming, :to_model, :to_key, :persisted?, :to => :entry)
 
-    delegate(:chapters, :pages,
+    delegate(:widgets, :chapters, :pages,
              :files,
              :image_files, :video_files, :audio_files,
              :title, :summary, :credits, :manual_start,
