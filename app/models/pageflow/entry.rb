@@ -32,6 +32,7 @@ module Pageflow
 
     after_create do
       create_draft!(home_button_enabled: theming.home_button_enabled_by_default)
+      theming.widgets.copy_all_to(draft)
     end
 
     def edit_lock
