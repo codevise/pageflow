@@ -1,3 +1,4 @@
 <%= render 'pageflow/entries/header', :entry => @entry %>
 <%= render 'pageflow/entries/navigation', :entry => @entry %>
 <%= render 'pageflow/entries/overview', :entry => @entry %>
+<%= render_widgets(@entry, only: :editor) %>
