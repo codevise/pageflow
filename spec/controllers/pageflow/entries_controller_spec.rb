@@ -166,6 +166,17 @@ module Pageflow
           expect(response.status).to eq(404)
         end
 
+        it 'renders widgets for entry' do
+          Pageflow.config.widget_types.register(TestWidgetType.new(:name => 'test_widget',
+                                                                   :rendered => '<div class="test_widget"></div>'))
+          entry = create(:entry, :published)
+          create(:widget, :subject => entry.published_revision, :type_name => 'test_widget')
+
+          get(:show, :id => entry)
+
+          expect(response.body).to have_selector('div.test_widget')
+        end
+
         context 'with configured entry_request_scope' do
           before do
             Pageflow.config.public_entry_request_scope = lambda do |entries, request|
@@ -268,6 +279,50 @@ module Pageflow
 
           expect(response.status).to eq(404)
         end
+      end
+    end
+
+    describe '#partials' do
+      it 'reponds with success for members of the entry' do
+        user = create(:user)
+        entry = create(:entry, :with_member => user)
+
+        sign_in(user)
+        get(:partials, :id => entry)
+
+        expect(response.status).to eq(200)
+      end
+
+      it 'requires the signed in user to be member of the parent entry' do
+        user = create(:user)
+        entry = create(:entry)
+
+        sign_in(user)
+        get(:partials, :id => entry)
+
+        expect(response).to redirect_to(main_app.admin_root_path)
+      end
+
+      it 'requires authentication' do
+        entry = create(:entry)
+
+        get(:partials, :id => entry)
+
+        expect(response).to redirect_to(main_app.new_user_session_path)
+      end
+
+      it 'renders editor enabled widgets for entry' do
+        Pageflow.config.widget_types.register(TestWidgetType.new(:name => 'test_widget',
+                                                                 :enabled_in_editor => true,
+                                                                 :rendered => '<div class="test_widget"></div>'))
+        user = create(:user)
+        entry = create(:entry, :with_member => user)
+        create(:widget, :subject => entry.draft, :type_name => 'test_widget')
+
+        sign_in(user)
+        get(:partials, :id => entry)
+
+        expect(response.body).to have_selector('div.test_widget')
       end
     end
 
