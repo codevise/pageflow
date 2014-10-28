@@ -31,7 +31,7 @@ module Pageflow
     scope :editing, -> { joins(:edit_lock).merge(Pageflow::EditLock.active) }
 
     after_create do
-      create_draft!(home_button_enabled: theming.home_button_enabled_by_default)
+      create_draft!(home_button_enabled: theming.home_button_enabled_by_default, emphasize_chapter_beginning: false)
     end
 
     def edit_lock
