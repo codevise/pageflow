@@ -36,6 +36,7 @@
 //= require ./print_layout
 //= require ./history
 //= require ./manual_start
+//= require ./widget_types
 
 //= require ./settings
 
