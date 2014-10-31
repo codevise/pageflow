@@ -9,6 +9,14 @@ module Pageflow
       classes.join(' ')
     end
 
+    def navigation_classes(page)
+      classes = [page.template]
+      classes << 'chapter_beginning' if page.position == 0
+      classes << "chapter_#{page.chapter.position}"
+      page.chapter.position % 2 == 0 ? classes << 'chapter_even' : classes << 'chapter_odd'
+      classes.join(' ')
+    end
+
     def shadow_div(options = {})
       style = options[:opacity] ? "opacity: #{options[:opacity] / 100.0};" : nil
       content_tag(:div, '', :class => 'shadow', :style => style)
