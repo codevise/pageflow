@@ -76,7 +76,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
       view.ui.overview.overview();
     });
 
-    this.$el.toggleClass('emphasize_chapter_beginning', this.model.get('emphasize_chapter_beginning'));
+    this.$el.toggleClass('emphasize_chapter_beginning', !!this.model.get('emphasize_chapter_beginning'));
   },
 
   updateWidgets: function(partials) {
