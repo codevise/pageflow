@@ -73,6 +73,8 @@
     },
 
     activate: function(options) {
+      options = options || {};
+
       this.element
         .removeClass('animate-out-forwards animate-out-backwards')
         .addClass('animate-in-' + options.direction);
@@ -88,7 +90,7 @@
         this._triggerDelayedPageTypeHook('activated');
       }, this), 1100);
 
-      this.content.scroller('enable');
+      this.content.scroller('enable', {position: options.position});
       this._trigger('activate', null, {page: this});
       this._triggerPageTypeHook('activating');
 

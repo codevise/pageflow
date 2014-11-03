@@ -31,10 +31,18 @@
       this._initMoveEvents();
     },
 
-    enable: function() {
+    enable: function(options) {
+      options = options || {};
+
       this.iscroll.enable();
       this.iscroll.refresh();
-      this.iscroll.scrollTo(0, 0, 0);
+
+      if (options.position === 'bottom') {
+        this.iscroll.scrollTo(0, this.iscroll.maxScrollY, 0);
+      }
+      else {
+        this.iscroll.scrollTo(0, 0, 0);
+      }
     },
 
     refresh: function() {
