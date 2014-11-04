@@ -134,6 +134,7 @@ de:
         video_file_id: "Video"
         audio_file_id: "Audio"
         poster_image_id: "Posterbild"
+        mobile_poster_image_id: "Posterbild (mobil)"
         linked_page_ids: "Seiten verknüpfen"
         linked_pages_layout: "Hervorgehobenes Element"
         hide_title: "Titel ausblenden"

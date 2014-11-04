@@ -1,7 +1,9 @@
 <div class="blackLayer"></div>
 <div class="content_and_background backgroundVideo">
   <div class="backgroundArea">
-    <%= poster_image_div(configuration['video_file_id'], configuration['poster_image_id']) %>
+    <%= mobile_poster_image_div({:video_file_id => configuration['video_file_id'],
+                                 :poster_image_id => configuration['poster_image_id'],
+                                 :mobile_poster_image_id => configuration['mobile_poster_image_id']}) %>
     <span class="hint">Video Loop</span>
     <%= lookup_video_tag(configuration['video_file_id'],
         configuration['poster_image_id'], :class => 'background', :loop => true, :unique_id => page.id, :preload => page.is_first) %>
@@ -16,7 +18,7 @@
             <span class="title"><%= configuration['title'] %></span>
             <span class="subtitle"><%= configuration['subtitle'] %></span>
           </h2>
-          <%= poster_image_tag(configuration['video_file_id'], configuration['poster_image_id'], {"class" => "print_image"}) %>
+          <%= poster_image_tag(configuration['video_file_id'], configuration['poster_image_id'], {:class => "print_image"}) %>
         </div>
         <div class="contentText">
           <p><%= raw configuration['text'] %></p>

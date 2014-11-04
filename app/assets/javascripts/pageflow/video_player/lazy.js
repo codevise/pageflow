@@ -109,7 +109,10 @@ pageflow.VideoPlayer.Lazy = function(template, options) {
 
     var element = $(htmlWithPreload);
 
-    if (pageflow.features.has('high bandwidth') && !pageflow.features.has('mobile platform')) {
+    if (pageflow.features.has('mobile platform') && element.attr('data-mobile-poster')) {
+      element.attr('poster', element.attr('data-mobile-poster'));
+    }
+    else if (pageflow.features.has('high bandwidth') && !pageflow.features.has('mobile platform')) {
       element.attr('poster', element.attr('data-large-poster'));
 
       element.find('source').each(function() {
