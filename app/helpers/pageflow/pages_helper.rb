@@ -9,7 +9,7 @@ module Pageflow
       classes.join(' ')
     end
 
-    def navigation_classes(page)
+    def page_navigation_css_class(page)
       classes = [page.template]
       classes << 'chapter_beginning' if page.position == 0
       classes << "chapter_#{page.chapter.position}"
