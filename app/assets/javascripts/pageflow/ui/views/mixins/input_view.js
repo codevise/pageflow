@@ -6,7 +6,7 @@ pageflow.inputView = {
 
   onRender: function() {
     this.$el.addClass(this.model.modelName + '_' + this.options.propertyName);
-    this.ui.labelText.text(this.localizedAttributeName());
+    this.ui.labelText.text(this.labelText());
 
     this.ui.inlineHelp.text(this.inlineHelpText());
 
@@ -16,6 +16,10 @@ pageflow.inputView = {
 
     this.updateDisabled();
     this.setupVisibleBinding();
+  },
+
+  labelText: function() {
+    return this.options.label || this.localizedAttributeName();
   },
 
   localizedAttributeName: function() {
