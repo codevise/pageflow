@@ -7,7 +7,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
   mixins: [pageflow.failureIndicatingView],
 
   regions: {
-    formContainer: '.form_fields'
+    formContainer: '.form_fields',
   },
 
   events: {
@@ -37,6 +37,9 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
           visibleBinding: 'home_button_enabled'
         });
       }
+      this.view(pageflow.EditWidgetsView, {
+        widgetTypes: pageflow.editor.widgetTypes
+      });
     });
 
     this.formContainer.show(configurationEditor);
