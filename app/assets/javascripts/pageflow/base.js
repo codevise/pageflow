@@ -26,6 +26,7 @@
 //= require backbone-rails
 //= require_self
 
+//= require ./events
 //= require ./page_type
 //= require ./asset_urls
 //= require ./preload
