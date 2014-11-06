@@ -2,7 +2,13 @@
 
 ### Changes on `master`
 
-None so far.
+##### Public Site
+
+- Allow displaying a different poster image for video pages on mobile
+  devices where autoplay is not supported.
+  ([#143](https://github.com/codevise/pageflow/pull/143))
+- Improve Facebook open graph meta tags.
+  ([#157](https://github.com/codevise/pageflow/pull/157))
 
 ### 0.5.0
 
