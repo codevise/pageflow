@@ -15,6 +15,10 @@ pageflow.ImageFile = pageflow.UploadedFile.extend({
 
   readyState: 'processed',
 
+  getBackgroundPositioningImageUrl: function() {
+    return this.get('url');
+  },
+
   isPositionable: function() {
     return this.isReady();
   }

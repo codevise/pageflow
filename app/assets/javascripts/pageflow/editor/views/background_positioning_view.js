@@ -1,6 +1,6 @@
-pageflow.ImagePositioningView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/image_positioning',
-  className: 'image_positioning dialog',
+pageflow.BackgroundPositioningView = Backbone.Marionette.ItemView.extend({
+  template: 'templates/background_positioning',
+  className: 'background_positioning dialog',
 
   mixins: [pageflow.dialogView],
 
@@ -34,14 +34,15 @@ pageflow.ImagePositioningView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    var image = $('<img />').attr('src', this.model.getImageFileUrl(this.options.propertyName));
+    var file = this.model.getReference(this.options.propertyName, this.options.filesCollection),
+        image = $('<img />').attr('src', file.getBackgroundPositioningImageUrl());
     this.ui.container.append(image);
 
     var view = this;
 
     this.ui.sliderVertical.slider({
       orientation: 'vertical',
-      value: 100 - this.model.getImageFilePosition(this.options.propertyName, 'y'),
+      value: 100 - this.model.getFilePosition(this.options.propertyName, 'y'),
 
       slide: function(event, ui) {
         view.updateMaskPosition({y: 100 - ui.value});
@@ -55,12 +56,12 @@ pageflow.ImagePositioningView = Backbone.Marionette.ItemView.extend({
       stop: function() {
         view.ui.maskLeft.show();
         view.ui.maskRight.show();
-      },
+      }
     });
 
     this.ui.sliderHorizontal.slider({
       orientation: 'horizontal',
-      value: this.model.getImageFilePosition(this.options.propertyName, 'x'),
+      value: this.model.getFilePosition(this.options.propertyName, 'x'),
 
       slide: function(event, ui) {
         view.updateMaskPosition({x: ui.value});
@@ -74,7 +75,7 @@ pageflow.ImagePositioningView = Backbone.Marionette.ItemView.extend({
       stop: function() {
         view.ui.maskTop.show();
         view.ui.maskBottom.show();
-      },
+      }
     });
 
     this.updateScreens();
@@ -85,8 +86,8 @@ pageflow.ImagePositioningView = Backbone.Marionette.ItemView.extend({
   },
 
   save: function() {
-    this.model.setImageFilePosition(this.options.propertyName, 'x', this.ui.sliderHorizontal.slider('value'));
-    this.model.setImageFilePosition(this.options.propertyName, 'y', 100 - this.ui.sliderVertical.slider('value'));
+    this.model.setFilePosition(this.options.propertyName, 'x', this.ui.sliderHorizontal.slider('value'));
+    this.model.setFilePosition(this.options.propertyName, 'y', 100 - this.ui.sliderVertical.slider('value'));
   },
 
   updateScreens: function() {
@@ -148,6 +149,6 @@ pageflow.ImagePositioningView = Backbone.Marionette.ItemView.extend({
   }
 });
 
-pageflow.ImagePositioningView.open = function(options) {
-  pageflow.app.dialogRegion.show(new pageflow.ImagePositioningView(options).render());
+pageflow.BackgroundPositioningView.open = function(options) {
+  pageflow.app.dialogRegion.show(new pageflow.BackgroundPositioningView(options).render());
 };

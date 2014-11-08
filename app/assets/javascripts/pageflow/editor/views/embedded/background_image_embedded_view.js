@@ -11,8 +11,8 @@ pageflow.BackgroundImageEmbeddedView = Backbone.Marionette.View.extend({
   update: function() {
     this.$el.css({
       backgroundImage: 'url("' + this.model.getImageFileUrl(this.options.propertyName) + '")',
-      backgroundPosition: this.model.getImageFilePosition(this.options.propertyName, 'x') + '% ' +
-        this.model.getImageFilePosition(this.options.propertyName, 'y') + '%',
+      backgroundPosition: this.model.getFilePosition(this.options.propertyName, 'x') + '% ' +
+        this.model.getFilePosition(this.options.propertyName, 'y') + '%'
     });
 
     if (this.options.dataSizeAttributes) {

@@ -33,9 +33,10 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
     },
 
     'click. .edit_positioning': function() {
-      pageflow.ImagePositioningView.open({
+      pageflow.BackgroundPositioningView.open({
         model: this.model,
-        propertyName: this.options.propertyName
+        propertyName: this.options.propertyName,
+        filesCollection: this.options.collection
       });
       return false;
     }
@@ -43,7 +44,7 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
 
   initialize: function() {
     this.options = _.extend({
-      imagePositioning: true
+      positioning: true
     }, this.options);
 
     if (typeof this.options.collection === 'string') {
@@ -63,7 +64,7 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
 
     this.ui.fileName.text(file ? file.get('file_name') : '(Kein)');
     this.ui.unsetButton.toggle(!!file);
-    this.ui.editPositioningButton.toggle(this.options.imagePositioning && !!file && file.isPositionable());
+    this.ui.editPositioningButton.toggle(this.options.positioning && !!file && file.isPositionable());
 
     this.subview(new pageflow.FileThumbnailView({
       el: this.ui.thumbnail,
