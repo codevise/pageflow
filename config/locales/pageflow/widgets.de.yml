@@ -1,6 +1,7 @@
 de:
   pageflow:
     widgets:
+      none: '(Kein)'
       roles:
         navigation: "Navigationsleiste"
         mobile_navigation: "Mobile Navigation"

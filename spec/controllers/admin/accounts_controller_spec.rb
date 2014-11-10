@@ -16,6 +16,37 @@ module Admin
 
         expect(Pageflow::Account.last.default_theming.theme_name).to eq('custom')
       end
+
+      it 'batch updates widgets of default theming' do
+        Pageflow.config.themes.register(:custom)
+
+        sign_in(create(:user, :admin))
+        post(:create,
+             account: {
+               default_theming_attributes: {
+                 theme_name: 'custom'
+               }
+             },
+             widgets: {
+               navigation: 'some_widget'
+             })
+
+        expect(Pageflow::Account.last.default_theming.widgets).to include_record_with(role: 'navigation', type_name: 'some_widget')
+      end
+
+      it 'does not create widgets if account cannot be saved' do
+        Pageflow.config.themes.register(:custom)
+
+        sign_in(create(:user, :admin))
+
+        expect {
+          post(:create,
+               account: {},
+               widgets: {
+                 navigation: 'some_widget'
+               })
+        }.not_to change { Pageflow::Widget.count }
+      end
     end
 
     describe '#update' do
@@ -34,6 +65,39 @@ module Admin
 
         expect(theming.reload.theme_name).to eq('custom')
         expect(theming.imprint_link_url).to eq('http://example.com/new')
+      end
+
+      it 'batch updates widgets of default theming' do
+        theming = create(:theming)
+        account = create(:account, default_theming: theming)
+
+        sign_in(create(:user, :admin))
+        patch(:update,
+              id: account.id,
+              widgets: {
+                navigation: 'some_widget'
+              })
+
+        expect(theming.widgets).to include_record_with(role: 'navigation', type_name: 'some_widget')
+      end
+
+      it 'does not update widgets if theming validation fails' do
+        theming = create(:theming)
+        account = create(:account, default_theming: theming)
+
+        sign_in(create(:user, :admin))
+        expect {
+          patch(:update,
+                id: account.id,
+                account: {
+                  default_theming_attributes: {
+                    theme_name: 'invalid'
+                  }
+                },
+                widgets: {
+                  navigation: 'some_widget'
+                })
+        }.not_to change { Pageflow::Widget.count }
       end
     end
 

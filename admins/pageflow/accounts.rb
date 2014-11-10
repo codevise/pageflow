@@ -24,6 +24,7 @@ module Pageflow
 
     controller do
       helper ThemesHelper
+      helper WidgetsHelper
 
       def new
         @account = Account.new
@@ -34,6 +35,22 @@ module Pageflow
         @account = Account.new(permitted_params[:account])
         @account.build_default_theming(permitted_params[:account][:default_theming_attributes])
         super
+        update_widgets
+      end
+
+      def update
+        super
+        update_widgets
+      end
+
+      def update_widgets
+        @account.default_theming.widgets.batch_update!(widgets_params) if @account.valid?
+      end
+
+      def widgets_params
+        params.fetch(:widgets, {}).map do |role, type_name|
+          {role: role, type_name: type_name}
+        end
       end
 
       def permitted_params
