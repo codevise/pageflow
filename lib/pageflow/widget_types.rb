@@ -37,6 +37,12 @@ module Pageflow
       @widget_types.fetch(name, &block)
     end
 
+    def find_all_by_role(role)
+      select do |widget_type|
+        widget_type.roles.include?(role)
+      end
+    end
+
     def roles
       @widget_types.values.flat_map(&:roles).uniq
     end
