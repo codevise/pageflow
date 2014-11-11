@@ -39,6 +39,7 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    this.appendBlank();
     this.appendPlaceholder();
 
     _.each(this.options.values, function(value, index) {
@@ -56,6 +57,23 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
       this.ui.select.val(this.options.values[0]);
       this.save();
     }
+  },
+
+  appendBlank: function() {
+    if (!this.options.includeBlank) {
+      return;
+    }
+
+    if (this.options.blankTranslationKey) {
+      this.options.blankText = I18n.t(this.options.blankTranslationKey);
+    }
+
+    var option = document.createElement('option');
+
+    option.value = '';
+    option.text = this.options.blankText || I18n.t('pageflow.ui.select_input_view.blank');
+
+    this.ui.select.append(option);
   },
 
   appendPlaceholder: function() {
