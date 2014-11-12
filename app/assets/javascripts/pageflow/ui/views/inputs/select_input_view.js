@@ -34,6 +34,8 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
         return I18n.t(key);
       });
     }
+
+    this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
   },
 
   onRender: function() {
