@@ -12,15 +12,18 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
         }, {});
 
         pageflow.slides = new pageflow.Slideshow($(this), configurationsById);
+
+        $('.header').header({
+          slideshow: pageflow.slides
+        });
+        $('.overview').overview();
+        $('.multimedia_alert').multimediaAlert();
+
+        pageflow.widgetTypes.enhance($('body'));
+
+        pageflow.slides.update();
         pageflow.history = new pageflow.History(pageflow.slides);
       });
-
-      $('.header').header({
-        slideshow: pageflow.slides
-      });
-      $('.overview').overview();
-      $('.multimedia_alert').multimediaAlert();
-      pageflow.widgetTypes.enhance($('body'));
 
       $("body").on('click mousedown', 'a, [tabindex]', function() {
         $(this).blur();
