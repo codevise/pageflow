@@ -1,4 +1,5 @@
 <% content_for(:head) do %>
+    <%= stylesheet_link_tag('pageflow/application_with_simulated_media_queries', media: 'all', 'data-turbolinks-track' => true) %>
     <%= entry_theme_stylesheet_link_tag(@entry) %>
     <%= entry_stylesheet_link_tag(@entry) %>
     <%= stylesheet_link_tag 'pageflow/editor', media: "all" %>

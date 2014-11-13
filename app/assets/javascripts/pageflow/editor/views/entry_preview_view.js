@@ -52,7 +52,24 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
 
     this.listenTo(pageflow.app, 'resize', function() {
       slideshow.triggerResizeHooks();
+      this.updateSimulatedMediaQueryClasses();
     });
+
+    this.updateSimulatedMediaQueryClasses();
+  },
+
+  updateSimulatedMediaQueryClasses: function() {
+    var width = this.$el.width();
+    var portrait = this.$el.width() < this.$el.height();
+
+    $('html')
+      .toggleClass('simulate_mobile', width <= 900)
+      .toggleClass('simulate_phone', width <= 700)
+      .toggleClass('simulate_desktop', width > 700)
+      .toggleClass('simulate_narrow_desktop', width <= 1100)
+      .toggleClass('simulate_wide_desktop', width > 1400)
+      .toggleClass('simulate_pad_portrait', width <= 768 && portrait)
+      .toggleClass('simulate_phone_portrait', width <= 500 && portrait);
   },
 
   update: function() {
