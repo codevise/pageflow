@@ -6,7 +6,7 @@ pageflow.PageConfigurationFileSelectionHandler = function(options) {
   };
 
   this.getReferer = function() {
-    return '/pages/' + page.id + '/files';
+    return '/pages/' + page.id + '/' + (options.returnToTab || 'files');
   };
 };
 
