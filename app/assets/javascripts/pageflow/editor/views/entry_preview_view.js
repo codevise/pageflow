@@ -24,7 +24,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
 
     this.update();
 
-    this.listenTo(pageflow.entry, 'sync:order', this.update);
+    this.listenTo(pageflow.entry, 'sync:order sync:widgets', this.update);
     this.listenTo(pageflow.entry, 'change:credits change:home_url change:home_button_enabled', function() {
       pageflow.entry.once('sync', this.update, this);
     });
