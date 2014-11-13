@@ -11,6 +11,7 @@ module Pageflow
              :files,
              :image_files, :video_files, :audio_files,
              :title, :summary, :credits, :manual_start,
+             :emphasize_chapter_beginning,
              :to => :revision)
 
     def initialize(entry, revision = nil)

@@ -23,7 +23,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
     this.update();
 
     this.listenTo(pageflow.entry, 'sync:order', this.update);
-    this.listenTo(pageflow.entry, 'change:credits change:home_url change:home_button_enabled', function() {
+    this.listenTo(pageflow.entry, 'change:credits change:home_url change:home_button_enabled change:emphasize_chapter_beginning', function() {
       pageflow.entry.once('sync', this.update, this);
     });
 
@@ -41,7 +41,6 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
     this.listenTo(this.model.pages, 'add', function() {
       slideshow.update();
     });
-
     this.listenTo(this.model.pages, 'remove', function() {
       slideshow.update();
     });
@@ -75,5 +74,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
       view.ui.navigationMobile.navigationMobile();
       view.ui.overview.overview();
     });
+
+    this.$el.toggleClass('emphasize_chapter_beginning', this.model.get('emphasize_chapter_beginning'));
   }
 });

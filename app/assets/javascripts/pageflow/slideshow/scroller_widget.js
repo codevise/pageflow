@@ -34,7 +34,17 @@
     enable: function() {
       this.iscroll.enable();
       this.iscroll.refresh();
-      this.iscroll.scrollTo(0, 0, 0);
+    },
+
+    resetPosition: function(options) {
+      options = options || {};
+
+      if (options.position === 'bottom') {
+        this.iscroll.scrollTo(0, this.iscroll.maxScrollY, 0);
+      }
+      else {
+        this.iscroll.scrollTo(0, 0, 0);
+      }
     },
 
     refresh: function() {
@@ -47,6 +57,10 @@
 
     disable: function() {
       this.iscroll.disable();
+    },
+
+    positionY: function() {
+      return this.iscroll.y;
     },
 
     _initMoveEvents: function() {

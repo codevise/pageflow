@@ -26,7 +26,7 @@ pageflow.Entry = Backbone.Model.extend({
       this.pages.sort();
     });
 
-    this.listenTo(this, 'change:title change:summary change:credits change:manual_start change:home_url change:home_button_enabled', function() {
+    this.listenTo(this, 'change:title change:summary change:credits change:manual_start change:home_url change:home_button_enabled change:emphasize_chapter_beginning', function() {
       this.save();
     });
   },
@@ -87,6 +87,6 @@ pageflow.Entry = Backbone.Model.extend({
   },
 
   toJSON: function() {
-    return _.pick(this.attributes, 'title', 'summary', 'credits', 'manual_start', 'home_url', 'home_button_enabled');
+    return _.pick(this.attributes, 'title', 'summary', 'credits', 'manual_start', 'home_url', 'home_button_enabled', 'emphasize_chapter_beginning');
   }
 });

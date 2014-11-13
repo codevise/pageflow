@@ -97,6 +97,7 @@ de:
         manual_start: "Multimedia Hinweis vor dem Start anzeigen"
         home_url: "Home-Button URL"
         home_button_enabled: "Home-Button anzeigen"
+        emphasize_chapter_beginning: "Kapitelanfang hervorheben"
       "pageflow/folder":
         account: "Konto"
         name: "Name"
@@ -134,6 +135,7 @@ de:
         video_file_id: "Video"
         audio_file_id: "Audio"
         poster_image_id: "Posterbild"
+        mobile_poster_image_id: "Posterbild (mobil)"
         linked_page_ids: "Seiten verknüpfen"
         linked_pages_layout: "Hervorgehobenes Element"
         hide_title: "Titel ausblenden"

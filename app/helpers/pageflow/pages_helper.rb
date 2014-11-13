@@ -5,6 +5,15 @@ module Pageflow
       classes << 'invert' if page.configuration['invert']
       classes << 'hide_title' if page.configuration['hide_title']
       classes << "text_position_#{page.configuration['text_position']}" if page.configuration['text_position'].present?
+      classes << 'chapter_beginning' if page.position == 0
+      classes.join(' ')
+    end
+
+    def page_navigation_css_class(page)
+      classes = [page.template]
+      classes << 'chapter_beginning' if page.position == 0
+      classes << "chapter_#{page.chapter.position}"
+      page.chapter.position % 2 == 0 ? classes << 'chapter_even' : classes << 'chapter_odd'
       classes.join(' ')
     end
 
@@ -13,12 +22,20 @@ module Pageflow
       content_tag(:div, '', :class => 'shadow', :style => style)
     end
 
-    def poster_image_div(video_id, poster_image_id)
-      if poster_image_id.present?
-        content_tag(:div, '', :class => "background background_image image_#{poster_image_id}")
+    def mobile_poster_image_div(options = {})
+      classes = ['background', 'background_image']
+
+      if options[:mobile_poster_image_id]
+        classes << "image_#{options[:mobile_poster_image_id]}"
+      elsif options[:poster_image_id]
+        classes << "image_#{options[:poster_image_id]}"
+      elsif options[:video_file_id]
+        classes << "video_poster_#{options[:video_file_id]}"
       else
-        content_tag(:div, '', :class => "background background_image video_poster_#{video_id || 'none'}")
+        classes << 'video_poster_none'
       end
+
+      content_tag(:div, '', :class => classes.join(' '))
     end
 
     def poster_image_tag(video_id, poster_image_id, options = {})
@@ -46,9 +63,15 @@ module Pageflow
 
       video_file = VideoFile.find_by_id(video_id)
       poster = ImageFile.find_by_id(poster_image_id)
+      mobile_poster = ImageFile.find_by_id(options.delete(:mobile_poster_image_id))
 
       options[:data] = {}
       script_tag_data = {:template => 'video'}
+
+      if mobile_poster
+        options[:data][:mobile_poster] = mobile_poster.attachment.url(:medium)
+        options[:data][:mobile_large_poster] = mobile_poster.attachment.url(:large)
+      end
 
       if poster
         options[:data][:poster] = poster.attachment.url(:medium)
@@ -58,7 +81,7 @@ module Pageflow
         options[:data][:large_poster] = video_file.poster.url(:large)
       end
 
-      if (video_file && video_file.width.present? && video_file.height.present?)
+      if video_file && video_file.width.present? && video_file.height.present?
         script_tag_data[:video_width] = options[:data][:width] = video_file.width
         script_tag_data[:video_height] = options[:data][:height] = video_file.height
       end

@@ -42,7 +42,7 @@ pageflow.Slideshow = function($el, configurations) {
   };
 
   this.back = function() {
-    this.goTo(currentPage.prev('.page'));
+    this.goTo(currentPage.prev('.page'), {position: 'bottom'});
   };
 
   this.next = function() {
@@ -59,7 +59,9 @@ pageflow.Slideshow = function($el, configurations) {
     }
   };
 
-  this.goTo = function(page) {
+  this.goTo = function(page, options) {
+    options = options || {};
+
     if (page.length && !page.is(currentPage)) {
       transitionMutex(function() {
         var previousPage = currentPage;
@@ -69,7 +71,7 @@ pageflow.Slideshow = function($el, configurations) {
         var direction = currentPageIndex > previousPage.index() ? 'forwards' : 'backwards';
 
         previousPage.page('deactivate', {direction: direction});
-        currentPage.page('activate', {direction: direction});
+        currentPage.page('activate', {direction: direction, position: options.position});
 
         preload.start(currentPage);
         $el.trigger('slideshowchangepage');

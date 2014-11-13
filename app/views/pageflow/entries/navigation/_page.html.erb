@@ -1,4 +1,4 @@
-<li class="<%= page.template %>">
+<li class="<%= page_navigation_css_class(page) %>">
   <%= link_to "##{page.perma_id}", :data => {:link => page.id} do %>
       <%= image_tag(page.thumbnail_url(image_style), :width => image_width) %>
   <% end %>

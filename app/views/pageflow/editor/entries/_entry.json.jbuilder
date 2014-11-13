@@ -1,4 +1,4 @@
-json.(entry, :id, :title, :summary, :credits, :published_until, :manual_start, :slug)
+json.(entry, :id, :title, :summary, :credits, :published_until, :manual_start, :slug, :emphasize_chapter_beginning)
 
 json.pretty_url pretty_entry_url(entry)
 
