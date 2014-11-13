@@ -36,13 +36,22 @@ pageflow.TabsView = Backbone.Marionette.Layout.extend({
       );
     }, this);
 
-    this.changeTab(this.options.defaultTab || _.first(this.tabNames));
+    this.changeTab(this.defaultTab());
   },
 
   changeTab: function(name) {
     this.container.show(this.tabFactoryFns[name]());
     this._updateActiveHeader(name);
     this.currentTabName = name;
+  },
+
+  defaultTab: function() {
+    if (_.include(this.tabNames, this.options.defaultTab)) {
+      return this.options.defaultTab;
+    }
+    else {
+      return _.first(this.tabNames);
+    }
   },
 
   refresh: function() {
