@@ -1,34 +1,36 @@
-@include phone {
-  .navigation {
-    &, & > * {
-      display: none;
+body {
+  @include phone {
+    .navigation {
+      &, & > * {
+        display: none;
+      }
     }
-  }
-  .navigation_mobile {
-    display: block;
-  }
-}
-
-@include desktop {
-  .navigation, .header {
-    display: block;
-  }
-  .navigation_mobile {
-    &, & > * {
-      display: none;
-    }
-  }
-}
-
-@include pad_portrait {
-  .navigation {
-    &, & > * {
-      display: none;
-    }
-  }
-  .navigation_mobile {
-    &, & > * {
+    .navigation_mobile {
       display: block;
+    }
+  }
+
+  @include desktop {
+    .navigation, .header {
+      display: block;
+    }
+    .navigation_mobile {
+      &, & > * {
+        display: none;
+      }
+    }
+  }
+
+  @include pad_portrait {
+    .navigation {
+      &, & > * {
+        display: none;
+      }
+    }
+    .navigation_mobile {
+      &, & > * {
+        display: block;
+      }
     }
   }
 }
