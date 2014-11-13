@@ -1,6 +1,7 @@
 <% @page_title = @entry.title %>
 
 <% content_for(:head) do %>
+  <%= stylesheet_link_tag('pageflow/application', media: 'all', 'data-turbolinks-track' => true) %>
   <%= entry_theme_stylesheet_link_tag(@entry) %>
   <%= entry_stylesheet_link_tag(@entry) %>
   <%= render 'pageflow/entries/social_meta_tags', :entry => @entry %>
