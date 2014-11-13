@@ -64,6 +64,10 @@ module Pageflow
     # @return [FileTypes]
     attr_reader :file_types
 
+    # Used to register new types of widgets to be displayed in entries.
+    # @return [WidgetTypes]
+    attr_reader :widget_types
+
     # Paperclip style definitions of thumbnails used by Pageflow.
     # @return Hash
     attr_accessor :thumbnail_styles
@@ -135,6 +139,16 @@ module Pageflow
     # explicitly confirmed in the editor. Defaults to false.
     attr_accessor :confirm_encoding_jobs
 
+    # Used by Pageflow extensions to provide new tabs to be displayed
+    # in the admin.
+    #
+    # @example
+    #
+    #     config.admin_resource_tabs.register(:entry, Admin::CustomTab)
+    #
+    # @return [Admin::TabsRegistry]
+    attr_reader :admin_resource_tabs
+
     def initialize
       @paperclip_filesystem_default_options = {}
       @paperclip_s3_default_options = {}
@@ -147,6 +161,7 @@ module Pageflow
       @quotas = Quotas.new
       @themes = Themes.new
       @file_types = FileTypes.new(page_types)
+      @widget_types = WidgetTypes.new
 
       @thumbnail_styles = {}
       @css_rendered_thumbnail_styles = Pageflow::PagesHelper::CSS_RENDERED_THUMBNAIL_STYLES
@@ -156,6 +171,8 @@ module Pageflow
       @public_entry_url_options = Pageflow::ThemingsHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
 
       @confirm_encoding_jobs = false
+
+      @admin_resource_tabs = Pageflow::Admin::Tabs.new
     end
 
     # Make a page type available for use in the system.

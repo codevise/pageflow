@@ -1,0 +1,146 @@
+pageflow.UrlInputView = Backbone.Marionette.Layout.extend({
+  mixins: [pageflow.inputView],
+
+  template: 'pageflow/ui/templates/inputs/url_input',
+
+  ui: {
+    input: 'input',
+    validation: '.validation'
+  },
+
+  events: {
+    'change': 'onChange'
+  },
+
+  onRender: function() {
+    this.ui.validation.hide();
+    this.load();
+    this.validate();
+  },
+
+  onChange: function() {
+    var view = this;
+
+    this.saveDisplayProperty();
+
+    this.validate().done(function() {
+      view.save();
+    });
+  },
+
+  saveDisplayProperty: function() {
+    this.model.set(this.options.displayPropertyName, this.ui.input.val());
+    this.model.unset(this.options.propertyName);
+  },
+
+  save: function() {
+    var view = this;
+
+    $.when(this.transformPropertyValue(this.ui.input.val())).then(function(value) {
+      view.model.set(view.options.propertyName, value);
+    });
+  },
+
+  load: function() {
+    this.ui.input.val(this.model.get(this.options.displayPropertyName));
+    this.onLoad();
+  },
+
+  /**
+   * Override to be notified when the input has been loaded.
+   */
+  onLoad: function() {},
+
+  /**
+   * Override to validate the untransformed url. Validation error
+   * message can be passed as rejected promise. Progress notifications
+   * are displayed. Only valid urls are stored in the configuration.
+   *
+   * @return Promise
+   */
+  validateUrl: function(url) {
+    return $.Deferred().resolve().promise();
+  },
+
+  /**
+   * Override to transform the property value before it is stored.
+   *
+   * @return Promise | String
+   */
+  transformPropertyValue: function(value) {
+    return value;
+  },
+
+  /**
+   * Override to change the list of supported host names.
+   */
+  supportedHosts: function() {
+    return this.options.supportedHosts;
+  },
+
+  validate: function(success) {
+    var view = this;
+    var options = this.options;
+    var value = this.ui.input.val();
+
+    if (options.required && !value) {
+      displayValidationError('Muss ausgefüllt werden.');
+    }
+    else if (value && !isValidUrl(value)) {
+      displayValidationError('URL muss mit http:// beginnen.');
+    }
+    else if (value && !hasSupportedHost(value)) {
+      displayValidationError('Es werden nur die folgenden Anbieter unterstützt:' +
+                             _.map(view.supportedHosts(), function(url) {
+                               return '<li>' + url +'</li>';
+                             }).join(''));
+    }
+    else {
+      return view.validateUrl(value)
+        .progress(function(message) {
+          displayValidationPending(message);
+        })
+        .done(function() {
+          resetValidationError();
+        })
+        .fail(function(error) {
+          displayValidationError(error);
+        });
+    }
+
+    return $.Deferred().reject().promise();
+
+    function isValidUrl(url) {
+      return url.match(/^http:\/\//i);
+    }
+
+    function hasSupportedHost(url) {
+      return _.any(view.supportedHosts(), function(host) {
+        return url.match(new RegExp('^' + host));
+      });
+    }
+
+    function displayValidationError(message) {
+      view.$el.addClass('invalid');
+      view.ui.validation
+        .removeClass('pending')
+        .addClass('failed')
+        .html(message)
+        .show();
+    }
+
+    function displayValidationPending(message) {
+      view.$el.removeClass('invalid');
+      view.ui.validation
+        .removeClass('failed')
+        .addClass('pending')
+        .html(message)
+        .show();
+    }
+
+    function resetValidationError(message) {
+      view.$el.removeClass('invalid');
+      view.ui.validation.hide();
+    }
+  }
+});

@@ -15,7 +15,7 @@ module Pageflow
 
       # inline membership creation
 
-      ignore do
+      transient do
         with_member nil
       end
 
@@ -24,7 +24,7 @@ module Pageflow
       end
 
       trait :published do
-        ignore do
+        transient do
           published_revision_attributes({})
         end
 

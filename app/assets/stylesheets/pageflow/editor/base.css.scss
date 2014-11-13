@@ -1,5 +1,5 @@
 @import "bourbon";
-@import "pageflow/mixins";
+@import "pageflow/ui";
 @import "pageflow/animations";
 
 @import 'pageflow/jquery_ui';
@@ -13,6 +13,8 @@
 @import "./help";
 
 .editor {
+  @extend %pageflow-ui;
+
   font-family: Helvetica, "Sans-Serif";
   font-size: 13px;
 
@@ -44,7 +46,6 @@
     text-decoration: none;
   }
 
-  @import "./forms";
   @import "./outline";
   @import "./failures";
   @import "./menu";
@@ -56,13 +57,13 @@
   @import "./file_stages";
   @import "./file_thumbnails";
   @import "./wysihtml5";
-  @import "./tabs_view";
   @import "./notifications";
   @import "./publish_entry";
   @import "./other_entry_item";
   @import "./select_button";
   @import "./quotas";
   @import "./back_button_decorator";
+  @import "./widgets";
 
   a.publish {
     @include eye-icon;

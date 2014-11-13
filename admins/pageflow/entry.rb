@@ -81,16 +81,15 @@ module Pageflow
       render 'attributes_table', :entry => entry
       render 'links', :entry => entry
 
-      div :class => 'columns' do
-        render 'members', :entry => entry
-        render 'revisions', :entry => entry
-      end
+      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(:entry),
+                :i18n => 'pageflow.admin.resource_tabs',
+                :build_args => [entry])
     end
 
     controller do
       helper FoldersHelper
       helper EntriesHelper
-      helper Admin::RevisionsHelper
+      helper Pageflow::Admin::RevisionsHelper
 
       def scoped_collection
         params.key?(:folder_id) ? super.where(:folder_id => params[:folder_id]) : super

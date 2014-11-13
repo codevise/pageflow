@@ -1,6 +1,31 @@
 require 'spec_helper'
 
 describe Admin::EntriesController do
+  render_views
+
+  describe '#show' do
+    it 'account manager sees registered admin resource tabs' do
+      account = create(:account)
+      entry = create(:entry, :account => account, :title => 'example')
+      tab_view_component = Class.new(Pageflow::ViewComponent) do
+        def build(entry)
+          super('data-entry-title' => entry.title)
+        end
+
+        def self.name
+          'TabViewComponet'
+        end
+      end
+
+      Pageflow.config.admin_resource_tabs.register(:entry, name: :some_tab, component: tab_view_component)
+
+      sign_in(create(:user, :account_manager, :account => account))
+      get(:show, :id => entry.id)
+
+      expect(response.body).to have_selector('.admin_tabs_view div[data-entry-title="example"]')
+    end
+  end
+
   describe '#create' do
     it 'does not allow account manager to create entries for other account' do
       account = create(:account)

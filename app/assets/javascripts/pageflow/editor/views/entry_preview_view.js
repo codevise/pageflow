@@ -5,9 +5,11 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   ui: {
     header: '.header',
     entry: '.entry',
-    navigation: '.navigation',
-    navigationMobile: '.navigation_mobile',
     overview: '.overview'
+  },
+
+  initialize: function() {
+    this.widgets = $();
   },
 
   onRender: function() {
@@ -37,6 +39,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
 
   onShow: function() {
     var slideshow = pageflow.slides =  new pageflow.Slideshow(this.ui.entry);
+    slideshow.update();
 
     this.listenTo(this.model.pages, 'add', function() {
       slideshow.update();
@@ -61,20 +64,25 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
       var partials = $('<div />').html(response);
 
       view.ui.header.replaceWith(partials.find('.header'));
-      view.ui.navigation.replaceWith(partials.find('.navigation'));
-      view.ui.navigationMobile.replaceWith(partials.find('.navigation_mobile'));
       view.ui.overview.replaceWith(partials.find('.overview'));
-
       view.bindUIElements();
+
+      view.updateWidgets(partials);
 
       view.ui.header.header({
         slideshow: pageflow.slides
       });
-      view.ui.navigation.navigation();
-      view.ui.navigationMobile.navigationMobile();
       view.ui.overview.overview();
     });
 
     this.$el.toggleClass('emphasize_chapter_beginning', this.model.get('emphasize_chapter_beginning'));
+  },
+
+  updateWidgets: function(partials) {
+    this.widgets.remove();
+    this.widgets = partials.find('[data-widget]');
+    this.ui.entry.before(this.widgets);
+
+    pageflow.widgetTypes.enhance(this.$el);
   }
 });

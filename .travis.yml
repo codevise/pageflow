@@ -1,9 +1,13 @@
 language: ruby
+
 rvm:
   - 1.9.3
 
+env:
+  - PAGEFLOW_RAILS_VERSION=4.0.4
+  - PAGEFLOW_RAILS_VERSION=4.1.6
+
 script:
-  - "RAILS_ENV=test bundle exec rake db:schema:load"
   - "bundle exec rspec --tag ~js"
 
 before_script:

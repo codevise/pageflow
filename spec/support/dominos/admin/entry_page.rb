@@ -46,6 +46,11 @@ module Dom
           find('[data-rel=depublish]')
         end
       end
+
+      def self.visit_revisions(entry)
+        url_helpers = Rails.application.routes.url_helpers
+        visit(url_helpers.admin_entry_path(entry, tab: 'revisions'))
+      end
     end
   end
 end

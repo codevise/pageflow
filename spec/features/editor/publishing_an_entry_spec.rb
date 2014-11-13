@@ -9,7 +9,7 @@ feature 'publishing an entry', :js => true do
     editor_sidebar = Dom::Editor::Sidebar.first
     editor_sidebar.publish_button.click
     Dom::Editor::PublishEntryPanel.find!.publish
-    visit(admin_entry_path(entry))
+    Dom::Admin::EntryPage.visit_revisions(entry)
 
     expect(Dom::Admin::EntryRevision.published).to be_present
   end
@@ -22,8 +22,7 @@ feature 'publishing an entry', :js => true do
     editor_sidebar = Dom::Editor::Sidebar.first
     editor_sidebar.publish_button.click
     Dom::Editor::PublishEntryPanel.find!.publish_until(1.month.from_now)
-
-    visit(admin_entry_path(entry))
+    Dom::Admin::EntryPage.visit_revisions(entry)
 
     expect(Dom::Admin::EntryRevision.published_until_date).to be_present
   end

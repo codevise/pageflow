@@ -26,6 +26,7 @@
 //= require backbone-rails
 //= require_self
 
+//= require ./events
 //= require ./page_type
 //= require ./asset_urls
 //= require ./preload
@@ -36,6 +37,8 @@
 //= require ./print_layout
 //= require ./history
 //= require ./manual_start
+//= require ./widget_types
+//= require ./built_in_widget_types
 
 //= require ./settings
 

@@ -12,16 +12,18 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
         }, {});
 
         pageflow.slides = new pageflow.Slideshow($(this), configurationsById);
+
+        $('.header').header({
+          slideshow: pageflow.slides
+        });
+        $('.overview').overview();
+        $('.multimedia_alert').multimediaAlert();
+
+        pageflow.widgetTypes.enhance($('body'));
+
+        pageflow.slides.update();
         pageflow.history = new pageflow.History(pageflow.slides);
       });
-
-      $('.header').header({
-        slideshow: pageflow.slides
-      });
-      $('.navigation').navigation();
-      $('.navigation_mobile').navigationMobile();
-      $('.overview').overview();
-      $('.multimedia_alert').multimediaAlert();
 
       $("body").on('click mousedown', 'a, [tabindex]', function() {
         $(this).blur();

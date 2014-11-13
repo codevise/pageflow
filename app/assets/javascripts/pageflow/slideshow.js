@@ -160,6 +160,4 @@ pageflow.Slideshow = function($el, configurations) {
   scrollIndicator.on('click', _.bind(function(event) {
     this.next();
   }, this));
-
-  this.update();
 };

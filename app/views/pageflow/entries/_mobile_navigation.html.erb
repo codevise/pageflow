@@ -1,0 +1,52 @@
+<div class="navigation_mobile" data-widget="default_mobile_navigation">
+  <div class="menu index"></div>
+  <div class="menu sharing"></div>
+  <div class="menu imprint"></div>
+  <div class="overview_mobile">
+      <span class="heading-1">Übersicht</span>
+      <div class="wrapper">
+        <ul>
+          <%= render :partial => 'pageflow/entries/navigation/page',
+                     :collection => entry_mobile_navigation_pages(entry),
+                     :locals => {:image_style => :thumbnail_overview_mobile, :image_width => nil} %>
+        </ul>
+      </div>
+  </div>
+  <div class="sharing_mobile">
+      <div class="wrapper">
+        <ul>
+          <li>
+            <%= link_to "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}&p%5Btitle%5D=#{ERB::Util.url_encode(entry.title)}", :target => "_blank", :tabindex => "2", :class => "share facebook" do %>
+              <span class="hint">über facebook teilen</span>
+              <span class="share_facebook button"></span>
+              <p>facebook</p>
+            <% end %>
+          </li>
+          <li>
+            <%= link_to "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share twitter" do %>
+              <span class="hint">über twitter teilen</span>
+              <span class="share_twitter button"></span>
+              <p>Twitter</p>
+            <% end %>
+          </li>
+          <li>
+            <%= link_to "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share google" do %>
+              <span class="hint">über Google+ teilen</span>
+              <span class="share_google button"></span>
+              <p>Google+</p>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+  </div>
+  <div class="imprint_mobile">
+      <span class="heading-1">Impressum</span>
+      <div class="wrapper">
+        <ul>
+          <li class="credits">
+            <%= render 'pageflow/entries/navigation/credits_box_content', :entry =>  entry %>
+          </li>
+        </ul>
+      </div>
+  </div>
+</div>

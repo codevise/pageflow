@@ -38,6 +38,12 @@ Pageflow::Engine.routes.draw do
           post :check, :on => :collection
         end
       end
+
+      resources :subjects, path: '/subjects/:collection_name', only: [] do
+        resources :widgets, :only => [:index] do
+          patch :batch, :on => :collection
+        end
+      end
     end
 
     root :to => redirect('/admin')
