@@ -30,7 +30,7 @@ pageflow.widgetSubject = {
       },
 
       success: function(response) {
-        model.trigger('sync', model, response, {});
+        model.trigger('sync:widgets', model, response, {});
       }
     }));
   }
