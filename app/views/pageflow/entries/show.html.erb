@@ -4,7 +4,7 @@
   <%= entry_theme_stylesheet_link_tag(@entry) %>
   <%= entry_stylesheet_link_tag(@entry) %>
   <%= render 'pageflow/entries/social_meta_tags', :entry => @entry %>
-  <%= tag :link, :rel => 'icon', :href => image_path("#{@entry.theming.theme.directory_name}/favicon.ico"), :type => 'image/ico' %>
+  <%= tag :link, :rel => 'icon', :href => image_path("pageflow/themes/#{@entry.theming.theme.directory_name}/favicon.ico"), :type => 'image/ico' %>
 <% end %>
 
 <%= cache @entry do %>
