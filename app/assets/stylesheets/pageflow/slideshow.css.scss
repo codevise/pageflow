@@ -65,7 +65,7 @@
     @include transition(0.5s ease);
   }
 
-  .content.hidden {
+  .page.hidden_by_overlay .content {
     opacity: 0;
     pointer-events: 0;
   }
