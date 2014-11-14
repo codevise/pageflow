@@ -68,8 +68,8 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
       .toggleClass('simulate_mobile', width <= 900)
       .toggleClass('simulate_phone', width <= 700)
       .toggleClass('simulate_desktop', width > 700)
-      .toggleClass('simulate_narrow_desktop', width <= 1100)
-      .toggleClass('simulate_wide_desktop', width > 1400)
+      .toggleClass('simulate_narrow_desktop', width <= 1200)
+      .toggleClass('simulate_wide_desktop', width > 1600)
       .toggleClass('simulate_pad_portrait', width <= 768 && portrait)
       .toggleClass('simulate_phone_portrait', width <= 500 && portrait);
   },
