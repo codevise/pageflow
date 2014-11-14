@@ -34,9 +34,24 @@
           link.toggleClass('active', active);
           link.attr('tabindex', active ? '-1' : '3');
 
-          if (options.scrollToActive && active) {
-            scroller.scrollToElement(link[0], 800);
+          if (active) {
+            if (link.data('chapterId')) {
+              highlightChapter(link.data('chapterId'))
+            }
+
+            if (options.scrollToActive) {
+              scroller.scrollToElement(link[0], 800);
+            }
           }
+        });
+      }
+
+      function highlightChapter(activeChapterId) {
+        links.each(function() {
+          var link = $(this);
+          var active = activeChapterId === link.data('chapterId');
+
+          link.toggleClass('in_active_chapter', active);
         });
       }
 
