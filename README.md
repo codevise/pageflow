@@ -69,10 +69,12 @@ since, back when development started, no Rails 4 compatible version of
 Active Admin was available as a gem. You therefore need to bundle the
 `rails4` branch that we have forked into our github organization:
 
-    gem 'activeadmin', :git => 'https://github.com/codevise/active_admin.git', :branch => 'rails4'
+    gem 'activeadmin', git: 'https://github.com/codevise/active_admin.git', branch: 'rails4'
     gem 'ransack'
     gem 'inherited_resources', '1.4.1'
-    gem 'formtastic', '2.3.0.rc2'
+    gem 'formtastic', '2.3.0'
+    # Only required for Rails 4.1:
+    gem 'state_machine', git: 'https://github.com/codevise/state_machine.git'
 
 Run bundler to install dependencies:
 
