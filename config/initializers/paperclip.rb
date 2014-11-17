@@ -107,7 +107,7 @@ Paperclip.interpolates(:class_basename) do |attachment, style|
 end
 
 Paperclip.interpolates(:pageflow_placeholder) do |attachment, style|
-  ActionController::Base.helpers.asset_path("pageflow/placeholder_#{style}.jpg")
+  "pageflow/placeholder_#{style}.jpg"
 end
 
 Paperclip.interpolates(:pageflow_attachments_version) do |attachment, style|
