@@ -1,7 +1,7 @@
 pageflow.PageReferenceInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 
-  template: 'templates/inputs/page_reference',
+  template: 'pageflow/ui/templates/inputs/page_reference',
   className: 'page_reference_input',
 
   ui: {

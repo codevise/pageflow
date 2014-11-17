@@ -2,7 +2,7 @@ pageflow.SliderInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 
   className: 'slider_input',
-  template: 'templates/inputs/slider_input',
+  template: 'pageflow/ui/templates/inputs/slider_input',
 
   ui: {
     widget: '.slider',

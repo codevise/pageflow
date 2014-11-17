@@ -1,7 +1,7 @@
 pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 
-  template: 'templates/inputs/select_input',
+  template: 'pageflow/ui/templates/inputs/select_input',
 
   events: {
     'change': 'save'
