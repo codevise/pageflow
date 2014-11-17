@@ -47,7 +47,7 @@ Pageflow assumes the following choice of libraries:
 Pageflow runs in environments with:
 
 * Ruby 1.9.3 or higher
-* Rails 4.0
+* Rails 4.0 or 4.1
 * Redis server (for Resque)
 * A database server supported by Active Record (tested with MySQL)
 

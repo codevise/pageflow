@@ -9,6 +9,33 @@
   ([#143](https://github.com/codevise/pageflow/pull/143))
 - Improve Facebook open graph meta tags.
   ([#157](https://github.com/codevise/pageflow/pull/157))
+- Bug fix: Let Favicon path point into theme directoy.
+  ([#164](https://github.com/codevise/pageflow/pull/164))
+- Bug fix: Prevent resolving ready promise before dom ready event.
+  ([#167](https://github.com/codevise/pageflow/pull/167))
+
+##### Admin/Editor
+
+- Extensible tab concept for account and entry admin view.
+  ([#165](https://github.com/codevise/pageflow/pull/165))
+
+##### Rails Engine
+
+- Rails 4.1 compatibility.
+  ([#161](https://github.com/codevise/pageflow/pull/161),
+   [#162](https://github.com/codevise/pageflow/pull/162))
+- Introduce plugin concept for ui widgets.
+  ([#170](https://github.com/codevise/pageflow/pull/170))
+- Dispatch global events for Pageflow extensions.
+  ([#171](https://github.com/codevise/pageflow/pull/171))
+
+##### Internals
+
+- Extract reusable Backbone views from editor.
+  ([#163](https://github.com/codevise/pageflow/pull/163))
+- Improve Backbone form and tab views.
+  ([#166](https://github.com/codevise/pageflow/pull/166),
+   [#169](https://github.com/codevise/pageflow/pull/169))
 
 ### 0.5.0
 
