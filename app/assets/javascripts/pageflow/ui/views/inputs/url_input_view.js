@@ -87,7 +87,7 @@ pageflow.UrlInputView = Backbone.Marionette.Layout.extend({
       displayValidationError('Muss ausgefüllt werden.');
     }
     else if (value && !isValidUrl(value)) {
-      displayValidationError('URL muss mit http:// beginnen.');
+      displayValidationError('URL muss mit http:// oder https:// beginnen.');
     }
     else if (value && !hasSupportedHost(value)) {
       displayValidationError('Es werden nur die folgenden Anbieter unterstützt:' +
@@ -111,7 +111,7 @@ pageflow.UrlInputView = Backbone.Marionette.Layout.extend({
     return $.Deferred().reject().promise();
 
     function isValidUrl(url) {
-      return url.match(/^http:\/\//i);
+      return url.match(/^https?:\/\//i);
     }
 
     function hasSupportedHost(url) {
