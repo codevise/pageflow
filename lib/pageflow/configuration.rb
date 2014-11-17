@@ -135,6 +135,13 @@ module Pageflow
     # explicitly confirmed in the editor. Defaults to false.
     attr_accessor :confirm_encoding_jobs
 
+    # @example
+    #
+    #     config.admin_resource_tabs.register(:entry, Admin::CustomTab)
+    #
+    # @return [Admin::TabsRegistry]
+    attr_reader :admin_resource_tabs
+
     def initialize
       @paperclip_filesystem_default_options = {}
       @paperclip_s3_default_options = {}
@@ -156,6 +163,8 @@ module Pageflow
       @public_entry_url_options = Pageflow::ThemingsHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
 
       @confirm_encoding_jobs = false
+
+      @admin_resource_tabs = Pageflow::Admin::Tabs.new
     end
 
     # Make a page type available for use in the system.
