@@ -15,6 +15,8 @@ pageflow.TextInputView = Backbone.Marionette.ItemView.extend({
     this.updatePlaceholder();
     this.load();
     this.validate();
+
+    this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
   },
 
   onChange: function() {
@@ -55,7 +57,11 @@ pageflow.TextInputView = Backbone.Marionette.ItemView.extend({
 
   placeholderText: function() {
     if (!this.options.disabled || !this.options.hidePlaceholderIfDisabled) {
-      return this.options.placeholder;
+      return this.options.placeholder || this.placholderModelValue();
     }
+  },
+
+  placholderModelValue: function() {
+    return this.options.placeholderModel && this.options.placeholderModel.get(this.options.propertyName);
   }
 });

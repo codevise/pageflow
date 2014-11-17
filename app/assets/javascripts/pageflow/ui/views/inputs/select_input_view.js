@@ -34,9 +34,13 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
         return I18n.t(key);
       });
     }
+
+    this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
   },
 
   onRender: function() {
+    this.appendPlaceholder();
+
     _.each(this.options.values, function(value, index) {
       var option = document.createElement('option');
 
@@ -51,6 +55,24 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
     if (this.options.ensureValueDefined && !this.ui.select.val()) {
       this.ui.select.val(this.options.values[0]);
       this.save();
+    }
+  },
+
+  appendPlaceholder: function() {
+    if (!this.options.placeholderModel && !this.options.placeholderValue) {
+      return;
+    }
+
+    var placeholderValue = this.options.placeholderValue || this.options.placeholderModel.get(this.options.propertyName);
+    var placeholderIndex = this.options.values.indexOf(placeholderValue);
+
+    if (placeholderIndex >= 0) {
+      var option = document.createElement('option');
+
+      option.value = '';
+      option.text = I18n.t('pageflow.ui.select_input_view.placeholder', {text: this.options.texts[placeholderIndex]});
+
+      this.ui.select.append(option);
     }
   },
 
