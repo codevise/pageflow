@@ -7,7 +7,7 @@ module Pageflow
       attachment File.open(Engine.root.join('spec', 'fixtures', 'image.jpg'))
       state 'processed'
 
-      ignore do
+      transient do
         used_in nil
       end
 
