@@ -3,7 +3,11 @@
 <% content_for(:head) do %>
   <%= entry_theme_stylesheet_link_tag(@entry) %>
   <%= entry_stylesheet_link_tag(@entry) %>
-  <%= render 'pageflow/entries/social_meta_tags', :entry => @entry %>
+  <% if @entry.share_target.class.name.demodulize == 'Page' %>
+    <%= render 'pageflow/pages/social_meta_tags', :entry => @entry, :page => @entry.share_target %>
+  <% else %>
+    <%= render 'pageflow/entries/social_meta_tags', :entry => @entry %>
+  <% end %>
   <%= tag :link, :rel => 'icon', :href => image_path("pageflow/themes/#{@entry.theming.theme.directory_name}/favicon.ico"), :type => 'image/ico' %>
 <% end %>
 

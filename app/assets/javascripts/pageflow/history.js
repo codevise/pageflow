@@ -7,10 +7,20 @@ pageflow.History = function(slideshow) {
     slideshow.goToByPermaId(getHash());
   });
 
-  slideshow.goToByPermaId(getHash());
+  slideshow.goToByPermaId(getPermaId());
 
   function getHash() {
     var match = window.location.href.match(/#(.*)$/);
     return match ? match[1] : '';
+  }
+
+  function getPermaId() {
+    if (getHash().length) {
+      return getHash();
+    }
+    else {
+      var match = window.location.href.match(/page=([^&]*)/);
+      return match ? match[1] : '';
+    }
   }
 };

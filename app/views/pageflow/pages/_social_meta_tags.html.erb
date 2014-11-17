@@ -1,0 +1,9 @@
+<%= tag :link, :rel => "canonical", :href => pretty_page_url(page) %>
+
+<%= tag :meta, :property => "og:image", :content => page.thumbnail_url(:medium) %>
+
+<%= tag :meta, :property => "og:title", :content => page.configuration['title'] %>
+<%= tag :meta, :property => "og:description", :name => "description", :content => share_description(page) %>
+<%= tag :meta, :property => "og:url", :content => pretty_page_url(page) %>
+<%= tag :meta, :property => "og:site_name", :content => entry.theming.cname_domain %>
+<%= tag :meta, :property => "og:type", :content => "website" %>

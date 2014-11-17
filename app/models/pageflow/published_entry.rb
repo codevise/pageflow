@@ -5,6 +5,8 @@ module Pageflow
 
     attr_reader :entry, :revision
 
+    attr_accessor :share_target
+
     delegate(:account, :theming, :to_model, :to_key, :persisted?, :to => :entry)
 
     delegate(:widgets, :chapters, :pages,
