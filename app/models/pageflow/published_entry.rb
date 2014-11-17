@@ -4,6 +4,7 @@ module Pageflow
     extend ActiveModel::Naming
 
     attr_reader :entry, :revision
+    attr_accessor :share_target
 
     delegate(:id, :account, :theming, :to_model, :to_key, :persisted?, :to => :entry)
 
