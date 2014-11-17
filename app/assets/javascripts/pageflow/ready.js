@@ -18,10 +18,9 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
       $('.header').header({
         slideshow: pageflow.slides
       });
-      $('.navigation').navigation();
-      $('.navigation_mobile').navigationMobile();
       $('.overview').overview();
       $('.multimedia_alert').multimediaAlert();
+      pageflow.widgetTypes.enhance($('body'));
 
       $("body").on('click mousedown', 'a, [tabindex]', function() {
         $(this).blur();

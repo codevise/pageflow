@@ -34,6 +34,7 @@ module Pageflow
         can :destroy, Account do |account|
           account.users.empty? && account.entries.empty?
         end
+        can :manage, Theming
 
         can :manage, ::User
 
@@ -51,6 +52,7 @@ module Pageflow
 
         can :manage, Resque
       elsif user.account_manager?
+        can :manage, Theming, :account_id => user.account_id
         can :manage, Folder, :account_id => user.account.id
         can :manage, Entry, :account_id => user.account.id
         can :manage, ::User, :account_id => user.account.id

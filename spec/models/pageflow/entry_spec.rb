@@ -15,6 +15,14 @@ module Pageflow
 
         expect(entry.draft.home_button_enabled).to eq(theming.home_button_enabled_by_default)
       end
+
+      it 'copies widgets from theming to draft' do
+        theming = create(:theming)
+        create(:widget, subject: theming, role: 'header', type_name: 'theming_header')
+        entry = create(:entry, theming: theming)
+
+        expect(entry.draft.widgets).to include_record_with(role: 'header', type_name: 'theming_header')
+      end
     end
 
     context 'validation' do

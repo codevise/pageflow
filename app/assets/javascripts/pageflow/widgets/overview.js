@@ -10,8 +10,8 @@ jQuery(function($) {
         noOfChapterParts = chapterParts.size(),
         scrollerWidth = noOfChapterParts * chapterParts.outerWidth(true),
         closeButton = $('.close', this.element),
-        indexButton = $('.navigation .navigation_index'),
-        homeButton = $('.navigation .navigation_home'),
+        indexButton = $('.navigation_index'),
+        homeButton = $('.navigation_home'),
         overview = $('.overview'),
         wrapper = $('.wrapper', this.element);
 

@@ -1,0 +1,11 @@
+de:
+  pageflow:
+    widgets:
+      none: '(Kein)'
+      roles:
+        navigation: "Navigationsleiste"
+        mobile_navigation: "Mobile Navigation"
+        analytics: "Zählpixel"
+      type_names:
+        default_navigation: "Navigationsleiste mit Thumbnails"
+        default_mobile_navigation: "Navigationsmenü mit Thumbnails"

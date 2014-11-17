@@ -3,8 +3,14 @@ pageflow.Entry = Backbone.Model.extend({
   urlRoot: '/entries',
   modelName: 'entry',
   i18nKey: 'pageflow/entry',
+  collectionName: 'entries',
 
-  mixins: [pageflow.filesCountWatcher, pageflow.polling, pageflow.failureTracking],
+  autoSaveWidgets: true,
+
+  mixins: [pageflow.filesCountWatcher,
+           pageflow.polling,
+           pageflow.failureTracking,
+           pageflow.widgetSubject],
 
   initialize: function(attributes, options) {
     options = options || {};

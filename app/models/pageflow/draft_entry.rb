@@ -11,7 +11,7 @@ module Pageflow
              :to => :entry)
 
     delegate(:title, :summary, :credits, :manual_start,
-             :chapters, :pages,
+             :widgets, :chapters, :pages,
              :files,
              :image_files, :video_files, :audio_files,
              :to => :draft)
