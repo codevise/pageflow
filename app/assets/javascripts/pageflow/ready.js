@@ -1,5 +1,5 @@
 pageflow.ready = new $.Deferred(function(readyDeferred) {
-  onLoadWithTimeout(function() {
+  window.onload = function() {
     pageflow.features.detect().then(function() {
       $('body').one('pagepreloaded', function() {
         readyDeferred.resolve();
@@ -44,20 +44,5 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
         return false; }
       );
     });
-  });
-
-  function onLoadWithTimeout(callback) {
-    var invoked = false;
-    var invokeOnce = function() {
-      clearTimeout(timeout);
-
-      if (!invoked) {
-        callback();
-        invoked = true;
-      }
-    };
-
-    var timeout = setTimeout(invokeOnce, 10000);
-    window.onload = invokeOnce;
-  }
+  };
 }).promise();
