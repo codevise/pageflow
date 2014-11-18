@@ -64,5 +64,22 @@ module Pageflow
       return '' if entry.summary.blank?
       strip_tags(entry.summary.gsub(/<br ?\/?>/, ' ').squish)
     end
+
+    def entry_og_image_tags(entry)
+      image_urls = []
+
+      image_urls << ImageFile.find(entry.share_image_id).thumbnail_url(:medium)
+
+      entry.pages.each do |page|
+        if image_urls.size >= 4
+          break
+        else
+          image_urls << page.thumbnail_url(:medium)
+          image_urls.uniq!
+        end
+      end
+
+      render 'pageflow/entries/og_image_tags', :image_urls => image_urls
+    end
   end
 end
