@@ -67,6 +67,10 @@
       this.iscroll.on('scroll', callback);
     },
 
+    onScrollEnd: function(callback) {
+      this.iscroll.on('scrollEnd', callback);
+    },
+
     _initMoveEvents: function() {
       this.iscroll.on('mousewheelup', _.bind(this._triggerMoveEvent, this));
       this.iscroll.on('mousewheeldown', _.bind(this._triggerMoveEvent, this));
