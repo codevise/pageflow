@@ -1,0 +1,3 @@
+<% image_urls.each do |image_url| %>
+  <%= tag :meta, :property => "og:image", :content => image_url.gsub('https://', 'http://') %>
+<% end %>
