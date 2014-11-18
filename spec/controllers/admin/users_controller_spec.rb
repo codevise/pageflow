@@ -100,7 +100,7 @@ module Pageflow
         request.env['HTTP_REFERER'] = admin_users_path
         post(:create, :user => attributes_for(:valid_user))
 
-        expect(flash[:alert]).to eq(I18n.t('quotas.exhausted'))
+        expect(flash[:alert]).to eq(I18n.t('pageflow.quotas.exhausted'))
       end
     end
 

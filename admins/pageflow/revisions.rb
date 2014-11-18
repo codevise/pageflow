@@ -15,7 +15,7 @@ module Pageflow
       revision.entry.restore(:revision => revision, :creator => current_user)
       entry.edit_lock.release(current_user)
 
-      redirect_to(admin_entry_path(entry, :notice => I18n.t('admin.revisions.restored')))
+      redirect_to(admin_entry_path(entry, :notice => I18n.t('pageflow.admin.revisions.restored')))
     end
 
     controller do

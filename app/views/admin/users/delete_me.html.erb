@@ -1,12 +1,12 @@
 <%= semantic_form_for current_user, :url => delete_me_admin_users_path, :method => 'delete', :html => {:class => 'delete_account'} do |form| %>
   <%= form.inputs do %>
     <li>
-      <p><%= t('.warning_html') %></p>
+      <p><%= t('pageflow.admin.users.delete_me.warning_html') %></p>
     </li>
     <%= form.input :current_password %>
   <% end %>
   <%= form.actions do %>
-    <%= form.action :submit, :label => t('.delete_label') %>
-    <%= form.action :cancel, :label => t('.cancel_label') %>
+    <%= form.action :submit, :label => t('pageflow.admin.users.delete_me.delete_label') %>
+    <%= form.action :cancel, :label => t('pageflow.admin.users.delete_me.cancel_label') %>
   <% end %>
 <% end %>

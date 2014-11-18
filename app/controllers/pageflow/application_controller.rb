@@ -24,14 +24,14 @@ module Pageflow
 
     rescue_from CanCan::AccessDenied do |exception|
       respond_to do |format|
-        format.html { redirect_to main_app.admin_root_path, :alert => t('unauthorized') }
+        format.html { redirect_to main_app.admin_root_path, :alert => t('pageflow.unauthorized') }
         format.any(:json, :css) { head :forbidden }
       end
     end
 
     rescue_from StateMachine::InvalidTransition do |exception|
       respond_to do |format|
-        format.html { redirect_to main_app.admin_root_path, :alert => t('invalid_transition') }
+        format.html { redirect_to main_app.admin_root_path, :alert => t('pageflow.invalid_transition') }
         format.json { head :bad_request }
       end
     end

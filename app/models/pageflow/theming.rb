@@ -20,7 +20,7 @@ module Pageflow
     end
 
     def name
-      I18n.t('admin.themings.name', :account_name => account.name, :theme_name => theme_name)
+      I18n.t('pageflow.admin.themings.name', :account_name => account.name, :theme_name => theme_name)
     end
   end
 end

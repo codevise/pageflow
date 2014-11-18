@@ -1,4 +1,5 @@
 de:
-  editor:
-    quotas:
-      loading: "Bitte warten..."
+  pageflow:
+    editor:
+      quotas:
+        loading: "Bitte warten..."

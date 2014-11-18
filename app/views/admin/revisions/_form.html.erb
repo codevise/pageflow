@@ -2,7 +2,7 @@
   <%= f.inputs do %>
     <%= f.input(:published_until,
                 :as => :string,
-                :hint => t('admin.revisions.published_until_hint'),
+                :hint => t('pageflow.admin.revisions.published_until_hint'),
                 :input_html => {
                   :value => f.object.published_until && I18n.l(f.object.published_until.to_date)
                 }) %>

@@ -1,9 +1,9 @@
 para do
   if authorized?(:edit, Pageflow::Entry)
-    span(link_to(I18n.t("admin.entries.editor"), pageflow.edit_entry_path(entry), :class => 'editor button'))
+    span(link_to(I18n.t('pageflow.admin.entries.editor'), pageflow.edit_entry_path(entry), :class => 'editor button'))
   end
-  span(link_to(I18n.t("admin.entries.preview"), preview_admin_entry_path(entry), :class => 'preview button'))
+  span(link_to(I18n.t('pageflow.admin.entries.preview'), preview_admin_entry_path(entry), :class => 'preview button'))
   if entry.published?
-    span(link_to(I18n.t("admin.entries.show_public"), pretty_entry_url(entry), :class => 'show_public button'))
+    span(link_to(I18n.t('pageflow.admin.entries.show_public'), pretty_entry_url(entry), :class => 'show_public button'))
   end
 end
