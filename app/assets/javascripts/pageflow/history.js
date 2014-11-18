@@ -1,6 +1,13 @@
 pageflow.History = function(slideshow) {
   slideshow.on('slideshowchangepage', function() {
-    window.location.hash = '#' + slideshow.currentPage().attr('id');
+    if(pageflow.features.has('hashchange support')) {
+      window.location.hash = '#' + slideshow.currentPage().attr('id');
+    }
+    else {
+      $(window).on('orientationchange', function() {
+        window.scrollTo(0,0);
+      });
+    }
   });
 
   $(window).on('hashchange', function() {
