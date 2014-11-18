@@ -26,6 +26,7 @@
 //= require backbone-rails
 //= require_self
 
+//= require ./cookies
 //= require ./events
 //= require ./page_type
 //= require ./asset_urls
@@ -34,6 +35,7 @@
 //= require ./features
 //= require ./audio_player
 //= require ./video_player
+//= require ./visited
 //= require ./print_layout
 //= require ./history
 //= require ./manual_start

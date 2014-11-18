@@ -5,12 +5,15 @@
       var options = this.options;
       var scroller = options.scroller;
       var links = element.find('a');
+      var visited = new pageflow.Visited(links);
 
       pageflow.ready.then(function() {
+        highlightUnvisitedPages(visited.getUnvisitedPages());
         highlightActivePage(getPageId(pageflow.slides.currentPage()));
       });
 
       pageflow.slides.on('pageactivate', function(e) {
+        setPageVisited(e.target.getAttribute('id'));
         highlightActivePage(getPageId(e.target));
       });
 
@@ -76,6 +79,20 @@
             return page.get('perma_id').toString();
           });
         }
+      }
+
+      function highlightUnvisitedPages(ids) {
+        links.each(function() {
+          var link = $(this);
+          var unvisited = ids.indexOf(link.attr('href').substr(1)) >= 0;
+
+          link.toggleClass('unvisited', unvisited);
+        });
+      }
+
+      function setPageVisited(id) {
+        visited.setPageVisited(id);
+        element.find('[href="#' + id + '"]').removeClass('unvisited');
       }
     }
   });
