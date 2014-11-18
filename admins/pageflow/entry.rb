@@ -9,7 +9,7 @@ module Pageflow
       column :title, :sortable => 'title' do |entry|
         link_to entry.title, admin_entry_path(entry)
       end
-      column I18n.t('admin.entries.members'), :class => 'members' do |entry|
+      column I18n.t('pageflow.admin.entries.members'), :class => 'members' do |entry|
         entry_user_badge_list(entry)
       end
       if authorized?(:read, Account)
@@ -21,17 +21,17 @@ module Pageflow
       column :updated_at
       column :class => 'buttons' do |entry|
         if authorized?(:edit, Entry)
-          span(link_to(I18n.t("admin.entries.editor"), pageflow.edit_entry_path(entry), :class => 'editor button'))
+          span(link_to(I18n.t('pageflow.admin.entries.editor'), pageflow.edit_entry_path(entry), :class => 'editor button'))
         end
-        span(link_to(I18n.t("admin.entries.preview"), preview_admin_entry_path(entry), :class => 'preview button'))
+        span(link_to(I18n.t('pageflow.admin.entries.preview'), preview_admin_entry_path(entry), :class => 'preview button'))
         if entry.published?
-          span(link_to(I18n.t("admin.entries.show_public"), pretty_entry_url(entry), :class => 'show_public button'))
+          span(link_to(I18n.t('pageflow.admin.entries.show_public'), pretty_entry_url(entry), :class => 'show_public button'))
         end
       end
     end
 
     sidebar :folders, :only => :index do
-      text_node(link_to(I18n.t('admin.entries.add_folder'), new_admin_folder_path, :class => 'new'))
+      text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'), new_admin_folder_path, :class => 'new'))
       grouped_folder_list(Folder.accessible_by(Ability.new(current_user), :read),
                           :class => authorized?(:manage, Folder) ? 'editable' : nil,
                           :active_id => params[:folder_id],
@@ -40,7 +40,7 @@ module Pageflow
 
     form do |f|
       f.inputs do
-        f.input :title, :hint => I18n.t('admin.entries.title_hint')
+        f.input :title, :hint => I18n.t('pageflow.admin.entries.title_hint')
         if authorized?(:read, Account)
           f.input :account, :include_blank => false
 
@@ -57,10 +57,10 @@ module Pageflow
 
     action_item :only => :show do
       if authorized?(:publish, Entry) && entry.published?
-        button_to(I18n.t("admin.entries.depublish"),
+        button_to(I18n.t('pageflow.admin.entries.depublish'),
                   pageflow.current_entry_revisions_path(entry),
                   :method => :delete,
-                  :data => {:rel => 'depublish', :confirm => I18n.t('admin.entries.confirm_depublish')})
+                  :data => {:rel => 'depublish', :confirm => I18n.t('pageflow.admin.entries.confirm_depublish')})
       end
     end
 

@@ -26,9 +26,9 @@ module Pageflow
         ul(:class => 'folders') do
           li('data-role' => 'all') do
             if @active_id
-              link_to(t('admin.folders.all'), main_app.admin_entries_path, :class => 'name')
+              link_to(t('pageflow.admin.folders.all'), main_app.admin_entries_path, :class => 'name')
             else
-              span(t('admin.folders.all'), :class => 'name')
+              span(t('pageflow.admin.folders.all'), :class => 'name')
             end
           end
         end
@@ -64,19 +64,19 @@ module Pageflow
       end
 
       def edit_folder_link(folder)
-        link_to(t('admin.folders.edit'),
+        link_to(t('pageflow.admin.folders.edit'),
                 main_app.edit_admin_folder_path(folder),
-                :title => t('admin.folders.edit'),
+                :title => t('pageflow.admin.folders.edit'),
                 :class => 'edit_folder')
       end
 
       def delete_folder_link(folder)
-        link_to(t('admin.folders.destroy'),
+        link_to(t('pageflow.admin.folders.destroy'),
                 main_app.admin_folder_path(folder),
                 :method => :delete,
-                :title => t('admin.folders.destroy'),
+                :title => t('pageflow.admin.folders.destroy'),
                 :class => 'delete',
-                :data => {:confirm => t('admin.folders.confirm_destroy')})
+                :data => {:confirm => t('pageflow.admin.folders.confirm_destroy')})
       end
 
       def folders_by_account(account)

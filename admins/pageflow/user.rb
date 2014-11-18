@@ -16,7 +16,7 @@ module Pageflow
         end
       end
       column :role, :sortable => 'role' do |user|
-        I18n.t(user.role, :scope => 'admin.users.roles')
+        I18n.t(user.role, :scope => 'pageflow.admin.users.roles')
       end
       column :last_sign_in_at
       column :sign_in_count
@@ -28,7 +28,7 @@ module Pageflow
     filter :email
 
     action_item :only => :index do
-      link_to I18n.t('admin.users.invite_user'), new_admin_user_path, :data => {:rel => 'invite_user'}
+      link_to I18n.t('pageflow.admin.users.invite_user'), new_admin_user_path, :data => {:rel => 'invite_user'}
     end
 
     show do |user|
@@ -43,7 +43,7 @@ module Pageflow
             end
             row :role, :class => 'role' do
               span 'data-user-role' => user.role do
-                I18n.t(user.role, :scope => 'admin.users.roles')
+                I18n.t(user.role, :scope => 'pageflow.admin.users.roles')
               end
             end
 
@@ -53,7 +53,7 @@ module Pageflow
           end
 
           para do
-            link_to I18n.t('admin.users.resend_invitation'), resend_invitation_admin_user_path(user), :method => :post, :class => 'button', :data => {:rel => 'resend_invitation'}
+            link_to I18n.t('pageflow.admin.users.resend_invitation'), resend_invitation_admin_user_path(user), :method => :post, :class => 'button', :data => {:rel => 'resend_invitation'}
           end
         end
 
@@ -65,42 +65,42 @@ module Pageflow
               end
               column do |membership|
                 if authorized?(:destroy, membership)
-                  link_to(I18n.t('admin.users.delete'), admin_user_membership_path(user, membership), :method => :delete, :data => {:confirm => I18n.t('active_admin.delete_confirmation'), :rel => 'delete_membership'})
+                  link_to(I18n.t('pageflow.admin.users.delete'), admin_user_membership_path(user, membership), :method => :delete, :data => {:confirm => I18n.t('active_admin.delete_confirmation'), :rel => 'delete_membership'})
                 end
               end
             end
           else
             div :class => "blank_slate_container" do
               span :class => "blank_slate" do
-                I18n.t('admin.users.empty')
+                I18n.t('pageflow.admin.users.empty')
               end
             end
           end
 
           span do
-            link_to I18n.t('admin.users.add_entry'), new_admin_user_membership_path(user), :class => 'button', :data => {:rel => 'add_membership'}
+            link_to I18n.t('pageflow.admin.users.add_entry'), new_admin_user_membership_path(user), :class => 'button', :data => {:rel => 'add_membership'}
           end
         end
       end
     end
 
     action_item :only => :show do
-      link_to I18n.t('admin.users.edit'), edit_admin_user_path(user), :data => {:rel => 'edit_user'}
+      link_to I18n.t('pageflow.admin.users.edit'), edit_admin_user_path(user), :data => {:rel => 'edit_user'}
     end
 
     action_item :only => :show do
       if user != current_user
         if user.suspended?
-          link_to I18n.t('admin.users.unsuspend'), unsuspend_admin_user_path(user), :method => :post, :data => {:rel => 'unsuspend_user'}
+          link_to I18n.t('pageflow.admin.users.unsuspend'), unsuspend_admin_user_path(user), :method => :post, :data => {:rel => 'unsuspend_user'}
         else
-          link_to I18n.t('admin.users.suspend'), suspend_admin_user_path(user), :method => :post, :data => {:rel => 'suspend_user'}
+          link_to I18n.t('pageflow.admin.users.suspend'), suspend_admin_user_path(user), :method => :post, :data => {:rel => 'suspend_user'}
         end
       end
     end
 
     action_item :only => :show do
       if user != current_user
-        link_to I18n.t('admin.users.delete'), admin_user_path(user), :method => :delete, :data => {:rel => 'delete_user', :confirm => I18n.t('admin.users.confirm_delete')}
+        link_to I18n.t('pageflow.admin.users.delete'), admin_user_path(user), :method => :delete, :data => {:rel => 'delete_user', :confirm => I18n.t('pageflow.admin.users.confirm_delete')}
       end
     end
 
@@ -110,7 +110,7 @@ module Pageflow
       if request.patch?
         if current_user.update_with_password(user_profile_params)
           sign_in current_user, :bypass => true
-          redirect_to admin_root_path, :notice => I18n.t('admin.users.me.updated')
+          redirect_to admin_root_path, :notice => I18n.t('pageflow.admin.users.me.updated')
         end
       end
     end
@@ -118,24 +118,24 @@ module Pageflow
     collection_action 'delete_me', :title => 'Konto entfernen', :method => [:get, :delete] do
       if request.delete?
         if current_user.destroy_with_password(params.require(:user)[:current_password])
-          redirect_to admin_root_path, :notice => I18n.t('admin.users.me.updated')
+          redirect_to admin_root_path, :notice => I18n.t('pageflow.admin.users.me.updated')
         end
       end
     end
 
     member_action :resend_invitation, :method => :post do
       InvitedUser.find(params[:id]).send_invitation!
-      redirect_to :back, :notice => I18n.t('admin.users.resent_invitation')
+      redirect_to :back, :notice => I18n.t('pageflow.admin.users.resent_invitation')
     end
 
     member_action :suspend, :method => :post do
       User.find(params[:id]).suspend!
-      redirect_to :back, :notice => I18n.t('admin.users.suspended')
+      redirect_to :back, :notice => I18n.t('pageflow.admin.users.suspended')
     end
 
     member_action :unsuspend, :method => :post do
       User.find(params[:id]).unsuspend!
-      redirect_to :back, :notice => I18n.t('admin.users.unsuspended')
+      redirect_to :back, :notice => I18n.t('pageflow.admin.users.unsuspended')
     end
 
     controller do

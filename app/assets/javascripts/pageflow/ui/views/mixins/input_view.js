@@ -27,7 +27,7 @@ pageflow.inputView = {
   },
 
   inlineHelpText: function() {
-    var key = 'editor.inline_help.' + this.model.i18nKey + '.' + this.options.propertyName;
+    var key = 'pageflow.ui.inline_help.' + this.model.i18nKey + '.' + this.options.propertyName;
     var text = I18n.t(key, {defaultValue: ''});
 
     if (this.options.disabled) {

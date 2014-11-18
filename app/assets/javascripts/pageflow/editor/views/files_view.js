@@ -31,7 +31,7 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
 
     this.tabsView = new pageflow.TabsView({
       model: this.model,
-      i18n: 'editor.files.tabs',
+      i18n: 'pageflow.editor.files.tabs',
       defaultTab: this.options.tabName
     });
 

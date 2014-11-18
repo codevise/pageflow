@@ -23,7 +23,7 @@ pageflow.EntryPublicationQuotaDecoratorView = Backbone.Marionette.Layout.extend(
     var view = this;
 
     if (this.model.get('checking')) {
-      view.ui.state.text(I18n.t('editor.quotas.loading'));
+      view.ui.state.text(I18n.t('pageflow.editor.quotas.loading'));
       view.ui.exhaustedMessage.hide().html('');
       view.outlet.close();
     }

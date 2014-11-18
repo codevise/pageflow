@@ -1,3 +1,4 @@
 de:
-  quotas:
-    exhausted: "Quota verbraucht."
+  pageflow:
+    quotas:
+      exhausted: "Quota verbraucht."

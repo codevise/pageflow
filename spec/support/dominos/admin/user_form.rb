@@ -12,11 +12,11 @@ module Dom
           select(Pageflow::Account.find(options[:account_id]).name, :from => 'user_account_id') if options[:account_id]
 
           if options[:admin]
-            select(I18n.t('admin.users.roles.admin'), :from => 'user_role')
+            select(I18n.t('pageflow.admin.users.roles.admin'), :from => 'user_role')
           elsif options[:account_manager]
-            select(I18n.t('admin.users.roles.account_manager'), :from => 'user_role')
+            select(I18n.t('pageflow.admin.users.roles.account_manager'), :from => 'user_role')
           else
-            select(I18n.t('admin.users.roles.editor'), :from => 'user_role')
+            select(I18n.t('pageflow.admin.users.roles.editor'), :from => 'user_role')
           end
 
           find('[name="commit"]').click
