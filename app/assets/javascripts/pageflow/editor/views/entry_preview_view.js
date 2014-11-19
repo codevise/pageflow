@@ -80,10 +80,27 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   },
 
   updateWidgets: function(partials) {
+    var widgets = partials.find('[data-widget]');
+    this.updatePresentWidgetsCssClasses(widgets);
+
     this.widgets.remove();
-    this.widgets = partials.find('[data-widget]');
+    this.widgets = widgets;
     this.ui.entry.before(this.widgets);
 
     pageflow.widgetTypes.enhance(this.$el);
+  },
+
+  updatePresentWidgetsCssClasses: function(newWidgets) {
+    var previousClasses = this.widgetNames(this.widgets);
+    var newClasses = this.widgetNames(newWidgets);
+
+    this.$el.removeClass(_.difference(previousClasses, newClasses).join(' '));
+    this.$el.addClass(newClasses.join(' '));
+  },
+
+  widgetNames: function(widgets) {
+    return widgets.map(function() {
+      return 'widget_' + $(this).data('widget') + '_present';
+    }).get();
   }
 });
