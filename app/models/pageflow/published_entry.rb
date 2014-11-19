@@ -13,6 +13,7 @@ module Pageflow
              :title, :summary, :credits, :manual_start,
              :emphasize_chapter_beginning,
              :emphasize_new_pages,
+             :share_image_id, :share_image_x, :share_image_y,
              :to => :revision)
 
     def initialize(entry, revision = nil)
