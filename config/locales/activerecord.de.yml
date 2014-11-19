@@ -98,6 +98,7 @@ de:
         home_url: "Home-Button URL"
         home_button_enabled: "Home-Button anzeigen"
         emphasize_chapter_beginning: "Kapitelanfang hervorheben"
+        emphasize_new_pages: "Neue Seiten hervorheben"
       "pageflow/folder":
         account: "Konto"
         name: "Name"
