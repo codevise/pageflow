@@ -16,8 +16,9 @@
 
   <script>
     pageflow.manualStart.enabled = <%= @entry.manual_start ? 'true' : 'false' %>;
+    pageflow.visited.enabled = true;
     pageflow.pages = <%= @entry.pages.to_json(:only => [:id, :perma_id, :configuration]).html_safe %>;
-    pageflow.entry = <%= @entry.entry.to_json(:only => [:id, :title], :root => false).html_safe %>;
+    pageflow.entryId = <%= @entry.id %>;
   </script>
 
   <%= render 'pageflow/entries/analytics', :entry => @entry %>
