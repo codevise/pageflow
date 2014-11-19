@@ -59,6 +59,7 @@ de:
         home_button_enabled: "Link zu einer Übersichtsseite anzeigen."
         home_button_enabled_disabled: "Diese Funktion steht in diesem Theme nicht zur Verfügung."
         emphasize_chapter_beginning: "Die erste Seite eines jeden Kapitels wird hervorgehoben."
+        emphasize_new_pages: "Seit dem letzten Besuch neu hinzugefügte Seiten werden besonders gekennzeichnet."
         home_url: "URL der Übersichtseite. Leer lassen, um Standard zu übernehmen."
         home_url_disabled: "Diese Funktion steht in diesem Theme nicht zur Verfügung."
       "pageflow/chapter":

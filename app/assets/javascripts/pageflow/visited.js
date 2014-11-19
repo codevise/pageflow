@@ -46,8 +46,11 @@ pageflow.visited = (function() {
 
   return {
     getUnvisitedPages: function() {
-      var visitedIds = _getCookieIds();
-      return visitedIds.length ? _.difference(_getAllIds(), visitedIds) : visitedIds;
+      if (pageflow.visited.enabled) {
+        var visitedIds = _getCookieIds();
+        return visitedIds.length ? _.difference(_getAllIds(), visitedIds) : visitedIds;
+      }
+      return [];
     }
   };
 }());
