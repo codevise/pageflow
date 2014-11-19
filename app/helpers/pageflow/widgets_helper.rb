@@ -8,6 +8,12 @@ module Pageflow
       safe_join(fragments)
     end
 
+    def present_widgets_css_class(entry)
+      entry.widgets.resolve.map do |widget|
+        "#{widget.widget_type.name}_present"
+      end.join(' ')
+    end
+
     def widget_types_json_seeds
       Pageflow.config.widget_types.each_with_object({}) do |widget_type, result|
         widget_type.roles.each do |role|

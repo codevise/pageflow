@@ -52,6 +52,10 @@ module Pageflow
       end
     end
 
+    def entry_css_class(entry)
+      present_widgets_css_class(entry)
+    end
+
     def entry_header_css_class(entry)
       css_class = 'header'
       if entry.pages.any? && entry.pages.first.configuration['invert']
