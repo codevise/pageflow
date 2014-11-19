@@ -39,6 +39,8 @@
     resetPosition: function(options) {
       options = options || {};
 
+      this.iscroll.refresh();
+
       if (options.position === 'bottom') {
         this.iscroll.scrollTo(0, this.iscroll.maxScrollY, 0);
       }
