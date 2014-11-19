@@ -31,6 +31,11 @@
       }
     },
 
+    cleanup: function() {
+      this._triggerPageTypeHook('deactivating');
+      this._triggerDelayedPageTypeHook('deactivated');
+    },
+
     refreshScroller: function() {
       this.content.scroller('refresh');
     },
