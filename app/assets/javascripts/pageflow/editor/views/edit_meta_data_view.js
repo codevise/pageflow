@@ -15,8 +15,10 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
   },
 
   onRender: function() {
+    var entry = this.model;
+
     var configurationEditor = new pageflow.ConfigurationEditorView({
-      model: this.model
+      model: entry.configuration
     });
 
     configurationEditor.tab('general', function() {
@@ -38,6 +40,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
         });
       }
       this.view(pageflow.EditWidgetsView, {
+        model: entry,
         widgetTypes: pageflow.editor.widgetTypes
       });
     });

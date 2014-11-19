@@ -19,7 +19,7 @@ pageflow.Configuration = Backbone.Model.extend({
    * routes to lookup configuration via its page.
    */
   getRoutableId: function() {
-    return this.page.id;
+    return this.parent.id;
   },
 
   getImageFileUrl: function(attribute) {
@@ -93,15 +93,15 @@ pageflow.Configuration = Backbone.Model.extend({
   },
 
   _appendSuffix: function(sources) {
-    var page = this.page;
+    var parent = this.parent;
 
-    if (!page || !page.id) {
+    if (!parent || !parent.id) {
       return sources;
     }
 
     return _.map(sources, function(source) {
       var clone = _.clone(source);
-      clone.src = clone.src + '?e=' + page.id;
+      clone.src = clone.src + '?e=' + parent.id;
       return clone;
     });
   }
