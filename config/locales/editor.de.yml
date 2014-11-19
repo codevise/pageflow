@@ -7,6 +7,7 @@ de:
         options: "Optionen"
         links: "Verweise"
         widgets: "Erscheinungsbild"
+        social: "Social"
     screens:
       ratio16to9: "16:9"
       ratio4to3: "4:3"

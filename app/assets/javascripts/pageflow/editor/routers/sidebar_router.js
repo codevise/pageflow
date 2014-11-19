@@ -12,6 +12,7 @@ pageflow.SidebarRouter = Backbone.Marionette.AppRouter.extend({
     'confirmable_files': 'confirmableFiles',
 
     'meta_data': 'metaData',
+    'meta_data/:tab': 'metaData',
     'publish': 'publish',
 
     '.*': 'index'

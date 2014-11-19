@@ -27,9 +27,10 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
     }));
   },
 
-  metaData: function() {
+  metaData: function(tab) {
     this.region.show(new pageflow.EditMetaDataView({
-      model: this.entry
+      model: this.entry,
+      tab: tab
     }));
   },
 
