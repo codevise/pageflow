@@ -11,6 +11,6 @@ if file_type.editor_partial.present?
 end
 
 if file.respond_to?(:thumbnail_url)
-  json.thumbnail_url(file.thumbnail_url(:thumbnail))
-  json.link_thumbnail_url(file.thumbnail_url(:link_thumbnail_large))
+  json.thumbnail_url(asset_path(file.thumbnail_url(:thumbnail)))
+  json.link_thumbnail_url(asset_path(file.thumbnail_url(:link_thumbnail_large)))
 end
