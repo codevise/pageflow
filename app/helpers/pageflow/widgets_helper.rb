@@ -10,7 +10,7 @@ module Pageflow
 
     def present_widgets_css_class(entry)
       entry.widgets.resolve.map do |widget|
-        "#{widget.widget_type.name}_present"
+        "widget_#{widget.widget_type.name}_present"
       end.join(' ')
     end
 
