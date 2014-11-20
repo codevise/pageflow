@@ -10,7 +10,7 @@ pageflow.BackgroundImageEmbeddedView = Backbone.Marionette.View.extend({
 
   update: function() {
     this.$el.css({
-      backgroundImage: 'url("' + this.model.getImageFileUrl(this.options.propertyName) + '")',
+      backgroundImage: this.imageValue(),
       backgroundPosition: this.model.getFilePosition(this.options.propertyName, 'x') + '% ' +
         this.model.getFilePosition(this.options.propertyName, 'y') + '%'
     });
@@ -28,5 +28,10 @@ pageflow.BackgroundImageEmbeddedView = Backbone.Marionette.View.extend({
       }
       this.$el.css({backgroundPosition:'0 0'});
     }
+  },
+
+  imageValue: function() {
+    var url = this.model.getImageFileUrl(this.options.propertyName);
+    return url ? 'url("' + url  + '")' : 'none';
   }
 });
