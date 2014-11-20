@@ -95,6 +95,14 @@ module Pageflow
         expect(copied_revision.manual_start).to eq(true)
       end
 
+      it 'copies emphasize_chapter_beginning to new revision' do
+        revision = create(:revision, :emphasize_chapter_beginning => true)
+
+        copied_revision = revision.copy
+
+        expect(copied_revision.emphasize_chapter_beginning).to eq(true)
+      end
+
       it 'copies chapters to new revision' do
         revision = create(:revision)
         chapter = create(:chapter, :revision => revision, :title => 'Intro')

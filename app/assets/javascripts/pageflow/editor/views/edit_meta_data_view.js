@@ -15,8 +15,10 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
   },
 
   onRender: function() {
+    var entry = this.model;
+
     var configurationEditor = new pageflow.ConfigurationEditorView({
-      model: this.model
+      model: entry.configuration
     });
 
     configurationEditor.tab('general', function() {
@@ -27,6 +29,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
 
     configurationEditor.tab('widgets', function() {
       this.input('manual_start', pageflow.CheckBoxInputView);
+      this.input('emphasize_chapter_beginning', pageflow.CheckBoxInputView);
       this.input('home_button_enabled', pageflow.CheckBoxInputView, {
         disabled: !pageflow.theming.hasHomeButton(),
         displayUncheckedIfDisabled: true
@@ -38,6 +41,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
         });
       }
       this.view(pageflow.EditWidgetsView, {
+        model: entry,
         widgetTypes: pageflow.editor.widgetTypes
       });
     });
