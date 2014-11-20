@@ -1,6 +1,6 @@
 <%= tag :link, :rel => "canonical", :href => pretty_entry_url(entry) %>
 
-<%= social_share_image_tags(entry) %>
+<%= social_share_entry_image_tags(entry) %>
 
 <%= tag :meta, :property => "og:title", :content => "#{entry.title} - #{entry.theming.cname_domain}" %>
 <%= tag :meta, :property => "og:description", :name => "description", :content => entry_summary(entry) %>

@@ -29,7 +29,7 @@ module Pageflow
       ''
     end
 
-    def social_share_image_tags(entry)
+    def social_share_entry_image_tags(entry)
       image_urls = []
 
       image_urls << ImageFile.find(entry.share_image_id).thumbnail_url(:medium)
@@ -44,6 +44,10 @@ module Pageflow
       end
 
       render 'pageflow/social_share/image_tags', :image_urls => image_urls
+    end
+
+    def social_share_normalize_protocol(url)
+      url.gsub(/^(\/\/|https:\/\/)/, 'http://')
     end
 
   end
