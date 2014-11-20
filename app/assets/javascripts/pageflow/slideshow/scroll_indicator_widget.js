@@ -5,7 +5,14 @@
           that = this;
 
       parent.on('pageactivate', function(event) {
-        that.element.toggleClass('invert', $(event.target).hasClass('invert'));
+        var page = $(event.target);
+        var invertIndicator = page.data('invertIndicator');
+
+        if (typeof invertIndicator === 'undefined') {
+          invertIndicator = page.hasClass('invert');
+        }
+
+        that.element.toggleClass('invert', invertIndicator);
       });
 
       parent.on('scrollerhintdown', function() {
