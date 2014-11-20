@@ -1,7 +1,7 @@
 pageflow.pageType.register('background_video', _.extend({
 
   enhance: function(pageElement, configuration) {
-    this._initVideoPlayer(pageElement);
+    this._initVideoPlayer(pageElement, configuration);
   },
 
   prepare: function(pageElement, configuration) {
@@ -65,7 +65,11 @@ pageflow.pageType.register('background_video', _.extend({
     this.updateCommonPageCssClasses(pageElement, configuration);
     pageElement.find('.shadow').css({opacity: configuration.get('gradient_opacity') / 100});
 
-    var videoPlayer = this.videoPlayer;
+    var videoPlayer = this.videoPlayer,
+        x = configuration.getFilePosition('video_file_id', 'x') || 50,
+        y = configuration.getFilePosition('video_file_id', 'y') || 50,
+        posterUrl = configuration.getVideoPosterUrl();
+
     videoPlayer.ensureCreated();
 
     if (!this.srcDefined) {
@@ -79,19 +83,20 @@ pageflow.pageType.register('background_video', _.extend({
       this.videoPlayer.src(configuration.getVideoFileSources('video_file_id'));
     }
 
-    pageElement.find('.background_image').css({
-      backgroundImage: 'url("' + configuration.getVideoPosterUrl() + '")'
-    });
-
-    this.updateVideoPoster(pageElement, configuration.getVideoPosterUrl());
+    this.updateBackgroundVideoPosters(pageElement, posterUrl, x, y);
+    this._resizeToCover(pageElement, x, y);
   },
 
-  _initVideoPlayer: function(pageElement) {
+  _initVideoPlayer: function(pageElement, configuration) {
+    var that = this;
     var template = pageElement.find('[data-template=video]');
 
-    var min_w = 300; // minimum video width allowed
-    var vid_w_orig = template.attr("data-video-width") || 1280;
-    var vid_h_orig = template.attr("data-video-height") || 720;
+    var x = configuration.video_file_x || 50;
+    var y = configuration.video_file_y || 50;
+
+    this.min_w = 300; // minimum video width allowed
+    this.vid_w_orig = template.attr("data-video-width") || 1280;
+    this.vid_h_orig = template.attr("data-video-height") || 720;
 
     this.videoPlayer = new pageflow.VideoPlayer.Lazy(template, {
       width: '100%',
@@ -99,30 +104,32 @@ pageflow.pageType.register('background_video', _.extend({
     });
 
     this.videoPlayer.ready(function() {
-      jQuery(window).on('resize', function () { resizeToCover(); });
-      resizeToCover();
-    });
-
-    function resizeToCover() {
-      var video = pageElement.find('video');
-
-      // use largest scale factor of horizontal/vertical
-      var scale_h = jQuery(window).width() / vid_w_orig;
-      var scale_v = jQuery(window).height() / vid_h_orig;
-      var scale = scale_h > scale_v ? scale_h : scale_v;
-
-      // don't allow scaled width < minimum video width
-      if (scale * vid_w_orig < min_w) {
-        scale = min_w / vid_w_orig;
-      }
-
-      // now scale the video
-      video.width(scale * vid_w_orig).height(scale * vid_h_orig);
-      // and center it
-      video.css({
-        "left": "-" + ((video.width() - jQuery(window).width()) / 2) + "px",
-        "top": "-" + ((video.height() - jQuery(window).height()) / 2) + "px"
+      jQuery(window).on('resize', function() {
+        that._resizeToCover(pageElement, x, y);
       });
+      that._resizeToCover(pageElement, x, y);
+    });
+  },
+
+  _resizeToCover: function(pageElement, x, y) {
+    var video = pageElement.find('video');
+
+    // use largest scale factor of horizontal/vertical
+    var scale_h = jQuery(window).width() / this.vid_w_orig;
+    var scale_v = jQuery(window).height() / this.vid_h_orig;
+    var scale = scale_h > scale_v ? scale_h : scale_v;
+
+    // don't allow scaled width < minimum video width
+    if (scale * this.vid_w_orig < this.min_w) {
+      scale = this.min_w / this.vid_w_orig;
     }
+
+    // now scale the video
+    video.width(scale * this.vid_w_orig).height(scale * this.vid_h_orig);
+
+    video.css({
+      "left": "-" + ((video.width() - jQuery(window).width()) * x / 100) + "px",
+      "top": "-" + ((video.height() - jQuery(window).height()) * y / 100) + "px"
+    });
   }
 }, pageflow.volumeFade, pageflow.videoHelpers, pageflow.commonPageCssClasses));
