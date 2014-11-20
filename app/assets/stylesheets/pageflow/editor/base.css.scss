@@ -112,7 +112,8 @@
 
 main.ui-layout-pane {
   padding: 0;
-  overflow-x: hidden;
+  overflow: hidden;
+  border: 0;
 }
 
 main > .container {
