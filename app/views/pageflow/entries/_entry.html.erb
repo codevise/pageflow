@@ -1,4 +1,8 @@
-<%= content_tag :div, :id => 'outer_wrapper', :data => {:theme => entry.theming.theme.name} do %>
+<%= content_tag(:div,
+                :id => 'outer_wrapper',
+                :data => {:theme => entry.theming.theme.name},
+                :class => entry_css_class(entry)) do %>
+
   <%= render 'pageflow/entries/skip_links' %>
   <h1 class="hidden"><%= entry.title %></h1>
   <img src="<%= image_path("pageflow/themes/#{entry.theming.theme.directory_name}/logo_print.png") %>" class="print_image" alt="Logo image for print version">

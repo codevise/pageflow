@@ -1,4 +1,6 @@
-pageflow.AudioPlayer = function(sources, tag) {
+pageflow.AudioPlayer = function(sources, options) {
+  options = options || {};
+
   var codecMapping = {
     vorbis: 'audio/ogg',
     mp4: 'audio/mp4',
@@ -6,16 +8,23 @@ pageflow.AudioPlayer = function(sources, tag) {
   };
 
   var ready = new $.Deferred();
+  var loaded = new $.Deferred();
+
   var audio = new Audio5js({
-    reusedTag: tag,
+    reusedTag: options.tag,
     swf_path: pageflow.assetUrls.audioSwf,
     throw_errors: false,
     format_time: false,
     codecs: ['vorbis', 'mp4', 'mp3'],
-    ready: ready.resolve
+    ready: ready.resolve,
+    loop: options.loop
   });
 
   audio.readyPromise = ready.promise();
+  audio.loadedPromise = loaded.promise();
+
+  audio.on('load', loaded.resolve);
+
   audio.src = function(sources) {
     ready.then(function() {
       var source = _.detect(sources || [], function(source) {
@@ -59,16 +68,16 @@ pageflow.AudioPlayer = function(sources, tag) {
   return audio;
 };
 
-pageflow.AudioPlayer.fromAudioTag = function(element) {
+pageflow.AudioPlayer.fromAudioTag = function(element, options) {
   return new pageflow.AudioPlayer(element.find('source').map(function() {
     return {
       src: $(this).attr('src'),
       type: $(this).attr('type')
     };
-  }).get(), element[0]);
+  }).get(), {tag: element[0], loop: options.loop});
 };
 
-pageflow.AudioPlayer.fromScriptTag = function(element) {
+pageflow.AudioPlayer.fromScriptTag = function(element, options) {
   var sources = element.length ? JSON.parse(element.text()) : [];
-  return new pageflow.AudioPlayer(sources);
+  return new pageflow.AudioPlayer(sources, options);
 };

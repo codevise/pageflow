@@ -20,6 +20,13 @@ module Pageflow
       respond_to do |format|
         format.any(:html, :css) do
           @entry = PublishedEntry.find(params[:id], entry_request_scope)
+
+          if params[:page].present?
+            @entry.share_target = Page.find_by_perma_id(params[:page])
+          else
+            @entry.share_target = @entry
+          end
+
         end
         format.json do
           authenticate_user!
@@ -66,7 +73,10 @@ module Pageflow
     protected
 
     def entry_params
-      params.require(:entry).permit(:title, :summary, :credits, :manual_start, :home_url, :home_button_enabled)
+      params.require(:entry).permit(:title, :summary, :credits, :manual_start, :home_url, :home_button_enabled,
+                                    :emphasize_chapter_beginning,
+                                    :share_image_id, :share_image_x, :share_image_y,
+                                    :emphasize_new_pages)
     end
 
     def entry_request_scope

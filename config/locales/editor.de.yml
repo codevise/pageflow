@@ -7,6 +7,7 @@ de:
         options: "Optionen"
         links: "Verweise"
         widgets: "Erscheinungsbild"
+        social: "Social"
     screens:
       ratio16to9: "16:9"
       ratio4to3: "4:3"
@@ -58,6 +59,8 @@ de:
         manual_start: "Besucher muss den Start des Beitrags durch einen Klick bestätigen."
         home_button_enabled: "Link zu einer Übersichtsseite anzeigen."
         home_button_enabled_disabled: "Diese Funktion steht in diesem Theme nicht zur Verfügung."
+        emphasize_chapter_beginning: "Die erste Seite eines jeden Kapitels wird hervorgehoben."
+        emphasize_new_pages: "Seit dem letzten Besuch neu hinzugefügte Seiten werden besonders gekennzeichnet."
         home_url: "URL der Übersichtseite. Leer lassen, um Standard zu übernehmen."
         home_url_disabled: "Diese Funktion steht in diesem Theme nicht zur Verfügung."
       "pageflow/chapter":

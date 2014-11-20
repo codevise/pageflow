@@ -26,7 +26,9 @@ pageflow.pageType.register('audio', _.extend({
     this.audioPlayer.readyPromise.then(function() {
       that.audioPlayer.volume(pageflow.settings.get('volume'));
       that.listenTo(pageflow.settings, "change:volume", function(model, value) {
-        that.fadeSound(that.audioPlayer, value, 40);
+        that.audioPlayer.loadedPromise.then(function() {
+          that.fadeSound(that.audioPlayer, value, 40);
+        });
       });
     });
 
@@ -43,17 +45,22 @@ pageflow.pageType.register('audio', _.extend({
   },
 
   activated: function(pageElement, configuration) {
+    this.active = true;
     var that = this;
-    if(!pageflow.features.has('mobile platform')) {
 
+    if(!pageflow.features.has('mobile platform')) {
       if (configuration.autoplay === false) {
         that.audioPlayer.volume(pageflow.settings.get('volume'));
       } else {
         this.fadeInTimeout = setTimeout(function() {
           that.audioPlayer.readyPromise.then(function() {
-            that.audioPlayer.volume(0);
-            that.audioPlayer.play();
-            that.fadeSound(that.audioPlayer, pageflow.settings.get('volume'), 1000);
+            if (that.active) {
+              that.audioPlayer.volume(0);
+              that.audioPlayer.play();
+              that.audioPlayer.loadedPromise.then(function() {
+                that.fadeSound(that.audioPlayer, pageflow.settings.get('volume'), 1000);
+              });
+            }
           });
         }, 1000);
       }
@@ -61,8 +68,13 @@ pageflow.pageType.register('audio', _.extend({
   },
 
   deactivating: function(pageElement, configuration) {
+    this.active = false;
+    var that = this;
+
     clearTimeout(this.fadeInTimeout);
-    this.fadeSound(this.audioPlayer, 0, 400);
+    this.audioPlayer.loadedPromise.then(function() {
+      that.fadeSound(that.audioPlayer, 0, 400);
+    });
     this.stopListening();
     $('body').off('keyup');
   },

@@ -25,7 +25,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
     this.update();
 
     this.listenTo(pageflow.entry, 'sync:order sync:widgets', this.update);
-    this.listenTo(pageflow.entry, 'change:credits change:home_url change:home_button_enabled', function() {
+    this.listenTo(pageflow.entry, 'change:configuration', function() {
       pageflow.entry.once('sync', this.update, this);
     });
 
@@ -55,7 +55,24 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
 
     this.listenTo(pageflow.app, 'resize', function() {
       slideshow.triggerResizeHooks();
+      this.updateSimulatedMediaQueryClasses();
     });
+
+    this.updateSimulatedMediaQueryClasses();
+  },
+
+  updateSimulatedMediaQueryClasses: function() {
+    var width = this.$el.width();
+    var portrait = this.$el.width() < this.$el.height();
+
+    $('html')
+      .toggleClass('simulate_mobile', width <= 900)
+      .toggleClass('simulate_phone', width <= 700)
+      .toggleClass('simulate_desktop', width > 700)
+      .toggleClass('simulate_narrow_desktop', width <= 1200)
+      .toggleClass('simulate_wide_desktop', width > 1600)
+      .toggleClass('simulate_pad_portrait', width <= 768 && portrait)
+      .toggleClass('simulate_phone_portrait', width <= 500 && portrait);
   },
 
   update: function() {
@@ -80,10 +97,27 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   },
 
   updateWidgets: function(partials) {
+    var widgets = partials.find('[data-widget]');
+    this.updatePresentWidgetsCssClasses(widgets);
+
     this.widgets.remove();
-    this.widgets = partials.find('[data-widget]');
+    this.widgets = widgets;
     this.ui.entry.before(this.widgets);
 
     pageflow.widgetTypes.enhance(this.$el);
+  },
+
+  updatePresentWidgetsCssClasses: function(newWidgets) {
+    var previousClasses = this.widgetNames(this.widgets);
+    var newClasses = this.widgetNames(newWidgets);
+
+    this.$el.removeClass(_.difference(previousClasses, newClasses).join(' '));
+    this.$el.addClass(newClasses.join(' '));
+  },
+
+  widgetNames: function(widgets) {
+    return widgets.map(function() {
+      return $(this).data('widget') + '_present';
+    }).get();
   }
 });

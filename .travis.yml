@@ -7,8 +7,11 @@ env:
   - PAGEFLOW_RAILS_VERSION=4.0.4
   - PAGEFLOW_RAILS_VERSION=4.1.6
 
+services:
+  - redis-server
+
 script:
-  - "bundle exec rspec --tag ~js"
+  - "xvfb-run bundle exec rspec"
 
 before_script:
     - mysql -e 'create database pageflow_dummy_test;'

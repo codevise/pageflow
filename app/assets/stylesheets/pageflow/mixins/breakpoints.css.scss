@@ -1,27 +1,92 @@
+$simulated-media-queries: false !default;
+
 @mixin mobile {
-  @media screen and (max-width: 900px) {
-    @content;
+  @if $simulated-media-queries {
+    .simulate_mobile & {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (max-width: 900px) {
+      @content;
+    }
   }
 }
+
 @mixin phone {
-  @media screen and (max-width: 700px) {
-    @content;
+  @if $simulated-media-queries {
+    .simulate_phone & {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (max-width: 700px) {
+      @content;
+    }
   }
 }
+
 @mixin desktop {
-  @media screen and (min-width: 701px) {
-    @content;
+  @if $simulated-media-queries {
+    .simulate_desktop & {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (min-width: 701px) {
+      @content;
+    }
+  }
+}
+
+@mixin narrow_desktop {
+  @if $simulated-media-queries {
+    .simulate_narrow_desktop & {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (max-width: 1200px) {
+      @content;
+    }
+  }
+}
+
+@mixin wide_desktop {
+  @if $simulated-media-queries {
+    .simulate_wide_desktop & {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (min-width: 1601px) {
+      @content;
+    }
   }
 }
 
 @mixin pad_portrait {
-  @media screen and (max-width: 768px) and (orientation: portrait) {
-    @content;
+  @if $simulated-media-queries {
+    .simulate_pad_portrait & {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (max-width: 768px) and (orientation: portrait) {
+      @content;
+    }
   }
 }
 
 @mixin phone_portrait {
-  @media screen and (max-width: 500px) and (orientation: portrait) {
-    @content;
+  @if $simulated-media-queries {
+    .simulate_phone_portrait & {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (max-width: 500px) and (orientation: portrait) {
+      @content;
+    }
   }
 }
