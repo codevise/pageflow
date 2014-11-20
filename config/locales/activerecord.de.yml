@@ -98,6 +98,7 @@ de:
         home_url: "Home-Button URL"
         home_button_enabled: "Home-Button anzeigen"
         emphasize_chapter_beginning: "Kapitelanfang hervorheben"
+        share_image_id: "Social Sharing Bild"
       "pageflow/folder":
         account: "Konto"
         name: "Name"

@@ -7,7 +7,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
   mixins: [pageflow.failureIndicatingView],
 
   regions: {
-    formContainer: '.form_fields',
+    formContainer: '.form_fields'
   },
 
   events: {
@@ -18,12 +18,12 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
     var entry = this.model;
 
     var configurationEditor = new pageflow.ConfigurationEditorView({
-      model: entry.configuration
+      model: entry.configuration,
+      tab: this.options.tab
     });
 
     configurationEditor.tab('general', function() {
       this.input('title', pageflow.TextInputView);
-      this.input('summary', pageflow.TextAreaInputView);
       this.input('credits', pageflow.TextAreaInputView);
     });
 
@@ -44,6 +44,17 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
         model: entry,
         widgetTypes: pageflow.editor.widgetTypes
       });
+    });
+
+    configurationEditor.tab('social', function() {
+      this.input('share_image_id', pageflow.FileInputView, {
+        collection: pageflow.imageFiles,
+        fileSelectionHandler: 'entryConfiguration',
+        fileSelectionHandlerOptions: {
+          returnToTab: 'social'
+        }
+      });
+      this.input('summary', pageflow.TextAreaInputView);
     });
 
     this.formContainer.show(configurationEditor);

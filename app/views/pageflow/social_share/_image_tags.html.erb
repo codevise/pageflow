@@ -1,0 +1,3 @@
+<% image_urls.each do |image_url| %>
+  <%= tag :meta, :property => "og:image", :content => social_share_normalize_protocol(image_url) %>
+<% end %>
