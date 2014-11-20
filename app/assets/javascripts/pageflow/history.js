@@ -1,6 +1,8 @@
 pageflow.History = function(slideshow) {
   slideshow.on('slideshowchangepage', function() {
-    window.location.hash = '#' + slideshow.currentPage().attr('id');
+    if(pageflow.features.has('hashchange support')) {
+      window.location.hash = '#' + slideshow.currentPage().attr('id');
+    }
   });
 
   $(window).on('hashchange', function() {
