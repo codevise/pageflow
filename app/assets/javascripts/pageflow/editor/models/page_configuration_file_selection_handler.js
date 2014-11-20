@@ -1,4 +1,4 @@
-pageflow.EntryConfigurationFileSelectionHandler = function(options) {
+pageflow.PageConfigurationFileSelectionHandler = function(options) {
   var page = pageflow.pages.get(options.id);
 
   this.call = function(file) {
@@ -10,4 +10,4 @@ pageflow.EntryConfigurationFileSelectionHandler = function(options) {
   };
 };
 
-pageflow.editor.registerFileSelectionHandler('pageConfiguration', pageflow.EntryConfigurationFileSelectionHandler);
+pageflow.editor.registerFileSelectionHandler('pageConfiguration', pageflow.PageConfigurationFileSelectionHandler);
