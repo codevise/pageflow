@@ -24,6 +24,7 @@
     reactivate: function() {
       if (this.element.hasClass('active')) {
         this.content.scroller('enable');
+        this.content.scroller('resetPosition');
         this.content.scroller('afterAnimationHook');
 
         this._triggerPageTypeHook('activating');
@@ -48,6 +49,7 @@
       this.element.addClass('active');
 
       this.content.scroller('enable');
+      this.content.scroller('resetPosition');
       this.content.scroller('afterAnimationHook');
 
       this._trigger('activate', null, {page: this});
@@ -89,13 +91,14 @@
       }, this), 5);
 
       setTimeout(_.bind(function() {
+        this.content.scroller('enable');
         this.content.scroller('afterAnimationHook');
         this.element.removeClass('animate-in-forwards animate-in-backwards');
 
         this._triggerDelayedPageTypeHook('activated');
       }, this), 1100);
 
-      this.content.scroller('enable', {position: options.position});
+      this.content.scroller('resetPosition', {position: options.position});
       this._trigger('activate', null, {page: this});
       this._triggerPageTypeHook('activating');
 

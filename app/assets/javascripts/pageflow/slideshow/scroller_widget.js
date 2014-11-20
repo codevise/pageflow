@@ -31,11 +31,13 @@
       this._initMoveEvents();
     },
 
-    enable: function(options) {
-      options = options || {};
-
+    enable: function() {
       this.iscroll.enable();
       this.iscroll.refresh();
+    },
+
+    resetPosition: function(options) {
+      options = options || {};
 
       if (options.position === 'bottom') {
         this.iscroll.scrollTo(0, this.iscroll.maxScrollY, 0);
