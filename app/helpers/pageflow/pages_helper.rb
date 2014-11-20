@@ -1,26 +1,5 @@
 module Pageflow
   module PagesHelper
-    def pretty_page_url(page)
-      "#{pretty_entry_url(page.chapter.entry)}?page=#{page.perma_id}"
-    end
-
-    def share_title(page)
-      entry = page.chapter.entry
-
-      title = ["#{entry.title}:"]
-      title << page.title
-      title << '-' if entry.theming.cname_domain.present?
-      title << entry.theming.cname_domain
-
-      title.join(' ')
-    end
-
-    def share_description(page)
-      return page.configuration['text'] if page.configuration['text'].present?
-      return page.configuration['description'] if page.configuration['description'].present?
-      ''
-    end
-
     def page_css_class(page)
       classes = ['page']
       classes << 'invert' if page.configuration['invert']
