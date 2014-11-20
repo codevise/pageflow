@@ -49,6 +49,10 @@
       this.iscroll.disable();
     },
 
+    positionY: function() {
+      return this.iscroll.y;
+    },
+
     _initMoveEvents: function() {
       this.iscroll.on('mousewheelup', _.bind(this._triggerMoveEvent, this));
       this.iscroll.on('mousewheeldown', _.bind(this._triggerMoveEvent, this));
