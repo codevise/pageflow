@@ -68,7 +68,7 @@ pageflow.pageType.register('audio', _.extend({
   },
 
   deactivating: function(pageElement, configuration) {
-    this.active = true;
+    this.active = false;
     var that = this;
 
     clearTimeout(this.fadeInTimeout);
