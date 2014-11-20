@@ -7,10 +7,12 @@
       var links = element.find('a');
 
       pageflow.ready.then(function() {
+        highlightUnvisitedPages(pageflow.visited.getUnvisitedPages());
         highlightActivePage(getPageId(pageflow.slides.currentPage()));
       });
 
       pageflow.slides.on('pageactivate', function(e) {
+        setPageVisited(e.target.getAttribute('id'));
         highlightActivePage(getPageId(e.target));
       });
 
@@ -76,6 +78,19 @@
             return page.get('perma_id').toString();
           });
         }
+      }
+
+      function highlightUnvisitedPages(ids) {
+        links.each(function() {
+          var link = $(this);
+          var unvisited = ids.indexOf(parseInt(link.attr('href').substr(1), 10)) >= 0;
+
+          link.toggleClass('unvisited', unvisited);
+        });
+      }
+
+      function setPageVisited(id) {
+        element.find('[href="#' + id + '"]').removeClass('unvisited');
       }
     }
   });
