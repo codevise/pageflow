@@ -19,6 +19,7 @@ pageflow.pageType.register('background_video', _.extend({
     var that = this;
 
     this.videoPlayer.ensureCreated();
+    this._resizeToCover(pageElement, configuration);
 
     if (!pageflow.features.has('mobile platform')) {
       this.prebufferingPromise = this.videoPlayer.prebuffer().then(function() {
@@ -56,6 +57,10 @@ pageflow.pageType.register('background_video', _.extend({
     this.videoPlayer.scheduleDispose();
   },
 
+  resize: function(pageElement, configuration) {
+    this._resizeToCover(pageElement, configuration);
+  },
+
   update: function(pageElement, configuration) {
     pageElement.find('h2 .tagline').text(configuration.get('tagline') || '');
     pageElement.find('h2 .title').text(configuration.get('title') || '');
@@ -66,8 +71,8 @@ pageflow.pageType.register('background_video', _.extend({
     pageElement.find('.shadow').css({opacity: configuration.get('gradient_opacity') / 100});
 
     var videoPlayer = this.videoPlayer,
-        x = configuration.getFilePosition('video_file_id', 'x') || 50,
-        y = configuration.getFilePosition('video_file_id', 'y') || 50,
+        x = configuration.getFilePosition('video_file_id', 'x'),
+        y = configuration.getFilePosition('video_file_id', 'y'),
         posterUrl = configuration.getVideoPosterUrl();
 
     videoPlayer.ensureCreated();
@@ -84,15 +89,12 @@ pageflow.pageType.register('background_video', _.extend({
     }
 
     this.updateBackgroundVideoPosters(pageElement, posterUrl, x, y);
-    this._resizeToCover(pageElement, x, y);
+    this._resizeToCover(pageElement, configuration.attributes);
   },
 
   _initVideoPlayer: function(pageElement, configuration) {
     var that = this;
     var template = pageElement.find('[data-template=video]');
-
-    var x = configuration.video_file_x || 50;
-    var y = configuration.video_file_y || 50;
 
     this.min_w = 300; // minimum video width allowed
     this.vid_w_orig = template.attr("data-video-width") || 1280;
@@ -104,14 +106,13 @@ pageflow.pageType.register('background_video', _.extend({
     });
 
     this.videoPlayer.ready(function() {
-      jQuery(window).on('resize', function() {
-        that._resizeToCover(pageElement, x, y);
-      });
-      that._resizeToCover(pageElement, x, y);
+      that._resizeToCover(pageElement, configuration);
     });
   },
 
-  _resizeToCover: function(pageElement, x, y) {
+  _resizeToCover: function(pageElement, configuration) {
+    var x = configuration.hasOwnProperty('video_file_x') ? configuration.video_file_x : 50;
+    var y = configuration.hasOwnProperty('video_file_y') ? configuration.video_file_y : 50;
     var video = pageElement.find('video');
 
     // use largest scale factor of horizontal/vertical
@@ -128,8 +129,8 @@ pageflow.pageType.register('background_video', _.extend({
     video.width(scale * this.vid_w_orig).height(scale * this.vid_h_orig);
 
     video.css({
-      "left": "-" + ((video.width() - jQuery(window).width()) * x / 100) + "px",
-      "top": "-" + ((video.height() - jQuery(window).height()) * y / 100) + "px"
+      "left": "-" + ((video.width() - jQuery(pageElement).width()) * x / 100) + "px",
+      "top": "-" + ((video.height() - jQuery(pageElement).height()) * y / 100) + "px"
     });
   }
 }, pageflow.volumeFade, pageflow.videoHelpers, pageflow.commonPageCssClasses));
