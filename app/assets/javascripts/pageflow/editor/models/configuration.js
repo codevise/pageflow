@@ -46,6 +46,15 @@ pageflow.Configuration = Backbone.Model.extend({
     this.set(propertyName, value);
   },
 
+  setFilePositions: function(attribute, x, y) {
+    var attributes = {};
+
+    attributes[this._filePositionProperty(attribute, 'x')] = x;
+    attributes[this._filePositionProperty(attribute, 'y')] = y;
+
+    this.set(attributes);
+  },
+
   _filePositionProperty: function(attribute, coord) {
     return attribute.replace(/_id$/, '_' + coord);
   },

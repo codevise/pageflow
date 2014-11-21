@@ -2,9 +2,12 @@
   .box {
     top: 5%;
     width: 90%;
-    max-width: 800px;
+    max-width: 1000px;
+    max-height: 745px;
     padding-bottom: 20px;
     overflow: hidden;
+    height: 80%;
+    overflow-y: scroll;
   }
 
   label {
@@ -44,7 +47,36 @@
 
   .wrapper {
     text-align: center;
-    margin-bottom: 40px;
+    margin: 20px;
+  }
+
+  .previews {
+    overflow: scroll;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    margin-bottom: 20px;
+
+    > div {
+      height: 100%;
+      white-space: nowrap;
+    }
+  }
+
+  .preview {
+    display: inline-block;
+    margin: 5px 10px;
+    vertical-align: middle;
+
+    .image {
+      border: solid 1px #444;
+      background-size: cover;
+    }
+
+    .label {
+      padding: 3px 0;
+      font-size: 11px;
+      color: #444;
+    }
   }
 
   .container {
@@ -55,46 +87,9 @@
     img {
       border: solid 1px #444;
       display: block;
-      max-height: 500px;
-      max-width: 800px;
-    }
-  }
-
-  .mask {
-    position: absolute;
-    background-color: #000;
-    opacity: 0.3;
-
-    &.left {
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 200px;
-      border-right: solid 1px #eee;
-    }
-
-    &.top {
-      top: 0;
-      left: 0;
-      height: 100px;
-      border-bottom: solid 1px #eee;
-      width: 100%;
-    }
-
-    &.right {
-      top: 0;
-      right: 0;
-      height: 100%;
-      width: 200px;
-      border-left: solid 1px #eee;
-    }
-
-    &.bottom {
-      bottom: 0;
-      left: 0;
-      height: 100px;
-      width: 100%;
-      border-top: solid 1px #eee;
+      max-height: 300px;
+      max-width: 600px;
+      cursor: crosshair;
     }
   }
 
@@ -102,40 +97,46 @@
     position: absolute;
     border: none;
 
+    a {
+      @include background-icon-center($font-size: 20px);
+      @include arrow-combo-icon;
+      position: absolute;
+      display: block;
+      width: 40px;
+      height: 40px;
+      margin: 0;
+      background-color: #fff;
+      border: solid 1px #888;
+      border-radius: 4px;
+      left: auto;
+      top: auto;
+    }
+
     &.horizontal {
       bottom: 0;
-      left: 50px;
-      right: 50px;
+      left: 40px;
+      right: 40px;
       height: 0;
+
+      a {
+        @include transform(rotate(90deg));
+        margin-left: -20px;
+        margin-top: -20px;
+      }
     }
 
     &.vertical {
       right: 0;
-      top: 50px;
-      bottom: 50px;
+      top: 40px;
+      bottom: 40px;
       width: 0;
       height: auto;
+
+      a {
+        margin-left: -20px;
+        margin-bottom: -20px;
+      }
     }
-  }
-
-  .slider a {
-    @include background-icon-center($font-size: 20px);
-    @include arrow-combo-icon;
-    position: absolute;
-    display: block;
-    width: 40px;
-    height: 40px;
-    margin-left: -20px;
-    margin-top: -20px;
-    background-color: #fff;
-    border: solid 1px #888;
-    border-radius: 4px;
-    left: auto;
-    top: auto;
-  }
-
-  .slider.horizontal a {
-    @include transform(rotate(90deg));
   }
 
   a.save {
