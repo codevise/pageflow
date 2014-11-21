@@ -50,10 +50,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
     configurationEditor.tab('social', function() {
       this.input('share_image_id', pageflow.FileInputView, {
         collection: pageflow.imageFiles,
-        fileSelectionHandler: 'entryConfiguration',
-        fileSelectionHandlerOptions: {
-          returnToTab: 'social'
-        }
+        fileSelectionHandler: 'entryConfiguration'
       });
       this.input('summary', pageflow.TextAreaInputView);
     });
