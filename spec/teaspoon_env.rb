@@ -1,7 +1,11 @@
 # Set RAILS_ROOT and load the environment if it's not already loaded.
 unless defined?(Rails)
-  ENV["RAILS_ROOT"] = File.expand_path("../dummy/", __FILE__)
-  require File.expand_path("../dummy/config/environment", __FILE__)
+  require 'pageflow/support'
+  Pageflow::Dummy.setup
+
+  require File.expand_path('../support/pageflow/rails_version', __FILE__)
+  ENV["RAILS_ROOT"] = File.expand_path("../dummy/rails-#{Pageflow::RailsVersion.detect}/", __FILE__)
+  require File.expand_path("../dummy/rails-#{Pageflow::RailsVersion.detect}/config/environment", __FILE__)
 end
 
 Teaspoon.configure do |config|

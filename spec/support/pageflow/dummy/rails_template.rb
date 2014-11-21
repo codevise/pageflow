@@ -22,10 +22,10 @@ gsub_file('config/database.yml',
 
 # Recreate db. Ignore if it does not exist.
 
-log :rake, 'db:drop'
-in_root { run('rake db:drop RAILS_ENV=test 2> /dev/null', verbose: false) }
+log :rake, 'db:drop:all'
+in_root { run('rake db:drop:all 2> /dev/null', verbose: false) }
 
-rake 'db:create'
+rake 'db:create:all'
 
 # Install pageflow and the tested engine via their generators.
 
@@ -43,6 +43,12 @@ inject_into_file('config/environments/test.rb',
 prepend_to_file('config/initializers/pageflow.rb',
                  "ActiveAdmin.application.load_paths.unshift(Dir[Rails.root.join('app/admin')])\n")
 
+# For Javascript testing the Teaspoon engine has to be mounted
+
+inject_into_file('config/routes.rb',
+                 "  mount ::Teaspoon::Engine, at: '/teaspoon' if defined?(Teaspoon)",
+                 before: "end\n")
+
 # Create database tables for fake hosted files and revision components.
 
 copy_file('create_test_hosted_file.rb', 'db/migrate/00000000000000_create_test_hosted_file.rb')
@@ -54,4 +60,4 @@ Dir.glob('db/migrate/*').each do |file_name|
   run("mv #{file_name} #{file_name}.rb") if File.extname(file_name).blank?
 end
 
-rake 'db:migrate'
+rake 'db:migrate db:test:load', env: 'development'
