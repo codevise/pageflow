@@ -13,31 +13,39 @@
       </div>
   </div>
   <div class="sharing_mobile">
-      <div class="wrapper">
-        <ul>
-          <li>
-            <%= link_to "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}&p%5Btitle%5D=#{ERB::Util.url_encode(entry.title)}", :target => "_blank", :tabindex => "2", :class => "share facebook" do %>
-              <span class="hint">über facebook teilen</span>
-              <span class="share_facebook button"></span>
-              <p>facebook</p>
-            <% end %>
-          </li>
-          <li>
-            <%= link_to "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share twitter" do %>
-              <span class="hint">über twitter teilen</span>
-              <span class="share_twitter button"></span>
-              <p>Twitter</p>
-            <% end %>
-          </li>
-          <li>
-            <%= link_to "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share google" do %>
-              <span class="hint">über Google+ teilen</span>
-              <span class="share_google button"></span>
-              <p>Google+</p>
-            <% end %>
-          </li>
-        </ul>
-      </div>
+    <div class="wrapper">
+      <ul>
+        <li>
+          <%= link_to "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}&p%5Btitle%5D=#{ERB::Util.url_encode(entry.title)}", :target => "_blank", :tabindex => "2", :class => "share facebook", :data => { :"share-page" => "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
+            <span class="hint">über facebook teilen</span>
+            <span class="share_facebook button"></span>
+            <p>facebook</p>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share twitter", :data => { :"share-page" => "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
+            <span class="hint">über twitter teilen</span>
+            <span class="share_twitter button"></span>
+            <p>Twitter</p>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share google", :data => { :"share-page" => "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
+            <span class="hint">über Google+ teilen</span>
+            <span class="share_google button"></span>
+            <p>Google+</p>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+    <ul>
+      <li class="sub_share">
+        <a><%= I18n.t('pageflow.widgets.share_menu.entry') %></a>
+      </li>
+      <li class="sub_share">
+        <a><%= I18n.t('pageflow.widgets.share_menu.current_page') %></a>
+      </li>
+    </ul>
   </div>
   <div class="imprint_mobile">
       <span class="heading-1">Impressum</span>

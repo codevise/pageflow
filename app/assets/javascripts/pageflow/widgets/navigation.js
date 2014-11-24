@@ -105,6 +105,14 @@
         $(this).parent().parent().removeClass('focused');
       });
 
+      var links = $('.navigation_share_box > a', this.element);
+      $('.navigation_share_box', this.element).shareMenu({
+        clickTarget: links,
+        subMenu: $('.sub_share', this.element),
+        links: links,
+        insertAfter: links.last()
+      });
+
       /* pages */
       var pageLinks = $('.navigation_thumbnails a', that.element),
         target;
