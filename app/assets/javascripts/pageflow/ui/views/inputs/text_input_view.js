@@ -34,7 +34,7 @@ pageflow.TextInputView = Backbone.Marionette.ItemView.extend({
 
   validate: function() {
     if (this.options.required && !this.ui.input.val()) {
-      this.displayValidationError('Muss ausgefüllt werden');
+      this.displayValidationError(I18n.t('pageflow.ui.views.inputs.text_input_view.required_field'));
     }
     else {
       this.resetValidationError();

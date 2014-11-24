@@ -20,7 +20,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
       blankSlateViewConstructor: pageflow.BlankEntryView
     }));
 
-    this.ui.entry.append($('<div class="scroll_indicator indicator">Scrollen, um weiterzulesen</div>'));
+    this.ui.entry.append($('<div class="scroll_indicator indicator">' + I18n.t('pageflow.editor.views.entry_preview_view.scroll_hint', {locale: I18n.entryLocale }) + '</div>'));
 
     this.update();
 

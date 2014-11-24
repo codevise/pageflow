@@ -1,25 +1,21 @@
 <div class="multimedia_alert">
   <div class="multimedia_alert_box">
     <div class="alert_block">
-    <h1 class="alert_headline">Hinweis</h1>
+    <h1 class="alert_headline"><%= t('.alert') %></h1>
     <div class="alert_icon speaker"></div>
       <p>
-        Für dieses multimediale Reportage-Format nutzen wir neben
-        Texten und Fotos auch Audios und Videos. Daher sollten die
-        Lautsprecher des Systems eingeschaltet sein.
+        <%= t('.sound_hint') %>
       </p>
     </div>
     <div class="alert_block">
       <div class="alert_icon scrolling"></div>
       <p class="scroll_hint desktop">
-        Mit dem Mausrad oder den Pfeiltasten auf der Tastatur wird die
-        jeweils nächste Kapitelseite aufgerufen.
+        <%= t('.scroll_hint') %>
       </p>
       <p class="scroll_hint mobile">
-        Durch Wischen wird die jeweils nächste Kapitelseite
-        aufgerufen.
+        <%= t('.swipe_hint') %>
       </p>
-      <a class="close" href="#" tabindex="1">Los geht's</a>
+      <a class="close" href="#" tabindex="1"><%= t('.close') %></a>
     </div>
   </div>
 </div>

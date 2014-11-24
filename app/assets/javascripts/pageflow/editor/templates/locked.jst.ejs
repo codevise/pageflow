@@ -1,13 +1,13 @@
 <div class="checking notice">
-  <p>Der Beitrag wird zur Bearbeitung geöffnet. Bitte warten...</p>
+  <p><%= I18n.t('pageflow.editor.templates.locked.loading') %></p>
 
-  <a class="close" href="#">Editor schließen</a>
+  <a class="close" href="#"><%= I18n.t('pageflow.editor.templates.locked.close') %></a>
 </div>
 
 <div class="error notice">
   <div class="message"></div>
 
-  <a class="close" href="#">Editor schließen</a>
-  <a class="break" href="#">Stattdessen hier öffnen</a>
+  <a class="close" href="#"><%= I18n.t('pageflow.editor.templates.locked.close') %></a>
+  <a class="break" href="#"><%= I18n.t('pageflow.editor.templates.locked.open_here') %></a>
 </div>
 

@@ -2,7 +2,7 @@
 <div class="content_and_background backgroundVideo">
   <div class="backgroundArea">
     <%= mobile_poster_image_div(configuration) %>
-    <span class="hint">Video Loop</span>
+    <span class="hint"><%= t('pageflow.pages.templates.background_video.hint') %></span>
     <%= lookup_video_tag(configuration['video_file_id'],
         configuration['poster_image_id'], :class => 'background', :loop => true, :unique_id => page.id, :preload => page.is_first) %>
     <%= shadow_div :opacity => configuration['gradient_opacity'] %>

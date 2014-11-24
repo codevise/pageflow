@@ -13,7 +13,7 @@
       <% if authorized?(:read, Pageflow::Account) %>
         <%= f.input :account, :include_blank => false %>
       <% end %>
-      <%= f.input :role, :collection => collection_for_user_roles, :include_blank => false, :hint => authorized?(:read, Pageflow::Account) ? I18n.t('pageflow.admin.users.role_hint.admin') : I18n.t('pageflow.admin.users.role_hint.other') %>
+      <%= f.input :role, :collection => collection_for_user_roles, :include_blank => false, :hint => authorized?(:read, Pageflow::Account) ? I18n.t('pageflow.admin.users.role_hint.admin') : I18n.t('pageflow.admin.users.role_hint.others') %>
     <% end %>
     <%= f.actions %>
   <% end %>

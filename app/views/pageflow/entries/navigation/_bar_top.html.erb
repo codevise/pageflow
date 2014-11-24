@@ -1,37 +1,37 @@
 <ul class="navigation_bar_top">
   <li class="menu_li">
-    <a id="navigation" class="navigation_bullet navigation_main" tabindex="2" title="Dachnavigation anzeigen" data-active-title="Dachnavigation schließen">
-      <span class="hint">zur Navigation</span>
+    <a id="navigation" class="navigation_bullet navigation_main" tabindex="2" title="<%= t('.open_top_navigation') %>" data-active-title="<%= t('.close_top_navigation') %>">
+      <span class="hint"><%= t('.open_top_navigation') %></span>
       <span class="button"></span>
     </a>
   </li>
   <%= render('pageflow/entries/navigation/home_button', home_button: entry.home_button) %>
   <li>
-    <a class="navigation_bullet navigation_top" <%= "href=##{entry.pages.first.perma_id} data-link=#{entry.pages.first.id}" unless entry.pages.nil? || entry.pages.first.nil? %> tabindex="2" title="Zur ersten Seite">
-      <span class="hint">zum Anfang</span>
+    <a class="navigation_bullet navigation_top" <%= "href=##{entry.pages.first.perma_id} data-link=#{entry.pages.first.id}" unless entry.pages.nil? || entry.pages.first.nil? %> tabindex="2" title="<%= t('.navigate_top') %>">
+      <span class="hint"><%= t('.navigate_top') %></span>
       <span class="button"></span>
     </a>
   </li>
   <li>
-    <a class="navigation_bullet navigation_index" tabindex="2" title="Übersicht anzeigen" data-active-title="Übersicht schließen">
-      <span class="hint">zur Übersicht</span>
+    <a class="navigation_bullet navigation_index" tabindex="2" title="<%= t('.open_overview') %>" data-active-title="<%= t('.close_overview') %>">
+      <span class="hint"><%= t('.open_overview') %></span>
       <span class="button"></span>
     </a>
   </li>
   <li class="navigation_menu share" tabindex="2">
     <div class="navigation_menu_box navigation_share_box">
       <%= link_to "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}&p%5Btitle%5D=#{ERB::Util.url_encode(entry.title)}", :target => "_blank", :tabindex => "2", :class => "share facebook", :data => { :"share-page" => "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
-          <span class="hint">über facebook teilen</span>
+          <span class="hint"><%= t('pageflow.widgets.share_menu.share_with_facebook') %></span>
           <span class="share_facebook button"></span>
           <p>facebook</p>
       <% end %>
       <%= link_to "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share twitter", :data => { :"share-page" => "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
-          <span class="hint">über twitter teilen</span>
+          <span class="hint"><%= t('pageflow.widgets.share_menu.share_with_twitter') %></span>
           <span class="share_twitter button"></span>
           <p>twitter</p>
       <% end %>
       <%= link_to "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share google", :data => { :"share-page" => "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
-          <span class="hint">über Google+ teilen</span>
+          <span class="hint"><%= t('pageflow.widgets.share_menu.share_with_google') %></span>
           <span class="share_google button"></span>
           <p>google</p>
       <% end %>
@@ -40,8 +40,8 @@
         <a tabindex="2" target="_blank"><%= I18n.t('pageflow.widgets.share_menu.current_page') %></a>
       </div>
     </div>
-    <a title="Angebot weiterempfehlen">
-      <span class="hint">teilen</span>
+    <a title="<%= t('.share') %>">
+      <span class="hint"><%= t('.share') %></span>
       <span class="navigation_bg navigation_share button"></span>
     </a>
   </li>
@@ -49,12 +49,12 @@
     <div class="navigation_menu_box navigation_credits_box">
       <%= render 'pageflow/entries/navigation/credits_box_content', :entry => entry %>
     </div>
-    <a title="Impressum">
-      <span class="hint">impressum</span>
+    <a title="<%= t('.imprint') %>">
+      <span class="hint"><%= t('.imprint') %></span>
       <span class="navigation_bg navigation_credits button"></span>
     </a>
   </li>
 </ul>
 <a class="scroll_indicator top" tabindex="2">
-  <span class="hint">hoch scrollen</span>
+  <span class="hint"><%= t('.scroll_up') %></span>
 </a>

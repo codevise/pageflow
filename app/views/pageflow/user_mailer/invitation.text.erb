@@ -1,11 +1,10 @@
-Hallo <%= @user.first_name %>!
+<%= t('.salutation', first_name: @user.first_name, last_name: @user.last_name) %>,
 
-Willkommen auf der Pageflow-Plattform. Bitte lege über den folgenden
-Link ein Kennwort fest. In Zukunft kannst Du Dich dann mit Deiner
-E-Mail-Adresse anmelden.
+<%= t('.instruction') %>
 
 <%= main_app.edit_user_password_url(@user, :reset_password_token => @user.reset_password_token) %>
 
-Dankeschön und viel Spaß,
+<%= t('.ending') %>
 
-Dein Pageflow-Team
+<%= t('.greeting') %>
+

@@ -1,2 +1,1124 @@
 en:
-  unauthorized: "You are not authorized to access this page."
+  active_admin:
+    access_denied:
+      message: You are not authorized to perform this action.
+    any: Any
+    batch_actions:
+      action_label: ! '%{title} Selected'
+      button_label: Batch Actions
+      default_confirmation: Are you sure you want to do this?
+      delete_confirmation: Are you sure you want to delete these %{plural_model}?
+      labels:
+        destroy: Delete
+      link: Create one
+      selection_toggle_explanation: (Toggle Selection)
+      succesfully_destroyed:
+        one: Successfully destroyed 1 %{model}
+        other: Successfully destroyed %{count} %{plural_model}
+    blank_slate:
+      content: There are no %{resource_name} yet.
+      link: Create one
+    cancel: Cancel
+    clear_filters: Clear filters
+    comments:
+      add: Add Comment
+      author: Author
+      author_missing: Anonymous
+      author_type: Author Type
+      body: Body
+      errors:
+        empty_text: Comment wasn't saved, text was empty.
+      no_comments_yet: No comments yet.
+      resource: Resource
+      resource_type: Resource Type
+      title: Comment
+      title_content: Comments (%{count})
+    create_model: Create %{model}
+    dashboard: Dashboard
+    dashboard_welcome:
+      call_to_action: To add dashboard sections, checkout 'app/admin/dashboard.rb'
+      welcome: Welcome to Active Admin. This is the default dashboard page.
+    delete: Delete
+    delete_confirmation: Are you sure you want to delete this?
+    delete_model: Delete %{model}
+    details: ! '%{model} Details'
+    devise:
+      change_password:
+        submit: Change my password
+        title: Change your password
+      email:
+        title: Email
+      links:
+        forgot_your_password: Forgot your password?
+        resend_confirmation_instructions: Re-send confirmation instructions
+        resend_unlock_instructions: Re-send unlock instructions
+        sign_in: Sign in
+        sign_in_with_omniauth_provider: Sign in with %{provider}
+        sign_up: Sign up
+      login:
+        remember_me: Remember me
+        submit: Login
+        title: Login
+      password:
+        title: Password
+      resend_confirmation_instructions:
+        submit: Resend confirmation instructions
+        title: Resend confirmation instructions
+      reset_password:
+        submit: Reset My Password
+        title: Forgot your password?
+      sign_up:
+        submit: Sign up
+        title: Sign up
+      subdomain:
+        title: Subdomain
+      unlock:
+        submit: Resend unlock instructions
+        title: Resend unlock instructions
+      username:
+        title: Username
+    download: ! 'Download:'
+    dropdown_actions:
+      button_label: Actions
+    edit: Edit
+    edit_model: Edit %{model}
+    empty: Empty
+    equal_to: Equal to
+    filter: Filter
+    filters:
+      buttons:
+        clear: Clear Filters
+        filter: Filter
+      predicates:
+        contains: Contains
+        ends_with: Ends with
+        equals: Equals
+        greater_than: Greater than
+        less_than: Less than
+        starts_with: Starts with
+    greater_than: Greater than
+    has_many_delete: Delete
+    has_many_new: Add New %{model}
+    has_many_remove: Remove
+    index_list:
+      block: List
+      blog: Blog
+      grid: Grid
+      table: Table
+    less_than: Less than
+    logout: Logout
+    main_content: Please implement %{model}#main_content to display content.
+    new_model: New %{model}
+    next: Next
+    pagination:
+      empty: No %{model} found
+      entry:
+        one: entry
+        other: entries
+      multiple: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{total}</b> in total
+      multiple_without_total: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b>
+      one_page: Displaying <b>all %{n}</b> %{model}
+    powered_by: ! ' '
+    previous: Previous
+    scopes:
+      frozen: All
+      publications: Only published
+      publications_and_user_snapshots: Only published/snapshots
+    search_field: ! 'Search %{field} '
+    sidebars:
+      filters: Filters
+      folders: Folders
+    status_tag:
+      'no': 'No'
+      'yes': 'Yes'
+    undelete: Undelete
+    unsupported_browser:
+      headline: Please note that Internet Explorer versions 9 or less is no longer supported.
+      recommendation: We recommend upgrading to the latest <a href="http://windows.microsoft.com/ie">Internet Explorer</a>, <a href="https://chrome.google.com/">Google Chrome</a>, or <a href="https://mozilla.org/firefox/">Firefox</a>.
+      turn_off_compatibility_view: If you are using IE 9 or later, make sure you <a href="http://windows.microsoft.com/en-US/windows7/webpages-look-incorrect-in-Internet-Explorer">turn off "Compatibility View"</a>.
+    view: View
+  activerecord:
+    attributes:
+      admin_user:
+        created_at: Created at
+        current_sign_in_at: Current sign in at
+        current_sign_in_ip: Current IP-Address
+        email: Email
+        encrypted_Password: Encrypted password
+        id: ID
+        last_sign_in_at: Last sign-in at
+        last_sign_in_ip: Last sign-in IP
+        remember_created_at: Remember password since
+        reset_password_sent_at: Password reset instructions sent at
+        reset_password_token: Passwort reset token
+        sign_in_count: Sign-in count
+        updated_at: Updated at
+      pageflow/account:
+        created_at: Created at
+        default_file_rights: Default file credits
+        default_theming: Default theming
+        landing_page_name: Landing page
+        name: Name
+      pageflow/audio_file:
+        duration: Duration
+        format: Format
+      pageflow/chapter:
+        title: Title
+      pageflow/entry:
+        account: Account
+        created_at: Created at
+        credits: Credits
+        emphasize_chapter_beginning: Emphasize chapter beginning
+        emphasize_new_pages: Emphasize new pages
+        home_button_enabled: Show 'Home' button
+        home_url: ! '''Home'' Button URL'
+        locale: Language
+        manual_start: Show Instruction-Overlay
+        published?: Publication state
+        share_image_id: Social Sharing Image
+        summary: Summary
+        title: Title
+        updated_at: Updated at
+        url: Permalink
+      pageflow/folder:
+        account: Account
+        name: Name
+      pageflow/image_file:
+        dimensions: Dimensions
+      pageflow/membership:
+        entry: Story
+        user: Editor
+      pageflow/page:
+        additional_description: Infobox Description
+        additional_title: Infobox Title
+        allow_full_screen: Allow fullscreen
+        audio_file_id: Audio
+        autoplay: Autoplay
+        background_image_id: Background-Image
+        background_video_id: Background-Video
+        description: Description (Overview)
+        display_in_navigation: Show in navigationbar
+        gradient_opacity: Gradient opacity
+        hide_title: Hide titles
+        invert: Invert colors
+        linked_page_ids: Link pages
+        linked_pages_layout: Hero
+        mobile_poster_image_id: Posterimage (mobile)
+        poster_image_id: Posterimage
+        subtitle: Subtitle
+        tagline: Tagline
+        template: Pagetype
+        text: Text
+        text_position: Textposition
+        thumbnail_image_id: Thumbnail
+        title: Title
+        transition: Transition effect
+        video_file_id: Video
+      pageflow/revision:
+        created_at: Created at
+        created_with: Created by
+        creator: Created by
+        frozen_at: Effective
+        published_at: Published at
+        published_until: Published until
+        updated_at: Updated at
+      pageflow/theming:
+        cname: CNAME
+        copyright_link_label: Copyright link Text
+        copyright_link_url: Copyright link URL
+        home_button_enabled_by_default: ! '''Home''-Button enabled by default'
+        home_url: Redirect URL
+        imprint_link_label: Imprint link label
+        imprint_link_url: Imprint link URL
+        theme_name: Theme
+      pageflow/video_file:
+        dimensions: Dimensions
+        duration: Duration
+        format: Format
+      user:
+        account: Account
+        admin: Administrator
+        admin?: Administrator
+        created_at: Registered at
+        current_password: Current password
+        current_sign_in_at: Signed in at
+        email: Email address
+        entry: Story
+        first_name: First name
+        full_name: Full name
+        last_name: Last name
+        last_sign_in_at: Last signed in at
+        locale: Language
+        membership: Membership
+        password: Password
+        password_confirmation: Password confirmation
+        role: Role
+        sign_in_count: ! '# of sign ins'
+        suspended?: Suspended
+        unconfirmed_email: Unconfirmed Email
+    errors:
+      messages:
+        accepted: has to be accepted
+        blank: required
+        confirmation: not equal
+        empty: required
+        equal_to:
+          one: must be equal to %{count}
+          other: must be equal to %{count}
+        even: must be even
+        exclusion: not available
+        greater_than:
+          one: must be greater than %{count}
+          other: must be greater than %{count}
+        greater_than_or_equal_to:
+          one: must be greater or equal %{count}
+          other: must be greater or equal %{count}
+        inclusion: invalid
+        invalid: invalid
+        invalid_date: is not a valid date
+        less_than:
+          one: must be smaller than %{count}
+          other: must be smaller than %{count}
+        less_than_or_equal_to:
+          one: must be smaller or equal than %{count}
+          other: must be smaller or equal than %{count}
+        not_a_number: not a number
+        not_an_integer: not an integer
+        odd: must be odd
+        record_invalid: Record is invalid %{errors}
+        taken: already taken
+        too_long:
+          one: too long (only %{count} chars allowed)
+          other: too long (only %{count} chars allowed)
+        too_short:
+          one: too short (minimum of %{count} chars required)
+          other: too short (minimum of %{count} chars required)
+        validation: has to be at least 5 chars and to contain one decimal
+        wrong_length:
+          one: wrong length (must be exactly %{count} chars)
+          other: wrong length (must be exactly %{count} chars)
+    models:
+      account:
+        one: Account
+        other: Accounts
+      admin_user:
+        one: Administrator
+        other: Administrators
+      entry:
+        one: Story
+        other: Stories
+      folder:
+        one: Folder
+        other: Folders
+      membership:
+        one: Membership
+        other: Memberships
+      pageflow/account:
+        one: Account
+        other: Accounts
+      pageflow/entry:
+        one: Story
+        other: Stories
+      pageflow/folder:
+        one: Folder
+        other: Folders
+      pageflow/membership:
+        one: Membership
+        other: Memberships
+      pageflow/revision:
+        one: Version
+        other: Versions
+      pageflow/theming:
+        one: Theming
+        other: Themings
+      revision:
+        one: Version
+        other: Versions
+      theming:
+        one: Theming
+        other: Themings
+      user:
+        one: User
+        other: Users
+    values:
+      pageflow/page:
+        linked_pages_layout:
+          default: (none)
+          hero_top_left: Top left
+          hero_top_right: Top right
+        template:
+          audio: Audio
+          audio_loop: Background-Audio
+          background_image: Background-Image
+          background_video: Background-Video
+          internal_links: Internal links
+          video: Video
+        text_position:
+          left: Left
+          right: Right
+        transition:
+          fade: Fade
+          scroll: Scroll
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    - 
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: ! '%Y-%m-%d'
+      long: ! '%B %d, %Y'
+      short: ! '%b %d'
+    month_names:
+    - 
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - :year
+    - :month
+    - :day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: about 1 hour
+        other: about %{count} hours
+      about_x_months:
+        one: about 1 month
+        other: about %{count} months
+      about_x_years:
+        one: about 1 year
+        other: about %{count} years
+      almost_x_years:
+        one: almost 1 year
+        other: almost %{count} years
+      half_a_minute: half a minute
+      less_than_x_minutes:
+        one: less than a minute
+        other: less than %{count} minutes
+      less_than_x_seconds:
+        one: less than 1 second
+        other: less than %{count} seconds
+      over_x_years:
+        one: over 1 year
+        other: over %{count} years
+      x_days:
+        one: 1 day
+        other: ! '%{count} days'
+      x_minutes:
+        one: 1 minute
+        other: ! '%{count} minutes'
+      x_months:
+        one: 1 month
+        other: ! '%{count} months'
+      x_seconds:
+        one: 1 second
+        other: ! '%{count} seconds'
+    prompts:
+      day: Day
+      hour: Hour
+      minute: Minute
+      month: Month
+      second: Seconds
+      year: Year
+  devise:
+    confirmations:
+      confirmed: Your account was successfully confirmed. You are now signed in.
+      send_instructions: You will receive an email with instructions about how to confirm your account in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes.
+    failure:
+      admin_user:
+        invalid: Password or username was not correct.
+        unauthenticated: Please log-in using an administrator account.
+      already_authenticated: You are already signed in.
+      inactive: Your account was not activated yet.
+      invalid: Invalid email or password.
+      invalid_token: Invalid authentication token.
+      locked: Your account is locked.
+      not_found_in_database: Invalid email or password.
+      timeout: Your session expired, please sign in again to continue.
+      unauthenticated: You need to sign in or sign up before continuing.
+      unconfirmed: You have to confirm your account before continuing.
+    mailer:
+      confirmation_instructions:
+        subject: Confirmation instructions
+      reset_password_instructions:
+        subject: Reset password instructions
+      unlock_instructions:
+        subject: Unlock Instructions
+    oauth_providers:
+      facebook: Facebook
+      google_oauth2: Google
+    omniauth_callbacks:
+      failure: Could not authenticate you from %{kind} because "%{reason}".
+      success: Successfully authenticated from %{kind} account.
+    passwords:
+      no_token: You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided.
+      send_instructions: You will receive an email with instructions about how to reset your password in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.
+      updated: Your password was changed successfully. You are now signed in.
+      updated_not_active: Your password was changed successfully.
+    registrations:
+      destroyed: Bye! Your account was successfully cancelled. We hope to see you again soon.
+      edit:
+        are_you_sure: Are you sure?
+        change_password: Change password
+        delete_account: Delete account
+        submit: Save
+        userdata: Userinfo
+      new:
+        cancel_oauth_sign_up: Cancel
+        registration: Registration
+        sign_up_with_facebook: Log-in using Facebook
+        sign_up_with_google: Log in using Google
+        submit: Submit
+      signed_up: Welcome! You have signed up successfully.
+      signed_up_but_inactive: You have signed up successfully. However, we could not sign you in because your account is not yet activated.
+      signed_up_but_locked: You have signed up successfully. However, we could not sign you in because your account is locked.
+      signed_up_but_unconfirmed: A message with a confirmation link has been sent to your email address. Please open the link to activate your account.
+      update_needs_confirmation: You updated your account successfully, but we need to verify your new email address. Please check your email and click on the confirm link to finalize confirming your new email address.
+      updated: You updated your account successfully.
+    sessions:
+      admin_user:
+        signed_in: Successfully signed in as administrator.
+      new:
+        sign_in_with_facebook: Sign in with Facebook
+        sign_in_with_google: Sign in with Google
+      signed_in: Signed in successfully.
+      signed_out: Signed out successfully.
+    unlocks:
+      send_instructions: You will receive an email with instructions about how to unlock your account in a few minutes.
+      send_paranoid_instructions: If your account exists, you will receive an email with instructions about how to unlock it in a few minutes.
+      unlocked: Your account has been unlocked successfully. Please sign in to continue.
+  errors:
+    format: ! '%{attribute} %{message}'
+    messages:
+      accepted: must be accepted
+      already_confirmed: was already confirmed, please try signing in
+      blank: can't be blank
+      confirmation: not equal with confirmation
+      confirmation_period_expired: needs to be confirmed within %{period}, please request a new one
+      empty: can't be empty
+      equal_to:
+        one: must be equal to %{count}
+        other: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      expired: has expired, please request a new one
+      greater_than:
+        one: must be greater than %{count}
+        other: must be greater than %{count}
+      greater_than_or_equal_to:
+        one: must be greater than or equal to %{count}
+        other: must be greater than or equal to %{count}
+      inclusion: is not included in the list
+      invalid: is invalid
+      invalid_date: is not a valid date
+      less_than:
+        one: must be less than %{count}
+        other: must be less than %{count}
+      less_than_or_equal_to:
+        one: must be less than or equal to %{count}
+        other: must be less than or equal to %{count}
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      not_found: not found
+      not_locked: was not locked
+      not_saved:
+        one: Could not save. One error.
+        other: Could not save. %{count} errors.
+      odd: must be odd
+      other_than:
+        one: must be other than %{count}
+        other: must be other than %{count}
+      present: must be blank
+      readonly: readonly
+      record_invalid: ! 'Validation failed: %{errors}'
+      restrict_dependent_destroy:
+        many: Cannot delete record because dependent %{record} exist
+        one: Cannot delete record because a dependent %{record} exists
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+    template:
+      body: ! 'There were problems with the following fields:'
+      header:
+        one: 1 error prohibited this %{model} from being saved
+        other: ! '%{count} errors prohibited this %{model} from being saved'
+  formtastic:
+    cancel: Cancel
+    create: ! 'Create %{model} '
+    'no': 'No'
+    required: required
+    reset: ! 'Reset %{model} '
+    submit: ! 'Submit %{model} '
+    update: ! 'Update %{model} '
+    'yes': 'Yes'
+  helpers:
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
+  language: English
+  number:
+    currency:
+      format:
+        delimiter: ! ','
+        format: ! '%u%n'
+        precision: 2
+        separator: .
+        significant: false
+        strip_insignificant_zeros: false
+        unit: $
+    format:
+      delimiter: ! ','
+      precision: 3
+      separator: .
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: ! '%n %u'
+        units:
+          billion:
+            one: Billion
+            other: Billion
+          million: Million
+          quadrillion:
+            one: Quadrillion
+            other: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
+          unit: Unit
+      format:
+        delimiter: Delimiter
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: ! '%n %u'
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: ! '%n%'
+    precision:
+      format:
+        delimiter: ''
+  pageflow:
+    admin:
+      accounts:
+        no_entries: No Stories
+        no_members: No members
+      entries:
+        add_folder: Add folder
+        confirm_depublish: Unpublish this story?
+        confirm_restore: Restore story to the selected version? A snapshot will be created, so that you can roll back later.
+        depublish: Unpublish story
+        edit: Edit
+        edit_config: Edit configuration
+        edit_revision: Edit
+        editor: Editor
+        entries: Stories
+        forever: (unlimited)
+        members: Members
+        no_members: No members assigned
+        no_revisions: No versions yet
+        not_published: Not yet published
+        preview: Preview
+        published_forever: Published
+        published_revision_legend: Currently published version
+        published_until: Published until %{published_until}
+        remove: Remove
+        remove_logo: Remove logo
+        restore: Restore
+        revision_created_with:
+          auto: Automatic snapshot
+          publish: Publish
+          restore: Automatic snapshot
+          user: Manual snapshot
+        revision_created_with_hint:
+          auto: This version was automatically saved
+          publish: This version has been published
+          restore: This version has been automatically saved before an resrore was made
+          user: This version was manually saved
+        show: View
+        show_public: Public
+        snapshot: Save current version
+        title_hint: This field determines the URL for this story.
+      folders:
+        all: All
+        confirm_destroy: ! 'Delete folder? Note: Containing stories will be preserved.'
+        destroy: Delete
+        edit: Edit
+      resource_tabs:
+        entries: Stories
+        members: Members
+        revisions: Versions
+        users: User
+      revisions:
+        published_until_hint: Leave blank to publish indefinitely.
+      themings:
+        cname_hint: For social sharing
+        name: ! '%{account_name}'
+        remove_logo: Remove logo
+        show: View
+      users:
+        account: Profile
+        add: Add user
+        add_entry: Add story
+        confirm_delete: Delete this user? This action cannot be undone.
+        delete: Delete
+        delete_me:
+          cancel_label: No, do not delete my account!
+          delete_label: Delete account
+          warning_html: Please enter your current password to confirm deletion of your account. <b>All data will be deleted. This action cannot be undone.</b>
+        deleted: This user was deleted.
+        edit: Edit
+        email_invitation_hint: The user will be invited to choose a password.
+        empty: ! 'This user has no associated stories. '
+        invite_user: Invite user
+        me:
+          change_password_hint: Leave blank to keep your current password.
+          delete_account: Delete account
+          delete_account_hint: You don't want to continue using Pageflow?
+          deleted: Your account has been deleted. You may sign-up for a new one at any time!
+          updated: Your profile has been updated.
+        none: There are no stories.
+        resend_invitation: Resend invitation email
+        resent_invitation: The invitation email has been resent.
+        role_hint:
+          admin: Account-Administrators are able to manage all users and stories of their account only. System-Administrators can manage all settings.
+          others: Account-Administrators are able to manage all users and stories of their account.
+        roles:
+          account_manager: Account-Administrator
+          admin: System-Administrator
+          editor: Editor
+        suspend: Suspend
+        suspended: ! 'The user was suspended and will not be able to sign-in again. '
+        unsuspend: Unsuspend
+        unsuspended: The user was unsuspended.
+    audio:
+      open: Play audio
+    devise:
+      mailer:
+        confirmation_instructions: 
+        reset_password_instructions:
+          ignore_hint: Please ignore this mail If you have not requested a password reset. Your password will not be changed in this case.
+          instruction: Somebody recently asked to reset your Pageflow password. Click here to change your password.
+          salutation: Hello %{first_name}
+    edit_locks:
+      break_action:
+        aquire: Continue here
+      errors:
+        held_by_other_session_error:
+          aquire_html: <p>This story is already open in another editor window.</p>
+          other_html: ! '<p>This story is already open in another editor window. Please reload this page and click on the ''Continue here'' button.</p>
+
+            <p>If you continue working without reload, data loss may occur.</p>'
+        held_by_other_user_error:
+          aquire_html: <p><strong>%{user_name}</strong> is currently working on this story or has left the editor window open. Click 'Continue here' to take over.</p>
+          other_html: <p><strong>%{user_name}</strong> has ended your editor session. Please reload the page and click 'Continue here' to view the current version.</p>
+        not_held_error:
+          other_html: <p>Your editor session has been ended from another session. Please reload the page and click 'Continue here' to view the current version.</p>
+      required: This action cannot be executed because this story has been opened in another editor session.
+      required_but_held_by_other_user: This action cannot be executed because this story has been opened by another user.
+    editor:
+      blank_entry:
+        create_chapter: Click <em>New chapter</em> to create your first chapter.
+        create_page: Use the <em>New page</em> button within the chapter to add pages.
+        edit_page: Click directly on a page to switch to the pages edit view.
+        header: This is an empty Pageflow
+        intro: Each Pageflow consist of chapters and pages. The editor panel to your right shows the outline of your story.
+        outro: In this area, a live preview will be shown.
+      errors:
+        UnmatchedUploadError: This filetype is not supported.
+        unknown: A unknown error has occurred.
+      files:
+        stages:
+          encoding:
+            action_required: Confirmation required.
+            active: Encoding in progress.
+            failed: Encoding failed.
+            finished: Encoding was successful.
+            pending: Encoding pending.
+          fetching_meta_data:
+            active: Fetching metadata.
+            failed: Metadata failure.
+            finished: Metadata successfully fetched.
+            pending: Metadata polling pending.
+          processing:
+            active: Processing.
+            failed: Processing failure.
+            finished: Processing successfully finished.
+            pending: Processing pending.
+          uploading:
+            active: Upload in progress.
+            failed: Upload failure.
+            finished: Successfully uploaded.
+            pending: Upload pending.
+          uploading_to_s3:
+            active: Transfering to S3.
+            failed: Transfer to S3 failed.
+            finished: Successfully transferred to S3.
+            pending: Transfer to S3 pending.
+        tabs:
+          audio_files: Audios
+          image_files: Images
+          video_files: Videos
+      templates:
+        back_button_decorator:
+          outline: Outline
+        background_positioning:
+          cancel: Cancel
+          help: Configure which part of the image shall remain visibile when cropping.
+          preview_title: Preview
+          previews:
+            banner: Banner
+            ratio16to9: 16:9 Landscape
+            ratio16to9Portrait: 16:9 Portrait
+            ratio4to3: 4:3 Landscape
+            ratio4to3Portrait: 4:3 Portrait
+          save: Save
+          title: Adjust position
+        chapter_item:
+          new_page: New page
+          save_error: Errors were detected while saving this chapter.
+        confirm_encoding:
+          all_released: ! 'All files have been scheduled for encoding. '
+          audios_tab: Audios
+          confirm_button: Encode selected files
+          link_to_progress: The %{link} page shows encoding progress.
+          manage_files: Manage files
+          videos_tab: Videos
+        confirmable_file_item:
+          remove: Remove
+        edit_chapter:
+          destroy: Delete
+          outline: Outline
+          retry: Retry
+          save_error: Errors were detected while saving this chapter.
+        edit_entry:
+          close: Close
+          manage_files: Manage files
+          metadata: Title and options
+          new_chapter: New chapter
+          outline: Outline
+          publish: Publish
+          save_error: There were errors while saving metadata.
+        edit_meta_data:
+          outline: Outline
+          retry: Retry
+          save_error: There were errors while saving metadata.
+        edit_page:
+          destroy: Delete
+          outline: Outline
+          retry: Retry
+          save_error: There were errors while saving page.
+        embedded:
+          page_link:
+            reset: Reset
+        file_item:
+          cancel: Cancel
+          confirm: Confirm
+          credits: Credits
+          destroy: Delete
+          download: Download
+          retry: Retry
+          select: Select
+          source: Source
+        files:
+          back: Back
+        files_blank_slate:
+          no_files: There are no files of this type, yet. You can upload one to get started.
+        files_explorer:
+          cancel: Cancel
+          ok: Ok
+          reuse_files: Reuse files from other stories
+        files_explorer_blank_slate:
+          choose_hint: Please choose a story.
+        files_gallery_blank_slate:
+          no_files: This story does not contain any files of this type.
+        help_button:
+          open_help: Open help
+        loading:
+          loading: Loading...
+        locked:
+          close: Close editor
+          loading: Loading story. Please wait...
+          open_here: Continue here
+        notification:
+          approve_files: ! '%{num_files} files awaiting confirmation for the encoding process.'
+          retry: Retry
+          save_error: There were errors while saving changes.
+          saved: All changes have been saved.
+          saving: Saving changes...
+          show: Show
+          upload_pending: Uploads pending.
+        other_entries_blank_slate:
+          none_available: There are no other stories yet
+        page_item:
+          save_error: There were errors while saving page.
+        publish_entry:
+          date: Date
+          files_pending_notice: Please wait until all files have been processed and check the results. You may then publish your story.
+          not_published_notice: This story is currently not published.
+          publish: Publish
+          publish_current: Publish current version
+          publish_success: Your story has been sucessfully published.
+          published_notice: A version of this story is currently published.
+          published_url_hint: ! 'It can be accessed using following URL:'
+          show_files: Show files
+          time: Time
+          unlimited: indefinitely
+          until_including: Until including
+          view_revisions: View versions
+        select_button:
+          select: Select
+      views:
+        chapter_item_view:
+          chapter: Chapter
+          unnamed: (New chapter)
+        editor_views:
+          files_pending_warning: You are currently uploading files. All uploads will be canceled if you leave this page.
+          hide_editor: Hide editor panel
+          resize_editor: Resize editor panel
+          show_editor: Show editor panel
+        entry_preview_view:
+          scroll_hint: Scroll down to continue
+        files_view:
+          add: Add
+          reuse: Reuse
+          upload: Upload
+        page_item_view:
+          unnamed: (New page)
+    entries:
+      entry:
+        print_logo: Logo
+        scroll_indicator: Scroll down to continue
+        swipe_indicator: Swipe to continue
+      ie8_hint:
+        close: Close
+        deprecated_browser: <p>Your browser is outdated and this page might not work as intended. We recommend upgrading to a current browser version. Please visit <a href="http://www.browserchoice.eu/">http://www.browserchoice.eu/</a> for download suggestions.</p>
+      mobile_navigation:
+        imprint: Imprint
+        overview: Overview
+        share_with_twitter: Tweet
+      multimedia_alert:
+        alert: Alert
+        close: Continue
+        scroll_hint: Use the mouse wheel or the arrow keys on your keyboard to navigate between pages.
+        sound_hint: This multimedia story format uses video and audio footage. Please make sure your speakers are turned on.
+        swipe_hint: Swipe to navigate between pages.
+      navigation:
+        bar_bottom:
+          close_fullscreen: Exit fullscreen mode
+          hide_text: Hide text
+          mute_off: Unmute
+          mute_on: Mute
+          open_fullscreen: Fullscreen mode
+          scroll_down: Scroll down
+          show_text: Show text
+          volume: Volume
+        bar_top:
+          close_overview: Close overview
+          close_top_navigation: Close navigation
+          imprint: Imprint
+          navigate_top: Goto first page
+          open_overview: Overview
+          open_top_navigation: Open navigation
+          scroll_up: Scroll up
+          share: Share
+          share_with_facebook: Share on Facebook
+          share_with_twitter: Tweet
+        home_button:
+          show_home: Start
+      non_js_hint:
+        js_hint: This application utilizes JavaScript for enhanced functionality and user experience. Your browser may not have JavaScript or it may be disabled.
+      overview:
+        chapter:
+          chapter: Chapter
+        entry:
+          close: Close
+          overview: Overview
+          scroll_left: Scroll left
+          scroll_right: Scroll right
+      skip_links:
+        goto_content: Goto content
+        goto_navigation: Goto navigation
+        goto_topnavigation: Goto main navigation
+    helpers:
+      entries:
+        global_links: Global links
+        image_rights: Credits
+    invalid_transition: Invalid transition
+    pages:
+      templates:
+        audio:
+          hint: Audio
+        background_video:
+          hint: Video loop
+        page:
+          goto_top: Goto first page
+        video:
+          hint: Video
+        video_tag:
+          view_video: Play video
+    quotas:
+      exhausted: Quota exhausted
+    ui:
+      configuration_editor:
+        tabs:
+          files: Files
+          general: General
+          links: Links
+          options: Options
+          social: Social
+          widgets: Apperance
+      inline_help:
+        pageflow/chapter:
+          title: Will be shown on the overview page.
+        pageflow/entry:
+          credits: Will be shown in the info box.
+          emphasize_chapter_beginning: The first page of each chapter is emphasized.
+          emphasize_new_pages: Pages which have been added since the last visit are highlighted.
+          home_button_enabled: Show button to your home page.
+          home_button_enabled_disabled: This option is not available for your theme.
+          home_url: URL of your home page. Leave empty to use your accounts default setting.
+          home_url_disabled: This option is not available for your theme.
+          manual_start: Visitors must start the story manually.
+          summary: Summary text used for sharing within social networks.
+          title: Title that appears in your browser bar or tab.
+        pageflow/page:
+          additional_title: The info box appears close to the player controls.
+          description: Summary of this page that is used on the overview overlay and for social sharing.
+          gradient_opacity: Adjust gradient opacity to gain optimal contrast between text and background. Keep in mind that the position of elements varies with screen sizes.
+          invert: Use dark font color and bright gradient.
+          mobile_poster_image_id: This image is used as poster image on mobile devices.
+          text: This is the main text of the page.
+          thumbnail_image_id: This image will be used as thumbnail in the navigation bar and for internal links to this page.
+      templates:
+        inputs:
+          file_input:
+            adjust_positioning: Adjust field of view
+            edit: Edit
+            reset: Reset
+          page_reference:
+            drag_hint: Drag pages into the preview to create links.
+          text_area_input:
+            bold: Bold
+            cancel: Cancel
+            create_link: Insert link
+            italic: Italic
+            ok: Ok
+            underline: Underline
+            url: URL
+      views:
+        inputs:
+          file_input_view:
+            none: (none)
+          proxy_url_input_view:
+            http_error: The given URL could not be fetched. (The server answered with a HTTP status code ' %{status}')
+            url_validation: Checking URL...
+          select_input_view:
+            none: (none)
+            placeholder: Default (%{text})
+          text_input_view:
+            required_field: Required field
+          url_input_view:
+            required_field: Required field
+            supported_vendors: ! 'Following providers are supported:'
+            url_hint: ! 'URL must start with http:// '
+            url_hint_https: URL must start with http:// or https://
+    unauthorized: You are not authorized to view this page.
+    user_mailer:
+      invitation:
+        ending: Thank you and have fun,
+        greeting: Your Pageflow Team
+        instruction: ! 'Welcome to Pageflow. Please use the following link to set your personal password. You may use your email address to sign-in. '
+        salutation: Hello %{first_name}
+    widgets:
+      none: (none)
+      roles:
+        analytics: Tracking
+        mobile_navigation: Mobile navigation
+        navigation: Navigation bar
+      share_menu:
+        current_page: This page
+        entry: This story
+        share_with_facebook: Share on Facebook
+        share_with_google: Share on Google+
+        share_with_twitter: Share on Twitter
+      type_names:
+        default_mobile_navigation: Navigation bar with thumbnails
+        default_navigation: Navigation bar with thumbnails
+  support:
+    array:
+      last_word_connector: ! ', and '
+      two_words_connector: ! ' and '
+      words_connector: ! ', '
+  time:
+    am: am
+    formats:
+      date: ! '%Y-%m-%d'
+      default: ! '%a, %d %b %Y %H:%M:%S %z'
+      long: ! '%B %d, %Y %H:%M'
+      short: ! '%d %b %H:%M'
+    pm: pm
+  views:
+    pagination:
+      first: ! '|<'
+      last: ! '>|'
+      next: ! '>>'
+      previous: <<
+      truncate: ! '...'

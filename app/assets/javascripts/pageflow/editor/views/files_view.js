@@ -10,14 +10,14 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
 
   onRender: function() {
     this.addFileModel = new Backbone.Model({
-      label: 'Hinzufügen',
+      label: I18n.t('pageflow.editor.views.files_view.add'),
       options: [
         {
-          label: 'Hochladen',
+          label: I18n.t('pageflow.editor.views.files_view.upload'),
           handler: this.upload.bind(this)
         },
         {
-          label: 'Wiederverwenden',
+          label: I18n.t('pageflow.editor.views.files_view.reuse'),
           handler: function() {
             pageflow.FilesExplorerView.open({
               callback: pageflow.entry.addFileUsage.bind(pageflow.entry)

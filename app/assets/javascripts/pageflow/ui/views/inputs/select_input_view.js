@@ -71,7 +71,7 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
     var option = document.createElement('option');
 
     option.value = '';
-    option.text = this.options.blankText || I18n.t('pageflow.ui.select_input_view.blank');
+    option.text = this.options.blankText || I18n.t('pageflow.ui.views.inputs.select_input_view.none');
 
     this.ui.select.append(option);
   },
@@ -88,7 +88,7 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
       var option = document.createElement('option');
 
       option.value = '';
-      option.text = I18n.t('pageflow.ui.select_input_view.placeholder', {text: this.options.texts[placeholderIndex]});
+      option.text = I18n.t('pageflow.ui.views.inputs.select_input_view.placeholder', {text: this.options.texts[placeholderIndex]});
 
       this.ui.select.append(option);
     }

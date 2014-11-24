@@ -6,7 +6,7 @@ pageflow.ProxyUrlInputView = pageflow.UrlInputView.extend({
     var view = this;
 
     return $.Deferred(function(deferred) {
-      deferred.notify('Pr<C3><BC>fe Erreichbarkeit der URL...');
+      deferred.notify(I18n.t('pageflow.ui.views.inputs.proxy_url_input_view.url_validation'));
 
       $.ajax({
         url: view.rewriteUrl(url),
@@ -14,7 +14,7 @@ pageflow.ProxyUrlInputView = pageflow.UrlInputView.extend({
       })
         .done(deferred.resolve)
         .fail(function(xhr) {
-          deferred.reject('Die URL konnte nicht erfolgreich abgerufen werden (Der Server antwortete mit HTTP Status Code ' + xhr.status + ')');
+          deferred.reject(I18n.t('pageflow.ui.views.inputs.proxy_url_input_view.http_error', { status: xhr.status}));
         });
     }).promise();
   },

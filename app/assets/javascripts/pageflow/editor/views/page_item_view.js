@@ -33,7 +33,7 @@ pageflow.PageItemView = Backbone.Marionette.ItemView.extend({
       .addClass(this.model.get('template'));
 
     this.ui.pictogram.attr('title', this._getPictogramTitle());
-    this.ui.title.text(this.model.title() || '(Unbenannt)');
+    this.ui.title.text(this.model.title() || I18n.t('pageflow.editor.views.page_item_view.unnamed'));
   },
 
   _getPictogramTitle: function() {

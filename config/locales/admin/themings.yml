@@ -1,5 +1,0 @@
-de:
-  pageflow:
-    admin:
-      themings:
-        name: "%{account_name}"

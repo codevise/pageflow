@@ -56,7 +56,7 @@ pageflow.BackgroundPositioningView = Backbone.Marionette.ItemView.extend({
         filesCollection: view.options.filesCollection,
         ratio: ratio,
         maxSize: 200,
-        label: I18n.t('pageflow.editor.background_positioning.previews.' + name)
+        label: I18n.t('pageflow.editor.templates.background_positioning.previews.' + name)
       })).el);
     });
   }
