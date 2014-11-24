@@ -1,8 +1,5 @@
 ENV['RAILS_ENV'] ||= 'test'
 
-require 'pageflow/support'
-Pageflow::Dummy.setup
-
 require 'rspec/rails'
 require 'domino'
 

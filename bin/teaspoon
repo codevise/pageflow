@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-ENV['RAILS_ENV'] ||= 'test'
 
 require File.expand_path('../spec/support/pageflow/rails_version', File.dirname(__FILE__))
 dummy_root = File.expand_path("../spec/dummy/rails-#{Pageflow::RailsVersion.detect}", File.dirname(__FILE__))
@@ -13,4 +12,4 @@ require 'bundler/setup'
 require 'pageflow/support'
 Pageflow::Dummy.setup
 
-load Gem.bin_path('rspec-core', 'rspec')
+load Gem.bin_path('teaspoon', 'teaspoon')

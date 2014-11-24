@@ -11,7 +11,8 @@ services:
   - redis-server
 
 script:
-  - "xvfb-run bundle exec rspec"
+  - "xvfb-run bin/rspec"
+  - "xvfb-run bin/teaspoon"
 
 before_script:
     - mysql -e 'create database pageflow_dummy_test;'

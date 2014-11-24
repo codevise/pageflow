@@ -32,6 +32,8 @@ rake 'db:create:all'
 generate 'pageflow:install', '--force'
 generate "#{ENV['PAGEFLOW_PLUGIN_ENGINE']}:install", '--force' if ENV['PAGEFLOW_PLUGIN_ENGINE']
 
+run 'rm -r spec'
+
 # Devise needs default_url_options for generating mails.
 
 inject_into_file('config/environments/test.rb',
@@ -42,12 +44,6 @@ inject_into_file('config/environments/test.rb',
 
 prepend_to_file('config/initializers/pageflow.rb',
                  "ActiveAdmin.application.load_paths.unshift(Dir[Rails.root.join('app/admin')])\n")
-
-# For Javascript testing the Teaspoon engine has to be mounted
-
-inject_into_file('config/routes.rb',
-                 "  mount ::Teaspoon::Engine, at: '/teaspoon' if defined?(Teaspoon)",
-                 before: "end\n")
 
 # Create database tables for fake hosted files and revision components.
 
