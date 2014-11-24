@@ -47,7 +47,6 @@ body {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 0;
   width: 100%;
   overflow: hidden;
   pointer-events: none;
@@ -142,7 +141,6 @@ body {
     }
 
     .heading-1 {
-      display: block;
       height: 40px;
       margin: 10px;
       font-size: 2em;
@@ -303,7 +301,6 @@ body {
       }
       li {
         width: 200px;
-        height: 88px;
         border-bottom: 1px solid #465b73;
 
         a {
@@ -333,6 +330,13 @@ body {
           &.google:before {
             background-position: center bottom;
           }
+        }
+      }
+      .sub_share {
+        display: none;
+
+        a {
+          margin-left: 0;
         }
       }
     }

@@ -9,13 +9,14 @@
 
       var goToPage = function () {
         var a = $('a', this),
-          id = a.attr("data-link");
+          id = a.attr("data-link"),
+          share = a.data("share-page");
 
         if (id !== undefined) {
           pageflow.slides.goToById(id);
           $('.navigation_mobile').removeClass('active');
         }
-        else {
+        else if (share === undefined) {
           window.open(a.attr('href'), '_blank');
           a.preventDefault();
         }
@@ -40,6 +41,12 @@
       $('.menu.imprint', that.element).click(function() {
         $(that.element).addClass('imprint');
         $(that.element).removeClass('sharing');
+      });
+
+      $('.sharing_mobile', this.element).shareMenu({
+        clickTarget: $('.sharing_mobile li', this.element),
+        subMenu: $('.sub_share', this.element),
+        links: $('.sharing_mobile li > a', this.element)
       });
 
       $('.wrapper', this.element).each(function() {
