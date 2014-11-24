@@ -1,21 +1,21 @@
 <a class="scroll_indicator bottom" tabindex="2">
-  <span class="hint">runter scrollen</span>
+  <span class="hint"><%= t('.scroll_down') %></span>
 </a>
 <ul class="navigation_bar_bottom">
   <li class="indicator">
   </li>
   <li class="fullscreen">
-    <a class="navigation_bullet navigation_fullscreen" tabindex="2" title="Vollbilddarstellung" data-active-title="Vollbilddarstellung verlassen">
+    <a class="navigation_bullet navigation_fullscreen" tabindex="2" title="<%= t('.open_fullscreen') %>" data-active-title="<%= t('.close_fullscreen') %>">
       <span class="button"></span>
     </a>
   </li>
   <li class="hide_text">
-    <a class="navigation_bullet navigation_hide_text" tabindex="2" title="Text ausblenden" data-active-title="Text wieder einblenden">
+    <a class="navigation_bullet navigation_hide_text" tabindex="2" title="<%= t('.hide_text') %>" data-active-title="<%= t('.show_text') %>">
       <span class="button"></span>
     </a>
   </li>
   <li class="navigation_menu mute">
-    <div class="navigation_menu_box navigation_volume_box" title="Lautstärke">
+    <div class="navigation_menu_box navigation_volume_box" title="<%= t('.volume') %>">
       <div class="volume-control" style="display: block;">
         <div class="volume-slider">
           <div class="volume-level" style="width: 100%;"><span class="volume-control-text"></span></div>
@@ -24,7 +24,7 @@
       </div>
     </div>
     <a class="navigation_menu" tabindex="2">
-      <span class="navigation_bg navigation_mute" title="Lautstärke" data-muted-title="Ton an" data-not-muted-title="Ton aus"></span>
+      <span class="navigation_bg navigation_mute" title="<%= t('.volume') %>" data-muted-title="<%= t('.mute_off') %>" data-not-muted-title="<%= t('.mute_on') %>"></span>
     </a>
   </li>
 </ul>

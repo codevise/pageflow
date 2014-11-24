@@ -1,9 +1,11 @@
 <section class="overview">
   <div class="content">
-    <a class="close button"></a>
-    <h2>Übersicht</h2>
+    <a class="close button">
+      <span class="label"><%= t('.close') %></span>
+    </a>
+    <h2><%= t('.overview') %></h2>
 
-    <a class="scroll_indicator left button" tabindex="1" title="Nach links scrollen"><span class="hint">Nach links scrollen</span></a>
+    <a class="scroll_indicator left button" tabindex="1" title="<%= t('.scroll_left') %>"><span class="hint"><%= t('.scroll_left') %></span></a>
 
     <div class="wrapper">
       <div class="scroller">
@@ -12,6 +14,6 @@
       </div>
     </div>
 
-    <a class="scroll_indicator right button" tabindex="1" title="Nach rechts scrollen"><span class="hint">Nach rechts scrollen</span></a>
+    <a class="scroll_indicator right button" tabindex="1" title="<%= t('.scroll_right') %>"><span class="hint"><%= t('.scroll_right') %></span></a>
   </div>
 </section>

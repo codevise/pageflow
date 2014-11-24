@@ -1,9 +1,9 @@
-<li class="uploading"><span class="count">0</span> Dateien werden gerade hochgeladen.</li>
-<li class="failed"><span class="count">0</span> <span class="description">Datensätze konnten nicht gespeichert werden.</span> <a class="retry">Erneut versuchen</a></li>
-<li class="saving">Änderungen werden gespeichert...</li>
-<li class="saved">Alle Änderungen wurden gespeichert.</li>
+<li class="uploading"><span class="count">0</span><%= I18n.t('pageflow.editor.templates.notification.upload_pending') %></li>
+<li class="failed"><span class="count">0</span> <span class="description"><%= I18n.t('pageflow.editor.templates.notification.save_error') %></span> <a class="retry"><%= I18n.t('pageflow.editor.templates.notification.retry') %></a></li>
+<li class="saving"><%= I18n.t('pageflow.editor.templates.notification.saving') %></li>
+<li class="saved"><%= I18n.t('pageflow.editor.templates.notification.saved') %></li>
 
 <li class="confirmable_files">
-  <span class="count">0</span> Dateien müssen für die Transcodierung freigeben werden.
-  <a href="#/confirmable_files" class="display_confirmable_files">Anzeigen</a>
+  <%= I18n.t('pageflow.editor.templates.notification.approve_files', {num_files: '<span class="count">0</span>'}) %>
+  <a href="#/confirmable_files" class="display_confirmable_files"><%= I18n.t('pageflow.editor.templates.notification.show') %></a>
 </li>

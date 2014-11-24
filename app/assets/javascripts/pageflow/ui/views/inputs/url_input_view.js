@@ -84,19 +84,19 @@ pageflow.UrlInputView = Backbone.Marionette.Layout.extend({
     var value = this.ui.input.val();
 
     if (options.required && !value) {
-      displayValidationError('Muss ausgefüllt werden.');
+      displayValidationError(I18n.t('pageflow.ui.views.inputs.url_input_view.required_field'));
     }
     else if (value && !isValidUrl(value)) {
-      var errorMessage = 'URL muss mit http:// beginnen.';
+      var errorMessage = I18n.t('pageflow.ui.views.inputs.url_input_view.url_hint');
 
       if (options.permitHttps) {
-        errorMessage = 'URL muss mit http:// oder https:// beginnen.';
+        errorMessage = I18n.t('pageflow.ui.views.inputs.url_input_view.url_hint_https');
       }
 
       displayValidationError(errorMessage);
     }
     else if (value && !hasSupportedHost(value)) {
-      displayValidationError('Es werden nur die folgenden Anbieter unterstützt:' +
+      displayValidationError(I18n.t('pageflow.ui.views.inputs.url_input_view.supported_vendors') +
                              _.map(view.supportedHosts(), function(url) {
                                return '<li>' + url +'</li>';
                              }).join(''));

@@ -1,5 +1,5 @@
 <% if video_file %>
-  <%= link_to 'Video ansehen', short_video_file_path(video_file.entry, video_file), :class => 'hint'%>
+  <%= link_to t('.view_video'), short_video_file_path(video_file.entry, video_file), :class => 'hint'%>
 <% end %>
 
 <%= content_tag :script, :type => 'text/html', :data => script_tag_data do %>

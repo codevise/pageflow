@@ -1,45 +1,45 @@
 <div class="files_pending notice">
-  <p>Bitte warten Sie bis alle Dateien des Beitrags verarbeitet wurden und überprüfen Sie das Ergebnis. Der Beitrag kann dann veröffentlicht werden.</p>
-  <p><a href="#files">Dateien anzeigen</a></p>
+  <p><%= I18n.t('pageflow.editor.templates.publish_entry.files_pending_notice') %></p>
+  <p><a href="#files"><%= I18n.t('pageflow.editor.templates.publish_entry.show_files') %></a></p>
 </div>
 
 <div>
   <div class="published notice">
-    <p>Eine Revision dieses Beitrags ist zur Zeit veröffentlicht.</p>
-    <p><a href="" target="_blank">Revisionen ansehen</a></p>
+    <p><%= I18n.t('pageflow.editor.templates.publish_entry.published_notice') %></p>
+    <p><a href="" target="_blank"><%= I18n.t('pageflow.editor.templates.publish_entry.view_revisions') %></a></p>
   </div>
 
   <div class="not_published notice">
-    Dieser Beitrag ist zur Zeit nicht veröffentlicht.
+      <%= I18n.t('pageflow.editor.templates.publish_entry.not_published_notice') %>
   </div>
 
-  <h2>Akuellen Stand veröffentlichen</h2>
+  <h2><%= I18n.t('pageflow.editor.templates.publish_entry.publish_current') %></h2>
 
   <div class="radio_input">
     <input id="publish_entry_forever" type="radio" name="mode" value="publish_forever">
-    <label for="publish_entry_forever">Unbegrenzt</label>
+    <label for="publish_entry_forever"><%= I18n.t('pageflow.editor.templates.publish_entry.unlimited') %></label>
   </div>
 
   <div class="radio_input">
     <input id="publish_entry_until" type="radio" name="mode" value="publish_until">
-    <label for="publish_entry_until">Bis einschließlich</label>
+    <label for="publish_entry_until"><%= I18n.t('pageflow.editor.templates.publish_entry.until_including') %></label>
 
     <div class="publish_until_fields disabled">
-      <label>Datum
+      <label><%= I18n.t('pageflow.editor.templates.publish_entry.date') %>
         <input type="text" name="publish_until">
       </label>
 
-      <label>Uhrzeit
+      <label><%= I18n.t('pageflow.editor.templates.publish_entry.time') %>
         <input type="text" name="publish_until_time" value="00:00">
       </label>
     </div>
   </div>
 
-  <button class="save" disabled>Veröffentlichen</a>
+  <button class="save" disabled><%= I18n.t('pageflow.editor.templates.publish_entry.publish') %></a>
 </div>
 
 <div class="success notice">
-  <p>Der Beitrag wurde erfolgreich veröffentlicht.</p>
-  <p>Er kann nun unter folgender URL erreicht werden:</p>
+  <p><%= I18n.t('pageflow.editor.templates.publish_entry.publish_success') %></p>
+  <p><%= I18n.t('pageflow.editor.templates.publish_entry.published_url_hint') %></p>
   <p><a href="" target="_blank"></a></p>
 </div>

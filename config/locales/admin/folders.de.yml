@@ -1,8 +1,0 @@
-de:
-  pageflow:
-    admin:
-      folders:
-        all: "Alle"
-        edit: "Bearbeiten"
-        destroy: "Löschen"
-        confirm_destroy: "Ordner wirklick löschen? Beiträge bleiben erhalten."

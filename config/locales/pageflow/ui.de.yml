@@ -1,6 +1,0 @@
-de:
-  pageflow:
-    ui:
-      select_input_view:
-        placeholder: "Standard (%{text})"
-        blank: "(Kein)"

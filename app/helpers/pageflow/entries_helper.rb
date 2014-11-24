@@ -13,7 +13,7 @@ module Pageflow
 
       if rights.any?
         content_tag :p, class: 'rights' do
-          "Bildrechte: " + rights * ', '
+          I18n.t('pageflow.helpers.entries.image_rights') + ": " + rights * ', '
         end
       else
         ''
@@ -30,7 +30,7 @@ module Pageflow
       end
 
       if links.any?
-        content_tag(:h2, 'Globale Links', :class => 'hidden') + safe_join(links, ''.html_safe)
+        content_tag(:h2, I18n.t('pageflow.helpers.entries.global_links'), :class => 'hidden') + safe_join(links, ''.html_safe)
       else
         ''
       end

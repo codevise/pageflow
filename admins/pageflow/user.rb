@@ -106,7 +106,7 @@ module Pageflow
 
     form(:partial => 'form')
 
-    collection_action 'me', :title => 'Profil', :method => [:get, :patch] do
+    collection_action 'me', :title => I18n.t('pageflow.admin.users.account'), :method => [:get, :patch] do
       if request.patch?
         if current_user.update_with_password(user_profile_params)
           sign_in current_user, :bypass => true
@@ -115,7 +115,7 @@ module Pageflow
       end
     end
 
-    collection_action 'delete_me', :title => 'Konto entfernen', :method => [:get, :delete] do
+    collection_action 'delete_me', :title => I18n.t('pageflow.admin.users.account'), :method => [:get, :delete] do
       if request.delete?
         if current_user.destroy_with_password(params.require(:user)[:current_password])
           redirect_to admin_root_path, :notice => I18n.t('pageflow.admin.users.me.updated')

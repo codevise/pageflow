@@ -13,7 +13,7 @@ module Pageflow
             end
             column do |membership|
               if authorized?(:destroy, membership)
-                link_to(I18n.t('pageflow.admin.entries.remove'), admin_entry_membership_path(membership.entry, membership), :method => :delete, :data => {:confirm => I18n.t('pageflow.active_admin.delete_confirmation'), :rel => 'delete_membership'})
+                link_to(I18n.t('pageflow.admin.entries.remove'), admin_entry_membership_path(membership.entry, membership), :method => :delete, :data => {:confirm => I18n.t('active_admin.delete_confirmation'), :rel => 'delete_membership'})
               end
             end
           end
