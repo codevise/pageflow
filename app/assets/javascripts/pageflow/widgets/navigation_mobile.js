@@ -7,7 +7,7 @@
       var that = this,
         scroller;
 
-      var goToPage = function () {
+      var goToPage = function (event) {
         var a = $('a', this),
           id = a.attr("data-link"),
           share = a.data("share-page");
@@ -18,7 +18,7 @@
         }
         else if (share === undefined) {
           window.open(a.attr('href'), '_blank');
-          a.preventDefault();
+          event.preventDefault();
         }
       };
 
