@@ -4,8 +4,8 @@
   $.widget('pageflow.navigationMobile', {
     _create: function() {
       /* mobile version */
-      var that = this,
-        scroller;
+      var element = this.element,
+          scroller;
 
       var goToPage = function (event) {
         var a = $('a', this),
@@ -23,24 +23,24 @@
       };
 
       $('body').on('touchstart mousedown MSPointerDown pointerdown', function(event) {
-        if (that.element.hasClass('active') && !$(event.target).parents().filter(that.element).length) {
-          that.element.removeClass('active imprint sharing');
+        if (element.hasClass('active') && !$(event.target).parents().filter(element).length) {
+          element.removeClass('active imprint sharing');
         }
       });
 
-      $('.menu.index', that.element).click(function() {
-        if(!$(that.element).hasClass('sharing') && !$(that.element).hasClass('imprint')) {
-          $(that.element).toggleClass('active');
+      $('.menu.index', element).click(function() {
+        if(!$(element).hasClass('sharing') && !$(element).hasClass('imprint')) {
+          $(element).toggleClass('active');
         }
-        $(that.element).removeClass('imprint sharing');
+        $(element).removeClass('imprint sharing');
       });
-      $('.menu.sharing', that.element).click(function() {
-        $(that.element).addClass('sharing');
-        $(that.element).removeClass('imprint');
+      $('.menu.sharing', element).click(function() {
+        $(element).addClass('sharing');
+        $(element).removeClass('imprint');
       });
-      $('.menu.imprint', that.element).click(function() {
-        $(that.element).addClass('imprint');
-        $(that.element).removeClass('sharing');
+      $('.menu.imprint', element).click(function() {
+        $(element).addClass('imprint');
+        $(element).removeClass('sharing');
       });
 
       $('.sharing_mobile', this.element).shareMenu({
@@ -56,20 +56,20 @@
           probeType: 3
         });
 
-        $('ul', that.element).pageNavigationList({
+        $('ul', element).pageNavigationList({
           scroller: scroller
         });
 
         scroller.on('scroll', function() {
-          $('li', that.element).removeClass('touched').off('touchend mouseup MSPointerUp pointerup', goToPage);
+          $('li', element).removeClass('touched').off('touchend mouseup MSPointerUp pointerup', goToPage);
         });
 
-        $('.menu', that.element).click(function() {
+        $('.menu', element).click(function() {
           scroller.refresh();
         });
 
-        $('li', that.element).each(function() {
-          $(this).on({
+        if (!$(element).data('touchBound')) {
+          $('li', element).on({
             'touchstart mousedown MSPointerDown pointerdown': function() {
               $(this).addClass('touched');
               $(this).one('touchend mouseup MSPointerUp pointerup', goToPage);
@@ -78,7 +78,9 @@
               $(this).removeClass('touched');
             }
           });
-        });
+          $(element).data('touchBound', true);
+        }
+
       });
     }
   });
