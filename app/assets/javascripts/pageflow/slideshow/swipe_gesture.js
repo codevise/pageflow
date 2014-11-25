@@ -53,8 +53,9 @@
       }, this));
 
       function isNonTouchPointer(event) {
-        return (event.originalEvent.pointerType &&
-                event.originalEvent.pointerType !== event.originalEvent.MSPOINTER_TYPE_TOUCH);
+        return event.originalEvent.pointerType &&
+          event.originalEvent.pointerType !== event.originalEvent.MSPOINTER_TYPE_TOUCH &&
+          event.originalEvent.pointerType !== 'touch';
       }
     }
   });
