@@ -173,7 +173,7 @@
           allowDown = false,
           startX, startY;
 
-      this.element.on('touchstart MSPointerDown', _.bind(function(event) {
+      this.element.on('touchstart MSPointerDown pointerdown', _.bind(function(event) {
         var point = event.originalEvent.touches ? event.originalEvent.touches[0] : event.originalEvent;
         startX = point.pageX;
         startY = point.pageY;
@@ -184,7 +184,7 @@
         }
       }, this));
 
-      this.element.on('touchmove MSPointerMove', _.bind(function(event) {
+      this.element.on('touchmove MSPointerMove pointermove', _.bind(function(event) {
         var point = event.originalEvent.touches ? event.originalEvent.touches[0] : event.originalEvent;
         var deltaX = point.pageX - startX;
         var deltaY = point.pageY - startY;
@@ -203,7 +203,7 @@
         }
       }, this));
 
-      this.element.on('touchend MSPointerUp', _.bind(function(event) {
+      this.element.on('touchend MSPointerUp pointerup', _.bind(function(event) {
         if (allowUp) {
           this._trigger('hintup');
         }

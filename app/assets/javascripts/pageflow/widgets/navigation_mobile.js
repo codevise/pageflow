@@ -21,7 +21,7 @@
         }
       };
 
-      $('body').on('touchstart mousedown MSPointerDown', function(event) {
+      $('body').on('touchstart mousedown MSPointerDown pointerdown', function(event) {
         if (that.element.hasClass('active') && !$(event.target).parents().filter(that.element).length) {
           that.element.removeClass('active imprint sharing');
         }
@@ -54,7 +54,7 @@
         });
 
         scroller.on('scroll', function() {
-          $('li', that.element).removeClass('touched').off('touchend mouseup MSPointerUp', goToPage);
+          $('li', that.element).removeClass('touched').off('touchend mouseup MSPointerUp pointerup', goToPage);
         });
 
         $('.menu', that.element).click(function() {
@@ -63,11 +63,11 @@
 
         $('li', that.element).each(function() {
           $(this).on({
-            'touchstart mousedown MSPointerDown': function() {
+            'touchstart mousedown MSPointerDown pointerdown': function() {
               $(this).addClass('touched');
-              $(this).one('touchend mouseup MSPointerUp', goToPage);
+              $(this).one('touchend mouseup MSPointerUp pointerup', goToPage);
             },
-            'touchend mouseup MSPointerUp': function() {
+            'touchend mouseup MSPointerUp pointerup': function() {
               $(this).removeClass('touched');
             }
           });
