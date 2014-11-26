@@ -251,30 +251,22 @@ body {
       }
     }
 
-    .menu.index {
-      background-position: 0px 0px;
-    }
-    &.sharing .menu.index, &.imprint .menu.index {
-      background-position: -45px 0px;
-    }
-
-    &.sharing .menu.sharing {
-      background-position: 0px 0px;
-    }
+    .menu.index,
+    &.sharing .menu.sharing,
     &.imprint .menu.imprint {
-      background-position: 0px 0px;
-    }
-    &.sharing .sharing_mobile {
-      right: 0px;
-      width: 200px;
-      visibility: visible;
-    }
-    &.imprint .imprint_mobile {
-      right: 0px;
-      width: 200px;
-      visibility: visible;
+      background-position: 0 0;
     }
 
+    &.sharing .menu.index, &.imprint .menu.index {
+      background-position: -45px 0;
+    }
+
+    &.sharing .sharing_mobile,
+    &.imprint .imprint_mobile {
+      right: 0;
+      width: 200px;
+      visibility: visible;
+    }
 
     .overview_mobile {
       @include transition-delay(0s);
@@ -337,9 +329,9 @@ body {
           }
         }
       }
-      .sub_share {
-        display: none;
-      }
+    }
+    .sub_share {
+      display: none;
     }
   }
 

@@ -3,21 +3,10 @@
 (function($) {
   $.widget('pageflow.navigationMobile', {
     _create: function() {
-      /* mobile version */
-      var element = this.element,
+
+      var that = this,
+          element = this.element,
           scroller;
-
-      var goToPage = function (event) {
-        console.log('goToPage');
-        var a = $('a', this),
-          id = a.attr("data-link"),
-          share = a.data("share-page");
-
-        if (id !== undefined) {
-          pageflow.slides.goToById(id);
-          $('.navigation_mobile').removeClass('active');
-        }
-      };
 
       $('body').on('touchstart mousedown MSPointerDown pointerdown', function(event) {
         if (element.hasClass('active') && !$(event.target).parents().filter(element).length) {
@@ -40,7 +29,9 @@
         $(element).removeClass('sharing');
       });
 
-      $('.wrapper', this.element).each(function() {
+      $('.wrapper', element).each(function() {
+        var sharingMobile = $(this).parents('.sharing_mobile');
+
         scroller = new IScroll(this, {
           mouseWheel: true,
           bounce: false,
@@ -52,7 +43,8 @@
         });
 
         scroller.on('scroll', function() {
-          $('.overview_mobile li', element).removeClass('touched').off('touchend mouseup MSPointerUp pointerup', goToPage);
+          $('.overview_mobile li', element).removeClass('touched').off('touchend mouseup MSPointerUp pointerup', that._goToPage);
+          $('.sub_share a', sharingMobile).off('touchend mouseup MSPointerUp pointerup', that._openLink);
         });
 
         $('.menu', element).click(function() {
@@ -69,22 +61,40 @@
             }
           });
           $('.overview_mobile li', element).on({
-            'touchstart mousedown MSPointerDown': function() {
-              $(this).one('touchend mouseup MSPointerUp', goToPage);
+            'touchstart mousedown MSPointerDown pointerdown': function() {
+              $(this).one('touchend mouseup MSPointerUp pointerup', that._goToPage);
             }
           });
           $(element).data('touchBound', true);
         }
 
-      });
+        $('.sub_share a', sharingMobile).on({
+          'touchstart mousedown MSPointerDown pointerdown': function() {
+            $(this).one('touchend mouseup MSPointerUp pointerup', that._openLink);
+          }
+        });
 
-      $('.sharing_mobile', this.element).shareMenu({
-        clickTarget: $('.sharing_mobile li > a', this.element),
-        subMenu: $('.sub_share', this.element),
-        links: $('.sharing_mobile li > a', this.element),
-        scrollerToRefresh: scroller
+        sharingMobile.shareMenu({
+          subMenu: $('.sub_share', element),
+          links: $('li > a', sharingMobile),
+          scroller: scroller
+        });
       });
+    },
 
+    _goToPage: function () {
+      var a = $('a', this),
+          id = a.attr("data-link");
+
+      if (id !== undefined) {
+        pageflow.slides.goToById(id);
+        $('.navigation_mobile').removeClass('active');
+      }
+    },
+
+    _openLink: function(event) {
+      event.preventDefault();
+      window.open(this.href, '_blank');
     }
   });
 }(jQuery));
