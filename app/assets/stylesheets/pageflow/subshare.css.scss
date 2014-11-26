@@ -1,0 +1,25 @@
+div.sub_share a {
+  width: 45%;
+  padding: 3px;
+  color: white;
+  font-family: SourceSansPro;
+  font-size: 13px;
+  text-align: center;
+  margin: 20px 1% 0px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 9px;
+  display: inline-block;
+  text-decoration: none;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.navigation_mobile div.sub_share a {
+  width: auto;
+  display: block;
+  margin: 1em 1em;
+  padding: 1em 0;
+}
+
