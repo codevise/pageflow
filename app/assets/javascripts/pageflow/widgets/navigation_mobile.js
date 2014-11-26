@@ -8,6 +8,7 @@
           scroller;
 
       var goToPage = function (event) {
+        console.log('goToPage');
         var a = $('a', this),
           id = a.attr("data-link"),
           share = a.data("share-page");
@@ -15,10 +16,6 @@
         if (id !== undefined) {
           pageflow.slides.goToById(id);
           $('.navigation_mobile').removeClass('active');
-        }
-        else if (share === undefined) {
-          window.open(a.attr('href'), '_blank');
-          event.preventDefault();
         }
       };
 
@@ -43,12 +40,6 @@
         $(element).removeClass('sharing');
       });
 
-      $('.sharing_mobile', this.element).shareMenu({
-        clickTarget: $('.sharing_mobile li', this.element),
-        subMenu: $('.sub_share', this.element),
-        links: $('.sharing_mobile li > a', this.element)
-      });
-
       $('.wrapper', this.element).each(function() {
         scroller = new IScroll(this, {
           mouseWheel: true,
@@ -61,7 +52,7 @@
         });
 
         scroller.on('scroll', function() {
-          $('li', element).removeClass('touched').off('touchend mouseup MSPointerUp', goToPage);
+          $('.overview_mobile li', element).removeClass('touched').off('touchend mouseup MSPointerUp', goToPage);
         });
 
         $('.menu', element).click(function() {
@@ -72,16 +63,28 @@
           $('li', element).on({
             'touchstart mousedown MSPointerDown': function() {
               $(this).addClass('touched');
-              $(this).one('touchend mouseup MSPointerUp', goToPage);
             },
             'touchend mouseup MSPointerUp': function() {
               $(this).removeClass('touched');
+            }
+          });
+          $('.overview_mobile li', element).on({
+            'touchstart mousedown MSPointerDown': function() {
+              $(this).one('touchend mouseup MSPointerUp', goToPage);
             }
           });
           $(element).data('touchBound', true);
         }
 
       });
+
+      $('.sharing_mobile', this.element).shareMenu({
+        clickTarget: $('.sharing_mobile li > a', this.element),
+        subMenu: $('.sub_share', this.element),
+        links: $('.sharing_mobile li > a', this.element),
+        scrollerToRefresh: scroller
+      });
+
     }
   });
 }(jQuery));
