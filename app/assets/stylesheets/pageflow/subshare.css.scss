@@ -1,4 +1,8 @@
-div.sub_share a {
+div.sub_share {
+  display: none;
+}
+
+.navigation_share_box div.sub_share a {
   width: 45%;
   padding: 3px;
   color: white;
