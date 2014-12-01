@@ -46,10 +46,7 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
     this.$el.page('cleanup');
 
     this.$el.html(this.pageTemplate());
-    this.$el.attr('data-id', this.model.id);
-    this.$el.attr('data-perma-id', this.model.get('perma_id'));
     this.$el.data('template', this.model.get('template'));
-    this.$el.data('configuration', this.model.get('configuration'));
 
     this.$el.page('reinit');
     this.updateChapterBeginningClass();
