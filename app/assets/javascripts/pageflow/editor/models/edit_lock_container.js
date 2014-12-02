@@ -66,6 +66,7 @@ pageflow.EditLockContainer = Backbone.Model.extend({
   release: function() {
     if (this.lock) {
       var promise = this.lock.destroy();
+      delete sessionStorage[this.storageKey];
       this.lock = null;
       return promise;
     }
