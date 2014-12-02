@@ -37,7 +37,7 @@ pageflow.PageItemView = Backbone.Marionette.ItemView.extend({
   },
 
   _getPictogramTitle: function() {
-    var result = I18n.t('activerecord.values.page.template.' + this.model.get('template'));
+    var result = I18n.t(this.model.pageType().translation_key);
     result += ' Seite';
 
     if (this.options.displayInNavigationHint && !this.model.configuration.get('display_in_navigation')) {
