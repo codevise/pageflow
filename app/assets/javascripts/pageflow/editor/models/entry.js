@@ -15,6 +15,9 @@ pageflow.Entry = Backbone.Model.extend({
   initialize: function(attributes, options) {
     options = options || {};
 
+    this.configuration = new pageflow.EntryConfiguration(this.get('configuration') || {});
+    this.configuration.parent = this;
+
     this.files = options.files || pageflow.files;
     this.chapters = options.chapters || pageflow.chapters;
     this.chapters.parentModel = this;
@@ -32,7 +35,8 @@ pageflow.Entry = Backbone.Model.extend({
       this.pages.sort();
     });
 
-    this.listenTo(this, 'change:title change:summary change:credits change:manual_start change:home_url change:home_button_enabled', function() {
+    this.listenTo(this.configuration, 'change', function() {
+      this.trigger('change:configuration');
       this.save();
     });
   },
@@ -93,6 +97,6 @@ pageflow.Entry = Backbone.Model.extend({
   },
 
   toJSON: function() {
-    return _.pick(this.attributes, 'title', 'summary', 'credits', 'manual_start', 'home_url', 'home_button_enabled');
+    return this.configuration.toJSON();
   }
 });
