@@ -13,6 +13,7 @@ module Pageflow
     delegate(:title, :summary, :credits, :manual_start,
              :widgets, :chapters, :pages,
              :emphasize_chapter_beginning,
+             :emphasize_new_pages,
              :files,
              :image_files, :video_files, :audio_files,
              :to => :draft)

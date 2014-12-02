@@ -7,7 +7,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
   mixins: [pageflow.failureIndicatingView],
 
   regions: {
-    formContainer: '.form_fields',
+    formContainer: '.form_fields'
   },
 
   events: {
@@ -30,6 +30,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
     configurationEditor.tab('widgets', function() {
       this.input('manual_start', pageflow.CheckBoxInputView);
       this.input('emphasize_chapter_beginning', pageflow.CheckBoxInputView);
+      this.input('emphasize_new_pages', pageflow.CheckBoxInputView);
       this.input('home_button_enabled', pageflow.CheckBoxInputView, {
         disabled: !pageflow.theming.hasHomeButton(),
         displayUncheckedIfDisabled: true

@@ -66,7 +66,8 @@ module Pageflow
     protected
 
     def entry_params
-      params.require(:entry).permit(:title, :summary, :credits, :manual_start, :home_url, :home_button_enabled, :emphasize_chapter_beginning)
+      params.require(:entry).permit(:title, :summary, :credits, :manual_start, :home_url, :home_button_enabled,
+                                    :emphasize_chapter_beginning, :emphasize_new_pages)
     end
 
     def entry_request_scope
