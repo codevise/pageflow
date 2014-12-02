@@ -9,7 +9,7 @@
         pageflow.hideText.activate();
       });
 
-      this.element.on('touchstart MSPointerDown mousedown', function() {
+      this.element.on('touchstart MSPointerDown pointerdown mousedown', function() {
         if (pageflow.hideText.isActive()) {
           pageflow.hideText.deactivate();
         }

@@ -11,7 +11,7 @@
         maxDuration: 500
       }, this.options);
 
-      this.element.on('touchstart MSPointerDown', _.bind(function(event) {
+      this.element.on('touchstart MSPointerDown pointerdown', _.bind(function(event) {
         if (isNonTouchPointer(event)) { return; }
         var point = event.originalEvent.touches ? event.originalEvent.touches[0] : event.originalEvent;
 
@@ -24,7 +24,7 @@
         startTime = new Date().getTime();
       }, this));
 
-      this.element.on('touchmove MSPointerMove', _.bind(function(event) {
+      this.element.on('touchmove MSPointerMove pointermove', _.bind(function(event) {
         if (isNonTouchPointer(event)) { return; }
         var point = event.originalEvent.touches ? event.originalEvent.touches[0] : event.originalEvent;
 
@@ -32,7 +32,7 @@
         distY = point.pageY - startY;
       }, this));
 
-      this.element.on('touchend MSPointerUp', _.bind(function(event) {
+      this.element.on('touchend MSPointerUp pointerup', _.bind(function(event) {
         if (isNonTouchPointer(event)) { return; }
         var elapsedTime = new Date().getTime() - startTime;
 
@@ -53,8 +53,9 @@
       }, this));
 
       function isNonTouchPointer(event) {
-        return (event.originalEvent.pointerType &&
-                event.originalEvent.pointerType !== event.originalEvent.MSPOINTER_TYPE_TOUCH);
+        return event.originalEvent.pointerType &&
+          event.originalEvent.pointerType !== event.originalEvent.MSPOINTER_TYPE_TOUCH &&
+          event.originalEvent.pointerType !== 'touch';
       }
     }
   });
