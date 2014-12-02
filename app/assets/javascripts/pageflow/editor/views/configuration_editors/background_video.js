@@ -6,13 +6,10 @@ pageflow.ConfigurationEditorView.register('background_video', {
 
     this.tab('files', function() {
       this.input('video_file_id', pageflow.FileInputView, {collection: pageflow.videoFiles});
-      this.input('poster_image_id', pageflow.FileInputView, {
-        collection: pageflow.imageFiles,
-        imagePositioning: false
-      });
+      this.input('poster_image_id', pageflow.FileInputView, {collection: pageflow.imageFiles});
       this.input('thumbnail_image_id', pageflow.FileInputView, {
         collection: pageflow.imageFiles,
-        imagePositioning: false
+        positioning: false
       });
       this.input('mobile_poster_image_id', pageflow.FileInputView, {
         collection: pageflow.imageFiles,

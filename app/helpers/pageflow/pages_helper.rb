@@ -22,20 +22,28 @@ module Pageflow
       content_tag(:div, '', :class => 'shadow', :style => style)
     end
 
-    def mobile_poster_image_div(options = {})
+    def mobile_poster_image_div(config = {})
       classes = ['background', 'background_image']
+      position = {x: 50, y: 50}
 
-      if options[:mobile_poster_image_id]
-        classes << "image_#{options[:mobile_poster_image_id]}"
-      elsif options[:poster_image_id]
-        classes << "image_#{options[:poster_image_id]}"
-      elsif options[:video_file_id]
-        classes << "video_poster_#{options[:video_file_id]}"
+      if config['mobile_poster_image_id']
+        classes << "image_#{config['mobile_poster_image_id']}"
+        position[:x] = config['mobile_poster_image_x'] || 50
+        position[:y] = config['mobile_poster_image_y'] || 50
+      elsif config['poster_image_id']
+        classes << "image_#{config['poster_image_id']}"
+        position[:x] = config['poster_image_x'] || 50
+        position[:y] = config['poster_image_y'] || 50
+      elsif config['video_file_id']
+        classes << "video_poster_#{config['video_file_id']}"
+        position[:x] = config['video_file_x'] || 50
+        position[:y] = config['video_file_y'] || 50
       else
         classes << 'video_poster_none'
       end
 
-      content_tag(:div, '', :class => classes.join(' '))
+      content_tag(:div, '', :class => classes.join(' '),
+                  :style => "background-position: #{position[:x]}% #{position[:y]}%;")
     end
 
     def poster_image_tag(video_id, poster_image_id, options = {})
