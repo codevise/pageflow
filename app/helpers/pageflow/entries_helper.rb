@@ -52,6 +52,13 @@ module Pageflow
       end
     end
 
+    def entry_css_class(entry)
+      [
+        present_widgets_css_class(entry),
+        entry.emphasize_chapter_beginning ? 'emphasize_chapter_beginning' : nil
+      ].compact.join(' ')
+    end
+
     def entry_header_css_class(entry)
       css_class = 'header'
       if entry.pages.any? && entry.pages.first.configuration['invert']

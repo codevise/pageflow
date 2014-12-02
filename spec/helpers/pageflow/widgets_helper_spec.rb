@@ -41,6 +41,18 @@ module Pageflow
       end
     end
 
+    describe '#present_widgets_css_class' do
+      it 'renders widgets for draft entry' do
+        Pageflow.config.widget_types.register(TestWidgetType.new(name: 'test'))
+        entry = DraftEntry.new(create(:entry))
+        create(:widget, type_name: 'test', subject: entry.draft)
+
+        result = helper.present_widgets_css_class(entry)
+
+        expect(result).to eq('widget_test_present')
+      end
+    end
+
     describe '#widget_types_collection_for_role' do
       it 'returns widget_types name by translated name' do
         widget_type = TestWidgetType.new(name: 'test_widget', roles: ['header'])
