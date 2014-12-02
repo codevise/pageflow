@@ -2,18 +2,18 @@
 <html>
 <head>
   <title><%= @page_title.presence || 'Pageflow' %></title>
-  <%= stylesheet_link_tag    "pageflow/application", media: "all", "data-turbolinks-track" => true %>
-  <%= stylesheet_link_tag    "pageflow/print_view", media: "print", "data-turbolinks-track" => true %>
+
   <%= javascript_include_tag "pageflow/application", "data-turbolinks-track" => true %>
+
   <%= csrf_meta_tags %>
-
-  <%= render 'layouts/pageflow/loading_spinner_inline_script' %>
   <%= render 'layouts/pageflow/meta_tags' %>
-
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
 
   <%= yield :head %>
+
+  <%= stylesheet_link_tag 'pageflow/print_view', media: 'print', 'data-turbolinks-track' => true %>
+  <%= render 'layouts/pageflow/loading_spinner_inline_script' %>
 
   <%= render 'layouts/pageflow/ie_include_tags' %>
 </head>
