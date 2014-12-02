@@ -6,7 +6,7 @@ json.default_file_rights entry.account.default_file_rights
 json.published(entry.published?)
 
 json.configuration do
-  json.(entry, :title, :summary, :credits, :manual_start)
+  json.(entry, :title, :summary, :credits, :manual_start, :emphasize_chapter_beginning)
   json.home_url entry.home_button.url_value
   json.home_button_enabled entry.home_button.enabled_value
 end

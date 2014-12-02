@@ -5,6 +5,15 @@ module Pageflow
       classes << 'invert' if page.configuration['invert']
       classes << 'hide_title' if page.configuration['hide_title']
       classes << "text_position_#{page.configuration['text_position']}" if page.configuration['text_position'].present?
+      classes << 'chapter_beginning' if page.position == 0
+      classes.join(' ')
+    end
+
+    def page_navigation_css_class(page)
+      classes = [page.template]
+      classes << 'chapter_beginning' if page.position == 0
+      classes << "chapter_#{page.chapter.position}"
+      page.chapter.position % 2 == 0 ? classes << 'chapter_even' : classes << 'chapter_odd'
       classes.join(' ')
     end
 
