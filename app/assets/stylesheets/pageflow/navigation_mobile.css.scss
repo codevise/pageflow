@@ -47,7 +47,6 @@ body {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 0;
   width: 100%;
   overflow: hidden;
   pointer-events: none;
@@ -79,6 +78,7 @@ body {
     background-size: auto 100%;
     right: 10px;
     pointer-events: all;
+    cursor: pointer;
     @include transition(opacity 500ms, right 250ms);
 
     &.index {
@@ -142,7 +142,6 @@ body {
     }
 
     .heading-1 {
-      display: block;
       height: 40px;
       margin: 10px;
       font-size: 2em;
@@ -197,20 +196,6 @@ body {
         left: 0;
       }
 
-      &:after {
-        content: " ";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 38px;
-        height: 38px;
-        margin: 38px 85px;
-
-        background-repeat: no-repeat;
-        background-position: 0 0;
-        background-size: 76px 100%;
-      }
-
       &.touched {
         &:after {
           background-position: -38px 0;
@@ -221,6 +206,7 @@ body {
           background-color: #fff;
           opacity: 0.2;
           z-index: 1;
+          pointer-events: none;
         }
       }
 
@@ -265,36 +251,43 @@ body {
       }
     }
 
-    .menu.index {
-      background-position: 0px 0px;
-    }
-    &.sharing .menu.index, &.imprint .menu.index {
-      background-position: -45px 0px;
-    }
-
-    &.sharing .menu.sharing {
-      background-position: 0px 0px;
-    }
+    .menu.index,
+    &.sharing .menu.sharing,
     &.imprint .menu.imprint {
-      background-position: 0px 0px;
-    }
-    &.sharing .sharing_mobile {
-      right: 0px;
-      width: 200px;
-      visibility: visible;
-    }
-    &.imprint .imprint_mobile {
-      right: 0px;
-      width: 200px;
-      visibility: visible;
+      background-position: 0 0;
     }
 
+    &.sharing .menu.index, &.imprint .menu.index {
+      background-position: -45px 0;
+    }
+
+    &.sharing .sharing_mobile,
+    &.imprint .imprint_mobile {
+      right: 0;
+      width: 200px;
+      visibility: visible;
+    }
 
     .overview_mobile {
       @include transition-delay(0s);
       width: 200px;
       right: 0;
       visibility: visible;
+
+
+      li:after {
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 38px;
+        height: 38px;
+        margin: 38px 85px;
+
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        background-size: 76px 100%;
+      }
     }
 
     .sharing_mobile {
@@ -303,15 +296,16 @@ body {
       }
       li {
         width: 200px;
-        height: 88px;
         border-bottom: 1px solid #465b73;
 
-        a {
+        > a {
           margin-left: 78px;
           color: white;
           text-decoration: none;
           font-size: 24px;
           padding-top: 12px;
+          border: 0;
+          height: 80px;
 
           &:before {
             content: "";
@@ -335,6 +329,9 @@ body {
           }
         }
       }
+    }
+    .sub_share {
+      display: none;
     }
   }
 

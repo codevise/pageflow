@@ -3,76 +3,98 @@
 (function($) {
   $.widget('pageflow.navigationMobile', {
     _create: function() {
-      /* mobile version */
+
       var that = this,
-        scroller;
-
-      var goToPage = function () {
-        var a = $('a', this),
-          id = a.attr("data-link");
-
-        if (id !== undefined) {
-          pageflow.slides.goToById(id);
-          $('.navigation_mobile').removeClass('active');
-        }
-        else {
-          window.open(a.attr('href'), '_blank');
-          a.preventDefault();
-        }
-      };
+          element = this.element,
+          scroller;
 
       $('body').on('touchstart mousedown MSPointerDown pointerdown', function(event) {
-        if (that.element.hasClass('active') && !$(event.target).parents().filter(that.element).length) {
-          that.element.removeClass('active imprint sharing');
+        if (element.hasClass('active') && !$(event.target).parents().filter(element).length) {
+          element.removeClass('active imprint sharing');
         }
       });
 
-      $('.menu.index', that.element).click(function() {
-        if(!$(that.element).hasClass('sharing') && !$(that.element).hasClass('imprint')) {
-          $(that.element).toggleClass('active');
+      $('.menu.index', element).click(function() {
+        if(!$(element).hasClass('sharing') && !$(element).hasClass('imprint')) {
+          $(element).toggleClass('active');
         }
-        $(that.element).removeClass('imprint sharing');
+        $(element).removeClass('imprint sharing');
       });
-      $('.menu.sharing', that.element).click(function() {
-        $(that.element).addClass('sharing');
-        $(that.element).removeClass('imprint');
+      $('.menu.sharing', element).click(function() {
+        $(element).addClass('sharing');
+        $(element).removeClass('imprint');
       });
-      $('.menu.imprint', that.element).click(function() {
-        $(that.element).addClass('imprint');
-        $(that.element).removeClass('sharing');
+      $('.menu.imprint', element).click(function() {
+        $(element).addClass('imprint');
+        $(element).removeClass('sharing');
       });
 
-      $('.wrapper', this.element).each(function() {
+      $('.wrapper', element).each(function() {
+        var sharingMobile = $(this).parents('.sharing_mobile');
+
         scroller = new IScroll(this, {
           mouseWheel: true,
           bounce: false,
           probeType: 3
         });
 
-        $('ul', that.element).pageNavigationList({
+        $('ul', element).pageNavigationList({
           scroller: scroller
         });
 
         scroller.on('scroll', function() {
-          $('li', that.element).removeClass('touched').off('touchend mouseup MSPointerUp pointerup', goToPage);
+          $('.overview_mobile li', element).removeClass('touched').off('touchend mouseup MSPointerUp pointerup', that._goToPage);
+          $('.sub_share a', sharingMobile).off('touchend mouseup MSPointerUp pointerup', that._openLink);
         });
 
-        $('.menu', that.element).click(function() {
+        $('.menu', element).click(function() {
           scroller.refresh();
         });
 
-        $('li', that.element).each(function() {
-          $(this).on({
+        if (!$(element).data('touchBound')) {
+          $('li', element).on({
             'touchstart mousedown MSPointerDown pointerdown': function() {
               $(this).addClass('touched');
-              $(this).one('touchend mouseup MSPointerUp pointerup', goToPage);
             },
             'touchend mouseup MSPointerUp pointerup': function() {
               $(this).removeClass('touched');
             }
           });
+          $('.overview_mobile li', element).on({
+            'touchstart mousedown MSPointerDown pointerdown': function() {
+              $(this).one('touchend mouseup MSPointerUp pointerup', that._goToPage);
+            }
+          });
+          $(element).data('touchBound', true);
+        }
+
+        $('.sub_share a', sharingMobile).on({
+          'touchstart mousedown MSPointerDown pointerdown': function() {
+            $(this).one('touchend mouseup MSPointerUp pointerup', that._openLink);
+          }
+        });
+
+        sharingMobile.shareMenu({
+          subMenu: $('.sub_share', element),
+          links: $('li > a', sharingMobile),
+          scroller: scroller
         });
       });
+    },
+
+    _goToPage: function () {
+      var a = $('a', this),
+          id = a.attr("data-link");
+
+      if (id !== undefined) {
+        pageflow.slides.goToById(id);
+        $('.navigation_mobile').removeClass('active');
+      }
+    },
+
+    _openLink: function(event) {
+      event.preventDefault();
+      window.open(this.href, '_blank');
     }
   });
 }(jQuery));

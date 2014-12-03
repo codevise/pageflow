@@ -4,7 +4,8 @@
   <%= stylesheet_link_tag('pageflow/application', media: 'all', 'data-turbolinks-track' => true) %>
   <%= entry_theme_stylesheet_link_tag(@entry) %>
   <%= entry_stylesheet_link_tag(@entry) %>
-  <%= render 'pageflow/entries/social_meta_tags', :entry => @entry %>
+  <%= social_share_meta_tags_for(@entry.share_target) %>
+
   <%= tag :link, :rel => 'icon', :href => image_path("pageflow/themes/#{@entry.theming.theme.directory_name}/favicon.ico"), :type => 'image/ico' %>
 <% end %>
 

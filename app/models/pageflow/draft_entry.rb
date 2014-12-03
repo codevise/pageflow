@@ -14,6 +14,7 @@ module Pageflow
              :widgets, :chapters, :pages,
              :emphasize_chapter_beginning,
              :emphasize_new_pages,
+             :share_image_id, :share_image_x, :share_image_y,
              :files,
              :image_files, :video_files, :audio_files,
              :to => :draft)

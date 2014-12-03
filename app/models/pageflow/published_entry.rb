@@ -4,6 +4,7 @@ module Pageflow
     extend ActiveModel::Naming
 
     attr_reader :entry, :revision
+    attr_accessor :share_target
 
     delegate(:id, :account, :theming, :to_model, :to_key, :persisted?, :to => :entry)
 
@@ -12,6 +13,7 @@ module Pageflow
              :title, :summary, :credits, :manual_start,
              :emphasize_chapter_beginning,
              :emphasize_new_pages,
+             :share_image_id, :share_image_x, :share_image_y,
              :to => :revision)
 
     def initialize(entry, revision = nil)

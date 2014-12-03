@@ -9,3 +9,6 @@ de:
       type_names:
         default_navigation: "Navigationsleiste mit Thumbnails"
         default_mobile_navigation: "Navigationsmenü mit Thumbnails"
+      share_menu:
+        entry: "Diesen Beitrag"
+        current_page: "Diese Seite"
