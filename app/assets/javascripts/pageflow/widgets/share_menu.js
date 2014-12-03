@@ -38,6 +38,8 @@
           }
           else {
             $subMenu.show();
+            $links.find('.button').removeClass('pressed');
+            $(this).find('.button').addClass('pressed');
           }
 
           if (scroller) {
@@ -49,6 +51,7 @@
       if(!!$closeOnMouseLeaving) {
         $closeOnMouseLeaving.on('mouseleave', function() {
           $links.removeClass('active');
+          $(this).find('.button').removeClass('pressed');
           $subMenu.hide();
         });
       }

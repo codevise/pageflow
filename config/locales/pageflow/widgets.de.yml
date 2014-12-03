@@ -10,5 +10,5 @@ de:
         default_navigation: "Navigationsleiste mit Thumbnails"
         default_mobile_navigation: "Navigationsmenü mit Thumbnails"
       share_menu:
-        entry: "ganzes Pageflow"
-        current_page: "diese Seite"
+        entry: "Diesen Beitrag"
+        current_page: "Diese Seite"
