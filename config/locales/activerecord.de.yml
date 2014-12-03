@@ -125,7 +125,7 @@ de:
         description: "Beschreibung für Übersicht"
         additional_title: "Titel für Infobox"
         additional_description: "Beschreibung für Infobox"
-        gradient_opacity: "Intensität des Farbverlaufs"
+        gradient_opacity: "Intensität der Abblendung"
         invert: "Farben invertieren"
         transition: "Übergangseffekt"
         display_in_navigation: "In Navigationsleiste anzeigen"
