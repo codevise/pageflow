@@ -14,21 +14,21 @@
     @include transition(visibility 200ms, opacity 200ms, top 200ms);
 
     position: absolute;
+    z-index: 1;
 
     padding: 10px;
 
-    top: 8px;
-    left: -9px;
+    top: 14px;
+    right: -10px;
   }
 
   .dropdown-menu {
     position: relative;
     background-color: #eee;
     border: 1px solid #ccc;
-    border-radius: 3px;
 
     li {
-      padding: 5px;
+      padding: 7px 10px;
       cursor: pointer;
     }
   }
