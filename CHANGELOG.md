@@ -94,7 +94,9 @@
 - Include capybara webkit tests in travis run.
   ([#201](https://github.com/codevise/pageflow/pull/201))
 
-### 0.5.0
+### Version 0.5.0
+
+2014-10-14
 
 ##### Manual Update Step
 
@@ -157,6 +159,8 @@ following line to your `config/initializers/pageflow.rb` file:
 
 ### Version 0.4.0
 
+2014-09-08
+
 ##### Breaking Changes
 
 - The `<meta name="description" />` tag now uses the `Entry#summary`
@@ -204,6 +208,8 @@ following line to your `config/initializers/pageflow.rb` file:
   ([#108](https://github.com/codevise/pageflow/pull/108))
 
 ### Version 0.3.0
+
+2015-08-22
 
 ##### Breaking Changes
 
@@ -274,9 +280,13 @@ following line to your `config/initializers/pageflow.rb` file:
 
 ### Version 0.2.1
 
+2015-07-25
+
 - Update Zencoder gem to fix [Zencoder SSL issue](http://status.zencoder.com/events/84) ([#70](https://github.com/codevise/pageflow/pull/70)).
 
 ### Version 0.2.0
+
+2015-07-18
 
 ##### Breaking Changes
 
@@ -344,10 +354,14 @@ following line to your `config/initializers/pageflow.rb` file:
 
 ### Version 0.1.0
 
+2015-05-16
+
 - `pageflow:install` generator now creates resque rake tasks.
 - Configuration option to change email address user invitations are sent from.
 - Improved asset precompilation for production environment.
 
 ### Version 0.0.1
+
+2015-05-05
 
 - Initial release
