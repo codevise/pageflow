@@ -7,27 +7,82 @@
 - Allow displaying a different poster image for video pages on mobile
   devices where autoplay is not supported.
   ([#143](https://github.com/codevise/pageflow/pull/143))
+- Animate scrolling indicator initially.
+  ([#144](https://github.com/codevise/pageflow/pull/144))
 - Improve Facebook open graph meta tags.
   ([#157](https://github.com/codevise/pageflow/pull/157))
+- Allow sharing individual pages and changing the share image.
+  ([#206](https://github.com/codevise/pageflow/pull/206))
+- Allow configuring position of background videos.
+  ([#176](https://github.com/codevise/pageflow/pull/176))
+- Allow emphasizing recently added pages.
+  ([#195](https://github.com/codevise/pageflow/pull/195))
+- Start at bottom of page when scrolling backwards.
+  ([#178](https://github.com/codevise/pageflow/pull/178),
+   [#184](https://github.com/codevise/pageflow/pull/184),
+   [#185](https://github.com/codevise/pageflow/pull/185))
+- Improve iOS 8 compatability.
+  ([#186](https://github.com/codevise/pageflow/pull/186),
+   [#199](https://github.com/codevise/pageflow/pull/199))
+- Improve IE 11 compatability.
+  ([#189](https://github.com/codevise/pageflow/pull/189))
 - Bug fix: Let Favicon path point into theme directoy.
   ([#164](https://github.com/codevise/pageflow/pull/164))
+- Bug fix: Correct position of video loading spinner.
+  ([#141](https://github.com/codevise/pageflow/pull/141))
+- Bug fix: Audio loop page did not loop.
+  ([#147](https://github.com/codevise/pageflow/pull/147))
 - Bug fix: Prevent resolving ready promise before dom ready event.
   ([#167](https://github.com/codevise/pageflow/pull/167))
 
 ##### Admin/Editor
 
+- New background positioning dialog.
+  ([#212](https://github.com/codevise/pageflow/pull/212))
 - Extensible tab concept for account and entry admin view.
   ([#165](https://github.com/codevise/pageflow/pull/165))
+- Improve editor preview when sidebar causes narrow display.
+  ([#196](https://github.com/codevise/pageflow/pull/196))
+- Editor UI improvements.
+  ([#182](https://github.com/codevise/pageflow/pull/182),
+   [#194](https://github.com/codevise/pageflow/pull/194),
+   [#200](https://github.com/codevise/pageflow/pull/200),
+   [#203](https://github.com/codevise/pageflow/pull/203),
+   [#207](https://github.com/codevise/pageflow/pull/207),
+   [#208](https://github.com/codevise/pageflow/pull/208),
+   [#210](https://github.com/codevise/pageflow/pull/210))
+- Bug fix: Audio kept playing in editor when chaning page type.
+  ([#149](https://github.com/codevise/pageflow/pull/149))
+- Bug fix: Do not display edit lock warning after reopening an entry
+  in the same tab.
+  ([#202](https://github.com/codevise/pageflow/pull/202))
+- Bug fix: Do not pass obsolete page configurations to page type
+  hooks.
+  ([#204](https://github.com/codevise/pageflow/pull/204))
+- Bug fix: Return to correct tab after file selection.
+  ([#211](https://github.com/codevise/pageflow/pull/211))
 
 ##### Rails Engine
 
 - Rails 4.1 compatibility.
   ([#161](https://github.com/codevise/pageflow/pull/161),
-   [#162](https://github.com/codevise/pageflow/pull/162))
+   [#162](https://github.com/codevise/pageflow/pull/162),
+   [#197](https://github.com/codevise/pageflow/pull/197))
 - Introduce plugin concept for ui widgets.
-  ([#170](https://github.com/codevise/pageflow/pull/170))
+  ([#170](https://github.com/codevise/pageflow/pull/170),
+   [#198](https://github.com/codevise/pageflow/pull/198))
 - Dispatch global events for Pageflow extensions.
   ([#171](https://github.com/codevise/pageflow/pull/171))
+- Richer CSS classes for theming of progress bars.
+  ([#177](https://github.com/codevise/pageflow/pull/177))
+- Allow special theming of first page of chapter.
+  ([#151](https://github.com/codevise/pageflow/pull/151),
+   [#209](https://github.com/codevise/pageflow/pull/209))
+- Allow page types to control whether an inverted scrolling indicator
+  is used.
+  ([#180](https://github.com/codevise/pageflow/pull/180))
+- Give page types access to scroller properties.
+  ([#181](https://github.com/codevise/pageflow/pull/181))
 
 ##### Internals
 
@@ -36,6 +91,8 @@
 - Improve Backbone form and tab views.
   ([#166](https://github.com/codevise/pageflow/pull/166),
    [#169](https://github.com/codevise/pageflow/pull/169))
+- Include capybara webkit tests in travis run.
+  ([#201](https://github.com/codevise/pageflow/pull/201))
 
 ### 0.5.0
 
