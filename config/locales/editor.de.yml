@@ -8,9 +8,6 @@ de:
         links: "Verweise"
         widgets: "Erscheinungsbild"
         social: "Social"
-    screens:
-      ratio16to9: "16:9"
-      ratio4to3: "4:3"
     files:
       tabs:
         image_files: "Bilder"
