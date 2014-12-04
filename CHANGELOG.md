@@ -209,7 +209,7 @@ following line to your `config/initializers/pageflow.rb` file:
 
 ### Version 0.3.0
 
-2015-08-22
+2014-08-22
 
 ##### Breaking Changes
 
@@ -280,13 +280,13 @@ following line to your `config/initializers/pageflow.rb` file:
 
 ### Version 0.2.1
 
-2015-07-25
+2014-07-25
 
 - Update Zencoder gem to fix [Zencoder SSL issue](http://status.zencoder.com/events/84) ([#70](https://github.com/codevise/pageflow/pull/70)).
 
 ### Version 0.2.0
 
-2015-07-18
+2014-07-18
 
 ##### Breaking Changes
 
@@ -354,7 +354,7 @@ following line to your `config/initializers/pageflow.rb` file:
 
 ### Version 0.1.0
 
-2015-05-16
+2014-05-16
 
 - `pageflow:install` generator now creates resque rake tasks.
 - Configuration option to change email address user invitations are sent from.
@@ -362,6 +362,6 @@ following line to your `config/initializers/pageflow.rb` file:
 
 ### Version 0.0.1
 
-2015-05-05
+2014-05-05
 
 - Initial release
