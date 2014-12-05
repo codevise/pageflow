@@ -16,7 +16,7 @@ pageflow.Page = Backbone.Model.extend({
 
   initialize: function() {
     this.configuration = new pageflow.Configuration(this.get('configuration') || {});
-    this.configuration.parent = this;
+    this.configuration.parent = this.configuration.page = this;
 
     this.listenTo(this.configuration, 'change', function() {
       this.trigger('change:configuration');
