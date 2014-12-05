@@ -4,7 +4,7 @@
       var element = this.element;
       var options = this.options;
       var scroller = options.scroller;
-      var links = element.find('a');
+      var links = element.find('a[href]');
 
       pageflow.ready.then(function() {
         highlightUnvisitedPages(pageflow.visited.getUnvisitedPages());
