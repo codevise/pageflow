@@ -41,14 +41,14 @@
       @include background-icon-animation(none);
     }
 
-    &.failed {
-      @include attention-icon;
-      @include background-icon-animation(none);
-    }
-
     &.action_required {
       @include bell-icon;
     }
+  }
+
+  div.pictogram.failed {
+    @include attention-icon;
+    @include background-icon-animation(none);
   }
 
   &.ready {
