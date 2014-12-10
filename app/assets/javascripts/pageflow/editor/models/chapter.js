@@ -15,6 +15,12 @@ pageflow.Chapter = Backbone.Model.extend({
       this.save();
     });
 
+    this.configuration = new Backbone.Model({});
+
+    this.listenTo(this.configuration, 'change', function() {
+      this.trigger('change:configuration', this);
+    });
+
     return attributes;
   },
 
