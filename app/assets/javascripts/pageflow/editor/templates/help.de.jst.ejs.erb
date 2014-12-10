@@ -1,15 +1,17 @@
 <div class="box">
   <h2>Hilfe</h2>
 
-  <ul>
-    <li data-section="intro"><a href="">Übersicht</a></li>
-    <li data-section="outline"><a href="">Kapitel und Seiten verwalten</a></li>
-    <li data-section="page"><a href="">Seiten konfigurieren</a></li>
-    <li data-section="files"><a href="">Dateien hochladen und verwalten</a></li>
-    <li data-section="reusing_files"><a href="">Dateien wiederverwenden</a></li>
-    <li data-section="options"><a href="">Weitere Optionen</a></li>
-    <li data-section="publish"><a href="">Reportage veröffentlichen</a></li>
-  </ul>
+  <nav>
+      <ul>
+        <li data-section="intro"><a href="">Erste Schritte</a></li>
+        <li data-section="outline"><a href="">Kapitel und Seiten verwalten</a></li>
+        <li data-section="page"><a href="">Seiten konfigurieren</a></li>
+        <li data-section="files"><a href="">Dateien hochladen und verwalten</a></li>
+        <li data-section="reusing_files"><a href="">Dateien wiederverwenden</a></li>
+        <li data-section="options"><a href="">Weitere Optionen</a></li>
+        <li data-section="publish"><a href="">Reportage veröffentlichen</a></li>
+      </ul>
+  </nav>
 
   <section data-name="intro">
     <h3>Übersicht</h3>
@@ -17,7 +19,7 @@
       Dies ist der Editor zum Bearbeiten einer Reportage. In der
       Leiste auf der rechten Seite können Seiten und Kapitel
       hinzugefügt und bearbeitet werden. Außerdem gibt es die
-      Möglichkeit, Bilder, Videos und Audiodateien zur Verwendung in
+      Möglichkeit, Bilder, Videos, Audiodateien und weitere Inhalte zur Verwendung in
       der Reportage hochzuladen. Auf der linken Seite befindet sich eine
       Vorschau der Reportage, die sich bei Änderungen automatisch
       aktualisiert.
@@ -30,8 +32,10 @@
     <p>
       Sollte eine Reportage bereits veröffentlicht sein, bleiben
       Änderungen solange öffentlich unsichtbar, bis die Reportage
-      erneut veröffentlicht wird. Eine Reportage kann stets nur von
-      einem Redakteur zur gleichen Zeit bearbeitet werden.
+      erneut veröffentlicht wird.
+    </p>
+    <p>
+      Eine Reportage kann stets nur von einem Redakteur zur gleichen Zeit bearbeitet werden.
     </p>
   </section>
 
@@ -60,15 +64,30 @@
     <h3>Seiten konfigurieren</h3>
 
     <p>
-      Wählen Sie zunächst einen Seitentyp.
-      <em>Hintergrundbild:</em> Statische Seite mit Text und einem
-      Hintegrundbild.
-      <em>Video:</em> Auf der Seite wird ein Video angezeigt, das
-      durch Steuerelemente gestartet und gestoppt werden kann.
-      <em>Hintergrund-Video:</em> Ähnlich der Hintergrundbild-Seite. Im
-      Hintergrund läuft allerdings ein Video-Loop.
-      <em>Audio:</em> Auf der Seite wird ein Player zur Wiedergabe
-      einer Audiodatei angezeigt.
+      Wählen Sie zunächst einen <em>Seitentyp</em>. Die einfachsten und gleichzeitig auch die wichtigsten Seitentypen sind die folgenden vier:
+      <ul>
+        <li>
+            <em>Hintergrundbild:</em>
+            <p>Statische Seite mit Text auf einem Hintegrundbild.</p>
+        </li>
+        <li>
+            <em>Video:</em>
+            <p>Auf der Seite wird ein Video angezeigt, das durch Steuerelemente
+            gestartet und gestoppt werden kann. Es werden keine Bildbestandteile beschnitten.</p>
+        </li>
+        <li>
+            <em>Hintergrund-Video:</em>
+            <p>Ähnlich der Hintergrundbild-Seite. Im Hintergrund läuft allerdings ein Video-Loop. Das
+            Video wird dabei soweit gestreckt, bis es vollständig das Fenster ausfüllt. Es können daher je nach Bildschitrmformat Seiten beschnitten werden.
+            Bitte beachten Sie, dass Hintergrund-Videos bei manchen mobilen Geräten nicht abgespielt werden können und daher automatisch durch ein Bild ersetzt werden.
+            </p>
+        </li>
+        <li>
+            <em>Audio:</em>
+            <p>Auf der Seite wird ein Player zur Wiedergabe
+            einer Audiodatei angezeigt.</p>
+        </li>
+      </ul>
     </p>
 
     <p>
