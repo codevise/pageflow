@@ -27,6 +27,22 @@ $overview-header-font: $standard-font;
     text-align: center;
     @include shine-gradient;
 
+    .label {
+      text-transform: uppercase;
+      text-shadow: 1px 1px 4px #2b2b2b;
+      font-size: 1.0em;
+      letter-spacing: 0.1em;
+      color: #FFFEFE;
+      position: absolute;
+      margin-right: 130%;
+      text-align: right;
+      width: 500%;
+      right: 0px;
+      margin-top: 0.4em;
+    }
+
+
+
     &:before {
       content: " ";
       position: absolute;
@@ -36,7 +52,6 @@ $overview-header-font: $standard-font;
       width: 100px;
       height: 30px;
 
-      background-image: image-url('pageflow/close_text.png');
     }
     &:after {
       content: "\F00d";
