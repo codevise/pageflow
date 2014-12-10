@@ -12,6 +12,21 @@ pageflow.EditorApi = pageflow.Object.extend({
     this.fileSelectionHandlers = {};
 
     /**
+     *  Display Backbone/Marionette View inside the main panel
+     *  of the editor.
+     */
+    this.showViewInMainPanel = function(view) {
+      pageflow.app.mainRegion.show(view);
+    };
+
+    /**
+     *  Display the Pageflow-Preview inside the main panel.
+     */
+    this.showPreview = function() {
+      pageflow.app.mainRegion.$el.empty();
+    };
+
+    /**
      * Register additional router and controller for sidebar.
      *
      * Supported options:

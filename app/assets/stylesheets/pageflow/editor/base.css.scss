@@ -116,8 +116,12 @@ main.ui-layout-pane {
   border: 0;
 }
 
-main > .container {
+main > div {
   height: 100%;
+
+  > .container {
+    height: 100%;
+  }
 }
 
 #help_entries_seed {
