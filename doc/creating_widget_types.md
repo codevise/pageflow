@@ -104,3 +104,21 @@ theming is required for a widget to be rendered in all entries:
 
 The default option registers the widget type as default choice for all
 roles supported by the widget type.
+
+### Adding Content to the Page Head
+
+Widget types can contribute to the head of a published entry to add
+script or meta tags.
+
+    module Pageflow
+      module ProgressNaviationBar
+        class WidgetType < Pageflow::WidgetType
+          # ...
+
+          def render_head_fragment(template, entry)
+            # return html representation. For example:
+            template.content_tag(:script, '', src: '//example.com/script.js')
+          end
+        end
+      end
+    end

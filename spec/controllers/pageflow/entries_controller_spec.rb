@@ -177,6 +177,17 @@ module Pageflow
           expect(response.body).to have_selector('div.test_widget')
         end
 
+        it 'renders widgets head fragments for entry' do
+          Pageflow.config.widget_types.register(TestWidgetType.new(:name => 'test_widget',
+                                                                   :rendered_head_fragment => '<meta name="some_test" content="value">'))
+          entry = create(:entry, :published)
+          create(:widget, :subject => entry.published_revision, :type_name => 'test_widget')
+
+          get(:show, :id => entry)
+
+          expect(response.body).to have_selector('head meta[name=some_test]', :visible => false)
+        end
+
         context 'with configured entry_request_scope' do
           before do
             Pageflow.config.public_entry_request_scope = lambda do |entries, request|

@@ -1,12 +1,16 @@
 <% @page_title = @entry.title %>
 
 <% content_for(:head) do %>
-  <%= stylesheet_link_tag('pageflow/application', media: 'all', 'data-turbolinks-track' => true) %>
-  <%= entry_theme_stylesheet_link_tag(@entry) %>
-  <%= entry_stylesheet_link_tag(@entry) %>
-  <%= social_share_meta_tags_for(@entry.share_target) %>
+  <%= cache [@entry, :head] do %>
+    <%= stylesheet_link_tag('pageflow/application', media: 'all', 'data-turbolinks-track' => true) %>
+    <%= entry_theme_stylesheet_link_tag(@entry) %>
+    <%= entry_stylesheet_link_tag(@entry) %>
 
-  <%= tag :link, :rel => 'icon', :href => image_path("pageflow/themes/#{@entry.theming.theme.directory_name}/favicon.ico"), :type => 'image/ico' %>
+    <%= social_share_meta_tags_for(@entry.share_target) %>
+    <%= render_widget_head_fragments(@entry) %>
+
+    <%= tag :link, :rel => 'icon', :href => image_path("pageflow/themes/#{@entry.theming.theme.directory_name}/favicon.ico"), :type => 'image/ico' %>
+  <% end %>
 <% end %>
 
 <%= cache @entry do %>
