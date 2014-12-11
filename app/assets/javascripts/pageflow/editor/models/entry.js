@@ -49,11 +49,13 @@ pageflow.Entry = Backbone.Model.extend({
     });
   },
 
-  addChapter: function() {
-    this.chapters.create({
+  addChapter: function(params) {
+    var defaults = {
       entry_id: this.get('id'),
+      title: '',
       position: this.chapters.length
-    });
+    };
+    return this.chapters.create(_.extend(defaults, params));
   },
 
   addFileUpload: function(upload) {

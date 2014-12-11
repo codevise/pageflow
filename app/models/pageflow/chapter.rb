@@ -5,6 +5,12 @@ module Pageflow
 
     delegate :entry, :to => :revision
 
+    serialize :configuration, JSON
+
+    def configuration
+      super || {}
+    end
+
     def copy_to(revision)
       chapter = dup
       revision.chapters << chapter

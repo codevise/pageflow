@@ -19,6 +19,7 @@
 //= require ./models/uploaded_file
 //= require ./models/hosted_file
 //= require ./models/encoded_file
+//= require ./models/configuration
 //= require_tree ./models
 //= require_tree ./collections/mixins
 //= require ./collections/multi_collection
