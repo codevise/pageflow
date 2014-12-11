@@ -4,7 +4,7 @@ module Pageflow
       def build(entry)
         if entry.memberships.any?
           table_for entry.memberships, :class => 'memberships' do
-            column t('activerecord.attributes.user.full_name') do |membership|
+            column t('activerecord.attributes.user.full_name'), class: 'name' do |membership|
               if authorized? :manage, User
                 link_to membership.user.full_name, admin_user_path(membership.user), :class => 'view_creator'
               else
