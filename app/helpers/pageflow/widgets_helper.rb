@@ -1,5 +1,13 @@
 module Pageflow
   module WidgetsHelper
+    def render_widget_head_fragments(entry, options = {})
+      fragments = entry.widgets.resolve(options).map do |widget|
+        widget.widget_type.render_head_fragment(self, entry)
+      end
+
+      safe_join(fragments)
+    end
+
     def render_widgets(entry, options = {})
       fragments = entry.widgets.resolve(options).map do |widget|
         widget.widget_type.render(self, entry)

@@ -25,6 +25,12 @@ module Pageflow
       template.render(File.join('pageflow', name, 'widget'), entry: entry)
     end
 
+    # Override to return html that should be placed in the head
+    # element of the page. Not supported inside the editor.
+    def render_head_fragment(template, entry)
+      ''
+    end
+
     class Null < WidgetType
       def initialize(role)
         @role = role
