@@ -11,6 +11,8 @@ module Pageflow
       authorize!(:show, revision) unless request.format.css?
 
       @entry = PublishedEntry.new(revision.entry, revision)
+      I18n.locale = @entry.locale
+
       render :template => 'pageflow/entries/show'
     end
 

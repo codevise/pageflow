@@ -52,6 +52,8 @@
   });
 </script>
 
-<%= page_type_templates %>
+<% I18n.with_locale(@entry.locale) do %>
+  <%= page_type_templates %>
+<% end %>
 
 <%= render('pageflow/editor/entries/analytics', entry: @entry) %>

@@ -20,6 +20,7 @@ module Pageflow
       respond_to do |format|
         format.any(:html, :css) do
           @entry = PublishedEntry.find(params[:id], entry_request_scope)
+          I18n.locale = @entry.locale
 
           if params[:page].present?
             @entry.share_target = Page.find_by_perma_id(params[:page])
@@ -49,6 +50,7 @@ module Pageflow
     def partials
       authenticate_user!
       @entry = DraftEntry.find(params[:id])
+      I18n.locale = @entry.locale
       authorize!(:show, @entry.to_model)
 
       respond_to do |format|
@@ -75,7 +77,7 @@ module Pageflow
     def entry_params
       params.require(:entry).permit(:title, :summary, :credits, :manual_start, :home_url, :home_button_enabled,
                                     :emphasize_chapter_beginning, :emphasize_new_pages,
-                                    :share_image_id, :share_image_x, :share_image_y)
+                                    :share_image_id, :share_image_x, :share_image_y, :locale)
     end
 
     def entry_request_scope
