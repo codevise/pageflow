@@ -41,6 +41,10 @@ module Pageflow
       [last_name, first_name] * ", "
     end
 
+    def locale
+      super.presence || I18n.locale
+    end
+
     def update_with_password(attributes)
       if needs_password?(attributes)
         super(attributes)
