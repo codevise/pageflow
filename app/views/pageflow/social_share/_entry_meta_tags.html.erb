@@ -3,7 +3,9 @@
 <%= social_share_entry_image_tags(entry) %>
 
 <%= tag :meta, :property => "og:title", :content => "#{entry.title} - #{entry.theming.cname_domain}" %>
-<%= tag :meta, :property => "og:description", :name => "description", :content => entry_summary(entry) %>
+<%= tag :meta, :property => "og:description", :content => entry_summary(entry) %>
 <%= tag :meta, :property => "og:url", :content => pretty_entry_url(entry) %>
 <%= tag :meta, :property => "og:site_name", :content => entry.theming.cname_domain %>
 <%= tag :meta, :property => "og:type", :content => "website" %>
+
+<%= tag :meta, :name => "twitter:card", :content => "summary_large_image" %>
