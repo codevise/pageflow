@@ -39,6 +39,14 @@ pageflow.Entry = Backbone.Model.extend({
       this.trigger('change:configuration');
       this.save();
     });
+
+    this.listenTo(this.configuration, 'change:locale', function() {
+      this.once('sync', function() {
+        // No other way of updating page templates used in
+        // EntryPreviewView at the moment.
+        location.reload();
+      });
+    });
   },
 
   addChapter: function() {
