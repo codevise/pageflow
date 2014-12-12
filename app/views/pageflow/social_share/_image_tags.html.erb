@@ -2,4 +2,6 @@
   <%= tag :meta, :property => "og:image", :content => social_share_normalize_protocol(image_url) %>
 <% end %>
 
-<%= tag :meta, :name => "twitter:image:src", :content => social_share_normalize_protocol(image_urls.first) %>
+<% if image_urls.first.present? %>
+  <%= tag :meta, :name => "twitter:image:src", :content => social_share_normalize_protocol(image_urls.first) %>
+<% end %>
