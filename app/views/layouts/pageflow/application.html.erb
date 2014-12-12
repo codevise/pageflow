@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<%= content_tag(:html, lang: I18n.locale) do %>
 <head>
   <title><%= @page_title.presence || 'Pageflow' %></title>
 
@@ -24,4 +24,4 @@
   </script>
   <%= yield %>
 <% end %>
-</html>
+<% end %>

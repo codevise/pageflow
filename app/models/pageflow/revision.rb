@@ -45,6 +45,10 @@ module Pageflow
       super || NullUser.new
     end
 
+    def locale
+      super.presence || I18n.default_locale
+    end
+
     def pages
       super.tap { |p| p.first.is_first = true if p.present? }
     end
