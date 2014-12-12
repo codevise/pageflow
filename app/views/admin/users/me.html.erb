@@ -1,5 +1,13 @@
 <%= semantic_form_for current_user, :url => me_admin_users_path, :html => {:class => 'profile'} do |form| %>
   <%= form.inputs :first_name, :last_name %>
+
+  <%= form.inputs  do %>
+    <%= form.input :locale,
+                   as: :select,
+                   include_blank: false,
+                   collection: I18n.available_locales.map { |locale| [I18n.t('language', locale: locale), locale.to_s] } %>
+  <% end %>
+
   <%= form.inputs do %>
     <%= form.input :current_password, :hint => t('pageflow.admin.users.me.change_password_hint') %>
     <%= form.input :password %>

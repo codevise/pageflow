@@ -5,6 +5,10 @@ module Pageflow
   class ApplicationController < ActionController::Base
     layout 'pageflow/application'
 
+    before_filter do
+      I18n.locale = current_user.try(:locale) || I18n.default_locale
+    end
+
     # Prevent CSRF attacks by raising an exception.
     # For APIs, you may want to use :null_session instead.
     protect_from_forgery with: :exception

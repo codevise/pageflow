@@ -59,4 +59,10 @@ module Pageflow
       mount Pageflow::Engine, at: '/'
     end
   end
+
+  def self.active_admin_settings(config)
+    config.before_filter do
+      I18n.locale = current_user.try(:locale) || I18n.default_locale
+    end
+  end
 end

@@ -11,6 +11,14 @@ module Pageflow
 
         expect(mail.from).to eq(['test@example.com'])
       end
+
+      it 'uses locale of reveiving user' do
+        user = create(:user, locale: 'de')
+
+        mail = UserMailer.invitation('user_id' => user.id)
+
+        expect(mail.header['X-Language'].value).to eq('de')
+      end
     end
   end
 end

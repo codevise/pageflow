@@ -50,6 +50,9 @@ module Pageflow
             row :created_at
             row :last_sign_in_at
             boolean_status_tag_row :suspended?
+            row :locale do
+              I18n.t('language', locale: user.locale)
+            end
           end
 
           para do
@@ -156,11 +159,11 @@ module Pageflow
       end
 
       def user_profile_params
-        params.require(:user).permit(:first_name, :last_name, :current_password, :password, :password_confirmation)
+        params.require(:user).permit(:first_name, :last_name, :current_password, :password, :password_confirmation, :locale)
       end
 
       def permitted_params
-        result = params.permit(:user => [:first_name, :last_name, :email, :password, :password_confirmation, :account_id, :role])
+        result = params.permit(:user => [:first_name, :last_name, :email, :password, :password_confirmation, :account_id, :role, :locale])
         restrict_attributes(params[:id], result[:user]) if result[:user]
         result
       end

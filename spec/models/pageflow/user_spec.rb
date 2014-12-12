@@ -56,5 +56,19 @@ module Pageflow
         end
       end
     end
+
+    describe '#locale' do
+      it 'falls back to default_locale' do
+        user = build(:user, locale: '')
+
+        expect(user.locale).to eq(I18n.default_locale)
+      end
+
+      it 'returns present attribute' do
+        user = build(:user, locale: 'fr')
+
+        expect(user.locale).to eq('fr')
+      end
+    end
   end
 end
