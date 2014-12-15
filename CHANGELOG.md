@@ -6,6 +6,8 @@ None so far.
 
 ### Version 0.6.0
 
+2014-12-15
+
 ##### Public Site
 
 - Allow displaying a different poster image for video pages on mobile
