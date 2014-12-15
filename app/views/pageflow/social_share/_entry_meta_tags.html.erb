@@ -7,3 +7,6 @@
 <%= tag :meta, :property => "og:url", :content => pretty_entry_url(entry) %>
 <%= tag :meta, :property => "og:site_name", :content => entry.theming.cname_domain %>
 <%= tag :meta, :property => "og:type", :content => "website" %>
+
+<%= tag :meta, :name => "twitter:card", :content => "summary_large_image" %>
+<%= tag :meta, :name => "twitter:description", :content => entry_summary(entry) %>
