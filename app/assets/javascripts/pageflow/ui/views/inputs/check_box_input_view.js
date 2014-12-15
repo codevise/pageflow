@@ -16,7 +16,9 @@ pageflow.CheckBoxInputView = Backbone.Marionette.ItemView.extend({
   onRender: function() {
     this.ui.label.attr('for', this.cid);
     this.ui.input.attr('id', this.cid);
+
     this.load();
+    this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
   },
 
   save: function() {
@@ -26,7 +28,9 @@ pageflow.CheckBoxInputView = Backbone.Marionette.ItemView.extend({
   },
 
   load: function() {
-    this.ui.input.attr('checked', this.displayValue());
+    if (!this.isClosed) {
+      this.ui.input.prop('checked', this.displayValue());
+    }
   },
 
   displayValue: function() {
