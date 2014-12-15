@@ -8,7 +8,8 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
   },
 
   ui: {
-    select: 'select'
+    select: 'select',
+    input: 'select',
   },
 
   initialize: function() {
@@ -34,8 +35,6 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
         return I18n.t(key);
       });
     }
-
-    this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
   },
 
   onRender: function() {
@@ -52,6 +51,7 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
     }, this);
 
     this.load();
+    this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
 
     if (this.options.ensureValueDefined && !this.ui.select.val()) {
       this.ui.select.val(this.options.values[0]);
@@ -99,6 +99,8 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
   },
 
   load: function() {
-    this.ui.select.val(this.model.get(this.options.propertyName));
+    if (!this.isClosed) {
+      this.ui.select.val(this.model.get(this.options.propertyName));
+    }
   }
 });
