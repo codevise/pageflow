@@ -1,3 +1,6 @@
+//= require_self
+//= require ./audio_player/media_events
+
 pageflow.AudioPlayer = function(sources, options) {
   options = options || {};
 
@@ -24,6 +27,10 @@ pageflow.AudioPlayer = function(sources, options) {
   audio.loadedPromise = loaded.promise();
 
   audio.on('load', loaded.resolve);
+
+  if (options.mediaEvents) {
+    pageflow.AudioPlayer.mediaEvents(audio);
+  }
 
   audio.src = function(sources) {
     ready.then(function() {
@@ -74,7 +81,7 @@ pageflow.AudioPlayer.fromAudioTag = function(element, options) {
       src: $(this).attr('src'),
       type: $(this).attr('type')
     };
-  }).get(), {tag: element[0], loop: options.loop});
+  }).get(), _.extend({tag: element[0]}, options || {}));
 };
 
 pageflow.AudioPlayer.fromScriptTag = function(element, options) {
