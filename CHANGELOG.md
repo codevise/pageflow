@@ -2,6 +2,10 @@
 
 ### Changes on `master`
 
+None so far.
+
+### Version 0.6.0
+
 ##### Public Site
 
 - Allow displaying a different poster image for video pages on mobile
