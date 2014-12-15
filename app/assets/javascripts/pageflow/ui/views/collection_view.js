@@ -43,7 +43,7 @@ pageflow.CollectionView = Backbone.Marionette.View.extend({
   addItem: function(item) {
     var view = new this.options.itemViewConstructor(_.extend({
       model: item
-    }, this.options.itemViewOptions || {}));
+    }, this.getItemViewOptions(item)));
 
     this.itemViews.add(view);
 
@@ -90,6 +90,15 @@ pageflow.CollectionView = Backbone.Marionette.View.extend({
 
       last = element;
     }, this);
+  },
+
+  getItemViewOptions: function(item) {
+    if (typeof this.options.itemViewOptions === 'function') {
+      return this.options.itemViewOptions(item);
+    }
+    else {
+      return this.options.itemViewOptions || {};
+    }
   },
 
   closePlaceHolderView: function() {
