@@ -16,11 +16,14 @@
 - Allow configuring position of background videos.
   ([#176](https://github.com/codevise/pageflow/pull/176))
 - Allow emphasizing recently added pages.
-  ([#195](https://github.com/codevise/pageflow/pull/195))
+  ([#195](https://github.com/codevise/pageflow/pull/195),
+   [#214](https://github.com/codevise/pageflow/pull/214))
 - Start at bottom of page when scrolling backwards.
   ([#178](https://github.com/codevise/pageflow/pull/178),
    [#184](https://github.com/codevise/pageflow/pull/184),
    [#185](https://github.com/codevise/pageflow/pull/185))
+- Prevent search engine indexing of video/audio file pages.
+  ([#219](https://github.com/codevise/pageflow/pull/219))
 - Improve iOS 8 compatability.
   ([#186](https://github.com/codevise/pageflow/pull/186),
    [#199](https://github.com/codevise/pageflow/pull/199))
@@ -50,7 +53,8 @@
    [#203](https://github.com/codevise/pageflow/pull/203),
    [#207](https://github.com/codevise/pageflow/pull/207),
    [#208](https://github.com/codevise/pageflow/pull/208),
-   [#210](https://github.com/codevise/pageflow/pull/210))
+   [#210](https://github.com/codevise/pageflow/pull/210),
+   [#215](https://github.com/codevise/pageflow/pull/215))
 - Bug fix: Audio kept playing in editor when chaning page type.
   ([#149](https://github.com/codevise/pageflow/pull/149))
 - Bug fix: Do not display edit lock warning after reopening an entry
@@ -73,6 +77,8 @@
    [#198](https://github.com/codevise/pageflow/pull/198))
 - Dispatch global events for Pageflow extensions.
   ([#171](https://github.com/codevise/pageflow/pull/171))
+- Allow widget types to add content to page head.
+  ([#217](https://github.com/codevise/pageflow/pull/217))
 - Richer CSS classes for theming of progress bars.
   ([#177](https://github.com/codevise/pageflow/pull/177))
 - Allow special theming of first page of chapter.
