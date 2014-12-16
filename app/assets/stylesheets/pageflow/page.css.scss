@@ -116,10 +116,10 @@
     padding: 15% 14% 5% 8%;
     width: 100%;
     @include mobile {
-      padding: 15% 12% 5% 8%;
+      padding: 25% 12% 5% 8%;
       width: 100%;
       @media (orientation: landscape) {
-        padding: 7% 12% 5% 8%;
+        padding: 10% 12% 5% 8%;
       }
     }
   }
