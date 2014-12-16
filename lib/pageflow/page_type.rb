@@ -136,37 +136,5 @@ module Pageflow
         name
       end
     end
-
-    # Include in your engine if it mainly defines new page types. Sets
-    # up load paths so you can place all files related to a page type
-    # in a single directory. The following structure is proposed for a
-    # page type engine:
-    #
-    #    pageflow-rainbow/
-    #      page_types/
-    #        pageflow/
-    #          rainbow/
-    #            editor.js
-    #            page.html.erb
-    #            page_type.json.jbuilder
-    #          rainbow.css.scss
-    #          rainbow.js
-    #      lib/
-    #        pageflow/
-    #          rainbow/
-    #            engine.rb
-    #            page_type.rb
-    #
-    module Engine
-      extend ActiveSupport::Concern
-
-      included do
-        paths["app/views"] << 'page_types'
-
-        initializer :assets do |config|
-          Rails.application.config.assets.paths << root.join('page_types')
-        end
-      end
-    end
   end
 end
