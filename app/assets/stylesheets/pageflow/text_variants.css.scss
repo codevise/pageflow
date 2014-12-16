@@ -7,10 +7,19 @@
     margin-left: auto;
   }
 
+  &.page {
+    h1, h2 span.subtitle, h2 span.tagline, h3, p {
+      margin-left: auto;
+    }
+    h2 .title {
+      margin-left: auto;
+      max-width: 500px;
+    }
+  }
+
   .page_header {
-    max-width: 500px;
     margin-left: auto;
-    width: 60%;
+    width: 100%;
 
     @include mobile {
       width: 100%;
