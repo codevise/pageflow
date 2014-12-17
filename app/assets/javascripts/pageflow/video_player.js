@@ -1,4 +1,5 @@
 //= require_self
+//= require ./video_player/media_events
 //= require ./video_player/prebuffering
 //= require ./video_player/buffer_underrun_waiting
 //= require ./video_player/src_from_options_method
@@ -15,6 +16,10 @@ pageflow.VideoPlayer = function(element, options) {
 
   pageflow.VideoPlayer.prebuffering(player);
   pageflow.VideoPlayer.srcFromOptionsMethod(player);
+
+  if (options.mediaEvents) {
+    pageflow.VideoPlayer.mediaEvents(player);
+  }
 
   if (options.bufferUnderrunWaiting) {
     pageflow.VideoPlayer.bufferUnderrunWaiting(player);
