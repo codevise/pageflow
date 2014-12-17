@@ -2,9 +2,6 @@ pageflow.ConfigurationEditorView.register('audio_loop', {
   configure: function() {
     this.tab('general', function() {
       this.group('general');
-
-      this.input('additional_title', pageflow.TextInputView);
-      this.input('additional_description', pageflow.TextAreaInputView, {size: 'short'});
     });
 
     this.tab('files', function() {
