@@ -1,0 +1,21 @@
+@mixin shine-gradient {
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  rgba(255,255,255,0.1) 0%,rgba(0, 0, 0, 0.1) 29%,rgba(0,0,0,0.05) 90%,rgba(246,246,246,0.1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.1)), color-stop(29%,rgba(0,0,0,0.1)), color-stop(90%,rgba(0,0,0,0.05)), color-stop(100%,rgba(246,246,246,0.1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  rgba(255,255,255,0.1) 0%,rgba(0, 0, 0, 0.1) 29%,rgba(0,0,0,0.05) 90%,rgba(246,246,246,0.1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  rgba(255,255,255,0.1) 0%,rgba(0, 0, 0, 0.1) 29%,rgba(0,0,0,0.05) 90%,rgba(246,246,246,0.1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  rgba(255,255,255,0.1) 0%,rgba(0, 0, 0, 0.1) 29%,rgba(0,0,0,0.05) 90%,rgba(246,246,246,0.1) 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  rgba(255,255,255,0.1) 0%,rgba(0, 0, 0, 0.1) 29%,rgba(0,0,0,0.05) 90%,rgba(246,246,246,0.1) 100%); /* W3C */
+}
+
+@import "bourbon";
+@import "pageflow/mixins";
+@import "pageflow/animations";
+
+@import "./variables";
+@import "./anchors";
+@import "./loading_spinner";
+@import "./page";
+@import "./navigation";
+@import "./overview";
+@import "./player_controls";
