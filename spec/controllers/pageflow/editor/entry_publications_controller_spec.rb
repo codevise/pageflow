@@ -98,6 +98,17 @@ module Pageflow
 
           expect(response.status).to eq(200)
         end
+
+        it 'responds with published_message_html' do
+          user = create(:user)
+          entry = create(:entry, with_member: user)
+
+          sign_in(user)
+          aquire_edit_lock(user, entry)
+          post(:create, entry_id: entry.id, entry_publication: {}, format: 'json')
+
+          expect(json_response(path: :published_message_html)).not_to be_nil
+        end
       end
 
       describe '#check' do
