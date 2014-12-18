@@ -11,6 +11,7 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
     revisionsLink: '.published.notice a',
     publishedNotice: '.published.notice',
     saveButton: 'button.save',
+    successNotice: '.success',
     successLink: '.success a'
   },
 
@@ -109,6 +110,12 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
         that.$el.removeClass('publishing');
         that.$el.addClass('succeeded');
         that.$('input').removeAttr('disabled');
+
+        var publishedMessage = that.options.entryPublication.get('published_message_html');
+        if (publishedMessage) {
+          that.ui.successNotice.append(publishedMessage);
+        }
+
         that.enableSave();
       });
 
