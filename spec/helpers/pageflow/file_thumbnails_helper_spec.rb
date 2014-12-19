@@ -39,5 +39,24 @@ module Pageflow
         expect(result).not_to include(".pageflow_audio_file_link_thumbnail_#{audio_file.id}")
       end
     end
+
+    describe '#file_thumbnail_css_class' do
+      it 'concats class name, style and id' do
+        image_file = create(:image_file)
+
+        result = helper.file_thumbnail_css_class(image_file, :thumbnail)
+
+        expect(result).to eq("pageflow_image_file_thumbnail_#{image_file.id}")
+      end
+
+      it 'supportes positioned files' do
+        image_file = create(:image_file)
+        positioned_file = PositionedFile.new(image_file, 50, 50)
+
+        result = helper.file_thumbnail_css_class(positioned_file, :thumbnail)
+
+        expect(result).to eq("pageflow_image_file_thumbnail_#{image_file.id}")
+      end
+    end
   end
 end
