@@ -22,7 +22,7 @@ pageflow.transientReferences = {
 
   unsetReference: function(attribute) {
     this._cleanUpReference(attribute);
-    this.unset(attribute);
+    this.set(attribute, null);
   },
 
   _setReference: function(attribute, record) {
