@@ -54,16 +54,36 @@ module Pageflow
         file = resolver.find
 
         expect(file).to be_blank
+        expect(file.position_x).to eq(50)
+        expect(file.position_y).to eq(50)
       end
-    end
 
-    describe ThumbnailFileResolver::Null do
-      describe '#thumbnail_url' do
-        it 'returns placeholder url' do
-          file = ThumbnailFileResolver::Null.new
+      it 'returns positioned file with coordinates from configuration' do
+        image_file = create(:image_file)
+        candidates = [
+          {attribute: 'thumbnail_id', file_collection: 'image_files'}
+        ]
+        configuration = {'thumbnail_id' => image_file.id, 'thumbnail_x' => 20, 'thumbnail_y' => 30}
+        resolver = ThumbnailFileResolver.new(candidates, configuration)
 
-          expect(file.thumbnail_url).to match(/placeholder/)
-        end
+        file = resolver.find
+
+        expect(file.position_x).to eq(20)
+        expect(file.position_y).to eq(30)
+      end
+
+      it 'returns positioned file with default coordinates' do
+        image_file = create(:image_file)
+        candidates = [
+          {attribute: 'thumbnail_id', file_collection: 'image_files'}
+        ]
+        configuration = {'thumbnail_id' => image_file.id}
+        resolver = ThumbnailFileResolver.new(candidates, configuration)
+
+        file = resolver.find
+
+        expect(file.position_x).to eq(50)
+        expect(file.position_y).to eq(50)
       end
     end
   end

@@ -31,7 +31,13 @@ module Pageflow
     end
 
     def thumbnail_url(*args)
-      pages.first.try(:thumbnail_url, *args) || ImageFile.new.processed_attachment.url(*args)
+      thumbnail_file.thumbnail_url(*args)
+    end
+
+    def thumbnail_file
+      share_image_file ||
+        pages.first.try(:thumbnail_file) ||
+        PositionedFile.null
     end
 
     def self.find(id, scope = Entry)
@@ -50,6 +56,10 @@ module Pageflow
 
     def custom_revision?
       @custom_revision
+    end
+
+    def share_image_file
+      PositionedFile.wrap(ImageFile.find_by_id(share_image_id), share_image_x, share_image_y)
     end
   end
 end
