@@ -25,26 +25,7 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
         pageflow.history = new pageflow.History(pageflow.slides);
       });
 
-      $("body").on('click mousedown', 'a, [tabindex]', function() {
-        $(this).blur();
-      });
-
-      $("body").on('keypress', 'a, [tabindex]', function(e) {
-        if (e.which == 13) {
-          $(this).click();
-        }
-      });
-
-      $("body").on("keyup", "a, [tabindex]", function (e) {
-        e.stopPropagation();
-      });
-
-      $(".content_link").attr("href","#firstContent");
-      $(".content_link").click(function(e) {
-        $("#firstContent").focus();
-        e.preventDefault();
-        return false; }
-      );
+      pageflow.links.setup();
     });
   };
 }).promise();
