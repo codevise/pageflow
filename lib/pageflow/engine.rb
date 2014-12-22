@@ -20,7 +20,7 @@ require 'videojs_rails'
 require 'backbone-rails'
 require 'marionette-rails'
 require 'jquery-fileupload-rails'
-require 'wysihtml5-rails'
+require 'wysihtml5x/rails'
 require 'i18n-js'
 
 module Pageflow

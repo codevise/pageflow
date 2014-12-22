@@ -1,7 +1,6 @@
 //= require_self
 
-//= require wysihtml5
-//= require parser_rules/simple
+//= require wysihtml5x-toolbar
 
 //= require i18n
 //= require i18n/translations
