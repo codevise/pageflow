@@ -18,9 +18,11 @@ module Pageflow
       end
 
       it 'includes available locales' do
+        Pageflow.config.available_locales = [:de, :fr]
+
         result = JSON.parse(helper.editor_config_seeds)
 
-        expect(result['availableLocales']).not_to be_empty
+        expect(result['availableLocales']).to eq(['de', 'fr'])
       end
     end
   end

@@ -56,5 +56,21 @@ module Pageflow
         expect(conf.file_types.to_a).to eq([file_type1, file_type2])
       end
     end
+
+    describe '#available_locales' do
+      it 'defaults to I18n.available_locales' do
+        configuration = Configuration.new
+
+        expect(configuration.available_locales).to eq(Engine.config.i18n.available_locales)
+      end
+
+      it 'can be overwritten' do
+        configuration = Configuration.new
+
+        configuration.available_locales = [:fr]
+
+        expect(configuration.available_locales).to eq([:fr])
+      end
+    end
   end
 end

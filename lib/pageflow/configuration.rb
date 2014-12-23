@@ -149,6 +149,11 @@ module Pageflow
     # @return [Admin::TabsRegistry]
     attr_reader :admin_resource_tabs
 
+    # Array of locales which can be chosen as interface language by a
+    # user or for an entry. Defaults to `I18n.available_locales`.
+    # @since 0.7
+    attr_accessor :available_locales
+
     def initialize
       @paperclip_filesystem_default_options = {}
       @paperclip_s3_default_options = {}
@@ -173,6 +178,8 @@ module Pageflow
       @confirm_encoding_jobs = false
 
       @admin_resource_tabs = Pageflow::Admin::Tabs.new
+
+      @available_locales = Engine.config.i18n.available_locales
     end
 
     # Make a page type available for use in the system.
