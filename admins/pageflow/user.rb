@@ -145,6 +145,7 @@ module Pageflow
       include Pageflow::QuotaVerification
 
       helper Pageflow::Admin::UsersHelper
+      helper Pageflow::Admin::LocalesHelper
       helper Pageflow::QuotaHelper
 
       def build_new_resource

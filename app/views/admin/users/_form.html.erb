@@ -13,7 +13,7 @@
       <%= f.input :locale,
                   as: :select,
                   include_blank: false,
-                  collection: I18n.available_locales.map { |locale| [I18n.t('language', locale: locale), locale.to_s] } %>
+                  collection: available_locales_collection %>
 
       <% if authorized?(:read, Pageflow::Account) %>
         <%= f.input :account, :include_blank => false %>
