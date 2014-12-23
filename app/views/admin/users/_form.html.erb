@@ -7,13 +7,19 @@
         <%= quota_state_description(:users, @user.account) %>
       <% end %>
 
-      <%= f.input :email, :hint => f.object.new_record? && I18n.t('admin.users.email_invitation_hint') %>
+      <%= f.input :email, :hint => f.object.new_record? && I18n.t('pageflow.admin.users.email_invitation_hint') %>
       <%= f.input :first_name %>
       <%= f.input :last_name %>
+      <%= f.input :locale,
+                  as: :select,
+                  include_blank: false,
+                  collection: available_locales_collection %>
+
       <% if authorized?(:read, Pageflow::Account) %>
         <%= f.input :account, :include_blank => false %>
       <% end %>
-      <%= f.input :role, :collection => collection_for_user_roles, :include_blank => false, :hint => authorized?(:read, Pageflow::Account) ? I18n.t('admin.users.role_hint.admin') : I18n.t('admin.users.role_hint.other') %>
+
+      <%= f.input :role, :collection => collection_for_user_roles, :include_blank => false, :hint => authorized?(:read, Pageflow::Account) ? I18n.t('pageflow.admin.users.role_hint.admin') : I18n.t('pageflow.admin.users.role_hint.others') %>
     <% end %>
     <%= f.actions %>
   <% end %>

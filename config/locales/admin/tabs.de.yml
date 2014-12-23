@@ -1,8 +1,0 @@
-de:
-  pageflow:
-    admin:
-      resource_tabs:
-        members: "Mitglieder"
-        revisions: "Revisionen"
-        entries: "Beiträge"
-        users: "Benutzer"

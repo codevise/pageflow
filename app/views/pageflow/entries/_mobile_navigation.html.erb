@@ -3,7 +3,7 @@
   <div class="menu sharing"></div>
   <div class="menu imprint"></div>
   <div class="overview_mobile">
-      <span class="heading-1">Übersicht</span>
+      <span class="heading-1"><%= t('.overview') %></span>
       <div class="wrapper">
         <ul>
           <%= render :partial => 'pageflow/entries/navigation/page',
@@ -17,21 +17,21 @@
       <ul>
         <li>
           <%= link_to "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}&p%5Btitle%5D=#{ERB::Util.url_encode(entry.title)}", :target => "_blank", :tabindex => "2", :class => "share facebook", :data => { :"share-page" => "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
-            <span class="hint">über facebook teilen</span>
+            <span class="hint"><%= t('pageflow.widgets.share_menu.share_with_facebook') %></span>
             <span class="share_facebook button"></span>
             <p>facebook</p>
           <% end %>
         </li>
         <li>
           <%= link_to "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share twitter", :data => { :"share-page" => "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
-            <span class="hint">über twitter teilen</span>
+            <span class="hint"><%= t('pageflow.widgets.share_menu.share_with_twitter') %></span>
             <span class="share_twitter button"></span>
             <p>Twitter</p>
           <% end %>
         </li>
         <li>
           <%= link_to "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share google", :data => { :"share-page" => "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
-            <span class="hint">über Google+ teilen</span>
+            <span class="hint"><%= t('pageflow.widgets.share_menu.share_with_google') %></span>
             <span class="share_google button"></span>
             <p>Google+</p>
           <% end %>
@@ -44,7 +44,7 @@
     </div>
   </div>
   <div class="imprint_mobile">
-      <span class="heading-1">Impressum</span>
+      <span class="heading-1"><%= t('.imprint') %></span>
       <div class="wrapper">
         <ul>
           <li class="credits">

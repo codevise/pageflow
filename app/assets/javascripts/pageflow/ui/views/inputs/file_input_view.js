@@ -63,7 +63,7 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
   update: function() {
     var file = this._getFile();
 
-    this.ui.fileName.text(file ? file.get('file_name') : '(Kein)');
+    this.ui.fileName.text(file ? file.get('file_name') : I18n.t('pageflow.ui.views.inputs.file_input_view.none'));
     this.ui.unsetButton.toggle(!!file);
     this.ui.editPositioningButton.toggle(this.options.positioning && !!file && file.isPositionable());
 

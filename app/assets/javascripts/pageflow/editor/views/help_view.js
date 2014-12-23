@@ -1,8 +1,11 @@
 pageflow.HelpView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/help',
   className: 'help',
 
   defaultSection: 'outline',
+
+  getTemplate: function(){
+    return 'templates/help.' + I18n.locale;
+  },
 
   routeSectionMapping: {
     'pages': 'page',

@@ -17,7 +17,7 @@ module Pageflow
         invoke 'pageflow:routes'
         invoke 'pageflow:user'
         invoke 'pageflow:seeds'
-        invoke 'pageflow:active_admin_menu'
+        invoke 'pageflow:active_admin_initializer'
 
         rake 'pageflow:install:migrations'
       end

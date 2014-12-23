@@ -1,7 +1,0 @@
-de:
-  admin:
-    users:
-      delete_me:
-        warning_html: "Geben Sie Ihr aktuelles Passwort ein, um zu bestätigen, dass Ihr Benutzerkonto wirklich löschen möchten. <b>Alle Ihre Daten gehen dabei verloren. Der Vorgang kann nicht rückgangig gemacht werden.</b>"
-        delete_label: "Benutzerkonto löschen"
-        cancel_label: "Nein, mein Benutzerkonto nicht löschen"

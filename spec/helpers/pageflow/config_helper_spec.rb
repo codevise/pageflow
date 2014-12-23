@@ -16,6 +16,14 @@ module Pageflow
 
         expect(result['fileTypes'][0]['collectionName']).to eq('image_files')
       end
+
+      it 'includes available locales' do
+        Pageflow.config.available_locales = [:de, :fr]
+
+        result = JSON.parse(helper.editor_config_seeds)
+
+        expect(result['availableLocales']).to eq(['de', 'fr'])
+      end
     end
   end
 end

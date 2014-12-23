@@ -1,6 +1,0 @@
-de:
-  pageflow:
-    editor:
-      errors:
-        unknown: "Ein unbekannter Fehler ist aufgetreten."
-        "UnmatchedUploadError": "Der Dateityp wird nicht unterstützt."

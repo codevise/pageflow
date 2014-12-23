@@ -5,6 +5,10 @@ module Pageflow
   class ApplicationController < ActionController::Base
     layout 'pageflow/application'
 
+    before_filter do
+      I18n.locale = current_user.try(:locale) || I18n.default_locale
+    end
+
     # Prevent CSRF attacks by raising an exception.
     # For APIs, you may want to use :null_session instead.
     protect_from_forgery with: :exception
@@ -24,14 +28,14 @@ module Pageflow
 
     rescue_from CanCan::AccessDenied do |exception|
       respond_to do |format|
-        format.html { redirect_to main_app.admin_root_path, :alert => t('unauthorized') }
+        format.html { redirect_to main_app.admin_root_path, :alert => t('pageflow.unauthorized') }
         format.any(:json, :css) { head :forbidden }
       end
     end
 
     rescue_from StateMachine::InvalidTransition do |exception|
       respond_to do |format|
-        format.html { redirect_to main_app.admin_root_path, :alert => t('invalid_transition') }
+        format.html { redirect_to main_app.admin_root_path, :alert => t('pageflow.invalid_transition') }
         format.json { head :bad_request }
       end
     end

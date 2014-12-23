@@ -1,11 +1,13 @@
 module Pageflow
   module Generators
-    class ActiveAdminMenuGenerator < Rails::Generators::Base
+    class ActiveAdminInitializerGenerator < Rails::Generators::Base
       desc "Configure active admin utilitiy menu to contain profile link."
 
       def configure_active_admin
         inject_into_file 'config/initializers/active_admin.rb', after: "ActiveAdmin.setup do |config|\n" do
           <<-RUBY
+  Pageflow.active_admin_settings(config)
+
   config.namespace :admin do |admin|
     # Place a user user profile button next to the sign out link.
     admin.build_menu :utility_navigation do |menu|

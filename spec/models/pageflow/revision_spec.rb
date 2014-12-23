@@ -312,5 +312,19 @@ module Pageflow
         expect(audio_file_record.usage_id).to eq(usage.id)
       end
     end
+
+    describe '#locale' do
+      it 'falls back to default_locale' do
+        revision = build(:revision, locale: '')
+
+        expect(revision.locale).to eq(I18n.default_locale)
+      end
+
+      it 'returns present attribute' do
+        revision = build(:revision, locale: 'fr')
+
+        expect(revision.locale).to eq('fr')
+      end
+    end
   end
 end

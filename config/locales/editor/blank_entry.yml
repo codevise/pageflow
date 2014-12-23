@@ -1,9 +1,0 @@
-de:
-  editor:
-    blank_entry:
-      header: "Dies ist ein leerer Pageflow"
-      intro: "Pageflows bestehen aus Kapiteln und Seiten. In der Seitenleiste rechts findest Du die Gliederung."
-      create_chapter: "Klicke jetzt auf <em>Neues Kapitel</em>, um ein erstes Kapitel zu erstellen."
-      create_page: "Klicke dann auf <em>Neue Seite</em>, um dem Kapitel eine erste Seite hinzuzufügen."
-      edit_page: "Klicke auf eine Seite, um ihren Inhalt zu bearbeiten."
-      outro: "Hier siehst Du dann eine Vorschau deines Pageflows."

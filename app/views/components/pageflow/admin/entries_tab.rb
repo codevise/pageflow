@@ -12,7 +12,7 @@ module Pageflow
           else
             div :class => "blank_slate_container" do
             span :class => "blank_slate" do
-              I18n.t('admin.accounts.no_entries')
+              I18n.t('pageflow.admin.accounts.no_entries')
             end
           end
         end

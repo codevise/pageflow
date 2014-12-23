@@ -1,7 +1,0 @@
-de:
-  admin:
-    themings:
-      cname_hint: "Verwendet für Social Network Sharing."
-      show: "Anzeigen"
-      remove_logo: "Logo entfernen"
-      name: "%{account_name}"

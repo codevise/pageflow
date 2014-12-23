@@ -14,6 +14,7 @@ module Pageflow
              :emphasize_chapter_beginning,
              :emphasize_new_pages,
              :share_image_id, :share_image_x, :share_image_y,
+             :locale,
              :to => :revision)
 
     def initialize(entry, revision = nil)

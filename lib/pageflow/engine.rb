@@ -13,6 +13,7 @@ require 'resque_scheduler'
 require 'active_admin'
 require 'active_admin/patches/views/attributes_table'
 require 'active_admin/patches/views/table_for'
+require 'active_admin/patches/views/pages/base'
 
 require 'jquery-layout-rails'
 require 'videojs_rails'
@@ -31,7 +32,8 @@ module Pageflow
     config.autoload_paths << File.join(config.root, 'app', 'views', 'components')
 
     config.i18n.load_path += Dir[config.root.join('config', 'locales', '**', '*.yml').to_s]
-    config.i18n.default_locale = :de
+    config.i18n.available_locales = [:en, :de]
+    config.i18n.default_locale = :en
 
     # Supress deprecation warning. This is the future default value of the option.
     I18n.config.enforce_available_locales = true
@@ -39,10 +41,10 @@ module Pageflow
     # FORCE RAILS TO MAKE I18N AVAILABLE TO ACTIVE ADMIN
     config.before_configuration do
       I18n.load_path += Dir[Engine.root.join('config', 'locales', '**', '*.yml').to_s]
-      I18n.locale = :de
-      I18n.default_locale = :de
+      I18n.locale = :en
+      I18n.default_locale = :en
       config.i18n.load_path += Dir[Engine.root.join('config', 'locales', '**', '*.yml').to_s]
-      config.i18n.locale = :de
+      config.i18n.locale = :en
       # bypasses rails bug with i18n in production
       I18n.reload!
       config.i18n.reload!

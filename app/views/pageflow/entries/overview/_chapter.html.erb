@@ -2,7 +2,7 @@
 
     <div class="ov_chapter">
       <% if chapters_count > 1 %>
-        <span class="heading-5"><%= "Kapitel #{chapter.position + 1}" if index == 0 %></span>
+        <span class="heading-5"><%= "#{t('.chapter')} #{chapter.position + 1}" if index == 0 %></span>
       <% end %>
       <span class="heading-4"><%= chapter.title if index == 0 %></span>
       <%= render :partial => 'pageflow/entries/overview/page', :collection => page_group, :locals => {:chapter => chapter} %>

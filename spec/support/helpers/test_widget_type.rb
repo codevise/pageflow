@@ -15,7 +15,11 @@ module Pageflow
     end
 
     def render(template, entry)
-      @rendered.html_safe
+      if @rendered.respond_to?(:call)
+        @rendered.call.html_safe
+      else
+        @rendered.html_safe
+      end
     end
 
     def render_head_fragment(template, entry)

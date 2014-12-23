@@ -25,7 +25,7 @@ pageflow.ChapterItemView = Backbone.Marionette.ItemView.extend({
   },
 
   update: function() {
-    this.ui.title.text(this.model.get('title') || '(Unbenannt)');
-    this.ui.number.text('Kapitel ' + (this.model.get('position') + 1));
+    this.ui.title.text(this.model.get('title') || I18n.t('pageflow.editor.views.chapter_item_view.unnamed'));
+    this.ui.number.text(I18n.t('pageflow.editor.views.chapter_item_view.chapter') + ' ' + (this.model.get('position') + 1));
   }
 });

@@ -3,7 +3,7 @@ pageflow.ConfigurationEditorView = Backbone.Marionette.View.extend({
 
   initialize: function() {
     this.tabsView = new pageflow.TabsView({
-      i18n: 'editor.configuration_editor.tabs',
+      i18n: 'pageflow.ui.configuration_editor.tabs',
       defaultTab: this.options.tab
     });
     this.configure();

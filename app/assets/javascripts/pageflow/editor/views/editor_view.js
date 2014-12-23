@@ -13,7 +13,7 @@ pageflow.EditorView = Backbone.View.extend({
   initialize: function() {
     $(window).on('beforeunload', function(event) {
       if (pageflow.entry.get('uploading_files_count') > 0)  {
-        return 'Es werden noch Dateien hochgeladen. Wenn Sie die Seite verlassen werden die Uploads abgebrochen.';
+        return I18n.t('pageflow.editor.views.editor_views.files_pending_warning');
       }
     });
   },
@@ -21,9 +21,9 @@ pageflow.EditorView = Backbone.View.extend({
   render: function() {
     this.$el.layout({
       minSize: 300,
-      togglerTip_closed: 'Editorleiste einblenden',
-      togglerTip_open: 'Editorleiste ausblenden',
-      resizerTip: 'Größe der Editorleiste ändern',
+      togglerTip_closed: I18n.t('pageflow.editor.views.editor_views.show_editor'),
+      togglerTip_open: I18n.t('pageflow.editor.views.editor_views.hide_editor'),
+      resizerTip: I18n.t('pageflow.editor.views.editor_views.resize_editor'),
       onresize: function() {
         pageflow.app.trigger('resize');
       }
