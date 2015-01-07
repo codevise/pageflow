@@ -42,7 +42,7 @@ module Pageflow
     end
 
     def locale
-      super.presence || I18n.locale
+      super.presence || I18n.default_locale
     end
 
     def update_with_password(attributes)
