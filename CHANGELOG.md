@@ -2,7 +2,47 @@
 
 ### Changes on `master`
 
-None so far.
+##### Manual Update Step
+
+The locale can now be changed on a per user and per entry basis.
+([#220](https://github.com/codevise/pageflow/pull/220))
+
+So far `en` and `de` locales are supported. If you do not wish to allow users
+to change the locale setting, add the following line to your
+`config/initializers/pageflow.rb` file:
+
+     # Make only some locales available
+     config.available_locales = [:de]
+
+##### Public Site
+
+- Twitter share cards support.
+  ([#218](https://github.com/codevise/pageflow/pull/218))
+- Bug fix: Ensure target blank for content links.
+  ([#233](https://github.com/codevise/pageflow/pull/233))
+- Bug fix: Improve top margin of pages without title.
+  ([#223](https://github.com/codevise/pageflow/pull/223))
+- Bug fix: Correct width of title elements with text position right.
+  ([#224](https://github.com/codevise/pageflow/pull/224))
+
+##### Admin/Editor
+
+- Update rich text editor.
+  ([#232](https://github.com/codevise/pageflow/pull/232))
+- Bug fix: Remove unused additional info box fields for background
+  audio page type.
+  ([#226](https://github.com/codevise/pageflow/pull/226))
+- Bug fix: Allow unsetting the custom share image.
+  ([#230](https://github.com/codevise/pageflow/pull/230))
+
+##### Rails Engine
+
+- Refactor default theme to ease importing additional files.
+  ([#229](https://github.com/codevise/pageflow/pull/229))
+- Dispatch media events on video/audio playback.
+  ([#227](https://github.com/codevise/pageflow/pull/227))
+- Remove unused page type engine base class.
+  ([#225](https://github.com/codevise/pageflow/pull/225))
 
 ### Version 0.6.0
 
