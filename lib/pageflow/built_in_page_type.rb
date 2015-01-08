@@ -28,6 +28,10 @@ module Pageflow
       "activerecord.values.pageflow/page.template.#{name}"
     end
 
+    def category_translation_key
+      "pageflow.built_in_page_type.categories.#{name}"
+    end
+
     def thumbnail_candidates
       @thumbnail_candidates.presence || super
     end

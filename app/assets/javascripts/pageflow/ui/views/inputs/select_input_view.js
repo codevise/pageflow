@@ -9,7 +9,7 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
 
   ui: {
     select: 'select',
-    input: 'select',
+    input: 'select'
   },
 
   initialize: function() {
@@ -22,6 +22,13 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
       else if (this.options.translationKeyProperty) {
         this.options.translationKeys = _.pluck(this.options.collection, this.options.translationKeyProperty);
       }
+
+      if (this.options.groupProperty) {
+        this.options.groups = _.pluck(this.options.collection, this.options.groupProperty);
+      }
+      else if (this.options.groupTranslationKeyProperty) {
+        this.options.groupTanslationKeys = _.pluck(this.options.collection, this.options.groupTranslationKeyProperty);
+      }
     }
 
     if (!this.options.texts) {
@@ -32,6 +39,12 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
       }
 
       this.options.texts = _.map(this.options.translationKeys, function(key) {
+        return I18n.t(key);
+      });
+    }
+
+    if (!this.options.groups) {
+      this.options.groups = _.map(this.options.groupTanslationKeys, function(key) {
         return I18n.t(key);
       });
     }
@@ -47,7 +60,25 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
       option.value = value;
       option.text = this.options.texts[index];
 
-      this.ui.select.append(option);
+      if (this.options.groups) {
+        var group = this.options.groups[index];
+        var optgroup = this.ui.select.find('optgroup[label="' + group + '"]');
+
+        option.setAttribute('data-group', group);
+
+        if (optgroup.length > 0) {
+          optgroup.append(option);
+        }
+        else {
+          $('<optgroup label="' + group + '">')
+            .appendTo(this.ui.select)
+            .append(option);
+        }
+
+      } else {
+        this.ui.select.append(option);
+      }
+
     }, this);
 
     this.load();

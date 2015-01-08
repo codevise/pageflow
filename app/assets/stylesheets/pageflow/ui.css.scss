@@ -1,6 +1,8 @@
 @import "bourbon";
 @import "pageflow/mixins";
 
+@import "./ui/input/extended_select_input";
+
 %pageflow-ui {
   @import "./ui/forms";
   @import "./ui/tabs_view";

@@ -19,12 +19,17 @@ pageflow.EditPageView = Backbone.Marionette.Layout.extend({
   },
 
   onRender: function() {
-    this.pageTypeContainer.show(new pageflow.SelectInputView({
+    this.pageTypeContainer.show(new pageflow.ExtendedSelectInputView({
       model: this.model,
       propertyName: 'template',
       collection: pageflow.Page.types,
       valueProperty: 'name',
       translationKeyProperty: 'translation_key',
+
+      groupTranslationKeyProperty: 'category_translation_key',
+      pictogramClassProperty: 'foo',
+      helpLinkProperty: 'name',
+      descriptionTranslationKeyProperty: 'description_translation_key'
     }));
 
     this.load();

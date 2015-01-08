@@ -11,6 +11,14 @@ module Pageflow
       "pageflow.#{name}.page_type_name"
     end
 
+    def description_translation_key
+      "pageflow.#{name}.page_type_description"
+    end
+
+    def category_translation_key
+      "pageflow.#{name}.page_type_category_name"
+    end
+
     # Override to return a string in snake_case.
     def name
       raise(NotImplementedError, 'PageType subclass needs to define a name.')
