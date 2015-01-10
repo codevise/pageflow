@@ -50,13 +50,13 @@ pageflow.Page = Backbone.Model.extend({
   thumbnailFile: function() {
     var configuration = this.configuration;
 
-    return _.reduce(this.pageType().thumbnail_candidates, function(result, candidate) {
+    return _.reduce(this.pageType().thumbnailCandidates(), function(result, candidate) {
       return result || configuration.getReference(candidate.attribute, candidate.file_collection);
     }, null);
   },
 
   pageType: function() {
-    return pageflow.Page.typesByName[this.get('template')];
+    return pageflow.editor.pageTypes.findByName(this.get('template'));
   },
 
   toJSON: function() {

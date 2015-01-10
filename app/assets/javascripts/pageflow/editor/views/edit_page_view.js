@@ -22,8 +22,7 @@ pageflow.EditPageView = Backbone.Marionette.Layout.extend({
     this.pageTypeContainer.show(new pageflow.ExtendedSelectInputView({
       model: this.model,
       propertyName: 'template',
-
-      collection: pageflow.Page.types,
+      collection: pageflow.editor.pageTypes.pluck('seed'),
       valueProperty: 'name',
       translationKeyProperty: 'translation_key',
       groupTranslationKeyProperty: 'category_translation_key',
@@ -42,10 +41,12 @@ pageflow.EditPageView = Backbone.Marionette.Layout.extend({
   },
 
   load: function() {
-    this.configurationContainer.show(pageflow.ConfigurationEditorView.create(this.model.get('template'), {
+    var configurationEditor = this.model.pageType().createConfigurationEditorView({
       model: this.model.configuration,
       tab: this.options.tab
-    }));
+    });
+
+    this.configurationContainer.show(configurationEditor);
   },
 
   destroy: function() {
