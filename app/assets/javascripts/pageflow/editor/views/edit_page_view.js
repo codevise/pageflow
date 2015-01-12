@@ -27,7 +27,7 @@ pageflow.EditPageView = Backbone.Marionette.Layout.extend({
       translationKeyProperty: 'translation_key',
 
       groupTranslationKeyProperty: 'category_translation_key',
-      pictogramClassProperty: 'foo',
+      pictogramClassProperty: 'type_pictogram',
       helpLinkProperty: 'name',
       descriptionTranslationKeyProperty: 'description_translation_key'
     }));

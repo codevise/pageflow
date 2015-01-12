@@ -56,26 +56,28 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
 
     _.each(this.options.values, function(value, index) {
       var option = document.createElement('option');
+      var group = this.options.groups[index];
+      var optgroup = [];
 
       option.value = value;
       option.text = this.options.texts[index];
 
-      if (this.options.groups) {
-        var group = this.options.groups[index];
-        var optgroup = this.ui.select.find('optgroup[label="' + group + '"]');
-
-        option.setAttribute('data-group', group);
+      if (group) {
+        var escapedGroup = group.replace(/"/g, '&quot;');
+        optgroup = this.ui.select.find('optgroup[label="' + escapedGroup + '"]');
 
         if (optgroup.length > 0) {
           optgroup.append(option);
         }
         else {
-          $('<optgroup label="' + group + '">')
+          $('<optgroup label="' + escapedGroup + '">')
             .appendTo(this.ui.select)
             .append(option);
         }
 
-      } else {
+        option.setAttribute('data-group', group);
+      }
+      else {
         this.ui.select.append(option);
       }
 

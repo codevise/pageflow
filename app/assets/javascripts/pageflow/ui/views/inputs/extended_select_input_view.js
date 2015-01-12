@@ -39,7 +39,7 @@ pageflow.ExtendedSelectInputView = pageflow.SelectInputView.extend({
           li.addClass('ui-state-disabled');
         }
 
-        $('<span>', { class: 'type_pictogram' }).prependTo(li);
+        $('<span>', { class: options.pictogramClassProperty }).prependTo(li);
 
         $('<p>', {
           text: item.label,
