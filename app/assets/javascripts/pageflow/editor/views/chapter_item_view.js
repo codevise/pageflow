@@ -13,7 +13,9 @@ pageflow.ChapterItemView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.subview(new pageflow.SortableCollectionView({
+    var collectionView = this.options.sortable ? pageflow.SortableCollectionView : pageflow.CollectionView;
+
+    this.subview(new collectionView({
       el: this.ui.pages,
       collection: this.model.pages,
       itemViewConstructor: this.options.pageItemView || pageflow.NavigatablePageItemView,
