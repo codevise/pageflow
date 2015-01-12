@@ -1,0 +1,48 @@
+.page_links {
+  .add_link {
+    @include plus-circled-icon;
+    @include icon-button;
+  }
+
+  ul.links {
+    margin-bottom: 10px;
+  }
+
+  a.edit {
+    @include icon-only-button(#aaa);
+    @include pencil-icon;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+  }
+
+  li {
+    margin-bottom: 2px;
+
+    .title {
+      cursor: default;
+    }
+
+    .thumbnail,
+    .missing_page_thumbnail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 35px;
+      width: 35px;
+      background-size: cover;
+      background-color: #444;
+    }
+
+    .missing_page_thumbnail {
+      @include attention-icon;
+      @include background-icon-center($color: #fff);
+      display: none;
+      position: absolute;
+    }
+
+    &.dangling .missing_page_thumbnail {
+      display: block;
+    }
+  }
+}
