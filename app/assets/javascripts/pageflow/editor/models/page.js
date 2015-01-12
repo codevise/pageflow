@@ -55,6 +55,10 @@ pageflow.Page = Backbone.Model.extend({
     }, null);
   },
 
+  pageLinks: function() {
+    return this.pageType().pageLinks(this.configuration);
+  },
+
   pageType: function() {
     return pageflow.editor.pageTypes.findByName(this.get('template'));
   },
