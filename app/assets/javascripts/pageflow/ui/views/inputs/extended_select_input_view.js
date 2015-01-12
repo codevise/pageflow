@@ -25,7 +25,8 @@ pageflow.ExtendedSelectInputView = pageflow.SelectInputView.extend({
   },
 
   onRender: function() {
-    var options = this.options;
+    var that = this,
+        options = this.options;
     pageflow.SelectInputView.prototype.onRender.apply(this, arguments);
 
     $.widget("custom.extendedselectmenu", $.ui.selectmenu, {
@@ -75,6 +76,7 @@ pageflow.ExtendedSelectInputView = pageflow.SelectInputView.extend({
     });
 
     this.ui.select.extendedselectmenu({
+      select: that.select.bind(that),
       width: '100%',
       position: {
         my: "right top",
@@ -82,6 +84,11 @@ pageflow.ExtendedSelectInputView = pageflow.SelectInputView.extend({
       }
     }).extendedselectmenu("menuWidget")
       .addClass('extended-select-menu');
+  },
+
+  select: function(event, ui) {
+    this.ui.select.val(ui.item.value);
+    this.save();
   }
 
 });
