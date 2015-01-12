@@ -55,6 +55,22 @@ pageflow.ExtendedSelectInputView = pageflow.SelectInputView.extend({
         }
 
         return li.appendTo(ul);
+      },
+
+      _resizeMenu: function() {
+        var menuHeight = this.menu.height(),
+            menuOffset = this.button.offset().top + this.button.outerHeight(),
+            bodyHeight = $("body").height();
+
+        if (menuHeight + menuOffset > bodyHeight) {
+          this.menuWrap.outerHeight(bodyHeight - menuOffset).css({ 'overflow-y': 'scroll' });
+        }
+        else {
+          this.menuWrap.css({
+            height: 'initial',
+            'overflow-y': 'initial'
+          });
+        }
       }
     });
 
