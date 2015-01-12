@@ -1,4 +1,6 @@
 pageflow.PageThumbnailView = Backbone.Marionette.View.extend({
+  className: 'page_thumbnail',
+
   modelEvents: {
     'change:configuration': 'update'
   },
@@ -9,18 +11,20 @@ pageflow.PageThumbnailView = Backbone.Marionette.View.extend({
   },
 
   update: function() {
-    if (this.fileThumbnailView && this.currentFileThumbnail == this.model.thumbnailFile()) {
+    var file = this.model && this.model.thumbnailFile();
+
+    if (this.fileThumbnailView && this.currentFileThumbnail == file) {
       return;
     }
 
-    this.currentFileThumbnail = this.model.thumbnailFile();
+    this.currentFileThumbnail = file;
 
     if (this.fileThumbnailView) {
       this.fileThumbnailView.close();
     }
 
     this.fileThumbnailView = this.subview(new pageflow.FileThumbnailView({
-      model: this.model.thumbnailFile(),
+      model: file,
       className: 'thumbnail file_thumbnail',
       imageUrlPropertyName: this.options.imageUrlPropertyName
     }));
