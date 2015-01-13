@@ -7,19 +7,36 @@ de:
         audio_loop: "Audio"
         background_image: "Basic"
         background_video: "Video"
-        background_audio: "Audio"
         internal_links: "Verweise"
 
-    external_links:
-      page_type_category_name: "Verweise"
+    background_video:
+      page_type_description: "Bildschirmfüllendes Video ohne Steuerelemente im Loop abgespielt"
+    video:
+      page_type_description: "Wiedergabe einer Videodatei mit Steuerelementen"
+    audio:
+      page_type_description: "Wiedergabe von Audiodatei mit Steuerelementen"
+    background_image:
+      page_type_description: "Bildschirmfüllendes Bild und Text"
+    audio_loop:
+      page_type_description: "Wiedergabe einer Audiodatei ohne Steuerelemente (Atmo)"
+    internal_links:
+      page_type_description: "Sammlung von Verweisen zu anderen Seiten dieses Pageflows"
+
     before_after:
       page_type_category_name: "Interaktiv"
-    chart:
-      page_type_category_name: "Interaktiv"
-    panorama:
-      page_type_category_name: "Interaktiv"
-    text_page:
-      page_type_category_name: "Basic"
+      page_type_description: "Zwei übereinandergelegte Bilder mit Schieberegler getrennt"
+    external_links:
+      page_type_description: "Sammlung von Verweisen zu Webseiten außerhalb des Pageflows"
+      page_type_category_name: "Verweise"
     embedded_video:
       page_type_category_name: "Video"
-
+      page_type_description: "Bettet ein externes Video von YouTube oder Vimeo ein"
+    chart:
+      page_type_category_name: "Daten und Diagramme"
+      page_type_description: "Einbindung von Diagrammen, die mit DataWrapper erstellt wurden"
+    text_page:
+      page_type_category_name: "Basic"
+      page_type_description: "Blogartig Seite für lange Texte"
+    panorama:
+      page_type_description: "Einbindung interaktiver Panoramen von palmsfilm.com oder Panogate"
+      page_type_category_name: "Interaktiv"
