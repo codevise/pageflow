@@ -49,13 +49,13 @@ pageflow.Slideshow = function($el, configurations) {
     this.goTo(currentPage.next('.page'));
   };
 
-  this.goToById = function(id) {
-    this.goTo($el.find('[data-id=' + id + ']'));
+  this.goToById = function(id, options) {
+    return this.goTo($el.find('[data-id=' + id + ']'), options);
   };
 
-  this.goToByPermaId = function(permaId) {
+  this.goToByPermaId = function(permaId, options) {
     if (permaId) {
-      this.goTo($el.find('#' + permaId));
+      return this.goTo($el.find('#' + permaId), options);
     }
   };
 
@@ -76,11 +76,13 @@ pageflow.Slideshow = function($el, configurations) {
         preload.start(currentPage);
         $el.trigger('slideshowchangepage');
       }, this);
+
+      return true;
     }
   };
 
   this.goToFirstPage = function() {
-    this.goTo(pages.first());
+    return this.goTo(pages.first());
   };
 
   this.update = function() {
