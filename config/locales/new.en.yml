@@ -7,18 +7,4 @@ en:
         audio_loop: "Audio"
         background_image: "Basic"
         background_video: "Video"
-        background_audio: "Audio"
         internal_links: "Links"
-
-    external_links:
-      page_type_category_name: "Links"
-    before_after:
-      page_type_category_name: "Interactive"
-    chart:
-      page_type_category_name: "Interactive"
-    panorama:
-      page_type_category_name: "Interactive"
-    text_page:
-      page_type_category_name: "Basic"
-    embedded_video:
-      page_type_category_name: "Video"
