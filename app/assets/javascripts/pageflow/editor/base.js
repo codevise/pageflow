@@ -55,7 +55,7 @@ pageflow.startEditor = function(options) {
   jQuery(function() {
     $.when(
       $.getJSON('/editor/entries/' + options.entryId + '/seed'),
-      pageflow.features.detect()
+      pageflow.browser.detectFeatures()
     )
       .done(function(result) {
         pageflow.app.start(result[0]);

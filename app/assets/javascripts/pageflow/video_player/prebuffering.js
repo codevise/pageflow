@@ -30,7 +30,7 @@ pageflow.VideoPlayer.prebuffering = function(player) {
     var deferred = $.Deferred();
     var timeout;
 
-    if (pageflow.features.has('prebuffering support')) {
+    if (pageflow.browser.has('prebuffering support')) {
       if (!player.isBufferedAhead(delta) && !player.prebufferDeferred) {
         pageflow.log('prebuffering video ' + player.srcFromOptions());
 

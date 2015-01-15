@@ -1,6 +1,6 @@
 pageflow.ready = new $.Deferred(function(readyDeferred) {
   window.onload = function() {
-    pageflow.features.detect().then(function() {
+    pageflow.browser.detectFeatures().then(function() {
       $('body').one('pagepreloaded', function() {
         readyDeferred.resolve();
       });

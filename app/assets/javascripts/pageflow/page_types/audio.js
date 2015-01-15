@@ -48,7 +48,7 @@ pageflow.pageType.register('audio', _.extend({
     this.active = true;
     var that = this;
 
-    if(!pageflow.features.has('mobile platform')) {
+    if (!pageflow.browser.has('mobile platform')) {
       if (configuration.autoplay === false) {
         that.audioPlayer.volume(pageflow.settings.get('volume'));
       } else {

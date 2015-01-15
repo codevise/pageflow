@@ -1,4 +1,4 @@
-pageflow.features.add('ie', function() {
+pageflow.browser.feature('ie', function() {
   if (navigator.appName == 'Microsoft Internet Explorer')
   {
     return true;

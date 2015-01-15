@@ -6,7 +6,7 @@ pageflow.pageType.register('background_video', _.extend({
 
   prepare: function(pageElement, configuration) {
 
-    if (!pageflow.features.has('mobile platform')) {
+    if (!pageflow.browser.has('mobile platform')) {
       this.videoPlayer.ensureCreated();
     }
   },
@@ -21,7 +21,7 @@ pageflow.pageType.register('background_video', _.extend({
     this.videoPlayer.ensureCreated();
     this._resizeToCover(pageElement, configuration);
 
-    if (!pageflow.features.has('mobile platform')) {
+    if (!pageflow.browser.has('mobile platform')) {
       this.prebufferingPromise = this.videoPlayer.prebuffer().then(function() {
         that.videoPlayer.volume(0);
         that.videoPlayer.play();
@@ -38,7 +38,7 @@ pageflow.pageType.register('background_video', _.extend({
   activated: function(pageElement, configuration) {
     var that = this;
 
-    if (!pageflow.features.has('mobile platform')) {
+    if (!pageflow.browser.has('mobile platform')) {
       this.prebufferingPromise.then(function() {
         that.fadeSound(that.videoPlayer, pageflow.settings.get('volume'), 1000);
       });

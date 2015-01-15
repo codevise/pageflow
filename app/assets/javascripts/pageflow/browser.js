@@ -1,7 +1,12 @@
 //= require_self
-//= require_tree ./features
+//= require_tree ./browser
 
-pageflow.features = (function(){
+/**
+ * Browser feature detection.
+ *
+ * @since edge
+ */
+pageflow.browser = (function(){
   var tests = {},
       results = {},
       ready = new $.Deferred();
@@ -11,7 +16,14 @@ pageflow.features = (function(){
     on: {},
     unset: {},
 
-    add: function(name, test) {
+    /**
+     * Add a feature test.
+     *
+     * @param name [String] Name of the feature. Can contain whitespace.
+     * @param test [Function] A function that either returns `true` or
+     *   `false` or a promise that resolves to `true` or `false`.
+     */
+    feature: function(name, test) {
       var s = name.replace(/ /g, '_');
 
       this.off[s] = function() {
@@ -32,6 +44,13 @@ pageflow.features = (function(){
       tests[name] = test;
     },
 
+    /**
+     * Check whether the browser has a specific feature. This method
+     * may only be called after the `#ready` promise is resolved.
+     *
+     * @param name [String] Name of the feature.
+     * @return [Boolean]
+     */
     has: function(name) {
       if (this.ready().state() != 'resolved') {
         throw 'Feature detection has not finished yet.';
@@ -44,11 +63,17 @@ pageflow.features = (function(){
       return results[name];
     },
 
+    /**
+     * A promise that is resolved once feature detection has finished.
+     *
+     * @return [Promise]
+     */
     ready: function() {
       return ready.promise();
     },
 
-    detect: function() {
+    /** @api private */
+    detectFeatures: function() {
       var promises = {};
 
       var asyncHas = function(name) {

@@ -1,4 +1,4 @@
-pageflow.features.add('high bandwidth', function() {
+pageflow.browser.feature('high bandwidth', function() {
   return pageflow.bandwidth().pipe(function(result) {
     var isHigh = result.speedInBps > 8000 * 1024;
 

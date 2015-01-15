@@ -13,7 +13,7 @@
     if (typeof lastAction == 'undefined' || now - lastAction > 400) {
       lastAction = now;
 
-      if (pageflow.features.has('phone platform')) {
+      if (pageflow.browser.has('phone platform')) {
         var elem = this.player_.tech.el();
         this.player_.play();
 
