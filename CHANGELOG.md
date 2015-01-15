@@ -7,6 +7,16 @@
 The locale can now be changed on a per user and per entry basis.
 ([#220](https://github.com/codevise/pageflow/pull/220))
 
+For language selection to work inside the admin, you need to add the
+following line to the setup block inside your
+`config/initializers/active_admin.rb` file:
+
+    ActiveAdmin.setup do |config|
+      Pageflow.active_admin_settings(config)
+
+      # ...
+    end
+
 So far `en` and `de` locales are supported. If you do not wish to allow users
 to change the locale setting, add the following line to your
 `config/initializers/pageflow.rb` file:
@@ -43,6 +53,9 @@ to change the locale setting, add the following line to your
   ([#227](https://github.com/codevise/pageflow/pull/227))
 - Remove unused page type engine base class.
   ([#225](https://github.com/codevise/pageflow/pull/225))
+- Bug fix: Depend on working jquery-fileupload-rails patch level
+  version.
+  ([#235](https://github.com/codevise/pageflow/pull/235))
 
 ### Version 0.6.0
 
