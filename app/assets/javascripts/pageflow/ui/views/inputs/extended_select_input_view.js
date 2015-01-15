@@ -76,14 +76,21 @@ pageflow.ExtendedSelectInputView = pageflow.SelectInputView.extend({
     });
 
     this.ui.select.extendedselectmenu({
+      open: that.open.bind(that),
       select: that.select.bind(that),
       width: '100%',
       position: {
         my: "right top",
         at: "right bottom"
       }
-    }).extendedselectmenu("menuWidget")
+    }).extendedselectmenu('menuWidget')
       .addClass('extended-select-menu');
+  },
+
+  open: function() {
+    this.ui.select.extendedselectmenu('menuWidget')
+      .find('.ui-selectmenu-optgroup')
+      .data('ui-selectmenu-item', false);
   },
 
   select: function(event, ui) {
