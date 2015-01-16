@@ -23,7 +23,7 @@
   <script>
     pageflow.manualStart.enabled = <%= @entry.manual_start ? 'true' : 'false' %>;
     pageflow.visited.enabled = <%= @entry.emphasize_new_pages ? 'true' : 'false' %>;
-    pageflow.pages = <%= @entry.pages.to_json(:only => [:id, :perma_id, :configuration]).html_safe %>;
+    pageflow.pages = <%= entry_pages_json_seed(@entry) %>;
     pageflow.entryId = <%= @entry.id %>;
   </script>
 
