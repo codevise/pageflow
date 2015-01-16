@@ -24,6 +24,8 @@ Pageflow::Engine.routes.draw do
 
     namespace :editor do
       resources :entries, :only => :index, :shallow => true do
+        get :seed, :on => :member
+
         resources :files, :path => 'files/:collection_name', :only => [:index, :create, :update] do
           get :retry, :on => :member
         end

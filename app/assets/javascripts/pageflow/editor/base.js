@@ -49,3 +49,18 @@
 
 pageflow.app = new Backbone.Marionette.Application();
 pageflow.editor = new pageflow.EditorApi();
+
+pageflow.startEditor = function(options) {
+  jQuery(function() {
+    $.when(
+      $.getJSON('/editor/entries/' + options.entryId + '/seed'),
+      pageflow.features.detect()
+    )
+      .done(function(result) {
+        pageflow.app.start(result[0]);
+      })
+      .fail(function() {
+        alert('Error while starting editor.');
+      });
+  });
+};
