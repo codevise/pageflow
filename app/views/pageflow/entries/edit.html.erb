@@ -28,28 +28,7 @@
   I18n.defaultLocale = "<%= I18n.default_locale %>";
   I18n.locale = "<%= I18n.locale %>";
 
-  jQuery(function() {
-    pageflow.features.detect().then(function() {
-      pageflow.app.start({
-        root: '<%= edit_entry_path(@entry).html_safe %>',
-        config: <%= editor_config_seeds %>,
-
-        entry: <%= render_json_seed(@entry) %>,
-        chapters: <%= @entry.chapters.to_json.html_safe %>,
-        pages: <%= @entry.pages.to_json.html_safe %>,
-
-        files: {
-          <% Pageflow.config.file_types.each do |file_type| %>
-            <%= file_type.collection_name %>: <%= render_json_partial(partial: 'pageflow/editor/files/file', collection: @entry.files(file_type.model), locals: {file_type: file_type}, as: :file) %>,
-          <% end %>
-        },
-
-        theming: <%= render_json_seed(@entry.theming) %>,
-        widget_types: <%= widget_types_json_seeds %>,
-        page_types: <%= page_type_json_seeds %>
-      });
-    });
-  });
+  pageflow.startEditor({entryId: <%= @entry.id %>})
 </script>
 
 <%= page_type_templates %>
