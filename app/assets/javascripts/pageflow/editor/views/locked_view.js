@@ -17,6 +17,8 @@ pageflow.LockedView = Backbone.Marionette.ItemView.extend({
     aquired: 'hide',
 
     locked: 'show',
+
+    unauthenticated: 'goBack'
   },
 
   breakLock: function() {
