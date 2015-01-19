@@ -12,6 +12,7 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
     'sync': function() {
       this.$el.attr('data-id', this.model.id);
       this.$el.attr('data-perma-id', this.model.get('perma_id'));
+      this.$el.attr('id', this.model.get('perma_id'));
     }
   },
 
@@ -29,6 +30,7 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
     this.$el.html(this.pageTemplate());
     this.$el.attr('data-id', this.model.id);
     this.$el.attr('data-perma-id', this.model.get('perma_id'));
+    this.$el.attr('id', this.model.get('perma_id'));
     this.$el.data('template', this.model.get('template'));
     this.$el.data('configuration', this.model.get('configuration'));
 
