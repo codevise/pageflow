@@ -76,5 +76,31 @@ module Pageflow
         expect(helper.entry_stylesheet_link_tag(entry)).to include(%Q'href="/revisions/#{revision.id}.css?v=#{ERB::Util.url_encode(revision.cache_key)}')
       end
     end
+
+    describe '#entry_pages_json_seed' do
+      it 'includes id, perma_id and configuration' do
+        revision = create(:revision, :published)
+        chapter = create(:chapter, revision: revision)
+        page = create(:page, chapter: chapter, configuration: {text: 'some text'})
+        entry = PublishedEntry.new(create(:entry, published_revision: revision))
+
+        result = JSON.parse(helper.entry_pages_json_seed(entry))
+
+        expect(result[0]['id']).to eq(page.id)
+        expect(result[0]['perma_id']).to eq(page.perma_id)
+        expect(result[0]['configuration']['text']).to eq('some text')
+      end
+
+      it 'escapes illegal characters' do
+        revision = create(:revision, :published)
+        chapter = create(:chapter, revision: revision)
+        page = create(:page, chapter: chapter, configuration: {text: "some\u2028text"})
+        entry = PublishedEntry.new(create(:entry, published_revision: revision))
+
+        result = helper.entry_pages_json_seed(entry)
+
+        expect(result).to include('some\\u2028text')
+      end
+    end
   end
 end
