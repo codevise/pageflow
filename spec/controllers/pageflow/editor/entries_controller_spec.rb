@@ -23,5 +23,36 @@ module Pageflow
         expect(response.status).to eq(401)
       end
     end
+
+    describe '#seed' do
+      it 'reponds with success for members of the entry' do
+        user = create(:user)
+        entry = create(:entry, :with_member => user)
+
+        sign_in(user)
+        get(:seed, :id => entry, :format => 'json')
+
+        expect(response.status).to eq(200)
+        expect { JSON.parse(response.body) }.not_to raise_error
+      end
+
+      it 'requires the signed in user to be member of the parent entry' do
+        user = create(:user)
+        entry = create(:entry)
+
+        sign_in(user)
+        get(:seed, :id => entry, :format => 'json')
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'requires authentication' do
+        entry = create(:entry)
+
+        get(:seed, :id => entry, :format => 'json')
+
+        expect(response.status).to eq(401)
+      end
+    end
   end
 end

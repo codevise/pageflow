@@ -9,6 +9,11 @@ module Pageflow
         @entries = DraftEntry.accessible_by(current_ability, :use_files)
         respond_with(@entries)
       end
+
+      def seed
+        @entry = DraftEntry.find(params[:id])
+        authorize!(:edit, @entry.to_model)
+      end
     end
   end
 end

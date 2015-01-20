@@ -1,0 +1,14 @@
+{
+  "root": "<%= edit_entry_path(@entry).html_safe %>",
+  "config": <%= editor_config_seeds %>,
+
+  "entry": <%= render_json_seed(@entry) %>,
+  "chapters": <%= @entry.chapters.to_json.html_safe %>,
+  "pages": <%= @entry.pages.to_json.html_safe %>,
+
+  "files": <%= files_json_seeds(@entry) %>,
+
+  "theming": <%= render_json_seed(@entry.theming) %>,
+  "widget_types": <%= widget_types_json_seeds %>,
+  "page_types": <%= page_type_json_seeds %>
+}
