@@ -50,15 +50,16 @@ pageflow.EditLockContainer = Backbone.Model.extend({
     });
 
     $(document).ajaxError(function(event, xhr, settings) {
-      if (xhr.status === 409) {
-        container.lock = null;
-        container.trigger('locked',
-                          xhr.responseJSON || {},
-                          {
-                            context: (settings.url.match(/\/edit_lock/) && !settings.polling) ? 'aquire' : 'other'
-                          });
-
-        container.stopPolling();
+      switch(xhr.status) {
+      case 409:
+        container.handleConflict(xhr, settings);
+        break;
+      case 401:
+      case 422:
+        container.handleUnauthenticated();
+        break;
+      default:
+        container.handleError();
       }
     });
   },
@@ -70,5 +71,25 @@ pageflow.EditLockContainer = Backbone.Model.extend({
       this.lock = null;
       return promise;
     }
+  },
+
+  handleConflict: function(xhr, settings) {
+    this.lock = null;
+    this.trigger('locked',
+                 xhr.responseJSON || {},
+                 {
+                   context: (settings.url.match(/\/edit_lock/) && !settings.polling) ? 'aquire' : 'other'
+                 });
+
+    this.stopPolling();
+
+  },
+
+  handleUnauthenticated: function() {
+    this.stopPolling();
+    this.trigger('unauthenticated');
+  },
+
+  handleError: function() {
   }
 });
