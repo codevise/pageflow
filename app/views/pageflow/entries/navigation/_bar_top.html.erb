@@ -20,7 +20,7 @@
   </li>
   <li class="navigation_menu share" tabindex="2">
     <div class="navigation_menu_box navigation_share_box">
-      <%= link_to "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}&p%5Btitle%5D=#{ERB::Util.url_encode(entry.title)}", :target => "_blank", :tabindex => "2", :class => "share facebook", :data => { :"share-page" => "http://www.facebook.com/sharer/sharer.php?s=100&p%5Burl%5D=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
+      <%= link_to "http://www.facebook.com/sharer/sharer.php?u=#{ERB::Util.url_encode(pretty_entry_url(entry))}&t=#{ERB::Util.url_encode(entry.title)}", :target => "_blank", :tabindex => "2", :class => "share facebook", :data => { :"share-page" => "http://www.facebook.com/sharer/sharer.php?u=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
           <span class="hint">über facebook teilen</span>
           <span class="share_facebook button"></span>
           <p>facebook</p>
