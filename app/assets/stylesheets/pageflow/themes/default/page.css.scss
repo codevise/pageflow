@@ -88,6 +88,11 @@ $page-color: $main-color;
     max-width: 221px;
     width: 13%;
     left: 8%;
+
+    @include mobile {
+      padding-top: 1%;
+      height: 35px;
+    }
   }
 
   &.invert .content_and_background .scroller > div:after {
