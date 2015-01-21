@@ -1,0 +1,23 @@
+de:
+  pageflow:
+    built_in_page_type:
+      categories:
+        video: "Video"
+        audio: "Audio"
+        audio_loop: "Audio"
+        background_image: "Basic"
+        background_video: "Video"
+        internal_links: "Verweise"
+
+    background_video:
+      page_type_description: "Bildschirmfüllendes Video ohne Steuerelemente im Loop abgespielt"
+    video:
+      page_type_description: "Wiedergabe einer Videodatei mit Steuerelementen"
+    audio:
+      page_type_description: "Wiedergabe von Audiodatei mit Steuerelementen"
+    background_image:
+      page_type_description: "Bildschirmfüllendes Bild und Text"
+    audio_loop:
+      page_type_description: "Wiedergabe einer Audiodatei ohne Steuerelemente (Atmo)"
+    internal_links:
+      page_type_description: "Sammlung von Verweisen zu anderen Seiten dieses Pageflows"

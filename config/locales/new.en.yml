@@ -1,0 +1,10 @@
+en:
+  pageflow:
+    built_in_page_type:
+      categories:
+        video: "Video"
+        audio: "Audio"
+        audio_loop: "Audio"
+        background_image: "Basic"
+        background_video: "Video"
+        internal_links: "Links"

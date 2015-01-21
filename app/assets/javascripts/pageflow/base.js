@@ -14,7 +14,7 @@
 //= require polyfills/bind
 
 //= require jquery
-//= require jquery.ui.widget
+//= require jquery-ui/widget
 //= require jquery_ujs
 //= require ./jquery_utils
 //= require iscroll

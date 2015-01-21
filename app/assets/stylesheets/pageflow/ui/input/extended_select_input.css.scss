@@ -1,0 +1,96 @@
+.ui-selectmenu-button span.ui-selectmenu-text {
+  font-family: Helvetica, Sans-Serif;
+  font-size: 13px;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+  background: white;
+  border: 1px solid rgb(187, 187, 187);
+}
+
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+  background: white;
+  margin: 0;
+  background: rgb(248, 248, 248);
+}
+
+.extended-select-menu {
+  width: 600px;
+
+  .type_pictogram {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+  }
+
+  .text-container {
+    position: absolute;
+    top: 50%;
+    @include transform(translate(0,-50%));
+    width: 66%;
+    margin-left: 20%;
+    overflow: hidden;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    text-decoration: none;
+    float: right;
+    opacity: 0.2;
+    position: absolute;
+    bottom: 3px;
+    right: 7px;
+
+    &:before {
+      font-family: 'entypo';
+      content: "\e704";
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .ui-menu-item {
+    float: left;
+    width: 33.33%;
+    outline: 0;
+    box-sizing: border-box;
+    min-height: 120px;
+    padding: 10px 2%;
+    border: 1px solid rgb(242, 242, 242);
+  }
+
+  .ui-selectmenu-optgroup {
+    float: left;
+    width: 100%;
+    padding: 0.5em 0.4em 2px 0.5em !important;
+    margin: 0 !important;
+    border: 0;
+    background-color: rgb(211,211,211);
+  }
+
+  &.ui-widget {
+    font-family: Helvetica, Sans-Serif;
+    font-size: 13px;
+
+    .item-description {
+      font-size: 11px;
+      color: gray;
+    }
+  }
+  .ui-state-focus {
+    background: #D2E5FA;
+  }
+}

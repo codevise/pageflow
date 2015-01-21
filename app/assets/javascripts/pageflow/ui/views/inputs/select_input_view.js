@@ -9,7 +9,7 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
 
   ui: {
     select: 'select',
-    input: 'select',
+    input: 'select'
   },
 
   initialize: function() {
@@ -21,6 +21,13 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
       }
       else if (this.options.translationKeyProperty) {
         this.options.translationKeys = _.pluck(this.options.collection, this.options.translationKeyProperty);
+      }
+
+      if (this.options.groupProperty) {
+        this.options.groups = _.pluck(this.options.collection, this.options.groupProperty);
+      }
+      else if (this.options.groupTranslationKeyProperty) {
+        this.options.groupTanslationKeys = _.pluck(this.options.collection, this.options.groupTranslationKeyProperty);
       }
     }
 
@@ -35,6 +42,12 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
         return I18n.t(key);
       });
     }
+
+    if (!this.options.groups) {
+      this.options.groups = _.map(this.options.groupTanslationKeys, function(key) {
+        return I18n.t(key);
+      });
+    }
   },
 
   onRender: function() {
@@ -43,11 +56,31 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
 
     _.each(this.options.values, function(value, index) {
       var option = document.createElement('option');
+      var group = this.options.groups[index];
+      var optgroup = [];
 
       option.value = value;
       option.text = this.options.texts[index];
 
-      this.ui.select.append(option);
+      if (group) {
+        var escapedGroup = group.replace(/"/g, '&quot;');
+        optgroup = this.ui.select.find('optgroup[label="' + escapedGroup + '"]');
+
+        if (optgroup.length > 0) {
+          optgroup.append(option);
+        }
+        else {
+          $('<optgroup label="' + escapedGroup + '">')
+            .appendTo(this.ui.select)
+            .append(option);
+        }
+
+        option.setAttribute('data-group', group);
+      }
+      else {
+        this.ui.select.append(option);
+      }
+
     }, this);
 
     this.load();
