@@ -25,8 +25,13 @@ pageflow.HelpView = Backbone.Marionette.ItemView.extend({
       this.toggle();
     },
 
+    'click .expandable > a': function(event) {
+      $(event.currentTarget).parents('.expandable').toggleClass('expanded');
+    },
+
     'click li': function(event) {
       this.showSection($(event.currentTarget).data('section'));
+      return false;
     },
 
     'click .box': function() {
