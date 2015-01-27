@@ -16,6 +16,8 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
       selectionHandler: handler && pageflow.editor.createFileSelectionHandler(handler, payload),
       tabName: collectionName
     }));
+
+    pageflow.editor.setDefaultHelpEntry('pageflow.help_entries.files');
   },
 
   confirmableFiles: function(preselectedFileType, preselectedFileId) {
@@ -39,6 +41,8 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
       model: this.entry,
       entryPublication: new pageflow.EntryPublication()
     }));
+
+    pageflow.editor.setDefaultHelpEntry('pageflow.help_entries.publish');
   },
 
   chapter: function(id) {
@@ -48,9 +52,13 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
   },
 
   page: function(id, tab) {
+    var page = this.entry.pages.get(id);
+
     this.region.show(new pageflow.EditPageView({
-      model: this.entry.pages.get(id),
+      model: page,
       tab: tab
     }));
+
+    pageflow.editor.setDefaultHelpEntry(page.pageType().help_entry_translation_key);
   }
 });
