@@ -27,6 +27,13 @@ module Pageflow
       collection.sort_by! { |help_entry| -help_entry.priority }
     end
 
+    # @api private
+    def flat
+      map do |help_entry|
+        [help_entry, help_entry.children]
+      end.flatten
+    end
+
     def each(&block)
       @help_entries.each(&block)
     end

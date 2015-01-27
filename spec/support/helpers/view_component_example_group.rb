@@ -19,7 +19,6 @@ end
 
 RSpec.configure do |config|
   config.include(ViewComponentExampleGroup,
-                 :type => :helper,
                  :example_group => lambda { |example_group, metadata|
                    %r(spec/views/components) =~ example_group[:file_path]
                  })

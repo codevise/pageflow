@@ -39,5 +39,16 @@ module Pageflow
         }.to raise_error(/Help entry .* not found/)
       end
     end
+
+    describe '#flat' do
+      it 'returns flat array including nested entries' do
+        help_entries = HelpEntries.new
+
+        help_entries.register('parent')
+        help_entries.register('child', parent: 'parent')
+
+        expect(help_entries.flat.map(&:name)).to eq(['parent', 'child'])
+      end
+    end
   end
 end

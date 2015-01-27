@@ -1,0 +1,3 @@
+<%= content_tag(:section, data: {name: help_entry.name}) do %>
+  <%= raw(Kramdown::Document.new(t('text', scope: help_entry.translation_key)).to_html) %>
+<% end %>

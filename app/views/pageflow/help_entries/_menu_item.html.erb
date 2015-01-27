@@ -1,0 +1,7 @@
+<%= help_entry_li(help_entry) do %>
+   <%= link_to(t('menu_item', scope: help_entry.translation_key), "##{help_entry.name}") %>
+
+   <% if help_entry.children.present? %>
+     <%= render('pageflow/help_entries/menu', help_entries: help_entry.children) %>
+   <% end %>
+<% end %>
