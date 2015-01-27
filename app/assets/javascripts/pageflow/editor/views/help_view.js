@@ -1,21 +1,9 @@
 pageflow.HelpView = Backbone.Marionette.ItemView.extend({
+  template: 'templates/help',
   className: 'help',
 
-  defaultSection: 'outline',
-
-  getTemplate: function(){
-    return 'templates/help.' + I18n.locale;
-  },
-
-  routeSectionMapping: {
-    'pages': 'page',
-    'files': 'files',
-    'publish': 'publish'
-  },
-
   ui: {
-    breakButton: '.break',
-    message: '.error .message',
+    placeholder: '.placeholder',
     sections: 'section',
     menuItems: 'li'
   },
@@ -29,8 +17,14 @@ pageflow.HelpView = Backbone.Marionette.ItemView.extend({
       $(event.currentTarget).parents('.expandable').toggleClass('expanded');
     },
 
-    'click li': function(event) {
-      this.showSection($(event.currentTarget).data('section'));
+    'click a': function(event) {
+      var link = $(event.currentTarget);
+
+      if (link.attr('href').indexOf('#') === 0) {
+        this.showSection(link.attr('href').substring(1),
+                         {scrollIntoView: !link.parents('nav').length});
+      }
+
       return false;
     },
 
@@ -44,30 +38,41 @@ pageflow.HelpView = Backbone.Marionette.ItemView.extend({
   },
 
   initialize: function() {
-    this.listenTo(pageflow.app, 'toggle-help', function() {
-      this.chooseSectionFromFragment();
+    this.listenTo(pageflow.app, 'toggle-help', function(name) {
       this.toggle();
+      this.showSection(name ||
+                       pageflow.editor.defaultHelpEntry ||
+                       this.defaultHelpEntry(),
+                       {scrollIntoView: true});
     });
+  },
+
+  onRender: function() {
+    this.ui.placeholder.replaceWith($('#help_entries_seed').html());
+    this.bindUIElements();
   },
 
   toggle: function() {
     this.$el.toggle();
   },
 
-  chooseSectionFromFragment: function() {
-    var route = _.chain(this.routeSectionMapping).keys().find(function(route) {
-      if (Backbone.history.fragment.indexOf(route) >= 0) {
-        return true;
-      }
-    }, this).value();
-
-    this.showSection(this.routeSectionMapping[route] || this.defaultSection);
+  defaultHelpEntry: function() {
+    return this.ui.sections.first().data('name');
   },
 
-  showSection: function(name) {
+  showSection: function(name, options) {
     this.ui.menuItems.each(function() {
       var menuItem = $(this);
-      menuItem.toggleClass('active', menuItem.data('section') === name);
+      var active = (menuItem.find('a').attr('href') === '#' + name);
+      menuItem.toggleClass('active', active);
+
+      if (active) {
+        menuItem.parents('.expandable').addClass('expanded');
+
+        if (options.scrollIntoView) {
+          menuItem[0].scrollIntoView();
+        }
+      }
     });
 
     this.ui.sections.each(function() {
