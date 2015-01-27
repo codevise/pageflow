@@ -28,6 +28,14 @@ module Pageflow
       "activerecord.values.pageflow/page.template.#{name}"
     end
 
+    def help_entry_translation_key
+      "pageflow.help_entries.built_in_page_type.#{name}"
+    end
+
+    def translation_key_prefix
+      "pageflow.built_in_page_type.#{name}"
+    end
+
     def thumbnail_candidates
       @thumbnail_candidates.presence || super
     end
