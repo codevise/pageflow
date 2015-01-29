@@ -39,7 +39,7 @@ pageflow.EditPageView = Backbone.Marionette.Layout.extend({
   },
 
   destroy: function() {
-    if (confirm("Seite wirklich löschen?")) {
+    if (confirm(I18n.t('pageflow.editor.views.edit_page_view.confirm_destroy'))) {
       this.model.destroy();
       this.goBack();
     }

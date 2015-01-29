@@ -21,7 +21,7 @@ pageflow.EditChapterView = Backbone.Marionette.Layout.extend({
   },
 
   destroy: function() {
-    if (confirm("Kapitel einschließlich ALLER enthaltener Seiten wirklich löschen?\n\nDieser Schritt kann nicht rückgängig gemacht werden.")) {
+    if (confirm(I18n.t('pageflow.editor.views.edit_chapter_view.confirm_destroy'))) {
       this.model.destroy();
       this.goBack();
     }
