@@ -9,7 +9,7 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
 
   ui: {
     select: 'select',
-    input: 'select',
+    input: 'select'
   },
 
   initialize: function() {
@@ -21,6 +21,13 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
       }
       else if (this.options.translationKeyProperty) {
         this.options.translationKeys = _.pluck(this.options.collection, this.options.translationKeyProperty);
+      }
+
+      if (this.options.groupProperty) {
+        this.options.groups = _.pluck(this.options.collection, this.options.groupProperty);
+      }
+      else if (this.options.groupTranslationKeyProperty) {
+        this.options.groupTanslationKeys = _.pluck(this.options.collection, this.options.groupTranslationKeyProperty);
       }
     }
 
@@ -35,20 +42,20 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
         return I18n.t(key);
       });
     }
+
+    if (!this.options.groups) {
+      this.options.groups = _.map(this.options.groupTanslationKeys, function(key) {
+        return I18n.t(key);
+      });
+    }
+
+    this.optGroups = {};
   },
 
   onRender: function() {
     this.appendBlank();
     this.appendPlaceholder();
-
-    _.each(this.options.values, function(value, index) {
-      var option = document.createElement('option');
-
-      option.value = value;
-      option.text = this.options.texts[index];
-
-      this.ui.select.append(option);
-    }, this);
+    this.appendOptions();
 
     this.load();
     this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
@@ -92,6 +99,33 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
 
       this.ui.select.append(option);
     }
+  },
+
+  appendOptions: function() {
+    _.each(this.options.values, function(value, index) {
+      var option = document.createElement('option');
+      var group = this.options.groups[index];
+
+      option.value = value;
+      option.text = this.options.texts[index];
+
+      if (group) {
+        option.setAttribute('data-group', group);
+        this.findOrCreateOptGroup(group).append(option);
+      }
+      else {
+        this.ui.select.append(option);
+      }
+    }, this);
+  },
+
+  findOrCreateOptGroup: function(label) {
+    if (!this.optGroups[label]) {
+      this.optGroups[label] = $('<optgroup />', {label: label})
+        .appendTo(this.ui.select);
+    }
+
+    return this.optGroups[label];
   },
 
   save: function() {

@@ -1,0 +1,53 @@
+de:
+  pageflow:
+    ui:
+      views:
+        extended_select_input_view:
+          display_help: "Hilfe anzeigen"
+
+    built_in_page_type:
+      background_video:
+        page_type_description: "Bildschirmfüllendes Video ohne Steuerelemente im Loop abgespielt"
+        page_type_category_name: "Video"
+      video:
+        page_type_description: "Wiedergabe einer Videodatei mit Steuerelementen"
+        page_type_category_name: "Video"
+      audio:
+        page_type_description: "Wiedergabe von Audiodatei mit Steuerelementen"
+        page_type_category_name: "Audio"
+      background_image:
+        page_type_description: "Bildschirmfüllendes Bild und Text"
+        page_type_category_name: "Basic"
+      audio_loop:
+        page_type_description: "Wiedergabe einer Audiodatei ohne Steuerelemente (Atmo)"
+        page_type_category_name: "Audio"
+      internal_links:
+        page_type_description: "Sammlung von Verweisen zu anderen Seiten dieses Pageflows"
+        page_type_category_name: "Verweise"
+
+en:
+  pageflow:
+    ui:
+      views:
+        extended_select_input_view:
+          display_help: "Display help"
+
+    built_in_page_type:
+      background_video:
+        page_type_description: "Fullscreen video loop without controls"
+        page_type_category_name: "Video"
+      video:
+        page_type_description: "Video player with controls"
+        page_type_category_name: "Video"
+      audio:
+        page_type_description: "Audio player with controls"
+        page_type_category_name: "Audio"
+      background_image:
+        page_type_description: "Fullscreen image with text"
+        page_type_category_name: "Basic"
+      audio_loop:
+        page_type_description: "Audio playback in the background without controls"
+        page_type_category_name: "Audio"
+      internal_links:
+        page_type_description: "A grid of thumbnails linking to other pages inside the Pageflow"
+        page_type_category_name: "Links"

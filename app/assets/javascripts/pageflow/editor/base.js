@@ -3,7 +3,7 @@
 //= require pageflow/ui
 //= require ./sync
 
-//= require jquery.ui.all
+//= require jquery-ui
 //= require jquery/layout
 
 //= require jquery-fileupload/vendor/load-image
