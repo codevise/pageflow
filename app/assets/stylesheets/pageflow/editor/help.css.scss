@@ -22,7 +22,7 @@
 
   .box {
     position: relative;
-    max-width: 800px;
+    max-width: 1000px;
     max-height: 500px;
     min-height: 200px;
     height: 50%;
@@ -40,51 +40,108 @@
 
   }
 
+  h2 {
+    margin: 0 0 10px 0;
+  }
 
   nav {
+    position: absolute;
+    width: 200px;
+    left: 10px;
+    top: 60px;
+    bottom: 50px;
+    overflow: auto;
+    padding: 0 5px;
+
     ul {
-      width: 15%;
       margin: 0;
-      padding: 0 5px 20px 0;
-      float: left;
+      padding: 0;
     }
 
     li {
+      margin: 3px 0;
       list-style: none;
       font-size: 13px;
       line-height: 18px;
+    }
 
-      a:hover {
-        background-color: #eee;
-      }
+    a {
+      display: block;
+      text-decoration: none;
+      color: #000;
+      padding: 5px;
+    }
 
-      &.active a {
-        background-color: #D2E5FA;
-      }
+    a:hover {
+      background-color: #eee;
+    }
 
-      a {
-        display: block;
-        text-decoration: none;
-        color: #000;
-        padding: 5px;
-      }
+    .expandable > a {
+      @include background-icon-right($top: 6px);
+      @include down-open-mini-icon;
+      padding-right: 30px;
+    }
+
+    .expanded > a {
+      @include up-open-mini-icon;
+      background-color: #eee;
+    }
+
+    .active > a {
+      background-color: #D2E5FA;
+    }
+
+    li ul {
+      display: none;
+      border-bottom: solid 1px #ddd;
+    }
+
+    .expanded ul {
+      display: block;
+    }
+
+    li li a {
+      padding-left: 25px;
+    }
+  }
+
+  section {
+    position: absolute;
+    left: 220px;
+    bottom: 50px;
+    top: 60px;
+    right: 10px;
+
+    overflow: auto;
+
+    margin-left: 5px;
+    padding-left: 20px;
+    padding-right: 5px;
+    border-left: solid 1px #888;
+
+    h1 {
+      margin: 0 0 10px 0;
+      font-size: 27px;
+    }
+
+    h2 {
+      margin: 25px 0 15px 0;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    h3 {
+      margin: 5px 0 0 0;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 26px;
     }
   }
 
   .footer {
-    clear: left;
-    text-align: right;
-  }
-
-  h2, h3 {
-    margin: 0 0 10px 0;
-  }
-
-  h4 {
-    margin: 0 0 10px 0;
-    font-weight: bold;
-    font-size: 13;
-    line-height: 23px;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
   }
 
   p {
@@ -97,21 +154,6 @@
     margin: 5px;
     border: solid 1px #888;
     padding: 1px;
-  }
-
-
-
-  section {
-    float: left;
-    min-height: 200px;
-    overflow: auto;
-    width: 80%;
-    height: 100%;
-    margin-left: 5px;
-    margin-bottom: 20px;
-    padding-left: 20px;
-    padding-right: 5px;
-    border-left: solid 1px #888;
   }
 }
 

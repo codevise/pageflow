@@ -1,0 +1,15 @@
+de:
+  pageflow:
+    editor:
+      templates:
+        help:
+          title: "Hilfe"
+          close: "Schließen"
+
+en:
+  pageflow:
+    editor:
+      templates:
+        help:
+          title: "Help"
+          close: "Close"

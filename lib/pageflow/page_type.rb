@@ -8,7 +8,29 @@ module Pageflow
 
     # Name to display in editor.
     def translation_key
-      "pageflow.#{name}.page_type_name"
+      "#{translation_key_prefix}.page_type_name"
+    end
+
+    # Translation key for a one line description of the page type.
+    def description_translation_key
+      "#{translation_key_prefix}.page_type_description"
+    end
+
+    # Translation key for the category the page type shall be
+    # displayed in inside the page type select menu.
+    def category_translation_key
+      "#{translation_key_prefix}.page_type_category_name"
+    end
+
+    # Translation key for a markdown text fragment describing the page
+    # type.
+    def help_entry_translation_key
+      "#{translation_key_prefix}.help_entries.page_type"
+    end
+
+    # Common prefix of all page type translation keys.
+    def translation_key_prefix
+      "pageflow.#{name}"
     end
 
     # Override to return a string in snake_case.

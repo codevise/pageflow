@@ -23,6 +23,21 @@ pageflow.EditorApi = pageflow.Object.extend({
     };
 
     /**
+     * Set the name of the help entry that shall be selected by
+     * default when the help view is opened. This value is
+     * automatically reset when navigation occurs.
+     */
+    this.setDefaultHelpEntry = function(name) {
+      this.nextDefaultHelpEntry = name;
+    };
+
+    /** @api private */
+    this.applyDefaultHelpEntry = function(name) {
+      this.defaultHelpEntry = this.nextDefaultHelpEntry;
+      this.nextDefaultHelpEntry = null;
+    };
+
+    /**
      * Register additional menu item to be displayed on the root sidebar
      * view.
      *

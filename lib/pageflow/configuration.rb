@@ -68,6 +68,19 @@ module Pageflow
     # @return [WidgetTypes]
     attr_reader :widget_types
 
+    # Used to add new sections to the help dialog displayed in the
+    # editor.
+    #
+    # @exmaple
+    #
+    #   config.help_entries.register('pageflow.rainbow.help_entries.colors', priority: 11)
+    #   config.help_entries.register('pageflow.rainbow.help_entries.colors.blue',
+    #                                parent: 'pageflow.rainbow.help_entries.colors')
+    #
+    # @since 0.7
+    # @return [HelpEntries]
+    attr_reader :help_entries
+
     # Paperclip style definitions of thumbnails used by Pageflow.
     # @return Hash
     attr_accessor :thumbnail_styles
@@ -167,6 +180,7 @@ module Pageflow
       @themes = Themes.new
       @file_types = FileTypes.new(page_types)
       @widget_types = WidgetTypes.new
+      @help_entries = HelpEntries.new
 
       @thumbnail_styles = {}
       @css_rendered_thumbnail_styles = Pageflow::PagesHelper::CSS_RENDERED_THUMBNAIL_STYLES

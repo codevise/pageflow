@@ -50,6 +50,9 @@ Gem::Specification.new do |s|
   # Amazon AWS
   s.add_dependency 'aws-sdk'
 
+  # Markdown parser
+  s.add_dependency 'kramdown', '~> 1.5'
+
   # VideoJS for Asset Pipeline, version fixed at 4.1.0
   # Recommendation: Do not change
   s.add_dependency 'videojs_rails', '4.1.0'

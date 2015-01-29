@@ -120,6 +120,10 @@ main > .container {
   height: 100%;
 }
 
+#help_entries_seed {
+  display: none;
+}
+
 form#upload {
   visibility: hidden;
 }

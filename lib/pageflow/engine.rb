@@ -6,6 +6,7 @@ require 'friendly_id'
 require 'devise'
 require 'cancan'
 require 'jbuilder'
+require 'kramdown'
 
 require 'resque_mailer'
 require 'resque_scheduler'
