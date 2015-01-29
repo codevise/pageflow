@@ -28,7 +28,7 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
           br: {},
           a: {
             check_attributes: {
-              href: "url"
+              href: "href"
             },
             set_attributes: {
               rel: "nofollow",
