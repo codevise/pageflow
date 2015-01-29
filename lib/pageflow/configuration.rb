@@ -182,6 +182,14 @@ module Pageflow
       @available_locales = Engine.config.i18n.available_locales
     end
 
+    # Activate a plugin.
+    #
+    # @param [Plugin] plugin
+    # @since 0.7
+    def plugin(plugin)
+      plugin.configure(self)
+    end
+
     # Make a page type available for use in the system.
     def register_page_type(page_type)
       page_types << page_type

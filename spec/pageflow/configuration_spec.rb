@@ -2,6 +2,16 @@ require 'spec_helper'
 
 module Pageflow
   describe Configuration do
+    describe '#plugin' do
+      it 'calls configure method on plugin' do
+        configuration = Configuration.new
+        plugin = Class.new(Pageflow::Plugin).new
+
+        expect(plugin).to receive(:configure).with(configuration)
+
+        configuration.plugin(plugin)
+      end
+    end
 
     describe '#revision_components' do
       let(:page_type_class) do
