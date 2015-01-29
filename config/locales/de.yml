@@ -634,7 +634,7 @@ de:
           trillion: Billionen
           unit: Einheit
       format:
-        delimiter: ''
+        delimiter: .
         precision: 1
         significant: true
         strip_insignificant_zeros: true
@@ -650,11 +650,11 @@ de:
           tb: TB
     percentage:
       format:
-        delimiter: ''
+        delimiter: .
         format: ! '%n%'
     precision:
       format:
-        delimiter: ''
+        delimiter: .
   pageflow:
     admin:
       accounts:
@@ -750,9 +750,27 @@ de:
         unsuspended: Der Benutzer wurde entsperrt. Er kann sich nun wieder anmelden.
     audio:
       open: Audio anhören
+    built_in_page_type:
+      audio:
+        page_type_category_name: Audio
+        page_type_description: Wiedergabe von Audiodatei mit Steuerelementen
+      audio_loop:
+        page_type_category_name: Audio
+        page_type_description: Wiedergabe einer Audiodatei ohne Steuerelemente (Atmo)
+      background_image:
+        page_type_category_name: Basic
+        page_type_description: Bildschirmfüllendes Bild und Text
+      background_video:
+        page_type_category_name: Video
+        page_type_description: Bildschirmfüllendes Video ohne Steuerelemente im Loop abgespielt
+      internal_links:
+        page_type_category_name: Verweise
+        page_type_description: Sammlung von Verweisen zu anderen Seiten dieses Pageflows
+      video:
+        page_type_category_name: Video
+        page_type_description: Wiedergabe einer Videodatei mit Steuerelementen
     devise:
       mailer:
-        confirmation_instructions: 
         reset_password_instructions:
           ignore_hint: Falls Du diese Anfrage zur Passwortänderung gar nicht selbst gestartet hast, ignorier diese Mail einfach. Dein Passwort wird nicht geändert, bevor du den oben stehenden Link nicht bestätigt hast und im Anschluss ein neues Passwort anlegst.
           instruction: für dein persönliches Pageflow-Benutzerkonto wurde ein Link zur Passwortänderung angefordert. Du kannst diese Aktion durchführen, indem du folgenden Link anklickst.
@@ -819,7 +837,7 @@ de:
           outline: Gliederung
         background_positioning:
           cancel: Abbrechen
-          help: Stellen Sie ein, welcher Teil des Bildes beim Zuschneiden sichtbar bleiben soll.
+          help: Über die Auswahl des Bildausschnitts stellst Du sicher, dass Dein Bild auch auf mobilen Endgeräten optimal dargestellt wird.
           preview_title: Vorschau
           previews:
             banner: Banner
@@ -828,7 +846,7 @@ de:
             ratio4to3: 4:3 Landscape
             ratio4to3Portrait: 4:3 Portrait
           save: Speichern
-          title: Bildauschnitt anpassen
+          title: Bildausschnitt anpassen
         chapter_item:
           new_page: Neue Seite
           save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
@@ -887,6 +905,9 @@ de:
           choose_hint: Bitte wählen Sie einen Beitrag aus.
         files_gallery_blank_slate:
           no_files: In diesem Beitrag gibt es keine Dateien dieses Typs.
+        help:
+          close: Schließen
+          title: Hilfe
         help_button:
           open_help: Hilfe anzeigen
         loading:
@@ -927,6 +948,13 @@ de:
         chapter_item_view:
           chapter: Kapitel
           unnamed: (Unbenannt)
+        edit_chapter_view:
+          confirm_destroy: ! 'Kapitel einschließlich ALLER enthaltener Seiten wirklich löschen?
+
+
+            Dieser Schritt kann nicht rückgängig gemacht werden.'
+        edit_page_view:
+          confirm_destroy: Seite wirklich löschen?
         editor_views:
           files_pending_warning: Es werden noch Dateien hochgeladen. Wenn Sie die Seite verlassen werden die Uploads abgebrochen.
           hide_editor: Editorleiste ausblenden
@@ -995,6 +1023,714 @@ de:
         goto_content: Zum Inhalt
         goto_navigation: Zur Seitennavigation
         goto_topnavigation: Zur Dachnavigation
+    help_entries:
+      built_in_page_type:
+        audio:
+          menu_item: Audio
+          text: ! '# Audio
+
+
+            Wiedergabe von Audiodatei mit Steuerelementen Hiermit
+
+            kannst Du Audiodateien mit Bild und Textinhalten
+
+            kombinieren. Wie beim Seitentyp „Video“ werden
+
+            Steuerelemente angezeigt, und ebenso kann eine zusätzliche
+
+            Infobox mit Text befüllt werden.
+
+
+            Typische Anwendungsbeispiele: Interview, O-Töne,
+
+            Musikstücke
+
+'
+        audio_loop:
+          menu_item: Hintergrund-Audio
+          text: ! '# Hintergrund-Audio
+
+
+            Wiedergabe eines Audio-Loops ohne Steuerelemente (Atmo)
+
+            Auch hier wird wie beim „Hintergrund-Bild“ ein bildschirmfüllendes Foto ausgespielt. Der
+
+            Unterschied zum reinen „Audio“ besteht darin, dass der Nutzer mangels Steuerelemente
+
+            keinen Einfluss auf die Wiedergabe hat und das Audio in einer Endlosschleife läuft.
+
+
+            Typische Anwendungsbeispiele: Atmos, Klangwelten,
+
+            Feld-Aufnahmen
+
+'
+        background_image:
+          menu_item: Hintergrund-Bild
+          text: ! '# Hintergrund-Bild
+
+
+            Bildschirmfüllendes Bild und Text
+
+
+            Mit dem Seitentyp „Hintergrund-Bild“ werden großformatige
+
+            Bilder mit Text überlagert und zur optimalen Lesbarkeit
+
+            mit einem manuell einstellbaren Farbverlauf gepaart. über
+
+            die Auswahl des Bildausschnitts stellst Du sicher, dass
+
+            Dein Bild auch auf mobilen Endgeräten optimal dargestellt
+
+            wird. Wahlweise kann der Text für einen ausreichenden
+
+            Kontrast auch invertiert - also von hell in dunkel -
+
+            vertauscht werden. Das bietet sich bei hellen
+
+            Hintergrund-Bildern an.
+
+
+            User haben übrigens die Möglichkeit Farbverlauf und Text
+
+            im Front-End auszublenden, sofern Sie sich speziell für
+
+            das Hintergrund-Bild interessieren.
+
+
+            Typische Anwendungsbeispiele: Präsentation, Teil einer
+
+            Bildergalerie, Portrait
+
+'
+        background_video:
+          menu_item: Hintergrund-Video
+          text: ! '# Hintergrund-Video
+
+
+            Bildschirmfüllendes Video ohne Steuerelemente im Loop
+
+            abgespielt Dieser Seitentyp entspricht dem
+
+            Hintergrund-Bild mit dem Unterschied, dass hier statt
+
+            eines Bildes ein Video angezeigt wird. Dieses startet
+
+            automatisch und wird ohne Steuerungselement abgespielt,
+
+            womit User Start und Stopp nicht beeinflussen können.  Da
+
+            das Video in einer Endlosschleife abgespielt wird, sollte
+
+            deshalb auf ausreichende Länge und/oder einen sauberen
+
+            übergang geachtet werden. Gleiches gilt für die im Video
+
+            enthaltene Tonspur.
+
+
+            Ein Hinweis zur Nutzung von Pageflow auf Smartphones: Um
+
+            ungewollten Datenverbrauch beim übertragen großer
+
+            Videodateien zu verhindern, werden diese auf mobilen
+
+            Endgeräten nicht ausgespielt. Stattdessen wird ein
+
+            Poster-Bild angezeigt, das automatisch aus dem Video
+
+            generiert wird. Optional kann dieses aber auch durch ein
+
+            selbstgewähltes Bild ersetzt werden.
+
+
+            Typische Anwendungsbeispiele: Intro, Kapitelübergang, Atmo
+
+'
+        internal_links:
+          menu_item: Seitenverweise
+          text: ! '# Seitenverweise
+
+
+            Verweise auf andere Seiten innerhalb eines Pageflows
+
+            Im Gegensatz zur externen Verweis-Seite, werden hier interne Seiten innerhalb des
+
+            Pageflows verlinkt. Dies bietet sich an, um den User gezielt durch den Pageflow zu leiten.
+
+
+            Typische Anwendungsbeispiele: Willkommens-Seite, Kapitel-Startseite
+
+'
+        video:
+          menu_item: Video
+          text: ! '# Video
+
+
+            Wiedergabe einer Videodatei mit Steuerelementen Anders als
+
+            bei „Hintergrund-Videos“ werden hier Textelemente nach ein
+
+            paar Sekunden automatisch ausgeblendet, um die
+
+            Aufmerksamkeit auf das Bewegtbild zu lenken. Mit
+
+            Steuerelementen kann der Nutzer das Video jederzeit
+
+            starten und pausieren, vor- oder zurückspulen. Ein
+
+            weiterer Unterschied ist, dass Du wählen kannst, ob ein
+
+            Video automatisch gestartet wird, sobald die Seite
+
+            angezeigt wird.  Als dezente Alternative oder Ergänzung zu
+
+            den normalen Texteingabemöglichkeiten, kann eine
+
+            sogenannte „Infobox“ mit Text befüllt werden.
+
+
+            Typische Anwendungsbeispiele: Filme aller Art, Interviews,
+
+            Portrait
+
+'
+      files:
+        menu_item: Dateien verwalten
+        text: ! '# Daten verwalten
+
+
+          Pageflow verarbeitet alle gängigen Medien-Formate (Bild,
+
+          Audio, Video) und rechnet diese in unterschiedliche Formate
+
+          und Qualitäten um. Das System passt dann automatisch die
+
+          Ausgabequalität der Medien an die jeweilige
+
+          Internetverbindung und das Endgerät des Users
+
+          an. Prinzipiell sollten Dateien in der bestmöglichen
+
+          Auflösung verwendet werden und vor dem Upload nicht
+
+          komprimiert sein. Zudem ist es für ein strukturiertes
+
+          Arbeiten enorm hilfreich, sämtliche Audios,
+
+          Hintergrund-Video-Loops, Filme, Bilder und Texte bereits im
+
+          Vorfeld in der gewünschten Version in einem separaten Ordner
+
+          auf dem eigenen Rechner abzulegen.
+
+
+          ## Dateien hochladen & verwalten
+
+
+          Von der Gliederung führt der Menüpunkt "Dateien verwalten"
+
+          zur Liste der bereits hochgeladenen Dateien. Über die
+
+          Schaltfläche "Hinzufügen -> Hochladen" fügst Du weitere
+
+          Dateien hinzu.
+
+
+          Nach dem Hochladen werden die Dateien zunächst auf dem
+
+          Server verarbeitet. Dies kann bei längeren Videos einige
+
+          Minuten in Anspruch nehmen. Klicke auf das Thumbnail einer
+
+          Datei, um den aktuellen Verarbeitungsstatus
+
+          einzublenden. Hier lassen sich auch die allgemeinen
+
+          Eigenschaften, wie Bildgröße oder Audiolänge einsehen und
+
+          die Originaldatei herunterladen.
+
+
+          Dateien können bereits in Seiten verwendet werden, auch wenn
+
+          die Verarbeitung noch nicht abgeschlossen ist. Während des
+
+          Ladevorgangs kann also problemlos weiter gearbeitet werden.
+
+
+          ## Urheberrechte von Dateien
+
+
+          Bei jeder einzelnen Mediendatei (Bilder, Videos, Audios)
+
+          gibt es bei Klick auf das jeweilige Thumbnail die
+
+          Möglichkeit, Angaben zu den Urheberrechten zu machen, die
+
+          dann automatisch im „Impressum“ angezeigt werden.
+
+
+          ## Dateien wiederverwenden
+
+
+          Videos, Audios und Bilder können in mehr als einem Beitrag
+
+          verwendet werden. So müssen z.B. Videos nicht mehrfach
+
+          hochgeladen und verarbeitet werden. Klicke hierfür unter
+
+          "Dateien verwalten“ auf "Hinzufügen -> Wiederverwenden", um
+
+          andere Beiträge nach Dateien zu durchsuchen und sie in den
+
+          bearbeiteten Beitrag zu übernehmen.
+
+'
+      meta_data:
+        menu_item: Titel und Optionen
+        text: ! '# Titel und Optionen
+
+
+          ## Allgemein
+
+
+          ### Titel des Pageflows
+
+
+          Hier kannst Du Deinem Pageflow einen Titel geben, der in der
+
+          Titelleiste des Browserfensters angezeigt wird. Unter diesem
+
+          Titel wird Dein Pageflow nach der Veröffentlichung auch in
+
+          Suchmaschinen indiziert werden.
+
+
+          ### Sprache
+
+
+          Wähle hier, in welcher Sprache Dein Pageflow ausgespielt
+
+          wird. Hierbei geht es um nicht editierbare Texte, wie
+
+          z.B. den Multimedia-Hinweis, Scroll-Hinweis, die Übersicht
+
+          und Impressum.
+
+
+          ### Impressum
+
+
+          Hier kannst Du Deine Impressums-Information im Freitext
+
+          eingeben.
+
+
+          ## Erscheinungsbild
+
+
+          ### Multimedia Hinweis vor dem Start
+
+
+          Entscheide, ob zu Beginn Deines Pageflows ein Hinweis angezeigt wird.
+
+
+          ### Kapitelanfang hervorheben
+
+
+          Mit dieser Option wird der Titel der jeweils ersten Seite
+
+          eines Kapitels größer dargestellt.
+
+
+          ## Neue Seiten hervorheben
+
+
+          Zeigt zum Start des Pageflows in einer Info-Box die seit dem
+
+          letzten Besuch neu erstellen Seiten an.
+
+
+          ### Home-Button anzeigen
+
+
+          Es gibt die Möglichkeit, in der Navigation einen Button
+
+          anzuzeigen, der auf eine externe Seite verlinkt, z.B. zurück
+
+          auf die Homepage, von der aus Du den Pageflow verlinkt hast.
+
+
+          ### Navigationsleiste
+
+
+          Wähle zwischen "Navigationsleiste mit Fortschrittsbalken“
+
+          oder "Navigationsleiste mit Thumbnails“. Beachte, dass bei
+
+          mobilen Endgeräten statt der Navigationsleiste aus
+
+          Platzgründen in beiden Fällen lediglich das Icon „Übersicht“
+
+          angezeigt wird.
+
+
+          ## Social
+
+
+          ### Social Sharing Bild
+
+
+          Wähle hier das Bild aus, das beim Teilen des Pageflows in
+
+          sozialen Netzwerken erscheinen soll.
+
+
+          ### Zusammenfassung
+
+
+          Trage hier ein, welcher Beschreibungstext beim Teilen in
+
+          sozialen Netzwerken angezeigt wird.
+
+'
+      outline:
+        menu_item: Kapitel und Seiten
+        text: ! '# Kapitel und Seiten
+
+
+          Ein Pageflow besteht aus mindestens einem Kapitel mit
+
+          mindestens einer Seite. Es können beliebig viele Kapitel mit
+
+          beliebig vielen Seiten erstellt werden. Um Inhalte zu
+
+          erstellen, klicke
+
+
+          1. auf Neues Kaptitel, um eine erstes Kapitel zu erstellen
+
+          2. auf Neue Seite, um dem Kapitel eine Seite hinzuzufügen, und
+
+          3. auf diese Seite, um den Inhalt zu bearbeiten.
+
+
+          ## Aufbau eines Kapitels
+
+
+          Mit den „Kapiteln" strukturierst Du den Aufbau Deiner
+
+          Reportage - beispielsweise nach Themenschwerpunkten oder
+
+          Zeiträumen. Die Kapitel werden in der „Übersicht“ angezeigt
+
+          und dienen dem User als Orientierungshilfe. Deshalb ist es
+
+          ratsam die jeweiligen Kapitel mit Titeln zu versehen.
+
+
+          Wenn nur ein unbenanntes Kapitel angelegt wird, so verhält
+
+          sich Pageflow, als ob keine Kapitelstruktur vorhanden
+
+          ist. (Kapitel und Kapiteltitel werden in diesem Falle nicht
+
+          in der Übersicht bzw. Navigation dargestellt).
+
+'
+      overview:
+        menu_item: Übersicht
+        text: ! '# Übersicht
+
+
+          Dies ist der Editor zum Bearbeiten eines Pageflows. Mit
+
+          seiner Zweiteilung ermöglicht er die direkte Vorschau
+
+          während der Bearbeitung, zeigt Änderungen am Text oder neu
+
+          ausgewählte Dateien unmittelbar an und speichert diese
+
+          automatisch.
+
+
+          Die Seitenleiste kann durch einen Klick auf den Anfasser zur
+
+          Größenänderung ein- und ausgeblendet werden. Mit einem
+
+          Verschieben der Seitenleiste nach links und rechts kannst Du
+
+          die Größe des Vorschaufensters verändern. Wird das
+
+          Vorschaufenster schmal, und somit eher zu einem hochkantigen
+
+          Mobiltelefon-Format gestaucht, wird aus Platzgründen statt
+
+          der Navigationsleiste nur das Icon „Übersicht“ angezeigt.
+
+
+          Die Navigation des Editors ist unterteilt in die vier
+
+          Bereiche:
+
+
+          ## Titel und Optionen
+
+
+          Unter „Titel und Optionen“ kannst Du grundsätzliche
+
+          Parameter des Erscheinungsbildes, sowie Titel, Sprache,
+
+          Impressum etc. einstellen. Dazu können Texte festgelegt
+
+          werden, die beim Teilen des Beitrags über Social Media
+
+          Dienste angezeigt werden sollen.
+
+
+          Details findest Du unter: [Titel und Optionen](#pageflow.help_entries.meta_data)
+
+
+          ## Dateien verwalten
+
+
+          Unter „Dateien verwalten“ lädst Du die Mediendateien hoch,
+
+          die im Pageflow verwendet werden sollen. Du kannst hier auch
+
+          bereits hochgeladene Videos, Fotos und Audios
+
+          wiederverwenden.
+
+
+          Details findest Du unter: [Dateien verwalten](#pageflow.help_entries.files)
+
+
+          ## Gliederung
+
+
+          Über die „Gliederung“ kannst Du Kapitel und Seiten
+
+          hinzufügen, also die eigentlichen Inhalte bearbeiten. Per
+
+          Drag&Drop lassen sich Seiten und Kapitel auch jederzeit
+
+          umsortieren.
+
+
+          Details findest Du unter: [Kapitel und Seiten](#pageflow.help_entries.outline)
+
+'
+      page_options:
+        menu_item: Allgemeine Seitenoptionen
+        text: ! '# Allgemeine Seitenoptionen
+
+
+          ### Titel
+
+
+          Hier gibst Du den Titel der jeweiligen Seite ein. Dieser
+
+          wird nicht nur als Überschrift des Fliesstextes der Seite
+
+          ausgespielt, sondern dient zudem als Titel innerhalb der
+
+          Navigation und der Übersicht. Wird eine einzelne Seite in
+
+          sozialen Netzwerken geteilt, ist dieser Titel zugleich auch
+
+          der Titel des Social Media-Beitrages.
+
+
+          ### Titel ausblenden
+
+
+          Optional lässt sich der Titel auch ausblenden. Das heisst:
+
+          Er wird nicht mehr als Überschrift im Fliesstext
+
+          angezeigt. Er bleibt zur Identifikation einer Seite
+
+          allerdings in Navigation, Übersicht und geteilten Beträgen
+
+          erhalten.
+
+
+          ### Tagline und Untertitel
+
+
+          Hier kann wahlweise eine Tagline und/oder ein Untertitel
+
+          eingegeben werden. Falls Du ein Häkchen bei „Titel
+
+          ausblenden“ gesetzt hast, sind Tagline und Untertitel über
+
+          dem Fliesstext ebenfalls nicht zu sehen.
+
+
+          ### Text
+
+
+          Der Textblock kann mit den Buttons unterhalb des
+
+          Eingabefeldes formatiert werden. [ B=Fett / I=kursiv /
+
+          U=unterstrichen „gekippte acht“=Link/URL auf fremde Seite
+
+          einfügen].
+
+
+          Alle Änderungen sind in der linken Frontend-Ansicht
+
+          sichtbar, sobald das entsprechende Texteingabefeld im
+
+          Editierbereich verlassen wurde.
+
+
+          ### Textposition
+
+
+          Wähle hier, ob der Text auf der linken oder rechten Seite
+
+          angezeigt wird.
+
+
+          ### Intensität des Farbverlaufs
+
+
+          Die Intensität des Farbverlaufs dient der Lesbarkeit von
+
+          Texten auf Videos oder Bildern.
+
+
+          Durch den Schieberegler kann der Bildhintergrund so stark
+
+          abgedunkelt bzw. aufgehellt werden, bis der Kontrast
+
+          zwischen Bild und Text ausreichend ist.
+
+
+          ### Farben invertieren
+
+
+          Beim Invertieren werden „hell“ und „dunkel“ vertauscht, die
+
+          sonst weiße Schrift ändert sich dabei automatisch in
+
+          schwarz.
+
+
+          Grundsätzlich gilt: Helle Schrift für dunkle Bilder, dunkle
+
+          Schrift für helle Bilder.
+
+
+          ### Thumbnail
+
+
+          Das Thumbnail ersetzt das ansonsten automatisch generierte
+
+          Vorschaubild in der Navigation und in der Übersicht.
+
+
+          ### In Navigationsleiste anzeigen
+
+
+          Ist diese Option nicht gesetzt, wird die jeweilige Seite
+
+          nicht in der Navigation repräsentiert, kann also nicht
+
+          direkt über die Navigation erreicht werden.
+
+
+          Dies bietet sich vor allem für Seiten an, die inhaltlich als
+
+          „Unterseiten“ einer anderen Seite anzusehen sind.
+
+
+          ### Übergangseffekt
+
+
+          Es gibt zwei verschiedene Effekte, die sichtbar sind, wenn
+
+          von einer Kapitelseite zur nächsten gewischt/gescrollt
+
+          wird. „Überblenden“ und „Scrollen“. Welcher Effekt verwendet
+
+          wird, kann individuell für jede Seite festgelegt werden.
+
+
+          ### Beschreibung für Übersicht
+
+
+          Hier kann der Text eingegeben werden, der angezeigt wird,
+
+          wenn der User in der Übersicht mit der Mouse über die
+
+          jeweilige Seite fährt. Außerdem entspricht der hier
+
+          eingegebene Text
+
+'
+      page_types:
+        menu_item: Seitentypen
+        text: ! '# Seitentypen
+
+
+          Durch die Auswahl des Seitentyps legst Du fest, welche
+
+          Medien in der jeweiligen Seite verwendet werden. Je nach
+
+          Seitentyp stehen verschiedene Einstellungen zur Verfügung.
+
+          Für weitere Informationen klicke bitte auf einen Seitentyp
+
+          in der linken Spalte.
+
+'
+      publishing:
+        menu_item: Veröffentlichen
+        text: ! '# Veröffentlichen
+
+
+          Klicke in der Gliederung auf die Schaltfläche
+
+          „Veröffentlichen“ um Deinen Pageflow zu publizieren. Eine
+
+          Reportage kann entweder zeitlich unbegrenzt oder bis zu
+
+          einem bestimmten Stichtag veröffentlicht
+
+          werden. Veröffentlichte Pageflows können jederzeit manuell
+
+          depubliziert werden. Sollte eine Reportage bereits
+
+          veröffentlicht sein, bleiben Änderungen solange öffentlich
+
+          unsichtbar, bis die Reportage erneut veröffentlicht wird.
+
+          Eine Reportage kann stets nur von einem Redakteur zur
+
+          gleichen Zeit bearbeitet werden.
+
+
+          Vorschaubild zum Einbetten in Externe Webseiten Nach der
+
+          Veröffentlichung erstellt das System ein Vorschaubild, das
+
+          als iframe zur Verlinkung in eine externe Seite eingebunden
+
+          werden kann.  Anhand des ausgespielten Codes lässt sich die
+
+          Größe des iframes frei einstellen. Hierbei ist jedoch eine
+
+          Mindesthöhe von 150px und und eine Mindestbreite von 220px
+
+          zu beachten.
+
+'
     helpers:
       entries:
         global_links: Globale Links
@@ -1028,23 +1764,31 @@ de:
           title: Wird auf der Übersichtsseite angezeigt.
         pageflow/entry:
           credits: Text wird zusammen mit dem Impressumsverweis angezeigt.
-          emphasize_chapter_beginning: Die erste Seite eines jeden Kapitels wird hervorgehoben.
-          emphasize_new_pages: Seit dem letzten Besuch neu hinzugefügte Seiten werden besonders gekennzeichnet.
-          home_button_enabled: Link zu einer Übersichtsseite anzeigen.
+          emphasize_chapter_beginning: Mit dieser Option wird der Titel der jeweils ersten Seite eines Kapitels größer dargestellt.
+          emphasize_new_pages: Zeigt zum Start des Pageflows in einer Info-Box die seit dem letzten Besuch neu erstellen Seiten an.
+          home_button_enabled: Es gibt die Möglichkeit, in der Navigation einen Button anzuzeigen, der auf eine externe Seite verlinkt, z.B. zurück auf die Homepage, von der aus Du den Pageflow verlinkt hast.
           home_button_enabled_disabled: Diese Funktion steht in diesem Theme nicht zur Verfügung.
           home_url: URL der Übersichtseite. Leer lassen, um Standard zu übernehmen.
           home_url_disabled: Diese Funktion steht in diesem Theme nicht zur Verfügung.
           manual_start: Besucher muss den Start des Beitrags durch einen Klick bestätigen.
-          summary: Zusammenfassung die an Soziale Netzwerke weitergeben wird.
-          title: Vom Browser angezeigter Titel der Seite.
+          summary: ! 'Trage hier ein, welcher Beschreibungstext beim Teilen in sozialen Netzwerken angezeigt wird.
+
+'
+          title: Hier kannst Du Deinem Pageflow einen Titel geben, der in der Titelleiste des Browserfensters angezeigt wird. Unter diesem Titel wird Dein Pageflow nach der Veröffentlichung auch in Suchmaschinen indiziert werden
         pageflow/page:
           additional_title: Die Infobox wird über den Steuerelementen zum Starten und Stoppen der Wiedegabe angezeigt.
-          description: Dieser Text wird auf der Übersichtseite angezeigt, wenn Sie den Mauszeiger über dem Vorschaubild einer Seite platzieren.
-          gradient_opacity: Wählen Sie die Intensität des Farbverlaufs so, dass ein ausreichender Kontrast zwischen Text und Hintegrund gewährleistet ist.
-          invert: Dunkle Schrift und helle Schattierung anzeigen.
+          description: Hier kann der Text eingegeben werden, der angezeigt wird, wenn der User in der Übersicht mit der Mouse über die jeweilige Seite fährt. Außerdem entspricht der hier eingegebene Text auch dem Mouse-Over-Text beim Seitentyp „Seiten-Verweise“, sowie dem Text zum Teilen in sozialen Netzwerken.
+          gradient_opacity: ! 'Die Intensität des Farbverlaufs dient der Lesbarkeit von Texten auf Videos oder Bildern.
+
+
+            Durch den Schieberegler kann der Bildhintergrund so stark abgedunkelt bzw. aufgehellt werden, bis der Kontrast zwischen Bild und Text ausreichend ist.'
+          invert: ! "Beim Invertieren werden „hell“ und „dunkel“ vertauscht, die sonst weiße Schrift ändert sich dabei automatisch in schwarz. \n\nGrundsätzlich gilt: Helle Schrift für dunkle Bilder, dunkle Schrift für helle Bilder."
           mobile_poster_image_id: Dieses Bild wird in der Mobilvariante der Seite als Posterbild gezeigt.
-          text: Dies ist der Textbereich der Seite.
-          thumbnail_image_id: Dieses Bild wird in der Navigationsleiste und anderen Verweisen auf die Seite gezeigt.
+          text: ! 'Der Textblock kann mit den Buttons unterhalb des Eingabefeldes formatiert werden. [ B=Fett / I=kursiv / U=unterstrichen „gekippte acht“=Link/URL auf fremde Seite einfügen].
+
+
+            Alle Änderungen sind in der linken Frontend-Ansicht sichtbar, sobald das entsprechende Texteingabefeld im Editierbereich verlassen wurde.'
+          thumbnail_image_id: Das Thumbnail ersetzt das ansonsten automatisch generierte Vorschaubild in der Navigation und in der Übersicht.
       templates:
         inputs:
           file_input:
@@ -1062,6 +1806,8 @@ de:
             underline: Unterstrichen
             url: URL
       views:
+        extended_select_input_view:
+          display_help: Hilfe anzeigen
         inputs:
           file_input_view:
             none: (Kein)
@@ -1085,6 +1831,7 @@ de:
         greeting: Dein Pageflow-Team
         instruction: Willkommen bei Pageflow. Bitte lege über den folgenden Link ein Kennwort fest. In Zukunft kannst Du Dich dann mit Deiner E-Mail-Adresse anmelden.
         salutation: Hallo %{first_name}
+        subject: Ihre Pageflow Einladung
     widgets:
       none: (Kein)
       roles:
