@@ -6,3 +6,5 @@ pkg/
 tmp/
 spec/dummy/*
 .idea
+
+.localeapp
