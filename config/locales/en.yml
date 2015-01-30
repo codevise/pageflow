@@ -351,7 +351,7 @@ en:
           audio_loop: Background-Audio
           background_image: Background-Image
           background_video: Background-Video
-          internal_links: Internal links
+          internal_links: Internal Links
           video: Video
         text_position:
           left: Left
@@ -1090,7 +1090,7 @@ en:
             is especially useful for bright background-images.
 
 
-            Users have are able to hide the color-gradient and text in
+            Users are able to hide the color-gradient and text in
 
             the front-end, if they want to have a view of the
 
@@ -1099,9 +1099,7 @@ en:
 
             Examples: Presentation, part of a picture gallery,
 
-            portrait
-
-'
+            portrait'
         background_video:
           menu_item: Background Video
           text: ! '# Background Video
@@ -1391,7 +1389,7 @@ en:
           3. onto the new page, in order to edit the content.
 
 
-          # Structuring Chapters
+          ## Structuring Chapters
 
 
           You can structure the composition of your Pageflow with
@@ -1411,9 +1409,7 @@ en:
 
           this chapter are consequently not shown in the
 
-          overview/navigation.
-
-'
+          overview/navigation.'
       overview:
         menu_item: Overview
         text: ! '# Overview
@@ -1545,10 +1541,10 @@ en:
           Decide if the text should be shown on the left or right side.
 
 
-          ### Intensity of the color gradient
+          ### Opacity of the gradient
 
 
-          The intensity of the color gradient serves the legibility of
+          The opacity of the gradient improves the legibility of
 
           the text on background-videos or pictures.
 
@@ -1618,9 +1614,7 @@ en:
 
           as well as with the text, which appears when you share the
 
-          Pageflow in social networks.
-
-'
+          Pageflow in social networks.'
       page_types:
         menu_item: Page Types
         text: ! '# Page Types
@@ -1705,13 +1699,13 @@ en:
           home_button_enabled_disabled: This option is not available for your theme.
           home_url: URL of your home page. Leave empty to use your accounts default setting.
           home_url_disabled: This option is not available for your theme.
-          manual_start: Visitors must start the story manually.
+          manual_start: Decide if tips or advice should be shown at the beginning of your Pageflow.
           summary: Here you can write a description, which is shown, when your Pageflow is shared in social networks.
           title: Here you can choose a title for your Pageflow. It will be shown on the title bar of the browser window. It also acts as an indicator for search engines once the report is published.
         pageflow/page:
           additional_title: The info box appears close to the player controls.
           description: You can enter a text, which appears when the user navigates with the mouse over the particular page. This text matches with the mouse-over-text for the page-type „Page References“ as well as with the text, which appears when you share the Pageflow in social networks.
-          gradient_opacity: ! 'The intensity of the color gradient serves the legibility of the text on background-videos or pictures.
+          gradient_opacity: ! 'The opacity of the gradient improves the legibility of the text on background-videos or pictures.
 
 
             You can use the slider to darken or lighten up the background until the contrast between text and background is optimal.'

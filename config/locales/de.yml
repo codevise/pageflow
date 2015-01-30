@@ -1597,7 +1597,7 @@ de:
           angezeigt wird.
 
 
-          ### Intensität des Farbverlaufs
+          ### Intensität der Abblendung
 
 
           Die Intensität des Farbverlaufs dient der Lesbarkeit von
@@ -1671,9 +1671,7 @@ de:
 
           jeweilige Seite fährt. Außerdem entspricht der hier
 
-          eingegebene Text
-
-'
+          eingegebene Text'
       page_types:
         menu_item: Seitentypen
         text: ! '# Seitentypen
@@ -1770,7 +1768,7 @@ de:
           home_button_enabled_disabled: Diese Funktion steht in diesem Theme nicht zur Verfügung.
           home_url: URL der Übersichtseite. Leer lassen, um Standard zu übernehmen.
           home_url_disabled: Diese Funktion steht in diesem Theme nicht zur Verfügung.
-          manual_start: Besucher muss den Start des Beitrags durch einen Klick bestätigen.
+          manual_start: Entscheide, ob zu Beginn Deines Pageflows ein Hinweis angezeigt wird.
           summary: ! 'Trage hier ein, welcher Beschreibungstext beim Teilen in sozialen Netzwerken angezeigt wird.
 
 '
