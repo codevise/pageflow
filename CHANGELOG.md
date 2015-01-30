@@ -4,49 +4,75 @@
 
 ##### Manual Update Step
 
-The locale can now be changed on a per user and per entry basis.
-([#220](https://github.com/codevise/pageflow/pull/220))
+- The locale can now be changed on a per user and per entry basis.
+  ([#220](https://github.com/codevise/pageflow/pull/220))
 
-For language selection to work inside the admin, you need to add the
-following line to the setup block inside your
-`config/initializers/active_admin.rb` file:
+  For language selection to work inside the admin, you need to add the
+  following line to the setup block inside your
+  `config/initializers/active_admin.rb` file:
+  
+        ActiveAdmin.setup do |config|
+          Pageflow.active_admin_settings(config)
+  
+          # ...
+        end
 
-    ActiveAdmin.setup do |config|
-      Pageflow.active_admin_settings(config)
+  So far `en` and `de` locales are supported. If you do not wish to allow users
+  to change the locale setting, add the following line to your
+  `config/initializers/pageflow.rb` file:
 
-      # ...
-    end
-
-So far `en` and `de` locales are supported. If you do not wish to allow users
-to change the locale setting, add the following line to your
-`config/initializers/pageflow.rb` file:
-
-     # Make only some locales available
-     config.available_locales = [:de]
+        # Make only some locales available
+        config.available_locales = [:de]
 
 ##### Public Site
 
 - Twitter share cards support.
   ([#218](https://github.com/codevise/pageflow/pull/218))
+- Bug fix: Cache head fragment for different share targets.
+  ([#243](https://github.com/codevise/pageflow/pull/243))
+- Bug fix: Improve social sharing buttons.
+  ([#246](https://github.com/codevise/pageflow/pull/246))
 - Bug fix: Ensure target blank for content links.
   ([#233](https://github.com/codevise/pageflow/pull/233))
 - Bug fix: Improve top margin of pages without title.
   ([#223](https://github.com/codevise/pageflow/pull/223))
 - Bug fix: Correct width of title elements with text position right.
   ([#224](https://github.com/codevise/pageflow/pull/224))
+- Bug fix: Correct logo height on mobile devices.
+  ([#234](https://github.com/codevise/pageflow/pull/234))
+- Bug fix: Prevent illegal UTF8 characters from causing javascript
+  syntax errors.
+  ([#238](https://github.com/codevise/pageflow/pull/238),
+   [#239](https://github.com/codevise/pageflow/pull/239))
 
 ##### Admin/Editor
 
+- Improved page type select drop down menu.
+  ([#249](https://github.com/codevise/pageflow/pull/249))
+- Improved extensible help dialog.
+  ([#248](https://github.com/codevise/pageflow/pull/248))
 - Update rich text editor.
   ([#232](https://github.com/codevise/pageflow/pull/232))
+- Allow mailto protocol in content links.
+  ([#245](https://github.com/codevise/pageflow/pull/245))
 - Bug fix: Remove unused additional info box fields for background
   audio page type.
   ([#226](https://github.com/codevise/pageflow/pull/226))
 - Bug fix: Allow unsetting the custom share image.
   ([#230](https://github.com/codevise/pageflow/pull/230))
+- Bug fix: Do not display outdated data when visiting editor with
+  browser back.
+  ([#239](https://github.com/codevise/pageflow/pull/239))
+- Bug fix: Stop edit lock polling when session expires.
+  ([#240](https://github.com/codevise/pageflow/pull/240))
+- Bug fix: Add missing en translations.
+  ([#237](https://github.com/codevise/pageflow/pull/237),
+   [#247](https://github.com/codevise/pageflow/pull/247))
 
 ##### Rails Engine
 
+- New plugin method for configuration API.
+  ([#244](https://github.com/codevise/pageflow/pull/244))
 - Refactor default theme to ease importing additional files.
   ([#229](https://github.com/codevise/pageflow/pull/229))
 - Dispatch media events on video/audio playback.
