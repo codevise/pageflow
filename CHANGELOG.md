@@ -2,6 +2,12 @@
 
 ### Changes on `master`
 
+None so far.
+
+### Version 0.7.0
+
+2015-02-03
+
 ##### Manual Update Step
 
 - The locale can now be changed on a per user and per entry basis.
