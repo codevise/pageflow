@@ -24,6 +24,13 @@
         # Make only some locales available
         config.available_locales = [:de]
 
+- DOM Change: The
+  [overview close button](https://github.com/codevise/pageflow/pull/220/files#diff-ff2814e1f24a8bc9a279aebdda1094cdR3)
+  and
+  [the scroll/hidden text indicators](https://github.com/codevise/pageflow/pull/220/files#diff-59509a460b3b5b90c4d7b46bcb906befL13)
+  now use localizable texts instead of relying on text in
+  images. Custom themes must either hide or style these texts.
+
 ##### Public Site
 
 - Twitter share cards support.
