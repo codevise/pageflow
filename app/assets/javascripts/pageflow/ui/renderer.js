@@ -1,6 +1,9 @@
 /*global JST*/
 
 Backbone.Marionette.Renderer.render = function(template, data) {
+  if (_.isFunction(template)) {
+    return template(data);
+  }
   if (template.indexOf('templates/') === 0) {
     template = 'pageflow/editor/' + template;
   }
