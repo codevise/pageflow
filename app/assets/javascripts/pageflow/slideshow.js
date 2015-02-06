@@ -8,8 +8,7 @@
 //=require ./slideshow/hide_text_on_swipe
 
 pageflow.Slideshow = function($el, configurations) {
-  var transitionDuration = 1000,
-      transitioning = false,
+  var transitioning = false,
       preload = new pageflow.ProgressivePreload(),
       currentPage = $(),
       currentPageIndex, pages;
@@ -20,7 +19,7 @@ pageflow.Slideshow = function($el, configurations) {
     if (transitioning) { return; }
     transitioning = true;
 
-    fn.call(context);
+    var transitionDuration = fn.call(context);
 
     setTimeout(function() {
       transitioning = false;
@@ -70,11 +69,21 @@ pageflow.Slideshow = function($el, configurations) {
 
         var direction = currentPageIndex > previousPage.index() ? 'forwards' : 'backwards';
 
-        previousPage.page('deactivate', {direction: direction});
-        currentPage.page('activate', {direction: direction, position: options.position});
+        var outDuration = previousPage.page('deactivate', {
+          direction: direction,
+          transition: options.transition
+        });
+
+        var inDuration = currentPage.page('activate', {
+          direction: direction,
+          position: options.position,
+          transition: options.transition
+        });
 
         preload.start(currentPage);
-        $el.trigger('slideshowchangepage');
+        $el.trigger('slideshowchangepage', [options]);
+
+        return Math.max(outDuration, inDuration);
       }, this);
     }
   };
