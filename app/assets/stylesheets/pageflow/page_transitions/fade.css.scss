@@ -1,0 +1,78 @@
+/* fading background, vertical scrolling content */
+
+section.page {
+  background-color: transparent;
+}
+
+section.fade {
+
+  background-color: transparent;
+
+  &.invert {
+    background-color: transparent;
+  }
+
+  .blackLayer {
+    display: none;
+  }
+  .backgroundArea {
+    background-color: black;
+    -webkit-backface-visibility: hidden;
+    @include transition (opacity 1s ease);
+  }
+
+  &.invert .backgroundArea {
+    background-color: white;
+  }
+
+  &.animate-in-forwards .backgroundArea {
+    opacity: 0;
+  }
+  &.animate-out-forwards .backgroundArea{
+    opacity: 1;
+  }
+  &.animate-in-backwards .backgroundArea{
+    opacity: 0;
+  }
+  &.animate-out-backwards .backgroundArea{
+    opacity: 1;
+  }
+
+  &.active .backgroundArea {
+    opacity: 1;
+  }
+
+  .content {
+    @include transition(1s ease);
+    -webkit-backface-visibility: hidden;
+  }
+
+  &.active div.content {
+    @include transform(translate3d(0,0,0));
+  }
+
+  &.animate-in-forwards {
+    z-index: 2;
+
+    .content {
+      @include transform(translate3d(0,100%,0));
+    }
+  }
+  &.animate-out-forwards {
+    .content {
+      @include transform(translate3d(0,-100%,0));
+    }
+  }
+  &.animate-in-backwards {
+    z-index: 2;
+
+    .content {
+      @include transform(translate3d(0,-100%,0));
+    }
+  }
+  &.animate-out-backwards {
+    .content {
+      @include transform(translate3d(0,100%,0));
+    }
+  }
+}

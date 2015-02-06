@@ -1,0 +1,23 @@
+/* fading background, vertical scrolling content */
+
+section.cut {
+  &.active {
+    display: block;
+  }
+
+  &.animate-in-forwards {
+    display: block;
+  }
+  &.animate-out-forwards {
+    display: none;
+  }
+  &.animate-in-backwards {
+    display: block;
+  }
+  &.animate-out-backwards {
+    display: none;
+  }
+  &.animate-in-backwards, &.animate-in-forwards {
+    z-index: 2;
+  }
+}

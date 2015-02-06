@@ -1,7 +1,10 @@
 de:
   pageflow:
     page_transitions:
-      fade: "Überblenden"
+      fade: "Hintergrund Blenden/Vordergrund Scrollen"
+      crossfade: "Überblenden"
+      fade_to_black: "Schwarzblende"
+      cut: "Harter Schnitt"
       scroll: "Scrollen"
-      scroll_right: "Von rechts scrollen"
-      scroll_left: "Von link scrollen"
+      scroll_right: "Scrollen (von rechts)"
+      scroll_left: "Scrollen (von links)"

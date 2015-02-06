@@ -83,7 +83,7 @@
 
       setTimeout(_.bind(function() {
         this.element.addClass('active');
-      }, this), 5);
+      }, this), 0);
 
       var duration = this.animateTransition('in', options, function() {
         this.content.scroller('enable');

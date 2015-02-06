@@ -1,0 +1,29 @@
+/* fading background, vertical scrolling content */
+
+section.crossfade {
+  @include transition(1s ease);
+  -webkit-backface-visibility: hidden;
+
+  .blackLayer {
+    display: none;
+  }
+
+  &.animate-in-forwards {
+    z-index: 2;
+    opacity: 0;
+  }
+  &.animate-out-forwards {
+    opacity: 1;
+  }
+  &.animate-in-backwards {
+    z-index: 2;
+    opacity: 0;
+  }
+  &.animate-out-backwards {
+    opacity: 1;
+  }
+
+  &.active {
+    opacity: 1;
+  }
+}
