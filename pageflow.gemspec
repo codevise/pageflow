@@ -72,6 +72,9 @@ Gem::Specification.new do |s|
   # Templating engine used to render jst tempaltes.
   s.add_dependency 'ejs'
 
+  # Templating engine used to compile scss templates.
+  s.add_dependency 'sass-rails', '~> 4.0'
+
   # Using translations from rails locales in javascript code.
   s.add_dependency 'i18n-js'
 
