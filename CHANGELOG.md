@@ -4,6 +4,19 @@
 
 None so far.
 
+### Version 0.7.1
+
+2015-02-19
+
+- Bug fix: Make gem versions more specific.
+  ([#254](https://github.com/codevise/pageflow/pull/254),
+   [#256](https://github.com/codevise/pageflow/pull/256))
+- Bug fix: Loosen JBuilder dependency.
+  ([#257](https://github.com/codevise/pageflow/pull/257))
+- Bug fix: Make custom Backbone Marionette renderer accept functions
+  as templates.
+  ([#252](https://github.com/codevise/pageflow/pull/252))
+
 ### Version 0.7.0
 
 2015-02-03

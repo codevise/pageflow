@@ -1,3 +1,3 @@
 module Pageflow
-  VERSION = "0.7.1.alpha"
+  VERSION = "0.7.1"
 end
