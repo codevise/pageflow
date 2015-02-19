@@ -15,31 +15,32 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '>= 4.0.2', '< 4.2'
 
-  s.add_dependency 'activeadmin'
+  s.add_dependency 'activeadmin', '~> 0.6.0'
 
   # Make devise mailers use resque. (Needs to be below active admin entry!)
-  s.add_dependency 'devise-async'
+  s.add_dependency 'devise-async', '~> 0.8.0'
 
+  # Caution: 3.1 changes methods used by Pageflow::InvitedUser
   s.add_dependency 'devise', '~> 3.0.2'
 
   # Resque jobs and queues
-  s.add_dependency 'resque'
-  s.add_dependency 'resque-scheduler', '~> 2.5.5'
-  s.add_dependency 'resque-logger'
-  s.add_dependency 'resque_mailer'
-  s.add_dependency 'ar_after_transaction'
-  s.add_dependency 'redis'
-  s.add_dependency 'redis-namespace'
-  s.add_dependency 'yajl-ruby'
+  s.add_dependency 'resque', '~> 1.25'
+  s.add_dependency 'resque-scheduler', '~> 2.5'
+  s.add_dependency 'resque-logger', '~> 0.2.0'
+  s.add_dependency 'resque_mailer', '~> 2.2'
+  s.add_dependency 'ar_after_transaction', '~> 0.4.0'
+  s.add_dependency 'redis', '~> 3.0'
+  s.add_dependency 'redis-namespace', '~> 1.5'
+  s.add_dependency 'yajl-ruby', '~> 1.2'
 
   # Authorization
-  s.add_dependency 'cancan'
+  s.add_dependency 'cancan', '~> 1.6'
 
   # State machines for active record
-  s.add_dependency 'state_machine'
+  s.add_dependency 'state_machine', '~> 1.2'
 
   # Trigger resque jobs with a state machine
-  s.add_dependency 'state_machine_job', '~> 0.2'
+  s.add_dependency 'state_machine_job', '~> 0.2.0'
 
   # File attachments
   s.add_dependency 'paperclip', '~> 3.5'
@@ -70,13 +71,13 @@ Gem::Specification.new do |s|
 
 
   # Templating engine used to render jst tempaltes.
-  s.add_dependency 'ejs'
+  s.add_dependency 'ejs', '~> 1.1'
 
   # Templating engine used to compile scss templates.
   s.add_dependency 'sass-rails', '~> 4.0'
 
   # Using translations from rails locales in javascript code.
-  s.add_dependency 'i18n-js'
+  s.add_dependency 'i18n-js', '~> 2.1'
 
   # WYSIWYG editor
   s.add_dependency 'wysihtml5x-rails', '0.4.17'
@@ -90,38 +91,38 @@ Gem::Specification.new do |s|
   s.add_dependency 'jbuilder', '~> 1.5'
 
   # Used by the dummy rails application
-  s.add_development_dependency 'mysql2'
+  s.add_development_dependency 'mysql2', '~> 0.3.16'
 
   # Testing framework
-  s.add_development_dependency 'rspec-rails', '~> 2.14.0'
+  s.add_development_dependency 'rspec-rails', '~> 2.14'
 
   # Browser like integration testing
-  s.add_development_dependency 'capybara'
+  s.add_development_dependency 'capybara', '~> 2.4'
 
   # Headless browser testing
-  s.add_development_dependency 'capybara-webkit'
+  s.add_development_dependency 'capybara-webkit', '~> 1.3'
 
   # View abstraction fro integration testing
-  s.add_development_dependency 'domino'
+  s.add_development_dependency 'domino', '~> 0.7.0'
 
   # Fixture replacement
-  s.add_development_dependency 'factory_girl_rails'
+  s.add_development_dependency 'factory_girl_rails', '~> 4.5'
 
   # Clean database in integration tests
   s.add_development_dependency 'database_cleaner', '~> 1.2'
 
   # Freeze time in tests
-  s.add_development_dependency 'timecop'
+  s.add_development_dependency 'timecop', '~> 0.7.1'
 
   # Early failure output
-  s.add_development_dependency 'rspec-instafail'
+  s.add_development_dependency 'rspec-instafail', '~> 0.2.6'
 
   # Colorized console output
-  s.add_development_dependency 'colorize'
+  s.add_development_dependency 'colorize', '~> 0.7.5'
 
   # Javascript unit testing
-  s.add_development_dependency 'teaspoon'
+  s.add_development_dependency 'teaspoon', '~> 0.8.0'
 
   # Stub HTTP requests in tests
-  s.add_development_dependency 'webmock'
+  s.add_development_dependency 'webmock', '~> 1.20'
 end
