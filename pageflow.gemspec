@@ -86,8 +86,8 @@ Gem::Specification.new do |s|
   # Pretty URLs
   s.add_dependency 'friendly_id', '~> 5.0'
 
-  # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-  s.add_dependency 'jbuilder', '~> 1.5'
+  # Build JSON APIs with ease.
+  s.add_dependency 'jbuilder', '>= 1.5', '< 3.0'
 
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2'
