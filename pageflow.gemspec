@@ -90,6 +90,9 @@ Gem::Specification.new do |s|
   # Build JSON APIs with ease.
   s.add_dependency 'jbuilder', '>= 1.5', '< 3.0'
 
+  # Browser language detection
+  s.add_dependency 'http_accept_language', '~> 2.0'
+
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2', '~> 0.3.16'
 
