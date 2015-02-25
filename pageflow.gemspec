@@ -49,7 +49,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'zencoder', '~> 2.5'
 
   # Amazon AWS
-  s.add_dependency 'aws-sdk'
+  s.add_dependency 'aws-sdk', '~> 1.60'
 
   # Markdown parser
   s.add_dependency 'kramdown', '~> 1.5'
