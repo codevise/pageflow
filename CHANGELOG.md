@@ -4,6 +4,13 @@
 
 None so far.
 
+### Version 0.7.2
+
+2015-02-25
+
+- Bug fix: Depend on version 1.x of `aws-sdk` gem.
+  ([#259](https://github.com/codevise/pageflow/pull/259))
+
 ### Version 0.7.1
 
 2015-02-19
