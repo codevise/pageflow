@@ -21,10 +21,6 @@
 .js .audioPage {
   .contentText {
     margin-bottom: 200px;
-
-    @include phone {
-      margin-bottom: 100px;
-    }
   }
 
   .non_js_audio {
