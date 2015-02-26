@@ -13,6 +13,25 @@ module Pageflow
       end
     end
 
+    describe 'deprecated #register_page_type method' do
+      let(:page_type_class) do
+        Class.new(PageType) do
+          name 'test'
+        end
+      end
+
+      it 'registers a page type' do
+        configuration = Configuration.new
+        page_type = page_type_class.new
+
+        ActiveSupport::Deprecation.silence do
+          configuration.register_page_type(page_type)
+        end
+
+        expect(configuration.page_types.first).to be(page_type)
+      end
+    end
+
     describe '#revision_components' do
       let(:page_type_class) do
         Class.new(PageType) do
@@ -28,16 +47,16 @@ module Pageflow
 
       it 'returns all RevisionComponents of registered PageTypes' do
         conf = Configuration.new
-        conf.register_page_type(page_type_class.new(:component1))
-        conf.register_page_type(page_type_class.new(:component2))
+        conf.page_types.register(page_type_class.new(:component1))
+        conf.page_types.register(page_type_class.new(:component2))
 
         expect(conf.revision_components).to eq([:component1, :component2])
       end
 
       it 'does not return duplicate RevisionComponents' do
         conf = Configuration.new
-        conf.register_page_type(page_type_class.new(:component1))
-        conf.register_page_type(page_type_class.new(:component1, :component2))
+        conf.page_types.register(page_type_class.new(:component1))
+        conf.page_types.register(page_type_class.new(:component1, :component2))
 
         expect(conf.revision_components).to eq([:component1, :component2])
       end
@@ -60,8 +79,8 @@ module Pageflow
         file_type1 = FileType.new(model: ImageFile, collection_name: 'image_files', editor_partial: 'path')
         file_type2 = FileType.new(model: VideoFile, collection_name: 'video_files', editor_partial: 'path')
         conf = Configuration.new
-        conf.register_page_type(page_type_class.new(file_type1))
-        conf.register_page_type(page_type_class.new(file_type2))
+        conf.page_types.register(page_type_class.new(file_type1))
+        conf.page_types.register(page_type_class.new(file_type2))
 
         expect(conf.file_types.to_a).to eq([file_type1, file_type2])
       end
