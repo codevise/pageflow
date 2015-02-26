@@ -33,6 +33,22 @@ module Pageflow
     # new users
     attr_accessor :mailer_sender
 
+    # Extend the configuration based on feature flags set for accounts
+    # or entries.
+    #
+    # @example
+    #
+    # Make a page type only available if a feature flag is set on the
+    # entry or its account
+    #
+    #   config.features.register('some_special_page_type' do |config
+    #     config.page_types.register(Pageflow::SomeSpecial.page_type)
+    #   end
+    #
+    # @since edge
+    # @returns [Features}
+    attr_reader :features
+
     # Subscribe to hooks in order to be notified of events. Any object
     # with a call method can be a subscriber
     #
@@ -180,6 +196,7 @@ module Pageflow
 
       @mailer_sender = 'pageflow@example.com'
 
+      @features = Features.new
       @hooks = Hooks.new
       @quotas = Quotas.new
       @themes = Themes.new
@@ -224,6 +241,22 @@ module Pageflow
     def theming_url_options(theming)
       options = public_entry_url_options
       options.respond_to?(:call) ? options.call(theming) : options
+    end
+
+    # @api private
+    def enable_features(names)
+      features.enable(names, FeatureLevelConfiguration.new(self))
+    end
+
+    # @api private
+    def enable_all_features
+      features.enable_all(FeatureLevelConfiguration.new(self))
+    end
+
+    # Restricts the configuration interface to those parts which can
+    # be used from inside features.
+    class FeatureLevelConfiguration < Struct.new(:config)
+      delegate :page_types, to: :config
     end
   end
 end

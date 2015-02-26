@@ -1,52 +1,8 @@
 require "pageflow/engine"
+require "pageflow/global_config_api"
 
 module Pageflow
-  def self.config(options = {})
-    unless @config
-      if options[:ignore_not_configured]
-        return Configuration.new
-      else
-        raise('Pageflow has not been configured yet')
-      end
-    end
-    @config
-  end
-
-  def self.configure(&block)
-    @configure_blocks ||= []
-    @configure_blocks << block
-  end
-
-  def self.configured?
-    !!@config
-  end
-
-  def self.configure!
-    return unless @finalized
-
-    config = Configuration.new
-    @configure_blocks ||= []
-
-    @configure_blocks.each do |block|
-      block.call(config)
-    end
-
-    @after_configure_blocks.each do |block|
-      block.call(config)
-    end
-
-    @config = config
-  end
-
-  def self.finalize!
-    @finalized = true
-    configure!
-  end
-
-  def self.after_configure(&block)
-    @after_configure_blocks ||= []
-    @after_configure_blocks << block
-  end
+  extend GlobalConfigApi
 
   def self.routes(router)
     router.instance_eval do
