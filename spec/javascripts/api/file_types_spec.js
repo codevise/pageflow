@@ -25,11 +25,13 @@ describe('FileTypes', function() {
       var upload = {type: 'video/mp4'};
 
       fileTypes.register('image_files', {
+        model: pageflow.ImageFile,
         matchUpload: function(upload) {
           return upload.type.match(/^image/);
         }
       });
       fileTypes.register('video_files', {
+        model: pageflow.VideoFile,
         matchUpload: function(upload) {
           return upload.type.match(/^video/);
         }
@@ -49,9 +51,11 @@ describe('FileTypes', function() {
       var upload = {type: 'video/mp4'};
 
       fileTypes.register('image_files', {
+        model: pageflow.ImageFile,
         matchUpload: /^image/
       });
       fileTypes.register('video_files', {
+        model: pageflow.VideoFile,
         matchUpload: /^video/
       });
       fileTypes.setup([
@@ -81,9 +85,11 @@ describe('FileTypes', function() {
       var fileTypes = new pageflow.FileTypes();
 
       fileTypes.register('image_files', {
+        model: pageflow.ImageFile,
         matchUpload: /^image/
       });
       fileTypes.register('video_files', {
+        model: pageflow.VideoFile,
         matchUpload: /^video/
       });
       fileTypes.setup([

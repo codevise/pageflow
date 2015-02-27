@@ -17,6 +17,10 @@ module Pageflow
     @configure_blocks << block
   end
 
+  def self.configured?
+    !!@config
+  end
+
   def self.configure!
     return unless @finalized
 

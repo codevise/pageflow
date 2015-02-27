@@ -2,7 +2,8 @@
 //= require support/chai
 //= require support/sinon-chai
 
-//= require application
+//= require pageflow/application
+//= require pageflow/editor
 
 //= require_self
 //= require support/use_fake_xhr

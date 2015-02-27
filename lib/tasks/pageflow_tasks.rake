@@ -1,4 +1,7 @@
-# desc "Explaining what the task does"
-# task :pageflow do
-#   # Task goes here
-# end
+namespace :pageflow do
+  desc 'Generate dummy app for current Rails version.'
+  task :dummy do
+    require 'pageflow/support'
+    Pageflow::Dummy.setup
+  end
+end
