@@ -15,7 +15,10 @@
         widget.element.find('.close').on('click', function() {
           widget.element.hide();
           toggleContent(true);
+
+          pageflow.events.trigger('button:close_multimedia_alert');
           start();
+
           return false;
         });
       });

@@ -22,15 +22,17 @@ gsub_file('config/database.yml',
 
 # Recreate db. Ignore if it does not exist.
 
-log :rake, 'db:drop'
-in_root { run('rake db:drop RAILS_ENV=test 2> /dev/null', verbose: false) }
+log :rake, 'db:drop:all'
+in_root { run('rake db:drop:all 2> /dev/null', verbose: false) }
 
-rake 'db:create'
+rake 'db:create:all'
 
 # Install pageflow and the tested engine via their generators.
 
 generate 'pageflow:install', '--force'
 generate "#{ENV['PAGEFLOW_PLUGIN_ENGINE']}:install", '--force' if ENV['PAGEFLOW_PLUGIN_ENGINE']
+
+run 'rm -r spec'
 
 # Devise needs default_url_options for generating mails.
 
@@ -54,4 +56,4 @@ Dir.glob('db/migrate/*').each do |file_name|
   run("mv #{file_name} #{file_name}.rb") if File.extname(file_name).blank?
 end
 
-rake 'db:migrate'
+rake 'db:migrate db:test:load', env: 'development'
