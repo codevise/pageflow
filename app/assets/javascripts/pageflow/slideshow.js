@@ -175,6 +175,8 @@ pageflow.Slideshow.setup = function(options) {
     configurationsById(options.pages)
   );
 
+  pageflow.features.enable('slideshow', options.enabledFeatureNames || []);
+
   if (options.beforeFirstUpdate) {
     options.beforeFirstUpdate();
   }
