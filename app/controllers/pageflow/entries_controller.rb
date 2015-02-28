@@ -62,6 +62,8 @@ module Pageflow
     def edit
       @entry = DraftEntry.find(params[:id])
       authorize!(:edit, @entry.to_model)
+
+      @entry_config = Pageflow.config_for(@entry)
     end
 
     def update

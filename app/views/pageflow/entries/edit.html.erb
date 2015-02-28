@@ -35,5 +35,5 @@
   <%= page_type_templates %>
 <% end %>
 
-<%= render('pageflow/editor/entries/help_entries_seed') %>
+<%= render('pageflow/editor/entries/help_entries_seed', config: @entry_config) %>
 <%= render('pageflow/editor/entries/analytics', entry: @entry) %>
