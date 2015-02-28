@@ -6,23 +6,18 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
       });
 
       $('[data-role=slideshow]').each(function() {
-        var configurationsById = _.reduce(pageflow.pages, function(memo, page) {
-          memo[page.id] = page.configuration;
-          return memo;
-        }, {});
+        pageflow.Slideshow.setup({
+          element: $(this),
+          pages: pageflow.pages,
 
-        pageflow.slides = new pageflow.Slideshow($(this), configurationsById);
+          beforeFirstUpdate: function() {
+            $('.header').header({slideshow: pageflow.slides});
+            $('.overview').overview();
+            $('.multimedia_alert').multimediaAlert();
 
-        $('.header').header({
-          slideshow: pageflow.slides
+            pageflow.widgetTypes.enhance($('body'));
+          }
         });
-        $('.overview').overview();
-        $('.multimedia_alert').multimediaAlert();
-
-        pageflow.widgetTypes.enhance($('body'));
-
-        pageflow.slides.update();
-        pageflow.history = new pageflow.History(pageflow.slides);
       });
 
       pageflow.links.setup();
