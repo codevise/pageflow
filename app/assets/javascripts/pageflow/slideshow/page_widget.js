@@ -10,6 +10,10 @@
       this.reinit();
     },
 
+    getConfiguration: function() {
+      return this.configuration;
+    },
+
     reinit: function() {
       this.pageType = pageflow.pageType.get(this.element.data('template'));
       this.element.data('pageType', this.pageType);
