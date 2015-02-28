@@ -1,0 +1,7 @@
+de:
+  pageflow:
+    page_transitions:
+      fade: "Überblenden"
+      scroll: "Scrollen"
+      scroll_right: "Von rechts scrollen"
+      scroll_left: "Von link scrollen"
