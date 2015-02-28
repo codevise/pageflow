@@ -1,3 +1,4 @@
+//=require ./slideshow/atmo
 //=require ./slideshow/lazy_page_widget
 //=require ./slideshow/page_widget
 //=require ./slideshow/scroller_widget
@@ -121,6 +122,10 @@ pageflow.Slideshow = function($el, configurations) {
     return currentPage;
   };
 
+  this.currentPageConfiguration = function() {
+    return currentPage.page('getConfiguration');
+  };
+
   function ensureCurrentPage() {
     var newCurrentPage = findNewCurrentPage();
 
@@ -194,6 +199,12 @@ pageflow.Slideshow.setup = function(options) {
   );
 
   pageflow.features.enable('slideshow', options.enabledFeatureNames || []);
+
+  pageflow.atmo = pageflow.Atmo.create(
+    pageflow.slides,
+    pageflow.events,
+    pageflow.audio
+  );
 
   pageflow.history = pageflow.History.create(
     pageflow.slides,

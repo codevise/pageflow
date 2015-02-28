@@ -1,0 +1,19 @@
+en:
+  pageflow:
+    atmo:
+      feature_name: "Atmo Audios"
+
+  activerecord:
+    attributes:
+      "pageflow/page":
+        atmo_audio_file_id: "Atmo Audio"
+
+de:
+  pageflow:
+    atmo:
+      feature_name: "Atmo-Audios"
+
+  activerecord:
+    attributes:
+      "pageflow/page":
+        atmo_audio_file_id: "Atmo-Audio"
