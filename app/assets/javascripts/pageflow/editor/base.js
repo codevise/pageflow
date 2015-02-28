@@ -37,6 +37,7 @@
 
 //= require ./initializers/setup_config
 //= require ./initializers/setup_features
+//= require ./initializers/setup_audio
 //= require ./initializers/setup_help_entries
 //= require ./initializers/setup_file_types
 //= require ./initializers/setup_widget_types

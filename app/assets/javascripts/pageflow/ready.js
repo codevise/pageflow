@@ -6,6 +6,10 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
       });
 
       $('[data-role=slideshow]').each(function() {
+        pageflow.Audio.setup({
+          audioFiles: pageflow.audioFiles
+        });
+
         pageflow.Slideshow.setup({
           element: $(this),
           pages: pageflow.pages,
