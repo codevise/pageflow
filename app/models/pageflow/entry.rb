@@ -3,6 +3,8 @@ module Pageflow
     class PasswordMissingError < StandardError
     end
 
+    include FeatureTarget
+
     extend FriendlyId
     friendly_id :slug_candidates, :use => [:finders, :slugged]
 
@@ -42,6 +44,10 @@ module Pageflow
 
     def edit_lock
       super || EditLock::Null.new(self)
+    end
+
+    def feature_state(name)
+      super(name) || account.feature_state(name)
     end
 
     def publish(options = {})
