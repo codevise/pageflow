@@ -25,5 +25,9 @@ module Pageflow
     def enable(config)
       @block.call(config) if @block
     end
+
+    def name_translation_key
+      "pageflow.#{name}.feature_name"
+    end
   end
 end

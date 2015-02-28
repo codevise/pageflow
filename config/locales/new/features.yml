@@ -1,0 +1,17 @@
+en:
+  pageflow:
+    admin:
+      features:
+        states:
+          undefined: "(Default)"
+          enabled: "Enabled"
+          disabled: "Disabled"
+
+de:
+  pageflow:
+    admin:
+      features:
+        states:
+          undefined: "(Standard)"
+          enabled: "Aktiviert"
+          disabled: "Deaktiviert"

@@ -3,6 +3,8 @@ module Pageflow
   #
   # @since edge
   class Features
+    include Enumerable
+
     # @api private
     def initialize
       @features = {}
@@ -57,6 +59,10 @@ module Pageflow
     # @api private
     def enable_all(config)
       enable(@features.keys, config)
+    end
+
+    def each(&block)
+      @features.values.each(&block)
     end
   end
 end

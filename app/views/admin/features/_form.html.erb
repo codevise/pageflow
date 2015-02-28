@@ -1,0 +1,16 @@
+<%= semantic_form_for [:admin, resource], html: {class: 'features'}  do |f| %>
+  <%= hidden_field_tag('tab', params[:tab]) %>
+
+  <%= f.inputs do %>
+    <% Pageflow.config.features.each do |feature| %>
+      <li>
+        <%= label_tag(feature_state_input_name(resource, feature.name),
+                      t(feature.name_translation_key)) %>
+        <%= feature_state_select_tag(resource, feature.name) %>
+      </li>
+    <% end %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action(:submit) %>
+  <% end %>
+<% end %>

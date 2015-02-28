@@ -4,4 +4,5 @@ Pageflow.configure do |config|
 
   config.admin_resource_tabs.register(:theming, name: :entries, component: Pageflow::Admin::EntriesTab)
   config.admin_resource_tabs.register(:theming, name: :users, component: Pageflow::Admin::UsersTab)
+  config.admin_resource_tabs.register(:theming, name: :features, component: Pageflow::Admin::FeaturesTab)
 end

@@ -99,6 +99,33 @@ module Admin
                 })
         }.not_to change { Pageflow::Widget.count }
       end
+
+      it 'updates feature_configuration through feature_states param' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin))
+        patch(:update,
+              id: account.id,
+              account: {
+                feature_states: {
+                  fancy_page_type: 'enabled'
+                }
+              })
+
+        expect(account.reload.feature_state('fancy_page_type')).to eq(true)
+      end
+
+      it 'redirects back to tab' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin))
+        patch(:update,
+              id: account.id,
+              account: {},
+              tab: 'features')
+
+        expect(response).to redirect_to(admin_account_path(tab: 'features'))
+      end
     end
 
     describe '#destroy' do
