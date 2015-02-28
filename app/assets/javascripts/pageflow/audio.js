@@ -1,6 +1,6 @@
 //= require_self
 //= require ./audio/player_pool
-//= require ./audio/pool_player
+//= require ./audio/multi_player
 
 pageflow.Audio = function(options) {
   this.getSources = options.getSources || function(audioFileId) {
@@ -16,6 +16,13 @@ pageflow.Audio = function(options) {
     else {
       return new pageflow.AudioPlayer.Null();
     }
+  };
+
+  this.createMultiPlayer = function(options) {
+    return new pageflow.Audio.MultiPlayer(
+      new pageflow.Audio.PlayerPool(this, options),
+      options
+    );
   };
 };
 
