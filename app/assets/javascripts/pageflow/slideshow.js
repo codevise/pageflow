@@ -181,11 +181,10 @@ pageflow.Slideshow.setup = function(options) {
 
   pageflow.slides.update();
 
-  if (options.history !== false) {
-    pageflow.history = new pageflow.History(
-      pageflow.slides
-    );
-  }
+  pageflow.history = pageflow.History.create(
+    pageflow.slides,
+    {simulate: options.simulateHistory}
+  );
 
   return pageflow.slides;
 };
