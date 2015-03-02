@@ -32,7 +32,8 @@ pageflow.EditPageView = Backbone.Marionette.Layout.extend({
       pictogramClass: 'type_pictogram',
 
       helpLinkClicked: function(value) {
-        pageflow.app.trigger('toggle-help', pageflow.Page.typesByName[value].help_entry_translation_key);
+        var pageType = pageflow.editor.pageTypes.findByName(value);
+        pageflow.app.trigger('toggle-help', pageType.seed.help_entry_translation_key);
       }
     }));
 
