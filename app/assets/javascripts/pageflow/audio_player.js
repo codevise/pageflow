@@ -31,8 +31,10 @@ pageflow.AudioPlayer = function(sources, options) {
 
   audio.on('load', loaded.resolve);
 
-  pageflow.AudioPlayer.volumeFading(audio);
-  pageflow.AudioPlayer.volumeBinding(audio, pageflow.settings);
+  if (options.volumeFading) {
+    pageflow.AudioPlayer.volumeFading(audio);
+    pageflow.AudioPlayer.volumeBinding(audio, pageflow.settings);
+  }
 
   if (options.mediaEvents) {
     pageflow.AudioPlayer.mediaEvents(audio, options.context);

@@ -11,7 +11,9 @@ pageflow.Audio = function(options) {
     var sources = this.getSources(audioFileId);
 
     if (sources) {
-      return new pageflow.AudioPlayer(sources, options);
+      return new pageflow.AudioPlayer(sources, _.extend({
+        volumeFading: true
+      }, options || {}));
     }
     else {
       return new pageflow.AudioPlayer.Null();
