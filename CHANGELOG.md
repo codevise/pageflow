@@ -43,9 +43,14 @@ None so far.
           # ...
         end
 
-  So far `en` and `de` locales are supported. If you do not wish to allow users
-  to change the locale setting, add the following line to your
-  `config/initializers/pageflow.rb` file:
+  So far `en` and `de` locales are supported. The default locale can
+  be configured in your `config/application.rb` file just like for any
+  other Rails app:
+
+        config.i18n.default_locale = :de
+
+  If you do not wish to allow users to change the locale setting, add
+  the following line to your `config/initializers/pageflow.rb` file:
 
         # Make only some locales available
         config.available_locales = [:de]
