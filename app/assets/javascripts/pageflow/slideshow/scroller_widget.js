@@ -11,13 +11,13 @@
     doubleBumpThreshold: 500,
 
     _create: function() {
-      this.iscroll = new IScroll(this.element[0], {
+      this.iscroll = new IScroll(this.element[0], _.extend({
         mouseWheel: true,
         bounce: false,
         keyBindings: true,
         probeType: 2,
         preventDefault: false
-      });
+      }, _.pick(this.options, 'freeScroll', 'scrollX')));
 
       this.iscroll.disable();
 
@@ -47,6 +47,24 @@
       else {
         this.iscroll.scrollTo(0, 0, 0);
       }
+    },
+
+    scrollBy: function(deltaX, deltaY, time, easing) {
+      this.scrollTo(
+        this.iscroll.x + deltaX,
+        this.iscroll.y + deltaY,
+        time,
+        easing
+      );
+    },
+
+    scrollTo: function(x, y, time, easing) {
+      this.iscroll.scrollTo(
+        Math.max(Math.min(x, 0), this.iscroll.maxScrollX),
+        Math.max(Math.min(y, 0), this.iscroll.maxScrollY),
+        time,
+        easing
+      );
     },
 
     refresh: function() {
