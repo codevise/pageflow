@@ -79,8 +79,20 @@
       this.iscroll.disable();
     },
 
+    positionX: function() {
+      return this.iscroll.x;
+    },
+
     positionY: function() {
       return this.iscroll.y;
+    },
+
+    maxX: function() {
+      return this.iscroll.maxScrollX;
+    },
+
+    maxY: function() {
+      return this.iscroll.maxScrollY;
     },
 
     onScroll: function(callback) {
