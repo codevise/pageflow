@@ -20,6 +20,15 @@ pageflow.Audio = function(options) {
     }
   };
 
+  /**
+   * @option options [Numeric] fadeDuration  Time in milliseconds to fade
+   *   audios in and out.
+   * @option options [Boolean] playFromBeginning  Do not continue to play
+   *   audios at last position. Defaults to false.
+   *
+   * Furthermore all options supported by pageflow.AudioPlayer can be
+   * passed.
+   */
   this.createMultiPlayer = function(options) {
     return new pageflow.Audio.MultiPlayer(
       new pageflow.Audio.PlayerPool(this, options),

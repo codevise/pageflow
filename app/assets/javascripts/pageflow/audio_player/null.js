@@ -10,6 +10,8 @@ pageflow.AudioPlayer.Null = function() {
   this.play = function() {};
 
   this.pause = function() {};
+
+  this.seek = function() {};
 };
 
 _.extend(pageflow.AudioPlayer.Null.prototype, Backbone.Events);

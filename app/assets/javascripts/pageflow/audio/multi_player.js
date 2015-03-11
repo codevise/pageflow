@@ -1,5 +1,6 @@
 pageflow.Audio.MultiPlayer = function(pool, options) {
   var current = new pageflow.AudioPlayer.Null();
+  var currentId = null;
   var that = this;
 
   this.resume = function() {
@@ -23,7 +24,16 @@ pageflow.Audio.MultiPlayer = function(pool, options) {
   };
 
   function changeCurrent(id, callback) {
+    if (!options.playFromBeginning && id === currentId) {
+      return;
+    }
+
     var player = pool.get(id);
+    currentId = id;
+
+    if (options.playFromBeginning) {
+      player.seek(0);
+    }
 
     current.fadeOutAndPause(options.fadeDuration).then(function() {
       startEventPropagation(player, id);
