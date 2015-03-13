@@ -976,6 +976,9 @@ de:
       ie8_hint:
         close: Hinweis schließen
         deprecated_browser: <p>Liebe Nutzer,</p><p>leider nutzen Sie eine veraltete Version Ihres Browsers. Deshalb können die an dieser Stelle vorgesehenen Inhalte nicht korrekt dargestellt werden. Bitte aktualisieren Sie auf eine aktuelle Version. Unter <a href="http://www.browserchoice.eu/">http://www.browserchoice.eu/</a> stehen alternative Browser zur Verfügung.  Für eine Installation benötigen Sie gegebenenfalls Administrator-Rechte. </p>
+      ie9_hint:
+        close: Hinweis schließen
+        deprecated_browser: <p>Liebe Nutzer,</p><p>leider nutzen Sie eine veraltete Version Ihres Browsers. Deshalb können die an dieser Stelle vorgesehenen Inhalte nicht korrekt dargestellt werden. Bitte aktualisieren Sie auf eine aktuelle Version.</p><p>Unter <a style="color:#e84d2c" href="http://www.browserchoice.eu/">http://www.browserchoice.eu/</a> stehen alternative Browser zur Verfügung.  Für eine Installation benötigen Sie gegebenenfalls Administrator-Rechte. </p>
       mobile_navigation:
         imprint: Impressum
         overview: Übersicht
