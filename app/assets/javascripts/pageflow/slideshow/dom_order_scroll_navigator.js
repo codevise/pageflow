@@ -1,4 +1,8 @@
 pageflow.DomOrderScrollNavigator = function(slideshow) {
+  this.getLandingPage = function(pages) {
+    return pages.first();
+  };
+
   this.back = function(currentPage) {
     slideshow.goTo(currentPage.prev('.page'), {position: 'bottom'});
   };

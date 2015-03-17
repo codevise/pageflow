@@ -13,6 +13,7 @@ pageflow.Slideshow = function($el, configurations) {
       transitioning = false,
       preload = new pageflow.ProgressivePreload(),
       currentPage = $(),
+      that = this,
       currentPageIndex, pages;
 
   configurations = configurations || {};
@@ -119,7 +120,7 @@ pageflow.Slideshow = function($el, configurations) {
 
   function findNewCurrentPage() {
     if (!currentPage.length) {
-      return pages.first();
+      return that.scrollNavigator.getLandingPage(pages);
     }
     else if (!currentPage.parent().length) {
       return nearestPage(currentPageIndex);
