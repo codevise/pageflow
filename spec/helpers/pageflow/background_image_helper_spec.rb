@@ -28,6 +28,13 @@ module Pageflow
         expect(html).to have_selector('div.image_6')
       end
 
+      it 'uses style_group option in image css class' do
+        configuration = {'background_image_id' => 6}
+        html = helper.background_image_div(configuration, 'background_image', style_group: :panorama)
+
+        expect(html).to have_selector('div.image_panorama_6')
+      end
+
       it 'sets inline style for background position' do
         configuration = {'background_image_x' => 45, 'background_image_y' => 35}
         html = helper.background_image_div(configuration, 'background_image')

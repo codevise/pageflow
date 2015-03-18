@@ -48,7 +48,11 @@ module Pageflow
       private
 
       def css_class
-        ["background background_image image_#{image_id || 'none'}", options[:class]].compact.join(' ')
+        ["background background_image #{image_css_class}", options[:class]].compact.join(' ')
+      end
+
+      def image_css_class
+        ['image', options[:style_group], image_id || 'none'].compact.join('_')
       end
 
       def background_position(coord)
