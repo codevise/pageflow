@@ -35,6 +35,7 @@ module Pageflow
       protected
 
       def data_attributes
+        options.slice(:style_group)
       end
 
       def image_id
@@ -64,7 +65,9 @@ module Pageflow
     class DivWithSizeAttributes < Div
       def data_attributes
         if image_file
-          {:width => image_file.width, :height => image_file.height}
+          super.merge(:width => image_file.width, :height => image_file.height)
+        else
+          super
         end
       end
 

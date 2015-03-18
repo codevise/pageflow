@@ -31,7 +31,10 @@ pageflow.BackgroundImageEmbeddedView = Backbone.Marionette.View.extend({
   },
 
   imageValue: function() {
-    var url = this.model.getImageFileUrl(this.options.propertyName);
+    var url = this.model.getImageFileUrl(this.options.propertyName, {
+      styleGroup: this.$el.data('styleGroup')
+    });
+
     return url ? 'url("' + url  + '")' : 'none';
   }
 });
