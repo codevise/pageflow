@@ -76,11 +76,11 @@ attribute matching the widget name.
 
 ## Advanced Options
 
-### Excluding Widgets from Being Rendered in the Editor
+### Excluding Widgets from Being Rendered in certain Scopes
 
-Some widgets do not make sense in the context of the editor,
-i.e. analytics snippets. Simply override `enabled_in_editor?` inside
-your widget type and return false.
+Some widgets do not make sense in the context of the editor or the
+preview, i.e. analytics snippets. Simply override `enabled_in_editor?`
+or `enabled_in_preview?` inside your widget type and return `false`.
 
     module Pageflow
       module MyAnalytics

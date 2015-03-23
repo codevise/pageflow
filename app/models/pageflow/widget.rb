@@ -11,7 +11,13 @@ module Pageflow
     end
 
     def enabled?(options)
-      options[:only] != :editor || widget_type.enabled_in_editor?
+      if options[:scope] == :editor
+        widget_type.enabled_in_editor?
+      elsif options[:scope] == :preview
+        widget_type.enabled_in_preview?
+      else
+        true
+      end
     end
 
     def widget_type

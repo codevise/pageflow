@@ -5,13 +5,18 @@ module Pageflow
     def initialize(options = {})
       @name = options.fetch(:name, 'test_widget')
       @roles = options.fetch(:roles, [])
-      @enabled_in_editor = options.fetch(:enabled_in_editor, false)
+      @enabled_in_editor = options.fetch(:enabled_in_editor, true)
+      @enabled_in_preview = options.fetch(:enabled_in_preview, true)
       @rendered = options.fetch(:rendered, '')
       @rendered_head_fragment = options.fetch(:rendered_head_fragment, '')
     end
 
     def enabled_in_editor?
       @enabled_in_editor
+    end
+
+    def enabled_in_preview?
+      @enabled_in_preview
     end
 
     def render(template, entry)

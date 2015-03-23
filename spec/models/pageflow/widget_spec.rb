@@ -54,13 +54,28 @@ module Pageflow
         expect(revision.widgets.resolve).to include_record_with(type_name: 'custom_header', role: 'header')
       end
 
-      it 'filters disabled widgets' do
-        widget_type = TestWidgetType.new(name: 'non_editor_header', enabled_in_editor: false)
-        Pageflow.config.widget_types.register(widget_type)
+      it 'filters widgets disabled in editor' do
+        non_editor_widget_type = TestWidgetType.new(name: 'non_editor', enabled_in_editor: false)
+        non_preview_widget_type = TestWidgetType.new(name: 'non_preview', enabled_in_preview: false)
+        Pageflow.config.widget_types.register(non_editor_widget_type)
+        Pageflow.config.widget_types.register(non_preview_widget_type)
         revision = create(:revision)
-        create(:widget, subject: revision, role: 'header', type_name: 'non_editor_header')
+        create(:widget, subject: revision, role: 'header', type_name: 'non_editor')
+        non_preview_widget = create(:widget, subject: revision, role: 'footer', type_name: 'non_preview')
 
-        expect(revision.widgets.resolve(only: :editor)).to eq([])
+        expect(revision.widgets.resolve(scope: :editor)).to eq([non_preview_widget])
+      end
+
+      it 'filters widgets disabled in preview' do
+        non_editor_widget_type = TestWidgetType.new(name: 'non_editor', enabled_in_editor: false)
+        non_preview_widget_type = TestWidgetType.new(name: 'non_preview', enabled_in_preview: false)
+        Pageflow.config.widget_types.register(non_editor_widget_type)
+        Pageflow.config.widget_types.register(non_preview_widget_type)
+        revision = create(:revision)
+        non_editor_widget = create(:widget, subject: revision, role: 'header', type_name: 'non_editor')
+        create(:widget, subject: revision, role: 'footer', type_name: 'non_preview')
+
+        expect(revision.widgets.resolve(scope: :preview)).to eq([non_editor_widget])
       end
 
       it 'supports adding placeholders for missing role' do

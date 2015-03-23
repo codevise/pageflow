@@ -13,6 +13,7 @@ module Pageflow
       @entry = PublishedEntry.new(revision.entry, revision)
       I18n.locale = @entry.locale
 
+      @widget_scope = :preview
       render :template => 'pageflow/entries/show'
     end
 

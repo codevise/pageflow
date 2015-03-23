@@ -20,6 +20,11 @@ module Pageflow
       true
     end
 
+    # Override to return false to hide widget in entry preview.
+    def enabled_in_preview?
+      true
+    end
+
     # Override to return html as string.
     def render(template, entry)
       template.render(File.join('pageflow', name, 'widget'), entry: entry)
