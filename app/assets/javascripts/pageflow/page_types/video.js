@@ -116,9 +116,14 @@ pageflow.pageType.register('video', _.extend({
   _initVideoPlayer: function(pageElement) {
     var videoPlayer = new pageflow.VideoPlayer.Lazy(pageElement.find('[data-template=video]'), {
       bufferUnderrunWaiting: true,
-      mediaEvents: true,
       controls: true,
       customControlsOnMobile: true,
+
+      mediaEvents: true,
+      context: {
+        page: pageElement.page('instance')
+      },
+
       width: '100%',
       height: '100%'
     });

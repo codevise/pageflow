@@ -1,7 +1,8 @@
-pageflow.VideoPlayer.mediaEvents = function(player) {
+pageflow.VideoPlayer.mediaEvents = function(player, context) {
   function triggerMediaEvent(name) {
     pageflow.events.trigger('media:' + name, {
       fileName: player.currentSrc(),
+      context: context,
       currentTime: player.currentTime(),
       duration: player.duration(),
       volume: player.volume(),

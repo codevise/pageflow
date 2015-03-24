@@ -18,7 +18,7 @@ pageflow.VideoPlayer = function(element, options) {
   pageflow.VideoPlayer.srcFromOptionsMethod(player);
 
   if (options.mediaEvents) {
-    pageflow.VideoPlayer.mediaEvents(player);
+    pageflow.VideoPlayer.mediaEvents(player, options.context);
   }
 
   if (options.bufferUnderrunWaiting) {
