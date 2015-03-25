@@ -18,7 +18,7 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
-    sleep 1 if example.metadata[:js]
+    Capybara.reset_sessions!
     DatabaseCleaner.clean
   end
 end

@@ -10,9 +10,10 @@ env:
 services:
   - redis-server
 
-script:
-  - "xvfb-run exec/rspec"
-  - "xvfb-run exec/teaspoon"
+before_install:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
 
-before_script:
-    - mysql -e 'create database pageflow_dummy_test;'
+script:
+  - exec/rspec
+  - exec/teaspoon
