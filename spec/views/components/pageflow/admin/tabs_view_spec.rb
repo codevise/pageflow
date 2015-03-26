@@ -93,6 +93,38 @@ module Pageflow
 
         expect(rendered).to have_selector('.admin_tabs_view .tab_container .tab_view_component[data-custom="custom"]')
       end
+
+      context 'with :authorize options' do
+        it 'does not render links for tabs we are not authorized for' do
+          tabs = [{name: :some_tab, component: tab_view_component}]
+
+          helper.stub(:authorized?) { false }
+
+          render(tabs, authorize: true)
+
+          expect(rendered).not_to have_selector('.admin_tabs_view ul.tabs li.some_tab a')
+        end
+
+        it 'renders links for tabs we are authorized for' do
+          tabs = [{name: :some_tab, component: tab_view_component}]
+
+          helper.stub(:authorized?) { true }
+
+          render(tabs, authorize: true)
+
+          expect(rendered).to have_selector('.admin_tabs_view ul.tabs li.some_tab a')
+        end
+
+        it 'passes :view action and component class to authorized? method' do
+          tabs = [{name: :some_tab, component: tab_view_component}]
+
+          helper.stub(:authorized?) { true }
+
+          render(tabs, authorize: true)
+
+          expect(helper).to have_received(:authorized?).with(:view, tab_view_component)
+        end
+      end
     end
   end
 end

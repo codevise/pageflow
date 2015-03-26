@@ -12,6 +12,10 @@ module ViewComponentExampleGroup
     Arbre::Context.new({}, _view)
   end
 
+  def helper
+    _view
+  end
+
   def render(*args)
     @rendered = arbre.send(described_class.builder_method_name, *args)
   end

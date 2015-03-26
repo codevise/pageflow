@@ -29,6 +29,8 @@ module Pageflow
         can_edit_entry?(user, revision.entry)
       end
 
+      can :view, [Admin::MembersTab, Admin::RevisionsTab]
+
       if user.admin?
         can [:read, :create, :update], Account
         can :destroy, Account do |account|

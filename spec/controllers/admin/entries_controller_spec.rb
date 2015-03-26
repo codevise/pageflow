@@ -4,7 +4,43 @@ describe Admin::EntriesController do
   render_views
 
   describe '#show' do
-    it 'account manager sees registered admin resource tabs' do
+    it 'editor sees members and revisions tabs' do
+      account = create(:account)
+      user = create(:user, :editor, :account => account)
+      entry = create(:entry, :account => account, :with_member => user, :title => 'example')
+
+      sign_in(user)
+      get(:show, :id => entry.id)
+
+      expect(response.body).to have_selector('.admin_tabs_view .tabs .members')
+      expect(response.body).to have_selector('.admin_tabs_view .tabs .revisions')
+    end
+
+    it 'account manager sees registered admin resource tabs she is authorized for' do
+      account = create(:account)
+      entry = create(:entry, :account => account, :title => 'example')
+      tab_view_component = Class.new(Pageflow::ViewComponent) do
+        def build(entry)
+          super('data-entry-title' => entry.title)
+        end
+
+        def self.name
+          'TabViewComponet'
+        end
+      end
+
+      Pageflow.config.admin_resource_tabs.register(:entry, name: :some_tab, component: tab_view_component)
+
+      allow(controller).to receive(:authorized?).and_call_original
+      allow(controller).to receive(:authorized?).with(:view, tab_view_component).and_return(true)
+
+      sign_in(create(:user, :account_manager, :account => account))
+      get(:show, :id => entry.id)
+
+      expect(response.body).to have_selector('.admin_tabs_view div[data-entry-title="example"]')
+    end
+
+    it 'account manager does not see registered admin resource tabs she is not authorized for' do
       account = create(:account)
       entry = create(:entry, :account => account, :title => 'example')
       tab_view_component = Class.new(Pageflow::ViewComponent) do
@@ -22,7 +58,7 @@ describe Admin::EntriesController do
       sign_in(create(:user, :account_manager, :account => account))
       get(:show, :id => entry.id)
 
-      expect(response.body).to have_selector('.admin_tabs_view div[data-entry-title="example"]')
+      expect(response.body).not_to have_selector('.admin_tabs_view div[data-entry-title="example"]')
     end
   end
 

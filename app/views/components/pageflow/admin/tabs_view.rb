@@ -8,14 +8,22 @@ module Pageflow
       def build(tabs, options = {})
         super(class: 'admin_tabs_view')
 
-        @tabs = tabs
         @options = options
+        @tabs = filter_tabs(tabs)
 
         build_tab_list
         build_tab_containers
       end
 
       private
+
+      def filter_tabs(tabs)
+        return tabs unless options[:authorize]
+
+        tabs.select do |tab_options|
+          authorized?(:view, tab_options[:component])
+        end
+      end
 
       def build_tab_list
         ul(class: 'tabs') do

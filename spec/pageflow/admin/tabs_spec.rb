@@ -17,10 +17,10 @@ module Pageflow
         it 'allows to register multiple view components per resource' do
           tabs = Tabs.new
 
-          tabs.register(:entry, ViewComponent)
+          tabs.register(:entry, component: ViewComponent)
           components = tabs.find_by_resource(:entry)
 
-          expect(components).to eq([ViewComponent])
+          expect(components).to eq([{component: ViewComponent}])
         end
       end
     end
