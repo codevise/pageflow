@@ -2,7 +2,31 @@
 
 ### Changes on `master`
 
-None so far.
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.7.2...master)
+
+##### Rails Engine
+
+- Allow exluding widgets from being rendered in the preview.
+  ([#271](https://github.com/codevise/pageflow/pull/271))
+- Authorize display of entry admin tabs.
+  ([#272](https://github.com/codevise/pageflow/pull/272))
+- Trigger `pageflow.events` Event when the multimedia alert is closed.
+  ([#260](https://github.com/codevise/pageflow/pull/260))
+- Pass page widget in context option of media events.
+  ([#273](https://github.com/codevise/pageflow/pull/273))
+
+##### Internals
+
+- Include teaspoon javascript tests in travis run.
+  ([#264](https://github.com/codevise/pageflow/pull/264))
+- Use container based travis infrastructure and cache gem bundle
+  between test runs.
+  ([#270](https://github.com/codevise/pageflow/pull/270))
+- Bug fix: Reset capybara session before cleaning the database in
+  tests.
+  ([#269](https://github.com/codevise/pageflow/pull/269))
+- Bug fix: Prevent order dependent test suite failures.
+  ([#274](https://github.com/codevise/pageflow/pull/274))
 
 ### Version 0.7.2
 
