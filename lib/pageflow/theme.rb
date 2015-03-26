@@ -15,5 +15,9 @@ module Pageflow
     def has_home_button?
       !@options[:no_home_button]
     end
+
+    def has_scroll_back_indicator?
+      !!@options[:scroll_back_indicator]
+    end
   end
 end

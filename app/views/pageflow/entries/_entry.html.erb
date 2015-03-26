@@ -4,14 +4,15 @@
                 :class => entry_css_class(entry)) do %>
 
   <%= render 'pageflow/entries/skip_links' %>
+
   <h1 class="hidden"><%= entry.title %></h1>
+
   <img src="<%= image_path("pageflow/themes/#{entry.theming.theme.directory_name}/logo_print.png") %>" class="print_image" alt="<%= t('.print_logo') %>">
   <span class="print_only page_url"><%= request.original_url %></span>
+
   <%= content_tag :div, :id => 'content', :class => 'entry', :data => {:role => 'slideshow'} do %>
     <%= render entry.pages %>
-
-    <div class="scroll_indicator indicator"><%= t('.scroll_indicator') %></div>
-    <div class="hidden_text_indicator indicator"><%= t('.swipe_indicator') %></div>
+    <%= render 'pageflow/entries/indicators', :theme => entry.theming.theme %>
   <% end %>
 
   <%= render 'pageflow/entries/header', :entry => entry %>

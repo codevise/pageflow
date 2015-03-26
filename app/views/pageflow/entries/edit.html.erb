@@ -38,4 +38,6 @@
 <% end %>
 
 <%= render('pageflow/editor/entries/help_entries_seed', config: @entry_config) %>
+<%= render('pageflow/editor/entries/indicators_seed', theme: @entry.theming.theme) %>
+
 <%= render('pageflow/editor/entries/analytics', entry: @entry) %>

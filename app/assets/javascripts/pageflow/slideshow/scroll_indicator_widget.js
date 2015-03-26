@@ -1,8 +1,15 @@
 (function($) {
+  var boundaries = {
+    up: 'top',
+    down: 'bottom'
+  };
+
   $.widget('pageflow.scrollIndicator', {
     _create: function() {
       var parent = this.options.parent,
-        that = this;
+          direction = this.element.data('direction'),
+          boundary = boundaries[direction],
+          that = this;
 
       parent.on('pageactivate', function(event) {
         var page = $(event.target);
@@ -13,16 +20,17 @@
         }
 
         that.element.toggleClass('invert', invertIndicator);
+        that.element.toggleClass('horizontal', page.data('scrollDirection'));
       });
 
-      parent.on('scrollerhintdown', function() {
+      parent.on('scrollerhint' + direction, function() {
         that.element.addClass('animate');
         setTimeout(function() {
           that.element.removeClass('animate');
         }, 500);
       });
 
-      parent.on('scrollernearbottom', function(event) {
+      parent.on('scrollernear' + boundary, function(event) {
         var page = $(event.target).parents('section');
 
         if (page.hasClass('active')) {
@@ -30,7 +38,7 @@
         }
       });
 
-      parent.on('scrollernotnearbottom slideshowchangepage', function() {
+      parent.on('scrollernotnear' + boundary +' slideshowchangepage', function() {
         that.element.removeClass('visible');
       });
 
@@ -43,6 +51,14 @@
         }, 3000);
       });
 
+      this.element.on('click', function() {
+        if (direction === 'down') {
+          parent.next();
+        }
+        else {
+          parent.back();
+        }
+      });
     }
   });
 }(jQuery));
