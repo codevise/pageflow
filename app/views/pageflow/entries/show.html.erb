@@ -13,12 +13,12 @@
   <% end %>
 <% end %>
 
-<%= cache @entry do %>
+<%= cache [@entry, :body, @widget_scope] do %>
 
   <%= render 'pageflow/entries/ie8_hint' %>
   <%= render 'pageflow/entries/loading_spinner' %>
   <%= render 'pageflow/entries/multimedia_alert' %>
-  <%= render @entry %>
+  <%= render @entry, :widget_scope => @widget_scope %>
 
   <script>
     pageflow.manualStart.enabled = <%= @entry.manual_start ? 'true' : 'false' %>;
