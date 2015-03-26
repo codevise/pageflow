@@ -29,7 +29,7 @@ pageflow.AudioPlayer = function(sources, options) {
   audio.on('load', loaded.resolve);
 
   if (options.mediaEvents) {
-    pageflow.AudioPlayer.mediaEvents(audio);
+    pageflow.AudioPlayer.mediaEvents(audio, options.context);
   }
 
   audio.src = function(sources) {

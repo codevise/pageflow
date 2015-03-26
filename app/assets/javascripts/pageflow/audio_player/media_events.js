@@ -1,7 +1,8 @@
-pageflow.AudioPlayer.mediaEvents = function(player) {
+pageflow.AudioPlayer.mediaEvents = function(player, context) {
   function triggerMediaEvent(name) {
     pageflow.events.trigger('media:' + name, {
       fileName: player.currentSrc,
+      context: context,
       currentTime: player.position,
       duration: player.duration,
       volume: player.volume(),

@@ -112,8 +112,12 @@ pageflow.pageType.register('audio', _.extend({
 
   _ensureAudioPlayer: function(pageElement) {
     this.audioPlayer = this.audioPlayer ||
-      pageflow.AudioPlayer.fromScriptTag(pageElement.find('script[data-audio]'),
-                                         {mediaEvents: true});
+      pageflow.AudioPlayer.fromScriptTag(pageElement.find('script[data-audio]'), {
+        mediaEvents: true,
+        context: {
+          page: pageElement.page('instance')
+        }
+      });
 
     pageElement.find('.vjs-controls').playerControls({
       player: this.audioPlayer
