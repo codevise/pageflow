@@ -28,6 +28,11 @@ pageflow.ConfigurationEditorView.register('video', {
 
     this.tab('options', function() {
       this.input('autoplay', pageflow.CheckBoxInputView);
+
+      if (pageflow.features.isEnabled('auto_change_page')) {
+        this.input('auto_change_page_on_ended', pageflow.CheckBoxInputView);
+      }
+
       this.group('options');
     });
   }
