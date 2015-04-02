@@ -23,9 +23,18 @@ module Pageflow
       title.join(' ')
     end
 
-    def social_share_page_description(page)
-      return page.configuration['text'] if page.configuration['text'].present?
-      return page.configuration['description'] if page.configuration['description'].present?
+    def social_share_page_description(page, entry)
+      return strip_html_tags(page.configuration['text']) if page.configuration['text'].present?
+      return strip_html_tags(page.configuration['description']) if page.configuration['description'].present?
+      social_share_entry_description(entry)
+    end
+
+    def social_share_entry_description(entry)
+      return strip_html_tags(entry.summary) if entry.summary.present?
+
+      entry.pages.each do |page|
+        return strip_html_tags(page.configuration['text']) if page.configuration['text'].present?
+      end
       ''
     end
 
@@ -50,5 +59,9 @@ module Pageflow
       url.gsub(/^(\/\/|https:\/\/)/, 'http://')
     end
 
+    private
+    def strip_html_tags(text)
+      strip_tags(text.gsub(/<br ?\/?>/, ' ').squish)
+    end
   end
 end
