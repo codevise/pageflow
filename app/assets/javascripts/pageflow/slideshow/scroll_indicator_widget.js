@@ -11,16 +11,31 @@
           boundary = boundaries[direction],
           that = this;
 
-      parent.on('pageactivate', function(event) {
-        var page = $(event.target);
+      function update(page) {
         var invertIndicator = page.data('invertIndicator');
 
         if (typeof invertIndicator === 'undefined') {
           invertIndicator = page.hasClass('invert');
         }
 
+        if (page.hasClass('scroll_indicators_non') ||
+            (page.hasClass('scroll_indicators_only_next') && direction === 'up')) {
+          that.element.hide();
+        }
+        else {
+          that.element.show();
+        }
+
         that.element.toggleClass('invert', invertIndicator);
-        that.element.toggleClass('horizontal', page.data('scrollDirection'));
+        that.element.toggleClass('horizontal', !!page.data('scrollDirection'));
+      }
+
+      parent.on('pageactivate', function(event) {
+        update($(event.target));
+      });
+
+      pageflow.events.on('page:update', function() {
+        update(parent.currentPage());
       });
 
       parent.on('scrollerhint' + direction, function() {

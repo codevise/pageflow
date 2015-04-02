@@ -1,0 +1,31 @@
+en:
+  pageflow:
+    scroll_indicator_modes:
+      feature_name: "Configurable scroll indicators"
+
+  activerecord:
+    attributes:
+      "pageflow/page":
+        scroll_indictor_mode: "Visible scroll indicators"
+    values:
+      "pageflow/page":
+        scroll_indicator_mode:
+          non: "Non"
+          only_next: "Forwards only"
+          all: "Forwards and Backwards"
+
+de:
+  pageflow:
+    scroll_indicator_modes:
+      feature_name: "Konfigurierbare Scroll Indikatoren"
+
+  activerecord:
+    attributes:
+      "pageflow/page":
+        scroll_indicator_mode: "Sichtbare Scroll Indikatoren"
+    values:
+      "pageflow/page":
+        scroll_indicator_mode:
+          non: "Keine"
+          only_next: "Nur vorwärts"
+          all: "Vorwärts und zurück"

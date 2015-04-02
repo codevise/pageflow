@@ -2,4 +2,10 @@ pageflow.ConfigurationEditorTabView.groups.define('options', function() {
   this.input('display_in_navigation', pageflow.CheckBoxInputView);
   this.group('page_transitions');
   this.input('description', pageflow.TextAreaInputView, {size: 'short'});
+
+  if (pageflow.features.isEnabled('scroll_indicator_modes')) {
+    this.input('scroll_indicator_mode', pageflow.SelectInputView, {
+      values: pageflow.Page.scrollIndicatorModes
+    });
+  }
 });
