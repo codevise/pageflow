@@ -19,6 +19,10 @@ module Pageflow
         create(:file_usage, :file => file, :revision => evaluator.used_in) if evaluator.used_in
       end
 
+      trait :processed do
+        processed_attachment File.open(Engine.root.join('spec', 'fixtures', 'image.jpg'))
+      end
+
       trait :unprocessed do
         unprocessed_attachment File.open(Engine.root.join('spec', 'fixtures', 'image.jpg'))
         processed_attachment nil
