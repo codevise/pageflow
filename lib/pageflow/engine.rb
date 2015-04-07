@@ -23,6 +23,7 @@ require 'marionette-rails'
 require 'jquery-fileupload-rails'
 require 'wysihtml5x/rails'
 require 'i18n-js'
+require 'http_accept_language'
 
 module Pageflow
   # Rails integration
