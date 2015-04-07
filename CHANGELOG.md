@@ -4,6 +4,13 @@
 
 [Compare changes](https://github.com/codevise/pageflow/compare/v0.7.2...master)
 
+##### Admin/Editor
+
+- Use locale from request header if user has not selected one.
+  ([#265](https://github.com/codevise/pageflow/pull/265))
+- Performance improvement: Speed up file polling requests in editor.
+  ([#276](https://github.com/codevise/pageflow/pull/276))
+
 ##### Rails Engine
 
 - Allow exluding widgets from being rendered in the preview.
