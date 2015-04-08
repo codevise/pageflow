@@ -7,6 +7,7 @@ pageflow.PageLinkItemView = Backbone.Marionette.ItemView.extend({
   ui: {
     thumbnail: '.page_thumbnail',
     title: '.title',
+    label: '.label',
     editButton: '.edit'
   },
 
@@ -41,7 +42,10 @@ pageflow.PageLinkItemView = Backbone.Marionette.ItemView.extend({
       this.ui.title.text(I18n.t('pageflow.editor.views.page_link_item_view.no_page'));
     }
 
+    this.ui.label.text(this.model.label());
+    this.ui.label.toggle(!!this.model.label());
     this.ui.editButton.toggle(!!this.model.editPath());
+
     this.$el.toggleClass('dangling', !page);
   },
 });
