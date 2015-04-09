@@ -1,8 +1,9 @@
+//= require ./media_player
+
 //= require_self
+
 //= require ./audio_player/media_events
 //= require ./audio_player/null
-//= require ./audio_player/volume_fading
-//= require ./audio_player/volume_binding
 
 pageflow.AudioPlayer = function(sources, options) {
   options = options || {};
@@ -31,14 +32,11 @@ pageflow.AudioPlayer = function(sources, options) {
 
   audio.on('load', loaded.resolve);
 
-  if (options.volumeFading) {
-    pageflow.AudioPlayer.volumeFading(audio);
-    pageflow.AudioPlayer.volumeBinding(audio, pageflow.settings);
-  }
-
   if (options.mediaEvents) {
     pageflow.AudioPlayer.mediaEvents(audio, options.context);
   }
+
+  pageflow.mediaPlayer.enhance(audio, options);
 
   audio.src = function(sources) {
     ready.then(function() {

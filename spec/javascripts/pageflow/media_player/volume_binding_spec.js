@@ -1,9 +1,9 @@
-describe('pageflow.AudioPlayer.volumeBinding', function() {
+describe('pageflow.mediaPlayer.volumeBinding', function() {
   describe('#play', function() {
     it('sets volume to settings volume', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       player.play();
 
@@ -13,7 +13,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('starts listenting to settings changes', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       player.play();
       settings.set('volume', 50);
@@ -24,7 +24,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('calls original play method', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       player.play();
 
@@ -36,7 +36,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('fades from 0 to settings volume', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       player.playAndFadeIn(500);
 
@@ -48,7 +48,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('starts listenting to settings changes', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       player.playAndFadeIn(500);
       settings.set('volume', 50);
@@ -59,7 +59,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('return fadeVolume promise', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       var result = player.playAndFadeIn(500);
 
@@ -69,7 +69,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('calls original play method', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       player.playAndFadeIn();
 
@@ -81,7 +81,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('stops listenting to settings changes', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       player.play();
       player.pause();
@@ -93,7 +93,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('calls original play method', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model();
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       player.pause();
 
@@ -105,7 +105,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('fades to 0', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       player.fadeOutAndPause(500);
 
@@ -116,7 +116,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('stops listenting to settings changes', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       player.play();
       player.fadeOutAndPause(500);
@@ -128,7 +128,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('calls original pause when fading promise resolves', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
 
       player.fadeOutAndPause(500);
 
@@ -140,7 +140,7 @@ describe('pageflow.AudioPlayer.volumeBinding', function() {
     it('returns fadeVolume promise', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.AudioPlayer.volumeBinding(player, settings);
+      pageflow.mediaPlayer.volumeBinding(player, settings);
       var callback = sinon.spy();
 
       player.fadeOutAndPause(500).then(callback);

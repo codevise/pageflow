@@ -1,4 +1,4 @@
-pageflow.AudioPlayer.volumeBinding = function(player, settings) {
+pageflow.mediaPlayer.volumeBinding = function(player, settings) {
   var originalPlay = player.play;
   var originalPause = player.pause;
 

@@ -1,4 +1,4 @@
-pageflow.AudioPlayer.volumeFading = function(player) {
+pageflow.mediaPlayer.volumeFading = function(player) {
   player.fadeVolume = function(value, duration) {
     return new $.Deferred(function(deferred) {
       var resolution = 10;

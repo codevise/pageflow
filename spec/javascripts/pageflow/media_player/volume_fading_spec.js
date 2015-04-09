@@ -1,8 +1,8 @@
-describe('pageflow.AudioPlayer.volumeFading', function() {
+describe('pageflow.mediaPlayer.volumeFading', function() {
   describe('#fadeVolume', function() {
     it('resolves promise after fading down', function(done) {
       var player = fakePlayer({volume: 100});
-      pageflow.AudioPlayer.volumeFading(player);
+      pageflow.mediaPlayer.volumeFading(player);
 
       player.fadeVolume(50, 10).then(function() {
         expect(player.volume()).to.eq(50);
@@ -13,7 +13,7 @@ describe('pageflow.AudioPlayer.volumeFading', function() {
 
     it('resolves promise after fading up', function(done) {
       var player = fakePlayer({volume: 50});
-      pageflow.AudioPlayer.volumeFading(player);
+      pageflow.mediaPlayer.volumeFading(player);
 
       player.fadeVolume(100, 10).then(function() {
         expect(player.volume()).to.eq(100);
@@ -23,7 +23,7 @@ describe('pageflow.AudioPlayer.volumeFading', function() {
 
     it('does not change volume directly', function(done) {
       var player = fakePlayer({volume: 50});
-      pageflow.AudioPlayer.volumeFading(player);
+      pageflow.mediaPlayer.volumeFading(player);
 
       player.fadeVolume(100, 10).then(done);
       expect(player.volume()).to.eq(50);
