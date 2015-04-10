@@ -57,8 +57,7 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
   },
 
   update: function() {
-    this.pageTypeHooks().update(this.$el, this.model.configuration);
-    _.extend(this.$el.data('configuration'), this.model.configuration.attributes);
+    this.$el.page('update', this.model.configuration);
 
     pageflow.events.trigger('page:update', this.model);
 
@@ -73,7 +72,7 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
   },
 
   pageTypeHooks: function() {
-    return this.$el.data('pageType');
+    return pageflow.pageType.get(this.model.get('template'));
   },
 
   pageTemplate: function() {
