@@ -39,7 +39,11 @@ pageflow.Slideshow = function($el, configurations) {
   }
 
   this.nextPageExists = function() {
-    return (!currentPage.is(pages.last()));
+    return this.scrollNavigator.nextPageExists(currentPage, pages);
+  };
+
+  this.previousPageExists = function() {
+    return this.scrollNavigator.previousPageExists(currentPage, pages);
   };
 
   this.back = function() {
