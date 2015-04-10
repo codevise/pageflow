@@ -17,3 +17,10 @@ de:
     attributes:
       "pageflow/page":
         atmo_audio_file_id: "Atmo-Audio"
+        atmo_during_playback: "Atmo während Medien-Wiedergabe"
+    values:
+      "pageflow/page":
+        atmo_during_playback:
+          mute: "Ausblenden"
+          turn_down: "Leiser weiterspielen"
+          play: "Weiterspielen"

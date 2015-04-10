@@ -34,28 +34,33 @@ describe('pageflow.Slideshow.Atmo', function() {
   });
 
   describe('#pause', function() {
-    it('calls pause on multiPlayer', function() {
+    it('calls fadeOutAndPause on multiPlayer', function() {
       var slideshow = {};
       var events = support.fakeEventEmitter();
-      var multiPlayer = {pause: sinon.spy()};
+      var multiPlayer = {fadeOutAndPause: sinon.spy()};
       var atmo = new pageflow.Atmo(slideshow, events, multiPlayer);
 
       atmo.pause();
 
-      expect(multiPlayer.pause).to.have.been.called;
+      expect(multiPlayer.fadeOutAndPause).to.have.been.called;
     });
   });
 
   describe('#resume', function() {
-    it('calls resume on multiPlayer', function() {
-      var slideshow = {};
-      var events = support.fakeEventEmitter();
-      var multiPlayer = {resume: sinon.spy()};
-      var atmo = new pageflow.Atmo(slideshow, events, multiPlayer);
+    describe('when multiPlayer is paused', function() {
+      it('calls resumeAndFadeIn on multiPlayer', function() {
+        var slideshow = {};
+        var events = support.fakeEventEmitter();
+        var multiPlayer = {
+          paused: sinon.stub().returns(true),
+          resumeAndFadeIn: sinon.spy()
+        };
+        var atmo = new pageflow.Atmo(slideshow, events, multiPlayer);
 
-      atmo.resume();
+        atmo.resume();
 
-      expect(multiPlayer.resume).to.have.been.called;
+        expect(multiPlayer.resumeAndFadeIn).to.have.been.called;
+      });
     });
   });
 });
