@@ -28,19 +28,21 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
 
   render: function() {
     this.$el.html(this.pageTemplate());
+
     this.$el.attr('data-id', this.model.id);
     this.$el.attr('data-perma-id', this.model.get('perma_id'));
     this.$el.attr('id', this.model.get('perma_id'));
     this.$el.attr('data-chapter-id', this.model.get('chapter_id'));
+
     this.$el.data('template', this.model.get('template'));
     this.$el.data('configuration', this.model.get('configuration'));
 
-    this.$el.page();
-    this.updateChapterBeginningClass();
-    this.update();
-    this.$el.page('reactivate');
+    this.$el.on('pageenhanced', _.bind(function() {
+      this.update();
+      this.initEmbeddedViews();
 
-    this.initEmbeddedViews();
+      this.$el.page('reactivate');
+    }, this));
 
     return this;
   },
@@ -52,11 +54,6 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
     this.$el.data('template', this.model.get('template'));
 
     this.$el.page('reinit');
-    this.updateChapterBeginningClass();
-    this.update();
-    this.$el.page('reactivate');
-
-    this.initEmbeddedViews();
   },
 
   update: function() {
@@ -67,6 +64,7 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
 
     this.refreshScroller();
     this.ensureTargetBlankForContentLinks();
+    this.updateChapterBeginningClass();
   },
 
   updateChapterBeginningClass: function() {
