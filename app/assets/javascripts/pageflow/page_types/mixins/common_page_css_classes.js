@@ -4,6 +4,7 @@ pageflow.commonPageCssClasses = {
     pageElement.toggleClass('hide_title', configuration.get('hide_title'));
 
     toggleModeClass(pageflow.Page.textPositions, 'text_position');
+    toggleModeClass(pageflow.Page.delayedTextFadeIn, 'delayed_text_fade_in');
     toggleModeClass(pageflow.Page.scrollIndicatorModes, 'scroll_indicator_mode');
     toggleModeClass(pageflow.Page.scrollIndicatorOrientations, 'scroll_indicator_orientation');
 

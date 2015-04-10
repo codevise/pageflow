@@ -7,6 +7,7 @@ module Pageflow
       classes << "text_position_#{page.configuration['text_position']}" if page.configuration['text_position'].present?
       classes << "scroll_indicator_mode_#{page.configuration['scroll_indicator_mode']}" if page.configuration['scroll_indicator_mode'].present?
       classes << "scroll_indicator_orientation_#{page.configuration['scroll_indicator_orientation']}" if page.configuration['scroll_indicator_orientation'].present?
+      classes << "delayed_text_fade_in_#{page.configuration['delayed_text_fade_in']}" if page.configuration['delayed_text_fade_in'].present?
       classes << 'chapter_beginning' if page.position == 0
       classes.join(' ')
     end
