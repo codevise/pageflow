@@ -1,0 +1,18 @@
+en:
+  pageflow:
+    chapter_hierachy:
+      feature_name: "Chapter Hierachy"
+
+  activerecord:
+    attributes:
+      "pageflow/chapter":
+        parent_page_perma_id: "Parent Page"
+de:
+  pageflow:
+    chapter_hierachy:
+      feature_name: "Kapitel Hierachie"
+
+  activerecord:
+    attributes:
+      "pageflow/chapter":
+        parent_page_perma_id: "Übergeordnete Seite"

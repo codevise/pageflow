@@ -10,14 +10,30 @@ pageflow.EditChapterView = Backbone.Marionette.Layout.extend({
 
   events: {
     'click a.back': 'goBack',
-    'click a.destroy': 'destroy',
+    'click a.destroy': 'destroy'
   },
 
   onRender: function() {
-    this.formContainer.show(new pageflow.TextInputView({
-      model: this.model,
-      propertyName: 'title'
-    }));
+    var configurationEditor = new pageflow.ConfigurationEditorView({
+      model: this.model.configuration
+    });
+
+    this.configure(configurationEditor);
+    this.formContainer.show(configurationEditor);
+  },
+
+  configure: function(configurationEditor) {
+    var view = this;
+
+    configurationEditor.tab('general', function() {
+      this.input('title', pageflow.TextInputView, {
+        model: view.model
+      });
+
+      if (pageflow.features.isEnabled('chapter_hierachy')) {
+        this.input('parent_page_perma_id', pageflow.PageLinkInputView);
+      }
+    });
   },
 
   destroy: function() {
