@@ -27,6 +27,8 @@
 //= require_self
 
 //= require ./object
+//= require ./entry_data
+//= require ./seed_entry_data
 //= require ./cookies
 //= require ./events
 //= require ./page_type

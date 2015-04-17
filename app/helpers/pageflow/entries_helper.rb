@@ -1,7 +1,5 @@
 module Pageflow
   module EntriesHelper
-    include RenderJsonHelper
-
     def pretty_entry_url(entry)
       pageflow.short_entry_url(entry.to_model, Pageflow.config.theming_url_options(entry.theming))
     end
@@ -72,18 +70,6 @@ module Pageflow
     def entry_summary(entry)
       return '' if entry.summary.blank?
       strip_tags(entry.summary.gsub(/<br ?\/?>/, ' ').squish)
-    end
-
-    def entry_pages_json_seed(entry)
-      sanitize_json(entry.pages.to_json(only: [:id, :perma_id, :configuration])).html_safe
-    end
-
-    def entry_audio_files_json_seed(entry)
-      seed = entry.audio_files.each_with_object({}) do |audio_file, result|
-        result[audio_file.id] = audio_file_sources(audio_file)
-      end
-
-      sanitize_json(seed.to_json).html_safe
     end
   end
 end

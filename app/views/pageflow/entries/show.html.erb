@@ -21,9 +21,11 @@
   <%= render @entry, :widget_scope => @widget_scope %>
 
   <script>
+    pageflow.seed = <%= entry_json_seed(@entry) %>;
+
     pageflow.manualStart.enabled = <%= @entry.manual_start ? 'true' : 'false' %>;
     pageflow.visited.enabled = <%= @entry.emphasize_new_pages ? 'true' : 'false' %>;
-    pageflow.pages = <%= entry_pages_json_seed(@entry) %>;
+    pageflow.pages = pageflow.seed.pages;
     pageflow.audioFiles = <%= entry_audio_files_json_seed(@entry) %>;
     pageflow.entryId = <%= @entry.id %>;
     pageflow.enabledFeatureNames = <%= @entry.enabled_feature_names.to_json.html_safe %>;
