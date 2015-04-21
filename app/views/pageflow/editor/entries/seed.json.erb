@@ -10,6 +10,6 @@
 
   "account": <%= render_json_seed(@entry.account) %>,
   "theming": <%= render_json_seed(@entry.theming) %>,
-  "widget_types": <%= widget_types_json_seeds %>,
+  "widget_types": <%= widget_types_json_seeds(@entry_config) %>,
   "page_types": <%= page_type_json_seeds(@entry_config) %>
 }

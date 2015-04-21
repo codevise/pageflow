@@ -29,7 +29,7 @@ module Pageflow
 
       def new
         @account = Account.new
-        @account.default_theming = Theming.new
+        @account.build_default_theming
       end
 
       def create

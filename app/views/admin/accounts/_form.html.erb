@@ -18,13 +18,15 @@
       <%= theming.input :copyright_link_label %>
       <%= theming.input :copyright_link_url %>
 
+      <% account_config = Pageflow.config_for(theming.object.account) %>
+
       <% theming.object.widgets.resolve(:include_placeholders => true).each do |widget| %>
         <%= f.semantic_fields_for(widget) do |w| %>
           <%= w.input(:type_name,
                       :label => t(widget.role, :scope => 'pageflow.widgets.roles'),
                       :input_html => {:name => "widgets[#{widget.role}]"},
                       :include_blank => t('pageflow.widgets.none'),
-                      :collection => widget_types_collection_for_role(widget.role)) %>
+                      :collection => widget_types_collection_for_role(account_config, widget.role)) %>
         <% end %>
       <% end %>
     <% end %>
