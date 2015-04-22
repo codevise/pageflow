@@ -80,6 +80,19 @@ Run bundler to install dependencies:
 
     $ bundle install
 
+### Create the database
+
+As the generator needs the presence of a database, you must create it:
+
+    $ rake db:create
+
+### Generate a User model
+
+Pageflow assumes the presence of a `User` model and corresponding `users`
+table in the database. If your application doesn't have that, generate it:
+
+    $ rails generate resource user name email encrypted_password
+
 ### Running the Generator
 
 Now you can run the generator to setup Pageflow and its dependencies:
@@ -87,7 +100,8 @@ Now you can run the generator to setup Pageflow and its dependencies:
     $ rails generate pageflow:install
 
 The generator will invoke Active Admin and Devise generators in turn
-and apply some configuration changes.
+and apply some configuration changes. When asked to overwrite the
+database seeds, choose yes.
 
 To better understand Pageflow's configuration choices, you can run the
 single steps of the `install` generator one by one. See the wiki page
@@ -99,7 +113,7 @@ safely read on for now.
 
 Now it's time to migrate the database.
 
-    $ rake db:create db:migrate
+    $ rake db:migrate
 
 If you do not like Rails' default database choices you might have to
 alter your `database.yml` first.
