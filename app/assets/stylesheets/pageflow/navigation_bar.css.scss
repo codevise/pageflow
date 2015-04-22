@@ -97,6 +97,10 @@ $nav-color: #9c9c9c;
     &:active {
       outline: none;
     }
+
+    &.filtered {
+      display: none;
+    }
   }
 
   a {

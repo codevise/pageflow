@@ -32,6 +32,9 @@ pageflow.EditChapterView = Backbone.Marionette.Layout.extend({
 
       if (pageflow.features.isEnabled('chapter_hierachy')) {
         this.input('parent_page_perma_id', pageflow.PageLinkInputView);
+        this.input('navigation_bar_mode', pageflow.SelectInputView, {
+          values: pageflow.ChapterFilter.strategies
+        });
       }
     });
   },

@@ -48,6 +48,8 @@
 //= require ./widget_types
 //= require ./built_in_widget_types
 //= require ./links
+//= require ./highlighted_page
+//= require ./chapter_filter
 
 //= require ./settings
 

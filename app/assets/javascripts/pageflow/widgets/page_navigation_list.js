@@ -6,32 +6,32 @@
       var scroller = options.scroller;
       var links = element.find('a[href]');
 
+      var chapterFilter = pageflow.ChapterFilter.create();
+      var highlightedPage = pageflow.HighlightedPage.create();
+
       pageflow.ready.then(function() {
         highlightUnvisitedPages(pageflow.visited.getUnvisitedPages());
-        highlightActivePage(getPageId(pageflow.slides.currentPage()));
+        update(getPagePermaId(pageflow.slides.currentPage()));
       });
 
       pageflow.slides.on('pageactivate', function(e) {
         setPageVisited(e.target.getAttribute('id'));
-        highlightActivePage(getPageId(e.target));
+        update(getPagePermaId(e.target));
       });
 
-      function getPageId(section) {
-        return $(section).attr('id') || ($(section).attr('data-perma-id') || '').toString();
+      function getPagePermaId(section) {
+        return parseInt($(section).attr('id') || $(section).attr('data-perma-id'), 10);
       }
 
-      function highlightActivePage(id) {
-        var displayPageId = _.find(pageIdsUpUntil(id).reverse(), function(id) {
-          return links.filter('[href="#' + id + '"]').length;
-        });
-
-        highlightPage(displayPageId);
+      function update(currentPagePermaId) {
+        highlightPage(highlightedPage.getPagePermaId(currentPagePermaId));
+        filterChapters(currentPagePermaId);
       }
 
-      function highlightPage(id) {
+      function highlightPage(permaId) {
         links.each(function() {
           var link = $(this);
-          var active = '#' + id === link.attr('href');
+          var active = '#' + permaId === link.attr('href');
 
           link.toggleClass('active', active);
           link.attr('tabindex', active ? '-1' : '3');
@@ -57,29 +57,6 @@
         });
       }
 
-      function pageIdsUpUntil(id) {
-        var found = false;
-
-        return _.filter(pageIds(), function(other) {
-          var result = !found;
-          found = found || (id === other);
-          return result;
-        });
-      }
-
-      function pageIds() {
-        if (_.isArray(pageflow.pages)) {
-          return _.map(pageflow.pages, function(page) {
-            return page.perma_id.toString();
-          });
-        }
-        else {
-          return pageflow.pages.map(function(page) {
-            return page.get('perma_id').toString();
-          });
-        }
-      }
-
       function highlightUnvisitedPages(ids) {
         links.each(function() {
           var link = $(this);
@@ -91,6 +68,19 @@
 
       function setPageVisited(id) {
         element.find('[href="#' + id + '"]').removeClass('unvisited');
+      }
+
+      function filterChapters(currentPagePermaId) {
+        links.each(function() {
+          var link = $(this);
+
+          link.toggleClass('filtered', !chapterFilter.chapterVisibleFromPage(
+            currentPagePermaId,
+            link.data('chapterId')
+          ));
+        });
+
+        scroller.refresh();
       }
     }
   });
