@@ -46,7 +46,7 @@ Pageflow assumes the following choice of libraries:
 
 Pageflow runs in environments with:
 
-* Ruby 1.9.3 or higher
+* Ruby >= 1.9.3 and < 2.2.0 because of [ActiveAdmin](https://github.com/activeadmin/activeadmin/issues/3715)
 * Rails 4.0 or 4.1
 * Redis server (for Resque)
 * A database server supported by Active Record (tested with MySQL)
