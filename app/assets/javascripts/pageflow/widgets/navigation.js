@@ -15,67 +15,12 @@
       $('.navigation_bar_bottom', element)
         .append($('.navigation_bar_top > li', element).slice(hasHomeButton ? 4 : 3));
 
-      /* Volume */
 
-      var handlingVolume = false;
-      var volumeBeforeMute = 1;
-      var muteButton = $('.navigation_bg.navigation_mute', element);
-
-      var changeVolume = function(event) {
-        var volume = (event.pageX - $('.volume-slider', element).offset().left) / $(('.volume-slider')).width();
-        if (volume > 1) { volume = 1; }
-        if (volume < 0) { volume = 0; }
-        setVolume(volume);
-      };
-
-      var setVolume = function(volume) {
-        $('.volume-level', element).css({width: volume * 100 + "%"});
-        pageflow.settings.set('volume', volume);
-
-        if (volume === 0) {
-          muteButton
-            .attr('title', muteButton.attr('data-muted-title'))
-            .addClass('muted');
-        }
-        else {
-          muteButton
-            .attr('title', muteButton.attr('data-not-muted-title'))
-            .removeClass('muted');
-        }
-      };
-
-      var toggleMute = function () {
-        if (pageflow.settings.get('volume') > 0) {
-          volumeBeforeMute = pageflow.settings.get('volume');
-          setVolume(0);
-        }
-        else {
-          setVolume(volumeBeforeMute);
-        }
-      };
-
-      muteButton.on("click", function() {
-        toggleMute();
-      });
-
-      $('.volume-level', element).css({
-        width: pageflow.settings.get("volume") * 100 + "%"
-      });
-
-      $('.navigation_volume_box', element).on("mousedown", function(event) {
-        handlingVolume = true;
-        changeVolume(event);
-      });
-
-      $('.navigation_volume_box', element).on("mousemove", function(event) {
-        if(handlingVolume) {
-          changeVolume(event);
-        }
-      });
-
-      setVolume(pageflow.settings.get('volume'));
+      $('.navigation_volume_box', element).volumeSlider({orientation: 'h'});
+      $('.navigation_mute', element).muteButton();
 
       /* hide volume button on mobile devices */
+
       if (pageflow.browser.has('mobile platform')) {
         $('li.mute', element).hide();
         $('.navigation_bar_bottom', element).css('height', '224px');
@@ -353,9 +298,6 @@
       });
 
       $('body').on({
-        'mouseup': function() {
-          handlingVolume = false;
-        },
         'pageactivate': function(e) {
           toggleIndicators();
         }
