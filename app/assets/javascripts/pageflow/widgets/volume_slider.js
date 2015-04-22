@@ -48,6 +48,11 @@
       else {
         $('.volume-level', this.element).css({width: volume * 100 + '%'});
       }
+
+      this.element.toggleClass('volume-high', volume > 2 / 3);
+      this.element.toggleClass('volume-medium', volume >= 1 / 3 && volume <= 2 / 3 );
+      this.element.toggleClass('volume-low', volume < 1 / 3 && volume > 0);
+      this.element.toggleClass('volume-mute', volume === 0);
     }
   });
 }(jQuery));
