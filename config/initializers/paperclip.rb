@@ -72,7 +72,7 @@ if Rails.env.development?
   end
 
   Paperclip.interpolates(:host) do |attachment, style|
-    Socket.gethostname
+    ENV.fetch('PAGEFLOW_ATTACHMENTS_SCOPE_NAME') { Socket.gethostname }
   end
 end
 
