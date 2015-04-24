@@ -13,12 +13,21 @@ pageflow.ProgressivePreload = function() {
     };
 
     function preload(page) {
-      return $.when(page.page('preload')).pipe(function() {
+      return $.when(page.page('preload'), tick()).pipe(function() {
         var nextPage = page.next('.page');
         if (!cancelled && nextPage.length) {
           return preload(nextPage);
         }
       });
+    }
+
+    // prevent stack level from becoming to deep
+    function tick() {
+      return new $.Deferred(function(deferred) {
+        setTimeout(function() {
+          deferred.resolve();
+        }, 1);
+      }).promise();
     }
   }
 
