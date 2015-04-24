@@ -15,15 +15,14 @@ pageflow.LazyVideoEmbeddedView = Backbone.Marionette.View.extend({
   },
 
   update: function() {
-    var videoPlayer = this.videoPlayer;
+    if (this.videoPlayer.isPresent() && this.model.hasChanged(this.options.propertyName)) {
+      var paused = this.videoPlayer.paused();
 
-    videoPlayer.ensureCreated();
+      this.videoPlayer.src(this.model.getVideoFileSources(this.options.propertyName));
 
-    if (!this.srcDefined || this.model.hasChanged(this.options.propertyName)) {
-      var src = this.model.getVideoFileSources(this.options.propertyName);
-      videoPlayer.src(src);
-
-      this.srcDefined = true;
+      if (!paused) {
+        this.videoPlayer.play();
+      }
     }
 
     if (this.options.dataSizeAttributes) {
