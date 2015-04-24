@@ -226,6 +226,7 @@ pageflow.pageType.register('video', _.extend({
       });
 
       pageElement.find('.player_mute').muteButton();
+      pageElement.find('.player_skip').skipPageButton();
 
       function autoHideControls() {
         showControls();
