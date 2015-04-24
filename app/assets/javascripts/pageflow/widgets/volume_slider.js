@@ -10,9 +10,11 @@
         var parent = $('body');
 
         parent.on('mousemove.volumeSlider', changeVolume);
+        element.addClass('lock_showing');
 
         parent.on('mouseup.volumeSlider', function() {
           parent.off('mousemove.volumeSlider mouseup.volumeSlider');
+          element.removeClass('lock_showing');
         });
 
         changeVolume(event);
@@ -44,9 +46,11 @@
 
       if (this.options.orientation === 'v') {
         $('.volume-level', this.element).css({height: volume * 100 + '%'});
+        $('.volume-handle', this.element).css({bottom: volume * 100 + '%', top: 'initial'});
       }
       else {
         $('.volume-level', this.element).css({width: volume * 100 + '%'});
+        $('.volume-handle', this.element).css({left: volume * 100 + '%'});
       }
 
       this.element.toggleClass('volume-high', volume > 2 / 3);

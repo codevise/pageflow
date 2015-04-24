@@ -17,6 +17,8 @@
         else {
           pageflow.settings.set('volume', volumeBeforeMute);
         }
+
+        return false;
       }
     },
 

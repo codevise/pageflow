@@ -139,6 +139,10 @@ pageflow.pageType.register('video', _.extend({
           video =  pageElement.find('video');
 
       controlBar.appendTo(controls);
+
+      var additionalControlsHtml = '<div class="player_skip"></div><div class="player_fullscreen"></div><div class="player_volume"><div class="volume-control"><div tabindex="0" class="player_volume_bar player_slider volume-slider"><div class="player_volume_level volume-level"></div><div class="player_volume_handle player_slider_handle volume-handle"></div></div></div><div class="player_mute volume-mute-button"></div></div>';
+
+      $(additionalControlsHtml).appendTo(controlBar);
       //pageElement.find('.scroller').after(controls);
 
       controlBar.addClass('vjs-default-skin vjs-player');
@@ -216,6 +220,12 @@ pageflow.pageType.register('video', _.extend({
       pageElement.on('mousemove', autoHideControls);
       $('body').on('keydown', autoHideControls);
       pageElement.find('.content').on('touchstart', autoHideControls);
+
+      pageElement.find('.volume-control').volumeSlider({
+        orientation: 'v'
+      });
+
+      pageElement.find('.player_mute').muteButton();
 
       function autoHideControls() {
         showControls();
