@@ -9,7 +9,7 @@ For a high level introduction and example Pageflow stories see
 [pageflow.io](http://pageflow.io).
 
 In addition to this README, there is also a [Getting Started Wiki page](https://github.com/codevise/pageflow/wiki/Getting-Started)
-to guide you through the steps of setting up a Rails application with Pageflow 
+to guide you through the steps of setting up a Rails application with Pageflow
 on your development machine.
 
 ## Updating
@@ -115,31 +115,35 @@ Pageflow stores files in S3 buckets also in development
 mode. Otherwise there's no way to have Zencoder encode them. See the
 wiki page [Setting up external services](https://github.com/codevise/pageflow/wiki/Setting-up-External-Services).
 
+API keys are configured using environment variables. It's assumed that the
+host application uses [dotenv](https://github.com/bkeepers/dotenv) or [Figaro](https://github.com/laserlemon/figaro) to configure them. You can also
+hard-code the keys in the configuration file directly.
+
 For available configuration options and examples see the inline docs
 in `config/initializers/pageflow.rb` in your generated rails app.
 
 ## Running Pageflow
 
-In addition to the Rails server, you need to start two Rake tasks for 
+In addition to the Rails server, you need to start two Rake tasks for
 the background job processing. First, start a Resque worker which handles
 jobs from all queues:
 
     $ QUEUE=* rake resque:work
-    
+
 Image and video processing are examples of jobs that are executes by these workers.
 
 Some jobs need to be executed repeatedly. For example, while videos are being
-encoded by Zencoder, there is a job that runs every few seconds to fetch the 
+encoded by Zencoder, there is a job that runs every few seconds to fetch the
 current progress. This delayed invocation of jobs is handled by the Resque
 Scheduler Rake task:
 
      $ QUEUE=* rake resque:scheduler
 
 Consider using the [foreman gem](https://github.com/ddollar/foreman) to start all of
-these processes (including the Rails server) with a single command in your 
+these processes (including the Rails server) with a single command in your
 development environment.
 
 ## Troubleshooting
 
-If you run into problems during the installation of Pageflow, please refer to the [Troubleshooting](https://github.com/codevise/pageflow/wiki/Troubleshooting) wiki 
+If you run into problems during the installation of Pageflow, please refer to the [Troubleshooting](https://github.com/codevise/pageflow/wiki/Troubleshooting) wiki
 page. If that doesn't help, consider [filing an issue](https://github.com/codevise/pageflow/issues?state=open).
