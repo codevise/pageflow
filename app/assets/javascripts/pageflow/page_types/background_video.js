@@ -70,26 +70,26 @@ pageflow.pageType.register('background_video', _.extend({
     this.updateCommonPageCssClasses(pageElement, configuration);
     pageElement.find('.shadow').css({opacity: configuration.get('gradient_opacity') / 100});
 
-    var videoPlayer = this.videoPlayer,
-        x = configuration.getFilePosition('video_file_id', 'x'),
+    var x = configuration.getFilePosition('video_file_id', 'x'),
         y = configuration.getFilePosition('video_file_id', 'y'),
         posterUrl = configuration.getVideoPosterUrl();
 
-    videoPlayer.ensureCreated();
-
-    if (!this.srcDefined) {
-      videoPlayer.ready(function() {
-        videoPlayer.src(configuration.getVideoFileSources('video_file_id'));
-      });
-    }
-
-    if (!this.srcDefined || configuration.hasChanged('video_file_id')) {
-      this.srcDefined = true;
-      this.videoPlayer.src(configuration.getVideoFileSources('video_file_id'));
-    }
-
     this.updateBackgroundVideoPosters(pageElement, posterUrl, x, y);
-    this._resizeToCover(pageElement, configuration.attributes);
+
+    if (this.videoPlayer.isPresent()) {
+      this._resizeToCover(pageElement, configuration.attributes);
+    }
+  },
+
+  embeddedEditorViews: function() {
+    return {
+      '.backgroundArea': {
+        view: pageflow.LazyVideoEmbeddedView,
+        options: {
+          propertyName: 'video_file_id'
+        }
+      }
+    };
   },
 
   _initVideoPlayer: function(pageElement, configuration) {
@@ -104,6 +104,7 @@ pageflow.pageType.register('background_video', _.extend({
       width: '100%',
       height: '100%'
     });
+    pageElement.find('.backgroundArea').data('videoPlayer', this.videoPlayer);
 
     this.videoPlayer.ready(function() {
       that._resizeToCover(pageElement, configuration);
