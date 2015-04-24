@@ -22,7 +22,9 @@ module Pageflow
 
     def shadow_div(options = {})
       style = options[:opacity] ? "opacity: #{options[:opacity] / 100.0};" : nil
-      content_tag(:div, '', :class => 'shadow', :style => style)
+      content_tag(:div, '', :class => 'shadow_wrapper') do
+        content_tag(:div, '', :class => 'shadow', :style => style)
+      end
     end
 
     def mobile_poster_image_div(config = {})
