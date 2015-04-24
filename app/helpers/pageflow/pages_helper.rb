@@ -9,7 +9,19 @@ module Pageflow
       classes << "scroll_indicator_orientation_#{page.configuration['scroll_indicator_orientation']}" if page.configuration['scroll_indicator_orientation'].present?
       classes << "delayed_text_fade_in_#{page.configuration['delayed_text_fade_in']}" if page.configuration['delayed_text_fade_in'].present?
       classes << 'chapter_beginning' if page.position == 0
+      classes << 'no_text_content' if !page_has_content(page)
       classes.join(' ')
+    end
+
+    # @api private
+    def page_has_content(page)
+      has_title = ['title','subtitle','tagline'].any? do |attribute|
+        page.configuration[attribute].present?
+      end
+
+      has_text = strip_tags(page.configuration['text']).present?
+
+      (has_title && !page.configuration['hide_title']) || has_text
     end
 
     def page_navigation_css_class(page)

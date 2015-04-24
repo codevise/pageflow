@@ -19,5 +19,18 @@ pageflow.commonPageCssClasses = {
         pageElement.addClass(name + '_' + value);
       }
     }
+
+    pageElement.toggleClass('no_text_content', !hasContent());
+
+    function hasContent() {
+      var hasTitle = _(['title','subtitle','tagline']).some(function(attribute) {
+        return !!$.trim(configuration.get(attribute));
+      });
+
+      var text = $('<div />').html(configuration.get('text')).text();
+      var hasText = !!$.trim(text);
+
+      return (hasTitle && !configuration.get('hide_title')) || hasText;
+    }
   }
 };
