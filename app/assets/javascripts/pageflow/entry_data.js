@@ -15,6 +15,11 @@ pageflow.EntryData = pageflow.Object.extend({
     throw 'Not implemented';
   },
 
+  getParentPagePermaIdByPagePermaId: function(permaId) {
+    var chapterId = this.getChapterIdByPagePermaId(permaId);
+    return this.getParentPagePermaId(chapterId);
+  },
+
   getParentChapterId: function(chapterId) {
     var pagePermaId = this.getParentPagePermaId(chapterId);
     return pagePermaId && this.getChapterIdByPagePermaId(pagePermaId);
