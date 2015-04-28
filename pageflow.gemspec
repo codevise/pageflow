@@ -43,7 +43,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'state_machine_job', '~> 0.2.0'
 
   # File attachments
-  s.add_dependency 'paperclip', '~> 3.5'
+  s.add_dependency 'paperclip', '~> 4.2'
 
   # zencoder
   s.add_dependency 'zencoder', '~> 2.5'

@@ -17,6 +17,9 @@ module Pageflow
                                  :large => "-quality 70 -interlace Plane"
                                }))
 
+    do_not_validate_attachment_file_type(:unprocessed_attachment)
+    do_not_validate_attachment_file_type(:processed_attachment)
+
     after_unprocessed_attachment_post_process :save_image_dimensions
 
     def attachment
