@@ -50,6 +50,7 @@ Pageflow runs in environments with:
 * Rails 4.0 or 4.1
 * Redis server (for Resque)
 * A database server supported by Active Record (tested with MySQL)
+* ImageMagick
 
 Accounts of the following cloud services have to be registered:
 
@@ -58,6 +59,23 @@ Accounts of the following cloud services have to be registered:
 * [Zencoder](http://zencoder.com) for video/audio encoding
 
 ## Installation
+
+Generate a new Rails application using the MySQL database adapter:
+
+    $ rails new my_pageflow --database=mysql
+    $ cd my_pageflow
+   
+Do not name your application `"pageflow"` since it will cause conflicts 
+which constant names created by Pageflow itself.
+
+### Database Setup
+
+Enter valid MySQL credentials inside `config/database.yml` and create 
+the database:
+
+    $ rake db:create
+
+### Gem Dependencies
 
 Add this line to your application's Gemfile:
 
@@ -69,6 +87,7 @@ since, back when development started, no Rails 4 compatible version of
 Active Admin was available as a gem. You therefore need to bundle the
 `rails4` branch that we have forked into our github organization:
 
+    # Gemfile
     gem 'activeadmin', git: 'https://github.com/codevise/active_admin.git', branch: 'rails4'
     gem 'ransack'
     gem 'inherited_resources', '1.4.1'
@@ -87,22 +106,26 @@ Now you can run the generator to setup Pageflow and its dependencies:
     $ rails generate pageflow:install
 
 The generator will invoke Active Admin and Devise generators in turn
-and apply some configuration changes.
+and apply some configuration changes. When asked to overwrite the
+`db/seeds.rb` file, choose yes.
 
 To better understand Pageflow's configuration choices, you can run the
 single steps of the `install` generator one by one. See the wiki page
 [The Install Generator in Detail](https://github.com/codevise/pageflow/wiki/The-Install-Generator-in-Detail)
 for more. If you'd rather not look behind the scenes for now, you can
-safely read on for now.
+safely read on.
 
-## Database Setup
+### Database Migration
 
-Now it's time to migrate the database.
+_Devise migration name fix_: In some cases, the Devise generator creates 
+a migration file without file extension. This needs to be fixed manually
+at the moment:
 
-    $ rake db:create db:migrate
+    $ mv db/migrate/*_devise_create_users{,.rb}
 
-If you do not like Rails' default database choices you might have to
-alter your `database.yml` first.
+Now you can migrate the database.
+
+    $ rake db:migrate
 
 Finally, you can populate the database with some example data, so
 things do not look too blank in development mode.
