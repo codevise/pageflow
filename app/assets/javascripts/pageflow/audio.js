@@ -7,8 +7,18 @@ pageflow.Audio = function(options) {
     return options.audioFiles[audioFileId] || '';
   };
 
+  /**
+   * Creates a player for the given audio file.
+   *
+   * @param [String|Numberic] audioFileId  Id of the audio file to play possibly with a suffix.
+   * @param [Object] options  Options to pass on player creation
+   *
+   * The audio file id can be of the form `"5.suffix"` to distinguish
+   * multiple occurences of the same audio file for example inside a
+   * pageflow.Audio.PlayerPool;
+   */
   this.createPlayer = function(audioFileId, options) {
-    var sources = this.getSources(audioFileId);
+    var sources = this.getSources(removeSuffix(audioFileId));
 
     if (sources) {
       return new pageflow.AudioPlayer(sources, _.extend({
@@ -35,6 +45,14 @@ pageflow.Audio = function(options) {
       options
     );
   };
+
+  function removeSuffix(id) {
+    if (!id) {
+      return id;
+    }
+
+    return parseInt(id.toString().split('.')[0], 10);
+  }
 };
 
 pageflow.Audio.setup = function(options) {
