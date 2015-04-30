@@ -24,7 +24,11 @@
       }
 
       function update(currentPagePermaId) {
-        highlightPage(highlightedPage.getPagePermaId(currentPagePermaId));
+        var highlightedPagePermaId = highlightedPage.getPagePermaId(currentPagePermaId);
+
+        element.toggleClass('inside_sub_chapter', highlightedPagePermaId !== currentPagePermaId);
+
+        highlightPage(highlightedPagePermaId);
         filterChapters(currentPagePermaId);
       }
 
