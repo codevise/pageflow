@@ -6,14 +6,17 @@ en:
   activerecord:
     attributes:
       "pageflow/page":
-        scroll_indictor_mode: "Visible scroll indicators"
+        scroll_indicator_mode: "Visible scroll indicators"
+        scroll_indicator_orientation: "Scroll indicator orientation"
     values:
       "pageflow/page":
         scroll_indicator_mode:
           non: "Non"
           only_next: "Forwards only"
           all: "Forwards and Backwards"
-
+        scroll_indicator_orientation:
+          horizontal: "Horizontal"
+          vertical: "Vertical"
 de:
   pageflow:
     scroll_indicator_modes:
@@ -23,9 +26,13 @@ de:
     attributes:
       "pageflow/page":
         scroll_indicator_mode: "Sichtbare Scroll Indikatoren"
+        scroll_indicator_orientation: "Scroll Indikator Ausrichtung"
     values:
       "pageflow/page":
         scroll_indicator_mode:
           non: "Keine"
           only_next: "Nur vorwärts"
           all: "Vorwärts und zurück"
+        scroll_indicator_orientation:
+          horizontal: "Horizontal"
+          vertical: "Vertikal"

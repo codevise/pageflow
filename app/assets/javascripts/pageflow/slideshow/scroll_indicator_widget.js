@@ -18,8 +18,8 @@
           invertIndicator = page.hasClass('invert');
         }
 
-        if (page.hasClass('scroll_indicators_non') ||
-            (page.hasClass('scroll_indicators_only_next') && direction === 'up')) {
+        if (page.hasClass('scroll_indicator_mode_non') ||
+            (page.hasClass('scroll_indicator_mode_only_next') && direction === 'up')) {
           that.element.hide();
         }
         else {
@@ -27,7 +27,7 @@
         }
 
         that.element.toggleClass('invert', invertIndicator);
-        that.element.toggleClass('horizontal', !!page.data('scrollDirection'));
+        that.element.toggleClass('horizontal', page.hasClass('scroll_indicator_orientation_horizontal'));
       }
 
       parent.on('pageactivate', function(event) {
