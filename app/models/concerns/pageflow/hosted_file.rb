@@ -7,6 +7,9 @@ module Pageflow
       has_attached_file(:attachment_on_filesystem, Pageflow.config.paperclip_filesystem_default_options)
       has_attached_file(:attachment_on_s3, Pageflow.config.paperclip_s3_default_options)
 
+      do_not_validate_attachment_file_type(:attachment_on_filesystem)
+      do_not_validate_attachment_file_type(:attachment_on_s3)
+
       state_machine initial: 'not_uploaded_to_s3' do
         extend StateMachineJob::Macro
 

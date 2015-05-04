@@ -28,6 +28,10 @@ module Pageflow
                                  :large => "-quality 60 -interlace Plane"
                                }))
 
+
+    do_not_validate_attachment_file_type(:poster)
+    do_not_validate_attachment_file_type(:thumbnail)
+
     def thumbnail_url(*args)
       poster.url(*args)
     end

@@ -168,8 +168,8 @@ module Pageflow
     attr_accessor :available_locales
 
     def initialize
-      @paperclip_filesystem_default_options = {}
-      @paperclip_s3_default_options = {}
+      @paperclip_filesystem_default_options = {validate_media_type: false}
+      @paperclip_s3_default_options = {validate_media_type: false}
 
       @zencoder_options = {}
 
