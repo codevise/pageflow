@@ -24,16 +24,16 @@ module Pageflow
     end
 
     def social_share_page_description(page, entry)
-      return strip_html_tags(page.configuration['text']) if page.configuration['text'].present?
-      return strip_html_tags(page.configuration['description']) if page.configuration['description'].present?
+      return social_share_sanitize(page.configuration['text']) if page.configuration['text'].present?
+      return social_share_sanitize(page.configuration['description']) if page.configuration['description'].present?
       social_share_entry_description(entry)
     end
 
     def social_share_entry_description(entry)
-      return strip_html_tags(entry.summary) if entry.summary.present?
+      return social_share_sanitize(entry.summary) if entry.summary.present?
 
       entry.pages.each do |page|
-        return strip_html_tags(page.configuration['text']) if page.configuration['text'].present?
+        return social_share_sanitize(page.configuration['text']) if page.configuration['text'].present?
       end
       ''
     end
@@ -62,7 +62,8 @@ module Pageflow
     end
 
     private
-    def strip_html_tags(text)
+
+    def social_share_sanitize(text)
       strip_tags(text.gsub(/<br ?\/?>/, ' ').squish)
     end
   end
