@@ -23,23 +23,34 @@ module Pageflow
       title.join(' ')
     end
 
-    def social_share_page_description(page)
-      return page.configuration['text'] if page.configuration['text'].present?
-      return page.configuration['description'] if page.configuration['description'].present?
+    def social_share_page_description(page, entry)
+      return social_share_sanitize(page.configuration['text']) if page.configuration['text'].present?
+      return social_share_sanitize(page.configuration['description']) if page.configuration['description'].present?
+      social_share_entry_description(entry)
+    end
+
+    def social_share_entry_description(entry)
+      return social_share_sanitize(entry.summary) if entry.summary.present?
+
+      entry.pages.each do |page|
+        return social_share_sanitize(page.configuration['text']) if page.configuration['text'].present?
+      end
       ''
     end
 
     def social_share_entry_image_tags(entry)
       image_urls = []
 
-      image_urls << ImageFile.find(entry.share_image_id).thumbnail_url(:medium) if entry.share_image_id.present?
-
-      entry.pages.each do |page|
-        if image_urls.size >= 4
-          break
-        else
-          image_urls << page.thumbnail_url(:medium)
-          image_urls.uniq!
+      if entry.share_image_id.present?
+        image_urls << ImageFile.find(entry.share_image_id).thumbnail_url(:medium)
+      else
+        entry.pages.each do |page|
+          if image_urls.size >= 4
+            break
+          else
+            image_urls << page.thumbnail_url(:medium)
+            image_urls.uniq!
+          end
         end
       end
 
@@ -50,5 +61,10 @@ module Pageflow
       url.gsub(/^(\/\/|https:\/\/)/, 'http://')
     end
 
+    private
+
+    def social_share_sanitize(text)
+      strip_tags(text.gsub(/<br ?\/?>/, ' ').squish)
+    end
   end
 end
