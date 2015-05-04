@@ -1,0 +1,18 @@
+.js .audioLoopPage {
+  .non_js_audio {
+    display: none;
+  }
+}
+
+.non_js .text_position_right .audioLoopPage {
+  .page_header {
+    margin-left: 0;
+    max-width: initial;
+
+    > * {
+      max-width: 500px;
+      width: 60%;
+      margin-left: auto;
+    }
+  }
+}
