@@ -3,10 +3,10 @@ de:
     editor:
       templates:
         inputs:
-          page_link_input:
+          reference:
             edit: "Verknüpfung ändern"
             reset: "Verknüpfung entfernen"
       views:
         inputs:
-          page_link_input_view:
+          reference_input_view:
             none: "(Kein)"
