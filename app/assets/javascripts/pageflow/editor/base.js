@@ -30,6 +30,7 @@
 //= require_tree ./templates
 
 //= require_tree ./views/mixins
+//= require ./views/model_thumbnail_view
 //= require ./views/file_item_view
 //= require ./views/chapter_item_view
 //= require ./views/page_item_view
