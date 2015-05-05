@@ -28,8 +28,10 @@ pageflow.History = function(slideshow, adapter) {
     slideshow.goToByPermaId(adapter.hash());
   });
 
-  slideshow.goToByPermaId(adapter.hash() || pageParameter());
-  adapter.replaceState(null, '', slideshow.currentPage().attr('id'));
+  this.start = function() {
+    slideshow.goToByPermaId(adapter.hash() || pageParameter());
+    adapter.replaceState(null, '', slideshow.currentPage().attr('id'));
+  };
 
   this.back = _.bind(adapter.back, adapter);
 

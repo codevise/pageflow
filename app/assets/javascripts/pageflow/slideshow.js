@@ -192,16 +192,17 @@ pageflow.Slideshow.setup = function(options) {
 
   pageflow.features.enable('slideshow', options.enabledFeatureNames || []);
 
+  pageflow.history = pageflow.History.create(
+    pageflow.slides,
+    {simulate: options.simulateHistory}
+  );
+
   if (options.beforeFirstUpdate) {
     options.beforeFirstUpdate();
   }
 
   pageflow.slides.update();
-
-  pageflow.history = pageflow.History.create(
-    pageflow.slides,
-    {simulate: options.simulateHistory}
-  );
+  pageflow.history.start();
 
   return pageflow.slides;
 };
