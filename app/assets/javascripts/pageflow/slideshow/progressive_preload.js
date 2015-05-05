@@ -1,7 +1,7 @@
 pageflow.ProgressivePreload = function() {
   var run = null;
 
-  function Run(page) {
+  function Run(page, maxPreloadedPages) {
     var cancelled = false;
 
     this.cancel = function() {
@@ -12,11 +12,11 @@ pageflow.ProgressivePreload = function() {
       preload(page, 0);
     };
 
-    function preload(page) {
+    function preload(page, counter) {
       $.when(page.page('preload'), tick()).then(function() {
         var nextPage = page.next('.page');
-        if (!cancelled && nextPage.length) {
-          preload(nextPage);
+        if (!cancelled && nextPage.length && counter < maxPreloadedPages) {
+          preload(nextPage, counter + 1);
         }
       });
     }
@@ -36,7 +36,7 @@ pageflow.ProgressivePreload = function() {
       run.cancel();
     }
 
-    run = new Run(page);
+    run = new Run(page, 10);
     run.start();
   };
 };
