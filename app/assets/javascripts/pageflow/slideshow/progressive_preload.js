@@ -9,14 +9,14 @@ pageflow.ProgressivePreload = function() {
     };
 
     this.start = function() {
-      return preload(page);
+      preload(page, 0);
     };
 
     function preload(page) {
-      return $.when(page.page('preload'), tick()).pipe(function() {
+      $.when(page.page('preload'), tick()).then(function() {
         var nextPage = page.next('.page');
         if (!cancelled && nextPage.length) {
-          return preload(nextPage);
+          preload(nextPage);
         }
       });
     }
