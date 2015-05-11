@@ -141,6 +141,15 @@ wiki page [Setting up external services](https://github.com/codevise/pageflow/wi
 For available configuration options and examples see the inline docs
 in `config/initializers/pageflow.rb` in your generated rails app.
 
+Ensure you have defined default url options in your environments
+files. Here is an example of `default_url_options` appropriate for a
+development environment in `config/environments/development.rb`:
+
+    config.action_mailer.default_url_options = {host: 'localhost:3000'}
+
+In production, `:host` should be set to the actual host of your
+application.
+
 ## Running Pageflow
 
 In addition to the Rails server, you need to start two Rake tasks for 
