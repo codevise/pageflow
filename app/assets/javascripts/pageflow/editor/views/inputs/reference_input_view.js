@@ -26,6 +26,10 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend({
     }
   },
 
+  initialize: function() {
+    this.listenTo(this.model, 'change:' + this.options.propertyName, this.update);
+  },
+
   onRender: function() {
     this.update();
     this.listenTo(this.model, 'change:' + this.options.propertyName, this.update);
@@ -51,12 +55,12 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend({
     this.ui.title.text(target ? target.title() : I18n.t('pageflow.editor.views.inputs.reference_input_view.none'));
     this.ui.unsetButton.toggle(!!target);
 
-    if (this.pageThumbnailView) {
-      this.pageThumbnailView.close();
+    if (this.thumbnailView) {
+      this.thumbnailView.close();
     }
 
-    this.pageThumbnailView = this.subview(this.createThumbnailView(target));
+    this.thumbnailView = this.subview(this.createThumbnailView(target));
 
-    this.ui.title.before(this.pageThumbnailView.el);
+    this.ui.title.before(this.thumbnailView.el);
   }
 });
