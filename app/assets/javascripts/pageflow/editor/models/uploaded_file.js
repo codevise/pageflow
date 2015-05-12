@@ -9,6 +9,14 @@ pageflow.UploadedFile = Backbone.Model.extend({
     return this.collection && this.collection.fileType;
   },
 
+  title: function() {
+    return this.get('file_name');
+  },
+
+  thumbnailFile: function() {
+    return this;
+  },
+
   isUploading: function() {
     return this.get('state') === 'uploading';
   },
