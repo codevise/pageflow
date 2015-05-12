@@ -5,6 +5,10 @@ pageflow.subviewContainer = {
     return view;
   },
 
+  appendSubview: function(view) {
+    return this.$el.append(this.subview(view).el);
+  },
+
   onClose: function() {
     if (this.subviews) {
       this.subviews.call('close');
