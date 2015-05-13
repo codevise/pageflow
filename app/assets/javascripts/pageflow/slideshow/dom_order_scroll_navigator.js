@@ -19,6 +19,10 @@ pageflow.DomOrderScrollNavigator = function(slideshow) {
     return !currentPage.is(pages.first());
   };
 
+  this.getNextPage = function(currentPage, pages) {
+    return currentPage.next('.page');
+  };
+
   this.getTransitionDirection = function(previousPage, currentPage, options) {
     return (currentPage.index() > previousPage.index() ? 'forwards' : 'backwards');
   };

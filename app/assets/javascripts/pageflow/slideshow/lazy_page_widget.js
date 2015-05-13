@@ -1,6 +1,6 @@
-pageflow.lazyPageWidget = (function($) {
-  var creatingMethods = ['reinit', 'reactivate', 'activate', 'activateAsLandingPage', 'prepare'];
-  var ignoredMethods = ['cleanup', 'refreshScroller', 'resize', 'preload', 'deactivate'];
+(function($) {
+  var creatingMethods = ['reinit', 'reactivate', 'activate', 'activateAsLandingPage', 'prepare', 'linkedPages'];
+  var ignoredMethods = ['cleanup', 'refreshScroller', 'resize', 'preload', 'deactivate', 'unprepare'];
 
   var prototype = {
     _create: function() {
