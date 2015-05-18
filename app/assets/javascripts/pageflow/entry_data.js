@@ -1,4 +1,8 @@
 pageflow.EntryData = pageflow.Object.extend({
+  getThemingOption: function(name) {
+    throw 'Not implemented';
+  },
+
   getPageConfiguration: function(permaId) {
     throw 'Not implemented';
   },

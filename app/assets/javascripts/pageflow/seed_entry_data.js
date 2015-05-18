@@ -1,5 +1,7 @@
 pageflow.SeedEntryData = pageflow.EntryData.extend({
   initialize: function(options) {
+    this.theming = options.theming;
+
     this.chapterConfigurations = options.chapter_configurations;
 
     this.chapterPagePermaIds = _(options.pages).reduce(function(memo, page) {
@@ -17,6 +19,10 @@ pageflow.SeedEntryData = pageflow.EntryData.extend({
       memo[page.perma_id] = page.configuration;
       return memo;
     }, {});
+  },
+
+  getThemingOption: function(name) {
+    return this.theming[name];
   },
 
   getChapterConfiguration: function(id) {

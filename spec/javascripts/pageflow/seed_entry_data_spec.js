@@ -1,6 +1,20 @@
 describe('pageflow.SeedEntryData', function() {
   var p = pageflow;
 
+  describe('#getThemingOption', function() {
+    it('returns option value by name', function() {
+      var entryData = new p.SeedEntryData({
+        theming: {
+          page_change_by_scrolling: true
+        }
+      });
+
+      var result = entryData.getThemingOption('page_change_by_scrolling');
+
+      expect(result).to.eq(true);
+    });
+  });
+
   describe('#getChapterConfiguration', function() {
     it('returns configruation by chapter id', function() {
       var configuration = {};

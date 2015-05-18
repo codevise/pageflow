@@ -21,11 +21,14 @@
 
       this.iscroll.disable();
 
-      this._initMousewheelBump('up');
-      this._initMousewheelBump('down');
+      if (pageflow.entryData.getThemingOption('page_change_by_scrolling')) {
+        this._initMousewheelBump('up');
+        this._initMousewheelBump('down');
+        this._initDragGestureBump();
+      }
+
       this._initKeyboardBump('up');
       this._initKeyboardBump('down');
-      this._initDragGestureBump();
       this._initNearBottomEvents();
       this._initNearTopEvents();
       this._initMoveEvents();

@@ -1,6 +1,21 @@
 describe('pageflow.PreviewEntryData', function() {
   var p = pageflow;
 
+  describe('#getThemingOption', function() {
+    it('returns option value by name', function() {
+      var theming = new p.Theming({
+        page_change_by_scrolling: true
+      });
+      var entryData = new p.PreviewEntryData({
+        theming: theming
+      });
+
+      var result = entryData.getThemingOption('page_change_by_scrolling');
+
+      expect(result).to.eq(true);
+    });
+  });
+
   describe('#getChapterConfiguration', function() {
     it('returns configuration by chapter id', function() {
       var configuration = {title: 'some text'};

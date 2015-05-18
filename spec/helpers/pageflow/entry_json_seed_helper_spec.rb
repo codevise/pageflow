@@ -15,6 +15,18 @@ module Pageflow
       end
     end
 
+    describe '#entry_theming_seed' do
+      it 'includes page_change_by_scrolling theme option' do
+        Pageflow.config.themes.register(:custom, no_page_change_by_scrolling: true)
+        theming = create(:theming, theme_name: 'custom')
+        entry = PublishedEntry.new(create(:entry, theming: theming))
+
+        result = helper.entry_theming_seed(entry)
+
+        expect(result[:page_change_by_scrolling]).to eq(false)
+      end
+    end
+
     describe '#entry_chapter_configurations_seed' do
       it 'indexed configurations by id' do
         revision = create(:revision, :published)
