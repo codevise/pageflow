@@ -19,7 +19,9 @@
         }
 
         if (page.hasClass('scroll_indicator_mode_non') ||
-            (page.hasClass('scroll_indicator_mode_only_next') && direction === 'up')) {
+            (page.hasClass('scroll_indicator_mode_only_next') && direction === 'up') ||
+            (page.hasClass('scroll_indicator_mode_only_back') && direction === 'down')) {
+
           that.element.hide();
         }
         else {

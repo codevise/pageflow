@@ -13,6 +13,7 @@ en:
         scroll_indicator_mode:
           non: "Non"
           only_next: "Forwards only"
+          only_back: "Backwards only"
           all: "Forwards and Backwards"
         scroll_indicator_orientation:
           horizontal: "Horizontal"
@@ -32,6 +33,7 @@ de:
         scroll_indicator_mode:
           non: "Keine"
           only_next: "Nur vorwärts"
+          only_back: "Nur zurück"
           all: "Vorwärts und zurück"
         scroll_indicator_orientation:
           horizontal: "Horizontal"

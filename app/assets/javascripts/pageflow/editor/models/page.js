@@ -77,5 +77,5 @@ pageflow.Page = Backbone.Model.extend({
 pageflow.Page.linkedPagesLayouts = ['default', 'hero_top_left', 'hero_top_right'];
 pageflow.Page.textPositions = ['left', 'right'];
 
-pageflow.Page.scrollIndicatorModes = ['all', 'only_next', 'non'];
+pageflow.Page.scrollIndicatorModes = ['all', 'only_back', 'only_next', 'non'];
 pageflow.Page.scrollIndicatorOrientations = ['vertical', 'horizontal'];
