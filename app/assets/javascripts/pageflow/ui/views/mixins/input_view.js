@@ -61,7 +61,22 @@ pageflow.inputView = {
     }
 
     function updateVisible(model, value) {
-      view.$el.toggle(view.options.visibleBindingValue ? value === view.options.visibleBindingValue : !!value);
+      view.$el.toggle(isVisible(value));
+    }
+
+    function isVisible(value) {
+      if (view.options.visibleBindingValue) {
+        return value === view.options.visibleBindingValue;
+      }
+      else if (typeof view.options.visible === 'function') {
+        return !!view.options.visible(value);
+      }
+      else if ('visible' in view.options) {
+        return !!view.options.visible;
+      }
+      else {
+        return !!value;
+      }
     }
   }
 };
