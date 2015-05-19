@@ -84,7 +84,8 @@
         loop: true,
         fadeDuration: 500,
         crossFade: true,
-        playFromBeginning: false
+        playFromBeginning: false,
+        pauseInBackground: true
       })
     );
   };
