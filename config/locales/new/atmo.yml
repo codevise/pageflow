@@ -12,6 +12,9 @@ de:
   pageflow:
     atmo:
       feature_name: "Atmo-Audios"
+    editor:
+      atmo:
+        disabled: "Atmo deaktiviert"
 
   activerecord:
     attributes:

@@ -11,6 +11,8 @@
 @import "./files_explorer";
 @import "./locked";
 @import "./help";
+@import "./indicators";
+@import "./disabled_atmo_indicator";
 
 .editor {
   @extend %pageflow-ui;
