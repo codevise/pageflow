@@ -60,7 +60,7 @@ pageflow.Audio.MultiPlayer = function(pool, options) {
   };
 
   function changeCurrent(id, callback) {
-    if (!options.playFromBeginning && id === currentId) {
+    if (!options.playFromBeginning && id === currentId && !current.paused()) {
       return;
     }
 

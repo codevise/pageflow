@@ -36,6 +36,7 @@ describe('pageflow.Audio.MultiPlayer', function() {
       });
 
       sinon.spy(player, 'playAndFadeIn');
+      sinon.stub(player, 'paused').returns(false);
 
       multiPlayer.fadeTo(5);
       multiPlayer.fadeTo(5);
@@ -69,6 +70,22 @@ describe('pageflow.Audio.MultiPlayer', function() {
       sinon.spy(player, 'playAndFadeIn');
 
       multiPlayer.fadeTo(5);
+      multiPlayer.fadeTo(5);
+
+      expect(player.playAndFadeIn).to.have.been.calledTwice;
+    });
+
+    it('plays and fades in same audio file if paused', function() {
+      var player = new pageflow.AudioPlayer.Null();
+      var pool = fakePlayerPool({5: player});
+      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+        fadeDuration: 1000
+      });
+
+      sinon.spy(player, 'playAndFadeIn');
+
+      multiPlayer.fadeTo(5);
+      multiPlayer.pause();
       multiPlayer.fadeTo(5);
 
       expect(player.playAndFadeIn).to.have.been.calledTwice;
@@ -131,6 +148,7 @@ describe('pageflow.Audio.MultiPlayer', function() {
       });
 
       sinon.spy(player, 'play');
+      sinon.stub(player, 'paused').returns(false);
 
       multiPlayer.play(5);
       multiPlayer.play(5);

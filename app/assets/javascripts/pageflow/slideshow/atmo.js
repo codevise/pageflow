@@ -5,10 +5,25 @@
     initialize: function(slideshow, events, multiPlayer) {
       this.slideshow = slideshow;
       this.multiPlayer = multiPlayer;
+      this.disabled = false;
 
       this.listenTo(events, 'page:change page:update', function() {
         this.update();
       });
+    },
+
+    disable: function() {
+      this.disabled = true;
+      this.multiPlayer.fadeOutAndPause();
+
+      pageflow.events.trigger('atmo:disabled');
+    },
+
+    enable: function() {
+      this.disabled = false;
+      this.update();
+
+      pageflow.events.trigger('atmo:enabled');
     },
 
     pause: function() {
@@ -21,7 +36,12 @@
 
     resume: function() {
       if (this.multiPlayer.paused()) {
-        return this.multiPlayer.resumeAndFadeIn();
+        if (this.disabled) {
+          return new $.Deferred().resolve().promise();
+        }
+        else {
+          return this.multiPlayer.resumeAndFadeIn();
+        }
       }
       else {
         return this.multiPlayer.changeVolumeFactor(1);
@@ -30,7 +50,10 @@
 
     update: function() {
       var configuration = this.slideshow.currentPageConfiguration();
-      this.multiPlayer.fadeTo(configuration[attributeName]);
+
+      if (!this.disabled) {
+        this.multiPlayer.fadeTo(configuration[attributeName]);
+      }
     },
 
     createMediaPlayerHooks: function(configuration) {
