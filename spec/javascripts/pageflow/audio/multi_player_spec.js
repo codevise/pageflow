@@ -73,6 +73,25 @@ describe('pageflow.Audio.MultiPlayer', function() {
 
       expect(player.playAndFadeIn).to.have.been.calledTwice;
     });
+
+    it('plays and fades in new player directly if crossFade option is true', function() {
+      var previousPlayer = new pageflow.AudioPlayer.Null();
+      var nextPlayer = new pageflow.AudioPlayer.Null();
+      var pool = fakePlayerPool({
+        5: previousPlayer,
+        6: nextPlayer
+      });
+      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {fadeDuration: 1000, crossFade: true});
+      var pendingPromise = new jQuery.Deferred();
+
+      sinon.stub(previousPlayer, 'fadeOutAndPause').returns(pendingPromise);
+      sinon.spy(nextPlayer, 'playAndFadeIn');
+
+      multiPlayer.fadeTo(5);
+      multiPlayer.fadeTo(6);
+
+      expect(nextPlayer.playAndFadeIn).to.have.been.calledWith(1000);
+    });
   });
 
   describe('#play', function() {

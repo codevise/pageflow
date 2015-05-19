@@ -60,6 +60,7 @@
       audio.createMultiPlayer({
         loop: true,
         fadeDuration: 500,
+        crossFade: true,
         playFromBeginning: false
       })
     );

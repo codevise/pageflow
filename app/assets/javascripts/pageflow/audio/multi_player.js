@@ -1,4 +1,8 @@
 pageflow.Audio.MultiPlayer = function(pool, options) {
+  if (options.crossFade && options.playFromBeginning) {
+    throw 'pageflow.Audio.MultiPlayer: The options crossFade and playFromBeginning can not be used together at the moment.';
+  }
+
   var current = new pageflow.AudioPlayer.Null();
   var currentId = null;
   var that = this;
@@ -63,9 +67,13 @@ pageflow.Audio.MultiPlayer = function(pool, options) {
     var player = pool.get(id);
     currentId = id;
 
-    current.fadeOutAndPause(options.fadeDuration).then(function() {
-      stopEventPropagation(current);
+    var fadeOutPromise = current.fadeOutAndPause(options.fadeDuration);
 
+    fadeOutPromise.then(function() {
+      stopEventPropagation(current);
+    });
+
+    handleCrossFade(fadeOutPromise).then(function() {
       current = player;
       startEventPropagation(current, id);
 
@@ -73,6 +81,15 @@ pageflow.Audio.MultiPlayer = function(pool, options) {
         callback(player);
       });
     });
+  }
+
+  function handleCrossFade(fadePomise) {
+    if (options.crossFade) {
+      return new $.Deferred().resolve().promise();
+    }
+    else {
+      return fadePomise;
+    }
   }
 
   function handlePlayFromBeginning(player) {
