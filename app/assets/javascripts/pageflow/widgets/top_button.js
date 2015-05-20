@@ -4,22 +4,21 @@
       var element = this.element;
 
       element.click(function(event) {
-        pageflow.slides.goToById(element.data('link'));
+        pageflow.slides.goToLandingPage();
         event.preventDefault();
       });
 
       pageflow.slides.on('pageactivate', function(e, ui) {
-        toggle($(e.target));
+        toggle();
       });
 
       toggle(pageflow.slides.currentPage());
 
-      function toggle(currentPage) {
-        var currentPageId = currentPage.data('id');
-        var onFirstPage = (currentPageId === element.data('link'));
+      function toggle() {
+        var onLandingPage = pageflow.slides.isOnLandingPage();
 
-        element.toggleClass('deactivated', onFirstPage);
-        element.attr('tabindex', onFirstPage ? '-1' : '2');
+        element.toggleClass('deactivated', onLandingPage);
+        element.attr('tabindex', onLandingPage ? '-1' : '2');
       }
     }
   });
