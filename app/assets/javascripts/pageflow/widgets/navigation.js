@@ -252,22 +252,7 @@
       });
 
       /* fullscreen button */
-      if ($.support.fullscreen) {
-        var fs = $('.navigation_fullscreen', element),
-            fullscreenCallback = function(isFullScreen) {
-              fs
-                .toggleClass('active', !!isFullScreen)
-                .updateTitle();
-            };
-
-        fs.click(function() {
-          fs.toggleClass('fs').updateTitle();
-          $('#outer_wrapper').fullScreen({'callback': fullscreenCallback});
-        });
-      }
-      else {
-        $('.navigation_bar_bottom .fullscreen a', element).css('visibility', 'hidden');
-      }
+      $('.navigation_bar_bottom .fullscreen a', element).fullscreenButton();
 
       $('.button, .navigation_mute, .scroll_indicator', element).on({
         'touchstart mousedown': function() {
