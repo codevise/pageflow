@@ -50,6 +50,7 @@
 //= require ./links
 //= require ./highlighted_page
 //= require ./chapter_filter
+//= require ./fullscreen
 
 //= require ./settings
 
