@@ -1,4 +1,17 @@
 describe('pageflow.mediaPlayer.volumeBinding', function() {
+  function itBehavesLikePlayMethod(callPlayMethod) {
+    it('aborts intent to pause', function() {
+      var player = fakePlayer();
+      var settings = new Backbone.Model({volume: 98});
+      pageflow.mediaPlayer.volumeBinding(player, settings);
+
+      player.intendToPause();
+      callPlayMethod(player);
+
+      expect(player.intendingToPause()).to.eq(false);
+    });
+  }
+
   describe('#play', function() {
     it('sets volume to settings volume', function() {
       var player = fakePlayer();
@@ -29,6 +42,17 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.play();
 
       expect(player.originalPlay).to.have.been.called;
+    });
+
+    it('aborts intent to pause', function() {
+      var player = fakePlayer({playing: true});
+      var settings = new Backbone.Model({volume: 98});
+      pageflow.mediaPlayer.volumeBinding(player, settings);
+
+      player.intendToPause();
+      player.play();
+
+      expect(player.intendingToPause()).to.eq(false);
     });
 
     describe('with volumeFactor option', function() {
@@ -93,7 +117,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       expect(player.fadingVolume).to.eq(98);
     });
 
-    it('returns fadeVolume promise', function() {
+    it('returns promise which resolves after fade', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
       var callback = sinon.spy();
@@ -101,6 +125,18 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.playAndFadeIn(500).then(callback);
       player.fadingDeferred.resolve();
+
+      expect(callback).to.be.have.been.called;
+    });
+
+    it('returns promise which resolves even if fade is canceled', function() {
+      var player = fakePlayer();
+      var settings = new Backbone.Model({volume: 98});
+      var callback = sinon.spy();
+      pageflow.mediaPlayer.volumeBinding(player, settings);
+
+      player.playAndFadeIn(500).then(callback);
+      player.fadingDeferred.reject();
 
       expect(callback).to.be.have.been.called;
     });
@@ -113,6 +149,17 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.playAndFadeIn();
 
       expect(player.originalPlay).to.have.been.called;
+    });
+
+    it('aborts intent to pause', function() {
+      var player = fakePlayer({playing: true});
+      var settings = new Backbone.Model({volume: 98});
+      pageflow.mediaPlayer.volumeBinding(player, settings);
+
+      player.intendToPause();
+      player.playAndFadeIn(500);
+
+      expect(player.intendingToPause()).to.eq(false);
     });
 
     it('returns resolved promise if alreay playing', function() {
@@ -174,6 +221,17 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       expect(player.originalPause).to.have.been.called;
     });
+
+    it('aborts intent to play', function() {
+      var player = fakePlayer();
+      var settings = new Backbone.Model({volume: 98});
+      pageflow.mediaPlayer.volumeBinding(player, settings);
+
+      player.intendToPlay();
+      player.pause();
+
+      expect(player.intendingToPlay()).to.eq(false);
+    });
   });
 
   describe('#fadeOutAndPause', function() {
@@ -210,6 +268,40 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       expect(player.originalPause).not.to.have.been.called;
       player.fadingDeferred.resolve();
       expect(player.originalPause).to.have.been.called;
+    });
+
+    it('calls original pause even when fade is canceled', function() {
+      var player = fakePlayer({playing: true});
+      var settings = new Backbone.Model({volume: 98});
+      pageflow.mediaPlayer.volumeBinding(player, settings);
+
+      player.fadeOutAndPause(500);
+
+      player.fadingDeferred.reject();
+      expect(player.originalPause).to.have.been.called;
+    });
+
+    it('does not calls original pause when played during fade out', function() {
+      var player = fakePlayer({playing: true});
+      var settings = new Backbone.Model({volume: 98});
+      pageflow.mediaPlayer.volumeBinding(player, settings);
+
+      player.fadeOutAndPause(500);
+      player.play();
+      player.fadingDeferred.resolve();
+
+      expect(player.originalPause).not.to.have.been.called;
+    });
+
+    it('aborts intent to play', function() {
+      var player = fakePlayer();
+      var settings = new Backbone.Model({volume: 98});
+      pageflow.mediaPlayer.volumeBinding(player, settings);
+
+      player.intendToPlay();
+      player.fadeOutAndPause(500);
+
+      expect(player.intendingToPlay()).to.eq(false);
     });
 
     it('returns fadeVolume promise', function() {
@@ -268,7 +360,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     var playSpy = sinon.spy();
     var pauseSpy = sinon.spy();
 
-    return {
+    var player = {
       currentVolume: 100,
 
       play: playSpy,
@@ -293,5 +385,9 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
         return this.fadingDeferred.promise();
       }
     };
+
+    pageflow.mediaPlayer.asyncPlay(player);
+
+    return player;
   }
 });

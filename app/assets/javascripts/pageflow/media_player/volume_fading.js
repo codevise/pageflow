@@ -1,25 +1,62 @@
 pageflow.mediaPlayer.volumeFading = function(player) {
+  var originalVolume = player.volume;
+  var fadeVolumeDeferred;
+  var fadeVolumeInterval;
+
+  player.volume = function(value) {
+    if (typeof value !== 'undefined') {
+      cancelFadeVolume();
+    }
+
+    return originalVolume.apply(player, arguments);
+  };
+
   player.fadeVolume = function(value, duration) {
+    cancelFadeVolume();
+
     return new $.Deferred(function(deferred) {
       var resolution = 10;
-      var startValue = player.volume();
+      var startValue = volume();
       var steps = duration / resolution;
       var leap = (value - startValue) / steps;
 
-      clearInterval(player.fadeVolumeInterval);
+      if (value === startValue) {
+        deferred.resolve();
+      }
+      else {
+        fadeVolumeDeferred = deferred;
+        fadeVolumeInterval = setInterval(function() {
+          volume(volume() + leap);
 
-      if (value !== startValue) {
-        var interval = player.fadeVolumeInterval = setInterval(function() {
-          player.volume(player.volume() + leap);
+          if ((volume() >= value && value >= startValue) ||
+              (volume() <= value && value <= startValue)) {
 
-          if ((player.volume() >= value && value >= startValue) ||
-              (player.volume() <= value && value <= startValue)) {
-
-            clearInterval(interval);
-            deferred.resolve();
+            resolveFadeVolume();
           }
         }, resolution);
       }
-    }).promise();
+    });
+
+    function volume(/* arguments */) {
+      return originalVolume.apply(player, arguments);
+    }
   };
+
+  function resolveFadeVolume() {
+    clearInterval(fadeVolumeInterval);
+    fadeVolumeDeferred.resolve();
+
+    fadeVolumeInterval = null;
+    fadeVolumeDeferred = null;
+  }
+
+  function cancelFadeVolume() {
+    if (fadeVolumeInterval) {
+      clearInterval(fadeVolumeInterval);
+      fadeVolumeDeferred.reject();
+
+      fadeVolumeInterval = null;
+      fadeVolumeDeferred = null;
+    }
+  }
 };
