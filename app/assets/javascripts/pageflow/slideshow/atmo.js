@@ -27,11 +27,21 @@
     },
 
     pause: function() {
-      return this.multiPlayer.fadeOutAndPause();
+      if (pageflow.browser.has('volume control support')) {
+        return this.multiPlayer.fadeOutAndPause();
+      }
+      else {
+        this.multiPlayer.pause();
+      }
     },
 
     turnDown: function() {
-      return this.multiPlayer.changeVolumeFactor(0.2);
+      if (pageflow.browser.has('volume control support')) {
+        return this.multiPlayer.changeVolumeFactor(0.2);
+      }
+      else {
+        this.multiPlayer.pause();
+      }
     },
 
     resume: function() {
