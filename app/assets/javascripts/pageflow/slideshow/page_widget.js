@@ -10,6 +10,10 @@
       this.reinit();
     },
 
+    getPermaId: function() {
+      return parseInt(this.element.attr('id'), 10);
+    },
+
     getConfiguration: function() {
       return this.configuration;
     },
