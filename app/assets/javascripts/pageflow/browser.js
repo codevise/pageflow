@@ -78,7 +78,7 @@ pageflow.browser = (function(){
 
       var asyncHas = function(name) {
         var runTest = function() {
-          if (pageflow.debugMode() &&
+          if ((pageflow.debugMode() || pageflow.ALLOW_FEATURE_OVERRIDES) &&
               window.localStorage &&
               typeof window.localStorage['override ' + name] !== 'undefined') {
             var value = (window.localStorage['override ' + name] === 'on');
