@@ -140,7 +140,7 @@ pageflow.pageType.register('video', _.extend({
 
       controlBar.appendTo(controls);
 
-      var additionalControlsHtml = '<div class="player_skip"></div><div class="player_fullscreen"></div><div class="player_volume"><div class="volume-control"><div tabindex="0" class="player_volume_bar player_slider volume-slider"><div class="player_volume_level volume-level"></div><div class="player_volume_handle player_slider_handle volume-handle"></div></div></div><div class="player_mute volume-mute-button"></div></div>';
+      var additionalControlsHtml = '<div class="player_skip" tabindex="4"></div><div class="player_fullscreen" tabindex="4"></div><div class="player_volume"><div class="volume-control"><div tabindex="0" class="player_volume_bar player_slider volume-slider"><div class="player_volume_level volume-level"></div><div class="player_volume_handle player_slider_handle volume-handle"></div></div></div><div class="player_mute volume-mute-button" tabindex="4"></div></div>';
 
       $(additionalControlsHtml).appendTo(controlBar);
       //pageElement.find('.scroller').after(controls);
