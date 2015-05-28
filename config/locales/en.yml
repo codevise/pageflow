@@ -1443,7 +1443,7 @@ en:
 
           Under „Title and Options“ you can set up basic appearance
 
-          parameters as well as the title, language and lega
+          parameters as well as the title, language and legal
 
           notice. You can also decide which content should be
 
@@ -1478,9 +1478,7 @@ en:
           and chapters any time.
 
 
-          For more details see: [Chapter and Pages](#pageflow.help_entries.outline)
-
-'
+          For more details see: [Chapter and Pages](#pageflow.help_entries.outline)'
       page_options:
         menu_item: General Page Options
         text: ! '# General Page Options
