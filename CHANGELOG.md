@@ -4,11 +4,13 @@
 
 None so far
 
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.8.0...master)
+
 ### Version 0.8.0
 
 2015-05-28
 
-[Compare changes](https://github.com/codevise/pageflow/compare/v0.7.2...master)
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.7.2...v0.8.0)
 
 ##### Public Site
 
