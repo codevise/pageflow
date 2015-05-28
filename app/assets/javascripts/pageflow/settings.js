@@ -4,18 +4,20 @@ pageflow.Settings = Backbone.Model.extend({
   },
 
   initialize: function() {
-    if (localStorage['pageflow.settings']) {
-      try {
-        this.set(JSON.parse(localStorage['pageflow.settings']));
+    if (window.localStorage) {
+      if (localStorage['pageflow.settings']) {
+        try {
+          this.set(JSON.parse(localStorage['pageflow.settings']));
+        }
+        catch(e) {
+          pageflow.log(e);
+        }
       }
-      catch(e) {
-        pageflow.log(e);
-      }
-    }
 
-    this.on('change', function() {
-      localStorage['pageflow.settings'] = JSON.stringify(this);
-    });
+      this.on('change', function() {
+        localStorage['pageflow.settings'] = JSON.stringify(this);
+      });
+    }
   }
 });
 
