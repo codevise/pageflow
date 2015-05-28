@@ -2,6 +2,12 @@
 
 ### Changes on `master`
 
+None so far
+
+### Version 0.8.0
+
+2015-05-28
+
 [Compare changes](https://github.com/codevise/pageflow/compare/v0.7.2...master)
 
 ##### Public Site
