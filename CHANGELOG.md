@@ -4,6 +4,19 @@
 
 [Compare changes](https://github.com/codevise/pageflow/compare/v0.7.2...master)
 
+##### Public Site
+
+- Bug fix: Do not hang at loading spinner if local storage is not
+  available.
+  ([#295](https://github.com/codevise/pageflow/pull/295))
+- Bug fix: Ensure correct social sharing images and descriptions are
+  used.
+  ([#288](https://github.com/codevise/pageflow/pull/288))
+- Bug fix: Ensure audio page text is not hidden by player controls on
+  mobile.
+  ([#263](https://github.com/codevise/pageflow/pull/263),
+   [#267](https://github.com/codevise/pageflow/pull/267))
+
 ##### Admin/Editor
 
 - Use locale from request header if user has not selected one.
@@ -24,11 +37,18 @@
 
 ##### Internals
 
+- Upgrade to Paperclip 4.2 to improve temp file removal.
+  ([#289](https://github.com/codevise/pageflow/pull/289))
 - Include teaspoon javascript tests in travis run.
-  ([#264](https://github.com/codevise/pageflow/pull/264))
+  ([#264](https://github.com/codevise/pageflow/pull/264),
+   [#294](https://github.com/codevise/pageflow/pull/294))
 - Use container based travis infrastructure and cache gem bundle
   between test runs.
   ([#270](https://github.com/codevise/pageflow/pull/270))
+- Improve install instructions in README.
+  ([#283](https://github.com/codevise/pageflow/pull/283),
+   [#285](https://github.com/codevise/pageflow/pull/285),
+   [#293](https://github.com/codevise/pageflow/pull/293))
 - Bug fix: Reset capybara session before cleaning the database in
   tests.
   ([#269](https://github.com/codevise/pageflow/pull/269))
