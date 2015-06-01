@@ -26,6 +26,7 @@
 //= require backbone-rails
 //= require_self
 
+//= require ./object
 //= require ./cookies
 //= require ./events
 //= require ./page_type
