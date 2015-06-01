@@ -257,6 +257,7 @@ module Pageflow
     # be used from inside features.
     class FeatureLevelConfiguration < Struct.new(:config)
       delegate :page_types, to: :config
+      delegate :help_entries, to: :config
     end
   end
 end
