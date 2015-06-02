@@ -27,6 +27,7 @@ pageflow.AdjacentPreparer = pageflow.Object.extend({
 
     _(newAdjacentPages).each(function(adjacentPage) {
       adjacentPage.prepare();
+      adjacentPage.preload();
     });
 
     this.lastAdjacentPages = adjacentPages;
