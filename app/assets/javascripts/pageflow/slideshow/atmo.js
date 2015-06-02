@@ -95,6 +95,7 @@
         fadeDuration: 500,
         crossFade: true,
         playFromBeginning: false,
+        rewindOnChange: true,
         pauseInBackground: true
       })
     );
