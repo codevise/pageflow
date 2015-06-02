@@ -93,7 +93,7 @@ pageflow.Audio.MultiPlayer = function(pool, options) {
   }
 
   function handlePlayFromBeginning(player) {
-    if (options.playFromBeginning) {
+    if (options.playFromBeginning || options.rewindOnChange) {
       return player.rewind();
     }
     else {

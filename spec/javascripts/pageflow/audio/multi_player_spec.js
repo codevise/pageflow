@@ -75,6 +75,38 @@ describe('pageflow.Audio.MultiPlayer', function() {
       expect(player.playAndFadeIn).to.have.been.calledTwice;
     });
 
+    it('rewinds if rewindOnChange option is true', function() {
+      var player = new pageflow.AudioPlayer.Null();
+      var pool = fakePlayerPool({5: player});
+      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+        fadeDuration: 1000,
+        rewindOnChange: true
+      });
+
+      sinon.spy(player, 'rewind');
+
+      multiPlayer.fadeTo(5);
+
+      expect(player.rewind).to.have.been.called;
+    });
+
+    it('does not interrupt when fading to same audio file when rewindOnChange option is true', function() {
+      var player = new pageflow.AudioPlayer.Null();
+      var pool = fakePlayerPool({5: player});
+      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+        fadeDuration: 1000,
+        rewindOnChange: true
+      });
+
+      sinon.spy(player, 'playAndFadeIn');
+      sinon.stub(player, 'paused').returns(false);
+
+      multiPlayer.fadeTo(5);
+      multiPlayer.fadeTo(5);
+
+      expect(player.playAndFadeIn).to.have.been.calledOnce;
+    });
+
     it('plays and fades in same audio file if paused', function() {
       var player = new pageflow.AudioPlayer.Null();
       var pool = fakePlayerPool({5: player});
@@ -140,7 +172,7 @@ describe('pageflow.Audio.MultiPlayer', function() {
       expect(previousPlayer.fadeOutAndPause).to.have.been.calledWith(1000);
     });
 
-    it('does not interrupt playback when fading to same audio file', function() {
+    it('does not interrupt playback when playing  same audio file', function() {
       var player = new pageflow.AudioPlayer.Null();
       var pool = fakePlayerPool({5: player});
       var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
@@ -185,6 +217,38 @@ describe('pageflow.Audio.MultiPlayer', function() {
       multiPlayer.play(5);
 
       expect(player.play).to.have.been.calledTwice;
+    });
+
+    it('rewinds if rewindOnChange option is true', function() {
+      var player = new pageflow.AudioPlayer.Null();
+      var pool = fakePlayerPool({5: player});
+      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+        fadeDuration: 1000,
+        rewindOnChange: true
+      });
+
+      sinon.spy(player, 'rewind');
+
+      multiPlayer.play(5);
+
+      expect(player.rewind).to.have.been.called;
+    });
+
+    it('does not interrupt when playing same audio file when rewindOnChange option is true', function() {
+      var player = new pageflow.AudioPlayer.Null();
+      var pool = fakePlayerPool({5: player});
+      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+        fadeDuration: 1000,
+        rewindOnChange: true
+      });
+
+      sinon.spy(player, 'play');
+      sinon.stub(player, 'paused').returns(false);
+
+      multiPlayer.play(5);
+      multiPlayer.play(5);
+
+      expect(player.play).to.have.been.calledOnce;
     });
   });
 
