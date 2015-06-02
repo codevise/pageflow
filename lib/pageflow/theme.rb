@@ -23,5 +23,9 @@ module Pageflow
     def page_change_by_scrolling?
       !@options[:no_page_change_by_scrolling]
     end
+
+    def hide_text_on_swipe?
+      !@options[:no_hide_text_on_swipe]
+    end
   end
 end

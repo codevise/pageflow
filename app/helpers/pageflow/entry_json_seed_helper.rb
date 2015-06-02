@@ -17,7 +17,8 @@ module Pageflow
 
     def entry_theming_seed(entry)
       {
-        page_change_by_scrolling: entry.theming.theme.page_change_by_scrolling?
+        page_change_by_scrolling: entry.theming.theme.page_change_by_scrolling?,
+        hide_text_on_swipe: entry.theming.theme.hide_text_on_swipe?
       }
     end
 
