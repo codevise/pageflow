@@ -23,16 +23,52 @@
   <div class="radio_input">
     <input id="publish_entry_until" type="radio" name="mode" value="publish_until">
     <label for="publish_entry_until"><%= I18n.t('pageflow.editor.templates.publish_entry.until_including') %></label>
+  </div>
 
-    <div class="publish_until_fields disabled">
-      <label><%= I18n.t('pageflow.editor.templates.publish_entry.date') %>
-        <input type="text" name="publish_until">
-      </label>
+  <div class="publish_until_fields disabled">
+    <label>
+      <%= I18n.t('pageflow.editor.templates.publish_entry.date') %>
+      <input type="text" name="publish_until">
+    </label>
 
-      <label><%= I18n.t('pageflow.editor.templates.publish_entry.time') %>
-        <input type="text" name="publish_until_time" value="00:00">
-      </label>
-    </div>
+    <label>
+      <%= I18n.t('pageflow.editor.templates.publish_entry.time') %>
+      <input type="text" name="publish_until_time" value="00:00">
+    </label>
+  </div>
+
+  <div class="check_box_input">
+    <input id="publish_password_protected" type="checkbox" name="password_protected" value="1">
+    <label for="publish_password_protected">
+      <span class="name">
+        <%= I18n.t('pageflow.editor.templates.publish_entry.password_protected') %>
+      </span>
+      <span class="inline_help">
+        <%= I18n.t('pageflow.editor.templates.publish_entry.password_help') %>
+      </span>
+    </label>
+  </div>
+
+  <div class="password_fields disabled">
+    <label>
+      <%= I18n.t('pageflow.editor.templates.publish_entry.user_name') %>
+      <input type="text" name="user_name" disabled>
+    </label>
+
+    <label>
+      <%= I18n.t('pageflow.editor.templates.publish_entry.password') %>
+      <input type="text" name="password">
+    </label>
+
+    <p class="already_published_with_password">
+      <%= I18n.t('pageflow.editor.templates.publish_entry.already_published_with_password_help') %>
+    </p>
+    <p class="previously_published_with_password">
+      <%= I18n.t('pageflow.editor.templates.publish_entry.previously_published_with_password_help') %>
+    </p>
+    <p class="already_published_without_password">
+      <%= I18n.t('pageflow.editor.templates.publish_entry.already_published_without_password_help') %>
+    </p>
   </div>
 
   <button class="save" disabled><%= I18n.t('pageflow.editor.templates.publish_entry.publish') %></a>

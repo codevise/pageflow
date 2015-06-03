@@ -34,6 +34,11 @@ module Dom
         save
       end
 
+      def activate_password_protection(password)
+        node.find('input[name=password_protected]').click
+        node.find('input[name=password]').set(password)
+      end
+
       def activate_publish_forever
         node.find('#publish_entry_forever').click
       end

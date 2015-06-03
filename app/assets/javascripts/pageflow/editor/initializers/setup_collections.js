@@ -9,6 +9,7 @@ pageflow.app.addInitializer(function(options) {
   pageflow.chapters = new pageflow.ChaptersCollection(options.chapters);
   pageflow.entry = new pageflow.Entry(options.entry);
   pageflow.theming = new pageflow.Theming(options.theming);
+  pageflow.account = new Backbone.Model(options.account);
 
   pageflow.pages.sort();
 

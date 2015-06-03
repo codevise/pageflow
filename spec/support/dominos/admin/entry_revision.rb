@@ -25,6 +25,10 @@ module Dom
         node.find('a.show')
       end
 
+      def password_protected?
+        node.has_css?('.password_protected');
+      end
+
       def self.published
         select { |node| node.published? }
       end

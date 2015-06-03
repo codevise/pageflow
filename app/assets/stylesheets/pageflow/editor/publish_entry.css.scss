@@ -71,16 +71,18 @@
     }
   }
 
-
+  .check_box_input,
   .radio_input {
     position: relative;
     padding-left: 40px;
+    padding-top: 10px;
   }
 
   label {
     padding: 0;
   }
 
+  input[type=checkbox],
   input[type=radio] {
     position: absolute;
     vertical-align: top;
@@ -88,10 +90,45 @@
     top: 11px;
   }
 
+  input[type=text] {
+    margin-bottom: 5px;
+  }
+
+  .inline_help {
+    top: 5px;
+    right: 0;
+    box-sizing: border-box;
+
+    &:hover {
+      padding: 23px 15px 10px 40px;
+    }
+  }
+
+  .publish_until_fields,
+  .password_fields {
+    padding-left: 40px;
+    padding-top: 10px;
+  }
+
   .publish_until_fields {
     &.disabled {
       opacity: 0.5;
     }
+  }
+
+  .password_fields {
+    &.disabled {
+      display: none;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+  }
+
+  .already_published_without_password {
+    @include background-icon-left($left: -30px, $top: 9px);
+    @include attention-icon;
   }
 
   .save {
