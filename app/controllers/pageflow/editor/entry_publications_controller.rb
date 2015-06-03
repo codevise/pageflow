@@ -17,6 +17,8 @@ module Pageflow
         render(action: :check)
       rescue Quota::ExceededError
         render(action: :check, status: :forbidden)
+      rescue Entry::PasswordMissingError
+        head(:bad_request)
       end
 
       def check
@@ -37,7 +39,7 @@ module Pageflow
       end
 
       def entry_publication_params
-        params.fetch(:entry_publication, {}).permit(:published_until)
+        params.fetch(:entry_publication, {}).permit(:published_until, :password, :password_protected)
       end
 
       def published_entries_quota

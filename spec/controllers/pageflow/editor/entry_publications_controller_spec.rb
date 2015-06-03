@@ -44,6 +44,34 @@ module Pageflow
           expect(revision.published_until).to eq(1.month.from_now)
         end
 
+        it 'allows to publish with a password' do
+          user = create(:user)
+          entry = create(:entry, :with_member => user)
+
+          sign_in(user)
+          aquire_edit_lock(user, entry)
+          post(:create, :entry_id => entry, :entry_publication => {
+                 :password_protected => true,
+                 :password => 'abc123abc'
+               }, :format => :json)
+          revision = entry.revisions.published.last
+
+          expect(entry.reload).to be_published_with_password('abc123abc')
+        end
+
+        it 'responds with bad request if password is missing' do
+          user = create(:user)
+          entry = create(:entry, :with_member => user)
+
+          sign_in(user)
+          aquire_edit_lock(user, entry)
+          post(:create, :entry_id => entry, :entry_publication => {
+                 :password_protected => true
+               }, :format => :json)
+
+          expect(response.status).to eq(400)
+        end
+
         it 'saves current user as creator' do
           user = create(:user)
           entry = create(:entry, :with_member => user)

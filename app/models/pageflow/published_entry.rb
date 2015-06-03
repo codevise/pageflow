@@ -6,7 +6,7 @@ module Pageflow
     attr_reader :entry, :revision
     attr_accessor :share_target
 
-    delegate(:id, :account, :theming, :to_model, :to_key, :persisted?, :to => :entry)
+    delegate(:id, :account, :theming, :to_model, :to_key, :persisted?, :authenticate, :to => :entry)
 
     delegate(:widgets, :chapters, :pages, :files,
              :image_files, :video_files, :audio_files,
@@ -15,6 +15,7 @@ module Pageflow
              :emphasize_new_pages,
              :share_image_id, :share_image_x, :share_image_y,
              :locale,
+             :password_protected?,
              :to => :revision)
 
     def initialize(entry, revision = nil)
