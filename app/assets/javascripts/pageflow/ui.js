@@ -6,6 +6,7 @@
 //= require i18n/translations
 
 //= require ./ui/renderer
+//= require ./ui/object
 
 //= require_tree ./ui/views/mixins
 //= require ./ui/views/inputs/select_input_view
