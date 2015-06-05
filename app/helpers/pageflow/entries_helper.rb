@@ -7,11 +7,11 @@ module Pageflow
     end
 
     def entry_file_rights(entry)
-      rights = [:audio_files, :image_files, :video_files].map do |collection|
-        entry.send(collection).map do |file|
-          file.rights.presence || entry.account.default_file_rights
+      rights = Pageflow.config.file_types.map do |file_type|
+        entry.files(file_type.model).map do |file|
+          file.rights.presence || entry.account.default_file_rights.presence
         end
-      end.flatten.sort.uniq
+      end.flatten.compact.sort.uniq
 
       if rights.any?
         content_tag :p, class: 'rights' do

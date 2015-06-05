@@ -40,6 +40,51 @@ module Pageflow
       end
     end
 
+    describe '#entry_file_rights' do
+      it 'returns comma separated list of file rights' do
+        revision = create(:revision)
+        image_file = create(:image_file, rights: 'My Company', used_in: revision)
+        image_file = create(:image_file, rights: 'My Photographer', used_in: revision)
+        entry = PublishedEntry.new(create(:entry), revision)
+
+        result = helper.entry_file_rights(entry)
+
+        expect(result).to include(': My Company, My Photographer')
+      end
+
+      it 'falls back to default file rights' do
+        revision = create(:revision)
+        image_file = create(:image_file, used_in: revision)
+        account = create(:account, default_file_rights: 'My Account')
+        entry = PublishedEntry.new(create(:entry, account: account), revision)
+
+        result = helper.entry_file_rights(entry)
+
+        expect(result).to include(': My Account')
+      end
+
+      it 'does not insert extra comma if a file has no rights and defaults are not configured' do
+        revision = create(:revision)
+        image_file = create(:image_file, used_in: revision)
+        image_file = create(:image_file, rights: 'My Photographer', used_in: revision)
+        entry = PublishedEntry.new(create(:entry), revision)
+
+        result = helper.entry_file_rights(entry)
+
+        expect(result).to include(': My Photographer')
+      end
+
+      it 'returns empty string if no rights are defined' do
+        revision = create(:revision)
+        image_file = create(:image_file, used_in: revision)
+        entry = PublishedEntry.new(create(:entry), revision)
+
+        result = helper.entry_file_rights(entry)
+
+        expect(result).to eq('')
+      end
+    end
+
     describe '#entry_stylesheet_link_tag' do
       it 'returns revision css for published entry with custom revision' do
         revision = build_stubbed(:revision)
