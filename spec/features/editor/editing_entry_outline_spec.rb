@@ -6,6 +6,7 @@ feature 'editing entry outline', :js => true do
     entry = create(:entry, :title => 'Test Entry', :with_member => user)
 
     visit(pageflow.edit_entry_path(entry))
+    Dom::Editor::EntryOutline.await!
     editor_sidebar = Dom::Editor::Sidebar.first
     editor_sidebar.add_chapter_button.click
 
@@ -18,6 +19,7 @@ feature 'editing entry outline', :js => true do
     chapter = create(:chapter, :entry => entry, :title => 'Intro')
 
     visit(pageflow.edit_entry_path(entry))
+    Dom::Editor::EntryOutline.await!
     Dom::Editor::ChapterItem.find_by_title('Intro').edit_link.click
     Dom::Editor::ChapterProperties.first.destroy_button.click
 
@@ -30,6 +32,7 @@ feature 'editing entry outline', :js => true do
     create(:chapter, :entry => entry, :title => 'Intro')
 
     visit(pageflow.edit_entry_path(entry))
+    Dom::Editor::EntryOutline.await!
     chapter_item = Dom::Editor::ChapterItem.find_by_title('Intro')
     chapter_item.add_page_button.click
 
@@ -43,6 +46,7 @@ feature 'editing entry outline', :js => true do
     create(:page, :chapter => chapter, :configuration => {:title => 'Welcome'})
 
     visit(pageflow.edit_entry_path(entry))
+    Dom::Editor::EntryOutline.await!
     Dom::Editor::PageItem.find_by_title('Welcome').edit_link.click
     Dom::Editor::PageProperties.first.destroy_button.click
 
