@@ -202,7 +202,7 @@ pageflow.pageType.register('video', _.extend({
         clearTimeout(scrollIndicatorTimeout);
 
         if (pageflow.browser.has('mobile platform')) {
-          this.showPosterImage();
+          videoPlayer.showPosterImage();
         }
       });
 
