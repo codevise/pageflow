@@ -17,6 +17,11 @@ module Pageflow
     end
 
     class Div
+      FILE_TYPE_CSS_CLASS_PREFIXES = {
+        'image_file' => 'image',
+        'video_file' => 'video_poster',
+      }
+
       attr_reader :configuration, :property_base_name, :options
 
       delegate :content_tag, :to => :@template
@@ -38,7 +43,7 @@ module Pageflow
         options.slice(:style_group)
       end
 
-      def image_id
+      def file_id
         configuration["#{property_base_name}_id"]
       end
 
@@ -53,7 +58,11 @@ module Pageflow
       end
 
       def image_css_class
-        ['image', options[:style_group], image_id || 'none'].compact.join('_')
+        [image_css_class_prefix, options[:style_group], file_id || 'none'].compact.join('_')
+      end
+
+      def image_css_class_prefix
+        FILE_TYPE_CSS_CLASS_PREFIXES.fetch(options.fetch(:file_type, 'image_file'))
       end
 
       def background_position(coord)
@@ -64,8 +73,8 @@ module Pageflow
 
     class DivWithSizeAttributes < Div
       def data_attributes
-        if image_file
-          super.merge(:width => image_file.width, :height => image_file.height)
+        if file
+          super.merge(:width => file.width, :height => file.height)
         else
           super
         end
@@ -79,17 +88,27 @@ module Pageflow
         end
       end
 
+      private
+
       def padding_top
-        if image_file
-          image_file.height / image_file.width.to_f * 100
+        if file
+          file.height / file.width.to_f * 100
         else
           0
         end
       end
 
-      def image_file
-        @image_file ||= (ImageFile.find_by_id(image_id) || :none)
-        @image_file == :none ? nil : @image_file
+      def file
+        @file ||= (find_file || :none)
+        @file == :none ? nil : @file
+      end
+
+      def find_file
+        file_type.model.find_by_id(file_id)
+      end
+
+      def file_type
+        Pageflow.config.file_types.find_by_collection_name!(options.fetch(:file_type, 'image_file').pluralize)
       end
     end
   end
