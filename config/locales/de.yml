@@ -832,6 +832,8 @@ de:
           audio_files: Audios
           image_files: Bilder
           video_files: Videos
+      quotas:
+        loading: Checking quotas...
       templates:
         back_button_decorator:
           outline: Gliederung
@@ -1690,45 +1692,7 @@ de:
 '
       publishing:
         menu_item: Veröffentlichen
-        text: ! '# Veröffentlichen
-
-
-          Klicke in der Gliederung auf die Schaltfläche
-
-          „Veröffentlichen“ um Deinen Pageflow zu publizieren. Eine
-
-          Reportage kann entweder zeitlich unbegrenzt oder bis zu
-
-          einem bestimmten Stichtag veröffentlicht
-
-          werden. Veröffentlichte Pageflows können jederzeit manuell
-
-          depubliziert werden. Sollte eine Reportage bereits
-
-          veröffentlicht sein, bleiben Änderungen solange öffentlich
-
-          unsichtbar, bis die Reportage erneut veröffentlicht wird.
-
-          Eine Reportage kann stets nur von einem Redakteur zur
-
-          gleichen Zeit bearbeitet werden.
-
-
-          Vorschaubild zum Einbetten in Externe Webseiten Nach der
-
-          Veröffentlichung erstellt das System ein Vorschaubild, das
-
-          als iframe zur Verlinkung in eine externe Seite eingebunden
-
-          werden kann.  Anhand des ausgespielten Codes lässt sich die
-
-          Größe des iframes frei einstellen. Hierbei ist jedoch eine
-
-          Mindesthöhe von 150px und und eine Mindestbreite von 220px
-
-          zu beachten.
-
-'
+        text: ! "# Veröffentlichen\n\nKlicke in der Gliederung auf die Schaltfläche\n„Veröffentlichen“ um Deinen Pageflow zu publizieren. Eine\nReportage kann entweder zeitlich unbegrenzt oder bis zu\neinem bestimmten Stichtag veröffentlicht\nwerden. \n\nAußerdem gibt es die Möglichkeit, Pageflows mit einem Passwort zu schützen. \nHierzu muss einfach das entsprechende Häkchen bei „Mit Passwort schützen\" gesetzt werden. \nDas System verwendet als Benutzernamen den Namen des Kontos und generiert ein Passwort, \nwelches auch manuell geändert werden kann. \n\nBeiträge, die bereits veröffentlicht sind, können nachträglich mit einem Passwort geschützt werden - \nund andersherum können auch geschützte Beiträge anschließend mit erneutem Klick auf „Veröffentlichen“ vom Passwortschutz befreit werden. \nBei der Veröffentlichung werden die auszuführenden Schritte im Dialogfenster angezeigt und erklärt.\n\nVeröffentlichte Pageflows können jederzeit manuell\ndepubliziert werden. Sollte eine Reportage bereits\nveröffentlicht sein, bleiben Änderungen solange öffentlich\nunsichtbar, bis die Reportage erneut veröffentlicht wird.\nEine Reportage kann stets nur von einem Redakteur zur\ngleichen Zeit bearbeitet werden.\n\nVorschaubild zum Einbetten in Externe Webseiten Nach der\nVeröffentlichung erstellt das System ein Vorschaubild, das\nals iframe zur Verlinkung in eine externe Seite eingebunden\nwerden kann.  Anhand des ausgespielten Codes lässt sich die\nGröße des iframes frei einstellen. Hierbei ist jedoch eine\nMindesthöhe von 150px und und eine Mindestbreite von 220px\nzu beachten."
     helpers:
       entries:
         global_links: Globale Links
