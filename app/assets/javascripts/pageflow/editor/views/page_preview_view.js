@@ -62,6 +62,8 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
     this.pageType().update(this.$el, this.model.configuration);
     _.extend(this.$el.data('configuration'), this.model.configuration.attributes);
 
+    pageflow.events.trigger('page:update', this.model);
+
     this.refreshScroller();
     this.ensureTargetBlankForContentLinks();
   },
