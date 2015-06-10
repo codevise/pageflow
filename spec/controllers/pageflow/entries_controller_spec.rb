@@ -263,6 +263,14 @@ module Pageflow
           expect(response.status).to eq(200)
         end
 
+        it 'responds with success for entry published with password' do
+          entry = create(:entry, :published_with_password, password: 'abc123abc')
+
+          get(:show, :id => entry, :format => 'css')
+
+          expect(response.status).to eq(200)
+        end
+
         it 'responds with not found for not published entry' do
           entry = create(:entry)
 
