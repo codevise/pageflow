@@ -3,18 +3,26 @@
     _create: function() {
       var widget = this;
 
+      function show() {
+        widget.element.show();
+        toggleContent(false);
+      }
+
+      function hide() {
+        widget.element.hide();
+        toggleContent(true);
+      }
+
       function toggleContent(state) {
         $('.page .content').toggleClass('initially_hidden', !state);
         $('.slideshow .scroll_indicator').toggleClass('initially_hidden', !state);
       }
 
       pageflow.manualStart.required().then(function(start) {
-        widget.element.show();
-        toggleContent(false);
+        show();
 
-        widget.element.find('.close').on('click', function() {
-          widget.element.hide();
-          toggleContent(true);
+        widget.element.find('.close').one('click', function() {
+          hide();
 
           pageflow.events.trigger('button:close_multimedia_alert');
           start();
@@ -22,6 +30,14 @@
           return false;
         });
       });
+
+      pageflow.events.on('request:multimedia_alert', function() {
+        show();
+
+        widget.element.find('.close').one('click', function() {
+          hide();
+        });
+      }, this);
     }
   });
 }(jQuery));
