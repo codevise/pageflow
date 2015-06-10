@@ -32,6 +32,12 @@ module Pageflow
           create(:revision, :published, evaluator.published_revision_attributes.merge(entry: entry))
         end
       end
+
+      trait :published_with_password do
+        after(:create) do |entry, evaluator|
+          create(:revision, :published, entry: entry, password_protected: true)
+        end
+      end
     end
   end
 end

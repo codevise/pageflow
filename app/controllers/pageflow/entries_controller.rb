@@ -22,12 +22,13 @@ module Pageflow
           @entry = PublishedEntry.find(params[:id], entry_request_scope)
           I18n.locale = @entry.locale
 
+          check_entry_password(@entry) if @entry.password_protected?
+
           if params[:page].present?
             @entry.share_target = Page.find_by_perma_id(params[:page])
           else
             @entry.share_target = @entry
           end
-
         end
         format.json do
           authenticate_user!
@@ -82,6 +83,12 @@ module Pageflow
 
     def entry_request_scope
       Pageflow.config.public_entry_request_scope.call(Entry, request)
+    end
+
+    def check_entry_password(entry)
+      authenticate_or_request_with_http_basic('Pageflow') do |_, password|
+        entry.authenticate(password)
+      end
     end
   end
 end

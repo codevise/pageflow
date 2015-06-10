@@ -93,6 +93,9 @@ Gem::Specification.new do |s|
   # Browser language detection
   s.add_dependency 'http_accept_language', '~> 2.0'
 
+  # Password encryption
+  s.add_dependency 'bcrypt', '~> 3.1.7'
+
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2', '~> 0.3.16'
 

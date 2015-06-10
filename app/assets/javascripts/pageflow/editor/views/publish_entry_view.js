@@ -8,6 +8,13 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
     publishUntilTimeField: 'input[name=publish_until_time]',
     publishUntilRadioBox: '#publish_entry_until',
     publishForeverRadioBox: 'input[value=publish_forever]',
+    passwordProtectedCheckBox: 'input[name=password_protected]',
+    passwordFields: '.password_fields',
+    userNameField: 'input[name=user_name]',
+    passwordField: 'input[name=password]',
+    alreadyPublishedWithPassword: '.already_published_with_password',
+    previouslyPublishedWithPassword: '.previously_published_with_password',
+    alreadyPublishedWithoutPassword: '.already_published_without_password',
     revisionsLink: '.published.notice a',
     publishedNotice: '.published.notice',
     saveButton: 'button.save',
@@ -24,7 +31,13 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
 
     'focus .publish_until_fields input':  'enablePublishUntilFields',
 
-    'change .publish_until_fields input':  'checkPublishUntil'
+    'change .publish_until_fields input':  'checkForm',
+
+    'click input#publish_password_protected': 'togglePasswordFields',
+
+    'keyup input[name=password]': 'checkForm',
+
+    'change input[name=password]': 'checkForm'
   },
 
   modelEvents: {
@@ -64,6 +77,20 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
       this.ui.publishUntilTimeField.val(timeStr(publishedUntil));
     }
 
+    this.ui.userNameField.val(pageflow.account.get('name'));
+
+    if (this.model.get('password_protected')) {
+      this.ui.passwordProtectedCheckBox.prop('checked', true);
+      this.togglePasswordFields();
+    }
+    else {
+      this.ui.passwordField.val(this.randomPassword());
+    }
+
+    this.ui.alreadyPublishedWithPassword.toggle(this.model.get('published') && this.model.get('password_protected'));
+    this.ui.previouslyPublishedWithPassword.toggle(!this.model.get('published') && this.model.get('password_protected'));
+    this.ui.alreadyPublishedWithoutPassword.toggle(this.model.get('published') && !this.model.get('password_protected'));
+
     // Helpers
     function timeStr(date) {
       return twoDigits(date.getHours()) + ':' + twoDigits(date.getMinutes());
@@ -100,7 +127,11 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
 
     var that = this;
 
-    this.options.entryPublication.publish({published_until: publishedUntil})
+    this.options.entryPublication.publish({
+      published_until: publishedUntil,
+      password_protected: this.ui.passwordProtectedCheckBox.is(':checked'),
+      password: this.ui.passwordField.val()
+    })
       .fail(function() {
         alert('Beim Veröffentlichen ist ein Fehler aufgetreten');
       })
@@ -156,17 +187,20 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
     this.ui.publishUntilRadioBox[0].checked = true;
 
     this.ui.publishUntilFields.removeClass('disabled');
-    this.checkPublishUntil();
+    this.checkForm();
   },
 
   disablePublishUntilFields: function() {
     this.ui.publishUntilRadioBox[0].checked = false;
     this.ui.publishUntilFields.addClass('disabled');
+    this.checkForm();
 
     if (!this.checkPublishUntilTime()) {
       this.ui.publishUntilTimeField.val('00:00');
-      this.ui.publishUntilTimeField.removeClass('invalid');
     }
+
+    this.ui.publishUntilTimeField.removeClass('invalid');
+    this.ui.publishUntilField.removeClass('invalid');
   },
 
   enablePublishForever: function() {
@@ -175,15 +209,31 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
     this.enableSave();
   },
 
-  checkPublishUntil: function() {
-      var publishedUntil = this.ui.publishUntilField.datepicker('getDate');
-
-      if (!publishedUntil || !this.checkPublishUntilTime()) {
-        this.disableSave();
-        return false;
-      }
+  checkForm: function() {
+    if (_.all([this.checkPublishUntil(), this.checkPassword()])) {
       this.enableSave();
+    }
+    else{
+      this.disableSave();
+    }
+  },
+
+  checkPublishUntil: function() {
+    return (this.ui.publishForeverRadioBox.is(':checked') ||
+      (this.ui.publishUntilRadioBox.is(':checked') &&
+       _.all([this.checkPublishUntilDate(),
+              this.checkPublishUntilTime()])));
+  },
+
+  checkPublishUntilDate: function() {
+    if (this.ui.publishUntilField.datepicker('getDate')) {
+      this.ui.publishUntilField.removeClass('invalid');
       return true;
+    }
+    else {
+      this.ui.publishUntilField.addClass('invalid');
+      return false;
+    }
   },
 
   checkPublishUntilTime: function() {
@@ -193,6 +243,32 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
     }
     this.ui.publishUntilTimeField.removeClass('invalid');
     return true;
+  },
+
+  togglePasswordFields: function() {
+    this.ui.passwordFields.toggleClass('disabled', !this.ui.passwordProtectedCheckBox.is(':checked'));
+    this.checkForm();
+  },
+
+  checkPassword: function() {
+    if (this.ui.passwordField.val().length === 0 &&
+        !this.model.get('password_protected') &&
+        this.ui.passwordProtectedCheckBox.is(':checked')) {
+      this.ui.passwordField.addClass('invalid');
+      return false;
+    }
+    else {
+      this.ui.passwordField.removeClass('invalid');
+      return true;
+    }
+  },
+
+  randomPassword: function() {
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    return _(10).times(function() {
+      return possible.charAt(Math.floor(Math.random() * possible.length));
+    }).join('');
   }
 });
 

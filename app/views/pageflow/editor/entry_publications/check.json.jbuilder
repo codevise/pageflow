@@ -5,6 +5,7 @@ end
 json.entry do
   json.(@entry_publication.entry, :published_until)
   json.published(@entry_publication.entry.published?)
+  json.password_protected(@entry_publication.entry.password_digest.present?)
 end
 json.exhausted_html(render_html_partial('pageflow/editor/quotas/published_entries_exhausted',
                                         entry: @entry_publication.entry,

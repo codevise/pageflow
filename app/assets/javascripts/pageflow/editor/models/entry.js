@@ -93,7 +93,7 @@ pageflow.Entry = Backbone.Model.extend({
 
   parse: function(response, options) {
     if (response) {
-      this.set(_.pick(response, 'published', 'published_until'));
+      this.set(_.pick(response, 'published', 'published_until', 'password_protected'));
 
       pageflow.editor.fileTypes.each(function(fileType) {
         this.getFileCollection(fileType).set(response[fileType.collectionName], {add: false, remove: false});

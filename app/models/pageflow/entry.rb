@@ -1,5 +1,8 @@
 module Pageflow
   class Entry < ActiveRecord::Base
+    class PasswordMissingError < StandardError
+    end
+
     extend FriendlyId
     friendly_id :slug_candidates, :use => [:finders, :slugged]
 
@@ -24,6 +27,8 @@ module Pageflow
 
     has_one :edit_lock, :dependent => :destroy
 
+    has_secure_password validations: false
+
     validates :account, :theming, :presence => true
     validate :folder_belongs_to_same_account
 
@@ -40,14 +45,19 @@ module Pageflow
     end
 
     def publish(options = {})
-      revisions.depublish_all
-      association(:published_revision).reset
+      ActiveRecord::Base.transaction do
+        update_password!(options.slice(:password, :password_protected))
 
-      draft.copy do |revision|
-        revision.creator = options[:creator]
-        revision.frozen_at = Time.now
-        revision.published_at = Time.now
-        revision.published_until = options[:published_until]
+        revisions.depublish_all
+        association(:published_revision).reset
+
+        draft.copy do |revision|
+          revision.creator = options[:creator]
+          revision.frozen_at = Time.now
+          revision.published_at = Time.now
+          revision.published_until = options[:published_until]
+          revision.password_protected = options[:password_protected]
+        end
       end
     end
 
@@ -68,6 +78,7 @@ module Pageflow
         revision.frozen_at = nil
         revision.published_at = nil
         revision.published_until = nil
+        revision.password_protected = nil
       end
     end
 
@@ -91,6 +102,20 @@ module Pageflow
 
     def folder_belongs_to_same_account
       errors.add(:folder, :must_be_same_account) if folder.present? && folder.account_id != account_id
+    end
+
+    def update_password!(options)
+      if options[:password].present?
+        self.password = options[:password]
+      end
+
+      if options[:password_protected]
+        raise PasswordMissingError if password_digest.blank?
+      else
+        self.password_digest = nil
+      end
+
+      save!
     end
   end
 end

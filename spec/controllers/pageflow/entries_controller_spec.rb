@@ -166,6 +166,23 @@ module Pageflow
           expect(response.status).to eq(404)
         end
 
+        it 'responds with forbidden for entry published with password' do
+          entry = create(:entry, :published_with_password, password: 'abc123abc')
+
+          get(:show, :id => entry)
+
+          expect(response.status).to eq(401)
+        end
+
+        it 'responds with success for entry published with password when correct password is given' do
+          entry = create(:entry, :published_with_password, password: 'abc123abc')
+
+          request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials('Pageflow', 'abc123abc')
+          get(:show, :id => entry)
+
+          expect(response.status).to eq(200)
+        end
+
         it 'uses locale of entry' do
           entry = create(:entry, :published, published_revision_attributes: {locale: 'de'})
 

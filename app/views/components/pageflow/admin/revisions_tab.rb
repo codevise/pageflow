@@ -32,6 +32,10 @@ module Pageflow
             column :created_with do |revision|
               span(I18n.t(revision.created_with, :scope => 'pageflow.admin.entries.revision_created_with'),
                    :title => I18n.t(revision.created_with, :scope => 'pageflow.admin.entries.revision_created_with_hint'))
+
+              if revision.password_protected?
+                span('', :class => 'password_protected', :title => t('pageflow.admin.entries.password_protected'))
+              end
             end
             column do |revision|
               text_node(link_to(t('pageflow.admin.entries.show'), pageflow.revision_path(revision), :class => 'show'))

@@ -7,6 +7,7 @@ module Pageflow
     delegate(:id,
              :edit_lock, :account, :theming, :slug,
              :published_until, :published?,
+             :password_digest,
              :to_model, :to_key, :persisted?, :to_json,
              :to => :entry)
 
