@@ -82,5 +82,15 @@ module Pageflow
         expect(html).to have_selector('div.background_image[data-width="123"][data-height="456"]')
       end
     end
+
+    describe '#background_image_lazy_loading_css_class' do
+      it 'returns css classes prefixed with .load_all_images and .load_image' do
+        image_file = create(:image_file)
+
+        css_class = helper.background_image_lazy_loading_css_class('image', image_file)
+
+        expect(css_class).to eq(".load_all_images .image_#{image_file.id}, .load_image.image_#{image_file.id}")
+      end
+    end
   end
 end
