@@ -76,7 +76,7 @@
       setVolume(pageflow.settings.get('volume'));
 
       /* hide volume button on mobile devices */
-      if (pageflow.features.has('mobile platform')) {
+      if (pageflow.browser.has('mobile platform')) {
         $('li.mute', element).hide();
         $('.navigation_bar_bottom', element).css('height', '224px');
         $('.scroller', element).css('bottom', '224px');

@@ -163,7 +163,7 @@ module Pageflow
         end
 
         it 'copies registered RevisionComponents' do
-          Pageflow.config.register_page_type(RevisionTestPageType.new)
+          Pageflow.config.page_types.register(RevisionTestPageType.new)
           revision = create(:revision)
           TestRevisionComponent.create!(revision: revision)
 

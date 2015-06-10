@@ -36,6 +36,7 @@
 //= require_tree ./views
 
 //= require ./initializers/setup_config
+//= require ./initializers/setup_features
 //= require ./initializers/setup_help_entries
 //= require ./initializers/setup_file_types
 //= require ./initializers/setup_widget_types
@@ -55,7 +56,7 @@ pageflow.startEditor = function(options) {
   jQuery(function() {
     $.when(
       $.getJSON('/editor/entries/' + options.entryId + '/seed'),
-      pageflow.features.detect()
+      pageflow.browser.detectFeatures()
     )
       .done(function(result) {
         pageflow.app.start(result[0]);

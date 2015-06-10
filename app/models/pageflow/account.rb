@@ -1,5 +1,7 @@
 module Pageflow
   class Account < ActiveRecord::Base
+    include FeatureTarget
+
     has_many :users
     has_many :entries
     has_many :folders

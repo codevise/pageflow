@@ -33,6 +33,7 @@
 //= require ./asset_urls
 //= require ./preload
 //= require ./bandwidth
+//= require ./browser
 //= require ./features
 //= require ./audio_player
 //= require ./video_player

@@ -1,4 +1,4 @@
-pageflow.features.add('touch support', function() {
+pageflow.browser.feature('touch support', function() {
   return ('ontouchstart' in window) ||
     /* Firefox on android */
     window.DocumentTouch && document instanceof window.DocumentTouch ||

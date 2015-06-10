@@ -1,4 +1,4 @@
-pageflow.features.add('phone platform', function() {
+pageflow.browser.feature('phone platform', function() {
   var matchers = [/iPod/i, /iPad/i, /iPhone/i, /Android/i, /IEMobile/i];
 
   return _.any(matchers, function(matcher) {

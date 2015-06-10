@@ -24,7 +24,7 @@ pageflow.pageType.register('video', _.extend({
 
     this.videoPlayer.ensureCreated();
 
-    if (pageflow.features.has('mobile platform')) {
+    if (pageflow.browser.has('mobile platform')) {
       this.videoPlayer.showPosterImage();
     }
 
@@ -49,7 +49,7 @@ pageflow.pageType.register('video', _.extend({
     var videoPlayer = this.videoPlayer;
     var that = this;
 
-    if (pageflow.features.has('mobile platform')) {
+    if (pageflow.browser.has('mobile platform')) {
        videoPlayer.src(videoPlayer.srcFromOptions()); // needed for iOS
     }
     else {
@@ -77,7 +77,7 @@ pageflow.pageType.register('video', _.extend({
   },
 
   deactivated: function(pageElement, configuration) {
-    if (pageflow.features.has('mobile platform')) {
+    if (pageflow.browser.has('mobile platform')) {
       this.videoPlayer.showPosterImage();
     }
     this.videoPlayer.pause();
@@ -165,7 +165,7 @@ pageflow.pageType.register('video', _.extend({
         loadingSpinner.removeClass('showing-for-underrun');
       });
 
-      if (pageflow.features.has('phone platform')) {
+      if (pageflow.browser.has('phone platform')) {
         // alternate poster image handling
         $("<div class='vjs-poster-mobile' style='" +
           poster.attr('style') +
@@ -203,7 +203,7 @@ pageflow.pageType.register('video', _.extend({
         scrollIndicator.removeClass('faded');
         clearTimeout(scrollIndicatorTimeout);
 
-        if(pageflow.features.has('mobile platform')) {
+        if (pageflow.browser.has('mobile platform')) {
           this.showPosterImage();
         }
       });
@@ -214,7 +214,7 @@ pageflow.pageType.register('video', _.extend({
 
       function autoHideControls() {
         showControls();
-        if (!pageflow.features.has('phone platform')) {
+        if (!pageflow.browser.has('phone platform')) {
           clearTimeout(timeout);
           timeout = setTimeout(hideControls, 2000);
         }

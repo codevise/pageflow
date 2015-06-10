@@ -56,7 +56,7 @@ pageflow.VideoPlayer.bufferUnderrunWaiting = function(player) {
     player.off('progress', pauseAndPreloadOnUnderrun);
   }
 
-  if (pageflow.features.has('buffer underrun waiting support')) {
+  if (pageflow.browser.has('buffer underrun waiting support')) {
     player.on('play', function() {
       player.on('progress', pauseAndPreloadOnUnderrun);
     });

@@ -23,6 +23,7 @@ module Pageflow
     end
 
     controller do
+      helper Pageflow::Admin::FeaturesHelper
       helper ThemesHelper
       helper WidgetsHelper
 
@@ -39,7 +40,9 @@ module Pageflow
       end
 
       def update
-        super
+        update! do |success, failure|
+          success.html { redirect_to(admin_account_path(resource, params.slice(:tab))) }
+        end
         update_widgets
       end
 
@@ -54,7 +57,27 @@ module Pageflow
       end
 
       def permitted_params
-        params.permit(:account => [:name, :default_file_rights, :default_theming_attributes => [:cname, :theme_name, :imprint_link_url, :imprint_link_label, :copyright_link_url, :copyright_link_label, :home_url, :home_button_enabled_by_default]])
+        result = params.permit(:account => [
+                                 :name,
+                                 :default_file_rights,
+                                 :default_theming_attributes => [
+                                   :cname,
+                                   :theme_name,
+                                   :imprint_link_url,
+                                   :imprint_link_label,
+                                   :copyright_link_url,
+                                   :copyright_link_label,
+                                   :home_url,
+                                   :home_button_enabled_by_default
+                                 ]
+                               ])
+
+        if result[:account]
+          feature_states = params[:account][:feature_states].try(:permit!)
+          result[:account].merge!(:feature_states => feature_states || {})
+        end
+
+        result
       end
     end
   end

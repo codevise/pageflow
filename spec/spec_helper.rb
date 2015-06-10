@@ -19,3 +19,7 @@ RSpec.configure do |config|
     Pageflow.configure!
   end
 end
+
+Pageflow.configure do |config|
+  config.features.register('test_feature')
+end

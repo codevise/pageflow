@@ -4,7 +4,7 @@ module Pageflow
   describe PageTypesHelper do
     describe '#page_type_json_seeds' do
       it 'renders custom json seed template' do
-        class TestPageType < Pageflow::PageType
+        page_type_class = Class.new(Pageflow::PageType) do
           name 'test'
 
           def json_seed_template
@@ -12,25 +12,27 @@ module Pageflow
           end
         end
 
-        allow(Pageflow.config).to receive(:page_types).and_return([TestPageType.new])
-        stub_template('pageflow/test/page.json.jbuilder' => 'json.key "value"')
+        config = Configuration.new
+        config.page_types.register(page_type_class.new)
 
-        result = helper.page_type_json_seeds
+        stub_template('pageflow/test/page.json.jbuilder' => 'json.key "value"')
+        result = helper.page_type_json_seeds(config)
 
         expect(result).to include('"key":"value"')
       end
 
       it 'only renders basic properties if json seed template is nil' do
-        class TestPageType < Pageflow::PageType
+        page_type_class = Class.new(Pageflow::PageType) do
           name 'test'
 
           def json_seed_template
           end
         end
 
-        allow(Pageflow.config).to receive(:page_types).and_return([TestPageType.new])
+        config = Configuration.new
+        config.page_types.register(page_type_class.new)
 
-        result = helper.page_type_json_seeds
+        result = helper.page_type_json_seeds(config)
 
         expect(result).to include('"name":"test"')
       end
@@ -44,9 +46,10 @@ module Pageflow
           end
         end
 
-        allow(Pageflow.config).to receive(:page_types).and_return([page_type_class.new])
+        config = Configuration.new
+        config.page_types.register(page_type_class.new)
 
-        result = JSON.parse(helper.page_type_json_seeds)
+        result = JSON.parse(helper.page_type_json_seeds(config))
 
         expect(result[0]['thumbnail_candidates']).to eq([{'attribute' => 'thumbnail_image_id', 'file_collection' => 'image_files'}])
       end
@@ -60,7 +63,7 @@ module Pageflow
       end
 
       it 'renders page templates in script tags' do
-        class TestPageType < Pageflow::PageType
+        page_type_class = Class.new(Pageflow::PageType) do
           name 'test'
 
           def template_path
@@ -68,7 +71,7 @@ module Pageflow
           end
         end
 
-        allow(Pageflow.config).to receive(:page_types).and_return([TestPageType.new])
+        allow(Pageflow.config).to receive(:page_types).and_return([page_type_class.new])
         stub_template('pageflow/test/page.html.erb' => 'template')
 
         result = helper.page_type_templates

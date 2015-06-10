@@ -26,7 +26,7 @@ pageflow.VideoPlayer.Lazy = function(template, options) {
   };
 
   this.dispose = function() {
-    if (videoTag && !pageflow.features.has('mobile platform')) {
+    if (videoTag && !pageflow.browser.has('mobile platform')) {
       this.setEmptySrc();
 
       $(videoPlayer.el()).replaceWith(placeholder);
@@ -109,10 +109,10 @@ pageflow.VideoPlayer.Lazy = function(template, options) {
 
     var element = $(htmlWithPreload);
 
-    if (pageflow.features.has('mobile platform') && element.attr('data-mobile-poster')) {
+    if (pageflow.browser.has('mobile platform') && element.attr('data-mobile-poster')) {
       element.attr('poster', element.attr('data-mobile-poster'));
     }
-    else if (pageflow.features.has('high bandwidth') && !pageflow.features.has('mobile platform')) {
+    else if (pageflow.browser.has('high bandwidth') && !pageflow.browser.has('mobile platform')) {
       element.attr('poster', element.attr('data-large-poster'));
 
       element.find('source').each(function() {

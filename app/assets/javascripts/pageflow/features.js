@@ -1,98 +1,68 @@
-//= require_self
-//= require_tree ./features
+/**
+ * Registry of functions which extend pageflow when a named feature is
+ * enabled.
+ *
+ * @since edge
+ */
+pageflow.Features = pageflow.Object.extend({
+  /** @api private */
+  initialize: function() {
+    this.registry = {};
+    this.enabledFeatureNames = [];
+  },
 
-pageflow.features = (function(){
-  var tests = {},
-      results = {},
-      ready = new $.Deferred();
+  /**
+   * `pageflow.features` has been renamed to `pageflow.browser`.
+   * @deprecated
+   */
+  has: function(/* arguments */) {
+    return pageflow.browser.has.apply(pageflow.browser, arguments);
+  },
 
-  return {
-    off: {},
-    on: {},
-    unset: {},
+  /**
+   * Register a function to configure a feature when it is active.
+   *
+   * @param scope [String] Name of the scope the passed function
+   *   shall be called in.
+   * @param name [String] Name of the feature
+   * @param fn [Function] Function to call when the given feature
+   *   is activate.
+   */
+  register: function(scope, name, fn) {
+    this.registry[scope] = this.registry[scope] || {};
+    this.registry[scope][name] = this.registry[scope][name] || [];
+    this.registry[scope][name].push(fn);
+  },
 
-    add: function(name, test) {
-      var s = name.replace(/ /g, '_');
+  /**
+   * Check if a feature as been enabled.
+   *
+   * @param name [String]
+   * @return [Boolean]
+   */
+  isEnabled: function(name) {
+    return _(this.enabledFeatureNames).contains(name);
+  },
 
-      this.off[s] = function() {
-        window.localStorage['override ' + name] = 'off';
-        pageflow.log('Feature off: ' + name, {force: true});
-      };
+  /** @api private */
+  enable: function(scope, names) {
+    var fns = this.registry[scope] || {};
+    this.enabledFeatureNames = this.enabledFeatureNames.concat(names);
 
-      this.on[s] = function() {
-        window.localStorage['override ' + name] = 'on';
-        pageflow.log('Feature on: ' + name, {force: true});
-      };
+    _(names).each(function(name) {
+      _(fns[name] || []).each(function(fn) {
+        fn();
+      });
+    });
+  }
+});
 
-      this.unset[s] = function() {
-        window.localStorage.removeItem('override ' + name);
-        pageflow.log('Feature unset: ' + name, {force: true});
-      };
-
-      tests[name] = test;
-    },
-
-    has: function(name) {
-      if (this.ready().state() != 'resolved') {
-        throw 'Feature detection has not finished yet.';
-      }
-
-      if (!results.hasOwnProperty(name)) {
-        throw 'Unknown feature "' + name +'".';
-      }
-
-      return results[name];
-    },
-
-    ready: function() {
-      return ready.promise();
-    },
-
-    detect: function() {
-      var promises = {};
-
-      var asyncHas = function(name) {
-        var runTest = function() {
-          if (pageflow.debugMode() &&
-              window.localStorage &&
-              typeof window.localStorage['override ' + name] !== 'undefined') {
-            var value = (window.localStorage['override ' + name] === 'on');
-            pageflow.log('FEATURE OVERRIDDEN ' + name + ': ' + value, {force: true});
-            return value;
-          }
-          else {
-            return tests[name](asyncHas);
-          }
-        };
-
-        promises[name] = promises[name] || $.when(runTest(name));
-        return promises[name];
-      };
-
-      asyncHas.not = function(name) {
-        return asyncHas(name).pipe(function(result) {
-          return !result;
-        });
-      };
-
-      asyncHas.all = function(/* arguments */) {
-        return $.when.apply(null, arguments).pipe(function(/* arguments */) {
-          return _.all(arguments);
-        });
-      };
-
-      $.when.apply(null, _.map(_.keys(tests), function(name) {
-        return asyncHas(name).then(function(result) {
-          var cssClassName = name.replace(/ /g, '_');
-
-          $('body').toggleClass('has_' + cssClassName, !!result);
-          $('body').toggleClass('has_no_' + cssClassName, !result);
-
-          results[name] = !!result;
-        });
-      })).then(ready.resolve);
-
-      return this.ready();
-    }
-  };
-}());
+/**
+ * Let plugins register functions which extend the editor or
+ * slideshow with certain functionality when a named feature is
+ * enabled.
+ *
+ * @return [pageflow.Features]
+ * @since edge
+ */
+pageflow.features = new pageflow.Features();

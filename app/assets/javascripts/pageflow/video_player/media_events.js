@@ -6,7 +6,7 @@ pageflow.VideoPlayer.mediaEvents = function(player, context) {
       currentTime: player.currentTime(),
       duration: player.duration(),
       volume: player.volume(),
-      bitrate: pageflow.features.has('high bandwidth') ? 3500000 : 2000000
+      bitrate: pageflow.browser.has('high bandwidth') ? 3500000 : 2000000
     });
   }
 

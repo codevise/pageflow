@@ -4,7 +4,7 @@ module Pageflow
 
     attr_accessor :is_first
 
-    validates_inclusion_of :template, :in => ->(_) { Pageflow.config.page_type_names }
+    validates_inclusion_of :template, :in => ->(_) { Pageflow.config.page_types.names }
 
     serialize :configuration, JSON
 
@@ -25,7 +25,7 @@ module Pageflow
     end
 
     def page_type
-      Pageflow.config.lookup_page_type(template)
+      Pageflow.config.page_types.find_by_name!(template)
     end
 
     def configuration
