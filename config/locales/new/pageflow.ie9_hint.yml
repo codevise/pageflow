@@ -1,0 +1,11 @@
+de:
+  pageflow:
+    entries:
+      ie9_hint:
+        deprecated_browser: <p>Liebe Nutzer,</p><p>leider nutzen Sie eine veraltete Version Ihres Browsers. Deshalb können die an dieser Stelle vorgesehenen Inhalte nicht korrekt dargestellt werden. Bitte aktualisieren Sie auf eine aktuelle Version.</p>
+
+en:
+  pageflow:
+    entries:
+      ie9_hint:
+        deprecated_browser: <p>Your browser is outdated and this page might not work as intended. We recommend upgrading to a current browser version.</p>
