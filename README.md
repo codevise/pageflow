@@ -9,7 +9,7 @@ For a high level introduction and example Pageflow stories see
 [pageflow.io](http://pageflow.io).
 
 In addition to this README, there is also a [Getting Started Wiki page](https://github.com/codevise/pageflow/wiki/Getting-Started)
-to guide you through the steps of setting up a Rails application with Pageflow 
+to guide you through the steps of setting up a Rails application with Pageflow
 on your development machine.
 
 ## Updating
@@ -64,13 +64,13 @@ Generate a new Rails application using the MySQL database adapter:
 
     $ rails new my_pageflow --database=mysql
     $ cd my_pageflow
-   
-Do not name your application `"pageflow"` since it will cause conflicts 
+
+Do not name your application `"pageflow"` since it will cause conflicts
 which constant names created by Pageflow itself.
 
 ### Database Setup
 
-Enter valid MySQL credentials inside `config/database.yml` and create 
+Enter valid MySQL credentials inside `config/database.yml` and create
 the database:
 
     $ rake db:create
@@ -117,7 +117,7 @@ safely read on.
 
 ### Database Migration
 
-_Devise migration name fix_: In some cases, the Devise generator creates 
+_Devise migration name fix_: In some cases, the Devise generator creates
 a migration file without file extension. This needs to be fixed manually
 at the moment:
 
@@ -152,26 +152,26 @@ application.
 
 ## Running Pageflow
 
-In addition to the Rails server, you need to start two Rake tasks for 
+In addition to the Rails server, you need to start two Rake tasks for
 the background job processing. First, start a Resque worker which handles
 jobs from all queues:
 
     $ QUEUE=* rake resque:work
-    
+
 Image and video processing are examples of jobs that are executes by these workers.
 
 Some jobs need to be executed repeatedly. For example, while videos are being
-encoded by Zencoder, there is a job that runs every few seconds to fetch the 
+encoded by Zencoder, there is a job that runs every few seconds to fetch the
 current progress. This delayed invocation of jobs is handled by the Resque
 Scheduler Rake task:
 
      $ QUEUE=* rake resque:scheduler
 
 Consider using the [foreman gem](https://github.com/ddollar/foreman) to start all of
-these processes (including the Rails server) with a single command in your 
+these processes (including the Rails server) with a single command in your
 development environment.
 
 ## Troubleshooting
 
-If you run into problems during the installation of Pageflow, please refer to the [Troubleshooting](https://github.com/codevise/pageflow/wiki/Troubleshooting) wiki 
+If you run into problems during the installation of Pageflow, please refer to the [Troubleshooting](https://github.com/codevise/pageflow/wiki/Troubleshooting) wiki
 page. If that doesn't help, consider [filing an issue](https://github.com/codevise/pageflow/issues?state=open).
