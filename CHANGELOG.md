@@ -18,6 +18,34 @@
   The old method still exists for now, but will be removed before
   version 1.0.
 
+##### Public Site
+
+- Improve display of file rights.
+  ([#300](https://github.com/codevise/pageflow/pull/300))
+
+##### Admin/Editor
+
+- Password protection for published entries.
+  ([#301](https://github.com/codevise/pageflow/pull/301),
+   [#304](https://github.com/codevise/pageflow/pull/304))
+
+##### Rails Engine
+
+- Introduce Features API.
+  ([#297](https://github.com/codevise/pageflow/pull/297))
+- Allow overriding attachments scope name.
+  ([#303](https://github.com/codevise/pageflow/pull/303))
+
+##### Internals
+
+- Promote `pageflow.Object` to `application.js`.
+  ([#296](https://github.com/codevise/pageflow/pull/296),
+   [#298](https://github.com/codevise/pageflow/pull/298))
+- Dispatch `page:update` event via `pageflow.events`.
+  ([#302](https://github.com/codevise/pageflow/pull/302))
+- Improve stability of feature specs.
+  ([#299](https://github.com/codevise/pageflow/pull/299))
+
 ### Version 0.8.0
 
 2015-05-28
@@ -113,10 +141,10 @@
   For language selection to work inside the admin, you need to add the
   following line to the setup block inside your
   `config/initializers/active_admin.rb` file:
-  
+
         ActiveAdmin.setup do |config|
           Pageflow.active_admin_settings(config)
-  
+
           # ...
         end
 
