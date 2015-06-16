@@ -48,23 +48,23 @@ Pageflow.configure do |config|
   # calls are allowed.
   config.paperclip_s3_default_options.merge!(
     :s3_credentials => {
-      :bucket => 'com-example-pageflow-development',
-      :access_key_id => 'xxx',
-      :secret_access_key => 'xxx',
-      :s3_host_name => 's3-eu-west-1.amazonaws.com'
+      :bucket => ENV['S3_BUCKET'],
+      :access_key_id => ENV['S3_ACCESS_KEY'],
+      :secret_access_key => ENV['S3_SECRET_KEY'],
+      :s3_host_name => ENV['S3_HOST_NAME']
     },
-    :s3_host_alias => 'com-example-pageflow.s3-website-eu-west-1.amazonaws.com',
-    :s3_protocol => 'http'
+    :s3_host_alias => ENV['S3_HOST_ALIAS'],
+    :s3_protocol => ENV['S3_PROTOCOL'] || 'http'
   )
 
   # Default options for paperclip attachments which are supposed to
   # use filesystem storage. All options allowed in paperclip has_attached_file
   # calls are allowed.
   config.zencoder_options.merge!(
-    :api_key => 'xxx',
-    :output_bucket => 'com-example-pageflow-out',
-    :s3_host_alias => 'com-example-pageflow-out.s3-website-eu-west-1.amazonaws.com',
-    :s3_protocol => 'http',
+    :api_key => env['ZENCODER_API_KEY'],
+    :output_bucket => ENV['S3_OUTPUT_BUCKET'],
+    :s3_host_alias => ENV['S3_OUTPUT_HOST_ALIAS'],
+    :s3_protocol => ENV['S3_PROTOCOL'] || 'http',
     :attachments_version => 'v1'
   )
 end
