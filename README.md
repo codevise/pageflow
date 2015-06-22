@@ -138,6 +138,8 @@ Pageflow stores files in S3 buckets also in development
 mode. Otherwise there's no way to have Zencoder encode them. See the
 wiki page [Setting up external services](https://github.com/codevise/pageflow/wiki/Setting-up-External-Services).
 
+The host application can utilize environment variables to configure the API keys for S3 and Zencoder. The variables can be found in the generated Pageflow initializer.
+
 For available configuration options and examples see the inline docs
 in `config/initializers/pageflow.rb` in your generated rails app.
 
