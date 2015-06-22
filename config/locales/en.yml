@@ -835,7 +835,7 @@ en:
           image_files: Images
           video_files: Videos
       quotas:
-        loading: Quotas überprüfen...
+        loading: Checking quotas...
       templates:
         back_button_decorator:
           outline: Outline
@@ -979,7 +979,7 @@ en:
         swipe_indicator: Swipe to continue
       ie8_hint:
         close: Close
-        deprecated_browser: <p>Your browser is outdated and this page might not work as intended. We recommend upgrading to a current browser version. Please visit <a href="http://www.browserchoice.eu/">http://www.browserchoice.eu/</a> for download suggestions.</p>
+        deprecated_browser: <p>Your browser is outdated and this page might not work as intended. We recommend upgrading to a current browser version.</p>
       mobile_navigation:
         imprint: Imprint
         overview: Overview
