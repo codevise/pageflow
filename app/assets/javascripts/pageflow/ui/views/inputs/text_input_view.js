@@ -24,6 +24,10 @@ pageflow.TextInputView = Backbone.Marionette.ItemView.extend({
     this.save();
   },
 
+  onClose: function() {
+    this.save();
+  },
+
   save: function() {
     this.model.set(this.options.propertyName, this.ui.input.val());
   },
