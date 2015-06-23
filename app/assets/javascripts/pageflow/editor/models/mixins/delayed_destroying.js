@@ -6,8 +6,8 @@ pageflow.delayedDestroying = {
   destroyWithDelay: function() {
     var model = this;
 
-    this.trigger('destroying', this);
     this._destroying = true;
+    this.trigger('destroying', this);
 
     return Backbone.Model.prototype.destroy.call(this, {
       wait: true,
