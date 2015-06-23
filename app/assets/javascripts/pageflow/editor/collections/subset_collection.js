@@ -16,8 +16,12 @@ pageflow.SubsetCollection = Backbone.Collection.extend({
 
     this.listenTo(this.parent, 'add', function(model, collection, options) {
       if (!adding && this.filter(model)) {
-        this.add(model, collection, options);
+        this.add(model, options);
       }
+    });
+
+    this.listenTo(this.parent, 'remove', function(model) {
+      this.remove(model);
     });
 
     this.listenTo(this, 'add', function(model, collection, options) {
