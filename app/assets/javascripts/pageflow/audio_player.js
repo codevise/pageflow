@@ -36,7 +36,9 @@ pageflow.AudioPlayer = function(sources, options) {
     pageflow.AudioPlayer.mediaEvents(audio, options.context);
   }
 
-  pageflow.mediaPlayer.enhance(audio, options);
+  pageflow.mediaPlayer.enhance(audio, _.extend({
+    loadWaiting: true
+  }, options || {}));
 
   audio.src = function(sources) {
     ready.then(function() {
