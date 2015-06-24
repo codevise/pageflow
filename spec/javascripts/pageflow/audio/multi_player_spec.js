@@ -43,7 +43,7 @@ describe('pageflow.Audio.MultiPlayer', function() {
       expect(player.playAndFadeIn).to.have.been.calledOnce;
     });
 
-    it('seeks to 0 if playFromBeginning option is true', function() {
+    it('rewinds if playFromBeginning option is true', function() {
       var player = new pageflow.AudioPlayer.Null();
       var pool = fakePlayerPool({5: player});
       var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
@@ -51,11 +51,11 @@ describe('pageflow.Audio.MultiPlayer', function() {
         playFromBeginning: true
       });
 
-      sinon.spy(player, 'seek');
+      sinon.spy(player, 'rewind');
 
       multiPlayer.fadeTo(5);
 
-      expect(player.seek).to.have.been.calledWith(0);
+      expect(player.rewind).to.have.been.called;
     });
 
     it('restarts same audio file if playFromBeginning option is true', function() {
@@ -119,7 +119,7 @@ describe('pageflow.Audio.MultiPlayer', function() {
       expect(player.play).to.have.been.calledOnce;
     });
 
-    it('seeks to 0 if playFromBeginning option is true', function() {
+    it('rewinds 0 if playFromBeginning option is true', function() {
       var player = new pageflow.AudioPlayer.Null();
       var pool = fakePlayerPool({5: player});
       var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
@@ -127,11 +127,11 @@ describe('pageflow.Audio.MultiPlayer', function() {
         playFromBeginning: true
       });
 
-      sinon.spy(player, 'seek');
+      sinon.spy(player, 'rewind');
 
       multiPlayer.play(5);
 
-      expect(player.seek).to.have.been.calledWith(0);
+      expect(player.rewind).to.have.been.called;
     });
 
     it('restarts same audio file if playFromBeginning option is true', function() {

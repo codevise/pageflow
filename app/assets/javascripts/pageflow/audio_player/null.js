@@ -19,7 +19,13 @@ pageflow.AudioPlayer.Null = function() {
     return true;
   };
 
-  this.seek = function() {};
+  this.seek = function() {
+    return new $.Deferred().resolve().promise();
+  };
+
+  this.rewind = function() {
+    return new $.Deferred().resolve().promise();
+  };
 
   this.formatTime = function() {};
 

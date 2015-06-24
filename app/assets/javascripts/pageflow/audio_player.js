@@ -4,6 +4,7 @@
 
 //= require ./audio_player/media_events
 //= require ./audio_player/null
+//= require ./audio_player/rewind_method
 
 pageflow.AudioPlayer = function(sources, options) {
   options = options || {};
@@ -39,6 +40,8 @@ pageflow.AudioPlayer = function(sources, options) {
   pageflow.mediaPlayer.enhance(audio, _.extend({
     loadWaiting: true
   }, options || {}));
+
+  pageflow.AudioPlayer.rewindMethod(audio);
 
   audio.src = function(sources) {
     ready.then(function() {
