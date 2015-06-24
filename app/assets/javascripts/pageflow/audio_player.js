@@ -4,6 +4,7 @@
 
 //= require ./audio_player/media_events
 //= require ./audio_player/null
+//= require ./audio_player/seek_with_invalid_state_handling
 //= require ./audio_player/rewind_method
 
 pageflow.AudioPlayer = function(sources, options) {
@@ -41,6 +42,7 @@ pageflow.AudioPlayer = function(sources, options) {
     loadWaiting: true
   }, options || {}));
 
+  pageflow.AudioPlayer.seekWithInvalidStateHandling(audio);
   pageflow.AudioPlayer.rewindMethod(audio);
 
   audio.src = function(sources) {
@@ -71,7 +73,7 @@ pageflow.AudioPlayer = function(sources, options) {
   var originalSeek = audio.seek;
   audio.seek = function() {
     if (this.currentSrc) {
-      originalSeek.apply(this, arguments);
+      return originalSeek.apply(this, arguments);
     }
   };
 
