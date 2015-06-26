@@ -17,7 +17,7 @@
         keyBindings: true,
         probeType: 2,
         preventDefault: false
-      }, _.pick(this.options, 'freeScroll', 'scrollX')));
+      }, _.pick(this.options, 'freeScroll', 'scrollX', 'noMouseWheelScrollX')));
 
       this.iscroll.disable();
 
