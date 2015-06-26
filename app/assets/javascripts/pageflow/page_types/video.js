@@ -28,10 +28,6 @@ pageflow.pageType.register('video', _.extend({
       this.videoPlayer.showPosterImage();
     }
 
-    this.listenTo(pageflow.settings, "change:volume", function(model, value) {
-      this.fadeSound(this.videoPlayer, value, 10);
-    });
-
     $('body').on('keyup', function(e) {
       if(e.keyCode == 32){
         if(videoPlayer.paused()) {
@@ -56,13 +52,9 @@ pageflow.pageType.register('video', _.extend({
       videoPlayer.prebuffer().done(function() {
         videoPlayer.hidePosterImage();
 
-        if (configuration.autoplay === false) {
-          videoPlayer.volume(pageflow.settings.get('volume'));
-        } else {
+        if (configuration.autoplay !== false) {
           that.fadeInTimeout = setTimeout(function() {
-            videoPlayer.volume(0);
-            videoPlayer.play();
-            that.fadeSound(videoPlayer, pageflow.settings.get('volume'), 1000);
+            videoPlayer.playAndFadeIn(1000);
           }, 1000);
         }
       });
@@ -118,6 +110,8 @@ pageflow.pageType.register('video', _.extend({
       bufferUnderrunWaiting: true,
       controls: true,
       customControlsOnMobile: true,
+
+      volumeFading: true,
 
       mediaEvents: true,
       context: {
@@ -189,6 +183,10 @@ pageflow.pageType.register('video', _.extend({
 
         scrollIndicator.removeClass('faded');
         clearTimeout(scrollIndicatorTimeout);
+      });
+
+      videoPlayer.on('beforeplay', function() {
+        loadingSpinner.addClass('showing-for-underrun');
       });
 
       videoPlayer.on("play", function() {
