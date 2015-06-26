@@ -1,5 +1,6 @@
 pageflow.NavigatablePageItemView = pageflow.PageItemView.extend({
   mixins: [pageflow.loadable, pageflow.failureIndicatingView],
+  className: 'draggable',
 
   events: {
     'click': function() {

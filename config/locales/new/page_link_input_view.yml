@@ -1,0 +1,12 @@
+de:
+  pageflow:
+    editor:
+      templates:
+        inputs:
+          page_link_input:
+            edit: "Verknüpfung ändern"
+            reset: "Verknüpfung entfernen"
+      views:
+        inputs:
+          page_link_input_view:
+            none: "(Kein)"

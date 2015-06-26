@@ -38,6 +38,7 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
       collection: this.model.chapters,
       itemViewConstructor: pageflow.NavigatableChapterItemView,
       itemViewOptions: {
+        sortable: true,
         pageItemViewOptions: {
           displayInNavigationHint: true
         }

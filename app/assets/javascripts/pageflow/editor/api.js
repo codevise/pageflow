@@ -138,6 +138,14 @@ pageflow.EditorApi = pageflow.Object.extend({
     };
 
     /**
+     * Returns a promise which resolves to a page selected by the
+     * user.
+     */
+    this.selectPage = function() {
+      return pageflow.PageSelectionView.selectPage();
+    };
+
+    /**
      * Failures API
      *
      * Can watch collections for errors saving models and display the error
@@ -151,6 +159,11 @@ pageflow.EditorApi = pageflow.Object.extend({
      *
      */
     this.failures = new pageflow.FailuresAPI();
+
+    /**
+     * Setup editor integration for page types.
+     */
+    this.pageTypes = new pageflow.PageTypes();
 
     /**
      *

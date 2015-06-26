@@ -8,7 +8,8 @@ ul.outline {
     position: relative;
     background-color: #fff;
 
-    a:first-child {
+    > div:first-child,
+    > a:first-child {
       display: block;
       padding: 10px 10px 10px 70px;
       background-color: #efefef;
@@ -28,8 +29,11 @@ ul.outline {
       background-color: #D2E5FA;
     }
 
-    &.draggable > a {
-      cursor: move;
+    &.draggable {
+      .type_pictogram,
+      .page_thumbnail {
+        cursor: move;
+      }
     }
 
     .type_pictogram {
@@ -42,7 +46,6 @@ ul.outline {
       background-repeat: no-repeat;
       background-position: 3px 45%;
       opacity: 0.2;
-      cursor: move;
     }
 
     .page_thumbnail {
@@ -51,7 +54,6 @@ ul.outline {
       left: 0;
       height: 100%;
       width: 35px;
-      cursor: move;
 
       .thumbnail {
         height: 100%;

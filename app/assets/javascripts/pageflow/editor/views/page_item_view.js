@@ -29,7 +29,7 @@ pageflow.PageItemView = Backbone.Marionette.ItemView.extend({
     this.$el.toggleClass('active', this.model.get('active'));
     this.$el.toggleClass('display_in_navigation', !!this.model.configuration.get('display_in_navigation'));
     this.$el
-      .removeClass(_.pluck(pageflow.Page.types, 'name').join(' '))
+      .removeClass(pageflow.editor.pageTypes.pluck('name').join(' '))
       .addClass(this.model.get('template'));
 
     this.ui.pictogram.attr('title', this._getPictogramTitle());
@@ -37,7 +37,7 @@ pageflow.PageItemView = Backbone.Marionette.ItemView.extend({
   },
 
   _getPictogramTitle: function() {
-    var result = I18n.t(this.model.pageType().translation_key);
+    var result = I18n.t(this.model.pageType().translationKey());
     result += ' Seite';
 
     if (this.options.displayInNavigationHint && !this.model.configuration.get('display_in_navigation')) {

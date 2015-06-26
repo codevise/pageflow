@@ -1,0 +1,51 @@
+.page_link_input {
+  position: relative;
+  white-space: nowrap;
+  height: 80px;
+
+  .page_thumbnail {
+    width: 60px;
+    height: 60px;
+    vertical-align: bottom;
+    margin-right: 5px;
+    border: solid 1px #888;
+  }
+
+  div.page_thumbnail {
+    float: left;
+  }
+
+  .file_thumbnail {
+    height: 100%;
+  }
+
+  div.page_title {
+    position: absolute;
+    top: 20px;
+    left: 70px;
+    right: 20px;
+    overflow: hidden;
+  }
+
+  a.choose {
+    @include icon-only-button;
+    @include pencil-icon;
+
+    position: absolute;
+    top: 53px;
+    right: 0;
+  }
+
+  a.unset {
+    @include icon-only-button($base-color: #d00);
+    @include cancel-circled-icon;
+
+    position: absolute;
+    top: 53px;
+    right: 35px;
+  }
+
+  .inline_help {
+    white-space: normal;
+  }
+}
