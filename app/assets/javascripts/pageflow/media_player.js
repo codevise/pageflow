@@ -12,7 +12,7 @@ pageflow.mediaPlayer = {
 
     if (options.volumeFading) {
       pageflow.mediaPlayer.volumeFading(player);
-      pageflow.mediaPlayer.volumeBinding(player, pageflow.settings);
+      pageflow.mediaPlayer.volumeBinding(player, pageflow.settings, options);
     }
 
     if (options.loadWaiting) {

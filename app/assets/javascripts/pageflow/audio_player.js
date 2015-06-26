@@ -79,6 +79,10 @@ pageflow.AudioPlayer = function(sources, options) {
     }
   };
 
+  audio.paused = function() {
+    return !audio.playing;
+  };
+
   audio.src(sources);
   return audio;
 };
