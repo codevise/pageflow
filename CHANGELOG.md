@@ -1,10 +1,13 @@
 # CHANGELOG
 
-### Changes on `master`
+### Version 0.8.1
 
-None so far
+2015-06-26
 
-[Compare changes](https://github.com/codevise/pageflow/compare/v0.8.0...master)
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.8.0...v0.8.1)
+
+- Bug fix: Fix Paperclip Version to 4.2 until 4.3 Issues are Resolved
+  ([#313](https://github.com/codevise/pageflow/pull/313))
 
 ### Version 0.8.0
 
