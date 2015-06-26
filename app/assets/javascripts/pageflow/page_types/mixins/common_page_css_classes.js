@@ -3,9 +3,20 @@ pageflow.commonPageCssClasses = {
     pageElement.toggleClass('invert', configuration.get('invert'));
     pageElement.toggleClass('hide_title', configuration.get('hide_title'));
 
-    _.each(pageflow.Page.textPositions, function(position) {
-      pageElement.removeClass('text_position_' + position);
-    });
-    pageElement.addClass('text_position_' + configuration.get('text_position'));
+    toggleModeClass(pageflow.Page.textPositions, 'text_position');
+    toggleModeClass(pageflow.Page.scrollIndicatorModes, 'scroll_indicator_mode');
+    toggleModeClass(pageflow.Page.scrollIndicatorOrientations, 'scroll_indicator_orientation');
+
+    function toggleModeClass(modes, name) {
+      var value = configuration.get(name);
+
+      _.each(modes, function(mode) {
+        pageElement.removeClass(name + '_' + mode);
+      });
+
+      if (value) {
+        pageElement.addClass(name + '_' + value);
+      }
+    }
   }
 };

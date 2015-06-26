@@ -5,6 +5,8 @@ module Pageflow
       classes << 'invert' if page.configuration['invert']
       classes << 'hide_title' if page.configuration['hide_title']
       classes << "text_position_#{page.configuration['text_position']}" if page.configuration['text_position'].present?
+      classes << "scroll_indicator_mode_#{page.configuration['scroll_indicator_mode']}" if page.configuration['scroll_indicator_mode'].present?
+      classes << "scroll_indicator_orientation_#{page.configuration['scroll_indicator_orientation']}" if page.configuration['scroll_indicator_orientation'].present?
       classes << 'chapter_beginning' if page.position == 0
       classes.join(' ')
     end

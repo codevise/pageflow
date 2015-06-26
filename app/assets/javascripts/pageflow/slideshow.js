@@ -39,7 +39,11 @@ pageflow.Slideshow = function($el, configurations) {
   }
 
   this.nextPageExists = function() {
-    return (!currentPage.is(pages.last()));
+    return this.scrollNavigator.nextPageExists(currentPage, pages);
+  };
+
+  this.previousPageExists = function() {
+    return this.scrollNavigator.previousPageExists(currentPage, pages);
   };
 
   this.back = function() {
@@ -168,11 +172,7 @@ pageflow.Slideshow = function($el, configurations) {
     pageflow.hideText.deactivate();
   });
 
-  var scrollIndicator = $el.find('.scroll_indicator');
-  scrollIndicator.scrollIndicator({parent : this});
-  scrollIndicator.on('click', _.bind(function(event) {
-    this.next();
-  }, this));
+  $el.find('.scroll_indicator').scrollIndicator({parent: this});
 
   this.scrollNavigator = new pageflow.DomOrderScrollNavigator(this);
 };
