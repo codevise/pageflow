@@ -30,6 +30,7 @@
 //= require ./cookies
 //= require ./events
 //= require ./page_type
+//= require ./page_transitions
 //= require ./asset_urls
 //= require ./preload
 //= require ./bandwidth

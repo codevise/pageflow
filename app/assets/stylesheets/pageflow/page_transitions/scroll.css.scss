@@ -1,0 +1,20 @@
+/* scroll transition to left*/
+
+section.scroll {
+  &.animate-in-forwards, &.animate-in-backwards {
+    z-index: 2;
+  }
+
+  &.animate-in-forwards {
+    @include animation(scroll-in-forwards forwards 1s 1);
+  }
+  &.animate-in-backwards {
+    @include animation(scroll-in-backwards forwards 1s 1);
+  }
+  &.animate-out-forwards {
+    @include animation(scroll-out-forwards forwards 1s 1);
+  }
+  &.animate-out-backwards {
+    @include animation(scroll-out-backwards forwards 1s 1);
+  }
+}

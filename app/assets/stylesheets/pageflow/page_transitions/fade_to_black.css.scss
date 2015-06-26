@@ -1,0 +1,93 @@
+/* fading background, vertical scrolling content */
+
+section.fade_to_black {
+
+  background-color: transparent;
+
+  &.invert {
+    background-color: transparent;
+  }
+
+  .active {
+    visibility: visible;
+    -webkit-backface-visibility: hidden;
+  }
+
+  &.animate-in-backwards {
+    display: block;
+  }
+
+  &.animate-in-forwards, &.animate-in-backwards {
+    z-index: 2;
+  }
+
+  .blackLayer {
+    display: none;
+  }
+  .backgroundArea {
+    opacity: 0;
+    background-color: black;
+    -webkit-backface-visibility: hidden;
+    @include transition(1s ease 1s);
+  }
+
+  &.invert .backgroundArea {
+    background-color: white;
+  }
+
+  &.animate-in-forwards .backgroundArea {
+    opacity: 0;
+  }
+  &.animate-out-forwards .backgroundArea{
+    opacity: 0;
+    @include transition(1s ease);
+  }
+  &.animate-in-backwards .backgroundArea{
+    opacity: 0;
+    @include transition(1s ease 1s);
+  }
+  &.animate-out-backwards .backgroundArea{
+    opacity: 0;
+    @include transition(1s ease);
+  }
+
+  &.active .backgroundArea {
+    opacity: 1;
+    @include transition(1s ease 1s);
+  }
+
+  .content {
+    @include transition(1s ease);
+    -webkit-backface-visibility: hidden;
+    opacity: 0;
+  }
+
+  &.active div.content, &.active .backgroundArea {
+    opacity: 1;
+    @include transition(1s ease 1s);
+  }
+
+  &.animate-in-forwards {
+    .content {
+      opacity: 0;
+    }
+  }
+  &.animate-out-forwards {
+    .content {
+      opacity: 0;
+      @include transition(1s ease);
+    }
+  }
+  &.animate-in-backwards {
+    .content {
+      opacity: 0;
+      @include transition(1s ease 1s);
+    }
+  }
+  &.animate-out-backwards {
+    .content {
+      opacity: 0;
+      @include transition(1s ease);
+    }
+  }
+}

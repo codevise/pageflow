@@ -4,8 +4,6 @@
       this.configuration = this.element.data('configuration') || this.options.configuration;
       this.index = this.options.index;
 
-      this.element.addClass(this.configuration.transition || "fade");
-
       this.preloaded = false;
       this.reinit();
     },
@@ -91,44 +89,58 @@
     activate: function(options) {
       options = options || {};
 
-      this.element
-        .removeClass('animate-out-forwards animate-out-backwards')
-        .addClass('animate-in-' + options.direction);
-
       setTimeout(_.bind(function() {
         this.element.addClass('active');
-      }, this), 5);
+      }, this), 0);
 
-      setTimeout(_.bind(function() {
+      var duration = this.animateTransition('in', options, function() {
         this.content.scroller('enable');
         this.content.scroller('afterAnimationHook');
-        this.element.removeClass('animate-in-forwards animate-in-backwards');
 
         this._triggerDelayedPageTypeHook('activated');
-      }, this), 1100);
+      });
 
       this.content.scroller('resetPosition', {position: options.position});
       this._trigger('activate', null, {page: this});
       this._triggerPageTypeHook('activating');
 
       this.prepareTimeout = setTimeout(_.bind(this.triggerPrepareNextPage, this), this.prepareNextPageTimeout());
+      return duration;
     },
 
     deactivate: function(options) {
-      this.element
-        .removeClass('active animate-in-forwards animate-in-backwards')
-        .addClass('animate-out-' + options.direction);
+      options = options || {};
 
-      setTimeout(_.bind(function() {
-        this.element.removeClass('animate-out-forwards animate-out-backwards');
+      this.element.removeClass('active');
+
+      var duration = this.animateTransition('out', options, function() {
         this._triggerPageTypeHook('deactivated');
-      }, this), 1100);
+      });
 
       this.content.scroller('disable');
       this._trigger('deactivate');
       this._triggerPageTypeHook('deactivating');
 
       clearTimeout(this.prepareTimeout);
+      return duration;
+    },
+
+    animateTransition: function(destination, options, callback) {
+      var otherDestination = destination === 'in' ? 'out' : 'in';
+      var transition = options.transition || this.configuration.transition || 'fade';
+      var duration = pageflow.pageTransitions.get(transition).duration;
+      var animateClass = transition + ' animate-' + destination + '-' + options.direction;
+
+      this.element
+        .removeClass('animate-' + otherDestination + '-forwards animate-' + otherDestination + '-backwards')
+        .addClass(animateClass);
+
+      setTimeout(_.bind(function() {
+        this.element.removeClass(animateClass);
+        callback.call(this);
+      }, this), duration);
+
+      return duration;
     },
 
     _triggerDelayedPageTypeHook: function(name) {

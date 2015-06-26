@@ -33,3 +33,21 @@
     @include transform(translateY(100%));
   }
 }
+
+@include keyframes(scroll-in-left) {
+  0%   { @include transform(translate(-100%,0)); }
+  100% { @include transform(translate(0,0)); }
+}
+
+@include keyframes(scroll-in-right) {
+  0%   { @include transform(translate(100%,0)); }
+  100% { @include transform(translate(0,0)); }
+}
+@include keyframes(scroll-out-left) {
+  0%   { @include transform(translate(0,0)); }
+  100% { @include transform(translate(-100%,0)); }
+}
+@include keyframes(scroll-out-right) {
+  0%   { @include transform(translate(0,0)); }
+  100% { @include transform(translate(100%,0)); }
+}

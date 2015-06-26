@@ -74,6 +74,5 @@ pageflow.Page = Backbone.Model.extend({
   }
 });
 
-pageflow.Page.transitions = ['fade', 'scroll'];
 pageflow.Page.linkedPagesLayouts = ['default', 'hero_top_left', 'hero_top_right'];
 pageflow.Page.textPositions = ['left', 'right'];
