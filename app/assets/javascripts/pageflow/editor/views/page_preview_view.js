@@ -28,19 +28,21 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
 
   render: function() {
     this.$el.html(this.pageTemplate());
+
     this.$el.attr('data-id', this.model.id);
     this.$el.attr('data-perma-id', this.model.get('perma_id'));
     this.$el.attr('id', this.model.get('perma_id'));
     this.$el.attr('data-chapter-id', this.model.get('chapter_id'));
+
     this.$el.data('template', this.model.get('template'));
     this.$el.data('configuration', this.model.get('configuration'));
 
-    this.$el.page();
-    this.updateChapterBeginningClass();
-    this.update();
-    this.$el.page('reactivate');
+    this.$el.on('pageenhanced', _.bind(function() {
+      this.update();
+      this.initEmbeddedViews();
 
-    this.initEmbeddedViews();
+      this.$el.page('reactivate');
+    }, this));
 
     return this;
   },
@@ -52,21 +54,16 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
     this.$el.data('template', this.model.get('template'));
 
     this.$el.page('reinit');
-    this.updateChapterBeginningClass();
-    this.update();
-    this.$el.page('reactivate');
-
-    this.initEmbeddedViews();
   },
 
   update: function() {
-    this.pageTypeHooks().update(this.$el, this.model.configuration);
-    _.extend(this.$el.data('configuration'), this.model.configuration.attributes);
+    this.$el.page('update', this.model.configuration);
 
     pageflow.events.trigger('page:update', this.model);
 
     this.refreshScroller();
     this.ensureTargetBlankForContentLinks();
+    this.updateChapterBeginningClass();
   },
 
   updateChapterBeginningClass: function() {
@@ -75,7 +72,7 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
   },
 
   pageTypeHooks: function() {
-    return this.$el.data('pageType');
+    return pageflow.pageType.get(this.model.get('template'));
   },
 
   pageTemplate: function() {

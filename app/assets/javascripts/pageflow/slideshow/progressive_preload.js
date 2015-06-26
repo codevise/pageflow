@@ -1,7 +1,7 @@
 pageflow.ProgressivePreload = function() {
   var run = null;
 
-  function Run(page) {
+  function Run(page, maxPreloadedPages) {
     var cancelled = false;
 
     this.cancel = function() {
@@ -9,16 +9,25 @@ pageflow.ProgressivePreload = function() {
     };
 
     this.start = function() {
-      return preload(page);
+      preload(page, 0);
     };
 
-    function preload(page) {
-      return $.when(page.page('preload')).pipe(function() {
+    function preload(page, counter) {
+      $.when(page.page('preload'), tick()).then(function() {
         var nextPage = page.next('.page');
-        if (!cancelled && nextPage.length) {
-          return preload(nextPage);
+        if (!cancelled && nextPage.length && counter < maxPreloadedPages) {
+          preload(nextPage, counter + 1);
         }
       });
+    }
+
+    // prevent stack level from becoming to deep
+    function tick() {
+      return new $.Deferred(function(deferred) {
+        setTimeout(function() {
+          deferred.resolve();
+        }, 1);
+      }).promise();
     }
   }
 
@@ -27,7 +36,7 @@ pageflow.ProgressivePreload = function() {
       run.cancel();
     }
 
-    run = new Run(page);
+    run = new Run(page, 10);
     run.start();
   };
 };

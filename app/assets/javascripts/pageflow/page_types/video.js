@@ -13,6 +13,10 @@ pageflow.pageType.register('video', _.extend({
     this.videoPlayer.ensureCreated();
   },
 
+  unprepare: function(pageElement, configuration) {
+    this.videoPlayer.scheduleDispose();
+  },
+
   activating: function(pageElement, configuration) {
     var videoPlayer = this.videoPlayer;
 

@@ -1,5 +1,6 @@
 (function($) {
-  $.widget('pageflow.page', {
+  $.widget('pageflow.nonLazyPage', {
+    widgetEventPrefix: 'page',
     _create: function() {
       this.configuration = this.element.data('configuration') || this.options.configuration;
       this.index = this.options.index;
@@ -16,6 +17,11 @@
       return this.configuration;
     },
 
+    update: function(configuration) {
+      _.extend(this.configuration, configuration.attributes);
+      this.pageType.update(this.element, configuration);
+    },
+
     reinit: function() {
       this.pageType = pageflow.pageType.get(this.element.data('template'));
       this.element.data('pageType', this.pageType);
@@ -25,7 +31,9 @@
       this.content.hideTextOnSwipe();
 
       this.pageType.scroller = this.content.scroller('instance');
+
       this._triggerPageTypeHook('enhance');
+      this._trigger('enhanced');
     },
 
     reactivate: function() {
@@ -62,16 +70,22 @@
       this._trigger('activate', null, {page: this});
       this._triggerPageTypeHook('activating');
       this._triggerDelayedPageTypeHook('activated');
-
-      this.prepareTimeout = setTimeout(_.bind(this.triggerPrepareNextPage, this), this.prepareNextPageTimeout());
     },
 
     prepare: function() {
       this._triggerPageTypeHook('prepare');
     },
 
+    unprepare: function() {
+      this._triggerPageTypeHook('unprepare');
+    },
+
     prepareNextPageTimeout: function() {
       return this.pageType.prepareNextPageTimeout;
+    },
+
+    linkedPages: function() {
+      return this._triggerPageTypeHook('linkedPages');
     },
 
     preload: function() {
@@ -104,7 +118,6 @@
       this._trigger('activate', null, {page: this});
       this._triggerPageTypeHook('activating');
 
-      this.prepareTimeout = setTimeout(_.bind(this.triggerPrepareNextPage, this), this.prepareNextPageTimeout());
       return duration;
     },
 
@@ -121,7 +134,6 @@
       this._trigger('deactivate');
       this._triggerPageTypeHook('deactivating');
 
-      clearTimeout(this.prepareTimeout);
       return duration;
     },
 
@@ -156,12 +168,6 @@
 
     _triggerPageTypeHook: function(name) {
       return this.pageType[name](this.element, this.configuration);
-    },
-
-    triggerPrepareNextPage: function() {
-      if($(this.element).next(".page").length > 0) {
-        $(this.element).next(".page").page('prepare', {});
-      }
     }
   });
 }(jQuery));
