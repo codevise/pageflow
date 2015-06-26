@@ -3,7 +3,7 @@ pageflow.app.addInitializer(function(options) {
     el: $('body')
   }).render();
 
-  pageflow.app.mainRegion.show(new pageflow.EntryPreviewView({
+  pageflow.app.previewRegion.show(new pageflow.EntryPreviewView({
     model: pageflow.entry
   }));
 
@@ -14,7 +14,8 @@ pageflow.app.addInitializer(function(options) {
 });
 
 pageflow.app.addRegions({
-  mainRegion: 'main',
+  previewRegion: '#entry_preview',
+  mainRegion: '#main_content',
   sidebarRegion: 'sidebar .container',
   dialogRegion: '.dialog_container',
   notificationsRegion: 'sidebar .notifications_container',

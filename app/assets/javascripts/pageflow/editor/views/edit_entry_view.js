@@ -52,8 +52,15 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
       var item = $('<li><a href="#"></a></li>');
       var link = item.find('a');
 
-      link.data('path', options.path);
+      if (options.path) {
+        link.data('path', options.path);
+      }
       link.text(I18n.t(options.translationKey));
+
+      if (options.click) {
+        $(link).click(options.click);
+      }
+
 
       view.ui.menu.append(item);
     });

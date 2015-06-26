@@ -12,6 +12,21 @@ pageflow.EditorApi = pageflow.Object.extend({
     this.fileSelectionHandlers = {};
 
     /**
+     *  Display Backbone/Marionette View inside the main panel
+     *  of the editor.
+     */
+    this.showViewInMainPanel = function(view) {
+      pageflow.app.mainRegion.show(view);
+    };
+
+    /**
+     *  Display the Pageflow-Preview inside the main panel.
+     */
+    this.showPreview = function() {
+      pageflow.app.mainRegion.$el.empty();
+    };
+
+    /**
      * Register additional router and controller for sidebar.
      *
      * Supported options:
@@ -44,6 +59,7 @@ pageflow.EditorApi = pageflow.Object.extend({
      * Supported options:
      * - translationKey: for the label
      * - path: route to link to
+     * - click: click handler
      */
     this.registerMainMenuItem = function(options) {
       this.mainMenuItems.push(options);
