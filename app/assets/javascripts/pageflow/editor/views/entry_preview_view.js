@@ -43,10 +43,8 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   onShow: function() {
     var slideshow = pageflow.Slideshow.setup({
       element: this.ui.entry,
-      history: false
+      simulateHistory: true
     });
-
-    slideshow.update();
 
     this.listenTo(this.model.pages, 'add', function() {
       slideshow.update();
