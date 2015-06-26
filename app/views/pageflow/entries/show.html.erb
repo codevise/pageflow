@@ -26,6 +26,7 @@
     pageflow.pages = <%= entry_pages_json_seed(@entry) %>;
     pageflow.audioFiles = <%= entry_audio_files_json_seed(@entry) %>;
     pageflow.entryId = <%= @entry.id %>;
+    pageflow.enabledFeatureNames = <%= @entry.enabled_feature_names.to_json.html_safe %>;
   </script>
 
   <%= render 'pageflow/entries/analytics', :entry => @entry %>

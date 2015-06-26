@@ -13,6 +13,7 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
         pageflow.Slideshow.setup({
           element: $(this),
           pages: pageflow.pages,
+          enabledFeatureNames: pageflow.enabledFeatureNames,
 
           beforeFirstUpdate: function() {
             $('.header').header({slideshow: pageflow.slides});
