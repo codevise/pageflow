@@ -62,10 +62,6 @@ module Pageflow
           thumbnail_candidates: video_thumbnail_candidates)
     end
 
-    def self.internal_links
-      new('internal_links', file_type_models: ['Pageflow::ImageFile'])
-    end
-
     def self.video
       new('video',
           file_type_models: ['Pageflow::ImageFile', 'Pageflow::VideoFile'],

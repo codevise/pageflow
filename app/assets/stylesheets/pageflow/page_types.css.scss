@@ -3,11 +3,9 @@
 @import "page_types/background-image";
 @import "page_types/background-video";
 @import "page_types/video";
-@import "page_types/internal_links";
 
 @include pageflow-page-type(audio);
 @include pageflow-page-type(audio_loop);
 @include pageflow-page-type(background_image);
 @include pageflow-page-type(background_video);
 @include pageflow-page-type(video);
-@include pageflow-page-type(internal_links);

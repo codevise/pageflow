@@ -124,31 +124,6 @@ module Pageflow
       }
     end
 
-    def page_thumbnail_item(page_ids, index, layout_name)
-      page_ids ||= {}
-      page = @entry.pages.find_by_perma_id(page_ids[index.to_s])
-
-      content_tag(:li,
-                  page ? page_thumbnail_link(page, page_thumbnail_hero?(index, layout_name)) : '',
-                  :data => {:reference_key => index},
-                  :class => page ? 'title_hover' : 'title_hover empty')
-    end
-
-    def page_thumbnail_hero?(index, layout_name)
-      index == {
-        'hero_top_left' => 1,
-        'hero_top_right' => 1
-      }[layout_name]
-    end
-
-    def page_thumbnail_link(page, hero = false)
-      link_to(content_tag(:span, raw(page.configuration['description']), :class => 'title'),
-              "##{page.perma_id}",
-              :title => page.title,
-              :data => {:page => page.id},
-              :class => ['thumbnail', page_thumbnail_image_class(page, hero)] * ' ')
-    end
-
     def page_thumbnail_image_class(page, hero)
       file_thumbnail_css_class(page.thumbnail_file, hero ? :link_thumbnail : :link_thumbnail_large)
     end
