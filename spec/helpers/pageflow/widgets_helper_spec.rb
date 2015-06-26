@@ -56,9 +56,10 @@ module Pageflow
     describe '#widget_types_collection_for_role' do
       it 'returns widget_types name by translated name' do
         widget_type = TestWidgetType.new(name: 'test_widget', roles: ['header'])
-        Pageflow.config.widget_types.register(widget_type)
+        config = Configuration.new
+        config.widget_types.register(widget_type)
 
-        result = helper.widget_types_collection_for_role('header')
+        result = helper.widget_types_collection_for_role(config, 'header')
 
         expect(result.size).to eq(1)
         expect(result.keys.first).to include('test_widget.widget_type_name')

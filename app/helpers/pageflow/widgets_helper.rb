@@ -22,8 +22,8 @@ module Pageflow
       end.join(' ')
     end
 
-    def widget_types_json_seeds
-      Pageflow.config.widget_types.each_with_object({}) do |widget_type, result|
+    def widget_types_json_seeds(config)
+      config.widget_types.each_with_object({}) do |widget_type, result|
         widget_type.roles.each do |role|
           result[role] ||= []
           result[role] << {
@@ -34,8 +34,8 @@ module Pageflow
       end.to_json.html_safe
     end
 
-    def widget_types_collection_for_role(role)
-      Pageflow.config.widget_types.find_all_by_role(role).each_with_object({}) do |widget_type, result|
+    def widget_types_collection_for_role(config, role)
+      config.widget_types.find_all_by_role(role).each_with_object({}) do |widget_type, result|
         result[I18n.t(widget_type.translation_key)] = widget_type.name
       end
     end
