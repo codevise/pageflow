@@ -6,7 +6,7 @@
 //= require pageflow/editor
 
 //= require_self
-//= require support/use_fake_xhr
+//= require_tree ./support
 
 window.support = {};
 window.expect = chai.expect;

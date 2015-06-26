@@ -82,7 +82,7 @@ pageflow.VideoPlayer.Lazy = function(template, options) {
     return videoPlayer ? videoPlayer.srcFromOptions() : null;
   };
 
-  _.each(['play', 'pause', 'prebuffer', 'src', 'on', 'load'], function(method) {
+  _.each(['play', 'playAndFadeIn', 'pause', 'fadeOutAndPause', 'prebuffer', 'src', 'on', 'load'], function(method) {
     that[method] = function(/* args */) {
       var args = arguments;
 

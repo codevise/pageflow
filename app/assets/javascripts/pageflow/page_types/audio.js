@@ -19,18 +19,9 @@ pageflow.pageType.register('audio', _.extend({
     $(firstContentElement[0]).attr('id','firstContent');
     //
 
-    this._ensureAudioPlayer(pageElement);
+    this._ensureAudioPlayer(pageElement, configuration);
 
     var that = this;
-
-    this.audioPlayer.readyPromise.then(function() {
-      that.audioPlayer.volume(pageflow.settings.get('volume'));
-      that.listenTo(pageflow.settings, "change:volume", function(model, value) {
-        that.audioPlayer.loadedPromise.then(function() {
-          that.fadeSound(that.audioPlayer, value, 40);
-        });
-      });
-    });
 
     $('body').on('keyup', function(e) {
       if(e.keyCode == 32){
@@ -49,17 +40,11 @@ pageflow.pageType.register('audio', _.extend({
     var that = this;
 
     if (!pageflow.browser.has('mobile platform')) {
-      if (configuration.autoplay === false) {
-        that.audioPlayer.volume(pageflow.settings.get('volume'));
-      } else {
+      if (configuration.autoplay !== false) {
         this.fadeInTimeout = setTimeout(function() {
           that.audioPlayer.readyPromise.then(function() {
             if (that.active) {
-              that.audioPlayer.volume(0);
-              that.audioPlayer.play();
-              that.audioPlayer.loadedPromise.then(function() {
-                that.fadeSound(that.audioPlayer, pageflow.settings.get('volume'), 1000);
-              });
+              that.audioPlayer.playAndFadeIn(1000);
             }
           });
         }, 1000);
@@ -96,7 +81,7 @@ pageflow.pageType.register('audio', _.extend({
       opacity: configuration.get('gradient_opacity') / 100
     });
 
-    this._ensureAudioPlayer(pageElement);
+    this._ensureAudioPlayer(pageElement, configuration.attributes);
     this.audioPlayer.src(configuration.getAudioFileSources('audio_file_id'));
   },
 
@@ -110,10 +95,13 @@ pageflow.pageType.register('audio', _.extend({
     };
   },
 
-  _ensureAudioPlayer: function(pageElement) {
+  _ensureAudioPlayer: function(pageElement, configuration) {
     this.audioPlayer = this.audioPlayer ||
       pageflow.AudioPlayer.fromScriptTag(pageElement.find('script[data-audio]'), {
         mediaEvents: true,
+
+        volumeFading: true,
+
         context: {
           page: pageElement.page('instance')
         }

@@ -161,3 +161,31 @@ pageflow.Slideshow = function($el, configurations) {
     this.next();
   }, this));
 };
+
+pageflow.Slideshow.setup = function(options) {
+  function configurationsById(pages) {
+    return _.reduce(pages, function(memo, page) {
+      memo[page.id] = page.configuration;
+      return memo;
+    }, {});
+  }
+
+  pageflow.slides = new pageflow.Slideshow(
+    options.element,
+    configurationsById(options.pages)
+  );
+
+  if (options.beforeFirstUpdate) {
+    options.beforeFirstUpdate();
+  }
+
+  pageflow.slides.update();
+
+  if (options.history !== false) {
+    pageflow.history = new pageflow.History(
+      pageflow.slides
+    );
+  }
+
+  return pageflow.slides;
+};

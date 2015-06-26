@@ -24,6 +24,7 @@
     pageflow.manualStart.enabled = <%= @entry.manual_start ? 'true' : 'false' %>;
     pageflow.visited.enabled = <%= @entry.emphasize_new_pages ? 'true' : 'false' %>;
     pageflow.pages = <%= entry_pages_json_seed(@entry) %>;
+    pageflow.audioFiles = <%= entry_audio_files_json_seed(@entry) %>;
     pageflow.entryId = <%= @entry.id %>;
   </script>
 

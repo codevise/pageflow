@@ -6,6 +6,7 @@
   "expr": true,
   "globals": {
     "jQuery": true,
+    "_": true,
     "Backbone": true,
     "I18n": true,
     "pageflow": true,

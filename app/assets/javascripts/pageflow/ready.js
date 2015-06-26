@@ -6,23 +6,22 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
       });
 
       $('[data-role=slideshow]').each(function() {
-        var configurationsById = _.reduce(pageflow.pages, function(memo, page) {
-          memo[page.id] = page.configuration;
-          return memo;
-        }, {});
-
-        pageflow.slides = new pageflow.Slideshow($(this), configurationsById);
-
-        $('.header').header({
-          slideshow: pageflow.slides
+        pageflow.Audio.setup({
+          audioFiles: pageflow.audioFiles
         });
-        $('.overview').overview();
-        $('.multimedia_alert').multimediaAlert();
 
-        pageflow.widgetTypes.enhance($('body'));
+        pageflow.Slideshow.setup({
+          element: $(this),
+          pages: pageflow.pages,
 
-        pageflow.slides.update();
-        pageflow.history = new pageflow.History(pageflow.slides);
+          beforeFirstUpdate: function() {
+            $('.header').header({slideshow: pageflow.slides});
+            $('.overview').overview();
+            $('.multimedia_alert').multimediaAlert();
+
+            pageflow.widgetTypes.enhance($('body'));
+          }
+        });
       });
 
       pageflow.links.setup();

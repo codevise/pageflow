@@ -1,4 +1,7 @@
+//= require ./media_player
+
 //= require_self
+
 //= require ./video_player/media_events
 //= require ./video_player/prebuffering
 //= require ./video_player/buffer_underrun_waiting
@@ -24,6 +27,8 @@ pageflow.VideoPlayer = function(element, options) {
   if (options.bufferUnderrunWaiting) {
     pageflow.VideoPlayer.bufferUnderrunWaiting(player);
   }
+
+  pageflow.mediaPlayer.enhance(player, options);
 
   return player;
 };
