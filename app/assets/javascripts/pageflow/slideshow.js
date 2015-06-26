@@ -6,12 +6,14 @@
 //=require ./slideshow/swipe_gesture
 //=require ./slideshow/hide_text
 //=require ./slideshow/hide_text_on_swipe
+//=require ./slideshow/dom_order_scroll_navigator
 
 pageflow.Slideshow = function($el, configurations) {
   var transitionDuration = 1000,
       transitioning = false,
       preload = new pageflow.ProgressivePreload(),
       currentPage = $(),
+      that = this,
       currentPageIndex, pages;
 
   configurations = configurations || {};
@@ -42,20 +44,20 @@ pageflow.Slideshow = function($el, configurations) {
   };
 
   this.back = function() {
-    this.goTo(currentPage.prev('.page'), {position: 'bottom'});
+    this.scrollNavigator.back(currentPage);
   };
 
   this.next = function() {
-    this.goTo(currentPage.next('.page'));
+    this.scrollNavigator.next(currentPage);
   };
 
-  this.goToById = function(id) {
-    this.goTo($el.find('[data-id=' + id + ']'));
+  this.goToById = function(id, options) {
+    return this.goTo($el.find('[data-id=' + id + ']'), options);
   };
 
-  this.goToByPermaId = function(permaId) {
+  this.goToByPermaId = function(permaId, options) {
     if (permaId) {
-      this.goTo($el.find('#' + permaId));
+      return this.goTo($el.find('#' + permaId), options);
     }
   };
 
@@ -68,7 +70,7 @@ pageflow.Slideshow = function($el, configurations) {
         currentPage = page;
         currentPageIndex = currentPage.index();
 
-        var direction = currentPageIndex > previousPage.index() ? 'forwards' : 'backwards';
+        var direction = this.scrollNavigator.getTransitionDirection(previousPage, currentPage, options);
 
         previousPage.page('deactivate', {direction: direction});
         currentPage.page('activate', {direction: direction, position: options.position});
@@ -76,11 +78,13 @@ pageflow.Slideshow = function($el, configurations) {
         preload.start(currentPage);
         $el.trigger('slideshowchangepage');
       }, this);
+
+      return true;
     }
   };
 
   this.goToFirstPage = function() {
-    this.goTo(pages.first());
+    return this.goTo(pages.first());
   };
 
   this.update = function() {
@@ -116,7 +120,7 @@ pageflow.Slideshow = function($el, configurations) {
 
   function findNewCurrentPage() {
     if (!currentPage.length) {
-      return pages.first();
+      return that.scrollNavigator.getLandingPage(pages);
     }
     else if (!currentPage.parent().length) {
       return nearestPage(currentPageIndex);
@@ -160,6 +164,8 @@ pageflow.Slideshow = function($el, configurations) {
   scrollIndicator.on('click', _.bind(function(event) {
     this.next();
   }, this));
+
+  this.scrollNavigator = new pageflow.DomOrderScrollNavigator(this);
 };
 
 pageflow.Slideshow.setup = function(options) {

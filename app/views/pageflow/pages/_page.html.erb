@@ -1,5 +1,5 @@
 <%= cache page do %>
-  <%= content_tag :section, :id => page.perma_id, :class => page_css_class(page), :data => {:template => page.template, :id => page.id} do %>
+  <%= content_tag :section, :id => page.perma_id, :class => page_css_class(page), :data => {:template => page.template, :id => page.id, :chapter_id => page.chapter_id} do %>
     <%= render :template => Pageflow.config.page_types.find_by_name!(page.template).template_path, :locals => {:page => page, :configuration => page.configuration} %>
     <a class="to_top" href="#content"><%= t('.goto_top') %></a>
   <% end %>
