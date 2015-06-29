@@ -29,6 +29,8 @@
       this._initNearBottomEvents();
       this._initNearTopEvents();
       this._initMoveEvents();
+
+      this._onScrollEndCallbacks = new $.Callbacks();
     },
 
     enable: function() {
@@ -65,6 +67,7 @@
         time,
         easing
       );
+      this._onScrollEndCallbacks.fire();
     },
 
     refresh: function() {
@@ -101,6 +104,7 @@
 
     onScrollEnd: function(callback) {
       this.iscroll.on('scrollEnd', callback);
+      this._onScrollEndCallbacks.add(callback);
     },
 
     _initMoveEvents: function() {
