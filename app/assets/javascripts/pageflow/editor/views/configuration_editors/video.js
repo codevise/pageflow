@@ -33,7 +33,7 @@ pageflow.ConfigurationEditorView.register('video', {
         this.input('auto_change_page_on_ended', pageflow.CheckBoxInputView);
       }
 
-      this.group('options');
+      this.group('options', {canPauseAtmo: true});
     });
   }
 });
