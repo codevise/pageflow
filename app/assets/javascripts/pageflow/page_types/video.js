@@ -185,6 +185,8 @@ pageflow.pageType.register('video', _.extend({
           scrollIndicator = $('.entry .scroll_indicator'),
           pageContent = pageElement.find('.scroller, .controls, .shadow');
 
+      pageContent.addClass('lock-showing');
+
       videoPlayer.on("pause", function() {
         pageContent.addClass('lock-showing');
 
