@@ -15,8 +15,9 @@ pageflow.Slideshow = function($el, configurations) {
   var transitioning = false,
       preload = new pageflow.ProgressivePreload(),
       currentPage = $(),
+      pages = $(),
       that = this,
-      currentPageIndex, pages;
+      currentPageIndex;
 
   configurations = configurations || {};
 
@@ -51,6 +52,14 @@ pageflow.Slideshow = function($el, configurations) {
 
   this.previousPageExists = function() {
     return this.scrollNavigator.previousPageExists(currentPage, pages);
+  };
+
+  this.isOnLandingPage = function() {
+    return currentPage.is(this.scrollNavigator.getLandingPage(pages));
+  };
+
+  this.goToLandingPage = function() {
+    this.goTo(this.scrollNavigator.getLandingPage(pages));
   };
 
   this.back = function() {
@@ -176,7 +185,7 @@ pageflow.Slideshow = function($el, configurations) {
   }, this));
 
   $el.on('click', 'a.to_top', _.bind(function() {
-    this.goToFirstPage();
+    this.goToLandingPage();
   }, this));
 
   $(window).on('resize', this.triggerResizeHooks);
