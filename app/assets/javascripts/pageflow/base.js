@@ -51,6 +51,7 @@
 //= require ./highlighted_page
 //= require ./chapter_filter
 //= require ./fullscreen
+//= require ./multimedia_alert
 
 //= require ./settings
 
