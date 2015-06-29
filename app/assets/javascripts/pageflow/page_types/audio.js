@@ -111,5 +111,12 @@ pageflow.pageType.register('audio', _.extend({
     pageElement.find('.vjs-controls').playerControls({
       player: this.audioPlayer
     });
+
+    pageElement.find('.volume-control').volumeSlider({
+      orientation: 'v'
+    });
+
+    pageElement.find('.player_mute').muteButton();
+    pageElement.find('.player_skip').skipPageButton();
   }
 }, pageflow.volumeFade, pageflow.infoBox, pageflow.commonPageCssClasses));
