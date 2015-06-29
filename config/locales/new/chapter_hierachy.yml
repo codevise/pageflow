@@ -27,6 +27,7 @@ de:
       "pageflow/chapter":
         parent_page_perma_id: "Übergeordnete Seite"
         navigation_bar_mode: "Navigationsleiste"
+        display_parent_page_button: "'Übergeordnete Seite'-Button anzeigen"
     values:
       "pageflow/chapter":
         navigation_bar_mode:

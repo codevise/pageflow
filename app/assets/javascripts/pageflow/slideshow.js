@@ -41,6 +41,10 @@ pageflow.Slideshow = function($el, configurations) {
     return result;
   }
 
+  function currentPagePermaId() {
+    return parseInt(currentPage.attr('id'), 10);
+  }
+
   this.nextPageExists = function() {
     return this.scrollNavigator.nextPageExists(currentPage, pages);
   };
@@ -55,6 +59,14 @@ pageflow.Slideshow = function($el, configurations) {
 
   this.next = function() {
     this.scrollNavigator.next(currentPage);
+  };
+
+  this.parentPageExists = function() {
+    return !!pageflow.entryData.getParentPagePermaIdByPagePermaId(currentPagePermaId());
+  };
+
+  this.goToParentPage = function() {
+    this.goToByPermaId(pageflow.entryData.getParentPagePermaIdByPagePermaId(currentPagePermaId()));
   };
 
   this.goToById = function(id, options) {
