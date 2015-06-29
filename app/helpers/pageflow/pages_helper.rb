@@ -7,8 +7,21 @@ module Pageflow
       classes << "text_position_#{page.configuration['text_position']}" if page.configuration['text_position'].present?
       classes << "scroll_indicator_mode_#{page.configuration['scroll_indicator_mode']}" if page.configuration['scroll_indicator_mode'].present?
       classes << "scroll_indicator_orientation_#{page.configuration['scroll_indicator_orientation']}" if page.configuration['scroll_indicator_orientation'].present?
+      classes << "delayed_text_fade_in_#{page.configuration['delayed_text_fade_in']}" if page.configuration['delayed_text_fade_in'].present?
       classes << 'chapter_beginning' if page.position == 0
+      classes << 'no_text_content' if !page_has_content(page)
       classes.join(' ')
+    end
+
+    # @api private
+    def page_has_content(page)
+      has_title = ['title','subtitle','tagline'].any? do |attribute|
+        page.configuration[attribute].present?
+      end
+
+      has_text = strip_tags(page.configuration['text']).present?
+
+      (has_title && !page.configuration['hide_title']) || has_text
     end
 
     def page_navigation_css_class(page)
@@ -21,7 +34,9 @@ module Pageflow
 
     def shadow_div(options = {})
       style = options[:opacity] ? "opacity: #{options[:opacity] / 100.0};" : nil
-      content_tag(:div, '', :class => 'shadow', :style => style)
+      content_tag(:div, '', :class => 'shadow_wrapper') do
+        content_tag(:div, '', :class => 'shadow', :style => style)
+      end
     end
 
     def mobile_poster_image_div(config = {})

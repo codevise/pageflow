@@ -79,3 +79,4 @@ pageflow.Page.textPositions = ['left', 'right'];
 
 pageflow.Page.scrollIndicatorModes = ['all', 'only_back', 'only_next', 'non'];
 pageflow.Page.scrollIndicatorOrientations = ['vertical', 'horizontal'];
+pageflow.Page.delayedTextFadeIn = ['no_fade', 'short', 'medium', 'long'];
