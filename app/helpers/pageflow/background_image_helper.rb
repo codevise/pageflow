@@ -16,6 +16,11 @@ module Pageflow
       end
     end
 
+    def background_image_lazy_loading_css_class(prefix, model)
+      css_class = [prefix, model.id].join('_')
+      ".load_all_images .#{css_class}, .load_image.#{css_class}"
+    end
+
     class Div
       FILE_TYPE_CSS_CLASS_PREFIXES = {
         'image_file' => 'image',

@@ -12,17 +12,20 @@
     },
 
     backgroundImage: function(element) {
-      $(element).parent().addClass('load_images');
+      var that = this;
+      var promises = [];
 
-      if ($(element).length) {
-        var propertyValue = window.getComputedStyle($(element)[0]).getPropertyValue('background-image');
+      $(element).addClass('load_image');
+
+      $(element).each(function() {
+        var propertyValue = window.getComputedStyle(this).getPropertyValue('background-image');
 
         if (propertyValue.match(/^url/)) {
-          return this.image(propertyValue.replace(/^url\(['"]?/, '').replace(/['"]?\)$/, ''));
+          promises.push(that.image(propertyValue.replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '')));
         }
-      }
+      });
 
-      return $.Deferred().resolve().promise();
+      return $.when.apply(null, promises);
     }
   };
 }());

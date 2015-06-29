@@ -3,13 +3,13 @@
     <% page_media_breakpoints.each do |style, condition| %>
       <%= media_query(condition) do %>
         <% @entry.image_files.each do |image_file| %>
-          .load_images .image_<%= image_file.id %> {
+          <%= background_image_lazy_loading_css_class('image', image_file) %> {
             background-image: url('<%= image_file.attachment.url(style) %>');
           }
         <% end %>
 
         <% @entry.video_files.each do |video_file| %>
-          .load_images .video_poster_<%= video_file.id %> {
+          <%= background_image_lazy_loading_css_class('video_poster', video_file) %> {
             background-image: url('<%= video_file.poster.url(style) %>');
           }
         <% end %>
@@ -19,7 +19,7 @@
     <% page_media_breakpoints.each do |style, condition| %>
       <%= media_query(condition) do %>
         <% @entry.image_files.each do |image_file| %>
-          .load_images .image_panorama_<%= image_file.id %> {
+          <%= background_image_lazy_loading_css_class('image_panorama', image_file) %> {
             background-image: url('<%= image_file.attachment.url("panorama_#{style}") %>');
           }
         <% end %>
