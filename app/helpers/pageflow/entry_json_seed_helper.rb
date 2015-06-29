@@ -7,11 +7,18 @@ module Pageflow
 
     def entry_json_seed(entry)
       seed = {
+        theming: entry_theming_seed(entry),
         chapter_configurations: entry_chapter_configurations_seed(entry),
         pages: entry_pages_seed(entry)
       }
 
       sanitize_json(seed.to_json).html_safe
+    end
+
+    def entry_theming_seed(entry)
+      {
+        page_change_by_scrolling: entry.theming.theme.page_change_by_scrolling?
+      }
     end
 
     def entry_chapter_configurations_seed(entry)

@@ -19,5 +19,9 @@ module Pageflow
     def has_scroll_back_indicator?
       !!@options[:scroll_back_indicator]
     end
+
+    def page_change_by_scrolling?
+      !@options[:no_page_change_by_scrolling]
+    end
   end
 end

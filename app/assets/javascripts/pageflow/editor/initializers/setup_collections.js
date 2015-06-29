@@ -13,7 +13,8 @@ pageflow.app.addInitializer(function(options) {
 
   pageflow.entryData = new pageflow.PreviewEntryData({
     chapters: pageflow.chapters,
-    pages: pageflow.pages
+    pages: pageflow.pages,
+    theming: pageflow.theming
   });
 
   pageflow.pages.sort();
