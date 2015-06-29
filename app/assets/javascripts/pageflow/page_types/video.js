@@ -227,6 +227,7 @@ pageflow.pageType.register('video', _.extend({
 
       pageElement.find('.player_mute').muteButton();
       pageElement.find('.player_skip').skipPageButton();
+      pageElement.find('.player_fullscreen').fullscreenButton();
 
       function autoHideControls() {
         showControls();
