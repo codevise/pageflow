@@ -16,6 +16,16 @@
       <% end %>
     <% end %>
 
+    <% page_media_breakpoints.each do |style, condition| %>
+      <%= media_query(condition) do %>
+        <% @entry.image_files.each do |image_file| %>
+          .load_images .image_panorama_<%= image_file.id %> {
+            background-image: url('<%= image_file.attachment.url("panorama_#{style}") %>');
+          }
+        <% end %>
+      <% end %>
+    <% end %>
+
     <%= file_thumbnails_css(@entry) %>
     <%= render 'pageflow/entries/theming' %>
 <% end %>

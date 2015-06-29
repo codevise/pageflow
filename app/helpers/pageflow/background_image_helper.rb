@@ -17,6 +17,11 @@ module Pageflow
     end
 
     class Div
+      FILE_TYPE_CSS_CLASS_PREFIXES = {
+        'image_file' => 'image',
+        'video_file' => 'video_poster',
+      }
+
       attr_reader :configuration, :property_base_name, :options
 
       delegate :content_tag, :to => :@template
@@ -35,9 +40,10 @@ module Pageflow
       protected
 
       def data_attributes
+        options.slice(:style_group)
       end
 
-      def image_id
+      def file_id
         configuration["#{property_base_name}_id"]
       end
 
@@ -48,7 +54,15 @@ module Pageflow
       private
 
       def css_class
-        ["background background_image image_#{image_id || 'none'}", options[:class]].compact.join(' ')
+        ["background background_image #{image_css_class}", options[:class]].compact.join(' ')
+      end
+
+      def image_css_class
+        [image_css_class_prefix, options[:style_group], file_id || 'none'].compact.join('_')
+      end
+
+      def image_css_class_prefix
+        FILE_TYPE_CSS_CLASS_PREFIXES.fetch(options.fetch(:file_type, 'image_file'))
       end
 
       def background_position(coord)
@@ -59,8 +73,10 @@ module Pageflow
 
     class DivWithSizeAttributes < Div
       def data_attributes
-        if image_file
-          {:width => image_file.width, :height => image_file.height}
+        if file
+          super.merge(:width => file.width, :height => file.height)
+        else
+          super
         end
       end
 
@@ -72,17 +88,27 @@ module Pageflow
         end
       end
 
+      private
+
       def padding_top
-        if image_file
-          image_file.height / image_file.width.to_f * 100
+        if file
+          file.height / file.width.to_f * 100
         else
           0
         end
       end
 
-      def image_file
-        @image_file ||= (ImageFile.find_by_id(image_id) || :none)
-        @image_file == :none ? nil : @image_file
+      def file
+        @file ||= (find_file || :none)
+        @file == :none ? nil : @file
+      end
+
+      def find_file
+        file_type.model.find_by_id(file_id)
+      end
+
+      def file_type
+        Pageflow.config.file_types.find_by_collection_name!(options.fetch(:file_type, 'image_file').pluralize)
       end
     end
   end

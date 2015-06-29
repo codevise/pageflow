@@ -22,11 +22,13 @@ pageflow.Configuration = Backbone.Model.extend({
     return this.parent.id;
   },
 
-  getImageFileUrl: function(attribute) {
+  getImageFileUrl: function(attribute, options) {
+    options = options || {};
+
     var file = this.getImageFile(attribute);
 
     if (file && file.isReady()) {
-      return file.get('url');
+      return file.get(options.styleGroup ? options.styleGroup + '_url' : 'url');
     }
 
     return '';
