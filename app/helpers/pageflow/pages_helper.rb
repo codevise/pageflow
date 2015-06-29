@@ -27,6 +27,7 @@ module Pageflow
     def page_navigation_css_class(page)
       classes = [page.template]
       classes << 'chapter_beginning' if page.position == 0
+      classes << 'emphasized' if page.configuration['emphasize_in_navigation']
       classes << "chapter_#{page.chapter.position}"
       page.chapter.position % 2 == 0 ? classes << 'chapter_even' : classes << 'chapter_odd'
       classes.join(' ')

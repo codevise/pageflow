@@ -1,5 +1,10 @@
 pageflow.ConfigurationEditorTabView.groups.define('options', function(options) {
   this.input('display_in_navigation', pageflow.CheckBoxInputView);
+
+  if (pageflow.features.isEnabled('emphasize_pages_in_navigation')) {
+    this.input('emphasize_in_navigation', pageflow.CheckBoxInputView);
+  }
+
   this.group('page_transitions');
 
   if (pageflow.features.isEnabled('delayed_text_fade_in')) {
