@@ -1,0 +1,12 @@
+<%= link_to("http://www.facebook.com/sharer/sharer.php?u=#{ERB::Util.url_encode(pretty_entry_url(entry))}&t=#{ERB::Util.url_encode(entry.title)}",
+            :target => "_blank",
+            :tabindex => "2",
+            :class => "share facebook",
+            :data => {
+              :"share-page" => "http://www.facebook.com/sharer/sharer.php?u=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId"
+            }) do %>
+
+    <span class="hint"><%= t('pageflow.widgets.share_menu.share_with_facebook') %></span>
+    <span class="share_facebook button"></span>
+    <p>facebook</p>
+<% end %>

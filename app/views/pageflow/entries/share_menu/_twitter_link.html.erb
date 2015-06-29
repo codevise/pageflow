@@ -1,0 +1,12 @@
+<%= link_to("http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}",
+            :target => "_blank",
+            :tabindex => "2",
+            :class => "share twitter",
+            :data => {
+              :"share-page" => "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId"
+            }) do %>
+
+    <span class="hint"><%= t('pageflow.widgets.share_menu.share_with_twitter') %></span>
+    <span class="share_twitter button"></span>
+    <p>twitter</p>
+<% end %>

@@ -16,25 +16,13 @@
     <div class="wrapper">
       <ul>
         <li>
-          <%= link_to "http://www.facebook.com/sharer/sharer.php?u=#{ERB::Util.url_encode(pretty_entry_url(entry))}&t=#{ERB::Util.url_encode(entry.title)}", :target => "_blank", :tabindex => "2", :class => "share facebook", :data => { :"share-page" => "http://www.facebook.com/sharer/sharer.php?u=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
-            <span class="hint"><%= t('pageflow.widgets.share_menu.share_with_facebook') %></span>
-            <span class="share_facebook button"></span>
-            <p>facebook</p>
-          <% end %>
+          <%= render 'pageflow/entries/share_menu/facebook_link', entry: entry %>
         </li>
         <li>
-          <%= link_to "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share twitter", :data => { :"share-page" => "http://twitter.com/home?status=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
-            <span class="hint"><%= t('pageflow.widgets.share_menu.share_with_twitter') %></span>
-            <span class="share_twitter button"></span>
-            <p>Twitter</p>
-          <% end %>
+          <%= render 'pageflow/entries/share_menu/twitter_link', entry: entry %>
         </li>
         <li>
-          <%= link_to "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}", :target => "_blank", :tabindex => "2", :class => "share google", :data => { :"share-page" => "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId" } do %>
-            <span class="hint"><%= t('pageflow.widgets.share_menu.share_with_google') %></span>
-            <span class="share_google button"></span>
-            <p>Google+</p>
-          <% end %>
+          <%= render 'pageflow/entries/share_menu/google_link', entry: entry %>
         </li>
       </ul>
     </div>
