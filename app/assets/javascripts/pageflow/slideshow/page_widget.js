@@ -28,9 +28,9 @@
 
       this.content = this.element.find('.scroller');
       this.content.scroller(this.pageType.scrollerOptions || {});
-      this.content.hideTextOnSwipe();
-
       this.pageType.scroller = this.content.scroller('instance');
+
+      this._setupHideTextOnSwipe();
 
       this._triggerPageTypeHook('enhance');
       this._trigger('enhanced');
@@ -168,6 +168,13 @@
 
     _triggerPageTypeHook: function(name) {
       return this.pageType[name](this.element, this.configuration);
+    },
+
+    _setupHideTextOnSwipe: function() {
+      if (pageflow.entryData.getThemingOption('hide_text_on_swipe') &&
+          !this.pageType.noHideTextOnSwipe) {
+        this.content.hideTextOnSwipe();
+      }
     }
   });
 }(jQuery));
