@@ -158,6 +158,16 @@ pageflow.pageType.register('video', _.extend({
         }
       });
 
+      controls.find('a, [tabindex]').on({
+        focus: function() {
+          controls.addClass('focussed');
+        },
+
+        blur: function() {
+          controls.removeClass('focussed');
+        }
+      });
+
       videoPlayer.on('bufferunderrun', function() {
         loadingSpinner.addClass('showing-for-underrun');
       });
