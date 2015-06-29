@@ -16,4 +16,4 @@ de:
   activerecord:
     attributes:
       "pageflow/page":
-        atmo_audio_file_id: "Am Ende weiterblättern"
+        auto_change_page_on_ended: "Am Ende weiterblättern"
