@@ -1,9 +1,9 @@
-.page_link_input {
+.reference_input {
   position: relative;
   white-space: nowrap;
   height: 80px;
 
-  .page_thumbnail {
+  .model_thumbnail {
     width: 60px;
     height: 60px;
     vertical-align: bottom;
@@ -11,7 +11,7 @@
     border: solid 1px #888;
   }
 
-  div.page_thumbnail {
+  div.model_thumbnail {
     float: left;
   }
 
@@ -19,7 +19,7 @@
     height: 100%;
   }
 
-  div.page_title {
+  div.title {
     position: absolute;
     top: 20px;
     left: 70px;
