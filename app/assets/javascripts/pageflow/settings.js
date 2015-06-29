@@ -4,10 +4,12 @@ pageflow.Settings = Backbone.Model.extend({
   },
 
   initialize: function() {
-    if (window.localStorage) {
-      if (localStorage['pageflow.settings']) {
+    var storage = this.getLocalStorage();
+
+    if (storage) {
+      if (storage['pageflow.settings']) {
         try {
-          this.set(JSON.parse(localStorage['pageflow.settings']));
+          this.set(JSON.parse(storage['pageflow.settings']));
         }
         catch(e) {
           pageflow.log(e);
@@ -15,8 +17,19 @@ pageflow.Settings = Backbone.Model.extend({
       }
 
       this.on('change', function() {
-        localStorage['pageflow.settings'] = JSON.stringify(this);
+        storage['pageflow.settings'] = JSON.stringify(this);
       });
+    }
+  },
+
+  getLocalStorage: function() {
+    try {
+      return window.localStorage;
+    }
+    catch(e) {
+      // Safari throws SecurityError when accessing window.localStorage
+      // if cookies/website data are disabled.
+      return null;
     }
   }
 });
