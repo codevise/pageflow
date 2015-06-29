@@ -70,6 +70,9 @@ pageflow.pageType.register('video', _.extend({
     this.fadeSound(this.videoPlayer, 0, 400);
     this.stopListening();
     $('body').off('keyup');
+
+    $('.entry .scroll_indicator').removeClass('faded');
+    clearTimeout(this.scrollIndicatorTimeout);
   },
 
   deactivated: function(pageElement, configuration) {
@@ -107,6 +110,8 @@ pageflow.pageType.register('video', _.extend({
   },
 
   _initVideoPlayer: function(pageElement, configuration) {
+    var that = this;
+
     var videoPlayer = new pageflow.VideoPlayer.Lazy(pageElement.find('[data-template=video]'), {
       bufferUnderrunWaiting: true,
       controls: true,
@@ -211,9 +216,12 @@ pageflow.pageType.register('video', _.extend({
       videoPlayer.on("play", function() {
         pageContent.removeClass('lock-showing');
 
-        scrollIndicatorTimeout = setTimeout(function() {
-          scrollIndicator.addClass('faded');
-        }, 2000);
+        if (pageElement.hasClass('active')) {
+          clearTimeout(scrollIndicatorTimeout);
+          scrollIndicatorTimeout = that.scrollIndicatorTimeout = setTimeout(function() {
+            scrollIndicator.addClass('faded');
+          }, 2000);
+        }
       });
 
       videoPlayer.on("ended", function() {
