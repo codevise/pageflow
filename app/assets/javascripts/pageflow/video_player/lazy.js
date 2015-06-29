@@ -25,6 +25,10 @@ pageflow.VideoPlayer.Lazy = function(template, options) {
     }
   };
 
+  this.isPresent = function() {
+    return videoTag && !disposeTimeout;
+  };
+
   this.dispose = function() {
     if (videoTag && !pageflow.browser.has('mobile platform')) {
       this.setEmptySrc();

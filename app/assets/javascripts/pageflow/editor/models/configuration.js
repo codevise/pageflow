@@ -110,7 +110,7 @@ pageflow.Configuration = Backbone.Model.extend({
 
     return _.map(sources, function(source) {
       var clone = _.clone(source);
-      clone.src = clone.src + '?e=' + parent.id;
+      clone.src = clone.src + '?e=' + parent.id + '&t=' + new Date().getTime();
       return clone;
     });
   }
