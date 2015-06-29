@@ -27,6 +27,8 @@
 //= require_self
 
 //= require ./object
+//= require ./entry_data
+//= require ./seed_entry_data
 //= require ./cookies
 //= require ./events
 //= require ./page_type
@@ -46,6 +48,8 @@
 //= require ./widget_types
 //= require ./built_in_widget_types
 //= require ./links
+//= require ./highlighted_page
+//= require ./chapter_filter
 
 //= require ./settings
 

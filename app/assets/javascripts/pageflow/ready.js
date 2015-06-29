@@ -6,6 +6,10 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
       });
 
       $('[data-role=slideshow]').each(function() {
+        pageflow.entryData = new pageflow.SeedEntryData(
+          pageflow.seed
+        );
+
         pageflow.Audio.setup({
           audioFiles: pageflow.audioFiles
         });
