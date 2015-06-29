@@ -1,0 +1,19 @@
+de:
+  pageflow:
+    editor:
+      templates:
+        list_blank_slate:
+          text: "(Keine Einträge)"
+        list_item:
+          edit: "Bearbeiten"
+          remove: "Löschen"
+
+en:
+  pageflow:
+    editor:
+      templates:
+        list_blank_slate:
+          text: "(No items)"
+        list_item:
+          edit: "Edit"
+          remove: "Delete"

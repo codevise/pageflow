@@ -1,0 +1,54 @@
+.drop_down_button {
+  display: inline-block;
+  position: relative;
+
+  > button {
+    @include icon-button;
+  }
+}
+
+.drop_down_button_menu.is_visible {
+  @include transition(visibility 0ms, opacity 100ms);
+  visibility: visible;
+  pointer-events: all;
+  opacity: 1;
+}
+
+.drop_down_button_list {
+  position: relative;
+  background-color: #eee;
+  border: 1px solid #ccc;
+}
+
+.drop_down_button_menu {
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  @include transition(visibility 100ms, opacity 100ms);
+
+  position: absolute;
+  z-index: 1;
+  padding: 1px;
+  border: solid 1px #aaa;
+  background-color: #eee;
+}
+
+.drop_down_button_item {
+  a {
+    display: block;
+    padding: 7px 15px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+
+  &.is_disabled a {
+    color: #ddd;
+
+    &:hover {
+      background-color: inherit;
+    }
+  }
+}
