@@ -8,27 +8,36 @@ section.fade_to_black {
     background-color: transparent;
   }
 
-  .active {
-    visibility: visible;
-    -webkit-backface-visibility: hidden;
+  .blackLayer {
+    @include transition(1s ease);
+    opacity: 0;
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+  }
+
+  &.invert .blackLayer {
+    background-color: white;
+  }
+
+  &.active .blackLayer {
+    opacity: 1;
   }
 
   &.animate-in-backwards {
     display: block;
   }
 
-  &.animate-in-forwards, &.animate-in-backwards {
+  &.animate-in-forwards, &.animate-in-backwards, &.active {
     z-index: 2;
   }
 
-  .blackLayer {
-    display: none;
-  }
   .backgroundArea {
     opacity: 0;
     background-color: black;
     -webkit-backface-visibility: hidden;
-    @include transition(1s ease 1s);
+    @include transition(opacity 1s ease 1s);
   }
 
   &.invert .backgroundArea {
@@ -62,7 +71,12 @@ section.fade_to_black {
     opacity: 0;
   }
 
-  &.active div.content, &.active .backgroundArea {
+  &.active .backgroundArea {
+    opacity: 1;
+    @include transition(1s ease 1s);
+  }
+
+  &.active div.content {
     opacity: 1;
     @include transition(1s ease 1s);
   }
