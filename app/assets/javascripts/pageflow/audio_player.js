@@ -6,6 +6,7 @@
 //= require ./audio_player/null
 //= require ./audio_player/seek_with_invalid_state_handling
 //= require ./audio_player/rewind_method
+//= require ./audio_player/pause_in_background
 
 pageflow.AudioPlayer = function(sources, options) {
   options = options || {};
@@ -36,6 +37,10 @@ pageflow.AudioPlayer = function(sources, options) {
 
   if (options.mediaEvents) {
     pageflow.AudioPlayer.mediaEvents(audio, options.context);
+  }
+
+  if (options.pauseInBackground && pageflow.browser.has('mobile platform')) {
+    pageflow.AudioPlayer.pauseInBackground(audio);
   }
 
   pageflow.mediaPlayer.enhance(audio, _.extend({

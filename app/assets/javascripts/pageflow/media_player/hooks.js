@@ -7,9 +7,12 @@ pageflow.mediaPlayer.hooks = function(player, hooks) {
       var args = arguments;
 
       player.trigger('beforeplay');
+      player.intendToPlay();
 
       return $.when(hooks.before()).then(function() {
-        return originalPlay.apply(player, args);
+        return player.ifIntendingToPlay().then(function() {
+          return originalPlay.apply(player, args);
+        });
       });
     };
   }

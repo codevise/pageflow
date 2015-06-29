@@ -101,6 +101,7 @@ pageflow.pageType.register('audio', _.extend({
         mediaEvents: true,
 
         volumeFading: true,
+        hooks: pageflow.atmo.createMediaPlayerHooks(configuration),
 
         context: {
           page: pageElement.page('instance')

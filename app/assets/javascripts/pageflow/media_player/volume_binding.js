@@ -14,15 +14,18 @@ pageflow.mediaPlayer.volumeBinding = function(player, settings, options) {
   };
 
   player.playAndFadeIn = function(duration) {
-    if (!player.paused()) {
+    if (!player.paused() && !player.intendingToPause()) {
       return new jQuery.Deferred().resolve().promise();
     }
 
+    player.intendToPlay();
     player.volume(0);
 
     return $.when(originalPlay.call(player)).then(function() {
       listenToVolumeSetting();
-      return player.fadeVolume(player.targetVolume(), duration);
+      return player.fadeVolume(player.targetVolume(), duration).then(null, function() {
+        return new jQuery.Deferred().resolve().promise();
+      });
     });
   };
 
@@ -32,14 +35,17 @@ pageflow.mediaPlayer.volumeBinding = function(player, settings, options) {
   };
 
   player.fadeOutAndPause = function(duration) {
-    if (player.paused()) {
+    if (player.paused() && !player.intendingToPlay()) {
       return new jQuery.Deferred().resolve().promise();
     }
 
+    player.intendToPause();
     stopListeningToVolumeSetting();
 
-    return player.fadeVolume(0, duration).then(function() {
-      originalPause.call(player);
+    return player.fadeVolume(0, duration).always(function() {
+      return player.ifIntendingToPause().then(function() {
+        originalPause.call(player);
+      });
     });
   };
 

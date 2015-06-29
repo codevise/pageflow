@@ -11,7 +11,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
       });
     });
 
-    describe('without before option', function() {
+    describe('with before option', function() {
       it('calls passed function', function() {
         var player = fakePlayer();
         var beforeCallback = sinon.spy();
@@ -37,7 +37,22 @@ describe('pageflow.mediaPlayer.hooks', function() {
         expect(eventHandler).to.have.been.called;
       });
 
-      it('calls original play method when promised returned by before is resolved', function() {
+      it('aborts intent to pause', function() {
+        var player = fakePlayer();
+        var deferred = new jQuery.Deferred();
+        pageflow.mediaPlayer.hooks(player, {
+          before: function() {
+            return deferred.promise();
+          }
+        });
+
+        player.intendToPause();
+        player.play();
+
+        expect(player.intendingToPause()).to.eq(false);
+      });
+
+      it('calls original play method when promise returned by before is resolved', function() {
         var player = fakePlayer();
         var deferred = new jQuery.Deferred();
         pageflow.mediaPlayer.hooks(player, {
@@ -52,7 +67,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
         expect(player.originalPlay).to.have.been.called;
       });
 
-      it('does not call original play method until promised returned by before is resolved', function() {
+      it('does not call original play method until promise returned by before is resolved', function() {
         var player = fakePlayer();
         var deferred = new jQuery.Deferred();
         pageflow.mediaPlayer.hooks(player, {
@@ -76,6 +91,22 @@ describe('pageflow.mediaPlayer.hooks', function() {
 
         expect(player.originalPlay).to.have.been.called;
       });
+
+      it('does not call original play method if player is paused before promise returned by before is resolved', function() {
+        var player = fakePlayer();
+        var deferred = new jQuery.Deferred();
+        pageflow.mediaPlayer.hooks(player, {
+          before: function() {
+            return deferred.promise();
+          }
+        });
+
+        player.play();
+        player.pause();
+        deferred.resolve();
+
+        expect(player.originalPlay).not.to.have.been.called;
+      });
     });
   });
 
@@ -83,12 +114,18 @@ describe('pageflow.mediaPlayer.hooks', function() {
     var playSpy = sinon.spy();
     var playAndFadeInSpy = sinon.spy();
 
-    return _.extend({
+    var player = _.extend({
       play: playSpy,
       originalPlay: playSpy,
 
       playAndFadeIn: playAndFadeInSpy,
-      originalPlayAndFadeIn: playAndFadeInSpy
+      originalPlayAndFadeIn: playAndFadeInSpy,
+
+      pause: sinon.spy()
     }, Backbone.Events);
+
+    pageflow.mediaPlayer.asyncPlay(player);
+
+    return player;
   }
 });
