@@ -9,13 +9,13 @@ section.cut {
     display: block;
   }
   &.animate-out-forwards {
-    display: none;
+    display: block;
   }
   &.animate-in-backwards {
     display: block;
   }
   &.animate-out-backwards {
-    display: none;
+    display: block;
   }
   &.animate-in-backwards, &.animate-in-forwards {
     z-index: 2;
