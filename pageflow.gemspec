@@ -11,7 +11,6 @@ Gem::Specification.new do |s|
   s.summary     = 'Multimedia story telling for the web.'
 
   s.files = Dir['{admins,app,config,db,lib,vendor,spec/factories,spec/fixtures}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.rdoc']
-  s.test_files = Dir['test/**/*']
 
   s.add_dependency 'rails', '>= 4.0.2', '< 4.2'
 
