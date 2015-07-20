@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 0.8.2
+
+2015-07-20
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.8.1...v0.8.2)
+
+- Bug fix: Include fixture files used by factories in gem.
+  ([#369](https://github.com/codevise/pageflow/pull/369))
+
 ### Version 0.8.1
 
 2015-06-26
