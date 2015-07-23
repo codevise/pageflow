@@ -297,4 +297,50 @@ describe Admin::EntriesController do
       }.not_to change { entry.revisions.count }
     end
   end
+
+  describe '#duplicate' do
+    it 'does not allow account manager to duplicate entries of other account' do
+      account = create(:account)
+      entry = create(:entry)
+
+      sign_in(create(:user, :account_manager))
+
+      expect {
+        post(:duplicate, :id => entry.id)
+      }.not_to change { Pageflow::Entry.count }
+    end
+
+    it 'allows account manager to duplicate entries of own account' do
+      user = create(:user, :account_manager)
+      entry = create(:entry, :account => user.account)
+
+      sign_in(user)
+
+      expect {
+        post(:duplicate, :id => entry.id)
+      }.to change { Pageflow::Entry.count }
+    end
+
+    it 'allows admin to duplicate entries of other accounts' do
+      account = create(:account)
+      entry = create(:entry)
+
+      sign_in(create(:user, :admin))
+
+      expect {
+        post(:duplicate, :id => entry.id)
+      }.to change { Pageflow::Entry.count }
+    end
+
+    it 'does not allows editor to duplicate entries even as a member' do
+      user = create(:user, :editor)
+      entry = create(:entry, :with_member => user, :account => user.account)
+
+      sign_in(user)
+
+      expect {
+        post(:duplicate, :id => entry.id)
+      }.not_to change { Pageflow::Entry.count }
+    end
+  end
 end

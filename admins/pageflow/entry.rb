@@ -60,8 +60,30 @@ module Pageflow
         button_to(I18n.t('pageflow.admin.entries.depublish'),
                   pageflow.current_entry_revisions_path(entry),
                   :method => :delete,
-                  :data => {:rel => 'depublish', :confirm => I18n.t('pageflow.admin.entries.confirm_depublish')})
+                  :data => {
+                    :rel => 'depublish',
+                    :confirm => I18n.t('pageflow.admin.entries.confirm_depublish')
+                  })
       end
+    end
+
+    action_item :only => :show do
+      if authorized?(:duplicate, entry)
+        button_to(I18n.t('pageflow.admin.entries.duplicate'),
+                  duplicate_admin_entry_path(entry),
+                  :method => :post,
+                  :data => {
+                    :rel => 'duplicate',
+                    :confirm => I18n.t('pageflow.admin.entries.confirm_duplicate')
+                  })
+      end
+    end
+
+    member_action :duplicate, :method => :post do
+      entry = Entry.find(params[:id])
+      authorize!(:duplicate, entry)
+      new_entry = entry.duplicate
+      redirect_to(edit_admin_entry_path(new_entry))
     end
 
     member_action :snapshot, :method => :post do

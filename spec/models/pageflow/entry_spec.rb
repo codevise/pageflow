@@ -9,6 +9,12 @@ module Pageflow
         expect(entry.draft).to be_present
       end
 
+      it 'can skip draft creation' do
+        entry = create(:entry, skip_draft_creation: true)
+
+        expect(entry.draft).to be_blank
+      end
+
       it 'sets draft home_button_enabled to home_button_enabled_by_default of accounts default_theming' do
         theming = create(:theming, home_button_enabled_by_default: true)
         entry = create(:entry, theming: theming)
@@ -347,6 +353,16 @@ module Pageflow
 
         expect(revision.snapshot_type).to eq('user')
       end
+    end
+  end
+
+  describe '#duplicate' do
+    it 'creates a new entry' do
+      entry = create(:entry)
+
+      expect {
+        entry.duplicate
+      }.to change { Entry.count }
     end
   end
 end

@@ -47,6 +47,12 @@ module Dom
         end
       end
 
+      def duplicate_button
+        within(node) do
+          find('[data-rel=duplicate]')
+        end
+      end
+
       def self.visit_revisions(entry)
         url_helpers = Rails.application.routes.url_helpers
         visit(url_helpers.admin_entry_path(entry, tab: 'revisions'))
