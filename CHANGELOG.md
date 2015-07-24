@@ -42,7 +42,7 @@
    [#304](https://github.com/codevise/pageflow/pull/304))
 - Atmo audios spanning multiple pages.
   ([#332](https://github.com/codevise/pageflow/pull/332),
-   [#300](https://github.com/codevise/pageflow/pull/300))
+   [#361](https://github.com/codevise/pageflow/pull/361))
 - Option to automatically change page on video end.
   ([#334](https://github.com/codevise/pageflow/pull/334),
    [#339](https://github.com/codevise/pageflow/pull/339))
@@ -51,6 +51,8 @@
 - Additional page transitions.
   ([#326](https://github.com/codevise/pageflow/pull/326),
    [#363](https://github.com/codevise/pageflow/pull/363))
+- Improve display of file rights.
+  ([#300](https://github.com/codevise/pageflow/pull/300))
 - Slideshow optimization to improve initial load time in large
   entries.
   ([#330](https://github.com/codevise/pageflow/pull/330),
@@ -103,6 +105,8 @@ Public APIs to be used by Pageflow plugins:
    [#298](https://github.com/codevise/pageflow/pull/298))
 - Dispatch `page:update` event via `pageflow.events`.
   ([#302](https://github.com/codevise/pageflow/pull/302))
+- Panorama image file style.
+  ([#344](https://github.com/codevise/pageflow/pull/344))
 
 Theme options:
 
