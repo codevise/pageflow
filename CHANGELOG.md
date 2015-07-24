@@ -4,6 +4,14 @@
 
 [Compare changes](https://github.com/codevise/pageflow/compare/v0.8.0...master)
 
+##### Breaking Changes
+
+- The internal links page type has been extracted to the
+  [`pageflow-internal-links`](https://github.com/codevise/pageflow-internal-links)
+  gem. ([#316](https://github.com/codevise/pageflow/pull/316)) To keep
+  using it, follow the instructions found in the gem's
+  [README](https://github.com/codevise/pageflow-internal-links).
+  
 ##### Deprecations
 
 - The configuration API for registering new page types has
@@ -17,34 +25,155 @@
 
   The old method still exists for now, but will be removed before
   version 1.0.
+  ([#297](https://github.com/codevise/pageflow/pull/297))
+
+##### Manual Update Step
+
+- Some of the new features have to be enabled manually via the new
+  feature toggle UI inside the admin. Visit the _Features_ tab on the
+  account's admin page to view a list of available feature
+  toggles. Note that some of the graphical features currently have no
+  effect in the default theme.
 
 ##### Public Site
-
-- Improve display of file rights.
-  ([#300](https://github.com/codevise/pageflow/pull/300))
-
-##### Admin/Editor
 
 - Password protection for published entries.
   ([#301](https://github.com/codevise/pageflow/pull/301),
    [#304](https://github.com/codevise/pageflow/pull/304))
+- Atmo audios spanning multiple pages.
+  ([#332](https://github.com/codevise/pageflow/pull/332),
+   [#300](https://github.com/codevise/pageflow/pull/300))
+- Option to automatically change page on video end.
+  ([#334](https://github.com/codevise/pageflow/pull/334),
+   [#339](https://github.com/codevise/pageflow/pull/339))
+- Option to fade in page titles after a delay.
+  ([#338](https://github.com/codevise/pageflow/pull/338))
+- Additional page transitions.
+  ([#326](https://github.com/codevise/pageflow/pull/326),
+   [#363](https://github.com/codevise/pageflow/pull/363))
+- Slideshow optimization to improve initial load time in large
+  entries.
+  ([#330](https://github.com/codevise/pageflow/pull/330),
+   [#352](https://github.com/codevise/pageflow/pull/352))
+- Minor improvements to the video page type.
+  ([#355](https://github.com/codevise/pageflow/pull/355),
+   [#333](https://github.com/codevise/pageflow/pull/333),
+   [#357](https://github.com/codevise/pageflow/pull/357),
+   [#353](https://github.com/codevise/pageflow/pull/353),
+   [#331](https://github.com/codevise/pageflow/pull/331))
+- Bug fix: Improve local storage detection to prevent failure in
+  Safari.
+  ([#360](https://github.com/codevise/pageflow/pull/360))
 
+##### Admin/Editor
+
+- Hotkey to edit the current page.
+  ([#340](https://github.com/codevise/pageflow/pull/340))
+- Optimized video resouce management in editor for large entries.
+  ([#337](https://github.com/codevise/pageflow/pull/337))
+  
 ##### Rails Engine
 
-- Introduce Features API.
-  ([#297](https://github.com/codevise/pageflow/pull/297))
-- Allow overriding attachments scope name.
-  ([#303](https://github.com/codevise/pageflow/pull/303))
+Public APIs to be used by Pageflow plugins:
 
-##### Internals
-
+- Introduce features API.
+  ([#297](https://github.com/codevise/pageflow/pull/297),
+   [#320](https://github.com/codevise/pageflow/pull/320),
+   [#325](https://github.com/codevise/pageflow/pull/325))
+- Introduce API for audio playback.
+  ([#319](https://github.com/codevise/pageflow/pull/319),
+   [#356](https://github.com/codevise/pageflow/pull/356))
+- Enhance API for page types to configure their scroller.
+  ([#321](https://github.com/codevise/pageflow/pull/321),
+   [#327](https://github.com/codevise/pageflow/pull/327),
+   [#336](https://github.com/codevise/pageflow/pull/336))
+- Introduce API to display multimedia alert.
+  ([#359](https://github.com/codevise/pageflow/pull/359))
+- Introduce API to register new page transitions.
+  ([#326](https://github.com/codevise/pageflow/pull/326))
+- Introduce history API with adapters for hash, push state and
+  simulation.
+  ([#322](https://github.com/codevise/pageflow/pull/322))
+- Introduce page type API to manage internal links.
+  ([#324](https://github.com/codevise/pageflow/pull/324))
+- Introduce API to customize page change behavior via scrolling.
+  ([#323](https://github.com/codevise/pageflow/pull/323))
 - Promote `pageflow.Object` to `application.js`.
   ([#296](https://github.com/codevise/pageflow/pull/296),
    [#298](https://github.com/codevise/pageflow/pull/298))
 - Dispatch `page:update` event via `pageflow.events`.
   ([#302](https://github.com/codevise/pageflow/pull/302))
+
+Theme options:
+
+- Add theme option to disable page change by scrolling.
+  ([#349](https://github.com/codevise/pageflow/pull/349))
+- Let themes disable hide text on swipe functionality.
+  ([#358](https://github.com/codevise/pageflow/pull/358))
+- Add options to configure orientation and display of scroll
+  indicators.
+  ([#329](https://github.com/codevise/pageflow/pull/329))
+- For themes that support non-linear Pagefows, chapters can now be
+  organized in a hierachy.
+  ([#318](https://github.com/codevise/pageflow/pull/318),
+   [#345](https://github.com/codevise/pageflow/pull/345),
+   [#348](https://github.com/codevise/pageflow/pull/348))
+
+Extracted reusable jQuery widgets:
+
+- Fullscreen button.
+  ([#350](https://github.com/codevise/pageflow/pull/350))
+- Parent page button.
+  ([#347](https://github.com/codevise/pageflow/pull/347))
+- Additional player controls buttons.
+  ([#346](https://github.com/codevise/pageflow/pull/346),
+   [#362](https://github.com/codevise/pageflow/pull/362),
+   [#354](https://github.com/codevise/pageflow/pull/354))
+- Use top button to go to landing page.
+  ([#351](https://github.com/codevise/pageflow/pull/351))
+- Extract social share links into reusable partials.
+  ([#335](https://github.com/codevise/pageflow/pull/335))
+
+Reusable components for the editor Backbone application:
+
+- Generic button and list views.
+  ([#343](https://github.com/codevise/pageflow/pull/343))
+- Generic reference input view.
+  ([#342](https://github.com/codevise/pageflow/pull/342))
+- Add visible option for input backbone views.
+  ([#341](https://github.com/codevise/pageflow/pull/341))
+- Options for configuration editor tab groups.
+  ([#328](https://github.com/codevise/pageflow/pull/328))
+- Allow displaying custom views in the editor main region.
+  ([#317](https://github.com/codevise/pageflow/pull/317))
+- Add `appendSubview` method.
+  ([#310](https://github.com/codevise/pageflow/pull/310))
+- Improve `SubsetCollection`.
+  ([#309](https://github.com/codevise/pageflow/pull/309))
+- Bug fix: Set `isDestroying` before triggering `destroying` event.
+  ([#312](https://github.com/codevise/pageflow/pull/312))
+- Bug fix: Save `TextiInputView` on close.
+  ([#311](https://github.com/codevise/pageflow/pull/311))
+
+Enhancements for app development:
+
+- Allow overriding attachments scope name.
+  ([#303](https://github.com/codevise/pageflow/pull/303))
+- Bug fix: Add spec fixtures required by factory girl to gem files.
+  ([#370](https://github.com/codevise/pageflow/pull/370),
+   [#371](https://github.com/codevise/pageflow/pull/371),
+   [#368](https://github.com/codevise/pageflow/pull/368))
+- Use environment variables for api keys in generated initializer.
+  ([#306](https://github.com/codevise/pageflow/pull/306))
+
+##### Internals
+
 - Improve stability of feature specs.
   ([#299](https://github.com/codevise/pageflow/pull/299))
+- Disable bandwidth feature detection in test environment.
+  ([#308](https://github.com/codevise/pageflow/pull/308))
+- Bug fix: Fix paperclip version to 4.2 until 4.3 issues are resolved.
+  ([#307](https://github.com/codevise/pageflow/pull/307))
 
 ### Version 0.8.0
 
