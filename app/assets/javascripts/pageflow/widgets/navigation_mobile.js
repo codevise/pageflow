@@ -29,6 +29,10 @@
         $(element).removeClass('sharing');
       });
 
+      $('.imprint_mobile a', element).on('click touchstart', function(event) {
+        event.stopPropagation();
+      });
+
       $('.wrapper', element).each(function() {
         var sharingMobile = $(this).parents('.sharing_mobile');
 
