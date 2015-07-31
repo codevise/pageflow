@@ -41,7 +41,12 @@ module Pageflow
     end
 
     def entry_stylesheet_link_tag(entry)
-      stylesheet_link_tag(polymorphic_path(entry.stylesheet_model, v: entry.stylesheet_cache_key, format: 'css'), media: 'all')
+      url = polymorphic_path(entry.stylesheet_model,
+                             v: entry.stylesheet_cache_key,
+                             p: Pageflow::VERSION,
+                             format: 'css')
+
+      stylesheet_link_tag(url, media: 'all')
     end
 
     def entry_mobile_navigation_pages(entry)
