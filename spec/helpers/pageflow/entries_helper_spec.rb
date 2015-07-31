@@ -90,35 +90,54 @@ module Pageflow
         revision = build_stubbed(:revision)
         entry = PublishedEntry.new(build_stubbed(:entry), revision)
 
-        expect(helper.entry_stylesheet_link_tag(entry)).to include(%Q'href="/revisions/#{revision.id}.css')
+        result = helper.entry_stylesheet_link_tag(entry)
+
+        expect(result).to include(%Q'href="/revisions/#{revision.id}.css')
       end
 
       it 'returns entry css for published entry without custom revision' do
         revision = build_stubbed(:revision, :published)
         entry = PublishedEntry.new(build_stubbed(:entry, published_revision: revision))
 
-        expect(helper.entry_stylesheet_link_tag(entry)).to include(%Q'href="/entries/#{entry.entry.id}.css')
+        result = helper.entry_stylesheet_link_tag(entry)
+
+        expect(result).to include(%Q'href="/entries/#{entry.entry.id}.css')
       end
 
       it 'appends revision cache key for published entry without custom revision' do
         revision = build_stubbed(:revision, :published)
         entry = PublishedEntry.new(build_stubbed(:entry, published_revision: revision))
 
-        expect(helper.entry_stylesheet_link_tag(entry)).to include(%Q'href="/entries/#{entry.entry.id}.css?v=#{ERB::Util.url_encode(revision.cache_key)}')
+        result = helper.entry_stylesheet_link_tag(entry)
+
+        expect(result).to include("v=#{ERB::Util.url_encode(revision.cache_key)}")
       end
 
       it 'appends revision cache key for published entry with custom revision' do
         revision = build_stubbed(:revision, :published)
         entry = PublishedEntry.new(build_stubbed(:entry), revision)
 
-        expect(helper.entry_stylesheet_link_tag(entry)).to include(%Q'href="/revisions/#{revision.id}.css?v=#{ERB::Util.url_encode(revision.cache_key)}')
+        result = helper.entry_stylesheet_link_tag(entry)
+
+        expect(result).to include("v=#{ERB::Util.url_encode(revision.cache_key)}")
       end
 
       it 'appends revision cache key for draft entry' do
         revision = build_stubbed(:revision)
         entry = DraftEntry.new(build_stubbed(:entry, draft: revision))
 
-        expect(helper.entry_stylesheet_link_tag(entry)).to include(%Q'href="/revisions/#{revision.id}.css?v=#{ERB::Util.url_encode(revision.cache_key)}')
+        result = helper.entry_stylesheet_link_tag(entry)
+
+        expect(result).to include("v=#{ERB::Util.url_encode(revision.cache_key)}")
+      end
+
+      it 'appends pageflow version' do
+        revision = build_stubbed(:revision)
+        entry = DraftEntry.new(build_stubbed(:entry, draft: revision))
+
+        result = helper.entry_stylesheet_link_tag(entry)
+
+        expect(result).to include("p=#{Pageflow::VERSION}")
       end
     end
   end
