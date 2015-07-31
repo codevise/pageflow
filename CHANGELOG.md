@@ -69,6 +69,8 @@
 
 ##### Admin/Editor
 
+- Duplicating entries.
+  ([#372](https://github.com/codevise/pageflow/pull/372))
 - Hotkey to edit the current page.
   ([#340](https://github.com/codevise/pageflow/pull/340))
 - Optimized video resouce management in editor for large entries.
