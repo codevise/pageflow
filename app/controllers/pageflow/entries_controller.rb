@@ -27,7 +27,7 @@ module Pageflow
           end
 
           if params[:page].present?
-            @entry.share_target = Page.find_by_perma_id(params[:page])
+            @entry.share_target = @entry.pages.find_by_perma_id(params[:page])
           else
             @entry.share_target = @entry
           end
