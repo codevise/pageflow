@@ -223,7 +223,7 @@ module Pageflow
 
           get(:show, :id => entry)
 
-          expect(response.body).to have_selector('head meta[name=some_test]', :visible => false)
+          expect(response.body).to have_meta_tag.with_name('some_test')
         end
 
         context 'with configured entry_request_scope' do
@@ -250,6 +250,20 @@ module Pageflow
             get(:show, :id => entry)
 
             expect(response.status).to eq(404)
+          end
+        end
+
+        context 'with page parameter' do
+          it 'renders social sharing meta tags for page' do
+            entry = create(:entry, :published)
+            chapter = create(:chapter, :revision => entry.published_revision)
+            page = create(:page, :configuration => {:title => 'Shared page'}, :chapter => chapter)
+
+            get(:show, :id => entry, :page => page.perma_id)
+
+            expect(response.body).to have_meta_tag
+              .for_property('og:title')
+              .with_content_including('Shared page')
           end
         end
       end

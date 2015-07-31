@@ -35,7 +35,7 @@ module Pageflow
         get(:show, :id => revision)
 
         expect(response.body).to have_selector('div.test_widget')
-        expect(response.body).to have_selector('head meta[name=some_test]', :visible => false)
+        expect(response.body).to have_meta_tag.with_name('some_test')
       end
 
       it 'does not render widgets which are disabled in preview' do
