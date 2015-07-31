@@ -63,6 +63,10 @@
    [#357](https://github.com/codevise/pageflow/pull/357),
    [#353](https://github.com/codevise/pageflow/pull/353),
    [#331](https://github.com/codevise/pageflow/pull/331))
+- Bug fix: Fix copyright links in mobile navigation.
+  ([#377](https://github.com/codevise/pageflow/pull/377))
+- Bug fix: Find share target page in published revision
+  ([#375](https://github.com/codevise/pageflow/pull/375))
 - Bug fix: Improve local storage detection to prevent failure in
   Safari.
   ([#360](https://github.com/codevise/pageflow/pull/360))
@@ -174,6 +178,9 @@ Enhancements for app development:
 
 ##### Internals
 
+- Include pageflow version in entry css url to invalidate CDN on gem
+  updates.
+  ([#376](https://github.com/codevise/pageflow/pull/376))
 - Improve stability of feature specs.
   ([#299](https://github.com/codevise/pageflow/pull/299))
 - Disable bandwidth feature detection in test environment.
