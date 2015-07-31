@@ -37,7 +37,9 @@ module Pageflow
     scope :published, -> { joins(:published_revision) }
     scope :editing, -> { joins(:edit_lock).merge(Pageflow::EditLock.active) }
 
-    after_create do
+    attr_accessor :skip_draft_creation
+
+    after_create unless: :skip_draft_creation do
       create_draft!(home_button_enabled: theming.home_button_enabled_by_default)
       theming.widgets.copy_all_to(draft)
     end
@@ -86,6 +88,10 @@ module Pageflow
         revision.published_until = nil
         revision.password_protected = nil
       end
+    end
+
+    def duplicate
+      EntryDuplicate.of(self).create!
     end
 
     def published?
