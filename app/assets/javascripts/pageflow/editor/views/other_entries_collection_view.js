@@ -1,15 +1,15 @@
 pageflow.OtherEntriesCollectionView = Backbone.Marionette.View.extend({
-  initialize: function() {
+  initialize: function () {
     this.otherEntries = new pageflow.OtherEntriesCollection();
 
-    this.listenTo(this.otherEntries, 'sync', function() {
+    this.listenTo(this.otherEntries, 'sync', function () {
       if (this.otherEntries.length === 1) {
         this.options.selection.set('entry', this.otherEntries.first());
       }
     });
   },
 
-  render: function() {
+  render: function () {
     this.subview(new pageflow.CollectionView({
       el: this.el,
       collection: this.otherEntries,
@@ -18,10 +18,14 @@ pageflow.OtherEntriesCollectionView = Backbone.Marionette.View.extend({
         selection: this.options.selection
       },
       blankSlateViewConstructor: Backbone.Marionette.ItemView.extend({
-        template: 'templates/other_entries_blank_slate'
+        template: 'templates/other_entries_blank_slate',
+        tagName: 'li',
+        className: 'blank_slate'
       }),
       loadingViewConstructor: Backbone.Marionette.ItemView.extend({
-        template: 'templates/loading'
+        template: 'templates/loading',
+        tagName: 'li',
+        className: 'loading'
       })
     }));
 
