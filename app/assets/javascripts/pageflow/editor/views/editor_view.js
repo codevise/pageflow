@@ -2,9 +2,7 @@ pageflow.EditorView = Backbone.View.extend({
   events: {
     'click a': function(event) {
       // prevent default for all links
-      if (!$(event.target).attr('target') &&
-          !$(event.target).attr('download') &&
-          !$(event.target).attr('href')) {
+      if (!$(event.target).attr('target') && !$(event.target).attr('download') && !$(event.target).attr('href')) {
         return false;
       }
     }
@@ -12,7 +10,7 @@ pageflow.EditorView = Backbone.View.extend({
 
   initialize: function() {
     $(window).on('beforeunload', function(event) {
-      if (pageflow.entry.get('uploading_files_count') > 0)  {
+      if (pageflow.entry.get('uploading_files_count') > 0) {
         return I18n.t('pageflow.editor.views.editor_views.files_pending_warning');
       }
     });

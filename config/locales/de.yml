@@ -927,7 +927,7 @@ de:
           show: Anzeigen
           upload_pending: Dateien werden gerade hochgeladen.
         other_entries_blank_slate:
-          none_available: Keine anderen Beiträge verfügbar
+          none_available: Keine anderen Beiträge verfügbar.
         page_item:
           save_error: Beim Speichern der Seite ist ein Fehler aufgetreten.
         publish_entry:

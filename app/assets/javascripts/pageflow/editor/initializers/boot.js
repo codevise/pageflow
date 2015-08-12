@@ -18,8 +18,8 @@ pageflow.app.addRegions({
   previewRegion: '#entry_preview',
   mainRegion: '#main_content',
   indicatorsRegion: '#editor_indicators',
-  sidebarRegion: 'sidebar .container',
+  sidebarRegion: '#sidebar .container',
   dialogRegion: '.dialog_container',
-  notificationsRegion: 'sidebar .notifications_container',
-  helpButtonRegion: 'sidebar .help_button_container'
+  notificationsRegion: '#sidebar .notifications_container',
+  helpButtonRegion: '#sidebar .help_button_container'
 });

@@ -7,6 +7,7 @@ module Pageflow
 
       def index
         @entries = DraftEntry.accessible_by(current_ability, :use_files)
+        #sleep(7)
         respond_with(@entries)
       end
 
