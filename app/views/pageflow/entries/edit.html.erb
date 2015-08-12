@@ -1,9 +1,9 @@
 <% content_for(:head) do %>
-    <%= stylesheet_link_tag('pageflow/application_with_simulated_media_queries', media: 'all', 'data-turbolinks-track' => true) %>
-    <%= entry_theme_stylesheet_link_tag(@entry) %>
-    <%= entry_stylesheet_link_tag(@entry) %>
-    <%= stylesheet_link_tag 'pageflow/editor', media: "all" %>
-    <%= javascript_include_tag 'pageflow/editor' %>
+  <%= stylesheet_link_tag('pageflow/application_with_simulated_media_queries', media: 'all', 'data-turbolinks-track' => true) %>
+  <%= entry_theme_stylesheet_link_tag(@entry) %>
+  <%= entry_stylesheet_link_tag(@entry) %>
+  <%= stylesheet_link_tag 'pageflow/editor', media: "all" %>
+  <%= javascript_include_tag 'pageflow/editor' %>
 <% end %>
 
 <main class="ui-layout-center">
@@ -12,13 +12,13 @@
   <div id="editor_indicators"></div>
 </main>
 
-<sidebar class="ui-layout-east editor">
+<aside id="sidebar" class="ui-layout-east editor">
   <div class="scrolling">
     <div class="notifications_container"></div>
     <div class="container"></div>
   </div>
   <div class="help_button_container"></div>
-</sidebar>
+</aside>
 
 <div class="dialog_container">
 </div>

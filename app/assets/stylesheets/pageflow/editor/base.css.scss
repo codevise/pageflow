@@ -1,7 +1,6 @@
 @import "bourbon";
 @import "pageflow/ui";
 @import "pageflow/animations";
-
 @import 'pageflow/jquery_ui';
 @import "./blank_entry";
 @import "./dialogs";
@@ -17,7 +16,7 @@
 .editor {
   @extend %pageflow-ui;
 
-  font-family: Helvetica, "Sans-Serif";
+  font-family: Helvetica, sans-serif;
   font-size: 13px;
 
   padding: 0;
