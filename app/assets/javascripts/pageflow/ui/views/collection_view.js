@@ -16,6 +16,7 @@ pageflow.CollectionView = Backbone.Marionette.View.extend({
       });
       this.listenTo(this.collection, 'sync', function() {
         this.loading = false;
+        this.togglePlaceHolder();
       });
     }
   },
@@ -109,13 +110,16 @@ pageflow.CollectionView = Backbone.Marionette.View.extend({
   },
 
   togglePlaceHolder: function() {
-    var placeHolderConstructor = this.getPlaceHolderConstructor();
+    var lastPlaceholderConstructor = this.placeHolderConstructor;
+    this.placeHolderConstructor = this.getPlaceHolderConstructor();
 
-    if (this.itemViews.length || !placeHolderConstructor) {
+    if (this.itemViews.length || !this.placeHolderConstructor) {
       this.closePlaceHolderView();
     }
-    else if(!this.placeHolderView) {
-      this.placeHolderView = new placeHolderConstructor();
+    else if(!this.placeHolderView || lastPlaceholderConstructor !== this.placeHolderConstructor) {
+      this.closePlaceHolderView();
+
+      this.placeHolderView = new this.placeHolderConstructor();
       this.$el.append(this.placeHolderView.render().el);
     }
   },
