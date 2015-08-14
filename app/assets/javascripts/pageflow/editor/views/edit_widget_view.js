@@ -12,7 +12,7 @@ pageflow.EditWidgetView = Backbone.Marionette.Layout.extend({
   },
 
   onRender: function() {
-    var widgetTypes = this.options.widgetTypes[this.model.role()];
+    var widgetTypes = this.options.widgetTypes[this.model.role()] || [];
 
     this.widgetTypeContainer.show(new pageflow.SelectInputView({
       model: this.model,
