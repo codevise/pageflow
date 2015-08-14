@@ -1,8 +1,9 @@
 pageflow.stageProvider = {
   initialize: function() {
     var finishedStates = [this.readyState];
+    var stages = _.result(this, 'stages') || [];
 
-    this.stages = new Backbone.Collection(_.chain(this).result('stages').slice().reverse().map(function (options) {
+    this.stages = new Backbone.Collection(_.chain(stages).slice().reverse().map(function (options) {
       var name = options.name;
 
       options.file = this;
