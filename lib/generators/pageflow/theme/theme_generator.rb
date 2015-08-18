@@ -13,9 +13,10 @@ module Pageflow
         directory('images/pageflow/themes/default', themes_path('images', name))
 
         template('stylesheets/pageflow/themes/default.css.scss', themes_path('stylesheets', "#{name}.css.scss")) do |content|
-          content.gsub!('$theme-name: "default";', %Q'$theme-name: "#{name}";')
           content.gsub!('@import "./default/', %Q'@import "./#{name}/')
         end
+
+        gsub_file themes_path('stylesheets', "#{name}/variables.css.scss"), '$theme-name: "default";', %Q'$theme-name: "#{name}";'
       end
 
       private
