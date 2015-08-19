@@ -71,6 +71,7 @@
   @import "./back_button_decorator";
   @import "./widgets";
   @import "./page_links";
+  @import "./loading";
 
   a.publish {
     @include eye-icon;

@@ -1,6 +1,7 @@
 pageflow.OtherEntryItemView = Backbone.Marionette.ItemView.extend({
   template: 'templates/other_entry_item',
   className: 'other_entry_item',
+  tagName: 'li',
 
   mixins: [pageflow.selectableView],
 
@@ -9,7 +10,7 @@ pageflow.OtherEntryItemView = Backbone.Marionette.ItemView.extend({
   },
 
   events: {
-   'click': 'select'
+    'click': 'select'
   },
 
   onRender: function() {

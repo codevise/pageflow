@@ -1,0 +1,8 @@
+@include keyframes(loading) {
+  0%, 40%, 100% {
+    @include transform(scaleY(0.4));
+  }
+  20% {
+    @include transform(scaleY(1));
+  }
+}

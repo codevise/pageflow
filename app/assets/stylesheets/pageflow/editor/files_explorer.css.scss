@@ -33,6 +33,12 @@
 
   .entries_panel {
     width: 20%;
+
+    li.blank_slate {
+      text-align: center;
+      padding: 10px 5px 20px 5px;
+      color: #888;
+    }
   }
 
   .files_panel {
