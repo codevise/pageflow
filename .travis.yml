@@ -18,5 +18,5 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 script:
-  - exec/rspec
-  - exec/teaspoon
+  - bin/rspec
+  - bin/teaspoon
