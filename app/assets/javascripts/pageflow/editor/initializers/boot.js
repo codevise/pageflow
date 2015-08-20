@@ -10,6 +10,10 @@ pageflow.app.addInitializer(function(options) {
   pageflow.app.indicatorsRegion.show(new pageflow.DisabledAtmoIndicatorView().render());
   pageflow.app.notificationsRegion.show(new pageflow.NotificationsView().render());
   pageflow.app.helpButtonRegion.show(new pageflow.HelpButtonView().render());
+  new pageflow.ScrollingView({
+    el: $('sidebar .scrolling'),
+    region: pageflow.app.sidebarRegion
+  }).render();
 
   Backbone.history.start({root: options.root});
 });
