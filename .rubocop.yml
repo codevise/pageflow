@@ -1,0 +1,16 @@
+# Inherit from Hound default configuration so we can perform the same
+# checks locally.
+inherit_from: ./.rubocop_hound.yml
+
+# Use double quotes only for interpolation.
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+# Place dots at the beginning of multiline method calls.
+Style/DotPosition:
+  EnforcedStyle: leading
+
+# The Rubocop version used by hound cannot yet detect RSpec expections
+# that would change meaning with "do ... end".
+Style/Blocks:
+  Enabled: false
