@@ -8,6 +8,16 @@ Pageflow expects credentials of a MySQL user in the environment
 variables `$PAGEFLOW_DB_USER` AND `PAGEFLOW_DB_PASSWORD`. By default
 `"root"` and the empty password are used.
 
+Use the binstubs to invoke the Ruby test suite
+
+    $ bin/rspec
+
+or the headless browser based Javascript test suite
+
+    $ bin/teaspoon
+
+PhantomJS has to be installed on the system.
+
 Pageflow can run its test suite against Rails 4.0 and 4.1
 applications. The dummy app is created by a Rails template using the
 `pageflow:install` generator. There are two ways to specify the Rails
