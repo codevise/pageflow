@@ -94,9 +94,8 @@ linters:
     enabled: true
     convention: snake_case
   Shorthand:
-    enabled: true
+    enabled: false
     severity: warning
-    allowed_shorthands: [1, 2]
   SingleLinePerProperty:
     enabled: true
     allow_single_line_rule_sets: true

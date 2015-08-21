@@ -3,20 +3,20 @@
   "undef": true,
   "immed": true,
   "trailing": true,
-  "globals": {
-    "jQuery": true,
-    "$": true,
-    "Backbone": true,
-    "Cocktail": true,
-    "_": true,
-    "vjs": true,
-    "Audio5js": true,
-    "I18n": true,
+  "predef": [
+    "jQuery",
+    "$",
+    "Backbone",
+    "Cocktail",
+    "_",
+    "vjs",
+    "Audio5js",
+    "I18n",
 
-    "pageflow": true,
-    "editor": true,
+    "pageflow",
+    "editor",
     
-    "confirm": true,
-    "alert": true
-  }
+    "confirm",
+    "alert"
+  ]
 }
