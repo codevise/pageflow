@@ -4,7 +4,6 @@ body {
     overflow: visible !important;
   }
   background-color: white !important;
-  height: !important;
   overflow: visible !important;
 
   .slideshow {
@@ -22,7 +21,7 @@ body {
     padding-left: 17px;
   }
 
-  sidebar {
+  #sidebar {
     display: none;
   }
 
@@ -98,10 +97,8 @@ body {
       width: 100%;
     }
 
-
     .content_and_background {
-      width:100%;
-      min-height: auto;
+      width: 100%;
       position: initial;
     }
 
@@ -112,9 +109,8 @@ body {
     }
 
     h1, h2, h3, p {
-    max-width: initial;
+      max-width: initial;
     }
-
 
     .backgroundArea {
       width: initial;
@@ -122,22 +118,22 @@ body {
       position: absolute;
       background-color: white;
     }
-    .scroller, .content .scroller {
+    .scroller, .content .scroller  {
       opacity: 1 !important;
       visibility: visible !important;
       height: auto;
       position: relative;
     }
     .scroller > div {
-      transform: translate3d(0,0,0) !important;
-      -ms-transform: translate3d(0,0,0) !important; /* IE 9 */
-      -webkit-transform: translate3d(0,0,0) !important; /* Safari and Chrome */
-      transform: translate(0,0) !important;
-      -ms-transform: translate(0,0) !important; /* IE 9 */
-      -webkit-transform: translate(0,0) !important; /* Safari and Chrome */
+      transform: translate3d(0, 0, 0) !important;
+      -ms-transform: translate3d(0, 0, 0) !important; /* IE 9 */
+      -webkit-transform: translate3d(0, 0, 0) !important; /* Safari and Chrome */
+      transform: translate(0, 0) !important;
+      -ms-transform: translate(0, 0) !important; /* IE 9 */
+      -webkit-transform: translate(0, 0) !important; /* Safari and Chrome */
       top: 0 !important;
     }
-    .scroller  > div {
+    .scroller > div {
       position: relative;
     }
     .scroller.fade-out, .scroller.fade-in {
@@ -159,7 +155,7 @@ body {
     background-color: white !important;
   }
 
-  section.page  {
+  section.page {
     display: block;
     background-color: white !important;
   }
@@ -168,7 +164,7 @@ body {
     background-image: none !important;
   }
 
-  &.js .controls, .add_info_box  {
+  &.js .controls, .add_info_box {
     position: relative !important;
     bottom: initial;
     top: 0 !important;
@@ -176,10 +172,9 @@ body {
 
   &.js .controls .add_info_box:before {
     background-color: transparent;
-  };
+  }
 
   .video-js {
     display: none !important;
   }
-
 }

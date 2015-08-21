@@ -1,7 +1,7 @@
 module Dom
   module Editor
     class EntryOutline < Domino
-      selector 'sidebar .chapters.outline'
+      selector '#sidebar .chapters.outline'
 
       def self.await!
         find!

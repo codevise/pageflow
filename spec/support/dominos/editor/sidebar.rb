@@ -1,7 +1,7 @@
 module Dom
   module Editor
     class Sidebar < Domino
-      selector 'sidebar.editor'
+      selector '#sidebar.editor'
 
       def has_chapter_item?
         node.has_selector?('ul.chapters > li:not(.creating)')
