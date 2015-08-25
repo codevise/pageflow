@@ -1,18 +1,10 @@
 en:
-  pageflow:
-    emphasize_pages_in_navigation:
-      feature_name: "Emphasize pages in navgiationbar"
-
   activerecord:
     attributes:
       "pageflow/page":
         emphasize_in_navigation: "Emphasize in navigationbar"
 
 de:
-  pageflow:
-    emphasize_pages_in_navigation:
-      feature_name: "Seiten in Navigationsleiste hervorheben"
-
   activerecord:
     attributes:
       "pageflow/page":
