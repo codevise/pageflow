@@ -13,16 +13,14 @@ pageflow.ConfigurationEditorTabView.groups.define('options', function(options) {
 
   this.input('description', pageflow.TextAreaInputView, {size: 'short'});
 
-  if (pageflow.features.isEnabled('atmo')) {
-    this.input('atmo_audio_file_id', pageflow.FileInputView, {
-      collection: pageflow.audioFiles
-    });
+  this.input('atmo_audio_file_id', pageflow.FileInputView, {
+    collection: pageflow.audioFiles
+  });
 
-    if (options.canPauseAtmo) {
-      this.input('atmo_during_playback', pageflow.SelectInputView, {
-        values: pageflow.Atmo.duringPlaybackModes
-      });
-    }
+  if (options.canPauseAtmo) {
+    this.input('atmo_during_playback', pageflow.SelectInputView, {
+      values: pageflow.Atmo.duringPlaybackModes
+    });
   }
 
   if (pageflow.features.isEnabled('scroll_indicator_modes')) {

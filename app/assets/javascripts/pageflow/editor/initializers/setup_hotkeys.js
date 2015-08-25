@@ -4,13 +4,11 @@ pageflow.app.addInitializer(function(options) {
 
   $(document).on('keydown', function(event) {
     if (event.altKey && event.which === KEY_A) {
-      if (pageflow.features.isEnabled('atmo')) {
-        if (pageflow.atmo.disabled) {
-          pageflow.atmo.enable();
-        }
-        else {
-          pageflow.atmo.disable();
-        }
+      if (pageflow.atmo.disabled) {
+        pageflow.atmo.enable();
+      }
+      else {
+        pageflow.atmo.disable();
       }
     }
     else if (event.altKey && event.which === KEY_X) {
