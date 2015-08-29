@@ -16,6 +16,22 @@ describe('pageflow.PreviewEntryData', function() {
     });
   });
 
+  describe('#getStorylineConfiguration', function() {
+    it('returns configuration by storyline id', function() {
+      var configuration = {title: 'some text'};
+      var storyline = new p.Storyline({id: 1, configuration: configuration}, {
+        chapters: new p.ChaptersCollection([])
+      });
+      var entryData = new p.PreviewEntryData({
+        storylines: new p.StorylinesCollection([storyline])
+      });
+
+      var result = entryData.getStorylineConfiguration(1);
+
+      expect(result.title).to.eq('some text');
+    });
+  });
+
   describe('#getChapterConfiguration', function() {
     it('returns configuration by chapter id', function() {
       var configuration = {title: 'some text'};
@@ -72,6 +88,21 @@ describe('pageflow.PreviewEntryData', function() {
       });
 
       var result = entryData.getChapterIdByPagePermaId(102);
+
+      expect(result).to.eq(2);
+    });
+  });
+
+  describe('#getStorylineIdByChapterId', function() {
+    it('returns id of chapter`s parent storyline', function() {
+      var chapter = new p.Chapter({id: 102, storyline_id: 2}, {
+        pages: new p.PagesCollection([])
+      });
+      var entryData = new p.PreviewEntryData({
+        chapters: new p.ChaptersCollection([chapter])
+      });
+
+      var result = entryData.getStorylineIdByChapterId(102);
 
       expect(result).to.eq(2);
     });

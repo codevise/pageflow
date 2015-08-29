@@ -1,5 +1,5 @@
 <li class="<%= page_navigation_css_class(page) %>">
-  <%= link_to "##{page.perma_id}", :data => {:link => page.id} do %>
+  <%= link_to "##{page.perma_id}", :data => {:link => page.id, :chapter_id => page.chapter_id} do %>
       <%= image_tag(page.thumbnail_url(image_style), :width => image_width) %>
   <% end %>
   <div class="navigation_site_detail">

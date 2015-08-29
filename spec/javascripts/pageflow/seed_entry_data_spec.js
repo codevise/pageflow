@@ -15,13 +15,29 @@ describe('pageflow.SeedEntryData', function() {
     });
   });
 
+  describe('#getStorylineConfiguration', function() {
+    it('returns configruation by chapter id', function() {
+      var configuration = {};
+      var entryData = new p.SeedEntryData({
+        storyline_configurations: {
+          1: configuration
+        }
+      });
+
+      var result = entryData.getStorylineConfiguration(1);
+
+      expect(result).to.eq(configuration);
+    });
+  });
+
   describe('#getChapterConfiguration', function() {
     it('returns configruation by chapter id', function() {
       var configuration = {};
       var entryData = new p.SeedEntryData({
-        chapter_configurations: {
-          1: configuration
-        }
+        chapters: [{
+          id: 1,
+          configuration: configuration
+        }]
       });
 
       var result = entryData.getChapterConfiguration(1);
@@ -62,7 +78,7 @@ describe('pageflow.SeedEntryData', function() {
   });
 
   describe('#getChapterIdByPagePermaId', function() {
-    it('returns id of pages parent chapter ', function() {
+    it('returns id of page`s parent chapter ', function() {
       var entryData = new p.SeedEntryData({
         pages: [
           {perma_id: 102, chapter_id: 2}
@@ -70,6 +86,20 @@ describe('pageflow.SeedEntryData', function() {
       });
 
       var result = entryData.getChapterIdByPagePermaId(102);
+
+      expect(result).to.eq(2);
+    });
+  });
+
+  describe('#getStorylineIdByChapterId', function() {
+    it('returns id of chapter`s parent storyline', function() {
+      var entryData = new p.SeedEntryData({
+        chapters: [
+          {id: 102, storyline_id: 2}
+        ]
+      });
+
+      var result = entryData.getStorylineIdByChapterId(102);
 
       expect(result).to.eq(2);
     });

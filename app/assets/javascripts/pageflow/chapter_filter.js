@@ -4,28 +4,17 @@ pageflow.ChapterFilter = pageflow.Object.extend({
   },
 
   strategies: {
-    all: function() {
-      return true;
-    },
-
     non: function() {
       return false;
     },
 
-    current_chapter: function(currentChapterId, otherChapterId) {
-      return otherChapterId === currentChapterId;
+    current_storyline: function(currentChapterId, otherChapterId) {
+      return this.entry.getStorylineIdByChapterId(currentChapterId) ===
+        this.entry.getStorylineIdByChapterId(otherChapterId);
     },
 
     inherit_from_parent: function(currentChapterId, otherChapterId) {
       return this.chapterVisibleFromChapter(this.entry.getParentChapterId(currentChapterId), otherChapterId);
-    },
-
-    same_parent_page: function(currentChapterId, otherChapterId) {
-      return this.entry.getParentPagePermaId(currentChapterId) === this.entry.getParentPagePermaId(otherChapterId);
-    },
-
-    same_parent_chapter: function(currentChapterId, otherChapterId) {
-      return this.entry.getParentChapterId(currentChapterId) === this.entry.getParentChapterId(otherChapterId);
     }
   },
 
@@ -41,11 +30,12 @@ pageflow.ChapterFilter = pageflow.Object.extend({
 
   getStrategy: function(chapterId) {
     return this.strategies[this.getNavigationBarMode(chapterId)] ||
-      this.strategies.all;
+      this.strategies.current_storyline;
   },
 
   getNavigationBarMode: function(chapterId) {
-    return this.entry.getChapterConfiguration(chapterId).navigation_bar_mode;
+    var storylineId = this.entry.getStorylineIdByChapterId(chapterId);
+    return this.entry.getStorylineConfiguration(storylineId).navigation_bar_mode;
   }
 });
 

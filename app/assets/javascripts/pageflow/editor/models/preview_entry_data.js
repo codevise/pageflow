@@ -10,6 +10,11 @@ pageflow.PreviewEntryData = pageflow.EntryData.extend({
     return this.theming.get(name);
   },
 
+  getStorylineConfiguration: function(id) {
+    var storyline = this.storylines.get(id);
+    return storyline ? storyline.configuration.attributes : {};
+  },
+
   getChapterConfiguration: function(id) {
     var chapter = this.chapters.get(id);
     return chapter ? chapter.configuration.attributes : {};
@@ -18,6 +23,11 @@ pageflow.PreviewEntryData = pageflow.EntryData.extend({
   getChapterPagePermaIds: function(id) {
     var chapter = this.chapters.get(id);
     return chapter ? chapter.pages.pluck('perma_id') : [];
+  },
+
+  getStorylineIdByChapterId: function(id) {
+    var chapter = this.chapters.get(id);
+    return chapter && chapter.get('storyline_id');
   },
 
   getChapterIdByPagePermaId: function(permaId) {

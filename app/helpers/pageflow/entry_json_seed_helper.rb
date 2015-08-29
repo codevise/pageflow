@@ -8,7 +8,8 @@ module Pageflow
     def entry_json_seed(entry)
       seed = {
         theming: entry_theming_seed(entry),
-        chapter_configurations: entry_chapter_configurations_seed(entry),
+        storyline_configurations: entry_storyline_configurations_seed(entry),
+        chapters: entry_chapters_seed(entry),
         pages: entry_pages_seed(entry)
       }
 
@@ -22,10 +23,15 @@ module Pageflow
       }
     end
 
-    def entry_chapter_configurations_seed(entry)
-      entry.chapters.each_with_object({}) do |chapter, result|
-        result[chapter.id] = chapter.configuration
+    def entry_storyline_configurations_seed(entry)
+      entry.storylines.each_with_object({}) do |storyline, result|
+        result[storyline.id] = storyline.configuration
       end
+    end
+
+    def entry_chapters_seed(entry)
+      attributes = [:id, :storyline_id, :configuration]
+      entry.chapters.as_json(only: attributes)
     end
 
     def entry_pages_seed(entry)
