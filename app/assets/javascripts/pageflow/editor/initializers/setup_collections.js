@@ -19,7 +19,16 @@ pageflow.app.addInitializer(function(options) {
     theming: pageflow.theming
   });
 
+  pageflow.storylineOrdering = new pageflow.StorylineOrdering(pageflow.storylines, pageflow.pages);
+  pageflow.storylineOrdering.sort({silent: true});
+  pageflow.storylineOrdering.watch();
+
   pageflow.pages.sort();
+
+  // TODO
+  pageflow.storylines.on('sort', _.debounce(function() {
+    pageflow.storylines.saveOrder();
+  }, 100));
 
   pageflow.editor.failures.watch(pageflow.entry);
   pageflow.editor.failures.watch(pageflow.pages);

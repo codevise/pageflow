@@ -1,9 +1,11 @@
 pageflow.orderedCollection = {
   initialize: function() {
-    this.listenTo(this, 'remove', function() {
-      this.consolidatePositions();
-      this.saveOrder();
-    });
+    if (this.autoConsolidatePositions !== false) {
+      this.listenTo(this, 'remove', function() {
+        this.consolidatePositions();
+        this.saveOrder();
+      });
+    }
   },
 
   consolidatePositions: function() {

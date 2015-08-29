@@ -33,6 +33,10 @@ pageflow.Entry = Backbone.Model.extend({
       this.watchFileCollection(fileType.collectionName, this.getFileCollection(fileType));
     }, this);
 
+    this.listenTo(this.storylines, 'sort', function() {
+      this.pages.sort();
+    });
+
     this.listenTo(this.chapters, 'sort', function() {
       this.pages.sort();
     });

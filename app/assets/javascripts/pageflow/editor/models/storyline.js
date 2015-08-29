@@ -17,6 +17,10 @@ pageflow.Storyline = Backbone.Model.extend({
       this.save();
       this.trigger('change:configuration', this);
     });
+
+    this.listenTo(this.configuration, 'change:main', function(model, value) {
+      this.trigger('change:main', this, value);
+    });
   },
 
   urlRoot: function() {
@@ -24,7 +28,31 @@ pageflow.Storyline = Backbone.Model.extend({
   },
 
   title: function() {
-    return this.configuration.get('title') || I18n.t('pageflow.storylines.untitled');
+    return _([
+      this.configuration.get('title') ||
+        (!this.isMain() && I18n.t('pageflow.storylines.untitled')),
+      this.isMain() && I18n.t('pageflow.storylines.main')
+    ]).compact().join(' - ');
+  },
+
+  isMain: function() {
+    return !!this.configuration.get('main');
+  },
+
+  lane: function() {
+    return this.configuration.get('lane');
+  },
+
+  row: function() {
+    return this.configuration.get('row');
+  },
+
+  parentPagePermaId: function() {
+    return this.configuration.get('parent_page_perma_id');
+  },
+
+  parentPage: function() {
+    return pageflow.pages.getByPermaId(this.parentPagePermaId());
   },
 
   addChapter: function(params) {
