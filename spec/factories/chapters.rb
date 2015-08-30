@@ -3,14 +3,17 @@
 module Pageflow
   FactoryGirl.define do
     factory :chapter, :class => Chapter do
-      revision
+      storyline
 
       transient do
-        entry nil
+        in_main_storyline_of nil
       end
 
       before(:create) do |chapter, evaluator|
-        chapter.revision = evaluator.entry.draft if evaluator.entry
+        if revision = evaluator.in_main_storyline_of
+          chapter.storyline = revision.storylines.first ||
+            fail('Expected revision to have a main storyline.')
+        end
       end
     end
 

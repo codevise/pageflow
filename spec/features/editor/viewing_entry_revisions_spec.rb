@@ -4,7 +4,8 @@ feature 'viewing entry revisions' do
   scenario 'view depublished revision' do
     entry = create(:entry)
     revision = create(:revision, :depublished, :entry => entry)
-    chapter = create(:chapter, :revision => revision)
+    storyline = create(:storyline, :revision => revision)
+    chapter = create(:chapter, :storyline => storyline)
     create(:page, :chapter => chapter, :template => 'background_image')
 
     user = Dom::Admin::Page.sign_in_as(:editor)

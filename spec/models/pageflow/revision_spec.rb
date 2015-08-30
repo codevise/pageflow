@@ -103,31 +103,48 @@ module Pageflow
         expect(copied_revision.emphasize_chapter_beginning).to eq(true)
       end
 
-      it 'copies chapters to new revision' do
+      it 'copies storylines to new revision' do
         revision = create(:revision)
-        chapter = create(:chapter, :revision => revision, :title => 'Intro')
+        storyline = create(:storyline, :revision => revision, :configuration => {'some' => 'value'})
 
         copied_revision = revision.copy
 
+        expect(copied_revision).to have(1).storyline
+        expect(copied_revision.storylines.first).not_to eq(storyline)
+        expect(copied_revision.storylines.first.configuration['some']).to eq('value')
+      end
+
+      it 'copies chapters to new revision' do
+        revision = create(:revision)
+        storyline = create(:storyline, :revision => revision)
+        chapter = create(:chapter, :storyline => storyline, :title => 'Intro')
+
+        copied_revision = revision.copy
+
+        expect(revision).to have(1).chapter
         expect(copied_revision).to have(1).chapter
-        expect(copied_revision.chapters.first).not_to eq(chapter)
-        expect(copied_revision.chapters.first.title).to eq('Intro')
+        expect(copied_revision.storylines.first).to have(1).chapter
+        expect(copied_revision.storylines.first.chapters.first).not_to eq(chapter)
+        expect(copied_revision.storylines.first.chapters.first.title).to eq('Intro')
       end
 
       it 'copies pages to new revision' do
         revision = create(:revision)
-        chapter = create(:chapter, :revision => revision)
+        storyline = create(:storyline, :revision => revision)
+        chapter = create(:chapter, :storyline => storyline)
         page = create(:page, :chapter => chapter, :configuration => {'title' => 'Main'})
 
         copied_revision = revision.copy
 
-        expect(copied_revision.chapters.first).to have(1).page
-        expect(copied_revision.chapters.first.pages.first.configuration['title']).to eq('Main')
+        expect(copied_revision.storylines.first.chapters.first).to have(1).page
+        expect(copied_revision.storylines.first.chapters.first.pages.first).not_to eq(page)
+        expect(copied_revision.storylines.first.chapters.first.pages.first.configuration['title']).to eq('Main')
       end
 
       it 'copies file usages to new revision' do
         revision = create(:revision)
-        chapter = create(:chapter, :revision => revision)
+        storyline = create(:storyline, :revision => revision)
+        chapter = create(:chapter, :storyline => storyline)
         image_file = create(:image_file)
         revision.file_usages.create!(:file => image_file)
 
@@ -244,19 +261,24 @@ module Pageflow
     end
 
     describe '#pages' do
-      it 'orders by chapter position first then by page position' do
+      it 'orders by storyline position first then by chapter and page position' do
         revision = create(:revision)
-        chapter_1 = create(:chapter, :revision => revision, :position => 1)
-        chapter_2 = create(:chapter, :revision => revision, :position => 2)
+        storyline_1 = create(:storyline, :revision => revision, :position => 1)
+        storyline_2 = create(:storyline, :revision => revision, :position => 2)
+        chapter_1 = create(:chapter, :storyline => storyline_1, :position => 1)
+        chapter_2 = create(:chapter, :storyline => storyline_1, :position => 2)
+        chapter_3 = create(:chapter, :storyline => storyline_2, :position => 1)
         page_1 = create(:page, :chapter => chapter_1, :position => 1)
         page_2 = create(:page, :chapter => chapter_1, :position => 2)
         page_3 = create(:page, :chapter => chapter_2, :position => 1)
+        page_4 = create(:page, :chapter => chapter_3, :position => 1)
 
         pages = revision.pages
 
         expect(pages[0]).to eq(page_1)
         expect(pages[1]).to eq(page_2)
         expect(pages[2]).to eq(page_3)
+        expect(pages[3]).to eq(page_4)
       end
     end
 

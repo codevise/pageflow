@@ -29,6 +29,12 @@ module Pageflow
 
         expect(entry.draft.widgets).to include_record_with(role: 'header', type_name: 'theming_header')
       end
+
+      it 'creates a first storyline in the draft' do
+        entry = create(:entry)
+
+        expect(entry.draft.storylines).not_to be_empty
+      end
     end
 
     context 'validation' do

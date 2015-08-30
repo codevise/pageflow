@@ -256,7 +256,8 @@ module Pageflow
         context 'with page parameter' do
           it 'renders social sharing meta tags for page' do
             entry = create(:entry, :published)
-            chapter = create(:chapter, :revision => entry.published_revision)
+            storyline = create(:storyline, :revision => entry.published_revision)
+            chapter = create(:chapter, :storyline => storyline)
             page = create(:page, :configuration => {:title => 'Shared page'}, :chapter => chapter)
 
             get(:show, :id => entry, :page => page.perma_id)
@@ -488,7 +489,8 @@ module Pageflow
     describe '#page' do
       it 'redirects to entry path with page perma id anchor' do
         entry = create(:entry, :published, :title => 'report')
-        chapter = create(:chapter, :revision => entry.published_revision)
+        storyline = create(:storyline, :revision => entry.published_revision)
+        chapter = create(:chapter, :storyline => storyline)
         page = create(:page, :chapter => chapter)
 
         get(:page, :id => entry, :page_index => 0)
@@ -498,7 +500,8 @@ module Pageflow
 
       it 'removes suffix appended with slash' do
         entry = create(:entry, :published, :title => 'report')
-        chapter = create(:chapter, :revision => entry.published_revision)
+        storyline = create(:storyline, :revision => entry.published_revision)
+        chapter = create(:chapter, :storyline => storyline)
         page = create(:page, :chapter => chapter)
 
         get(:page, :id => entry, :page_index => '0-some-title')
@@ -508,7 +511,8 @@ module Pageflow
 
       it 'skips hash if page index is invalid' do
         entry = create(:entry, :published, :title => 'report')
-        chapter = create(:chapter, :revision => entry.published_revision)
+        storyline = create(:storyline, :revision => entry.published_revision)
+        chapter = create(:chapter, :storyline => storyline)
         page = create(:page, :chapter => chapter)
 
         get(:page, :id => entry, :page_index => '100-not-there')
@@ -526,7 +530,8 @@ module Pageflow
         it 'responds with redirect for matching entry' do
           account = create(:account, :name => 'news')
           entry = create(:entry, :published, :account => account, :title => 'report')
-          chapter = create(:chapter, :revision => entry.published_revision)
+          storyline = create(:storyline, :revision => entry.published_revision)
+          chapter = create(:chapter, :storyline => storyline)
           page = create(:page, :chapter => chapter)
 
           request.host = 'news.example.com'

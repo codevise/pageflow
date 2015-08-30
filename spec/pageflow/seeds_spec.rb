@@ -93,6 +93,12 @@ module Pageflow
         expect(result).to eq(entry)
       end
 
+      it 'creates sample storyline' do
+        entry = SeedsDsl.sample_entry(account: create(:account), title: 'Example')
+
+        expect(entry.draft.storylines).not_to be_empty
+      end
+
       it 'creates sample chapters' do
         entry = SeedsDsl.sample_entry(account: create(:account), title: 'Example')
 

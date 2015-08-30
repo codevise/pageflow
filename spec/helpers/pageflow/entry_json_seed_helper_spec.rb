@@ -5,7 +5,8 @@ module Pageflow
     describe '#entry_json_seed' do
       it 'escapes illegal characters' do
         revision = create(:revision, :published)
-        chapter = create(:chapter, revision: revision)
+        storyline = create(:storyline, revision: revision)
+        chapter = create(:chapter, storyline: storyline)
         create(:page, chapter: chapter, configuration: {text: "some\u2028text"})
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
 
@@ -27,22 +28,38 @@ module Pageflow
       end
     end
 
-    describe '#entry_chapter_configurations_seed' do
+    describe '#entry_storyline_configurations_seed' do
       it 'indexed configurations by id' do
         revision = create(:revision, :published)
-        chapter = create(:chapter, revision: revision, configuration: {text: 'some text'})
+        storyline = create(:storyline, revision: revision, configuration: {text: 'some text'})
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
 
-        result = helper.entry_chapter_configurations_seed(entry)
+        result = helper.entry_storyline_configurations_seed(entry)
 
-        expect(result[chapter.id]['text']).to eq('some text')
+        expect(result[storyline.id]['text']).to eq('some text')
+      end
+    end
+
+    describe '#entry_chapters_seed' do
+      it 'indexed configurations by id' do
+        revision = create(:revision, :published)
+        storyline = create(:storyline, revision: revision)
+        chapter = create(:chapter, storyline: storyline, configuration: {text: 'some text'})
+        entry = PublishedEntry.new(create(:entry, published_revision: revision))
+
+        result = helper.entry_chapters_seed(entry)
+
+        expect(result[0]['id']).to eq(chapter.id)
+        expect(result[0]['storyline_id']).to eq(storyline.id)
+        expect(result[0]['configuration']['text']).to eq('some text')
       end
     end
 
     describe '#entry_pages_seed' do
       it 'includes id, perma_id and configuration' do
         revision = create(:revision, :published)
-        chapter = create(:chapter, revision: revision)
+        storyline = create(:storyline, revision: revision)
+        chapter = create(:chapter, storyline: storyline)
         page = create(:page, chapter: chapter, configuration: {text: 'some text'})
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
 
