@@ -63,11 +63,11 @@ pageflow.Slideshow = function($el, configurations) {
   };
 
   this.back = function() {
-    this.scrollNavigator.back(currentPage);
+    this.scrollNavigator.back(currentPage, pages);
   };
 
   this.next = function() {
-    this.scrollNavigator.next(currentPage);
+    this.scrollNavigator.next(currentPage, pages);
   };
 
   this.parentPageExists = function() {
@@ -202,7 +202,7 @@ pageflow.Slideshow = function($el, configurations) {
 
   $el.find('.scroll_indicator').scrollIndicator({parent: this});
 
-  this.scrollNavigator = new pageflow.DomOrderScrollNavigator(this);
+  this.scrollNavigator = new pageflow.DomOrderScrollNavigator(this, pageflow.entryData);
   this.preparer = pageflow.AdjacentPreparer.create(function() { return pages; }, this.scrollNavigator).attach(pageflow.events);
 };
 
