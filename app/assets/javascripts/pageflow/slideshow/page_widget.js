@@ -26,7 +26,13 @@
       this.pageType = pageflow.pageType.get(this.element.data('template'));
       this.element.data('pageType', this.pageType);
 
-      this.content = this.element.find('.scroller');
+      if (this.pageType.scroller === false) {
+        this.content = $();
+      }
+      else {
+        this.content = this.element.find('.scroller');
+      }
+
       this.content.scroller(this.pageType.scrollerOptions || {});
       this.pageType.scroller = this.content.scroller('instance');
 
