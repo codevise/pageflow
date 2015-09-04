@@ -22,11 +22,11 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
       toolbar: this.ui.toolbar[0],
       parserRules: {
         tags: {
-          u: {},
-          b: {},
-          i: {},
+          u: this.options.disableRichtext ? 0 : {},
+          b: this.options.disableRichtext ? 0 : {},
+          i: this.options.disableRichtext ? 0 : {},
           br: {},
-          a: {
+          a: this.options.disableLinks ? 0 : {
             check_attributes: {
               href: "href"
             },
@@ -38,6 +38,15 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
         }
       }
     });
+
+    if (this.options.disableRichtext) {
+      this.ui.toolbar.find('a[data-wysihtml5-command="bold"]').remove();
+      this.ui.toolbar.find('a[data-wysihtml5-command="italic"]').remove();
+      this.ui.toolbar.find('a[data-wysihtml5-command="underline"]').remove();
+    }
+    if (this.options.disableLinks) {
+      this.ui.toolbar.find('a[data-wysihtml5-command="createLink"]').remove();
+    }
 
     this.editor.on('change', _.bind(this.save, this));
     this.editor.on('aftercommand:composer', _.bind(this.save, this));
