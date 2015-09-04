@@ -60,5 +60,15 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
     }));
 
     pageflow.editor.setDefaultHelpEntry(page.pageType().help_entry_translation_key);
+  },
+
+  pageLink: function(linkId) {
+    var pageId = linkId.split(':')[0];
+    var page = pageflow.pages.getByPermaId(pageId);
+
+    this.region.show(new pageflow.EditPageLinkView({
+      model: page.pageLinks().get(linkId),
+      page: page
+    }));
   }
 });

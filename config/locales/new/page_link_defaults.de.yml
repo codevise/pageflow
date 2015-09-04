@@ -1,0 +1,17 @@
+de:
+  pageflow:
+    editor:
+      templates:
+        edit_page_link:
+          back: "Zurück"
+          destroy: "Löschen"
+      views:
+        edit_page_link_view:
+          default_page_transition: "(Standard)"
+    common_page_link_attributes:
+      label:
+        label: "Bezeichnung"
+      target_page_id:
+        label: "Zielseite"
+      page_transition:
+        label: "Seitenübergangseffekt"

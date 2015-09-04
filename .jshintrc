@@ -3,6 +3,8 @@
   "undef": true,
   "immed": true,
   "trailing": true,
+  "maxlen": 100,
+  "unused": "vars",
   "predef": [
     "jQuery",
     "$",

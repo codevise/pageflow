@@ -22,6 +22,6 @@ pageflow.PagesCollection = Backbone.Collection.extend({
   },
 
   getByPermaId: function(permaId) {
-    return this.findWhere({perma_id: permaId});
+    return this.findWhere({perma_id: parseInt(permaId, 10)});
   }
 });

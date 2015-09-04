@@ -38,5 +38,17 @@ pageflow.PageType = pageflow.Object.extend({
         'pageflow.common_page_attributes'
       ]
     }, options));
+  },
+
+  createPageLinkConfigurationEditorView: function(options) {
+    var constructor = this.options.pageLinkConfigurationEditorView ||
+      pageflow.PageLinkConfigurationEditorView;
+
+    return new constructor(_.extend({
+      attributeTranslationKeyPrefixes: [
+        this.seed.translation_key_prefix + '.page_link_attributes',
+        'pageflow.common_page_link_attributes'
+      ]
+    }, options));
   }
 });
