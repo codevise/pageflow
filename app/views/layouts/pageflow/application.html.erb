@@ -3,6 +3,10 @@
 <head>
   <title><%= @page_title.presence || 'Pageflow' %></title>
 
+  <script>
+    window.PAGEFLOW_EDITOR = <%= @editor_scope ? 'true' : 'false' %>;
+  </script>
+
   <%= javascript_include_tag "pageflow/application", "data-turbolinks-track" => true %>
 
   <%= csrf_meta_tags %>
