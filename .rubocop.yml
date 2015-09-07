@@ -18,3 +18,7 @@ Style/Blocks:
 # The default of 80 characters is a little to narrow.
 Metrics/LineLength:
   Max: 100
+
+# Only place spaces inside blocks written with braces.
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
