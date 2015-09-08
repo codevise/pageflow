@@ -14,3 +14,7 @@ Style/DotPosition:
 # that would change meaning with "do ... end".
 Style/Blocks:
   Enabled: false
+
+# The default of 80 characters is a little to narrow.
+Metrics/LineLength:
+  Max: 100
