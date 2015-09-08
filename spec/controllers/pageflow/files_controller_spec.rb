@@ -67,12 +67,12 @@ module Pageflow
 
       context 'https mode' do
         let(:entry) { create(:entry, :published) }
-        let(:video_file) { create(:video_file, :entry => entry, :used_in => entry.published_revision) }
+        let(:video_file) { create(:video_file, entry: entry, used_in: entry.published_revision) }
 
         it 'redirects to https when https is enforced' do
           Pageflow.config.public_https_mode = :enforce
 
-          get(:show, :entry_id => entry.id, :collection_name => 'video_files', :id => video_file.id)
+          get(:show, entry_id: entry.id, collection_name: 'video_files', id: video_file.id)
 
           expect(response).to redirect_to("https://test.host/#{entry.id}/videos/#{video_file.id}")
         end
@@ -81,7 +81,7 @@ module Pageflow
           Pageflow.config.public_https_mode = :prevent
           request.env['HTTPS'] = 'on'
 
-          get(:show, :entry_id => entry.id, :collection_name => 'video_files', :id => video_file.id)
+          get(:show, entry_id: entry.id, collection_name: 'video_files', id: video_file.id)
 
           expect(response).to redirect_to("http://test.host/#{entry.id}/videos/#{video_file.id}")
         end
@@ -90,7 +90,7 @@ module Pageflow
           Pageflow.config.public_https_mode = :ignore
           request.env['HTTPS'] = 'on'
 
-          get(:show, :entry_id => entry.id, :collection_name => 'video_files', :id => video_file.id)
+          get(:show, entry_id: entry.id, collection_name: 'video_files', id: video_file.id)
 
           expect(response.status).to eq(200)
         end
@@ -98,7 +98,7 @@ module Pageflow
         it 'stays on http when https mode is ignored' do
           Pageflow.config.public_https_mode = :ignore
 
-          get(:show, :entry_id => entry.id, :collection_name => 'video_files', :id => video_file.id)
+          get(:show, entry_id: entry.id, collection_name: 'video_files', id: video_file.id)
 
           expect(response.status).to eq(200)
         end

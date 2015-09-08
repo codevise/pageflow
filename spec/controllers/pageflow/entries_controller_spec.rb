@@ -273,7 +273,7 @@ module Pageflow
           it 'redirects to https when https is enforced' do
             Pageflow.config.public_https_mode = :enforce
 
-            get(:show, :id => entry)
+            get(:show, id: entry)
 
             expect(response).to redirect_to("https://test.host/entries/#{entry.to_param}")
           end
@@ -282,7 +282,7 @@ module Pageflow
             Pageflow.config.public_https_mode = :prevent
             request.env['HTTPS'] = 'on'
 
-            get(:show, :id => entry)
+            get(:show, id: entry)
 
             expect(response).to redirect_to("http://test.host/entries/#{entry.to_param}")
           end
@@ -291,7 +291,7 @@ module Pageflow
             Pageflow.config.public_https_mode = :ignore
             request.env['HTTPS'] = 'on'
 
-            get(:show, :id => entry)
+            get(:show, id: entry)
 
             expect(response.status).to eq(200)
           end
@@ -299,7 +299,7 @@ module Pageflow
           it 'stays on http when https mode is ignored' do
             Pageflow.config.public_https_mode = :ignore
 
-            get(:show, :id => entry)
+            get(:show, id: entry)
 
             expect(response.status).to eq(200)
           end

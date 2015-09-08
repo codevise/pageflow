@@ -1,6 +1,5 @@
 module Pageflow
   class FilesController < Pageflow::ApplicationController
-
     include PublicHttpsMode
 
     before_filter :check_public_https_mode
