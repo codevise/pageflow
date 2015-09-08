@@ -1,6 +1,8 @@
 module Pageflow
   class FilesController < Pageflow::ApplicationController
-    before_filter :prevent_ssl
+    include PublicHttpsMode
+
+    before_filter :check_public_https_mode
 
     def show
       respond_to do |format|

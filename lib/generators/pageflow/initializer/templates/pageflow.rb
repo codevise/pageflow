@@ -34,6 +34,16 @@ Pageflow.configure do |config|
   # pageflow_filesystem_root paperclip interpolation.
   config.paperclip_filesystem_root = 'tmp/attachments/production'
 
+  # How to handle https requests for URLs which will have assets in the page.
+  # If you wish to serve all assets over http and prevent mixed-content warnings,
+  # you can force a redirect to http. The inverse is also true: you can force
+  # a redirect to https for all http requests.
+  #
+  #     config.public_https_mode = :prevent (default) # => redirects https to http
+  #     config.public_https_mode = :enforce # => redirects http to https
+  #     config.public_https_mode = :ignore # => does nothing
+  config.public_https_mode = :ignore
+
   # Rewrite the below section to use your favorite configuration
   # method: ENV variables, secrets.yml, custom yml files. If you use
   # environment variables consider the dotenv gem to configure your
