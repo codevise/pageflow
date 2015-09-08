@@ -108,17 +108,25 @@
       z-index: 0;
     }
   }
+
+  .hidden_text_indicator {
+    display: none;
+    left: 8%;
+
+    &:before {
+      background-image: image-url("pageflow/touch_indicator.png");
+    }
+
+    &.invert {
+      &:before {
+        background-image: image-url("pageflow/touch_indicator_invert.png");
+      }
+    }
+  }
 }
 
-.has_mobile_platform .hidden_text_indicator {
-  left: 8%;
-  &:before {
-    background-image: image-url('pageflow/touch_indicator.png');
-  }
-
-  &.invert {
-    &:before {
-      background-image: image-url('pageflow/touch_indicator_invert.png');
-    }
+.has_mobile_platform .entry {
+  .hidden_text_indicator {
+    display: block;
   }
 }
