@@ -76,6 +76,9 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
       this.ui.publishUntilField.datepicker('setDate', publishedUntil);
       this.ui.publishUntilTimeField.val(timeStr(publishedUntil));
     }
+    else {
+      this.ui.publishUntilField.datepicker('setDate', oneYearFromNow());
+    }
 
     this.ui.userNameField.val(pageflow.account.get('name'));
 
@@ -98,6 +101,12 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
       function twoDigits(val) {
         return ("0" + val).slice(-2);
       }
+    }
+
+    function oneYearFromNow() {
+      var date = new Date();
+      date.setFullYear(date.getFullYear() + 1);
+      return date;
     }
   },
 
