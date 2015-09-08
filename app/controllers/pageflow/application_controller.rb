@@ -54,12 +54,6 @@ module Pageflow
       root_url(:protocol => 'http')
     end
 
-    def prevent_ssl
-      if request.ssl?
-        redirect_to("http://#{request.host}#{request.fullpath}", :status => :moved_permanently)
-      end
-    end
-
     def locale_from_accept_language_header
       http_accept_language.compatible_language_from(I18n.available_locales)
     end

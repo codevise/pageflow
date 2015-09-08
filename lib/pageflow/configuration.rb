@@ -188,6 +188,19 @@ module Pageflow
     # @since 0.7
     attr_accessor :available_locales
 
+    # How to handle https requests for URLs which will have assets in the page.
+    # If you wish to serve all assets over http and prevent mixed-content warnings,
+    # you can force a redirect to http. The inverse is also true: you can force
+    # a redirect to https for all http requests.
+    #
+    # @example
+    #
+    #     config.public_https_mode = :prevent (default) # => redirects https to http
+    #     config.public_https_mode = :enforce # => redirects http to https
+    #     config.public_https_mode = :ignore # => does nothing
+    # @since edge
+    attr_accessor :public_https_mode
+
     def initialize
       @paperclip_filesystem_default_options = {validate_media_type: false}
       @paperclip_s3_default_options = {validate_media_type: false}
@@ -217,6 +230,8 @@ module Pageflow
       @admin_resource_tabs = Pageflow::Admin::Tabs.new
 
       @available_locales = Engine.config.i18n.available_locales
+
+      @public_https_mode = :prevent
     end
 
     # Activate a plugin.

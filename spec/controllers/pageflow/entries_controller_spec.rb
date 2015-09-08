@@ -266,6 +266,44 @@ module Pageflow
               .with_content_including('Shared page')
           end
         end
+
+        context 'https mode' do
+          let(:entry) { create(:entry, :published) }
+
+          it 'redirects to https when https is enforced' do
+            Pageflow.config.public_https_mode = :enforce
+
+            get(:show, :id => entry)
+
+            expect(response).to redirect_to("https://test.host/entries/#{entry.to_param}")
+          end
+
+          it 'redirects to http when https is prevented' do
+            Pageflow.config.public_https_mode = :prevent
+            request.env['HTTPS'] = 'on'
+
+            get(:show, :id => entry)
+
+            expect(response).to redirect_to("http://test.host/entries/#{entry.to_param}")
+          end
+
+          it 'stays on https when https mode is ignored' do
+            Pageflow.config.public_https_mode = :ignore
+            request.env['HTTPS'] = 'on'
+
+            get(:show, :id => entry)
+
+            expect(response.status).to eq(200)
+          end
+
+          it 'stays on http when https mode is ignored' do
+            Pageflow.config.public_https_mode = :ignore
+
+            get(:show, :id => entry)
+
+            expect(response.status).to eq(200)
+          end
+        end
       end
 
       context 'with format css' do
