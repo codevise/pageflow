@@ -1,5 +1,6 @@
 pageflow.PreviewEntryData = pageflow.EntryData.extend({
   initialize: function(options) {
+    this.storylines = options.storylines;
     this.chapters = options.chapters;
     this.pages = options.pages;
     this.theming = options.theming;
