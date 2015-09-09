@@ -1,8 +1,4 @@
 en:
-  pageflow:
-    scroll_indicator_modes:
-      feature_name: "Configurable scroll indicators"
-
   activerecord:
     attributes:
       "pageflow/page":
@@ -19,10 +15,6 @@ en:
           horizontal: "Horizontal"
           vertical: "Vertical"
 de:
-  pageflow:
-    scroll_indicator_modes:
-      feature_name: "Konfigurierbare Scroll Indikatoren"
-
   activerecord:
     attributes:
       "pageflow/page":

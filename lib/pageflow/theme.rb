@@ -20,6 +20,14 @@ module Pageflow
       !!@options[:scroll_back_indicator]
     end
 
+    def supports_scroll_indicator_modes?
+      !!@options[:scroll_indicator_modes]
+    end
+
+    def supports_emphasized_pages?
+      !!@options[:emphasized_pages]
+    end
+
     def page_change_by_scrolling?
       !@options[:no_page_change_by_scrolling]
     end
