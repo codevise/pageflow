@@ -3,6 +3,11 @@ pageflow.app.addInitializer(function(options) {
     el: $('body')
   }).render();
 
+  new pageflow.ScrollingView({
+    el: $('sidebar .scrolling'),
+    region: pageflow.app.sidebarRegion
+  }).render();
+
   pageflow.app.previewRegion.show(new pageflow.EntryPreviewView({
     model: pageflow.entry
   }));
