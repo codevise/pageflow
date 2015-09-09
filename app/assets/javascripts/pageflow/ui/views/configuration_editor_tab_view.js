@@ -8,7 +8,8 @@ pageflow.ConfigurationEditorTabView = Backbone.Marionette.View.extend({
   input: function(propertyName, view, options) {
     this.view(view, _.extend({
       placeholderModel: this.options.placeholderModel,
-      propertyName: propertyName
+      propertyName: propertyName,
+      attributeTranslationKeyPrefixes: this.options.attributeTranslationKeyPrefixes
     }, options || {}));
   },
 

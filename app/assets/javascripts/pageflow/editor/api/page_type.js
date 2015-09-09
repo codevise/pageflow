@@ -32,6 +32,11 @@ pageflow.PageType = pageflow.Object.extend({
     var constructor = this.configurationEditorView();
     options.pageType = this.seed;
 
-    return new constructor(options);
+    return new constructor(_.extend({
+      attributeTranslationKeyPrefixes: [
+        this.seed.translation_key_prefix + '.page_attributes',
+        'pageflow.common_page_attributes'
+      ]
+    }, options));
   }
 });

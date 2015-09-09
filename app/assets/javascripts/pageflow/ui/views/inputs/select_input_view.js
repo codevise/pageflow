@@ -33,7 +33,10 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
 
     if (!this.options.texts) {
       if (!this.options.translationKeys) {
-        var translationKeyPrefix = this.options.translationKeyPrefix || 'activerecord.values.' + this.model.i18nKey + '.' + this.options.propertyName;
+        var translationKeyPrefix = this.options.translationKeyPrefix ||
+          pageflow.i18nUtils.findKeyWithTranslation(this.attributeTranslationKeys('values', {
+            fallbackPrefix: 'activerecord.values'
+          }));
 
         this.options.translationKeys = _.map(this.options.values, function(value) {
           return translationKeyPrefix + '.' + value;
