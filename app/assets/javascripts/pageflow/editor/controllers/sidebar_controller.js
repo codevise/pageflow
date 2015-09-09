@@ -45,6 +45,12 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
     pageflow.editor.setDefaultHelpEntry('pageflow.help_entries.publish');
   },
 
+  storyline: function(id) {
+    this.region.show(new pageflow.EditStorylineView({
+      model: this.entry.storylines.get(id)
+    }));
+  },
+
   chapter: function(id) {
     this.region.show(new pageflow.EditChapterView({
       model: this.entry.chapters.get(id)

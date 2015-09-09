@@ -27,12 +27,16 @@ pageflow.Storyline = Backbone.Model.extend({
     return this.isNew() ? this.collection.url() : '/storylines';
   },
 
-  title: function() {
+  displayTitle: function() {
     return _([
-      this.configuration.get('title') ||
+      this.title() ||
         (!this.isMain() && I18n.t('pageflow.storylines.untitled')),
       this.isMain() && I18n.t('pageflow.storylines.main')
     ]).compact().join(' - ');
+  },
+
+  title: function() {
+    return this.configuration.get('title');
   },
 
   isMain: function() {

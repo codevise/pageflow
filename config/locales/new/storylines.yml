@@ -1,0 +1,46 @@
+de:
+  pageflow:
+    storylines:
+      feature_name: "Erzählstränge"
+      untitled: Unbenannter Erzählstrang
+      main: Haupstrang
+    editor:
+      templates:
+        storyline_outline:
+          header: Gliederung
+          new_chapter: Neues Kapitel
+        edit_entry:
+          outline: "DELELTED"
+          new_chapter: "DELETED"
+        edit_storyline:
+          destroy: Löschen
+          outline: Gliederung
+          retry: Erneut versuchen
+          save_error: Beim Speichern des Erzählstrangs ist ein Problem aufgetreten.
+        storyline_picker:
+          add: "Hinzufügen"
+          edit: "Einstellungen bearbeiten"
+      views:
+        storylines_picker_view:
+          label: Erzählstrang
+          without_parent_page: Ohne übergeordnete Seite
+        edit_storyline_view:
+          confirm_destroy: Erzählstrang wirklich löschen?
+          cannot_destroy: Nur leere Erzählstränge können gelöscht werden.
+    storyline_attributes:
+      title:
+        label: "Titel"
+      main:
+        label: "Haupterzählstrang"
+        inline_help: "Macht die erste Seite dieses Erzählstrangs zur Startseite des Beitrags."
+        inline_help_disabled: "Die erste Seite dieses Erzählstrangs ist die Startseite des Beitrags."
+      parent_page_perma_id:
+        label: "Übergeordnete Seite"
+        inline_help: "Zielseite, um den Erzählstrang zu verlassen. Bestimmt die Kapitelhierarchie. Alle Kapitel des Erzählstrangs werden dem Kapitel dieser Seite untergeordnet."
+      navigation_bar_mode:
+        label: "Navigationsleiste"
+        values:
+          non: "Ausblenden"
+          current_storyline: "Aktueller Erzählstrang"
+          current_chapter: "Aktueller Kapitel"
+          inherit_from_parent: "Von übergeordnetem Kapitel erben"

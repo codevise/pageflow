@@ -1,0 +1,20 @@
+en:
+  pageflow:
+    chapter_hierachy:
+      feature_name: "Chapter Hierachy"
+
+  activerecord:
+    attributes:
+      "pageflow/chapter":
+        navigation_bar_mode: "Navigation Bar"
+        display_parent_page_button: "Display 'Parent Page'-Button"
+de:
+  pageflow:
+    chapter_hierachy:
+      feature_name: "Kapitel Hierachie"
+
+  activerecord:
+    attributes:
+      "pageflow/chapter":
+        navigation_bar_mode: "Navigationsleiste"
+        display_parent_page_button: "'Übergeordnete Seite'-Button anzeigen"

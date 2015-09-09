@@ -1,0 +1,32 @@
+.storyline_picker {
+  position: relative;
+
+  .add_storyline,
+  .edit_storyline {
+    @include icon-only-button;
+    display: none;
+    position: absolute;
+    top: 11px;
+  }
+
+  .add_storyline {
+    @include plus-circled-icon;
+    right: 0;
+  }
+
+  .edit_storyline {
+    @include pencil-icon;
+    right: 37px;
+  }
+
+  &.editable {
+    .storyline_picker_select_region {
+      margin-right: 75px;
+    }
+
+    .add_storyline,
+    .edit_storyline {
+      display: block;
+    }
+  }
+}

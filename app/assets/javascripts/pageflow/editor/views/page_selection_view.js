@@ -5,7 +5,8 @@ pageflow.PageSelectionView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.dialogView],
 
   ui: {
-    chapters: 'ul.chapters',
+    storylines: '.storyline_picker',
+    chapters: '.chapters',
   },
 
   events: {
@@ -16,16 +17,8 @@ pageflow.PageSelectionView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    var onSelect = this.onSelect;
-
-    this.subview(new pageflow.CollectionView({
-      el: this.ui.chapters,
-      collection: this.model.chapters,
-      itemViewConstructor: pageflow.ChapterItemView,
-      itemViewOptions: {
-        pageItemView: pageflow.PageItemView,
-        sortable: false
-      }
+    this.subview(new pageflow.StorylinePickerView({
+      el: this.ui.storylines
     }));
   }
 });

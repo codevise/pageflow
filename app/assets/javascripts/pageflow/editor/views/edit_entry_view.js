@@ -5,7 +5,8 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
 
   ui: {
     publicationStateButton: 'a.publication_state',
-    menu: '.menu'
+    menu: '.menu',
+    storylines: '.edit_entry_storylines'
   },
 
   events: {
@@ -20,10 +21,6 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
       return false;
     },
 
-    'click a.add_chapter': function() {
-      this.model.addChapter();
-    },
-
     'click .menu a': function(event) {
       editor.navigate($(event.target).data('path'), {trigger: true});
       return false;
@@ -33,16 +30,12 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
   onRender: function() {
     this._addMenuItems();
 
-    this.subview(new pageflow.SortableCollectionView({
-      el: this.$('ul.chapters'),
-      collection: this.model.chapters,
-      itemViewConstructor: pageflow.NavigatableChapterItemView,
-      itemViewOptions: {
-        sortable: true,
-        pageItemViewOptions: {
-          displayInNavigationHint: true
-        }
-      }
+    this.subview(new pageflow.StorylinePickerView({
+      el: this.ui.storylines,
+      navigatable: true,
+      editable: true,
+      displayInNavigationHint: true,
+      rememberLastSelection: true
     }));
   },
 
