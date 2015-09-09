@@ -5,7 +5,6 @@
       this.configuration = this.element.data('configuration') || this.options.configuration;
       this.index = this.options.index;
 
-      this.preloaded = false;
       this.reinit();
     },
 
@@ -25,6 +24,7 @@
     reinit: function() {
       this.pageType = pageflow.pageType.get(this.element.data('template'));
       this.element.data('pageType', this.pageType);
+      this.preloaded = false;
 
       this.content = this.element.find('.scroller');
       this.content.scroller(this.pageType.scrollerOptions || {});
@@ -38,6 +38,8 @@
 
     reactivate: function() {
       if (this.element.hasClass('active')) {
+        this.preload();
+
         this.content.scroller('enable');
         this.content.scroller('resetPosition');
         this.content.scroller('afterAnimationHook');
