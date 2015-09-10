@@ -114,7 +114,14 @@ module Pageflow
     controller do
       helper FoldersHelper
       helper EntriesHelper
+      helper Pageflow::Admin::FeaturesHelper
       helper Pageflow::Admin::RevisionsHelper
+
+      def update
+        update! do |success, _|
+          success.html { redirect_to(admin_entry_path(resource, params.slice(:tab))) }
+        end
+      end
 
       def scoped_collection
         params.key?(:folder_id) ? super.where(:folder_id => params[:folder_id]) : super
@@ -128,7 +135,13 @@ module Pageflow
       end
 
       def permitted_params
-        params.permit(entry: permitted_attributes)
+        result = params.permit(entry: permitted_attributes)
+
+        if result[:entry]
+          permit_feature_states(result[:entry])
+        end
+
+        result
       end
 
       private
@@ -142,6 +155,13 @@ module Pageflow
         result += [:account_id, :theming_id] if authorized?(:read, Account)
         result << :folder_id if authorized?(:manage, Folder)
         result
+      end
+
+      def permit_feature_states(attributes)
+        if authorized?(:read, Account)
+          feature_states = params[:entry][:feature_states].try(:permit!)
+          attributes.merge!(feature_states: feature_states || {})
+        end
       end
     end
   end
