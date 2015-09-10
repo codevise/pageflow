@@ -4,4 +4,8 @@ pageflow.app.addInitializer(function(options) {
       pageflow.reloadStylesheet('entry');
     }
   });
+
+  pageflow.entry.on('use:file', function() {
+    pageflow.reloadStylesheet('entry');
+  });
 });

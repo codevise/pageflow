@@ -78,6 +78,8 @@ pageflow.Entry = Backbone.Model.extend({
     fileUsages.createForFile(file, { success: function(usage) {
       file.set('usage_id', usage.get('id'));
       this.getFileCollection(file.fileType()).add(file);
+
+      this.trigger('use:file', file);
     }.bind(this)});
   },
 
