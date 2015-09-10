@@ -4,11 +4,28 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
   };
 
   this.back = function(currentPage, pages) {
-    slideshow.goTo(this.getPreviousPage(currentPage, pages), {position: 'bottom'});
+    var forcedTransition = null;
+    var previousPage = this.getPreviousPage(currentPage, pages);
+
+    if (previousPage.is(getParentPage(currentPage, pages))) {
+      forcedTransition = 'scroll_right';
+    }
+
+    slideshow.goTo(previousPage, {
+      position: forcedTransition ? null :'bottom',
+      transition: forcedTransition
+    });
   };
 
   this.next = function(currentPage, pages) {
-    slideshow.goTo(this.getNextPage(currentPage, pages));
+    var forcedTransition = null;
+    var nextPage = this.getNextPage(currentPage, pages);
+
+    if (nextPage.is(getParentPage(currentPage, pages))) {
+      forcedTransition = 'scroll_right';
+    }
+
+    slideshow.goTo(nextPage, {transition: forcedTransition});
   };
 
   this.nextPageExists = function(currentPage, pages) {
