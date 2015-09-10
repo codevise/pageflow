@@ -2,9 +2,9 @@ pageflow.EditorView = Backbone.View.extend({
   events: {
     'click a': function(event) {
       // prevent default for all links
-      if (!$(event.target).attr('target') &&
-          !$(event.target).attr('download') &&
-          !$(event.target).attr('href')) {
+      if (!$(event.currentTarget).attr('target') &&
+          !$(event.currentTarget).attr('download') &&
+          !$(event.currentTarget).attr('href')) {
         return false;
       }
     }
