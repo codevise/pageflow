@@ -8,7 +8,8 @@ pageflow.PageLinkItemView = Backbone.Marionette.ItemView.extend({
     thumbnail: '.page_thumbnail',
     title: '.title',
     label: '.label',
-    editButton: '.edit'
+    editButton: '.edit',
+    removeButton: '.remove'
   },
 
   events: {
@@ -23,6 +24,12 @@ pageflow.PageLinkItemView = Backbone.Marionette.ItemView.extend({
 
     'mouseleave': function() {
       this.model.resetHighlight(false);
+    },
+
+    'click .remove': function() {
+      if (confirm(I18n.t('pageflow.internal_links.editor.views.edit_page_link_view.confirm_destroy'))) {
+        this.model.remove();
+      }
     }
   },
 

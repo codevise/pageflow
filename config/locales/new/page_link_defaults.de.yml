@@ -5,6 +5,8 @@ de:
         edit_page_link:
           back: "Zurück"
           destroy: "Löschen"
+        page_link_item:
+          remove: "Löschen"
       views:
         edit_page_link_view:
           default_page_transition: "(Standard)"
