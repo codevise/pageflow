@@ -3,7 +3,7 @@
   <div class="menu sharing"></div>
   <div class="menu imprint"></div>
   <div class="overview_mobile">
-      <span class="heading-1"><%= t('.overview') %></span>
+      <span class="heading-1"><%= t('pageflow.public.overview') %></span>
       <div class="wrapper">
         <ul>
           <%= render :partial => 'pageflow/entries/navigation/page',
@@ -27,12 +27,12 @@
       </ul>
     </div>
     <div class="sub_share">
-      <a target="_blank"><%= I18n.t('pageflow.widgets.share_menu.entry') %></a>
-      <a target="_blank"><%= I18n.t('pageflow.widgets.share_menu.current_page') %></a>
+      <a target="_blank"><%= I18n.t('pageflow.public.share_this_entry') %></a>
+      <a target="_blank"><%= I18n.t('pageflow.public.share_this_page') %></a>
     </div>
   </div>
   <div class="imprint_mobile">
-      <span class="heading-1"><%= t('.imprint') %></span>
+      <span class="heading-1"><%= t('pageflow.public.imprint') %></span>
       <div class="wrapper">
         <ul>
           <li class="credits">

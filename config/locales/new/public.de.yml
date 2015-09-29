@@ -1,0 +1,79 @@
+de:
+  pageflow:
+    public:
+      logo: Logo
+      deprecated_browser: <p>Liebe Nutzer,</p><p>leider nutzen Sie eine veraltete Version Ihres Browsers. Deshalb
+              können die an dieser Stelle vorgesehenen Inhalte nicht korrekt dargestellt werden. Bitte aktualisieren Sie auf eine aktuelle Version.</p>
+      close: Schließen
+      close_hint: Hinweis schließen
+      scroll_back_indicator:
+      scroll_indicator: Scrollen, um weiterzulesen
+      swipe_indicator: Wischen, um Text einzublenden
+      overview: Übersicht
+      imprint: Impressum
+      notice: Hinweis
+      lets_go: Los geht's
+      forward: Vorwärts
+      back: Zurück
+      share: Teilen
+      share_this_entry: Diesen Beitrag
+      share_this_page: Diese Seite
+      share_on_facebook: Auf Facebook teilen
+      share_on_google: Auf Google+ teilen
+      share_on_twitter: Auf Twitter teilen
+      scroll_hint: Mit dem Mausrad oder den Pfeiltasten auf der Tastatur wird die jeweils nächste Kapitelseite aufgerufen.
+      sound_hint: Für dieses multimediale Reportage-Format nutzen wir neben Texten und Fotos auch Audios und Videos. Daher sollten die Lautsprecher des Systems eingeschaltet sein.
+      swipe_hint: Durch Wischen wird die jeweils nächste Kapitelseite aufgerufen.
+      javascript_hint: Zur korrekten Anzeige der Seite benötigen Sie JavaScript.
+      fullscreen: Vollbilddarstellung
+      enter_fullscreen: Vollbilddarstellung
+      leave_fullscreen: Vollbilddarstellung beenden
+      enlarge_view: Ansicht vergrößern
+      hide_text: Text ausblenden
+      show_text: Text einblenden
+      mute_off: Ton ein
+      mute_on: Ton aus
+      volume: Lautstärke
+      scroll_down: Runter scrollen
+      scroll_up: Hoch scrollen
+      scroll_left: Nach links scrollen
+      scroll_right: Nach rechts scrollen
+      skip_links_content: Zum Inhalt
+      skip_links_navigation: Zur Seitennavigation
+      skip_links_top_navigation: Zur Dachnavigation
+      navigation: Navigation
+      open_navigation: Navigation öffnen
+      close_navigation: Navigation schließen
+      navigate_top: Zum Anfang
+      open_overview: Übersicht öffnen
+      close_overview: Übersicht schließen
+      show_home: Zur Startseite
+      home: Startseite
+      first_page: Erste Seite
+      goto_first_page: Zur ersten Seite
+      chapter: Kapitel
+      goto_top: Zum Anfang
+      play_video: Video ansehen
+      audio: Audio
+      video: Video
+
+      before_after:
+        leave_view: Vorher/Nachher-Ansicht verlassen und Text einblenden
+        hint: Vorher/Nacher Ansicht
+        start: Vorher/Nachher-Ansicht starten
+        start_title: Vorher/Nachher-Ansicht starten
+
+      chart:
+        toggle: Ansicht vergrößern bzw. verkleinern
+
+      embedded_video:
+        leave_video: Eingebettetes Video verlassen
+
+      new_pages_box:
+        title: Neue Seiten
+        description: ! 'Seit dem letzten Besuch wurden diesem Pageflow neue Seiten hinzugefügt:'
+        additional_pages_html: ! '...und <span></span> weitere'
+
+      panorama:
+        start: 360°-Ansicht starten
+        close: 360°-Ansicht verlassen und Text einblenden
