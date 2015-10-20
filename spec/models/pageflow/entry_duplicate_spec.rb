@@ -38,6 +38,14 @@ module Pageflow
 
         expect(duplicate.users.first).to eq(user)
       end
+
+      it 'copies enabled features' do
+        entry = create(:entry, features_configuration: {fancy_page_type: true})
+
+        duplicate = EntryDuplicate.of(entry).create!
+
+        expect(duplicate.feature_state('fancy_page_type')).to eq(true)
+      end
     end
   end
 end
