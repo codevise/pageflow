@@ -18,11 +18,11 @@ pageflow.OtherEntriesCollectionView = Backbone.Marionette.View.extend({
         selection: this.options.selection
       },
       blankSlateViewConstructor: Backbone.Marionette.ItemView.extend({
-        template: 'templates/other_entries_blank_slate'
+        template: 'templates/other_entries_blank_slate',
+        tagName: 'li',
+        className: 'blank_slate'
       }),
-      loadingViewConstructor: Backbone.Marionette.ItemView.extend({
-        template: 'templates/loading'
-      })
+      loadingViewConstructor: pageflow.LoadingView
     }));
 
     this.otherEntries.fetch();
