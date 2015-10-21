@@ -38,6 +38,7 @@ module Pageflow
         title: new_title,
         account: original_entry.account,
         theming: original_entry.theming,
+        features_configuration: original_entry.features_configuration,
 
         skip_draft_creation: true
       }
