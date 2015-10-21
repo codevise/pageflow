@@ -8,9 +8,14 @@
 
 - The internal links page type has been extracted to the
   [`pageflow-internal-links`](https://github.com/codevise/pageflow-internal-links)
-  gem. ([#316](https://github.com/codevise/pageflow/pull/316)) To keep
-  using it, follow the instructions found in the gem's
-  [README](https://github.com/codevise/pageflow-internal-links).
+  gem. ([#316](https://github.com/codevise/pageflow/pull/316)) Remove
+  the following line from your Pageflow initializer:
+
+        config.register_page_type(Pageflow::BuiltInPageType.internal_links)
+
+  Then follow the instructions found in the gem's
+  [README](https://github.com/codevise/pageflow-internal-links) to
+  install the extracted page type.
   
 ##### Deprecations
 
@@ -32,8 +37,7 @@
 - Some of the new features have to be enabled manually via the new
   feature toggle UI inside the admin. Visit the _Features_ tab on the
   account's admin page to view a list of available feature
-  toggles. Note that some of the graphical features currently have no
-  effect in the default theme.
+  toggles.
 
 ##### Public Site
 
@@ -51,6 +55,8 @@
 - Additional page transitions.
   ([#326](https://github.com/codevise/pageflow/pull/326),
    [#363](https://github.com/codevise/pageflow/pull/363))
+- Make https mode configurable
+  ([#403](https://github.com/codevise/pageflow/pull/403))
 - Improve display of file rights.
   ([#300](https://github.com/codevise/pageflow/pull/300))
 - Slideshow optimization to improve initial load time in large
@@ -63,6 +69,12 @@
    [#357](https://github.com/codevise/pageflow/pull/357),
    [#353](https://github.com/codevise/pageflow/pull/353),
    [#331](https://github.com/codevise/pageflow/pull/331))
+- Bug fix: Use large link thumbnail if hero argument is true
+  ([#417](https://github.com/codevise/pageflow/pull/417))
+- Bug fix: Use the current locale in meta tags
+  ([#412](https://github.com/codevise/pageflow/pull/412))
+- Bug fix: Ensure hidden text indicator is only visible on mobile
+  ([#391](https://github.com/codevise/pageflow/pull/391))
 - Bug fix: Fix copyright links in mobile navigation.
   ([#377](https://github.com/codevise/pageflow/pull/377))
 - Bug fix: Find share target page in published revision
@@ -79,6 +91,15 @@
   ([#340](https://github.com/codevise/pageflow/pull/340))
 - Optimized video resouce management in editor for large entries.
   ([#337](https://github.com/codevise/pageflow/pull/337))
+- Implement remembering of scroll position in chapter overview
+  ([#405](https://github.com/codevise/pageflow/pull/405))
+- Prefill depublication date field to one year from now
+  ([#392](https://github.com/codevise/pageflow/pull/392))
+- Implement loading spinner for file reuse panel
+  ([#387](https://github.com/codevise/pageflow/pull/387))
+- Bug fix: Make edit widget view handle widgets with no available
+  widget types
+  ([#383](https://github.com/codevise/pageflow/pull/383))
   
 ##### Rails Engine
 
@@ -87,7 +108,8 @@ Public APIs to be used by Pageflow plugins:
 - Introduce features API.
   ([#297](https://github.com/codevise/pageflow/pull/297),
    [#320](https://github.com/codevise/pageflow/pull/320),
-   [#325](https://github.com/codevise/pageflow/pull/325))
+   [#325](https://github.com/codevise/pageflow/pull/325),
+   [#416](https://github.com/codevise/pageflow/pull/416))
 - Introduce API for audio playback.
   ([#319](https://github.com/codevise/pageflow/pull/319),
    [#356](https://github.com/codevise/pageflow/pull/356))
@@ -120,9 +142,10 @@ Theme options:
   ([#349](https://github.com/codevise/pageflow/pull/349))
 - Let themes disable hide text on swipe functionality.
   ([#358](https://github.com/codevise/pageflow/pull/358))
-- Add options to configure orientation and display of scroll
+- Add theme options to configure orientation and display of scroll
   indicators.
-  ([#329](https://github.com/codevise/pageflow/pull/329))
+  ([#329](https://github.com/codevise/pageflow/pull/329),
+   [#397](https://github.com/codevise/pageflow/pull/397))
 - For themes that support non-linear Pagefows, chapters can now be
   organized in a hierachy.
   ([#318](https://github.com/codevise/pageflow/pull/318),
@@ -150,6 +173,8 @@ Reusable components for the editor Backbone application:
   ([#343](https://github.com/codevise/pageflow/pull/343))
 - Generic reference input view.
   ([#342](https://github.com/codevise/pageflow/pull/342))
+- Page attribute translation key prefixes
+  ([#395](https://github.com/codevise/pageflow/pull/395))
 - Add visible option for input backbone views.
   ([#341](https://github.com/codevise/pageflow/pull/341))
 - Options for configuration editor tab groups.
@@ -160,6 +185,10 @@ Reusable components for the editor Backbone application:
   ([#310](https://github.com/codevise/pageflow/pull/310))
 - Improve `SubsetCollection`.
   ([#309](https://github.com/codevise/pageflow/pull/309))
+- Bug fix: Fix editor bug in collection_view.js
+  ([#382](https://github.com/codevise/pageflow/pull/382))
+- Bug fix: Fix editor bug related to underscore.js
+  ([#381](https://github.com/codevise/pageflow/pull/381))
 - Bug fix: Set `isDestroying` before triggering `destroying` event.
   ([#312](https://github.com/codevise/pageflow/pull/312))
 - Bug fix: Save `TextiInputView` on close.
@@ -175,6 +204,8 @@ Enhancements for app development:
    [#368](https://github.com/codevise/pageflow/pull/368))
 - Use environment variables for api keys in generated initializer.
   ([#306](https://github.com/codevise/pageflow/pull/306))
+- Bug fix: Fix theme name replacement in generator
+  ([#385](https://github.com/codevise/pageflow/pull/385))
 
 ##### Internals
 
@@ -185,6 +216,12 @@ Enhancements for app development:
   ([#299](https://github.com/codevise/pageflow/pull/299))
 - Disable bandwidth feature detection in test environment.
   ([#308](https://github.com/codevise/pageflow/pull/308))
+- Add config files to perform rubocop checks with hound
+  ([#390](https://github.com/codevise/pageflow/pull/390))
+- Rename binstub directory back to bin
+  ([#389](https://github.com/codevise/pageflow/pull/389))
+- Replaced sample video with smaller file
+  ([#386](https://github.com/codevise/pageflow/pull/386))
 - Bug fix: Fix paperclip version to 4.2 until 4.3 issues are resolved.
   ([#307](https://github.com/codevise/pageflow/pull/307))
 
