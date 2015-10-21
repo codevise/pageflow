@@ -1,7 +1,7 @@
 module Pageflow
   # A registry of [Feature} objects.
   #
-  # @since edge
+  # @since 0.9
   class Features
     include Enumerable
 

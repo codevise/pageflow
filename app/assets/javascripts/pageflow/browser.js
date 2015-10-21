@@ -4,7 +4,7 @@
 /**
  * Browser feature detection.
  *
- * @since edge
+ * @since 0.9
  */
 pageflow.browser = (function(){
   var tests = {},

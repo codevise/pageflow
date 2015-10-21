@@ -45,7 +45,7 @@ module Pageflow
     #     config.page_types.register(Pageflow::SomeSpecial.page_type)
     #   end
     #
-    # @since edge
+    # @since 0.9
     # @returns [Features}
     attr_reader :features
 
@@ -78,7 +78,7 @@ module Pageflow
 
     # Register new types of pages.
     # @return [PageTypes]
-    # @since edge
+    # @since 0.9
     attr_reader :page_types
 
     # List of {FileType} instances provided by page types.
@@ -198,7 +198,7 @@ module Pageflow
     #     config.public_https_mode = :prevent (default) # => redirects https to http
     #     config.public_https_mode = :enforce # => redirects http to https
     #     config.public_https_mode = :ignore # => does nothing
-    # @since edge
+    # @since 0.9
     attr_accessor :public_https_mode
 
     def initialize

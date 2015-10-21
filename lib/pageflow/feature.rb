@@ -2,7 +2,7 @@ module Pageflow
   # Represents a set of configuration changes that can be performed
   # based on account or entry feature flags.
   #
-  # @since edge
+  # @since 0.9
   class Feature
     # Unique identifyer of feature.
     #

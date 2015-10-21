@@ -1,7 +1,7 @@
 /**
  * Manual interaction with the multimedia alert.
  *
- * @since edge
+ * @since 0.9
  */
 pageflow.multimediaAlert = {
   /**

@@ -23,7 +23,7 @@ module Pageflow
     # Returns true if pageflow has already been configures.
     #
     # @return [Boolean]
-    # @since edge
+    # @since 0.9
     def configured?
       !!@config
     end
@@ -42,7 +42,7 @@ module Pageflow
     #
     # @param target [#enabled_feature_names]
     # @return [Configuration]
-    # @since edge
+    # @since 0.9
     def config_for(target)
       build_config do |config|
         config.enable_features(target.enabled_feature_names)
@@ -69,7 +69,7 @@ module Pageflow
     # point in the application.
     #
     # @yieldparam config [Configuration]
-    # @since edge
+    # @since 0.9
     def after_global_configure(&block)
       @after_global_configure_blocks ||= []
       @after_global_configure_blocks << block

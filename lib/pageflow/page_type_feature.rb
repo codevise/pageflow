@@ -1,7 +1,7 @@
 module Pageflow
   # A feature to enable a {PageType}.
   #
-  # @since edge
+  # @since 0.9
   class PageTypeFeature < Feature
     attr_reader :page_type
 

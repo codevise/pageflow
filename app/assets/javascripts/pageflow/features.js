@@ -2,7 +2,7 @@
  * Registry of functions which extend pageflow when a named feature is
  * enabled.
  *
- * @since edge
+ * @since 0.9
  */
 pageflow.Features = pageflow.Object.extend({
   /** @api private */
@@ -63,6 +63,6 @@ pageflow.Features = pageflow.Object.extend({
  * enabled.
  *
  * @return [pageflow.Features]
- * @since edge
+ * @since 0.9
  */
 pageflow.features = new pageflow.Features();
