@@ -12,7 +12,6 @@ Pageflow.configure do |config|
   config.page_types.register(Pageflow::BuiltInPageType.background_video)
   config.page_types.register(Pageflow::BuiltInPageType.video)
   config.page_types.register(Pageflow::BuiltInPageType.audio)
-  config.page_types.register(Pageflow::BuiltInPageType.audio_loop)
   # config.page_types.register(Pageflow::Rainbow::PageType.new)
 
   # Add custom themes by invoking the pageflow:theme generator and

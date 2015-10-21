@@ -189,9 +189,6 @@ $nav-bg-color-transparent: $basic-background-color-transparent;
   .audio:after {
     background-image: image-url('pageflow/themes/#{$theme-name}/audio_sprite.png');
   }
-  .audio_loop:after {
-    background-image: image-url('pageflow/themes/#{$theme-name}/image_sprite.png');
-  }
 }
 
 .navigation.js .scroller ul a.active img, .navigation_mobile .wrapper a.active {

@@ -48,10 +48,6 @@ module Pageflow
       new('audio', file_type_models: ['Pageflow::ImageFile', 'Pageflow::AudioFile'])
     end
 
-    def self.audio_loop
-      new('audio_loop', file_type_models: ['Pageflow::ImageFile', 'Pageflow::AudioFile'])
-    end
-
     def self.background_image
       new('background_image', file_type_models: ['Pageflow::ImageFile'])
     end
