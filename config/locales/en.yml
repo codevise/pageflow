@@ -163,6 +163,9 @@ en:
         duration: Duration
         format: Format
       pageflow/chapter:
+        display_parent_page_button: Display parent page button
+        navigation_bar_mode: Navigation Bar
+        parent_page_perma_id: Parent Page
         title: Title
       pageflow/entry:
         account: Account
@@ -192,12 +195,17 @@ en:
         additional_description: Infobox Description
         additional_title: Infobox Title
         allow_full_screen: Allow fullscreen
+        atmo_audio_file_id: Atmo Audio
+        atmo_during_playback: Atmo during playback
         audio_file_id: Audio
+        auto_change_page_on_ended: Go to next page on end
         autoplay: Autoplay
         background_image_id: Background-Image
         background_video_id: Background-Video
+        delayed_text_fade_in: Fade in text after delay
         description: Description (Overview)
         display_in_navigation: Show in navigationbar
+        emphasize_in_navigation: Emphasize in navigationbar
         gradient_opacity: Gradient opacity
         hide_title: Hide titles
         invert: Invert colors
@@ -205,6 +213,8 @@ en:
         linked_pages_layout: Hero
         mobile_poster_image_id: Posterimage (mobile)
         poster_image_id: Posterimage
+        scroll_indicator_mode: Visible scroll indicators
+        scroll_indicator_orientation: Scroll indicator orientation
         subtitle: Subtitle
         tagline: Tagline
         template: Pagetype
@@ -341,11 +351,36 @@ en:
         one: User
         other: Users
     values:
+      pageflow/chapter:
+        navigation_bar_mode:
+          all: All pages
+          current_chapter: Current chapter only
+          inherit_from_parent: Inherit from parent chapter
+          non: Hide
+          same_parent_chapter: Chapters with same parent chapter only
+          same_parent_page: Chapters with same parent page only
       pageflow/page:
+        atmo_during_playback:
+          mute: Mute
+          play: Keep playing
+          turn_down: Keep playing at lower volume
+        delayed_text_fade_in:
+          long: Long delay
+          medium: Medium delay
+          no_fade: No fade in
+          short: Short delay
         linked_pages_layout:
           default: (none)
           hero_top_left: Top left
           hero_top_right: Top right
+        scroll_indicator_mode:
+          all: Forwards and Backwards
+          non: Non
+          only_back: Backwards only
+          only_next: Forwards only
+        scroll_indicator_orientation:
+          horizontal: Horizontal
+          vertical: Vertical
         template:
           audio: Audio
           audio_loop: Background-Audio
@@ -663,8 +698,10 @@ en:
       entries:
         add_folder: Add folder
         confirm_depublish: Unpublish this story?
+        confirm_duplicate: Duplicate this story?
         confirm_restore: Restore story to the selected version? A snapshot will be created, so that you can roll back later.
         depublish: Unpublish story
+        duplicate: Copy Story
         edit: Edit
         edit_config: Edit configuration
         edit_revision: Edit
@@ -675,6 +712,7 @@ en:
         no_members: No members assigned
         no_revisions: No versions yet
         not_published: Not yet published
+        password_protected: Password protected
         preview: Preview
         published_forever: Published
         published_revision_legend: Currently published version
@@ -696,6 +734,11 @@ en:
         show_public: Public
         snapshot: Save current version
         title_hint: This field determines the URL for this story.
+      features:
+        states:
+          disabled: Disabled
+          enabled: Enabled
+          undefined: (Default)
       folders:
         all: All
         confirm_destroy: ! 'Delete folder? Note: Containing stories will be preserved.'
@@ -748,8 +791,12 @@ en:
         suspended: ! 'The user was suspended and will not be able to sign-in again. '
         unsuspend: Unsuspend
         unsuspended: The user was unsuspended.
+    atmo:
+      feature_name: Atmo Audios
     audio:
       open: Play audio
+    auto_change_page:
+      feature_name: Automatic Page Change
     built_in_page_type:
       audio:
         page_type_category_name: Audio
@@ -769,6 +816,10 @@ en:
       video:
         page_type_category_name: Video
         page_type_description: Video player with controls
+    chapter_hierachy:
+      feature_name: Chapter Hierachy
+    delayed_text_fade_in:
+      feature_name: Delayed text fade in
     devise:
       mailer:
         reset_password_instructions:
@@ -792,6 +843,8 @@ en:
       required: This action cannot be executed because this story has been opened in another editor session.
       required_but_held_by_other_user: This action cannot be executed because this story has been opened by another user.
     editor:
+      atmo:
+        disabled: Atmo disabled
       blank_entry:
         create_chapter: Click <em>New chapter</em> to create your first chapter.
         create_page: Use the <em>New page</em> button within the chapter to add pages.
@@ -914,6 +967,15 @@ en:
           title: Help
         help_button:
           open_help: Open help
+        inputs:
+          reference:
+            edit: Edit
+            reset: Reset
+        list_blank_slate:
+          text: (No items)
+        list_item:
+          edit: Edit
+          remove: Delete
         loading:
           loading: Loading...
         locked:
@@ -932,10 +994,25 @@ en:
           none_available: There are no other stories yet
         page_item:
           save_error: There were errors while saving page.
+        page_link_item:
+          edit: Edit page
+        page_links:
+          add: Add
+          label: Linked pages
+        page_selection:
+          cancel: Cancel
+          ok: OK
+          title: Select target page
         publish_entry:
+          already_published_with_password_help: This entry is already published with a password. Leave password field blank to keep the previous password.
+          already_published_without_password_help: This entry is published without a password at the moment. Setting a password will prevent public access from now on.
           date: Date
           files_pending_notice: Please wait until all files have been processed and check the results. You may then publish your story.
           not_published_notice: This story is currently not published.
+          password: Password
+          password_help: Restrict access to the published version of this entry. Visiters will have to enter a password.
+          password_protected: Protect with Password
+          previously_published_with_password_help: This entry was published with a password before. Leave password field blank to keep the previous password.
           publish: Publish
           publish_current: Publish current version
           publish_success: Your story has been sucessfully published.
@@ -945,6 +1022,7 @@ en:
           time: Time
           unlimited: indefinitely
           until_including: Until including
+          user_name: User name
           view_revisions: View versions
         select_button:
           select: Select
@@ -970,8 +1048,14 @@ en:
           add: Add
           reuse: Reuse
           upload: Upload
+        inputs:
+          reference_input_view:
+            none: (None)
         page_item_view:
           unnamed: (New page)
+        page_link_item_view:
+          no_page: (No page)
+          unnamed: (No title)
     entries:
       entry:
         print_logo: Logo
@@ -1027,6 +1111,8 @@ en:
         goto_content: Goto content
         goto_navigation: Goto navigation
         goto_topnavigation: Goto main navigation
+    entry:
+      duplicated_title: Copy of %{title}
     help_entries:
       built_in_page_type:
         audio:
@@ -1637,6 +1723,14 @@ en:
         global_links: Global links
         image_rights: Credits
     invalid_transition: Invalid transition
+    page_transitions:
+      crossfade: Crossfade
+      cut: Cut
+      fade: Fade
+      fade_to_black: Fade to black
+      scroll: Scroll
+      scroll_left: Scroll left
+      scroll_right: Scroll right
     pages:
       templates:
         audio:
@@ -1676,6 +1770,7 @@ en:
           title: Here you can choose a title for your Pageflow. It will be shown on the title bar of the browser window. It also acts as an indicator for search engines once the report is published.
         pageflow/page:
           additional_title: The info box appears close to the player controls.
+          delayed_text_fade_in: Fades in the page contents after a delay such that the background image can be viewed initially.
           description: You can enter a text, which appears when the user navigates with the mouse over the particular page. This text matches with the mouse-over-text for the page-type „Page References“ as well as with the text, which appears when you share the Pageflow in social networks.
           gradient_opacity: ! 'The opacity of the gradient improves the legibility of the text on background-videos or pictures.
 

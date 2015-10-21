@@ -163,6 +163,9 @@ de:
         duration: Länge
         format: Format
       pageflow/chapter:
+        display_parent_page_button: ! '''Übergeordnete Seite''-Button anzeigen'
+        navigation_bar_mode: Navigationsleiste
+        parent_page_perma_id: Übergeordnete Seite
         title: Titel
       pageflow/entry:
         account: Konto
@@ -192,12 +195,17 @@ de:
         additional_description: Beschreibung für Infobox
         additional_title: Titel für Infobox
         allow_full_screen: Vollbild Anzeige erlauben
+        atmo_audio_file_id: Atmo-Audio
+        atmo_during_playback: Atmo während Medien-Wiedergabe
         audio_file_id: Audio
+        auto_change_page_on_ended: Am Ende weiterblättern
         autoplay: Automatische Wiedergabe
         background_image_id: Hintergrundbild
         background_video_id: Hintergrundvideo
+        delayed_text_fade_in: Text verzögert einblenden
         description: Beschreibung für Übersicht
         display_in_navigation: In Navigationsleiste anzeigen
+        emphasize_in_navigation: In Navigationsleiste hervorheben
         gradient_opacity: Intensität der Abblendung
         hide_title: Titel ausblenden
         invert: Farben invertieren
@@ -205,6 +213,8 @@ de:
         linked_pages_layout: Hervorgehobenes Element
         mobile_poster_image_id: Posterbild (mobil)
         poster_image_id: Posterbild
+        scroll_indicator_mode: Sichtbare Scroll Indikatoren
+        scroll_indicator_orientation: Scroll Indikator Ausrichtung
         subtitle: Untertitel
         tagline: Tagline
         template: Seitentyp
@@ -341,11 +351,36 @@ de:
         one: Nutzer
         other: Nutzer
     values:
+      pageflow/chapter:
+        navigation_bar_mode:
+          all: Alle Seiten zeigen
+          current_chapter: Nur aktuelles Kapitel
+          inherit_from_parent: Von übergeordnetem Kapitel erben
+          non: Ausblenden
+          same_parent_chapter: Nur Kapitel mit gleichem übergeordneten Kapitel
+          same_parent_page: Nur Kapitel mit gleicher übergeordneter Seite
       pageflow/page:
+        atmo_during_playback:
+          mute: Ausblenden
+          play: Weiterspielen
+          turn_down: Leiser weiterspielen
+        delayed_text_fade_in:
+          long: Lange Verzögerung
+          medium: Mittlere Verzögerung
+          no_fade: Nicht verzögert einblenden
+          short: Kurze Verzögerung
         linked_pages_layout:
           default: (Kein)
           hero_top_left: Links oben
           hero_top_right: Rechts oben
+        scroll_indicator_mode:
+          all: Vorwärts und zurück
+          non: Keine
+          only_back: Nur zurück
+          only_next: Nur vorwärts
+        scroll_indicator_orientation:
+          horizontal: Horizontal
+          vertical: Vertikal
         template:
           audio: Audio
           audio_loop: Hintergrund-Audio
@@ -663,8 +698,10 @@ de:
       entries:
         add_folder: Ordner hinzufügen
         confirm_depublish: Soll der Beitrag wirklich depubliziert werden?
+        confirm_duplicate: Beitrag wirklich duplizieren?
         confirm_restore: Soll der Beitrag wirklich auf den Stand dieser Revision zurückgesetzt werden? Vor dem Zurücksetzen wird eine automatische Sicherung des aktuellen Standes erstellt.
         depublish: Beitrag depublizieren
+        duplicate: Beitrag kopieren
         edit: Bearbeiten
         edit_config: Konfiguration ändern
         edit_revision: Ändern
@@ -675,6 +712,7 @@ de:
         no_members: Es sind keine Redakteure zugeordnet.
         no_revisions: Bisher keine Revisionen
         not_published: Nicht veröffentlicht
+        password_protected: Mit Passwortschutz
         preview: Vorschau
         published_forever: Veröffentlicht
         published_revision_legend: Aktuell Veröffentlichter Stand
@@ -696,6 +734,11 @@ de:
         show_public: Öffentlich
         snapshot: Aktuellen Stand sichern
         title_hint: Dieses Feld bestimmt die URL, unter der der Beitrag öffentlich erreichbar ist.
+      features:
+        states:
+          disabled: Deaktiviert
+          enabled: Aktiviert
+          undefined: (Standard)
       folders:
         all: Alle
         confirm_destroy: Ordner wirklick löschen? Beiträge bleiben erhalten.
@@ -748,8 +791,12 @@ de:
         suspended: Der Benutzer wurde gesperrt. Er kann sich nun nicht mehr anmelden.
         unsuspend: Entsperren
         unsuspended: Der Benutzer wurde entsperrt. Er kann sich nun wieder anmelden.
+    atmo:
+      feature_name: Atmo-Audios
     audio:
       open: Audio anhören
+    auto_change_page:
+      feature_name: Automatischer Seitenwechsel
     built_in_page_type:
       audio:
         page_type_category_name: Audio
@@ -769,6 +816,10 @@ de:
       video:
         page_type_category_name: Video
         page_type_description: Wiedergabe einer Videodatei mit Steuerelementen
+    chapter_hierachy:
+      feature_name: Kapitel Hierachie
+    delayed_text_fade_in:
+      feature_name: Text verzögert einblenden
     devise:
       mailer:
         reset_password_instructions:
@@ -790,6 +841,8 @@ de:
       required: Die Aktion kann nicht durchgeführt werden, da der Beitrag gerade in einem Editor geöffnet ist.
       required_but_held_by_other_user: Die Aktion kann nicht durchgeführt werden, da der Beitrag gerade von einem anderen Benutzer bearbeitet wird.
     editor:
+      atmo:
+        disabled: Atmo deaktiviert
       blank_entry:
         create_chapter: Klicke jetzt auf <em>Neues Kapitel</em>, um ein erstes Kapitel zu erstellen.
         create_page: Klicke dann auf <em>Neue Seite</em>, um dem Kapitel eine erste Seite hinzuzufügen.
@@ -912,6 +965,15 @@ de:
           title: Hilfe
         help_button:
           open_help: Hilfe anzeigen
+        inputs:
+          reference:
+            edit: Verknüpfung ändern
+            reset: Verknüpfung entfernen
+        list_blank_slate:
+          text: (Keine Einträge)
+        list_item:
+          edit: Bearbeiten
+          remove: Löschen
         loading:
           loading: Daten werden geladen.
         locked:
@@ -930,10 +992,25 @@ de:
           none_available: Keine anderen Beiträge verfügbar
         page_item:
           save_error: Beim Speichern der Seite ist ein Fehler aufgetreten.
+        page_link_item:
+          edit: Bearbeiten
+        page_links:
+          add: Hinzufügen
+          label: Verlinkte Seiten
+        page_selection:
+          cancel: Abbrechen
+          ok: OK
+          title: Zielseite auswählen
         publish_entry:
+          already_published_with_password_help: Dieser Beitrag ist im Moment mit Passwortschutz veröffentlicht. Lassen Sie das Passwort-Feld frei, um das bisherige Passwort beizubehalten.
+          already_published_without_password_help: Dieser Beitrag ist im Moment ohne Passwortschutz veröffentlicht. Nach Festlegen eines Passworts ist kein öffentlicher Zugriff mehr möglich.
           date: Datum
           files_pending_notice: Bitte warten Sie bis alle Dateien des Beitrags verarbeitet wurden und überprüfen Sie das Ergebnis. Der Beitrag kann dann veröffentlicht werden.
           not_published_notice: Dieser Beitrag ist zur Zeit nicht veröffentlicht.
+          password: Passwort
+          password_help: Teilen Sie Ihren veröffentlichten Beitrag nur mit bestimmten Personen. Besucher benötigen dann das von Ihnen festgelegte Passwort, um den Beitrag ansehen zu können.
+          password_protected: Mit Passwort schützen
+          previously_published_with_password_help: Dieser Beitrag war zuletzt mit Passwortschutz veröffentlicht. Lassen Sie das Passwort-Feld frei, um das bisherige Passwort beizubehalten.
           publish: Veröffentlichen
           publish_current: Akuellen Stand veröffentlichen
           publish_success: Der Beitrag wurde erfolgreich veröffentlicht.
@@ -943,6 +1020,7 @@ de:
           time: Uhrzeit
           unlimited: Unbegrenzt
           until_including: Bis einschließlich
+          user_name: Benutzername
           view_revisions: Revisionen ansehen
         select_button:
           select: Auswählen
@@ -968,7 +1046,13 @@ de:
           add: Hinzufügen
           reuse: Wiederverwenden
           upload: Hochladen
+        inputs:
+          reference_input_view:
+            none: (Kein)
         page_item_view:
+          unnamed: (Unbenannt)
+        page_link_item_view:
+          no_page: (Keine Seite)
           unnamed: (Unbenannt)
     entries:
       entry:
@@ -1025,6 +1109,8 @@ de:
         goto_content: Zum Inhalt
         goto_navigation: Zur Seitennavigation
         goto_topnavigation: Zur Dachnavigation
+    entry:
+      duplicated_title: Kopie von %{title}
     help_entries:
       built_in_page_type:
         audio:
@@ -1698,6 +1784,14 @@ de:
         global_links: Globale Links
         image_rights: Bildrechte
     invalid_transition: Der gewünschte Statuswechsel ist nicht erlaubt.
+    page_transitions:
+      crossfade: Überblenden
+      cut: Harter Schnitt
+      fade: Hintergrund Blenden/Vordergrund Scrollen
+      fade_to_black: Schwarzblende
+      scroll: Scrollen
+      scroll_left: Scrollen (von links)
+      scroll_right: Scrollen (von rechts)
     pages:
       templates:
         audio:
@@ -1739,6 +1833,7 @@ de:
           title: Hier kannst Du Deinem Pageflow einen Titel geben, der in der Titelleiste des Browserfensters angezeigt wird. Unter diesem Titel wird Dein Pageflow nach der Veröffentlichung auch in Suchmaschinen indiziert werden
         pageflow/page:
           additional_title: Die Infobox wird über den Steuerelementen zum Starten und Stoppen der Wiedegabe angezeigt.
+          delayed_text_fade_in: Blendet die Textinhalte der Seite sowie die Abblendung zeitverzögert ein, nachdem man auf die Seite geblättert hat. So wird für eine gewisse Zeit der Blick auf den Hintergrund freigegeben.
           description: Hier kann der Text eingegeben werden, der angezeigt wird, wenn der User in der Übersicht mit der Mouse über die jeweilige Seite fährt. Außerdem entspricht der hier eingegebene Text auch dem Mouse-Over-Text beim Seitentyp „Seiten-Verweise“, sowie dem Text zum Teilen in sozialen Netzwerken.
           gradient_opacity: ! 'Die Intensität des Farbverlaufs dient der Lesbarkeit von Texten auf Videos oder Bildern.
 

@@ -1,8 +1,0 @@
-de:
-  pageflow:
-    editor:
-      templates:
-        page_selection:
-          title: "Zielseite auswählen"
-          ok: "OK"
-          cancel: "Abbrechen"
