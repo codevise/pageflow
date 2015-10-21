@@ -40,6 +40,15 @@ module Pageflow
 
         css_class = helper.page_thumbnail_image_class(page, false)
 
+        expect(css_class).to eq("pageflow_image_file_link_thumbnail_#{image_file.id}")
+      end
+
+      it 'returns large variant for hero' do
+        image_file = create(:image_file)
+        page = build(:page, template: 'background_image', configuration: {'thumbnail_image_id' => image_file.id})
+
+        css_class = helper.page_thumbnail_image_class(page, true)
+
         expect(css_class).to eq("pageflow_image_file_link_thumbnail_large_#{image_file.id}")
       end
     end
