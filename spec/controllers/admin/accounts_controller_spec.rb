@@ -49,6 +49,36 @@ module Admin
       end
     end
 
+    describe '#edit' do
+      render_views
+
+      it 'displays additional registered account form inputs' do
+        account = create(:account)
+
+        pageflow_configure do |config|
+          config.admin_form_inputs.register(:account, :custom_field)
+        end
+
+        sign_in(create(:user, :admin))
+        get :edit, id: account
+
+        expect(response.body).to have_selector('[name="account[custom_field]"]')
+      end
+
+      it 'displays additional registered theming form inputs' do
+        account = create(:account)
+
+        pageflow_configure do |config|
+          config.admin_form_inputs.register(:theming, :custom_field)
+        end
+
+        sign_in(create(:user, :admin))
+        get :edit, id: account
+
+        expect(response.body).to have_selector('[name="account[default_theming_attributes][custom_field]"]')
+      end
+    end
+
     describe '#update' do
       it 'updates nested default_theming' do
         Pageflow.config.themes.register(:custom)
@@ -113,6 +143,62 @@ module Admin
               })
 
         expect(account.reload.feature_state('fancy_page_type')).to eq(true)
+      end
+
+      it 'updates custom account field registered as form input' do
+        account = create(:account)
+
+        pageflow_configure do |config|
+          config.admin_form_inputs.register(:account, :custom_field)
+        end
+
+        sign_in(create(:user, :admin))
+        patch(:update, id: account, account: {custom_field: 'some value'})
+
+        expect(account.reload.custom_field).to eq('some value')
+      end
+
+      it 'does not update account custom field not registered as form input' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin))
+        patch(:update, id: account, account: {custom_field: 'some value'})
+
+        expect(account.reload.custom_field).to eq(nil)
+      end
+
+      it 'updates custom field of nested theming registered as form input' do
+        account = create(:account)
+
+        pageflow_configure do |config|
+          config.admin_form_inputs.register(:theming, :custom_field)
+        end
+
+        sign_in(create(:user, :admin))
+        patch(:update,
+              id: account,
+              account: {
+                default_theming_attributes: {
+                  custom_field: 'some value'
+                }
+              })
+
+        expect(account.default_theming.reload.custom_field).to eq('some value')
+      end
+
+      it 'does not update custom field of nested theming not registered as form input' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin))
+        patch(:update,
+              id: account,
+              account: {
+                default_theming_attributes: {
+                  custom_field: 'some value'
+                }
+              })
+
+        expect(account.default_theming.custom_field).to eq(nil)
       end
 
       it 'redirects back to tab' do
