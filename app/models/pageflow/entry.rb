@@ -54,6 +54,7 @@ module Pageflow
 
     def publish(options = {})
       ActiveRecord::Base.transaction do
+        self.first_published_at ||= Time.now
         update_password!(options.slice(:password, :password_protected))
 
         revisions.depublish_all

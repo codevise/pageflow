@@ -99,6 +99,24 @@ module Pageflow
         expect(revision).to be_frozen
       end
 
+      it 'sets first_published_at on first publication' do
+        creator = create(:user)
+        entry = create(:entry)
+
+        entry.publish(creator: creator)
+
+        expect(entry.first_published_at).to be_present
+      end
+
+      it 'does not set first_published_at if it is already present' do
+        creator = create(:user)
+        entry = create(:entry, first_published_at: 1.day.ago)
+
+        entry.publish(creator: creator)
+
+        expect(entry.first_published_at).to eq(1.day.ago)
+      end
+
       context 'with :published_until option' do
         it 'publishes entry directly' do
           creator = create(:user)
