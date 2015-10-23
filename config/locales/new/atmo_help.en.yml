@@ -1,0 +1,27 @@
+en:
+  pageflow:
+    help_entries:
+      atmo:
+        menu_item: Atmo Audio
+        text: ! '# Atmo Audio
+
+This feature lets you add background audio to every page regardless of its page type.
+You can define if a sound should play only for one page or continue playing for more pages without interruption.
+Simply select the same atmo audio file for some adjacent pages.
+
+
+That way chapters can be seperated acoustically
+and pages that belong together can be weaved to a stronger unit.
+
+
+For the page type „Video“ there is a special option
+to pause background audio or continue at lower volume while the video is playing.
+
+
+You find the atmo settings on the „Options“ tab of each page.
+
+
+Should you ever feel distracted by the atmo audio while working on your entry,
+you can use the hot key „Alt + a“ to temporarily mute it.
+Simply press „Alt + a“ again to reactivate atmo audio.
+'
