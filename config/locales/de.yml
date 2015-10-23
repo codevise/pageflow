@@ -1112,6 +1112,24 @@ de:
     entry:
       duplicated_title: Kopie von %{title}
     help_entries:
+      atmo:
+        menu_item: Atmo Audio
+        text: ! '# Atmo Audio
+
+
+          Mit der „Atmo“ kann jede Seite, unabhängig vom Seitentyp, im Hintergrund Sound abspielen. Dabei kannst Du bestimmen, ob ein Sound nur auf einer Seite zu hören ist oder über mehrere Seiten ohne Unterbrechung läuft. Wähle dazu einfach für die benachbarten Seiten die selbe Audiodatei als Atmo aus.
+
+
+          Auf diese Weise lassen sich Kapitel akustisch voneinander absetzen und zusammenhängende Seiten stärker verweben.
+
+
+          Beim Seitentyp Video kann zusätzlich ausgwählt werden, ob der Hintergrundsound während der Video-Wiedergabe normal oder leiser weitergespielt oder ganz ausgeblendet werden soll.
+
+
+          Die Einstellung der Atmo-Sounds erreichst du bei jeder Seite über den Reiter „Optionen“.
+
+
+          Sollte Dich die Atmo während der Bearbeitung Deines Beitrags im Editor einmal stören, kannst Du sie mit der Tastenkombination „Alt + a“ vorübergehend stumm schalten. Um die Atmo wieder zu aktivieren, drücke einfach erneut „Alt + a“. '
       built_in_page_type:
         audio:
           menu_item: Audio
@@ -1253,37 +1271,7 @@ de:
 '
         video:
           menu_item: Video
-          text: ! '# Video
-
-
-            Wiedergabe einer Videodatei mit Steuerelementen Anders als
-
-            bei „Hintergrund-Videos“ werden hier Textelemente nach ein
-
-            paar Sekunden automatisch ausgeblendet, um die
-
-            Aufmerksamkeit auf das Bewegtbild zu lenken. Mit
-
-            Steuerelementen kann der Nutzer das Video jederzeit
-
-            starten und pausieren, vor- oder zurückspulen. Ein
-
-            weiterer Unterschied ist, dass Du wählen kannst, ob ein
-
-            Video automatisch gestartet wird, sobald die Seite
-
-            angezeigt wird.  Als dezente Alternative oder Ergänzung zu
-
-            den normalen Texteingabemöglichkeiten, kann eine
-
-            sogenannte „Infobox“ mit Text befüllt werden.
-
-
-            Typische Anwendungsbeispiele: Filme aller Art, Interviews,
-
-            Portrait
-
-'
+          text: ! "# Video\n\nWiedergabe einer Videodatei mit Steuerelementen Anders als\nbei „Hintergrund-Videos“ werden hier Textelemente nach ein\npaar Sekunden automatisch ausgeblendet, um die\nAufmerksamkeit auf das Bewegtbild zu lenken. Mit\nSteuerelementen kann der Nutzer das Video jederzeit\nstarten und pausieren, vor- oder zurückspulen. Ein\nweiterer Unterschied ist, dass Du wählen kannst, ob ein\nVideo automatisch gestartet wird, sobald die Seite\nangezeigt wird.  Als dezente Alternative oder Ergänzung zu\nden normalen Texteingabemöglichkeiten, kann eine\nsogenannte „Infobox“ mit Text befüllt werden.\n\nUnter Optionen lässt sich ein automatisches weiterscrollen am Ende des Videos aktivieren. \nDas kann nützlich sein, um einen nahtlosen Übergang zur nächsten Seite herzustellen.\n\nTypische Anwendungsbeispiele: Filme aller Art, Interviews,\nPortrait"
       files:
         menu_item: Dateien verwalten
         text: ! '# Daten verwalten
@@ -1748,6 +1736,20 @@ de:
           wird. „Überblenden“ und „Scrollen“. Welcher Effekt verwendet
 
           wird, kann individuell für jede Seite festgelegt werden.
+
+
+          ### Text verzögert einblenden
+
+
+          Bestimme mit dieser Option, ob Text und Abblendung mit zeitlicher Verzögerung angezeigt werden.
+
+          Hierbei sehen User zunächst nur den Hintergrund, dann erscheinen Titel, Tagline und Untertitel und mit minimaler Verzögerung schließlich der Fließtext.
+
+
+          Insgesamt stehen drei Verzögerungslängen zur Verfügung: kurz = 1 Sekunde, mittel = 3 Sekunde, lang = 5 Sekunde.
+
+
+          Dieses Feature eignet sich zum Beispiel für Intros oder Kapitelanfänge.
 
 
           ### Beschreibung für Übersicht
