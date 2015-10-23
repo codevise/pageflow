@@ -33,8 +33,8 @@ module Pageflow
 
     context 'validation' do
       it 'ensures folder belongs to same account' do
-        folder = build(:folder, :account => build_stubbed(:account))
-        entry = build(:entry, :account => build_stubbed(:account))
+        folder = build(:folder, account: build_stubbed(:account))
+        entry = build(:entry, account: build_stubbed(:account))
 
         entry.folder = folder
 
@@ -48,7 +48,7 @@ module Pageflow
         entry = create(:entry)
 
         expect {
-          entry.publish(:creator => creator)
+          entry.publish(creator: creator)
         }.to change { entry.revisions.count }
       end
 
@@ -56,7 +56,7 @@ module Pageflow
         creator = create(:user)
         entry = create(:entry)
 
-        entry.publish(:creator => creator)
+        entry.publish(creator: creator)
 
         expect(entry).to be_published
       end
@@ -66,7 +66,7 @@ module Pageflow
         entry = create(:entry, :published)
 
         revision = entry.published_revision
-        entry.publish(:creator => creator)
+        entry.publish(creator: creator)
 
         expect(entry.published_revision).not_to eq(revision)
       end
@@ -74,9 +74,9 @@ module Pageflow
       it 'depublishes eariler revisions' do
         creator = create(:user)
         entry = create(:entry)
-        earlier_revision = create(:revision, :published, :entry => entry, :published_at => 1.week.ago)
+        earlier_revision = create(:revision, :published, entry: entry, published_at: 1.week.ago)
 
-        entry.publish(:creator => creator)
+        entry.publish(creator: creator)
 
         expect(earlier_revision.reload).not_to be_published
       end
@@ -85,7 +85,7 @@ module Pageflow
         creator = create(:user)
         entry = create(:entry)
 
-        revision = entry.publish(:creator => creator)
+        revision = entry.publish(creator: creator)
 
         expect(revision.creator).to be(creator)
       end
@@ -94,9 +94,27 @@ module Pageflow
         creator = create(:user)
         entry = create(:entry)
 
-        revision = entry.publish(:creator => creator)
+        revision = entry.publish(creator: creator)
 
         expect(revision).to be_frozen
+      end
+
+      it 'sets first_published_at on first publication' do
+        creator = create(:user)
+        entry = create(:entry)
+
+        entry.publish(creator: creator)
+
+        expect(entry.first_published_at).to be_present
+      end
+
+      it 'does not set first_published_at if it is already present' do
+        creator = create(:user)
+        entry = create(:entry, first_published_at: 1.day.ago)
+
+        entry.publish(creator: creator)
+
+        expect(entry.first_published_at).to eq(1.day.ago)
       end
 
       context 'with :published_until option' do
@@ -104,7 +122,7 @@ module Pageflow
           creator = create(:user)
           entry = create(:entry)
 
-          entry.publish(:published_until => 1.month.from_now, :creator => creator)
+          entry.publish(published_until: 1.month.from_now, creator: creator)
 
           expect(entry).to be_published
         end
@@ -113,7 +131,7 @@ module Pageflow
           creator = create(:user)
           entry = create(:entry)
 
-          entry.publish(:published_until => 1.month.from_now, :creator => creator)
+          entry.publish(published_until: 1.month.from_now, creator: creator)
 
           Timecop.freeze(1.month.from_now) do
             expect(entry).not_to be_published
@@ -126,9 +144,9 @@ module Pageflow
           creator = create(:user)
           entry = create(:entry)
 
-          entry.publish(:creator => creator,
-                        :password_protected => true,
-                        :password => 'abc123abc')
+          entry.publish(creator: creator,
+                        password_protected: true,
+                        password: 'abc123abc')
 
           expect(entry).to be_published_with_password('abc123abc')
         end
@@ -139,9 +157,9 @@ module Pageflow
           creator = create(:user)
           entry = create(:entry)
 
-          entry.publish(:creator => creator,
-                        :password_protected => false,
-                        :password => 'abc123abc')
+          entry.publish(creator: creator,
+                        password_protected: false,
+                        password: 'abc123abc')
 
           expect(entry).to be_published_without_password
         end
@@ -150,13 +168,13 @@ module Pageflow
           creator = create(:user)
           entry = create(:entry)
 
-          entry.publish(:creator => creator,
-                        :password_protected => false,
-                        :password => 'abc123abc')
+          entry.publish(creator: creator,
+                        password_protected: false,
+                        password: 'abc123abc')
 
           expect {
-            entry.publish(:creator => creator,
-                          :password_protected => true)
+            entry.publish(creator: creator,
+                          password_protected: true)
           }.to raise_error(Entry::PasswordMissingError)
         end
 
@@ -164,15 +182,15 @@ module Pageflow
           creator = create(:user)
           entry = create(:entry)
 
-          entry.publish(:creator => creator,
-                        :password_protected => true,
-                        :password => 'abc123abc')
-          entry.publish(:creator => creator,
-                        :password_protected => false)
+          entry.publish(creator: creator,
+                        password_protected: true,
+                        password: 'abc123abc')
+          entry.publish(creator: creator,
+                        password_protected: false)
 
           expect {
-            entry.publish(:creator => creator,
-                          :password_protected => true)
+            entry.publish(creator: creator,
+                          password_protected: true)
           }.to raise_error(Entry::PasswordMissingError)
         end
       end
@@ -182,11 +200,11 @@ module Pageflow
           creator = create(:user)
           entry = create(:entry)
 
-          entry.publish(:creator => creator,
-                        :password_protected => true,
-                        :password => 'abc123abc')
-          entry.publish(:creator => creator,
-                        :password_protected => true)
+          entry.publish(creator: creator,
+                        password_protected: true,
+                        password: 'abc123abc')
+          entry.publish(creator: creator,
+                        password_protected: true)
 
           expect(entry).to be_published_with_password('abc123abc')
         end
@@ -196,8 +214,8 @@ module Pageflow
           entry = create(:entry)
 
           expect {
-            entry.publish(:creator => creator,
-                          :password_protected => true)
+            entry.publish(creator: creator,
+                          password_protected: true)
           }.to raise_error(Entry::PasswordMissingError)
         end
 
@@ -205,11 +223,11 @@ module Pageflow
           creator = create(:user)
           entry = create(:entry)
 
-          entry.publish(:creator => creator)
+          entry.publish(creator: creator)
 
           expect {
-            entry.publish(:creator => creator,
-                          :password_protected => true)
+            entry.publish(creator: creator,
+                          password_protected: true)
           }.to raise_error(Entry::PasswordMissingError)
         end
       end
@@ -219,20 +237,20 @@ module Pageflow
       it 'creates a revision' do
         creator = create(:user)
         entry = create(:entry)
-        earlier_revision = create(:revision, :published, :entry => entry)
+        earlier_revision = create(:revision, :published, entry: entry)
 
         expect {
-          entry.restore(:revision => earlier_revision, :creator => creator)
+          entry.restore(revision: earlier_revision, creator: creator)
         }.to change { entry.revisions.count }
       end
 
       it 'freezes previous draft' do
         creator = create(:user)
         entry = create(:entry)
-        earlier_revision = create(:revision, :published, :entry => entry)
+        earlier_revision = create(:revision, :published, entry: entry)
 
         draft_before_restore = entry.draft
-        entry.restore(:revision => earlier_revision, :creator => creator)
+        entry.restore(revision: earlier_revision, creator: creator)
 
         expect(draft_before_restore.reload).to be_frozen
       end
@@ -240,10 +258,10 @@ module Pageflow
       it 'turns previous draft into snapshot of type before_restore' do
         creator = create(:user)
         entry = create(:entry)
-        earlier_revision = create(:revision, :published, :entry => entry)
+        earlier_revision = create(:revision, :published, entry: entry)
 
         draft_before_restore = entry.draft
-        revision = entry.restore(:revision => earlier_revision, :creator => creator)
+        entry.restore(revision: earlier_revision, creator: creator)
 
         expect(draft_before_restore.reload.snapshot_type).to eq('before_restore')
       end
@@ -252,9 +270,9 @@ module Pageflow
         it 'turns copy of passed revision into new draft' do
           creator = create(:user)
           entry = create(:entry)
-          earlier_revision = create(:revision, :published, :title => 'the way it was', :entry => entry)
+          earlier_revision = create(:revision, :published, title: 'the way it was', entry: entry)
 
-          entry.restore(:revision => earlier_revision, :creator => creator)
+          entry.restore(revision: earlier_revision, creator: creator)
 
           expect(entry.draft(true).title).to eq('the way it was')
         end
@@ -264,11 +282,11 @@ module Pageflow
           entry = create(:entry)
           earlier_revision = create(:revision,
                                     :published,
-                                    :title => 'the way it was',
-                                    :entry => entry,
-                                    :password_protected => true)
+                                    title: 'the way it was',
+                                    entry: entry,
+                                    password_protected: true)
 
-          entry.restore(:revision => earlier_revision, :creator => creator)
+          entry.restore(revision: earlier_revision, creator: creator)
 
           expect(entry.draft(true)).not_to be_password_protected
         end
@@ -278,9 +296,9 @@ module Pageflow
         it 'turns copy of passed revision into new draft' do
           creator = create(:user)
           entry = create(:entry)
-          earlier_revision = create(:revision, :frozen, :title => 'the way it was', :entry => entry)
+          earlier_revision = create(:revision, :frozen, title: 'the way it was', entry: entry)
 
-          entry.restore(:revision => earlier_revision, :creator => creator)
+          entry.restore(revision: earlier_revision, creator: creator)
 
           expect(entry.draft(true).title).to eq('the way it was')
         end
@@ -289,10 +307,10 @@ module Pageflow
       it 'saves creator in previous draft' do
         creator = create(:user)
         entry = create(:entry)
-        earlier_revision = create(:revision, :published, :entry => entry)
+        earlier_revision = create(:revision, :published, entry: entry)
 
         draft_before_restore = entry.draft
-        revision = entry.restore(:revision => earlier_revision, :creator => creator)
+        entry.restore(revision: earlier_revision, creator: creator)
 
         expect(draft_before_restore.reload.creator).to eq(creator)
       end
@@ -300,9 +318,9 @@ module Pageflow
       it 'saves which revision was restored from' do
         creator = create(:user)
         entry = create(:entry)
-        earlier_revision = create(:revision, :published, :entry => entry)
+        earlier_revision = create(:revision, :published, entry: entry)
 
-        revision = entry.restore(:revision => earlier_revision, :creator => creator)
+        entry.restore(revision: earlier_revision, creator: creator)
 
         expect(entry.draft(true).restored_from).to eq(earlier_revision)
       end
@@ -314,7 +332,7 @@ module Pageflow
         entry = create(:entry)
 
         expect {
-          entry.snapshot(:creator => creator)
+          entry.snapshot(creator: creator)
         }.to change { entry.revisions.count }
       end
 
@@ -322,7 +340,7 @@ module Pageflow
         creator = create(:user)
         entry = create(:entry)
 
-        revision = entry.snapshot(:creator => creator)
+        revision = entry.snapshot(creator: creator)
 
         expect(revision.creator).to be(creator)
       end
@@ -331,7 +349,7 @@ module Pageflow
         creator = create(:user)
         entry = create(:entry)
 
-        revision = entry.snapshot(:creator => creator)
+        revision = entry.snapshot(creator: creator)
 
         expect(revision).to be_frozen
       end
@@ -340,7 +358,7 @@ module Pageflow
         creator = create(:user)
         entry = create(:entry)
 
-        revision = entry.snapshot(:creator => creator)
+        revision = entry.snapshot(creator: creator)
 
         expect(revision.snapshot_type).to eq('auto')
       end
@@ -349,7 +367,7 @@ module Pageflow
         creator = create(:user)
         entry = create(:entry)
 
-        revision = entry.snapshot(:creator => creator, :type => 'user')
+        revision = entry.snapshot(creator: creator, type: 'user')
 
         expect(revision.snapshot_type).to eq('user')
       end
@@ -360,9 +378,7 @@ module Pageflow
     it 'creates a new entry' do
       entry = create(:entry)
 
-      expect {
-        entry.duplicate
-      }.to change { Entry.count }
+      expect { entry.duplicate }.to change { Entry.count }
     end
   end
 end
