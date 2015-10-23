@@ -2,7 +2,15 @@
 
 ### Changes on `master`
 
-[Compare changes](https://github.com/codevise/pageflow/compare/v0.8.0...master)
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.9.0...master)
+
+None so far.
+
+### Version 0.9.0
+
+2015-10-23
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.8.0..v0.9.0)
 
 ##### Breaking Changes
 
@@ -55,7 +63,8 @@
   ([#338](https://github.com/codevise/pageflow/pull/338))
 - Additional page transitions.
   ([#326](https://github.com/codevise/pageflow/pull/326),
-   [#363](https://github.com/codevise/pageflow/pull/363))
+   [#363](https://github.com/codevise/pageflow/pull/363),
+   [#423](https://github.com/codevise/pageflow/pull/423))
 - Make https mode configurable
   ([#403](https://github.com/codevise/pageflow/pull/403))
 - Improve display of file rights.
