@@ -191,7 +191,7 @@ module Pageflow
     #       form.input(:custom_field)
     #     end
     #
-    # @since edge
+    # @since 0.9
     # @return [Admin::FormInputs]
     attr_reader :admin_form_inputs
 

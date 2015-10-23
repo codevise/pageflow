@@ -2,7 +2,7 @@ module Pageflow
   module Admin
     # A registry of additional inputs for admin forms.
     #
-    # @since edge
+    # @since 0.9
     class FormInputs
       def initialize
         @resources = {}
