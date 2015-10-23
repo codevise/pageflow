@@ -16,7 +16,7 @@
   Then follow the instructions found in the gem's
   [README](https://github.com/codevise/pageflow-internal-links) to
   install the extracted page type.
-  
+
 ##### Deprecations
 
 - The configuration API for registering new page types has
@@ -46,7 +46,8 @@
    [#304](https://github.com/codevise/pageflow/pull/304))
 - Atmo audios spanning multiple pages.
   ([#332](https://github.com/codevise/pageflow/pull/332),
-   [#361](https://github.com/codevise/pageflow/pull/361))
+   [#361](https://github.com/codevise/pageflow/pull/361),
+   [#422](https://github.com/codevise/pageflow/pull/422))
 - Option to automatically change page on video end.
   ([#334](https://github.com/codevise/pageflow/pull/334),
    [#339](https://github.com/codevise/pageflow/pull/339))
@@ -100,7 +101,7 @@
 - Bug fix: Make edit widget view handle widgets with no available
   widget types
   ([#383](https://github.com/codevise/pageflow/pull/383))
-  
+
 ##### Rails Engine
 
 Public APIs to be used by Pageflow plugins:
@@ -113,6 +114,8 @@ Public APIs to be used by Pageflow plugins:
 - Introduce API for audio playback.
   ([#319](https://github.com/codevise/pageflow/pull/319),
    [#356](https://github.com/codevise/pageflow/pull/356))
+- Add API to add inputs to admin forms.
+  ([#421](https://github.com/codevise/pageflow/pull/421))
 - Enhance API for page types to configure their scroller.
   ([#321](https://github.com/codevise/pageflow/pull/321),
    [#327](https://github.com/codevise/pageflow/pull/327),
@@ -128,6 +131,8 @@ Public APIs to be used by Pageflow plugins:
   ([#324](https://github.com/codevise/pageflow/pull/324))
 - Introduce API to customize page change behavior via scrolling.
   ([#323](https://github.com/codevise/pageflow/pull/323))
+- Record when an entry has first been published
+  ([#419](https://github.com/codevise/pageflow/pull/419))
 - Promote `pageflow.Object` to `application.js`.
   ([#296](https://github.com/codevise/pageflow/pull/296),
    [#298](https://github.com/codevise/pageflow/pull/298))
@@ -212,6 +217,8 @@ Enhancements for app development:
 - Include pageflow version in entry css url to invalidate CDN on gem
   updates.
   ([#376](https://github.com/codevise/pageflow/pull/376))
+- Allow adding pageflow configure blocks in tests.
+  ([#420](https://github.com/codevise/pageflow/pull/420))
 - Improve stability of feature specs.
   ([#299](https://github.com/codevise/pageflow/pull/299))
 - Disable bandwidth feature detection in test environment.
