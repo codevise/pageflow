@@ -57,27 +57,47 @@ module Pageflow
       end
 
       def permitted_params
-        result = params.permit(:account => [
-                                 :name,
-                                 :default_file_rights,
-                                 :default_theming_attributes => [
-                                   :cname,
-                                   :theme_name,
-                                   :imprint_link_url,
-                                   :imprint_link_label,
-                                   :copyright_link_url,
-                                   :copyright_link_label,
-                                   :home_url,
-                                   :home_button_enabled_by_default
-                                 ]
-                               ])
+        result = params.permit(account: permitted_account_attributes)
 
         if result[:account]
           feature_states = params[:account][:feature_states].try(:permit!)
-          result[:account].merge!(:feature_states => feature_states || {})
+          result[:account].merge!(feature_states: feature_states || {})
         end
 
         result
+      end
+
+      private
+
+      def permitted_account_attributes
+        [
+          :name,
+          :default_file_rights,
+          default_theming_attributes: permitted_theming_attributes
+        ] +
+          permitted_attributes_for(:account)
+      end
+
+      def permitted_theming_attributes
+        [
+          :cname,
+          :theme_name,
+          :imprint_link_url,
+          :imprint_link_label,
+          :copyright_link_url,
+          :copyright_link_label,
+          :home_url,
+          :home_button_enabled_by_default
+        ] +
+          permitted_attributes_for(:theming)
+      end
+
+      def permitted_attributes_for(resource_name)
+        if params[:id]
+          Pageflow.config_for(resource).admin_form_inputs.permitted_attributes_for(resource_name)
+        else
+          []
+        end
       end
     end
   end

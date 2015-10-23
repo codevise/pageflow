@@ -1,7 +1,13 @@
 <%= semantic_form_for [:admin, resource] do |f| %>
+  <% account_config = Pageflow.config_for(f.object) %>
+
   <%= f.inputs do %>
     <%= f.input :name %>
     <%= f.input :default_file_rights %>
+
+    <% account_config.admin_form_inputs.find_all_for(:account).each do |form_input| %>
+      <%= form_input.build(f) %>
+    <% end %>
   <% end %>
 
   <%= f.semantic_fields_for :default_theming do |theming| %>
@@ -18,7 +24,9 @@
       <%= theming.input :copyright_link_label %>
       <%= theming.input :copyright_link_url %>
 
-      <% account_config = Pageflow.config_for(theming.object.account) %>
+      <% account_config.admin_form_inputs.find_all_for(:theming).each do |form_input| %>
+        <%= form_input.build(theming) %>
+      <% end %>
 
       <% theming.object.widgets.resolve(:include_placeholders => true).each do |widget| %>
         <%= f.semantic_fields_for(widget) do |w| %>

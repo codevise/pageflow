@@ -180,8 +180,20 @@ module Pageflow
     #
     #     config.admin_resource_tabs.register(:entry, Admin::CustomTab)
     #
-    # @return [Admin::TabsRegistry]
+    # @return [Admin::Tabs]
     attr_reader :admin_resource_tabs
+
+    # Add custom form fields to admin forms.
+    #
+    # @example
+    #
+    #     config.admin_form_inputs.register(:entry) do |form|
+    #       form.input(:custom_field)
+    #     end
+    #
+    # @since edge
+    # @return [Admin::FormInputs]
+    attr_reader :admin_form_inputs
 
     # Array of locales which can be chosen as interface language by a
     # user or for an entry. Defaults to `I18n.available_locales`.
@@ -228,6 +240,7 @@ module Pageflow
       @confirm_encoding_jobs = false
 
       @admin_resource_tabs = Pageflow::Admin::Tabs.new
+      @admin_form_inputs = Pageflow::Admin::FormInputs.new
 
       @available_locales = Engine.config.i18n.available_locales
 
@@ -274,6 +287,7 @@ module Pageflow
       delegate :page_types, to: :config
       delegate :widget_types, to: :config
       delegate :help_entries, to: :config
+      delegate :admin_form_inputs, to: :config
     end
   end
 end

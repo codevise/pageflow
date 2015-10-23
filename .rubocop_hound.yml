@@ -416,7 +416,7 @@ Style/SpaceInsideHashLiteralBraces:
   Description: Use spaces inside hash literal braces - or don't.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#spaces-operators
   Enabled: true
-  EnforcedStyle: space
+  EnforcedStyle: no_space
   EnforcedStyleForEmptyBraces: no_space
   SupportedStyles:
   - space
