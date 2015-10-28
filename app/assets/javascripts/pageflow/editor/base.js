@@ -15,6 +15,7 @@
 
 //= require_self
 
+//= require_tree ./utils
 //= require_tree ./models/mixins
 //= require ./models/uploaded_file
 //= require ./models/hosted_file
@@ -49,6 +50,7 @@
 //= require ./initializers/setup_hotkeys
 //= require ./initializers/edit_lock
 //= require ./initializers/files_polling
+//= require ./initializers/stylesheet_reloading
 //= require ./initializers/routing
 //= require ./initializers/error_listener
 //= require ./initializers/additional_initializers

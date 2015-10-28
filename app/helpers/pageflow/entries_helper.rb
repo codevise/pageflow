@@ -46,7 +46,9 @@ module Pageflow
                              p: Pageflow::VERSION,
                              format: 'css')
 
-      stylesheet_link_tag(url, media: 'all')
+      stylesheet_link_tag(url,
+                          media: 'all',
+                          data: {name: 'entry'})
     end
 
     def entry_mobile_navigation_pages(entry)
