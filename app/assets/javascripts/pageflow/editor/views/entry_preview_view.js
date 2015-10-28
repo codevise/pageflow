@@ -3,9 +3,9 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   className: 'container',
 
   ui: {
-    header: '.header',
-    entry: '.entry',
-    overview: '.overview'
+    header: '> .header',
+    entry: '> .entry',
+    overview: '> .overview'
   },
 
   initialize: function() {
@@ -84,8 +84,8 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
     $.ajax(this.model.url() + '/partials').success(function(response) {
       var partials = $('<div />').html(response);
 
-      view.ui.header.replaceWith(partials.find('.header'));
-      view.ui.overview.replaceWith(partials.find('.overview'));
+      view.ui.header.replaceWith(partials.find('> .header'));
+      view.ui.overview.replaceWith(partials.find('> .overview'));
       view.bindUIElements();
 
       view.updateWidgets(partials);
