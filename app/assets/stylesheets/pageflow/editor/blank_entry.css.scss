@@ -1,13 +1,14 @@
 .blank_entry {
-  margin: 0 auto;
-  top: 5%;
+  margin: 0;
   position: relative;
   font-family: "SourceSansPro";
   font-size: 17px;
   letter-spacing: 0.01em;
   text-align: center;
-  width: 50%;
+  padding: 5% 25%;
+  background-color: #fff;
   color: #333;
+  height: 100%;
 
   h2 {
     font-size: 30px;
