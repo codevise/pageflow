@@ -6,10 +6,12 @@
 
       parent.on('pageactivate', function(event) {
         that.element.toggleClass('invert', $(event.target).hasClass('invert'));
-        that.element.toggleClass('hidden', $(event.target).hasClass('hide_content_with_text'));
+        that.element.toggleClass('hidden',
+                                 $(event.target).hasClass('hide_content_with_text') ||
+                                 $(event.target).hasClass('no_hidden_text_indicator'));
       });
 
-      parent.on('hidetextactivate', function(event) {
+      parent.on('hidetextactivate', function() {
         that.element.addClass('visible');
       });
 
