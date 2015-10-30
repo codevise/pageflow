@@ -1,10 +1,11 @@
 # CHANGELOG
 
-### Changes on `master`
+### Version 0.9.1
 
-[Compare changes](https://github.com/codevise/pageflow/compare/v0.9.0...master)
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.9.0...v0.9.1)
 
-None so far.
+- Bug fix: Fix editor blank slate background color
+  ([#436](https://github.com/codevise/pageflow/pull/436))
 
 ### Version 0.9.0
 
