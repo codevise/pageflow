@@ -47,6 +47,14 @@
   feature toggle UI inside the admin. Visit the _Features_ tab on the
   account's admin page to view a list of available feature
   toggles.
+- Image file Paperclip attachments need to be refreshed to ensure the
+  new panorama styles 
+  ([#344](https://github.com/codevise/pageflow/pull/344)) are present:
+        
+        $ bin/rake paperclip:refresh:thumbnails \
+            CLASS=Pageflow::ImageFile \
+            ATTACHMENT=processed_attachment \
+            STYLES=panorama_large,panorama_medium
 
 ##### Public Site
 
