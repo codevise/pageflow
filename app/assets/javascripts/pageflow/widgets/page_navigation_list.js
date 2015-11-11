@@ -25,10 +25,12 @@
 
       function update(currentPagePermaId) {
         var highlightedPagePermaId = highlightedPage.getPagePermaId(currentPagePermaId);
+        var highlightedChapterId = pageflow.entryData.getChapterIdByPagePermaId(highlightedPagePermaId);
 
         element.toggleClass('inside_sub_chapter', highlightedPagePermaId !== currentPagePermaId);
 
         highlightPage(highlightedPagePermaId);
+        highlightChapter(highlightedChapterId);
         filterChapters(currentPagePermaId);
       }
 
@@ -41,10 +43,6 @@
           link.attr('tabindex', active ? '-1' : '3');
 
           if (active) {
-            if (link.data('chapterId')) {
-              highlightChapter(link.data('chapterId'));
-            }
-
             if (options.scrollToActive) {
               scroller.scrollToElement(link[0], 800);
             }
