@@ -20,13 +20,17 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
 
     this.editor = new wysihtml5.Editor(this.ui.textarea[0], {
       toolbar: this.ui.toolbar[0],
+      autoLink: this.options.disableLinks ? 0 : 1,
       parserRules: {
         tags: {
-          u: {},
-          b: {},
-          i: {},
+          em: {unwrap: this.options.disableRichtext ? 1 : 0, rename_tag: "i"},
+          strong: {unwrap: this.options.disableRichtext ? 1 : 0, rename_tag: "b"},
+          u: {unwrap: this.options.disableRichtext ? 1 : 0},
+          b: {unwrap: this.options.disableRichtext ? 1 : 0},
+          i: {unwrap: this.options.disableRichtext ? 1 : 0},
           br: {},
           a: {
+            unwrap: this.options.disableLinks ? 1 : 0,
             check_attributes: {
               href: "href"
             },
@@ -38,6 +42,15 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
         }
       }
     });
+
+    if (this.options.disableRichtext) {
+      this.ui.toolbar.find('a[data-wysihtml5-command="bold"]').hide();
+      this.ui.toolbar.find('a[data-wysihtml5-command="italic"]').hide();
+      this.ui.toolbar.find('a[data-wysihtml5-command="underline"]').hide();
+    }
+    if (this.options.disableLinks) {
+      this.ui.toolbar.find('a[data-wysihtml5-command="createLink"]').hide();
+    }
 
     this.editor.on('change', _.bind(this.save, this));
     this.editor.on('aftercommand:composer', _.bind(this.save, this));
