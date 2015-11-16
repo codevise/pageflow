@@ -1,11 +1,13 @@
 pageflow.ready = new $.Deferred(function(readyDeferred) {
   window.onload = function() {
     pageflow.browser.detectFeatures().then(function() {
+      var slideshow = $('[data-role=slideshow]');
+
       $('body').one('pagepreloaded', function() {
         readyDeferred.resolve();
       });
 
-      $('[data-role=slideshow]').each(function() {
+      slideshow.each(function() {
         pageflow.entryData = new pageflow.SeedEntryData(
           pageflow.seed
         );
@@ -30,6 +32,7 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
       });
 
       pageflow.links.setup();
+      pageflow.nativeScrolling.preventScrollingOnEmbed(slideshow);
     });
   };
 }).promise();

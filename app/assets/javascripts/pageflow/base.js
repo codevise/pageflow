@@ -52,6 +52,7 @@
 //= require ./chapter_filter
 //= require ./fullscreen
 //= require ./multimedia_alert
+//= require ./native_scrolling
 
 //= require ./settings
 
