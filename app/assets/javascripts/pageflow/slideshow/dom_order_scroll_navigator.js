@@ -43,6 +43,12 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
       return nextPage;
     }
 
+    var scrollSuccessor = getScrollSuccessor(currentPage, pages);
+
+    if (scrollSuccessor.length) {
+      return scrollSuccessor;
+    }
+
     return getParentPage(currentPage, pages);
   };
 
@@ -66,14 +72,28 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
   }
 
   function getParentPage(page, pages) {
-    var permaId = page.page('getPermaId');
-    var storylineId = entryData.getStorylineIdByPagePermaId(permaId);
-    var storylineConfiguration = entryData.getStorylineConfiguration(storylineId);
+    var storylineConfiguration = getStorylineConfiguration(page);
 
     if ('parent_page_perma_id' in storylineConfiguration) {
       return pages.filter('#' + storylineConfiguration.parent_page_perma_id);
     }
 
     return $();
+  }
+
+  function getScrollSuccessor(page, pages) {
+    var storylineConfiguration = getStorylineConfiguration(page);
+
+    if ('scroll_successor_id' in storylineConfiguration) {
+      return pages.filter('#' + storylineConfiguration.scroll_successor_id);
+    }
+
+    return $();
+  }
+
+  function getStorylineConfiguration(page) {
+    var permaId = page.page('getPermaId');
+    var storylineId = entryData.getStorylineIdByPagePermaId(permaId);
+    return entryData.getStorylineConfiguration(storylineId);
   }
 };

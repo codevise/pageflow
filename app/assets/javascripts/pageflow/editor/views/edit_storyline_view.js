@@ -63,6 +63,7 @@ pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
           return !isMain && pageflow.storylines.length > 1;
         }
       });
+      this.input('scroll_successor_id', pageflow.PageLinkInputView);
 
       if (pageflow.features.isEnabled('chapter_hierachy')) {
         this.input('navigation_bar_mode', pageflow.SelectInputView, {

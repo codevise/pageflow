@@ -37,6 +37,9 @@ de:
       parent_page_perma_id:
         label: "Übergeordnete Seite"
         inline_help: "Zielseite, um den Erzählstrang zu verlassen. Bestimmt die Kapitelhierarchie. Alle Kapitel des Erzählstrangs werden dem Kapitel dieser Seite untergeordnet."
+      scroll_successor_id:
+        label: "Scroll Nachfolger"
+        inline_help: "Seite, die beim Weiterscrollen am Ende des Erzählstrangs erreicht werden soll. Standardmäßig gelangt der Leser zur übergeordneten Seite zurück."
       navigation_bar_mode:
         label: "Navigationsleiste"
         values:
