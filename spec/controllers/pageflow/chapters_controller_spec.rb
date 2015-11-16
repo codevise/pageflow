@@ -103,6 +103,35 @@ module Pageflow
         expect(chapters.last.reload.position).to eq(1)
       end
 
+      it 'moves chapter from same entry to storyline' do
+        user = create(:user)
+        entry = create(:entry, with_member: user)
+        storyline = create(:storyline, revision: entry.draft)
+        other_storyline = create(:storyline, revision: entry.draft)
+        chapter = create(:chapter, storyline: storyline)
+
+        sign_in(user)
+        aquire_edit_lock(user, entry)
+        patch(:order, storyline_id: other_storyline, ids: [chapter.id])
+
+        expect(chapter.reload.storyline).to eq(other_storyline)
+      end
+
+      it 'cannot move chapter to storyline of other entry' do
+        user = create(:user)
+        entry = create(:entry, with_member: user)
+        other_entry = create(:entry, with_member: user)
+        storyline = create(:storyline, revision: entry.draft)
+        chapter = create(:chapter, storyline: storyline)
+        storyline_of_other_entry = create(:storyline, revision: other_entry.draft)
+
+        sign_in(user)
+        aquire_edit_lock(user, other_entry)
+        patch(:order, storyline_id: storyline_of_other_entry, ids: [chapter.id])
+
+        expect(response).to be_not_found
+      end
+
       it 'requires signed in user to be member of the parent entry' do
         user = create(:user)
         entry = create(:entry)

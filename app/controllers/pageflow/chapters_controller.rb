@@ -27,11 +27,12 @@ module Pageflow
 
     def order
       storyline = Storyline.find(params[:storyline_id])
+      entry = DraftEntry.new(storyline.entry)
 
       authorize!(:edit_outline, storyline.entry)
       verify_edit_lock!(storyline.entry)
       params.require(:ids).each_with_index do |id, index|
-        storyline.chapters.update(id, position: index)
+        entry.chapters.update(id, storyline_id: storyline.id, position: index)
       end
 
       head :no_content
