@@ -17,6 +17,7 @@ pageflow.SidebarRouter = Backbone.Marionette.AppRouter.extend({
     'meta_data/:tab': 'metaData',
     'publish': 'publish',
 
+    '?storyline=:id': 'index',
     '.*': 'index'
   }
 });

@@ -35,7 +35,8 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
       navigatable: true,
       editable: true,
       displayInNavigationHint: true,
-      rememberLastSelection: true
+      rememberLastSelection: true,
+      storylineId: this.options.storylineId
     }));
   },
 

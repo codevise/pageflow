@@ -84,6 +84,7 @@ pageflow.StorylinePickerView = Backbone.Marionette.Layout.extend({
 
   defaultStorylineId: function() {
     var storyline =
+      pageflow.storylines.get(this.options.storylineId) ||
       pageflow.storylines.get(this.rememberedStorylineId()) ||
       pageflow.storylines.first();
 

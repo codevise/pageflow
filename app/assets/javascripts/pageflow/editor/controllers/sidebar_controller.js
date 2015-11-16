@@ -4,9 +4,10 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
     this.entry = options.entry;
   },
 
-  index: function() {
+  index: function(storylineId) {
     this.region.show(new pageflow.EditEntryView({
-      model: this.entry
+      model: this.entry,
+      storylineId: storylineId
     }));
   },
 
