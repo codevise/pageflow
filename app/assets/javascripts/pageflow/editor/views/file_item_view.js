@@ -72,7 +72,7 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
     this.ui.rights.val(this.model.get('rights'));
     this.ui.rights.attr('placeholder', pageflow.entry.get('default_file_rights'));
 
-    this.ui.downloadLink.attr('href', this.model.get('url'));
+    this.ui.downloadLink.attr('href', this.model.get('original_url'));
     this.ui.downloads.toggle(this.model.isUploaded());
 
     this.ui.selectButton.toggle(!!this.options.selectionHandler);
