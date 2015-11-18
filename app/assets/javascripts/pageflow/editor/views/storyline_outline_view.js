@@ -8,7 +8,7 @@ pageflow.StorylineOutlineView = Backbone.Marionette.Layout.extend({
 
   events: {
     'click a.add_chapter': function() {
-      this.model.addChapter();
+      this.model.scaffoldChapter();
     }
   },
 
