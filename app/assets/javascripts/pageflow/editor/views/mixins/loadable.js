@@ -1,6 +1,6 @@
 pageflow.loadable = {
   modelEvents: {
-    sync: function() {
+    'change:id': function() {
       this.$el.removeClass('creating');
     },
 
