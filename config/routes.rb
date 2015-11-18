@@ -7,17 +7,19 @@ Pageflow::Engine.routes.draw do
         delete :current, :to => 'revisions#depublish_current', :on => :collection
       end
 
-      resources :storylines, :only => [:create, :update, :destroy] do
+      resources :storylines, only: [:create, :update, :destroy] do
         collection do
           patch :order
+          post :scaffold
         end
 
-        resources :chapters, :only => [:create, :update, :destroy] do
+        resources :chapters, only: [:create, :update, :destroy] do
           collection do
             patch :order
+            post :scaffold
           end
 
-          resources :pages, :only => [:create, :update, :destroy] do
+          resources :pages, only: [:create, :update, :destroy] do
             collection do
               patch :order
             end
