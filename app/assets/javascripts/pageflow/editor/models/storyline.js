@@ -59,13 +59,28 @@ pageflow.Storyline = Backbone.Model.extend({
     return pageflow.pages.getByPermaId(this.parentPagePermaId());
   },
 
-  addChapter: function(params) {
+  addChapter: function(attributes) {
+    var chapter = this.buildChapter(attributes);
+    chapter.save();
+
+    return chapter;
+  },
+
+  buildChapter: function(attributes) {
     var defaults = {
       storyline_id: this.id,
       title: '',
       position: this.chapters.length
     };
-    return this.chapters.create(_.extend(defaults, params));
+
+    return this.chapters.addAndReturnModel(_.extend(defaults, attributes));
+  },
+
+  scaffoldChapter: function(options) {
+    var scaffold = new pageflow.ChapterScaffold(this, options);
+    scaffold.create();
+
+    return scaffold;
   },
 
   toJSON: function() {

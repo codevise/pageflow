@@ -21,6 +21,7 @@
 //= require ./models/hosted_file
 //= require ./models/encoded_file
 //= require ./models/configuration
+//= require ./models/scaffold
 //= require_tree ./models
 //= require_tree ./collections/mixins
 //= require ./collections/multi_collection
