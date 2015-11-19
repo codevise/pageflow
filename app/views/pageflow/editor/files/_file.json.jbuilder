@@ -6,6 +6,10 @@ if file.url.present?
   json.url(file.url)
 end
 
+if file.original_url.present?
+  json.original_url(file.original_url)
+end
+
 if file_type.editor_partial.present?
   json.partial!(:object => file, :partial => file_type.editor_partial)
 end

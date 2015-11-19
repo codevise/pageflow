@@ -59,6 +59,10 @@ module Pageflow
       end
     end
 
+    def original_url
+      url
+    end
+
     def self.columns(t)
       t.belongs_to(:entry, index: true)
       t.belongs_to(:uploader, index: true)

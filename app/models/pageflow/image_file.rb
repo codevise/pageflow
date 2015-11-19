@@ -54,6 +54,12 @@ module Pageflow
       end
     end
 
+    def original_url
+      if processed_attachment.present?
+        attachment.url
+      end
+    end
+
     def panorama_url
       if processed_attachment.present?
         attachment.url(:panorama_large)
