@@ -9,7 +9,7 @@ pageflow.StorylineChaptersCollection = pageflow.SubsetCollection.extend({
       parentModel: storyline,
 
       filter: function(item) {
-        return item.get('storyline_id') === storyline.id;
+        return !storyline.isNew() && item.get('storyline_id') === storyline.id;
       },
 
       comparator: function(item) {
