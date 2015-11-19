@@ -169,7 +169,7 @@
         that._triggerPageTypeHook(name);
       });
 
-      this.element.one('deactivate', function() {
+      this.element.one('pagedeactivate', function() {
         handle.cancel();
       });
     },
