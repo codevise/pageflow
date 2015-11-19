@@ -47,6 +47,8 @@ module Pageflow
             membership.entry.account == membership.user.account
         end
 
+        can :view, Admin::FeaturesTab
+
         can :manage, Folder
         can :manage, [Entry, Revision]
         can :manage, [Chapter, Page]
