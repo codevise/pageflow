@@ -9,8 +9,9 @@
 
     <div class="wrapper">
       <div class="scroller">
-        <%= render :partial => 'pageflow/entries/overview/chapter', :collection => entry.chapters,
-                   :locals => {:chapters_count => entry.chapters.count} %>
+        <%= render(partial: 'pageflow/entries/overview/chapter',
+                   collection: entry.main_storyline_chapters,
+                   locals: {chapters_count: entry.main_storyline_chapters.count}) %>
       </div>
     </div>
 

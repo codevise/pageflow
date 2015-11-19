@@ -41,6 +41,11 @@ module Pageflow
     validate :published_until_unchanged, :if => :published_until_was_in_past?
     validate :published_until_blank, :if => :published_at_blank?
 
+    def main_storyline_chapters
+      main_storyline = storylines.first
+      main_storyline ? main_storyline.chapters : Chapter.none
+    end
+
     def files(model)
       model
         .select("#{model.table_name}.*, pageflow_file_usages.id AS usage_id")

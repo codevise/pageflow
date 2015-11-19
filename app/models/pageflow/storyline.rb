@@ -4,7 +4,7 @@ module Pageflow
 
     belongs_to :revision, touch: true
 
-    has_many :chapters
+    has_many :chapters, -> { order('pageflow_chapters.position ASC') }
     has_many :pages, through: :chapters
 
     delegate :entry, to: :revision
