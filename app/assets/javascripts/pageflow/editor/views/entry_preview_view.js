@@ -10,6 +10,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
 
   initialize: function() {
     this.widgets = $();
+    this.debouncedFetchWidgets = _.debounce(this.fetchWidgets, 200);
   },
 
   onRender: function() {
@@ -79,6 +80,12 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   },
 
   update: function() {
+    this.debouncedFetchWidgets();
+
+    this.$el.toggleClass('emphasize_chapter_beginning', !!this.model.configuration.get('emphasize_chapter_beginning'));
+  },
+
+  fetchWidgets: function() {
     var view = this;
 
     $.ajax(this.model.url() + '/partials').success(function(response) {
@@ -95,8 +102,6 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
       });
       view.ui.overview.overview();
     });
-
-    this.$el.toggleClass('emphasize_chapter_beginning', !!this.model.configuration.get('emphasize_chapter_beginning'));
   },
 
   updateWidgets: function(partials) {
