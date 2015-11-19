@@ -1,0 +1,19 @@
+en:
+  pageflow:
+    editor:
+      templates:
+        edit_page_link:
+          back: "Back"
+          destroy: "Delete"
+        page_link_item:
+          remove: "Delete"
+      views:
+        edit_page_link_view:
+          default_page_transition: "(Default)"
+    common_page_link_attributes:
+      label:
+        label: "Label"
+      target_page_id:
+        label: "Target page"
+      page_transition:
+        label: "Page transition"

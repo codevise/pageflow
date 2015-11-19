@@ -12,6 +12,14 @@ div.page_links {
     @include icon-only-button(#aaa);
     @include pencil-icon;
     position: absolute;
+    right: 40px;
+    top: 4px;
+  }
+
+  a.remove {
+    @include icon-only-button(#aaa);
+    @include trash-icon;
+    position: absolute;
     right: 4px;
     top: 4px;
   }
@@ -25,7 +33,7 @@ div.page_links {
 
     .title {
       cursor: default;
-      padding-right: 30px;
+      padding-right: 65px;
     }
 
     .label {

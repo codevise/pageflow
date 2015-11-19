@@ -1,5 +1,6 @@
 pageflow.SidebarRouter = Backbone.Marionette.AppRouter.extend({
   appRoutes: {
+    'page_links/:id': 'pageLink',
     'pages/:id': 'page',
     'pages/:id/:tab': 'page',
     'chapters/:id': 'chapter',
