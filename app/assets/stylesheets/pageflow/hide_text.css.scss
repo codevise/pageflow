@@ -1,8 +1,5 @@
 .slideshow .content .contentWrapper, .shadow {
-  -webkit-transition: 0.8s ease !important;
-  -moz-transition: 0.8s ease !important;
-  -ms-transition: 0.8s ease !important;
-  transition: 0.8s ease !important;
+  @include transition(0.8s ease !important);
 }
 
 .js .text_hidden_only {
@@ -12,10 +9,7 @@
 .hideText {
   .shadow {
     opacity: 0 !important;
-    -webkit-transition: 0.8s ease !important;
-    -moz-transition: 0.8s ease !important;
-    -ms-transition: 0.8s ease !important;
-    transition: 0.8s ease !important;
+    @include transition(0.8s ease !important);
     visibility: hidden;
   }
 

@@ -138,67 +138,49 @@
     visibility: initial;
     /* Needed to make sure things hide in older browsers too. */
     opacity: initial;
-    -webkit-transition: none;
-    -moz-transition: none;
-    -ms-transition: none;
-    -o-transition: none;
-    transition: none }
+    @include transition(none);
+  }
 
   .vjs-fade-out {
-    display: initial!important;
+    display: initial !important;
     visibility: initial;
     opacity: initial;
-    -webkit-transition: none;
-    -moz-transition: none;
-    -ms-transition: none;
-    -o-transition: none;
-    transition: none;
+    @include transition(none);
     /* Wait a moment before fading out the control bar */
-    -webkit-transition-delay: none;
-    -moz-transition-delay: none;
-    -ms-transition-delay: none;
-    -o-transition-delay: none;
-    transition-delay: none; }
+    @include transition-delay(none);
+  }
 
   /* Hide disabled or unsupported controls */
   .vjs-default-skin .vjs-hidden {
-    display: initial; }
+    display: initial;
+  }
 
   .vjs-lock-showing {
     display: initial !important;
     opacity: initial;
-    visibility: initial; }
+    visibility: initial;
+  }
 
-    /* Fading sytles, used to fade control bar. */
+  /* Fading sytles, used to fade control bar. */
   .fade-in {
     display: block !important;
     /* Needed to make sure things hide in older browsers too. */
     opacity: 1;
-    -webkit-transition: 0.1s;
-    -moz-transition: 0.1s;
-    -ms-transition: 0.1s;
-    -o-transition: 0.1s;
-    transition: 0.1s;
+    @include transition(0.1s);
   }
 
   .fade-out {
     display: block !important;
     opacity: 0 !important;
-    -webkit-transition: 1.5s;
-    -moz-transition: 1.5s;
-    -ms-transition: 1.5s;
-    -o-transition: 1.5s;
-    transition: 1.5s;
+    @include transition(1.5s);
     /* Wait a moment before fading out the control bar */
-    -webkit-transition-delay: 2s;
-    -moz-transition-delay: 2s;
-    -ms-transition-delay: 2s;
-    -o-transition-delay: 2s;
-    transition-delay: 2s; }
+    @include transition-delay(2s);
+  }
 
   /* Hide disabled or unsupported controls */
   .vjs-default-skin .vjs-hidden {
-    display: none; }
+    display: none;
+  }
 
   .lock-showing {
     display: block !important;
