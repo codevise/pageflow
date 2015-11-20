@@ -173,8 +173,6 @@
     display: block !important;
     opacity: 0 !important;
     @include transition(1.5s);
-    /* Wait a moment before fading out the control bar */
-    @include transition-delay(2s);
   }
 
   /* Hide disabled or unsupported controls */

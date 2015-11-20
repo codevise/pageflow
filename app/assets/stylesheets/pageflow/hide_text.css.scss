@@ -14,7 +14,7 @@
   }
 
   .slideshow .content .contentWrapper {
-    @include transform(translate3d(-200%,0,0));
+    @include transform(translate3d(-200%, 0, 0));
   }
 
   .entry .scroll_indicator {
