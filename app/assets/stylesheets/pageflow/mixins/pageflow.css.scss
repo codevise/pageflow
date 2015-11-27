@@ -4,6 +4,27 @@
   }
 }
 
+@mixin pageflow-page-type-pictograms($name, $directory: "pageflow/#{$name}/themes/default/pictograms") {
+  $pictogram-dir: $directory;
+  $custom-page-type-pictograms: false !default;
+
+  @if $custom-page-type-pictograms {
+    $pictogram-dir: "pageflow/themes/#{$theme-name}/page_type_pictograms/#{$name}";
+  }
+
+  .overview {
+    .#{$name} .pictogram {
+      background-image: image-url("#{$pictogram-dir}/wide.png");
+    }
+  }
+
+  .navigation_mobile {
+    .#{$name}:after {
+      background-image: image-url('#{$pictogram-dir}/sprite.png');
+    }
+  }
+}
+
 @mixin pageflow-hosted-file-stage($stage-name) {
   .editor {
     .file_thumbnail .pictogram.#{$stage-name},
