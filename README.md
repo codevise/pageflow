@@ -121,7 +121,7 @@ _Devise migration name fix_: In some cases, the Devise generator creates
 a migration file without file extension. This needs to be fixed manually
 at the moment:
 
-    $ mv db/migrate/*_devise_create_users{,.rb}
+    $ rename 's/$/.rb/' db/migrate/*_devise_create_users
 
 Now you can migrate the database.
 
