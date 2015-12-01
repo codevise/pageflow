@@ -196,9 +196,15 @@ module Pageflow
     attr_reader :admin_form_inputs
 
     # Array of locales which can be chosen as interface language by a
-    # user or for an entry. Defaults to `I18n.available_locales`.
+    # user. Defaults to `I18n.available_locales`.
     # @since 0.7
     attr_accessor :available_locales
+
+    # Array of locales which can be chosen as interface language for
+    # an entry. Defaults to the locales supported by the
+    # `pageflow-public-i18n` gem.
+    # @since edge
+    attr_accessor :available_public_locales
 
     # How to handle https requests for URLs which will have assets in the page.
     # If you wish to serve all assets over http and prevent mixed-content warnings,
@@ -243,6 +249,7 @@ module Pageflow
       @admin_form_inputs = Pageflow::Admin::FormInputs.new
 
       @available_locales = Engine.config.i18n.available_locales
+      @available_public_locales = PublicI18n.available_locales
 
       @public_https_mode = :prevent
     end

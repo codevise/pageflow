@@ -24,6 +24,7 @@ require 'jquery-fileupload-rails'
 require 'wysihtml5x/rails'
 require 'i18n-js'
 require 'http_accept_language'
+require 'pageflow-public-i18n'
 
 module Pageflow
   # Rails integration
@@ -34,7 +35,7 @@ module Pageflow
     config.autoload_paths << File.join(config.root, 'app', 'views', 'components')
 
     config.i18n.load_path += Dir[config.root.join('config', 'locales', '**', '*.yml').to_s]
-    config.i18n.available_locales = [:en, :de]
+    config.i18n.available_locales = [:en, :de] | PublicI18n.available_locales
     config.i18n.default_locale = :en
 
     # Supress deprecation warning. This is the future default value of the option.

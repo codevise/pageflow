@@ -24,6 +24,14 @@ module Pageflow
 
         expect(result['availableLocales']).to eq(['de', 'fr'])
       end
+
+      it 'includes available public locales' do
+        Pageflow.config.available_public_locales = [:fr]
+
+        result = JSON.parse(helper.editor_config_seeds)
+
+        expect(result['availablePublicLocales']).to eq(['fr'])
+      end
     end
   end
 end
