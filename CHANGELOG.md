@@ -4,7 +4,41 @@
 
 [Compare changes](https://github.com/codevise/pageflow/compare/v0.9.0...master)
 
-None so far.
+- Use shared translations `pageflow-public-i18n` gem for published
+  entries.
+  ([#451](https://github.com/codevise/pageflow/pull/451),
+   [#450](https://github.com/codevise/pageflow/pull/450),
+   [#410](https://github.com/codevise/pageflow/pull/410))
+- Add mixin to generate page type pictogram theme css
+  ([#449](https://github.com/codevise/pageflow/pull/449))
+- Add feature tab to entry admin
+  ([#432](https://github.com/codevise/pageflow/pull/432))
+- Add css class to prevent display of hidden text indicator
+  ([#435](https://github.com/codevise/pageflow/pull/435))
+- Let page type opt out of default scroller creation
+  ([#427](https://github.com/codevise/pageflow/pull/427))
+- Default implementation for editor page links collection and views
+  ([#415](https://github.com/codevise/pageflow/pull/415))
+- Reload dynamically generated entry stylesheet
+  ([#426](https://github.com/codevise/pageflow/pull/426))
+- Improve reloading logic for widgets inside editor
+  ([#429](https://github.com/codevise/pageflow/pull/429))
+- Improve display of page type pictograms in select box
+  ([#434](https://github.com/codevise/pageflow/pull/434))
+- Set pageflow_editor global
+  ([#428](https://github.com/codevise/pageflow/pull/428))
+- Bug fix: Fix migration rename command in readme
+  ([#448](https://github.com/codevise/pageflow/pull/448))
+- Bug fix: Offer original image for download in editor
+  ([#442](https://github.com/codevise/pageflow/pull/442))
+- Bug fix: Prevent incorrectly called page type hook on manual start
+  ([#441](https://github.com/codevise/pageflow/pull/441))
+- Bug fix: Fix editor blank slate background color
+  ([#433](https://github.com/codevise/pageflow/pull/433))
+- Bug fix: Correctly detect links to prevent default for in editor
+  ([#431](https://github.com/codevise/pageflow/pull/431))
+- Bug fix: Ensure pages are preloaded in editor after type change
+  ([#430](https://github.com/codevise/pageflow/pull/430))
 
 ### Version 0.9.0
 
