@@ -818,6 +818,13 @@ de:
         page_type_description: Wiedergabe einer Videodatei mit Steuerelementen
     chapter_hierachy:
       feature_name: Kapitel Hierachie
+    common_page_link_attributes:
+      label:
+        label: Bezeichnung
+      page_transition:
+        label: Seitenübergangseffekt
+      target_page_id:
+        label: Zielseite
     delayed_text_fade_in:
       feature_name: Text verzögert einblenden
     devise:
@@ -936,6 +943,9 @@ de:
           outline: Gliederung
           retry: Erneut versuchen
           save_error: Beim Speichern der Seite ist ein Problem aufgetreten.
+        edit_page_link:
+          back: Zurück
+          destroy: Löschen
         embedded:
           page_link:
             reset: Zurücksetzen
@@ -994,6 +1004,7 @@ de:
           save_error: Beim Speichern der Seite ist ein Fehler aufgetreten.
         page_link_item:
           edit: Bearbeiten
+          remove: Löschen
         page_links:
           add: Hinzufügen
           label: Verlinkte Seiten
@@ -1033,6 +1044,8 @@ de:
 
 
             Dieser Schritt kann nicht rückgängig gemacht werden.'
+        edit_page_link_view:
+          default_page_transition: (Standard)
         edit_page_view:
           confirm_destroy: Seite wirklich löschen?
         editor_views:
@@ -1054,61 +1067,6 @@ de:
         page_link_item_view:
           no_page: (Keine Seite)
           unnamed: (Unbenannt)
-    entries:
-      entry:
-        print_logo: Logo
-        scroll_indicator: Scrollen, um weiterzulesen
-        swipe_indicator: Wischen, um Text einzublenden
-      ie8_hint:
-        close: Hinweis schließen
-        deprecated_browser: <p>Liebe Nutzer,</p><p>leider nutzen Sie eine veraltete Version Ihres Browsers. Deshalb können die an dieser Stelle vorgesehenen Inhalte nicht korrekt dargestellt werden. Bitte aktualisieren Sie auf eine aktuelle Version.</p>
-      mobile_navigation:
-        imprint: Impressum
-        overview: Übersicht
-        share_with_twitter: Twittern
-      multimedia_alert:
-        alert: Hinweis
-        close: Los geht's
-        scroll_hint: Mit dem Mausrad oder den Pfeiltasten auf der Tastatur wird die jeweils nächste Kapitelseite aufgerufen.
-        sound_hint: Für dieses multimediale Reportage-Format nutzen wir neben Texten und Fotos auch Audios und Videos. Daher sollten die Lautsprecher des Systems eingeschaltet sein.
-        swipe_hint: Durch Wischen wird die jeweils nächste Kapitelseite aufgerufen.
-      navigation:
-        bar_bottom:
-          close_fullscreen: Vollbilddarstellung beenden
-          hide_text: Text ausblenden
-          mute_off: Ton ein
-          mute_on: Ton aus
-          open_fullscreen: Vollbilddarstellung
-          scroll_down: Runter scrollen
-          show_text: Text wieder einblenden
-          volume: Lautstärke
-        bar_top:
-          close_overview: Übersicht schließen
-          close_top_navigation: Navigation schließen
-          imprint: Impressum
-          navigate_top: Zum Anfang
-          open_overview: Übersicht öffnen
-          open_top_navigation: Navigation öffnen
-          scroll_up: Hoch scrollen
-          share: Teilen
-          share_with_facebook: Auf Facebook teilen
-          share_with_twitter: Twittern
-        home_button:
-          show_home: Zur Startseite
-      non_js_hint:
-        js_hint: Zur korrekten Anzeige der Seite benötigen Sie JavaScript.
-      overview:
-        chapter:
-          chapter: Kapitel
-        entry:
-          close: Schliessen
-          overview: Übersicht
-          scroll_left: Nach links scrollen
-          scroll_right: Nach rechts scrollen
-      skip_links:
-        goto_content: Zum Inhalt
-        goto_navigation: Zur Seitennavigation
-        goto_topnavigation: Zur Dachnavigation
     entry:
       duplicated_title: Kopie von %{title}
     help_entries:
@@ -1133,44 +1091,10 @@ de:
       built_in_page_type:
         audio:
           menu_item: Audio
-          text: ! '# Audio
-
-
-            Wiedergabe von Audiodatei mit Steuerelementen Hiermit
-
-            kannst Du Audiodateien mit Bild und Textinhalten
-
-            kombinieren. Wie beim Seitentyp „Video“ werden
-
-            Steuerelemente angezeigt, und ebenso kann eine zusätzliche
-
-            Infobox mit Text befüllt werden.
-
-
-            Typische Anwendungsbeispiele: Interview, O-Töne,
-
-            Musikstücke
-
-'
+          text: ! "# Audio\n\n*Wiedergabe von Audiodatei mit Steuerelementen* \n    \nHiermit kannst Du Audiodateien mit Bild und Textinhalten\nkombinieren. Wie beim Seitentyp „Video“ werden\nSteuerelemente angezeigt, und ebenso kann eine zusätzliche\nInfobox mit Text befüllt werden.\n\nTypische Anwendungsbeispiele: Interview, O-Töne,\nMusikstücke"
         audio_loop:
           menu_item: Hintergrund-Audio
-          text: ! '# Hintergrund-Audio
-
-
-            Wiedergabe eines Audio-Loops ohne Steuerelemente (Atmo)
-
-            Auch hier wird wie beim „Hintergrund-Bild“ ein bildschirmfüllendes Foto ausgespielt. Der
-
-            Unterschied zum reinen „Audio“ besteht darin, dass der Nutzer mangels Steuerelemente
-
-            keinen Einfluss auf die Wiedergabe hat und das Audio in einer Endlosschleife läuft.
-
-
-            Typische Anwendungsbeispiele: Atmos, Klangwelten,
-
-            Feld-Aufnahmen
-
-'
+          text: ! "# Hintergrund-Audio\n\nWiedergabe eines Audio-Loops ohne Steuerelemente (Atmo)\n    \nAuch hier wird wie beim „Hintergrund-Bild“ ein bildschirmfüllendes Foto ausgespielt. Der\nUnterschied zum reinen „Audio“ besteht darin, dass der Nutzer mangels Steuerelemente\nkeinen Einfluss auf die Wiedergabe hat und das Audio in einer Endlosschleife läuft.\n\nTypische Anwendungsbeispiele: Atmos, Klangwelten,\nFeld-Aufnahmen"
         background_image:
           menu_item: Hintergrund-Bild
           text: ! '# Hintergrund-Bild
@@ -1212,48 +1136,7 @@ de:
 '
         background_video:
           menu_item: Hintergrund-Video
-          text: ! '# Hintergrund-Video
-
-
-            Bildschirmfüllendes Video ohne Steuerelemente im Loop
-
-            abgespielt Dieser Seitentyp entspricht dem
-
-            Hintergrund-Bild mit dem Unterschied, dass hier statt
-
-            eines Bildes ein Video angezeigt wird. Dieses startet
-
-            automatisch und wird ohne Steuerungselement abgespielt,
-
-            womit User Start und Stopp nicht beeinflussen können.  Da
-
-            das Video in einer Endlosschleife abgespielt wird, sollte
-
-            deshalb auf ausreichende Länge und/oder einen sauberen
-
-            übergang geachtet werden. Gleiches gilt für die im Video
-
-            enthaltene Tonspur.
-
-
-            Ein Hinweis zur Nutzung von Pageflow auf Smartphones: Um
-
-            ungewollten Datenverbrauch beim übertragen großer
-
-            Videodateien zu verhindern, werden diese auf mobilen
-
-            Endgeräten nicht ausgespielt. Stattdessen wird ein
-
-            Poster-Bild angezeigt, das automatisch aus dem Video
-
-            generiert wird. Optional kann dieses aber auch durch ein
-
-            selbstgewähltes Bild ersetzt werden.
-
-
-            Typische Anwendungsbeispiele: Intro, Kapitelübergang, Atmo
-
-'
+          text: ! "# Hintergrund-Video\n\n*Bildschirmfüllendes Video ohne Steuerelemente im Loop*\n    \nabgespielt Dieser Seitentyp entspricht dem\nHintergrund-Bild mit dem Unterschied, dass hier statt\neines Bildes ein Video angezeigt wird. Dieses startet\nautomatisch und wird ohne Steuerungselement abgespielt,\nwomit User Start und Stopp nicht beeinflussen können.  Da\ndas Video in einer Endlosschleife abgespielt wird, sollte\ndeshalb auf ausreichende Länge und/oder einen sauberen\nübergang geachtet werden. Gleiches gilt für die im Video\nenthaltene Tonspur.\n\nEin Hinweis zur Nutzung von Pageflow auf Smartphones: Um\nungewollten Datenverbrauch beim übertragen großer\nVideodateien zu verhindern, werden diese auf mobilen\nEndgeräten nicht ausgespielt. Stattdessen wird ein\nPoster-Bild angezeigt, das automatisch aus dem Video\ngeneriert wird. Optional kann dieses aber auch durch ein\nselbstgewähltes Bild ersetzt werden.\n\nTypische Anwendungsbeispiele: Intro, Kapitelübergang, Atmo"
         internal_links:
           menu_item: Seitenverweise
           text: ! '# Seitenverweise
@@ -1271,10 +1154,10 @@ de:
 '
         video:
           menu_item: Video
-          text: ! "# Video\n\nWiedergabe einer Videodatei mit Steuerelementen Anders als\nbei „Hintergrund-Videos“ werden hier Textelemente nach ein\npaar Sekunden automatisch ausgeblendet, um die\nAufmerksamkeit auf das Bewegtbild zu lenken. Mit\nSteuerelementen kann der Nutzer das Video jederzeit\nstarten und pausieren, vor- oder zurückspulen. Ein\nweiterer Unterschied ist, dass Du wählen kannst, ob ein\nVideo automatisch gestartet wird, sobald die Seite\nangezeigt wird.  Als dezente Alternative oder Ergänzung zu\nden normalen Texteingabemöglichkeiten, kann eine\nsogenannte „Infobox“ mit Text befüllt werden.\n\nUnter Optionen lässt sich ein automatisches weiterscrollen am Ende des Videos aktivieren. \nDas kann nützlich sein, um einen nahtlosen Übergang zur nächsten Seite herzustellen.\n\nTypische Anwendungsbeispiele: Filme aller Art, Interviews,\nPortrait"
+          text: ! "# Video\n\n*Wiedergabe einer Videodatei mit Steuerelementen* \n   \nAnders als bei „Hintergrund-Videos“ werden hier Textelemente nach ein\npaar Sekunden automatisch ausgeblendet, um die\nAufmerksamkeit auf das Bewegtbild zu lenken. Mit\nSteuerelementen kann der Nutzer das Video jederzeit\nstarten und pausieren, vor- oder zurückspulen. Ein\nweiterer Unterschied ist, dass Du wählen kannst, ob ein\nVideo automatisch gestartet wird, sobald die Seite\nangezeigt wird.  Als dezente Alternative oder Ergänzung zu\nden normalen Texteingabemöglichkeiten, kann eine\nsogenannte „Infobox“ mit Text befüllt werden.\n\nUnter Optionen lässt sich ein automatisches weiterscrollen am Ende des Videos aktivieren. \nDas kann nützlich sein, um einen nahtlosen Übergang zur nächsten Seite herzustellen.\n\nTypische Anwendungsbeispiele: Filme aller Art, Interviews,\nPortrait"
       files:
         menu_item: Dateien verwalten
-        text: ! '# Daten verwalten
+        text: ! '# Dateien verwalten
 
 
           Pageflow verarbeitet alle gängigen Medien-Formate (Bild,
@@ -1361,9 +1244,7 @@ de:
 
           andere Beiträge nach Dateien zu durchsuchen und sie in den
 
-          bearbeiteten Beitrag zu übernehmen.
-
-'
+          bearbeiteten Beitrag zu übernehmen.'
       meta_data:
         menu_item: Titel und Optionen
         text: ! '# Titel und Optionen
@@ -1781,6 +1662,18 @@ de:
       publishing:
         menu_item: Veröffentlichen
         text: ! "# Veröffentlichen\n\nKlicke in der Gliederung auf die Schaltfläche\n„Veröffentlichen“ um Deinen Pageflow zu publizieren. Eine\nReportage kann entweder zeitlich unbegrenzt oder bis zu\neinem bestimmten Stichtag veröffentlicht\nwerden. \n\nAußerdem gibt es die Möglichkeit, Pageflows mit einem Passwort zu schützen. \nHierzu muss einfach das entsprechende Häkchen bei „Mit Passwort schützen\" gesetzt werden. \nDas System verwendet als Benutzernamen den Namen des Kontos und generiert ein Passwort, \nwelches auch manuell geändert werden kann. \n\nBeiträge, die bereits veröffentlicht sind, können nachträglich mit einem Passwort geschützt werden - \nund andersherum können auch geschützte Beiträge anschließend mit erneutem Klick auf „Veröffentlichen“ vom Passwortschutz befreit werden. \nBei der Veröffentlichung werden die auszuführenden Schritte im Dialogfenster angezeigt und erklärt.\n\nVeröffentlichte Pageflows können jederzeit manuell\ndepubliziert werden. Sollte eine Reportage bereits\nveröffentlicht sein, bleiben Änderungen solange öffentlich\nunsichtbar, bis die Reportage erneut veröffentlicht wird.\nEine Reportage kann stets nur von einem Redakteur zur\ngleichen Zeit bearbeitet werden.\n\nVorschaubild zum Einbetten in Externe Webseiten Nach der\nVeröffentlichung erstellt das System ein Vorschaubild, das\nals iframe zur Verlinkung in eine externe Seite eingebunden\nwerden kann.  Anhand des ausgespielten Codes lässt sich die\nGröße des iframes frei einstellen. Hierbei ist jedoch eine\nMindesthöhe von 150px und und eine Mindestbreite von 220px\nzu beachten."
+      storylines:
+        menu_item: Erzählstränge
+        text: ! '# Erzählstränge
+
+
+          Parallel zur linearen Erzählung von „oben nach unten“, können auch weitere Erzählstränge und Exkurse zu vertiefenden Inhalten erstellt werden. Erstelle dazu eine „Verweise“-Seite und verknüpfe die dort hinterlegten Verweise mit einem neuen Erzählstrang. Dabei kann frei gewählt werden, an welcher Stelle ein solcher Abzweig später wieder zum Hauptstrang führt oder auf einen weiteren Erzählstrang in der Geschichte verweist. 
+
+
+          Erstellt werden diese Erzählstränge in der Gliederung über ein Klick auf die Plus-Schaltfläche neben der Erzählstrang-Auswahl. Dabei öffnet sich automatisch ein neues Kapitel, in dem dann weitere Seiten angelegt werden können. In jedem Erzählstrang kann eine „Übergeordnete Seite“ festgelegt werden. Zu dieser wird der User geleitet, wenn er am Ende des Erzählstrangs weiter scrollt. Mit einem Klick auf das Stift-Symbol kann die Zielseite ausgewählt werden.
+
+
+          Achtung: Während des Editierens wird immer nur das aktuell ausgewählte Kapitel angezeigt. Um zu den anderen Kapiteln zu gelangen klicke auf das Auswahlmenü „Erzählstrang“. '
     helpers:
       entries:
         global_links: Globale Links
@@ -1794,18 +1687,6 @@ de:
       scroll: Scrollen
       scroll_left: Scrollen (von links)
       scroll_right: Scrollen (von rechts)
-    pages:
-      templates:
-        audio:
-          hint: Audio
-        background_video:
-          hint: Video Loop
-        page:
-          goto_top: zum Anfang
-        video:
-          hint: Video
-        video_tag:
-          view_video: Video ansehen
     quotas:
       exhausted: Quota verbraucht.
     ui:
@@ -1897,12 +1778,6 @@ de:
         analytics: Zählpixel
         mobile_navigation: Mobile Navigation
         navigation: Navigationsleiste
-      share_menu:
-        current_page: Diese Seite
-        entry: Diesen Beitrag
-        share_with_facebook: Auf Facebook teilen
-        share_with_google: Auf Google+ teilen
-        share_with_twitter: Auf Twitter teilen
       type_names:
         default_mobile_navigation: Navigationsmenü mit Thumbnails
         default_navigation: Navigationsleiste mit Thumbnails
