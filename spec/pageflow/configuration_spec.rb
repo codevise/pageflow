@@ -101,5 +101,21 @@ module Pageflow
         expect(configuration.available_locales).to eq([:fr])
       end
     end
+
+    describe '#available_public_locales' do
+      it 'defaults to Pageflow::PublicI18n.available_locales' do
+        configuration = Configuration.new
+
+        expect(configuration.available_public_locales).to eq(PublicI18n.available_locales)
+      end
+
+      it 'can be overwritten' do
+        configuration = Configuration.new
+
+        configuration.available_public_locales = [:fr]
+
+        expect(configuration.available_public_locales).to eq([:fr])
+      end
+    end
   end
 end
