@@ -87,10 +87,10 @@ module Pageflow
     end
 
     describe '#available_locales' do
-      it 'defaults to I18n.available_locales' do
+      it 'defaults to [:en, :de]' do
         configuration = Configuration.new
 
-        expect(configuration.available_locales).to eq(Engine.config.i18n.available_locales)
+        expect(configuration.available_locales).to eq([:en, :de])
       end
 
       it 'can be overwritten' do
