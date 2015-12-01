@@ -196,7 +196,7 @@ module Pageflow
     attr_reader :admin_form_inputs
 
     # Array of locales which can be chosen as interface language by a
-    # user. Defaults to `I18n.available_locales`.
+    # user. Defaults to `[:en, :de]`.
     # @since 0.7
     attr_accessor :available_locales
 
@@ -248,7 +248,7 @@ module Pageflow
       @admin_resource_tabs = Pageflow::Admin::Tabs.new
       @admin_form_inputs = Pageflow::Admin::FormInputs.new
 
-      @available_locales = Engine.config.i18n.available_locales
+      @available_locales = [:en, :de]
       @available_public_locales = PublicI18n.available_locales
 
       @public_https_mode = :prevent
