@@ -71,6 +71,18 @@ module Pageflow
       end
     end
 
+    describe '#entry_file_ids_seed' do
+      it 'indexes list of ids by collection name' do
+        revision = create(:revision, :published)
+        image_file = create(:image_file, used_in: revision)
+        entry = PublishedEntry.new(create(:entry, published_revision: revision))
+
+        result = helper.entry_file_ids_seed(entry)
+
+        expect(result['image_files']).to eq([image_file.id])
+      end
+    end
+
     describe '#entry_audio_files_json_seed' do
       before { helper.extend(AudioFilesHelper) }
 
@@ -80,7 +92,6 @@ module Pageflow
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
 
         result = JSON.parse(helper.entry_audio_files_json_seed(entry))
-        result[audio_file.id]
 
         expect(result[audio_file.id.to_s].first['type']).to be_present
         expect(result[audio_file.id.to_s].first['src']).to be_present
