@@ -8,7 +8,7 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
     var previousPage = this.getPreviousPage(currentPage, pages);
 
     if (previousPage.is(getParentPage(currentPage, pages))) {
-      forcedTransition = 'scroll_right';
+      forcedTransition = 'scroll_over_from_right';
     }
 
     slideshow.goTo(previousPage, {
@@ -22,7 +22,7 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
     var nextPage = this.getNextPage(currentPage, pages);
 
     if (nextPage.is(getParentPage(currentPage, pages))) {
-      forcedTransition = 'scroll_right';
+      forcedTransition = 'scroll_over_from_right';
     }
 
     slideshow.goTo(nextPage, {transition: forcedTransition});
