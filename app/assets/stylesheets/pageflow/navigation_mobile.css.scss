@@ -99,6 +99,44 @@ body {
     }
   }
 
+  .parent_page {
+    @include background-icon-center($color: #ddd);
+    @include fa-arrow-left-icon;
+    cursor: pointer;
+    pointer-events: all;
+    position: absolute;
+    top: 16px;
+    right: 60px;
+    width: 45px;
+    height: 45px;
+    visibility: hidden;
+    @include transform(translate3d(0, -100px, 0));
+    @include transition(transform 0.4s ease, visibility 0.4s, right 250ms);
+
+    &.is_visible {
+      visibility: visible;
+      @include transform(translate3d(0, 0, 0));
+    }
+
+    &:before {
+      z-index: 2;
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 34px;
+      height: 34px;
+      border-radius: 17px;
+      background-color: rgba(53, 53, 53, 0.9);
+      @include box-shadow(0 0 7px #ccc);
+      z-index: 1;
+    }
+  }
+
   .overview_mobile, .imprint_mobile, .sharing_mobile {
     position: absolute;
     top: 0;
@@ -263,6 +301,10 @@ body {
         pointer-events: all;
         opacity: 1;
       }
+    }
+
+    .parent_page {
+      right: 250px;
     }
 
     .menu.index,

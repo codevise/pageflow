@@ -33,6 +33,10 @@
         event.stopPropagation();
       });
 
+      $('.parent_page', element).parentPageButton({
+        visibleClass: 'is_visible'
+      });
+
       $('.wrapper', element).each(function() {
         var sharingMobile = $(this).parents('.sharing_mobile');
 
