@@ -29,6 +29,11 @@ pageflow.SeedEntryData = pageflow.EntryData.extend({
       memo[page.perma_id] = page.configuration;
       return memo;
     }, {});
+
+    this.pagePositions = _.reduce(options.pages, function(memo, page, index) {
+      memo[page.perma_id] = index;
+      return memo;
+    }, {});
   },
 
   getThemingOption: function(name) {
@@ -45,6 +50,10 @@ pageflow.SeedEntryData = pageflow.EntryData.extend({
 
   getPageConfiguration: function(permaId) {
     return this.pageConfigurations[permaId] || {};
+  },
+
+  getPagePosition: function(permaId) {
+    return this.pagePositions[permaId];
   },
 
   getChapterIdByPagePermaId: function(permaId) {
