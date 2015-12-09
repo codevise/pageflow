@@ -269,6 +269,14 @@ $nav-color: #9c9c9c;
       $normal-offset: -14px;
       $hover-offset: -115px;
       $pressed-offset: -64px;
+      opacity: 0;
+      visibility: hidden;
+      @include transition(opacity 0.2s linear, visibility 0.2s);
+
+      &.visible {
+        opacity: 1;
+        visibility: visible;
+      }
 
       &.top {
         top: 145px;
