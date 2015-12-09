@@ -76,6 +76,50 @@ $nav-color: #9c9c9c;
     &[tabindex] {
       outline: -webkit-focus-ring-color none 0;
     }
+
+    &.filtered {
+      display: none;
+    }
+
+    &.animate_in {
+      &.moving_forwards {
+        @include animation(pageflow-navigation-bar-slide-in-from-bottom 0.4s ease-out);
+      }
+
+      &.moving_backwards {
+        @include animation(pageflow-navigation-bar-slide-in-from-top 0.4s ease-out);
+      }
+
+      &.moving_down {
+        @include animation(pageflow-navigation-bar-slide-in-from-right 0.4s ease-out);
+      }
+
+      &.moving_up {
+        @include animation(pageflow-navigation-bar-slide-in-from-left 0.4s ease-out);
+      }
+    }
+
+    &.animate_out {
+      opacity: 0;
+
+      &.moving_forwards {
+        @include animation(pageflow-navigation-bar-slide-out-to-top 0.4s ease-in);
+      }
+
+      &.moving_backwards {
+        @include animation(pageflow-navigation-bar-slide-out-to-bottom 0.4s ease-in);
+      }
+
+      &.moving_down {
+        @include animation(pageflow-navigation-bar-slide-out-to-left 0.4s ease-in);
+        @include transform(translate3d(-100%, 0, 0));
+      }
+
+      &.moving_up {
+        @include animation(pageflow-navigation-bar-slide-out-to-right 0.4s ease-in);
+        @include transform(translate3d(100%, 0, 0));
+      }
+    }
   }
 
   a {
@@ -96,10 +140,6 @@ $nav-color: #9c9c9c;
 
     &:active {
       outline: none;
-    }
-
-    &.filtered {
-      display: none;
     }
   }
 
@@ -128,6 +168,10 @@ $nav-color: #9c9c9c;
       left: 0;
       border: solid 3px #eee;
     }
+  }
+
+  .navigation_thumbnails li {
+    overflow: hidden;
   }
 
   .navigation_site_detail {
@@ -316,6 +360,11 @@ $nav-color: #9c9c9c;
       }
     }
 
+    &.is_animating .scroller:after {
+      position: absolute;
+      top: 0;
+    }
+
     .scroller {
       overflow: hidden;
       top: 180px;
@@ -323,6 +372,8 @@ $nav-color: #9c9c9c;
 
       &:after {
         height: 100%;
+        width: 100%;
+        z-index: 1;
         background-color: $bg-color;
         background-image: none;
         opacity: 0.9;
@@ -330,6 +381,7 @@ $nav-color: #9c9c9c;
 
       ul {
         position: relative;
+        z-index: 2;
 
         a {
           position: relative;

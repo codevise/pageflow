@@ -42,8 +42,9 @@
           probeType: 3
         });
 
-        $('ul', element).pageNavigationList({
-          scroller: scroller
+        $('ul.pages', element).pageNavigationList({
+          scroller: scroller,
+          animationDuration: 500
         });
 
         scroller.on('scroll', function() {

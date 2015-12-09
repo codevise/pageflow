@@ -1,3 +1,5 @@
+//= require ./page_navigation_list_animation
+
 (function($) {
   $.widget('pageflow.pageNavigationList', {
     _create: function() {
@@ -8,6 +10,7 @@
 
       var chapterFilter = pageflow.ChapterFilter.create();
       var highlightedPage = pageflow.HighlightedPage.create();
+      var animation = pageflow.PageNavigationListAnimation.create()
 
       pageflow.ready.then(function() {
         highlightUnvisitedPages(pageflow.visited.getUnvisitedPages());
@@ -29,12 +32,17 @@
 
         element.toggleClass('inside_sub_chapter', highlightedPagePermaId !== currentPagePermaId);
 
-        highlightPage(highlightedPagePermaId);
-        highlightChapter(highlightedChapterId);
-        filterChapters(currentPagePermaId);
+        filterChapters(currentPagePermaId).then(function() {
+          highlightPage(highlightedPagePermaId, {animate: !animation.enabled});
+          highlightChapter(highlightedChapterId);
+
+          if (options.onFilterChange) {
+            options.onFilterChange();
+          }
+        });
       }
 
-      function highlightPage(permaId) {
+      function highlightPage(permaId, highlightOptions) {
         links.each(function() {
           var link = $(this);
           var active = '#' + permaId === link.attr('href');
@@ -44,7 +52,7 @@
 
           if (active) {
             if (options.scrollToActive) {
-              scroller.scrollToElement(link[0], 800);
+              scroller.scrollToElement(link[0], highlightOptions.animate ? 800 : 0);
             }
           }
         });
@@ -73,16 +81,48 @@
       }
 
       function filterChapters(currentPagePermaId) {
+        animation.update(currentPagePermaId);
+
         links.each(function() {
           var link = $(this);
-
-          link.parent().andSelf().toggleClass('filtered', !chapterFilter.chapterVisibleFromPage(
-            currentPagePermaId,
-            link.data('chapterId')
-          ));
+          animation.start(link.parent(), visible(currentPagePermaId, link));
         });
 
-        scroller.refresh();
+        return $.when(animation.enabled && animationDurationElapsed()).then(function() {
+          links.each(function() {
+            var link = $(this);
+
+            animation.finish(link.parent(), visible(currentPagePermaId, link));
+            link.parent().andSelf().toggleClass('filtered', !visible(currentPagePermaId, link));
+          });
+
+          scroller.refresh();
+        });
+      }
+
+      function visible(currentPagePermaId, link) {
+        return chapterFilter.chapterVisibleFromPage(
+          currentPagePermaId,
+          link.data('chapterId')
+        );
+      }
+
+      function animationDurationElapsed() {
+        if (options.animationDuration) {
+          if (options.onAnimationStart) {
+            options.onAnimationStart();
+          }
+
+          return $.Deferred(function(deferred) {
+            setTimeout(function() {
+              deferred.resolve();
+
+              if (options.onAnimationEnd) {
+                setTimeout(options.onAnimationEnd, 500);
+              }
+            }, 500);
+          }).promise();
+        }
       }
     }
   });

@@ -217,6 +217,20 @@ body {
         width: 200px;
         height: 112px;
       }
+
+      &.filtered {
+        display: none;
+      }
+
+      &.animate_in.moving_up {
+        @include animation(pageflow-navigation-bar-slide-in-from-left 0.4s ease-out);
+      }
+
+      &.animate_out.moving_up {
+        opacity: 0;
+        @include animation(pageflow-navigation-bar-slide-out-to-right 0.4s ease-in);
+        @include transform(translate3d(100%, 0, 0));
+      }
     }
 
     a.active {

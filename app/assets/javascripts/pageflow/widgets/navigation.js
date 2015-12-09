@@ -193,7 +193,17 @@
 
         $('ul.navigation_thumbnails', element).pageNavigationList({
           scroller: scroller,
-          scrollToActive: true
+          scrollToActive: true,
+          animationDuration: 500,
+          onAnimationStart: function() {
+            element.addClass('is_animating');
+          },
+          onAnimationEnd: function() {
+            element.removeClass('is_animating');
+          },
+          onFilterChange: function() {
+            toggleIndicators();
+          }
         });
 
         pageflow.ready.then(function() {
