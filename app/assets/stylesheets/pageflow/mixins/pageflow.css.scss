@@ -23,6 +23,10 @@
       background-image: image-url('#{$pictogram-dir}/sprite.png');
     }
   }
+
+  %pageflow_page_type_thumbnail.is_#{$name}:after {
+    background-image: image-url('#{$pictogram-dir}/sprite.png');
+  }
 }
 
 @mixin pageflow-hosted-file-stage($stage-name) {
