@@ -29,6 +29,10 @@ pageflow.Chapter = Backbone.Model.extend({
     return this.isNew() ? this.collection.url() : '/chapters';
   },
 
+  storylinePosition: function() {
+    return (this.storyline && this.storyline.get('position')) || -1;
+  },
+
   addPage: function(options) {
     options = options || {};
 

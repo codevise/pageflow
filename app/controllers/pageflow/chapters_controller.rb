@@ -5,11 +5,11 @@ module Pageflow
     before_filter :authenticate_user!
 
     def create
-      entry = DraftEntry.find(params[:entry_id])
-      chapter = entry.chapters.build(chapter_params)
+      storyline = Storyline.find(params[:storyline_id])
+      chapter = storyline.chapters.build(chapter_params)
 
       authorize!(:create, chapter)
-      verify_edit_lock!(chapter.entry)
+      verify_edit_lock!(storyline.entry)
       chapter.save
 
       respond_with(chapter)
@@ -26,12 +26,13 @@ module Pageflow
     end
 
     def order
-      entry = DraftEntry.find(params[:entry_id])
+      storyline = Storyline.find(params[:storyline_id])
+      entry = DraftEntry.new(storyline.entry)
 
-      authorize!(:edit_outline, entry.to_model)
-      verify_edit_lock!(entry)
+      authorize!(:edit_outline, storyline.entry)
+      verify_edit_lock!(storyline.entry)
       params.require(:ids).each_with_index do |id, index|
-        entry.chapters.update(id, :position => index)
+        entry.chapters.update(id, storyline_id: storyline.id, position: index)
       end
 
       head :no_content
@@ -42,7 +43,7 @@ module Pageflow
 
       authorize!(:destroy, chapter)
       verify_edit_lock!(chapter.entry)
-      chapter.entry.snapshot(:creator => current_user)
+      chapter.entry.snapshot(creator: current_user)
 
       chapter.destroy
 
@@ -53,7 +54,10 @@ module Pageflow
 
     def chapter_params
       configuration = params.require(:chapter)[:configuration].try(:permit!)
-      params.require(:chapter).permit(:position, :title).merge(:configuration => configuration)
+
+      params.require(:chapter)
+        .permit(:position, :title)
+        .merge(configuration: configuration)
     end
   end
 end

@@ -7,17 +7,28 @@ pageflow.app.addInitializer(function(options) {
 
   pageflow.pages = new pageflow.PagesCollection(options.pages);
   pageflow.chapters = new pageflow.ChaptersCollection(options.chapters);
+  pageflow.storylines = new pageflow.StorylinesCollection(options.storylines);
   pageflow.entry = new pageflow.Entry(options.entry);
   pageflow.theming = new pageflow.Theming(options.theming);
   pageflow.account = new Backbone.Model(options.account);
 
   pageflow.entryData = new pageflow.PreviewEntryData({
+    storylines: pageflow.storylines,
     chapters: pageflow.chapters,
     pages: pageflow.pages,
     theming: pageflow.theming
   });
 
+  pageflow.storylineOrdering = new pageflow.StorylineOrdering(pageflow.storylines, pageflow.pages);
+  pageflow.storylineOrdering.sort({silent: true});
+  pageflow.storylineOrdering.watch();
+
   pageflow.pages.sort();
+
+  // TODO
+  pageflow.storylines.on('sort', _.debounce(function() {
+    pageflow.storylines.saveOrder();
+  }, 100));
 
   pageflow.editor.failures.watch(pageflow.entry);
   pageflow.editor.failures.watch(pageflow.pages);

@@ -39,6 +39,10 @@ pageflow.Page = Backbone.Model.extend({
     return this.isNew() ? this.collection.url() : '/pages';
   },
 
+  storylinePosition: function() {
+    return (this.chapter && this.chapter.storylinePosition()) || -1;
+  },
+
   chapterPosition: function() {
     return (this.chapter && this.chapter.get('position')) || -1;
   },

@@ -2,7 +2,17 @@ pageflow.SeedEntryData = pageflow.EntryData.extend({
   initialize: function(options) {
     this.theming = options.theming;
 
-    this.chapterConfigurations = options.chapter_configurations;
+    this.storylineConfigurations = options.storyline_configurations;
+
+    this.storylineIdsByChapterIds = _(options.chapters).reduce(function(memo, chapter) {
+      memo[chapter.id] = chapter.storyline_id;
+      return memo;
+    }, {});
+
+    this.chapterConfigurations = _.reduce(options.chapters, function(memo, chapter) {
+      memo[chapter.id] = chapter.configuration;
+      return memo;
+    }, {});
 
     this.chapterPagePermaIds = _(options.pages).reduce(function(memo, page) {
       memo[page.chapter_id] = memo[page.chapter_id] || [];
@@ -39,5 +49,13 @@ pageflow.SeedEntryData = pageflow.EntryData.extend({
 
   getChapterIdByPagePermaId: function(permaId) {
     return this.chapterIdsByPagePermaIds[permaId];
+  },
+
+  getStorylineConfiguration: function(id) {
+    return this.storylineConfigurations[id] || {};
+  },
+
+  getStorylineIdByChapterId: function(id) {
+    return this.storylineIdsByChapterIds[id];
   }
 });

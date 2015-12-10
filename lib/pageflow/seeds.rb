@@ -118,11 +118,13 @@ module Pageflow
           yield(entry) if block_given?
         end
 
-        chapter = entry.draft.chapters.create!(title: 'Kapitel 1')
+        storyline = entry.draft.storylines.first
+
+        chapter = storyline.chapters.create!(title: 'Chapter 1')
         chapter.pages.create!(template: 'background_image')
         chapter.pages.create!(template: 'background_image')
 
-        chapter = entry.draft.chapters.create!(title: 'Kapitel 2')
+        chapter = storyline.chapters.create!(title: 'Chapter 2')
         chapter.pages.create!(template: 'video')
       end
 

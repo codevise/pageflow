@@ -4,6 +4,7 @@ pageflow.SidebarRouter = Backbone.Marionette.AppRouter.extend({
     'pages/:id': 'page',
     'pages/:id/:tab': 'page',
     'chapters/:id': 'chapter',
+    'storylines/:id': 'storyline',
 
     'files/:collectionName?handler=:handler&payload=:payload': 'files',
     'files/:collectionName': 'files',
@@ -16,6 +17,7 @@ pageflow.SidebarRouter = Backbone.Marionette.AppRouter.extend({
     'meta_data/:tab': 'metaData',
     'publish': 'publish',
 
+    '?storyline=:id': 'index',
     '.*': 'index'
   }
 });

@@ -1,0 +1,58 @@
+module Pageflow
+  class StorylinesController < Pageflow::ApplicationController
+    respond_to :json
+
+    before_filter :authenticate_user!
+
+    def create
+      entry = DraftEntry.find(params[:entry_id])
+      storyline = entry.storylines.build(storyline_params)
+
+      authorize!(:create, storyline)
+      verify_edit_lock!(entry.to_model)
+      storyline.save
+
+      respond_with(storyline)
+    end
+
+    def update
+      storyline = Storyline.find(params[:id])
+
+      authorize!(:update, storyline)
+      verify_edit_lock!(storyline.entry)
+      storyline.update_attributes(storyline_params)
+
+      respond_with(storyline)
+    end
+
+    def order
+      entry = DraftEntry.find(params[:entry_id])
+
+      authorize!(:edit_outline, entry.to_model)
+      verify_edit_lock!(entry)
+      params.require(:ids).each_with_index do |id, index|
+        entry.storylines.update(id, position: index)
+      end
+
+      head :no_content
+    end
+
+    def destroy
+      storyline = Storyline.find(params[:id])
+
+      authorize!(:destroy, storyline)
+      verify_edit_lock!(storyline.entry)
+
+      storyline.destroy
+
+      respond_with(storyline)
+    end
+
+    private
+
+    def storyline_params
+      configuration = params.require(:storyline)[:configuration].try(:permit!)
+      params.require(:storyline).permit.merge(configuration: configuration)
+    end
+  end
+end

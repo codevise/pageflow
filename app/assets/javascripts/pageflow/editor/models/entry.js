@@ -19,6 +19,8 @@ pageflow.Entry = Backbone.Model.extend({
     this.configuration.parent = this;
 
     this.files = options.files || pageflow.files;
+    this.storylines = options.storylines || pageflow.storylines;
+    this.storylines.parentModel = this;
     this.chapters = options.chapters || pageflow.chapters;
     this.chapters.parentModel = this;
     this.pages = pageflow.pages;
@@ -30,6 +32,10 @@ pageflow.Entry = Backbone.Model.extend({
     pageflow.editor.fileTypes.each(function(fileType) {
       this.watchFileCollection(fileType.collectionName, this.getFileCollection(fileType));
     }, this);
+
+    this.listenTo(this.storylines, 'sort', function() {
+      this.pages.sort();
+    });
 
     this.listenTo(this.chapters, 'sort', function() {
       this.pages.sort();
@@ -49,13 +55,11 @@ pageflow.Entry = Backbone.Model.extend({
     });
   },
 
-  addChapter: function(params) {
+  addStoryline: function(params) {
     var defaults = {
-      entry_id: this.get('id'),
       title: '',
-      position: this.chapters.length
     };
-    return this.chapters.create(_.extend(defaults, params));
+    return this.storylines.create(_.extend(defaults, params));
   },
 
   addFileUpload: function(upload) {

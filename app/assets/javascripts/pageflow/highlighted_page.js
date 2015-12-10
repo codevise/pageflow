@@ -4,10 +4,10 @@ pageflow.HighlightedPage = pageflow.Object.extend({
   },
 
   getPagePermaId: function(currentPagePermaId) {
-    var chapterId = this.entry.getChapterIdByPagePermaId(currentPagePermaId);
+    var storylineId = this.entry.getStorylineIdByPagePermaId(currentPagePermaId);
 
-    if (this.getNavigationBarMode(chapterId) === 'inherit_from_parent') {
-      var parentPagePermaId = this.entry.getParentPagePermaId(chapterId);
+    if (this.getNavigationBarMode(storylineId) === 'inherit_from_parent') {
+      var parentPagePermaId = this.entry.getParentPagePermaId(storylineId);
 
       return parentPagePermaId &&
         this.getPagePermaId(parentPagePermaId);
@@ -27,8 +27,8 @@ pageflow.HighlightedPage = pageflow.Object.extend({
     return this.entry.getPageConfiguration(permaId).display_in_navigation !== false;
   },
 
-  getNavigationBarMode: function(chapterId) {
-    return this.entry.getChapterConfiguration(chapterId).navigation_bar_mode;
+  getNavigationBarMode: function(storylineId) {
+    return this.entry.getStorylineConfiguration(storylineId).navigation_bar_mode;
   },
 
   getChapterPagesUntil: function(pagePermaId) {

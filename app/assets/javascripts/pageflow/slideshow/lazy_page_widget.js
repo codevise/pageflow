@@ -16,6 +16,10 @@
       return this.element.nonLazyPage.apply(this.element, [method].concat([].slice.call(args)));
     },
 
+    getPermaId: function() {
+      return parseInt(this.element.attr('id'), 10);
+    },
+
     getConfiguration: function() {
       return this.configuration;
     },
