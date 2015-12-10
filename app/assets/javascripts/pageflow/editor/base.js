@@ -41,6 +41,7 @@
 //= require_tree ./views
 
 //= require ./initializers/setup_config
+//= require ./initializers/setup_common_seed
 //= require ./initializers/setup_features
 //= require ./initializers/setup_audio
 //= require ./initializers/setup_help_entries
