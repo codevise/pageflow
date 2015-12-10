@@ -39,6 +39,80 @@ module Pageflow
       end
     end
 
+    describe '#scaffold' do
+      it 'creates chapter in storyline' do
+        user = create(:user)
+        entry = create(:entry, with_member: user)
+        storyline = create(:storyline, revision: entry.draft)
+
+        expect {
+          sign_in(user)
+          aquire_edit_lock(user, entry)
+          post(:scaffold,
+               storyline_id: storyline,
+               chapter: attributes_for(:valid_chapter),
+               format: 'json')
+        }.to change { entry.draft.chapters.count }.by(1)
+      end
+
+      it 'creates page inside new chapter' do
+        user = create(:user)
+        entry = create(:entry, with_member: user)
+        storyline = create(:storyline, revision: entry.draft)
+
+        sign_in(user)
+        aquire_edit_lock(user, entry)
+        post(:scaffold,
+             storyline_id: storyline,
+             chapter: attributes_for(:valid_chapter),
+             format: 'json')
+
+        expect(storyline.chapters.last.pages.count).to eq(1)
+      end
+
+      it 'renders chapter and page attributes' do
+        user = create(:user)
+        entry = create(:entry, with_member: user)
+        storyline = create(:storyline, revision: entry.draft)
+
+        sign_in(user)
+        aquire_edit_lock(user, entry)
+        post(:scaffold,
+             storyline_id: storyline,
+             chapter: attributes_for(:valid_chapter),
+             format: 'json')
+
+        expect(json_response(path: [:chapter, :id])).to be_present
+        expect(json_response(path: [:page, :id])).to be_present
+      end
+
+      it 'requires the signed in user to be member of the parent entry' do
+        user = create(:user)
+        entry = create(:entry)
+        storyline = create(:storyline, revision: entry.draft)
+
+        sign_in user
+        post(:scaffold,
+             storyline_id: storyline,
+             chapter: attributes_for(:valid_chapter),
+             format: 'json')
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'requires authentication' do
+        entry = create(:entry)
+        storyline = create(:storyline, revision: entry.draft)
+
+        post(:scaffold,
+             storyline_id: storyline,
+             chapter: attributes_for(:valid_chapter),
+             format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+    end
+
     describe '#update' do
       it 'updates chapter' do
         user = create(:user)

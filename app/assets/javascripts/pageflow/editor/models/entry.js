@@ -55,11 +55,34 @@ pageflow.Entry = Backbone.Model.extend({
     });
   },
 
-  addStoryline: function(params) {
+  addStoryline: function(attributes) {
+    var storyline = this.buildStoryline(attributes);
+    storyline.save();
+
+    return storyline;
+  },
+
+  buildStoryline: function(attributes) {
     var defaults = {
       title: '',
     };
-    return this.storylines.create(_.extend(defaults, params));
+
+    return this.storylines.addAndReturnModel(_.extend(defaults, attributes));
+  },
+
+  scaffoldStoryline: function(options) {
+    var scaffold = new pageflow.StorylineScaffold(this, options);
+    scaffold.create();
+
+    return scaffold;
+  },
+
+  addChapterInNewStoryline: function(options) {
+    return this.scaffoldStoryline(_.extend({depth: 'chapter'}, options)).chapter;
+  },
+
+  addPageInNewStoryline: function(options) {
+    return this.scaffoldStoryline(_.extend({depth: 'page'}, options)).page;
   },
 
   addFileUpload: function(upload) {

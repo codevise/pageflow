@@ -13,9 +13,11 @@ pageflow.StorylinePickerView = Backbone.Marionette.Layout.extend({
 
   events: {
     'click .add_storyline': function() {
-      var storyline = pageflow.entry.addStoryline();
+      var storyline = pageflow.entry.scaffoldStoryline({
+        depth: 'page'
+      }).storyline;
 
-      this.listenTo(storyline, 'sync', function() {
+      this.listenToOnce(storyline, 'sync', function() {
         this.updateSelect();
         this.model.set('storyline_id', storyline.id);
       });

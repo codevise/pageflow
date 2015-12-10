@@ -15,6 +15,17 @@ module Pageflow
       respond_with(storyline)
     end
 
+    def scaffold
+      entry = DraftEntry.find(params[:entry_id])
+      storyline_scaffold = StorylineScaffold.build(entry, storyline_params, params.slice(:depth))
+
+      authorize!(:create, storyline_scaffold.to_model)
+      verify_edit_lock!(entry.to_model)
+      storyline_scaffold.save!
+
+      respond_with(storyline_scaffold)
+    end
+
     def update
       storyline = Storyline.find(params[:id])
 

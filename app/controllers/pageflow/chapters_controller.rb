@@ -15,6 +15,17 @@ module Pageflow
       respond_with(chapter)
     end
 
+    def scaffold
+      storyline = Storyline.find(params[:storyline_id])
+      chapter_scaffold = ChapterScaffold.build(storyline, chapter_params, depth: 'page')
+
+      authorize!(:create, chapter_scaffold.to_model)
+      verify_edit_lock!(storyline.entry)
+      chapter_scaffold.save!
+
+      respond_with(chapter_scaffold)
+    end
+
     def update
       chapter = Chapter.find(params[:id])
 
