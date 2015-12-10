@@ -38,6 +38,11 @@ Pageflow.configure do |config|
       geometry: '100x100#',
       format: :JPG
     },
+    thumbnail_large: {
+      geometry: '560x315#',
+      format: :JPG
+    },
+
     navigation_thumbnail_small: {
       geometry: '85x47#',
       format: :JPG

@@ -146,6 +146,6 @@ module Pageflow
       file_thumbnail_css_class(page.thumbnail_file, hero ? :link_thumbnail_large : :link_thumbnail)
     end
 
-    CSS_RENDERED_THUMBNAIL_STYLES = [:link_thumbnail, :link_thumbnail_large]
+    CSS_RENDERED_THUMBNAIL_STYLES = [:thumbnail_large, :navigation_thumbnail_large, :link_thumbnail, :link_thumbnail_large]
   end
 end
