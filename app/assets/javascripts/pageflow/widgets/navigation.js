@@ -139,16 +139,16 @@
         toggleIndicators = function () {
           if (atBoundary('down')) {
             clearInterval(scrollDownIntervalID);
-            bottomIndicator.hide().removeClass('pressed');
+            bottomIndicator.removeClass('pressed');
           }
+
           if (atBoundary('up')) {
             clearInterval(scrollUpIntervalID);
-            topIndicator.hide().removeClass('pressed');
+            topIndicator.removeClass('pressed');
           }
-          if (!atBoundary('up') && !atBoundary('down')) {
-            topIndicator.show();
-            bottomIndicator.show();
-          }
+
+          topIndicator.toggleClass('visible', !atBoundary('up'));
+          bottomIndicator.toggleClass('visible', !atBoundary('down'));
         };
 
         var keyPressHandler = function(e) {
