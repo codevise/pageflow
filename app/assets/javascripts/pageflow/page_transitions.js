@@ -25,3 +25,5 @@ pageflow.pageTransitions.register('cut', {duration: 1100});
 pageflow.pageTransitions.register('scroll', {duration: 1100});
 pageflow.pageTransitions.register('scroll_right', {duration: 1100});
 pageflow.pageTransitions.register('scroll_left', {duration: 1100});
+pageflow.pageTransitions.register('scroll_over_from_right', {duration: 1100});
+pageflow.pageTransitions.register('scroll_over_from_left', {duration: 1100});
