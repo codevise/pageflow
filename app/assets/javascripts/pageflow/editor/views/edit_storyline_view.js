@@ -2,7 +2,7 @@ pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
   template: 'templates/edit_storyline',
   className: 'edit_storyline',
 
-  mixins: [pageflow.failureIndicatingView],
+  mixins: [pageflow.failureIndicatingView, pageflow.tooltipContainer],
 
   regions: {
     formContainer: '.form_container'
@@ -26,7 +26,20 @@ pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
     this.configure(configurationEditor);
     this.formContainer.show(configurationEditor);
 
-    this.ui.destroyButton.toggleClass('faded', this.model.chapters.length > 0);
+    this.updateDestroyButton();
+  },
+
+  updateDestroyButton: function() {
+    var disabled = (this.model.chapters.length > 0);
+
+    this.ui.destroyButton.toggleClass('faded', disabled);
+
+    if (disabled) {
+      this.ui.destroyButton.attr('data-tooltip', 'pageflow.editor.views.edit_storyline_view.cannot_destroy');
+    }
+    else {
+      this.ui.destroyButton.removeAttr('data-tooltip');
+    }
   },
 
   configure: function(configurationEditor) {
@@ -61,7 +74,6 @@ pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
 
   destroy: function() {
     if (this.model.chapters.length) {
-      alert(I18n.t('pageflow.editor.views.edit_storyline_view.cannot_destroy'));
       return;
     }
 
