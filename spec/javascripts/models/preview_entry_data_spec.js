@@ -80,6 +80,19 @@ describe('pageflow.PreviewEntryData', function() {
     });
   });
 
+  describe('#getPagePosition', function() {
+    it('returns configruation by page perma id', function() {
+      var page1 = new p.Page({perma_id: 100});
+      var page2 = new p.Page({perma_id: 101});
+      var entryData = new p.PreviewEntryData({
+        pages: new p.PagesCollection([page1, page2])
+      });
+
+      expect(entryData.getPagePosition(100)).to.eq(0);
+      expect(entryData.getPagePosition(101)).to.eq(1);
+    });
+  });
+
   describe('#getChapterIdByPagePermaId', function() {
     it('returns id of pages parent chapter ', function() {
       var page = new p.Page({perma_id: 102, chapter_id: 2});

@@ -77,6 +77,20 @@ describe('pageflow.SeedEntryData', function() {
     });
   });
 
+  describe('#getPagePosition', function() {
+    it('returns index of page in pages list', function() {
+      var entryData = new p.SeedEntryData({
+        pages: [
+          {perma_id: 100},
+          {perma_id: 101}
+        ]
+      });
+
+      expect(entryData.getPagePosition(100)).to.eq(0);
+      expect(entryData.getPagePosition(101)).to.eq(1);
+    });
+  });
+
   describe('#getChapterIdByPagePermaId', function() {
     it('returns id of page`s parent chapter ', function() {
       var entryData = new p.SeedEntryData({

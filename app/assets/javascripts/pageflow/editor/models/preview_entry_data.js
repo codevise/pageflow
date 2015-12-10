@@ -38,5 +38,9 @@ pageflow.PreviewEntryData = pageflow.EntryData.extend({
   getPageConfiguration: function(permaId) {
     var page = this.pages.getByPermaId(permaId);
     return page ? page.configuration.attributes : {};
+  },
+
+  getPagePosition: function(permaId) {
+    return this.pages.indexOf(this.pages.getByPermaId(permaId));
   }
 });

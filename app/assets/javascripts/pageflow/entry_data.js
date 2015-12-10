@@ -7,6 +7,10 @@ pageflow.EntryData = pageflow.Object.extend({
     throw 'Not implemented';
   },
 
+  getPagePosition: function(permaId) {
+    throw 'Not implemented';
+  },
+
   getChapterConfiguration: function(id) {
     throw 'Not implemented';
   },
@@ -37,6 +41,11 @@ pageflow.EntryData = pageflow.Object.extend({
     return this.getStorylineIdByChapterId(chapterId);
   },
 
+  getParentStorylineId: function(storylineId) {
+    var parentPagePermaId = this.getParentPagePermaId(storylineId);
+    return parentPagePermaId && this.getStorylineIdByPagePermaId(parentPagePermaId);
+  },
+
   getParentChapterId: function(chapterId) {
     var storylineId = this.getStorylineIdByChapterId(chapterId);
     var pagePermaId = this.getParentPagePermaId(storylineId);
@@ -45,5 +54,16 @@ pageflow.EntryData = pageflow.Object.extend({
 
   getParentPagePermaId: function(storylineId) {
     return this.getStorylineConfiguration(storylineId).parent_page_perma_id;
+  },
+
+  getStorylineLevel: function(storylineId) {
+    var parentStorylineId = this.getParentStorylineId(storylineId);
+
+    if (parentStorylineId) {
+      return this.getStorylineLevel(parentStorylineId) + 1;
+    }
+    else {
+      return 0;
+    }
   }
 });
