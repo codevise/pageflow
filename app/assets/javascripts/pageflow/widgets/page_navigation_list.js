@@ -76,7 +76,7 @@
         links.each(function() {
           var link = $(this);
 
-          link.toggleClass('filtered', !chapterFilter.chapterVisibleFromPage(
+          link.parent().andSelf().toggleClass('filtered', !chapterFilter.chapterVisibleFromPage(
             currentPagePermaId,
             link.data('chapterId')
           ));
