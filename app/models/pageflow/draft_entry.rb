@@ -13,7 +13,8 @@ module Pageflow
              :to => :entry)
 
     delegate(:title, :summary, :credits, :manual_start,
-             :widgets, :storylines, :chapters, :pages,
+             :widgets,
+             :storylines, :main_storyline_chapters, :chapters, :pages,
              :emphasize_chapter_beginning,
              :emphasize_new_pages,
              :share_image_id, :share_image_x, :share_image_y,

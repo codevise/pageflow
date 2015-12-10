@@ -13,7 +13,9 @@ module Pageflow
              :authenticate,
              :to => :entry)
 
-    delegate(:widgets, :storylines, :chapters, :pages, :files,
+    delegate(:widgets,
+             :storylines, :main_storyline_chapters, :chapters, :pages,
+             :files,
              :image_files, :video_files, :audio_files,
              :title, :summary, :credits, :manual_start,
              :emphasize_chapter_beginning,

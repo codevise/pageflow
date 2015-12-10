@@ -282,6 +282,31 @@ module Pageflow
       end
     end
 
+    describe '#main_storyline_chapters' do
+      it 'returns chapters of first storyline' do
+        revision = create(:revision)
+        storyline_1 = create(:storyline, revision: revision, position: 1)
+        storyline_2 = create(:storyline, revision: revision, position: 2)
+        chapter_1 = create(:chapter, storyline: storyline_1, position: 2)
+        chapter_2 = create(:chapter, storyline: storyline_1, position: 1)
+        create(:chapter, storyline: storyline_2, position: 1)
+
+        chapters = revision.main_storyline_chapters
+
+        expect(chapters.size).to eq(2)
+        expect(chapters[0]).to eq(chapter_2)
+        expect(chapters[1]).to eq(chapter_1)
+      end
+
+      it 'returns empty scope if no storyline is present' do
+        revision = create(:revision)
+
+        chapters = revision.main_storyline_chapters
+
+        expect(chapters.size).to eq(0)
+      end
+    end
+
     describe '.editable' do
       it 'includes draft revisions' do
         revision = create(:revision)
