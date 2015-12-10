@@ -74,7 +74,9 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
   function getParentPage(page, pages) {
     var storylineConfiguration = getStorylineConfiguration(page);
 
-    if ('parent_page_perma_id' in storylineConfiguration) {
+    if ('parent_page_perma_id' in storylineConfiguration &&
+        entryData.getThemingOption('change_to_parent_page_at_storyline_boundary')) {
+
       return pages.filter('#' + storylineConfiguration.parent_page_perma_id);
     }
 

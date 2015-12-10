@@ -4,3 +4,4 @@ json.page_change_by_scrolling theming.theme.page_change_by_scrolling?
 json.hide_text_on_swipe theming.theme.hide_text_on_swipe?
 json.emphasized_pages theming.theme.supports_emphasized_pages?
 json.scroll_indicator_modes theming.theme.supports_scroll_indicator_modes?
+json.change_to_parent_page_at_storyline_boundary theming.theme.change_to_parent_page_at_storyline_boundary?

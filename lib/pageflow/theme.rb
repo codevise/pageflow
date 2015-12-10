@@ -32,6 +32,10 @@ module Pageflow
       !@options[:no_page_change_by_scrolling]
     end
 
+    def change_to_parent_page_at_storyline_boundary?
+      !@options[:no_change_to_parent_page_at_storyline_boundary]
+    end
+
     def hide_text_on_swipe?
       !@options[:no_hide_text_on_swipe]
     end
