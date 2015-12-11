@@ -1,0 +1,26 @@
+%pageflow_widget {
+  $widget-text-color: #fff !default;
+  $widget-standard-font: $standard-font !default;
+
+  font-family: $standard-font;
+  font-size: 1em;
+  color: $widget-text-color;
+}
+
+%pageflow_page_type_thumbnail{
+  position: relative;
+
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 38px;
+    height: 38px;
+    margin: -19px -19px;
+
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 76px 100%;
+  }
+}
