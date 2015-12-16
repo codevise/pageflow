@@ -1,77 +1,214 @@
-$page-font: $standard-font;
-$page-color: $main-color;
+// Typography
+
+/// Default font family for page content
+/// @group page-typography
+$page-font-family: $standard-font !default;
+
+/// Base font size.
+/// @group page-typography
+$page-font-size: 16px !default;
+
+/// Base font size for page content
+/// @group page-typography
+$page-content-font-size: 1em !default;
+
+/// Base font size for page content in phone layout
+/// @group page-typography
+$page-content-phone-font-size: 0.7em !default;
+
+/// Default font fimily for page header
+/// @group page-typography
+$page-header-font-family: $page-font-family !default;
+
+/// Base font size of page header
+/// @group page-typography
+$page-header-font-size: 1.375em !default;
+
+/// Font weight of page header
+/// @group page-typography
+$page-header-font-weight: normal !default;
+
+/// Font size of tagline
+/// @group page-typography
+$page-header-tagline-font-size: 1em !default;
+
+/// Font weight of tagline
+/// @group page-typography
+$page-header-tagline-font-weight: $page-header-font-weight !default;
+
+/// Line height of tagline
+/// @group page-typography
+$page-header-tagline-line-height: normal !default;
+
+/// Margin of tagline
+/// @group page-typography
+$page-header-tagline-margin-top: 0 !default;
+
+/// Font size of title
+/// @group page-typography
+$page-header-title-font-size: 2.3em !default;
+
+/// Font size of title in phone layout
+/// @group page-typography
+$page-header-title-phone-font-size: 1.8em !default;
+
+/// Font size of title on first page of entry
+/// @group page-typography
+$page-header-first-page-title-font-size: 2.5em !default;
+
+/// Font size of title on first page of entry in phone layout
+/// @group page-typography
+$page-header-first-page-title-phone-font-size: 2em !default;
+
+/// Font weight of title
+/// @group page-typography
+$page-header-title-font-weight: $page-header-font-weight !default;
+
+/// Line height of title
+/// @group page-typography
+$page-header-title-line-height: 1em !default;
+
+/// Line height of title
+/// @group page-typography
+$page-header-first-page-title-line-height: 1em !default;
+
+/// Margin top of title
+/// @group page-typography
+$page-header-title-margin-top: 0.4em !default;
+
+/// Margin bottom of title
+/// @group page-typography
+$page-header-title-margin-bottom: 0.4em !default;
+
+/// Font size of subtitle
+/// @group page-typography
+$page-header-subtitle-font-size: 1em !default;
+
+/// Font weight of subtitle
+/// @group page-typography
+$page-header-subtitle-font-weight: $page-header-font-weight !default;
+
+/// Line height of subtitle
+/// @group page-typography
+$page-header-subtitle-line-height: normal !default;
+
+/// Margin of subtitle
+/// @group page-typography
+$page-header-subtitle-margin-bottom: 1.875em !default;
+
+/// Font family of content text
+/// @group page-typography
+$page-content-text-font-family: $page-font-family !default;
+
+/// Font size of content text
+/// @group page-typography
+$page-content-text-font-size: 1.2em !default;
+
+/// Line height of content text
+/// @group page-typography
+$page-content-text-line-height: 1.5em !default;
+
+// Colors
+
+/// Color of text
+/// @group page-colors
+$page-text-color: #fff !default;
+
+/// Color of text on inverted pages
+/// @group page-colors
+$page-inverted-text-color: #000 !default;
+
+/// Background-color of pages
+/// @group page-colors
+$page-background-color: #000 !default;
+
+/// Background-color of inverted pages
+/// @group page-colors
+$page-inverted-background-color: #fff !default;
+
+/// Color of the gradient
+/// @group page-colors
+$page-shadow-color: #000 !default;
+
+/// Color of the gradient on inverted pages
+/// @group page-colors
+$page-shadow-inverted-color: #fff !default;
 
 @import "./page/anchors";
 
 .page {
-  font-size: 16px;
-  color: #fff;
-  background-color: #000;
-  font-family: $page-font;
+  font-family: $page-font-family;
+  font-size: $page-font-size;
+  color: $page-text-color;
+  background-color: $page-background-color;
 
   .content {
-    font-size: 1em;
+    font-size: $page-content-font-size;
 
     @include phone {
-      font-size: 0.7em;
+      font-size: $page-content-phone-font-size;
     }
   }
 
   .shadow {
-    @include shadow(#000);
+    @include shadow($page-shadow-color);
   }
 
   &.invert {
-    color: #000;
-    background-color: #fff;
+    color: $page-inverted-text-color;
+    background-color: $page-inverted-background-color;
 
     .shadow {
-      @include shadow(#fff);
+      @include shadow($page-shadow-inverted-color);
     }
   }
 
   h2 {
-    font-size: 1.375em;
-  }
+    font-family: $page-header-font-family;
+    font-size: $page-header-font-size;
 
-  h2 .tagline {
+    .tagline {
       display: block;
-      font-size: 1em;
-      font-weight: normal;
-      margin-top: 0;
-      letter-spacing: 0em;
-  }
+      font-size: $page-header-tagline-font-size;
+      font-weight: $page-header-tagline-font-weight;
+      line-height: $page-header-tagline-line-height;
+      margin-top: $page-header-tagline-margin-top;
+      letter-spacing: 0;
+    }
 
-  h2 .title {
-      font-family: $page-font;
+    .title {
       display: block;
-      font-size: 2.3em;
-      font-weight: normal;
-      margin-top: 0.4em;
-      margin-bottom: 0.4em;
-      letter-spacing: 0em;
-      line-height: 1em;
+      font-size: $page-header-title-font-size;
+      font-weight: $page-header-title-font-weight;
+      line-height: $page-header-title-line-height;
+      margin-top: $page-header-title-margin-top;
+      margin-bottom: $page-header-title-margin-top;
+      letter-spacing: 0;
+
       @include phone {
-        font-size: 1.8em;
+        font-size: $page-header-title-phone-font-size;
       }
-  }
+    }
 
-  h2 .subtitle {
+    .subtitle {
       display: block;
-      font-size: 1em;
-      font-weight: normal;
+      font-size: $page-header-subtitle-font-size;
+      font-weight: $page-header-subtitle-font-weight;
+      line-height: $page-header-subtitle-line-height;
       margin-top: 0;
-      margin-bottom: 1.875em;
+      margin-bottom: $page-header-subtitle-margin-bottom;
+    }
   }
 
   .contentText > * {
-    font-size: 1.2em;
-    line-height: 1.5em;
+    font-family: $page-content-text-font-family;
+    font-size: $page-content-text-font-size;
+    line-height: $page-content-text-line-height;
   }
+
   p {
     margin-top: 0;
   }
-
 }
 
 .js .page:first-child {
@@ -112,11 +249,12 @@ $page-color: $main-color;
   }
 
   h2 .title {
-    font-size: 2.5em;
-    letter-spacing: 0em;
-    line-height: 1em;
+    font-size: $page-header-first-page-title-font-size;
+    line-height: $page-header-first-page-title-line-height;
+    letter-spacing: 0;
+
     @include phone {
-        font-size: 2em;
+      font-size: $page-header-first-page-title-phone-font-size;
     }
   }
 }
@@ -127,7 +265,7 @@ $page-color: $main-color;
 .vjs-duration,
 .vjs-time-divider,
 .vjs-current-time {
-  font-family: $page-font;
+  font-family: $standard-font;
   color: white;
 }
 
