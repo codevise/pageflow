@@ -1,277 +1,97 @@
-$nav-color: $main-color;
-$nav-font: $standard-font;
+////
+/// @group default-navigation-bar
+////
 
-$nav-bg-color: $basic-background-color;
-$nav-bg-color-transparent: $basic-background-color-transparent;
+/// Type of icons to use:
+///
+/// - `"icon-font"`: Circular buttons with font awesome icons.
+///
+/// - `"sprite"`: Custom icons from `icon_sprite.png` in theme
+///   directory.
+$navigation-icons: $widget-icons !default;
 
+/// @see $default-widget-icon-font-options
+$navigation-icon-font-options: () !default;
 
+/// Possible options:
+///
+/// - `use-fullscreen-exit-icon`: Use fullscreen exit icon for active
+///   fullscreen button. By default the active state of the fullscreen
+///   icon is used.
+$navigation-sprite-options: () !default;
 
+/// Display button to toggle header
+$navigation-display-header-button: false !default;
+
+/// Display button to toggle overview
+$navigation-display-overview-button: true !default;
+
+/// Display social share menu.
+$navigation-display-share-button: true !default;
+
+/// Default background color for widget.
+$navigation-background-color: $widget-background-color !default;
+
+/// Background tile image to display on bar and menu boxes.
+$navigation-background-image: null !default;
+
+/// Default text color for widget.
+$navigation-text-color: $widget-text-color !default;
+
+/// Background color of the navigation bar.
+$navigation-bar-background-color: $navigation-background-color !default;
+
+/// Transparency of navigation bar.
+$navigation-opacity: 0.9 !default;
 
 .navigation {
+  @import "./navigation/dimensions";
+  @import "./navigation/icons/icon_font";
+  @import "./navigation/icons/sprite";
+  @import "./navigation/menu_boxes";
+  @import "./navigation/share_box";
+  @import "./navigation/credits";
+  @import "./navigation/separator_lines";
+  @import "./navigation/volume_control";
+  @import "./navigation/typography";
 
-  .navigation_bullet, .navigation_menu > a {
-    font-size: 16px;
-    width: 28px;
-    height: 28px;
-    display: block;
-    background: -webkit-linear-gradient(-75deg, rgba(255, 255, 255, 0.71), rgba(0, 0, 0, 0.32));
-    background-color: #03818c !important;
-    box-shadow: 1px 2px 1px 0px rgba(0,0,0,0.2);
-    border-radius: 18px;
-    color: rgba(255,255,255,0.8);
-    cursor: pointer;
-    margin: 13px 28px;
-    position: relative;
-    background-color: rgb(219, 219, 219) !important;
-    @include shine-gradient;
-
-    &:hover, &.active {
-        background-color: $nav-color !important;
-        -webkit-mask-image: none;
-
-        .button, .navigation_mute, .navigation_share {
-          color: rgba(255,255,255,0.9);
-          text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.2);
-        }
-    }
-    &:active {
-      box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.2);
-      -webkit-transform: translate(1px,1px);
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%,rgba(0,0,0,0.2) 40%,rgba(0,0,0,0.2) 100%);
-    }
+  @if $navigation-icons == "sprite" {
+    @include navigation-icons-sprite(
+      $navigation-sprite-options...
+    );
+  } @else {
+    @include navigation-icons-icon-font(
+      widget-icon-font-options($navigation-icon-font-options)...
+    );
   }
 
-  .button, .navigation_mute, .navigation_share {
-    font-family: "FontAwesome";
-    font-size: 1em;
-    color: rgba(0,0,0,0.75);
-    text-shadow: -1px -1px 1px rgba(255, 255, 255, 0.6);
-    margin: 1px 0px 0px 0px !important;
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    line-height: 28px;
-    border-bottom: 0px !important;
-
+  a {
+    color: $navigation-text-color;
   }
 
-  .navigation_bullet.navigation_top {
-    padding-top: 0;
-    .button {
-      border-bottom: 0;
-      font-weight: bold;
-
-      @include fa-arrow-circle-up-icon;
-    }
-  }
-  .navigation_bullet.navigation_home {
-    padding-top: 0;
-    .button {
-      border-bottom: 0;
-      font-weight: bold;
-
-      @include fa-home-icon;
-    }
-  }
-  .navigation_bullet.navigation_index {
-    .button {
-      @include fa-th-icon;
-    }
-  }
-
-  &.js .navigation_bar_bottom li.fullscreen {
-    height: auto;
-  }
-
-  &.js a.scroll_indicator {
-    background-image: image-url('pageflow/themes/default/scroll_indicator_sprite.png');
-  }
-
-  .navigation_bullet.navigation_fullscreen {
-
-    .button {
-      font-weight: bold;
-      @include fa-expand-icon;
-    }
-  }
-  .navigation_bullet.navigation_hide_text {
-    .button {
-      font-weight: bold;
-
-      @include fa-photo-icon;
-    }
-  }
-  .navigation_menu {
-    .navigation_mute {
-      font-weight: bold;
-
-      @include fa-volume-up-icon;
-
-      &.muted {
-        @include fa-volume-off-icon;
-      }
-      &.muted:before {
-        margin-right: 2px;
-      }
-    }
-  }
-  .navigation_menu {
-    .navigation_share {
-      font-weight: bold;
-
-      @include fa-share-icon;
-
-      &:before {
-        margin-left: 1px;
-      }
-    }
-  }
-  .navigation_menu {
-    .navigation_credits {
-      font-weight: bold;
-      @include fa-info-icon;
-    }
-  }
-
-  .navigation_share_box {
-    a {
-      text-align: center;
-
-      p {
-        font-family: SourceSansPro;
-        font-size: 12px;
-      }
-    }
-
-    .share_google, .share_facebook, .share_twitter {
-      font-size: 1.5em;
-      &:before {
-        font-family: "FontAwesome";
-        color: white;
-        text-shadow: none;
-      }
-    }
-
-    a:hover {
-      p {
-        color: $nav-color;
-      }
-
-      .share_google, .share_facebook, .share_twitter {
-        &:before {
-          color: $nav-color;
-        }
-      }
-    }
-
-    .share_google {
-      @include fa-google-plus-icon;
-    }
-    .share_facebook {
-      @include fa-facebook-icon;
-    }
-    .share_twitter {
-      @include fa-twitter-icon;
-    }
-  }
-}
-
-.navigation_mobile {
-  .background_image:after {
-    background-image: image-url('pageflow/themes/#{$theme-name}/image_sprite.png');
-  }
-  .background_video:after {
-    background-image: image-url('pageflow/themes/#{$theme-name}/image_sprite.png');
-  }
-  .video:after {
-    background-image: image-url('pageflow/themes/#{$theme-name}/video_sprite.png');
-  }
-  .audio:after {
-    background-image: image-url('pageflow/themes/#{$theme-name}/audio_sprite.png');
-  }
-  .audio_loop:after {
-    background-image: image-url('pageflow/themes/#{$theme-name}/image_sprite.png');
+  .navigation_top.deactivated {
+    pointer-events: none;
   }
 }
 
 .navigation.js .scroller ul a.active img, .navigation_mobile .wrapper a.active {
-  border-left: 5px solid $nav-color;
+  border-left: 5px solid $main-color;
 }
 
-.navigation.js .scroller:after, .navigation.js .navigation_bar_top:after, .navigation .navigation_bar_top, .navigation .navigation_bar_bottom {
-  opacity: 0.9;
-  background-color: $nav-bg-color;
+.navigation .scroller a:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 
-.navigation.js .navigation_bar_bottom > li > a,
-.navigation.js .navigation_bar_bottom .indicator,
-.navigation .navigation_bullet {
-  background-color: $nav-bg-color;
-}
-.navigation .navigation_credits_box,
-.navigation .navigation_site_detail {
-  font-family: $nav-font;
-}
-
-.navigation a,
-.navigation .navigation_credits_box a {
-  color: $nav-color;
-}
-
-.overview_mobile .credits a:before, .navigation_credits_box a:before {
-  background-image: none;
-  top: 1px;
-}
-
-.navigation .navigation_top.deactivated .button {
-  background-position: -155px -140px;
-}
-
-.navigation .navigation_top.deactivated {
-  pointer-events: none;
-}
-
-div.navigation > ul.navigation_bar_top > li:nth-child(1) {
-  display: none !important;
-}
-div.navigation .menu_li {
-  display: none;
-}
-.navigation_bullet.navigation_top {
-  padding-top: 20px;
-}
-
-.navigation.js .volume-control .volume-level {
-  background-color: $nav-color;
-}
-
-.navigation_mobile, .navigation_mobile .overview_mobile .credits, .navigation_mobile .imprint_mobile .credits, .navigation_mobile .sharing_mobile .credits {
-  font-family: $nav-font;
-}
-
-.navigation_mobile .overview_mobile .credits a, .navigation_mobile .imprint_mobile .credits a, .navigation_mobile .sharing_mobile .credits a {
-  color: $nav-font;
-}
-
-.has_no_mobile_platform .navigation .navigation_top.deactivated .button:hover {
-  background-position: -155px -140px;
-}
-
-.js.navigation .navigation_bar_bottom .fullscreen {
-  background-color: $nav-bg-color;
-}
-.navigation .scroller ul a, .navigation.js .scroller ul a {
-  background-color: transparent;
-
-  &:after {
-    content: "";
-    background-color: $nav-bg-color;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    position: absolute;
-    z-index: -1;
-    left: 0;
-    opacity: 0.9;
-  }
+.navigation .navigation_bar_top,
+.navigation.js .scroller:after,
+.navigation .navigation_bar_bottom,
+.navigation .scroller a:after {
+  background-color: $navigation-bar-background-color;
+  background-image: $navigation-background-image;
 }

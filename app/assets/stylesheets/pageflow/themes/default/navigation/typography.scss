@@ -1,0 +1,40 @@
+$navigation-page-title-typography: () !default;
+
+$navigation-share-box-typography: () !default;
+
+$navigation-credits-box-typography: () !default;
+
+$navigation-credits-box-text-typography: () !default;
+
+.navigation_site_detail {
+  @include standard-typography(
+    $navigation-page-title-typography,
+    (
+      font-size: 1em,
+      line-height: 1.1em
+    )
+  );
+}
+
+.navigation_share_box {
+  @include standard-typography(
+    $navigation-share-box-typography,
+    ()
+  );
+}
+
+.navigation_credits_box {
+  @include standard-typography(
+    $navigation-credits-box-typography,
+    (
+      line-height: 1.5em
+    )
+  );
+
+  p {
+    @include standard-typography(
+      $navigation-credits-box-text-typography,
+      ()
+    );
+  }
+}

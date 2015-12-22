@@ -1,0 +1,17 @@
+////
+/// @group default-navigation-bar
+////
+
+/// Background color of the volume control.
+$navigation-volume-control-color: #aaa !default;
+
+/// Background color of the level in the volume control.
+$navigation-volume-level-color: $main-color !default;
+
+.volume-control {
+  background-color: $navigation-volume-control-color;
+}
+
+.volume-level {
+  background-color: $navigation-volume-level-color;
+}

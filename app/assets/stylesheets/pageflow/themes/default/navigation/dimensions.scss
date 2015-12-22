@@ -1,0 +1,79 @@
+/// Vertical position of upper buttons.
+$navigation-bar-padding-top: null !default;
+
+$top-height: 92px;
+$item-height: 44px;
+$bottom-height: 268px;
+
+$scroll-indicator-height: 30px;
+$scroll-indicator-offset: 35px;
+
+@if $navigation-display-header-button {
+  $top-height: $top-height + $item-height;
+} @else {
+  .menu_li {
+    display: none;
+  }
+}
+
+@if $navigation-display-overview-button {
+  $top-height: $top-height + $item-height;
+} @else {
+  &.js .navigation_bar_top a.navigation_index {
+    display: none;
+  }
+}
+
+@if not $navigation-display-share-button {
+  $bottom-height: 232px;
+
+  .navigation_menu.share {
+    display: none;
+  }
+}
+
+&.js {
+  .navigation_bar_top {
+    top: 0;
+    height: $top-height;
+
+    box-sizing: border-box;
+    padding-top: $navigation-bar-padding-top;
+  }
+
+  .navigation_bar_bottom {
+    bottom: 0;
+    height: $bottom-height;
+  }
+
+  .scroller {
+    top: $top-height;
+    bottom: $bottom-height;
+  }
+
+  .scroll_indicator {
+    height: $scroll-indicator-height;
+
+    &.top {
+      top: $top-height - $scroll-indicator-offset;
+    }
+
+    &.bottom {
+      bottom: $bottom-height - $scroll-indicator-offset;
+    }
+  }
+
+  &.with_home_button {
+    .navigation_bar_top {
+      height: $top-height + $item-height;
+    }
+
+    .scroller {
+      top: $top-height + $item-height;
+    }
+
+    .scroll_indicator.top {
+      top: $top-height + $item-height - $scroll-indicator-offset;
+    }
+  }
+}

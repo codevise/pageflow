@@ -1,25 +1,8 @@
-$bg-color: #353535;
-$nav-color: #9c9c9c;
-
 @mixin box($margin-top) {
   visibility: hidden;
   margin-top: $margin-top;
-  background-color: $bg-color;
-  border: 2px solid $nav-color;
   position: absolute;
-  right: 90px;
   padding: 15px;
-
-  &:before {
-    content: " ";
-    background-image: image-url("pageflow/menu-arrow-short.png");
-    display: block;
-    position: absolute;
-    width: 10px;
-    height: 38px;
-    left: 100%;
-    top: 4px;
-  }
 }
 
 .hint {
@@ -35,7 +18,6 @@ $nav-color: #9c9c9c;
 
 .navigation {
   @include unselectable;
-  color: $nav-color;
   width: 85px;
   position: absolute;
   right: 0;
@@ -133,11 +115,6 @@ $nav-color: #9c9c9c;
       }
     }
 
-    @include hover {
-      -webkit-mask-image: image-url("pageflow/page_thumbnail_mask.png");
-      -webkit-mask-position-y: 2px;
-    }
-
     &:active {
       outline: none;
     }
@@ -175,12 +152,6 @@ $nav-color: #9c9c9c;
   }
 
   .navigation_site_detail {
-
-    color: white;
-    font-size: 1em;
-    line-height: 1.1em;
-    font-family: sourcesanspro;
-
     @include box(-40px);
 
     img {
@@ -189,41 +160,11 @@ $nav-color: #9c9c9c;
   }
 
   .navigation_bg, .navigation_bullet .button {
-    background-repeat: no-repeat;
-    border-bottom: 2px solid $nav-color;
     margin: auto;
-  }
-
-  .navigation_bar_top, .navigation_bar_bottom {
-    opacity: 0.9;
-
-    li:last-child a .button {
-      border-bottom: none;
-    }
-  }
-
-  .navigation_bullet {
-    background-color: $bg-color;
-
-    @include hover {
-      -webkit-mask-image: none;
-    }
-  }
-
-  .navigation_menu {
-    a {
-      -webkit-mask-position-y: -4px !important;
-    }
   }
 
   .navigation_menu_box {
     @include box(0);
-
-    a {
-      @include hover {
-        -webkit-mask-image: none;
-      }
-    }
 
     p {
       margin: 0 0 0.5em;
@@ -231,43 +172,14 @@ $nav-color: #9c9c9c;
   }
 
   .navigation_share_box {
-    $size: 28px;
-    width: 210px;
-
-    a {
-      float: left;
-      text-decoration: none;
-      padding: 0 15px 0 15px;
-      width: 39px;
-
-      p {
-        font-size: 9px;
-        color: $nav-color;
-        margin-bottom: 0;
-        text-align: center;
-      }
-
-      .button {
-        width: $size;
-        height: $size;
-        margin: auto;
-      }
-    }
-
     .sub_share {
       display: none;
     }
   }
 
   .navigation_credits_box {
-    font-size: 1em;
     min-width: 230px;
     min-height: 4px;
-    font-family: "sourcesanspro";
-
-    a {
-      color: #b4c552;
-    }
 
     a.legal, a.copy {
       float: left;
@@ -303,16 +215,6 @@ $nav-color: #9c9c9c;
     }
 
     a.scroll_indicator {
-      height: 30px;
-      width: 35px;
-      right: 25px;
-      background-repeat: no-repeat;
-      background-image: image-url('pageflow/scroll_indicator_sprite.png');
-      background-color: transparent;
-      -webkit-mask-image: none;
-      $normal-offset: -14px;
-      $hover-offset: -115px;
-      $pressed-offset: -64px;
       opacity: 0;
       visibility: hidden;
       @include transition(opacity 0.2s linear, visibility 0.2s);
@@ -322,49 +224,14 @@ $nav-color: #9c9c9c;
         visibility: visible;
       }
 
-      &.top {
-        top: 145px;
-        $top-offset: -13px;
-        background-position: $top-offset $normal-offset;
-
-        @include hover {
-          background-position: $top-offset $hover-offset;
-        }
-
-        @include pressed {
-          background-position: $top-offset $pressed-offset;
-        }
-      }
-
       &.bottom {
         z-index: 1;
-        bottom: 234px;
-        $bottom-offset: -161px;
-        background-position: $bottom-offset $normal-offset;
-
-        @include hover {
-          background-position: $bottom-offset $hover-offset;
-        }
-        @include pressed {
-          background-position: $bottom-offset $pressed-offset;
-        }
       }
     }
 
     .navigation_bar_top {
-      top: 0;
-      height: 180px;
-
       a.navigation_main, a.navigation_top, a.navigation_index {
         display: block;
-      }
-
-      &:after {
-        content: " ";
-        display: block;
-        background-color: $bg-color;
-        height: 50px;
-        width: 100%;
       }
     }
 
@@ -375,16 +242,12 @@ $nav-color: #9c9c9c;
 
     .scroller {
       overflow: hidden;
-      top: 180px;
-      bottom: 268px;
 
       &:after {
         height: 100%;
         width: 100%;
         z-index: 1;
-        background-color: $bg-color;
         background-image: none;
-        opacity: 0.9;
       }
 
       ul {
@@ -393,16 +256,10 @@ $nav-color: #9c9c9c;
 
         a {
           position: relative;
-          background-color: $bg-color;
-          background-color: rgba(53, 53, 53, 0.9);
           padding-bottom: 4px;
 
           &.active {
             cursor: default;
-
-            img {
-              border-left: 5px solid #A6D513;
-            }
           }
         }
 
@@ -412,44 +269,15 @@ $nav-color: #9c9c9c;
       }
     }
 
-    &.with_home_button {
-      .navigation_bar_top {
-        height: 224px;
-      }
-
-      .scroller {
-        top: 224px;
-      }
-
-      .scroll_indicator.top {
-        top: 189px;
-      }
-    }
-
     .navigation_bar_bottom {
       display: block;
-      height: 268px;
-      bottom: 0;
-
-      & > li > a {
-        background-color: $bg-color;
-      }
 
       .indicator {
         height: 50px;
-        background-color: $bg-color;
       }
 
       .fullscreen {
         height: 44px;
-        background-color: $bg-color;
-      }
-    }
-
-    .navigation_menu_box {
-      &:before {
-        top: auto;
-        bottom: -2px;
       }
     }
 
@@ -469,40 +297,16 @@ $nav-color: #9c9c9c;
       visibility: hidden;
     }
 
-    .navigation_menu_box.navigation_volume_box .volume-control {
-      &:before, &:after {
-        background-image: image-url('pageflow/volume_control_sprite.png');
-        position: absolute;
-        width: 19px;
-        height: 19px;
-        content: " ";
-        background-repeat: no-repeat;
-        top: 8px;
-      }
-
-      &:before {
-        background-position: left top;
-        left: 0;
-        left: 12px;
-      }
-      &:after {
-        right: 8px;
-        background-position: -21px top;
-        top: 8px;
-      }
-    }
-
     .volume-control {
-      margin: 0px 20px;
+      margin: 0 20px;
 
       .volume-slider {
         width: 100px;
         height: 4px;
-        background-color: gray;
       }
+
       .volume-level {
         height: 100%;
-        background-color: #b4c552;
       }
     }
   }

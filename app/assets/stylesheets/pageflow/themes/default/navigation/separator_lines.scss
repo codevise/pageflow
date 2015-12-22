@@ -1,0 +1,27 @@
+////
+/// @group default-navigation-bar
+////
+
+/// Width of the line drawn between navigation bar buttons
+$navigation-separator-line-width: 0 !default;
+
+/// Color of line drawn between navigation bar buttons
+$navigation-separator-line-color: #9c9c9c !default;
+
+.navigation_bg,
+.navigation_bullet .button {
+  border-bottom: $navigation-separator-line-width solid $navigation-separator-line-color;
+}
+
+.navigation_bar_top,
+.navigation_bar_bottom {
+  li:last-child .button {
+    border-bottom: none;
+  }
+}
+
+@if not $navigation-display-overview-button {
+  .navigation_top .button {
+    border-bottom: none;
+  }
+}

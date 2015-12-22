@@ -1,0 +1,124 @@
+@mixin navigation-icons-sprite($use-fullscreen-exit-icon: false) {
+  .button,
+  .navigation_mute {
+    @extend %pageflow_sprite_icon;
+    height: 42px;
+    width: 42px;
+  }
+
+  .navigation_share_box a .button {
+    height: 42px;
+  }
+
+  .scroll_indicator {
+    @extend %pageflow_sprite_icon;
+    width: 45px;
+    right: 20px;
+  }
+
+  .scroll_indicator.top {
+    @include pageflow-sprite-icon-arrow-up($offset: -5px);
+  }
+
+  .scroll_indicator.bottom {
+    @include pageflow-sprite-icon-arrow-down($offset: -5px);
+  }
+
+  .navigation_main .button {
+    @include pageflow-sprite-icon-menu;
+  }
+
+  .navigation_main.active .button {
+    @include pageflow-sprite-icon-menu("active");
+  }
+
+  .navigation_home .button {
+    @include pageflow-sprite-icon-home;
+  }
+
+  .navigation_top .button {
+    @include pageflow-sprite-icon-top;
+  }
+
+  .navigation_top.deactivated .button {
+    @include pageflow-sprite-icon-top("disabled");
+  }
+
+  .navigation_index .button {
+    @include pageflow-sprite-icon-overview;
+  }
+
+  .navigation_index.active .button {
+    @include pageflow-sprite-icon-overview("active");
+  }
+
+  .navigation_fullscreen .button {
+    @include pageflow-sprite-icon-fullscreen;
+  }
+
+  .navigation_fullscreen.active .button {
+    @if ($use-fullscreen-exit-icon) {
+      @include pageflow-sprite-icon-fullscreen-exit;
+    } @else {
+      @include pageflow-sprite-icon-fullscreen("active");
+    }
+  }
+
+  .navigation_hide_text .button {
+    @include pageflow-sprite-icon-hide-text;
+  }
+
+  .navigation_hide_text.active .button {
+    @include pageflow-sprite-icon-hide-text("active");
+  }
+
+  .navigation_mute {
+    @include pageflow-sprite-icon-mute;
+  }
+
+  .navigation_mute.muted {
+    @include pageflow-sprite-icon-muted;
+  }
+
+  .navigation_share {
+    @include pageflow-sprite-icon-share;
+  }
+
+  .navigation_credits.button {
+    @include pageflow-sprite-icon-credits;
+  }
+
+  .share_google {
+    @include pageflow-sprite-icon-google($offset: -5px);
+  }
+
+  .share_twitter {
+    @include pageflow-sprite-icon-twitter($offset: -5px);
+  }
+
+  .share_facebook {
+    @include pageflow-sprite-icon-facebook($offset: -5px);
+  }
+
+  .volume-control {
+    &:before,
+    &:after {
+      @extend %pageflow_sprite_icon;
+      content: "";
+      position: absolute;
+      width: 27px;
+      height: 27px;
+      top: 3px;
+    }
+
+    &:before {
+      @include pageflow-sprite-icon-volume-down;
+      left: 5px;
+    }
+
+    &:after {
+      @include pageflow-sprite-icon-volume-up;
+      right: 5px;
+    }
+  }
+}
