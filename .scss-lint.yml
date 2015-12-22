@@ -62,6 +62,8 @@ linters:
     enabled: true
     allow_leading_underscore: true
     convention: hyphenated_lowercase
+    placeholder_convention: "^[-a-z_]+$"
+    mixin_convention: "^[-a-z_]+$"
   NestingDepth:
     enabled: true
     max_depth: 4
@@ -80,6 +82,8 @@ linters:
   PropertySpelling:
     enabled: true
     extra_properties: []
+  PseudoElement:
+    enabled: false
   QualifyingElement:
     enabled: false
     allow_element_with_attribute: false
@@ -92,7 +96,7 @@ linters:
     severity: warning
   SelectorFormat:
     enabled: true
-    convention: snake_case
+    convention: "^[-a-z0-9_]+$"
   Shorthand:
     enabled: false
     severity: warning
