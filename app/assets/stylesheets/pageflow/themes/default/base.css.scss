@@ -12,12 +12,13 @@
 @import "pageflow/mixins";
 @import "pageflow/animations";
 
+@import "./variables";
+
 @import "./functions/icon_font_options";
 
 @import "./mixins/sprite_icons";
 @import "./mixins/typography";
 
-@import "./variables";
 @import "./anchors";
 @import "./loading_spinner";
 @import "./page";
