@@ -1,0 +1,47 @@
+////
+/// @group indicators
+////
+
+/// Text color of indicators.
+$indicator-text-color: #e6e6e6 !default;
+
+/// Text color of hovered indicators.
+$indicator-active-text-color: $indicator-text-color !default;
+
+/// Text shadow color of indicators.
+$indicator-text-shadow-color: rgb(43, 43, 43) !default;
+
+/// Text color of indicators on inverted page.
+$indicator-inverted-text-color: #0a0a0a !default;
+
+/// Text color of hovered indicators on inverted page.
+$indicator-inverted-active-text-color: $indicator-inverted-text-color !default;
+
+/// Text shadow color of indicators on inverted page.
+$indicator-inverted-text-shadow-color: #fdfdfd !default;
+
+.slideshow > .indicator {
+  color: $indicator-text-color;
+  text-shadow: 1px 1px 4px $indicator-text-shadow-color;
+
+  &:hover {
+    color: $indicator-active-text-color;
+  }
+
+  @include phone {
+    text-shadow: 1px 1px 1px $indicator-text-shadow-color;
+  }
+
+  &.invert {
+    color: $indicator-inverted-text-color;
+    text-shadow: 1px 1px 4px $indicator-inverted-text-shadow-color;
+
+    &:hover {
+      color: $indicator-inverted-active-text-color;
+    }
+
+    @include phone {
+      text-shadow: 1px 1px 1px $indicator-inverted-text-shadow-color;
+    }
+  }
+}
