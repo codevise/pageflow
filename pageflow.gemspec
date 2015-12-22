@@ -62,8 +62,17 @@ Gem::Specification.new do |s|
 
   # Use jquery as the JavaScript library
   s.add_dependency 'jquery-rails', '~> 3.0'
-  s.add_dependency 'jquery-ui-rails', '~> 5.0'
+
+  # Advanced ui widgets for the editor.
+  #
+  # WARNING: This gem has compatibility issues with sass-rails. See
+  # pageflow/jquery_ui.scss for details and update instructions.
+  s.add_dependency 'jquery-ui-rails', '5.0.5'
+
+  # Split screen functionality for editor sidebar
   s.add_dependency 'jquery-layout-rails', '~> 0.1.0'
+
+  # Editor file upload helper
   s.add_dependency 'jquery-fileupload-rails', '0.4.1'
 
   s.add_dependency 'backbone-rails', '~> 1.0.0'
@@ -71,12 +80,14 @@ Gem::Specification.new do |s|
   # Further helpers and conventions on top of Backbone
   s.add_dependency 'marionette-rails', '~> 1.1.0'
 
-
   # Templating engine used to render jst tempaltes.
   s.add_dependency 'ejs', '~> 1.1'
 
   # Templating engine used to compile scss templates.
-  s.add_dependency 'sass-rails', '~> 4.0'
+  s.add_dependency 'sass-rails', '~> 5.0'
+
+  # Scss compiler
+  s.add_dependency 'sass', '~> 3.4'
 
   # Using translations from rails locales in javascript code.
   s.add_dependency 'i18n-js', '~> 2.1'
