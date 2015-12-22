@@ -1,8 +1,9 @@
 @import "bourbon";
+
+@import "pageflow/jquery_ui";
 @import "pageflow/ui";
 @import "pageflow/animations";
 
-@import 'pageflow/jquery_ui';
 @import "./blank_entry";
 @import "./dialogs";
 @import "./colors";
