@@ -1,50 +1,53 @@
-.loading_spinner {
-  background-color: #252526;
-  background-image: image-url('pageflow/loading_spinner_glow.jpg');
-  background-repeat: no-repeat;
-  background-position: center center;
+$custom-loading-spinner: false !default;
 
-  .loading_spinner_inner {
-    left: 50%;
-    top: 50%;
-    width: 204px;
-    height: 202px;
-    margin-left: -102px;
-    margin-top: -101px;
-    position: absolute;
-    z-index: 0;
-    background-color: $main-color;
-    animation: fadeInLoadingSpinner  linear 2s;
-    animation-iteration-count: 1;
-    -webkit-animation: fadeInLoadingSpinner linear 2s;
-    -webkit-animation-iteration-count: 1;
-    -moz-animation: fadeInLoadingSpinner linear 2s;
-    -moz-animation-iteration-count: 1;
-    -o-animation: fadeInLoadingSpinner linear 2s;
-    -o-animation-iteration-count: 1;
-    -ms-animation: fadeInLoadingSpinner linear 2s;
-    -ms-animation-iteration-count: 1;
+$loading-spinner-background-image: "default" !default;
 
-    &:before {
-      content: " ";
-      width: 208px;
-      height: 208px;
-      position: absolute;
-      background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner_bg.png');
-      z-index: 1;
-      top:-2px;
-      left: -2px;
+$loading-spinner-background-color: #252526 !default;
+
+@if not $custom-loading-spinner {
+  .loading_spinner {
+    background-color: $loading-spinner-background-color !important;
+
+    @if $loading-spinner-background-image == "default" {
+      background-image: image-url("pageflow/loading_spinner_glow.jpg");
+      background-repeat: no-repeat;
+      background-position: center center;
     }
 
-    div {
+    .loading_spinner_inner {
+      left: 50%;
+      top: 50%;
       width: 204px;
-      height: 204px;
+      height: 202px;
+      margin-left: -102px;
+      margin-top: -101px;
       position: absolute;
-      background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner.png');
-      @include animation-duration (1.5s);
-      @include animation-name(rotateSpinner);
-      @include animation-iteration-count(infinite);
-      @include animation-timing-function(linear);
+      z-index: 0;
+      background-color: $main-color;
+      @include animation(fadeInLoadingSpinner linear 2s);
+      @include animation-iteration-count(1);
+
+      &:before {
+        content: " ";
+        width: 208px;
+        height: 208px;
+        position: absolute;
+        background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner_bg.png');
+        z-index: 1;
+        top: -2px;
+        left: -2px;
+      }
+
+      div {
+        width: 204px;
+        height: 204px;
+        position: absolute;
+        background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner.png');
+        @include animation-duration (1.5s);
+        @include animation-name(rotateSpinner);
+        @include animation-iteration-count(infinite);
+        @include animation-timing-function(linear);
+      }
     }
   }
 }
