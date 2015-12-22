@@ -1,0 +1,7 @@
+@mixin standard-typography($overrides, $properties: ()) {
+  @include typography($overrides, map-merge($standard-typography, $properties));
+}
+
+@mixin typography($overrides, $properties: ()) {
+  @include map-to-css(map-merge($properties, $overrides));
+}
