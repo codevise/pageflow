@@ -1,0 +1,231 @@
+@mixin navigation-icons-icon-font(
+  $button-background-color,
+  $active-button-background-color,
+
+  $button-icon-color,
+  $active-button-icon-color,
+  $deactivated-button-icon-color,
+
+  $scroll-indicator-color: #888,
+
+  $share-icon-color: #fff,
+  $active-share-icon-color: $main-color
+) {
+
+  .navigation_bullet,
+  .navigation_menu > a {
+    font-size: 16px;
+    width: 28px;
+    height: 28px;
+    display: block;
+    background-color: $button-background-color !important;
+    color: $button-icon-color;
+    box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 18px;
+    cursor: pointer;
+    margin: 13px 28px;
+    position: relative;
+
+    &:hover, &.active {
+      background-color: $active-button-background-color !important;
+      -webkit-mask-image: none;
+
+      .button,
+      .navigation_mute,
+      .navigation_share {
+        color: $active-button-icon-color;
+        text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    &:active {
+      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+      @include transform(translate(1px, 1px));
+    }
+
+    &.deactivated {
+      .button {
+        color: $deactivated-button-icon-color;
+      }
+    }
+  }
+
+  .button,
+  .navigation_mute,
+  .navigation_share {
+    font-family: "FontAwesome";
+    font-size: 1em;
+    text-shadow: -1px -1px 1px rgba(255, 255, 255, 0.6);
+    margin: 1px auto 0 auto !important;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    line-height: 28px;
+  }
+
+  .navigation_bullet.navigation_main {
+    padding-top: 0;
+
+    .button {
+      @include fa-bars-icon;
+    }
+  }
+
+  .navigation_bullet.navigation_top {
+    padding-top: 0;
+
+    .button {
+      font-weight: bold;
+      @include fa-arrow-circle-up-icon;
+    }
+  }
+
+  .navigation_bullet.navigation_home {
+    padding-top: 0;
+
+    .button {
+      font-weight: bold;
+      @include fa-home-icon;
+    }
+  }
+
+  .navigation_bullet.navigation_index {
+    .button {
+      @include fa-th-icon;
+    }
+  }
+
+  &.js {
+    .navigation_bar_bottom li.fullscreen {
+      height: auto;
+    }
+
+    .scroll_indicator {
+      @include background-icon-center($font-size: 25px, $color: $scroll-indicator-color);
+      font-weight: bold;
+      position: absolute;
+
+      &.top {
+        @include fa-angle-up-icon
+      }
+
+      &.bottom {
+        @include fa-angle-down-icon;
+      }
+    }
+  }
+
+  .navigation_bullet.navigation_fullscreen {
+    .button {
+      font-weight: bold;
+      @include fa-expand-icon;
+    }
+  }
+
+  .navigation_bullet.navigation_hide_text {
+    .button {
+      font-weight: bold;
+      @include fa-photo-icon;
+    }
+  }
+
+  .navigation_menu {
+    .navigation_mute {
+      font-weight: bold;
+      @include fa-volume-up-icon;
+
+      &.muted {
+        @include fa-volume-off-icon;
+      }
+
+      &.muted:before {
+        margin-right: 2px;
+      }
+    }
+  }
+
+  .navigation_menu {
+    .navigation_share {
+      font-weight: bold;
+      @include fa-share-icon;
+
+      &:before {
+        margin-left: 1px;
+      }
+    }
+  }
+
+  .navigation_menu {
+    .navigation_credits {
+      font-weight: bold;
+      @include fa-info-icon;
+    }
+  }
+
+  .navigation_share_box {
+    a {
+      text-align: center;
+
+      p {
+        font-family: SourceSansPro;
+        font-size: 12px;
+      }
+    }
+
+    .share_google,
+    .share_facebook,
+    .share_twitter {
+      font-size: 1.5em;
+
+      &:before {
+        font-family: "FontAwesome";
+        color: $share-icon-color;
+        text-shadow: none;
+      }
+    }
+
+    a:hover {
+      p {
+        color: $active-share-icon-color;
+      }
+
+      .share_google,
+      .share_facebook,
+      .share_twitter {
+        &:before {
+          color: $active-share-icon-color;
+        }
+      }
+    }
+
+    .share_google {
+      @include fa-google-plus-icon;
+    }
+
+    .share_facebook {
+      @include fa-facebook-icon;
+    }
+
+    .share_twitter {
+      @include fa-twitter-icon;
+    }
+  }
+
+  .volume-control {
+    @include background-icon-left(
+      $left: -21px,
+      $top: 2px,
+      $color: $button-background-color
+    );
+    @include fa-volume-down-icon;
+  }
+
+  .volume-slider {
+    @include background-icon-right(
+      $right: -25px,
+      $top: -7px,
+      $color: $button-background-color
+    );
+    @include fa-volume-up-icon;
+  }
+}

@@ -62,6 +62,7 @@ $sprite-icon-active-as-pressed: false !default;
 @mixin pageflow-sprite-icon-top($args...) { @include pageflow-sprite-icon(-909px, $args...); }
 @mixin pageflow-sprite-icon-overview($args...) { @include pageflow-sprite-icon(-222px, $args...); }
 @mixin pageflow-sprite-icon-fullscreen($args...) { @include pageflow-sprite-icon(-289px, $args...); }
+@mixin pageflow-sprite-icon-fullscreen-exit($args...) { @include pageflow-sprite-icon(-1010px, $args...); }
 @mixin pageflow-sprite-icon-hide-text($args...) { @include pageflow-sprite-icon(-670px, $args...); }
 @mixin pageflow-sprite-icon-credits($args...) { @include pageflow-sprite-icon(-622px, $args...); }
 @mixin pageflow-sprite-icon-mute($args...) { @include pageflow-sprite-icon(-355px, $args...); }
@@ -76,3 +77,11 @@ $sprite-icon-active-as-pressed: false !default;
 @mixin pageflow-sprite-icon-arrow-down($args...) { @include pageflow-sprite-icon(-1274px, $args...); }
 @mixin pageflow-sprite-icon-arrow-down-invert($args...) { @include pageflow-sprite-icon(-1208px, $args...); }
 @mixin pageflow-sprite-icon-close($args...) { @include pageflow-sprite-icon(-1538px, $args...); }
+
+@mixin pageflow-sprite-icon-volume-down {
+  background-position: -495px -200px;
+}
+
+@mixin pageflow-sprite-icon-volume-up {
+  background-position: -361px -200px;
+}

@@ -1,0 +1,262 @@
+// scss-lint:disable all
+
+$bg-color: #353535;
+$nav-color: #9c9c9c;
+
+.navigation {
+  color: $nav-color;
+
+  @mixin box {
+    background-color: $bg-color;
+    border: 2px solid $nav-color;
+    right: 90px;
+
+    &:before {
+      content: " ";
+      background-image: image-url("pageflow/themes/legacy/menu-arrow-short.png");
+      display: block;
+      position: absolute;
+      width: 10px;
+      height: 38px;
+      left: 100%;
+      top: 4px;
+    }
+  }
+
+  a {
+    @include hover {
+      -webkit-mask-image: image-url("pageflow/themes/legacy/page_thumbnail_mask.png");
+      -webkit-mask-position-y: 2px;
+    }
+  }
+
+  .navigation_site_detail {
+    @include box;
+    font-size: 1em;
+    line-height: 1.1em;
+    font-family: sourcesanspro;
+    color: white;
+  }
+
+  .navigation_bullet {
+    background-color: $bg-color;
+
+    @include hover {
+      -webkit-mask-image: none;
+    }
+  }
+
+  .navigation_menu {
+    a {
+      -webkit-mask-position-y: -4px !important;
+    }
+  }
+
+  .navigation_menu_box {
+    @include box;
+
+    a {
+      @include hover {
+        -webkit-mask-image: none;
+      }
+    }
+
+    &:before {
+      top: auto;
+      bottom: -2px;
+    }
+  }
+
+  .navigation_share_box {
+    $size: 28px;
+    width: 210px;
+
+    a {
+      float: left;
+      text-decoration: none;
+      padding: 0 15px 0 15px;
+      width: 39px;
+
+      p {
+        color: $nav-color;
+        font-size: 9px;
+        margin-bottom: 0;
+        text-align: center;
+      }
+
+      .button {
+        width: $size;
+        height: $size;
+        margin: auto;
+      }
+    }
+  }
+
+  .navigation_credits_box {
+    font-family: "sourcesanspro";
+    font-size: 1em;
+
+    a {
+      color: #b4c552;
+    }
+  }
+}
+
+.navigation.js {
+  .navigation_bg,
+  .navigation_bullet .button {
+    background-repeat: no-repeat;
+    border-bottom: 2px solid $nav-color;
+  }
+
+  .navigation_bar_top,
+  .navigation_bar_bottom {
+    opacity: 0.9;
+
+    li:last-child a .button {
+      border-bottom: none;
+    }
+  }
+
+  .navigation_bar_top {
+    top: 0;
+    height: 180px;
+
+    &:after {
+      background-color: $bg-color;
+      content: " ";
+      display: block;
+      height: 50px;
+      width: 100%;
+    }
+  }
+
+  .scroller {
+    top: 180px;
+    bottom: 268px;
+
+    &:after {
+      background-color: $bg-color;
+      opacity: 0.9;
+    }
+
+    a {
+      background-color: $bg-color;
+      background-color: rgba(53, 53, 53, 0.9);
+
+      &.active {
+        img {
+          border-left: 5px solid #A6D513;
+        }
+      }
+    }
+  }
+
+  &.with_home_button {
+    .navigation_bar_top {
+      height: 224px;
+    }
+
+    .scroller {
+      top: 224px;
+    }
+
+    .scroll_indicator.top {
+      top: 189px;
+    }
+  }
+
+  a.scroll_indicator {
+    $normal-offset: -14px;
+    $hover-offset: -115px;
+    $pressed-offset: -64px;
+
+    background-image: image-url("pageflow/themes/legacy/scroll_indicator_sprite.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    width: 35px;
+    height: 30px;
+    right: 25px;
+    -webkit-mask-image: none;
+
+    &.top {
+      top: 145px;
+
+      $top-offset: -13px;
+      background-position: $top-offset $normal-offset;
+
+      @include hover {
+        background-position: $top-offset $hover-offset;
+      }
+
+      @include pressed {
+        background-position: $top-offset $pressed-offset;
+      }
+    }
+
+    &.bottom {
+      bottom: 234px;
+
+      $bottom-offset: -161px;
+      background-position: $bottom-offset $normal-offset;
+
+      @include hover {
+        background-position: $bottom-offset $hover-offset;
+      }
+
+      @include pressed {
+        background-position: $bottom-offset $pressed-offset;
+      }
+    }
+  }
+
+  .navigation_bar_bottom {
+    height: 268px;
+    bottom: 0;
+
+    & > li > a {
+      background-color: $bg-color;
+    }
+
+    .indicator {
+      background-color: $bg-color;
+    }
+
+    .fullscreen {
+      background-color: $bg-color;
+    }
+  }
+
+  .navigation_menu_box.navigation_volume_box .volume-control {
+    &:before, &:after {
+      background-image: image-url('pageflow/themes/legacy/volume_control_sprite.png');
+      position: absolute;
+      width: 19px;
+      height: 19px;
+      content: " ";
+      background-repeat: no-repeat;
+      top: 8px;
+    }
+
+    &:before {
+      background-position: left top;
+      left: 0;
+      left: 12px;
+    }
+    &:after {
+      right: 8px;
+      background-position: -21px top;
+      top: 8px;
+    }
+  }
+
+  .volume-control {
+    .volume-slider {
+      background-color: gray;
+    }
+
+    .volume-level {
+      background-color: #b4c552;
+    }
+  }
+}

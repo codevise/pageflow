@@ -1,0 +1,7 @@
+/// Color of links in credits text.
+$navigation-credits-link-color: $main-color !default;
+
+.navigation_credits_box a {
+  @extend %anchor;
+  color: $navigation-credits-link-color;
+}
