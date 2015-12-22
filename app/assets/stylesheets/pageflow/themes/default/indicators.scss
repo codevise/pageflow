@@ -1,0 +1,22 @@
+////
+/// @group indicators
+////
+
+/// Type of icons to use:
+///
+/// - `"default"`: Use images from default theme.
+///
+/// - `"sprite"`: Custom icons from `icon_sprite.png` in theme
+///   directory.
+$indicator-icons: $standard-icons !default;
+
+@import "./indicators/icons/default";
+@import "./indicators/icons/sprite";
+@import "./indicators/typography";
+@import "./indicators/colors";
+
+@if $indicator-icons == "sprite" {
+  @include indicators-icons-sprite;
+} @else {
+  @include indicators-icons-default;
+}
