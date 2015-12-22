@@ -1,0 +1,70 @@
+////
+/// @group overview
+////
+
+/// Images to use to draw outline of chapter columns.
+///
+/// Possible values:
+///
+/// - `"default"`: Use images from default theme.
+/// - `"none"`: Do not use background images.
+/// - `"custom"`: Use images from current theme directory.
+///
+/// Custom border images have to placed in a
+/// `overview_chapter_borders` directory inside the theme's image
+/// directory. Five images have to be supplied:
+///
+/// - `top.png` (width: 265pxm height: 10px): Used as the upper border
+///   of each column.
+///
+/// - `bottom.png` (width: 265px, height 10px): Used as the lower
+///   border of each column.
+///
+/// - `start.png` (width: 265px, height: 10px): Used as the upper
+///   border of the first column.
+///
+/// - `end.png` (width: 265px, height: 10px): Used as the lower border
+///   of the last column.
+///
+/// - `tile.png` (width: 265px): Repeated in the background of each
+///    column to draw the left and right borders.
+///
+/// @see $overview-chapter-background-color
+$overview-chapter-border-images: "default" !default;
+
+/// Opacity of the border images.
+$overview-chapter-border-opacity: 1 !default;
+
+@if $overview-chapter-border-images != "none" {
+  .ov_chapter {
+    $dir: "pageflow/themes/default/overview_chapter_borders";
+
+    @if $overview-chapter-border-images == "custom" {
+      $dir: "pageflow/themes/#{$theme-name}/overview_chapter_borders";
+    }
+
+    background-image: image-url("#{$dir}/tile.png");
+    background-repeat: repeat-y;
+
+    &:before,
+    &:after {
+      opacity: $overview-chapter-border-opacity;
+    }
+
+    &:before {
+      background-image: image-url("#{$dir}/top.png");
+    }
+
+    &:after {
+      background-image: image-url("#{$dir}/bottom.png");
+    }
+
+    &:first-of-type:before {
+      background-image: image-url("#{$dir}/start.png");
+    }
+
+    &:last-of-type:after {
+      background-image: image-url("#{$dir}/end.png");
+    }
+  }
+}
