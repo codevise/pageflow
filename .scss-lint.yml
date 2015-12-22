@@ -62,6 +62,7 @@ linters:
     enabled: true
     allow_leading_underscore: true
     convention: hyphenated_lowercase
+    placeholder_convention: snake_case
   NestingDepth:
     enabled: true
     max_depth: 4
