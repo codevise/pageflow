@@ -1,0 +1,81 @@
+////
+/// @group logo
+////
+
+/// Width of the logo
+$logo-width: 100px !default;
+
+/// Height of the logo
+$logo-height: 50px !default;
+
+/// Height of the logo in phone layout
+$logo-phone-height: 24px !default;
+
+@mixin logo-variant-watermark {
+  .header_logo {
+    display: none;
+
+    @include hide-text;
+    position: absolute;
+    width: $logo-width;
+    height: $logo-height;
+    top: 30px;
+    left: 8%;
+    z-index: 1;
+
+    pointer-events: none;
+    opacity: 0.3;
+    @include transition(opacity 500ms);
+
+    @include phone {
+      width: $logo-phone-height * $logo-width / $logo-height;
+      height: $logo-phone-height;
+      top: 21px;
+    }
+
+    .js & {
+      display: block;
+    }
+
+    &:after,
+    &:before {
+      background-repeat: no-repeat;
+      background-size: 100% auto;
+      content: "";
+      width: 100%;
+      height: 100%;
+      display: block;
+      position: absolute;
+      top: 0;
+      pointer-events: none;
+      @include transition(opacity 500ms);
+    }
+
+    &:before {
+      opacity: 1;
+      background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.png");
+    }
+
+    &:after {
+      opacity: 0;
+      background-image: image-url("pageflow/themes/#{$theme-name}/logo_header_invert.png");
+    }
+  }
+
+  .header.invert .header_logo:before {
+    opacity: 0;
+  }
+
+  .header.invert .header_logo:after {
+    opacity: 1;
+  }
+
+  .header.near_top .header_logo {
+    pointer-events: all;
+  }
+
+  .header.near_top.first_page .header_logo,
+  .header.near_top .header_logo:hover {
+    opacity: 1;
+  }
+}

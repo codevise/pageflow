@@ -1,0 +1,19 @@
+////
+/// @group logo
+////
+
+/// Variant of logo to display:
+///
+/// - `"first-page"`: Background image on first page.
+///
+/// - `"watermark"`: Use `.header_logo` element as logo.
+$logo-variant: "first-page" !default;
+
+@import "./logo/variant/first_page";
+@import "./logo/variant/watermark";
+
+@if $logo-variant == "watermark" {
+  @include logo-variant-watermark;
+} @else {
+  @include logo-variant-first-page;
+}
