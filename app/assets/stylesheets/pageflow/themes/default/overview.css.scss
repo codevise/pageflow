@@ -1,134 +1,42 @@
-$overview-color: $main-color;
-$overview-font: $standard-font;
-$overview-header-font: $standard-font;
+////
+/// @group overview
+////
+
+/// Type of icons to use:
+///
+/// - `"icon-font"`: Circular buttons with font awesome icons.
+///
+/// - `"sprite"`: Custom icons from `icon_sprite.png` in theme
+///   directory.
+$overview-icons: $standard-icons !default;
+
+/// @see $default-widget-icon-font-options
+$overview-icon-font-options: () !default;
 
 .overview {
-  font-family: $standard-font;
+  @import "./overview/icons/icon_font";
+  @import "./overview/icons/sprite";
+  @import "./overview/chapter_border_images";
+  @import "./overview/typography";
+  @import "./overview/colors";
 
-  .content h2 {
-    font-family: $standard-font;
+  @if $overview-icons == "sprite" {
+    @include overview-icons-sprite;
+  } @else {
+    @include overview-icons-icon-font(
+      widget-icon-font-options($overview-icon-font-options)...
+    );
   }
+
   .button {
     display: block;
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    width: 32px;
-    height: 32px;
-
-    &:hover {
-      background-position: -32px 0;
-    }
   }
 
-  .close {
-    background-image: none;
-    background-color: #dbdbdb !important;
-    border-radius: 20px;
-    text-align: center;
-    @include shine-gradient;
-
-    .label {
-      text-transform: uppercase;
-      text-shadow: 1px 1px 4px #2b2b2b;
-      font-size: 1.0em;
-      letter-spacing: 0.1em;
-      color: #FFFEFE;
-      position: absolute;
-      margin-right: 130%;
-      text-align: right;
-      width: 500%;
-      right: 0px;
-      margin-top: 0.4em;
-    }
-
-
-
-    &:before {
-      content: " ";
-      position: absolute;
-      top: 3px;
-      right: 45px;
-
-      width: 100px;
-      height: 30px;
-
-    }
-    &:after {
-      content: "\F00d";
-      font-family: "FontAwesome";
-      line-height: 31px;
-      font-size: 22px;
-      color: black;
-    }
-    &:hover {
-      background-color: $overview-color !important;
-
-      &:after {
-        color: white;
-      }
-    }
+  .close .label {
+    position: absolute;
+    margin-right: 130%;
+    text-align: right;
+    width: 500%;
+    right: 0;
   }
-
-  .scroll_indicator {
-    &.left, &.right {
-      background-image: none;
-      background-color: #dbdbdb !important;
-      border-radius: 20px;
-      text-align: center;
-      @include shine-gradient;
-
-      &:after {
-        font-family: "FontAwesome";
-        line-height: 31px;
-        font-size: 29px;
-        color: black;
-        font-weight: bold;
-      }
-
-      &:hover {
-        background-color: $overview-color !important;
-
-        &:after {
-          color: white;
-        }
-      }
-    }
-    &.left:after {
-      content: "\f104";
-      margin-right: 3px;
-    }
-    &.right:after {
-      content: "\f105";
-      margin-left: 4px;
-    }
-  }
-
-  .ov_page {
-    &.background_image .pictogram {
-      background-image: image-url('pageflow/ov-image.png');
-    }
-
-    &.background_video .pictogram {
-      background-image: image-url('pageflow/ov-image.png');
-    }
-
-    &.video .pictogram {
-      background-image: image-url('pageflow/ov-video.png');
-    }
-
-    &.audio .pictogram {
-      background-image: image-url('pageflow/ov-audio.png');
-    }
-    &.audio_loop .pictogram {
-      background-image: image-url('pageflow/ov-image.png');
-    }
-  }
-
-  .content .ov_chapter .ov_page.active {
-    border-color: $overview-color;
-  }
-}
-
-.overview .content .ov_chapter .ov_page_description {
-  background-color: $overview-color;
 }

@@ -1,0 +1,93 @@
+////
+/// @group overview
+////
+
+/// Color of the backdrop used to fade out the current page.
+$overview-backdrop-color: rgba(0, 0, 0, 0.4) !default;
+
+/// Default text color for overview elements.
+$overview-text-color: #fff !default;
+
+/// Color of the overview's main header.
+$overview-header-text-color: $overview-text-color !default;
+
+/// Color of the chapter tagline containing the chapter number.
+$overview-chapter-number-text-color: $overview-text-color !default;
+
+/// Background color of the chapter columns.
+$overview-chapter-background-color: transparent !default;
+
+/// Color of the borders around the page thumbnails.
+$overview-page-border-color: #505050 !default;
+
+/// Color of the border around the thumbnail of the current page.
+$overview-current-page-border-color: $main-color-dark !default;
+
+/// Background color of the panel which slides above the page
+/// thumbnail to reveal a page description.
+$overview-page-description-background-color: $main-color-dark !default;
+
+/// Text color of the panel which slides above the page thumbnail to
+/// reveal a page description.
+$overview-page-description-text-color: $overview-text-color !default;
+
+/// Text color of the close button label.
+$overview-close-button-text-color: #fffefe !default;
+
+/// Text color of the hovered close button label.
+$overview-active-close-button-text-color: $overview-close-button-text-color !default;
+
+/// Text shadow color of the close button label.
+$overview-close-button-text-shadow-color: #2b2b2b !default;
+
+/// Text shadow color of the hovered close button label.
+$overview-active-close-button-text-shadow-color: $overview-close-button-text-shadow-color !default;
+
+&.active:after {
+  background-color: $overview-backdrop-color;
+}
+
+.content {
+  color: $overview-text-color;
+}
+
+h2 {
+  color: $overview-header-text-color;
+}
+
+.button {
+  display: block;
+}
+
+.close {
+  .label {
+    text-shadow: 1px 1px 4px $overview-close-button-text-shadow-color;
+    color: $overview-close-button-text-color;
+  }
+
+  &:hover .label {
+    text-shadow: 1px 1px 4px $overview-active-close-button-text-shadow-color;
+    color: $overview-active-close-button-text-color;
+  }
+}
+
+.ov_chapter {
+  background-color: $overview-chapter-background-color;
+}
+
+.heading-5 {
+  color: $overview-chapter-number-text-color;
+}
+
+.ov_page {
+  border: solid 1px $overview-page-border-color;
+
+  &.active {
+    border: solid 1px $overview-current-page-border-color;
+  }
+}
+
+.ov_page_description {
+  background-color: $overview-page-description-background-color;
+  color: $overview-page-description-text-color;
+}

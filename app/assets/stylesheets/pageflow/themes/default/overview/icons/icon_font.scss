@@ -1,0 +1,50 @@
+@mixin overview-icons-icon-font(
+  $button-background-color,
+  $active-button-background-color,
+
+  $button-icon-color,
+  $active-button-icon-color,
+  $deactivated-button-icon-color
+) {
+
+  .button {
+    @include background-icon-center($color: $button-icon-color, $font-size: 22px);
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background-color: $button-background-color;
+    border-radius: 20px;
+
+    &:hover {
+      background-color: $active-button-background-color;
+      @include background-icon-color($active-button-icon-color);
+    }
+  }
+
+  .close {
+    @include fa-times-icon;
+
+    .label {
+      margin-top: 0.4em;
+    }
+  }
+
+  .scroll_indicator {
+    &:before {
+      font-weight: bold;
+      font-size: 29px;
+    }
+
+    &.left {
+      @include fa-angle-left-icon;
+
+      &:before {
+        margin-left: -2px;
+      }
+    }
+
+    &.right {
+      @include fa-angle-right-icon;
+    }
+  }
+}
