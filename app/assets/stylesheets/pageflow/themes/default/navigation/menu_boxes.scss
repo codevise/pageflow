@@ -44,8 +44,30 @@ $navigation-menu-box-opacity: $navigation-opacity !default;
   }
 }
 
-.navigation_site_detail:before {
-  top: 18px;
+.navigation_site_detail {
+  .thumbnail {
+    @extend %pageflow_page_type_thumbnail;
+
+    position: relative;
+    width: 170px;
+    height: 95px;
+    margin-top: 12px;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 28px;
+      left: 66px;
+      width: 38px;
+      height: 38px;
+      background-size: 76px 38px;
+      background-repeat: no-repeat;
+    }
+  }
+
+  &:before {
+    top: 18px;
+  }
 }
 
 .navigation_menu_box:before {
