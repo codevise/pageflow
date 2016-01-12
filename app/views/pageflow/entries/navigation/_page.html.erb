@@ -4,7 +4,6 @@
   <% end %>
   <div class="navigation_site_detail">
     <%= page.title %>
-
-    <%= image_tag("pageflow/#{page.template}_pictogram.png", :style => "background-image: url('#{asset_path(page.thumbnail_url(:navigation_thumbnail_large))}')") %>
+    <div class="thumbnail is_<%= page.template %>" style="background-image: url('<%= asset_path(page.thumbnail_url(:navigation_thumbnail_large)) %>')"></div>
   </div>
 </li>
