@@ -35,7 +35,7 @@ a feature:
 
     class MyPlugin < Pageflow::Plugin
       def configure(config)
-        config.features.register(:my_feature) do |feature_config|
+        config.features.register("my_feature") do |feature_config|
           feature_config.page_types.register(MyPageType.new)
         end
       end
