@@ -49,7 +49,7 @@ module Pageflow
 
         result = helper.present_widgets_css_class(entry)
 
-        expect(result).to eq('widget_test_present')
+        expect(result).to eq('widget_test_present widgets_present')
       end
     end
 
