@@ -17,10 +17,13 @@
     <%= shadow_div :opacity => configuration['gradient_opacity'] %>
   </div>
   <div class="content">
-    <div class="controls">
+    <%= content_tag(:div,
+                    class: 'controls',
+                    data: {role: 'player_controls', control_bar_text: I18n.t('pageflow.public.start_video')}) do %>
+
       <span class="hint"><%= t('pageflow.public.video') %></span>
       <%= info_box(configuration) %>
-    </div>
+    <% end %>
     <div class="scroller">
       <div>
         <div class="contentWrapper">
