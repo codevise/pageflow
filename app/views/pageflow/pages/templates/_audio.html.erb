@@ -15,7 +15,7 @@
   </div>
 
   <div class="content">
-    <div class="controls">
+    <div class="controls" data-role="player_controls">
       <span class="hint"><%= t('pageflow.public.audio') %></span>
       <%= info_box(configuration) %>
       <div class="vjs-control-bar">
@@ -45,6 +45,9 @@
             </div>
           </div>
           <div class="player_mute volume-mute-button" tabindex="4"></div>
+        </div>
+        <div class="control_bar_text">
+          <%= t('pageflow.public.start_audio') %>
         </div>
       </div>
     </div>
