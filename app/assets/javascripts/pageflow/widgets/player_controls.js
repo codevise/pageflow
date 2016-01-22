@@ -33,22 +33,24 @@ jQuery.widget('pageflow.playerControls', {
         }
       }
 
-      $(progressHandler).css({left: percent + "%"});
-      $(playProgress).css({width: percent + "%"});
+      var handlerLeft = ((progressHolder.width() - progressHandler.width()) * percent / 100);
+
+      progressHandler.css({left: handlerLeft + 'px'});
+      playProgress.css({width: percent + "%"});
     });
 
     player.on('play', function (position, duration) {
       $(playButton).removeClass('vjs-play');
-      $(playButton).addClass('vjs-pause');
+      $(playButton).addClass('vjs-pause vjs-playing');
     });
 
     player.on('pause', function (position, duration) {
-      $(playButton).removeClass('vjs-pause');
+      $(playButton).removeClass('vjs-pause vjs-playing');
       $(playButton).addClass('vjs-play');
     });
 
     player.on('ended', function (position, duration) {
-      $(playButton).removeClass('vjs-pause');
+      $(playButton).removeClass('vjs-pause vjs-playing');
       $(playButton).addClass('vjs-play');
     });
 
