@@ -1,0 +1,38 @@
+%player_controls {
+  &-close_button {
+    @include background-icon-left($left: 12px, $color: $slim-player-controls-color);
+    @include fa-times-icon;
+
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    width: 200px;
+    height: 40px;
+
+    cursor: pointer;
+    @include user-select(none);
+    z-index: 10;
+
+    @include transition(opacity 0.2s linear, visibility 0.2s linear);
+    opacity: 0;
+
+    .hideText & {
+      opacity: 1;
+    }
+  }
+
+  &-close_button_label {
+    position: absolute;
+    left: 55px;
+    bottom: 10px;
+
+    color: $slim-player-controls-color;
+    text-shadow: 1px 1px 4px $indicator-text-shadow-color;
+
+    @include indicator-typography;
+
+    @include phone {
+      left: 45px;
+    }
+  }
+}

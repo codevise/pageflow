@@ -1,0 +1,52 @@
+%player_controls {
+  $dir: "pageflow/themes/default";
+
+  @if $classic-player-controls-images == "custom" {
+    $dir: "pageflow/themes/#{$theme-name}";
+  }
+
+  &-close_button {
+    cursor: pointer;
+    background-position: -45px 0;
+    background-repeat: no-repeat;
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background-size: 200% auto;
+    background-image: image-url("#{$dir}/close_button_sprite.png");
+
+    &:hover {
+      background-position: 0 0;
+    }
+
+    @include phone {
+      right: 40px;
+    }
+
+    @include pad_portrait {
+      right: 40px;
+    }
+  }
+
+  &-close_button_label {
+    text-transform: uppercase;
+    text-shadow: 1px 1px 4px #2b2b2b;
+    font-size: 1.0em;
+    letter-spacing: 0.1em;
+    color: #FFFEFE;
+    position: absolute;
+    margin-right: 115%;
+    text-align: right;
+    right: 0px;
+    margin-top: 14px;
+    margin-left: 1em;
+  }
+}
+
+.invert %player_controls-close_button_label {
+  color: #2b2b2b;
+  text-shadow: 1px 1px 4px #fff;
+}

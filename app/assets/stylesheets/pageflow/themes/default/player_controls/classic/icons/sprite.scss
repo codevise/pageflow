@@ -1,0 +1,59 @@
+@mixin player-controls-classic-icons-sprite {
+  $dir: "pageflow/themes/default";
+
+  @if $classic-player-controls-images == "custom" {
+    $dir: "pageflow/themes/#{$theme-name}";
+  }
+
+  %player_controls {
+    &-play_button,
+    &-progress_bar_handle {
+      background-image: image-url("#{$dir}/player_controls_sprite.png");
+    }
+
+    &-play_button {
+      background-position: center top;
+
+      &:hover {
+        background-position: center -40px;
+      }
+
+      &:active,
+      &.touched {
+        background-position: center -80px;
+      }
+    }
+
+    &-play_button-playing {
+      background-position: center -120px;
+
+      &:hover {
+        background-position: center -160px;
+      }
+
+      &:active,
+      &:touched {
+        background-position: center -200px;
+      }
+    }
+
+    &-progress_bar_handle {
+      background-position: center -240px;
+    }
+
+    &-loading_spinner {
+      top: 10px;
+      left: 10px;
+
+      &:before {
+        content: " ";
+        display: block;
+        width: 41px;
+        height: 41px;
+        background-image: image-url("#{$dir}/player_controls_loading_spinner.png");
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+  }
+}
