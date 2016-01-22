@@ -13,6 +13,7 @@ $logo-phone-height: 24px !default;
 
 @mixin logo-variant-watermark {
   .header_logo {
+    @extend %pageflow_widget_margin_top !optional;
     display: none;
 
     @include hide-text;

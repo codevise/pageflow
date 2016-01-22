@@ -44,6 +44,8 @@ $navigation-bar-background-color: $navigation-background-color !default;
 /// Transparency of navigation bar.
 $navigation-opacity: 0.9 !default;
 
+@import "./navigation/widget_margin";
+
 .navigation {
   @import "./navigation/dimensions";
   @import "./navigation/icons/icon_font";
