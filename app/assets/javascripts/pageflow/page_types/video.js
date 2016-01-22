@@ -27,6 +27,7 @@ pageflow.pageType.register('video', _.extend({
     //
 
     this.videoPlayer.ensureCreated();
+    pageElement.find('.controls').autoHidePlayerControls('reset');
 
     if (pageflow.browser.has('mobile platform')) {
       this.videoPlayer.showPosterImage();
@@ -70,9 +71,6 @@ pageflow.pageType.register('video', _.extend({
     this.fadeSound(this.videoPlayer, 0, 400);
     this.stopListening();
     $('body').off('keyup');
-
-    $('.entry .scroll_indicator').removeClass('faded');
-    clearTimeout(this.scrollIndicatorTimeout);
   },
 
   deactivated: function(pageElement, configuration) {
@@ -110,8 +108,7 @@ pageflow.pageType.register('video', _.extend({
   },
 
   _initVideoPlayer: function(pageElement, configuration) {
-    var that = this;
-
+    var scrollIndicator = this.scrollIndicator;
     var videoPlayer = new pageflow.VideoPlayer.Lazy(pageElement.find('[data-template=video]'), {
       bufferUnderrunWaiting: true,
       controls: true,
@@ -135,20 +132,32 @@ pageflow.pageType.register('video', _.extend({
     videoPlayer.ready(function() {
       videoPlayer.showPosterImage();
 
-      var addInfoBox = pageElement.find('.add_info_box'),
+      var pageContent = pageElement.find('.scroller, .controls, .shadow'),
           controls = pageElement.find('.controls'),
           controlBar = pageElement.find('.vjs-control-bar'),
           playButton = pageElement.find('.vjs-play-control'),
           loadingSpinner = pageElement.find('.vjs-loading-spinner'),
-          poster = pageElement.find('.vjs-poster'),
-          video =  pageElement.find('video');
+          poster = pageElement.find('.vjs-poster');
 
       controlBar.appendTo(controls);
 
-      var additionalControlsHtml = '<div class="player_skip" tabindex="4"></div><div class="player_fullscreen" tabindex="4"></div><div class="player_volume"><div class="volume-control"><div tabindex="0" class="player_volume_bar player_slider volume-slider"><div class="player_volume_level volume-level"></div><div class="player_volume_handle player_slider_handle volume-handle"></div></div></div><div class="player_mute volume-mute-button" tabindex="4"></div></div>';
+      var additionalControlsHtml =
+        '<div class="player_skip" tabindex="4"></div>' +
+        '<div class="player_fullscreen" tabindex="4"></div>' +
+        '<div class="player_volume">' +
+        '  <div class="volume-control">' +
+        '    <div tabindex="0" class="player_volume_bar player_slider volume-slider">' +
+        '      <div class="player_volume_level volume-level"></div>' +
+        '      <div class="player_volume_handle player_slider_handle volume-handle"></div>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="player_mute volume-mute-button" tabindex="4"></div>' +
+        '</div>' +
+        '<div class="control_bar_text">' +
+        controls.data('controlBarText') +
+        '</div>';
 
       $(additionalControlsHtml).appendTo(controlBar);
-      //pageElement.find('.scroller').after(controls);
 
       controlBar.addClass('vjs-default-skin vjs-player');
       playButton.before(loadingSpinner);
@@ -196,38 +205,11 @@ pageflow.pageType.register('video', _.extend({
         });
       }
 
-      var timeout, scrollIndicatorTimeout,
-          scrollIndicator = $('.entry .scroll_indicator'),
-          pageContent = pageElement.find('.scroller, .controls, .shadow');
-
-      pageContent.addClass('lock-showing');
-
-      videoPlayer.on("pause", function() {
-        pageContent.addClass('lock-showing');
-
-        scrollIndicator.removeClass('faded');
-        clearTimeout(scrollIndicatorTimeout);
-      });
-
       videoPlayer.on('beforeplay', function() {
         loadingSpinner.addClass('showing-for-underrun');
       });
 
-      videoPlayer.on("play", function() {
-        pageContent.removeClass('lock-showing');
-
-        if (pageElement.hasClass('active')) {
-          clearTimeout(scrollIndicatorTimeout);
-          scrollIndicatorTimeout = that.scrollIndicatorTimeout = setTimeout(function() {
-            scrollIndicator.addClass('faded');
-          }, 2000);
-        }
-      });
-
       videoPlayer.on("ended", function() {
-        scrollIndicator.removeClass('faded');
-        clearTimeout(scrollIndicatorTimeout);
-
         if (pageflow.browser.has('mobile platform')) {
           videoPlayer.showPosterImage();
         }
@@ -237,9 +219,26 @@ pageflow.pageType.register('video', _.extend({
         }
       });
 
-      pageElement.on('mousemove', autoHideControls);
-      $('body').on('keydown', autoHideControls);
-      pageElement.find('.content').on('touchstart', autoHideControls);
+      pageElement
+        .hideContentDuringPlayback({
+          scrollIndicator: scrollIndicator
+        })
+        .hideContentDuringPlayback('attach', videoPlayer);
+
+      controls
+        .autoHidePlayerControls({
+          pageElement: pageElement,
+          target: pageElement.find('.videoPage'),
+
+          onShow: function() {
+            pageContent.addClass('fade-in').removeClass('fade-out');
+          },
+
+          onHide: function() {
+            pageContent.addClass('fade-out').removeClass('fade-in');
+          }
+        })
+        .autoHidePlayerControls('attach', videoPlayer);
 
       pageElement.find('.volume-control').volumeSlider({
         orientation: 'v'
@@ -248,24 +247,6 @@ pageflow.pageType.register('video', _.extend({
       pageElement.find('.player_mute').muteButton();
       pageElement.find('.player_skip').skipPageButton();
       pageElement.find('.player_fullscreen').fullscreenButton();
-
-      function autoHideControls() {
-        showControls();
-        if (!pageflow.browser.has('phone platform')) {
-          clearTimeout(timeout);
-          timeout = setTimeout(hideControls, 2000);
-        }
-      }
-
-      function hideControls() {
-        if (!videoPlayer.paused()) {
-          pageContent.addClass('fade-out').removeClass('fade-in');
-        }
-      }
-
-      function showControls() {
-        pageContent.addClass('fade-in').removeClass('fade-out');
-      }
     });
   }
 }, pageflow.volumeFade, pageflow.videoHelpers, pageflow.infoBox, pageflow.commonPageCssClasses));
