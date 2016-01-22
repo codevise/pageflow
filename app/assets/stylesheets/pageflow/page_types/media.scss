@@ -1,0 +1,19 @@
+.js .videoPage,
+.js .audioPage {
+  .scroller {
+    @include transition(opacity 0.2s linear);
+
+    &.is_playing {
+      opacity: 0;
+    }
+  }
+
+  .shadow.is_paused,
+  .scroller.is_paused {
+    @include transition-delay(0.2s);
+  }
+
+  .shadow.is_playing {
+    opacity: 0 !important;
+  }
+}
