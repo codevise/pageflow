@@ -1,4 +1,4 @@
-.slideshow .content .contentWrapper, .shadow {
+.slideshow .content .contentWrapper {
   -webkit-transition: 0.8s ease !important;
   -moz-transition: 0.8s ease !important;
   -ms-transition: 0.8s ease !important;
@@ -12,10 +12,6 @@
 .hideText {
   .shadow {
     opacity: 0 !important;
-    -webkit-transition: 0.8s ease !important;
-    -moz-transition: 0.8s ease !important;
-    -ms-transition: 0.8s ease !important;
-    transition: 0.8s ease !important;
     visibility: hidden;
   }
 
@@ -24,7 +20,9 @@
   }
 
   .entry .scroll_indicator {
-    left: -100%;
+    opacity: 0;
+    visibility: hidden;
+    @include transition-delay(0s);
   }
 
   .hide_content_with_text .content {
