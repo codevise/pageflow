@@ -1,15 +1,15 @@
 @charset 'UTF-8';
 
 @mixin icon($char) {
-  &:before {
+  &::before {
     font-family: 'entypo';
     content: $char;
   }
 }
 
-@mixin fontawesome-icon($char) {
-  &:before {
-    font-family: 'FontAwesome';
+@mixin fontawesome-icon($char, $position: "before") {
+  &::#{$position} {
+    font-family: "FontAwesome";
     content: $char;
   }
 }

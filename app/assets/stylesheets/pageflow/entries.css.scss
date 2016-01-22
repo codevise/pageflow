@@ -9,7 +9,7 @@
 
   .indicator {
     position: absolute;
-    bottom: 2%;
+    bottom: 0;
     width: 400px;
     max-width: 80%;
     height: 40px;
@@ -22,7 +22,6 @@
 
     background-color: transparent;
     opacity: 0;
-
     @include transition(opacity 1s ease);
 
     &.visible {
