@@ -2,8 +2,9 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
   window.onload = function() {
     pageflow.browser.detectFeatures().then(function() {
       var slideshow = $('[data-role=slideshow]');
+      var body = $('body');
 
-      $('body').one('pagepreloaded', function() {
+      body.one('pagepreloaded', function() {
         readyDeferred.resolve();
       });
 
@@ -26,12 +27,13 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
             $('.overview').overview();
             $('.multimedia_alert').multimediaAlert();
 
-            pageflow.widgetTypes.enhance($('body'));
+            pageflow.widgetTypes.enhance(body);
           }
         });
       });
 
       pageflow.links.setup();
+      pageflow.FocusOutline.setup(body);
       pageflow.nativeScrolling.preventScrollingOnEmbed(slideshow);
     });
   };

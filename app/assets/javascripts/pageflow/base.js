@@ -53,6 +53,7 @@
 //= require ./fullscreen
 //= require ./multimedia_alert
 //= require ./native_scrolling
+//= require ./focus_outline
 
 //= require ./settings
 

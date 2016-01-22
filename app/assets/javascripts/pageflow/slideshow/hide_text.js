@@ -10,7 +10,7 @@ pageflow.hideText = (function() {
   }
 
   $(function() {
-    element().on('keydown', function(e) {
+    element().on('keydown', function(event) {
       if(event.keyCode == 27) {
         pageflow.hideText.deactivate();
       }

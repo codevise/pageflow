@@ -1,0 +1,23 @@
+$focus-outline-color: #c1c1c1;
+$input-focus-outline-color: #065195;
+
+a:focus,
+[tabindex]:focus {
+  outline: 3px solid $focus-outline-color;
+}
+
+a:focus {
+  text-decoration: none;
+}
+
+input:focus {
+  outline: 3px solid $input-focus-outline-color;
+}
+
+.has_mobile_platform,
+.disable_focus_outline {
+  [tabindex]:focus,
+  a:focus {
+    outline: none;
+  }
+}
