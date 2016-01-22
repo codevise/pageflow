@@ -9,15 +9,10 @@
       var parent = this.options.parent,
           direction = this.element.data('direction'),
           boundary = boundaries[direction],
-          that = this;
+          that = this,
+          fadeTimeout;
 
       function update(page) {
-        var invertIndicator = page.data('invertIndicator');
-
-        if (typeof invertIndicator === 'undefined') {
-          invertIndicator = page.hasClass('invert');
-        }
-
         if (page.hasClass('scroll_indicator_mode_non') ||
             (page.hasClass('scroll_indicator_mode_only_next') && direction === 'up') ||
             (page.hasClass('scroll_indicator_mode_only_back') && direction === 'down')) {
@@ -28,9 +23,34 @@
           that.element.show();
         }
 
-        that.element.toggleClass('invert', invertIndicator);
+        that.element.toggleClass('hidden_for_page', hideScrollIndicatorForPage(page));
+
+        that.element.toggleClass('invert', invertIndicator(page));
         that.element.toggleClass('horizontal', page.hasClass('scroll_indicator_orientation_horizontal'));
         that.element.toggleClass('available', targetPageExists());
+      }
+
+      function invertIndicator(page) {
+        var result = page.data('invertIndicator');
+
+        if (typeof result === 'undefined') {
+          result = page.hasClass('invert') && !hasSlimPlayerControls(page);
+        }
+
+        return result;
+      }
+
+      function hideScrollIndicatorForPage(page) {
+        return hasSlimPlayerControls(page) ||
+          !pageflow.widgets.areLoaded();
+      }
+
+      function hasSlimPlayerControls(page) {
+        return hasPlayerControls(page) && pageflow.widgets.isPresent('slim_player_controls');
+      }
+
+      function hasPlayerControls(page) {
+        return !!page.find('[data-role="player_controls"]').length;
       }
 
       function targetPageExists() {
@@ -39,10 +59,33 @@
 
       parent.on('pageactivate', function(event) {
         update($(event.target));
+
+        clearTimeout(fadeTimeout);
+        that.element.removeClass('faded');
       });
 
-      pageflow.events.on('page:update', function() {
-        update(parent.currentPage());
+      pageflow.events.on({
+        'page:update': function() {
+          update(parent.currentPage());
+        },
+
+        'scroll_indicator:disable': function() {
+          clearTimeout(fadeTimeout);
+          that.element.addClass('hidden_for_page');
+        },
+
+        'scroll_indicator:schedule_disable': function() {
+          clearTimeout(fadeTimeout);
+
+          fadeTimeout = setTimeout(function() {
+            that.element.addClass('faded');
+          }, 2000);
+        },
+
+        'scroll_indicator:enable': function() {
+          clearTimeout(fadeTimeout);
+          that.element.removeClass('faded hidden_for_page');
+        },
       });
 
       parent.on('scrollerhint' + direction, function() {
