@@ -2,6 +2,7 @@
 //=require ./slideshow/lazy_page_widget
 //=require ./slideshow/page_widget
 //=require ./slideshow/scroller_widget
+//=require ./slideshow/scroll_indicator
 //=require ./slideshow/scroll_indicator_widget
 //=require ./slideshow/hidden_text_indicator_widget
 //=require ./slideshow/progressive_preload
