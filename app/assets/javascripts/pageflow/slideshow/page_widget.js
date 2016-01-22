@@ -5,6 +5,8 @@
       this.configuration = this.element.data('configuration') || this.options.configuration;
       this.index = this.options.index;
 
+      this._setupNearBoundaryCssClasses();
+
       this.reinit();
     },
 
@@ -184,6 +186,20 @@
           !this.pageType.noHideTextOnSwipe) {
         this.content.hideTextOnSwipe();
       }
+    },
+
+    _setupNearBoundaryCssClasses: function() {
+      var element = this.element;
+
+      _(['top', 'bottom']).each(function(boundary) {
+        element.on('scrollernear' + boundary, function() {
+          element.addClass('is_near_' + boundary);
+        });
+
+        element.on('scrollernotnear' + boundary, function() {
+          element.removeClass('is_near_' + boundary);
+        });
+      });
     }
   });
 }(jQuery));
