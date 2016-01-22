@@ -8,15 +8,20 @@
 ///
 /// - `"sprite"`: Custom icons from `icon_sprite.png` in theme
 ///   directory.
-$indicator-icons: $standard-icons !default;
+///
+/// - `"icon_font"`: Use font icons for icon.
+$indicator-icons: "icon_font" !default;
 
 @import "./indicators/icons/default";
+@import "./indicators/icons/icon_font";
 @import "./indicators/icons/sprite";
 @import "./indicators/typography";
 @import "./indicators/colors";
 
 @if $indicator-icons == "sprite" {
   @include indicators-icons-sprite;
+} @else if $indicator-icons == "icon_font" {
+  @include indicators-icons-icon-font;
 } @else {
   @include indicators-icons-default;
 }
