@@ -1,31 +1,30 @@
-.js .vjs-play-control {
-  background-image: none;
-  width: 36px;
-  height: 36px;
-  margin-top: 12px;
-  margin-left: 13px;
+$player-controls-typography: () !default;
 
-  @include fa-play-icon;
+// Prevent unstyled player controls from being displayed inside editor
+// while widget presence css classes have not yet been set:
 
-  &:before {
-    color: white;
-    font-size: 34px;
-    top: -15px;
-    left: 3px;
-    text-shadow: 0px 0px 2px black;
-  }
+%player_controls-container {
+  display: none;
+}
 
-  &.vjs-playing, &.vjs-pause {
-    &:before {
-      left: 0px;
-    }
-    @include fa-pause-icon;
-  }
-
-  &:hover, &:active {
-    &:before {
-      color: $main-color;
-      text-shadow: 0px 0px 2px black;
-    }
+.widget_slim_player_controls_present,
+.widget_classic_player_controls_present {
+  %player_controls-container {
+    display: block;
   }
 }
+
+// Define placeholders scoped by widget presence css class:
+
+.widget_classic_player_controls_present {
+  @import "./player_controls/classic";
+}
+
+.widget_slim_player_controls_present {
+  @import "./player_controls/slim";
+}
+
+// Extend vjs specific css classes with placeholders:
+
+@import "./player_controls/vjs_mapping";
+@import "./player_controls/widget_margins";

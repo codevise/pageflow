@@ -1,0 +1,73 @@
+// Map placeholder names to concrete vjs css class names.
+
+$vjs-selector-mapping: (
+  background: ".videoWrapper, .audioPage .backgroundArea",
+
+  background-idle: ".is_idle .videoWrapper, .audioPage.is_idle .backgroundArea",
+
+  background-hover: ".is_control_bar_hovered .videoWrapper, .audioPage.is_control_bar_hovered .backgroundArea",
+
+  container: ".controls",
+
+  container-playing: ".controls.is_playing",
+  container-paused: ".controls.is_paused",
+
+  container-idle: ".is_idle .controls",
+
+  container-hover: ".is_control_bar_hovered .controls",
+
+  // `has_been_faded` is set by the video page type after the user has
+  // become inactive for the first time during video playback.
+  //
+  // This is used in the slim player controls to keep displaying the
+  // info box a little longer on initial playback. Especially on auto
+  // play pages this lets the user finish reading the info box
+  // text. When the user re-displays the info box though by moving the
+  // cursor above the control bar, it fades immediately once the
+  // cursor leaves the control bar again.
+  container-has_been_faded: ".controls.has_been_faded",
+
+  container-unplayed: ".controls.unplayed",
+
+  info_box: ".add_info_box",
+  control_bar: ".vjs-control-bar",
+  control_bar_text: ".control_bar_text",
+
+  play_button: ".vjs-play-control",
+  play_button-playing: ".vjs-play-control.vjs-playing",
+  skip_button: ".player_skip",
+  loading_spinner: ".vjs-loading-spinner",
+
+  current_time: ".vjs-current-time",
+  time_separator: ".vjs-time-divider",
+  duration: ".vjs-duration",
+
+  progress_bar: ".vjs-progress-control",
+  progress_bar_inner: ".vjs-progress-holder",
+  progress_bar_handle: ".vjs-seek-handle",
+  load_progress: ".vjs-load-progress",
+  play_progress: ".vjs-play-progress",
+
+  close_button: ".page .close_button",
+  close_button_label: ".page .close_button .label",
+);
+
+@each $suffix, $selector in $vjs-selector-mapping {
+  #{$selector} {
+    @extend %player_controls-#{$suffix};
+  }
+}
+
+.vjs-control-text {
+  @include hide_text;
+}
+
+.vjs-remaining-time,
+.vjs-fullscreen-control,
+.vjs-volume-control,
+.vjs-mute-control,
+.vjs-menu-button,
+.player_fullscreen,
+.player_volume {
+  display: none;
+}

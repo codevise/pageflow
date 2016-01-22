@@ -1,0 +1,87 @@
+@mixin player-controls-classic-icons-icon-font(
+  $icon-color: #fff,
+  $active-icon-color: $main-color,
+
+  $icon-shadow-color: #000,
+
+  $progress-bar-handle-background-color: #aaa,
+  $progress-bar-handle-border-color: #bbb,
+  $progress-bar-handle-icon-color: #333,
+
+  $loading-spinner-color: $main-color
+) {
+  %player_controls {
+    &-play_button {
+      margin-top: 12px;
+      margin-left: 13px;
+      width: 36px;
+      height: 36px;
+      background-image: none;
+
+      @include fa-play-icon;
+
+      &:before {
+        position: absolute;
+        top: -15px;
+        left: 3px;
+        width: 100%;
+        height: 100%;
+        color: $icon-color;
+        font-size: 34px;
+        line-height: 2;
+        text-shadow: 0 0 2px $icon-shadow-color;
+      }
+
+      &:hover,
+      &:active {
+        &:before {
+          color: $active-icon-color;
+        }
+      }
+
+      &-playing {
+        @include fa-pause-icon;
+
+        &:before {
+          left: 0;
+        }
+      }
+    }
+
+    &-progress_bar_handle {
+      @include background-icon-center($color: $progress-bar-handle-icon-color, $font-size: 23px);
+      @include fa-reorder-icon;
+      background-color: $progress-bar-handle-background-color;
+      border: solid 1px $progress-bar-handle-border-color;
+      border-radius: 6px;
+      box-sizing: border-box;
+      height: 36px;
+      top: -13px;
+
+      &:before {
+        @include transform(translate(-50%, -50%) scaleX(0.6));
+      }
+    }
+
+    &-loading_spinner {
+      top: 8px;
+      left: 9px;
+      width: 43px;
+      height: 43px;
+      opacity: 1;
+
+      @include fa-gear-icon;
+
+      &:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 43px;
+        height: 43px;
+        color: $loading-spinner-color;
+        font-size: 43px;
+        text-align: center;
+      }
+    }
+  }
+}

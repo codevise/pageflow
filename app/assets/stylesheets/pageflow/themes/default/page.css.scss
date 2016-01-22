@@ -234,21 +234,3 @@ $page-shadow-inverted-color: #fff !default;
     }
   }
 }
-
-.js .vjs-current-time,
-.js .vjs-time-divider,
-.js .vjs-duration,
-.vjs-duration,
-.vjs-time-divider,
-.vjs-current-time {
-  font-family: $standard-font;
-  color: white;
-}
-
-.js .vjs-play-control {
-  background-image: image-url('pageflow/themes/#{$theme-name}/video_controls.png');
-}
-
-.js .vjs-progress-control .vjs-play-progress, .js .vjs-progress-control.vjs-fade-out .vjs-play-progress {
-  background-color: $main-color;
-}

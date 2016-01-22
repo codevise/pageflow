@@ -120,30 +120,3 @@ $loading-spinner-background-color: #252526 !default;
     @include transform(rotate(359deg));
   }
 }
-
-  .js .vjs-default-skin {
-    .vjs-loading-spinner {
-      top: 8px;
-      left: 10px;
-      opacity: 1;
-      width: 43px;
-      height: 43px;
-      margin-left: 0;
-      margin-top: 0;
-
-      @include fa-gear-icon;
-
-      @include phone {
-      }
-
-      &:before {
-        width: 43px;
-        height: 43px;
-        top: 0;
-        left: 0;
-        font-size: 43px;
-        color: $main-color;
-        background-image: none;
-      }
-    }
-  }

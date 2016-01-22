@@ -1,0 +1,199 @@
+/// Background color of the control bar.
+$classic-player-controls-background-color: #191919 !default;
+
+/// Color of the border around the control bar.
+$classic-player-controls-border-color: #505050 !default;
+
+/// Color of control bar text, current time and duration.
+$classic-player-controls-text-color: #ddd !default;
+
+/// Backgrund color of the progress bar.
+$classic-player-controls-progress-bar-background-color: #333333 !default;
+
+/// Color of the part of the progress bar indicating the play progress.
+$classic-player-controls-progress-bar-color: $main-color !default;
+
+/// Color of the part of the progress bar indicating the load progress.
+$classic-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.4) !default;
+
+%player_controls {
+  &-control_bar {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    @include transform(translate3d(-50%, 0, 0));
+    z-index: 2;
+
+    display: block;
+    width: 434px;
+    height: 60px;
+
+    background-color: $classic-player-controls-background-color;
+    border: 3px solid $classic-player-controls-border-color;
+    pointer-events: all;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 64px;
+      width: 0;
+      height: 60px;
+      border-right: 2px solid $classic-player-controls-border-color;
+    }
+
+    @include phone {
+      left: 0;
+      top: 50%;
+      bottom: auto;
+      margin-left: -4px;
+      margin-top: -30px;
+      @include transform(translate3d(0, 0, 0));
+      width: 60px;
+      max-width: 435px;
+      height: 60px;
+
+      background: none;
+      border: none;
+
+      pointer-events: all;
+    }
+  }
+
+  &-control_bar_text {
+    position: absolute;
+    left: 80px;
+    top: 20px;
+    color: $classic-player-controls-text-color;
+
+    @include phone {
+      display: none;
+    }
+  }
+
+  &-play_button,
+  &-progress_bar,
+  &-current_time,
+  &-duration {
+    position: relative;
+    float: left;
+    text-align: center;
+    height: 3em;
+    width: 4em;
+  }
+
+  &-play_button {
+    width: 40px;
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 11px;
+    cursor: pointer;
+
+    &.pressed:focus {
+      outline: none;
+    }
+  }
+
+  &-skip_button {
+    display: none;
+  }
+
+  &-progress_bar {
+    position: absolute;
+    left: 90px;
+    right: 114px;
+    top: 25px;
+    width: auto;
+    height: 9px;
+    cursor: pointer;
+  }
+
+  &-progress_bar_inner {
+    height: 100%;
+    border-radius: 4px;
+    background-color: $classic-player-controls-progress-bar-background-color;
+  }
+
+  &-play_progress,
+  &-load_progress {
+    border-radius: 4px;
+    position: absolute;
+    height: 100%;
+  }
+
+  &-play_progress {
+    background: initial;
+    background-color: $classic-player-controls-progress-bar-color;
+  }
+
+  &-load_progress {
+    background-color: $classic-player-controls-progress-bar-load-progress-color;
+  }
+
+  &-progress_bar_handle {
+    position: absolute;
+    top: -15px;
+    left: 0;
+    height: 40px;
+    width: 24px;
+
+    &:before {
+      content: "";
+    }
+  }
+
+  &-current_time,
+  &-time_separator,
+  &-duration {
+    position: relative;
+    line-height: 3em;
+    font-size: 15px;
+    margin-top: 7px;
+    color: $classic-player-controls-text-color;
+  }
+
+  &-current_time {
+    left: 276px;
+  }
+
+  &-time_separator {
+    float: left;
+    height: 3em;
+    left: 268px;
+  }
+
+  &-duration {
+    left: 260px;
+  }
+
+  &-loading_spinner {
+    position: absolute;
+    top: 30px;
+    left: 31px;
+    opacity: 1;
+    @include animation(rotate 1.5s infinite linear);
+  }
+
+  @include phone {
+    &-progress_bar,
+    &-current_time,
+    &-time_separator,
+    &-duration,
+    &-control_bar:before {
+      display: none;
+    }
+  }
+
+  //TODO
+
+  .showing-for-underrun {
+    display: block;
+  }
+}
+
+.audioPage,
+.videoPage {
+  %player_controls-control_bar_text {
+    display: none;
+  }
+}

@@ -1,0 +1,27 @@
+/// Type of icons to use:
+///
+/// - `"icon-font"`: Circular buttons with font awesome icons.
+///
+/// - `"sprite"`: Custom icons from `player_controls_sprite.png` in theme
+///   directory.
+$classic-player-controls-icons: "icon-font" !default;
+
+$classic-player-controls-icon-font-option: () !default;
+
+$classic-player-controls-images: "default" !default;
+
+@import "./classic/container";
+@import "./classic/control_bar";
+@import "./classic/info_box";
+@import "./classic/close_button";
+
+@import "./classic/icons/icon_font";
+@import "./classic/icons/sprite";
+
+@if $classic-player-controls-icons == "sprite" {
+  @include player-controls-classic-icons-sprite;
+} @else {
+  @include player-controls-classic-icons-icon-font(
+    $classic-player-controls-icon-font-option...
+  );
+}

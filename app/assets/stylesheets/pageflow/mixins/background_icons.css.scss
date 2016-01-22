@@ -44,7 +44,19 @@
 
 @mixin background-icon-color($color) {
   &:before {
-    color: $color
+    color: $color;
+  }
+}
+
+@mixin background-icon-position($left: false, $top: false) {
+  &:before {
+    @if $left != false {
+      left: $left;
+    }
+
+    @if $top != false {
+      top: $top;
+    }
   }
 }
 

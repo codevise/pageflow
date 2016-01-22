@@ -1,0 +1,20 @@
+@import "./slim/container";
+@import "./slim/control_bar";
+@import "./slim/info_box";
+@import "./slim/close_button";
+
+%player_controls-container {
+  @include phone {
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 50px;
+
+      background-color: $slim-player-controls-info-box-background-color;
+      pointer-events: none;
+    }
+  }
+}
