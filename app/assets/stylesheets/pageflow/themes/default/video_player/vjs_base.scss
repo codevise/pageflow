@@ -1,0 +1,121 @@
+// This file is a copy of src/css/video-js.css with the following things removed:
+//
+// - Styles for hiding/showing/fading controls
+// - Default theme
+//
+// This theme defines its own rules for fading the controls. The
+// Video.js styles for fading are hard to override since they are
+// quite specific and include `!important` declarations,
+//
+// We need the other base styles though to position the video and for
+// fullscreen display.
+
+// scss-lint:disable all
+
+/*
+REQUIRED STYLES (be careful overriding)
+================================================================================ */
+/* When loading the player, the video tag is replaced with a DIV,
+   that will hold the video tag or object tag for other playback methods.
+   The div contains the video playback element (Flash or HTML5) and controls, and sets the width and height of the video.
+   ** If you want to add some kind of border/padding (e.g. a frame), or special positioning, use another containing element.
+   Otherwise you risk messing up control positioning and full window mode. **
+*/
+.video-js {
+  background-color: #000;
+  position: relative;
+  padding: 0;
+  /* Start with 10px for base font size so other dimensions can be em based and easily calculable. */
+  font-size: 10px;
+  /* Allow poster to be vertially aligned. */
+  vertical-align: middle;
+  /*  display: table-cell; */ /*This works in Safari but not Firefox.*/
+
+  /* Turn off user selection (text highlighting) by default.
+     The majority of player components will not be text blocks.
+     Text areas will need to turn user selection back on. */
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  -o-user-select: none;
+  user-select: none;
+}
+
+/* Playback technology elements expand to the width/height of the containing div.
+    <video> or <object> */
+.video-js .vjs-tech {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fix for Firefox 9 fullscreen (only if it is enabled). Not needed when checking fullScreenEnabled. */
+.video-js:-moz-full-screen { position: absolute; }
+
+/* Fullscreen Styles */
+body.vjs-full-window {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  overflow-y: auto; /* Fix for IE6 full-window. http://www.cssplay.co.uk/layouts/fixed.html */
+}
+.video-js.vjs-fullscreen {
+  position: fixed;
+  overflow: hidden;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100% !important;
+  height: 100% !important;
+  _position: absolute; /* IE6 Full-window (underscore hack) */
+}
+.video-js:-webkit-full-screen {
+  width: 100% !important; height: 100% !important;
+}
+
+/* Poster Styles */
+.vjs-poster {
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+  cursor: pointer;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+.vjs-poster img {
+  display: block;
+  margin: 0 auto;
+  max-height: 100%;
+  padding: 0;
+  width: 100%;
+}
+
+/* Text Track Styles */
+/* Overall track holder for both captions and subtitles */
+.video-js .vjs-text-track-display {
+  text-align: center;
+  position: absolute;
+  bottom: 4em;
+  left: 1em; /* Leave padding on left and right */
+  right: 1em;
+  font-family: Arial, sans-serif;
+}
+/* Individual tracks */
+.video-js .vjs-text-track {
+  display: none;
+  font-size: 1.4em;
+  text-align: center;
+  margin-bottom: 0.1em;
+  /* Transparent black background, or fallback to all black (oldIE) */
+  background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.50);
+}
+.video-js .vjs-subtitles { color: #fff; } /* Subtitles are white */
+.video-js .vjs-captions { color: #fc6; } /* Captions are yellow */
+.vjs-tt-cue { display: block; }

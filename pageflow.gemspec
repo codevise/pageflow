@@ -56,8 +56,13 @@ Gem::Specification.new do |s|
   # Markdown parser
   s.add_dependency 'htmlentities', '~> 4.3'
 
-  # VideoJS for Asset Pipeline, version fixed at 4.1.0
-  # Recommendation: Do not change
+  # Video tag handling
+  #
+  # WARNING: CSS from the video.js repository has been copied to
+  # pageflow/themes/default/video_player/vjs_base.scss. It needs to be
+  # kept in sync when this dependency is updated. Moreover,
+  # pageflow/video_player/play_button_patch.js might depend on
+  # video.js implementation details.
   s.add_dependency 'videojs_rails', '4.1.0'
 
   # Use jquery as the JavaScript library
