@@ -1,0 +1,8 @@
+en:
+  pageflow:
+    widgets:
+      type_names:
+        classic_player_controls: "Classic"
+        slim_player_controls: "Minimal"
+      roles:
+        player_controls: "Player Controls"
