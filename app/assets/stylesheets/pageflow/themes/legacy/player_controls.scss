@@ -222,6 +222,10 @@
     .vjs-loading-spinner {
       top: 30px;
       left: 31px;
+      margin-left: -0.5em;
+      margin-top: -0.5em;
+      width: 1em;
+      height: 1em;
       opacity: 1;
 
       &:before {
