@@ -1,8 +1,9 @@
 @mixin indicators-icons-icon-font {
   .slideshow {
     > .indicator {
-      padding-right: 60px;
-      padding-top: 10px;
+      @include phone {
+        text-align: right;
+      }
 
       &:after {
         content: "";
@@ -11,6 +12,10 @@
         font-weight: bold;
         vertical-align: middle;
         padding-left: 15px;
+
+        @include phone {
+          padding-left: 10px;
+        }
       }
     }
 

@@ -16,10 +16,6 @@
     z-index: 5;
     pointer-events: none;
 
-    @include phone {
-      bottom: -11px;
-    }
-
     background-color: transparent;
     opacity: 0;
     @include transition(opacity 1s ease);
@@ -51,9 +47,16 @@
   }
 
   .scroll_indicator {
-    left: 8%;
     cursor: pointer;
     visibility: hidden;
+
+    @include desktop {
+      left: 8%;
+    }
+
+    @include phone {
+      right: 15px;
+    }
 
     &.visible {
       pointer-events: all;
