@@ -191,8 +191,7 @@ pageflow.Slideshow = function($el, configurations) {
 
   $(window).on('resize', this.triggerResizeHooks);
 
-  // prevent page from bouncing in modern browsers
-  $(document).on('touchmove', function (e) { e.preventDefault(); });
+  pageflow.nativeScrolling.preventScrollBouncing($el);
 
   $el.addClass('slideshow');
 
