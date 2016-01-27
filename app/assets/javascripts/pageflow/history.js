@@ -46,7 +46,7 @@ pageflow.History.create = function(slideshow, options) {
 
   var adapter;
 
-  if (options.simulate || !pageflow.browser.has('hashchange support')) {
+  if (options.simulate) {
     adapter = new pageflow.History.SimulatedAdapter();
   }
   else if (pageflow.browser.has('pushstate support')) {
