@@ -198,7 +198,7 @@ pageflow.pageType.register('video', _.extend({
 
       var timeout, scrollIndicatorTimeout,
           scrollIndicator = $('.entry .scroll_indicator'),
-          pageContent = pageElement.find('.scroller, .controls, .shadow');
+          pageContent = pageElement.find('.scroller, .controls, .shadow_wrapper');
 
       pageContent.addClass('lock-showing');
 
@@ -253,7 +253,8 @@ pageflow.pageType.register('video', _.extend({
         showControls();
         if (!pageflow.browser.has('phone platform')) {
           clearTimeout(timeout);
-          timeout = setTimeout(hideControls, 2000);
+          // Wait a moment before fading out the control bar
+          timeout = setTimeout(hideControls, 4000);
         }
       }
 
