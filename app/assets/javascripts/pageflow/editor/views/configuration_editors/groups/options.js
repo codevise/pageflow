@@ -11,7 +11,7 @@ pageflow.ConfigurationEditorTabView.groups.define('options', function(options) {
     this.input('delayed_text_fade_in', pageflow.SelectInputView, {values: pageflow.Page.delayedTextFadeIn});
   }
 
-  this.input('description', pageflow.TextAreaInputView, {size: 'short'});
+  this.input('description', pageflow.TextAreaInputView, {size: 'short', disableLinks: true});
 
   if (pageflow.features.isEnabled('atmo')) {
     this.input('atmo_audio_file_id', pageflow.FileInputView, {
