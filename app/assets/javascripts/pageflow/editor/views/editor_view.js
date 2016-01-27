@@ -24,6 +24,9 @@ pageflow.EditorView = Backbone.View.extend({
       togglerTip_closed: I18n.t('pageflow.editor.views.editor_views.show_editor'),
       togglerTip_open: I18n.t('pageflow.editor.views.editor_views.hide_editor'),
       resizerTip: I18n.t('pageflow.editor.views.editor_views.resize_editor'),
+      enableCursorHotkey: false,
+      fxName: 'none',
+
       onresize: function() {
         pageflow.app.trigger('resize');
       }
