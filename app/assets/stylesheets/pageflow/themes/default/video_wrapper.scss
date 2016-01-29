@@ -1,0 +1,20 @@
+.videoWrapper {
+  @include desktop {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
+  @include pad_portrait {
+    position: initial;
+    height: initial;
+  }
+
+  .js & {
+    @extend %pageflow_widget_margin_right !optional;
+
+    @include desktop {
+      width: auto;
+    }
+  }
+}

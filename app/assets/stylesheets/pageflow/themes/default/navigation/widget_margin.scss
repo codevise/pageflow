@@ -1,0 +1,19 @@
+@include pageflow-widget-margin("default_navigation", "right") {
+  @include desktop {
+    margin-right: 85px;
+  }
+
+  @include pad_portrait {
+    margin-right: 0;
+  }
+}
+
+@include pageflow-widget-margin("default_navigation", "right_max") {
+  @include desktop {
+    margin-right: 85px;
+  }
+
+  @include pad_portrait {
+    margin-right: 0;
+  }
+}
