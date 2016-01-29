@@ -820,10 +820,13 @@ de:
       feature_name: Kapitel Hierachie
     common_page_link_attributes:
       label:
+        inline_help: Gib hier eine Bezeichnung ein, um später bei in der Verweis-Übersicht direkt zu erkennen, um welchen Verweis es sich handelt. Die Bezeichnung ist für die Leser nicht sichtbar.
         label: Bezeichnung
       page_transition:
+        inline_help: Wähle hier den Effekt, der beim Übergang zur Zielseite des Verweises benutzt werden soll.
         label: Seitenübergangseffekt
       target_page_id:
+        inline_help: Auf diese Seite kommt der Leser beim Klick auf den Verweis.
         label: Zielseite
     delayed_text_fade_in:
       feature_name: Text verzögert einblenden
@@ -1556,6 +1559,8 @@ de:
           title: Hier kannst Du Deinem Pageflow einen Titel geben, der in der Titelleiste des Browserfensters angezeigt wird. Unter diesem Titel wird Dein Pageflow nach der Veröffentlichung auch in Suchmaschinen indiziert werden
         pageflow/page:
           additional_title: Die Infobox wird über den Steuerelementen zum Starten und Stoppen der Wiedegabe angezeigt.
+          atmo_audio_file_id: Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch auf Folgeseiten nahtlos weiterspielen soll, wähle auf diesen Seiten die selbe Datei aus.
+          atmo_during_playback: Wähle wie sich die Atmo während der Wiedergabe des Hauptmediums dieser Seite verhalten soll.
           delayed_text_fade_in: Blendet die Textinhalte der Seite sowie die Abblendung zeitverzögert ein, nachdem man auf die Seite geblättert hat. So wird für eine gewisse Zeit der Blick auf den Hintergrund freigegeben.
           description: Hier kann der Text eingegeben werden, der angezeigt wird, wenn der User in der Übersicht mit der Mouse über die jeweilige Seite fährt. Außerdem entspricht der hier eingegebene Text auch dem Mouse-Over-Text beim Seitentyp „Seiten-Verweise“, sowie dem Text zum Teilen in sozialen Netzwerken.
           gradient_opacity: ! 'Die Intensität des Farbverlaufs dient der Lesbarkeit von Texten auf Videos oder Bildern.
@@ -1569,6 +1574,7 @@ de:
 
             Alle Änderungen sind in der linken Frontend-Ansicht sichtbar, sobald das entsprechende Texteingabefeld im Editierbereich verlassen wurde.'
           thumbnail_image_id: Das Thumbnail ersetzt das ansonsten automatisch generierte Vorschaubild in der Navigation und in der Übersicht.
+          transition: Wähle hier den Effekt, der beim Erreichen dieser der Seite benutzt werden soll.
       templates:
         inputs:
           file_input:

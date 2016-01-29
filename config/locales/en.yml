@@ -820,10 +820,13 @@ en:
       feature_name: Chapter Hierachy
     common_page_link_attributes:
       label:
+        inline_help: Choose a label to recognize the link within the overview. This label is for your orientation only and will not be displayed to the reader.
         label: Label
       page_transition:
+        inline_help: Choose the animation, that will be used to transition to the link's target page.
         label: Page transition
       target_page_id:
+        inline_help: Users will get to this page when clicking the link.
         label: Target page
     delayed_text_fade_in:
       feature_name: Delayed text fade in
@@ -1508,6 +1511,8 @@ en:
           title: Here you can choose a title for your Pageflow. It will be shown on the title bar of the browser window. It also acts as an indicator for search engines once the report is published.
         pageflow/page:
           additional_title: The info box appears close to the player controls.
+          atmo_audio_file_id: Choose an audio file, that shall be played in the background. If you want this audio to continue playing on following pages, just choose the same file again there.
+          atmo_during_playback: Choose which way the atmo shall behave during playback of this page's main media.
           delayed_text_fade_in: Fades in the page contents after a delay such that the background image can be viewed initially.
           description: You can enter a text, which appears when the user navigates with the mouse over the particular page. This text matches with the mouse-over-text for the page-type „Page References“ as well as with the text, which appears when you share the Pageflow in social networks.
           gradient_opacity: ! 'The opacity of the gradient improves the legibility of the text on background-videos or pictures.
@@ -1526,6 +1531,7 @@ en:
           thumbnail_image_id: ! 'The thumbnail replaces the automatically generated preview-picture in the navigation and overview.
 
 '
+          transition: Choose the animation, that will be used when users scroll to this page.
       templates:
         inputs:
           file_input:
