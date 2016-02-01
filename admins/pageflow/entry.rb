@@ -3,7 +3,6 @@ module Pageflow
     menu :priority => 1
 
     config.batch_actions = false
-    config.clear_sidebar_sections!
 
     index do
       column :title, :sortable => 'title' do |entry|
@@ -19,6 +18,7 @@ module Pageflow
       end
       column :created_at
       column :updated_at
+      column I18n.t('pageflow.admin.entries.published_at'), :first_published_at
       column :class => 'buttons' do |entry|
         if authorized?(:edit, Entry)
           span(link_to(I18n.t('pageflow.admin.entries.editor'), pageflow.edit_entry_path(entry), :class => 'editor button'))
@@ -37,6 +37,11 @@ module Pageflow
                           :active_id => params[:folder_id],
                           :grouped_by_accounts => authorized?(:read, Account))
     end
+
+    filter :title
+    filter :created_at
+    filter :updated_at
+    filter :first_published_at, label: I18n.t('pageflow.admin.entries.first_published_at')
 
     form do |f|
       f.inputs do
