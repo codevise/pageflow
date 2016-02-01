@@ -693,8 +693,11 @@ en:
   pageflow:
     admin:
       accounts:
-        no_entries: No Stories
+        no_entries: No stories
         no_members: No members
+        entries_count: Stories
+        users_count: Members
+        default_theming: Theme
       entries:
         add_folder: Add folder
         confirm_depublish: Unpublish this story?

@@ -9,7 +9,7 @@ module Pageflow
     include Suspendable
 
     included do
-      belongs_to :account, :class_name => 'Pageflow::Account'
+      belongs_to :account, :counter_cache => true, :class_name => 'Pageflow::Account'
 
       has_many :memberships, :dependent => :destroy, :class_name => 'Pageflow::Membership'
       has_many :entries, :through => :memberships, :class_name => 'Pageflow::Entry'

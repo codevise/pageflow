@@ -3,13 +3,23 @@ module Pageflow
     menu :priority => 3
 
     config.batch_actions = false
-    config.clear_sidebar_sections!
 
     index do
       column :name do |account|
         link_to account.name, admin_account_path(account)
       end
+      column I18n.t('pageflow.admin.accounts.entries_count') do |account|
+        account.entries_count
+      end
+      column I18n.t('pageflow.admin.accounts.users_count') do |account|
+        account.users_count
+      end
+      column I18n.t('pageflow.admin.accounts.default_theming') do |account|
+        account.default_theming.theme_name
+      end
     end
+
+    filter :name
 
     form :partial => 'form'
 
