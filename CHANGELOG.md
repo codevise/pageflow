@@ -1,6 +1,17 @@
 # CHANGELOG
 
+### Version 0.9.2
+
+2016-02-02
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.9.1...v0.9.2)
+
+- Bug fix: Prevent unauthorized access of password protected entries.
+  ([#484](https://github.com/codevise/pageflow/pull/484))
+
 ### Version 0.9.1
+
+2015-10-30
 
 [Compare changes](https://github.com/codevise/pageflow/compare/v0.9.0...v0.9.1)
 
