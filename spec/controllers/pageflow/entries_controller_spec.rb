@@ -149,6 +149,17 @@ module Pageflow
     end
 
     describe '#show' do
+      context 'with format */*' do
+        it 'responds with forbidden for entry published with password' do
+          entry = create(:entry, :published_with_password, password: 'abc123abc')
+
+          request.env['HTTP_ACCEPT'] = '*/*'
+          get(:show, id: entry)
+
+          expect(response.status).to eq(401)
+        end
+      end
+
       context 'with format html' do
         it 'responds with success for published entry' do
           entry = create(:entry, :published)

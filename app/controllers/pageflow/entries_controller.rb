@@ -24,7 +24,7 @@ module Pageflow
           @entry = PublishedEntry.find(params[:id], entry_request_scope)
           I18n.locale = @entry.locale
 
-          if request.format.html? && @entry.password_protected?
+          if !request.format.css? && @entry.password_protected?
             check_entry_password(@entry)
           end
 
