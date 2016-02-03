@@ -58,6 +58,7 @@
     cleanup: function() {
       this._triggerPageTypeHook('deactivating');
       this._triggerDelayedPageTypeHook('deactivated');
+      this._triggerPageTypeHook('cleanup');
     },
 
     refreshScroller: function() {
