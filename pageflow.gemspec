@@ -53,6 +53,9 @@ Gem::Specification.new do |s|
   # Markdown parser
   s.add_dependency 'kramdown', '~> 1.5'
 
+  # Markdown parser
+  s.add_dependency 'htmlentities', '~> 4.3'
+
   # VideoJS for Asset Pipeline, version fixed at 4.1.0
   # Recommendation: Do not change
   s.add_dependency 'videojs_rails', '4.1.0'
