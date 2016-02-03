@@ -66,6 +66,12 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
     return (currentPage.index() > previousPage.index() ? 'forwards' : 'backwards');
   };
 
+  this.getDefaultTransition = function(previousPage, currentPage, pages) {
+    if (previousPage.is(getParentPage(currentPage, pages))) {
+      return 'scroll_over_from_right';
+    }
+  };
+
   function sameStoryline(page1, page2) {
     return entryData.getStorylineIdByPagePermaId(page1.page('getPermaId')) ==
       entryData.getStorylineIdByPagePermaId(page2.page('getPermaId'));
