@@ -3,16 +3,13 @@ module Pageflow
     class UsersTab < ViewComponent
       def build(theming)
         account = theming.account
-        if account.users.any?
-          table_for account.users, :i18n => User do
-            column :full_name do |user|
-              link_to user.full_name, admin_user_path(user)
-            end
-          end
-        else
-          div :class => "blank_slate_container" do
-            span :class => "blank_slate" do
-              I18n.t('pageflow.admin.accounts.no_members')
+        embedded_index_table account.users.order(
+            params[:order] && User.column_names.include?(params[:order].gsub('_asc', '').gsub('_desc', '')) ?
+                params[:order].gsub('_asc', ' asc').gsub('_desc', ' desc') : 'last_name asc'),
+                             blank_slate_text: I18n.t('pageflow.admin.entries.no_members') do
+          table_for_collection :sortable => true, :class => 'users', :i18n => User do
+            column :formal_name, :sortable => :last_name do |user|
+              link_to user.formal_name, admin_user_path(user)
             end
           end
         end

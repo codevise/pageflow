@@ -2,8 +2,8 @@ module Pageflow
   module Admin
     class MembersTab < ViewComponent
       def build(entry)
-        if entry.memberships.any?
-          table_for entry.memberships, :class => 'memberships' do
+        embedded_index_table entry.memberships, blank_slate_text: I18n.t('pageflow.admin.entries.no_members') do
+          table_for_collection :class => 'memberships', :i18n => Pageflow::Membership do
             column t('activerecord.attributes.user.full_name'), class: 'name' do |membership|
               if authorized? :manage, User
                 link_to membership.user.full_name, admin_user_path(membership.user), :class => 'view_creator'
@@ -13,14 +13,9 @@ module Pageflow
             end
             column do |membership|
               if authorized?(:destroy, membership)
-                link_to(I18n.t('pageflow.admin.entries.remove'), admin_entry_membership_path(membership.entry, membership), :method => :delete, :data => {:confirm => I18n.t('active_admin.delete_confirmation'), :rel => 'delete_membership'})
+                link_to(I18n.t('pageflow.admin.entries.remove'), admin_entry_membership_path(membership.entry, membership),
+                        :method => :delete, :data => {:confirm => I18n.t('active_admin.delete_confirmation'), :rel => 'delete_membership'})
               end
-            end
-          end
-        else
-          div :class => "blank_slate_container" do
-            span :class => "blank_slate" do
-              I18n.t('pageflow.admin.entries.no_members')
             end
           end
         end

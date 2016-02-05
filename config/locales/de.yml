@@ -695,7 +695,13 @@ de:
       accounts:
         no_entries: Keine Beiträge
         no_members: Keine Benutzer
+        entries_count: Beiträge
+        users_count: Mitglieder
+        default_theming: Theme
       entries:
+        published_at: Veröffentlicht am
+        first_published_at: Zuerst veröffentlicht
+        last_published_at: Zuletzt veröffentlicht
         add_folder: Ordner hinzufügen
         confirm_depublish: Soll der Beitrag wirklich depubliziert werden?
         confirm_duplicate: Beitrag wirklich duplizieren?
