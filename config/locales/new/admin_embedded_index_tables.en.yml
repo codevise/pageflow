@@ -1,0 +1,5 @@
+en:
+  activerecord:
+    attributes:
+      pageflow/membership:
+        created_at: "Member since"
