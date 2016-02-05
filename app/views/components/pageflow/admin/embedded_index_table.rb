@@ -18,8 +18,10 @@ module Pageflow
 
       def table_for_collection(*args, &block)
         if scopes.any?
-          custom_scopes_renderer(scopes, :default_scope => scopes.first.id)
+          custom_scopes_renderer(scopes, default_scope: scopes.first.id)
         end
+
+        record_sort_columns(&block)
 
         if scoped_collection.any?
           build_table(*args, &block)
@@ -31,15 +33,15 @@ module Pageflow
       private
 
       def build_table(*args, &block)
-        paginated_collection(scoped_collection.page(params[:page]).per(10),
-                             :download_links => false) do
+        paginated_collection(paginate(apply_sorting(scoped_collection)),
+                             download_links: false) do
           table_for(collection, *args, &block)
         end
       end
 
       def build_blank_slate
-        div :class => "blank_slate_container" do
-          span :class => "blank_slate" do
+        div class: 'blank_slate_container' do
+          span class: 'blank_slate' do
             @blank_slate_text
           end
         end
@@ -50,9 +52,63 @@ module Pageflow
       end
 
       def current_scope
-        scopes.find do |scope|
+        scopes.detect do |scope|
           scope.id.to_s == params[:scope]
         end || scopes.first
+      end
+
+      def paginate(collection)
+        collection.page(params[:page]).per(10)
+      end
+
+      def apply_sorting(collection)
+        if has_sort_columns?
+          collection.reorder(order_clause)
+        else
+          collection
+        end
+      end
+
+      def has_sort_columns?
+        @sort_columns.any?
+      end
+
+      def order_clause
+        if valid_order?
+          params[:order].gsub('_asc', ' ASC').gsub('_desc', ' DESC')
+        else
+          "#{@sort_columns.first} ASC"
+        end
+      end
+
+      def valid_order?
+        params[:order] &&
+          @sort_columns.include?(params[:order].gsub('_asc', '').gsub('_desc', ''))
+      end
+
+      def record_sort_columns(&block)
+        recorder = SortColumnRecorder.new
+        recorder.instance_eval(&block)
+        @sort_columns = recorder.columns
+      end
+
+      class SortColumnRecorder
+        attr_reader :columns
+
+        def initialize
+          @columns = []
+        end
+
+        def column(name = nil, options = {})
+          if options[:sortable].is_a?(String) || options[:sortable].is_a?(Symbol)
+            @columns << options[:sortable].to_s
+          elsif options[:sortable] != false && name
+            @columns << name.to_s
+          end
+        end
+
+        def row_attributes
+        end
       end
     end
   end
