@@ -3,13 +3,23 @@ module Pageflow
     menu :priority => 3
 
     config.batch_actions = false
-    config.clear_sidebar_sections!
 
     index do
       column :name do |account|
         link_to account.name, admin_account_path(account)
       end
+      column :entries_count do |account|
+        account.entries_count
+      end
+      column :users_count do |account|
+        account.users_count
+      end
+      column :default_theming do |account|
+        account.default_theming.theme_name
+      end
     end
+
+    filter :name
 
     form :partial => 'form'
 
@@ -65,6 +75,10 @@ module Pageflow
         end
 
         result
+      end
+
+      def scoped_collection
+        super.includes(:users, :entries, :themings)
       end
 
       private
