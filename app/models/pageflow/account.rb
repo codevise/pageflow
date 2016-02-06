@@ -4,9 +4,9 @@ module Pageflow
 
     has_many :users
     has_many :entries
-    has_many :folders
+    has_many :folders, dependent: :destroy
 
-    has_many :themings
+    has_many :themings, dependent: :destroy
     belongs_to :default_theming, :class_name => 'Theming'
 
     validates :default_theming, :presence => true
