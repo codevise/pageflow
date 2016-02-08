@@ -27,7 +27,9 @@ pageflow.pageType.register('video', _.extend({
     //
 
     this.videoPlayer.ensureCreated();
-    pageElement.find('.controls').autoHidePlayerControls('reset');
+    pageElement.find('.controls').autoHidePlayerControls('reset', {
+      autoplay: configuration.autoplay !== false
+    });
 
     if (pageflow.browser.has('mobile platform')) {
       this.videoPlayer.showPosterImage();

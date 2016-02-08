@@ -53,9 +53,15 @@ jQuery.widget('pageflow.autoHidePlayerControls', {
     }
   },
 
-  reset: function() {
+  reset: function(options) {
     this.element
-      .removeClass('has_been_faded')
-      .addClass('unplayed');
+      .removeClass('has_been_faded');
+
+    this.element.toggleClass('unplayed', !this._willAutoplay(options));
+  },
+
+  _willAutoplay: function(options) {
+    options = options || {};
+    return options.autoplay && !pageflow.browser.has('mobile platform');
   }
 });
