@@ -35,6 +35,12 @@ $slim-player-controls-info-box-separator-line-color: #888 !default;
       padding-bottom: 5px;
     }
 
+    &.title_empty h3,
+    &.description_empty h3 {
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
     a {
       color: $slim-player-controls-info-box-text-color;
     }
