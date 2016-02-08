@@ -9,6 +9,9 @@ pageflow.infoBox = {
     infoBox.find('h3').html(configuration.get('additional_title') || '');
     infoBox.find('p').html(configuration.get('additional_description') || '');
 
-    infoBox.toggleClass('empty', !configuration.get('additional_description') && !configuration.get('additional_title'));
+    infoBox.toggleClass('empty', !configuration.get('additional_description') &&
+      !configuration.get('additional_title'));
+    infoBox.toggleClass('title_empty', !configuration.get('additional_title'));
+    infoBox.toggleClass('description_empty', !configuration.get('additional_description'));
   }
 };
