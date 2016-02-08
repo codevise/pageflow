@@ -14,7 +14,6 @@ $slim-player-controls-info-box-separator-line-color: #888 !default;
     padding: 0 1%;
     position: relative;
     z-index: 2;
-    font-size: 0.8em;
     border-radius: 3px;
     color: $slim-player-controls-info-box-text-color;
     background-color: $slim-player-controls-info-box-background-color;
@@ -26,8 +25,10 @@ $slim-player-controls-info-box-separator-line-color: #888 !default;
 
     h3,
     p {
+      font-size: 1.1em;
       margin: 15px 0;
       width: 100%;
+      max-width: none;
     }
 
     h3 {
@@ -61,7 +62,8 @@ $slim-player-controls-info-box-separator-line-color: #888 !default;
     z-index: 2;
 
     @include desktop {
-      width: 434px;
+      width: 100%;
+      max-width: 700px;
       bottom: 80px;
     }
 
