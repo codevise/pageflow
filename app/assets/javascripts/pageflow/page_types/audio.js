@@ -20,7 +20,9 @@ pageflow.pageType.register('audio', _.extend({
     //
 
     this._ensureAudioPlayer(pageElement, configuration);
-    pageElement.find('.controls').autoHidePlayerControls('reset');
+    pageElement.find('.controls').autoHidePlayerControls('reset', {
+      autoplay: configuration.autoplay !== false
+    });
 
     var that = this;
 
