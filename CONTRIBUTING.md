@@ -18,11 +18,11 @@ or the headless browser based Javascript test suite
 
 PhantomJS has to be installed on the system.
 
-The dummy Rails used for tests is created automatically through the 
+The dummy Rails app used for tests is created automatically through the 
 install generator during test runs. To have it regenerated,
 simply delete the contents of the `spec/dummy` directory. This is 
 required everytime new migrations are added or if tests are failing 
-after pulling changes into the the local working tree.
+after pulling changes into the local working tree.
 
 Pageflow can run its test suite against Rails 4.0 and 4.1
 applications. The dummy app is created by a Rails template using the
