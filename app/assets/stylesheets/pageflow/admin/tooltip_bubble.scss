@@ -1,0 +1,30 @@
+$tooltip-bubble-background-color: rgba(0, 0, 0, 0.7);
+
+$tooltip-bubble-text-color: #fff;
+
+.tooltip_bubble {
+  position: absolute;
+  display: none;
+  background-color: $tooltip-bubble-background-color;
+  color: $tooltip-bubble-text-color;
+  padding: 5px 10px;
+  top: -30px;
+  white-space: nowrap;
+  border-radius: 2px;
+  pointer-events: none;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 8px;
+    @include triangle(10px, $tooltip-bubble-background-color, down);
+  }
+}
+
+:focus,
+:hover {
+  > .tooltip_bubble {
+    display: block;
+  }
+}

@@ -1,0 +1,31 @@
+$icon-link-color: #555;
+
+$icon-link-acitve-color: #000;
+
+.icon_link_to {
+  a {
+    @include background-icon-center($font-size: 16px, $color: $icon-link-color);
+    position: relative;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    vertical-align: bottom;
+
+    &:focus,
+    &:hover {
+      @include background-icon-color($icon-link-acitve-color);
+    }
+
+    &.editor {
+      @include fa-pencil-icon;
+    }
+
+    &.preview {
+      @include fa-eye-icon;
+    }
+
+    &.show_public {
+      @include fa-external-link-icon;
+    }
+  }
+}

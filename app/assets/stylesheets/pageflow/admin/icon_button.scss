@@ -1,0 +1,25 @@
+$icon-button-color: #fff;
+
+a.icon_button:link {
+  @include background-icon-left($font-size: 15px,
+                                $color: $icon-button-color,
+                                $left: 9px,
+                                $top: 50%);
+  padding-left: 30px;
+
+  &:before {
+    font-weight: normal;
+  }
+
+  &.editor {
+    @include fa-pencil-icon;
+  }
+
+  &.preview {
+    @include fa-eye-icon;
+  }
+
+  &.show_public {
+    @include fa-external-link-icon;
+  }
+}
