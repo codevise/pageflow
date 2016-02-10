@@ -6,6 +6,13 @@ label {
   color: #444;
   font-size: 11px;
   font-weight: bold;
+
+  .name {
+    display: inline-block;
+    width: 84%;
+    vertical-align: middle;
+    line-height: 15px;
+  }
 }
 
 /** Make sure the label is on top when an inline help text is displayed */
@@ -237,6 +244,7 @@ textarea.short {
     width: 20px;
     height: 17px;
     text-align: center;
+    pointer-events: all;
   }
 
   position: absolute;
@@ -245,14 +253,15 @@ textarea.short {
   width: 30px;
   height: 0;
   overflow: hidden;
+  pointer-events: none;
 
-  padding-top: 23px;
+  padding-top: 32px;
   margin: 1px;
 
   &:hover {
     padding-left: 5px;
     padding-right: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 12px;
     margin: 0;
     background-color: #e4eef6;
     border: solid 1px #aaa;
