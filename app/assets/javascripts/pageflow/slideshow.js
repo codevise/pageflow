@@ -98,17 +98,21 @@ pageflow.Slideshow = function($el, configurations) {
         currentPage = page;
         currentPageIndex = currentPage.index();
 
-        var direction = this.scrollNavigator.getTransitionDirection(previousPage, currentPage, options);
+        var transition = options.transition ||
+          this.scrollNavigator.getDefaultTransition(previousPage, currentPage, pages);
+
+        var direction =
+          this.scrollNavigator.getTransitionDirection(previousPage, currentPage, options);
 
         var outDuration = previousPage.page('deactivate', {
           direction: direction,
-          transition: options.transition
+          transition: transition
         });
 
         var inDuration = currentPage.page('activate', {
           direction: direction,
           position: options.position,
-          transition: options.transition
+          transition: transition
         });
 
         preload.start(currentPage);
