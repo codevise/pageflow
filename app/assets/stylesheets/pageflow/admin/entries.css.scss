@@ -60,14 +60,7 @@
     clear: both;
   }
 
-  td.buttons {
-    padding: 5px;
-  }
-
-  td.members {
-    max-width: 130px;
-  }
-
-  @import './entries/folders';
-  @import './entries/user_badge_list';
+  @import "./entries/index_table";
+  @import "./entries/folders";
+  @import "./entries/user_badge_list";
 }

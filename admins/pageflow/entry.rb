@@ -6,26 +6,41 @@ module Pageflow
     config.clear_sidebar_sections!
 
     index do
-      column :title, :sortable => 'title' do |entry|
-        link_to entry.title, admin_entry_path(entry)
+      column class: 'publication_state' do |entry|
+        entry_publication_state_indicator(entry)
       end
-      column I18n.t('pageflow.admin.entries.members'), :class => 'members' do |entry|
+      column :title, sortable: 'title' do |entry|
+        link_to(entry.title, admin_entry_path(entry))
+      end
+      column I18n.t('pageflow.admin.entries.members'), class: 'members' do |entry|
         entry_user_badge_list(entry)
       end
       if authorized?(:read, Account)
-        column :account, :sortable => 'account_id' do |entry|
-          link_to(entry.account.name, admin_account_path(entry.account), :data => {:id => entry.account.id})
+        column :account, sortable: 'account_id' do |entry|
+          link_to(entry.account.name,
+                  admin_account_path(entry.account),
+                  data: {id: entry.account.id})
         end
       end
       column :created_at
       column :edited_at
-      column :class => 'buttons' do |entry|
+      column :published_at, sortable: 'pageflow_revisions.published_at'
+
+      column class: 'buttons' do |entry|
         if authorized?(:edit, Entry)
-          span(link_to(I18n.t('pageflow.admin.entries.editor'), pageflow.edit_entry_path(entry), :class => 'editor button'))
+          icon_link_to(pageflow.edit_entry_path(entry),
+                       tooltip: I18n.t('pageflow.admin.entries.editor_hint'),
+                       class: 'editor')
         end
-        span(link_to(I18n.t('pageflow.admin.entries.preview'), preview_admin_entry_path(entry), :class => 'preview button'))
+
+        icon_link_to(preview_admin_entry_path(entry),
+                     tooltip: I18n.t('pageflow.admin.entries.preview'),
+                     class: 'preview')
+
         if entry.published?
-          span(link_to(I18n.t('pageflow.admin.entries.show_public'), pretty_entry_url(entry), :class => 'show_public button'))
+          icon_link_to(pretty_entry_url(entry),
+                       tooltip: I18n.t('pageflow.admin.entries.show_public_hint'),
+                       class: 'show_public')
         end
       end
     end
@@ -130,7 +145,8 @@ module Pageflow
       end
 
       def scoped_collection
-        params.key?(:folder_id) ? super.where(:folder_id => params[:folder_id]) : super
+        result = super.includes(:theming, :account, :users, :published_revision)
+        params.key?(:folder_id) ? result.where(folder_id: params[:folder_id]) : result
       end
 
       def permitted_params
