@@ -81,6 +81,7 @@ module Pageflow
       def permitted_theming_attributes
         [
           :cname,
+          :additional_cnames,
           :theme_name,
           :imprint_link_url,
           :imprint_link_label,

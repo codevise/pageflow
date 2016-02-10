@@ -1,0 +1,11 @@
+en:
+  activerecord:
+    attributes:
+      "pageflow/theming":
+        additional_cnames: "Additional CNAMES"
+  pageflow:
+    admin:
+      themings:
+        cname_hint: "Used in public sharing URLs."
+        additional_cnames_hint: "Comma separated list of additional CNAMES. Used only to select the correct redirect URL."
+        home_url_hint: "Used for requests to the root path with one of the above CNAMES. Default target location for the home button."
