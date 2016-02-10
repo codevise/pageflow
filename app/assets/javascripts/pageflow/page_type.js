@@ -14,6 +14,8 @@ pageflow.pageType = (function() {
     deactivating: function(pageElement, configuarion) {},
     deactivated: function(pageElement, configuarion) {},
     update: function(pageElement, configuarion) {},
+    cleanup: function(pageElement, configuarion) {},
+
     embeddedEditorViews: function() {},
 
     linkedPages: function() {
