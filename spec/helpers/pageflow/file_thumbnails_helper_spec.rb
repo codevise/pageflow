@@ -21,6 +21,15 @@ module Pageflow
         expect(result).to include(".pageflow_image_file_link_thumbnail_large_#{image_file.id}")
       end
 
+      it 'renders lazy loaded variants' do
+        entry = create(:entry)
+        image_file = create(:image_file, used_in: entry.draft)
+
+        result = helper.file_thumbnails_css(entry.draft)
+
+        expect(result).to include(".load_image.lazy_pageflow_image_file_link_thumbnail_#{image_file.id}")
+      end
+
       it 'renders link thumbnail rule for video files of revision' do
         entry = create(:entry)
         video_file = create(:video_file, used_in: entry.draft)
