@@ -59,7 +59,10 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
         collection: pageflow.imageFiles,
         fileSelectionHandler: 'entryConfiguration'
       });
-      this.input('summary', pageflow.TextAreaInputView);
+      this.input('summary', pageflow.TextAreaInputView, {
+        disableRichtext: true,
+        disableLinks: true
+      });
     });
 
     this.formContainer.show(configurationEditor);

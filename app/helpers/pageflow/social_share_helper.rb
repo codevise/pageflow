@@ -64,7 +64,7 @@ module Pageflow
     private
 
     def social_share_sanitize(text)
-      strip_tags(text.gsub(/<br ?\/?>/, ' ').squish)
+      HTMLEntities.new.decode(strip_tags(text.gsub(/<br ?\/?>|&nbsp;/, ' ').squish))
     end
   end
 end

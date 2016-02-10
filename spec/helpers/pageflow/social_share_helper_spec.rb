@@ -15,12 +15,12 @@ module Pageflow
 
       it 'returns html stripped text' do
         entry = create(:entry, :published)
-        entry.published_revision.summary = 'social<br />share <b>description</b>'
+        entry.published_revision.summary = 'social<br />share <b>description</b> &amp;&nbsp;more'
         published_entry = PublishedEntry.new(entry)
 
         result = helper.social_share_entry_description(published_entry)
 
-        expect(result).to eq('social share description')
+        expect(result).to eq('social share description & more')
       end
 
       it 'returns text of first page which has text' do
