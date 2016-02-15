@@ -52,7 +52,11 @@
 
           if (active) {
             if (options.scrollToActive) {
-              scroller.scrollToElement(link[0], highlightOptions.animate ? 800 : 0);
+              var target = options.scrollToActive === true ?
+                link :
+                link.parents(options.scrollToActive);
+
+              scroller.scrollToElement(target[0], highlightOptions.animate ? 800 : 0);
             }
           }
         });
