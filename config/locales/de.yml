@@ -169,15 +169,18 @@ de:
         title: Titel
       pageflow/entry:
         account: Konto
+        author: Autor
         created_at: Erstellt am
         credits: Credits
         emphasize_chapter_beginning: Kapitelanfang hervorheben
         emphasize_new_pages: Neue Seiten hervorheben
         home_button_enabled: Home-Button anzeigen
         home_url: Home-Button URL
+        keywords: Schlüsselwörter
         locale: Sprache
         manual_start: Multimedia Hinweis vor dem Start anzeigen
         published?: Veröffentlichungstatus
+        publisher: Herausgeber
         share_image_id: Social Sharing Bild
         summary: Zusammenfassung
         title: Titel

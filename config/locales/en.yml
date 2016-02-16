@@ -169,15 +169,18 @@ en:
         title: Title
       pageflow/entry:
         account: Account
+        author: Author
         created_at: Created at
         credits: Credits
         emphasize_chapter_beginning: Emphasize chapter beginning
         emphasize_new_pages: Emphasize new pages
         home_button_enabled: Show 'Home' button
         home_url: ! '''Home'' Button URL'
+        keywords: Keywords
         locale: Language
         manual_start: Show Instruction-Overlay
         published?: Publication state
+        publisher: Publisher
         share_image_id: Social Sharing Image
         summary: Summary
         title: Title
