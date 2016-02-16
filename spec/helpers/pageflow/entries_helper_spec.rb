@@ -7,19 +7,19 @@ module Pageflow
   describe EntriesHelper do
     describe '#pretty_entry_title' do
       it 'equals the entry title by default' do
-        entry = PublishedEntry.new(build(:entry, title: 'test'))
+        entry = PublishedEntry.new(build(:entry, title: 'test'), build(:revision))
         expect(helper.pretty_entry_title(entry)).to eq('test')
       end
 
       it 'includes the cname domain when present' do
         theming = build(:theming, cname: 'www.example.com')
-        entry = PublishedEntry.new(build(:entry, title: 'test', theming: theming))
+        entry = PublishedEntry.new(build(:entry, title: 'test', theming: theming), build(:revision))
         expect(helper.pretty_entry_title(entry)).to eq('test - example.com')
       end
 
       it 'does not include empty cname domain' do
         theming = build(:theming, cname: '')
-        entry = PublishedEntry.new(build(:entry, title: 'test', theming: theming))
+        entry = PublishedEntry.new(build(:entry, title: 'test', theming: theming), build(:revision))
         expect(helper.pretty_entry_title(entry)).to eq('test')
       end
     end
