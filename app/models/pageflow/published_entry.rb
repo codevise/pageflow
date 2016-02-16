@@ -11,6 +11,7 @@ module Pageflow
              :enabled_feature_names,
              :to_model, :to_key, :persisted?,
              :authenticate,
+             :users,
              :to => :entry)
 
     delegate(:widgets,

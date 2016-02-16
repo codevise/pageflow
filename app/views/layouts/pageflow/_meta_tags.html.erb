@@ -1,5 +1,5 @@
   <meta name="dc.language" content="<%= I18n.locale %>" />
   <meta name="keywords" content="pageflow, multimedia, reportage">
   <meta name="description" content="">
-  <meta name="author" content="Pageflow">
-  <meta name="publisher" content="Pageflow">
+  <meta name="author" content="<%= content_for?(:author) ? yield(:author) : 'Pageflow' %>">
+  <meta name="publisher" content="<%= content_for?(:publisher) ? yield(:publisher) : 'Pageflow' %>">

@@ -33,3 +33,6 @@
 
   <%= render 'pageflow/entries/analytics', :entry => @entry %>
 <% end %>
+
+<% content_for :author, @entry.users.map(&:full_name).to_sentence if @entry.users.present? %>
+<% content_for :publisher, @entry.account.name %>
