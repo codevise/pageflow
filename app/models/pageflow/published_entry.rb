@@ -18,7 +18,7 @@ module Pageflow
              :storylines, :main_storyline_chapters, :chapters, :pages,
              :files,
              :image_files, :video_files, :audio_files,
-             :title, :summary, :credits, :manual_start,
+             :summary, :credits, :manual_start,
              :emphasize_chapter_beginning,
              :emphasize_new_pages,
              :share_image_id, :share_image_x, :share_image_y,
@@ -30,6 +30,14 @@ module Pageflow
       @entry = entry
       @revision = revision || entry.published_revision
       @custom_revision = !!revision
+    end
+
+    def title
+      if revision
+        revision.title.presence || entry.title
+      else
+        entry.title
+      end
     end
 
     def stylesheet_model
