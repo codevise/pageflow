@@ -2,7 +2,7 @@
 
 <%= social_share_entry_image_tags(entry) %>
 
-<%= tag :meta, :property => "og:title", :content => "#{entry.title} - #{entry.theming.cname_domain}" %>
+<%= tag :meta, :property => "og:title", :content => pretty_entry_title(entry) %>
 <%= tag :meta, :property => "og:description", :name => "description", :content => social_share_entry_description(entry) %>
 <%= tag :meta, :property => "og:url", :content => pretty_entry_url(entry) %>
 <%= tag :meta, :property => "og:type", :content => "website" %>
