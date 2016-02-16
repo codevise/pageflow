@@ -1,4 +1,4 @@
-<% @page_title = pretty_entry_title(@entry.title) %>
+<% @page_title = pretty_entry_title(@entry) %>
 
 <% content_for(:head) do %>
   <%= cache [@entry, :head, @entry.share_target] do %>
