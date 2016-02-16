@@ -42,7 +42,6 @@ body {
 .navigation_mobile {
   z-index: 1;
   color: #fff;
-  font-family: sourcesanspro;
   position: absolute;
   top: 0;
   right: 0;
@@ -73,7 +72,6 @@ body {
     position: absolute;
     width: 45px;
     height: 45px;
-    background-image: image-url('pageflow/menu_mobile_sprite3.png');
     background-position: -45px 0px;
     background-size: auto 100%;
     right: 10px;
@@ -89,13 +87,11 @@ body {
       opacity: 0;
       pointer-events: none;
       bottom: 16px;
-      background-image: image-url('pageflow/menu_mobile_imprint.png');
     }
     &.sharing {
       top: 80px;
       opacity: 0;
       pointer-events: none;
-      background-image: image-url('pageflow/menu_mobile_sharing.png');
     }
   }
 
@@ -145,7 +141,6 @@ body {
     bottom: 0;
     width: 0;
     overflow: hidden;
-    background-color: #232323;
     @include transition(visibility 250ms, right 250ms, width 0s 250ms);
 
     .navigation_site_detail {
@@ -153,15 +148,8 @@ body {
     }
 
     .credits {
-      font-family: "sourcesanspro";
-
       a {
         margin-top: 1em;
-        color: #b4c552;
-
-        &:hover {
-          color: white;
-        }
       }
     }
 
@@ -271,13 +259,8 @@ body {
       }
     }
 
-    a.active {
-      border-left: 5px solid #A6D513;
-    }
-
     .credits {
       padding: 15px;
-      color: grey;
     }
   }
 
