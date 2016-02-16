@@ -33,11 +33,7 @@ module Pageflow
     end
 
     def title
-      if revision
-        revision.title.presence || entry.title
-      else
-        entry.title
-      end
+      revision.title.presence || entry.title
     end
 
     def stylesheet_model

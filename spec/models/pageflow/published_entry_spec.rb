@@ -6,15 +6,14 @@ module Pageflow
       let(:entry) { create(:entry, title: 'Metropolis') }
       let(:published_entry) { PublishedEntry.new(entry) }
 
-      it 'is fetched from the revision' do
+      it 'is fetched from the revision when present' do
         create(:revision, :published, entry: entry, title: 'Blade Runner')
         expect(published_entry.title).to eq('Blade Runner')
       end
 
-      context 'not present on the revision' do
-        it 'is fetched from the entry' do
-          expect(published_entry.title).to eq('Metropolis')
-        end
+      it 'is fetched from the entry when absent from the revision' do
+        create(:revision, :published, entry: entry, title: '')
+        expect(published_entry.title).to eq('Metropolis')
       end
     end
 
