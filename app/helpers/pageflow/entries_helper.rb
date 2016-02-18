@@ -1,10 +1,7 @@
 module Pageflow
   module EntriesHelper
     def pretty_entry_title(entry)
-      [].tap do |title|
-        title << entry.title
-        title << entry.theming.cname_domain if entry.theming.cname_domain.present?
-      end.join(' - ')
+      [entry.title, entry.theming.cname_domain.presence].compact.join(' - ')
     end
 
     def pretty_entry_url(entry)
