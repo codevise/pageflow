@@ -29,6 +29,11 @@ module Pageflow
       @draft = draft || entry.draft
     end
 
+    # So we can always get to the original Entry title.
+    def entry_title
+      entry.title
+    end
+
     def create_file(model, attributes)
       file = model.create(attributes) do |f|
         f.entry = entry
