@@ -8,6 +8,8 @@
           element = this.element,
           scroller;
 
+      pageflow.nativeScrolling.preventScrollBouncing(element);
+
       $('body').on('touchstart mousedown MSPointerDown pointerdown', function(event) {
         if (element.hasClass('active') && !$(event.target).parents().filter(element).length) {
           element.removeClass('active imprint sharing');
