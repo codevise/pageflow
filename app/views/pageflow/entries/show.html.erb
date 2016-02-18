@@ -10,6 +10,7 @@
     <%= render_widget_head_fragments(@entry) %>
 
     <%= tag :link, :rel => 'icon', :href => image_path("pageflow/themes/#{@entry.theming.theme.directory_name}/favicon.ico"), :type => 'image/ico' %>
+    <%= render 'pageflow/entries/meta_tags', :entry => @entry %>
   <% end %>
 <% end %>
 
@@ -33,7 +34,3 @@
 
   <%= render 'pageflow/entries/analytics', :entry => @entry %>
 <% end %>
-
-<% content_for :author, @entry.author %>
-<% content_for :publisher, @entry.publisher %>
-<% content_for :keywords, @entry.keywords %>
