@@ -45,9 +45,9 @@
 
       /* share-button */
       $('.navigation_menu .navigation_menu_box a', element).focus(function() {
-        $(this).parent().parent().addClass('focused');
+        $(this).parents('.navigation_menu').addClass('focused');
       }).blur(function() {
-        $(this).parent().parent().removeClass('focused');
+        $(this).parents('.navigation_menu').removeClass('focused');
       });
 
       var shareBox = $('.navigation_share_box', element),
