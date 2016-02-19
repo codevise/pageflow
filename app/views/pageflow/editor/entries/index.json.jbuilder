@@ -1,1 +1,1 @@
-json.array!(@entries, :partial => 'entry', :as => :entry)
+json.array!(@entries, :partial => 'other_entry', :as => :other_entry)
