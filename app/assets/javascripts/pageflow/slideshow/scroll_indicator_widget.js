@@ -59,6 +59,9 @@
 
       parent.on('pageactivate', function(event) {
         update($(event.target));
+
+        clearTimeout(fadeTimeout);
+        that.element.removeClass('faded');
       });
 
       pageflow.events.on({
