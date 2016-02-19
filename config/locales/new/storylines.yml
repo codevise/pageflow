@@ -36,7 +36,7 @@ de:
         inline_help_disabled: "Die erste Seite dieses Erzählstrangs ist die Startseite des Beitrags."
       parent_page_perma_id:
         label: "Übergeordnete Seite"
-        inline_help: "Zielseite, um den Erzählstrang zu verlassen. Bestimmt die Kapitelhierarchie. Alle Kapitel des Erzählstrangs werden dem Kapitel dieser Seite untergeordnet."
+        inline_help: "Die Auswahl einer übergeordneten Seite bestimmt, auf welcher Seite der User am Ende eines untergeordneten Erzählstrangs oder bei Klick auf den Zurück-Button landet. Mit einer solchen Seite kann die Kapitelhierarchie bestimmt werden, falls mehr als zwei Erzählstränge benutzt werden. Mehr Informationen zur Kapitelhierachie findest Du im Hilfethema 'Erzählstränge'."
       scroll_successor_id:
         label: "Scroll Nachfolger"
         inline_help: "Seite, die beim Weiterscrollen am Ende des Erzählstrangs erreicht werden soll. Standardmäßig gelangt der Leser zur übergeordneten Seite zurück."
