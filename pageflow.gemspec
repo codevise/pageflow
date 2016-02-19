@@ -89,6 +89,11 @@ Gem::Specification.new do |s|
   # Scss compiler
   s.add_dependency 'sass', '~> 3.4'
 
+  # Newer sprocket version allow sprockets 3 which causes
+  # precompilation errors due to the arity of the lambda added to
+  # `config.assets.precompile` in `pageflow/engine.rb`.
+  s.add_dependency 'sprockets-rails', '~> 2.0.1'
+
   # Using translations from rails locales in javascript code.
   s.add_dependency 'i18n-js', '~> 2.1'
 
