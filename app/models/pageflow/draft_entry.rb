@@ -65,7 +65,7 @@ module Pageflow
     end
 
     def self.accessible_by(ability, action)
-      Entry.accessible_by(ability, action).map do |entry|
+      Entry.includes(:draft).accessible_by(ability, action).map do |entry|
         DraftEntry.new(entry)
       end
     end
