@@ -1,0 +1,15 @@
+.unsupported_browser_hint {
+  position: absolute;
+  top: 0;
+  left: 25%;
+  right: 25%;
+  z-index: 1000;
+  line-height: 25px;
+  padding: 10px 50px;
+
+  font-family: sourcesanspro;
+  font-weight: bold;
+  background-color: #fff;
+  color: #444;
+  border: solid 1px #000;
+}
