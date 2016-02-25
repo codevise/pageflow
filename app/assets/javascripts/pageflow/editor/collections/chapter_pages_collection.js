@@ -23,6 +23,8 @@ pageflow.ChapterPagesCollection = pageflow.SubsetCollection.extend({
 
     this.listenTo(this, 'add', function(model) {
       model.chapter = chapter;
+      model.set('chapter_id', chapter.id);
+
       pageflow.editor.trigger('add:page', model);
     });
 
