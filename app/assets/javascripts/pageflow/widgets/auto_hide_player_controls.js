@@ -11,7 +11,6 @@ jQuery.widget('pageflow.autoHidePlayerControls', {
     pageElement.find('.content').on('touchstart', autoHideControls);
 
     player.on('play', function() {
-      element.removeClass('unplayed');
       autoHideControls();
     });
 
@@ -56,12 +55,5 @@ jQuery.widget('pageflow.autoHidePlayerControls', {
   reset: function(options) {
     this.element
       .removeClass('has_been_faded');
-
-    this.element.toggleClass('unplayed', !this._willAutoplay(options));
-  },
-
-  _willAutoplay: function(options) {
-    options = options || {};
-    return options.autoplay && !pageflow.browser.has('mobile platform');
   }
 });
