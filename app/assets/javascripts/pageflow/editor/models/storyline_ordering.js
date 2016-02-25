@@ -2,7 +2,7 @@ pageflow.StorylineOrdering = function(storylines, pages) {
   var storylinesByParent;
 
   this.watch = function() {
-    storylines.on('change:configuration', function() {
+    storylines.on('add change:configuration', function() {
       this.sort();
     }, this);
 
