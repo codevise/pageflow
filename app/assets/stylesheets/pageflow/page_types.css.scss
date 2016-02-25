@@ -4,8 +4,6 @@
 @import "page_types/background-video";
 @import "page_types/video";
 
-@import "page_types/media";
-
 @include pageflow-page-type(audio);
 @include pageflow-page-type(audio_loop);
 @include pageflow-page-type(background_image);
