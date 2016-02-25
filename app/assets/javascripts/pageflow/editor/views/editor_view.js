@@ -1,4 +1,15 @@
 pageflow.EditorView = Backbone.View.extend({
+  scrollNavigationKeys: _.values({
+    pageUp: 33,
+    pageDown: 34,
+    end: 35,
+    home: 36,
+    left: 37,
+    up: 38,
+    right: 39,
+    down: 40
+  }),
+
   events: {
     'click a': function(event) {
       // prevent default for all links
@@ -7,6 +18,10 @@ pageflow.EditorView = Backbone.View.extend({
           !$(event.currentTarget).attr('href')) {
         return false;
       }
+    },
+
+    'keydown sidebar': function(event) {
+      this.preventScrollingPreviewWhileFocusInSidebar(event);
     }
   },
 
@@ -39,5 +54,11 @@ pageflow.EditorView = Backbone.View.extend({
     }).render().el);
 
     this.$el.append(new pageflow.HelpView().render().el);
+  },
+
+  preventScrollingPreviewWhileFocusInSidebar: function(event) {
+    if (this.scrollNavigationKeys.indexOf(event.which) >= 0) {
+      event.stopPropagation();
+    }
   }
 });
