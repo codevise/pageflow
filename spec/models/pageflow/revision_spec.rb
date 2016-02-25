@@ -298,6 +298,17 @@ module Pageflow
         expect(chapters[1]).to eq(chapter_1)
       end
 
+      it 'uses position to get first storyline' do
+        revision = create(:revision)
+        create(:storyline, revision: revision, position: 2)
+        storyline_2 = create(:storyline, revision: revision, position: 1)
+        chapter_1 = create(:chapter, storyline: storyline_2, position: 2)
+
+        chapters = revision.main_storyline_chapters
+
+        expect(chapters[0]).to eq(chapter_1)
+      end
+
       it 'returns empty scope if no storyline is present' do
         revision = create(:revision)
 
