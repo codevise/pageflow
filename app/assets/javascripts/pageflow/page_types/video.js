@@ -27,9 +27,13 @@ pageflow.pageType.register('video', _.extend({
     //
 
     this.videoPlayer.ensureCreated();
-    pageElement.find('.controls').autoHidePlayerControls('reset', {
-      autoplay: configuration.autoplay !== false
-    });
+    pageElement.find('.controls')
+      .autoHidePlayerControls('reset');
+
+    pageElement.find('.videoPage')
+      .markWithPlayedStates('reset', {
+        autoplay: configuration.autoplay !== false
+      });
 
     if (pageflow.browser.has('mobile platform')) {
       this.videoPlayer.showPosterImage();
@@ -136,6 +140,7 @@ pageflow.pageType.register('video', _.extend({
       videoPlayer.showPosterImage();
 
       var pageContent = pageElement.find('.scroller, .controls, .shadow'),
+          wrapper = pageElement.find('.videoPage'),
           controls = pageElement.find('.controls'),
           controlBar = pageElement.find('.vjs-control-bar'),
           playButton = pageElement.find('.vjs-play-control'),
@@ -228,10 +233,16 @@ pageflow.pageType.register('video', _.extend({
         })
         .hideContentDuringPlayback('attach', videoPlayer);
 
+      wrapper
+        .markWithPlayedStates({
+          target: wrapper,
+        })
+        .markWithPlayedStates('attach', videoPlayer);
+
       controls
         .autoHidePlayerControls({
           pageElement: pageElement,
-          target: pageElement.find('.videoPage'),
+          target: wrapper,
 
           onShow: function() {
             pageContent.addClass('fade-in').removeClass('fade-out');
