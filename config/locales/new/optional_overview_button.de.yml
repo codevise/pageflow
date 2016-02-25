@@ -1,0 +1,11 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/entry:
+        overview_button_enabled: "Übersicht-Button anzeigen"
+  pageflow:
+    ui:
+      inline_help:
+        pageflow/entry:
+          overview_button_enabled: "In der Übersicht werden die Kapitel und Seiten des Haupterzählstrangs angezeigt."
+          overview_button_enabled_disabled: "Diese Funktion steht in diesem Theme nicht zur Verfügung."

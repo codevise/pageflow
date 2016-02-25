@@ -81,5 +81,9 @@ module Pageflow
     def home_button
       HomeButton.new(draft, theming)
     end
+
+    def overview_button
+      OverviewButton.new(draft, theming)
+    end
   end
 end

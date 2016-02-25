@@ -61,6 +61,10 @@ module Pageflow
       HomeButton.new(revision, theming)
     end
 
+    def overview_button
+      OverviewButton.new(revision, theming)
+    end
+
     private
 
     def custom_revision?
