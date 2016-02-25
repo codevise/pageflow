@@ -47,6 +47,10 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
         disabled: !pageflow.theming.hasHomeButton(),
         displayUncheckedIfDisabled: true
       });
+      this.input('overview_button_enabled', pageflow.CheckBoxInputView, {
+        disabled: !pageflow.theming.hasOverviewButton(),
+        displayUncheckedIfDisabled: true
+      });
       if (pageflow.theming.hasHomeButton()) {
         this.input('home_url', pageflow.TextInputView, {
           placeholder: pageflow.theming.get('pretty_url'),

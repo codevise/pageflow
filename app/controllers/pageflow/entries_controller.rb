@@ -10,6 +10,7 @@ module Pageflow
     helper_method :render_to_string
 
     helper PagesHelper
+    helper NavigationBarHelper
     helper BackgroundImageHelper
     helper RenderJsonHelper
 
@@ -83,7 +84,9 @@ module Pageflow
     protected
 
     def entry_params
-      params.require(:entry).permit(:title, :summary, :credits, :manual_start, :home_url, :home_button_enabled,
+      params.require(:entry).permit(:title, :summary, :credits, :manual_start,
+                                    :home_url, :home_button_enabled,
+                                    :overview_button_enabled,
                                     :emphasize_chapter_beginning, :emphasize_new_pages,
                                     :share_image_id, :share_image_x, :share_image_y, :locale,
                                     :author, :publisher, :keywords)

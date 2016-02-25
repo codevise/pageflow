@@ -9,6 +9,10 @@ pageflow.Theming = Backbone.Model.extend({
     return this.get('home_button');
   },
 
+  hasOverviewButton: function() {
+    return this.get('overview_button');
+  },
+
   supportsEmphasizedPages: function() {
     return this.get('emphasized_pages');
   },

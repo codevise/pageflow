@@ -1,5 +1,5 @@
 <%= content_tag(:div,
-                class: ["navigation", entry.home_button.enabled? ? 'with_home_button' : nil].compact.join(' '),
+                class: navigation_bar_css_class(entry, class: 'navigation'),
                 data: {widget: 'default_navigation'}) do %>
   <%= render 'pageflow/entries/navigation/bar_top', :entry => entry %>
   <div class="scroller">
