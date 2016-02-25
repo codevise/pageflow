@@ -27,7 +27,7 @@ $vjs-selector-mapping: (
   // cursor leaves the control bar again.
   container-has_been_faded: ".controls.has_been_faded",
 
-  container-unplayed: ".controls.unplayed",
+  container-unplayed: ".unplayed .controls",
 
   info_box: ".add_info_box",
   control_bar: ".vjs-control-bar",
