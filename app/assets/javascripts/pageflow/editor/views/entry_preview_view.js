@@ -30,6 +30,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
       pageflow.entry.once('sync', this.update, this);
     });
 
+    this.listenTo(pageflow.storylines, 'sync', this.update);
     this.listenTo(pageflow.chapters, 'sync', this.update);
     this.listenTo(pageflow.pages, 'sync', this.update);
 
