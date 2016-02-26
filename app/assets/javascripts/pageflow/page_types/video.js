@@ -114,6 +114,7 @@ pageflow.pageType.register('video', _.extend({
   },
 
   _initVideoPlayer: function(pageElement, configuration) {
+    var that = this;
     var scrollIndicator = this.scrollIndicator;
     var videoPlayer = new pageflow.VideoPlayer.Lazy(pageElement.find('[data-template=video]'), {
       bufferUnderrunWaiting: true,
@@ -260,6 +261,16 @@ pageflow.pageType.register('video', _.extend({
       pageElement.find('.player_mute').muteButton();
       pageElement.find('.player_skip').skipPageButton();
       pageElement.find('.player_fullscreen').fullscreenButton();
+
+      that._ensureAndroidPhoneControlsCanBeDisplayedViaTouch(pageElement);
     });
+  },
+
+  _ensureAndroidPhoneControlsCanBeDisplayedViaTouch: function(pageElement) {
+    if (pageflow.browser.has('phone platform')) {
+      pageElement.find('video').on('touchend', function(event) {
+        event.stopPropagation();
+      });
+    }
   }
 }, pageflow.volumeFade, pageflow.videoHelpers, pageflow.infoBox, pageflow.commonPageCssClasses));
