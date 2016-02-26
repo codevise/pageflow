@@ -91,6 +91,13 @@ $slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2)
     bottom: -4px;
   }
 
+  &-loading_spinner-on_underrun {
+    // Override inline style set by video.js
+    // scss-lint:disable ImportantRule
+    display: block !important;
+    // scss-lint:enable ImportantRule
+  }
+
   &-skip_button {
     @include fa-forward-icon;
     left: 50px;

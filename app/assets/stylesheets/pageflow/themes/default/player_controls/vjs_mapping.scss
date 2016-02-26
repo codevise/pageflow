@@ -1,6 +1,8 @@
 // Map placeholder names to concrete vjs css class names.
 
 $vjs-selector-mapping: (
+  page_with_progress_bar: ".audioPage, .videoPage",
+
   background: ".videoWrapper, .audioPage .backgroundArea",
 
   background-idle: ".is_idle .videoWrapper, .audioPage.is_idle .backgroundArea",
@@ -47,6 +49,7 @@ $vjs-selector-mapping: (
   play_button-playing: ".vjs-play-control.vjs-playing",
   skip_button: ".player_skip",
   loading_spinner: ".vjs-loading-spinner",
+  loading_spinner-on_underrun: ".vjs-loading-spinner.showing-for-underrun",
 
   current_time: ".vjs-current-time",
   time_separator: ".vjs-time-divider",
