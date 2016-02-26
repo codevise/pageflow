@@ -2,6 +2,7 @@
 @import "./slim/control_bar";
 @import "./slim/info_box";
 @import "./slim/close_button";
+@import "./slim/scroller";
 
 %player_controls-container {
   @include phone {
