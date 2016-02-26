@@ -25,6 +25,12 @@
   }
 }
 
+.page .videoPage {
+  .scroller.vjs-fade-out {
+    visibility: initial;
+  }
+}
+
 .js .page .videoPage {
   .vjs-control-bar {
     @include transform(translate3d(-50%, 0, 0));
