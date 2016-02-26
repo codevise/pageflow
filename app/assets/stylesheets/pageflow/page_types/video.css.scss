@@ -48,10 +48,6 @@
     padding-top: 2em;
   }
 
-  .scroller.vjs-fade-out {
-    visibility: initial;
-  }
-
   .scroller {
     /* required for IE 10 to enable mouse events */
     background-image: image-url('pageflow/empty.png');
