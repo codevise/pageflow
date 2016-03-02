@@ -41,7 +41,6 @@ Pageflow assumes the following choice of libraries:
 * [Paperclip](https://github.com/thoughtbot/paperclip) for attachment handling
 * [Backbone](http://backbonejs.org/) [Marionette](http://marionettejs.com/) for client side development
 
-
 ## Requirements
 
 Pageflow runs in environments with:
@@ -82,17 +81,7 @@ Add this line to your application's Gemfile:
     # Gemfile
     gem 'pageflow'
 
-At the moment, Pageflow depends on a frozen version of Active Admin
-since, back when development started, no Rails 4 compatible version of
-Active Admin was available as a gem. You therefore need to bundle the
-`rails4` branch that we have forked into our github organization:
-
-    # Gemfile
-    gem 'activeadmin', git: 'https://github.com/codevise/active_admin.git', branch: 'rails4'
-    gem 'ransack'
-    gem 'inherited_resources', '1.4.1'
-    gem 'formtastic', '2.3.0'
-    # Only required for Rails 4.1:
+    # Required for Rails 4.1:
     gem 'state_machine', git: 'https://github.com/codevise/state_machine.git'
 
 Run bundler to install dependencies:
@@ -116,12 +105,6 @@ for more. If you'd rather not look behind the scenes for now, you can
 safely read on.
 
 ### Database Migration
-
-_Devise migration name fix_: In some cases, the Devise generator creates
-a migration file without file extension. This needs to be fixed manually
-at the moment:
-
-    $ rename 's/$/.rb/' db/migrate/*_devise_create_users
 
 Now you can migrate the database.
 
