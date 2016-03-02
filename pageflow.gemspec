@@ -14,13 +14,14 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '>= 4.0.2', '< 4.2'
 
-  s.add_dependency 'activeadmin', '~> 0.6.0'
+  # Framework for admin interface
+  s.add_dependency 'activeadmin'
 
   # Make devise mailers use resque. (Needs to be below active admin entry!)
-  s.add_dependency 'devise-async', '~> 0.8.0'
+  s.add_dependency 'devise-async', '~> 0.9.0'
 
-  # Caution: 3.1 changes methods used by Pageflow::InvitedUser
-  s.add_dependency 'devise', '~> 3.0.2'
+  # User authentication
+  s.add_dependency 'devise', '~> 3.5'
 
   # Resque jobs and queues
   s.add_dependency 'resque', '~> 1.25'
