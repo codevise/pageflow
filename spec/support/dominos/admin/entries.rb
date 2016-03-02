@@ -3,8 +3,8 @@ module Dom
     class EntryInIndexTable < Domino
       selector '.admin_entries.index .index_table tbody tr'
 
-      attribute :title, 'td.title'
-      attribute :account_name, 'td.account a'
+      attribute :title, 'td.col-title'
+      attribute :account_name, 'td.col-account a'
 
       def view_entry_link
         within(node) do
