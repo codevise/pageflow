@@ -21,6 +21,22 @@ module Pageflow
 RUBY
         end
       end
+
+      def use_devise
+        gsub_file('config/initializers/active_admin.rb',
+                  '# config.current_user_method =',
+                  'config.current_user_method =')
+
+        gsub_file('config/initializers/active_admin.rb',
+                  '# config.authentication_method =',
+                  'config.authentication_method =')
+      end
+
+      def use_can_can
+        gsub_file('config/initializers/active_admin.rb',
+                  '# config.authorization_adapter =',
+                  'config.authorization_adapter =')
+      end
     end
   end
 end
