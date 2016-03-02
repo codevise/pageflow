@@ -2,7 +2,7 @@
 
 <%= t('.instruction') %>
 
-<%= main_app.edit_user_password_url(@user, :reset_password_token => @user.reset_password_token) %>
+<%= main_app.edit_user_password_url(@user, reset_password_token: @password_token) %>
 
 <%= t('.ending') %>
 

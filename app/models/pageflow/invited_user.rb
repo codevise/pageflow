@@ -6,22 +6,32 @@ module Pageflow
     after_create :send_invitation
 
     def send_invitation!
-      generate_reset_password_token! if should_generate_reset_token?
+      prepare_invitation
+      save(validate: false)
       send_invitation
     end
 
     private
 
+    def prepare_invitation
+      @token = generate_reset_password_token
+    end
+
+    def generate_reset_password_token
+      raw, enc = Devise.token_generator.generate(self.class, :reset_password_token)
+
+      self.reset_password_token = enc
+      self.reset_password_sent_at = Time.now.utc
+
+      raw
+    end
+
     def password_required?
       false
     end
 
-    def prepare_invitation
-      generate_reset_password_token if should_generate_reset_token?
-    end
-
     def send_invitation
-      UserMailer.invitation('user_id' => id).deliver
+      UserMailer.invitation('user_id' => id, 'password_token' => @token).deliver
     end
   end
 end
