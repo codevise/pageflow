@@ -1,5 +1,5 @@
 # Register admins for pageflow models with active admin.
-ActiveAdmin.application.load_paths.unshift(Dir[Pageflow::Engine.root.join('admins')])
+ActiveAdmin.application.load_paths.unshift(Dir[Pageflow::Engine.root.join('admins')].first)
 
 Pageflow.configure do |config|
   # The email address to use as from header in invitation mails to new
