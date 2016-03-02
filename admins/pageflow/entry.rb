@@ -117,6 +117,11 @@ module Pageflow
       helper Pageflow::Admin::FeaturesHelper
       helper Pageflow::Admin::RevisionsHelper
 
+      after_build do |entry|
+        entry.account ||= current_user.account
+        entry.theming ||= entry.account.default_theming
+      end
+
       def update
         update! do |success, _|
           success.html { redirect_to(admin_entry_path(resource, params.slice(:tab))) }
@@ -125,13 +130,6 @@ module Pageflow
 
       def scoped_collection
         params.key?(:folder_id) ? super.where(:folder_id => params[:folder_id]) : super
-      end
-
-      def build_new_resource
-        super.tap do |entry|
-          entry.account ||= current_user.account
-          entry.theming ||= entry.account.default_theming
-        end
       end
 
       def permitted_params
