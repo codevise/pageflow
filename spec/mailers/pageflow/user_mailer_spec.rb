@@ -12,7 +12,7 @@ module Pageflow
         expect(mail.from).to eq(['test@example.com'])
       end
 
-      it 'uses locale of reveiving user' do
+      it 'uses locale of receiving user' do
         user = create(:user, locale: 'de')
 
         mail = UserMailer.invitation('user_id' => user.id)
