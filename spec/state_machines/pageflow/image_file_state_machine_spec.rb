@@ -9,7 +9,7 @@ module Pageflow
 
           file.process
 
-          expect(file.reload.attachment.exists?(:thumbnail)).to be_true
+          expect(file.reload.attachment.exists?(:thumbnail)).to be true
         end
 
         it 'sets state to processed' do
@@ -35,7 +35,7 @@ module Pageflow
 
           file.process
 
-          expect(file.reload.attachment.exists?(:thumbnail)).to be_true
+          expect(file.reload.attachment.exists?(:thumbnail)).to be true
         end
 
         it 'sets state to processed' do

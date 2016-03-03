@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Pageflow
   module Admin
-    describe TabsView do
+    describe TabsView, type: :view_component do
       let(:tab_view_component) do
         Class.new(ViewComponent) do
           def self.name
@@ -98,7 +98,7 @@ module Pageflow
         it 'does not render links for tabs we are not authorized for' do
           tabs = [{name: :some_tab, component: tab_view_component}]
 
-          helper.stub(:authorized?) { false }
+          allow(helper).to receive(:authorized?) { false }
 
           render(tabs, authorize: true)
 
@@ -108,7 +108,7 @@ module Pageflow
         it 'renders links for tabs we are authorized for' do
           tabs = [{name: :some_tab, component: tab_view_component}]
 
-          helper.stub(:authorized?) { true }
+          allow(helper).to receive(:authorized?) { true }
 
           render(tabs, authorize: true)
 
@@ -118,7 +118,7 @@ module Pageflow
         it 'passes :view action and component class to authorized? method' do
           tabs = [{name: :some_tab, component: tab_view_component}]
 
-          helper.stub(:authorized?) { true }
+          allow(helper).to receive(:authorized?) { true }
 
           render(tabs, authorize: true)
 
