@@ -52,10 +52,4 @@ copy_file('create_test_hosted_file.rb', 'db/migrate/00000000000000_create_test_h
 copy_file('create_test_revision_component.rb', 'db/migrate/00000000000001_create_test_revision_component.rb')
 copy_file('add_custom_fields.rb', 'db/migrate/99990000000000_add_custom_fields.rb')
 
-# Devise bug fix: rename migrations without file extension
-
-Dir.glob('db/migrate/*').each do |file_name|
-  run("mv #{file_name} #{file_name}.rb") if File.extname(file_name).blank?
-end
-
 rake 'db:migrate db:test:load', env: 'development'
