@@ -62,6 +62,17 @@ editor:
           page_type:
             ...
 
+For a new input key, add e.g. `config/locales/new/some_input_key.de.yml` and `some_input_key.en.yml` with the following translation keys:
+
+    en:
+      pageflow:
+        chart:
+          page_attributes:
+            some_input_key:
+              inline_help: This text is displayed in the inline help displayed via a small "?" next to the field 
+              label: This is the actual label text
+
+
 See the [help entries guide]() for more information on the adding a
 help pages.
 
