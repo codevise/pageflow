@@ -1,4 +1,4 @@
-<%= semantic_form_for [:admin, resource] do |f| %>
+<%= admin_form_for [:admin, resource] do |f| %>
   <% account_config = Pageflow.config_for(f.object) %>
 
   <%= f.inputs do %>

@@ -1,4 +1,4 @@
-<%= semantic_form_for [:admin, resource], html: {class: 'features'}  do |f| %>
+<%= admin_form_for [:admin, resource], html: {class: 'features'}  do |f| %>
   <%= hidden_field_tag('tab', params[:tab]) %>
 
   <%= f.inputs do %>

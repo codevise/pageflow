@@ -1,4 +1,4 @@
-<%= semantic_form_for current_user, :url => delete_me_admin_users_path, :method => 'delete', :html => {:class => 'delete_account'} do |form| %>
+<%= admin_form_for current_user, :url => delete_me_admin_users_path, :method => 'delete', :html => {:class => 'delete_account'} do |form| %>
   <%= form.inputs do %>
     <li>
       <p><%= t('pageflow.admin.users.delete_me.warning_html') %></p>

@@ -1,4 +1,4 @@
-<%= semantic_form_for current_user, :url => me_admin_users_path, :html => {:class => 'profile'} do |form| %>
+<%= admin_form_for current_user, :url => me_admin_users_path, :html => {:class => 'profile'} do |form| %>
   <%= form.inputs :first_name, :last_name %>
 
   <%= form.inputs do %>
