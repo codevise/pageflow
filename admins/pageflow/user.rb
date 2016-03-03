@@ -27,7 +27,7 @@ module Pageflow
     filter :first_name
     filter :email
 
-    action_item :only => :index do
+    action_item(:invite, only: :index) do
       link_to I18n.t('pageflow.admin.users.invite_user'), new_admin_user_path, :data => {:rel => 'invite_user'}
     end
 
@@ -87,11 +87,11 @@ module Pageflow
       end
     end
 
-    action_item :only => :show do
+    action_item(:edit, only: :show) do
       link_to I18n.t('pageflow.admin.users.edit'), edit_admin_user_path(user), :data => {:rel => 'edit_user'}
     end
 
-    action_item :only => :show do
+    action_item(:toggle_suspended, only: :show) do
       if user != current_user
         if user.suspended?
           link_to I18n.t('pageflow.admin.users.unsuspend'), unsuspend_admin_user_path(user), :method => :post, :data => {:rel => 'unsuspend_user'}
@@ -101,7 +101,7 @@ module Pageflow
       end
     end
 
-    action_item :only => :show do
+    action_item(:delete, only: :show) do
       if user != current_user
         link_to I18n.t('pageflow.admin.users.delete'), admin_user_path(user), :method => :delete, :data => {:rel => 'delete_user', :confirm => I18n.t('pageflow.admin.users.confirm_delete')}
       end

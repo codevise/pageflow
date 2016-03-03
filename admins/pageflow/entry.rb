@@ -57,7 +57,7 @@ module Pageflow
       f.actions
     end
 
-    action_item :only => :show do
+    action_item(:depublish, only: :show) do
       if authorized?(:publish, Entry) && entry.published?
         button_to(I18n.t('pageflow.admin.entries.depublish'),
                   pageflow.current_entry_revisions_path(entry),
@@ -69,7 +69,7 @@ module Pageflow
       end
     end
 
-    action_item :only => :show do
+    action_item(:duplicate, only: :show) do
       if authorized?(:duplicate, entry)
         button_to(I18n.t('pageflow.admin.entries.duplicate'),
                   duplicate_admin_entry_path(entry),
