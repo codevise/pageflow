@@ -20,3 +20,6 @@ gem 'teaspoon', '~> 0.9.0'
 
 gem 'spring-commands-rspec', group: :development
 gem 'spring-commands-teaspoon', group: :development
+
+# Early failure output
+gem 'rspec-instafail', '~> 0.4.0', require: false
