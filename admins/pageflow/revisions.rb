@@ -21,6 +21,8 @@ module Pageflow
     controller do
       include EditLocking
 
+      helper Pageflow::Admin::FormHelper
+
       def permitted_params
         params.permit(:revision => [:published_until])
       end

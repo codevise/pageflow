@@ -24,6 +24,7 @@ module Pageflow
 
     controller do
       helper Pageflow::Admin::FeaturesHelper
+      helper Pageflow::Admin::FormHelper
       helper ThemesHelper
       helper WidgetsHelper
 
