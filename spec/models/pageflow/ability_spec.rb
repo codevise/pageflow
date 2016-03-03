@@ -62,7 +62,7 @@ module Pageflow
         user = build(:user, :account_manager)
         ability = Ability.new(user)
 
-        expect(ability.can?(:create, User)).to be_true
+        expect(ability.can?(:create, User)).to be true
       end
 
       it 'can read folders of own account' do

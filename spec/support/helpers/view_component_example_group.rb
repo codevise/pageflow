@@ -26,8 +26,5 @@ module ViewComponentExampleGroup
 end
 
 RSpec.configure do |config|
-  config.include(ViewComponentExampleGroup,
-                 :example_group => lambda { |example_group, metadata|
-                   %r(spec/views/components) =~ example_group[:file_path]
-                 })
+  config.include(ViewComponentExampleGroup, type: :view_component)
 end

@@ -65,7 +65,7 @@ module Pageflow
         SeedsDsl.default_user_password('!Other123')
         user = SeedsDsl.user(email: 'editor@example.com', account: create(:account))
 
-        expect(user.valid_password?('!Other123')).to be_true
+        expect(user.valid_password?('!Other123')).to be true
       end
 
       it 'allows overriding attributes in block' do

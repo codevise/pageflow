@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 module Pageflow
-  describe Admin::EmbeddedIndexTable do
+  describe Admin::EmbeddedIndexTable, type: :view_component do
     before do
       helper.extend(ActiveAdmin::ViewHelpers)
-      helper.stub(:url_for)
+      allow(helper).to receive(:url_for)
     end
 
     it 'renders table of entries' do
