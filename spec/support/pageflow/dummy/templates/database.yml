@@ -1,0 +1,27 @@
+development:
+  adapter: mysql2
+  encoding: utf8
+  database: development
+  pool: 5
+  username: <%= ENV.fetch('PAGEFLOW_DB_USER', 'root') %>
+  password: <%= ENV.fetch('PAGEFLOW_DB_PASSWORD', '') %>
+<% if ENV['PAGEFLOW_DB_HOST'].present? %>
+  host: <%= ENV['PAGEFLOW_DB_HOST'] %>
+  port: <%= ENV.fetch('PAGEFLOW_DB_PORT', '3306') %>
+<% else %>
+  socket: /var/run/mysqld/mysqld.sock
+<% end %>
+
+test:
+  adapter: mysql2
+  encoding: utf8
+  database: test
+  pool: 5
+  username: <%= ENV.fetch('PAGEFLOW_DB_USER', 'root') %>
+  password: <%= ENV.fetch('PAGEFLOW_DB_PASSWORD', '') %>
+<% if ENV['PAGEFLOW_DB_HOST'].present? %>
+  host: <%= ENV['PAGEFLOW_DB_HOST'] %>
+  port: <%= ENV.fetch('PAGEFLOW_DB_PORT', '3306') %>
+<% else %>
+  socket: /var/run/mysqld/mysqld.sock
+<% end %>
