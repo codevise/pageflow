@@ -1,12 +1,16 @@
 # Contributing to Pageflow
 
-See the [GitHub wiki](https://github.com/codevise/pageflow/wiki) for details on how to contribute to Pageflow.
+See the [GitHub wiki](https://github.com/codevise/pageflow/wiki) for
+details on how to contribute to Pageflow.
 
 ## Running the Test Suite
 
 Pageflow expects credentials of a MySQL user in the environment
 variables `$PAGEFLOW_DB_USER` AND `PAGEFLOW_DB_PASSWORD`. By default
-`"root"` and the empty password are used.
+`"root"` and the empty password are used. If your MySQL is on a
+different host, you can specify a MySQL host in the environment
+variable `$PAGEFLOW_DB_HOST` and a port in `$PAGEFLOW_DB_PORT`
+(default: 3306).
 
 Use the binstubs to invoke the Ruby test suite
 
@@ -18,10 +22,10 @@ or the headless browser based Javascript test suite
 
 PhantomJS has to be installed on the system.
 
-The dummy Rails app used for tests is created automatically through the 
+The dummy Rails app used for tests is created automatically through the
 install generator during test runs. To have it regenerated,
-simply delete the contents of the `spec/dummy` directory. This is 
-required everytime new migrations are added or if tests are failing 
+simply delete the contents of the `spec/dummy` directory. This is
+required everytime new migrations are added or if tests are failing
 after pulling changes into the local working tree.
 
 Pageflow can run its test suite against Rails 4.0 and 4.1
