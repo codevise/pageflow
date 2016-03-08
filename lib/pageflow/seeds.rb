@@ -131,13 +131,22 @@ module Pageflow
       entry
     end
 
-    # Create a {Membership} for the given user and entry.
+    # Create a {Membership} for the given user and entity.
     #
     # @param [Hash] attributes  attributes to override defaults
     # @option attributes [User] :user  required
-    # @option attributes [Entry] :entry  required
+    # @option attributes [Entity] :entity  required
+    # :entry and :account are lower-priority aliases for :entity
     # @return [Membership] newly created membership
     def membership(attributes)
+      if (attributes[:entry].present? && attributes[:entity].present?) ||
+         (attributes[:account].present? && attributes[:entity].present?)
+        say_attribute_precedence(':entity', ':entry and :account')
+      end
+      unless attributes[:entity].present?
+        entry_or_account_attributes_specified attributes
+      end
+
       Membership.find_or_create_by!(attributes) do |membership|
         say_creating_membership(membership)
       end
@@ -167,8 +176,23 @@ END
       say("   membership for user '#{membership.user.email}' and entry '#{membership.entry.title}'")
     end
 
+    def say_attribute_precedence(subject, object)
+      say("   #{subject} attribute precedes #{object}")
+    end
+
     def say(text)
       puts(text) unless Rails.env.test?
+    end
+
+    def entry_or_account_attributes_specified(attributes)
+      if attributes[:entry].present? && attributes[:account].present?
+        attributes[:entity] = attributes[:entry]
+        if attributes[:account].present?
+          say_attribute_precedence(':entry', ':account')
+        end
+      else
+        attributes[:entity] = attributes[:account]
+      end
     end
   end
 end

@@ -18,7 +18,7 @@ module Pageflow
     has_many :chapters, -> { order('pageflow_chapters.position ASC') }, :through => :revisions
     has_many :pages, -> { order('pageflow_chapters.position ASC, pageflow_pages.position ASC') }, :through => :chapters
 
-    has_many :memberships, :dependent => :destroy
+    has_many :memberships, as: :entity, dependent: :destroy
     has_many :users, :through => :memberships, :class_name => '::User'
 
     has_many :image_files

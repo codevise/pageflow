@@ -122,7 +122,7 @@ module Pageflow
         user = create(:user, :editor)
         entry = create(:entry)
 
-        SeedsDsl.membership(user: user, entry: entry)
+        SeedsDsl.membership(user: user, entity: entry)
 
         expect(entry.users).to include(user)
       end
