@@ -14,6 +14,17 @@ describe Admin::MembershipsController do
         }.not_to change { entry.memberships.count }
       end
 
+      it 'does allow to add user of same account to entry' do
+        user = create(:user, :editor)
+        entry = create(:entry, account: user.account)
+
+        sign_in(create(:user, :admin))
+
+        expect do
+          post :create, entry_id: entry, membership: {user_id: user}
+        end.to change { entry.memberships.count }
+      end
+
       it 'does not allow to add entry of other account to user' do
         user = create(:user, :editor)
         entry = create(:entry)
@@ -21,7 +32,9 @@ describe Admin::MembershipsController do
         sign_in(create(:user, :admin))
 
         expect {
-          post :create, :user_id => user, :membership => {:entry_id => entry}
+          post :create,
+               user_id: user,
+               membership: {entity_id: entry, entity_type: 'Pageflow::Entry'}
         }.not_to change { user.memberships.count }
       end
     end
@@ -47,7 +60,9 @@ describe Admin::MembershipsController do
         sign_in(create(:user, :account_manager))
 
         expect {
-          post :create, :user_id => user, :membership => {:entry_id => entry}
+          post :create,
+               user_id: user,
+               membership: {entity_id: entry, entity_type: 'Pageflow::Entry'}
         }.not_to change { user.memberships.count }
       end
     end
