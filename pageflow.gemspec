@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'yajl-ruby', '~> 1.2'
 
   # Authorization
-  s.add_dependency 'cancan', '~> 1.6'
+  s.add_dependency 'cancancan', '~> 1.10'
 
   # State machines for active record
   s.add_dependency 'state_machine', '~> 1.2'
