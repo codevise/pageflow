@@ -139,6 +139,9 @@ Gem::Specification.new do |s|
   # Fixture replacement
   s.add_development_dependency 'factory_girl_rails', '~> 4.5'
 
+  # Matchers for Pundit policies
+  s.add_development_dependency 'pundit-matchers', '~> 1.0'
+
   # Clean database in integration tests
   s.add_development_dependency 'database_cleaner', '~> 1.2'
 

@@ -20,7 +20,7 @@ module Pageflow
       end
 
       after(:create) do |entry, evaluator|
-        create(:membership, :entry => entry, :user => evaluator.with_member) if evaluator.with_member
+        create(:membership, entity: entry, user: evaluator.with_member) if evaluator.with_member
       end
 
       trait :published do
