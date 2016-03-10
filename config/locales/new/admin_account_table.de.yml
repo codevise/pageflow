@@ -1,0 +1,7 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/account:
+        users_count: "# Benutzer"
+        entries_count: "# Beiträge"
+        default_theming: "Theme"
