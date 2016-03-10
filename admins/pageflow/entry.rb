@@ -3,7 +3,6 @@ module Pageflow
     menu :priority => 1
 
     config.batch_actions = false
-    config.clear_sidebar_sections!
 
     index do
       column class: 'publication_state' do |entry|
@@ -44,6 +43,14 @@ module Pageflow
         end
       end
     end
+
+    filter :title
+    filter :account
+    filter :created_at
+    filter :edited_at
+    filter :first_published_at
+    filter :published_revision_published_at, as: :date_range
+    filter :with_publication_state, as: :select, collection: -> { collection_for_entry_publication_states }
 
     sidebar :folders, :only => :index do
       text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'), new_admin_folder_path, :class => 'new'))
@@ -129,6 +136,7 @@ module Pageflow
     controller do
       helper FoldersHelper
       helper EntriesHelper
+      helper Pageflow::Admin::EntriesHelper
       helper Pageflow::Admin::FeaturesHelper
       helper Pageflow::Admin::RevisionsHelper
       helper Pageflow::Admin::FormHelper
