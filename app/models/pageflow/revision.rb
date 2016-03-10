@@ -6,7 +6,7 @@ module Pageflow
       'pageflow_pages.position ASC'
     ].join(',')
 
-    belongs_to :entry, :touch => true
+    belongs_to :entry, touch: :edited_at
     belongs_to :creator, :class_name => 'User'
     belongs_to :restored_from, :class_name => 'Pageflow::Revision'
 

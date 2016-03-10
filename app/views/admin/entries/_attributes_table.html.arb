@@ -4,7 +4,7 @@ attributes_table_for entry do
     row :account, :class => 'account'
   end
   row :created_at
-  row :updated_at
+  row :edited_at
   row :published?, :class => 'published' do
     span :'data-published' => entry.published? do
       if entry.published?
