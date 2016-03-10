@@ -18,9 +18,9 @@
       display: inline-block;
 
       &.active {
-        @include gradient(#f4f4f4, #fff);
+        background-color: #fff;
         color: #444;
-        box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.1) inset;
+        box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.2) inset;
 
         a {
           cursor: default;
