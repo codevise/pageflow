@@ -42,7 +42,7 @@ inject_into_file('config/environments/test.rb',
 
 # ActiveAdmin does not look for admin definitions inside dummy apps by default.
 
-prepend_to_file('config/initializers/pageflow.rb', <<-END
+prepend_to_file('config/initializers/pageflow.rb', <<-END)
   ActiveAdmin.application.load_paths.unshift(Dir[Rails.root.join('app/admin')].first)\n
 END
 
