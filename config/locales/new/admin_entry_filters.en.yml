@@ -1,0 +1,13 @@
+en:
+  activerecord:
+    attributes:
+      pageflow/entry:
+        published_revision_published_at: "Published since"
+        first_published_at: "First published at"
+        with_publication_state: "Publication state"
+    values:
+      pageflow/entry:
+        publication_states:
+          published_without_password_protection: "Published with password protection"
+          published_with_password_protection: "Published without password protection"
+          not_published: "Not published"

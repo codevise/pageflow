@@ -104,6 +104,10 @@ module Pageflow
       [:title, [:title, :id]]
     end
 
+    def self.ransackable_scopes(_)
+      [:with_publication_state, :published]
+    end
+
     private
 
     def folder_belongs_to_same_account
