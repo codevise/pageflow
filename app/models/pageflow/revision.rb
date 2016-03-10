@@ -29,6 +29,9 @@ module Pageflow
               {:now => Time.now}])
     end
 
+    scope(:with_password_protection, -> { where('password_protected IS TRUE') })
+    scope(:without_password_protection, -> { where('password_protected IS NOT TRUE') })
+
     scope :editable, -> { where('frozen_at IS NULL') }
     scope :frozen, -> { where('frozen_at IS NOT NULL') }
 
