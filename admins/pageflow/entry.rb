@@ -54,7 +54,7 @@ module Pageflow
 
     sidebar :folders, :only => :index do
       text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'), new_admin_folder_path, :class => 'new'))
-      grouped_folder_list(Folder.accessible_by(Ability.new(current_user), :read),
+      grouped_folder_list(Folder.includes(:account).accessible_by(Ability.new(current_user), :read),
                           :class => authorized?(:manage, Folder) ? 'editable' : nil,
                           :active_id => params[:folder_id],
                           :grouped_by_accounts => authorized?(:read, Account))
