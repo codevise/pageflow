@@ -18,7 +18,7 @@ module Pageflow
         end
       end
       column :created_at
-      column :updated_at
+      column :edited_at
       column :class => 'buttons' do |entry|
         if authorized?(:edit, Entry)
           span(link_to(I18n.t('pageflow.admin.entries.editor'), pageflow.edit_entry_path(entry), :class => 'editor button'))
