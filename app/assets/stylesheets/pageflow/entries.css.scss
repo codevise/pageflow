@@ -36,11 +36,6 @@
       top: auto; /* collision with .hidden class from application.css.scss */
     }
 
-    &.faded {
-      opacity: 0;
-      @include transition(opacity 2s ease);
-    }
-
     &.animate {
       @include animation(bounce 0.5s ease);
     }
@@ -61,6 +56,12 @@
     &.visible {
       pointer-events: all;
       visibility: visible;
+    }
+
+    &.faded {
+      opacity: 0;
+      visibility: hidden;
+      @include transition(opacity 2s ease, visibility 2s);
     }
 
     &.hidden_for_page {
