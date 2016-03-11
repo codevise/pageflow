@@ -7,23 +7,29 @@ module Pageflow
       end
 
       def preview?
-        @user.memberships.where(entity: @entry, role: ['previewer', 'editor', 'publisher', 'manager']).any? ||
-          @user.memberships.where(entity: @entry.account, role: ['previewer', 'editor', 'publisher', 'manager']).any?
+        allows?(%w(previewer editor publisher manager))
       end
 
       def edit?
-        @user.memberships.where(entity: @entry, role: ['editor', 'publisher', 'manager']).any? ||
-          @user.memberships.where(entity: @entry.account, role: ['editor', 'publisher', 'manager']).any?
+        allows?(%w(editor publisher manager))
       end
 
       def publish?
-        @user.memberships.where(entity: @entry, role: ['publisher', 'manager']).any? ||
-          @user.memberships.where(entity: @entry.account, role: ['publisher', 'manager']).any?
+        allows?(%w(publisher manager))
       end
 
       def configure?
-        @user.memberships.where(entity: @entry, role: 'manager').any? ||
-          @user.memberships.where(entity: @entry.account, role: 'manager').any?
+        allows?(%w(manager))
+      end
+
+      private
+
+      def allows?(roles)
+        user_memberships = @user.memberships.where(role: roles)
+
+        user_memberships.where("(entity_id = :entry_id AND entity_type = 'Pageflow::Entry') OR " \
+                               "(entity_id = :account_id AND entity_type = 'Pageflow::Account')",
+                               entry_id: @entry.id, account_id: @entry.account.id).any?
       end
     end
   end

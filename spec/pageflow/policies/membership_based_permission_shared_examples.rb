@@ -17,7 +17,7 @@ module Pageflow
 
       it "does not allow #{params[:entity]} #{params[:minimum_required_role]} " \
          "to #{params[:permission_type]} off-limits entry" do
-        params[:entity] == :entry ? other_entity = create(:entry) : other_entity = create(:account)
+        other_entity = (params[:entity] == :entry ? create(:entry) : create(:account))
         create(:membership, user: user, entity: other_entity, role: params[:minimum_required_role])
 
         expect(policy).not_to permit_action(params[:permission_type])
