@@ -29,8 +29,8 @@ module Pageflow
         can_edit_entry?(user, page.chapter.entry)
       end
 
-      can :manage, Revision do |revision|
-        can_edit_entry?(user, revision.entry)
+      can :read, Revision do |revision|
+        Policies::EntryPolicy.new(user, revision.entry).preview?
       end
 
       can :view, [Admin::MembersTab, Admin::RevisionsTab]
