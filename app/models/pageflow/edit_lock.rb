@@ -36,7 +36,7 @@ module Pageflow
       Time.now > self.updated_at + TIME_TO_LIVE
     end
 
-    def aquire(current_user, options = {})
+    def acquire(current_user, options = {})
       verify!(current_user, options)
     rescue Error
       if options[:force] || timed_out?
@@ -73,7 +73,7 @@ module Pageflow
         true
       end
 
-      def aquire(user, options = {})
+      def acquire(user, options = {})
         entry.create_edit_lock!(:user => user)
       end
 

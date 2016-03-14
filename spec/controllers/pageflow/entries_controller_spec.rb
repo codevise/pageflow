@@ -110,7 +110,7 @@ module Pageflow
         create(:membership, :entry => entry, :user => user)
 
         sign_in user
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         patch(:update, :id => entry, :entry => {:title => 'new', :credits => 'credits'}, :format => 'json')
 
         expect(response.status).to eq(204)
@@ -122,7 +122,7 @@ module Pageflow
         create(:membership, :entry => entry, :user => user)
 
         sign_in user
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         patch(:update, :id => entry, :entry => {:title => 'new', :credits => 'credits'}, :format => 'json')
 
         expect(entry.draft.reload.title).to eq('new')

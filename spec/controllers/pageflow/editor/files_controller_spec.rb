@@ -44,7 +44,7 @@ module Pageflow
         entry = create(:entry, :with_member => user)
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         post(:create, :entry_id => entry, :collection_name => 'image_files', :image_file => {:attachment => fixture_upload}, :format => 'json')
 
         expect(response.status).to eq(200)
@@ -55,7 +55,7 @@ module Pageflow
         entry = create(:entry, :with_member => user)
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         post(:create, :entry_id => entry, :collection_name => 'image_files', :image_file => {:attachment => fixture_upload}, :format => 'json')
 
         expect(entry.image_files).to have(1).item
@@ -66,7 +66,7 @@ module Pageflow
         entry = create(:entry, :with_member => user)
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         post(:create, :entry_id => entry, :collection_name => 'image_files', :image_file => {:attachment => fixture_upload}, :format => 'json')
 
         expect(json_response(:path => [:usage_id])).to be_present
@@ -78,7 +78,7 @@ module Pageflow
         create(:membership, :user => user, :entry => entry)
 
         sign_in user
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         post(:create, :entry_id => entry, :collection_name => 'image_files', :image_file => {:attachment => fixture_upload}, :format => 'json')
 
         expect(entry.image_files.first.unprocessed_attachment_file_name).to be_present
@@ -114,7 +114,7 @@ module Pageflow
         file = create(:image_file, :failed, :used_in => entry.draft)
 
         sign_in user
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         post(:retry, :collection_name => 'image_files', :id => file, :format => 'json')
 
         expect(response.status).to eq(201)
@@ -144,7 +144,7 @@ module Pageflow
         image_file = create(:image_file, :used_in => entry.draft)
 
         sign_in user
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         post(:retry, :collection_name => 'image_files', :id => image_file, :format => 'json')
 
         expect(response.status).to eq(400)
@@ -158,7 +158,7 @@ module Pageflow
         file = create(:image_file, :used_in => entry.draft, :rights => 'old')
 
         sign_in user
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         patch(:update, :collection_name => 'image_files', :id => file, :image_file => {:rights => 'new'}, :format => 'json')
 
         expect(response.status).to eq(204)

@@ -838,13 +838,13 @@ de:
           salutation: Hallo %{first_name}
     edit_locks:
       break_action:
-        aquire: Stattdessen hier bearbeiten
+        acquire: Stattdessen hier bearbeiten
       errors:
         held_by_other_session_error:
-          aquire_html: <p>Sie haben diesen Beitrag in einem anderen Fenster geöffnet.</p>
+          acquire_html: <p>Sie haben diesen Beitrag in einem anderen Fenster geöffnet.</p>
           other_html: <p>Sie haben diesen Beitrag in einem anderen Fenster geöffnet. Laden Sie die Seite neu und klicken Sie auf 'Stattdessen hier bearbeiten', um den akutellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen verloren.</p>
         held_by_other_user_error:
-          aquire_html: <p>Dieser Beitrag wird im Moment von <strong>%{user_name}</strong> bearbeitet. Klicken Sie auf 'Stattdessen hier bearbeiten', um die Bearbeitung durch den anderen Benutzers abzubrechen.</p>
+          acquire_html: <p>Dieser Beitrag wird im Moment von <strong>%{user_name}</strong> bearbeitet. Klicken Sie auf 'Stattdessen hier bearbeiten', um die Bearbeitung durch den anderen Benutzers abzubrechen.</p>
           other_html: <p><strong>%{user_name}</strong> hat ihre Bearbeitung abgebrochen. Laden Sie die Seite neu und klicken Sie auf 'Stattdessen hier bearbeiten', um den aktuellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen des anderen Benutzers verloren.</p>
         not_held_error:
           other_html: <p>Die Bearbeitung des Beitrags wurde außerhalb dieses Editor beendet. Laden Sie die Seite neu, um den akutellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen verloren.</p>

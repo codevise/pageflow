@@ -64,7 +64,7 @@ module Pageflow
         usage = create(:file_usage, :revision => entry.draft, :file => file)
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
 
         delete(:destroy, :id => usage.id, :format => 'json')
 
@@ -78,7 +78,7 @@ module Pageflow
         usage = create(:file_usage, :revision => entry.draft, :file => file)
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
 
         delete(:destroy, :id => usage.id, :format => 'json')
 

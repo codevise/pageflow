@@ -11,7 +11,7 @@ module Pageflow
       entry = revision.entry
       authorize!(:restore, entry)
 
-      entry.edit_lock.aquire(current_user)
+      entry.edit_lock.acquire(current_user)
       revision.entry.restore(:revision => revision, :creator => current_user)
       entry.edit_lock.release(current_user)
 
