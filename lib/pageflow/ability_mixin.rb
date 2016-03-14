@@ -14,11 +14,11 @@ module Pageflow
       end
 
       can :manage, Storyline do |storyline|
-        can_edit_entry?(user, storyline.revision.entry)
+        Policies::EntryPolicy.new(user, storyline.revision.entry).edit?
       end
 
       can :manage, Chapter do |record|
-        can_edit_entry?(user, record.entry)
+        Policies::EntryPolicy.new(user, record.entry).edit?
       end
 
       can :manage, Pageflow.config.file_types.map(&:model) do |record|
@@ -26,7 +26,7 @@ module Pageflow
       end
 
       can :manage, Page do |page|
-        can_edit_entry?(user, page.chapter.entry)
+        Policies::EntryPolicy.new(user, page.chapter.entry).edit?
       end
 
       can :read, Revision do |revision|
