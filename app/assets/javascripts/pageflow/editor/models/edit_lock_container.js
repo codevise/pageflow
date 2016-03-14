@@ -3,7 +3,7 @@ pageflow.EditLockContainer = Backbone.Model.extend({
     this.storageKey = 'pageflow.edit_lock.' + pageflow.entry.id;
   },
 
-  aquire: function(options) {
+  acquire: function(options) {
     options = options || {};
     var container = this;
 
@@ -18,7 +18,7 @@ pageflow.EditLockContainer = Backbone.Model.extend({
         sessionStorage[container.storageKey] = lock.id;
 
         container.lock = lock;
-        container.trigger('aquired');
+        container.trigger('acquired');
 
         container.startPolling();
       }
@@ -28,7 +28,7 @@ pageflow.EditLockContainer = Backbone.Model.extend({
   startPolling: function() {
     if (!this.pollingInteval) {
       this.pollingInteval = setInterval(_.bind(function() {
-        this.aquire({polling: true});
+        this.acquire({polling: true});
       }, this), 2000);
     }
   },
@@ -78,7 +78,7 @@ pageflow.EditLockContainer = Backbone.Model.extend({
     this.trigger('locked',
                  xhr.responseJSON || {},
                  {
-                   context: (settings.url.match(/\/edit_lock/) && !settings.polling) ? 'aquire' : 'other'
+                   context: (settings.url.match(/\/edit_lock/) && !settings.polling) ? 'acquire' : 'other'
                  });
 
     this.stopPolling();

@@ -60,7 +60,7 @@ module Pageflow
         it 'responds with conflict' do
           user = create(:user)
           entry = create(:entry, :with_member => user)
-          entry.edit_lock.aquire(create(:user))
+          entry.edit_lock.acquire(create(:user))
 
           sign_in(user)
           post(:create, :entry_id => entry, :format => :json)
@@ -72,7 +72,7 @@ module Pageflow
           user = create(:user)
           other_user = create(:user)
           entry = create(:entry, :with_member => user)
-          entry.edit_lock.aquire(other_user)
+          entry.edit_lock.acquire(other_user)
 
           sign_in(user)
           post(:create, :entry_id => entry, :format => :json)
@@ -84,7 +84,7 @@ module Pageflow
           it 'responds with success' do
             user = create(:user)
             entry = create(:entry, :with_member => user)
-            entry.edit_lock.aquire(create(:user))
+            entry.edit_lock.acquire(create(:user))
 
             sign_in(user)
             post(:create, :entry_id => entry, :edit_lock => {:force => true}, :format => :json)
@@ -95,7 +95,7 @@ module Pageflow
           it 'responds with id of created edit lock' do
             user = create(:user)
             entry = create(:entry, :with_member => user)
-            entry.edit_lock.aquire(create(:user))
+            entry.edit_lock.acquire(create(:user))
 
             sign_in(user)
             post(:create, :entry_id => entry, :edit_lock => {:force => true}, :format => :json)
@@ -107,7 +107,7 @@ module Pageflow
             user = create(:user)
             other_user = create(:user)
             entry = create(:entry, :with_member => user)
-            entry.edit_lock.aquire(other_user)
+            entry.edit_lock.acquire(other_user)
 
             sign_in(user)
             post(:create, :entry_id => entry, :edit_lock => {:force => true}, :format => :json)
@@ -163,7 +163,7 @@ module Pageflow
         it 'succeeds for member of the entry' do
           user = create(:user)
           entry = create(:entry, :with_member => user)
-          edit_lock = entry.edit_lock.aquire(user)
+          edit_lock = entry.edit_lock.acquire(user)
 
           sign_in(user)
           put(:update, :entry_id => entry, :edit_lock => {:id => edit_lock.id})
@@ -174,7 +174,7 @@ module Pageflow
         it 'keeps entry locked for the current user' do
           user = create(:user)
           entry = create(:entry, :with_member => user)
-          edit_lock = entry.edit_lock.aquire(user)
+          edit_lock = entry.edit_lock.acquire(user)
 
           sign_in(user)
           put(:update, :entry_id => entry, :edit_lock => {:id => edit_lock.id})
@@ -185,7 +185,7 @@ module Pageflow
         it 'requires the signed in user to be member of the parent entry' do
           user = create(:user)
           entry = create(:entry)
-          edit_lock = entry.edit_lock.aquire(user)
+          edit_lock = entry.edit_lock.acquire(user)
 
           sign_in(user)
           put(:update, :entry_id => entry, :edit_lock => {:id => edit_lock.id}, :format => :json)
@@ -195,7 +195,7 @@ module Pageflow
 
         it 'requires authentication' do
           entry = create(:entry)
-          edit_lock = entry.edit_lock.aquire(create(:user))
+          edit_lock = entry.edit_lock.acquire(create(:user))
 
           put(:update, :entry_id => entry, :edit_lock => {:id => edit_lock.id}, :format => :json)
 
@@ -207,7 +207,7 @@ module Pageflow
         it 'responds with conflict' do
           user = create(:user)
           entry = create(:entry, :with_member => user)
-          entry.edit_lock.aquire(create(:user))
+          entry.edit_lock.acquire(create(:user))
 
           sign_in(user)
           put(:update, :entry_id => entry, :edit_lock => {:id => 'not_there_anymore'}, :format => :json)
@@ -219,7 +219,7 @@ module Pageflow
           user = create(:user)
           other_user = create(:user)
           entry = create(:entry, :with_member => user)
-          entry.edit_lock.aquire(other_user)
+          entry.edit_lock.acquire(other_user)
 
           sign_in(user)
           put(:update, :entry_id => entry, :edit_lock => {:id => 'not_there_anymore'}, :format => :json)
@@ -246,7 +246,7 @@ module Pageflow
         it 'succeeds for member of the entry' do
           user = create(:user)
           entry = create(:entry, :with_member => user)
-          edit_lock = entry.edit_lock.aquire(user)
+          edit_lock = entry.edit_lock.acquire(user)
 
           sign_in(user)
           delete(:destroy, :entry_id => entry, :format => :json)
@@ -257,7 +257,7 @@ module Pageflow
         it 'releases lock' do
           user = create(:user)
           entry = create(:entry, :with_member => user)
-          edit_lock = entry.edit_lock.aquire(user)
+          edit_lock = entry.edit_lock.acquire(user)
 
           sign_in(user)
           delete(:destroy, :entry_id => entry, :format => :json)
@@ -267,7 +267,7 @@ module Pageflow
 
         it 'requires authentication' do
           entry = create(:entry)
-          edit_lock = entry.edit_lock.aquire(create(:user))
+          edit_lock = entry.edit_lock.acquire(create(:user))
 
           delete(:destroy, :entry_id => entry, :format => :json)
 
@@ -280,7 +280,7 @@ module Pageflow
           user = create(:user)
           other_user = create(:user)
           entry = create(:entry, :with_member => user)
-          entry.edit_lock.aquire(other_user)
+          entry.edit_lock.acquire(other_user)
 
           sign_in(user)
           delete(:destroy, :entry_id => entry, :format => :json)

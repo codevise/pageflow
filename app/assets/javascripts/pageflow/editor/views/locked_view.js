@@ -14,7 +14,7 @@ pageflow.LockedView = Backbone.Marionette.ItemView.extend({
   },
 
   modelEvents: {
-    aquired: 'hide',
+    acquired: 'hide',
 
     locked: 'show',
 
@@ -22,7 +22,7 @@ pageflow.LockedView = Backbone.Marionette.ItemView.extend({
   },
 
   breakLock: function() {
-    this.model.aquire({force: true});
+    this.model.acquire({force: true});
   },
 
   goBack: function() {
@@ -35,7 +35,7 @@ pageflow.LockedView = Backbone.Marionette.ItemView.extend({
     this.ui.message.html(I18n.t('pageflow.edit_locks.errors.' + key + '_html', {user_name: info.held_by}));
     this.ui.message.attr('data-error', key);
 
-    this.ui.breakButton.text(I18n.t('pageflow.edit_locks.break_action.aquire'));
+    this.ui.breakButton.text(I18n.t('pageflow.edit_locks.break_action.acquire'));
 
     this.$el.removeClass('checking');
     this.$el.show();

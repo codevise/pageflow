@@ -12,7 +12,7 @@ module Pageflow
         chapter = create(:chapter, :in_main_storyline_of => entry.draft)
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         post(:create,
              :chapter_id => chapter,
              :page => {
@@ -63,7 +63,7 @@ module Pageflow
         page = create(:page, :chapter => chapter, :configuration => {})
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         patch(:update,
               :id => page,
               :page => {
@@ -101,8 +101,8 @@ module Pageflow
         pages = create_list(:page, 2, :chapter => chapter)
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
-        patch(:order, :chapter_id => chapter, :ids => [pages.first.id, pages.last.id])
+        acquire_edit_lock(user, entry)
+        patch(:order, chapter_id: chapter, ids: [pages.first.id, pages.last.id])
 
         expect(pages.first.reload.position).to eq(0)
         expect(pages.last.reload.position).to eq(1)
@@ -118,8 +118,8 @@ module Pageflow
         page = create(:page, :chapter => chapter)
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
-        patch(:order, :chapter_id => other_chapter, :ids => [page.id])
+        acquire_edit_lock(user, entry)
+        patch(:order, chapter_id: other_chapter, ids: [page.id])
 
         expect(page.reload.chapter).to eq(other_chapter)
       end
@@ -135,8 +135,8 @@ module Pageflow
         page = create(:page, :chapter => chapter)
 
         sign_in(user)
-        aquire_edit_lock(user, other_entry)
-        patch(:order, :chapter_id => chapter_of_other_entry, :ids => [page.id])
+        acquire_edit_lock(user, other_entry)
+        patch(:order, chapter_id: chapter_of_other_entry, ids: [page.id])
 
         expect(response).to be_not_found
       end
@@ -168,7 +168,7 @@ module Pageflow
         page = create(:page, :chapter => chapter, :configuration => {})
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         delete(:destroy,
                :id => page,
                :format => 'json')

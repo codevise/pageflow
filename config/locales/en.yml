@@ -835,15 +835,15 @@ en:
           salutation: Hello %{first_name}
     edit_locks:
       break_action:
-        aquire: Continue here
+        acquire: Continue here
       errors:
         held_by_other_session_error:
-          aquire_html: <p>This story is already open in another editor window.</p>
+          acquire_html: <p>This story is already open in another editor window.</p>
           other_html: ! '<p>This story is already open in another editor window. Please reload this page and click on the ''Continue here'' button.</p>
 
             <p>If you continue working without reload, data loss may occur.</p>'
         held_by_other_user_error:
-          aquire_html: <p><strong>%{user_name}</strong> is currently working on this story or has left the editor window open. Click 'Continue here' to take over.</p>
+          acquire_html: <p><strong>%{user_name}</strong> is currently working on this story or has left the editor window open. Click 'Continue here' to take over.</p>
           other_html: <p><strong>%{user_name}</strong> has ended your editor session. Please reload the page and click 'Continue here' to view the current version.</p>
         not_held_error:
           other_html: <p>Your editor session has been ended from another session. Please reload the page and click 'Continue here' to view the current version.</p>

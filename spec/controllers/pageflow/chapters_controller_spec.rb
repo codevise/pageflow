@@ -11,11 +11,14 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
         create(:membership, :entry => entry, :user => user)
 
-        expect {
+        expect do
           sign_in(user)
-          aquire_edit_lock(user, entry)
-          post(:create, :storyline_id => storyline, :chapter => attributes_for(:valid_chapter), :format => 'json')
-        }.to change { entry.draft.chapters.count }.by(1)
+          acquire_edit_lock(user, entry)
+          post(:create,
+               storyline_id: storyline,
+               chapter: attributes_for(:valid_chapter),
+               format: 'json')
+        end.to change { entry.draft.chapters.count }.by(1)
       end
 
       it 'requires the signed in user to be member of the parent entry' do
@@ -47,7 +50,7 @@ module Pageflow
 
         expect {
           sign_in(user)
-          aquire_edit_lock(user, entry)
+          acquire_edit_lock(user, entry)
           post(:scaffold,
                storyline_id: storyline,
                chapter: attributes_for(:valid_chapter),
@@ -61,7 +64,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         post(:scaffold,
              storyline_id: storyline,
              chapter: attributes_for(:valid_chapter),
@@ -76,7 +79,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         post(:scaffold,
              storyline_id: storyline,
              chapter: attributes_for(:valid_chapter),
@@ -122,8 +125,11 @@ module Pageflow
         create(:membership, :entry => entry, :user => user)
 
         sign_in user
-        aquire_edit_lock(user, entry)
-        patch(:update, :id => chapter, :chapter => attributes_for(:valid_chapter, :title => 'new'), :format => 'json')
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              id: chapter,
+              chapter: attributes_for(:valid_chapter, title: 'new'),
+              format: 'json')
 
         expect(chapter.reload.title).to eq('new')
       end
@@ -156,8 +162,11 @@ module Pageflow
         create(:membership, :entry => entry, :user => user)
 
         sign_in user
-        aquire_edit_lock(user, entry)
-        patch(:order, :storyline_id => storyline, :ids => [chapters.first.id, chapters.last.id], :format => 'json')
+        acquire_edit_lock(user, entry)
+        patch(:order,
+              storyline_id: storyline,
+              ids: [chapters.first.id, chapters.last.id],
+              format: 'json')
 
         expect(response.status).to eq(204)
       end
@@ -170,8 +179,11 @@ module Pageflow
         create(:membership, :entry => entry, :user => user)
 
         sign_in user
-        aquire_edit_lock(user, entry)
-        patch(:order, :storyline_id => storyline, :ids => [chapters.first.id, chapters.last.id], :format => 'json')
+        acquire_edit_lock(user, entry)
+        patch(:order,
+              storyline_id: storyline,
+              ids: [chapters.first.id, chapters.last.id],
+              format: 'json')
 
         expect(chapters.first.reload.position).to eq(0)
         expect(chapters.last.reload.position).to eq(1)
@@ -185,7 +197,7 @@ module Pageflow
         chapter = create(:chapter, storyline: storyline)
 
         sign_in(user)
-        aquire_edit_lock(user, entry)
+        acquire_edit_lock(user, entry)
         patch(:order, storyline_id: other_storyline, ids: [chapter.id])
 
         expect(chapter.reload.storyline).to eq(other_storyline)
@@ -200,7 +212,7 @@ module Pageflow
         storyline_of_other_entry = create(:storyline, revision: other_entry.draft)
 
         sign_in(user)
-        aquire_edit_lock(user, other_entry)
+        acquire_edit_lock(user, other_entry)
         patch(:order, storyline_id: storyline_of_other_entry, ids: [chapter.id])
 
         expect(response).to be_not_found
@@ -237,8 +249,8 @@ module Pageflow
         create(:membership, :entry => entry, :user => user)
 
         sign_in user
-        aquire_edit_lock(user, entry)
-        delete(:destroy, :id => chapter.id, :format => 'json')
+        acquire_edit_lock(user, entry)
+        delete(:destroy, id: chapter.id, format: 'json')
 
         expect(entry.draft(true)).to have(0).chapters
       end
