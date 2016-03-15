@@ -4,41 +4,153 @@
 
 [Compare changes](https://github.com/codevise/pageflow/compare/v0.9.0...master)
 
+##### Breaking Changes
+
+- Except for icon fonts, Pageflow now only packages the Source Sans
+  Pro font, which is used by the default theme. If your theme depends
+  on one of the additional fonts that were included so far, you need
+  to supply these in your own app from now on.
+  ([#498](https://github.com/codevise/pageflow/pull/498))
+
+##### Manual Update Step
+
+- Add new thumbnail_large style
+  ([#466](https://github.com/codevise/pageflow/pull/466))
+- Image file Paperclip attachments need to be refreshed to ensure the
+  new `thumbnail_large` styles
+  ([#466](https://github.com/codevise/pageflow/pull/466)) are present:
+
+        $ bin/rake paperclip:refresh:thumbnails \
+            CLASS=Pageflow::ImageFile \
+            ATTACHMENT=processed_attachment \
+            STYLES=thumbnail_large
+
+        $ bin/rake paperclip:refresh:thumbnails \
+            CLASS=Pageflow::VideoFile \
+            ATTACHMENT=poster \
+            STYLES=thumbnail_large
+
+        $ bin/rake paperclip:refresh:thumbnails \
+            CLASS=Pageflow::VideoFile \
+            ATTACHMENT=thumbnail \
+            STYLES=thumbnail_large
+
+  If you use plugins that provide file types with thumbnails, you need
+  to reprocess their attachments as well.
+
+##### Public Site
+
+- Support entries with multiple storylines
+  ([#409](https://github.com/codevise/pageflow/pull/409),
+   [#461](https://github.com/codevise/pageflow/pull/461),
+   [#462](https://github.com/codevise/pageflow/pull/462),
+   [#467](https://github.com/codevise/pageflow/pull/467),
+   [#485](https://github.com/codevise/pageflow/pull/485))
+- Display chapters of main storyline in overview
+  ([#455](https://github.com/codevise/pageflow/pull/455))
+- Add css class to prevent display of hidden text indicator
+  ([#435](https://github.com/codevise/pageflow/pull/435))
 - Use shared translations `pageflow-public-i18n` gem for published
   entries.
   ([#451](https://github.com/codevise/pageflow/pull/451),
    [#450](https://github.com/codevise/pageflow/pull/450),
    [#410](https://github.com/codevise/pageflow/pull/410))
-- Add mixin to generate page type pictogram theme css
-  ([#449](https://github.com/codevise/pageflow/pull/449))
+- Fade scroll indicators on classic navigation bar
+  ([#464](https://github.com/codevise/pageflow/pull/464))
+- Bug fix: Remove html entities from social share description
+  ([#486](https://github.com/codevise/pageflow/pull/486))
+- Bug fix: Prevent accessing password protected entries
+  ([#483](https://github.com/codevise/pageflow/pull/483))
+- Bug fix: Use history pushstateadapter on ios 8 and above
+  ([#479](https://github.com/codevise/pageflow/pull/479))
+- Bug fix: Use correct key in navigation share box
+  ([#454](https://github.com/codevise/pageflow/pull/454))
+- Bug fix: Replace source sans pro to support czech characters
+  ([#497](https://github.com/codevise/pageflow/pull/497))
+
+##### Admin
+
 - Add feature tab to entry admin
   ([#432](https://github.com/codevise/pageflow/pull/432))
-- Add css class to prevent display of hidden text indicator
-  ([#435](https://github.com/codevise/pageflow/pull/435))
-- Let page type opt out of default scroller creation
-  ([#427](https://github.com/codevise/pageflow/pull/427))
-- Default implementation for editor page links collection and views
-  ([#415](https://github.com/codevise/pageflow/pull/415))
-- Reload dynamically generated entry stylesheet
-  ([#426](https://github.com/codevise/pageflow/pull/426))
-- Improve reloading logic for widgets inside editor
-  ([#429](https://github.com/codevise/pageflow/pull/429))
+- Allow associating multiple CNAMES with a theming
+  ([#482](https://github.com/codevise/pageflow/pull/482))
+
+##### Editor
+
+- Scaffold pages and chapters in editor
+  ([#456](https://github.com/codevise/pageflow/pull/456))
+- Disallow links in overview description
+  ([#440](https://github.com/codevise/pageflow/pull/440))
+- Add storyline help topic
+  ([#460](https://github.com/codevise/pageflow/pull/460))
 - Improve display of page type pictograms in select box
   ([#434](https://github.com/codevise/pageflow/pull/434))
-- Set pageflow_editor global
-  ([#428](https://github.com/codevise/pageflow/pull/428))
-- Bug fix: Fix migration rename command in readme
-  ([#448](https://github.com/codevise/pageflow/pull/448))
-- Bug fix: Offer original image for download in editor
-  ([#442](https://github.com/codevise/pageflow/pull/442))
-- Bug fix: Prevent incorrectly called page type hook on manual start
-  ([#441](https://github.com/codevise/pageflow/pull/441))
+- Improve reloading logic for widgets inside editor
+  ([#429](https://github.com/codevise/pageflow/pull/429))
+- Reload dynamically generated entry stylesheet
+  ([#426](https://github.com/codevise/pageflow/pull/426))
+- Improve inline help in forms
+  ([#480](https://github.com/codevise/pageflow/pull/480))
+- Debounce widget update in editor
+  ([#444](https://github.com/codevise/pageflow/pull/444))
+- Improve native scrolling prevention
+  ([#477](https://github.com/codevise/pageflow/pull/477))
+- Bug fix: Optimize sidebar for text box compatibility
+  ([#478](https://github.com/codevise/pageflow/pull/478))
 - Bug fix: Fix editor blank slate background color
   ([#433](https://github.com/codevise/pageflow/pull/433))
-- Bug fix: Correctly detect links to prevent default for in editor
-  ([#431](https://github.com/codevise/pageflow/pull/431))
+- Bug fix: Offer original image for download in editor
+  ([#442](https://github.com/codevise/pageflow/pull/442))
 - Bug fix: Ensure pages are preloaded in editor after type change
   ([#430](https://github.com/codevise/pageflow/pull/430))
+- Bug fix: Correctly detect links to prevent default for in editor
+  ([#431](https://github.com/codevise/pageflow/pull/431))
+
+##### Rails Engine
+
+- Let page type opt out of default scroller creation
+  ([#427](https://github.com/codevise/pageflow/pull/427))
+- Add theme option to control page change at storyline boundaries
+  ([#458](https://github.com/codevise/pageflow/pull/458))
+- Add mixin to generate page type pictogram theme css
+  ([#449](https://github.com/codevise/pageflow/pull/449))
+- Introduce SCSS extendables
+  ([#463](https://github.com/codevise/pageflow/pull/463))
+- Add image css classes to lazy load thumbnails
+  ([#488](https://github.com/codevise/pageflow/pull/488))
+- Add cleanup page type hook
+  ([#489](https://github.com/codevise/pageflow/pull/489))
+- Reorganize seed data
+  ([#465](https://github.com/codevise/pageflow/pull/465))
+- Default implementation for editor page links collection and views
+  ([#415](https://github.com/codevise/pageflow/pull/415))
+- Implement options for disabling rich text and links in TextAreaInputView
+  ([#404](https://github.com/codevise/pageflow/pull/404))
+- Trigger event on editor api when chapter or page is added
+  ([#457](https://github.com/codevise/pageflow/pull/457))
+- Set PAGEFLOW_EDITOR global
+  ([#428](https://github.com/codevise/pageflow/pull/428))
+- Improve page navigation list widget
+  ([#443](https://github.com/codevise/pageflow/pull/443))
+- Also set filter css class on navigation bar item
+  ([#459](https://github.com/codevise/pageflow/pull/459))
+- Optionally specify a host for the dummy instance
+  ([#503](https://github.com/codevise/pageflow/pull/503))
+- Ensure multijson uses yajl JSON adapter.
+  ([#487](https://github.com/codevise/pageflow/pull/487))
+- Improve guides and specs
+  ([#502](https://github.com/codevise/pageflow/pull/502),
+   [#501](https://github.com/codevise/pageflow/pull/501),
+   [#473](https://github.com/codevise/pageflow/pull/473),
+   [#472](https://github.com/codevise/pageflow/pull/472))
+- Bug fix: Destroy dependent account objects
+  ([#493](https://github.com/codevise/pageflow/pull/493))
+- Bug fix: Prevent incorrectly called page type hook on manual start
+  ([#441](https://github.com/codevise/pageflow/pull/441))
+- Bug fix: Explicitly set available locales in config
+  ([#452](https://github.com/codevise/pageflow/pull/452))
+- Bug fix: Fix migration rename command in readme
+  ([#448](https://github.com/codevise/pageflow/pull/448))
 
 ### Version 0.9.0
 
@@ -81,9 +193,9 @@
   account's admin page to view a list of available feature
   toggles.
 - Image file Paperclip attachments need to be refreshed to ensure the
-  new panorama styles 
+  new panorama styles
   ([#344](https://github.com/codevise/pageflow/pull/344)) are present:
-        
+
         $ bin/rake paperclip:refresh:thumbnails \
             CLASS=Pageflow::ImageFile \
             ATTACHMENT=processed_attachment \
