@@ -14,6 +14,7 @@
 
 ##### Manual Update Step
 
+- Image file Paperclip attachments need to be refreshed to ensure the
   new `thumbnail_large` styles
   ([#466](https://github.com/codevise/pageflow/pull/466)) are present:
 
