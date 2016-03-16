@@ -129,7 +129,7 @@ module Pageflow
 
       def build_new_resource
         super.tap do |entry|
-          entry.account ||= current_user.account
+          entry.account ||= current_user.membership_accounts.first || Account.first
           entry.theming ||= entry.account.default_theming
         end
       end

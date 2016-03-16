@@ -17,6 +17,11 @@ module Pageflow
                class_name: 'Pageflow::Entry',
                source: :entity,
                source_type: 'Pageflow::Entry'
+      has_many :membership_accounts,
+               through: :memberships,
+               class_name: 'Pageflow::Account',
+               source: :entity,
+               source_type: 'Pageflow::Account'
 
       has_many :revisions, :class_name => 'Pageflow::Revision', :foreign_key => :creator_id
 

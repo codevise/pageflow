@@ -1,9 +1,41 @@
 module Pageflow
   module Policies
     class EntryPolicy
+      class Scope
+        attr_reader :user, :scope
+
+        def initialize(user, scope)
+          @user = user
+          @scope = scope
+        end
+
+        def resolve
+          scope.joins(ActiveRecord::Base.send(
+                        :sanitize_sql_array, [
+                          'LEFT OUTER JOIN pageflow_memberships ON ' \
+                          'pageflow_memberships.user_id = :user_id AND ' \
+                          'pageflow_memberships.entity_id = pageflow_entries.id AND ' \
+                          'pageflow_memberships.entity_type = "Pageflow::Entry"',
+                          user_id: user.id]))
+               .joins(ActiveRecord::Base.send(
+                        :sanitize_sql_array, [
+                          'LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
+                          'pageflow_memberships_2.user_id = :user_id AND ' \
+                          'pageflow_memberships_2.entity_id = pageflow_entries.account_id AND ' \
+                          'pageflow_memberships_2.entity_type = "Pageflow::Account"',
+                          user_id: user.id])).where(
+                            'pageflow_memberships.entity_id IS NOT NULL OR ' \
+                            'pageflow_memberships_2.entity_id IS NOT NULL')
+        end
+      end
+
       def initialize(user, entry)
         @user = user
         @entry = entry
+      end
+
+      def read?
+        preview?
       end
 
       def preview?

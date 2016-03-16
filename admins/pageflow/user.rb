@@ -64,7 +64,9 @@ module Pageflow
           if user.memberships.any?
             table_for user.memberships, :class => 'memberships', :i18n => Membership do
               column :entry do |membership|
-                link_to(membership.entry.title, admin_entry_path(membership.entry))
+                if membership.entity_type == 'Pageflow::Entry'
+                  link_to(membership.entry.title, admin_entry_path(membership.entry))
+                end
               end
             end
           else
