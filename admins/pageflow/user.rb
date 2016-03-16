@@ -61,11 +61,12 @@ module Pageflow
         end
 
         panel I18n.t('activerecord.models.entry.other') do
-          embedded_index_table(user.memberships.includes(:entry).references(:pageflow_entry),
-                               blank_slate_text: I18n.t('pageflow.admin.users.empty')) do
-            table_for_collection sortable: true, class: 'memberships', i18n: Membership do
-              column :entry, sortable: 'pageflow_entries.title' do |membership|
-                link_to(membership.entry.title, admin_entry_path(membership.entry))
+          if user.memberships.any?
+            table_for user.memberships, :class => 'memberships', :i18n => Membership do
+              column :entry do |membership|
+                if membership.entity_type == 'Pageflow::Entry'
+                  link_to(membership.entry.title, admin_entry_path(membership.entry))
+                end
               end
               column :created_at, sortable: 'pageflow_memberships.created_at'
               column do |membership|

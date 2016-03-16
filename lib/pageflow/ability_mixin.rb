@@ -5,35 +5,57 @@ module Pageflow
     def pageflow_default_abilities(user)
       return if user.nil?
 
-      can :read, Folder, :id => user.entries.map(&:folder_id)
-
-      can [:read, :use_files], Entry, :id => user.entry_ids
-
-      can [:edit, :update, :edit_outline, :publish, :restore, :snapshot, :confirm_encoding], Entry do |entry|
-        can_edit_entry?(user, entry)
-      end
-
-      can :manage, Storyline do |storyline|
-        Policies::EntryPolicy.new(user, storyline.revision.entry).edit?
-      end
-
-      can :manage, Chapter do |record|
-        Policies::EntryPolicy.new(user, record.entry).edit?
-      end
-
-      can :manage, Pageflow.config.file_types.map(&:model) do |record|
-        can_edit_any_entry_using_file?(user, record)
-      end
-
-      can :manage, Page do |page|
-        Policies::EntryPolicy.new(user, page.chapter.entry).edit?
-      end
-
-      can :read, Revision do |revision|
-        Policies::EntryPolicy.new(user, revision.entry).preview?
-      end
-
       can :view, [Admin::MembersTab, Admin::RevisionsTab]
+
+      unless user.admin?
+
+        can :read, Folder, id: user.entries.map(&:folder_id)
+
+        can :use_files, Entry, id: user.entry_ids
+
+        can :read, Entry, Policies::EntryPolicy::Scope.new(user, Entry).resolve do |entry|
+          Policies::EntryPolicy.new(user, entry).read?
+        end
+
+        can [:create, :duplicate], Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).publish?
+        end
+
+        can [:edit,
+             :update,
+             :edit_outline,
+             :publish,
+             :restore,
+             :snapshot,
+             :confirm_encoding], Entry do |entry|
+          can_edit_entry?(user, entry)
+        end
+
+        can :add_member_to, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).configure?
+        end
+
+        can :manage, Storyline do |storyline|
+          Policies::EntryPolicy.new(user, storyline.revision.entry).edit?
+        end
+
+        can :manage, Chapter do |record|
+          Policies::EntryPolicy.new(user, record.entry).edit?
+        end
+
+        can :manage, Pageflow.config.file_types.map(&:model) do |record|
+          can_edit_any_entry_using_file?(user, record)
+        end
+
+        can :manage, Page do |page|
+          Policies::EntryPolicy.new(user, page.chapter.entry).edit?
+        end
+
+        can :read, Revision do |revision|
+          Policies::EntryPolicy.new(user, revision.entry).preview?
+        end
+
+      end
 
       if user.admin?
         can [:read, :create, :update], Account
@@ -62,7 +84,15 @@ module Pageflow
       elsif user.account_manager?
         can :manage, Theming, :account_id => user.account_id
         can :manage, Folder, :account_id => user.account.id
-        can :manage, Entry, :account_id => user.account.id
+        can [:edit,
+             :update,
+             :edit_outline,
+             :publish,
+             :restore,
+             :snapshot,
+             :confirm_encoding,
+             :use_files,
+             :destroy], Entry, account_id: user.account.id
         can :manage, ::User, :account_id => user.account.id
         can :manage, Revision, :entry => {:account_id => user.account.id}
 

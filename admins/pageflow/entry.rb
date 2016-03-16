@@ -157,6 +157,13 @@ module Pageflow
         params.key?(:folder_id) ? result.where(folder_id: params[:folder_id]) : result
       end
 
+      def build_new_resource
+        super.tap do |entry|
+          entry.account ||= current_user.membership_accounts.first || Account.first
+          entry.theming ||= entry.account.default_theming
+        end
+      end
+
       def permitted_params
         result = params.permit(entry: permitted_attributes)
 

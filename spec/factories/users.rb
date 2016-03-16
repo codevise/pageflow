@@ -19,6 +19,9 @@ module Pageflow
 
       trait :account_manager do
         role 'account_manager'
+        after(:create) do |user|
+          create(:membership, user: user, entity: user.account, role: 'manager')
+        end
       end
 
       trait :admin do
