@@ -6,7 +6,7 @@ describe Admin::EntriesController do
   describe '#show' do
     it 'editor sees members and revisions tabs' do
       account = create(:account)
-      user = create(:user, :editor, :account => account)
+      user = create(:user)
       entry = create(:entry, account: account, with_editor: user, title: 'example')
 
       sign_in(user)
@@ -16,9 +16,8 @@ describe Admin::EntriesController do
       expect(response.body).to have_selector('.admin_tabs_view .tabs .revisions')
     end
 
-    it 'account manager sees registered admin resource tabs she is authorized for' do
-      account = create(:account)
-      entry = create(:entry, :account => account, :title => 'example')
+    it 'entry previewer sees registered admin resource tabs she is authorized for' do
+      entry = create(:entry, title: 'example')
       tab_view_component = Class.new(Pageflow::ViewComponent) do
         def build(entry)
           super('data-entry-title' => entry.title)
@@ -34,7 +33,8 @@ describe Admin::EntriesController do
       allow(controller).to receive(:authorized?).and_call_original
       allow(controller).to receive(:authorized?).with(:view, tab_view_component).and_return(true)
 
-      user = create(:user, :account_manager, account: account)
+      user = create(:user)
+      create(:membership, user: user, entity: entry, role: 'previewer')
       sign_in(user)
       get(:show, :id => entry.id)
 
@@ -42,7 +42,8 @@ describe Admin::EntriesController do
     end
 
     it 'account manager does not see registered admin resource tabs she is not authorized for' do
-      account = create(:account)
+      user = create(:user)
+      account = create(:account, with_manager: user)
       entry = create(:entry, :account => account, :title => 'example')
       tab_view_component = Class.new(Pageflow::ViewComponent) do
         def build(entry)
@@ -56,7 +57,7 @@ describe Admin::EntriesController do
 
       Pageflow.config.admin_resource_tabs.register(:entry, name: :some_tab, component: tab_view_component)
 
-      sign_in(create(:user, :account_manager, :account => account))
+      sign_in(user)
       get(:show, :id => entry.id)
 
       expect(response.body).not_to have_selector('.admin_tabs_view div[data-entry-title="example"]')
@@ -66,8 +67,7 @@ describe Admin::EntriesController do
   describe '#new' do
     it 'displays additional registered form inputs' do
       user = create(:user)
-      account = create(:account)
-      create(:membership, user: user, entity: account, role: 'publisher')
+      account = create(:account, with_publisher: user)
 
       pageflow_configure do |config|
         config.admin_form_inputs.register(:entry, :custom_field)
@@ -82,12 +82,11 @@ describe Admin::EntriesController do
 
   describe '#create' do
     it 'does not allow account publisher to create entries for other account' do
-      account = create(:account)
-      other_account = create(:account)
       user = create(:user)
+      account = create(:account, with_publisher: user)
+      other_account = create(:account)
 
       sign_in(user)
-      create(:membership, user: user, entity: account, role: 'publisher')
 
       expect do
         post :create, entry: attributes_for(:entry, account_id: other_account)
@@ -107,9 +106,8 @@ describe Admin::EntriesController do
     end
 
     it 'allows account publisher to create entries for own account' do
-      account = create(:account)
       user = create(:user)
-      create(:membership, user: user, entity: account, role: 'publisher')
+      account = create(:account, with_publisher: user)
 
       sign_in(user)
 
@@ -148,8 +146,7 @@ describe Admin::EntriesController do
 
     it 'allows account publisher to define custom field registered as form input' do
       user = create(:user)
-      account = create(:account)
-      create(:membership, user: user, entity: account, role: 'publisher')
+      account = create(:account, with_publisher: user)
 
       pageflow_configure do |config|
         config.admin_form_inputs.register(:entry, :custom_field)
@@ -163,8 +160,7 @@ describe Admin::EntriesController do
 
     it 'does not allows account publisher to define custom field not registered as form input' do
       user = create(:user)
-      account = create(:account)
-      create(:membership, user: user, entity: account, role: 'publisher')
+      account = create(:account, with_publisher: user)
 
       sign_in(user)
       post(:create, entry: {custom_field: 'some value'})

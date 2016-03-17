@@ -3,8 +3,12 @@ require 'spec_helper'
 module Pageflow
   module Policies
     describe EntryPolicy do
+      terms = {class: EntryPolicy,
+               subject: FactoryGirl.create(:entry),
+               name: 'entry'}
       describe :configure do
         include_examples 'for entry and account',
+                         terms: terms,
                          permission_type: :configure,
                          minimum_required_role: 'manager',
                          maximum_forbidden_role: 'publisher'
@@ -12,6 +16,7 @@ module Pageflow
 
       describe :publish do
         include_examples 'for entry and account',
+                         terms: terms,
                          permission_type: :publish,
                          minimum_required_role: 'publisher',
                          maximum_forbidden_role: 'editor'
@@ -19,6 +24,7 @@ module Pageflow
 
       describe :edit do
         include_examples 'for entry and account',
+                         terms: terms,
                          permission_type: :edit,
                          minimum_required_role: 'editor',
                          maximum_forbidden_role: 'previewer'
@@ -26,12 +32,14 @@ module Pageflow
 
       describe :preview do
         include_examples 'for entry and account',
+                         terms: terms,
                          permission_type: :preview,
                          minimum_required_role: 'previewer'
       end
 
       describe :read do
         include_examples 'for entry and account',
+                         terms: terms,
                          permission_type: :read,
                          minimum_required_role: 'previewer'
       end

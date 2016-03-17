@@ -54,8 +54,11 @@ module Pageflow
 
     sidebar :folders, :only => :index do
       text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'), new_admin_folder_path, :class => 'new'))
-      grouped_folder_list(Folder.includes(:account).accessible_by(Ability.new(current_user), :read),
-                          :class => authorized?(:manage, Folder) ? 'editable' : nil,
+      grouped_folder_list(Folder.accessible_by(Ability.new(current_user), :read),
+                          class: if params[:id] &&
+                                    authorized?(:configure_folder_on, resource.account)
+                                   'editable'
+                                 end,
                           :active_id => params[:folder_id],
                           :grouped_by_accounts => authorized?(:read, Account))
     end
@@ -70,7 +73,7 @@ module Pageflow
             f.input :theming, :include_blank => false
           end
         end
-        if authorized?(:manage, Folder)
+        if authorized?(:configure_folder_for, resource || resource_class)
           f.input :folder, :collection => collection_for_folders(f.object.account), :include_blank => true
         end
 
@@ -183,7 +186,10 @@ module Pageflow
         result += Pageflow.config_for(target).admin_form_inputs.permitted_attributes_for(:entry)
 
         result += [:account_id, :theming_id] if authorized?(:read, Account)
-        result << :folder_id if authorized?(:manage, Folder)
+        if params[:id] && authorized?(:configure_folder_for, resource || resource.class)
+          result << :folder_id
+        end
+
         result
       end
 
