@@ -375,9 +375,9 @@ module Pageflow
       end
 
       context 'with format json' do
-        it 'responds with success for members of the entry' do
+        it 'responds with success for previewers of the entry' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_previewer: user)
 
           sign_in(user)
           get(:show, :id => entry, :format => 'json')
@@ -387,7 +387,7 @@ module Pageflow
 
         it 'includes file usage ids in response' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_previewer: user)
           file = create(:image_file)
           usage = create(:file_usage, :file => file, :revision => entry.draft)
 
@@ -434,9 +434,9 @@ module Pageflow
     end
 
     describe '#partials' do
-      it 'reponds with success for members of the entry' do
+      it 'reponds with success for editors of the entry' do
         user = create(:user)
-        entry = create(:entry, :with_member => user)
+        entry = create(:entry, with_editor: user)
 
         sign_in(user)
         get(:partials, :id => entry)
@@ -444,7 +444,7 @@ module Pageflow
         expect(response.status).to eq(200)
       end
 
-      it 'requires the signed in user to be member of the parent entry' do
+      it 'requires the signed in user to be editor of the parent entry' do
         user = create(:user)
         entry = create(:entry)
 
@@ -470,7 +470,7 @@ module Pageflow
                                                                  :enabled_in_editor => false,
                                                                  :rendered => '<div class="non_editor_widget"></div>'))
         user = create(:user)
-        entry = create(:entry, :with_member => user)
+        entry = create(:entry, with_editor: user)
         create(:widget, :subject => entry.draft, :role => 'header', :type_name => 'test_widget')
         create(:widget, :subject => entry.draft, :role => 'footer', :type_name => 'non_editor_widget')
 
@@ -486,7 +486,7 @@ module Pageflow
                                                                  enabled_in_editor: true,
                                                                  rendered: lambda { %'<div lang="#{I18n.locale}"></div>' }))
         user = create(:user)
-        entry = create(:entry, with_member: user)
+        entry = create(:entry, with_editor: user)
         create(:widget, :subject => entry.draft, :type_name => 'test_widget')
 
         sign_in(user)

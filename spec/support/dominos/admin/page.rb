@@ -27,7 +27,8 @@ module Dom
                options.delete(:on)
              end
 
-        if ['previewer', 'editor', 'publisher', 'manager'].include?(role)
+        if [:previewer, :editor, :publisher, :manager].include?(role.to_sym) &&
+           !(role == :editor && on.blank?)
           user = FactoryGirl.create(:user, options.reverse_merge(email: email,
                                                                  password: password))
         else
@@ -35,7 +36,7 @@ module Dom
                                                                        password: password))
         end
 
-        unless role == :editor || on.blank?
+        if on.present?
           role = 'manager' if role == :account_manager
           FactoryGirl.create(:membership, user: user, role: role, entity: on)
         end
