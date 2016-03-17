@@ -6,10 +6,20 @@ module Pageflow
       return if user.nil?
 
       can :view, [Admin::MembersTab, Admin::RevisionsTab]
-
       unless user.admin?
+        can [:create, :update, :destroy], Folder do |folder|
+          Policies::FolderPolicy.new(user, folder).manage?
+        end
 
-        can :read, Folder, id: user.entries.map(&:folder_id)
+        can :configure_folder_on, Account do |account|
+          Policies::AccountPolicy.new(user, account).publish?
+        end
+
+        can :configure_folder_for, Entry do |entry|
+          Policies::AccountPolicy.new(user, entry.account).publish?
+        end
+
+        can :read, Folder, Policies::FolderPolicy::Scope.new(user, Folder).resolve
 
         can :use_files, Entry, id: user.entry_ids
 
@@ -62,7 +72,7 @@ module Pageflow
       end
 
       if user.admin?
-        can [:read, :create, :update], Account
+        can [:read, :create, :update, :configure_folder_on], Account
         can :destroy, Account do |account|
           account.users.empty? && account.entries.empty?
         end
@@ -87,7 +97,6 @@ module Pageflow
         can :manage, Resque
       elsif user.account_manager?
         can :manage, Theming, :account_id => user.account_id
-        can :manage, Folder, :account_id => user.account.id
         can [:edit,
              :update,
              :edit_outline,

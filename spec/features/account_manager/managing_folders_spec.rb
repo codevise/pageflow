@@ -1,8 +1,9 @@
 require 'spec_helper'
 
-feature 'account manager managing folders' do
+feature 'account publisher managing folders' do
   scenario 'adding a folder' do
-    Dom::Admin::Page.sign_in_as(:account_manager)
+    account = create(:account)
+    Dom::Admin::Page.sign_in_as(:publisher, on: account)
 
     visit(admin_entries_path)
     Dom::Admin::FolderPanel.first.add_folder_link.click
@@ -13,8 +14,8 @@ feature 'account manager managing folders' do
   end
 
   scenario 'renaming a folder' do
-    user = Dom::Admin::Page.sign_in_as(:account_manager)
-    create(:folder, :name => 'A folder', :account => user.account)
+    folder = create(:folder, name: 'A folder')
+    Dom::Admin::Page.sign_in_as(:publisher, on: folder.account)
 
     visit(admin_entries_path)
     Dom::Admin::FolderPanelItem.find_by_name('A folder').edit_link.click
@@ -24,8 +25,8 @@ feature 'account manager managing folders' do
   end
 
   scenario 'destroying a folder' do
-    user = Dom::Admin::Page.sign_in_as(:account_manager)
-    create(:folder, :name => 'A folder', :account => user.account)
+    folder = create(:folder, name: 'A folder')
+    Dom::Admin::Page.sign_in_as(:publisher, on: folder.account)
 
     visit(admin_entries_path)
     Dom::Admin::FolderPanelItem.find_by_name('A folder').delete_link.click
