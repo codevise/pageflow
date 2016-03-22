@@ -72,11 +72,6 @@
         pageLinks.off('mouseup touchend', goToPage);
       }
 
-      function closeOverview() {
-        $('.overview').removeClass("active");
-        $('.navigation_index', element).removeClass("active");
-      }
-
       function hideOverlay() {
         $(overlays).addClass('hidden').removeClass('visible');
       }
@@ -86,8 +81,6 @@
           return;
         }
         hideOverlay();
-        closeOverview();
-        $('.page .content, .scroll_indicator').removeClass('hidden');
         pageflow.slides.goToById(this.getAttribute("data-link"));
         e.preventDefault();
       }
