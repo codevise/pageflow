@@ -246,7 +246,7 @@ module Pageflow
         it 'succeeds for member of the entry' do
           user = create(:user)
           entry = create(:entry, :with_member => user)
-          edit_lock = entry.edit_lock.acquire(user)
+          entry.edit_lock.acquire(user)
 
           sign_in(user)
           delete(:destroy, :entry_id => entry, :format => :json)
@@ -257,7 +257,7 @@ module Pageflow
         it 'releases lock' do
           user = create(:user)
           entry = create(:entry, :with_member => user)
-          edit_lock = entry.edit_lock.acquire(user)
+          entry.edit_lock.acquire(user)
 
           sign_in(user)
           delete(:destroy, :entry_id => entry, :format => :json)
@@ -267,7 +267,7 @@ module Pageflow
 
         it 'requires authentication' do
           entry = create(:entry)
-          edit_lock = entry.edit_lock.acquire(create(:user))
+          entry.edit_lock.acquire(create(:user))
 
           delete(:destroy, :entry_id => entry, :format => :json)
 
