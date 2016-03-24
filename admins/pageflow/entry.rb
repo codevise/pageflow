@@ -73,7 +73,7 @@ module Pageflow
             f.input :theming, :include_blank => false
           end
         end
-        if authorized?(:configure_folder_for, resource || resource_class)
+        if authorized?(:configure_folder_for, resource) || controller.action_name == :create
           f.input :folder, :collection => collection_for_folders(f.object.account), :include_blank => true
         end
 
@@ -186,7 +186,7 @@ module Pageflow
         result += Pageflow.config_for(target).admin_form_inputs.permitted_attributes_for(:entry)
 
         result += [:account_id, :theming_id] if authorized?(:read, Account)
-        if params[:id] && authorized?(:configure_folder_for, resource || resource.class)
+        if params[:id] && authorized?(:configure_folder_for, resource)
           result << :folder_id
         end
 
