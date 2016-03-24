@@ -404,7 +404,7 @@ de:
     - Fr
     - Sa
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mär
@@ -430,7 +430,7 @@ de:
       long: ! '%e. %B %Y'
       short: ! '%e. %b'
     month_names:
-    - 
+    -
     - Januar
     - Februar
     - März
@@ -835,13 +835,13 @@ de:
           salutation: Hallo %{first_name}
     edit_locks:
       break_action:
-        acquire: Stattdessen hier bearbeiten
+        aquire: Stattdessen hier bearbeiten
       errors:
         held_by_other_session_error:
-          acquire_html: <p>Sie haben diesen Beitrag in einem anderen Fenster geöffnet.</p>
+          aquire_html: <p>Sie haben diesen Beitrag in einem anderen Fenster geöffnet.</p>
           other_html: <p>Sie haben diesen Beitrag in einem anderen Fenster geöffnet. Laden Sie die Seite neu und klicken Sie auf 'Stattdessen hier bearbeiten', um den akutellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen verloren.</p>
         held_by_other_user_error:
-          acquire_html: <p>Dieser Beitrag wird im Moment von <strong>%{user_name}</strong> bearbeitet. Klicken Sie auf 'Stattdessen hier bearbeiten', um die Bearbeitung durch den anderen Benutzers abzubrechen.</p>
+          aquire_html: <p>Dieser Beitrag wird im Moment von <strong>%{user_name}</strong> bearbeitet. Klicken Sie auf 'Stattdessen hier bearbeiten', um die Bearbeitung durch den anderen Benutzers abzubrechen.</p>
           other_html: <p><strong>%{user_name}</strong> hat ihre Bearbeitung abgebrochen. Laden Sie die Seite neu und klicken Sie auf 'Stattdessen hier bearbeiten', um den aktuellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen des anderen Benutzers verloren.</p>
         not_held_error:
           other_html: <p>Die Bearbeitung des Beitrags wurde außerhalb dieses Editor beendet. Laden Sie die Seite neu, um den akutellen Stand des Beitrags zu sehen.</p><p>Wenn Sie die Bearbeitung hier fortsetzen, gehen möglicherweise Änderungen verloren.</p>
@@ -1507,7 +1507,7 @@ de:
         text: ! '# Erzählstränge
 
 
-          Parallel zur linearen Erzählung von „oben nach unten“, können auch weitere Erzählstränge und Exkurse zu vertiefenden Inhalten erstellt werden. Erstelle dazu eine „Verweise“-Seite und verknüpfe die dort hinterlegten Verweise mit einem neuen Erzählstrang. Dabei kann frei gewählt werden, an welcher Stelle ein solcher Abzweig später wieder zum Hauptstrang führt oder auf einen weiteren Erzählstrang in der Geschichte verweist. 
+          Parallel zur linearen Erzählung von „oben nach unten“, können auch weitere Erzählstränge und Exkurse zu vertiefenden Inhalten erstellt werden. Erstelle dazu eine „Verweise“-Seite und verknüpfe die dort hinterlegten Verweise mit einem neuen Erzählstrang. Dabei kann frei gewählt werden, an welcher Stelle ein solcher Abzweig später wieder zum Hauptstrang führt oder auf einen weiteren Erzählstrang in der Geschichte verweist.
 
 
           Erstellt werden diese Erzählstränge in der Gliederung über ein Klick auf die Plus-Schaltfläche neben der Erzählstrang-Auswahl. Dabei öffnet sich automatisch ein neues Kapitel, in dem dann weitere Seiten angelegt werden können. In jedem Erzählstrang kann eine „Übergeordnete Seite“ festgelegt werden. Zu dieser wird der User geleitet, wenn er am Ende des Erzählstrangs weiter scrollt. Mit einem Klick auf das Stift-Symbol kann die Zielseite ausgewählt werden.
