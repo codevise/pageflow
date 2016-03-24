@@ -5,6 +5,10 @@ module Pageflow
     end
 
     factory :user do
+      transient do
+        on nil
+      end
+
       email
       first_name 'John'
       last_name 'Doe'
@@ -15,12 +19,33 @@ module Pageflow
       account
 
       trait :editor do
+          after(:create) do |user, evaluator|
+            create(:membership, user: user, entity: evaluator.on, role: 'editor') if evaluator.on
+          end
       end
 
       trait :account_manager do
         role 'account_manager'
         after(:create) do |user|
           create(:membership, user: user, entity: user.account, role: 'manager')
+        end
+      end
+
+      trait :previewer do
+        after(:create) do |user, evaluator|
+          create(:membership, user: user, entity: evaluator.on, role: 'previewer')
+        end
+      end
+
+      trait :publisher do
+        after(:create) do |user, evaluator|
+          create(:membership, user: user, entity: evaluator.on, role: 'publisher')
+        end
+      end
+
+      trait :manager do
+        after(:create) do |user, evaluator|
+          create(:membership, user: user, entity: evaluator.on, role: 'manager')
         end
       end
 
