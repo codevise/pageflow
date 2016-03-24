@@ -12,11 +12,11 @@ module Pageflow
         end
 
         can :configure_folder_on, Account do |account|
-          Policies::AccountPolicy.new(user, account).publish?
+          Policies::AccountPolicy.new(user, account).configure_folder_on?
         end
 
         can :configure_folder_for, Entry do |entry|
-          Policies::AccountPolicy.new(user, entry.account).publish?
+          Policies::AccountPolicy.new(user, entry.account).configure_folder_on?
         end
 
         can :read, Folder, Policies::FolderPolicy::Scope.new(user, Folder).resolve
@@ -27,8 +27,12 @@ module Pageflow
           Policies::EntryPolicy.new(user, entry).read?
         end
 
-        can [:create, :duplicate], Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).publish?
+        can :create, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).create?
+        end
+
+        can :duplicate, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).duplicate?
         end
 
         can [:edit,
@@ -42,7 +46,7 @@ module Pageflow
         end
 
         can :add_member_to, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).configure?
+          Policies::EntryPolicy.new(user, entry).add_member_to?
         end
 
         can :manage, Storyline do |storyline|
