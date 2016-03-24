@@ -14,37 +14,46 @@ describe Admin::FoldersController do
       end
     end
 
-    describe 'as account admin' do
+    describe 'as account publisher' do
       it 'does not allow to add folder to other account' do
         account = create(:account)
+        other_account = create(:account)
+        sign_in(create(:user, :publisher, on: other_account))
 
-        sign_in(create(:user, :account_manager))
-
-        expect {
-          post :create, :folder => attributes_for(:folder, :account_id => account)
-        }.not_to change { account.folders.count }
+        expect do
+          post :create, folder: attributes_for(:folder, account_id: account)
+        end.not_to change { account.folders.count }
       end
 
       it 'allows to add folder for own account' do
-        user = create(:user, :account_manager)
+        account = create(:account)
+        sign_in(create(:user, :publisher, on: account))
 
-        sign_in(user)
-
-        expect {
-          post :create, :folder => attributes_for(:folder, :account_id => user.account)
-        }.to change { user.account.folders.count }
+        expect do
+          post :create, folder: attributes_for(:folder, account_id: account)
+        end.to change { account.folders.count }
       end
     end
 
-    describe 'as editor' do
+    describe 'as entry manager of entry on account' do
       it 'does not allow to add folder for own account' do
-        user = create(:user, :editor)
+        entry = create(:entry)
+        sign_in(create(:user, :manager, on: entry))
 
-        sign_in(user)
+        expect do
+          post :create, folder: attributes_for(:folder, account_id: entry.account)
+        end.not_to change { entry.account.folders.count }
+      end
+    end
 
-        expect {
-          post :create, :folder => attributes_for(:folder, :account_id => user.account)
-        }.not_to change { user.account.folders.count }
+    describe 'as entry editor' do
+      it 'does not allow to add folder for own account' do
+        account = create(:account)
+        sign_in(create(:user, :editor, on: account))
+
+        expect do
+          post :create, folder: attributes_for(:folder, account_id: account)
+        end.not_to change { account.folders.count }
       end
     end
   end
