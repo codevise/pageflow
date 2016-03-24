@@ -10,6 +10,10 @@ module Pageflow
         allows?(%w(publisher manager))
       end
 
+      def configure_folder_on?
+        publish?
+      end
+
       private
 
       def allows?(roles)

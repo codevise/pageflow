@@ -27,7 +27,7 @@ module Pageflow
             end
           end
         end
-        if authorized? :add_member_to, Pageflow::Entry
+        if authorized? :add_member_to, entry
           span do
             link_to(I18n.t('pageflow.admin.users.add'),
                     new_admin_entry_membership_path(entry),

@@ -19,9 +19,9 @@ module Pageflow
       account
 
       trait :editor do
-          after(:create) do |user, evaluator|
-            create(:membership, user: user, entity: evaluator.on, role: 'editor') if evaluator.on
-          end
+        after(:create) do |user, evaluator|
+          create(:membership, user: user, entity: evaluator.on, role: 'editor') if evaluator.on
+        end
       end
 
       trait :account_manager do

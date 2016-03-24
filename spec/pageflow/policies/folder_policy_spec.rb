@@ -3,18 +3,12 @@ require 'spec_helper'
 module Pageflow
   module Policies
     describe FolderPolicy do
-      terms = {class: FolderPolicy,
-               subject: FactoryGirl.create(:folder),
-               name: 'folder'}
-      terms = terms.merge!(entity: terms[:subject].account)
-      describe :manage do
-        it_behaves_like 'a membership-based permission that',
-                        terms: terms,
-                        entity_type: :account,
-                        permission_type: :manage,
-                        minimum_required_role: 'publisher',
-                        maximum_forbidden_role: 'editor'
-      end
+      it_behaves_like 'a membership-based permission that',
+                      allows: 'publisher',
+                      but_forbids: 'editor',
+                      of_account: -> (topic) { topic.account },
+                      to: :manage,
+                      topic: -> { create(:folder) }
     end
 
     describe '.resolve' do

@@ -3,46 +3,51 @@ require 'spec_helper'
 module Pageflow
   module Policies
     describe EntryPolicy do
-      terms = {class: EntryPolicy,
-               subject: FactoryGirl.create(:entry),
-               name: 'entry'}
-      describe :configure do
-        include_examples 'for entry and account',
-                         terms: terms,
-                         permission_type: :configure,
-                         minimum_required_role: 'manager',
-                         maximum_forbidden_role: 'publisher'
-      end
+      include_examples 'a membership-based permission referring to entry and account that',
+                       allows: 'manager',
+                       but_forbids: 'publisher',
+                       to: :configure,
+                       topic: -> { create(:entry) }
 
-      describe :publish do
-        include_examples 'for entry and account',
-                         terms: terms,
-                         permission_type: :publish,
-                         minimum_required_role: 'publisher',
-                         maximum_forbidden_role: 'editor'
-      end
+      include_examples 'a membership-based permission referring to entry and account that',
+                       allows: 'manager',
+                       but_forbids: 'publisher',
+                       to: :add_member_to,
+                       topic: -> { create(:entry) }
 
-      describe :edit do
-        include_examples 'for entry and account',
-                         terms: terms,
-                         permission_type: :edit,
-                         minimum_required_role: 'editor',
-                         maximum_forbidden_role: 'previewer'
-      end
+      include_examples 'a membership-based permission referring to entry and account that',
+                       allows: 'publisher',
+                       but_forbids: 'editor',
+                       to: :publish,
+                       topic: -> { create(:entry) }
 
-      describe :preview do
-        include_examples 'for entry and account',
-                         terms: terms,
-                         permission_type: :preview,
-                         minimum_required_role: 'previewer'
-      end
+      include_examples 'a membership-based permission referring to entry and account that',
+                       allows: 'publisher',
+                       but_forbids: 'editor',
+                       to: :create,
+                       topic: -> { create(:entry) }
 
-      describe :read do
-        include_examples 'for entry and account',
-                         terms: terms,
-                         permission_type: :read,
-                         minimum_required_role: 'previewer'
-      end
+      include_examples 'a membership-based permission referring to entry and account that',
+                       allows: 'publisher',
+                       but_forbids: 'editor',
+                       to: :duplicate,
+                       topic: -> { create(:entry) }
+
+      include_examples 'a membership-based permission referring to entry and account that',
+                       allows: 'editor',
+                       but_forbids: 'previewer',
+                       to: :edit,
+                       topic: -> { create(:entry) }
+
+      include_examples 'a membership-based permission referring to entry and account that',
+                       allows: 'previewer',
+                       to: :preview,
+                       topic: -> { create(:entry) }
+
+      include_examples 'a membership-based permission referring to entry and account that',
+                       allows: 'previewer',
+                       to: :read,
+                       topic: -> { create(:entry) }
 
       describe '.resolve' do
         it 'includes entries with correct user and correct id' do
