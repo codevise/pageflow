@@ -13,7 +13,7 @@ feature 'account publisher managing folders' do
     expect(Dom::Admin::FolderPanelItem.find_by_name('A new folder')).to be_present
   end
 
-  scenario 'renaming a folder' do
+  scenario 'renaming a folder', js: true do
     folder = create(:folder, name: 'A folder')
     Dom::Admin::Page.sign_in_as(:publisher, on: folder.account)
 
