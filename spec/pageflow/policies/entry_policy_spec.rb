@@ -50,7 +50,7 @@ module Pageflow
                        topic: -> { create(:entry) }
 
       describe '.resolve' do
-        it 'includes entries with correct user and correct id' do
+        it 'includes entries with membership with correct user and correct id' do
           user = create(:user)
           entry = create(:entry)
           create(:membership, user: user, entity: entry)
@@ -58,7 +58,7 @@ module Pageflow
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).to include(entry)
         end
 
-        it 'includes entries with correct user and correct account' do
+        it 'includes entries with membership with correct user and correct account' do
           user = create(:user)
           account = create(:account)
           entry = create(:entry, account: account)
@@ -76,7 +76,7 @@ module Pageflow
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).not_to include(other_entry)
         end
 
-        it 'does not include entries with wrong user and correct id' do
+        it 'does not include entries with membership with wrong user and correct id' do
           user = create(:user)
           other_user = create(:user)
           entry = create(:entry)
@@ -85,7 +85,7 @@ module Pageflow
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
         end
 
-        it 'does not include entries with wrong account' do
+        it 'does not include entries with membership with wrong account' do
           user = create(:user)
           account = create(:account)
           other_account = create(:account)
@@ -95,7 +95,7 @@ module Pageflow
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
         end
 
-        it 'does not include entries with wrong user and correct account' do
+        it 'does not include entries with membership with wrong user and correct account' do
           user = create(:user)
           other_user = create(:user)
           account = create(:account)
@@ -105,7 +105,7 @@ module Pageflow
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
         end
 
-        it 'does not include entries with nil id' do
+        it 'does not include entries with membership with nil id' do
           user = create(:user)
           entry = Entry.new
           create(:membership, user: user, entity: entry)
@@ -113,7 +113,7 @@ module Pageflow
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
         end
 
-        it 'does not include entries with nil account id' do
+        it 'does not include entries with membership with nil account id' do
           user = create(:user)
           theming = create(:theming)
           account = Account.new

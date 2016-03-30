@@ -11,7 +11,7 @@ module Pageflow
 
         def resolve
           scope.where('account_id IN (?) OR id IN (?)',
-                      accounts_where_user_is_at_least_publisher(user).map(&:id),
+                      accounts_where_user_is_at_least_previewer(user).map(&:id),
                       user.entries.map(&:folder_id))
         end
 
@@ -21,13 +21,13 @@ module Pageflow
           ActiveRecord::Base.send(:sanitize_sql_array, array)
         end
 
-        def accounts_where_user_is_at_least_publisher(user)
+        def accounts_where_user_is_at_least_previewer(user)
           user.membership_accounts.joins(sanitize_sql_array([
             'LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
             'pageflow_memberships_2.user_id = :user_id AND ' \
             'pageflow_memberships_2.entity_type = "Pageflow::Account" AND ' \
             'pageflow_memberships_2.entity_id = pageflow_accounts.id AND ' \
-            'pageflow_memberships_2.role IN ("publisher", "manager")',
+            'pageflow_memberships_2.role IN ("previewer", "editor", "publisher", "manager")',
             user_id: user.id])).where('pageflow_memberships_2.entity_id IS NOT NULL')
         end
       end
