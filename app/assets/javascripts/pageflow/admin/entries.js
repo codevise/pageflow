@@ -1,6 +1,6 @@
 jQuery(function($) {
   $('.admin_entries').each(function() {
-    if ($('#folders_sidebar_section .editable').length) {
+    if ($('#folders_sidebar_section').length) {
       $('#index_table_entries tr').draggable({
         helper: function() {
           var title = $('.title a', this).text();

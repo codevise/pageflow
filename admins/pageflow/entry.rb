@@ -52,29 +52,27 @@ module Pageflow
     filter :published_revision_published_at, as: :date_range
     filter :with_publication_state, as: :select, collection: -> { collection_for_entry_publication_states }
 
-    sidebar :folders, :only => :index do
-      text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'), new_admin_folder_path, :class => 'new'))
+    sidebar :folders, only: :index do
+      text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'),
+                        new_admin_folder_path,
+                        class: 'new'))
       grouped_folder_list(Folder.accessible_by(Ability.new(current_user), :read),
-                          class: if params[:id] &&
-                                    authorized?(:configure_folder_on, resource.account)
-                                   'editable'
-                                 end,
-                          :active_id => params[:folder_id],
-                          :grouped_by_accounts => authorized?(:read, Account))
+                          active_id: params[:folder_id],
+                          grouped_by_accounts: true)
     end
 
     form do |f|
       f.inputs do
-        f.input :title, :hint => I18n.t('pageflow.admin.entries.title_hint')
+        f.input :title, hint: I18n.t('pageflow.admin.entries.title_hint')
         if authorized?(:read, Account)
-          f.input :account, :include_blank => false
+          f.input :account, include_blank: false
 
           unless f.object.new_record?
-            f.input :theming, :include_blank => false
+            f.input :theming, include_blank: false
           end
         end
         if authorized?(:configure_folder_for, resource) || controller.action_name == :create
-          f.input :folder, :collection => collection_for_folders(f.object.account), :include_blank => true
+          f.input :folder, collection: collection_for_folders, include_blank: true
         end
 
         Pageflow.config_for(f.object).admin_form_inputs.build(:entry, f)
@@ -164,7 +162,11 @@ module Pageflow
 
       def build_new_resource
         super.tap do |entry|
-          entry.account ||= current_user.membership_accounts.first || Account.first
+          entry.account ||=
+            Policies::AccountPolicy::Scope.new(current_user,
+                                               Pageflow::Account).entry_creatable.first ||
+            Pageflow::Account.first
+
           entry.theming ||= entry.account.default_theming
         end
       end
