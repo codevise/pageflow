@@ -111,7 +111,9 @@ describe Admin::EntriesController do
 
       sign_in(user)
 
-      expect { post :create, entry: attributes_for(:entry) }.to change { account.entries.count }
+      expect do
+        post :create, entry: attributes_for(:entry, account: account)
+      end.to change { account.entries.count }
     end
 
     it 'allows admin to set user account' do

@@ -28,9 +28,10 @@ module Pageflow
         expect(Policies::FolderPolicy::Scope.new(user, Folder).resolve).to include(folder)
       end
 
-      it 'does not include folders without entry of the user where they are only account editor' do
+      it 'does not include folders without entry of the user where they are not ' \
+         'account previewer' do
         user = create(:user)
-        account = create(:account, with_editor: user)
+        account = create(:account)
         folder = create(:folder, account: account)
 
         expect(Policies::FolderPolicy::Scope.new(user, Folder).resolve).not_to include(folder)
