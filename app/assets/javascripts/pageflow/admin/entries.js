@@ -35,7 +35,7 @@ jQuery(function($) {
 
         drop: function(event, ui) {
           var folderId = $(this).data('id');
-          var entryId = $(ui.draggable).attr('id').replace('entry_', '');
+          var entryId = $(ui.draggable).attr('id').replace('pageflow_entry_', '');
 
           $.ajax({
             url: '/admin/entries/' + entryId,
