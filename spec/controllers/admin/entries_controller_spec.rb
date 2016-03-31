@@ -237,10 +237,10 @@ describe Admin::EntriesController do
     it 'allows admin to change account' do
       account = create(:account)
       other_account = create(:account)
-      entry = create(:entry, :account => account)
+      entry = create(:entry, account: account)
 
       sign_in(create(:user, :admin))
-      patch :update, :id => entry, :entry => {:account_id => other_account}
+      patch :update, id: entry, entry: {account_id: other_account}
 
       expect(entry.reload.account).to eq(other_account)
     end
@@ -259,43 +259,44 @@ describe Admin::EntriesController do
     it 'allows admin to change theming' do
       theming = create(:theming)
       other_theming = create(:theming)
-      entry = create(:entry, :theming => theming)
+      entry = create(:entry, theming: theming)
 
       sign_in(create(:user, :admin))
-      patch :update, :id => entry, :entry => {:theming_id => other_theming}
+      patch :update, id: entry, entry: {theming_id: other_theming}
 
       expect(entry.reload.theming).to eq(other_theming)
     end
 
     it 'does not allow editor to change folder' do
       user = create(:user)
-      folder = create(:folder, :account => user.account)
-      entry = create(:entry, with_editor: user, account: user.account)
+      folder = create(:folder)
+      entry = create(:entry, with_editor: user, account: folder.account)
 
       sign_in(user)
-      patch :update, :id => entry, :entry => {:folder_id => folder}
+      patch :update, id: entry, entry: {folder_id: folder}
 
       expect(entry.reload.folder).to eq(nil)
     end
 
-    it 'allows account manager to change folder of entry of own account' do
-      user = create(:user, :account_manager)
-      folder = create(:folder, :account => user.account)
-      entry = create(:entry, :account => user.account)
+    it 'allows account publisher to change folder of entry of own account' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      folder = create(:folder, account: account)
+      entry = create(:entry, account: account)
 
       sign_in(user)
-      patch :update, :id => entry, :entry => {:folder_id => folder}
+      patch :update, id: entry, entry: {folder_id: folder}
 
       expect(entry.reload.folder).to eq(folder)
     end
 
-    it 'does not allow account manager to change folder of entry of other account' do
-      user = create(:user, :account_manager)
+    it 'does not allow account publisher to change folder of entry of other account' do
+      user = create(:user)
       folder = create(:folder)
-      entry = create(:entry, :account => folder.account)
+      entry = create(:entry, account: folder.account)
 
       sign_in(user)
-      patch :update, :id => entry, :entry => {:folder_id => folder}
+      patch :update, id: entry, entry: {folder_id: folder}
 
       expect(entry.reload.folder).to eq(nil)
     end
@@ -303,10 +304,10 @@ describe Admin::EntriesController do
     it 'allows admin to change folder of entry of any account' do
       user = create(:user, :admin)
       folder = create(:folder)
-      entry = create(:entry, :account => folder.account)
+      entry = create(:entry, account: folder.account)
 
       sign_in(user)
-      patch :update, :id => entry, :entry => {:folder_id => folder}
+      patch :update, id: entry, entry: {folder_id: folder}
 
       expect(entry.reload.folder).to eq(folder)
     end
@@ -345,7 +346,7 @@ describe Admin::EntriesController do
 
     it 'allows editor to change custom field registered as form input' do
       user = create(:user)
-      entry = create(:entry, with_editor: user, account: user.account)
+      entry = create(:entry, with_editor: user)
 
       pageflow_configure do |config|
         config.admin_form_inputs.register(:entry, :custom_field)
@@ -357,9 +358,9 @@ describe Admin::EntriesController do
       expect(entry.reload.custom_field).to eq('some value')
     end
 
-    it 'does not allows editor to change custom field not registered as form input' do
+    it 'does not allow editor to change custom field not registered as form input' do
       user = create(:user)
-      entry = create(:entry, with_editor: user, account: user.account)
+      entry = create(:entry, with_editor: user)
 
       sign_in(user)
       patch(:update, id: entry, entry: {custom_field: 'some value'})
