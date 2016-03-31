@@ -40,7 +40,7 @@ shared_examples 'encoded files controller' do
       entry = create(:entry, :with_member => user)
 
       sign_in(user)
-      aquire_edit_lock(user, entry)
+      acquire_edit_lock(user, entry)
       post :create, :entry_id => entry, model_name => {:attachment => fixture_upload}, :format => 'json'
 
       expect(response.status).to eq(200)
@@ -51,7 +51,7 @@ shared_examples 'encoded files controller' do
       entry = create(:entry, :with_member => user)
 
       sign_in(user)
-      aquire_edit_lock(user, entry)
+      acquire_edit_lock(user, entry)
       post :create, :entry_id => entry, model_name => {:attachment => fixture_upload}, :format => 'json'
 
       expect(files_collection(entry)).to have(1).item
@@ -62,7 +62,7 @@ shared_examples 'encoded files controller' do
       entry = create(:entry, :with_member => user)
 
       sign_in(user)
-      aquire_edit_lock(user, entry)
+      acquire_edit_lock(user, entry)
       post :create, :entry_id => entry, model_name => {:attachment => fixture_upload}, :format => 'json'
 
       expect(json_response(:path => [:usage_id])).to be_present
@@ -74,7 +74,7 @@ shared_examples 'encoded files controller' do
       create(:membership, :user => user, :entry => entry)
 
       sign_in user
-      aquire_edit_lock(user, entry)
+      acquire_edit_lock(user, entry)
       post :create, :entry_id => entry, model_name => {:attachment => fixture_upload}, :format => 'json'
 
       expect(files_collection(entry).first.send(attachment)).to be_present
@@ -106,7 +106,7 @@ shared_examples 'encoded files controller' do
       file = create(model_name, failed_trait, :used_in => entry.draft)
 
       sign_in user
-      aquire_edit_lock(user, entry)
+      acquire_edit_lock(user, entry)
       post :retry, :id => file, :format => 'json'
 
       expect(response.status).to eq(201)
@@ -138,7 +138,7 @@ shared_examples 'encoded files controller' do
       file = create(model_name, :used_in => entry.draft, :rights => 'old')
 
       sign_in user
-      aquire_edit_lock(user, entry)
+      acquire_edit_lock(user, entry)
       patch :update, :id => file, model_name => {:rights => 'new'}, :format => 'json'
 
       expect(response.status).to eq(204)

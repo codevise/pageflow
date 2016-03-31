@@ -9,7 +9,7 @@ module Pageflow
         expect(EditLock.active).not_to include(lock)
       end
     end
-    describe '#aquire' do
+    describe '#acquire' do
       context 'when held by other user' do
         it 'raises HeldByOtherUserError' do
           current_user = build(:user)
@@ -17,29 +17,29 @@ module Pageflow
           edit_lock = build(:edit_lock, :user => other_user)
 
           expect {
-            edit_lock.aquire(current_user)
+            edit_lock.acquire(current_user)
           }.to raise_error(EditLock::HeldByOtherUserError)
         end
 
-        it 'can be aquired with force option' do
+        it 'can be acquired with force option' do
           current_user = build(:user)
           other_user = build(:user)
           entry = build(:entry)
           edit_lock = build(:edit_lock, :user => other_user, :entry => entry)
 
-          edit_lock.aquire(current_user, :force => true)
+          edit_lock.acquire(current_user, :force => true)
 
           expect(entry.edit_lock).to be_held_by(current_user)
         end
 
-        it 'can be aquired if timed out' do
+        it 'can be acquired if timed out' do
           current_user = build(:user)
           other_user = build(:user)
           entry = build(:entry)
           edit_lock = build(:edit_lock, :user => other_user, :entry => entry)
 
           Timecop.freeze(Time.now + EditLock::TIME_TO_LIVE + 1.minute)
-          edit_lock.aquire(current_user)
+          edit_lock.acquire(current_user)
 
           expect(entry.edit_lock).to be_held_by(current_user)
         end
@@ -51,7 +51,7 @@ module Pageflow
           edit_lock = build_stubbed(:edit_lock, :user => current_user)
 
           expect {
-            edit_lock.aquire(current_user)
+            edit_lock.acquire(current_user)
           }.to raise_error(EditLock::HeldByOtherSessionError)
         end
 
@@ -60,27 +60,27 @@ module Pageflow
           edit_lock = build_stubbed(:edit_lock, :user => current_user)
 
           expect {
-            edit_lock.aquire(current_user, :id => 'other_id')
+            edit_lock.acquire(current_user, :id => 'other_id')
           }.to raise_error(EditLock::HeldByOtherSessionError)
         end
 
-        it 'can be aquired with force option' do
+        it 'can be acquired with force option' do
           current_user = build(:user)
           entry = build(:entry)
           edit_lock = build(:edit_lock, :user => current_user, :entry => entry)
 
-          edit_lock.aquire(current_user, :id => 'other_id', :force => true)
+          edit_lock.acquire(current_user, :id => 'other_id', :force => true)
 
           expect(entry.edit_lock).to be_held_by(current_user)
         end
 
-        it 'can be aquired if timed out' do
+        it 'can be acquired if timed out' do
           current_user = build(:user)
           entry = build(:entry)
           edit_lock = build(:edit_lock, :user => current_user, :entry => entry)
 
           Timecop.freeze(Time.now + EditLock::TIME_TO_LIVE + 1.minute)
-          edit_lock.aquire(current_user, :id => 'other_id')
+          edit_lock.acquire(current_user, :id => 'other_id')
 
           expect(entry.edit_lock).to be_held_by(current_user)
         end
@@ -93,7 +93,7 @@ module Pageflow
           edit_lock = build_stubbed(:edit_lock, :user => current_user, :entry => entry)
 
           expect {
-            edit_lock.aquire(current_user, :id => edit_lock.id)
+            edit_lock.acquire(current_user, :id => edit_lock.id)
           }.not_to raise_error
         end
 
@@ -102,7 +102,7 @@ module Pageflow
           entry = build(:entry)
           edit_lock = build_stubbed(:edit_lock, :user => current_user, :entry => entry)
 
-          edit_lock.aquire(current_user, :id => edit_lock.id, :force => true)
+          edit_lock.acquire(current_user, :id => edit_lock.id, :force => true)
 
           expect(entry.edit_lock).to be(edit_lock)
         end
@@ -113,10 +113,10 @@ module Pageflow
           edit_lock = create(:edit_lock, :user => current_user, :entry => entry)
 
           Timecop.freeze(Time.now + EditLock::TIME_TO_LIVE + 1.minute)
-          edit_lock.aquire(current_user, :id => edit_lock.id)
+          edit_lock.acquire(current_user, :id => edit_lock.id)
 
           expect {
-            edit_lock.aquire(current_user, :id => 'other_id')
+            edit_lock.acquire(current_user, :id => 'other_id')
           }.to raise_error(EditLock::HeldByOtherSessionError)
         end
       end
@@ -220,13 +220,13 @@ module Pageflow
     end
 
     describe '::Null' do
-      describe '#aquire' do
+      describe '#acquire' do
         it 'creates lock for current user' do
           current_user = build(:user)
           entry = build(:entry)
           edit_lock = EditLock::Null.new(entry)
 
-          edit_lock.aquire(current_user)
+          edit_lock.acquire(current_user)
 
           expect(entry.edit_lock).to be_held_by(current_user)
         end

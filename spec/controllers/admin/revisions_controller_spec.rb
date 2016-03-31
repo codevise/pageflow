@@ -60,12 +60,12 @@ describe Admin::RevisionsController do
       }.not_to change { entry.revisions.count }
     end
 
-    it 'needs to be able to aquire an edit lock' do
+    it 'needs to be able to acquire an edit lock' do
       user = create(:user, :editor)
       entry = create(:entry, :with_member => user, :account => user.account)
       earlier_revision = create(:revision, :frozen, :entry => entry)
 
-      aquire_edit_lock(create(:user), entry)
+      acquire_edit_lock(create(:user), entry)
       sign_in(user)
       request.env['HTTP_REFERER'] = admin_entry_path(entry)
 

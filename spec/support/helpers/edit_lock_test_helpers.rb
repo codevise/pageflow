@@ -1,5 +1,5 @@
 module EditLockTestHelpers
-  def aquire_edit_lock(user, entry)
+  def acquire_edit_lock(user, entry)
     edit_lock = create(:edit_lock, :user => user, :entry => entry)
     request.headers['X-Edit-Lock'] = edit_lock.id
   end

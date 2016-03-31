@@ -23,7 +23,7 @@ module Pageflow
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
           sign_in(user)
-          aquire_edit_lock(user, entry)
+          acquire_edit_lock(user, entry)
           post(:create, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
 
           expect(video_file.reload.state).to eq('waiting_for_encoding')
@@ -35,7 +35,7 @@ module Pageflow
           audio_file = create(:audio_file, :waiting_for_confirmation, used_in: entry.draft)
 
           sign_in(user)
-          aquire_edit_lock(user, entry)
+          acquire_edit_lock(user, entry)
           post(:create, entry_id: entry.id, encoding_confirmation: {audio_file_ids: [audio_file.id]}, format: 'json')
 
           expect(audio_file.reload.state).to eq('waiting_for_encoding')
@@ -94,7 +94,7 @@ module Pageflow
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
           sign_in(user)
-          aquire_edit_lock(user, entry)
+          acquire_edit_lock(user, entry)
           post(:check, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
 
           expect(json_response(path: :exceeding)).to eq(false)
