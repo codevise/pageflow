@@ -11,7 +11,6 @@ jQuery(function($) {
         scrollerWidth = noOfChapterParts * chapterParts.outerWidth(true),
         closeButton = $('.close', this.element),
         indexButton = $('.navigation_index'),
-        homeButton = $('.navigation_home'),
         overview = $('.overview'),
         wrapper = $('.wrapper', this.element);
 
@@ -25,11 +24,19 @@ jQuery(function($) {
 
         $('section.page').toggleClass('hidden_by_overlay', state);
         scrollIndicator.toggleClass('hidden', state);
+
+        if (overview.hasClass('active')) {
+          pageflow.events.once('page:change', function() {
+            toggleContent(false);
+          }, that);
+        }
+        else {
+          pageflow.events.off('page:change', null, that);
+        }
       };
 
       var goToPage = function() {
         if (!$(this).hasClass('active')) {
-          toggleContent();
           pageflow.slides.goToById(this.getAttribute("data-link"));
         }
       };
@@ -97,10 +104,6 @@ jQuery(function($) {
 
       closeButton.click(toggleContent);
       indexButton.click(toggleContent);
-
-      homeButton.click(function() {
-        toggleContent(false);
-      });
 
       $('body').keyup(function(e) {
         if (e.which == 27 && overview.hasClass('active')) {
