@@ -2,6 +2,21 @@ require 'spec_helper'
 
 module Pageflow
   describe PublishedEntry do
+    describe '#title' do
+      let(:entry) { create(:entry, title: 'Metropolis') }
+      let(:published_entry) { PublishedEntry.new(entry) }
+
+      it 'is fetched from the revision when present' do
+        create(:revision, :published, entry: entry, title: 'Blade Runner')
+        expect(published_entry.title).to eq('Blade Runner')
+      end
+
+      it 'is fetched from the entry when absent from the revision' do
+        create(:revision, :published, entry: entry, title: '')
+        expect(published_entry.title).to eq('Metropolis')
+      end
+    end
+
     describe '#thumbnail_file' do
       it 'returns positioned share image of published revision' do
         entry = create(:entry)
