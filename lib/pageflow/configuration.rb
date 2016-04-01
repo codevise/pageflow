@@ -219,6 +219,15 @@ module Pageflow
     # @since 0.9
     attr_accessor :public_https_mode
 
+    # Meta tag defaults.
+    #
+    # These defaults will be included in the page <head> unless overriden by the Entry.
+    # If you set these to <tt>nil</tt> or <tt>""</tt> the meta tag won't be included.
+    # @since edge
+    attr_accessor :default_keywords_meta_tag
+    attr_accessor :default_author_meta_tag
+    attr_accessor :default_publisher_meta_tag
+
     def initialize
       @paperclip_filesystem_default_options = {validate_media_type: false}
       @paperclip_s3_default_options = {validate_media_type: false}
@@ -252,6 +261,10 @@ module Pageflow
       @available_public_locales = PublicI18n.available_locales
 
       @public_https_mode = :prevent
+
+      @default_keywords_meta_tag = 'pageflow, multimedia, reportage'
+      @default_author_meta_tag = 'Pageflow'
+      @default_publisher_meta_tag = 'Pageflow'
     end
 
     # Activate a plugin.
