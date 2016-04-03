@@ -24,6 +24,10 @@ module Pageflow
       File.join('pageflow', 'pages', 'templates', "_#{name}.html.erb")
     end
 
+    def partial_path
+      File.join('pageflow', 'pages', 'templates', name)
+    end
+
     def translation_key
       "activerecord.values.pageflow/page.template.#{name}"
     end
