@@ -3,8 +3,8 @@ require 'spec_helper'
 feature 'editor reusing a file', js: true do
   scenario 'from a another entry in account' do
     user = Dom::Admin::Page.sign_in_as(:editor)
-    entry = create(:entry, title: 'Test Entry', with_member: user)
-    other_entry = create(:entry, title: 'Other Entry', with_member: user)
+    entry = create(:entry, title: 'Test Entry', with_editor: user)
+    other_entry = create(:entry, title: 'Other Entry', with_previewer: user)
     file = create(:image_file, used_in: other_entry.draft)
 
     visit(pageflow.edit_entry_path(entry))

@@ -4,7 +4,7 @@ feature 'moving entry to folder' do
   scenario 'as account publisher' do
     folder = create(:folder)
     user = Dom::Admin::Page.sign_in_as(:publisher, on: folder.account)
-    entry = create(:entry, title: 'Test Entry', account: folder.account, with_member: user)
+    entry = create(:entry, title: 'Test Entry', account: folder.account)
 
     visit(admin_entry_path(entry))
     Dom::Admin::EntryPage.first.edit_entry_link.click

@@ -27,10 +27,10 @@ module Pageflow
     describe '#seed' do
       it 'reponds with success for members of the entry' do
         user = create(:user)
-        entry = create(:entry, :with_member => user)
+        entry = create(:entry, with_editor: user)
 
         sign_in(user)
-        get(:seed, :id => entry, :format => 'json')
+        get(:seed, id: entry, format: 'json')
 
         expect(response.status).to eq(200)
         expect { JSON.parse(response.body) }.not_to raise_error
