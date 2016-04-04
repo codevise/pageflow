@@ -10,10 +10,14 @@ module Pageflow
         end
 
         def resolve
-          scope
-            .joins(memberships_for_entries(user))
-            .joins(memberships_for_account_of_entries(user))
-            .where(either_membership_is_present)
+          if user.admin?
+            scope
+          else
+            scope
+              .joins(memberships_for_entries(user))
+              .joins(memberships_for_account_of_entries(user))
+              .where(either_membership_is_present)
+          end
         end
 
         private
@@ -73,12 +77,32 @@ module Pageflow
         publish?
       end
 
-      def configure?
+      def manage?
         allows?(%w(manager))
       end
 
       def add_member_to?
-        configure?
+        manage?
+      end
+
+      def publish_on_account_of?
+        account_allows?(%w(publisher manager))
+      end
+
+      def update_account_on?
+        publish_on_account_of?
+      end
+
+      def update_theming_on?
+        publish_on_account_of?
+      end
+
+      def manage_account_of?
+        account_allows?(%w(manager))
+      end
+
+      def update_feature_configuration_on?
+        manage_account_of?
       end
 
       private
@@ -89,6 +113,10 @@ module Pageflow
         user_memberships.where("(entity_id = :entry_id AND entity_type = 'Pageflow::Entry') OR " \
                                "(entity_id = :account_id AND entity_type = 'Pageflow::Account')",
                                entry_id: @entry.id, account_id: @entry.account.id).any?
+      end
+
+      def account_allows?(roles)
+        @user.memberships.where(role: roles, entity: @entry.account).any?
       end
     end
   end

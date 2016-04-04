@@ -10,9 +10,13 @@ module Pageflow
         end
 
         def resolve
-          scope.where('account_id IN (?) OR id IN (?)',
-                      accounts_where_user_is_at_least_previewer(user).map(&:id),
-                      user.entries.map(&:folder_id))
+          if user.admin?
+            scope
+          else
+            scope.where('account_id IN (?) OR id IN (?)',
+                        accounts_where_user_is_at_least_previewer(user).map(&:id),
+                        user.entries.map(&:folder_id))
+          end
         end
 
         private

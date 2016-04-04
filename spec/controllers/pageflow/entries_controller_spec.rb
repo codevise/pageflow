@@ -76,10 +76,10 @@ module Pageflow
     describe '#edit' do
       it 'reponds with success for members of the entry' do
         user = create(:user)
-        entry = create(:entry, :with_member => user)
+        entry = create(:entry, with_editor: user)
 
         sign_in(user)
-        get(:edit, :id => entry)
+        get(:edit, id: entry)
 
         expect(response.status).to eq(200)
       end
@@ -89,7 +89,7 @@ module Pageflow
         entry = create(:entry)
 
         sign_in(user)
-        get(:edit, :id => entry)
+        get(:edit, id: entry)
 
         expect(response).to redirect_to(main_app.admin_root_path)
       end
@@ -97,44 +97,42 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        get(:edit, :id => entry)
+        get(:edit, id: entry)
 
         expect(response).to redirect_to(main_app.new_user_session_path)
       end
     end
 
     describe '#update' do
-      it 'responds with sucess' do
+      it 'responds with success' do
         user = create(:user)
-        entry = create(:entry)
-        create(:membership, :entry => entry, :user => user)
+        entry = create(:entry, with_editor: user)
 
         sign_in user
         acquire_edit_lock(user, entry)
-        patch(:update, :id => entry, :entry => {:title => 'new', :credits => 'credits'}, :format => 'json')
+        patch(:update, id: entry, entry: {title: 'new', credits: 'credits'}, format: 'json')
 
         expect(response.status).to eq(204)
       end
 
       it 'updates title and credits in draft' do
         user = create(:user)
-        entry = create(:entry)
-        create(:membership, :entry => entry, :user => user)
+        entry = create(:entry, with_editor: user)
 
         sign_in user
         acquire_edit_lock(user, entry)
-        patch(:update, :id => entry, :entry => {:title => 'new', :credits => 'credits'}, :format => 'json')
+        patch(:update, id: entry, entry: {title: 'new', credits: 'credits'}, format: 'json')
 
         expect(entry.draft.reload.title).to eq('new')
         expect(entry.draft.credits).to eq('credits')
       end
 
-      it 'requires the signed in user to be member of the parent entry' do
+      it 'requires the signed in user to be editor of the parent entry' do
         user = create(:user)
-        entry = create(:entry)
+        entry = create(:entry, with_previewer: user)
 
         sign_in user
-        patch(:update, :id => entry, :entry => {}, :format => 'json')
+        patch(:update, id: entry, entry: {}, format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -142,7 +140,7 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        patch(:update, :id => entry, :chapter => {}, :format => 'json')
+        patch(:update, id: entry, chapter: {}, format: 'json')
 
         expect(response.status).to eq(401)
       end

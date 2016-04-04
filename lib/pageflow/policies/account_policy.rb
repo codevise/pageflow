@@ -10,7 +10,19 @@ module Pageflow
         end
 
         def entry_creatable
-          scope.joins(publisher_memberships_for_account(user)).where(membership_is_present)
+          if user.admin?
+            scope.all
+          else
+            scope.joins(publisher_memberships_for_account(user)).where(membership_is_present)
+          end
+        end
+
+        def entry_movable
+          entry_creatable
+        end
+
+        def themings_accessible
+          entry_creatable
         end
 
         private
@@ -42,6 +54,10 @@ module Pageflow
       end
 
       def configure_folder_on?
+        publish?
+      end
+
+      def update_theming_on_entry_of?
         publish?
       end
 

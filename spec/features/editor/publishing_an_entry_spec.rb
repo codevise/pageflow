@@ -2,8 +2,8 @@ require 'spec_helper'
 
 feature 'publishing an entry', js: true do
   scenario 'without depublication date' do
-    user = Dom::Admin::Page.sign_in_as(:editor)
-    entry = create(:entry, title: 'Test Entry', with_publisher: user)
+    entry = create(:entry, title: 'Test Entry')
+    Dom::Admin::Page.sign_in_as(:publisher, on: entry)
 
     visit(pageflow.edit_entry_path(entry))
     editor_sidebar = Dom::Editor::Sidebar.first
@@ -15,8 +15,8 @@ feature 'publishing an entry', js: true do
   end
 
   scenario 'with depublication date' do
-    user = Dom::Admin::Page.sign_in_as(:editor)
-    entry = create(:entry, title: 'Test Entry', with_publisher: user)
+    entry = create(:entry, title: 'Test Entry')
+    Dom::Admin::Page.sign_in_as(:publisher, on: entry)
 
     visit(pageflow.edit_entry_path(entry))
     editor_sidebar = Dom::Editor::Sidebar.first
@@ -28,8 +28,8 @@ feature 'publishing an entry', js: true do
   end
 
   scenario 'with invalid depublication time' do
-    user = Dom::Admin::Page.sign_in_as(:editor)
-    entry = create(:entry, title: 'Test Entry', with_publisher: user)
+    entry = create(:entry, title: 'Test Entry')
+    Dom::Admin::Page.sign_in_as(:publisher, on: entry)
 
     visit(pageflow.edit_entry_path(entry))
     editor_sidebar = Dom::Editor::Sidebar.first
@@ -43,8 +43,8 @@ feature 'publishing an entry', js: true do
   end
 
   scenario 'with password' do
-    user = Dom::Admin::Page.sign_in_as(:editor)
-    entry = create(:entry, title: 'Test Entry', with_member: user)
+    entry = create(:entry, title: 'Test Entry')
+    Dom::Admin::Page.sign_in_as(:publisher, on: entry)
 
     visit(pageflow.edit_entry_path(entry))
     editor_sidebar = Dom::Editor::Sidebar.first

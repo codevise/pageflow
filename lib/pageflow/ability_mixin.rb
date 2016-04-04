@@ -35,9 +35,27 @@ module Pageflow
           Policies::EntryPolicy.new(user, entry).duplicate?
         end
 
-        can [:edit,
-             :update,
-             :edit_outline,
+        can :update, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).edit?
+        end
+
+        can :update_account_on, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).update_account_on?
+        end
+
+        can :update_theming_on, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).update_theming_on?
+        end
+
+        can :update_theming_on_entry_of, Account do |account|
+          Policies::AccountPolicy.new(user, account).update_theming_on_entry_of?
+        end
+
+        can :update_feature_configuration_on, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).update_feature_configuration_on?
+        end
+
+        can [:edit_outline,
              :publish,
              :restore,
              :snapshot,
@@ -69,6 +87,9 @@ module Pageflow
           Policies::EntryPolicy.new(user, revision.entry).preview?
         end
 
+        can :edit, Theming do |theming|
+          Policies::ThemingPolicy.new(user, theming).edit?
+        end
       end
 
       can :delete_own_user, ::User do |user_to_delete|
@@ -100,10 +121,7 @@ module Pageflow
 
         can :manage, Resque
       elsif user.account_manager?
-        can :manage, Theming, :account_id => user.account_id
-        can [:edit,
-             :update,
-             :edit_outline,
+        can [:edit_outline,
              :publish,
              :restore,
              :snapshot,

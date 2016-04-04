@@ -132,6 +132,7 @@ describe Admin::EntriesController do
       sign_in(create(:user, :admin))
 
       post :create, :entry => attributes_for(:entry, :theming_id => theming)
+
       entry = Pageflow::Entry.last
 
       expect(entry.theming).to eq(theming)
@@ -207,7 +208,8 @@ describe Admin::EntriesController do
     it 'does not display additional form inputs registered inside disabled feature' do
       user = create(:user)
       entry = create(:entry,
-                     with_editor: user)
+                     with_editor: user,
+                     feature_states: {custom_entry_field: false})
 
       pageflow_configure do |config|
         config.features.register('custom_entry_field') do |feature_config|
@@ -223,35 +225,89 @@ describe Admin::EntriesController do
   end
 
   describe '#update' do
-    it 'does not allow account manager to change account' do
-      account = create(:account)
-      other_account = create(:account)
-      entry = create(:entry, :account => account)
+    it 'does not allow account editor of two accounts to change account of entry they manage' do
+      user = create(:user)
+      account = create(:account, with_editor: user)
+      other_account = create(:account, with_editor: user)
+      entry = create(:entry, account: account, with_manager: user)
 
-      sign_in(create(:user, :account_manager, :account => account))
-      patch :update, :id => entry, :entry => {:account_id => other_account}
+      sign_in(user)
+      patch :update, id: entry, entry: {account_id: other_account}
 
       expect(entry.reload.account).to eq(account)
+    end
+
+    it 'does not allow account publisher of one account to change account of entry' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      other_account = create(:account)
+      entry = create(:entry, account: account)
+
+      sign_in(user)
+      patch :update, id: entry, entry: {account_id: other_account}
+
+      expect(entry.reload.account).to eq(account)
+    end
+
+    it 'allows account publisher of two accounts to change accounts of entry' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      other_account = create(:account, with_publisher: user)
+      entry = create(:entry, account: account)
+
+      sign_in(user)
+      patch :update, id: entry, entry: {account_id: other_account}
+
+      expect(entry.reload.account).to eq(other_account)
     end
 
     it 'allows admin to change account' do
       account = create(:account)
       other_account = create(:account)
-      entry = create(:entry, account: account)
 
+      entry = create(:entry, account: account)
       sign_in(create(:user, :admin))
       patch :update, id: entry, entry: {account_id: other_account}
 
       expect(entry.reload.account).to eq(other_account)
     end
 
-    it 'does not allow account manager to change theming' do
-      theming = create(:theming)
-      other_theming = create(:theming)
-      entry = create(:entry, :theming => theming)
+    it 'does not allow entry manager and account editor to change theming' do
+      user = create(:user)
+      account = create(:account, with_editor: user)
+      theming = create(:theming, account: account)
+      other_theming = create(:theming, account: account)
+      entry = create(:entry, theming: theming, account: account, with_manager: user)
 
-      sign_in(create(:user, :account_manager, :account => entry.account))
-      patch :update, :id => entry, :entry => {:theming_id => other_theming}
+      sign_in(user)
+      patch :update, id: entry, entry: {theming_id: other_theming}
+
+      expect(entry.reload.theming).to eq(theming)
+    end
+
+    it 'allows account publisher to change theming' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      theming = create(:theming, account: account)
+      other_theming = create(:theming, account: account)
+      entry = create(:entry, theming: theming, account: account)
+
+      sign_in(user)
+      patch :update, id: entry, entry: {theming_id: other_theming}
+
+      expect(entry.reload.theming).to eq(other_theming)
+    end
+
+    it 'does not allow account publisher to switch to theming of other account they manage' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      other_account = create(:account, with_manager: user)
+      theming = create(:theming, account: account)
+      other_theming = create(:theming, account: other_account)
+      entry = create(:entry, theming: theming, account: account)
+
+      sign_in(user)
+      patch :update, id: entry, entry: {theming_id: other_theming}
 
       expect(entry.reload.theming).to eq(theming)
     end
@@ -267,10 +323,11 @@ describe Admin::EntriesController do
       expect(entry.reload.theming).to eq(other_theming)
     end
 
-    it 'does not allow editor to change folder' do
+    it 'does not allow entry manager and account editor to change folder' do
       user = create(:user)
-      folder = create(:folder)
-      entry = create(:entry, with_editor: user, account: folder.account)
+      account = create(:account, with_editor: user)
+      folder = create(:folder, account: account)
+      entry = create(:entry, account: account, with_manager: user)
 
       sign_in(user)
       patch :update, id: entry, entry: {folder_id: folder}
@@ -328,9 +385,27 @@ describe Admin::EntriesController do
       expect(entry.reload.feature_state('fancy_page_type')).to eq(true)
     end
 
-    it 'does not allow account_manager to update feature_configuration' do
-      user = create(:user, :account_manager)
-      entry = create(:entry, account: user.account)
+    it 'allows account manager to update feature_configuration through feature_states param' do
+      user = create(:user)
+      account = create(:account, with_manager: user)
+      entry = create(:entry, account: account)
+
+      sign_in(user)
+      patch(:update,
+            id: entry.id,
+            entry: {
+              feature_states: {
+                fancy_page_type: 'enabled'
+              }
+            })
+
+      expect(entry.reload.feature_state('fancy_page_type')).to eq(true)
+    end
+
+    it 'does not allow account publisher and entry manager update feature_configuration' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account: account, with_manager: user)
 
       sign_in(user)
       patch(:update,

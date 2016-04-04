@@ -64,13 +64,21 @@ module Pageflow
     form do |f|
       f.inputs do
         f.input :title, hint: I18n.t('pageflow.admin.entries.title_hint')
-        if authorized?(:read, Account)
-          f.input :account, include_blank: false
 
-          unless f.object.new_record?
-            f.input :theming, include_blank: false
-          end
+        eligible_accounts = Policies::AccountPolicy::Scope.new(current_user, Pageflow::Account)
+                            .entry_movable.all
+        if authorized?(:update_account_on, resource)
+          f.input :account, collection: eligible_accounts, include_blank: false
         end
+
+        unless f.object.new_record?
+          eligible_themings = Policies::ThemingPolicy::Scope.new(current_user, Pageflow::Theming).themings_allowed_for(resource.account).all
+        end
+
+        if authorized?(:update_theming_on, resource) && !f.object.new_record?
+          f.input :theming, collection: eligible_themings, include_blank: false
+        end
+
         if authorized?(:configure_folder_for, resource) || controller.action_name == :create
           f.input :folder, collection: collection_for_folders, include_blank: true
         end
@@ -183,25 +191,61 @@ module Pageflow
 
       private
 
+      def account_policy_scope
+        Pageflow::Policies::AccountPolicy::Scope.new(current_user, Pageflow::Account)
+      end
+
+      def theming_policy_scope
+        Pageflow::Policies::ThemingPolicy::Scope.new(current_user, Pageflow::Theming)
+      end
+
       def permitted_attributes
         result = [:title]
-
         target = params[:id] ? resource : current_user.account
         result += Pageflow.config_for(target).admin_form_inputs.permitted_attributes_for(:entry)
+        result += permit_account || []
 
-        result += [:account_id, :theming_id] if authorized?(:read, Account)
-        if params[:id] && authorized?(:configure_folder_for, resource)
-          result << :folder_id
+        if params[:id]
+          result << :folder_id if authorized?(:configure_folder_for, resource)
         end
+
+        if params[:id]
+          accounts = resource.account
+        else
+          accounts = account_policy_scope.themings_accessible
+        end
+
+        result += permit_theming(accounts) || []
 
         result
       end
 
       def permit_feature_states(attributes)
-        if authorized?(:read, Account)
+        if params[:id] && authorized?(:update_feature_configuration_on, resource)
           feature_states = params[:entry][:feature_states].try(:permit!)
           attributes.merge!(feature_states: feature_states || {})
         end
+      end
+
+      def permit_theming(accounts)
+        if ([:create, :new].include?(action_name.to_sym) ||
+           authorized?(:update_theming_on, resource)) && params[:entry] && params[:entry][:theming_id]
+          if theming_policy_scope.themings_allowed_for(accounts)
+              .include?(Pageflow::Theming.find(params[:entry][:theming_id]))
+            result = [:theming_id]
+          end
+        end
+        result
+      end
+
+      def permit_account
+        if params[:id] && authorized?(:update_account_on, resource) && params[:entry] && params[:entry][:account_id]
+          if account_policy_scope.entry_movable
+              .include?(Pageflow::Account.find(params[:entry][:account_id]))
+            result = [:account_id]
+          end
+        end
+        result
       end
     end
   end

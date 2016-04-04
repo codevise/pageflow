@@ -6,7 +6,7 @@ module Pageflow
       include_examples 'a membership-based permission referring to entry and account that',
                        allows: 'manager',
                        but_forbids: 'publisher',
-                       to: :configure,
+                       to: :manage,
                        topic: -> { create(:entry) }
 
       include_examples 'a membership-based permission referring to entry and account that',
@@ -47,6 +47,27 @@ module Pageflow
       include_examples 'a membership-based permission referring to entry and account that',
                        allows: 'previewer',
                        to: :read,
+                       topic: -> { create(:entry) }
+
+      include_examples 'a membership-based permission that',
+                       allows: 'publisher',
+                       but_forbids: 'editor',
+                       of_account: -> (topic) { topic.account },
+                       to: :publish_on_account_of,
+                       topic: -> { create(:entry) }
+
+      include_examples 'a membership-based permission that',
+                       allows: 'publisher',
+                       but_forbids: 'editor',
+                       of_account: -> (topic) { topic.account },
+                       to: :update_account_on,
+                       topic: -> { create(:entry) }
+
+      include_examples 'a membership-based permission that',
+                       allows: 'publisher',
+                       but_forbids: 'editor',
+                       of_account: -> (topic) { topic.account },
+                       to: :update_theming_on,
                        topic: -> { create(:entry) }
 
       describe '.resolve' do
