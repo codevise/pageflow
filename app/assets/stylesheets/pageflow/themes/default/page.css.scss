@@ -74,8 +74,7 @@ $page-color: $main-color;
 
 .js .page:first-child {
 
-  .content_and_background .scroller > div:after {
-    content: " ";
+  .logo_header {
     position: absolute;
     background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.png");
     background-repeat: no-repeat;
@@ -95,7 +94,7 @@ $page-color: $main-color;
     }
   }
 
-  &.invert .content_and_background .scroller > div:after {
+  &.invert .logo_header {
     background-image: image-url("pageflow/themes/#{$theme-name}/logo_header_invert.png");
   }
 
