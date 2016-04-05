@@ -23,7 +23,9 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
     });
 
     configurationEditor.tab('general', function() {
-      this.input('title', pageflow.TextInputView);
+      this.input('title', pageflow.TextInputView, {
+        placeholder: entry.attributes.entry_title
+      });
       this.input('locale', pageflow.SelectInputView, {
         values: pageflow.config.availablePublicLocales,
         texts: _.map(pageflow.config.availablePublicLocales, function(locale) {
@@ -32,6 +34,9 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
       });
 
       this.input('credits', pageflow.TextAreaInputView);
+      this.input('author', pageflow.TextInputView);
+      this.input('publisher', pageflow.TextInputView);
+      this.input('keywords', pageflow.TextInputView);
     });
 
     configurationEditor.tab('widgets', function() {

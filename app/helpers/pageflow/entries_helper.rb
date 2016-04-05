@@ -1,5 +1,9 @@
 module Pageflow
   module EntriesHelper
+    def pretty_entry_title(entry)
+      [entry.title, entry.theming.cname_domain.presence].compact.join(' - ')
+    end
+
     def pretty_entry_url(entry)
       pageflow.short_entry_url(entry.to_model, Pageflow.config.theming_url_options(entry.theming))
     end

@@ -76,6 +76,13 @@ Pageflow.configure do |config|
     :s3_protocol => ENV.fetch('S3_PROTOCOL','http'),
     :attachments_version => 'v1'
   )
+
+  # Specify default meta tags to use in published stories.
+  # These defaults will be included in the page <head> unless overriden by the Entry.
+  # If you set these to <tt>nil</tt> or <tt>""</tt> the meta tag won't be included.
+  config.default_keywords_meta_tag = 'pageflow, multimedia, reportage'
+  config.default_author_meta_tag = 'Pageflow'
+  config.default_publisher_meta_tag = 'Pageflow'
 end
 
 # Comment out this call if you wish to run rails generators or rake
