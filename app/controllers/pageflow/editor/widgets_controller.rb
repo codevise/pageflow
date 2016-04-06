@@ -7,7 +7,7 @@ module Pageflow
 
       def index
         subject = find_subject
-        authorize!(:edit, subject.to_model)
+        authorize!(:index_widgets_for, subject.to_model)
 
         @widgets = subject.resolve_widgets(include_placeholders: true)
         respond_with(@widgets)

@@ -28,6 +28,10 @@ module Pageflow
         allows?(%w(publisher manager))
       end
 
+      def index_widgets_for?
+        @user.admin?
+      end
+
       private
 
       def allows?(roles)
