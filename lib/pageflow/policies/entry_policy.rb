@@ -65,6 +65,10 @@ module Pageflow
         allows?(%w(editor publisher manager))
       end
 
+      def index_widgets_for?
+        edit?
+      end
+
       def publish?
         allows?(%w(publisher manager))
       end

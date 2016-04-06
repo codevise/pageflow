@@ -34,8 +34,8 @@ module Pageflow
         end
 
         it 'responds with widgets of theming' do
-          user = create(:user)
-          account = create(:account, with_publisher: user)
+          user = create(:user, :admin)
+          account = create(:account)
           theming = create(:theming, account: account)
           create(:widget, subject: theming, type_name: 'test_widget')
 
@@ -48,7 +48,7 @@ module Pageflow
 
         it 'requires permission to index themings' do
           user = create(:user)
-          account = create(:account, with_editor: user)
+          account = create(:account, with_manager: user)
           theming = create(:theming, account: account)
           create(:widget, subject: theming, type_name: 'test_widget')
 

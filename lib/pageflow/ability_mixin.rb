@@ -90,6 +90,14 @@ module Pageflow
         can :edit, Theming do |theming|
           Policies::ThemingPolicy.new(user, theming).edit?
         end
+
+        can :index_widgets_for, Theming do |theming|
+          Policies::ThemingPolicy.new(user, theming).index_widgets_for?
+        end
+
+        can :index_widgets_for, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).index_widgets_for?
+        end
       end
 
       if user.admin?
