@@ -177,3 +177,11 @@ development environment.
 
 If you run into problems during the installation of Pageflow, please refer to the [Troubleshooting](https://github.com/codevise/pageflow/wiki/Troubleshooting) wiki
 page. If that doesn't help, consider [filing an issue](https://github.com/codevise/pageflow/issues?state=open).
+
+## Special Thanks
+
+We would like to express our special thanks to the following services
+for supporting Pageflow through free open source plans:
+
+[![BrowserStack](doc/supporter_logos/browser_stack.png)](https://browserstack.com)
+[![Travis CI](doc/supporter_logos/travis_ci.png)](https://travis-ci.com/)
