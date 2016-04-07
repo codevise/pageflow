@@ -11,7 +11,7 @@ module Pageflow
 
         def resolve
           if user.admin?
-            scope
+            scope.all
           else
             scope
               .joins(memberships_for_entries(user))
