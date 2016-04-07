@@ -40,6 +40,12 @@ module Pageflow
                        topic: -> { create(:entry) }
 
       include_examples 'a membership-based permission referring to entry and account that',
+                       allows: 'editor',
+                       but_forbids: 'previewer',
+                       to: :index_widgets_for,
+                       topic: -> { create(:entry) }
+
+      include_examples 'a membership-based permission referring to entry and account that',
                        allows: 'previewer',
                        to: :preview,
                        topic: -> { create(:entry) }
@@ -70,29 +76,47 @@ module Pageflow
                        to: :update_theming_on,
                        topic: -> { create(:entry) }
 
+      include_examples 'a membership-based permission that',
+                       allows: 'manager',
+                       but_forbids: 'publisher',
+                       of_account: -> (topic) { topic.account },
+                       to: :manage_account_of,
+                       topic: -> { create(:entry) }
+
+      include_examples 'a membership-based permission that',
+                       allows: 'manager',
+                       but_forbids: 'publisher',
+                       of_account: -> (topic) { topic.account },
+                       to: :update_feature_configuration_on,
+                       topic: -> { create(:entry) }
+
       describe '.resolve' do
+        it 'includes all entries for admins' do
+          user = create(:user, :admin)
+
+          expect(Policies::EntryPolicy::Scope.new(user,
+                                                  Entry).resolve).to include(create(:entry))
+        end
+
         it 'includes entries with membership with correct user and correct id' do
           user = create(:user)
-          entry = create(:entry)
-          create(:membership, user: user, entity: entry)
+          entry = create(:entry, with_previewer: user)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).to include(entry)
         end
 
         it 'includes entries with membership with correct user and correct account' do
           user = create(:user)
-          account = create(:account)
+          account = create(:account, with_previewer: user)
           entry = create(:entry, account: account)
-          create(:membership, user: user, entity: account)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).to include(entry)
         end
 
         it 'does not include entries with wrong id' do
           user = create(:user)
-          entry = create(:entry)
+          create(:entry, with_previewer: user)
           other_entry = create(:entry)
-          create(:membership, user: user, entity: entry)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).not_to include(other_entry)
         end
@@ -100,8 +124,7 @@ module Pageflow
         it 'does not include entries with membership with wrong user and correct id' do
           user = create(:user)
           other_user = create(:user)
-          entry = create(:entry)
-          create(:membership, user: other_user, entity: entry)
+          entry = create(:entry, with_previewer: other_user)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
         end
@@ -109,9 +132,8 @@ module Pageflow
         it 'does not include entries with membership with wrong account' do
           user = create(:user)
           account = create(:account)
-          other_account = create(:account)
+          create(:account, with_previewer: user)
           entry = create(:entry, account: account)
-          create(:membership, user: user, entity: other_account)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
         end
@@ -119,9 +141,8 @@ module Pageflow
         it 'does not include entries with membership with wrong user and correct account' do
           user = create(:user)
           other_user = create(:user)
-          account = create(:account)
+          account = create(:account, with_previewer: other_user)
           entry = create(:entry, account: account)
-          create(:membership, user: other_user, entity: account)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
         end

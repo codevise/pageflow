@@ -44,6 +44,7 @@ module Pageflow
           'pageflow_memberships.entity_id IS NOT NULL'
         end
       end
+
       def initialize(user, account)
         @user = user
         @account = account

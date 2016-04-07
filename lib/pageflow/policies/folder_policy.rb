@@ -11,7 +11,7 @@ module Pageflow
 
         def resolve
           if user.admin?
-            scope
+            scope.all
           else
             scope.where('account_id IN (?) OR id IN (?)',
                         accounts_where_user_is_at_least_previewer(user).map(&:id),
