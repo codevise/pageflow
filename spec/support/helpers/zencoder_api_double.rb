@@ -4,7 +4,7 @@ module ZencoderApiDouble
   def creating_job_with_id(id)
     api = double
 
-    api.stub(:create_job).and_return(id)
+    allow(api).to receive(:create_job).and_return(id)
 
     api
   end
@@ -12,9 +12,9 @@ module ZencoderApiDouble
   def finished
     api = double
 
-    api.stub(:create_job).and_return(1)
-    api.stub(:get_info).and_return(finished_info_result)
-    api.stub(:get_input_details).and_return(input_details)
+    allow(api).to receive(:create_job).and_return(1)
+    allow(api).to receive(:get_info).and_return(finished_info_result)
+    allow(api).to receive(:get_input_details).and_return(input_details)
 
     api
   end
@@ -22,9 +22,9 @@ module ZencoderApiDouble
   def finished_but_failed
     api = double
 
-    api.stub(:create_job).and_return(1)
-    api.stub(:get_info).and_return(failed_info_result)
-    api.stub(:get_input_details).and_return(input_details)
+    allow(api).to receive(:create_job).and_return(1)
+    allow(api).to receive(:get_info).and_return(failed_info_result)
+    allow(api).to receive(:get_input_details).and_return(input_details)
 
     api
   end
@@ -32,9 +32,9 @@ module ZencoderApiDouble
   def once_pending_then_finished
     api = double
 
-    api.stub(:create_job).and_return(1)
-    api.stub(:get_info).and_return(pending_info_result, finished_info_result)
-    api.stub(:get_input_details).and_return(input_details)
+    allow(api).to receive(:create_job).and_return(1)
+    allow(api).to receive(:get_info).and_return(pending_info_result, finished_info_result)
+    allow(api).to receive(:get_input_details).and_return(input_details)
 
     api
   end
@@ -42,9 +42,9 @@ module ZencoderApiDouble
   def pending(options = {})
     api = double
 
-    api.stub(:create_job).and_return(1)
-    api.stub(:get_info).and_return(pending_info_result(options))
-    api.stub(:get_input_details).and_return(input_details)
+    allow(api).to receive(:create_job).and_return(1)
+    allow(api).to receive(:get_info).and_return(pending_info_result(options))
+    allow(api).to receive(:get_input_details).and_return(input_details)
 
     api
   end
@@ -52,7 +52,7 @@ module ZencoderApiDouble
   def recoverably_failing
     api = double
 
-    api.stub(:get_info).and_raise(Pageflow::ZencoderApi::RecoverableError)
+    allow(api).to receive(:get_info).and_raise(Pageflow::ZencoderApi::RecoverableError)
 
     api
   end
@@ -60,7 +60,7 @@ module ZencoderApiDouble
   def unrecoverably_failing
     api = double
 
-    api.stub(:get_info).and_raise(Pageflow::ZencoderApi::UnrecoverableError)
+    allow(api).to receive(:get_info).and_raise(Pageflow::ZencoderApi::UnrecoverableError)
 
     api
   end
@@ -68,7 +68,7 @@ module ZencoderApiDouble
   private
 
   def double
-    RSpec::Mocks::Mock.new('zencoder api')
+    RSpec::Mocks::Double.new('zencoder api')
   end
 
   def pending_info_result(options = {})
@@ -95,3 +95,5 @@ module ZencoderApiDouble
       :duration_in_ms => 5000 }
   end
 end
+
+RSpec::Mocks::Syntax.enable_expect(ZencoderApiDouble)

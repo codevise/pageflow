@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'yajl-ruby', '~> 1.2'
 
   # Authorization
-  s.add_dependency 'cancan', '~> 1.6'
+  s.add_dependency 'cancancan', '~> 1.10'
 
   # State machines for active record
   s.add_dependency 'state_machine', '~> 1.2'
@@ -105,7 +105,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mysql2', '~> 0.3.16'
 
   # Testing framework
-  s.add_development_dependency 'rspec-rails', '~> 2.14'
+  s.add_development_dependency 'rspec-rails', '~> 3.4'
+
+  # Matchers like "to have(3).items"
+  s.add_development_dependency 'rspec-collection_matchers', '~> 1.1'
 
   # Browser like integration testing
   s.add_development_dependency 'capybara', '~> 2.4'
@@ -119,14 +122,14 @@ Gem::Specification.new do |s|
   # Fixture replacement
   s.add_development_dependency 'factory_girl_rails', '~> 4.5'
 
+  # Matchers for Pundit policies
+  s.add_development_dependency 'pundit-matchers', '~> 1.0'
+
   # Clean database in integration tests
   s.add_development_dependency 'database_cleaner', '~> 1.2'
 
   # Freeze time in tests
   s.add_development_dependency 'timecop', '~> 0.7.1'
-
-  # Early failure output
-  s.add_development_dependency 'rspec-instafail', '~> 0.2.6'
 
   # Colorized console output
   s.add_development_dependency 'colorize', '~> 0.7.5'

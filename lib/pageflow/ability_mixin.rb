@@ -5,38 +5,74 @@ module Pageflow
     def pageflow_default_abilities(user)
       return if user.nil?
 
-      can :read, Folder, :id => user.entries.map(&:folder_id)
-
-      can [:read, :use_files], Entry, :id => user.entry_ids
-
-      can [:edit, :update, :edit_outline, :publish, :restore, :snapshot, :confirm_encoding], Entry do |entry|
-        can_edit_entry?(user, entry)
-      end
-
-      can :manage, Storyline do |storyline|
-        can_edit_entry?(user, storyline.revision.entry)
-      end
-
-      can :manage, Chapter do |record|
-        can_edit_entry?(user, record.entry)
-      end
-
-      can :manage, Pageflow.config.file_types.map(&:model) do |record|
-        can_edit_any_entry_using_file?(user, record)
-      end
-
-      can :manage, Page do |page|
-        can_edit_entry?(user, page.chapter.entry)
-      end
-
-      can :manage, Revision do |revision|
-        can_edit_entry?(user, revision.entry)
-      end
-
       can :view, [Admin::MembersTab, Admin::RevisionsTab]
+      unless user.admin?
+        can [:create, :update, :destroy], Folder do |folder|
+          Policies::FolderPolicy.new(user, folder).manage?
+        end
+
+        can :configure_folder_on, Account do |account|
+          Policies::AccountPolicy.new(user, account).configure_folder_on?
+        end
+
+        can :configure_folder_for, Entry do |entry|
+          Policies::AccountPolicy.new(user, entry.account).configure_folder_on?
+        end
+
+        can :read, Folder, Policies::FolderPolicy::Scope.new(user, Folder).resolve
+
+        can :use_files, Entry, id: user.entry_ids
+
+        can :read, Entry, Policies::EntryPolicy::Scope.new(user, Entry).resolve do |entry|
+          Policies::EntryPolicy.new(user, entry).read?
+        end
+
+        can :create, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).create?
+        end
+
+        can :duplicate, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).duplicate?
+        end
+
+        can [:edit,
+             :update,
+             :edit_outline,
+             :publish,
+             :restore,
+             :snapshot,
+             :confirm_encoding], Entry do |entry|
+          can_edit_entry?(user, entry)
+        end
+
+        can :add_member_to, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).add_member_to?
+        end
+
+        can :manage, Storyline do |storyline|
+          Policies::EntryPolicy.new(user, storyline.revision.entry).edit?
+        end
+
+        can :manage, Chapter do |record|
+          Policies::EntryPolicy.new(user, record.entry).edit?
+        end
+
+        can :manage, Pageflow.config.file_types.map(&:model) do |record|
+          can_edit_any_entry_using_file?(user, record)
+        end
+
+        can :manage, Page do |page|
+          Policies::EntryPolicy.new(user, page.chapter.entry).edit?
+        end
+
+        can :read, Revision do |revision|
+          Policies::EntryPolicy.new(user, revision.entry).preview?
+        end
+
+      end
 
       if user.admin?
-        can [:read, :create, :update], Account
+        can [:read, :create, :update, :configure_folder_on], Account
         can :destroy, Account do |account|
           account.users.empty? && account.entries.empty?
         end
@@ -61,8 +97,15 @@ module Pageflow
         can :manage, Resque
       elsif user.account_manager?
         can :manage, Theming, :account_id => user.account_id
-        can :manage, Folder, :account_id => user.account.id
-        can :manage, Entry, :account_id => user.account.id
+        can [:edit,
+             :update,
+             :edit_outline,
+             :publish,
+             :restore,
+             :snapshot,
+             :confirm_encoding,
+             :use_files,
+             :destroy], Entry, account_id: user.account.id
         can :manage, ::User, :account_id => user.account.id
         can :manage, Revision, :entry => {:account_id => user.account.id}
 

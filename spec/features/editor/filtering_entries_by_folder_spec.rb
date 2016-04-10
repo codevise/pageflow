@@ -1,13 +1,12 @@
 require 'spec_helper'
 
-feature 'editor filtering entries by folder' do
+feature 'previewer filtering entries by folder' do
   scenario 'listing entries in a folder' do
-    user = Dom::Admin::Page.sign_in_as(:editor)
-    folder = create(:folder, :account => user.account)
-    entry_in_folder = create(:entry, :account => user.account, :folder => folder)
-    entry_not_in_folder = create(:entry, :account => user.account)
-    create(:membership, :entry => entry_in_folder, :user => user)
-    create(:membership, :entry => entry_not_in_folder, :user => user)
+    folder = create(:folder)
+    entry_in_folder = create(:entry, account: folder.account, folder: folder)
+    entry_not_in_folder = create(:entry, account: folder.account)
+    user = Dom::Admin::Page.sign_in_as(:previewer, on: entry_not_in_folder)
+    create(:membership, entry: entry_in_folder, user: user, role: 'previewer')
 
     visit(admin_entries_path)
     Dom::Admin::FolderPanelItem.find_by_name(folder.name).link.click

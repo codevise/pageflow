@@ -1,8 +1,9 @@
 module Pageflow
   FactoryGirl.define do
-    factory :membership, :class => Membership do
+    factory :membership, class: Membership do
       user
-      entry
+      association :entity, factory: :entry
+      role 'editor'
     end
   end
 end

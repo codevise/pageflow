@@ -1,9 +1,8 @@
 feature 'listing entries' do
   scenario 'only entries show up in entries table in which the user is a member' do
-    user = Dom::Admin::Page.sign_in_as(:editor)
-    first_entry = create(:entry, :title => 'First Entry')
-    create(:entry, :title => 'Second Entry')
-    create(:membership, :entry => first_entry, :user => user)
+    first_entry = create(:entry, title: 'First Entry')
+    create(:entry, title: 'Second Entry')
+    Dom::Admin::Page.sign_in_as(:previewer, on: first_entry)
 
     visit(admin_entries_path)
 

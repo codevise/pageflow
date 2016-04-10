@@ -65,7 +65,7 @@ module Pageflow
         SeedsDsl.default_user_password('!Other123')
         user = SeedsDsl.user(email: 'editor@example.com', account: create(:account))
 
-        expect(user.valid_password?('!Other123')).to be_true
+        expect(user.valid_password?('!Other123')).to be true
       end
 
       it 'allows overriding attributes in block' do
@@ -122,7 +122,7 @@ module Pageflow
         user = create(:user, :editor)
         entry = create(:entry)
 
-        SeedsDsl.membership(user: user, entry: entry)
+        SeedsDsl.membership(user: user, entity: entry)
 
         expect(entry.users).to include(user)
       end

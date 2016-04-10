@@ -6,8 +6,8 @@ describe Admin::EntriesController do
   describe '#show' do
     it 'editor sees members and revisions tabs' do
       account = create(:account)
-      user = create(:user, :editor, :account => account)
-      entry = create(:entry, :account => account, :with_member => user, :title => 'example')
+      user = create(:user)
+      entry = create(:entry, account: account, with_editor: user, title: 'example')
 
       sign_in(user)
       get(:show, :id => entry.id)
@@ -16,9 +16,8 @@ describe Admin::EntriesController do
       expect(response.body).to have_selector('.admin_tabs_view .tabs .revisions')
     end
 
-    it 'account manager sees registered admin resource tabs she is authorized for' do
-      account = create(:account)
-      entry = create(:entry, :account => account, :title => 'example')
+    it 'entry previewer sees registered admin resource tabs she is authorized for' do
+      entry = create(:entry, title: 'example')
       tab_view_component = Class.new(Pageflow::ViewComponent) do
         def build(entry)
           super('data-entry-title' => entry.title)
@@ -34,14 +33,17 @@ describe Admin::EntriesController do
       allow(controller).to receive(:authorized?).and_call_original
       allow(controller).to receive(:authorized?).with(:view, tab_view_component).and_return(true)
 
-      sign_in(create(:user, :account_manager, :account => account))
+      user = create(:user)
+      create(:membership, user: user, entity: entry, role: 'previewer')
+      sign_in(user)
       get(:show, :id => entry.id)
 
       expect(response.body).to have_selector('.admin_tabs_view div[data-entry-title="example"]')
     end
 
     it 'account manager does not see registered admin resource tabs she is not authorized for' do
-      account = create(:account)
+      user = create(:user)
+      account = create(:account, with_manager: user)
       entry = create(:entry, :account => account, :title => 'example')
       tab_view_component = Class.new(Pageflow::ViewComponent) do
         def build(entry)
@@ -55,7 +57,7 @@ describe Admin::EntriesController do
 
       Pageflow.config.admin_resource_tabs.register(:entry, name: :some_tab, component: tab_view_component)
 
-      sign_in(create(:user, :account_manager, :account => account))
+      sign_in(user)
       get(:show, :id => entry.id)
 
       expect(response.body).not_to have_selector('.admin_tabs_view div[data-entry-title="example"]')
@@ -64,7 +66,8 @@ describe Admin::EntriesController do
 
   describe '#new' do
     it 'displays additional registered form inputs' do
-      user = create(:user, :account_manager)
+      user = create(:user)
+      account = create(:account, with_publisher: user)
 
       pageflow_configure do |config|
         config.admin_form_inputs.register(:entry, :custom_field)
@@ -78,20 +81,23 @@ describe Admin::EntriesController do
   end
 
   describe '#create' do
-    it 'does not allow account manager to create entries for other account' do
-      account = create(:account)
+    it 'does not allow account publisher to create entries for other account' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      other_account = create(:account)
 
-      sign_in(create(:user, :account_manager))
+      sign_in(user)
 
-      expect {
-        post :create, :entry => attributes_for(:entry, :account_id => account)
-      }.not_to change { account.entries.count }
+      expect do
+        post :create, entry: attributes_for(:entry, account_id: other_account)
+      end.not_to change { other_account.entries.count }
     end
 
     it 'does not allow account manager to create entries with custom theming' do
       theming = create(:theming)
 
-      sign_in(create(:user, :account_manager))
+      user = create(:user, :account_manager)
+      sign_in(user)
 
       post :create, :entry => attributes_for(:entry, :theming_id => theming)
       entry = Pageflow::Entry.last
@@ -99,14 +105,15 @@ describe Admin::EntriesController do
       expect(entry.theming).to eq(entry.account.default_theming)
     end
 
-    it 'allows account manager to create entries for own account' do
-      account = create(:account)
+    it 'allows account publisher to create entries for own account' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
 
-      sign_in(create(:user, :account_manager, :account => account))
+      sign_in(user)
 
-      expect {
-        post :create, :entry => attributes_for(:entry)
-      }.to change { account.entries.count }
+      expect do
+        post :create, entry: attributes_for(:entry, account: account)
+      end.to change { account.entries.count }
     end
 
     it 'allows admin to set user account' do
@@ -139,8 +146,9 @@ describe Admin::EntriesController do
       expect(Pageflow::Entry.last.theming).to eq(account.default_theming)
     end
 
-    it 'allows account manager to define custom field registered as form input' do
-      user = create(:user, :account_manager)
+    it 'allows account publisher to define custom field registered as form input' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
 
       pageflow_configure do |config|
         config.admin_form_inputs.register(:entry, :custom_field)
@@ -152,8 +160,9 @@ describe Admin::EntriesController do
       expect(Pageflow::Entry.last.custom_field).to eq('some value')
     end
 
-    it 'does not allows account manager to define custom field not registered as form input' do
-      user = create(:user, :account_manager)
+    it 'does not allows account publisher to define custom field not registered as form input' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
 
       sign_in(user)
       post(:create, entry: {custom_field: 'some value'})
@@ -164,8 +173,8 @@ describe Admin::EntriesController do
 
   describe '#edit' do
     it 'displays additional registered form inputs' do
-      user = create(:user, :editor)
-      entry = create(:entry, with_member: user)
+      user = create(:user)
+      entry = create(:entry, with_editor: user)
 
       pageflow_configure do |config|
         config.admin_form_inputs.register(:entry, :custom_field)
@@ -178,9 +187,9 @@ describe Admin::EntriesController do
     end
 
     it 'displays additional form inputs registered inside enabled feature' do
-      user = create(:user, :editor)
+      user = create(:user)
       entry = create(:entry,
-                     with_member: user,
+                     with_editor: user,
                      feature_states: {custom_entry_field: true})
 
       pageflow_configure do |config|
@@ -196,9 +205,9 @@ describe Admin::EntriesController do
     end
 
     it 'does not display additional form inputs registered inside disabled feature' do
-      user = create(:user, :editor)
+      user = create(:user)
       entry = create(:entry,
-                     with_member: user)
+                     with_editor: user)
 
       pageflow_configure do |config|
         config.features.register('custom_entry_field') do |feature_config|
@@ -259,9 +268,9 @@ describe Admin::EntriesController do
     end
 
     it 'does not allow editor to change folder' do
-      user = create(:user, :editor)
+      user = create(:user)
       folder = create(:folder, :account => user.account)
-      entry = create(:entry, :with_member => user, :account => user.account)
+      entry = create(:entry, with_editor: user, account: user.account)
 
       sign_in(user)
       patch :update, :id => entry, :entry => {:folder_id => folder}
@@ -335,8 +344,8 @@ describe Admin::EntriesController do
     end
 
     it 'allows editor to change custom field registered as form input' do
-      user = create(:user, :editor)
-      entry = create(:entry, with_member: user, account: user.account)
+      user = create(:user)
+      entry = create(:entry, with_editor: user, account: user.account)
 
       pageflow_configure do |config|
         config.admin_form_inputs.register(:entry, :custom_field)
@@ -349,8 +358,8 @@ describe Admin::EntriesController do
     end
 
     it 'does not allows editor to change custom field not registered as form input' do
-      user = create(:user, :editor)
-      entry = create(:entry, with_member: user, account: user.account)
+      user = create(:user)
+      entry = create(:entry, with_editor: user, account: user.account)
 
       sign_in(user)
       patch(:update, id: entry, entry: {custom_field: 'some value'})
@@ -374,7 +383,7 @@ describe Admin::EntriesController do
   describe '#preview' do
     it 'responds redirects to draft revision' do
       user = create(:user)
-      entry = create(:entry, :with_member => user)
+      entry = create(:entry, with_editor: user)
 
       sign_in(user)
       get(:preview, :id => entry)
@@ -430,8 +439,8 @@ describe Admin::EntriesController do
     end
 
     it 'allows editor to snapshot entries he is member of' do
-      user = create(:user, :editor)
-      entry = create(:entry, :with_member => user, :account => user.account)
+      user = create(:user)
+      entry = create(:entry, with_editor: user, account: user.account)
 
       sign_in(user)
       post(:snapshot, :id => entry.id)
@@ -455,20 +464,21 @@ describe Admin::EntriesController do
   end
 
   describe '#duplicate' do
-    it 'does not allow account manager to duplicate entries of other account' do
-      account = create(:account)
-      entry = create(:entry)
+    it 'does not allow account editor to duplicate entries of own account' do
+      user = create(:user)
+      account = create(:account, with_editor: user)
+      entry = create(:entry, account: account)
 
-      sign_in(create(:user, :account_manager))
+      sign_in(user)
 
       expect {
         post(:duplicate, :id => entry.id)
       }.not_to change { Pageflow::Entry.count }
     end
 
-    it 'allows account manager to duplicate entries of own account' do
-      user = create(:user, :account_manager)
-      entry = create(:entry, :account => user.account)
+    it 'allows entry publisher to duplicate entry' do
+      user = create(:user)
+      entry = create(:entry, with_publisher: user)
 
       sign_in(user)
 
@@ -488,15 +498,13 @@ describe Admin::EntriesController do
       }.to change { Pageflow::Entry.count }
     end
 
-    it 'does not allows editor to duplicate entries even as a member' do
-      user = create(:user, :editor)
-      entry = create(:entry, :with_member => user, :account => user.account)
+    it 'does not allow editor to duplicate entries even as a member' do
+      user = create(:user)
+      entry = create(:entry, with_editor: user, account: user.account)
 
       sign_in(user)
 
-      expect {
-        post(:duplicate, :id => entry.id)
-      }.not_to change { Pageflow::Entry.count }
+      expect { post(:duplicate, id: entry.id) }.not_to change { Pageflow::Entry.count }
     end
   end
 end

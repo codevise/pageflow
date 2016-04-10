@@ -64,11 +64,8 @@ module Pageflow
           if user.memberships.any?
             table_for user.memberships, :class => 'memberships', :i18n => Membership do
               column :entry do |membership|
-                link_to(membership.entry.title, admin_entry_path(membership.entry))
-              end
-              column do |membership|
-                if authorized?(:destroy, membership)
-                  link_to(I18n.t('pageflow.admin.users.delete'), admin_user_membership_path(user, membership), :method => :delete, :data => {:confirm => I18n.t('active_admin.delete_confirmation'), :rel => 'delete_membership'})
+                if membership.entity_type == 'Pageflow::Entry'
+                  link_to(membership.entry.title, admin_entry_path(membership.entry))
                 end
               end
             end
@@ -78,10 +75,6 @@ module Pageflow
                 I18n.t('pageflow.admin.users.empty')
               end
             end
-          end
-
-          span do
-            link_to I18n.t('pageflow.admin.users.add_entry'), new_admin_user_membership_path(user), :class => 'button', :data => {:rel => 'add_membership'}
           end
         end
       end

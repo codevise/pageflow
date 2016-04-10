@@ -14,37 +14,46 @@ describe Admin::FoldersController do
       end
     end
 
-    describe 'as account admin' do
+    describe 'as account publisher' do
       it 'does not allow to add folder to other account' do
         account = create(:account)
+        other_account = create(:account)
+        sign_in(create(:user, :publisher, on: other_account))
 
-        sign_in(create(:user, :account_manager))
-
-        expect {
-          post :create, :folder => attributes_for(:folder, :account_id => account)
-        }.not_to change { account.folders.count }
+        expect do
+          post :create, folder: attributes_for(:folder, account_id: account)
+        end.not_to change { account.folders.count }
       end
 
       it 'allows to add folder for own account' do
-        user = create(:user, :account_manager)
+        account = create(:account)
+        sign_in(create(:user, :publisher, on: account))
 
-        sign_in(user)
-
-        expect {
-          post :create, :folder => attributes_for(:folder, :account_id => user.account)
-        }.to change { user.account.folders.count }
+        expect do
+          post :create, folder: attributes_for(:folder, account_id: account)
+        end.to change { account.folders.count }
       end
     end
 
-    describe 'as editor' do
+    describe 'as entry manager of entry on account' do
+      it 'does not allow to add folder for entry account' do
+        entry = create(:entry)
+        sign_in(create(:user, :manager, on: entry))
+
+        expect do
+          post :create, folder: attributes_for(:folder, account_id: entry.account)
+        end.not_to change { entry.account.folders.count }
+      end
+    end
+
+    describe 'as account editor' do
       it 'does not allow to add folder for own account' do
-        user = create(:user, :editor)
+        account = create(:account)
+        sign_in(create(:user, :editor, on: account))
 
-        sign_in(user)
-
-        expect {
-          post :create, :folder => attributes_for(:folder, :account_id => user.account)
-        }.not_to change { user.account.folders.count }
+        expect do
+          post :create, folder: attributes_for(:folder, account_id: account)
+        end.not_to change { account.folders.count }
       end
     end
   end
@@ -71,34 +80,47 @@ describe Admin::FoldersController do
       end
     end
 
-    describe 'as account admin' do
+    describe 'as account manager' do
       it 'does not allow to change name of folder of other account' do
-        folder = create(:folder, :name => 'old')
-
-        sign_in(create(:user, :account_manager))
-        patch :update, :id => folder, :folder => {:name => 'changed'}
+        folder = create(:folder, name: 'old')
+        other_account = create(:account)
+        sign_in(create(:user, :publisher, on: other_account))
+        patch :update, id: folder, folder: {name: 'changed'}
 
         expect(folder.reload.name).to eq('old')
       end
 
       it 'allows to change name of folder of own account' do
-        user = create(:user, :account_manager)
-        folder = create(:folder, :name => 'old', :account => user.account)
+        folder = create(:folder, name: 'old')
+        user = create(:user, :publisher, on: folder.account)
 
         sign_in(user)
-        patch :update, :id => folder, :folder => {:name => 'changed'}
+        patch :update, id: folder, folder: {name: 'changed'}
 
         expect(folder.reload.name).to eq('changed')
       end
     end
 
-    describe 'as editor' do
-      it 'does not allow to change name of folder of own account' do
-        user = create(:user, :editor)
-        folder = create(:folder, :name => 'old', :account => user.account)
+    describe 'as entry manager of entry on account' do
+      it 'does not allow to change name of folder of entry account' do
+        entry = create(:entry)
+        user = create(:user, :manager, on: entry)
+        folder = create(:folder, name: 'old', account: entry.account)
 
         sign_in(user)
-        patch :update, :id => folder, :folder => {:name => 'changed'}
+        patch :update, id: folder, folder: {name: 'changed'}
+
+        expect(folder.reload.name).to eq('old')
+      end
+    end
+
+    describe 'as account editor' do
+      it 'does not allow to change name of folder of own account' do
+        folder = create(:folder, name: 'old')
+        user = create(:user, :editor, on: folder.account)
+
+        sign_in(user)
+        patch :update, id: folder, folder: {name: 'changed'}
 
         expect(folder.reload.name).to eq('old')
       end
@@ -112,45 +134,60 @@ describe Admin::FoldersController do
 
         sign_in(create(:user, :admin))
 
-        expect {
-          delete :destroy, :id => folder
-        }.to change { Pageflow::Folder.count }
+        expect do
+          delete :destroy, id: folder
+        end.to change { Pageflow::Folder.count }
       end
     end
 
-    describe 'as account admin' do
+    describe 'as account publisher' do
       it 'does not allow to destroy folder of other account' do
         folder = create(:folder)
+        other_account = create(:account)
 
-        sign_in(create(:user, :account_manager))
+        sign_in(create(:user, :publisher, on: other_account))
 
-        expect {
-          delete :destroy, :id => folder
-        }.not_to change { Pageflow::Folder.count }
+        expect do
+          delete :destroy, id: folder
+        end.not_to change { Pageflow::Folder.count }
       end
 
       it 'allows to destroy folder of own account' do
-        user = create(:user, :account_manager)
-        folder = create(:folder, :account => user.account)
+        folder = create(:folder)
+        user = create(:user, :publisher, on: folder.account)
 
         sign_in(user)
 
-        expect {
-          delete :destroy, :id => folder
-        }.to change { Pageflow::Folder.count }
+        expect do
+          delete :destroy, id: folder
+        end.to change { Pageflow::Folder.count }
       end
     end
 
-    describe 'as editor' do
-      it 'does not allow to destroy folder of own account' do
-        user = create(:user, :editor)
-        folder = create(:folder, :account => user.account)
+    describe 'as entry manager of entry on account' do
+      it 'does not allow to destroy folder of entry account' do
+        entry = create(:entry)
+        user = create(:user, :manager, on: entry)
+        folder = create(:folder, account: entry.account)
 
         sign_in(user)
 
-        expect {
-          delete :destroy, :id => folder
-        }.not_to change { user.account.folders.count }
+        expect do
+          delete :destroy, id: folder
+        end.not_to change { user.account.folders.count }
+      end
+
+      describe 'as account editor' do
+        it 'does not allow to destroy folder of own account' do
+          folder = create(:folder)
+          user = create(:user, :editor, on: folder.account)
+
+          sign_in(user)
+
+          expect do
+            delete :destroy, id: folder
+          end.not_to change { user.account.folders.count }
+        end
       end
     end
   end
