@@ -19,6 +19,7 @@ $overview-icon-font-options: () !default;
   @import "./overview/chapter_border_images";
   @import "./overview/typography";
   @import "./overview/colors";
+  @import "./overview/chapter_numbers";
 
   @if $overview-icons == "sprite" {
     @include overview-icons-sprite;
