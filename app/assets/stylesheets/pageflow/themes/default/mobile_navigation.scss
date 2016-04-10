@@ -27,6 +27,9 @@ $mobile-navigation-credits-text-color: #808080 !default;
 /// Color of links in credits text.
 $mobile-navigation-credits-link-color: $main-color !default;
 
+/// Color of share links.
+$mobile-navigation-share-link-color: #fff !default;
+
 /// Color of the border that is displayed on the left side of the
 /// current page.
 $mobile-navigation-current-page-marker-color: $main-color !default;
@@ -80,5 +83,13 @@ $mobile-navigation-current-page-marker-color: $main-color !default;
 
   .imprint_mobile a {
     @extend %anchor;
+  }
+
+  .sharing_mobile a {
+    color: $mobile-navigation-share-link-color;
+
+    &::before {
+      background-image: image-url("#{$image-dir}/sharing_icons_sprite.png");
+    }
   }
 }
