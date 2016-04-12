@@ -167,7 +167,8 @@ module Pageflow
 
         sign_in user
         acquire_edit_lock(user, entry)
-        patch(:order, entry_id: entry, ids: [storylines.first.id, storylines.last.id], format: 'json')
+        patch(:order, entry_id: entry, ids: [storylines.first.id,
+                                             storylines.last.id], format: 'json')
 
         expect(response.status).to eq(204)
       end
@@ -179,7 +180,8 @@ module Pageflow
 
         sign_in user
         acquire_edit_lock(user, entry)
-        patch(:order, entry_id: entry, ids: [storylines.first.id, storylines.last.id], format: 'json')
+        patch(:order, entry_id: entry, ids: [storylines.first.id,
+                                             storylines.last.id], format: 'json')
 
         expect(storylines.first.reload.position).to eq(0)
         expect(storylines.last.reload.position).to eq(1)

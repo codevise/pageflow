@@ -55,8 +55,7 @@ module Pageflow
           Policies::EntryPolicy.new(user, entry).update_feature_configuration_on?
         end
 
-        can [:edit_outline,
-             :publish,
+        can [:publish,
              :restore,
              :snapshot,
              :confirm_encoding], Entry do |entry|
@@ -65,6 +64,10 @@ module Pageflow
 
         can :add_member_to, Entry do |entry|
           Policies::EntryPolicy.new(user, entry).add_member_to?
+        end
+
+        can :edit_outline, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).edit_outline?
         end
 
         can :manage, Storyline do |storyline|
@@ -125,8 +128,7 @@ module Pageflow
 
         can :manage, Resque
       elsif user.account_manager?
-        can [:edit_outline,
-             :publish,
+        can [:publish,
              :restore,
              :snapshot,
              :confirm_encoding,
