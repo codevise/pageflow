@@ -457,9 +457,9 @@ describe Admin::EntriesController do
   end
 
   describe '#preview' do
-    it 'responds redirects to draft revision' do
+    it 'response redirects to draft revision' do
       user = create(:user)
-      entry = create(:entry, with_editor: user)
+      entry = create(:entry, with_previewer: user)
 
       sign_in(user)
       get(:preview, :id => entry)

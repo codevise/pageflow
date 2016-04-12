@@ -128,7 +128,7 @@ module Pageflow
 
     member_action :preview do
       entry = Entry.find(params[:id])
-      authorize!(:show, entry.draft)
+      authorize!(:read, entry.draft)
       redirect_to(pageflow.revision_path(entry.draft))
     end
 
