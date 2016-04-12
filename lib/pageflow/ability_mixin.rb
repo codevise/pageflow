@@ -65,8 +65,7 @@ module Pageflow
           Policies::EntryPolicy.new(user, entry).update_feature_configuration_on?
         end
 
-        can [:publish,
-             :restore], Entry do |entry|
+        can :restore, Entry do |entry|
           can_edit_entry?(user, entry)
         end
 
@@ -100,6 +99,10 @@ module Pageflow
 
         can :edit, Theming do |theming|
           Policies::ThemingPolicy.new(user, theming).edit?
+        end
+
+        can :publish, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).publish?
         end
 
         can :index_widgets_for, Theming do |theming|
@@ -140,8 +143,7 @@ module Pageflow
 
         can :manage, Resque
       elsif user.account_manager?
-        can [:publish,
-             :restore], Entry, account_id: user.account.id
+        can :restore, Entry, account_id: user.account.id
         can :manage, ::User, :account_id => user.account.id
         can :manage, Revision, :entry => {:account_id => user.account.id}
 

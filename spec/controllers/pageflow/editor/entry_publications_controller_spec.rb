@@ -7,9 +7,9 @@ module Pageflow
       render_views
 
       describe '#create' do
-        it 'responds with success for members' do
+        it 'responds with success for publishers' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, :with_publisher => user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
@@ -20,7 +20,7 @@ module Pageflow
 
         it 'includes published and published_until attributes in response' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, :with_publisher => user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
@@ -32,7 +32,7 @@ module Pageflow
 
         it 'allows to define published_until attributes' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, :with_publisher => user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
@@ -46,7 +46,7 @@ module Pageflow
 
         it 'allows to publish with a password' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, :with_publisher => user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
@@ -61,7 +61,7 @@ module Pageflow
 
         it 'responds with bad request if password is missing' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, :with_publisher => user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
@@ -74,7 +74,7 @@ module Pageflow
 
         it 'saves current user as creator' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, :with_publisher => user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
@@ -83,9 +83,9 @@ module Pageflow
           expect(entry.revisions.where(:creator => user)).to be_present
         end
 
-        it 'requires the signed in user to be member of the parent entry' do
+        it 'requires the signed in user to be publisher of the parent entry' do
           user = create(:user)
-          entry = create(:entry)
+          entry = create(:entry, with_editor: user)
 
           sign_in(user)
           post(:create, :entry_id => entry, :entry_publication => {}, :format => :json)
@@ -103,7 +103,7 @@ module Pageflow
 
         it 'responds with forbidden if :published_entries quota would be exceeded' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, :with_publisher => user)
 
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.exceeded)
 
@@ -116,7 +116,7 @@ module Pageflow
 
         it 'responds with success if :published_entries quota is exhausted but would not be exceeded ' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, :with_publisher => user)
 
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.exhausted)
 
@@ -129,7 +129,7 @@ module Pageflow
 
         it 'responds with published_message_html' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_publisher: user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
@@ -142,7 +142,7 @@ module Pageflow
       describe '#check' do
         it 'responds with exceeding state for available quota' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_publisher: user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
@@ -153,7 +153,7 @@ module Pageflow
 
         it 'responds with exceeding state for exceeded quota' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_publisher: user)
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.exceeded)
 
           sign_in(user)
@@ -164,7 +164,7 @@ module Pageflow
 
         it 'responds with quota attributes' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_publisher: user)
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.available)
 
           sign_in(user)
@@ -176,7 +176,7 @@ module Pageflow
 
         it 'responds with exhausted_html' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_publisher: user)
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.available)
 
           sign_in(user)
@@ -185,9 +185,9 @@ module Pageflow
           expect(json_response(path: :exhausted_html)).to be_present
         end
 
-        it 'forbidden for entry the signed in user is not member of' do
+        it 'forbidden for entry the signed in user is not publisher of' do
           user = create(:user)
-          entry = create(:entry)
+          entry = create(:entry, with_editor: user)
 
           sign_in(user)
           post(:check, entry_id: entry.id, entry_publication: {}, format: 'json')
