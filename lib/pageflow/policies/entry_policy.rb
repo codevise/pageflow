@@ -61,6 +61,10 @@ module Pageflow
         preview?
       end
 
+      def use_files?
+        preview?
+      end
+
       def edit?
         allows?(%w(editor publisher manager))
       end
