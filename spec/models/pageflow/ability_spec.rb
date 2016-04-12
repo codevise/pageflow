@@ -3,22 +3,6 @@ require 'spec_helper'
 module Pageflow
   describe Ability do
     context 'of editor' do
-      it 'can use_files of entries it is member of' do
-        user = create(:user)
-        entry = create(:entry, :with_previewer => user)
-        ability = Ability.new(user)
-
-        expect(Entry.accessible_by(ability, :use_files)).to include(entry)
-      end
-
-      it 'cannot use_files of entries it is not member of' do
-        user = create(:user)
-        entry = create(:entry)
-        ability = Ability.new(user)
-
-        expect(Entry.accessible_by(ability, :use_files)).not_to include(entry)
-      end
-
       it 'can manage file used in editor on entry they are member of' do
         user = create(:user)
         entry = create(:entry, :with_previewer => user)
@@ -46,22 +30,6 @@ module Pageflow
         ability = Ability.new(user)
 
         expect(ability.can?(:create, User)).to be true
-      end
-
-      it 'can use_files of entries of own account' do
-        user = create(:user, :account_manager)
-        entry = create(:entry, :account => user.account)
-        ability = Ability.new(user)
-
-        expect(Entry.accessible_by(ability, :use_files)).to include(entry)
-      end
-
-      it 'cannot use_files of other account' do
-        user = create(:user, :account_manager)
-        entry = create(:entry)
-        ability = Ability.new(user)
-
-        expect(Entry.accessible_by(ability, :use_files)).not_to include(entry)
       end
 
       it 'can manage file used in any entry of own account' do

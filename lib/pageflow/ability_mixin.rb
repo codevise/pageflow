@@ -21,7 +21,9 @@ module Pageflow
 
         can :read, Folder, Policies::FolderPolicy::Scope.new(user, Folder).resolve
 
-        can :use_files, Entry, id: user.entry_ids
+        can :use_files, Entry, Policies::EntryPolicy::Scope.new(user, Entry).resolve do |entry|
+          Policies::EntryPolicy.new(user, entry).use_files?
+        end
 
         can :read, Entry, Policies::EntryPolicy::Scope.new(user, Entry).resolve do |entry|
           Policies::EntryPolicy.new(user, entry).read?
@@ -132,7 +134,6 @@ module Pageflow
              :restore,
              :snapshot,
              :confirm_encoding,
-             :use_files,
              :destroy], Entry, account_id: user.account.id
         can :manage, ::User, :account_id => user.account.id
         can :manage, Revision, :entry => {:account_id => user.account.id}

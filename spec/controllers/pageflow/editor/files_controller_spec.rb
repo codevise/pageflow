@@ -18,6 +18,19 @@ module Pageflow
         expect(json_response(path: [0, 'id'])).to eq(file.id)
       end
 
+      it 'returns list of files of account' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, account: account)
+        file = create(:image_file)
+        create(:file_usage, revision: entry.draft, file: file)
+
+        sign_in(user)
+        get(:index, entry_id: entry.id, collection_name: 'image_files', format: 'json')
+
+        expect(json_response(path: [0, 'id'])).to eq(file.id)
+      end
+
       it 'does not allow to list files of unaccessible entry' do
         user = create(:user)
         entry = create(:entry)
