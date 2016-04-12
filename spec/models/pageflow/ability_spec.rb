@@ -3,42 +3,25 @@ require 'spec_helper'
 module Pageflow
   describe Ability do
     context 'of editor' do
-      it 'can read folders containing entries editor is member of' do
-        user = create(:user, :editor)
-        folder = create(:folder, :account => user.account)
-        entry = create(:entry, :with_member => user, :account => user.account, :folder => folder)
-        ability = Ability.new(user)
-
-        expect(Folder.accessible_by(ability, :read)).to include(folder)
-      end
-
-      it 'cannot read folders without entry editor is member of' do
-        user = create(:user, :editor)
-        folder = create(:folder, :account => user.account)
-        ability = Ability.new(user)
-
-        expect(Folder.accessible_by(ability, :read)).not_to include(folder)
-      end
-
       it 'can use_files of entries it is member of' do
-        user = create(:user, :editor)
-        entry = create(:entry, :with_member => user, :account => user.account)
+        user = create(:user)
+        entry = create(:entry, :with_previewer => user)
         ability = Ability.new(user)
 
         expect(Entry.accessible_by(ability, :use_files)).to include(entry)
       end
 
       it 'cannot use_files of entries it is not member of' do
-        user = create(:user, :editor)
-        entry = create(:entry, :account => user.account)
+        user = create(:user)
+        entry = create(:entry)
         ability = Ability.new(user)
 
         expect(Entry.accessible_by(ability, :use_files)).not_to include(entry)
       end
 
-      it 'can manage file used in entry editor is member of' do
-        user = create(:user, :editor)
-        entry = create(:entry, :with_member => user, :account => user.account)
+      it 'can manage file used in editor on entry they are member of' do
+        user = create(:user)
+        entry = create(:entry, :with_previewer => user)
         file = create(:audio_file)
         create(:file_usage, :revision => entry.draft, :file => file)
         ability = Ability.new(user)
@@ -47,8 +30,8 @@ module Pageflow
       end
 
       it 'cannot manage file used in entry editor is not member of' do
-        user = create(:user, :editor)
-        entry = create(:entry, :account => user.account)
+        user = create(:user)
+        entry = create(:entry)
         file = create(:audio_file)
         create(:file_usage, :revision => entry.draft, :file => file)
         ability = Ability.new(user)
@@ -63,22 +46,6 @@ module Pageflow
         ability = Ability.new(user)
 
         expect(ability.can?(:create, User)).to be true
-      end
-
-      it 'can read folders of own account' do
-        user = create(:user, :account_manager)
-        folder = create(:folder, :account => user.account)
-        ability = Ability.new(user)
-
-        expect(Folder.accessible_by(ability, :read)).to include(folder)
-      end
-
-      it 'cannot read folders of other account' do
-        user = create(:user, :account_manager)
-        folder = create(:folder)
-        ability = Ability.new(user)
-
-        expect(Folder.accessible_by(ability, :read)).not_to include(folder)
       end
 
       it 'can use_files of entries of own account' do
@@ -119,14 +86,6 @@ module Pageflow
     end
 
     context 'of admin' do
-      it 'can read folders of all accounts' do
-        user = create(:user, :admin)
-        folder = create(:folder)
-        ability = Ability.new(user)
-
-        expect(Folder.accessible_by(ability, :read)).to include(folder)
-      end
-
       it 'can use_files of all entries' do
         user = create(:user, :admin)
         entry = create(:entry)
