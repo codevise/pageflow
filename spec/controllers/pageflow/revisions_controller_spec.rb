@@ -99,7 +99,7 @@ module Pageflow
     describe '#depublish_current' do
       it 'does not depublish unpublished revision' do
         user = create(:user)
-        entry = create(:entry, with_editor: user)
+        entry = create(:entry, with_publisher: user)
 
         sign_in(user)
         delete(:depublish_current, entry_id: entry)
@@ -109,7 +109,7 @@ module Pageflow
 
       it 'depublishes published revision' do
         user = create(:user)
-        entry = create(:entry, :published, with_editor: user)
+        entry = create(:entry, :published, with_publisher: user)
 
         sign_in(user)
         delete(:depublish_current, entry_id: entry)
@@ -117,10 +117,10 @@ module Pageflow
         expect(entry).not_to be_published
       end
 
-      it 'requires the signed in user to be editor of the parent entry' do
+      it 'requires the signed in user to be publisher of the parent entry or account' do
         user = create(:user)
-        account = create(:account, with_previewer: user)
-        entry = create(:entry, account: account)
+        account = create(:account, with_editor: user)
+        entry = create(:entry, account: account, with_editor: user)
 
         sign_in(user)
         delete(:depublish_current, entry_id: entry)
