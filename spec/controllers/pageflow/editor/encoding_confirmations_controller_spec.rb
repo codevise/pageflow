@@ -19,7 +19,7 @@ module Pageflow
       describe '#create' do
         it 'confirms encoding for given video files' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
           sign_in(user)
@@ -31,7 +31,7 @@ module Pageflow
 
         it 'confirms encoding for given audio files' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_editor: user)
           audio_file = create(:audio_file, :waiting_for_confirmation, used_in: entry.draft)
 
           sign_in(user)
@@ -43,8 +43,8 @@ module Pageflow
 
         it 'does not allow to confirm encoding file of other entry' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
-          other_entry = create(:entry, with_member: user)
+          entry = create(:entry, with_editor: user)
+          other_entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: other_entry.draft)
 
           sign_in(user)
@@ -53,9 +53,9 @@ module Pageflow
           expect(response.status).to eq(404)
         end
 
-        it 'does not allow to confirm encoding of files in entry the signed in user is not member of' do
+        it 'does not allow to confirm encoding of files in entry the signed in user is not editor of' do
           user = create(:user)
-          entry = create(:entry)
+          entry = create(:entry, with_previewer: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
           sign_in(user)
@@ -66,7 +66,7 @@ module Pageflow
 
         it 'does not allow to confirm encoding if encoding quota is exceeded' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
           Pageflow.config.quotas.register(:encoding, ExceededTestQuota)
 
@@ -90,7 +90,7 @@ module Pageflow
       describe '#check' do
         it 'responds with exceeding state for available quota' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
           sign_in(user)
@@ -102,7 +102,7 @@ module Pageflow
 
         it 'responds with exceeding state for exceeded quota' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
           Pageflow.config.quotas.register(:encoding, ExceededTestQuota)
 
@@ -114,8 +114,8 @@ module Pageflow
 
         it 'does not allow to confirm encoding file of other entry' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
-          other_entry = create(:entry, with_member: user)
+          entry = create(:entry, with_editor: user)
+          other_entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: other_entry.draft)
 
           sign_in(user)
@@ -126,7 +126,7 @@ module Pageflow
 
         it 'does not allow to confirm encoding of files in entry the signed in user is not member of' do
           user = create(:user)
-          entry = create(:entry)
+          entry = create(:entry, with_previewer: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
           sign_in(user)
