@@ -583,4 +583,35 @@ describe Admin::EntriesController do
       expect { post(:duplicate, id: entry.id) }.not_to change { Pageflow::Entry.count }
     end
   end
+
+  describe '#destroy' do
+    it 'allows account manager to destroy entry' do
+      user = create(:user)
+      account = create(:account, with_manager: user)
+      entry = create(:entry, account: account)
+
+      sign_in(user)
+
+      expect { delete(:destroy, id: entry) }.to change { Pageflow::Entry.count }
+    end
+
+    it 'does not allow account publisher and entry manager to destroy entry' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, with_manager: user, account: account)
+
+      sign_in(user)
+
+      expect { delete(:destroy, id: entry) }.not_to change { Pageflow::Entry.count }
+    end
+
+    it 'allows admin to destroy entry' do
+      user = create(:user, :admin)
+      entry = create(:entry)
+
+      sign_in(user)
+
+      expect { delete(:destroy, id: entry) }.to change { Pageflow::Entry.count }
+    end
+  end
 end

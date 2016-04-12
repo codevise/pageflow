@@ -117,6 +117,10 @@ module Pageflow
         manage_account_of?
       end
 
+      def destroy?
+        manage_account_of?
+      end
+
       private
 
       def allows?(roles)
