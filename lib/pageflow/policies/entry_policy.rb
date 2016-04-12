@@ -77,6 +77,10 @@ module Pageflow
         edit?
       end
 
+      def restore?
+        edit?
+      end
+
       def snapshot?
         edit?
       end

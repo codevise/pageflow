@@ -66,7 +66,7 @@ module Pageflow
         end
 
         can :restore, Entry do |entry|
-          can_edit_entry?(user, entry)
+          Policies::EntryPolicy.new(user, entry).restore?
         end
 
         can :add_member_to, Entry do |entry|
@@ -147,9 +147,7 @@ module Pageflow
 
         can :manage, Resque
       elsif user.account_manager?
-        can :restore, Entry, account_id: user.account.id
         can :manage, ::User, :account_id => user.account.id
-        can :manage, Revision, :entry => {:account_id => user.account.id}
 
         can :destroy, Membership, :entry => {:account_id => user.account.id}
         can :destroy, Membership, :user => {:account_id => user.account.id}
