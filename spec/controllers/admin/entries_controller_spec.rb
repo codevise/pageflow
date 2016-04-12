@@ -335,7 +335,7 @@ describe Admin::EntriesController do
       expect(entry.reload.folder).to eq(nil)
     end
 
-    it 'allows account publisher to change folder of entry of own account' do
+    it 'allows account publisher to change folder of entry of account they publish on' do
       user = create(:user)
       account = create(:account, with_publisher: user)
       folder = create(:folder, account: account)
