@@ -103,6 +103,10 @@ module Pageflow
         can :index_widgets_for, Entry do |entry|
           Policies::EntryPolicy.new(user, entry).index_widgets_for?
         end
+
+        can :destroy, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).destroy?
+        end
       end
 
       can :delete_own_user, ::User do |user_to_delete|
@@ -137,8 +141,7 @@ module Pageflow
         can [:publish,
              :restore,
              :snapshot,
-             :confirm_encoding,
-             :destroy], Entry, account_id: user.account.id
+             :confirm_encoding], Entry, account_id: user.account.id
         can :manage, ::User, :account_id => user.account.id
         can :manage, Revision, :entry => {:account_id => user.account.id}
 
