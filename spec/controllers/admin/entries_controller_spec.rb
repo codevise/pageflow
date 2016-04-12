@@ -479,20 +479,21 @@ describe Admin::EntriesController do
   end
 
   describe '#snapshot' do
-    it 'does not allow account manager to snapshot entries of other account' do
+    it 'does not allow user to snapshot entry they are not member of' do
       account = create(:account)
-      entry = create(:entry)
+      entry = create(:entry, account: account)
 
-      sign_in(create(:user, :account_manager))
+      sign_in(create(:user))
 
       expect {
         post(:snapshot, :id => entry.id)
       }.not_to change { entry.revisions.count }
     end
 
-    it 'allows account manager to snapshot entries of own account' do
-      user = create(:user, :account_manager)
-      entry = create(:entry, :account => user.account)
+    it 'allows account editor to snapshot entries of own account' do
+      user = create(:user)
+      account = create(:account, with_editor: user)
+      entry = create(:entry, account: account)
 
       sign_in(user)
       post(:snapshot, :id => entry.id)
@@ -503,7 +504,6 @@ describe Admin::EntriesController do
     end
 
     it 'allows admin to snapshot entries of other accounts' do
-      account = create(:account)
       entry = create(:entry)
 
       sign_in(create(:user, :admin))
@@ -514,9 +514,9 @@ describe Admin::EntriesController do
       }.to change { entry.revisions.count }
     end
 
-    it 'allows editor to snapshot entries he is member of' do
+    it 'allows editor to snapshot their entries' do
       user = create(:user)
-      entry = create(:entry, with_editor: user, account: user.account)
+      entry = create(:entry, with_editor: user)
 
       sign_in(user)
       post(:snapshot, :id => entry.id)
@@ -524,18 +524,6 @@ describe Admin::EntriesController do
       expect {
         post(:snapshot, :id => entry.id)
       }.to change { entry.revisions.count }
-    end
-
-    it 'does not allows editor to snapshot entries he is not member of' do
-      user = create(:user, :editor)
-      entry = create(:entry, :account => user.account)
-
-      sign_in(user)
-      post(:snapshot, :id => entry.id)
-
-      expect {
-        post(:snapshot, :id => entry.id)
-      }.not_to change { entry.revisions.count }
     end
   end
 
