@@ -45,6 +45,10 @@ module Pageflow
           Policies::EntryPolicy.new(user, entry).snapshot?
         end
 
+        can :confirm_encoding, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).confirm_encoding?
+        end
+
         can :update_account_on, Entry do |entry|
           Policies::EntryPolicy.new(user, entry).update_account_on?
         end
@@ -62,8 +66,7 @@ module Pageflow
         end
 
         can [:publish,
-             :restore,
-             :confirm_encoding], Entry do |entry|
+             :restore], Entry do |entry|
           can_edit_entry?(user, entry)
         end
 
@@ -138,8 +141,7 @@ module Pageflow
         can :manage, Resque
       elsif user.account_manager?
         can [:publish,
-             :restore,
-             :confirm_encoding], Entry, account_id: user.account.id
+             :restore], Entry, account_id: user.account.id
         can :manage, ::User, :account_id => user.account.id
         can :manage, Revision, :entry => {:account_id => user.account.id}
 

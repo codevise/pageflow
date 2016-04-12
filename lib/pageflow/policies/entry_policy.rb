@@ -81,6 +81,10 @@ module Pageflow
         edit?
       end
 
+      def confirm_encoding?
+        edit?
+      end
+
       def publish?
         allows?(%w(publisher manager))
       end
