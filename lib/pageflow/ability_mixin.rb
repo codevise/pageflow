@@ -161,14 +161,6 @@ module Pageflow
 
     private
 
-    def can_edit_entry?(user, entry)
-      user.entries.include?(entry) || account_manager_of_entries_account?(user, entry)
-    end
-
-    def account_manager_of_entries_account?(user, entry)
-      user.account_manager? && entry.account_id == user.account_id
-    end
-
     def can_edit_any_entry_using_file?(user, file)
       member_of_any_entry_using_file?(user, file) || account_manager_of_account_using_file?(user, file)
     end
