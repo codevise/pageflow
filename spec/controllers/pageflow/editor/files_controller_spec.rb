@@ -123,7 +123,7 @@ module Pageflow
     describe '#retry' do
       it 'succeeds if encoding/processing failed' do
         user = create(:user)
-        entry = create(:entry, :with_member => user)
+        entry = create(:entry, :with_editor => user)
         file = create(:image_file, :failed, :used_in => entry.draft)
 
         sign_in user
@@ -133,11 +133,13 @@ module Pageflow
         expect(response.status).to eq(201)
       end
 
-      it 'does not allow to retry encoding of file for entry the signed in user is not member of' do
+      it 'does not allow to retry encoding of file for entry the user is not editor of' do
         user = create(:user)
-        file = create(:image_file, :failed)
+        entry = create(:entry, with_previewer: user)
+        file = create(:image_file, :failed, used_in: entry.draft)
 
         sign_in user
+        acquire_edit_lock(user, entry)
         post(:retry, :collection_name => 'image_files', :id => file, :format => 'json')
 
         expect(response.status).to eq(403)
@@ -153,7 +155,7 @@ module Pageflow
 
       it 'fails if image file is processed' do
         user = create(:user)
-        entry = create(:entry, :with_member => user)
+        entry = create(:entry, :with_editor => user)
         image_file = create(:image_file, :used_in => entry.draft)
 
         sign_in user
@@ -165,9 +167,9 @@ module Pageflow
     end
 
     describe '#update' do
-      it 'signed in member of the entry can update rights' do
+      it 'signed in editor of the entry can update rights' do
         user = create(:user)
-        entry = create(:entry, :with_member => user)
+        entry = create(:entry, :with_editor => user)
         file = create(:image_file, :used_in => entry.draft, :rights => 'old')
 
         sign_in user
@@ -178,9 +180,10 @@ module Pageflow
         expect(file.reload.rights).to eq('new')
     end
 
-      it 'does not allow to update file if the signed in user is not member of' do
+      it 'does not allow to update file if the signed in user is not editor for its entry' do
         user = create(:user)
-        file = create(:image_file)
+        entry = create(:entry, with_previewer: user)
+        file = create(:image_file, used_in: entry.draft)
 
         sign_in user
         patch(:update, :collection_name => 'image_files', :id => file, :image_file => {:rights => 'new'}, :format => 'json')
@@ -188,7 +191,7 @@ module Pageflow
         expect(response.status).to eq(403)
       end
 
-      it 'does not allow to updat file if not signed in' do
+      it 'does not allow to update file if not signed in' do
         file = create(:image_file)
 
         patch(:update, :collection_name => 'image_files', :id => file, :image_file => {:rights => 'new'}, :format => 'json')
