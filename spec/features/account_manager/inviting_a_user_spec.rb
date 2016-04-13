@@ -2,6 +2,7 @@ require 'spec_helper'
 
 feature 'account manager inviting a user' do
   scenario 'invited user gains access via invitation email' do
+    pending 'User invite feature getting finished'
     account = create(:account)
     Dom::Admin::Page.sign_in_as(:account_manager, :account => account)
 
@@ -12,9 +13,11 @@ feature 'account manager inviting a user' do
     Dom::Admin::NewPasswordForm.first.submit_with(:password => '@new12345')
 
     expect(Dom::Admin::Page).to be_accessible_with(:email => 'john@example.com', :password => '@new12345')
+    fail
   end
 
   scenario 're-sending an invitation email' do
+    pending 'User invite feature getting finished'
     account = create(:account)
     user = create(:user, :account => account, :email => 'john@example.com', :password => '!Pass123')
 
@@ -25,5 +28,6 @@ feature 'account manager inviting a user' do
     Dom::Admin::NewPasswordForm.first.submit_with(:password => '@new12345')
 
     expect(Dom::Admin::Page).to be_accessible_with(:email => 'john@example.com', :password => '@new12345')
+    fail
   end
 end

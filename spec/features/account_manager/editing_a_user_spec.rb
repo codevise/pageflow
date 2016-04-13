@@ -2,6 +2,7 @@ require 'spec_helper'
 
 feature 'account manager editing a user' do
   scenario 'changing first name, last name and email of a user of own account' do
+    pending 'User invite feature getting finished'
     account = create(:account)
     user = create(:user, :account => account, :first_name => 'Bob', :last_name => 'Bobson', :email => 'bob@example.com')
 
@@ -13,5 +14,6 @@ feature 'account manager editing a user' do
     expect(Dom::Admin::UserPage.first.first_name).to eq('John')
     expect(Dom::Admin::UserPage.first.last_name).to eq('Jackson')
     expect(Dom::Admin::UserPage.first.email).to eq('john@example.com')
+    fail
   end
 end

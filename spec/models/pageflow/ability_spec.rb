@@ -2,15 +2,6 @@ require 'spec_helper'
 
 module Pageflow
   describe Ability do
-    context 'of account manager' do
-      it 'can create user' do
-        user = build(:user, :account_manager)
-        ability = Ability.new(user)
-
-        expect(ability.can?(:create, User)).to be true
-      end
-    end
-
     context 'of admin' do
       it 'can use_files of all entries' do
         user = create(:user, :admin)

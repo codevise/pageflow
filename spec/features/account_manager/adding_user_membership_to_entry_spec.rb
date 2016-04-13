@@ -2,6 +2,7 @@ require 'spec_helper'
 
 feature 'account manager adding user membership to entry' do
   scenario 'creating a membership between entry and user of an account' do
+    pending 'New Membership permissions getting finished'
     account = create(:account)
     user = create(:user, first_name: 'Paul', account: account)
     entry = create(:entry, account: account)
@@ -12,5 +13,6 @@ feature 'account manager adding user membership to entry' do
     Dom::Admin::NewMembershipForm.first.submit_with(user_id: user.id)
 
     expect(Dom::Admin::Membership.find_by_user_full_name(user.formal_name)).to be_present
+    fail
   end
 end

@@ -151,8 +151,6 @@ module Pageflow
 
         can :manage, Resque
       elsif user.account_manager?
-        can :manage, ::User, :account_id => user.account.id
-
         can :destroy, Membership, :entry => {:account_id => user.account.id}
         can :destroy, Membership, :user => {:account_id => user.account.id}
 
