@@ -20,6 +20,13 @@ module Pageflow
           end
         end
 
+        def editor_or_above
+          scope
+            .joins(above_editor_memberships_for_entries(user))
+            .joins(above_editor_memberships_for_account_of_entries(user))
+            .where(either_membership_is_present)
+        end
+
         private
 
         def sanitize_sql_array(array)
@@ -37,6 +44,24 @@ module Pageflow
         def memberships_for_account_of_entries(user)
           sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
                               'pageflow_memberships_2.user_id = :user_id AND ' \
+                              'pageflow_memberships_2.entity_id = pageflow_entries.account_id ' \
+                              'AND pageflow_memberships_2.entity_type = "Pageflow::Account"',
+                              user_id: user.id])
+        end
+
+        def above_editor_memberships_for_entries(user)
+          sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \
+                              'pageflow_memberships.user_id = :user_id AND ' \
+                              'pageflow_memberships.role IN ("editor", "publisher", "manager") AND ' \
+                              'pageflow_memberships.entity_id = pageflow_entries.id AND ' \
+                              'pageflow_memberships.entity_type = "Pageflow::Entry"',
+                              user_id: user.id])
+        end
+
+        def above_editor_memberships_for_account_of_entries(user)
+          sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
+                              'pageflow_memberships_2.user_id = :user_id AND ' \
+                              'pageflow_memberships_2.role IN ("editor", "publisher", "manager") AND ' \
                               'pageflow_memberships_2.entity_id = pageflow_entries.account_id ' \
                               'AND pageflow_memberships_2.entity_type = "Pageflow::Account"',
                               user_id: user.id])
