@@ -85,8 +85,12 @@ module Pageflow
           Policies::EntryPolicy.new(user, record.entry).edit?
         end
 
-        can :manage, Pageflow.config.file_types.map(&:model) do |record|
-          can_edit_any_entry_using_file?(user, record)
+        can [:retry, :update], Pageflow.config.file_types.map(&:model) do |record|
+          Policies::FilePolicy.new(user, record).manage?
+        end
+
+        can :use, Pageflow.config.file_types.map(&:model) do |record|
+          Policies::FilePolicy.new(user, record).use?
         end
 
         can :manage, Page do |page|
@@ -157,20 +161,6 @@ module Pageflow
             (membership.user.nil? || membership.user.account == user.account)
         end
       end
-    end
-
-    private
-
-    def can_edit_any_entry_using_file?(user, file)
-      member_of_any_entry_using_file?(user, file) || account_manager_of_account_using_file?(user, file)
-    end
-
-    def member_of_any_entry_using_file?(user, file)
-      (user.entry_ids & file.using_entry_ids).any?
-    end
-
-    def account_manager_of_account_using_file?(user, file)
-      user.account_manager? && file.using_account_ids.include?(user.account_id)
     end
   end
 end
