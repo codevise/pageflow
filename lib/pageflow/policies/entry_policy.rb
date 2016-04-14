@@ -134,6 +134,14 @@ module Pageflow
         manage?
       end
 
+      def edit_role_on?
+        manage?
+      end
+
+      def destroy_membership_on?
+        manage?
+      end
+
       def publish_on_account_of?
         account_allows?(%w(publisher manager))
       end
