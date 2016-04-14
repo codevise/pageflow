@@ -62,6 +62,18 @@ module Pageflow
         publish?
       end
 
+      def manage?
+        allows?(%w(manager))
+      end
+
+      def edit_role_on?
+        manage?
+      end
+
+      def destroy_membership_on?
+        manage?
+      end
+
       private
 
       def allows?(roles)

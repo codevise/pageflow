@@ -65,7 +65,7 @@ module Pageflow
 
       it 'creates file for entry' do
         user = create(:user)
-        entry = create(:entry, with_member: user)
+        entry = create(:entry, with_editor: user)
 
         sign_in(user)
         acquire_edit_lock(user, entry)

@@ -23,6 +23,27 @@ module Pageflow
                       of_account: -> (topic) { topic },
                       to: :update_theming_on_entry_of,
                       topic: -> { create(:account) }
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: 'manager',
+                      but_forbids: 'publisher',
+                      of_account: -> (topic) { topic },
+                      to: :manage,
+                      topic: -> { create(:account) }
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: 'manager',
+                      but_forbids: 'publisher',
+                      of_account: -> (topic) { topic },
+                      to: :edit_role_on,
+                      topic: -> { create(:account) }
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: 'manager',
+                      but_forbids: 'publisher',
+                      of_account: -> (topic) { topic },
+                      to: :destroy_membership_on,
+                      topic: -> { create(:account) }
     end
 
     describe '.entry_creatable' do
