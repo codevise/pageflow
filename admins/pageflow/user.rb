@@ -10,13 +10,8 @@ module Pageflow
         link_to(user.full_name, admin_user_path(user))
       end
       column :email
-      if authorized?(:read, Account)
-        column :account, :sortable => 'account_id' do |user|
-          link_to(user.account.name, admin_account_path(user.account))
-        end
-      end
-      column :role, :sortable => 'role' do |user|
-        I18n.t(user.role, :scope => 'pageflow.admin.users.roles')
+      column I18n.t('pageflow.admin.users.accounts'), class: 'accounts' do |user|
+        user_account_badge_list(user)
       end
       column :last_sign_in_at
       column :sign_in_count

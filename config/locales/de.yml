@@ -404,7 +404,7 @@ de:
     - Fr
     - Sa
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mär
@@ -430,7 +430,7 @@ de:
       long: ! '%e. %B %Y'
       short: ! '%e. %b'
     month_names:
-    - 
+    -
     - Januar
     - Februar
     - März
@@ -781,11 +781,11 @@ de:
         resend_invitation: Einladung erneut verschicken
         resent_invitation: Der Benutzer wurde erneut per E-Mail eingeladen.
         role_hint:
-          admin: Konto Administratoren können Benutzer und Beiträge des eigenen Kontos verwalten. System Admisitratoren haben Vollzugriff auf alle Konten.
-          others: Konto Administratoren können Benutzer und Beiträge verwalten.
+          admin: Konto-Administratoren können Benutzer und Beiträge des eigenen Kontos verwalten. System-Administratoren haben Vollzugriff auf alle Konten.
+          others: Konto-Administratoren können Benutzer und Beiträge verwalten.
         roles:
-          account_manager: Konto Administrator
-          admin: System Administrator
+          account_manager: Konto-Administrator
+          admin: System-Administrator
           editor: Redakteur
         suspend: Sperren
         suspended: Der Benutzer wurde gesperrt. Er kann sich nun nicht mehr anmelden.
@@ -1510,7 +1510,7 @@ de:
         text: ! '# Erzählstränge
 
 
-          Parallel zur linearen Erzählung von „oben nach unten“, können auch weitere Erzählstränge und Exkurse zu vertiefenden Inhalten erstellt werden. Erstelle dazu eine „Verweise“-Seite und verknüpfe die dort hinterlegten Verweise mit einem neuen Erzählstrang. Dabei kann frei gewählt werden, an welcher Stelle ein solcher Abzweig später wieder zum Hauptstrang führt oder auf einen weiteren Erzählstrang in der Geschichte verweist. 
+          Parallel zur linearen Erzählung von „oben nach unten“, können auch weitere Erzählstränge und Exkurse zu vertiefenden Inhalten erstellt werden. Erstelle dazu eine „Verweise“-Seite und verknüpfe die dort hinterlegten Verweise mit einem neuen Erzählstrang. Dabei kann frei gewählt werden, an welcher Stelle ein solcher Abzweig später wieder zum Hauptstrang führt oder auf einen weiteren Erzählstrang in der Geschichte verweist.
 
 
           Erstellt werden diese Erzählstränge in der Gliederung über ein Klick auf die Plus-Schaltfläche neben der Erzählstrang-Auswahl. Dabei öffnet sich automatisch ein neues Kapitel, in dem dann weitere Seiten angelegt werden können. In jedem Erzählstrang kann eine „Übergeordnete Seite“ festgelegt werden. Zu dieser wird der User geleitet, wenn er am Ende des Erzählstrangs weiter scrollt. Mit einem Klick auf das Stift-Symbol kann die Zielseite ausgewählt werden.

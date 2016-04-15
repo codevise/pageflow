@@ -13,6 +13,9 @@ module Pageflow
                 membership.user.full_name
               end
             end
+            column :role, sortable: 'pageflow_memberships.role', title: I18n.t('activerecord.attributes.pageflow/membership.role') do |membership|
+              I18n.t(membership.role, :scope => 'activerecord.values.pageflow/membership.role')
+            end
             column :created_at, sortable: 'pageflow_memberships.created_at'
             column do |membership|
               if authorized?(:destroy, membership)

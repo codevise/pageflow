@@ -66,6 +66,10 @@ module Pageflow
         allows?(%w(manager))
       end
 
+      def add_member_to?
+        manage?
+      end
+
       def edit_role_on?
         manage?
       end

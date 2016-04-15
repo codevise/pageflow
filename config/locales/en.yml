@@ -404,7 +404,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mar
@@ -430,7 +430,7 @@ en:
       long: ! '%B %d, %Y'
       short: ! '%b %d'
     month_names:
-    - 
+    -
     - January
     - February
     - March
@@ -781,11 +781,11 @@ en:
         resend_invitation: Resend invitation email
         resent_invitation: The invitation email has been resent.
         role_hint:
-          admin: Account-Administrators are able to manage all users and stories of their account only. System-Administrators can manage all settings.
-          others: Account-Administrators are able to manage all users and stories of their account.
+          admin: Account Administrators are able to manage all users and stories of their account only. System Administrators can manage all settings.
+          others: Account Administrators are able to manage all users and stories of their account.
         roles:
-          account_manager: Account-Administrator
-          admin: System-Administrator
+          account_manager: Account Administrator
+          admin: System Administrator
           editor: Editor
         suspend: Suspend
         suspended: ! 'The user was suspended and will not be able to sign-in again. '

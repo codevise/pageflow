@@ -1,0 +1,10 @@
+de:
+  pageflow:
+    admin:
+      users:
+        roles:
+          member: 'Mitglied'
+          previewer: 'Prüfer'
+          publisher: 'Chefredakteur'
+          manager: 'Administrator'
+        accounts: 'Konten'

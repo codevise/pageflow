@@ -14,7 +14,7 @@ module Pageflow
       helper Pageflow::Admin::FormHelper
 
       def permitted_params
-        params.permit(:membership => [:user_id, :entry_id])
+        params.permit(:membership => [:user_id, :entry_id, :role])
       end
     end
   end
