@@ -5,16 +5,6 @@ module Pageflow
     def pageflow_default_abilities(user)
       return if user.nil?
 
-      can :view, [Admin::MembersTab, Admin::RevisionsTab]
-
-      can :destroy, Membership do |membership|
-        Policies::MembershipPolicy.new(user, membership).destroy?
-      end
-
-      can :update, Membership do |membership|
-        Policies::MembershipPolicy.new(user, membership).edit_role?
-      end
-
       can :create, Membership do |membership|
         membership.entity.nil? ||
           membership.user.nil? ||
@@ -25,31 +15,27 @@ module Pageflow
 
       can :index, Membership, Policies::MembershipPolicy::Scope.new(user, Membership).indexable
 
+      can :view, [Admin::MembersTab, Admin::RevisionsTab]
+
+      can :update, Membership do |membership|
+        Policies::MembershipPolicy.new(user, membership).edit_role?
+      end
+
+      can :destroy, Membership do |membership|
+        Policies::MembershipPolicy.new(user, membership).destroy?
+      end
+
       can :see, :accounts_column_on_entry_index do
         user.admin? || user.memberships.on_accounts.length > 1
       end
 
       unless user.admin?
-        can [:create, :update, :destroy], Folder do |folder|
-          Policies::FolderPolicy.new(user, folder).manage?
-        end
-
         can :configure_folder_on, Account do |account|
           Policies::AccountPolicy.new(user, account).configure_folder_on?
         end
 
-        can :configure_folder_for, Entry do |entry|
-          Policies::AccountPolicy.new(user, entry.account).configure_folder_on?
-        end
-
-        can :read, Folder, Policies::FolderPolicy::Scope.new(user, Folder).resolve
-
-        can :use_files, Entry, Policies::EntryPolicy::Scope.new(user, Entry).resolve do |entry|
-          Policies::EntryPolicy.new(user, entry).use_files?
-        end
-
-        can :read, Entry, Policies::EntryPolicy::Scope.new(user, Entry).resolve do |entry|
-          Policies::EntryPolicy.new(user, entry).read?
+        can :update_theming_on_entry_of, Account do |account|
+          Policies::AccountPolicy.new(user, account).update_theming_on_entry_of?
         end
 
         if Policies::AccountPolicy::Scope.new(user, Account).entry_creatable.any?
@@ -58,56 +44,72 @@ module Pageflow
           end
         end
 
-        can :duplicate, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).duplicate?
+        can :manage, Chapter do |record|
+          Policies::EntryPolicy.new(user, record.entry).edit?
+        end
+
+        can :read, Entry, Policies::EntryPolicy::Scope.new(user, Entry).resolve do |entry|
+          Policies::EntryPolicy.new(user, entry).read?
         end
 
         can :update, Entry do |entry|
           Policies::EntryPolicy.new(user, entry).edit?
         end
 
-        can :snapshot, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).snapshot?
-        end
-
-        can :confirm_encoding, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).confirm_encoding?
-        end
-
-        can :update_account_on, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).update_account_on?
-        end
-
-        can :update_theming_on, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).update_theming_on?
-        end
-
-        can :update_theming_on_entry_of, Account do |account|
-          Policies::AccountPolicy.new(user, account).update_theming_on_entry_of?
-        end
-
-        can :update_feature_configuration_on, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).update_feature_configuration_on?
-        end
-
-        can :restore, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).restore?
+        can :destroy, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).destroy?
         end
 
         can :add_member_to, Entry do |entry|
           Policies::EntryPolicy.new(user, entry).add_member_to?
         end
 
+        can :configure_folder_for, Entry do |entry|
+          Policies::AccountPolicy.new(user, entry.account).configure_folder_on?
+        end
+
+        can :confirm_encoding, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).confirm_encoding?
+        end
+
+        can :duplicate, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).duplicate?
+        end
+
         can :edit_outline, Entry do |entry|
           Policies::EntryPolicy.new(user, entry).edit_outline?
         end
 
-        can :manage, Storyline do |storyline|
-          Policies::EntryPolicy.new(user, storyline.revision.entry).edit?
+        can :index_widgets_for, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).index_widgets_for?
         end
 
-        can :manage, Chapter do |record|
-          Policies::EntryPolicy.new(user, record.entry).edit?
+        can :publish, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).publish?
+        end
+
+        can :restore, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).restore?
+        end
+
+        can :snapshot, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).snapshot?
+        end
+
+        can :update_account_on, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).update_account_on?
+        end
+
+        can :update_feature_configuration_on, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).update_feature_configuration_on?
+        end
+
+        can :update_theming_on, Entry do |entry|
+          Policies::EntryPolicy.new(user, entry).update_theming_on?
+        end
+
+        can :use_files, Entry, Policies::EntryPolicy::Scope.new(user, Entry).resolve do |entry|
+          Policies::EntryPolicy.new(user, entry).use_files?
         end
 
         can [:retry, :update], Pageflow.config.file_types.map(&:model) do |record|
@@ -118,6 +120,12 @@ module Pageflow
           Policies::FilePolicy.new(user, record).use?
         end
 
+        can [:create, :update, :destroy], Folder do |folder|
+          Policies::FolderPolicy.new(user, folder).manage?
+        end
+
+        can :read, Folder, Policies::FolderPolicy::Scope.new(user, Folder).resolve
+
         can :manage, Page do |page|
           Policies::EntryPolicy.new(user, page.chapter.entry).edit?
         end
@@ -126,40 +134,34 @@ module Pageflow
           Policies::EntryPolicy.new(user, revision.entry).preview?
         end
 
-        can :edit, Theming do |theming|
-          Policies::ThemingPolicy.new(user, theming).edit?
+        can :manage, Storyline do |storyline|
+          Policies::EntryPolicy.new(user, storyline.revision.entry).edit?
         end
 
-        can :publish, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).publish?
+        can :edit, Theming do |theming|
+          Policies::ThemingPolicy.new(user, theming).edit?
         end
 
         can :index_widgets_for, Theming do |theming|
           Policies::ThemingPolicy.new(user, theming).index_widgets_for?
         end
 
-        can :index_widgets_for, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).index_widgets_for?
-        end
-
-        can :destroy, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).destroy?
-        end
-
-        can :read, ::User, Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
-          Policies::UserPolicy.new(user, managed_user).read?
-        end
-
-        can :redirect_to_user, ::User, Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
-          Policies::UserPolicy.new(user, managed_user).redirect_to_user?
+        can :create, ::User do |managed_user|
+          Policies::UserPolicy.new(user, managed_user).create?
         end
 
         can :index, ::User, Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
           Policies::UserPolicy.new(user, managed_user).index?
         end
 
-        can :create, ::User do |managed_user|
-          Policies::UserPolicy.new(user, managed_user).create?
+        can :read, ::User, Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
+          Policies::UserPolicy.new(user, managed_user).read?
+        end
+
+        can :redirect_to_user,
+            ::User,
+            Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
+          Policies::UserPolicy.new(user, managed_user).redirect_to_user?
         end
       end
 
@@ -168,22 +170,18 @@ module Pageflow
       end
 
       if user.admin?
+        can :view, Admin::FeaturesTab
         can [:read, :create, :update, :configure_folder_on], Account
         can :destroy, Account do |account|
           account.users.empty? && account.entries.empty?
         end
-        can :manage, Theming
-
-        can :manage, ::User
-
-        can :view, Admin::FeaturesTab
-
-        can :manage, Folder
-        can :manage, [Entry, Revision]
         can :manage, [Storyline, Chapter, Page]
+        can :manage, [Entry, Revision]
         can :manage, Pageflow.config.file_types.map(&:model)
-
+        can :manage, Folder
         can :manage, Resque
+        can :manage, Theming
+        can :manage, ::User
       end
     end
   end

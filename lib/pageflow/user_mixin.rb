@@ -31,10 +31,6 @@ module Pageflow
       admin
     end
 
-    def account_manager?
-      role == 'account_manager'
-    end
-
     def full_name
       [first_name, last_name] * ' '
     end

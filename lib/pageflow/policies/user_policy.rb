@@ -16,7 +16,9 @@ module Pageflow
             manager_accounts_ids = Pageflow::Policies::AccountPolicy::Scope
                                    .new(@user, Account).member_addable.map(&:id)
 
-            scope.joins(:memberships).where('pageflow_memberships.entity_type = "Pageflow::Account"').where(membership_in_managed_account(manager_accounts_ids)).distinct
+            scope.joins(:memberships)
+              .where('pageflow_memberships.entity_type = "Pageflow::Account"')
+              .where(membership_in_managed_account(manager_accounts_ids)).distinct
           end
         end
 
@@ -27,13 +29,22 @@ module Pageflow
         end
 
         def membership_in_managed_account(accounts_ids)
-          sanitize_sql_array(['pageflow_memberships.entity_id IN (:accounts_ids)', accounts_ids: accounts_ids])
+          sanitize_sql_array(['pageflow_memberships.entity_id IN (:accounts_ids)',
+                              accounts_ids: accounts_ids])
         end
       end
 
       def initialize(user, managed_user)
         @user = user
         @managed_user = managed_user
+      end
+
+      def create?
+        index?
+      end
+
+      def index?
+        @user.memberships.on_accounts.where(role: 'manager').any?
       end
 
       def read?
@@ -46,14 +57,6 @@ module Pageflow
 
       def redirect_to_user?
         read?
-      end
-
-      def index?
-        @user.memberships.on_accounts.where(role: 'manager').any?
-      end
-
-      def create?
-        index?
       end
     end
   end
