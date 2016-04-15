@@ -1,0 +1,13 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/membership:
+        role: "Rolle"
+    values:
+      pageflow/membership:
+        role:
+          member: 'Mitglied'
+          previewer: 'Prüfer'
+          editor: 'Redakteur'
+          publisher: 'Chefredakteur'
+          manager: 'Administrator'
