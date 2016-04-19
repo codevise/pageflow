@@ -49,6 +49,12 @@ module Pageflow
         end
       end
 
+      trait :member do
+        after(:create) do |user, evaluator|
+          create(:membership, user: user, entity: evaluator.on, role: 'member')
+        end
+      end
+
       trait :admin do
         role 'admin'
       end

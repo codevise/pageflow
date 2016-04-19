@@ -6,6 +6,23 @@ module Pageflow
       return if user.nil?
 
       can :view, [Admin::MembersTab, Admin::RevisionsTab]
+
+      can :destroy, Membership do |membership|
+        Policies::MembershipPolicy.new(user, membership).destroy?
+      end
+
+      can :update, Membership do |membership|
+        Policies::MembershipPolicy.new(user, membership).edit_role?
+      end
+
+      can :create, Membership do |membership|
+        membership.entity.nil? ||
+          membership.user.nil? ||
+          (!(membership.user.entries.include?(membership.entity) ||
+             membership.user.membership_accounts.include?(membership.entity))) &&
+          Policies::MembershipPolicy.new(user, membership).create?
+      end
+
       unless user.admin?
         can [:create, :update, :destroy], Folder do |folder|
           Policies::FolderPolicy.new(user, folder).manage?
@@ -130,13 +147,6 @@ module Pageflow
         can :manage, Theming
 
         can :manage, ::User
-
-        can :destroy, Membership
-        can :create, Membership do |membership|
-          membership.entry.nil? ||
-            membership.user.nil? ||
-            membership.entry.account == membership.user.account
-        end
 
         can :view, Admin::FeaturesTab
 

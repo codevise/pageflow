@@ -6,13 +6,13 @@ module Pageflow
         @membership = membership
       end
 
-      # def create?
-      #   if @membership.entity_type == 'Pageflow::Account'
-      #     create_for_account?
-      #   else
-      #     create_for_entry?
-      #   end
-      # end
+      def create?
+        if @membership.entity_type == 'Pageflow::Account'
+          create_for_account?
+        else
+          create_for_entry?
+        end
+      end
 
       def edit_role?
         if @membership.entity_type == 'Pageflow::Account'
@@ -32,29 +32,33 @@ module Pageflow
 
       private
 
-      # def create_for_entry?
-      #   (@membership.entity.nil? ||
-      #    Pageflow::Policies::EntryPolicy.new(user, @membership.entity).add_member_to?) &&
+      def create_for_entry?
+        Pageflow::Policies::EntryPolicy.new(@user, @membership.entity).add_member_to? &&
+          @membership.user.membership_accounts.include?(@membership.entity.account)
+      end
 
-      # end
-
-      # def create_for_account?
-      # end
+      def create_for_account?
+        Pageflow::Policies::AccountPolicy.new(@user, @membership.entity).add_member_to?
+      end
 
       def edit_role_on_entry?
-        Pageflow::Policies::EntryPolicy.new(@user, @membership.entity).edit_role_on?
+        @user.admin? ||
+          Pageflow::Policies::EntryPolicy.new(@user, @membership.entity).edit_role_on?
       end
 
       def edit_role_on_account?
-        Pageflow::Policies::AccountPolicy.new(@user, @membership.entity).edit_role_on?
+        @user.admin? ||
+          Pageflow::Policies::AccountPolicy.new(@user, @membership.entity).edit_role_on?
       end
 
       def destroy_for_entry?
-        Pageflow::Policies::EntryPolicy.new(@user, @membership.entity).destroy_membership_on?
+        @user.admin? ||
+          Pageflow::Policies::EntryPolicy.new(@user, @membership.entity).destroy_membership_on?
       end
 
       def destroy_for_account?
-        Pageflow::Policies::AccountPolicy.new(@user, @membership.entity).destroy_membership_on?
+        @user.admin? ||
+          Pageflow::Policies::AccountPolicy.new(@user, @membership.entity).destroy_membership_on?
       end
     end
   end

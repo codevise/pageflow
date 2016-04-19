@@ -27,43 +27,64 @@ module Pageflow
     end
 
     show do |user|
-      div :class => :columns do
-        div do
-          attributes_table_for user do
-            row :last_name, :class => 'last_name'
-            row :first_name, :class => 'first_name'
-            row :email, :class => 'email'
-            if authorized?(:read, Account)
-              row :account, :class => 'account'
-            end
-            row :role, :class => 'role' do
-              span 'data-user-role' => user.role do
-                I18n.t(user.role, :scope => 'pageflow.admin.users.roles')
-              end
-            end
+      div do
+        attributes_table_for user do
+          row :last_name, :class => 'last_name'
+          row :first_name, :class => 'first_name'
+          row :email, :class => 'email'
 
-            row :created_at
-            row :last_sign_in_at
-            boolean_status_tag_row :suspended?
-            row :locale do
-              I18n.t('language', locale: user.locale)
-            end
-          end
-
-          para do
-            link_to I18n.t('pageflow.admin.users.resend_invitation'), resend_invitation_admin_user_path(user), :method => :post, :class => 'button', :data => {:rel => 'resend_invitation'}
+          row :created_at
+          row :last_sign_in_at
+          boolean_status_tag_row :suspended?
+          row :locale do
+            I18n.t('language', locale: user.locale)
           end
         end
 
+        para do
+          link_to I18n.t('pageflow.admin.users.resend_invitation'), resend_invitation_admin_user_path(user), :method => :post, :class => 'button', :data => {:rel => 'resend_invitation'}
+        end
+
         panel I18n.t('activerecord.models.entry.other') do
-          if user.memberships.any?
-            table_for user.memberships, :class => 'memberships', :i18n => Membership do
+          if user.memberships.on_entries.any?
+            table_for user.memberships.on_entries, :class => 'memberships', :i18n => Membership do
               column :entry do |membership|
-                if membership.entity_type == 'Pageflow::Entry'
-                  link_to(membership.entry.title, admin_entry_path(membership.entry))
-                end
+                link_to(membership.entry.title, admin_entry_path(membership.entry))
               end
               column :created_at, sortable: 'pageflow_memberships.created_at'
+              # column do |membership|
+              #   if authorized?(:destroy, membership)
+              #     link_to(I18n.t('pageflow.admin.users.delete'),
+              #             admin_user_membership_path(user, membership),
+              #             method: :delete,
+              #             data: {
+              #               confirm: I18n.t('active_admin.delete_confirmation'),
+              #               rel: 'delete_membership'
+              #             })
+              #   end
+              # end
+            end
+          end
+        end
+
+        panel I18n.t('activerecord.models.account.other') do
+          if user.memberships.on_accounts.any?
+            table_for user.memberships.on_accounts, :class => 'memberships', :i18n => Membership do
+              column :account do |membership|
+                link_to(membership.entity.name, admin_account_path(membership.entity))
+              end
+              column :created_at, sortable: 'pageflow_memberships.created_at'
+              column do |membership|
+                if authorized?(:edit_role, membership)
+                  link_to(I18n.t('pageflow.admin.users.edit_role'),
+                          admin_user_membership_path(user, membership),
+                          method: :patch)# ,
+                        #   data: {
+                        #     confirm: I18n.t('active_admin.delete_confirmation'),
+                        #     rel: 'delete_membership'
+                        # })
+                end
+              end
               column do |membership|
                 if authorized?(:destroy, membership)
                   link_to(I18n.t('pageflow.admin.users.delete'),
@@ -75,16 +96,15 @@ module Pageflow
                           })
                 end
               end
+              if Pageflow::Policies::AccountPolicy::Scope.new(user, Account).member_addable
+                span do
+                  link_to(I18n.t('pageflow.admin.account.add'),
+                          new_admin_user_membership_path(user),
+                          class: 'button',
+                          data: {rel: 'add_member'})
+                end
+              end
             end
-          end
-
-          span do
-            link_to(I18n.t('pageflow.admin.users.add_entry'),
-                    new_admin_user_membership_path(user),
-                    class: 'button',
-                    data: {
-                      rel: 'add_membership'
-                    })
           end
         end
       end

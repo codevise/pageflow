@@ -127,6 +127,7 @@ module Pageflow
       end
 
       def manage?
+        @user.admin? ||
         allows?(%w(manager))
       end
 

@@ -1,2 +1,3 @@
 <%= f.input :entity,
             :collection => membership_accounts_collection_for_parent(parent) %>
+<%= f.hidden_field :entity_type, value: 'Pageflow::Account' %>

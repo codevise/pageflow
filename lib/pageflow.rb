@@ -8,7 +8,7 @@ module Pageflow
     router.instance_eval do
       namespace :admin do
         resources :users do
-          resources :account_memberships
+          resources :memberships
         end
 
         resources :entries do
