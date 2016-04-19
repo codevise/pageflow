@@ -3,7 +3,7 @@
     <%= f.input :user,
                 :input_html => { :disabled => (parent_type == :user) },
     :collection => membership_users_collection_for_parent(parent) %>
-    <% if resource.entity_type == 'Pageflow::Entry' %>
+    <% if parent_type == :entry %>
       <%= f.input :entry,
                   :input_html => { :disabled => (parent_type == :entry) },
                   :collection => membership_entries_collection_for_parent(parent) %>

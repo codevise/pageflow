@@ -25,6 +25,14 @@ module Pageflow
           entry_creatable
         end
 
+        def member_addable
+          if user.admin?
+            scope.all
+          else
+            scope.joins(manager_memberships_for_account(user)).where(membership_is_present)
+          end
+        end
+
         private
 
         def sanitize_sql_array(array)
@@ -37,6 +45,15 @@ module Pageflow
                               'pageflow_memberships.entity_id = pageflow_accounts.id AND ' \
                               'pageflow_memberships.entity_type = "Pageflow::Account" AND ' \
                               'pageflow_memberships.role IN ("publisher", "manager")',
+                              user_id: user.id])
+        end
+
+        def manager_memberships_for_account(user)
+          sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \
+                              'pageflow_memberships.user_id = :user_id AND ' \
+                              'pageflow_memberships.entity_id = pageflow_accounts.id AND ' \
+                              'pageflow_memberships.entity_type = "Pageflow::Account" AND ' \
+                              'pageflow_memberships.role IN ("manager")',
                               user_id: user.id])
         end
 
@@ -63,7 +80,8 @@ module Pageflow
       end
 
       def manage?
-        allows?(%w(manager))
+        @user.admin? ||
+          allows?(%w(manager))
       end
 
       def add_member_to?

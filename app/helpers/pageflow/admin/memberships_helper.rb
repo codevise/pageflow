@@ -3,20 +3,25 @@ module Pageflow
     module MembershipsHelper
       def membership_entries_collection_for_parent(parent)
         CollectionForParent.new(parent,
+                                entity_type: 'Pageflow::Entry',
                                 collection_method: :entries,
                                 display_method: :title,
                                 order: 'title ASC').pairs
       end
 
       def membership_accounts_collection_for_parent(parent)
+        accounts = Pageflow::Policies::AccountPolicy::Scope.new(current_user, Account).member_addable.all
         CollectionForParent.new(parent,
+                                entity_type: 'Pageflow::Account',
                                 collection_method: :membership_accounts,
                                 display_method: :name,
-                                order: 'name ASC').pairs
+                                order: 'name ASC',
+                                managed_accounts: accounts).pairs
       end
 
       def membership_users_collection_for_parent(parent)
         CollectionForParent.new(parent,
+                                entity_type: 'Pageflow::Entry',
                                 collection_method: :users,
                                 display_method: :formal_name,
                                 order: 'last_name ASC, first_name ASC').pairs
@@ -47,7 +52,11 @@ module Pageflow
         private
 
         def items
-          items_in_account - items_in_parent
+          if options[:entity_type] == 'Pageflow::Entry'
+            items_in_account - items_in_parent
+          else
+            options[:managed_accounts] - items_in_parent
+          end
         end
 
         def display(item)

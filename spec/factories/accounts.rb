@@ -17,7 +17,10 @@ FactoryGirl.define do
     end
 
     after(:create) do |account, evaluator|
-      create(:membership, entity: account, user: evaluator.with_member) if evaluator.with_member
+      create(:membership,
+             entity: account,
+             user: evaluator.with_member,
+             role: 'member') if evaluator.with_member
       create(:membership,
              entity: account,
              user: evaluator.with_previewer,
