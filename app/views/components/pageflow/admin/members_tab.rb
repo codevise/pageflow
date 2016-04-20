@@ -13,10 +13,23 @@ module Pageflow
                 membership.user.full_name
               end
             end
-            column :role, sortable: 'pageflow_memberships.role', title: I18n.t('activerecord.attributes.pageflow/membership.role') do |membership|
-              I18n.t(membership.role, :scope => 'activerecord.values.pageflow/membership.role')
+            column :role,
+                   sortable: 'pageflow_memberships.role',
+                   title: I18n.t('activerecord.attributes.pageflow/membership.role') do |membership|
+              span class: "membership_role #{membership.role}" do
+                I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')
+              end
             end
             column :created_at, sortable: 'pageflow_memberships.created_at'
+            column do |membership|
+              if authorized?(:update, membership)
+                link_to(I18n.t('pageflow.admin.users.edit_role'),
+                        edit_admin_entry_membership_path(entry, membership),
+                        data: {
+                          rel: "edit_entry_membership_#{membership.role}"
+                        })
+              end
+            end
             column do |membership|
               if authorized?(:destroy, membership)
                 link_to(I18n.t('pageflow.admin.entries.remove'),
@@ -24,7 +37,7 @@ module Pageflow
                         method: :delete,
                         data: {
                           confirm: I18n.t('active_admin.delete_confirmation'),
-                          rel: 'delete_membership'
+                          rel: "delete_membership_#{membership.role}"
                         })
               end
             end

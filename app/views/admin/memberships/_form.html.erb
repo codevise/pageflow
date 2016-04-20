@@ -1,20 +1,5 @@
-<%= admin_form_for [:admin, parent, resource] do |f| %>
-  <%= f.inputs do %>
-    <%= f.input :user,
-                :input_html => { :disabled => (parent_type == :user) },
-    :collection => membership_users_collection_for_parent(parent) %>
-    <% if parent_type == :entry %>
-      <%= f.input :entry,
-                  :input_html => { :disabled => (parent_type == :entry) },
-                  :collection => membership_entries_collection_for_parent(parent) %>
-      <% else %>
-        <%= render partial: 'admin/memberships/account_form', locals: {f: f} %>
-      <% end %>
-    <%= f.input :role,
-                :collection => membership_roles_collection %>
-  <% end %>
-  <%= f.actions do %>
-    <%= f.action(:submit) %>
-    <%= f.action(:cancel, :wrapper_html => {:class => 'cancel'}) %>
-  <% end %>
+<% if parent_type == :entry %>
+  <%= render partial: 'admin/memberships/entry_form' %>
+<% else %>
+  <%= render partial: 'admin/memberships/account_form' %>
 <% end %>

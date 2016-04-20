@@ -3,7 +3,6 @@ module Pageflow
     module MembershipsHelper
       def membership_entries_collection_for_parent(parent)
         CollectionForParent.new(parent,
-                                entity_type: 'Pageflow::Entry',
                                 collection_method: :entries,
                                 display_method: :title,
                                 order: 'title ASC').pairs
@@ -12,7 +11,6 @@ module Pageflow
       def membership_accounts_collection_for_parent(parent)
         accounts = Pageflow::Policies::AccountPolicy::Scope.new(current_user, Account).member_addable.all
         CollectionForParent.new(parent,
-                                entity_type: 'Pageflow::Account',
                                 collection_method: :membership_accounts,
                                 display_method: :name,
                                 order: 'name ASC',
@@ -21,7 +19,6 @@ module Pageflow
 
       def membership_users_collection_for_parent(parent)
         CollectionForParent.new(parent,
-                                entity_type: 'Pageflow::Entry',
                                 collection_method: :users,
                                 display_method: :formal_name,
                                 order: 'last_name ASC, first_name ASC').pairs
@@ -52,10 +49,12 @@ module Pageflow
         private
 
         def items
-          if options[:entity_type] == 'Pageflow::Entry'
-            items_in_account - items_in_parent
-          else
+          if options[:managed_accounts]
             options[:managed_accounts] - items_in_parent
+          elsif parent.class.to_s == 'User' && options[:collection_method] == :users
+            [parent]
+          else
+            items_in_account - items_in_parent
           end
         end
 
@@ -64,7 +63,15 @@ module Pageflow
         end
 
         def items_in_account
-          parent.account.send(options[:collection_method]).order(options[:order])
+          if options[:collection_method] == :users
+            if parent.class.to_s == 'Pageflow::Entry'
+              parent.account.membership_users.order(options[:order])
+            else
+              parent.membership_users.order(options[:order])
+            end
+          else
+            parent.account.send(options[:collection_method]).order(options[:order])
+          end
         end
 
         def items_in_parent

@@ -137,6 +137,10 @@ module Pageflow
         can :destroy, Entry do |entry|
           Policies::EntryPolicy.new(user, entry).destroy?
         end
+
+        can :read, ::User do |managed_user|
+          Policies::UserPolicy.new(user, managed_user).read?
+        end
       end
 
       if user.admin?

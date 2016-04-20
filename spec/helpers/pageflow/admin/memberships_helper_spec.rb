@@ -5,12 +5,13 @@ module Pageflow
     describe MembershipsHelper do
       describe '#membership_users_collection_for_parent' do
         it 'returns pairs of formal name and id' do
-          account = create(:account)
-          user = create(:user, account: account, first_name: 'John', last_name: 'Doe')
+          john = create(:user, first_name: 'John', last_name: 'Doe')
+          account = create(:account, with_member: john)
+          entry = create(:entry, account: account)
 
-          pairs = membership_users_collection_for_parent(user)
+          pairs = membership_users_collection_for_parent(entry)
 
-          expect(pairs).to eq([['Doe, John', user.id]])
+          expect(pairs).to eq([['Doe, John', john.id]])
         end
 
         it 'filters users that are already members of parent' do

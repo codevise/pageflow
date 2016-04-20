@@ -123,7 +123,7 @@ module Pageflow
       end
 
       it 'does not allow account manager to change user account' do
-        pending 'New Membership permissions getting finished'
+        pending 'removal of account attribute from user'
         account = create(:account)
         other_account = create(:account)
         user = create(:user, :editor, :account => account)
@@ -136,7 +136,7 @@ module Pageflow
       end
 
       it 'allows admin to change user account' do
-        pending 'New Membership permissions getting finished'
+        pending 'removal of account attribute from user'
         account = create(:account)
         other_account = create(:account)
         user = create(:user, :editor, :account => account)
