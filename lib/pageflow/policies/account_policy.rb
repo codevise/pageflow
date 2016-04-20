@@ -9,6 +9,14 @@ module Pageflow
           @scope = scope
         end
 
+        def resolve
+          if user.admin?
+            scope.all
+          else
+            scope.joins(memberships_for_account(user)).where(membership_is_present)
+          end
+        end
+
         def entry_creatable
           if user.admin?
             scope.all
@@ -37,6 +45,15 @@ module Pageflow
 
         def sanitize_sql_array(array)
           ActiveRecord::Base.send(:sanitize_sql_array, array)
+        end
+
+        def memberships_for_account(user)
+          sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \
+                              'pageflow_memberships.user_id = :user_id AND ' \
+                              'pageflow_memberships.entity_id = pageflow_accounts.id AND ' \
+                              'pageflow_memberships.entity_type = "Pageflow::Account" AND ' \
+                              'pageflow_memberships.role IN ("member", "previewer", "editor", "publisher", "manager")',
+                              user_id: user.id])
         end
 
         def publisher_memberships_for_account(user)

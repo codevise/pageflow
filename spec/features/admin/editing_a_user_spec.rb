@@ -13,16 +13,4 @@ feature 'editing a user' do
     expect(Dom::Admin::UserPage.first.last_name).to eq('Jackson')
     expect(Dom::Admin::UserPage.first.email).to eq('john@example.com')
   end
-
-  scenario 'changing account' do
-    user = create(:user)
-    other_account = create(:account, :name => 'Other Account')
-
-    Dom::Admin::Page.sign_in_as(:admin)
-    visit(admin_user_path(user))
-    Dom::Admin::UserPage.first.edit_user_link.click
-    Dom::Admin::UserForm.first.submit_with(:account_id => other_account.id)
-
-    expect(Dom::Admin::UserPage.first.account).to eq(other_account.name)
-  end
 end

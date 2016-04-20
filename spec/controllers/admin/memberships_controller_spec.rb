@@ -14,16 +14,18 @@ describe Admin::MembershipsController do
         }.to change { account.memberships.count }
       end
 
-      # it 'allows to add account to user' do
-      #   user = create(:user)
-      #   account = create(:account)
+      it 'allows to add account to user' do
+        pending 'decision on allowed routes'
+        user = create(:user)
+        account = create(:account)
 
-      #   sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin))
 
-      #   expect {
-      #     post :create, user_id: user, membership: {account_id: account, role: 'manager'}
-      #   }.to change { account.memberships.count }
-      # end
+        expect {
+          post :create, user_id: user, membership: {account_id: account, role: 'manager'}
+        }.to change { account.memberships.count }
+        fail
+      end
 
       it 'does not allow to add user of other account to entry' do
         user = create(:user)
@@ -49,17 +51,19 @@ describe Admin::MembershipsController do
         }.not_to change { user.memberships.count }
       end
 
-      # it 'allows to add entry of member account to user' do
-      #   account = create(:account)
-      #   user = create(:user, :member, on: account)
-      #   entry = create(:entry, account: account)
+      it 'allows to add entry of member account to user' do
+        pending 'decision on allowed routes'
+        account = create(:account)
+        user = create(:user, :member, on: account)
+        entry = create(:entry, account: account)
 
-      #   sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin))
 
-      #   expect {
-      #     post :create, :user_id => user, :membership => {:entry_id => entry, role: 'manager'}
-      #   }.to change { user.memberships.count }
-      # end
+        expect {
+          post :create, :user_id => user, :membership => {:entry_id => entry, role: 'manager'}
+        }.to change { user.memberships.count }
+        fail
+      end
 
       it 'allows to add user of member account to entry' do
         account = create(:account)
@@ -87,17 +91,19 @@ describe Admin::MembershipsController do
         end.to change { account.memberships.count }
       end
 
-      # it 'allows to add correct account to user' do
-      #   account_admin = create(:user)
-      #   account = create(:account, with_manager: account_admin)
-      #   user = create(:user)
+      it 'allows to add correct account to user' do
+        pending 'decision on allowed routes'
+        account_admin = create(:user)
+        account = create(:account, with_manager: account_admin)
+        user = create(:user)
 
-      #   sign_in(account_admin)
+        sign_in(account_admin)
 
-      #   expect do
-      #     post :create, user_id: user, membership: {account_id: account, role: 'manager'}
-      #   end.to change { account.memberships.count }
-      # end
+        expect do
+          post :create, user_id: user, membership: {account_id: account, role: 'manager'}
+        end.to change { account.memberships.count }
+        fail
+      end
 
       it 'does not allow to add user to off-limits account' do
         account_admin = create(:user)
@@ -222,18 +228,20 @@ describe Admin::MembershipsController do
         }.to change { entry.memberships.count }
       end
 
-      # it 'allows to add entry to user in correct account' do
-      #   entry_admin = create(:user)
-      #   account = create(:account)
-      #   user = create(:user, :member, on: account)
-      #   entry = create(:entry, account: account, with_manager: entry_admin)
+      it 'allows to add entry to user in correct account' do
+        pending 'decision on allowed routes'
+        entry_admin = create(:user)
+        account = create(:account)
+        user = create(:user, :member, on: account)
+        entry = create(:entry, account: account, with_manager: entry_admin)
 
-      #   sign_in(entry_admin)
+        sign_in(entry_admin)
 
-      #   expect {
-      #     post :create, :user_id => user, :membership => {:entry_id => entry, role: 'manager'}
-      #   }.to change { user.memberships.count }
-      # end
+        expect {
+          post :create, :user_id => user, :membership => {:entry_id => entry, role: 'manager'}
+        }.to change { user.memberships.count }
+        fail
+      end
     end
 
     describe 'as entry publisher' do

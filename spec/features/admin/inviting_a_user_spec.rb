@@ -26,6 +26,7 @@ feature 'inviting a user' do
   end
 
   scenario 'inviting a user for another account' do
+    pending 'decision on invitation changes'
     account = create(:account, :name => 'other account')
 
     Dom::Admin::Page.sign_in_as(:admin)
@@ -35,5 +36,6 @@ feature 'inviting a user' do
     visit(admin_users_path)
 
     expect(Dom::Admin::UserInIndexTable.find_by_full_name('John Doe').account_name).to eq(account.name)
+    fail
   end
 end

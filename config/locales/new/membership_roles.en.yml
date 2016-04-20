@@ -1,10 +1,18 @@
 en:
+  activerecord:
+    attributes:
+      pageflow/membership:
+        account: 'Account'
+        entity: 'Entity'
   pageflow:
     admin:
+      account:
+        add: 'Add Account'
       users:
+        accounts: 'Accounts'
+        edit_role: 'Edit Role'
         roles:
           member: 'Member'
           previewer: 'Previewer'
           publisher: 'Publisher'
           manager: 'Manager'
-        accounts: 'Accounts'

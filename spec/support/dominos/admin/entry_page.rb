@@ -29,15 +29,21 @@ module Dom
         end
       end
 
+      def edit_role_link(role)
+        within(node) do
+          find("[data-rel=edit_entry_membership_#{role}]")
+        end
+      end
+
       def delete_entry_link
         within(node) do
           find_link(I18n.t('active_admin.delete_model', model: I18n.t('activerecord.models.entry.one')))
         end
       end
 
-      def delete_member_link
+      def delete_member_link(role)
         within(node) do
-          find('[data-rel=delete_membership]')
+          find("[data-rel=delete_membership_#{role}]")
         end
       end
 
@@ -56,6 +62,12 @@ module Dom
       def self.visit_revisions(entry)
         url_helpers = Rails.application.routes.url_helpers
         visit(url_helpers.admin_entry_path(entry, tab: 'revisions'))
+      end
+
+      def has_role_flag?(role)
+        within(node) do
+          has_selector?(".memberships .#{role}")
+        end
       end
     end
   end
