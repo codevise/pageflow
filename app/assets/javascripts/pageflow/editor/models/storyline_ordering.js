@@ -6,7 +6,7 @@ pageflow.StorylineOrdering = function(storylines, pages) {
       this.sort();
     }, this);
 
-    pages.on('change:position', function() {
+    pages.on('change:position change:chapter_id', function() {
       this.sort();
     }, this);
   };
@@ -47,7 +47,7 @@ pageflow.StorylineOrdering = function(storylines, pages) {
     return storylines
       .groupBy(function(storyline) {
         var parentPage = getParentPage(storyline);
-        return parentPage ? parentPage.chapter.storyline.cid : -1;
+        return parentPage && parentPage.chapter ? parentPage.chapter.storyline.cid : -1;
       });
   }
 
