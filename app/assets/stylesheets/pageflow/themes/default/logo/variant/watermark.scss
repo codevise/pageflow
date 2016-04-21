@@ -1,3 +1,10 @@
+/// Fade in logo when scroller is near top
+///
+/// - `"first-page"`: only on first page
+///
+/// - `"all-pages"`: on all pages
+$logo-watermark-variant-fade-in-near-top: "first-page" !default;
+
 @mixin logo-variant-watermark(
   $top,
   $width,
@@ -67,7 +74,16 @@
     pointer-events: all;
   }
 
-  .header.near_top.first_page .header_logo,
+  @if $logo-watermark-variant-fade-in-near-top == "first-page" {
+    .header.near_top.first_page .header_logo {
+      opacity: 1;
+    }
+  } @else {
+    .header.near_top .header_logo {
+      opacity: 1;
+    }
+  }
+
   .header.near_top .header_logo:hover {
     opacity: 1;
   }
