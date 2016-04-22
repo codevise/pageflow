@@ -30,12 +30,24 @@ feature 'account manager managing user roles' do
   scenario 'deleting permissions of a user on an account' do
     user = create(:user)
     account = create(:account, with_member: user)
+    account_manager = Dom::Admin::Page.sign_in_as(:manager, on: account)
+    create(:account, with_previewer: user, with_manager: account_manager)
+
+    visit(admin_user_path(user))
+
+    Dom::Admin::UserPage.first.delete_account_link('member').click
+    expect(Dom::Admin::UserPage.first).not_to have_role_flag('member')
+  end
+
+  scenario 'deleting last permissions of a user on an account they have in common with the ' \
+           'account manager' do
+    user = create(:user)
+    account = create(:account, with_member: user)
     Dom::Admin::Page.sign_in_as(:manager, on: account)
 
     visit(admin_user_path(user))
 
-    Dom::Admin::UserPage.first.delete_account_link.click
-
+    Dom::Admin::UserPage.first.delete_account_link('member').click
     expect(Dom::Admin::UserPage.first).not_to have_role_flag('member')
   end
 end
