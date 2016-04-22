@@ -138,8 +138,16 @@ module Pageflow
           Policies::EntryPolicy.new(user, entry).destroy?
         end
 
-        can :read, ::User do |managed_user|
+        can :read, ::User, Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
           Policies::UserPolicy.new(user, managed_user).read?
+        end
+
+        can :redirect_to_user, ::User, Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
+          Policies::UserPolicy.new(user, managed_user).redirect_to_user?
+        end
+
+        can :index_users, ::User, Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
+          Policies::UserPolicy.new(user, managed_user).index_users?
         end
       end
 

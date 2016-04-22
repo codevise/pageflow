@@ -69,9 +69,9 @@ module Dom
         end
       end
 
-      def delete_account_link
+      def delete_account_link(role)
         within(node) do
-          find('[data-rel=delete_account_membership]')
+          find("[data-rel=delete_account_membership_#{role}]")
         end
       end
 

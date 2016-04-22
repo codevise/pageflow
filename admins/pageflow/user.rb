@@ -1,6 +1,6 @@
 module Pageflow
   ActiveAdmin.register User do
-    menu :priority => 2
+    menu :priority => 2, if: proc { authorized?(:index_users, current_user) }
 
     config.batch_actions = false
     config.clear_action_items!
@@ -99,7 +99,7 @@ module Pageflow
                           method: :delete,
                           data: {
                             confirm: I18n.t('active_admin.delete_confirmation'),
-                            rel: 'delete_account_membership'
+                            rel: "delete_account_membership_#{membership.role}"
                           })
                 end
               end

@@ -62,7 +62,7 @@ module Pageflow
       end
 
       it 'includes accounts with memberships with correct user, correct account and ' \
-      'sufficient role' do
+         'sufficient role' do
         user = create(:user)
         account = create(:account, with_publisher: user)
 
@@ -114,7 +114,7 @@ module Pageflow
       end
 
       it 'includes accounts with memberships with correct user, correct account and ' \
-      'sufficient role' do
+         'sufficient role' do
         user = create(:user)
         account = create(:account, with_publisher: user)
 
@@ -206,6 +206,102 @@ module Pageflow
 
         expect(Policies::AccountPolicy::Scope.new(user,
                                                   Account).themings_accessible).not_to include(account)
+      end
+
+      describe '.member_addable' do
+        it 'includes all accounts for admins' do
+          user = create(:user, :admin)
+
+          expect(Policies::AccountPolicy::Scope.new(user,
+                                                    Account).member_addable).to include(create(:account))
+        end
+
+        it 'includes accounts with memberships with correct user, correct account and ' \
+           'sufficient role' do
+          user = create(:user)
+          account = create(:account, with_manager: user)
+
+          expect(Policies::AccountPolicy::Scope.new(user,
+                                                    Account).member_addable).to include(account)
+        end
+
+        it 'does not include accounts with memberships with wrong entity id' do
+          user = create(:user)
+          account = create(:account)
+
+          expect(Policies::AccountPolicy::Scope.new(user,
+                                                    Account).member_addable).not_to include(account)
+        end
+
+        it 'does not include accounts with memberships with wrong user' do
+          user = create(:user)
+          wrong_user = create(:user)
+          account = create(:account, with_manager: wrong_user)
+
+          expect(Policies::AccountPolicy::Scope.new(user,
+                                                    Account).member_addable).not_to include(account)
+        end
+
+        it 'does not include accounts with memberships with insufficient role' do
+          user = create(:user)
+          account = create(:account, with_publisher: user)
+
+          expect(Policies::AccountPolicy::Scope.new(user,
+                                                    Account).member_addable).not_to include(account)
+        end
+
+        it 'does not include accounts with membership with nil account id' do
+          user = create(:user)
+          account = Account.new
+          create(:membership, user: user, entity: account)
+
+          expect(Policies::AccountPolicy::Scope.new(user,
+                                                    Account).member_addable).not_to include(account)
+        end
+      end
+
+      describe '.resolve' do
+        it 'includes all accounts for admins' do
+          user = create(:user, :admin)
+
+          expect(Policies::AccountPolicy::Scope.new(user,
+                                                    Account).resolve).to include(create(:account))
+        end
+
+        it 'includes accounts with memberships with correct user, correct account and ' \
+           'sufficient role' do
+          user = create(:user)
+          account = create(:account, with_member: user)
+
+          expect(Policies::AccountPolicy::Scope.new(user,
+                                                    Account).resolve).to include(account)
+        end
+
+        it 'does not include accounts with memberships with wrong entity id/insufficient role' do
+          user = create(:user)
+          account = create(:account)
+
+          expect(Policies::AccountPolicy::Scope.new(user,
+                                                    Account).resolve).not_to include(account)
+        end
+
+        it 'does not include accounts with memberships with wrong user' do
+          user = create(:user)
+          wrong_user = create(:user)
+          account = create(:account, with_member: wrong_user)
+
+          expect(Policies::AccountPolicy::Scope.new(user,
+                                                    Account).resolve).not_to include(account)
+        end
+
+        it 'does not include accounts with membership with nil account id' do
+          user = create(:user)
+          account = Account.new
+          create(:membership, user: user, entity: account)
+
+          expect(Policies::AccountPolicy::Scope.new(user,
+                                                    Account).resolve).not_to include(account)
+        end
       end
     end
   end
