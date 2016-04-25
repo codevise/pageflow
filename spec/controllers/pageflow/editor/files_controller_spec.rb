@@ -114,7 +114,6 @@ module Pageflow
         file = create(:image_file, :failed, :used_in => entry.draft)
 
         sign_in user
-        acquire_edit_lock(user, entry)
         post(:retry, :collection_name => 'image_files', :id => file, :format => 'json')
 
         expect(response.status).to eq(201)
@@ -144,7 +143,6 @@ module Pageflow
         image_file = create(:image_file, :used_in => entry.draft)
 
         sign_in user
-        acquire_edit_lock(user, entry)
         post(:retry, :collection_name => 'image_files', :id => image_file, :format => 'json')
 
         expect(response.status).to eq(400)
@@ -158,12 +156,11 @@ module Pageflow
         file = create(:image_file, :used_in => entry.draft, :rights => 'old')
 
         sign_in user
-        acquire_edit_lock(user, entry)
         patch(:update, :collection_name => 'image_files', :id => file, :image_file => {:rights => 'new'}, :format => 'json')
 
         expect(response.status).to eq(204)
         expect(file.reload.rights).to eq('new')
-    end
+      end
 
       it 'does not allow to update file if the signed in user is not member of' do
         user = create(:user)

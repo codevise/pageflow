@@ -29,7 +29,6 @@ module Pageflow
         file = file_type.model.find(params[:id])
 
         authorize!(:retry, file)
-        verify_edit_lock!(file.entry)
         file.retry!
 
         respond_with(:editor, file, location: editor_file_url(file, collection_name: params[:collection_name]))
@@ -39,7 +38,6 @@ module Pageflow
         file = file_type.model.find(params[:id])
 
         authorize!(:update, file)
-        verify_edit_lock!(file.entry)
         file.update_attributes!(update_params)
 
         head(:no_content)
