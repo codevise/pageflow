@@ -4,28 +4,20 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
   };
 
   this.back = function(currentPage, pages) {
-    var forcedTransition = null;
+    var position = 'bottom';
     var previousPage = this.getPreviousPage(currentPage, pages);
 
     if (previousPage.is(getParentPage(currentPage, pages))) {
-      forcedTransition = 'scroll_over_from_right';
+      position = null;
     }
 
     slideshow.goTo(previousPage, {
-      position: forcedTransition ? null :'bottom',
-      transition: forcedTransition
+      position: position
     });
   };
 
   this.next = function(currentPage, pages) {
-    var forcedTransition = null;
-    var nextPage = this.getNextPage(currentPage, pages);
-
-    if (nextPage.is(getParentPage(currentPage, pages))) {
-      forcedTransition = 'scroll_over_from_right';
-    }
-
-    slideshow.goTo(nextPage, {transition: forcedTransition});
+    slideshow.goTo(this.getNextPage(currentPage, pages));
   };
 
   this.nextPageExists = function(currentPage, pages) {
@@ -67,10 +59,20 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
   };
 
   this.getDefaultTransition = function(previousPage, currentPage, pages) {
-    if (previousPage.is(getParentPage(currentPage, pages))) {
-      return 'scroll_over_from_right';
+    if (inParentStorylineOf(currentPage, previousPage, pages)) {
+      return getStorylinePageTransition(currentPage);
+    }
+    else if (inParentStorylineOf(previousPage, currentPage, pages)) {
+      return getStorylinePageTransition(previousPage);
     }
   };
+
+  function inParentStorylineOf(page, otherPage, pages) {
+    var parentPage = getParentPage(page, pages);
+
+    return entryData.getStorylineIdByPagePermaId(parentPage.page('getPermaId')) ==
+      entryData.getStorylineIdByPagePermaId(otherPage.page('getPermaId'));
+  }
 
   function sameStoryline(page1, page2) {
     return entryData.getStorylineIdByPagePermaId(page1.page('getPermaId')) ==
@@ -87,6 +89,11 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
     }
 
     return $();
+  }
+
+  function getStorylinePageTransition(page) {
+    var storylineConfiguration = getStorylineConfiguration(page);
+    return storylineConfiguration.page_transition || 'scroll_over_from_right';
   }
 
   function getScrollSuccessor(page, pages) {

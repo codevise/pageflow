@@ -27,6 +27,7 @@ de:
         edit_storyline_view:
           confirm_destroy: Erzählstrang wirklich löschen?
           cannot_destroy: Nur leere Erzählstränge können gelöscht werden.
+          default_parent_page_transition: "(Standard)"
     storyline_attributes:
       title:
         label: "Titel"
@@ -37,6 +38,9 @@ de:
       parent_page_perma_id:
         label: "Übergeordnete Seite"
         inline_help: "Die Auswahl einer übergeordneten Seite bestimmt, auf welcher Seite der User am Ende eines untergeordneten Erzählstrangs oder bei Klick auf den Zurück-Button landet. Mit einer solchen Seite kann die Kapitelhierarchie bestimmt werden, falls mehr als zwei Erzählstränge benutzt werden. Mehr Informationen zur Kapitelhierachie findest Du im Hilfethema 'Erzählstränge'."
+      page_transition:
+        label: "Seitenübergangseffekt"
+        inline_help: "Standardmäßig wird beim Erreichen des Erzählstrangs von der übergeordneten Seite die erste Seite des Erzählstrangs von rechts hineingeschoben. Bei Klick auf den Zurück-Button fährt die Seite wieder nach rechts hinaus. Hier kannst Du einen alternativen Effekt wählen."
       scroll_successor_id:
         label: "Scroll Nachfolger"
         inline_help: "Seite, die beim Weiterscrollen am Ende des Erzählstrangs erreicht werden soll. Standardmäßig gelangt der Leser zur übergeordneten Seite zurück."
@@ -45,5 +49,4 @@ de:
         values:
           non: "Ausblenden"
           current_storyline: "Aktueller Erzählstrang"
-          current_chapter: "Aktueller Kapitel"
           inherit_from_parent: "Von übergeordnetem Kapitel erben"

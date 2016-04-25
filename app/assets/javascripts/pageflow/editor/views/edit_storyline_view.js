@@ -43,13 +43,17 @@ pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
   },
 
   configure: function(configurationEditor) {
-    var view = this;
-
     configurationEditor.tab('general', function() {
       this.input('title', pageflow.TextInputView);
       this.input('main', pageflow.CheckBoxInputView, {
         disabled: true,
         visibleBinding: 'main'
+      });
+      this.input('page_transition', pageflow.SelectInputView, {
+        translationKeyPrefix: 'pageflow.page_transitions',
+        includeBlank: true,
+        blankTranslationKey: 'pageflow.editor.views.edit_storyline_view.default_parent_page_transition',
+        values: pageflow.pageTransitions.names()
       });
       this.input('main', pageflow.CheckBoxInputView, {
         visibleBinding: 'main',

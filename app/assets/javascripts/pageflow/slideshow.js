@@ -75,8 +75,7 @@ pageflow.Slideshow = function($el, configurations) {
   };
 
   this.goToParentPage = function() {
-    this.goToByPermaId(pageflow.entryData.getParentPagePermaIdByPagePermaId(currentPagePermaId()),
-                       {transition: 'scroll_over_from_right'});
+    this.goToByPermaId(pageflow.entryData.getParentPagePermaIdByPagePermaId(currentPagePermaId()));
   };
 
   this.goToById = function(id, options) {
