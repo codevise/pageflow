@@ -36,7 +36,7 @@ pageflow.StorylinePickerView = Backbone.Marionette.Layout.extend({
       storyline_id: this.defaultStorylineId()
     });
 
-    this.listenTo(pageflow.storylines, 'remove', this.updateSelect);
+    this.listenTo(pageflow.storylines, 'add sort remove', this.updateSelect);
     this.listenTo(this.model, 'change', this.load);
   },
 

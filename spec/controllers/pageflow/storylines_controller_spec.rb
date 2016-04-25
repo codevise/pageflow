@@ -60,7 +60,7 @@ module Pageflow
         acquire_edit_lock(user, entry)
         post(:scaffold,
              entry_id: entry, storyline: attributes_for(:valid_storyline), format: 'json')
-        storyline = entry.draft.storylines.last
+        storyline = entry.draft.storylines.reorder('id').last
 
         expect(storyline.chapters).not_to be_empty
       end
@@ -89,10 +89,10 @@ module Pageflow
           acquire_edit_lock(user, entry)
           post(:scaffold,
                entry_id: entry,
-               storyline: attributes_for(:valid_storyline),
+               storyline: attributes_for(:valid_storyline, position: 1),
                depth: 'page',
                format: 'json')
-          storyline = entry.draft.storylines.last
+          storyline = entry.draft.storylines.reorder('id').last
           chapter = storyline.chapters.last
 
           expect(chapter.pages).not_to be_empty

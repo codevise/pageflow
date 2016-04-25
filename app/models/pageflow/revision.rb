@@ -11,7 +11,7 @@ module Pageflow
     belongs_to :restored_from, :class_name => 'Pageflow::Revision'
 
     has_many :widgets, :as => :subject
-    has_many :storylines
+    has_many :storylines, -> { order('pageflow_storylines.position ASC') }
     has_many :chapters, -> { order('position ASC') }, through: :storylines
     has_many :pages, -> { reorder(PAGE_ORDER) }, through: :storylines
 
