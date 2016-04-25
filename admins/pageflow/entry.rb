@@ -153,7 +153,7 @@ module Pageflow
       end
 
       def scoped_collection
-        result = super.includes(:theming, :account, :users, :published_revision)
+        result = super.includes(:theming, :account, :users, :published_revision).references(:published_revision)
         params.key?(:folder_id) ? result.where(folder_id: params[:folder_id]) : result
       end
 
