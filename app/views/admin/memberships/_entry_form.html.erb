@@ -1,18 +1,17 @@
 <%= admin_form_for [:admin, parent, resource] do |f| %>
   <%= f.inputs do %>
     <%= f.input :user,
-                :input_html => { :disabled => (parent_type == :user) },
-                :collection => membership_users_collection_for_parent(parent),
+                collection: f.object.new_record? ? membership_users_collection_for_parent(parent) : [[resource.user.formal_name, resource.user_id]],
                 include_blank: false,
-                input_html: { disabled: !f.object.new_record? }%>
+                input_html: { disabled: !f.object.new_record? || parent_type == :user }%>
     <%= f.input :entity,
                 label: I18n.t('activerecord.attributes.pageflow/membership.entry'),
-                :input_html => { :disabled => (parent_type == :entry) },
-                :collection => membership_entries_collection_for_parent(parent),
+                input_html: { disabled: !f.object.new_record? || parent_type == :entry },
+                collection: f.object.new_record? ? membership_entries_collection_for_parent(parent) : [[resource.entity.title, resource.entity_id]],
                 include_blank: false %>
     <%= f.hidden_field :entity_type, value: 'Pageflow::Entry' %>
     <%= f.input :role,
-                :collection => membership_roles_collection,
+                :collection => membership_roles_collection('Pageflow::Entry'),
                 include_blank: false %>
   <% end %>
   <%= f.actions do %>
