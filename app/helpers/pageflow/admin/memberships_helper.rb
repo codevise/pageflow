@@ -24,12 +24,16 @@ module Pageflow
                                 order: 'last_name ASC, first_name ASC').pairs
       end
 
-      def membership_roles_collection
-        [[I18n.t('pageflow.admin.users.roles.member'), :member],
-         [I18n.t('pageflow.admin.users.roles.previewer'), :previewer],
-         [I18n.t('pageflow.admin.users.roles.editor'), :editor],
-         [I18n.t('pageflow.admin.users.roles.publisher'), :publisher],
-         [I18n.t('pageflow.admin.users.roles.manager'), :manager]]
+      def membership_roles_collection(entity_type)
+        default_options = [[I18n.t('pageflow.admin.users.roles.previewer'), :previewer],
+                           [I18n.t('pageflow.admin.users.roles.editor'), :editor],
+                           [I18n.t('pageflow.admin.users.roles.publisher'), :publisher],
+                           [I18n.t('pageflow.admin.users.roles.manager'), :manager]]
+        if entity_type == 'Pageflow::Account'
+          [[I18n.t('pageflow.admin.users.roles.member'), :member]] + default_options
+        else
+          default_options
+        end
       end
 
       class CollectionForParent
