@@ -23,6 +23,8 @@ module Pageflow
           Policies::MembershipPolicy.new(user, membership).create?
       end
 
+      can :index, Membership, Policies::MembershipPolicy::Scope.new(user, Membership).indexable
+
       unless user.admin?
         can [:create, :update, :destroy], Folder do |folder|
           Policies::FolderPolicy.new(user, folder).manage?

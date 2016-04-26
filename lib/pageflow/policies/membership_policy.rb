@@ -1,6 +1,50 @@
 module Pageflow
   module Policies
     class MembershipPolicy
+      class Scope
+        attr_reader :user, :scope
+
+        def initialize(user, scope)
+          @user = user
+          @scope = scope
+        end
+
+        def indexable
+          if user.admin?
+            scope.all
+          else
+            scope.where(permissions_appropriate).where(membership_is_present)
+          end
+        end
+
+        private
+
+        def sanitize_sql_array(array)
+          ActiveRecord::Base.send(:sanitize_sql_array, array)
+        end
+
+        def permissions_appropriate
+          sanitize_sql_array(['pageflow_memberships.entity_type = "Pageflow::Account" AND ' \
+                              'pageflow_memberships.entity_id IN (:managed_account_ids) OR ' \
+                              'pageflow_memberships.entity_type = "Pageflow::Entry" AND ' \
+                              'pageflow_memberships.entity_id IN (:managed_entry_ids)',
+                              managed_account_ids: managed_account_ids,
+                              managed_entry_ids: managed_entry_ids])
+        end
+
+        def managed_account_ids
+          user.memberships.on_accounts.where(role: 'manager').map(&:entity_id)
+        end
+
+        def managed_entry_ids
+          user.memberships.on_entries.where(role: 'manager').map(&:entity_id)
+        end
+
+        def membership_is_present
+          'pageflow_memberships.entity_id IS NOT NULL'
+        end
+      end
+
       def initialize(user, membership)
         @user = user
         @membership = membership

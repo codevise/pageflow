@@ -52,9 +52,10 @@ module Pageflow
           link_to I18n.t('pageflow.admin.users.resend_invitation'), resend_invitation_admin_user_path(user), :method => :post, :class => 'button', :data => {:rel => 'resend_invitation'}
         end
 
-        if user.memberships.on_entries.any?
+        entry_memberships = user.memberships.on_entries.accessible_by(Ability.new(current_user), :index)
+        if entry_memberships.any?
           panel I18n.t('activerecord.models.entry.other') do
-            table_for user.memberships.on_entries, :class => 'memberships', :i18n => Membership do
+            table_for entry_memberships, :class => 'memberships', :i18n => Membership do
               column :entry do |membership|
                 link_to(membership.entry.title, admin_entry_path(membership.entry))
               end
@@ -71,11 +72,18 @@ module Pageflow
           end
         end
 
-        if user.memberships.on_accounts.any?
+        account_memberships = user.memberships.on_accounts.accessible_by(Ability.new(current_user), :index)
+        if account_memberships.any?
           panel I18n.t('activerecord.models.account.other') do
-            table_for user.memberships.on_accounts, :class => 'memberships', :i18n => Membership do
+            table_for account_memberships, :class => 'memberships', :i18n => Membership do
+              if authorized?(:list_memberships_on, Account)
+              end
               column I18n.t('activerecord.models.account.one'), :account do |membership|
-                link_to(membership.entity.name, admin_account_path(membership.entity))
+                if authorized?(:read, Account)
+                  link_to(membership.entity.name, admin_account_path(membership.entity))
+                else
+                  membership.entity.name
+                end
               end
               column :role, sortable: 'pageflow_memberships.role' do |membership|
                 span class: "membership_role #{membership.role}" do
