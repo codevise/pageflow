@@ -26,16 +26,15 @@ feature 'inviting a user' do
   end
 
   scenario 'inviting a user for another account' do
-    pending 'decision on invitation changes'
-    account = create(:account, :name => 'other account')
+    account = create(:account, :name => 'another account')
+    user = create(:user, email: 'existing_user@example.org', first_name: 'Hans')
 
     Dom::Admin::Page.sign_in_as(:admin)
     visit(admin_users_path)
     Dom::Admin::UserPage.first.invite_user_link.click
-    Dom::Admin::UserForm.first.submit_with(:account_id => account.id, :first_name => 'John', :last_name => 'Doe', :email => 'john@example.com')
+    Dom::Admin::UserForm.first.submit_with(:account_id => account.id, :first_name => 'John', :last_name => 'Doe', :email => 'existing_user@example.org')
     visit(admin_users_path)
 
-    expect(Dom::Admin::UserInIndexTable.find_by_full_name('John Doe').account_name).to eq(account.name)
-    fail
+    expect(Dom::Admin::UserInIndexTable.find_by_full_name('Hans Doe').account_names).to include(account.name)
   end
 end
