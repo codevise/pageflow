@@ -1,27 +1,41 @@
 module Pageflow
   module Admin
     module MembershipsHelper
-      def membership_entries_collection_for_parent(parent)
-        CollectionForParent.new(parent,
-                                collection_method: :entries,
-                                display_method: :title,
-                                order: 'title ASC').pairs
+      def membership_entries_collection(parent, resource, f_object)
+        if f_object.new_record?
+          MembershipFormCollection.new(parent,
+                                       resource: resource,
+                                       collection_method: :entries,
+                                       display_method: :title,
+                                       order: 'title ASC').pairs
+        else
+          [[resource.entity.title, resource.entity_id]]
+        end
       end
 
-      def membership_accounts_collection_for_parent(parent)
-        accounts = Pageflow::Policies::AccountPolicy::Scope.new(current_user, Account).member_addable.all
-        CollectionForParent.new(parent,
-                                collection_method: :membership_accounts,
-                                display_method: :name,
-                                order: 'name ASC',
-                                managed_accounts: accounts).pairs
+      def membership_accounts_collection(parent, resource, f_object)
+        if f_object.new_record?
+          accounts = Pageflow::Policies::AccountPolicy::Scope
+                     .new(current_user, Account).member_addable.all
+          MembershipFormCollection.new(parent,
+                                       collection_method: :membership_accounts,
+                                       display_method: :name,
+                                       order: 'name ASC',
+                                       managed_accounts: accounts).pairs
+        else
+          [[resource.entity.name, resource.entity_id]]
+        end
       end
 
-      def membership_users_collection_for_parent(parent)
-        CollectionForParent.new(parent,
-                                collection_method: :users,
-                                display_method: :formal_name,
-                                order: 'last_name ASC, first_name ASC').pairs
+      def membership_users_collection(parent, resource, f_object)
+        if f_object.new_record?
+          MembershipFormCollection.new(parent,
+                                       collection_method: :users,
+                                       display_method: :formal_name,
+                                       order: 'last_name ASC, first_name ASC').pairs
+        else
+          [[resource.user.formal_name, resource.user.id]]
+        end
       end
 
       def membership_roles_collection(entity_type)
@@ -36,7 +50,7 @@ module Pageflow
         end
       end
 
-      class CollectionForParent
+      class MembershipFormCollection
         attr_reader :parent, :options
 
         def initialize(parent, options)
@@ -53,10 +67,14 @@ module Pageflow
         private
 
         def items
-          if options[:managed_accounts]
-            options[:managed_accounts] - items_in_parent
-          elsif parent.class.to_s == 'User' && options[:collection_method] == :users
-            [parent]
+          if parent.class.to_s == 'User'
+            if options[:collection_method] == :users
+              [parent]
+            elsif options[:collection_method] == :entries
+              items_in_account - items_in_parent
+            else
+              options[:managed_accounts] - items_in_parent
+            end
           else
             items_in_account - items_in_parent
           end
@@ -68,10 +86,12 @@ module Pageflow
 
         def items_in_account
           if options[:collection_method] == :users
-            if parent.class.to_s == 'Pageflow::Entry'
-              parent.account.membership_users.order(options[:order])
+            parent.account.membership_users.order(options[:order])
+          elsif parent.class.to_s == 'User'
+            if options[:collection_method] == :entries
+              options[:resource].entity.account.send(options[:collection_method]).order(options[:order])
             else
-              parent.membership_users.order(options[:order])
+              options[:resource].entity.send(options[:collection_method]).order(options[:order])
             end
           else
             parent.account.send(options[:collection_method]).order(options[:order])
