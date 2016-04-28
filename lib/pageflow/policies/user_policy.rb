@@ -48,8 +48,12 @@ module Pageflow
         read?
       end
 
-      def index_users?
+      def index?
         @user.memberships.on_accounts.where(role: 'manager').any?
+      end
+
+      def create?
+        index?
       end
     end
   end

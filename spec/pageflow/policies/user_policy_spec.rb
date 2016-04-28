@@ -17,13 +17,13 @@ module Pageflow
                       to: :redirect_to_user,
                       topic: -> { create(:user, :member, on: create(:account)) }
 
-      describe 'index_users?' do
+      describe 'index?' do
         it 'allows user with manager permissions on account to index users' do
           user = create(:user, :manager, on: create(:account))
 
           policy = UserPolicy.new(user, create(:user))
 
-          expect(policy).to permit_action(:index_users)
+          expect(policy).to permit_action(:index)
         end
 
         it 'does not allow user with publisher permissions on account to index users' do
@@ -31,7 +31,7 @@ module Pageflow
 
           policy = UserPolicy.new(user, create(:user))
 
-          expect(policy).not_to permit_action(:index_users)
+          expect(policy).not_to permit_action(:index)
         end
 
         it 'allows user with manager permissions on entry to index users' do
@@ -39,7 +39,7 @@ module Pageflow
 
           policy = UserPolicy.new(user, create(:user))
 
-          expect(policy).not_to permit_action(:index_users)
+          expect(policy).not_to permit_action(:index)
         end
       end
 

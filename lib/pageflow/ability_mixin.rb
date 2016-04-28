@@ -148,8 +148,12 @@ module Pageflow
           Policies::UserPolicy.new(user, managed_user).redirect_to_user?
         end
 
-        can :index_users, ::User, Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
-          Policies::UserPolicy.new(user, managed_user).index_users?
+        can :index, ::User, Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
+          Policies::UserPolicy.new(user, managed_user).index?
+        end
+
+        can :create, ::User do |managed_user|
+          Policies::UserPolicy.new(user, managed_user).create?
         end
       end
 

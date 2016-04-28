@@ -1,6 +1,6 @@
 module Pageflow
   ActiveAdmin.register User do
-    menu :priority => 2, if: proc { authorized?(:index_users, current_user) }
+    menu :priority => 2, if: proc { authorized?(:index, current_user) }
 
     config.batch_actions = false
     config.clear_action_items!
