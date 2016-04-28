@@ -15,19 +15,6 @@ module Pageflow
 
         expect(response.body).to have_content('Quota available')
       end
-
-      it 'does not create user if quota is exhausted and e-mail is unknown' do
-        account = create(:account)
-
-        Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
-
-        sign_in(create(:user, :manager, on: account))
-        get(:new)
-
-        expect(response.body).not_to have_selector('form#new_user')
-      end
-
-      it 'creates user if quota is exhausted when e-mail is known'
     end
 
     describe '#create' do
@@ -79,10 +66,22 @@ module Pageflow
         expect do
           request.env['HTTP_REFERER'] = admin_users_path
           post :create, user: attributes_for(:valid_user)
-        end.not_to change { User.admins.count }
+        end.not_to change { User.count }
       end
 
-      it 'creates user via membership if their e-mail was already in the database'
+      it 'creates user via membership in spite of exhausted quota ' \
+         'if their e-mail was already in the database' do
+        account = create(:account)
+        create(:user, email: 'existing_user@example.com')
+
+        Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
+        sign_in(create(:user, :manager, on: account))
+
+        expect do
+          request.env['HTTP_REFERER'] = admin_users_path
+          post :create, user: attributes_for(:valid_user, email: 'existing_user@example.com')
+        end.to change { Membership.count }
+      end
 
       it 'redirects with flash if :users quota is exhausted and e-mail is unknown' do
         account = create(:account)

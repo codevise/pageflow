@@ -67,7 +67,7 @@ module Pageflow
         private
 
         def items
-          if parent.class.to_s == 'User'
+          if parent.class.to_s == 'User' || parent.class.to_s == 'Pageflow::InvitedUser'
             if options[:collection_method] == :users
               [parent]
             elsif options[:collection_method] == :entries
