@@ -12,11 +12,9 @@
                 include_blank: false,
                 collection: available_locales_collection %>
 
-    <% if authorized?(:read, Pageflow::Account) %>
-      <%= f.input :account,
-                  :include_blank => false,
-                  collection: membership_accounts_collection(@user, Pageflow::Membership.new, User.new)%>
-    <% end %>
+    <%= f.input :account,
+                :include_blank => false,
+                collection: membership_accounts_collection(@user, Pageflow::Membership.new, User.new)%>
 
     <%= f.input :role,
                 :collection => membership_roles_collection('Pageflow::Account'),
