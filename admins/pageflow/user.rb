@@ -10,7 +10,7 @@ module Pageflow
         link_to(user.full_name, admin_user_path(user))
       end
       column :email
-      column I18n.t('pageflow.admin.users.accounts'), class: 'accounts' do |user|
+      column I18n.t('pageflow.admin.users.accounts'), class: 'col-accounts' do |user|
         user_account_badge_list(user)
       end
       column :last_sign_in_at
