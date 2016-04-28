@@ -578,6 +578,69 @@ describe Admin::MembershipsController do
           end.to change { user.memberships.count }
         end
 
+        it 'deletes entry membership from user along with account membership' do
+          account_admin = create(:user)
+          account = create(:account, with_manager: account_admin)
+          entry = create(:entry, account: account)
+          user = create(:user)
+          account_membership = create(:membership, user: user, entity: account, role: 'manager')
+          create(:membership, user: user, entity: entry)
+
+          sign_in(account_admin)
+
+          expect do
+            delete(:destroy, user_id: user, id: account_membership)
+          end.to change { entry.memberships.count }
+        end
+
+        it 'does not delete entry membership from other user along with account membership' do
+          account_admin = create(:user)
+          account = create(:account, with_manager: account_admin)
+          entry = create(:entry, account: account)
+          user = create(:user)
+          other_user = create(:user)
+          account_membership = create(:membership, user: user, entity: account, role: 'manager')
+          create(:membership, user: other_user, entity: entry)
+
+          sign_in(account_admin)
+
+          expect do
+            delete(:destroy, user_id: user, id: account_membership)
+          end.not_to change { entry.memberships.count }
+        end
+
+        it 'does not delete entry membership of other account along with account membership' do
+          account_admin = create(:user)
+          account = create(:account, with_manager: account_admin)
+          entry = create(:entry)
+          user = create(:user)
+          account_membership = create(:membership, user: user, entity: account, role: 'manager')
+          create(:membership, user: user, entity: entry)
+
+          sign_in(account_admin)
+
+          expect do
+            delete(:destroy, user_id: user, id: account_membership)
+          end.not_to change { entry.memberships.count }
+        end
+
+        it 'does not delete account membership along with other account membership' do
+          account_admin = create(:user)
+          other_account = create(:account)
+          account = create(:account, with_manager: account_admin)
+          entry = create(:entry, account: account)
+          user = create(:user)
+          create(:membership, user: user, entity: other_account)
+          account_membership = create(:membership, user: user, entity: account, role: 'manager')
+          create(:membership, user: user, entity: entry)
+
+          sign_in(account_admin)
+
+          expect do
+            delete(:destroy, user_id: user, id: account_membership)
+          end.not_to change { other_account.memberships.count }
+        end
+
         it 'does not allow to delete user from off-limits account' do
           account_admin = create(:user)
           create(:account, with_manager: account_admin)

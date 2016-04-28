@@ -19,6 +19,14 @@ module Pageflow
       end
 
       def destroy
+        if resource.entity_type == 'Pageflow::Account'
+          dependent_entry_ids = resource.entity.entry_memberships.where(user: resource.user)
+                                .map(&:entity_id)
+          Membership
+            .where(user: resource.user,
+                   entity_type: 'Pageflow::Entry',
+                   entity_id: dependent_entry_ids).destroy_all
+        end
         destroy! do
           if authorized?(:redirect_to_user, resource.user)
             redirect_url = admin_user_url(resource.user)
