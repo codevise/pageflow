@@ -55,10 +55,6 @@ module Pageflow
       def create?
         index?
       end
-
-      def update?
-        index?
-      end
     end
   end
 end
