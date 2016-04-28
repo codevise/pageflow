@@ -1,12 +1,12 @@
 module Pageflow
   ActiveAdmin.register User do
-    menu :priority => 2, if: proc { authorized?(:index, current_user) }
+    menu priority: 2, if: proc { authorized?(:index, current_user) }
 
     config.batch_actions = false
     config.clear_action_items!
 
     index do
-      column :full_name, :sortable => 'last_name' do |user|
+      column :full_name, sortable: 'last_name' do |user|
         link_to(user.full_name, admin_user_path(user))
       end
       column :email
@@ -212,6 +212,7 @@ module Pageflow
       helper Pageflow::Admin::UsersHelper
       helper Pageflow::Admin::LocalesHelper
       helper Pageflow::Admin::FormHelper
+      helper Pageflow::Admin::MembershipsHelper
       helper Pageflow::QuotaHelper
 
       def build_new_resource
@@ -221,8 +222,13 @@ module Pageflow
       end
 
       def create_resource(user)
-        verify_quota!(:users, resource.account)
-        super
+        known_user = User.find_by(email: resource.email)
+        if known_user
+          Membership.create(user: known_user, role: resource.role, entity: resource.account)
+        else
+          verify_quota!(:users, resource.account)
+          super
+        end
       end
 
       def user_profile_params
