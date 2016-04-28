@@ -155,10 +155,6 @@ module Pageflow
         can :create, ::User do |managed_user|
           Policies::UserPolicy.new(user, managed_user).create?
         end
-
-        can :update, ::User do |managed_user|
-          Policies::UserPolicy.new(user, managed_user).update?
-        end
       end
 
       if user.admin?
