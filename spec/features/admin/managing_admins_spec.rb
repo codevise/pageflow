@@ -20,7 +20,7 @@ feature 'managing admins' do
     Dom::Admin::Page.sign_in_as(:admin)
     visit(admin_user_path(user))
     Dom::Admin::UserPage.first.edit_user_link.click
-    Dom::Admin::UserForm.first.submit_with(:admin => false)
+    Dom::Admin::UserForm.first.submit_with(admin: false)
 
     expect(Dom::Admin::UserPage.first).not_to have_admin_flag
   end

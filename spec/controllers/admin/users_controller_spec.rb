@@ -20,21 +20,21 @@ module Pageflow
     describe '#create' do
       it 'does not allow account managers to create admins' do
         account = create(:account)
-        user = create(:user, :editor, :account => account)
+        create(:user, :editor, on: account)
 
-        sign_in(create(:user, :account_manager, :account => account))
+        sign_in(create(:user, :manager, on: account))
 
-        expect {
-          post :create, :user => attributes_for(:valid_user, :role => 'admin')
-        }.not_to change { User.admins.count }
+        expect do
+          post :create, user: attributes_for(:valid_user, role: 'admin')
+        end.not_to change { User.admins.count }
       end
 
       it 'allows admins to create admins' do
         sign_in(create(:user, :admin))
 
-        expect {
-          post :create, :user => attributes_for(:valid_user, :role => 'admin')
-        }.to change { User.admins.count }
+        expect do
+          post :create, user: attributes_for(:valid_user, role: 'admin')
+        end.to change { User.admins.count }
       end
 
       it 'does not allow account manager to create users for own account' do
@@ -42,19 +42,21 @@ module Pageflow
 
         sign_in(create(:user, :manager, on: account))
 
-        expect {
-          post :create, :user => attributes_for(:valid_user)
-        }.to_not change { account.users.count }
+        expect do
+          post :create, user: attributes_for(:valid_user)
+        end.to_not change { account.users.count }
       end
 
       it 'allows admin to set user account' do
+        pending 'remove upon removal of User account attribute'
         account = create(:account)
 
         sign_in(create(:user, :admin))
 
-        expect {
-          post :create, :user => attributes_for(:valid_user, :account_id => account)
-        }.to change { account.users.count }
+        expect do
+          post :create, user: attributes_for(:valid_user, account_id: account)
+        end.to change { account.users.count }
+        fail
       end
 
       it 'does not create user if quota is exhausted and e-mail is new' do
@@ -98,22 +100,26 @@ module Pageflow
 
     describe '#update' do
       it 'does not allow account managers to make users admin' do
+        pending 'change upon admin flag introduction'
         account = create(:account)
-        user = create(:user, :editor, :account => account)
+        user = create(:user, :manager, on: account)
 
-        sign_in(create(:user, :account_manager, :account => account))
-        patch :update, :id => user, :user => {:role => 'admin'}
+        sign_in(create(:user, :manager, on: account))
+        patch :update, id: user, user: {role: 'admin'}
 
         expect(user.reload).not_to be_admin
+        fail
       end
 
       it 'allows admin to make users admin' do
+        pending 'change upon admin flag introduction'
         user = create(:user, :editor)
 
         sign_in(create(:user, :admin))
-        patch :update, :id => user, :user => {:role => 'admin'}
+        patch :update, id: user, user: {role: 'admin'}
 
         expect(user.reload).to be_admin
+        fail
       end
 
       it 'does not allow account manager to change user account' do
