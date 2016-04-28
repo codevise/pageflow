@@ -6,30 +6,28 @@ module Pageflow
       render_views
 
       it 'displays quota state description' do
-        pending 'User invite feature getting finished'
         account = create(:account)
 
         Pageflow.config.quotas.register(:users, QuotaDouble.available)
 
-        sign_in(create(:user, :account_manager, :account => account))
+        sign_in(create(:user, :manager, on: account))
         get(:new)
 
         expect(response.body).to have_content('Quota available')
-        fail
       end
 
-      it 'does not render form if quota is exhausted' do
-        pending 'User invite feature getting finished'
+      it 'does not create user if quota is exhausted and e-mail is unknown' do
         account = create(:account)
 
         Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
 
-        sign_in(create(:user, :account_manager, :account => account))
+        sign_in(create(:user, :manager, on: account))
         get(:new)
 
         expect(response.body).not_to have_selector('form#new_user')
-        fail
       end
+
+      it 'creates user if quota is exhausted when e-mail is known'
     end
 
     describe '#create' do
@@ -72,33 +70,30 @@ module Pageflow
         }.to change { account.users.count }
       end
 
-      it 'does not create user if quota is exhausted' do
-        pending 'User invite feature getting finished'
+      it 'does not create user if quota is exhausted and e-mail is new' do
         account = create(:account)
-        user = create(:user, :editor, :account => account)
 
         Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
-        sign_in(create(:user, :account_manager, :account => account))
+        sign_in(create(:user, :manager, on: account))
 
-        expect {
+        expect do
           request.env['HTTP_REFERER'] = admin_users_path
-          post :create, :user => attributes_for(:valid_user)
-        }.not_to change { User.admins.count }
-        fail
+          post :create, user: attributes_for(:valid_user)
+        end.not_to change { User.admins.count }
       end
 
-      it 'redirects with flash if :users quota is exhausted' do
-        pending 'User invite feature getting finished'
+      it 'creates user via membership if their e-mail was already in the database'
+
+      it 'redirects with flash if :users quota is exhausted and e-mail is unknown' do
         account = create(:account)
 
         Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
 
-        sign_in(create(:user, :account_manager, :account => account))
+        sign_in(create(:user, :manager, on: account))
         request.env['HTTP_REFERER'] = admin_users_path
-        post(:create, :user => attributes_for(:valid_user))
+        post(:create, user: attributes_for(:valid_user))
 
         expect(flash[:alert]).to eq(I18n.t('pageflow.quotas.exhausted'))
-        fail
       end
     end
 

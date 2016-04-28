@@ -30,7 +30,7 @@ module Pageflow
         destroy! do
           if authorized?(:redirect_to_user, resource.user)
             redirect_url = admin_user_url(resource.user)
-          elsif authorized?(:index_users, resource.user)
+          elsif authorized?(:index, resource.user)
             redirect_url = admin_users_url
           else
             redirect_url = admin_entries_url
