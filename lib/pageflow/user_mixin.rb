@@ -11,7 +11,7 @@ module Pageflow
     included do
       belongs_to :account, counter_cache: true, class_name: 'Pageflow::Account'
 
-      has_many :memberships, :dependent => :destroy, :class_name => 'Pageflow::Membership'
+      has_many :memberships, dependent: :destroy, class_name: 'Pageflow::Membership'
       has_many :entries,
                through: :memberships,
                class_name: 'Pageflow::Entry',
@@ -43,11 +43,11 @@ module Pageflow
     end
 
     def full_name
-      [first_name, last_name] * " "
+      [first_name, last_name] * ' '
     end
 
     def formal_name
-      [last_name, first_name] * ", "
+      [last_name, first_name] * ', '
     end
 
     def locale
@@ -69,7 +69,7 @@ module Pageflow
         destroy
         true
       else
-        self.errors.add(:current_password, password.blank? ? :blank : :invalid)
+        errors.add(:current_password, password.blank? ? :blank : :invalid)
         false
       end
     end
