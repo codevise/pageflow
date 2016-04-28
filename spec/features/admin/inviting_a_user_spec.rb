@@ -6,23 +6,27 @@ feature 'inviting a user' do
 
     visit(admin_users_path)
     Dom::Admin::UserPage.first.invite_user_link.click
-    Dom::Admin::UserForm.first.submit_with(:first_name => 'John', :last_name => 'Doe', :email => 'john@example.com')
-    visit(MailClient.of('john@example.com').receive_invitation_link)
-    Dom::Admin::NewPasswordForm.first.submit_with(:password => '@new12345')
+    Dom::Admin::UserForm.first.submit_with(first_name: 'Wahnfried',
+                                           last_name: 'Doe',
+                                           email: 'wahnfried@example.com')
+    visit(MailClient.of('wahnfried@example.com').receive_invitation_link)
+    Dom::Admin::NewPasswordForm.first.submit_with(password: '@new12345')
 
-    expect(Dom::Admin::Page).to be_accessible_with(:email => 'john@example.com', :password => '@new12345')
+    expect(Dom::Admin::Page).to be_accessible_with(email: 'wahnfried@example.com',
+                                                   password: '@new12345')
   end
 
   scenario 're-sending an invitation email' do
-    user = create(:user, :email => 'john@example.com', :password => '!Pass123')
+    user = create(:user, email: 'sigismund@example.com', password: '!Pass123')
 
     Dom::Admin::Page.sign_in_as(:admin)
     visit(admin_user_path(user))
     Dom::Admin::UserPage.first.resend_invitation_link.click
-    visit(MailClient.of('john@example.com').receive_invitation_link)
-    Dom::Admin::NewPasswordForm.first.submit_with(:password => '@new12345')
+    visit(MailClient.of('sigismund@example.com').receive_invitation_link)
+    Dom::Admin::NewPasswordForm.first.submit_with(password: '@new12345')
 
-    expect(Dom::Admin::Page).to be_accessible_with(:email => 'john@example.com', :password => '@new12345')
+    expect(Dom::Admin::Page).to be_accessible_with(email: 'sigismund@example.com',
+                                                   password: '@new12345')
   end
 
   scenario 'inviting a user for another account' do
