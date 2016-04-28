@@ -224,7 +224,9 @@ module Pageflow
       def create_resource(user)
         known_user = User.find_by(email: resource.email)
         if known_user
-          Membership.create(user: known_user, role: resource.role, entity: resource.account)
+          Membership.create(user: known_user,
+                            role: resource.role,
+                            entity: resource.account)
         else
           verify_quota!(:users, resource.account)
           super
@@ -256,7 +258,7 @@ module Pageflow
       private
 
       def restrict_attributes(_id, attributes)
-        if !authorized?(:read, Account)
+        if !authorized?(:index, ::User)
           attributes.delete(:account_id)
         end
 
