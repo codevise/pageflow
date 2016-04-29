@@ -1,4 +1,4 @@
-<% if parent_type == :entry %>
+<% if params[:entity_type].to_sym == :entry %>
   <%= render partial: 'admin/memberships/entry_form' %>
 <% else %>
   <%= render partial: 'admin/memberships/account_form' %>

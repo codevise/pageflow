@@ -3,11 +3,22 @@ module Pageflow
     module MembershipsHelper
       def membership_entries_collection(parent, resource, f_object)
         if f_object.new_record?
-          MembershipFormCollection.new(parent,
-                                       resource: resource,
-                                       collection_method: :entries,
-                                       display_method: :title,
-                                       order: 'title ASC').pairs
+          if parent.class.to_s == 'User'
+            accounts = Policies::AccountPolicy::Scope.new(current_user, Pageflow::Account)
+                       .entry_creatable
+            MembershipFormCollection.new(parent,
+                                         resource: resource,
+                                         collection_method: :entries,
+                                         display_method: :title,
+                                         order: 'title ASC',
+                                         managed_accounts: accounts).collection_for_entries
+          else
+            MembershipFormCollection.new(parent,
+                                         resource: resource,
+                                         collection_method: :entries,
+                                         display_method: :title,
+                                         order: 'title ASC').pairs
+          end
         else
           [[resource.entity.title, resource.entity_id]]
         end
@@ -51,6 +62,7 @@ module Pageflow
       end
 
       class MembershipFormCollection
+        include ActionView::Helpers::FormOptionsHelper
         attr_reader :parent, :options
 
         def initialize(parent, options)
@@ -64,14 +76,21 @@ module Pageflow
           end
         end
 
+        def collection_for_entries
+          accounts = options[:managed_accounts]
+                     .includes(:entries).where('pageflow_entries.id IS NOT NULL')
+                     .where(entries_ids_not_in_parent_entries_ids)
+                     .order(:name, 'pageflow_entries.title')
+
+          option_groups_from_collection_for_select(accounts, :entries, :name, :id, :title)
+        end
+
         private
 
         def items
           if parent.class.to_s == 'User' || parent.class.to_s == 'Pageflow::InvitedUser'
             if options[:collection_method] == :users
               [parent]
-            elsif options[:collection_method] == :entries
-              items_in_account - items_in_parent
             else
               options[:managed_accounts] - items_in_parent
             end
@@ -88,11 +107,7 @@ module Pageflow
           if options[:collection_method] == :users
             parent.account.membership_users.order(options[:order])
           elsif parent.class.to_s == 'User'
-            if options[:collection_method] == :entries
-              options[:resource].entity.account.send(options[:collection_method]).order(options[:order])
-            else
-              options[:resource].entity.send(options[:collection_method]).order(options[:order])
-            end
+            options[:resource].entity.send(options[:collection_method]).order(options[:order])
           else
             parent.account.send(options[:collection_method]).order(options[:order])
           end
@@ -100,6 +115,20 @@ module Pageflow
 
         def items_in_parent
           parent.respond_to?(options[:collection_method]) ? parent.send(options[:collection_method]) : []
+        end
+
+        def entries_ids_not_in_parent_entries_ids
+          parent_entries_ids = items_in_parent.map(&:id)
+          if parent_entries_ids.any?
+            sanitize_sql_array(['pageflow_entries.id NOT IN (:parent_entries_ids)',
+                                parent_entries_ids: parent_entries_ids])
+          else
+            true
+          end
+        end
+
+        def sanitize_sql_array(array)
+          ActiveRecord::Base.send(:sanitize_sql_array, array)
         end
       end
     end

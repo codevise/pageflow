@@ -8,6 +8,8 @@ en:
     admin:
       account:
         add: 'Add Account'
+      entry:
+        add: 'Add Entry'
       users:
         accounts: 'Accounts'
         edit_role: 'Edit Role'
