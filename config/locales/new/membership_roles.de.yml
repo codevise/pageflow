@@ -8,6 +8,8 @@ de:
     admin:
       account:
         add: 'Konto hinzufügen'
+      entry:
+        add: 'Beitrag hinzufügen'
       users:
         accounts: 'Konten'
         edit_role: 'Rolle ändern'

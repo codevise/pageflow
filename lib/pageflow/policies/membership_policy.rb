@@ -37,7 +37,7 @@ module Pageflow
         end
 
         def managed_entry_ids
-          user.memberships.on_entries.where(role: 'manager').map(&:entity_id)
+          Pageflow::Policies::EntryPolicy::Scope.new(user, Entry).manager_or_above.map(&:id)
         end
 
         def membership_is_present

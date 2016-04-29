@@ -74,6 +74,43 @@ module Pageflow
                         admin_account_path(membership.entity.account))
               end
               column :created_at, sortable: 'pageflow_memberships.created_at'
+              column do |membership|
+                if authorized?(:update, membership)
+                  link_to(I18n.t('pageflow.admin.users.edit_role'),
+                          edit_admin_user_membership_path(user, membership, entity_type: :entry),
+                          data: {
+                            rel: "edit_entry_role_#{membership.role}"
+                          })
+                end
+              end
+              column do |membership|
+                if authorized?(:destroy, membership)
+                  link_to(I18n.t('pageflow.admin.users.delete'),
+                          admin_user_membership_path(user, membership),
+                          method: :delete,
+                          data: {
+                            confirm: I18n.t('active_admin.delete_confirmation'),
+                            rel: "delete_entry_membership_#{membership.role}"
+                          })
+                end
+              end
+            end
+            if Pageflow::Policies::EntryPolicy::Scope.new(user, Entry).publisher_or_above
+              span do
+                link_to(I18n.t('pageflow.admin.entry.add'),
+                        new_admin_user_membership_path(user, entity_type: :entry),
+                        class: 'button',
+                        data: {rel: 'add_entry_membership'})
+              end
+            end
+          end
+        else
+          if Pageflow::Policies::EntryPolicy::Scope.new(user, Entry).publisher_or_above
+            para do
+              link_to(I18n.t('pageflow.admin.entry.add'),
+                      new_admin_user_membership_path(user, entity_type: :entry),
+                      class: 'button',
+                      data: {rel: 'add_entry_membership'})
             end
           end
         end
@@ -101,7 +138,7 @@ module Pageflow
               column do |membership|
                 if authorized?(:update, membership)
                   link_to(I18n.t('pageflow.admin.users.edit_role'),
-                          edit_admin_user_membership_path(user, membership),
+                          edit_admin_user_membership_path(user, membership, entity_type: :account),
                           data: {
                             rel: 'edit_account_role'
                           })
@@ -122,7 +159,7 @@ module Pageflow
             if Pageflow::Policies::AccountPolicy::Scope.new(user, Account).member_addable
               span do
                 link_to(I18n.t('pageflow.admin.account.add'),
-                        new_admin_user_membership_path(user),
+                        new_admin_user_membership_path(user, entity_type: :account),
                         class: 'button',
                         data: {rel: 'add_account_membership'})
               end
@@ -130,11 +167,11 @@ module Pageflow
           end
         else
           if Pageflow::Policies::AccountPolicy::Scope.new(user, Account).member_addable
-            span do
+            para do
               link_to(I18n.t('pageflow.admin.account.add'),
-                      new_admin_user_membership_path(user),
+                      new_admin_user_membership_path(user, entity_type: :account),
                       class: 'button',
-                      data: {rel: 'add_account_member'})
+                      data: {rel: 'add_account_membership'})
             end
           end
         end
@@ -211,8 +248,8 @@ module Pageflow
       include Pageflow::QuotaVerification
 
       helper Pageflow::Admin::UsersHelper
-      helper Pageflow::Admin::LocalesHelper
       helper Pageflow::Admin::FormHelper
+      helper Pageflow::Admin::LocalesHelper
       helper Pageflow::Admin::MembershipsHelper
       helper Pageflow::QuotaHelper
 

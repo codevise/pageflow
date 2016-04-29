@@ -9,22 +9,22 @@ describe Admin::MembershipsController do
 
         sign_in(create(:user, :admin))
 
-        expect {
+        expect do
           post :create, account_id: account, membership: {user_id: user, role: 'manager'}
-        }.to change { account.memberships.count }
+        end.to change { account.memberships.count }
       end
 
       it 'allows to add account to user' do
-        pending 'decision on allowed routes'
         user = create(:user)
         account = create(:account)
 
         sign_in(create(:user, :admin))
 
-        expect {
-          post :create, user_id: user, membership: {account_id: account, role: 'manager'}
-        }.to change { account.memberships.count }
-        fail
+        expect do
+          post :create, user_id: user, membership: {entity_id: account.id,
+                                                    entity_type: 'Pageflow::Account',
+                                                    role: 'manager'}
+        end.to change { account.memberships.count }
       end
 
       it 'does not allow to add user of other account to entry' do
@@ -34,9 +34,11 @@ describe Admin::MembershipsController do
 
         sign_in(create(:user, :admin))
 
-        expect {
-          post :create, :entry_id => entry, :membership => {:user_id => user, role: 'previewer'}
-        }.not_to change { entry.memberships.count }
+        expect do
+          post :create,
+               entry_id: entry.id,
+               membership: {user_id: user, role: 'previewer'}
+        end.not_to change { entry.memberships.count }
       end
 
       it 'does not allow to add entry of other account to user' do
@@ -46,23 +48,25 @@ describe Admin::MembershipsController do
 
         sign_in(create(:user, :admin))
 
-        expect {
-          post :create, :user_id => user, :membership => {:entry_id => entry, role: 'previewer'}
-        }.not_to change { user.memberships.count }
+        expect do
+          post :create,
+               user_id: user,
+               membership: {entity_id: entry.id, entity_type: 'Pageflow::Entry', role: 'previewer'}
+        end.not_to change { user.memberships.count }
       end
 
       it 'allows to add entry of member account to user' do
-        pending 'decision on allowed routes'
         account = create(:account)
         user = create(:user, :member, on: account)
         entry = create(:entry, account: account)
 
         sign_in(create(:user, :admin))
 
-        expect {
-          post :create, :user_id => user, :membership => {:entry_id => entry, role: 'manager'}
-        }.to change { user.memberships.count }
-        fail
+        expect do
+          post :create, user_id: user, membership: {entity_id: entry.id,
+                                                    entity_type: 'Pageflow::Entry',
+                                                    role: 'manager'}
+        end.to change { user.memberships.count }
       end
 
       it 'allows to add user of member account to entry' do
@@ -72,9 +76,11 @@ describe Admin::MembershipsController do
 
         sign_in(create(:user, :admin))
 
-        expect {
-          post :create, :entry_id => entry, :membership => {:user_id => user, role: 'manager'}
-        }.to change { entry.memberships.count }
+        expect do
+          post :create,
+               entry_id: entry.id,
+               membership: {user_id: user, role: 'manager'}
+        end.to change { entry.memberships.count }
       end
     end
 
@@ -92,7 +98,6 @@ describe Admin::MembershipsController do
       end
 
       it 'allows to add correct account to user' do
-        pending 'decision on allowed routes'
         account_admin = create(:user)
         account = create(:account, with_manager: account_admin)
         user = create(:user)
@@ -100,9 +105,10 @@ describe Admin::MembershipsController do
         sign_in(account_admin)
 
         expect do
-          post :create, user_id: user, membership: {account_id: account, role: 'manager'}
+          post :create, user_id: user, membership: {entity_id: account.id,
+                                                    entity_type: 'Pageflow::Account',
+                                                    role: 'manager'}
         end.to change { account.memberships.count }
-        fail
       end
 
       it 'does not allow to add user to off-limits account' do
@@ -114,7 +120,8 @@ describe Admin::MembershipsController do
         sign_in(account_admin)
 
         expect do
-          post :create, account_id: off_limits_account, membership: {user_id: user, role: 'manager'}
+          post :create, account_id: off_limits_account.id, membership: {user_id: user,
+                                                                        role: 'manager'}
         end.not_to change { off_limits_account.memberships.count }
       end
 
@@ -127,7 +134,11 @@ describe Admin::MembershipsController do
         sign_in(account_admin)
 
         expect do
-          post :create, user_id: user, membership: {account_id: off_limits_account, role: 'manager'}
+          post :create,
+               user_id: user,
+               membership: {entity_id: off_limits_account.id,
+                            entity_type: 'Pageflow::Account',
+                            role: 'manager'}
         end.not_to change { off_limits_account.memberships.count }
       end
     end
@@ -153,7 +164,9 @@ describe Admin::MembershipsController do
         sign_in(account_publisher)
 
         expect do
-          post :create, user_id: user, membership: {account_id: account, role: 'manager'}
+          post :create, user_id: user, membership: {account_id: account.id,
+                                                    account_type: 'Pageflow::Account',
+                                                    role: 'manager'}
         end.not_to change { account.memberships.count }
       end
     end
@@ -164,13 +177,13 @@ describe Admin::MembershipsController do
         account = create(:account, with_manager: entry_admin)
         other_account = create(:account, with_manager: entry_admin)
         user = create(:user, :manager, on: account)
-        entry = create(:entry, :account => other_account, with_manager: entry_admin)
+        entry = create(:entry, account: other_account, with_manager: entry_admin)
 
         sign_in(entry_admin)
 
-        expect {
-          post :create, :entry_id => entry, :membership => {:user_id => user, role: 'previewer'}
-        }.not_to change { entry.memberships.count }
+        expect do
+          post :create, entry_id: entry, membership: {user_id: user, role: 'previewer'}
+        end.not_to change { entry.memberships.count }
       end
 
       it 'does not allow to add entry to user in other account' do
@@ -178,41 +191,45 @@ describe Admin::MembershipsController do
         account = create(:account, with_manager: entry_admin)
         other_account = create(:account, with_manager: entry_admin)
         user = create(:user, :manager, on: account)
-        entry = create(:entry, :account => other_account, with_manager: entry_admin)
+        entry = create(:entry, account: other_account, with_manager: entry_admin)
 
         sign_in(entry_admin)
 
-        expect {
-          post :create, :user_id => user, :membership => {:entry_id => entry, role: 'previewer'}
-        }.not_to change { user.memberships.count }
+        expect do
+          post :create, user_id: user, membership: {entry_id: entry.id,
+                                                    entity_type: 'Pageflow::Entry',
+                                                    role: 'previewer'}
+        end.not_to change { user.memberships.count }
       end
 
       it 'does not allow to add user to entry for entry admin on other entry' do
         entry_admin = create(:user)
         account = create(:account)
-        other_entry = create(:entry, with_manager: entry_admin)
+        create(:entry, with_manager: entry_admin)
         user = create(:user, :member, on: account)
-        entry = create(:entry, :account => account)
+        entry = create(:entry, account: account)
 
         sign_in(entry_admin)
 
-        expect {
-          post :create, :entry_id => entry, :membership => {:user_id => user, role: 'previewer'}
-        }.not_to change { entry.memberships.count }
+        expect do
+          post :create, entry_id: entry, membership: {user_id: user, role: 'previewer'}
+        end.not_to change { entry.memberships.count }
       end
 
       it 'does not allow to add entry to user for entry admin on other entry' do
         entry_admin = create(:user)
         account = create(:account)
-        other_entry = create(:entry, with_manager: entry_admin)
+        create(:entry, with_manager: entry_admin)
         user = create(:user, :member, on: account)
-        entry = create(:entry, :account => account)
+        entry = create(:entry, account: account)
 
         sign_in(entry_admin)
 
-        expect {
-          post :create, :user_id => user, :membership => {:entry_id => entry, role: 'previewer'}
-        }.not_to change { user.memberships.count }
+        expect do
+          post :create, user_id: user, membership: {entry_id: entry.id,
+                                                    entity_type: 'Pageflow::Entry',
+                                                    role: 'previewer'}
+        end.not_to change { user.memberships.count }
       end
 
       it 'allows to add user to entry in correct account' do
@@ -223,13 +240,12 @@ describe Admin::MembershipsController do
 
         sign_in(entry_admin)
 
-        expect {
-          post :create, :entry_id => entry, :membership => {:user_id => user, role: 'manager'}
-        }.to change { entry.memberships.count }
+        expect do
+          post :create, entry_id: entry, membership: {user_id: user, role: 'manager'}
+        end.to change { entry.memberships.count }
       end
 
       it 'allows to add entry to user in correct account' do
-        pending 'decision on allowed routes'
         entry_admin = create(:user)
         account = create(:account)
         user = create(:user, :member, on: account)
@@ -237,10 +253,11 @@ describe Admin::MembershipsController do
 
         sign_in(entry_admin)
 
-        expect {
-          post :create, :user_id => user, :membership => {:entry_id => entry, role: 'manager'}
-        }.to change { user.memberships.count }
-        fail
+        expect do
+          post :create, user_id: user, membership: {entity_id: entry.id,
+                                                    entity_type: 'Pageflow::Entry',
+                                                    role: 'manager'}
+        end.to change { user.memberships.count }
       end
     end
 
@@ -253,9 +270,9 @@ describe Admin::MembershipsController do
 
         sign_in(entry_publisher)
 
-        expect {
-          post :create, :entry_id => entry, :membership => {:user_id => user, role: 'manager'}
-        }.not_to change { entry.memberships.count }
+        expect do
+          post :create, entry_id: entry, membership: {user_id: user, role: 'manager'}
+        end.not_to change { entry.memberships.count }
       end
 
       it 'does not allow to add entry to user in correct account' do
@@ -266,9 +283,11 @@ describe Admin::MembershipsController do
 
         sign_in(entry_publisher)
 
-        expect {
-          post :create, :user_id => user, :membership => {:entry_id => entry, role: 'manager'}
-        }.not_to change { user.memberships.count }
+        expect do
+          post :create, user_id: user, membership: {entry_id: entry,
+                                                    entity_type: 'Pageflow::Entry',
+                                                    role: 'manager'}
+        end.not_to change { user.memberships.count }
       end
     end
   end
@@ -307,9 +326,9 @@ describe Admin::MembershipsController do
 
         sign_in(create(:user, :admin))
 
-        expect {
+        expect do
           patch :update, user_id: user, id: membership, membership: {role: 'publisher'}
-        }.to change { membership.reload.role }
+        end.to change { membership.reload.role }
       end
 
       it 'allows to edit entry role via entry' do
@@ -320,9 +339,9 @@ describe Admin::MembershipsController do
 
         sign_in(create(:user, :admin))
 
-        expect {
-          patch :update, :entry_id => entry, id: membership, membership: {role: 'publisher'}
-        }.to change { membership.reload.role }
+        expect do
+          patch :update, entry_id: entry, id: membership, membership: {role: 'publisher'}
+        end.to change { membership.reload.role }
       end
 
       describe 'as account admin' do
@@ -362,7 +381,10 @@ describe Admin::MembershipsController do
           sign_in(account_admin)
 
           expect do
-            patch :update, account_id: off_limits_account, id: membership, membership: {role: 'previewer'}
+            patch :update,
+                  account_id: off_limits_account,
+                  id: membership,
+                  membership: {role: 'previewer'}
           end.not_to change { membership.reload.role }
         end
 
@@ -736,9 +758,9 @@ describe Admin::MembershipsController do
 
           sign_in(entry_manager)
 
-          expect {
+          expect do
             delete(:destroy, entry_id: entry, id: membership)
-          }.not_to change { entry.memberships.count }
+          end.not_to change { entry.memberships.count }
         end
 
         it 'allows to delete member of entry account from entry' do
@@ -750,9 +772,9 @@ describe Admin::MembershipsController do
 
           sign_in(entry_manager)
 
-          expect {
+          expect do
             delete(:destroy, entry_id: entry, id: membership)
-          }.to change { entry.memberships.count }
+          end.to change { entry.memberships.count }
         end
 
         it 'allows to delete entry of user account from user' do
@@ -764,9 +786,9 @@ describe Admin::MembershipsController do
 
           sign_in(entry_manager)
 
-          expect {
+          expect do
             delete(:destroy, user_id: user, id: membership)
-          }.to change { user.memberships.count }
+          end.to change { user.memberships.count }
         end
       end
 
@@ -780,9 +802,9 @@ describe Admin::MembershipsController do
 
           sign_in(entry_publisher)
 
-          expect {
+          expect do
             delete(:destroy, entry_id: entry, id: membership)
-          }.not_to change { entry.memberships.count }
+          end.not_to change { entry.memberships.count }
         end
 
         it 'does not allow to delete entry of user account from user' do
@@ -794,9 +816,9 @@ describe Admin::MembershipsController do
 
           sign_in(entry_publisher)
 
-          expect {
+          expect do
             delete(:destroy, user_id: user, id: membership)
-          }.not_to change { user.memberships.count }
+          end.not_to change { user.memberships.count }
         end
       end
     end

@@ -5,7 +5,7 @@ module Pageflow
                  .entry_creatable.includes(:folders).where('pageflow_folders.id IS NOT NULL')
                  .order(:name, 'pageflow_folders.name')
 
-      option_groups_from_collection_for_select(accounts, :folders, :name, :id, :name, nil)
+      option_groups_from_collection_for_select(accounts, :folders, :name, :id, :name)
     end
   end
 end

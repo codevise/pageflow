@@ -52,41 +52,82 @@ feature 'account manager managing user roles' do
   end
 end
 
-feature 'entry manager managing user roles' do
-  scenario 'giving a member on the account of entry permissions on that entry' do
-    entry = create(:entry)
-    create(:user, :member, on: entry.account)
-    Dom::Admin::Page.sign_in_as(:manager, on: entry)
+feature 'managing user roles' do
+  context 'as entry manager via entry show page' do
+    scenario 'giving a member on the account of entry permissions on that entry' do
+      entry = create(:entry)
+      create(:user, :member, on: entry.account)
+      Dom::Admin::Page.sign_in_as(:manager, on: entry)
 
-    visit(admin_entry_path(entry))
+      visit(admin_entry_path(entry))
 
-    Dom::Admin::EntryPage.first.add_member_link.click
-    Dom::Admin::MembershipForm.first.submit_with(role: 'publisher',
-                                                 entity: entry)
-    expect(Dom::Admin::EntryPage.first).to have_role_flag('publisher')
+      Dom::Admin::EntryPage.first.add_member_link.click
+      Dom::Admin::MembershipForm.first.submit_with(role: 'publisher',
+                                                   entity: entry)
+      expect(Dom::Admin::EntryPage.first).to have_role_flag('publisher')
+    end
+
+    scenario 'editing permissions of a user on an entry' do
+      entry = create(:entry)
+      create(:user, :previewer, on: entry)
+      Dom::Admin::Page.sign_in_as(:manager, on: entry)
+
+      visit(admin_entry_path(entry))
+
+      Dom::Admin::EntryPage.first.edit_role_link('previewer').click
+      Dom::Admin::MembershipForm.first.submit_with(role: 'publisher')
+      expect(Dom::Admin::EntryPage.first).to have_role_flag('publisher')
+    end
+
+    scenario 'deleting permissions of a user on an entry' do
+      entry = create(:entry)
+      create(:user, :previewer, on: entry)
+      Dom::Admin::Page.sign_in_as(:manager, on: entry)
+
+      visit(admin_entry_path(entry))
+
+      Dom::Admin::EntryPage.first.delete_member_link('previewer').click
+
+      expect(Dom::Admin::EntryPage.first).not_to have_role_flag('previewer')
+    end
   end
 
-  scenario 'editing permissions of a user on an entry' do
-    entry = create(:entry)
-    create(:user, :previewer, on: entry)
-    Dom::Admin::Page.sign_in_as(:manager, on: entry)
+  context 'as account manager via user show page' do
+    scenario 'giving a member on the account of entry permissions on that entry' do
+      entry = create(:entry)
+      user = create(:user, :member, on: entry.account)
+      Dom::Admin::Page.sign_in_as(:manager, on: entry.account)
 
-    visit(admin_entry_path(entry))
+      visit(admin_user_path(user))
 
-    Dom::Admin::EntryPage.first.edit_role_link('previewer').click
-    Dom::Admin::MembershipForm.first.submit_with(role: 'publisher')
-    expect(Dom::Admin::EntryPage.first).to have_role_flag('publisher')
-  end
+      Dom::Admin::UserPage.first.add_entry_membership_link.click
+      Dom::Admin::MembershipForm.first.submit_with(role: 'publisher',
+                                                   entity: entry)
+      expect(Dom::Admin::UserPage.first).to have_role_flag('publisher')
+    end
 
-  scenario 'deleting permissions of a user on an entry' do
-    entry = create(:entry)
-    create(:user, :previewer, on: entry)
-    Dom::Admin::Page.sign_in_as(:manager, on: entry)
+    scenario 'editing permissions of a user on an entry' do
+      entry = create(:entry)
+      user = create(:user, :previewer, on: entry)
+      Dom::Admin::Page.sign_in_as(:manager, on: entry.account)
 
-    visit(admin_entry_path(entry))
+      visit(admin_user_path(user))
 
-    Dom::Admin::EntryPage.first.delete_member_link('previewer').click
+      Dom::Admin::UserPage.first.edit_entry_role_link('previewer').click
+      Dom::Admin::MembershipForm.first.submit_with(role: 'publisher')
+      expect(Dom::Admin::UserPage.first).to have_role_flag('publisher')
+    end
 
-    expect(Dom::Admin::EntryPage.first).not_to have_role_flag('member')
+    scenario 'deleting permissions of a user on an entry' do
+      entry = create(:entry)
+      user = create(:user, :previewer, on: entry)
+      Dom::Admin::Page.sign_in_as(:manager, on: entry.account)
+
+      visit(admin_user_path(user))
+
+      Dom::Admin::UserPage.first.delete_member_on_entry_link('previewer').click
+
+      expect(Dom::Admin::UserPage.first).not_to have_role_flag('previewer')
+    end
   end
 end
