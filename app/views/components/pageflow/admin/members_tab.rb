@@ -43,7 +43,8 @@ module Pageflow
             end
           end
         end
-        if authorized? :add_member_to, entry
+        if authorized?(:add_member_to, entry) &&
+           membership_users_collection(resource, Membership.new(entity: resource), Membership.new).any?
           span do
             link_to(I18n.t('pageflow.admin.users.add'),
                     new_admin_entry_membership_path(entry, entity_type: :entry),

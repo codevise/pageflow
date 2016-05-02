@@ -95,7 +95,8 @@ module Pageflow
                 end
               end
             end
-            if Pageflow::Policies::EntryPolicy::Scope.new(user, Entry).publisher_or_above
+            if Pageflow::Policies::EntryPolicy::Scope.new(user, Entry).publisher_or_above &&
+               !membership_entries_collection(resource, Membership.new(user: resource), Membership.new).blank?
               span do
                 link_to(I18n.t('pageflow.admin.entry.add'),
                         new_admin_user_membership_path(user, entity_type: :entry),
@@ -105,7 +106,8 @@ module Pageflow
             end
           end
         else
-          if Pageflow::Policies::EntryPolicy::Scope.new(user, Entry).publisher_or_above
+          if Pageflow::Policies::EntryPolicy::Scope.new(user, Entry).publisher_or_above &&
+             !membership_entries_collection(resource, Membership.new(user: resource), Membership.new).blank?
             para do
               link_to(I18n.t('pageflow.admin.entry.add'),
                       new_admin_user_membership_path(user, entity_type: :entry),
@@ -156,7 +158,8 @@ module Pageflow
                 end
               end
             end
-            if Pageflow::Policies::AccountPolicy::Scope.new(user, Account).member_addable
+            if Pageflow::Policies::AccountPolicy::Scope.new(user, Account).member_addable &&
+               !membership_accounts_collection(resource, Membership.new(user: resource), Membership.new).blank?
               span do
                 link_to(I18n.t('pageflow.admin.account.add'),
                         new_admin_user_membership_path(user, entity_type: :account),
@@ -166,7 +169,8 @@ module Pageflow
             end
           end
         else
-          if Pageflow::Policies::AccountPolicy::Scope.new(user, Account).member_addable
+          if Pageflow::Policies::AccountPolicy::Scope.new(user, Account).member_addable &&
+             !membership_accounts_collection(resource, Membership.new(user: resource), Membership.new).blank?
             para do
               link_to(I18n.t('pageflow.admin.account.add'),
                       new_admin_user_membership_path(user, entity_type: :account),
