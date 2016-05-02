@@ -147,8 +147,9 @@ module Pageflow
       helper EntriesHelper
       helper Pageflow::Admin::EntriesHelper
       helper Pageflow::Admin::FeaturesHelper
-      helper Pageflow::Admin::RevisionsHelper
       helper Pageflow::Admin::FormHelper
+      helper Pageflow::Admin::MembershipsHelper
+      helper Pageflow::Admin::RevisionsHelper
 
       after_build do |entry|
         entry.account ||= current_user.account

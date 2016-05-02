@@ -28,9 +28,11 @@ module Pageflow
                    entity_id: dependent_entry_ids).destroy_all
         end
         destroy! do
-          if authorized?(:redirect_to_user, resource.user)
+          if authorized?(:redirect_to_user, resource.user) && params[:user_id]
             redirect_url = admin_user_url(resource.user)
-          elsif authorized?(:index, resource.user)
+          elsif authorized?(:redirect_to_user, resource.user) && params[:entry_id]
+            redirect_url = admin_entry_url(resource.entity)
+          elsif params[:user_id] && authorized?(:index, resource.user)
             redirect_url = admin_users_url
           else
             redirect_url = admin_entries_url
