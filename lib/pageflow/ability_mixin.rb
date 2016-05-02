@@ -25,6 +25,10 @@ module Pageflow
 
       can :index, Membership, Policies::MembershipPolicy::Scope.new(user, Membership).indexable
 
+      can :see, :accounts_column_on_entry_index do
+        user.admin? || user.memberships.on_accounts.length > 1
+      end
+
       unless user.admin?
         can [:create, :update, :destroy], Folder do |folder|
           Policies::FolderPolicy.new(user, folder).manage?
