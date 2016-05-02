@@ -14,7 +14,7 @@ module Pageflow
       column I18n.t('pageflow.admin.entries.members'), class: 'members' do |entry|
         entry_user_badge_list(entry)
       end
-      if authorized?(:read, Account)
+      if authorized?(:see, :accounts_column_on_entry_index)
         column :account, sortable: 'account_id' do |entry|
           link_to(entry.account.name,
                   admin_account_path(entry.account),
@@ -227,9 +227,10 @@ module Pageflow
 
       def permit_theming(accounts)
         if ([:create, :new].include?(action_name.to_sym) ||
-           authorized?(:update_theming_on, resource)) && params[:entry] && params[:entry][:theming_id]
+           authorized?(:update_theming_on, resource)) && params[:entry] &&
+           params[:entry][:theming_id]
           if theming_policy_scope.themings_allowed_for(accounts)
-              .include?(Pageflow::Theming.find(params[:entry][:theming_id]))
+             .include?(Pageflow::Theming.find(params[:entry][:theming_id]))
             result = [:theming_id]
           end
         end
@@ -237,13 +238,16 @@ module Pageflow
       end
 
       def permit_account
-        if params[:id] && authorized?(:update_account_on, resource) && params[:entry] && params[:entry][:account_id]
-          if account_policy_scope.entry_movable
-              .include?(Pageflow::Account.find(params[:entry][:account_id]))
-            result = [:account_id]
+        if params[:entry] && params[:entry][:account_id]
+          if action_name.to_sym == :create ||
+             action_name.to_sym == :update && authorized?(:update_account_on, resource)
+            if account_policy_scope.entry_movable
+               .include?(Pageflow::Account.find(params[:entry][:account_id]))
+              result = [:account_id]
+            end
           end
+          result
         end
-        result
       end
     end
   end
