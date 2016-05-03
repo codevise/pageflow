@@ -17,7 +17,13 @@ module Pageflow
         li do
           span(user_initials(user), :class => 'abbreviation')
           div :class => 'tooltip' do
-            link_to(user.full_name, admin_user_path(user))
+            if authorized?(:read, user)
+              link_to(user.full_name, admin_user_path(user))
+            else
+              span class: 'name' do
+                user.full_name
+              end
+            end
           end
         end
       end
