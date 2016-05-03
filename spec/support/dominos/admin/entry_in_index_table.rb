@@ -4,7 +4,7 @@ module Dom
       selector '.admin_entries.index .index_table tbody tr'
 
       attribute :title, 'td.col-title'
-      attribute :account_name, 'td.col-account a'
+      attribute :account_name, 'td.col-account'
 
       def view_entry_link
         within(node) do

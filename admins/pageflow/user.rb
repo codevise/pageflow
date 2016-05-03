@@ -70,8 +70,12 @@ module Pageflow
                 end
               end
               column I18n.t('activerecord.models.account.one'), :account do |membership|
-                link_to(membership.entity.account.name,
-                        admin_account_path(membership.entity.account))
+                if authorized?(:read, Account)
+                  link_to(membership.entity.account.name,
+                          admin_account_path(membership.entity.account))
+                else
+                  membership.entity.account.name
+                end
               end
               column :created_at, sortable: 'pageflow_memberships.created_at'
               column do |membership|
