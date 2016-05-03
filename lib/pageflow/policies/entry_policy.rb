@@ -15,29 +15,29 @@ module Pageflow
           else
             scope
               .joins(memberships_for_entries(user))
-              .joins(memberships_for_account_of_entries(user))
+              .joins(memberships_above_member_for_account_of_entries(user))
               .where(either_membership_is_present)
           end
         end
 
         def editor_or_above
           scope
-            .joins(above_editor_memberships_for_entries(user))
-            .joins(above_editor_memberships_for_account_of_entries(user))
+            .joins(memberships_above_previewer_for_entries(user))
+            .joins(memberships_above_previewer_for_account_of_entries(user))
             .where(either_membership_is_present)
         end
 
         def publisher_or_above
           scope
-            .joins(above_publisher_memberships_for_entries(user))
-            .joins(above_publisher_memberships_for_account_of_entries(user))
+            .joins(memberships_above_editor_for_entries(user))
+            .joins(memberships_above_editor_for_account_of_entries(user))
             .where(either_membership_is_present)
         end
 
         def manager_or_above
           scope
-            .joins(above_manager_memberships_for_entries(user))
-            .joins(above_manager_memberships_for_account_of_entries(user))
+            .joins(memberships_above_publisher_for_entries(user))
+            .joins(memberships_above_publisher_for_account_of_entries(user))
             .where(either_membership_is_present)
         end
 
@@ -55,15 +55,16 @@ module Pageflow
                               user_id: user.id])
         end
 
-        def memberships_for_account_of_entries(user)
+        def memberships_above_member_for_account_of_entries(user)
           sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
                               'pageflow_memberships_2.user_id = :user_id AND ' \
+                              'pageflow_memberships_2.role IN ("previewer", "editor", "publisher", "manager") AND ' \
                               'pageflow_memberships_2.entity_id = pageflow_entries.account_id ' \
                               'AND pageflow_memberships_2.entity_type = "Pageflow::Account"',
                               user_id: user.id])
         end
 
-        def above_editor_memberships_for_entries(user)
+        def memberships_above_previewer_for_entries(user)
           sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \
                               'pageflow_memberships.user_id = :user_id AND ' \
                               'pageflow_memberships.role IN ("editor", "publisher", "manager") AND ' \
@@ -72,7 +73,7 @@ module Pageflow
                               user_id: user.id])
         end
 
-        def above_editor_memberships_for_account_of_entries(user)
+        def memberships_above_previewer_for_account_of_entries(user)
           sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
                               'pageflow_memberships_2.user_id = :user_id AND ' \
                               'pageflow_memberships_2.role IN ("editor", "publisher", "manager") AND ' \
@@ -81,7 +82,7 @@ module Pageflow
                               user_id: user.id])
         end
 
-        def above_publisher_memberships_for_entries(user)
+        def memberships_above_editor_for_entries(user)
           sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \
                               'pageflow_memberships.user_id = :user_id AND ' \
                               'pageflow_memberships.role IN ("publisher", "manager") AND ' \
@@ -90,7 +91,7 @@ module Pageflow
                               user_id: user.id])
         end
 
-        def above_publisher_memberships_for_account_of_entries(user)
+        def memberships_above_editor_for_account_of_entries(user)
           sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
                               'pageflow_memberships_2.user_id = :user_id AND ' \
                               'pageflow_memberships_2.role IN ("publisher", "manager") AND ' \
@@ -99,7 +100,7 @@ module Pageflow
                               user_id: user.id])
         end
 
-        def above_manager_memberships_for_entries(user)
+        def memberships_above_publisher_for_entries(user)
           sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \
                               'pageflow_memberships.user_id = :user_id AND ' \
                               'pageflow_memberships.role IN ("manager") AND ' \
@@ -108,7 +109,7 @@ module Pageflow
                               user_id: user.id])
         end
 
-        def above_manager_memberships_for_account_of_entries(user)
+        def memberships_above_publisher_for_account_of_entries(user)
           sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
                               'pageflow_memberships_2.user_id = :user_id AND ' \
                               'pageflow_memberships_2.role IN ("manager") AND ' \
