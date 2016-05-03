@@ -54,7 +54,9 @@ module Pageflow
     filter :edited_at
     filter :first_published_at
     filter :published_revision_published_at, as: :date_range
-    filter :with_publication_state, as: :select, collection: -> { collection_for_entry_publication_states }
+    filter :with_publication_state,
+           as: :select,
+           collection: -> { collection_for_entry_publication_states }
 
     sidebar :folders, only: :index do
       text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'),
@@ -72,7 +74,10 @@ module Pageflow
         eligible_accounts = Policies::AccountPolicy::Scope.new(current_user, Pageflow::Account)
                             .entry_movable.all
         if authorized?(:update_account_on, resource)
-          f.input :account, collection: eligible_accounts, include_blank: false
+          f.input :account,
+                  collection: eligible_accounts,
+                  include_blank: false,
+                  input_html: {onchange: jquery_for_disabling_on_change}
         end
 
         unless f.object.new_record?
@@ -85,7 +90,12 @@ module Pageflow
         end
 
         if authorized?(:configure_folder_for, resource) || controller.action_name == :create
-          f.input :folder, collection: collection_for_folders, include_blank: true
+          resource_folder_id = resource.folder ? resource.folder.id : nil
+          f.input(:folder,
+                  collection: collection_for_folders(resource.account,
+                                                     resource_folder_id),
+                  include_blank: true) unless collection_for_folders(resource.account,
+                                                                     resource_folder_id).empty?
         end
 
         Pageflow.config_for(f.object).admin_form_inputs.build(:entry, f)

@@ -11,9 +11,11 @@ module Pageflow
 
         allow(helper).to receive(:current_user) { user }
 
-        expect(helper.collection_for_folders).to have_content('This folder')
-        expect(helper.collection_for_folders).not_to have_content('not this folder')
-        expect(helper.collection_for_folders).to include('This account here')
+        collection_for_folders_result = helper.collection_for_folders(account)
+
+        expect(collection_for_folders_result).to have_content('This folder')
+        expect(collection_for_folders_result).not_to have_content('not this folder')
+        expect(collection_for_folders_result).to include('This account here')
       end
     end
   end
