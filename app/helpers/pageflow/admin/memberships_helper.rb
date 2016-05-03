@@ -27,7 +27,7 @@ module Pageflow
       def membership_accounts_collection(parent, resource, f_object)
         if f_object.new_record?
           accounts = Pageflow::Policies::AccountPolicy::Scope
-                     .new(current_user, Account).member_addable.all
+                     .new(current_user, Account).member_addable.load
           MembershipFormCollection.new(parent,
                                        collection_method: :membership_accounts,
                                        display_method: :name,
