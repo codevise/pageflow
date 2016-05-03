@@ -52,8 +52,10 @@ module Pageflow
           Policies::EntryPolicy.new(user, entry).read?
         end
 
-        can :create, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).create?
+        if Policies::AccountPolicy::Scope.new(user, Account).entry_creatable.any?
+          can :create, Entry do |entry|
+            Policies::EntryPolicy.new(user, entry).create?
+          end
         end
 
         can :duplicate, Entry do |entry|

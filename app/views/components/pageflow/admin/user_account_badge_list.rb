@@ -17,9 +17,16 @@ module Pageflow
 
       def build_badge(membership)
         li do
-          span(membership.entity.name, class: 'abbreviation')
+          if authorized?(:read, Account)
+            account_name_display = span(link_to(membership.entity.name,
+                                                admin_account_path(membership.entity)),
+                                        class: 'abbreviation')
+          else
+            account_name_display = span(membership.entity.name, class: 'abbreviation')
+          end
           div class: 'tooltip' do
-            link_to(membership.entity.name, admin_account_path(membership.entity)) + " (#{I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')})"
+            account_name_display +
+              " (#{I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')})"
           end
         end
       end

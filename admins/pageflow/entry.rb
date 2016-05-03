@@ -1,6 +1,6 @@
 module Pageflow
-  ActiveAdmin.register Entry, :as => 'Entry' do
-    menu :priority => 1
+  ActiveAdmin.register Entry, as: 'Entry' do
+    menu priority: 1
 
     config.batch_actions = false
 
@@ -16,9 +16,13 @@ module Pageflow
       end
       if authorized?(:see, :accounts_column_on_entry_index)
         column :account, sortable: 'account_id' do |entry|
-          link_to(entry.account.name,
-                  admin_account_path(entry.account),
-                  data: {id: entry.account.id})
+          if authorized?(:read, Account)
+            link_to(entry.account.name,
+                    admin_account_path(entry.account),
+                    data: {id: entry.account.id})
+          else
+            entry.account.name
+          end
         end
       end
       column :created_at
@@ -72,7 +76,8 @@ module Pageflow
         end
 
         unless f.object.new_record?
-          eligible_themings = Policies::ThemingPolicy::Scope.new(current_user, Pageflow::Theming).themings_allowed_for(resource.account).all
+          eligible_themings = Policies::ThemingPolicy::Scope.new(current_user, Pageflow::Theming)
+                              .themings_allowed_for(resource.account).all
         end
 
         if authorized?(:update_theming_on, resource) && !f.object.new_record?

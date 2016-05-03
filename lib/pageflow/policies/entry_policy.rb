@@ -178,7 +178,7 @@ module Pageflow
 
       def manage?
         @user.admin? ||
-        allows?(%w(manager))
+          allows?(%w(manager))
       end
 
       def add_member_to?
