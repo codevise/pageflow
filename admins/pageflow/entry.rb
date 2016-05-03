@@ -72,7 +72,7 @@ module Pageflow
         f.input :title, hint: I18n.t('pageflow.admin.entries.title_hint')
 
         eligible_accounts = Policies::AccountPolicy::Scope.new(current_user, Pageflow::Account)
-                            .entry_movable.all
+                            .entry_movable.load
         if authorized?(:update_account_on, resource)
           f.input :account,
                   collection: eligible_accounts,
@@ -82,7 +82,7 @@ module Pageflow
 
         unless f.object.new_record?
           eligible_themings = Policies::ThemingPolicy::Scope.new(current_user, Pageflow::Theming)
-                              .themings_allowed_for(resource.account).all
+                              .themings_allowed_for(resource.account).load
         end
 
         if authorized?(:update_theming_on, resource) && !f.object.new_record?

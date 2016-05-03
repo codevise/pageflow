@@ -14,7 +14,7 @@ module Pageflow
             scope.all
           else
             manager_accounts_ids = Pageflow::Policies::AccountPolicy::Scope
-                                   .new(@user, Account).member_addable.all.map(&:id)
+                                   .new(@user, Account).member_addable.map(&:id)
 
             scope.joins(:memberships).where('pageflow_memberships.entity_type = "Pageflow::Account"').where(membership_in_managed_account(manager_accounts_ids)).distinct
           end
