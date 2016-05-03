@@ -30,7 +30,7 @@ module Pageflow
       column :published_at, sortable: 'pageflow_revisions.published_at'
 
       column class: 'buttons' do |entry|
-        if authorized?(:edit, Entry)
+        if authorized?(:edit, entry)
           icon_link_to(pageflow.edit_entry_path(entry),
                        tooltip: I18n.t('pageflow.admin.entries.editor_hint'),
                        class: 'editor')
