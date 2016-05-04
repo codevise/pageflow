@@ -187,13 +187,15 @@ module Pageflow
     end
 
     action_item(:edit, only: :show) do
-      link_to I18n.t('pageflow.admin.users.edit'),
-              edit_admin_user_path(user),
-              data: {rel: 'edit_user'}
+      if authorized?(:edit, resource)
+        link_to I18n.t('pageflow.admin.users.edit'),
+                edit_admin_user_path(user),
+                data: {rel: 'edit_user'}
+      end
     end
 
     action_item(:toggle_suspended, only: :show) do
-      if user != current_user
+      if user != current_user && authorized?(:suspend, resource)
         if user.suspended?
           link_to I18n.t('pageflow.admin.users.unsuspend'),
                   unsuspend_admin_user_path(user),
@@ -207,7 +209,7 @@ module Pageflow
     end
 
     action_item(:delete, only: :show) do
-      if user != current_user
+      if user != current_user && authorized?(:destroy, resource)
         link_to I18n.t('pageflow.admin.users.delete'),
                 admin_user_path(user),
                 method: :delete,

@@ -1,0 +1,28 @@
+de:
+  activerecord:
+    errors:
+      models:
+        pageflow/entry:
+          attributes:
+            folder:
+              must_be_same_account: Ordner muss zu gleichem Konto gehören wie Beitrag
+  pageflow:
+    admin:
+      entries:
+        entry_number: Beitrag Nr.
+    parent_page_box:
+      widget_type_name: Erscheinungsbild-Bestandteil
+en:
+  activerecord:
+    errors:
+      models:
+        pageflow/entry:
+          attributes:
+            folder:
+              must_be_same_account: Folder must belong to same account as entry
+  pageflow:
+    admin:
+      entries:
+        entry_number: Entry №
+    parent_page_box:
+      widget_type_name: Appearance Feature
