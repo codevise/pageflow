@@ -9,7 +9,11 @@ module Pageflow
         entry_publication_state_indicator(entry)
       end
       column :title, sortable: 'title' do |entry|
-        link_to(entry.title, admin_entry_path(entry))
+        if entry.title.blank?
+          link_to(I18n.t('pageflow.admin.entries.entry_number') + ' ' + entry.id.to_s, admin_entry_path(entry))
+        else
+          link_to(entry.title, admin_entry_path(entry))
+        end
       end
       column I18n.t('pageflow.admin.entries.members'), class: 'members' do |entry|
         entry_user_badge_list(entry)
