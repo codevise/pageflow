@@ -29,7 +29,7 @@ module Pageflow
       def build_encoding_confirmation(entry)
         EncodingConfirmation.new(entry,
                                  encoding_confirmation_params,
-                                 encoding_quota,
+                                 encoding_quota(entry),
                                  current_user)
       end
 
@@ -37,8 +37,8 @@ module Pageflow
         params.require(:encoding_confirmation).permit(video_file_ids: [], audio_file_ids: [])
       end
 
-      def encoding_quota
-        Pageflow.config.quotas.get(:encoding, current_user.account)
+      def encoding_quota(entry)
+        Pageflow.config.quotas.get(:encoding, entry.account)
       end
     end
   end

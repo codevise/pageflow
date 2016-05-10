@@ -159,11 +159,12 @@ module Pageflow
     end
 
     def say_creating_user(user)
-     say(<<-END)
-   #{user.role} user:
+      say(<<-END)
+      #{user.memberships.length > 1 ? user.memberships.first.role : user.memberships.length}
+      membership user:
 
-     email:     #{user.email}
-     password:  #{user.password}
+      email:     #{user.email}
+      password:  #{user.password}
 
 END
     end

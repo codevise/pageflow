@@ -89,7 +89,7 @@ module Dom
 
       def has_admin_flag?
         within(node) do
-          has_selector?('.attributes_table span[data-user-role=admin]')
+          has_selector?('.attributes_table .admin')
         end
       end
 

@@ -16,8 +16,6 @@ module Pageflow
       password '@qwert12345'
       password_confirmation { password }
 
-      account
-
       trait :editor do
         after(:create) do |user, evaluator|
           create(:membership, user: user, entity: evaluator.on, role: 'editor') if evaluator.on
@@ -27,7 +25,7 @@ module Pageflow
       trait :account_manager do
         role 'account_manager'
         after(:create) do |user|
-          create(:membership, user: user, entity: user.account, role: 'manager')
+          create(:membership, user: user, entity: create(:account), role: 'manager')
         end
       end
 
@@ -56,7 +54,7 @@ module Pageflow
       end
 
       trait :admin do
-        role 'admin'
+        admin true
       end
 
       trait :suspended do

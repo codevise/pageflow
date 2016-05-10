@@ -42,7 +42,7 @@ module Pageflow
 
     describe '#user' do
       it 'creates user' do
-        user = SeedsDsl.user(email: 'editor@example.com', account: create(:account))
+        user = SeedsDsl.user(email: 'editor@example.com')
 
         expect(user).to be_persisted
       end
@@ -50,27 +50,27 @@ module Pageflow
       it 'does not create user if user with email exists' do
         user = create(:user, email: 'editor@example.com')
 
-        result = SeedsDsl.user(email: 'editor@example.com', account: create(:account))
+        result = SeedsDsl.user(email: 'editor@example.com')
 
         expect(result).to eq(user)
       end
 
       it 'sets password confirmation' do
-        user = SeedsDsl.user(email: 'editor@example.com', account: create(:account), password: '!Other123')
+        user = SeedsDsl.user(email: 'editor@example.com', password: '!Other123')
 
         expect(user).to be_persisted
       end
 
       it 'uses default user password' do
         SeedsDsl.default_user_password('!Other123')
-        user = SeedsDsl.user(email: 'editor@example.com', account: create(:account))
+        user = SeedsDsl.user(email: 'editor@example.com')
 
         expect(user.valid_password?('!Other123')).to be true
       end
 
       it 'allows overriding attributes in block' do
         user = SeedsDsl.user(email: 'editor@exmaple.com') do |user|
-          user.account = create(:account)
+          user.first_name = 'Waldemar'
         end
 
         expect(user).to be_persisted

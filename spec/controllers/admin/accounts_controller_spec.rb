@@ -227,7 +227,7 @@ module Admin
 
       it 'does not allow to destroy account with user' do
         account = create(:account)
-        create(:user, :account => account)
+        create(:user, :member, on: account)
 
         sign_in(create(:user, :admin))
 

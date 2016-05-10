@@ -30,7 +30,7 @@ module Pageflow
 
         it 'filters users that are already members of parent' do
           account = create(:account)
-          user = create(:user, account: account, first_name: 'John', last_name: 'Doe')
+          user = create(:user, first_name: 'John', last_name: 'Doe')
           entry = create(:entry, account: account)
           membership = create(:membership, entity: entry, role: 'member', user: user)
           new_membership = Membership.new

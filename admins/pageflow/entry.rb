@@ -221,7 +221,8 @@ module Pageflow
 
       def permitted_attributes
         result = [:title]
-        target = params[:id] ? resource : current_user.account
+        target = params[:id] ? resource : current_user.membership_accounts.first
+        target = Account.first if !params[:id] && current_user.admin?
         result += Pageflow.config_for(target).admin_form_inputs.permitted_attributes_for(:entry)
         result += permit_account || []
 

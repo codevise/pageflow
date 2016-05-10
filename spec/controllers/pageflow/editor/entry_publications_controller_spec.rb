@@ -185,7 +185,7 @@ module Pageflow
           expect(json_response(path: :exhausted_html)).to be_present
         end
 
-        it 'forbidden for entry the signed in user is not publisher of' do
+        it 'is forbidden for entry the signed in user is not publisher of' do
           user = create(:user)
           entry = create(:entry, with_editor: user)
 
