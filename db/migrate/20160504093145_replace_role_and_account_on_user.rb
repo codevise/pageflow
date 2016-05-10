@@ -1,33 +1,107 @@
 class ReplaceRoleAndAccountOnUser < ActiveRecord::Migration
   def change
-    add_account_member_membership_for_each_user
-    update_membership_role_to_manager_for_each_account_manager
+    reversible do |dir|
+      dir.up do
+        add_account_member_membership_for_each_user
+        update_membership_role_to_manager_for_each_account_manager
+      end
+    end
+
     add_column :users, :admin, :boolean, null: false, default: false
-    set_admin_to_true_for_each_admin
-    remove_column(:users, :role)
-    remove_column(:users, :account_id)
+
+    reversible do |dir|
+      dir.up do
+        set_admin_to_true_for_each_admin
+      end
+      dir.down do
+        set_role
+        set_account_id
+      end
+    end
+
+    remove_column :users, :role, :string, default: 'editor', null: false
+    remove_column :users, :account_id, :integer
   end
 
   private
 
   def add_account_member_membership_for_each_user
-    User.all.each do |user|
-      Pageflow::Membership.create(user: user, entity: user.account, role: 'member')
-    end
+    execute(<<-SQL)
+      INSERT INTO pageflow_memberships (role, user_id, entity_id, entity_type)
+      SELECT 'member', id, account_id, 'Pageflow::Account' FROM users
+    SQL
   end
 
   def update_membership_role_to_manager_for_each_account_manager
-    User.where(role: 'account_manager').each do |account_manager|
-      Pageflow::Membership.where(user: account_manager, entity: account_manager.account)
-        .each do |membership|
-        membership.update(role: 'manager')
-      end
-    end
+    execute(<<-SQL)
+      UPDATE pageflow_memberships INNER JOIN users ON
+      pageflow_memberships.user_id = users.id AND
+      users.role = 'account_manager'
+      SET pageflow_memberships.role = 'manager'
+    SQL
   end
 
   def set_admin_to_true_for_each_admin
-    User.where(role: 'admin').each do |admin|
-      admin.update(admin: true)
-    end
+    execute(<<-SQL)
+      UPDATE users SET users.admin = TRUE WHERE users.role = 'admin'
+    SQL
+  end
+
+  def set_account_id
+    execute(<<-SQL)
+      UPDATE users INNER JOIN pageflow_memberships ON
+      pageflow_memberships.entity_type = 'Pageflow::Account' AND
+      pageflow_memberships.role = 'member' AND
+      users.id = pageflow_memberships.user_id
+      SET users.account_id = pageflow_memberships.entity_id
+    SQL
+    execute(<<-SQL)
+      UPDATE users INNER JOIN pageflow_memberships ON
+      pageflow_memberships.entity_type = 'Pageflow::Account' AND
+      pageflow_memberships.role = 'previewer' AND
+      users.id = pageflow_memberships.user_id
+      SET users.account_id = pageflow_memberships.entity_id
+    SQL
+    execute(<<-SQL)
+      UPDATE users INNER JOIN pageflow_memberships ON
+      pageflow_memberships.entity_type = 'Pageflow::Account' AND
+      pageflow_memberships.role = 'editor' AND
+      users.id = pageflow_memberships.user_id
+      SET users.account_id = pageflow_memberships.entity_id
+    SQL
+    execute(<<-SQL)
+      UPDATE users INNER JOIN pageflow_memberships ON
+      pageflow_memberships.entity_type = 'Pageflow::Account' AND
+      pageflow_memberships.role = 'publisher' AND
+      users.id = pageflow_memberships.user_id
+      SET users.account_id = pageflow_memberships.entity_id
+    SQL
+    execute(<<-SQL)
+      UPDATE users INNER JOIN pageflow_memberships ON
+      pageflow_memberships.entity_type = 'Pageflow::Account' AND
+      pageflow_memberships.role = 'manager' AND
+      users.id = pageflow_memberships.user_id
+      SET users.account_id = pageflow_memberships.entity_id
+    SQL
+    execute(<<-SQL)
+      DELETE FROM pageflow_memberships
+      WHERE pageflow_memberships.entity_type = 'Pageflow::Account'
+    SQL
+  end
+
+  def set_role
+    execute(<<-SQL)
+      UPDATE users SET users.role = 'editor'
+    SQL
+    execute(<<-SQL)
+      UPDATE users INNER JOIN pageflow_memberships ON
+      users.id = pageflow_memberships.user_id AND
+      pageflow_memberships.entity_type = 'Pageflow::Account' AND
+      pageflow_memberships.role = 'manager'
+      SET users.role = 'account_manager'
+    SQL
+    execute(<<-SQL)
+      UPDATE users SET users.role = 'admin' WHERE users.admin = TRUE;
+    SQL
   end
 end

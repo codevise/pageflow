@@ -41,11 +41,9 @@ module Pageflow
           row :locale do
             I18n.t('language', locale: user.locale)
           end
-          if user.role.to_sym == :admin
-            row :role, class: 'role' do
-              span 'data-user-role' => user.role do
-                I18n.t(user.role, scope: 'pageflow.admin.users.roles')
-              end
+          if user.admin?
+            row :admin, class: 'admin' do
+              I18n.t('pageflow.admin.users.roles.admin')
             end
           end
         end
@@ -263,19 +261,18 @@ module Pageflow
       helper Pageflow::QuotaHelper
 
       def build_new_resource
-        user = InvitedUser.new(permitted_params[:user])
-        user.account ||= current_user.account
-        user
+        InvitedUser.new(permitted_params[:user])
       end
 
       def create_resource(user)
         known_user = User.find_by(email: resource.email)
         if known_user
           Membership.create(user: known_user,
-                            role: resource.role,
-                            entity: resource.account)
+                            role: resource.initial_role,
+                            entity_id: resource.initial_account,
+                            entity_type: 'Pageflow::Account')
         else
-          verify_quota!(:users, resource.account)
+          verify_quota!(:users, params[:user][:account])
           super
         end
       end
@@ -286,32 +283,20 @@ module Pageflow
                                      :current_password,
                                      :password,
                                      :password_confirmation,
-                                     :locale)
+                                     :locale,
+                                     :admin)
       end
 
       def permitted_params
-        result = params.permit(user: [:first_name,
-                                      :last_name,
-                                      :email,
-                                      :password,
-                                      :password_confirmation,
-                                      :account_id,
-                                      :role,
-                                      :locale])
-        restrict_attributes(params[:id], result[:user]) if result[:user]
-        result
-      end
-
-      private
-
-      def restrict_attributes(_id, attributes)
-        if !authorized?(:index, ::User)
-          attributes.delete(:account_id)
-        end
-
-        if !authorized?(:read, Account) && !User::NON_ADMIN_ROLES.include?(attributes[:role])
-          attributes.delete(:role)
-        end
+        params.permit(user: [:first_name,
+                             :last_name,
+                             :email,
+                             :password,
+                             :password_confirmation,
+                             :locale,
+                             :admin,
+                             :initial_role,
+                             :initial_account])
       end
     end
   end

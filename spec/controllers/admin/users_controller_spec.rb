@@ -33,7 +33,7 @@ module Pageflow
         sign_in(create(:user, :admin))
 
         expect do
-          post :create, user: attributes_for(:valid_user, role: 'admin')
+          post :create, user: attributes_for(:valid_user, admin: true)
         end.to change { User.admins.count }
       end
 
@@ -44,19 +44,7 @@ module Pageflow
 
         expect do
           post :create, user: attributes_for(:valid_user)
-        end.to_not change { account.users.count }
-      end
-
-      it 'allows admin to set user account' do
-        pending 'remove upon removal of User account attribute'
-        account = create(:account)
-
-        sign_in(create(:user, :admin))
-
-        expect do
-          post :create, user: attributes_for(:valid_user, account_id: account)
-        end.to change { account.users.count }
-        fail
+        end.to_not change { account.membership_users.count }
       end
 
       it 'does not create user if quota is exhausted and e-mail is new' do
@@ -81,8 +69,11 @@ module Pageflow
 
         expect do
           request.env['HTTP_REFERER'] = admin_users_path
-          post :create, user: attributes_for(:valid_user, email: 'existing_user@example.com')
-        end.to change { Membership.count }
+          post :create,
+               user: {email: 'existing_user@example.com',
+                      initial_role: 'member',
+                      initial_account: account}
+        end.to change { account.memberships.count }
       end
 
       it 'redirects with flash if :users quota is exhausted and e-mail is unknown' do
@@ -100,52 +91,22 @@ module Pageflow
 
     describe '#update' do
       it 'does not allow account managers to make users admin' do
-        pending 'change upon admin flag introduction'
         account = create(:account)
         user = create(:user, :manager, on: account)
 
         sign_in(create(:user, :manager, on: account))
-        patch :update, id: user, user: {role: 'admin'}
+        patch :update, id: user, user: {admin: true}
 
         expect(user.reload).not_to be_admin
-        fail
       end
 
       it 'allows admin to make users admin' do
-        pending 'change upon admin flag introduction'
         user = create(:user, :editor)
 
         sign_in(create(:user, :admin))
-        patch :update, id: user, user: {role: 'admin'}
+        patch :update, id: user, user: {admin: true}
 
         expect(user.reload).to be_admin
-        fail
-      end
-
-      it 'does not allow account manager to change user account' do
-        pending 'removal of account attribute from user'
-        account = create(:account)
-        other_account = create(:account)
-        user = create(:user, :editor, :account => account)
-
-        sign_in(create(:user, :account_manager, :account => account))
-        patch :update, :id => user, :user => {:account_id => other_account}
-
-        expect(user.reload.account).to eq(account)
-        fail
-      end
-
-      it 'allows admin to change user account' do
-        pending 'removal of account attribute from user'
-        account = create(:account)
-        other_account = create(:account)
-        user = create(:user, :editor, :account => account)
-
-        sign_in(create(:user, :admin))
-        patch :update, :id => user, :user => {:account_id => other_account}
-
-        expect(user.reload.account).to eq(other_account)
-        fail
       end
     end
   end

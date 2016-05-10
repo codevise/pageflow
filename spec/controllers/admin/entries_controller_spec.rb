@@ -95,8 +95,9 @@ describe Admin::EntriesController do
 
     it 'does not allow account manager to create entries with custom theming' do
       theming = create(:theming)
+      create(:entry)
 
-      user = create(:user, :account_manager)
+      user = create(:user, :manager, on: create(:account))
       sign_in(user)
 
       post :create, :entry => attributes_for(:entry, :theming_id => theming)
@@ -161,7 +162,7 @@ describe Admin::EntriesController do
       expect(Pageflow::Entry.last.custom_field).to eq('some value')
     end
 
-    it 'does not allows account publisher to define custom field not registered as form input' do
+    it 'does not allow account publisher to define custom field not registered as form input' do
       user = create(:user)
       account = create(:account, with_publisher: user)
 
@@ -564,7 +565,7 @@ describe Admin::EntriesController do
 
     it 'does not allow editor to duplicate entries even as a member' do
       user = create(:user)
-      entry = create(:entry, with_editor: user, account: user.account)
+      entry = create(:entry, with_editor: user)
 
       sign_in(user)
 

@@ -174,7 +174,7 @@ describe Admin::FoldersController do
 
         expect do
           delete :destroy, id: folder
-        end.not_to change { user.account.folders.count }
+        end.not_to change { user.memberships.on_accounts.first.entity.folders.count }
       end
 
       describe 'as account editor' do
@@ -186,7 +186,7 @@ describe Admin::FoldersController do
 
           expect do
             delete :destroy, id: folder
-          end.not_to change { user.account.folders.count }
+          end.not_to change { user.memberships.first.entity.folders.count }
         end
       end
     end

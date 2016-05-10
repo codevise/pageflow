@@ -1,7 +1,8 @@
 <%= admin_form_for([:admin, @user.becomes(User)]) do |f| %>
   <%= f.inputs "Details" do %>
     <% if @user.new_record? %>
-      <%= quota_state_description(:users, @user.account) %>
+      <%= quota_state_description(:users, Pageflow::Policies::AccountPolicy::Scope
+                                  .new(current_user, Pageflow::Account).member_addable.first) %>
     <% end %>
 
     <%= f.input :email, :hint => f.object.new_record? && I18n.t('pageflow.admin.users.email_invitation_hint') %>
@@ -12,14 +13,16 @@
                 include_blank: false,
                 collection: available_locales_collection %>
 
-    <%= f.input :account,
-                :include_blank => false,
-                collection: membership_accounts_collection(@user, Pageflow::Membership.new, User.new)%>
-
-    <%= f.input :role,
-                :collection => membership_roles_collection('Pageflow::Account'),
-                :include_blank => false,
-                :hint => authorized?(:read, Pageflow::Account) ? I18n.t('pageflow.admin.users.role_hint.admin') : I18n.t('pageflow.admin.users.role_hint.others') %>
+    <% if Pageflow::Policies::AccountPolicy::Scope
+        .new(current_user, Pageflow::Account).member_addable.any? && @user.new_record? %>
+      <%= f.input :initial_account,
+                  collection: membership_accounts_collection(@user,
+                                                             Pageflow::Membership.new(user: @user),
+                                                             Pageflow::Membership.new),
+                                                             :include_blank => false %>
+      <%= f.input :initial_role, :collection => membership_roles_collection('Pageflow::Account'), :include_blank => false, :hint => authorized?(:read, Pageflow::Account) ? I18n.t('pageflow.admin.users.role_hint.admin') : I18n.t('pageflow.admin.users.role_hint.others') %>
+    <% end %>
+    <%= f.input :admin if current_user.admin? %>
   <% end %>
   <%= f.actions %>
 <% end %>

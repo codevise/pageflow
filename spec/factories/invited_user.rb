@@ -4,7 +4,6 @@ module Pageflow
       email
       first_name "Edison"
       last_name "Editor"
-      account
     end
   end
 end

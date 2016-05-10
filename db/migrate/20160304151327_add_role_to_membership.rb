@@ -1,7 +1,12 @@
 class AddRoleToMembership < ActiveRecord::Migration
   def change
     add_column :pageflow_memberships, :role, :string, null: false, default: 'editor'
-    update_each_membership_to_have_default_role
+
+    reversible do |dir|
+      dir.up do
+        update_each_membership_to_have_default_role
+      end
+    end
   end
 
   private

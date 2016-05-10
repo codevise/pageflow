@@ -3,14 +3,11 @@ module Pageflow
   module UserMixin
     extend ActiveSupport::Concern
 
-    NON_ADMIN_ROLES = ['editor', 'account_manager']
-    ROLES = NON_ADMIN_ROLES + ['admin']
-
     include Suspendable
 
-    included do
-      belongs_to :account, counter_cache: true, class_name: 'Pageflow::Account'
+    attr_accessor :initial_account, :initial_role
 
+    included do
       has_many :memberships, dependent: :destroy, class_name: 'Pageflow::Membership'
       has_many :entries,
                through: :memberships,
@@ -26,16 +23,12 @@ module Pageflow
       has_many :revisions, class_name: 'Pageflow::Revision', foreign_key: :creator_id
 
       validates :first_name, :last_name, presence: true
-      validates :role, inclusion: ROLES
-      validates :account, presence: true
 
-      scope :admins, -> { where(role: 'admin') }
-      scope :account_managers, -> { where(role: 'account_manager') }
-      scope :editors, -> { where(role: 'editor') }
+      scope :admins, -> { where(admin: true) }
     end
 
     def admin?
-      role == 'admin'
+      admin
     end
 
     def account_manager?

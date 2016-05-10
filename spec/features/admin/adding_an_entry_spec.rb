@@ -2,6 +2,7 @@ require 'spec_helper'
 
 feature 'admin adding an entry' do
   scenario 'added entry shows up in entries table' do
+    create(:account)
     Dom::Admin::Page.sign_in_as(:admin)
 
     visit(admin_entries_path)
