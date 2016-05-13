@@ -78,7 +78,7 @@ module Pageflow
 
       def create_for_entry?
         Pageflow::Policies::EntryPolicy.new(@user, @membership.entity).add_member_to? &&
-          @membership.user.membership_accounts.include?(@membership.entity.account)
+          @membership.user.accounts.include?(@membership.entity.account)
       end
 
       def create_for_account?

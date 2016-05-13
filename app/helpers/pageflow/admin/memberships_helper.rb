@@ -29,7 +29,7 @@ module Pageflow
           accounts = Pageflow::Policies::AccountPolicy::Scope
                      .new(current_user, Account).member_addable.load
           MembershipFormCollection.new(parent,
-                                       collection_method: :membership_accounts,
+                                       collection_method: :accounts,
                                        display_method: :name,
                                        order: 'name ASC',
                                        managed_accounts: accounts).pairs
