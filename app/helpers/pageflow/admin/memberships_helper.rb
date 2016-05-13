@@ -105,7 +105,7 @@ module Pageflow
 
         def items_in_account
           if options[:collection_method] == :users
-            parent.account.membership_users.order(options[:order])
+            parent.account.users.order(options[:order])
           elsif parent.class.to_s == 'User'
             options[:resource].entity.send(options[:collection_method]).order(options[:order])
           else
