@@ -44,7 +44,7 @@ module Pageflow
 
         expect do
           post :create, user: attributes_for(:valid_user)
-        end.to_not change { account.membership_users.count }
+        end.to_not change { account.users.count }
       end
 
       it 'does not create user if quota is exhausted and e-mail is new' do

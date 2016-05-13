@@ -166,7 +166,7 @@ module Pageflow
       if user.admin?
         can [:read, :create, :update, :configure_folder_on], Account
         can :destroy, Account do |account|
-          account.membership_users.empty? && account.entries.empty?
+          account.users.empty? && account.entries.empty?
         end
         can :manage, Theming
 
