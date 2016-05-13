@@ -7,24 +7,23 @@ default_user_password('!Pass123')
 account(name: 'Pageflow') do |account|
   entry = sample_entry(account: account, title: 'Example Entry')
 
-  user(account: account,
-       role: 'admin',
-       email: 'admin@example.com',
+  user(email: 'admin@example.com',
        first_name: 'Alice',
-       last_name: 'Adminson')
+       last_name: 'Adminson',
+       admin: true) do |admin|
+    membership(user: admin, entity: account, role: 'member')
+  end
 
-  user(account: account,
-       role: 'account_manager',
-       email: 'accountmanager@example.com',
+  user(email: 'accountmanager@example.com',
        first_name: 'Alfred',
-       last_name: 'Mc Count')
+       last_name: 'Mc Count') do |account_manager|
+    membership(user: account_manager, entity: account, role: 'manager')
+  end
 
-  user(account: account,
-       email: 'editor@example.com',
-       role: 'editor',
+  user(email: 'editor@example.com',
        first_name: 'Ed',
        last_name: 'Edison') do |editor|
-
-    membership(user: editor, entry: entry)
+    membership(user: editor, entity: entry, role: 'editor')
+    membership(user: editor, entity: account, role: 'member')
   end
 end
