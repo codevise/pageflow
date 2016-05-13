@@ -274,6 +274,10 @@ module Pageflow
                             entity_type: 'Pageflow::Account')
         else
           verify_quota!(:users, params[:user][:account])
+          Membership.create(user: resource,
+                            role: resource.initial_role,
+                            entity_id: resource.initial_account,
+                            entity_type: 'Pageflow::Account')
           super
         end
       end
