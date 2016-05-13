@@ -6,7 +6,7 @@ module Pageflow
       role 'previewer'
       after(:create) do |membership|
         unless membership.entity_type == 'Pageflow::Account' ||
-               membership.user.membership_accounts.include?(membership.entity.account) ||
+               membership.user.accounts.include?(membership.entity.account) ||
                membership.entity.account == nil
           create(:membership,
                  user: membership.user,
@@ -21,7 +21,7 @@ module Pageflow
       association :entity, factory: :entry
       role 'previewer'
       after(:create) do |membership|
-        unless membership.user.membership_accounts.include?(membership.entity.account) ||
+        unless membership.user.accounts.include?(membership.entity.account) ||
                membership.entity.account == nil
           create(:membership,
                  user: membership.user,

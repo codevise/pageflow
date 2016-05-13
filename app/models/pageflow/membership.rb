@@ -11,7 +11,7 @@ module Pageflow
 
     class AccountMembershipExistenceValidator < ActiveModel::Validator
       def validate(record)
-        unless record.user.membership_accounts.include?(record.entity.account)
+        unless record.user.accounts.include?(record.entity.account)
           record.errors[:base] << 'Entry Membership misses presupposed Membership on account of entry'
         end
       end

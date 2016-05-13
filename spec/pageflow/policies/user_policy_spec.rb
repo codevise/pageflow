@@ -6,14 +6,14 @@ module Pageflow
       it_behaves_like 'a membership-based permission that',
                       allows: 'manager',
                       but_forbids: 'publisher',
-                      of_account: -> (topic) { topic.membership_accounts.first },
+                      of_account: -> (topic) { topic.accounts.first },
                       to: :read,
                       topic: -> { create(:user, :member, on: create(:account)) }
 
       it_behaves_like 'a membership-based permission that',
                       allows: 'manager',
                       but_forbids: 'publisher',
-                      of_account: -> (topic) { topic.membership_accounts.first },
+                      of_account: -> (topic) { topic.accounts.first },
                       to: :redirect_to_user,
                       topic: -> { create(:user, :member, on: create(:account)) }
 

@@ -26,7 +26,7 @@ module Pageflow
         end
 
         def accounts_where_user_is_at_least_previewer(user)
-          user.membership_accounts.joins(sanitize_sql_array([
+          user.accounts.joins(sanitize_sql_array([
             'LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
             'pageflow_memberships_2.user_id = :user_id AND ' \
             'pageflow_memberships_2.entity_type = "Pageflow::Account" AND ' \
