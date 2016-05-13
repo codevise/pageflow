@@ -111,11 +111,11 @@ module Pageflow
       entry = Entry.where(attributes.slice(:account, :title)).first
 
       if entry.nil?
-        entry = Entry.create!(attributes) do |entry|
-          entry.theming = attributes.fetch(:account).default_theming
+        entry = Entry.create!(attributes) do |created_entry|
+          created_entry.theming = attributes.fetch(:account).default_theming
 
-          say_creating_entry(entry)
-          yield(entry) if block_given?
+          say_creating_entry(created_entry)
+          yield(created_entry) if block_given?
         end
 
         storyline = entry.draft.storylines.first
@@ -160,21 +160,27 @@ module Pageflow
 
     def say_creating_user(user)
       say(<<-END)
-      #{user.memberships.length > 1 ? user.memberships.first.role : user.memberships.length}
-      membership user:
 
-      email:     #{user.email}
-      password:  #{user.password}
+   user with login:
+
+   email:     #{user.email}
+   password:  #{user.password}
 
 END
     end
 
     def say_creating_entry(entry)
-      say("   sample entry '#{entry.title}'")
+      say("   sample entry '#{entry.title}'\n")
     end
 
     def say_creating_membership(membership)
-      say("   membership for user '#{membership.user.email}' and entry '#{membership.entry.title}'")
+      say("   -- '#{membership.role}' membership for user '#{membership.user.email}' on " +
+          "#{membership.entity_type == 'Pageflow::Entry' ? 'entry' : 'account'} " +
+          %|'#{if membership.entity_type == "Pageflow::Entry"
+                 membership.entity.title
+               else
+                 membership.entity.name
+               end}'\n|)
     end
 
     def say_attribute_precedence(subject, object)
