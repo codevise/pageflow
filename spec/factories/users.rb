@@ -62,10 +62,10 @@ module Pageflow
       end
     end
 
-    factory :valid_user, :class => User do
+    factory :valid_user, class: User do
       email
-      first_name "Edison"
-      last_name "Editor"
+      first_name 'Edison'
+      last_name 'Editor'
     end
   end
 end

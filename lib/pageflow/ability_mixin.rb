@@ -20,7 +20,7 @@ module Pageflow
           membership.user.nil? ||
           (!(membership.user.entries.include?(membership.entity) ||
              membership.user.accounts.include?(membership.entity))) &&
-          Policies::MembershipPolicy.new(user, membership).create?
+            Policies::MembershipPolicy.new(user, membership).create?
       end
 
       can :index, Membership, Policies::MembershipPolicy::Scope.new(user, Membership).indexable

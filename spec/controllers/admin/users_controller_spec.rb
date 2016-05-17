@@ -76,6 +76,36 @@ module Pageflow
         end.to change { account.memberships.count }
       end
 
+      it 'creates account membership if e-mail unknown but quota allows it' do
+        account = create(:account)
+
+        sign_in(create(:user, :manager, on: account))
+
+        expect do
+          request.env['HTTP_REFERER'] = admin_users_path
+          post :create,
+               user: {email: 'new_user@example.com',
+                      initial_role: 'member',
+                      initial_account: account}
+        end.to change { account.memberships.count }
+      end
+
+      it 'creates invited user if e-mail unknown but quota allows it' do
+        account = create(:account)
+
+        sign_in(create(:user, :manager, on: account))
+
+        expect do
+          request.env['HTTP_REFERER'] = admin_users_path
+          post :create,
+               user: {email: 'new_user@example.com',
+                      first_name: 'Wiltrud',
+                      last_name: 'Doe',
+                      initial_role: 'member',
+                      initial_account: account}
+        end.to change { User.count }
+      end
+
       it 'redirects with flash if :users quota is exhausted and e-mail is unknown' do
         account = create(:account)
 

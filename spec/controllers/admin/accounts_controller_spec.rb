@@ -7,10 +7,10 @@ module Admin
         Pageflow.config.themes.register(:custom)
 
         sign_in(create(:user, :admin))
-        post(:create, :account => {
-               :default_theming_attributes => {
-                 :theme_name => 'custom',
-                 :imprint_link_url => 'http://example.com/new'
+        post(:create, account: {
+               default_theming_attributes: {
+                 theme_name: 'custom',
+                 imprint_link_url: 'http://example.com/new'
                }
              })
 
@@ -31,7 +31,8 @@ module Admin
                navigation: 'some_widget'
              })
 
-        expect(Pageflow::Account.last.default_theming.widgets).to include_record_with(role: 'navigation', type_name: 'some_widget')
+        expect(Pageflow::Account.last.default_theming.widgets)
+          .to include_record_with(role: 'navigation', type_name: 'some_widget')
       end
 
       it 'does not create widgets if account cannot be saved' do
@@ -39,13 +40,13 @@ module Admin
 
         sign_in(create(:user, :admin))
 
-        expect {
+        expect do
           post(:create,
                account: {},
                widgets: {
                  navigation: 'some_widget'
                })
-        }.not_to change { Pageflow::Widget.count }
+        end.not_to change { Pageflow::Widget.count }
       end
     end
 
@@ -75,7 +76,8 @@ module Admin
         sign_in(create(:user, :admin))
         get :edit, id: account
 
-        expect(response.body).to have_selector('[name="account[default_theming_attributes][custom_field]"]')
+        expect(response.body)
+          .to have_selector('[name="account[default_theming_attributes][custom_field]"]')
       end
     end
 
@@ -83,13 +85,13 @@ module Admin
       it 'updates nested default_theming' do
         Pageflow.config.themes.register(:custom)
         theming = create(:theming)
-        account = create(:account, :default_theming => theming)
+        account = create(:account, default_theming: theming)
 
         sign_in(create(:user, :admin))
-        put(:update, :id => account.id, :account => {
-              :default_theming_attributes => {
-                :theme_name => 'custom',
-                :imprint_link_url => 'http://example.com/new'
+        put(:update, id: account.id, account: {
+              default_theming_attributes: {
+                theme_name: 'custom',
+                imprint_link_url: 'http://example.com/new'
               }
             })
 
@@ -116,7 +118,7 @@ module Admin
         account = create(:account, default_theming: theming)
 
         sign_in(create(:user, :admin))
-        expect {
+        expect do
           patch(:update,
                 id: account.id,
                 account: {
@@ -127,7 +129,7 @@ module Admin
                 widgets: {
                   navigation: 'some_widget'
                 })
-        }.not_to change { Pageflow::Widget.count }
+        end.not_to change { Pageflow::Widget.count }
       end
 
       it 'updates feature_configuration through feature_states param' do
@@ -220,9 +222,7 @@ module Admin
 
         sign_in(create(:user, :admin))
 
-        expect {
-          delete :destroy, :id => account
-        }.to change { Pageflow::Account.count }
+        expect { delete :destroy, id: account }.to change { Pageflow::Account.count }
       end
 
       it 'does not allow to destroy account with user' do
@@ -231,20 +231,16 @@ module Admin
 
         sign_in(create(:user, :admin))
 
-        expect {
-          delete :destroy, :id => account
-        }.not_to change { Pageflow::Account.count }
+        expect { delete :destroy, id: account }.not_to change { Pageflow::Account.count }
       end
 
       it 'does not allow to destroy account with entry' do
         account = create(:account)
-        create(:entry, :account => account)
+        create(:entry, account: account)
 
         sign_in(create(:user, :admin))
 
-        expect {
-          delete :destroy, :id => account
-        }.not_to change { Pageflow::Account.count }
+        expect { delete :destroy, id: account }.not_to change { Pageflow::Account.count }
       end
     end
   end

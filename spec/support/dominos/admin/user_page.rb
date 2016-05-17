@@ -93,12 +93,6 @@ module Dom
         end
       end
 
-      def has_account_manager_flag?
-        within(node) do
-          has_selector?('.attributes_table span[data-user-role=account_manager]')
-        end
-      end
-
       def has_role_flag?(role)
         within(node) do
           has_selector?(".memberships .#{role}")
