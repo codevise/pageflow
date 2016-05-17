@@ -34,7 +34,7 @@ module Pageflow
           expect(policy).not_to permit_action(:index)
         end
 
-        it 'allows user with manager permissions on entry to index users' do
+        it 'does not allow user with manager permissions on entry to index users' do
           user = create(:user, :manager, on: create(:entry))
 
           policy = UserPolicy.new(user, create(:user))
@@ -44,7 +44,7 @@ module Pageflow
       end
 
       describe 'create?' do
-        it 'allows user with manager permissions on account to index users' do
+        it 'allows user with manager permissions on account to create users' do
           user = create(:user, :manager, on: create(:account))
 
           policy = UserPolicy.new(user, create(:user))
@@ -52,7 +52,7 @@ module Pageflow
           expect(policy).to permit_action(:create)
         end
 
-        it 'does not allow user with publisher permissions on account to index users' do
+        it 'does not allow user with publisher permissions on account to create users' do
           user = create(:user, :publisher, on: create(:account))
 
           policy = UserPolicy.new(user, create(:user))
@@ -60,7 +60,7 @@ module Pageflow
           expect(policy).not_to permit_action(:create)
         end
 
-        it 'allows user with manager permissions on entry to index users' do
+        it 'does not allow user with manager permissions on entry to index users' do
           user = create(:user, :manager, on: create(:entry))
 
           policy = UserPolicy.new(user, create(:user))
