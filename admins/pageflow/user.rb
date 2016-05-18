@@ -260,15 +260,30 @@ module Pageflow
       end
 
       def permitted_params
-        params.permit(user: [:first_name,
-                             :last_name,
-                             :email,
-                             :password,
-                             :password_confirmation,
-                             :locale,
-                             :admin,
-                             :initial_role,
-                             :initial_account])
+        result = params.permit(user: [:first_name,
+                                      :last_name,
+                                      :email,
+                                      :password,
+                                      :password_confirmation,
+                                      :locale,
+                                      :admin,
+                                      :initial_role,
+                                      :initial_account])
+        restrict_attributes(params[:id], result[:user]) if result[:user]
+        result
+      end
+
+      def restrict_attributes(_id, attributes)
+        if !authorized?(:read, Account)
+          attributes.delete(:admin)
+        end
+
+        if Pageflow::Policies::AccountPolicy::Scope
+           .new(current_user, Pageflow::Account).member_addable.empty? ||
+           action_name.to_sym != :create
+          attributes.delete(:initial_role)
+          attributes.delete(:initial_account)
+        end
       end
     end
   end
