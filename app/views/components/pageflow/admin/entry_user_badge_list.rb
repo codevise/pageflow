@@ -4,7 +4,7 @@ module Pageflow
       builder_method :entry_user_badge_list
 
       def build(entry)
-        ul :class => 'badge_list' do
+        ul class: 'badge_list' do
           entry.users.each do |user|
             build_badge(user)
           end
@@ -15,8 +15,8 @@ module Pageflow
 
       def build_badge(user)
         li do
-          span(user_initials(user), :class => 'abbreviation')
-          div :class => 'tooltip' do
+          span(user_initials(user), class: 'abbreviation')
+          div class: 'tooltip' do
             if authorized?(:read, user)
               link_to(user.full_name, admin_user_path(user))
             else

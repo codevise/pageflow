@@ -192,7 +192,7 @@ END
     end
 
     def entry_or_account_attributes_specified(attributes)
-      if attributes[:entry].present? && attributes[:account].present?
+      if attributes[:entry].present? || attributes[:account].present?
         attributes[:entity] = attributes[:entry]
         if attributes[:account].present?
           say_attribute_precedence(':entry', ':account')

@@ -52,7 +52,8 @@ module Pageflow
                               'pageflow_memberships.user_id = :user_id AND ' \
                               'pageflow_memberships.entity_id = pageflow_accounts.id AND ' \
                               'pageflow_memberships.entity_type = "Pageflow::Account" AND ' \
-                              'pageflow_memberships.role IN ("member", "previewer", "editor", "publisher", "manager")',
+                              'pageflow_memberships.role IN '\
+                              '("member", "previewer", "editor", "publisher", "manager")',
                               user_id: user.id])
         end
 

@@ -62,7 +62,8 @@ module Pageflow
         def memberships_above_member_for_account_of_entries(user)
           sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
                               'pageflow_memberships_2.user_id = :user_id AND ' \
-                              'pageflow_memberships_2.role IN ("previewer", "editor", "publisher", "manager") AND ' \
+                              'pageflow_memberships_2.role IN '\
+                              '("previewer", "editor", "publisher", "manager") AND ' \
                               'pageflow_memberships_2.entity_id = pageflow_entries.account_id ' \
                               'AND pageflow_memberships_2.entity_type = "Pageflow::Account"',
                               user_id: user.id])
@@ -71,7 +72,8 @@ module Pageflow
         def memberships_above_previewer_for_entries(user)
           sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \
                               'pageflow_memberships.user_id = :user_id AND ' \
-                              'pageflow_memberships.role IN ("editor", "publisher", "manager") AND ' \
+                              'pageflow_memberships.role IN '\
+                              '("editor", "publisher", "manager") AND ' \
                               'pageflow_memberships.entity_id = pageflow_entries.id AND ' \
                               'pageflow_memberships.entity_type = "Pageflow::Entry"',
                               user_id: user.id])
@@ -80,7 +82,8 @@ module Pageflow
         def memberships_above_previewer_for_account_of_entries(user)
           sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships as pageflow_memberships_2 ON ' \
                               'pageflow_memberships_2.user_id = :user_id AND ' \
-                              'pageflow_memberships_2.role IN ("editor", "publisher", "manager") AND ' \
+                              'pageflow_memberships_2.role IN '\
+                              '("editor", "publisher", "manager") AND ' \
                               'pageflow_memberships_2.entity_id = pageflow_entries.account_id ' \
                               'AND pageflow_memberships_2.entity_type = "Pageflow::Account"',
                               user_id: user.id])
@@ -149,11 +152,15 @@ module Pageflow
         allows?(%w(editor publisher manager))
       end
 
-      def index_widgets_for?
+      def confirm_encoding?
         edit?
       end
 
       def edit_outline?
+        edit?
+      end
+
+      def index_widgets_for?
         edit?
       end
 
@@ -162,10 +169,6 @@ module Pageflow
       end
 
       def snapshot?
-        edit?
-      end
-
-      def confirm_encoding?
         edit?
       end
 
