@@ -322,7 +322,7 @@ describe Admin::MembershipsController do
         account = create(:account)
         user = create(:user, :member, on: account)
         entry = create(:entry, account: account)
-        membership = create(:membership, entry: entry, user: user, role: 'manager')
+        membership = create(:membership, entity: entry, user: user, role: 'manager')
 
         sign_in(create(:user, :admin))
 
@@ -335,7 +335,7 @@ describe Admin::MembershipsController do
         account = create(:account)
         user = create(:user, :member, on: account)
         entry = create(:entry, account: account)
-        membership = create(:membership, entry: entry, user: user, role: 'manager')
+        membership = create(:membership, entity: entry, user: user, role: 'manager')
 
         sign_in(create(:user, :admin))
 

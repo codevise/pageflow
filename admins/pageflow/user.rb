@@ -60,7 +60,7 @@ module Pageflow
           panel I18n.t('activerecord.models.entry.other') do
             table_for entry_memberships, class: 'memberships', i18n: Membership do
               column :entry do |membership|
-                link_to(membership.entry.title, admin_entry_path(membership.entry))
+                link_to(membership.entity.title, admin_entry_path(membership.entity))
               end
               column :role, sortable: 'pageflow_memberships.role' do |membership|
                 span class: "membership_role #{membership.role}" do
