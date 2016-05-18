@@ -78,6 +78,7 @@ module Pageflow
 
         def collection_for_entries
           accounts = options[:managed_accounts]
+                     .where(accounts_ids_in_parent_accounts_ids)
                      .includes(:entries).where('pageflow_entries.id IS NOT NULL')
                      .where(entries_ids_not_in_parent_entries_ids)
                      .order(:name, 'pageflow_entries.title')
@@ -115,6 +116,16 @@ module Pageflow
 
         def items_in_parent
           parent.respond_to?(options[:collection_method]) ? parent.send(options[:collection_method]) : []
+        end
+
+        def accounts_ids_in_parent_accounts_ids
+          parent_accounts_ids = parent.accounts.map(&:id)
+          if parent_accounts_ids.any?
+            sanitize_sql_array(['pageflow_accounts.id IN (:parent_accounts_ids)',
+                                parent_accounts_ids: parent_accounts_ids])
+          else
+            false
+          end
         end
 
         def entries_ids_not_in_parent_entries_ids
