@@ -1,20 +1,19 @@
 module Pageflow
-  ActiveAdmin.register Folder, :as => 'Folder' do
+  ActiveAdmin.register Folder, as: 'Folder' do
     menu false
 
-    # TODO
     actions :new, :create, :edit, :update, :destroy
 
     form do |f|
       f.inputs do
         if authorized?(:read, Account) && f.object.new_record?
-          f.input :account, :include_blank => false
+          f.input :account, include_blank: false
         end
         f.input :name
       end
       f.actions do
         f.action(:submit)
-        f.action(:cancel, :wrapper_html => {:class => 'cancel'})
+        f.action(:cancel, wrapper_html: {class: 'cancel'})
       end
     end
 
@@ -26,25 +25,25 @@ module Pageflow
       end
 
       def create
-        super do |success, failure|
+        super do |success, _failure|
           success.html { redirect_to(admin_entries_path) }
         end
       end
 
       def update
-        super do |success, failure|
-          success.html { redirect_to(admin_entries_path(:folder_id => resource.id)) }
+        super do |success, _failure|
+          success.html { redirect_to(admin_entries_path(folder_id: resource.id)) }
         end
       end
 
       def destroy
-        super do |success, failure|
+        super do |success, _failure|
           success.html { redirect_to(admin_entries_path) }
         end
       end
 
       def permitted_params
-        result = params.permit(:folder => [:name, :account_id])
+        result = params.permit(folder: [:name, :account_id])
         restrict_attributes(params[:id], result[:folder]) if result[:folder]
         result
       end

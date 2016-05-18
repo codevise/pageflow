@@ -10,7 +10,8 @@ module Pageflow
       end
       column :title, sortable: 'title' do |entry|
         if entry.title.blank?
-          link_to(I18n.t('pageflow.admin.entries.entry_number') + ' ' + entry.id.to_s, admin_entry_path(entry))
+          link_to(I18n.t('pageflow.admin.entries.entry_number') + ' ' + entry.id.to_s,
+                  admin_entry_path(entry))
         else
           link_to(entry.title, admin_entry_path(entry))
         end
@@ -133,17 +134,17 @@ module Pageflow
       end
     end
 
-    member_action :duplicate, :method => :post do
+    member_action :duplicate, method: :post do
       entry = Entry.find(params[:id])
       authorize!(:duplicate, entry)
       new_entry = entry.duplicate
       redirect_to(edit_admin_entry_path(new_entry))
     end
 
-    member_action :snapshot, :method => :post do
+    member_action :snapshot, method: :post do
       entry = Entry.find(params[:id])
       authorize!(:snapshot, entry)
-      entry.snapshot(:creator => current_user, :type => 'user')
+      entry.snapshot(creator: current_user, type: 'user')
       redirect_to(admin_entry_path(entry))
     end
 
@@ -153,14 +154,14 @@ module Pageflow
       redirect_to(pageflow.revision_path(entry.draft))
     end
 
-    show :title => :title do |entry|
-      render 'attributes_table', :entry => entry
-      render 'links', :entry => entry
+    show title: :title do |entry|
+      render 'attributes_table', entry: entry
+      render 'links', entry: entry
 
       tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(:entry),
-                :i18n => 'pageflow.admin.resource_tabs',
-                :authorize => true,
-                :build_args => [entry])
+                i18n: 'pageflow.admin.resource_tabs',
+                authorize: true,
+                build_args: [entry])
     end
 
     controller do
@@ -221,8 +222,13 @@ module Pageflow
 
       def permitted_attributes
         result = [:title]
-        target = params[:id] ? resource : current_user.accounts.first
-        target = Account.first if !params[:id] && current_user.admin?
+        target = if !params[:id] && current_user.admin?
+                   Account.first
+                 elsif params[:id]
+                   resource
+                 else
+                   current_user.accounts.first
+                 end
         result += Pageflow.config_for(target).admin_form_inputs.permitted_attributes_for(:entry)
         result += permit_account || []
 
@@ -250,26 +256,21 @@ module Pageflow
 
       def permit_theming(accounts)
         if ([:create, :new].include?(action_name.to_sym) ||
-           authorized?(:update_theming_on, resource)) && params[:entry] &&
-           params[:entry][:theming_id]
-          if theming_policy_scope.themings_allowed_for(accounts)
-             .include?(Pageflow::Theming.find(params[:entry][:theming_id]))
-            result = [:theming_id]
-          end
+            authorized?(:update_theming_on, resource)) && params[:entry] &&
+           params[:entry][:theming_id] &&
+           theming_policy_scope.themings_allowed_for(accounts)
+           .include?(Pageflow::Theming.find(params[:entry][:theming_id]))
+          [:theming_id]
         end
-        result
       end
 
       def permit_account
-        if params[:entry] && params[:entry][:account_id]
-          if action_name.to_sym == :create ||
-             action_name.to_sym == :update && authorized?(:update_account_on, resource)
-            if account_policy_scope.entry_movable
-               .include?(Pageflow::Account.find(params[:entry][:account_id]))
-              result = [:account_id]
-            end
-          end
-          result
+        if params[:entry] && params[:entry][:account_id] &&
+           (action_name.to_sym == :create ||
+            action_name.to_sym == :update && authorized?(:update_account_on, resource)) &&
+           account_policy_scope.entry_movable
+           .include?(Pageflow::Account.find(params[:entry][:account_id]))
+          [:account_id]
         end
       end
     end

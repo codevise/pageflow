@@ -97,26 +97,10 @@ module Pageflow
                 end
               end
             end
-            if Pageflow::Policies::EntryPolicy::Scope.new(user, Entry).publisher_or_above &&
-               !membership_entries_collection(resource, Membership.new(user: resource), Membership.new).blank?
-              span do
-                link_to(I18n.t('pageflow.admin.entry.add'),
-                        new_admin_user_membership_path(user, entity_type: :entry),
-                        class: 'button',
-                        data: {rel: 'add_entry_membership'})
-              end
-            end
+            render 'add_membership_button_if_needed', entity_type: 'entry'
           end
         else
-          if Pageflow::Policies::EntryPolicy::Scope.new(user, Entry).publisher_or_above &&
-             !membership_entries_collection(resource, Membership.new(user: resource), Membership.new).blank?
-            para do
-              link_to(I18n.t('pageflow.admin.entry.add'),
-                      new_admin_user_membership_path(user, entity_type: :entry),
-                      class: 'button',
-                      data: {rel: 'add_entry_membership'})
-            end
-          end
+          render 'add_membership_button_if_needed', entity_type: 'entry'
         end
 
         account_memberships = user.memberships.on_accounts
@@ -160,26 +144,10 @@ module Pageflow
                 end
               end
             end
-            if Pageflow::Policies::AccountPolicy::Scope.new(user, Account).member_addable &&
-               !membership_accounts_collection(resource, Membership.new(user: resource), Membership.new).blank?
-              span do
-                link_to(I18n.t('pageflow.admin.account.add'),
-                        new_admin_user_membership_path(user, entity_type: :account),
-                        class: 'button',
-                        data: {rel: 'add_account_membership'})
-              end
-            end
+            render 'add_membership_button_if_needed', entity_type: 'account'
           end
         else
-          if Pageflow::Policies::AccountPolicy::Scope.new(user, Account).member_addable &&
-             !membership_accounts_collection(resource, Membership.new(user: resource), Membership.new).blank?
-            para do
-              link_to(I18n.t('pageflow.admin.account.add'),
-                      new_admin_user_membership_path(user, entity_type: :account),
-                      class: 'button',
-                      data: {rel: 'add_account_membership'})
-            end
-          end
+          render 'add_membership_button_if_needed', entity_type: 'account'
         end
       end
     end

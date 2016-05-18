@@ -421,6 +421,95 @@ module Pageflow
         end
       end
 
+      describe '.member_addable' do
+        it 'includes no entries for admin without memberships' do
+          user = create(:user, :admin)
+
+          expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable).to be_empty
+        end
+
+        it 'includes entries with membership with correct user and correct id' do
+          user = create(:user)
+          entry = create(:entry, with_publisher: user)
+
+          expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable).to include(entry)
+        end
+
+        it 'includes entries with membership with correct user and correct account' do
+          user = create(:user)
+          account = create(:account, with_publisher: user)
+          entry = create(:entry, account: account)
+
+          expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable).to include(entry)
+        end
+
+        it 'does not include entries with wrong id' do
+          user = create(:user)
+          create(:entry, with_publisher: user)
+          other_entry = create(:entry)
+
+          expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable)
+            .not_to include(other_entry)
+        end
+
+        it 'does not include entries with membership with wrong user and correct id' do
+          user = create(:user)
+          other_user = create(:user)
+          entry = create(:entry, with_publisher: other_user)
+
+          expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable)
+            .not_to include(entry)
+        end
+
+        it 'does not include entries with membership with wrong account' do
+          user = create(:user)
+          account = create(:account)
+          create(:account, with_publisher: user)
+          entry = create(:entry, account: account)
+
+          expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable)
+            .not_to include(entry)
+        end
+
+        it 'does not include entries with membership with wrong user and correct account' do
+          user = create(:user)
+          other_user = create(:user)
+          account = create(:account, with_publisher: other_user)
+          entry = create(:entry, account: account)
+
+          expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable)
+            .not_to include(entry)
+        end
+
+        it 'does not include entries with membership with nil id' do
+          user = create(:user)
+          entry = Entry.new
+          create(:membership, user: user, entity: entry, role: 'publisher')
+
+          expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable)
+            .not_to include(entry)
+        end
+
+        it 'does not include entries with membership with nil account id' do
+          user = create(:user)
+          theming = create(:theming)
+          account = Account.new
+          entry = create(:entry, account: account, theming: theming)
+          create(:membership, user: user, entity: account, role: 'publisher')
+
+          expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable)
+            .not_to include(entry)
+        end
+
+        it 'does not include entries with memberships of insufficient role' do
+          user = create(:user)
+          entry = create(:entry, with_editor: user)
+
+          expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable)
+            .not_to include(entry)
+        end
+      end
+
       describe '.manager_or_above' do
         it 'includes no entries for admin without memberships' do
           user = create(:user, :admin)
