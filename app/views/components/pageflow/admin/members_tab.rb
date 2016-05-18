@@ -33,7 +33,7 @@ module Pageflow
             column do |membership|
               if authorized?(:destroy, membership)
                 link_to(I18n.t('pageflow.admin.entries.remove'),
-                        admin_entry_membership_path(membership.entry, membership),
+                        admin_entry_membership_path(membership.entity, membership),
                         method: :delete,
                         data: {
                           confirm: I18n.t('active_admin.delete_confirmation'),

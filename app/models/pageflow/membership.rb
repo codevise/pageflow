@@ -19,13 +19,5 @@ module Pageflow
 
     scope :on_entries, -> { where(entity_type: 'Pageflow::Entry') }
     scope :on_accounts, -> { where(entity_type: 'Pageflow::Account') }
-
-    def entry
-      entity
-    end
-
-    def entry=(value)
-      self.entity = value
-    end
   end
 end
