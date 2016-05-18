@@ -20,12 +20,11 @@ module Pageflow
     describe '#create' do
       it 'does not allow account managers to create admins' do
         account = create(:account)
-        create(:user, :editor, on: account)
 
         sign_in(create(:user, :manager, on: account))
 
         expect do
-          post :create, user: attributes_for(:valid_user, role: 'admin')
+          post :create, user: attributes_for(:valid_user, admin: true)
         end.not_to change { User.admins.count }
       end
 
@@ -73,7 +72,7 @@ module Pageflow
                user: {email: 'existing_user@example.com',
                       initial_role: 'member',
                       initial_account: account}
-        end.to change { account.memberships.count }
+        end.to change { account.users.count }
       end
 
       it 'creates account membership if e-mail unknown but quota allows it' do
@@ -85,9 +84,11 @@ module Pageflow
           request.env['HTTP_REFERER'] = admin_users_path
           post :create,
                user: {email: 'new_user@example.com',
+                      first_name: 'Adelheid',
+                      last_name: 'Doe',
                       initial_role: 'member',
                       initial_account: account}
-        end.to change { account.memberships.count }
+        end.to change { account.users.count }
       end
 
       it 'creates invited user if e-mail unknown but quota allows it' do
@@ -131,7 +132,7 @@ module Pageflow
       end
 
       it 'allows admin to make users admin' do
-        user = create(:user, :editor)
+        user = create(:user)
 
         sign_in(create(:user, :admin))
         patch :update, id: user, user: {admin: true}

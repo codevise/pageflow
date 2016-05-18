@@ -11,7 +11,7 @@ describe Admin::MembershipsController do
 
         expect do
           post :create, account_id: account, membership: {user_id: user, role: 'manager'}
-        end.to change { account.memberships.count }
+        end.to change { account.users.count }
       end
 
       it 'allows to add account to user' do
@@ -24,7 +24,7 @@ describe Admin::MembershipsController do
           post :create, user_id: user, membership: {entity_id: account.id,
                                                     entity_type: 'Pageflow::Account',
                                                     role: 'manager'}
-        end.to change { account.memberships.count }
+        end.to change { user.accounts.count }
       end
 
       it 'does not allow to add user of other account to entry' do
@@ -38,7 +38,7 @@ describe Admin::MembershipsController do
           post :create,
                entry_id: entry.id,
                membership: {user_id: user, role: 'previewer'}
-        end.not_to change { entry.memberships.count }
+        end.not_to change { entry.users.count }
       end
 
       it 'does not allow to add entry of other account to user' do
@@ -52,7 +52,7 @@ describe Admin::MembershipsController do
           post :create,
                user_id: user,
                membership: {entity_id: entry.id, entity_type: 'Pageflow::Entry', role: 'previewer'}
-        end.not_to change { user.memberships.count }
+        end.not_to change { user.entries.count }
       end
 
       it 'allows to add entry of member account to user' do
@@ -66,7 +66,7 @@ describe Admin::MembershipsController do
           post :create, user_id: user, membership: {entity_id: entry.id,
                                                     entity_type: 'Pageflow::Entry',
                                                     role: 'manager'}
-        end.to change { user.memberships.count }
+        end.to change { user.entries.count }
       end
 
       it 'allows to add user of member account to entry' do
@@ -80,7 +80,7 @@ describe Admin::MembershipsController do
           post :create,
                entry_id: entry.id,
                membership: {user_id: user, role: 'manager'}
-        end.to change { entry.memberships.count }
+        end.to change { entry.users.count }
       end
     end
 
@@ -94,7 +94,7 @@ describe Admin::MembershipsController do
 
         expect do
           post :create, account_id: account, membership: {user_id: user, role: 'manager'}
-        end.to change { account.memberships.count }
+        end.to change { account.users.count }
       end
 
       it 'allows to add correct account to user' do
@@ -108,7 +108,7 @@ describe Admin::MembershipsController do
           post :create, user_id: user, membership: {entity_id: account.id,
                                                     entity_type: 'Pageflow::Account',
                                                     role: 'manager'}
-        end.to change { account.memberships.count }
+        end.to change { user.accounts.count }
       end
 
       it 'does not allow to add user to off-limits account' do
@@ -122,7 +122,7 @@ describe Admin::MembershipsController do
         expect do
           post :create, account_id: off_limits_account.id, membership: {user_id: user,
                                                                         role: 'manager'}
-        end.not_to change { off_limits_account.memberships.count }
+        end.not_to change { off_limits_account.users.count }
       end
 
       it 'does not allow to add off-limits account to user' do
@@ -139,7 +139,7 @@ describe Admin::MembershipsController do
                membership: {entity_id: off_limits_account.id,
                             entity_type: 'Pageflow::Account',
                             role: 'manager'}
-        end.not_to change { off_limits_account.memberships.count }
+        end.not_to change { user.accounts.count }
       end
     end
 
@@ -153,7 +153,7 @@ describe Admin::MembershipsController do
 
         expect do
           post :create, account_id: account, membership: {user_id: user, role: 'manager'}
-        end.not_to change { account.memberships.count }
+        end.not_to change { account.users.count }
       end
 
       it 'does not allow to add account to user' do
@@ -167,7 +167,7 @@ describe Admin::MembershipsController do
           post :create, user_id: user, membership: {account_id: account.id,
                                                     account_type: 'Pageflow::Account',
                                                     role: 'manager'}
-        end.not_to change { account.memberships.count }
+        end.not_to change { user.accounts.count }
       end
     end
 
@@ -183,7 +183,7 @@ describe Admin::MembershipsController do
 
         expect do
           post :create, entry_id: entry, membership: {user_id: user, role: 'previewer'}
-        end.not_to change { entry.memberships.count }
+        end.not_to change { entry.users.count }
       end
 
       it 'does not allow to add entry to user in other account' do
@@ -199,7 +199,7 @@ describe Admin::MembershipsController do
           post :create, user_id: user, membership: {entry_id: entry.id,
                                                     entity_type: 'Pageflow::Entry',
                                                     role: 'previewer'}
-        end.not_to change { user.memberships.count }
+        end.not_to change { user.entries.count }
       end
 
       it 'does not allow to add user to entry for entry admin on other entry' do
@@ -213,7 +213,7 @@ describe Admin::MembershipsController do
 
         expect do
           post :create, entry_id: entry, membership: {user_id: user, role: 'previewer'}
-        end.not_to change { entry.memberships.count }
+        end.not_to change { entry.users.count }
       end
 
       it 'does not allow to add entry to user for entry admin on other entry' do
@@ -229,7 +229,7 @@ describe Admin::MembershipsController do
           post :create, user_id: user, membership: {entry_id: entry.id,
                                                     entity_type: 'Pageflow::Entry',
                                                     role: 'previewer'}
-        end.not_to change { user.memberships.count }
+        end.not_to change { user.entries.count }
       end
 
       it 'allows to add user to entry in correct account' do
@@ -242,7 +242,7 @@ describe Admin::MembershipsController do
 
         expect do
           post :create, entry_id: entry, membership: {user_id: user, role: 'manager'}
-        end.to change { entry.memberships.count }
+        end.to change { entry.users.count }
       end
 
       it 'allows to add entry to user in correct account' do
@@ -257,7 +257,7 @@ describe Admin::MembershipsController do
           post :create, user_id: user, membership: {entity_id: entry.id,
                                                     entity_type: 'Pageflow::Entry',
                                                     role: 'manager'}
-        end.to change { user.memberships.count }
+        end.to change { user.entries.count }
       end
     end
 
@@ -272,7 +272,7 @@ describe Admin::MembershipsController do
 
         expect do
           post :create, entry_id: entry, membership: {user_id: user, role: 'manager'}
-        end.not_to change { entry.memberships.count }
+        end.not_to change { entry.users.count }
       end
 
       it 'does not allow to add entry to user in correct account' do
@@ -287,7 +287,7 @@ describe Admin::MembershipsController do
           post :create, user_id: user, membership: {entry_id: entry,
                                                     entity_type: 'Pageflow::Entry',
                                                     role: 'manager'}
-        end.not_to change { user.memberships.count }
+        end.not_to change { user.entries.count }
       end
     end
   end
@@ -417,7 +417,7 @@ describe Admin::MembershipsController do
           end.not_to change { membership.reload.role }
         end
 
-        it 'does not allow to edit own account role on user' do
+        it 'does not allow to edit account role relating to own account on user' do
           account_publisher = create(:user)
           account = create(:account, with_publisher: account_publisher)
           user = create(:user)
@@ -531,7 +531,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, account_id: account, id: membership)
-          end.to change { account.memberships.count }
+          end.to change { account.users.count }
         end
 
         it 'allows to delete account from user' do
@@ -543,7 +543,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, user_id: user, id: membership)
-          end.to change { account.memberships.count }
+          end.to change { user.accounts.count }
         end
 
         it 'allows to delete user from entry' do
@@ -556,7 +556,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, entry_id: entry, id: membership)
-          end.to change { entry.memberships.count }
+          end.to change { entry.users.count }
         end
 
         it 'allows to delete entry from user' do
@@ -569,7 +569,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, user_id: user, id: membership)
-          end.to change { user.memberships.count }
+          end.to change { user.entries.count }
         end
       end
 
@@ -584,7 +584,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, account_id: account, id: membership)
-          end.to change { account.memberships.count }
+          end.to change { account.users.count }
         end
 
         it 'allows to delete own account from user' do
@@ -597,7 +597,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, user_id: user, id: membership)
-          end.to change { user.memberships.count }
+          end.to change { user.accounts.count }
         end
 
         it 'deletes entry membership from user along with account membership' do
@@ -612,7 +612,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, user_id: user, id: account_membership)
-          end.to change { entry.memberships.count }
+          end.to change { user.entries.count }
         end
 
         it 'does not delete entry membership from other user along with account membership' do
@@ -628,7 +628,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, user_id: user, id: account_membership)
-          end.not_to change { entry.memberships.count }
+          end.not_to change { user.entries.count }
         end
 
         it 'does not delete entry membership of other account along with account membership' do
@@ -643,7 +643,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, user_id: user, id: account_membership)
-          end.not_to change { entry.memberships.count }
+          end.not_to change { user.entries.count }
         end
 
         it 'does not delete account membership along with other account membership' do
@@ -660,7 +660,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, user_id: user, id: account_membership)
-          end.not_to change { other_account.memberships.count }
+          end.not_to change { other_account.users.count }
         end
 
         it 'does not allow to delete user from off-limits account' do
@@ -674,7 +674,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, account_id: off_limits_account, id: membership)
-          end.not_to change { off_limits_account.memberships.count }
+          end.not_to change { off_limits_account.users.count }
         end
 
         it 'does not allow to delete user from off-limits account' do
@@ -688,7 +688,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, account_id: off_limits_account, id: membership)
-          end.not_to change { off_limits_account.memberships.count }
+          end.not_to change { off_limits_account.users.count }
         end
 
         it 'does not allow to delete off-limits account from user' do
@@ -702,7 +702,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, user_id: user, id: membership)
-          end.not_to change { user.memberships.count }
+          end.not_to change { user.accounts.count }
         end
       end
 
@@ -717,7 +717,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, account_id: account, id: membership)
-          end.not_to change { account.memberships.count }
+          end.not_to change { account.users.count }
         end
 
         it 'does not allow to delete own account from user' do
@@ -730,7 +730,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, user_id: user, id: membership)
-          end.not_to change { user.memberships.count }
+          end.not_to change { user.accounts.count }
         end
       end
 
@@ -746,7 +746,7 @@ describe Admin::MembershipsController do
 
           expect {
             delete(:destroy, user_id: user, id: membership)
-          }.not_to change { user.memberships.count }
+          }.not_to change { user.entries.count }
         end
 
         it 'does not allow to delete entry from user in other account' do
@@ -760,7 +760,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, entry_id: entry, id: membership)
-          end.not_to change { entry.memberships.count }
+          end.not_to change { entry.users.count }
         end
 
         it 'allows to delete member of entry account from entry' do
@@ -774,7 +774,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, entry_id: entry, id: membership)
-          end.to change { entry.memberships.count }
+          end.to change { entry.users.count }
         end
 
         it 'allows to delete entry of user account from user' do
@@ -788,7 +788,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, user_id: user, id: membership)
-          end.to change { user.memberships.count }
+          end.to change { user.entries.count }
         end
       end
 
@@ -804,7 +804,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, entry_id: entry, id: membership)
-          end.not_to change { entry.memberships.count }
+          end.not_to change { entry.users.count }
         end
 
         it 'does not allow to delete entry of user account from user' do
@@ -818,7 +818,7 @@ describe Admin::MembershipsController do
 
           expect do
             delete(:destroy, user_id: user, id: membership)
-          end.not_to change { user.memberships.count }
+          end.not_to change { user.entries.count }
         end
       end
     end

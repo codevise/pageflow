@@ -72,7 +72,7 @@ describe Admin::FoldersController do
       end
     end
 
-    describe 'as account manager' do
+    describe 'as account publisher' do
       it 'does not allow to change name of folder of other account' do
         folder = create(:folder, name: 'old')
         other_account = create(:account)
@@ -158,7 +158,7 @@ describe Admin::FoldersController do
 
         expect do
           delete :destroy, id: folder
-        end.not_to change { user.memberships.on_accounts.first.entity.folders.count }
+        end.not_to change { Pageflow::Folder.count }
       end
     end
   end
