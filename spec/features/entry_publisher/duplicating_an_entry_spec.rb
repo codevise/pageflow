@@ -1,10 +1,9 @@
 require 'spec_helper'
 
 feature 'duplicating an entry' do
-  scenario 'as publisher of entry' do
-    user = Dom::Admin::Page.sign_in_as(:editor)
-
-    entry = create(:entry, with_publisher: user, title: 'Test Entry')
+  scenario 'entry is duplicated' do
+    entry = create(:entry, title: 'Test Entry')
+    Dom::Admin::Page.sign_in_as(:publisher, on: entry)
 
     visit(admin_entry_path(entry))
     Dom::Admin::EntryPage.first.duplicate_button.click

@@ -16,7 +16,6 @@ module Pageflow
       # inline membership creation
 
       transient do
-        with_member nil
         with_previewer nil
         with_editor nil
         with_publisher nil
@@ -24,7 +23,6 @@ module Pageflow
       end
 
       after(:create) do |entry, evaluator|
-        create(:membership, entity: entry, user: evaluator.with_member) if evaluator.with_member
         create(:membership,
                entity: entry,
                user: evaluator.with_previewer,

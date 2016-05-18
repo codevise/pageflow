@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-feature 'entry editor editing an entry' do
-  scenario 'changing title of entry of own account' do
+feature 'editing an entry' do
+  scenario 'changing entry title' do
     entry = create(:entry, title: 'Test Entry')
 
-    Dom::Admin::Page.sign_in_as(:editor, on: entry)
+    Dom::Admin::Page.sign_in_as(:publisher, on: entry)
 
     visit(admin_entries_path)
     expect(Dom::Admin::EntryInIndexTable.find_by_title('Test Entry')).to be_present

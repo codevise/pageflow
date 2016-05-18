@@ -6,7 +6,7 @@ module Pageflow
 
     form do |f|
       f.inputs do
-        if authorized?(:read, Account) && f.object.new_record?
+        if authorized?(:manage, Folder) && f.object.new_record?
           f.input :account, include_blank: false
         end
         f.input :name
@@ -50,8 +50,8 @@ module Pageflow
 
       private
 
-      def restrict_attributes(id, attributes)
-        attributes.except!(:account_id) if !authorized?(:read, Account) || id.present?
+      def restrict_attributes(_id, attributes)
+        attributes.except!(:account_id)
       end
     end
   end

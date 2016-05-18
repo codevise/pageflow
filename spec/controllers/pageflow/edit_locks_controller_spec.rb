@@ -7,7 +7,7 @@ module Pageflow
 
     describe '#create' do
       context 'when not locked' do
-        it 'succeeds for publisher of the entry' do
+        it 'succeeds for editor of the entry' do
           user = create(:user)
           entry = create(:entry, with_editor: user)
 
@@ -37,9 +37,9 @@ module Pageflow
           expect(entry.edit_lock).to be_held_by(user)
         end
 
-        it 'requires the signed in user to be member of the parent entry' do
+        it 'requires the signed in user to be editor of the parent entry' do
           user = create(:user)
-          entry = create(:entry)
+          entry = create(:entry, with_previewer: user)
 
           sign_in(user)
           post(:create, entry_id: entry, format: :json)
@@ -103,7 +103,7 @@ module Pageflow
             expect(json_response(path: ['id'])).to eq(entry.reload.edit_lock.id)
           end
 
-          it 'does not break other users lock' do
+          it 'breaks other users\' lock' do
             user = create(:user)
             other_user = create(:user)
             entry = create(:entry, with_editor: user)
@@ -140,9 +140,9 @@ module Pageflow
           expect(entry.edit_lock).to be_held_by(user)
         end
 
-        it 'requires the signed in user to be member of the parent entry' do
+        it 'requires the signed in user to be editor of the parent entry' do
           user = create(:user)
-          entry = create(:entry)
+          entry = create(:entry, with_previewer: user)
 
           sign_in(user)
           put(:update, entry_id: entry, edit_lock: {id: 'not_there_anymore'}, format: :json)
@@ -182,9 +182,9 @@ module Pageflow
           expect(entry.edit_lock).to be_held_by(user)
         end
 
-        it 'requires the signed in user to be member of the parent entry' do
+        it 'requires the signed in user to be editor of the parent entry' do
           user = create(:user)
-          entry = create(:entry)
+          entry = create(:entry, with_previewer: user)
           edit_lock = entry.edit_lock.acquire(user)
 
           sign_in(user)

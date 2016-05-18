@@ -86,7 +86,12 @@ module Pageflow
       end
 
       def publish?
-        allows?(%w(publisher manager))
+        @user.admin? ||
+          allows?(%w(publisher manager))
+      end
+
+      def read?
+        publish?
       end
 
       def configure_folder_on?
@@ -102,6 +107,10 @@ module Pageflow
           allows?(%w(manager))
       end
 
+      def update?
+        manage?
+      end
+
       def add_member_to?
         manage?
       end
@@ -112,6 +121,14 @@ module Pageflow
 
       def destroy_membership_on?
         manage?
+      end
+
+      def admin?
+        @user.admin?
+      end
+
+      def index?
+        admin?
       end
 
       private

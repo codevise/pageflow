@@ -13,13 +13,15 @@ module Dom
 
       def add_entry_link
         within(node) do
-          find_link(I18n.t('active_admin.new_model', model: I18n.t('activerecord.models.entry.one')))
+          find_link(I18n.t('active_admin.new_model',
+                           model: I18n.t('activerecord.models.entry.one')))
         end
       end
 
       def edit_entry_link
         within(node) do
-          find_link(I18n.t('active_admin.edit_model', model: I18n.t('activerecord.models.entry.one')))
+          find_link(I18n.t('active_admin.edit_model',
+                           model: I18n.t('activerecord.models.entry.one')))
         end
       end
 
@@ -37,7 +39,8 @@ module Dom
 
       def delete_entry_link
         within(node) do
-          find_link(I18n.t('active_admin.delete_model', model: I18n.t('activerecord.models.entry.one')))
+          find_link(I18n.t('active_admin.delete_model',
+                           model: I18n.t('activerecord.models.entry.one')))
         end
       end
 

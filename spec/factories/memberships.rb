@@ -34,7 +34,7 @@ module Pageflow
     factory :account_membership, class: Membership do
       user
       association :entity, factory: :account
-      role 'previewer'
+      role 'member'
     end
   end
 end

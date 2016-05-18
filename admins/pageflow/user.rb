@@ -68,7 +68,7 @@ module Pageflow
                 end
               end
               column I18n.t('activerecord.models.account.one'), :account do |membership|
-                if authorized?(:read, Account)
+                if authorized?(:read, membership.entity.account)
                   link_to(membership.entity.account.name,
                           admin_account_path(membership.entity.account))
                 else
@@ -111,7 +111,7 @@ module Pageflow
               if authorized?(:list_memberships_on, Account)
               end
               column I18n.t('activerecord.models.account.one'), :account do |membership|
-                if authorized?(:read, Account)
+                if authorized?(:read, membership.entity)
                   link_to(membership.entity.name, admin_account_path(membership.entity))
                 else
                   membership.entity.name
@@ -128,7 +128,7 @@ module Pageflow
                   link_to(I18n.t('pageflow.admin.users.edit_role'),
                           edit_admin_user_membership_path(user, membership, entity_type: :account),
                           data: {
-                            rel: 'edit_account_role'
+                            rel: "edit_account_role_#{membership.role}"
                           })
                 end
               end
@@ -223,7 +223,6 @@ module Pageflow
     controller do
       include Pageflow::QuotaVerification
 
-      helper Pageflow::Admin::UsersHelper
       helper Pageflow::Admin::FormHelper
       helper Pageflow::Admin::LocalesHelper
       helper Pageflow::Admin::MembershipsHelper
@@ -274,8 +273,10 @@ module Pageflow
         result
       end
 
+      private
+
       def restrict_attributes(_id, attributes)
-        if !authorized?(:read, Account)
+        unless authorized?(:set_admin, current_user)
           attributes.delete(:admin)
         end
 

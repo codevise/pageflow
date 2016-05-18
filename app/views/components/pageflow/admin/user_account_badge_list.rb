@@ -17,7 +17,7 @@ module Pageflow
 
       def build_badge(membership)
         li do
-          if authorized?(:read, Account)
+          if authorized?(:read, membership.entity)
             account_name_display = span(link_to(membership.entity.name,
                                                 admin_account_path(membership.entity)),
                                         class: 'abbreviation')

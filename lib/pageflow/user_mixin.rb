@@ -63,12 +63,6 @@ module Pageflow
       end
     end
 
-    module ClassMethods
-      def roles_accessible_by(ability)
-        ability.can?(:read, Account) ? ROLES : NON_ADMIN_ROLES
-      end
-    end
-
     private
 
     def needs_password?(attributes)

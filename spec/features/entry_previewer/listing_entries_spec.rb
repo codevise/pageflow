@@ -1,5 +1,5 @@
 feature 'listing entries' do
-  scenario 'only entries show up in entries table in which the user is a member' do
+  scenario 'only entries show up in entries table on which the user is at least previewer' do
     first_entry = create(:entry, title: 'First Entry')
     create(:entry, title: 'Second Entry')
     Dom::Admin::Page.sign_in_as(:previewer, on: first_entry)

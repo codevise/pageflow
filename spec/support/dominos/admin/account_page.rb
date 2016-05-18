@@ -19,13 +19,15 @@ module Dom
 
       def edit_link
         within(node) do
-          find_link(I18n.t('active_admin.edit_model', model: I18n.t('activerecord.models.account.one')))
+          find_link(I18n.t('active_admin.edit_model',
+                           model: I18n.t('activerecord.models.account.one')))
         end
       end
 
       def delete_link
         within(node) do
-          find_link(I18n.t('active_admin.delete_model', model: I18n.t('activerecord.models.account.one')))
+          find_link(I18n.t('active_admin.delete_model',
+                           model: I18n.t('activerecord.models.account.one')))
         end
       end
     end

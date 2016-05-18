@@ -59,8 +59,9 @@ module Pageflow
         end
 
         it 'requires user to be signed in' do
-          user = create(:user)
-          entry = create(:entry, with_manager: user)
+          user = create(:user, :admin)
+          entry = create(:entry)
+          create(:membership, user: user, entity: entry.account, role: 'manager')
 
           get(:index, collection_name: 'entries', subject_id: entry.id, format: 'json')
 
@@ -82,13 +83,17 @@ module Pageflow
                 ],
                 format: 'json')
 
-          expect(entry.draft.widgets).to include_record_with(type_name: 'test_widget', role: 'navigation')
+          expect(entry.draft.widgets).to include_record_with(type_name: 'test_widget',
+                                                             role: 'navigation')
         end
 
         it 'updates widget with role for entry draft' do
           user = create(:user)
           entry = create(:entry, with_editor: user)
-          widget = create(:widget, subject: entry.draft, role: 'navigation', type_name: 'test_widget')
+          widget = create(:widget,
+                          subject: entry.draft,
+                          role: 'navigation',
+                          type_name: 'test_widget')
 
           sign_in(user)
           patch(:batch,
@@ -237,7 +242,7 @@ module Pageflow
         end
 
         it 'requires user to be signed in' do
-          user = create(:user)
+          user = create(:user, :admin)
           entry = create(:entry, with_manager: user)
 
           patch(:batch,

@@ -14,40 +14,49 @@ module Pageflow
         create(:file_usage, revision: other_entry.draft, file: file)
 
         sign_in(user)
-        post(:create, entry_id: entry.id, file_usage: {file_id: file.id, file_type: 'Pageflow::ImageFile'}, format: 'json')
+        post(:create,
+             entry_id: entry.id,
+             file_usage: {file_id: file.id, file_type: 'Pageflow::ImageFile'},
+             format: 'json')
 
         expect(entry.draft.image_files).to include(file)
       end
 
       it 'cannot add file of unaccessible entry' do
         user = create(:user)
-        entry = create(:entry, with_previewer: user)
+        entry = create(:entry, with_manager: user)
         other_entry = create(:entry)
         file = create(:image_file)
         create(:file_usage, revision: other_entry.draft, file: file)
 
         sign_in(user)
-        post(:create, entry_id: entry.id, file_usage: {file_id: file.id, file_type: 'Pageflow::ImageFile'}, format: 'json')
+        post(:create,
+             entry_id: entry.id,
+             file_usage: {file_id: file.id, file_type: 'Pageflow::ImageFile'},
+             format: 'json')
 
         expect(response.status).to eq(403)
       end
 
       it 'cannot add file to unaccessible entry' do
         user = create(:user)
-        entry = create(:entry)
-        other_entry = create(:entry, with_editor: user)
+        entry = create(:entry, with_previewer: user)
+        other_entry = create(:entry, with_manager: user)
         file = create(:image_file)
         create(:file_usage, revision: other_entry.draft, file: file)
 
         sign_in(user)
-        post(:create, entry_id: entry.id, file_usage: {file_id: file.id, file_type: 'Pageflow::ImageFile'}, format: 'json')
+        post(:create,
+             entry_id: entry.id,
+             file_usage: {file_id: file.id, file_type: 'Pageflow::ImageFile'},
+             format: 'json')
 
         expect(response.status).to eq(403)
       end
 
       it 'requires user to be signed in' do
-        user = create(:user)
-        entry = create(:entry, with_editor: user)
+        user = create(:user, :admin)
+        entry = create(:entry, with_manager: user)
         file = create(:image_file)
 
         post(:create, entry_id: entry.id, file_usage: {file_id: file.id}, format: 'json')
@@ -88,8 +97,8 @@ module Pageflow
       end
 
       it 'requires user to be signed in' do
-        user = create(:user)
-        entry = create(:entry, with_editor: user)
+        user = create(:user, :admin)
+        entry = create(:entry, with_manager: user)
         file = create(:image_file)
         usage = create(:file_usage, revision: entry.draft, file: file)
 

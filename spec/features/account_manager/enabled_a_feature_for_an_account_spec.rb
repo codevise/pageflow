@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'admim enabling a feature for an account' do
+feature 'enabling a feature for an account' do
   scenario 'enabled for account' do
     account = create(:account)
 
@@ -8,7 +8,7 @@ feature 'admim enabling a feature for an account' do
       config.features.register('test_feature')
     end
 
-    Dom::Admin::Page.sign_in_as(:admin)
+    Dom::Admin::Page.sign_in_as(:manager, on: account)
     visit(admin_account_path(account))
     Dom::Admin::AccountPage.find!.features_tab.click
     Dom::Admin::FeaturesForm.find!.submit_with(test_feature: true)

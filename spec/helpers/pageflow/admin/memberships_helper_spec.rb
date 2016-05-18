@@ -5,7 +5,7 @@ module Pageflow
     describe MembershipsHelper do
       describe '#membership_users_collection' do
         it 'returns pairs of formal name and id for new membership' do
-          user = create(:user, first_name: 'John', last_name: 'Doe')
+          user = create(:user, first_name: 'Randolph', last_name: 'Doe')
           account = create(:account)
           membership = create(:membership, entity: account, role: 'member', user: user)
           new_membership = Membership.new
@@ -13,7 +13,7 @@ module Pageflow
 
           pairs = membership_users_collection(entry, membership, new_membership)
 
-          expect(pairs).to eq([['Doe, John', user.id]])
+          expect(pairs).to eq([['Doe, Randolph', user.id]])
         end
 
         it 'returns only membership user if membership not new' do
@@ -58,13 +58,13 @@ module Pageflow
         it 'returns only membership account if membership not new' do
           user = create(:user)
           account_manager = create(:user)
-          account = create(:account, name: 'TVcorp', with_manager: account_manager)
+          account = create(:account, name: 'Radiocorp', with_manager: account_manager)
           create(:account, with_manager: account_manager)
           membership = create(:membership, entity: account)
 
           pairs = helper.membership_accounts_collection(user, membership, membership)
 
-          expect(pairs).to eq([['TVcorp', account.id]])
+          expect(pairs).to eq([['Radiocorp', account.id]])
         end
 
         it 'filters accounts that are already members of parent' do
@@ -113,7 +113,7 @@ module Pageflow
           account = create(:account, name: 'Codevise Ltd.')
           user = create(:user)
           entry = create(:entry, account: account, title: 'My Pageflow')
-          create(:entry, title: 'Lewd title', with_previewer: user)
+          create(:entry, title: 'Raucous title', with_previewer: user)
           membership = create(:membership, user: user, role: 'previewer', entity: entry)
 
           pairs = helper.membership_entries_collection(user, membership, membership)

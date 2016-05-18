@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'account manager inviting a user' do
+feature 'inviting a user' do
   scenario 'invited user gains access via invitation email' do
     account = create(:account)
     Dom::Admin::Page.sign_in_as(:manager, on: account)
@@ -32,13 +32,13 @@ feature 'account manager inviting a user' do
 
   scenario 'inviting a user for another account' do
     account = create(:account, name: 'another account')
-    create(:user, email: 'existing_user@example.org', first_name: 'Walter')
+    create(:user, email: 'existing_user@example.org', first_name: 'Walter', last_name: 'Doe')
 
     Dom::Admin::Page.sign_in_as(:manager, on: account)
     visit(admin_users_path)
     Dom::Admin::UserPage.first.invite_user_link.click
     Dom::Admin::UserForm.first.submit_with(account_id: account.id,
-                                           first_name: 'Walter',
+                                           first_name: 'John',
                                            last_name: 'Doe',
                                            email: 'existing_user@example.org')
     visit(admin_users_path)

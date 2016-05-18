@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'adding an entry' do
-  scenario 'added entry shows up in entries table for account publisher' do
+  scenario 'added entry shows up in entries table' do
     filler_account = create(:account, name: 'Filler Account')
     account = create(:account, name: 'Stock Report')
     account_publisher = Dom::Admin::Page.sign_in_as(:publisher, on: account)

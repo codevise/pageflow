@@ -33,7 +33,7 @@ module Pageflow
           expect(json_response(path: [:entry, :published_until])).to eq(1.month.from_now.iso8601(3))
         end
 
-        it 'allows to define published_until attributes' do
+        it 'allows to define published_until attribute' do
           user = create(:user)
           entry = create(:entry, with_publisher: user)
 
@@ -57,7 +57,6 @@ module Pageflow
                  password_protected: true,
                  password: 'abc123abc'
                }, format: :json)
-          entry.revisions.published.last
 
           expect(entry.reload).to be_published_with_password('abc123abc')
         end
@@ -144,7 +143,7 @@ module Pageflow
       end
 
       describe '#check' do
-        it 'responds with exceeding state for available quota' do
+        it 'responds with non-exceeding state for available quota' do
           user = create(:user)
           entry = create(:entry, with_publisher: user)
 

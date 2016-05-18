@@ -35,7 +35,7 @@ module Pageflow
 
       it 'copies memberships' do
         user = create(:user)
-        entry = create(:entry, with_member: user)
+        entry = create(:entry, with_previewer: user)
 
         duplicate = EntryDuplicate.of(entry).create!
 

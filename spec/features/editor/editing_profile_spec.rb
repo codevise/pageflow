@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 feature 'editing profile' do
-  scenario 'change first and last name', :focus => true do
-    create(:user, :email => 'john@example.com', :password => '@qwert12345')
+  scenario 'change first and last name', focus: true do
+    create(:user, email: 'john@example.com', password: '@qwert12345')
 
-    Dom::Admin::Page.sign_in(:email => 'john@example.com', :password => '@qwert12345')
+    Dom::Admin::Page.sign_in(email: 'john@example.com', password: '@qwert12345')
     visit('/admin/users/me')
-    Dom::Admin::ProfileForm.first.submit_with(:first_name => 'Joe', :last_name => 'Johnson')
+    Dom::Admin::ProfileForm.first.submit_with(first_name: 'Joe', last_name: 'Johnson')
     visit('/admin/users/me')
     form = Dom::Admin::ProfileForm.first
 
@@ -15,12 +15,14 @@ feature 'editing profile' do
   end
 
   scenario 'change password' do
-    create(:user, :email => 'john@example.com', :password => '@qwert12345')
+    create(:user, email: 'john@example.com', password: '@qwert12345')
 
-    Dom::Admin::Page.sign_in(:email => 'john@example.com', :password => '@qwert12345')
+    Dom::Admin::Page.sign_in(email: 'john@example.com', password: '@qwert12345')
     visit('/admin/users/me')
-    Dom::Admin::ProfileForm.first.submit_with(:current_password => '@qwert12345', :password => '@new12345', :password_confirmation => '@new12345')
+    Dom::Admin::ProfileForm.first.submit_with(current_password: '@qwert12345',
+                                              password: '@new12345',
+                                              password_confirmation: '@new12345')
 
-    expect(Dom::Admin::Page).to be_accessible_with(:email => 'john@example.com', :password => '@new12345')
+    expect(Dom::Admin::Page).to be_accessible_with(email: 'john@example.com', password: '@new12345')
   end
 end

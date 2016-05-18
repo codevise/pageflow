@@ -16,22 +16,21 @@ module Pageflow
       password '@qwert12345'
       password_confirmation { password }
 
-      trait :editor do
+      trait :member do
         after(:create) do |user, evaluator|
-          create(:membership, user: user, entity: evaluator.on, role: 'editor') if evaluator.on
-        end
-      end
-
-      trait :account_manager do
-        role 'account_manager'
-        after(:create) do |user|
-          create(:membership, user: user, entity: create(:account), role: 'manager')
+          create(:membership, user: user, entity: evaluator.on, role: 'member')
         end
       end
 
       trait :previewer do
         after(:create) do |user, evaluator|
           create(:membership, user: user, entity: evaluator.on, role: 'previewer')
+        end
+      end
+
+      trait :editor do
+        after(:create) do |user, evaluator|
+          create(:membership, user: user, entity: evaluator.on, role: 'editor')
         end
       end
 
@@ -44,12 +43,6 @@ module Pageflow
       trait :manager do
         after(:create) do |user, evaluator|
           create(:membership, user: user, entity: evaluator.on, role: 'manager')
-        end
-      end
-
-      trait :member do
-        after(:create) do |user, evaluator|
-          create(:membership, user: user, entity: evaluator.on, role: 'member')
         end
       end
 

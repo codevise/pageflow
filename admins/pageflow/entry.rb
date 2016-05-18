@@ -21,7 +21,7 @@ module Pageflow
       end
       if authorized?(:see, :accounts_column_on_entry_index)
         column :account, sortable: 'account_id' do |entry|
-          if authorized?(:read, Account)
+          if authorized?(:read, entry.account)
             link_to(entry.account.name,
                     admin_account_path(entry.account),
                     data: {id: entry.account.id})
@@ -269,7 +269,7 @@ module Pageflow
            (action_name.to_sym == :create ||
             action_name.to_sym == :update && authorized?(:update_account_on, resource)) &&
            account_policy_scope.entry_movable
-           .include?(Pageflow::Account.find(params[:entry][:account_id]))
+             .include?(Pageflow::Account.find(params[:entry][:account_id]))
           [:account_id]
         end
       end

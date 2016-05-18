@@ -111,7 +111,10 @@ module Pageflow
         entry = create(:entry, account: account)
 
         sign_in(user)
-        post(:scaffold, entry_id: entry, storyline: attributes_for(:valid_storyline), format: 'json')
+        post(:scaffold,
+             entry_id: entry,
+             storyline: attributes_for(:valid_storyline),
+             format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -119,7 +122,10 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        post(:scaffold, entry_id: entry, storyline: attributes_for(:valid_storyline), format: 'json')
+        post(:scaffold,
+             entry_id: entry,
+             storyline: attributes_for(:valid_storyline),
+             format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -133,7 +139,10 @@ module Pageflow
 
         sign_in user
         acquire_edit_lock(user, entry)
-        patch(:update, id: storyline, storyline: attributes_for(:valid_storyline, configuration: {some: 'updated value'}), format: 'json')
+        patch(:update,
+              id: storyline,
+              storyline: attributes_for(:valid_storyline, configuration: {some: 'updated value'}),
+              format: 'json')
 
         expect(storyline.reload.configuration['some']).to eq('updated value')
       end
