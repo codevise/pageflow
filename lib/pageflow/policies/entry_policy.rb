@@ -34,6 +34,10 @@ module Pageflow
             .where(either_membership_is_present)
         end
 
+        def member_addable
+          publisher_or_above
+        end
+
         def manager_or_above
           scope
             .joins(memberships_above_publisher_for_entries(user))
