@@ -21,8 +21,8 @@ module Pageflow
           user = create(:user, :admin)
           theming = create(:theming)
 
-          expect(Policies::ThemingPolicy::Scope.new(user,
-                                                    Theming).themings_allowed_for(create(:account))).to include(theming)
+          expect(Policies::ThemingPolicy::Scope
+                  .new(user, Theming).themings_allowed_for(create(:account))).to include(theming)
         end
 
         it 'includes themings for one account' do
@@ -30,43 +30,32 @@ module Pageflow
           account = create(:account, with_publisher: user)
           theming = create(:theming, account: account)
 
-          expect(Policies::ThemingPolicy::Scope.new(user, Theming).themings_allowed_for(account)).to include(theming)
+          expect(Policies::ThemingPolicy::Scope
+                  .new(user, Theming).themings_allowed_for(account)).to include(theming)
         end
 
-        it 'includes/excludes themings correctly for multiple accounts' do
+        it 'excludes a theming for whose account the user is not at least publisher' do
           user = create(:user)
-          other_user = create(:user)
 
-          account = create(:account, with_publisher: user)
-          create(:membership, user: other_user, role: 'publisher', entity: account)
-
-          account_2 = create(:account, with_publisher: user)
-          theming_2 = create(:theming, account: account_2)
-
-          account_3 = create(:account, with_editor: user)
-          theming_3 = create(:theming, account: account_3)
-          create(:entry, account: account_3, theming: theming_3, with_manager: user)
+          account = create(:account, with_editor: user)
+          theming = create(:theming, account: account)
+          create(:entry, account: account, theming: theming, with_manager: user)
 
           account_policy_scope = Pageflow::Policies::AccountPolicy::Scope.new(user, Account)
           accounts = account_policy_scope.themings_accessible
 
-          other_user_account_policy_scope = Pageflow::Policies::AccountPolicy::Scope.new(other_user, Account)
-          other_user_accounts = other_user_account_policy_scope.themings_accessible
+          scope = Pageflow::Policies::ThemingPolicy::Scope
+                  .new(user, Theming).themings_allowed_for(accounts)
 
-          scope = Pageflow::Policies::ThemingPolicy::Scope.new(user, Theming).themings_allowed_for(accounts)
-          other_user_scope = Pageflow::Policies::ThemingPolicy::Scope.new(other_user, Theming).themings_allowed_for(other_user_accounts)
-
-          expect(scope).to include(theming_2)
-          expect(scope).to_not include(theming_3)
-
-          expect(other_user_scope).to_not include(theming_2)
+          expect(scope).to_not include(theming)
         end
 
         it 'does not include themings for wrong account' do
           user = create(:user)
           theming = create(:theming)
 
-          scope = Pageflow::Policies::ThemingPolicy::Scope.new(user, Theming).themings_allowed_for(theming.account)
+          scope = Pageflow::Policies::ThemingPolicy::Scope
+                  .new(user, Theming).themings_allowed_for(theming.account)
 
           expect(scope).to_not include(theming)
         end
@@ -77,7 +66,8 @@ module Pageflow
           theming = create(:theming, account: account)
           create(:membership, user: user, entity: account)
 
-          expect(Pageflow::Policies::ThemingPolicy::Scope.new(user, Theming).themings_allowed_for(account)).not_to include(theming)
+          expect(Pageflow::Policies::ThemingPolicy::Scope
+                  .new(user, Theming).themings_allowed_for(account)).not_to include(theming)
         end
       end
     end

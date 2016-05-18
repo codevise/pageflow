@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'listing entry revisions' do
-  scenario 'previewer can see revisions on entry site' do
+  scenario 'can see revisions on entry site' do
     revision = create(:revision, :published)
     Dom::Admin::Page.sign_in_as(:previewer, on: revision.entry)
 

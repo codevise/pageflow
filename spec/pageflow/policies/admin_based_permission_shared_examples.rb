@@ -7,7 +7,8 @@ module Pageflow
       let(:of) { params[:of_account] }
       let(:account) { of.call(topic) }
       it "allows admin to #{params[:to]} all " \
-         "#{described_class.name.humanize.sub('Pageflow::policies::', '').chomp('policy').pluralize}" do
+         "#{described_class.name.humanize.sub('Pageflow::policies::', '')\
+              .chomp('policy').pluralize}" do
         user = create(:user, :admin)
         policy = described_class.new(user, topic)
 

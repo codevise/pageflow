@@ -21,24 +21,13 @@ module Dom
       def self.sign_in_as(role, options = {})
         email = "#{role}@example.com"
         password = '!Pass123'
-        on = if role == :account_manager && options[:on].blank?
-               FactoryGirl.create(:account)
-             else
-               options.delete(:on)
-             end
+        user = FactoryGirl.create(:user, options.reverse_merge(email: email, password: password))
 
-        if [:previewer, :editor, :publisher, :manager].include?(role.to_sym) &&
-           !(role == :editor && on.blank?)
-          user = FactoryGirl.create(:user, options.reverse_merge(email: email,
-                                                                 password: password))
+        if role.to_sym == :admin
+          user.admin = true
+          user.save
         else
-          user = FactoryGirl.create(:user, role, options.reverse_merge(email: email,
-                                                                       password: password))
-        end
-
-        if on.present?
-          role = 'manager' if role == :account_manager
-          FactoryGirl.create(:membership, user: user, role: role, entity: on)
+          FactoryGirl.create(:membership, user: user, role: role, entity: options[:on])
         end
 
         visit '/admin/login'

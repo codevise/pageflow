@@ -24,7 +24,7 @@
       <%= f.input :initial_role,
                   collection: membership_roles_collection('Pageflow::Account'),
                   include_blank: false,
-                  hint: authorized?(:read, Pageflow::Account) ? I18n.t('pageflow.admin.users.role_hint.admin') : I18n.t('pageflow.admin.users.role_hint.others') %>
+                  hint: I18n.t('pageflow.admin.users.role_hint.admin') %>
     <% end %>
     <%= f.input :admin if current_user.admin? %>
   <% end %>

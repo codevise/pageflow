@@ -24,7 +24,10 @@ module Pageflow
 
           sign_in(user)
           acquire_edit_lock(user, entry)
-          post(:create, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
+          post(:create,
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]},
+               format: 'json')
 
           expect(video_file.reload.state).to eq('waiting_for_encoding')
         end
@@ -36,30 +39,39 @@ module Pageflow
 
           sign_in(user)
           acquire_edit_lock(user, entry)
-          post(:create, entry_id: entry.id, encoding_confirmation: {audio_file_ids: [audio_file.id]}, format: 'json')
+          post(:create,
+               entry_id: entry.id,
+               encoding_confirmation: {audio_file_ids: [audio_file.id]},
+               format: 'json')
 
           expect(audio_file.reload.state).to eq('waiting_for_encoding')
         end
 
-        it 'does not allow to confirm encoding file of other entry' do
+        it 'does not allow to confirm encoding for file of other entry' do
           user = create(:user)
           entry = create(:entry, with_editor: user)
           other_entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: other_entry.draft)
 
           sign_in(user)
-          post(:create, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
+          post(:create,
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]},
+               format: 'json')
 
           expect(response.status).to eq(404)
         end
 
-        it 'does not allow to confirm encoding of files in entry the signed in user is not editor of' do
+        it 'does not allow to confirm file encoding in entry the signed in user is not editor of' do
           user = create(:user)
           entry = create(:entry, with_previewer: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
           sign_in(user)
-          post(:create, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
+          post(:create,
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]},
+               format: 'json')
 
           expect(response.status).to eq(403)
         end
@@ -71,7 +83,10 @@ module Pageflow
           Pageflow.config.quotas.register(:encoding, ExceededTestQuota)
 
           sign_in(user)
-          post(:create, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
+          post(:create,
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]},
+               format: 'json')
 
           expect(response.status).to eq(403)
         end
@@ -80,22 +95,27 @@ module Pageflow
           entry = create(:entry)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
-          post(:create, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
+          post(:create,
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]},
+               format: 'json')
 
           expect(response.status).to eq(401)
         end
       end
 
-
       describe '#check' do
-        it 'responds with exceeding state for available quota' do
+        it 'responds with non-exceeding state for available quota' do
           user = create(:user)
           entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
-          post(:check, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
+          post(:check,
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]},
+               format: 'json')
 
           expect(json_response(path: :exceeding)).to eq(false)
         end
@@ -107,7 +127,10 @@ module Pageflow
           Pageflow.config.quotas.register(:encoding, ExceededTestQuota)
 
           sign_in(user)
-          post(:check, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
+          post(:check,
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]},
+               format: 'json')
 
           expect(json_response(path: :exceeding)).to eq(true)
         end
@@ -119,18 +142,24 @@ module Pageflow
           video_file = create(:video_file, :waiting_for_confirmation, used_in: other_entry.draft)
 
           sign_in(user)
-          post(:check, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
+          post(:check,
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]},
+               format: 'json')
 
           expect(response.status).to eq(404)
         end
 
-        it 'does not allow to confirm encoding of files in entry the signed in user is not member of' do
+        it 'does not allow to confirm file encoding in entry the signed in user is not editor of' do
           user = create(:user)
           entry = create(:entry, with_previewer: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
           sign_in(user)
-          post(:check, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
+          post(:check,
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]},
+               format: 'json')
 
           expect(response.status).to eq(403)
         end
@@ -139,7 +168,10 @@ module Pageflow
           entry = create(:entry)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
-          post(:check, entry_id: entry.id, encoding_confirmation: {video_file_ids: [video_file.id]}, format: 'json')
+          post(:check,
+               entry_id: entry.id,
+               encoding_confirmation: {video_file_ids: [video_file.id]},
+               format: 'json')
 
           expect(response.status).to eq(401)
         end

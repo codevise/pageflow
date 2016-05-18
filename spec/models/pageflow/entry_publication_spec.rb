@@ -46,7 +46,7 @@ module Pageflow
     end
 
     describe 'save!' do
-      it 'passes published entry to quotas #assume method' do
+      it 'passes published entry to quota\'s #assume method' do
         user = create(:user)
         entry = create(:entry)
         quota = QuotaDouble.available.new(:published_entries, entry.account)

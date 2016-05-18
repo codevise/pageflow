@@ -13,7 +13,7 @@ module Pageflow
         expect(account).to be_persisted
       end
 
-      it 'does not account if account with name exists' do
+      it 'does not create account if account with that name exists' do
         account = create(:account, name: 'example')
 
         result = SeedsDsl.account(name: 'example')
@@ -84,7 +84,7 @@ module Pageflow
         expect(entry).to be_persisted
       end
 
-      it 'does not create entry if entry with title exists for account' do
+      it 'does not create entry if entry with same title exists for account' do
         account = create(:account)
         entry = create(:entry, account: account, title: 'Example')
 
@@ -122,7 +122,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry)
 
-        SeedsDsl.membership(user: user, entity: entry)
+        SeedsDsl.membership(user: user, entity: entry, role: 'previewer')
 
         expect(entry.users).to include(user)
         expect(user.entries).to include(entry)
@@ -132,7 +132,7 @@ module Pageflow
         user = create(:user)
         account = create(:account)
 
-        SeedsDsl.membership(user: user, entity: account)
+        SeedsDsl.membership(user: user, entity: account, role: 'member')
 
         expect(account.users).to include(user)
         expect(user.accounts).to include(account)

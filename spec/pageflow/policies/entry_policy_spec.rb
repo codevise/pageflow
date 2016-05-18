@@ -246,8 +246,7 @@ module Pageflow
         it 'includes no entries for admin without memberships' do
           user = create(:user, :admin)
 
-          expect(Policies::EntryPolicy::Scope.new(user,
-                                                  Entry).editor_or_above).to be_empty
+          expect(Policies::EntryPolicy::Scope.new(user, Entry).editor_or_above).to be_empty
         end
 
         it 'includes entries with membership with correct user and correct id' do

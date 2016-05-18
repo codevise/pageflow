@@ -69,19 +69,19 @@ module Dom
         end
       end
 
-      def add_account_link
+      def add_account_membership_link
         within(node) do
           find('[data-rel=add_account_membership]')
         end
       end
 
-      def edit_account_link
+      def edit_account_role_link(role)
         within(node) do
-          find('[data-rel=edit_account_role]')
+          find("[data-rel=edit_account_role_#{role}]")
         end
       end
 
-      def delete_account_link(role)
+      def delete_member_on_account_link(role)
         within(node) do
           find("[data-rel=delete_account_membership_#{role}]")
         end

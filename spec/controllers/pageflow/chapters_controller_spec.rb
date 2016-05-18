@@ -39,7 +39,10 @@ module Pageflow
         entry = create(:entry)
         storyline = create(:storyline, revision: entry.draft)
 
-        post(:create, :storyline_id => storyline, :chapter => attributes_for(:valid_chapter), :format => 'json')
+        post(:create,
+             storyline_id: storyline,
+             chapter: attributes_for(:valid_chapter),
+             format: 'json')
 
         expect(response.status).to eq(401)
       end

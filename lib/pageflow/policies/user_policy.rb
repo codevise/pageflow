@@ -58,6 +58,14 @@ module Pageflow
       def redirect_to_user?
         read?
       end
+
+      def admin?
+        @user.admin?
+      end
+
+      def set_admin?
+        admin?
+      end
     end
   end
 end

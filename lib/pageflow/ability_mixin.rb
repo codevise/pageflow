@@ -5,6 +5,18 @@ module Pageflow
     def pageflow_default_abilities(user)
       return if user.nil?
 
+      can :read, Account, Policies::AccountPolicy::Scope.new(user, Account).resolve do |account|
+        Policies::AccountPolicy.new(user, account).read?
+      end
+
+      can :update, Account do |account|
+        Policies::AccountPolicy.new(user, account).update?
+      end
+
+      can :index, Account do |account|
+        Policies::AccountPolicy.new(user, account).index?
+      end
+
       can :create, Membership do |membership|
         membership.entity.nil? ||
           membership.user.nil? ||
@@ -23,6 +35,10 @@ module Pageflow
 
       can :destroy, Membership do |membership|
         Policies::MembershipPolicy.new(user, membership).destroy?
+      end
+
+      can :set_admin, ::User do |managed_user|
+        Policies::UserPolicy.new(user, managed_user).set_admin?
       end
 
       can :see, :accounts_column_on_entry_index do
@@ -167,7 +183,7 @@ module Pageflow
 
       if user.admin?
         can :view, Admin::FeaturesTab
-        can [:read, :create, :update, :configure_folder_on], Account
+        can [:create, :configure_folder_on], Account
         can :destroy, Account do |account|
           account.users.empty? && account.entries.empty?
         end

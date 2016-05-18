@@ -3,9 +3,9 @@ require 'spec_helper'
 feature 'reading entry' do
   scenario 'visitor sees pages of entry' do
     entry = create(:entry, :published)
-    storyline = create(:storyline, :revision => entry.published_revision)
-    chapter = create(:chapter, :storyline => storyline)
-    page = create(:page, :chapter => chapter, :template => 'background_image')
+    storyline = create(:storyline, revision: entry.published_revision)
+    chapter = create(:chapter, storyline: storyline)
+    page = create(:page, chapter: chapter, template: 'background_image')
 
     visit(pageflow.entry_path(page.chapter.entry))
 
