@@ -4,7 +4,7 @@ describe Admin::EntriesController do
   render_views
 
   describe '#show' do
-    it 'editor sees members and revisions tabs' do
+    it 'entry editor sees members and revisions tabs' do
       account = create(:account)
       user = create(:user)
       entry = create(:entry, account: account, with_editor: user, title: 'example')
@@ -16,7 +16,7 @@ describe Admin::EntriesController do
       expect(response.body).to have_selector('.admin_tabs_view .tabs .revisions')
     end
 
-    it 'entry previewer sees registered admin resource tabs she is authorized for' do
+    it 'entry previewer sees registered admin resource tabs they are authorized for' do
       entry = create(:entry, title: 'example')
       tab_view_component = Class.new(Pageflow::ViewComponent) do
         def build(entry)
@@ -85,9 +85,9 @@ describe Admin::EntriesController do
   end
 
   describe '#create' do
-    it 'does not allow account publisher to create entries for other account' do
+    it 'does not allow account manager to create entries for other account' do
       user = create(:user)
-      create(:account, with_publisher: user)
+      create(:account, with_manager: user)
       other_account = create(:account)
 
       sign_in(user)
@@ -121,14 +121,14 @@ describe Admin::EntriesController do
       end.to change { account.entries.count }
     end
 
-    it 'allows admin to set user account' do
+    it 'allows admin to set entry account' do
       account = create(:account)
 
       sign_in(create(:user, :admin))
 
-      expect {
+      expect do
         post :create, entry: attributes_for(:entry, account_id: account)
-      }.to change { account.entries.count }
+      end.to change { account.entries.count }
     end
 
     it 'allows admin to create entries with custom theming' do
@@ -352,8 +352,9 @@ describe Admin::EntriesController do
       expect(entry.reload.folder).to eq(folder)
     end
 
-    it 'does not allow account publisher to change folder of entry of other account' do
-      user = create(:user)
+    it 'does not allow account manager to change folder of entry of other account' do
+      user_account = create(:account)
+      user = create(:user, :manager, on: user_account)
       folder = create(:folder)
       entry = create(:entry, account: folder.account)
 
@@ -407,7 +408,7 @@ describe Admin::EntriesController do
       expect(entry.reload.feature_state('fancy_page_type')).to eq(true)
     end
 
-    it 'does not allow account publisher and entry manager update feature_configuration' do
+    it 'does not allow account publisher and entry manager to update feature_configuration' do
       user = create(:user)
       account = create(:account, with_publisher: user)
       entry = create(:entry, account: account, with_manager: user)
@@ -424,7 +425,7 @@ describe Admin::EntriesController do
       expect(entry.reload.feature_state('fancy_page_type')).not_to eq(true)
     end
 
-    it 'allows editor to change custom field registered as form input' do
+    it 'allows entry editor to change custom field registered as form input' do
       user = create(:user)
       entry = create(:entry, with_editor: user)
 
@@ -438,7 +439,7 @@ describe Admin::EntriesController do
       expect(entry.reload.custom_field).to eq('some value')
     end
 
-    it 'does not allow editor to change custom field not registered as form input' do
+    it 'does not allow entry editor to change custom field not registered as form input' do
       user = create(:user)
       entry = create(:entry, with_editor: user)
 
@@ -533,10 +534,10 @@ describe Admin::EntriesController do
   end
 
   describe '#duplicate' do
-    it 'does not allow account editor to duplicate entries of own account' do
+    it 'does not allow account editor to duplicate own entries of own account' do
       user = create(:user)
       account = create(:account, with_editor: user)
-      entry = create(:entry, account: account)
+      entry = create(:entry, account: account, with_editor: user)
 
       sign_in(user)
 
@@ -565,15 +566,6 @@ describe Admin::EntriesController do
       expect do
         post(:duplicate, id: entry.id)
       end.to change { Pageflow::Entry.count }
-    end
-
-    it 'does not allow editor to duplicate entries even as a member' do
-      user = create(:user)
-      entry = create(:entry, with_editor: user)
-
-      sign_in(user)
-
-      expect { post(:duplicate, id: entry.id) }.not_to change { Pageflow::Entry.count }
     end
   end
 
