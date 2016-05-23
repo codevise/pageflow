@@ -76,7 +76,7 @@ module Pageflow
       f.inputs do
         f.input :title, hint: I18n.t('pageflow.admin.entries.title_hint')
 
-        eligible_accounts = Policies::AccountPolicy::Scope.new(current_user, Pageflow::Account)
+        eligible_accounts = AccountPolicy::Scope.new(current_user, Pageflow::Account)
                             .entry_movable.load
         if authorized?(:update_account_on, resource)
           f.input :account,
@@ -86,7 +86,7 @@ module Pageflow
         end
 
         unless f.object.new_record?
-          eligible_themings = Policies::ThemingPolicy::Scope.new(current_user, Pageflow::Theming)
+          eligible_themings = ThemingPolicy::Scope.new(current_user, Pageflow::Theming)
                               .themings_allowed_for(resource.account).load
         end
 
@@ -192,7 +192,7 @@ module Pageflow
       def build_new_resource
         super.tap do |entry|
           entry.account ||=
-            Policies::AccountPolicy::Scope.new(current_user,
+            AccountPolicy::Scope.new(current_user,
                                                Pageflow::Account).entry_creatable.first ||
             Pageflow::Account.first
 
@@ -213,11 +213,11 @@ module Pageflow
       private
 
       def account_policy_scope
-        Pageflow::Policies::AccountPolicy::Scope.new(current_user, Pageflow::Account)
+        AccountPolicy::Scope.new(current_user, Pageflow::Account)
       end
 
       def theming_policy_scope
-        Pageflow::Policies::ThemingPolicy::Scope.new(current_user, Pageflow::Theming)
+        ThemingPolicy::Scope.new(current_user, Pageflow::Theming)
       end
 
       def permitted_attributes

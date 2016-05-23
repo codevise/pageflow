@@ -1,74 +1,72 @@
 require 'spec_helper'
 
 module Pageflow
-  module Policies
-    describe ThemingPolicy do
-      it_behaves_like 'a membership-based permission that',
-                      allows: :publisher,
-                      but_forbids: :editor,
-                      of_account: -> (topic) { topic.account },
-                      to: :edit,
-                      topic: -> { create(:theming) }
+  describe ThemingPolicy do
+    it_behaves_like 'a membership-based permission that',
+                    allows: :publisher,
+                    but_forbids: :editor,
+                    of_account: -> (topic) { topic.account },
+                    to: :edit,
+                    topic: -> { create(:theming) }
 
-      it_behaves_like 'an admin permission that',
-                      allows_admins_but_forbids_even_managers: true,
-                      of_account: -> (topic) { topic.account },
-                      to: :index_widgets_for,
-                      topic: -> { create(:theming) }
+    it_behaves_like 'an admin permission that',
+                    allows_admins_but_forbids_even_managers: true,
+                    of_account: -> (topic) { topic.account },
+                    to: :index_widgets_for,
+                    topic: -> { create(:theming) }
 
-      describe '.themings_allowed_for(accounts)' do
-        it 'includes all themings for admins' do
-          user = create(:user, :admin)
-          theming = create(:theming)
+    describe '.themings_allowed_for(accounts)' do
+      it 'includes all themings for admins' do
+        user = create(:user, :admin)
+        theming = create(:theming)
 
-          expect(Policies::ThemingPolicy::Scope
-                  .new(user, Theming).themings_allowed_for(create(:account))).to include(theming)
-        end
+        expect(ThemingPolicy::Scope
+                .new(user, Theming).themings_allowed_for(create(:account))).to include(theming)
+      end
 
-        it 'includes themings for one account' do
-          user = create(:user)
-          account = create(:account, with_publisher: user)
-          theming = create(:theming, account: account)
+      it 'includes themings for one account' do
+        user = create(:user)
+        account = create(:account, with_publisher: user)
+        theming = create(:theming, account: account)
 
-          expect(Policies::ThemingPolicy::Scope
-                  .new(user, Theming).themings_allowed_for(account)).to include(theming)
-        end
+        expect(ThemingPolicy::Scope
+                .new(user, Theming).themings_allowed_for(account)).to include(theming)
+      end
 
-        it 'excludes a theming for whose account the user is not at least publisher' do
-          user = create(:user)
+      it 'excludes a theming for whose account the user is not at least publisher' do
+        user = create(:user)
 
-          account = create(:account, with_editor: user)
-          theming = create(:theming, account: account)
-          create(:entry, account: account, theming: theming, with_manager: user)
+        account = create(:account, with_editor: user)
+        theming = create(:theming, account: account)
+        create(:entry, account: account, theming: theming, with_manager: user)
 
-          account_policy_scope = Pageflow::Policies::AccountPolicy::Scope.new(user, Account)
-          accounts = account_policy_scope.themings_accessible
+        account_policy_scope = AccountPolicy::Scope.new(user, Account)
+        accounts = account_policy_scope.themings_accessible
 
-          scope = Pageflow::Policies::ThemingPolicy::Scope
-                  .new(user, Theming).themings_allowed_for(accounts)
+        scope = ThemingPolicy::Scope
+                .new(user, Theming).themings_allowed_for(accounts)
 
-          expect(scope).to_not include(theming)
-        end
+        expect(scope).to_not include(theming)
+      end
 
-        it 'does not include themings for wrong account' do
-          user = create(:user)
-          theming = create(:theming)
+      it 'does not include themings for wrong account' do
+        user = create(:user)
+        theming = create(:theming)
 
-          scope = Pageflow::Policies::ThemingPolicy::Scope
-                  .new(user, Theming).themings_allowed_for(theming.account)
+        scope = ThemingPolicy::Scope
+                .new(user, Theming).themings_allowed_for(theming.account)
 
-          expect(scope).to_not include(theming)
-        end
+        expect(scope).to_not include(theming)
+      end
 
-        it 'does not include themings with membership with nil account id' do
-          user = create(:user)
-          account = Account.new
-          theming = create(:theming, account: account)
-          create(:membership, user: user, entity: account)
+      it 'does not include themings with membership with nil account id' do
+        user = create(:user)
+        account = Account.new
+        theming = create(:theming, account: account)
+        create(:membership, user: user, entity: account)
 
-          expect(Pageflow::Policies::ThemingPolicy::Scope
-                  .new(user, Theming).themings_allowed_for(account)).not_to include(theming)
-        end
+        expect(ThemingPolicy::Scope
+                .new(user, Theming).themings_allowed_for(account)).not_to include(theming)
       end
     end
   end

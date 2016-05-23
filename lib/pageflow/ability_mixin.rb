@@ -5,16 +5,16 @@ module Pageflow
     def pageflow_default_abilities(user)
       return if user.nil?
 
-      can :read, Account, Policies::AccountPolicy::Scope.new(user, Account).resolve do |account|
-        Policies::AccountPolicy.new(user, account).read?
+      can :read, Account, AccountPolicy::Scope.new(user, Account).resolve do |account|
+        AccountPolicy.new(user, account).read?
       end
 
       can :update, Account do |account|
-        Policies::AccountPolicy.new(user, account).update?
+        AccountPolicy.new(user, account).update?
       end
 
       can :index, Account do |account|
-        Policies::AccountPolicy.new(user, account).index?
+        AccountPolicy.new(user, account).index?
       end
 
       can :create, Membership do |membership|
@@ -22,23 +22,23 @@ module Pageflow
           membership.user.nil? ||
           (!(membership.user.entries.include?(membership.entity) ||
              membership.user.accounts.include?(membership.entity))) &&
-            Policies::MembershipPolicy.new(user, membership).create?
+            MembershipPolicy.new(user, membership).create?
       end
 
-      can :index, Membership, Policies::MembershipPolicy::Scope.new(user, Membership).indexable
+      can :index, Membership, MembershipPolicy::Scope.new(user, Membership).indexable
 
       can :view, [Admin::MembersTab, Admin::RevisionsTab]
 
       can :update, Membership do |membership|
-        Policies::MembershipPolicy.new(user, membership).edit_role?
+        MembershipPolicy.new(user, membership).edit_role?
       end
 
       can :destroy, Membership do |membership|
-        Policies::MembershipPolicy.new(user, membership).destroy?
+        MembershipPolicy.new(user, membership).destroy?
       end
 
       can :set_admin, ::User do |managed_user|
-        Policies::UserPolicy.new(user, managed_user).set_admin?
+        UserPolicy.new(user, managed_user).set_admin?
       end
 
       can :see, :accounts_column_on_entry_index do
@@ -47,137 +47,137 @@ module Pageflow
 
       unless user.admin?
         can :configure_folder_on, Account do |account|
-          Policies::AccountPolicy.new(user, account).configure_folder_on?
+          AccountPolicy.new(user, account).configure_folder_on?
         end
 
         can :update_theming_on_entry_of, Account do |account|
-          Policies::AccountPolicy.new(user, account).update_theming_on_entry_of?
+          AccountPolicy.new(user, account).update_theming_on_entry_of?
         end
 
-        if Policies::AccountPolicy::Scope.new(user, Account).entry_creatable.any?
+        if AccountPolicy::Scope.new(user, Account).entry_creatable.any?
           can :create, Entry do |entry|
-            Policies::EntryPolicy.new(user, entry).create?
+            EntryPolicy.new(user, entry).create?
           end
         end
 
         can :manage, Chapter do |record|
-          Policies::EntryPolicy.new(user, record.entry).edit?
+          EntryPolicy.new(user, record.entry).edit?
         end
 
-        can :read, Entry, Policies::EntryPolicy::Scope.new(user, Entry).resolve do |entry|
-          Policies::EntryPolicy.new(user, entry).read?
+        can :read, Entry, EntryPolicy::Scope.new(user, Entry).resolve do |entry|
+          EntryPolicy.new(user, entry).read?
         end
 
         can :update, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).edit?
+          EntryPolicy.new(user, entry).edit?
         end
 
         can :destroy, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).destroy?
+          EntryPolicy.new(user, entry).destroy?
         end
 
         can :add_member_to, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).add_member_to?
+          EntryPolicy.new(user, entry).add_member_to?
         end
 
         can :configure_folder_for, Entry do |entry|
-          Policies::AccountPolicy.new(user, entry.account).configure_folder_on?
+          AccountPolicy.new(user, entry.account).configure_folder_on?
         end
 
         can :confirm_encoding, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).confirm_encoding?
+          EntryPolicy.new(user, entry).confirm_encoding?
         end
 
         can :duplicate, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).duplicate?
+          EntryPolicy.new(user, entry).duplicate?
         end
 
         can :edit_outline, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).edit_outline?
+          EntryPolicy.new(user, entry).edit_outline?
         end
 
         can :index_widgets_for, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).index_widgets_for?
+          EntryPolicy.new(user, entry).index_widgets_for?
         end
 
         can :publish, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).publish?
+          EntryPolicy.new(user, entry).publish?
         end
 
         can :restore, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).restore?
+          EntryPolicy.new(user, entry).restore?
         end
 
         can :snapshot, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).snapshot?
+          EntryPolicy.new(user, entry).snapshot?
         end
 
         can :update_account_on, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).update_account_on?
+          EntryPolicy.new(user, entry).update_account_on?
         end
 
         can :update_feature_configuration_on, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).update_feature_configuration_on?
+          EntryPolicy.new(user, entry).update_feature_configuration_on?
         end
 
         can :update_theming_on, Entry do |entry|
-          Policies::EntryPolicy.new(user, entry).update_theming_on?
+          EntryPolicy.new(user, entry).update_theming_on?
         end
 
-        can :use_files, Entry, Policies::EntryPolicy::Scope.new(user, Entry).resolve do |entry|
-          Policies::EntryPolicy.new(user, entry).use_files?
+        can :use_files, Entry, EntryPolicy::Scope.new(user, Entry).resolve do |entry|
+          EntryPolicy.new(user, entry).use_files?
         end
 
         can [:retry, :update], Pageflow.config.file_types.map(&:model) do |record|
-          Policies::FilePolicy.new(user, record).manage?
+          FilePolicy.new(user, record).manage?
         end
 
         can :use, Pageflow.config.file_types.map(&:model) do |record|
-          Policies::FilePolicy.new(user, record).use?
+          FilePolicy.new(user, record).use?
         end
 
         can [:create, :update, :destroy], Folder do |folder|
-          Policies::FolderPolicy.new(user, folder).manage?
+          FolderPolicy.new(user, folder).manage?
         end
 
-        can :read, Folder, Policies::FolderPolicy::Scope.new(user, Folder).resolve
+        can :read, Folder, FolderPolicy::Scope.new(user, Folder).resolve
 
         can :manage, Page do |page|
-          Policies::EntryPolicy.new(user, page.chapter.entry).edit?
+          EntryPolicy.new(user, page.chapter.entry).edit?
         end
 
         can :read, Revision do |revision|
-          Policies::EntryPolicy.new(user, revision.entry).preview?
+          EntryPolicy.new(user, revision.entry).preview?
         end
 
         can :manage, Storyline do |storyline|
-          Policies::EntryPolicy.new(user, storyline.revision.entry).edit?
+          EntryPolicy.new(user, storyline.revision.entry).edit?
         end
 
         can :edit, Theming do |theming|
-          Policies::ThemingPolicy.new(user, theming).edit?
+          ThemingPolicy.new(user, theming).edit?
         end
 
         can :index_widgets_for, Theming do |theming|
-          Policies::ThemingPolicy.new(user, theming).index_widgets_for?
+          ThemingPolicy.new(user, theming).index_widgets_for?
         end
 
         can :create, ::User do |managed_user|
-          Policies::UserPolicy.new(user, managed_user).create?
+          UserPolicy.new(user, managed_user).create?
         end
 
-        can :index, ::User, Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
-          Policies::UserPolicy.new(user, managed_user).index?
+        can :index, ::User, UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
+          UserPolicy.new(user, managed_user).index?
         end
 
-        can :read, ::User, Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
-          Policies::UserPolicy.new(user, managed_user).read?
+        can :read, ::User, UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
+          UserPolicy.new(user, managed_user).read?
         end
 
         can :redirect_to_user,
             ::User,
-            Policies::UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
-          Policies::UserPolicy.new(user, managed_user).redirect_to_user?
+            UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
+          UserPolicy.new(user, managed_user).redirect_to_user?
         end
       end
 
