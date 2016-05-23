@@ -122,7 +122,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry)
 
-        SeedsDsl.membership(user: user, entity: entry, role: 'previewer')
+        SeedsDsl.membership(user: user, entity: entry, role: :previewer)
 
         expect(entry.users).to include(user)
         expect(user.entries).to include(entry)
@@ -132,7 +132,7 @@ module Pageflow
         user = create(:user)
         account = create(:account)
 
-        SeedsDsl.membership(user: user, entity: account, role: 'member')
+        SeedsDsl.membership(user: user, entity: account, role: :member)
 
         expect(account.users).to include(user)
         expect(user.accounts).to include(account)

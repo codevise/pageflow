@@ -7,7 +7,7 @@ module Pageflow
         it 'returns pairs of formal name and id for new membership' do
           user = create(:user, first_name: 'Randolph', last_name: 'Doe')
           account = create(:account)
-          membership = create(:membership, entity: account, role: 'member', user: user)
+          membership = create(:membership, entity: account, role: :member, user: user)
           new_membership = Membership.new
           entry = create(:entry, account: account)
 
@@ -19,8 +19,8 @@ module Pageflow
         it 'returns only membership user if membership not new' do
           user = create(:user, first_name: 'Rudolf', last_name: 'Doe')
           account = create(:account)
-          membership = create(:membership, entity: account, role: 'member', user: user)
-          create(:membership, entity: account, role: 'member', user: create(:user))
+          membership = create(:membership, entity: account, role: :member, user: user)
+          create(:membership, entity: account, role: :member, user: create(:user))
           entry = create(:entry, account: account)
 
           pairs = membership_users_collection(entry, membership, membership)
@@ -32,7 +32,7 @@ module Pageflow
           account = create(:account)
           user = create(:user, first_name: 'John', last_name: 'Doe')
           entry = create(:entry, account: account)
-          membership = create(:membership, entity: entry, role: 'member', user: user)
+          membership = create(:membership, entity: entry, role: :member, user: user)
           new_membership = Membership.new
 
           pairs = membership_users_collection(entry, membership, new_membership)
@@ -71,7 +71,7 @@ module Pageflow
           user = create(:user)
           account_manager = create(:user)
           account = create(:account, name: 'Mediacorp', with_manager: account_manager)
-          membership = create(:membership, entity: account, role: 'member', user: user)
+          membership = create(:membership, entity: account, role: :member, user: user)
           new_membership = Membership.new
           expect(helper).to receive(:current_user).and_return(account_manager)
 
@@ -114,7 +114,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, account: account, title: 'My Pageflow')
           create(:entry, title: 'Raucous title', with_previewer: user)
-          membership = create(:membership, user: user, role: 'previewer', entity: entry)
+          membership = create(:membership, user: user, role: :previewer, entity: entry)
 
           pairs = helper.membership_entries_collection(user, membership, membership)
 
@@ -126,7 +126,7 @@ module Pageflow
           entry = create(:entry, account: account, title: 'My Pageflow')
           create(:entry, account: account, title: 'Not mine')
           user = create(:user)
-          membership = create(:membership, entity: entry, role: 'previewer', user: user)
+          membership = create(:membership, entity: entry, role: :previewer, user: user)
           new_membership = Membership.new
           expect(helper).to receive(:current_user).and_return(create(:user, :manager, on: account))
 

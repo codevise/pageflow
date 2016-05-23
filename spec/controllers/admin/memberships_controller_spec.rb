@@ -10,7 +10,7 @@ describe Admin::MembershipsController do
         sign_in(create(:user, :admin))
 
         expect do
-          post :create, account_id: account, membership: {user_id: user, role: 'manager'}
+          post :create, account_id: account, membership: {user_id: user, role: :manager}
         end.to change { account.users.count }
       end
 
@@ -23,7 +23,7 @@ describe Admin::MembershipsController do
         expect do
           post :create, user_id: user, membership: {entity_id: account.id,
                                                     entity_type: 'Pageflow::Account',
-                                                    role: 'manager'}
+                                                    role: :manager}
         end.to change { user.accounts.count }
       end
 
@@ -37,7 +37,7 @@ describe Admin::MembershipsController do
         expect do
           post :create,
                entry_id: entry.id,
-               membership: {user_id: user, role: 'previewer'}
+               membership: {user_id: user, role: :previewer}
         end.not_to change { entry.users.count }
       end
 
@@ -51,7 +51,7 @@ describe Admin::MembershipsController do
         expect do
           post :create,
                user_id: user,
-               membership: {entity_id: entry.id, entity_type: 'Pageflow::Entry', role: 'previewer'}
+               membership: {entity_id: entry.id, entity_type: 'Pageflow::Entry', role: :previewer}
         end.not_to change { user.entries.count }
       end
 
@@ -65,7 +65,7 @@ describe Admin::MembershipsController do
         expect do
           post :create, user_id: user, membership: {entity_id: entry.id,
                                                     entity_type: 'Pageflow::Entry',
-                                                    role: 'manager'}
+                                                    role: :manager}
         end.to change { user.entries.count }
       end
 
@@ -79,7 +79,7 @@ describe Admin::MembershipsController do
         expect do
           post :create,
                entry_id: entry.id,
-               membership: {user_id: user, role: 'manager'}
+               membership: {user_id: user, role: :manager}
         end.to change { entry.users.count }
       end
     end
@@ -93,7 +93,7 @@ describe Admin::MembershipsController do
         sign_in(account_admin)
 
         expect do
-          post :create, account_id: account, membership: {user_id: user, role: 'manager'}
+          post :create, account_id: account, membership: {user_id: user, role: :manager}
         end.to change { account.users.count }
       end
 
@@ -107,7 +107,7 @@ describe Admin::MembershipsController do
         expect do
           post :create, user_id: user, membership: {entity_id: account.id,
                                                     entity_type: 'Pageflow::Account',
-                                                    role: 'manager'}
+                                                    role: :manager}
         end.to change { user.accounts.count }
       end
 
@@ -121,7 +121,7 @@ describe Admin::MembershipsController do
 
         expect do
           post :create, account_id: off_limits_account.id, membership: {user_id: user,
-                                                                        role: 'manager'}
+                                                                        role: :manager}
         end.not_to change { off_limits_account.users.count }
       end
 
@@ -138,7 +138,7 @@ describe Admin::MembershipsController do
                user_id: user,
                membership: {entity_id: off_limits_account.id,
                             entity_type: 'Pageflow::Account',
-                            role: 'manager'}
+                            role: :manager}
         end.not_to change { user.accounts.count }
       end
     end
@@ -152,7 +152,7 @@ describe Admin::MembershipsController do
         sign_in(account_publisher)
 
         expect do
-          post :create, account_id: account, membership: {user_id: user, role: 'manager'}
+          post :create, account_id: account, membership: {user_id: user, role: :manager}
         end.not_to change { account.users.count }
       end
 
@@ -166,7 +166,7 @@ describe Admin::MembershipsController do
         expect do
           post :create, user_id: user, membership: {account_id: account.id,
                                                     account_type: 'Pageflow::Account',
-                                                    role: 'manager'}
+                                                    role: :manager}
         end.not_to change { user.accounts.count }
       end
     end
@@ -182,7 +182,7 @@ describe Admin::MembershipsController do
         sign_in(entry_admin)
 
         expect do
-          post :create, entry_id: entry, membership: {user_id: user, role: 'previewer'}
+          post :create, entry_id: entry, membership: {user_id: user, role: :previewer}
         end.not_to change { entry.users.count }
       end
 
@@ -198,7 +198,7 @@ describe Admin::MembershipsController do
         expect do
           post :create, user_id: user, membership: {entry_id: entry.id,
                                                     entity_type: 'Pageflow::Entry',
-                                                    role: 'previewer'}
+                                                    role: :previewer}
         end.not_to change { user.entries.count }
       end
 
@@ -212,7 +212,7 @@ describe Admin::MembershipsController do
         sign_in(entry_admin)
 
         expect do
-          post :create, entry_id: entry, membership: {user_id: user, role: 'previewer'}
+          post :create, entry_id: entry, membership: {user_id: user, role: :previewer}
         end.not_to change { entry.users.count }
       end
 
@@ -228,7 +228,7 @@ describe Admin::MembershipsController do
         expect do
           post :create, user_id: user, membership: {entry_id: entry.id,
                                                     entity_type: 'Pageflow::Entry',
-                                                    role: 'previewer'}
+                                                    role: :previewer}
         end.not_to change { user.entries.count }
       end
 
@@ -241,7 +241,7 @@ describe Admin::MembershipsController do
         sign_in(entry_admin)
 
         expect do
-          post :create, entry_id: entry, membership: {user_id: user, role: 'manager'}
+          post :create, entry_id: entry, membership: {user_id: user, role: :manager}
         end.to change { entry.users.count }
       end
 
@@ -256,7 +256,7 @@ describe Admin::MembershipsController do
         expect do
           post :create, user_id: user, membership: {entity_id: entry.id,
                                                     entity_type: 'Pageflow::Entry',
-                                                    role: 'manager'}
+                                                    role: :manager}
         end.to change { user.entries.count }
       end
     end
@@ -271,7 +271,7 @@ describe Admin::MembershipsController do
         sign_in(entry_publisher)
 
         expect do
-          post :create, entry_id: entry, membership: {user_id: user, role: 'manager'}
+          post :create, entry_id: entry, membership: {user_id: user, role: :manager}
         end.not_to change { entry.users.count }
       end
 
@@ -286,7 +286,7 @@ describe Admin::MembershipsController do
         expect do
           post :create, user_id: user, membership: {entry_id: entry,
                                                     entity_type: 'Pageflow::Entry',
-                                                    role: 'manager'}
+                                                    role: :manager}
         end.not_to change { user.entries.count }
       end
     end
@@ -297,24 +297,24 @@ describe Admin::MembershipsController do
       it 'allows to edit user role on account' do
         user = create(:user)
         account = create(:account)
-        membership = create(:membership, entity: account, user: user, role: 'manager')
+        membership = create(:membership, entity: account, user: user, role: :manager)
 
         sign_in(create(:user, :admin))
 
         expect do
-          patch(:update, account_id: account, id: membership, membership: {role: 'publisher'})
+          patch(:update, account_id: account, id: membership, membership: {role: :publisher})
         end.to change { membership.reload.role }
       end
 
       it 'allows to edit account role on user' do
         user = create(:user)
         account = create(:account)
-        membership = create(:membership, entity: account, user: user, role: 'manager')
+        membership = create(:membership, entity: account, user: user, role: :manager)
 
         sign_in(create(:user, :admin))
 
         expect do
-          patch(:update, user_id: user, id: membership, membership: {role: 'publisher'})
+          patch(:update, user_id: user, id: membership, membership: {role: :publisher})
         end.to change { membership.reload.role }
       end
 
@@ -322,12 +322,12 @@ describe Admin::MembershipsController do
         account = create(:account)
         user = create(:user, :member, on: account)
         entry = create(:entry, account: account)
-        membership = create(:membership, entity: entry, user: user, role: 'manager')
+        membership = create(:membership, entity: entry, user: user, role: :manager)
 
         sign_in(create(:user, :admin))
 
         expect do
-          patch :update, user_id: user, id: membership, membership: {role: 'publisher'}
+          patch :update, user_id: user, id: membership, membership: {role: :publisher}
         end.to change { membership.reload.role }
       end
 
@@ -335,12 +335,12 @@ describe Admin::MembershipsController do
         account = create(:account)
         user = create(:user, :member, on: account)
         entry = create(:entry, account: account)
-        membership = create(:membership, entity: entry, user: user, role: 'manager')
+        membership = create(:membership, entity: entry, user: user, role: :manager)
 
         sign_in(create(:user, :admin))
 
         expect do
-          patch :update, entry_id: entry, id: membership, membership: {role: 'publisher'}
+          patch :update, entry_id: entry, id: membership, membership: {role: :publisher}
         end.to change { membership.reload.role }
       end
 
@@ -349,12 +349,12 @@ describe Admin::MembershipsController do
           account_admin = create(:user)
           account = create(:account, with_manager: account_admin)
           user = create(:user)
-          membership = create(:membership, user: user, entity: account, role: 'manager')
+          membership = create(:membership, user: user, entity: account, role: :manager)
 
           sign_in(account_admin)
 
           expect do
-            patch :update, account_id: account, id: membership, membership: {role: 'publisher'}
+            patch :update, account_id: account, id: membership, membership: {role: :publisher}
           end.to change { membership.reload.role }
         end
 
@@ -362,12 +362,12 @@ describe Admin::MembershipsController do
           account_admin = create(:user)
           account = create(:account, with_manager: account_admin)
           user = create(:user)
-          membership = create(:membership, user: user, entity: account, role: 'manager')
+          membership = create(:membership, user: user, entity: account, role: :manager)
 
           sign_in(account_admin)
 
           expect do
-            patch :update, user_id: user, id: membership, membership: {role: 'publisher'}
+            patch :update, user_id: user, id: membership, membership: {role: :publisher}
           end.to change { membership.reload.role }
         end
 
@@ -376,7 +376,7 @@ describe Admin::MembershipsController do
           create(:account, with_manager: account_admin)
           off_limits_account = create(:account)
           user = create(:user)
-          membership = create(:membership, user: user, entity: off_limits_account, role: 'manager')
+          membership = create(:membership, user: user, entity: off_limits_account, role: :manager)
 
           sign_in(account_admin)
 
@@ -384,7 +384,7 @@ describe Admin::MembershipsController do
             patch :update,
                   account_id: off_limits_account,
                   id: membership,
-                  membership: {role: 'previewer'}
+                  membership: {role: :previewer}
           end.not_to change { membership.reload.role }
         end
 
@@ -393,12 +393,12 @@ describe Admin::MembershipsController do
           create(:account, with_manager: account_admin)
           off_limits_account = create(:account)
           user = create(:user)
-          membership = create(:membership, user: user, entity: off_limits_account, role: 'manager')
+          membership = create(:membership, user: user, entity: off_limits_account, role: :manager)
 
           sign_in(account_admin)
 
           expect do
-            patch :update, user_id: user, id: membership, membership: {role: 'previewer'}
+            patch :update, user_id: user, id: membership, membership: {role: :previewer}
           end.not_to change { membership.reload.role }
         end
       end
@@ -408,12 +408,12 @@ describe Admin::MembershipsController do
           account_publisher = create(:user)
           account = create(:account, with_publisher: account_publisher)
           user = create(:user)
-          membership = create(:membership, user: user, entity: account, role: 'manager')
+          membership = create(:membership, user: user, entity: account, role: :manager)
 
           sign_in(account_publisher)
 
           expect do
-            patch :update, account_id: account, id: membership, membership: {role: 'previewer'}
+            patch :update, account_id: account, id: membership, membership: {role: :previewer}
           end.not_to change { membership.reload.role }
         end
 
@@ -421,12 +421,12 @@ describe Admin::MembershipsController do
           account_publisher = create(:user)
           account = create(:account, with_publisher: account_publisher)
           user = create(:user)
-          membership = create(:membership, user: user, entity: account, role: 'manager')
+          membership = create(:membership, user: user, entity: account, role: :manager)
 
           sign_in(account_publisher)
 
           expect do
-            patch :update, user_id: user, id: membership, membership: {role: 'previewer'}
+            patch :update, user_id: user, id: membership, membership: {role: :previewer}
           end.not_to change { membership.reload.role }
         end
       end
@@ -437,12 +437,12 @@ describe Admin::MembershipsController do
           entry_manager = create(:user)
           create(:account, with_member: user, with_manager: entry_manager)
           create(:entry, with_manager: entry_manager)
-          membership = create(:membership, entity: create(:entry), user: user, role: 'previewer')
+          membership = create(:membership, entity: create(:entry), user: user, role: :previewer)
 
           sign_in(entry_manager)
 
           expect do
-            patch :update, user_id: user, id: membership, membership: {role: 'editor'}
+            patch :update, user_id: user, id: membership, membership: {role: :editor}
           end.not_to change { membership.reload.role }
         end
 
@@ -451,12 +451,12 @@ describe Admin::MembershipsController do
           entry_manager = create(:user)
           create(:account, with_member: user, with_manager: entry_manager)
           entry = create(:entry)
-          membership = create(:membership, entity: entry, user: user, role: 'previewer')
+          membership = create(:membership, entity: entry, user: user, role: :previewer)
 
           sign_in(entry_manager)
 
           expect do
-            patch :update, entry_id: entry, id: membership, membership: {role: 'editor'}
+            patch :update, entry_id: entry, id: membership, membership: {role: :editor}
           end.not_to change { membership.reload.role }
         end
 
@@ -465,12 +465,12 @@ describe Admin::MembershipsController do
           account = create(:account, with_manager: user)
           entry_manager = create(:user)
           entry = create(:entry, account: account, with_manager: entry_manager)
-          membership = create(:membership, entity: entry, user: user, role: 'manager')
+          membership = create(:membership, entity: entry, user: user, role: :manager)
 
           sign_in(entry_manager)
 
           expect do
-            patch :update, entry_id: entry, id: membership, membership: {role: 'publisher'}
+            patch :update, entry_id: entry, id: membership, membership: {role: :publisher}
           end.to change { membership.reload.role }
         end
 
@@ -479,12 +479,12 @@ describe Admin::MembershipsController do
           account = create(:account, with_manager: user)
           entry_manager = create(:user)
           entry = create(:entry, account: account, with_manager: entry_manager)
-          membership = create(:membership, entity: entry, user: user, role: 'manager')
+          membership = create(:membership, entity: entry, user: user, role: :manager)
 
           sign_in(entry_manager)
 
           expect do
-            patch :update, user_id: user, id: membership, membership: {role: 'publisher'}
+            patch :update, user_id: user, id: membership, membership: {role: :publisher}
           end.to change { membership.reload.role }
         end
       end
@@ -495,12 +495,12 @@ describe Admin::MembershipsController do
           account = create(:account, with_member: user)
           entry_publisher = create(:user)
           entry = create(:entry, account: account, with_publisher: entry_publisher)
-          membership = create(:membership, entity: entry, user: user, role: 'previewer')
+          membership = create(:membership, entity: entry, user: user, role: :previewer)
 
           sign_in(entry_publisher)
 
           expect do
-            patch :update, entry_id: entry, id: membership, membership: {role: 'editor'}
+            patch :update, entry_id: entry, id: membership, membership: {role: :editor}
           end.not_to change { membership.reload.role }
         end
 
@@ -509,12 +509,12 @@ describe Admin::MembershipsController do
           account = create(:account, with_member: user)
           entry_publisher = create(:user)
           entry = create(:entry, account: account, with_publisher: entry_publisher)
-          membership = create(:membership, entity: entry, user: user, role: 'previewer')
+          membership = create(:membership, entity: entry, user: user, role: :previewer)
 
           sign_in(entry_publisher)
 
           expect do
-            patch :update, user_id: user, id: membership, membership: {role: 'editor'}
+            patch :update, user_id: user, id: membership, membership: {role: :editor}
           end.not_to change { membership.reload.role }
         end
       end
@@ -525,7 +525,7 @@ describe Admin::MembershipsController do
         it 'allows to delete user from account' do
           user = create(:user)
           account = create(:account)
-          membership = create(:membership, entity: account, user: user, role: 'manager')
+          membership = create(:membership, entity: account, user: user, role: :manager)
 
           sign_in(create(:user, :admin))
 
@@ -537,7 +537,7 @@ describe Admin::MembershipsController do
         it 'allows to delete account from user' do
           user = create(:user)
           account = create(:account)
-          membership = create(:membership, entity: account, user: user, role: 'manager')
+          membership = create(:membership, entity: account, user: user, role: :manager)
 
           sign_in(create(:user, :admin))
 
@@ -550,7 +550,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           account = create(:account, with_member: user)
           entry = create(:entry, account: account)
-          membership = create(:membership, entity: entry, user: user, role: 'manager')
+          membership = create(:membership, entity: entry, user: user, role: :manager)
 
           sign_in(create(:user, :admin))
 
@@ -563,7 +563,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           account = create(:account, with_member: user)
           entry = create(:entry, account: account)
-          membership = create(:membership, entity: entry, user: user, role: 'manager')
+          membership = create(:membership, entity: entry, user: user, role: :manager)
 
           sign_in(create(:user, :admin))
 
@@ -578,7 +578,7 @@ describe Admin::MembershipsController do
           account_admin = create(:user)
           account = create(:account, with_manager: account_admin)
           user = create(:user)
-          membership = create(:membership, user: user, entity: account, role: 'manager')
+          membership = create(:membership, user: user, entity: account, role: :manager)
 
           sign_in(account_admin)
 
@@ -591,7 +591,7 @@ describe Admin::MembershipsController do
           account_admin = create(:user)
           account = create(:account, with_manager: account_admin)
           user = create(:user)
-          membership = create(:membership, user: user, entity: account, role: 'manager')
+          membership = create(:membership, user: user, entity: account, role: :manager)
 
           sign_in(account_admin)
 
@@ -605,7 +605,7 @@ describe Admin::MembershipsController do
           account = create(:account, with_manager: account_admin)
           entry = create(:entry, account: account)
           user = create(:user)
-          account_membership = create(:membership, user: user, entity: account, role: 'manager')
+          account_membership = create(:membership, user: user, entity: account, role: :manager)
           create(:membership, user: user, entity: entry)
 
           sign_in(account_admin)
@@ -621,7 +621,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account)
           user = create(:user)
           other_user = create(:user)
-          account_membership = create(:membership, user: user, entity: account, role: 'manager')
+          account_membership = create(:membership, user: user, entity: account, role: :manager)
           create(:membership, user: other_user, entity: entry)
 
           sign_in(account_admin)
@@ -636,7 +636,7 @@ describe Admin::MembershipsController do
           account = create(:account, with_manager: account_admin)
           entry = create(:entry)
           user = create(:user)
-          account_membership = create(:membership, user: user, entity: account, role: 'manager')
+          account_membership = create(:membership, user: user, entity: account, role: :manager)
           create(:membership, user: user, entity: entry)
 
           sign_in(account_admin)
@@ -653,7 +653,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account)
           user = create(:user)
           create(:membership, user: user, entity: other_account)
-          account_membership = create(:membership, user: user, entity: account, role: 'manager')
+          account_membership = create(:membership, user: user, entity: account, role: :manager)
           create(:membership, user: user, entity: entry)
 
           sign_in(account_admin)
@@ -668,7 +668,7 @@ describe Admin::MembershipsController do
           create(:account, with_manager: account_admin)
           off_limits_account = create(:account)
           user = create(:user)
-          membership = create(:membership, user: user, entity: off_limits_account, role: 'manager')
+          membership = create(:membership, user: user, entity: off_limits_account, role: :manager)
 
           sign_in(account_admin)
 
@@ -682,7 +682,7 @@ describe Admin::MembershipsController do
           create(:account, with_manager: account_admin)
           off_limits_account = create(:account)
           user = create(:user)
-          membership = create(:membership, user: user, entity: off_limits_account, role: 'manager')
+          membership = create(:membership, user: user, entity: off_limits_account, role: :manager)
 
           sign_in(account_admin)
 
@@ -696,7 +696,7 @@ describe Admin::MembershipsController do
           create(:account, with_manager: account_admin)
           off_limits_account = create(:account)
           user = create(:user)
-          membership = create(:membership, user: user, entity: off_limits_account, role: 'manager')
+          membership = create(:membership, user: user, entity: off_limits_account, role: :manager)
 
           sign_in(account_admin)
 
@@ -711,7 +711,7 @@ describe Admin::MembershipsController do
           account_publisher = create(:user)
           account = create(:account, with_publisher: account_publisher)
           user = create(:user)
-          membership = create(:membership, user: user, entity: account, role: 'manager')
+          membership = create(:membership, user: user, entity: account, role: :manager)
 
           sign_in(account_publisher)
 
@@ -724,7 +724,7 @@ describe Admin::MembershipsController do
           account_publisher = create(:user)
           account = create(:account, with_publisher: account_publisher)
           user = create(:user)
-          membership = create(:membership, user: user, entity: account, role: 'manager')
+          membership = create(:membership, user: user, entity: account, role: :manager)
 
           sign_in(account_publisher)
 
@@ -740,7 +740,7 @@ describe Admin::MembershipsController do
           entry_manager = create(:user)
           create(:account, with_member: user, with_manager: entry_manager)
           create(:entry, with_manager: entry_manager)
-          membership = create(:membership, entity: create(:entry), user: user, role: 'previewer')
+          membership = create(:membership, entity: create(:entry), user: user, role: :previewer)
 
           sign_in(entry_manager)
 
@@ -754,7 +754,7 @@ describe Admin::MembershipsController do
           entry_manager = create(:user)
           create(:account, with_member: user, with_manager: entry_manager)
           entry = create(:entry)
-          membership = create(:membership, entity: entry, user: user, role: 'previewer')
+          membership = create(:membership, entity: entry, user: user, role: :previewer)
 
           sign_in(entry_manager)
 
@@ -768,7 +768,7 @@ describe Admin::MembershipsController do
           account = create(:account, with_manager: user)
           entry_manager = create(:user)
           entry = create(:entry, account: account, with_manager: entry_manager)
-          membership = create(:membership, entity: entry, user: user, role: 'manager')
+          membership = create(:membership, entity: entry, user: user, role: :manager)
 
           sign_in(entry_manager)
 
@@ -782,7 +782,7 @@ describe Admin::MembershipsController do
           account = create(:account, with_manager: user)
           entry_manager = create(:user)
           entry = create(:entry, account: account, with_manager: entry_manager)
-          membership = create(:membership, entity: entry, user: user, role: 'manager')
+          membership = create(:membership, entity: entry, user: user, role: :manager)
 
           sign_in(entry_manager)
 
@@ -798,7 +798,7 @@ describe Admin::MembershipsController do
           account = create(:account, with_member: user)
           entry_publisher = create(:user)
           entry = create(:entry, account: account, with_publisher: entry_publisher)
-          membership = create(:membership, entity: entry, user: user, role: 'previewer')
+          membership = create(:membership, entity: entry, user: user, role: :previewer)
 
           sign_in(entry_publisher)
 
@@ -812,7 +812,7 @@ describe Admin::MembershipsController do
           account = create(:account, with_member: user)
           entry_publisher = create(:user)
           entry = create(:entry, account: account, with_publisher: entry_publisher)
-          membership = create(:membership, entity: entry, user: user, role: 'previewer')
+          membership = create(:membership, entity: entry, user: user, role: :previewer)
 
           sign_in(entry_publisher)
 

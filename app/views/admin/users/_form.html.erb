@@ -20,11 +20,13 @@
                   collection: membership_accounts_collection(@user,
                                                              Pageflow::Membership.new(user: @user),
                                                              Pageflow::Membership.new),
-                                                             include_blank: false %>
+                  include_blank: false,
+                  selected: (params[:user][:initial_account] if params[:user].present?) %>
       <%= f.input :initial_role,
                   collection: membership_roles_collection('Pageflow::Account'),
                   include_blank: false,
-                  hint: I18n.t('pageflow.admin.users.role_hint.admin') %>
+                  hint: I18n.t('pageflow.admin.users.role_hint.admin'),
+                  selected: (params[:user][:initial_role] if params[:user].present?) %>
     <% end %>
     <%= f.input :admin if current_user.admin? %>
   <% end %>

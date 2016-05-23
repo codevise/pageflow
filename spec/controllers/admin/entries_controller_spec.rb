@@ -36,7 +36,7 @@ describe Admin::EntriesController do
       allow(controller).to receive(:authorized?).with(:view, tab_view_component).and_return(true)
 
       user = create(:user)
-      create(:membership, user: user, entity: entry, role: 'previewer')
+      create(:membership, user: user, entity: entry, role: :previewer)
       sign_in(user)
       get(:show, id: entry.id)
 

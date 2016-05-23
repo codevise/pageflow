@@ -4,8 +4,8 @@ module Pageflow
   module Policies
     describe FolderPolicy do
       it_behaves_like 'a membership-based permission that',
-                      allows: 'publisher',
-                      but_forbids: 'editor',
+                      allows: :publisher,
+                      but_forbids: :editor,
                       of_account: -> (topic) { topic.account },
                       to: :manage,
                       topic: -> { create(:folder) }

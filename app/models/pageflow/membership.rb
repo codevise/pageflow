@@ -4,9 +4,12 @@ module Pageflow
     belongs_to :entity, polymorphic: true
 
     validates :user, :entity, :role, presence: true
-    validates :user_id, uniqueness: { scope: [:entity_type, :entity_id] }
+    validates :user_id, uniqueness: {scope: [:entity_type, :entity_id]}
     if :entity_type == 'Pageflow::Entry'
       validates_with AccountMembershipExistenceValidator
+      validates :role, inclusion: {in: %w(previewer editor publisher manager).map(&:to_sym)}
+    else
+      validates :role, inclusion: {in: %w(member previewer editor publisher manager).map(&:to_sym)}
     end
 
     class AccountMembershipExistenceValidator < ActiveModel::Validator

@@ -26,19 +26,19 @@ module Pageflow
         create(:membership,
                entity: entry,
                user: evaluator.with_previewer,
-               role: 'previewer') if evaluator.with_previewer
+               role: :previewer) if evaluator.with_previewer
         create(:membership,
                entity: entry,
                user: evaluator.with_editor,
-               role: 'editor') if evaluator.with_editor
+               role: :editor) if evaluator.with_editor
         create(:membership,
                entity: entry,
                user: evaluator.with_publisher,
-               role: 'publisher') if evaluator.with_publisher
+               role: :publisher) if evaluator.with_publisher
         create(:membership,
                entity: entry,
                user: evaluator.with_manager,
-               role: 'manager') if evaluator.with_manager
+               role: :manager) if evaluator.with_manager
       end
 
       trait :published do

@@ -61,7 +61,7 @@ module Pageflow
         it 'requires user to be signed in' do
           user = create(:user, :admin)
           entry = create(:entry)
-          create(:membership, user: user, entity: entry.account, role: 'manager')
+          create(:membership, user: user, entity: entry.account, role: :manager)
 
           get(:index, collection_name: 'entries', subject_id: entry.id, format: 'json')
 

@@ -15,7 +15,9 @@ module Pageflow
       helper Pageflow::Admin::FormHelper
 
       def permitted_params
-        params.permit(membership: [:user_id, :entity_id, :entity_type, :role])
+        result = params.permit(membership: [:user_id, :entity_id, :entity_type, :role])
+        restrict_attributes(params[:id], result[:membership]) if result[:membership]
+        result
       end
 
       def destroy
@@ -39,6 +41,15 @@ module Pageflow
           end
           redirect_url
         end
+      end
+
+      private
+
+      def restrict_attributes(_id, attributes)
+        if attributes[:role].present?
+          role = attributes.delete(:role).to_sym
+        end
+        attributes.merge!(role: role)
       end
     end
   end
