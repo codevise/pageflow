@@ -1,5 +1,9 @@
 de:
   activerecord:
+    attributes:
+      user:
+        initial_role: Rolle
+        initial_account: Konto
     errors:
       models:
         pageflow/entry:
@@ -14,6 +18,10 @@ de:
       widget_type_name: Erscheinungsbild-Bestandteil
 en:
   activerecord:
+    attributes:
+      user:
+        initial_role: Role
+        initial_account: Account
     errors:
       models:
         pageflow/entry:

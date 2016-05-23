@@ -4,64 +4,64 @@ module Pageflow
   module Policies
     describe AccountPolicy do
       it_behaves_like 'a membership-based permission that',
-                      allows: 'publisher',
-                      but_forbids: 'editor',
+                      allows: :publisher,
+                      but_forbids: :editor,
                       of_account: -> (topic) { topic },
                       to: :publish,
                       topic: -> { create(:account) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'publisher',
-                      but_forbids: 'editor',
+                      allows: :publisher,
+                      but_forbids: :editor,
                       of_account: -> (topic) { topic },
                       to: :read,
                       topic: -> { create(:account) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'publisher',
-                      but_forbids: 'editor',
+                      allows: :publisher,
+                      but_forbids: :editor,
                       of_account: -> (topic) { topic },
                       to: :configure_folder_on,
                       topic: -> { create(:account) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'publisher',
-                      but_forbids: 'editor',
+                      allows: :publisher,
+                      but_forbids: :editor,
                       of_account: -> (topic) { topic },
                       to: :update_theming_on_entry_of,
                       topic: -> { create(:account) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_account: -> (topic) { topic },
                       to: :manage,
                       topic: -> { create(:account) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_account: -> (topic) { topic },
                       to: :update,
                       topic: -> { create(:account) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_account: -> (topic) { topic },
                       to: :add_member_to,
                       topic: -> { create(:account) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_account: -> (topic) { topic },
                       to: :edit_role_on,
                       topic: -> { create(:account) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_account: -> (topic) { topic },
                       to: :destroy_membership_on,
                       topic: -> { create(:account) }

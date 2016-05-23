@@ -4,164 +4,164 @@ module Pageflow
   module Policies
     describe EntryPolicy do
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :manage,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :add_member_to,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :edit_role_on,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :destroy_membership_on,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'publisher',
-                      but_forbids: 'editor',
+                      allows: :publisher,
+                      but_forbids: :editor,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :publish,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'publisher',
-                      but_forbids: 'editor',
+                      allows: :publisher,
+                      but_forbids: :editor,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :create,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'publisher',
-                      but_forbids: 'editor',
+                      allows: :publisher,
+                      but_forbids: :editor,
                       to: :duplicate,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'editor',
-                      but_forbids: 'previewer',
+                      allows: :editor,
+                      but_forbids: :previewer,
                       to: :edit,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'editor',
-                      but_forbids: 'previewer',
+                      allows: :editor,
+                      but_forbids: :previewer,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :index_widgets_for,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'editor',
-                      but_forbids: 'previewer',
+                      allows: :editor,
+                      but_forbids: :previewer,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :edit_outline,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'editor',
-                      but_forbids: 'previewer',
+                      allows: :editor,
+                      but_forbids: :previewer,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :restore,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'editor',
-                      but_forbids: 'previewer',
+                      allows: :editor,
+                      but_forbids: :previewer,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :snapshot,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'editor',
-                      but_forbids: 'previewer',
+                      allows: :editor,
+                      but_forbids: :previewer,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :confirm_encoding,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'previewer',
+                      allows: :previewer,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :preview,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'previewer',
+                      allows: :previewer,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :read,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'previewer',
+                      allows: :previewer,
                       of_entry: -> (topic) { topic },
                       of_account: -> (topic) { topic.account },
                       to: :use_files,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'publisher',
-                      but_forbids: 'editor',
+                      allows: :publisher,
+                      but_forbids: :editor,
                       of_account: -> (topic) { topic.account },
                       to: :publish_on_account_of,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'publisher',
-                      but_forbids: 'editor',
+                      allows: :publisher,
+                      but_forbids: :editor,
                       of_account: -> (topic) { topic.account },
                       to: :update_account_on,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'publisher',
-                      but_forbids: 'editor',
+                      allows: :publisher,
+                      but_forbids: :editor,
                       of_account: -> (topic) { topic.account },
                       to: :update_theming_on,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_account: -> (topic) { topic.account },
                       to: :manage_account_of,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_account: -> (topic) { topic.account },
                       to: :update_feature_configuration_on,
                       topic: -> { create(:entry) }
 
       it_behaves_like 'a membership-based permission that',
-                      allows: 'manager',
-                      but_forbids: 'publisher',
+                      allows: :manager,
+                      but_forbids: :publisher,
                       of_account: -> (topic) { topic.account },
                       to: :destroy,
                       topic: -> { create(:entry) }
@@ -305,7 +305,7 @@ module Pageflow
         it 'does not include entries with membership with nil id' do
           user = create(:user)
           entry = Entry.new
-          create(:membership, user: user, entity: entry, role: 'editor')
+          create(:membership, user: user, entity: entry, role: :editor)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).editor_or_above)
             .not_to include(entry)
@@ -316,7 +316,7 @@ module Pageflow
           theming = create(:theming)
           account = Account.new
           entry = create(:entry, account: account, theming: theming)
-          create(:membership, user: user, entity: account, role: 'editor')
+          create(:membership, user: user, entity: account, role: :editor)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).editor_or_above)
             .not_to include(entry)
@@ -394,7 +394,7 @@ module Pageflow
         it 'does not include entries with membership with nil id' do
           user = create(:user)
           entry = Entry.new
-          create(:membership, user: user, entity: entry, role: 'publisher')
+          create(:membership, user: user, entity: entry, role: :publisher)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).publisher_or_above)
             .not_to include(entry)
@@ -405,7 +405,7 @@ module Pageflow
           theming = create(:theming)
           account = Account.new
           entry = create(:entry, account: account, theming: theming)
-          create(:membership, user: user, entity: account, role: 'publisher')
+          create(:membership, user: user, entity: account, role: :publisher)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).publisher_or_above)
             .not_to include(entry)
@@ -483,7 +483,7 @@ module Pageflow
         it 'does not include entries with membership with nil id' do
           user = create(:user)
           entry = Entry.new
-          create(:membership, user: user, entity: entry, role: 'publisher')
+          create(:membership, user: user, entity: entry, role: :publisher)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable)
             .not_to include(entry)
@@ -494,7 +494,7 @@ module Pageflow
           theming = create(:theming)
           account = Account.new
           entry = create(:entry, account: account, theming: theming)
-          create(:membership, user: user, entity: account, role: 'publisher')
+          create(:membership, user: user, entity: account, role: :publisher)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).member_addable)
             .not_to include(entry)
@@ -572,7 +572,7 @@ module Pageflow
         it 'does not include entries with membership with nil id' do
           user = create(:user)
           entry = Entry.new
-          create(:membership, user: user, entity: entry, role: 'manager')
+          create(:membership, user: user, entity: entry, role: :manager)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).manager_or_above)
             .not_to include(entry)
@@ -583,7 +583,7 @@ module Pageflow
           theming = create(:theming)
           account = Account.new
           entry = create(:entry, account: account, theming: theming)
-          create(:membership, user: user, entity: account, role: 'manager')
+          create(:membership, user: user, entity: account, role: :manager)
 
           expect(Policies::EntryPolicy::Scope.new(user, Entry).manager_or_above)
             .not_to include(entry)

@@ -768,7 +768,7 @@ de:
           warning_html: Gib Dein aktuelles Passwort ein, um zu bestätigen, dass Du Dein Benutzerkonto wirklich löschen möchtest. <b>Alle Deine Daten gehen dabei verloren. Der Vorgang kann nicht rückgangig gemacht werden.</b>
         deleted: Der Benutzer wurde gelöscht.
         edit: Bearbeiten
-        email_invitation_hint: Dem Benutzer wird eine E-Mail mit Anweisungen zum Festelegen eines Passworts gesendet.
+        email_invitation_hint: Dem Benutzer wird eine E-Mail mit Anweisungen zum Festlegen eines Passworts gesendet.
         empty: Keine Beiträge assoziiert. Fügen Sie dem ausgewählten Benutzer Beiträge hinzu.
         invite_user: Benutzer einladen
         me:

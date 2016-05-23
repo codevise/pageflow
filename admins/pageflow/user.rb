@@ -234,16 +234,22 @@ module Pageflow
       def create_resource(user)
         known_user = User.find_by(email: resource.email)
         if known_user
-          Membership.create(user: known_user,
-                            role: resource.initial_role,
-                            entity_id: resource.initial_account,
-                            entity_type: 'Pageflow::Account')
+          membership_params = {user: known_user,
+                               entity_id: resource.initial_account,
+                               entity_type: 'Pageflow::Account'}
+          if resource.initial_role.present?
+            membership_params.merge!(role: resource.initial_role.to_sym)
+          end
+          Membership.create(membership_params)
         else
           verify_quota!(:users, params[:user][:account])
-          Membership.create(user: resource,
-                            role: resource.initial_role,
-                            entity_id: resource.initial_account,
-                            entity_type: 'Pageflow::Account')
+          membership_params = {user: resource,
+                               entity_id: resource.initial_account,
+                               entity_type: 'Pageflow::Account'}
+          if resource.initial_role.present?
+            membership_params.merge!(role: resource.initial_role.to_sym)
+          end
+          Membership.create(membership_params)
           super
         end
       end
@@ -255,7 +261,9 @@ module Pageflow
                                      :password,
                                      :password_confirmation,
                                      :locale,
-                                     :admin)
+                                     :admin,
+                                     :initial_role,
+                                     :initial_account)
       end
 
       def permitted_params

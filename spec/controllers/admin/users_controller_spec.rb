@@ -70,7 +70,7 @@ module Pageflow
           request.env['HTTP_REFERER'] = admin_users_path
           post :create,
                user: {email: 'existing_user@example.com',
-                      initial_role: 'member',
+                      initial_role: :member,
                       initial_account: account}
         end.to change { account.users.count }
       end
@@ -86,7 +86,7 @@ module Pageflow
                user: {email: 'new_user@example.com',
                       first_name: 'Adelheid',
                       last_name: 'Doe',
-                      initial_role: 'member',
+                      initial_role: :member,
                       initial_account: account}
         end.to change { account.users.count }
       end
@@ -102,7 +102,7 @@ module Pageflow
                user: {email: 'new_user@example.com',
                       first_name: 'Wiltrud',
                       last_name: 'Doe',
-                      initial_role: 'member',
+                      initial_role: :member,
                       initial_account: account}
         end.to change { User.count }
       end

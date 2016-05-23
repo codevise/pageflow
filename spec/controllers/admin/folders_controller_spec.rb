@@ -39,8 +39,8 @@ describe Admin::FoldersController do
       it 'does not allow to add folder for entry/own account' do
         entry = create(:entry)
         user = create(:user)
-        create(:membership, user: user, entity: entry.account, role: 'editor')
-        create(:membership, user: user, entity: entry, role: 'manager')
+        create(:membership, user: user, entity: entry.account, role: :editor)
+        create(:membership, user: user, entity: entry, role: :manager)
         sign_in(user)
 
         expect do
@@ -97,8 +97,8 @@ describe Admin::FoldersController do
       it 'does not allow to change name of folder of entry account' do
         entry = create(:entry)
         user = create(:user)
-        create(:membership, user: user, entity: entry.account, role: 'editor')
-        create(:membership, user: user, entity: entry, role: 'manager')
+        create(:membership, user: user, entity: entry.account, role: :editor)
+        create(:membership, user: user, entity: entry, role: :manager)
         folder = create(:folder, name: 'old', account: entry.account)
 
         sign_in(user)
@@ -150,8 +150,8 @@ describe Admin::FoldersController do
       it 'does not allow to destroy folder of entry account' do
         entry = create(:entry)
         user = create(:user)
-        create(:membership, user: user, entity: entry.account, role: 'editor')
-        create(:membership, user: user, entity: entry, role: 'manager')
+        create(:membership, user: user, entity: entry.account, role: :editor)
+        create(:membership, user: user, entity: entry, role: :manager)
         folder = create(:folder, account: entry.account)
 
         sign_in(user)
