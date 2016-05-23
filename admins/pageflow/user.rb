@@ -262,9 +262,7 @@ module Pageflow
                                      :password,
                                      :password_confirmation,
                                      :locale,
-                                     :admin,
-                                     :initial_role,
-                                     :initial_account)
+                                     :admin)
       end
 
       def permitted_params
