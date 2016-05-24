@@ -13,13 +13,6 @@ module Pageflow
                     allows: :publisher,
                     but_forbids: :editor,
                     of_account: -> (topic) { topic },
-                    to: :read,
-                    topic: -> { create(:account) }
-
-    it_behaves_like 'a membership-based permission that',
-                    allows: :publisher,
-                    but_forbids: :editor,
-                    of_account: -> (topic) { topic },
                     to: :configure_folder_on,
                     topic: -> { create(:account) }
 
@@ -35,6 +28,13 @@ module Pageflow
                     but_forbids: :publisher,
                     of_account: -> (topic) { topic },
                     to: :manage,
+                    topic: -> { create(:account) }
+
+    it_behaves_like 'a membership-based permission that',
+                    allows: :manager,
+                    but_forbids: :publisher,
+                    of_account: -> (topic) { topic },
+                    to: :read,
                     topic: -> { create(:account) }
 
     it_behaves_like 'a membership-based permission that',
@@ -70,20 +70,47 @@ module Pageflow
                     of_account: -> (topic) { topic },
                     to: :admin,
                     topic: -> { create(:account) }
+  end
 
-    it_behaves_like 'an admin permission that',
-                    allows_admins_but_forbids_even_managers: true,
-                    of_account: -> (topic) { topic },
-                    to: :index,
-                    topic: -> { create(:account) }
+  describe '.index?' do
+    it 'is permitted when account manager on at least one account' do
+      user = create(:user, :manager, on: create(:account))
+
+      expect(AccountPolicy.new(user, create(:account))).to permit_action(:index)
+    end
+
+    it 'is not permitted when account publisher and entry manager' do
+      user = create(:user, :publisher, on: create(:account))
+      create(:entry, with_manager: user)
+
+      expect(AccountPolicy.new(user, create(:account))).not_to permit_action(:index)
+    end
+  end
+
+  describe '.see_all_instances_of_class_of' do
+    it 'is not permitted when not managing all accounts' do
+      user = create(:user)
+      create(:membership, user: user, entity: create(:account), role: :manager)
+
+      expect(AccountPolicy.new(user, create(:account)))
+        .not_to permit_action(:see_all_instances_of_class_of)
+    end
+
+    it 'is permitted when managing all accounts' do
+      Account.delete_all
+      user = create(:user)
+      account = create(:account)
+      create(:membership, user: user, entity: account, role: :manager)
+
+      expect(AccountPolicy.new(user, account)).to permit_action(:see_all_instances_of_class_of)
+    end
   end
 
   describe '.resolve' do
     it 'includes all accounts for admins' do
       user = create(:user, :admin)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).resolve).to include(create(:account))
+      expect(AccountPolicy::Scope.new(user, Account).resolve).to include(create(:account))
     end
 
     it 'includes accounts with memberships with correct user, correct account and ' \
@@ -91,16 +118,14 @@ module Pageflow
       user = create(:user)
       account = create(:account, with_member: user)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).resolve).to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).resolve).to include(account)
     end
 
     it 'does not include accounts with memberships with wrong entity id/insufficient role' do
       user = create(:user)
       account = create(:account)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).resolve).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).resolve).not_to include(account)
     end
 
     it 'does not include accounts with memberships with wrong user' do
@@ -108,8 +133,7 @@ module Pageflow
       wrong_user = create(:user)
       account = create(:account, with_member: wrong_user)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).resolve).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).resolve).not_to include(account)
     end
 
     it 'does not include accounts with membership with nil account id' do
@@ -117,8 +141,7 @@ module Pageflow
       account = Account.new
       create(:membership, user: user, entity: account)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).resolve).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).resolve).not_to include(account)
     end
   end
 
@@ -126,8 +149,7 @@ module Pageflow
     it 'includes all accounts for admins' do
       user = create(:user, :admin)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_creatable).to include(create(:account))
+      expect(AccountPolicy::Scope.new(user, Account).entry_creatable).to include(create(:account))
     end
 
     it 'includes accounts with memberships with correct user, correct account and ' \
@@ -135,16 +157,14 @@ module Pageflow
       user = create(:user)
       account = create(:account, with_publisher: user)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_creatable).to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).entry_creatable).to include(account)
     end
 
     it 'does not include accounts with memberships with wrong entity id' do
       user = create(:user)
       account = create(:account)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_creatable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).entry_creatable).not_to include(account)
     end
 
     it 'does not include accounts with memberships with wrong user' do
@@ -152,16 +172,14 @@ module Pageflow
       wrong_user = create(:user)
       account = create(:account, with_publisher: wrong_user)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_creatable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).entry_creatable).not_to include(account)
     end
 
     it 'does not include accounts with memberships with insufficient role' do
       user = create(:user)
       account = create(:account, with_editor: user)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_creatable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).entry_creatable).not_to include(account)
     end
 
     it 'does not include accounts with membership with nil account id' do
@@ -169,8 +187,7 @@ module Pageflow
       account = Account.new
       create(:membership, user: user, entity: account)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_creatable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).entry_creatable).not_to include(account)
     end
   end
 
@@ -178,8 +195,7 @@ module Pageflow
     it 'includes all accounts for admins' do
       user = create(:user, :admin)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_movable).to include(create(:account))
+      expect(AccountPolicy::Scope.new(user, Account).entry_movable).to include(create(:account))
     end
 
     it 'includes accounts with memberships with correct user, correct account and ' \
@@ -187,16 +203,14 @@ module Pageflow
       user = create(:user)
       account = create(:account, with_publisher: user)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_movable).to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).entry_movable).to include(account)
     end
 
     it 'does not include accounts with memberships with wrong entity id' do
       user = create(:user)
       account = create(:account)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_movable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).entry_movable).not_to include(account)
     end
 
     it 'does not include accounts with memberships with wrong user' do
@@ -204,16 +218,14 @@ module Pageflow
       wrong_user = create(:user)
       account = create(:account, with_publisher: wrong_user)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_movable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).entry_movable).not_to include(account)
     end
 
     it 'does not include accounts with memberships with insufficient role' do
       user = create(:user)
       account = create(:account, with_editor: user)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_movable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).entry_movable).not_to include(account)
     end
 
     it 'does not include accounts with membership with nil account id' do
@@ -221,8 +233,7 @@ module Pageflow
       account = Account.new
       create(:membership, user: user, entity: account)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).entry_movable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).entry_movable).not_to include(account)
     end
   end
 
@@ -230,8 +241,7 @@ module Pageflow
     it 'includes all accounts for admins' do
       user = create(:user, :admin)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).member_addable).to include(create(:account))
+      expect(AccountPolicy::Scope.new(user, Account).member_addable).to include(create(:account))
     end
 
     it 'includes accounts with memberships with correct user, correct account and ' \
@@ -239,16 +249,14 @@ module Pageflow
       user = create(:user)
       account = create(:account, with_manager: user)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).member_addable).to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).member_addable).to include(account)
     end
 
     it 'does not include accounts with memberships with wrong entity id' do
       user = create(:user)
       account = create(:account)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).member_addable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).member_addable).not_to include(account)
     end
 
     it 'does not include accounts with memberships with wrong user' do
@@ -256,16 +264,14 @@ module Pageflow
       wrong_user = create(:user)
       account = create(:account, with_manager: wrong_user)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).member_addable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).member_addable).not_to include(account)
     end
 
     it 'does not include accounts with memberships with insufficient role' do
       user = create(:user)
       account = create(:account, with_publisher: user)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).member_addable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).member_addable).not_to include(account)
     end
 
     it 'does not include accounts with membership with nil account id' do
@@ -273,8 +279,7 @@ module Pageflow
       account = Account.new
       create(:membership, user: user, entity: account)
 
-      expect(AccountPolicy::Scope
-              .new(user, Account).member_addable).not_to include(account)
+      expect(AccountPolicy::Scope.new(user, Account).member_addable).not_to include(account)
     end
   end
 
@@ -282,8 +287,54 @@ module Pageflow
     it 'includes all accounts for admins' do
       user = create(:user, :admin)
 
+      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).to include(create(:account))
+    end
+
+    it 'includes accounts with memberships with correct user, correct account and ' \
+       'sufficient role' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+
+      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).to include(account)
+    end
+
+    it 'does not include accounts with memberships with wrong entity id' do
+      user = create(:user)
+      account = create(:account)
+
+      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).not_to include(account)
+    end
+
+    it 'does not include accounts with memberships with wrong user' do
+      user = create(:user)
+      wrong_user = create(:user)
+      account = create(:account, with_publisher: wrong_user)
+
+      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).not_to include(account)
+    end
+
+    it 'does not include accounts with memberships with insufficient role' do
+      user = create(:user)
+      account = create(:account, with_editor: user)
+
+      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).not_to include(account)
+    end
+
+    it 'does not include accounts with membership with nil account id' do
+      user = create(:user)
+      account = Account.new
+      create(:membership, user: user, entity: account)
+
+      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).not_to include(account)
+    end
+  end
+
+  describe '.folder_addable' do
+    it 'includes all accounts for admins' do
+      user = create(:user, :admin)
+
       expect(AccountPolicy::Scope
-              .new(user, Account).themings_accessible).to include(create(:account))
+              .new(user, Account).folder_addable).to include(create(:account))
     end
 
     it 'includes accounts with memberships with correct user, correct account and ' \
@@ -292,7 +343,7 @@ module Pageflow
       account = create(:account, with_publisher: user)
 
       expect(AccountPolicy::Scope
-              .new(user, Account).themings_accessible).to include(account)
+              .new(user, Account).folder_addable).to include(account)
     end
 
     it 'does not include accounts with memberships with wrong entity id' do
@@ -300,7 +351,7 @@ module Pageflow
       account = create(:account)
 
       expect(AccountPolicy::Scope
-              .new(user, Account).themings_accessible).not_to include(account)
+              .new(user, Account).folder_addable).not_to include(account)
     end
 
     it 'does not include accounts with memberships with wrong user' do
@@ -309,7 +360,7 @@ module Pageflow
       account = create(:account, with_publisher: wrong_user)
 
       expect(AccountPolicy::Scope
-              .new(user, Account).themings_accessible).not_to include(account)
+              .new(user, Account).folder_addable).not_to include(account)
     end
 
     it 'does not include accounts with memberships with insufficient role' do
@@ -317,7 +368,7 @@ module Pageflow
       account = create(:account, with_editor: user)
 
       expect(AccountPolicy::Scope
-              .new(user, Account).themings_accessible).not_to include(account)
+              .new(user, Account).folder_addable).not_to include(account)
     end
 
     it 'does not include accounts with membership with nil account id' do
@@ -326,7 +377,59 @@ module Pageflow
       create(:membership, user: user, entity: account)
 
       expect(AccountPolicy::Scope
-              .new(user, Account).themings_accessible).not_to include(account)
+              .new(user, Account).folder_addable).not_to include(account)
+    end
+  end
+
+  describe '.folder_addable' do
+    it 'includes all accounts for admins' do
+      user = create(:user, :admin)
+
+      expect(AccountPolicy::Scope
+              .new(user, Account).folder_addable).to include(create(:account))
+    end
+
+    it 'includes accounts with memberships with correct user, correct account and ' \
+       'sufficient role' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+
+      expect(AccountPolicy::Scope
+              .new(user, Account).folder_addable).to include(account)
+    end
+
+    it 'does not include accounts with memberships with wrong entity id' do
+      user = create(:user)
+      account = create(:account)
+
+      expect(AccountPolicy::Scope
+              .new(user, Account).folder_addable).not_to include(account)
+    end
+
+    it 'does not include accounts with memberships with wrong user' do
+      user = create(:user)
+      wrong_user = create(:user)
+      account = create(:account, with_publisher: wrong_user)
+
+      expect(AccountPolicy::Scope
+              .new(user, Account).folder_addable).not_to include(account)
+    end
+
+    it 'does not include accounts with memberships with insufficient role' do
+      user = create(:user)
+      account = create(:account, with_editor: user)
+
+      expect(AccountPolicy::Scope
+              .new(user, Account).folder_addable).not_to include(account)
+    end
+
+    it 'does not include accounts with membership with nil account id' do
+      user = create(:user)
+      account = Account.new
+      create(:membership, user: user, entity: account)
+
+      expect(AccountPolicy::Scope
+              .new(user, Account).folder_addable).not_to include(account)
     end
   end
 end

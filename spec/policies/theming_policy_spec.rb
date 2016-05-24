@@ -43,8 +43,7 @@ module Pageflow
         account_policy_scope = AccountPolicy::Scope.new(user, Account)
         accounts = account_policy_scope.themings_accessible
 
-        scope = ThemingPolicy::Scope
-                .new(user, Theming).themings_allowed_for(accounts)
+        scope = ThemingPolicy::Scope.new(user, Theming).themings_allowed_for(accounts)
 
         expect(scope).to_not include(theming)
       end
@@ -53,8 +52,7 @@ module Pageflow
         user = create(:user)
         theming = create(:theming)
 
-        scope = ThemingPolicy::Scope
-                .new(user, Theming).themings_allowed_for(theming.account)
+        scope = ThemingPolicy::Scope.new(user, Theming).themings_allowed_for(theming.account)
 
         expect(scope).to_not include(theming)
       end

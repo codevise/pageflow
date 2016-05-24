@@ -14,8 +14,7 @@ module Pageflow
     it 'includes all folders for admins' do
       user = create(:user, :admin)
 
-      expect(FolderPolicy::Scope
-              .new(user, Folder).resolve).to include(create(:folder))
+      expect(FolderPolicy::Scope.new(user, Folder).resolve).to include(create(:folder))
     end
 
     it 'includes folders containing an entry of the user' do

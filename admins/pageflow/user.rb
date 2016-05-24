@@ -286,8 +286,7 @@ module Pageflow
           attributes.delete(:admin)
         end
 
-        if AccountPolicy::Scope
-           .new(current_user, Pageflow::Account).member_addable.empty? ||
+        if AccountPolicy::Scope.new(current_user, Pageflow::Account).member_addable.empty? ||
            action_name.to_sym != :create
           attributes.delete(:initial_role)
           attributes.delete(:initial_account)

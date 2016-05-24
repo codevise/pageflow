@@ -192,8 +192,7 @@ module Pageflow
       def build_new_resource
         super.tap do |entry|
           entry.account ||=
-            AccountPolicy::Scope.new(current_user,
-                                               Pageflow::Account).entry_creatable.first ||
+            AccountPolicy::Scope.new(current_user, Pageflow::Account).entry_creatable.first ||
             Pageflow::Account.first
 
           entry.theming ||= entry.account.default_theming

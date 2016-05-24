@@ -40,8 +40,7 @@ module Pageflow
         managed_user = create(:user)
         create(:account, with_member: managed_user, with_manager: account_manager)
 
-        expect(UserPolicy::Scope
-                .new(account_manager, ::User).resolve).to include(managed_user)
+        expect(UserPolicy::Scope.new(account_manager, ::User).resolve).to include(managed_user)
       end
 
       it 'does not include member on publisher account' do
@@ -58,8 +57,7 @@ module Pageflow
         managed_user = create(:user)
         create(:entry, with_previewer: managed_user, with_manager: account_manager)
 
-        expect(UserPolicy::Scope
-                .new(account_manager, ::User).resolve).not_to include(managed_user)
+        expect(UserPolicy::Scope.new(account_manager, ::User).resolve).not_to include(managed_user)
       end
 
       it 'does not include member on other account' do
@@ -68,8 +66,7 @@ module Pageflow
         create(:account, with_manager: account_manager)
         create(:account, with_member: managed_user)
 
-        expect(UserPolicy::Scope
-                .new(account_manager, ::User).resolve).not_to include(managed_user)
+        expect(UserPolicy::Scope.new(account_manager, ::User).resolve).not_to include(managed_user)
       end
 
       it 'does not include user with nil id' do
@@ -78,8 +75,7 @@ module Pageflow
         create(:account, with_manager: account_manager)
         create(:account, with_member: managed_user)
 
-        expect(UserPolicy::Scope
-                .new(account_manager, ::User).resolve).not_to include(managed_user)
+        expect(UserPolicy::Scope.new(account_manager, ::User).resolve).not_to include(managed_user)
       end
     end
 
