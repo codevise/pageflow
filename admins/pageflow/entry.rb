@@ -9,12 +9,7 @@ module Pageflow
         entry_publication_state_indicator(entry)
       end
       column :title, sortable: 'title' do |entry|
-        if entry.title.blank?
-          link_to(I18n.t('pageflow.admin.entries.entry_number') + ' ' + entry.id.to_s,
-                  admin_entry_path(entry))
-        else
-          link_to(entry.title, admin_entry_path(entry))
-        end
+        link_to(admin_entry_title(entry), admin_entry_path(entry))
       end
       column I18n.t('pageflow.admin.entries.members'), class: 'members' do |entry|
         entry_user_badge_list(entry)
@@ -76,8 +71,6 @@ module Pageflow
       f.inputs do
         f.input :title, hint: I18n.t('pageflow.admin.entries.title_hint')
 
-        eligible_accounts = AccountPolicy::Scope.new(current_user, Pageflow::Account)
-                            .entry_movable.load
         if authorized?(:update_account_on, resource)
           f.input :account,
                   collection: eligible_accounts,

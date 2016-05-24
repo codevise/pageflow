@@ -13,7 +13,7 @@ de:
   pageflow:
     admin:
       entries:
-        entry_number: Beitrag Nr.
+        default_title: "Beitrag Nr. %id"
     parent_page_box:
       widget_type_name: Erscheinungsbild-Bestandteil
 en:
@@ -31,6 +31,6 @@ en:
   pageflow:
     admin:
       entries:
-        entry_number: Entry №
+        default_title: "Entry № %id"
     parent_page_box:
       widget_type_name: Appearance Feature
