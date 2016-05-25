@@ -18,3 +18,16 @@ de:
           previewer: 'Prüfer'
           publisher: 'Chefredakteur'
           manager: 'Administrator'
+          accounts:
+            tooltip:
+              member: 'Kann Beitrags-Rollen auf diesem Konto innehaben'
+              previewer: 'Kann unveröffentlichte Beiträge dieses Kontos betrachten'
+              editor: 'Kann Beiträge dieses Kontos editieren'
+              publisher: 'Kann Beiträge dieses Kontos veröffentlichen'
+              manager: 'Kann Konto-Rollen setzen'
+          entries:
+            tooltip:
+              previewer: 'Kann Beitrag unveröffentlicht betrachten'
+              editor: 'Kann Beitrag editieren'
+              publisher: 'Kann Beitrag veröffentlichen'
+              manager: 'Kann Beitrags-Rollen setzen'

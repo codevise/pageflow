@@ -18,3 +18,16 @@ en:
           previewer: 'Previewer'
           publisher: 'Publisher'
           manager: 'Manager'
+          accounts:
+            tooltip:
+              member: 'Can be assigned roles on entries of this account'
+              previewer: 'Can preview entries of this account'
+              editor: 'Can edit entries of this account'
+              publisher: 'Can publish entries of this account'
+              manager: 'Can set roles on this account'
+          entries:
+            tooltip:
+              previewer: 'Can preview this entry'
+              editor: 'Can edit this entry'
+              publisher: 'Can publish this entry'
+              manager: 'Can set roles on this entry'

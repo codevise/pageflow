@@ -16,8 +16,11 @@ module Pageflow
             column :role,
                    sortable: 'pageflow_memberships.role',
                    title: I18n.t('activerecord.attributes.pageflow/membership.role') do |membership|
-              span class: "membership_role #{membership.role}" do
-                I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')
+              span I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role'),
+                   class: "membership_role #{membership.role}", style: 'position:relative;' do
+                div I18n.t(membership.role,
+                           scope: 'pageflow.admin.users.roles.entries.tooltip'),
+                    class: 'tooltip_bubble'
               end
             end
             column :created_at, sortable: 'pageflow_memberships.created_at'

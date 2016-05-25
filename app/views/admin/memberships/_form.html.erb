@@ -13,7 +13,8 @@
     <%= f.input :role,
                 collection: membership_roles_collection("Pageflow::#{params[:entity_type]
                                                           .capitalize}"),
-                include_blank: false %>
+                                                          include_blank: false,
+    hint: t("pageflow.admin.memberships.on_#{params[:entity_type].to_s}.role.hint_html")%>
   <% end %>
   <%= f.actions do %>
     <%= f.action(:submit) %>

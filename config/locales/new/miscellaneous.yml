@@ -13,7 +13,14 @@ de:
   pageflow:
     admin:
       entries:
-        default_title: "Beitrag Nr. %id"
+        entry_number: Beitrag Nr.
+      memberships:
+        on_account:
+          role:
+            hint_html: "Dem <strong>Mitglied</strong> können Sie Rollen auf einzelnen Beiträgen dieses Kontos zuweisen.<br>Der <strong>Prüfer</strong> kann zusätzlich dazu alle Beiträge dieses Kontos anschauen, auch bevor sie veröffentlicht sind.<br>Der <strong>Redakteur</strong> kann zusätzlich dazu alle Beiträge dieses Kontos bearbeiten.<br>Der <strong>Chefredakteur</strong> kann zusätzlich dazu alle Beiträge dieses Kontos veröffentlichen.<br>Der <strong>Administrator</strong> kann zusätzlich dazu Benutzerrollen auf allen Beiträgen dieses Kontos setzen und bearbeiten."
+        on_entry:
+          role:
+            hint_html: "Der <strong>Prüfer</strong> kann diesen Beitrag anschauen, auch bevor er veröffentlicht ist.<br>Der <strong>Redakteur</strong> kann zusätzlich dazu den Beitrag bearbeiten.<br>Der <strong>Chefredakteur</strong> kann zusätzlich dazu den Beitrag veröffentlichen.<br>Der <strong>Administrator</strong> kann zusätzlich dazu Benutzerrollen auf diesem Beitrag setzen und bearbeiten."
     parent_page_box:
       widget_type_name: Erscheinungsbild-Bestandteil
 en:
@@ -31,6 +38,13 @@ en:
   pageflow:
     admin:
       entries:
-        default_title: "Entry № %id"
+        entry_number: Entry №
+      memberships:
+        on_account:
+          role:
+            hint_html: "You can assign roles on individual entries of this account to a <strong>Member</strong>.<br>A <strong>Previewer</strong> can additionally preview all entries of this account.<br>An <strong>Editor</strong> can additionally edit all entries of this account.<br>A <strong>Publisher</strong> can additionally publish all entries of this account.<br>A <strong>Manager</strong> can additionally set user roles on all entries of this account and edit them."
+        on_entry:
+          role:
+            hint_html: "A <strong>Previewer</strong> can preview this entry.<br>An <strong>Editor</strong> can additionally edit this entry.<br>A <strong>Publisher</strong> can additionally publish this entry.<br>A <strong>Manager</strong> can additionally set user roles on this entry and edit them."
     parent_page_box:
       widget_type_name: Appearance Feature

@@ -63,8 +63,11 @@ module Pageflow
                 link_to(membership.entity.title, admin_entry_path(membership.entity))
               end
               column :role, sortable: 'pageflow_memberships.role' do |membership|
-                span class: "membership_role #{membership.role}" do
-                  I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')
+                span I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role'),
+                     class: "membership_role #{membership.role}", style: 'position:relative;' do
+                  div I18n.t(membership.role,
+                             scope: 'pageflow.admin.users.roles.entries.tooltip'),
+                      class: 'tooltip_bubble'
                 end
               end
               column I18n.t('activerecord.models.account.one'), :account do |membership|
@@ -118,8 +121,11 @@ module Pageflow
                 end
               end
               column :role, sortable: 'pageflow_memberships.role' do |membership|
-                span class: "membership_role #{membership.role}" do
-                  I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')
+                span I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role'),
+                     class: "membership_role #{membership.role}", style: 'position:relative;' do
+                  div I18n.t(membership.role,
+                             scope: 'pageflow.admin.users.roles.accounts.tooltip'),
+                      class: 'tooltip_bubble'
                 end
               end
               column :created_at, sortable: 'pageflow_memberships.created_at'
