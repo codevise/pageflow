@@ -5,7 +5,7 @@ module Pageflow
 
       def build(user)
         ul class: 'badge_list' do
-          user.memberships.on_accounts.each do |membership|
+          user_accounts(user).each do |membership|
             build_badge(membership)
           end
 
@@ -15,11 +15,15 @@ module Pageflow
 
       private
 
+      def user_accounts(user)
+        user.memberships.on_accounts.accessible_by(current_ability)
+      end
+
       def build_badge(membership)
         li do
           if authorized?(:read, membership.entity)
             account_name_display = span(link_to(membership.entity.name,
-                                                admin_account_path(membership.entity)),
+                                                main_app.admin_account_path(membership.entity)),
                                         class: 'abbreviation')
           else
             account_name_display = span(membership.entity.name, class: 'abbreviation')
