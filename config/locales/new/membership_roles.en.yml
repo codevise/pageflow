@@ -31,3 +31,7 @@ en:
               editor: 'Can edit this entry'
               publisher: 'Can publish this entry'
               manager: 'Can set roles on this entry'
+    editor:
+      views:
+        edit_entry_view:
+          cannot_publish: 'You do not have sufficient rights to publish this entry.'

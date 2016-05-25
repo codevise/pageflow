@@ -31,3 +31,7 @@ de:
               editor: 'Kann Beitrag editieren'
               publisher: 'Kann Beitrag veröffentlichen'
               manager: 'Kann Beitrags-Rollen setzen'
+    editor:
+      views:
+        edit_entry_view:
+          cannot_publish: 'Sie sind nicht berechtigt diesen Beitrag zu veröffentlichen.'

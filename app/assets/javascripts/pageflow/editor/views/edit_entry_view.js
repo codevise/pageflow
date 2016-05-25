@@ -1,9 +1,10 @@
 pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
   template: 'templates/edit_entry',
 
-  mixins: [pageflow.failureIndicatingView],
+  mixins: [pageflow.failureIndicatingView, pageflow.tooltipContainer],
 
   ui: {
+    publishButton: 'a.publish',
     publicationStateButton: 'a.publication_state',
     menu: '.menu',
     storylines: '.edit_entry_storylines'
@@ -17,7 +18,10 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
     },
 
     'click a.publish': function() {
-      editor.navigate('/publish', {trigger: true});
+      if (!this.ui.publishButton.hasClass('disabled')) {
+        editor.navigate('/publish', {trigger: true});
+      }
+
       return false;
     },
 
@@ -29,6 +33,7 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
 
   onRender: function() {
     this._addMenuItems();
+    this._updatePublishButton();
 
     this.subview(new pageflow.StorylinePickerView({
       el: this.ui.storylines,
@@ -38,6 +43,20 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
       rememberLastSelection: true,
       storylineId: this.options.storylineId
     }));
+  },
+
+  _updatePublishButton: function() {
+    var disabled = !pageflow.entry.get('publishable');
+
+    this.ui.publishButton.toggleClass('disabled', disabled);
+
+    if (disabled) {
+      this.ui.publishButton.attr('data-tooltip',
+                                 'pageflow.editor.views.edit_entry_view.cannot_publish');
+    }
+    else {
+      this.ui.publishButton.removeAttr('data-tooltip');
+    }
   },
 
   _addMenuItems: function() {

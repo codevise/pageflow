@@ -4,6 +4,7 @@ json.pretty_url pretty_entry_url(entry)
 
 json.default_file_rights entry.account.default_file_rights
 json.published(entry.published?)
+json.publishable(can?(:publish, entry.to_model))
 json.password_protected(entry.password_digest.present?)
 
 json.configuration do
