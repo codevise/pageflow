@@ -26,7 +26,7 @@ module Pageflow
           end
           div class: 'tooltip' do
             account_name_display +
-              " (#{I18n.t(membership.role, scope: 'pageflow.admin.users.roles.accounts.tooltip')})"
+              " (#{I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')})"
           end
         end
       end

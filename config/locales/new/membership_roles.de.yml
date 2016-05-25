@@ -16,7 +16,7 @@ de:
         roles:
           member: 'Mitglied'
           previewer: 'Prüfer'
-          publisher: 'Chefredakteur'
+          publisher: 'Veröffentlicher'
           manager: 'Administrator'
           accounts:
             tooltip:

@@ -17,7 +17,7 @@ module Pageflow
                    sortable: 'pageflow_memberships.role',
                    title: I18n.t('activerecord.attributes.pageflow/membership.role') do |membership|
               span I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role'),
-                   class: "membership_role #{membership.role}", style: 'position:relative;' do
+                   class: "membership_role #{membership.role} tooltip_clue" do
                 div I18n.t(membership.role,
                            scope: 'pageflow.admin.users.roles.entries.tooltip'),
                     class: 'tooltip_bubble'
@@ -46,6 +46,7 @@ module Pageflow
             end
           end
         end
+        para text_node I18n.t('pageflow.admin.resource_tabs.account_editor_hint')
         if authorized?(:add_member_to, entry) &&
            membership_users_collection(resource, Membership.new(entity: resource), Membership.new).any?
           span do

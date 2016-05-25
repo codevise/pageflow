@@ -64,7 +64,7 @@ module Pageflow
               end
               column :role, sortable: 'pageflow_memberships.role' do |membership|
                 span I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role'),
-                     class: "membership_role #{membership.role}", style: 'position:relative;' do
+                     class: "membership_role #{membership.role} tooltip_clue" do
                   div I18n.t(membership.role,
                              scope: 'pageflow.admin.users.roles.entries.tooltip'),
                       class: 'tooltip_bubble'
@@ -122,7 +122,7 @@ module Pageflow
               end
               column :role, sortable: 'pageflow_memberships.role' do |membership|
                 span I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role'),
-                     class: "membership_role #{membership.role}", style: 'position:relative;' do
+                     class: "membership_role #{membership.role} tooltip_clue" do
                   div I18n.t(membership.role,
                              scope: 'pageflow.admin.users.roles.accounts.tooltip'),
                       class: 'tooltip_bubble'

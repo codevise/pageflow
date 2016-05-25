@@ -17,10 +17,12 @@ de:
       memberships:
         on_account:
           role:
-            hint_html: "Dem <strong>Mitglied</strong> können Sie Rollen auf einzelnen Beiträgen dieses Kontos zuweisen.<br>Der <strong>Prüfer</strong> kann zusätzlich dazu alle Beiträge dieses Kontos anschauen, auch bevor sie veröffentlicht sind.<br>Der <strong>Redakteur</strong> kann zusätzlich dazu alle Beiträge dieses Kontos bearbeiten.<br>Der <strong>Chefredakteur</strong> kann zusätzlich dazu alle Beiträge dieses Kontos veröffentlichen.<br>Der <strong>Administrator</strong> kann zusätzlich dazu Benutzerrollen auf allen Beiträgen dieses Kontos setzen und bearbeiten."
+            hint_html: "Dem <strong>Mitglied</strong> können Sie Rollen auf einzelnen Beiträgen dieses Kontos zuweisen.<br>Der <strong>Prüfer</strong> kann zusätzlich dazu alle Beiträge dieses Kontos anschauen, auch bevor sie veröffentlicht sind.<br>Der <strong>Redakteur</strong> kann zusätzlich dazu alle Beiträge dieses Kontos bearbeiten.<br>Der <strong>Veröffentlicher</strong> kann zusätzlich dazu alle Beiträge dieses Kontos veröffentlichen.<br>Der <strong>Administrator</strong> kann zusätzlich dazu Benutzerrollen auf allen Beiträgen dieses Kontos setzen und bearbeiten."
         on_entry:
           role:
-            hint_html: "Der <strong>Prüfer</strong> kann diesen Beitrag anschauen, auch bevor er veröffentlicht ist.<br>Der <strong>Redakteur</strong> kann zusätzlich dazu den Beitrag bearbeiten.<br>Der <strong>Chefredakteur</strong> kann zusätzlich dazu den Beitrag veröffentlichen.<br>Der <strong>Administrator</strong> kann zusätzlich dazu Benutzerrollen auf diesem Beitrag setzen und bearbeiten."
+            hint_html: "Der <strong>Prüfer</strong> kann diesen Beitrag anschauen, auch bevor er veröffentlicht ist.<br>Der <strong>Redakteur</strong> kann zusätzlich dazu den Beitrag bearbeiten.<br>Der <strong>Veröffentlicher</strong> kann zusätzlich dazu den Beitrag veröffentlichen.<br>Der <strong>Administrator</strong> kann zusätzlich dazu Benutzerrollen auf diesem Beitrag setzen und bearbeiten."
+      resource_tabs:
+        account_editor_hint: Es ist möglich, dass außer den hier aufgeführten Nutzern weitere Nutzer an diesem Beitrag mitarbeiten, welche über allgemeinere Berechtigungen verfügen
     parent_page_box:
       widget_type_name: Erscheinungsbild-Bestandteil
 en:
@@ -46,5 +48,7 @@ en:
         on_entry:
           role:
             hint_html: "A <strong>Previewer</strong> can preview this entry.<br>An <strong>Editor</strong> can additionally edit this entry.<br>A <strong>Publisher</strong> can additionally publish this entry.<br>A <strong>Manager</strong> can additionally set user roles on this entry and edit them."
+      resource_tabs:
+        account_editor_hint: Possibly, additional users with more general permissions are working on this story
     parent_page_box:
       widget_type_name: Appearance Feature
