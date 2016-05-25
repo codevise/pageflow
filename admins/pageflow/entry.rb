@@ -14,7 +14,7 @@ module Pageflow
       column I18n.t('pageflow.admin.entries.members'), class: 'members' do |entry|
         entry_user_badge_list(entry)
       end
-      if authorized?(:see, :accounts_column_on_entry_index)
+      if authorized?(:see, :accounts)
         column :account, sortable: 'account_id' do |entry|
           if authorized?(:read, entry.account)
             link_to(entry.account.name,

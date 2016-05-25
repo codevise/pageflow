@@ -1,7 +1,15 @@
 attributes_table_for entry do
   row :title, :class => 'title'
-  if authorized?(:read, entry.account)
-    row :account, :class => 'account'
+  if authorized?(:see, :accounts)
+    row :account, :class => 'account' do
+      if authorized?(:read, entry.account)
+        link_to(entry.account.name,
+                admin_account_path(entry.account),
+                data: {id: entry.account.id})
+      else
+        entry.account.name
+      end
+    end
   end
   row :created_at
   row :edited_at
