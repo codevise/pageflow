@@ -27,8 +27,8 @@ class ReplaceRoleAndAccountOnUser < ActiveRecord::Migration
 
   def add_account_member_membership_for_each_user
     execute(<<-SQL)
-      INSERT INTO pageflow_memberships (role, user_id, entity_id, entity_type)
-      SELECT 'member', id, account_id, 'Pageflow::Account' FROM users
+      INSERT INTO pageflow_memberships (role, user_id, entity_id, entity_type, created_at)
+      SELECT 'member', id, account_id, 'Pageflow::Account', created_at FROM users
     SQL
   end
 
