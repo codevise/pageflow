@@ -36,6 +36,7 @@ class ReplaceRoleAndAccountOnUser < ActiveRecord::Migration
     execute(<<-SQL)
       UPDATE pageflow_memberships INNER JOIN users ON
       pageflow_memberships.user_id = users.id AND
+      pageflow_memberships.entity_type = 'Pageflow::Account' AND
       users.role = 'account_manager'
       SET pageflow_memberships.role = 'manager'
     SQL
