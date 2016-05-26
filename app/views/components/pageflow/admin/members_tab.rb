@@ -6,7 +6,7 @@ module Pageflow
                              blank_slate_text: I18n.t('pageflow.admin.entries.no_members')) do
           table_for_collection class: 'memberships', sortable: true, i18n: Pageflow::Membership do
             column :user, sortable: 'users.last_name', class: 'name' do |membership|
-              if authorized? :manage, User
+              if authorized? :read, membership.user
                 link_to(membership.user.formal_name, admin_user_path(membership.user),
                         class: 'view_creator')
               else
