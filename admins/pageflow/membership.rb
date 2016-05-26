@@ -20,6 +20,16 @@ module Pageflow
         result
       end
 
+      def index
+        if params[:user_id].present?
+          redirect_to admin_user_url(params[:user_id])
+        elsif params[:entry_id].present?
+          redirect_to admin_entry_url(params[:entry_id])
+        else
+          redirect_to admin_account_url(params[:account_id])
+        end
+      end
+
       def destroy
         if resource.entity_type == 'Pageflow::Account'
           dependent_entry_ids = resource.entity.entry_memberships.where(user: resource.user)
