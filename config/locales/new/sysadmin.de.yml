@@ -1,0 +1,23 @@
+de:
+  activerecord:
+    attributes:
+      user:
+        admin: System-Administrator
+        admin?: System-Administrator
+    models:
+      admin_user:
+        one: System-Administrator
+        other: System-Administratoren
+  devise:
+    failure:
+      admin_user:
+        unauthenticated: Bitte melden Sie sich als System-Administrator an.
+    sessions:
+      admin_user:
+        signed_in: Erfolgreich als System-Administrator angemeldet.
+  pageflow:
+    admin:
+      users:
+        role_hint:
+          admin: "DELETED"
+          others: "DELETED"

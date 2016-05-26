@@ -50,5 +50,9 @@ en:
             hint_html: "A <strong>Previewer</strong> can preview this entry.<br>An <strong>Editor</strong> can additionally edit this entry.<br>A <strong>Publisher</strong> can additionally publish this entry.<br>A <strong>Manager</strong> can additionally set user roles on this entry and edit them."
       resource_tabs:
         account_editor_hint: Possibly, additional users with more general permissions are working on this story
+      users:
+        role_hint:
+          admin: "DELETED"
+          others: "DELETED"
     parent_page_box:
       widget_type_name: Appearance Feature

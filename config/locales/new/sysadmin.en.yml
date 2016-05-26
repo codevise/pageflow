@@ -1,0 +1,7 @@
+en:
+  pageflow:
+    admin:
+      users:
+        role_hint:
+          admin: "DELETED"
+          others: "DELETED"
