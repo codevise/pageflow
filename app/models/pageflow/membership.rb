@@ -2,6 +2,8 @@ module Pageflow
   class Membership < ActiveRecord::Base
     belongs_to :user
     belongs_to :entity, polymorphic: true
+    belongs_to :entry, -> { where(pageflow_memberships: {entity_type: 'Pageflow::Entry'}) }, foreign_key: 'entity_id'
+    belongs_to :account, -> { where(pageflow_memberships: {entity_type: 'Pageflow::Account'}) }, foreign_key: 'entity_id'
 
     validates :user, :entity, :role, presence: true
     validates :user_id, uniqueness: {scope: [:entity_type, :entity_id]}

@@ -53,109 +53,11 @@ module Pageflow
                   resend_invitation_admin_user_path(user),
                   method: :post, class: 'button', data: {rel: 'resend_invitation'}
         end
-
-        entry_memberships = user.memberships.on_entries
-                            .accessible_by(Ability.new(current_user), :index)
-        if entry_memberships.any?
-          panel I18n.t('activerecord.models.entry.other') do
-            table_for entry_memberships, class: 'memberships', i18n: Membership do
-              column :entry do |membership|
-                link_to(membership.entity.title, admin_entry_path(membership.entity))
-              end
-              column :role, sortable: 'pageflow_memberships.role' do |membership|
-                span I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role'),
-                     class: "membership_role #{membership.role} tooltip_clue" do
-                  div I18n.t(membership.role,
-                             scope: 'pageflow.admin.users.roles.entries.tooltip'),
-                      class: 'tooltip_bubble'
-                end
-              end
-              column I18n.t('activerecord.models.account.one'), :account do |membership|
-                if authorized?(:read, membership.entity.account)
-                  link_to(membership.entity.account.name,
-                          admin_account_path(membership.entity.account))
-                else
-                  membership.entity.account.name
-                end
-              end
-              column :created_at, sortable: 'pageflow_memberships.created_at'
-              column do |membership|
-                if authorized?(:update, membership)
-                  link_to(I18n.t('pageflow.admin.users.edit_role'),
-                          edit_admin_user_membership_path(user, membership, entity_type: :entry),
-                          data: {
-                            rel: "edit_entry_role_#{membership.role}"
-                          })
-                end
-              end
-              column do |membership|
-                if authorized?(:destroy, membership)
-                  link_to(I18n.t('pageflow.admin.users.delete'),
-                          admin_user_membership_path(user, membership),
-                          method: :delete,
-                          data: {
-                            confirm: I18n.t('active_admin.delete_confirmation'),
-                            rel: "delete_entry_membership_#{membership.role}"
-                          })
-                end
-              end
-            end
-            render 'add_membership_button_if_needed', entity_type: 'entry'
-          end
-        else
-          render 'add_membership_button_if_needed', entity_type: 'entry'
-        end
-
-        account_memberships = user.memberships.on_accounts
-                              .accessible_by(Ability.new(current_user), :index)
-        if account_memberships.any?
-          panel I18n.t('activerecord.models.account.other') do
-            table_for account_memberships, class: 'memberships', i18n: Membership do
-              if authorized?(:list_memberships_on, Account)
-              end
-              column I18n.t('activerecord.models.account.one'), :account do |membership|
-                if authorized?(:read, membership.entity)
-                  link_to(membership.entity.name, admin_account_path(membership.entity))
-                else
-                  membership.entity.name
-                end
-              end
-              column :role, sortable: 'pageflow_memberships.role' do |membership|
-                span I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role'),
-                     class: "membership_role #{membership.role} tooltip_clue" do
-                  div I18n.t(membership.role,
-                             scope: 'pageflow.admin.users.roles.accounts.tooltip'),
-                      class: 'tooltip_bubble'
-                end
-              end
-              column :created_at, sortable: 'pageflow_memberships.created_at'
-              column do |membership|
-                if authorized?(:update, membership)
-                  link_to(I18n.t('pageflow.admin.users.edit_role'),
-                          edit_admin_user_membership_path(user, membership, entity_type: :account),
-                          data: {
-                            rel: "edit_account_role_#{membership.role}"
-                          })
-                end
-              end
-              column do |membership|
-                if authorized?(:destroy, membership)
-                  link_to(I18n.t('pageflow.admin.users.delete'),
-                          admin_user_membership_path(user, membership),
-                          method: :delete,
-                          data: {
-                            confirm: I18n.t('active_admin.delete_confirmation'),
-                            rel: "delete_account_membership_#{membership.role}"
-                          })
-                end
-              end
-            end
-            render 'add_membership_button_if_needed', entity_type: 'account'
-          end
-        else
-          render 'add_membership_button_if_needed', entity_type: 'account'
-        end
       end
+
+      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(:user),
+                i18n: 'pageflow.admin.resource_tabs',
+                build_args: [user])
     end
 
     action_item(:edit, only: :show) do
