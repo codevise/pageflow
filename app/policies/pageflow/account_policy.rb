@@ -124,7 +124,7 @@ module Pageflow
 
     def see_link_to_index?
       @user.admin? ||
-        (read? && @user.memberships.on_accounts.as_manager.length > 1)
+        (read? && @user.memberships.on_accounts.as_manager.any?)
     end
 
     def admin?
