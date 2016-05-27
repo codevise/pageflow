@@ -677,20 +677,6 @@ describe Admin::MembershipsController do
           end.not_to change { off_limits_account.users.count }
         end
 
-        it 'does not allow to delete user from off-limits account' do
-          account_admin = create(:user)
-          create(:account, with_manager: account_admin)
-          off_limits_account = create(:account)
-          user = create(:user)
-          membership = create(:membership, user: user, entity: off_limits_account, role: :manager)
-
-          sign_in(account_admin)
-
-          expect do
-            delete(:destroy, account_id: off_limits_account, id: membership)
-          end.not_to change { off_limits_account.users.count }
-        end
-
         it 'does not allow to delete off-limits account from user' do
           account_admin = create(:user)
           create(:account, with_manager: account_admin)

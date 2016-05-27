@@ -4,80 +4,180 @@ module Pageflow
   module Admin
     describe MembershipsHelper do
       describe '#membership_users_collection' do
-        it 'returns pairs of formal name and id for new membership' do
-          user = create(:user, first_name: 'Randolph', last_name: 'Doe')
-          account = create(:account)
-          membership = create(:membership, entity: account, role: :member, user: user)
-          new_membership = Membership.new
-          entry = create(:entry, account: account)
+        context 'via Entries#index' do
+          it 'returns pairs of formal name and id for new membership' do
+            user = create(:user, first_name: 'Randolph', last_name: 'Doe')
+            account = create(:account)
+            membership = create(:membership, entity: account, role: :member, user: user)
+            new_membership = Membership.new
+            entry = create(:entry, account: account)
+            expect(helper).to receive(:current_user).and_return(user)
 
-          pairs = membership_users_collection(entry, membership, new_membership)
+            pairs = helper.membership_users_collection(entry, membership, new_membership)
 
-          expect(pairs).to eq([['Doe, Randolph', user.id]])
+            expect(pairs).to eq([['Doe, Randolph', user.id]])
+          end
+
+          it 'returns only membership user if membership not new' do
+            user = create(:user, first_name: 'Rudolf', last_name: 'Doe')
+            account = create(:account)
+            membership = create(:membership, entity: account, role: :member, user: user)
+            create(:membership, entity: account, role: :member, user: create(:user))
+            entry = create(:entry, account: account)
+
+            pairs = membership_users_collection(entry, membership, membership)
+
+            expect(pairs).to eq([['Doe, Rudolf', user.id]])
+          end
+
+          it 'filters users that are already members of parent' do
+            account = create(:account)
+            user = create(:user, first_name: 'John', last_name: 'Doe')
+            entry = create(:entry, account: account)
+            membership = create(:membership, entity: entry, role: :member, user: user)
+            new_membership = Membership.new
+            expect(helper).to receive(:current_user).and_return(user)
+
+            pairs = helper.membership_users_collection(entry, membership, new_membership)
+
+            expect(pairs).to eq([])
+          end
         end
 
-        it 'returns only membership user if membership not new' do
-          user = create(:user, first_name: 'Rudolf', last_name: 'Doe')
-          account = create(:account)
-          membership = create(:membership, entity: account, role: :member, user: user)
-          create(:membership, entity: account, role: :member, user: create(:user))
-          entry = create(:entry, account: account)
+        context 'via Users#index' do
+          it 'returns pair of formal name and id for new membership' do
+            user = create(:user, first_name: 'Randolph', last_name: 'Doe')
+            account = create(:account)
+            membership = create(:membership, entity: account, role: :member, user: user)
+            new_membership = Membership.new
+            create(:entry, account: account)
+            expect(helper).to receive(:current_user).and_return(user)
 
-          pairs = membership_users_collection(entry, membership, membership)
+            pairs = helper.membership_users_collection(user, membership, new_membership)
 
-          expect(pairs).to eq([['Doe, Rudolf', user.id]])
+            expect(pairs).to eq([['Doe, Randolph', user.id]])
+          end
+
+          it 'returns membership user if membership not new' do
+            user = create(:user, first_name: 'Rudolf', last_name: 'Doe')
+            account = create(:account)
+            membership = create(:membership, entity: account, role: :member, user: user)
+            create(:membership, entity: account, role: :member, user: create(:user))
+            create(:entry, account: account)
+
+            pairs = membership_users_collection(user, membership, membership)
+
+            expect(pairs).to eq([['Doe, Rudolf', user.id]])
+          end
         end
 
-        it 'filters users that are already members of parent' do
-          account = create(:account)
-          user = create(:user, first_name: 'John', last_name: 'Doe')
-          entry = create(:entry, account: account)
-          membership = create(:membership, entity: entry, role: :member, user: user)
-          new_membership = Membership.new
+        context 'for Accounts#index' do
+          it 'returns pairs of formal name and id for new membership' do
+            user = create(:user, first_name: 'Randolph', last_name: 'Doe')
+            account_manager = create(:user)
+            account = create(:account, with_manager: account_manager)
+            create(:account, with_member: user, with_manager: account_manager)
+            new_membership = Membership.new
+            create(:entry, account: account)
+            expect(helper).to receive(:current_user).and_return(account_manager)
 
-          pairs = membership_users_collection(entry, membership, new_membership)
+            pairs = helper.membership_users_collection(account, new_membership, new_membership)
 
-          expect(pairs).to eq([])
+            expect(pairs).to eq([['Doe, Randolph', user.id]])
+          end
+
+          it 'returns only membership user if membership not new' do
+            user = create(:user, first_name: 'Rudolf', last_name: 'Doe')
+            account = create(:account)
+            membership = create(:membership, entity: account, role: :member, user: user)
+            create(:membership, entity: account, role: :member, user: create(:user))
+            create(:entry, account: account)
+
+            pairs = membership_users_collection(account, membership, membership)
+
+            expect(pairs).to eq([['Doe, Rudolf', user.id]])
+          end
+
+          it 'filters users that are already members of parent' do
+            account = create(:account)
+            user = create(:user, first_name: 'John', last_name: 'Doe')
+            entry = create(:entry, account: account)
+            membership = create(:membership, entity: entry, role: :member, user: user)
+            new_membership = Membership.new
+            expect(helper).to receive(:current_user).and_return(user)
+
+            pairs = helper.membership_users_collection(account, membership, new_membership)
+
+            expect(pairs).to eq([])
+          end
         end
       end
 
       describe '#membership_accounts_collection' do
-        it 'returns pairs of name and id for new membership' do
-          user = create(:user)
-          account_manager = create(:user)
-          account = create(:account, name: 'TVcorp', with_manager: account_manager)
-          membership = create(:membership)
-          new_membership = Membership.new
-          expect(helper).to receive(:current_user).and_return(account_manager)
+        context 'via user' do
+          it 'returns pairs of name and id for new membership' do
+            user = create(:user)
+            account_manager = create(:user)
+            account = create(:account, name: 'TVcorp', with_manager: account_manager)
+            membership = create(:membership)
+            new_membership = Membership.new
+            expect(helper).to receive(:current_user).and_return(account_manager)
 
-          pairs = helper.membership_accounts_collection(user, membership, new_membership)
+            pairs = helper.membership_accounts_collection(user, membership, new_membership)
 
-          expect(pairs).to eq([['TVcorp', account.id]])
+            expect(pairs).to eq([['TVcorp', account.id]])
+          end
+
+          it 'returns only membership account if membership not new' do
+            user = create(:user)
+            account_manager = create(:user)
+            account = create(:account, name: 'Radiocorp', with_manager: account_manager)
+            create(:account, with_manager: account_manager)
+            membership = create(:membership, entity: account)
+
+            pairs = helper.membership_accounts_collection(user, membership, membership)
+
+            expect(pairs).to eq([['Radiocorp', account.id]])
+          end
+
+          it 'filters accounts that are already members of parent' do
+            user = create(:user)
+            account_manager = create(:user)
+            account = create(:account, name: 'Mediacorp', with_manager: account_manager)
+            membership = create(:membership, entity: account, role: :member, user: user)
+            new_membership = Membership.new
+            expect(helper).to receive(:current_user).and_return(account_manager)
+
+            pairs = helper.membership_accounts_collection(user, membership, new_membership)
+
+            expect(pairs).to eq([])
+          end
         end
 
-        it 'returns only membership account if membership not new' do
-          user = create(:user)
-          account_manager = create(:user)
-          account = create(:account, name: 'Radiocorp', with_manager: account_manager)
-          create(:account, with_manager: account_manager)
-          membership = create(:membership, entity: account)
+        context 'via account' do
+          it 'returns pair of name and id for new membership' do
+            create(:user)
+            account_manager = create(:user)
+            account = create(:account, name: 'TVcorp', with_manager: account_manager)
+            membership = create(:membership)
+            new_membership = Membership.new
 
-          pairs = helper.membership_accounts_collection(user, membership, membership)
+            pairs = helper.membership_accounts_collection(account, membership, new_membership)
 
-          expect(pairs).to eq([['Radiocorp', account.id]])
-        end
+            expect(pairs).to eq([['TVcorp', account.id]])
+          end
 
-        it 'filters accounts that are already members of parent' do
-          user = create(:user)
-          account_manager = create(:user)
-          account = create(:account, name: 'Mediacorp', with_manager: account_manager)
-          membership = create(:membership, entity: account, role: :member, user: user)
-          new_membership = Membership.new
-          expect(helper).to receive(:current_user).and_return(account_manager)
+          it 'returns membership account if membership not new' do
+            create(:user)
+            account_manager = create(:user)
+            account = create(:account, name: 'Radiocorp', with_manager: account_manager)
+            create(:account, with_manager: account_manager)
+            membership = create(:membership, entity: account)
 
-          pairs = helper.membership_accounts_collection(user, membership, new_membership)
+            pairs = helper.membership_accounts_collection(account, membership, membership)
 
-          expect(pairs).to eq([])
+            expect(pairs).to eq([['Radiocorp', account.id]])
+          end
         end
       end
 

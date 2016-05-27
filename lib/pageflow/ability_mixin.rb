@@ -17,6 +17,10 @@ module Pageflow
         AccountPolicy.new(user, account).index?
       end
 
+      can :add_member_to, Account do |account|
+        AccountPolicy.new(user, account).add_member_to?
+      end
+
       can :see_link_to_index, Account, AccountPolicy::Scope.new(user, Account).resolve do |account|
         AccountPolicy.new(user, account).see_link_to_index?
       end

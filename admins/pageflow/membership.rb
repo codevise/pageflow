@@ -46,6 +46,8 @@ module Pageflow
             redirect_url = admin_entry_url(resource.entity)
           elsif params[:user_id] && authorized?(:index, resource.user)
             redirect_url = admin_users_url
+          elsif params[:account_id]
+            redirect_url = admin_accounts_url
           else
             redirect_url = admin_entries_url
           end

@@ -3,8 +3,9 @@ module Pageflow
     module MembershipsHelper
       def membership_entries_collection(parent, resource, f_object)
         if f_object.new_record?
-          if parent.class.to_s == 'User'
-            accounts = AccountPolicy::Scope.new(current_user, Pageflow::Account).entry_creatable
+          if parent.class.to_s == 'User' || parent.class.to_s == 'Pageflow::InvitedUser'
+            accounts = AccountPolicy::Scope.new(current_user, Pageflow::Account)
+                       .entry_creatable
             MembershipFormCollection.new(parent,
                                          resource: resource,
                                          collection_method: :entries,
@@ -25,12 +26,17 @@ module Pageflow
 
       def membership_accounts_collection(parent, resource, f_object)
         if f_object.new_record?
-          accounts = AccountPolicy::Scope.new(current_user, Account).member_addable.load
-          MembershipFormCollection.new(parent,
-                                       collection_method: :accounts,
-                                       display_method: :name,
-                                       order: 'name ASC',
-                                       managed_accounts: accounts).pairs
+          if parent.class.to_s == 'User' || parent.class.to_s == 'Pageflow::InvitedUser'
+            accounts = AccountPolicy::Scope
+                       .new(current_user, Account).member_addable.load
+            MembershipFormCollection.new(parent,
+                                         collection_method: :accounts,
+                                         display_method: :name,
+                                         order: 'name ASC',
+                                         managed_accounts: accounts).pairs
+          else
+            [[parent.name, parent.id]]
+          end
         else
           [[resource.entity.name, resource.entity_id]]
         end
@@ -38,10 +44,13 @@ module Pageflow
 
       def membership_users_collection(parent, resource, f_object)
         if f_object.new_record?
+          accounts = AccountPolicy::Scope
+                     .new(current_user, Pageflow::Account).member_addable.load
           MembershipFormCollection.new(parent,
                                        collection_method: :users,
                                        display_method: :formal_name,
-                                       order: 'last_name ASC, first_name ASC').pairs
+                                       order: 'last_name ASC, first_name ASC',
+                                       managed_accounts: accounts).pairs
         else
           [[resource.user.formal_name, resource.user.id]]
         end
@@ -93,8 +102,10 @@ module Pageflow
             else
               options[:managed_accounts] - items_in_parent
             end
-          else
+          elsif parent.class.to_s == 'Pageflow::Entry'
             items_in_account - items_in_parent
+          else
+            Set.new(options[:managed_accounts].map(&:users).flatten) - items_in_parent
           end
         end
 

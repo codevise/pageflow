@@ -2,4 +2,4 @@
             label: I18n.t('activerecord.attributes.pageflow/membership.account'),
             collection: membership_accounts_collection(parent, resource, f.object),
             include_blank: false,
-            input_html: { disabled: !f.object.new_record? } %>
+            input_html: { disabled: !f.object.new_record? || parent_type == :account } %>

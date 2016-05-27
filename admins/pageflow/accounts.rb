@@ -38,6 +38,7 @@ module Pageflow
       helper Pageflow::Admin::FeaturesHelper
       helper Pageflow::Admin::WidgetsHelper
       helper Pageflow::Admin::FormHelper
+      helper Pageflow::Admin::MembershipsHelper
       helper ThemesHelper
 
       def new

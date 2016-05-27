@@ -27,7 +27,9 @@ module Pageflow
             column do |membership|
               if authorized?(:update, membership)
                 link_to(I18n.t('pageflow.admin.users.edit_role'),
-                        edit_admin_entry_membership_path(entry, membership, entity_type: :entry),
+                        edit_admin_entry_membership_path(entry,
+                                                         membership,
+                                                         entity_type: :entry),
                         data: {
                           rel: "edit_entry_membership_#{membership.role}"
                         })
@@ -48,7 +50,9 @@ module Pageflow
         end
         para text_node I18n.t('pageflow.admin.resource_tabs.account_editor_hint')
         if authorized?(:add_member_to, entry) &&
-           membership_users_collection(resource, Membership.new(entity: resource), Membership.new).any?
+           membership_users_collection(resource,
+                                       Membership.new(entity: resource),
+                                       Membership.new).any?
           span do
             link_to(I18n.t('pageflow.admin.users.add'),
                     new_admin_entry_membership_path(entry, entity_type: :entry),
