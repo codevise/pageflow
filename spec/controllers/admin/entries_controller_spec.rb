@@ -4,67 +4,201 @@ describe Admin::EntriesController do
   render_views
 
   describe '#show' do
-    it 'entry editor sees members and revisions tabs' do
-      account = create(:account)
-      user = create(:user)
-      entry = create(:entry, account: account, with_editor: user, title: 'example')
+    describe 'built in admin tabs' do
+      it 'entry editor sees members and revisions tabs' do
+        account = create(:account)
+        user = create(:user)
+        entry = create(:entry, account: account, with_editor: user, title: 'example')
 
-      sign_in(user)
-      get(:show, id: entry.id)
+        sign_in(user)
+        get(:show, id: entry.id)
 
-      expect(response.body).to have_selector('.admin_tabs_view .tabs .members')
-      expect(response.body).to have_selector('.admin_tabs_view .tabs .revisions')
+        expect(response.body).to have_selector('.admin_tabs_view .tabs .members')
+        expect(response.body).to have_selector('.admin_tabs_view .tabs .revisions')
+      end
+
+      it 'account manager sees features tab' do
+        user = create(:user)
+        account = create(:account, with_manager: user)
+        entry = create(:entry, account: account)
+
+        sign_in(user)
+        get(:show, id: entry.id)
+
+        expect(response.body).to have_selector('.admin_tabs_view .tabs .features')
+      end
+
+      it 'account publisher does not see features tab' do
+        user = create(:user)
+        account = create(:account, with_publisher: user)
+        entry = create(:entry, account: account)
+
+        sign_in(user)
+        get(:show, id: entry.id)
+
+        expect(response.body).not_to have_selector('.admin_tabs_view .tabs .features')
+      end
+
+      it 'entry manager does not see features tab' do
+        user = create(:user)
+        entry = create(:entry, with_manager: user)
+
+        sign_in(user)
+        get(:show, id: entry.id)
+
+        expect(response.body).not_to have_selector('.admin_tabs_view .tabs .features')
+      end
     end
 
-    it 'entry previewer sees registered admin resource tabs they are authorized for' do
-      entry = create(:entry, title: 'example')
-      tab_view_component = Class.new(Pageflow::ViewComponent) do
-        def build(entry)
-          super('data-entry-title' => entry.title)
-        end
+    describe 'additional admin resource tab' do
+      let(:tab_view_component) do
+        Class.new(Pageflow::ViewComponent) do
+          def build(entry)
+            super('data-custom-tab' => entry.title)
+          end
 
-        def self.name
-          'TabViewComponet'
+          def self.name
+            'TabViewComponet'
+          end
         end
       end
 
-      Pageflow.config.admin_resource_tabs.register(:entry,
-                                                   name: :some_tab,
-                                                   component: tab_view_component)
+      let(:tab_view_selector) { '.admin_tabs_view div[data-custom-tab]' }
 
-      allow(controller).to receive(:authorized?).and_call_original
-      allow(controller).to receive(:authorized?).with(:view, tab_view_component).and_return(true)
+      context 'with required_role option' do
+        it 'is visible if user has required entry role' do
+          user = create(:user)
+          entry = create(:entry, with_publisher: user)
 
-      user = create(:user)
-      create(:membership, user: user, entity: entry, role: :previewer)
-      sign_in(user)
-      get(:show, id: entry.id)
+          Pageflow.config.admin_resource_tabs.register(:entry,
+                                                       name: :some_tab,
+                                                       component: tab_view_component,
+                                                       required_role: :publisher)
+          sign_in(user)
+          get(:show, id: entry.id)
 
-      expect(response.body).to have_selector('.admin_tabs_view div[data-entry-title="example"]')
-    end
-
-    it 'account manager does not see registered admin resource tabs she is not authorized for' do
-      user = create(:user)
-      account = create(:account, with_manager: user)
-      entry = create(:entry, account: account, title: 'example')
-      tab_view_component = Class.new(Pageflow::ViewComponent) do
-        def build(entry)
-          super('data-entry-title' => entry.title)
+          expect(response.body).to have_selector(tab_view_selector)
         end
 
-        def self.name
-          'TabViewComponet'
+        it 'is visible for admin' do
+          user = create(:user, :admin)
+          entry = create(:entry)
+
+          Pageflow.config.admin_resource_tabs.register(:entry,
+                                                       name: :some_tab,
+                                                       component: tab_view_component,
+                                                       required_role: :publisher)
+          sign_in(user)
+          get(:show, id: entry.id)
+
+          expect(response.body).to have_selector(tab_view_selector)
+        end
+
+        it 'is not visible if user does not have required role' do
+          user = create(:user)
+          entry = create(:entry, with_editor: user)
+
+          Pageflow.config.admin_resource_tabs.register(:entry,
+                                                       name: :some_tab,
+                                                       component: tab_view_component,
+                                                       required_role: :publisher)
+          sign_in(user)
+          get(:show, id: entry.id)
+
+          expect(response.body).not_to have_selector(tab_view_selector)
         end
       end
 
-      Pageflow.config.admin_resource_tabs.register(:entry,
-                                                   name: :some_tab,
-                                                   component: tab_view_component)
+      context 'with required_account_role option' do
+        it 'is visible if user has required account role' do
+          user = create(:user)
+          account = create(:account, with_manager: user)
+          entry = create(:entry, account: account)
 
-      sign_in(user)
-      get(:show, id: entry.id)
+          Pageflow.config.admin_resource_tabs.register(:entry,
+                                                       name: :some_tab,
+                                                       component: tab_view_component,
+                                                       required_account_role: :manager)
+          sign_in(user)
+          get(:show, id: entry.id)
 
-      expect(response.body).not_to have_selector('.admin_tabs_view div[data-entry-title="example"]')
+          expect(response.body).to have_selector(tab_view_selector)
+        end
+
+        it 'is visible for admin' do
+          user = create(:user, :admin)
+          entry = create(:entry)
+
+          Pageflow.config.admin_resource_tabs.register(:entry,
+                                                       name: :some_tab,
+                                                       component: tab_view_component,
+                                                       required_account_role: :manager)
+          sign_in(user)
+          get(:show, id: entry.id)
+
+          expect(response.body).to have_selector(tab_view_selector)
+        end
+
+        it 'is not visible if user does not have required account role' do
+          user = create(:user)
+          account = create(:account, with_publisher: user)
+          entry = create(:entry, account: account)
+
+          Pageflow.config.admin_resource_tabs.register(:entry,
+                                                       name: :some_tab,
+                                                       component: tab_view_component,
+                                                       required_account_role: :manager)
+          sign_in(user)
+          get(:show, id: entry.id)
+
+          expect(response.body).not_to have_selector(tab_view_selector)
+        end
+
+        it 'is not visible if user only has entry role' do
+          user = create(:user)
+          entry = create(:entry, with_manager: user)
+
+          Pageflow.config.admin_resource_tabs.register(:entry,
+                                                       name: :some_tab,
+                                                       component: tab_view_component,
+                                                       required_account_role: :manager)
+          sign_in(user)
+          get(:show, id: entry.id)
+
+          expect(response.body).not_to have_selector(tab_view_selector)
+        end
+      end
+
+      context 'with admin_only option' do
+        it 'is visible for admin' do
+          user = create(:user, :admin)
+          entry = create(:entry)
+
+          Pageflow.config.admin_resource_tabs.register(:entry,
+                                                       name: :some_tab,
+                                                       component: tab_view_component,
+                                                       admin_only: true)
+          sign_in(user)
+          get(:show, id: entry.id)
+
+          expect(response.body).to have_selector(tab_view_selector)
+        end
+
+        it 'is not visible for non admins' do
+          user = create(:user)
+          account = create(:account, with_manager: user)
+          entry = create(:entry, account: account)
+
+          Pageflow.config.admin_resource_tabs.register(:entry,
+                                                       name: :some_tab,
+                                                       component: tab_view_component,
+                                                       admin_only: true)
+          sign_in(user)
+          get(:show, id: entry.id)
+
+          expect(response.body).not_to have_selector(tab_view_selector)
+        end
+      end
     end
   end
 

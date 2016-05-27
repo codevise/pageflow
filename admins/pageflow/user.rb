@@ -55,8 +55,9 @@ module Pageflow
         end
       end
 
-      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(:user),
+      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(user),
                 i18n: 'pageflow.admin.resource_tabs',
+                authorize: :see_user_admin_tab,
                 build_args: [user])
     end
 

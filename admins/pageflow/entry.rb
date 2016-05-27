@@ -151,9 +151,9 @@ module Pageflow
       render 'attributes_table', entry: entry
       render 'links', entry: entry
 
-      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(:entry),
+      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(entry),
                 i18n: 'pageflow.admin.resource_tabs',
-                authorize: true,
+                authorize: :see_entry_admin_tab,
                 build_args: [entry])
     end
 

@@ -28,9 +28,10 @@ module Pageflow
       render 'account_details', :account => account
       render 'theming_details', :account => account
 
-      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(:theming),
-                :i18n => 'pageflow.admin.resource_tabs',
-                :build_args => [account.default_theming])
+      tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(account.default_theming),
+                i18n: 'pageflow.admin.resource_tabs',
+                authorize: :see_theming_admin_tab,
+                build_args: [account.default_theming])
     end
 
     controller do

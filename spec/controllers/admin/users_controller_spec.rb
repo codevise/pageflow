@@ -2,6 +2,69 @@ require 'spec_helper'
 
 module Pageflow
   describe ::Admin::UsersController do
+    describe '#show' do
+      render_views
+
+      describe 'additional admin resource tab' do
+        let(:tab_view_component) do
+          Class.new(Pageflow::ViewComponent) do
+            def build(user)
+              super('data-custom-tab' => user.full_name)
+            end
+
+            def self.name
+              'TabViewComponet'
+            end
+          end
+        end
+
+        let(:tab_view_selector) { '.admin_tabs_view div[data-custom-tab]' }
+
+        it 'is visible for managers' do
+          user = create(:user)
+          create(:account, with_manager: user)
+
+          Pageflow.config.admin_resource_tabs.register(:user,
+                                                       name: :some_tab,
+                                                       component: tab_view_component,
+                                                       required_account_role: :manager)
+          sign_in(user)
+          get(:show, id: user.id)
+
+          expect(response.body).to have_selector(tab_view_selector)
+        end
+
+        context 'with admin_only option' do
+          it 'is visible for admin' do
+            user = create(:user, :admin)
+
+            Pageflow.config.admin_resource_tabs.register(:user,
+                                                         name: :some_tab,
+                                                         component: tab_view_component,
+                                                         admin_only: true)
+            sign_in(user)
+            get(:show, id: user.id)
+
+            expect(response.body).to have_selector(tab_view_selector)
+          end
+
+          it 'is not visible for non admins' do
+            user = create(:user)
+            create(:account, with_manager: user)
+
+            Pageflow.config.admin_resource_tabs.register(:user,
+                                                         name: :some_tab,
+                                                         component: tab_view_component,
+                                                         admin_only: true)
+            sign_in(user)
+            get(:show, id: user.id)
+
+            expect(response.body).not_to have_selector(tab_view_selector)
+          end
+        end
+      end
+    end
+
     describe '#invite' do
       render_views
 

@@ -31,8 +31,6 @@ module Pageflow
 
       can :index, Membership, MembershipPolicy::Scope.new(user, Membership).indexable
 
-      can :view, [Admin::MembersTab, Admin::RevisionsTab]
-
       can :update, Membership do |membership|
         MembershipPolicy.new(user, membership).edit_role?
       end
@@ -47,6 +45,18 @@ module Pageflow
 
       can :see, :accounts do
         user.admin? || user.memberships.on_accounts.length > 1
+      end
+
+      can :see_entry_admin_tab, Admin::Tab do |tab|
+        Admin::EntryTabPolicy.new(user, tab).see?
+      end
+
+      can :see_theming_admin_tab, Admin::Tab do |tab|
+        Admin::AdminOnlyTabPolicy.new(user, tab).see?
+      end
+
+      can :see_user_admin_tab, Admin::Tab do |tab|
+        Admin::AdminOnlyTabPolicy.new(user, tab).see?
       end
 
       unless user.admin?
@@ -190,7 +200,6 @@ module Pageflow
       end
 
       if user.admin?
-        can :view, Admin::FeaturesTab
         can [:create, :configure_folder_on], Account
         can :destroy, Account do |account|
           account.users.empty? && account.entries.empty?

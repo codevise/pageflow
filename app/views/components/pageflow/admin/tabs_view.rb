@@ -20,22 +20,22 @@ module Pageflow
       def filter_tabs(tabs)
         return tabs unless options[:authorize]
 
-        tabs.select do |tab_options|
-          authorized?(:view, tab_options[:component])
+        tabs.select do |tab|
+          authorized?(options[:authorize], tab)
         end
       end
 
       def build_tab_list
         ul(class: 'tabs') do
-          tabs.each do |tab_options|
-            build_tab_item(tab_options)
+          tabs.each do |tab|
+            build_tab_item(tab)
           end
         end
       end
 
-      def build_tab_item(tab_options)
-        li(class: tab_class(tab_options[:name])) do
-          link_to(t(tab_options[:name], scope: options[:i18n]), tab_href(tab_options[:name]))
+      def build_tab_item(tab)
+        li(class: tab_class(tab.name)) do
+          link_to(t(tab.name, scope: options[:i18n]), tab_href(tab.name))
         end
       end
 
@@ -46,14 +46,14 @@ module Pageflow
       end
 
       def build_tab_containers
-        tabs.each do |tab_options|
-          build_tab_container(tab_options)
+        tabs.each do |tab|
+          build_tab_container(tab)
         end
       end
 
-      def build_tab_container(tab_options)
-        div(class: tab_container_class(tab_options[:name])) do
-          insert_tag(tab_options[:component], *options.fetch(:build_args, []))
+      def build_tab_container(tab)
+        div(class: tab_container_class(tab.name)) do
+          insert_tag(tab.component, *options.fetch(:build_args, []))
         end
       end
 
@@ -79,7 +79,7 @@ module Pageflow
       def current_tab_name
         options[:current_tab] ||
           request.params[:tab] ||
-          tabs.first[:name]
+          tabs.first.name
       end
     end
   end

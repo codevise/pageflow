@@ -20,7 +20,7 @@ module Pageflow
       end
 
       it 'renders tab links' do
-        tabs = [{name: :some_tab, component: tab_view_component}]
+        tabs = [Tab.new(name: :some_tab, component: tab_view_component)]
 
         render(tabs)
 
@@ -29,8 +29,8 @@ module Pageflow
 
       it 'filters query parameters in tab link' do
         tabs = [
-          {name: :some_tab, component: tab_view_component},
-          {name: :other_tab, component: other_tab_view_component}
+          Tab.new(name: :some_tab, component: tab_view_component),
+          Tab.new(name: :other_tab, component: other_tab_view_component)
         ]
 
         controller.request.query_parameters.merge!(page: '2', scope: 'active', other: 'kept')
@@ -40,7 +40,7 @@ module Pageflow
       end
 
       it 'renders first tab component as active by default' do
-        tabs = [{name: :some_tab, component: tab_view_component}]
+        tabs = [Tab.new(name: :some_tab, component: tab_view_component)]
 
         render(tabs)
 
@@ -49,8 +49,8 @@ module Pageflow
 
       it 'renders tab from tab param as active' do
         tabs = [
-          {name: :some_tab, component: tab_view_component},
-          {name: :other_tab, component: other_tab_view_component}
+          Tab.new(name: :some_tab, component: tab_view_component),
+          Tab.new(name: :other_tab, component: other_tab_view_component)
         ]
 
         controller.request.params.merge!(tab: 'other_tab')
@@ -61,8 +61,8 @@ module Pageflow
 
       it 'renders current tab component as active' do
         tabs = [
-          {name: :some_tab, component: tab_view_component},
-          {name: :other_tab, component: other_tab_view_component}
+          Tab.new(name: :some_tab, component: tab_view_component),
+          Tab.new(name: :other_tab, component: other_tab_view_component)
         ]
 
         render(tabs, current_tab: :other_tab)
@@ -72,8 +72,8 @@ module Pageflow
 
       it 'also renders inactive tabs' do
         tabs = [
-          {name: :some_tab, component: tab_view_component},
-          {name: :other_tab, component: other_tab_view_component}
+          Tab.new(name: :some_tab, component: tab_view_component),
+          Tab.new(name: :other_tab, component: other_tab_view_component)
         ]
 
         render(tabs, current_tab: :other_tab)
@@ -87,7 +87,7 @@ module Pageflow
             super('data-custom' => custom)
           end
         end
-        tabs = [{name: :some_tab, component: tab_view_component_with_params}]
+        tabs = [Tab.new(name: :some_tab, component: tab_view_component_with_params)]
 
         render(tabs, build_args: ['custom'])
 
@@ -96,33 +96,33 @@ module Pageflow
 
       context 'with :authorize options' do
         it 'does not render links for tabs we are not authorized for' do
-          tabs = [{name: :some_tab, component: tab_view_component}]
+          tabs = [Tab.new(name: :some_tab, component: tab_view_component)]
 
           allow(helper).to receive(:authorized?) { false }
 
-          render(tabs, authorize: true)
+          render(tabs, authorize: :see_some_tab)
 
           expect(rendered).not_to have_selector('.admin_tabs_view ul.tabs li.some_tab a')
         end
 
         it 'renders links for tabs we are authorized for' do
-          tabs = [{name: :some_tab, component: tab_view_component}]
+          tabs = [Tab.new(name: :some_tab, component: tab_view_component)]
 
           allow(helper).to receive(:authorized?) { true }
 
-          render(tabs, authorize: true)
+          render(tabs, authorize: :see_some_tab)
 
           expect(rendered).to have_selector('.admin_tabs_view ul.tabs li.some_tab a')
         end
 
         it 'passes :view action and component class to authorized? method' do
-          tabs = [{name: :some_tab, component: tab_view_component}]
+          tabs = [Tab.new(name: :some_tab, component: tab_view_component)]
 
           allow(helper).to receive(:authorized?) { true }
 
-          render(tabs, authorize: true)
+          render(tabs, authorize: :see_some_tab)
 
-          expect(helper).to have_received(:authorized?).with(:view, tab_view_component)
+          expect(helper).to have_received(:authorized?).with(:see_some_tab, tabs.first)
         end
       end
     end
