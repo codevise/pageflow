@@ -23,7 +23,7 @@ de:
             hint_html: "Der <strong>Prüfer</strong> kann diesen Beitrag anschauen, auch bevor er veröffentlicht ist.<br>Der <strong>Redakteur</strong> kann zusätzlich dazu den Beitrag bearbeiten.<br>Der <strong>Veröffentlicher</strong> kann zusätzlich dazu den Beitrag veröffentlichen.<br>Der <strong>Administrator</strong> kann zusätzlich dazu Benutzerrollen auf diesem Beitrag setzen und bearbeiten."
       resource_tabs:
         accounts: Konten
-        account_editor_hint: Es ist möglich, dass außer den hier aufgeführten Nutzern weitere Nutzer an diesem Beitrag mitarbeiten, welche über allgemeinere Berechtigungen verfügen
+        account_editor_hint: Auf Kontoebene zugeordnete Benutzer sind hier nicht aufgeführt
       users:
         no_entries: Keine Beiträge
         no_accounts: Keine Konten
@@ -54,7 +54,7 @@ en:
             hint_html: "A <strong>Previewer</strong> can preview this entry.<br>An <strong>Editor</strong> can additionally edit this entry.<br>A <strong>Publisher</strong> can additionally publish this entry.<br>A <strong>Manager</strong> can additionally set user roles on this entry and edit them."
       resource_tabs:
         accounts: Accounts
-        account_editor_hint: Possibly, additional users with more general permissions are working on this story
+        account_editor_hint: Users who are assigned on an account level are not listed here
       users:
         role_hint:
           admin: "DELETED"
