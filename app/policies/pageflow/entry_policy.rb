@@ -1,36 +1,28 @@
 module Pageflow
   class EntryPolicy
     class Scope
-      attr_reader :user, :scope
+      attr_reader :user, :scope, :query
 
       def initialize(user, scope)
         @user = user
         @scope = scope
+        @query = EntryRoleQuery::Scope.new(user, scope)
       end
 
       def resolve
         if user.admin?
           scope.all
         else
-          scope
-            .joins(memberships_above_role_for_entries(user, :member))
-            .joins(memberships_above_role_for_account_of_entries(user, :member))
-            .where(either_membership_is_present)
+          query.with_role_at_least(:previewer)
         end
       end
 
       def editor_or_above
-        scope
-          .joins(memberships_above_role_for_entries(user, :previewer))
-          .joins(memberships_above_role_for_account_of_entries(user, :previewer))
-          .where(either_membership_is_present)
+        query.with_role_at_least(:editor)
       end
 
       def publisher_or_above
-        scope
-          .joins(memberships_above_role_for_entries(user, :editor))
-          .joins(memberships_above_role_for_account_of_entries(user, :editor))
-          .where(either_membership_is_present)
+        query.with_role_at_least(:publisher)
       end
 
       def member_addable
@@ -38,63 +30,24 @@ module Pageflow
       end
 
       def manager_or_above
-        scope
-          .joins(memberships_above_role_for_entries(user, :publisher))
-          .joins(memberships_above_role_for_account_of_entries(user, :publisher))
-          .where(either_membership_is_present)
-      end
-
-      private
-
-      def sanitize_sql_array(array)
-        ActiveRecord::Base.send(:sanitize_sql_array, array)
-      end
-
-      def memberships_above_role_for_entries(user, role)
-        sanitize_sql_array(
-          ['LEFT OUTER JOIN pageflow_memberships as pm_entry_pol_entries_role ON ' \
-           'pm_entry_pol_entries_role.user_id = :user_id AND ' \
-           'pm_entry_pol_entries_role.role IN (:roles) AND ' \
-           'pm_entry_pol_entries_role.entity_id = pageflow_entries.id AND ' \
-           'pm_entry_pol_entries_role.entity_type = "Pageflow::Entry"',
-           user_id: user.id, roles: roles_above(role)])
-      end
-
-      def memberships_above_role_for_account_of_entries(user, role)
-        sanitize_sql_array(
-          ['LEFT OUTER JOIN pageflow_memberships as pm_entry_pol_accounts_role ON ' \
-           'pm_entry_pol_accounts_role.user_id = :user_id AND ' \
-           'pm_entry_pol_accounts_role.role IN (:roles) AND ' \
-           'pm_entry_pol_accounts_role.entity_id = pageflow_entries.account_id ' \
-           'AND pm_entry_pol_accounts_role.entity_type = "Pageflow::Account"',
-           user_id: user.id, roles: roles_above(role)])
-      end
-
-      def roles_above(role)
-        if role == :member
-          %w(previewer editor publisher manager)
-        elsif role == :previewer
-          %w(editor publisher manager)
-        elsif role == :editor
-          %w(publisher manager)
-        elsif role == :publisher
-          %w(manager)
-        end
-      end
-
-      def either_membership_is_present
-        'pm_entry_pol_entries_role.entity_id IS NOT NULL OR ' \
-        'pm_entry_pol_accounts_role.entity_id IS NOT NULL'
+        query.with_role_at_least(:manager)
       end
     end
+
+    attr_reader :user, :query
 
     def initialize(user, entry)
       @user = user
       @entry = entry
+      @query = EntryRoleQuery.new(user, entry)
+    end
+
+    def record
+      @entry
     end
 
     def preview?
-      allows?(%w(previewer editor publisher manager))
+      query.has_at_least_role?(:previewer)
     end
 
     def read?
@@ -106,7 +59,7 @@ module Pageflow
     end
 
     def edit?
-      allows?(%w(editor publisher manager))
+      query.has_at_least_role?(:editor)
     end
 
     def confirm_encoding?
@@ -130,7 +83,7 @@ module Pageflow
     end
 
     def publish?
-      allows?(%w(publisher manager))
+      query.has_at_least_role?(:publisher)
     end
 
     def create?
@@ -142,8 +95,8 @@ module Pageflow
     end
 
     def manage?
-      @user.admin? ||
-        allows?(%w(manager))
+      user.admin? ||
+        query.has_at_least_role?(:manager)
     end
 
     def add_member_to?
@@ -159,7 +112,7 @@ module Pageflow
     end
 
     def publish_on_account_of?
-      account_allows?(%w(publisher manager))
+      query.has_at_least_account_role?(:publisher)
     end
 
     def update_account_on?
@@ -171,7 +124,7 @@ module Pageflow
     end
 
     def manage_account_of?
-      account_allows?(%w(manager))
+      query.has_at_least_account_role?(:manager)
     end
 
     def update_feature_configuration_on?
@@ -180,20 +133,6 @@ module Pageflow
 
     def destroy?
       manage_account_of?
-    end
-
-    private
-
-    def allows?(roles)
-      user_memberships = @user.memberships.where(role: roles)
-
-      user_memberships.where("(entity_id = :entry_id AND entity_type = 'Pageflow::Entry') OR " \
-                             "(entity_id = :account_id AND entity_type = 'Pageflow::Account')",
-                             entry_id: @entry.id, account_id: @entry.account.id).any?
-    end
-
-    def account_allows?(roles)
-      @user.memberships.where(role: roles, entity: @entry.account).any?
     end
   end
 end
