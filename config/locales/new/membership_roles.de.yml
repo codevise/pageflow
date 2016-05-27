@@ -13,6 +13,8 @@ de:
       users:
         accounts: 'Konten'
         edit_role: 'Rolle ändern'
+        delete_account_membership_confirmation: "Soll die Kontomitgliedschaft des Benutzers wirklich gelöscht werden?\n\nACHTUNG: Alle Beitragsmitgliedschaften des Benutzers in diesem Konto werden ebenfalls gelöscht."
+        delete_entry_membership_confirmation: 'Soll die Beitragsmitgliedschaft wirklich gelöscht werden?'
         roles:
           member: 'Mitglied'
           previewer: 'Prüfer'
