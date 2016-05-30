@@ -122,11 +122,6 @@ module Pageflow
       manage?
     end
 
-    def see_link_to_index?
-      @user.admin? ||
-        (read? && @user.memberships.on_accounts.as_manager.any?)
-    end
-
     def admin?
       @user.admin?
     end

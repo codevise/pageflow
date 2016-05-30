@@ -21,10 +21,6 @@ module Pageflow
         AccountPolicy.new(user, account).add_member_to?
       end
 
-      can :see_link_to_index, Account, AccountPolicy::Scope.new(user, Account).resolve do |account|
-        AccountPolicy.new(user, account).see_link_to_index?
-      end
-
       can :create, Membership do |membership|
         membership.entity.nil? ||
           membership.user.nil? ||
@@ -49,6 +45,10 @@ module Pageflow
 
       can :see, :accounts do
         user.admin? || user.memberships.on_accounts.length > 1
+      end
+
+      can :see_link_to_index, :accounts do
+        user.admin? || Roles.highest_role_among(user.memberships.on_accounts) == :manager
       end
 
       can :see_entry_admin_tab, Admin::Tab do |tab|

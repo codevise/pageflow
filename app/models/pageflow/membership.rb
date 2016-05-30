@@ -25,5 +25,9 @@ module Pageflow
     scope :on_entries, -> { where(entity_type: 'Pageflow::Entry') }
     scope :on_accounts, -> { where(entity_type: 'Pageflow::Account') }
     scope :as_manager, -> { where(role: :manager) }
+    scope :as_publisher, -> { where(role: :publisher) }
+    scope :as_editor, -> { where(role: :editor) }
+    scope :as_previewer, -> { where(role: :previewer) }
+    scope :as_member, -> { where(role: :member) }
   end
 end

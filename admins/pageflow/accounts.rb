@@ -1,7 +1,7 @@
 module Pageflow
   ActiveAdmin.register Account, :as => 'Account' do
     menu :priority => 3,
-         if: proc { authorized?(:see_link_to_index, current_user.accounts.first) }
+         if: proc { authorized?(:see_link_to_index, :accounts) }
 
     config.batch_actions = false
 
