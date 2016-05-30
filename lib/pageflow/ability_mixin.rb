@@ -48,7 +48,7 @@ module Pageflow
       end
 
       can :see, :accounts do
-        user.admin? || user.memberships.on_accounts.any?
+        user.admin? || user.memberships.on_accounts.length > 1
       end
 
       can :see_entry_admin_tab, Admin::Tab do |tab|
