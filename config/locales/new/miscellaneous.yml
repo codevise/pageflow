@@ -1,6 +1,9 @@
 de:
   activerecord:
     attributes:
+      pageflow/account:
+        default_theming: Standard-Theming
+        own_role: Eigene Rolle
       user:
         initial_role: Rolle
         initial_account: Konto
@@ -32,6 +35,8 @@ de:
 en:
   activerecord:
     attributes:
+      pageflow/account:
+        own_role: Own Role
       user:
         initial_role: Role
         initial_account: Account

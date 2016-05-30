@@ -21,6 +21,16 @@ module Pageflow
       column :users_count do |account|
         account.users_count
       end
+      if authorized?(:see_own_role_on, :accounts)
+        column :own_role do |account|
+          own_role = account.memberships.where(user: current_user).first.role
+          span I18n.t(own_role, scope: 'activerecord.values.pageflow/membership.role'),
+               class: "membership_role #{own_role} tooltip_clue" do
+            div I18n.t(own_role, scope: 'pageflow.admin.users.roles.entries.tooltip'),
+                class: 'tooltip_bubble'
+          end
+        end
+      end
       column :default_theming do |account|
         account.default_theming.theme_name
       end

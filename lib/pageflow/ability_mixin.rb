@@ -47,6 +47,10 @@ module Pageflow
         user.admin? || user.memberships.on_accounts.length > 1
       end
 
+      can :see_own_role_on, :accounts do
+        !user.admin?
+      end
+
       can :see_link_to_index, :accounts do
         user.admin? || Roles.highest_role_among(user.memberships.on_accounts) == :manager
       end
