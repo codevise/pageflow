@@ -7,7 +7,13 @@ module Pageflow
 
     index do
       column :name do |account|
-        link_to account.name, admin_account_path(account)
+        if authorized?(:read, account)
+          link_to(account.name,
+                  admin_account_path(account),
+                  data: {id: account.id})
+        else
+          account.name
+        end
       end
       column :entries_count do |account|
         account.entries_count
