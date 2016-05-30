@@ -17,6 +17,7 @@ de:
     admin:
       entries:
         entry_number: Beitrag Nr.
+        members: Name
       memberships:
         on_account:
           role:
@@ -50,6 +51,7 @@ en:
     admin:
       entries:
         entry_number: Entry №
+        members: Name
       memberships:
         on_account:
           role:

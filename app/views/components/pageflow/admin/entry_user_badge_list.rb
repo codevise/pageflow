@@ -6,22 +6,25 @@ module Pageflow
       def build(entry)
         ul class: 'badge_list' do
           entry.users.each do |user|
-            build_badge(user)
+            build_badge(user, entry)
           end
         end
       end
 
       private
 
-      def build_badge(user)
+      def build_badge(user, entry)
         li do
           span(user_initials(user), class: 'abbreviation')
           div class: 'tooltip' do
+            membership = Membership.where(user: user, entity: entry).first
+            role_string =
+              " (#{I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')})"
             if authorized?(:read, user)
-              link_to(user.full_name, admin_user_path(user))
+              link_to(user.full_name, admin_user_path(user)) + role_string
             else
               span class: 'name' do
-                user.full_name
+                user.full_name + role_string
               end
             end
           end
