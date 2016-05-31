@@ -19,7 +19,7 @@ module Pageflow
         account.entries_count
       end
       column :users_count do |account|
-        account.users.length
+        account.memberships.size
       end
       if authorized?(:see_own_role_on, :accounts)
         column :own_role do |account|
