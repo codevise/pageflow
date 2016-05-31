@@ -1,0 +1,22 @@
+$hint-text-color: #777777;
+$background-color: #fbfbfb;
+
+.side_hint_container {
+  position: relative;
+}
+
+.side_hint {
+  @include background-icon-left($font-size: 300%,
+                                $color: $hint-text-color,
+                                $top: 27%,
+                                $left: 3.5%);
+  background-color: $background-color;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 48%;
+  bottom: 6px;
+  padding: 2% 5% 1%;
+  color: $hint-text-color;
+  @include fa-info-icon;
+}

@@ -1,5 +1,5 @@
 <%= admin_form_for [:admin, parent, resource] do |f| %>
-  <%= f.inputs do %>
+  <%= f.inputs class: 'inputs side_hint_container' do %>
     <%= f.input :user,
                 collection: membership_users_collection(parent, resource, f.object),
                 include_blank: false,
@@ -13,8 +13,8 @@
     <%= f.input :role,
                 collection: membership_roles_collection("Pageflow::#{params[:entity_type]
                                                           .capitalize}"),
-                                                          include_blank: false,
-    hint: t("pageflow.admin.memberships.on_#{params[:entity_type].to_s}.role.hint_html")%>
+                                                          include_blank: false %>
+    <%= render partial: 'admin/memberships/role_hint' %>
   <% end %>
   <%= f.actions do %>
     <%= f.action(:submit) %>
