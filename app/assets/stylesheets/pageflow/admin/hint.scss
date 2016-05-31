@@ -8,7 +8,7 @@ $background-color: #fbfbfb;
 .side_hint {
   @include background-icon-left($font-size: 300%,
                                 $color: $hint-text-color,
-                                $top: 27%,
+                                $top: 40px,
                                 $left: 3.5%);
   background-color: $background-color;
   position: absolute;
@@ -16,7 +16,7 @@ $background-color: #fbfbfb;
   right: 5px;
   width: 48%;
   bottom: 6px;
-  padding: 2% 5% 1%;
+  padding: 15px 5% 5px;
   color: $hint-text-color;
   @include fa-info-icon;
 }
