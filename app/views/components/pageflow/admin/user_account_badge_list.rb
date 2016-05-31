@@ -16,7 +16,7 @@ module Pageflow
       private
 
       def user_accounts(user)
-        user.memberships.on_accounts.accessible_by(current_ability)
+        Membership.where(user: user, entity_type: 'Pageflow::Account')
       end
 
       def build_badge(membership)
@@ -25,12 +25,12 @@ module Pageflow
             account_name_display = span(link_to(membership.entity.name,
                                                 main_app.admin_account_path(membership.entity)),
                                         class: 'abbreviation')
+            div class: 'tooltip' do
+              account_name_display +
+                " (#{I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')})"
+            end
           else
-            account_name_display = span(membership.entity.name, class: 'abbreviation')
-          end
-          div class: 'tooltip' do
-            account_name_display +
-              " (#{I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role')})"
+            span(membership.entity.name, class: 'abbreviation')
           end
         end
       end

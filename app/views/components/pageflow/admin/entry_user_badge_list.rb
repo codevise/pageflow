@@ -14,7 +14,7 @@ module Pageflow
       private
 
       def entry_users(entry)
-        entry.memberships.on_entries.accessible_by(current_ability)
+        Membership.where(entity: entry)
       end
 
       def build_badge(membership)

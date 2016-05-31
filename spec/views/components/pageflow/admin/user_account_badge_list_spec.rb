@@ -14,7 +14,7 @@ module Pageflow
       allow(helper).to receive(:current_ability).and_return(Ability.new(current_user))
       allow(helper).to receive(:authorized?).and_return(true)
 
-      render(user)
+      render(current_user)
 
       expect(rendered).to have_selector('li', text: /Common/)
       expect(rendered).not_to have_selector('li', text: /Other/)

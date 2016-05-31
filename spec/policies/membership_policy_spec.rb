@@ -56,10 +56,10 @@ module Pageflow
         user = create(:user)
         entry = create(:entry)
         membership = create(:membership, role: :previewer, entity: entry, user: user)
-        entry_manager = create(:user, :manager, on: entry)
+        entry_previewer = create(:user, :previewer, on: entry)
 
         expect(MembershipPolicy::Scope
-                .new(entry_manager, Membership).indexable).to include(membership)
+                .new(entry_previewer, Membership).indexable).to include(membership)
       end
 
       it 'includes memberships with correct user and correct account' do
@@ -72,21 +72,23 @@ module Pageflow
                 .new(account_manager, Membership).indexable).to include(membership)
       end
 
-      it 'does not include memberships for entry publisher in spite of correct entry' do
+      it 'does not include memberships for entry non-member in spite of correct entry' do
         user = create(:user)
         entry = create(:entry)
         membership = create(:membership, role: :previewer, entity: entry, user: user)
-        entry_publisher = create(:user, :publisher, on: entry)
+        entry_publisher = create(:user)
 
         expect(MembershipPolicy::Scope
                 .new(entry_publisher, Membership).indexable).not_to include(membership)
       end
 
-      it 'does not include memberships for account publisher in spite of correct entry' do
+      it 'does not include account memberships for account publisher and entry manager '\
+         'in spite of correct entry' do
         user = create(:user)
-        entry = create(:entry)
-        membership = create(:membership, role: :previewer, entity: entry, user: user)
-        account_publisher = create(:user, :publisher, on: entry.account)
+        account = create(:account)
+        account_publisher = create(:user, :publisher, on: account)
+        entry = create(:entry, account: account, with_manager: account_publisher)
+        membership = create(:membership, role: :member, entity: account, user: user)
 
         expect(MembershipPolicy::Scope
                 .new(account_publisher, Membership).indexable).not_to include(membership)
@@ -165,6 +167,23 @@ module Pageflow
 
         expect(MembershipPolicy::Scope
                 .new(account_manager, Membership).indexable).not_to include(membership)
+      end
+
+      it 'includes own memberships' do
+        user = create(:user)
+        entry_membership = create(:membership,
+                                  user: user,
+                                  role: :previewer,
+                                  entity: create(:entry))
+        account_membership = create(:membership,
+                                    user: user,
+                                    role: :member,
+                                    entity: create(:account))
+
+        expect(MembershipPolicy::Scope
+                .new(user, Membership).indexable).to include(entry_membership)
+        expect(MembershipPolicy::Scope
+                .new(user, Membership).indexable).to include(account_membership)
       end
     end
   end
