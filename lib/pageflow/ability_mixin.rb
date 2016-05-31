@@ -51,8 +51,8 @@ module Pageflow
         !user.admin?
       end
 
-      can :see_link_to_index, :accounts do
-        user.admin? || Roles.highest_role_among(user.memberships.on_accounts) == :manager
+      can :index, :accounts do
+        AccountPolicy.new(user, Account.new).index?
       end
 
       can :see_entry_admin_tab, Admin::Tab do |tab|

@@ -127,7 +127,7 @@ module Pageflow
     end
 
     def index?
-      admin?
+      admin? || @user.memberships.on_accounts.as_manager.any?
     end
 
     private
