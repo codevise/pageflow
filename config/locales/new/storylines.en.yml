@@ -1,0 +1,52 @@
+en:
+  pageflow:
+    storylines:
+      feature_name: "Storylines"
+      untitled: Unnamed storyline
+      main: Main storyline
+    editor:
+      templates:
+        storyline_outline:
+          header: Outline
+          new_chapter: New chapter
+        edit_entry:
+          outline: "DELELTED"
+          new_chapter: "DELETED"
+        edit_storyline:
+          destroy: Delete
+          outline: Outline
+          retry: Retry
+          save_error: Errors were detected while saving the storyline.
+        storyline_picker:
+          add: "Add"
+          edit: "Edit settings"
+      views:
+        storylines_picker_view:
+          label: Storyline
+          without_parent_page: Without parent page
+        edit_storyline_view:
+          confirm_destroy: Really delete storyline
+          cannot_destroy: Only empty storylines can be deleted.
+          default_parent_page_transition: "(Default)"
+    storyline_attributes:
+      title:
+        label: "Title"
+      main:
+        label: "Main storyline"
+        inline_help: "Turns the first page of this storyline into the start page of the entry."
+        inline_help_disabled: "The first page of this storyline is the start page of the entry."
+      parent_page_perma_id:
+        label: "Parent page"
+        inline_help: "The user is redirected to this page when reaching the end of the storyline or when clicking the back button. The parent page settings determine the chapter hierachy. For more information on the chapter hierarchy see the 'Storylines' help topic."
+      page_transition:
+        label: "Transition effect"
+        inline_help: "By default, comming from the parent page, the first page of the storyline is scrolled in from the right. When clicking the back button, pages of the storyline are scrolled back out to the right. Here you can choose an alternative effect."
+      scroll_successor_id:
+        label: "Scroll successor"
+        inline_help: "Page to go to when scrolling down from the last page of the storyline. By default the user is brought back to the storyline's parent page."
+      navigation_bar_mode:
+        label: "Navigation bar mode"
+        values:
+          non: "Hide"
+          current_storyline: "Current storyline"
+          inherit_from_parent: "Display parent storyline"
