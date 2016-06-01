@@ -130,10 +130,22 @@ module Pageflow
       admin? || @user.memberships.on_accounts.as_manager.any?
     end
 
+    def see_all_instances_of_class_of?
+      admin? || manages_all_accounts?
+    end
+
     private
 
     def allows?(roles)
       @user.memberships.where(role: roles, entity: @account).any?
+    end
+
+    def manages_all_accounts?
+      user_accounts = @user.accounts.load
+      Account.all.each do |account|
+        return false unless user_accounts.include?(account)
+      end
+      true
     end
   end
 end

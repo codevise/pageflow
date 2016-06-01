@@ -33,6 +33,12 @@ de:
               editor: 'Kann Beitrag editieren'
               publisher: 'Kann Beitrag veröffentlichen'
               manager: 'Kann Beitrags-Rollen setzen'
+          own_role:
+            tooltip:
+              previewer: 'Du kannst diesen Beitrag unveröffentlicht betrachten'
+              editor: 'Du kannst diesen Beitrag editieren'
+              publisher: 'Du kannst diesen Beitrag veröffentlichen'
+              manager: 'Du kannst Beitrags-Rollen setzen'
     editor:
       views:
         edit_entry_view:

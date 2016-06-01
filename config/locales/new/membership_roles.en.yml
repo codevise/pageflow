@@ -33,6 +33,12 @@ en:
               editor: 'Can edit this entry'
               publisher: 'Can publish this entry'
               manager: 'Can set roles on this entry'
+          own_role:
+            tooltip:
+              previewer: 'You can preview this entry'
+              editor: 'You can edit this entry'
+              publisher: 'You can publish this entry'
+              manager: 'You can set roles on this entry'
     editor:
       views:
         edit_entry_view:

@@ -21,6 +21,10 @@ module Pageflow
         AccountPolicy.new(user, account).add_member_to?
       end
 
+      can :see_all_instances_of_class_of, Account do |account|
+        AccountPolicy.new(user, account).see_all_instances_of_class_of?
+      end
+
       can :create, Membership do |membership|
         membership.entity.nil? ||
           membership.user.nil? ||
@@ -53,6 +57,10 @@ module Pageflow
 
       can :index, :accounts do
         AccountPolicy.new(user, Account.new).index?
+      end
+
+      can :see_own_role_on, :entries do
+        !user.admin?
       end
 
       can :see_entry_admin_tab, Admin::Tab do |tab|

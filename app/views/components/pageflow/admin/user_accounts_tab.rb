@@ -42,6 +42,10 @@ module Pageflow
               end
             end
           end
+          unless user == current_user ||
+                 authorized?(:see_all_instances_of_class_of, user.accounts.first)
+            para text_node I18n.t('pageflow.admin.users.user_account_tab_hint')
+          end
           render 'add_membership_button_if_needed', entity_type: 'account'
         end
       end

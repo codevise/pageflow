@@ -16,6 +16,9 @@ module Pageflow
       column :last_sign_in_at
       column :sign_in_count
       boolean_status_tag_column :suspended?
+      unless authorized?(:see_all_instances_of_class_of, current_user.accounts.first)
+        para text_node I18n.t('pageflow.admin.users.no_account_manager_hint')
+      end
     end
 
     filter :last_name
