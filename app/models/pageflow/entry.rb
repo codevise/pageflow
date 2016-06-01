@@ -33,6 +33,7 @@ module Pageflow
     has_secure_password validations: false
 
     validates :account, :theming, :presence => true
+    validates :title, presence: true
     validate :folder_belongs_to_same_account
 
     scope :editing, -> { joins(:edit_lock).merge(Pageflow::EditLock.active) }

@@ -18,7 +18,6 @@ de:
   pageflow:
     admin:
       entries:
-        entry_number: Beitrag Nr.
         members: Mitglieder
       memberships:
         on_account:
@@ -56,7 +55,6 @@ en:
   pageflow:
     admin:
       entries:
-        entry_number: Entry №
         members: Members
       memberships:
         on_account:

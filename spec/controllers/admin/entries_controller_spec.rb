@@ -295,7 +295,7 @@ describe Admin::EntriesController do
       end
 
       sign_in(user)
-      post(:create, entry: {custom_field: 'some value'})
+      post(:create, entry: {title: 'some_title', custom_field: 'some value'})
 
       expect(Pageflow::Entry.last.custom_field).to eq('some value')
     end
@@ -305,7 +305,7 @@ describe Admin::EntriesController do
       create(:account, with_publisher: user)
 
       sign_in(user)
-      post(:create, entry: {custom_field: 'some value'})
+      post(:create, entry: {title: 'some_title', custom_field: 'some value'})
 
       expect(Pageflow::Entry.last.custom_field).to eq(nil)
     end
