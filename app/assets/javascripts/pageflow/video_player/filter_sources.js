@@ -1,5 +1,5 @@
-pageflow.VideoPlayer.filterSourcesForSilkBrowser = function(playerElement) {
-  if (/\bSilk\b/.test(navigator.userAgent)) {
+pageflow.VideoPlayer.filterSources = function(playerElement) {
+  if (pageflow.browser.has('mp4 support only')) {
     // keep only mp4 source
     $(playerElement).find('source').not('source[type="video/mp4"]').remove();
 

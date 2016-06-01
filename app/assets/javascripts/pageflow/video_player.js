@@ -8,13 +8,13 @@
 //= require ./video_player/src_from_options_method
 //= require ./video_player/play_button_patch
 //= require ./video_player/player_buffered_patch
-//= require ./video_player/filter_for_silk
+//= require ./video_player/filter_sources
 //= require ./video_player/lazy
 
 pageflow.VideoPlayer = function(element, options) {
   options = options || {};
 
-  element = pageflow.VideoPlayer.filterSourcesForSilkBrowser(element);
+  element = pageflow.VideoPlayer.filterSources(element);
   var player = vjs(element, options);
 
   pageflow.VideoPlayer.prebuffering(player);
