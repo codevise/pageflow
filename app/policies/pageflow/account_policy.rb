@@ -32,6 +32,10 @@ module Pageflow
         entry_creatable
       end
 
+      def folder_addable
+        entry_creatable
+      end
+
       def member_addable
         if user.admin?
           scope.all

@@ -6,8 +6,10 @@ module Pageflow
 
     form do |f|
       f.inputs do
-        if authorized?(:manage, Folder) && f.object.new_record?
-          f.input :account, include_blank: false
+        if authorized?(:show_account_selection_on, resource) && f.object.new_record?
+          f.input :account,
+                  collection: AccountPolicy::Scope.new(current_user, Account).folder_addable,
+                  include_blank: false
         end
         f.input :name
       end
@@ -51,7 +53,14 @@ module Pageflow
       private
 
       def restrict_attributes(_id, attributes)
-        attributes.except!(:account_id)
+        if params[:folder] && params[:folder][:account_id] &&
+           AccountPolicy::Scope.new(current_user, Account).folder_addable.map(&:id)
+             .include?(params[:folder][:account_id].to_i) &&
+           action_name == :create
+          attributes
+        else
+          attributes.except!(:account_id)
+        end
       end
     end
   end

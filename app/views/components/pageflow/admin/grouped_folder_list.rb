@@ -38,7 +38,7 @@ module Pageflow
         ul(class: 'accounts') do
           folder_accounts.each do |account|
             li('data-id' => account.id) do
-              h4(account.name)
+              h4(account.name, class: 'account-name')
               build_folder_list(folders_by_account(account))
             end
           end

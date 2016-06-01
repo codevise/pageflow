@@ -44,6 +44,11 @@ module Pageflow
       allows?(%w(publisher manager))
     end
 
+    def show_account_selection_on?
+      (@user.admin? && Account.all.size > 1) ||
+        @user.memberships.as_publisher_or_above.on_accounts.size > 1
+    end
+
     private
 
     def allows?(roles)

@@ -2,15 +2,17 @@ require 'spec_helper'
 
 feature 'managing folders' do
   scenario 'adding a folder' do
-    account = create(:account)
-    Dom::Admin::Page.sign_in_as(:publisher, on: account)
+    account = create(:account, name: 'New Folder Account')
+    user = Dom::Admin::Page.sign_in_as(:publisher, on: account)
+    new_folder_account = create(:account, with_publisher: user, name: 'New Folder Account')
 
     visit(admin_entries_path)
     Dom::Admin::FolderPanel.first.add_folder_link.click
-    Dom::Admin::FolderForm.first.submit_with(name: 'A new folder')
+    Dom::Admin::FolderForm.first.submit_with(name: 'A new folder', account: new_folder_account)
 
     visit(admin_entries_path)
     expect(Dom::Admin::FolderPanelItem.find_by_name('A new folder')).to be_present
+    expect(Dom::Admin::FolderPanelItem.find_by(account_name: 'New Folder Account')).to be_present
   end
 
   scenario 'renaming a folder' do

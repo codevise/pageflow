@@ -1,9 +1,10 @@
 module Dom
   module Admin
     class FolderPanelItem < Domino
-      selector '#folders_sidebar_section ul.folders li'
+      selector '#folders_sidebar_section ul.accounts li'
 
       attribute :name, '.name'
+      attribute :account_name
 
       def link
         within(node) do

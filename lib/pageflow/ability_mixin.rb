@@ -172,6 +172,10 @@ module Pageflow
 
         can :read, Folder, FolderPolicy::Scope.new(user, Folder).resolve
 
+        can :show_account_selection_on, Folder do |folder|
+          FolderPolicy.new(user, folder).show_account_selection_on?
+        end
+
         can :manage, Page do |page|
           EntryPolicy.new(user, page.chapter.entry).edit?
         end
