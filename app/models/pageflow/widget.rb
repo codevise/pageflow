@@ -4,6 +4,8 @@ module Pageflow
 
     validates :subject, presence: true
 
+    attr_accessor :widget_type
+
     def copy_to(subject)
       record = dup
       record.subject = subject
@@ -20,12 +22,6 @@ module Pageflow
       end
     end
 
-    def widget_type
-      Pageflow.config.widget_types.fetch_by_name(type_name) do
-        WidgetType::Null.new(role)
-      end
-    end
-
     def self.copy_all_to(subject)
       all.each do |widget|
         widget.copy_to(subject)
@@ -38,13 +34,13 @@ module Pageflow
       end
     end
 
-    def self.resolve(options = {})
-      Resolver.new(options).result
+    def self.resolve(config, options = {})
+      Resolver.new(config, options).result
     end
 
-    class Resolver < Struct.new(:options)
+    Resolver = Struct.new(:config, :options) do
       def result
-        all.select do |widget|
+        assign_widget_types(all).select do |widget|
           widget.enabled?(options)
         end
       end
@@ -63,7 +59,7 @@ module Pageflow
       end
 
       def defaults_by_role
-        Pageflow.config.widget_types.defaults_by_role.each_with_object({}) do |(role, widget_type), result|
+        config.widget_types.defaults_by_role.each_with_object({}) do |(role, widget_type), result|
           result[role] = Widget.new(role: role, type_name: widget_type.name, subject: nil)
         end
       end
@@ -71,8 +67,16 @@ module Pageflow
       def placeholders_by_role
         return {} unless options[:include_placeholders]
 
-        Pageflow.config.widget_types.roles.each_with_object({}) do |role, result|
+        config.widget_types.roles.each_with_object({}) do |role, result|
           result[role] = Widget.new(role: role, type_name: nil, subject: nil)
+        end
+      end
+
+      def assign_widget_types(widgets)
+        widgets.each do |widget|
+          widget.widget_type = config.widget_types.fetch_by_name(widget.type_name) do
+            WidgetType::Null.new(widget.role)
+          end
         end
       end
     end

@@ -24,8 +24,8 @@ module Pageflow
 
     controller do
       helper Pageflow::Admin::FeaturesHelper
+      helper Pageflow::Admin::WidgetsHelper
       helper ThemesHelper
-      helper WidgetsHelper
 
       def new
         @account = Account.new

@@ -203,36 +203,52 @@ module Pageflow
         end
 
         it 'renders widgets for entry' do
-          Pageflow.config.widget_types.register(TestWidgetType.new(:name => 'test_widget',
-                                                                   :rendered => '<div class="test_widget"></div>'))
-          entry = create(:entry, :published)
-          create(:widget, :subject => entry.published_revision, :type_name => 'test_widget')
+          widget_type = TestWidgetType.new(name: 'test_widget',
+                                           rendered: '<div class="test_widget"></div>')
 
-          get(:show, :id => entry)
+          pageflow_configure do |config|
+            config.widget_types.register(widget_type)
+          end
+
+          entry = create(:entry, :published)
+          create(:widget, subject: entry.published_revision, type_name: 'test_widget')
+
+          get(:show, id: entry)
 
           expect(response.body).to have_selector('div.test_widget')
         end
 
         it 'renders widgets which are disabled in editor and preview' do
-          Pageflow.config.widget_types.register(TestWidgetType.new(:name => 'test_widget',
-                                                                   :enabled_in_editor => false,
-                                                                   :enabled_in_preview => false,
-                                                                   :rendered => '<div class="test_widget"></div>'))
-          entry = create(:entry, :published)
-          create(:widget, :subject => entry.published_revision, :type_name => 'test_widget')
+          widget_type = TestWidgetType.new(name: 'test_widget',
+                                           enabled_in_editor: false,
+                                           enabled_in_preview: false,
+                                           rendered: '<div class="test_widget"></div>')
 
-          get(:show, :id => entry)
+          pageflow_configure do |config|
+            config.widget_types.register(widget_type)
+          end
+
+          entry = create(:entry, :published)
+          create(:widget, subject: entry.published_revision, type_name: 'test_widget')
+
+          get(:show, id: entry)
 
           expect(response.body).to have_selector('div.test_widget')
         end
 
         it 'renders widgets head fragments for entry' do
-          Pageflow.config.widget_types.register(TestWidgetType.new(:name => 'test_widget',
-                                                                   :rendered_head_fragment => '<meta name="some_test" content="value">'))
-          entry = create(:entry, :published)
-          create(:widget, :subject => entry.published_revision, :type_name => 'test_widget')
+          widget_type =
+            TestWidgetType.new(name: 'test_widget',
+                               rendered_head_fragment: '<meta name="some_test" content="value">')
 
-          get(:show, :id => entry)
+          pageflow_configure do |config|
+            config.widget_types.register(widget_type)
+          end
+
+          entry = create(:entry, :published)
+          create(:widget, subject: entry.published_revision, type_name: 'test_widget')
+
+          get(:show, id: entry)
 
           expect(response.body).to have_meta_tag.with_name('some_test')
         end
@@ -463,31 +479,45 @@ module Pageflow
       end
 
       it 'renders editor enabled widgets for entry' do
-        Pageflow.config.widget_types.register(TestWidgetType.new(:name => 'test_widget',
-                                                                 :enabled_in_editor => true,
-                                                                 :rendered => '<div class="test_widget"></div>'))
-        Pageflow.config.widget_types.register(TestWidgetType.new(:name => 'non_editor_widget',
-                                                                 :enabled_in_editor => false,
-                                                                 :rendered => '<div class="non_editor_widget"></div>'))
+        widget_type =
+          TestWidgetType.new(name: 'test_widget',
+                             enabled_in_editor: true,
+                             rendered: '<div class="test_widget"></div>')
+        non_editor_widget_type =
+          TestWidgetType.new(name: 'non_editor_widget',
+                             enabled_in_editor: false,
+                             rendered: '<div class="non_editor_widget"></div>')
+
+        pageflow_configure do |config|
+          config.widget_types.register(widget_type)
+          config.widget_types.register(non_editor_widget_type)
+        end
+
         user = create(:user)
-        entry = create(:entry, :with_member => user)
-        create(:widget, :subject => entry.draft, :role => 'header', :type_name => 'test_widget')
-        create(:widget, :subject => entry.draft, :role => 'footer', :type_name => 'non_editor_widget')
+        entry = create(:entry, with_member: user)
+        create(:widget, subject: entry.draft, role: 'header', type_name: 'test_widget')
+        create(:widget, subject: entry.draft, role: 'footer', type_name: 'non_editor_widget')
 
         sign_in(user)
-        get(:partials, :id => entry)
+        get(:partials, id: entry)
 
         expect(response.body).to have_selector('div.test_widget')
         expect(response.body).not_to have_selector('div.non_editor_widget')
       end
 
       it 'uses locale of entry' do
-        Pageflow.config.widget_types.register(TestWidgetType.new(name: 'test_widget',
-                                                                 enabled_in_editor: true,
-                                                                 rendered: lambda { %'<div lang="#{I18n.locale}"></div>' }))
+        widget_type =
+          TestWidgetType.new(name: 'test_widget',
+                             enabled_in_editor: true,
+                             rendered: lambda { %'<div lang="#{I18n.locale}"></div>' })
+
+        pageflow_configure do |config|
+          config.widget_types.register(widget_type)
+        end
+
         user = create(:user)
         entry = create(:entry, with_member: user)
-        create(:widget, :subject => entry.draft, :type_name => 'test_widget')
+        create(:widget, subject: entry.draft, type_name: 'test_widget')
 
         sign_in(user)
         entry.draft.update(locale: 'de')

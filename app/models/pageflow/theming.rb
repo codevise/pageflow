@@ -11,6 +11,10 @@ module Pageflow
     validates :account, :presence => true
     validates_inclusion_of :theme_name, :in => ->(_) { Pageflow.config.themes.names }
 
+    def resolve_widgets(options = {})
+      widgets.resolve(Pageflow.config_for(account), options)
+    end
+
     def cname_domain
       cname.split('.').pop(2).join('.')
     end

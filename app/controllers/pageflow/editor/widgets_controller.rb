@@ -9,7 +9,7 @@ module Pageflow
         subject = find_subject
         authorize!(:edit, subject.to_model)
 
-        @widgets = subject.widgets.resolve(include_placeholders: true)
+        @widgets = subject.resolve_widgets(include_placeholders: true)
         respond_with(@widgets)
       end
 

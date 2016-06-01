@@ -22,34 +22,46 @@ module Pageflow
       end
 
       it 'renders widgets which are enabled in preview' do
-        Pageflow.config.widget_types.register(TestWidgetType.new(:name => 'test_widget',
-                                                                 :enabled_in_preview => true,
-                                                                 :rendered_head_fragment => '<meta name="some_test" content="value">',
-                                                                 :rendered => '<div class="test_widget"></div>'))
+        widget_type =
+          TestWidgetType.new(name: 'test_widget',
+                             enabled_in_preview: true,
+                             rendered_head_fragment: '<meta name="some_test" content="value">',
+                             rendered: '<div class="test_widget"></div>')
+
+        pageflow_configure do |config|
+          config.widget_types.register(widget_type)
+        end
+
         user = create(:user)
-        entry = create(:entry, :with_member => user)
-        revision = create(:revision, :entry => entry)
-        create(:widget, :subject => revision, :type_name => 'test_widget')
+        entry = create(:entry, with_member: user)
+        revision = create(:revision, entry: entry)
+        create(:widget, subject: revision, type_name: 'test_widget')
 
         sign_in(user)
-        get(:show, :id => revision)
+        get(:show, id: revision)
 
         expect(response.body).to have_selector('div.test_widget')
         expect(response.body).to have_meta_tag.with_name('some_test')
       end
 
       it 'does not render widgets which are disabled in preview' do
-        Pageflow.config.widget_types.register(TestWidgetType.new(:name => 'test_widget',
-                                                                 :enabled_in_preview => false,
-                                                                 :rendered_head_fragment => '<meta name="some_test" content="value">',
-                                                                 :rendered => '<div class="test_widget"></div>'))
+        widget_type =
+          TestWidgetType.new(name: 'test_widget',
+                             enabled_in_preview: false,
+                             rendered_head_fragment: '<meta name="some_test" content="value">',
+                             rendered: '<div class="test_widget"></div>')
+
+        pageflow_configure do |config|
+          config.widget_types.register(widget_type)
+        end
+
         user = create(:user)
-        entry = create(:entry, :with_member => user)
-        revision = create(:revision, :entry => entry)
-        create(:widget, :subject => revision, :type_name => 'test_widget')
+        entry = create(:entry, with_member: user)
+        revision = create(:revision, entry: entry)
+        create(:widget, subject: revision, type_name: 'test_widget')
 
         sign_in(user)
-        get(:show, :id => revision)
+        get(:show, id: revision)
 
         expect(response.body).not_to have_selector('div.test_widget')
       end

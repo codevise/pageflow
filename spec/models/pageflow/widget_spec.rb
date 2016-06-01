@@ -6,22 +6,6 @@ module Pageflow
       Pageflow.config.widget_types.clear
     end
 
-    describe '#widget_type' do
-      it 'looks up widget type in config' do
-        widget_type = TestWidgetType.new(name: 'test_widget')
-        Pageflow.config.widget_types.register(widget_type)
-        widget = build(:widget, type_name: 'test_widget')
-
-        expect(widget.widget_type).to be(widget_type)
-      end
-
-      it 'returns null widget type if type_name is blank' do
-        widget = build(:widget, type_name: '')
-
-        expect(widget.widget_type).to be_kind_of(WidgetType::Null)
-      end
-    end
-
     describe '.copy_all_to' do
       it 'copies all widgets to given subject' do
         theming = create(:theming)
@@ -37,53 +21,88 @@ module Pageflow
     describe '.resolve' do
       it 'adds default widgets for missing roles' do
         widget_type = TestWidgetType.new(name: 'default_header', roles: ['header'])
-        Pageflow.config.widget_types.register(widget_type, default: true)
+        config = Configuration.new
+        config.widget_types.register(widget_type, default: true)
         revision = create(:revision)
         create(:widget, subject: revision, role: 'navigation', type_name: 'custom_navigation')
 
-        expect(revision.widgets.resolve).to include_record_with(type_name: 'default_header', role: 'header')
-        expect(revision.widgets.resolve).to include_record_with(type_name: 'custom_navigation', role: 'navigation')
+        widgets = revision.widgets.resolve(config)
+
+        expect(widgets).to include_record_with(type_name: 'default_header', role: 'header')
+        expect(widgets).to include_record_with(type_name: 'custom_navigation', role: 'navigation')
       end
 
       it 'overrides defaults with subject widgets' do
         widget_type = TestWidgetType.new(name: 'default_header', roles: ['header'])
-        Pageflow.config.widget_types.register(widget_type, default: true)
+        config = Configuration.new
+        config.widget_types.register(widget_type, default: true)
         revision = create(:revision)
         create(:widget, subject: revision, role: 'header', type_name: 'custom_header')
 
-        expect(revision.widgets.resolve).to include_record_with(type_name: 'custom_header', role: 'header')
+        widgets = revision.widgets.resolve(config)
+
+        expect(widgets).to include_record_with(type_name: 'custom_header', role: 'header')
+      end
+
+      it 'sets widget type attributes on widgets' do
+        widget_type = TestWidgetType.new(name: 'custom_header', roles: ['header'])
+        config = Configuration.new
+        config.widget_types.register(widget_type)
+        revision = create(:revision)
+        create(:widget, subject: revision, role: 'header', type_name: 'custom_header')
+
+        widgets = revision.widgets.resolve(config)
+
+        expect(widgets.first.widget_type).to be(widget_type)
+      end
+
+      it 'sets widget type attribute to null widget type if type_name cannot be found' do
+        config = Configuration.new
+        revision = create(:revision)
+        create(:widget, subject: revision, role: 'header', type_name: 'unknown')
+
+        widgets = revision.widgets.resolve(config)
+
+        expect(widgets.first.widget_type).to be_kind_of(WidgetType::Null)
       end
 
       it 'filters widgets disabled in editor' do
         non_editor_widget_type = TestWidgetType.new(name: 'non_editor', enabled_in_editor: false)
         non_preview_widget_type = TestWidgetType.new(name: 'non_preview', enabled_in_preview: false)
-        Pageflow.config.widget_types.register(non_editor_widget_type)
-        Pageflow.config.widget_types.register(non_preview_widget_type)
+        config = Configuration.new
+        config.widget_types.register(non_editor_widget_type)
+        config.widget_types.register(non_preview_widget_type)
         revision = create(:revision)
         create(:widget, subject: revision, role: 'header', type_name: 'non_editor')
         non_preview_widget = create(:widget, subject: revision, role: 'footer', type_name: 'non_preview')
 
-        expect(revision.widgets.resolve(scope: :editor)).to eq([non_preview_widget])
+        widgets = revision.widgets.resolve(config, scope: :editor)
+
+        expect(widgets).to eq([non_preview_widget])
       end
 
       it 'filters widgets disabled in preview' do
         non_editor_widget_type = TestWidgetType.new(name: 'non_editor', enabled_in_editor: false)
         non_preview_widget_type = TestWidgetType.new(name: 'non_preview', enabled_in_preview: false)
-        Pageflow.config.widget_types.register(non_editor_widget_type)
-        Pageflow.config.widget_types.register(non_preview_widget_type)
+        config = Configuration.new
+        config.widget_types.register(non_editor_widget_type)
+        config.widget_types.register(non_preview_widget_type)
         revision = create(:revision)
         non_editor_widget = create(:widget, subject: revision, role: 'header', type_name: 'non_editor')
         create(:widget, subject: revision, role: 'footer', type_name: 'non_preview')
 
-        expect(revision.widgets.resolve(scope: :preview)).to eq([non_editor_widget])
+        widgets = revision.widgets.resolve(config, scope: :preview)
+
+        expect(widgets).to eq([non_editor_widget])
       end
 
       it 'supports adding placeholders for missing role' do
         widget_type = TestWidgetType.new(name: 'header', roles: ['header'])
-        Pageflow.config.widget_types.register(widget_type)
+        config = Configuration.new
+        config.widget_types.register(widget_type)
         revision = create(:revision)
 
-        widgets = revision.widgets.resolve(include_placeholders: true)
+        widgets = revision.widgets.resolve(config, include_placeholders: true)
 
         expect(widgets).to include_record_with(type_name: nil, role: 'header')
       end
