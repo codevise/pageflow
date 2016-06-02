@@ -9,6 +9,7 @@ module Pageflow
     def initialize
       @features = {}
       @enabled_features = []
+      @default_features = []
     end
 
     # Register a feature that can be enabled for accounts of
@@ -40,9 +41,23 @@ module Pageflow
 
     # Check if a feature has been enabled.
     #
+    # @param name [String] Name of the feature
     # @return [Boolean]
     def enabled?(name)
       @enabled_features.include?(name)
+    end
+
+    # Enable a feature by default for all accounts. The feature can
+    # still be disabled via the web interface.
+    #
+    # @since edge
+    def enable_by_default(name)
+      @default_features << name
+    end
+
+    # @api private
+    def enabled_by_default?(name)
+      @default_features.include?(name)
     end
 
     # @api private
@@ -59,6 +74,15 @@ module Pageflow
     # @api private
     def enable_all(config)
       enable(@features.keys, config)
+    end
+
+    # @api private
+    def lint!
+      @default_features.each do |name|
+        unless @features.key?(name)
+          raise(ArgumentError, "Cannot enable unknown feature #{name} by default.")
+        end
+      end
     end
 
     def each(&block)

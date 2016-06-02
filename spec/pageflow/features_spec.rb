@@ -69,7 +69,6 @@ module Pageflow
     describe '#register' do
       it 'raises helpful error when feature is already registered' do
         features = Features.new
-        config = Configuration.new
 
         expect {
           features.register('some_stuff')
@@ -91,11 +90,42 @@ module Pageflow
 
       it 'returns false if a feature has not been applied' do
         features = Features.new
-        config = Configuration.new
 
         features.register('some_stuff')
 
         expect(features.enabled?('some_stuff')).to be(false)
+      end
+    end
+
+    describe '#enabled_by_default?' do
+      it 'returns false by default' do
+        features = Features.new
+
+        features.register('vanilla')
+        result = features.enabled_by_default?('vanilla')
+
+        expect(result).to be(false)
+      end
+
+      it 'returns true if feature is enabled by default' do
+        features = Features.new
+
+        features.register('vanilla')
+        features.enable_by_default('vanilla')
+        result = features.enabled_by_default?('vanilla')
+
+        expect(result).to be(true)
+      end
+    end
+
+    describe 'lint!' do
+      it 'raises helpful error when default feature is not registered' do
+        features = Features.new
+        features.enable_by_default('unknown')
+
+        expect {
+          features.lint!
+        }.to raise_error(/unknown feature/)
       end
     end
   end

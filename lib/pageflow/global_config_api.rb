@@ -80,6 +80,7 @@ module Pageflow
     def finalize!
       @finalized = true
       configure!
+      @config.lint!
     end
 
     # @api private

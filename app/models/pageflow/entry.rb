@@ -49,8 +49,8 @@ module Pageflow
       super || EditLock::Null.new(self)
     end
 
-    def feature_state(name)
-      super(name) || account.feature_state(name)
+    def inherited_feature_state(name)
+      account.feature_state(name)
     end
 
     def publish(options = {})
