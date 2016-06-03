@@ -8,13 +8,17 @@ module Pageflow
                           as: :page_type)
     end
 
-    def page_type_templates
+    def page_type_templates(entry)
       safe_join(Pageflow.config.page_types.map do |page_type|
         content_tag(:script,
-                    render_to_string(:template => page_type.template_path,
-                                     :locals => {:configuration => {}, :page => Page.new},
-                                     :layout => false).to_str,
-                    :type => 'text/html', :data => {:template => "#{page_type.name}_page"})
+                    render_to_string(template: page_type.template_path,
+                                     locals: {
+                                       configuration: {},
+                                       page: Page.new,
+                                       entry: entry
+                                     },
+                                     layout: false).to_str,
+                    type: 'text/html', data: {template: "#{page_type.name}_page"})
       end)
     end
   end

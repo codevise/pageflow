@@ -44,6 +44,16 @@ module Pageflow
 
         expect(result).to include('Page test')
       end
+
+      it 'passes additional locals' do
+        Pageflow.config.page_types.register(page_type_class.new)
+        page = build(:page, template: 'test')
+
+        stub_template('pageflow/test/page.html.erb' => 'Page <%= some %>')
+        result = helper.render_page_template(page, some: 'test')
+
+        expect(result).to include('Page test')
+      end
     end
 
     describe '#page_css_class' do

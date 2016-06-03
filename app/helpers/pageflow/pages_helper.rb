@@ -1,13 +1,11 @@
 module Pageflow
   module PagesHelper
-    def render_page_template(page)
+    def render_page_template(page, locals = {})
       page_type = Pageflow.config.page_types.find_by_name!(page.template)
 
       render(template: page_type.template_path,
-             locals: {
-               page: page,
-               configuration: page.configuration
-             })
+             locals: locals.merge(page: page,
+                                  configuration: page.configuration))
     end
 
     def page_css_class(page)
