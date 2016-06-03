@@ -1,6 +1,7 @@
 module Pageflow
   class EntriesController < Pageflow::ApplicationController
     include PublicHttpsMode
+    include EntryPasswordProtection
 
     before_filter :authenticate_user!, :except => [:index, :show, :page]
 
@@ -24,8 +25,8 @@ module Pageflow
           @entry = PublishedEntry.find(params[:id], entry_request_scope)
           I18n.locale = @entry.locale
 
-          if !request.format.css? && @entry.password_protected?
-            check_entry_password(@entry)
+          if !request.format.css?
+            check_entry_password_protection(@entry)
           end
 
           if params[:page].present?
@@ -90,12 +91,6 @@ module Pageflow
 
     def entry_request_scope
       Pageflow.config.public_entry_request_scope.call(Entry, request)
-    end
-
-    def check_entry_password(entry)
-      authenticate_or_request_with_http_basic('Pageflow') do |_, password|
-        entry.authenticate(password)
-      end
     end
   end
 end
