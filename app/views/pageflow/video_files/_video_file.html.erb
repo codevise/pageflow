@@ -1,1 +1,4 @@
-<%= lookup_video_tag(video_file.id, nil, :unique_id => 'single', :preload => true, :controls => true) %>
+<%= video_file_video_tag(video_file,
+                         unique_id: 'single',
+                         preload: true,
+                         controls: true) %>

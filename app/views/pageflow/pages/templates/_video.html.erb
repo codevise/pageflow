@@ -10,9 +10,11 @@
   </div>
   <div class="backgroundArea">
     <div class="videoWrapper">
-      <%= lookup_video_tag(configuration['video_file_id'], configuration['poster_image_id'],
-                           :mobile_poster_image_id => configuration['mobile_poster_image_id'],
-                           :unique_id => page.id, :preload => page.is_first) %>
+      <%= video_file_script_tag(configuration['video_file_id'],
+                                poster_image_id: configuration['poster_image_id'],
+                                mobile_poster_image_id: configuration['mobile_poster_image_id'],
+                                unique_id: page.id,
+                                preload: page.is_first) %>
     </div>
     <%= shadow_div :opacity => configuration['gradient_opacity'] %>
   </div>
@@ -25,6 +27,9 @@
       <div>
         <div class="contentWrapper">
           <div class="contentText">
+            <p class="non_js_video">
+              <%= video_file_non_js_link(entry, configuration['video_file_id']) %>
+            </p>
             <p><%= raw configuration['text'] %></p>
           </div>
         </div>

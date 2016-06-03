@@ -40,7 +40,7 @@ module Pageflow
       image_tag('', options)
     end
 
-    def lookup_video_tag(video_id, poster_image_id, options = {})
+    def video_file_video_tag(video_file, options = {})
       defaults = {
         class: [
           'player video-js video-viewport vjs-default-skin',
@@ -52,12 +52,10 @@ module Pageflow
       options.reverse_merge! defaults
       url_options = {unique_id: options.delete(:unique_id)}
 
-      video_file = VideoFile.find_by_id(video_id)
-      poster = ImageFile.find_by_id(poster_image_id)
+      poster = ImageFile.find_by_id(options.delete(:poster_image_id))
       mobile_poster = ImageFile.find_by_id(options.delete(:mobile_poster_image_id))
 
       options[:data] = {}
-      script_tag_data = {template: 'video'}
 
       if mobile_poster
         options[:data][:mobile_poster] = mobile_poster.attachment.url(:medium)
@@ -73,13 +71,43 @@ module Pageflow
       end
 
       if video_file && video_file.width.present? && video_file.height.present?
-        script_tag_data[:video_width] = options[:data][:width] = video_file.width
-        script_tag_data[:video_height] = options[:data][:height] = video_file.height
+        options[:data][:width] = video_file.width
+        options[:data][:height] = video_file.height
       end
 
-      render('pageflow/pages/video_tag',
-             video_file: video_file, script_tag_data: script_tag_data,
-             options: options, url_options: url_options)
+      render('pageflow/video_files/video_tag',
+             video_file: video_file,
+             options: options,
+             url_options: url_options)
+    end
+
+    # @deprecated
+    def lookup_video_tag(video_id, poster_image_id, options = {})
+      video_file_script_tag(video_id, options.merge(poster_image_id: poster_image_id))
+    end
+
+    def video_file_script_tag(video_id, options = {})
+      video_file = VideoFile.find_by_id(video_id)
+
+      script_tag_data = {template: 'video'}
+
+      if video_file && video_file.width.present? && video_file.height.present?
+        script_tag_data[:video_width] = video_file.width
+        script_tag_data[:video_height] = video_file.height
+      end
+
+      render('pageflow/video_files/script_tag',
+             script_tag_data: script_tag_data,
+             video_file: video_file,
+             options: options)
+    end
+
+    def video_file_non_js_link(entry, video_file_id)
+      if (video_file = VideoFile.find_by_id(video_file_id))
+        link_to(t('pageflow.public.play_video'),
+                short_video_file_path(entry, video_file),
+                class: 'hint')
+      end
     end
 
     def video_file_sources(video_file, options = {})
