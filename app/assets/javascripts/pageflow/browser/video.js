@@ -14,3 +14,10 @@ pageflow.browser.feature('buffer underrun waiting support', function(has) {
 pageflow.browser.feature('prebuffering support', function(has) {
   return has.not('mobile platform');
 });
+
+pageflow.browser.feature('mp4 support only', function(has) {
+  // - Silk does not play videos with hls source
+  // - Desktop Safari 9.1 does not loop hls videos
+  return pageflow.browser.agent.matchesSilk() ||
+    pageflow.browser.agent.matchesDesktopSafari9();
+});
