@@ -2,6 +2,7 @@
 
 @import "pageflow/admin/columns";
 @import "pageflow/admin/entries";
+@import "pageflow/admin/forms";
 @import "pageflow/admin/features";
 @import "pageflow/admin/quotas";
 @import "pageflow/admin/tabs_view";
@@ -9,21 +10,6 @@
 #wrapper {
   overflow: hidden;
   position: relative;
-}
-
-form {
-  fieldset p {
-    margin-left: 20%;
-    max-width: 550px;
-  }
-
-  fieldset.actions .link_action {
-    padding: 5px;
-
-    &.cancel {
-      padding: 0;
-    }
-  }
 }
 
 .action_items {

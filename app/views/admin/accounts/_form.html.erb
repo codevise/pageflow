@@ -28,7 +28,10 @@
       <% account_config.admin_form_inputs.find_all_for(:theming).each do |form_input| %>
         <%= form_input.build(theming) %>
       <% end %>
+    <% end %>
 
+    <%= f.inputs do %>
+      <%= render('admin/accounts/widgets_inline_help') %>
       <%= admin_widgets_fields(theming, account_config) %>
     <% end %>
   <% end %>
