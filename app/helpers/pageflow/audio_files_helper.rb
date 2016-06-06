@@ -23,9 +23,9 @@ module Pageflow
       end
     end
 
-    def audio_file_non_js_link(audio_file_id)
+    def audio_file_non_js_link(entry, audio_file_id)
       if (audio_file = AudioFile.find_by_id(audio_file_id))
-        link_to(t('pageflow.audio.open'), short_audio_file_path(audio_file.entry, audio_file))
+        link_to(t('pageflow.audio.open'), short_audio_file_path(entry, audio_file))
       end
     end
 

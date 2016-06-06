@@ -70,11 +70,12 @@ module Pageflow
             'pageflow/test/page'
           end
         end
+        entry = build(:entry)
 
         allow(Pageflow.config).to receive(:page_types).and_return([page_type_class.new])
         stub_template('pageflow/test/page.html.erb' => 'template')
 
-        result = helper.page_type_templates
+        result = helper.page_type_templates(entry)
 
         expect(result).to have_selector('script[data-template=test_page]', :text => 'template', :visible => false)
       end

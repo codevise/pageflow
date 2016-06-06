@@ -1,0 +1,7 @@
+<%= content_tag :video, options do %>
+  <% if video_file %>
+    <% video_file_sources(video_file, url_options).map do |v| %>
+      <%= tag(:source, src: v[:src], type: v[:type], data: {high_src: v[:high_src]}) %>
+    <% end %>
+  <% end %>
+<% end %>

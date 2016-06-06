@@ -11,7 +11,7 @@
   <span class="print_only page_url"><%= request.original_url %></span>
 
   <%= content_tag :div, :id => 'content', :class => 'entry', :data => {:role => 'slideshow'} do %>
-    <%= render entry.pages %>
+    <%= render entry.pages, entry: entry %>
     <%= render 'pageflow/entries/indicators', :theme => entry.theming.theme %>
   <% end %>
 

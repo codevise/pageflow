@@ -1,6 +1,6 @@
 <%= cache page do %>
   <%= content_tag :section, :id => page.perma_id, :class => page_css_class(page), :data => {:template => page.template, :id => page.id, :chapter_id => page.chapter_id} do %>
-    <%= render_page_template(page) %>
+    <%= render_page_template(page, entry: entry) %>
     <a class="to_top" href="#content"><%= t('pageflow.public.goto_top') %></a>
   <% end %>
 <% end %>

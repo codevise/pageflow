@@ -3,8 +3,13 @@
   <div class="backgroundArea">
     <%= mobile_poster_image_div(configuration) %>
     <span class="hint"><%= t('pageflow.public.video') %></span>
-    <%= lookup_video_tag(configuration['video_file_id'],
-        configuration['poster_image_id'], :class => 'background', :loop => true, :unique_id => page.id, :preload => page.is_first) %>
+    <%= video_file_script_tag(configuration['video_file_id'],
+                              poster_image_id: configuration['poster_image_id'],
+                              class: 'background',
+                              loop: true,
+                              unique_id: page.id,
+                              preload: page.is_first) %>
+
     <%= shadow_div :opacity => configuration['gradient_opacity'] %>
   </div>
   <div class="content scroller">
