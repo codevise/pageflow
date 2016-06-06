@@ -43,6 +43,18 @@ module Pageflow
           ])
         end
       end
+
+      describe '["locale"]' do
+        it 'equals entry locale' do
+          entry = PublishedEntry.new(create(:entry,
+                                            :published,
+                                            published_revision_attributes: {locale: 'fr'}))
+
+          result = common_entry_seed(entry)
+
+          expect(result[:locale]).to eq('fr')
+        end
+      end
     end
   end
 end

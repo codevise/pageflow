@@ -6,6 +6,7 @@ module Pageflow
   module CommonEntrySeedHelper
     def common_entry_seed(entry)
       {
+        locale: entry.locale,
         page_types: PageTypesSeed.new(entry, Pageflow.config_for(entry)).as_json
       }
     end

@@ -1,0 +1,5 @@
+<script>
+  I18n.translations = I18n.translations || {};
+  I18n.translations["<%= entry_locale %>"] = <%= translations.to_json.html_safe %>
+  I18n.locale = "<%= entry_locale %>";
+</script>

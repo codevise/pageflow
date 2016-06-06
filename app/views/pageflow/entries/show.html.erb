@@ -32,5 +32,7 @@
     pageflow.enabledFeatureNames = <%= @entry.enabled_feature_names.to_json.html_safe %>;
   </script>
 
+  <%= public_i18n_javascript_tag(@entry) %>
+
   <%= render 'pageflow/entries/analytics', :entry => @entry %>
 <% end %>

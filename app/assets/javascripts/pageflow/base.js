@@ -13,6 +13,7 @@
 
 //= require polyfills/bind
 
+//= require i18n
 //= require jquery
 //= require jquery-ui/widget
 //= require jquery_ujs
