@@ -78,22 +78,15 @@ module Pageflow
                   input_html: {class: 'entry_account_input'}
         end
 
-        unless f.object.new_record?
-          eligible_themings = ThemingPolicy::Scope.new(current_user, Pageflow::Theming)
-                              .themings_allowed_for(resource.account).load
-        end
-
         if authorized?(:update_theming_on, resource) && !f.object.new_record?
           f.input :theming, collection: eligible_themings, include_blank: false
         end
 
         if authorized?(:configure_folder_for, resource) || controller.action_name == :create
-          resource_folder_id = resource.folder ? resource.folder.id : nil
+          folder_collection = collection_for_folders(resource.account, resource.folder)
           f.input(:folder,
-                  collection: collection_for_folders(resource.account,
-                                                     resource_folder_id),
-                  include_blank: true) unless collection_for_folders(resource.account,
-                                                                     resource_folder_id).empty?
+                  collection: folder_collection,
+                  include_blank: true) unless folder_collection.empty?
         end
 
         Pageflow.config_for(f.object).admin_form_inputs.build(:entry, f)
@@ -160,11 +153,11 @@ module Pageflow
     controller do
       helper FoldersHelper
       helper EntriesHelper
-      helper Pageflow::Admin::EntriesHelper
-      helper Pageflow::Admin::FeaturesHelper
-      helper Pageflow::Admin::FormHelper
-      helper Pageflow::Admin::MembershipsHelper
-      helper Pageflow::Admin::RevisionsHelper
+      helper Admin::EntriesHelper
+      helper Admin::FeaturesHelper
+      helper Admin::FormHelper
+      helper Admin::MembershipsHelper
+      helper Admin::RevisionsHelper
 
       after_build do |entry|
         entry.account ||= current_user.account
@@ -184,9 +177,7 @@ module Pageflow
 
       def build_new_resource
         super.tap do |entry|
-          entry.account ||=
-            AccountPolicy::Scope.new(current_user, Pageflow::Account).entry_creatable.first ||
-            Pageflow::Account.first
+          entry.account ||= account_policy_scope.entry_creatable.first || Account.first
 
           entry.theming ||= entry.account.default_theming
         end
@@ -205,11 +196,11 @@ module Pageflow
       private
 
       def account_policy_scope
-        AccountPolicy::Scope.new(current_user, Pageflow::Account)
+        AccountPolicy::Scope.new(current_user, Account)
       end
 
       def theming_policy_scope
-        ThemingPolicy::Scope.new(current_user, Pageflow::Theming)
+        ThemingPolicy::Scope.new(current_user, Theming)
       end
 
       def permitted_attributes
@@ -222,7 +213,7 @@ module Pageflow
                    current_user.accounts.first
                  end
         result += Pageflow.config_for(target).admin_form_inputs.permitted_attributes_for(:entry)
-        result += permit_account || []
+        result += permitted_account_attributes
 
         if params[:id]
           result << :folder_id if authorized?(:configure_folder_for, resource)
@@ -234,7 +225,7 @@ module Pageflow
           accounts = account_policy_scope.themings_accessible
         end
 
-        result += permit_theming(accounts) || []
+        result += permitted_theming_attributes(accounts)
 
         result
       end
@@ -246,24 +237,44 @@ module Pageflow
         end
       end
 
-      def permit_theming(accounts)
-        if ([:create, :new].include?(action_name.to_sym) ||
-            authorized?(:update_theming_on, resource)) && params[:entry] &&
-           params[:entry][:theming_id] &&
-           theming_policy_scope.themings_allowed_for(accounts)
-           .include?(Pageflow::Theming.find(params[:entry][:theming_id]))
+      def permitted_theming_attributes(accounts)
+        if (create_or_new_action? || authorized?(:update_theming_on, resource)) &&
+           theming_params_present? && theming_in_allowed_themings_for?(accounts)
           [:theming_id]
+        else
+          []
         end
       end
 
-      def permit_account
-        if params[:entry] && params[:entry][:account_id] &&
-           (action_name.to_sym == :create ||
-            action_name.to_sym == :update && authorized?(:update_account_on, resource)) &&
-           account_policy_scope.entry_movable
-             .include?(Pageflow::Account.find(params[:entry][:account_id]))
+      def theming_params_present?
+        params[:entry] && params[:entry][:theming_id]
+      end
+
+      def create_or_new_action?
+        [:create, :new].include?(action_name.to_sym)
+      end
+
+      def theming_in_allowed_themings_for?(accounts)
+        theming_policy_scope.themings_allowed_for(accounts)
+          .include?(Theming.find(params[:entry][:theming_id]))
+      end
+
+      def permitted_account_attributes
+        if account_params_present? &&
+           (action_name.to_sym == :create || legally_moving_entry_to_other_account)
           [:account_id]
+        else
+          []
         end
+      end
+
+      def legally_moving_entry_to_other_account
+        action_name.to_sym == :update && authorized?(:update_account_on, resource) &&
+          account_policy_scope.entry_movable.include?(Account.find(params[:entry][:account_id]))
+      end
+
+      def account_params_present?
+        params[:entry] && params[:entry][:account_id]
       end
     end
   end

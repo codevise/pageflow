@@ -22,6 +22,11 @@ module Pageflow
       def eligible_accounts
         AccountPolicy::Scope.new(current_user, Account).entry_movable
       end
+
+      def eligible_themings
+        ThemingPolicy::Scope.new(current_user, Pageflow::Theming)
+          .themings_allowed_for(resource.account)
+      end
     end
   end
 end
