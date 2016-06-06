@@ -36,6 +36,28 @@ module Pageflow
         expect(response.status).to eq(404)
       end
 
+      it 'responds with forbidden for entry published with password' do
+        entry = create(:entry, :published_with_password, password: 'abc123abc')
+        video_file = create(:video_file, entry: entry)
+        create(:file_usage, revision: entry.published_revision, file: video_file)
+
+        get(:show, entry_id: entry, collection_name: 'video_files', id: video_file.id)
+
+        expect(response.status).to eq(401)
+      end
+
+      it 'responds with success for password protected entry when correct password is given' do
+        entry = create(:entry, :published_with_password, password: 'abc123abc')
+        video_file = create(:video_file, entry: entry)
+        create(:file_usage, revision: entry.published_revision, file: video_file)
+
+        request.env['HTTP_AUTHORIZATION'] =
+          ActionController::HttpAuthentication::Basic.encode_credentials('Pageflow', 'abc123abc')
+        get(:show, entry_id: entry, collection_name: 'video_files', id: video_file.id)
+
+        expect(response.status).to eq(200)
+      end
+
       context 'with configured entry_request_scope' do
         before do
           Pageflow.config.public_entry_request_scope = lambda do |entries, request|
