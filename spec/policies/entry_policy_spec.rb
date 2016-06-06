@@ -223,7 +223,8 @@ module Pageflow
 
       it 'does not include entries with membership with nil id' do
         user = create(:user)
-        entry = Entry.new
+        account = create(:account, with_member: user)
+        entry = Entry.new(account: account)
         create(:membership, user: user, entity: entry)
 
         expect(EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
@@ -298,7 +299,8 @@ module Pageflow
 
       it 'does not include entries with membership with nil id' do
         user = create(:user)
-        entry = Entry.new
+        account = create(:account, with_member: user)
+        entry = Entry.new(account: account)
         create(:membership, user: user, entity: entry, role: :editor)
 
         expect(EntryPolicy::Scope.new(user, Entry).editor_or_above).not_to include(entry)
@@ -380,7 +382,8 @@ module Pageflow
 
       it 'does not include entries with membership with nil id' do
         user = create(:user)
-        entry = Entry.new
+        account = create(:account, with_member: user)
+        entry = Entry.new(account: account)
         create(:membership, user: user, entity: entry, role: :publisher)
 
         expect(EntryPolicy::Scope.new(user, Entry).publisher_or_above).not_to include(entry)
@@ -462,7 +465,8 @@ module Pageflow
 
       it 'does not include entries with membership with nil id' do
         user = create(:user)
-        entry = Entry.new
+        account = create(:account, with_member: user)
+        entry = Entry.new(account: account)
         create(:membership, user: user, entity: entry, role: :publisher)
 
         expect(EntryPolicy::Scope.new(user, Entry).member_addable).not_to include(entry)
@@ -544,7 +548,8 @@ module Pageflow
 
       it 'does not include entries with membership with nil id' do
         user = create(:user)
-        entry = Entry.new
+        account = create(:account, with_member: user)
+        entry = Entry.new(account: account)
         create(:membership, user: user, entity: entry, role: :manager)
 
         expect(EntryPolicy::Scope.new(user, Entry).manager_or_above).not_to include(entry)

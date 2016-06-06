@@ -4,7 +4,7 @@ module Pageflow
       user
       association :entity, factory: :entry
       role :previewer
-      after(:create) do |membership|
+      before(:create) do |membership|
         unless membership.entity_type == 'Pageflow::Account' ||
                membership.user.accounts.include?(membership.entity.account) ||
                membership.entity.account == nil
@@ -20,7 +20,7 @@ module Pageflow
       user
       association :entity, factory: :entry
       role :previewer
-      after(:create) do |membership|
+      before(:create) do |membership|
         unless membership.user.accounts.include?(membership.entity.account) ||
                membership.entity.account == nil
           create(:membership,

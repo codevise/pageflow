@@ -151,7 +151,8 @@ module Pageflow
 
       it 'does not include memberships with nil entry id' do
         user = create(:user)
-        entry = Entry.new
+        account = create(:account, with_member: user)
+        entry = Entry.new(account: account)
         membership = create(:membership, user: user, entity: entry, role: :previewer)
         entry_manager = create(:user, :manager, on: entry)
 

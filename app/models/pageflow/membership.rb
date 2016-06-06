@@ -11,21 +11,13 @@ module Pageflow
 
     validates :user, :entity, :role, presence: true
     validates :user_id, uniqueness: {scope: [:entity_type, :entity_id]}
-    if :entity_type == 'Pageflow::Entry'
-      validates_with AccountMembershipExistenceValidator
-      validates :role, inclusion: {in: %w(previewer editor publisher manager).map(&:to_sym)}
-    else
-      validates :role, inclusion: {in: %w(member previewer editor publisher manager).map(&:to_sym)}
-    end
-
-    class AccountMembershipExistenceValidator < ActiveModel::Validator
-      def validate(record)
-        unless record.user.accounts.include?(record.entity.account)
-          record.errors[:base] <<
-            'Entry Membership misses presupposed Membership on account of entry'
-        end
-      end
-    end
+    validate :account_membership_exists, if: :on_entry?
+    validates :role,
+              inclusion: {in: %w(previewer editor publisher manager).map(&:to_sym)},
+              if: :on_entry?
+    validates :role,
+              inclusion: {in: %w(member previewer editor publisher manager).map(&:to_sym)},
+              if: :on_account?
 
     scope :on_entries, -> { where(entity_type: 'Pageflow::Entry') }
     scope :on_accounts, -> { where(entity_type: 'Pageflow::Account') }
@@ -38,6 +30,22 @@ module Pageflow
 
     after_destroy do
       entity.decrement(:users_count)
+    end
+
+    private
+
+    def account_membership_exists
+      unless user.accounts.include?(entity.account)
+        errors[:base] << 'Entry Membership misses presupposed Membership on account of entry'
+      end
+    end
+
+    def on_entry?
+      entity_type == 'Pageflow::Entry'
+    end
+
+    def on_account?
+      entity_type == 'Pageflow::Account'
     end
   end
 end

@@ -34,7 +34,7 @@ module Pageflow
             account = create(:account)
             user = create(:user, first_name: 'John', last_name: 'Doe')
             entry = create(:entry, account: account)
-            create(:membership, entity: entry, role: :member, user: user)
+            create(:membership, entity: entry, role: :previewer, user: user)
             new_membership = Membership.new
             expect(helper).to receive(:current_user).and_return(user)
 
@@ -102,7 +102,7 @@ module Pageflow
             account = create(:account)
             user = create(:user, first_name: 'John', last_name: 'Doe')
             entry = create(:entry, account: account)
-            create(:membership, entity: entry, role: :member, user: user)
+            create(:membership, entity: entry, role: :previewer, user: user)
             new_membership = Membership.new
             expect(helper).to receive(:current_user).and_return(user)
 

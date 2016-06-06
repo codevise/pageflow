@@ -196,7 +196,7 @@ describe Admin::MembershipsController do
         sign_in(entry_admin)
 
         expect do
-          post :create, user_id: user, membership: {entry_id: entry.id,
+          post :create, user_id: user, membership: {entity_id: entry.id,
                                                     entity_type: 'Pageflow::Entry',
                                                     role: :previewer}
         end.not_to change { user.entries.count }
@@ -226,7 +226,7 @@ describe Admin::MembershipsController do
         sign_in(entry_admin)
 
         expect do
-          post :create, user_id: user, membership: {entry_id: entry.id,
+          post :create, user_id: user, membership: {entity_id: entry.id,
                                                     entity_type: 'Pageflow::Entry',
                                                     role: :previewer}
         end.not_to change { user.entries.count }
@@ -284,7 +284,7 @@ describe Admin::MembershipsController do
         sign_in(entry_publisher)
 
         expect do
-          post :create, user_id: user, membership: {entry_id: entry,
+          post :create, user_id: user, membership: {entity_id: entry.id,
                                                     entity_type: 'Pageflow::Entry',
                                                     role: :manager}
         end.not_to change { user.entries.count }
