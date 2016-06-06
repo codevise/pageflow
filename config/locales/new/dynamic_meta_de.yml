@@ -1,7 +1,0 @@
-de:
-  activerecord:
-    attributes:
-      pageflow/entry:
-        author: Autor
-        keywords: Schlüsselwörter
-        publisher: Herausgeber

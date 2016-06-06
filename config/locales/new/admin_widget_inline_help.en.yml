@@ -1,5 +1,0 @@
-en:
-  pageflow:
-    admin:
-      accounts:
-        widgets_inline_help: "The widgets selected here will be used as defaults for new entries in this account. Changes do not affect existing entries."

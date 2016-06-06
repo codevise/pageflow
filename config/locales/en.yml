@@ -4,14 +4,14 @@ en:
       message: You are not authorized to perform this action.
     any: Any
     batch_actions:
-      action_label: ! '%{title} Selected'
+      action_label: "%{title} Selected"
       button_label: Batch Actions
       default_confirmation: Are you sure you want to do this?
       delete_confirmation: Are you sure you want to delete these %{plural_model}?
       labels:
         destroy: Delete
       link: Create one
-      selection_toggle_explanation: (Toggle Selection)
+      selection_toggle_explanation: "(Toggle Selection)"
       succesfully_destroyed:
         one: Successfully destroyed 1 %{model}
         other: Successfully destroyed %{count} %{plural_model}
@@ -41,7 +41,7 @@ en:
     delete: Delete
     delete_confirmation: Are you sure you want to delete this?
     delete_model: Delete %{model}
-    details: ! '%{model} Details'
+    details: "%{model} Details"
     devise:
       change_password:
         submit: Change my password
@@ -77,7 +77,7 @@ en:
         title: Resend unlock instructions
       username:
         title: Username
-    download: ! 'Download:'
+    download: 'Download:'
     dropdown_actions:
       button_label: Actions
     edit: Edit
@@ -118,13 +118,13 @@ en:
       multiple: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{total}</b> in total
       multiple_without_total: Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b>
       one_page: Displaying <b>all %{n}</b> %{model}
-    powered_by: ! ' '
+    powered_by: " "
     previous: Previous
     scopes:
       frozen: All
       publications: Only published
       publications_and_user_snapshots: Only published/snapshots
-    search_field: ! 'Search %{field} '
+    search_field: 'Search %{field} '
     sidebars:
       filters: Filters
       folders: Folders
@@ -163,21 +163,24 @@ en:
         duration: Duration
         format: Format
       pageflow/chapter:
-        display_parent_page_button: Display parent page button
+        display_parent_page_button: Display 'Parent Page'-Button
         navigation_bar_mode: Navigation Bar
         parent_page_perma_id: Parent Page
         title: Title
       pageflow/entry:
         account: Account
+        author: Author
         created_at: Created at
         credits: Credits
         emphasize_chapter_beginning: Emphasize chapter beginning
         emphasize_new_pages: Emphasize new pages
         home_button_enabled: Show 'Home' button
-        home_url: ! '''Home'' Button URL'
+        home_url: "'Home' Button URL"
+        keywords: Keywords
         locale: Language
         manual_start: Show Instruction-Overlay
         published?: Publication state
+        publisher: Publisher
         share_image_id: Social Sharing Image
         summary: Summary
         title: Title
@@ -233,10 +236,11 @@ en:
         published_until: Published until
         updated_at: Updated at
       pageflow/theming:
+        additional_cnames: Additional CNAMES
         cname: CNAME
         copyright_link_label: Copyright link Text
         copyright_link_url: Copyright link URL
-        home_button_enabled_by_default: ! '''Home''-Button enabled by default'
+        home_button_enabled_by_default: "'Home'-Button enabled by default"
         home_url: Redirect URL
         imprint_link_label: Imprint link label
         imprint_link_url: Imprint link URL
@@ -263,7 +267,7 @@ en:
         password: Password
         password_confirmation: Password confirmation
         role: Role
-        sign_in_count: ! '# of sign ins'
+        sign_in_count: "# of sign ins"
         suspended?: Suspended
         unconfirmed_email: Unconfirmed Email
     errors:
@@ -370,7 +374,7 @@ en:
           no_fade: No fade in
           short: Short delay
         linked_pages_layout:
-          default: (none)
+          default: "(none)"
           hero_top_left: Top left
           hero_top_right: Top right
         scroll_indicator_mode:
@@ -404,7 +408,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    -
+    - 
     - Jan
     - Feb
     - Mar
@@ -426,11 +430,11 @@ en:
     - Friday
     - Saturday
     formats:
-      default: ! '%Y-%m-%d'
-      long: ! '%B %d, %Y'
-      short: ! '%b %d'
+      default: "%Y-%m-%d"
+      long: "%B %d, %Y"
+      short: "%b %d"
     month_names:
-    -
+    - 
     - January
     - February
     - March
@@ -473,16 +477,16 @@ en:
         other: over %{count} years
       x_days:
         one: 1 day
-        other: ! '%{count} days'
+        other: "%{count} days"
       x_minutes:
         one: 1 minute
-        other: ! '%{count} minutes'
+        other: "%{count} minutes"
       x_months:
         one: 1 month
-        other: ! '%{count} months'
+        other: "%{count} months"
       x_seconds:
         one: 1 second
-        other: ! '%{count} seconds'
+        other: "%{count} seconds"
     prompts:
       day: Day
       hour: Hour
@@ -560,7 +564,7 @@ en:
       send_paranoid_instructions: If your account exists, you will receive an email with instructions about how to unlock it in a few minutes.
       unlocked: Your account has been unlocked successfully. Please sign in to continue.
   errors:
-    format: ! '%{attribute} %{message}'
+    format: "%{attribute} %{message}"
     messages:
       accepted: must be accepted
       already_confirmed: was already confirmed, please try signing in
@@ -602,7 +606,7 @@ en:
         other: must be other than %{count}
       present: must be blank
       readonly: readonly
-      record_invalid: ! 'Validation failed: %{errors}'
+      record_invalid: 'Validation failed: %{errors}'
       restrict_dependent_destroy:
         many: Cannot delete record because dependent %{record} exist
         one: Cannot delete record because a dependent %{record} exists
@@ -617,18 +621,18 @@ en:
         one: is the wrong length (should be 1 character)
         other: is the wrong length (should be %{count} characters)
     template:
-      body: ! 'There were problems with the following fields:'
+      body: 'There were problems with the following fields:'
       header:
         one: 1 error prohibited this %{model} from being saved
-        other: ! '%{count} errors prohibited this %{model} from being saved'
+        other: "%{count} errors prohibited this %{model} from being saved"
   formtastic:
     cancel: Cancel
-    create: ! 'Create %{model} '
+    create: 'Create %{model} '
     'no': 'No'
     required: required
-    reset: ! 'Reset %{model} '
-    submit: ! 'Submit %{model} '
-    update: ! 'Update %{model} '
+    reset: 'Reset %{model} '
+    submit: 'Submit %{model} '
+    update: 'Update %{model} '
     'yes': 'Yes'
   helpers:
     select:
@@ -641,22 +645,22 @@ en:
   number:
     currency:
       format:
-        delimiter: ! ','
-        format: ! '%u%n'
+        delimiter: ","
+        format: "%u%n"
         precision: 2
-        separator: .
+        separator: "."
         significant: false
         strip_insignificant_zeros: false
-        unit: $
+        unit: "$"
     format:
-      delimiter: ! ','
+      delimiter: ","
       precision: 3
-      separator: .
+      separator: "."
       significant: false
       strip_insignificant_zeros: false
     human:
       decimal_units:
-        format: ! '%n %u'
+        format: "%n %u"
         units:
           billion:
             one: Billion
@@ -669,12 +673,12 @@ en:
           trillion: Trillion
           unit: Unit
       format:
-        delimiter: ! ','
+        delimiter: ","
         precision: 3
         significant: true
         strip_insignificant_zeros: true
       storage_units:
-        format: ! '%n %u'
+        format: "%n %u"
         units:
           byte:
             one: Byte
@@ -685,16 +689,17 @@ en:
           tb: TB
     percentage:
       format:
-        delimiter: ! ','
-        format: ! '%n%'
+        delimiter: ","
+        format: "%n%"
     precision:
       format:
-        delimiter: ! ','
+        delimiter: ","
   pageflow:
     admin:
       accounts:
         no_entries: No Stories
         no_members: No members
+        widgets_inline_help: The widgets selected here will be used as defaults for new entries in this account. Changes do not affect existing entries.
       entries:
         add_folder: Add folder
         confirm_depublish: Unpublish this story?
@@ -707,7 +712,7 @@ en:
         edit_revision: Edit
         editor: Editor
         entries: Stories
-        forever: (unlimited)
+        forever: "(unlimited)"
         members: Members
         no_members: No members assigned
         no_revisions: No versions yet
@@ -736,24 +741,28 @@ en:
         title_hint: This field determines the URL for this story.
       features:
         states:
+          default: Default (%{inherited})
           disabled: Disabled
           enabled: Enabled
-          undefined: (Default)
+          undefined: "(Default)"
       folders:
         all: All
-        confirm_destroy: ! 'Delete folder? Note: Containing stories will be preserved.'
+        confirm_destroy: 'Delete folder? Note: Containing stories will be preserved.'
         destroy: Delete
         edit: Edit
       resource_tabs:
         entries: Stories
+        features: Features
         members: Members
         revisions: Versions
         users: User
       revisions:
         published_until_hint: Leave blank to publish indefinitely.
       themings:
-        cname_hint: For social sharing
-        name: ! '%{account_name}'
+        additional_cnames_hint: Comma separated list of additional CNAMES. Used only to select the correct redirect URL.
+        cname_hint: Used in public sharing URLs.
+        home_url_hint: Used for requests to the root path with one of the above CNAMES. Default target location for the home button.
+        name: "%{account_name}"
         remove_logo: Remove logo
         show: View
       users:
@@ -769,7 +778,7 @@ en:
         deleted: This user was deleted.
         edit: Edit
         email_invitation_hint: The user will be invited to choose a password.
-        empty: ! 'This user has no associated stories. '
+        empty: 'This user has no associated stories. '
         invite_user: Invite user
         me:
           change_password_hint: Leave blank to keep your current password.
@@ -788,7 +797,7 @@ en:
           admin: System-Administrator
           editor: Editor
         suspend: Suspend
-        suspended: ! 'The user was suspended and will not be able to sign-in again. '
+        suspended: 'The user was suspended and will not be able to sign-in again. '
         unsuspend: Unsuspend
         unsuspended: The user was unsuspended.
     atmo:
@@ -820,10 +829,13 @@ en:
       feature_name: Chapter Hierachy
     common_page_link_attributes:
       label:
+        inline_help: Choose a label to recognize the link within the overview. This label is for your orientation only and will not be displayed to the reader.
         label: Label
       page_transition:
+        inline_help: Choose the animation, that will be used to transition to the link's target page.
         label: Page transition
       target_page_id:
+        inline_help: Users will get to this page when clicking the link.
         label: Target page
     delayed_text_fade_in:
       feature_name: Delayed text fade in
@@ -835,18 +847,18 @@ en:
           salutation: Hello %{first_name}
     edit_locks:
       break_action:
-        aquire: Continue here
+        acquire: Continue here
       errors:
         held_by_other_session_error:
-          aquire_html: <p>This story is already open in another editor window.</p>
-          other_html: ! '<p>This story is already open in another editor window. Please reload this page and click on the ''Continue here'' button.</p>
-
-            <p>If you continue working without reload, data loss may occur.</p>'
+          acquire_html: "<p>This story is already open in another editor window.</p>"
+          other_html: |-
+            <p>This story is already open in another editor window. Please reload this page and click on the 'Continue here' button.</p>
+            <p>If you continue working without reload, data loss may occur.</p>
         held_by_other_user_error:
-          aquire_html: <p><strong>%{user_name}</strong> is currently working on this story or has left the editor window open. Click 'Continue here' to take over.</p>
-          other_html: <p><strong>%{user_name}</strong> has ended your editor session. Please reload the page and click 'Continue here' to view the current version.</p>
+          acquire_html: "<p><strong>%{user_name}</strong> is currently working on this story or has left the editor window open. Click 'Continue here' to take over.</p>"
+          other_html: "<p><strong>%{user_name}</strong> has ended your editor session. Please reload the page and click 'Continue here' to view the current version.</p>"
         not_held_error:
-          other_html: <p>Your editor session has been ended from another session. Please reload the page and click 'Continue here' to view the current version.</p>
+          other_html: "<p>Your editor session has been ended from another session. Please reload the page and click 'Continue here' to view the current version.</p>"
       required: This action cannot be executed because this story has been opened in another editor session.
       required_but_held_by_other_user: This action cannot be executed because this story has been opened by another user.
     editor:
@@ -915,7 +927,7 @@ en:
           new_page: New page
           save_error: Errors were detected while saving this chapter.
         confirm_encoding:
-          all_released: ! 'All files have been scheduled for encoding. '
+          all_released: 'All files have been scheduled for encoding. '
           audios_tab: Audios
           confirm_button: Encode selected files
           link_to_progress: The %{link} page shows encoding progress.
@@ -932,8 +944,6 @@ en:
           close: Close
           manage_files: Manage files
           metadata: Title and options
-          new_chapter: New chapter
-          outline: Outline
           publish: Publish
           save_error: There were errors while saving metadata.
         edit_meta_data:
@@ -948,6 +958,11 @@ en:
         edit_page_link:
           back: Back
           destroy: Delete
+        edit_storyline:
+          destroy: Delete
+          outline: Outline
+          retry: Retry
+          save_error: Errors were detected while saving the storyline.
         embedded:
           page_link:
             reset: Reset
@@ -982,7 +997,7 @@ en:
             edit: Edit
             reset: Reset
         list_blank_slate:
-          text: (No items)
+          text: "(No items)"
         list_item:
           edit: Edit
           remove: Delete
@@ -993,7 +1008,7 @@ en:
           loading: Loading story. Please wait...
           open_here: Continue here
         notification:
-          approve_files: ! '%{num_files} files awaiting confirmation for the encoding process.'
+          approve_files: "%{num_files} files awaiting confirmation for the encoding process."
           retry: Retry
           save_error: There were errors while saving changes.
           saved: All changes have been saved.
@@ -1028,7 +1043,7 @@ en:
           publish_current: Publish current version
           publish_success: Your story has been sucessfully published.
           published_notice: A version of this story is currently published.
-          published_url_hint: ! 'It can be accessed using following URL:'
+          published_url_hint: 'It can be accessed using following URL:'
           show_files: Show files
           time: Time
           unlimited: indefinitely
@@ -1037,19 +1052,29 @@ en:
           view_revisions: View versions
         select_button:
           select: Select
+        storyline_outline:
+          header: Outline
+          new_chapter: New chapter
+        storyline_picker:
+          add: Add
+          edit: Edit settings
       views:
         chapter_item_view:
           chapter: Chapter
-          unnamed: (New chapter)
+          unnamed: "(New chapter)"
         edit_chapter_view:
-          confirm_destroy: ! 'Really delete this chapter including ALL its pages?
+          confirm_destroy: |-
+            Really delete this chapter including ALL its pages?
 
-
-            This operation cannot be undone.'
+            This operation cannot be undone.
         edit_page_link_view:
-          default_page_transition: (Default)
+          default_page_transition: "(Default)"
         edit_page_view:
           confirm_destroy: Really delete this page?
+        edit_storyline_view:
+          cannot_destroy: Only empty storylines can be deleted.
+          confirm_destroy: Really delete storyline
+          default_parent_page_transition: "(Default)"
         editor_views:
           files_pending_warning: You are currently uploading files. All uploads will be canceled if you leave this page.
           hide_editor: Hide editor panel
@@ -1063,411 +1088,275 @@ en:
           upload: Upload
         inputs:
           reference_input_view:
-            none: (None)
+            none: "(None)"
         page_item_view:
-          unnamed: (New page)
+          unnamed: "(New page)"
         page_link_item_view:
-          no_page: (No page)
-          unnamed: (No title)
+          no_page: "(No page)"
+          unnamed: "(No title)"
+        storylines_picker_view:
+          label: Storyline
+          without_parent_page: Without parent page
     entry:
       duplicated_title: Copy of %{title}
     help_entries:
       atmo:
         menu_item: Atmo Audio
-        text: ! '# Atmo Audio
-
+        text: |-
+          # Atmo Audio
 
           This feature lets you add background audio to every page regardless of its page type. You can define if a sound should play only for one page or continue playing for more pages without interruption. Simply select the same atmo audio file for some adjacent pages.
 
-
           That way chapters can be seperated acoustically and pages that belong together can be weaved to a stronger unit.
-
 
           For the page type „Video“ there is a special option to pause background audio or continue at lower volume while the video is playing.
 
-
           You find the atmo settings on the „Options“ tab of each page.
 
+          Should you ever feel distracted by the atmo audio while working on your entry, you can use the hot key „Alt + a“ to temporarily mute it. Simply press „Alt + a“ again to reactivate atmo audio.
 
-          Should you ever feel distracted by the atmo audio while working on your entry, you can use the hot key „Alt + a“ to temporarily mute it. Simply press „Alt + a“ again to reactivate atmo audio.'
+          CAUTION: Atmo audio does not play on mobile devices.
       built_in_page_type:
         audio:
           menu_item: Audio
-          text: ! "# Audio\n\n*Playing audio-files with controls*\n    \nHere you can combine audio-files with pictures and\ntext-content. Controls similar to the page type „Video“\nare shown.  In addition to that you can write a\ndescription into an „Infobox“.\n\nExamples of application: interviews, direct quotes, music"
+          text: "# Audio\n\n*Playing audio-files with controls*\n    \nHere you can combine audio-files with pictures and\ntext-content. Controls similar to the page type „Video“\nare shown.  In addition to that you can write a\ndescription into an „Infobox“.\n\nExamples of application: interviews, direct quotes, music"
         audio_loop:
           menu_item: Audio Loop
-          text: ! "# Audio Loop\n\n*Playing an audio-loop without control (Ambience)*\n    \nA full-screen photo is shown as a „Background-Image“. The\ndifference to the normal Audio-Page is that the user\ncannot influence the audio-file by controlling it. Instead\nit is an endless-loop.\n\nTypical examples of application: Ambience, soundscape, field-recordings"
+          text: "# Audio Loop\n\n*Playing an audio-loop without control (Ambience)*\n    \nA full-screen photo is shown as a „Background-Image“. The\ndifference to the normal Audio-Page is that the user\ncannot influence the audio-file by controlling it. Instead\nit is an endless-loop.\n\nTypical examples of application: Ambience, soundscape, field-recordings"
         background_image:
           menu_item: Background Image
-          text: ! '# Background Image
-
+          text: |-
+            # Background Image
 
             Full-screen image and text
 
-
             By using the page type „Background-Image“, large pictures
-
             are the background for the text and are paired with a
-
             manually adjustable color gradient for an optimal
-
             legibility. In order to have an optimal presentation on
-
             mobile devices you can adjust the image detail to the
-
             display. Optionally the text color can be inverted. This
-
             is especially useful for bright background-images.
 
-
             Users are able to hide the color-gradient and text in
-
             the front-end, if they want to have a view of the
-
             background-image.
 
-
             Examples: Presentation, part of a picture gallery,
-
-            portrait'
+            portrait
         background_video:
           menu_item: Background Video
-          text: ! "# Background Video\n\n*Full-screen video played in a loop without control* \n    \nThis type of page is comparable to „Background-Image“. But\ninstead of an image, a video is shown in the\nbackground. This video starts automatically and is played\nwithout control. Thus the user cannot influence the start\nand stop of the video. Since the video is played in an\nendless-loop, it should be long enough and it should have\na proper crossover. The same applies to the soundtrack.\n\nAs a hint for the use of Pageflow on a smartphone: In\norder to prevent unintended data consumption, the video is\nnot played on smartphones. Instead a poster-image is\nshown, which is generated automatically. You can however\nalso choose the image yourself.\n\nExamples of application: intro, chapter cross-fade,\nambience"
+          text: "# Background Video\n\n*Full-screen video played in a loop without control* \n    \nThis type of page is comparable to „Background-Image“. But\ninstead of an image, a video is shown in the\nbackground. This video starts automatically and is played\nwithout control. Thus the user cannot influence the start\nand stop of the video. Since the video is played in an\nendless-loop, it should be long enough and it should have\na proper crossover. The same applies to the soundtrack.\n\nAs a hint for the use of Pageflow on a smartphone: In\norder to prevent unintended data consumption, the video is\nnot played on smartphones. Instead a poster-image is\nshown, which is generated automatically. You can however\nalso choose the image yourself.\n\nExamples of application: intro, chapter cross-fade,\nambience"
         internal_links:
           menu_item: Internal Links
-          text: ! '# Internal Links
-
+          text: |
+            # Internal Links
 
             References to other pages inside a Pageflow
 
-
             In contrast to external link, you can link to pages inside
-
             your Pageflow. This page type helps you guide your users
-
             through your Pageflow.
 
-
             Examples of application: Welcome page, chapter homepage
-
-'
         video:
           menu_item: Video
-          text: ! "# Video\n\n*Playing a video with control*\n    \nIn contrast to „Background-Videos“ the text elements fade\nout after a few seconds, in order to draw attention to the\nvideo. With controls the user can start and pause the\nvideo or even fast-forward and rewind it. You can choose\nwhether the video should start automatically as soon as\nthe page is opened.\n\nAs an alternative to the normal text input, you can write\na description into an „Infobox“ with text.\n\nOn the „Options“ tab you can activate auto-scrolling to the next page at the end of a video. \nThis can be useful to create a seamless transition.\n\nExamples of application: Videos of all kinds, interviews,\nportraits"
+          text: "# Video\n\n*Playing a video with control*\n    \nIn contrast to „Background-Videos“ the text elements fade\nout after a few seconds, in order to draw attention to the\nvideo. With controls the user can start and pause the\nvideo or even fast-forward and rewind it. You can choose\nwhether the video should start automatically as soon as\nthe page is opened.\n\nAs an alternative to the normal text input, you can write\na description into an „Infobox“ with text.\n\nOn the „Options“ tab you can activate auto-scrolling to the next page at the end of a video. \nThis can be useful to create a seamless transition.\n\nExamples of application: Videos of all kinds, interviews,\nportraits"
       files:
         menu_item: Manage Files
-        text: ! '# Manage Files
-
+        text: |
+          # Manage Files
 
           Pageflow processes all major media formats (photo, audio,
-
           video) and converts them into different formats and
-
           qualities. The system adapts the quality of the media to the
-
           internet connection and the end device of the user
-
           automatically. In principle the files should be uploaded in
-
           the optimal resolution and not be compressed beforehand. In
-
           order to have a well-structured work-flow, it is helpful to
-
           store all audio-files, background-video-loops, movies,
-
           pictures and texts in the required version in a separate
-
           file on your computer.
-
 
           ## Upload and Manage Files
 
-
           The menu item „Manage Files“ leads to the files, which have
-
           already been uploaded. If you click „Add more“ and „Upload“
-
           you can add more files.
 
-
           After you have uploaded the files, they are processed on the
-
           server. This can take a few minutes - especially if the
-
           videos are long. Click on the thumbnail of a file, in order
-
           to see its status. Moreover you can see the general features
-
           like the size of the picture or length of an audio-file and
-
           you can download the original file.
 
-
           The files can already be used before the process is
-
           finished. You can therefore continue your work during the
-
           loading process.
-
 
           ## Copyrights of Files
 
-
           If you click on the thumbnail of a media file (picture,
-
           video, audio), you can add information with regards to its
-
           copyright. This information is shown automatically in the
-
           legal notice.
-
 
           ## Reuse Files
 
-
           Videos, audio files and pictures can be used in more than
-
           one article. Thus, videos, for example, do not have to be
-
           uploaded several times. Click on „Manage Files“ and on
-
           „Add“/„Reuse“, to search for files in other articles and add
-
           them to a new one.
-
-'
       meta_data:
         menu_item: Title and Options
-        text: ! '# Title and Options
-
+        text: |
+          # Title and Options
 
           ## General
 
-
           ### Title of the Pageflow
 
-
           Here you can choose a title for your Pageflow. It will be
-
           shown on the title bar of the browser window. It also acts
-
           as an indicator for search engines once the report is
-
           published.
-
 
           ### Language
 
-
           Decide in which language your Pageflow should be
-
           displayed. This refers to text which cannot be edited - like
-
           multimedia tips, scroll-indicators, the overview and the
-
           legal notice.
-
 
           ## Appearance
 
-
           ### Multimedia tips before the start
 
-
           Decide if tips or advice should be shown at the beginning of
-
           your Pageflow.
-
 
           ### Highlighting chapter beginnings
 
-
           This option lets the title of the first page of a chapter
-
           appear in a bigger font.
-
 
           ### Highlighting new pages
 
-
           At the beginning of a Pageflow an info-box shows new pages
-
           that were created since the last visit.
-
 
           ### Display Home-Button
 
-
           You can have a button in the navigation, which hyperlinks to
-
           an external website, for example back to the website from
-
           which you hyperlinked to the Pageflow.
-
 
           ### Navigation
 
-
           Choose between two forms of navigation: The navigation with
-
           a progress bar or the navigation with thumbnails. Please
-
           note, that due to the lack of space on mobile devices only
-
           the icon „Overview“ is shown.
-
 
           ## Social
 
-
           ### Social Sharing Picture
 
-
           Choose a picture, which should be shown, if your Pageflow is
-
           shared in social networks.
-
 
           ### Summary
 
-
           Here you can write a description, which is shown, when your
-
           Pageflow is shared in social networks.
-
-'
       outline:
         menu_item: Chapters and Pages
-        text: ! '# Chapters and Pages
-
+        text: |-
+          # Chapters and Pages
 
           A Pageflow consists of at least one chapter with at least
-
           one page. You can create as many chapters and pages as you
-
           want. In order to create content, click:
 
-
           1. „New Chapter“ to create a new chapter,
-
           2. „New Page“ to add a page,
-
           3. onto the new page, in order to edit the content.
-
 
           ## Structuring Chapters
 
-
           You can structure the composition of your Pageflow with
-
           chapters - e.g. thematically or chronologically . The
-
           chapters are shown in the overview and help the users find
-
           their way around. It is therefore advisable to give each
-
           chapter a title.
 
-
           If you create an unnamed chapter, Pageflow acts as if there
-
           is no structure of chapters. The chapter and the title of
-
           this chapter are consequently not shown in the
-
-          overview/navigation.'
+          overview/navigation.
       overview:
         menu_item: Overview
-        text: ! '# Overview
-
+        text: |-
+          # Overview
 
           This is Pageflow’s editing platform. The division of the
-
           screen into two allows you to edit your Pageflow and see a
-
           preview at the same time. The editor shows modifications and
-
           newly selected files directly and saves them automatically.
 
-
           The sidebar can be hidden or shown. You can change the size
-
           of the preview-window by pulling the sidebar to the right or
-
           the left. If the preview-window is long and narrow like ´ a
-
           smartphone, you will only be able to see the „overview“ icon
-
           and not the entire navigation. This is due to lack of space.
-
 
           The navigation is divided into four parts:
 
-
           ## Title and Options
 
-
           Under „Title and Options“ you can set up basic appearance
-
           parameters as well as the title, language and legal
-
           notice. You can also decide which content should be
-
           displayed when sharing the report on social media platforms.
-
 
           For more details see: [Title and Options](#pageflow.help_entries.meta_data)
 
-
           ## Manage Files
 
-
           Under „Manage Files“ you can upload your media files, which
-
           you want to use in Pageflow. Furthermore you can reuse
-
           videos, photos and audio-files that have already been
-
           uploaded.
-
 
           For more details see: [Manage Files](#pageflow.help_entries.files)
 
-
           ## Outline
 
-
           Via the „Outline“ you can add chapters and pages - the
-
           actual content. Per Drag and Drop you can resort the pages
-
           and chapters any time.
 
-
-          For more details see: [Chapter and Pages](#pageflow.help_entries.outline)'
+          For more details see: [Chapter and Pages](#pageflow.help_entries.outline)
       page_options:
         menu_item: General Page Options
-        text: ! "# General Page Options\n\n### Title\n\nHere you can add the title of a particular page. This\ntitle is not only the headline of the text on the page, it\nalso functions as the title in the navigation and\noverview. If a single page is shared in social networks,\nthis title is also the title of the social media post.\n\n### Hide the title\n\nOptionally you can hide the title. Thus the title is not shown as the\nheading of the text body. For the identification of the page it\nremains visible in the navigation, overview and on social media posts.\n\n### Tagline and Subtitle\n\nHere you can optionally enter a tagline and/or a\nsubtitle. If you click on „Hide title“ the tagline and\nsubtitle are not shown either.\n\n### Text\n\nThe text-block can be formatted with the buttons underneath\nthe input field. [B= bold / I=italic / U=underlined /\ninfinity symbol= Link/URL to an external website]\n\nAll changes are visible in the left front-end-view as soon\nas you leave the appropriate input field in the editor.\n\n### Textposition\n\nDecide if the text should be shown on the left or right side.\n\n### Opacity of the gradient\n\nThe opacity of the gradient improves the legibility of\nthe text on background-videos or pictures.\n\nYou can use the slider to darken or lighten up the\nbackground until the contrast between text and background is\noptimal.\n\n### Invert colors\n\nIf you invert the colors, „bright“ and „dark“ are\ninterchanged. Thus the normally white font changes into\nblack.\n\nA general rule: Bright font for dark pictures, dark font for\nbright pictures.\n\n### Thumbnail\n\nThe thumbnail replaces the automatically generated\npreview-picture in the navigation and overview.\n\n### Display in navigation\n\nIf this option is not taken, the particular page is not\nrepresented in the navigation and therefore cannot be\nreached through it.  You can use this option if a page is\nsupposed to read more like a subpage of another page.\n\n### Transition effect\n\nThere are different scroll effects, which are visible when users enter or leave pages. You can use vertical transitions like „crossfade“ or „cut“ or „Fade to black“. Besides this you also can choose horizontal scrolling from right or left. You can determine which effect should be used for each individual page.\n\n### Fade in text after delay\n\nDefine whether text and gradient of a page should appear with a delay. \nUsers will first see the background image, then title, tagline and subtitle until finally the content text will be displayed.\n\nThere are three different durations of delay: short = 1 second, medium = 3 seconds, long = 5 seconds.\n\nThis feature fits best for intros or beginnings of chapters.\n\n### Description for the overview\n\nYou can enter a text, which appears when the user navigates\nwith the mouse over the particular page. This text matches\nwith the mouse-over-text for the page-type „Page References“\nas well as with the text, which appears when you share the\nPageflow in social networks."
+        text: "# General Page Options\n\n### Title\n\nHere you can add the title of a particular page. This\ntitle is not only the headline of the text on the page, it\nalso functions as the title in the navigation and\noverview. If a single page is shared in social networks,\nthis title is also the title of the social media post.\n\n### Hide the title\n\nOptionally you can hide the title. Thus the title is not shown as the\nheading of the text body. For the identification of the page it\nremains visible in the navigation, overview and on social media posts.\n\n### Tagline and Subtitle\n\nHere you can optionally enter a tagline and/or a\nsubtitle. If you click on „Hide title“ the tagline and\nsubtitle are not shown either.\n\n### Text\n\nThe text-block can be formatted with the buttons underneath\nthe input field. [B= bold / I=italic / U=underlined /\ninfinity symbol= Link/URL to an external website]\n\nAll changes are visible in the left front-end-view as soon\nas you leave the appropriate input field in the editor.\n\n### Textposition\n\nDecide if the text should be shown on the left or right side.\n\n### Opacity of the gradient\n\nThe opacity of the gradient improves the legibility of\nthe text on background-videos or pictures.\n\nYou can use the slider to darken or lighten up the\nbackground until the contrast between text and background is\noptimal.\n\n### Invert colors\n\nIf you invert the colors, „bright“ and „dark“ are\ninterchanged. Thus the normally white font changes into\nblack.\n\nA general rule: Bright font for dark pictures, dark font for\nbright pictures.\n\n### Thumbnail\n\nThe thumbnail replaces the automatically generated\npreview-picture in the navigation and overview.\n\n### Display in navigation\n\nIf this option is not taken, the particular page is not\nrepresented in the navigation and therefore cannot be\nreached through it.  You can use this option if a page is\nsupposed to read more like a subpage of another page.\n\n### Transition effect\n\nThere are different scroll effects, which are visible when users enter or leave pages. You can use vertical transitions like „crossfade“ or „cut“ or „Fade to black“. Besides this you also can choose horizontal scrolling from right or left. You can determine which effect should be used for each individual page.\n\n### Fade in text after delay\n\nDefine whether text and gradient of a page should appear with a delay. \nUsers will first see the background image, then title, tagline and subtitle until finally the content text will be displayed.\n\nThere are three different durations of delay: short = 1 second, medium = 3 seconds, long = 5 seconds.\n\nThis feature fits best for intros or beginnings of chapters.\n\n### Description for the overview\n\nYou can enter a text, which appears when the user navigates\nwith the mouse over the particular page. This text matches\nwith the mouse-over-text for the page-type „Page References“\nas well as with the text, which appears when you share the\nPageflow in social networks."
       page_types:
         menu_item: Page Types
-        text: ! '# Page Types
-
+        text: |
+          # Page Types
 
           By choosing the page type, you determine what type of media
-
           files are used for which page. For each type of page you can
-
           use different settings.  For further information please
-
           click on a page type on the left column.
-
-'
       publishing:
         menu_item: Publishing
-        text: ! "# Publishing\n\nClick on the „Publish“ button to publish your Pageflow. A\nPageflow can be published at any point in time. \n\nBesides this, there is the possibility to publish Pageflows with \na password protection. Just activate „Protect with password“. \nPageflow uses the name of the account as user name and \nautomatically generates a password, which can be changed afterwords. \n\nAlready published stories can also be protected with a password by \npublishing another version - the other way round works as well. \nFor this please just click on the „Publishing“ button. The following \nsteps will then be shown and explained within the dialog window.\n\nPublished\nPageflows can also be unpublished manually at any time. If a\nPageflow has already been published, changes will not be\nshown until you publish your report again.  A Pageflow can\nonly be edited by one author at one time.\n\nThumbnail for embedding the Pageflow on external websites\nAfter publishing your Pageflow, the system generates a\nthumbnail, which can be embedded as an iframe to the\nhyperlink of another website. By means of the code, the size\nof the iframe can be adjusted. The minimum size is a height\n150px and a width of 220px."
+        text: "# Publishing\n\nClick on the „Publish“ button to publish your Pageflow. A\nPageflow can be published at any point in time. \n\nBesides this, there is the possibility to publish Pageflows with \na password protection. Just activate „Protect with password“. \nPageflow uses the name of the account as user name and \nautomatically generates a password, which can be changed afterwords. \n\nAlready published stories can also be protected with a password by \npublishing another version - the other way round works as well. \nFor this please just click on the „Publishing“ button. The following \nsteps will then be shown and explained within the dialog window.\n\nPublished\nPageflows can also be unpublished manually at any time. If a\nPageflow has already been published, changes will not be\nshown until you publish your report again.  A Pageflow can\nonly be edited by one author at one time.\n\nThumbnail for embedding the Pageflow on external websites\nAfter publishing your Pageflow, the system generates a\nthumbnail, which can be embedded as an iframe to the\nhyperlink of another website. By means of the code, the size\nof the iframe can be adjusted. The minimum size is a height\n150px and a width of 220px."
       storylines:
         menu_item: Storylines
-        text: ! "# Storylines\n\nBesides the linear narrative form from „top to bottom“, additional storylines and excursions can be used to tell further aspects of a story. For this create a new „internal link“ page and connect these links to a new storyline. Thereby you can choose at which page such a branch will lead back to the main storyline or even links to another part of a story. \n\nCreate these storylines within the „Outline“ by clicking on the plus-button next to the storyline menu. A new chapter will then be added in which you have to create the new pages of your excursion. For every storyline a „Parent page“ can be chosen, to where a user will be led, when he scrolls at the end of a storyline. Define this target page by clicking on the pen symbol.\n\n*Notice: Only the chosen storyline will be shown while editing it. Click the menu „Storyline“ to go back to the other chapters.*"
+        text: "# Storylines\n\nIn addition to linear narrations from top to bottom, further storylines can be used as non linear excursions to enlarge upon parts of a story. A „Storyline“ consists of chapters and pages, which users scroll through. Distinguishable is the so called main storyline from further subordinate ones. The user starts off in the main storyline and can then navigate to different excursions.\n\nTo create such an excursion from the main storyline use one of the „Link“ pages (Mosaic, Collage, Hotspot) and create the desired connections via „Links“.\n\nBy choosing a „Parent page“ you can determine to which page users return after scrolling the storyline´s last page.\n\nTransitions to subordinate storylines are visually supported by a horizontal animation as the default setting for entering and leaving. \n\nStorylines are created by clicking onto the plus button next to the storyline menu. Thereby a new chapter opens automatically in which further pages can be added. \n\n\n### Parent pages\n\nIn every subordinate  storyline a „Parent page“ must be determined to define where users land when scrolling back.\n\nThis target page can be chosen by clicking on the pen symbol next to the storyline menu. When a „Parent page“ is defined, a back button will be shown automatically in the subordinate storyline that will always lead users back to the „Parent page“.\n\n\n### Chapter hierarchy\n\nThe use of more than one „subordinary“ storylines and the definition of „Parent pages“ leads to a chapter hierarchy as known from books:\n\n1. (Main storyline), 1.1. (Superior sub storyline), 1.1.1. (Subordinate sub storyline) and so on.\n\nThis hierarchy can be edited afterwards by clicking on the pen symbol next to the storyline menu. A subordinate storyline can be turned into the main storyline as well.\n\n\n### Scroll successors\n\nIf you want to lead users from a last page of a subordinate chapter (1.1.1) to another position than\nthe „Parent page“ (e.g. to 2.1) you can define a „Scroll successor“. Therefore click on the blue pen symbol within the storyline settings. As an example the following sequence might be imaginable: 1 -> 1.1 -> 1.1.1 -> 2.1\n\nAttention: While editing only the selected chapter will be shown in the sidebar. To switch to the other chapters click onto the storyline menu."
     helpers:
       entries:
         global_links: Global links
@@ -1480,9 +1369,37 @@ en:
       fade_to_black: Fade to black
       scroll: Scroll
       scroll_left: Scroll left
+      scroll_over_from_left: Scroll over from left
+      scroll_over_from_right: Scroll over from right
       scroll_right: Scroll right
     quotas:
       exhausted: Quota exhausted
+    storyline_attributes:
+      main:
+        inline_help: Turns the first page of this storyline into the start page of the entry.
+        inline_help_disabled: The first page of this storyline is the start page of the entry.
+        label: Main storyline
+      navigation_bar_mode:
+        label: Navigation bar mode
+        values:
+          current_storyline: Current storyline
+          inherit_from_parent: Display parent storyline
+          non: Hide
+      page_transition:
+        inline_help: By default, comming from the parent page, the first page of the storyline is scrolled in from the right. When clicking the back button, pages of the storyline are scrolled back out to the right. Here you can choose an alternative effect.
+        label: Transition effect
+      parent_page_perma_id:
+        inline_help: The user is redirected to this page when reaching the end of the storyline or when clicking the back button. The parent page settings determine the chapter hierachy. For more information on the chapter hierarchy see the 'Storylines' help topic.
+        label: Parent page
+      scroll_successor_id:
+        inline_help: Page to go to when scrolling down from the last page of the storyline. By default the user is brought back to the storyline's parent page.
+        label: Scroll successor
+      title:
+        label: Title
+    storylines:
+      feature_name: Storylines
+      main: Main storyline
+      untitled: Unnamed storyline
     ui:
       configuration_editor:
         tabs:
@@ -1508,24 +1425,26 @@ en:
           title: Here you can choose a title for your Pageflow. It will be shown on the title bar of the browser window. It also acts as an indicator for search engines once the report is published.
         pageflow/page:
           additional_title: The info box appears close to the player controls.
+          atmo_audio_file_id: Choose an audio file, that shall be played in the background. If you want this audio to continue playing on following pages, just choose the same file again there.
+          atmo_during_playback: Choose which way the atmo shall behave during playback of this page's main media.
           delayed_text_fade_in: Fades in the page contents after a delay such that the background image can be viewed initially.
           description: You can enter a text, which appears when the user navigates with the mouse over the particular page. This text matches with the mouse-over-text for the page-type „Page References“ as well as with the text, which appears when you share the Pageflow in social networks.
-          gradient_opacity: ! 'The opacity of the gradient improves the legibility of the text on background-videos or pictures.
+          gradient_opacity: |-
+            The opacity of the gradient improves the legibility of the text on background-videos or pictures.
 
+            You can use the slider to darken or lighten up the background until the contrast between text and background is optimal.
+          invert: |-
+            If you invert the colors, „bright“ and „dark“ are interchanged. Thus the normally white font changes into black.
 
-            You can use the slider to darken or lighten up the background until the contrast between text and background is optimal.'
-          invert: ! 'If you invert the colors, „bright“ and „dark“ are interchanged. Thus the normally white font changes into black.
-
-
-            A general rule: Bright font for dark pictures, dark font for bright pictures.'
+            A general rule: Bright font for dark pictures, dark font for bright pictures.
           mobile_poster_image_id: This image is used as poster image on mobile devices.
-          text: ! 'The text-block can be formatted with the buttons underneath the input field. [B= bold / I=italic / U=underlined / infinity symbol= Link/URL to an external website]
+          text: |-
+            The text-block can be formatted with the buttons underneath the input field. [B= bold / I=italic / U=underlined / infinity symbol= Link/URL to an external website]
 
-
-            All changes are visible in the left front-end-view as soon as you leave the appropriate input field in the editor.'
-          thumbnail_image_id: ! 'The thumbnail replaces the automatically generated preview-picture in the navigation and overview.
-
-'
+            All changes are visible in the left front-end-view as soon as you leave the appropriate input field in the editor.
+          thumbnail_image_id: |
+            The thumbnail replaces the automatically generated preview-picture in the navigation and overview.
+          transition: Choose the animation, that will be used when users scroll to this page.
       templates:
         inputs:
           file_input:
@@ -1547,30 +1466,30 @@ en:
           display_help: Display help
         inputs:
           file_input_view:
-            none: (none)
+            none: "(none)"
           proxy_url_input_view:
             http_error: The given URL could not be fetched. (The server answered with a HTTP status code ' %{status}')
             url_validation: Checking URL...
           select_input_view:
-            none: (none)
+            none: "(none)"
             placeholder: Default (%{text})
           text_input_view:
             required_field: Required field
           url_input_view:
             required_field: Required field
-            supported_vendors: ! 'Following providers are supported:'
-            url_hint: ! 'URL must start with http:// '
+            supported_vendors: 'Following providers are supported:'
+            url_hint: 'URL must start with http:// '
             url_hint_https: URL must start with http:// or https://
     unauthorized: You are not authorized to view this page.
     user_mailer:
       invitation:
         ending: Thank you and have fun,
         greeting: Your Pageflow Team
-        instruction: ! 'Welcome to Pageflow. Please use the following link to set your personal password. You may use your email address to sign-in. '
+        instruction: 'Welcome to Pageflow. Please use the following link to set your personal password. You may use your email address to sign-in. '
         salutation: Hello %{first_name}
         subject: Your Pageflow Invitation
     widgets:
-      none: (none)
+      none: "(none)"
       roles:
         analytics: Tracking
         mobile_navigation: Mobile navigation
@@ -1580,21 +1499,21 @@ en:
         default_navigation: Navigation bar with thumbnails
   support:
     array:
-      last_word_connector: ! ', and '
-      two_words_connector: ! ' and '
-      words_connector: ! ', '
+      last_word_connector: ", and "
+      two_words_connector: " and "
+      words_connector: ", "
   time:
     am: am
     formats:
-      date: ! '%Y-%m-%d'
-      default: ! '%a, %d %b %Y %H:%M:%S %z'
-      long: ! '%B %d, %Y %H:%M'
-      short: ! '%d %b %H:%M'
+      date: "%Y-%m-%d"
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%B %d, %Y %H:%M"
+      short: "%d %b %H:%M"
     pm: pm
   views:
     pagination:
-      first: ! '|<'
-      last: ! '>|'
-      next: ! '>>'
-      previous: <<
-      truncate: ! '...'
+      first: "|<"
+      last: ">|"
+      next: ">>"
+      previous: "<<"
+      truncate: "..."
