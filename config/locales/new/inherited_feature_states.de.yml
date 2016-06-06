@@ -1,0 +1,8 @@
+de:
+  pageflow:
+    admin:
+      features:
+        states:
+          default: 'Standard (%{inherited})'
+      resource_tabs:
+        features: "Features"

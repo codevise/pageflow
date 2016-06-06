@@ -71,6 +71,30 @@ module Pageflow
 
         expect(result).to eq(true)
       end
+
+      it 'raises helpful error when trying to enable unknown feature by default' do
+        pageflow = PageflowModule.new
+
+        pageflow.configure do |config|
+          config.features.enable_by_default('unknown')
+          config.features.register('other_stuff')
+        end
+
+        expect {
+          pageflow.finalize!
+        }.to raise_error(/unknown feature/)
+      end
+
+      it 'does not raise error when enabling feature by default before registering it' do
+        pageflow = PageflowModule.new
+
+        expect {
+          pageflow.configure do |config|
+            config.features.enable_by_default('some_stuff')
+            config.features.register('some_stuff')
+          end
+        }.not_to raise_error
+      end
     end
 
     describe '#config_for' do

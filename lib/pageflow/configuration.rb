@@ -286,6 +286,11 @@ module Pageflow
     end
 
     # @api private
+    def lint!
+      @features.lint!
+    end
+
+    # @api private
     def theming_url_options(theming)
       options = public_entry_url_options
       options.respond_to?(:call) ? options.call(theming) : options
