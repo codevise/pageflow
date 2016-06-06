@@ -14,19 +14,6 @@ module Pageflow
                                                disabled: disabled_ids(accounts, current_account))
     end
 
-    def jquery_for_disabling_on_change
-      %|$('option[value=""]').prop('selected', 'selected')
-        var account = $(this).find('option:selected').text();
-        $('#entry_folder_input').val(0).find('optgroup').each(function(){
-          var optgroup_account = this.label,
-          isCorrectAccount = (optgroup_account === account);
-          $(this).children('option').each(function(){
-            var $option = $(this);
-            $option.prop('disabled', !isCorrectAccount);
-          });
-        });|
-    end
-
     private
 
     def disabled_ids(accounts, current_account)

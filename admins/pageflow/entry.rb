@@ -75,7 +75,7 @@ module Pageflow
           f.input :account,
                   collection: eligible_accounts,
                   include_blank: false,
-                  input_html: {onchange: jquery_for_disabling_on_change}
+                  input_html: {class: 'entry_account_input'}
         end
 
         unless f.object.new_record?
