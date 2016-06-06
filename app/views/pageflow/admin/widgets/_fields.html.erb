@@ -1,0 +1,9 @@
+<% widgets.each do |widget| %>
+  <%= form.semantic_fields_for(widget) do |fields| %>
+    <%= fields.input(:type_name,
+                     label: t(widget.role, scope: 'pageflow.widgets.roles'),
+                     input_html: {name: "widgets[#{widget.role}]"},
+                     include_blank: t('pageflow.widgets.none'),
+                     collection: admin_widget_types_collection_for_role(config, widget.role)) %>
+  <% end %>
+<% end %>
