@@ -27,7 +27,7 @@ module Pageflow
       end
 
       def create
-        super do |success, _failure|
+        super do |success|
           success.html { redirect_to(admin_entries_path) }
         end
       end
@@ -46,13 +46,13 @@ module Pageflow
 
       def permitted_params
         result = params.permit(folder: [:name, :account_id])
-        restrict_attributes(params[:id], result[:folder]) if result[:folder]
+        restrict_attributes(result[:folder]) if result[:folder]
         result
       end
 
       private
 
-      def restrict_attributes(_id, attributes)
+      def restrict_attributes(attributes)
         if params[:folder] && params[:folder][:account_id] &&
            AccountPolicy::Scope.new(current_user, Account).folder_addable.map(&:id)
              .include?(params[:folder][:account_id].to_i) &&

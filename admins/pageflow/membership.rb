@@ -16,7 +16,7 @@ module Pageflow
 
       def permitted_params
         result = params.permit(membership: [:user_id, :entity_id, :entity_type, :role])
-        restrict_attributes(params[:id], result[:membership]) if result[:membership]
+        restrict_attributes(result[:membership]) if result[:membership]
         result
       end
 
@@ -57,7 +57,7 @@ module Pageflow
 
       private
 
-      def restrict_attributes(_id, attributes)
+      def restrict_attributes(attributes)
         if attributes[:role].present?
           role = attributes.delete(:role).to_sym
         end
