@@ -44,9 +44,7 @@ module Pageflow
             end
           end
           if AccountPolicy::Scope.new(current_user, Pageflow::Account).member_addable &&
-             membership_users_collection(resource,
-                                         Membership.new(entity: resource),
-                                         Membership.new).any?
+             membership_users_collection(resource, Membership.new(entity: resource)).any?
             span do
               link_to(I18n.t('pageflow.admin.users.add'),
                       new_admin_account_membership_path(account, entity_type: :account),

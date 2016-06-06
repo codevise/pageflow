@@ -50,9 +50,7 @@ module Pageflow
         end
         para text_node I18n.t('pageflow.admin.resource_tabs.account_editor_hint')
         if authorized?(:add_member_to, entry) &&
-           membership_users_collection(resource,
-                                       Membership.new(entity: resource),
-                                       Membership.new).any?
+           membership_users_collection(resource, Membership.new(entity: resource)).any?
           span do
             link_to(I18n.t('pageflow.admin.users.add'),
                     new_admin_entry_membership_path(entry, entity_type: :entry),

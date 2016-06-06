@@ -1,8 +1,8 @@
 module Pageflow
   module Admin
     module MembershipsHelper
-      def membership_entries_collection(parent, resource, f_object)
-        if f_object.new_record?
+      def membership_entries_collection(parent, resource)
+        if resource.new_record?
           if parent.class.to_s == 'User' || parent.class.to_s == 'Pageflow::InvitedUser'
             accounts = AccountPolicy::Scope.new(current_user, Pageflow::Account)
                        .entry_creatable
@@ -24,8 +24,8 @@ module Pageflow
         end
       end
 
-      def membership_accounts_collection(parent, resource, f_object)
-        if f_object.new_record?
+      def membership_accounts_collection(parent, resource)
+        if resource.new_record?
           if parent.class.to_s == 'User' || parent.class.to_s == 'Pageflow::InvitedUser'
             accounts = AccountPolicy::Scope
                        .new(current_user, Account).member_addable.load
@@ -42,8 +42,8 @@ module Pageflow
         end
       end
 
-      def membership_users_collection(parent, resource, f_object)
-        if f_object.new_record?
+      def membership_users_collection(parent, resource)
+        if resource.new_record?
           accounts = AccountPolicy::Scope
                      .new(current_user, Pageflow::Account).member_addable.load
           MembershipFormCollection.new(parent,

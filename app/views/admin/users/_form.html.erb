@@ -18,8 +18,7 @@
         .new(current_user, Pageflow::Account).member_addable.any? && @user.new_record? %>
       <%= f.input :initial_account,
                   collection: membership_accounts_collection(@user,
-                                                             Pageflow::Membership.new(user: @user),
-                                                             Pageflow::Membership.new),
+                                                             Pageflow::Membership.new(user: @user)),
                   include_blank: false,
                   selected: (params[:user][:initial_account] if params[:user].present?) %>
       <%= f.input :initial_role,

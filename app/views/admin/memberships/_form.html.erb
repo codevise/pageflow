@@ -1,7 +1,7 @@
 <%= admin_form_for [:admin, parent, resource] do |f| %>
   <%= f.inputs class: 'inputs side_hint_container' do %>
     <%= f.input :user,
-                collection: membership_users_collection(parent, resource, f.object),
+                collection: membership_users_collection(parent, resource),
                 include_blank: false,
                 input_html: { disabled: !f.object.new_record? || parent_type == :user }%>
     <% if params[:entity_type].to_sym == :entry %>

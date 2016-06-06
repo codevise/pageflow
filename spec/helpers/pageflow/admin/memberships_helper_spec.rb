@@ -8,12 +8,12 @@ module Pageflow
           it 'returns pairs of formal name and id for new membership' do
             user = create(:user, first_name: 'Randolph', last_name: 'Doe')
             account = create(:account)
-            membership = create(:membership, entity: account, role: :member, user: user)
+            create(:membership, entity: account, role: :member, user: user)
             new_membership = Membership.new
             entry = create(:entry, account: account)
             expect(helper).to receive(:current_user).and_return(user)
 
-            pairs = helper.membership_users_collection(entry, membership, new_membership)
+            pairs = helper.membership_users_collection(entry, new_membership)
 
             expect(pairs).to eq([['Doe, Randolph', user.id]])
           end
@@ -25,7 +25,7 @@ module Pageflow
             create(:membership, entity: account, role: :member, user: create(:user))
             entry = create(:entry, account: account)
 
-            pairs = membership_users_collection(entry, membership, membership)
+            pairs = membership_users_collection(entry, membership)
 
             expect(pairs).to eq([['Doe, Rudolf', user.id]])
           end
@@ -34,11 +34,11 @@ module Pageflow
             account = create(:account)
             user = create(:user, first_name: 'John', last_name: 'Doe')
             entry = create(:entry, account: account)
-            membership = create(:membership, entity: entry, role: :member, user: user)
+            create(:membership, entity: entry, role: :member, user: user)
             new_membership = Membership.new
             expect(helper).to receive(:current_user).and_return(user)
 
-            pairs = helper.membership_users_collection(entry, membership, new_membership)
+            pairs = helper.membership_users_collection(entry, new_membership)
 
             expect(pairs).to eq([])
           end
@@ -48,12 +48,12 @@ module Pageflow
           it 'returns pair of formal name and id for new membership' do
             user = create(:user, first_name: 'Randolph', last_name: 'Doe')
             account = create(:account)
-            membership = create(:membership, entity: account, role: :member, user: user)
+            create(:membership, entity: account, role: :member, user: user)
             new_membership = Membership.new
             create(:entry, account: account)
             expect(helper).to receive(:current_user).and_return(user)
 
-            pairs = helper.membership_users_collection(user, membership, new_membership)
+            pairs = helper.membership_users_collection(user, new_membership)
 
             expect(pairs).to eq([['Doe, Randolph', user.id]])
           end
@@ -65,7 +65,7 @@ module Pageflow
             create(:membership, entity: account, role: :member, user: create(:user))
             create(:entry, account: account)
 
-            pairs = membership_users_collection(user, membership, membership)
+            pairs = membership_users_collection(user, membership)
 
             expect(pairs).to eq([['Doe, Rudolf', user.id]])
           end
@@ -81,7 +81,7 @@ module Pageflow
             create(:entry, account: account)
             expect(helper).to receive(:current_user).and_return(account_manager)
 
-            pairs = helper.membership_users_collection(account, new_membership, new_membership)
+            pairs = helper.membership_users_collection(account, new_membership)
 
             expect(pairs).to eq([['Doe, Randolph', user.id]])
           end
@@ -93,7 +93,7 @@ module Pageflow
             create(:membership, entity: account, role: :member, user: create(:user))
             create(:entry, account: account)
 
-            pairs = membership_users_collection(account, membership, membership)
+            pairs = membership_users_collection(account, membership)
 
             expect(pairs).to eq([['Doe, Rudolf', user.id]])
           end
@@ -102,11 +102,11 @@ module Pageflow
             account = create(:account)
             user = create(:user, first_name: 'John', last_name: 'Doe')
             entry = create(:entry, account: account)
-            membership = create(:membership, entity: entry, role: :member, user: user)
+            create(:membership, entity: entry, role: :member, user: user)
             new_membership = Membership.new
             expect(helper).to receive(:current_user).and_return(user)
 
-            pairs = helper.membership_users_collection(account, membership, new_membership)
+            pairs = helper.membership_users_collection(account, new_membership)
 
             expect(pairs).to eq([])
           end
@@ -119,11 +119,10 @@ module Pageflow
             user = create(:user)
             account_manager = create(:user)
             account = create(:account, name: 'TVcorp', with_manager: account_manager)
-            membership = create(:membership)
             new_membership = Membership.new
             expect(helper).to receive(:current_user).and_return(account_manager)
 
-            pairs = helper.membership_accounts_collection(user, membership, new_membership)
+            pairs = helper.membership_accounts_collection(user, new_membership)
 
             expect(pairs).to eq([['TVcorp', account.id]])
           end
@@ -135,7 +134,7 @@ module Pageflow
             create(:account, with_manager: account_manager)
             membership = create(:membership, entity: account)
 
-            pairs = helper.membership_accounts_collection(user, membership, membership)
+            pairs = helper.membership_accounts_collection(user, membership)
 
             expect(pairs).to eq([['Radiocorp', account.id]])
           end
@@ -144,11 +143,11 @@ module Pageflow
             user = create(:user)
             account_manager = create(:user)
             account = create(:account, name: 'Mediacorp', with_manager: account_manager)
-            membership = create(:membership, entity: account, role: :member, user: user)
+            create(:membership, entity: account, role: :member, user: user)
             new_membership = Membership.new
             expect(helper).to receive(:current_user).and_return(account_manager)
 
-            pairs = helper.membership_accounts_collection(user, membership, new_membership)
+            pairs = helper.membership_accounts_collection(user, new_membership)
 
             expect(pairs).to eq([])
           end
@@ -159,10 +158,9 @@ module Pageflow
             create(:user)
             account_manager = create(:user)
             account = create(:account, name: 'TVcorp', with_manager: account_manager)
-            membership = create(:membership)
             new_membership = Membership.new
 
-            pairs = helper.membership_accounts_collection(account, membership, new_membership)
+            pairs = helper.membership_accounts_collection(account, new_membership)
 
             expect(pairs).to eq([['TVcorp', account.id]])
           end
@@ -174,7 +172,7 @@ module Pageflow
             create(:account, with_manager: account_manager)
             membership = create(:membership, entity: account)
 
-            pairs = helper.membership_accounts_collection(account, membership, membership)
+            pairs = helper.membership_accounts_collection(account, membership)
 
             expect(pairs).to eq([['Radiocorp', account.id]])
           end
@@ -186,10 +184,9 @@ module Pageflow
            'with Entry as parent for new membership' do
           account = create(:account)
           entry = create(:entry, account: account, title: 'My Pageflow')
-          membership = create(:membership)
           new_membership = Membership.new
 
-          pairs = membership_entries_collection(entry, membership, new_membership)
+          pairs = membership_entries_collection(entry, new_membership)
 
           expect(pairs).to eq([['My Pageflow', entry.id]])
         end
@@ -202,7 +199,7 @@ module Pageflow
           new_membership = Membership.new
           expect(helper).to receive(:current_user).and_return(create(:user, :manager, on: account))
 
-          collection = helper.membership_entries_collection(user, new_membership, new_membership)
+          collection = helper.membership_entries_collection(user, new_membership)
 
           expect(collection).to include('Codevise Ltd.')
           expect(collection).to include('My Pageflow')
@@ -216,7 +213,7 @@ module Pageflow
           create(:entry, title: 'Raucous title', with_previewer: user)
           membership = create(:membership, user: user, role: :previewer, entity: entry)
 
-          pairs = helper.membership_entries_collection(user, membership, membership)
+          pairs = helper.membership_entries_collection(user, membership)
 
           expect(pairs).to eq([['My Pageflow', entry.id]])
         end
@@ -226,11 +223,11 @@ module Pageflow
           entry = create(:entry, account: account, title: 'My Pageflow')
           create(:entry, account: account, title: 'Not mine')
           user = create(:user)
-          membership = create(:membership, entity: entry, role: :previewer, user: user)
+          create(:membership, entity: entry, role: :previewer, user: user)
           new_membership = Membership.new
           expect(helper).to receive(:current_user).and_return(create(:user, :manager, on: account))
 
-          pairs = helper.membership_entries_collection(user, membership, new_membership)
+          pairs = helper.membership_entries_collection(user, new_membership)
 
           expect(pairs).not_to include('My Pageflow')
         end
