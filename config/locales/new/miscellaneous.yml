@@ -36,6 +36,9 @@ de:
         accounts: Konten
         account_editor_hint: Auf Kontoebene zugeordnete Benutzer sind hier nicht aufgeführt
       users:
+        role_hint:
+          admin: "DELETED"
+          others: "DELETED"
         no_entries: Keine Beiträge
         no_accounts: Keine Konten
         no_account_manager_hint: Nutzer, deren Konto Du nicht administrierst, sind hier nicht aufgeführt

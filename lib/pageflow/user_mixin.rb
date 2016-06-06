@@ -5,8 +5,6 @@ module Pageflow
 
     include Suspendable
 
-    attr_accessor :initial_account, :initial_role
-
     included do
       has_many :memberships, dependent: :destroy, class_name: 'Pageflow::Membership'
       has_many :entries,
