@@ -2,6 +2,50 @@ require 'spec_helper'
 
 module Pageflow
   describe PagesHelper do
+    describe '#render_page_template' do
+      let(:page_type_class) do
+        Class.new(Pageflow::PageType) do
+          name 'test'
+
+          def template_path
+            'pageflow/test/page'
+          end
+        end
+      end
+
+      it 'renders page template given by page type' do
+        Pageflow.config.page_types.register(page_type_class.new)
+        page = build(:page, template: 'test')
+
+        stub_template('pageflow/test/page.html.erb' => '<div>test page</div>')
+        result = helper.render_page_template(page)
+
+        expect(result).to include('<div>test page</div>')
+      end
+
+      it 'passes configuration as local' do
+        Pageflow.config.page_types.register(page_type_class.new)
+        page = build(:page, template: 'test', configuration: {
+                       'text' => 'Some text'
+                     })
+
+        stub_template('pageflow/test/page.html.erb' => '<%= configuration["text"] %>')
+        result = helper.render_page_template(page)
+
+        expect(result).to include('Some text')
+      end
+
+      it 'passes page as local' do
+        Pageflow.config.page_types.register(page_type_class.new)
+        page = build(:page, template: 'test')
+
+        stub_template('pageflow/test/page.html.erb' => 'Page <%= page.template %>')
+        result = helper.render_page_template(page)
+
+        expect(result).to include('Page test')
+      end
+    end
+
     describe '#page_css_class' do
       it 'contains invert class if invert configuration option is present' do
         page = build(:page, :configuration => {'invert' => true})
