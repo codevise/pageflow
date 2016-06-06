@@ -1,4 +1,11 @@
 en:
+  devise:
+    failure:
+      admin_user:
+        unauthenticated: Please log in using a system administrator account.
+    sessions:
+      admin_user:
+        signed_in: Successfully signed in as system administrator.
   pageflow:
     admin:
       users:

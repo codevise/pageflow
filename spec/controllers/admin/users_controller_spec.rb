@@ -135,7 +135,7 @@ module Pageflow
                user: {email: 'existing_user@example.com',
                       initial_role: :member,
                       initial_account: account}
-        end.to change { account.users.count }
+        end.not_to change { account.users.count }
       end
 
       it 'creates account membership if e-mail unknown but quota allows it' do

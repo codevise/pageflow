@@ -1,13 +1,4 @@
 de:
-  activerecord:
-    attributes:
-      user:
-        admin: System-Administrator
-        admin?: System-Administrator
-    models:
-      admin_user:
-        one: System-Administrator
-        other: System-Administratoren
   devise:
     failure:
       admin_user:

@@ -7,6 +7,8 @@ de:
       pageflow/entry:
         own_role: Rolle
       user:
+        admin: System-Administrator
+        admin?: System-Administrator
         initial_role: Rolle
         initial_account: Konto
     errors:
@@ -15,6 +17,10 @@ de:
           attributes:
             folder:
               must_be_same_account: Ordner muss zu gleichem Konto gehören wie Beitrag
+    models:
+      admin_user:
+        one: System-Administrator
+        other: System-Administratoren
   pageflow:
     admin:
       entries:
@@ -44,6 +50,8 @@ en:
       pageflow/entry:
         own_role: Role
       user:
+        admin: System administrator
+        admin?: System administrator
         initial_role: Role
         initial_account: Account
     errors:
@@ -52,6 +60,10 @@ en:
           attributes:
             folder:
               must_be_same_account: Folder must belong to same account as entry
+    models:
+      admin_user:
+        one: System administrator
+        other: System administrators
   pageflow:
     admin:
       entries:

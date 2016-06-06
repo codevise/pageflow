@@ -44,9 +44,12 @@ module Pageflow
           row :locale do
             I18n.t('language', locale: user.locale)
           end
-          if user.admin?
-            row :admin, class: 'admin' do
-              I18n.t('pageflow.admin.users.roles.admin')
+          admin_class = user.admin? ? 'admin' : ''
+          row :admin, class: admin_class do
+            if user.admin?
+              I18n.t('active_admin.status_tag.yes')
+            else
+              '-'
             end
           end
         end
@@ -145,24 +148,19 @@ module Pageflow
       end
 
       def create_resource(user)
+        verify_quota!(:users, params[:user][:account])
         known_user = User.find_by(email: resource.email)
+        membership_user = known_user ? known_user : resource
+        membership_params = {user: membership_user,
+                             entity_id: resource.initial_account,
+                             entity_type: 'Pageflow::Account'}
+        if resource.initial_role.present?
+          membership_params.merge!(role: resource.initial_role.to_sym)
+        end
+        Membership.create(membership_params)
         if known_user
-          membership_params = {user: known_user,
-                               entity_id: resource.initial_account,
-                               entity_type: 'Pageflow::Account'}
-          if resource.initial_role.present?
-            membership_params.merge!(role: resource.initial_role.to_sym)
-          end
-          Membership.create(membership_params)
+          known_user
         else
-          verify_quota!(:users, params[:user][:account])
-          membership_params = {user: resource,
-                               entity_id: resource.initial_account,
-                               entity_type: 'Pageflow::Account'}
-          if resource.initial_role.present?
-            membership_params.merge!(role: resource.initial_role.to_sym)
-          end
-          Membership.create(membership_params)
           super
         end
       end
