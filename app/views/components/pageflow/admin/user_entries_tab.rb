@@ -46,7 +46,7 @@ module Pageflow
               end
             end
           end
-          render 'add_membership_button_if_needed', entity_type: 'entry'
+          add_membership_button_if_needed(user, 'entry')
         end
       end
     end
