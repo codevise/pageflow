@@ -43,8 +43,6 @@ de:
         no_accounts: Keine Konten
         no_account_manager_hint: Nutzer, deren Konto Du nicht administrierst, sind hier nicht aufgeführt
         user_account_tab_hint: Konten, die Du nicht administrierst, sind hier nicht aufgeführt
-    parent_page_box:
-      widget_type_name: Erscheinungsbild-Bestandteil
 en:
   activerecord:
     attributes:
@@ -89,5 +87,3 @@ en:
         no_accounts: No members
         no_account_manager_hint: Users whose account you do not manage are not listed here
         user_account_tab_hint: Accounts which you do not manage are not listed here
-    parent_page_box:
-      widget_type_name: Appearance Feature
