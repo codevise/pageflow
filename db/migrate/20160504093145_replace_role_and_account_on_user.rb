@@ -14,8 +14,7 @@ class ReplaceRoleAndAccountOnUser < ActiveRecord::Migration
         set_admin_to_true_for_each_admin
       end
       dir.down do
-        set_role
-        set_account_id
+        raise ActiveRecord::IrreversibleMigration
       end
     end
 
@@ -45,64 +44,6 @@ class ReplaceRoleAndAccountOnUser < ActiveRecord::Migration
   def set_admin_to_true_for_each_admin
     execute(<<-SQL)
       UPDATE users SET users.admin = TRUE WHERE users.role = 'admin'
-    SQL
-  end
-
-  def set_account_id
-    execute(<<-SQL)
-      UPDATE users INNER JOIN pageflow_memberships ON
-      pageflow_memberships.entity_type = 'Pageflow::Account' AND
-      pageflow_memberships.role = 'member' AND
-      users.id = pageflow_memberships.user_id
-      SET users.account_id = pageflow_memberships.entity_id
-    SQL
-    execute(<<-SQL)
-      UPDATE users INNER JOIN pageflow_memberships ON
-      pageflow_memberships.entity_type = 'Pageflow::Account' AND
-      pageflow_memberships.role = 'previewer' AND
-      users.id = pageflow_memberships.user_id
-      SET users.account_id = pageflow_memberships.entity_id
-    SQL
-    execute(<<-SQL)
-      UPDATE users INNER JOIN pageflow_memberships ON
-      pageflow_memberships.entity_type = 'Pageflow::Account' AND
-      pageflow_memberships.role = 'editor' AND
-      users.id = pageflow_memberships.user_id
-      SET users.account_id = pageflow_memberships.entity_id
-    SQL
-    execute(<<-SQL)
-      UPDATE users INNER JOIN pageflow_memberships ON
-      pageflow_memberships.entity_type = 'Pageflow::Account' AND
-      pageflow_memberships.role = 'publisher' AND
-      users.id = pageflow_memberships.user_id
-      SET users.account_id = pageflow_memberships.entity_id
-    SQL
-    execute(<<-SQL)
-      UPDATE users INNER JOIN pageflow_memberships ON
-      pageflow_memberships.entity_type = 'Pageflow::Account' AND
-      pageflow_memberships.role = 'manager' AND
-      users.id = pageflow_memberships.user_id
-      SET users.account_id = pageflow_memberships.entity_id
-    SQL
-    execute(<<-SQL)
-      DELETE FROM pageflow_memberships
-      WHERE pageflow_memberships.entity_type = 'Pageflow::Account'
-    SQL
-  end
-
-  def set_role
-    execute(<<-SQL)
-      UPDATE users SET users.role = 'editor'
-    SQL
-    execute(<<-SQL)
-      UPDATE users INNER JOIN pageflow_memberships ON
-      users.id = pageflow_memberships.user_id AND
-      pageflow_memberships.entity_type = 'Pageflow::Account' AND
-      pageflow_memberships.role = 'manager'
-      SET users.role = 'account_manager'
-    SQL
-    execute(<<-SQL)
-      UPDATE users SET users.role = 'admin' WHERE users.admin = TRUE;
     SQL
   end
 end
