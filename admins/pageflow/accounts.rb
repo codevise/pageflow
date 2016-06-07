@@ -21,10 +21,9 @@ module Pageflow
       column :users_count do |account|
         account.memberships.size if authorized?(:read, account)
       end
-      account_memberships = Membership.on_accounts.where(user: current_user)
-      account_roles = {}
-      account_memberships.each do |membership|
-        account_roles.merge!(membership.entity_id => membership.role)
+      account_memberships = current_user.memberships.on_accounts
+      account_roles = account_memberships.each_with_object({}) do |membership, roles|
+        roles.merge!(membership.entity_id => membership.role)
       end
       if authorized?(:see_own_role_on, :accounts)
         column :own_role do |account|
