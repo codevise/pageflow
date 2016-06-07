@@ -1,0 +1,101 @@
+en:
+  devise:
+    failure:
+      admin_user:
+        unauthenticated: Please log in using a system administrator account.
+    sessions:
+      admin_user:
+        signed_in: Successfully signed in as system administrator.
+  activerecord:
+    attributes:
+      pageflow/membership:
+        role: "Role"
+        account: 'Account'
+        entity: 'Entity'
+      pageflow/account:
+        own_role: Own Role
+      pageflow/entry:
+        own_role: Role
+      user:
+        admin: System administrator
+        admin?: System administrator
+        initial_role: Role
+        initial_account: Account
+    errors:
+      models:
+        pageflow/entry:
+          attributes:
+            folder:
+              must_be_same_account: Folder must belong to same account as entry
+    models:
+      admin_user:
+        one: System administrator
+        other: System administrators
+    values:
+      pageflow/membership:
+        role:
+          member: 'Member'
+          previewer: 'Previewer'
+          editor: 'Editor'
+          publisher: 'Publisher'
+          manager: 'Manager'
+  pageflow:
+    admin:
+      account:
+        add: 'Add Account'
+      entry:
+        add: 'Add Entry'
+      entries:
+        members: Members
+      memberships:
+        on_account:
+          role:
+            hint_html: "You can assign roles on individual entries of this account to a <strong>Member</strong>.<br>A <strong>Previewer</strong> can additionally preview all entries of this account.<br>An <strong>Editor</strong> can additionally edit all entries of this account.<br>A <strong>Publisher</strong> can additionally publish all entries of this account.<br>A <strong>Manager</strong> can additionally set user roles on all entries of this account and edit them."
+        on_entry:
+          role:
+            hint_html: "A <strong>Previewer</strong> can preview this entry.<br>An <strong>Editor</strong> can additionally edit this entry.<br>A <strong>Publisher</strong> can additionally publish this entry.<br>A <strong>Manager</strong> can additionally set user roles on this entry and edit them."
+      resource_tabs:
+        accounts: Accounts
+        account_editor_hint: Users who are assigned on an account level are not listed here
+      users:
+        accounts: 'Accounts'
+        edit_role: 'Edit Role'
+        delete_account_membership_confirmation: "Really delete the account membership of this user?\n\nCAUTION: All of the user's entry memberships in this account are also deleted."
+        delete_entry_membership_confirmation: 'Really delete the entry membership of this user?'
+        roles:
+          account_manager: Konto-Administrator
+          admin: System-Administrator
+          member: 'Member'
+          previewer: 'Previewer'
+          publisher: 'Publisher'
+          manager: 'Manager'
+          accounts:
+            tooltip:
+              member: 'Can be assigned roles on entries of this account'
+              previewer: 'Can preview entries of this account'
+              editor: 'Can edit entries of this account'
+              publisher: 'Can publish entries of this account'
+              manager: 'Can set roles on this account'
+          entries:
+            tooltip:
+              previewer: 'Can preview this entry'
+              editor: 'Can edit this entry'
+              publisher: 'Can publish this entry'
+              manager: 'Can set roles on this entry'
+          own_role:
+            tooltip:
+              previewer: 'You can preview this entry'
+              editor: 'You can edit this entry'
+              publisher: 'You can publish this entry'
+              manager: 'You can set roles on this entry'
+        role_hint:
+          admin: "DELETED"
+          others: "DELETED"
+        no_entries: No stories
+        no_accounts: No members
+        no_account_manager_hint: Users whose account you do not manage are not listed here
+        user_account_tab_hint: Accounts which you do not manage are not listed here
+    editor:
+      views:
+        edit_entry_view:
+          cannot_publish: 'You do not have sufficient rights to publish this entry.'
