@@ -27,7 +27,7 @@
                   hint: t('pageflow.admin.memberships.on_account.role.hint_html'),
                   selected: (params[:user][:initial_role] if params[:user].present?) %>
     <% end %>
-    <%= f.input :admin if current_user.admin? %>
+    <%= f.input :admin if authorized?(:set_admin, current_user) %>
   <% end %>
   <%= f.actions %>
 <% end %>
