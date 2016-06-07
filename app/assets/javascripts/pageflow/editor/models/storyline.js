@@ -59,6 +59,10 @@ pageflow.Storyline = Backbone.Model.extend({
     return pageflow.pages.getByPermaId(this.parentPagePermaId());
   },
 
+  transitiveChildPages: function() {
+    return new pageflow.StorylineTransitiveChildPages(this, pageflow.storylines, pageflow.pages);
+  },
+
   addChapter: function(attributes) {
     var chapter = this.buildChapter(attributes);
     chapter.save();
