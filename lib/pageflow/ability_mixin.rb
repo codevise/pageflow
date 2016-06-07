@@ -84,10 +84,8 @@ module Pageflow
           AccountPolicy.new(user, account).update_theming_on_entry_of?
         end
 
-        if AccountPolicy::Scope.new(user, Account).entry_creatable.any?
-          can :create, Entry do |entry|
-            EntryPolicy.new(user, entry).create?
-          end
+        can :create, Entry do |entry|
+          EntryPolicy.new(user, entry).create?
         end
 
         can :manage, Chapter do |record|
