@@ -27,6 +27,8 @@ pageflow.PageItemView = Backbone.Marionette.ItemView.extend({
     this.$el.attr('data-perma-id', this.model.get('perma_id'));
 
     this.$el.toggleClass('active', this.model.get('active'));
+    this.$el.toggleClass('disabled',
+                         !!(this.options.isDisabled && this.options.isDisabled(this.model)));
     this.$el.toggleClass('display_in_navigation', !!this.model.configuration.get('display_in_navigation'));
     this.$el
       .removeClass(pageflow.editor.pageTypes.pluck('name').join(' '))
