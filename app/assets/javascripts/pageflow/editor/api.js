@@ -140,9 +140,13 @@ pageflow.EditorApi = pageflow.Object.extend({
     /**
      * Returns a promise which resolves to a page selected by the
      * user.
+     *
+     * Supported options:
+     * - isAllowed: function which given a page returns true or false depending on
+     *   whether the page is a valid selection
      */
-    this.selectPage = function() {
-      return pageflow.PageSelectionView.selectPage();
+    this.selectPage = function(options) {
+      return pageflow.PageSelectionView.selectPage(options);
     };
 
     /**

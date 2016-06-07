@@ -17,17 +17,25 @@ pageflow.PageSelectionView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    var options = this.options;
+
     this.subview(new pageflow.StorylinePickerView({
-      el: this.ui.storylines
+      el: this.ui.storylines,
+      pageItemViewOptions: {
+        isDisabled: function(page) {
+          return options.isAllowed && !options.isAllowed(page);
+        }
+      }
     }));
   }
 });
 
-pageflow.PageSelectionView.selectPage = function() {
+pageflow.PageSelectionView.selectPage = function(options) {
   return $.Deferred(function(deferred) {
     var view = new pageflow.PageSelectionView({
       model: pageflow.entry,
-      onSelect: deferred.resolve
+      onSelect: deferred.resolve,
+      isAllowed: options && options.isAllowed
     });
 
     view.on('close', function() {

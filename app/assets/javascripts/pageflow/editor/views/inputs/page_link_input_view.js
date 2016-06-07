@@ -1,6 +1,8 @@
 pageflow.PageLinkInputView = pageflow.ReferenceInputView.extend({
   choose: function() {
-    return pageflow.editor.selectPage();
+    return pageflow.editor.selectPage({
+      isAllowed: this.options.isAllowed
+    });
   },
 
   getTarget: function(permaId) {

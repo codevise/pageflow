@@ -80,6 +80,7 @@ pageflow.StorylinePickerView = Backbone.Marionette.Layout.extend({
       sortable: this.options.editable,
       chapterItemView: this.options.chapterItemView,
       pageItemView: this.options.pageItemView,
+      pageItemViewOptions: this.options.pageItemViewOptions,
       displayInNavigationHint: this.options.displayInNavigationHint
     }));
   },

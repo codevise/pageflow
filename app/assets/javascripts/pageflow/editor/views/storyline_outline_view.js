@@ -24,9 +24,9 @@ pageflow.StorylineOutlineView = Backbone.Marionette.Layout.extend({
       itemViewOptions: {
         sortable: this.options.sortable,
         pageItemView: this.options.navigatable ? pageflow.NavigatablePageItemView : pageflow.PageItemView,
-        pageItemViewOptions: {
+        pageItemViewOptions: _.extend({
           displayInNavigationHint: this.options.displayInNavigationHint
-        }
+        }, this.options.pageItemViewOptions || {})
       }
     }).render();
   }

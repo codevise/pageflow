@@ -95,6 +95,11 @@ ul.pages {
 
   > li {
     margin-bottom: 2px;
+
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
   }
 }
 

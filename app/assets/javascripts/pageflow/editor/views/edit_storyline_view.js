@@ -23,7 +23,7 @@ pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
       attributeTranslationKeyPrefixes: ['pageflow.storyline_attributes']
     });
 
-    this.configure(configurationEditor);
+    this.configure(configurationEditor, this.model.transitiveChildPages());
     this.formContainer.show(configurationEditor);
 
     this.updateDestroyButton();
@@ -42,7 +42,7 @@ pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
     }
   },
 
-  configure: function(configurationEditor) {
+  configure: function(configurationEditor, storylineChildPages) {
     configurationEditor.tab('general', function() {
       this.input('title', pageflow.TextInputView);
       this.input('main', pageflow.CheckBoxInputView, {
@@ -65,6 +65,9 @@ pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
         visibleBinding: 'main',
         visible: function(isMain) {
           return !isMain && pageflow.storylines.length > 1;
+        },
+        isAllowed: function(page) {
+          return !storylineChildPages.contain(page);
         }
       });
       this.input('scroll_successor_id', pageflow.PageLinkInputView);
