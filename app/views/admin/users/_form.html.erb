@@ -1,8 +1,10 @@
 <%= admin_form_for([:admin, @user.becomes(User)]) do |f| %>
   <%= f.inputs "Details" do %>
     <% if @user.new_record? %>
-      <%= quota_state_description(:users, Pageflow::AccountPolicy::Scope
-                                  .new(current_user, Pageflow::Account).member_addable.first) %>
+      <% Pageflow::AccountPolicy::Scope
+           .new(current_user, Pageflow::Account).member_addable.each do |account| %>
+        <%= quota_state_description(:users, account) %>
+      <% end %>
     <% end %>
 
     <%= f.input :email, hint: f.object.new_record? &&
