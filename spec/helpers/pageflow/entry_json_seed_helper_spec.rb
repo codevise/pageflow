@@ -44,13 +44,17 @@ module Pageflow
       it 'indexed configurations by id' do
         revision = create(:revision, :published)
         storyline = create(:storyline, revision: revision)
-        chapter = create(:chapter, storyline: storyline, configuration: {text: 'some text'})
+        chapter = create(:chapter,
+                         storyline: storyline,
+                         title: 'Chapter 1',
+                         configuration: {text: 'some text'})
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
 
         result = helper.entry_chapters_seed(entry)
 
         expect(result[0]['id']).to eq(chapter.id)
         expect(result[0]['storyline_id']).to eq(storyline.id)
+        expect(result[0]['title']).to eq(chapter.title)
         expect(result[0]['configuration']['text']).to eq('some text')
       end
     end

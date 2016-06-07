@@ -35,7 +35,7 @@ module Pageflow
     end
 
     def entry_chapters_seed(entry)
-      attributes = [:id, :storyline_id, :configuration]
+      attributes = [:id, :storyline_id, :title, :configuration]
       entry.chapters.as_json(only: attributes)
     end
 
