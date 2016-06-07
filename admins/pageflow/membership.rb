@@ -41,17 +41,16 @@ module Pageflow
         end
         destroy! do
           if authorized?(:redirect_to_user, resource.user) && params[:user_id]
-            redirect_url = admin_user_url(resource.user)
+            admin_user_url(resource.user)
           elsif authorized?(:redirect_to_user, resource.user) && params[:entry_id]
-            redirect_url = admin_entry_url(resource.entity)
+            admin_entry_url(resource.entity)
           elsif params[:user_id] && authorized?(:index, resource.user)
-            redirect_url = admin_users_url
+            admin_users_url
           elsif params[:account_id]
-            redirect_url = admin_accounts_url
+            admin_accounts_url
           else
-            redirect_url = admin_entries_url
+            admin_entries_url
           end
-          redirect_url
         end
       end
 
