@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'inviting a user' do
+feature 'as account manager, inviting a user' do
   scenario 'invited user gains access via invitation email' do
     account = create(:account)
     Dom::Admin::Page.sign_in_as(:manager, on: account)

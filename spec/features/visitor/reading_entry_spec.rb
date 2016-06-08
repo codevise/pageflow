@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'reading entry' do
+feature 'as visitor, reading entry' do
   scenario 'visitor sees pages of entry' do
     entry = create(:entry, :published)
     storyline = create(:storyline, revision: entry.published_revision)

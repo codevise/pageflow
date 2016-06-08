@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'editing profile' do
+feature 'as registered user, editing own profile' do
   scenario 'change first and last name', focus: true do
     create(:user, email: 'john@example.com', password: '@qwert12345')
 

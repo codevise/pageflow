@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'managing user roles' do
+feature 'as account manager, managing user roles' do
   context 'via user show page' do
     scenario 'giving a user account permissions' do
       account = create(:account)

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'editing an entry' do
+feature 'as entry editor, editing an entry' do
   scenario 'changing title of entry of own account' do
     entry = create(:entry, title: 'Test Entry')
 

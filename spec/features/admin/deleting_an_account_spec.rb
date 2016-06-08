@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'deleting an account' do
+feature 'as system admin, deleting an account' do
   scenario 'deleted account does no longer exist' do
     account = create(:account, name: 'Codevise')
 

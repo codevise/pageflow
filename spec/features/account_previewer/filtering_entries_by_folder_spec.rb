@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'filtering entries by folder' do
+feature 'as account previewer, filtering entries by folder' do
   scenario 'listing entries in a folder' do
     folder = create(:folder)
     user = Dom::Admin::Page.sign_in_as(:previewer, on: folder.account)

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'editing entry outline', js: true do
+feature 'as entry editor, editing entry outline', js: true do
   scenario 'adding a chapter' do
     entry = create(:entry, title: 'Test Entry')
     Dom::Admin::Page.sign_in_as(:editor, on: entry)

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'deleting a user' do
+feature 'as system admin, deleting a user' do
   scenario 'deleted user can no longer sign in' do
     user = create(:user, email: 'john@example.com', password: '!Pass123')
 

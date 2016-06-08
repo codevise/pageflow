@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'signing in' do
+feature 'as visitor, signing in' do
   scenario 'with email and password' do
     create :user, email: 'john@example.com', password: '@qwert12345'
 

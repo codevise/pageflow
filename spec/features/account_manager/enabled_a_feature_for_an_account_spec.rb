@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'enabling a feature for an account' do
+feature 'as account manager, enabling a feature for an account' do
   scenario 'enabled for account' do
     account = create(:account)
 

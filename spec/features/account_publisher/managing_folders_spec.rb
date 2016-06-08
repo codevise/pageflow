@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'managing folders' do
+feature 'as account publisher, managing folders' do
   scenario 'adding a folder' do
     account = create(:account, name: 'New Folder Account')
     user = Dom::Admin::Page.sign_in_as(:publisher, on: account)

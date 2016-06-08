@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'recovering password' do
+feature 'as visitor, recovering password' do
   scenario 'with email' do
     create(:user, email: 'john@example.com', password: '@qwert12345')
 

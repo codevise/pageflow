@@ -1,4 +1,4 @@
-feature 'listing entries' do
+feature 'as entry previewer, listing entries' do
   scenario 'only entries show up in entries table on which the user is at least previewer' do
     first_entry = create(:entry, title: 'First Entry')
     create(:entry, title: 'Second Entry')

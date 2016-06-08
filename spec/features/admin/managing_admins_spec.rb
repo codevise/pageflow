@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'managing admins' do
+feature 'as system admin, managing admins' do
   scenario 'marking a user as admin' do
     user = create(:user)
 

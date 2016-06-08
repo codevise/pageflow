@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'adding an entry' do
+feature 'as account publisher, adding an entry' do
   scenario 'added entry shows up in entries table' do
     filler_account = create(:account, name: 'Filler Account')
     account = create(:account, name: 'Stock Report')

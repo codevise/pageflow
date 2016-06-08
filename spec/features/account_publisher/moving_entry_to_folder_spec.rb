@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'moving entry to folder' do
+feature 'as account publisher, moving entry to folder' do
   scenario 'folder of entry is changed' do
     folder = create(:folder)
     Dom::Admin::Page.sign_in_as(:publisher, on: folder.account)

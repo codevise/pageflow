@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'editing account on entry' do
+feature 'as account publisher, editing account on entry' do
   scenario 'changing account' do
     entry = create(:entry, title: 'Test Entry')
     account_publisher = Dom::Admin::Page.sign_in_as(:publisher, on: entry.account)

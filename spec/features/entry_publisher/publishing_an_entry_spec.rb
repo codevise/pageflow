@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'publishing an entry', js: true do
+feature 'as entry publisher, publishing an entry', js: true do
   scenario 'without depublication date' do
     entry = create(:entry, title: 'Test Entry')
     Dom::Admin::Page.sign_in_as(:publisher, on: entry)

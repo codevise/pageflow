@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'editing an account' do
+feature 'as account manager, editing an account' do
   scenario 'changing name' do
     account = create(:account, name: 'Codevise')
 

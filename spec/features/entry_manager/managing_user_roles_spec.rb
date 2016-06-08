@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'managing user roles' do
+feature 'as entry manager, managing user roles' do
   context 'via entry show page' do
     scenario 'giving a member on the account of entry permissions on that entry' do
       entry = create(:entry)

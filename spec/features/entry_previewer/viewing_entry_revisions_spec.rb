@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'viewing entry revisions' do
+feature 'as entry previewer, viewing entry revisions' do
   scenario 'view depublished revision' do
     revision = create(:revision, :depublished)
     Dom::Admin::Page.sign_in_as(:previewer, on: revision.entry)

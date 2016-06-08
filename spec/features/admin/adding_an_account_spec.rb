@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'adding an account' do
+feature 'as system admin, adding an account' do
   scenario 'added account shows up in account table' do
     Dom::Admin::Page.sign_in_as(:admin)
 

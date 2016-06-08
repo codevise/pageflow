@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'editing a user' do
+feature 'as system admin, editing a user' do
   scenario 'changing first name, last name and email' do
     user = create(:user, first_name: 'Bob', last_name: 'Bobson', email: 'bob@example.com')
 

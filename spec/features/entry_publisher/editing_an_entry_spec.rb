@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'editing an entry' do
+feature 'as entry publisher, editing an entry' do
   scenario 'changing entry title' do
     entry = create(:entry, title: 'Test Entry')
 

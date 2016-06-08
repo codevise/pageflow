@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'sees entries of own account' do
+feature 'as account previewer, viewing entries of own account' do
   scenario 'entry of account shows up in entries table' do
     entry = create(:entry, title: 'Entry of Account')
     Dom::Admin::Page.sign_in_as(:previewer, on: entry.account)

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'reusing a file', js: true do
+feature 'as entry editor, reusing a file', js: true do
   scenario 'from a another entry in account' do
     account = create(:account)
     user = Dom::Admin::Page.sign_in_as(:member, on: account)

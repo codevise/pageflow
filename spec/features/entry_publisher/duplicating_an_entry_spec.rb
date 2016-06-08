@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'duplicating an entry' do
+feature 'as entry publisher, duplicating an entry' do
   scenario 'entry is duplicated' do
     entry = create(:entry, title: 'Test Entry')
     Dom::Admin::Page.sign_in_as(:publisher, on: entry)

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'see all entries' do
+feature 'as system admin, viewing all entries' do
   scenario 'all entries show up in entries table if admin is logged in' do
     Dom::Admin::Page.sign_in_as(:admin)
 

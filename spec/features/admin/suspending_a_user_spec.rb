@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'suspending a user' do
+feature 'as system admin, suspending a user' do
   scenario 'suspended user can not sign in' do
     user = create(:user, email: 'john@example.com', password: '!Pass123')
 
@@ -11,7 +11,7 @@ feature 'suspending a user' do
     expect(Dom::Admin::Page).not_to be_accessible_with(email: 'john@example.com', password: '!Pass123')
   end
 
-  scenario 'suspended user can not sign in' do
+  scenario 'unsuspended user can sign in' do
     user = create(:user, :suspended, email: 'john@example.com', password: '!Pass123')
 
     Dom::Admin::Page.sign_in_as(:admin)

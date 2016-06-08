@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'depublishing an entry' do
+feature 'as entry publisher, depublishing an entry' do
   scenario 'depublishing published revision' do
     revision = create(:revision, :published)
     Dom::Admin::Page.sign_in_as(:publisher, on: revision.entry)

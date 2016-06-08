@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-feature 'deleting an entry' do
-  scenario 'deleting entry of own account' do
+feature 'as account manager, deleting an entry' do
+  scenario 'of own account' do
     entry = create(:entry, title: 'Test Entry')
     Dom::Admin::Page.sign_in_as(:manager, on: entry.account)
 
