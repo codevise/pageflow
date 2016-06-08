@@ -1,25 +1,18 @@
 class ReplaceRoleAndAccountOnUser < ActiveRecord::Migration
-  def change
-    reversible do |dir|
-      dir.up do
-        add_account_member_membership_for_each_user
-        update_membership_role_to_manager_for_each_account_manager
-      end
-    end
+  def up
+    add_account_member_membership_for_each_user
+    update_membership_role_to_manager_for_each_account_manager
 
     add_column :users, :admin, :boolean, null: false, default: false
 
-    reversible do |dir|
-      dir.up do
-        set_admin_to_true_for_each_admin
-      end
-      dir.down do
-        raise ActiveRecord::IrreversibleMigration
-      end
-    end
+    set_admin_to_true_for_each_admin
 
     remove_column :users, :role, :string, default: 'editor', null: false
     remove_column :users, :account_id, :integer
+  end
+
+  def down
+    raise ActiveRecord::IrreversibleMigration
   end
 
   private
