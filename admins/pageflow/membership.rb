@@ -53,10 +53,7 @@ module Pageflow
       private
 
       def restrict_attributes(attributes)
-        if attributes[:role].present?
-          role = attributes.delete(:role).to_sym
-        end
-        attributes.merge!(role: role)
+        attributes[:role] = attributes[:role].to_sym if !attributes[:role].nil?
       end
     end
   end
