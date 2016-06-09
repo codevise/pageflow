@@ -203,7 +203,7 @@ module Pageflow
     # Array of locales which can be chosen as interface language for
     # an entry. Defaults to the locales supported by the
     # `pageflow-public-i18n` gem.
-    # @since edge
+    # @since 0.10
     attr_accessor :available_public_locales
 
     # How to handle https requests for URLs which will have assets in the page.
@@ -223,7 +223,7 @@ module Pageflow
     #
     # These defaults will be included in the page <head> unless overriden by the Entry.
     # If you set these to <tt>nil</tt> or <tt>""</tt> the meta tag won't be included.
-    # @since edge
+    # @since 0.10
     attr_accessor :default_keywords_meta_tag
     attr_accessor :default_author_meta_tag
     attr_accessor :default_publisher_meta_tag

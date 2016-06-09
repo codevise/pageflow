@@ -50,7 +50,7 @@ module Pageflow
     # Enable a feature by default for all accounts. The feature can
     # still be disabled via the web interface.
     #
-    # @since edge
+    # @since 0.10
     def enable_by_default(name)
       @default_features << name
     end

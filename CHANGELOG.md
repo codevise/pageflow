@@ -1,8 +1,10 @@
 # CHANGELOG
 
-### Changes on `master`
+### Version 0.10.0
 
-[Compare changes](https://github.com/codevise/pageflow/compare/v0.9.0...master)
+2016-06-09
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.9.0...v0.10.0)
 
 ##### Breaking Changes
 
@@ -182,8 +184,6 @@
    [#514](https://github.com/codevise/pageflow/pull/514))
 - Improve test coverage of page type interface
   ([#518](https://github.com/codevise/pageflow/pull/518))
-- Update travis to use ruby 2.1
-  ([#506](https://github.com/codevise/pageflow/pull/506))
 - Bug fix: Destroy dependent account objects
   ([#493](https://github.com/codevise/pageflow/pull/493))
 - Bug fix: Prevent incorrectly called page type hook on manual start
@@ -192,6 +192,13 @@
   ([#452](https://github.com/codevise/pageflow/pull/452))
 - Bug fix: Fix migration rename command in readme
   ([#448](https://github.com/codevise/pageflow/pull/448))
+
+##### Internals
+
+- Install semmy release rake tasks
+  ([#534](https://github.com/codevise/pageflow/pull/534))
+- Update travis to use ruby 2.1
+  ([#506](https://github.com/codevise/pageflow/pull/506))
 
 ### Version 0.9.0
 
