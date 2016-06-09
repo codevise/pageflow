@@ -12,6 +12,13 @@
   to supply these in your own app from now on.
   ([#498](https://github.com/codevise/pageflow/pull/498))
 
+- HTML meta tags for published entries can now be configured in the
+  Pageflow initializer. The partial
+  `layouts/pageflow/_meta_tags.html.erb` is no longer used and can be
+  removed.
+  ([#508](https://github.com/codevise/pageflow/pull/508),
+   [#517](https://github.com/codevise/pageflow/pull/517))
+
 ##### Manual Update Step
 
 - Image file Paperclip attachments need to be refreshed to ensure the
@@ -55,6 +62,12 @@
    [#410](https://github.com/codevise/pageflow/pull/410))
 - Fade scroll indicators on classic navigation bar
   ([#464](https://github.com/codevise/pageflow/pull/464))
+- Bug fix: Ensure background videos loop on desktop safari 9
+  ([#527](https://github.com/codevise/pageflow/pull/527))
+- Bug fix: Use current entry in non-js media links, fix video tag
+  rendering and apply password protection to non-js files pages.
+  ([#530](https://github.com/codevise/pageflow/pull/530),
+   [#529](https://github.com/codevise/pageflow/pull/529))
 - Bug fix: Remove html entities from social share description
   ([#486](https://github.com/codevise/pageflow/pull/486))
 - Bug fix: Prevent accessing password protected entries
@@ -65,6 +78,10 @@
   ([#454](https://github.com/codevise/pageflow/pull/454))
 - Bug fix: Replace source sans pro to support czech characters
   ([#497](https://github.com/codevise/pageflow/pull/497))
+- Bug fix: Decouple overview and navigation widgets
+  ([#505](https://github.com/codevise/pageflow/pull/505))
+- Bug fix: Ensure delayed text is displayed id no css animation support
+  ([#525](https://github.com/codevise/pageflow/pull/525))
 
 ##### Admin
 
@@ -72,6 +89,10 @@
   ([#432](https://github.com/codevise/pageflow/pull/432))
 - Allow associating multiple CNAMES with a theming
   ([#482](https://github.com/codevise/pageflow/pull/482))
+- Improve feature state inheritance
+  ([#528](https://github.com/codevise/pageflow/pull/528))
+- Add inline help for account default widgets form
+  ([#522](https://github.com/codevise/pageflow/pull/522))
 
 ##### Editor
 
@@ -79,6 +100,8 @@
   ([#456](https://github.com/codevise/pageflow/pull/456))
 - Disallow links in overview description
   ([#440](https://github.com/codevise/pageflow/pull/440))
+- Make page transitions to storylines more configurable
+  ([#526](https://github.com/codevise/pageflow/pull/526))
 - Add storyline help topic
   ([#460](https://github.com/codevise/pageflow/pull/460))
 - Improve display of page type pictograms in select box
@@ -93,6 +116,14 @@
   ([#444](https://github.com/codevise/pageflow/pull/444))
 - Improve native scrolling prevention
   ([#477](https://github.com/codevise/pageflow/pull/477))
+- Bug fix: Improve storyline management
+  ([#515](https://github.com/codevise/pageflow/pull/515))
+- Bug fix: Prevent creation of loops in the storyline hierarchy
+  ([#533](https://github.com/codevise/pageflow/pull/533))
+- Bug fix: Prevent edit lock warning when editing reused file
+  ([#524](https://github.com/codevise/pageflow/pull/524))
+- Make fetching other entries faster for file reuse
+  ([#523](https://github.com/codevise/pageflow/pull/523))
 - Bug fix: Optimize sidebar for text box compatibility
   ([#478](https://github.com/codevise/pageflow/pull/478))
 - Bug fix: Fix editor blank slate background color
@@ -110,16 +141,23 @@
   ([#427](https://github.com/codevise/pageflow/pull/427))
 - Add theme option to control page change at storyline boundaries
   ([#458](https://github.com/codevise/pageflow/pull/458))
+- Allow registering default widget types in features
+  ([#521](https://github.com/codevise/pageflow/pull/521))
 - Add mixin to generate page type pictogram theme css
   ([#449](https://github.com/codevise/pageflow/pull/449))
 - Introduce SCSS extendables
   ([#463](https://github.com/codevise/pageflow/pull/463))
+- Introduce SCSS variables for page typography
+  ([#520](https://github.com/codevise/pageflow/pull/520))
 - Add image css classes to lazy load thumbnails
   ([#488](https://github.com/codevise/pageflow/pull/488))
 - Add cleanup page type hook
   ([#489](https://github.com/codevise/pageflow/pull/489))
 - Reorganize seed data
-  ([#465](https://github.com/codevise/pageflow/pull/465))
+  ([#465](https://github.com/codevise/pageflow/pull/465),
+   [#532](https://github.com/codevise/pageflow/pull/532))
+- Allow using i18n-js in published entries.
+  ([#531](https://github.com/codevise/pageflow/pull/531))
 - Default implementation for editor page links collection and views
   ([#415](https://github.com/codevise/pageflow/pull/415))
 - Implement options for disabling rich text and links in TextAreaInputView
@@ -140,7 +178,12 @@
   ([#502](https://github.com/codevise/pageflow/pull/502),
    [#501](https://github.com/codevise/pageflow/pull/501),
    [#473](https://github.com/codevise/pageflow/pull/473),
-   [#472](https://github.com/codevise/pageflow/pull/472))
+   [#472](https://github.com/codevise/pageflow/pull/472),
+   [#514](https://github.com/codevise/pageflow/pull/514))
+- Improve test coverage of page type interface
+  ([#518](https://github.com/codevise/pageflow/pull/518))
+- Update travis to use ruby 2.1
+  ([#506](https://github.com/codevise/pageflow/pull/506))
 - Bug fix: Destroy dependent account objects
   ([#493](https://github.com/codevise/pageflow/pull/493))
 - Bug fix: Prevent incorrectly called page type hook on manual start
