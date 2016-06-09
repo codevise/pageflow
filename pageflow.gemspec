@@ -136,4 +136,7 @@ Gem::Specification.new do |s|
 
   # Stub HTTP requests in tests
   s.add_development_dependency 'webmock', '~> 1.20'
+
+  # Semantic versioning rake tasks
+  s.add_development_dependency 'semmy', '~> 0.2.0'
 end

@@ -14,6 +14,11 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
+require 'semmy'
+Semmy::Tasks.install do |config|
+  config.github_repository = 'codevise/pageflow'
+end
+
 require File.expand_path('spec/support/pageflow/rails_version', File.dirname(__FILE__))
 APP_RAKEFILE = File.expand_path("../spec/dummy/rails-#{Pageflow::RailsVersion.detect}/Rakefile", __FILE__)
 
