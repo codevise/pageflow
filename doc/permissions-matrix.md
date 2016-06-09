@@ -17,11 +17,11 @@
 | Account/entry settings** | X |  | A | A |  |  |  |  |  |  |  |
 | Entry settings*** | X |  | A | A |  |  |  | E | E |  |  |
 |  |  |  |  |  |  |  |  |  |  |  |  |
-| __Managing Accounts__ | System admin | Registered user | Account manager | Account publisher | Account editor | Account previewer | Account member | Entry manager | Entry publisher | Entry editor | Entry previewer |
+| __Managing accounts__ | System admin | Registered user | Account manager | Account publisher | Account editor | Account previewer | Account member | Entry manager | Entry publisher | Entry editor | Entry previewer |
 | Create/delete accounts | X |  |  |  |  |  |  |  |  |  |  |
 | Manage folders | X |  | A | A |  |  |  |  |  |  |  |
 |  |  |  |  |  |  |  |  |  |  |  |  |
-| __Managing Entries__ | System admin | Registered user | Account manager | Account publisher | Account editor | Account previewer | Account member | Entry manager | Entry publisher | Entry editor | Entry previewer |
+| __Managing entries__ | System admin | Registered user | Account manager | Account publisher | Account editor | Account previewer | Account member | Entry manager | Entry publisher | Entry editor | Entry previewer |
 | List all entries | X |  |  |  |  |  |  |  |  |  |  |
 | Delete entries | X |  | A |  |  |  |  |  |  |  |  |
 | Create entries, move entries between folders | X |  | A | A |  |  |  |  |  |  |  |
