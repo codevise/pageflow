@@ -11,6 +11,12 @@ module Pageflow
                     class: 'button',
                     data: {rel: "add_#{entity_type}_membership"})
           end
+        else
+          para(content_tag('a',
+                           I18n.t("pageflow.admin.#{entity_type}.add"),
+                           class: 'button disabled',
+                           data: {rel: "add_#{entity_type}_membership"}),
+               'data-tooltip' => I18n.t("pageflow.admin.#{entity_type}.none_addable_tooltip"))
         end
       end
 

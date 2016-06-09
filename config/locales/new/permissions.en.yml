@@ -43,8 +43,10 @@ en:
     admin:
       account:
         add: 'Add Account'
+        none_addable_tooltip: No account available
       entry:
         add: 'Add Entry'
+        none_addable_tooltip: No entry available
       entries:
         members: Members
       memberships:
@@ -93,8 +95,8 @@ en:
           others: "DELETED"
         no_entries: No stories
         no_accounts: No members
-        no_account_manager_hint: Users whose account you do not manage are not listed here
-        user_account_tab_hint: Accounts which you do not manage are not listed here
+        no_account_manager_hint: Only users whose account you manage are listed here
+        user_account_tab_hint: Only accounts you manage are listed here
     editor:
       views:
         edit_entry_view:
