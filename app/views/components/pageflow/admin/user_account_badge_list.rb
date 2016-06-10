@@ -6,7 +6,9 @@ module Pageflow
       def build(user)
         ul class: 'badge_list' do
           user_accounts(user).each do |membership|
-            build_badge(membership)
+            if authorized?(:see_badge_belonging_to, membership.entity)
+              build_badge(membership)
+            end
           end
 
           build_admin_badge if user.admin?

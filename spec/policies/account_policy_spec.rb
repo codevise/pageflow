@@ -72,6 +72,34 @@ module Pageflow
                     topic: -> { create(:account) }
   end
 
+  describe '.see_badge_belonging_to?' do
+    it 'is permitted when user and account have an entry in common' do
+      account = create(:account)
+      user = create(:user)
+      create(:entry, account: account, with_previewer: user)
+
+      expect(AccountPolicy.new(user, account)).to permit_action(:see_badge_belonging_to)
+    end
+
+    it 'is not permitted when user and account have no entry in common' do
+      expect(AccountPolicy.new(create(:user), create(:account))).not_to permit_action(:see_badge_belonging_to)
+    end
+
+    it 'is permitted when user is at least previewer on account' do
+      account = create(:account)
+      user = create(:user, :previewer, on: account)
+
+      expect(AccountPolicy.new(user, account)).to permit_action(:see_badge_belonging_to)
+    end
+
+    it 'is not permitted when user is at most member on account' do
+      account = create(:account)
+      user = create(:user, :member, on: account)
+
+      expect(AccountPolicy.new(user, account)).not_to permit_action(:see_badge_belonging_to)
+    end
+  end
+
   describe '.index?' do
     it 'is permitted when account manager on at least one account' do
       user = create(:user, :manager, on: create(:account))

@@ -23,6 +23,7 @@ module Pageflow
     scope :on_accounts, -> { where(entity_type: 'Pageflow::Account') }
     scope :as_manager, -> { where(role: :manager) }
     scope :as_publisher_or_above, -> { where(role: %w(publisher manager)) }
+    scope :as_previewer_or_above, -> { where(role: %w(previewer editor publisher manager)) }
 
     after_create do
       entity.increment(:users_count)

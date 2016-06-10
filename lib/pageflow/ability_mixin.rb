@@ -25,6 +25,10 @@ module Pageflow
         AccountPolicy.new(user, account).see_all_instances_of_class_of?
       end
 
+      can :see_badge_belonging_to, Account do |account|
+        AccountPolicy.new(user, account).see_badge_belonging_to?
+      end
+
       can :create, Membership do |membership|
         membership.entity.nil? ||
           membership.user.nil? ||
