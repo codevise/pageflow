@@ -65,7 +65,7 @@ module Pageflow
       account.build_default_theming(default_attributes.merge(attributes), &block)
     end
 
-    # Create a {User} if non with the given email exists yet.
+    # Create a {User} if none with the given email exists yet.
     #
     # @param [Hash] attributes  attributes to override defaults
     # @option attributes [String] :email  required
@@ -132,6 +132,8 @@ module Pageflow
     end
 
     # Create a {Membership} for the given user and entity.
+    # Create a {Membership} for the corresponding account first if a {Membership} on an entry is to
+    # be created and no {Membership} on the entry's account exists yet.
     #
     # @param [Hash] attributes  attributes to override defaults
     # @option attributes [User] :user  required
@@ -149,9 +151,13 @@ module Pageflow
 
       if attributes[:entity].class.to_s == 'Pageflow::Entry' || attributes[:entry].present?
         entry = attributes[:entity] || attributes[:entry]
-        Membership.find_or_create_by!(entity: entry.account,
-                                      user: attributes[:user],
-                                      role: :member)
+        unless attributes[:user].accounts.include?(entry.account)
+          Membership.find_or_create_by!(entity: entry.account,
+                                        user: attributes[:user],
+                                        role: :member) do |membership|
+            say_creating_membership(membership)
+          end
+        end
       end
 
       Membership.find_or_create_by!(attributes) do |membership|
