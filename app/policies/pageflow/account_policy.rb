@@ -132,7 +132,8 @@ module Pageflow
 
     def see_badge_belonging_to?
       (@account.entries & @user.entries).any? ||
-        @user.memberships.on_accounts.as_previewer_or_above.where(entity: @account).any?
+        @user.memberships.on_accounts.as_previewer_or_above.where(entity: @account).any? ||
+        @user.admin?
     end
 
     def index?
