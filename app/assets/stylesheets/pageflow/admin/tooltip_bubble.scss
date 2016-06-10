@@ -53,7 +53,7 @@ $tooltip-bubble-text-color: #fff;
   &:hover:before {
     content: "";
     position: absolute;
-    top: -5px;
+    top: -6px;
     left: 8px;
     @include triangle(10px, $tooltip-bubble-background-color, down);
   }

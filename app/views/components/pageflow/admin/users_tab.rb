@@ -43,15 +43,7 @@ module Pageflow
               end
             end
           end
-          if AccountPolicy::Scope.new(current_user, Pageflow::Account).member_addable &&
-             membership_users_collection(resource, Membership.new(entity: resource)).any?
-            span do
-              link_to(I18n.t('pageflow.admin.users.add'),
-                      new_admin_account_membership_path(account, entity_type: :account),
-                      class: 'button',
-                      data: {rel: 'add_member'})
-            end
-          end
+          add_membership_button_if_needed(current_user, account, 'account')
         end
       end
     end

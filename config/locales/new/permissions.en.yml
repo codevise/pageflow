@@ -59,6 +59,8 @@ en:
       resource_tabs:
         accounts: Accounts
         account_editor_hint: Users who are assigned on an account level are not listed here
+      user:
+        none_addable_tooltip: No user available
       users:
         accounts: 'Accounts'
         edit_role: 'Edit Role'

@@ -60,6 +60,8 @@ de:
       resource_tabs:
         accounts: Konten
         account_editor_hint: Auf Kontoebene zugeordnete Benutzer sind hier nicht aufgeführt
+      user:
+        none_addable_tooltip: Kein Benutzer verfügbar
       users:
         accounts: 'Konten'
         edit_role: 'Rolle ändern'
