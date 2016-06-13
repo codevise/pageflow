@@ -30,7 +30,7 @@ module Pageflow
     end
 
     describe '#destroy_with_password' do
-      it 'allows to destroy the use  when given current password' do
+      it 'allows to destroy the user when given current password' do
         user = create(:user, :password => '@qwert123')
 
         user.destroy_with_password('@qwert123')
@@ -47,7 +47,7 @@ module Pageflow
           expect(user.errors[:current_password]).to be_present
         end
 
-        it 'allows to destroy the use  when given current password' do
+        it 'does not allow to destroy the user when given wrong password' do
           user = create(:user, :password => '@qwert123')
 
           user.destroy_with_password('wrong')

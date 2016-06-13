@@ -35,6 +35,10 @@ module Pageflow
 
       can :view, [Admin::MembersTab, Admin::RevisionsTab]
 
+      can :delete_own_user, ::User do |user_to_delete|
+        Pageflow.config.authorize_user_deletion.call(user_to_delete) == true
+      end
+
       if user.admin?
         can [:read, :create, :update], Account
         can :destroy, Account do |account|
