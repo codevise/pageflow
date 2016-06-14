@@ -137,10 +137,10 @@ module Pageflow
 
     controller do
       include Pageflow::QuotaVerification
-
       helper Pageflow::Admin::FormHelper
       helper Pageflow::Admin::LocalesHelper
       helper Pageflow::Admin::MembershipsHelper
+      helper Pageflow::Admin::UsersHelper
       helper Pageflow::QuotaHelper
 
       def build_new_resource

@@ -215,10 +215,11 @@ module Pageflow
 
       it 'does not allow to destroy the user when authorize_user_deletion non-true' do
         user = create(:user, password: '@qwert123')
+        create(:membership, user: user, entity: create(:account))
         sign_in(user)
         Pageflow.config.authorize_user_deletion =
           lambda do |user_to_delete|
-            if user_to_delete.account.users.length > 1
+            if user_to_delete.accounts.all? { |account| account.users.length > 1 }
               true
             else
               'Last user on account. Permission denied'
