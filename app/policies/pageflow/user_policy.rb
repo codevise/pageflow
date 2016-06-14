@@ -65,5 +65,9 @@ module Pageflow
     def set_admin?
       admin?
     end
+
+    def delete_own_user?
+      Pageflow.config.authorize_user_deletion.call(@managed_user) == true
+    end
   end
 end

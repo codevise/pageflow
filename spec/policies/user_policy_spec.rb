@@ -28,6 +28,24 @@ module Pageflow
                     to: :set_admin,
                     topic: -> { create(:user, :member, on: create(:account)) }
 
+    describe 'delete_own_user?' do
+      it 'allows users when authorize_user_deletion is true' do
+        Pageflow.config.authorize_user_deletion = lambda { |_user| true }
+
+        user = create(:user)
+
+        expect(UserPolicy.new(user, user)).to permit_action(:delete_own_user)
+      end
+
+      it 'does not allow users when authorize_user_deletion is false' do
+        Pageflow.config.authorize_user_deletion = lambda { |_user| false }
+
+        user = create(:user)
+
+        expect(UserPolicy.new(user, user)).not_to permit_action(:delete_own_user)
+      end
+    end
+
     describe '.resolve' do
       it 'includes all users if admin' do
         admin = create(:user, :admin)

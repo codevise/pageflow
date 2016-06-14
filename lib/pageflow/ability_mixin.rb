@@ -218,7 +218,7 @@ module Pageflow
       end
 
       can :delete_own_user, ::User do |user_to_delete|
-        Pageflow.config.authorize_user_deletion.call(user_to_delete) == true
+        UserPolicy.new(user, user_to_delete).delete_own_user?
       end
 
       if user.admin?
