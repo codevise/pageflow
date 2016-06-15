@@ -24,7 +24,7 @@ module Pageflow
 
     it_behaves_like 'an admin permission that',
                     allows_admins_but_forbids_even_managers: true,
-                    of_account: -> (topic) {topic.accounts.first},
+                    of_account: -> (topic) { topic.accounts.first },
                     to: :set_admin,
                     topic: -> { create(:user, :member, on: create(:account)) }
 
@@ -38,7 +38,8 @@ module Pageflow
       end
 
       it 'does not allow users when authorize_user_deletion is false' do
-        Pageflow.config.authorize_user_deletion = lambda { |_user| false }
+        Pageflow.config.authorize_user_deletion =
+          lambda { |_user| 'User cannot be deleted. Database is read-only' }
 
         user = create(:user)
 
