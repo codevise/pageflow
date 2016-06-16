@@ -146,5 +146,32 @@ module Pageflow
         expect(user.reload.account).to eq(other_account)
       end
     end
+
+    describe '#delete_me' do
+      it 'allows to destroy the user by default' do
+        sign_in(create(:user, password: '@qwert123'))
+
+        expect do
+          delete(:delete_me, user: {current_password: '@qwert123'})
+        end.to change { User.count }
+      end
+
+      it 'does not allow to destroy the user when authorize_user_deletion non-true' do
+        user = create(:user, password: '@qwert123')
+        sign_in(user)
+        Pageflow.config.authorize_user_deletion =
+          lambda do |user_to_delete|
+            if user_to_delete.account.users.length > 1
+              true
+            else
+              'Last user on account. Permission denied'
+            end
+          end
+
+        expect do
+          delete(:delete_me, user: {current_password: '@qwert123'})
+        end.not_to change { User.count }
+      end
+    end
   end
 end

@@ -228,6 +228,21 @@ module Pageflow
     attr_accessor :default_author_meta_tag
     attr_accessor :default_publisher_meta_tag
 
+    # Whether a user can be deleted.
+    #
+    # @example
+    #
+    #     config.authorize_user_deletion =
+    #       lambda do |user_to_delete|
+    #         if user_to_delete.account.users.length > 1
+    #           true
+    #         else
+    #           'Last user on account. Permission denied'
+    #         end
+    #       end
+    # @since edge
+    attr_accessor :authorize_user_deletion
+
     def initialize
       @paperclip_filesystem_default_options = {validate_media_type: false}
       @paperclip_s3_default_options = {validate_media_type: false}
@@ -265,6 +280,8 @@ module Pageflow
       @default_keywords_meta_tag = 'pageflow, multimedia, reportage'
       @default_author_meta_tag = 'Pageflow'
       @default_publisher_meta_tag = 'Pageflow'
+
+      @authorize_user_deletion = lambda { |_user| true }
     end
 
     # Activate a plugin.

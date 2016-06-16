@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-feature 'editing profile' do
-  scenario 'change first and last name' do
+feature 'deleting own user' do
+  scenario 'user is deleted per default configuration' do
     create(:user, :email => 'john@example.com', :password => '@qwert12345')
 
     Dom::Admin::Page.sign_in(:email => 'john@example.com', :password => '@qwert12345')
