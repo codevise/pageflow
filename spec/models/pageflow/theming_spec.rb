@@ -60,6 +60,35 @@ module Pageflow
       end
     end
 
+    describe '#copy_default_meta_tags' do
+      let(:theming) { create(:theming) }
+      let(:revision) { create(:revision) }
+
+      it "updates the revision author with the theming's default author" do
+        theming.update default_author: 'Amir Greithanner'
+
+        theming.copy_default_meta_tags(revision)
+
+        expect(revision.author).to eq('Amir Greithanner')
+      end
+
+      it "updates the revision publisher with the theming's default publisher" do
+        theming.update default_publisher: 'Spöttel KG'
+
+        theming.copy_default_meta_tags(revision)
+
+        expect(revision.publisher).to eq('Spöttel KG')
+      end
+
+      it "updates the revision keywords with the theming's default keywords" do
+        theming.update default_keywords: 'ratione, aut, blanditiis'
+
+        theming.copy_default_meta_tags(revision)
+
+        expect(revision.keywords).to eq('ratione, aut, blanditiis')
+      end
+    end
+
     describe '.with_home_url' do
       it 'includes theming with home_url' do
         theming = create(:theming, home_url: 'http://home.example.com')

@@ -26,5 +26,18 @@ module Pageflow
     def name
       I18n.t('pageflow.admin.themings.name', :account_name => account.name, :theme_name => theme_name)
     end
+
+    def copy_defaults_to(revision)
+      widgets.copy_all_to(revision)
+      copy_default_meta_tags(revision)
+    end
+
+    def copy_default_meta_tags(revision)
+      revision.update(
+        author: default_author.presence || Pageflow.config.default_author_meta_tag,
+        publisher: default_publisher.presence || Pageflow.config.default_publisher_meta_tag,
+        keywords: default_keywords.presence || Pageflow.config.default_keywords_meta_tag
+      )
+    end
   end
 end

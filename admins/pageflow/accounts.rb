@@ -89,7 +89,10 @@ module Pageflow
           :copyright_link_url,
           :copyright_link_label,
           :home_url,
-          :home_button_enabled_by_default
+          :home_button_enabled_by_default,
+          :default_author,
+          :default_publisher,
+          :default_keywords
         ] +
           permitted_attributes_for(:theming)
       end

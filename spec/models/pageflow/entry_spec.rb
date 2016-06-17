@@ -35,6 +35,29 @@ module Pageflow
 
         expect(entry.draft.storylines).not_to be_empty
       end
+
+      it 'copies meta defaults from the theming' do
+        theming = create(:theming, default_author: 'Codevise', default_publisher: 'Codevise Solutions', default_keywords: 'codevise, story')
+        entry = create(:entry, theming: theming)
+
+        expect(entry.draft.author).to eq('Codevise')
+        expect(entry.draft.publisher).to eq('Codevise Solutions')
+        expect(entry.draft.keywords).to eq('codevise, story')
+      end
+
+      it 'copies meta defaults from the configuration' do
+        pageflow_configure do |config|
+          config.default_author_meta_tag = 'Prof. Dr. Sahra Isak'
+          config.default_publisher_meta_tag = 'Kempe-Heuck'
+          config.default_keywords_meta_tag = 'story, environment'
+        end
+
+        entry = create(:entry)
+
+        expect(entry.draft.author).to eq('Prof. Dr. Sahra Isak')
+        expect(entry.draft.publisher).to eq('Kempe-Heuck')
+        expect(entry.draft.keywords).to eq('story, environment')
+      end
     end
 
     context 'validation' do

@@ -34,9 +34,16 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
       });
 
       this.input('credits', pageflow.TextAreaInputView);
-      this.input('author', pageflow.TextInputView);
-      this.input('publisher', pageflow.TextInputView);
-      this.input('keywords', pageflow.TextInputView);
+
+      this.input('author', pageflow.TextInputView, {
+        placeholder: pageflow.config.defaultAuthorMetaTag
+      });
+      this.input('publisher', pageflow.TextInputView, {
+        placeholder: pageflow.config.defaultPublisherMetaTag
+      });
+      this.input('keywords', pageflow.TextInputView, {
+        placeholder: pageflow.config.defaultKeywordsMetaTag
+      });
     });
 
     configurationEditor.tab('widgets', function() {

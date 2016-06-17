@@ -42,7 +42,7 @@ module Pageflow
     after_create unless: :skip_draft_creation do
       create_draft!(home_button_enabled: theming.home_button_enabled_by_default)
       draft.storylines.create!(configuration: {main: true})
-      theming.widgets.copy_all_to(draft)
+      theming.copy_defaults_to(draft)
     end
 
     def edit_lock
