@@ -61,7 +61,7 @@
     update: function() {
       var configuration = this.slideshow.currentPageConfiguration();
 
-      if (!this.disabled) {
+      if (!this.disabled && !pageflow.browser.has('mobile platform')) {
         this.multiPlayer.fadeTo(configuration[attributeName]);
       }
     },
