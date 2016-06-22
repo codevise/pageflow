@@ -5,7 +5,6 @@
     _create: function() {
       var element = this.element,
           overlays = element.find('.navigation_site_detail'),
-          hasHomeButton = !!element.find('.navigation_home').length,
           toggleIndicators = function() {};
 
       element.addClass('js').append(overlays);
@@ -13,8 +12,7 @@
       $('a.navigation_top', element).topButton();
 
       $('.navigation_bar_bottom', element)
-        .append($('.navigation_bar_top > li', element).slice(hasHomeButton ? 4 : 3));
-
+        .append($('.navigation_bar_top > li', element).slice(-2));
 
       $('.navigation_volume_box', element).volumeSlider({orientation: 'h'});
       $('.navigation_mute', element).muteButton();

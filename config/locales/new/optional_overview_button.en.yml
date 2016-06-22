@@ -1,0 +1,11 @@
+en:
+  activerecord:
+    attributes:
+      pageflow/entry:
+        overview_button_enabled: "Show 'Overview' button"
+  pageflow:
+    ui:
+      inline_help:
+        pageflow/entry:
+          overview_button_enabled: "The overview displays chapters and pages of the main storyline."
+          overview_button_enabled_disabled: "This option is not available for your theme."

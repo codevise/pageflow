@@ -19,9 +19,3 @@ $navigation-separator-line-color: #9c9c9c !default;
     border-bottom: none;
   }
 }
-
-@if not $navigation-display-overview-button {
-  .navigation_top .button {
-    border-bottom: none;
-  }
-}

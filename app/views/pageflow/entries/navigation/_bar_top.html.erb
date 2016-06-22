@@ -12,12 +12,7 @@
       <span class="button"></span>
     </a>
   </li>
-  <li>
-    <a class="navigation_bullet navigation_index" tabindex="2" title="<%= t('pageflow.public.open_overview') %>" data-active-title="<%= t('pageflow.public.close_overview') %>">
-      <span class="hint"><%= t('pageflow.public.open_overview') %></span>
-      <span class="button"></span>
-    </a>
-  </li>
+  <%= render('pageflow/entries/navigation/overview_button', overview_button: entry.overview_button) %>
   <li class="navigation_menu share" tabindex="2">
     <div class="navigation_menu_box navigation_share_box">
       <%= render 'pageflow/entries/share_menu/facebook_link', entry: entry %>
