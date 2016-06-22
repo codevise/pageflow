@@ -1,0 +1,16 @@
+@include keyframes(rotate_and_blink) {
+  0% {
+    @include transform(rotate(0));
+    opacity: 1;
+  }
+
+  50% {
+    @include transform(rotate(180deg));
+    opacity: 0.5;
+  }
+
+  100% {
+    @include transform(rotate(360deg));
+    opacity: 1;
+  }
+}

@@ -1,0 +1,120 @@
+// scss-lint:disable all
+
+.videoWrapper {
+  @include desktop {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+  @include pad_portrait {
+    margin-right: 0;
+    position: initial;
+    height: initial;
+  }
+}
+
+.js .videoWrapper {
+  @include desktop {
+    position: relative;
+    height: 100%;
+    width: auto;
+    margin-right: 85px;
+  }
+  @include pad_portrait {
+    margin-right: 0;
+  }
+}
+
+.page .videoPage {
+  .scroller.vjs-fade-out {
+    visibility: initial;
+  }
+}
+
+.js .page .videoPage {
+  .vjs-control-bar {
+    @include transform(translate3d(-50%, 0, 0));
+
+    @include phone {
+      @include transform(translate3d(0, 0, 0));
+    }
+  }
+  /* overwriting video js auto hiding control rules */
+  /* Fading sytles, used to fade control bar. */
+  .vjs-fade-in {
+    display: initial !important;
+    visibility: initial;
+    /* Needed to make sure things hide in older browsers too. */
+    opacity: initial;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none }
+
+  .vjs-fade-out {
+    display: initial!important;
+    visibility: initial;
+    opacity: initial;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+    /* Wait a moment before fading out the control bar */
+    -webkit-transition-delay: none;
+    -moz-transition-delay: none;
+    -ms-transition-delay: none;
+    -o-transition-delay: none;
+    transition-delay: none; }
+
+  /* Hide disabled or unsupported controls */
+  .vjs-default-skin .vjs-hidden {
+    display: initial; }
+
+  .vjs-lock-showing {
+    display: initial !important;
+    opacity: initial;
+    visibility: initial; }
+
+    /* Fading sytles, used to fade control bar. */
+  .fade-in {
+    display: block !important;
+    /* Needed to make sure things hide in older browsers too. */
+    opacity: 1;
+    -webkit-transition: 0.1s;
+    -moz-transition: 0.1s;
+    -ms-transition: 0.1s;
+    -o-transition: 0.1s;
+    transition: 0.1s;
+  }
+
+  .fade-out {
+    display: block !important;
+    opacity: 0 !important;
+    -webkit-transition: 1.5s;
+    -moz-transition: 1.5s;
+    -ms-transition: 1.5s;
+    -o-transition: 1.5s;
+    transition: 1.5s;
+    /* Wait a moment before fading out the control bar */
+    -webkit-transition-delay: 2s;
+    -moz-transition-delay: 2s;
+    -ms-transition-delay: 2s;
+    -o-transition-delay: 2s;
+    transition-delay: 2s; }
+
+  /* Hide disabled or unsupported controls */
+  .vjs-default-skin .vjs-hidden {
+    display: none; }
+
+  .lock-showing {
+    display: block !important;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .control_bar_text {
+    display: none;
+  }
+}

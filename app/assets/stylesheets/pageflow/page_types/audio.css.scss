@@ -7,17 +7,6 @@
   right: 0;
 }
 
-.audioPage .vjs-control-bar {
-  position: absolute;
-  left: 50%;
-}
-
-.audioPage {
-  .vjs-controls.vjs-player {
-    display: none;
-  }
-}
-
 .js .audioPage {
   .contentText {
     margin-bottom: 200px;
@@ -25,10 +14,6 @@
 
   .non_js_audio {
     display: none;
-  }
-
-  .vjs-slider-handle {
-    margin-left:-17px;
   }
 }
 

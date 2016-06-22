@@ -15,17 +15,17 @@
   </div>
 
   <div class="content">
-    <div class="controls">
+    <div class="controls" data-role="player_controls">
       <span class="hint"><%= t('pageflow.public.audio') %></span>
       <%= info_box(configuration) %>
       <div class="vjs-control-bar">
         <div class="vjs-controls vjs-default-skin vjs-player">
           <a class="vjs-play-control vjs-play vjs-control" tabindex="4"><span></span></a>
           <div class="vjs-progress-control">
-            <div class="vjs-progress-holder">
+            <div class="vjs-progress-holder vjs-slider">
               <div class="vjs-load-progress"></div>
               <div class="vjs-play-progress"></div>
-              <div class="vjs-slider-handle"></div>
+              <div class="vjs-seek-handle vjs-slider-handle"></div>
             </div>
           </div>
           <div class="vjs-current-time vjs-time-controls vjs-control">
@@ -45,6 +45,9 @@
             </div>
           </div>
           <div class="player_mute volume-mute-button" tabindex="4"></div>
+        </div>
+        <div class="control_bar_text">
+          <%= t('pageflow.public.start_audio') %>
         </div>
       </div>
     </div>

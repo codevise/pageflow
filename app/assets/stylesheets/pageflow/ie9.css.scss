@@ -7,13 +7,14 @@
 
 /* IE 9 does not trigger mouse events on div without a background - duh */
 
+.widget_slim_player_controls_present .vjs-control-bar,
 .page .scroller {
   background-image: url('.');
 }
 
 /* Make sure controls are centered, since translateX(-50%) does not work. */
 
-.vjs-control-bar {
+.widget_classic_player_controls_present .vjs-control-bar {
   -ms-transform: translate(-50%, 0);
 }
 

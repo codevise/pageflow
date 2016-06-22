@@ -16,10 +16,6 @@
     z-index: 5;
     pointer-events: none;
 
-    @include phone {
-      bottom: -11px;
-    }
-
     background-color: transparent;
     opacity: 0;
     @include transition(opacity 1s ease);
@@ -40,24 +36,37 @@
       top: auto; /* collision with .hidden class from application.css.scss */
     }
 
-    &.faded {
-      opacity: 0;
-      @include transition(opacity 2s ease);
-    }
-
     &.animate {
       @include animation(bounce 0.5s ease);
     }
   }
 
   .scroll_indicator {
-    left: 8%;
     cursor: pointer;
     visibility: hidden;
+
+    @include desktop {
+      left: 8%;
+    }
+
+    @include phone {
+      right: 15px;
+    }
 
     &.visible {
       pointer-events: all;
       visibility: visible;
+    }
+
+    &.faded {
+      opacity: 0;
+      visibility: hidden;
+      @include transition(opacity 2s ease, visibility 2s);
+    }
+
+    &.hidden_for_page {
+      opacity: 0;
+      visibility: hidden;
     }
 
     .bigScreen & {

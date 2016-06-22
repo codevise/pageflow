@@ -33,22 +33,24 @@ jQuery.widget('pageflow.playerControls', {
         }
       }
 
-      $(progressHandler).css({left: percent + "%"});
-      $(playProgress).css({width: percent + "%"});
+      var handlerLeft = ((progressHolder.width() - progressHandler.width()) * percent / 100);
+
+      progressHandler.css({left: handlerLeft + 'px'});
+      playProgress.css({width: percent + "%"});
     });
 
     player.on('play', function (position, duration) {
       $(playButton).removeClass('vjs-play');
-      $(playButton).addClass('vjs-pause');
+      $(playButton).addClass('vjs-pause vjs-playing');
     });
 
     player.on('pause', function (position, duration) {
-      $(playButton).removeClass('vjs-pause');
+      $(playButton).removeClass('vjs-pause vjs-playing');
       $(playButton).addClass('vjs-play');
     });
 
     player.on('ended', function (position, duration) {
-      $(playButton).removeClass('vjs-pause');
+      $(playButton).removeClass('vjs-pause vjs-playing');
       $(playButton).addClass('vjs-play');
     });
 
@@ -84,8 +86,7 @@ jQuery.widget('pageflow.playerControls', {
     });
 
     $(progressHolder).on('mousedown touchstart', function(event) {
-      var newProgress = (event.pageX - $(progressHolder).offset().left) / $(progressHolder).width();
-      player.seek(newProgress * player.duration);
+      player.seek(getSeekPosition(event));
 
       $('body').on({
         'mousemove touchmove': onMouseMove,
@@ -93,18 +94,7 @@ jQuery.widget('pageflow.playerControls', {
       });
 
       function onMouseMove(event) {
-        var pageX;
-        if(event.originalEvent.changedTouches || event.originalEvent.touches) {
-          pageX = event.originalEvent.changedTouches[0].pageX || event.originalEvent.touches[0].pageX;
-        } else {
-          pageX = event.pageX;
-        }
-        var newProgress = (pageX - $(progressHolder).offset().left) / $(progressHolder).width();
-
-        if (newProgress > 1) { newProgress = 1; }
-        if (newProgress < 0) { newProgress = 0; }
-
-        player.seek(newProgress * player.duration);
+        player.seek(getSeekPosition(event));
       }
 
       function onMouseUp() {
@@ -112,6 +102,21 @@ jQuery.widget('pageflow.playerControls', {
           'mousemove touchmove': onMouseMove,
           'mouseup touchend': onMouseUp
         });
+      }
+
+      function getSeekPosition(event) {
+        var position = getPointerPageX(event) - $(progressHolder).offset().left;
+        var fraction = position / $(progressHolder).width();
+
+        return Math.min(Math.max(fraction, 0), 1) * player.duration;
+      }
+
+      function getPointerPageX(event) {
+        if (event.originalEvent.changedTouches) {
+          return event.originalEvent.changedTouches[0].pageX;
+        } else {
+          return event.pageX;
+        }
       }
     });
   }

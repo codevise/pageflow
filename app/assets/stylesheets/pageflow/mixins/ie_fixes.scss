@@ -1,0 +1,4 @@
+// IE 9 and 10 do not handle z-index of transparent objects correctly.
+@mixin fix-ie-ensure-z-index-applies {
+  background: transparent 0 0 repeat scroll url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+}

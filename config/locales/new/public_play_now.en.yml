@@ -1,0 +1,5 @@
+en:
+  pageflow:
+    public:
+      start_audio: "Start audio now"
+      start_video: "Start video now"

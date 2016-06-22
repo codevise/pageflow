@@ -37,6 +37,7 @@
 
       this.content.scroller(this.pageType.scrollerOptions || {});
       this.pageType.scroller = this.content.scroller('instance');
+      this.pageType.scrollIndicator = new pageflow.ScrollIndicator(this.element);
 
       this._setupHideTextOnSwipe();
 

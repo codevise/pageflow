@@ -61,7 +61,7 @@
     height: 100%;
     -webkit-backface-visibility: hidden;
 
-    z-index: 1;
+    z-index: 2;
     overflow: hidden;
     @include transition(0.5s ease);
   }
@@ -76,7 +76,8 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    bottom: 0;
+    z-index: 1;
 
     > div {
       position: absolute;

@@ -20,6 +20,9 @@ pageflow.pageType.register('audio', _.extend({
     //
 
     this._ensureAudioPlayer(pageElement, configuration);
+    pageElement.find('.audioPage').markWithPlayedStates('reset', {
+      autoplay: configuration.autoplay !== false
+    });
 
     var that = this;
 
@@ -118,5 +121,15 @@ pageflow.pageType.register('audio', _.extend({
 
     pageElement.find('.player_mute').muteButton();
     pageElement.find('.player_skip').skipPageButton();
+
+    pageElement.find('.audioPage')
+      .markWithPlayedStates()
+      .markWithPlayedStates('attach', this.audioPlayer);
+
+    pageElement
+      .hideContentDuringPlayback({
+        scrollIndicator: this.scrollIndicator
+      })
+      .hideContentDuringPlayback('attach', this.audioPlayer);
   }
 }, pageflow.volumeFade, pageflow.infoBox, pageflow.commonPageCssClasses));

@@ -119,17 +119,10 @@
       -moz-box-shadow: 0 0 2em white;
       box-shadow: 0 0 2em white;
     }
-    .vjs-play-control:focus {
-      outline: 3px solid #c1c1c1;
-    }
   }
 
   .vjs-control:before {
     text-shadow: none;
-  }
-
-  .vjs-play-control:focus {
-    outline: 3px solid #c1c1c1;
   }
 
   .vjs-play-control {
@@ -150,10 +143,6 @@
     &.vjs-playing { background-position: center -120px; }
     &.vjs-playing:hover { background-position: center -160px; }
     &.vjs-playing:active, &.vjs-paused.touched {  background-position: center -200px; }
-
-    &.pressed:focus {
-      outline: none;
-    }
 
     &:before {
       content: ""
@@ -222,6 +211,10 @@
     .vjs-loading-spinner {
       top: 30px;
       left: 31px;
+      margin-left: -0.5em;
+      margin-top: -0.5em;
+      width: 1em;
+      height: 1em;
       opacity: 1;
 
       &:before {
@@ -360,4 +353,12 @@
       }
     }
   }
+}
+
+.vjs-play-control:focus {
+  outline: 3px solid #c1c1c1 !important;
+}
+
+.disable_focus_outline .vjs-play-control:focus {
+  outline: 0 !important;
 }

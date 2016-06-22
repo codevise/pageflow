@@ -12,12 +12,7 @@
 @import "pageflow/mixins";
 @import "pageflow/animations";
 
-@import "./variables";
-
-@import "./functions/icon_font_options";
-
-@import "./mixins/sprite_icons";
-@import "./mixins/typography";
+@import "./definitions";
 
 @import "./built_in_page_types";
 @import "./anchors";
@@ -29,4 +24,6 @@
 @import "./mobile_navigation";
 @import "./overview";
 @import "./player_controls";
+@import "./video_player";
+@import "./video_wrapper";
 @import "./slideshow";

@@ -1,0 +1,245 @@
+/// Color of player icons and text.
+$slim-player-controls-color: #fff !default;
+
+/// Color of the loading spinner circle around the play button.
+$slim-player-controls-loading-spinner-color: rgba(255, 255, 255, 0.5) !default;
+
+/// Backgrund color of the progress bar.
+$slim-player-controls-progress-bar-background-color: rgba(255, 255, 255, 0.2) !default;
+
+/// Color of the part of the progress bar indicating the play progress.
+$slim-player-controls-progress-bar-color: $main-color !default;
+
+/// Color of the part of the progress bar indicating the load progress.
+$slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2) !default;
+
+%player_controls {
+  &-control_bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 70px 20px 15px 20px;
+
+    pointer-events: none;
+
+    text-align: right;
+
+    @include phone {
+      z-index: 2;
+    }
+  }
+
+  &-container-playing %player_controls-control_bar {
+    pointer-events: all;
+  }
+
+  &-control_bar_text {
+    position: absolute;
+    bottom: 15px;
+    left: 60px;
+    text-align: left;
+
+    opacity: 0;
+    visibility: hidden;
+
+    color: $slim-player-controls-color;
+    text-shadow: 1px 1px 4px $indicator-text-shadow-color;
+
+    @include indicator-typography;
+
+    @include phone {
+      left: 50px;
+    }
+  }
+
+  &-play_button,
+  &-skip_button {
+    @include background-icon-center($color: $slim-player-controls-color);
+    @include hide-text;
+
+    position: absolute;
+    bottom: 5px;
+    width: 40px;
+    height: 40px;
+
+    cursor: pointer;
+  }
+
+  &-play_button {
+    @include background-icon-position($left: 21px);
+    @include fa-play-icon;
+    @include fix-ie-ensure-z-index-applies;
+    left: 5px;
+    z-index: 1;
+  }
+
+  &-play_button-playing {
+    @include background-icon-position($left: 20px);
+    @include fa-pause-icon;
+  }
+
+  &-loading_spinner {
+    @include background-icon-center($color: $slim-player-controls-loading-spinner-color, $font-size: 36px);
+    @include fa-circle-o-notch-icon;
+    @include animation(rotate_and_blink 0.5s linear infinite);
+
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    left: -5px;
+    bottom: -4px;
+  }
+
+  &-loading_spinner-on_underrun {
+    // Override inline style set by video.js
+    // scss-lint:disable ImportantRule
+    display: block !important;
+    // scss-lint:enable ImportantRule
+  }
+
+  &-skip_button {
+    @include fa-forward-icon;
+    left: 50px;
+    display: none;
+  }
+
+  &-progress_bar {
+    position: absolute;
+    bottom: 55px;
+    left: 16px;
+    right: 20px;
+    height: 20px;
+
+    @include phone {
+      display: none;
+    }
+
+    &:before {
+      content: "";
+      background-color: $slim-player-controls-progress-bar-background-color;
+      width: 100%;
+    }
+  }
+
+  &-progress_bar_inner {
+    height: 100%;
+  }
+
+  &-progress_bar:before,
+  &-play_progress,
+  &-load_progress {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    height: 3px;
+  }
+
+  &-play_progress {
+    background-color: $slim-player-controls-progress-bar-color;
+  }
+
+  &-load_progress {
+    background-color: $slim-player-controls-progress-bar-load-progress-color;
+  }
+
+  &-progress_bar_handle {
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 0;
+    height: 0;
+    @include transform(scale(0));
+    @include transition(transform 0.1s ease);
+
+    &:before {
+      content: "";
+      position: absolute;
+      left: -6px;
+      top: -6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 6px;
+      background-color: $slim-player-controls-progress-bar-color;
+    }
+  }
+
+  &-progress_bar:hover {
+    %player_controls-progress_bar:before,
+    %player_controls-play_progress,
+    %player_controls-load_progress {
+      top: 9px;
+      height: 5px;
+    }
+
+    %player_controls-progress_bar_handle {
+      @include transform(scale(1));
+    }
+  }
+
+  &-current_time,
+  &-time_separator,
+  &-duration {
+    display: inline-block;
+    color: $slim-player-controls-color;
+    font-size: 14px;
+  }
+
+  &-time_separator {
+    padding: 0 5px;
+  }
+
+  &-progress_bar,
+  &-control_bar_text,
+  &-play_button,
+  &-skip_button {
+    pointer-events: all;
+  }
+
+  &-progress_bar,
+  &-control_bar_text,
+  &-current_time,
+  &-time_separator,
+  &-duration,
+  &-skip_button,
+  &-loading_spinner {
+    @include transition(opacity 0.2s linear, visibility 0.2s linear);
+  }
+
+  &-container-paused {
+    %player_controls-progress_bar,
+    %player_controls-current_time,
+    %player_controls-time_separator,
+    %player_controls-duration,
+    %player_controls-skip_button,
+    %player_controls-loading_spinner {
+      opacity: 0;
+      visibility: hidden;
+      @include transition-delay(0.2s);
+    }
+  }
+}
+
+.is_near_bottom %player_controls-container-unplayed {
+  %player_controls-play_button {
+    width: 300px;
+  }
+
+  %player_controls-control_bar_text {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@include phone {
+  %player_controls-container-unplayed {
+    %player_controls-play_button {
+      width: 300px;
+    }
+
+    %player_controls-control_bar_text {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
