@@ -9,7 +9,8 @@
           $closeOnMouseLeaving = options.closeOnMouseLeaving,
           scroller = options.scroller;
 
-      $links.on('touchend click', function(event) {
+      $links.on('click', function(event) {
+
         var $this = $(this),
             $a = $this.find('a').length ? $this.find('a') : $this,
             active = $a.hasClass('active');
