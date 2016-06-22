@@ -62,7 +62,8 @@ jQuery(function($) {
         });
 
         wrapper.pageNavigationList({
-          scroller: scroller
+          scroller: scroller,
+          scrollToActive: '.ov_chapter'
         });
 
         this.element.find('.scroll_indicator.left').scrollButton({
