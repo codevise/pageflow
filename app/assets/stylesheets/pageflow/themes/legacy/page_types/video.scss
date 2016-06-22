@@ -1,5 +1,30 @@
 // scss-lint:disable all
 
+.videoWrapper {
+  @include desktop {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+  @include pad_portrait {
+    margin-right: 0;
+    position: initial;
+    height: initial;
+  }
+}
+
+.js .videoWrapper {
+  @include desktop {
+    position: relative;
+    height: 100%;
+    width: auto;
+    margin-right: 85px;
+  }
+  @include pad_portrait {
+    margin-right: 0;
+  }
+}
+
 .js .page .videoPage {
   .vjs-control-bar {
     @include transform(translate3d(-50%, 0, 0));

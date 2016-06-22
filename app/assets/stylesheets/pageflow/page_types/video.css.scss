@@ -1,28 +1,3 @@
-.videoWrapper {
-  @include desktop {
-    position: relative;
-    height: 100%;
-    width: 100%;
-  }
-  @include pad_portrait {
-    margin-right: 0;
-    position: initial;
-    height: initial;
-  }
-}
-
-.js .videoWrapper {
-  @include desktop {
-    position: relative;
-    height: 100%;
-    width: auto;
-    margin-right: 85px;
-  }
-  @include pad_portrait {
-    margin-right: 0;
-  }
-}
-
 .has_phone_platform .page .videoPage .videoWrapper {
   margin-right: 0;
   position: initial;
