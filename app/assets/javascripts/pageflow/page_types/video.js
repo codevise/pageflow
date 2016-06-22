@@ -49,10 +49,11 @@ pageflow.pageType.register('video', _.extend({
     var videoPlayer = this.videoPlayer;
     var that = this;
 
-    if (pageflow.browser.has('mobile platform')) {
-       videoPlayer.src(videoPlayer.srcFromOptions()); // needed for iOS
+    if (pageflow.browser.has('ios platform')) {
+      videoPlayer.src(videoPlayer.srcFromOptions());
     }
-    else {
+
+    if (!pageflow.browser.has('mobile platform')) {
       videoPlayer.prebuffer().done(function() {
         videoPlayer.hidePosterImage();
 
