@@ -38,6 +38,8 @@
           hide();
         });
       }, this);
+
+      pageflow.nativeScrolling.preventScrollBouncing(this.element);
     }
   });
 }(jQuery));
