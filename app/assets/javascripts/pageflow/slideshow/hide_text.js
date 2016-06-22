@@ -43,6 +43,10 @@ pageflow.hideText = (function() {
 
     on: function(event, callback) {
       element().on(prefix(event), callback);
+    },
+
+    off: function(event, callback) {
+      element().off(prefix(event), callback);
     }
   };
 }());
