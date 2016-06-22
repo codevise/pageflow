@@ -120,6 +120,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
     var previousClasses = this.widgetNames(this.widgets);
     var newClasses = this.widgetNames(newWidgets);
 
+    this.$el.addClass('widgets_present');
     this.$el.removeClass(_.difference(previousClasses, newClasses).join(' '));
     this.$el.addClass(newClasses.join(' '));
   },

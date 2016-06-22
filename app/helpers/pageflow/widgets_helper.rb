@@ -19,7 +19,7 @@ module Pageflow
     def present_widgets_css_class(entry)
       entry.resolve_widgets.map do |widget|
         "widget_#{widget.widget_type.name}_present"
-      end.join(' ')
+      end.push('widgets_present').join(' ')
     end
 
     def widget_types_json_seeds(config)
