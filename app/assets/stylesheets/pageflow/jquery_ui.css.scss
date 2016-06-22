@@ -1,6 +1,16 @@
 @import "jquery-layout-default";
+
+// sass-rails ignores sprockets requires in imported files. We have to
+// mimic the require calls inside jquery-ui-rails with imports.
+//
+// See also:
+// https://github.com/rails/sass-rails/issues/297
+// https://github.com/rails/sass-rails/issues/306
+@import "jquery-ui/theme";
+@import "jquery-ui/core";
 @import "jquery-ui/slider";
 @import "jquery-ui/datepicker";
+@import "jquery-ui/menu";
 @import "jquery-ui/selectmenu";
 
 div.ui-datepicker{
