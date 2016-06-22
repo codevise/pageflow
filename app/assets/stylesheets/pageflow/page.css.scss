@@ -19,6 +19,7 @@
   }
 
   .shadow {
+    @include transition(opacity 0.2s linear, visibility 0.2s linear);
     @include shadow(#000);
     pointer-events: none;
   }
