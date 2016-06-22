@@ -37,3 +37,11 @@
     }
   }
 }
+
+@mixin pageflow-widget-margin($widget-name, $position) {
+  .widget_#{$widget-name}_present {
+    %pageflow_widget_margin_#{$position} {
+      @content;
+    }
+  }
+}
