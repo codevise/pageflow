@@ -1,0 +1,87 @@
+/// Use pressed state instead of hover state as acitve state.
+$sprite-icon-active-as-pressed: false !default;
+
+%pageflow_sprite_icon {
+  background-image: image-url("pageflow/themes/#{$theme-name}/icon_sprite.png");
+}
+
+@mixin pageflow-sprite-icon($left, $mode: "normal", $offset: 0, $target: "&") {
+  $normal-top: $offset - 30px;
+  $hover-top: $offset - 85px;
+  $pressed-top: $offset - 140px;
+  $deactivated-top: $offset - 195px;
+
+  @if $mode == "active" {
+    $active-top: $hover-top;
+
+    @if $sprite-icon-active-as-pressed {
+      $active-top: $pressed-top;
+    }
+
+    #{$target} {
+      background-position: $left $active-top;
+    }
+
+    @include hover {
+      #{$target} {
+        background-position: $left $active-top;
+      }
+    }
+  } @else if $mode == "disabled" {
+    #{$target} {
+      background-position: $left $deactivated-top;
+    }
+
+    @include hover {
+      #{$target} {
+        background-position: $left $deactivated-top;
+      }
+    }
+  } @else {
+    #{$target} {
+      background-position: $left $normal-top;
+    }
+
+    @include hover {
+      #{$target} {
+        background-position: $left $hover-top;
+      }
+    }
+
+    @include pressed {
+      #{$target} {
+        background-position: $left $pressed-top;
+      }
+    }
+  }
+}
+
+@mixin pageflow-sprite-icon-menu($args...) { @include pageflow-sprite-icon(-22px, $args...); }
+@mixin pageflow-sprite-icon-close-header($args...) { @include pageflow-sprite-icon(-89px, $args...); }
+@mixin pageflow-sprite-icon-home($args...) { @include pageflow-sprite-icon(-155px, $args...); }
+@mixin pageflow-sprite-icon-top($args...) { @include pageflow-sprite-icon(-909px, $args...); }
+@mixin pageflow-sprite-icon-overview($args...) { @include pageflow-sprite-icon(-222px, $args...); }
+@mixin pageflow-sprite-icon-fullscreen($args...) { @include pageflow-sprite-icon(-289px, $args...); }
+@mixin pageflow-sprite-icon-fullscreen-exit($args...) { @include pageflow-sprite-icon(-1010px, $args...); }
+@mixin pageflow-sprite-icon-hide-text($args...) { @include pageflow-sprite-icon(-670px, $args...); }
+@mixin pageflow-sprite-icon-credits($args...) { @include pageflow-sprite-icon(-622px, $args...); }
+@mixin pageflow-sprite-icon-mute($args...) { @include pageflow-sprite-icon(-355px, $args...); }
+@mixin pageflow-sprite-icon-muted($args...) { @include pageflow-sprite-icon(-489px, $args...); }
+@mixin pageflow-sprite-icon-share($args...) { @include pageflow-sprite-icon(-555px, $args...); }
+@mixin pageflow-sprite-icon-twitter($args...) { @include pageflow-sprite-icon(-789px, $args...); }
+@mixin pageflow-sprite-icon-facebook($args...) { @include pageflow-sprite-icon(-718px, $args...); }
+@mixin pageflow-sprite-icon-google($args...) { @include pageflow-sprite-icon(-855px, $args...); }
+@mixin pageflow-sprite-icon-arrow-right($args...) { @include pageflow-sprite-icon(-1472px, $args...); }
+@mixin pageflow-sprite-icon-arrow-up($args...) { @include pageflow-sprite-icon(-1406px, $args...); }
+@mixin pageflow-sprite-icon-arrow-left($args...) { @include pageflow-sprite-icon(-1340px, $args...); }
+@mixin pageflow-sprite-icon-arrow-down($args...) { @include pageflow-sprite-icon(-1274px, $args...); }
+@mixin pageflow-sprite-icon-arrow-down-invert($args...) { @include pageflow-sprite-icon(-1208px, $args...); }
+@mixin pageflow-sprite-icon-close($args...) { @include pageflow-sprite-icon(-1538px, $args...); }
+
+@mixin pageflow-sprite-icon-volume-down {
+  background-position: -495px -200px;
+}
+
+@mixin pageflow-sprite-icon-volume-up {
+  background-position: -361px -200px;
+}

@@ -1,0 +1,45 @@
+@mixin indicators-icons-default {
+  .slideshow {
+    > .indicator {
+      padding-left: 40px;
+      padding-top: 6px;
+      margin-left: -40px;
+
+      &:before {
+        background-size: auto auto;
+        background-position: top left;
+        background-repeat: no-repeat;
+        content: "";
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 1px;
+        position: absolute;
+      }
+    }
+
+    > .scroll_next_indicator {
+      &:before {
+        background-image: image-url("pageflow/themes/default/indicators/scroll_down.png");
+      }
+
+      &.invert {
+        &:before {
+          background-image: image-url("pageflow/themes/default/indicators/scroll_down_invert.png");
+        }
+      }
+    }
+
+    > .hidden_text_indicator {
+      &:before {
+        background-image: image-url("pageflow/themes/default/indicators/hidden_text.png");
+      }
+
+      &.invert {
+        &:before {
+          background-image: image-url("pageflow/themes/default/indicators/hidden_text_invert.png");
+        }
+      }
+    }
+  }
+}

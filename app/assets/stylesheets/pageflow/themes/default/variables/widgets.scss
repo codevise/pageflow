@@ -1,0 +1,28 @@
+////
+/// @group widgets
+////
+
+$basic-background-color: #353535 !default;
+$basic-background-color-transparent: rgba(53, 53, 53, 0.9) !default;
+
+/// Default background color of widgets.
+$widget-background-color: $basic-background-color-transparent;
+
+/// Default text color in widgets.
+$widget-text-color: #fff;
+
+/// Default type of icons to use in widgets.
+$widget-icons: $standard-icons !default;
+
+/// Default options used for icon font based icons in widgets.
+$default-widget-icon-font-options:  (
+  button-background-color: #dbdbdb,
+  active-button-background-color: $main-color,
+
+  button-icon-color: rgba(0, 0, 0, 0.75),
+  active-button-icon-color: rgba(255, 255, 255, 0.9),
+  deactivated-button-icon-color: rgba(120, 120, 120, 0.8)
+);
+
+/// @see $default-widget-icon-font-options
+$widget-icon-font-options: () !default;

@@ -1,0 +1,84 @@
+////
+/// @group navigation_mobile
+////
+
+/// Base typography for widget.
+$mobile-navigation-typography: () !default;
+
+/// Images to use to for icons in mobile navigation.
+///
+/// Possible values:
+///
+/// - `"default"`: Use images from default theme.
+/// - `"custom"`: Use images from current theme directory.
+///
+/// Custom images have to placed in a `mobile_navigation` directory
+/// inside the theme's image directory.  See images in
+/// `pageflow/themes/default/mobile_navigation` for samples of the
+/// required images.
+$mobile-navigation-images: "default" !default;
+
+/// Background color of the panels.
+$mobile-navigation-background-color: #232323 !default;
+
+/// Color of the credits text.
+$mobile-navigation-credits-text-color: #808080 !default;
+
+/// Color of links in credits text.
+$mobile-navigation-credits-link-color: $main-color !default;
+
+/// Color of the border that is displayed on the left side of the
+/// current page.
+$mobile-navigation-current-page-marker-color: $main-color !default;
+
+.navigation_mobile {
+  $image-dir: "pageflow/themes/default/mobile_navigation";
+
+  @if $mobile-navigation-images == "custom" {
+    $image-dir: "pageflow/themes/#{$theme-name}/mobile_navigation";
+  }
+
+  @include standard-typography($mobile-navigation-typography);
+
+  .menu {
+    &.index {
+      background-image: image-url("#{$image-dir}/index_sprite.png");
+    }
+
+    &.imprint {
+      background-image: image-url("#{$image-dir}/imprint_sprite.png");
+    }
+
+    &.sharing {
+      @if $navigation-display-share-button {
+        background-image: image-url("#{$image-dir}/sharing_sprite.png");
+      } @else {
+        display: none;
+      }
+    }
+  }
+
+  .wrapper {
+    a.active {
+      border-left: solid 5px $mobile-navigation-current-page-marker-color;
+    }
+
+    .credits {
+      color: $mobile-navigation-credits-text-color;
+    }
+  }
+
+  .overview_mobile,
+  .imprint_mobile,
+  .sharing_mobile {
+    background-color: $mobile-navigation-background-color;
+
+    a {
+      color: $mobile-navigation-credits-link-color;
+    }
+  }
+
+  .imprint_mobile a {
+    @extend %anchor;
+  }
+}

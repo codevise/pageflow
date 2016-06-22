@@ -1,0 +1,38 @@
+@mixin indicators-icons-sprite {
+  .slideshow {
+    > .indicator {
+      padding-left: 60px;
+      padding-top: 10px;
+
+      &:before {
+        @extend %pageflow_sprite_icon;
+        position: absolute;
+        top: 1px;
+        left: 0;
+        content: "";
+        width: 42px;
+        height: 42px;
+      }
+    }
+
+    > .scroll_next_indicator {
+      &:before {
+        @include pageflow-sprite-icon-arrow-down;
+      }
+
+      &:hover:before {
+        @include pageflow-sprite-icon-arrow-down("active");
+      }
+
+      &.invert {
+        &:before {
+          @include pageflow-sprite-icon-arrow-down-invert;
+        }
+
+        &:hover:before {
+          @include pageflow-sprite-icon-arrow-down-invert("active");
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+// scss-lint:disable all
+
+.navigation_mobile {
+  font-family: sourcesanspro;
+
+  .menu {
+    background-image: image-url('pageflow/themes/legacy/menu_mobile_sprite3.png');
+
+    &.imprint {
+      background-image: image-url('pageflow/themes/legacy/menu_mobile_imprint.png');
+    }
+
+    &.sharing {
+      background-image: image-url('pageflow/themes/legacy/menu_mobile_sharing.png');
+    }
+  }
+
+  .wrapper {
+    a.active {
+      border-left: 5px solid #A6D513;
+    }
+    .credits {
+      color: grey;
+    }
+  }
+
+  .overview_mobile, .imprint_mobile, .sharing_mobile {
+    background-color: #232323;
+
+    .credits{
+      font-family: "sourcesanspro";
+
+      a {
+        color: #b4c552;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
+  }
+}

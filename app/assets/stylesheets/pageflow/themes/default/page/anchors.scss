@@ -1,0 +1,19 @@
+////
+/// @group page-colors
+////
+
+/// Color of links inside the text
+$page-anchor-color: #fff !default;
+
+/// Color of links inside the text on inverted pages
+$page-anchor-inverted-color: #000 !default;
+
+.contentText a {
+  @extend %anchor;
+  color: $page-anchor-color;
+  pointer-events: all;
+}
+
+.invert .contentText a {
+  color: $page-anchor-inverted-color;
+}

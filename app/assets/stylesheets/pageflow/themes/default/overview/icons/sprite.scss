@@ -1,0 +1,25 @@
+@mixin overview-icons-sprite {
+  .button {
+    @extend %pageflow_sprite_icon;
+    width: 42px;
+    height: 42px;
+  }
+
+  .close {
+    @include pageflow-sprite-icon-close;
+
+    .label {
+      margin-top: 0.8em;
+    }
+  }
+
+  .scroll_indicator {
+    &.left {
+      @include pageflow-sprite-icon-arrow-left;
+    }
+
+    &.right {
+      @include pageflow-sprite-icon-arrow-right;
+    }
+  }
+}

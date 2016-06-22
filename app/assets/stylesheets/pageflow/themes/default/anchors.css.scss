@@ -1,56 +1,24 @@
-
-$anchor-color: $main-color;
-
-.contentText a,
-.overview_mobile .credits a,
-.navigation_credits_box a  {
-  color: white;
+%anchor {
+  @include fa-caret-right-icon;
   text-decoration: none;
   pointer-events: all;
   position: relative;
   margin-left: 6px;
   margin-right: 6px;
 
-  &:hover {
-    text-decoration: underline;
-  }
-
   @include phone {
     margin-left: 5px;
     margin-right: 5px;
   }
 
-  @include fa-caret-right-icon;
+  &:hover {
+    text-decoration: underline;
+  }
 
   &:before {
+    display: inline-block;
     top: 7px;
     width: 10px;
     height: 12px;
-    display: inline-block;
-    background-repeat: no-repeat;
-    background-position: center;
-
-    @include phone {
-    }
-  }
-}
-
-.invert .contentText a {
-  color: black;
-}
-
-.overview_mobile .credits a,
-.navigation_credits_box a {
-  color: $anchor_color;
-  text-decoration: none;
-
-  &:before {
-    background-image: image-url('pageflow/themes/#{$theme-name}/anchor_main_color.png');
-    top: 4px;
-  }
-
-  &:hover {
-    text-decoration: underline;
-    color: $anchor-color;
   }
 }

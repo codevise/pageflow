@@ -1,0 +1,26 @@
+////
+/// @group standard
+////
+
+/// Color to use for highlighted elements.
+$main-color: #e84d2c !default;
+
+/// Background color to use for highlighted elements.
+$main-color-dark: #b14a08 !default;
+
+$standard-font: SourceSansPro !default;
+$standard-font-size: 16px !default;
+
+/// Default typography settings.
+$standard-typography: (
+  font-family: $standard-font,
+  font-size: $standard-font-size
+);
+
+/// Default type of icons to use.
+///
+/// - `"icon-font"`: Circular buttons with font awesome icons.
+///
+/// - `"sprite"`: Custom icons from `icon_sprite.png` in theme
+///   directory.
+$standard-icons: "icon-font" !default;

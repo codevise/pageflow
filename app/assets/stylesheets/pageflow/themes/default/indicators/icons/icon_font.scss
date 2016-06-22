@@ -1,0 +1,21 @@
+@mixin indicators-icons-icon-font {
+  .slideshow {
+    > .indicator {
+      padding-right: 60px;
+      padding-top: 10px;
+
+      &:after {
+        content: "";
+        display: inline-block;
+        font-size: 30px;
+        font-weight: bold;
+        vertical-align: middle;
+        padding-left: 15px;
+      }
+    }
+
+    > .scroll_next_indicator {
+      @include fa-angle-down-icon($position: "after");
+    }
+  }
+}

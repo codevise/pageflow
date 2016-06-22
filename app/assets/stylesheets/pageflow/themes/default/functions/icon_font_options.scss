@@ -1,0 +1,8 @@
+@function widget-icon-font-options($overrides) {
+  $icon-font-options: map-merge(
+    $default-widget-icon-font-options,
+    $widget-icon-font-options
+  );
+
+  @return map-merge($icon-font-options, $overrides);
+}

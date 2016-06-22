@@ -1,0 +1,61 @@
+////
+/// @group overview
+////
+
+/// Base typography for widget.
+$overview-typography: () !default;
+
+/// Typography for overview header.
+$overview-header-typography: () !default;
+
+/// Typography for chapter number tagline.
+$overview-chapter-number-typography: () !default;
+
+/// Typography for chapter title.
+$overview-chapter-title-typography: () !default;
+
+/// Typography for close button label.
+$overview-close-button-typography: () !default;
+
+@include standard-typography($overview-typography, ());
+
+h2 {
+  @include typography(
+    $overview-header-typography,
+    (
+      font-size: 3em,
+    )
+  );
+}
+
+.heading-5 {
+  @include typography(
+    $overview-chapter-number-typography,
+    (
+      font-size: 1em,
+      font-weight: normal,
+      text-transform: uppercase,
+    )
+  );
+}
+
+.heading-4 {
+  @include typography(
+    $overview-chapter-title-typography,
+    (
+      font-size: 1.1em,
+      font-weight: bold,
+    )
+  );
+}
+
+.close .label {
+  @include typography(
+    $overview-close-button-typography,
+    (
+      text-transform: uppercase,
+      font-size: 1em,
+      letter-spacing: 0.1em,
+    )
+  );
+}
