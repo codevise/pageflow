@@ -136,7 +136,7 @@
     position: relative;
     outline: none;
 
-    &:focus:after {
+    &:focus:before {
       content: " ";
       position: absolute;
       top: 0;
@@ -144,6 +144,10 @@
       bottom: 0;
       left: 0;
       border: solid 3px #eee;
+
+      .disable_focus_rect & {
+        display: none;
+      }
     }
   }
 

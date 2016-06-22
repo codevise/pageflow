@@ -1,15 +1,8 @@
 pageflow.links = {
   setup: function() {
-    this.preventFocusRectOnClick();
     this.ensureClickOnEnterKeyPress();
     this.setupContentSkipLinks();
     this.ensureTargetBlankForContentLinks();
-  },
-
-  preventFocusRectOnClick: function() {
-    $('body').on('click mousedown', 'a, [tabindex]', function() {
-      $(this).blur();
-    });
   },
 
   ensureClickOnEnterKeyPress: function() {
