@@ -20,3 +20,5 @@ gem 'teaspoon', '~> 0.9.0'
 
 gem 'spring-commands-rspec', group: :development
 gem 'spring-commands-teaspoon', group: :development
+
+gem 'pageflow-theme-doc-publisher', git: 'https://github.com/tf/pageflow-theme-doc-publisher'
