@@ -8,10 +8,8 @@ Multimedia story telling for the web.
 For a high level introduction and example Pageflow stories see
 [pageflow.io](http://pageflow.io).
 
-In addition to this README, there is also a [Getting Started Wiki page](https://github.com/codevise/pageflow/wiki/Getting-Started)
-to guide you through the steps of setting up a Rails application with Pageflow
-on your development machine.
-
+* [Getting Started](https://github.com/codevise/pageflow/wiki/Getting-Started)
+* [Guides](https://github.com/codevise/pageflow/blob/master/doc/index.md)
 * [Theme Settings](http://codevise.github.io/pageflow/theme/master/)
 
 ## Updating
