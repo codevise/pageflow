@@ -1,28 +1,18 @@
 module Pageflow
   module Generators
     class ThemeGenerator < Rails::Generators::Base
-      desc 'Copies a theme template to the app.'
+      desc 'Creates a configurable theme based on the default theme.'
 
-      argument :name, required: false, default: 'custom',
-               desc: 'The scope to copy views to'
+      argument :name,
+               required: false,
+               default: 'custom',
+               desc: 'The name of the new theme'
 
-      source_root File.expand_path("../../../../../app/assets", __FILE__)
+      source_root File.expand_path('../templates', __FILE__)
 
       def copy_template
-        directory('stylesheets/pageflow/themes/default', themes_path('stylesheets', name))
-        directory('images/pageflow/themes/default', themes_path('images', name))
-
-        template('stylesheets/pageflow/themes/default.css.scss', themes_path('stylesheets', "#{name}.css.scss")) do |content|
-          content.gsub!('@import "./default/', %Q'@import "./#{name}/')
-        end
-
-        gsub_file themes_path('stylesheets', "#{name}/variables.css.scss"), '$theme-name: "default";', %Q'$theme-name: "#{name}";'
-      end
-
-      private
-
-      def themes_path(type, path)
-        File.join('app', 'assets', type, 'pageflow', 'themes', path)
+        directory('themes', File.join('app', 'assets', 'stylesheets', 'pageflow', 'themes'))
+        empty_directory(File.join('app', 'assets', 'images', 'pageflow', 'themes', name))
       end
     end
   end

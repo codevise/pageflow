@@ -1,0 +1,10 @@
+$theme-name: "<%= name %>";
+
+// $main-color: #e84d2c;
+// $main-color-dark: #b14a08;
+// $standard-font: "SourceSansPro";
+
+// For a full list of available variables see:
+//
+//   http://codevise.github.io/pageflow/theme/master/
+//

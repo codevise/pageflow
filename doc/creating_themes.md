@@ -1,27 +1,61 @@
-# @title Creating Themes
+# Creating Themes
 
-## Defining the Color Scheme
+**Available as of Pageflow version 0.11**
 
-TODO
+Themes consist of stylesheets and images which alter the look of a
+Pageflow installation. Pageflow comes with a default theme which is
+registered by the `pageflow:install` generator. The default theme
+provides a rich set of SCSS variables, which can be adapted by
+basing a custom theme on the default theme.
 
-## Custom Page Type Pictograms
+To add a custom theme to your application, run the following command
+inside your Pageflow app directory:
 
-By default, each page type brings its own set of pictogram images for
-display inside navigations bars and overviews. Default pictograms are
-usually located in a directory named
-`app/assets/images/pageflow/<page_type_name>/themes/default/pictograms`
-inside the page type gem.
+    $ rails generate pageflow:theme my_custom_theme
 
-To supply custom pictograms, add the following line to your theme
-file:
+The generator creates the following files and directories:
 
-    # pageflow/themes/my_theme.scss
-    $custom-page-type-picotgrams: true;
+    app/
+      assets/
+        stylesheets/
+          pageflow/
+            themes/
+              my_custom_theme.scss
+              my_custom_theme/
+                variables.scss
+        images/
+          pageflow/
+            themes/
+              my_custom_theme/
 
-This causes pictograms to be looked for in
-`pageflow/themes/<theme_name>/page_type_pictograms/<page_type_name>/`
-inside your apps image directory. Each directory must contain the
-following variants:
+Now take a look at the
+[available variables](http://codevise.github.io/pageflow/theme/master/)
+and start customizing. Pageflow plugins might define their own set of
+variables. Refer to the README of the respective plugin for further
+information.
 
-* `wide.png`
-* `sprite.png`
+Finally you have to register the theme in the Pageflow initializer:
+
+    # config/initializers/pageflow.rb
+    Pageflow.configure do
+      config.themes.register(:my_custom_theme)
+    end
+
+After restarting the app server, the custom theme can be selected in
+the account admin form.
+
+The theme stylesheet `pageflow/themes/my_custom_theme.css` is
+automatically added to the list of precompiled assets.
+
+## Common Gotchas
+
+The default `application.scss` provided by Rails contains the
+statement `require_tree .`. This causes all stylesheets under
+`app/assets/stylesheets` to be included into `application.css` on
+asset precompilation. Since your custom theme is precompiled into a
+separate css file, this is undesirable and can even lead to "Undefined
+Variable" errors during precompilation.
+
+To fix the issue, simply remove the `require_tree` statement and
+require each file that you want to include in your `application.css`
+individually.
