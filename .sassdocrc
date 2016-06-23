@@ -1,0 +1,13 @@
+package:
+  title: "Pageflow Theme"
+groups:
+  standard: "Defaults"
+  widgets: "Widget Defaults"
+  default-navigation-bar: "Default Navigation Bar"
+  navigation_mobile: "Mobile Navigation"
+  overview: "Overview"
+  logo: "Logo"
+  indicators: "Indicators"
+  page-colors: "Page Colors"
+  page-typography: "Page Typography"
+descriptionPath: app/assets/stylesheets/pageflow/themes/default/README.md

@@ -8,15 +8,17 @@ cache: bundler
 
 env:
   - PAGEFLOW_RAILS_VERSION=4.0.4
-  - PAGEFLOW_RAILS_VERSION=4.1.6
+  - PAGEFLOW_RAILS_VERSION=4.1.6 PUBLISH_THEME_DOC=true
 
 services:
   - redis-server
 
 before_install:
+  - nvm install stable
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
 script:
   - bin/rspec
   - bin/teaspoon
+  - bundle exec publish-pageflow-theme-doc

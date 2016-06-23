@@ -12,6 +12,8 @@ In addition to this README, there is also a [Getting Started Wiki page](https://
 to guide you through the steps of setting up a Rails application with Pageflow
 on your development machine.
 
+* [Theme Settings](http://codevise.github.io/pageflow/theme/master/)
+
 ## Updating
 
 For instructions on how to update from a prior version of the gem see
