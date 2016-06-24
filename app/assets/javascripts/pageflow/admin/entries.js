@@ -35,7 +35,7 @@ jQuery(function($) {
         hoverClass: 'drop_over',
 
         accept: function(draggable) {
-          var entryAccountId = $(draggable).find('.account a').data('id');
+          var entryAccountId = $(draggable).find('.col-account a').data('id');
           var folderAccountId = $(this).parents('.accounts > li').data('id');
 
           return !entryAccountId ||
