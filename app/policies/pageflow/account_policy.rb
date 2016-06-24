@@ -1,6 +1,6 @@
 module Pageflow
-  class AccountPolicy
-    class Scope
+  class AccountPolicy < ApplicationPolicy
+    class Scope < Scope
       attr_reader :user, :scope
 
       def initialize(user, scope)
@@ -45,10 +45,6 @@ module Pageflow
       end
 
       private
-
-      def sanitize_sql_array(array)
-        ActiveRecord::Base.send(:sanitize_sql_array, array)
-      end
 
       def memberships_for_account(user)
         sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \

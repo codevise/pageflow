@@ -1,6 +1,6 @@
 module Pageflow
-  class FolderPolicy
-    class Scope
+  class FolderPolicy < ApplicationPolicy
+    class Scope < Scope
       attr_reader :user, :scope
 
       def initialize(user, scope)
@@ -19,10 +19,6 @@ module Pageflow
       end
 
       private
-
-      def sanitize_sql_array(array)
-        ActiveRecord::Base.send(:sanitize_sql_array, array)
-      end
 
       def accounts_where_user_is_at_least_previewer(user)
         user.accounts.joins(sanitize_sql_array([

@@ -1,6 +1,6 @@
 module Pageflow
-  class ThemingPolicy
-    class Scope
+  class ThemingPolicy < ApplicationPolicy
+    class Scope < Scope
       attr_reader :user, :scope
 
       def initialize(user, scope)
@@ -28,10 +28,6 @@ module Pageflow
                             'pageflow_memberships.entity_type = "Pageflow::Account" AND ' \
                             'pageflow_memberships.role IN ("publisher", "manager")',
                             user_id: user.id, accounts_ids: accounts_ids])
-      end
-
-      def sanitize_sql_array(array)
-        ActiveRecord::Base.send(:sanitize_sql_array, array)
       end
 
       def membership_is_present

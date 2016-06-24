@@ -1,6 +1,6 @@
 module Pageflow
-  class EntryPolicy
-    class Scope
+  class EntryPolicy < ApplicationPolicy
+    class Scope < Scope
       attr_reader :user, :scope, :query
 
       def initialize(user, scope)

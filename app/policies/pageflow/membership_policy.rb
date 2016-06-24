@@ -1,6 +1,6 @@
 module Pageflow
-  class MembershipPolicy
-    class Scope
+  class MembershipPolicy < ApplicationPolicy
+    class Scope < Scope
       attr_reader :user, :scope
 
       def initialize(user, scope)
@@ -17,10 +17,6 @@ module Pageflow
       end
 
       private
-
-      def sanitize_sql_array(array)
-        ActiveRecord::Base.send(:sanitize_sql_array, array)
-      end
 
       def permissions_appropriate
         sanitize_sql_array(['pageflow_memberships.entity_type = "Pageflow::Account" AND ' \

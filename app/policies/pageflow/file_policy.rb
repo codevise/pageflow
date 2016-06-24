@@ -1,5 +1,5 @@
 module Pageflow
-  class FilePolicy
+  class FilePolicy < ApplicationPolicy
     def initialize(user, file)
       @user = user
       @file = file
