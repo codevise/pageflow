@@ -7,6 +7,10 @@ module Pageflow
     let(:entity) { of.call(topic) }
     let(:policy) { described_class.new(user, topic) }
 
+    if !params[:of_entry] && !params[:of_account]
+      fail('Speficy at least one of the following options: of_entry, of_account')
+    end
+
     [:of_entry, :of_account].each do |membership_type|
       if params[membership_type]
         let(:of) { params[membership_type] }
