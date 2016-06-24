@@ -1,6 +1,6 @@
 module Pageflow
   ActiveAdmin.register Account, :as => 'Account' do
-    menu :priority => 3,
+    menu priority: 3,
          if: proc { authorized?(:index, :accounts) }
 
     config.batch_actions = false
@@ -23,7 +23,7 @@ module Pageflow
       end
       account_memberships = current_user.memberships.on_accounts
       account_roles = account_memberships.each_with_object({}) do |membership, roles|
-        roles.merge!(membership.entity_id => membership.role)
+        roles[membership.entity_id] = membership.role
       end
       if authorized?(:see_own_role_on, :accounts)
         column :own_role do |account|
