@@ -104,8 +104,6 @@ de:
           others: "DELETED"
         no_entries: Keine Beiträge
         no_accounts: Keine Konten
-        no_account_manager_hint: Hier sind nur solche Nutzer aufgeführt, deren Konto Du administrierst
-        user_account_tab_hint: Hier sind nur diejenigen Konten aufgeführt, welche Du administrierst
     editor:
       views:
         edit_entry_view:

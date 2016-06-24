@@ -115,25 +115,6 @@ module Pageflow
     end
   end
 
-  describe '.see_all_instances_of_class_of' do
-    it 'is not permitted when not managing all accounts' do
-      user = create(:user)
-      create(:membership, user: user, entity: create(:account), role: :manager)
-
-      expect(AccountPolicy.new(user, create(:account)))
-        .not_to permit_action(:see_all_instances_of_class_of)
-    end
-
-    it 'is permitted when managing all accounts' do
-      Account.delete_all
-      user = create(:user)
-      account = create(:account)
-      create(:membership, user: user, entity: account, role: :manager)
-
-      expect(AccountPolicy.new(user, account)).to permit_action(:see_all_instances_of_class_of)
-    end
-  end
-
   describe '.resolve' do
     it 'includes all accounts for admins' do
       user = create(:user, :admin)
