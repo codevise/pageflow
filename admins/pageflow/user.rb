@@ -41,14 +41,7 @@ module Pageflow
           row :locale do
             I18n.t('language', locale: user.locale)
           end
-          admin_class = user.admin? ? 'admin' : ''
-          row :admin, class: admin_class do
-            if user.admin?
-              I18n.t('active_admin.status_tag.yes')
-            else
-              '-'
-            end
-          end
+          boolean_status_tag_row(:admin?, 'admin warning')
         end
 
         para do
