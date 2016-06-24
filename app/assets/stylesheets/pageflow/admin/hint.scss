@@ -1,22 +1,20 @@
-$hint-text-color: #777777;
-$background-color: #fbfbfb;
-
-.side_hint_container {
-  position: relative;
-}
+$hint-text-color: #777777 !default;
+$hint-icon-color: #8aa5da !default;
+$background-color: #fbfbfb !default;
 
 .side_hint {
-  @include background-icon-left($font-size: 300%,
-                                $color: $hint-text-color,
-                                $top: 40px,
-                                $left: 3.5%);
   background-color: $background-color;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 48%;
-  bottom: 6px;
-  padding: 15px 5% 5px;
+  margin: 0 10px;
+  padding: 10px 0;
   color: $hint-text-color;
-  @include fa-info-icon;
+
+  p {
+    @include background-icon-left($font-size: 20px,
+                                  $color: $hint-icon-color,
+                                  $top: 10px,
+                                  $left: -30px);
+    @include fa-info-circle-icon;
+
+    margin-left: 20%;
+  }
 }

@@ -1,2 +1,2 @@
-span(t("pageflow.admin.memberships.on_#{params[:entity_type]}.role.hint_html"),
-     class: 'side_hint')
+li(para(t("pageflow.admin.memberships.on_#{params[:entity_type]}.role.hint_html")),
+   class: 'side_hint')
