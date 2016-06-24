@@ -64,7 +64,7 @@ module Pageflow
                         class: 'new'))
       grouped_folder_list(Folder.accessible_by(Ability.new(current_user), :read),
                           active_id: params[:folder_id],
-                          grouped_by_accounts: true)
+                          grouped_by_accounts: authorized?(:see, :accounts))
     end
 
     form do |f|
