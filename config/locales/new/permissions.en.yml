@@ -86,12 +86,18 @@ en:
               editor: 'Can edit this entry'
               publisher: 'Can publish this entry'
               manager: 'Can set roles on this entry'
-          own_role:
+          own_entry_role:
             tooltip:
               previewer: 'You can preview this entry'
               editor: 'You can edit this entry'
               publisher: 'You can publish this entry'
               manager: 'You can set roles on this entry'
+          own_account_role:
+            tooltip:
+              previewer: 'You can preview entries in this account'
+              editor: 'You can edit entries in this account'
+              publisher: 'You can publish entries in this account'
+              manager: 'You can manage user and entries in this account'
         role_hint:
           admin: "DELETED"
           others: "DELETED"

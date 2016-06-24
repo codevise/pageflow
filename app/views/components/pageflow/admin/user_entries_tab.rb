@@ -10,11 +10,7 @@ module Pageflow
               link_to(membership.entity.title, admin_entry_path(membership.entity))
             end
             column :role, sortable: 'pageflow_memberships.role' do |membership|
-              span t(membership.role, scope: 'activerecord.values.pageflow/membership.role'),
-                   class: "membership_role #{membership.role} tooltip_clue" do
-                div t(membership.role, scope: 'pageflow.admin.users.roles.entries.tooltip'),
-                    class: 'tooltip_bubble'
-              end
+              membership_role_with_tooltip(membership.role, scope: 'entries')
             end
             column :account, sortable: 'pageflow_accounts.name' do |membership|
               if authorized?(:read, membership.entity.account)

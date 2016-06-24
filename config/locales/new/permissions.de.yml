@@ -87,12 +87,18 @@ de:
               editor: 'Kann Beitrag editieren'
               publisher: 'Kann Beitrag veröffentlichen'
               manager: 'Kann Beitrags-Rollen setzen'
-          own_role:
+          own_entry_role:
             tooltip:
               previewer: 'Du kannst diesen Beitrag unveröffentlicht betrachten'
               editor: 'Du kannst diesen Beitrag editieren'
               publisher: 'Du kannst diesen Beitrag veröffentlichen'
               manager: 'Du kannst Beitrags-Rollen setzen'
+          own_account_role:
+            tooltip:
+              previewer: 'Du kannst Beiträge in diesem Konto unveröffentlicht betrachten'
+              editor: 'Du kannst Beiträge in diesem Konto editieren'
+              publisher: 'Du kannst Beiträge in diesem Konto veröffentlichen'
+              manager: 'Du kannst Benutzer und Beiträge in diesem Konto verwalten'
         role_hint:
           admin: "DELETED"
           others: "DELETED"

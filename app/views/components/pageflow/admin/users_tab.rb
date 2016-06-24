@@ -12,12 +12,7 @@ module Pageflow
               link_to membership.user.formal_name, admin_user_path(membership.user)
             end
             column :role, sortable: 'pageflow_memberships.role' do |membership|
-              span I18n.t(membership.role, scope: 'activerecord.values.pageflow/membership.role'),
-                   class: "membership_role #{membership.role} tooltip_clue" do
-                div I18n.t(membership.role,
-                           scope: 'pageflow.admin.users.roles.accounts.tooltip'),
-                    class: 'tooltip_bubble'
-              end
+              membership_role_with_tooltip(membership.role, scope: 'accounts')
             end
             column :created_at
             column do |membership|

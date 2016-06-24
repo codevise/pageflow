@@ -3,11 +3,7 @@ attributes_table_for entry do
   if authorized?(:see_own_role_on, :entries)
     row :own_role do
       own_role = Pageflow::Roles.high(current_user, entry)
-      span t(own_role, scope: 'activerecord.values.pageflow/membership.role'),
-           class: "membership_role #{own_role} tooltip_clue" do
-        div I18n.t(own_role, scope: 'pageflow.admin.users.roles.own_role.tooltip'),
-            class: 'tooltip_bubble'
-      end
+      membership_role_with_tooltip(own_role, scope: 'own_entry_role')
     end
   end
   if authorized?(:see, :accounts)

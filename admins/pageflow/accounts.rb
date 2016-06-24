@@ -28,11 +28,7 @@ module Pageflow
       if authorized?(:see_own_role_on, :accounts)
         column :own_role do |account|
           own_role = account_roles[account.id]
-          span I18n.t(own_role, scope: 'activerecord.values.pageflow/membership.role'),
-               class: "membership_role #{own_role} tooltip_clue" do
-            div I18n.t(own_role, scope: 'pageflow.admin.users.roles.accounts.tooltip'),
-                class: 'tooltip_bubble'
-          end
+          membership_role_with_tooltip(own_role, scope: 'own_account_role')
         end
       end
       column :default_theming do |account|
