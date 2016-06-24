@@ -95,7 +95,7 @@ module Pageflow
     end
 
     action_item(:depublish, only: :show) do
-      if authorized?(:publish, Entry) && entry.published?
+      if authorized?(:publish, entry) && entry.published?
         button_to(I18n.t('pageflow.admin.entries.depublish'),
                   pageflow.current_entry_revisions_path(entry),
                   method: :delete,
