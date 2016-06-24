@@ -2,6 +2,8 @@
 
 [![Gem Version](https://badge.fury.io/rb/pageflow.svg)](http://badge.fury.io/rb/pageflow)
 [![Build Status](https://travis-ci.org/codevise/pageflow.svg?branch=master)](https://travis-ci.org/codevise/pageflow)
+[![Coverage Status](https://coveralls.io/repos/github/codevise/pageflow/badge.svg?branch=master)](https://coveralls.io/github/codevise/pageflow?branch=master)
+[![Code Climate](https://codeclimate.com/github/codevise/pageflow/badges/gpa.svg)](https://codeclimate.com/github/codevise/pageflow)
 
 Multimedia story telling for the web.
 
