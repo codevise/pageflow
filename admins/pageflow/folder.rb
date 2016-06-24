@@ -20,10 +20,8 @@ module Pageflow
     end
 
     controller do
-      def build_new_resource
-        super.tap do |folder|
-          folder.account ||= current_user.accounts.first || Account.first
-        end
+      after_build do |folder|
+        folder.account ||= account_policy_scope.folder_addable.first || Account.first
       end
 
       def create
@@ -51,6 +49,10 @@ module Pageflow
       end
 
       private
+
+      def account_policy_scope
+        AccountPolicy::Scope.new(current_user, Account)
+      end
 
       def restrict_attributes(attributes)
         if params[:folder] && params[:folder][:account_id] &&
