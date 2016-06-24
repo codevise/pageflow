@@ -7,6 +7,9 @@ module Pageflow
 
     included do
       has_many :memberships, dependent: :destroy, class_name: 'Pageflow::Membership'
+      has_many :account_memberships,
+               -> { where(entity_type: 'Pageflow::Account') },
+               class_name: 'Pageflow::Membership'
       has_many :entries,
                through: :memberships,
                class_name: 'Pageflow::Entry',

@@ -62,7 +62,7 @@ module Pageflow
       text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'),
                         new_admin_folder_path,
                         class: 'new'))
-      grouped_folder_list(Folder.accessible_by(Ability.new(current_user), :read),
+      grouped_folder_list(Folder.accessible_by(Ability.new(current_user), :read).includes(:account),
                           active_id: params[:folder_id],
                           grouped_by_accounts: authorized?(:see, :accounts))
     end
@@ -171,7 +171,7 @@ module Pageflow
       end
 
       def scoped_collection
-        result = super.includes(:theming, :account, :users, :published_revision).references(:published_revision)
+        result = super.includes(:theming, :account, {memberships: :user}, :published_revision).references(:published_revision)
         params.key?(:folder_id) ? result.where(folder_id: params[:folder_id]) : result
       end
 

@@ -5,17 +5,13 @@ module Pageflow
 
       def build(entry)
         ul class: 'badge_list' do
-          entry_users(entry).each do |membership|
+          entry.memberships.each do |membership|
             build_badge(membership)
           end
         end
       end
 
       private
-
-      def entry_users(entry)
-        Membership.where(entity: entry)
-      end
 
       def build_badge(membership)
         li do

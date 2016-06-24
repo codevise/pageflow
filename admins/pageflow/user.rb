@@ -143,6 +143,10 @@ module Pageflow
       helper Pageflow::Admin::UsersHelper
       helper Pageflow::QuotaHelper
 
+      def scoped_collection
+        super.includes(account_memberships: :entity)
+      end
+
       def build_new_resource
         InvitedUser.new(permitted_params[:user])
       end
