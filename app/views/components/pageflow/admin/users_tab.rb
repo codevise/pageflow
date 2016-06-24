@@ -4,7 +4,7 @@ module Pageflow
       def build(theming)
         account = theming.account
         embedded_index_table(account.memberships.on_accounts.includes(:user)
-                              .accessible_by(Ability.new(current_user), :index)
+                              .accessible_by(current_ability, :index)
                                             .where('pageflow_memberships.user_id IS NOT NULL'),
                              blank_slate_text: I18n.t('pageflow.admin.accounts.no_members')) do
           table_for_collection class: 'memberships', sortable: true, i18n: Pageflow::Membership do

@@ -62,7 +62,7 @@ module Pageflow
       text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'),
                         new_admin_folder_path,
                         class: 'new'))
-      grouped_folder_list(Folder.accessible_by(Ability.new(current_user), :read).includes(:account),
+      grouped_folder_list(Folder.accessible_by(current_ability, :read).includes(:account),
                           active_id: params[:folder_id],
                           grouped_by_accounts: authorized?(:see, :accounts))
     end

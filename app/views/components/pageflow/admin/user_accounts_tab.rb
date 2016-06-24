@@ -3,7 +3,7 @@ module Pageflow
     class UserAccountsTab < ViewComponent
       def build(user)
         embedded_index_table(user.memberships.on_accounts.includes(:account)
-                              .accessible_by(Ability.new(current_user), :index),
+                              .accessible_by(current_ability, :index),
                              blank_slate_text: t('pageflow.admin.users.no_accounts')) do
           table_for_collection class: 'memberships', sortable: true, i18n: Pageflow::Membership do
             column :account, sortable: 'pageflow_accounts.name' do |membership|
