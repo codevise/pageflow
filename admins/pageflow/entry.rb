@@ -82,7 +82,7 @@ module Pageflow
           f.input :theming, collection: eligible_themings, include_blank: false
         end
 
-        if authorized?(:configure_folder_for, resource) || controller.action_name == :create
+        if authorized?(:configure_folder_for, resource)
           folder_collection = collection_for_folders(resource.account, resource.folder)
           f.input(:folder,
                   collection: folder_collection,
