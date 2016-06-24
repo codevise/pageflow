@@ -22,3 +22,5 @@ gem 'spring-commands-rspec', group: :development
 gem 'spring-commands-teaspoon', group: :development
 
 gem 'pageflow-theme-doc-publisher', git: 'https://github.com/tf/pageflow-theme-doc-publisher'
+
+gem 'coveralls', require: false
