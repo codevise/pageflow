@@ -160,7 +160,7 @@ module Pageflow
       helper Admin::RevisionsHelper
 
       after_build do |entry|
-        entry.account ||= current_user.account
+        entry.account ||= account_policy_scope.entry_creatable.first || Account.first
         entry.theming ||= entry.account.default_theming
       end
 
@@ -173,14 +173,6 @@ module Pageflow
       def scoped_collection
         result = super.includes(:theming, :account, {memberships: :user}, :published_revision).references(:published_revision)
         params.key?(:folder_id) ? result.where(folder_id: params[:folder_id]) : result
-      end
-
-      def build_new_resource
-        super.tap do |entry|
-          entry.account ||= account_policy_scope.entry_creatable.first || Account.first
-
-          entry.theming ||= entry.account.default_theming
-        end
       end
 
       def permitted_params
