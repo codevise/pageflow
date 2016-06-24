@@ -54,9 +54,10 @@ module Pageflow
 
       def restrict_attributes(attributes)
         if params[:folder] && params[:folder][:account_id] &&
-           AccountPolicy::Scope.new(current_user, Account).folder_addable.map(&:id)
-             .include?(params[:folder][:account_id].to_i) &&
-           action_name == :create
+           AccountPolicy::Scope.new(current_user, Account)
+            .folder_addable.exists?(params[:folder][:account_id]) &&
+           action_name.to_sym == :create
+
           attributes
         else
           attributes.except!(:account_id)

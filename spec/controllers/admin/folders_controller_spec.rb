@@ -33,6 +33,18 @@ describe Admin::FoldersController do
           post :create, folder: attributes_for(:folder, account_id: account)
         end.to change { account.folders.count }
       end
+
+      it 'allows to add folder for account when multiple accounts are present' do
+        account = create(:account)
+        other_account = create(:account)
+        user = create(:user, :publisher, on: account)
+        create(:membership, user: user, entity: other_account, role: :publisher)
+        sign_in(user)
+
+        expect do
+          post :create, folder: attributes_for(:folder, account_id: other_account)
+        end.to change { other_account.folders.count }
+      end
     end
 
     describe 'as entry manager/account editor of entry on account' do
