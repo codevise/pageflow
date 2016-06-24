@@ -3,7 +3,7 @@ module Pageflow
     module MembershipsHelper
       def membership_entries_collection(parent, resource)
         if resource.new_record?
-          if parent.class.to_s == 'User' || parent.class.to_s == 'Pageflow::InvitedUser'
+          if parent.is_a?(User)
             accounts = AccountPolicy::Scope.new(current_user, Pageflow::Account)
                        .entry_creatable
             MembershipFormCollection.new(parent,
@@ -26,7 +26,7 @@ module Pageflow
 
       def membership_accounts_collection(parent, resource)
         if resource.new_record?
-          if parent.class.to_s == 'User' || parent.class.to_s == 'Pageflow::InvitedUser'
+          if parent.is_a?(User)
             accounts = AccountPolicy::Scope
                        .new(current_user, Account).member_addable.load
             MembershipFormCollection.new(parent,
@@ -96,13 +96,13 @@ module Pageflow
         private
 
         def items
-          if parent.class.to_s == 'User' || parent.class.to_s == 'Pageflow::InvitedUser'
+          if parent.is_a?(User)
             if options[:collection_method] == :users
               [parent]
             else
               options[:managed_accounts] - items_in_parent
             end
-          elsif parent.class.to_s == 'Pageflow::Entry'
+          elsif parent.is_a?(Entry)
             items_in_account - items_in_parent
           else
             Set.new(options[:managed_accounts].map(&:users).flatten) - items_in_parent
@@ -116,7 +116,7 @@ module Pageflow
         def items_in_account
           if options[:collection_method] == :users
             parent.account.users.order(options[:order])
-          elsif parent.class.to_s == 'User'
+          elsif parent.is_a?(User)
             options[:resource].entity.send(options[:collection_method]).order(options[:order])
           else
             parent.account.send(options[:collection_method]).order(options[:order])

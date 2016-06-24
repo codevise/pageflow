@@ -149,7 +149,7 @@ module Pageflow
         entry_or_account_attributes_specified attributes
       end
 
-      if attributes[:entity].class.to_s == 'Pageflow::Entry' || attributes[:entry].present?
+      if attributes[:entity].is_a?(Entry) || attributes[:entry].present?
         entry = attributes[:entity] || attributes[:entry]
         unless attributes[:user].accounts.include?(entry.account)
           Membership.find_or_create_by!(entity: entry.account,
