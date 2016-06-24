@@ -1,6 +1,6 @@
 module Pageflow
   module FoldersHelper
-    def collection_for_folders(current_account, current_folder_id = nil)
+    def collection_for_folders(current_account, current_folder = nil)
       accounts = AccountPolicy::Scope.new(current_user, Pageflow::Account)
                  .entry_creatable.includes(:folders).where('pageflow_folders.id IS NOT NULL')
                  .order(:name, 'pageflow_folders.name')
@@ -10,7 +10,7 @@ module Pageflow
                                                :name,
                                                :id,
                                                :name,
-                                               selected: current_folder_id,
+                                               selected: current_folder.try(:id),
                                                disabled: disabled_ids(accounts, current_account))
     end
 
