@@ -11,6 +11,6 @@ feature 'account manager adding user membership to entry' do
     Dom::Admin::EntryPage.first.add_member_link.click
     Dom::Admin::NewMembershipForm.first.submit_with(:user_id => user.id)
 
-    expect(Dom::Admin::Membership.find_by_user_full_name(user.full_name)).to be_present
+    expect(Dom::Admin::Membership.find_by_user_full_name(user.formal_name)).to be_present
   end
 end

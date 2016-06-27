@@ -20,7 +20,7 @@ module Pageflow
                 revision.creator.full_name
               end
             end
-            column :published_until  do |revision|
+            column :published_until do |revision|
               if revision.published_until
                 I18n.l(revision.published_until)
               elsif revision.published?

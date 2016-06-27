@@ -38,6 +38,7 @@
   }
 
   > .tab_container {
+    @include clearfix;
     @extend .panel_contents;
 
     display: none;
