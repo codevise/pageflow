@@ -11,6 +11,7 @@ module Pageflow
       belongs_to :user, :parent_class => User, :polymorphic => true
 
       helper Pageflow::Admin::MembershipsHelper
+      helper Pageflow::Admin::FormHelper
 
       def permitted_params
         params.permit(:membership => [:user_id, :entry_id])

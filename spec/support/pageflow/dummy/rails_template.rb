@@ -47,19 +47,14 @@ inject_into_file('config/environments/test.rb',
 
 # ActiveAdmin does not look for admin definitions inside dummy apps by default.
 
-prepend_to_file('config/initializers/pageflow.rb',
-                 "ActiveAdmin.application.load_paths.unshift(Dir[Rails.root.join('app/admin')])\n")
+prepend_to_file('config/initializers/pageflow.rb', <<-END)
+  ActiveAdmin.application.load_paths.unshift(Dir[Rails.root.join('app/admin')].first)\n
+END
 
 # Create database tables for fake hosted files and revision components.
 
 copy_file('create_test_hosted_file.rb', 'db/migrate/00000000000000_create_test_hosted_file.rb')
 copy_file('create_test_revision_component.rb', 'db/migrate/00000000000001_create_test_revision_component.rb')
 copy_file('add_custom_fields.rb', 'db/migrate/99990000000000_add_custom_fields.rb')
-
-# Devise bug fix: rename migrations without file extension
-
-Dir.glob('db/migrate/*').each do |file_name|
-  run("mv #{file_name} #{file_name}.rb") if File.extname(file_name).blank?
-end
 
 rake 'db:migrate db:test:load', env: 'development'

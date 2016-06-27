@@ -27,6 +27,8 @@ class ActiveAdmin::Views::TableFor
   end
 
   def boolean_status_tag_column(name, yes_state = :warning)
-    status_tag_column(name, ['Ja', '-'], [yes_state, nil])
+    status_tag_column(name,
+                      [I18n.t('active_admin.status_tag.yes'), '-'],
+                      [yes_state, nil])
   end
 end

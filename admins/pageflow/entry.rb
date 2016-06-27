@@ -57,7 +57,7 @@ module Pageflow
       f.actions
     end
 
-    action_item :only => :show do
+    action_item(:depublish, only: :show) do
       if authorized?(:publish, Entry) && entry.published?
         button_to(I18n.t('pageflow.admin.entries.depublish'),
                   pageflow.current_entry_revisions_path(entry),
@@ -69,7 +69,7 @@ module Pageflow
       end
     end
 
-    action_item :only => :show do
+    action_item(:duplicate, only: :show) do
       if authorized?(:duplicate, entry)
         button_to(I18n.t('pageflow.admin.entries.duplicate'),
                   duplicate_admin_entry_path(entry),
@@ -116,6 +116,12 @@ module Pageflow
       helper EntriesHelper
       helper Pageflow::Admin::FeaturesHelper
       helper Pageflow::Admin::RevisionsHelper
+      helper Pageflow::Admin::FormHelper
+
+      after_build do |entry|
+        entry.account ||= current_user.account
+        entry.theming ||= entry.account.default_theming
+      end
 
       def update
         update! do |success, _|
@@ -125,13 +131,6 @@ module Pageflow
 
       def scoped_collection
         params.key?(:folder_id) ? super.where(:folder_id => params[:folder_id]) : super
-      end
-
-      def build_new_resource
-        super.tap do |entry|
-          entry.account ||= current_user.account
-          entry.theming ||= entry.account.default_theming
-        end
       end
 
       def permitted_params
