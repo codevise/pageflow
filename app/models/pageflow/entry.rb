@@ -4,6 +4,7 @@ module Pageflow
     end
 
     include FeatureTarget
+    include EntryPublicationStates
 
     extend FriendlyId
     friendly_id :slug_candidates, :use => [:finders, :slugged]
@@ -34,7 +35,6 @@ module Pageflow
     validates :account, :theming, :presence => true
     validate :folder_belongs_to_same_account
 
-    scope :published, -> { joins(:published_revision) }
     scope :editing, -> { joins(:edit_lock).merge(Pageflow::EditLock.active) }
 
     attr_accessor :skip_draft_creation
@@ -96,20 +96,16 @@ module Pageflow
       EntryDuplicate.of(self).create!
     end
 
-    def published?
-      published_revision.present?
-    end
-
-    def published_until
-      published? ? published_revision.published_until : nil
-    end
-
     def should_generate_new_friendly_id?
       slug.blank? || title_changed?
     end
 
     def slug_candidates
       [:title, [:title, :id]]
+    end
+
+    def self.ransackable_scopes(_)
+      [:with_publication_state, :published]
     end
 
     private

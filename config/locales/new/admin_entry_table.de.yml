@@ -1,0 +1,11 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/entry:
+        published_at: "Veröffentlicht seit"
+  pageflow:
+    admin:
+      entries:
+        editor_hint: "Editor öffnen"
+        preview_hint: "Vorschau anzeigen"
+        show_public_hint: "Öffentliche Seite anzeigen"

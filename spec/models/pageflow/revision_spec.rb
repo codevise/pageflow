@@ -347,6 +347,58 @@ module Pageflow
       end
     end
 
+    describe '.with_password_protection' do
+      it 'includes revision with password_protected flag set to true' do
+        revision = create(:revision, password_protected: true)
+
+        result = Revision.with_password_protection
+
+        expect(result).to include(revision)
+      end
+
+      it 'does not include revision without password_protected flag' do
+        revision = create(:revision)
+
+        result = Revision.with_password_protection
+
+        expect(result).not_to include(revision)
+      end
+
+      it 'does not include revision with password_protected flag set to false' do
+        revision = create(:revision, password_protected: false)
+
+        result = Revision.with_password_protection
+
+        expect(result).not_to include(revision)
+      end
+    end
+
+    describe '.without_password_protection' do
+      it 'includes revision without password_protected flag' do
+        revision = create(:revision)
+
+        result = Revision.without_password_protection
+
+        expect(result).to include(revision)
+      end
+
+      it 'does not include revision with password_protected flag set to true' do
+        revision = create(:revision, password_protected: true)
+
+        result = Revision.without_password_protection
+
+        expect(result).not_to include(revision)
+      end
+
+      it 'includes revision with password_protected flag set to false' do
+        revision = create(:revision, password_protected: false)
+
+        result = Revision.without_password_protection
+
+        expect(result).to include(revision)
+      end
+    end
+
     describe '#image_files.with_usage_id' do
       it 'adds file_usage_id to image file record' do
         revision = create(:revision)

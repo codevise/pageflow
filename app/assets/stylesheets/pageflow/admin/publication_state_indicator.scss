@@ -1,0 +1,18 @@
+$publication-state-indicator-color: #5d5d5d;
+
+.publication_state_indicator {
+  @include background-icon-center($font-size: 16px, $color: $publication-state-indicator-color);
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  vertical-align: bottom;
+  border-bottom: none;
+
+  &.published_without_password_protection {
+    @include fa-globe-icon;
+  }
+
+  &.published_with_password_protection {
+    @include fa-lock-icon;
+  }
+}

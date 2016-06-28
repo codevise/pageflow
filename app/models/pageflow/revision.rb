@@ -6,7 +6,7 @@ module Pageflow
       'pageflow_pages.position ASC'
     ].join(',')
 
-    belongs_to :entry, :touch => true
+    belongs_to :entry, touch: :edited_at
     belongs_to :creator, :class_name => 'User'
     belongs_to :restored_from, :class_name => 'Pageflow::Revision'
 
@@ -28,6 +28,9 @@ module Pageflow
       where([':now >= published_at AND (published_until IS NULL OR :now < published_until)',
               {:now => Time.now}])
     end
+
+    scope(:with_password_protection, -> { where('password_protected IS TRUE') })
+    scope(:without_password_protection, -> { where('password_protected IS NOT TRUE') })
 
     scope :editable, -> { where('frozen_at IS NULL') }
     scope :frozen, -> { where('frozen_at IS NOT NULL') }

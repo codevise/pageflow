@@ -3,36 +3,58 @@ module Pageflow
     menu :priority => 1
 
     config.batch_actions = false
-    config.clear_sidebar_sections!
 
     index do
-      column :title, :sortable => 'title' do |entry|
-        link_to entry.title, admin_entry_path(entry)
+      column class: 'publication_state' do |entry|
+        entry_publication_state_indicator(entry)
       end
-      column I18n.t('pageflow.admin.entries.members'), :class => 'members' do |entry|
+      column :title, sortable: 'title' do |entry|
+        link_to(entry.title, admin_entry_path(entry))
+      end
+      column I18n.t('pageflow.admin.entries.members'), class: 'members' do |entry|
         entry_user_badge_list(entry)
       end
       if authorized?(:read, Account)
-        column :account, :sortable => 'account_id' do |entry|
-          link_to(entry.account.name, admin_account_path(entry.account), :data => {:id => entry.account.id})
+        column :account, sortable: 'account_id' do |entry|
+          link_to(entry.account.name,
+                  admin_account_path(entry.account),
+                  data: {id: entry.account.id})
         end
       end
       column :created_at
-      column :updated_at
-      column :class => 'buttons' do |entry|
+      column :edited_at
+      column :published_at, sortable: 'pageflow_revisions.published_at'
+
+      column class: 'buttons' do |entry|
         if authorized?(:edit, Entry)
-          span(link_to(I18n.t('pageflow.admin.entries.editor'), pageflow.edit_entry_path(entry), :class => 'editor button'))
+          icon_link_to(pageflow.edit_entry_path(entry),
+                       tooltip: I18n.t('pageflow.admin.entries.editor_hint'),
+                       class: 'editor')
         end
-        span(link_to(I18n.t('pageflow.admin.entries.preview'), preview_admin_entry_path(entry), :class => 'preview button'))
+
+        icon_link_to(preview_admin_entry_path(entry),
+                     tooltip: I18n.t('pageflow.admin.entries.preview'),
+                     class: 'preview')
+
         if entry.published?
-          span(link_to(I18n.t('pageflow.admin.entries.show_public'), pretty_entry_url(entry), :class => 'show_public button'))
+          icon_link_to(pretty_entry_url(entry),
+                       tooltip: I18n.t('pageflow.admin.entries.show_public_hint'),
+                       class: 'show_public')
         end
       end
     end
 
+    filter :title
+    filter :account
+    filter :created_at
+    filter :edited_at
+    filter :first_published_at
+    filter :published_revision_published_at, as: :date_range
+    filter :with_publication_state, as: :select, collection: -> { collection_for_entry_publication_states }
+
     sidebar :folders, :only => :index do
       text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'), new_admin_folder_path, :class => 'new'))
-      grouped_folder_list(Folder.accessible_by(Ability.new(current_user), :read),
+      grouped_folder_list(Folder.includes(:account).accessible_by(Ability.new(current_user), :read),
                           :class => authorized?(:manage, Folder) ? 'editable' : nil,
                           :active_id => params[:folder_id],
                           :grouped_by_accounts => authorized?(:read, Account))
@@ -114,6 +136,7 @@ module Pageflow
     controller do
       helper FoldersHelper
       helper EntriesHelper
+      helper Pageflow::Admin::EntriesHelper
       helper Pageflow::Admin::FeaturesHelper
       helper Pageflow::Admin::RevisionsHelper
       helper Pageflow::Admin::FormHelper
@@ -130,7 +153,8 @@ module Pageflow
       end
 
       def scoped_collection
-        params.key?(:folder_id) ? super.where(:folder_id => params[:folder_id]) : super
+        result = super.includes(:theming, :account, :users, :published_revision).references(:published_revision)
+        params.key?(:folder_id) ? result.where(folder_id: params[:folder_id]) : result
       end
 
       def permitted_params

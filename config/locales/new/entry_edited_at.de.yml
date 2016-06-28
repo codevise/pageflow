@@ -1,0 +1,5 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/entry:
+        edited_at: "Geändert am"
