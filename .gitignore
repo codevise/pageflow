@@ -1,4 +1,6 @@
 /.rails_version
+/.ruby-version
+/coverage
 /Gemfile.lock
 .bundle/
 log/*.log
