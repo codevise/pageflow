@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Pageflow
-  describe Admin::GroupedFolderList do
+  describe Admin::GroupedFolderList, type: :view_component do
     it 'renders all link' do
       render([], :active_id => 3)
 

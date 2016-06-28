@@ -127,7 +127,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mysql2', '~> 0.3.16'
 
   # Testing framework
-  s.add_development_dependency 'rspec-rails', '~> 2.14'
+  s.add_development_dependency 'rspec-rails', '~> 3.4'
+
+  # Matchers like "to have(3).items"
+  s.add_development_dependency 'rspec-collection_matchers', '~> 1.1'
 
   # Browser like integration testing
   s.add_development_dependency 'capybara', '~> 2.4'
@@ -146,9 +149,6 @@ Gem::Specification.new do |s|
 
   # Freeze time in tests
   s.add_development_dependency 'timecop', '~> 0.7.1'
-
-  # Early failure output
-  s.add_development_dependency 'rspec-instafail', '~> 0.2.6'
 
   # Colorized console output
   s.add_development_dependency 'colorize', '~> 0.7.5'
