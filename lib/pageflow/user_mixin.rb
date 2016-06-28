@@ -9,20 +9,20 @@ module Pageflow
     include Suspendable
 
     included do
-      belongs_to :account, :class_name => 'Pageflow::Account'
+      belongs_to :account, counter_cache: true, class_name: 'Pageflow::Account'
 
-      has_many :memberships, :dependent => :destroy, :class_name => 'Pageflow::Membership'
-      has_many :entries, :through => :memberships, :class_name => 'Pageflow::Entry'
+      has_many :memberships, dependent: :destroy, class_name: 'Pageflow::Membership'
+      has_many :entries, through: :memberships, class_name: 'Pageflow::Entry'
 
-      has_many :revisions, :class_name => 'Pageflow::Revision', :foreign_key => :creator_id
+      has_many :revisions, class_name: 'Pageflow::Revision', foreign_key: :creator_id
 
-      validates :first_name, :last_name, :presence => true
-      validates :role, :inclusion => ROLES
-      validates :account, :presence => true
+      validates :first_name, :last_name, presence: true
+      validates :role, inclusion: ROLES
+      validates :account, presence: true
 
-      scope :admins, -> { where(:role => 'admin') }
-      scope :account_managers, -> { where(:role => 'account_manager') }
-      scope :editors, -> { where(:role => 'editor') }
+      scope :admins, -> { where(role: 'admin') }
+      scope :account_managers, -> { where(role: 'account_manager') }
+      scope :editors, -> { where(role: 'editor') }
     end
 
     def admin?
