@@ -16,7 +16,7 @@ Pageflow.configure do |config|
   # registering the theme here.
   #
   #     $ rails generate pageflow:theme my_custom_theme
-  #     => creates app/assets/stylesheets/pageflow/themes/my_custom_theme.css.scss
+  #     => creates app/assets/stylesheets/pageflow/themes/my_custom_theme.scss
   #
   config.themes.register(:default)
   # config.themes.register(:my_custom_theme)

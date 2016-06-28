@@ -192,7 +192,7 @@ know when a file shall be regarded as ready.
 There is a special SCSS mixin which can be used to associate a
 pictogram with the processing stage:
 
-    # app/assets/stylesheets/pageflow/panorama/editor.css.scss
+    # app/assets/stylesheets/pageflow/panorama/editor.scss
     @include pageflow-hosted-file-stage('unpacking') {
       @include archive-icon;
     }
