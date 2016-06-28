@@ -25,4 +25,8 @@ module Pageflow
       I18n.locale = current_user.try(:locale) || http_accept_language.compatible_language_from(I18n.available_locales) || I18n.default_locale
     end
   end
+
+  def self.active_admin_load_path
+    Dir[Pageflow::Engine.root.join('admins')].first
+  end
 end
