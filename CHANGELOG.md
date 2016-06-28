@@ -4,7 +4,100 @@
 
 [Compare changes](https://github.com/codevise/pageflow/compare/v0.10.0...master)
 
-None so far.
+##### Breaking Changes
+
+- Active Admin/Devise have been updated. The `gem` entries for
+  `activeadmin`, `ransack`, `inherited_resources` and `formtastic`
+  have to be removed. Furthermore, delete following line from the
+  Pageflow initializer:
+
+        ActiveAdmin.application.load_paths.unshift(Dir[Pageflow::Engine.root.join('admins')])
+
+  Instead insert the following line at the top of the Active Admin
+  initializer:
+
+        ActiveAdmin.application.load_paths.unshift(Pageflow.active_admin_load_path)
+
+  See the
+  [Active Admin changelog](https://github.com/activeadmin/activeadmin/blob/master/CHANGELOG.md)
+  for instructions on how to upgrade the Active Admin initializer.
+  ([#500](https://github.com/codevise/pageflow/pull/500))
+- The default theme has partly been rewritten. See
+  [the new theme guide](https://github.com/codevise/pageflow/blob/master/doc/creating_themes.md)
+  for instructions on how to build themes that are decoupled from
+  Pageflow implementation details.
+  ([#470](https://github.com/codevise/pageflow/pull/470))
+
+##### Public Site
+
+- Minimalistic player controls
+  ([#558](https://github.com/codevise/pageflow/pull/558))
+- Move share button in mobile navigation to bottom
+  ([#551](https://github.com/codevise/pageflow/pull/551))
+- Scroll to active item in overview item
+  ([#555](https://github.com/codevise/pageflow/pull/555))
+- Improve hide text css
+  ([#541](https://github.com/codevise/pageflow/pull/541))
+- Improve focus outline handling
+  ([#543](https://github.com/codevise/pageflow/pull/543))
+- Increase fastclick compatibility of share menu
+  ([#548](https://github.com/codevise/pageflow/pull/548))
+- Disable atmo on mobile platform
+  ([#554](https://github.com/codevise/pageflow/pull/554))
+- Bug fix: Fix keyboard access to sub share menu
+  ([#553](https://github.com/codevise/pageflow/pull/553))
+- Bug fix: Do not set video src on video page activate
+  ([#547](https://github.com/codevise/pageflow/pull/547))
+- Bug fix: Prevent native scrolling on multimedia alert
+  ([#550](https://github.com/codevise/pageflow/pull/550))
+
+##### Admin
+
+- Improve filtering, sorting and pagination of admin tables
+  ([#568](https://github.com/codevise/pageflow/pull/568),
+   [#567](https://github.com/codevise/pageflow/pull/567),
+   [#563](https://github.com/codevise/pageflow/pull/563))
+
+##### Editor
+
+- Add option to hide overview button
+  ([#556](https://github.com/codevise/pageflow/pull/556))
+- Display warning for ie 9 in editor
+  ([#552](https://github.com/codevise/pageflow/pull/552))
+- Bug fix: Prevent scrolling preview while focus in sidebar
+  ([#549](https://github.com/codevise/pageflow/pull/549))
+
+##### Rails Engine
+
+- Update sass to 3.4
+  ([#540](https://github.com/codevise/pageflow/pull/540))
+- Add config option to forbid deleting user account
+  ([#535](https://github.com/codevise/pageflow/pull/535))
+- Encapsulate active admin load path setup
+  ([#570](https://github.com/codevise/pageflow/pull/570))
+- Add off event emitter method to pageflow.hidetext.
+  ([#542](https://github.com/codevise/pageflow/pull/542))
+- Introduce widgets api
+  ([#544](https://github.com/codevise/pageflow/pull/544))
+- Introduce widget margins
+  ([#557](https://github.com/codevise/pageflow/pull/557))
+- Add page css classes for scroller boundary position
+  ([#545](https://github.com/codevise/pageflow/pull/545))
+- Theme generator for configurable default theme
+  ([#560](https://github.com/codevise/pageflow/pull/560))
+
+##### Internals
+
+- Upgrade to rspec 3
+  ([#569](https://github.com/codevise/pageflow/pull/569))
+- Generate theme documentation
+  ([#559](https://github.com/codevise/pageflow/pull/559))
+- Install coveralls test coverage reporter
+  ([#561](https://github.com/codevise/pageflow/pull/561))
+- Ignore a few more files
+  ([#565](https://github.com/codevise/pageflow/pull/565))
+- Bug fix: Narrow sprockets-rails version
+  ([#546](https://github.com/codevise/pageflow/pull/546))
 
 ### Version 0.10.0
 
