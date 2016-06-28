@@ -61,27 +61,34 @@ module Pageflow
         end
 
         panel I18n.t('activerecord.models.entry.other') do
-          if user.memberships.any?
-            table_for user.memberships, :class => 'memberships', :i18n => Membership do
-              column :entry do |membership|
+          embedded_index_table(user.memberships.includes(:entry).references(:pageflow_entry),
+                               blank_slate_text: I18n.t('pageflow.admin.users.empty')) do
+            table_for_collection sortable: true, class: 'memberships', i18n: Membership do
+              column :entry, sortable: 'pageflow_entries.title' do |membership|
                 link_to(membership.entry.title, admin_entry_path(membership.entry))
               end
+              column :created_at, sortable: 'pageflow_memberships.created_at'
               column do |membership|
                 if authorized?(:destroy, membership)
-                  link_to(I18n.t('pageflow.admin.users.delete'), admin_user_membership_path(user, membership), :method => :delete, :data => {:confirm => I18n.t('active_admin.delete_confirmation'), :rel => 'delete_membership'})
+                  link_to(I18n.t('pageflow.admin.users.delete'),
+                          admin_user_membership_path(user, membership),
+                          method: :delete,
+                          data: {
+                            confirm: I18n.t('active_admin.delete_confirmation'),
+                            rel: 'delete_membership'
+                          })
                 end
-              end
-            end
-          else
-            div :class => "blank_slate_container" do
-              span :class => "blank_slate" do
-                I18n.t('pageflow.admin.users.empty')
               end
             end
           end
 
           span do
-            link_to I18n.t('pageflow.admin.users.add_entry'), new_admin_user_membership_path(user), :class => 'button', :data => {:rel => 'add_membership'}
+            link_to(I18n.t('pageflow.admin.users.add_entry'),
+                    new_admin_user_membership_path(user),
+                    class: 'button',
+                    data: {
+                      rel: 'add_membership'
+                    })
           end
         end
       end

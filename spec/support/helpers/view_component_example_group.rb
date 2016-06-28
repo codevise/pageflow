@@ -8,16 +8,21 @@ module ViewComponentExampleGroup
     attr_reader :rendered
   end
 
-  def arbre
-    Arbre::Context.new({}, _view)
+  def arbre(&block)
+    Arbre::Context.new({}, _view, &block)
   end
 
   def helper
     _view
   end
 
-  def render(*args)
-    @rendered = arbre.send(described_class.builder_method_name, *args)
+  def render(*args, &block)
+    @rendered =
+      if block_given?
+        arbre(&block).to_s
+      else
+        arbre.send(described_class.builder_method_name, *args, &block)
+      end
   end
 end
 

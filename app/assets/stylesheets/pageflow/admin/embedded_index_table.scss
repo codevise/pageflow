@@ -1,0 +1,14 @@
+.embedded_index_table {
+  .sortable a {
+    background: url("/assets/active_admin/orderable.png") no-repeat 100% 2px;
+    padding-right: 13px;
+  }
+
+  .sorted-asc a {
+    background-position: 100% -29px;
+  }
+
+  .sorted-desc a {
+    background-position: 100% -58px;
+  }
+}
