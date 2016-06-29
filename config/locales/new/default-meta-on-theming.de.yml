@@ -1,0 +1,13 @@
+de:
+  pageflow:
+    admin:
+      themings:
+        default_author_hint: Voreinstellung 'author' Meta-Feld für Eintrage
+        default_publisher_hint: Voreinstellung 'publisher' Meta-Feld für Eintrage
+        default_keywords_hint: Voreinstellung 'keywords' Meta-Feld für Eintrage
+    ui:
+      inline_help:
+        pageflow/entry:
+          author: Den Namen des Autors.
+          publisher: Namen oder Firmennamen des Herausgeber.
+          keywords: Keywords als Vorschlag für Suchmaschinen.

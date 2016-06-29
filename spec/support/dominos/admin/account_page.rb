@@ -7,6 +7,10 @@ module Dom
       attribute :cname, '.attributes_table.pageflow_theming .cname td'
       attribute :theme, '.attributes_table.pageflow_theming .theme td'
 
+      attribute :default_author,    '.attributes_table.pageflow_theming .default_author td'
+      attribute :default_publisher, '.attributes_table.pageflow_theming .default_publisher td'
+      attribute :default_keywords,  '.attributes_table.pageflow_theming .default_keywords td'
+
       def features_tab
         within(node) do
           find('.tabs > .features a')
