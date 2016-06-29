@@ -11,3 +11,9 @@ en:
           author: The author's name.
           publisher: The publisher's name or company name.
           keywords: Keywords as a suggestion for search engines.
+  activerecord:
+    attributes:
+      "pageflow/theming":
+        default_author: "Default author"
+        default_publisher: "Default publisher"
+        default_keywords: "Default keywords"

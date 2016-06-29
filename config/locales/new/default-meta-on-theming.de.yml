@@ -8,6 +8,12 @@ de:
     ui:
       inline_help:
         pageflow/entry:
-          author: Den Namen des Autors.
-          publisher: Namen oder Firmennamen des Herausgeber.
-          keywords: Keywords als Vorschlag für Suchmaschinen.
+          author: Name des Autors.
+          publisher: Name oder Firmenname des Herausgeber.
+          keywords: Schlüsselwörter als Vorschlag für Suchmaschinen.
+  activerecord:
+    attributes:
+      "pageflow/theming":
+        default_author: "Standard Autor"
+        default_publisher: "Standard Herausgeber"
+        default_keywords: "Standard Schlüsselwörter"
