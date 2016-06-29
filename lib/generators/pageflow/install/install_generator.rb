@@ -18,6 +18,7 @@ module Pageflow
         invoke 'pageflow:user'
         invoke 'pageflow:seeds'
         invoke 'pageflow:active_admin_initializer'
+        invoke 'pageflow:error_pages'
 
         rake 'pageflow:install:migrations'
       end
