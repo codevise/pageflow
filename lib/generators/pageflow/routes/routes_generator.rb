@@ -1,3 +1,5 @@
+require 'rails/generators'
+
 module Pageflow
   module Generators
     class RoutesGenerator < Rails::Generators::Base
