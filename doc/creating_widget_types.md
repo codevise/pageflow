@@ -58,7 +58,7 @@ be registered which shall be executed to enhance the rendered HTML
 snippet of a widget.
 
     # app/assets/javascript/pageflow/progress_navigation_bar.js
-    pageflow.widget_types.register('pageflow_progress_navigation_bar', {
+    pageflow.widgetTypes.register('pageflow_progress_navigation_bar', {
       enhance: function(element) {
         // some jQuery magic
       }
