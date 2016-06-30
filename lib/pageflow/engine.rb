@@ -69,6 +69,11 @@ module Pageflow
       end
     end
 
+    config.assets.precompile << lambda do |path, filename|
+      filename.start_with?(Engine.root.join('app/assets').to_s) &&
+        !['.js', '.css', ''].include?(File.extname(path))
+    end
+
     # Make sure the configuration is recreated when classes are
     # reloded. Otherwise registered page types might still point to
     # unloaded classes in development mode.
