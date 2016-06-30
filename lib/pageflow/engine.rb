@@ -63,7 +63,7 @@ module Pageflow
                                    pageflow/lt_ie9.js pageflow/lt_ie9.css pageflow/ie9.js pageflow/ie9.css
                                    video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff)
 
-    config.assets.precompile << lambda do |path|
+    config.assets.precompile << lambda do |path, _filename|
       Pageflow.config.themes.any? do |theme|
         path == theme.stylesheet_path
       end
