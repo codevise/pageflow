@@ -1,3 +1,7 @@
+////
+/// @group slim-player-controls
+////
+
 /// Background color of info box.
 $slim-player-controls-info-box-background-color: rgba(17, 17, 17, 0.9) !default;
 
@@ -6,6 +10,12 @@ $slim-player-controls-info-box-text-color: #fff !default;
 
 /// Color of separator line between info box header and info box text.
 $slim-player-controls-info-box-separator-line-color: #888 !default;
+
+/// Typography settings for the info box.
+$slim-player-controls-info-box-typography: () !default;
+
+/// Typography settings for the info box header.
+$slim-player-controls-info-box-header-typography: () !default;
 
 %player_controls {
   &-info_box {
@@ -25,15 +35,23 @@ $slim-player-controls-info-box-separator-line-color: #888 !default;
 
     h3,
     p {
-      font-size: 1.1em;
-      margin: 15px 0;
-      width: 100%;
-      max-width: none;
+      @include typography(
+        $slim-player-controls-info-box-typography, (
+          font-size: 1.1em,
+          margin: 15px 0,
+          width: 100%,
+          max-width: none
+        )
+      );
     }
 
     h3 {
       border-bottom: solid 1px $slim-player-controls-info-box-separator-line-color;
       padding-bottom: 5px;
+
+      @include typography(
+        $slim-player-controls-info-box-header-typography
+      );
     }
 
     &.title_empty h3,
