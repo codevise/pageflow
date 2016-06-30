@@ -30,30 +30,43 @@ module Pageflow
         end
       end
 
+      def create
+        create! { redirect_path }
+      end
+
+      def update
+        update! { redirect_path }
+      end
+
       def destroy
         if resource.entity_type == 'Pageflow::Account'
           resource.entity.entry_memberships.where(user: resource.user).destroy_all
         end
 
-        destroy! do
-          if authorized?(:redirect_to_user, resource.user) && params[:user_id]
-            admin_user_url(resource.user)
-          elsif authorized?(:redirect_to_user, resource.user) && params[:entry_id]
-            admin_entry_url(resource.entity)
-          elsif params[:user_id] && authorized?(:index, resource.user)
-            admin_users_url
-          elsif params[:account_id]
-            admin_accounts_url
-          else
-            admin_entries_url
-          end
-        end
+        destroy! { redirect_path }
       end
 
       private
 
       def permitted_params
         params.permit(membership: [:user_id, :entity_id, :entity_type, :role])
+      end
+
+      def redirect_path
+        if params[:user_id].present? && authorized?(:redirect_to_user, resource.user)
+          tab = resource.entity_type == 'Pageflow::Account' ? 'accounts' : 'entries'
+          admin_user_path(params[:user_id], tab: tab)
+        elsif params[:user_id].present? && authorized?(:index, resource.user)
+          admin_users_path
+        elsif params[:account_id].present? && authorized?(:read, resource.entity)
+          admin_account_path(params[:account_id], tab: 'users')
+        elsif params[:account_id].present? && authorized?(:index, :accounts)
+          admin_accounts_path
+        elsif params[:entry_id].present?
+          admin_entry_path(params[:entry_id])
+        else
+          admin_entries_path
+        end
       end
     end
   end
