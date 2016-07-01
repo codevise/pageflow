@@ -1,8 +1,15 @@
+////
+/// @group classic-player-controls
+////
+
 /// Background color of the control bar.
 $classic-player-controls-background-color: #191919 !default;
 
 /// Color of the border around the control bar.
 $classic-player-controls-border-color: #505050 !default;
+
+/// Color of the vertical separator right from the play button.
+$classic-player-controls-separator-color: $classic-player-controls-border-color !default;
 
 /// Color of control bar text, current time and duration.
 $classic-player-controls-text-color: #ddd !default;
@@ -15,6 +22,13 @@ $classic-player-controls-progress-bar-color: $main-color !default;
 
 /// Color of the part of the progress bar indicating the load progress.
 $classic-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.4) !default;
+
+/// Border radius of the progress bar.
+$classic-player-controls-progress-bar-border-radius: 4px !default;
+
+/// Width of the handle element. Can be used to ensure correct
+/// positioning of the handle when sprite images are used.
+$classic-player-controls-handle-width: 24px !default;
 
 %player_controls {
   &-control_bar {
@@ -39,7 +53,7 @@ $classic-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0
       left: 64px;
       width: 0;
       height: 60px;
-      border-right: 2px solid $classic-player-controls-border-color;
+      border-right: 2px solid $classic-player-controls-separator-color;
     }
 
     @include phone {
@@ -110,13 +124,13 @@ $classic-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0
 
   &-progress_bar_inner {
     height: 100%;
-    border-radius: 4px;
+    border-radius: $classic-player-controls-progress-bar-border-radius;
     background-color: $classic-player-controls-progress-bar-background-color;
   }
 
   &-play_progress,
   &-load_progress {
-    border-radius: 4px;
+    border-radius: $classic-player-controls-progress-bar-border-radius;
     position: absolute;
     height: 100%;
   }
@@ -135,7 +149,7 @@ $classic-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0
     top: -15px;
     left: 0;
     height: 40px;
-    width: 24px;
+    width: $classic-player-controls-handle-width;
 
     &:before {
       content: "";

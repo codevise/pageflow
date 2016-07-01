@@ -1,13 +1,22 @@
+////
+/// @group classic-player-controls
+////
+
 /// Type of icons to use:
 ///
 /// - `"icon-font"`: Circular buttons with font awesome icons.
 ///
-/// - `"sprite"`: Custom icons from `player_controls_sprite.png` in theme
-///   directory.
+/// - `"sprite"`: Use sprite image for play controls.
 $classic-player-controls-icons: "icon-font" !default;
 
 $classic-player-controls-icon-font-option: () !default;
 
+/// Image to use if `$classic-player-controls-icons` is `"sprite"`:
+///
+/// - `"default"`: Use sprite from default image.
+///
+/// - `"custom"`: Custom sprite from `player_controls_sprite.png` in
+///   theme directory.
 $classic-player-controls-images: "default" !default;
 
 @import "./classic/container";

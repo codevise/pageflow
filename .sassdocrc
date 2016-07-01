@@ -10,4 +10,6 @@ groups:
   indicators: "Indicators"
   page-colors: "Page Colors"
   page-typography: "Page Typography"
+  classic-player-controls: "Classic Player Controls"
+  slim-player-controls: "Classic Player Controls"
 descriptionPath: app/assets/stylesheets/pageflow/themes/default/README.md
