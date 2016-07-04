@@ -1,6 +1,6 @@
 module Pageflow
   class ZencoderVideoOutputDefinition < ZencoderOutputDefinition
-    cattr_accessor :skip_hls
+    cattr_accessor :skip_hls, :skip_smil
 
     attr_reader :video_file
 
@@ -22,7 +22,7 @@ module Pageflow
         transferable(mp4_low_definition),
 
         hls_definitions,
-        non_transferable(smil_definition),
+        smil_definition,
 
         thumbnails_definitions
       ].flatten
@@ -184,13 +184,14 @@ module Pageflow
     end
 
     def smil_definition
-      {
-        :streams => smil_stream_definitions,
-        :type => 'playlist',
-        :format => 'highwinds',
-        :path =>  video_file.smil.path,
-        :public => true
-      }
+      return [] if skip_smil
+      non_transferable(
+        streams: smil_stream_definitions,
+        type: 'playlist',
+        format: 'highwinds',
+        path: video_file.smil.path,
+        public: true
+      )
     end
 
     def smil_stream_definitions
@@ -204,8 +205,8 @@ module Pageflow
           :bandwidth => 256
         },
         {
-          :path => video_file.mp4_high.url(host: :hls_origin, default_protocol: 'http'),
-          :bandwidth => 3750
+          path: video_file.mp4_high.url(host: :hls_origin, default_protocol: 'http'),
+          bandwidth: 3750
         }
       ]
     end
