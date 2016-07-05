@@ -50,6 +50,14 @@ module Pageflow
     end
 
 
+    def mp4_4k
+      ZencoderAttachment.new(self, "4k.mp4")
+    end
+
+    def mp4_fullhd
+      ZencoderAttachment.new(self, "fullhd.mp4")
+    end
+
     def mp4_high
       ZencoderAttachment.new(self, "high.mp4")
     end
