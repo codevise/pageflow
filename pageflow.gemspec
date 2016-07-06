@@ -161,4 +161,7 @@ Gem::Specification.new do |s|
 
   # Semantic versioning rake tasks
   s.add_development_dependency 'semmy', '~> 0.2.0'
+
+  # A gem that makes it easy to write specs for your Rails 3 Generators.
+  s.add_development_dependency 'ammeter', '~> 1.1'
 end
