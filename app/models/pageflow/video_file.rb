@@ -2,6 +2,7 @@ module Pageflow
   class VideoFile < ActiveRecord::Base
     include HostedFile
     include EncodedFileStateMachine
+    include OutputSource
 
     belongs_to :confirmed_by, :class_name => 'User'
 
@@ -110,7 +111,11 @@ module Pageflow
     end
 
     def meta_data_attributes=(attributes)
-      self.attributes = attributes.symbolize_keys.slice(:format, :duration_in_ms, :width, :height)
+      self.attributes = attributes.symbolize_keys.slice(:format,
+                                                        :duration_in_ms,
+                                                        :width,
+                                                        :height,
+                                                        :output_presences)
     end
   end
 end

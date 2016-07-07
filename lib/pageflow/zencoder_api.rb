@@ -47,12 +47,21 @@ module Pageflow
 
         if response.success?
           input_details = response.body['job']['input_media_file']
+          outputs_details = response.body['job']['output_media_files']
+
+          output_presences = outputs_details.inject({}) do |presences, output|
+            if output['label'].present?
+              presences[output['label'].to_sym] = output['state']
+            end
+            presences
+          end
 
           {
-            :format => input_details["format"],
-            :duration_in_ms => input_details["duration_in_ms"],
-            :width => input_details["width"],
-            :height => input_details["height"]
+            format: input_details['format'],
+            duration_in_ms: input_details['duration_in_ms'],
+            width: input_details['width'],
+            height: input_details['height'],
+            output_presences: output_presences
           }
         else
           raise translate_zencoder_errors(response.errors)
