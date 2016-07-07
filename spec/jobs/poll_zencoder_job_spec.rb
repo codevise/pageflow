@@ -120,7 +120,7 @@ module Pageflow
       expect(result).to eq(:error)
     end
 
-    it 'passes job id of file to get_input_details method of zencoder api' do
+    it 'passes job id of file to get_details method of zencoder api' do
       video_file = build(:video_file, :job_id => 43)
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
@@ -129,7 +129,7 @@ module Pageflow
 
       result = PollZencoderJob.perform_with_result(video_file, {})
 
-      expect(ZencoderApi.instance).to have_received(:get_input_details).with(43)
+      expect(ZencoderApi.instance).to have_received(:get_details).with(43)
     end
 
     it 'assigns meta data' do
@@ -138,7 +138,7 @@ module Pageflow
       meta_data = {}
 
       allow(ZencoderApi).to receive(:instance).and_return(zencoder_api)
-      allow(zencoder_api).to receive(:get_input_details).and_return(meta_data)
+      allow(zencoder_api).to receive(:get_details).and_return(meta_data)
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
       allow(video_file).to receive(:meta_data_attributes=)

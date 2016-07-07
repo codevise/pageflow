@@ -36,7 +36,12 @@ module Pageflow
       end
     end
 
+    # @deprecated Use `get_details(job_id)` instead.
     def get_input_details(job_id)
+      get_details(job_id)
+    end
+
+    def get_details(job_id)
       with_exception_translation do
         response = Zencoder::Job.details(job_id)
 
