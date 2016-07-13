@@ -11,9 +11,9 @@ module Pageflow
         run_generator
 
         expect(procfile).to exist
-        expect(procfile).to contain "web: bundle exec rails server"
-        expect(procfile).to contain "worker: bundle exec rake resque:work QUEUE=*"
-        expect(procfile).to contain "scheduler: bundle exec rake resque:scheduler QUEUE=*"
+        expect(procfile).to contain 'web: bundle exec rails server'
+        expect(procfile).to contain 'worker: bundle exec rake resque:work QUEUE=*'
+        expect(procfile).to contain 'scheduler: bundle exec rake resque:scheduler QUEUE=*'
       end
     end
   end
