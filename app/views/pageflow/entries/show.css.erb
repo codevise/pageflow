@@ -6,21 +6,14 @@
           <%= background_image_lazy_loading_css_class('image', image_file) %> {
             background-image: url('<%= image_file.attachment.url(style) %>');
           }
+          <%= background_image_lazy_loading_css_class('image_panorama', image_file) %> {
+            background-image: url('<%= image_file.attachment.url("panorama_#{style}") %>');
+          }
         <% end %>
 
         <% @entry.video_files.each do |video_file| %>
           <%= background_image_lazy_loading_css_class('video_poster', video_file) %> {
             background-image: url('<%= video_file.poster.url(style) %>');
-          }
-        <% end %>
-      <% end %>
-    <% end %>
-
-    <% page_media_breakpoints.each do |style, condition| %>
-      <%= media_query(condition) do %>
-        <% @entry.image_files.each do |image_file| %>
-          <%= background_image_lazy_loading_css_class('image_panorama', image_file) %> {
-            background-image: url('<%= image_file.attachment.url("panorama_#{style}") %>');
           }
         <% end %>
       <% end %>
