@@ -140,19 +140,8 @@ application.
 ## Running Pageflow
 
 In addition to the Rails server, you need to start two Rake tasks for
-the background job processing. First, start a Resque worker which handles
-jobs from all queues:
-
-    $ QUEUE=* rake resque:work
-
-Image and video processing are examples of jobs that are executes by these workers.
-
-Some jobs need to be executed repeatedly. For example, while videos are being
-encoded by Zencoder, there is a job that runs every few seconds to fetch the
-current progress. This delayed invocation of jobs is handled by the Resque
-Scheduler Rake task:
-
-     $ QUEUE=* rake resque:scheduler
+the background job processing. These tasks are listed in `Procfile` which
+is generated in the project root folder by the Pageflow installer.
 
 Consider using the [foreman gem](https://github.com/ddollar/foreman) to start all of
 these processes (including the Rails server) with a single command in your
