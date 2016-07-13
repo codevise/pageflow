@@ -14,6 +14,7 @@ module Pageflow
 
         invoke 'pageflow:assets'
         invoke 'pageflow:initializer'
+        invoke 'pageflow:procfile'
         invoke 'pageflow:routes'
         invoke 'pageflow:user'
         invoke 'pageflow:seeds'
