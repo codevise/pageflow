@@ -1,12 +1,5 @@
-<%= link_to("https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}",
-            :target => "_blank",
-            :tabindex => "2",
-            :class => "share google",
-            :data => {
-              :"share-page" => "https://plus.google.com/share?url=#{ERB::Util.url_encode(pretty_entry_url(entry))}%3Fpage%3DpermaId"
-            }) do %>
-
-    <span class="hint"><%= t('pageflow.public.share_on_google') %></span>
-    <span class="share_google button"></span>
-    <p>google</p>
+<%= social_share_link(:google, entry) do %>
+  <span class="hint"><%= t('pageflow.public.share_on_google') %></span>
+  <span class="share_google button"></span>
+  <p>google</p>
 <% end %>

@@ -1,0 +1,10 @@
+de:
+  pageflow:
+    ui:
+      inline_help:
+        pageflow/entry:
+          share_url: "URL, die geteilt werden soll, wenn der Benutzer auf einen der Social Media Buttons klickt. Feld frei lassen, um URL des veröffentlichten Beitrags zu verwenden."
+  activerecord:
+    attributes:
+      "pageflow/entry":
+        share_url: "Social Sharing URL"

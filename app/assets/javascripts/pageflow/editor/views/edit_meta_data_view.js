@@ -79,6 +79,9 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
         disableRichtext: true,
         disableLinks: true
       });
+      this.input('share_url', pageflow.TextInputView, {
+        placeholder: pageflow.entry.get('pretty_url')
+      });
     });
 
     this.formContainer.show(configurationEditor);

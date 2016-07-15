@@ -2,6 +2,51 @@ require 'spec_helper'
 
 module Pageflow
   describe SocialShareHelper do
+    describe '#social_share_entry_url' do
+      it 'returns share_url if present' do
+        entry = create(:entry, :published, published_revision_attributes: {
+                         share_url: 'http://example.com/my_entry'
+                       })
+        published_entry = PublishedEntry.new(entry)
+
+        result = helper.social_share_entry_url(published_entry)
+
+        expect(result).to eq('http://example.com/my_entry')
+      end
+
+      it 'falls back to pretty entry url' do
+        entry = create(:entry, :published, title: 'my_entry')
+        published_entry = PublishedEntry.new(entry)
+
+        result = helper.social_share_entry_url(published_entry)
+
+        expect(result).to eq('http://test.host/my_entry')
+      end
+    end
+
+    describe '#social_share_page_url' do
+      it 'appends page param to pretty entry url' do
+        entry = create(:entry, :published, title: 'my_entry')
+        storyline = create(:storyline, revision: entry.published_revision)
+        chapter = create(:chapter, storyline: storyline)
+        page = create(:page, chapter: chapter, configuration: {text: 'Page Text'}, position: 1)
+        published_entry = PublishedEntry.new(entry)
+
+        result = helper.social_share_page_url(published_entry, page)
+
+        expect(result).to eq("http://test.host/my_entry?page=#{page.perma_id}")
+      end
+
+      it 'supports string as page parameter' do
+        entry = create(:entry, :published, title: 'my_entry')
+        published_entry = PublishedEntry.new(entry)
+
+        result = helper.social_share_page_url(published_entry, 'some_placeholder')
+
+        expect(result).to eq('http://test.host/my_entry?page=some_placeholder')
+      end
+    end
+
     describe '#social_share_entry_description' do
       it 'returns entry summary if present' do
         entry = create(:entry, :published)
@@ -27,8 +72,8 @@ module Pageflow
         entry = create(:entry, :published)
         storyline = create(:storyline, revision: entry.published_revision)
         chapter = create(:chapter, storyline: storyline)
-        page = create(:page, chapter: chapter, configuration: { text: 'Page Text' }, position: 1)
-        create(:page, chapter: chapter, configuration: { text: 'Another Page Text' }, position: 2)
+        page = create(:page, chapter: chapter, configuration: {text: 'Page Text'}, position: 1)
+        create(:page, chapter: chapter, configuration: {text: 'Another Page Text'}, position: 2)
         published_entry = PublishedEntry.new(entry)
 
         result = helper.social_share_entry_description(published_entry)
@@ -51,10 +96,10 @@ module Pageflow
         entry = create(:entry, :published)
         storyline = create(:storyline, revision: entry.published_revision)
         chapter = create(:chapter, storyline: storyline)
-        page = create(:page, chapter: chapter, configuration: { text: 'Page Text' })
+        page = create(:page, chapter: chapter, configuration: {text: 'Page Text'})
         published_entry = PublishedEntry.new(entry)
 
-        result = helper.social_share_page_description(page, published_entry)
+        result = helper.social_share_page_description(published_entry, page)
 
         expect(result).to eq(page.configuration['text'])
       end
@@ -63,10 +108,10 @@ module Pageflow
         entry = create(:entry, :published)
         storyline = create(:storyline, revision: entry.published_revision)
         chapter = create(:chapter, storyline: storyline)
-        page = create(:page, chapter: chapter, configuration: { description: 'description' })
+        page = create(:page, chapter: chapter, configuration: {description: 'description'})
         published_entry = PublishedEntry.new(entry)
 
-        result = helper.social_share_page_description(page, published_entry)
+        result = helper.social_share_page_description(published_entry, page)
 
         expect(result).to eq(page.configuration['description'])
       end
@@ -79,7 +124,7 @@ module Pageflow
         page = create(:page, chapter: chapter)
         published_entry = PublishedEntry.new(entry)
 
-        result = helper.social_share_page_description(page, published_entry)
+        result = helper.social_share_page_description(published_entry, page)
 
         expect(result).to eq('social share description')
       end

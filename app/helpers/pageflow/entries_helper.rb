@@ -4,8 +4,9 @@ module Pageflow
       [entry.title, entry.theming.cname_domain.presence].compact.join(' - ')
     end
 
-    def pretty_entry_url(entry)
-      pageflow.short_entry_url(entry.to_model, Pageflow.config.theming_url_options(entry.theming))
+    def pretty_entry_url(entry, options = {})
+      params = options.reverse_merge(Pageflow.config.theming_url_options(entry.theming) || {})
+      pageflow.short_entry_url(entry.to_model, params)
     end
 
     def entry_file_rights(entry)

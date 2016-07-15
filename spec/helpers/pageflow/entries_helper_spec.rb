@@ -33,6 +33,14 @@ module Pageflow
         expect(helper.pretty_entry_url(entry)).to eq('http://test.host/test')
       end
 
+      it 'supports custom params' do
+        theming = create(:theming, cname: '')
+        entry = PublishedEntry.new(create(:entry, title: 'test', theming: theming),
+                                   create(:revision))
+
+        expect(helper.pretty_entry_url(entry, page: 4)).to eq('http://test.host/test?page=4')
+      end
+
       it 'uses theming cname if present' do
         theming = create(:theming, cname: 'my.example.com')
         entry = PublishedEntry.new(create(:entry, title: 'test', theming: theming),

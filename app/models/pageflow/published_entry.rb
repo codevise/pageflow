@@ -20,7 +20,7 @@ module Pageflow
              :summary, :credits, :manual_start,
              :emphasize_chapter_beginning,
              :emphasize_new_pages,
-             :share_image_id, :share_image_x, :share_image_y,
+             :share_url, :share_image_id, :share_image_x, :share_image_y,
              :locale,
              :author, :publisher, :keywords,
              :password_protected?,
