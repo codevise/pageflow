@@ -21,8 +21,14 @@ module Pageflow
 
     rescue_from ActiveRecord::RecordNotFound do
       respond_to do |format|
-        format.html { render :file => Rails.root.join('public/404.html'), :status => :not_found }
-        format.any(:json, :css) { head :not_found }
+        format.html do
+          begin
+            render file: Rails.public_path.join('pageflow', 'error_pages', '404.html'), status: :not_found
+          rescue ActionView::MissingTemplate
+            head :not_found
+          end
+        end
+        format.any { head :not_found }
       end
     end
 

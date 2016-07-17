@@ -41,9 +41,6 @@ module Pageflow
           @entry = DraftEntry.find(params[:id])
           authorize!(:show, @entry.to_model)
         end
-        format.any do
-          render(:file => 'public/pageflow/404.html', :status => :not_found)
-        end
       end
     end
 
