@@ -15,10 +15,10 @@
             $a = $this.find('a').length ? $this.find('a') : $this,
             active = $a.hasClass('active');
 
-        $links.removeClass('active');
-        $a.addClass('active');
-
         if ($a.data('share-page')) {
+          $links.removeClass('active');
+          $a.addClass('active');
+
           event.preventDefault();
 
           var $currentPage = pageflow.slides.currentPage(),

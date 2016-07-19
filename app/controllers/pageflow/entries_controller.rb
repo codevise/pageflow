@@ -85,8 +85,8 @@ module Pageflow
                                     :home_url, :home_button_enabled,
                                     :overview_button_enabled,
                                     :emphasize_chapter_beginning, :emphasize_new_pages,
-                                    :share_image_id, :share_image_x, :share_image_y, :locale,
-                                    :author, :publisher, :keywords)
+                                    :share_url, :share_image_id, :share_image_x, :share_image_y,
+                                    :locale, :author, :publisher, :keywords)
     end
 
     def entry_request_scope

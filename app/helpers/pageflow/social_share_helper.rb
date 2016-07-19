@@ -1,5 +1,7 @@
 module Pageflow
   module SocialShareHelper
+    include EntriesHelper
+
     def social_share_meta_tags_for(target)
       if target.is_a?(Page)
         render('pageflow/social_share/page_meta_tags', entry: @entry, page: @entry.share_target)
@@ -8,8 +10,19 @@ module Pageflow
       end
     end
 
-    def social_share_page_url(page)
-      "#{pretty_entry_url(page.chapter.entry)}?page=#{page.perma_id}"
+    def social_share_entry_url(entry)
+      entry.share_url.presence || pretty_entry_url(entry)
+    end
+
+    def social_share_page_url(entry, page_or_perma_id)
+      perma_id =
+        if page_or_perma_id.respond_to?(:perma_id)
+          page_or_perma_id.perma_id
+        else
+          page_or_perma_id
+        end
+
+      pretty_entry_url(entry, page: perma_id)
     end
 
     def social_share_page_title(page)
@@ -23,7 +36,7 @@ module Pageflow
       title.join(' ')
     end
 
-    def social_share_page_description(page, entry)
+    def social_share_page_description(entry, page)
       return social_share_sanitize(page.configuration['text']) if page.configuration['text'].present?
       return social_share_sanitize(page.configuration['description']) if page.configuration['description'].present?
       social_share_entry_description(entry)

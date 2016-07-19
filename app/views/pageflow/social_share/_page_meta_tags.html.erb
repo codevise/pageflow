@@ -1,12 +1,12 @@
-<%= tag :link, :rel => "canonical", :href => social_share_page_url(page) %>
+<%= tag :link, rel: "canonical", href: social_share_page_url(entry, page) %>
 
-<%= tag :meta, :property => "og:image", :content => social_share_normalize_protocol(page.thumbnail_url(:medium)) %>
+<%= tag :meta, property: "og:image", content: social_share_normalize_protocol(page.thumbnail_url(:medium)) %>
 
-<%= tag :meta, :property => "og:title", :content => social_share_page_title(page) %>
-<%= tag :meta, :property => "og:description", :name => "description", :content => social_share_page_description(page, entry) %>
-<%= tag :meta, :property => "og:url", :content => social_share_page_url(page) %>
-<%= tag :meta, :property => "og:site_name", :content => entry.theming.cname_domain %>
-<%= tag :meta, :property => "og:type", :content => "website" %>
+<%= tag :meta, property: "og:title", content: social_share_page_title(page) %>
+<%= tag :meta, property: "og:description", name: "description", content: social_share_page_description(entry, page) %>
+<%= tag :meta, property: "og:url", content: social_share_page_url(entry, page) %>
+<%= tag :meta, property: "og:site_name", content: entry.theming.cname_domain %>
+<%= tag :meta, property: "og:type", content: "website" %>
 
-<%= tag :meta, :name => "twitter:card", :content => "summary_large_image" %>
-<%= tag :meta, :name => "twitter:description", :content => social_share_page_description(page, entry) %>
+<%= tag :meta, name: "twitter:card", content: "summary_large_image" %>
+<%= tag :meta, name: "twitter:description", content: social_share_page_description(entry, page) %>
