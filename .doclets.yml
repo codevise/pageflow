@@ -1,0 +1,3 @@
+dir: app/assets/javascripts/
+branches:
+  - master
