@@ -1,9 +1,13 @@
-/*global editor*/
-
+/**
+ * Input view to reference a file.
+ *
+ * @class
+ * @memberof module:pageflow/editor
+ */
 pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 
-  template: 'pageflow/ui/templates/inputs/file_input',
+  template: 'pageflow/editor/templates/inputs/file_input',
   className: 'file_input',
 
   ui: {
