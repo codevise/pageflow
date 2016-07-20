@@ -1,5 +1,8 @@
 /**
  * Base thumbnail view for models supporting a `thumbnailFile` method.
+ *
+ * @class
+ * @memberof module:pageflow/editor
  */
 pageflow.ModelThumbnailView = Backbone.Marionette.View.extend({
   className: 'model_thumbnail',

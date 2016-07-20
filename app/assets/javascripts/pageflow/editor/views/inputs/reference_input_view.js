@@ -1,4 +1,12 @@
-pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend({
+/**
+ * Base class for input views that reference models.
+ *
+ * @class
+ * @memberof module:pageflow/editor
+ */
+pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
+/** @lends module:pageflow/editor.pageflow.ReferenceInputView# */{
+
   mixins: [pageflow.inputView],
 
   template: 'pageflow/editor/templates/inputs/reference',

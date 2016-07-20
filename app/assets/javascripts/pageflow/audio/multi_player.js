@@ -1,3 +1,8 @@
+/**
+ * Play and fade between multiple audio files.
+ *
+ * @class
+ */
 pageflow.Audio.MultiPlayer = function(pool, options) {
   if (options.crossFade && options.playFromBeginning) {
     throw 'pageflow.Audio.MultiPlayer: The options crossFade and playFromBeginning can not be used together at the moment.';
@@ -7,10 +12,16 @@ pageflow.Audio.MultiPlayer = function(pool, options) {
   var currentId = null;
   var that = this;
 
+  /**
+   * Continue playback.
+   */
   this.resume = function() {
     return current.play();
   };
 
+  /**
+   * Continue playback with fade in.
+   */
   this.resumeAndFadeIn = function() {
     return current.playAndFadeIn(options.fadeDuration);
   };

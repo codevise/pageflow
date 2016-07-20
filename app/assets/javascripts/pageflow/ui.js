@@ -14,4 +14,9 @@
 //= require_tree ./ui/views
 //= require_tree ./ui/templates
 
+/**
+ * Reusable Backbone views for the editor and admin interface.
+ * @module pageflow/ui
+ */
+
 window.pageflow = window.pageflow || {};

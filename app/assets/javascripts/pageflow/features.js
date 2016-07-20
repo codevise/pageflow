@@ -1,10 +1,14 @@
 /**
- * Registry of functions which extend pageflow when a named feature is
+ * Let plugins register functions which extend the editor or
+ * slideshow with certain functionality when a named feature is
  * enabled.
  *
+ * @alias pageflow.features
  * @since 0.9
  */
-pageflow.Features = pageflow.Object.extend({
+pageflow.Features = pageflow.Object.extend(
+  /** @lends pageflow.features */{
+
   /** @api private */
   initialize: function() {
     this.registry = {};
@@ -22,7 +26,7 @@ pageflow.Features = pageflow.Object.extend({
   /**
    * Register a function to configure a feature when it is active.
    *
-   * @param scope [String] Name of the scope the passed function
+   * @param {String} scope - Name of the scope the passed function
    *   shall be called in.
    * @param name [String] Name of the feature
    * @param fn [Function] Function to call when the given feature
@@ -57,12 +61,4 @@ pageflow.Features = pageflow.Object.extend({
   }
 });
 
-/**
- * Let plugins register functions which extend the editor or
- * slideshow with certain functionality when a named feature is
- * enabled.
- *
- * @return [pageflow.Features]
- * @since 0.9
- */
 pageflow.features = new pageflow.Features();

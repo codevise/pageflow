@@ -1,7 +1,53 @@
 //= require ./url_input_view
 
-pageflow.ProxyUrlInputView = pageflow.UrlInputView.extend({
-  /** @override */
+/**
+ * Input view that verifies that a certain URL is reachable via a
+ * proxy. To conform with same origin restrictions, this input view
+ * lets the user enter some url and saves a rewritten url where the
+ * domain is replaced with some path segment.
+ *
+ * That way, when `/example` is setup to proxy requests to
+ * `http://example.com`, the user can enter an url of the form
+ * `http://example.com/some/path` but the string `/example/some/path`
+ * is persisited to the database.
+ *
+ * @param {string} options.displayPropertyName
+ *   Attribute name to store the url entered by the user.
+ *
+ * @param {Object[]} options.proxies
+ *   List of supported proxies.
+ *
+ * @param {string} options.proxies[].url
+ *   Supported prefix of an url that can be entered by the user.
+ *
+ * @param {string} options.proxies[].base_path
+ *   Path to replace the url prefix with.
+ *
+ * @param {boolean} [options.required=false]
+ *   Display an error if the url is blank.
+ *
+ * @param {boolean} [options.permitHttps=false]
+ *   Allow urls with https protocol.
+ *
+ * @example
+ *
+ * this.input('url, pageflow.ProxyUrlInputView, {
+ *   proxies: [
+ *     {
+ *       url: 'http://example.com',
+ *       base_path: '/example'
+ *     }
+ *   ]
+ * });
+ *
+ * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @class
+ * @memberof module:pageflow/ui
+ */
+pageflow.ProxyUrlInputView = pageflow.UrlInputView.extend(
+  /** @lends module:pageflow/ui.pageflow.ProxyUrlInputView# */{
+
+  // @override
   validateUrl: function(url) {
     var view = this;
 
@@ -19,12 +65,12 @@ pageflow.ProxyUrlInputView = pageflow.UrlInputView.extend({
     }).promise();
   },
 
-  /** @override */
+  // @override
   transformPropertyValue: function(url) {
     return this.rewriteUrl(url);
   },
 
-  /** @override */
+  // @override
   supportedHosts: function() {
     return _.pluck(this.options.proxies, 'url');
   },

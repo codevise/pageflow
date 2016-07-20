@@ -3,8 +3,12 @@
 
 /**
  * Interface for engines providing editor extensions.
+ * @alias pageflow.editor
+ * @memberof module:pageflow/editor
  */
-pageflow.EditorApi = pageflow.Object.extend({
+pageflow.EditorApi = pageflow.Object.extend(
+/** @lends module:pageflow/editor.pageflow.editor */{
+
   initialize: function() {
     this.sideBarRoutings = [];
     this.mainMenuItems = [];
@@ -14,30 +18,23 @@ pageflow.EditorApi = pageflow.Object.extend({
     /**
      * Failures API
      *
-     * Can watch collections for errors saving models and display the error
-     * allong with a retry button.
-     *
-     *     pageflow.editor.failures.watch(collection);
-     *
-     * It's possible to add failures to the UI by adding instances of subclasses of pageflow.Failure:
-     *
-     *     pageflow.editor.failures.add(new pageflow.OrderingFailure(model, collection));
+     * @returns {pageflow.Failures}
      *
      * @alias failures
-     * @memberof module:pageflow/editor.pageflow.EditorApi#
+     * @memberof module:pageflow/editor.pageflow.editor
      */
     this.failures = new pageflow.FailuresAPI();
 
     /**
      * Setup editor integration for page types.
      * @alias pageTypes
-     * @memberof module:pageflow/editor.pageflow.EditorApi#
+     * @memberof module:pageflow/editor.pageflow.editor
      */
     this.pageTypes = new pageflow.PageTypes();
 
     /**
      * @alias fileTypes
-     * @memberof module:pageflow/editor.pageflow.EditorApi#
+     * @memberof module:pageflow/editor.pageflow.editor
      */
     this.fileTypes = new pageflow.FileTypes();
   },
@@ -77,7 +74,6 @@ pageflow.EditorApi = pageflow.Object.extend({
     this.nextDefaultHelpEntry = name;
   },
 
-  /** @api private */
   applyDefaultHelpEntry: function(name) {
     this.defaultHelpEntry = this.nextDefaultHelpEntry;
     this.nextDefaultHelpEntry = null;
@@ -134,23 +130,21 @@ pageflow.EditorApi = pageflow.Object.extend({
    * File selection handlers let editor extensions use the files view
    * to select files for usage in their custom models.
    *
-   * See selectFile method for details how to trigger file selection.
+   * See {@link module:pageflow/editor.pageflow.editor.selectFile
+   * selectFile} method for details how to trigger file selection.
    *
    * Example:
    *
-   *     function MyFileSelectionHandler(options) {
-   *       this.call = function(file) {
-   *         // invoked with the selected file
-   *       };
+   *     function MyFileSelectionHandler(options) { this.call =
+   *       function(file) { // invoked with the selected file };
    *
-   *       this.getReferer = function() {
-   *         // the path to return to when the back button is clicked
-   *         // or after file selection
-   *         return '/some/path';
-   *       }
-   *     }
+   *       this.getReferer = function() { // the path to return to
+   *         when the back button is clicked // or after file
+   *         selection return '/some/path'; } }
    *
-   *     pageflow.editor.registerFileSelectionHandler('my_file_selection_handler', MyFileSelectionHandler);
+   *
+         pageflow.editor.registerFileSelectionHandler('my_file_selection_handler',
+         MyFileSelectionHandler);
    */
   registerFileSelectionHandler: function(name, handler) {
     this.fileSelectionHandlers[name] = handler;
@@ -180,9 +174,7 @@ pageflow.EditorApi = pageflow.Object.extend({
     return pageflow.PageSelectionView.selectPage(options);
   },
 
-  /** @private */
   createFileSelectionHandler: function(handlerName, encodedPayload) {
-    /** @private */
     if (!this.fileSelectionHandlers[handlerName]) {
       throw 'Unknown FileSelectionHandler ' + handlerName;
     }

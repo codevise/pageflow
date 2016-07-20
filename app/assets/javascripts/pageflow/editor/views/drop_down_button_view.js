@@ -1,11 +1,14 @@
 /**
  * A button that displays a drop down menu on hover.
  *
- * @option label [String]
- * @options items [Backbone.Collection] The `label` attribute is used
+ * - `label` {String}
+ * - `items` {Backbone.Collection} The `label` attribute is used
  *   as text for the item. Items can be disabled by setting the
  *   `disabled` property to `true`. On click a `selected` method is
  *   called on the item model.
+ *
+ * @class
+ * @memberof module:pageflow/editor
  */
 pageflow.DropDownButtonView = Backbone.Marionette.ItemView.extend({
   template: 'pageflow/editor/templates/drop_down_button',

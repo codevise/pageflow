@@ -17,6 +17,7 @@ pageflow.Configuration = Backbone.Model.extend({
   /**
    * Used by views (i.e. FileInputView) to get id which can be used in
    * routes to lookup configuration via its page.
+   * @private
    */
   getRoutableId: function() {
     return this.parent.id;

@@ -1,8 +1,6 @@
-/**
- * A partial implementation of a collection that can store records of
- * different model types.  Backbone.Collection tries to merge records
- * if they have the same id.
- */
+// A partial implementation of a collection that can store records of
+// different model types.  Backbone.Collection tries to merge records
+// if they have the same id.
 pageflow.MultiCollection = function() {
   this.records = {};
   this.length = 0;

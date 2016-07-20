@@ -1,3 +1,14 @@
+/**
+ * Input view for boolean values.
+ *
+ * @param {boolean} [options.displayUncheckedIfDisabled=false]
+ *   Ignore the attribute value if the input is disabled and display
+ *   an unchecked check box.
+ *
+ * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @class
+ * @memberof module:pageflow/ui
+ */
 pageflow.CheckBoxInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 
