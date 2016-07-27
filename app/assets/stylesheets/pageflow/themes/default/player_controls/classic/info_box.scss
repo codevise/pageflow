@@ -88,6 +88,7 @@ $classic-player-controls-info-box-border-radius: 4px !default;
     z-index: 2;
 
     @include phone {
+      bottom: 0;
       position: relative;
       padding: 1px;
       margin-bottom: 0;
