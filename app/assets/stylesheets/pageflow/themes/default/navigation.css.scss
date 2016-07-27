@@ -41,6 +41,9 @@ $navigation-bar-background-color: $navigation-background-color !default;
 /// Transparency of navigation bar.
 $navigation-opacity: 0.9 !default;
 
+/// Color used to highlight the current page.
+$navigation-current-page-marker-color: $main-color !default;
+
 @import "./navigation/widget_margin";
 
 .navigation {
@@ -74,7 +77,7 @@ $navigation-opacity: 0.9 !default;
 }
 
 .navigation.js .scroller ul a.active img, .navigation_mobile .wrapper a.active {
-  border-left: 5px solid $main-color;
+  border-left: 5px solid $navigation-current-page-marker-color;
 }
 
 .navigation .scroller a:after {
