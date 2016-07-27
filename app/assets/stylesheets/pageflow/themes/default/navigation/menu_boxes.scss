@@ -11,19 +11,38 @@ $navigation-menu-box-text-color: #fff !default;
 /// Transparency of page detail and menu boxes
 $navigation-menu-box-opacity: $navigation-opacity !default;
 
+/// Style of navigation menu boxes.
+///
+/// - `"triangle"`: Box without border and small triangle arrow at the right side
+///
+/// - `"border"`: Box with a border
+$navigation-menu-box-style: "triangle" !default;
+
+/// Width of border if `$navigation-menu-box-style` is `"border"`.
+$navigation-menu-box-border-width: 2px !default;
+
+/// Color of border if `$navigation-menu-box-style` is `"border"`.
+$navigation-menu-box-border-color: #9c9c9c !default;
+
 .navigation_site_detail,
 .navigation_menu_box {
   color: $navigation-menu-box-text-color;
   background-color: $navigation-menu-box-background-color;
   background-image: $navigation-background-image;
-  right: 94px;
 
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    left: 100%;
-    @include triangle(16px, $navigation-menu-box-background-color, right);
+  @if $navigation-menu-box-style == "border" {
+    right: 90px;
+    border: $navigation-menu-box-border-width solid $navigation-menu-box-border-color;
+  } @else {
+    right: 94px;
+
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 100%;
+      @include triangle(16px, $navigation-menu-box-background-color, right);
+    }
   }
 
   // Ensure element remains hovered even when cursor moves between
