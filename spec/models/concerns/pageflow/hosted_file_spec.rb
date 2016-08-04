@@ -96,4 +96,12 @@ module Pageflow
       end
     end
   end
+
+  describe 'basename' do
+    it 'returns the original file name without extention' do
+      hosted_file = TestHostedFile.new(attachment_on_s3_file_name: 'video.mp4')
+
+      expect(hosted_file.basename).to eq('video')
+    end
+  end
 end

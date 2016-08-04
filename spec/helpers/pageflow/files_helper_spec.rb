@@ -115,30 +115,40 @@ module Pageflow
         expect(text_track_file_seed).to have_key('parent_file_model_type')
       end
 
-      it 'renders specified template' do
-        stub_template 'pageflow/editor/stub_files/_stub_file.json.jbuilder' =>
-                      'json.test_property "value"'
+      it 'renders file type editor partial' do
+        stub_template('pageflow/editor/stub_files/_stub_file.json.jbuilder' =>
+                      'json.test_property "value"')
         stub_file_type = FileType.new(model: 'Pageflow::VideoFile',
                                       editor_partial: 'pageflow/editor/stub_files/stub_file',
-                                      collection_name: 'stub_files')
-        stub_page_type = page_type_class.new(file_types: [stub_file_type])
-        Pageflow.config.page_types.register(stub_page_type)
+                                      collection_name: 'stub_files',
+                                      top_level_type: true)
+        Pageflow.config.page_types.clear
+        Pageflow.config.page_types.register(page_type_class.new(file_types: [stub_file_type]))
 
-        revision = create(:revision, :published)
-        entry = create(:entry, published_revision: revision)
-        published_entry = PublishedEntry.new(entry)
-        video_file = create(:video_file)
-        create(:file_usage, revision: revision, file: video_file)
+        entry = PublishedEntry.new(create(:entry, :published))
+        create(:video_file, used_in: entry.revision)
 
-        files_seed = JSON.parse(
-          helper.render_json_partial(partial: 'pageflow/editor/files/file',
-                                     collection: published_entry.files(stub_file_type.model),
-                                     locals: {file_type: stub_file_type},
-                                     as: :file)
-        )
-        stub_file_seed = files_seed.first
+        files_seed = JSON.parse(helper.files_json_seeds(entry))
 
-        expect(stub_file_seed).to have_key('test_property')
+        expect(files_seed['stub_files'].first).to have_key('test_property')
+      end
+
+      it 'renders file type partial' do
+        stub_template('pageflow/stub_files/_stub_file.json.jbuilder' =>
+                      'json.test_property "value"')
+        stub_file_type = FileType.new(model: 'Pageflow::VideoFile',
+                                      partial: 'pageflow/stub_files/stub_file',
+                                      collection_name: 'stub_files',
+                                      top_level_type: true)
+        Pageflow.config.page_types.clear
+        Pageflow.config.page_types.register(page_type_class.new(file_types: [stub_file_type]))
+
+        entry = PublishedEntry.new(create(:entry, :published))
+        create(:video_file, used_in: entry.revision)
+
+        files_seed = JSON.parse(helper.files_json_seeds(entry))
+
+        expect(files_seed['stub_files'].first).to have_key('test_property')
       end
     end
   end

@@ -13,6 +13,7 @@ module Pageflow
 
     def self.video
       FileType.new(model: 'Pageflow::VideoFile',
+                   partial: 'pageflow/video_files/video_file',
                    editor_partial: 'pageflow/editor/video_files/video_file',
                    collection_name: 'video_files',
                    url_templates: VideoFileUrlTemplates.new,

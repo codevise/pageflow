@@ -1,11 +1,12 @@
-json.(file,
-      :id,
-      :state,
-      :rights,
-      :usage_id,
-      :configuration,
-      :parent_file_id,
-      :parent_file_model_type)
+json.partial!(partial: 'pageflow/files/file',
+              object: file,
+              locals: {file_type: file_type})
+
+json.call(file,
+          :state,
+          :rights,
+          :usage_id)
+
 json.retryable(file.retryable?)
 json.file_name(file.attachment.original_filename)
 
@@ -18,7 +19,7 @@ if file.original_url.present?
 end
 
 if file_type.editor_partial.present?
-  json.partial!(:object => file, :partial => file_type.editor_partial)
+  json.partial!(object: file, partial: file_type.editor_partial)
 end
 
 if file.respond_to?(:thumbnail_url)

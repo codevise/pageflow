@@ -1,6 +1,10 @@
-module JsonResponseHelper
+module JsonHelper
   def json_response(options = {})
-    object = JSON.parse(response.body)
+    json_get(response.body, options)
+  end
+
+  def json_get(text, options = {})
+    object = JSON.parse(text)
     path = options[:path] || []
     pretty_path = nil
 
@@ -36,5 +40,6 @@ module JsonResponseHelper
 end
 
 RSpec.configure do |config|
-  config.include(JsonResponseHelper, :type => :controller)
+  config.include(JsonHelper, type: :controller)
+  config.include(JsonHelper, type: :helper)
 end

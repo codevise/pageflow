@@ -57,4 +57,12 @@ module Pageflow
       end
     end
   end
+
+  describe 'basename' do
+    it 'returns the original file name without extention' do
+      image_file = build(:image_file, processed_attachment_file_name: 'image.jpg')
+
+      expect(image_file.basename).to eq('image')
+    end
+  end
 end
