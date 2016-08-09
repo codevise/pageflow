@@ -1,26 +1,25 @@
-////
-/// @group logo
-////
+/// Fade in logo when scroller is near top
+///
+/// - `"first-page"`: only on first page
+///
+/// - `"all-pages"`: on all pages
+$logo-watermark-variant-fade-in-near-top: "first-page" !default;
 
-/// Width of the logo
-$logo-width: 100px !default;
-
-/// Height of the logo
-$logo-height: 50px !default;
-
-/// Height of the logo in phone layout
-$logo-phone-height: 24px !default;
-
-@mixin logo-variant-watermark {
+@mixin logo-variant-watermark(
+  $top,
+  $width,
+  $height,
+  $phone-height
+) {
   .header_logo {
     @extend %pageflow_widget_margin_top !optional;
     display: none;
 
     @include hide-text;
     position: absolute;
-    width: $logo-width;
-    height: $logo-height;
-    top: 30px;
+    width: $width;
+    height: $height;
+    top: $top;
     left: 8%;
     z-index: 1;
 
@@ -29,8 +28,8 @@ $logo-phone-height: 24px !default;
     @include transition(opacity 500ms);
 
     @include phone {
-      width: $logo-phone-height * $logo-width / $logo-height;
-      height: $logo-phone-height;
+      width: $phone-height * $width / $height;
+      height: $phone-height;
       top: 21px;
     }
 
@@ -75,7 +74,16 @@ $logo-phone-height: 24px !default;
     pointer-events: all;
   }
 
-  .header.near_top.first_page .header_logo,
+  @if $logo-watermark-variant-fade-in-near-top == "first-page" {
+    .header.near_top.first_page .header_logo {
+      opacity: 1;
+    }
+  } @else {
+    .header.near_top .header_logo {
+      opacity: 1;
+    }
+  }
+
   .header.near_top .header_logo:hover {
     opacity: 1;
   }

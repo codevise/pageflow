@@ -25,6 +25,9 @@ append_to_file('config/application.rb', <<-END)
   end
 END
 
+# Remove requires to missing gems (i.e. turbolinks)
+gsub_file('app/assets/javascripts/application.js', %r'//=.*', '')
+
 # Recreate db. Ignore if it does not exist.
 
 log :rake, 'db:drop:all'

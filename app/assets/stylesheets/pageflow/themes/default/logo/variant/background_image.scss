@@ -1,19 +1,28 @@
-@mixin logo-variant-first-page {
-  .js .page:first-child {
+@mixin logo-variant-background-image(
+  $first-page-only,
+  $top,
+  $min-width,
+  $max-width,
+  $width,
+  $height
+) {
+  $page-selector: if($first-page-only, ":first-child", "");
+
+  .js .page#{$page-selector} {
     .content_and_background .scroller > div:after {
       content: "";
       position: absolute;
+      left: 8%;
+      top: $top;
+      z-index: 200;
+      min-width: $min-width;
+      max-width: $max-width;
+      width: $width;
+      height: $height;
       background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.png");
       background-repeat: no-repeat;
-      top: 50px;
-      z-index: 200;
       background-size: contain;
       background-position: left top;
-      padding-top: 6.8%;
-      min-width: 100px;
-      max-width: 221px;
-      width: 13%;
-      left: 8%;
 
       @include mobile {
         padding-top: 1%;

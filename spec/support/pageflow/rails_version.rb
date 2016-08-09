@@ -5,7 +5,7 @@ module Pageflow
     RAILS_VERSION_FILE = File.expand_path('../../../../.rails_version')
 
     def detect
-      from_env || from_file || '4.0.4'
+      from_env || from_file || '4.2.6'
     end
 
     private

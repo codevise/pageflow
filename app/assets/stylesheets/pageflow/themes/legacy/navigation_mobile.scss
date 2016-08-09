@@ -39,4 +39,14 @@
       }
     }
   }
+
+  &.active {
+    .sharing_mobile li > a {
+      color: white;
+
+      &:before {
+        background-image: image-url('pageflow/themes/legacy/mobile_sharing.png');
+      }
+    }
+  }
 }

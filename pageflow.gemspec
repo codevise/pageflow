@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{admins,app,config,db,lib,vendor,spec/factories,spec/fixtures}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
 
-  s.add_dependency 'rails', '>= 4.0.2', '< 4.2'
+  s.add_dependency 'rails', '~> 4.2.6'
 
   # Framework for admin interface
   s.add_dependency 'activeadmin', '1.0.0.pre2'
@@ -95,11 +95,6 @@ Gem::Specification.new do |s|
   # Scss compiler
   s.add_dependency 'sass', '~> 3.4'
 
-  # Newer sprocket version allow sprockets 3 which causes
-  # precompilation errors due to the arity of the lambda added to
-  # `config.assets.precompile` in `pageflow/engine.rb`.
-  s.add_dependency 'sprockets-rails', '~> 2.0.1'
-
   # Using translations from rails locales in javascript code.
   s.add_dependency 'i18n-js', '~> 2.1'
 
@@ -154,7 +149,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'colorize', '~> 0.7.5'
 
   # Javascript unit testing
-  s.add_development_dependency 'teaspoon', '~> 0.9.0'
+  s.add_development_dependency 'teaspoon-mocha', '~> 2.3'
 
   # Stub HTTP requests in tests
   s.add_development_dependency 'webmock', '~> 1.20'

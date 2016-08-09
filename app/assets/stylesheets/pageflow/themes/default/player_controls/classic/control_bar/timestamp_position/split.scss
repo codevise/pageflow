@@ -1,0 +1,22 @@
+@mixin player-controls-classic-controls-bar-timestamps-position-split {
+  %player_controls {
+    &-progress_bar {
+      left: 137px;
+      right: 66px;
+    }
+
+    &-current_time {
+      left: 11px;
+      text-align: right;
+    }
+
+    &-time_separator {
+      display: none;
+    }
+
+    &-duration {
+      left: 277px;
+      text-align: left;
+    }
+  }
+}

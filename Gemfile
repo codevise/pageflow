@@ -7,11 +7,11 @@ gem 'rails', Pageflow::RailsVersion.detect
 
 gem 'pageflow-support', path: 'spec/support'
 
-gem 'state_machine', git: 'https://github.com/tf/state_machine.git', branch: 'master'
+gem 'state_machine', git: 'https://github.com/codevise/state_machine.git', branch: 'master'
 
 # Ensure that teaspoon is required via Bundler.require inside the
 # dummy app. Otherwise teaspoon fails to initialize correctly.
-gem 'teaspoon', '~> 0.9.0'
+gem 'teaspoon-mocha', '~> 2.3'
 
 gem 'spring-commands-rspec', group: :development
 gem 'spring-commands-teaspoon', group: :development

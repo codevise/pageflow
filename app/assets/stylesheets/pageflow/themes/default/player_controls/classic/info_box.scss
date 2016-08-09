@@ -63,12 +63,12 @@ $classic-player-controls-info-box-border-radius: 4px !default;
     &:before {
       content: "";
       position: absolute;
-      left: -3px;
+      left: -$classic-player-controls-border-width;
       top: 0;
       width: 100%;
       height: 100%;
       background-color: $classic-player-controls-info-box-background-color;
-      border: solid 3px transparent;
+      border: solid $classic-player-controls-border-width transparent;
       z-index: -1;
 
       border-top-left-radius: $classic-player-controls-info-box-border-radius;
@@ -78,16 +78,17 @@ $classic-player-controls-info-box-border-radius: 4px !default;
 
   .js &-info_box {
     pointer-events: none;
-    margin: 0 0 54px 0;
+    margin: 0;
+    margin-bottom: 60px + $classic-player-controls-border-width * 2;
     width: 434px;
-    bottom: 9px;
-    margin-bottom: 63px;
+    bottom: $classic-player-controls-border-width * 2;
     position: absolute;
     left: 50%;
     @include transform(translate3d(-50%, 0, 0));
     z-index: 2;
 
     @include phone {
+      bottom: 0;
       position: relative;
       padding: 1px;
       margin-bottom: 0;

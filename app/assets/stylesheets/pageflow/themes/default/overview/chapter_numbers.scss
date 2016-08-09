@@ -1,0 +1,14 @@
+$overview-hide-chapter-numbers: false !default;
+
+@if $overview-hide-chapter-numbers {
+  .content .ov_chapter {
+    .heading-5 {
+      display: none;
+    }
+
+    .heading-4 {
+      margin-top: 20px;
+      margin-bottom: 15px;
+    }
+  }
+}
