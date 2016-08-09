@@ -50,7 +50,7 @@ $classic-player-controls-timestamp-position: "left" !default;
   &-control_bar {
     position: absolute;
     left: 50%;
-    bottom: 0;
+    bottom: 100%;
     @include transform(translate3d(-50%, 0, 0));
     z-index: 2;
 

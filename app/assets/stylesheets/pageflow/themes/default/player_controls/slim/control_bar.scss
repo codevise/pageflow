@@ -222,6 +222,7 @@ $slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2)
   &-time_separator,
   &-duration,
   &-skip_button,
+  &-menu_bar,
   &-loading_spinner {
     @include transition(opacity 0.2s linear, visibility 0.2s linear);
   }
@@ -232,6 +233,7 @@ $slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2)
     %player_controls-time_separator,
     %player_controls-duration,
     %player_controls-skip_button,
+    %player_controls-menu_bar,
     %player_controls-loading_spinner {
       opacity: 0;
       visibility: hidden;

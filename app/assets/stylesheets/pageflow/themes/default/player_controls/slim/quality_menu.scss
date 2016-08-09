@@ -1,0 +1,116 @@
+$slim-player-controls-menu-popup-background-color: rgba(17, 17, 17, 0.9) !default;
+
+$slim-player-controls-menu-popup-link-color: $slim-player-controls-color !default;
+
+$slim-player-controls-menu-item-active-background-color: rgba(200, 200, 200, 0.8) !default;
+
+$slim-player-controls-quality-menu-annotation-color: #ff0000 !default;
+
+.player_controls {
+  &-menu_bar {
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    z-index: 10;
+    pointer-events: all;
+
+    @include transition(opacity 0.5s, visibility 0.5s);
+  }
+
+  &-menu_bar-stand_alone {
+    right: 20px;
+    bottom: 5px;
+  }
+
+  &-menu_bar-hidden_on_phone {
+    @include phone {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+  }
+
+  &-menu_bar_button {
+    display: inline-block;
+    position: relative;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  &-menu_bar_button_link {
+    display: block;
+    height: 100%;
+  }
+
+  &-menu_bar_button_icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    @include transform(translate(-50%, -50%));
+    @include transition(transform 0.3s ease);
+    width: 25px;
+    height: 25px;
+
+    fill: $slim-player-controls-color;
+  }
+
+  &-menu_bar_button-sub_menu_visible .player_controls-quality_menu_button_icon {
+    @include transform(translate(-50%, -50%) rotate(40deg));
+  }
+
+  &-quality_menu_button_sub_menu_item_annotation {
+    color: $slim-player-controls-quality-menu-annotation-color;
+    font-size: 70%;
+    vertical-align: 5px;
+    padding-left: 3px;
+  }
+
+  &-menu_bar_button_sub_menu {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    @include transition(opacity 0.5s, visibility 0.5s);
+
+    position: absolute;
+    right: 0;
+    bottom: 40px;
+    margin: 0;
+    padding: 5px;
+
+    background-color: $slim-player-controls-menu-popup-background-color;
+    border-radius: 2px;
+    text-align: right;
+  }
+
+  &-menu_bar_button-sub_menu_visible .player_controls-menu_bar_button_sub_menu {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: all;
+    @include transition(none);
+  }
+
+  &-menu_bar_button_sub_menu_item {
+    position: relative;
+    list-style: none;
+  }
+
+  &-menu_bar_button_sub_menu_item_icon {
+    position: absolute;
+    top: 8px;
+    left: 5px;
+    width: 12px;
+    height: 12px;
+
+    fill: $slim-player-controls-color;
+  }
+
+  &-menu_bar_button_sub_menu_item_link {
+    display: block;
+    padding: 5px 10px 5px 25px;
+    color: $slim-player-controls-menu-popup-link-color;
+    text-decoration: none;
+  }
+}
