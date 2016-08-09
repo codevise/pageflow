@@ -3,8 +3,8 @@ describe('pageflow.AdjacentPreparer', function() {
 
   describe('#prepareAdjacent', function() {
     it('calls prepare for adjacent pages', function() {
-      var page = {id: 'current'};
-      var adjacentPage = {prepare: sinon.spy(), preload: sinon.spy()};
+      var page = fakePage({id: 'current'});
+      var adjacentPage = fakePage();
       var adjacentPages = fakeAdjacentPages([page, [adjacentPage]]);
       var adjacentPreparer = new p.AdjacentPreparer(adjacentPages);
 
@@ -14,9 +14,9 @@ describe('pageflow.AdjacentPreparer', function() {
     });
 
     it('does not call prepare for previously prepared pages which are also adjacent of current page', function() {
-      var lastPage = {id: 'last'};
-      var page = {id: 'current'};
-      var commonAdjacentPage = {prepare: sinon.spy(), unprepare: sinon.spy(), preload: sinon.spy()};
+      var lastPage = fakePage();
+      var page = fakePage();
+      var commonAdjacentPage = fakePage();;
       var adjacentPages = fakeAdjacentPages([lastPage, [commonAdjacentPage]],
                                             [page, [commonAdjacentPage]]);
       var adjacentPreparer = new p.AdjacentPreparer(adjacentPages);
@@ -28,9 +28,9 @@ describe('pageflow.AdjacentPreparer', function() {
     });
 
     it('calls unprepare for previously prepared pages which are not adjacent of current page', function() {
-      var lastPage = {id: 'last'};
-      var page = {id: 'current'};
-      var adjacentPageOfLastPage = {prepare: sinon.spy(), unprepare: sinon.spy(), preload: sinon.spy()};
+      var lastPage = fakePage();
+      var page = fakePage();
+      var adjacentPageOfLastPage = fakePage();
       var adjacentPages = fakeAdjacentPages([lastPage, [adjacentPageOfLastPage]],
                                             [page, []]);
       var adjacentPreparer = new p.AdjacentPreparer(adjacentPages);
@@ -42,9 +42,9 @@ describe('pageflow.AdjacentPreparer', function() {
     });
 
     it('does not call unprepare for previously prepared pages which are also adjacent of current page', function() {
-      var lastPage = {id: 'last'};
-      var page = {id: 'current'};
-      var commonAdjacentPage = {prepare: sinon.spy(), unprepare: sinon.spy(), preload: sinon.spy()};
+      var lastPage = fakePage();
+      var page = fakePage();
+      var commonAdjacentPage = fakePage();
       var adjacentPages = fakeAdjacentPages([lastPage, [commonAdjacentPage]],
                                             [page, [commonAdjacentPage]]);
       var adjacentPreparer = new p.AdjacentPreparer(adjacentPages);
@@ -56,8 +56,8 @@ describe('pageflow.AdjacentPreparer', function() {
     });
 
     it('does not call unprepare for previously prepared pages has become current page', function() {
-      var lastPage = {id: 'last'};
-      var page = {prepare: sinon.spy(), unprepare: sinon.spy(), preload: sinon.spy()};
+      var lastPage = fakePage();
+      var page = fakePage();
       var adjacentPages = fakeAdjacentPages([lastPage, [page]],
                                             [page, []]);
       var adjacentPreparer = new p.AdjacentPreparer(adjacentPages);
@@ -81,5 +81,9 @@ describe('pageflow.AdjacentPreparer', function() {
     });
 
     return {of: stub};
+  }
+
+  function fakePage() {
+    return {prepare: sinon.spy(), unprepare: sinon.spy(), preload: sinon.spy()};
   }
 });
