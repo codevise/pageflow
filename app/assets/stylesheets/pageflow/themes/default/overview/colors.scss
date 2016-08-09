@@ -43,6 +43,9 @@ $overview-close-button-text-shadow-color: #2b2b2b !default;
 /// Text shadow color of the hovered close button label.
 $overview-active-close-button-text-shadow-color: $overview-close-button-text-shadow-color !default;
 
+/// Pictogram visiblity.
+$overview-pictogram-visibility: $standard-page-pictogram-visibility !default;
+
 &.active:after {
   background-color: $overview-backdrop-color;
 }
@@ -84,6 +87,10 @@ h2 {
 
   &.active {
     border: solid 1px $overview-current-page-border-color;
+  }
+
+  .pictogram {
+    visibility: $overview-pictogram-visibility;
   }
 }
 

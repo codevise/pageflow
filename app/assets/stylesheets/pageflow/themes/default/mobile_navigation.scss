@@ -34,6 +34,9 @@ $mobile-navigation-share-link-color: #fff !default;
 /// current page.
 $mobile-navigation-current-page-marker-color: $main-color !default;
 
+// Pictogram visibility.
+$mobile-navigation-pictogram-visibility: $standard-page-pictogram-visibility !default;
+
 .navigation_mobile {
   $image-dir: "pageflow/themes/default/mobile_navigation";
 
@@ -78,6 +81,12 @@ $mobile-navigation-current-page-marker-color: $main-color !default;
 
     a {
       color: $mobile-navigation-credits-link-color;
+    }
+  }
+
+  .overview_mobile {
+    li:after {
+      visibility: $mobile-navigation-pictogram-visibility;
     }
   }
 
