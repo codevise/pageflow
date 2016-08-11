@@ -27,6 +27,8 @@ $classic-player-controls-images: "default" !default;
 @import "./classic/icons/icon_font";
 @import "./classic/icons/sprite";
 
+@import "./classic/icons/custom";
+
 @if $classic-player-controls-icons == "sprite" {
   @include player-controls-classic-icons-sprite;
 } @else {

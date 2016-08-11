@@ -37,6 +37,10 @@
       }
     }
 
+    &-play_button-custom_icon {
+      background-image: image-url("#{$dir}/player_controls_sprite_custom.png");
+    }
+
     &-progress_bar_handle {
       background-position: center -240px;
     }

@@ -1,0 +1,14 @@
+/// Color of of the custom icon displayed inside the play button.
+$classic-player-controls-custom-play-button-icon-color: #000 !default;
+
+%player_controls-play_button-custom_icon {
+  svg {
+    fill: $classic-player-controls-custom-play-button-icon-color;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    @include transform(translate(-50%, -50%));
+    width: 27px;
+    height: 27px;
+  }
+}

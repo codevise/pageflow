@@ -47,6 +47,7 @@ $vjs-selector-mapping: (
 
   play_button: ".vjs-play-control",
   play_button-playing: ".vjs-play-control.vjs-playing",
+  play_button-custom_icon: ".player_controls-play_button-custom_icon",
   skip_button: ".player_skip",
   loading_spinner: ".vjs-loading-spinner",
   loading_spinner-on_underrun: ".vjs-loading-spinner.showing-for-underrun",

@@ -48,6 +48,10 @@
       }
     }
 
+    &-play_button-custom_icon:before {
+      display: none;
+    }
+
     &-progress_bar_handle {
       @include background-icon-center($color: $progress-bar-handle-icon-color, $font-size: 23px);
       @include fa-reorder-icon;
