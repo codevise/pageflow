@@ -33,7 +33,7 @@
     &.hidden {
       opacity: 0;
       @include transition(opacity 0.5s ease);
-      top: auto; /* collision with .hidden class from application.css.scss */
+      top: auto; /* collision with .hidden class from application.scss */
     }
 
     &.animate {
