@@ -6,14 +6,49 @@
 ///
 /// - `"first-page"`: Background image on first page.
 ///
+/// - `"all-pages"`: Background image on all pages.
+///
 /// - `"watermark"`: Use `.header_logo` element as logo.
 $logo-variant: "first-page" !default;
 
-@import "./logo/variant/first_page";
+/// Top position of logo.
+$logo-top: 30px !default;
+
+/// Width of the logo. (Watermark variant only)
+$logo-width: 100px !default;
+
+/// Width of the logo in percent. (Non-watermark variants only)
+$logo-relative-width: 13% !default;
+
+/// Min Width of the logo. (Non-watermark variants only)
+$logo-min-width: 100px !default;
+
+/// Max Width of the logo. (Non-watermark variants only)
+$logo-max-width: 221px !default;
+
+/// Height of the logo.
+$logo-height: 50px !default;
+
+/// Height of the logo in phone layout. (Watermark variant only)
+$logo-phone-height: 24px !default;
+
+@import "./logo/variant/background_image";
 @import "./logo/variant/watermark";
 
 @if $logo-variant == "watermark" {
-  @include logo-variant-watermark;
+  @include logo-variant-watermark(
+    $top: $logo-top,
+    $width: $logo-width,
+    $height: $logo-height,
+    $phone-height: $logo-phone-height
+  );
 } @else {
-  @include logo-variant-first-page;
+  @include logo-variant-background-image(
+    $first-page-only: ($logo-variant == "first-page"),
+    $top: $logo-top,
+    $min-width: $logo-min-width,
+    $max-width: $logo-max-width,
+    $width: $logo-relative-width,
+    $height: $logo-height
+  );
 }
