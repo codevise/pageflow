@@ -29,7 +29,7 @@
   }
 
   .navigation_main.active .button {
-    @include pageflow-sprite-icon-menu("active");
+    @include pageflow-sprite-icon-close-header();
   }
 
   .navigation_home .button {
