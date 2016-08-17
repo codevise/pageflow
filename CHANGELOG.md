@@ -6,9 +6,15 @@
 
 ##### Breaking Changes
 
+- Pageflow now depends on Rails 4.2, which is the only version below
+  Rails 5 that still receives security and bug fixes. See the
+  [Upgrading Rails guide](http://guides.rubyonrails.org/upgrading_ruby_on_rails.html)
+  for changes you need to apply to your application.
+  ([#575](https://github.com/codevise/pageflow/pull/575))
+  
 - Active Admin/Devise have been updated. The `gem` entries for
   `activeadmin`, `ransack`, `inherited_resources` and `formtastic`
-  have to be removed. Furthermore, delete following line from the
+  have to be removed. Furthermore, delete the following line from the
   Pageflow initializer:
 
         ActiveAdmin.application.load_paths.unshift(Dir[Pageflow::Engine.root.join('admins')])
@@ -22,11 +28,31 @@
   [Active Admin changelog](https://github.com/activeadmin/activeadmin/blob/master/CHANGELOG.md)
   for instructions on how to upgrade the Active Admin initializer.
   ([#500](https://github.com/codevise/pageflow/pull/500))
+
+- Error pages now live in the `public` directory of the host
+  application. Run the following generator to copy the default error
+  pages to `public/pageflow/error_pages`:
+
+        $ bin/rails generate pageflow:error_pages
+
+  Feel free to change the generated files however you like.
+  ([#572](https://github.com/codevise/pageflow/pull/572))
+
 - The default theme has partly been rewritten. See
   [the new theme guide](https://github.com/codevise/pageflow/blob/master/doc/creating_themes.md)
   for instructions on how to build themes that are decoupled from
   Pageflow implementation details.
-  ([#470](https://github.com/codevise/pageflow/pull/470))
+  ([#470](https://github.com/codevise/pageflow/pull/470),
+   [#576](https://github.com/codevise/pageflow/pull/576),
+   [#586](https://github.com/codevise/pageflow/pull/586),
+   [#590](https://github.com/codevise/pageflow/pull/590),
+   [#591](https://github.com/codevise/pageflow/pull/591),
+   [#592](https://github.com/codevise/pageflow/pull/592),
+   [#593](https://github.com/codevise/pageflow/pull/593),
+   [#594](https://github.com/codevise/pageflow/pull/594),
+   [#596](https://github.com/codevise/pageflow/pull/596),
+   [#597](https://github.com/codevise/pageflow/pull/597),
+   [#598](https://github.com/codevise/pageflow/pull/598))
 
 ##### Public Site
 
@@ -57,9 +83,14 @@
   ([#568](https://github.com/codevise/pageflow/pull/568),
    [#567](https://github.com/codevise/pageflow/pull/567),
    [#563](https://github.com/codevise/pageflow/pull/563))
+- Allow setting defaults for meta tags per theming
+  ([#538](https://github.com/codevise/pageflow/pull/538),
+   [#573](https://github.com/codevise/pageflow/pull/573))
 
 ##### Editor
 
+- Allow specifying custom share url
+  ([#581](https://github.com/codevise/pageflow/pull/581))
 - Add option to hide overview button
   ([#556](https://github.com/codevise/pageflow/pull/556))
 - Display warning for ie 9 in editor
@@ -85,15 +116,23 @@
   ([#545](https://github.com/codevise/pageflow/pull/545))
 - Theme generator for configurable default theme
   ([#560](https://github.com/codevise/pageflow/pull/560))
+- Prevent account with entries being deleted
+  ([#599](https://github.com/codevise/pageflow/pull/599))
+- Correct the documentation for js widget types
+  ([#571](https://github.com/codevise/pageflow/pull/571))
 
 ##### Internals
 
 - Upgrade to rspec 3
   ([#569](https://github.com/codevise/pageflow/pull/569))
+- Generator unit tests
+  ([#574](https://github.com/codevise/pageflow/pull/574))
 - Generate theme documentation
   ([#559](https://github.com/codevise/pageflow/pull/559))
 - Install coveralls test coverage reporter
   ([#561](https://github.com/codevise/pageflow/pull/561))
+- Import new rubocop default from hound repository
+  ([#580](https://github.com/codevise/pageflow/pull/580))
 - Ignore a few more files
   ([#565](https://github.com/codevise/pageflow/pull/565))
 - Bug fix: Narrow sprockets-rails version
