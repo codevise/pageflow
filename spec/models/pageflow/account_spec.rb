@@ -2,6 +2,24 @@ require 'spec_helper'
 
 module Pageflow
   describe Account do
+    describe 'with entries' do
+      it 'cannot be deleted' do
+        account = create(:account)
+        create(:entry, account: account)
+
+        expect { account.destroy }.to raise_error(ActiveRecord::DeleteRestrictionError)
+      end
+    end
+
+    describe 'with users' do
+      it 'cannot be deleted' do
+        account = create(:account)
+        create(:user, account: account)
+
+        expect { account.destroy }.to raise_error(ActiveRecord::DeleteRestrictionError)
+      end
+    end
+
     describe '#build_default_theming' do
       it 'sets default theming to new theming' do
         account = create(:account)
