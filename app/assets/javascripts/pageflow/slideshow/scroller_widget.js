@@ -52,6 +52,8 @@
       else {
         this.iscroll.scrollTo(0, 0, 0);
       }
+
+      this._triggerBoundaryEvents();
     },
 
     scrollBy: function(deltaX, deltaY, time, easing) {
@@ -78,7 +80,7 @@
     },
 
     afterAnimationHook: function() {
-      this._triggerNearBottomEvents();
+      this._triggerBoundaryEvents();
     },
 
     disable: function() {
@@ -130,6 +132,11 @@
       this.iscroll.on('scroll', _.bind(this._triggerNearTopEvents, this));
       this.iscroll.on('scrollEnd', _.bind(this._triggerNearTopEvents, this));
       this.iscroll.on('afterkeyboard', _.bind(this._triggerNearTopEvents, this));
+    },
+
+    _triggerBoundaryEvents: function() {
+      this._triggerNearTopEvents();
+      this._triggerNearBottomEvents();
     },
 
     _triggerNearBottomEvents: function() {
