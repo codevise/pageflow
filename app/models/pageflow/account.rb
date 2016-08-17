@@ -2,8 +2,8 @@ module Pageflow
   class Account < ActiveRecord::Base
     include FeatureTarget
 
-    has_many :users
-    has_many :entries
+    has_many :users, dependent: :restrict_with_exception
+    has_many :entries, dependent: :restrict_with_exception
     has_many :folders, dependent: :destroy
 
     has_many :themings, dependent: :destroy
