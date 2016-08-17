@@ -24,6 +24,9 @@ $navigation-menu-box-border-width: 2px !default;
 /// Color of border if `$navigation-menu-box-style` is `"border"`.
 $navigation-menu-box-border-color: #9c9c9c !default;
 
+// Pictogram visibility.
+$navigation-menu-box-pictogram-visibility: $standard-page-pictogram-visibility !default;
+
 .navigation_site_detail,
 .navigation_menu_box {
   color: $navigation-menu-box-text-color;
@@ -65,7 +68,9 @@ $navigation-menu-box-border-color: #9c9c9c !default;
 
 .navigation_site_detail {
   .thumbnail {
-    @extend %pageflow_page_type_thumbnail;
+    @if $navigation-menu-box-pictogram-visibility == visible {
+      @extend %pageflow_page_type_thumbnail;
+    }
 
     position: relative;
     width: 170px;

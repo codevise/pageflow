@@ -24,3 +24,10 @@ $standard-typography: (
 /// - `"sprite"`: Custom icons from `icon_sprite.png` in theme
 ///   directory.
 $standard-icons: "icon-font" !default;
+
+/// Pictograms visibility values to use.
+///
+/// - `"visible"`: All pictograms should be visible.
+///
+/// - `"hidden"`: All pictograms should be hidden.
+$standard-page-pictogram-visibility: visible !default;
