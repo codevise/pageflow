@@ -1,8 +1,18 @@
+/// Custom loading spinner is disabled by default.
+///
+/// - `"true"`: Use custom spinner from custom theme (pageflow/themes/new_theme).
+///
+/// - `"false"`: Use default spinner from default theme.
+///   directory.
 $custom-loading-spinner: false !default;
 
+/// Spinner uses background default image.
 $loading-spinner-background-image: "default" !default;
 
+/// Spinner background color.
 $loading-spinner-background-color: #3b5159 !default;
+
+/// Spinner glow (radiant) color.
 $loading-spinner-glow-color: #7595a0 !default;
 
 @if not $custom-loading-spinner {
