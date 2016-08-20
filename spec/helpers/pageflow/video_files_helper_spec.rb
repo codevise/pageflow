@@ -2,6 +2,107 @@ require 'spec_helper'
 
 module Pageflow
   describe VideoFilesHelper do
+    describe '#mobile_poster_image_div' do
+      it 'has default css classes' do
+        html = helper.mobile_poster_image_div
+
+        expect(html).to have_selector('div.background.background_image')
+      end
+
+      context 'no poster' do
+        it 'has video_poster_none class' do
+          html = helper.mobile_poster_image_div
+
+          expect(html).to have_selector('div.video_poster_none')
+        end
+      end
+
+      context 'with mobile_poster_image_id' do
+        it 'has the id in the class' do
+          html = helper.mobile_poster_image_div(
+            'mobile_poster_image_id' => 98
+          )
+
+          expect(html).to have_selector('div.image_98')
+        end
+
+        it 'has optional background-position' do
+          html = helper.mobile_poster_image_div(
+            'mobile_poster_image_id' => 98,
+            'mobile_poster_image_x' => 40,
+            'mobile_poster_image_y' => 40
+          )
+
+          expect(html).to have_selector('div[style="background-position: 40% 40%;"]')
+        end
+      end
+
+      context 'with poster_image_id' do
+        it 'has the id in the class' do
+          html = helper.mobile_poster_image_div(
+            'poster_image_id' => 97
+          )
+
+          expect(html).to have_selector('div.image_97')
+        end
+
+        it 'has optional background-position' do
+          html = helper.mobile_poster_image_div(
+            'poster_image_id' => 98,
+            'poster_image_x' => 30,
+            'poster_image_y' => 30
+          )
+
+          expect(html).to have_selector('div[style="background-position: 30% 30%;"]')
+        end
+      end
+
+      context 'with video_file_id' do
+        it 'has the id in the class' do
+          html = helper.mobile_poster_image_div(
+            'video_file_id' => 96
+          )
+
+          expect(html).to have_selector('div.video_poster_96')
+        end
+
+        it 'has optional background-position' do
+          html = helper.mobile_poster_image_div(
+            'video_file_id' => 96,
+            'video_file_x' => 20,
+            'video_file_y' => 20
+          )
+
+          expect(html).to have_selector('div[style="background-position: 20% 20%;"]')
+        end
+      end
+    end
+
+    describe '#poster_image_tag' do
+      context 'with separate poster image' do
+        it 'includes the poster image url' do
+          video_file = create(:video_file)
+          poster_image = create(:image_file)
+
+          html = helper.poster_image_tag(video_file.id, poster_image.id)
+
+          expect(html).to include(poster_image.attachment.url(:medium))
+          expect(html).to include(poster_image.attachment.url(:print))
+        end
+      end
+
+      context 'with unknown poster image id' do
+        it 'includes the video file poster url' do
+          video_file = create(:video_file)
+
+          html = helper.poster_image_tag(video_file.id, 'unknown')
+
+          expect(html).to include(video_file.poster.url(:medium))
+          expect(html).to include(video_file.poster.url(:print))
+        end
+      end
+    end
+
     describe '#video_file_video_tag' do
       it 'sets class as css class' do
         video_file = build(:video_file)
