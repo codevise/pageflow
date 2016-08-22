@@ -16,8 +16,8 @@ pageflow.SliderInputView = Backbone.Marionette.ItemView.extend({
   onRender: function() {
     this.ui.widget.slider({
       animate: 'fast',
-      min: 0,
-      max: 100
+      min: 'minValue' in this.options ? this.options.minValue : 0,
+      max: 'maxValue' in this.options ? this.options.maxValue : 100,
     });
 
     this.load();
@@ -25,12 +25,23 @@ pageflow.SliderInputView = Backbone.Marionette.ItemView.extend({
 
   save: function() {
     var value = this.ui.widget.slider('option', 'value');
-    this.ui.value.text(value + '%');
+    var unit = 'unit' in this.options ? this.options.unit : '%';
+
+    this.ui.value.text(value + unit);
 
     this.model.set(this.options.propertyName, value);
   },
 
   load: function() {
-    this.ui.widget.slider('option', 'value', this.model.get(this.options.propertyName));
+    var value;
+
+    if (this.model.has(this.options.propertyName)) {
+      value = this.model.get(this.options.propertyName)
+    }
+    else {
+      value = 'defaultValue' in this.options ? this.options.defaultValue : 0
+    }
+
+    this.ui.widget.slider('option', 'value', value);
   }
 });
