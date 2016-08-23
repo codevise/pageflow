@@ -49,5 +49,13 @@ pageflow.browser.agent = {
    */
   matchesIEUpTo11: function() {
     return navigator.userAgent.match(/Trident\//);
+  },
+
+  /**
+   * Returns true in InApp browser of Facebook app.
+   * @return {boolean}
+   */
+  matchesFacebookInAppBrowser: function() {
+    return navigator.userAgent.match(/FBAN/) && navigator.userAgent.match(/FBAV/);
   }
 };

@@ -3,6 +3,8 @@
     _create: function() {
       var element = this.element;
 
+      pageflow.nativeScrolling.preventScrollBouncing(element);
+
       setTimeout(function() {
         pageflow.ready.then(function() {
           element.addClass('fade');
