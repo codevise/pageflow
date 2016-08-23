@@ -1,5 +1,6 @@
 pageflow.HighlightedPage = pageflow.Object.extend({
-  initialize: function(entryData) {
+  initialize: function(entryData, options) {
+    this.customNavigationBarMode = options && options.customNavigationBarMode;
     this.entry = entryData;
   },
 
@@ -28,7 +29,12 @@ pageflow.HighlightedPage = pageflow.Object.extend({
   },
 
   getNavigationBarMode: function(storylineId) {
-    return this.entry.getStorylineConfiguration(storylineId).navigation_bar_mode;
+    if (this.customNavigationBarMode) {
+      return this.customNavigationBarMode(storylineId, this.entry);
+    }
+    else {
+      return this.entry.getStorylineConfiguration(storylineId).navigation_bar_mode;
+    }
   },
 
   getChapterPagesUntil: function(pagePermaId) {
@@ -43,6 +49,6 @@ pageflow.HighlightedPage = pageflow.Object.extend({
   }
 });
 
-pageflow.HighlightedPage.create = function() {
-  return new pageflow.HighlightedPage(pageflow.entryData);
+pageflow.HighlightedPage.create = function(options) {
+  return new pageflow.HighlightedPage(pageflow.entryData, options);
 };

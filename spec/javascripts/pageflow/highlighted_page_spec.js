@@ -118,5 +118,44 @@ describe('pageflow.HighlightedPage', function() {
         expect(result).to.eq(102);
       });
     });
+
+    describe('with customNavigationBarMode option', function() {
+      it('uses navigation bar modes returned by option', function() {
+        var entryData = new p.SeedEntryData({
+          storyline_configurations: {
+            10: {
+              parent_page_perma_id: 101
+            },
+            20: {
+              parent_page_perma_id: 102,
+            },
+            30: {
+              main: true
+            }
+          },
+          chapters: [
+            {id: 1, storyline_id: 10},
+            {id: 2, storyline_id: 20},
+            {id: 3, storyline_id: 30}
+          ],
+          pages: [
+            {perma_id: 100, chapter_id: 1},
+            {perma_id: 101, chapter_id: 2},
+            {perma_id: 102, chapter_id: 3}
+          ]
+        });
+        var outline = new p.HighlightedPage(entryData, {
+          customNavigationBarMode: function(storylineId, entryData) {
+            if (!entryData.getStorylineConfiguration(storylineId).main) {
+              return 'inherit_from_parent';
+            }
+          }
+        });
+
+        var result = outline.getPagePermaId(100);
+
+        expect(result).to.eq(102);
+      });
+    });
   });
 });
