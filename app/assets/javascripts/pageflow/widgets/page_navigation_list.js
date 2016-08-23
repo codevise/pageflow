@@ -9,8 +9,8 @@
       var links = element.find('a[href]');
 
       var chapterFilter = pageflow.ChapterFilter.create();
-      var highlightedPage = pageflow.HighlightedPage.create();
-      var animation = pageflow.PageNavigationListAnimation.create()
+      var highlightedPage = pageflow.HighlightedPage.create(options.highlightedPage);
+      var animation = pageflow.PageNavigationListAnimation.create();
 
       pageflow.ready.then(function() {
         highlightUnvisitedPages(pageflow.visited.getUnvisitedPages());
