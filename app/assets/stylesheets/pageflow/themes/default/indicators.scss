@@ -17,6 +17,7 @@ $indicator-icons: "icon_font" !default;
 @import "./indicators/icons/sprite";
 @import "./indicators/typography";
 @import "./indicators/colors";
+@import "./indicators/widget_margins";
 
 @if $indicator-icons == "sprite" {
   @include indicators-icons-sprite;
