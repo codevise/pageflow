@@ -2,7 +2,6 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
   el: 'form#upload',
 
   ui: {
-    input: 'input#image_file_attachment',
     authToken: 'input[name="authenticity_token"]'
   },
 
