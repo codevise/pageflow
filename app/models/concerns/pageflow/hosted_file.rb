@@ -63,6 +63,7 @@ module Pageflow
       url
     end
 
+    # @deprecated Write a migration instead
     def self.columns(t)
       t.belongs_to(:entry, index: true)
       t.belongs_to(:uploader, index: true)
