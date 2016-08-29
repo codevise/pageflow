@@ -2,6 +2,20 @@ require 'spec_helper'
 
 module Pageflow
   describe FileType do
+    describe '#model' do
+      it 'is set if model is passed' do
+        file_type = FileType.new(model: ImageFile)
+
+        expect(file_type.model).to eq(ImageFile)
+      end
+
+      it 'is set if model name is passed' do
+        file_type = FileType.new(model: 'Pageflow::ImageFile')
+
+        expect(file_type.model).to eq(ImageFile)
+      end
+    end
+
     describe '#collection_name' do
       it 'defaults to plural model name' do
         file_type = FileType.new(model: ImageFile)
@@ -9,7 +23,7 @@ module Pageflow
         expect(file_type.collection_name).to eq('pageflow_image_files')
       end
 
-      it 'can be overriden' do
+      it 'can be overridden' do
         file_type = FileType.new(model: ImageFile,
                                  collection_name: 'image_files')
 
@@ -50,7 +64,7 @@ module Pageflow
     end
 
     describe '#editor_partial' do
-      it 'returns passed editor_partial to ' do
+      it 'returns passed editor_partial' do
         file_type = FileType.new(model: ImageFile,
                                  editor_partial: 'pageflow/editor/image_files/image_file')
 
