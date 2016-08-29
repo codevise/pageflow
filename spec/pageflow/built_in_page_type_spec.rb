@@ -4,7 +4,7 @@ module Pageflow
   describe BuiltInPageType do
     describe '#file_types' do
       it 'returns file types for given file type models' do
-        page_type = BuiltInPageType.new('background_image', file_type_models: ['Pageflow::ImageFile'])
+        page_type = BuiltInPageType.new('background_image', file_types: [BuiltInFileType.image])
 
         file_type = page_type.file_types.first
 
@@ -14,7 +14,7 @@ module Pageflow
       end
     end
 
-    describe '#thumbnail_candidate' do
+    describe '#thumbnail_candidates' do
       it 'returns default candidates' do
         page_type = BuiltInPageType.new('background_image')
 
