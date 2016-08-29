@@ -81,7 +81,7 @@ pageflow.UploadedFile = Backbone.Model.extend({
   },
 
   toJSON: function() {
-    return _.extend(_.pick(this.attributes, 'rights'), {
+    return _.extend(_.pick(this.attributes, 'rights', 'parent_file_id', 'parent_file_model_type'), {
       configuration: this.configuration.toJSON()
     });
   },

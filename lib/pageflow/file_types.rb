@@ -16,6 +16,12 @@ module Pageflow
       end || raise(FileType::NotFoundError, "No file type found for collection name '#{collection_name}'.")
     end
 
+    def find_by_model!(model)
+      detect do |file_type|
+        file_type.model == model
+      end || raise(FileType::NotFoundError, "No file type found for '#{model.name}'.")
+    end
+
     def with_thumbnail_support
       select do |file_type|
         file_type.model.instance_methods.include?(:thumbnail_url)

@@ -160,6 +160,10 @@ module Pageflow
           FilePolicy.new(user, record).manage?
         end
 
+        can :destroy, Pageflow.config.file_types.map(&:model) do |record|
+          FilePolicy.new(user, record).destroy?
+        end
+
         can :use, Pageflow.config.file_types.map(&:model) do |record|
           FilePolicy.new(user, record).use?
         end

@@ -25,6 +25,15 @@ module Pageflow
         respond_with(:editor, @file)
       end
 
+      def destroy
+        file = file_type.model.find(params[:id])
+
+        authorize!(:destroy, file)
+        file.destroy
+
+        head(:no_content)
+      end
+
       def retry
         file = file_type.model.find(params[:id])
 
@@ -46,7 +55,9 @@ module Pageflow
       private
 
       def create_params
-        file_attachment_params.merge(file_configuration_params)
+        file_attachment_params
+          .merge(file_configuration_params)
+          .merge(file_parent_file_params)
       end
 
       def update_params
@@ -65,6 +76,10 @@ module Pageflow
         file_params
           .permit(:rights)
           .merge(configuration: configuration)
+      end
+
+      def file_parent_file_params
+        file_params.permit(:parent_file_id, :parent_file_model_type)
       end
 
       def file_params
