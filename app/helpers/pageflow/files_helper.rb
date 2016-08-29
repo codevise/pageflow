@@ -1,5 +1,8 @@
 module Pageflow
   module FilesHelper
+    include RenderJsonHelper
+    include VideoFilesHelper
+
     def file_format(file)
       file.format.presence || '-'
     end
