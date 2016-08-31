@@ -9,10 +9,10 @@ module Pageflow
 
       def create_assets
         template 'editor.js', 'app/assets/javascripts/pageflow/editor.js'
-        template 'editor.css.scss', 'app/assets/stylesheets/pageflow/editor.scss'
+        template 'editor.scss', 'app/assets/stylesheets/pageflow/editor.scss'
 
         template 'application.js', 'app/assets/javascripts/pageflow/application.js'
-        template 'application.css.scss', 'app/assets/stylesheets/pageflow/application.scss'
+        template 'application.scss', 'app/assets/stylesheets/pageflow/application.scss'
 
         append_to_file 'app/assets/javascripts/active_admin.js.coffee' do
           "#= require pageflow/admin\n"
