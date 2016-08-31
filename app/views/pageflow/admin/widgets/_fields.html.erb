@@ -1,5 +1,5 @@
 <% widgets.each do |widget| %>
-  <%= form.semantic_fields_for(widget) do |fields| %>
+  <%= form.semantic_fields_for(widget, builder: ActiveAdmin::FormBuilder) do |fields| %>
     <%= fields.input(:type_name,
                      label: t(widget.role, scope: 'pageflow.widgets.roles'),
                      input_html: {name: "widgets[#{widget.role}]"},
