@@ -36,7 +36,7 @@ components:
 Pageflow assumes the following choice of libraries:
 
 * [Devise](https://github.com/plataformatec/devise) for authentication
-* [CanCan](https://github.com/ryanb/cancan) for authorization
+* [CanCanCan](https://github.com/CanCanCommunity/cancancan) for authorization
 * [ActiveAdmin](http://activeadmin.info/) for administration
 * [Resque](https://github.com/resque/resque) for background jobs
 * [FriendlyId](https://github.com/norman/friendly_id) for pretty URLs
