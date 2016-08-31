@@ -21,9 +21,11 @@
       content: "";
       display: block;
       margin: 0 auto 30px auto;
-      width: 61px;
-      height: 60px;
-      background-image: image-url('pageflow/themes/default/logo_header.png');
+      width: 33px;
+      height: 45px;
+      background-size: 33px 45px;
+      background-repeat: no-repeat;
+      background-image: image-url("pageflow/themes/default/blank_entry_logo.png");
       opacity: 0.3;
     }
   }
