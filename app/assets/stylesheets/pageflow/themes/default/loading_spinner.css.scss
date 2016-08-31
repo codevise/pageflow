@@ -1,122 +1,72 @@
+/// Custom loading spinner is disabled by default.
+///
+/// - `"true"`: Use custom spinner from custom theme (pageflow/themes/new_theme).
+///
+/// - `"false"`: Use default spinner from default theme.
+///   directory.
 $custom-loading-spinner: false !default;
 
+/// Spinner uses background default image.
 $loading-spinner-background-image: "default" !default;
 
-$loading-spinner-background-color: #252526 !default;
+/// Spinner background color.
+$loading-spinner-background-color: #3b5159 !default;
+
+/// Spinner glow (radiant) color.
+$loading-spinner-glow-color: #7595a0 !default;
 
 @if not $custom-loading-spinner {
   .loading_spinner {
     background-color: $loading-spinner-background-color !important;
 
-    @if $loading-spinner-background-image == "default" {
-      background-image: image-url("pageflow/loading_spinner_glow.jpg");
+    &:before {
+      content: "";
+      $radial: 140px;
+      @include radial-gradient(circle, $loading-spinner-glow-color 0%, $loading-spinner-background-color $radial);
+      background-position: 50% 50%;
       background-repeat: no-repeat;
-      background-position: center center;
+      background-size: 100% 100%;
+      display: inline-block;
+      height: 100%;
+      width: 100%;
+      opacity: 0;
+      @include animation-name(gradientAnimation);
+      @include animation-duration(5s);
+      @include animation-iteration-count(infinite);
+      @include animation-timing-function(ease-in);
+    }
+
+    @include keyframes(gradientAnimation) {
+      0%  { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
     }
 
     .loading_spinner_inner {
       left: 50%;
       top: 50%;
-      width: 204px;
-      height: 202px;
-      margin-left: -102px;
-      margin-top: -101px;
+      width: 190px;
+      height: 164px;
+      margin-left: -60px;
+      margin-top: -65px;
       position: absolute;
-      z-index: 0;
-      background-color: $main-color;
-      @include animation(fadeInLoadingSpinner linear 2s);
-      @include animation-iteration-count(1);
-
-      &:before {
-        content: " ";
-        width: 208px;
-        height: 208px;
-        position: absolute;
-        background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner_bg.png');
-        z-index: 1;
-        top: -2px;
-        left: -2px;
-      }
 
       div {
-        width: 204px;
-        height: 204px;
+        width: 190px;
+        height: 164px;
+        background-size: 130px 112px;
+        background-repeat: no-repeat;
         position: absolute;
-        background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner.png');
-        @include animation-duration (1.5s);
-        @include animation-name(rotateSpinner);
-        @include animation-iteration-count(infinite);
-        @include animation-timing-function(linear);
+        background-image: image-url('pageflow/themes/#{$theme-name}/loading_spinner_inner.png');
       }
     }
   }
-}
+} @else {
+  .loading_spinner {
+    background-color: $loading-spinner-background-color;
 
-@keyframes fadeInLoadingSpinner {
-  0% {
-    opacity:0;
-  }
-  48% {
-    opacity:0;
-  }
-  100% {
-    opacity:1;
-  }
-}
-
-@-moz-keyframes fadeInLoadingSpinner {
-  0% {
-    opacity:0;
-  }
-  48% {
-    opacity:0;
-  }
-  100% {
-    opacity:1;
-  }
-}
-
-@-webkit-keyframes fadeInLoadingSpinner {
-  0% {
-    opacity:0;
-  }
-  48% {
-    opacity:0;
-  }
-  100% {
-    opacity:1;
-  }
-}
-
-@-o-keyframes fadeInLoadingSpinner {
-  0% {
-    opacity:0;
-  }
-  48% {
-    opacity:0;
-  }
-  100% {
-    opacity:1;
-  }
-}
-
-@-ms-keyframes fadeInLoadingSpinner {
-  0% {
-    opacity:0;
-  }
-  48% {
-    opacity:0;
-  }
-  100% {
-    opacity:1;
-  }
-}
-
-@include keyframes(rotateSpinner) {
-  from {
-    @include transform(rotate(0deg));
-  }
-  to {
-    @include transform(rotate(359deg));
+    @if $loading-spinner-background-image == "default" {
+      background-image: image-url("pageflow/loading_spinner_glow.jpg");
+    }
   }
 }
