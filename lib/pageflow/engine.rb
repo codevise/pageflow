@@ -14,9 +14,6 @@ require 'resque_mailer'
 require 'resque_scheduler'
 
 require 'active_admin'
-require 'active_admin/patches/views/attributes_table'
-require 'active_admin/patches/views/table_for'
-require 'active_admin/patches/views/pages/base'
 
 require 'jquery-layout-rails'
 require 'videojs_rails'
