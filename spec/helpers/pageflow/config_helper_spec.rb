@@ -17,6 +17,12 @@ module Pageflow
         expect(result['fileTypes'][0]['collectionName']).to eq('image_files')
       end
 
+      it 'includes nested file type collection names' do
+        result = JSON.parse(helper.editor_config_seeds)
+
+        expect(result['fileTypes'][3]['collectionName']).to eq('text_track_files')
+      end
+
       it 'includes available locales' do
         Pageflow.config.available_locales = [:de, :fr]
 
