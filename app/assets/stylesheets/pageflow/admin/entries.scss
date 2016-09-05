@@ -11,7 +11,10 @@
     }
 
     .published td {
-      background-color: $published-color;
+      // scss-lint:disable ImportantRule
+      // Win against overly specific Active Admin rule
+      background-color: $published-color !important;
+      // scss-lint:enable ImportantRule
       color: #000;
     }
   }
