@@ -8,6 +8,7 @@ module Pageflow
       def build(base_collection, options = {})
         @base_collection = base_collection
         @scopes = []
+        @sort_columns = []
         @blank_slate_text = options[:blank_slate_text]
         super()
       end
@@ -16,15 +17,15 @@ module Pageflow
         scopes << ActiveAdmin::Scope.new(*args)
       end
 
-      def table_for_collection(*args, &block)
+      def table_for_collection(options = {}, &block)
         if scopes.any?
           custom_scopes_renderer(scopes, default_scope: scopes.first.id)
         end
 
-        record_sort_columns(&block)
+        record_sort_columns(&block) if options[:sortable]
 
         if scoped_collection.any?
-          build_table(*args, &block)
+          build_table(options, &block)
         else
           build_blank_slate
         end
@@ -32,10 +33,10 @@ module Pageflow
 
       private
 
-      def build_table(*args, &block)
+      def build_table(options, &block)
         paginated_collection(paginate(apply_sorting(scoped_collection)),
                              download_links: false) do
-          table_for(collection, *args, &block)
+          table_for(collection, options, &block)
         end
       end
 

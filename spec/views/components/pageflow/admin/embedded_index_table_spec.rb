@@ -52,7 +52,7 @@ module Pageflow
 
       render do
         embedded_index_table(Entry) do
-          table_for_collection do
+          table_for_collection sortable: true do
             column :id, sortable: true
             column :title, sortable: true
           end
@@ -71,8 +71,8 @@ module Pageflow
 
       render do
         embedded_index_table(Entry) do
-          table_for_collection do
-            column :id, stortable: true
+          table_for_collection sortable: true do
+            column :id, sortable: true
             column :title, sortable: true
           end
         end
@@ -83,12 +83,12 @@ module Pageflow
     end
 
     it 'sorts by first sortable column by default' do
-      create(:entry, title: 'Bbb')
       create(:entry, title: 'Aaa')
+      create(:entry, title: 'Bbb')
 
       render do
-        embedded_index_table(Entry) do
-          table_for_collection do
+        embedded_index_table(Entry.order('title DESC')) do
+          table_for_collection sortable: true do
             column :id, sortable: false
             column :title, sortable: true
           end
@@ -99,22 +99,39 @@ module Pageflow
       expect(titles).to eq(['Aaa', 'Bbb'])
     end
 
+    it 'does not reorder if table is not sortable' do
+      create(:entry, title: 'Bbb')
+      create(:entry, title: 'Aaa')
+
+      render do
+        embedded_index_table(Entry.order('title DESC')) do
+          table_for_collection do
+            column :id, sortable: false
+            column :title, sortable: true
+          end
+        end
+      end
+      titles = Capybara.string(rendered).all('td:last-child').map(&:text)
+
+      expect(titles).to eq(['Bbb', 'Aaa'])
+    end
+
     it 'ignores order parameter not matching sortable column' do
-      create(:user, last_name: 'Bbb')
       create(:user, last_name: 'Aaa')
+      create(:user, last_name: 'Bbb')
 
       params[:order] = 'last_name_desc'
 
       render do
         embedded_index_table(User) do
-          table_for_collection do
-            column :last_name
+          table_for_collection sortable: true do
+            column :last_name, sortable: false
           end
         end
       end
       titles = Capybara.string(rendered).all('td').map(&:text)
 
-      expect(titles).to eq(['Bbb', 'Aaa'])
+      expect(titles).to eq(['Aaa', 'Bbb'])
     end
 
     it 'ignores invalid order parameter' do
@@ -125,7 +142,7 @@ module Pageflow
 
       render do
         embedded_index_table(User) do
-          table_for_collection do
+          table_for_collection sortable: true do
             column :last_name
           end
         end
@@ -143,7 +160,7 @@ module Pageflow
 
       render do
         embedded_index_table(User) do
-          table_for_collection do
+          table_for_collection sortable: true do
             column :id, sortable: true
             column :formal_name, sortable: 'last_name'
           end
