@@ -16,10 +16,22 @@ $scroll-indicator-offset: 35px;
   }
 }
 
-@if not $navigation-display-share-button {
+@if not $navigation-display-share-button and
+    not $navigation-display-hide-text-button {
+  $bottom-height: 196px;
+} @elseif not $navigation-display-share-button or
+    not $navigation-display-hide-text-button{
   $bottom-height: 232px;
+}
 
+@if not $navigation-display-share-button {
   .navigation_menu.share {
+    display: none;
+  }
+}
+
+@if not $navigation-display-hide-text-button {
+  .hide_text {
     display: none;
   }
 }
