@@ -1,12 +1,11 @@
 pageflow.FileType = pageflow.Object.extend({
   initialize: function(options) {
     this.model = options.model;
-
     this.typeName = options.typeName;
     this.collectionName = options.collectionName;
+    this.topLevelType = options.topLevelType;
     this.paramKey = options.paramKey;
     this.i18nKey = options.i18nKey;
-
     this.confirmUploadTableColumns = options.confirmUploadTableColumns || [];
     this.configurationEditorInputs = [].concat(options.configurationEditorInputs || []);
     this.configurationUpdaters = options.configurationUpdaters || [];
