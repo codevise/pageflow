@@ -15,7 +15,9 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
     this.bindUIElements();
 
     this.$el.fileupload({
-      acceptFileTypes: /(\.|\/)(bmp|gif|jpe?g|png|ti?f|wmv|mp4|mpg|mov|asf|asx|avi|m?v|mpeg|qt|3g2|3gp|3ivx|divx|3vx|vob|flv|dvx|xvid|mkv)$/i,
+      acceptFileTypes: new RegExp ('(\\.|\\/)(bmp|gif|jpe?g|png|ti?f|wmv|mp4|mpg|mov|asf|asx|avi|' +
+                                   'm?v|mpeg|qt|3g2|3gp|3ivx|divx|3vx|vob|flv|dvx|xvid|mkv|vtt)$',
+                                   'i'),
       dataType: 'json',
 
       add: function(event, data) {

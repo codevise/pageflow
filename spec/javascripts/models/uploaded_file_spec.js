@@ -4,7 +4,12 @@ describe('UploadedFile', function() {
   });
 
   var FilesCollection = Backbone.Collection.extend({
-    model: File
+    model: File,
+
+    initialize: function(options) {
+      options = options || {};
+      this.fileType = options.fileType;
+    }
   });
 
   describe('#destroyUsage', function() {
@@ -94,7 +99,8 @@ describe('UploadedFile', function() {
             }
           ]
         });
-        var file = new File({state: 'processing', configuration: {custom: 'seed'}}, {fileType: fileType});
+        var file = new File({state: 'processing', configuration: {custom: 'seed'}},
+                            {fileType: fileType});
         var attributes = {configuration: {custom: 'updated'}};
 
         file.set(attributes, {applyConfigurationUpdaters: true});
@@ -124,69 +130,94 @@ describe('UploadedFile', function() {
   });
 
   describe('#nestedFiles', function() {
-    var seed = {nested_files: {text_track_files: [{file_name: 'sample.vtt'}]}};
-
     beforeEach(function() {
-      this.VideoFile = pageflow.UploadedFile.extend({
-        readyState: 'ready'
-      });
-      this.TextTrackFile = pageflow.UploadedFile.extend({
-        readyState: 'ready'
-      });
-      this.ImageFile = pageflow.UploadedFile.extend({
-        readyState: 'ready'
-      });
       this.textTrackFileType = new pageflow.FileType({collectionName: 'text_track_files',
-                                                     model: this.TextTrackFile,
+                                                     model: File,
                                                       matchUpload: /^text_track/});
       this.imageFileType = new pageflow.FileType({collectionName: 'image_files',
-                                                  model: this.ImageFile,
+                                                  model: File,
                                                   matchUpload: /^image/});
       this.videoFileType = new pageflow.FileType({collectionName: 'video_files',
-                                                  model: this.VideoFile,
+                                                  model: File,
                                                   matchUpload: /^video/});
       this.videoFileType.nestedFileTypes = new pageflow.FileTypesCollection([this.textTrackFileType,
                                                                              this.imageFileType]);
-  });
+      this.textTrackFiles = new FilesCollection({fileType: this.textTrackFileType});
+      this.imageFiles = new FilesCollection({fileType: this.imageFileType});
+    });
 
-    it('returns a Backbone.Collection', function() {
-      var file = new File(seed, {fileType: this.videoFileType});
+    it('returns a SubsetCollection', function() {
+      var parentFile = new File({}, {fileType: this.videoFileType});
+      var nestedFile = new File({}, {fileType: this.textTrackFileType, parentFile: parentFile});
+      this.textTrackFiles.add(nestedFile);
 
-      expect(file.nestedFiles('text_track_files')).to.be.instanceof(Backbone.Collection);
+      expect(parentFile.nestedFiles(this.textTrackFiles))
+        .to.be.instanceof(pageflow.SubsetCollection);
     });
 
     it('contains nested files of expected type', function() {
-      var file = new File(seed, {fileType: this.videoFileType});
+      var parentFile = new File({id: 43}, {fileType: this.videoFileType});
+      var otherNestedFile = new File({file_name: 'not_nested.vtt'},
+                                     {fileType: this.textTrackFileType});
+      var nestedFile = new File({parent_file_id: parentFile.id,
+                                 parent_file_model_type: 'Pageflow::VideoFile',
+                                 file_name: 'nested.vtt'},
+                                {fileType: this.textTrackFileType, parentFile: parentFile});
+      this.textTrackFiles.add(otherNestedFile);
+      this.textTrackFiles.add(nestedFile);
 
-      var nestedFile = file.nestedFiles('text_track_files').first();
+      var nestedFilesViaParent = parentFile.nestedFiles(this.textTrackFiles);
+      var nestedFileViaParent = nestedFilesViaParent.first();
 
-      expect(nestedFile.get('file_name')).to.eq('sample.vtt');
+      expect(nestedFilesViaParent.length).to.eq(1);
+      expect(nestedFileViaParent.get('file_name')).to.eq('nested.vtt');
     });
 
-    it('returns same backbone collection on repeated call', function() {
-      var file = new File(seed, {fileType: this.videoFileType});
+    it('returns same collection on repeated call', function() {
+      var parentFile = new File({id: 43}, {fileType: this.videoFileType});
+      var nestedFile = new File({parent_file_id: parentFile.id,
+                                 parent_file_model_type: 'Pageflow::VideoFile',
+                                 file_name: 'nested.vtt'},
+                                {fileType: this.textTrackFileType, parentFile: parentFile});
+      this.textTrackFiles.add(nestedFile);
 
-      var nestedFileCollection = file.nestedFiles('text_track_files');
-      var nestedFileCollection2 = file.nestedFiles('text_track_files');
+      var nestedFileCollection = parentFile.nestedFiles(this.textTrackFiles);
+      var nestedFileCollection2 = parentFile.nestedFiles(this.textTrackFiles);
 
       expect(nestedFileCollection).to.eq(nestedFileCollection2);
     });
 
     it('returns different backbone collection for different filetypes', function() {
-      var file = new File(seed, {fileType: this.videoFileType});
+      var parentFile = new File({id: 43}, {fileType: this.videoFileType});
+      var nestedTextTrackFile = new File({parent_file_id: parentFile.id,
+                                          parent_file_model_type: 'Pageflow::VideoFile',
+                                          file_name: 'nested.vtt'},
+                                         {fileType: this.textTrackFileType,
+                                          parentFile: parentFile});
+      var nestedImageFile = new File({parent_file_id: parentFile.id,
+                                      parent_file_model_type: 'Pageflow::ImageFile',
+                                      file_name: 'nested.tiff'},
+                                     {fileType: this.textTrackFileType, parentFile: parentFile});
+      this.textTrackFiles.add(nestedTextTrackFile);
+      this.imageFiles.add(nestedImageFile);
 
-      var nestedFileCollection = file.nestedFiles('text_track_files');
-      var nestedFileCollection2 = file.nestedFiles('image_files');
+      var nestedFileCollection = parentFile.nestedFiles(this.textTrackFiles);
+      var nestedFileCollection2 = parentFile.nestedFiles(this.imageFiles);
 
       expect(nestedFileCollection).not.to.eq(nestedFileCollection2);
     });
 
     it('contains nested files of expected type', function() {
-      var file = new File(seed, {fileType: this.videoFileType});
+      var parentFile = new File({id: 43}, {fileType: this.videoFileType});
+      var nestedFile = new File({parent_file_id: parentFile.id,
+                                 parent_file_model_type: 'Pageflow::VideoFile',
+                                 file_name: 'nested.vtt'},
+                                {fileType: this.textTrackFileType, parentFile: parentFile});
+      this.textTrackFiles.add(nestedFile);
 
-      var nestedFile = file.nestedFiles('text_track_files').first();
+      var nestedFileViaParent = parentFile.nestedFiles(this.textTrackFiles).first();
 
-      expect(nestedFile.fileType()).to.eq(this.textTrackFileType);
+      expect(nestedFileViaParent.fileType()).to.eq(this.textTrackFileType);
     });
   });
 });
