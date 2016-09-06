@@ -1,5 +1,0 @@
-en:
-  activerecord:
-    attributes:
-      pageflow/entry:
-        edited_at: "Updated at"

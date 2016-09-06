@@ -157,8 +157,10 @@ en:
         created_at: Created at
         default_file_rights: Default file credits
         default_theming: Default theming
+        entries_count: "# Entries"
         landing_page_name: Landing page
         name: Name
+        users_count: "# Users"
       pageflow/audio_file:
         duration: Duration
         format: Format
@@ -172,26 +174,34 @@ en:
         author: Author
         created_at: Created at
         credits: Credits
+        edited_at: Updated at
         emphasize_chapter_beginning: Emphasize chapter beginning
         emphasize_new_pages: Emphasize new pages
+        first_published_at: First published at
         home_button_enabled: Show 'Home' button
         home_url: "'Home' Button URL"
         keywords: Keywords
         locale: Language
         manual_start: Show Instruction-Overlay
+        overview_button_enabled: Show 'Overview' button
         published?: Publication state
+        published_at: Published since
+        published_revision_published_at: Published since
         publisher: Publisher
         share_image_id: Social Sharing Image
+        share_url: Social Sharing URL
         summary: Summary
         title: Title
         updated_at: Updated at
         url: Permalink
+        with_publication_state: Publication state
       pageflow/folder:
         account: Account
         name: Name
       pageflow/image_file:
         dimensions: Dimensions
       pageflow/membership:
+        created_at: Member since
         entry: Story
         user: Editor
       pageflow/page:
@@ -240,10 +250,13 @@ en:
         cname: CNAME
         copyright_link_label: Copyright link Text
         copyright_link_url: Copyright link URL
+        default_author: Default author
+        default_keywords: Default keywords
+        default_publisher: Default publisher
         home_button_enabled_by_default: "'Home'-Button enabled by default"
         home_url: Redirect URL
-        imprint_link_label: Imprint link label
-        imprint_link_url: Imprint link URL
+        imprint_link_label: Legal notice link label
+        imprint_link_url: Legal notice link URL
         theme_name: Theme
       pageflow/video_file:
         dimensions: Dimensions
@@ -363,6 +376,11 @@ en:
           non: Hide
           same_parent_chapter: Chapters with same parent chapter only
           same_parent_page: Chapters with same parent page only
+      pageflow/entry:
+        publication_states:
+          not_published: Not published
+          published_with_password_protection: Published without password protection
+          published_without_password_protection: Published with password protection
       pageflow/page:
         atmo_during_playback:
           mute: Mute
@@ -711,6 +729,7 @@ en:
         edit_config: Edit configuration
         edit_revision: Edit
         editor: Editor
+        editor_hint: Open editor
         entries: Stories
         forever: "(unlimited)"
         members: Members
@@ -719,6 +738,7 @@ en:
         not_published: Not yet published
         password_protected: Password protected
         preview: Preview
+        preview_hint: Open preview
         published_forever: Published
         published_revision_legend: Currently published version
         published_until: Published until %{published_until}
@@ -737,6 +757,7 @@ en:
           user: This version was manually saved
         show: View
         show_public: Public
+        show_public_hint: Visit public page
         snapshot: Save current version
         title_hint: This field determines the URL for this story.
       features:
@@ -761,6 +782,9 @@ en:
       themings:
         additional_cnames_hint: Comma separated list of additional CNAMES. Used only to select the correct redirect URL.
         cname_hint: Used in public sharing URLs.
+        default_author_hint: Default 'author' meta field for entries
+        default_keywords_hint: Default 'keywords' meta field for entries
+        default_publisher_hint: Default 'publisher' meta field for entries
         home_url_hint: Used for requests to the root path with one of the above CNAMES. Default target location for the home button.
         name: "%{account_name}"
         remove_logo: Remove logo
@@ -871,6 +895,9 @@ en:
         header: This is an empty Pageflow
         intro: Each Pageflow consist of chapters and pages. The editor panel to your right shows the outline of your story.
         outro: In this area, a live preview will be shown.
+      entries:
+        unsupported_browser_hint:
+          message: The Pageflow editor does not support the browser version you are using. We recommend upgrading your browser to the most recent version.
       errors:
         UnmatchedUploadError: This filetype is not supported.
         unknown: A unknown error has occurred.
@@ -1413,6 +1440,7 @@ en:
         pageflow/chapter:
           title: Will be shown on the overview page.
         pageflow/entry:
+          author: The author's name.
           credits: Will be shown in the info box.
           emphasize_chapter_beginning: This option emphasizes the title of the first page of a chapter.
           emphasize_new_pages: At the beginning of a Pageflow an info-box shows news pages that were created since the last visit.
@@ -1420,12 +1448,17 @@ en:
           home_button_enabled_disabled: This option is not available for your theme.
           home_url: URL of your home page. Leave empty to use your accounts default setting.
           home_url_disabled: This option is not available for your theme.
+          keywords: Keywords as a suggestion for search engines.
           manual_start: Decide if tips or advice should be shown at the beginning of your Pageflow.
+          overview_button_enabled: The overview displays chapters and pages of the main storyline.
+          overview_button_enabled_disabled: This option is not available for your theme.
+          publisher: The publisher's name or company name.
+          share_url: URL to share via social media buttons. Leave blank to use URL of published entry.
           summary: Here you can write a description, which is shown, when your Pageflow is shared in social networks.
           title: Here you can choose a title for your Pageflow. It will be shown on the title bar of the browser window. It also acts as an indicator for search engines once the report is published.
         pageflow/page:
           additional_title: The info box appears close to the player controls.
-          atmo_audio_file_id: Choose an audio file, that shall be played in the background. If you want this audio to continue playing on following pages, just choose the same file again there.
+          atmo_audio_file_id: Choose an audio file, that shall be played in the background. If you want this audio to continue playing on following pages, just choose the same file again there. Not available on mobile devices at the moment.
           atmo_during_playback: Choose which way the atmo shall behave during playback of this page's main media.
           delayed_text_fade_in: Fades in the page contents after a delay such that the background image can be viewed initially.
           description: You can enter a text, which appears when the user navigates with the mouse over the particular page. This text matches with the mouse-over-text for the page-type „Page References“ as well as with the text, which appears when you share the Pageflow in social networks.
@@ -1494,9 +1527,12 @@ en:
         analytics: Tracking
         mobile_navigation: Mobile navigation
         navigation: Navigation bar
+        player_controls: Player Controls
       type_names:
+        classic_player_controls: Classic
         default_mobile_navigation: Navigation bar with thumbnails
         default_navigation: Navigation bar with thumbnails
+        slim_player_controls: Minimal
   support:
     array:
       last_word_connector: ", and "

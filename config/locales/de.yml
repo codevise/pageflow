@@ -156,9 +156,11 @@ de:
       pageflow/account:
         created_at: Erstellt am
         default_file_rights: Standard Urheber
-        default_theming: Standard Theming
+        default_theming: Theme
+        entries_count: "# Beiträge"
         landing_page_name: Einstiegsseite
         name: Name
+        users_count: "# Benutzer"
       pageflow/audio_file:
         duration: Länge
         format: Format
@@ -172,26 +174,34 @@ de:
         author: Autor
         created_at: Erstellt am
         credits: Credits
+        edited_at: Geändert am
         emphasize_chapter_beginning: Kapitelanfang hervorheben
         emphasize_new_pages: Neue Seiten hervorheben
+        first_published_at: Erstmals veröffentlicht am
         home_button_enabled: Home-Button anzeigen
         home_url: Home-Button URL
         keywords: Schlüsselwörter
         locale: Sprache
         manual_start: Multimedia Hinweis vor dem Start anzeigen
+        overview_button_enabled: "Übersicht-Button anzeigen"
         published?: Veröffentlichungstatus
+        published_at: Veröffentlicht seit
+        published_revision_published_at: Veröffentlicht am
         publisher: Herausgeber
         share_image_id: Social Sharing Bild
+        share_url: Social Sharing URL
         summary: Zusammenfassung
         title: Titel
         updated_at: Geändert am
         url: Permalink
+        with_publication_state: Veröffentlichungsstatus
       pageflow/folder:
         account: Konto
         name: Name
       pageflow/image_file:
         dimensions: Maße
       pageflow/membership:
+        created_at: Mitglied seit
         entry: Beitrag
         user: Redakteur
       pageflow/page:
@@ -240,6 +250,9 @@ de:
         cname: CNAME
         copyright_link_label: Copyright-Link Text
         copyright_link_url: Copyright-Link URL
+        default_author: Standard Autor
+        default_keywords: Standard Schlüsselwörter
+        default_publisher: Standard Herausgeber
         home_button_enabled_by_default: Home-Button in neuen Beiträgen anzeigen
         home_url: Redirect URL
         imprint_link_label: Impressum-Link Text
@@ -363,6 +376,11 @@ de:
           non: Ausblenden
           same_parent_chapter: Nur Kapitel mit gleichem übergeordneten Kapitel
           same_parent_page: Nur Kapitel mit gleicher übergeordneter Seite
+      pageflow/entry:
+        publication_states:
+          not_published: Nicht veröffentlicht
+          published_with_password_protection: Mit Passwortschutz veröffentlicht
+          published_without_password_protection: Ohne Passwortschutz veröffentlicht
       pageflow/page:
         atmo_during_playback:
           mute: Ausblenden
@@ -711,6 +729,7 @@ de:
         edit_config: Konfiguration ändern
         edit_revision: "Ändern"
         editor: Editor
+        editor_hint: Editor öffnen
         entries: Beiträge
         forever: "(unbegrenzt)"
         members: Redakteure
@@ -719,6 +738,7 @@ de:
         not_published: Nicht veröffentlicht
         password_protected: Mit Passwortschutz
         preview: Vorschau
+        preview_hint: Vorschau anzeigen
         published_forever: Veröffentlicht
         published_revision_legend: Aktuell Veröffentlichter Stand
         published_until: Veröffentlicht bis %{published_until}
@@ -737,6 +757,7 @@ de:
           user: Dieser Stand wurde durch einen Benutzer gesichert
         show: Anzeigen
         show_public: "Öffentlich"
+        show_public_hint: "Öffentliche Seite anzeigen"
         snapshot: Aktuellen Stand sichern
         title_hint: Dieses Feld bestimmt die URL, unter der der Beitrag öffentlich erreichbar ist.
       features:
@@ -761,6 +782,9 @@ de:
       themings:
         additional_cnames_hint: Kommaseparierte Liste von weiteren CNAMES. Ausschließlich zur Auswahl der Redirect URL genutzt.
         cname_hint: Wird in Share Links verwendet.
+        default_author_hint: Voreinstellung 'author' Meta-Feld für Eintrage
+        default_keywords_hint: Voreinstellung 'keywords' Meta-Feld für Eintrage
+        default_publisher_hint: Voreinstellung 'publisher' Meta-Feld für Eintrage
         home_url_hint: Wird einer der obigen CNAMES ohne Pfad in der URL verwendet, wird zu dieser URL umgeleitet. Standard Link Ziel des Home Buttons.
         name: "%{account_name}"
         remove_logo: Logo entfernen
@@ -869,6 +893,9 @@ de:
         header: Dies ist ein leerer Pageflow
         intro: Pageflows bestehen aus Kapiteln und Seiten. In der Seitenleiste rechts findest Du die Gliederung.
         outro: Hier siehst Du dann eine Vorschau deines Pageflows.
+      entries:
+        unsupported_browser_hint:
+          message: Die Version Ihres Browsers wird vom Pageflow Editor nicht unterstützt. Bitte benutzen Sie einen aktuellen Browser.
       errors:
         UnmatchedUploadError: Der Dateityp wird nicht unterstützt.
         unknown: Ein unbekannter Fehler ist aufgetreten.
@@ -1429,6 +1456,7 @@ de:
         pageflow/chapter:
           title: Wird auf der Übersichtsseite angezeigt.
         pageflow/entry:
+          author: Name des Autors.
           credits: Text wird zusammen mit dem Impressumsverweis angezeigt.
           emphasize_chapter_beginning: Mit dieser Option wird der Titel der jeweils ersten Seite eines Kapitels größer dargestellt.
           emphasize_new_pages: Zeigt zum Start des Pageflows in einer Info-Box die seit dem letzten Besuch neu erstellen Seiten an.
@@ -1436,13 +1464,18 @@ de:
           home_button_enabled_disabled: Diese Funktion steht in diesem Theme nicht zur Verfügung.
           home_url: URL der Übersichtseite. Leer lassen, um Standard zu übernehmen.
           home_url_disabled: Diese Funktion steht in diesem Theme nicht zur Verfügung.
+          keywords: Schlüsselwörter als Vorschlag für Suchmaschinen.
           manual_start: Entscheide, ob zu Beginn Deines Pageflows ein Hinweis angezeigt wird.
+          overview_button_enabled: In der Übersicht werden die Kapitel und Seiten des Haupterzählstrangs angezeigt.
+          overview_button_enabled_disabled: Diese Funktion steht in diesem Theme nicht zur Verfügung.
+          publisher: Name oder Firmenname des Herausgeber.
+          share_url: URL, die geteilt werden soll, wenn der Benutzer auf einen der Social Media Buttons klickt. Feld frei lassen, um URL des veröffentlichten Beitrags zu verwenden.
           summary: |
             Trage hier ein, welcher Beschreibungstext beim Teilen in sozialen Netzwerken angezeigt wird.
           title: Hier kannst Du Deinem Pageflow einen Titel geben, der in der Titelleiste des Browserfensters angezeigt wird. Unter diesem Titel wird Dein Pageflow nach der Veröffentlichung auch in Suchmaschinen indiziert werden
         pageflow/page:
           additional_title: Die Infobox wird über den Steuerelementen zum Starten und Stoppen der Wiedegabe angezeigt.
-          atmo_audio_file_id: Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch auf Folgeseiten nahtlos weiterspielen soll, wähle auf diesen Seiten die selbe Datei aus.
+          atmo_audio_file_id: Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch auf Folgeseiten nahtlos weiterspielen soll, wähle auf diesen Seiten die selbe Datei aus. Diese Funktionalität steht im Moment nicht auf mobilen Geräten zur Verfügung.
           atmo_during_playback: Wähle wie sich die Atmo während der Wiedergabe des Hauptmediums dieser Seite verhalten soll.
           delayed_text_fade_in: Blendet die Textinhalte der Seite sowie die Abblendung zeitverzögert ein, nachdem man auf die Seite geblättert hat. So wird für eine gewisse Zeit der Blick auf den Hintergrund freigegeben.
           description: Hier kann der Text eingegeben werden, der angezeigt wird, wenn der User in der Übersicht mit der Mouse über die jeweilige Seite fährt. Außerdem entspricht der hier eingegebene Text auch dem Mouse-Over-Text beim Seitentyp „Seiten-Verweise“, sowie dem Text zum Teilen in sozialen Netzwerken.
@@ -1507,9 +1540,12 @@ de:
         analytics: Zählpixel
         mobile_navigation: Mobile Navigation
         navigation: Navigationsleiste
+        player_controls: Player Controls
       type_names:
+        classic_player_controls: Klassisch
         default_mobile_navigation: Navigationsmenü mit Thumbnails
         default_navigation: Navigationsleiste mit Thumbnails
+        slim_player_controls: Minimalistisch
   support:
     array:
       last_word_connector: " und "

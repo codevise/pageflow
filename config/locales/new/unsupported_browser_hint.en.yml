@@ -1,6 +1,0 @@
-en:
-  pageflow:
-    editor:
-      entries:
-        unsupported_browser_hint:
-          message: "The Pageflow editor does not support the browser version you are using. We recommend upgrading your browser to the most recent version."

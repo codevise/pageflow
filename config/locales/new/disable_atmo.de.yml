@@ -1,6 +1,0 @@
-de:
-  pageflow:
-    ui:
-      inline_help:
-        pageflow/page:
-          atmo_audio_file_id: Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch auf Folgeseiten nahtlos weiterspielen soll, wähle auf diesen Seiten die selbe Datei aus. Diese Funktionalität steht im Moment nicht auf mobilen Geräten zur Verfügung.
