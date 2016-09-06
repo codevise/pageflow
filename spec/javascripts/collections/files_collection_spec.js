@@ -36,6 +36,17 @@ describe('FileCollection', function() {
     });
   });
 
+  describe('.createForFileType', function() {
+    it('passes fileType to files', function() {
+      var fileType = f.imageFileType();
+      var files = [{file_name: 'image.png'}];
+      var entry = {};
+      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+
+      expect(collection.first().fileType()).to.eq(fileType);
+    });
+  });
+
   describe('#uploadable', function() {
     it('always contains subset of files with state uploadable', function() {
       var fileType = f.fileType();
