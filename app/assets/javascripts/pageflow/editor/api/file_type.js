@@ -9,6 +9,8 @@ pageflow.FileType = pageflow.Object.extend({
     this.confirmUploadTableColumns = options.confirmUploadTableColumns || [];
     this.configurationEditorInputs = [].concat(options.configurationEditorInputs || []);
     this.configurationUpdaters = options.configurationUpdaters || [];
+    this.nestedFileTableColumns = options.nestedFileTableColumns || [];
+    this.skipUploadConfirmation = options.skipUploadConfirmation || false;
     this.metaDataAttributes = options.metaDataAttributes || [];
     this.filters = options.filters || [];
 
@@ -38,6 +40,10 @@ pageflow.FileType = pageflow.Object.extend({
     this.model.prototype.modelName = this.model.prototype.modelName || this.paramKey;
     this.model.prototype.paramRoot = this.model.prototype.paramRoot || this.paramKey;
     this.model.prototype.i18nKey = this.model.prototype.i18nKey || this.i18nKey;
+  },
+
+  setNestedFileTypes: function(fileTypesCollection) {
+    this.nestedFileTypes = fileTypesCollection;
   },
 
   getFilter: function(name) {

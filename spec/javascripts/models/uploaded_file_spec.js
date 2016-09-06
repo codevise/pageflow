@@ -122,4 +122,71 @@ describe('UploadedFile', function() {
       });
     });
   });
+
+  describe('#nestedFiles', function() {
+    var seed = {nested_files: {text_track_files: [{file_name: 'sample.vtt'}]}};
+
+    beforeEach(function() {
+      this.VideoFile = pageflow.UploadedFile.extend({
+        readyState: 'ready'
+      });
+      this.TextTrackFile = pageflow.UploadedFile.extend({
+        readyState: 'ready'
+      });
+      this.ImageFile = pageflow.UploadedFile.extend({
+        readyState: 'ready'
+      });
+      this.textTrackFileType = new pageflow.FileType({collectionName: 'text_track_files',
+                                                     model: this.TextTrackFile,
+                                                      matchUpload: /^text_track/});
+      this.imageFileType = new pageflow.FileType({collectionName: 'image_files',
+                                                  model: this.ImageFile,
+                                                  matchUpload: /^image/});
+      this.videoFileType = new pageflow.FileType({collectionName: 'video_files',
+                                                  model: this.VideoFile,
+                                                  matchUpload: /^video/});
+      this.videoFileType.nestedFileTypes = new pageflow.FileTypesCollection([this.textTrackFileType,
+                                                                             this.imageFileType]);
+  });
+
+    it('returns a Backbone.Collection', function() {
+      var file = new File(seed, {fileType: this.videoFileType});
+
+      expect(file.nestedFiles('text_track_files')).to.be.instanceof(Backbone.Collection);
+    });
+
+    it('contains nested files of expected type', function() {
+      var file = new File(seed, {fileType: this.videoFileType});
+
+      var nestedFile = file.nestedFiles('text_track_files').first();
+
+      expect(nestedFile.get('file_name')).to.eq('sample.vtt');
+    });
+
+    it('returns same backbone collection on repeated call', function() {
+      var file = new File(seed, {fileType: this.videoFileType});
+
+      var nestedFileCollection = file.nestedFiles('text_track_files');
+      var nestedFileCollection2 = file.nestedFiles('text_track_files');
+
+      expect(nestedFileCollection).to.eq(nestedFileCollection2);
+    });
+
+    it('returns different backbone collection for different filetypes', function() {
+      var file = new File(seed, {fileType: this.videoFileType});
+
+      var nestedFileCollection = file.nestedFiles('text_track_files');
+      var nestedFileCollection2 = file.nestedFiles('image_files');
+
+      expect(nestedFileCollection).not.to.eq(nestedFileCollection2);
+    });
+
+    it('contains nested files of expected type', function() {
+      var file = new File(seed, {fileType: this.videoFileType});
+
+      var nestedFile = file.nestedFiles('text_track_files').first();
+
+      expect(nestedFile.fileType()).to.eq(this.textTrackFileType);
+    });
+  });
 });

@@ -40,6 +40,18 @@ support.factories = {
                                                       [{}, {}]);
   },
 
+  nestedFilesCollection: function(options) {
+    return new pageflow.SubsetCollection({
+      parentModel: support.factories.file({file_name: options.parentFileName}),
+      filter: function() {
+        return true;
+      },
+      parent: support.factories.filesCollection(
+        {fileType: options.fileType}
+      )
+    });
+  },
+
   file: function(attributes, options) {
     return new pageflow.ImageFile(attributes, options);
   }

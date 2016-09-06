@@ -2,7 +2,7 @@ pageflow.UploadedFile = Backbone.Model.extend({
   mixins: [pageflow.stageProvider, pageflow.retryable],
 
   initialize: function(attributes, options) {
-    this.options = options;
+    this.options = options || {};
 
     this.configuration = new pageflow.FileConfiguration(
       this.get('configuration') || {}
@@ -46,6 +46,17 @@ pageflow.UploadedFile = Backbone.Model.extend({
 
   thumbnailFile: function() {
     return this;
+  },
+
+  nestedFiles: function(supersetCollection) {
+    if (typeof supersetCollection === 'function') {
+      supersetCollection = supersetCollection();
+    }
+    var collectionName = supersetCollection.fileType.collectionName;
+    this.nestedFilesCollections = this.nestedFilesCollections || {};
+    this.nestedFilesCollections[collectionName] = this.nestedFilesCollections[collectionName] ||
+      this._createNestedFilesSubsetCollection(supersetCollection);
+    return this.nestedFilesCollections[collectionName];
   },
 
   isUploading: function() {
@@ -106,5 +117,15 @@ pageflow.UploadedFile = Backbone.Model.extend({
     usage.destroy();
 
     this.trigger('destroy', this, this.collection, {});
+  },
+
+  _createNestedFilesSubsetCollection: function(supersetCollection) {
+    return new pageflow.SubsetCollection(
+      {parentModel: this,
+       filter: function(item) {
+         return item.get('parent_file_id') === this.parentModel.get('id');
+       },
+       parent: supersetCollection}
+    );
   }
 });
