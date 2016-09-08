@@ -59,7 +59,8 @@ module Pageflow
     end
 
     def cache_key
-      "#{self.class.model_name.cache_key}/#{entry.cache_key}-#{revision.cache_key}"
+      "#{self.class.model_name.cache_key}/" \
+        "#{entry.cache_key}-#{revision.cache_key}-#{theming.cache_key}"
     end
 
     def home_button
