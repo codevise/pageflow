@@ -159,4 +159,10 @@ Gem::Specification.new do |s|
 
   # A gem that makes it easy to write specs for your Rails 3 Generators.
   s.add_development_dependency 'ammeter', '~> 1.1'
+
+  # Ruby code linter
+  s.add_development_dependency 'rubocop', '~> 0.42.0'
+
+  # Scss code linter
+  s.add_development_dependency 'scss_lint', '~> 0.50.0'
 end

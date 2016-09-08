@@ -10,10 +10,9 @@ Style/StringLiterals:
 Style/DotPosition:
   EnforcedStyle: leading
 
-# The Rubocop version used by hound cannot yet detect RSpec expections
-# that would change meaning with "do ... end".
-Style/Blocks:
-  Enabled: false
+# Allow using {} when chaining methods
+Style/BlockDelimiters:
+  EnforcedStyle: braces_for_chaining
 
 # The default of 80 characters is a little to narrow.
 Metrics/LineLength:
