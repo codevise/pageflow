@@ -87,6 +87,40 @@ module Pageflow
       end
     end
 
+    describe '#cache_key' do
+      before { Timecop.travel }
+
+      it 'changes when entry changes' do
+        entry = create(:entry)
+        create(:revision, :published, entry: entry)
+        published_entry = PublishedEntry.new(entry)
+
+        expect {
+          entry.touch
+        }.to change { published_entry.cache_key }
+      end
+
+      it 'changes when revision changes' do
+        entry = create(:entry)
+        revision = create(:revision, :published, entry: entry)
+        published_entry = PublishedEntry.new(entry)
+
+        expect {
+          revision.touch
+        }.to change { published_entry.cache_key }
+      end
+
+      it 'changes when theming changes' do
+        entry = create(:entry)
+        create(:revision, :published, entry: entry)
+        published_entry = PublishedEntry.new(entry)
+
+        expect {
+          entry.theming.touch
+        }.to change { published_entry.cache_key }
+      end
+    end
+
     describe '#stylesheet_model' do
       it 'returns entry if no revision was passed to constructor' do
         entry = create(:entry)
