@@ -11,6 +11,12 @@ $custom-loading-spinner: false !default;
 /// Custom logo image has to be named `loading_spinner/logo.png`.
 $loading-spinner-logo: "default" !default;
 
+/// Width of the loading spinner image.
+$loading-spinner-logo-width: 130px !default;
+
+/// Height of the loading spinner image.
+$loading-spinner-logo-height: 112px !default;
+
 /// Spinner background color.
 $loading-spinner-background-color: #3b5159 !default;
 
@@ -60,23 +66,23 @@ $loading-spinner-glow-color: rgba(117, 149, 160, 0.8) !default;
     .loading_spinner_inner {
       left: 50%;
       top: 50%;
-      width: 190px;
-      height: 164px;
-      margin-left: -60px;
-      margin-top: -65px;
+      width: $loading-spinner-logo-width;
+      height: $loading-spinner-logo-height;
+      margin-left: -$loading-spinner-logo-width / 2;
+      margin-top: -$loading-spinner-logo-height / 2;
       position: absolute;
 
       div {
-        width: 190px;
-        height: 164px;
-        background-size: 130px 112px;
+        width: 100%;
+        height: 100%;
+        background-size: $loading-spinner-logo-width $loading-spinner-logo-height;
         background-repeat: no-repeat;
         position: absolute;
 
         @if $loading-spinner-logo == "custom" {
-          background-image: image-url("pageflow/themes/default/loading_spinner/logo.png");
-        } @else {
           background-image: image-url("pageflow/themes/#{$theme-name}/loading_spinner/logo.png");
+        } @else {
+          background-image: image-url("pageflow/themes/default/loading_spinner/logo.png");
         }
       }
     }
