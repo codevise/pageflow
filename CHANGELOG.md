@@ -1,8 +1,10 @@
 # CHANGELOG
 
-### Changes on `master`
+### Version 0.11.0
 
-[Compare changes](https://github.com/codevise/pageflow/compare/v0.10.0...master)
+2016-09-09
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.10.0...v0.11.0)
 
 ##### Breaking Changes
 
@@ -11,7 +13,7 @@
   [Upgrading Rails guide](http://guides.rubyonrails.org/upgrading_ruby_on_rails.html)
   for changes you need to apply to your application.
   ([#575](https://github.com/codevise/pageflow/pull/575))
-  
+
 - Active Admin/Devise have been updated. The `gem` entries for
   `activeadmin`, `ransack`, `inherited_resources` and `formtastic`
   have to be removed. Furthermore, delete the following line from the
@@ -52,10 +54,17 @@
    [#594](https://github.com/codevise/pageflow/pull/594),
    [#596](https://github.com/codevise/pageflow/pull/596),
    [#597](https://github.com/codevise/pageflow/pull/597),
-   [#598](https://github.com/codevise/pageflow/pull/598))
+   [#598](https://github.com/codevise/pageflow/pull/598),
+   [#626](https://github.com/codevise/pageflow/pull/626),
+   [#618](https://github.com/codevise/pageflow/pull/618),
+   [#600](https://github.com/codevise/pageflow/pull/600))
 
 ##### Public Site
 
+- Rebrush default theme
+  ([#612](https://github.com/codevise/pageflow/pull/612),
+   [#611](https://github.com/codevise/pageflow/pull/611),
+   [#588](https://github.com/codevise/pageflow/pull/588))
 - Minimalistic player controls
   ([#558](https://github.com/codevise/pageflow/pull/558))
 - Move share button in mobile navigation to bottom
@@ -70,12 +79,18 @@
   ([#548](https://github.com/codevise/pageflow/pull/548))
 - Disable atmo on mobile platform
   ([#554](https://github.com/codevise/pageflow/pull/554))
+- Ensure facebook app does not crop viewport
+  ([#607](https://github.com/codevise/pageflow/pull/607))
+- Apply widget margin to mobile scroll indicator
+  ([#606](https://github.com/codevise/pageflow/pull/606))
 - Bug fix: Fix keyboard access to sub share menu
   ([#553](https://github.com/codevise/pageflow/pull/553))
 - Bug fix: Do not set video src on video page activate
   ([#547](https://github.com/codevise/pageflow/pull/547))
 - Bug fix: Prevent native scrolling on multimedia alert
   ([#550](https://github.com/codevise/pageflow/pull/550))
+- Bug fix: Ensure entry cache is invalidated when theming changes
+  ([#627](https://github.com/codevise/pageflow/pull/627))
 
 ##### Admin
 
@@ -86,6 +101,8 @@
 - Allow setting defaults for meta tags per theming
   ([#538](https://github.com/codevise/pageflow/pull/538),
    [#573](https://github.com/codevise/pageflow/pull/573))
+- Improve revisions table on entry admin page
+  ([#619](https://github.com/codevise/pageflow/pull/619))
 
 ##### Editor
 
@@ -100,8 +117,13 @@
 
 ##### Rails Engine
 
+- Update activeadmin to 1.0.pre4
+  ([#617](https://github.com/codevise/pageflow/pull/617),
+   [#610](https://github.com/codevise/pageflow/pull/610))
 - Update sass to 3.4
   ([#540](https://github.com/codevise/pageflow/pull/540))
+- Switch to cancancan from cancan
+  ([#615](https://github.com/codevise/pageflow/pull/615))
 - Add config option to forbid deleting user account
   ([#535](https://github.com/codevise/pageflow/pull/535))
 - Encapsulate active admin load path setup
@@ -114,17 +136,31 @@
   ([#557](https://github.com/codevise/pageflow/pull/557))
 - Add page css classes for scroller boundary position
   ([#545](https://github.com/codevise/pageflow/pull/545))
+- Allow overriding logic to determine highlightes page
+  ([#605](https://github.com/codevise/pageflow/pull/605))
 - Theme generator for configurable default theme
   ([#560](https://github.com/codevise/pageflow/pull/560))
 - Prevent account with entries being deleted
   ([#599](https://github.com/codevise/pageflow/pull/599))
 - Correct the documentation for js widget types
   ([#571](https://github.com/codevise/pageflow/pull/571))
+- Update ruby version requirement in readme
+  ([#620](https://github.com/codevise/pageflow/pull/620))
+- Make sliderinputview more configurable
+  ([#602](https://github.com/codevise/pageflow/pull/602))
+- Add classnames to title bar action-items
+  ([#608](https://github.com/codevise/pageflow/pull/608))
+- Add browser agent based detection for ie up to 11
+  ([#601](https://github.com/codevise/pageflow/pull/601))
 
 ##### Internals
 
 - Upgrade to rspec 3
   ([#569](https://github.com/codevise/pageflow/pull/569))
+- Add ruby 2.3.1 to travis file
+  ([#609](https://github.com/codevise/pageflow/pull/609))
+- Use parallel coverall builds
+  ([#614](https://github.com/codevise/pageflow/pull/614))
 - Generator unit tests
   ([#574](https://github.com/codevise/pageflow/pull/574))
 - Generate theme documentation
@@ -133,8 +169,15 @@
   ([#561](https://github.com/codevise/pageflow/pull/561))
 - Import new rubocop default from hound repository
   ([#580](https://github.com/codevise/pageflow/pull/580))
+- Add scss_lint and rubocop to development dependency
+  ([#625](https://github.com/codevise/pageflow/pull/625))
+- Rename .css.scss files to just .scss
+  ([#613](https://github.com/codevise/pageflow/pull/613))
 - Ignore a few more files
   ([#565](https://github.com/codevise/pageflow/pull/565))
+- Increase the test coverage
+  ([#603](https://github.com/codevise/pageflow/pull/603),
+   [#604](https://github.com/codevise/pageflow/pull/604))
 - Bug fix: Narrow sprockets-rails version
   ([#546](https://github.com/codevise/pageflow/pull/546))
 

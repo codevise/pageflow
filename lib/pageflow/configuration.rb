@@ -240,7 +240,7 @@ module Pageflow
     #           'Last user on account. Permission denied'
     #         end
     #       end
-    # @since edge
+    # @since 0.11
     attr_accessor :authorize_user_deletion
 
     def initialize
