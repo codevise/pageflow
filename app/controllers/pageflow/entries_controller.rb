@@ -2,6 +2,7 @@ module Pageflow
   class EntriesController < Pageflow::ApplicationController
     include PublicHttpsMode
     include EntryPasswordProtection
+    include EntryRequestScope
 
     before_filter :authenticate_user!, except: [:index, :show, :page]
 
@@ -91,16 +92,6 @@ module Pageflow
                                     :emphasize_chapter_beginning, :emphasize_new_pages,
                                     :share_url, :share_image_id, :share_image_x, :share_image_y,
                                     :locale, :author, :publisher, :keywords, :theme_name)
-    end
-
-    def entry_request_scope
-      Pageflow.config.public_entry_request_scope.call(Entry, request)
-    end
-
-    def allow_iframe_for_embed
-      if params[:embed]
-        response.headers.except! 'X-Frame-Options'
-      end
     end
   end
 end
