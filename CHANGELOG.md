@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### Changes on `master`
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.11.0...master)
+
+None so far.
+
 ### Version 0.11.0
 
 2016-09-09
