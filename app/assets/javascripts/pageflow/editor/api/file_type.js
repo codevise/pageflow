@@ -6,6 +6,7 @@ pageflow.FileType = pageflow.Object.extend({
     this.topLevelType = options.topLevelType;
     this.paramKey = options.paramKey;
     this.i18nKey = options.i18nKey;
+    this.nestedFileTypes = [];
     this.confirmUploadTableColumns = options.confirmUploadTableColumns || [];
     this.configurationEditorInputs = [].concat(options.configurationEditorInputs || []);
     this.configurationUpdaters = options.configurationUpdaters || [];

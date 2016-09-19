@@ -60,4 +60,62 @@ describe('TableCellView', function() {
       expect(result).to.eq('Test');
     });
   });
+
+  describe('#setupContentBinding', function() {
+    it('triggers update() on rendering TableCellView if contentBinding is declared', function() {
+      var FunnelCellView = pageflow.TableCellView.extend({
+        template: function(serializedModel) {
+          return serializedModel.jargon;
+        },
+        update: function() {
+          return this.getModel().set('jargon', this.options.model.get(this.options.contentBinding));
+        }
+      });
+
+      var languageIsJargon = new Backbone.Model({
+        language: 'Japanese',
+        jargon: 'Hacker Slang'
+      });
+
+      var jargonCellView = new FunnelCellView({
+        column: {name: 'jargon'},
+        contentBinding: 'language',
+        model: languageIsJargon
+      });
+
+      jargonCellView.render();
+
+      expect(languageIsJargon.get('jargon')).to.eq('Japanese');
+    });
+
+    it('updates TableCellView when value of variable that is bound to changes', function() {
+      var FunnelCellView = pageflow.TableCellView.extend({
+        template: function(serializedModel) {
+          return serializedModel.jargon;
+        },
+        update: function() {
+          return this.getModel().set('jargon',
+                                     this.options.model.get(this.options.column.contentBinding));
+        }
+      });
+
+      var languageIsJargon = new Backbone.Model({
+        language: 'Japanese',
+        jargon: 'Hacker Slang'
+      });
+
+      var jargonCellView = new FunnelCellView({
+        column: {
+          name: 'jargon',
+          contentBinding: 'language'
+        },
+        model: languageIsJargon
+      });
+
+      jargonCellView.render();
+      languageIsJargon.set('language', 'Klingon');
+
+      expect(languageIsJargon.get('jargon')).to.eq('Klingon');
+    });
+  });
 });

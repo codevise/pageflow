@@ -80,10 +80,10 @@
  * @param {boolean} [options.disabled]
  *   Render input as disabled.
  *
- * @param {string} [options.visibleBinding]
- *   Name of an attribute to control whether the input is visible. If
- *   the `visible` and `visibleBindingValue` options are not set,
- *   input will be visible whenever this attribute as a truthy value.
+ * @param {string} [options.visibleBinding] Name of an attribute to
+ *   control whether the input is visible. If the `visible` and
+ *   `visibleBindingValue` options are not set, input will be visible
+ *   whenever this attribute has a truthy value.
  *
  * @param {function|boolean} [options.visible]
  *   A Function taking the value of the `visibleBinding` attribute as

@@ -7,12 +7,8 @@ pageflow.TextTrackFile = pageflow.HostedFile.extend({
 
   initialize: function(attributes, options) {
     pageflow.UploadedFile.prototype.initialize.apply(this, arguments);
-    if(this.isNew()) {
+    if (this.isNew()) {
       this.configuration.set('srclang', this.extractLanguageCodeFromFilename());
-      if(this.configuration.get('srclang' !== 'null')){
-        this.configuration.set('label',
-                               I18n.t('pageflow.languages.' + this.configuration.get('srclang')));
-      }
     }
   },
 

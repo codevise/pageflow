@@ -6,8 +6,8 @@
  *
  * The following attribute translations are used:
  *
- * - `.cell_text.<attribute_value>` - Useas as cell content.
- * - `.cell_text.blank` - Useas as cell content if attribute is blank.
+ * - `.cell_text.<attribute_value>` - Used as cell content.
+ * - `.cell_text.blank` - Used as cell content if attribute is blank.
  * - `.cell_title.<attribute_value>` - Used as title attribute.
  * - `.cell_title.blank` - Used as title attribute if attribute is blank.
  *

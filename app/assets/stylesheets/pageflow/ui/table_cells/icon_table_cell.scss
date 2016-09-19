@@ -1,0 +1,16 @@
+.icon_table_cell {
+  font-size: 150%;
+  @include fa-exclamation-circle-icon;
+
+  &.subtitles {
+    @include fa-comments-o-icon;
+  }
+
+  &.captions {
+    @include fa-deafness-icon;
+  }
+
+  &.descriptions {
+    @include fa-low-vision-icon;
+  }
+}
