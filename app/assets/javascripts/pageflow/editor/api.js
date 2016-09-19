@@ -68,6 +68,15 @@ pageflow.EditorApi = pageflow.Object.extend(
   },
 
   /**
+   * Set the file that is the parent of nested files when they are
+   * uploaded. This value is automatically set and unset upon
+   * navigating towards the appropriate views.
+   */
+  setUploadTargetFile: function(file) {
+    this.nextUploadTargetFile = file;
+  },
+
+  /**
    * Set the name of the help entry that shall be selected by
    * default when the help view is opened. This value is
    * automatically reset when navigation occurs.
