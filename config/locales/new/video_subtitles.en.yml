@@ -1,0 +1,73 @@
+en:
+  activerecord:
+    attributes:
+      pageflow/text_track_file:
+        kind: Kind
+        label: Label
+        srclang: Language
+  pageflow:
+    config:
+      text_track_kind:
+        subtitles: Translation Text Track
+        captions: Audio Replacement Text Track
+        descriptions: Image Description Text Track
+    editor:
+      file_settings_dialog:
+        tabs:
+          text_tracks: Text Tracks
+          video_settings_tab: Video Details
+      files:
+        settings_dialog_tabs:
+          text_track_tab: Text Tracks
+      nested_files:
+        text_track_files:
+          delete:
+            column_header: ''
+            cell_title: Delete text tracks
+          kind:
+            column_header: Kind
+            cell_title:
+              subtitles: Translation Text Track
+              captions: Audio Replacement Text Track
+              descriptions: Image Replacement Text Track
+          label:
+            column_header: Label
+            missing: Label missing
+          srclang:
+            column_header: Language
+            cell_title:
+              present: "Entered: %{value}"
+              blank: Not yet entered
+      templates:
+        background_positioning:
+          close: Close
+        file_item:
+          settings: Settings
+        text_tracks:
+          edit_file_header: Metadata
+          upload: Add
+      ui:
+        text_table_cell_view:
+          empty: (empty)
+    languages:
+      ar: Arabic
+      cs: Czech
+      de: German
+      dk: Danish
+      el: Greek
+      en: English
+      es: Spanish
+      fr: French
+      fy: Frisian
+      hi: Hindi
+      it: Italian
+      lb: Letzeburgesch
+      nl: Dutch
+      pl: Polish
+      pt: Portuguese
+      rm: Romansh
+      ru: Russian
+      sr: Serbian
+      tr: Turkish
+      zh: Chinese
+      unknown: Unknown language key

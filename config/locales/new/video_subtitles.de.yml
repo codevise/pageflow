@@ -1,0 +1,73 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/text_track_file:
+        kind: Art
+        label: Label
+        srclang: Sprache
+  pageflow:
+    config:
+      text_track_kind:
+        subtitles: Übersetzungs-Textspur
+        captions: Ton-Ersatz-Textspur
+        descriptions: Bild-Ersatz-Textspur
+    editor:
+      file_settings_dialog:
+        tabs:
+          text_track_tab: Textspuren
+          video_settings_tab: Video-Details
+      files:
+        settings_dialog_tabs:
+          text_tracks: Textspuren
+      nested_files:
+        text_track_files:
+          delete:
+            column_header: ''
+            cell_title: Textspur löschen
+          kind:
+            column_header: Art
+            cell_title:
+              subtitles: Übersetzungs-Textspur
+              captions: Ton-Ersatz-Textspur
+              descriptions: Bild-Ersatz-Textspur
+          label:
+            column_header: Label
+            missing: Label fehlt
+          srclang:
+            column_header: Sprache
+            cell_title:
+              present: "Ausgefüllt: %{value}"
+              blank: "Noch nicht ausgefüllt"
+      templates:
+        background_positioning:
+          close: Schließen
+        file_item:
+          settings: Einstellungen
+        text_tracks:
+          edit_file_header: Metadaten
+          upload: Hinzufügen
+      ui:
+        text_table_cell_view:
+          empty: (leer)
+    languages:
+      ar: Arabisch
+      cs: Tschechisch
+      de: Deutsch
+      dk: Dänisch
+      el: Griechisch
+      en: Englisch
+      es: Spanisch
+      fr: Französisch
+      fy: Friesisch
+      hi: Hindi
+      it: Italienisch
+      lb: Luxemburgisch
+      nl: Holländisch
+      pl: Polnisch
+      pt: Portugiesisch
+      rm: Rätoromanisch
+      ru: Russisch
+      sr: Serbisch
+      tr: Türkisch
+      zh: Chinesisch
+      unknown: Unbekannter Sprachschlüssel
