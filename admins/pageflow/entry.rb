@@ -116,7 +116,7 @@ module Pageflow
       entry = Entry.find(params[:id])
       authorize!(:snapshot, entry)
       entry.snapshot(:creator => current_user, :type => 'user')
-      redirect_to(admin_entry_path(entry))
+      redirect_to(admin_entry_path(entry, params.slice(:tab)))
     end
 
     member_action :preview do

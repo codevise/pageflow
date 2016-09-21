@@ -47,7 +47,7 @@ module Pageflow
         para(I18n.t('pageflow.admin.entries.published_revision_legend'), :class => 'legend published')
 
         text_node(button_to(t('pageflow.admin.entries.snapshot'),
-                            snapshot_admin_entry_path(entry),
+                            snapshot_admin_entry_path(entry, params.slice(:tab)),
                             :method => :post))
       end
     end
