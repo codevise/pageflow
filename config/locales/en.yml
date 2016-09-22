@@ -379,8 +379,8 @@ en:
       pageflow/entry:
         publication_states:
           not_published: Not published
-          published_with_password_protection: Published without password protection
-          published_without_password_protection: Published with password protection
+          published_with_password_protection: Published with password protection
+          published_without_password_protection: Published without password protection
       pageflow/page:
         atmo_during_playback:
           mute: Mute
