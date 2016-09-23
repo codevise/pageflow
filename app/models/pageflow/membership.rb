@@ -26,11 +26,11 @@ module Pageflow
     scope :as_previewer_or_above, -> { where(role: %w(previewer editor publisher manager)) }
 
     after_create do
-      entity.increment(:users_count)
+      entity.increment!(:users_count)
     end
 
     after_destroy do
-      entity.decrement(:users_count)
+      entity.decrement!(:users_count)
     end
 
     private
