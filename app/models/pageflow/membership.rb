@@ -13,10 +13,10 @@ module Pageflow
     validates :user_id, uniqueness: {scope: [:entity_type, :entity_id]}
     validate :account_membership_exists, if: :on_entry?
     validates :role,
-              inclusion: {in: %w(previewer editor publisher manager).map(&:to_sym)},
+              inclusion: {in: %w(previewer editor publisher manager)},
               if: :on_entry?
     validates :role,
-              inclusion: {in: %w(member previewer editor publisher manager).map(&:to_sym)},
+              inclusion: {in: %w(member previewer editor publisher manager)},
               if: :on_account?
 
     scope :on_entries, -> { where(entity_type: 'Pageflow::Entry') }

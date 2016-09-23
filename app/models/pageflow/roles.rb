@@ -2,7 +2,8 @@ module Pageflow
   module Roles
     module_function
 
-    def at_least(role)
+    def at_least(role_uncasted)
+      role = role_uncasted.to_sym
       if role == :member
         %w(member previewer editor publisher manager)
       elsif role == :previewer
