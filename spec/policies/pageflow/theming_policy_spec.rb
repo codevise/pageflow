@@ -56,16 +56,6 @@ module Pageflow
 
         expect(scope).to_not include(theming)
       end
-
-      it 'does not include themings with membership with nil account id' do
-        user = create(:user)
-        account = Account.new
-        theming = create(:theming, account: account)
-        create(:membership, user: user, entity: account)
-
-        expect(ThemingPolicy::Scope
-                .new(user, Theming).themings_allowed_for(account)).not_to include(theming)
-      end
     end
   end
 end

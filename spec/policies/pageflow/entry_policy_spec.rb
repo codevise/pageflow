@@ -224,25 +224,6 @@ module Pageflow
 
         expect(EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
       end
-
-      it 'does not include entries with membership with nil id' do
-        user = create(:user)
-        account = create(:account, with_member: user)
-        entry = Entry.new(account: account)
-        create(:membership, user: user, entity: entry)
-
-        expect(EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
-      end
-
-      it 'does not include entries with membership with nil account id' do
-        user = create(:user)
-        theming = create(:theming)
-        account = Account.new
-        entry = create(:entry, account: account, theming: theming)
-        create(:membership, user: user, entity: account)
-
-        expect(EntryPolicy::Scope.new(user, Entry).resolve).not_to include(entry)
-      end
     end
 
     describe '.editor_or_above' do
@@ -297,25 +278,6 @@ module Pageflow
         other_user = create(:user)
         account = create(:account, with_editor: other_user)
         entry = create(:entry, account: account)
-
-        expect(EntryPolicy::Scope.new(user, Entry).editor_or_above).not_to include(entry)
-      end
-
-      it 'does not include entries with membership with nil id' do
-        user = create(:user)
-        account = create(:account, with_member: user)
-        entry = Entry.new(account: account)
-        create(:membership, user: user, entity: entry, role: :editor)
-
-        expect(EntryPolicy::Scope.new(user, Entry).editor_or_above).not_to include(entry)
-      end
-
-      it 'does not include entries with membership with nil account id' do
-        user = create(:user)
-        theming = create(:theming)
-        account = Account.new
-        entry = create(:entry, account: account, theming: theming)
-        create(:membership, user: user, entity: account, role: :editor)
 
         expect(EntryPolicy::Scope.new(user, Entry).editor_or_above).not_to include(entry)
       end
@@ -384,25 +346,6 @@ module Pageflow
         expect(EntryPolicy::Scope.new(user, Entry).publisher_or_above).not_to include(entry)
       end
 
-      it 'does not include entries with membership with nil id' do
-        user = create(:user)
-        account = create(:account, with_member: user)
-        entry = Entry.new(account: account)
-        create(:membership, user: user, entity: entry, role: :publisher)
-
-        expect(EntryPolicy::Scope.new(user, Entry).publisher_or_above).not_to include(entry)
-      end
-
-      it 'does not include entries with membership with nil account id' do
-        user = create(:user)
-        theming = create(:theming)
-        account = Account.new
-        entry = create(:entry, account: account, theming: theming)
-        create(:membership, user: user, entity: account, role: :publisher)
-
-        expect(EntryPolicy::Scope.new(user, Entry).publisher_or_above).not_to include(entry)
-      end
-
       it 'does not include entries with memberships of insufficient role' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
@@ -467,25 +410,6 @@ module Pageflow
         expect(EntryPolicy::Scope.new(user, Entry).member_addable).not_to include(entry)
       end
 
-      it 'does not include entries with membership with nil id' do
-        user = create(:user)
-        account = create(:account, with_member: user)
-        entry = Entry.new(account: account)
-        create(:membership, user: user, entity: entry, role: :publisher)
-
-        expect(EntryPolicy::Scope.new(user, Entry).member_addable).not_to include(entry)
-      end
-
-      it 'does not include entries with membership with nil account id' do
-        user = create(:user)
-        theming = create(:theming)
-        account = Account.new
-        entry = create(:entry, account: account, theming: theming)
-        create(:membership, user: user, entity: account, role: :publisher)
-
-        expect(EntryPolicy::Scope.new(user, Entry).member_addable).not_to include(entry)
-      end
-
       it 'does not include entries with memberships of insufficient role' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
@@ -546,25 +470,6 @@ module Pageflow
         other_user = create(:user)
         account = create(:account, with_manager: other_user)
         entry = create(:entry, account: account)
-
-        expect(EntryPolicy::Scope.new(user, Entry).manager_or_above).not_to include(entry)
-      end
-
-      it 'does not include entries with membership with nil id' do
-        user = create(:user)
-        account = create(:account, with_member: user)
-        entry = Entry.new(account: account)
-        create(:membership, user: user, entity: entry, role: :manager)
-
-        expect(EntryPolicy::Scope.new(user, Entry).manager_or_above).not_to include(entry)
-      end
-
-      it 'does not include entries with membership with nil account id' do
-        user = create(:user)
-        theming = create(:theming)
-        account = Account.new
-        entry = create(:entry, account: account, theming: theming)
-        create(:membership, user: user, entity: account, role: :manager)
 
         expect(EntryPolicy::Scope.new(user, Entry).manager_or_above).not_to include(entry)
       end

@@ -87,15 +87,6 @@ module Pageflow
 
         expect(UserPolicy::Scope.new(account_manager, ::User).resolve).not_to include(managed_user)
       end
-
-      it 'does not include user with nil id' do
-        account_manager = create(:user)
-        managed_user = User.new
-        create(:account, with_manager: account_manager)
-        create(:account, with_member: managed_user)
-
-        expect(UserPolicy::Scope.new(account_manager, ::User).resolve).not_to include(managed_user)
-      end
     end
 
     describe 'index?' do

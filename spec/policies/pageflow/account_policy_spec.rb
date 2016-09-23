@@ -144,14 +144,6 @@ module Pageflow
 
       expect(AccountPolicy::Scope.new(user, Account).resolve).not_to include(account)
     end
-
-    it 'does not include accounts with membership with nil account id' do
-      user = create(:user)
-      account = Account.new
-      create(:membership, user: user, entity: account)
-
-      expect(AccountPolicy::Scope.new(user, Account).resolve).not_to include(account)
-    end
   end
 
   describe '.entry_creatable' do
@@ -187,14 +179,6 @@ module Pageflow
     it 'does not include accounts with memberships with insufficient role' do
       user = create(:user)
       account = create(:account, with_editor: user)
-
-      expect(AccountPolicy::Scope.new(user, Account).entry_creatable).not_to include(account)
-    end
-
-    it 'does not include accounts with membership with nil account id' do
-      user = create(:user)
-      account = Account.new
-      create(:membership, user: user, entity: account)
 
       expect(AccountPolicy::Scope.new(user, Account).entry_creatable).not_to include(account)
     end
@@ -236,14 +220,6 @@ module Pageflow
 
       expect(AccountPolicy::Scope.new(user, Account).entry_movable).not_to include(account)
     end
-
-    it 'does not include accounts with membership with nil account id' do
-      user = create(:user)
-      account = Account.new
-      create(:membership, user: user, entity: account)
-
-      expect(AccountPolicy::Scope.new(user, Account).entry_movable).not_to include(account)
-    end
   end
 
   describe '.member_addable' do
@@ -279,14 +255,6 @@ module Pageflow
     it 'does not include accounts with memberships with insufficient role' do
       user = create(:user)
       account = create(:account, with_publisher: user)
-
-      expect(AccountPolicy::Scope.new(user, Account).member_addable).not_to include(account)
-    end
-
-    it 'does not include accounts with membership with nil account id' do
-      user = create(:user)
-      account = Account.new
-      create(:membership, user: user, entity: account)
 
       expect(AccountPolicy::Scope.new(user, Account).member_addable).not_to include(account)
     end
@@ -328,14 +296,6 @@ module Pageflow
 
       expect(AccountPolicy::Scope.new(user, Account).themings_accessible).not_to include(account)
     end
-
-    it 'does not include accounts with membership with nil account id' do
-      user = create(:user)
-      account = Account.new
-      create(:membership, user: user, entity: account)
-
-      expect(AccountPolicy::Scope.new(user, Account).themings_accessible).not_to include(account)
-    end
   end
 
   describe '.folder_addable' do
@@ -379,15 +339,6 @@ module Pageflow
       expect(AccountPolicy::Scope
               .new(user, Account).folder_addable).not_to include(account)
     end
-
-    it 'does not include accounts with membership with nil account id' do
-      user = create(:user)
-      account = Account.new
-      create(:membership, user: user, entity: account)
-
-      expect(AccountPolicy::Scope
-              .new(user, Account).folder_addable).not_to include(account)
-    end
   end
 
   describe '.folder_addable' do
@@ -427,15 +378,6 @@ module Pageflow
     it 'does not include accounts with memberships with insufficient role' do
       user = create(:user)
       account = create(:account, with_editor: user)
-
-      expect(AccountPolicy::Scope
-              .new(user, Account).folder_addable).not_to include(account)
-    end
-
-    it 'does not include accounts with membership with nil account id' do
-      user = create(:user)
-      account = Account.new
-      create(:membership, user: user, entity: account)
 
       expect(AccountPolicy::Scope
               .new(user, Account).folder_addable).not_to include(account)

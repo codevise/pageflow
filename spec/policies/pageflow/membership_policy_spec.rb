@@ -149,27 +149,6 @@ module Pageflow
                 .new(account_manager, Membership).indexable).not_to include(membership)
       end
 
-      it 'does not include memberships with nil entry id' do
-        user = create(:user)
-        account = create(:account, with_member: user)
-        entry = Entry.new(account: account)
-        membership = create(:membership, user: user, entity: entry, role: :previewer)
-        entry_manager = create(:user, :manager, on: entry)
-
-        expect(MembershipPolicy::Scope
-                .new(entry_manager, Membership).indexable).not_to include(membership)
-      end
-
-      it 'does not include memberships with nil account id' do
-        user = create(:user)
-        account = Account.new
-        membership = create(:membership, user: user, entity: account, role: :previewer)
-        account_manager = create(:user, :manager, on: account)
-
-        expect(MembershipPolicy::Scope
-                .new(account_manager, Membership).indexable).not_to include(membership)
-      end
-
       it 'includes own memberships' do
         user = create(:user)
         entry_membership = create(:membership,
