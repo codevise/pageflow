@@ -13,7 +13,7 @@ class AddRoleToMembership < ActiveRecord::Migration
 
   def update_each_membership_to_have_default_role
     execute(<<-SQL)
-      UPDATE pageflow_memberships SET role = 'editor'
+      UPDATE pageflow_memberships SET role = 'publisher'
     SQL
   end
 end
