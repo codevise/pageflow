@@ -133,7 +133,7 @@ module Pageflow
             sanitize_sql_array(['pageflow_accounts.id IN (:parent_accounts_ids)',
                                 parent_accounts_ids: parent_accounts_ids])
           else
-            false
+            'FALSE'
           end
         end
 
@@ -143,7 +143,7 @@ module Pageflow
             sanitize_sql_array(['pageflow_entries.id NOT IN (:parent_entries_ids)',
                                 parent_entries_ids: parent_entries_ids])
           else
-            true
+            'TRUE'
           end
         end
 
