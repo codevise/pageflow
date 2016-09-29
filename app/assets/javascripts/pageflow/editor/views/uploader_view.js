@@ -50,9 +50,9 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
         this.action = record.url();
 
         data.paramName = record.modelName + '[attachment]';
-        data.formData = {
+        data.formData = _.extend({
           authenticity_token: that.ui.authToken.attr('value')
-        };
+        }, pageflow.formDataUtils.fromModel(record));
       },
 
       done: function(event, data) {

@@ -1,0 +1,66 @@
+&.confirm_upload {
+  .box {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    bottom: 20px;
+    right: 20px;
+    max-width: 1100px;
+    background-color: #eee;
+  }
+
+  .uploadable_files {
+    margin-right: 10px;
+
+    &.is_empty {
+      display: none;
+    }
+  }
+
+  .files_panel,
+  .selected_file_panel {
+    position: absolute;
+    top: 80px;
+  }
+
+  .files_panel {
+    right: 370px;
+    bottom: 50px;
+    left: 20px;
+    overflow: auto;
+  }
+
+  .selected_file_panel {
+    position: absolute;
+    right: 20px;
+    width: 330px;
+  }
+
+  .configuration_editor {
+    border: solid 1px #ddd;
+    background-color: #fff;
+    padding: 10px 10px 20px 12px;
+    margin: 0;
+  }
+
+  .table_view {
+    width: 100%;
+  }
+
+  .footer {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    left: 20px;
+  }
+
+  .upload {
+    @include icon-button;
+    @include up-icon;
+  }
+
+  .close {
+    @include icon-button(#888);
+    @include cancel-icon;
+  }
+}

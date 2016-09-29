@@ -5,6 +5,7 @@
   width: 100%;
   height: 100%;
   z-index: 5;
+  background: transparent;
 
   &:before {
     content: " ";
@@ -25,7 +26,14 @@
     background-color: #fff;
   }
 
-  h2, h3 {
+  h2,
+  h3 {
+    margin: 0 0 10px 0;
+  }
+
+  .dialog-header {
+    font-size: 17px;
+    font-weight: bold;
     margin: 0 0 10px 0;
   }
 
