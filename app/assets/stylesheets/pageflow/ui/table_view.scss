@@ -1,0 +1,27 @@
+$table-view-header-background-color: #444 !default;
+$table-view-header-color: #fff !default;
+$table-view-cell-background-color: #fff !default;
+$table-view-selected-cell-background-color: #D2E5FA !default;
+
+.table_view {
+  border-spacing: 0 1px;
+
+  th {
+    background-color: $table-view-header-background-color;
+    color: $table-view-header-color;
+    padding: 5px 10px;
+    text-align: left;
+
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+
+  td {
+    background-color: $table-view-cell-background-color;
+    padding: 10px;
+  }
+
+  .is_selected > td {
+    background-color: $table-view-selected-cell-background-color;
+  }
+}
