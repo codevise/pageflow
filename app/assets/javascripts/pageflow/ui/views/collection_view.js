@@ -80,7 +80,14 @@ pageflow.CollectionView = Backbone.Marionette.View.extend({
     var last = null;
 
     this.collection.each(function(item) {
-      var element = this.itemViews.findByModel(item).$el;
+      var itemView = this.itemViews.findByModel(item);
+      var element;
+
+      if (!itemView) {
+        return;
+      }
+
+      element = itemView.$el;
 
       if (last) {
         last.after(element);
