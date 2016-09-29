@@ -1,6 +1,22 @@
 pageflow.UploadedFile = Backbone.Model.extend({
   mixins: [pageflow.stageProvider, pageflow.retryable],
 
+  initialize: function() {
+    this.configuration = new pageflow.FileConfiguration(
+      this.get('configuration') || {}
+    );
+
+    this.configuration.i18nKey = this.i18nKey;
+
+    this.listenTo(this.configuration, 'change', function() {
+      this.trigger('change:configuration', this);
+
+      if (!this.isNew()) {
+        this.save();
+      }
+    });
+  },
+
   urlRoot: function() {
     return this.isNew() ? this.collection.url() : '/editor/files/' + this.fileType().collectionName;
   },
@@ -47,6 +63,12 @@ pageflow.UploadedFile = Backbone.Model.extend({
 
   isPositionable: function() {
     return false;
+  },
+
+  toJSON: function() {
+    return _.extend(_.pick(this.attributes, 'rights'), {
+      configuration: this.configuration.toJSON()
+    });
   },
 
   cancelUpload: function() {

@@ -81,4 +81,23 @@ describe('UploadedFile', function() {
       expect(file.isPending()).to.eq(false);
     });
   });
+
+  describe('#toJSON', function() {
+    it('includes rights and configuration', function() {
+      var file = new File({
+        state: 'processed',
+        rights: 'someone',
+        configuration: {
+          some: 'value'
+        }
+      });
+
+      expect(file.toJSON()).to.eql({
+        rights: 'someone',
+        configuration: {
+          some: 'value'
+        }
+      });
+    });
+  });
 });
