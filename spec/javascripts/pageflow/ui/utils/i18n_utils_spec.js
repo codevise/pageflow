@@ -1,7 +1,8 @@
 describe('pageflow.i18nUtils', function() {
   support.useFakeTranslations({
     'some.key': 'Some text',
-    'fallback': 'Fallback'
+    'fallback': 'Fallback',
+    'with.interpolation': 'Value %{value}'
   });
 
   describe('.findTranslation', function() {
@@ -20,6 +21,15 @@ describe('pageflow.i18nUtils', function() {
       );
 
       expect(result).to.eq('Default');
+    });
+
+    it('supports interpolations', function() {
+      var result = pageflow.i18nUtils.findTranslation(
+        ['with.interpolation'],
+        {value: 'interpolated'}
+      );
+
+      expect(result).to.eq('Value interpolated');
     });
   });
 

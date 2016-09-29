@@ -20,7 +20,7 @@ pageflow.i18nUtils = {
     options = options || {};
 
     return _.chain(keys).reverse().reduce(function(result, key) {
-      return I18n.t(key, {defaultValue: result});
+      return I18n.t(key, _.extend({}, options, {defaultValue: result}));
     }, options.defaultValue).value();
   },
 
