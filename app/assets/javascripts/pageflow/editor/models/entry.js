@@ -85,18 +85,6 @@ pageflow.Entry = Backbone.Model.extend({
     return this.scaffoldStoryline(_.extend({depth: 'page'}, options)).page;
   },
 
-  addFileUpload: function(upload) {
-    var fileType = pageflow.editor.fileTypes.findByUpload(upload);
-    var file = new fileType.model({
-      state: 'uploading',
-      file_name: upload.name
-    });
-
-    this.getFileCollection(fileType).add(file);
-
-    return file;
-  },
-
   addFileUsage: function(file) {
     var fileUsages = new pageflow.FileUsagesCollection([], {
       entry: this

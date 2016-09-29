@@ -14,21 +14,6 @@ describe('Entry', function() {
     this.imageFileType = pageflow.editor.fileTypes.first();
   });
 
-  describe('#addFileUpload', function() {
-    it('adds file to files collection of file type', function() {
-      var entry = buildEntry({}, {
-        files: {
-          image_files: new Backbone.Collection()
-        }
-      });
-      var upload = {name: 'image.png', type: 'image/png'};
-
-      var file = entry.addFileUpload(upload);
-
-      expect(entry.getFileCollection(this.imageFileType).length).to.eq(1);
-    });
-  });
-
   describe('#addFileUsage', function() {
     support.useFakeXhr();
 
