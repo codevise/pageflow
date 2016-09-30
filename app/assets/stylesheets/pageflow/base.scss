@@ -8,19 +8,6 @@ html, body, #outer_wrapper {
   -webkit-tap-highlight-color: transparent; /* we need this for some Android browsers */
 }
 
-// Facebook app displays a toolbar at the bottom of the screen on iOS
-// phone which hides parts of the browser viewport. Normally this is
-// hidden once the user scrolls, but since there is no native
-// scrolling in Pageflow, the bar stays and hides page elements like
-// the slim player controls. Setting the wrapper to fixed, makes it
-// work for some reason.
-.has_facebook_toolbar #outer_wrapper {
-  height: auto;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-}
-
 html {
   background-color: black;
 }
@@ -38,6 +25,19 @@ body {
 
 body.js, .js #outer_wrapper {
   overflow: hidden;
+}
+
+// Apps like Twitter and Facebook displays a toolbar at the bottom of
+// the screen on iOS phone which hides parts of the browser
+// viewport. Normally this is hidden once the user scrolls, but since
+// there is no native scrolling in Pageflow, the bar stays and hides
+// page elements like the player controls. Setting the wrapper to
+// fixed makes it work and does not seem to affect other browsers.
+.has_ios_platform #outer_wrapper {
+  height: auto;
+  position: fixed;
+  top: 0;
+  bottom: 0;
 }
 
 a {
