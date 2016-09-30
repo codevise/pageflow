@@ -24,6 +24,9 @@ pageflow.HelpView = Backbone.Marionette.ItemView.extend({
         this.showSection(link.attr('href').substring(1),
                          {scrollIntoView: !link.parents('nav').length});
       }
+      else if (link.attr('href').match(/^http/)) {
+        window.open(link.attr('href'), '_blank');
+      }
 
       return false;
     },
