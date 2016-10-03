@@ -49,11 +49,16 @@ ul.files {
     }
   }
 
+  a.settings,
   a.cancel,
   a.confirm,
   a.remove,
   a.retry {
     @include icon-only-button(#aaa);
+  }
+
+  a.settings {
+    @include cog-icon;
   }
 
   a.remove {

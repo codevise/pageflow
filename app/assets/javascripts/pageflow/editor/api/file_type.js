@@ -9,6 +9,13 @@ pageflow.FileType = pageflow.Object.extend({
 
     this.metaDataAttributes = options.metaDataAttributes || [];
 
+    this.settingsDialogTabs = [
+      {
+        name: 'general',
+        view: pageflow.EditFileView
+      }
+    ].concat(options.settingsDialogTabs || []);
+
     if (typeof options.matchUpload === 'function') {
       this.matchUpload = options.matchUpload;
     }

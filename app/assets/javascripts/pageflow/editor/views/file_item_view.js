@@ -8,6 +8,7 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
     fileName: '.file_name',
 
     selectButton: '.select',
+    settingsButton: '.settings',
     removeButton: '.remove',
     confirmButton: '.confirm',
     cancelButton: '.cancel',
@@ -16,7 +17,6 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
     thumbnail: '.file_thumbnail',
     stageItems: '.file_stage_items',
 
-    rights: 'input.rights',
     metaData: 'tbody.attributes',
     downloads: 'tbody.downloads',
     downloadLink: 'a.original'
@@ -29,6 +29,12 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
       return false;
     },
 
+    'click .settings': function() {
+      pageflow.FileSettingsDialogView.open({
+        model: this.model
+      });
+    },
+
     'click .cancel': 'cancel',
 
     'click .confirm': 'confirm',
@@ -37,9 +43,7 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
 
     'click .retry': 'retry',
 
-    'click .file_thumbnail': 'toggleExpanded',
-
-    'change': 'save'
+    'click .file_thumbnail': 'toggleExpanded'
   },
 
   modelEvents: {
@@ -69,13 +73,11 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
     this.$el.attr('data-id', this.model.id);
     this.ui.fileName.text(this.model.get('file_name') || '(Unbekannt)');
 
-    this.ui.rights.val(this.model.get('rights'));
-    this.ui.rights.attr('placeholder', pageflow.entry.get('default_file_rights'));
-
     this.ui.downloadLink.attr('href', this.model.get('original_url'));
     this.ui.downloads.toggle(this.model.isUploaded());
 
     this.ui.selectButton.toggle(!!this.options.selectionHandler);
+    this.ui.settingsButton.toggle(!this.model.isNew());
 
     this.ui.cancelButton.toggle(this.model.isUploading());
     this.ui.confirmButton.toggle(this.model.isConfirmable());
@@ -83,12 +85,6 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
     this.ui.retryButton.toggle(this.model.isRetryable());
 
     this.updateToggleTitle();
-  },
-
-  save: function() {
-    this.model.save({
-      rights: this.ui.rights.val()
-    });
   },
 
   metaDataViews: function() {
