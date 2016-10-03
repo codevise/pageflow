@@ -6,7 +6,7 @@ pageflow.EditFileView = Backbone.Marionette.ItemView.extend({
     var fileType = this.model.fileType();
 
     var tab = new pageflow.ConfigurationEditorTabView({
-      model: this.model,
+      model: this.model.configuration,
       attributeTranslationKeyPrefixes: [
         'pageflow.editor.files.attributes.' + fileType.collectionName,
         'pageflow.editor.files.common_attributes'
@@ -21,6 +21,10 @@ pageflow.EditFileView = Backbone.Marionette.ItemView.extend({
     tab.input('rights', pageflow.TextInputView, {
       model: this.model,
       placeholder: pageflow.entry.get('default_file_rights')
+    });
+
+    _(fileType.configurationEditorInputs).each(function(options) {
+      tab.input(options.name, options.inputView, options.inputViewOptions);
     });
 
     this.appendSubview(tab);
