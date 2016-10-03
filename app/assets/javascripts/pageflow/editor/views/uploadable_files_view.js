@@ -26,7 +26,7 @@ pageflow.UploadableFilesView = Backbone.Marionette.ItemView.extend({
         'pageflow.editor.files.attributes.' + this.options.fileType.collectionName,
         'pageflow.editor.files.common_attributes'
       ],
-      columns: this.commonColumns(),
+      columns: this.commonColumns().concat(this.fileTypeColumns()),
       selection: this.options.selection,
       selectionAttribute: 'file'
     }));
@@ -44,5 +44,13 @@ pageflow.UploadableFilesView = Backbone.Marionette.ItemView.extend({
       {name: 'file_name', cellView: pageflow.TextTableCellView},
       {name: 'rights', cellView: pageflow.PresenceTableCellView}
     ];
+  },
+
+  fileTypeColumns: function() {
+    return _(this.options.fileType.confirmUploadTableColumns).map(function(column) {
+      return _.extend({}, column, {
+        configurationAttribute: true
+      });
+    });
   }
 });

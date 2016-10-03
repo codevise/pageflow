@@ -7,6 +7,7 @@ pageflow.FileType = pageflow.Object.extend({
     this.paramKey = options.paramKey;
     this.i18nKey = options.i18nKey;
 
+    this.confirmUploadTableColumns = options.confirmUploadTableColumns || [];
     this.metaDataAttributes = options.metaDataAttributes || [];
 
     this.settingsDialogTabs = [
