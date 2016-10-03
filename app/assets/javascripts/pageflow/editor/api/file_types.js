@@ -2,7 +2,8 @@ pageflow.FileTypes = pageflow.Object.extend({
   modifyableProperties: [
     'configurationEditorInputs',
     'configurationUpdaters',
-    'confirmUploadTableColumns'
+    'confirmUploadTableColumns',
+    'filters'
   ],
 
   initialize: function() {

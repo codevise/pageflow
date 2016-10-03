@@ -20,7 +20,10 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
   events: {
     'click .choose': function() {
       pageflow.editor.selectFile(
-        this.options.collection.name,
+        {
+          name: this.options.collection.name,
+          filter: this.options.filter
+        },
         this.options.fileSelectionHandler || 'pageConfiguration',
         _.extend({
           id: this.model.getRoutableId ? this.model.getRoutableId() : this.model.id,

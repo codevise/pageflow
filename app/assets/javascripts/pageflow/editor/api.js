@@ -9,7 +9,9 @@
 pageflow.EditorApi = pageflow.Object.extend(
 /** @lends module:pageflow/editor.pageflow.editor */{
 
-  initialize: function() {
+  initialize: function(options) {
+    this.router = options && options.router;
+
     this.sideBarRoutings = [];
     this.mainMenuItems = [];
     this.initializers = [];
@@ -104,7 +106,11 @@ pageflow.EditorApi = pageflow.Object.extend(
    * Navigate to the given path.
    */
   navigate: function(path, options) {
-    editor.navigate(path, options);
+    if (!this.router) {
+      throw 'Routing has not been initialized yet.';
+    }
+
+    this.router.navigate(path, options);
   },
 
   /**
@@ -154,12 +160,40 @@ pageflow.EditorApi = pageflow.Object.extend(
    * Trigger selection of the given file type with the given
    * handler. Payload hash is passed to selection handler as options.
    *
-   * Example:
+   * @param {string|{name: string, filter: string}} fileType
+   *   Either collection name of a file type or and object containing
+   *   the collection name a file type and a the name of a file type
+   *   filter.
    *
-   *     pageflow.editor.selectFile('image_files', 'my_file_selection_handler', {some: 'option for handler'});
+   * @param {string} handlerName
+   *   The name of a handler registered via {@link
+   *   module:pageflow/editor.pageflow.editor.registerFileSelectionHandler}.
+   *
+   * @param {Object} payload
+   *   Options passed to the file selection handler.
+   *
+   * @example
+   *
+   * pageflow.editor.selectFile('image_files',
+   *                            'my_file_selection_handler',
+   *                            {some: 'option for handler'});
+   *
+   * pageflow.editor.selectFile({name: 'image_files', filter: 'some_filter'},
+   *                            'my_file_selection_handler',
+   *                            {some: 'option for handler'});
    */
   selectFile: function(fileType, handlerName, payload) {
-    this.navigate('/files/' + fileType + '?handler=' + handlerName + '&payload=' + encodeURIComponent(JSON.stringify(payload)), {trigger: true});
+    if (typeof fileType === 'string') {
+      fileType = {
+        name: fileType
+      };
+    }
+
+    this.navigate('/files/' + fileType.name +
+                  '?handler=' + handlerName +
+                  '&payload=' + encodeURIComponent(JSON.stringify(payload)) +
+                  (fileType.filter ? '&filter=' + fileType.filter : ''),
+                  {trigger: true});
   },
 
   /**

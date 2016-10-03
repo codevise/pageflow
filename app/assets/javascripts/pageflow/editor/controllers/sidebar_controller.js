@@ -11,11 +11,12 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
     }));
   },
 
-  files: function(collectionName, handler, payload) {
+  files: function(collectionName, handler, payload, filterName) {
     this.region.show(new pageflow.FilesView({
       model: this.entry,
       selectionHandler: handler && pageflow.editor.createFileSelectionHandler(handler, payload),
-      tabName: collectionName
+      tabName: collectionName,
+      filterName: filterName
     }));
 
     pageflow.editor.setDefaultHelpEntry('pageflow.help_entries.files');

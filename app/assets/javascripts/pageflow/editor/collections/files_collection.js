@@ -51,6 +51,15 @@ pageflow.FilesCollection = Backbone.Collection.extend({
       });
 
     return this._uploadableSubsetCollection;
+  },
+
+  withFilter: function(filterName) {
+    return new pageflow.SubsetCollection({
+      parent: this,
+      watchAttribute: 'configuration',
+
+      filter: this.fileType.getFilter(filterName).matches,
+    });
   }
 });
 

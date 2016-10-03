@@ -52,6 +52,36 @@ describe('FileCollection', function() {
     });
   });
 
+  describe('#withFilter', function() {
+    it('always contains subset of files matching given filter', function() {
+      var fileType = f.fileType({
+        filters: [
+          {
+            name: 'with_custom_field',
+            matches: function(file) {
+              return !!file.configuration.get('custom');
+            }
+          }
+        ]
+      });
+      var files = [
+        {
+          file_name: 'image.png'
+        },
+        {
+          file_name: 'other.png'
+        }
+      ];
+      var entry = {};
+      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+
+      var uploadableFiles = collection.withFilter('with_custom_field');
+      collection.first().configuration.set('custom', 'some value');
+
+      expect(uploadableFiles.length).to.eq(1);
+    });
+  });
+
   describe('#fetch', function() {
     it('sets file type on fetched file models', function() {
       var fileType = f.fileType();
