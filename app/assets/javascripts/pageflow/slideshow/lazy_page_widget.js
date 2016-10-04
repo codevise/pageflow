@@ -5,6 +5,7 @@
   var prototype = {
     _create: function() {
       this.configuration = this.element.data('configuration') || this.options.configuration;
+      this.index = this.options.index;
     },
 
     _ensureCreated: function() {
