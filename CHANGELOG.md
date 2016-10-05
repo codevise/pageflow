@@ -1,5 +1,16 @@
 # CHANGELOG
 
+### Version 0.11.1
+
+2016-10-05
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.11.0...v0.11.1)
+
+- Bug fix: Show account filter to admins only
+  ([#639](https://github.com/codevise/pageflow/pull/639))
+- Bug fix: Extend facebook in-app-browser fix to ios platform
+  ([#638](https://github.com/codevise/pageflow/pull/638))
+
 ### Version 0.11.0
 
 2016-09-09
