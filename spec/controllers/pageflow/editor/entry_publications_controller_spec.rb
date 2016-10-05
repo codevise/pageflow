@@ -7,38 +7,41 @@ module Pageflow
       render_views
 
       describe '#create' do
-        it 'responds with success for members' do
+        it 'responds with success for publishers' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_publisher: user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
-          post(:create, :entry_id => entry.id, :entry_publication => {}, :format => :json)
+          post(:create, entry_id: entry.id, entry_publication: {}, format: :json)
 
           expect(response.status).to eq(200)
         end
 
         it 'includes published and published_until attributes in response' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_publisher: user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
-          post(:create, :entry_id => entry, :entry_publication => {:published_until => 1.month.from_now}, :format => :json)
+          post(:create,
+               entry_id: entry,
+               entry_publication: {published_until: 1.month.from_now},
+               format: :json)
 
-          expect(json_response(:path => [:entry, :published])).to eq(true)
-          expect(json_response(:path => [:entry, :published_until])).to eq(1.month.from_now.iso8601(3))
+          expect(json_response(path: [:entry, :published])).to eq(true)
+          expect(json_response(path: [:entry, :published_until])).to eq(1.month.from_now.iso8601(3))
         end
 
-        it 'allows to define published_until attributes' do
+        it 'allows to define published_until attribute' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_publisher: user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
-          post(:create, :entry_id => entry, :entry_publication => {
-                 :published_until => 1.month.from_now
-               }, :format => :json)
+          post(:create, entry_id: entry, entry_publication: {
+                 published_until: 1.month.from_now
+               }, format: :json)
           revision = entry.revisions.published.last
 
           expect(revision.published_until).to eq(1.month.from_now)
@@ -46,49 +49,48 @@ module Pageflow
 
         it 'allows to publish with a password' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_publisher: user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
-          post(:create, :entry_id => entry, :entry_publication => {
-                 :password_protected => true,
-                 :password => 'abc123abc'
-               }, :format => :json)
-          revision = entry.revisions.published.last
+          post(:create, entry_id: entry, entry_publication: {
+                 password_protected: true,
+                 password: 'abc123abc'
+               }, format: :json)
 
           expect(entry.reload).to be_published_with_password('abc123abc')
         end
 
         it 'responds with bad request if password is missing' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_publisher: user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
-          post(:create, :entry_id => entry, :entry_publication => {
-                 :password_protected => true
-               }, :format => :json)
+          post(:create, entry_id: entry, entry_publication: {
+                 password_protected: true
+               }, format: :json)
 
           expect(response.status).to eq(400)
         end
 
         it 'saves current user as creator' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_publisher: user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
-          post(:create, :entry_id => entry, :entry_publication => {}, :format => :json)
+          post(:create, entry_id: entry, entry_publication: {}, format: :json)
 
-          expect(entry.revisions.where(:creator => user)).to be_present
+          expect(entry.revisions.where(creator: user)).to be_present
         end
 
-        it 'requires the signed in user to be member of the parent entry' do
+        it 'requires the signed in user to be publisher of the parent entry' do
           user = create(:user)
-          entry = create(:entry)
+          entry = create(:entry, with_editor: user)
 
           sign_in(user)
-          post(:create, :entry_id => entry, :entry_publication => {}, :format => :json)
+          post(:create, entry_id: entry, entry_publication: {}, format: :json)
 
           expect(response.status).to eq(403)
         end
@@ -96,40 +98,41 @@ module Pageflow
         it 'requires authentication' do
           entry = create(:entry)
 
-          post(:create, :entry_id => entry, :entry_publication => {}, :format => :json)
+          post(:create, entry_id: entry, entry_publication: {}, format: :json)
 
           expect(response.status).to eq(401)
         end
 
         it 'responds with forbidden if :published_entries quota would be exceeded' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_publisher: user)
 
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.exceeded)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
-          post(:create, :entry_id => entry, :entry_publication => {}, :format => :json)
+          post(:create, entry_id: entry, entry_publication: {}, format: :json)
 
           expect(response.status).to eq(403)
         end
 
-        it 'responds with success if :published_entries quota is exhausted but would not be exceeded ' do
+        it 'responds with success if :published_entries quota is exhausted but would not be '\
+           'exceeded ' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_publisher: user)
 
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.exhausted)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
-          post(:create, :entry_id => entry, :entry_publication => {}, :format => :json)
+          post(:create, entry_id: entry, entry_publication: {}, format: :json)
 
           expect(response.status).to eq(200)
         end
 
         it 'responds with published_message_html' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_publisher: user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
@@ -140,9 +143,9 @@ module Pageflow
       end
 
       describe '#check' do
-        it 'responds with exceeding state for available quota' do
+        it 'responds with non-exceeding state for available quota' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_publisher: user)
 
           sign_in(user)
           acquire_edit_lock(user, entry)
@@ -153,7 +156,7 @@ module Pageflow
 
         it 'responds with exceeding state for exceeded quota' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_publisher: user)
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.exceeded)
 
           sign_in(user)
@@ -164,7 +167,7 @@ module Pageflow
 
         it 'responds with quota attributes' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_publisher: user)
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.available)
 
           sign_in(user)
@@ -176,7 +179,7 @@ module Pageflow
 
         it 'responds with exhausted_html' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_publisher: user)
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.available)
 
           sign_in(user)
@@ -185,9 +188,9 @@ module Pageflow
           expect(json_response(path: :exhausted_html)).to be_present
         end
 
-        it 'forbidden for entry the signed in user is not member of' do
+        it 'is forbidden for entry the signed in user is not publisher of' do
           user = create(:user)
-          entry = create(:entry)
+          entry = create(:entry, with_editor: user)
 
           sign_in(user)
           post(:check, entry_id: entry.id, entry_publication: {}, format: 'json')

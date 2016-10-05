@@ -14,6 +14,10 @@ module Pageflow
         resources :entries do
           resources :memberships
         end
+
+        resources :accounts do
+          resources :memberships
+        end
       end
 
       mount Pageflow::Engine, at: '/'

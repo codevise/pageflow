@@ -65,7 +65,7 @@ module Pageflow
       account.build_default_theming(default_attributes.merge(attributes), &block)
     end
 
-    # Create a {User} if non with the given email exists yet.
+    # Create a {User} if none with the given email exists yet.
     #
     # @param [Hash] attributes  attributes to override defaults
     # @option attributes [String] :email  required
@@ -111,11 +111,11 @@ module Pageflow
       entry = Entry.where(attributes.slice(:account, :title)).first
 
       if entry.nil?
-        entry = Entry.create!(attributes) do |entry|
-          entry.theming = attributes.fetch(:account).default_theming
+        entry = Entry.create!(attributes) do |created_entry|
+          created_entry.theming = attributes.fetch(:account).default_theming
 
-          say_creating_entry(entry)
-          yield(entry) if block_given?
+          say_creating_entry(created_entry)
+          yield(created_entry) if block_given?
         end
 
         storyline = entry.draft.storylines.first
@@ -131,13 +131,35 @@ module Pageflow
       entry
     end
 
-    # Create a {Membership} for the given user and entry.
+    # Create a {Membership} for the given user and entity.
+    # Create a {Membership} for the corresponding account first if a {Membership} on an entry is to
+    # be created and no {Membership} on the entry's account exists yet.
     #
     # @param [Hash] attributes  attributes to override defaults
     # @option attributes [User] :user  required
-    # @option attributes [Entry] :entry  required
+    # @option attributes [Entity] :entity  required
+    # :entry and :account are lower-priority aliases for :entity
     # @return [Membership] newly created membership
     def membership(attributes)
+      if (attributes[:entry].present? && attributes[:entity].present?) ||
+         (attributes[:account].present? && attributes[:entity].present?)
+        say_attribute_precedence(':entity', ':entry and :account')
+      end
+      unless attributes[:entity].present?
+        entry_or_account_attributes_specified attributes
+      end
+
+      if attributes[:entity].is_a?(Entry) || attributes[:entry].present?
+        entry = attributes[:entity] || attributes[:entry]
+        unless attributes[:user].accounts.include?(entry.account)
+          Membership.find_or_create_by!(entity: entry.account,
+                                        user: attributes[:user],
+                                        role: :member) do |membership|
+            say_creating_membership(membership)
+          end
+        end
+      end
+
       Membership.find_or_create_by!(attributes) do |membership|
         say_creating_membership(membership)
       end
@@ -150,25 +172,47 @@ module Pageflow
     end
 
     def say_creating_user(user)
-     say(<<-END)
-   #{user.role} user:
+      say(<<-END)
 
-     email:     #{user.email}
-     password:  #{user.password}
+   user with login:
+
+   email:     #{user.email}
+   password:  #{user.password}
 
 END
     end
 
     def say_creating_entry(entry)
-      say("   sample entry '#{entry.title}'")
+      say("   sample entry '#{entry.title}'\n")
     end
 
     def say_creating_membership(membership)
-      say("   membership for user '#{membership.user.email}' and entry '#{membership.entry.title}'")
+      say("   -- '#{membership.role}' membership for user '#{membership.user.email}' on " +
+          "#{membership.entity_type == 'Pageflow::Entry' ? 'entry' : 'account'} " +
+          %|'#{if membership.entity_type == "Pageflow::Entry"
+                 membership.entity.title
+               else
+                 membership.entity.name
+               end}'\n|)
+    end
+
+    def say_attribute_precedence(subject, object)
+      say("   #{subject} attribute precedes #{object}")
     end
 
     def say(text)
       puts(text) unless Rails.env.test?
+    end
+
+    def entry_or_account_attributes_specified(attributes)
+      if attributes[:entry].present? || attributes[:account].present?
+        attributes[:entity] = attributes[:entry]
+        if attributes[:account].present?
+          say_attribute_precedence(':entry', ':account')
+        end
+      else
+        attributes[:entity] = attributes[:account]
+      end
     end
   end
 end

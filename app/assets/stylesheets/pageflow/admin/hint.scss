@@ -1,0 +1,20 @@
+$hint-text-color: #777777 !default;
+$hint-icon-color: #8aa5da !default;
+$background-color: #fbfbfb !default;
+
+.side_hint {
+  background-color: $background-color;
+  margin: 0 10px;
+  padding: 10px 0;
+  color: $hint-text-color;
+
+  p {
+    @include background-icon-left($font-size: 20px,
+                                  $color: $hint-icon-color,
+                                  $top: 10px,
+                                  $left: -30px);
+    @include fa-info-circle-icon;
+
+    margin-left: 20%;
+  }
+}

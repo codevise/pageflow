@@ -234,7 +234,7 @@ module Pageflow
     #
     #     config.authorize_user_deletion =
     #       lambda do |user_to_delete|
-    #         if user_to_delete.account.users.length > 1
+    #         if user_to_delete.accounts.all? { |account| account.users.size > 1 }
     #           true
     #         else
     #           'Last user on account. Permission denied'

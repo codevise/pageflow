@@ -14,7 +14,7 @@ module Pageflow
     describe 'with users' do
       it 'cannot be deleted' do
         account = create(:account)
-        create(:user, account: account)
+        create(:user, :editor, on: account)
 
         expect { account.destroy }.to raise_error(ActiveRecord::DeleteRestrictionError)
       end

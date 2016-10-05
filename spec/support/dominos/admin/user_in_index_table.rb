@@ -4,7 +4,7 @@ module Dom
       selector '.admin_users .index_table tbody tr'
 
       attribute :full_name, 'td.col-full_name'
-      attribute :account_name, 'td.col-account a'
+      attribute :account_names, 'td.col-accounts'
     end
   end
 end

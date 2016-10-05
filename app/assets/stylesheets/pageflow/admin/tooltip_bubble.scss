@@ -28,3 +28,37 @@ $tooltip-bubble-text-color: #fff;
     display: block;
   }
 }
+
+.tooltip_clue {
+  position: relative;
+  border-bottom: 1px dotted;
+}
+
+[data-tooltip] {
+  position: relative;
+
+  &:after {
+    position: absolute;
+    display: none;
+    background-color: $tooltip-bubble-background-color;
+    color: $tooltip-bubble-text-color;
+    padding: 5px 10px;
+    top: -33px;
+    white-space: nowrap;
+    border-radius: 2px;
+    content: attr(data-tooltip);
+    pointer-events: none;
+  }
+
+  &:hover:before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 8px;
+    @include triangle(10px, $tooltip-bubble-background-color, down);
+  }
+
+  &:hover:after {
+    display: block;
+  }
+}

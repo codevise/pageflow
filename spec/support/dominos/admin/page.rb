@@ -21,11 +21,17 @@ module Dom
       def self.sign_in_as(role, options = {})
         email = "#{role}@example.com"
         password = '!Pass123'
+        user = FactoryGirl.create(:user, options.reverse_merge(email: email, password: password))
 
-        user = FactoryGirl.create(:user, role, options.reverse_merge(:email => email, :password => password))
+        if role.to_sym == :admin
+          user.admin = true
+          user.save
+        else
+          FactoryGirl.create(:membership, user: user, role: role, entity: options[:on])
+        end
 
         visit '/admin/login'
-        SignInForm.first.submit_with(:email => email, :password => password)
+        SignInForm.first.submit_with(email: email, password: password)
 
         unless page.has_content?(I18n.t('devise.sessions.signed_in'))
           raise 'Expected to find sign in flash message.'

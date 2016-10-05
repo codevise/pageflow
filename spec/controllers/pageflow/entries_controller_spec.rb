@@ -11,7 +11,7 @@ module Pageflow
 
     describe '#index' do
       it 'redirects to home url of theming with matching cname' do
-        theming = create(:theming, cname: 'pageflow.example.com', home_url: 'http://example.com/overview')
+        create(:theming, cname: 'pageflow.example.com', home_url: 'http://example.com/overview')
 
         request.env['HTTP_HOST'] = 'pageflow.example.com'
         get(:index)
@@ -27,7 +27,7 @@ module Pageflow
       end
 
       it 'responds with not found if theming with matching cname does not have home_url' do
-        theming = create(:theming, cname: 'pageflow.example.com')
+        create(:theming, cname: 'pageflow.example.com')
 
         request.env['HTTP_HOST'] = 'pageflow.example.com'
         get(:index)
@@ -40,7 +40,7 @@ module Pageflow
           themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
         end
         theming = create(:theming, home_url: 'http://example.com')
-        account = create(:account, name: 'some-example', default_theming: theming)
+        create(:account, name: 'some-example', default_theming: theming)
 
         request.env['HTTP_HOST'] = 'some-example.pageflow.io'
         get(:index)
@@ -64,7 +64,7 @@ module Pageflow
           themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
         end
         theming = create(:theming)
-        account = create(:account, name: 'some-example', default_theming: theming)
+        create(:account, name: 'some-example', default_theming: theming)
 
         request.env['HTTP_HOST'] = 'some-example.pageflow.io'
         get(:index)
@@ -74,22 +74,22 @@ module Pageflow
     end
 
     describe '#edit' do
-      it 'reponds with success for members of the entry' do
+      it 'reponds with success for editors of the entry' do
         user = create(:user)
-        entry = create(:entry, :with_member => user)
+        entry = create(:entry, with_editor: user)
 
         sign_in(user)
-        get(:edit, :id => entry)
+        get(:edit, id: entry)
 
         expect(response.status).to eq(200)
       end
 
       it 'requires the signed in user to be member of the parent entry' do
         user = create(:user)
-        entry = create(:entry)
+        entry = create(:entry, with_previewer: user)
 
         sign_in(user)
-        get(:edit, :id => entry)
+        get(:edit, id: entry)
 
         expect(response).to redirect_to(main_app.admin_root_path)
       end
@@ -97,44 +97,42 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        get(:edit, :id => entry)
+        get(:edit, id: entry)
 
         expect(response).to redirect_to(main_app.new_user_session_path)
       end
     end
 
     describe '#update' do
-      it 'responds with sucess' do
+      it 'responds with success' do
         user = create(:user)
-        entry = create(:entry)
-        create(:membership, :entry => entry, :user => user)
+        entry = create(:entry, with_editor: user)
 
         sign_in user
         acquire_edit_lock(user, entry)
-        patch(:update, :id => entry, :entry => {:title => 'new', :credits => 'credits'}, :format => 'json')
+        patch(:update, id: entry, entry: {title: 'new', credits: 'credits'}, format: 'json')
 
         expect(response.status).to eq(204)
       end
 
       it 'updates title and credits in draft' do
         user = create(:user)
-        entry = create(:entry)
-        create(:membership, :entry => entry, :user => user)
+        entry = create(:entry, with_editor: user)
 
         sign_in user
         acquire_edit_lock(user, entry)
-        patch(:update, :id => entry, :entry => {:title => 'new', :credits => 'credits'}, :format => 'json')
+        patch(:update, id: entry, entry: {title: 'new', credits: 'credits'}, format: 'json')
 
         expect(entry.draft.reload.title).to eq('new')
         expect(entry.draft.credits).to eq('credits')
       end
 
-      it 'requires the signed in user to be member of the parent entry' do
+      it 'requires the signed in user to be editor of the parent entry' do
         user = create(:user)
-        entry = create(:entry)
+        entry = create(:entry, with_previewer: user)
 
         sign_in user
-        patch(:update, :id => entry, :entry => {}, :format => 'json')
+        patch(:update, id: entry, entry: {}, format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -142,7 +140,7 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        patch(:update, :id => entry, :chapter => {}, :format => 'json')
+        patch(:update, id: entry, chapter: {}, format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -164,15 +162,15 @@ module Pageflow
         it 'responds with success for published entry' do
           entry = create(:entry, :published)
 
-          get(:show, :id => entry)
+          get(:show, id: entry)
 
           expect(response.status).to eq(200)
         end
 
-        it 'responds with not found for not published entry' do
+        it 'responds with not found for non-published entry' do
           entry = create(:entry)
 
-          get(:show, :id => entry)
+          get(:show, id: entry)
 
           expect(response.status).to eq(404)
         end
@@ -180,16 +178,18 @@ module Pageflow
         it 'responds with forbidden for entry published with password' do
           entry = create(:entry, :published_with_password, password: 'abc123abc')
 
-          get(:show, :id => entry)
+          get(:show, id: entry)
 
           expect(response.status).to eq(401)
         end
 
-        it 'responds with success for entry published with password when correct password is given' do
+        it 'responds with success for entry published with password when correct password is '\
+           'supplied' do
           entry = create(:entry, :published_with_password, password: 'abc123abc')
 
-          request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials('Pageflow', 'abc123abc')
-          get(:show, :id => entry)
+          request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic
+                                              .encode_credentials('Pageflow', 'abc123abc')
+          get(:show, id: entry)
 
           expect(response.status).to eq(200)
         end
@@ -236,7 +236,7 @@ module Pageflow
           expect(response.body).to have_selector('div.test_widget')
         end
 
-        it 'renders widgets head fragments for entry' do
+        it 'renders widget\'s head fragments for entry' do
           widget_type =
             TestWidgetType.new(name: 'test_widget',
                                rendered_head_fragment: '<meta name="some_test" content="value">')
@@ -261,20 +261,20 @@ module Pageflow
           end
 
           it 'responds with success for matching entry' do
-            account = create(:account, :name => 'news')
-            entry = create(:entry, :published, :account => account)
+            account = create(:account, name: 'news')
+            entry = create(:entry, :published, account: account)
 
             request.host = 'news.example.com'
-            get(:show, :id => entry)
+            get(:show, id: entry)
 
             expect(response.status).to eq(200)
           end
 
-          it 'responds with not found for non matching entry' do
+          it 'responds with not found for non-matching entry' do
             entry = create(:entry, :published)
 
             request.host = 'news.example.com'
-            get(:show, :id => entry)
+            get(:show, id: entry)
 
             expect(response.status).to eq(404)
           end
@@ -283,11 +283,11 @@ module Pageflow
         context 'with page parameter' do
           it 'renders social sharing meta tags for page' do
             entry = create(:entry, :published)
-            storyline = create(:storyline, :revision => entry.published_revision)
-            chapter = create(:chapter, :storyline => storyline)
-            page = create(:page, :configuration => {:title => 'Shared page'}, :chapter => chapter)
+            storyline = create(:storyline, revision: entry.published_revision)
+            chapter = create(:chapter, storyline: storyline)
+            page = create(:page, configuration: {title: 'Shared page'}, chapter: chapter)
 
-            get(:show, :id => entry, :page => page.perma_id)
+            get(:show, id: entry, page: page.perma_id)
 
             expect(response.body).to have_meta_tag
               .for_property('og:title')
@@ -338,7 +338,7 @@ module Pageflow
         it 'responds with success for published entry' do
           entry = create(:entry, :published)
 
-          get(:show, :id => entry, :format => 'css')
+          get(:show, id: entry, format: 'css')
 
           expect(response.status).to eq(200)
         end
@@ -346,7 +346,7 @@ module Pageflow
         it 'responds with success for entry published with password' do
           entry = create(:entry, :published_with_password, password: 'abc123abc')
 
-          get(:show, :id => entry, :format => 'css')
+          get(:show, id: entry, format: 'css')
 
           expect(response.status).to eq(200)
         end
@@ -354,16 +354,16 @@ module Pageflow
         it 'responds with not found for not published entry' do
           entry = create(:entry)
 
-          get(:show, :id => entry, :format => 'css')
+          get(:show, id: entry, format: 'css')
 
           expect(response.status).to eq(404)
         end
 
         it 'includes image rules for image files' do
           entry = create(:entry, :published)
-          image_file = create(:image_file, :used_in => entry.published_revision)
+          image_file = create(:image_file, used_in: entry.published_revision)
 
-          get(:show, :id => entry, :format => 'css')
+          get(:show, id: entry, format: 'css')
 
           expect(response.body).to include(".image_#{image_file.id}")
           expect(response.body).to include("url('#{image_file.attachment.url(:large)}')")
@@ -371,9 +371,9 @@ module Pageflow
 
         it 'includes poster image rules for video files' do
           entry = create(:entry, :published)
-          video_file = create(:video_file, :used_in => entry.published_revision)
+          video_file = create(:video_file, used_in: entry.published_revision)
 
-          get(:show, :id => entry, :format => 'css')
+          get(:show, id: entry, format: 'css')
 
           expect(response.body).to include(".video_poster_#{video_file.id}")
           expect(response.body).to include("url('#{video_file.poster.url(:large)}')")
@@ -381,9 +381,9 @@ module Pageflow
 
         it 'includes panorama style group rules for image files' do
           entry = create(:entry, :published)
-          image_file = create(:image_file, :used_in => entry.published_revision)
+          image_file = create(:image_file, used_in: entry.published_revision)
 
-          get(:show, :id => entry, :format => 'css')
+          get(:show, id: entry, format: 'css')
 
           expect(response.body).to include(".image_panorama_#{image_file.id}")
           expect(response.body).to include("url('#{image_file.attachment.url(:panorama_large)}')")
@@ -391,34 +391,34 @@ module Pageflow
       end
 
       context 'with format json' do
-        it 'responds with success for members of the entry' do
+        it 'responds with success for previewers of the entry' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_previewer: user)
 
           sign_in(user)
-          get(:show, :id => entry, :format => 'json')
+          get(:show, id: entry, format: 'json')
 
           expect(response.status).to eq(200)
         end
 
         it 'includes file usage ids in response' do
           user = create(:user)
-          entry = create(:entry, :with_member => user)
+          entry = create(:entry, with_previewer: user)
           file = create(:image_file)
-          usage = create(:file_usage, :file => file, :revision => entry.draft)
+          usage = create(:file_usage, file: file, revision: entry.draft)
 
           sign_in(user)
-          get(:show, :id => entry, :format => 'json')
+          get(:show, id: entry, format: 'json')
 
-          expect(json_response(:path => [:image_files, 0, :usage_id])).to eq(usage.id)
+          expect(json_response(path: [:image_files, 0, :usage_id])).to eq(usage.id)
         end
 
-        it 'requires the signed in user to be member of the parent entry' do
+        it 'requires the signed in user to be previewer of the parent entry' do
           user = create(:user)
           entry = create(:entry)
 
           sign_in(user)
-          get(:show, :id => entry, :format => 'json')
+          get(:show, id: entry, format: 'json')
 
           expect(response.status).to eq(403)
         end
@@ -426,7 +426,7 @@ module Pageflow
         it 'requires authentication' do
           entry = create(:entry)
 
-          get(:show, :id => entry, :format => 'json')
+          get(:show, id: entry, format: 'json')
 
           expect(response.status).to eq(401)
         end
@@ -434,7 +434,7 @@ module Pageflow
 
       context 'with other known format' do
         it 'responds with not found' do
-          get(:show, :id => 1, :format => 'png')
+          get(:show, id: 1, format: 'png')
 
           expect(response.status).to eq(404)
         end
@@ -442,7 +442,7 @@ module Pageflow
 
       context 'with unknown format' do
         it 'responds with not found' do
-          get(:show, :id => 1, :format => 'php')
+          get(:show, id: 1, format: 'php')
 
           expect(response.status).to eq(404)
         end
@@ -450,22 +450,22 @@ module Pageflow
     end
 
     describe '#partials' do
-      it 'reponds with success for members of the entry' do
+      it 'reponds with success for previewers of the entry' do
         user = create(:user)
-        entry = create(:entry, :with_member => user)
+        entry = create(:entry, with_previewer: user)
 
         sign_in(user)
-        get(:partials, :id => entry)
+        get(:partials, id: entry)
 
         expect(response.status).to eq(200)
       end
 
-      it 'requires the signed in user to be member of the parent entry' do
+      it 'requires the signed in user to be previewer of the parent entry' do
         user = create(:user)
         entry = create(:entry)
 
         sign_in(user)
-        get(:partials, :id => entry)
+        get(:partials, id: entry)
 
         expect(response).to redirect_to(main_app.admin_root_path)
       end
@@ -473,7 +473,7 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        get(:partials, :id => entry)
+        get(:partials, id: entry)
 
         expect(response).to redirect_to(main_app.new_user_session_path)
       end
@@ -494,7 +494,7 @@ module Pageflow
         end
 
         user = create(:user)
-        entry = create(:entry, with_member: user)
+        entry = create(:entry, with_previewer: user)
         create(:widget, subject: entry.draft, role: 'header', type_name: 'test_widget')
         create(:widget, subject: entry.draft, role: 'footer', type_name: 'non_editor_widget')
 
@@ -516,11 +516,11 @@ module Pageflow
         end
 
         user = create(:user)
-        entry = create(:entry, with_member: user)
+        entry = create(:entry, with_previewer: user)
         create(:widget, subject: entry.draft, type_name: 'test_widget')
+        entry.draft.update(locale: 'de')
 
         sign_in(user)
-        entry.draft.update(locale: 'de')
         get(:partials, id: entry)
 
         expect(response.body).to have_selector('div[lang=de]')
@@ -529,36 +529,36 @@ module Pageflow
 
     describe '#page' do
       it 'redirects to entry path with page perma id anchor' do
-        entry = create(:entry, :published, :title => 'report')
-        storyline = create(:storyline, :revision => entry.published_revision)
-        chapter = create(:chapter, :storyline => storyline)
-        page = create(:page, :chapter => chapter)
+        entry = create(:entry, :published, title: 'report')
+        storyline = create(:storyline, revision: entry.published_revision)
+        chapter = create(:chapter, storyline: storyline)
+        page = create(:page, chapter: chapter)
 
-        get(:page, :id => entry, :page_index => 0)
+        get(:page, id: entry, page_index: 0)
 
         expect(response).to redirect_to("/report##{page.perma_id}")
       end
 
       it 'removes suffix appended with slash' do
-        entry = create(:entry, :published, :title => 'report')
-        storyline = create(:storyline, :revision => entry.published_revision)
-        chapter = create(:chapter, :storyline => storyline)
-        page = create(:page, :chapter => chapter)
+        entry = create(:entry, :published, title: 'report')
+        storyline = create(:storyline, revision: entry.published_revision)
+        chapter = create(:chapter, storyline: storyline)
+        page = create(:page, chapter: chapter)
 
-        get(:page, :id => entry, :page_index => '0-some-title')
+        get(:page, id: entry, page_index: '0-some-title')
 
         expect(response).to redirect_to("/report##{page.perma_id}")
       end
 
       it 'skips hash if page index is invalid' do
-        entry = create(:entry, :published, :title => 'report')
-        storyline = create(:storyline, :revision => entry.published_revision)
-        chapter = create(:chapter, :storyline => storyline)
-        page = create(:page, :chapter => chapter)
+        entry = create(:entry, :published, title: 'report')
+        storyline = create(:storyline, revision: entry.published_revision)
+        chapter = create(:chapter, storyline: storyline)
+        create(:page, chapter: chapter)
 
-        get(:page, :id => entry, :page_index => '100-not-there')
+        get(:page, id: entry, page_index: '100-not-there')
 
-        expect(response).to redirect_to("/report")
+        expect(response).to redirect_to('/report')
       end
 
       context 'with configured entry_request_scope' do
@@ -569,23 +569,23 @@ module Pageflow
         end
 
         it 'responds with redirect for matching entry' do
-          account = create(:account, :name => 'news')
-          entry = create(:entry, :published, :account => account, :title => 'report')
-          storyline = create(:storyline, :revision => entry.published_revision)
-          chapter = create(:chapter, :storyline => storyline)
-          page = create(:page, :chapter => chapter)
+          account = create(:account, name: 'news')
+          entry = create(:entry, :published, account: account, title: 'report')
+          storyline = create(:storyline, revision: entry.published_revision)
+          chapter = create(:chapter, storyline: storyline)
+          page = create(:page, chapter: chapter)
 
           request.host = 'news.example.com'
-          get(:page, :id => entry, :page_index => 0)
+          get(:page, id: entry, page_index: 0)
 
           expect(response).to redirect_to("/report##{page.perma_id}")
         end
 
-        it 'responds with not found for non matching entry' do
+        it 'responds with not found for non-matching entry' do
           entry = create(:entry, :published)
 
           request.host = 'news.example.com'
-          get(:page, :id => entry, :page_index => 0)
+          get(:page, id: entry, page_index: 0)
 
           expect(response.status).to eq(404)
         end

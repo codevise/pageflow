@@ -2,15 +2,79 @@ require 'spec_helper'
 
 module Admin
   describe AccountsController do
+    describe '#show' do
+      render_views
+
+      describe 'additional admin resource tab' do
+        let(:tab_view_component) do
+          Class.new(Pageflow::ViewComponent) do
+            def build(account)
+              super('data-custom-tab' => account.name)
+            end
+
+            def self.name
+              'TabViewComponet'
+            end
+          end
+        end
+
+        let(:tab_view_selector) { '.admin_tabs_view div[data-custom-tab]' }
+
+        it 'is visible for managers' do
+          user = create(:user)
+          account = create(:account, with_manager: user)
+
+          Pageflow.config.admin_resource_tabs.register(:theming,
+                                                       name: :some_tab,
+                                                       component: tab_view_component,
+                                                       required_account_role: :manager)
+          sign_in(user)
+          get(:show, id: account.id)
+
+          expect(response.body).to have_selector(tab_view_selector)
+        end
+
+        context 'with admin_only option' do
+          it 'is visible for admin' do
+            user = create(:user, :admin)
+            account = create(:account)
+
+            Pageflow.config.admin_resource_tabs.register(:theming,
+                                                         name: :some_tab,
+                                                         component: tab_view_component,
+                                                         admin_only: true)
+            sign_in(user)
+            get(:show, id: account.id)
+
+            expect(response.body).to have_selector(tab_view_selector)
+          end
+
+          it 'is not visible for non admins' do
+            user = create(:user)
+            account = create(:account, with_manager: user)
+
+            Pageflow.config.admin_resource_tabs.register(:theming,
+                                                         name: :some_tab,
+                                                         component: tab_view_component,
+                                                         admin_only: true)
+            sign_in(user)
+            get(:show, id: account.id)
+
+            expect(response.body).not_to have_selector(tab_view_selector)
+          end
+        end
+      end
+    end
+
     describe '#create' do
       it 'creates nested default_theming' do
         Pageflow.config.themes.register(:custom)
 
         sign_in(create(:user, :admin))
-        post(:create, :account => {
-               :default_theming_attributes => {
-                 :theme_name => 'custom',
-                 :imprint_link_url => 'http://example.com/new'
+        post(:create, account: {
+               default_theming_attributes: {
+                 theme_name: 'custom',
+                 imprint_link_url: 'http://example.com/new'
                }
              })
 
@@ -31,7 +95,8 @@ module Admin
                navigation: 'some_widget'
              })
 
-        expect(Pageflow::Account.last.default_theming.widgets).to include_record_with(role: 'navigation', type_name: 'some_widget')
+        expect(Pageflow::Account.last.default_theming.widgets)
+          .to include_record_with(role: 'navigation', type_name: 'some_widget')
       end
 
       it 'does not create widgets if account cannot be saved' do
@@ -39,13 +104,13 @@ module Admin
 
         sign_in(create(:user, :admin))
 
-        expect {
+        expect do
           post(:create,
                account: {},
                widgets: {
                  navigation: 'some_widget'
                })
-        }.not_to change { Pageflow::Widget.count }
+        end.not_to change { Pageflow::Widget.count }
       end
     end
 
@@ -75,7 +140,8 @@ module Admin
         sign_in(create(:user, :admin))
         get :edit, id: account
 
-        expect(response.body).to have_selector('[name="account[default_theming_attributes][custom_field]"]')
+        expect(response.body)
+          .to have_selector('[name="account[default_theming_attributes][custom_field]"]')
       end
     end
 
@@ -83,13 +149,13 @@ module Admin
       it 'updates nested default_theming' do
         Pageflow.config.themes.register(:custom)
         theming = create(:theming)
-        account = create(:account, :default_theming => theming)
+        account = create(:account, default_theming: theming)
 
         sign_in(create(:user, :admin))
-        put(:update, :id => account.id, :account => {
-              :default_theming_attributes => {
-                :theme_name => 'custom',
-                :imprint_link_url => 'http://example.com/new'
+        put(:update, id: account.id, account: {
+              default_theming_attributes: {
+                theme_name: 'custom',
+                imprint_link_url: 'http://example.com/new'
               }
             })
 
@@ -116,7 +182,7 @@ module Admin
         account = create(:account, default_theming: theming)
 
         sign_in(create(:user, :admin))
-        expect {
+        expect do
           patch(:update,
                 id: account.id,
                 account: {
@@ -127,7 +193,7 @@ module Admin
                 widgets: {
                   navigation: 'some_widget'
                 })
-        }.not_to change { Pageflow::Widget.count }
+        end.not_to change { Pageflow::Widget.count }
       end
 
       it 'updates feature_configuration through feature_states param' do
@@ -220,31 +286,25 @@ module Admin
 
         sign_in(create(:user, :admin))
 
-        expect {
-          delete :destroy, :id => account
-        }.to change { Pageflow::Account.count }
+        expect { delete :destroy, id: account }.to change { Pageflow::Account.count }
       end
 
       it 'does not allow to destroy account with user' do
         account = create(:account)
-        create(:user, :account => account)
+        create(:user, :member, on: account)
 
         sign_in(create(:user, :admin))
 
-        expect {
-          delete :destroy, :id => account
-        }.not_to change { Pageflow::Account.count }
+        expect { delete :destroy, id: account }.not_to change { Pageflow::Account.count }
       end
 
       it 'does not allow to destroy account with entry' do
         account = create(:account)
-        create(:entry, :account => account)
+        create(:entry, account: account)
 
         sign_in(create(:user, :admin))
 
-        expect {
-          delete :destroy, :id => account
-        }.not_to change { Pageflow::Account.count }
+        expect { delete :destroy, id: account }.not_to change { Pageflow::Account.count }
       end
     end
   end

@@ -5,6 +5,10 @@ module Pageflow
     end
 
     factory :user do
+      transient do
+        on nil
+      end
+
       email
       first_name 'John'
       last_name 'Doe'
@@ -12,17 +16,38 @@ module Pageflow
       password '@qwert12345'
       password_confirmation { password }
 
-      account
-
-      trait :editor do
+      trait :member do
+        after(:create) do |user, evaluator|
+          create(:membership, user: user, entity: evaluator.on, role: :member)
+        end
       end
 
-      trait :account_manager do
-        role 'account_manager'
+      trait :previewer do
+        after(:create) do |user, evaluator|
+          create(:membership, user: user, entity: evaluator.on, role: :previewer)
+        end
+      end
+
+      trait :editor do
+        after(:create) do |user, evaluator|
+          create(:membership, user: user, entity: evaluator.on, role: :editor)
+        end
+      end
+
+      trait :publisher do
+        after(:create) do |user, evaluator|
+          create(:membership, user: user, entity: evaluator.on, role: :publisher)
+        end
+      end
+
+      trait :manager do
+        after(:create) do |user, evaluator|
+          create(:membership, user: user, entity: evaluator.on, role: :manager)
+        end
       end
 
       trait :admin do
-        role 'admin'
+        admin true
       end
 
       trait :suspended do
@@ -30,10 +55,10 @@ module Pageflow
       end
     end
 
-    factory :valid_user, :class => User do
+    factory :valid_user, class: User do
       email
-      first_name "Edison"
-      last_name "Editor"
+      first_name 'Edison'
+      last_name 'Editor'
     end
   end
 end

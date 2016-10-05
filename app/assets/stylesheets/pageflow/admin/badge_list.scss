@@ -1,0 +1,47 @@
+.badge_list {
+  margin: -4px 0;
+  padding: 0;
+
+  li {
+    float: left;
+    position: relative;
+    list-style: none;
+
+    margin: 1px;
+    line-height: 22px;
+    padding: 0 5px;
+
+    background-color: #fff;
+    border: solid 1px #aaa;
+    text-align: center;
+
+    &:hover .tooltip {
+      opacity: 1;
+    }
+  }
+
+  .abbreviation, .name {
+    font-size: 11px;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .tooltip {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    padding: 0 5px;
+
+    white-space: nowrap;
+    z-index: 1;
+
+    background-color: #fff;
+    border: solid 1px #aaa;
+    opacity: 0;
+  }
+
+  a {
+    text-decoration: none;
+    font-weight: bold;
+  }
+}

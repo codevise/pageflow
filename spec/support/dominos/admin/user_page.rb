@@ -45,9 +45,21 @@ module Dom
         end
       end
 
-      def add_membership_link
+      def add_entry_membership_link
         within(node) do
-          find('[data-rel=add_membership]')
+          find('[data-rel=add_entry_membership]')
+        end
+      end
+
+      def edit_entry_role_link(role)
+        within(node) do
+          find("[data-rel=edit_entry_role_#{role}]")
+        end
+      end
+
+      def delete_member_on_entry_link(role)
+        within(node) do
+          find("[data-rel=delete_entry_membership_#{role}]")
         end
       end
 
@@ -57,15 +69,33 @@ module Dom
         end
       end
 
-      def has_admin_flag?
+      def add_account_membership_link
         within(node) do
-          has_selector?('.attributes_table span[data-user-role=admin]')
+          find('[data-rel=add_account_membership]')
         end
       end
 
-      def has_account_manager_flag?
+      def edit_account_role_link(role)
         within(node) do
-          has_selector?('.attributes_table span[data-user-role=account_manager]')
+          find("[data-rel=edit_account_role_#{role}]")
+        end
+      end
+
+      def delete_member_on_account_link(role)
+        within(node) do
+          find("[data-rel=delete_account_membership_#{role}]")
+        end
+      end
+
+      def has_admin_flag?
+        within(node) do
+          has_selector?('.attributes_table .status_tag.admin')
+        end
+      end
+
+      def has_role_flag?(role)
+        within(node) do
+          has_selector?(".memberships .#{role}")
         end
       end
     end

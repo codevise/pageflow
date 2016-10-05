@@ -32,7 +32,7 @@ pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
   updateDestroyButton: function() {
     var disabled = (this.model.chapters.length > 0);
 
-    this.ui.destroyButton.toggleClass('faded', disabled);
+    this.ui.destroyButton.toggleClass('disabled', disabled);
 
     if (disabled) {
       this.ui.destroyButton.attr('data-tooltip', 'pageflow.editor.views.edit_storyline_view.cannot_destroy');

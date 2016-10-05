@@ -3,9 +3,9 @@ require 'spec_helper'
 module Pageflow
   describe EntryPublication do
     describe '#exceeding?' do
-      it 'passes published entry to quotas #assume method' do
+      it 'passes published entry to quota\'s #assume method' do
         entry = create(:entry)
-        user = create(:user, account: entry.account)
+        user = create(:user)
         quota = QuotaDouble.available.new(:published_entries, entry.account)
         entry_publication = EntryPublication.new(entry, {}, quota, user)
 
@@ -16,18 +16,19 @@ module Pageflow
 
       it 'returns true if assumed quota is exceeded' do
         entry = create(:entry)
-        user = create(:user, account: entry.account)
+        user = create(:user)
         quota = QuotaDouble.exhausted.new(:published_entries, entry.account)
         entry_publication = EntryPublication.new(entry, {}, quota, user)
 
-        allow(quota).to receive(:assume).and_return(QuotaDouble.exceeded.new(:published_entries, entry.account))
+        allow(quota).to receive(:assume).and_return(QuotaDouble.exceeded.new(:published_entries,
+                                                                             entry.account))
 
         expect(entry_publication).to be_exceeding
       end
 
       it 'returns false if assumed quota is exhausted' do
         entry = create(:entry)
-        user = create(:user, account: entry.account)
+        user = create(:user)
         quota = QuotaDouble.exhausted.new(:published_entries, entry.account)
         entry_publication = EntryPublication.new(entry, {}, quota, user)
 
@@ -36,7 +37,7 @@ module Pageflow
 
       it 'returns false if assumed quota is available' do
         entry = create(:entry)
-        user = create(:user, account: entry.account)
+        user = create(:user)
         quota = QuotaDouble.available.new(:published_entries, entry.account)
         entry_publication = EntryPublication.new(entry, {}, quota, user)
 
@@ -45,9 +46,9 @@ module Pageflow
     end
 
     describe 'save!' do
-      it 'passes published entry to quotas #assume method' do
+      it 'passes published entry to quota\'s #assume method' do
+        user = create(:user)
         entry = create(:entry)
-        user = create(:user, account: entry.account)
         quota = QuotaDouble.available.new(:published_entries, entry.account)
         entry_publication = EntryPublication.new(entry, {}, quota, user)
 
@@ -57,23 +58,27 @@ module Pageflow
       end
 
       it 'raises Quota::ExceededException if assumed quota is exceeded' do
+        user = create(:user)
         entry = create(:entry)
-        user = create(:user, account: entry.account)
         quota = QuotaDouble.exhausted.new(:published_entries, entry.account)
         entry_publication = EntryPublication.new(entry, {}, quota, user)
 
-        allow(quota).to receive(:assume).and_return(QuotaDouble.exceeded.new(:published_entries, entry.account))
+        allow(quota).to receive(:assume).and_return(QuotaDouble.exceeded.new(:published_entries,
+                                                                             entry.account))
 
-        expect {
+        expect do
           entry_publication.save!
-        }.to raise_error(Quota::ExceededError)
+        end.to raise_error(Quota::ExceededError)
       end
 
       it 'passes attributes and creator to Entry#publish' do
         entry = create(:entry)
-        user = create(:user, account: entry.account)
+        user = create(:user)
         quota = QuotaDouble.available.new(:published_entries, entry.account)
-        entry_publication = EntryPublication.new(entry, {published_until: 1.week.from_now}, quota, user)
+        entry_publication = EntryPublication.new(entry,
+                                                 {published_until: 1.week.from_now},
+                                                 quota,
+                                                 user)
 
         expect(entry).to receive(:publish).with(creator: user, published_until: 1.week.from_now)
 

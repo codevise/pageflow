@@ -1,11 +1,22 @@
 <%= admin_form_for [:admin, parent, resource] do |f| %>
   <%= f.inputs do %>
     <%= f.input :user,
-                :input_html => { :disabled => (parent_type == :user) },
-                :collection => membership_users_collection_for_parent(parent) %>
-    <%= f.input :entry,
-                :input_html => { :disabled => (parent_type == :entry) },
-                :collection => membership_entries_collection_for_parent(parent) %>
+                collection: membership_users_collection(parent, resource),
+                include_blank: false,
+                input_html: { disabled: !f.object.new_record? || parent_type == :user }%>
+    <% if params[:entity_type].to_sym == :entry %>
+      <%= render partial: 'admin/memberships/entity_entry_input', locals: {f: f} %>
+    <% else %>
+      <%= render partial: 'admin/memberships/entity_account_input', locals: {f: f} %>
+    <% end %>
+    <%= f.hidden_field :entity_type, value: "Pageflow::#{params[:entity_type].capitalize}" %>
+  <% end %>
+  <%= f.inputs do %>
+    <%= render partial: 'admin/memberships/role_hint' %>
+    <%= f.input :role,
+                collection: membership_roles_collection("Pageflow::#{params[:entity_type]
+                                                          .capitalize}"),
+                                                          include_blank: false %>
   <% end %>
   <%= f.actions do %>
     <%= f.action(:submit) %>

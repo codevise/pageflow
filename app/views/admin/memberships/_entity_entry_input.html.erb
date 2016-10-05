@@ -1,0 +1,5 @@
+<%= f.input :entity,
+            label: I18n.t('activerecord.attributes.pageflow/membership.entry'),
+            input_html: { disabled: !f.object.new_record? || parent_type == :entry },
+            collection: membership_entries_collection(parent, resource),
+            include_blank: false %>

@@ -28,8 +28,8 @@ module Pageflow
     end
 
     def copy_memberships
-      original_entry.users.each do |member|
-        new_entry.memberships.create(user: member)
+      original_entry.memberships.each do |membership|
+        Membership.create(user: membership.user, role: membership.role.to_sym, entity: new_entry)
       end
     end
 

@@ -1,5 +1,5 @@
 para do
-  if authorized?(:edit, Pageflow::Entry)
+  if authorized?(:edit, entry)
     span(link_to(I18n.t('pageflow.admin.entries.editor'),
                  pageflow.edit_entry_path(entry),
                  class: 'editor icon_button button'))

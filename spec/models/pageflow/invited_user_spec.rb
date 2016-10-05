@@ -5,8 +5,7 @@ module Pageflow
     it 'is valid without password' do
       user = InvitedUser.new(attributes_for(:valid_user,
                                             password: nil,
-                                            password_confirmation: nil,
-                                            account: build_stubbed(:account)))
+                                            password_confirmation: nil))
 
       expect(user).to be_valid
     end

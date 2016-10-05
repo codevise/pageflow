@@ -10,15 +10,26 @@ module Pageflow
     end
 
     describe '#show' do
-      it 'responds with success for members' do
+      it 'responds with success for previewers' do
         user = create(:user)
-        entry = create(:entry, :with_member => user)
-        revision = create(:revision, :entry => entry)
+        entry = create(:entry, with_previewer: user)
+        revision = create(:revision, entry: entry)
 
         sign_in(user)
-        get(:show, :id => revision)
+        get(:show, id: revision)
 
         expect(response.status).to eq(200)
+      end
+
+      it 'responds with failure for less-than-previewers' do
+        user = create(:user)
+        entry = create(:entry)
+        revision = create(:revision, entry: entry)
+
+        sign_in(user)
+        get(:show, id: revision)
+
+        expect(response.status).to eq(302)
       end
 
       it 'renders widgets which are enabled in preview' do
@@ -33,7 +44,7 @@ module Pageflow
         end
 
         user = create(:user)
-        entry = create(:entry, with_member: user)
+        entry = create(:entry, with_previewer: user)
         revision = create(:revision, entry: entry)
         create(:widget, subject: revision, type_name: 'test_widget')
 
@@ -56,7 +67,7 @@ module Pageflow
         end
 
         user = create(:user)
-        entry = create(:entry, with_member: user)
+        entry = create(:entry, with_previewer: user)
         revision = create(:revision, entry: entry)
         create(:widget, subject: revision, type_name: 'test_widget')
 
@@ -66,12 +77,12 @@ module Pageflow
         expect(response.body).not_to have_selector('div.test_widget')
       end
 
-      it 'requires the signed in user to be member of the parent entry' do
+      it 'requires the signed in user to be previewer of the parent entry' do
         user = create(:user)
         revision = create(:revision)
 
         sign_in(user)
-        get(:show, :id => revision)
+        get(:show, id: revision)
 
         expect(response.status).to redirect_to(main_app.admin_root_path)
       end
@@ -79,39 +90,40 @@ module Pageflow
       it 'requires authentication' do
         revision = create(:revision)
 
-        get(:show, :id => revision)
+        get(:show, id: revision)
 
         expect(response).to redirect_to(main_app.new_user_session_path)
       end
     end
 
     describe '#depublish_current' do
-      it 'depublished current revision' do
+      it 'does not depublish unpublished revision' do
         user = create(:user)
-        entry = create(:entry, :with_member => user)
+        entry = create(:entry, with_publisher: user)
 
         sign_in(user)
-        delete(:depublish_current, :entry_id => entry)
+        delete(:depublish_current, entry_id: entry)
 
         expect(response.status).to redirect_to(main_app.admin_entry_path(entry))
       end
 
-      it 'depublished current revision' do
+      it 'depublishes published revision' do
         user = create(:user)
-        entry = create(:entry, :published, :with_member => user)
+        entry = create(:entry, :published, with_publisher: user)
 
         sign_in(user)
-        delete(:depublish_current, :entry_id => entry)
+        delete(:depublish_current, entry_id: entry)
 
         expect(entry).not_to be_published
       end
 
-      it 'requires the signed in user to be member of the parent entry' do
+      it 'requires the signed in user to be publisher of the parent entry or account' do
         user = create(:user)
-        entry = create(:entry)
+        account = create(:account, with_editor: user)
+        entry = create(:entry, account: account, with_editor: user)
 
         sign_in(user)
-        delete(:depublish_current, :entry_id => entry)
+        delete(:depublish_current, entry_id: entry)
 
         expect(response.status).to redirect_to(main_app.admin_root_path)
       end
@@ -119,7 +131,7 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        delete(:depublish_current, :entry_id => entry)
+        delete(:depublish_current, entry_id: entry)
 
         expect(response).to redirect_to(main_app.new_user_session_path)
       end

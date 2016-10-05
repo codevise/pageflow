@@ -13,7 +13,7 @@ module Pageflow
       describe '#index' do
         it 'responds with widgets of entry' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_editor: user)
           create(:widget, subject: entry.draft, type_name: 'test_widget')
 
           sign_in(user)
@@ -25,7 +25,7 @@ module Pageflow
 
         it 'requires permission to edit entry' do
           user = create(:user)
-          entry = create(:entry)
+          entry = create(:entry, with_previewer: user)
 
           sign_in(user)
           get(:index, collection_name: 'entries', subject_id: entry.id, format: 'json')
@@ -34,8 +34,9 @@ module Pageflow
         end
 
         it 'responds with widgets of theming' do
-          user = create(:user, :account_manager)
-          theming = create(:theming, account: user.account)
+          user = create(:user, :admin)
+          account = create(:account)
+          theming = create(:theming, account: account)
           create(:widget, subject: theming, type_name: 'test_widget')
 
           sign_in(user)
@@ -45,9 +46,10 @@ module Pageflow
           expect(json_response(path: [0, :type_name])).to eq('test_widget')
         end
 
-        it 'requires permission to edit theming' do
+        it 'requires permission to index themings' do
           user = create(:user)
-          theming = create(:theming, account: user.account)
+          account = create(:account, with_manager: user)
+          theming = create(:theming, account: account)
           create(:widget, subject: theming, type_name: 'test_widget')
 
           sign_in(user)
@@ -57,8 +59,9 @@ module Pageflow
         end
 
         it 'requires user to be signed in' do
-          user = create(:user)
-          entry = create(:entry, with_member: user)
+          user = create(:user, :admin)
+          entry = create(:entry)
+          create(:membership, user: user, entity: entry.account, role: :manager)
 
           get(:index, collection_name: 'entries', subject_id: entry.id, format: 'json')
 
@@ -69,7 +72,7 @@ module Pageflow
       describe '#batch' do
         it 'creates widget with role for entry draft' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
+          entry = create(:entry, with_editor: user)
 
           sign_in(user)
           patch(:batch,
@@ -80,13 +83,17 @@ module Pageflow
                 ],
                 format: 'json')
 
-          expect(entry.draft.widgets).to include_record_with(type_name: 'test_widget', role: 'navigation')
+          expect(entry.draft.widgets).to include_record_with(type_name: 'test_widget',
+                                                             role: 'navigation')
         end
 
         it 'updates widget with role for entry draft' do
           user = create(:user)
-          entry = create(:entry, with_member: user)
-          widget = create(:widget, subject: entry.draft, role: 'navigation', type_name: 'test_widget')
+          entry = create(:entry, with_editor: user)
+          widget = create(:widget,
+                          subject: entry.draft,
+                          role: 'navigation',
+                          type_name: 'test_widget')
 
           sign_in(user)
           patch(:batch,
@@ -102,7 +109,7 @@ module Pageflow
 
         it 'requires permission to edit entry' do
           user = create(:user)
-          entry = create(:entry)
+          entry = create(:entry, with_previewer: user)
 
           sign_in(user)
           patch(:batch,
@@ -132,9 +139,10 @@ module Pageflow
           expect(response.status).to eq(200)
         end
 
-        it 'allows account manager to edit entries of own account' do
-          user = create(:user, :account_manager)
-          entry = create(:entry, account: user.account)
+        it 'allows account editor to edit entries of own account' do
+          user = create(:user)
+          account = create(:account, with_editor: user)
+          entry = create(:entry, account: account)
 
           sign_in(user)
           patch(:batch,
@@ -149,7 +157,8 @@ module Pageflow
         end
 
         it 'does not allow account manager to edit entries of other account' do
-          user = create(:user, :account_manager)
+          user = create(:user)
+          create(:account, with_manager: user)
           entry = create(:entry)
 
           sign_in(user)
@@ -164,9 +173,10 @@ module Pageflow
           expect(response.status).to eq(403)
         end
 
-        it 'allows account manager to edit theming of own account' do
-          user = create(:user, :account_manager)
-          theming = create(:theming, account: user.account)
+        it 'allows account publisher to edit theming of own account' do
+          user = create(:user)
+          account = create(:account, with_publisher: user)
+          theming = create(:theming, account: account)
 
           sign_in(user)
           patch(:batch,
@@ -180,9 +190,10 @@ module Pageflow
           expect(response.status).to eq(200)
         end
 
-        it 'does not allow editor to edit theming' do
+        it 'does not allow account editor to edit theming' do
           user = create(:user)
-          theming = create(:theming, account: user.account)
+          account = create(:account, with_editor: user)
+          theming = create(:theming, account: account)
           create(:widget, subject: theming, type_name: 'test_widget')
 
           sign_in(user)
@@ -198,7 +209,8 @@ module Pageflow
         end
 
         it 'does not allow account manager to edit theming of other account' do
-          user = create(:user, :account_manager)
+          user = create(:user)
+          create(:account, with_manager: user)
           theming = create(:theming)
 
           sign_in(user)
@@ -230,8 +242,8 @@ module Pageflow
         end
 
         it 'requires user to be signed in' do
-          user = create(:user)
-          entry = create(:entry, with_member: user)
+          user = create(:user, :admin)
+          entry = create(:entry, with_manager: user)
 
           patch(:batch,
                 collection_name: 'entries',

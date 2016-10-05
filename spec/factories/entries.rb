@@ -4,7 +4,7 @@ module Pageflow
       "Entry #{n}"
     end
 
-    factory :entry, :class => Entry do
+    factory :entry, class: Entry do
       title
 
       account
@@ -16,11 +16,29 @@ module Pageflow
       # inline membership creation
 
       transient do
-        with_member nil
+        with_previewer nil
+        with_editor nil
+        with_publisher nil
+        with_manager nil
       end
 
       after(:create) do |entry, evaluator|
-        create(:membership, :entry => entry, :user => evaluator.with_member) if evaluator.with_member
+        create(:membership,
+               entity: entry,
+               user: evaluator.with_previewer,
+               role: :previewer) if evaluator.with_previewer
+        create(:membership,
+               entity: entry,
+               user: evaluator.with_editor,
+               role: :editor) if evaluator.with_editor
+        create(:membership,
+               entity: entry,
+               user: evaluator.with_publisher,
+               role: :publisher) if evaluator.with_publisher
+        create(:membership,
+               entity: entry,
+               user: evaluator.with_manager,
+               role: :manager) if evaluator.with_manager
       end
 
       trait :published do
@@ -34,7 +52,7 @@ module Pageflow
       end
 
       trait :published_with_password do
-        after(:create) do |entry, evaluator|
+        after(:create) do |entry, _evaluator|
           create(:revision, :published, entry: entry, password_protected: true)
         end
       end

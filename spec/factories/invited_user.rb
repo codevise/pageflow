@@ -1,10 +1,9 @@
 module Pageflow
   FactoryGirl.define do
-    factory :invited_user, :class => InvitedUser do
+    factory :invited_user, class: InvitedUser do
       email
-      first_name "Edison"
-      last_name "Editor"
-      account
+      first_name 'Edison'
+      last_name 'Editor'
     end
   end
 end

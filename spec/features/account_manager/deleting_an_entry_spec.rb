@@ -1,11 +1,9 @@
 require 'spec_helper'
 
-feature 'account manager deleting an entry' do
-  scenario 'deleting entry of own account' do
-    account = create(:account)
-    entry = create(:entry, :title => 'Test Entry', :account => account)
-
-    Dom::Admin::Page.sign_in_as(:account_manager, :account => account)
+feature 'as account manager, deleting an entry' do
+  scenario 'of own account' do
+    entry = create(:entry, title: 'Test Entry')
+    Dom::Admin::Page.sign_in_as(:manager, on: entry.account)
 
     visit(admin_entries_path)
     expect(Dom::Admin::EntryInIndexTable.find_by_title('Test Entry')).to be_present

@@ -102,10 +102,6 @@
     @include icon-button(#d00);
     @include trash-icon;
     float: right;
-
-    &.faded {
-      opacity: 0.3;
-    }
   }
 
   a.upload {

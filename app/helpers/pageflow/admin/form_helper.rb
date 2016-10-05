@@ -1,7 +1,7 @@
 module Pageflow
   module Admin
     module FormHelper
-      # Using semantic_for_for directly causes Formtastic deprecation
+      # Using semantic_form_for directly causes Formtastic deprecation
       # warnings regarding `input_class_finder` and
       # `action_class_finder`. `active_admin_form_for` causes issues
       # in `erb` templates (see
