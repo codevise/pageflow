@@ -95,6 +95,7 @@ de:
               manager: 'Du kannst Beitrags-Rollen setzen'
           own_account_role:
             tooltip:
+              member: 'Du kannst Beitrags-Rollen auf diesem Konto innehaben'
               previewer: 'Du kannst Beiträge in diesem Konto unveröffentlicht betrachten'
               editor: 'Du kannst Beiträge in diesem Konto editieren'
               publisher: 'Du kannst Beiträge in diesem Konto veröffentlichen'
