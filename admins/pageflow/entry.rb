@@ -45,7 +45,7 @@ module Pageflow
     end
 
     filter :title
-    filter :account
+    filter :account, if: ->(_) { authorized?(:read, Account) }
     filter :created_at
     filter :edited_at
     filter :first_published_at
