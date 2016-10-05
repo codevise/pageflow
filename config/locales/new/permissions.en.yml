@@ -94,6 +94,7 @@ en:
               manager: 'You can set roles on this entry'
           own_account_role:
             tooltip:
+              member: 'You can be assigned roles on entries in this account'
               previewer: 'You can preview entries in this account'
               editor: 'You can edit entries in this account'
               publisher: 'You can publish entries in this account'
