@@ -12,7 +12,8 @@ For a high level introduction and example Pageflow stories see
 
 * [Getting Started](https://github.com/codevise/pageflow/wiki/Getting-Started)
 * [Guides](https://github.com/codevise/pageflow/blob/master/doc/index.md)
-* [Theme Settings](http://codevise.github.io/pageflow/theme/master/)
+* [JavaScript API Reference](https://doclets.io/codevise/pageflow/master)
+* [Theme API Reference](http://codevise.github.io/pageflow/theme/master/)
 
 ## Updating
 
