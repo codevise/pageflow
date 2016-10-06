@@ -6,11 +6,10 @@
   </div>
 
   <div class="page_header">
-    <h2>
-      <span class="tagline"><%= configuration['tagline'] %></span>
-      <span class="title"><%= configuration['title'] %></span>
-      <span class="subtitle"><%= configuration['subtitle'] %></span>
-    </h2>
+    <%= render partial: "page_headers", locals: {
+      tagline: configuration['tagline'],
+      title: configuration['title'],
+      subtitle: configuration['subtitle']} %>
     <%= background_image_tag(configuration['background_image_id'], {"class" => "print_image"}) %>
   </div>
 
