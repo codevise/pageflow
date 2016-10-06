@@ -1,6 +1,4 @@
-/**
- * A proxy which lazily initializes the real video player.
- */
+// A proxy which lazily initializes the real video player.
 pageflow.VideoPlayer.Lazy = function(template, options) {
   var placeholder = $('<span class="video_placeholder" />'),
       that = this,
@@ -56,7 +54,7 @@ pageflow.VideoPlayer.Lazy = function(template, options) {
     }
   };
 
-  /** proxied methods */
+  // proxied methods
 
   this.ready = function(callback) {
     readyCallbacks.add(callback);

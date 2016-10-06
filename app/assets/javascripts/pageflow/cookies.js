@@ -1,7 +1,4 @@
-/**
- *  https://developer.mozilla.org/en-US/docs/Web/API/document.cookie
- */
-
+//  https://developer.mozilla.org/en-US/docs/Web/API/document.cookie
 pageflow.cookies = {
   getItem: function (sKey) {
     if (!sKey) { return null; }

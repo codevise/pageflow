@@ -1,3 +1,23 @@
+/**
+ * Input view for a single line of text.
+ *
+ * @param {boolean} [options.required=false]
+ *   Display an error if the input is blank.
+ *
+ * @param {string} [options.placeholder]
+ *   Display a placeholder string if the input is blank.
+ *
+ * @param {boolean} [options.hidePlaceholderIfDisabled]
+ *   Do not display the placeholder if the input is disabled.
+ *
+ * @param {Backbone.Model} [options.placeholderModel]
+ *   Obtain placeholder by looking up the configured `propertyName`
+ *   inside a given model.
+ *
+ * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @class
+ * @memberof module:pageflow/ui
+ */
 pageflow.TextInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 

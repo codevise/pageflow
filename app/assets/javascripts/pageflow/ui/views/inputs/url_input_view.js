@@ -1,4 +1,22 @@
-pageflow.UrlInputView = Backbone.Marionette.Layout.extend({
+/**
+ * Input view for URLs.
+ *
+ * @param {string[]} options.supportedHosts
+ *   List of allowed url prefixes.
+ *
+ * @param {boolean} [options.required=false]
+ *   Display an error if the url is blank.
+ *
+ * @param {boolean} [options.permitHttps=false]
+ *   Allow urls with https protocol.
+ *
+ * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @class
+ * @memberof module:pageflow/ui
+ */
+pageflow.UrlInputView = Backbone.Marionette.Layout.extend(
+  /** @lends module:pageflow/ui.pageflow.UrlInputView# */{
+
   mixins: [pageflow.inputView],
 
   template: 'pageflow/ui/templates/inputs/url_input',

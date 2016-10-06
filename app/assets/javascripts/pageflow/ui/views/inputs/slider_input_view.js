@@ -1,3 +1,10 @@
+/**
+ * A slider for numeric inputs.
+ *
+ * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for options
+ * @class
+ * @memberof module:pageflow/ui
+ */
 pageflow.SliderInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 

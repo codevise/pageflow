@@ -22,6 +22,7 @@ pageflow.browser = (function(){
      * @param name [String] Name of the feature. Can contain whitespace.
      * @param test [Function] A function that either returns `true` or
      *   `false` or a promise that resolves to `true` or `false`.
+     * @memberof pageflow.browser
      */
     feature: function(name, test) {
       var s = name.replace(/ /g, '_');
@@ -50,6 +51,7 @@ pageflow.browser = (function(){
      *
      * @param name [String] Name of the feature.
      * @return [Boolean]
+     * @memberof pageflow.browser
      */
     has: function(name) {
       if (this.ready().state() != 'resolved') {
@@ -67,6 +69,7 @@ pageflow.browser = (function(){
      * A promise that is resolved once feature detection has finished.
      *
      * @return [Promise]
+     * @memberof pageflow.browser
      */
     ready: function() {
       return ready.promise();

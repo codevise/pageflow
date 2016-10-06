@@ -4,19 +4,29 @@
  *
  * Models inside the collection must implement the following methods:
  *
- * - `title` - A text for the list item.
- * - `thumbnailFile` - The file to use as thumbnail for the list item.
+ * @param {Backbone.Collection} options.collection
  *
- * @option collection [Backbone.Collection]
- * @option highlight [Boolean]
- * @option sortable [Boolean]
- * @option label [String]
- * @option itemDescription [String|Function]
- * @option itemTypeName [String|Function]
- * @option itemTypeDescription [String|Function]
- * @option itemIsInvalid [String|Function]
- * @option onEdit [Function]
- * @option onRemove [Function]
+ * @param {string} options.label
+ *   Text of the label to display above the list.
+ *
+ * @param {boolean} [options.highlight=false]
+ *
+ * @param {boolean} [options.sortable=false]
+ *
+ * @param {string|function} [options.itemDescription]
+ *
+ * @param {string|function} [options.itemTypeName]
+ *
+ * @param {string|function} [options.itemTypeDescription]
+ *
+ * @param {string|function} [options.itemIsInvalid]
+ *
+ * @param {function} [options.onEdit]
+ *
+ * @param {function} [options.onRemove]
+ *
+ * @class
+ * @memberof module:pageflow/editor
  */
 pageflow.ListView = Backbone.Marionette.ItemView.extend({
   template: 'pageflow/editor/templates/list',

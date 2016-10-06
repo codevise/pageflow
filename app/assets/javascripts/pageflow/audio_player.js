@@ -8,6 +8,20 @@
 //= require ./audio_player/rewind_method
 //= require ./audio_player/pause_in_background
 
+/**
+ * Playing audio sources
+ *
+ * @param {Object[]} sources
+ * List of sources for audio element.
+ *
+ * @param {string} sources[].type
+ * Mime type of the audio.
+ *
+ * @param {string} sources[].src
+ * Url of the audio.
+ *
+ * @class
+ */
 pageflow.AudioPlayer = function(sources, options) {
   options = options || {};
 

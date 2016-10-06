@@ -1,5 +1,21 @@
-/*global wysihtml5, wysihtml5ParserRules*/
+/*global wysihtml5*/
 
+/**
+ * Input view for multi line text with simple formatting options.
+ *
+ * @param {string} [options.size="normal"]
+ *   Pass `"short"` to reduce the text area height.
+ *
+ * @param {boolean} [options.disableLinks=false]
+ *   Do not allow links inside the text.
+ *
+ * @param {boolean} [options.disableRichtext=false]
+ *   Do not provide text formatting options.
+ *
+ * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @class
+ * @memberof module:pageflow/ui
+ */
 pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 

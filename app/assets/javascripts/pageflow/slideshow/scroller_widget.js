@@ -4,6 +4,7 @@
    * Wrapper widget around iScroll adding special bump events which
    * are triggered when scrolling to the very top or very bottom
    * (called boundary posititon below).
+   * @private
    */
   $.widget('pageflow.scroller', {
     dragThreshold: 50,
@@ -157,13 +158,11 @@
       }
     },
 
-    /**
-     * Whenever the a mousewheel event is triggered, we test whether
-     * the scroller is at the very top or at the very bottom. If so,
-     * we trigger a hintdown or hintup event the first time the mouse
-     * wheel turns and a bumpup or bumpdown event when the mouse wheel
-     * is turned to times in a short period of time.
-     */
+    // Whenever the a mousewheel event is triggered, we test whether
+    // the scroller is at the very top or at the very bottom. If so,
+    // we trigger a hintdown or hintup event the first time the mouse
+    // wheel turns and a bumpup or bumpdown event when the mouse wheel
+    // is turned to times in a short period of time.
     _initMousewheelBump: function(direction) {
       var firstBump = false;
 
@@ -189,10 +188,8 @@
       }, this));
     },
 
-    /**
-     * Trigger bumpup or bumpdown event when the a up/down key is
-     * pressed while the scroller in boundary position.
-     */
+    // Trigger bumpup or bumpdown event when the a up/down key is
+    // pressed while the scroller in boundary position.
     _initKeyboardBump: function(direction) {
       this.iscroll.on('keyboard' + direction, _.bind(function(event) {
         if (this._atBoundary(direction)) {
@@ -210,10 +207,8 @@
       }, this));
     },
 
-    /**
-     * Trigger bumpup or bumpdown when the user drags the page from a
-     * boundary position.
-     */
+    // Trigger bumpup or bumpdown when the user drags the page from a
+    // boundary position.
     _initDragGestureBump: function() {
       var allowUp = false,
           allowDown = false,
@@ -265,9 +260,7 @@
       }
     },
 
-    /**
-     * Checks whether the scroller is at the very top or very bottom.
-     */
+    // Checks whether the scroller is at the very top or very bottom.
     _atBoundary: function(direction, options) {
       options = options || {};
       var delta = options.delta || 0;
