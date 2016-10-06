@@ -49,7 +49,9 @@ module Pageflow
     end
 
     filter :title
-    filter :account
+    filter :account,
+           if: ->(_) { authorized?(:index, :accounts) },
+           collection: -> { Account.accessible_by(current_ability, :read) }
     filter :created_at
     filter :edited_at
     filter :first_published_at

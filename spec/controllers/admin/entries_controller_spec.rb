@@ -3,6 +3,31 @@ require 'spec_helper'
 describe Admin::EntriesController do
   render_views
 
+  describe '#index' do
+    describe 'account filter' do
+      it 'is displayed for account managers' do
+        account_manager = create(:user)
+        create(:account, with_manager: account_manager)
+
+        sign_in(account_manager)
+        get :index
+
+        expect(response.body).to have_selector('#q_account_id')
+      end
+
+      it 'is not displayed for account publishers and entry managers' do
+        underprivileged_user = create(:user)
+        account = create(:account, with_publisher: underprivileged_user)
+        create(:entry, with_manager: underprivileged_user, account: account)
+
+        sign_in(underprivileged_user)
+        get :index
+
+        expect(response.body).not_to have_selector('#q_account_id')
+      end
+    end
+  end
+
   describe '#show' do
     describe 'built in admin tabs' do
       it 'entry editor sees members and revisions tabs' do
