@@ -120,11 +120,11 @@ module Pageflow
 
         storyline = entry.draft.storylines.first
 
-        chapter = storyline.chapters.create!(title: 'Chapter 1')
+        chapter = storyline.chapters.create!(title: 'Chapter 1', position: 0)
         chapter.pages.create!(template: 'background_image')
         chapter.pages.create!(template: 'background_image')
 
-        chapter = storyline.chapters.create!(title: 'Chapter 2')
+        chapter = storyline.chapters.create!(title: 'Chapter 2', position: 1)
         chapter.pages.create!(template: 'video')
       end
 
