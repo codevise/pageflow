@@ -16,6 +16,14 @@ pageflow.FilesCollection = Backbone.Collection.extend({
     return '/editor/entries/' + this.getEntry().get('id') + '/files/' + this.name;
   },
 
+  fetch: function(options) {
+    options = _.extend({
+      fileType: this.fileType
+    }, options || {});
+
+    return Backbone.Collection.prototype.fetch.call(this, options);
+  },
+
   getEntry: function() {
     return this.entry || pageflow.entry;
   },

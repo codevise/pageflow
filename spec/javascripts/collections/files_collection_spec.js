@@ -1,42 +1,47 @@
 describe('FileCollection', function() {
-  var Model = Backbone.Model.extend({});
+  var f = support.factories;
 
   describe('.createForFileTypes', function() {
     it('creates file collections index by collection name', function() {
-      var fileTypes = [new pageflow.FileType({collectionName: 'image_files', model: Model, matchUpload: /^image/})];
+      var fileType = f.imageFileType();
       var files = {
         image_files: [{file_name: 'image.png'}]
       };
-      var collections = pageflow.FilesCollection.createForFileTypes(fileTypes, files);
+      var collections = pageflow.FilesCollection.createForFileTypes([fileType], files);
 
       expect(collections.image_files.name).to.eq('image_files');
-      expect(collections.image_files.model).to.eq(Model);
+      expect(collections.image_files.model).to.eq(fileType.model);
     });
 
     it('allows passing options to collection constructors', function() {
-      var fileTypes = [new pageflow.FileType({collectionName: 'image_files', model: Model, matchUpload: /^image/})];
+      var fileType = f.imageFileType();
       var files = {
         image_files: [{file_name: 'image.png'}]
       };
       var entry = {};
-      var collections = pageflow.FilesCollection.createForFileTypes(fileTypes, files, {entry: entry});
+      var collections = pageflow.FilesCollection.createForFileTypes([fileType], files, {entry: entry});
 
       expect(collections.image_files.entry).to.eq(entry);
+    });
+
+    it('sets file type on created file models', function() {
+      var fileType = f.imageFileType();
+      var files = {
+        image_files: [{file_name: 'image.png'}]
+      };
+      var entry = {};
+      var collection = pageflow.FilesCollection.createForFileTypes([fileType], files);
+
+      expect(collection.image_files.first().fileType()).to.eq(fileType);
     });
   });
 
   describe('#uploadable', function() {
     it('always contains subset of files with state uploadable', function() {
-      var fileType = new pageflow.FileType({
-        collectionName: 'image_files',
-        model: Model,
-        matchUpload: /^image/
-      });
-      var files = {
-        image_files: [{
-          file_name: 'image.png'
-        }]
-      };
+      var fileType = f.fileType();
+      var files = [{
+        file_name: 'image.png'
+      }];
       var entry = {};
       var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
 
@@ -44,6 +49,25 @@ describe('FileCollection', function() {
       collection.first().set('state', 'uploadable');
 
       expect(uploadableFiles.length).to.eq(1);
+    });
+  });
+
+  describe('#fetch', function() {
+    it('sets file type on fetched file models', function() {
+      var fileType = f.fileType();
+      var files = [{
+        file_name: 'image.png'
+      }];
+      var entry = {};
+      var collection = pageflow.FilesCollection.createForFileType(fileType, [], {entry: entry});
+
+      collection.sync = function(method, collecton, options) {
+        options.success(files);
+      };
+
+      collection.fetch();
+
+      expect(collection.first().fileType()).to.eq(fileType);
     });
   });
 });

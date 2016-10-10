@@ -1,7 +1,9 @@
 pageflow.UploadedFile = Backbone.Model.extend({
   mixins: [pageflow.stageProvider, pageflow.retryable],
 
-  initialize: function() {
+  initialize: function(attributes, options) {
+    this.options = options;
+
     this.configuration = new pageflow.FileConfiguration(
       this.get('configuration') || {}
     );
@@ -22,7 +24,7 @@ pageflow.UploadedFile = Backbone.Model.extend({
   },
 
   fileType: function() {
-    return this.collection && this.collection.fileType;
+    return this.options.fileType;
   },
 
   title: function() {

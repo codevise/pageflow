@@ -11,6 +11,8 @@ pageflow.FileUploader = pageflow.Object.extend({
     var file = new fileType.model({
       state: 'uploadable',
       file_name: upload.name
+    }, {
+      fileType: fileType
     });
 
     this.entry.getFileCollection(fileType).add(file);
