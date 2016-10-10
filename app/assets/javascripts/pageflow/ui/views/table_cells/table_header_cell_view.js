@@ -3,6 +3,8 @@ pageflow.TableHeaderCellView = pageflow.TableCellView.extend({
 
   render: function() {
     this.$el.text(this.attributeTranslation('column_header'));
+    this.$el.data('columnName', this.options.column.name);
+
     return this;
   }
 });
