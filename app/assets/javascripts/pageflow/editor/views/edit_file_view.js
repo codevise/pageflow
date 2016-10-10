@@ -4,6 +4,7 @@ pageflow.EditFileView = Backbone.Marionette.ItemView.extend({
 
   onRender: function() {
     var fileType = this.model.fileType();
+    var entry = this.options.entry || pageflow.entry;
 
     var tab = new pageflow.ConfigurationEditorTabView({
       model: this.model.configuration,
@@ -20,7 +21,7 @@ pageflow.EditFileView = Backbone.Marionette.ItemView.extend({
 
     tab.input('rights', pageflow.TextInputView, {
       model: this.model,
-      placeholder: pageflow.entry.get('default_file_rights')
+      placeholder: entry.get('default_file_rights')
     });
 
     _(fileType.configurationEditorInputs).each(function(options) {

@@ -7,6 +7,7 @@
 //= require pageflow/editor
 
 //= require_self
+//= require ./support/dominos/base
 //= require_tree ./support
 
 window.support = {};
