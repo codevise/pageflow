@@ -18,6 +18,7 @@ pageflow.FilteredFilesView = Backbone.Marionette.ItemView.extend({
     var entry = this.options.entry;
     var fileType = this.options.fileType;
     var collection = entry.getFileCollection(fileType);
+    var blankSlateText = I18n.t('pageflow.editor.templates.files_blank_slate.no_files');
 
     if (this.options.filterName) {
       if (this.filteredCollection) {
@@ -25,6 +26,7 @@ pageflow.FilteredFilesView = Backbone.Marionette.ItemView.extend({
       }
 
       collection = this.filteredCollection = collection.withFilter(this.options.filterName);
+      blankSlateText = this.filterTranslation('blank_slate');
     }
 
     this.appendSubview(new pageflow.CollectionView({
@@ -37,22 +39,32 @@ pageflow.FilteredFilesView = Backbone.Marionette.ItemView.extend({
         selectionHandler: this.options.selectionHandler,
       },
       blankSlateViewConstructor: Backbone.Marionette.ItemView.extend({
-        template: 'templates/files_blank_slate'
+        template: 'templates/files_blank_slate',
+        serializeData: function(){
+          return {
+            text: blankSlateText
+          };
+        }
       })
     }));
 
     this.ui.banner.toggle(!!this.options.filterName);
 
     if (this.options.filterName) {
-      this.ui.filterName.text(this.filterDisplayName(this.options.filterName));
+      this.ui.filterName.text(this.filterTranslation('name'));
     }
   },
 
-  filterDisplayName: function(name) {
+  filterTranslation: function(keyName, options) {
+    var filterName = this.options.filterName;
+
     return pageflow.i18nUtils.findTranslation([
-      'pageflow.editor.files.filters.' + this.options.fileType.collectionName + '.' + name,
-      'pageflow.editor.files.common_filters.' + name,
-    ]);
+      'pageflow.editor.files.filters.' +
+        this.options.fileType.collectionName + '.' +
+        filterName + '.' +
+        keyName,
+      'pageflow.editor.files.common_filters.' + keyName
+    ], options);
   },
 
   onClose: function() {
