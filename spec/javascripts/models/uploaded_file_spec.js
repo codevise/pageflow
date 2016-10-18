@@ -82,6 +82,28 @@ describe('UploadedFile', function() {
     });
   });
 
+  describe('#set', function() {
+    var f = support.factories;
+
+    describe('with applyConfigurationUpdaters option', function() {
+      it('applies file type updaters', function() {
+        var fileType = f.fileType({
+          configurationUpdaters: [
+            function(configuration, newAttributes) {
+              configuration.set(newAttributes);
+            }
+          ]
+        });
+        var file = new File({state: 'processing', configuration: {custom: 'seed'}}, {fileType: fileType});
+        var attributes = {configuration: {custom: 'updated'}};
+
+        file.set(attributes, {applyConfigurationUpdaters: true});
+
+        expect(file.configuration.get('custom')).to.eq('updated');
+      });
+    });
+  });
+
   describe('#toJSON', function() {
     it('includes rights and configuration', function() {
       var file = new File({

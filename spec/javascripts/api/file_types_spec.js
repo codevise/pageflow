@@ -48,6 +48,25 @@ describe('FileTypes', function() {
       expect(inputNames).to.eql(['custom_field', 'other_field']);
     });
 
+    it('allows adding additional configurationUpdaters', function() {
+      var fileTypes = new pageflow.FileTypes();
+      var updater1 = function() {};
+      var updater2 = function() {};
+
+      fileTypes.register('image_files', {
+        model: pageflow.ImageFile,
+        matchUpload: /^image/,
+        configurationUpdaters: [updater1]
+      });
+      fileTypes.modify('image_files', {
+        configurationUpdaters: [updater2]
+      });
+
+      fileTypes.setup([{collectionName: 'image_files'}]);
+
+      expect(fileTypes.first().configurationUpdaters).to.eql([updater1, updater2]);
+    });
+
     it('allows adding additional confirmUploadTableColumns', function() {
       var fileTypes = new pageflow.FileTypes();
 

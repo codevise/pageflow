@@ -116,7 +116,11 @@ pageflow.Entry = Backbone.Model.extend({
       this.set(_.pick(response, 'published', 'published_until', 'password_protected'));
 
       this.fileTypes.each(function(fileType) {
-        this.getFileCollection(fileType).set(response[fileType.collectionName], {add: false, remove: false});
+        this.getFileCollection(fileType).set(response[fileType.collectionName], {
+          add: false,
+          remove: false,
+          applyConfigurationUpdaters: true
+        });
         delete response[fileType.collectionName];
       }, this);
     }

@@ -1,6 +1,7 @@
 pageflow.FileTypes = pageflow.Object.extend({
   modifyableProperties: [
     'configurationEditorInputs',
+    'configurationUpdaters',
     'confirmUploadTableColumns'
   ],
 
