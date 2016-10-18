@@ -24,10 +24,23 @@ pageflow.EditFileView = Backbone.Marionette.ItemView.extend({
       placeholder: entry.get('default_file_rights')
     });
 
-    _(fileType.configurationEditorInputs).each(function(options) {
+    _(this.fileTypeInputs()).each(function(options) {
       tab.input(options.name, options.inputView, options.inputViewOptions);
     });
 
     this.appendSubview(tab);
+  },
+
+  fileTypeInputs: function() {
+    var fileType = this.model.fileType();
+
+    return _.chain(fileType.configurationEditorInputs).map(function(inputs) {
+      if (_.isFunction(inputs)) {
+        return inputs(this.model);
+      }
+      else {
+        return inputs;
+      }
+    }, this).flatten().value();
   }
 });
