@@ -21,3 +21,7 @@ Metrics/LineLength:
 # Only place spaces inside blocks written with braces.
 Style/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
+
+# Do not warn about missing magic comment
+Style/FrozenStringLiteralComment:
+  Enabled: false
