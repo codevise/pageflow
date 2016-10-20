@@ -1,23 +1,13 @@
 describe('FileUploader', function() {
   beforeEach(function() {
-    this.fileTypes = new pageflow.FileTypes();
-
-    this.fileTypes.register('image_files', {
-      model: pageflow.ImageFile,
-      matchUpload: /^image/
-    });
-
-    this.fileTypes.setup([{
-      collectionName: 'image_files',
-      typeName: 'Pageflow::ImageFile'
-    }]);
-
+    this.fileTypes = support.factories.fileTypesWithImageFileType();
     this.imageFileType = this.fileTypes.first();
 
-    this.entry = buildEntry({}, {
+    this.entry = support.factories.entry({}, {
       files: {
         image_files: new Backbone.Collection()
-      }
+      },
+      fileTypes: this.fileTypes
     });
   });
 
@@ -125,11 +115,4 @@ describe('FileUploader', function() {
       expect(this.entry.getFileCollection(this.imageFileType).length).to.eq(0);
     });
   });
-
-  function buildEntry(attributes, options) {
-    return new pageflow.Entry(attributes, _.extend({
-      storylines: new Backbone.Collection(),
-      chapters: new Backbone.Collection()
-    }, options));
-  }
 });
