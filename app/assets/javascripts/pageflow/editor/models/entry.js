@@ -19,6 +19,7 @@ pageflow.Entry = Backbone.Model.extend({
     this.configuration.parent = this;
 
     this.files = options.files || pageflow.files;
+    this.fileTypes = options.fileTypes || pageflow.editor.fileTypes;
     this.storylines = options.storylines || pageflow.storylines;
     this.storylines.parentModel = this;
     this.chapters = options.chapters || pageflow.chapters;
@@ -29,7 +30,7 @@ pageflow.Entry = Backbone.Model.extend({
     this.videoFiles = pageflow.videoFiles;
     this.audioFiles = pageflow.audioFiles;
 
-    pageflow.editor.fileTypes.each(function(fileType) {
+    this.fileTypes.each(function(fileType) {
       this.watchFileCollection(fileType.collectionName, this.getFileCollection(fileType));
     }, this);
 
@@ -114,7 +115,7 @@ pageflow.Entry = Backbone.Model.extend({
     if (response) {
       this.set(_.pick(response, 'published', 'published_until', 'password_protected'));
 
-      pageflow.editor.fileTypes.each(function(fileType) {
+      this.fileTypes.each(function(fileType) {
         this.getFileCollection(fileType).set(response[fileType.collectionName], {add: false, remove: false});
         delete response[fileType.collectionName];
       }, this);
