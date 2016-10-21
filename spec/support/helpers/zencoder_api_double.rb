@@ -14,7 +14,7 @@ module ZencoderApiDouble
 
     allow(api).to receive(:create_job).and_return(1)
     allow(api).to receive(:get_info).and_return(finished_info_result)
-    allow(api).to receive(:get_input_details).and_return(input_details)
+    allow(api).to receive(:get_details).and_return(details)
 
     api
   end
@@ -24,7 +24,7 @@ module ZencoderApiDouble
 
     allow(api).to receive(:create_job).and_return(1)
     allow(api).to receive(:get_info).and_return(failed_info_result)
-    allow(api).to receive(:get_input_details).and_return(input_details)
+    allow(api).to receive(:get_details).and_return(details)
 
     api
   end
@@ -34,7 +34,7 @@ module ZencoderApiDouble
 
     allow(api).to receive(:create_job).and_return(1)
     allow(api).to receive(:get_info).and_return(pending_info_result, finished_info_result)
-    allow(api).to receive(:get_input_details).and_return(input_details)
+    allow(api).to receive(:get_details).and_return(details)
 
     api
   end
@@ -44,7 +44,7 @@ module ZencoderApiDouble
 
     allow(api).to receive(:create_job).and_return(1)
     allow(api).to receive(:get_info).and_return(pending_info_result(options))
-    allow(api).to receive(:get_input_details).and_return(input_details)
+    allow(api).to receive(:get_details).and_return(details)
 
     api
   end
@@ -72,27 +72,28 @@ module ZencoderApiDouble
   end
 
   def pending_info_result(options = {})
-    { :state => 'encoding',
-      :progress => options.fetch(:progress, 20),
-      :finished => false }
+    {state: 'encoding',
+     progress: options.fetch(:progress, 20),
+     finished: false}
   end
 
   def finished_info_result
-    { :state => 'finished',
-      :progress => 100,
-      :finished => true }
+    {state: 'finished',
+     progress: 100,
+     finished: true}
   end
 
   def failed_info_result
-    { :state => 'failed',
-      :finished => false }
+    {state: 'failed',
+     finished: false}
   end
 
-  def input_details
-    { :format => 'ogg',
-      :width => 200,
-      :height => 100,
-      :duration_in_ms => 5000 }
+  def details
+    {format: 'ogg',
+     width: 200,
+     height: 100,
+     duration_in_ms: 5000,
+     output_presences: {avi: 'finished', gif: 'skipped'}}
   end
 end
 

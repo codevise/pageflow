@@ -48,7 +48,7 @@ module Pageflow
     end
 
     def self.fetch_input_details(file, api)
-      file.meta_data_attributes = api.get_input_details(file.job_id)
+      file.meta_data_attributes = api.get_details(file.job_id)
     rescue ZencoderApi::RecoverableError => e
       file.encoding_error_message = e.message
       throw(:halt, :pending)

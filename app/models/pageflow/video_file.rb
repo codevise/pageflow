@@ -2,6 +2,7 @@ module Pageflow
   class VideoFile < ActiveRecord::Base
     include HostedFile
     include EncodedFileStateMachine
+    include OutputSource
 
     belongs_to :confirmed_by, :class_name => 'User'
 
@@ -49,6 +50,14 @@ module Pageflow
       ZencoderAttachment.new(self, "medium.webm")
     end
 
+
+    def mp4_4k
+      ZencoderAttachment.new(self, "4k.mp4")
+    end
+
+    def mp4_fullhd
+      ZencoderAttachment.new(self, "fullhd.mp4")
+    end
 
     def mp4_high
       ZencoderAttachment.new(self, "high.mp4")
@@ -102,7 +111,11 @@ module Pageflow
     end
 
     def meta_data_attributes=(attributes)
-      self.attributes = attributes.symbolize_keys.slice(:format, :duration_in_ms, :width, :height)
+      self.attributes = attributes.symbolize_keys.slice(:format,
+                                                        :duration_in_ms,
+                                                        :width,
+                                                        :height,
+                                                        :output_presences)
     end
   end
 end

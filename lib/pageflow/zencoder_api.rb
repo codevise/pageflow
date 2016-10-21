@@ -36,18 +36,32 @@ module Pageflow
       end
     end
 
+    # @deprecated Use `get_details(job_id)` instead.
     def get_input_details(job_id)
+      get_details(job_id)
+    end
+
+    def get_details(job_id)
       with_exception_translation do
         response = Zencoder::Job.details(job_id)
 
         if response.success?
           input_details = response.body['job']['input_media_file']
+          outputs_details = response.body['job']['output_media_files']
+
+          output_presences = outputs_details.inject({}) do |presences, output|
+            if output['label'].present?
+              presences[output['label'].to_sym] = output['state']
+            end
+            presences
+          end
 
           {
-            :format => input_details["format"],
-            :duration_in_ms => input_details["duration_in_ms"],
-            :width => input_details["width"],
-            :height => input_details["height"]
+            format: input_details['format'],
+            duration_in_ms: input_details['duration_in_ms'],
+            width: input_details['width'],
+            height: input_details['height'],
+            output_presences: output_presences
           }
         else
           raise translate_zencoder_errors(response.errors)
