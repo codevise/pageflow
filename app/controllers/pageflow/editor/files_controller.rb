@@ -19,7 +19,7 @@ module Pageflow
         authorize!(:edit, entry.to_model)
         verify_edit_lock!(entry)
 
-        @file = entry.create_file(file_type.model, file_params)
+        @file = entry.create_file(file_type.model, create_params)
         @file.publish!
 
         respond_with(:editor, @file)
@@ -45,21 +45,37 @@ module Pageflow
 
       private
 
+      def create_params
+        file_attachment_params.merge(file_configuration_params)
+      end
+
+      def update_params
+        file_configuration_params
+      end
+
+      def file_attachment_params
+        file_params
+          .permit(attachment: [:tmp_path, :original_name, :content_type])
+          .merge(file_params.permit(:attachment))
+      end
+
+      def file_configuration_params
+        configuration = file_params[:configuration].try(:permit!)
+
+        file_params
+          .permit(:rights)
+          .merge(configuration: configuration)
+      end
+
+      def file_params
+        params.require(file_type.param_key)
+      end
+
       def file_type
         @file_type ||= Pageflow.config.file_types.find_by_collection_name!(params[:collection_name])
       end
 
       helper_method :file_type
-
-      def file_params
-        params.require(file_type.param_key)
-          .permit(:attachment => [:tmp_path, :original_name, :content_type])
-          .merge(params.require(file_type.param_key).permit(:attachment))
-      end
-
-      def update_params
-        params.require(file_type.param_key).permit(:rights)
-      end
     end
   end
 end

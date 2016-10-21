@@ -21,11 +21,13 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
 
       add: function(event, data) {
         try {
-          data.record = pageflow.entry.addFileUpload(data.files[0]);
-          var xhr = data.submit();
+          pageflow.fileUploader.add(data.files[0]).then(function(record) {
+            data.record = record;
+            var xhr = data.submit();
 
-          that.listenTo(data.record, 'uploadCancelled', function() {
-            xhr.abort();
+            that.listenTo(data.record, 'uploadCancelled', function() {
+              xhr.abort();
+            });
           });
         }
         catch(e) {
@@ -48,9 +50,9 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
         this.action = record.url();
 
         data.paramName = record.modelName + '[attachment]';
-        data.formData = {
+        data.formData = _.extend({
           authenticity_token: that.ui.authToken.attr('value')
-        };
+        }, pageflow.formDataUtils.fromModel(record));
       },
 
       done: function(event, data) {

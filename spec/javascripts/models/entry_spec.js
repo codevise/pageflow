@@ -1,32 +1,13 @@
 describe('Entry', function() {
   beforeEach(function() {
-    pageflow.editor = new pageflow.EditorApi();
+    this.fileTypes = support.factories.fileTypesWithImageFileType();
+    this.imageFileType = this.fileTypes.first();
 
-    pageflow.editor.fileTypes.register('image_files', {
-      model: pageflow.ImageFile,
-      matchUpload: /^image/
-    });
-
-    pageflow.editor.fileTypes.setup([{
-      collectionName: 'image_files',
-      typeName: 'Pageflow::ImageFile'
-    }]);
-    this.imageFileType = pageflow.editor.fileTypes.first();
-  });
-
-  describe('#addFileUpload', function() {
-    it('adds file to files collection of file type', function() {
-      var entry = buildEntry({}, {
-        files: {
-          image_files: new Backbone.Collection()
-        }
-      });
-      var upload = {name: 'image.png', type: 'image/png'};
-
-      var file = entry.addFileUpload(upload);
-
-      expect(entry.getFileCollection(this.imageFileType).length).to.eq(1);
-    });
+    this.buildEntry = function(attributes, options) {
+      return support.factories.entry(attributes, _.extend({
+        fileTypes: this.fileTypes
+      }, options));
+    };
   });
 
   describe('#addFileUsage', function() {
@@ -34,9 +15,7 @@ describe('Entry', function() {
 
     it('posts file usage to server', function() {
       var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, [{id: '12'}]);
-      var entry = buildEntry({id: 1}, {
-        storylines: new Backbone.Collection(),
-        chapters: new Backbone.Collection(),
+      var entry = this.buildEntry({id: 1}, {
         files: {
           image_files: new Backbone.Collection()
         }
@@ -56,7 +35,7 @@ describe('Entry', function() {
 
     it('adds file to files collection on success', function() {
       var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, [{}]);
-      var entry = buildEntry({id: 1}, {
+      var entry = this.buildEntry({id: 1}, {
         files: {
           image_files: new Backbone.Collection()
         }
@@ -76,7 +55,7 @@ describe('Entry', function() {
 
   describe('#parse', function() {
     it('updates files in files collections', function() {
-      var entry = buildEntry({id: 1}, {
+      var entry = this.buildEntry({id: 1}, {
         files: {
           image_files: pageflow.FilesCollection.createForFileType(this.imageFileType,
                                                                   [{id: 12, state: 'uploading'}])
@@ -93,7 +72,7 @@ describe('Entry', function() {
 
   describe('file collection count attribute', function() {
     it('is kept for each registed file type', function() {
-      var entry = buildEntry({}, {
+      var entry = this.buildEntry({}, {
         files: {
           image_files: new Backbone.Collection()
         }
@@ -104,11 +83,4 @@ describe('Entry', function() {
       expect(entry.get('pending_image_files_count')).to.eq(1);
     });
   });
-
-  function buildEntry(attributes, options) {
-    return new pageflow.Entry(attributes, _.extend({
-      storylines: new Backbone.Collection(),
-      chapters: new Backbone.Collection()
-    }, options));
-  }
 });

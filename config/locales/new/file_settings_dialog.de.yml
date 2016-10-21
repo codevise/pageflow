@@ -1,0 +1,11 @@
+de:
+  pageflow:
+    editor:
+      templates:
+        file_item:
+          settings: "Einstellungen bearbeiten"
+        file_settings_dialog:
+          close: "Schließen"
+      files:
+        settings_dialog_tabs:
+          general: "Metadata"

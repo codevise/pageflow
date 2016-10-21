@@ -19,6 +19,105 @@ describe('FileTypes', function() {
     });
   });
 
+  describe('#modify', function() {
+    it('allows adding additional configurationEditorInputs', function() {
+      var fileTypes = new pageflow.FileTypes();
+
+      fileTypes.register('image_files', {
+        model: pageflow.ImageFile,
+        matchUpload: /^image/,
+        configurationEditorInputs: [
+          {
+            name: 'custom_field',
+            input: pageflow.TextInputView
+          }
+        ]
+      });
+      fileTypes.modify('image_files', {
+        configurationEditorInputs: [
+          {
+            name: 'other_field',
+            input: pageflow.TextInputView
+          }
+        ]
+      });
+
+      fileTypes.setup([{collectionName: 'image_files'}]);
+      var inputNames = _(fileTypes.first().configurationEditorInputs).pluck('name');
+
+      expect(inputNames).to.eql(['custom_field', 'other_field']);
+    });
+
+    it('allows adding additional configurationUpdaters', function() {
+      var fileTypes = new pageflow.FileTypes();
+      var updater1 = function() {};
+      var updater2 = function() {};
+
+      fileTypes.register('image_files', {
+        model: pageflow.ImageFile,
+        matchUpload: /^image/,
+        configurationUpdaters: [updater1]
+      });
+      fileTypes.modify('image_files', {
+        configurationUpdaters: [updater2]
+      });
+
+      fileTypes.setup([{collectionName: 'image_files'}]);
+
+      expect(fileTypes.first().configurationUpdaters).to.eql([updater1, updater2]);
+    });
+
+    it('allows adding additional confirmUploadTableColumns', function() {
+      var fileTypes = new pageflow.FileTypes();
+
+      fileTypes.register('image_files', {
+        model: pageflow.ImageFile,
+        matchUpload: /^image/,
+        confirmUploadTableColumns: [
+          {
+            name: 'custom_field',
+            cellView: pageflow.TextTableCellView
+          }
+        ]
+      });
+      fileTypes.modify('image_files', {
+        confirmUploadTableColumns: [
+          {
+            name: 'other_field',
+            cellView: pageflow.TextTableCellView
+          }
+        ]
+      });
+
+      fileTypes.setup([{collectionName: 'image_files'}]);
+      var columnNames = _(fileTypes.first().confirmUploadTableColumns).pluck('name');
+
+      expect(columnNames).to.eql(['custom_field', 'other_field']);
+    });
+
+    it('throws error when trying to modify unsupported property', function() {
+      var fileTypes = new pageflow.FileTypes();
+
+      fileTypes.register('image_files', {
+        model: pageflow.ImageFile,
+        matchUpload: /^image/,
+        confirmUploadTableColumns: [
+          {
+            name: 'custom_field',
+            cellView: pageflow.TextTableCellView
+          }
+        ]
+      });
+      fileTypes.modify('image_files', {
+        somethingElse: [{}]
+      });
+
+      expect(function() {
+        fileTypes.setup([{collectionName: 'image_files'}]);
+      }).to.throw(/Given in modification for image_files: somethingElse/);
+    });
+  });
+
   describe('#findByUpload', function() {
     it('returns first FileType whose matchUpload method returns true', function() {
       var fileTypes = new pageflow.FileTypes();

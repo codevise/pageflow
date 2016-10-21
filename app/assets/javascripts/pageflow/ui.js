@@ -11,6 +11,7 @@
 //= require_tree ./ui/utils
 //= require_tree ./ui/views/mixins
 //= require ./ui/views/inputs/select_input_view
+//= require ./ui/views/table_cells/table_cell_view
 //= require_tree ./ui/views
 //= require_tree ./ui/templates
 

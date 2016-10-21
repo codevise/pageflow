@@ -1,0 +1,8 @@
+.presence_table_cell {
+  @include background-icon-left;
+  @include minus-icon;
+
+  &.is_present {
+    @include check-icon;
+  }
+}

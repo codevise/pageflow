@@ -142,9 +142,12 @@ pageflow.inputView = {
   },
 
   onRender: function() {
+    this.$el.addClass('input');
     this.$el.addClass(this.model.modelName + '_' + this.options.propertyName);
-    this.ui.labelText.text(this.labelText());
 
+    this.$el.data('inputPropertyName', this.options.propertyName);
+
+    this.ui.labelText.text(this.labelText());
     this.ui.inlineHelp.text(this.inlineHelpText());
 
     if (!this.inlineHelpText()) {

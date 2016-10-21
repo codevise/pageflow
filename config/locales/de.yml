@@ -1189,56 +1189,6 @@ de:
           text: "# Video\n\n*Wiedergabe einer Videodatei mit Steuerelementen* \n   \nAnders als bei „Hintergrund-Videos“ werden hier Textelemente nach ein\npaar Sekunden automatisch ausgeblendet, um die\nAufmerksamkeit auf das Bewegtbild zu lenken. Mit\nSteuerelementen kann der Nutzer das Video jederzeit\nstarten und pausieren, vor- oder zurückspulen. Ein\nweiterer Unterschied ist, dass Du wählen kannst, ob ein\nVideo automatisch gestartet wird, sobald die Seite\nangezeigt wird.  Als dezente Alternative oder Ergänzung zu\nden normalen Texteingabemöglichkeiten, kann eine\nsogenannte „Infobox“ mit Text befüllt werden.\n\nUnter Optionen lässt sich ein automatisches weiterscrollen am Ende des Videos aktivieren. \nDas kann nützlich sein, um einen nahtlosen Übergang zur nächsten Seite herzustellen.\n\nTypische Anwendungsbeispiele: Filme aller Art, Interviews,\nPortrait"
       files:
         menu_item: Dateien verwalten
-        text: |-
-          # Dateien verwalten
-
-          Pageflow verarbeitet alle gängigen Medien-Formate (Bild,
-          Audio, Video) und rechnet diese in unterschiedliche Formate
-          und Qualitäten um. Das System passt dann automatisch die
-          Ausgabequalität der Medien an die jeweilige
-          Internetverbindung und das Endgerät des Users
-          an. Prinzipiell sollten Dateien in der bestmöglichen
-          Auflösung verwendet werden und vor dem Upload nicht
-          komprimiert sein. Zudem ist es für ein strukturiertes
-          Arbeiten enorm hilfreich, sämtliche Audios,
-          Hintergrund-Video-Loops, Filme, Bilder und Texte bereits im
-          Vorfeld in der gewünschten Version in einem separaten Ordner
-          auf dem eigenen Rechner abzulegen.
-
-          ## Dateien hochladen & verwalten
-
-          Von der Gliederung führt der Menüpunkt "Dateien verwalten"
-          zur Liste der bereits hochgeladenen Dateien. Über die
-          Schaltfläche "Hinzufügen -> Hochladen" fügst Du weitere
-          Dateien hinzu.
-
-          Nach dem Hochladen werden die Dateien zunächst auf dem
-          Server verarbeitet. Dies kann bei längeren Videos einige
-          Minuten in Anspruch nehmen. Klicke auf das Thumbnail einer
-          Datei, um den aktuellen Verarbeitungsstatus
-          einzublenden. Hier lassen sich auch die allgemeinen
-          Eigenschaften, wie Bildgröße oder Audiolänge einsehen und
-          die Originaldatei herunterladen.
-
-          Dateien können bereits in Seiten verwendet werden, auch wenn
-          die Verarbeitung noch nicht abgeschlossen ist. Während des
-          Ladevorgangs kann also problemlos weiter gearbeitet werden.
-
-          ## Urheberrechte von Dateien
-
-          Bei jeder einzelnen Mediendatei (Bilder, Videos, Audios)
-          gibt es bei Klick auf das jeweilige Thumbnail die
-          Möglichkeit, Angaben zu den Urheberrechten zu machen, die
-          dann automatisch im „Impressum“ angezeigt werden.
-
-          ## Dateien wiederverwenden
-
-          Videos, Audios und Bilder können in mehr als einem Beitrag
-          verwendet werden. So müssen z.B. Videos nicht mehrfach
-          hochgeladen und verarbeitet werden. Klicke hierfür unter
-          "Dateien verwalten“ auf "Hinzufügen -> Wiederverwenden", um
-          andere Beiträge nach Dateien zu durchsuchen und sie in den
-          bearbeiteten Beitrag zu übernehmen.
       meta_data:
         menu_item: Titel und Optionen
         text: |

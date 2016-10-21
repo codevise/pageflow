@@ -7,7 +7,17 @@ pageflow.FileType = pageflow.Object.extend({
     this.paramKey = options.paramKey;
     this.i18nKey = options.i18nKey;
 
+    this.confirmUploadTableColumns = options.confirmUploadTableColumns || [];
+    this.configurationEditorInputs = [].concat(options.configurationEditorInputs || []);
+    this.configurationUpdaters = options.configurationUpdaters || [];
     this.metaDataAttributes = options.metaDataAttributes || [];
+
+    this.settingsDialogTabs = [
+      {
+        name: 'general',
+        view: pageflow.EditFileView
+      }
+    ].concat(options.settingsDialogTabs || []);
 
     if (typeof options.matchUpload === 'function') {
       this.matchUpload = options.matchUpload;

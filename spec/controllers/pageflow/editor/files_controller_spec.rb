@@ -67,6 +67,29 @@ module Pageflow
         expect(response.status).to eq(200)
       end
 
+      it 'allows to set rights and configuration' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+        post(:create,
+             entry_id: entry,
+             collection_name: 'image_files',
+             image_file: {
+               attachment: fixture_upload,
+               rights: 'someone',
+               configuration: {
+                 some: 'value'
+               }
+             },
+             format: 'json')
+
+        file = entry.image_files.last
+        expect(file.rights).to eq('someone')
+        expect(file.configuration['some']).to eq('value')
+      end
+
       it 'creates file for entry' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
@@ -191,7 +214,7 @@ module Pageflow
     end
 
     describe '#update' do
-      it 'signed in editor of the entry can update rights' do
+      it 'signed in editor of the entry can update rights and configuration' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
         file = create(:image_file, used_in: entry.draft, rights: 'old')
@@ -201,11 +224,15 @@ module Pageflow
         patch(:update,
               collection_name: 'image_files',
               id: file,
-              image_file: {rights: 'new'},
+              image_file: {
+                rights: 'new',
+                configuration: {some: 'value'}
+              },
               format: 'json')
 
         expect(response.status).to eq(204)
         expect(file.reload.rights).to eq('new')
+        expect(file.configuration['some']).to eq('value')
       end
 
       it 'does not allow to update file if the signed in user is not editor for its entry' do
