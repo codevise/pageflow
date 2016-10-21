@@ -22,16 +22,16 @@
     "confirm",
     "alert",
 
-    "chai": true,
-    "sinon": true,
-    "support": true,
+    "chai",
+    "sinon",
+    "support",
 
-    "describe": true,
-    "it": true,
-    "before": true,
-    "after": true,
-    "beforeEach": true,
-    "afterEach": true,
-    "expect": true
+    "describe",
+    "it",
+    "before",
+    "after",
+    "beforeEach",
+    "afterEach",
+    "expect"
   ]
 }
