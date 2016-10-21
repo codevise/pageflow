@@ -8,10 +8,12 @@ pageflow.app.addInitializer(function() {
     });
   });
 
-  window.editor = new pageflow.SidebarRouter({
+  pageflow.editor.router = new pageflow.SidebarRouter({
     controller: new pageflow.SidebarController({
       region: pageflow.app.sidebarRegion,
       entry: pageflow.entry
     })
   });
+
+  window.editor = pageflow.editor.router;
 });

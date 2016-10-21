@@ -70,6 +70,10 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
   },
 
   update: function() {
+    if (this.isClosed) {
+      return;
+    }
+
     this.$el.attr('data-id', this.model.id);
     this.ui.fileName.text(this.model.get('file_name') || '(Unbekannt)');
 

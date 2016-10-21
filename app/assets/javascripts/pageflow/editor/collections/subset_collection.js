@@ -55,5 +55,10 @@ pageflow.SubsetCollection = Backbone.Collection.extend({
 
   url: function() {
     return this.parentModel.url() + _.result(this.parent, 'url');
+  },
+
+  dispose: function() {
+    this.stopListening();
+    this.reset();
   }
 });
