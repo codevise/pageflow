@@ -5,6 +5,7 @@
   "trailing": true,
   "maxlen": 100,
   "unused": "vars",
+  "expr": true,
   "predef": [
     "jQuery",
     "$",
@@ -19,6 +20,18 @@
     "editor",
     
     "confirm",
-    "alert"
+    "alert",
+
+    "chai": true,
+    "sinon": true,
+    "support": true,
+
+    "describe": true,
+    "it": true,
+    "before": true,
+    "after": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "expect": true
   ]
 }
