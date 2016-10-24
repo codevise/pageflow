@@ -1,5 +1,16 @@
 # CHANGELOG
 
+### Version 0.11.2
+
+2016-10-24
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.11.1...v0.11.2)
+
+- Bug fix: Fix video loop on safari 10 on el capitan.
+  ([#664](https://github.com/codevise/pageflow/pull/664))
+- Bug fix: Fix sharing menu in mobile navigation
+  ([#662](https://github.com/codevise/pageflow/pull/662))
+
 ### Version 0.11.1
 
 2016-10-05
