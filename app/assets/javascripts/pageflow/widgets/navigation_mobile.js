@@ -43,6 +43,7 @@
         var sharingMobile = $(this).parents('.sharing_mobile');
 
         scroller = new IScroll(this, {
+          preventDefault: false,
           mouseWheel: true,
           bounce: false,
           probeType: 3
