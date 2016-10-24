@@ -11,8 +11,20 @@ pageflow.browser.agent = {
     return this.matchesSafari9() && !this.matchesMobilePlatform();
   },
 
+  matchesDesktopSafari10: function() {
+    return this.matchesSafari10() && !this.matchesMobilePlatform();
+  },
+
   matchesSafari9: function() {
     var matchers = [/Safari\//i, /Version\/9/i];
+
+    return _.all(matchers, function(matcher) {
+      return navigator.userAgent.match(matcher);
+    });
+  },
+
+  matchesSafari10: function() {
+    var matchers = [/Safari\//i, /Version\/10/i];
 
     return _.all(matchers, function(matcher) {
       return navigator.userAgent.match(matcher);
