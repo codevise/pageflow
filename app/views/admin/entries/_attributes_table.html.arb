@@ -35,4 +35,9 @@ attributes_table_for entry do
   row :url do
     pretty_entry_url(entry)
   end
+  row :embed_code do
+    embed_code_field(embed_code_entry_snippet(entry),
+                     name: :entry_embed_code,
+                     hint: I18n.t('pageflow.admin.entries.embed_code_hint'))
+  end
 end

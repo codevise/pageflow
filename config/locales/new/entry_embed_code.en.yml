@@ -1,0 +1,9 @@
+en:
+  pageflow:
+    admin:
+      entries:
+        embed_code_hint: "Embed the published entry on a website."
+  activerecord:
+    attributes:
+      pageflow/entry:
+        embed_code: "Embed"

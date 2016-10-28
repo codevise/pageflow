@@ -1,0 +1,9 @@
+de:
+  pageflow:
+    admin:
+      entries:
+        embed_code_hint: "Bette den veröffentlichten Pageflow auf einer Website ein."
+  activerecord:
+    attributes:
+      pageflow/entry:
+        embed_code: "Einbetten"
