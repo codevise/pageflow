@@ -1,0 +1,13 @@
+.embed_code {
+  $hint-color: #9c9c9c;
+
+  input {
+    width: 100%;
+  }
+
+  p {
+    margin: 5px 0 0 0;
+    color: $hint-color;
+    font-style: italic;
+  }
+}

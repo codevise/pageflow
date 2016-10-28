@@ -155,6 +155,7 @@ module Pageflow
     controller do
       helper FoldersHelper
       helper EntriesHelper
+      helper EmbedCodeHelper
       helper Admin::EntriesHelper
       helper Admin::FeaturesHelper
       helper Admin::FormHelper

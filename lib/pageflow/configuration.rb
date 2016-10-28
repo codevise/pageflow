@@ -169,6 +169,11 @@ module Pageflow
     #     end
     attr_accessor :public_entry_url_options
 
+    # Either a lambda or an object with a `call` method taking a
+    # {Theming} as paramater and returing a hash of options used to
+    # construct the embed url of a published entry.
+    attr_accessor :entry_embed_url_options
+
     # Submit video/audio encoding jobs only after the user has
     # explicitly confirmed in the editor. Defaults to false.
     attr_accessor :confirm_encoding_jobs
@@ -266,6 +271,7 @@ module Pageflow
       @theming_request_scope = CnameThemingRequestScope.new
       @public_entry_request_scope = lambda { |entries, request| entries }
       @public_entry_url_options = Pageflow::ThemingsHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
+      @entry_embed_url_options = {protocol: 'https'}
 
       @confirm_encoding_jobs = false
 
