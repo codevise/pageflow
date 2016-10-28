@@ -295,6 +295,24 @@ module Pageflow
           end
         end
 
+        it 'sets X-Frame-Options header' do
+          entry = create(:entry, :published)
+
+          get(:show, id: entry)
+
+          expect(response.headers).to include('X-Frame-Options')
+        end
+
+        context 'with embed parameter' do
+          it 'does not set X-Frame-Options header' do
+            entry = create(:entry, :published)
+
+            get(:show, id: entry, embed: '1')
+
+            expect(response.headers).not_to include('X-Frame-Options')
+          end
+        end
+
         context 'https mode' do
           let(:entry) { create(:entry, :published) }
 

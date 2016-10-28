@@ -63,8 +63,11 @@ Pageflow::Engine.routes.draw do
   get ':entry_id/audio/:id', :to => 'files#show', :as => :short_audio_file, :defaults => {:collection_name => 'audio_files'}
 
   resources :entries, :only => [:show]
-  get ':id', :to => 'entries#show', :as => :short_entry
-  get '/', :to => 'entries#index', :as => :public_root
 
-  get ':id/pages/:page_index', :to => 'entries#page'
+  get ':id', to: 'entries#show', as: :short_entry
+  get ':id/embed', to: 'entries#show', defaults: {embed: '1'}, as: :entry_embed
+
+  get '/', to: 'entries#index', as: :public_root
+
+  get ':id/pages/:page_index', to: 'entries#page'
 end
