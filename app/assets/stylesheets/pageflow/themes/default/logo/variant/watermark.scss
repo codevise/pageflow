@@ -5,6 +5,11 @@
 /// - `"all-pages"`: on all pages
 $logo-watermark-variant-fade-in-near-top: "first-page" !default;
 
+/// Fade in logo when header is active. If the header logo is
+/// inverted on the current page, the non-inverted logo variant
+/// is displayed while the header is active.
+$logo-watermark-variant-fade-in-with-header: false !default;
+
 @mixin logo-variant-watermark(
   $top,
   $width,
@@ -81,6 +86,22 @@ $logo-watermark-variant-fade-in-near-top: "first-page" !default;
   } @else {
     .header.near_top .header_logo {
       opacity: 1;
+    }
+  }
+
+  @if $logo-watermark-variant-fade-in-with-header {
+    .header {
+      &.active .header_logo {
+        opacity: 1;
+      }
+
+      &.invert.active .header_logo:before {
+        opacity: 1;
+      }
+
+      &.invert.active .header_logo:after {
+        opacity: 0;
+      }
     }
   }
 
