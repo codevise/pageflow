@@ -10,17 +10,17 @@
     height: 42px;
   }
 
-  .scroll_indicator {
+  .navigation_scroll_indicator {
     @extend %pageflow_sprite_icon;
     width: 45px;
     right: 20px;
   }
 
-  .scroll_indicator.top {
+  .navigation_scroll_indicator.top {
     @include pageflow-sprite-icon-arrow-up($offset: -5px);
   }
 
-  .scroll_indicator.bottom {
+  .navigation_scroll_indicator.bottom {
     @include pageflow-sprite-icon-arrow-down($offset: -5px);
   }
 
