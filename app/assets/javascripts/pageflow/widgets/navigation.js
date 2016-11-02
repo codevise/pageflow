@@ -23,7 +23,7 @@
         $('li.mute', element).hide();
         $('.navigation_bar_bottom', element).css('height', '224px');
         $('.scroller', element).css('bottom', '224px');
-        $('.scroll_indicator.bottom', element).css('bottom', '190px');
+        $('.navigation_scroll_indicator.bottom', element).css('bottom', '190px');
       }
 
       /* header button */
@@ -105,14 +105,14 @@
 
       var initiateIndicators = function() {
         setTimeout(function() {
-          $('.scroll_indicator', element).show();
+          $('.navigation_scroll_indicator', element).show();
           toggleIndicators();
         }, 500);
       };
 
       $('.scroller', element).each(function () {
-        var bottomIndicator = $('.scroll_indicator.bottom', element),
-          topIndicator = $('.scroll_indicator.top', element),
+        var bottomIndicator = $('.navigation_scroll_indicator.bottom', element),
+          topIndicator = $('.navigation_scroll_indicator.top', element),
           scrollUpIntervalID, scrollDownIntervalID,
           hideOverlay = function () {
             overlays.addClass('hidden').removeClass('visible');
@@ -255,7 +255,7 @@
       /* fullscreen button */
       $('.navigation_bar_bottom .fullscreen a', element).fullscreenButton();
 
-      $('.button, .navigation_mute, .scroll_indicator', element).on({
+      $('.button, .navigation_mute, .navigation_scroll_indicator', element).on({
         'touchstart mousedown': function() {
           $(this).addClass('pressed');
         },
