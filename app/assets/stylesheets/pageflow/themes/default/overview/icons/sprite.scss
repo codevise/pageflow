@@ -13,7 +13,7 @@
     }
   }
 
-  .scroll_indicator {
+  .overview_scroll_indicator {
     &.left {
       @include pageflow-sprite-icon-arrow-left;
     }

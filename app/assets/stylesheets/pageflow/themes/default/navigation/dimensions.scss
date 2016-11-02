@@ -52,7 +52,7 @@ $scroll-indicator-offset: 35px;
     bottom: $bottom-height;
   }
 
-  .scroll_indicator {
+  .navigation_scroll_indicator {
     height: $scroll-indicator-height;
 
     &.bottom {
@@ -69,7 +69,7 @@ $scroll-indicator-offset: 35px;
       top: $top-height + $item-height;
     }
 
-    .scroll_indicator.top {
+    .navigation_scroll_indicator.top {
       top: $top-height + $item-height - $scroll-indicator-offset;
     }
   }

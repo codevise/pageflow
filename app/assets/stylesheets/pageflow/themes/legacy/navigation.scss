@@ -161,12 +161,12 @@ $nav-color: #9c9c9c;
       top: 224px;
     }
 
-    .scroll_indicator.top {
+    .navigation_scroll_indicator.top {
       top: 189px;
     }
   }
 
-  a.scroll_indicator {
+  a.navigation_scroll_indicator {
     $normal-offset: -14px;
     $hover-offset: -115px;
     $pressed-offset: -64px;
