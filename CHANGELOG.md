@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 0.11.3
+
+2016-11-02
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.11.2...v0.11.3)
+
+- Bug fix: Fix css class collision in widget scroll indicators
+  ([#668](https://github.com/codevise/pageflow/pull/668))
+
 ### Version 0.11.2
 
 2016-10-24
