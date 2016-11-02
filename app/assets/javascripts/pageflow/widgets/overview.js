@@ -66,13 +66,13 @@ jQuery(function($) {
           scrollToActive: '.ov_chapter'
         });
 
-        this.element.find('.scroll_indicator.left').scrollButton({
+        this.element.find('.overview_scroll_indicator.left').scrollButton({
           scroller: scroller,
           page: true,
           direction: 'left'
         });
 
-        this.element.find('.scroll_indicator.right').scrollButton({
+        this.element.find('.overview_scroll_indicator.right').scrollButton({
           scroller: scroller,
           page: true,
           direction: 'right'

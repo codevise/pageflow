@@ -101,7 +101,7 @@
       height: auto;
     }
 
-    .scroll_indicator {
+    .navigation_scroll_indicator {
       @include background-icon-center($font-size: 25px, $color: $scroll-indicator-color);
       font-weight: bold;
       position: absolute;
