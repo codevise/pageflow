@@ -44,7 +44,9 @@ pageflow.FilesExplorerView = Backbone.Marionette.ItemView.extend({
     });
 
     pageflow.editor.fileTypes.each(function(fileType) {
-      this.tab(fileType);
+      if (fileType.topLevelType) {
+        this.tab(fileType);
+      }
     }, this);
 
     this.ui.filesPanel.append(this.subview(this.tabsView).el);
