@@ -33,6 +33,7 @@ en:
           label:
             column_header: Label
             missing: Label missing
+          no_files_blank_slate: Currently, there are no text tracks for this file.
           srclang:
             column_header: Language
             cell_title:

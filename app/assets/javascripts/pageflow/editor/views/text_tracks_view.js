@@ -7,7 +7,8 @@ pageflow.TextTracksView = Backbone.Marionette.Layout.extend({
   },
 
   ui: {
-    filesPanel: '.files_panel'
+    filesPanel: '.files_panel',
+    selectedFileHeader: '.selected_file_header'
   },
 
   events: {
@@ -25,7 +26,8 @@ pageflow.TextTracksView = Backbone.Marionette.Layout.extend({
       collection: this.model.nestedFiles(this.options.supersetCollection),
       fileType: pageflow.editor.fileTypes.findByCollectionName('text_track_files'),
       selection: this.selection,
-      model: this.model
+      model: this.model,
+      tableBlankSlateText: I18n.t('pageflow.editor.nested_files.text_track_files.no_files_blank_slate')
     });
 
     this.ui.filesPanel.append(this.subview(this.nestedFilesView).el);
@@ -45,9 +47,11 @@ pageflow.TextTracksView = Backbone.Marionette.Layout.extend({
       this.selectedFileRegion.show(new pageflow.EditFileView({
         model: selectedFile
       }));
+      this.ui.selectedFileHeader.toggle(true);
     }
     else {
       this.selectedFileRegion.close();
+      this.ui.selectedFileHeader.toggle(false);
     }
   },
 

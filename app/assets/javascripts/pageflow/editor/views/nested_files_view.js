@@ -16,6 +16,10 @@ pageflow.NestedFilesView = Backbone.Marionette.ItemView.extend({
     this.listenTo(this.collection, 'add', this.selectNewFile);
     this.listenTo(this.collection, 'remove', this.selectNextFileIfSelectionDeleted);
     this.listenTo(this.options.selection, 'change', this.setNextFile);
+    this.listenTo(this.collection, 'add', this.update);
+    this.listenTo(this.collection, 'remove', this.update);
+    this.listenTo(this.collection, 'request', this.update);
+    this.listenTo(this.collection, 'sync', this.update);
   },
 
   onRender: function() {
@@ -30,7 +34,8 @@ pageflow.NestedFilesView = Backbone.Marionette.ItemView.extend({
       ],
       columns: this.columns(this.options.fileType),
       selection: this.options.selection,
-      selectionAttribute: 'file'
+      selectionAttribute: 'file',
+      blankSlateText: this.options.tableBlankSlateText
     }));
 
     this.update();

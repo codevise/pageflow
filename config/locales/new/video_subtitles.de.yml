@@ -33,6 +33,7 @@ de:
           label:
             column_header: Label
             missing: Label fehlt
+          no_files_blank_slate: Für diese Datei gibt es momentan keine Textspuren.
           srclang:
             column_header: Sprache
             cell_title:

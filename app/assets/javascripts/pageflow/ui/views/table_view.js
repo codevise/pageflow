@@ -26,7 +26,14 @@ pageflow.TableView = Backbone.Marionette.ItemView.extend({
         selection: this.options.selection,
         selectionAttribute: this.options.selectionAttribute,
         attributeTranslationKeyPrefixes: this.options.attributeTranslationKeyPrefixes
-      }
+      },
+      blankSlateViewConstructor: Backbone.Marionette.ItemView.extend({
+        tagName: 'tr',
+        className: 'blank_slate',
+        template: function() {
+          return this.options.blankSlateText;
+        }.bind(this)
+      })
     }));
   }
 });
