@@ -15,6 +15,7 @@
  *
  * will be used for the label. And the key
  *
+ *     pageflow.ui.inline_help.page.title_html
  *     pageflow.ui.inline_help.page.title
  *
  * will be used for the inline help.
@@ -35,8 +36,11 @@
  *
  * Accordingly, for the inline help:
  *
+ *     some.attributes.title.inline_help_html
  *     some.attributes.title.inline_help
+ *     fallback.attributes.title.inline_help_html
  *     fallback.attributes.title.inline_help
+ *     pageflow.ui.inline_help.post.title_html
  *     pageflow.ui.inline_help.post.title
  *
  * This setup allows to keep all translation keys for an attribute
@@ -57,12 +61,18 @@
  * attribute translation key prefixes take precedence over suffixed
  * keys:
  *
+ *     some.attributes.title.inline_help_html
  *     some.attributes.title.inline_help
+ *     some.attributes.title.inline_help_disabled_html
  *     some.attributes.title.inline_help_disabled
+ *     fallback.attributes.title.inline_help_html
  *     fallback.attributes.title.inline_help
+ *     fallback.attributes.title.inline_help_disabled_html
  *     fallback.attributes.title.inline_help_disabled
+ *     pageflow.ui.inline_help.post.title_html
  *     pageflow.ui.inline_help.post.title
- *     pageflow.ui.inline_help.post.title_disabled *
+ *     pageflow.ui.inline_help.post.title_disabled_html
+ *     pageflow.ui.inline_help.post.title_disabled
  *
  * @param {string} options
  *   Common constructor options for all views that include this mixin.
@@ -80,10 +90,10 @@
  * @param {boolean} [options.disabled]
  *   Render input as disabled.
  *
- * @param {string} [options.visibleBinding] Name of an attribute to
- *   control whether the input is visible. If the `visible` and
- *   `visibleBindingValue` options are not set, input will be visible
- *   whenever this attribute has a truthy value.
+ * @param {string} [options.visibleBinding]
+ *   Name of an attribute to control whether the input is visible. If
+ *   the `visible` and `visibleBindingValue` options are not set,
+ *   input will be visible whenever this attribute has a truthy value.
  *
  * @param {function|boolean} [options.visible]
  *   A Function taking the value of the `visibleBinding` attribute as
@@ -148,7 +158,7 @@ pageflow.inputView = {
     this.$el.data('inputPropertyName', this.options.propertyName);
 
     this.ui.labelText.text(this.labelText());
-    this.ui.inlineHelp.text(this.inlineHelpText());
+    this.ui.inlineHelp.html(this.inlineHelpText());
 
     if (!this.inlineHelpText()) {
       this.ui.inlineHelp.hide();
@@ -181,7 +191,7 @@ pageflow.inputView = {
       keys = pageflow.i18nUtils.translationKeysWithSuffix(keys, 'disabled');
     }
 
-    return pageflow.i18nUtils.findTranslation(keys, {defaultValue: ''});
+    return pageflow.i18nUtils.findTranslation(keys, {defaultValue: '', html: true});
   },
 
   updateDisabled: function() {

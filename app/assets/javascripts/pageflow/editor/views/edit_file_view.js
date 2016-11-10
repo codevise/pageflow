@@ -10,7 +10,9 @@ pageflow.EditFileView = Backbone.Marionette.ItemView.extend({
       model: this.model.configuration,
       attributeTranslationKeyPrefixes: [
         'pageflow.editor.files.attributes.' + fileType.collectionName,
-        'pageflow.editor.files.common_attributes'
+        'pageflow.editor.files.common_attributes',
+        'pageflow.editor.nested_files.' + fileType.collectionName,
+        'pageflow.editor.nested_files.common_attributes'
       ]
     });
 

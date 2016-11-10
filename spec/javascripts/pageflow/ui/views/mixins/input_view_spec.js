@@ -173,7 +173,7 @@ describe('pageflow.inputView', function() {
 
       describe('with missing prefixed attribute translation', function() {
         support.useFakeTranslations({
-          'pageflow.ui.inline_help.page.title': 'Model/Attribute Help'
+          'pageflow.ui.inline_help.page.title_html': '<strong>Model/Attribute Help</strong>'
         });
 
         it('falls back to model/attribute based inline help translation', function() {
@@ -187,7 +187,7 @@ describe('pageflow.inputView', function() {
 
           var result = view.inlineHelpText();
 
-          expect(result).to.eq('Model/Attribute Help');
+          expect(result).to.eq('<strong>Model/Attribute Help</strong>');
         });
       });
     });

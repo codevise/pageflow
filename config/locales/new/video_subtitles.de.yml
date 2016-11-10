@@ -17,6 +17,9 @@ de:
           text_track_tab: Textspuren
           video_settings_tab: Video-Details
       files:
+        common_attributes:
+          original_url:
+            label: Original
         settings_dialog_tabs:
           text_tracks: Textspuren
       nested_files:
@@ -24,14 +27,20 @@ de:
           delete:
             column_header: ''
             cell_title: Textspur löschen
+          file_name:
+            inline_help_html: <ul><li>Wenn der Dateiname dem Schema <strong>dateiname.wx_YZ.vtt</strong> folgt, findet Pageflow automatisch den Sprachcode, in diesem Fall <strong>wx</strong>.</li><li>Ein <strong>Beispiel-Dateiname</strong> für Deutsch (de) ist <strong>untertitel.de_DE.vtt</strong>.</li></ul>
           kind:
             column_header: Art
             cell_title:
               subtitles: Übersetzungs-Textspur
               captions: Ton-Ersatz-Textspur
               descriptions: Bild-Ersatz-Textspur
+            inline_help_html: <ul><li><strong>Ton-Ersatz-Textspuren</strong> richten sich an Nutzer, welche eine Textspur besser verstehen als eine Tonspur.</li><li><strong>Übersetzungs-Textspuren</strong> richten sich an Nutzer, welche eine andere Sprache besser verstehen als die Sprache der Tonspur.</li><li><strong>Bild-Ersatz-Textspuren</strong> richten sich an Nutzer, welche eine Textspur besser verstehen als eine Bildspur. Bild-Ersatz-Textspuren werden in der Regel von Screenreadern o.ä. vorgelesen, welche die Nutzer bereithalten.</li></ul>
+            label: Art
           label:
             column_header: Label
+            inline_help: Wird im Textspuren-Auswahlmenü des Media Players angezeigt.
+            label: Label
             missing: Label fehlt
           no_files_blank_slate: Für diese Datei gibt es momentan keine Textspuren.
           srclang:
@@ -39,6 +48,8 @@ de:
             cell_title:
               present: "Ausgefüllt: %{value}"
               blank: "Noch nicht ausgefüllt"
+            inline_help_html: <ul><li>Die Sprache einer Textspur wird als Zwei-Buchstaben-Code nach ISO 639.1 angegeben.</li> <li><strong>Beispiele:</strong> 'de' für Deutsch oder 'en' für Englisch.</li> <li>Den Sprachcode findet man meist auf der Wikipedia-Seite zur jeweiligen Sprache.</li></ul>
+            label: Sprache
       templates:
         background_positioning:
           close: Schließen

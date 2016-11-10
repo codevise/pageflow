@@ -27,7 +27,8 @@ pageflow.TextTracksView = Backbone.Marionette.Layout.extend({
       fileType: pageflow.editor.fileTypes.findByCollectionName('text_track_files'),
       selection: this.selection,
       model: this.model,
-      tableBlankSlateText: I18n.t('pageflow.editor.nested_files.text_track_files.no_files_blank_slate')
+      tableBlankSlateText:
+      I18n.t('pageflow.editor.nested_files.text_track_files.no_files_blank_slate')
     });
 
     this.ui.filesPanel.append(this.subview(this.nestedFilesView).el);
@@ -45,7 +46,10 @@ pageflow.TextTracksView = Backbone.Marionette.Layout.extend({
     var selectedFile = this.selection.get('file');
     if (selectedFile) {
       this.selectedFileRegion.show(new pageflow.EditFileView({
-        model: selectedFile
+        model: selectedFile,
+        attributeTranslationKeyPrefixes: [
+          'pageflow.editor.nested_files.text_track_files'
+        ]
       }));
       this.ui.selectedFileHeader.toggle(true);
     }
