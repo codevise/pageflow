@@ -1,6 +1,33 @@
-&.text_tracks {
+.text_tracks {
+  height: 700px;
+
+  .text_tracks_container {
+    background-color: #fff;
+    min-height: 100%;
+  }
+
+  .files_upload_panel {
+    position: absolute;
+    top: 80px;
+    right: 370px;
+    bottom: 50px;
+    left: 20px;
+    overflow: auto;
+  }
+
+  .selected_file_panel {
+    position: absolute;
+    right: 20px;
+    top: 80px;
+    width: 330px;
+  }
+
+  .table_view {
+    width: 100%;
+  }
+
   .upload {
-    @include icon-button;
-    @include up-icon;
+    position: relative;
+    top: 12px;
   }
 }
