@@ -30,6 +30,10 @@ pageflow.EditFileView = Backbone.Marionette.ItemView.extend({
       tab.input(options.name, options.inputView, options.inputViewOptions);
     });
 
+    tab.input('original_url', pageflow.UrlDisplayView, {
+      model: this.model
+    });
+
     this.appendSubview(tab);
   },
 

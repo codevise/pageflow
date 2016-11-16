@@ -58,9 +58,13 @@ de:
         text_tracks:
           edit_file_header: Metadaten
           upload: Hinzufügen
-      ui:
-        text_table_cell_view:
-          empty: (leer)
+    ui:
+      templates:
+        inputs:
+          url_display:
+            link_text: Herunterladen
+      text_table_cell_view:
+        empty: (leer)
     languages:
       ar: Arabisch
       cs: Tschechisch
