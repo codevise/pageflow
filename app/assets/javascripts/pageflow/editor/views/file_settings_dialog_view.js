@@ -17,9 +17,8 @@ pageflow.FileSettingsDialogView = Backbone.Marionette.ItemView.extend({
 
     _.each(this.model.fileType().settingsDialogTabs, function(options) {
       this.tabsView.tab(options.name, _.bind(function() {
-        return this.subview(new options.view({
-          model: this.model
-        }));
+        return this.subview(new options.view(
+          _.extend({model: this.model}, options.viewOptions)));
       }, this));
     }, this);
 
