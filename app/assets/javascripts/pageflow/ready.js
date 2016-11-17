@@ -9,6 +9,8 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
       });
 
       slideshow.each(function() {
+        pageflow.events.trigger('seed:loaded');
+
         pageflow.entryData = new pageflow.SeedEntryData(
           pageflow.seed
         );
