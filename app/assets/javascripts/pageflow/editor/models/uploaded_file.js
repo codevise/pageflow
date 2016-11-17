@@ -18,6 +18,12 @@ pageflow.UploadedFile = Backbone.Model.extend({
       }
     });
 
+    this.listenTo(this, 'change:rights', function() {
+      if (!this.isNew()) {
+        this.save();
+      }
+    });
+
     this.listenTo(this, 'change', function(model, options) {
       if (options.applyConfigurationUpdaters) {
         this.configuration.applyUpdaters(this.fileType().configurationUpdaters,
