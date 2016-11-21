@@ -89,7 +89,6 @@ module Pageflow
         expect(video_file_seed).to have_key('thumbnail_url')
         expect(video_file_seed).to have_key('url')
         expect(video_file_seed).to have_key('usage_id')
-        expect(video_file_seed).to have_key('nested_files')
         expect(video_file_seed).to have_key('height')
       end
 
@@ -97,13 +96,12 @@ module Pageflow
         revision = create(:revision, :published)
         entry = create(:entry, published_revision: revision)
         published_entry = PublishedEntry.new(entry)
-        audio_file = create(:audio_file, used_in: entry.draft)
-        create(:file_usage, revision: revision, file: audio_file)
-        create(:text_track_file, parent_file: audio_file, entry: entry)
+        video_file = create(:video_file, used_in: entry.draft)
+        create(:file_usage, revision: revision, file: video_file)
+        create(:text_track_file, parent_file: video_file, entry: entry)
 
         files_seed = JSON.parse(helper.files_json_seeds(published_entry))
-        text_track_file_seed = files_seed['audio_files']
-                               .first['nested_files']['text_track_files'].first
+        text_track_file_seed = files_seed['text_track_files'].first
 
         expect(text_track_file_seed).to have_key('id')
         expect(text_track_file_seed).to have_key('state')
@@ -113,6 +111,8 @@ module Pageflow
         expect(text_track_file_seed).to have_key('file_name')
         expect(text_track_file_seed).to have_key('url')
         expect(text_track_file_seed).to have_key('original_url')
+        expect(text_track_file_seed).to have_key('parent_file_id')
+        expect(text_track_file_seed).to have_key('parent_file_model_type')
       end
 
       it 'renders specified template' do
