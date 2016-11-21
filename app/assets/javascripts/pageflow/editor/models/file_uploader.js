@@ -17,16 +17,27 @@ pageflow.FileUploader = pageflow.Object.extend({
       fileType: fileType
     });
 
-    if (editor.nextUploadTargetFile){
-      file.set({parent_file_id: editor.nextUploadTargetFile.get('id'),
-                parent_file_model_type: editor.nextUploadTargetFile.fileType().typeName});
+    var setTargetFile = editor.nextUploadTargetFile;
+
+    if (setTargetFile){
+      if (fileType.topLevelType ||
+          !setTargetFile.fileType().nestedFileTypes.contains(fileType)) {
+        throw(new pageflow.InvalidNestedTypeError(upload, {editor: editor,
+                                                           fileType: fileType}));
+      }
+      file.set({parent_file_id: setTargetFile.get('id'),
+                parent_file_model_type: setTargetFile.fileType().typeName});
+    }
+    else if (!fileType.topLevelType) {
+      throw(new pageflow.NestedTypeError(upload, {fileType: fileType,
+                                                  fileTypes: this.fileTypes}));
     }
 
     this.entry.getFileCollection(fileType).add(file);
 
     var deferred = new $.Deferred();
 
-    if (editor.nextUploadTargetFile) {
+    if (setTargetFile) {
       deferred.resolve();
     }
     else {

@@ -5,6 +5,19 @@ de:
         kind: Art
         label: Label
         srclang: Sprache
+    models:
+      pageflow/text_track_file:
+        one: Textspur-Datei
+        other: Textspur-Dateien
+      pageflow/image_file:
+        one: Bilddatei
+        other: Bilddateien
+      pageflow/audio_file:
+        one: Audiodatei
+        other: Audiodateien
+      pageflow/video_file:
+        one: Videodatei
+        other: Videodateien
   pageflow:
     config:
       text_track_kind:
@@ -12,6 +25,12 @@ de:
         captions: Ton-Ersatz-Textspur
         descriptions: Bild-Ersatz-Textspur
     editor:
+      errors:
+        nested_type_error: "Fehler beim Upload von '%{name}': %{type} können nicht als unabhängige Dateien hochgeladen werden. Verwende das Einstellungen-Menü einer Datei des folgenden Typs: %{validList}"
+        invalid_nested_type_error: "Fehler: Upload-Datei '%{name}' ist eine %{type}. Es sind nur folgende Arten von Dateien erlaubt: %{validList}"
+        unmatched_upload_error: Kein passender Verwendungszweck gefunden für Upload '%{name}' vom Typ '%{type}'.
+        upload:
+          type_empty: kein
       file_settings_dialog:
         tabs:
           text_track_tab: Textspuren

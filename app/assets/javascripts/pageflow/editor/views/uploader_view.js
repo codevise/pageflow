@@ -32,7 +32,7 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
           });
         }
         catch(e) {
-          if (e instanceof pageflow.UnmatchedUploadError) {
+          if (e instanceof pageflow.UploadError) {
             pageflow.app.trigger('error', e);
           }
           else {

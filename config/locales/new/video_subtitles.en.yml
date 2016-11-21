@@ -5,6 +5,19 @@ en:
         kind: Kind
         label: Label
         srclang: Language
+    models:
+      pageflow/text_track_file:
+        one: Text Track File
+        other: Text Track Files
+      pageflow/image_file:
+        one: Image File
+        other: Image Files
+      pageflow/audio_file:
+        one: Audio File
+        other: Audio Files
+      pageflow/video_file:
+        one: Video File
+        other: Video Files
   pageflow:
     config:
       text_track_kind:
@@ -12,6 +25,12 @@ en:
         captions: Audio Replacement Text Track
         descriptions: Image Description Text Track
     editor:
+      errors:
+        nested_type_error: "Error while uploading '%{name}': %{type} cannot be uploaded as independent files. Use the settings menu for a file of the following type: %{validList}"
+        invalid_nested_type_error: "Error: Upload file '%{file}' is a %{type}. Only the following types of files are allowed: %{validList}"
+        unmatched_upload_error: No matching file type found for upload '%{name}' of type '%{type}'.
+        upload:
+          type_empty: none
       file_settings_dialog:
         tabs:
           text_tracks: Text Tracks

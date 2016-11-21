@@ -23,18 +23,25 @@ support.factories = {
 
     fileTypes.register('image_files', _.extend({
       model: pageflow.ImageFile,
-      matchUpload: /^image/
+      matchUpload: /^image/,
+      topLevelType: true
     }, options));
 
-    if (options.addVideoAndTextTrackFileTypes) {
+    if (options.addVideoAndNestedFileTypes) {
       fileTypes.register('video_files', _.extend({
         model: pageflow.VideoFile,
-        matchUpload: /^video/
+        matchUpload: /^video/,
+        topLevelType: true
       }, options));
 
       fileTypes.register('text_track_files', _.extend({
         model: pageflow.TextTrackFile,
         matchUpload: /vtt$/
+      }, options));
+
+      fileTypes.register('dont_nest_these_files', _.extend({
+        model: pageflow.TextTrackFile,
+        matchUpload: /dont$/
       }, options));
 
       fileTypesSetupArray = fileTypesSetupArray.concat([
@@ -45,6 +52,10 @@ support.factories = {
         },
         {
           collectionName: 'text_track_files',
+          typeName: 'Pageflow::TextTrackFile'
+        },
+        {
+          collectionName: 'dont_nest_these_files',
           typeName: 'Pageflow::TextTrackFile'
         }
       ]);

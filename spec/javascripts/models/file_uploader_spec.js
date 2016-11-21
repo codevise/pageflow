@@ -1,17 +1,17 @@
 describe('FileUploader', function() {
   beforeEach(function() {
     this.fileTypes = support.factories
-      .fileTypesWithImageFileType({addVideoAndTextTrackFileTypes: true});
+      .fileTypesWithImageFileType({addVideoAndNestedFileTypes: true});
     this.imageFileType = this.fileTypes.findByCollectionName('image_files');
     this.videoFileType = this.fileTypes.findByCollectionName('video_files');
     this.textTrackFileType = this.fileTypes.findByCollectionName('text_track_files');
+    this.secondNestedFileType = this.fileTypes.findByCollectionName('dont_nest_these_files');
 
     this.entry = support.factories.entry({}, {
-      files: {
-        image_files: new Backbone.Collection(),
-        video_files: new Backbone.Collection(),
-        text_track_files: new Backbone.Collection()
-      },
+      files: pageflow.FilesCollection.createForFileTypes([this.imageFileType,
+                                                          this.videoFileType,
+                                                          this.textTrackFileType,
+                                                          this.secondNestedFileType], {}),
       fileTypes: this.fileTypes
     });
   });
@@ -105,6 +105,25 @@ describe('FileUploader', function() {
 
         expect(handler).to.have.been.calledTwice;
       });
+
+      it('throws exception if target set', function() {
+        var fileUploader = new pageflow.FileUploader({
+          entry: this.entry,
+          fileTypes: this.fileTypes
+        });
+        var targetFileUpload = {name: 'video.mp4', type: 'video/mp4'};
+        pageflow.config = {confirmEncodingJobs: false};
+        fileUploader.add(targetFileUpload);
+        fileUploader.submit();
+        var targetFile = this.entry.getFileCollection(this.videoFileType).first();
+        var nonNestedUpload = {name: 'nested_video.mp4', type: 'video/mp4'};
+        var editor = new pageflow.EditorApi();
+        editor.setUploadTargetFile(targetFile);
+
+        expect(function() {
+          fileUploader.add(nonNestedUpload, {editor: editor});
+        }).to.throw(pageflow.InvalidNestedTypeError);
+      });
     });
 
     describe('nested file', function() {
@@ -122,11 +141,6 @@ describe('FileUploader', function() {
         var editor = new pageflow.EditorApi();
         editor.setUploadTargetFile(targetFile);
         fileUploader.add(nestedFileUpload, {editor: editor});
-        sinon.stub(this.entry, 'getFileCollection').withArgs(this.textTrackFileType)
-          .returns(new pageflow.FilesCollection.createForFileType(this.textTrackFileType,
-                                                                  {},
-                                                                  {entry: this.entry,
-                                                                   parentFile: targetFile}));
         expect(editor.nextUploadTargetFile.nestedFiles(
           this.entry.getFileCollection(this.textTrackFileType)
         ).length).to.eq(1);
@@ -150,6 +164,38 @@ describe('FileUploader', function() {
           result = file;
         });
         expect(result).to.be.instanceof(pageflow.TextTrackFile);
+      });
+
+      it('throws exception if target not set', function() {
+        var fileUploader = new pageflow.FileUploader({
+          entry: this.entry,
+          fileTypes: this.fileTypes
+        });
+        var nestedFileUpload = {name: 'text_track.vtt', type: 'text/vtt'};
+        var editor = new pageflow.EditorApi();
+
+        expect(function() {
+          fileUploader.add(nestedFileUpload, {editor: editor});
+        }).to.throw(pageflow.NestedTypeError);
+      });
+
+      it('throws exception if target does not allow to nest type of file', function() {
+        var fileUploader = new pageflow.FileUploader({
+          entry: this.entry,
+          fileTypes: this.fileTypes
+        });
+        var targetFileUpload = {name: 'video.mp4', type: 'video/mp4'};
+        pageflow.config = {confirmEncodingJobs: false};
+        fileUploader.add(targetFileUpload);
+        fileUploader.submit();
+        var targetFile = this.entry.getFileCollection(this.videoFileType).first();
+        var nestedFileUpload = {name: 'do_not_nest_me.dont', type: 'nest/dont'};
+        var editor = new pageflow.EditorApi();
+        editor.setUploadTargetFile(targetFile);
+
+        expect(function() {
+          fileUploader.add(nestedFileUpload, {editor: editor});
+        }).to.throw(pageflow.InvalidNestedTypeError);
       });
     });
   });
