@@ -11,4 +11,12 @@
     position: initial;
     height: initial;
   }
+
+  .vjs-control-bar {
+    display: none !important;
+  }
+
+  .vjs-loading-spinner {
+    display: none !important;
+  }
 }
