@@ -18,8 +18,7 @@ module Pageflow
 
       describe '["page_types"]' do
         it 'includes thumbnail candidates of page types registered for entry' do
-          thumbnail_candidates =
-            [
+          thumbnail_candidates = [
             {attribute: 'thumbnail_image_id', file_collection: 'image_files'},
             {attribute: 'video_id', file_collection: 'video_files'}
           ]
@@ -59,6 +58,27 @@ module Pageflow
           result = common_entry_seed(entry)
 
           expect(result[:locale]).to eq('fr')
+        end
+      end
+
+      describe '["file_url_templates"]' do
+        it 'contains url templates of registered file types' do
+          url_template = 'files/:id_partition/video.mp4'
+          file_type = FileType.new(model: 'Pageflow::VideoFile',
+                                   collection_name: 'test_files',
+                                   url_templates: ->() { {original: url_template} })
+
+          pageflow_configure do |config|
+            config.page_types.clear
+            config.page_types.register(page_type.new(file_types: [file_type]))
+          end
+
+          entry = PublishedEntry.new(create(:entry, :published))
+
+          result = common_entry_seed(entry)
+          template = result[:file_url_templates]['test_files'][:original]
+
+          expect(template).to eq(url_template)
         end
       end
 
