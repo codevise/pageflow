@@ -20,7 +20,7 @@
 //= require ./jquery_utils
 //= require iscroll
 //= require audio5.min
-//= require video
+//= require ./videojs
 //= require jquery.fullscreen
 //= require jquery.placeholder
 

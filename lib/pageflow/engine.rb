@@ -16,7 +16,6 @@ require 'resque_scheduler'
 require 'active_admin'
 
 require 'jquery-layout-rails'
-require 'videojs_rails'
 require 'backbone-rails'
 require 'marionette-rails'
 require 'jquery-fileupload-rails'
