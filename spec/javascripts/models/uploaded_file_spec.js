@@ -132,12 +132,15 @@ describe('UploadedFile', function() {
   describe('#nestedFiles', function() {
     beforeEach(function() {
       this.textTrackFileType = new pageflow.FileType({collectionName: 'text_track_files',
-                                                     model: File,
+                                                      typeName: 'Pageflow::TextTrackFile',
+                                                      model: File,
                                                       matchUpload: /^text_track/});
       this.imageFileType = new pageflow.FileType({collectionName: 'image_files',
+                                                  typeName: 'Pageflow::ImageFile',
                                                   model: File,
                                                   matchUpload: /^image/});
       this.videoFileType = new pageflow.FileType({collectionName: 'video_files',
+                                                  typeName: 'Pageflow::VideoFile',
                                                   model: File,
                                                   matchUpload: /^video/});
       this.videoFileType.nestedFileTypes = new pageflow.FileTypesCollection([this.textTrackFileType,
@@ -218,6 +221,19 @@ describe('UploadedFile', function() {
       var nestedFileViaParent = parentFile.nestedFiles(this.textTrackFiles).first();
 
       expect(nestedFileViaParent.fileType()).to.eq(this.textTrackFileType);
+    });
+
+    it('does not contains nested files of other file with same id but different type', function() {
+      var parentFile = new File({id: 43}, {fileType: this.videoFileType});
+      var nestedFile = new File({parent_file_id: parentFile.id,
+                                 parent_file_model_type: 'Pageflow::AudioFile',
+                                 file_name: 'nested.vtt'},
+                                {fileType: this.textTrackFileType, parentFile: parentFile});
+      this.textTrackFiles.add(nestedFile);
+
+      var nestedFilesCount = parentFile.nestedFiles(this.textTrackFiles).length;
+
+      expect(nestedFilesCount).to.eq(0);
     });
   });
 });

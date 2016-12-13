@@ -120,12 +120,15 @@ pageflow.UploadedFile = Backbone.Model.extend({
   },
 
   _createNestedFilesSubsetCollection: function(supersetCollection) {
-    return new pageflow.SubsetCollection(
-      {parentModel: this,
-       filter: function(item) {
-         return item.get('parent_file_id') === this.parentModel.get('id');
-       },
-       parent: supersetCollection}
-    );
+    var modelType = this.fileType().typeName;
+
+    return new pageflow.SubsetCollection({
+      parentModel: this,
+      filter: function(item) {
+        return item.get('parent_file_id') === this.parentModel.get('id') &&
+          item.get('parent_file_model_type') === modelType;
+      },
+      parent: supersetCollection
+    });
   }
 });
