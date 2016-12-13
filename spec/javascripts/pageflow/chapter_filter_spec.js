@@ -5,9 +5,12 @@ describe('pageflow.ChapterFilter', function() {
     describe('with default strategy', function() {
       it('return true for chapters of same storyline', function() {
         var chapterFilter = new p.ChapterFilter(new p.SeedEntryData({
-          storyline_configurations: {
-            10: {}
-          },
+          storylines: [
+            {
+              id: 10,
+              configuration: {}
+            }
+          ],
           chapters: [
             {
               id: 1,
@@ -33,12 +36,15 @@ describe('pageflow.ChapterFilter', function() {
     describe('with inherit_from_parent strategy', function() {
       it('returns true only for chapters visible from parent chapter', function() {
         var chapterFilter = new p.ChapterFilter(new p.SeedEntryData({
-          storyline_configurations: {
-            10: {
-              navigation_bar_mode: 'inherit_from_parent',
-              parent_page_perma_id: 100
+          storylines: [
+            {
+              id: 10,
+              configuration: {
+                navigation_bar_mode: 'inherit_from_parent',
+                parent_page_perma_id: 100
+              }
             }
-          },
+          ],
           chapters: [
             {
               id: 1,
@@ -67,11 +73,14 @@ describe('pageflow.ChapterFilter', function() {
     describe('with non strategy', function() {
       it('returns false', function() {
         var chapterFilter = new p.ChapterFilter(new p.SeedEntryData({
-          storyline_configurations: {
-            10: {
-              navigation_bar_mode: 'non'
+          storylines: [
+            {
+              id: 10,
+              configuration: {
+                navigation_bar_mode: 'non'
+              }
             }
-          },
+          ],
           chapters: [
             {
               id: 1,

@@ -2,7 +2,10 @@ pageflow.SeedEntryData = pageflow.EntryData.extend({
   initialize: function(options) {
     this.theming = options.theming;
 
-    this.storylineConfigurations = options.storyline_configurations;
+    this.storylineConfigurations = _(options.storylines).reduce(function(memo, storyline) {
+      memo[storyline.id] = storyline.configuration;
+      return memo;
+    }, {});
 
     this.storylineIdsByChapterIds = _(options.chapters).reduce(function(memo, chapter) {
       memo[chapter.id] = chapter.storyline_id;

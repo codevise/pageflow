@@ -13,7 +13,7 @@ module Pageflow
     def entry_seed(entry)
       common_entry_seed(entry).merge(
         theming: entry_theming_seed(entry),
-        storyline_configurations: entry_storyline_configurations_seed(entry),
+        storylines: entry_storylines_seed(entry),
         chapters: entry_chapters_seed(entry),
         pages: entry_pages_seed(entry),
         file_ids: entry_file_ids_seed(entry)
@@ -28,10 +28,9 @@ module Pageflow
       }
     end
 
-    def entry_storyline_configurations_seed(entry)
-      entry.storylines.each_with_object({}) do |storyline, result|
-        result[storyline.id] = storyline.configuration
-      end
+    def entry_storylines_seed(entry)
+      attributes = [:id, :configuration]
+      entry.storylines.as_json(only: attributes)
     end
 
     def entry_chapters_seed(entry)

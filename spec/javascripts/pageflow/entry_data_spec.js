@@ -16,11 +16,12 @@ describe('pageflow.EntryData', function() {
           id: 100,
           storyline_id: 1000
         }],
-        storyline_configurations: {
-          1000: {
+        storylines: [{
+          id: 1000,
+          configuration: {
             parent_page_perma_id: 6
           }
-        }
+        }]
       });
 
       var result = entryData.getParentPagePermaIdByPagePermaId(5);
@@ -67,12 +68,17 @@ describe('pageflow.EntryData', function() {
             storyline_id: 1001
           }
         ],
-        storyline_configurations: {
-          1000: {},
-          1001: {
-            parent_page_perma_id: 5
+        storylines: [
+          {
+            id: 1000
+          },
+          {
+            id: 1001,
+            configuration: {
+              parent_page_perma_id: 5
+            }
           }
-        }
+        ]
       });
 
       var result = entryData.getParentStorylineId(1001);
@@ -82,9 +88,9 @@ describe('pageflow.EntryData', function() {
 
     it('returns undefined if there is no parent page', function() {
       var entryData = new createEntryData({
-        storyline_configurations: {
-          1001: {}
-        }
+        storylines: [{
+          id: 1001
+        }]
       });
 
       var result = entryData.getParentStorylineId(1001);
@@ -100,11 +106,12 @@ describe('pageflow.EntryData', function() {
           id: 100,
           storyline_id: 1000
         }],
-        storyline_configurations: {
-          1000: {
+        storylines: [{
+          id: 1000,
+          configuration: {
             parent_page_perma_id: 6
           }
-        },
+        }],
         pages: [{
           perma_id: 6,
           chapter_id: 101
@@ -120,11 +127,12 @@ describe('pageflow.EntryData', function() {
   describe('#getParentPagePermaId', function() {
     it('returns perma id of storyline`s parent page', function() {
       var entryData = new createEntryData({
-        storyline_configurations: {
-          1000: {
+        storylines: [{
+          id: 1000,
+          configuration: {
             parent_page_perma_id: 6
           }
-        }
+        }]
       });
 
       var result = entryData.getParentPagePermaId(1000);
@@ -156,15 +164,23 @@ describe('pageflow.EntryData', function() {
             storyline_id: 1001
           }
         ],
-        storyline_configurations: {
-          1000: {},
-          1001: {
-            parent_page_perma_id: 5
+        storylines: [
+          {
+            id: 1000,
           },
-          1002: {
-            parent_page_perma_id: 6
+          {
+            id: 1001,
+            configuration: {
+              parent_page_perma_id: 5
+            },
+          },
+          {
+            id: 1002,
+            configuration: {
+              parent_page_perma_id: 6
+            }
           }
-        }
+        ]
       });
 
       expect(entryData.getStorylineLevel(1000)).to.eq(0);
