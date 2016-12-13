@@ -6,7 +6,7 @@ module Pageflow
     attr_reader :entry, :revision
     attr_accessor :share_target
 
-    delegate(:id,
+    delegate(:id, :slug,
              :account, :theming,
              :enabled_feature_names,
              :to_model, :to_key, :persisted?,
