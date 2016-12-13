@@ -15,14 +15,12 @@ module Pageflow
 
     def outputs
       [
-        transferable(webm_high_definition),
-        transferable(webm_medium_definition),
-
         mp4_highdef_definitions,
         transferable(mp4_high_definition),
         transferable(mp4_medium_definition),
         transferable(mp4_low_definition),
 
+        dash_definitions,
         hls_definitions,
         smil_definition,
 
@@ -31,32 +29,6 @@ module Pageflow
     end
 
     private
-
-    def webm_high_definition
-      {
-        label: 'webm_high',
-        format: 'webm',
-        path: video_file.webm_high.path,
-        size: '1280x720',
-        quality: 4,
-        max_video_bitrate: 3500,
-        public: 1,
-        sharpen: true
-      }
-    end
-
-    def webm_medium_definition
-      {
-        label: 'webm_medium',
-        format: 'webm',
-        path: video_file.webm_medium.path,
-        size: '1280x720',
-        quality: 3,
-        max_video_bitrate: 2000,
-        public: 1,
-        sharpen: true
-      }
-    end
 
     def mp4_highdef_definitions
       return [] unless video_file.entry.feature_state('highdef_video_encoding')
@@ -100,59 +72,198 @@ module Pageflow
     def mp4_high_definition
       {
         label: 'high',
-        format: 'mp4',
+        prepare_for_segmenting: ['hls', 'dash'],
         path: video_file.mp4_high.path,
-        h264_level: 3.1,
-        max_frame_rate: 30,
-        max_video_bitrate: 3500,
-        audio_bitrate: 192,
-        h264_profile: 'main',
+        video_bitrate: 3072,
+        decoder_bitrate_cap: 3410,
+        decoder_buffer_size: 7326,
+        audio_bitrate: 128,
         size: '1280x720',
         public: 1,
-        forced_keyframe_rate: '0.5',
-        tuning: 'film',
-        sharpen: true
       }
     end
 
     def mp4_medium_definition
       {
         label: 'medium',
-        format: 'mp4',
+        prepare_for_segmenting: ['hls', 'dash'],
         path: video_file.mp4_medium.path,
-        h264_level: 3.1,
-        max_frame_rate: 30,
-        max_video_bitrate: 2000,
-        audio_bitrate: 128,
-        h264_profile: 'main',
-        size: '1280x720',
-        forced_keyframe_rate: '0.5',
-        public: 1,
-        sharpen: true
+        video_bitrate: 1536,
+        decoder_bitrate_cap: 1705,
+        decoder_buffer_size: 2557,
+        audio_bitrate: 64,
+        audio_channels: 1,
+        size: '853x480',
+        public: 1
       }
     end
 
     def mp4_low_definition
       {
         label: 'low',
-        format: 'mp4',
+        prepare_for_segmenting: ['hls', 'dash'],
         path: video_file.mp4_low.path,
-        device_profile: 'mobile/legacy',
-        audio_bitrate: 56,
-        forced_keyframe_rate: '0.5',
+        video_bitrate: 500,
+        decoder_bitrate_cap: 555,
+        decoder_buffer_size: 924,
+        audio_bitrate: 64,
+        audio_channels: 1,
+        size: '640x360',
         public: 1,
-        sharpen: true
+        h264_profile: 'baseline'
       }
+    end
+
+    def dash_definitions
+      dash_highdef_definitions +
+        [
+          non_transferable(dash_high_definition),
+          non_transferable(dash_medium_definition),
+          non_transferable(dash_low_definition),
+          non_transferable(dash_playlist_definition)
+        ]
+    end
+
+    def dash_highdef_definitions
+      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+
+      [
+        non_transferable(dash_fullhd_definition),
+        non_transferable(dash_4k_definition)
+      ]
     end
 
     def hls_definitions
       return [] if skip_hls
 
+      hls_highdef_definitions +
+        [
+          non_transferable(hls_high_definition),
+          non_transferable(hls_medium_definition),
+          non_transferable(hls_low_definition),
+          non_transferable(hls_playlist_definition)
+        ]
+    end
+
+    def hls_highdef_definitions
+      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+
       [
-        non_transferable(hls_high_definition),
-        non_transferable(hls_medium_definition),
-        non_transferable(hls_low_definition),
-        non_transferable(hls_playlist_definition)
+        non_transferable(hls_fullhd_definition),
+        non_transferable(hls_4k_definition)
+      ]
+    end
+
+    def dash_low_definition
+      {
+        label: 'dash-low',
+        source: 'low',
+        copy_audio: 'true',
+        copy_video: 'true',
+        streaming_delivery_format: 'dash',
+        streaming_delivery_profile: 'on_demand',
+        path: video_file.dash_low.path,
+        type: 'segmented',
+        public: 1
+      }
+    end
+
+    def dash_medium_definition
+      {
+        label: 'dash-medium',
+        source: 'medium',
+        copy_audio: 'true',
+        copy_video: 'true',
+        streaming_delivery_format: 'dash',
+        streaming_delivery_profile: 'on_demand',
+        path: video_file.dash_medium.path,
+        type: 'segmented',
+        public: 1
+      }
+    end
+
+    def dash_high_definition
+      {
+        label: 'dash-high',
+        source: 'high',
+        copy_audio: 'true',
+        copy_video: 'true',
+        streaming_delivery_format: 'dash',
+        streaming_delivery_profile: 'on_demand',
+        path: video_file.dash_high.path,
+        type: 'segmented',
+        public: 1
+      }
+    end
+
+    def dash_fullhd_definition
+      {
+        label: 'dash-fullhd',
+        source: 'fullhd',
+        copy_audio: 'true',
+        copy_video: 'true',
+        streaming_delivery_format: 'dash',
+        streaming_delivery_profile: 'on_demand',
+        path: video_file.dash_fullhd.path,
+        type: 'segmented',
+        public: 1
+      }
+    end
+
+    def dash_4k_definition
+      {
+        label: 'dash-4k',
+        source: '4k',
+        copy_audio: 'true',
+        copy_video: 'true',
+        streaming_delivery_format: 'dash',
+        streaming_delivery_profile: 'on_demand',
+        path: video_file.dash_4k.path,
+        type: 'segmented',
+        public: 1
+      }
+    end
+
+    def dash_playlist_definition
+      {
+        label: 'dash-playlist',
+        streams: dash_stream_definitions,
+        type: 'playlist',
+        streaming_delivery_format: 'dash',
+        path: video_file.dash_playlist.path,
+        public: 1,
+        allow_skipped_sources: true
+      }
+    end
+
+    def dash_stream_definitions
+      [
+        {
+          source: 'dash-low',
+          path: video_file.dash_low.url
+        },
+        {
+          source: 'dash-medium',
+          path: video_file.dash_medium.url
+        },
+        {
+          source: 'dash-high',
+          path: video_file.dash_high.url
+        }
+      ] + dash_highdef_stream_definitions
+    end
+
+    def dash_highdef_stream_definitions
+      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      [
+        {
+          source: 'dash-fullhd',
+          path: video_file.dash_fullhd.url
+        },
+        {
+          source: 'dash-4k',
+          path: video_file.dash_4k.url
+        }
       ]
     end
 
@@ -195,6 +306,32 @@ module Pageflow
       }
     end
 
+    def hls_fullhd_definition
+      {
+        label: 'hls-fullhd',
+        format: 'ts',
+        source: 'fullhd',
+        copy_audio: 'true',
+        copy_video: 'true',
+        path: video_file.hls_fullhd.path,
+        type: 'segmented',
+        public: 1
+      }
+    end
+
+    def hls_4k_definition
+      {
+        label: 'hls-4k',
+        format: 'ts',
+        source: '4k',
+        copy_audio: 'true',
+        copy_video: 'true',
+        path: video_file.hls_4k.path,
+        type: 'segmented',
+        public: 1
+      }
+    end
+
     def hls_playlist_definition
       {
         label: 'hls-playlist',
@@ -209,15 +346,29 @@ module Pageflow
       [
         {
           path: video_file.hls_medium.url(host: :hls_origin, default_protocol: 'http'),
-          bandwidth: 2250
+          bandwidth: 1769
         },
         {
           path: video_file.hls_low.url(host: :hls_origin, default_protocol: 'http'),
-          bandwidth: 256
+          bandwidth: 619
         },
         {
           path: video_file.hls_high.url(host: :hls_origin, default_protocol: 'http'),
-          bandwidth: 3750
+          bandwidth: 3538
+        }
+      ] + hls_highdef_stream_definitions
+    end
+
+    def hls_highdef_stream_definitions
+      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      [
+        {
+          path: video_file.hls_fullhd.url(host: :hls_origin, default_protocol: 'http'),
+          bandwidth: 8575
+        },
+        {
+          path: video_file.hls_4k.url(host: :hls_origin, default_protocol: 'http'),
+          bandwidth: 32000
         }
       ]
     end
@@ -237,15 +388,29 @@ module Pageflow
       [
         {
           path: video_file.mp4_medium.url(host: :hls_origin, default_protocol: 'http'),
-          bandwidth: 2250
+          bandwidth: 1769
         },
         {
           path: video_file.mp4_low.url(host: :hls_origin, default_protocol: 'http'),
-          bandwidth: 256
+          bandwidth: 619
         },
         {
           path: video_file.mp4_high.url(host: :hls_origin, default_protocol: 'http'),
-          bandwidth: 3750
+          bandwidth: 3538
+        }
+      ] + smil_highdef_stream_definitions
+    end
+
+    def smil_highdef_stream_definitions
+      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      [
+        {
+          path: video_file.mp4_fullhd.url(host: :hls_origin, default_protocol: 'http'),
+          bandwidth: 8575
+        },
+        {
+          path: video_file.mp4_4k.url(host: :hls_origin, default_protocol: 'http'),
+          bandwidth: 32000
         }
       ]
     end
