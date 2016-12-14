@@ -12,17 +12,55 @@ support.factories = {
   },
 
   fileTypesWithImageFileType: function(options) {
+    options = options || {};
     var fileTypes = new pageflow.FileTypes();
+    var fileTypesSetupArray = [
+      {
+        collectionName: 'image_files',
+        typeName: 'Pageflow::ImageFile'
+      }
+    ];
 
     fileTypes.register('image_files', _.extend({
       model: pageflow.ImageFile,
-      matchUpload: /^image/
+      matchUpload: /^image/,
+      topLevelType: true
     }, options));
 
-    fileTypes.setup([{
-      collectionName: 'image_files',
-      typeName: 'Pageflow::ImageFile'
-    }]);
+    if (options.addVideoAndNestedFileTypes) {
+      fileTypes.register('video_files', _.extend({
+        model: pageflow.VideoFile,
+        matchUpload: /^video/,
+        topLevelType: true
+      }, options));
+
+      fileTypes.register('text_track_files', _.extend({
+        model: pageflow.TextTrackFile,
+        matchUpload: /vtt$/
+      }, options));
+
+      fileTypes.register('dont_nest_these_files', _.extend({
+        model: pageflow.TextTrackFile,
+        matchUpload: /dont$/
+      }, options));
+
+      fileTypesSetupArray = fileTypesSetupArray.concat([
+        {
+          collectionName: 'video_files',
+          typeName: 'Pageflow::VideoFile',
+          nestedFileTypes: [{collectionName: 'text_track_files'}]
+        },
+        {
+          collectionName: 'text_track_files',
+          typeName: 'Pageflow::TextTrackFile'
+        },
+        {
+          collectionName: 'dont_nest_these_files',
+          typeName: 'Pageflow::TextTrackFile'
+        }
+      ]);
+    }
+    fileTypes.setup(fileTypesSetupArray);
 
     return fileTypes;
   },
@@ -38,6 +76,18 @@ support.factories = {
   filesCollection: function(options) {
     return pageflow.FilesCollection.createForFileType(options.fileType,
                                                       [{}, {}]);
+  },
+
+  nestedFilesCollection: function(options) {
+    return new pageflow.SubsetCollection({
+      parentModel: support.factories.file({file_name: options.parentFileName}),
+      filter: function() {
+        return true;
+      },
+      parent: support.factories.filesCollection(
+        {fileType: options.fileType}
+      )
+    });
   },
 
   file: function(attributes, options) {

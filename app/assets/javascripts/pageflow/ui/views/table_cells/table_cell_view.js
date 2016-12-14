@@ -10,18 +10,18 @@
  *
  * @since edge
  */
-pageflow.TableCellView = Backbone.Marionette.View.extend({
+pageflow.TableCellView = Backbone.Marionette.ItemView.extend({
   tagName: 'td',
+  template: 'templates/table_cell',
 
   className: function() {
     return this.options.className;
   },
 
-  render: function() {
+  onRender: function() {
     this.listenTo(this.getModel(), 'change:' + this.options.column.name, this.update);
+    this.setupContentBinding();
     this.update();
-
-    return this;
   },
 
   /**
@@ -76,5 +76,21 @@ pageflow.TableCellView = Backbone.Marionette.View.extend({
     return _(this.options.attributeTranslationKeyPrefixes || []).map(function(prefix) {
       return prefix + '.' + this.options.column.name + '.' + keyName;
     }, this);
+  },
+
+  /**
+   * Set up content binding to update this view upon change of
+   * specified attribute on this.getModel().
+   *
+   * @param {string} [options.column.contentBinding]
+   *   Name of the attribute to which this cell's update is bound
+   *
+   * @protected
+   */
+  setupContentBinding: function() {
+    if (this.options.column.contentBinding) {
+      this.listenTo(this.getModel(), 'change:' + this.options.column.contentBinding, this.update);
+      this.update();
+    }
   }
 });

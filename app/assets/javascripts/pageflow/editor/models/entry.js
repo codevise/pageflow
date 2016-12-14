@@ -96,6 +96,9 @@ pageflow.Entry = Backbone.Model.extend({
       this.getFileCollection(file.fileType()).add(file);
 
       this.trigger('use:file', file);
+      file.fileType().nestedFileTypes.each(function(nestedFileType) {
+        this.getFileCollection(nestedFileType).fetch();
+      }.bind(this));
     }.bind(this)});
   },
 

@@ -25,3 +25,7 @@ $table-view-selected-cell-background-color: #D2E5FA !default;
     background-color: $table-view-selected-cell-background-color;
   }
 }
+
+.is_empty .table_view th {
+  visibility: hidden;
+}

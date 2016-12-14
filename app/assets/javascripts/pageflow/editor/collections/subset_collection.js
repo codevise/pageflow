@@ -45,7 +45,8 @@ pageflow.SubsetCollection = Backbone.Collection.extend({
       this.parent.sort();
     });
 
-    Backbone.Collection.prototype.constructor.call(this, this.parent.filter(this.filter), options);
+    Backbone.Collection.prototype.constructor
+      .call(this, this.parent.filter(this.filter, this), options);
   },
 
   clear: function() {

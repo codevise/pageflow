@@ -1,0 +1,7 @@
+.delete_row_table_cell {
+  .remove {
+    @include icon-only-button(#aaa);
+    @include trash-icon;
+    float: right;
+  }
+}

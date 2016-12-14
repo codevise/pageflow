@@ -5,8 +5,16 @@ module Pageflow
       @file = file
     end
 
+    def destroy?
+      can_edit_any_entry_using_file?(@file.parent_file) if @file.parent_file
+    end
+
     def manage?
-      can_edit_any_entry_using_file?
+      if @file.parent_file
+        can_edit_any_entry_using_file?(@file.parent_file)
+      else
+        can_edit_any_entry_using_file?(@file)
+      end
     end
 
     def use?
@@ -25,8 +33,8 @@ module Pageflow
       (entries_user_is_previewer_or_above_on.map(&:id) & file.using_entry_ids).any?
     end
 
-    def can_edit_any_entry_using_file?
-      editor_of_any_entry_using_file_or_its_account?(@user, @file)
+    def can_edit_any_entry_using_file?(file)
+      editor_of_any_entry_using_file_or_its_account?(@user, file)
     end
 
     def editor_of_any_entry_using_file_or_its_account?(user, file)

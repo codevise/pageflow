@@ -9,7 +9,7 @@
  * - `.cell_title.present` - Used as title attribute if the attribute
  *   is present. The current attribute value is provided as
  *   interpolation `%{value}`.
- * - `.cell_title.not_present` - Used as title attribute if the
+ * - `.cell_title.blank` - Used as title attribute if the
  *   attribute is blank.
  *
  * @since edge

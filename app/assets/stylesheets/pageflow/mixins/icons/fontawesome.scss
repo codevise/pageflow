@@ -518,3 +518,5 @@
 @mixin fa-share-alt-icon { @include fontawesome-icon("\f1e0"); }
 @mixin fa-share-alt-square-icon { @include fontawesome-icon("\f1e1"); }
 @mixin fa-bomb-icon { @include fontawesome-icon("\f1e2"); }
+@mixin fa-deafness-icon { @include fontawesome-icon("\f2a4"); }
+@mixin fa-low-vision-icon { @include fontawesome-icon("\f2a8"); }

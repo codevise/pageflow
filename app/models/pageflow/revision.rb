@@ -50,10 +50,19 @@ module Pageflow
     end
 
     def files(model)
-      model
-        .select("#{model.table_name}.*, pageflow_file_usages.id AS usage_id")
-        .joins(:usages)
-        .where(pageflow_file_usages: {revision_id: id})
+      if Pageflow.config.file_types.find_by_model!(model).top_level_type
+        model
+          .select("#{model.table_name}.*, pageflow_file_usages.id AS usage_id")
+          .joins(:usages)
+          .where(pageflow_file_usages: {revision_id: id})
+      else
+        model
+          .select("#{model.table_name}.*")
+          .joins('LEFT OUTER JOIN pageflow_file_usages ON '\
+                 'pageflow_file_usages.file_id = parent_file_id AND '\
+                 'pageflow_file_usages.file_type = parent_file_model_type')
+          .where(pageflow_file_usages: {revision_id: id})
+      end
     end
 
     def creator

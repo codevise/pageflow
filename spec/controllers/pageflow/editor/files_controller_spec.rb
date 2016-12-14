@@ -5,7 +5,7 @@ module Pageflow
     routes { Engine.routes }
     render_views
 
-    describe '#index'do
+    describe '#index' do
       it 'returns list of files of entry' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
@@ -61,7 +61,7 @@ module Pageflow
         post(:create,
              entry_id: entry,
              collection_name: 'image_files',
-             image_file: {attachment: fixture_upload},
+             image_file: {attachment: image_fixture_upload},
              format: 'json')
 
         expect(response.status).to eq(200)
@@ -77,7 +77,7 @@ module Pageflow
              entry_id: entry,
              collection_name: 'image_files',
              image_file: {
-               attachment: fixture_upload,
+               attachment: image_fixture_upload,
                rights: 'someone',
                configuration: {
                  some: 'value'
@@ -100,7 +100,7 @@ module Pageflow
         post(:create,
              entry_id: entry,
              collection_name: 'image_files',
-             image_file: {attachment: fixture_upload},
+             image_file: {attachment: image_fixture_upload},
              format: 'json')
 
         expect(entry.image_files).to have(1).item
@@ -115,7 +115,7 @@ module Pageflow
         post(:create,
              entry_id: entry,
              collection_name: 'image_files',
-             image_file: {attachment: fixture_upload},
+             image_file: {attachment: image_fixture_upload},
              format: 'json')
 
         expect(json_response(path: [:usage_id])).to be_present
@@ -130,7 +130,7 @@ module Pageflow
         post(:create,
              entry_id: entry,
              collection_name: 'image_files',
-             image_file: {attachment: fixture_upload},
+             image_file: {attachment: image_fixture_upload},
              format: 'json')
 
         expect(entry.image_files.first.unprocessed_attachment_file_name).to be_present
@@ -144,7 +144,7 @@ module Pageflow
         post(:create,
              entry_id: entry,
              collection_name: 'image_files',
-             image_file: {attachment: fixture_upload},
+             image_file: {attachment: image_fixture_upload},
              format: 'json')
 
         expect(response.status).to eq(403)
@@ -156,14 +156,78 @@ module Pageflow
         post(:create,
              entry_id: entry,
              collection_name: 'image_files',
-             image_file: {attachment: fixture_upload},
+             image_file: {attachment: image_fixture_upload},
              format: 'json')
 
         expect(response.status).to eq(401)
       end
 
-      def fixture_upload
+      it 'allows to create file with associated parent file' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        parent_file = create(:video_file, used_in: entry.draft)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+
+        post(:create,
+             entry_id: entry,
+             collection_name: 'text_track_files',
+             text_track_file: {attachment: text_track_fixture_upload,
+                               parent_file_id: parent_file.id,
+                               parent_file_model_type: 'Pageflow::VideoFile'},
+             format: 'json')
+
+        expect(parent_file.nested_files(Pageflow::TextTrackFile)).not_to be_empty
+        expect(response.status).to eq(200)
+      end
+
+      it 'does not allow to create file with associated parent file of non-permitted type' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        parent_file = create(:image_file, entry: entry)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+
+        post(:create,
+             entry_id: entry,
+             collection_name: 'image_files',
+             image_file: {attachment: image_fixture_upload,
+                          parent_file_id: parent_file.id,
+                          parent_file_model_type: 'Pageflow::ImageFile'},
+             format: 'json')
+
+        expect(parent_file.nested_files(Pageflow::ImageFile)).to be_empty
+        expect(response.status).to eq(400)
+      end
+
+      it 'does not allow to create file with associated parent file on other entry' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        parent_file = create(:image_file)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+
+        post(:create,
+             entry_id: entry,
+             collection_name: 'text_track_files',
+             text_track_file: {attachment: text_track_fixture_upload,
+                               parent_file_id: parent_file.id,
+                               parent_file_model_type: 'Pageflow::ImageFile'},
+             format: 'json')
+
+        expect(parent_file.nested_files(Pageflow::TextTrackFile)).to be_empty
+        expect(response.status).to eq(400)
+      end
+
+      def image_fixture_upload
         fixture_file_upload(Engine.root.join('spec', 'fixtures', 'image.jpg'), 'image/jpeg')
+      end
+
+      def text_track_fixture_upload
+        fixture_file_upload(Engine.root.join('spec', 'fixtures', 'sample.vtt'), 'text/vtt')
       end
     end
 
@@ -260,6 +324,76 @@ module Pageflow
               format: 'json')
 
         expect(response.status).to eq(401)
+      end
+    end
+
+    describe '#destroy' do
+      it 'allows to destroy nested file when signed in editor of an entry that uses the parent '\
+         'file' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        parent_file = create(:video_file, used_in: entry.draft)
+        nested_file = create(:text_track_file, entry: entry, parent_file: parent_file)
+
+        sign_in user
+
+        expect(parent_file).to have(1).nested_files(TextTrackFile)
+
+        delete(:destroy, collection_name: 'text_track_files', id: nested_file)
+
+        expect(response.status).to eq(204)
+        expect(parent_file).to have(0).nested_files(TextTrackFile)
+      end
+
+      it 'does not allow to destroy if permissions below editor of entries using the file or of '\
+         'accounts containing those entries' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, with_previewer: user, account: account)
+        parent_file = create(:video_file, used_in: entry.draft)
+        nested_file = create(:text_track_file, entry: entry, parent_file: parent_file)
+
+        sign_in user
+
+        expect(parent_file).to have(1).nested_files(TextTrackFile)
+
+        delete(:destroy, collection_name: 'text_track_files', id: nested_file)
+
+        expect(response.status).to eq(302)
+        expect(parent_file).to have(1).nested_files(TextTrackFile)
+      end
+
+      it 'does not allow to destroy file if not signed in' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        parent_file = create(:video_file, used_in: entry.draft)
+        nested_file = create(:text_track_file, entry: entry, parent_file: parent_file)
+
+        expect(parent_file).to have(1).nested_files(TextTrackFile)
+
+        delete(:destroy, collection_name: 'text_track_files', id: nested_file)
+
+        expect(response.status).to eq(302)
+        expect(parent_file).to have(1).nested_files(TextTrackFile)
+      end
+
+      it 'does not allow to destroy non-nested file even if signed in with permissions needed for '\
+         'destroying a nested file' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        parent_file = create(:video_file, used_in: entry.draft)
+        create(:text_track_file, entry: entry, parent_file: parent_file)
+
+        sign_in user
+
+        expect(parent_file).to have(1).nested_files(TextTrackFile)
+        expect(VideoFile.all.length).to eq(1)
+
+        delete(:destroy, collection_name: 'video_files', id: parent_file)
+
+        expect(response.status).to eq(302)
+        expect(parent_file).to have(1).nested_files(TextTrackFile)
+        expect(VideoFile.all.length).to eq(1)
       end
     end
   end

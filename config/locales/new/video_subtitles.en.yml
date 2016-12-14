@@ -1,0 +1,101 @@
+en:
+  activerecord:
+    attributes:
+      pageflow/text_track_file:
+        kind: Kind
+        label: Label
+        srclang: Language
+    models:
+      pageflow/text_track_file:
+        one: Text Track File
+        other: Text Track Files
+      pageflow/image_file:
+        one: Image File
+        other: Image Files
+      pageflow/audio_file:
+        one: Audio File
+        other: Audio Files
+      pageflow/video_file:
+        one: Video File
+        other: Video Files
+  pageflow:
+    config:
+      text_track_kind:
+        subtitles: Translation Text Track
+        captions: Audio Replacement Text Track
+        descriptions: Image Description Text Track
+    editor:
+      errors:
+        nested_type_error: "Error while uploading '%{name}': %{type} cannot be uploaded as independent files. Use the settings menu for a file of the following type: %{validList}"
+        invalid_nested_type_error: "Error: Upload file '%{file}' is a %{type}. Only the following types of files are allowed: %{validList}"
+        unmatched_upload_error: No matching file type found for upload '%{name}' of type '%{type}'.
+        upload:
+          type_empty: none
+      file_settings_dialog:
+        tabs:
+          text_tracks: Text Tracks
+          video_settings_tab: Video Details
+      files:
+        settings_dialog_tabs:
+          text_track_tab: Text Tracks
+      nested_files:
+        text_track_files:
+          delete:
+            column_header: ''
+            cell_title: Delete text tracks
+          file_name:
+            inline_help_html: <ul><li>If the pattern of the file name resembles <strong>dateiname.wx_YZ.vtt</strong>, Pageflow will identify the language code, in this example <strong>wx</strong>.</li><li>An <strong>example</strong> for English (en) is <strong>subtitles.en_GB.vtt</strong>.</li></ul>
+          kind:
+            column_header: Kind
+            cell_title:
+              subtitles: Translation Text Track
+              captions: Audio Replacement Text Track
+              descriptions: Image Replacement Text Track
+            inline_help_html: <ul><li><strong>Audio Replacement Text Tracks</strong> are meant for users who understand a text track better than an audio track.</li><li><strong>Translation Text Tracks</strong> are meant for users who understand another language better than the language used in the audio track.</li><li><strong>Image Replacement Text Tracks</strong> are meant for users who understand a text track better than a video track. Image Replacement Text Tracks are often read aloud to the user by screen reading software supplied by the user.</li></ul>
+            label: Kind
+          label:
+            column_header: Label
+            inline_help: For display in the text track picker as part of the media player
+            label: Label
+            missing: Label missing
+          no_files_blank_slate: Currently, there are no text tracks for this file.
+          srclang:
+            column_header: Language
+            cell_title:
+              present: "Entered: %{value}"
+              blank: Not yet entered
+            inline_help_html: <ul><li>The language used in a text track is specified as a two letter code according to ISO 639.1.</li> <li><strong>Examples:</strong> 'en' for English or 'fr' for French.</li> <li>Language codes are often given on the Wikipedia page of a language.</li></ul>
+            label: Language
+      templates:
+        background_positioning:
+          close: Close
+        file_item:
+          settings: Settings
+        text_tracks:
+          edit_file_header: Metadata
+          upload: Add
+      ui:
+        text_table_cell_view:
+          empty: (empty)
+    languages:
+      ar: Arabic
+      cs: Czech
+      de: German
+      dk: Danish
+      el: Greek
+      en: English
+      es: Spanish
+      fr: French
+      fy: Frisian
+      hi: Hindi
+      it: Italian
+      lb: Letzeburgesch
+      nl: Dutch
+      pl: Polish
+      pt: Portuguese
+      rm: Romansh
+      ru: Russian
+      sr: Serbian
+      tr: Turkish
+      zh: Chinese
+      unknown: Unknown language key

@@ -1,23 +1,12 @@
 module Pageflow
   # Definition of page type located inside the Pageflow gem.
   class BuiltInPageType < PageType
-    attr_reader :name, :file_type_models
+    attr_reader :name, :file_types
 
     def initialize(name, options = {})
       @name = name.to_s
-      @file_type_models = options.fetch(:file_type_models, [])
+      @file_types = options.fetch(:file_types, [])
       @thumbnail_candidates = options.fetch(:thumbnail_candidates, nil)
-    end
-
-    def file_types
-      @file_types ||= file_type_models.map do |model_name|
-        model = model_name.constantize
-        base_name = model_name.underscore.split('/').last
-
-        FileType.new(model: model,
-                     editor_partial: "pageflow/editor/#{base_name.pluralize}/#{base_name}",
-                     collection_name: base_name.pluralize)
-      end
     end
 
     def template_path
@@ -45,7 +34,7 @@ module Pageflow
     # VideoPageType subclass etc.
 
     def self.audio
-      new('audio', file_type_models: ['Pageflow::ImageFile', 'Pageflow::AudioFile'])
+      new('audio', file_types: [BuiltInFileType.image, BuiltInFileType.audio])
     end
 
     def self.audio_loop
@@ -53,18 +42,18 @@ module Pageflow
     end
 
     def self.background_image
-      new('background_image', file_type_models: ['Pageflow::ImageFile'])
+      new('background_image', file_types: [BuiltInFileType.image])
     end
 
     def self.background_video
       new('background_video',
-          file_type_models: ['Pageflow::ImageFile', 'Pageflow::VideoFile'],
+          file_types: [BuiltInFileType.image, BuiltInFileType.video],
           thumbnail_candidates: video_thumbnail_candidates)
     end
 
     def self.video
       new('video',
-          file_type_models: ['Pageflow::ImageFile', 'Pageflow::VideoFile'],
+          file_types: [BuiltInFileType.image, BuiltInFileType.video],
           thumbnail_candidates: video_thumbnail_candidates)
     end
 

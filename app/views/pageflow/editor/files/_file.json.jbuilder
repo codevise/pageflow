@@ -1,4 +1,11 @@
-json.(file, :id, :state, :rights, :usage_id, :configuration)
+json.(file,
+      :id,
+      :state,
+      :rights,
+      :usage_id,
+      :configuration,
+      :parent_file_id,
+      :parent_file_model_type)
 json.retryable(file.retryable?)
 json.file_name(file.attachment.original_filename)
 
