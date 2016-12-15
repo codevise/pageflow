@@ -1,11 +1,25 @@
 /**
  * A button that displays a drop down menu on hover.
  *
- * - `label` {String}
- * - `items` {Backbone.Collection} The `label` attribute is used
- *   as text for the item. Items can be disabled by setting the
- *   `disabled` property to `true`. On click a `selected` method is
- *   called on the item model.
+ * @param {String} options.label
+ *   Button text.
+ *
+ * @param {Backbone.Collection} options.items
+ *   Collection of menu items. See below for supported attributes.
+ *
+ * ## Item Models
+ *
+ * The following model attributes can be used to control the
+ * appearance of a menu item:
+ *
+ * - `name` - A name for the menu item which is not displayed.
+ * - `label` - Used as menu item label.
+ * - `disabled` - Make the menu item inactive.
+ * - `checked` - Display a check mark in front of the item
+ * - `items` - A Backbone collection of nested menu items.
+ *
+ * If the menu item model provdised a `selected` method, it is called
+ * when the menu item is clicked.
  *
  * @class
  * @memberof module:pageflow/editor
@@ -16,8 +30,7 @@ pageflow.DropDownButtonView = Backbone.Marionette.ItemView.extend({
 
   ui: {
     button: '> button',
-    menu: '.drop_down_button_menu',
-    items: '.drop_down_button_items'
+    menu: '.drop_down_button_menu'
   },
 
   events: {
@@ -27,20 +40,21 @@ pageflow.DropDownButtonView = Backbone.Marionette.ItemView.extend({
     },
 
     'mouseleave': function() {
-      this.hideMenu();
+      this.scheduleHideMenu();
     }
   },
 
   onRender: function() {
     var view = this;
 
+    this.ui.button.toggleClass('has_icon_and_text', !!this.options.label);
+    this.ui.button.toggleClass('has_icon_only', !this.options.label);
+
     this.ui.button.text(this.options.label);
 
-    this.subview(new pageflow.CollectionView({
-      el: this.ui.items,
-      collection: this.options.items,
-      itemViewConstructor: pageflow.DropDownButtonItemView
-    }));
+    this.ui.menu.append(this.subview(new pageflow.DropDownButtonItemListView({
+      items: this.options.items
+    })).el);
 
     this.ui.menu.on({
       'mouseenter': function() {
@@ -48,7 +62,7 @@ pageflow.DropDownButtonView = Backbone.Marionette.ItemView.extend({
       },
 
       'mouseleave': function() {
-        view.hideMenu();
+        view.scheduleHideMenu();
       }
     });
 
@@ -69,15 +83,29 @@ pageflow.DropDownButtonView = Backbone.Marionette.ItemView.extend({
   },
 
   showMenu: function() {
+    this.ensureOnlyOneDropDownButtonShowsMenu();
+
     clearTimeout(this.hideMenuTimeout);
     this.ui.menu.addClass('is_visible');
   },
 
+  ensureOnlyOneDropDownButtonShowsMenu: function() {
+    if (pageflow.DropDownButtonView.currentlyShowingMenu) {
+      pageflow.DropDownButtonView.currentlyShowingMenu.hideMenu();
+    }
+
+    pageflow.DropDownButtonView.currentlyShowingMenu = this;
+  },
+
   hideMenu: function() {
-    this.hideMenuTimeout = setTimeout(_.bind(function() {
-      if (!this.isClosed) {
-        this.ui.menu.removeClass('is_visible');
-      }
-    }, this), 500);
+    clearTimeout(this.hideMenuTimeout);
+
+    if (!this.isClosed) {
+      this.ui.menu.removeClass('is_visible');
+    }
+  },
+
+  scheduleHideMenu: function() {
+    this.hideMenuTimeout = setTimeout(_.bind(this.hideMenu, this), 300);
   }
 });
