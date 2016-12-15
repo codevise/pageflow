@@ -1,10 +1,4 @@
 pageflow.app.addInitializer(function(options) {
-  pageflow.editor.fileTypes.register('image_files', {
-    model: pageflow.ImageFile,
-    metaDataAttributes: ['dimensions'],
-    matchUpload: /^image/
-  });
-
   var textTracksMetaDataAttribute = {
     name: 'text_tracks',
     valueView: pageflow.TextTracksFileMetaDataItemValueView,
@@ -23,15 +17,46 @@ pageflow.app.addInitializer(function(options) {
     }
   };
 
+  var altMetaDataAttribute = {
+    name: 'alt',
+    valueView: pageflow.TextFileMetaDataItemValueView,
+    valueViewOptions: {
+      fromConfiguration: true,
+      settingsDialogTabLink: 'general'
+    }
+  };
+
+  pageflow.editor.fileTypes.register('image_files', {
+    model: pageflow.ImageFile,
+    metaDataAttributes: [
+      'dimensions',
+      altMetaDataAttribute
+    ],
+    matchUpload: /^image/,
+    configurationEditorInputs: [
+      {
+        name: 'alt',
+        inputView: pageflow.TextInputView
+      }
+    ]
+  });
+
   pageflow.editor.fileTypes.register('video_files', {
     model: pageflow.VideoFile,
     metaDataAttributes: [
       'format',
       'dimensions',
       'duration',
-      textTracksMetaDataAttribute
+      textTracksMetaDataAttribute,
+      altMetaDataAttribute
     ],
     matchUpload: /^video/,
+    configurationEditorInputs: [
+      {
+        name: 'alt',
+        inputView: pageflow.TextInputView
+      }
+    ],
     settingsDialogTabs: [
       textTracksSettingsDialogTab
     ]
@@ -42,9 +67,16 @@ pageflow.app.addInitializer(function(options) {
     metaDataAttributes: [
       'format',
       'duration',
-      textTracksMetaDataAttribute
+      textTracksMetaDataAttribute,
+      altMetaDataAttribute
     ],
     matchUpload: /^audio/,
+    configurationEditorInputs: [
+      {
+        name: 'alt',
+        inputView: pageflow.TextInputView
+      }
+    ],
     settingsDialogTabs: [
       textTracksSettingsDialogTab
     ]
