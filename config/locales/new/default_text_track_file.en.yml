@@ -1,0 +1,14 @@
+en:
+  pageflow:
+    editor:
+      views:
+        inputs:
+          file_input:
+            default_text_track: "Default texttrack"
+            no_default_text_track: "(None)"
+            edit_background_positioning: "Adjust field of view..."
+    ui:
+      templates:
+        inputs:
+          file_input:
+            adjust_positioning: "DELETED"

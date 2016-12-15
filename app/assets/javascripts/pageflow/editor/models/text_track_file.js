@@ -12,6 +12,10 @@ pageflow.TextTrackFile = pageflow.HostedFile.extend({
     }
   },
 
+  label: function() {
+    return this.configuration.get('label');
+  },
+
   extractLanguageCodeFromFilename: function() {
     var matches = /\S+\.([a-z]{2})_[A-Z]{2}\.vtt/.exec(this.get('file_name'));
     return matches && matches[1];

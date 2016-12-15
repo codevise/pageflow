@@ -100,7 +100,57 @@ support.factories = {
     });
   },
 
-  file: function(attributes, options) {
-    return new pageflow.ImageFile(attributes, options);
+  videoFileWithTextTrackFiles: function(options) {
+    var fileTypes = this.fileTypes(function() {
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+
+    var fileAttributes = {
+      video_files: [
+        _.extend({
+          id: 1,
+          state: 'encoded'
+        }, options.videoFileAttributes)
+      ],
+      text_track_files: _.map(options.textTrackFilesAttributes, function(attributes) {
+        return _.extend({
+          parent_file_id: 1,
+          parent_file_model_type: 'Pageflow::VideoFile'
+        }, attributes);
+      })
+    };
+
+    var entry = support.factories.entry({}, {
+      files: pageflow.FilesCollection.createForFileTypes(fileTypes,
+                                                         fileAttributes || {}),
+      fileTypes: fileTypes
+    });
+
+    var videoFiles = entry.getFileCollection(
+      fileTypes.findByCollectionName('video_files')
+    );
+
+    var textTrackFiles = entry.getFileCollection(
+      fileTypes.findByCollectionName('text_track_files')
+    );
+
+    return {
+      entry: entry,
+      videoFile: videoFiles.first(),
+      videoFiles: videoFiles,
+      textTrackFiles: textTrackFiles
+    };
+
+  },
+
+  imageFile: function(attributes, options) {
+    return new pageflow.ImageFile(attributes, _.extend({
+      fileType: this.imageFileType()
+    }, options));
+  },
+
+  file: function(attributes, options){
+    return this.imageFile(attributes, options);
   }
 };

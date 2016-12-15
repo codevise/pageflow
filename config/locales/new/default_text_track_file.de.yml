@@ -1,0 +1,14 @@
+de:
+  pageflow:
+    editor:
+      views:
+        inputs:
+          file_input:
+            default_text_track: "Standard Textspur"
+            no_default_text_track: "(Keine)"
+            edit_background_positioning: "Bildausschnitt anpassen..."
+    ui:
+      templates:
+        inputs:
+          file_input:
+            adjust_positioning: "DELETED"
