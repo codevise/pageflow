@@ -1,23 +1,19 @@
+$drop-down-button-menu-background-color: #eee !default;
+$drop-down-button-menu-active-item-background-color: #ddd !default;
+$drop-down-button-menu-disabled-item-text-color: #ddd !default;
+$drop-down-button-menu-border-color: #aaa !default;
+
 .drop_down_button {
   display: inline-block;
   position: relative;
 
-  > button {
+  > button.has_icon_and_text {
     @include icon-button;
   }
-}
 
-.drop_down_button_menu.is_visible {
-  @include transition(visibility 0ms, opacity 100ms);
-  visibility: visible;
-  pointer-events: all;
-  opacity: 1;
-}
-
-.drop_down_button_list {
-  position: relative;
-  background-color: #eee;
-  border: 1px solid #ccc;
+  > button.has_icon_only {
+    @include icon-only-button;
+  }
 }
 
 .drop_down_button_menu {
@@ -29,26 +25,66 @@
   position: absolute;
   z-index: 1;
   padding: 1px;
-  border: solid 1px #aaa;
-  background-color: #eee;
+  border: solid 1px $drop-down-button-menu-border-color;
+  background-color: $drop-down-button-menu-background-color;
+
+  &.is_visible {
+    @include transition(visibility 0ms, opacity 100ms);
+    visibility: visible;
+    pointer-events: all;
+    opacity: 1;
+  }
 }
 
 .drop_down_button_item {
-  a {
-    display: block;
+  a,
+  .label {
     padding: 7px 15px;
+  }
+
+  a {
+    display: none;
     cursor: pointer;
 
     &:hover {
-      background-color: #ddd;
+      background-color: $drop-down-button-menu-active-item-background-color;
+    }
+  }
+
+  .label {
+    cursor: default;
+  }
+
+  &.is_selectable {
+    a {
+      display: block;
+    }
+
+    .label {
+      display: none;
     }
   }
 
   &.is_disabled a {
-    color: #ddd;
+    color: $drop-down-button-menu-disabled-item-text-color;
 
     &:hover {
       background-color: inherit;
     }
+  }
+
+  &.is_checked a {
+    @include background-icon-left($left: 15px, $font-size: 15px);
+    @include fa-check-icon;
+  }
+
+  .drop_down_button_item a {
+    padding-left: 39px;
+  }
+
+  ul {
+    border-bottom: solid 1px $drop-down-button-menu-border-color;
+    padding-bottom: 1px;
+    margin-bottom: 1px;
   }
 }

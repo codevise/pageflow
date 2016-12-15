@@ -41,9 +41,11 @@
     right: 35px;
   }
 
-  a.edit_positioning {
-    @include icon-only-button();
-    @include doc-landscape-icon;
+  .drop_down_button {
+    button {
+      @include fa-ellipsis-v-icon;
+      width: 31px;
+    }
 
     position: absolute;
     top: 53px;
@@ -52,5 +54,12 @@
 
   .inline_help {
     white-space: normal;
+  }
+
+  &.is_unset {
+    .unset,
+    .drop_down_button {
+      display: none;
+    }
   }
 }
