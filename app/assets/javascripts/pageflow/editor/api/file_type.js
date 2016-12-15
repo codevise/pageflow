@@ -12,8 +12,17 @@ pageflow.FileType = pageflow.Object.extend({
     this.configurationUpdaters = options.configurationUpdaters || [];
     this.nestedFileTableColumns = options.nestedFileTableColumns || [];
     this.skipUploadConfirmation = options.skipUploadConfirmation || false;
-    this.metaDataAttributes = options.metaDataAttributes || [];
     this.filters = options.filters || [];
+
+    this.metaDataAttributes = [
+      {
+        name: 'rights',
+        valueView: pageflow.TextFileMetaDataItemValueView,
+        valueViewOptions: {
+          settingsDialogTabLink: 'general'
+        }
+      },
+    ].concat(options.metaDataAttributes || []);
 
     this.settingsDialogTabs = [
       {

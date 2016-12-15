@@ -7,7 +7,11 @@ pageflow.app.addInitializer(function(options) {
 
   pageflow.editor.fileTypes.register('video_files', {
     model: pageflow.VideoFile,
-    metaDataAttributes: ['format', 'dimensions', 'duration'],
+    metaDataAttributes: [
+      'format',
+      'dimensions',
+      'duration',
+    ],
     matchUpload: /^video/,
     settingsDialogTabs: [
       {
