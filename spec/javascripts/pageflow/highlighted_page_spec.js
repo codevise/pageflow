@@ -5,9 +5,12 @@ describe('pageflow.HighlightedPage', function() {
     describe('for storylines with own navigation bar', function() {
       it('returns perma id of same page if page is displayed in navigation', function() {
         var outline = new p.HighlightedPage(new p.SeedEntryData({
-          storyline_configurations: {
-            10: {}
-          },
+          storylines: [
+            {
+              id: 10,
+              configuration: {}
+            }
+          ],
           chapters: [{
             id: 1,
             storyline_id: 10
@@ -27,9 +30,12 @@ describe('pageflow.HighlightedPage', function() {
 
       it('returns perma id of previous page if page is not displayed in navigation', function() {
         var outline = new p.HighlightedPage(new p.SeedEntryData({
-          storyline_configurations: {
-            10: {}
-          },
+          storylines: [
+            {
+              id: 10,
+              configuration: {}
+            }
+          ],
           chapters: [{
             id: 1,
             storyline_id: 10
@@ -58,12 +64,15 @@ describe('pageflow.HighlightedPage', function() {
     describe('for chapter with inherited navigation bar', function() {
       it('returns perma id of parent page', function() {
         var outline = new p.HighlightedPage(new p.SeedEntryData({
-          storyline_configurations: {
-            10: {
-              navigation_bar_mode: 'inherit_from_parent',
-              parent_page_perma_id: 101
+          storylines: [
+            {
+              id: 10,
+              configuration: {
+                navigation_bar_mode: 'inherit_from_parent',
+                parent_page_perma_id: 101
+              }
             },
-          },
+          ],
           chapters: [
             {
               id: 1,
@@ -91,16 +100,22 @@ describe('pageflow.HighlightedPage', function() {
     describe('for chapter with inherited navigation bar over multiple levels', function() {
       it('returns perma id of parent page', function() {
         var outline = new p.HighlightedPage(new p.SeedEntryData({
-          storyline_configurations: {
-            10: {
-              navigation_bar_mode: 'inherit_from_parent',
-              parent_page_perma_id: 101
+          storylines: [
+            {
+              id: 10,
+              configuration: {
+                navigation_bar_mode: 'inherit_from_parent',
+                parent_page_perma_id: 101
+              }
             },
-            20: {
-              navigation_bar_mode: 'inherit_from_parent',
-              parent_page_perma_id: 102
+            {
+              id: 20,
+              configuration: {
+                navigation_bar_mode: 'inherit_from_parent',
+                parent_page_perma_id: 102
+              }
             }
-          },
+          ],
           chapters: [
             {id: 1, storyline_id: 10},
             {id: 2, storyline_id: 20},
@@ -122,17 +137,26 @@ describe('pageflow.HighlightedPage', function() {
     describe('with customNavigationBarMode option', function() {
       it('uses navigation bar modes returned by option', function() {
         var entryData = new p.SeedEntryData({
-          storyline_configurations: {
-            10: {
-              parent_page_perma_id: 101
+          storylines: [
+            {
+              id: 10,
+              configuration: {
+                parent_page_perma_id: 101
+              }
             },
-            20: {
-              parent_page_perma_id: 102,
+            {
+              id: 20,
+              configuration: {
+                parent_page_perma_id: 102,
+              }
             },
-            30: {
-              main: true
+            {
+              id: 30,
+              configuration: {
+                main: true
+              }
             }
-          },
+          ],
           chapters: [
             {id: 1, storyline_id: 10},
             {id: 2, storyline_id: 20},

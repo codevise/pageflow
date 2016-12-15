@@ -6,6 +6,7 @@
   "maxlen": 100,
   "unused": "vars",
   "expr": true,
+  "camelcase": false,
   "predef": [
     "jQuery",
     "$",

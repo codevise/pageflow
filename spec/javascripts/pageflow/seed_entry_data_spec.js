@@ -19,9 +19,12 @@ describe('pageflow.SeedEntryData', function() {
     it('returns configruation by chapter id', function() {
       var configuration = {};
       var entryData = new p.SeedEntryData({
-        storyline_configurations: {
-          1: configuration
-        }
+        storylines: [
+          {
+            id: 1,
+            configuration: configuration
+          }
+        ]
       });
 
       var result = entryData.getStorylineConfiguration(1);

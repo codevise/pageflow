@@ -28,20 +28,21 @@ module Pageflow
       end
     end
 
-    describe '#entry_storyline_configurations_seed' do
-      it 'indexed configurations by id' do
+    describe '#entry_storylines_seed' do
+      it 'includes id and configuration' do
         revision = create(:revision, :published)
         storyline = create(:storyline, revision: revision, configuration: {text: 'some text'})
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
 
-        result = helper.entry_storyline_configurations_seed(entry)
+        result = helper.entry_storylines_seed(entry)
 
-        expect(result[storyline.id]['text']).to eq('some text')
+        expect(result[0]['id']).to eq(storyline.id)
+        expect(result[0]['configuration']['text']).to eq('some text')
       end
     end
 
     describe '#entry_chapters_seed' do
-      it 'indexed configurations by id' do
+      it 'includes id and configuration' do
         revision = create(:revision, :published)
         storyline = create(:storyline, revision: revision)
         chapter = create(:chapter,
