@@ -1,17 +1,19 @@
 describe('FileUploader', function() {
   beforeEach(function() {
-    this.fileTypes = support.factories
-      .fileTypesWithImageFileType({addVideoAndNestedFileTypes: true});
+    this.fileTypes = support.factories.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+
     this.imageFileType = this.fileTypes.findByCollectionName('image_files');
     this.videoFileType = this.fileTypes.findByCollectionName('video_files');
     this.textTrackFileType = this.fileTypes.findByCollectionName('text_track_files');
-    this.secondNestedFileType = this.fileTypes.findByCollectionName('dont_nest_these_files');
 
     this.entry = support.factories.entry({}, {
       files: pageflow.FilesCollection.createForFileTypes([this.imageFileType,
                                                           this.videoFileType,
-                                                          this.textTrackFileType,
-                                                          this.secondNestedFileType], {}),
+                                                          this.textTrackFileType], {}),
       fileTypes: this.fileTypes
     });
   });
@@ -189,7 +191,7 @@ describe('FileUploader', function() {
         fileUploader.add(targetFileUpload);
         fileUploader.submit();
         var targetFile = this.entry.getFileCollection(this.videoFileType).first();
-        var nestedFileUpload = {name: 'do_not_nest_me.dont', type: 'nest/dont'};
+        var nestedFileUpload = {name: 'cannot_nest_image.png', type: 'image/png'};
         var editor = new pageflow.EditorApi();
         editor.setUploadTargetFile(targetFile);
 
