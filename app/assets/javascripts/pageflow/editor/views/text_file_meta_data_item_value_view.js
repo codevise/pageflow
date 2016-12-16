@@ -11,6 +11,15 @@
  */
 pageflow.TextFileMetaDataItemValueView = pageflow.FileMetaDataItemValueView.extend({
   getText: function() {
-    return this.model.get(this.options.name);
+    var model;
+
+    if (this.options.fromConfiguration) {
+      model = this.model.configuration;
+    }
+    else {
+      model = this.model;
+    }
+
+    return model.get(this.options.name);
   }
 });
