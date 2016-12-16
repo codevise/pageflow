@@ -125,7 +125,8 @@ pageflow.app.addInitializer(function(options) {
       },
       {
         name: 'srclang',
-        cellView: pageflow.TextTableCellView
+        cellView: pageflow.TextTableCellView,
+        default: I18n.t('pageflow.editor.text_track_files.srclang_missing')
       },
       {
         name: 'kind',
