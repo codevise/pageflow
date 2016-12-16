@@ -12,20 +12,58 @@ describe('TableCellView', function() {
       expect(result).to.eq('Tom');
     });
 
-    it('supports reading from configuration', function() {
-      var person = new Backbone.Model();
-      person.configuration = new Backbone.Model({first_name: 'Tom'});
+    it('supports getting value from function passed as value option', function() {
+      var person = new Backbone.Model({first_name: 'Tom'});
       var tableCellView = new pageflow.TableCellView({
         column: {
           name: 'first_name',
-          configurationAttribute: true
+          value: function(person) {
+            return person.get('first_name') + '!';
+          }
         },
         model: person
       });
 
       var result = tableCellView.attributeValue();
 
-      expect(result).to.eq('Tom');
+      expect(result).to.eq('Tom!');
+    });
+
+    describe('with configurationAttribute option set to true', function() {
+      it('supports reading from configuration', function() {
+        var person = new Backbone.Model();
+        person.configuration = new Backbone.Model({first_name: 'Tom'});
+        var tableCellView = new pageflow.TableCellView({
+          column: {
+            name: 'first_name',
+            configurationAttribute: true
+          },
+          model: person
+        });
+
+        var result = tableCellView.attributeValue();
+
+        expect(result).to.eq('Tom');
+      });
+
+      it('still passes model to value function', function() {
+        var person = new Backbone.Model();
+        person.configuration = new Backbone.Model({first_name: 'Tom'});
+        var tableCellView = new pageflow.TableCellView({
+          column: {
+            name: 'first_name',
+            configurationAttribute: true,
+            value: function(person) {
+              return person.configuration.get('first_name') + '!';
+            }
+          },
+          model: person,
+        });
+
+        var result = tableCellView.attributeValue();
+
+        expect(result).to.eq('Tom!');
+      });
     });
   });
 

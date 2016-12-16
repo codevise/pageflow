@@ -35,7 +35,12 @@ pageflow.TableCellView = Backbone.Marionette.ItemView.extend({
    * Returns the column attribute's value in the row model.
    */
   attributeValue: function() {
-    return this.getModel().get(this.options.column.name);
+    if (typeof this.options.column.value == 'function') {
+      return this.options.column.value(this.model);
+    }
+    else {
+      return this.getModel().get(this.options.column.name);
+    }
   },
 
   getModel: function() {
