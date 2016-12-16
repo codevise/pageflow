@@ -11,6 +11,7 @@ pageflow.FileType = pageflow.Object.extend({
     this.configurationEditorInputs = [].concat(options.configurationEditorInputs || []);
     this.configurationUpdaters = options.configurationUpdaters || [];
     this.nestedFileTableColumns = options.nestedFileTableColumns || [];
+    this.nestedFilesOrder = options.nestedFilesOrder;
     this.skipUploadConfirmation = options.skipUploadConfirmation || false;
     this.filters = options.filters || [];
 

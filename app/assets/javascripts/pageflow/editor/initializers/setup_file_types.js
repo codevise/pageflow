@@ -134,7 +134,13 @@ pageflow.app.addInitializer(function(options) {
           icons: pageflow.config.availableTextTrackKinds
         }
       },
-    ]
+    ],
+    nestedFilesOrder: {
+      comparator: function(textTrackFile) {
+        return textTrackFile.displayLabel().toLowerCase();
+      },
+      binding: 'label'
+    }
   });
 
   pageflow.editor.fileTypes.setup(options.config.fileTypes);
