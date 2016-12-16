@@ -5,37 +5,48 @@ pageflow.app.addInitializer(function(options) {
     matchUpload: /^image/
   });
 
+  var textTracksMetaDataAttribute = {
+    name: 'text_tracks',
+    valueView: pageflow.TextTracksFileMetaDataItemValueView,
+    valueViewOptions: {
+      settingsDialogTabLink: 'text_tracks',
+    }
+  };
+
+  var textTracksSettingsDialogTab = {
+    name: 'text_tracks',
+    view: pageflow.TextTracksView,
+    viewOptions: {
+      supersetCollection: function() {
+        return pageflow.textTrackFiles;
+      }
+    }
+  };
+
   pageflow.editor.fileTypes.register('video_files', {
     model: pageflow.VideoFile,
-    metaDataAttributes: ['format', 'dimensions', 'duration'],
+    metaDataAttributes: [
+      'format',
+      'dimensions',
+      'duration',
+      textTracksMetaDataAttribute
+    ],
     matchUpload: /^video/,
     settingsDialogTabs: [
-      {
-        name: 'text_tracks',
-        view: pageflow.TextTracksView,
-        viewOptions: {
-          supersetCollection: function() {
-            return pageflow.textTrackFiles;
-          }
-        }
-      }
+      textTracksSettingsDialogTab
     ]
   });
 
   pageflow.editor.fileTypes.register('audio_files', {
     model: pageflow.AudioFile,
-    metaDataAttributes: ['format', 'duration'],
+    metaDataAttributes: [
+      'format',
+      'duration',
+      textTracksMetaDataAttribute
+    ],
     matchUpload: /^audio/,
     settingsDialogTabs: [
-      {
-        name: 'text_tracks',
-        view: pageflow.TextTracksView,
-        viewOptions: {
-          supersetCollection: function() {
-            return pageflow.textTrackFiles;
-          }
-        }
-      }
+      textTracksSettingsDialogTab
     ]
   });
 

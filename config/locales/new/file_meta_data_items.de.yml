@@ -1,0 +1,13 @@
+de:
+  pageflow:
+    editor:
+      files:
+        common_attributes:
+          text_tracks:
+            label: "Untertitel"
+      templates:
+        file_meta_data_item_value_view:
+          edit: "Bearbeiten"
+      views:
+        file_meta_data_item_value_view:
+          blank: "-"

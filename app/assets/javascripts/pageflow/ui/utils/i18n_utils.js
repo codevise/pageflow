@@ -5,6 +5,60 @@
  */
 pageflow.i18nUtils = {
   /**
+   * Returns an array of translation keys based on the `prefixes`
+   * option and the given `keyName`.
+   *
+   * @param {string} keyName
+   *   Suffix to append to prefixes.
+   *
+   * @param {string[]} [options.prefixes]
+   *   Array of translation key prefixes.
+   *
+   * @param {string} [options.fallbackPrefix]
+   *   Optional additional prefix to form a model based translation
+   *   key of the form
+   *   `prefix.fallbackModelI18nKey.propertyName.keyName`.
+   *
+   * @param {string} [options.fallbackModelI18nKey]
+   *   Required if `fallbackPrefix` option is present.
+   *
+   * @return {string[]}
+   * @since edge
+   */
+  attributeTranslationKeys: function(attributeName, keyName, options) {
+    var result = [];
+
+    if (options.prefixes) {
+      result = result.concat(_(options.prefixes).map(function(prefix) {
+        return prefix + '.' + attributeName + '.' + keyName;
+      }, this));
+    }
+
+    if (options && options.fallbackPrefix) {
+      result.push(options.fallbackPrefix + '.' +
+                  options.fallbackModelI18nKey + '.' +
+                  attributeName);
+    }
+
+    return result;
+  },
+
+  /**
+   * Takes the same parameters as {@link
+   * module:pageflow/ui.pageflow.i18nUtils.attributeTranslationKeys
+   * i18nUtils.attributeTranslationKeys}, but returns the first
+   * existing translation.
+   *
+   * @return {string}
+   * @since edge
+   */
+  attributeTranslation: function(attributeName, keyName, options) {
+    return pageflow.i18nUtils.findTranslation(
+      this.attributeTranslationKeys(attributeName, keyName, options)
+    );
+  },
+
+  /**
    * Find the first key for which a translation exists and return the
    * translation.
    *

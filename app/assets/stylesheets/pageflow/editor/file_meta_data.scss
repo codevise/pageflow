@@ -1,18 +1,28 @@
+$file-meta-data-label-color: #888 !default;
+$file-meta-data-icon-link-color: #555 !default;
+$file-meta-data-active-icon-link-color: #000 !default;
+
 .file_meta_data {
   margin-left: -65px;
+  white-space: normal;
 
   table {
     margin-bottom: 5px;
     width: 100%;
   }
 
+  th,
+  td {
+    vertical-align: top;
+  }
+
   th {
     width: 45px;
-    padding: 5px 20px 5px 0;
+    padding: 7px 20px 5px 0;
     font-weight: normal;
     text-align: right;
     font-size: 11px;
-    color: #888;
+    color: $file-meta-data-label-color;
   }
 
   td {
@@ -23,9 +33,19 @@
     text-decoration: underline;
   }
 
-  input[type="text"] {
-    display: block;
-    line-height: 15px;
-    margin: -5px 0;
+  .edit {
+    @include background-icon-center($font-size: 15px,
+                                    $color: $file-meta-data-icon-link-color);
+    @include pencil-icon;
+
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    float: right;
+    margin-top: -2px;
+
+    &:hover {
+      @include background-icon-color($file-meta-data-active-icon-link-color);
+    }
   }
 }

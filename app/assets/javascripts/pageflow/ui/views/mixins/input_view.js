@@ -136,19 +136,14 @@ pageflow.inputView = {
    * @member
    */
   attributeTranslationKeys: function(keyName, options) {
-    var result = [];
-
-    if (this.options.attributeTranslationKeyPrefixes) {
-      result = result.concat(_(this.options.attributeTranslationKeyPrefixes).map(function(prefix) {
-        return prefix + '.' + this.options.propertyName + '.' + keyName;
-      }, this));
-    }
-
-    if (options && options.fallbackPrefix) {
-      result.push(options.fallbackPrefix + '.' + this.model.i18nKey + '.' + this.options.propertyName);
-    }
-
-    return result;
+    return pageflow.i18nUtils.attributeTranslationKeys(
+      this.options.propertyName,
+      keyName,
+      _.extend({
+        prefixes: this.options.attributeTranslationKeyPrefixes,
+        fallbackModelI18nKey: this.model.i18nKey
+      }, options || {})
+    );
   },
 
   onRender: function() {
@@ -177,7 +172,9 @@ pageflow.inputView = {
   },
 
   localizedAttributeName: function() {
-    return pageflow.i18nUtils.findTranslation(this.attributeTranslationKeys('label', {fallbackPrefix: 'activerecord.attributes'}));
+    return pageflow.i18nUtils.findTranslation(this.attributeTranslationKeys('label', {
+      fallbackPrefix: 'activerecord.attributes'
+    }));
   },
 
   /**
@@ -185,7 +182,9 @@ pageflow.inputView = {
    * @return {string}
    */
   inlineHelpText: function() {
-    var keys = this.attributeTranslationKeys('inline_help', {fallbackPrefix: 'pageflow.ui.inline_help'});
+    var keys = this.attributeTranslationKeys('inline_help', {
+      fallbackPrefix: 'pageflow.ui.inline_help'
+    });
 
     if (this.options.disabled) {
       keys = pageflow.i18nUtils.translationKeysWithSuffix(keys, 'disabled');

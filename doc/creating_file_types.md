@@ -122,6 +122,27 @@ type.
       metaDataAttributes: ['dimensions']
     };
 
+Meta data attributes can also specify a Backbone view to render the
+value:
+
+    # app/assets/javascripts/pageflow/rainbow/editor/config.js
+    pageflow.editor.fileTypes.register('pageflow_rainbow_files', {
+      model: pageflow.ImageFile,
+      matchUpload: /^image/,
+      metaDataAttributes: [
+        {
+          name: 'custom',
+          valueView: pageflow.TextFileMetaDataItemValueView,
+          valueViewOptions: {
+            settingsDialogTabLink: 'general'
+          }
+      ]
+    };
+
+See `pageflow.TextFileMetaDataItemValueView` for more information. You
+can also create a custom view by extending
+`pageflow.FileMetaDataItemValueView`.
+
 ## Custom Processing Stages
 
 The `HostedFile` mixin defines a state machine which captures the

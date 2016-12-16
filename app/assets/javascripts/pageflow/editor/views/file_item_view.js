@@ -94,11 +94,17 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
   metaDataViews: function() {
     var model = this.model;
 
-    return _.map(this.options.metaDataAttributes, function(attribute) {
-      return new pageflow.FileMetaDataItemView({
-        model: model,
-        attribute: attribute
-      });
+    return _.map(this.options.metaDataAttributes, function(options) {
+      if (typeof options === 'string') {
+        options = {
+          name: options,
+          valueView: pageflow.TextFileMetaDataItemValueView
+        };
+      }
+
+      return new pageflow.FileMetaDataItemView(_.extend({
+        model: model
+      }, options));
     });
   },
 

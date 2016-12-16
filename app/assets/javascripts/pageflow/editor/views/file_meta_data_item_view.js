@@ -8,12 +8,23 @@ pageflow.FileMetaDataItemView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.update();
-    this.listenTo(this.model, 'change:' + this.options.attribute, this.update);
+    this.subview(new this.options.valueView(_.extend({
+      el: this.ui.value,
+      model: this.model,
+      name: this.options.name
+    }, this.options.valueViewOptions || {})));
+
+    this.ui.label.text(this.labelText());
   },
 
-  update: function() {
-    this.ui.label.text(I18n.t('activerecord.attributes.' + this.model.i18nKey + '.' + this.options.attribute));
-    this.ui.value.text(this.model.get(this.options.attribute));
+  labelText: function() {
+    return pageflow.i18nUtils.attributeTranslation(this.options.name, 'label', {
+      prefixes: [
+        'pageflow.editor.files.attributes.' + this.model.fileType().collectionName,
+        'pageflow.editor.files.common_attributes'
+      ],
+      fallbackPrefix: 'activerecord.attributes',
+      fallbackModelI18nKey: this.model.i18nKey
+    });
   }
 });

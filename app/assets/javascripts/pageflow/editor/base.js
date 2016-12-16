@@ -34,6 +34,7 @@
 //= require_tree ./views/mixins
 //= require ./views/model_thumbnail_view
 //= require ./views/file_item_view
+//= require ./views/file_meta_data_item_value_view
 //= require ./views/chapter_item_view
 //= require ./views/page_item_view
 //= require ./views/inputs/reference_input_view
