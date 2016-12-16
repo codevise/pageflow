@@ -38,4 +38,6 @@ pageflow.app.addInitializer(function(options) {
   pageflow.savingRecords = new pageflow.SavingRecordsCollection();
   pageflow.savingRecords.watch(pageflow.pages);
   pageflow.savingRecords.watch(pageflow.chapters);
+
+  pageflow.events.trigger('seed:loaded');
 });
