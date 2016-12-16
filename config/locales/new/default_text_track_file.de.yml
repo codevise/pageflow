@@ -7,6 +7,7 @@ de:
             default_text_track: "Standard Textspur"
             no_default_text_track: "(Keine)"
             edit_background_positioning: "Bildausschnitt anpassen..."
+            edit_file_settings: "Datei-Einstellungen..."
     ui:
       templates:
         inputs:

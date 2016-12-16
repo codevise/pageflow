@@ -7,6 +7,7 @@ en:
             default_text_track: "Default texttrack"
             no_default_text_track: "(None)"
             edit_background_positioning: "Adjust field of view..."
+            edit_file_settings: "File settings..."
     ui:
       templates:
         inputs:

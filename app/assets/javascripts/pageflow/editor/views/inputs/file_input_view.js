@@ -104,6 +104,15 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
       }));
     }
 
+    if (file) {
+      items.add(new pageflow.FileInputView.EditFileSettingsMenuItem({
+        name: 'edit_file_settings',
+        label: I18n.t('pageflow.editor.views.inputs.file_input.edit_file_settings')
+      }, {
+        file: file,
+      }));
+    }
+
     return items;
   },
 
@@ -135,6 +144,18 @@ pageflow.FileInputView.EditBackgroundPositioningMenuItem = Backbone.Model.extend
       model: this.options.inputModel,
       propertyName: this.options.propertyName,
       filesCollection: this.options.filesCollection
+    });
+  }
+});
+
+pageflow.FileInputView.EditFileSettingsMenuItem = Backbone.Model.extend({
+  initialize: function(attributes, options) {
+    this.options = options;
+  },
+
+  selected: function() {
+    pageflow.FileSettingsDialogView.open({
+      model: this.options.file
     });
   }
 });
