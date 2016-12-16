@@ -11,58 +11,68 @@ support.factories = {
     }, options));
   },
 
-  fileTypesWithImageFileType: function(options) {
-    options = options || {};
+  fileTypes: function(fn) {
     var fileTypes = new pageflow.FileTypes();
-    var fileTypesSetupArray = [
-      {
-        collectionName: 'image_files',
-        typeName: 'Pageflow::ImageFile'
-      }
-    ];
+    var fileTypesSetupArray = [];
 
-    fileTypes.register('image_files', _.extend({
-      model: pageflow.ImageFile,
-      matchUpload: /^image/,
-      topLevelType: true
-    }, options));
+    fn.call({
+      withImageFileType: function(options) {
+        fileTypes.register('image_files', _.extend({
+          model: pageflow.ImageFile,
+          matchUpload: /^image/,
+          topLevelType: true
+        }, options));
 
-    if (options.addVideoAndNestedFileTypes) {
-      fileTypes.register('video_files', _.extend({
-        model: pageflow.VideoFile,
-        matchUpload: /^video/,
-        topLevelType: true
-      }, options));
+        fileTypesSetupArray.push({
+          collectionName: 'image_files',
+          typeName: 'Pageflow::ImageFile',
+          i18nKey: 'pageflow/image_files'
+        });
 
-      fileTypes.register('text_track_files', _.extend({
-        model: pageflow.TextTrackFile,
-        matchUpload: /vtt$/
-      }, options));
+        return this;
+      },
 
-      fileTypes.register('dont_nest_these_files', _.extend({
-        model: pageflow.TextTrackFile,
-        matchUpload: /dont$/
-      }, options));
+      withVideoFileType: function(options) {
+        fileTypes.register('video_files', _.extend({
+          model: pageflow.VideoFile,
+          matchUpload: /^video/,
+          topLevelType: true
+        }, options));
 
-      fileTypesSetupArray = fileTypesSetupArray.concat([
-        {
+        fileTypesSetupArray.push({
           collectionName: 'video_files',
           typeName: 'Pageflow::VideoFile',
+          i18nKey: 'pageflow/video_files',
           nestedFileTypes: [{collectionName: 'text_track_files'}]
-        },
-        {
-          collectionName: 'text_track_files',
-          typeName: 'Pageflow::TextTrackFile'
-        },
-        {
-          collectionName: 'dont_nest_these_files',
-          typeName: 'Pageflow::TextTrackFile'
-        }
-      ]);
-    }
-    fileTypes.setup(fileTypesSetupArray);
+        });
 
+        return this;
+      },
+
+      withTextTrackFileType: function(options) {
+        fileTypes.register('text_track_files', _.extend({
+          model: pageflow.TextTrackFile,
+          matchUpload: /vtt$/
+        }, options));
+
+        fileTypesSetupArray.push({
+          collectionName: 'text_track_files',
+          typeName: 'Pageflow::TextTrackFile',
+          i18nKey: 'pageflow/text_track_files'
+        });
+
+        return this;
+      }
+    });
+
+    fileTypes.setup(fileTypesSetupArray);
     return fileTypes;
+  },
+
+  fileTypesWithImageFileType: function(options) {
+    return this.fileTypes(function() {
+      this.withImageFileType(options);
+    });
   },
 
   imageFileType: function(options) {
@@ -90,7 +100,57 @@ support.factories = {
     });
   },
 
-  file: function(attributes, options) {
-    return new pageflow.ImageFile(attributes, options);
+  videoFileWithTextTrackFiles: function(options) {
+    var fileTypes = this.fileTypes(function() {
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+
+    var fileAttributes = {
+      video_files: [
+        _.extend({
+          id: 1,
+          state: 'encoded'
+        }, options.videoFileAttributes)
+      ],
+      text_track_files: _.map(options.textTrackFilesAttributes, function(attributes) {
+        return _.extend({
+          parent_file_id: 1,
+          parent_file_model_type: 'Pageflow::VideoFile'
+        }, attributes);
+      })
+    };
+
+    var entry = support.factories.entry({}, {
+      files: pageflow.FilesCollection.createForFileTypes(fileTypes,
+                                                         fileAttributes || {}),
+      fileTypes: fileTypes
+    });
+
+    var videoFiles = entry.getFileCollection(
+      fileTypes.findByCollectionName('video_files')
+    );
+
+    var textTrackFiles = entry.getFileCollection(
+      fileTypes.findByCollectionName('text_track_files')
+    );
+
+    return {
+      entry: entry,
+      videoFile: videoFiles.first(),
+      videoFiles: videoFiles,
+      textTrackFiles: textTrackFiles
+    };
+
+  },
+
+  imageFile: function(attributes, options) {
+    return new pageflow.ImageFile(attributes, _.extend({
+      fileType: this.imageFileType()
+    }, options));
+  },
+
+  file: function(attributes, options){
+    return this.imageFile(attributes, options);
   }
 };
