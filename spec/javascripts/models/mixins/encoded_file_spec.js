@@ -1,8 +1,8 @@
 describe('encodedFile', function() {
   describe('#stages', function() {
     describe('when confirmEncodingJobs is off', function() {
-      beforeEach(function() {
-        pageflow.config = {confirmEncoding: false};
+      support.setupGlobals({
+        config: {confirmEncodingJobs: false}
       });
 
       it('does not include fetching meta data', function() {
@@ -13,8 +13,8 @@ describe('encodedFile', function() {
     });
 
     describe('when confirmEncodingJobs is on', function() {
-      beforeEach(function() {
-        pageflow.config = {confirmEncodingJobs: true};
+      support.setupGlobals({
+        config: {confirmEncodingJobs: true}
       });
 
       it('includes fetching meta data', function() {

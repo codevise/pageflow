@@ -12,3 +12,6 @@
 
 window.support = {};
 window.expect = chai.expect;
+
+// Some classes statically depend on pageflow being defined.
+pageflow.config = {};
