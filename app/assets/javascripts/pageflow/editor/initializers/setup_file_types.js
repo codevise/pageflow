@@ -89,7 +89,14 @@ pageflow.app.addInitializer(function(options) {
     configurationEditorInputs: [
       {
         name: 'label',
-        inputView: pageflow.TextInputView
+        inputView: pageflow.TextInputView,
+        inputViewOptions: {
+          placeholder: function(configuration) {
+            var textTrackFile = configuration.parent;
+            return textTrackFile.inferredLabel();
+          },
+          placeholderBinding: pageflow.TextTrackFile.displayLabelBinding
+        }
       },
       {
         name: 'kind',
@@ -101,27 +108,24 @@ pageflow.app.addInitializer(function(options) {
       },
       {
         name: 'srclang',
-        inputView: pageflow.TextInputView
+        inputView: pageflow.TextInputView,
+        inputViewOptions: {
+          required: true
+        }
       }
     ],
     nestedFileTableColumns: [
       {
         name: 'label',
         cellView: pageflow.TextTableCellView,
-        default: function(options) {
-          if (!!options.model.get(options.contentBinding)) {
-            return I18n.t('pageflow.languages.' + options.model.get(options.contentBinding),
-                          {defaultValue: I18n.t('pageflow.languages.unknown')});
-          }
-          else {
-            return I18n.t('pageflow.editor.nested_files.text_track_files.label.missing');
-          }
+        value: function(textTrackFile) {
+          return textTrackFile.displayLabel();
         },
-        contentBinding: 'srclang'
+        contentBinding: pageflow.TextTrackFile.displayLabelBinding
       },
       {
         name: 'srclang',
-        cellView: pageflow.PresenceTableCellView
+        cellView: pageflow.TextTableCellView
       },
       {
         name: 'kind',

@@ -7,13 +7,26 @@ pageflow.TextTrackFile = pageflow.HostedFile.extend({
 
   initialize: function(attributes, options) {
     pageflow.UploadedFile.prototype.initialize.apply(this, arguments);
-    if (this.isNew()) {
+
+    if (this.isNew() && !this.configuration.get('srclang')) {
       this.configuration.set('srclang', this.extractLanguageCodeFromFilename());
     }
   },
 
-  label: function() {
-    return this.configuration.get('label');
+  displayLabel: function() {
+    return this.configuration.get('label') ||
+      this.inferredLabel() ||
+      I18n.t('pageflow.editor.text_track_files.label_missing');
+  },
+
+  inferredLabel: function() {
+    var srclang = this.configuration.get('srclang');
+
+    if (srclang) {
+      return I18n.t('pageflow.languages.' + srclang, {
+        defaultValue: ''
+      });
+    }
   },
 
   extractLanguageCodeFromFilename: function() {
@@ -21,3 +34,5 @@ pageflow.TextTrackFile = pageflow.HostedFile.extend({
     return matches && matches[1];
   }
 });
+
+pageflow.TextTrackFile.displayLabelBinding = 'srclang';

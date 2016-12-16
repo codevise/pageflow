@@ -151,7 +151,7 @@ pageflow.FileInputView.DefaultTextTrackFileMenuItem = Backbone.Model.extend({
     this.set('checked', this.options.textTrackFile == this.getDefaultTextTrackFile());
     this.set('name', this.options.textTrackFile ? null : 'no_default_text_track');
     this.set('label', this.options.textTrackFile ?
-             this.options.textTrackFile.label() :
+             this.options.textTrackFile.displayLabel() :
              I18n.t('pageflow.editor.views.inputs.file_input.no_default_text_track'));
   },
 
