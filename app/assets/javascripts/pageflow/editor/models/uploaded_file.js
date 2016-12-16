@@ -9,9 +9,14 @@ pageflow.UploadedFile = Backbone.Model.extend({
     );
 
     this.configuration.i18nKey = this.i18nKey;
+    this.configuration.parent = this;
 
     this.listenTo(this.configuration, 'change', function() {
       this.trigger('change:configuration', this);
+
+      _.chain(this.configuration.changed).keys().each(function(name) {
+        this.trigger('change:configuration:' + name, this, this.configuration.get(name));
+      }, this);
 
       if (!this.isNew()) {
         this.save();
