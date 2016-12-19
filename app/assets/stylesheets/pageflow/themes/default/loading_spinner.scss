@@ -20,8 +20,18 @@ $loading-spinner-logo-height: 112px !default;
 /// Spinner background color.
 $loading-spinner-background-color: #3b5159 !default;
 
-/// Spinner glow (radiant) color.
+/// What to display behind the logo:
+///
+/// - `"glow"`: Display radial gradient (default).
+/// - `"custom"`: Display `loading_spinner/background.png` image.
+/// - `"none"`: Nothing
+$loading-spinner-background: "glow" !default;
+
+/// Radial gradient color.
 $loading-spinner-glow-color: rgba(117, 149, 160, 0.8) !default;
+
+/// Apply opacity animation to glow or background image.
+$loading-spinner-animate-background: true !default;
 
 @if not $custom-loading-spinner {
   .loading_spinner {
@@ -32,21 +42,30 @@ $loading-spinner-glow-color: rgba(117, 149, 160, 0.8) !default;
     // scss-lint:enable ImportantRule
 
     &:before {
-      content: "";
-      @include radial-gradient(circle,
-                               $loading-spinner-glow-color 0%,
-                               $loading-spinner-background-color 140px);
       background-position: 50% 50%;
       background-repeat: no-repeat;
-      background-size: 100% 100%;
-      display: inline-block;
+      display: block;
       height: 100%;
       width: 100%;
-      opacity: 0;
-      @include animation-name(loadingSpinnerGradientAnimation);
-      @include animation-duration(5s);
-      @include animation-iteration-count(infinite);
-      @include animation-timing-function(ease-in);
+
+      @if $loading-spinner-background == "glow" {
+        content: "";
+        @include radial-gradient(circle,
+                                 $loading-spinner-glow-color 0%,
+                                 $loading-spinner-background-color 140px);
+        background-size: 100% 100%;
+      } @else if $loading-spinner-background == "custom" {
+        content: "";
+        background-image: image-url("pageflow/themes/#{$theme-name}/loading_spinner/background.png");
+      }
+
+      @if $loading-spinner-animate-background {
+        opacity: 0;
+        @include animation-name(loadingSpinnerGradientAnimation);
+        @include animation-duration(5s);
+        @include animation-iteration-count(infinite);
+        @include animation-timing-function(ease-in);
+      }
     }
 
     @include keyframes(loadingSpinnerGradientAnimation) {
