@@ -48,7 +48,7 @@ module Pageflow
       context 'when held by other session' do
         it 'raises HeldByOtherSessionError' do
           current_user = build(:user)
-          edit_lock = build_stubbed(:edit_lock, :user => current_user)
+          edit_lock = build(:edit_lock, :user => current_user)
 
           expect {
             edit_lock.acquire(current_user)
@@ -57,7 +57,7 @@ module Pageflow
 
         it 'raises HeldByOtherSessionError for non matching id' do
           current_user = build(:user)
-          edit_lock = build_stubbed(:edit_lock, :user => current_user)
+          edit_lock = build(:edit_lock, :user => current_user)
 
           expect {
             edit_lock.acquire(current_user, :id => 'other_id')
@@ -90,7 +90,7 @@ module Pageflow
         it 'returns quietly' do
           current_user = build(:user)
           entry = build(:entry)
-          edit_lock = build_stubbed(:edit_lock, :user => current_user, :entry => entry)
+          edit_lock = create(:edit_lock, :user => current_user, :entry => entry)
 
           expect {
             edit_lock.acquire(current_user, :id => edit_lock.id)
@@ -100,7 +100,7 @@ module Pageflow
         it 'does not create new lock even with force option' do
           current_user = build(:user)
           entry = build(:entry)
-          edit_lock = build_stubbed(:edit_lock, :user => current_user, :entry => entry)
+          edit_lock = create(:edit_lock, :user => current_user, :entry => entry)
 
           edit_lock.acquire(current_user, :id => edit_lock.id, :force => true)
 
@@ -150,7 +150,7 @@ module Pageflow
       context 'when held by other session' do
         it 'raises HeldByOtherSessionError' do
           current_user = build(:user)
-          edit_lock = build_stubbed(:edit_lock, :user => current_user)
+          edit_lock = build(:edit_lock, :user => current_user)
 
           expect {
             edit_lock.verify!(current_user, :id => 'other_id')
@@ -159,7 +159,7 @@ module Pageflow
 
         it 'raises HeldByOtherSessionError even if timed out' do
           current_user = build(:user)
-          edit_lock = build_stubbed(:edit_lock, :user => current_user)
+          edit_lock = build(:edit_lock, :user => current_user)
 
           Timecop.freeze(Time.now + EditLock::TIME_TO_LIVE + 1.minutes)
 
@@ -173,7 +173,7 @@ module Pageflow
         it 'returns quietly' do
           current_user = build(:user)
           entry = build(:entry)
-          edit_lock = build_stubbed(:edit_lock, :user => current_user, :entry => entry)
+          edit_lock = create(:edit_lock, :user => current_user, :entry => entry)
 
           expect {
             edit_lock.verify!(current_user, :id => edit_lock.id)
@@ -182,7 +182,7 @@ module Pageflow
 
         it 'deferres timeout if timed out' do
           current_user = build(:user)
-          edit_lock = build_stubbed(:edit_lock, :user => current_user)
+          edit_lock = create(:edit_lock, :user => current_user)
 
           Timecop.freeze(Time.now + EditLock::TIME_TO_LIVE + 1.minutes)
           edit_lock.verify!(current_user, :id => edit_lock.id)
