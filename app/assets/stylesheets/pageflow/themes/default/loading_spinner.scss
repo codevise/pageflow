@@ -20,11 +20,18 @@ $loading-spinner-logo-height: 112px !default;
 /// Spinner background color.
 $loading-spinner-background-color: #3b5159 !default;
 
-/// Display radial gradient behind logo.
-$loading-spinner-display-glow: true !default;
+/// What to display behind the logo:
+///
+/// - `"glow"`: Display radial gradient (default).
+/// - `"custom"`: Display `loading_spinner/background.png` image.
+/// - `"none"`: Nothing
+$loading-spinner-background: "glow" !default;
 
 /// Radial gradient color.
 $loading-spinner-glow-color: rgba(117, 149, 160, 0.8) !default;
+
+/// Apply opacity animation to glow or background image.
+$loading-spinner-animate-background: true !default;
 
 @if not $custom-loading-spinner {
   .loading_spinner {
@@ -34,18 +41,25 @@ $loading-spinner-glow-color: rgba(117, 149, 160, 0.8) !default;
     background-color: $loading-spinner-background-color !important;
     // scss-lint:enable ImportantRule
 
-    @if $loading-spinner-display-glow {
-      &:before {
+    &:before {
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      display: block;
+      height: 100%;
+      width: 100%;
+
+      @if $loading-spinner-background == "glow" {
         content: "";
         @include radial-gradient(circle,
                                  $loading-spinner-glow-color 0%,
                                  $loading-spinner-background-color 140px);
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
         background-size: 100% 100%;
-        display: inline-block;
-        height: 100%;
-        width: 100%;
+      } @else if $loading-spinner-background == "custom" {
+        content: "";
+        background-image: image-url("pageflow/themes/#{$theme-name}/loading_spinner/background.png");
+      }
+
+      @if $loading-spinner-animate-background {
         opacity: 0;
         @include animation-name(loadingSpinnerGradientAnimation);
         @include animation-duration(5s);
