@@ -119,10 +119,16 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   updatePresentWidgetsCssClasses: function(newWidgets) {
     var previousClasses = this.widgetNames(this.widgets);
     var newClasses = this.widgetNames(newWidgets);
+    var removedClasses = _.difference(previousClasses, newClasses);
+    var addedClasses = _.difference(newClasses, previousClasses);
 
     this.$el.addClass('widgets_present');
-    this.$el.removeClass(_.difference(previousClasses, newClasses).join(' '));
-    this.$el.addClass(newClasses.join(' '));
+    this.$el.removeClass(removedClasses.join(' '));
+    this.$el.addClass(addedClasses.join(' '));
+
+    if (removedClasses.length || addedClasses.length) {
+      pageflow.events.trigger('widgets:update');
+    }
   },
 
   widgetNames: function(widgets) {
