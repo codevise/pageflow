@@ -38,7 +38,7 @@ pageflow.UploadedFile = Backbone.Model.extend({
   },
 
   urlRoot: function() {
-    return this.isNew() ? this.collection.url() : '/editor/files/' + this.fileType().collectionName;
+    return this.collection.url();
   },
 
   fileType: function() {
@@ -120,13 +120,5 @@ pageflow.UploadedFile = Backbone.Model.extend({
     this.unset('uploading_progress');
 
     this.trigger('uploadFailed');
-  },
-
-  destroyUsage: function() {
-    var usage = new pageflow.FileUsage({id: this.get('usage_id')});
-
-    usage.destroy();
-
-    this.trigger('destroy', this, this.collection, {});
   }
 });

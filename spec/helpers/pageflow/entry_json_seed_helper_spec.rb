@@ -26,7 +26,7 @@ module Pageflow
 
       it 'renders configurations of files' do
         entry = PublishedEntry.new(create(:entry, :published))
-        create(:video_file, used_in: entry.revision, configuration: {some: 'value'})
+        create(:video_file, used_in: entry.revision, with_configuration: {some: 'value'})
 
         result = helper.entry_json_seed(entry)
         value = json_get(result, path: ['files', 'video_files', 0, 'configuration', 'some'])
@@ -38,7 +38,7 @@ module Pageflow
         entry = create(:entry, :published)
         published_entry = PublishedEntry.new(entry)
         video_file = create(:video_file, used_in: entry.published_revision)
-        create(:text_track_file, entry: entry, parent_file: video_file)
+        create(:text_track_file, used_in: entry.published_revision, parent_file: video_file)
 
         result = helper.entry_json_seed(published_entry)
         id = json_get(result, path: ['files', 'text_track_files', 0, 'parent_file_id'])

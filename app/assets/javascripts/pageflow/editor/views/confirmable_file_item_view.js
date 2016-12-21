@@ -28,7 +28,7 @@ pageflow.ConfirmableFileItemView = Backbone.Marionette.ItemView.extend({
 
   destroy: function() {
     if (confirm("Datei wirklich wirklich löschen?")) {
-      this.model.destroyUsage();
+      this.model.destroy();
     }
   },
 

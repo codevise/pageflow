@@ -11,7 +11,7 @@ module Pageflow
 
     def entry_file_rights(entry)
       rights = Pageflow.config.file_types.map do |file_type|
-        entry.files(file_type.model).map do |file|
+        entry.find_files(file_type.model).map do |file|
           file.rights.presence || entry.account.default_file_rights.presence
         end
       end.flatten.compact.sort.uniq

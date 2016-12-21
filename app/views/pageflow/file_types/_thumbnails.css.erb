@@ -1,4 +1,4 @@
-<% revision.files(file_type.model).each do |file| %>
+<% revision.find_files(file_type.model).each do |file| %>
   <% styles.each do |style| %>
     .load_all_images .lazy_<%= file_thumbnail_css_class(file, style) %>,
     .load_image.lazy_<%= file_thumbnail_css_class(file, style) %>,

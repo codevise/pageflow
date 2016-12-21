@@ -9,7 +9,7 @@ module Pageflow
       respond_to do |format|
         format.html do
           entry = PublishedEntry.find(params[:entry_id], entry_request_scope)
-          @file = entry.files(file_type.model).find(params[:id])
+          @file = entry.find_file(file_type.model, params[:id])
 
           check_entry_password_protection(entry)
         end

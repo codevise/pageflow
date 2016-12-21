@@ -5,7 +5,7 @@ pageflow.app.addInitializer(function(options) {
     }
   });
 
-  pageflow.entry.on('use:file', function() {
+  pageflow.entry.on('use:files', function() {
     pageflow.reloadStylesheet('entry');
   });
 });

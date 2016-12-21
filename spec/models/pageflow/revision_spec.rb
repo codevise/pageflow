@@ -225,66 +225,38 @@ module Pageflow
       end
     end
 
-    describe '#files' do
-      context 'for top level types' do
-        it 'returns files of given type' do
-          entry = create(:entry)
-          revision = entry.draft
-          image_file = create(:image_file)
-          revision.image_files << image_file
+    describe '#find_files' do
+      it 'returns files of given type' do
+        entry = create(:entry)
+        revision = entry.draft
+        image_file = create(:image_file)
+        revision.image_files << image_file
 
-          result = revision.files(Pageflow::ImageFile)
+        result = revision.find_files(Pageflow::ImageFile)
 
-          expect(result).to eq([image_file])
-        end
-
-        it 'does not return files of other type' do
-          entry = create(:entry)
-          revision = entry.draft
-          image_file = create(:image_file)
-          revision.image_files << image_file
-
-          result = revision.files(Pageflow::VideoFile)
-
-          expect(result).to eq([])
-        end
-
-        it 'includes usage_ids' do
-          entry = create(:entry)
-          revision = entry.draft
-          image_file = create(:image_file)
-          revision.image_files << image_file
-
-          result = revision.files(Pageflow::ImageFile)
-
-          expect(result.first.usage_id).to be_present
-        end
+        expect(result).to eq([image_file])
       end
 
-      context 'for nested types' do
-        it 'returns files of given type' do
-          entry = create(:entry)
-          revision = entry.draft
-          parent_file = create(:video_file)
-          revision.video_files << parent_file
-          text_track_file = create(:text_track_file, parent_file: parent_file, entry: entry)
+      it 'does not return files of other type' do
+        entry = create(:entry)
+        revision = entry.draft
+        image_file = create(:image_file)
+        revision.image_files << image_file
 
-          result = revision.files(Pageflow::TextTrackFile)
+        result = revision.find_files(Pageflow::VideoFile)
 
-          expect(result).to eq([text_track_file])
-        end
+        expect(result).to eq([])
+      end
 
-        it 'does not include usage_ids' do
-          entry = create(:entry)
-          revision = entry.draft
-          parent_file = create(:video_file)
-          revision.video_files << parent_file
-          create(:text_track_file, parent_file: parent_file, entry: entry)
+      it 'includes usage_ids' do
+        entry = create(:entry)
+        revision = entry.draft
+        image_file = create(:image_file)
+        revision.image_files << image_file
 
-          result = revision.files(Pageflow::TextTrackFile)
+        result = revision.find_files(Pageflow::ImageFile)
 
-          expect(result.first.usage_id).to_not be_present
-        end
+        expect(result.first.usage_id).to be_present
       end
     end
 

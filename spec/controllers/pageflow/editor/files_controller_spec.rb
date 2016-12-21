@@ -85,7 +85,7 @@ module Pageflow
              },
              format: 'json')
 
-        file = entry.image_files.last
+        file = entry.draft.find_files(Pageflow::ImageFile).last
         expect(file.rights).to eq('someone')
         expect(file.configuration['some']).to eq('value')
       end
@@ -231,6 +231,89 @@ module Pageflow
       end
     end
 
+    describe '#reuse' do
+      it 'creates file usage for draft of given entry' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        other_entry = create(:entry, with_previewer: user)
+        file = create(:image_file, used_in: other_entry.draft)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+
+        post(:reuse,
+             entry_id: entry.id,
+             collection_name: 'image_files',
+             file_reuse: {
+               other_entry_id: other_entry.id,
+               file_id: file.id
+             },
+             format: 'json')
+
+        expect(entry.draft.image_files).to include(file)
+      end
+
+      it 'cannot add file of unaccessible entry' do
+        user = create(:user)
+        entry = create(:entry, with_manager: user)
+        other_entry = create(:entry)
+        file = create(:image_file, used_in: other_entry.draft)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+
+        post(:reuse,
+             entry_id: entry.id,
+             collection_name: 'image_files',
+             file_reuse: {
+               other_entry_id: other_entry.id,
+               file_id: file.id
+             },
+             format: 'json')
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'cannot add file to unaccessible entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        other_entry = create(:entry, with_manager: user)
+        file = create(:image_file, used_in: other_entry.draft)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+
+        post(:reuse,
+             entry_id: entry.id,
+             collection_name: 'image_files',
+             file_reuse: {
+               other_entry_id: other_entry.id,
+               file_id: file.id
+             },
+             format: 'json')
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'requires user to be signed in' do
+        user = create(:user, :admin)
+        entry = create(:entry, with_manager: user)
+        other_entry = create(:entry, with_manager: user)
+        file = create(:image_file, used_in: other_entry.draft)
+
+        post(:reuse,
+             entry_id: entry.id,
+             collection_name: 'image_files',
+             file_reuse: {
+               other_entry_id: other_entry.id,
+               file_id: file.id
+             },
+             format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+    end
+
     describe '#retry' do
       it 'succeeds if encoding/processing failed' do
         user = create(:user)
@@ -239,7 +322,11 @@ module Pageflow
 
         sign_in user
         acquire_edit_lock(user, entry)
-        post(:retry, collection_name: 'image_files', id: file, format: 'json')
+        post(:retry,
+             entry_id: entry.id,
+             collection_name: 'image_files',
+             id: file,
+             format: 'json')
 
         expect(response.status).to eq(201)
       end
@@ -251,15 +338,24 @@ module Pageflow
 
         sign_in user
         acquire_edit_lock(user, entry)
-        post(:retry, collection_name: 'image_files', id: file, format: 'json')
+        post(:retry,
+             entry_id: entry.id,
+             collection_name: 'image_files',
+             id: file,
+             format: 'json')
 
         expect(response.status).to eq(403)
       end
 
       it 'does not allow to retry encoding of file if not signed in' do
-        file = create(:image_file, :failed)
+        entry = create(:entry)
+        file = create(:image_file, :failed, used_in: entry.draft)
 
-        post(:retry, collection_name: 'image_files', id: file, format: 'json')
+        post(:retry,
+             entry_id: entry.id,
+             collection_name: 'image_files',
+             id: file,
+             format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -271,7 +367,11 @@ module Pageflow
 
         sign_in user
         acquire_edit_lock(user, entry)
-        post(:retry, collection_name: 'image_files', id: image_file, format: 'json')
+        post(:retry,
+             entry_id: entry.id,
+             collection_name: 'image_files',
+             id: image_file,
+             format: 'json')
 
         expect(response.status).to eq(400)
       end
@@ -286,6 +386,7 @@ module Pageflow
         sign_in user
         acquire_edit_lock(user, entry)
         patch(:update,
+              entry_id: entry.id,
               collection_name: 'image_files',
               id: file,
               image_file: {
@@ -294,9 +395,11 @@ module Pageflow
               },
               format: 'json')
 
+        used_file = entry.draft.find_file(file.class, file.id)
+
         expect(response.status).to eq(204)
-        expect(file.reload.rights).to eq('new')
-        expect(file.configuration['some']).to eq('value')
+        expect(used_file.rights).to eq('new')
+        expect(used_file.configuration['some']).to eq('value')
       end
 
       it 'does not allow to update file if the signed in user is not editor for its entry' do
@@ -306,6 +409,7 @@ module Pageflow
 
         sign_in user
         patch(:update,
+              entry_id: entry.id,
               collection_name: 'image_files',
               id: file,
               image_file: {rights: 'new'},
@@ -315,9 +419,11 @@ module Pageflow
       end
 
       it 'does not allow to update file if not signed in' do
-        file = create(:image_file)
+        entry = create(:entry)
+        file = create(:image_file, used_in: entry.draft)
 
         patch(:update,
+              entry_id: entry.id,
               collection_name: 'image_files',
               id: file,
               image_file: {rights: 'new'},
@@ -328,72 +434,70 @@ module Pageflow
     end
 
     describe '#destroy' do
-      it 'allows to destroy nested file when signed in editor of an entry that uses the parent '\
-         'file' do
+      it 'allows destroying a file usage for the draft of a given entry' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
-        parent_file = create(:video_file, used_in: entry.draft)
-        nested_file = create(:text_track_file, entry: entry, parent_file: parent_file)
+        file = create(:image_file, used_in: entry.draft)
 
-        sign_in user
+        sign_in(user)
+        acquire_edit_lock(user, entry)
 
-        expect(parent_file).to have(1).nested_files(TextTrackFile)
+        expect(entry.draft).to have(1).image_files
 
-        delete(:destroy, collection_name: 'text_track_files', id: nested_file)
+        delete(:destroy,
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               id: file.id,
+               format: 'json')
 
-        expect(response.status).to eq(204)
-        expect(parent_file).to have(0).nested_files(TextTrackFile)
+        expect(entry.draft).to have(0).image_files
       end
 
-      it 'does not allow to destroy if permissions below editor of entries using the file or of '\
-         'accounts containing those entries' do
+      it 'cannot remove file from unaccessible entry' do
         user = create(:user)
-        account = create(:account, with_previewer: user)
-        entry = create(:entry, with_previewer: user, account: account)
-        parent_file = create(:video_file, used_in: entry.draft)
-        nested_file = create(:text_track_file, entry: entry, parent_file: parent_file)
+        entry = create(:entry, with_previewer: user)
+        file = create(:image_file, used_in: entry.draft)
 
-        sign_in user
+        sign_in(user)
+        acquire_edit_lock(user, entry)
 
-        expect(parent_file).to have(1).nested_files(TextTrackFile)
+        delete(:destroy,
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               id: file.id,
+               format: 'json')
 
-        delete(:destroy, collection_name: 'text_track_files', id: nested_file)
-
-        expect(response.status).to eq(302)
-        expect(parent_file).to have(1).nested_files(TextTrackFile)
+        expect(response.status).to eq(403)
       end
 
-      it 'does not allow to destroy file if not signed in' do
+      it 'requires user to be signed in' do
+        user = create(:user, :admin)
+        entry = create(:entry, with_manager: user)
+        file = create(:image_file, used_in: entry.draft)
+
+        delete(:destroy,
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               id: file.id,
+               format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+
+      it 'requires user to have edit lock on entry' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
-        parent_file = create(:video_file, used_in: entry.draft)
-        nested_file = create(:text_track_file, entry: entry, parent_file: parent_file)
+        file = create(:image_file, used_in: entry.draft)
 
-        expect(parent_file).to have(1).nested_files(TextTrackFile)
+        sign_in(user)
 
-        delete(:destroy, collection_name: 'text_track_files', id: nested_file)
+        delete(:destroy,
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               id: file.id,
+               format: 'json')
 
-        expect(response.status).to eq(302)
-        expect(parent_file).to have(1).nested_files(TextTrackFile)
-      end
-
-      it 'does not allow to destroy non-nested file even if signed in with permissions needed for '\
-         'destroying a nested file' do
-        user = create(:user)
-        entry = create(:entry, with_editor: user)
-        parent_file = create(:video_file, used_in: entry.draft)
-        create(:text_track_file, entry: entry, parent_file: parent_file)
-
-        sign_in user
-
-        expect(parent_file).to have(1).nested_files(TextTrackFile)
-        expect(VideoFile.all.length).to eq(1)
-
-        delete(:destroy, collection_name: 'video_files', id: parent_file)
-
-        expect(response.status).to eq(302)
-        expect(parent_file).to have(1).nested_files(TextTrackFile)
-        expect(VideoFile.all.length).to eq(1)
+        expect(response.status).to eq(409)
       end
     end
   end

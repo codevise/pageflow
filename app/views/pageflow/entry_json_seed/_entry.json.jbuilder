@@ -11,7 +11,7 @@ json.file_ids entry_file_ids_seed(entry)
 json.files do
   Pageflow.config.file_types.each do |file_type|
     json.set!(file_type.collection_name) do
-      json.array!(entry.files(file_type.model)) do |file|
+      json.array!(entry.find_files(file_type.model)) do |file|
         json.partial! 'pageflow/files/file', file: file, file_type: file_type
       end
     end
