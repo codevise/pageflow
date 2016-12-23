@@ -7,9 +7,11 @@ pageflow.formDataUtils = {
   },
 
   fromObject: function(object) {
-    return _(decodeURIComponent($.param(object)).split('&')).reduce(function(result, param) {
+    var queryString = $.param(object).replace(/\+/g, '%20');
+
+    return _(queryString.split('&')).reduce(function(result, param) {
       var pair = param.split('=');
-      result[pair[0]] = pair[1];
+      result[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
 
       return result;
     }, {});

@@ -17,6 +17,20 @@ describe('formDataUtils', function() {
         'some[deeply][nested]': 'data'
       });
     });
+
+    it('handles spaces, +, = and & signs correctly', function() {
+      var object = {
+        some: {
+          value: '1 + 1 = 2 & a',
+        }
+      };
+
+      var result = pageflow.formDataUtils.fromObject(object);
+
+      expect(result).to.eql({
+        'some[value]': '1 + 1 = 2 & a',
+      });
+    });
   });
 
   describe('fromModel', function() {
