@@ -36,5 +36,9 @@ module Pageflow
     def retryable?
       processing_failed?
     end
+
+    def ready?
+      processed?
+    end
   end
 end
