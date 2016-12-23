@@ -126,7 +126,18 @@ pageflow.Entry = Backbone.Model.extend({
 
   _setFiles: function(response, options) {
     this.fileTypes.each(function(fileType) {
-      this.getFileCollection(fileType).set(response[fileType.collectionName],
+      var filesAttributes = response[fileType.collectionName];
+
+      // Temporary solution until rights attributes is moved to
+      // configuration hash. If we are polling, prevent overwriting
+      // the rights attribute.
+      if (options.merge !== false) {
+        filesAttributes = _.map(filesAttributes, function(fileAttributes) {
+          return _.omit(fileAttributes, 'rights');
+        });
+      }
+
+      this.getFileCollection(fileType).set(filesAttributes,
                                            _.extend({fileType: fileType}, options));
       delete response[fileType.collectionName];
     }, this);
