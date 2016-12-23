@@ -2,6 +2,7 @@
 
 //= require_self
 
+//= require ./video_player/dash
 //= require ./video_player/media_events
 //= require ./video_player/prebuffering
 //= require ./video_player/buffer_underrun_waiting
