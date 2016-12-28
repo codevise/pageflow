@@ -57,7 +57,8 @@ module Pageflow
           {
             attribute: candidate[:attribute],
             collection_name: candidate[:file_collection],
-            css_class_prefix: thumbnail_candidate_css_class_prefix(candidate)
+            css_class_prefix: thumbnail_candidate_css_class_prefix(candidate),
+            condition: condition(candidate)
           }
         end
       end
@@ -65,6 +66,16 @@ module Pageflow
       def thumbnail_candidate_css_class_prefix(candidate)
         file_type = config.file_types.find_by_collection_name!(candidate[:file_collection])
         file_type.model.model_name.singular
+      end
+
+      def condition(candidate)
+        result = candidate[:unless] || candidate[:if]
+
+        if result
+          result[:negated] = !!candidate[:unless]
+        end
+
+        result
       end
     end
   end

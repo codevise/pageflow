@@ -55,6 +55,10 @@ pageflow.Page = Backbone.Model.extend({
     var configuration = this.configuration;
 
     return _.reduce(this.pageType().thumbnailCandidates(), function(result, candidate) {
+      if (candidate.condition && !conditionMet(candidate.condition, configuration)) {
+        return result;
+      }
+
       return result || configuration.getReference(candidate.attribute, candidate.file_collection);
     }, null);
   },
@@ -77,6 +81,15 @@ pageflow.Page = Backbone.Model.extend({
     this.destroyWithDelay();
   }
 });
+
+function conditionMet(condition, configuration) {
+  if (condition.negated) {
+    return configuration.get(condition.attribute) != condition.value;
+  }
+  else {
+    return configuration.get(condition.attribute) == condition.value;
+  }
+}
 
 pageflow.Page.linkedPagesLayouts = ['default', 'hero_top_left', 'hero_top_right'];
 pageflow.Page.textPositions = ['left', 'right'];
