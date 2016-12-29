@@ -50,6 +50,8 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
         pageflow.editor.fileTypes.findByCollectionName(this.options.collection)
       );
     }
+
+    this.textTrackMenuItems = new Backbone.Collection();
   },
 
   onRender: function() {
@@ -67,6 +69,8 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
 
   update: function() {
     var file = this._getFile();
+
+    this._listenToNestedTextTrackFiles(file);
 
     this.$el.toggleClass('is_unset', !file);
     this.ui.fileName.text(file ?
@@ -87,9 +91,7 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
       items.add({
         name: 'default_text_track',
         label: I18n.t('pageflow.editor.views.inputs.file_input.default_text_track'),
-        items: this._textTrackMenuItems(
-          file.nestedFiles(this.options.textTrackFiles)
-        )
+        items: this.textTrackMenuItems
       });
     }
 
@@ -116,12 +118,26 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
     return items;
   },
 
-  _textTrackMenuItems: function(textTrackFiles) {
-    var models = [null].concat(textTrackFiles.toArray());
+  _listenToNestedTextTrackFiles: function(file) {
+    if (this.textTrackFiles) {
+      this.stopListening(this.textTrackFiles);
+      this.textTrackFiles = null;
+    }
 
-    return new Backbone.Collection(models.map(function(textTrackFile) {
+    if (file && this.options.defaultTextTrackFilePropertyName) {
+      this.textTrackFiles = file.nestedFiles(this.options.textTrackFiles);
+
+      this.listenTo(this.textTrackFiles, 'add remove', this._updateTextTrackMenuItems);
+      this._updateTextTrackMenuItems();
+    }
+  },
+
+  _updateTextTrackMenuItems: function update() {
+    var models = [null].concat(this.textTrackFiles.toArray());
+
+    this.textTrackMenuItems.set(models.map(function(textTrackFile) {
       return new pageflow.FileInputView.DefaultTextTrackFileMenuItem({}, {
-        textTrackFiles: textTrackFiles,
+        textTrackFiles: this.textTrackFiles,
         textTrackFile: textTrackFile,
         inputModel: this.model,
         propertyName: this.options.defaultTextTrackFilePropertyName
@@ -165,6 +181,11 @@ pageflow.FileInputView.DefaultTextTrackFileMenuItem = Backbone.Model.extend({
     this.options = options;
 
     this.listenTo(this.options.inputModel, 'change:' + this.options.propertyName, this.update);
+
+    if (this.options.textTrackFile) {
+      this.listenTo(this.options.textTrackFile, 'change:configuration', this.update);
+    }
+
     this.update();
   },
 
