@@ -34,7 +34,9 @@ pageflow.UrlDisplayView = Backbone.Marionette.ItemView.extend({
   },
 
   update: function() {
-    this.ui.link.attr('href', this.model.get(this.options.propertyName));
-    this.ui.link.toggle(this.model.isUploaded() && !_.isEmpty(this.model.get('original_url')));
+    var url = this.model.get('original_url');
+
+    this.$el.toggle(this.model.isUploaded() && !_.isEmpty(url));
+    this.ui.link.attr('href', url);
   }
 });
