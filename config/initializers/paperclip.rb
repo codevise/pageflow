@@ -122,3 +122,7 @@ Paperclip.interpolates(:pageflow_attachments_version) do |attachment, style|
     "#{version}/"
   end
 end
+
+Paperclip.configure do |config|
+  config.register_processor(:pageflow_vtt, Pageflow::PaperclipProcessors::Vtt)
+end
