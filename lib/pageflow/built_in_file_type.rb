@@ -33,7 +33,7 @@ module Pageflow
     def self.text_track
       FileType.new(model: 'Pageflow::TextTrackFile',
                    collection_name: 'text_track_files',
-                   url_templates: OriginalHostedFileUrlTemplates.new(extension: 'vtt'))
+                   url_templates: TextTrackFileUrlTemplates.new)
     end
   end
 end

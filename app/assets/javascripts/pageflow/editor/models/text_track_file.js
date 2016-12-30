@@ -5,6 +5,16 @@ pageflow.TextTrackFile = pageflow.HostedFile.extend({
     }
   },
 
+  processingStages: [
+    {
+      name: 'processing',
+      activeStates: ['processing'],
+      failedStates: ['processing_failed']
+    }
+  ],
+
+  readyState: 'processed',
+
   initialize: function(attributes, options) {
     pageflow.UploadedFile.prototype.initialize.apply(this, arguments);
 

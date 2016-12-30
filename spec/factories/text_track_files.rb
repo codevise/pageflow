@@ -20,6 +20,10 @@ module Pageflow
         create(:file_usage, file: file, revision: evaluator.used_in) if evaluator.used_in
       end
 
+      trait :from_srt_file do
+        attachment_on_s3 File.open(Engine.root.join('spec', 'fixtures', 'sample.srt'))
+      end
+
       trait :on_filesystem do
         attachment_on_filesystem File.open(Engine.root.join('spec', 'fixtures', 'et.ogg'))
         attachment_on_s3 nil
