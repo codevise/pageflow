@@ -3,7 +3,7 @@ module Pageflow
     factory :text_track_file, class: TextTrackFile do
       entry
       uploader { create(:user) }
-      parent_file { create(:video_file) }
+      parent_file { nil }
 
       attachment_on_s3 File.open(Engine.root.join('spec', 'fixtures', 'sample.vtt'))
 
@@ -13,6 +13,7 @@ module Pageflow
 
       before(:create) do |file, evaluator|
         file.entry = evaluator.used_in.entry if evaluator.used_in
+        file.parent_file ||= create(:video_file, used_in: file.entry.draft)
       end
 
       after(:create) do |file, evaluator|
