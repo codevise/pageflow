@@ -8,6 +8,7 @@ $vjs-selector-mapping: (
   background-idle: ".is_idle .videoWrapper, .audioPage.is_idle .backgroundArea",
 
   background-hover: ".is_control_bar_hovered .videoWrapper, .audioPage.is_control_bar_hovered .backgroundArea",
+  background-focused: ".is_control_bar_focused .videoWrapper, .audioPage.is_control_bar_focused .backgroundArea",
 
   // Use playing class that is removed with delay to prevent
   // mask image on scroller from being removed too early in slim
@@ -27,6 +28,7 @@ $vjs-selector-mapping: (
   container-idle: ".is_idle .controls",
 
   container-hover: ".is_control_bar_hovered .controls",
+  container-focused: ".is_control_bar_focused .controls",
 
   // `has_been_faded` is set by the video page type after the user has
   // become inactive for the first time during video playback.
