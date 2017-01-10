@@ -40,7 +40,7 @@ pageflow.TextTrackFile = pageflow.HostedFile.extend({
   },
 
   extractLanguageCodeFromFilename: function() {
-    var matches = /\S+\.([a-z]{2})_[A-Z]{2}\.vtt/.exec(this.get('file_name'));
+    var matches = /\S+\.([a-z]{2})_[A-Z]{2}\.[a-z]+/.exec(this.get('file_name'));
     return matches && matches[1];
   }
 });
