@@ -1,0 +1,8 @@
+de:
+  pageflow:
+    common_page_attributes:
+      background_type:
+        label: Hintergrund-Typ
+        values:
+          image: Hintergrund-Bild
+          video: Hintergrund-Video
