@@ -22,7 +22,9 @@ pageflow.AdjacentPreparer = pageflow.Object.extend({
     var newAdjacentPages = _.difference(adjacentPages, this.lastPreparedPages);
 
     _(noLongerPreparedPages).each(function(page) {
-      page.unprepare();
+      if (!page.isDestroyed) {
+        page.unprepare();
+      }
     });
 
     _(newAdjacentPages).each(function(adjacentPage) {

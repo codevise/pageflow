@@ -8,6 +8,10 @@
       this.index = this.options.index;
     },
 
+    _destroy: function() {
+      this.isDestroyed = true;
+    },
+
     _ensureCreated: function() {
       this.created = true;
       this.element.nonLazyPage(this.options);
