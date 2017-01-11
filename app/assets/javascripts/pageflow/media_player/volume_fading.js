@@ -12,6 +12,10 @@ pageflow.mediaPlayer.volumeFading = function(player) {
   };
 
   player.fadeVolume = function(value, duration) {
+    if (!pageflow.browser.has('volume control support')) {
+      return new jQuery.Deferred().resolve().promise();
+    }
+
     cancelFadeVolume();
 
     return new $.Deferred(function(deferred) {
