@@ -23,7 +23,10 @@ module Pageflow
                         .merge(styles: {
                                  vtt: {
                                    format: 'vtt',
-                                   processors: [:pageflow_vtt]
+                                   processors: [:pageflow_vtt],
+                                   s3_headers: {
+                                     'Content-Type' => 'text/vtt'
+                                   }
                                  }
                                }))
 
