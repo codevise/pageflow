@@ -203,6 +203,19 @@ $classic-player-controls-timestamp-position: "left" !default;
     &-control_bar:before {
       display: none;
     }
+
+    &-menu_bar {
+      @include transition(opacity 0.2s linear, visibility 0.2s linear);
+      position: fixed;
+    }
+
+    &-container-paused {
+      %player_controls-menu_bar {
+        opacity: 0;
+        visibility: hidden;
+        @include transition-delay(0.2s);
+      }
+    }
   }
 
   &-page_with_progress_bar {
