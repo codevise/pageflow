@@ -34,10 +34,6 @@ $classic-player-controls-typography: $player-controls-typography !default;
       bottom: 50px;
     }
 
-    a {
-      pointer-events: all;
-    }
-
     &-idle {
       @include transition-duration(1.5s);
       @include transition-delay(1s);
