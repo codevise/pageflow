@@ -228,11 +228,11 @@ module Pageflow
       {
         label: 'dash-playlist',
         streams: dash_stream_definitions,
+        allow_skipped_sources: true,
         type: 'playlist',
         streaming_delivery_format: 'dash',
         path: video_file.dash_playlist.path,
-        public: 1,
-        allow_skipped_sources: true
+        public: 1
       }
     end
 
@@ -336,6 +336,7 @@ module Pageflow
       {
         label: 'hls-playlist',
         streams: hls_stream_definitions,
+        allow_skipped_sources: true,
         type: 'playlist',
         path: video_file.hls_playlist.path,
         public: 1
@@ -345,14 +346,17 @@ module Pageflow
     def hls_stream_definitions
       [
         {
+          source: 'hls-medium',
           path: video_file.hls_medium.url(host: :hls_origin, default_protocol: 'http'),
           bandwidth: 1769
         },
         {
+          source: 'hls-low',
           path: video_file.hls_low.url(host: :hls_origin, default_protocol: 'http'),
           bandwidth: 619
         },
         {
+          source: 'hls-high',
           path: video_file.hls_high.url(host: :hls_origin, default_protocol: 'http'),
           bandwidth: 3538
         }
@@ -363,10 +367,12 @@ module Pageflow
       return [] unless video_file.entry.feature_state('highdef_video_encoding')
       [
         {
+          source: 'hls-fullhd',
           path: video_file.hls_fullhd.url(host: :hls_origin, default_protocol: 'http'),
           bandwidth: 8575
         },
         {
+          source: 'hls-4k',
           path: video_file.hls_4k.url(host: :hls_origin, default_protocol: 'http'),
           bandwidth: 32000
         }
