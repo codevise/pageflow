@@ -186,6 +186,10 @@ $classic-player-controls-timestamp-position: "left" !default;
     left: 31px;
     opacity: 1;
     @include animation(rotate 1.5s infinite linear);
+
+    svg {
+      display: none;
+    }
   }
 
   &-loading_spinner-on_underrun {
