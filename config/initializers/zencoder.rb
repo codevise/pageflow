@@ -25,11 +25,13 @@ Paperclip.interpolates(:zencoder_host_alias) do |attachment, style|
 end
 
 Paperclip.interpolates(:zencoder_hls_host_alias) do |attachment, style|
-  Pageflow.config.zencoder_options.fetch(:hls_host_alias, Pageflow.config.zencoder_options.fetch(:s3_host_alias))
+  Pageflow.config.zencoder_options[:hls_host_alias] ||
+    Pageflow.config.zencoder_options.fetch(:s3_host_alias)
 end
 
 Paperclip.interpolates(:zencoder_hls_origin_host_alias) do |attachment, style|
-  Pageflow.config.zencoder_options.fetch(:hls_origin_host_alias, Pageflow.config.zencoder_options.fetch(:s3_host_alias))
+  Pageflow.config.zencoder_options[:hls_origin_host_alias] ||
+    Pageflow.config.zencoder_options.fetch(:s3_host_alias)
 end
 
 Paperclip.interpolates(:zencoder_protocol) do |attachment, style|
