@@ -3,7 +3,7 @@ pageflow.widgetSubject = {
     this.widgets = pageflow.WidgetsCollection.createForSubject(this);
 
     if (this.autoSaveWidgets) {
-      this.listenTo(this.widgets, 'change:type_name', function() {
+      this.listenTo(this.widgets, 'change:type_name change:configuration', function() {
         this.saveWidgets();
       });
     }
