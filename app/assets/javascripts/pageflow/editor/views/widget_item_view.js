@@ -1,7 +1,7 @@
-pageflow.EditWidgetView = Backbone.Marionette.Layout.extend({
-  template: 'templates/edit_widget',
+pageflow.WidgetItemView = Backbone.Marionette.Layout.extend({
+  template: 'templates/widget_item',
   tagName: 'li',
-  className: 'edit_widget',
+  className: 'widget_item',
 
   regions: {
     widgetTypeContainer: '.widget_type'
