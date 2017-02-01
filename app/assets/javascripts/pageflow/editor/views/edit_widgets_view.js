@@ -9,7 +9,7 @@ pageflow.EditWidgetsView = Backbone.Marionette.Layout.extend({
     this.subview(new pageflow.CollectionView({
       el: this.ui.widgets,
       collection: this.model.widgets,
-      itemViewConstructor: pageflow.EditWidgetView,
+      itemViewConstructor: pageflow.WidgetItemView,
       itemViewOptions: {
         widgetTypes: this.options.widgetTypes
       }
