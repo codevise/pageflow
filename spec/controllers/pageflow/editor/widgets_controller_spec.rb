@@ -23,6 +23,21 @@ module Pageflow
           expect(json_response(path: [0, :type_name])).to eq('test_widget')
         end
 
+        it 'includes widget configuration in response' do
+          user = create(:user)
+          entry = create(:entry, with_editor: user)
+          create(:widget,
+                 subject: entry.draft,
+                 type_name: 'test_widget',
+                 configuration: {some: 'value'})
+
+          sign_in(user)
+          get(:index, collection_name: 'entries', subject_id: entry.id, format: 'json')
+
+          expect(response.status).to eq(200)
+          expect(json_response(path: [0, :configuration, :some])).to eq('value')
+        end
+
         it 'requires permission to edit entry' do
           user = create(:user)
           entry = create(:entry, with_previewer: user)
@@ -87,7 +102,7 @@ module Pageflow
                                                              role: 'navigation')
         end
 
-        it 'updates widget with role for entry draft' do
+        it 'updates type and configuration of widget with role for entry draft' do
           user = create(:user)
           entry = create(:entry, with_editor: user)
           widget = create(:widget,
@@ -100,11 +115,41 @@ module Pageflow
                 collection_name: 'entries',
                 subject_id: entry.id,
                 widgets: [
-                  {role: 'navigation', type_name: 'other_test_widget'}
+                  {
+                    role: 'navigation',
+                    type_name: 'other_test_widget',
+                    configuration: {some: 'value'}
+                  }
                 ],
                 format: 'json')
 
           expect(widget.reload.type_name).to eq('other_test_widget')
+          expect(widget.configuration['some']).to eq('value')
+        end
+
+        it 'does not reset configuration if it no configuration attribute is present' do
+          user = create(:user)
+          entry = create(:entry, with_editor: user)
+          widget = create(:widget,
+                          subject: entry.draft,
+                          role: 'navigation',
+                          type_name: 'test_widget',
+                          configuration: {some: 'value'})
+
+          sign_in(user)
+          patch(:batch,
+                collection_name: 'entries',
+                subject_id: entry.id,
+                widgets: [
+                  {
+                    role: 'navigation',
+                    type_name: 'other_test_widget'
+                  }
+                ],
+                format: 'json')
+
+          expect(widget.reload.type_name).to eq('other_test_widget')
+          expect(widget.configuration['some']).to eq('value')
         end
 
         it 'requires permission to edit entry' do

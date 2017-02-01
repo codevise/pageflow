@@ -6,6 +6,12 @@ module Pageflow
 
     attr_accessor :widget_type
 
+    serialize :configuration, JSON
+
+    def configuration
+      super || {}
+    end
+
     def copy_to(subject)
       record = dup
       record.subject = subject

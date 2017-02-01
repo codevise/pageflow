@@ -24,7 +24,21 @@ module Pageflow
       private
 
       def widget_batch_params
-        params.permit(widgets: [:role, :type_name]).fetch(:widgets, [])
+        widget_configurations = params.fetch(:widgets, []).map do |widget_params|
+          widget_params[:configuration].try(:permit!)
+        end
+
+        params
+          .permit(widgets: [:role, :type_name])
+          .fetch(:widgets, [])
+          .zip(widget_configurations)
+          .map do |(widget_params, widget_configuration)|
+            if widget_configuration
+              widget_params.merge(configuration: widget_configuration)
+            else
+              widget_params
+            end
+          end
       end
 
       def find_subject
