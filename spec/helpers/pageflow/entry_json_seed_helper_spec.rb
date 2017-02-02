@@ -133,6 +133,24 @@ module Pageflow
       end
     end
 
+    describe '#entry_widgets_seed' do
+      it 'includes type_name, role and configuration' do
+        revision = create(:revision, :published)
+        create(:widget,
+               subject: revision,
+               type_name: 'fancy_bar',
+               role: 'navigation',
+               configuration: {some: 'setting'})
+        entry = PublishedEntry.new(create(:entry, published_revision: revision))
+
+        result = helper.entry_widgets_seed(entry)
+
+        expect(result[0]['type_name']).to eq('fancy_bar')
+        expect(result[0]['role']).to eq('navigation')
+        expect(result[0]['configuration']['some']).to eq('setting')
+      end
+    end
+
     describe '#entry_file_ids_seed' do
       it 'indexes list of ids by collection name' do
         revision = create(:revision, :published)
