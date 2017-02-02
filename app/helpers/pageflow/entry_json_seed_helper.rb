@@ -16,6 +16,7 @@ module Pageflow
         storyline_configurations: entry_storyline_configurations_seed(entry),
         chapters: entry_chapters_seed(entry),
         pages: entry_pages_seed(entry),
+        widgets: entry_widgets_seed(entry),
         file_ids: entry_file_ids_seed(entry)
       )
     end
@@ -42,6 +43,11 @@ module Pageflow
     def entry_pages_seed(entry)
       attributes = [:id, :perma_id, :chapter_id, :template, :configuration]
       entry.pages.as_json(only: attributes)
+    end
+
+    def entry_widgets_seed(entry)
+      attributes = [:type_name, :role, :configuration]
+      entry.resolve_widgets.as_json(only: attributes)
     end
 
     def entry_file_ids_seed(entry)
