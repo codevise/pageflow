@@ -119,5 +119,37 @@ module Pageflow
         expect(result).to eq('widget_test_present widgets_present')
       end
     end
+
+    describe '#widgets_json_seeds' do
+      it 'includes role as id, type_name, configuration' do
+        entry = DraftEntry.new(create(:entry))
+        create(:widget,
+               subject: entry.draft,
+               type_name: 'fancy_bar',
+               role: 'navigation',
+               configuration: {some: 'setting'})
+
+        result = JSON.parse(helper.widgets_json_seeds(entry))
+
+        expect(result[0]['id']).to eq('navigation')
+        expect(result[0]['type_name']).to eq('fancy_bar')
+        expect(result[0]['configuration']['some']).to eq('setting')
+      end
+
+      it 'includes placeholders for roles without width' do
+        entry = DraftEntry.new(create(:entry))
+        widget_type = TestWidgetType.new(name: 'test', roles: 'foo')
+
+        pageflow_configure do |config|
+          config.widget_types.clear
+          config.widget_types.register(widget_type)
+        end
+
+        result = JSON.parse(helper.widgets_json_seeds(entry))
+
+        expect(result[0]['id']).to eq('foo')
+        expect(result[0]['type_name']).to eq(nil)
+      end
+    end
   end
 end

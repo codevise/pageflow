@@ -6,13 +6,17 @@ pageflow.app.addInitializer(function(options) {
   pageflow.audioFiles = pageflow.files.audio_files;
   pageflow.textTrackFiles = pageflow.files.text_track_files;
 
+  var widgets = new pageflow.WidgetsCollection(options.widgets);
+
   pageflow.themes = new pageflow.ThemesCollection(options.themes);
   pageflow.pages = new pageflow.PagesCollection(options.pages);
   pageflow.chapters = new pageflow.ChaptersCollection(options.chapters);
   pageflow.storylines = new pageflow.StorylinesCollection(options.storylines);
-  pageflow.entry = new pageflow.Entry(options.entry);
+  pageflow.entry = new pageflow.Entry(options.entry, {widgets: widgets});
   pageflow.theming = new pageflow.Theming(options.theming);
   pageflow.account = new Backbone.Model(options.account);
+
+  widgets.subject = pageflow.entry;
 
   pageflow.entryData = new pageflow.PreviewEntryData({
     entry: pageflow.entry,
