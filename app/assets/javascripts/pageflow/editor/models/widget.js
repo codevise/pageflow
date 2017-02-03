@@ -2,7 +2,9 @@ pageflow.Widget = Backbone.Model.extend({
   paramRoot: 'widget',
   i18nKey: 'pageflow/widget',
 
-  initialize: function() {
+  initialize: function(attributes, options) {
+    this.widgetTypes = options.widgetTypes;
+
     this.configuration = new pageflow.WidgetConfiguration(
       this.get('configuration') || {}
     );
@@ -10,6 +12,14 @@ pageflow.Widget = Backbone.Model.extend({
     this.listenTo(this.configuration, 'change', function() {
       this.trigger('change:configuration', this);
     });
+  },
+
+  widgetType: function() {
+    return this.get('type_name') && this.widgetTypes.findByName(this.get('type_name'));
+  },
+
+  hasConfiguration: function() {
+    return !!(this.widgetType() && this.widgetType().hasConfiguration());
   },
 
   role: function() {

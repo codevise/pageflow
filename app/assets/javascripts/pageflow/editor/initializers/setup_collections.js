@@ -7,7 +7,9 @@ pageflow.app.addInitializer(function(options) {
   pageflow.textTrackFiles = pageflow.files.text_track_files;
 
   pageflow.themes = new pageflow.ThemesCollection(options.themes);
-  var widgets = new pageflow.WidgetsCollection(options.widgets);
+  var widgets = new pageflow.WidgetsCollection(options.widgets, {
+    widgetTypes: pageflow.editor.widgetTypes
+  });
 
   pageflow.pages = new pageflow.PagesCollection(options.pages);
   pageflow.chapters = new pageflow.ChaptersCollection(options.chapters);

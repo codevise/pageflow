@@ -5,6 +5,7 @@ pageflow.SidebarRouter = Backbone.Marionette.AppRouter.extend({
     'pages/:id/:tab': 'page',
     'chapters/:id': 'chapter',
     'storylines/:id': 'storyline',
+    'widgets/:id': 'widget',
 
     'files/:collectionName?handler=:handler&payload=:payload&filter=:filter': 'files',
     'files/:collectionName?handler=:handler&payload=:payload': 'files',
