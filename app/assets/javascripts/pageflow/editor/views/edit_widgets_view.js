@@ -14,7 +14,5 @@ pageflow.EditWidgetsView = Backbone.Marionette.Layout.extend({
         widgetTypes: this.options.widgetTypes
       }
     }).render());
-
-    this.model.fetchWidgets();
   }
 });
