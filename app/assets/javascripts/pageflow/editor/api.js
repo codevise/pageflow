@@ -170,7 +170,15 @@ pageflow.EditorApi = pageflow.Object.extend({
     this.pageTypes = new pageflow.PageTypes();
 
     /**
-     *
+     * Setup editor integration for widget types.
+     * @alias widgetType
+     * @memberof module:pageflow/editor.pageflow.editor
+     */
+    this.widgetTypes = new pageflow.WidgetTypes();
+
+    /**
+     * @alias fileTypes
+     * @memberof module:pageflow/editor.pageflow.editor
      */
     this.fileTypes = new pageflow.FileTypes();
 

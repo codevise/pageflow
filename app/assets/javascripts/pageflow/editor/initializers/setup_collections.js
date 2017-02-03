@@ -5,7 +5,9 @@ pageflow.app.addInitializer(function(options) {
   pageflow.videoFiles = pageflow.files.video_files;
   pageflow.audioFiles = pageflow.files.audio_files;
 
-  var widgets = new pageflow.WidgetsCollection(options.widgets);
+  var widgets = new pageflow.WidgetsCollection(options.widgets, {
+    widgetTypes: pageflow.editor.widgetTypes
+  });
 
   pageflow.pages = new pageflow.PagesCollection(options.pages);
   pageflow.chapters = new pageflow.ChaptersCollection(options.chapters);
