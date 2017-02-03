@@ -5,12 +5,9 @@ pageflow.Entry = Backbone.Model.extend({
   i18nKey: 'pageflow/entry',
   collectionName: 'entries',
 
-  autoSaveWidgets: true,
-
   mixins: [pageflow.filesCountWatcher,
            pageflow.polling,
-           pageflow.failureTracking,
-           pageflow.widgetSubject],
+           pageflow.failureTracking],
 
   initialize: function(attributes, options) {
     options = options || {};
@@ -24,6 +21,7 @@ pageflow.Entry = Backbone.Model.extend({
     this.chapters = options.chapters || pageflow.chapters;
     this.chapters.parentModel = this;
     this.pages = pageflow.pages;
+    this.widgets = options.widgets;
 
     this.imageFiles = pageflow.imageFiles;
     this.videoFiles = pageflow.videoFiles;
