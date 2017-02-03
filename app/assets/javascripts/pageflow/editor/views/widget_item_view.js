@@ -11,8 +11,20 @@ pageflow.WidgetItemView = Backbone.Marionette.Layout.extend({
     role: 'h2'
   },
 
+  modelEvents: {
+    'change:type_name': 'update'
+  },
+
+  events: {
+    'click .settings': function() {
+      pageflow.editor.navigate('/widgets/' + this.model.role(), {trigger: true});
+      return false;
+    },
+  },
+
   onRender: function() {
-    var widgetTypes = this.options.widgetTypes[this.model.role()] || [];
+    var widgetTypes = this.options.widgetTypes.findAllByRole(this.model.role()) || [];
+    var isOptional = this.options.widgetTypes.isOptional(this.model.role());
 
     this.widgetTypeContainer.show(new pageflow.SelectInputView({
       model: this.model,
@@ -21,9 +33,17 @@ pageflow.WidgetItemView = Backbone.Marionette.Layout.extend({
       collection: widgetTypes,
       valueProperty: 'name',
       translationKeyProperty: 'translationKey',
-      includeBlank: true
+      includeBlank: isOptional || !this.model.get('type_name')
     }));
 
-    this.$el.toggle(widgetTypes.length > 1);
+    this.$el.toggleClass('is_hidden', widgetTypes.length <= 1 &&
+                         !this.model.hasConfiguration() &&
+                         !isOptional);
+
+    this.update();
+  },
+
+  update: function() {
+    this.$el.toggleClass('has_settings', this.model.hasConfiguration());
   }
 });

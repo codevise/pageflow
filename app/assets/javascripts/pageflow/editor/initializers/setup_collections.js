@@ -6,7 +6,9 @@ pageflow.app.addInitializer(function(options) {
   pageflow.audioFiles = pageflow.files.audio_files;
   pageflow.textTrackFiles = pageflow.files.text_track_files;
 
-  var widgets = new pageflow.WidgetsCollection(options.widgets);
+  var widgets = new pageflow.WidgetsCollection(options.widgets, {
+    widgetTypes: pageflow.editor.widgetTypes
+  });
 
   pageflow.themes = new pageflow.ThemesCollection(options.themes);
   pageflow.pages = new pageflow.PagesCollection(options.pages);
