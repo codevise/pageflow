@@ -33,6 +33,7 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
   onRender: function() {
     this.ui.textarea.addClass(this.options.size);
     this.load();
+    this.updatePlaceholder();
 
     this.editor = new wysihtml5.Editor(this.ui.textarea[0], {
       toolbar: this.ui.toolbar[0],
@@ -70,6 +71,21 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
 
     this.editor.on('change', _.bind(this.save, this));
     this.editor.on('aftercommand:composer', _.bind(this.save, this));
+  },
+
+  updatePlaceholder: function() {
+    this.ui.textarea.attr('placeholder', this.placeholderText());
+  },
+
+  placeholderText: function() {
+    if (!this.options.disabled || !this.options.hidePlaceholderIfDisabled) {
+      return this.options.placeholder || this.placholderModelValue();
+    }
+  },
+
+  placholderModelValue: function() {
+    return this.options.placeholderModel &&
+      this.options.placeholderModel.get(this.options.propertyName);
   },
 
   save: function() {
