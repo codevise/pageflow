@@ -4,6 +4,9 @@ module Pageflow
 
     attr_reader :video_file
 
+    MIN_SIZE_FOR_4K = '1921x1080'.freeze
+    MIN_SIZE_FOR_FULLHD = '1281x720'.freeze
+
     def initialize(video_file, options = {})
       super(options)
       @video_file = video_file
@@ -22,7 +25,7 @@ module Pageflow
 
         dash_definitions,
         hls_definitions,
-        smil_definition,
+        smil_definitions,
 
         thumbnails_definitions
       ].flatten
@@ -46,7 +49,7 @@ module Pageflow
         audio_bitrate: 320,
         size: '3839x2160',
         skip: {
-          min_size: '1920x1080'
+          min_size: MIN_SIZE_FOR_4K
         },
         public: 1,
       }
@@ -63,7 +66,7 @@ module Pageflow
         audio_bitrate: 192,
         size: '1919x1080',
         skip: {
-          min_size: '1281x720'
+          min_size: MIN_SIZE_FOR_FULLHD
         },
         public: 1,
       }
@@ -379,18 +382,50 @@ module Pageflow
       ]
     end
 
-    def smil_definition
+    def smil_definitions
       return [] if skip_smil
-      non_transferable(
-        streams: smil_stream_definitions,
+
+      smil_definition = {
         type: 'playlist',
         format: 'highwinds',
         path: video_file.smil.path,
         public: true
-      )
+      }
+
+      # EXPLANATION: Zencoder always includes all conditional outputs
+      # in SMIL files even if they were skipped. To prevent generating
+      # SMIL files which point to non existent files, we include three
+      # definitions for the same file and apply the same conditions
+      # that are used to decide whether outputs are skipped.
+      #
+      # Using the `min_size` values as `max_size` allows cases where
+      # only one of the three SMIL outputs is skipped (i.e. if the
+      # resolution is exactly equal to `MIN_SIZE_FULLHD`). Still, in
+      # these cases the input file is just a tiny bit larger than the
+      # next lower resolution, so we do not really care if the SMIL
+      # file which does not include the higher quality does not win.
+      if video_file.entry.feature_state('highdef_video_encoding')
+        [
+          non_transferable(smil_definition.merge(streams: smil_default_stream_definitions,
+                                                 skip: {
+                                                   max_size: MIN_SIZE_FOR_FULLHD
+                                                 })),
+          non_transferable(smil_definition.merge(streams: smil_fullhd_stream_definitions,
+                                                 skip: {
+                                                   min_size: MIN_SIZE_FOR_FULLHD,
+                                                   max_size: MIN_SIZE_FOR_4K
+                                                 })),
+          non_transferable(smil_definition.merge(streams: smil_4k_stream_definitions,
+                                                 skip: {
+                                                   min_size: MIN_SIZE_FOR_4K
+                                                 }))
+        ]
+      else
+        non_transferable(smil_definition.merge(streams: smil_default_stream_definitions))
+      end
     end
 
-    def smil_stream_definitions
+    def smil_default_stream_definitions
       [
         {
           path: video_file.mp4_medium.url(host: :hls_origin, default_protocol: 'http'),
@@ -404,21 +439,27 @@ module Pageflow
           path: video_file.mp4_high.url(host: :hls_origin, default_protocol: 'http'),
           bandwidth: 3538
         }
-      ] + smil_highdef_stream_definitions
+      ]
     end
 
-    def smil_highdef_stream_definitions
-      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+    def smil_fullhd_stream_definitions
       [
+        smil_default_stream_definitions,
         {
           path: video_file.mp4_fullhd.url(host: :hls_origin, default_protocol: 'http'),
           bandwidth: 8575
-        },
+        }
+      ].flatten
+    end
+
+    def smil_4k_stream_definitions
+      [
+        smil_fullhd_stream_definitions,
         {
           path: video_file.mp4_4k.url(host: :hls_origin, default_protocol: 'http'),
           bandwidth: 32000
         }
-      ]
+      ].flatten
     end
 
     def thumbnails_definitions
