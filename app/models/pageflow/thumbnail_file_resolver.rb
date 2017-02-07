@@ -1,12 +1,32 @@
 module Pageflow
   class ThumbnailFileResolver < Struct.new(:candidates, :configuration)
     def find
-      candidates.reduce(nil) do |result, candidate|
-        result || find_positioned_file_by_candiate(candidate)
+      candidates.detect do |candidate|
+        condition = candidate[:unless] || candidate[:if]
+        next if condition && !condition_met?(condition, candidate[:unless])
+
+        file = find_positioned_file_by_candiate(candidate)
+        break file if file
       end || PositionedFile.null
     end
 
     private
+
+    def condition_met?(condition, negated)
+      if !condition.is_a?(Hash) ||
+         condition.keys.sort != [:attribute, :value]
+        raise(ArgumentError,
+              'Expected thumbnail candidate condition to have keys :attribute and :value.')
+      end
+
+      value = configuration[condition[:attribute].to_s]
+
+      if negated
+        value != condition[:value]
+      else
+        value == condition[:value]
+      end
+    end
 
     def find_positioned_file_by_candiate(candidate)
       PositionedFile.wrap(find_file_by_candidate(candidate),

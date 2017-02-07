@@ -25,3 +25,7 @@ Style/SpaceInsideHashLiteralBraces:
 # Do not warn about missing magic comment
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+# Allow `json.(:attribute)`
+Style/LambdaCall:
+  Enabled: false

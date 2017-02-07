@@ -42,7 +42,12 @@ module Pageflow
           name 'test'
 
           def thumbnail_candidates
-            [{attribute: 'thumbnail_image_id', file_collection: 'image_files'}]
+            [
+              {
+                attribute: 'thumbnail_image_id',
+                file_collection: 'image_files'
+              }
+            ]
           end
         end
 
@@ -50,8 +55,62 @@ module Pageflow
         config.page_types.register(page_type_class.new)
 
         result = JSON.parse(helper.page_type_json_seeds(config))
+        candidate = result[0]['thumbnail_candidates'][0]
 
-        expect(result[0]['thumbnail_candidates']).to eq([{'attribute' => 'thumbnail_image_id', 'file_collection' => 'image_files'}])
+        expect(candidate['attribute']).to eq('thumbnail_image_id')
+        expect(candidate['file_collection']).to eq('image_files')
+      end
+
+      it 'includes thumbnail_candidates with condition' do
+        page_type_class = Class.new(Pageflow::PageType) do
+          name 'test'
+
+          def thumbnail_candidates
+            [
+              {
+                attribute: 'background_image_id',
+                file_collection: 'image_files',
+                if: {attribute: 'background_type', value: 'image'}
+              }
+            ]
+          end
+        end
+
+        config = Configuration.new
+        config.page_types.register(page_type_class.new)
+
+        result = JSON.parse(helper.page_type_json_seeds(config))
+        candidate = result[0]['thumbnail_candidates'][0]
+
+        expect(candidate['condition']['attribute']).to eq('background_type')
+        expect(candidate['condition']['value']).to eq('image')
+        expect(candidate['condition']['negated']).to eq(false)
+      end
+
+      it 'includes thumbnail_candidates with negated condition' do
+        page_type_class = Class.new(Pageflow::PageType) do
+          name 'test'
+
+          def thumbnail_candidates
+            [
+              {
+                attribute: 'background_image_id',
+                file_collection: 'image_files',
+                unless: {attribute: 'background_type', value: 'image'}
+              }
+            ]
+          end
+        end
+
+        config = Configuration.new
+        config.page_types.register(page_type_class.new)
+
+        result = JSON.parse(helper.page_type_json_seeds(config))
+        candidate = result[0]['thumbnail_candidates'][0]
+
+        expect(candidate['condition']['attribute']).to eq('background_type')
+        expect(candidate['condition']['value']).to eq('image')
+        expect(candidate['condition']['negated']).to eq(true)
       end
     end
 

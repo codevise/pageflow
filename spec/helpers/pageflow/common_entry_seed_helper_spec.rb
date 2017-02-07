@@ -20,7 +20,22 @@ module Pageflow
         it 'includes thumbnail candidates of page types registered for entry' do
           thumbnail_candidates = [
             {attribute: 'thumbnail_image_id', file_collection: 'image_files'},
-            {attribute: 'video_id', file_collection: 'video_files'}
+            {
+              attribute: 'image_id',
+              file_collection: 'image_files',
+              if: {
+                attribute: 'background_type',
+                value: 'image'
+              }
+            },
+            {
+              attribute: 'video_id',
+              file_collection: 'video_files',
+              unless: {
+                attribute: 'background_type',
+                value: 'image'
+              }
+            }
           ]
 
           pageflow_configure do |config|
@@ -38,12 +53,28 @@ module Pageflow
             {
               attribute: 'thumbnail_image_id',
               collection_name: 'image_files',
-              css_class_prefix: 'pageflow_image_file'
+              css_class_prefix: 'pageflow_image_file',
+              condition: nil
+            },
+            {
+              attribute: 'image_id',
+              collection_name: 'image_files',
+              css_class_prefix: 'pageflow_image_file',
+              condition: {
+                attribute: 'background_type',
+                value: 'image',
+                negated: false
+              }
             },
             {
               attribute: 'video_id',
               collection_name: 'video_files',
-              css_class_prefix: 'pageflow_video_file'
+              css_class_prefix: 'pageflow_video_file',
+              condition: {
+                attribute: 'background_type',
+                value: 'image',
+                negated: true
+              }
             }
           ])
         end
