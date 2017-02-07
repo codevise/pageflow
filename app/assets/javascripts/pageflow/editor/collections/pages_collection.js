@@ -29,5 +29,25 @@ pageflow.PagesCollection = Backbone.Collection.extend({
 
   getByPermaId: function(permaId) {
     return this.findWhere({perma_id: parseInt(permaId, 10)});
-  }
+  },
+
+  persisted: function() {
+    if (!this._persisted) {
+      this._persisted = new pageflow.SubsetCollection({
+        parent: this,
+
+        filter: function(page) {
+          return !page.isNew();
+        },
+      });
+
+      this.listenTo(this, 'change:id', function(model) {
+        setTimeout(_.bind(function() {
+          this._persisted.add(model);
+        }, this), 0);
+      });
+    }
+
+    return this._persisted;
+  },
 });

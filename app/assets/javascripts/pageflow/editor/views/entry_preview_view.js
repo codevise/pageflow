@@ -9,6 +9,8 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   },
 
   initialize: function() {
+    this.pages = this.model.pages.persisted();
+
     this.widgets = $();
     this.debouncedFetchWidgets = _.debounce(this.fetchWidgets, 200);
   },
@@ -16,7 +18,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   onRender: function() {
     this.pageViews = this.subview(new pageflow.CollectionView({
       el: this.ui.entry,
-      collection: this.model.pages,
+      collection: this.pages,
       itemViewConstructor: pageflow.PagePreviewView,
       blankSlateViewConstructor: pageflow.BlankEntryView
     }));
@@ -46,15 +48,15 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
       simulateHistory: true
     });
 
-    this.listenTo(this.model.pages, 'add', function() {
+    this.listenTo(this.pages, 'add', function() {
       slideshow.update();
     });
 
-    this.listenTo(this.model.pages, 'remove', function() {
+    this.listenTo(this.pages, 'remove', function() {
       slideshow.update();
     });
 
-    this.listenTo(this.model.pages, 'edit', function(model) {
+    this.listenTo(this.pages, 'edit', function(model) {
       slideshow.goTo(this.pageViews.itemViews.findByModel(model).$el);
     });
 
