@@ -6,6 +6,8 @@ module Pageflow
       it 'contains all definitions except highdef per default' do
         video_file = build(:video_file)
         definition = ZencoderVideoOutputDefinition.new(video_file)
+        definition.skip_hls = false
+        definition.skip_smil = false
 
         expect(definition).not_to have_output.to_s3(video_file.mp4_4k.path)
         expect(definition).not_to have_output.to_s3(video_file.mp4_fullhd.path)
@@ -31,6 +33,7 @@ module Pageflow
         video_file = build(:video_file)
         definition = ZencoderVideoOutputDefinition.new(video_file)
         definition.skip_hls = true
+        definition.skip_smil = false
 
         expect(definition).not_to have_output.to_s3(video_file.mp4_4k.path)
         expect(definition).not_to have_output.to_s3(video_file.mp4_fullhd.path)
@@ -55,6 +58,7 @@ module Pageflow
       it 'skips smil definitions if set to do so' do
         video_file = build(:video_file)
         definition = ZencoderVideoOutputDefinition.new(video_file)
+        definition.skip_hls = false
         definition.skip_smil = true
 
         expect(definition).not_to have_output.to_s3(video_file.mp4_4k.path)
@@ -81,6 +85,8 @@ module Pageflow
         video_file = build(:video_file)
         video_file.entry.feature_states = {'highdef_video_encoding' => true}
         definition = ZencoderVideoOutputDefinition.new(video_file)
+        definition.skip_hls = false
+        definition.skip_smil = false
 
         expect(definition).to have_output.to_s3(video_file.mp4_4k.path)
         expect(definition).to have_output.to_s3(video_file.mp4_fullhd.path)
