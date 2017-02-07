@@ -10,7 +10,8 @@ module Pageflow
         :'hls-playlist' => url_template(:hls_playlist),
         :'dash-playlist' => url_template(:dash_playlist),
 
-        poster_large: url_template(:poster, :large)
+        poster_large: url_template(:poster, :large),
+        poster_ultra: url_template(:poster, :ultra)
       }
     end
 

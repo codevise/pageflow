@@ -7,15 +7,17 @@ module Pageflow
     belongs_to :confirmed_by, :class_name => 'User'
 
     has_attached_file(:poster, Pageflow.config.paperclip_s3_default_options
-                        .merge(:default_url => ':pageflow_placeholder',
-                               :styles => Pageflow.config.thumbnail_styles
-                                 .merge(:medium => ['1920x1920>', :JPG],
-                                        :large => ['1024x1024>', :JPG],
-                                        :print => ['300x300>', :JPG]),
-                               :convert_options => {
-                                 :medium => "-quality 90 -interlace Plane",
-                                 :large => "-quality 90 -interlace Plane",
-                                 :print => "-quality 10 -interlace Plane"
+                        .merge(default_url: ':pageflow_placeholder',
+                               styles: Pageflow.config.thumbnail_styles
+                                 .merge(medium: ['1920x1920>', :JPG],
+                                        large: ['1024x1024>', :JPG],
+                                        ultra: ['3840x3840>', :JPG],
+                                        print: ['300x300>', :JPG]),
+                               convert_options: {
+                                 medium: '-quality 90 -interlace Plane',
+                                 large: '-quality 90 -interlace Plane',
+                                 ultra: '-quality 90 -interlace Plane',
+                                 print: '-quality 10 -interlace Plane'
                                }))
 
     has_attached_file(:thumbnail, Pageflow.config.paperclip_s3_default_options
