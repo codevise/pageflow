@@ -42,6 +42,8 @@ $slim-player-controls-typography: $player-controls-typography !default;
     visibility: hidden;
   }
 
+  .enable_focus_outline &-container-focused,
+  .enable_focus_outline &-background-focused::after,
   &-container-hover,
   &-background-hover::after {
     opacity: 1;

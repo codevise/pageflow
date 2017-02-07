@@ -78,6 +78,22 @@ $slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2)
     z-index: 1;
   }
 
+  &-play_button-custom_icon {
+    &:before {
+      display: none;
+    }
+
+    svg {
+      fill: $slim-player-controls-color;
+      position: absolute;
+      left: 7px;
+      top: 50%;
+      @include transform(translateY(-50%));
+      width: 25px;
+      height: 25px;
+    }
+  }
+
   &-play_button-playing {
     @include background-icon-position($left: 20px);
     @include fa-pause-icon;
@@ -135,7 +151,7 @@ $slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2)
   &-load_progress {
     position: absolute;
     left: 0;
-    top: 10px;
+    top: 8px;
     height: 3px;
   }
 
@@ -150,7 +166,7 @@ $slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2)
   &-progress_bar_handle {
     position: absolute;
     left: 0;
-    top: 11px;
+    top: 9px;
     width: 0;
     height: 0;
     @include transform(scale(0));
@@ -172,7 +188,7 @@ $slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2)
     %player_controls-progress_bar:before,
     %player_controls-play_progress,
     %player_controls-load_progress {
-      top: 9px;
+      top: 7px;
       height: 5px;
     }
 

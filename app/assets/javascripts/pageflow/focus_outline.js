@@ -26,6 +26,7 @@
       if (!this.disabled) {
         this.disabled = true;
         this.element.addClass('disable_focus_outline');
+        this.element.removeClass('enable_focus_outline');
       }
     },
 
@@ -33,6 +34,7 @@
       if (this.disabled) {
         this.disabled = false;
         this.element.removeClass('disable_focus_outline');
+        this.element.addClass('enable_focus_outline');
       }
     }
   });
