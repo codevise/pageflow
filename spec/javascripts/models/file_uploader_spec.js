@@ -114,7 +114,6 @@ describe('FileUploader', function() {
           fileTypes: this.fileTypes
         });
         var targetFileUpload = {name: 'video.mp4', type: 'video/mp4'};
-        pageflow.config = {confirmEncodingJobs: false};
         fileUploader.add(targetFileUpload);
         fileUploader.submit();
         var targetFile = this.entry.getFileCollection(this.videoFileType).first();
@@ -135,7 +134,6 @@ describe('FileUploader', function() {
           fileTypes: this.fileTypes
         });
         var targetFileUpload = {name: 'video.mp4', type: 'video/mp4'};
-        pageflow.config = {confirmEncodingJobs: false};
         fileUploader.add(targetFileUpload);
         fileUploader.submit();
         var targetFile = this.entry.getFileCollection(this.videoFileType).first();
@@ -154,7 +152,6 @@ describe('FileUploader', function() {
           fileTypes: this.fileTypes
         });
         var targetFileUpload = {name: 'video.mp4', type: 'video/mp4'};
-        pageflow.config = {confirmEncodingJobs: false};
         fileUploader.add(targetFileUpload);
         fileUploader.submit();
         var targetFile = this.entry.getFileCollection(this.videoFileType).first();
@@ -187,7 +184,6 @@ describe('FileUploader', function() {
           fileTypes: this.fileTypes
         });
         var targetFileUpload = {name: 'video.mp4', type: 'video/mp4'};
-        pageflow.config = {confirmEncodingJobs: false};
         fileUploader.add(targetFileUpload);
         fileUploader.submit();
         var targetFile = this.entry.getFileCollection(this.videoFileType).first();

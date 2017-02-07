@@ -57,7 +57,6 @@ en:
             column_header: Label
             inline_help: For display in the text track picker as part of the media player
             label: Label
-            missing: Label missing
           no_files_blank_slate: Currently, there are no text tracks for this file.
           srclang:
             column_header: Language
@@ -66,6 +65,9 @@ en:
               blank: Not yet entered
             inline_help_html: <ul><li>The language used in a text track is specified as a two letter code according to ISO 639.1.</li> <li><strong>Examples:</strong> 'en' for English or 'fr' for French.</li> <li>Language codes are often given on the Wikipedia page of a language.</li></ul>
             label: Language
+      text_track_files:
+        label_missing: (Label missing)
+        srclang_missing: (Missing)
       templates:
         background_positioning:
           close: Close
@@ -98,4 +100,4 @@ en:
       sr: Serbian
       tr: Turkish
       zh: Chinese
-      unknown: Unknown language key
+      unknown: (Unknown)

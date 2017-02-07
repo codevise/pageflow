@@ -9,6 +9,8 @@ pageflow.TableView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    var view = this;
+
     _(this.options.columns).each(function(column) {
       this.ui.headRow.append(this.subview(new pageflow.TableHeaderCellView({
         column: column,
@@ -27,12 +29,18 @@ pageflow.TableView = Backbone.Marionette.ItemView.extend({
         selectionAttribute: this.options.selectionAttribute,
         attributeTranslationKeyPrefixes: this.options.attributeTranslationKeyPrefixes
       },
+
       blankSlateViewConstructor: Backbone.Marionette.ItemView.extend({
         tagName: 'tr',
         className: 'blank_slate',
-        template: function() {
-          return this.options.blankSlateText;
-        }.bind(this)
+        template: 'pageflow/ui/templates/table_blank_slate',
+
+        serializeData: function() {
+          return {
+            blankSlateText: view.options.blankSlateText,
+            colSpan: view.options.columns.length
+          };
+        }
       })
     }));
   }

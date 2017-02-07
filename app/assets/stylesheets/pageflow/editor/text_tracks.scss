@@ -1,4 +1,6 @@
 .text_tracks {
+  $table-cell-color: #eee;
+
   height: 700px;
 
   .text_tracks_container {
@@ -8,7 +10,7 @@
 
   .files_upload_panel {
     position: absolute;
-    top: 80px;
+    top: 60px;
     right: 370px;
     bottom: 50px;
     left: 20px;
@@ -18,12 +20,16 @@
   .selected_file_panel {
     position: absolute;
     right: 20px;
-    top: 80px;
+    top: 60px;
     width: 330px;
   }
 
   .table_view {
     width: 100%;
+  }
+
+  td {
+    background-color: $table-cell-color;
   }
 
   .upload {

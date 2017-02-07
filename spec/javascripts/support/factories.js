@@ -102,8 +102,8 @@ support.factories = {
 
   videoFileWithTextTrackFiles: function(options) {
     var fileTypes = this.fileTypes(function() {
-      this.withVideoFileType();
-      this.withTextTrackFileType();
+      this.withVideoFileType(options.videoFileTypeOptions);
+      this.withTextTrackFileType(options.textTrackFileTypeOptions);
     });
 
     var fileAttributes = {

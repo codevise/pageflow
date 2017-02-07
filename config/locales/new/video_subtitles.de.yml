@@ -60,7 +60,6 @@ de:
             column_header: Label
             inline_help: Wird im Textspuren-Auswahlmenü des Media Players angezeigt.
             label: Label
-            missing: Label fehlt
           no_files_blank_slate: Für diese Datei gibt es momentan keine Textspuren.
           srclang:
             column_header: Sprache
@@ -69,6 +68,9 @@ de:
               blank: "Noch nicht ausgefüllt"
             inline_help_html: <ul><li>Die Sprache einer Textspur wird als Zwei-Buchstaben-Code nach ISO 639.1 angegeben.</li> <li><strong>Beispiele:</strong> 'de' für Deutsch oder 'en' für Englisch.</li> <li>Den Sprachcode findet man meist auf der Wikipedia-Seite zur jeweiligen Sprache.</li></ul>
             label: Sprache
+      text_track_files:
+        label_missing: (Label fehlt)
+        srclang_missing: (Fehlt)
       templates:
         background_positioning:
           close: Schließen
@@ -105,4 +107,4 @@ de:
       sr: Serbisch
       tr: Türkisch
       zh: Chinesisch
-      unknown: Unbekannter Sprachschlüssel
+      unknown: (Unbekannt)

@@ -6,9 +6,9 @@ support.setupGlobals = function(mapping) {
 
     this.globalsBackup = {};
 
-    _.each(mapping, function(fn, key) {
+    _.each(mapping, function(value, key) {
       this.globalsBackup[key] = pageflow[key];
-      pageflow[key] = fn.call(this);
+      pageflow[key] = typeof value === 'function' ? value.call(this) : value;
     }, this);
   });
 

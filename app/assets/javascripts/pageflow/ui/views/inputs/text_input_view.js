@@ -4,8 +4,14 @@
  * @param {boolean} [options.required=false]
  *   Display an error if the input is blank.
  *
- * @param {string} [options.placeholder]
- *   Display a placeholder string if the input is blank.
+ * @param {string|function} [options.placeholder]
+ *   Display a placeholder string if the input is blank. Either a
+ *   string or a function taking the model as a first parameter and
+ *   returning a string.
+ *
+ * @param {string} [options.placeholderBinding]
+ *   Name of an attribute. Recompute the placeholder function whenever
+ *   this attribute changes.
  *
  * @param {boolean} [options.hidePlaceholderIfDisabled]
  *   Do not display the placeholder if the input is disabled.
@@ -37,6 +43,12 @@ pageflow.TextInputView = Backbone.Marionette.ItemView.extend({
     this.validate();
 
     this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
+
+    if (this.options.placeholderBinding) {
+      this.listenTo(this.model,
+                    'change:' + this.options.placeholderBinding,
+                    this.updatePlaceholder);
+    }
   },
 
   onChange: function() {
@@ -81,11 +93,22 @@ pageflow.TextInputView = Backbone.Marionette.ItemView.extend({
 
   placeholderText: function() {
     if (!this.options.disabled || !this.options.hidePlaceholderIfDisabled) {
-      return this.options.placeholder || this.placholderModelValue();
+      if (this.options.placeholder) {
+        if (typeof this.options.placeholder == 'function') {
+          return this.options.placeholder(this.model);
+        }
+        else {
+          return this.options.placeholder;
+        }
+      }
+      else {
+        return this.placeholderModelValue();
+      }
     }
   },
 
-  placholderModelValue: function() {
-    return this.options.placeholderModel && this.options.placeholderModel.get(this.options.propertyName);
+  placeholderModelValue: function() {
+    return this.options.placeholderModel &&
+      this.options.placeholderModel.get(this.options.propertyName);
   }
 });

@@ -1,7 +1,8 @@
 $table-view-header-background-color: #444 !default;
 $table-view-header-color: #fff !default;
 $table-view-cell-background-color: #fff !default;
-$table-view-selected-cell-background-color: #D2E5FA !default;
+$table-view-blank-slate-color: #888 !default;
+$table-view-selected-cell-background-color: #d2e5fa !default;
 
 .table_view {
   border-spacing: 0 1px;
@@ -24,8 +25,9 @@ $table-view-selected-cell-background-color: #D2E5FA !default;
   .is_selected > td {
     background-color: $table-view-selected-cell-background-color;
   }
-}
 
-.is_empty .table_view th {
-  visibility: hidden;
+  .blank_slate > td {
+    text-align: center;
+    color: $table-view-blank-slate-color;
+  }
 }

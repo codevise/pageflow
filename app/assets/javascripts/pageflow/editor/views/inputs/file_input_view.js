@@ -50,6 +50,8 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
         pageflow.editor.fileTypes.findByCollectionName(this.options.collection)
       );
     }
+
+    this.textTrackMenuItems = new Backbone.Collection();
   },
 
   onRender: function() {
@@ -67,6 +69,8 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
 
   update: function() {
     var file = this._getFile();
+
+    this._listenToNestedTextTrackFiles(file);
 
     this.$el.toggleClass('is_unset', !file);
     this.ui.fileName.text(file ?
@@ -87,9 +91,7 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
       items.add({
         name: 'default_text_track',
         label: I18n.t('pageflow.editor.views.inputs.file_input.default_text_track'),
-        items: this._textTrackMenuItems(
-          file.nestedFiles(this.options.textTrackFiles)
-        )
+        items: this.textTrackMenuItems
       });
     }
 
@@ -104,15 +106,38 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
       }));
     }
 
+    if (file) {
+      items.add(new pageflow.FileInputView.EditFileSettingsMenuItem({
+        name: 'edit_file_settings',
+        label: I18n.t('pageflow.editor.views.inputs.file_input.edit_file_settings')
+      }, {
+        file: file,
+      }));
+    }
+
     return items;
   },
 
-  _textTrackMenuItems: function(textTrackFiles) {
-    var models = [null].concat(textTrackFiles.toArray());
+  _listenToNestedTextTrackFiles: function(file) {
+    if (this.textTrackFiles) {
+      this.stopListening(this.textTrackFiles);
+      this.textTrackFiles = null;
+    }
 
-    return new Backbone.Collection(models.map(function(textTrackFile) {
+    if (file && this.options.defaultTextTrackFilePropertyName) {
+      this.textTrackFiles = file.nestedFiles(this.options.textTrackFiles);
+
+      this.listenTo(this.textTrackFiles, 'add remove', this._updateTextTrackMenuItems);
+      this._updateTextTrackMenuItems();
+    }
+  },
+
+  _updateTextTrackMenuItems: function update() {
+    var models = [null].concat(this.textTrackFiles.toArray());
+
+    this.textTrackMenuItems.set(models.map(function(textTrackFile) {
       return new pageflow.FileInputView.DefaultTextTrackFileMenuItem({}, {
-        textTrackFiles: textTrackFiles,
+        textTrackFiles: this.textTrackFiles,
         textTrackFile: textTrackFile,
         inputModel: this.model,
         propertyName: this.options.defaultTextTrackFilePropertyName
@@ -139,11 +164,28 @@ pageflow.FileInputView.EditBackgroundPositioningMenuItem = Backbone.Model.extend
   }
 });
 
+pageflow.FileInputView.EditFileSettingsMenuItem = Backbone.Model.extend({
+  initialize: function(attributes, options) {
+    this.options = options;
+  },
+
+  selected: function() {
+    pageflow.FileSettingsDialogView.open({
+      model: this.options.file
+    });
+  }
+});
+
 pageflow.FileInputView.DefaultTextTrackFileMenuItem = Backbone.Model.extend({
   initialize: function(attributes, options) {
     this.options = options;
 
     this.listenTo(this.options.inputModel, 'change:' + this.options.propertyName, this.update);
+
+    if (this.options.textTrackFile) {
+      this.listenTo(this.options.textTrackFile, 'change:configuration', this.update);
+    }
+
     this.update();
   },
 
@@ -151,7 +193,9 @@ pageflow.FileInputView.DefaultTextTrackFileMenuItem = Backbone.Model.extend({
     this.set('checked', this.options.textTrackFile == this.getDefaultTextTrackFile());
     this.set('name', this.options.textTrackFile ? null : 'no_default_text_track');
     this.set('label', this.options.textTrackFile ?
-             this.options.textTrackFile.label() :
+             this.options.textTrackFile.displayLabel() :
+             this.options.textTrackFiles.length ?
+             I18n.t('pageflow.editor.views.inputs.file_input.auto_default_text_track') :
              I18n.t('pageflow.editor.views.inputs.file_input.no_default_text_track'));
   },
 

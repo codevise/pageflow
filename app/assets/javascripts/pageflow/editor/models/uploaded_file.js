@@ -9,9 +9,14 @@ pageflow.UploadedFile = Backbone.Model.extend({
     );
 
     this.configuration.i18nKey = this.i18nKey;
+    this.configuration.parent = this;
 
     this.listenTo(this.configuration, 'change', function() {
       this.trigger('change:configuration', this);
+
+      _.chain(this.configuration.changed).keys().each(function(name) {
+        this.trigger('change:configuration:' + name, this, this.configuration.get(name));
+      }, this);
 
       if (!this.isNew()) {
         this.save();
@@ -52,10 +57,16 @@ pageflow.UploadedFile = Backbone.Model.extend({
     if (typeof supersetCollection === 'function') {
       supersetCollection = supersetCollection();
     }
+
     var collectionName = supersetCollection.fileType.collectionName;
     this.nestedFilesCollections = this.nestedFilesCollections || {};
+
     this.nestedFilesCollections[collectionName] = this.nestedFilesCollections[collectionName] ||
-      this._createNestedFilesSubsetCollection(supersetCollection);
+      new pageflow.NestedFilesCollection({
+        parent: supersetCollection,
+        parentFile: this
+      });
+
     return this.nestedFilesCollections[collectionName];
   },
 
@@ -117,18 +128,5 @@ pageflow.UploadedFile = Backbone.Model.extend({
     usage.destroy();
 
     this.trigger('destroy', this, this.collection, {});
-  },
-
-  _createNestedFilesSubsetCollection: function(supersetCollection) {
-    var modelType = this.fileType().typeName;
-
-    return new pageflow.SubsetCollection({
-      parentModel: this,
-      filter: function(item) {
-        return item.get('parent_file_id') === this.parentModel.get('id') &&
-          item.get('parent_file_model_type') === modelType;
-      },
-      parent: supersetCollection
-    });
   }
 });

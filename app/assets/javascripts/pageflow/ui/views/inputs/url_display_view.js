@@ -22,12 +22,21 @@ pageflow.UrlDisplayView = Backbone.Marionette.ItemView.extend({
     'change': 'update'
   },
 
+  events: {
+    'click a': function(event) {
+      // Ensure default is not prevented by parent event listener.
+      event.stopPropagation();
+    }
+  },
+
   onRender: function() {
     this.update();
   },
 
   update: function() {
-    this.ui.link.attr('href', this.model.get(this.options.propertyName));
-    this.ui.link.toggle(this.model.isUploaded() && !_.isEmpty(this.model.get('original_url')));
+    var url = this.model.get('original_url');
+
+    this.$el.toggle(this.model.isUploaded() && !_.isEmpty(url));
+    this.ui.link.attr('href', url);
   }
 });

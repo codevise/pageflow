@@ -6,7 +6,7 @@ pageflow.TextTracksFileMetaDataItemValueView = pageflow.FileMetaDataItemValueVie
 
   getText: function() {
     return this.textTrackFiles.map(function(textTrackFile) {
-      return textTrackFile.label();
+      return textTrackFile.displayLabel();
     }).join(', ');
   }
 });

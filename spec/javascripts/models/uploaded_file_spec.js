@@ -236,4 +236,37 @@ describe('UploadedFile', function() {
       expect(nestedFilesCount).to.eq(0);
     });
   });
+
+  describe('changing the configuration', function() {
+    it('triggers change:configuration event', function() {
+      var file = new File();
+      var handler = sinon.spy();
+
+      file.on('change:configuration', handler);
+      file.configuration.set('some', 'value');
+
+      expect(handler).to.have.been.called;
+    });
+
+    it('triggers change:configuration:[attribute] events per changed attribute', function() {
+      var file = new File();
+      var handler = sinon.spy();
+
+      file.on('change:configuration:some', handler);
+      file.configuration.set('some', 'value');
+
+      expect(handler).to.have.been.called;
+    });
+
+    it('does not trigger change:configuration:[attribute] for unchanged attribute', function() {
+      var file = new File();
+      var handler = sinon.spy();
+
+      file.configuration.set('other', 'value');
+      file.on('change:configuration:other', handler);
+      file.configuration.set('some', 'value');
+
+      expect(handler).not.to.have.been.called;
+    });
+  });
 });
