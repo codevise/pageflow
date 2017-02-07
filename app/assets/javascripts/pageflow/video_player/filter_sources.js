@@ -1,5 +1,5 @@
 pageflow.VideoPlayer.filterSources = function(playerElement) {
-  if (pageflow.browser.has('mp4 support only')) {
+  if ($(playerElement).is('video') && pageflow.browser.has('mp4 support only')) {
     // keep only mp4 source
     $(playerElement).find('source').not('source[type="video/mp4"]').remove();
 
