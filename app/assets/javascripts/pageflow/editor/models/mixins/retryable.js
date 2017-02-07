@@ -11,6 +11,6 @@ pageflow.retryable = {
       model.trigger('error', model, resp, options);
     };
     options.url = this.url() + '/retry';
-    return this.sync('post', this, options);
+    return this.sync('create', this, options);
   }
 };
