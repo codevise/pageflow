@@ -53,6 +53,10 @@ module Pageflow
       can_retry?
     end
 
+    def ready?
+      attachment_on_s3.present?
+    end
+
     def basename
       File.basename(attachment.original_filename, '.*')
     end

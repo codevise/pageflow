@@ -74,5 +74,9 @@ module Pageflow
     def retryable?
       can_retry? && !encoded?
     end
+
+    def ready?
+      encoded?
+    end
   end
 end
