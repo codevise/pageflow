@@ -32,13 +32,17 @@ pageflow.hideText = (function() {
     },
 
     activate: function() {
-      element().addClass('hideText');
-      element().trigger('hidetextactivate');
+      if (!this.isActive()) {
+        element().addClass('hideText');
+        element().trigger('hidetextactivate');
+      }
     },
 
     deactivate: function() {
-      element().removeClass('hideText');
-      element().trigger('hidetextdeactivate');
+      if (this.isActive()) {
+        element().removeClass('hideText');
+        element().trigger('hidetextdeactivate');
+      }
     },
 
     on: function(event, callback) {
