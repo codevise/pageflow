@@ -1,0 +1,25 @@
+// scss-lint:disable ImportantRule
+
+$text-track-font-size: 27px !default;
+
+$text-track-line-height: 40px !default;
+
+video::-webkit-media-text-track-display {
+  font-size: $text-track-font-size;
+  font-family: $standard-font;
+  line-height: $text-track-line-height;
+}
+
+// May not be combined with -webkit-media-text-track-display rule
+// above. Otherwise Firefox (e.g. 50.1 on Ubuntu) ignores the rule.
+.vjs-text-track-display div {
+  font-size: $text-track-font-size !important;
+  font-family: $standard-font !important;
+  line-height: $text-track-line-height  !important;
+}
+
+.vjs-paused .vjs-text-track-display div {
+  @include transition(opacity 0.2s, visibility 0.2s);
+  opacity: 0;
+  visibility: hidden !important;
+}
