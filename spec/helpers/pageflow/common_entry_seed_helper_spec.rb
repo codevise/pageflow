@@ -92,6 +92,18 @@ module Pageflow
         end
       end
 
+      describe '["slug"]' do
+        it 'equals entry slug' do
+          entry = PublishedEntry.new(create(:entry,
+                                            :published,
+                                            title: 'My Entry'))
+
+          result = common_entry_seed(entry)
+
+          expect(result[:slug]).to eq('my-entry')
+        end
+      end
+
       describe '["file_url_templates"]' do
         it 'contains url templates of registered file types' do
           url_template = 'files/:id_partition/video.mp4'
