@@ -179,6 +179,7 @@ pageflow.Slideshow = function($el, configurations) {
 
   this.triggerResizeHooks = function() {
     currentPage.page('resize');
+    pageflow.events.trigger('resize');
   };
 
   $el.on('scrollerbumpup', _.bind(function(event) {
