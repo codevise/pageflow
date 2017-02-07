@@ -41,69 +41,91 @@ module Pageflow
       "s3://#{File.join(attachment_on_s3.bucket_name, attachment_on_s3.path)}"
     end
 
-
-    def webm_high
-      ZencoderAttachment.new(self, "high.webm")
-    end
-
-    def webm_medium
-      ZencoderAttachment.new(self, "medium.webm")
-    end
-
-
     def mp4_4k
-      ZencoderAttachment.new(self, "4k.mp4")
+      ZencoderAttachment.new(self, '4k.mp4')
     end
 
     def mp4_fullhd
-      ZencoderAttachment.new(self, "fullhd.mp4")
+      ZencoderAttachment.new(self, 'fullhd.mp4')
     end
 
     def mp4_high
-      ZencoderAttachment.new(self, "high.mp4")
+      ZencoderAttachment.new(self, 'high.mp4')
     end
 
     def mp4_medium
-      ZencoderAttachment.new(self, "medium.mp4")
+      ZencoderAttachment.new(self, 'medium.mp4')
     end
 
     def mp4_low
-      ZencoderAttachment.new(self, "low.mp4")
+      ZencoderAttachment.new(self, 'low.mp4')
     end
 
+    def dash_4k
+      ZencoderAttachment.new(self, 'dash/4k/rendition.mpd')
+    end
+
+    def dash_fullhd
+      ZencoderAttachment.new(self, 'dash/fullhd/rendition.mpd')
+    end
+
+    def dash_high
+      ZencoderAttachment.new(self, 'dash/high/rendition.mpd')
+    end
+
+    def dash_medium
+      ZencoderAttachment.new(self, 'dash/medium/rendition.mpd')
+    end
+
+    def dash_low
+      ZencoderAttachment.new(self, 'dash/low/rendition.mpd')
+    end
 
     def hls_low
-      ZencoderAttachment.new(self, "hls-low.m3u8")
+      ZencoderAttachment.new(self, 'hls-low.m3u8')
     end
 
     def hls_medium
-      ZencoderAttachment.new(self, "hls-medium.m3u8")
+      ZencoderAttachment.new(self, 'hls-medium.m3u8')
     end
 
     def hls_high
-      ZencoderAttachment.new(self, "hls-high.m3u8")
+      ZencoderAttachment.new(self, 'hls-high.m3u8')
     end
 
+    def hls_fullhd
+      ZencoderAttachment.new(self, 'hls-fullhd.m3u8')
+    end
 
+    def hls_4k
+      ZencoderAttachment.new(self, 'hls-4k.m3u8')
+    end
+
+    def dash_playlist
+      ZencoderAttachment.new(self, 'dash/manifest.mpd')
+    end
 
     def hls_playlist
       if Pageflow.config.zencoder_options[:hls_smil_suffix].present?
-        ZencoderAttachment.new(self, "hls-playlist.smil", :host => :hls, :url_suffix => Pageflow.config.zencoder_options[:hls_smil_suffix])
+        ZencoderAttachment.new(self,
+                               'hls-playlist.smil',
+                               host: :hls,
+                               url_suffix: Pageflow.config.zencoder_options[:hls_smil_suffix])
       else
-        ZencoderAttachment.new(self, "hls-playlist.m3u8", :host => :hls)
+        ZencoderAttachment.new(self, 'hls-playlist.m3u8', host: :hls)
       end
     end
 
     def smil
-      ZencoderAttachment.new(self, "hls-playlist.smil")
+      ZencoderAttachment.new(self, 'hls-playlist.smil')
     end
 
     def zencoder_thumbnail
-      ZencoderAttachment.new(self, "thumbnail-{{number}}", :format => 'jpg')
+      ZencoderAttachment.new(self, 'thumbnail-{{number}}', format: 'jpg')
     end
 
     def zencoder_poster
-      ZencoderAttachment.new(self, "poster-{{number}}", :format => 'jpg')
+      ZencoderAttachment.new(self, 'poster-{{number}}', format: 'jpg')
     end
 
     def output_definition
