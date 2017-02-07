@@ -22,6 +22,13 @@ pageflow.UrlDisplayView = Backbone.Marionette.ItemView.extend({
     'change': 'update'
   },
 
+  events: {
+    'click a': function(event) {
+      // Ensure default is not prevented by parent event listener.
+      event.stopPropagation();
+    }
+  },
+
   onRender: function() {
     this.update();
   },
