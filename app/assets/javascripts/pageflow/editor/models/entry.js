@@ -86,20 +86,17 @@ pageflow.Entry = Backbone.Model.extend({
     return this.scaffoldStoryline(_.extend({depth: 'page'}, options)).page;
   },
 
-  addFileUsage: function(file) {
-    var fileUsages = new pageflow.FileUsagesCollection([], {
-      entry: this
+  reuseFile: function(otherEntry, file) {
+    var entry = this;
+
+    pageflow.FileReuse.submit(otherEntry, file, {
+      entry: entry,
+
+      success: function(model, response) {
+        entry._setFiles(response, {merge: false, remove: false});
+        entry.trigger('use:files');
+      }
     });
-
-    fileUsages.createForFile(file, { success: function(usage) {
-      file.set('usage_id', usage.get('id'));
-      this.getFileCollection(file.fileType()).add(file);
-
-      this.trigger('use:file', file);
-      file.fileType().nestedFileTypes.each(function(nestedFileType) {
-        this.getFileCollection(nestedFileType).fetch();
-      }.bind(this));
-    }.bind(this)});
   },
 
   getFileCollection: function(fileType) {
@@ -117,18 +114,22 @@ pageflow.Entry = Backbone.Model.extend({
   parse: function(response, options) {
     if (response) {
       this.set(_.pick(response, 'published', 'published_until', 'password_protected'));
-
-      this.fileTypes.each(function(fileType) {
-        this.getFileCollection(fileType).set(response[fileType.collectionName], {
-          add: false,
-          remove: false,
-          applyConfigurationUpdaters: true
-        });
-        delete response[fileType.collectionName];
-      }, this);
+      this._setFiles(response, {
+        add: false,
+        remove: false,
+        applyConfigurationUpdaters: true
+      });
     }
 
     return response;
+  },
+
+  _setFiles: function(response, options) {
+    this.fileTypes.each(function(fileType) {
+      this.getFileCollection(fileType).set(response[fileType.collectionName],
+                                           _.extend({fileType: fileType}, options));
+      delete response[fileType.collectionName];
+    }, this);
   },
 
   toJSON: function() {

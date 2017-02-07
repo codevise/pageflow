@@ -34,12 +34,6 @@ Pageflow::Engine.routes.draw do
       resources :entries, :only => :index, :shallow => true do
         get :seed, :on => :member
 
-        resources :files,
-                  path: 'files/:collection_name',
-                  only: [:index, :create, :update, :destroy] do
-          get :retry, :on => :member
-        end
-
         resources :file_usages, :only => [:create, :destroy]
 
         resources :encoding_confirmations, :only => [:create] do
@@ -48,6 +42,15 @@ Pageflow::Engine.routes.draw do
 
         resources :entry_publications, :only => [:create] do
           post :check, :on => :collection
+        end
+      end
+
+      resources :entries, only: [] do
+        resources :files,
+                  path: 'files/:collection_name',
+                  only: [:index, :create, :update, :destroy] do
+          post :reuse, on: :collection
+          post :retry, on: :member
         end
       end
 

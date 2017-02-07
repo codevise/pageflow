@@ -10,46 +10,60 @@ describe('Entry', function() {
     };
   });
 
-  describe('#addFileUsage', function() {
+  describe('#reuseFile', function() {
     support.useFakeXhr();
 
     it('posts file usage to server', function() {
-      var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, [{id: '12'}]);
+      var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, [{id: 12}]);
       var entry = this.buildEntry({id: 1}, {
+        files: {
+          image_files: new Backbone.Collection()
+        }
+      });
+      var otherEntry = this.buildEntry({id: 2}, {
         files: {
           image_files: new Backbone.Collection()
         }
       });
       var file = imageFiles.first();
 
-      entry.addFileUsage(file);
+      entry.reuseFile(otherEntry, file);
 
-      expect(this.requests[0].url).to.eq('/editor/entries/1/file_usages');
+      expect(this.requests[0].url).to.eq('/editor/entries/1/files/image_files/reuse');
       expect(JSON.parse(this.requests[0].requestBody)).to.deep.eq({
-        file_usage: {
-          file_id: '12',
-          file_type: 'Pageflow::ImageFile'
+        file_reuse: {
+          file_id: 12,
+          other_entry_id: 2
         }
       });
     });
 
     it('adds file to files collection on success', function() {
-      var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, [{}]);
       var entry = this.buildEntry({id: 1}, {
         files: {
-          image_files: new Backbone.Collection()
+          image_files: pageflow.FilesCollection.createForFileType(this.imageFileType, [])
+        }
+      });
+      var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, [{}]);
+      var otherEntry = this.buildEntry({id: 2}, {
+        files: {
+          image_files: imageFiles
         }
       });
       var file = imageFiles.first();
 
-      this.server.respondWith('POST', '/editor/entries/1/file_usages',
-                              [200, {'Content-Type': 'application/json'}, '{"id": 234}']);
+      this.server.respondWith('POST', '/editor/entries/1/files/image_files/reuse',
+                              [200, {'Content-Type': 'application/json'}, JSON.stringify({
+                                image_files: [{id: 234}]
+                              })]);
 
-      entry.addFileUsage(file);
+      entry.reuseFile(otherEntry, file);
       this.server.respond();
 
-      expect(file.get('usage_id')).to.eq(234);
-      expect(entry.getFileCollection(this.imageFileType).first()).to.eq(file);
+      var imageFile = entry.getFileCollection(this.imageFileType).first();
+
+      expect(imageFile.id).to.eq(234);
+      expect(imageFile.fileType()).to.eq(this.imageFileType);
     });
   });
 

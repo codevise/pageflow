@@ -18,7 +18,7 @@ module Pageflow
              :emphasize_chapter_beginning,
              :emphasize_new_pages,
              :share_url, :share_image_id, :share_image_x, :share_image_y,
-             :files,
+             :find_files, :find_file,
              :image_files, :video_files, :audio_files,
              :locale,
              :author, :publisher, :keywords,
@@ -35,23 +35,33 @@ module Pageflow
     end
 
     def create_file(model, attributes)
-      file = model.create(attributes) do |f|
+      file = model.create(attributes.except(:configuration)) do |f|
         f.entry = entry
       end
 
-      usage = @draft.file_usages.create(:file => file)
-      file.usage_id = usage.id
-
-      file
+      usage = @draft.file_usages.create(file: file, configuration: attributes[:configuration])
+      UsedFile.new(file, usage)
     end
 
     def remove_file(file)
       draft.file_usages.where(file: file).destroy_all
+
+      file.file_type.nested_file_types.each do |nested_file_type|
+        nested_file_ids = file.nested_files(nested_file_type.model).map(&:id)
+
+        draft
+          .file_usages
+          .where(file_type: nested_file_type.model.name,
+                 file_id: nested_file_ids)
+          .destroy_all
+      end
+
       file.destroy if file.usages.empty?
     end
 
-    def add_file(file)
-      draft.file_usages.create!(:file => file)
+    def use_file(file)
+      draft.file_usages.create!(file: file.to_model,
+                                configuration: file.configuration)
     end
 
     def save!

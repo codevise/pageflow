@@ -5,10 +5,6 @@ module Pageflow
       @file = file
     end
 
-    def destroy?
-      can_edit_any_entry_using_file?(@file.parent_file) if @file.parent_file
-    end
-
     def manage?
       if @file.parent_file
         can_edit_any_entry_using_file?(@file.parent_file)

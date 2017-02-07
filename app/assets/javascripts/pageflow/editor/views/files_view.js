@@ -20,7 +20,9 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
           label: I18n.t('pageflow.editor.views.files_view.reuse'),
           handler: function() {
             pageflow.FilesExplorerView.open({
-              callback: pageflow.entry.addFileUsage.bind(pageflow.entry)
+              callback: function(otherEntry, file) {
+                pageflow.entry.reuseFile(otherEntry, file);
+              }
             });
           }
         }

@@ -96,9 +96,8 @@ module Pageflow
         revision = create(:revision, :published)
         entry = create(:entry, published_revision: revision)
         published_entry = PublishedEntry.new(entry)
-        video_file = create(:video_file, used_in: entry.draft)
-        create(:file_usage, revision: revision, file: video_file)
-        create(:text_track_file, parent_file: video_file, entry: entry)
+        video_file = create(:video_file, used_in: revision)
+        create(:text_track_file, parent_file: video_file, used_in: revision)
 
         files_seed = JSON.parse(helper.files_json_seeds(published_entry))
         text_track_file_seed = files_seed['text_track_files'].first

@@ -9,6 +9,7 @@ module Pageflow
 
       transient do
         used_in nil
+        with_configuration nil
       end
 
       before(:create) do |file, evaluator|
@@ -16,7 +17,12 @@ module Pageflow
       end
 
       after(:create) do |file, evaluator|
-        create(:file_usage, :file => file, :revision => evaluator.used_in) if evaluator.used_in
+        if evaluator.used_in
+          create(:file_usage,
+                 file: file,
+                 revision: evaluator.used_in,
+                 configuration: evaluator.with_configuration)
+        end
       end
 
       trait :on_filesystem do

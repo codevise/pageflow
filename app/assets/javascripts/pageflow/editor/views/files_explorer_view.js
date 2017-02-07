@@ -13,7 +13,8 @@ pageflow.FilesExplorerView = Backbone.Marionette.ItemView.extend({
   events: {
     'click .ok': function() {
       if (this.options.callback) {
-        this.options.callback(this._selectedFile());
+        this.options.callback(this.selection.get('entry'),
+                              this.selection.get('file'));
       }
       this.close();
     }
@@ -27,7 +28,7 @@ pageflow.FilesExplorerView = Backbone.Marionette.ItemView.extend({
 
     // check if the OK button should be enabled.
     this.listenTo(this.selection, 'change', function(selection, options) {
-      this.ui.okButton.prop('disabled', !this._selectedFile());
+      this.ui.okButton.prop('disabled', !this.selection.get('file'));
     });
   },
 
@@ -90,10 +91,6 @@ pageflow.FilesExplorerView = Backbone.Marionette.ItemView.extend({
     return Backbone.Marionette.ItemView.extend({
       template: this.selection.get('entry') ? 'templates/files_gallery_blank_slate' : 'templates/files_explorer_blank_slate'
     });
-  },
-
-  _selectedFile: function() {
-    return this.selection.get('file');
   }
 });
 

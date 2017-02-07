@@ -12,39 +12,6 @@ describe('UploadedFile', function() {
     }
   });
 
-  describe('#destroyUsage', function() {
-    before(function () {
-      this.xhr = sinon.useFakeXMLHttpRequest();
-      var requests = this.requests = [];
-
-      this.xhr.onCreate = function (xhr) {
-        requests.push(xhr);
-      };
-    });
-
-    after(function () {
-      this.xhr.restore();
-    });
-
-    it('deletes file usage via xhr', function() {
-      var record = new File({id: 11, usage_id: 12});
-
-      record.destroyUsage();
-
-      expect(this.requests[0].url).to.equal('/editor/file_usages/12');
-    });
-
-    it('removes record from containing collection', function () {
-      var record = new File({id: 11, usage_id: 12});
-      var collection = new FilesCollection();
-      collection.add(record);
-
-      record.destroyUsage();
-
-      expect(collection.contains(record)).not.to.be.ok;
-    });
-  });
-
   describe('#isReady', function() {
     it('returns true if state equals readyState', function() {
       var file = new File({state: 'ready'});
