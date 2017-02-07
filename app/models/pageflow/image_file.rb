@@ -44,6 +44,10 @@ module Pageflow
       self.unprocessed_attachment = value
     end
 
+    def basename
+      File.basename(attachment.original_filename, '.*')
+    end
+
     def thumbnail_url(*args)
       processed_attachment.url(*args)
     end

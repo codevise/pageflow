@@ -5,17 +5,36 @@ module Pageflow
   # @api private
   module CommonEntrySeedHelper
     def common_entry_seed(entry)
+      config = Pageflow.config_for(entry)
+
       {
         locale: entry.locale,
-        page_types: PageTypesSeed.new(entry, Pageflow.config_for(entry)).as_json
+        page_types: PageTypesSeed.new(config).as_json,
+        file_url_templates: FileUrlTemplatesSeed.new(config).as_json,
+        file_model_types: config.file_types
+                                .index_by(&:collection_name)
+                                .transform_values { |file_type| file_type.model.name }
       }
     end
 
-    class PageTypesSeed
-      attr_reader :entry, :config
+    class FileUrlTemplatesSeed
+      attr_reader :config
 
-      def initialize(entry, config)
-        @entry = entry
+      def initialize(config)
+        @config = config
+      end
+
+      def as_json
+        config.file_types.each_with_object({}) do |file_type, result|
+          result[file_type.collection_name] = file_type.url_templates.call
+        end
+      end
+    end
+
+    class PageTypesSeed
+      attr_reader :config
+
+      def initialize(config)
         @config = config
       end
 

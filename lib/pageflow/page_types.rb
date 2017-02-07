@@ -3,6 +3,10 @@ module Pageflow
     include Enumerable
 
     def initialize
+      clear
+    end
+
+    def clear
       @page_types = []
       @page_types_by_name = {}
     end

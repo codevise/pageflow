@@ -14,6 +14,59 @@ module Pageflow
 
         expect(result).to include('some\\u2028text')
       end
+
+      it 'renders ids of files' do
+        entry = PublishedEntry.new(create(:entry, :published))
+        video_file = create(:video_file, used_in: entry.revision)
+
+        result = helper.entry_json_seed(entry)
+
+        expect(json_get(result, path: %w(files video_files * id))).to eq([video_file.id])
+      end
+
+      it 'renders configurations of files' do
+        entry = PublishedEntry.new(create(:entry, :published))
+        create(:video_file, used_in: entry.revision, configuration: {some: 'value'})
+
+        result = helper.entry_json_seed(entry)
+        value = json_get(result, path: ['files', 'video_files', 0, 'configuration', 'some'])
+
+        expect(value).to eq('value')
+      end
+
+      it 'renders parent file info of files' do
+        entry = create(:entry, :published)
+        published_entry = PublishedEntry.new(entry)
+        video_file = create(:video_file, used_in: entry.published_revision)
+        create(:text_track_file, entry: entry, parent_file: video_file)
+
+        result = helper.entry_json_seed(published_entry)
+        id = json_get(result, path: ['files', 'text_track_files', 0, 'parent_file_id'])
+        type = json_get(result, path: ['files', 'text_track_files', 0, 'parent_file_model_type'])
+
+        expect(id).to eq(video_file.id)
+        expect(type).to eq(video_file.class.name)
+      end
+
+      it 'renders basenames of files' do
+        entry = PublishedEntry.new(create(:entry, :published))
+        create(:video_file, used_in: entry.revision, attachment_on_s3_file_name: 'some-video.mp4')
+
+        result = helper.entry_json_seed(entry)
+        value = json_get(result, path: ['files', 'video_files', 0, 'basename'])
+
+        expect(value).to eq('some-video')
+      end
+
+      it 'renders file type partial, for example variant property for video file' do
+        entry = PublishedEntry.new(create(:entry, :published))
+        create(:video_file, used_in: entry.revision, output_presences: {fullhd: true})
+
+        result = helper.entry_json_seed(entry)
+        variants = json_get(result, path: ['files', 'video_files', 0, 'variants'])
+
+        expect(variants).to include('fullhd')
+      end
     end
 
     describe '#entry_theming_seed' do

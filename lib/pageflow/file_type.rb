@@ -5,8 +5,13 @@ module Pageflow
     class NotFoundError < RuntimeError
     end
 
-    # Path of the partial used to render a json representation of the
-    # file.
+    # Path of a partial rendered in the json representation of the
+    # file in both the editor and published entries
+    # @return {String}
+    attr_reader :partial
+
+    # Path of a partial rendered in the json representation of the
+    # file inside the editor.
     # @return {String}
     attr_reader :editor_partial
 
@@ -19,6 +24,11 @@ module Pageflow
     # @return {Boolean}
     attr_reader :top_level_type
 
+    # Callable that returns a hash of url template strings indexed by
+    # their names.
+    # @return [#call]
+    attr_reader :url_templates
+
     # Create file type to be returned in {PageType#file_types}.
     #
     # @example
@@ -27,21 +37,30 @@ module Pageflow
     #                          editor_partial: 'pageflow/rainbow/editor/files/file')
     #
     # @param [Hash] options
-    # @option options [ActiveRecord::Base, String] :model  Required. Model
-    #   representing the file, or name of that model.
-    # @option options [String] :editor_partial  Optional. Path of a
-    #   partial to include in json representations of the file.
+    # @option options [ActiveRecord::Base, String] :model
+    #   Required. Model representing the file, or name of that model.
+    # @option options [String] :partial
+    #   Optional. Path of a partial to include in json representations
+    #   of the file both inside  the editor and published entries.
+    # @option options [String] :editor_partial
+    #   Optional. Path of a partial to include in json representations
+    #   of the file inside the editor.
     # @option options [String] :collection_name  Optional. String to
     #   be used in routes. Defaults to `"pageflow_rainbow_file"` for
     #   model `Pageflow::Rainbow::File`.
     # @option options [Array<FileType>] :nested_file_types
     #   Optional. Array of FileTypes allowed for nested files. Defaults to [].
+    # @option options [#call] :url_templates
+    #   Optional. Callable returning a hash of url template strings
+    #   indexed by their names.
     def initialize(options)
       @model_string_or_reference = options.fetch(:model)
+      @partial = options[:partial]
       @editor_partial = options[:editor_partial]
       @collection_name_or_blank = options[:collection_name]
       @nested_file_types = options.fetch(:nested_file_types, [])
       @top_level_type = options.fetch(:top_level_type, false)
+      @url_templates = options.fetch(:url_templates, ->() { {} })
     end
 
     # ActiveRecord model that represents the files of this type.
