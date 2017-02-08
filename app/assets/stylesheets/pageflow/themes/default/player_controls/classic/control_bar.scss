@@ -50,7 +50,7 @@ $classic-player-controls-timestamp-position: "left" !default;
   &-control_bar {
     position: absolute;
     left: 50%;
-    bottom: 0;
+    bottom: 100%;
     @include transform(translate3d(-50%, 0, 0));
     z-index: 2;
 
@@ -85,8 +85,6 @@ $classic-player-controls-timestamp-position: "left" !default;
 
       background: none;
       border: none;
-
-      pointer-events: all;
     }
   }
 
@@ -202,6 +200,19 @@ $classic-player-controls-timestamp-position: "left" !default;
     &-duration,
     &-control_bar:before {
       display: none;
+    }
+
+    &-menu_bar {
+      @include transition(opacity 0.2s linear, visibility 0.2s linear);
+      position: fixed;
+    }
+
+    &-container-paused {
+      %player_controls-menu_bar {
+        opacity: 0;
+        visibility: hidden;
+        @include transition-delay(0.2s);
+      }
     }
   }
 

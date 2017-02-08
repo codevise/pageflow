@@ -1,10 +1,15 @@
 // These have to be defined outside the widget presence scopes
 // (i.e. widget_slim_player_controls_present) since widget margins
-// also work via widget presence css classes. Technically the margins
-// are only needed for the classic variant. They turn out to have no
-// effect on the slim variant though.
+// also work via widget presence css classes. Technically the
+// container and close button margins are only needed for the classic
+// variant. They turn out to have no effect on the slim variant
+// though.
 
 %player_controls-close_button,
 %player_controls-container {
   @extend %pageflow_widget_margin_right_max !optional;
+}
+
+.player_controls-menu_bar-stand_alone {
+  @extend %pageflow_widget_margin_right;
 }

@@ -8,14 +8,20 @@ $classic-player-controls-typography: $player-controls-typography !default;
 %player_controls {
   &-container {
     position: absolute;
-    bottom: 10%;
-    left: 50%;
     z-index: 2;
     pointer-events: none;
     @include transition(opacity 0.1);
     @include standard-typography($classic-player-controls-typography);
 
+    @include desktop {
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 10%;
+    }
+
     @include phone {
+      bottom: 10%;
       left: 5%;
       max-width: 90%;
 
@@ -26,10 +32,6 @@ $classic-player-controls-typography: $player-controls-typography !default;
 
     @include phone_portrait {
       bottom: 50px;
-    }
-
-    a {
-      pointer-events: all;
     }
 
     &-idle {
