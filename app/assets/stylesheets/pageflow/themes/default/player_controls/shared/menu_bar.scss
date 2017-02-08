@@ -112,5 +112,6 @@ $player-controls-quality-menu-annotation-color: #ff0000 !default;
     padding: 5px 10px 5px 25px;
     color: $player-controls-menu-popup-link-color;
     text-decoration: none;
+    white-space: nowrap;
   }
 }
