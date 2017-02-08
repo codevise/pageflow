@@ -383,7 +383,11 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
         this.fadingDeferred = new jQuery.Deferred();
 
         return this.fadingDeferred.promise();
-      }
+      },
+
+      on: function() {},
+      one: function() {},
+      off: function() {}
     };
 
     pageflow.mediaPlayer.asyncPlay(player);

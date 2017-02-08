@@ -59,10 +59,12 @@ pageflow.mediaPlayer.volumeBinding = function(player, settings, options) {
   };
 
   function listenToVolumeSetting() {
+    player.on('dispose', stopListeningToVolumeSetting);
     settings.on('change:volume', onVolumeChange);
   }
 
   function stopListeningToVolumeSetting() {
+    player.off('dispose', stopListeningToVolumeSetting);
     settings.off('change:volume', onVolumeChange);
   }
 

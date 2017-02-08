@@ -36,6 +36,10 @@ pageflow.VideoPlayer.prebuffering = function(player) {
 
         timeout = function() {
           setTimeout(function() {
+            if (!player.prebufferDeferred) {
+              return;
+            }
+
             count++;
 
             if (player.isBufferedAhead(delta) || count > maxCount) {
@@ -67,8 +71,13 @@ pageflow.VideoPlayer.prebuffering = function(player) {
   };
 
   var originalPause = player.pause;
+
   player.pause = function() {
     player.abortPrebuffering();
     return originalPause.apply(this, arguments);
   };
+
+  player.one('dispose', function() {
+    player.abortPrebuffering();
+  });
 };

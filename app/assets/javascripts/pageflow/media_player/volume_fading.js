@@ -42,6 +42,8 @@ pageflow.mediaPlayer.volumeFading = function(player) {
     }
   };
 
+  player.one('dispose', cancelFadeVolume);
+
   function resolveFadeVolume() {
     clearInterval(fadeVolumeInterval);
     fadeVolumeDeferred.resolve();

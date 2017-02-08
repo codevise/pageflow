@@ -76,7 +76,11 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
         else {
           volume = value;
         }
-      }
+      },
+
+      on: function() {},
+      one: function() {},
+      off: function() {}
     };
   }
 });
