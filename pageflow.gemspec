@@ -54,7 +54,10 @@ Gem::Specification.new do |s|
   # Markdown parser
   s.add_dependency 'kramdown', '~> 1.5'
 
-  # Markdown parser
+  # Convert srt files to vtt
+  s.add_dependency 'webvtt-ruby', '~> 0.3.2'
+
+  # Decode strings with HTML entities
   s.add_dependency 'htmlentities', '~> 4.3'
 
   # Use jquery as the JavaScript library
