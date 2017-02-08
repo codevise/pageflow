@@ -4,7 +4,166 @@
 
 [Compare changes](https://github.com/codevise/pageflow/compare/v0.11.0...master)
 
-None so far.
+##### Public Site
+
+Media stack:
+
+- FullHD/4k video variants
+  ([#653](https://github.com/codevise/pageflow/pull/653))
+- Update Video.js and add Dash support
+  ([#678](https://github.com/codevise/pageflow/pull/678),
+   [#677](https://github.com/codevise/pageflow/pull/677))
+- Embed entries as iframes
+  ([#665](https://github.com/codevise/pageflow/pull/665))
+- Add ultra variant to image file and video file posters
+  ([#706](https://github.com/codevise/pageflow/pull/706))
+- Bug fix: Fix video loop on safari 10 on el capitan.
+  ([#663](https://github.com/codevise/pageflow/pull/663))
+- Bug fix: Prevent prebuffer/volume fading from failing on dispose
+  ([#719](https://github.com/codevise/pageflow/pull/719))
+- Do not filter sources for audio tags
+  ([#709](https://github.com/codevise/pageflow/pull/709))
+  
+Theme:
+
+- Add theme option to hide glow behind loading spinner logo
+  ([#675](https://github.com/codevise/pageflow/pull/675))
+- Add logo theme option to fade in with header
+  ([#666](https://github.com/codevise/pageflow/pull/666))
+- Update to more complete variant of source sans pro font
+  ([#676](https://github.com/codevise/pageflow/pull/676))
+- Allow setting hide text related css classes on wrapper
+  ([#651](https://github.com/codevise/pageflow/pull/651))
+- Use svg icon for slim loading spinner
+  ([#718](https://github.com/codevise/pageflow/pull/718))
+- Style text track cues
+  ([#713](https://github.com/codevise/pageflow/pull/713))
+- Theme for player controls menu bar
+  ([#717](https://github.com/codevise/pageflow/pull/717))
+- Hide audio page content when text tracks are displayed
+  ([#698](https://github.com/codevise/pageflow/pull/698))
+- Bug fix: Fix css class collision in widget scroll indicators
+  ([#667](https://github.com/codevise/pageflow/pull/667))
+
+JavaScript API:
+
+- Allow to programatically re-enable atmo on mobile devices
+  ([#670](https://github.com/codevise/pageflow/pull/670))
+- Trigger event when widgets are updated
+  ([#712](https://github.com/codevise/pageflow/pull/712))
+- Trigger event when slideshow is resized
+  ([#707](https://github.com/codevise/pageflow/pull/707))
+- Only fire hidetext events on state changes
+  ([#701](https://github.com/codevise/pageflow/pull/701))
+- Trigger event when seed data is available
+  ([#687](https://github.com/codevise/pageflow/pull/687))
+- Ensure page is unprepared if it was not activated
+  ([#650](https://github.com/codevise/pageflow/pull/650))
+  
+Seed data:
+
+- Reorganize file seed data
+  ([#686](https://github.com/codevise/pageflow/pull/686))
+- Add video file url to templates and json
+  ([#714](https://github.com/codevise/pageflow/pull/714))
+- Add is_ready flag to file json representation
+  ([#704](https://github.com/codevise/pageflow/pull/704))
+- Include entry slug in common seed
+  ([#702](https://github.com/codevise/pageflow/pull/702))
+- Render storylines as array in seed data
+  ([#680](https://github.com/codevise/pageflow/pull/680))
+- Bug fix: Set position for seeded chapters
+  ([#643](https://github.com/codevise/pageflow/pull/643))
+
+Widgets:
+
+- Player controls improvements
+  ([#699](https://github.com/codevise/pageflow/pull/699))
+- Prevent videojs controls from being displayed
+  ([#697](https://github.com/codevise/pageflow/pull/697))
+- Bug fix: Fix sharing menu in mobile navigation
+  ([#661](https://github.com/codevise/pageflow/pull/661))
+- Bug fix: Fix page widget index for analytics adapters
+  ([#652](https://github.com/codevise/pageflow/pull/652))
+- Bug fix: Extend Facebook in-app browser fix to iOS platform
+  ([#637](https://github.com/codevise/pageflow/pull/637))
+
+##### Admin
+
+- Role based account memberships
+  ([#634](https://github.com/codevise/pageflow/pull/634),
+   [#641](https://github.com/codevise/pageflow/pull/641),
+   [#640](https://github.com/codevise/pageflow/pull/640))
+
+##### Editor
+
+- File configuration
+  ([#654](https://github.com/codevise/pageflow/pull/654),
+   [#703](https://github.com/codevise/pageflow/pull/703),
+   [#673](https://github.com/codevise/pageflow/pull/673))
+- Add alt text attribute to files
+  ([#685](https://github.com/codevise/pageflow/pull/685))
+- Manage text track files as nested files
+  ([#660](https://github.com/codevise/pageflow/pull/660),
+   [#684](https://github.com/codevise/pageflow/pull/684),
+   [#683](https://github.com/codevise/pageflow/pull/683),
+   [#682](https://github.com/codevise/pageflow/pull/682),
+   [#688](https://github.com/codevise/pageflow/pull/688),
+   [#716](https://github.com/codevise/pageflow/pull/716))
+- File filters
+  ([#659](https://github.com/codevise/pageflow/pull/659))
+- Add background inputs group
+  ([#711](https://github.com/codevise/pageflow/pull/711))
+- Allow external links in editor help
+  ([#649](https://github.com/codevise/pageflow/pull/649))
+- Improve editor page lifecycle during delete
+  ([#710](https://github.com/codevise/pageflow/pull/710))
+- Make editor play nicely with Redux
+  ([#700](https://github.com/codevise/pageflow/pull/700))
+- Improve DropDownButton
+  ([#681](https://github.com/codevise/pageflow/pull/681))
+- Improve html translation support in i18nUtils
+  ([#671](https://github.com/codevise/pageflow/pull/671))
+- Add interpolation support for i18nUtils.findTranslation
+  ([#648](https://github.com/codevise/pageflow/pull/648))
+- Bug fix: Use correct Backbone sync parameter to trigger retry
+  ([#696](https://github.com/codevise/pageflow/pull/696))
+- Bug fix: Do not overwrite file rights when polling
+  ([#715](https://github.com/codevise/pageflow/pull/715))
+- Bug fix: Improve special character handling in formDataUtils
+  ([#690](https://github.com/codevise/pageflow/pull/690))
+
+##### Rails Engine
+
+- Introduce conditional thumbnail candidates
+  ([#705](https://github.com/codevise/pageflow/pull/705))
+- Add option to skip smil output
+  ([#645](https://github.com/codevise/pageflow/pull/645))
+- Improve hls options fallback
+  ([#708](https://github.com/codevise/pageflow/pull/708))
+- Link to plugins wiki page from readme
+  ([#674](https://github.com/codevise/pageflow/pull/674))
+
+##### Internals
+
+- Use doclets.io for javascript api reference
+  ([#644](https://github.com/codevise/pageflow/pull/644))
+- Git ignore coverage directory
+  ([#647](https://github.com/codevise/pageflow/pull/647))
+- Use only one jshint config for hound
+  ([#658](https://github.com/codevise/pageflow/pull/658))
+- Do not warn about missing frozen string comment
+  ([#646](https://github.com/codevise/pageflow/pull/646))
+- Update travis ruby version to 2.1.7
+  ([#695](https://github.com/codevise/pageflow/pull/695))
+- Remove cargo-culted @body_class
+  ([#616](https://github.com/codevise/pageflow/pull/616))
+- Remove unneeded loop
+  ([#578](https://github.com/codevise/pageflow/pull/578))
+- Use create instead of build_stubbed in EditLock tests
+  ([#689](https://github.com/codevise/pageflow/pull/689))
+- Bug fix: Handle symbolized keys in mailer options
+  ([#693](https://github.com/codevise/pageflow/pull/693))
 
 ### Version 0.11.0
 
