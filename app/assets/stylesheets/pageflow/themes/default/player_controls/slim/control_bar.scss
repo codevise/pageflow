@@ -100,8 +100,6 @@ $slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2)
   }
 
   &-loading_spinner {
-    @include background-icon-center($color: $slim-player-controls-loading-spinner-color, $font-size: 36px);
-    @include fa-circle-o-notch-icon;
     @include animation(rotate_and_blink 0.5s linear infinite);
 
     position: absolute;
@@ -109,6 +107,15 @@ $slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2)
     height: 60px;
     left: -5px;
     bottom: -4px;
+
+    svg {
+      fill: $slim-player-controls-loading-spinner-color;
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      width: 36px;
+      height: 36px;
+    }
   }
 
   &-loading_spinner-on_underrun {
