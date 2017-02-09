@@ -33,4 +33,8 @@ module Pageflow
   def self.active_admin_load_path
     Dir[Pageflow::Engine.root.join('admins')].first
   end
+
+  def self.built_in_page_types_plugin
+    BuiltInPageTypesPlugin.new
+  end
 end
