@@ -26,3 +26,5 @@ load 'rails/tasks/engine.rake' if File.exists?(APP_RAKEFILE)
 load File.expand_path('lib/tasks/pageflow_tasks.rake', File.dirname(__FILE__))
 
 Bundler::GemHelper.install_tasks
+
+task 'release:prepare' => 'pageflow:node_package:build'

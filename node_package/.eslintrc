@@ -1,0 +1,50 @@
+{
+    "rules": {
+        "indent": [ 1, 2 ],
+        "quotes": [ 2, "single" ],
+        "linebreak-style": [ 2, "unix" ],
+        "semi": [ 2, "always" ],
+        "no-unused-vars": [ 1, {"vars": "all", "args": "none"} ],
+        "curly": [ 2 ],
+        "no-spaced-func": [ 2 ],
+        "space-before-blocks": [ 2 ],
+        "keyword-spacing": [ 2, { "after": true} ],
+        "no-console": 1,
+        "react/display-name": 0,
+        "react/no-danger": 0,
+        "react/prop-types": [0, { ignore: ['children']}]
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "mocha": true
+    },
+    "settings": {
+      "import/resolver": {
+        "webpack": {
+          "config": "./webpack.karma.config.js"
+        }
+      }
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings"
+    ],
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaFeatures": {
+          "jsx": true,
+          "experimentalObjectRestSpread": true,
+          "modules": true
+      }
+    },
+    "plugins": ["react", "import"],
+    "globals": {
+      "React": true,
+      "pageflow": true,
+      "PAGEFLOW_EDITOR": true,
+      "I18n": true
+    }
+}

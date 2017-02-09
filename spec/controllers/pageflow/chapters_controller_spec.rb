@@ -171,10 +171,10 @@ module Pageflow
 
         sign_in user
         acquire_edit_lock(user, entry)
-        patch(:order,
-              storyline_id: storyline,
-              ids: [chapters.first.id, chapters.last.id],
-              format: 'json')
+        put(:order,
+            storyline_id: storyline,
+            ids: [chapters.first.id, chapters.last.id],
+            format: 'json')
 
         expect(response.status).to eq(204)
       end
@@ -187,10 +187,10 @@ module Pageflow
 
         sign_in user
         acquire_edit_lock(user, entry)
-        patch(:order,
-              storyline_id: storyline,
-              ids: [chapters.first.id, chapters.last.id],
-              format: 'json')
+        put(:order,
+            storyline_id: storyline,
+            ids: [chapters.first.id, chapters.last.id],
+            format: 'json')
 
         expect(chapters.first.reload.position).to eq(0)
         expect(chapters.last.reload.position).to eq(1)
@@ -205,7 +205,7 @@ module Pageflow
 
         sign_in(user)
         acquire_edit_lock(user, entry)
-        patch(:order, storyline_id: other_storyline, ids: [chapter.id])
+        put(:order, storyline_id: other_storyline, ids: [chapter.id])
 
         expect(chapter.reload.storyline).to eq(other_storyline)
       end
@@ -220,7 +220,7 @@ module Pageflow
 
         sign_in(user)
         acquire_edit_lock(user, other_entry)
-        patch(:order, storyline_id: storyline_of_other_entry, ids: [chapter.id])
+        put(:order, storyline_id: storyline_of_other_entry, ids: [chapter.id])
 
         expect(response).to be_not_found
       end
@@ -233,10 +233,10 @@ module Pageflow
         chapters = create_list(:chapter, 2, storyline: storyline)
 
         sign_in user
-        patch(:order,
-              storyline_id: storyline,
-              ids: [chapters.first.id, chapters.last.id],
-              format: 'json')
+        put(:order,
+            storyline_id: storyline,
+            ids: [chapters.first.id, chapters.last.id],
+            format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -245,7 +245,7 @@ module Pageflow
         storyline = create(:storyline)
         chapter = create(:chapter, storyline: storyline)
 
-        patch(:order, storyline_id: storyline, ids: [chapter.id], format: 'json')
+        put(:order, storyline_id: storyline, ids: [chapter.id], format: 'json')
 
         expect(response.status).to eq(401)
       end

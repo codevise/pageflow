@@ -3,14 +3,9 @@ Pageflow.configure do |config|
   # users.
   config.mailer_sender = 'change-me-at-config-initializers-pageflow@example.com'
 
-  # Page types available in the editor. Add futher page types from
-  # page type engines below.
-  config.page_types.register(Pageflow::BuiltInPageType.background_image)
-  config.page_types.register(Pageflow::BuiltInPageType.background_video)
-  config.page_types.register(Pageflow::BuiltInPageType.video)
-  config.page_types.register(Pageflow::BuiltInPageType.audio)
-  config.page_types.register(Pageflow::BuiltInPageType.audio_loop)
-  # config.page_types.register(Pageflow::Rainbow::PageType.new)
+  # Plugins provide page types and widget types.
+  config.plugin(Pageflow.built_in_page_types_plugin)
+  # config.plugin(Pageflow::Rainbow.plugin)
 
   # Add custom themes by invoking the pageflow:theme generator and
   # registering the theme here.

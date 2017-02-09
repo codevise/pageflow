@@ -9,19 +9,19 @@ Pageflow::Engine.routes.draw do
 
       resources :storylines, only: [:create, :update, :destroy] do
         collection do
-          patch :order
+          put :order
           post :scaffold
         end
 
         resources :chapters, only: [:create, :update, :destroy] do
           collection do
-            patch :order
+            put :order
             post :scaffold
           end
 
           resources :pages, only: [:create, :update, :destroy] do
             collection do
-              patch :order
+              put :order
             end
           end
         end

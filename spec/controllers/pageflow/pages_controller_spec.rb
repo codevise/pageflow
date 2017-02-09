@@ -107,7 +107,7 @@ module Pageflow
 
         sign_in(user)
         acquire_edit_lock(user, entry)
-        patch(:order, chapter_id: chapter, ids: [pages.first.id, pages.last.id])
+        put(:order, chapter_id: chapter, ids: [pages.first.id, pages.last.id])
 
         expect(pages.first.reload.position).to eq(0)
         expect(pages.last.reload.position).to eq(1)
@@ -124,7 +124,7 @@ module Pageflow
 
         sign_in(user)
         acquire_edit_lock(user, entry)
-        patch(:order, chapter_id: other_chapter, ids: [page.id])
+        put(:order, chapter_id: other_chapter, ids: [page.id])
 
         expect(page.reload.chapter).to eq(other_chapter)
       end
@@ -141,7 +141,7 @@ module Pageflow
 
         sign_in(user)
         acquire_edit_lock(user, other_entry)
-        patch(:order, chapter_id: chapter_of_other_entry, ids: [page.id])
+        put(:order, chapter_id: chapter_of_other_entry, ids: [page.id])
 
         expect(response).to be_not_found
       end
@@ -154,7 +154,7 @@ module Pageflow
         page = create(:page, chapter: chapter)
 
         sign_in(user)
-        patch(:order, chapter_id: page.chapter, ids: [page.id], format: 'json')
+        put(:order, chapter_id: page.chapter, ids: [page.id], format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -162,7 +162,7 @@ module Pageflow
       it 'requires authentication' do
         page = create(:page)
 
-        patch(:order, chapter_id: page.chapter, id: [page.id], format: 'json')
+        put(:order, chapter_id: page.chapter, id: [page.id], format: 'json')
 
         expect(response.status).to eq(401)
       end

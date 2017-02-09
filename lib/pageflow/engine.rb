@@ -9,6 +9,7 @@ require 'cancan'
 require 'jbuilder'
 require 'htmlentities'
 require 'kramdown'
+require 'react-rails'
 
 require 'resque_mailer'
 require 'resque_scheduler'
@@ -23,6 +24,11 @@ require 'wysihtml5x/rails'
 require 'i18n-js'
 require 'http_accept_language'
 require 'pageflow-public-i18n'
+
+if Gem::Specification.find_all_by_name('pageflow-react', '>= 0.0').any?
+  fail('The pageflow-react gem has been merged into the pageflow gem. ' \
+       'See the pageflow changelog for update instructions.')
+end
 
 module Pageflow
   # Rails integration

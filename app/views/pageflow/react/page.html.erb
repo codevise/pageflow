@@ -1,0 +1,6 @@
+<% if page.template.present? %>
+  <% concat React::ServerRendering.render(
+     'pageflow.react.ServerSidePage',
+     %Q'{ "resolverSeed": #{@_pageflow_react_entry_seed ||= entry_json_seed(@entry)}, "pageId": #{page.perma_id}, "pageType": "#{page.template}" }',
+     true) %>
+<% end %>

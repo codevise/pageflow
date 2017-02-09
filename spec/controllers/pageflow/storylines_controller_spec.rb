@@ -176,8 +176,8 @@ module Pageflow
 
         sign_in user
         acquire_edit_lock(user, entry)
-        patch(:order, entry_id: entry, ids: [storylines.first.id,
-                                             storylines.last.id], format: 'json')
+        put(:order, entry_id: entry, ids: [storylines.first.id,
+                                           storylines.last.id], format: 'json')
 
         expect(response.status).to eq(204)
       end
@@ -189,8 +189,8 @@ module Pageflow
 
         sign_in user
         acquire_edit_lock(user, entry)
-        patch(:order, entry_id: entry, ids: [storylines.first.id,
-                                             storylines.last.id], format: 'json')
+        put(:order, entry_id: entry, ids: [storylines.first.id,
+                                           storylines.last.id], format: 'json')
 
         expect(storylines.first.reload.position).to eq(0)
         expect(storylines.last.reload.position).to eq(1)
@@ -203,7 +203,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
 
         sign_in user
-        patch(:order, entry_id: entry, ids: [storyline.id], format: 'json')
+        put(:order, entry_id: entry, ids: [storyline.id], format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -211,7 +211,7 @@ module Pageflow
       it 'requires authentication' do
         storyline = create(:storyline)
 
-        patch(:order, entry_id: storyline.entry, ids: [storyline.id], format: 'json')
+        put(:order, entry_id: storyline.entry, ids: [storyline.id], format: 'json')
 
         expect(response.status).to eq(401)
       end

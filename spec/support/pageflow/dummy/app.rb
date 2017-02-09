@@ -4,10 +4,12 @@ module Pageflow
       def generate
         ENV['RAILS_ROOT'] = File.expand_path(directory)
 
-        if File.exists?(directory)
+        if File.exist?(directory)
           puts("Dummy directory #{directory} exists.")
         else
-          system("bundle exec rails new #{directory} --template #{template_path} #{rails_new_options}")
+          travis_fold('setup_dummy') do
+            system("bundle exec rails new #{directory} --template #{template_path} #{rails_new_options}")
+          end
         end
 
         require(File.join(ENV['RAILS_ROOT'], 'config', 'environment'))
@@ -24,6 +26,12 @@ module Pageflow
 
       def rails_new_options
         '--skip-test-unit --skip-bundle --database=mysql'
+      end
+
+      def travis_fold(name)
+        system("[ $TRAVIS ] && echo 'travis_fold:start:#{name}'")
+        yield
+        system("[ $TRAVIS ] && echo 'travis_fold:end:#{name}'")
       end
     end
   end

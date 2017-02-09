@@ -9,5 +9,5 @@ tmp/
 spec/dummy/*
 /coverage
 .idea
-
+/app/assets/javascripts/pageflow/dist
 .localeapp

@@ -43,13 +43,15 @@ Pageflow assumes the following choice of libraries:
 * [Resque](https://github.com/resque/resque) for background jobs
 * [FriendlyId](https://github.com/norman/friendly_id) for pretty URLs
 * [Paperclip](https://github.com/thoughtbot/paperclip) for attachment handling
-* [Backbone](http://backbonejs.org/) [Marionette](http://marionettejs.com/) for client side development
+* [Backbone](http://backbonejs.org/) [Marionette](http://marionettejs.com/) for the editor
+* [React](https://facebook.github.io/react/)/[Redux](http://redux.js.org/) for the frontend
 
 ## Requirements
 
 Pageflow runs in environments with:
 
 * Ruby >= 2.1
+* Node >= 6.9.5
 * Rails 4.2
 * Redis server (for Resque)
 * A database server supported by Active Record (tested with MySQL)
@@ -85,7 +87,7 @@ Add this line to your application's Gemfile:
     # Gemfile
     gem 'pageflow'
 
-    # Required for Rails 4.1:
+    # Required for Rails 4.2 compatibility
     gem 'state_machine', git: 'https://github.com/codevise/state_machine.git'
 
 Run bundler to install dependencies:

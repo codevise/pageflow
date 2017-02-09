@@ -1,6 +1,5 @@
 //= require_self
 //= require_tree ./page_types/mixins
-//= require_tree ./page_types
 
 pageflow.pageType = (function() {
   var base = {
