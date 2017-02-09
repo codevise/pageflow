@@ -80,6 +80,9 @@ Gem::Specification.new do |s|
   # Further helpers and conventions on top of Backbone
   s.add_dependency 'marionette-rails', '~> 1.1.0'
 
+  # React.js assets and server side rendering helpers
+  s.add_dependency 'react-rails', '~> 1.8'
+
   # Templating engine used to render jst tempaltes.
   s.add_dependency 'ejs', '~> 1.1'
 

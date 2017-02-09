@@ -9,6 +9,7 @@ require 'cancan'
 require 'jbuilder'
 require 'htmlentities'
 require 'kramdown'
+require 'react-rails'
 
 require 'resque_mailer'
 require 'resque_scheduler'

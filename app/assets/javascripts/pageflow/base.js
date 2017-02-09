@@ -24,6 +24,7 @@
 //= require jquery.fullscreen
 //= require jquery.placeholder
 
+//= require react
 //= require backbone-rails
 //= require_self
 
@@ -62,6 +63,7 @@
 //= require ./slideshow
 //= require ./ready
 //= require_tree ./widgets
+//= require ./react
 
 pageflow = {
   log: function(text, options) {
