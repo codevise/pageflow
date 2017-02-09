@@ -22,7 +22,7 @@ pageflow.orderedCollection = {
       return $.Deferred().resolve().promise();
     }
 
-    return Backbone.sync('patch', parentModel, {
+    return Backbone.sync('update', parentModel, {
       url: collection.url() + '/order',
       attrs: {ids: collection.pluck('id')},
 
