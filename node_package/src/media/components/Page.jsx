@@ -36,7 +36,7 @@ export function MediaPage(props) {
                                                 willAutoplay(props),
                                                 props.textTracks,
                                                 playerState)}>
-      <PageBackground>
+      <PageBackground pageHasPlayerControls={true}>
         {props.children}
         <PageShadow page={page} className={playerStateClassNames(playerState)} />
       </PageBackground>

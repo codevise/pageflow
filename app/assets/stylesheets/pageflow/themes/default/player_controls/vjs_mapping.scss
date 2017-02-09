@@ -3,7 +3,7 @@
 $vjs-selector-mapping: (
   page_with_progress_bar: ".audioPage, .videoPage",
 
-  background: ".videoWrapper, .audioPage .backgroundArea",
+  background: ".page_background-for_page_with_player_controls",
 
   background-idle: ".is_idle .videoWrapper, .audioPage.is_idle .backgroundArea",
 
