@@ -22,12 +22,17 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
+before_script:
+  - bin/npm install
+  - bin/npm run build
+
 script:
   - bin/rspec
   - bin/teaspoon
-  - bundle exec publish-pageflow-theme-doc
-  - bin/npm install
   - bin/npm test
+
+after_success:
+  - bundle exec publish-pageflow-theme-doc
 
 notifications:
   webhooks: https://coveralls.io/webhook?service_name=travis-ci
