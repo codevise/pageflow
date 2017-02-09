@@ -2,5 +2,9 @@ ruby:
   config_file: .rubocop.yml
 javascript:
   config_file: .jshintrc
+  ignore_file: .jshintignore
 scss:
   config_file: .scss-lint.yml
+eslint:
+  config_file: node_package/.eslintrc
+  ignore_file: .eslintignore
