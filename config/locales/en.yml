@@ -160,6 +160,7 @@ en:
         entries_count: "# Entries"
         landing_page_name: Landing page
         name: Name
+        own_role: Own Role
         users_count: "# Users"
       pageflow/audio_file:
         duration: Duration
@@ -175,6 +176,7 @@ en:
         created_at: Created at
         credits: Credits
         edited_at: Updated at
+        embed_code: Embed
         emphasize_chapter_beginning: Emphasize chapter beginning
         emphasize_new_pages: Emphasize new pages
         first_published_at: First published at
@@ -184,6 +186,7 @@ en:
         locale: Language
         manual_start: Show Instruction-Overlay
         overview_button_enabled: Show 'Overview' button
+        own_role: Role
         published?: Publication state
         published_at: Published since
         published_revision_published_at: Published since
@@ -201,8 +204,11 @@ en:
       pageflow/image_file:
         dimensions: Dimensions
       pageflow/membership:
+        account: Account
         created_at: Member since
+        entity: Entity
         entry: Story
+        role: Role
         user: Editor
       pageflow/page:
         additional_description: Infobox Description
@@ -245,6 +251,10 @@ en:
         published_at: Published at
         published_until: Published until
         updated_at: Updated at
+      pageflow/text_track_file:
+        kind: Kind
+        label: Label
+        srclang: Language
       pageflow/theming:
         additional_cnames: Additional CNAMES
         cname: CNAME
@@ -264,8 +274,8 @@ en:
         format: Format
       user:
         account: Account
-        admin: Administrator
-        admin?: Administrator
+        admin: System administrator
+        admin?: System administrator
         created_at: Registered at
         current_password: Current password
         current_sign_in_at: Signed in at
@@ -273,6 +283,8 @@ en:
         entry: Story
         first_name: First name
         full_name: Full name
+        initial_account: Account
+        initial_role: Role
         last_name: Last name
         last_sign_in_at: Last signed in at
         locale: Language
@@ -324,13 +336,18 @@ en:
         wrong_length:
           one: wrong length (must be exactly %{count} chars)
           other: wrong length (must be exactly %{count} chars)
+      models:
+        pageflow/entry:
+          attributes:
+            folder:
+              must_be_same_account: Folder must belong to same account as entry
     models:
       account:
         one: Account
         other: Accounts
       admin_user:
-        one: Administrator
-        other: Administrators
+        one: System administrator
+        other: System administrators
       entry:
         one: Story
         other: Stories
@@ -343,21 +360,33 @@ en:
       pageflow/account:
         one: Account
         other: Accounts
+      pageflow/audio_file:
+        one: Audio File
+        other: Audio Files
       pageflow/entry:
         one: Story
         other: Stories
       pageflow/folder:
         one: Folder
         other: Folders
+      pageflow/image_file:
+        one: Image File
+        other: Image Files
       pageflow/membership:
         one: Membership
         other: Memberships
       pageflow/revision:
         one: Version
         other: Versions
+      pageflow/text_track_file:
+        one: Text Track File
+        other: Text Track Files
       pageflow/theming:
         one: Theming
         other: Themings
+      pageflow/video_file:
+        one: Video File
+        other: Video Files
       revision:
         one: Version
         other: Versions
@@ -379,8 +408,15 @@ en:
       pageflow/entry:
         publication_states:
           not_published: Not published
-          published_with_password_protection: Published without password protection
-          published_without_password_protection: Published with password protection
+          published_with_password_protection: Published with password protection
+          published_without_password_protection: Published without password protection
+      pageflow/membership:
+        role:
+          editor: Editor
+          manager: Manager
+          member: Member
+          previewer: Previewer
+          publisher: Publisher
       pageflow/page:
         atmo_during_playback:
           mute: Mute
@@ -520,7 +556,7 @@ en:
     failure:
       admin_user:
         invalid: Password or username was not correct.
-        unauthenticated: Please log-in using an administrator account.
+        unauthenticated: Please log in using a system administrator account.
       already_authenticated: You are already signed in.
       inactive: Your account was not activated yet.
       invalid: Invalid email or password.
@@ -571,7 +607,7 @@ en:
       updated: You updated your account successfully.
     sessions:
       admin_user:
-        signed_in: Successfully signed in as administrator.
+        signed_in: Successfully signed in as system administrator.
       new:
         sign_in_with_facebook: Sign in with Facebook
         sign_in_with_google: Sign in with Google
@@ -714,6 +750,9 @@ en:
         delimiter: ","
   pageflow:
     admin:
+      account:
+        add: Add Account
+        none_addable_tooltip: No account available
       accounts:
         no_entries: No Stories
         no_members: No members
@@ -730,6 +769,7 @@ en:
         edit_revision: Edit
         editor: Editor
         editor_hint: Open editor
+        embed_code_hint: Embed the published entry on a website.
         entries: Stories
         forever: "(unlimited)"
         members: Members
@@ -760,6 +800,9 @@ en:
         show_public_hint: Visit public page
         snapshot: Save current version
         title_hint: This field determines the URL for this story.
+      entry:
+        add: Add Entry
+        none_addable_tooltip: No entry available
       features:
         states:
           default: Default (%{inherited})
@@ -771,7 +814,16 @@ en:
         confirm_destroy: 'Delete folder? Note: Containing stories will be preserved.'
         destroy: Delete
         edit: Edit
+      memberships:
+        on_account:
+          role:
+            hint_html: You can assign roles on individual entries of this account to a <strong>Member</strong>.<br>A <strong>Previewer</strong> can additionally preview all entries of this account.<br>An <strong>Editor</strong> can additionally edit all entries of this account.<br>A <strong>Publisher</strong> can additionally publish all entries of this account.<br>A <strong>Manager</strong> can additionally set user roles on all entries of this account and edit them.
+        on_entry:
+          role:
+            hint_html: A <strong>Previewer</strong> can preview this entry.<br>An <strong>Editor</strong> can additionally edit this entry.<br>A <strong>Publisher</strong> can additionally publish this entry.<br>A <strong>Manager</strong> can additionally set user roles on this entry and edit them.
       resource_tabs:
+        account_editor_hint: Users who are assigned on an account level are not listed here
+        accounts: Accounts
         entries: Stories
         features: Features
         members: Members
@@ -789,18 +841,27 @@ en:
         name: "%{account_name}"
         remove_logo: Remove logo
         show: View
+      user:
+        none_addable_tooltip: No user available
       users:
         account: Profile
+        accounts: Accounts
         add: Add user
         add_entry: Add story
         confirm_delete: Delete this user? This action cannot be undone.
         delete: Delete
+        delete_account_membership_confirmation: |-
+          Really delete the account membership of this user?
+
+          CAUTION: All of the user's entry memberships in this account are also deleted.
+        delete_entry_membership_confirmation: Really delete the entry membership of this user?
         delete_me:
           cancel_label: No, do not delete my account!
           delete_label: Delete account
           warning_html: Please enter your current password to confirm deletion of your account. <b>All data will be deleted. This action cannot be undone.</b>
         deleted: This user was deleted.
         edit: Edit
+        edit_role: Edit Role
         email_invitation_hint: The user will be invited to choose a password.
         empty: 'This user has no associated stories. '
         invite_user: Invite user
@@ -810,16 +871,45 @@ en:
           delete_account_hint: You don't want to continue using Pageflow?
           deleted: Your account has been deleted. You may sign-up for a new one at any time!
           updated: Your profile has been updated.
+        no_accounts: No members
+        no_entries: No stories
         none: There are no stories.
         resend_invitation: Resend invitation email
         resent_invitation: The invitation email has been resent.
-        role_hint:
-          admin: Account-Administrators are able to manage all users and stories of their account only. System-Administrators can manage all settings.
-          others: Account-Administrators are able to manage all users and stories of their account.
         roles:
-          account_manager: Account-Administrator
+          account_manager: Konto-Administrator
+          accounts:
+            tooltip:
+              editor: Can edit entries of this account
+              manager: Can set roles on this account
+              member: Can be assigned roles on entries of this account
+              previewer: Can preview entries of this account
+              publisher: Can publish entries of this account
           admin: System-Administrator
           editor: Editor
+          entries:
+            tooltip:
+              editor: Can edit this entry
+              manager: Can set roles on this entry
+              previewer: Can preview this entry
+              publisher: Can publish this entry
+          manager: Manager
+          member: Member
+          own_account_role:
+            tooltip:
+              editor: You can edit entries in this account
+              manager: You can manage user and entries in this account
+              member: You can be assigned roles on entries in this account
+              previewer: You can preview entries in this account
+              publisher: You can publish entries in this account
+          own_entry_role:
+            tooltip:
+              editor: You can edit this entry
+              manager: You can set roles on this entry
+              previewer: You can preview this entry
+              publisher: You can publish this entry
+          previewer: Previewer
+          publisher: Publisher
         suspend: Suspend
         suspended: 'The user was suspended and will not be able to sign-in again. '
         unsuspend: Unsuspend
@@ -827,30 +917,50 @@ en:
     atmo:
       feature_name: Atmo Audios
     audio:
+      help_entries:
+        page_type:
+          menu_item: Audio
+          text: "# Audio\n\n*Playing audio-files with controls*\n    \nHere you can combine audio-files with pictures or background videos and\ntext-content. Controls similar to the page type „Video“\nare shown.  In addition to that you can write a\ndescription into an „Infobox“.\n\nExamples of application: interviews, direct quotes, music"
       open: Play audio
+      page_type_category_name: Media
+      page_type_description: Audio player with controls
+      page_type_name: Audio
     auto_change_page:
       feature_name: Automatic Page Change
-    built_in_page_type:
-      audio:
-        page_type_category_name: Audio
-        page_type_description: Audio player with controls
-      audio_loop:
-        page_type_category_name: Audio
-        page_type_description: Audio playback in the background without controls
-      background_image:
-        page_type_category_name: Basic
-        page_type_description: Fullscreen image with text
-      background_video:
-        page_type_category_name: Video
-        page_type_description: Fullscreen video loop without controls
-      internal_links:
-        page_type_category_name: Links
-        page_type_description: A grid of thumbnails linking to other pages inside the Pageflow
-      video:
-        page_type_category_name: Video
-        page_type_description: Video player with controls
+    background_image:
+      help_entries:
+        page_type:
+          menu_item: Background Image/Video
+          text: |-
+            # Background Image/Video
+
+            Full-screen image or video loop and text
+
+            By using the page type „Background-Image/Video“, large pictures
+            or video loops are the background for the text and are paired with a
+            manually adjustable color gradient for an optimal
+            legibility. In order to have an optimal presentation on
+            mobile devices you can adjust the image detail to the
+            display. Optionally the text color can be inverted. This
+            is especially useful for bright background-images.
+
+            Users are able to hide the color-gradient and text in
+            the front-end, if they want to have a view of the
+            background image or video.
+
+            Examples: Presentation, part of a picture gallery,
+            portrait
+      page_type_category_name: Basic
+      page_type_description: Fullscreen image or video loop with text
+      page_type_name: Background image/video
     chapter_hierachy:
       feature_name: Chapter Hierachy
+    common_page_attributes:
+      background_type:
+        label: Background type
+        values:
+          image: Image
+          video: Video loop
     common_page_link_attributes:
       label:
         inline_help: Choose a label to recognize the link within the overview. This label is for your orientation only and will not be displayed to the reader.
@@ -861,6 +971,11 @@ en:
       target_page_id:
         inline_help: Users will get to this page when clicking the link.
         label: Target page
+    config:
+      text_track_kind:
+        captions: Audio Replacement Text Track
+        descriptions: Image Description Text Track
+        subtitles: Translation Text Track
     delayed_text_fade_in:
       feature_name: Delayed text fade in
     devise:
@@ -900,8 +1015,37 @@ en:
           message: The Pageflow editor does not support the browser version you are using. We recommend upgrading your browser to the most recent version.
       errors:
         UnmatchedUploadError: This filetype is not supported.
+        invalid_nested_type_error: 'Error: Upload file ''%{name}'' is a %{type}. Only the following types of files are allowed: %{validList}'
+        nested_type_error: 'Error while uploading ''%{name}'': %{type} cannot be uploaded as independent files. Use the settings menu for a file of the following type: %{validList}'
         unknown: A unknown error has occurred.
+        unmatched_upload_error: No matching file type found for upload '%{name}' of type '%{type}'.
+        upload:
+          type_empty: none
+      file_settings_dialog:
+        tabs:
+          video_settings_tab: Video Details
       files:
+        common_attributes:
+          alt:
+            inline_help: A hint describing the contents of the displayed element. Not displayed in the entry, but can be used by screen reader software. Improves accessibility of the content.
+            label: Alt-Text
+          file_name:
+            column_header: File name
+            label: File name
+          original_url:
+            label: Original
+          rights:
+            cell_title:
+              blank: Still blank
+              present: 'Present: %v{value}'
+            column_header: Rights
+            inline_help: Displayed in copyright area of entry.
+            label: Rights
+          text_tracks:
+            label: Subtitles
+        settings_dialog_tabs:
+          general: Meta data
+          text_tracks: Text tracks
         stages:
           encoding:
             action_required: Confirmation required.
@@ -933,6 +1077,33 @@ en:
           audio_files: Audios
           image_files: Images
           video_files: Videos
+      nested_files:
+        text_track_files:
+          delete:
+            cell_title: Delete text tracks
+            column_header: " "
+          file_name:
+            inline_help_html: "<ul><li>If the pattern of the file name resembles <strong>dateiname.wx_YZ.vtt</strong>, Pageflow will identify the language code, in this example <strong>wx</strong>.</li><li>An <strong>example</strong> for English (en) is <strong>subtitles.en_GB.vtt</strong>.</li></ul>"
+          kind:
+            cell_title:
+              captions: Audio Replacement Text Track
+              descriptions: Image Replacement Text Track
+              subtitles: Translation Text Track
+            column_header: Kind
+            inline_help_html: "<ul><li><strong>Audio Replacement Text Tracks</strong> are meant for users who understand a text track better than an audio track.</li><li><strong>Translation Text Tracks</strong> are meant for users who understand another language better than the language used in the audio track.</li><li><strong>Image Replacement Text Tracks</strong> are meant for users who understand a text track better than a video track. Image Replacement Text Tracks are often read aloud to the user by screen reading software supplied by the user.</li></ul>"
+            label: Kind
+          label:
+            column_header: Label
+            inline_help: For display in the text track picker as part of the media player
+            label: Label
+          no_files_blank_slate: Currently, there are no text tracks for this file.
+          srclang:
+            cell_title:
+              blank: Not yet entered
+              present: 'Entered: %{value}'
+            column_header: Language
+            inline_help_html: "<ul><li>The language used in a text track is specified as a two letter code according to ISO 639.1.</li> <li><strong>Examples:</strong> 'en' for English or 'fr' for French.</li> <li>Language codes are often given on the Wikipedia page of a language.</li></ul>"
+            label: Language
       quotas:
         loading: Checking quotas...
       templates:
@@ -940,6 +1111,7 @@ en:
           outline: Outline
         background_positioning:
           cancel: Cancel
+          close: Close
           help: In order to have an optimal presentation on mobile devices you can adjust the image detail to the display.
           preview_title: Preview
           previews:
@@ -960,6 +1132,12 @@ en:
           link_to_progress: The %{link} page shows encoding progress.
           manage_files: Manage files
           videos_tab: Videos
+        confirm_upload:
+          close: Cancel
+          edit_file_header: Meta data
+          header: Add files
+          hint: Edit the files' meta data, then start the upload.
+          upload: Start upload
         confirmable_file_item:
           remove: Remove
         edit_chapter:
@@ -1001,7 +1179,12 @@ en:
           download: Download
           retry: Retry
           select: Select
+          settings: Settings
           source: Source
+        file_meta_data_item_value_view:
+          edit: Edit
+        file_settings_dialog:
+          close: Close
         files:
           back: Back
         files_blank_slate:
@@ -1085,6 +1268,12 @@ en:
         storyline_picker:
           add: Add
           edit: Edit settings
+        text_tracks:
+          edit_file_header: Metadata
+          upload: Add
+      text_track_files:
+        label_missing: "(Label missing)"
+        srclang_missing: "(Missing)"
       views:
         chapter_item_view:
           chapter: Chapter
@@ -1094,6 +1283,8 @@ en:
             Really delete this chapter including ALL its pages?
 
             This operation cannot be undone.
+        edit_entry_view:
+          cannot_publish: You do not have sufficient rights to publish this entry.
         edit_page_link_view:
           default_page_transition: "(Default)"
         edit_page_view:
@@ -1109,11 +1300,21 @@ en:
           show_editor: Show editor panel
         entry_preview_view:
           scroll_hint: Scroll down to continue
+        file_meta_data_item_value_view:
+          blank: "-"
         files_view:
           add: Add
           reuse: Reuse
           upload: Upload
+        filtered_files_view:
+          banner_prefix: 'Active filter:'
         inputs:
+          file_input:
+            auto_default_text_track: "(Auto)"
+            default_text_track: 'Default texttrack:'
+            edit_background_positioning: Adjust field of view...
+            edit_file_settings: File settings...
+            no_default_text_track: "(None)"
           reference_input_view:
             none: "(None)"
         page_item_view:
@@ -1143,52 +1344,6 @@ en:
           Should you ever feel distracted by the atmo audio while working on your entry, you can use the hot key „Alt + a“ to temporarily mute it. Simply press „Alt + a“ again to reactivate atmo audio.
 
           CAUTION: Atmo audio does not play on mobile devices.
-      built_in_page_type:
-        audio:
-          menu_item: Audio
-          text: "# Audio\n\n*Playing audio-files with controls*\n    \nHere you can combine audio-files with pictures and\ntext-content. Controls similar to the page type „Video“\nare shown.  In addition to that you can write a\ndescription into an „Infobox“.\n\nExamples of application: interviews, direct quotes, music"
-        audio_loop:
-          menu_item: Audio Loop
-          text: "# Audio Loop\n\n*Playing an audio-loop without control (Ambience)*\n    \nA full-screen photo is shown as a „Background-Image“. The\ndifference to the normal Audio-Page is that the user\ncannot influence the audio-file by controlling it. Instead\nit is an endless-loop.\n\nTypical examples of application: Ambience, soundscape, field-recordings"
-        background_image:
-          menu_item: Background Image
-          text: |-
-            # Background Image
-
-            Full-screen image and text
-
-            By using the page type „Background-Image“, large pictures
-            are the background for the text and are paired with a
-            manually adjustable color gradient for an optimal
-            legibility. In order to have an optimal presentation on
-            mobile devices you can adjust the image detail to the
-            display. Optionally the text color can be inverted. This
-            is especially useful for bright background-images.
-
-            Users are able to hide the color-gradient and text in
-            the front-end, if they want to have a view of the
-            background-image.
-
-            Examples: Presentation, part of a picture gallery,
-            portrait
-        background_video:
-          menu_item: Background Video
-          text: "# Background Video\n\n*Full-screen video played in a loop without control* \n    \nThis type of page is comparable to „Background-Image“. But\ninstead of an image, a video is shown in the\nbackground. This video starts automatically and is played\nwithout control. Thus the user cannot influence the start\nand stop of the video. Since the video is played in an\nendless-loop, it should be long enough and it should have\na proper crossover. The same applies to the soundtrack.\n\nAs a hint for the use of Pageflow on a smartphone: In\norder to prevent unintended data consumption, the video is\nnot played on smartphones. Instead a poster-image is\nshown, which is generated automatically. You can however\nalso choose the image yourself.\n\nExamples of application: intro, chapter cross-fade,\nambience"
-        internal_links:
-          menu_item: Internal Links
-          text: |
-            # Internal Links
-
-            References to other pages inside a Pageflow
-
-            In contrast to external link, you can link to pages inside
-            your Pageflow. This page type helps you guide your users
-            through your Pageflow.
-
-            Examples of application: Welcome page, chapter homepage
-        video:
-          menu_item: Video
-          text: "# Video\n\n*Playing a video with control*\n    \nIn contrast to „Background-Videos“ the text elements fade\nout after a few seconds, in order to draw attention to the\nvideo. With controls the user can start and pause the\nvideo or even fast-forward and rewind it. You can choose\nwhether the video should start automatically as soon as\nthe page is opened.\n\nAs an alternative to the normal text input, you can write\na description into an „Infobox“ with text.\n\nOn the „Options“ tab you can activate auto-scrolling to the next page at the end of a video. \nThis can be useful to create a seamless transition.\n\nExamples of application: Videos of all kinds, interviews,\nportraits"
       files:
         menu_item: Manage Files
         text: |
@@ -1384,11 +1539,90 @@ en:
       storylines:
         menu_item: Storylines
         text: "# Storylines\n\nIn addition to linear narrations from top to bottom, further storylines can be used as non linear excursions to enlarge upon parts of a story. A „Storyline“ consists of chapters and pages, which users scroll through. Distinguishable is the so called main storyline from further subordinate ones. The user starts off in the main storyline and can then navigate to different excursions.\n\nTo create such an excursion from the main storyline use one of the „Link“ pages (Mosaic, Collage, Hotspot) and create the desired connections via „Links“.\n\nBy choosing a „Parent page“ you can determine to which page users return after scrolling the storyline´s last page.\n\nTransitions to subordinate storylines are visually supported by a horizontal animation as the default setting for entering and leaving. \n\nStorylines are created by clicking onto the plus button next to the storyline menu. Thereby a new chapter opens automatically in which further pages can be added. \n\n\n### Parent pages\n\nIn every subordinate  storyline a „Parent page“ must be determined to define where users land when scrolling back.\n\nThis target page can be chosen by clicking on the pen symbol next to the storyline menu. When a „Parent page“ is defined, a back button will be shown automatically in the subordinate storyline that will always lead users back to the „Parent page“.\n\n\n### Chapter hierarchy\n\nThe use of more than one „subordinary“ storylines and the definition of „Parent pages“ leads to a chapter hierarchy as known from books:\n\n1. (Main storyline), 1.1. (Superior sub storyline), 1.1.1. (Subordinate sub storyline) and so on.\n\nThis hierarchy can be edited afterwards by clicking on the pen symbol next to the storyline menu. A subordinate storyline can be turned into the main storyline as well.\n\n\n### Scroll successors\n\nIf you want to lead users from a last page of a subordinate chapter (1.1.1) to another position than\nthe „Parent page“ (e.g. to 2.1) you can define a „Scroll successor“. Therefore click on the blue pen symbol within the storyline settings. As an example the following sequence might be imaginable: 1 -> 1.1 -> 1.1.1 -> 2.1\n\nAttention: While editing only the selected chapter will be shown in the sidebar. To switch to the other chapters click onto the storyline menu."
+      text_tracks:
+        menu_item: Text tracks
+        text: |-
+          # Text tracks
+
+          Text tracks can be added to video and audio files. Open the
+          file setting dialog of a video or audio file by clicking the
+          files's "Settings" button in the "Manage files" view and
+          switch to the "Text tracks" tab.
+
+          Here you can upload SRT or VTT text track files. Each text
+          track has a language, kind and label attribute. The label is
+          displayed to the user in the subtitles menu on video and
+          audio pages.
+
+          If a video or audio file has text tracks, the user can
+          choose to activate them on video or audio pages. Please note
+          that text tracks will not be displayed when a video plays as
+          a loop in the page background or when an audio file is used
+          as background atmo.
+
+          ## Automatic subtitles
+
+          The selection made by the user in the subtitles menu on
+          video or audio pages is stored between pages and
+          sessions.
+
+          By default the option "Auto" is selected in the subtitles
+          menu. A text track to display is then choosen automatically
+          according to the following rules:
+
+
+          * If a file has a text track of kind "translation" in the
+            language of the entry, it is displayed as subtitle
+            automatically. This is meant for people who are able to
+            understand the language of the entry, but not the language
+            spoken in the video or audio.
+
+          * If instead the file has a text track of kind "audio
+            replacement", it is displayed automatically if the volume
+            has been set to mute using the controls in the navigation
+            bar. Please note that for technical reasons it is not
+            possible to detect if the volume has been set to mute
+            outside of the browser or on mobile devices in general.
+
+          ## Default text track
+
+          If the automatic selection described above does not fit your
+          needs, you can select a default text track for each video or
+          audio page. It will be displayed if the user has not
+          selected a text track from the subtitles menu.
+
+          Open the files tab of the page and choose a default text
+          track from the conext menu available via the menu button
+          inside the video or audio file field.
     helpers:
       entries:
         global_links: Global links
         image_rights: Credits
+    highdef_video_encoding:
+      feature_name: Full HD and 4K videos
     invalid_transition: Invalid transition
+    languages:
+      ar: Arabic
+      cs: Czech
+      de: German
+      dk: Danish
+      el: Greek
+      en: English
+      es: Spanish
+      fr: French
+      fy: Frisian
+      hi: Hindi
+      it: Italian
+      lb: Letzeburgesch
+      nl: Dutch
+      pl: Polish
+      pt: Portuguese
+      rm: Romansh
+      ru: Russian
+      sr: Serbian
+      tr: Turkish
+      unknown: "(Unknown)"
+      zh: Chinese
     page_transitions:
       crossfade: Crossfade
       cut: Cut
@@ -1475,13 +1709,13 @@ en:
             The text-block can be formatted with the buttons underneath the input field. [B= bold / I=italic / U=underlined / infinity symbol= Link/URL to an external website]
 
             All changes are visible in the left front-end-view as soon as you leave the appropriate input field in the editor.
-          thumbnail_image_id: |
-            The thumbnail replaces the automatically generated preview-picture in the navigation and overview.
+          thumbnail_image_id: 'The thumbnail replaces the automatically generated preview-picture in the navigation and overview.
+
+'
           transition: Choose the animation, that will be used when users scroll to this page.
       templates:
         inputs:
           file_input:
-            adjust_positioning: Adjust field of view
             edit: Edit
             reset: Reset
           page_reference:
@@ -1494,6 +1728,10 @@ en:
             ok: Ok
             underline: Underline
             url: URL
+          url_display:
+            link_text: Download
+      text_table_cell_view:
+        empty: "(empty)"
       views:
         extended_select_input_view:
           display_help: Display help
@@ -1521,6 +1759,14 @@ en:
         instruction: 'Welcome to Pageflow. Please use the following link to set your personal password. You may use your email address to sign-in. '
         salutation: Hello %{first_name}
         subject: Your Pageflow Invitation
+    video:
+      help_entries:
+        page_type:
+          menu_item: Video
+          text: "# Video\n\n*Playing a video with control*\n    \nIn contrast to „Background-Videos“ the text elements fade\nout after a few seconds, in order to draw attention to the\nvideo. With controls the user can start and pause the\nvideo or even fast-forward and rewind it. You can choose\nwhether the video should start automatically as soon as\nthe page is opened.\n\nAs an alternative to the normal text input, you can write\na description into an „Infobox“ with text.\n\nOn the „Options“ tab you can activate auto-scrolling to the next page at the end of a video. \nThis can be useful to create a seamless transition.\n\nExamples of application: Videos of all kinds, interviews,\nportraits"
+      page_type_category_name: Media
+      page_type_description: Video player with controls
+      page_type_name: Video
     widgets:
       none: "(none)"
       roles:
@@ -1551,5 +1797,5 @@ en:
       first: "|<"
       last: ">|"
       next: ">>"
-      previous: "<<"
+      previous: !!str '<<'
       truncate: "..."
