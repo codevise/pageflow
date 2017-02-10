@@ -5,4 +5,4 @@ de:
         label: Hintergrund-Typ
         values:
           image: Hintergrund-Bild
-          video: Hintergrund-Video
+          video: "Hintergrund-Video (Loop)"

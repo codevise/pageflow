@@ -15,7 +15,7 @@ de:
             column_header: "Dateiname"
           rights:
             label: "Rechte"
-            inline_help: "Wird im Impressum des Beitrags angezeigt."
+            inline_help: "Wird im Copyright-Bereich des Beitrags angezeigt."
             column_header: "Rechte"
             cell_title:
               present: "Ausgefüllt: %{value}"

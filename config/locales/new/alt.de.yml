@@ -5,4 +5,4 @@ de:
         common_attributes:
           alt:
             label: "Alt-Text"
-            inline_help: "Ein Hinweis darauf, was in dem dargestellten Element zum Ausdruck kommt."
+            inline_help: "Ein Hinweis darauf, was in dem dargestellten Element zum Ausdruck kommt. Der Text ist im Beitrag nicht sichtbar, kann aber von Screen-Readern verarbeitet werden und trägt somit zur barrierearmen Gestaltung der Inhalte bei."
