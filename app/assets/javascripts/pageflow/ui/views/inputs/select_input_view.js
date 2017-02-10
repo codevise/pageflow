@@ -212,7 +212,12 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
 
   load: function() {
     if (!this.isClosed) {
-      this.ui.select.val(this.model.get(this.options.propertyName));
+      if (this.model.has(this.options.propertyName)) {
+        this.ui.select.val(this.model.get(this.options.propertyName));
+      }
+      else {
+        this.ui.select.val(this.ui.select.find('option:first').val());
+      }
     }
   }
 });
