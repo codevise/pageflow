@@ -17,6 +17,15 @@ $slim-player-controls-progress-bar-color: $main-color !default;
 /// Color of the part of the progress bar indicating the load progress.
 $slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2) !default;
 
+/// Typography for text displayed next to play button
+$slim-player-controls-control-bar-text-typography: () !default;
+
+/// Typography for text displayed next to play button in desktop layout
+$slim-player-controls-control-bar-text-desktop-typography: () !default;
+
+/// Typography for text displayed next to play button in phone layout
+$slim-player-controls-control-bar-text-phone-typography: () !default;
+
 %player_controls {
   &-control_bar {
     position: absolute;
@@ -50,7 +59,11 @@ $slim-player-controls-progress-bar-load-progress-color: rgba(255, 255, 255, 0.2)
     color: $slim-player-controls-color;
     text-shadow: 1px 1px 4px $indicator-text-shadow-color;
 
-    @include indicator-typography;
+    @include indicator-typography(
+      $overrides: $slim-player-controls-control-bar-text-typography,
+      $phone-overrides: $slim-player-controls-control-bar-text-phone-typography,
+      $desktop-overrides: $slim-player-controls-control-bar-text-desktop-typography
+    );
 
     @include phone {
       left: 50px;
