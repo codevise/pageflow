@@ -62,7 +62,7 @@ class PageWithInteractiveBackground extends React.Component {
                  onQualityMenuItemClick={this.props.onQualityMenuItemClick}
                  hiddenOnPhone={this.props.textHasBeenHidden && !this.props.textIsHidden} />
 
-        <PageBackground>
+        <PageBackground pageHasPlayerControls={true}>
           <div className="videoWrapper">
             {this.props.children}
           </div>
