@@ -1,8 +1,0 @@
-en:
-  pageflow:
-    editor:
-      files:
-        common_attributes:
-          alt:
-            label: "Alt-Text"
-            inline_help: "A hint describing the contents of the displayed element. Not displayed in the entry, but can be used by screen reader software. Improves accessibility of the content."

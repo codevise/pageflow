@@ -1,6 +1,0 @@
-de:
-  pageflow:
-    editor:
-      views:
-        filtered_files_view:
-          banner_prefix: "Aktiver Filter:"
