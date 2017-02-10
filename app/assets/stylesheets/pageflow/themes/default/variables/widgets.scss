@@ -6,10 +6,10 @@ $basic-background-color: #353535 !default;
 $basic-background-color-transparent: rgba(53, 53, 53, 0.9) !default;
 
 /// Default background color of widgets.
-$widget-background-color: $basic-background-color-transparent;
+$widget-background-color: $basic-background-color-transparent !default;
 
 /// Default text color in widgets.
-$widget-text-color: #fff;
+$widget-text-color: #fff !default;
 
 /// Default type of icons to use in widgets.
 $widget-icons: $standard-icons !default;
