@@ -25,9 +25,22 @@ module Pageflow
       true
     end
 
+    # Override instead of render to use the widget
+    # configuration. Return html as string.
+    def render_with_configuration(template, entry, _configuration)
+      render(template, entry)
+    end
+
     # Override to return html as string.
     def render(template, entry)
       template.render(File.join('pageflow', name, 'widget'), entry: entry)
+    end
+
+    # Override instead of render_head_fragment to use the widget
+    # configuration. Return html as string that should be placed in
+    # the head element of the page.
+    def render_head_fragment_with_configuration(template, entry, _configuration)
+      render_head_fragment(template, entry)
     end
 
     # Override to return html that should be placed in the head
