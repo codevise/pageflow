@@ -44,6 +44,7 @@
   .scroll_indicator {
     cursor: pointer;
     visibility: hidden;
+    white-space: nowrap;
 
     @include desktop {
       left: 8%;
