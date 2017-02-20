@@ -1,0 +1,13 @@
+en:
+  pageflow:
+    common_page_attributes:
+      background_type:
+        inline_help: "The page background can either display an image or a video loop."
+      poster_image_id:
+        inline_help: "Displayed before the videos starts"
+      mobile_poster_image_id:
+        inline_help: "Displayed instead of the the background video loop on mobile devices."
+    video:
+      page_attributes:
+        mobile_poster_image_id:
+          inline_help: "Displayed on mobile devices before the video starts."

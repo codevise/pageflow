@@ -1,0 +1,13 @@
+de:
+  pageflow:
+    common_page_attributes:
+      background_type:
+        inline_help: "Im Hintergund der Seite kann entweder ein Bild oder ein Video-Loop angezeigt werden."
+      poster_image_id:
+        inline_help: "Wird angezeigt, bevor das Video startet."
+      mobile_poster_image_id:
+        inline_help: "Bild, das in der Mobilvariante der Seite an Stelle des Hintergrund-Videos gezeigt werden soll."
+    video:
+      page_attributes:
+        mobile_poster_image_id:
+          inline_help: "Wird in der Mobilvariante gezeigt, bevor das Video startet."
