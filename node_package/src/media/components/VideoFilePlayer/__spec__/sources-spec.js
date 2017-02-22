@@ -28,11 +28,33 @@ describe('sources', () => {
   });
 
   it('includes dash variant if file has dash playlist url', () => {
-    const videoFile = {urls: {'dash-playlist': 'http://example.com/4/maifest.mpd'}};
+    const videoFile = {urls: {'dash-playlist': 'http://example.com/4/manifest.mpd'}};
 
     const result = sources(videoFile);
 
     expect(result.map(s => s.type)).to.include('application/dash+xml');
+  });
+
+  it('includes high variant if high bandwidth', () => {
+    const videoFile = {urls: {
+      'medium': 'http://example.com/4/medium.mp4',
+      'high': 'http://example.com/4/high.mp4'
+    }};
+
+    const result = sources(videoFile, 'auto', {hasHighBandwidth: true});
+
+    expect(result.filter(s => (s.type == 'video/mp4'))[0].src).to.include('high.mp4');
+  });
+
+  it('includes medium variant if not high bandwidth', () => {
+    const videoFile = {urls: {
+      'medium': 'http://example.com/4/medium.mp4',
+      'high': 'http://example.com/4/high.mp4'
+    }};
+
+    const result = sources(videoFile, 'auto', {hasHighBandwidth: false});
+
+    expect(result.filter(s => (s.type == 'video/mp4'))[0].src).to.include('medium.mp4');
   });
 
   it('uses medium quality if requested', () => {
@@ -56,7 +78,7 @@ describe('sources', () => {
     expect(result[0].src).to.include('fullhd.mp4');
   });
 
-  it('falls back to medium quality if fullhd is requested and but not available', () => {
+  it('falls back to high quality if fullhd is requested but not available', () => {
     const videoFile = {urls: {
       'high': 'http://example.com/4/high.mp4'
     }};
@@ -79,7 +101,7 @@ describe('sources', () => {
     expect(result[0].src).to.include('4k.mp4');
   });
 
-  it('falls back to high quality if fullhd is requested and but not available', () => {
+  it('falls back to high quality if 4k is requested but not available', () => {
     const videoFile = {urls: {
       'high': 'http://example.com/4/high.mp4'
     }};
