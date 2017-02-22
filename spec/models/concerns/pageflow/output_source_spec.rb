@@ -8,7 +8,32 @@ module Pageflow
 
         result = source.present_outputs
 
-        expect(result).to eq([:avi])
+        expect(result).to include(:avi)
+        expect(result).not_to include(:gif)
+      end
+
+      it 'returns labels of outputs that are generated externally' do
+        source = build(:video_file, output_presences: {})
+
+        def source.externally_generated_outputs
+          [:hls]
+        end
+
+        result = source.present_outputs
+
+        expect(result).to include(:hls)
+      end
+
+      it 'externally generated outputs override stored presences' do
+        source = build(:video_file, output_presences: {hls: true})
+
+        def source.externally_generated_outputs
+          [:hls]
+        end
+
+        result = source.present_outputs
+
+        expect(result).to include(:hls)
       end
     end
 

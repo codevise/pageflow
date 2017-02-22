@@ -23,5 +23,21 @@ module Pageflow
         expect(video_file.output_present?(:bnk)).to be nil
       end
     end
+
+    describe '#present_outputs' do
+      it 'does not include hls by default' do
+        video_file = build(:video_file, output_presences: {})
+
+        expect(video_file.present_outputs).not_to include(:'hls-playlist')
+      end
+
+      it 'includes hls if akamai is configured' do
+        Pageflow.config.zencoder_options[:hls_smil_suffix] = '/master.m3u8'
+
+        video_file = build(:video_file, output_presences: {})
+
+        expect(video_file.present_outputs).to include(:'hls-playlist')
+      end
+    end
   end
 end
