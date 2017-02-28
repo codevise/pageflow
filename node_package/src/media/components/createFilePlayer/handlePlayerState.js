@@ -1,10 +1,14 @@
-export function initPlayer(player, getPlayerState, prevFileId, fileId) {
+export function initPlayer(player, getPlayerState, playerActions, prevFileId, fileId) {
   const playerState = getPlayerState();
 
   if (fileId === prevFileId) {
     if (playerState.currentTime > 0) {
       player.currentTime(playerState.currentTime);
     }
+  }
+
+  if (playerState.shouldPrebuffer) {
+    player.prebuffer().then(playerActions.prebuffered);
   }
 
   if (playerState.isPlaying) {
