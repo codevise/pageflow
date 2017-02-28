@@ -32,11 +32,7 @@ pageflow.WidgetTypes = pageflow.Object.extend({
   },
 
   findAllByRole: function(role) {
-    if (!this._widgetTypesByRole[role]) {
-      throw('Unknown widget type role "' + role +'"');
-    }
-
-    return this._widgetTypesByRole[role];
+    return this._widgetTypesByRole[role] || [];
   },
 
   findByName: function(name) {
