@@ -17,3 +17,4 @@ end
 json.default_author_meta_tag Pageflow.config.default_author_meta_tag
 json.default_publisher_meta_tag Pageflow.config.default_publisher_meta_tag
 json.default_keywords_meta_tag Pageflow.config.default_keywords_meta_tag
+json.themes(Pageflow.config.themes, :name, :preview_image_path)
