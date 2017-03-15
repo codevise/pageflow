@@ -31,14 +31,18 @@ module Pageflow
 
     def copy_defaults_to(revision)
       widgets.copy_all_to(revision)
-      copy_default_meta_tags(revision)
+      copy_attributes_to(revision)
     end
 
-    def copy_default_meta_tags(revision)
+    private
+
+    def copy_attributes_to(revision)
       revision.update(
         author: default_author.presence || Pageflow.config.default_author_meta_tag,
         publisher: default_publisher.presence || Pageflow.config.default_publisher_meta_tag,
-        keywords: default_keywords.presence || Pageflow.config.default_keywords_meta_tag
+        keywords: default_keywords.presence || Pageflow.config.default_keywords_meta_tag,
+        theme_name: theme_name,
+        home_button_enabled: home_button_enabled_by_default
       )
     end
   end
