@@ -94,14 +94,14 @@ module Pageflow
       end
     end
 
-    describe '#copy_default_meta_tags' do
+    describe '#copy_defaults_to' do
       let(:theming) { create(:theming) }
       let(:revision) { create(:revision) }
 
       it "updates the revision author with the theming's default author" do
         theming.update default_author: 'Amir Greithanner'
 
-        theming.copy_default_meta_tags(revision)
+        theming.copy_defaults_to(revision)
 
         expect(revision.author).to eq('Amir Greithanner')
       end
@@ -109,7 +109,7 @@ module Pageflow
       it "updates the revision publisher with the theming's default publisher" do
         theming.update default_publisher: 'Spöttel KG'
 
-        theming.copy_default_meta_tags(revision)
+        theming.copy_defaults_to(revision)
 
         expect(revision.publisher).to eq('Spöttel KG')
       end
@@ -117,9 +117,28 @@ module Pageflow
       it "updates the revision keywords with the theming's default keywords" do
         theming.update default_keywords: 'ratione, aut, blanditiis'
 
-        theming.copy_default_meta_tags(revision)
+        theming.copy_defaults_to(revision)
 
         expect(revision.keywords).to eq('ratione, aut, blanditiis')
+      end
+
+      it "updates the revision home_button_enabled with the theming's home_button_enabled_by_"\
+         'default' do
+        theming.update home_button_enabled_by_default: true
+
+        theming.copy_defaults_to(revision)
+
+        expect(revision.home_button_enabled).to eq(true)
+      end
+
+      it "updates the revision theme_name with the theming's default theme_name" do
+        Pageflow.config.themes.register(:acme_corp)
+
+        theming.update theme_name: 'acme_corp'
+
+        theming.copy_defaults_to(revision)
+
+        expect(revision.theme_name).to eq('acme_corp')
       end
     end
 
