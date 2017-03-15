@@ -330,6 +330,7 @@ module Pageflow
       delegate :widget_types, to: :config
       delegate :help_entries, to: :config
       delegate :admin_form_inputs, to: :config
+      delegate :themes, to: :config
     end
   end
 end
