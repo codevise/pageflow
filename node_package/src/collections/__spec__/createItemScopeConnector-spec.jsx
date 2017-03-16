@@ -34,6 +34,52 @@ describe('createItemScopeConnector', () => {
       }));
     });
 
+    it('supports mapStateToProps that returns a function', () => {
+      const connectInItemScope = createItemScopeConnector('pages');
+      const ItemScopeProvider = createItemScopeProvider('pages');
+
+      const Component = function() { return (<div />); };
+      const mapStateToProps = sinon.stub().returns({});
+      const Connected = connectInItemScope(() => mapStateToProps)(Component);
+
+      const store = createStore((state = {other: 'stuff'}) => state);
+
+      mount(
+        <Provider store={store}>
+          <ItemScopeProvider itemId={5}>
+            <Connected />
+          </ItemScopeProvider>
+        </Provider>
+      );
+
+      expect(mapStateToProps).to.have.been.calledWith(sinon.match({
+        __pages_connectedId: 5,
+        other: 'stuff'
+      }));
+    });
+
+    it('does not call mapStateToProps again if it returned function', () => {
+      const connectInItemScope = createItemScopeConnector('pages');
+      const ItemScopeProvider = createItemScopeProvider('pages');
+
+      const Component = function() { return (<div />); };
+      const mapStateToPropsFactory = sinon.stub().returns(() => ({}));
+      const Connected = connectInItemScope(mapStateToPropsFactory)(Component);
+
+      const store = createStore((state = {other: 'stuff'}) => ({...state}));
+
+      mount(
+        <Provider store={store}>
+          <ItemScopeProvider itemId={5}>
+            <Connected />
+          </ItemScopeProvider>
+        </Provider>
+      );
+      store.dispatch({type: 'SOMETHING'});
+
+      expect(mapStateToPropsFactory).to.have.been.calledOnce;
+    });
+
     it('sets meta info of item actions', () => {
       const connectInItemScope = createItemScopeConnector('pages');
       const ItemScopeProvider = createItemScopeProvider('pages');
