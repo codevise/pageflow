@@ -12,7 +12,9 @@ module Pageflow
       end
 
       it 'is valid if registered for usage in theming' do
-        Pageflow.config.themes.register(:custom)
+        pageflow_configure do |config|
+          config.themes.register(:custom)
+        end
 
         theming = build(:theming, theme_name: 'custom')
 
@@ -22,9 +24,13 @@ module Pageflow
 
     describe '#theme' do
       it 'looks up theme by #theme_name' do
-        theming = build(:theming, :theme_name => 'default')
+        pageflow_configure do |config|
+          config.themes.register(:named_theme)
+        end
 
-        expect(theming.theme).to be(Pageflow.config.themes.get(:default))
+        theming = build(:theming, :theme_name => 'named_theme')
+
+        expect(theming.theme.name).to eq(Pageflow.config.themes.get(:named_theme).name)
       end
     end
 
