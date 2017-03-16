@@ -9,7 +9,7 @@ module Pageflow
     scope :for_request, ->(request) { Pageflow.config.theming_request_scope.call(all, request) }
 
     validates :account, :presence => true
-    validates_inclusion_of :theme_name, :in => ->(_) { Pageflow.config.themes.names }
+    validates_inclusion_of :theme_name, :in => ->(theming) { Pageflow.config_for(theming.account).themes.names }
 
     def resolve_widgets(options = {})
       widgets.resolve(Pageflow.config_for(account), options)
@@ -20,7 +20,7 @@ module Pageflow
     end
 
     def theme
-      Pageflow.config.themes.get(theme_name)
+      Pageflow.config_for(account).themes.get(theme_name)
     end
 
     def name
