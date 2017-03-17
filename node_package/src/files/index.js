@@ -24,18 +24,18 @@ export default {
   },
 
   createReducers({files, fileUrlTemplates = {}, modelTypes = {}}) {
-    const reducers = Object.keys(files).reduce((result, collectionName) => {
-      collectionName = camelize(collectionName);
-      result[collectionName] = createCollectionReducer(collectionName);
-      return result;
-    }, {});
-
     fileUrlTemplates = camelize.keys(fileUrlTemplates);
-    reducers.fileUrlTemplates = (state => fileUrlTemplates);
-
     modelTypes = camelize.keys(modelTypes);
-    reducers.modelTypes = (state => modelTypes);
 
-    return reducers;
+    return {
+      files: combineReducers(Object.keys(files).reduce((result, collectionName) => {
+        collectionName = camelize(collectionName);
+        result[collectionName] = createCollectionReducer(collectionName);
+        return result;
+      }, {})),
+
+      fileUrlTemplates: state => fileUrlTemplates,
+      modelTypes: state => modelTypes
+    };
   }
 };
