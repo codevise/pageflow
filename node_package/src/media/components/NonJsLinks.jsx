@@ -1,4 +1,4 @@
-import {combine} from 'utils';
+import {combineSelectors} from 'utils';
 import {t} from 'i18n/selectors';
 import {entryAttribute} from 'entry/selectors';
 
@@ -28,7 +28,7 @@ function text({file, t}) {
   return t(`pageflow.public.open_${type}`);
 }
 
-export default connect(combine({
+export default connect(combineSelectors({
   t,
   entrySlug: entryAttribute('slug')
 }))(NonJsLinks);

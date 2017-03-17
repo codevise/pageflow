@@ -2,11 +2,11 @@ import VideoFilePlayer from './VideoFilePlayer';
 import createPageFilePlayer from './createPageFilePlayer';
 import {file} from 'files/selectors';
 import {prop} from 'selectors';
-import {camelize, combine} from 'utils';
+import {camelize, combineSelectors} from 'utils';
 
 import {connect} from 'react-redux';
 
-export const VideoPlayer = connect(combine({
+export const VideoPlayer = connect(combineSelectors({
   file: file('videoFiles', {id: prop('videoFileId')}),
   posterImageFile: file('imageFiles', {id: prop('posterImageFileId')})
 }))(createPageFilePlayer(VideoFilePlayer));

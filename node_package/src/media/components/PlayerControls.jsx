@@ -1,6 +1,6 @@
 import playerStateClassNames from './playerStateClassNames';
 import PlayerControls from 'components/PlayerControls';
-import {combine} from 'utils';
+import {combine, combineSelectors} from 'utils';
 
 import {videoQualitySetting} from 'media/selectors';
 import {t} from 'i18n/selectors';
@@ -73,7 +73,7 @@ MediaPlayerControls.defaultProps = {
 };
 
 export default connect(
-  combine({
+  combineSelectors({
     activeQuality: videoQualitySetting(),
     t
   }),

@@ -20,7 +20,7 @@ import {prop} from 'selectors';
 import {has} from 'utils/selectors';
 
 import React from 'react';
-import {combine} from 'utils';
+import {combineSelectors} from 'utils';
 import {connect} from 'react-redux';
 
 export default function({
@@ -130,7 +130,7 @@ export default function({
   };
 
   const result = connect(
-    combine({
+    combineSelectors({
       textTracks: textTracks({
         file: prop('file'),
         defaultTextTrackFileId: prop('defaultTextTrackFileId')

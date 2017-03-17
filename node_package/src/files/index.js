@@ -5,6 +5,8 @@ import {
 
 import {camelize} from 'utils';
 
+import {combineReducers} from 'redux';
+
 export default {
   init({files, dispatch}) {
     Object.keys(files).forEach(collectionName => {

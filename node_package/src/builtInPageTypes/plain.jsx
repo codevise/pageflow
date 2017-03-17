@@ -15,7 +15,7 @@ import {
 import registerPageType from 'registerPageType';
 import {connectInPage} from 'pages';
 import {pageAttributes} from 'pages/selectors';
-import {combine} from 'utils';
+import {combineSelectors} from 'utils';
 
 function PlainPage(props) {
   const page = props.page;
@@ -39,7 +39,7 @@ function PlainPage(props) {
 export function register() {
   registerPageType('background_image', {
     component: connectInPage(
-      combine({
+      combineSelectors({
         page: pageAttributes()
       })
     )(PlainPage),

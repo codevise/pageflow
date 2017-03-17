@@ -1,6 +1,6 @@
 import PageVideoPlayer from './PageVideoPlayer';
 import MobilePageVideoPoster from './MobilePageVideoPoster';
-import {combine, camelize} from 'utils';
+import {combineSelectors, camelize} from 'utils';
 
 import {fileExists} from 'files/selectors';
 import {has} from 'utils/selectors';
@@ -31,7 +31,7 @@ function mobilePosterExists(props) {
   return props.fileExists('imageFiles', props.page[property]);
 }
 
-export default connect(combine({
+export default connect(combineSelectors({
   fileExists: fileExists(),
   hasMobilePlatform: has('mobile platform'),
   hasMuteVideoAutoplaySupport: has('mute video autoplay support')

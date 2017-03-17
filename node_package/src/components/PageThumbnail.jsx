@@ -4,7 +4,7 @@ import {connectInPage} from 'pages';
 import {pageType} from 'pageTypes/selectors';
 import {fileExists} from 'files/selectors';
 
-import {combine, camelize} from 'utils';
+import {combineSelectors, camelize} from 'utils';
 
 export function PageThumbnail(props) {
   return (
@@ -91,7 +91,7 @@ function thumbnailCandidateId(props, candidate) {
   return 'id' in candidate ? candidate.id : props.page[camelize(candidate.attribute)];
 }
 
-export default connectInPage(combine({
+export default connectInPage(combineSelectors({
   pageType: pageType({page: props => props.page}),
   fileExists: fileExists()
 }))(PageThumbnail);

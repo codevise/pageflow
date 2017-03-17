@@ -16,7 +16,7 @@ import {
 
 import {textIsHidden, textHasBeenHidden} from 'hideText/selectors';
 import {connectInPage} from 'pages';
-import {combine} from 'utils';
+import {combineSelectors} from 'utils';
 
 /**
  * @desc
@@ -102,7 +102,7 @@ PageWithInteractiveBackground.propTypes = {
   onQualityMenuItemClick: React.PropTypes.func
 };
 
-export default connectInPage(combine({
+export default connectInPage(combineSelectors({
   textIsHidden,
   textHasBeenHidden
 }))(PageWithInteractiveBackground);

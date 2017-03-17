@@ -13,7 +13,7 @@ import {t} from 'i18n/selectors';
 import {file} from 'files/selectors';
 import {has} from 'utils/selectors';
 
-import {combine} from 'utils';
+import {combine, combineSelectors} from 'utils';
 
 const qualities = ['auto', '4k', 'fullhd', 'medium'];
 
@@ -39,7 +39,7 @@ export function register() {
   registerPageType('video', {
 
     component: connectInPage(
-      combine({
+      combineSelectors({
         page: pageAttributes(),
         videoFile: file('videoFiles', {id: pageAttribute('videoFileId')}),
         playerState: playerState(),
