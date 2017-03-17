@@ -73,17 +73,32 @@ describe('createItemSelector', () => {
       expect(result.title).to.eq('Big news');
     });
 
-    it('can map value', () => {
-      const state = {
-        posts: {
-          4: {id: 4, attributes: {title: 'Minor news'}}
-        }
-      };
-      const selector = createItemSelector('posts');
+    describe('with namespace option', () => {
+      it('can look up item by id in namespace', () => {
+        const state = {
+          myNamespace: {
+            posts: {
+              4: {id: 4, title: 'Minor news'},
+              5: {id: 5, title: 'Big news'}
+            }
+          }
+        };
+        const selector = createItemSelector('posts', {namespace: 'myNamespace'});
 
-      const result = selector({id: 4, map: post => post.attributes.title})(state);
+        const result = selector({id: 5})(state);
 
-      expect(result).to.eq('Minor news');
+        expect(result.title).to.eq('Big news');
+      });
+
+      it('throws descriptive error if namespace is unknown', () => {
+        const state = {
+        };
+        const selector = createItemSelector('items', {namespace: 'ufos'});
+
+        expect(() => {
+          selector({id: 5})(state);
+        }).to.throw(/unknown namespace/);
+      });
     });
   });
 });
