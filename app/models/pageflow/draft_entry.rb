@@ -21,7 +21,7 @@ module Pageflow
              :files,
              :image_files, :video_files, :audio_files,
              :locale,
-             :author, :publisher, :keywords,
+             :author, :publisher, :keywords, :theme_name,
              :to => :draft)
 
     def initialize(entry, draft = nil)
