@@ -3,6 +3,7 @@ import {nestedFiles} from 'files/selectors';
 import {pageState} from 'pages/selectors';
 import {setting} from 'settings/selectors';
 import {t, locale} from 'i18n/selectors';
+import {memoizedSelector} from 'utils';
 
 import {bindActionCreators} from 'redux';
 
@@ -16,39 +17,41 @@ export function playerActions({scope = 'default'} = {}) {
   };
 }
 
-export function textTracks({file,
-                            defaultTextTrackFileId = () => {}}) {
-  const textTrackSettingsSelector = setting({property: 'textTrack'});
-  const volumeSelector = setting({property: 'volume'});
-  const filesSelector = nestedFiles('textTrackFiles', {
-    parent: file
-  });
+export function textTracks({file, defaultTextTrackFileId = () => {}}) {
+  return memoizedSelector(
+    setting({property: 'textTrack'}),
+    setting({property: 'volume'}),
+    t,
+    locale,
+    nestedFiles('textTrackFiles', {
+      parent: file
+    }),
+    defaultTextTrackFileId,
+    (textTrackSettings, volume, translate, currentLocale, textTrackFiles, defaultTextTrackFileId) => {
+      textTrackSettings = textTrackSettings || {};
+      const files = textTrackFiles.map(textTrackFile => ({
+        displayLabel: displayLabel(textTrackFile, translate),
+        ...textTrackFile
+      }));
 
-  return (state, props) => {
-    const textTrackSettings = textTrackSettingsSelector(state, props) || {};
-    const translate = t(state, props);
-    const files = filesSelector(state, props).map(textTrackFile => ({
-      displayLabel: displayLabel(textTrackFile, translate),
-      ...textTrackFile
-    }));
+      const autoFile = autoTextTrackFile(files,
+                                         defaultTextTrackFileId,
+                                         currentLocale,
+                                         volume);
 
-    const autoFile = autoTextTrackFile(files,
-                                       defaultTextTrackFileId(state, props),
-                                       locale(state),
-                                       volumeSelector(state, props));
-
-    return {
-      files: files.sort((file1, file2) =>
-        file1.displayLabel.localeCompare(file2.displayLabel)
-      ),
-      autoFile,
-      activeFileId: getActiveTextTrackFileId(files,
-                                             autoFile,
-                                             textTrackSettings),
-      mode: textTrackSettings.kind == 'off' ? 'off' :
-            textTrackSettings.kind ? 'user' : 'auto'
-    };
-  };
+      return {
+        files: files.sort((file1, file2) =>
+                          file1.displayLabel.localeCompare(file2.displayLabel)
+                         ),
+        autoFile,
+        activeFileId: getActiveTextTrackFileId(files,
+                                               autoFile,
+                                               textTrackSettings),
+        mode: textTrackSettings.kind == 'off' ? 'off' :
+          textTrackSettings.kind ? 'user' : 'auto'
+      };
+    }
+  );
 }
 
 function autoTextTrackFile(textTrackFiles, defaultTextTrackFileId, locale, volume) {
