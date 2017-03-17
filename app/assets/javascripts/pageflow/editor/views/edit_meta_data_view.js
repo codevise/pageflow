@@ -68,6 +68,11 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
         model: entry,
         widgetTypes: pageflow.editor.widgetTypes
       });
+      if (pageflow.editor.themes.length > 1) {
+        this.view(pageflow.ChangeThemeView, {
+          themes: pageflow.editor.themes
+        });
+      }
     });
 
     configurationEditor.tab('social', function() {
