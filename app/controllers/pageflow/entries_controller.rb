@@ -90,7 +90,7 @@ module Pageflow
                                     :overview_button_enabled,
                                     :emphasize_chapter_beginning, :emphasize_new_pages,
                                     :share_url, :share_image_id, :share_image_x, :share_image_y,
-                                    :locale, :author, :publisher, :keywords)
+                                    :locale, :author, :publisher, :keywords, :theme_name)
     end
 
     def entry_request_scope
