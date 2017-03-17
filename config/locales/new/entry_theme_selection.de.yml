@@ -1,0 +1,9 @@
+de:
+  pageflow:
+    default_theme:
+      name: Standard
+    editor:
+      templates:
+        change_theme:
+          change: Theme ändern
+          current_prefix: Gewähltes Theme
