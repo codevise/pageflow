@@ -5,6 +5,18 @@
 /// Base typography for page.
 $page-typography: () !default;
 
+/// Space for logo on first page.
+$page-scroller-first-page-padding-top: nil !default;
+
+/// Space for logo on first page in mobile layout.
+$page-scroller-first-page-mobile-padding-top: 110px !default;
+
+/// Space for logo on first page in mobile landscape layout.
+$page-scroller-first-page-mobile-landscape-padding-top: 100px !default;
+
+/// Space for logo on first page in phone layout.
+$page-scroller-first-page-phone-padding-top: nil !default;
+
 /// Typography for header.
 $page-header-typography: () !default;
 
@@ -205,13 +217,19 @@ $page-content-text-line-height: 1.5em !default;
 .js .page:first-child {
   .scroller > div,
   .content_and_background > .page_header {
+    padding-top: $page-scroller-first-page-padding-top;
+
     @include mobile {
-      padding: 110px 12% 5% 8%;
+      padding-top: $page-scroller-first-page-mobile-padding-top;
       width: 100%;
 
       @media (orientation: landscape) {
-        padding: 100px 12% 5% 8%;
+        padding-top: $page-scroller-first-page-mobile-landscape-padding-top;
       }
+    }
+
+    @include phone {
+      padding-top: $page-scroller-first-page-phone-padding-top;
     }
   }
 
