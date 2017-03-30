@@ -14,7 +14,8 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
 
   ui: {
     title: '.title',
-    unsetButton: '.unset'
+    unsetButton: '.unset',
+    buttons: 'button'
   },
 
   events: {
@@ -62,6 +63,8 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
 
     this.ui.title.text(target ? target.title() : I18n.t('pageflow.editor.views.inputs.reference_input_view.none'));
     this.ui.unsetButton.toggle(!!target);
+
+    this.updateDisabledAttribute(this.ui.buttons);
 
     if (this.thumbnailView) {
       this.thumbnailView.close();

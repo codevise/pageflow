@@ -27,7 +27,7 @@
     overflow: hidden;
   }
 
-  a.choose {
+  .choose {
     @include icon-only-button;
     @include pencil-icon;
 
@@ -36,7 +36,7 @@
     right: 0;
   }
 
-  a.unset {
+  .unset {
     @include icon-only-button($base-color: #d00);
     @include cancel-circled-icon;
 
