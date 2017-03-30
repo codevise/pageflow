@@ -14,6 +14,9 @@ $logo-variant: "first-page" !default;
 /// Top position of logo.
 $logo-top: 30px !default;
 
+/// Height of the logo. (Non-watermark variants only)
+$logo-phone-top: nil !default;
+
 /// Width of the logo. (Watermark variant only)
 $logo-width: 100px !default;
 
@@ -28,6 +31,9 @@ $logo-max-width: 221px !default;
 
 /// Height of the logo.
 $logo-height: 50px !default;
+
+/// Height of the logo. (Non-watermark variants only)
+$logo-mobile-height: 35px !default;
 
 /// Height of the logo in phone layout. (Watermark variant only)
 $logo-phone-height: 24px !default;
@@ -49,6 +55,8 @@ $logo-phone-height: 24px !default;
     $min-width: $logo-min-width,
     $max-width: $logo-max-width,
     $width: $logo-relative-width,
-    $height: $logo-height
+    $height: $logo-height,
+    $mobile-height: $logo-mobile-height,
+    $phone-top: $logo-phone-top
   );
 }
