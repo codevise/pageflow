@@ -1,5 +1,5 @@
 pageflow.VideoPlayer.srcFromOptionsMethod = function(player) {
-  var extensions = ['webm', 'm3u8', 'mp4'];
+  var extensions = ['m3u8', 'mp4'];
 
   player.srcFromOptions = function() {
     var extension = getVideoExtension(player.currentSrc()),
