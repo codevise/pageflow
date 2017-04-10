@@ -1,0 +1,40 @@
+button.change_theme {
+  @include button(#559ff2);
+}
+
+.change_theme {
+  .box {
+    top: 5%;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 745px;
+    padding-bottom: 20px;
+    overflow: hidden;
+    height: 80%;
+    overflow-y: scroll;
+  }
+
+  .themes_panel,
+  .preview_panel {
+    position: absolute;
+    top: 80px;
+  }
+
+  .themes_panel {
+    width: 330px;
+    bottom: 50px;
+    left: 20px;
+    overflow: auto;
+  }
+
+  .preview_panel {
+    position: absolute;
+    left: 370px;
+    right: 20px;
+  }
+
+  .select_theme {
+    @include button(#590);
+    text-align: right;
+  }
+}

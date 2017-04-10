@@ -15,6 +15,7 @@
 @import "./indicators";
 @import "./disabled_atmo_indicator";
 @import "./unsupported_browser_hint";
+@import "./change_theme";
 
 .editor {
   @extend %pageflow-ui;
