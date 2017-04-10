@@ -33,8 +33,32 @@ button.change_theme {
     right: 20px;
   }
 
-  .select_theme {
+  .use_theme {
     @include button(#590);
     text-align: right;
+    vertical-align: 20px;
+  }
+
+  .theme_name {
+    margin: 10px;
+  }
+
+  .theme_in_use {
+    float: right;
+    font-size: 35px;
+    margin-right: 10px;
+  }
+
+  li {
+    line-height: 60px;
+    background-color: #d2e5fa;
+    margin: 10px;
+  }
+
+  h1 {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bolder;
+    color: #555;
   }
 }
