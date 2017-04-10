@@ -20,7 +20,10 @@ module Pageflow
         result = helper.theme_json_seeds(config)
 
         expect(result).to include('"name":"test_theme"')
-        expect(result).to include('"preview_image_path":"pageflow/themes/test_theme/preview.png"')
+        expect(result).to(
+          include('"preview_image_url":'\
+                  '"http://test.host/images/pageflow/themes/test_theme/preview.png"')
+        )
       end
     end
   end
