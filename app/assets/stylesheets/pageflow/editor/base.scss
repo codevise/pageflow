@@ -17,6 +17,7 @@
 @import "./unsupported_browser_hint";
 
 .editor {
+  @import "./change_theme";
   @extend %pageflow-ui;
 
   font-family: Helvetica, "Sans-Serif";
