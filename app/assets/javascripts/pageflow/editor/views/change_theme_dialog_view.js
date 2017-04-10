@@ -1,6 +1,6 @@
 pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
   template: 'templates/change_theme_dialog',
-  className: 'change_theme dialog',
+  className: 'change_theme dialog editor',
 
   mixins: [pageflow.dialogView],
 
