@@ -41,15 +41,6 @@ module Pageflow
     end
 
 
-    def webm_high
-      ZencoderAttachment.new(self, "high.webm")
-    end
-
-    def webm_medium
-      ZencoderAttachment.new(self, "medium.webm")
-    end
-
-
     def mp4_high
       ZencoderAttachment.new(self, "high.mp4")
     end
