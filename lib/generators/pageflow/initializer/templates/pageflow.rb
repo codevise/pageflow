@@ -2,6 +2,10 @@ Pageflow.configure do |config|
   # The email address to use as from header in invitation mails to new
   # users.
   config.mailer_sender = 'change-me-at-config-initializers-pageflow@example.com'
+  
+  # Activate a constraint for the editor routes defined by Pageflow.
+  # This is useful when you have accounts with CNAMEs.
+  # config.editor_route_constraint = HostConstraint.new
 
   # Plugins provide page types and widget types.
   config.plugin(Pageflow.built_in_page_types_plugin)
