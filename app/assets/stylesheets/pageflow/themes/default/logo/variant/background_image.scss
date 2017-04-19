@@ -4,7 +4,9 @@
   $min-width,
   $max-width,
   $width,
-  $height
+  $height,
+  $mobile-height,
+  $phone-top
 ) {
   $page-selector: if($first-page-only, ":first-child", "");
 
@@ -26,7 +28,11 @@
 
       @include mobile {
         padding-top: 1%;
-        height: 35px;
+        height: $mobile-height;
+      }
+
+      @include phone {
+        top: $phone-top;
       }
     }
 
