@@ -30,6 +30,7 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
             $('.multimedia_alert').multimediaAlert();
 
             pageflow.widgetTypes.enhance(body);
+            pageflow.phoneLandscapeFullscreen();
           }
         });
       });
