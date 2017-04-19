@@ -1,15 +1,16 @@
 .videoWrapper {
   @extend %pageflow_widget_margin_right !optional;
 
-  @include desktop {
-    position: relative;
-    height: 100%;
-    width: auto;
-  }
+  position: relative;
+  height: 100%;
+  width: auto;
+  overflow: hidden;
 
-  @include pad_portrait {
-    position: initial;
-    height: initial;
+  video::-webkit-media-controls-start-playback-button {
+    // scss-lint:disable ImportantRule
+    // Hide native video play button
+    display: none !important;
+    // scss-lint:enable ImportantRule
   }
 
   .vjs-control-bar {
