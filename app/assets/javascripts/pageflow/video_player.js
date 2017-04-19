@@ -3,6 +3,7 @@
 //= require_self
 
 //= require ./video_player/dash
+//= require ./video_player/use_slim_controls_during_phone_playback
 //= require ./video_player/media_events
 //= require ./video_player/prebuffering
 //= require ./video_player/buffer_underrun_waiting
@@ -15,6 +16,10 @@ pageflow.VideoPlayer = function(element, options) {
 
   element = pageflow.VideoPlayer.filterSources(element);
   var player = videojs(element, options);
+
+  if (options.useSlimPlayerControlsDuringPhonePlayback) {
+    pageflow.mediaPlayer.useSlimPlayerControlsDuringPhonePlayback(player);
+  }
 
   pageflow.VideoPlayer.prebuffering(player);
   pageflow.VideoPlayer.srcFromOptionsMethod(player);

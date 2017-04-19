@@ -71,7 +71,6 @@ $slim-player-controls-info-box-header-typography: () !default;
 
   .js &-info_box {
     @include transition(opacity 0.2s linear, visibility 0.2s linear, transform 0.2s ease);
-    @include transition-delay(0.2s);
     pointer-events: none;
 
     position: absolute;
@@ -80,6 +79,7 @@ $slim-player-controls-info-box-header-typography: () !default;
     z-index: 2;
 
     @include desktop {
+      @include transition-delay(0.2s);
       width: 100%;
       max-width: 700px;
       bottom: 80px;
@@ -96,17 +96,43 @@ $slim-player-controls-info-box-header-typography: () !default;
     }
   }
 
-  .js &-container-has_been_faded %player_controls-info_box {
+  @mixin faded {
     opacity: 0;
     visibility: hidden;
     @include transform(translate3d(-50%, 10px, 0));
   }
 
-  .js &-container:hover %player_controls-info_box,
-  .js &-container-paused %player_controls-info_box {
-    @include transition-delay(0);
+  @mixin visible {
     opacity: 1;
     visibility: visible;
     @include transform(translate3d(-50%, 0, 0));
+  }
+
+  @include desktop {
+    .js &-container-has_been_faded %player_controls-info_box {
+      @include faded;
+    }
+
+    .js &-container:hover %player_controls-info_box,
+    .js &-container-paused %player_controls-info_box {
+      @include transition-delay(0);
+      @include visible;
+    }
+  }
+
+  @include phone {
+    .js.has_no_native_video_player &-container-fading %player_controls-info_box {
+      @include faded;
+    }
+
+    .js.has_no_native_video_player &-container-paused %player_controls-info_box {
+      @include visible;
+    }
+  }
+}
+
+&.widget_classic_player_controls_replaced {
+  %player_controls-info_box {
+    display: none;
   }
 }

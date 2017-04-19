@@ -40,6 +40,15 @@ $slim-player-controls-control-bar-text-phone-typography: () !default;
 
     @include phone {
       z-index: 2;
+
+      &.with_quality_menu_present,
+      &.with_text_tracks_menu_present {
+        padding-right: 60px;
+      }
+
+      &.with_quality_menu_present.with_text_tracks_menu_present {
+        padding-right: 110px;
+      }
     }
   }
 
@@ -144,15 +153,21 @@ $slim-player-controls-control-bar-text-phone-typography: () !default;
     display: none;
   }
 
+  &-progress {
+    position: relative;
+  }
+
   &-progress_bar {
     position: absolute;
-    bottom: 55px;
-    left: 16px;
-    right: 20px;
+    bottom: 40px;
+    left: -4px;
+    right: 0;
     height: 20px;
 
     @include phone {
-      display: none;
+      bottom: 0;
+      left: 30px;
+      right: 80px;
     }
 
     &:before {
@@ -242,9 +257,19 @@ $slim-player-controls-control-bar-text-phone-typography: () !default;
   &-time_separator,
   &-duration,
   &-skip_button,
-  &-menu_bar,
-  &-loading_spinner {
+  &-menu_bar {
     @include transition(opacity 0.2s linear, visibility 0.2s linear);
+  }
+
+  .has_native_video_player &-container-video {
+    %player_controls-progress_bar,
+    %player_controls-current_time,
+    %player_controls-time_separator,
+    %player_controls-duration,
+    %player_controls-skip_button,
+    %player_controls-menu_bar {
+      display: none;
+    }
   }
 
   &-container-paused {
@@ -253,8 +278,7 @@ $slim-player-controls-control-bar-text-phone-typography: () !default;
     %player_controls-time_separator,
     %player_controls-duration,
     %player_controls-skip_button,
-    %player_controls-menu_bar,
-    %player_controls-loading_spinner {
+    %player_controls-menu_bar {
       opacity: 0;
       visibility: hidden;
       @include transition-delay(0.2s);
