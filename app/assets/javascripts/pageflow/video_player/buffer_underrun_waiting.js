@@ -1,4 +1,11 @@
 pageflow.VideoPlayer.bufferUnderrunWaiting = function(player) {
+  var originalPause = player.pause;
+
+  player.pause = function() {
+    cancelWaiting();
+    originalPause.apply(this, arguments);
+  };
+
   function pauseAndPreloadOnUnderrun() {
     if (bufferUnderrun()) {
       pauseAndPreload();
@@ -13,11 +20,12 @@ pageflow.VideoPlayer.bufferUnderrunWaiting = function(player) {
     pageflow.log('Buffer underrun');
 
     player.trigger('bufferunderrun');
+    player.pause();
+
     player.waitingOnUnderrun = true;
 
-    player.pause();
     player.prebuffer({secondsToBuffer: 5, secondsToWait: 5}).then(function() {
-      // do nothing if user aborted waiting by clicking play
+      // do nothing if user aborted waiting by clicking pause
       if (player.waitingOnUnderrun) {
         player.waitingOnUnderrun = false;
         player.trigger('bufferunderruncontinue');
@@ -25,18 +33,12 @@ pageflow.VideoPlayer.bufferUnderrunWaiting = function(player) {
         player.play();
       }
     });
+  }
 
-    player.on('play', onNextPlay);
-
-    function onNextPlay() {
-      player.off('play', onNextPlay);
-
-      // if user presses play button, ignore buffer underruns for a
-      // moment to give the user the possibility to pause the video.
-      if (player.waitingOnUnderrun) {
-        player.ignoreUnderrunsUntil = new Date().getTime() + 5 * 1000;
-        player.waitingOnUnderrun = false;
-      }
+  function cancelWaiting() {
+    if (player.waitingOnUnderrun) {
+      player.ignoreUnderrunsUntil = new Date().getTime() + 5 * 1000;
+      player.waitingOnUnderrun = false;
 
       player.trigger('bufferunderruncontinue');
     }
