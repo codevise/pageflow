@@ -1,7 +1,9 @@
-export default function(videoFile, quality) {
+export default function(videoFile, quality, {hasHighBandwidth} = {}) {
   quality = quality || 'auto';
 
   if (quality == 'auto') {
+    let fallbackQuality = hasHighBandwidth ? 'high' : 'medium';
+
     let result = [
       {
         type: 'application/x-mpegURL',
@@ -9,7 +11,7 @@ export default function(videoFile, quality) {
       },
       {
         type: 'video/mp4',
-        src: `${videoFile.urls.high}?u=1`
+        src: `${videoFile.urls[fallbackQuality]}?u=1`
       }
     ];
 

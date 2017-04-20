@@ -75,6 +75,18 @@ describe('createFilePlayer', () => {
       expect(wrapper.render()).to.have.descendants('source[src="high.mp4"]');
     });
 
+    it('passes hasHighBandwidth option to sources', () => {
+      const {FilePlayer} = setup({
+        sources: (file, quality, {hasHighBandwidth}) => [
+          {type: 'video/mp4', src: `${hasHighBandwidth ? 'high' : 'low'}.mp4`}
+        ]
+      });
+
+      const wrapper = mount(<FilePlayer {...requiredProps} hasHighBandwidth={true} />);
+
+      expect(wrapper.render()).to.have.descendants('source[src="high.mp4"]');
+    });
+
     it('renders media tag with poster given by option', () => {
       const {FilePlayer} = setup({
         poster: file => file.posterUrl

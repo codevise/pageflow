@@ -134,6 +134,14 @@ module Pageflow
       ZencoderVideoOutputDefinition.new(self)
     end
 
+    def externally_generated_outputs
+      if Pageflow.config.zencoder_options[:hls_smil_suffix].present?
+        %w(hls-playlist)
+      else
+        []
+      end
+    end
+
     def meta_data_attributes=(attributes)
       self.attributes = attributes.symbolize_keys.slice(:format,
                                                         :duration_in_ms,

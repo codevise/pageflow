@@ -40,7 +40,21 @@ module Pageflow
     end
 
     def output_presences
-      super || {}
+      (super || {}).merge(externally_generated_output_presences)
+    end
+
+    def externally_generated_outputs
+      []
+    end
+
+    private
+
+    def externally_generated_output_presences
+      pairs = externally_generated_outputs.map do |label|
+        [label.to_s, true]
+      end
+
+      Hash[pairs]
     end
   end
 end

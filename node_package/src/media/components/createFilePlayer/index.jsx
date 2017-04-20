@@ -100,7 +100,9 @@ export default function({
       return (
         <MediaTag tagName={tagName}
 
-                  sources={sources(this.props.file, this.props.quality)}
+                  sources={sources(this.props.file,
+                                   this.props.quality,
+                                   {hasHighBandwidth: this.props.hasHighBandwidth})}
                   tracks={textTracksFromFiles(this.props.textTracks.files,
                                               this.props.textTracksEnabled)}
                   poster={poster(this.props.file, this.props.posterImageFile)}
@@ -138,6 +140,7 @@ export default function({
       }),
       quality: setting({property: 'videoQuality'}),
       hasNativeVideoPlayer: has('native video player'),
+      hasHighBandwidth: has('high bandwidth'),
       textTrackPosition
     }),
     {
