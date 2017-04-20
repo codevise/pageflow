@@ -1,5 +1,5 @@
 import {PageBackgroundImage} from 'components';
-import {combine, camelize} from 'utils';
+import {combineSelectors, camelize} from 'utils';
 
 import {fileExists} from 'files/selectors';
 
@@ -43,6 +43,6 @@ function candidates(prefix) {
   ];
 }
 
-export default connect(combine({
+export default connect(combineSelectors({
   fileExists: fileExists()
 }))(MobilePageVideoPoster);

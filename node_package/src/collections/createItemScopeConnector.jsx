@@ -10,10 +10,23 @@ export default function(collectionName) {
 
   return function connectInItemScope(mapStateToProps, mapDispatchToProps, mergeProps) {
     const connecter = connect(
-      mapStateToProps ? (state, props) =>
-        mapStateToProps(
-          addItemScope(state, collectionName, props[itemScopeProperty]), props
-        ) : null,
+      mapStateToProps ? (state, props) => {
+        const result = mapStateToProps(
+          addItemScope(state, collectionName, props[itemScopeProperty]),
+          props
+        );
+
+        if (typeof result == 'function') {
+          return function(state, props) {
+            return result(
+              addItemScope(state, collectionName, props[itemScopeProperty]),
+              props
+            );
+          };
+        }
+
+        return result;
+      } : null,
       mapDispatchToProps ? (dispatch, props) => {
         const wrappedDispatch = function(action) {
           ensureItemActionId(action, collectionName, props[itemScopeProperty]);

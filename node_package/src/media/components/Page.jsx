@@ -15,7 +15,7 @@ import {
 import MediaPlayerControls from './PlayerControls';
 import NonJsLinks from './NonJsLinks';
 import playerStateClassNames from './playerStateClassNames';
-import {combine} from 'utils';
+import {combine, combineSelectors} from 'utils';
 import {prop, has} from 'utils/selectors';
 import {textTracks} from 'media/selectors';
 
@@ -66,7 +66,7 @@ export function MediaPage(props) {
   );
 }
 
-export default connect(combine({
+export default connect(combineSelectors({
   textTracks: textTracks({
     file: prop('file'),
     defaultTextTrackFileId: prop('page.defaultTextTrackFileId')

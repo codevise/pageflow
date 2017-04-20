@@ -1,17 +1,28 @@
 import {createItemSelector} from 'collections';
 
+import {memoizedSelector} from 'utils';
+
 export const selector = createItemSelector('pages');
 
 export function pageAttribute(property, options) {
-  return selector({map: page => page.attributes[property], ...options});
+  return memoizedSelector(
+    selector(options),
+    page => page && page.attributes[property]
+  );
 }
 
 export function pageAttributes(options) {
-  return selector({map: page => page.attributes, ...options});
+  return memoizedSelector(
+    selector(options),
+    page => page && page.attributes
+  );
 }
 
 export function pageState(property, options) {
-  return selector({map: page => page.state.custom[property], ...options});
+  return memoizedSelector(
+    selector(options),
+    page => page && page.state.custom[property]
+  );
 }
 
 export function pageIsActive(options) {
@@ -35,5 +46,8 @@ export function initialScrollerPosition(options) {
 }
 
 function commonPageState(property, options) {
-  return selector({map: page => page.state.common[property], ...options});
+  return memoizedSelector(
+    selector(options),
+    page => page && page.state.common[property]
+  );
 }

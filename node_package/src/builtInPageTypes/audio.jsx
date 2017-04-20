@@ -14,7 +14,7 @@ import {pageAttributes, pageAttribute} from 'pages/selectors';
 import {t} from 'i18n/selectors';
 import {file} from 'files/selectors';
 
-import {combine} from 'utils';
+import {combine, combineSelectors} from 'utils';
 
 function AudioPage(props) {
   return (
@@ -37,7 +37,7 @@ export function register() {
   registerPageType('audio', {
 
     component: connectInPage(
-      combine({
+      combineSelectors({
         page: pageAttributes(),
         audioFile: file('audioFiles', {id: pageAttribute('audioFileId')}),
         playerState: playerState(),

@@ -1,11 +1,20 @@
 import {getItemScopeProperty} from './itemScopeHelpers';
 
-export default function(collectionName) {
-  return function({id, map = (r => r)} = {}) {
+export default function(collectionName, {namespace} = {}) {
+  return function({id} = {}) {
     return function(state, props) {
       let modelId = id;
+      let namespacedState = state;
 
-      if (!state[collectionName]) {
+      if (namespace) {
+        if (!state[namespace]) {
+          throw new Error(`Cannot select from unknown namespace ${namespace}.`);
+        }
+
+        namespacedState = state[namespace];
+      }
+
+      if (!namespacedState[collectionName]) {
         throw new Error(`Cannot select from unknown collection ${collectionName}.`);
       }
 
@@ -19,9 +28,7 @@ export default function(collectionName) {
         return null;
       }
 
-      const model = state[collectionName][modelId];
-
-      return model && map(model);
+      return namespacedState[collectionName][modelId];
     };
   };
 }

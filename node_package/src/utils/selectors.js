@@ -12,13 +12,6 @@ export function prop(path) {
   };
 }
 
-export function map(selector, fn) {
-  return function(state, props) {
-    const result = selector(state, props);
-    return fn(result);
-  };
-}
-
 export function has(featureName) {
   return function(_props, _state, browser) {
     return hasFeature(featureName, browser);

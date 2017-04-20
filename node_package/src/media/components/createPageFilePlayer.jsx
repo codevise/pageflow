@@ -1,7 +1,7 @@
 import {connectInPage} from 'pages';
 import {pageIsPrepared, pageAttribute} from 'pages/selectors';
 
-import {combine} from 'utils';
+import {combineSelectors} from 'utils';
 
 export default function(FilePlayer) {
   function PageFilePlayer(props) {
@@ -28,7 +28,7 @@ export default function(FilePlayer) {
     }
   }
 
-  return connectInPage(combine({
+  return connectInPage(combineSelectors({
     pageIsPrepared: pageIsPrepared(),
     atmoDuringPlayback: pageAttribute('atmoDuringPlayback'),
     defaultTextTrackFileId: pageAttribute('defaultTextTrackFileId')

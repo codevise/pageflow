@@ -5,7 +5,7 @@ import Scroller from './Scroller';
 import {connectInPage} from 'pages';
 import {pageIsActivated, initialScrollerPosition} from 'pages/selectors';
 
-import {combine} from 'utils';
+import {combineSelectors} from 'utils';
 
 /**
  * @desc Can be used inside
@@ -65,7 +65,7 @@ PageScroller.childContextTypes = {
   pageScroller: React.PropTypes.object
 };
 
-export default connectInPage(combine({
+export default connectInPage(combineSelectors({
   enabled: pageIsActivated(),
   initialScrollerPosition: initialScrollerPosition()
 }))(PageScroller);

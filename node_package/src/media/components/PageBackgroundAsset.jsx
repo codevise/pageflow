@@ -5,7 +5,7 @@ import {playerState, playerActions} from 'media/selectors';
 import {connectInPage} from 'pages';
 import {pageAttributes} from 'pages/selectors';
 
-import {combine, camelize} from 'utils';
+import {combineSelectors, combine, camelize} from 'utils';
 
 export function PageBackgroundAsset({page,
                                      playerState, playerActions,
@@ -30,7 +30,7 @@ export function PageBackgroundAsset({page,
 }
 
 export default connectInPage(
-  combine({
+  combineSelectors({
     page: pageAttributes(),
     playerState: playerState({scope: 'background'})
   }),

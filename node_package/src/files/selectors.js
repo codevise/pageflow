@@ -3,61 +3,76 @@ import {
   createItemsSelector as createCollectionItemsSelector,
 } from 'collections';
 
+import {memoizedSelector} from 'utils';
+
 import expandUrls from './expandUrls';
 import addTypeInfo from './addTypeInfo';
 
 export function file(collectionName, options) {
-  const selector = createCollectionItemSelector(collectionName)(options);
-
-  return function(state, props) {
-    return extendFile(
-      collectionName,
-      selector(state, props),
-      state
-    );
-  };
+  return memoizedSelector(
+    createCollectionItemSelector(collectionName, {namespace: 'files'})(options),
+    state => state.fileUrlTemplates,
+    state => state.modelTypes,
+    function(file, fileUrlTemplates, modelTypes) {
+      return extendFile(
+        collectionName,
+        file,
+        fileUrlTemplates,
+        modelTypes
+      );
+    }
+  );
 }
 
 export function nestedFiles(collectionName, {parent}) {
-  const itemsSelector = createCollectionItemsSelector(collectionName);
-
-  return function(state, props) {
-    const files = itemsSelector(state, props);
-    const parentFile = parent(state, props);
-
-    if (!parentFile) {
-      return [];
-    }
-
-    return Object.keys(files).reduce((result, fileId) => {
-      const file = files[fileId];
-
-      if (file.id &&
-          file.parentFileId == parentFile.id &&
-          file.parentFileModelType == parentFile.modelType) {
-        result.push(extendFile(collectionName, file, state));
+  return memoizedSelector(
+    createCollectionItemsSelector(collectionName, {namespace: 'files'}),
+    parent,
+    state => state.fileUrlTemplates,
+    state => state.modelTypes,
+    (files, parentFile, fileUrlTemplates, modelTypes) => {
+      if (!parentFile) {
+        return [];
       }
 
-      return result;
-    }, []);
-  };
+      return Object.keys(files).reduce((result, fileId) => {
+        const file = files[fileId];
+
+        if (file.id &&
+            file.parentFileId == parentFile.id &&
+            file.parentFileModelType == parentFile.modelType) {
+
+          result.push(extendFile(
+            collectionName,
+            file,
+            fileUrlTemplates,
+            modelTypes
+          ));
+        }
+
+        return result;
+      }, []);
+    }
+  );
 }
 
 export function fileExists() {
-  return function(state, props) {
-    return function(collectionName, id) {
-      return id &&
-             !!createCollectionItemSelector(collectionName)({id})(state, props);
-    };
-  };
+  return memoizedSelector(
+    state => state.files,
+    files =>
+      function(collectionName, id) {
+        return id &&
+               !!createCollectionItemSelector(collectionName)({id})(files);
+      }
+  );
 }
 
-function extendFile(collectionName, file, state) {
+function extendFile(collectionName, file, fileUrlTemplates, modelTypes) {
   return addTypeInfo(
     collectionName,
     expandUrls(collectionName,
                file,
-               state.fileUrlTemplates),
-    state.modelTypes
+               fileUrlTemplates),
+    modelTypes
   );
 }
