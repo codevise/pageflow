@@ -8,7 +8,7 @@ import {has} from 'utils/selectors';
 import {connect} from 'react-redux';
 
 export function PageBackgroundVideo(props) {
-  if (props.hasMobilePlatform && (mobilePosterExists(props) || !props.hasMuteVideoAutoplaySupport)) {
+  if (props.hasMobilePlatform && mobilePosterExists(props)) {
     return (
       <MobilePageVideoPoster page={props.page}
                              propertyNamePrefix={props.propertyNamePrefix} />
@@ -33,6 +33,5 @@ function mobilePosterExists(props) {
 
 export default connect(combine({
   fileExists: fileExists(),
-  hasMobilePlatform: has('mobile platform'),
-  hasMuteVideoAutoplaySupport: has('mute video autoplay support')
+  hasMobilePlatform: has('mobile platform')
 }))(PageBackgroundVideo);

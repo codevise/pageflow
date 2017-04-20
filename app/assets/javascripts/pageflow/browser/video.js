@@ -24,3 +24,7 @@ pageflow.browser.feature('mp4 support only', function(has) {
     pageflow.browser.agent.matchesDesktopSafari9() ||
     pageflow.browser.agent.matchesDesktopSafari10();
 });
+
+pageflow.browser.feature('native video player', function(has) {
+  return has('iphone platform');
+});

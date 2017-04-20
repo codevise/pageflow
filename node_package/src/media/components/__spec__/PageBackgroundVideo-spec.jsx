@@ -14,7 +14,6 @@ describe('PageBackgroundVideo', () => {
           mobilePosterImageId: 5
         },
         hasMobilePlatform: true,
-        hasMuteVideoAutoplaySupport: true,
         fileExists: fileExistsFn({
           imageFiles: [5]
         })
@@ -25,30 +24,10 @@ describe('PageBackgroundVideo', () => {
       expect(wrapper).to.have.descendants(MobilePageVideoPoster);
     });
 
-    it('renders mobile poster if mute autoplay is not supported', () => {
+    it('renders muted video player on mobile if no mobile poster is present', () => {
       const props = {
         page: {},
-
         hasMobilePlatform: true,
-        hasMuteVideoAutoplaySupport: false,
-
-        fileExists: fileExistsFn({
-          imageFiles: []
-        })
-      };
-
-      const wrapper = shallow(<PageBackgroundVideo {...props} />);
-
-      expect(wrapper).to.have.descendants(MobilePageVideoPoster);
-    });
-
-    it('renders muted video player if mute autoplay is supported and no mobile poster is present', () => {
-      const props = {
-        page: {},
-
-        hasMobilePlatform: true,
-        hasMuteVideoAutoplaySupport: true,
-
         fileExists: fileExistsFn({
           imageFiles: []
         })
