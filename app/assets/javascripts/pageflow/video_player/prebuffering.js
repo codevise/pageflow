@@ -32,7 +32,7 @@ pageflow.VideoPlayer.prebuffering = function(player) {
 
     if (pageflow.browser.has('prebuffering support')) {
       if (!player.isBufferedAhead(delta) && !player.prebufferDeferred) {
-        pageflow.log('prebuffering video ' + player.srcFromOptions());
+        pageflow.log('prebuffering video ' + player.src());
 
         timeout = function() {
           setTimeout(function() {
@@ -43,7 +43,7 @@ pageflow.VideoPlayer.prebuffering = function(player) {
             count++;
 
             if (player.isBufferedAhead(delta) || count > maxCount) {
-              pageflow.log('finished prebuffering video ' + player.srcFromOptions());
+              pageflow.log('finished prebuffering video ' + player.src());
               deferred.resolve();
               player.prebufferDeferred = null;
             }
