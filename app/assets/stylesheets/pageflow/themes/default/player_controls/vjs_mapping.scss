@@ -5,10 +5,10 @@ $vjs-selector-mapping: (
 
   background: ".page_background-for_page_with_player_controls",
 
-  background-idle: ".is_idle .videoWrapper, .audioPage.is_idle .backgroundArea",
+  background-idle: ".is_idle .page_background-for_page_with_player_controls",
 
-  background-hover: ".is_control_bar_hovered .videoWrapper, .audioPage.is_control_bar_hovered .backgroundArea",
-  background-focused: ".is_control_bar_focused .videoWrapper, .audioPage.is_control_bar_focused .backgroundArea",
+  background-hover: ".is_control_bar_hovered .page_background-for_page_with_player_controls",
+  background-focused: ".is_control_bar_focused .page_background-for_page_with_player_controls",
 
   // Use playing class that is removed with delay to prevent
   // mask image on scroller from being removed too early in slim
