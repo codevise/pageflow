@@ -41,6 +41,9 @@ $vjs-selector-mapping: (
   // cursor leaves the control bar again.
   container-has_been_faded: ".controls.has_been_faded",
 
+  container-video: ".videoPage .controls",
+  container-fading: ".videoPage .controls",
+
   container-unplayed: ".unplayed .controls",
 
   info_box: ".add_info_box",
@@ -53,6 +56,8 @@ $vjs-selector-mapping: (
   skip_button: ".player_skip",
   loading_spinner: ".vjs-loading-spinner",
   loading_spinner-on_underrun: ".vjs-loading-spinner.showing-for-underrun",
+
+  progress: ".player_controls-progress",
 
   current_time: ".vjs-current-time",
   time_separator: ".vjs-time-divider",

@@ -1,8 +1,11 @@
 .player_controls {
   &-menu_bar {
     right: 90px;
-  }
 
+    @include phone {
+      right: 0;
+    }
+  }
 
   &-menu_bar-stand_alone {
     right: 20px;

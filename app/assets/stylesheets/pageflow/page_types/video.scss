@@ -1,6 +1,6 @@
 @import "./video/content_hiding";
 
-.has_phone_platform .page .videoPage .videoWrapper {
+.has_native_video_player .page .videoPage .videoWrapper {
   margin-right: 0;
   position: initial;
   height: 100%;
@@ -112,5 +112,9 @@
 }
 
 .js .non_js_video {
+  display: none;
+}
+
+.has_no_native_video_player .videoPage .background_image {
   display: none;
 }
