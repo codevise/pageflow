@@ -24,6 +24,7 @@ pageflow.WidgetItemView = Backbone.Marionette.Layout.extend({
 
   onRender: function() {
     var widgetTypes = this.options.widgetTypes.findAllByRole(this.model.role()) || [];
+    var isOptional = this.options.widgetTypes.isOptional(this.model.role());
 
     this.widgetTypeContainer.show(new pageflow.SelectInputView({
       model: this.model,
@@ -32,11 +33,12 @@ pageflow.WidgetItemView = Backbone.Marionette.Layout.extend({
       collection: widgetTypes,
       valueProperty: 'name',
       translationKeyProperty: 'translationKey',
-      includeBlank: true
+      includeBlank: isOptional || !this.model.get('type_name')
     }));
 
     this.$el.toggleClass('is_hidden', widgetTypes.length <= 1 &&
-                         !this.options.widgetTypes.isOptional(this.model.role()));
+                         !this.model.hasConfiguration() &&
+                         !isOptional);
 
     this.update();
   },
