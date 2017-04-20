@@ -4,6 +4,7 @@
 @import "./slim/info_box";
 @import "./slim/close_button";
 @import "./slim/scroller";
+@import "./slim/cue_margins";
 
 %player_controls-container {
   @include phone {

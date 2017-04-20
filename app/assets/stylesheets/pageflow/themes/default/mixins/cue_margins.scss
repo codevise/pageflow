@@ -1,0 +1,43 @@
+@mixin cue-margins($controls-offset: 0) {
+  .vjs-text-track-display {
+    bottom: $controls-offset;
+  }
+
+  .is_control_bar_hidden .vjs-text-track-display {
+    bottom: 0;
+  }
+
+  @for $i from 1 through 20 {
+    $size: 10px * $i;
+
+    .cue_margin_left_#{$i} {
+      .vjs-text-track-display {
+        left: $size;
+      }
+    }
+
+    .cue_margin_right_#{$i} {
+      .vjs-text-track-display {
+        right: $size;
+      }
+    }
+
+    .cue_margin_top_#{$i} {
+      .vjs-text-track-display {
+        top: $size;
+      }
+    }
+
+    .cue_margin_bottom_#{$i} {
+      .vjs-text-track-display {
+        bottom: $size + $controls-offset;
+      }
+    }
+
+    .is_control_bar_hidden .cue_margin_bottom_#{$i} {
+      .vjs-text-track-display {
+        bottom: $size;
+      }
+    }
+  }
+}
