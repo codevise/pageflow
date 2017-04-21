@@ -4,17 +4,53 @@
 
 [Compare changes](https://github.com/codevise/pageflow/compare/v0.11.0...master)
 
+##### Breaking Changes
+
+- The `pageflow-react` gem has been merged into the core `pageflow`
+  gem. Remove the `pageflow-react` entry from your `Gemfile` if one
+  exists and make sure you update all gems that depend on
+  `pageflow-react` to versions that only depend on `pageflow` instead.
+  ([#721](https://github.com/codevise/pageflow/pull/721),
+   [#744](https://github.com/codevise/pageflow/pull/744))
+
+  In the Pageflow initializer, delete all lines that register page
+  types from `Pageflow::BuiltInPageType`, i.e. lines of the form:
+
+        config.page_types.register(Pageflow::BuiltInPageType.background_image)
+
+  Insert the following single line instead:
+
+        config.plugin(Pageflow.built_in_page_types_plugin)
+
+  Finally, in `app/assets/javascript/components.js` replace
+
+        //= require pageflow/react/components
+
+  with
+
+        //= require pageflow/components
+
 ##### Public Site
+
+- Embed entries as iframes
+  ([#665](https://github.com/codevise/pageflow/pull/665))
+- Use slim controls as android phone player
+  ([#745](https://github.com/codevise/pageflow/pull/745))
 
 Media stack:
 
 - FullHD/4k video variants
-  ([#653](https://github.com/codevise/pageflow/pull/653))
+  ([#653](https://github.com/codevise/pageflow/pull/653),
+   [#741](https://github.com/codevise/pageflow/pull/741))
 - Update Video.js and add Dash support
   ([#678](https://github.com/codevise/pageflow/pull/678),
-   [#677](https://github.com/codevise/pageflow/pull/677))
-- Embed entries as iframes
-  ([#665](https://github.com/codevise/pageflow/pull/665))
+   [#677](https://github.com/codevise/pageflow/pull/677),
+   [#746](https://github.com/codevise/pageflow/pull/746))
+- Improve text track cue positioning
+  ([#747](https://github.com/codevise/pageflow/pull/747),
+   [#743](https://github.com/codevise/pageflow/pull/743))
+- Add feature detection for mobile video features
+  ([#742](https://github.com/codevise/pageflow/pull/742))
 - Add ultra variant to image file and video file posters
   ([#706](https://github.com/codevise/pageflow/pull/706))
 - Bug fix: Fix video loop on safari 10 on el capitan.
@@ -23,27 +59,37 @@ Media stack:
   ([#719](https://github.com/codevise/pageflow/pull/719))
 - Do not filter sources for audio tags
   ([#709](https://github.com/codevise/pageflow/pull/709))
-  
+- Bug fix: Continue prebuffer on media tag init
+  ([#740](https://github.com/codevise/pageflow/pull/740))
+
 Theme:
 
 - Add theme option to hide glow behind loading spinner logo
   ([#675](https://github.com/codevise/pageflow/pull/675))
 - Add logo theme option to fade in with header
   ([#666](https://github.com/codevise/pageflow/pull/666))
+- Logo theme options
+  ([#733](https://github.com/codevise/pageflow/pull/733))
 - Update to more complete variant of source sans pro font
   ([#676](https://github.com/codevise/pageflow/pull/676))
 - Allow setting hide text related css classes on wrapper
   ([#651](https://github.com/codevise/pageflow/pull/651))
 - Use svg icon for slim loading spinner
   ([#718](https://github.com/codevise/pageflow/pull/718))
+- Allow overriding typography of slim control bar text
+  ([#726](https://github.com/codevise/pageflow/pull/726))
 - Style text track cues
   ([#713](https://github.com/codevise/pageflow/pull/713))
 - Theme for player controls menu bar
   ([#717](https://github.com/codevise/pageflow/pull/717))
 - Hide audio page content when text tracks are displayed
   ([#698](https://github.com/codevise/pageflow/pull/698))
+- Add css class to page background with controls
+  ([#722](https://github.com/codevise/pageflow/pull/722))
 - Bug fix: Fix css class collision in widget scroll indicators
   ([#667](https://github.com/codevise/pageflow/pull/667))
+- Bug fix: Allow overriding widget theme options
+  ([#723](https://github.com/codevise/pageflow/pull/723))
 
 JavaScript API:
 
@@ -59,7 +105,7 @@ JavaScript API:
   ([#687](https://github.com/codevise/pageflow/pull/687))
 - Ensure page is unprepared if it was not activated
   ([#650](https://github.com/codevise/pageflow/pull/650))
-  
+
 Seed data:
 
 - Reorganize file seed data
@@ -78,9 +124,13 @@ Seed data:
 Widgets:
 
 - Player controls improvements
-  ([#699](https://github.com/codevise/pageflow/pull/699))
+  ([#699](https://github.com/codevise/pageflow/pull/699),
+   [#720](https://github.com/codevise/pageflow/pull/720),
+   [#739](https://github.com/codevise/pageflow/pull/739))
 - Prevent videojs controls from being displayed
   ([#697](https://github.com/codevise/pageflow/pull/697))
+- Bug fix: Prevent line wrap in scroll indicator
+  ([#729](https://github.com/codevise/pageflow/pull/729))
 - Bug fix: Fix sharing menu in mobile navigation
   ([#661](https://github.com/codevise/pageflow/pull/661))
 - Bug fix: Fix page widget index for analytics adapters
@@ -112,16 +162,14 @@ Widgets:
    [#716](https://github.com/codevise/pageflow/pull/716))
 - File filters
   ([#659](https://github.com/codevise/pageflow/pull/659))
+- Let file selection handler abort navigation
+  ([#736](https://github.com/codevise/pageflow/pull/736))
 - Add background inputs group
   ([#711](https://github.com/codevise/pageflow/pull/711))
-- Allow external links in editor help
-  ([#649](https://github.com/codevise/pageflow/pull/649))
 - Improve editor page lifecycle during delete
   ([#710](https://github.com/codevise/pageflow/pull/710))
 - Make editor play nicely with Redux
   ([#700](https://github.com/codevise/pageflow/pull/700))
-- Improve DropDownButton
-  ([#681](https://github.com/codevise/pageflow/pull/681))
 - Improve html translation support in i18nUtils
   ([#671](https://github.com/codevise/pageflow/pull/671))
 - Add interpolation support for i18nUtils.findTranslation
@@ -132,6 +180,26 @@ Widgets:
   ([#715](https://github.com/codevise/pageflow/pull/715))
 - Bug fix: Improve special character handling in formDataUtils
   ([#690](https://github.com/codevise/pageflow/pull/690))
+
+Backbone Views:
+
+- Improve DropDownButton
+  ([#681](https://github.com/codevise/pageflow/pull/681))
+- Ensure select input view displays default
+  ([#725](https://github.com/codevise/pageflow/pull/725))
+- Add disabled option to referenceinputview
+  ([#734](https://github.com/codevise/pageflow/pull/734))
+
+Help:
+
+- Allow external links in editor help
+  ([#649](https://github.com/codevise/pageflow/pull/649))
+- Add inline help for background inputs
+  ([#728](https://github.com/codevise/pageflow/pull/728))
+- Add help entry for text tracks
+  ([#727](https://github.com/codevise/pageflow/pull/727))
+- Improve inline help for rights and alt text field
+  ([#724](https://github.com/codevise/pageflow/pull/724))
 
 ##### Rails Engine
 
