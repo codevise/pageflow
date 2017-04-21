@@ -9,6 +9,7 @@
 //= require ./video_player/buffer_underrun_waiting
 //= require ./video_player/filter_sources
 //= require ./video_player/lazy
+//= require ./video_player/cue_settings_methods
 
 pageflow.VideoPlayer = function(element, options) {
   options = options || {};
@@ -21,6 +22,7 @@ pageflow.VideoPlayer = function(element, options) {
   }
 
   pageflow.VideoPlayer.prebuffering(player);
+  pageflow.VideoPlayer.cueSettingsMethods(player);
 
   if (options.mediaEvents) {
     pageflow.VideoPlayer.mediaEvents(player, options.context);
