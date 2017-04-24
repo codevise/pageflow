@@ -441,9 +441,7 @@ en:
           vertical: Vertical
         template:
           audio: Audio
-          audio_loop: Background-Audio
           background_image: Background-Image
-          background_video: Background-Video
           internal_links: Internal Links
           video: Video
         text_position:
@@ -914,8 +912,6 @@ en:
         suspended: 'The user was suspended and will not be able to sign-in again. '
         unsuspend: Unsuspend
         unsuspended: The user was unsuspended.
-    atmo:
-      feature_name: Atmo Audios
     audio:
       help_entries:
         page_type:
@@ -957,10 +953,15 @@ en:
       feature_name: Chapter Hierachy
     common_page_attributes:
       background_type:
+        inline_help: The page background can either display an image or a video loop.
         label: Background type
         values:
           image: Image
           video: Video loop
+      mobile_poster_image_id:
+        inline_help: Displayed instead of the the background video loop on mobile devices.
+      poster_image_id:
+        inline_help: Displayed before the videos starts
     common_page_link_attributes:
       label:
         inline_help: Choose a label to recognize the link within the overview. This label is for your orientation only and will not be displayed to the reader.
@@ -1764,6 +1765,9 @@ en:
         page_type:
           menu_item: Video
           text: "# Video\n\n*Playing a video with control*\n    \nIn contrast to „Background-Videos“ the text elements fade\nout after a few seconds, in order to draw attention to the\nvideo. With controls the user can start and pause the\nvideo or even fast-forward and rewind it. You can choose\nwhether the video should start automatically as soon as\nthe page is opened.\n\nAs an alternative to the normal text input, you can write\na description into an „Infobox“ with text.\n\nOn the „Options“ tab you can activate auto-scrolling to the next page at the end of a video. \nThis can be useful to create a seamless transition.\n\nExamples of application: Videos of all kinds, interviews,\nportraits"
+      page_attributes:
+        mobile_poster_image_id:
+          inline_help: Displayed on mobile devices before the video starts.
       page_type_category_name: Media
       page_type_description: Video player with controls
       page_type_name: Video

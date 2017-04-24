@@ -441,9 +441,7 @@ de:
           vertical: Vertikal
         template:
           audio: Audio
-          audio_loop: Hintergrund-Audio
           background_image: Hintergrund-Bild
-          background_video: Hintergrund-Video
           internal_links: Seiten-Verweise
           video: Video
         text_position:
@@ -914,8 +912,6 @@ de:
         suspended: Der Benutzer wurde gesperrt. Er kann sich nun nicht mehr anmelden.
         unsuspend: Entsperren
         unsuspended: Der Benutzer wurde entsperrt. Er kann sich nun wieder anmelden.
-    atmo:
-      feature_name: Atmo-Audios
     audio:
       help_entries:
         page_type:
@@ -959,10 +955,15 @@ de:
       feature_name: Kapitel Hierachie
     common_page_attributes:
       background_type:
+        inline_help: Im Hintergund der Seite kann entweder ein Bild oder ein Video-Loop angezeigt werden.
         label: Hintergrund-Typ
         values:
           image: Hintergrund-Bild
           video: Hintergrund-Video (Loop)
+      mobile_poster_image_id:
+        inline_help: Bild, das in der Mobilvariante der Seite an Stelle des Hintergrund-Videos gezeigt werden soll.
+      poster_image_id:
+        inline_help: Wird angezeigt, bevor das Video startet.
     common_page_link_attributes:
       label:
         inline_help: Gib hier eine Bezeichnung ein, um später bei in der Verweis-Übersicht direkt zu erkennen, um welchen Verweis es sich handelt. Die Bezeichnung ist für die Leser nicht sichtbar.
@@ -1789,6 +1790,9 @@ de:
         page_type:
           menu_item: Video
           text: "# Video\n\n*Wiedergabe einer Videodatei mit Steuerelementen* \n   \nAnders als bei „Hintergrund-Videos“ werden hier Textelemente nach ein\npaar Sekunden automatisch ausgeblendet, um die\nAufmerksamkeit auf das Bewegtbild zu lenken. Mit\nSteuerelementen kann der Nutzer das Video jederzeit\nstarten und pausieren, vor- oder zurückspulen. Ein\nweiterer Unterschied ist, dass Du wählen kannst, ob ein\nVideo automatisch gestartet wird, sobald die Seite\nangezeigt wird.  Als dezente Alternative oder Ergänzung zu\nden normalen Texteingabemöglichkeiten, kann eine\nsogenannte „Infobox“ mit Text befüllt werden.\n\nUnter Optionen lässt sich ein automatisches weiterscrollen am Ende des Videos aktivieren. \nDas kann nützlich sein, um einen nahtlosen Übergang zur nächsten Seite herzustellen.\n\nTypische Anwendungsbeispiele: Filme aller Art, Interviews,\nPortrait"
+      page_attributes:
+        mobile_poster_image_id:
+          inline_help: Wird in der Mobilvariante gezeigt, bevor das Video startet.
       page_type_category_name: Media
       page_type_description: Wiedergabe einer Videodatei mit Steuerelementen
       page_type_name: Video

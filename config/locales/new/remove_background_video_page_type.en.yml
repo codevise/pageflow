@@ -1,6 +1,0 @@
-en:
-  activerecord:
-    values:
-      pageflow/page:
-        template:
-          background_video: DELETED
