@@ -6,7 +6,7 @@ Pageflow.configure do |config|
   config.help_entries.register('pageflow.help_entries.outline', priority: 30)
   config.help_entries.register('pageflow.help_entries.page_options', priority: 20)
   config.help_entries.register('pageflow.help_entries.page_types', priority: 10)
-
+  config.help_entries.register('pageflow.help_entries.atmo', priority: 7)
   config.help_entries.register('pageflow.help_entries.publishing', priority: 5)
 end
 
