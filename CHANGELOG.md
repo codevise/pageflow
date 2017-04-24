@@ -30,6 +30,21 @@
 
         //= require pageflow/components
 
+- The background audio page type has been replaced by the atmo
+  feature. There is a migration turning all background audio pages
+  into background image pages with a atmo audio. The atmo settings are
+  no longer guarded by a feature flag. If you used
+  `Pageflow::Features#enabled_by_default` to enable the feature for
+  all accounts, you need to remove that call from your
+  initializer.
+  ([#748](https://github.com/codevise/pageflow/pull/748))
+
+- All page types that used to support only background images can now
+  display a background video as well. The background video page type
+  accordingly has been removed. There is a migration to turn
+  background video pages into pages with video background type.
+  ([#748](https://github.com/codevise/pageflow/pull/748))
+
 ##### Public Site
 
 - Embed entries as iframes
@@ -46,8 +61,9 @@ Media stack:
   ([#678](https://github.com/codevise/pageflow/pull/678),
    [#677](https://github.com/codevise/pageflow/pull/677),
    [#746](https://github.com/codevise/pageflow/pull/746))
-- Improve text track cue positioning
-  ([#747](https://github.com/codevise/pageflow/pull/747),
+- Allow displaying text tracks on videos and audio pages
+  ([#721](https://github.com/codevise/pageflow/pull/721),
+   [#747](https://github.com/codevise/pageflow/pull/747),
    [#743](https://github.com/codevise/pageflow/pull/743))
 - Add feature detection for mobile video features
   ([#742](https://github.com/codevise/pageflow/pull/742))
