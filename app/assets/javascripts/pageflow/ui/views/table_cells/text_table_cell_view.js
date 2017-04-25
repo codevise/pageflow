@@ -13,7 +13,7 @@
  *   this.getModel() via its options hash. No-op if
  *   `options.column.default` is not a function.
  *
- * @since edge
+ * @since 12.0
  */
 pageflow.TextTableCellView = pageflow.TableCellView.extend({
   className: 'text_table_cell',

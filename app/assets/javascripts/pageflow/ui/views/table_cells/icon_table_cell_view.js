@@ -14,7 +14,7 @@
  *   icon mixins is provided in
  *   pageflow/ui/table_cells/icon_table_cell.scss.
  *
- * @since edge
+ * @since 12.0
  */
 pageflow.IconTableCellView = pageflow.TableCellView.extend({
   className: 'icon_table_cell',

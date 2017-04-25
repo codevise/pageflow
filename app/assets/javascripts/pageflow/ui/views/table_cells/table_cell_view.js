@@ -8,7 +8,7 @@
  * @param {string} [options.className]
  *   Class attribute to apply to the cell element.
  *
- * @since edge
+ * @since 12.0
  */
 pageflow.TableCellView = Backbone.Marionette.ItemView.extend({
   tagName: 'td',

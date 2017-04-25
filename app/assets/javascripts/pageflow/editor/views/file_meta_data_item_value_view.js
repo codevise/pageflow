@@ -9,7 +9,7 @@
  *   Dispaly a link to open the specified tab of the file settings
  *   dialog.
  *
- * @since edge
+ * @since 12.0
  *
  * @class
  * @memberof module:pageflow/editor

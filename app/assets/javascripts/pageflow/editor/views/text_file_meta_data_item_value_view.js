@@ -4,7 +4,7 @@
  * @see {@link module:pageflow/editor.pageflow.FileMetaDataItemValueView
  * pageflow.FileMetaDataItemValueView} for further options.
  *
- * @since edge
+ * @since 12.0
  *
  * @class
  * @memberof module:pageflow/editor

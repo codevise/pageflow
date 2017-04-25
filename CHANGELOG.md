@@ -1,8 +1,10 @@
 # CHANGELOG
 
-### Changes on `master`
+### Version 12.0.0.rc1
 
-[Compare changes](https://github.com/codevise/pageflow/compare/0-11-stable...master)
+2017-04-25
+
+[Compare changes](https://github.com/codevise/pageflow/compare/0-11-stable...v12.0.0.rc1)
 
 ##### Breaking Changes
 

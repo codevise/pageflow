@@ -11,7 +11,7 @@
  * - `.cell_title.<attribute_value>` - Used as title attribute.
  * - `.cell_title.blank` - Used as title attribute if attribute is blank.
  *
- * @since edge
+ * @since 12.0
  */
 pageflow.EnumTableCellView = pageflow.TableCellView.extend({
   className: 'enum_table_cell',

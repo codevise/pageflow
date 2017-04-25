@@ -16,7 +16,7 @@
  * @param {boolean} [options.invertToggleDeleteButton]
  *   Invert the return value of `toggleDeleteButton`?
  *
- * @since edge
+ * @since 12.0
  */
 pageflow.DeleteRowTableCellView = pageflow.TableCellView.extend({
   className: 'delete_row_table_cell',

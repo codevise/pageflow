@@ -12,7 +12,7 @@
  * - `.cell_title.blank` - Used as title attribute if the
  *   attribute is blank.
  *
- * @since edge
+ * @since 12.0
  */
 pageflow.PresenceTableCellView = pageflow.TableCellView.extend({
   className: 'presence_table_cell',

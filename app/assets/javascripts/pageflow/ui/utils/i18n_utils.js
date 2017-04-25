@@ -23,7 +23,7 @@ pageflow.i18nUtils = {
    *   Required if `fallbackPrefix` option is present.
    *
    * @return {string[]}
-   * @since edge
+   * @since 12.0
    */
   attributeTranslationKeys: function(attributeName, keyName, options) {
     var result = [];
@@ -50,7 +50,7 @@ pageflow.i18nUtils = {
    * existing translation.
    *
    * @return {string}
-   * @since edge
+   * @since 12.0
    */
   attributeTranslation: function(attributeName, keyName, options) {
     return pageflow.i18nUtils.findTranslation(
