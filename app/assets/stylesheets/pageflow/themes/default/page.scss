@@ -243,3 +243,30 @@ $page-content-text-line-height: 1.5em !default;
     }
   }
 }
+
+// Styles when the text content is aligned right
+
+.text_position_right {
+  &.page .contentText > * {
+    margin-left: auto;
+  }
+
+  &.page {
+    h1, h2 span.subtitle, h2 span.tagline, h3, p {
+      margin-left: auto;
+    }
+    h2 .title {
+      margin-left: auto;
+      max-width: 500px;
+    }
+  }
+
+  .page_header {
+    margin-left: auto;
+    width: 100%;
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+}
