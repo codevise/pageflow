@@ -14,6 +14,9 @@ $page-header-tagline-typography: () !default;
 /// Typography for header title.
 $page-header-title-typography: () !default;
 
+/// Max width for header title
+$page-header-title-max-width: 700px !default;
+
 /// Typography for header title in phone layout.
 $page-header-title-phone-typography: () !default;
 
@@ -28,6 +31,10 @@ $page-header-subtitle-typography: () !default;
 
 /// Typography for content text.
 $page-content-text-typography: () !default;
+
+/// Max width for content text.
+
+$page-content-text-max-width: 500px !default;
 
 /// Base font size for page content
 $page-content-font-size: 1em !default;
@@ -147,7 +154,7 @@ $page-content-text-line-height: 1.5em !default;
 
     .title {
       display: block;
-
+      max-width: $page-header-title-max-width;
       @include typography(
         $page-header-title-typography,
         (
@@ -198,6 +205,7 @@ $page-content-text-line-height: 1.5em !default;
   }
 
   p {
+    max-width: $page-content-text-max-width;
     margin-top: 0;
   }
 }
