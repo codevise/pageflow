@@ -22,7 +22,7 @@ module Pageflow
              :emphasize_new_pages,
              :share_url, :share_image_id, :share_image_x, :share_image_y,
              :locale,
-             :author, :publisher, :keywords,
+             :author, :publisher, :keywords, :theme_name,
              :password_protected?,
              :to => :revision)
 
