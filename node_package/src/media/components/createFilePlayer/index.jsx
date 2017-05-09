@@ -18,6 +18,7 @@ import {textTracks} from 'media/selectors';
 import {setting} from 'settings/selectors';
 import {prop} from 'selectors';
 import {has} from 'utils/selectors';
+import {widgetPresent} from 'widgets/selectors';
 
 import React from 'react';
 import {combineSelectors} from 'utils';
@@ -153,6 +154,26 @@ export default function({
   return result;
 }
 
+const slimPlayerControlsPresent = widgetPresent('slimPlayerControls');
+
 function textTrackPosition(state, {playerState}) {
-  return playerState.controlsHidden ? 'auto' : 'top';
+  if (slimPlayerControlsPresent(state)) {
+    if (playerState.controlsHidden) {
+      return 'auto';
+    }
+    else if (playerState.infoBoxHidden) {
+      // `auto` and `auto.translated` are handled the same by the
+      // logic that updates text track position. Passing two different
+      // values ensures, that the text track position is actually
+      // set. Otherwise text track position does not change, even
+      // though the cue margins changed.
+      return 'auto.translated';
+    }
+    else {
+      return 'top';
+    }
+  }
+  else {
+    return playerState.controlsHidden ? 'auto' : 'top';
+  }
 }

@@ -36,7 +36,10 @@ export const CONTROLS_ENTERED = 'MEDIA_CONTROLS_ENTERED';
 export const CONTROLS_LEFT = 'MEDIA_CONTROLS_LEFT';
 export const FOCUS_ENTERED_CONTROLS = 'MEDIA_FOCUS_ENTERED_CONTROLS';
 export const FOCUS_LEFT_CONTROLS = 'MEDIA_FOCUS_LEFT_CONTROLS';
+
 export const CONTROLS_HIDDEN = 'MEDIA_CONTROLS_HIDDEN';
+export const INFO_BOX_VISIBLE = 'INFO_BOX_VISIBLE';
+export const INFO_BOX_HIDDEN = 'INFO_BOX_HIDDEN';
 
 export function actionCreators({scope = 'default'} = {}) {
   return {
@@ -176,6 +179,14 @@ export function actionCreators({scope = 'default'} = {}) {
 
     controlsHidden() {
       return pageAction(CONTROLS_HIDDEN);
+    },
+
+    infoBoxVisible() {
+      return pageAction(INFO_BOX_VISIBLE);
+    },
+
+    infoBoxHidden() {
+      return pageAction(INFO_BOX_HIDDEN);
     },
   };
 

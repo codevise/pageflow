@@ -1,6 +1,6 @@
 import playerStateClassNames from './playerStateClassNames';
 import PlayerControls from 'components/PlayerControls';
-import {combine, combineSelectors} from 'utils';
+import {combineSelectors} from 'utils';
 
 import {videoQualitySetting} from 'media/selectors';
 import {t} from 'i18n/selectors';
@@ -46,6 +46,11 @@ export function MediaPlayerControls(props) {
                     onMouseLeave={actions.controlsLeft}
                     onFocus={actions.focusEnteredControls}
                     onBlur={actions.focusLeftControls}
+
+                    watchVisibility={playerState.isPlaying}
+                    onHidden={actions.controlsHidden}
+                    onInfoBoxVisible={actions.infoBoxVisible}
+                    onInfoBoxHidden={actions.infoBoxHidden}
 
                     qualityMenuItems={qualityMenuItems(props.qualities,
                                                        props.file,
