@@ -35,7 +35,7 @@ module Pageflow
 
         user.destroy_with_password('@qwert123')
 
-        expect(user).to be_new_record
+        expect(user).to be_destroyed
       end
 
       context 'without correct password' do
