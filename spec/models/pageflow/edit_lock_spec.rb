@@ -202,7 +202,7 @@ module Pageflow
 
           edit_lock.release(current_user)
 
-          expect(edit_lock).to be_new_record
+          expect(edit_lock).to be_destroyed
         end
       end
 
