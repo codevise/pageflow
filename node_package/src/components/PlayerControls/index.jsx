@@ -10,13 +10,17 @@ import TimeDivider from './TimeDivider';
 import Duration from './Duration';
 import ProgressSlider from './ProgressSlider';
 import MenuBar from './MenuBar';
+import withVisibilityWatching from '../withVisibilityWatching';
 
 function PlayerControls(props) {
   return (
     <Container {...props} >
       <span className="hint">{props.hint}</span>
 
-      <InfoBox {...props.infoBox} />
+      <InfoBox {...props.infoBox}
+               watchVisibility={props.watchVisibility}
+               onVisible={props.onInfoBoxVisible}
+               onHidden={props.onInfoBoxHidden} />
 
       <div className={controlBarClassNames(props)}>
         {renderLoadingSpinner(props)}
@@ -87,4 +91,4 @@ PlayerControls.propTypes = {
   onPlayButtonClick: React.PropTypes.func
 };
 
-export default PlayerControls;
+export default withVisibilityWatching(PlayerControls);

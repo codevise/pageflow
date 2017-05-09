@@ -5,7 +5,6 @@ import hasNotBeenPlayingForAMoment from './hasNotBeenPlayingForAMoment';
 import idling from './idling';
 import fadeOutWhenPageWillDeactivate from './fadeOutWhenPageWillDeactivate';
 import goToNextPageOnEnd from './goToNextPageOnEnd';
-import controlsHidden from './controlsHidden';
 
 import {has} from 'utils';
 
@@ -31,8 +30,7 @@ export default function*(options = {}) {
 
   if (options.hideControls) {
     sagas.push([
-      idling(),
-      controlsHidden()
+      idling()
     ]);
   }
 

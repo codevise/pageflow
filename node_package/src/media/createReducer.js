@@ -8,7 +8,7 @@ import {
   USER_INTERACTION, USER_IDLE,
   CONTROLS_ENTERED, CONTROLS_LEFT,
   FOCUS_ENTERED_CONTROLS, FOCUS_LEFT_CONTROLS,
-  CONTROLS_HIDDEN
+  CONTROLS_HIDDEN, INFO_BOX_VISIBLE, INFO_BOX_HIDDEN
 } from './actions';
 
 import {HOTKEY_TAB} from 'hotkeys/actions';
@@ -213,6 +213,17 @@ export default function({scope = 'default'} = {}) {
       return {
         ...state,
         controlsHidden: true
+      };
+
+    case INFO_BOX_HIDDEN:
+      return {
+        ...state,
+        infoBoxHidden: true
+      };
+    case INFO_BOX_VISIBLE:
+      return {
+        ...state,
+        infoBoxHidden: false
       };
 
 
