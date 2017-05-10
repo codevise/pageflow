@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import InfoBox from '../InfoBox';
+import InfoBox from './InfoBox';
 import Container from './Container';
 import LoadingSpinner from './LoadingSpinner';
 import PlayButton from './PlayButton';

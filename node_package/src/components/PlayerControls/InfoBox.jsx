@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import withVisibilityWatching from './withVisibilityWatching';
+import withVisibilityWatching from '../withVisibilityWatching';
 
 function InfoBox(props) {
   return (
