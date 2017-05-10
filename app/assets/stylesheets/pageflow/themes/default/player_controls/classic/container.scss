@@ -10,7 +10,7 @@ $classic-player-controls-typography: $player-controls-typography !default;
     position: absolute;
     z-index: 2;
     pointer-events: none;
-    @include transition(opacity 0.1);
+    @include transition(opacity 0.1s, visibility 0.1s);
     @include standard-typography($classic-player-controls-typography);
 
     @include desktop {
@@ -38,6 +38,7 @@ $classic-player-controls-typography: $player-controls-typography !default;
       @include transition-duration(1.5s);
       @include transition-delay(1s);
       opacity: 0;
+      visibility: hidden;
     }
 
     &-paused,

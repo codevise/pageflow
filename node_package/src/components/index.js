@@ -17,6 +17,7 @@ import MenuBar from './PlayerControls/MenuBar';
 
 import Icon from './Icon';
 import editorOnly from './editorOnly';
+import withVisibilityWatching from './withVisibilityWatching';
 
 import Draggable from 'react-draggable';
 
@@ -40,6 +41,7 @@ export {
 
   Icon,
   editorOnly,
+  withVisibilityWatching,
 
   Draggable
 };
