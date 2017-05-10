@@ -1,5 +1,18 @@
 # CHANGELOG
 
+### Version 12.0.0.rc2
+
+2017-05-10
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc1...v12.0.0.rc2)
+
+- Improve text track positioning for slim player controls
+  ([#749](https://github.com/codevise/pageflow/pull/749))
+- Bug fix: Fix HTML descriptions in infobox component
+  ([#751](https://github.com/codevise/pageflow/pull/751))
+- Use correct matcher to expect destroyed record
+  ([#750](https://github.com/codevise/pageflow/pull/750))
+
 ### Version 12.0.0.rc1
 
 2017-04-25
