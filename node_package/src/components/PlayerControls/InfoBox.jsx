@@ -1,11 +1,11 @@
 import classNames from 'classnames';
-import withVisibilityWatching from './withVisibilityWatching';
+import withVisibilityWatching from '../withVisibilityWatching';
 
 function InfoBox(props) {
   return (
     <div className={wrapperClassNames(props)}>
       {header(props)}
-      <p>{props.description}</p>
+      <p dangerouslySetInnerHTML={{__html: props.description}} />
     </div>
   );
 }
