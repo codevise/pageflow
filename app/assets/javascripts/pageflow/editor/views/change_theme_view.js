@@ -15,6 +15,10 @@ pageflow.ChangeThemeView = Backbone.Marionette.ItemView.extend({
     }
   },
 
+  initialize: function(options) {
+    this.listenTo(this.model, 'change:theme_name', this.render);
+  },
+
   onRender: function() {
     this.ui.labelText.text(this.labelText());
   },
