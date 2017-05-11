@@ -1,5 +1,24 @@
 # CHANGELOG
 
+### Changes on `12-0-stable
+
+##### Manual Update Step
+
+- Switch from `Expires` to `Cache-Control` header for media uploads.
+  ([#753](https://github.com/codevise/pageflow/pull/753))
+
+  It’s recommended you update the files currently stored on S3:
+
+        $ s3cmd --recursive modify --add-header="Cache-Control: public, max-age=31536000" s3://yourbucket/
+        $ s3cmd --recursive modify --remove-header=Expires s3://yourbucket/
+
+  Tread carefully when you do this! As noted in
+  [this StackExchange answer](http://stackoverflow.com/questions/22501465/how-to-add-cache-control-in-aws-s3),
+  we have experienced that some public read permissions were lost
+  after running this script. Test first using just a single object. In
+  the AWS Management Console, you might want to grant public read
+  access on the entire bucket again to be safe.
+
 ### Version 12.0.0.rc2
 
 2017-05-10
