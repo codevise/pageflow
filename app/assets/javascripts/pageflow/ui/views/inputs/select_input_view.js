@@ -138,8 +138,7 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
     this.load();
     this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
 
-    if (this.options.ensureValueDefined && !this.ui.select.val()) {
-      this.ui.select.val(this.options.values[0]);
+    if (this.options.ensureValueDefined && !this.model.has(this.options.propertyName)) {
       this.save();
     }
   },
