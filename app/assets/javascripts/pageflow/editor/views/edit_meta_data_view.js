@@ -24,7 +24,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
 
     configurationEditor.tab('general', function() {
       this.input('title', pageflow.TextInputView, {
-        placeholder: entry.attributes.entry_title
+        placeholder: entry.get('entry_title')
       });
       this.input('locale', pageflow.SelectInputView, {
         values: pageflow.config.availablePublicLocales,
