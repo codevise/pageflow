@@ -247,9 +247,14 @@ $page-content-text-line-height: 1.5em !default;
 }
 
 
-h1, h2 span.subtitle, h2 span.tagline, h3, p {
+h1,
+h2 span.subtitle,
+h2 span.tagline,
+h3,
+p {
   max-width: $page-subtitle-tagline-max-width;
   width: 60%;
+
   @include mobile {
     width: 100%;
   }
