@@ -2,6 +2,11 @@ button.change_theme {
   @include button(#559ff2);
 }
 
+p.current_theme_name {
+  margin-bottom: 4px;
+  margin-left: 14px;
+}
+
 .editor.change_theme {
   .box {
     position: absolute;
