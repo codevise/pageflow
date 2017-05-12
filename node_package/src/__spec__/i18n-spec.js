@@ -3,18 +3,10 @@ import {t, locale} from 'i18n/selectors';
 import createStore from 'createStore';
 
 import {expect} from 'support/chai';
-import sinon from 'sinon';
+import stubI18n from 'support/stubI18n';
 
 describe('i18n', () => {
-  beforeEach(() => {
-    window.I18n = {
-      t: sinon.spy()
-    };
-  });
-
-  afterEach(() => {
-    delete window.I18n;
-  });
+  stubI18n();
 
   it('provides t selector to fetch translations', () => {
     const store = createStore([i18nModule], {locale: 'fr'});
