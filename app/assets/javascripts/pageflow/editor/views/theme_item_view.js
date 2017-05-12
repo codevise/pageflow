@@ -18,7 +18,7 @@ pageflow.ThemeItemView = Backbone.Marionette.ItemView.extend({
       var newThemeName = this.model.get('name');
 
       this.configuration.set('theme_name', newThemeName);
-      var stylesheetPath = pageflow.editor.themes.findWhere({name: newThemeName})
+      var stylesheetPath = pageflow.editor.themes.findByName(newThemeName)
           .get('stylesheet_path');
       pageflow.stylesheet.update('theme', stylesheetPath);
     },
