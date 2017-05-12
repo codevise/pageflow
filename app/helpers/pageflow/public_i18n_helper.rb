@@ -3,11 +3,17 @@ module Pageflow
     def public_i18n_javascript_tag(entry)
       render('pageflow/public_i18n/javascript_tag',
              entry_locale: entry.locale,
-             translations: {
-               pageflow: {
-                 public: I18n.t('pageflow.public', locale: entry.locale)
-               }
-             })
+             translations: public_i18n_translations(entry))
+    end
+
+    def public_i18n_translations(entry)
+      {
+        pageflow: {
+          public: I18n.t('pageflow.public', locale: entry.locale)
+                      .dup
+                      .deep_merge(I18n.t('pageflow.public', locale: I18n.default_locale))
+        }
+      }
     end
   end
 end
