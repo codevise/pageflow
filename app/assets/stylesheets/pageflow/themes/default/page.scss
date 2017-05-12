@@ -17,6 +17,9 @@ $page-header-title-typography: () !default;
 /// Max width for header title
 $page-header-title-max-width: 700px !default;
 
+/// Max width for tagline and subtitle
+$page-subtitle-tagline-max-width: 500px !default;
+
 /// Typography for header title in phone layout.
 $page-header-title-phone-typography: () !default;
 
@@ -32,9 +35,9 @@ $page-header-subtitle-typography: () !default;
 /// Typography for content text.
 $page-content-text-typography: () !default;
 
-/// Max width for content text.
+/// Maximal width for content text and right aligned headlines and content
 
-$page-content-text-max-width: 500px !default;
+$page-content-text-position-right-max-width: 500px !default;
 
 /// Base font size for page content
 $page-content-font-size: 1em !default;
@@ -179,7 +182,6 @@ $page-content-text-line-height: 1.5em !default;
 
     .subtitle {
       display: block;
-
       @include typography(
         $page-header-subtitle-typography,
         (
@@ -205,7 +207,7 @@ $page-content-text-line-height: 1.5em !default;
   }
 
   p {
-    max-width: $page-content-text-max-width;
+    max-width: $page-content-text-position-right-max-width;
     margin-top: 0;
   }
 }
@@ -244,6 +246,15 @@ $page-content-text-line-height: 1.5em !default;
   }
 }
 
+
+h1, h2 span.subtitle, h2 span.tagline, h3, p {
+  max-width: $page-subtitle-tagline-max-width;
+  width: 60%;
+  @include mobile {
+    width: 100%;
+  }
+}
+
 // Styles when the text content is aligned right
 
 .text_position_right {
@@ -252,12 +263,15 @@ $page-content-text-line-height: 1.5em !default;
   }
 
   &.page {
-    h1, h2 span.subtitle, h2 span.tagline, h3, p {
-      margin-left: auto;
-    }
+    h1,
+    h2 span.subtitle,
+    h2 span.tagline,
+    h3,
+    p,
     h2 .title {
       margin-left: auto;
-      max-width: 500px;
+      max-width: $page-content-text-position-right-max-width;
+      width: 60%;
     }
   }
 
