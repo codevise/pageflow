@@ -6,31 +6,31 @@ Pageflow.configure do |config|
 
   if Rails.env.test?
     config.paperclip_s3_default_options.merge!({
-      :storage => :filesystem,
-      :path => ':rails_root/tmp/attachments/test/s3/:class/:attachment/:id_partition/:style/:filename'
+      storage: :filesystem,
+      path: ':rails_root/tmp/attachments/test/s3/:class/:attachment/:id_partition/:style/:filename'
     })
   else
     config.paperclip_s3_default_options.merge!({
-      :storage => :s3,
-      :s3_headers => {'Expires' => 1.year.from_now.httpdate},
-      :s3_options => {:max_retries => 10},
+      storage: :s3,
+      s3_headers: {'Cache-Control' => "public, max-age=31536000"},
+      s3_options: {max_retries: 10},
 
-      :url => ':s3_alias_url',
-      :path => ':host/:class_basename/:attachment/:id_partition/:pageflow_attachments_version:style/:filename',
+      url: ':s3_alias_url',
+      path: ':host/:class_basename/:attachment/:id_partition/:pageflow_attachments_version:style/:filename',
 
       # Paperclip deletes and reuploads the original on
       # reprocess. Sometimes S3 seems to change the order of commands
       # causing the image to be deleted. This is fixed on paperclip
       # master, but for us not deleting old files is good enough. They
       # might be in the CDN anyway.
-      :keep_old_files => true
+      keep_old_files: true
     })
   end
 
   config.paperclip_filesystem_default_options.merge!({
-    :storage => :filesystem,
-    :path => ':pageflow_filesystem_root/:class/:attachment/:id_partition/:style/:filename',
-    :url => 'not_uploaded_yet'
+    storage: :filesystem,
+    path: ':pageflow_filesystem_root/:class/:attachment/:id_partition/:style/:filename',
+    url: 'not_uploaded_yet'
   })
 
   config.thumbnail_styles = {
