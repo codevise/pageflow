@@ -1,6 +1,10 @@
 # CHANGELOG
 
-### Changes on `12-0-stable
+### Version 12.0.0.rc3
+
+2017-05-12
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc2...v12.0.0.rc3)
 
 ##### Manual Update Step
 
@@ -18,6 +22,19 @@
   after running this script. Test first using just a single object. In
   the AWS Management Console, you might want to grant public read
   access on the entire bucket again to be safe.
+
+##### Minor Changes
+
+- Ensure public translations fall back to default locale
+  ([#757](https://github.com/codevise/pageflow/pull/757))
+- Depend on pageflow-public-i18n 1.9
+  ([#752](https://github.com/codevise/pageflow/pull/752))
+- Remove jQuery widgets formerly used by player controls
+  ([#756](https://github.com/codevise/pageflow/pull/756))
+- Bug fix: Use entry locale in CloseButton translations
+  ([#760](https://github.com/codevise/pageflow/pull/760))
+- Bug fix: Fix ensureValueDefined option of SelectInputView
+  ([#755](https://github.com/codevise/pageflow/pull/755))
 
 ### Version 12.0.0.rc2
 
