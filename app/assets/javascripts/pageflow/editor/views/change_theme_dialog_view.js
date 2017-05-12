@@ -15,9 +15,7 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
   initialize: function(options) {
     this.listenTo(this.model, 'change', this.update);
     this.selection = new Backbone.Model();
-    var themeInUse = this.options.themes.findWhere({
-      name: pageflow.entry.configuration.get('theme_name')
-    });
+    var themeInUse = this.options.themes.findByName(pageflow.entry.configuration.get('theme_name'));
     this.selection.set('theme', themeInUse);
     this.listenTo(this.selection, 'change:theme', function() {
       if (!this.selection.get('theme')) {
@@ -45,9 +43,7 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
 
   update: function() {
     var that = this;
-    var selectedTheme = this.options.themes.findWhere({
-      name: that.selection.get('theme').get('name')
-    });
+    var selectedTheme = this.options.themes.findByName(that.selection.get('theme').get('name'));
     this.ui.previewImage.attr('src', selectedTheme.get('preview_image_url'));
     this.ui.previewHeaderThemeName.text(that.translateThemeName({
       name: selectedTheme.get('name')
