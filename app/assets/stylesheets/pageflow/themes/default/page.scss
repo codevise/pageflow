@@ -281,11 +281,11 @@ p {
 // Styles when the text content is aligned right
 
 .text_position_right {
-  &.page .contentText > * {
-    margin-left: auto;
-  }
-
   &.page {
+    .contentText > * {
+      margin-left: auto;
+    }
+    
     h1,
     h2 span.subtitle,
     h2 span.tagline,
