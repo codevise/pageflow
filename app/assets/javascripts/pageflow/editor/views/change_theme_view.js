@@ -3,7 +3,8 @@ pageflow.ChangeThemeView = Backbone.Marionette.ItemView.extend({
 
   ui: {
     changeThemeButton: '.change_theme',
-    labelText: 'label .name'
+    labelText: 'label .name',
+    currentThemeName: 'p.current_theme_name'
   },
 
   events: {
@@ -21,10 +22,11 @@ pageflow.ChangeThemeView = Backbone.Marionette.ItemView.extend({
 
   onRender: function() {
     this.ui.labelText.text(this.labelText());
+    this.ui.currentThemeName.text(this.localizedThemeName());
   },
 
   labelText: function() {
-    return this.options.label || this.labelPrefix() + ': ' + this.localizedThemeName();
+    return this.options.label || this.labelPrefix();
   },
 
   labelPrefix: function() {
