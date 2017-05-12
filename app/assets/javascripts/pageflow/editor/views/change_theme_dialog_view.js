@@ -45,9 +45,7 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
 
   update: function() {
     var that = this;
-    var selectedTheme = this.options.themes.findWhere({
-      name: that.selection.get('theme').get('name')
-    });
+    var selectedTheme = this.options.themes.findByName(that.selection.get('theme').get('name'));
     this.ui.previewImage.attr('src', selectedTheme.get('preview_image_url'));
     this.ui.previewHeaderThemeName.text(that.translateThemeName({
       name: selectedTheme.get('name')
