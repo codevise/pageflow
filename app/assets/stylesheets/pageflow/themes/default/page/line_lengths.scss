@@ -1,17 +1,11 @@
-/// Max width for header title
-
-$page-header-title-max-width: 700px !default;
+/// Max width for tagline and subtitle and content
+$page-content-text-max-width: 500px !default;
 
 /// Maximal width for content text and right aligned headlines and content
-
 $page-content-text-position-right-max-width: 500px !default;
 
-/// Max width for tagline and subtitle
-
-$page-subtitle-tagline-max-width: 500px !default;
-
-
-// Styles
+/// Max width for header title
+$page-header-title-max-width: 700px !default;
 
 .page {
   h1,
@@ -19,7 +13,7 @@ $page-subtitle-tagline-max-width: 500px !default;
   h2 span.tagline,
   h3,
   p {
-    max-width: $page-subtitle-tagline-max-width;
+    max-width: $page-content-text-max-width;
     width: 60%;
 
     @include mobile {
@@ -30,33 +24,30 @@ $page-subtitle-tagline-max-width: 500px !default;
   .title {
     max-width: $page-header-title-max-width;
   }
-}
 
-// Styles when the text content is aligned right
-
-.text_position_right {
-  &.page {
+  &.text_position_right {
     .contentText > * {
       margin-left: auto;
     }
+
     h1,
-    h2 span.subtitle,
-    h2 span.tagline,
+    h2 .subtitle,
+    h2 .title,
+    h2 .tagline,
     h3,
-    p,
-    h2 .title {
+    p {
       margin-left: auto;
       max-width: $page-content-text-position-right-max-width;
       width: 60%;
     }
-  }
 
-  .page_header {
-    margin-left: auto;
-    width: 100%;
-
-    @include mobile {
+    .page_header {
+      margin-left: auto;
       width: 100%;
+
+      @include mobile {
+        width: 100%;
+      }
     }
   }
 }
