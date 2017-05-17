@@ -1,11 +1,19 @@
-/// Max width for tagline and subtitle and content
-$page-content-text-max-width: 500px !default;
+/// Max width for tagline and subtitle and content text.
+$page-content-max-width: 500px !default;
 
-/// Maximal width for content text and right aligned headlines and content
-$page-content-text-position-right-max-width: 500px !default;
-
-/// Max width for header title
+/// Max width for header title when text is positioned on the
+/// left. For right positioned text the max width has to match the max
+/// width of tagline and subtitle to ensure the title is left aligned
+/// with those elements.
 $page-header-title-max-width: 700px !default;
+
+/// Maximal width for right positioned headlines and content text.
+$page-content-position-right-max-width: 500px !default;
+
+/// Min width the header title is supposed to have in a split layout
+/// (i.e. when the page has two columns and some kind of embed is
+/// displayed on the right) with text positioned on the left.
+$page-header-title-min-width-for-split-layout: 525px !default;
 
 .page {
   h1,
@@ -13,7 +21,7 @@ $page-header-title-max-width: 700px !default;
   h2 span.tagline,
   h3,
   p {
-    max-width: $page-content-text-max-width;
+    max-width: $page-content-max-width;
     width: 60%;
 
     @include mobile {
@@ -21,8 +29,46 @@ $page-header-title-max-width: 700px !default;
     }
   }
 
-  .title {
+  h2 .title {
     max-width: $page-header-title-max-width;
+    width: 100%;
+  }
+
+  // see pageflow/page.scss
+  $page-content-padding-left: 8%;
+  $page-content-padding-right: 14%;
+  $page-content-width: 100% - $page-content-padding-left - $page-content-padding-right;
+
+  // Normally the title expands further to the right than subtitle and
+  // tagline. When the title is used on a page, though, that supports
+  // a split layout (i.e. some kind of embed can be displayed on the
+  // right), we want to be able to shorten the title so that it is
+  // contained inside the left column.
+  //
+  // Embeds use up to 55% of the page width. So we want to ensure that
+  // the sum of the page title's width and left margin stays below 45%
+  // of the page width:
+  //
+  //   $title-width-relative-to-page + $page-content-padding-left = 45%
+  //   $title-width-relative-to-content * $page-content-width + $page-content-padding-left = 45%
+  //
+  $title-split-layout-width: floor((45% - $page-content-padding-left) / ($page-content-width / 100%));
+
+  // When the pixel width of the title is given by
+  //
+  //   $title-width-in-px = $page-width-in-px
+  //                          * ($page-content-width / 100%)
+  //                          * ($title-split-layout-width / 100%),
+  //
+  // the title has at least the given min width if the page has width:
+  $page-min-width-for-split-layout: $page-header-title-min-width-for-split-layout
+                                      / ($title-split-layout-width / 100%)
+                                      / ($page-content-width / 100%);
+
+  @media screen and (min-width: $page-min-width-for-split-layout) {
+    h2 .title-for_split_layout {
+      width: $title-split-layout-width;
+    }
   }
 
   &.text_position_right {
@@ -37,7 +83,7 @@ $page-header-title-max-width: 700px !default;
     h3,
     p {
       margin-left: auto;
-      max-width: $page-content-text-position-right-max-width;
+      max-width: $page-content-position-right-max-width;
       width: 60%;
 
       @include mobile {
