@@ -1,4 +1,8 @@
 de:
+  activerecord:
+    attributes:
+      pageflow/entry:
+        theme_name: Gewähltes Theme
   pageflow:
     default_theme:
       name: Standard
