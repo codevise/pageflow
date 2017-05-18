@@ -2,6 +2,7 @@
 pageflow.ThemeItemView = Backbone.Marionette.ItemView.extend({
   tagName: 'li',
   template: 'pageflow/editor/templates/theme_item',
+  className: 'theme_item',
 
   mixins: [pageflow.selectableView],
 
@@ -17,22 +18,17 @@ pageflow.ThemeItemView = Backbone.Marionette.ItemView.extend({
     'click .use_theme': function(event) {
       var newThemeName = this.model.get('name');
 
-      this.configuration.set('theme_name', newThemeName);
-      var stylesheetPath = pageflow.editor.themes.findByName(newThemeName)
+      var stylesheetPath = this.options.themes.findByName(newThemeName)
           .get('stylesheet_path');
       pageflow.stylesheet.update('theme', stylesheetPath);
-      this.options.onUse();
+      this.options.onUse(this.model);
     },
     'mouseenter': 'select',
     'click': 'select'
   },
 
-  initialize: function(options) {
-    this.configuration = this.options.configuration;
-    this.listenTo(this.configuration, 'change', this.render);
-  },
-
   onRender: function() {
+    this.$el.data('themeName', this.model.get('name'));
     this.ui.themeName.text(this.translateThemeName());
 
     if (this.inUse()) {
@@ -45,7 +41,7 @@ pageflow.ThemeItemView = Backbone.Marionette.ItemView.extend({
   },
 
   inUse: function() {
-    return this.model.get('name') === this.configuration.get('theme_name');
+    return this.model.get('name') === this.options.themeInUse;
   },
 
   translateThemeName: function() {
