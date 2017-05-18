@@ -34,9 +34,10 @@ pageflow.ModelThumbnailView = Backbone.Marionette.View.extend({
         });
       }
       else {
-        this.newThumbnailView = new pageflow.StaticThumbnailView({
-          model: this.model
-        });
+        this.newThumbnailView = this.newThumbnailView ||
+          new pageflow.StaticThumbnailView({
+            model: this.model
+          });
       }
     }
 

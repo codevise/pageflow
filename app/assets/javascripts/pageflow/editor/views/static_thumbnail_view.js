@@ -2,6 +2,10 @@ pageflow.StaticThumbnailView = Backbone.Marionette.ItemView.extend({
   template: 'templates/static_thumbnail',
   className: 'static_thumbnail',
 
+  modelEvents: {
+    'change:configuration': 'update'
+  },
+
   onRender: function() {
     this.update();
   },
