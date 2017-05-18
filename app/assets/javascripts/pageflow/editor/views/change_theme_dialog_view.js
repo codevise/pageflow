@@ -32,7 +32,8 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
       itemViewConstructor: pageflow.ThemeItemView,
       itemViewOptions: {
         configuration: this.model,
-        selection: this.selection
+        selection: this.selection,
+        onUse: this.options.onUse
       }
     });
 
@@ -56,6 +57,18 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
   }
 });
 
-pageflow.ChangeThemeDialogView.open = function(options) {
-  pageflow.app.dialogRegion.show(new pageflow.ChangeThemeDialogView(options));
+pageflow.ChangeThemeDialogView.changeTheme = function(options) {
+  return $.Deferred(function(deferred) {
+    options.onUse = function() {
+      deferred.resolve(this.model);
+    };
+
+    var view = new pageflow.ChangeThemeDialogView(options);
+
+    view.on('close', function() {
+      deferred.reject();
+    });
+
+    pageflow.app.dialogRegion.show(view.render());
+  }).promise();
 };
