@@ -21,6 +21,7 @@ pageflow.ThemeItemView = Backbone.Marionette.ItemView.extend({
       var stylesheetPath = pageflow.editor.themes.findByName(newThemeName)
           .get('stylesheet_path');
       pageflow.stylesheet.update('theme', stylesheetPath);
+      this.options.onUse();
     },
     'mouseenter': 'select',
     'click': 'select'
