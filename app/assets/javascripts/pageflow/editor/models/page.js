@@ -48,7 +48,9 @@ pageflow.Page = Backbone.Model.extend({
   },
 
   title: function() {
-    return this.configuration.get('title') || this.configuration.get('additional_title');
+    return this.configuration.get('title') ||
+      this.configuration.get('additional_title') ||
+      '';
   },
 
   thumbnailFile: function() {
