@@ -436,5 +436,35 @@ module Pageflow
         expect(revision.locale).to eq('fr')
       end
     end
+
+    describe '#theme_name' do
+      it 'allows setting theme_name included in account config' do
+        pageflow_configure do |config|
+          config.features.register('red_theme') do |feature_config|
+            feature_config.themes.register(:red)
+          end
+        end
+
+        account = create(:account, feature_states: {red_theme: true})
+        entry = create(:entry, account: account)
+        revision = build(:revision, entry: entry, theme_name: 'red')
+
+        expect(revision).to be_valid
+      end
+
+      it 'does not allow setting theme_name not included in account config' do
+        pageflow_configure do |config|
+          config.features.register('glitter_theme') do |feature_config|
+            feature_config.themes.register(:glitter)
+          end
+        end
+
+        account = create(:account, feature_states: {glitter_theme: false})
+        entry = create(:entry, account: account)
+        revision = build(:revision, entry: entry, theme_name: 'glitter')
+
+        expect(revision).not_to be_valid
+      end
+    end
   end
 end

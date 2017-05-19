@@ -44,6 +44,10 @@ module Pageflow
     validate :published_until_unchanged, :if => :published_until_was_in_past?
     validate :published_until_blank, :if => :published_at_blank?
 
+    validates_inclusion_of(:theme_name, in: lambda do |revision|
+                             Pageflow.config_for(revision.entry.account).themes.names
+                           end)
+
     def main_storyline_chapters
       main_storyline = storylines.first
       main_storyline ? main_storyline.chapters : Chapter.none

@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'spec_helper'
 
 module Pageflow
@@ -11,12 +12,39 @@ module Pageflow
         expect(theming.errors).to include(:theme_name)
       end
 
+      it 'is invalid if disabled for account' do
+        pageflow_configure do |config|
+          config.features.register('glitter_theme') do |feature_config|
+            feature_config.themes.register(:glitter)
+          end
+        end
+
+        account = create(:account, feature_states: {glitter_theme: false})
+        theming = build(:theming, account: account, theme_name: 'glitter')
+
+        theming.valid?
+        expect(theming.errors).to include(:theme_name)
+      end
+
       it 'is valid if registered for usage in theming' do
         pageflow_configure do |config|
           config.themes.register(:custom)
         end
 
         theming = build(:theming, theme_name: 'custom')
+
+        expect(theming).to be_valid
+      end
+
+      it 'is valid if enabled for account' do
+        pageflow_configure do |config|
+          config.features.register('glitter_theme') do |feature_config|
+            feature_config.themes.register(:glitter)
+          end
+        end
+
+        account = create(:account, feature_states: {glitter_theme: true})
+        theming = build(:theming, account: account, theme_name: 'glitter')
 
         expect(theming).to be_valid
       end
