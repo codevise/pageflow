@@ -42,6 +42,16 @@ module Pageflow
 
         expect(Roles.high(user, entry)).to eq(:member)
       end
+
+      it 'returns correct role when only entry role exists after entry changed accounts' do
+        user = create(:user)
+        account = create(:account)
+        entry = create(:entry, with_editor: user)
+
+        entry.update!(account: account)
+
+        expect(Roles.high(user, entry)).to eq(:editor)
+      end
     end
   end
 end
