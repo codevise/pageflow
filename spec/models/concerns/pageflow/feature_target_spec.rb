@@ -46,8 +46,10 @@ module Pageflow
         end
 
         it 'includes features enabled by default' do
-          Pageflow.config.features.register('some_page_type')
-          Pageflow.config.features.enable_by_default('some_page_type')
+          pageflow_configure do |config|
+            config.features.register('some_page_type')
+            config.features.enable_by_default('some_page_type')
+          end
           entry = build(:entry)
 
           expect(entry.enabled_feature_names).to eq(['some_page_type'])
@@ -62,8 +64,10 @@ module Pageflow
         end
 
         it 'allows to disable inherited features enabled by default' do
-          Pageflow.config.features.register('some_page_type')
-          Pageflow.config.features.enable_by_default('some_page_type')
+          pageflow_configure do |config|
+            config.features.register('some_page_type')
+            config.features.enable_by_default('some_page_type')
+          end
           entry = build(:entry, features_configuration: {'some_page_type' => false})
 
           expect(entry.enabled_feature_names).to eq([])

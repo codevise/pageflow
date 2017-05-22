@@ -24,7 +24,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
 
     configurationEditor.tab('general', function() {
       this.input('title', pageflow.TextInputView, {
-        placeholder: entry.attributes.entry_title
+        placeholder: entry.get('entry_title')
       });
       this.input('locale', pageflow.SelectInputView, {
         values: pageflow.config.availablePublicLocales,
@@ -68,6 +68,13 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
         model: entry,
         widgetTypes: pageflow.editor.widgetTypes
       });
+      if (pageflow.editor.themes.length > 1) {
+        this.view(pageflow.ThemeInputView, {
+          themes: pageflow.editor.themes,
+          propertyName: 'theme_name',
+          hideUnsetButton: true
+        });
+      }
     });
 
     configurationEditor.tab('social', function() {

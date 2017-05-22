@@ -30,8 +30,10 @@ feature 'editing an account' do
   end
 
   scenario 'changing nested theming' do
-    Pageflow.config.themes.register(:foo)
-    Pageflow.config.themes.register(:bar)
+    pageflow_configure do |config|
+      config.themes.register(:foo)
+      config.themes.register(:bar)
+    end
 
     theming = create(:theming, :theme_name => 'foo')
     account = create(:account, :default_theming => theming)

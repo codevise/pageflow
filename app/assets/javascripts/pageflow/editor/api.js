@@ -165,7 +165,9 @@ pageflow.EditorApi = pageflow.Object.extend({
     this.failures = new pageflow.FailuresAPI();
 
     /**
-     * Setup editor integration for page types.
+     * Set up editor integration for page types.
+     * @alias pageTypes
+     * @memberof module:pageflow/editor.pageflow.editor
      */
     this.pageTypes = new pageflow.PageTypes();
 
@@ -179,6 +181,7 @@ pageflow.EditorApi = pageflow.Object.extend({
     /**
      * @alias fileTypes
      * @memberof module:pageflow/editor.pageflow.editor
+     * Set up editor integration for file types
      */
     this.fileTypes = new pageflow.FileTypes();
 
