@@ -46,7 +46,7 @@ module Pageflow
 
     validates_inclusion_of(:theme_name,
                            in: lambda do |revision|
-                             Pageflow.config_for(revision.entry.account).themes.names
+                             Pageflow.config_for(revision.entry).themes.names
                            end)
 
     def main_storyline_chapters
