@@ -1,5 +1,24 @@
 # CHANGELOG
 
+### Version 12.0.0.rc4
+
+2017-05-23
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc3...v12.0.0.rc4)
+
+##### Breaking Changes
+
+- Remove legacy theme files. All themes have to be based on the
+  default theme.
+  ([#768](https://github.com/codevise/pageflow/pull/768))
+
+##### Bug Fixes
+
+- Bug fix: Fix exception when sorting user accounts table by role
+  ([#769](https://github.com/codevise/pageflow/pull/769))
+- Bug fix: Change roles.high to not expect account membership
+  ([#766](https://github.com/codevise/pageflow/pull/766))
+
 ### Version 12.0.0.rc3
 
 2017-05-12
