@@ -21,7 +21,11 @@ module ViewComponentExampleGroup
       if block_given?
         arbre(&block).to_s
       else
-        arbre.send(described_class.builder_method_name, *args, &block)
+        component = described_class
+
+        arbre do
+          insert_tag(component, *args, &block)
+        end
       end
   end
 end
