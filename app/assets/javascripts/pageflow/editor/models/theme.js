@@ -8,6 +8,6 @@ pageflow.Theme = Backbone.Model.extend({
   },
 
   thumbnailUrl: function() {
-    return this.options.thumbnailUrl || this.get('preview_image_url');
+    return this.options.thumbnailUrl || this.get('preview_thumbnail_url');
   }
 });
