@@ -11,5 +11,5 @@
 }
 
 .player_controls-menu_bar-stand_alone {
-  @extend %pageflow_widget_margin_right;
+  @extend %pageflow_widget_margin_right !optional;
 }
