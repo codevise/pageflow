@@ -19,7 +19,10 @@ module Pageflow
 
     def high(user, entry)
       roles = [:none, :member, :previewer, :editor, :publisher, :manager]
-      account_role = Membership.where(user: user, entity: entry.account).first.role || :none
+
+      account_membership = Membership.where(user: user, entity: entry.account).first
+      account_role = account_membership ? account_membership.role : :none
+
       if user.entries.include?(entry)
         entry_role = Membership.where(user: user, entity: entry).first.role
       else

@@ -1,5 +1,60 @@
 # CHANGELOG
 
+### Version 12.0.0.rc4
+
+2017-05-23
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc3...v12.0.0.rc4)
+
+##### Breaking Changes
+
+- Remove legacy theme files. All themes have to be based on the
+  default theme.
+  ([#768](https://github.com/codevise/pageflow/pull/768))
+
+##### Bug Fixes
+
+- Bug fix: Fix exception when sorting user accounts table by role
+  ([#769](https://github.com/codevise/pageflow/pull/769))
+- Bug fix: Change roles.high to not expect account membership
+  ([#766](https://github.com/codevise/pageflow/pull/766))
+
+### Version 12.0.0.rc3
+
+2017-05-12
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc2...v12.0.0.rc3)
+
+##### Manual Update Step
+
+- Switch from `Expires` to `Cache-Control` header for media uploads.
+  ([#753](https://github.com/codevise/pageflow/pull/753))
+
+  It’s recommended you update the files currently stored on S3:
+
+        $ s3cmd --recursive modify --add-header="Cache-Control: public, max-age=31536000" s3://yourbucket/
+        $ s3cmd --recursive modify --remove-header=Expires s3://yourbucket/
+
+  Tread carefully when you do this! As noted in
+  [this StackExchange answer](http://stackoverflow.com/questions/22501465/how-to-add-cache-control-in-aws-s3),
+  we have experienced that some public read permissions were lost
+  after running this script. Test first using just a single object. In
+  the AWS Management Console, you might want to grant public read
+  access on the entire bucket again to be safe.
+
+##### Minor Changes
+
+- Ensure public translations fall back to default locale
+  ([#757](https://github.com/codevise/pageflow/pull/757))
+- Depend on pageflow-public-i18n 1.9
+  ([#752](https://github.com/codevise/pageflow/pull/752))
+- Remove jQuery widgets formerly used by player controls
+  ([#756](https://github.com/codevise/pageflow/pull/756))
+- Bug fix: Use entry locale in CloseButton translations
+  ([#760](https://github.com/codevise/pageflow/pull/760))
+- Bug fix: Fix ensureValueDefined option of SelectInputView
+  ([#755](https://github.com/codevise/pageflow/pull/755))
+
 ### Version 12.0.0.rc2
 
 2017-05-10

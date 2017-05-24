@@ -2,15 +2,16 @@ module Pageflow
   module Admin
     class UserAccountsTab < ViewComponent
       def build(user)
-        embedded_index_table(user.memberships.on_accounts.includes(:account)
-                              .accessible_by(current_ability, :index),
+        embedded_index_table(user.memberships.on_accounts
+                               .includes(:account).references(:pageflow_accounts)
+                               .accessible_by(current_ability, :index),
                              blank_slate_text: t('pageflow.admin.users.no_accounts')) do
           table_for_collection class: 'memberships', sortable: true, i18n: Pageflow::Membership do
             column :account, sortable: 'pageflow_accounts.name' do |membership|
-              if authorized?(:read, membership.entity)
-                link_to(membership.entity.name, admin_account_path(membership.entity))
+              if authorized?(:read, membership.account)
+                link_to(membership.account.name, admin_account_path(membership.account))
               else
-                membership.entity.name
+                membership.account.name
               end
             end
             column :role, sortable: 'pageflow_memberships.role' do |membership|

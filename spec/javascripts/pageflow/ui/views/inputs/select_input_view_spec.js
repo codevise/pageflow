@@ -144,6 +144,37 @@ describe('pageflow.SelectInputView', function() {
     });
   });
 
+  describe('without ensureValueDefined option', function() {
+    it('does not assign value when rendered', function() {
+      var model = new Model();
+      var selectInputView = new pageflow.SelectInputView({
+        model: model,
+        propertyName: 'value',
+        values: ['one', 'two']
+      });
+
+      selectInputView.render();
+
+      expect(model.has('value')).to.eq(false);
+    });
+  });
+
+  describe('with ensureValueDefined option', function() {
+    it('assigns value of first option when rendered', function() {
+      var model = new Model();
+      var selectInputView = new pageflow.SelectInputView({
+        model: model,
+        propertyName: 'value',
+        values: ['one', 'two'],
+        ensureValueDefined: true
+      });
+
+      selectInputView.render();
+
+      expect(model.get('value')).to.eq('one');
+    });
+  });
+
   function optionTexts(view) {
     view.render();
 
