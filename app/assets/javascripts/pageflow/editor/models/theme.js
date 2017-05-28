@@ -4,6 +4,6 @@ pageflow.Theme = Backbone.Model.extend({
   },
 
   thumbnailUrl: function() {
-    return this.get('preview_image_url');
+    return this.get('preview_thumbnail_url');
   }
 });
