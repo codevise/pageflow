@@ -68,7 +68,8 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
         model: entry,
         widgetTypes: pageflow.editor.widgetTypes
       });
-      if (pageflow.editor.themes.length > 1) {
+      if (pageflow.features.isEnabled('selectable_themes') &&
+          pageflow.editor.themes.length > 1) {
         this.view(pageflow.ThemeInputView, {
           themes: pageflow.editor.themes,
           propertyName: 'theme_name',
