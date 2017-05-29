@@ -45,11 +45,11 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
   },
 
   /**
-   * Returns the value of some identifying attribute.
+   * Returns a promise for some identifying attribute.
    *
-   * Default is perma_id. If the attribute is named differently, you
-   * can have your specific ReferenceInputView implement
-   * `chooseValue()` accordingly.
+   * Default attribute name is perma_id. If the attribute is named
+   * differently, you can have your specific ReferenceInputView
+   * implement `chooseValue()` accordingly.
    *
    * Will be used to set the chosen Model for this View.
    */
