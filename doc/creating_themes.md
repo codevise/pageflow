@@ -27,12 +27,20 @@ The generator creates the following files and directories:
           pageflow/
             themes/
               my_custom_theme/
+                preview.png
+                preview_thumbnail.png
 
 Now take a look at the
 [available variables](http://codevise.github.io/pageflow/theme/master/)
 and start customizing. Pageflow plugins might define their own set of
 variables. Refer to the README of the respective plugin for further
 information.
+
+To provide editors with more ways to distinguish between themes, you
+can add you own preview image and/or preview thumbnail in PNG
+format. To support high resolution displays, we advise to stick with
+the resolution/aspect ratio of the default sample files `preview.png`
+and `preview_thumbnail.png`.
 
 Finally you have to register the theme in the Pageflow initializer:
 
