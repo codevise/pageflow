@@ -15,6 +15,8 @@ module Pageflow
       def copy_template
         directory('themes', File.join('app', 'assets', 'stylesheets', 'pageflow', 'themes'))
         empty_directory(File.join('app', 'assets', 'images', 'pageflow', 'themes', name))
+        copy_file('preview.png', "app/assets/images/pageflow/themes/#{name}")
+        copy_file('preview_thumbnail.png', "app/assets/images/pageflow/themes/#{name}")
       end
     end
   end
