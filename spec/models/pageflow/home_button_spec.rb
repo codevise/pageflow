@@ -5,7 +5,7 @@ module Pageflow
     describe '#url' do
       it 'returns home_url of revision' do
         revision = Revision.new(home_url: 'http://example.com')
-        theming = Theming.new(account: create(:account))
+        theming = create(:theming)
         home_button = HomeButton.new(revision, theming)
 
         expect(home_button.url).to eq('http://example.com')
@@ -13,9 +13,9 @@ module Pageflow
 
       it 'falls back to cname of theming if theming has home_url' do
         revision = Revision.new(home_url: '')
-        theming = Theming.new(cname: 'pageflow.example.com',
-                              home_url: 'http://example.com',
-                              account: create(:account))
+        theming = create(:theming,
+                         cname: 'pageflow.example.com',
+                         home_url: 'http://example.com')
         home_button = HomeButton.new(revision, theming)
 
         expect(home_button.url).to eq(host: 'pageflow.example.com', controller: 'entries', action: 'index')
@@ -28,7 +28,7 @@ module Pageflow
           config.themes.register(:with_home_button)
         end
         revision = Revision.new(home_url: 'http://example.com', home_button_enabled: true)
-        theming = Theming.new(theme_name: 'with_home_button', account: create(:account))
+        theming = create(:theming, theme_name: 'with_home_button')
         home_button = HomeButton.new(revision, theming)
 
         expect(home_button).to be_enabled
@@ -39,10 +39,10 @@ module Pageflow
           config.themes.register(:with_home_button)
         end
         revision = Revision.new(home_url: '', home_button_enabled: true)
-        theming = Theming.new(theme_name: 'with_home_button',
-                              home_url: 'http://example.com',
-                              cname: 'pageflow.exmaple.com',
-                              account: create(:account))
+        theming = create(:theming,
+                         theme_name: 'with_home_button',
+                         home_url: 'http://example.com',
+                         cname: 'pageflow.exmaple.com')
         home_button = HomeButton.new(revision, theming)
 
         expect(home_button).to be_enabled
@@ -53,7 +53,7 @@ module Pageflow
           config.themes.register(:with_home_button)
         end
         revision = Revision.new(home_url: 'http://example.com', home_button_enabled: false)
-        theming = Theming.new(theme_name: 'with_home_button', account: create(:account))
+        theming = create(:theming, theme_name: 'with_home_button')
         home_button = HomeButton.new(revision, theming)
 
         expect(home_button).not_to be_enabled
@@ -64,7 +64,7 @@ module Pageflow
           config.themes.register(:with_home_button)
         end
         revision = Revision.new(home_button_enabled: true)
-        theming = Theming.new(theme_name: 'with_home_button', account: create(:account))
+        theming = create(:theming, theme_name: 'with_home_button')
         home_button = HomeButton.new(revision, theming)
 
         expect(home_button).not_to be_enabled
@@ -75,7 +75,7 @@ module Pageflow
           config.themes.register(:no_home_button, no_home_button: true)
         end
         revision = Revision.new(home_url: 'http://example.com', home_button_enabled: true)
-        theming = Theming.new(theme_name: 'no_home_button', account: create(:account))
+        theming = create(:theming, theme_name: 'no_home_button')
         home_button = HomeButton.new(revision, theming)
 
         expect(home_button).not_to be_enabled
