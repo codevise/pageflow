@@ -3,9 +3,12 @@ Pageflow.configure do |config|
   # users.
   config.mailer_sender = 'change-me-at-config-initializers-pageflow@example.com'
 
-  # Configure the classic or slim player controls.
-  config.widget_types.register(Pageflow::BuiltInWidgetType.classic_player_controls, default: true)
+  # Register the built-in widget types.
+  # You can remove these or add different versions with the same name.
+  config.widget_types.register(Pageflow::BuiltInWidgetType.navigation, default: true)
+  config.widget_types.register(Pageflow::BuiltInWidgetType.mobile_navigation, default: true)
   config.widget_types.register(Pageflow::BuiltInWidgetType.slim_player_controls)
+  config.widget_types.register(Pageflow::BuiltInWidgetType.classic_player_controls, default: true)
 
   # Plugins provide page types and widget types.
   config.plugin(Pageflow.built_in_page_types_plugin)
