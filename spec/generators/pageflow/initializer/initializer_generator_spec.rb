@@ -15,14 +15,14 @@ module Pageflow
         expect(initializer).to exist
       end
 
-      it "registers classic player controls" do
+      it 'registers classic player controls' do
         expect(initializer)
-          .to contain("config.widget_types.register(Pageflow::BuiltInWidgetType.classic_player_controls")
+          .to contain('config.widget_types.register(Pageflow::BuiltInWidgetType.classic_player_controls')
       end
 
-      it "registers slim player controls" do
+      it 'registers slim player controls' do
         expect(initializer)
-          .to contain("config.widget_types.register(Pageflow::BuiltInWidgetType.slim_player_controls")
+          .to contain('config.widget_types.register(Pageflow::BuiltInWidgetType.slim_player_controls')
       end
     end
   end
