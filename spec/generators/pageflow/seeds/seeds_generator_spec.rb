@@ -5,9 +5,19 @@ require 'generators/pageflow/seeds/seeds_generator'
 module Pageflow
   module Generators
     describe SeedsGenerator, type: :generator do
-      it "generates 'db/seeds.rb'" do
+      let(:seeds) { file('db/seeds.rb') }
+
+      before do
         run_generator
-        expect(file('db/seeds.rb')).to exist
+      end
+
+      it "generates 'db/seeds.rb'" do
+        expect(seeds).to exist
+      end
+
+      it 'generates a random password' do
+        expect(seeds)
+          .to_not contain('!Pass123')
       end
     end
   end
