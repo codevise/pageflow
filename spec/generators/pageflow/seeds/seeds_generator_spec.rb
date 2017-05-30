@@ -17,7 +17,7 @@ module Pageflow
 
       it 'generates a random password' do
         expect(seeds)
-          .to_not contain('!Pass123')
+          .to contain(/default_user_password\('\w{12}'\)/)
       end
     end
   end

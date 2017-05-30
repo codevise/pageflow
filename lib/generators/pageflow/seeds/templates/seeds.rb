@@ -4,7 +4,7 @@
 
 include Pageflow::Seeds
 
-default_user_password('!Pass123')
+default_user_password('<%= password %>')
 
 publisher_account = account(name: 'Acme Corporation')
 editor_account = account(name: 'General Products')
