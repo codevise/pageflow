@@ -3,6 +3,10 @@ Pageflow.configure do |config|
   # users.
   config.mailer_sender = 'change-me-at-config-initializers-pageflow@example.com'
 
+  # Configure the classic or slim player controls.
+  config.widget_types.register(Pageflow::BuiltInWidgetType.classic_player_controls, default: true)
+  config.widget_types.register(Pageflow::BuiltInWidgetType.slim_player_controls)
+
   # Plugins provide page types and widget types.
   config.plugin(Pageflow.built_in_page_types_plugin)
   # config.plugin(Pageflow::Rainbow.plugin)

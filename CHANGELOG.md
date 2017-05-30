@@ -4,6 +4,16 @@
 
 [Compare changes](https://github.com/codevise/pageflow/compare/12-0-stable...master)
 
+#### Breaking Changes
+
+- Move player controls initialization to the generated Pageflow initializer. Add these lines to `config/initializers/pageflow.rb` in your host application:
+
+```
+# Configure the classic or slim player controls.
+config.widget_types.register(Pageflow::BuiltInWidgetType.classic_player_controls, default: true)
+config.widget_types.register(Pageflow::BuiltInWidgetType.slim_player_controls)
+```
+
 Media stack:
 
 - Switch from `Expires` to `Cache-Control` header for media uploads.
