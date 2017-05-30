@@ -6,15 +6,10 @@
 
 #### Breaking Changes
 
-- The built-in widget types must now be registered in the host application. To keep existing functionality from previous Pageflow versions, add these lines to `config/initializers/pageflow.rb` in your host application:
+- The built-in widget types must now be registered in the host application. To keep existing functionality from previous Pageflow versions, add this line to `config/initializers/pageflow.rb` in your host application:
 
 ```
-# Register the built-in widget types.
-# You can remove these or add different versions with the same name.
-config.widget_types.register(Pageflow::BuiltInWidgetType.navigation, default: true)
-config.widget_types.register(Pageflow::BuiltInWidgetType.mobile_navigation, default: true)
-config.widget_types.register(Pageflow::BuiltInWidgetType.classic_player_controls, default: true)
-config.widget_types.register(Pageflow::BuiltInWidgetType.slim_player_controls)
+config.plugin(Pageflow.built_in_widget_types_plugin)
 ```
 
 Media stack:
