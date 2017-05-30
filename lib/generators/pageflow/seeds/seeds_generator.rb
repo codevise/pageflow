@@ -7,7 +7,7 @@ module Pageflow
       desc "Requires the pageflow seeds in db/seeds.rb"
 
       argument :password,
-               default: SecureRandom.random_number(36**12).to_s(36).rjust(12, "0"),
+               default: SecureRandom.random_number(36**12).to_s(36).rjust(12, '0'),
                desc: 'Default user password'
 
       source_root File.expand_path("../templates", __FILE__)
