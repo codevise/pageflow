@@ -45,12 +45,45 @@ and `preview_thumbnail.png`.
 Finally you have to register the theme in the Pageflow initializer:
 
     # config/initializers/pageflow.rb
-    Pageflow.configure do
+    Pageflow.configure do |config|
       config.themes.register(:my_custom_theme)
     end
 
+Alternatively, if you wish to offer a selection of themes to editors
+of one or more entries or accounts, you can enable the
+`selectable_themes` feature and also wrap your theme in a feature:
+
+    # config/initializers/pageflow.rb
+    Pageflow.configure do |config|
+      config.features.enable_by_default('selectable_themes')
+
+      config.features.register('my_theme_feature') do |feature_config|
+        feature_config.themes.register(:my_custom_theme)
+      end
+    end
+
+You can give different names to your feature and your theme
+(cf. `my_theme_feature` vs `my_custom_theme`). In many cases, it makes
+sense to use the same names nonetheless.
+
+When using your theme as part of a feature, you might want to add to
+your translations along the lines of
+
+    # config/locales/new/theme_translations.en.yml
+
+    en:
+      pageflow:
+        my_theme_feature:
+          feature_name: "Gertrud"-Theme
+          name: Gertrud
+
+`feature_name` is for feature selection in the admin, while `name` is
+for choosing between themes from the editor.
+
 After restarting the app server, the custom theme can be selected in
-the account admin form.
+the account admin form. If you wrapped it in a feature, you can
+activate the feature per entry or per account instead, which will
+allow editors to select it from editor mode.
 
 The theme stylesheet `pageflow/themes/my_custom_theme.css` is
 automatically added to the list of precompiled assets.
