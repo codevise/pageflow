@@ -37,4 +37,8 @@ module Pageflow
   def self.built_in_page_types_plugin
     BuiltInPageTypesPlugin.new
   end
+
+  def self.built_in_widget_types_plugin
+    BuiltInWidgetTypesPlugin.new
+  end
 end
