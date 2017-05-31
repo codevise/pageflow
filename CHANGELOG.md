@@ -1,5 +1,44 @@
 # CHANGELOG
 
+### Version 12.0.0.rc5
+
+2017-05-31
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc4...v12.0.0.rc5)
+
+#### Breaking Changes
+
+- The built-in widget types must now be registered in the host
+  application.
+  ([#774](https://github.com/codevise/pageflow/pull/774),
+   [#776](https://github.com/codevise/pageflow/pull/776))
+
+  To keep existing functionality from previous Pageflow versions, add
+  this line to the Pageflow initializer in your host application:
+
+        config.plugin(Pageflow.built_in_widget_types_plugin)
+
+- The built-in widget types must now be registered in the host
+  application.
+
+  To keep existing functionality from previous Pageflow versions, add
+  these lines to `config/initializers/pageflow.rb` in your host
+  application:
+
+        # Register the built-in widget types.
+        # You can remove these or add different versions with the same name.
+        config.widget_types.register(Pageflow::BuiltInWidgetType.navigation, default: true)
+        config.widget_types.register(Pageflow::BuiltInWidgetType.mobile_navigation, default: true)
+        config.widget_types.register(Pageflow::BuiltInWidgetType.classic_player_controls, default: true)
+        config.widget_types.register(Pageflow::BuiltInWidgetType.slim_player_controls)
+
+##### Bug Fixes
+
+- Upgrade to Sinon 2
+  ([#777](https://github.com/codevise/pageflow/pull/777))
+- Bug fix: Mark %pageflow_widget_margin_right optional
+  ([#773](https://github.com/codevise/pageflow/pull/773))
+
 ### Version 12.0.0.rc4
 
 2017-05-23
