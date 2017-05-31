@@ -154,7 +154,12 @@ describe('createFilePlayer', () => {
         mockPlayer.duration.returns(10);
         mockPlayer.trigger(event);
 
-        expect(playerActions[action]).to.have.been.calledWith(payload);
+        if (payload) {
+          expect(playerActions[action]).to.have.been.calledWith(payload);
+        }
+        else {
+          expect(playerActions[action]).to.have.been.called;
+        }
       });
     });
 
