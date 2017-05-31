@@ -2,7 +2,8 @@ pageflow.ThemeInputView = pageflow.ReferenceInputView.extend({
   choose: function() {
     return pageflow.ChangeThemeDialogView.changeTheme({
       model: this.model,
-      themes: this.options.themes
+      themes: this.options.themes,
+      themeInUse: this.model.get(this.options.propertyName)
     });
   },
 
