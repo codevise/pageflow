@@ -13,9 +13,8 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
   },
 
   initialize: function(options) {
-    this.listenTo(this.model, 'change', this.update);
     this.selection = new Backbone.Model();
-    var themeInUse = this.options.themes.findByName(pageflow.entry.configuration.get('theme_name'));
+    var themeInUse = this.options.themes.findByName(this.options.themeInUse);
     this.selection.set('theme', themeInUse);
     this.listenTo(this.selection, 'change:theme', function() {
       if (!this.selection.get('theme')) {
@@ -26,14 +25,16 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    var themes = this.options.themes;
     this.themesView = new pageflow.CollectionView({
-      collection: this.options.themes,
+      collection: themes,
       tagName: 'ul',
       itemViewConstructor: pageflow.ThemeItemView,
       itemViewOptions: {
-        configuration: this.model,
         selection: this.selection,
-        onUse: this.options.onUse
+        onUse: this.options.onUse,
+        themes: themes,
+        themeInUse: this.options.themeInUse
       }
     });
 
@@ -59,8 +60,8 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
 
 pageflow.ChangeThemeDialogView.changeTheme = function(options) {
   return $.Deferred(function(deferred) {
-    options.onUse = function() {
-      deferred.resolve(this.model);
+    options.onUse = function(theme) {
+      deferred.resolve(theme);
     };
 
     var view = new pageflow.ChangeThemeDialogView(options);
