@@ -24,7 +24,7 @@ pageflow.ThemeItemView = Backbone.Marionette.ItemView.extend({
 
   onRender: function() {
     this.$el.data('themeName', this.model.get('name'));
-    this.ui.themeName.text(this.translateThemeName());
+    this.ui.themeName.text(this.model.title());
 
     if (this.inUse()) {
       this.ui.inUseRegion.text('✓');
@@ -37,10 +37,5 @@ pageflow.ThemeItemView = Backbone.Marionette.ItemView.extend({
 
   inUse: function() {
     return this.model.get('name') === this.options.themeInUse;
-  },
-
-  translateThemeName: function() {
-    var name = this.model.get('name');
-    return I18n.t('pageflow.' + name + '_theme.name');
   }
 });
