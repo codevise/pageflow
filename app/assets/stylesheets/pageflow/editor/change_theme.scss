@@ -1,0 +1,106 @@
+button.change_theme {
+  @include button(#559ff2);
+}
+
+p.current_theme_name {
+  margin-bottom: 4px;
+  margin-left: 14px;
+}
+
+.editor.change_theme {
+  .box {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    bottom: 20px;
+    right: 20px;
+    max-width: 1100px;
+    max-height: 650px;
+    background-color: #eee;
+  }
+
+  .content {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    bottom: 50px;
+    left: 20px;
+    overflow: auto;
+    background-color: #fff;
+
+    >div {
+      padding: 10px;
+    }
+  }
+
+  .footer {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    left: 20px;
+  }
+
+  .themes_panel {
+    position: absolute;
+    top: 60px;
+    left: 20px;
+    width: 330px;
+  }
+
+  .preview_panel {
+    position: absolute;
+    top: 62px;
+    right: 30px;
+    left: 370px;
+    bottom: 50px;
+    overflow: auto;
+  }
+
+  .use_theme {
+    @include button(#590);
+  }
+
+  .theme_name {
+    margin: 10px;
+  }
+
+  .button_or_checkmark {
+    margin-right: 10px;
+    position: absolute;
+    right: 10px;
+  }
+
+  .theme_in_use {
+    font-size: 35px;
+  }
+
+  li {
+    position: relative;
+    line-height: 60px;
+    background-color: #eeeeee;
+    margin: 10px;
+    
+    .active {
+      background-color: #d2e5fa;
+    }
+  }
+
+  h2.themes_header {
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-transform: none;
+    position: absolute;
+    top: 25px;
+    left: 40px;
+  }
+
+  h2.preview_header {
+    font-size: 14px;
+    text-transform: none;
+  }
+
+  .preview_image {
+    max-width: 100%;
+  }
+}

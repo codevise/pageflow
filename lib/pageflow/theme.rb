@@ -12,6 +12,14 @@ module Pageflow
       "pageflow/themes/#{name}.css"
     end
 
+    def preview_image_path
+      "pageflow/themes/#{name}/preview.png"
+    end
+
+    def preview_thumbnail_path
+      "pageflow/themes/#{name}/preview_thumbnail.png"
+    end
+
     def has_home_button?
       !@options[:no_home_button]
     end

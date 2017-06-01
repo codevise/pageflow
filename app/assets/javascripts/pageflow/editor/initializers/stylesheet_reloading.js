@@ -1,11 +1,18 @@
 pageflow.app.addInitializer(function(options) {
   pageflow.entry.on('change:pending_files_count', function(model, value) {
     if (value < pageflow.entry.previous('pending_files_count')) {
-      pageflow.reloadStylesheet('entry');
+      pageflow.stylesheet.reload('entry');
     }
   });
 
   pageflow.entry.on('use:files', function() {
-    pageflow.reloadStylesheet('entry');
+    pageflow.stylesheet.reload('entry');
+  });
+
+  pageflow.entry.on('change:theme_name', function() {
+    var stylesheetPath = pageflow.themes
+        .findByName(pageflow.entry.theme_name)
+        .get('stylesheet_path');
+    pageflow.stylesheet.update('theme', stylesheetPath);
   });
 });

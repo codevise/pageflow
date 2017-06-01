@@ -1,0 +1,22 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/entry:
+        theme_name: Gewähltes Theme
+  pageflow:
+    default_theme:
+      name: Standard
+    editor:
+      templates:
+        change_theme:
+          change: Theme ändern
+          current_prefix: Gewähltes Theme
+        change_theme_dialog:
+          close: Schließen
+          header: Themes
+          preview_header_prefix: Vorschau
+          preview_header_suffix: -Theme
+        theme:
+          use: Verwenden
+      themes:
+        header: Themes
