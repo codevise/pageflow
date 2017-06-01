@@ -9,7 +9,9 @@ module Pageflow
     scope :for_request, ->(request) { Pageflow.config.theming_request_scope.call(all, request) }
 
     validates :account, :presence => true
-    validates_inclusion_of :theme_name, :in => ->(_) { Pageflow.config.themes.names }
+    validates_inclusion_of(:theme_name, in: lambda do |theming|
+      Pageflow.config_for(theming.account).themes.names
+    end)
 
     def resolve_widgets(options = {})
       widgets.resolve(Pageflow.config_for(account), options)
@@ -20,7 +22,7 @@ module Pageflow
     end
 
     def theme
-      Pageflow.config.themes.get(theme_name)
+      Pageflow.config_for(account).themes.get(theme_name)
     end
 
     def name
@@ -29,14 +31,18 @@ module Pageflow
 
     def copy_defaults_to(revision)
       widgets.copy_all_to(revision)
-      copy_default_meta_tags(revision)
+      copy_attributes_to(revision)
     end
 
-    def copy_default_meta_tags(revision)
+    private
+
+    def copy_attributes_to(revision)
       revision.update(
         author: default_author.presence || Pageflow.config.default_author_meta_tag,
         publisher: default_publisher.presence || Pageflow.config.default_publisher_meta_tag,
-        keywords: default_keywords.presence || Pageflow.config.default_keywords_meta_tag
+        keywords: default_keywords.presence || Pageflow.config.default_keywords_meta_tag,
+        theme_name: theme_name,
+        home_button_enabled: home_button_enabled_by_default
       )
     end
   end

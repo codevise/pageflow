@@ -71,7 +71,9 @@ module Pageflow
 
     describe '#entry_theming_seed' do
       it 'includes page_change_by_scrolling theme option' do
-        Pageflow.config.themes.register(:custom, no_page_change_by_scrolling: true)
+        pageflow_configure do |config|
+          config.themes.register(:custom, no_page_change_by_scrolling: true)
+        end
         theming = create(:theming, theme_name: 'custom')
         entry = PublishedEntry.new(create(:entry, theming: theming))
 

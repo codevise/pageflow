@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'spec_helper'
 
 module Pageflow
@@ -11,10 +12,39 @@ module Pageflow
         expect(theming.errors).to include(:theme_name)
       end
 
+      it 'is invalid if disabled for account' do
+        pageflow_configure do |config|
+          config.features.register('glitter_theme') do |feature_config|
+            feature_config.themes.register(:glitter)
+          end
+        end
+
+        account = create(:account, feature_states: {glitter_theme: false})
+        theming = build(:theming, account: account, theme_name: 'glitter')
+
+        theming.valid?
+        expect(theming.errors).to include(:theme_name)
+      end
+
       it 'is valid if registered for usage in theming' do
-        Pageflow.config.themes.register(:custom)
+        pageflow_configure do |config|
+          config.themes.register(:custom)
+        end
 
         theming = build(:theming, theme_name: 'custom')
+
+        expect(theming).to be_valid
+      end
+
+      it 'is valid if enabled for account' do
+        pageflow_configure do |config|
+          config.features.register('glitter_theme') do |feature_config|
+            feature_config.themes.register(:glitter)
+          end
+        end
+
+        account = create(:account, feature_states: {glitter_theme: true})
+        theming = build(:theming, account: account, theme_name: 'glitter')
 
         expect(theming).to be_valid
       end
@@ -22,9 +52,13 @@ module Pageflow
 
     describe '#theme' do
       it 'looks up theme by #theme_name' do
-        theming = build(:theming, :theme_name => 'default')
+        pageflow_configure do |config|
+          config.themes.register(:named_theme)
+        end
 
-        expect(theming.theme).to be(Pageflow.config.themes.get(:default))
+        theming = build(:theming, theme_name: 'named_theme')
+
+        expect(theming.theme.name).to eq(Pageflow.config.themes.get(:named_theme).name)
       end
     end
 
@@ -60,14 +94,14 @@ module Pageflow
       end
     end
 
-    describe '#copy_default_meta_tags' do
+    describe '#copy_defaults_to' do
       let(:theming) { create(:theming) }
       let(:revision) { create(:revision) }
 
       it "updates the revision author with the theming's default author" do
         theming.update default_author: 'Amir Greithanner'
 
-        theming.copy_default_meta_tags(revision)
+        theming.copy_defaults_to(revision)
 
         expect(revision.author).to eq('Amir Greithanner')
       end
@@ -75,7 +109,7 @@ module Pageflow
       it "updates the revision publisher with the theming's default publisher" do
         theming.update default_publisher: 'Spöttel KG'
 
-        theming.copy_default_meta_tags(revision)
+        theming.copy_defaults_to(revision)
 
         expect(revision.publisher).to eq('Spöttel KG')
       end
@@ -83,9 +117,28 @@ module Pageflow
       it "updates the revision keywords with the theming's default keywords" do
         theming.update default_keywords: 'ratione, aut, blanditiis'
 
-        theming.copy_default_meta_tags(revision)
+        theming.copy_defaults_to(revision)
 
         expect(revision.keywords).to eq('ratione, aut, blanditiis')
+      end
+
+      it "updates the revision home_button_enabled with the theming's home_button_enabled_by_"\
+         'default' do
+        theming.update home_button_enabled_by_default: true
+
+        theming.copy_defaults_to(revision)
+
+        expect(revision.home_button_enabled).to eq(true)
+      end
+
+      it "updates the revision theme_name with the theming's default theme_name" do
+        Pageflow.config.themes.register(:acme_corp)
+
+        theming.update theme_name: 'acme_corp'
+
+        theming.copy_defaults_to(revision)
+
+        expect(revision.theme_name).to eq('acme_corp')
       end
     end
 

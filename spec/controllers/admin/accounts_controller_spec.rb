@@ -68,7 +68,9 @@ module Admin
 
     describe '#create' do
       it 'creates nested default_theming' do
-        Pageflow.config.themes.register(:custom)
+        pageflow_configure do |config|
+          config.themes.register(:custom)
+        end
 
         sign_in(create(:user, :admin))
         post(:create, account: {
@@ -82,7 +84,9 @@ module Admin
       end
 
       it 'batch updates widgets of default theming' do
-        Pageflow.config.themes.register(:custom)
+        pageflow_configure do |config|
+          config.themes.register(:custom)
+        end
 
         sign_in(create(:user, :admin))
         post(:create,
@@ -100,7 +104,9 @@ module Admin
       end
 
       it 'does not create widgets if account cannot be saved' do
-        Pageflow.config.themes.register(:custom)
+        pageflow_configure do |config|
+          config.themes.register(:custom)
+        end
 
         sign_in(create(:user, :admin))
 
@@ -147,7 +153,9 @@ module Admin
 
     describe '#update' do
       it 'updates nested default_theming' do
-        Pageflow.config.themes.register(:custom)
+        pageflow_configure do |config|
+          config.themes.register(:custom)
+        end
         theming = create(:theming)
         account = create(:account, default_theming: theming)
 
