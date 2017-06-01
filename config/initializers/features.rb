@@ -5,4 +5,5 @@ Pageflow.configure do |config|
   config.features.register('storylines') do |feature_config|
     feature_config.help_entries.register('pageflow.help_entries.storylines', priority: 7)
   end
+  config.features.register('selectable_themes')
 end
