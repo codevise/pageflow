@@ -81,16 +81,7 @@
     display: none;
   }
 
-  h1, h2 span.subtitle, h2 span.tagline, h3, p {
-    max-width: 500px;
-    width: 60%;
-    @include mobile {
-      width: 100%;
-    }
-  }
-
   h2 .title {
-    max-width: 700px;
     width: 100%;
   }
 
