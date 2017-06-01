@@ -8,4 +8,11 @@ pageflow.app.addInitializer(function(options) {
   pageflow.entry.on('use:files', function() {
     pageflow.stylesheet.reload('entry');
   });
+
+  pageflow.entry.on('change:theme_name', function() {
+    var stylesheetPath = pageflow.themes
+        .findByName(pageflow.entry.theme_name)
+        .get('stylesheet_path');
+    pageflow.stylesheet.update('theme', stylesheetPath);
+  });
 });
