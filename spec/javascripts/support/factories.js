@@ -11,6 +11,12 @@ support.factories = {
     }, options));
   },
 
+  theme: function theme(attributes, options) {
+    return new pageflow.Theme(attributes, _.extend({
+      thumbnailUrl: attributes.thumbnailUrl || 'thumbnailUrl.com'
+    }, options));
+  },
+
   fileTypes: function(fn) {
     var fileTypes = new pageflow.FileTypes();
     var fileTypesSetupArray = [];

@@ -17,24 +17,37 @@ pageflow.ModelThumbnailView = Backbone.Marionette.View.extend({
   },
 
   update: function() {
-    var file = this.model && this.model.thumbnailFile();
+    if (this.model) {
+      if (_.isFunction(this.model.thumbnailFile)) {
+        var file = this.model && this.model.thumbnailFile();
 
-    if (this.fileThumbnailView && this.currentFileThumbnail == file) {
-      return;
+        if (this.thumbnailView && this.currentFileThumbnail == file) {
+          return;
+        }
+
+        this.currentFileThumbnail = file;
+
+        this.newThumbnailView = new pageflow.FileThumbnailView({
+          model: file,
+          className: 'thumbnail file_thumbnail',
+          imageUrlPropertyName: this.options.imageUrlPropertyName
+        });
+      }
+      else {
+        this.newThumbnailView = new pageflow.StaticThumbnailView({
+          model: this.model
+        });
+      }
     }
 
-    this.currentFileThumbnail = file;
-
-    if (this.fileThumbnailView) {
-      this.fileThumbnailView.close();
+    if (this.thumbnailView) {
+      this.thumbnailView.close();
     }
 
-    this.fileThumbnailView = this.subview(new pageflow.FileThumbnailView({
-      model: file,
-      className: 'thumbnail file_thumbnail',
-      imageUrlPropertyName: this.options.imageUrlPropertyName
-    }));
+    if (this.model) {
+      this.thumbnailView = this.subview(this.newThumbnailView);
 
-    this.$el.append(this.fileThumbnailView.el);
+      this.$el.append(this.thumbnailView.el);
+    }
   }
 });
