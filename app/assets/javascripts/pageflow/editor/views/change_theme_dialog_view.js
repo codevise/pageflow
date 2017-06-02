@@ -7,6 +7,7 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
   ui: {
     content: '.content',
     themesPanel: '.themes_panel',
+    previewPanel: '.preview_panel',
     previewImageRegion: '.preview_image_region',
     previewImage: '.preview_image',
     previewHeaderThemeName: '.preview_header_theme_name'
@@ -40,12 +41,18 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
 
     this.ui.themesPanel.append(this.subview(this.themesView).el);
 
+    this.ui.previewPanel.append(this.subview(new pageflow.LoadingView({tagName: 'div'})).el);
+
     this.update();
   },
 
   update: function() {
     var that = this;
     var selectedTheme = this.options.themes.findByName(that.selection.get('theme').get('name'));
+    this.ui.previewImage.hide();
+    this.ui.previewImage.one('load', function() {
+      $(this).show();
+    });
     this.ui.previewImage.attr('src', selectedTheme.get('preview_image_url'));
     this.ui.previewHeaderThemeName.text(selectedTheme.title());
   }
