@@ -1,13 +1,4 @@
-button.change_theme {
-  @include button(#559ff2);
-}
-
-p.current_theme_name {
-  margin-bottom: 4px;
-  margin-left: 14px;
-}
-
-.editor.change_theme {
+&.change_theme {
   .box {
     position: absolute;
     top: 20px;
@@ -49,11 +40,10 @@ p.current_theme_name {
 
   .preview_panel {
     position: absolute;
-    top: 62px;
+    top: 68px;
     right: 30px;
     left: 370px;
     bottom: 50px;
-    overflow: auto;
   }
 
   .use_theme {
@@ -79,7 +69,7 @@ p.current_theme_name {
     line-height: 60px;
     background-color: #eeeeee;
     margin: 10px;
-    
+
     .active {
       background-color: #d2e5fa;
     }
@@ -92,7 +82,7 @@ p.current_theme_name {
     text-transform: none;
     position: absolute;
     top: 25px;
-    left: 40px;
+    left: 30px;
   }
 
   h2.preview_header {
@@ -100,7 +90,24 @@ p.current_theme_name {
     text-transform: none;
   }
 
+  .preview_image_region {
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+    padding-top: 71%;
+    position: relative;
+  }
+
   .preview_image {
+    position: absolute;
+    top: 0;
     max-width: 100%;
+    z-index: 2;
+  }
+
+  .loading {
+    position: absolute;
+    top: 50px;
+    z-index: 1;
+    width: 100%;
   }
 }
