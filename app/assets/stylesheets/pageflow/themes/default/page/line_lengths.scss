@@ -15,6 +15,9 @@ $page-content-position-right-max-width: 500px !default;
 /// displayed on the right) with text positioned on the left.
 $page-header-title-min-width-for-split-layout: 525px !default;
 
+/// Relative width of tagline, subtitle and content text
+$page-content-width: 60% !default;
+
 .page {
   h1,
   h2 span.subtitle,
@@ -22,7 +25,7 @@ $page-header-title-min-width-for-split-layout: 525px !default;
   h3,
   p {
     max-width: $page-content-max-width;
-    width: 60%;
+    width: $page-content-width;
 
     @include mobile {
       width: 100%;
