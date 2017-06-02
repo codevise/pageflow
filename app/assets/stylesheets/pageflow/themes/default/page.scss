@@ -100,6 +100,7 @@ $page-content-text-font-size: 1.2em !default;
 $page-content-text-line-height: 1.5em !default;
 
 @import "./page/anchors";
+@import "./page/line_lengths";
 
 .page {
   @include typography(
