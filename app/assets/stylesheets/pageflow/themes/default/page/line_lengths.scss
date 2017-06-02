@@ -38,6 +38,11 @@ $page-header-title-max-width: 700px !default;
     p {
       margin-left: auto;
       max-width: $page-content-text-position-right-max-width;
+      width: 60%;
+
+      @include mobile {
+        width: 100%;
+      }
     }
 
     .page_header {
