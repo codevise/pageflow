@@ -14,6 +14,7 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
 
   ui: {
     title: '.title',
+    chooseButton: '.choose',
     unsetButton: '.unset',
     buttons: 'button'
   },
@@ -81,7 +82,19 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
     var target = this.getTarget(this.model.get(this.options.propertyName));
 
     this.ui.title.text(target ? target.title() : I18n.t('pageflow.editor.views.inputs.reference_input_view.none'));
+
     this.ui.unsetButton.toggle(!!target && !this.options.hideUnsetButton);
+    this.ui.unsetButton.attr(
+      'title',
+      this.options.unsetButtonTitle ||
+        I18n.t('pageflow.editor.views.inputs.reference_input_view.unset')
+    );
+
+    this.ui.chooseButton.attr(
+      'title',
+      this.options.chooseButtonTitle ||
+        I18n.t('pageflow.editor.views.inputs.reference_input_view.choose')
+    );
 
     this.updateDisabledAttribute(this.ui.buttons);
 

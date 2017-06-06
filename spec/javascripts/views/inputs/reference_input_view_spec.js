@@ -110,4 +110,58 @@ describe('pageflow.ReferenceInputView', function() {
        }
       );
   });
+
+  describe('choose button title', function() {
+    it('has default value', function() {
+      var model = new Model();
+      var view = new TestView({
+        model: model,
+        propertyName: 'an_id'
+      });
+
+      view.render();
+
+      expect(view.ui.chooseButton).to.have.$attr('title');
+    });
+
+    it('can be set via option', function() {
+      var model = new Model();
+      var view = new TestView({
+        model: model,
+        propertyName: 'an_id',
+        chooseButtonTitle: 'Change value'
+      });
+
+      view.render();
+
+      expect(view.ui.chooseButton).to.have.$attr('title', 'Change value');
+    });
+  });
+
+  describe('unset button title', function() {
+    it('has default value', function() {
+      var model = new Model();
+      var view = new TestView({
+        model: model,
+        propertyName: 'an_id'
+      });
+
+      view.render();
+
+      expect(view.ui.unsetButton).to.have.$attr('title');
+    });
+
+    it('can be set via option', function() {
+      var model = new Model();
+      var view = new TestView({
+        model: model,
+        propertyName: 'an_id',
+        unsetButtonTitle: 'No value'
+      });
+
+      view.render();
+
+      expect(view.ui.unsetButton).to.have.$attr('title', 'No value');
+    });
+  });
 });
