@@ -74,8 +74,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
           pageflow.themes.length > 1) {
         this.view(pageflow.ThemeInputView, {
           themes: pageflow.themes,
-          propertyName: 'theme_name',
-          hideUnsetButton: true
+          propertyName: 'theme_name'
         });
       }
     });

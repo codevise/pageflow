@@ -1,4 +1,11 @@
 pageflow.ThemeInputView = pageflow.ReferenceInputView.extend({
+  options: function() {
+    return {
+      chooseButtonTitle: I18n.t('pageflow.editor.views.inputs.theme_input_view.choose'),
+      hideUnsetButton: true
+    };
+  },
+
   choose: function() {
     return pageflow.ChangeThemeDialogView.changeTheme({
       model: this.model,
