@@ -1,13 +1,13 @@
 pageflow.PreviewEntryData = pageflow.EntryData.extend({
   initialize: function(options) {
+    this.entry = options.entry;
     this.storylines = options.storylines;
     this.chapters = options.chapters;
     this.pages = options.pages;
-    this.theming = options.theming;
   },
 
   getThemingOption: function(name) {
-    return this.theming.get(name);
+    return this.entry.getTheme().get(name);
   },
 
   getStorylineConfiguration: function(id) {

@@ -25,6 +25,10 @@ pageflow.ConfigurationEditorView = Backbone.Marionette.View.extend({
     }, this));
   },
 
+  refresh: function() {
+    this.tabsView.refresh();
+  },
+
   render: function() {
     this.$el.append(this.subview(this.tabsView).el);
     return this;

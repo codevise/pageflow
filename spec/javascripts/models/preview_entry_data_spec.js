@@ -3,11 +3,21 @@ describe('pageflow.PreviewEntryData', function() {
 
   describe('#getThemingOption', function() {
     it('returns option value by name', function() {
-      var theming = new p.Theming({
-        page_change_by_scrolling: true
-      });
+      var entry = support.factories.entry(
+        {
+          configuration: {theme_name: 'custom'}
+        },
+        {
+          themes: new p.ThemesCollection([
+            {
+              name: 'custom',
+              page_change_by_scrolling: true
+            }
+          ])
+        }
+      );
       var entryData = new p.PreviewEntryData({
-        theming: theming
+        entry: entry
       });
 
       var result = entryData.getThemingOption('page_change_by_scrolling');

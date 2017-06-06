@@ -6,6 +6,7 @@ pageflow.app.addInitializer(function(options) {
   pageflow.audioFiles = pageflow.files.audio_files;
   pageflow.textTrackFiles = pageflow.files.text_track_files;
 
+  pageflow.themes = new pageflow.ThemesCollection(options.themes);
   pageflow.pages = new pageflow.PagesCollection(options.pages);
   pageflow.chapters = new pageflow.ChaptersCollection(options.chapters);
   pageflow.storylines = new pageflow.StorylinesCollection(options.storylines);
@@ -14,10 +15,10 @@ pageflow.app.addInitializer(function(options) {
   pageflow.account = new Backbone.Model(options.account);
 
   pageflow.entryData = new pageflow.PreviewEntryData({
+    entry: pageflow.entry,
     storylines: pageflow.storylines,
     chapters: pageflow.chapters,
-    pages: pageflow.pages,
-    theming: pageflow.theming
+    pages: pageflow.pages
   });
 
   pageflow.storylineOrdering = new pageflow.StorylineOrdering(pageflow.storylines, pageflow.pages);

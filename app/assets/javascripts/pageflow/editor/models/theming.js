@@ -3,21 +3,5 @@ pageflow.Theming = Backbone.Model.extend({
   i18nKey: 'pageflow/theming',
   collectionName: 'themings',
 
-  mixins: [pageflow.widgetSubject],
-
-  hasHomeButton: function() {
-    return this.get('home_button');
-  },
-
-  hasOverviewButton: function() {
-    return this.get('overview_button');
-  },
-
-  supportsEmphasizedPages: function() {
-    return this.get('emphasized_pages');
-  },
-
-  supportsScrollIndicatorModes: function() {
-    return this.get('scroll_indicator_modes');
-  }
+  mixins: [pageflow.widgetSubject]
 });

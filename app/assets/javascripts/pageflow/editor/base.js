@@ -52,8 +52,6 @@
 //= require ./initializers/setup_file_uploader
 //= require ./initializers/setup_page_types
 //= require ./initializers/setup_hotkeys
-//= require ./initializers/setup_file_uploader
-//= require ./initializers/setup_themes
 //= require ./initializers/edit_lock
 //= require ./initializers/files_polling
 //= require ./initializers/stylesheet_reloading

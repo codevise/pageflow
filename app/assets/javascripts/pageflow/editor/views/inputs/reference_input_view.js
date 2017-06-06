@@ -74,6 +74,10 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
   },
 
   update: function() {
+    if (this.isClosed) {
+      return;
+    }
+
     var target = this.getTarget(this.model.get(this.options.propertyName));
 
     this.ui.title.text(target ? target.title() : I18n.t('pageflow.editor.views.inputs.reference_input_view.none'));
