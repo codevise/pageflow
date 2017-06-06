@@ -11,6 +11,7 @@ pageflow.app.addInitializer(function(options) {
     widgetTypes: pageflow.editor.widgetTypes
   });
 
+  pageflow.themes = new pageflow.ThemesCollection(options.themes);
   pageflow.pages = new pageflow.PagesCollection(options.pages);
   pageflow.chapters = new pageflow.ChaptersCollection(options.chapters);
   pageflow.storylines = new pageflow.StorylinesCollection(options.storylines);

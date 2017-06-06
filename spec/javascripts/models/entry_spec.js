@@ -120,4 +120,11 @@ describe('Entry', function() {
       expect(result).to.eq(themes.first());
     });
   });
+
+  function buildEntry(attributes, options) {
+    return new pageflow.Entry(attributes, _.extend({
+      storylines: new Backbone.Collection(),
+      chapters: new Backbone.Collection()
+    }, options));
+  }
 });
