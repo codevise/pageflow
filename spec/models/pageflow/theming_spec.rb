@@ -58,7 +58,7 @@ module Pageflow
 
         theming = build(:theming, theme_name: 'named_theme')
 
-        expect(theming.theme.name).to eq(Pageflow.config.themes.get(:named_theme).name)
+        expect(theming.theme.name).to eq('named_theme')
       end
     end
 

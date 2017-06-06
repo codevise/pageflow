@@ -464,5 +464,17 @@ module Pageflow
         expect(revision).not_to be_valid
       end
     end
+
+    describe '#theme' do
+      it 'looks up theme by #theme_name' do
+        pageflow_configure do |config|
+          config.themes.register(:named_theme)
+        end
+
+        theming = build(:revision, theme_name: 'named_theme')
+
+        expect(theming.theme.name).to eq('named_theme')
+      end
+    end
   end
 end
