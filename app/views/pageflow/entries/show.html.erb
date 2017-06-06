@@ -9,7 +9,7 @@
     <%= social_share_meta_tags_for(@entry.share_target) %>
     <%= render_widget_head_fragments(@entry) %>
 
-    <%= tag :link, :rel => 'icon', :href => image_path("pageflow/themes/#{@entry.theming.theme.directory_name}/favicon.ico"), :type => 'image/ico' %>
+    <%= tag :link, :rel => 'icon', :href => image_path("pageflow/themes/#{@entry.theme.directory_name}/favicon.ico"), :type => 'image/ico' %>
     <%= meta_tags_for_entry(@entry) %>
   <% end %>
 <% end %>

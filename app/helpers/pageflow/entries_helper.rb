@@ -42,7 +42,7 @@ module Pageflow
     end
 
     def entry_theme_stylesheet_link_tag(entry)
-      stylesheet_link_tag(Pageflow.config.themes.get(entry.theme_name).stylesheet_path,
+      stylesheet_link_tag(entry.theme.stylesheet_path,
                           media: 'all',
                           data: {name: 'theme'})
     end

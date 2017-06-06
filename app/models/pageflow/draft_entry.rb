@@ -21,7 +21,8 @@ module Pageflow
              :find_files, :find_file,
              :image_files, :video_files, :audio_files,
              :locale,
-             :author, :publisher, :keywords, :theme_name,
+             :author, :publisher, :keywords,
+             :theme,
              :to => :draft)
 
     def initialize(entry, draft = nil)
@@ -99,7 +100,7 @@ module Pageflow
     end
 
     def overview_button
-      OverviewButton.new(draft, theming)
+      OverviewButton.new(draft)
     end
 
     def resolve_widgets(options = {})
