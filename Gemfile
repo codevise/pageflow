@@ -11,7 +11,7 @@ gem 'state_machine', git: 'https://github.com/codevise/state_machine.git', branc
 
 # Ensure that teaspoon is required via Bundler.require inside the
 # dummy app. Otherwise teaspoon fails to initialize correctly.
-gem 'teaspoon-mocha', '~> 2.3'
+gem 'teaspoon-mocha', git: 'https://github.com/codevise/teaspoon'
 
 gem 'spring-commands-rspec', group: :development
 gem 'spring-commands-teaspoon', group: :development
