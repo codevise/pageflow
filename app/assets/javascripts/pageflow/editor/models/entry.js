@@ -18,6 +18,7 @@ pageflow.Entry = Backbone.Model.extend({
     this.configuration = new pageflow.EntryConfiguration(this.get('configuration') || {});
     this.configuration.parent = this;
 
+    this.themes = options.themes || pageflow.themes;
     this.files = options.files || pageflow.files;
     this.fileTypes = options.fileTypes || pageflow.editor.fileTypes;
     this.storylines = options.storylines || pageflow.storylines;
@@ -54,6 +55,10 @@ pageflow.Entry = Backbone.Model.extend({
         location.reload();
       });
     });
+  },
+
+  getTheme: function() {
+    return this.themes.findByName(this.configuration.get('theme_name'));
   },
 
   addStoryline: function(attributes) {

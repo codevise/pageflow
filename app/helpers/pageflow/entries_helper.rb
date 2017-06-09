@@ -42,7 +42,9 @@ module Pageflow
     end
 
     def entry_theme_stylesheet_link_tag(entry)
-      stylesheet_link_tag(entry.theming.theme.stylesheet_path, :media => 'all')
+      stylesheet_link_tag(entry.theme.stylesheet_path,
+                          media: 'all',
+                          data: {name: 'theme'})
     end
 
     def entry_stylesheet_link_tag(entry)

@@ -1,7 +1,9 @@
 pageflow.ConfigurationEditorTabView.groups.define('options', function(options) {
+  var theme = pageflow.entry.getTheme();
+
   this.input('display_in_navigation', pageflow.CheckBoxInputView);
 
-  if (pageflow.theming.supportsEmphasizedPages()) {
+  if (theme.supportsEmphasizedPages()) {
     this.input('emphasize_in_navigation', pageflow.CheckBoxInputView);
   }
 
@@ -23,7 +25,7 @@ pageflow.ConfigurationEditorTabView.groups.define('options', function(options) {
     });
   }
 
-  if (pageflow.theming.supportsScrollIndicatorModes()) {
+  if (theme.supportsScrollIndicatorModes()) {
     this.input('scroll_indicator_mode', pageflow.SelectInputView, {
       values: pageflow.Page.scrollIndicatorModes
     });

@@ -42,7 +42,7 @@
 
 <% I18n.with_locale(@entry.locale) do %>
   <%= page_type_templates(@entry) %>
-  <%= render('pageflow/editor/entries/indicators_seed', theme: @entry.theming.theme) %>
+  <%= render('pageflow/editor/entries/indicators_seed', theme: @entry.theme) %>
 <% end %>
 
 <%= render('pageflow/editor/entries/help_entries_seed', config: @entry_config) %>

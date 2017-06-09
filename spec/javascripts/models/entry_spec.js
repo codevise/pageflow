@@ -97,4 +97,27 @@ describe('Entry', function() {
       expect(entry.get('pending_image_files_count')).to.eq(1);
     });
   });
+
+  describe('#getTheme', function() {
+    it('returns theme based on theme_name configuration attribute', function() {
+      var themes = new pageflow.ThemesCollection([
+        {
+          name: 'custom',
+          page_change_by_scrolling: true
+        }
+      ]);
+      var entry = support.factories.entry(
+        {
+          configuration: {theme_name: 'custom'}
+        },
+        {
+          themes: themes
+        }
+      );
+
+      var result = entry.getTheme();
+
+      expect(result).to.eq(themes.first());
+    });
+  });
 });

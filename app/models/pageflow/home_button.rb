@@ -13,7 +13,7 @@ module Pageflow
 
     def enabled?
       revision.home_button_enabled? &&
-        theming.theme.has_home_button? &&
+        revision.theme.has_home_button? &&
         url.present?
     end
 

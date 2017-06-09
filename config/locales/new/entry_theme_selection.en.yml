@@ -1,0 +1,25 @@
+en:
+  activerecord:
+    attributes:
+      pageflow/entry:
+        theme_name: Theme
+  pageflow:
+    selectable_themes:
+      feature_name: "Editor theme selection"
+    default_theme:
+      name: Default
+    editor:
+      views:
+        inputs:
+          theme_input_view:
+            choose: "Change theme"
+      templates:
+        change_theme_dialog:
+          close: Close
+          header: Themes
+          preview_header_prefix: Preview
+          preview_header_suffix: -Theme
+        theme:
+          use: Use
+      themes:
+        header: Themes

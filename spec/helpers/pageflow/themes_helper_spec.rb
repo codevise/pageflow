@@ -11,5 +11,20 @@ module Pageflow
         expect(result['theme_with_options']).to eq('some_option' => 'value')
       end
     end
+
+    describe '#theme_json_seeds' do
+      it 'renders basic properties' do
+        config = Configuration.new
+        config.themes.register(:test_theme)
+
+        result = helper.theme_json_seeds(config)
+
+        expect(result).to include('"name":"test_theme"')
+        expect(result).to(
+          include('"preview_image_url":'\
+                  '"http://test.host/images/pageflow/themes/test_theme/preview.png"')
+        )
+      end
+    end
   end
 end

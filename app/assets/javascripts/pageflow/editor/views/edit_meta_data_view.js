@@ -24,7 +24,7 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
 
     configurationEditor.tab('general', function() {
       this.input('title', pageflow.TextInputView, {
-        placeholder: entry.attributes.entry_title
+        placeholder: entry.get('entry_title')
       });
       this.input('locale', pageflow.SelectInputView, {
         values: pageflow.config.availablePublicLocales,
@@ -47,18 +47,20 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
     });
 
     configurationEditor.tab('widgets', function() {
+      var theme = entry.getTheme();
+
       this.input('manual_start', pageflow.CheckBoxInputView);
       this.input('emphasize_chapter_beginning', pageflow.CheckBoxInputView);
       this.input('emphasize_new_pages', pageflow.CheckBoxInputView);
       this.input('home_button_enabled', pageflow.CheckBoxInputView, {
-        disabled: !pageflow.theming.hasHomeButton(),
+        disabled: !theme.hasHomeButton(),
         displayUncheckedIfDisabled: true
       });
       this.input('overview_button_enabled', pageflow.CheckBoxInputView, {
-        disabled: !pageflow.theming.hasOverviewButton(),
+        disabled: !theme.hasOverviewButton(),
         displayUncheckedIfDisabled: true
       });
-      if (pageflow.theming.hasHomeButton()) {
+      if (theme.hasHomeButton()) {
         this.input('home_url', pageflow.TextInputView, {
           placeholder: pageflow.theming.get('pretty_url'),
           visibleBinding: 'home_button_enabled'
@@ -68,6 +70,13 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
         model: entry,
         widgetTypes: pageflow.editor.widgetTypes
       });
+      if (pageflow.features.isEnabled('selectable_themes') &&
+          pageflow.themes.length > 1) {
+        this.view(pageflow.ThemeInputView, {
+          themes: pageflow.themes,
+          propertyName: 'theme_name'
+        });
+      }
     });
 
     configurationEditor.tab('social', function() {
@@ -82,6 +91,10 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
       this.input('share_url', pageflow.TextInputView, {
         placeholder: pageflow.entry.get('pretty_url')
       });
+    });
+
+    this.listenTo(entry.configuration, 'change:theme_name', function() {
+      configurationEditor.refresh();
     });
 
     this.formContainer.show(configurationEditor);

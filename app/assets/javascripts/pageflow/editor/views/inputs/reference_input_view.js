@@ -14,6 +14,7 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
 
   ui: {
     title: '.title',
+    chooseButton: '.choose',
     unsetButton: '.unset',
     buttons: 'button'
   },
@@ -22,8 +23,8 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
     'click .choose': function() {
       var view = this;
 
-      this.choose().then(function(site) {
-        view.model.set(view.options.propertyName, site.get('perma_id'));
+      this.chooseValue().then(function(id) {
+        view.model.set(view.options.propertyName, id);
       });
 
       return false;
@@ -44,11 +45,26 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
     this.listenTo(this.model, 'change:' + this.options.propertyName, this.update);
   },
 
+  /**
+   * Returns a promise for some identifying attribute.
+   *
+   * Default attribute name is perma_id. If the attribute is named
+   * differently, you can have your specific ReferenceInputView
+   * implement `chooseValue()` accordingly.
+   *
+   * Will be used to set the chosen Model for this View.
+   */
+  chooseValue: function() {
+    return this.choose().then(function(model) {
+      return model.get('perma_id');
+    });
+  },
+
   choose: function() {
     throw 'Not implemented: Override ReferenceInputView#choose to return a promise';
   },
 
-  getTarget: function() {
+  getTarget: function(targetId) {
     throw 'Not implemented: Override ReferenceInputView#getTarget';
   },
 
@@ -59,10 +75,26 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
   },
 
   update: function() {
+    if (this.isClosed) {
+      return;
+    }
+
     var target = this.getTarget(this.model.get(this.options.propertyName));
 
     this.ui.title.text(target ? target.title() : I18n.t('pageflow.editor.views.inputs.reference_input_view.none'));
-    this.ui.unsetButton.toggle(!!target);
+
+    this.ui.unsetButton.toggle(!!target && !this.options.hideUnsetButton);
+    this.ui.unsetButton.attr(
+      'title',
+      this.options.unsetButtonTitle ||
+        I18n.t('pageflow.editor.views.inputs.reference_input_view.unset')
+    );
+
+    this.ui.chooseButton.attr(
+      'title',
+      this.options.chooseButtonTitle ||
+        I18n.t('pageflow.editor.views.inputs.reference_input_view.choose')
+    );
 
     this.updateDisabledAttribute(this.ui.buttons);
 

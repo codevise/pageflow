@@ -6,6 +6,8 @@ module Pageflow
       'pageflow_pages.position ASC'
     ].join(',')
 
+    include ThemeReferencer
+
     belongs_to :entry, touch: :edited_at
     belongs_to :creator, :class_name => 'User'
     belongs_to :restored_from, :class_name => 'Pageflow::Revision'
@@ -43,11 +45,6 @@ module Pageflow
 
     validate :published_until_unchanged, :if => :published_until_was_in_past?
     validate :published_until_blank, :if => :published_at_blank?
-
-    validates_inclusion_of(:theme_name,
-                           in: lambda do |revision|
-                             Pageflow.config_for(revision.entry).themes.names
-                           end)
 
     def main_storyline_chapters
       main_storyline = storylines.first
@@ -152,6 +149,10 @@ module Pageflow
 
     def published_at_blank?
       published_at.blank?
+    end
+
+    def available_themes
+      Pageflow.config_for(entry).themes
     end
   end
 end

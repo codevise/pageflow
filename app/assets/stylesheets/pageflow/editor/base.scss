@@ -17,6 +17,7 @@
 @import "./unsupported_browser_hint";
 
 .editor {
+  @import "./change_theme";
   @extend %pageflow-ui;
 
   font-family: Helvetica, "Sans-Serif";
@@ -68,6 +69,7 @@
   @import "./file_thumbnails";
   @import "./file_settings_dialog";
   @import "./text_tracks";
+  @import "./static_thumbnails";
   @import "./wysihtml5";
   @import "./notifications";
   @import "./publish_entry";

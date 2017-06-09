@@ -1,15 +1,14 @@
 module Pageflow
   class OverviewButton
-    attr_reader :revision, :theming
+    attr_reader :revision
 
-    def initialize(revision, theming)
+    def initialize(revision)
       @revision = revision
-      @theming = theming
     end
 
     def enabled?
       revision.overview_button_enabled? &&
-        theming.theme.has_overview_button?
+        revision.theme.has_overview_button?
     end
 
     def enabled_value

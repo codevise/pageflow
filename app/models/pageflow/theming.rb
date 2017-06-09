@@ -1,5 +1,7 @@
 module Pageflow
   class Theming < ActiveRecord::Base
+    include ThemeReferencer
+
     belongs_to :account
     has_many :widgets, as: :subject
 
@@ -9,9 +11,6 @@ module Pageflow
     scope :for_request, ->(request) { Pageflow.config.theming_request_scope.call(all, request) }
 
     validates :account, :presence => true
-    validates_inclusion_of(:theme_name, in: lambda do |theming|
-      Pageflow.config_for(theming.account).themes.names
-    end)
 
     def resolve_widgets(options = {})
       widgets.resolve(Pageflow.config_for(account), options)
@@ -19,10 +18,6 @@ module Pageflow
 
     def cname_domain
       cname.split('.').pop(2).join('.')
-    end
-
-    def theme
-      Pageflow.config_for(account).themes.get(theme_name)
     end
 
     def name
@@ -44,6 +39,10 @@ module Pageflow
         theme_name: theme_name,
         home_button_enabled: home_button_enabled_by_default
       )
+    end
+
+    def available_themes
+      Pageflow.config_for(account).themes
     end
   end
 end

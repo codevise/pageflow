@@ -21,6 +21,31 @@ support.dom.Base.classMethods = function(Constructor) {
       }
 
       return new Constructor(element);
+    },
+
+    findBy: function(predicate, options) {
+      var predicateString = options.predicateName ? ' filtered by ' + options.predicateName : '';
+      var selector = Constructor.prototype.selector;
+      var selectorString = 'Selector "' + selector + '"' + predicateString;
+      var elements = options.inView.$el.find(selector);
+      var element = elements.filter(function() {
+        return predicate($(this));
+      });
+
+      if (element.length > 1) {
+        throw new Error(selectorString + ' matches multiple elements in view. Expected only one');
+      }
+
+      if (element.length === 0) {
+        throw new Error(selectorString + ' did not match any elements in view.');
+      }
+
+      return new Constructor(element);
+    },
+
+    render: function(view) {
+      view.render();
+      return new Constructor(view.$el);
     }
   };
 };

@@ -74,8 +74,10 @@ module Pageflow
         pageflow_configure do |config|
           config.themes.register(:custom, no_page_change_by_scrolling: true)
         end
-        theming = create(:theming, theme_name: 'custom')
-        entry = PublishedEntry.new(create(:entry, theming: theming))
+        entry = PublishedEntry.new(create(:entry, :published,
+                                          published_revision_attributes: {
+                                            theme_name: 'custom'
+                                          }))
 
         result = helper.entry_theming_seed(entry)
 

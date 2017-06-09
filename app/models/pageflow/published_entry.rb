@@ -22,7 +22,8 @@ module Pageflow
              :emphasize_new_pages,
              :share_url, :share_image_id, :share_image_x, :share_image_y,
              :locale,
-             :author, :publisher, :keywords, :theme_name,
+             :author, :publisher, :keywords,
+             :theme,
              :password_protected?,
              :to => :revision)
 
@@ -68,7 +69,7 @@ module Pageflow
     end
 
     def overview_button
-      OverviewButton.new(revision, theming)
+      OverviewButton.new(revision)
     end
 
     def resolve_widgets(options = {})

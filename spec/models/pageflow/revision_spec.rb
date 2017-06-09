@@ -438,32 +438,42 @@ module Pageflow
     end
 
     describe '#theme_name' do
-      it 'allows setting theme_name included in account config' do
+      it 'allows setting theme_name included in entry config' do
         pageflow_configure do |config|
           config.features.register('red_theme') do |feature_config|
             feature_config.themes.register(:red)
           end
         end
 
-        account = create(:account, feature_states: {red_theme: true})
-        entry = create(:entry, account: account)
+        entry = create(:entry, feature_states: {red_theme: true})
         revision = build(:revision, entry: entry, theme_name: 'red')
 
         expect(revision).to be_valid
       end
 
-      it 'does not allow setting theme_name not included in account config' do
+      it 'does not allow setting theme_name not included in entry config' do
         pageflow_configure do |config|
           config.features.register('glitter_theme') do |feature_config|
             feature_config.themes.register(:glitter)
           end
         end
 
-        account = create(:account, feature_states: {glitter_theme: false})
-        entry = create(:entry, account: account)
+        entry = create(:entry)
         revision = build(:revision, entry: entry, theme_name: 'glitter')
 
         expect(revision).not_to be_valid
+      end
+    end
+
+    describe '#theme' do
+      it 'looks up theme by #theme_name' do
+        pageflow_configure do |config|
+          config.themes.register(:named_theme)
+        end
+
+        theming = build(:revision, theme_name: 'named_theme')
+
+        expect(theming.theme.name).to eq('named_theme')
       end
     end
   end
