@@ -8,6 +8,9 @@ pageflow.History = function(slideshow, adapter) {
     if (options.back) {
       adapter.replaceState(null, '', adapter.hash());
     }
+    else if (options.ignoreInHistory) {
+      adapter.replaceState(null, '', hash);
+    }
     else {
       adapter.replaceState(options, '', adapter.hash());
       adapter.pushState(null, '', hash);
