@@ -85,7 +85,7 @@ pageflow.Slideshow = function($el, configurations) {
 
   this.goToByPermaId = function(permaId, options) {
     if (permaId) {
-      return this.goTo($el.find('#' + permaId), options);
+      return this.goTo(getPageByPermaId(permaId), options);
     }
   };
 
@@ -129,7 +129,7 @@ pageflow.Slideshow = function($el, configurations) {
     return this.goTo(pages.first());
   };
 
-  this.update = function() {
+  this.update = function(options) {
     pages = $el.find('section.page');
 
     pages.each(function(index) {
@@ -141,7 +141,7 @@ pageflow.Slideshow = function($el, configurations) {
       });
     });
 
-    ensureCurrentPage();
+    ensureCurrentPage(options);
   };
 
   this.currentPage = function() {
@@ -152,8 +152,8 @@ pageflow.Slideshow = function($el, configurations) {
     return currentPage.page('getConfiguration');
   };
 
-  function ensureCurrentPage() {
-    var newCurrentPage = findNewCurrentPage();
+  function ensureCurrentPage(options) {
+    var newCurrentPage = findNewCurrentPage(options);
 
     if (newCurrentPage) {
       currentPage = newCurrentPage;
@@ -164,13 +164,21 @@ pageflow.Slideshow = function($el, configurations) {
     }
   }
 
-  function findNewCurrentPage() {
+  function findNewCurrentPage(options) {
     if (!currentPage.length) {
-      return that.scrollNavigator.getLandingPage(pages);
+      var permaId = options && options.landingPagePermaId;
+
+      return permaId ?
+        getPageByPermaId(permaId) :
+        that.scrollNavigator.getLandingPage(pages);
     }
     else if (!currentPage.parent().length) {
       return nearestPage(currentPageIndex);
     }
+  }
+
+  function getPageByPermaId(permaId) {
+    return $el.find('#' + permaId);
   }
 
   this.on = function() {
@@ -241,7 +249,10 @@ pageflow.Slideshow.setup = function(options) {
     options.beforeFirstUpdate();
   }
 
-  pageflow.slides.update();
+  pageflow.slides.update({
+    landingPagePermaId: pageflow.history.getLandingPagePermaId()
+  });
+
   pageflow.history.start();
 
   return pageflow.slides;
