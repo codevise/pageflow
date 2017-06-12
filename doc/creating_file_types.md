@@ -1,7 +1,7 @@
 # Creating File Types
 
 Pageflow lets page types define new types of files to be managed in
-the editor. All editor featues available for the built in image, video
+the editor. All editor features available for the built in image, video
 and audio files can also be used for new types of files.
 
 The code in the following example is taken from the
@@ -37,7 +37,7 @@ model.
       end
     end
 
-Next, inside your page type, overrie the `file_types` method and
+Next, inside your page type, override the `file_types` method and
 return an array containing a `Pageflow::FileType` object that points
 to your model class. This tells Pageflow to enable the new file type
 whenever the page type is registered in a Pageflow application.
