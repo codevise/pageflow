@@ -75,6 +75,9 @@ Gem::Specification.new do |s|
   # Editor file upload helper
   s.add_dependency 'jquery-fileupload-rails', '0.4.1'
 
+  # Color picker
+  s.add_dependency 'jquery-minicolors-rails', '~> 2.2'
+
   s.add_dependency 'backbone-rails', '~> 1.0.0'
 
   # Further helpers and conventions on top of Backbone

@@ -1,6 +1,7 @@
 //= require_self
 
 //= require wysihtml5x-toolbar
+//= require jquery.minicolors
 
 //= require i18n
 //= require i18n/translations

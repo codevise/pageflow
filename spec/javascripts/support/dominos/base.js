@@ -43,8 +43,13 @@ support.dom.Base.classMethods = function(Constructor) {
       return new Constructor(element);
     },
 
-    render: function(view) {
+    render: function(view, options) {
       view.render();
+
+      if (options && options.appendTo) {
+        options.appendTo.append(view.$el);
+      }
+
       return new Constructor(view.$el);
     }
   };
