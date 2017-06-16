@@ -20,6 +20,10 @@ pageflow.ConfigurationEditorView.register('audio', {
     });
 
     this.tab('options', function() {
+      this.input('audio_player_controls_variant', pageflow.SelectInputView, {
+        values: ['default', 'waveform']
+      });
+
       this.input('autoplay', pageflow.CheckBoxInputView);
       this.group('options', {canPauseAtmo: true});
     });
