@@ -18,7 +18,6 @@ describe('PlayerControls', () => {
     expect(result).to.be.ok;
   });
 
-
   it('renders auto, off and id menu items when text tracks are passed', () => {
     const textTracks = {
       files: [
@@ -44,5 +43,20 @@ describe('PlayerControls', () => {
     const menuItems = wrapper.find(PlayerControls).prop('textTracksMenuItems');
 
     expect(menuItems).to.eql([]);
+  });
+
+  it('uses PlayerControls by default', () => {
+    const wrapper = shallow(<MediaPlayerControls {...requiredProps} />);
+
+    expect(wrapper).to.be.have.descendants(PlayerControls);
+  });
+
+  it('supports using custom player controls component', () => {
+    const CustomPlayerControls = function() {};
+
+    const wrapper = shallow(<MediaPlayerControls playerControlsComponent={CustomPlayerControls}
+                                                 {...requiredProps} />);
+
+    expect(wrapper).to.be.have.descendants(CustomPlayerControls);
   });
 });

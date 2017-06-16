@@ -27,6 +27,8 @@ export function MediaPlayerControls(props) {
     }
   };
 
+  const PlayerControls = props.playerControlsComponent;
+
   return (
     <PlayerControls hasProgress={true}
                     controlBarText={props.controlBarText}
@@ -77,6 +79,7 @@ export function MediaPlayerControls(props) {
 }
 
 MediaPlayerControls.defaultProps = {
+  playerControlsComponent: PlayerControls,
   qualities: [],
   textTracks: {
     files: []

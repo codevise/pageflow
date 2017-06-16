@@ -15,7 +15,7 @@ import {
 import MediaPlayerControls from './PlayerControls';
 import NonJsLinks from './NonJsLinks';
 import playerStateClassNames from './playerStateClassNames';
-import {combine, combineSelectors} from 'utils';
+import {combineSelectors} from 'utils';
 import {prop, has} from 'utils/selectors';
 import {textTracks, pageShouldAutoplay} from 'media/selectors';
 import {pageScrollerMarginBottom} from '../pageScrollerMargin/selectors';
@@ -46,14 +46,14 @@ export function MediaPage(props) {
                                          props.playerActions.userInteraction()}
                       classNames={playerStateClassNames(playerState)}>
 
-
         <MediaPlayerControls file={props.file}
                              textTracks={props.textTracks}
                              playerState={playerState}
                              playerActions={props.playerActions}
                              qualities={props.qualities}
                              controlBarText={props.controlBarText}
-                             infoBox={infoBox} />
+                             infoBox={infoBox}
+                             playerControlsComponent={props.playerControlsComponent} />
 
         <PageScroller className={playerStateClassNames(playerState)}
                       marginBottom={props.pageScrollerMarginBottom}>
