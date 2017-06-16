@@ -42,6 +42,7 @@
 //= require ./native_scrolling
 //= require ./focus_outline
 //= require ./phone_landscape_fullscreen
+//= require ./theme
 
 //= require ./settings
 
