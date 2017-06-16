@@ -35,7 +35,7 @@ export function updatePlayer(player, playerState, nextPlayerState, playerActions
       player.play();
     }
   }
-  else if (playerState.shouldPlay && !nextPlayerState.shouldPlay) {
+  else if (playerState.shouldPlay && !nextPlayerState.shouldPlay && nextPlayerState.isPlaying) {
     if (nextPlayerState.fadeDuration) {
       player.fadeOutAndPause(nextPlayerState.fadeDuration);
     }

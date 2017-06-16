@@ -195,27 +195,38 @@ describe('createFilePlayer', () => {
       expect(mockPlayer.playAndFadeIn).to.have.been.calledWith(500);
     });
 
-    it('calls pause on player when shouldPlay changes to false in playerState', () => {
-      const {FilePlayer, mockPlayer} = setup();
+    it('calls pause on player when isPlaying and shouldPlay changes to false in playerState',
+       () => {
+         const {FilePlayer, mockPlayer} = setup();
 
-      const wrapper = mount(<FilePlayer {...requiredProps}
-                                        playerState={{shouldPlay: true}} />);
+         const wrapper = mount(<FilePlayer {...requiredProps}
+                                           playerState={{isPlaying: true, shouldPlay: true}} />);
 
-      wrapper.setProps({playerState: {shouldPlay: false}});
+         wrapper.setProps({playerState: {isPlaying: true, shouldPlay: false}});
 
-      expect(mockPlayer.pause).to.have.been.called;
-    });
+         expect(mockPlayer.pause).to.have.been.called;
+       }
+    );
 
-    it('calls fadeOutAndPause on player when shouldPlay changes to false and fadeDuration is present', () => {
-      const {FilePlayer, mockPlayer} = setup();
+    it('calls fadeOutAndPause on player when isPlaying, shouldPlay changes to false and' +
+       'fadeDuration is present',
+       () => {
+        const {FilePlayer, mockPlayer} = setup();
 
-      const wrapper = mount(<FilePlayer {...requiredProps}
-                                        playerState={{shouldPlay: true}} />);
+        const wrapper = mount(<FilePlayer {...requiredProps}
+                                          playerState={{isPlaying: true, shouldPlay: true}} />);
 
-      wrapper.setProps({playerState: {shouldPlay: false, fadeDuration: 500}});
+        wrapper.setProps({
+          playerState: {
+            isPlaying: true,
+            shouldPlay: false,
+            fadeDuration: 500
+          }
+        });
 
-      expect(mockPlayer.fadeOutAndPause).to.have.been.calledWith(500);
-    });
+        expect(mockPlayer.fadeOutAndPause).to.have.been.calledWith(500);
+      }
+    );
 
     it('mutes the player when muted changes to true', () => {
       const {FilePlayer, mockPlayer} = setup();
