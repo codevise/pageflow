@@ -32,7 +32,9 @@ module.exports = {
     'jsdom': 'window',
     'react/lib/ReactContext': true,
     'react/lib/ExecutionEnvironment': true,
-    'react/addons': true
+    'react/addons': true,
+    'react-dom/test-utils': true,
+    'react-test-renderer/shallow': true
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
