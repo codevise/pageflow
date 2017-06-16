@@ -8,3 +8,6 @@ de:
           values:
             default: "Standard"
             waveform: "Waveform"
+        waveform_color:
+          label: "Waveform Farbe"
+          inline_help: "Farbe des Bereichs der Waveform, der den bereits abgespielten Teil der Audio-Datei repräsentiert."
