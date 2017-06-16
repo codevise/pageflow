@@ -38,6 +38,8 @@ export function MediaPlayerControls(props) {
                     bufferedEnd={playerState.bufferedEnd}
                     duration={playerState.duration}
 
+                    mediaElementId={playerState.mediaElementId}
+
                     onPlayButtonClick={actions.togglePlaying}
                     onScrub={actions.scrubTo}
                     onSeek={actions.seekTo}

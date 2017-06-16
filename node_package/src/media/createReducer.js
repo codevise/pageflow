@@ -10,7 +10,8 @@ import {
   CONTROLS_ENTERED, CONTROLS_LEFT,
   FOCUS_ENTERED_CONTROLS, FOCUS_LEFT_CONTROLS,
   CONTROLS_HIDDEN,
-  SHOW_INFO_BOX_DURING_PLAYBACK, HIDE_INFO_BOX_DURING_PLAYBACK, TOGGLE_INFO_BOX_DURING_PLAYBACK
+  SHOW_INFO_BOX_DURING_PLAYBACK, HIDE_INFO_BOX_DURING_PLAYBACK, TOGGLE_INFO_BOX_DURING_PLAYBACK,
+  SAVE_MEDIA_ELEMENT_ID, DISCARD_MEDIA_ELEMENT_ID
 } from './actions';
 
 import {HOTKEY_TAB} from 'hotkeys/actions';
@@ -253,6 +254,16 @@ export default function({scope = 'default'} = {}) {
         infoBoxHiddenDuringPlayback: !state.infoBoxHiddenDuringPlayback
       };
 
+    case SAVE_MEDIA_ELEMENT_ID:
+      return {
+        ...state,
+        mediaElementId: action.payload.id
+      };
+    case DISCARD_MEDIA_ELEMENT_ID:
+      return {
+        ...state,
+        mediaElementId: null
+      };
 
     default:
       return state;
