@@ -12,6 +12,9 @@
 /// - `"icon_font"`: Use font icons for icon.
 $indicator-icons: "icon_font" !default;
 
+/// Display the scroll indicator at the bottom of the page.
+$display-scroll-indicator: true !default;
+
 @import "./indicators/icons/default";
 @import "./indicators/icons/icon_font";
 @import "./indicators/icons/sprite";
@@ -25,4 +28,13 @@ $indicator-icons: "icon_font" !default;
   @include indicators-icons-icon-font;
 } @else {
   @include indicators-icons-default;
+}
+
+@if not $display-scroll-indicator {
+  .scroll_indicator {
+    // Override inline style used to display scroll indicator
+    // scss-lint:disable ImportantRule
+    display: none !important;
+    // scss-lint:enable ImportantRule
+  }
 }
