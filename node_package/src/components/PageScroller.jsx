@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import Scroller from './Scroller';
 
@@ -15,7 +16,7 @@ import {combineSelectors} from 'utils';
  * @alias pageflow.react.components.PageScroller
  * @since 12.1
  */
-class PageScroller extends React.Component {
+export class PageScroller extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.enabled && nextProps.enabled) {
       this.refs.scroller.enable();
@@ -48,12 +49,26 @@ class PageScroller extends React.Component {
 
   render() {
     return (
-      <Scroller ref="scroller" className={this.props.className}>
+      <Scroller ref="scroller" className={className(this.props)} style={style(this.props)}>
         <div className="contentWrapper">
           {this.props.children}
         </div>
       </Scroller>
     );
+  }
+}
+
+function className(props) {
+  return classNames(props.className, {
+    'scroller-clipped_bottom': !!props.marginBottom
+  });
+}
+
+function style(props) {
+  if (props.marginBottom) {
+    return {
+      bottom: props.marginBottom
+    };
   }
 }
 

@@ -7,6 +7,7 @@ import PageBackground from './components/PageBackground';
 import PagePrintImage from './components/PagePrintImage';
 
 import createReducer from './createReducer';
+import pageScrollerMarginReducer from './pageScrollerMargin/reducer';
 import pageSaga from './sagas';
 
 import fadeInWhenPageWillActivate from './sagas/fadeInWhenPageWillActivate';
@@ -17,6 +18,7 @@ export function reduxModule(options) {
   return {
     reducers: {
       'media.default': createReducer({scope: 'default'}),
+      'media.pageScrollerMargin': pageScrollerMarginReducer
     },
 
     saga: function*() {

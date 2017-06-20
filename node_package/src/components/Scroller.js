@@ -5,7 +5,9 @@ import classNames from 'classnames';
 class Scroller extends Component {
   render() {
     return (
-      <div ref="wrapper" className={classNames('scroller', this.props.className)}>
+      <div ref="wrapper"
+           className={classNames('scroller', this.props.className)}
+           style={this.props.style}>
         <div>{this.props.children}</div>
       </div>
     );

@@ -18,9 +18,10 @@ import playerStateClassNames from './playerStateClassNames';
 import {combine, combineSelectors} from 'utils';
 import {prop, has} from 'utils/selectors';
 import {textTracks, pageShouldAutoplay} from 'media/selectors';
+import {pageScrollerMarginBottom} from '../pageScrollerMargin/selectors';
+import {connectInPage} from 'pages';
 
 import classNames from 'classnames';
-import {connect} from 'react-redux';
 
 export function MediaPage(props) {
   const page = props.page;
@@ -54,7 +55,9 @@ export function MediaPage(props) {
                              controlBarText={props.controlBarText}
                              infoBox={infoBox} />
 
-        <PageScroller className={playerStateClassNames(playerState)}>
+        <PageScroller className={playerStateClassNames(playerState)}
+                      marginBottom={props.pageScrollerMarginBottom}>
+
           <PageHeader page={page} />
           <PagePrintImage page={page} />
           <PageText page={page}>
@@ -66,7 +69,8 @@ export function MediaPage(props) {
   );
 }
 
-export default connect(combineSelectors({
+export default connectInPage(combineSelectors({
+  pageScrollerMarginBottom,
   textTracks: textTracks({
     file: prop('file'),
     defaultTextTrackFileId: prop('page.defaultTextTrackFileId')

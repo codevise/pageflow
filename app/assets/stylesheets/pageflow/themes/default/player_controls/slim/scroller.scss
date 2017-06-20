@@ -1,13 +1,9 @@
-// scss-lint:disable VendorPrefix
-
 %player_controls {
   &-scroller-playing {
     @include desktop {
       bottom: 80px;
       overflow: hidden;
-      -webkit-mask-image: image-url("pageflow/themes/default/player_controls/slim/scroller_mask.png");
-      -webkit-mask-position: bottom left;
-      -webkit-mask-repeat: repeat-x;
+      @include mask-bottom;
     }
   }
 
@@ -15,7 +11,7 @@
   &-scroller-fading {
     @include desktop {
       bottom: 0;
-      -webkit-mask-image: none;
+      @include mask-none;
     }
   }
 }

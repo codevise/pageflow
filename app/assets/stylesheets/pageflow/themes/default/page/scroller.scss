@@ -1,3 +1,8 @@
 .page .scroller {
   @extend %pageflow_widget_margin_right !optional;
 }
+
+.scroller-clipped_bottom {
+  overflow: hidden;
+  @include mask-bottom;
+}

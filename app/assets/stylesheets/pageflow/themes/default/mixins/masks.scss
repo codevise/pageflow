@@ -1,0 +1,11 @@
+  // scss-lint:disable VendorPrefix
+
+@mixin mask-bottom {
+  -webkit-mask-image: image-url("pageflow/themes/default/mask_bottom.png");
+  -webkit-mask-position: bottom left;
+  -webkit-mask-repeat: repeat-x;
+}
+
+@mixin mask-none {
+  -webkit-mask-image: none;
+}
