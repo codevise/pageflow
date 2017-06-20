@@ -56,7 +56,8 @@ export function MediaPage(props) {
                              playerControlsComponent={props.playerControlsComponent} />
 
         <PageScroller className={playerStateClassNames(playerState)}
-                      marginBottom={props.pageScrollerMarginBottom}>
+                      marginBottom={props.dynamicPageScrollerMargin &&
+                                    props.pageScrollerMarginBottom}>
 
           <PageHeader page={page} />
           <PagePrintImage page={page} />

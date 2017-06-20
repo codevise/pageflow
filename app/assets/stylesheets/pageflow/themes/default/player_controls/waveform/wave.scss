@@ -1,0 +1,29 @@
+.waveform_player_controls {
+  canvas {
+    opacity: 0.8;
+  }
+
+  &-wave_wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+  }
+
+  &-wave {
+    @extend %pageflow_widget_margin_right_max !optional;
+
+    position: relative;
+    z-index: 1;
+    pointer-events: all;
+    height: 70px;
+
+    @media (min-height: 600px) {
+      height: 150px;
+    }
+
+    @media (min-height: 800px) {
+      height: 270px;
+    }
+  }
+}

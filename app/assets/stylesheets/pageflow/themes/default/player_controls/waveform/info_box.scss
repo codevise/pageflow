@@ -1,0 +1,29 @@
+$waveform-player-controls-info-box-typography: () !default;
+
+.waveform_player_controls {
+  &-info_box {
+    padding-left: 8%;
+    padding-right: 14%;
+    max-width: 900px;
+
+    h3,
+    p {
+      @include typography(
+        $waveform-player-controls-info-box-typography, (
+          font-size: 1.1em,
+          margin: 15px 0
+        )
+      );
+
+      display: inline;
+      width: auto;
+      max-width: none;
+    }
+
+    h3:after {
+      content: "\2014";
+      display: inline;
+      padding: 0 5px;
+    }
+  }
+}

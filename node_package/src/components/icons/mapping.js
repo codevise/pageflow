@@ -24,4 +24,6 @@ export default {
   textTracks: icons.Subtitles,
   activeMenuItem: icons.Checkmark,
   loadingSpinner: icons.CircleWithNotch,
+  play: icons.Play,
+  pause: icons.Pause,
 };
