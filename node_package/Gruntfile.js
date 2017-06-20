@@ -1,14 +1,16 @@
 /*global require, module*/
 
 var webpack = require('webpack');
-var webpackConfig = require('./webpack.config.js');
+var webpackConfigs = require('./webpack.config.js');
 
-webpackConfig.plugins = webpackConfig.plugins || [];
-webpackConfig.plugins.push(new webpack.DefinePlugin({
-  'process.env': {
-    'NODE_ENV': JSON.stringify('production')
-  }
-}));
+webpackConfigs.forEach(function(webpackConfig) {
+  webpackConfig.plugins = webpackConfig.plugins || [];
+  webpackConfig.plugins.push(new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify('production')
+    }
+  }));
+});
 
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-webpack');
@@ -16,7 +18,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     webpack: {
-      options: webpackConfig,
+      options: webpackConfigs,
       build: {}
     },
 
