@@ -24,6 +24,7 @@ function Waveform(props) {
             <div className="waveform_player_controls-wave_wrapper">
               <Wavesurfer mediaElt={`#${props.mediaElementId}`}
                           options={{
+                            removeMediaElementOnDestroy: false,
                             hideScrollbar: true,
                             progressColor: props.waveformColor || props.mainColor,
                             waveColor: props.inverted ? waveColorForInvertedPage : waveColor,
