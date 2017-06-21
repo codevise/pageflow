@@ -39,7 +39,8 @@ MenuBar.propTypes = {
   textTracksMenuItems: TextTracksMenu.propTypes.items,
   onTextTracksMenuItemClick: React.PropTypes.func,
 
-  standAlone: React.PropTypes.bool
+  standAlone: React.PropTypes.bool,
+  inverted: React.PropTypes.bool
 };
 
 MenuBar.defaultProps = {
@@ -50,7 +51,8 @@ MenuBar.defaultProps = {
 function className(props) {
   return classNames(props.className, 'player_controls-menu_bar', {
     'player_controls-menu_bar-hidden_on_phone': props.hiddenOnPhone,
-    'player_controls-menu_bar-stand_alone': props.standAlone
+    'player_controls-menu_bar-stand_alone': props.standAlone,
+    'player_controls-menu_bar-inverted': props.inverted
   });
 }
 

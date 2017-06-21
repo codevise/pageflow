@@ -1,10 +1,12 @@
 import Icon from 'components/Icon';
 import pageSkipLinkTarget from 'components/pageSkipLinkTarget';
 
+import classNames from 'classnames';
+
 function PlayButton(props) {
   return (
     <a href="#"
-       className="waveform_player_controls-play_button"
+       className={className(props)}
        id={props.id}
        tabIndex="4"
        title={props.title}
@@ -15,6 +17,12 @@ function PlayButton(props) {
 }
 
 export default pageSkipLinkTarget(PlayButton);
+
+function className(props) {
+  return classNames('waveform_player_controls-play_button', {
+    'waveform_player_controls-play_button-inverted': props.inverted
+  });
+}
 
 function clickHandler(props) {
   return event => {

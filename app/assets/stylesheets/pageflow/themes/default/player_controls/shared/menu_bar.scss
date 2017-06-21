@@ -1,5 +1,7 @@
 $player-controls-menu-icon-color: #fff !default;
 
+$player-controls-menu-inverted-icon-color: #333 !default;
+
 $player-controls-menu-popup-background-color: rgba(17, 17, 17, 0.9) !default;
 
 $player-controls-menu-popup-link-color: #fff !default;
@@ -60,6 +62,10 @@ $player-controls-quality-menu-annotation-color: #ff0000 !default;
     height: 25px;
 
     fill: $player-controls-menu-icon-color;
+  }
+
+  &-menu_bar-inverted .player_controls-menu_bar_button_icon {
+    fill: $player-controls-menu-inverted-icon-color;
   }
 
   &-menu_bar_button-sub_menu_visible .player_controls-quality_menu_button_icon {

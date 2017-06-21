@@ -12,6 +12,10 @@
 
   @include shadow-bottom;
 
+  &-inverted {
+    @include shadow-bottom-inverted;
+  }
+
   &-container {
     margin-bottom: 45px;
     width: 100%;

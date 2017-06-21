@@ -2,6 +2,10 @@ $waveform-player-controls-play-button-fill: #fff !default;
 
 $waveform-player-controls-play-button-stroke: #444 !default;
 
+$waveform-player-controls-play-button-inverted-fill: #222 !default;
+
+$waveform-player-controls-play-button-inverted-stroke: #ddd !default;
+
 .waveform_player_controls {
   &-play_button {
     display: block;
@@ -17,6 +21,11 @@ $waveform-player-controls-play-button-stroke: #444 !default;
       fill: $waveform-player-controls-play-button-fill;
       stroke: $waveform-player-controls-play-button-stroke;
       stroke-width: 3px;
+    }
+
+    &-inverted svg {
+      fill: $waveform-player-controls-play-button-inverted-fill;
+      stroke: $waveform-player-controls-play-button-inverted-stroke;
     }
   }
 }
