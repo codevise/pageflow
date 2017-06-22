@@ -1,0 +1,18 @@
+.contentText {
+  // This has to be the default behavior since all non-React pages
+  // still do not apply additional modifier classes to the content
+  // text
+  @include phone {
+    margin-bottom: 40px;
+  }
+
+  &-margin_none {
+    @include phone {
+      margin-bottom: 0;
+    }
+  }
+
+  &-margin_for_player_controls {
+    margin-bottom: 200px;
+  }
+}

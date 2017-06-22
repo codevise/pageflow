@@ -1,4 +1,5 @@
-import {Component} from 'react';
+import React from 'react';
+import classNames from 'classnames';
 
 /**
  * @desc Place inside
@@ -12,17 +13,31 @@ import {Component} from 'react';
  * @prop page
  *   Required. The page object to read configuration properties from.
  */
-export default class PageText extends Component {
-  render() {
-    return (
-      <div className="contentText">
-        <p dangerouslySetInnerHTML={this.text()} />
-        {this.props.children}
-      </div>
-    );
-  }
+export default function PageText(props) {
+  return (
+    <div className={className(props)}>
+      <p dangerouslySetInnerHTML={text(props)} />
+      {props.children}
+    </div>
+  );
+}
 
-  text() {
-    return {__html: this.props.page.text};
-  }
+PageText.defaultProps = {
+  marginBottom: 'for_scroll_indicator_on_phone'
+};
+
+PageText.propTypes = {
+  marginBottom: React.PropTypes.oneOf([
+    'for_player_controls', 'for_scroll_indicator_on_phone', 'none'
+  ])
+};
+
+function className(props) {
+  return classNames('contentText', {
+    [`contentText-margin_${props.marginBottom}`]: props.marginBottom != PageText.defaultProps.marginBottom
+  });
+}
+
+function text(props) {
+  return {__html: props.page.text};
 }

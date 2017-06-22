@@ -61,7 +61,8 @@ export function MediaPage(props) {
 
           <PageHeader page={page} />
           <PagePrintImage page={page} />
-          <PageText page={page}>
+          <PageText page={page}
+                    marginBottom={props.dynamicPageScrollerMargin ? 'none' : 'for_player_controls'}>
             <NonJsLinks file={props.file} />
           </PageText>
         </PageScroller>
@@ -69,6 +70,10 @@ export function MediaPage(props) {
     </PageWrapper>
   );
 }
+
+MediaPage.defaultProps = {
+  playerControlsCanOverlapPageText: true
+};
 
 export default connectInPage(combineSelectors({
   pageScrollerMarginBottom,
