@@ -74,6 +74,14 @@
     bottom: 0;
     z-index: 1;
 
+    &-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      bottom: 0;
+    }
+
     > div {
       position: absolute;
       @include box-sizing(border-box);
