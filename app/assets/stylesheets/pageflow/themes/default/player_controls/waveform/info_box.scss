@@ -6,8 +6,8 @@ $waveform-player-controls-info-box-typography: () !default;
     padding-right: 14%;
     max-width: 900px;
 
-    h3,
-    p {
+    &-title,
+    &-description {
       @include typography(
         $waveform-player-controls-info-box-typography, (
           font-size: 1.1em,
@@ -20,7 +20,7 @@ $waveform-player-controls-info-box-typography: () !default;
       max-width: none;
     }
 
-    h3:after {
+    &-title-with_separator:after {
       content: "\2014";
       display: inline;
       padding: 0 5px;
