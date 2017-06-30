@@ -23,8 +23,8 @@
 
 <body class="load_all_images has_no_mobile_platform non_js">
   <script>
-    jQuery('body').removeClass('load_all_images');
-    jQuery("body").removeClass('non_js').addClass('js');
+    document.body.classList.remove('load_all_images', 'non_js');
+    document.body.classList.add('js');
   </script>
   <%= yield %>
 </body>
