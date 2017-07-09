@@ -22,6 +22,7 @@ While you're in there, add `pageflow` as a dependency:
 ```
 # pageflow-before-after.gemspec
 spec.add_dependency "pageflow" # you should use ~> to lock to a release
+spec.add_dependency 'pageflow-public-i18n', '~> 1.0'
 ```
 
 ### Using the new PageType in the host application
@@ -88,11 +89,43 @@ your page type engine. That way, for example, the name of the
 `Pageflow::BeforeAfter::PageType` class can change without having to
 update all Pageflow applications using the page type.
 
+### Rails Engine
+
+Require the engine from your main file:
+
+``` ruby
+require 'pageflow/before_after/engine'
+```
+
+And add it:
+``` ruby
+# lib/pageflow/before_after/engine.rb
+require 'rails/engine'
+
+module Pageflow
+  module BeforeAfter
+    class Engine < ::Rails::Engine
+      isolate_namespace Pageflow::BeforeAfter
+    end
+  end
+end
+
+```
+
 ### View Templates
 
 Create the public view for your page: `pageflow/before_after/page.html.erb`.
 
-The exact path to the page depends on the name you've given the engine.
+The path to the page by default begins with `pageflow`. If you've chosen
+a different top-level module name—and you should, if you're not Pageflow—you
+will want to override the template path. Add this method to your PageType
+class:
+
+``` ruby
+def template_path
+  'pageflow/before_after/page' # default
+end
+```
 
 A certain DOM structure is required for the page to be functional inside
 Pageflow. For Pageflow 0.11.x, the minimal contents are:
