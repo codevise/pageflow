@@ -1,5 +1,6 @@
 module Pageflow
   class Storyline < ActiveRecord::Base
+    include Configuration
     include RevisionComponent
 
     belongs_to :revision, touch: true
@@ -8,8 +9,6 @@ module Pageflow
     has_many :pages, through: :chapters
 
     delegate :entry, to: :revision
-
-    serialize :configuration, JSON
 
     def copy_to(revision)
       storyline = dup

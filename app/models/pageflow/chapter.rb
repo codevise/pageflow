@@ -1,11 +1,11 @@
 module Pageflow
   class Chapter < ActiveRecord::Base
+    include Configuration
+
     belongs_to :storyline, touch: true
     has_many :pages, -> { order('position ASC') }
 
     delegate :entry, to: :storyline
-
-    serialize :configuration, JSON
 
     def configuration
       super || {}
