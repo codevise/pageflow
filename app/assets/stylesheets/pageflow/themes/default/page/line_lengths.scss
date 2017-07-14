@@ -20,8 +20,8 @@ $page-content-width: 60% !default;
 
 .page {
   h1,
-  h2 span.subtitle,
-  h2 span.tagline,
+  h2 .subtitle,
+  h2 .tagline,
   h3,
   p {
     max-width: $page-content-max-width;
@@ -38,39 +38,46 @@ $page-content-width: 60% !default;
   }
 
   // see pageflow/page.scss
-  $page-content-padding-left: 8%;
-  $page-content-padding-right: 14%;
-  $page-content-width: 100% - $page-content-padding-left - $page-content-padding-right;
+  $page-padding-left: 8%;
+  $page-padding-right: 14%;
+  $page-content-wrapper-width: 100% - $page-padding-left - $page-padding-right;
 
-  // Normally the title expands further to the right than subtitle and
-  // tagline. When the title is used on a page, though, that supports
-  // a split layout (i.e. some kind of embed can be displayed on the
-  // right), we want to be able to shorten the title so that it is
-  // contained inside the left column.
+  // On pages that support split layout (i.e. some kind of
+  // embed can be displayed on the right), we have to shorten the page
+  // content so that it is contained inside the left column.
   //
   // Embeds use up to 55% of the page width. So we want to ensure that
-  // the sum of the page title's width and left margin stays below 45%
-  // of the page width:
+  // the sum of the content's width and left margin stays below 45% of
+  // the page width:
   //
-  //   $title-width-relative-to-page + $page-content-padding-left = 45%
-  //   $title-width-relative-to-content * $page-content-width + $page-content-padding-left = 45%
+  //   $page-content-width-relative-to-page + $page-padding-left = 45%
+  //   $page-content-width-relative-to-wrapper * $page-content-wrapper-width
+  //     + $page-padding-left = 45%
   //
-  $title-split-layout-width: floor((45% - $page-content-padding-left) / ($page-content-width / 100%));
+  // Subtract 1% to keep a bit of space between text and embed.
+  $page-content-split-layout-width: floor((44% - $page-padding-left)
+                                          / ($page-content-wrapper-width / 100%));
 
   // When the pixel width of the title is given by
   //
   //   $title-width-in-px = $page-width-in-px
-  //                          * ($page-content-width / 100%)
-  //                          * ($title-split-layout-width / 100%),
+  //                          * ($page-content-wrapper-width / 100%)
+  //                          * ($page-content-split-layout-width / 100%),
   //
   // the title has at least the given min width if the page has width:
   $page-min-width-for-split-layout: $page-header-title-min-width-for-split-layout
-                                      / ($title-split-layout-width / 100%)
-                                      / ($page-content-width / 100%);
+                                      / ($page-content-split-layout-width / 100%)
+                                      / ($page-content-wrapper-width / 100%);
 
   @media screen and (min-width: $page-min-width-for-split-layout) {
-    h2 .title-for_split_layout {
-      width: $title-split-layout-width;
+    &-with_split_layout {
+      h2 .subtitle,
+      h2 .title,
+      h2 .tagline,
+      h3,
+      p {
+        width: $page-content-split-layout-width;
+      }
     }
   }
 
