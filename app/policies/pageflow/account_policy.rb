@@ -84,6 +84,21 @@ module Pageflow
       @account = account
     end
 
+    def be_member_on?
+      @user.admin? ||
+        allows?(%w(member previewer editor publisher manager))
+    end
+
+    def preview?
+      @user.admin? ||
+        allows?(%w(previewer editor publisher manager))
+    end
+
+    def edit?
+      @user.admin? ||
+        allows?(%w(editor publisher manager))
+    end
+
     def publish?
       @user.admin? ||
         allows?(%w(publisher manager))

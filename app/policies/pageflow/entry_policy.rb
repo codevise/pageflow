@@ -47,7 +47,8 @@ module Pageflow
     end
 
     def preview?
-      query.has_at_least_role?(:previewer)
+      user.admin? ||
+        query.has_at_least_role?(:previewer)
     end
 
     def read?
@@ -59,7 +60,8 @@ module Pageflow
     end
 
     def edit?
-      query.has_at_least_role?(:editor)
+      user.admin? ||
+        query.has_at_least_role?(:editor)
     end
 
     def confirm_encoding?
@@ -83,7 +85,8 @@ module Pageflow
     end
 
     def publish?
-      query.has_at_least_role?(:publisher)
+      user.admin? ||
+        query.has_at_least_role?(:publisher)
     end
 
     def create?
