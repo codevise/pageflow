@@ -87,7 +87,7 @@ module Pageflow
 
       it 'invokes entry_published hooks' do
         entry = create(:entry)
-        user = create(:user, account: entry.account)
+        user = create(:user, :previewer, on: entry)
         quota = QuotaDouble.available.new(:published_entries, entry.account)
         entry_publication = EntryPublication.new(entry, {}, quota, user)
         subscriber = double('subscriber', call: nil)
