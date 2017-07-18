@@ -1,0 +1,27 @@
+/// Alignment of the logo in desktop layout. In phone layout, logos
+/// are always displayed left aligned.
+///
+/// - `"left"`: Left align logo.
+///
+/// - `"right"`: Right align logo in desktop layout.
+$logo-alignment: "left" !default;
+
+// Left position relative to page when logo is left aligned.
+$logo-left: 8% !default;
+
+// Right position relative to page when logo is right aligned.
+$logo-right: 14% !default;
+
+@mixin logo-alignment {
+  @include desktop {
+    @if $logo-alignment == "left" {
+      left: $logo-left;
+    } @else {
+      right: $logo-right;
+    }
+  }
+
+  @include phone {
+    left: $logo-left;
+  }
+}
