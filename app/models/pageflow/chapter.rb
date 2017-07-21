@@ -7,10 +7,6 @@ module Pageflow
 
     delegate :entry, to: :storyline
 
-    def configuration
-      super || {}
-    end
-
     def copy_to(storyline)
       chapter = dup
       storyline.chapters << chapter
