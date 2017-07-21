@@ -167,6 +167,24 @@ module Pageflow
           expect(response.status).to eq(200)
         end
 
+        it 'includes a last-modified response header' do
+          entry = create(:entry, :published)
+
+          get(:show, id: entry)
+
+          expect(response.headers).to include('Last-Modified')
+          expect(response.headers['Last-Modified']).to eq(entry.updated_at.httpdate)
+        end
+
+        it 'sets Cache-Control to public' do
+          entry = create(:entry, :published)
+
+          get(:show, id: entry)
+
+          expect(response.headers).to include('Cache-Control')
+          expect(response.headers['Cache-Control']).to include('public')
+        end
+
         it 'responds with not found for non-published entry' do
           entry = create(:entry)
 
@@ -280,6 +298,28 @@ module Pageflow
           end
         end
 
+        context 'with if-modified-since header' do
+          let(:entry) { create(:entry, :published) }
+
+          it 'responds with success if the entry was modified' do
+            time = entry.updated_at.advance(days: -1)
+
+            request.env['HTTP_IF_MODIFIED_SINCE'] = time.httpdate
+            get(:show, id: entry)
+
+            expect(response.status).to eq(200)
+          end
+
+          it 'responds with not modified if the entry was not modified' do
+            time = entry.updated_at.advance(days: 1)
+
+            request.env['HTTP_IF_MODIFIED_SINCE'] = time.httpdate
+            get(:show, id: entry)
+
+            expect(response.status).to eq(304)
+          end
+        end
+
         context 'with page parameter' do
           it 'renders social sharing meta tags for page' do
             entry = create(:entry, :published)
@@ -375,6 +415,24 @@ module Pageflow
           get(:show, id: entry, format: 'css')
 
           expect(response.status).to eq(404)
+        end
+
+        it 'includes a last-modified response header' do
+          entry = create(:entry, :published)
+
+          get(:show, id: entry, format: 'css')
+
+          expect(response.headers).to include('Last-Modified')
+          expect(response.headers['Last-Modified']).to eq(entry.updated_at.httpdate)
+        end
+
+        it 'sets Cache-Control to public' do
+          entry = create(:entry, :published)
+
+          get(:show, id: entry, format: 'css')
+
+          expect(response.headers).to include('Cache-Control')
+          expect(response.headers['Cache-Control']).to include('public')
         end
 
         it 'includes image rules for image files' do

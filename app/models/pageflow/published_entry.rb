@@ -25,6 +25,7 @@ module Pageflow
              :author, :publisher, :keywords,
              :theme,
              :password_protected?,
+             :created_at, :updated_at,
              :to => :revision)
 
     def initialize(entry, revision = nil)

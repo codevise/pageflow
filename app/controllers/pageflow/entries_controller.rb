@@ -39,6 +39,8 @@ module Pageflow
           else
             @entry.share_target = @entry
           end
+
+          fresh_when(@entry, public: true)
         end
         format.json do
           authenticate_user!
