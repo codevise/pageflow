@@ -42,6 +42,7 @@
 //= require ./features
 //= require ./audio
 //= require ./audio_player
+//= require ./audio_context
 //= require ./video_player
 //= require ./visited
 //= require ./print_layout
