@@ -1,3 +1,5 @@
+@import "../alignment";
+
 @mixin logo-variant-background-image(
   $first-page-only,
   $top,
@@ -14,7 +16,6 @@
     .content_and_background .scroller > div:after {
       content: "";
       position: absolute;
-      left: 8%;
       top: $top;
       z-index: 200;
       min-width: $min-width;
@@ -24,9 +25,10 @@
       background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.png");
       background-repeat: no-repeat;
       background-size: contain;
-      background-position: left top;
+      background-position: #{$logo-alignment} top;
 
       @include mobile {
+        background-position: left top;
         padding-top: 1%;
         height: $mobile-height;
       }
@@ -34,6 +36,8 @@
       @include phone {
         top: $phone-top;
       }
+
+      @include logo-alignment;
     }
 
     &.invert .content_and_background .scroller > div:after {

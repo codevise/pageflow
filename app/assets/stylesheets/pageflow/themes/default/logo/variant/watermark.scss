@@ -1,3 +1,5 @@
+@import "../alignment";
+
 /// Fade in logo when scroller is near top
 ///
 /// - `"first-page"`: only on first page
@@ -25,7 +27,6 @@ $logo-watermark-variant-fade-in-with-header: false !default;
     width: $width;
     height: $height;
     top: $top;
-    left: 8%;
     z-index: 1;
 
     pointer-events: none;
@@ -37,6 +38,8 @@ $logo-watermark-variant-fade-in-with-header: false !default;
       height: $phone-height;
       top: 21px;
     }
+
+    @include logo-alignment;
 
     .js & {
       display: block;
