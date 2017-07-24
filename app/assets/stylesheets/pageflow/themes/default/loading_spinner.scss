@@ -27,6 +27,13 @@ $loading-spinner-background-color: #3b5159 !default;
 /// - `"none"`: Nothing
 $loading-spinner-background: "glow" !default;
 
+/// Background size to apply to background image:
+///
+/// - `"auto"`: Do not apply background size (default).
+/// - `"logo"`: Apply same size as for logo image. Allows using
+///   background image as an animated layer of the logo.
+$loading-spinner-background-size: "auto" !default;
+
 /// Radial gradient color.
 $loading-spinner-glow-color: rgba(117, 149, 160, 0.8) !default;
 
@@ -57,6 +64,10 @@ $loading-spinner-animate-background: true !default;
       } @else if $loading-spinner-background == "custom" {
         content: "";
         background-image: image-url("pageflow/themes/#{$theme-name}/loading_spinner/background.png");
+
+        @if $loading-spinner-background-size == "logo" {
+          background-size: $loading-spinner-logo-width $loading-spinner-logo-height;
+        }
       }
 
       @if $loading-spinner-animate-background {
