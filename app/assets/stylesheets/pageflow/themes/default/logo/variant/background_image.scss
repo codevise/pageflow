@@ -1,3 +1,5 @@
+@import "../alignment";
+
 // Opacity of the logo
 $logo-background-image-variant-opacity: null !default;
 
@@ -20,7 +22,6 @@ $logo-background-image-variant-first-page-opacity: null !default;
     .content_and_background .scroller > div:after {
       content: "";
       position: absolute;
-      left: 8%;
       top: $top;
       z-index: 200;
       min-width: $min-width;
@@ -30,9 +31,10 @@ $logo-background-image-variant-first-page-opacity: null !default;
       background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.png");
       background-repeat: no-repeat;
       background-size: contain;
-      background-position: left top;
+      background-position: #{$logo-alignment} top;
 
       @include mobile {
+        background-position: left top;
         padding-top: 1%;
         height: $mobile-height;
       }
@@ -40,6 +42,8 @@ $logo-background-image-variant-first-page-opacity: null !default;
       @include phone {
         top: $phone-top;
       }
+
+      @include logo-alignment;
     }
 
     &.invert .content_and_background .scroller > div:after {
