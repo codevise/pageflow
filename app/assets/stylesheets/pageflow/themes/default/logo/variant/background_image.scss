@@ -1,5 +1,11 @@
 @import "../alignment";
 
+// Opacity of the logo
+$logo-background-image-variant-opacity: null !default;
+
+/// Opacity of the logo on the first page
+$logo-background-image-variant-first-page-opacity: null !default;
+
 @mixin logo-variant-background-image(
   $first-page-only,
   $top,
@@ -43,5 +49,13 @@
     &.invert .content_and_background .scroller > div:after {
       background-image: image-url("pageflow/themes/#{$theme-name}/logo_header_invert.png");
     }
+  }
+
+  .page .scroller > div:after {
+    opacity: $logo-background-image-variant-opacity;
+  }
+
+  .page:first-child .scroller > div:after {
+    opacity: $logo-background-image-variant-first-page-opacity;
   }
 }
