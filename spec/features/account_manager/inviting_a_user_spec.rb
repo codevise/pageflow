@@ -30,20 +30,53 @@ feature 'as account manager, inviting a user' do
                                                    password: '@new12345')
   end
 
-  scenario 'inviting a user for another account' do
-    account = create(:account, name: 'another account')
-    create(:user, email: 'existing_user@example.org', first_name: 'Walter', last_name: 'Doe')
+  context 'inviting a user for another account' do
+    scenario 'with multiaccount users allowed' do
+      account = create(:account, name: 'another account')
+      create(:user,
+             :member,
+             on: create(:account),
+             email: 'existing_user@example.org',
+             first_name: 'Walter',
+             last_name: 'Doe')
 
-    Dom::Admin::Page.sign_in_as(:manager, on: account)
-    visit(admin_users_path)
-    Dom::Admin::UserPage.first.invite_user_link.click
-    Dom::Admin::UserForm.first.submit_with(account_id: account.id,
-                                           first_name: 'John',
-                                           last_name: 'Doe',
-                                           email: 'existing_user@example.org')
-    visit(admin_users_path)
+      Dom::Admin::Page.sign_in_as(:manager, on: account)
+      visit(admin_users_path)
+      Dom::Admin::UserPage.first.invite_user_link.click
+      Dom::Admin::UserForm.first.submit_with(account_id: account.id,
+                                             first_name: 'John',
+                                             last_name: 'Doe',
+                                             email: 'existing_user@example.org')
+      visit(admin_users_path)
 
-    expect(Dom::Admin::UserInIndexTable.find_by_full_name('Walter Doe').account_names)
-      .to include(account.name)
+      expect(Dom::Admin::UserInIndexTable.find_by_full_name('Walter Doe')
+               .account_names).to include(account.name)
+    end
+
+    scenario 'with multiaccount users forbidden' do
+      pageflow_configure do |config|
+        config.allow_multiaccount_users = false
+      end
+
+      account = create(:account, name: 'another account')
+      create(:user,
+             :member,
+             on: create(:account),
+             email: 'existing_user@example.org',
+             first_name: 'Walter',
+             last_name: 'Doe')
+
+      Dom::Admin::Page.sign_in_as(:manager, on: account)
+      visit(admin_users_path)
+      Dom::Admin::UserPage.first.invite_user_link.click
+      Dom::Admin::UserForm.first.submit_with(account_id: account.id,
+                                             first_name: 'John',
+                                             last_name: 'Doe',
+                                             email: 'existing_user@example.org')
+      visit(admin_users_path)
+
+      expect(Dom::Admin::UserInIndexTable.find_by_full_name('Walter Doe'))
+        .to be_nil
+    end
   end
 end
