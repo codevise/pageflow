@@ -11,6 +11,9 @@ module Pageflow
 
     validates :user, :entity, :role, presence: true
     validates :user_id, uniqueness: {scope: [:entity_type, :entity_id]}
+    validates :user_id,
+              uniqueness: {scope: :entity_type},
+              if: :on_account? && !Pageflow.config.allow_multiaccount_users
     validate :account_membership_exists, if: :on_entry?
     validates :role,
               inclusion: {in: %w(previewer editor publisher manager)},

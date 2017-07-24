@@ -38,7 +38,8 @@ module Pageflow
               end
             end
           end
-          add_membership_button_if_needed(current_user, account, 'account')
+          add_membership_button_if_needed(current_user, account, 'account') if
+            Pageflow.config.allow_multiaccount_users
         end
       end
     end
