@@ -1,10 +1,9 @@
-development:
+common: &common
   adapter: mysql2
   encoding: utf8
-  database: development
-  pool: 5
   username: <%= ENV.fetch('PAGEFLOW_DB_USER', 'root') %>
   password: <%= ENV.fetch('PAGEFLOW_DB_PASSWORD', '') %>
+  pool: 5
 <% if ENV['PAGEFLOW_DB_HOST'].present? %>
   host: <%= ENV['PAGEFLOW_DB_HOST'] %>
   port: <%= ENV.fetch('PAGEFLOW_DB_PORT', '3306') %>
@@ -12,20 +11,15 @@ development:
   socket: /var/run/mysqld/mysqld.sock
 <% elsif File.socket?('/tmp/mysql.sock') %>
   socket: /tmp/mysql.sock
+<% else %>
+  host: localhost
+  port: 3306
 <% end %>
 
+development:
+  <<: *common
+  database: development
+
 test:
-  adapter: mysql2
-  encoding: utf8
+  <<: *common
   database: test
-  pool: 5
-  username: <%= ENV.fetch('PAGEFLOW_DB_USER', 'root') %>
-  password: <%= ENV.fetch('PAGEFLOW_DB_PASSWORD', '') %>
-<% if ENV['PAGEFLOW_DB_HOST'].present? %>
-  host: <%= ENV['PAGEFLOW_DB_HOST'] %>
-  port: <%= ENV.fetch('PAGEFLOW_DB_PORT', '3306') %>
-<% elsif File.socket?('/var/run/mysqld/mysqld.sock') %>
-  socket: /var/run/mysqld/mysqld.sock
-<% elsif File.socket?('/tmp/mysql.sock') %>
-  socket: /tmp/mysql.sock
-<% end %>
