@@ -26,10 +26,18 @@ export default class MenuBarButton extends React.Component {
       if (this.props.subMenuItems.length > 0) {
         this.setState({subMenuVisible: true});
       }
+
+      if (this.props.onMouseEnter) {
+        this.props.onMouseEnter();
+      }
     };
 
     this.onMouseLeave = () => {
       this.closeMenu();
+
+      if (this.props.onMouseEnter) {
+        this.props.onMouseLeave();
+      }
     };
 
     this.onFocus = () => {
@@ -88,6 +96,8 @@ MenuBarButton.propTypes = {
     })
   ),
   onClick: React.PropTypes.func,
+  onMouseEnter: React.PropTypes.func,
+  onMouseLeave: React.PropTypes.func,
   onSubMenuItemClick: React.PropTypes.func
 };
 
