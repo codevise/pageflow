@@ -12,13 +12,10 @@ function InfoBox(props) {
 }
 
 function wrapperClassNames(props) {
-  const titleBlank = isBlank(props.title);
-  const descriptionBlank = isBlank(props.description);
-
   return classNames('add_info_box', {
-    'empty': titleBlank && descriptionBlank,
-    'title_empty': titleBlank,
-    'description_empty': descriptionBlank
+    'empty': isEmpty(props),
+    'title_empty': isBlank(props.title),
+    'description_empty': isBlank(props.description),
   });
 }
 
@@ -36,6 +33,10 @@ function description(props) {
       <p dangerouslySetInnerHTML={{__html: props.description}} />
     );
   }
+}
+
+export function isEmpty(props) {
+  return isBlank(props.title) && isBlank(props.description);
 }
 
 export default withVisibilityWatching(InfoBox);

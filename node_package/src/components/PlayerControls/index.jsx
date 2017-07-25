@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import InfoBox from './InfoBox';
+import InfoBox, {isEmpty as isInfoBoxEmpty} from './InfoBox';
 import Container from './Container';
 import LoadingSpinner from './LoadingSpinner';
 import PlayButton from './PlayButton';
@@ -90,5 +90,7 @@ PlayerControls.propTypes = {
 
   onPlayButtonClick: React.PropTypes.func
 };
+
+export {isInfoBoxEmpty};
 
 export default withVisibilityWatching(PlayerControls);
