@@ -24,7 +24,9 @@ MenuBar.propTypes = {
   additionalButtons: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       name: React.PropTypes.string.isRequired,
-      label: React.PropTypes.string.isRequired
+      label: React.PropTypes.string.isRequired,
+      className: React.PropTypes.string,
+      iconName: React.PropTypes.string
     })
   ),
   hiddenOnPhone: React.PropTypes.bool,
@@ -57,14 +59,20 @@ function renderAdditionalButtons(props) {
     return (
       <MenuBarButton title={additionalButton.label}
                      iconName={additionalButton.iconName}
+                     className={additionalButton.className}
                      key={additionalButton.name}
-                     onClick={additionalButtonClickHandler(props, additionalButton.name)} />
+                     onClick={createHandler(props.onAdditionalButtonClick,
+                                            additionalButton.name)}
+                     onMouseEnter={createHandler(props.onAdditionalButtonMouseEnter,
+                                                 additionalButton.name)}
+                     onMouseLeave={createHandler(props.onAdditionalButtonMouseLeave,
+                                                 additionalButton.name)}/>
     );
   });
 }
 
-function additionalButtonClickHandler(props, name) {
-  if (props.onAdditionalButtonClick) {
-    return () => props.onAdditionalButtonClick(name);
+function createHandler(handler, name) {
+  if (handler) {
+    return () => handler(name);
   }
 }

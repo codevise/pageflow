@@ -37,6 +37,10 @@ function PlayerControls(props) {
       </div>
 
       <MenuBar standAlone={false}
+               additionalButtons={props.additionalMenuBarButtons}
+               onAdditionalButtonClick={props.onAdditionalButtonClick}
+               onAdditionalButtonMouseEnter={props.onAdditionalButtonMouseEnter}
+               onAdditionalButtonMouseLeave={props.onAdditionalButtonMouseLeave}
                qualityMenuButtonTitle={props.qualityMenuButtonTitle}
                qualityMenuItems={props.qualityMenuItems}
                onQualityMenuItemClick={props.onQualityMenuItemClick}
