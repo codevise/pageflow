@@ -1,7 +1,8 @@
 // Map placeholder names to concrete vjs css class names.
 
 $vjs-selector-mapping: (
-  page_with_progress_bar: ".audioPage, .videoPage",
+  page-with_progress_bar: ".audioPage, .videoPage",
+  page-audio: ".audioPage",
 
   background: ".page_background-for_page_with_player_controls",
 
