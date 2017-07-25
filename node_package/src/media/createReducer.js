@@ -33,7 +33,8 @@ export default function({scope = 'default'} = {}) {
         ...state,
         hasPlayed: false,
         unplayed: true,
-        infoBoxHiddenDuringPlayback: undefined
+        infoBoxHiddenDuringPlayback: undefined,
+        userIsIdle: false
       };
     case PAGE_WILL_DEACTIVATE:
       return {
