@@ -8,8 +8,10 @@ development:
 <% if ENV['PAGEFLOW_DB_HOST'].present? %>
   host: <%= ENV['PAGEFLOW_DB_HOST'] %>
   port: <%= ENV.fetch('PAGEFLOW_DB_PORT', '3306') %>
-<% else %>
+<% elsif File.socket?('/var/run/mysqld/mysqld.sock') %>
   socket: /var/run/mysqld/mysqld.sock
+<% elsif File.socket?('/tmp/mysql.sock') %>
+  socket: /tmp/mysql.sock
 <% end %>
 
 test:
@@ -22,6 +24,8 @@ test:
 <% if ENV['PAGEFLOW_DB_HOST'].present? %>
   host: <%= ENV['PAGEFLOW_DB_HOST'] %>
   port: <%= ENV.fetch('PAGEFLOW_DB_PORT', '3306') %>
-<% else %>
+<% elsif File.socket?('/var/run/mysqld/mysqld.sock') %>
   socket: /var/run/mysqld/mysqld.sock
+<% elsif File.socket?('/tmp/mysql.sock') %>
+  socket: /tmp/mysql.sock
 <% end %>

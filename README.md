@@ -50,7 +50,7 @@ Pageflow assumes the following choice of libraries:
 
 Pageflow runs in environments with:
 
-* Ruby >= 2.1
+* Ruby >= 2.1 (see `.travis.yml` for supported versions)
 * Node >= 6.9.5
 * Rails 4.2
 * Redis server (for Resque)

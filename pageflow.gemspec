@@ -128,7 +128,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'capybara', '~> 2.4'
 
   # Headless browser testing
-  s.add_development_dependency 'capybara-webkit', '~> 1.3'
+  s.add_development_dependency 'poltergeist', '~> 1.15.0'
 
   # View abstraction fro integration testing
   s.add_development_dependency 'domino', '~> 0.7.0'
