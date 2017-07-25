@@ -42,8 +42,7 @@ $classic-player-controls-typography: $player-controls-typography !default;
     }
 
     &-paused,
-    &-unplayed,
-    &-has_been_faded {
+    &-unplayed {
       // Unused, but have to be defined for @extend to work
       display: block;
     }

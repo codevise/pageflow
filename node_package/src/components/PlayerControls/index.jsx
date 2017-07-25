@@ -18,9 +18,7 @@ function PlayerControls(props) {
       <span className="hint">{props.hint}</span>
 
       <InfoBox {...props.infoBox}
-               watchVisibility={props.watchVisibility}
-               onVisible={props.onInfoBoxVisible}
-               onHidden={props.onInfoBoxHidden} />
+               hiddenDuringPlayback={props.infoBoxHiddenDuringPlayback}/>
 
       <div className={controlBarClassNames(props)}>
         {renderLoadingSpinner(props)}

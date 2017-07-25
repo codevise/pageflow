@@ -49,8 +49,8 @@ export function MediaPlayerControls(props) {
 
                     watchVisibility={playerState.isPlaying}
                     onHidden={actions.controlsHidden}
-                    onInfoBoxVisible={actions.infoBoxVisible}
-                    onInfoBoxHidden={actions.infoBoxHidden}
+
+                    infoBoxHiddenDuringPlayback={infoBoxHiddenDuringPlayback(props)}
 
                     qualityMenuItems={qualityMenuItems(props.qualities,
                                                        props.file,
@@ -89,8 +89,18 @@ export default connect(
 )(MediaPlayerControls);
 
 function className(playerState) {
-  return classNames(playerStateClassNames(playerState),
-                    {'has_been_faded': playerState.userHasBeenIdle});
+  return classNames(playerStateClassNames(playerState));
+}
+
+function infoBoxHiddenDuringPlayback(props) {
+  const playerState = props.playerState;
+
+  if (playerState.infoBoxHiddenDuringPlayback === undefined) {
+    return !!props.textTracks.activeFileId;
+  }
+  else {
+    return playerState.infoBoxHiddenDuringPlayback;
+  }
 }
 
 function textTracksMenuItems(textTracks, t) {

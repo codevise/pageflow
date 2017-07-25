@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import withVisibilityWatching from '../withVisibilityWatching';
 import {isBlank} from 'utils';
 
 function InfoBox(props) {
@@ -16,6 +15,7 @@ function wrapperClassNames(props) {
     'empty': isEmpty(props),
     'title_empty': isBlank(props.title),
     'description_empty': isBlank(props.description),
+    'add_info_box-hidden_during_playback': props.hiddenDuringPlayback
   });
 }
 
@@ -39,4 +39,4 @@ export function isEmpty(props) {
   return isBlank(props.title) && isBlank(props.description);
 }
 
-export default withVisibilityWatching(InfoBox);
+export default InfoBox;
