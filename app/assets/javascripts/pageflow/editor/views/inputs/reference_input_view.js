@@ -96,8 +96,6 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
         I18n.t('pageflow.editor.views.inputs.reference_input_view.choose')
     );
 
-    this.updateDisabledAttribute(this.ui.buttons);
-
     if (this.thumbnailView) {
       this.thumbnailView.close();
     }

@@ -252,6 +252,11 @@ module Pageflow
     # take. Defaults to `[:captions, :subtitles, :descriptions]`.
     attr_reader :available_text_track_kinds
 
+    # Allow one user to be member of multiple accounts. Defaults to
+    # true.
+    # @since 12.1
+    attr_accessor :allow_multiaccount_users
+
     def initialize
       @paperclip_filesystem_default_options = {validate_media_type: false}
       @paperclip_s3_default_options = {validate_media_type: false}
@@ -294,6 +299,8 @@ module Pageflow
       @authorize_user_deletion = lambda { |_user| true }
 
       @available_text_track_kinds = [:captions, :subtitles, :descriptions]
+
+      @allow_multiaccount_users = true
     end
 
     # Activate a plugin.

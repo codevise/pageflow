@@ -1,29 +1,19 @@
-pageflow.EditWidgetView = Backbone.Marionette.Layout.extend({
+pageflow.EditWidgetView = Backbone.Marionette.ItemView.extend({
   template: 'templates/edit_widget',
-  tagName: 'li',
   className: 'edit_widget',
 
-  regions: {
-    widgetTypeContainer: '.widget_type'
-  },
-
-  ui: {
-    role: 'h2'
+  events: {
+    'click a.back': function() {
+      editor.navigate('/meta_data/widgets', {trigger: true});
+    }
   },
 
   onRender: function() {
-    var widgetTypes = this.options.widgetTypes[this.model.role()] || [];
+    var configurationEditor = this.model.widgetType().createConfigurationEditorView({
+      model: this.model.configuration,
+      tab: this.options.tab
+    });
 
-    this.widgetTypeContainer.show(new pageflow.SelectInputView({
-      model: this.model,
-      propertyName: 'type_name',
-      label: I18n.t('pageflow.widgets.roles.' + this.model.role()),
-      collection: widgetTypes,
-      valueProperty: 'name',
-      translationKeyProperty: 'translationKey',
-      includeBlank: true
-    }));
-
-    this.$el.toggle(widgetTypes.length > 1);
+    this.appendSubview(configurationEditor);
   }
 });

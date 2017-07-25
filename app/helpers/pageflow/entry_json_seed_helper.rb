@@ -35,6 +35,11 @@ module Pageflow
       entry.pages.as_json(only: attributes)
     end
 
+    def entry_widgets_seed(entry)
+      attributes = [:type_name, :role, :configuration]
+      entry.resolve_widgets.as_json(only: attributes)
+    end
+
     def entry_file_ids_seed(entry)
       Pageflow.config.file_types.with_thumbnail_support.each_with_object({}) do |file_type, result|
         result[file_type.collection_name] = entry.find_files(file_type.model).map(&:id)
