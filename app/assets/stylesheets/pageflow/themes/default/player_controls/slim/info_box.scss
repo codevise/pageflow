@@ -109,11 +109,10 @@ $slim-player-controls-info-box-header-typography: () !default;
   }
 
   @include desktop {
-    .js &-container-has_been_faded %player_controls-info_box {
+    .js &-info_box-hidden_during_playback {
       @include faded;
     }
 
-    .js &-container:hover %player_controls-info_box,
     .js &-container-paused %player_controls-info_box {
       @include transition-delay(0);
       @include visible;
