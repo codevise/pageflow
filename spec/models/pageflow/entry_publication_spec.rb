@@ -84,6 +84,19 @@ module Pageflow
 
         entry_publication.save!
       end
+
+      it 'invokes entry_published hooks' do
+        entry = create(:entry)
+        user = create(:user, account: entry.account)
+        quota = QuotaDouble.available.new(:published_entries, entry.account)
+        entry_publication = EntryPublication.new(entry, {}, quota, user)
+        subscriber = double('subscriber', call: nil)
+
+        Pageflow.config.hooks.on(:entry_published, subscriber)
+        entry_publication.save!
+
+        expect(subscriber).to have_received(:call).with(entry: entry)
+      end
     end
   end
 end
