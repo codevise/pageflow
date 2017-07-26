@@ -1,2 +1,2 @@
 json.id(widget.role)
-json.(widget, :type_name, :configuration)
+json.(widget, :type_name, :role, :configuration)

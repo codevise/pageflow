@@ -26,6 +26,10 @@ import {
   prop
 } from 'utils/selectors';
 
+import {
+  widgetAttributes
+} from 'widgets/selectors';
+
 export {
   pageAttribute,
   pageAttributes,
@@ -40,5 +44,7 @@ export {
   setting,
   file,
 
-  prop
+  prop,
+
+  widgetAttributes
 };
