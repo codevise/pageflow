@@ -7,6 +7,7 @@
 //= require ./audio_player/seek_with_invalid_state_handling
 //= require ./audio_player/rewind_method
 //= require ./audio_player/pause_in_background
+//= require ./audio_player/get_media_element_method
 
 /**
  * Playing audio sources
@@ -63,6 +64,7 @@ pageflow.AudioPlayer = function(sources, options) {
 
   pageflow.AudioPlayer.seekWithInvalidStateHandling(audio);
   pageflow.AudioPlayer.rewindMethod(audio);
+  pageflow.AudioPlayer.getMediaElementMethod(audio);
 
   audio.src = function(sources) {
     ready.then(function() {
