@@ -10,11 +10,28 @@ module Pageflow
       it 'copies all widgets to given subject' do
         theming = create(:theming)
         revision = create(:revision)
-        create(:widget, subject: theming, role: 'header', type_name: 'custom_header')
+        create(:widget,
+               subject: theming,
+               role: 'header',
+               type_name: 'custom_header')
 
         theming.widgets.copy_all_to(revision)
 
-        expect(revision.widgets).to include_record_with(type_name: 'custom_header', role: 'header')
+        expect(revision.widgets).to include_record_with(type_name: 'custom_header',
+                                                        role: 'header')
+      end
+    end
+
+    describe '.copy_to' do
+      it 'copies configuration' do
+        revision = create(:revision)
+        widget = create(:widget,
+                        subject: create(:revision),
+                        configuration: {some: 'value'})
+
+        widget.copy_to(revision)
+
+        expect(revision.widgets.first.configuration).to eq('some' => 'value')
       end
     end
 
