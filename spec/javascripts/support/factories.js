@@ -156,5 +156,24 @@ support.factories = {
 
   file: function(attributes, options){
     return this.imageFile(attributes, options);
+  },
+
+  widgetTypes: function(attributesList, beforeSetup) {
+    var widgetTypes = new pageflow.WidgetTypes();
+    var attributesListsByRole = {};
+
+    _(attributesList).each(function(attributes) {
+      attributesListsByRole[attributes.role] = attributesListsByRole[attributes.role] || [];
+      attributesListsByRole[attributes.role].push(_.extend({
+        translationKey: 'widget_name.' + attributes.name
+      }, attributes));
+    });
+
+    if (beforeSetup) {
+      beforeSetup(widgetTypes);
+    }
+
+    widgetTypes.setup(attributesListsByRole);
+    return widgetTypes;
   }
 };

@@ -1,8 +1,12 @@
 module Pageflow
   module WidgetsHelper
+    include RenderJsonHelper
+
     def render_widget_head_fragments(entry, options = {})
       fragments = entry.resolve_widgets(options).map do |widget|
-        widget.widget_type.render_head_fragment(self, entry)
+        widget.widget_type.render_head_fragment_with_configuration(self,
+                                                                   entry,
+                                                                   widget.configuration)
       end
 
       safe_join(fragments)
@@ -10,7 +14,7 @@ module Pageflow
 
     def render_widgets(entry, options = {})
       fragments = entry.resolve_widgets(options).map do |widget|
-        widget.widget_type.render(self, entry)
+        widget.widget_type.render_with_configuration(self, entry, widget.configuration)
       end
 
       safe_join(fragments)
@@ -32,6 +36,10 @@ module Pageflow
           }
         end
       end.to_json.html_safe
+    end
+
+    def widgets_json_seeds(entry)
+      render_json_seed(entry.resolve_widgets(include_placeholders: true))
     end
   end
 end
