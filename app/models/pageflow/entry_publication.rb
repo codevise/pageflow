@@ -16,6 +16,8 @@ module Pageflow
     def save!
       assumed_quota.verify_not_exceeded!
       entry.publish(attributes.merge(creator: user))
+
+      Pageflow.config.hooks.invoke(:entry_published, entry: entry)
     end
 
     private
