@@ -1,6 +1,6 @@
 module Pageflow
   class FileUsage < ActiveRecord::Base
-    include Configuration
+    include SerializedConfiguration
 
     belongs_to :revision
     belongs_to :file, polymorphic: true

@@ -1,6 +1,6 @@
 module Pageflow
   class Storyline < ActiveRecord::Base
-    include Configuration
+    include SerializedConfiguration
     include RevisionComponent
 
     belongs_to :revision, touch: true

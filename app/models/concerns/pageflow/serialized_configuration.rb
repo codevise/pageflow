@@ -3,7 +3,7 @@ module Pageflow
   # This is a hash serialized as JSON.
   # It contains everything related to the object, which includes its text
   # content such as title and body.
-  module Configuration
+  module SerializedConfiguration
     extend ActiveSupport::Concern
 
     included do

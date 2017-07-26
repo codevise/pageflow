@@ -1,6 +1,6 @@
 module Pageflow
   class Page < ActiveRecord::Base
-    include Configuration
+    include SerializedConfiguration
 
     belongs_to :chapter, :touch => true
 

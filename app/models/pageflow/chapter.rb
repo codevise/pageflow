@@ -1,6 +1,6 @@
 module Pageflow
   class Chapter < ActiveRecord::Base
-    include Configuration
+    include SerializedConfiguration
 
     belongs_to :storyline, touch: true
     has_many :pages, -> { order('position ASC') }
