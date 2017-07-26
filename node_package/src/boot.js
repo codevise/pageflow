@@ -15,6 +15,7 @@ import entryModule from 'entry';
 import hotkeysModule from 'hotkeys';
 import hideTextModule from 'hideText';
 import widgetsModule, {createWidgetType} from 'widgets';
+import widgetPresenceModule from 'widgetPresence';
 
 export default function(pageflow) {
   const isEditor = !!pageflow.storylines;
@@ -39,11 +40,12 @@ export default function(pageflow) {
     storylines: collections.storylines,
     chapters: collections.chapters,
     pages: collections.pages,
+    widgets: isEditor ? pageflow.entry.widgets : seed.widgets,
 
     hideText: pageflow.hideText,
     events: pageflow.events,
     settings: pageflow.settings,
-    widgets: pageflow.widgets,
+    widgetsApi: pageflow.widgets,
 
     window: isServerSide ? null : window
   };
@@ -59,6 +61,7 @@ export default function(pageflow) {
     settingsModule,
     hideTextModule,
     widgetsModule,
+    widgetPresenceModule,
     pageTypesModule,
     hotkeysModule
   ], options);

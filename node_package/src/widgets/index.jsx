@@ -1,29 +1,29 @@
-import reducer from './reducer';
-
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 
-import {load} from './actions';
+import {
+  createReducer as createCollectionReducer,
+  watch
+} from 'collections';
 
 export default {
-  init({isServerSide, events, widgets, dispatch}) {
-    function update() {
-      dispatch(load({
-        widgets: {
-          classicPlayerControls: widgets.isPresent('classic_player_controls'),
-          slimPlayerControls: widgets.isPresent('slim_player_controls')
-        }
-      }));
-    }
+  init({widgets, dispatch}) {
+    watch({
+      collection: widgets,
+      collectionName: 'widgets',
+      dispatch,
 
-    if (!isServerSide) {
-      events.on('widgets:update', update);
-      update();
-    }
+      attributes: ['role', 'type_name'],
+      includeConfiguration: true
+    });
   },
 
   createReducers() {
-    return {widgets: reducer};
+    return {
+      widgets: createCollectionReducer('widgets', {
+        idAttribute: 'role'
+      })
+    };
   }
 };
 

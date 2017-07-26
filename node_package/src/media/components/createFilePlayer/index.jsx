@@ -18,7 +18,7 @@ import {textTracks} from 'media/selectors';
 import {setting} from 'settings/selectors';
 import {prop} from 'selectors';
 import {has} from 'utils/selectors';
-import {widgetPresent} from 'widgets/selectors';
+import {widgetPresent} from 'widgetPresence/selectors';
 
 import React from 'react';
 import {combineSelectors} from 'utils';
