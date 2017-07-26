@@ -1,35 +1,35 @@
-describe('pageflow.TextInputView', function() {
+describe('pageflow.TextAreaInputView', function() {
   it('supports disabled option', function() {
     var model = new Backbone.Model({});
-    var textInputView = new pageflow.TextInputView({
+    var textAreaInputView = new pageflow.TextAreaInputView({
       model: model,
       propertyName: 'name',
       disabled: true
     });
 
-    textInputView.render();
-    var input = textInputView.$el.find('input');
+    textAreaInputView.render();
+    var input = textAreaInputView.$el.find('textarea');
 
     expect(input).to.have.$attr('disabled', 'disabled');
   });
 
   it('supports placeholder text', function() {
     var model = new Backbone.Model({});
-    var textInputView = new pageflow.TextInputView({
+    var textAreaInputView = new pageflow.TextAreaInputView({
       model: model,
       propertyName: 'name',
       placeholder: 'Default'
     });
 
-    textInputView.render();
-    var input = textInputView.$el.find('input');
+    textAreaInputView.render();
+    var input = textAreaInputView.$el.find('textarea');
 
     expect(input).to.have.$attr('placeholder', 'Default');
   });
 
   it('supports placeholder as function', function() {
     var model = new Backbone.Model({other: 'otherValue'});
-    var textInputView = new pageflow.TextInputView({
+    var textAreaInputView = new pageflow.TextAreaInputView({
       model: model,
       propertyName: 'name',
       placeholder: function(m) {
@@ -37,15 +37,15 @@ describe('pageflow.TextInputView', function() {
       }
     });
 
-    textInputView.render();
-    var input = textInputView.$el.find('input');
+    textAreaInputView.render();
+    var input = textAreaInputView.$el.find('textarea');
 
     expect(input).to.have.$attr('placeholder', 'otherValue');
   });
 
   it('updates placeholder when placeholderBinding attribute changes', function() {
     var model = new Backbone.Model({other: 'old'});
-    var textInputView = new pageflow.TextInputView({
+    var textAreaInputView = new pageflow.TextAreaInputView({
       model: model,
       propertyName: 'name',
       placeholder: function(m) {
@@ -54,8 +54,8 @@ describe('pageflow.TextInputView', function() {
       placeholderBinding: 'other'
     });
 
-    textInputView.render();
-    var input = textInputView.$el.find('input');
+    textAreaInputView.render();
+    var input = textAreaInputView.$el.find('textarea');
     model.set('other', 'new');
 
     expect(input).to.have.$attr('placeholder', 'new');
@@ -64,14 +64,14 @@ describe('pageflow.TextInputView', function() {
   it('supports reading placeholder from other model', function() {
     var placeholderModel = new Backbone.Model({name: 'otherValue'});
     var model = new Backbone.Model({});
-    var textInputView = new pageflow.TextInputView({
+    var textAreaInputView = new pageflow.TextAreaInputView({
       model: model,
       propertyName: 'name',
       placeholderModel: placeholderModel
     });
 
-    textInputView.render();
-    var input = textInputView.$el.find('input');
+    textAreaInputView.render();
+    var input = textAreaInputView.$el.find('textarea');
 
     expect(input).to.have.$attr('placeholder', 'otherValue');
   });
