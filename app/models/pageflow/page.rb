@@ -1,12 +1,12 @@
 module Pageflow
   class Page < ActiveRecord::Base
+    include SerializedConfiguration
+
     belongs_to :chapter, :touch => true
 
     attr_accessor :is_first
 
     validates_inclusion_of :template, :in => ->(_) { Pageflow.config.page_types.names }
-
-    serialize :configuration, JSON
 
     scope :displayed_in_navigation, -> { where(:display_in_navigation => true) }
 
@@ -26,10 +26,6 @@ module Pageflow
 
     def page_type
       Pageflow.config.page_types.find_by_name!(template)
-    end
-
-    def configuration
-      super || {}
     end
 
     def configuration=(value)

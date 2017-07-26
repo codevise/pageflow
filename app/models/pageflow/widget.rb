@@ -1,16 +1,12 @@
 module Pageflow
   class Widget < ActiveRecord::Base
+    include SerializedConfiguration
+
     belongs_to :subject, polymorphic: true, touch: true
 
     validates :subject, presence: true
 
     attr_accessor :widget_type
-
-    serialize :configuration, JSON
-
-    def configuration
-      super || {}
-    end
 
     def copy_to(subject)
       record = dup
