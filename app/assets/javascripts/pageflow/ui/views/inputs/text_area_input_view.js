@@ -12,17 +12,21 @@
  * @param {boolean} [options.disableRichtext=false]
  *   Do not provide text formatting options.
  *
+ * @see
+ * {@link module:pageflow/ui.pageflow.inputWithPlaceholderText pageflow.inputWithPlaceholderText}
+ * for placeholder related options
+ *
  * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
  * @class
  * @memberof module:pageflow/ui
  */
 pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
-  mixins: [pageflow.inputView],
+  mixins: [pageflow.inputView, pageflow.inputWithPlaceholderText],
 
   template: 'pageflow/ui/templates/inputs/text_area_input',
 
   ui: {
-    textarea: 'textarea',
+    input: 'textarea',
     toolbar: '.toolbar'
   },
 
@@ -31,10 +35,11 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.ui.textarea.addClass(this.options.size);
+    this.ui.input.addClass(this.options.size);
     this.load();
+    this.updatePlaceholder();
 
-    this.editor = new wysihtml5.Editor(this.ui.textarea[0], {
+    this.editor = new wysihtml5.Editor(this.ui.input[0], {
       toolbar: this.ui.toolbar[0],
       autoLink: this.options.disableLinks ? 0 : 1,
       parserRules: {
@@ -77,7 +82,7 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
   },
 
   load: function() {
-    this.ui.textarea.val(this.model.get(this.options.propertyName));
+    this.ui.input.val(this.model.get(this.options.propertyName));
   }
 });
 
