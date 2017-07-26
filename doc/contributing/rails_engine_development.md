@@ -5,9 +5,10 @@
 Ensure the development machine meets the requirements listed in the
 readme. From the repository root run:
 
+    $ gem install bundler
     $ bundle install
     $ bin/npm install
-    
+
 Build node package to `assets` directory:
 
     $ bin/npm run build

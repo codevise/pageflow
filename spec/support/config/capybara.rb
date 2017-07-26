@@ -1,4 +1,4 @@
 require 'capybara/rspec'
-require 'capybara/webkit'
+require 'capybara/poltergeist'
 
-Capybara.javascript_driver = :webkit
+Capybara.javascript_driver = :poltergeist

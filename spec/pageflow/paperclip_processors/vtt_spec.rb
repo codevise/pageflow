@@ -13,7 +13,7 @@ module Pageflow
 
           file = processor.make
 
-          expect(file.path).to match(/tmp.*\.vtt$/)
+          expect(file.path).to match(/\.vtt\z/)
           expect(file.read).to match(/^WEBVTT/)
         end
       end
@@ -28,7 +28,7 @@ module Pageflow
 
           file = processor.make
 
-          expect(file.path).to match(/tmp.*\.vtt$/)
+          expect(file.path).to match(/\.vtt\z/)
           expect(file.read).to match(/^WEBVTT/)
         end
       end
