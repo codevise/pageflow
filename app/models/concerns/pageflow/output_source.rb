@@ -40,7 +40,8 @@ module Pageflow
     end
 
     def output_presences
-      (super || {}).merge(externally_generated_output_presences)
+      output_presences = self[:output_presences] || {}
+      output_presences.merge(externally_generated_output_presences)
     end
 
     def externally_generated_outputs

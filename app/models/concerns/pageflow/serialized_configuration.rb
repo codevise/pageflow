@@ -11,7 +11,7 @@ module Pageflow
     end
 
     def configuration
-      super || {}
+      self[:configuration] || {}
     end
   end
 end

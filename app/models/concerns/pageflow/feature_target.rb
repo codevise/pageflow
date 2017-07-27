@@ -49,7 +49,7 @@ module Pageflow
     end
 
     def features_configuration
-      super || {}
+      self[:features_configuration] || {}
     end
   end
 end
