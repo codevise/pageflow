@@ -133,7 +133,9 @@ module Pageflow
     end
 
     def index?
-      admin? || @user.memberships.on_accounts.as_manager.any?
+      admin? ||
+        (Pageflow.config.allow_multiaccount_users &&
+         @user.memberships.on_accounts.as_manager.any?)
     end
 
     private

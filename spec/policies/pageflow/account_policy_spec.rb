@@ -113,6 +113,16 @@ module Pageflow
 
       expect(AccountPolicy.new(user, create(:account))).not_to permit_action(:index)
     end
+
+    it 'is not permitted when account manager without multiaccounts' do
+      pageflow_configure do |config|
+        config.allow_multiaccount_users = false
+      end
+
+      user = create(:user, :manager, on: create(:account))
+
+      expect(AccountPolicy.new(user, create(:account))).not_to permit_action(:index)
+    end
   end
 
   describe '.resolve' do
