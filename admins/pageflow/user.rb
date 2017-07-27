@@ -138,7 +138,9 @@ module Pageflow
       end
 
       def build_new_resource
-        InvitedUser.new(permitted_params[:user])
+        user = InvitedUser.new(permitted_params[:user])
+        user.initial_account ||= current_user.accounts.first
+        user
       end
 
       def create_resource(user)
