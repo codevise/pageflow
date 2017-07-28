@@ -1,6 +1,6 @@
 module Pageflow
-  class AccountMemberQuery
-    class Scope
+  class AccountMemberQuery < ApplicationQuery
+    class Scope < Scope
       # Account whose members we scope
       # @return {Pageflow::Account}
       attr_reader :account
@@ -51,11 +51,6 @@ module Pageflow
       # @api private
       def membership_is_present
         'pageflow_account_memberships.entity_id IS NOT NULL'
-      end
-
-      # @api private
-      def sanitize_sql(sql, interpolations)
-        ActiveRecord::Base.send(:sanitize_sql_array, [sql, interpolations])
       end
     end
   end

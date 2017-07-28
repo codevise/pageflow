@@ -1,6 +1,6 @@
 module Pageflow
-  class EntryRoleQuery
-    class Scope
+  class EntryRoleQuery < ApplicationQuery
+    class Scope < Scope
       attr_reader :user, :scope
 
       def initialize(user, scope)
@@ -49,10 +49,6 @@ module Pageflow
       def either_membership_is_present
         'pageflow_entry_memberships.entity_id IS NOT NULL OR ' \
         'pageflow_entry_account_memberships.entity_id IS NOT NULL'
-      end
-
-      def sanitize_sql(sql, interpolations)
-        ActiveRecord::Base.send(:sanitize_sql_array, [sql, interpolations])
       end
     end
 
