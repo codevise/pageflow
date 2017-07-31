@@ -1,7 +1,8 @@
 module Pageflow
   ActiveAdmin.register Account, :as => 'Account' do
-    menu priority: 3,
-         if: proc { authorized?(:index, :accounts) }
+    menu({priority: 3,
+          if: proc { authorized?(:index, :accounts) }}
+           .merge(Pageflow.config.account_admin_menu_options))
 
     config.batch_actions = false
 
