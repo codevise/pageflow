@@ -231,5 +231,26 @@ module Pageflow
         end.not_to change { User.count }
       end
     end
+
+    describe '#new' do
+      subject { get :new }
+      render_views
+
+      it 'renders quota exhausted partial if quota exhausted' do
+        users_quota_factory = double('quota_factory')
+        users_quota = double('users_quota')
+        allow(users_quota_factory).to receive(:get) { users_quota }
+        allow(users_quota).to receive(:exhausted?) { true }
+
+        pageflow_configure do |config|
+          config.quotas = Quotas.new.register(:users, users_quota_factory)
+        end
+
+        user = create(:user, :manager, on: create(:account))
+        sign_in(user)
+
+        expect(subject).to render_template(partial: '_quota_exhausted')
+      end
+    end
   end
 end
