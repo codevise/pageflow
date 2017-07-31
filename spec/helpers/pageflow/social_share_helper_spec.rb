@@ -176,6 +176,21 @@ module Pageflow
         expect(html).to have_css("meta[content=\"#{@image1.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]", visible: false)
         expect(html).to have_css('meta[name="twitter:image:src"]', visible: false, count: 1)
       end
+
+      it 'falls back to page thumbnails if share image references missing image' do
+        @entry.published_revision.share_image_id = @image1.id
+        published_entry = PublishedEntry.new(@entry)
+        storyline = create(:storyline, revision: @entry.published_revision)
+        chapter = create(:chapter, storyline: storyline)
+        create(:page, configuration: {thumbnail_image_id: @image2.id}, chapter: chapter)
+
+        @image1.destroy
+        html = helper.social_share_entry_image_tags(published_entry)
+
+        expect(html).to have_css(<<-END.strip, visible: false, count: 1)
+          meta[content="#{@image2.thumbnail_url(:medium)}"][property="og:image"]
+        END
+      end
     end
   end
 end

@@ -53,9 +53,10 @@ module Pageflow
 
     def social_share_entry_image_tags(entry)
       image_urls = []
+      image_file = ImageFile.find_by_id(entry.share_image_id)
 
-      if entry.share_image_id.present?
-        image_urls << ImageFile.find(entry.share_image_id).thumbnail_url(:medium)
+      if image_file
+        image_urls << image_file.thumbnail_url(:medium)
       else
         entry.pages.each do |page|
           if image_urls.size >= 4
