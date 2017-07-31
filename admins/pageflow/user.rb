@@ -139,7 +139,9 @@ module Pageflow
 
       def build_new_resource
         user = InvitedUser.new(permitted_params[:user])
-        user.initial_account ||= current_user.accounts.first
+        user.initial_account ||=
+          AccountPolicy::Scope.new(current_user, Pageflow::Account)
+                              .member_addable.first
         user
       end
 
