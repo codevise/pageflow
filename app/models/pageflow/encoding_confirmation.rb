@@ -3,13 +3,14 @@ module Pageflow
     class QuotaExceededError < RuntimeError
     end
 
-    attr_reader :entry, :attributes, :encoding_quota, :user
+    attr_reader :entry, :attributes, :encoding_quota, :user, :account
 
     def initialize(entry, attributes, encoding_quota, user)
       @entry = entry
       @attributes = attributes
       @encoding_quota = encoding_quota
       @user = user
+      @account = entry.account
     end
 
     def exceeding?
