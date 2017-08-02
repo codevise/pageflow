@@ -1,10 +1,11 @@
 module Pageflow
+  # Query users for their role on accounts based on role
   class AccountRoleQuery
     # Create query that can be used for role comparisons
     #
-    # @param {User} user
+    # @param [User] user
     #   Required. Membership user to check.
-    # @param {Pageflow::Account} account
+    # @param [Pageflow::Account] account
     #   Required. Membership entity to check.
     def initialize(user, account)
       @user = user
@@ -14,9 +15,9 @@ module Pageflow
     # Return true if there is a membership with at least role for
     # user/account
     #
-    # @param {String} role
+    # @param [String] role
     #   Required. Minimum role that we compare against.
-    # @return {Boolean}
+    # @return [Boolean]
     def has_at_least_role?(role)
       @user
         .memberships

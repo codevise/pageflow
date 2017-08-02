@@ -1,8 +1,9 @@
 module Pageflow
+  # Query accounts for members, e.g. based on role
   class AccountMemberQuery < ApplicationQuery
-    class Scope < Scope
+    class Scope < ApplicationQuery::Scope
       # Account whose members we scope
-      # @return {Pageflow::Account}
+      # @return [Pageflow::Account]
       attr_reader :account
 
       # Base scope which is further scoped according to account role
@@ -12,7 +13,7 @@ module Pageflow
       # Create scope that can limit base scope to account members at
       # or above a given role
       #
-      # @param {Pageflow::Account} account
+      # @param [Pageflow::Account] account
       #   Required. Membership account to check.
       # @param [ActiveRecord::Relation<User>] scope
       #   Optional. Membership entity to check.
@@ -24,7 +25,7 @@ module Pageflow
       # Scope to those members from scope on account who have at least
       # role
       #
-      # @param {String} role
+      # @param [String] role
       #   Required. Minimum role that we compare against.
       # @return [ActiveRecord::Relation<User>]
       def with_role_at_least(role)
@@ -34,7 +35,6 @@ module Pageflow
 
       private
 
-      # @api private
       def memberships_for_account_with_at_least_role(role)
         options = {roles: Roles.at_least(role), account_id: account.id}
 
@@ -48,7 +48,6 @@ module Pageflow
         SQL
       end
 
-      # @api private
       def membership_is_present
         'pageflow_account_memberships.entity_id IS NOT NULL'
       end
