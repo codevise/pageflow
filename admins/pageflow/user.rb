@@ -138,7 +138,15 @@ module Pageflow
       end
 
       def build_new_resource
-        user = InvitedUser.new(permitted_params[:user])
+        initial_account_id = permitted_params.fetch(:initial_account, nil)
+        if initial_account_id
+          invited_user_params = permitted_params
+                                .merge!(initial_account: Pageflow::Account
+                                            .find(initial_account_id))
+          user = InvitedUser.new(invited_user_params)
+        else
+          user = InvitedUser.new(permitted_params[:user])
+        end
         user.initial_account ||=
           AccountPolicy::Scope.new(current_user, Pageflow::Account)
                               .member_addable.first
@@ -146,17 +154,14 @@ module Pageflow
       end
 
       def create_resource(user)
-        verify_quota!(:users, params[:user][:account])
+        verify_quota!(:users, Pageflow::Account
+                                .find(params[:user][:initial_account]))
         known_user = User.find_by(email: resource.email)
-        membership_user = known_user ? known_user : resource
-        membership_params = {user: membership_user,
-                             entity_id: resource.initial_account,
-                             entity_type: 'Pageflow::Account'}
-        if resource.initial_role.present?
-          membership_params.merge!(role: resource.initial_role.to_sym)
+        if resource.initial_account.present?
+          resource.initial_account = Pageflow::Account
+                                     .find(resource.initial_account)
         end
-        Membership.create(membership_params)
-        if known_user
+        if known_user && Pageflow.config.allow_multiaccount_users
           known_user
         else
           super

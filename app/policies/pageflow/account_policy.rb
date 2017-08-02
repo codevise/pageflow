@@ -37,7 +37,7 @@ module Pageflow
       end
 
       def member_addable
-        if user.admin? && Pageflow.config.allow_multiaccount_users
+        if user.admin?
           scope.all
         else
           scope.joins(manager_memberships_for_account(user)).where(membership_is_present)

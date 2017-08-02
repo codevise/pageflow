@@ -1,5 +1,6 @@
 <% if @user.new_record? &&
-      Pageflow.config.quotas.get(:users, @user.initial_account).exhausted? %>
+        Pageflow.config.quotas.get(:users, @user.initial_account).exhausted? &&
+        !current_user.admin? %>
   <%= render partial: 'pageflow/admin/users/quota_exhausted',
              locals: {account: @user.initial_account} %>
 <% else %>

@@ -49,7 +49,7 @@ feature 'as account manager, inviting a user' do
                                              email: 'existing_user@example.org')
       visit(admin_users_path)
 
-      expect(Dom::Admin::UserInIndexTable.find_by_full_name('Walter Doe')
+      expect(Dom::Admin::UserInIndexTable.find_by_full_name('John Doe')
                .account_names).to include(account.name)
     end
 

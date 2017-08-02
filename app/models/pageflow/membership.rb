@@ -11,9 +11,8 @@ module Pageflow
 
     validates :user, :entity, :role, presence: true
     validates :user_id, uniqueness: {scope: [:entity_type, :entity_id]}
-    validates :user_id,
-              uniqueness: {scope: :entity_type},
-              if: :need_to_test_for_illicit_multiaccounting?
+    validate :first_account_membership,
+             if: :need_to_test_for_illicit_multiaccounting?
     validate :account_membership_exists, if: :on_entry?
     validates :role,
               inclusion: {in: %w(previewer editor publisher manager)},
@@ -41,6 +40,12 @@ module Pageflow
     def account_membership_exists
       unless user.accounts.include?(entity.account)
         errors[:base] << 'Entry Membership misses presupposed Membership on account of entry'
+      end
+    end
+
+    def first_account_membership
+      unless user.accounts.empty? || entity == user.accounts.first
+        errors[:base] << 'Only one account per user allowed'
       end
     end
 
