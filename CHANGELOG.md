@@ -1,5 +1,18 @@
 # CHANGELOG
 
+### Version 0.11.4
+
+2017-08-03
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v0.11.3...v0.11.4)
+
+- Allow using `state_machine_job` gem 1.x
+  ([#819](https://github.com/codevise/pageflow/pull/819))
+- Improve `pageflow-support` gem
+  ([#818](https://github.com/codevise/pageflow/pull/818))
+- Update semmy
+  ([#820](https://github.com/codevise/pageflow/pull/820))
+
 ### Version 0.11.3
 
 2016-11-02
@@ -183,6 +196,8 @@
   ([#608](https://github.com/codevise/pageflow/pull/608))
 - Add browser agent based detection for ie up to 11
   ([#601](https://github.com/codevise/pageflow/pull/601))
+- Generate procfile
+  ([#579](https://github.com/codevise/pageflow/pull/579))
 
 ##### Internals
 
