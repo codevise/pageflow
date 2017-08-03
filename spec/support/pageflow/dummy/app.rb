@@ -1,3 +1,5 @@
+require 'pageflow/version'
+
 module Pageflow
   module Dummy
     class App
@@ -15,7 +17,7 @@ module Pageflow
 
       def directory
         require 'rails/version'
-        File.join('spec', 'dummy', "rails-#{Rails::VERSION::STRING}")
+        File.join('spec', 'dummy', "rails-#{Rails::VERSION::STRING}-pageflow-#{Pageflow::VERSION}")
       end
 
       def template_path
