@@ -5,14 +5,67 @@ extended.
 
 ## The Basic Setup
 
+### Generate a new gem
+
+You'll have to distribute the new page type as a Rubygem; either if
+you mean to share it with others like you, or keep the code private.
+The easiest way to go about this is to generate a gem, and then add
+the Rails Engine parts in later.
+
+``` bash
+$ bundle gem pageflow-before-after # your gem name will be different!
+```
+
+Fill in the missing fields in the gemspec that's created for you.
+While you're in there, add `pageflow` as a dependency:
+
+```
+# pageflow-before-after.gemspec
+spec.add_dependency "pageflow" # you should use ~> to lock to a release
+spec.add_dependency 'pageflow-public-i18n', '~> 1.0'
+```
+
+### Using the new PageType in the host application
+
+To use a new page type in a Pageflow application, it has to be
+registered in the Pageflow initializer:
+
+    # some_pageflow_app/config/initializers/pageflow.rb
+    Pageflow.configure do |config|
+      config.page_types.register(Pageflow::BeforeAfter.page_type)
+
+      # ...
+    end
+
+and its assets picked up by the asset pipline. Typically it looks like this:
+
+```
+# app/assets/javascripts/pageflow/application.js
+//= require "pageflow/before_after"
+
+# app/assets/javascripts/pageflow/editor.js
+//= require pageflow/before_after/editor
+
+# app/assets/stylesheets/pageflow/application.scss
+@import "pageflow/before_after";
+
+# app/assets/stylesheets/pageflow/editor.scss
+@import "pageflow/before_after/editor";
+
+# Adding basic style to your theme
+# app/assets/stylesheets/pageflow/themes/default.scss
+@import "pageflow/before_after/themes/default";
+```
+
 ### The Page Type Object
 
 Page types are packaged as Rails engines that contain templates,
 stylesheets and javascript. Each page type is represented by a Ruby
 object whose class derived from `Pageflow::PageType`. The page type
-can be customized by overriding methods in this class. All exampled
+can be customized by overriding methods in this class. All examples
 below are taken from the `pageflow-before-after` gem.
 
+    # lib/pageflow/before_after/page_type.rb
     module Pageflow
       module BeforeAfter
         class PageType < Pageflow::PageType
@@ -30,23 +83,126 @@ below are taken from the `pageflow-before-after` gem.
 The name method is used to construct conventional template paths and
 translation keys.
 
-To use a new page type in a Pageflow application, it has to be
-registered in the Pageflow initializer:
-
-    # some_pageflow_app/config/initializers/pageflow.rb
-    Pageflow.configure do |config|
-      config.page_types.register(Pageflow::BeforeAfter.page_type)
-
-      # ...
-    end
-
 It's best practice to provide a `page_type` class method as above to
 decouple page type registration from the class constants defined by
 your page type engine. That way, for example, the name of the
 `Pageflow::BeforeAfter::PageType` class can change without having to
 update all Pageflow applications using the page type.
 
+### Rails Engine
+
+Require the engine from your main file:
+
+``` ruby
+require 'pageflow/before_after/engine'
+```
+
+And add it:
+``` ruby
+# lib/pageflow/before_after/engine.rb
+require 'rails/engine'
+
+module Pageflow
+  module BeforeAfter
+    class Engine < ::Rails::Engine
+      isolate_namespace Pageflow::BeforeAfter
+    end
+  end
+end
+
+```
+
 ### View Templates
+
+Create the public view for your page: `pageflow/before_after/page.html.erb`.
+
+The path to the page by default begins with `pageflow`. If you've chosen
+a different top-level module name—and you should, if you're not Pageflow—you
+will want to override the template path. Add this method to your PageType
+class:
+
+``` ruby
+def template_path
+  'pageflow/before_after/page' # default
+end
+```
+
+A certain DOM structure is required for the page to be functional inside
+Pageflow. For Pageflow 0.11.x, the minimal contents are:
+
+``` erb
+<div class="blackLayer"></div>
+<div class="content_and_background before_after_page">
+  <div class="content scroller">
+    <div>
+      <div class="contentWrapper">
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+We've added a classname specific to this PageType to the content_and_background
+div. This way we'll have an easy way to apply styles for our PageType. Leave the
+other classnames as they are; as Pageflow internals need them to be present.
+
+### JavaScript
+
+Create `app/assets/javascripts/pageflow/before_after.js` and copy and paste
+this boilerplate:
+
+``` javascript
+pageflow.pageType.register('before_after', _.extend({
+
+  prepareNextPageTimeout: 0,
+
+  enhance: function(pageElement, configuration) {
+    var that = this;
+
+    // add code that needs to run here
+  },
+
+  prepare: function(pageElement, configuration) {
+  },
+
+  resize: function(pageElement, configuration) {
+    pageElement.find('.scroller').scroller("refresh");
+  },
+
+  preload: function(pageElement, configuration) {
+    return pageflow.preload.backgroundImage(pageElement.find('.background_image'));
+  },
+
+  activating: function(pageElement, configuration) {
+    pageElement.find('.scroller').scroller("refresh");
+  },
+
+  activated: function(pageElement, configuration) {
+  },
+
+  deactivating: function(pageElement, configuration) {
+  },
+
+  deactivated: function(pageElement, configuration) {
+  },
+
+  // fired when the editor contents are updated
+  update: function(pageElement, configuration) {
+  },
+
+}, pageflow.commonPageCssClasses, pageflow.infoBox));
+```
+
+### CSS
+
+Create `app/assets/stylesheets/pageflow/before_after.scss` and copy and paste
+this boilerplate:
+
+``` scss
+@include pageflow-page-type(before_after);
+```
+
+Obviously add any required styles in this file as well.
 
 ### Translation Keys
 
@@ -69,7 +225,7 @@ For a new input key, add e.g. `config/locales/new/some_input_key.de.yml` and `so
         chart:
           page_attributes:
             some_input_key:
-              inline_help: This text is displayed in the inline help displayed via a small "?" next to the field 
+              inline_help: This text is displayed in the inline help displayed via a small "?" next to the field
               label: This is the actual label text
 
 
