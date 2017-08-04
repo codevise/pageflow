@@ -12,6 +12,7 @@ pageflow.FileStage = Backbone.Model.extend({
     this.update();
     this.listenTo(this.file, 'change:state', this.update);
     this.listenTo(this.file, 'change:' + this.get('name') + '_progress', this.update);
+    this.listenTo(this.file, 'change:' + this.get('name') + '_error_message', this.update);
   },
 
   update: function() {

@@ -71,6 +71,15 @@ module Pageflow
       url
     end
 
+    def cache_key
+      # Ensure the cache key changes when the state changes. There are
+      # cases during processing where the state is updated multiple
+      # times in a single second. Since `cache_key` relies on
+      # `updated_at`, which only is acurate to the second, we need to
+      # prevent caching outdated information.
+      "#{super}-#{state}"
+    end
+
     # @deprecated Write a migration instead
     def self.columns(t)
       t.belongs_to(:entry, index: true)
