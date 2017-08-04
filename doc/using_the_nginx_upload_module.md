@@ -28,7 +28,7 @@ HTTP endpoint used by Pageflow to accept file uploads:
     upload_set_form_field $upload_field_name[tmp_path] "$upload_tmp_path";
 
     upload_pass_form_field "^entry_id$|^authenticity_token$|^format$|\[configuration\]|\[rights\]|\[parent_file_model_type\]|\[parent_file_id\]";
-    upload_cleanup 400 404 500-505;
+    upload_cleanup 400 404 409 500-505;
 
     # Catch "Method not allowed" raised for non-POST requests and
     # delegate to app
