@@ -21,7 +21,11 @@ module Pageflow
             column do |membership|
               if authorized?(:update, membership)
                 link_to(t('pageflow.admin.users.edit_role'),
-                        edit_admin_user_membership_path(user, membership, entity_type: :account),
+                        edit_admin_user_membership_path(
+                          user,
+                          membership,
+                          entity_type: 'Pageflow::Account'
+                        ),
                         data: {
                           rel: "edit_account_role_#{membership.role}"
                         })
