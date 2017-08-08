@@ -20,6 +20,7 @@ import editorOnly from './editorOnly';
 import withVisibilityWatching from './withVisibilityWatching';
 
 import Draggable from 'react-draggable';
+import Measure from 'react-measure';
 
 export {
   PageWrapper,
@@ -43,5 +44,6 @@ export {
   editorOnly,
   withVisibilityWatching,
 
-  Draggable
+  Draggable,
+  Measure
 };
