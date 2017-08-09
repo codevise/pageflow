@@ -8,6 +8,7 @@ describe('PlayerControls', () => {
   const requiredProps = {
     playerState: {},
     playerActions: {},
+    infoBox: {},
     t: () => {}
   };
 

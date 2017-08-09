@@ -8,7 +8,8 @@ import {
   USER_INTERACTION, USER_IDLE,
   CONTROLS_ENTERED, CONTROLS_LEFT,
   FOCUS_ENTERED_CONTROLS, FOCUS_LEFT_CONTROLS,
-  CONTROLS_HIDDEN, INFO_BOX_VISIBLE, INFO_BOX_HIDDEN
+  CONTROLS_HIDDEN,
+  SHOW_INFO_BOX_DURING_PLAYBACK, HIDE_INFO_BOX_DURING_PLAYBACK, TOGGLE_INFO_BOX_DURING_PLAYBACK
 } from './actions';
 
 import {HOTKEY_TAB} from 'hotkeys/actions';
@@ -32,7 +33,8 @@ export default function({scope = 'default'} = {}) {
         ...state,
         hasPlayed: false,
         unplayed: true,
-        userHasBeenIdle: false
+        infoBoxHiddenDuringPlayback: undefined,
+        userIsIdle: false
       };
     case PAGE_WILL_DEACTIVATE:
       return {
@@ -185,7 +187,6 @@ export default function({scope = 'default'} = {}) {
       return {
         ...state,
         userIsIdle: true,
-        userHasBeenIdle: true
       };
 
     case CONTROLS_ENTERED:
@@ -212,18 +213,24 @@ export default function({scope = 'default'} = {}) {
     case CONTROLS_HIDDEN:
       return {
         ...state,
-        controlsHidden: true
+        controlsHidden: true,
+        infoBoxHiddenDuringPlayback: true
       };
 
-    case INFO_BOX_HIDDEN:
+    case HIDE_INFO_BOX_DURING_PLAYBACK:
       return {
         ...state,
-        infoBoxHidden: true
+        infoBoxHiddenDuringPlayback: true
       };
-    case INFO_BOX_VISIBLE:
+    case SHOW_INFO_BOX_DURING_PLAYBACK:
       return {
         ...state,
-        infoBoxHidden: false
+        infoBoxHiddenDuringPlayback: false
+      };
+    case TOGGLE_INFO_BOX_DURING_PLAYBACK:
+      return {
+        ...state,
+        infoBoxHiddenDuringPlayback: !state.infoBoxHiddenDuringPlayback
       };
 
 

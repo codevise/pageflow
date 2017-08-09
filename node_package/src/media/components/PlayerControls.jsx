@@ -1,5 +1,5 @@
 import playerStateClassNames from './playerStateClassNames';
-import PlayerControls from 'components/PlayerControls';
+import PlayerControls, {isInfoBoxEmpty} from 'components/PlayerControls';
 import {combineSelectors} from 'utils';
 
 import {videoQualitySetting} from 'media/selectors';
@@ -49,8 +49,12 @@ export function MediaPlayerControls(props) {
 
                     watchVisibility={playerState.isPlaying}
                     onHidden={actions.controlsHidden}
-                    onInfoBoxVisible={actions.infoBoxVisible}
-                    onInfoBoxHidden={actions.infoBoxHidden}
+
+                    additionalMenuBarButtons={additionalMenuBarButtons(props)}
+                    infoBoxHiddenDuringPlayback={infoBoxHiddenDuringPlayback(props)}
+                    onAdditionalButtonMouseEnter={actions.showInfoBoxDuringPlayback}
+                    onAdditionalButtonMouseLeave={actions.hideInfoBoxDuringPlayback}
+                    onAdditionalButtonClick={actions.toggleInfoBoxDuringPlayback}
 
                     qualityMenuItems={qualityMenuItems(props.qualities,
                                                        props.file,
@@ -89,8 +93,35 @@ export default connect(
 )(MediaPlayerControls);
 
 function className(playerState) {
-  return classNames(playerStateClassNames(playerState),
-                    {'has_been_faded': playerState.userHasBeenIdle});
+  return classNames(playerStateClassNames(playerState));
+}
+
+function additionalMenuBarButtons(props) {
+  const t = props.t;
+
+  if (isInfoBoxEmpty(props.infoBox)) {
+    return [];
+  }
+
+  return [
+    {
+      name: 'toggleInfoBox',
+      className: 'player_controls-toggle_info_box_menu_button',
+      label: t('pageflow.public.toggle_info_box'),
+      iconName: 'toggleInfoBox'
+    }
+  ];
+}
+
+function infoBoxHiddenDuringPlayback(props) {
+  const playerState = props.playerState;
+
+  if (playerState.infoBoxHiddenDuringPlayback === undefined) {
+    return !!props.textTracks.activeFileId;
+  }
+  else {
+    return playerState.infoBoxHiddenDuringPlayback;
+  }
 }
 
 function textTracksMenuItems(textTracks, t) {

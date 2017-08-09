@@ -158,22 +158,15 @@ const slimPlayerControlsPresent = widgetPresent('slimPlayerControls');
 
 function textTrackPosition(state, {playerState}) {
   if (slimPlayerControlsPresent(state)) {
+    // see pageflow.VideoPlayer#updateCueLineSettings for explanation of values.
     if (playerState.controlsHidden) {
-      return 'auto';
-    }
-    else if (playerState.infoBoxHidden) {
-      // `auto` and `auto.translated` are handled the same by the
-      // logic that updates text track position. Passing two different
-      // values ensures, that the text track position is actually
-      // set. Otherwise text track position does not change, even
-      // though the cue margins changed.
-      return 'auto.translated';
+      return 'auto.lazy';
     }
     else {
-      return 'top';
+      return 'auto.translated';
     }
   }
   else {
-    return playerState.controlsHidden ? 'auto' : 'top';
+    return playerState.controlsHidden ? 'auto.lazy' : 'top';
   }
 }

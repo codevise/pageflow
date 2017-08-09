@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import InfoBox from './InfoBox';
+import InfoBox, {isEmpty as isInfoBoxEmpty} from './InfoBox';
 import Container from './Container';
 import LoadingSpinner from './LoadingSpinner';
 import PlayButton from './PlayButton';
@@ -18,9 +18,7 @@ function PlayerControls(props) {
       <span className="hint">{props.hint}</span>
 
       <InfoBox {...props.infoBox}
-               watchVisibility={props.watchVisibility}
-               onVisible={props.onInfoBoxVisible}
-               onHidden={props.onInfoBoxHidden} />
+               hiddenDuringPlayback={props.infoBoxHiddenDuringPlayback}/>
 
       <div className={controlBarClassNames(props)}>
         {renderLoadingSpinner(props)}
@@ -37,6 +35,10 @@ function PlayerControls(props) {
       </div>
 
       <MenuBar standAlone={false}
+               additionalButtons={props.additionalMenuBarButtons}
+               onAdditionalButtonClick={props.onAdditionalButtonClick}
+               onAdditionalButtonMouseEnter={props.onAdditionalButtonMouseEnter}
+               onAdditionalButtonMouseLeave={props.onAdditionalButtonMouseLeave}
                qualityMenuButtonTitle={props.qualityMenuButtonTitle}
                qualityMenuItems={props.qualityMenuItems}
                onQualityMenuItemClick={props.onQualityMenuItemClick}
@@ -90,5 +92,7 @@ PlayerControls.propTypes = {
 
   onPlayButtonClick: React.PropTypes.func
 };
+
+export {isInfoBoxEmpty};
 
 export default withVisibilityWatching(PlayerControls);
