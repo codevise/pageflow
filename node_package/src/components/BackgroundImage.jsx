@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import {preloadBackgroundImage} from 'utils';
 
 /**
  * Display an element with a background image referenced by
@@ -23,9 +24,15 @@ import classNames from 'classnames';
 export default class BackgroundImage extends React.Component {
   render() {
     return (
-      <div className={this.cssClass()} style={this.style()}>
+      <div className={this.cssClass()} style={this.style()} ref={element => this.element = element}>
       </div>
     );
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.loaded && !prevProps.loaded) {
+      preloadBackgroundImage(this.element);
+    }
   }
 
   cssClass() {
