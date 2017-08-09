@@ -19,6 +19,7 @@ import icons from '../icons';
  * @alias pageflow.react.iconMapping
  */
 export default {
+  toggleInfoBox: icons.Info,
   mediaQuality: icons.Gear,
   textTracks: icons.Subtitles,
   activeMenuItem: icons.Checkmark,

@@ -38,8 +38,10 @@ export const FOCUS_ENTERED_CONTROLS = 'MEDIA_FOCUS_ENTERED_CONTROLS';
 export const FOCUS_LEFT_CONTROLS = 'MEDIA_FOCUS_LEFT_CONTROLS';
 
 export const CONTROLS_HIDDEN = 'MEDIA_CONTROLS_HIDDEN';
-export const INFO_BOX_VISIBLE = 'INFO_BOX_VISIBLE';
-export const INFO_BOX_HIDDEN = 'INFO_BOX_HIDDEN';
+
+export const SHOW_INFO_BOX_DURING_PLAYBACK = 'SHOW_INFO_BOX_DURING_PLAYBACK';
+export const HIDE_INFO_BOX_DURING_PLAYBACK = 'HIDE_INFO_BOX_DURING_PLAYBACK';
+export const TOGGLE_INFO_BOX_DURING_PLAYBACK = 'TOGGLE_INFO_BOX_DURING_PLAYBACK';
 
 export function actionCreators({scope = 'default'} = {}) {
   return {
@@ -181,13 +183,17 @@ export function actionCreators({scope = 'default'} = {}) {
       return pageAction(CONTROLS_HIDDEN);
     },
 
-    infoBoxVisible() {
-      return pageAction(INFO_BOX_VISIBLE);
+    showInfoBoxDuringPlayback() {
+      return pageAction(SHOW_INFO_BOX_DURING_PLAYBACK);
     },
 
-    infoBoxHidden() {
-      return pageAction(INFO_BOX_HIDDEN);
+    hideInfoBoxDuringPlayback() {
+      return pageAction(HIDE_INFO_BOX_DURING_PLAYBACK);
     },
+
+    toggleInfoBoxDuringPlayback() {
+      return pageAction(TOGGLE_INFO_BOX_DURING_PLAYBACK);
+    }
   };
 
   function pageAction(type, payload = {}) {

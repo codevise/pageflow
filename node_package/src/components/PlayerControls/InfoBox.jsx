@@ -1,29 +1,42 @@
 import classNames from 'classnames';
-import withVisibilityWatching from '../withVisibilityWatching';
+import {isBlank} from 'utils';
 
 function InfoBox(props) {
   return (
     <div className={wrapperClassNames(props)}>
       {header(props)}
-      <p dangerouslySetInnerHTML={{__html: props.description}} />
+      {description(props)}
     </div>
   );
 }
 
 function wrapperClassNames(props) {
   return classNames('add_info_box', {
-    'empty': !props.title && !props.description,
-    'title_empty': !props.title,
-    'description_empty': !props.description
+    'empty': isEmpty(props),
+    'title_empty': isBlank(props.title),
+    'description_empty': isBlank(props.description),
+    'add_info_box-hidden_during_playback': props.hiddenDuringPlayback
   });
 }
 
 function header(props) {
-  if (props.title) {
+  if (!isBlank(props.title)) {
     return (
       <h3>{props.title}</h3>
     );
   }
 }
 
-export default withVisibilityWatching(InfoBox);
+function description(props) {
+  if (!isBlank(props.description)) {
+    return (
+      <p dangerouslySetInnerHTML={{__html: props.description}} />
+    );
+  }
+}
+
+export function isEmpty(props) {
+  return isBlank(props.title) && isBlank(props.description);
+}
+
+export default InfoBox;

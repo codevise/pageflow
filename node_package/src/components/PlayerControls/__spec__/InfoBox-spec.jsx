@@ -1,4 +1,4 @@
-import InfoBox from '../InfoBox';
+import InfoBox, {isEmpty} from '../InfoBox';
 
 import {mount} from 'enzyme';
 import {expect} from 'support/chai';
@@ -20,5 +20,19 @@ describe('InfoBox', () => {
     const result = mount(<InfoBox description="Some <b>text</b>" />);
 
     expect(result.html()).to.contain('<b>text</b>');
+  });
+});
+
+describe('isEmpty', () => {
+  it('returns true if all props are blank', () => {
+    const result = isEmpty({title: '', description: '<b></b>'});
+
+    expect(result).to.eq(true);
+  });
+
+  it('returns false if at least one prop is present', () => {
+    const result = isEmpty({title: 'Some title'});
+
+    expect(result).to.eq(false);
   });
 });

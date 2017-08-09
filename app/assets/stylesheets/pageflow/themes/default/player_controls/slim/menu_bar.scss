@@ -11,3 +11,13 @@
     right: 20px;
   }
 }
+
+%player_controls-page-audio .player_controls-toggle_info_box_menu_button {
+  display: none;
+}
+
+@include phone {
+  .player_controls-toggle_info_box_menu_button {
+    display: none;
+  }
+}
