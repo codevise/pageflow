@@ -1,5 +1,20 @@
 # CHANGELOG
 
+### Version 12.0.0.rc6
+
+2017-08-09
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc5...v12.0.0.rc6)
+
+- Export `measure` from `react-measure`
+  ([#823](https://github.com/codevise/pageflow/pull/823))
+- Allow using `state_machine_job` gem 1.x
+  ([#819](https://github.com/codevise/pageflow/pull/819))
+- Improve `pageflow-support` gem
+  ([#818](https://github.com/codevise/pageflow/pull/818))
+- Update semmy
+  ([#820](https://github.com/codevise/pageflow/pull/820))
+
 ### Version 12.0.0.rc5
 
 2017-05-31
