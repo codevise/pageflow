@@ -1,5 +1,32 @@
 # CHANGELOG
 
+### Version 12.0.0.rc7
+
+2017-08-09
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc6...v12.0.0.rc7)
+
+#### Breaking Changes
+
+- If the application uses the `nginx-upload-module`, its configuration
+  needs to be adjusted.
+  ([#814](https://github.com/codevise/pageflow/pull/814))
+
+  Update the location matcher, to prevent routes of the form
+  `../files/image_files/retry` from being matched:
+
+        location ~ ^/editor/entries/[0-9]+/files/[^/]+/?$ {
+
+  (The change is not specific to this release candidate. It just was
+  missing from the changelog so far.)
+
+### Minor Changes
+
+- Improve text tracks and info box display logic
+  ([#827](https://github.com/codevise/pageflow/pull/827))
+- Preload page background images
+  ([#825](https://github.com/codevise/pageflow/pull/825))
+
 ### Version 12.0.0.rc6
 
 2017-08-09
