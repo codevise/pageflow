@@ -1,0 +1,20 @@
+$waveform-player-controls-times-display-typography: ();
+
+.waveform_player_controls-times_display {
+  margin-top: 10px;
+  padding-left: 8%;
+  @include standard-typography($waveform-player-controls-times-display-typography);
+
+  &-current_time,
+  &-duration {
+    display: inline;
+  }
+
+  &-current_time {
+    padding-right: 5px;
+  }
+
+  &-duration {
+    padding-left: 5px;
+  }
+}

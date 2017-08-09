@@ -2,6 +2,7 @@ import InfoBox from './InfoBox';
 import Container from './Container';
 import Waveform from './Waveform';
 import MenuBar from 'components/PlayerControls/MenuBar';
+import TimesDisplay from './TimesDisplay';
 
 import {combineSelectors} from 'utils';
 import {connectInPage} from 'pages';
@@ -17,7 +18,9 @@ function WaveformPlayerControls(props) {
                   inverted={props.inverted}
                   playButtonTitle={props.playButtonTitle}
                   mediaElementId={props.mediaElementId}
-                  onPlayButtonClick={props.onPlayButtonClick}/>
+                  onPlayButtonClick={props.onPlayButtonClick} />
+        <TimesDisplay currentTime={props.currentTime}
+                      duration={props.duration} />
         <InfoBox {...props.infoBox} />
       </Container>
 
