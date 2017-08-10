@@ -64,6 +64,12 @@ See
   default theme.
   ([#768](https://github.com/codevise/pageflow/pull/768))
 
+- Playing DASH videos requires certain CORS headers in the CDN/Amazon
+  S3 responses. See the
+  [bucket configuration section](./doc/setting_up_external_services.md#bucket-configuration)
+  in the "Setting up External Services" guide for details.
+  ([#829](https://github.com/codevise/pageflow/pull/829))
+
 - Switch from `Expires` to `Cache-Control` header for media uploads.
   ([#753](https://github.com/codevise/pageflow/pull/753))
 
