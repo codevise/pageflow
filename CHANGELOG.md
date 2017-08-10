@@ -1,147 +1,15 @@
 # CHANGELOG
 
-### Version 12.0.0.rc7
+### Version 12.0.0
 
-2017-08-09
+2017-08-10
 
-[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc6...v12.0.0.rc7)
+[Compare changes](https://github.com/codevise/pageflow/compare/0-11-stable...v12.0.0)
 
-#### Breaking Changes
-
-- If the application uses the `nginx-upload-module`, its configuration
-  needs to be adjusted.
-  ([#814](https://github.com/codevise/pageflow/pull/814))
-
-  Update the location matcher, to prevent routes of the form
-  `../files/image_files/retry` from being matched:
-
-        location ~ ^/editor/entries/[0-9]+/files/[^/]+/?$ {
-
-  (The change is not specific to this release candidate. It just was
-  missing from the changelog so far.)
-
-### Minor Changes
-
-- Improve text tracks and info box display logic
-  ([#827](https://github.com/codevise/pageflow/pull/827))
-- Preload page background images
-  ([#825](https://github.com/codevise/pageflow/pull/825))
-
-### Version 12.0.0.rc6
-
-2017-08-09
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc5...v12.0.0.rc6)
-
-- Export `measure` from `react-measure`
-  ([#823](https://github.com/codevise/pageflow/pull/823))
-- Allow using `state_machine_job` gem 1.x
-  ([#819](https://github.com/codevise/pageflow/pull/819))
-- Improve `pageflow-support` gem
-  ([#818](https://github.com/codevise/pageflow/pull/818))
-- Update semmy
-  ([#820](https://github.com/codevise/pageflow/pull/820))
-
-### Version 12.0.0.rc5
-
-2017-05-31
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc4...v12.0.0.rc5)
+See
+[changes grouped by release candidates](https://github.com/codevise/pageflow/blob/v12.0.0.rc7/CHANGELOG.md).
 
 #### Breaking Changes
-
-- The built-in widget types must now be registered in the host
-  application.
-  ([#774](https://github.com/codevise/pageflow/pull/774),
-   [#776](https://github.com/codevise/pageflow/pull/776))
-
-  To keep existing functionality from previous Pageflow versions, add
-  this line to the Pageflow initializer in your host application:
-
-        config.plugin(Pageflow.built_in_widget_types_plugin)
-
-##### Bug Fixes
-
-- Upgrade to Sinon 2
-  ([#777](https://github.com/codevise/pageflow/pull/777))
-- Bug fix: Mark %pageflow_widget_margin_right optional
-  ([#773](https://github.com/codevise/pageflow/pull/773))
-
-### Version 12.0.0.rc4
-
-2017-05-23
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc3...v12.0.0.rc4)
-
-##### Breaking Changes
-
-- Remove legacy theme files. All themes have to be based on the
-  default theme.
-  ([#768](https://github.com/codevise/pageflow/pull/768))
-
-##### Bug Fixes
-
-- Bug fix: Fix exception when sorting user accounts table by role
-  ([#769](https://github.com/codevise/pageflow/pull/769))
-- Bug fix: Change roles.high to not expect account membership
-  ([#766](https://github.com/codevise/pageflow/pull/766))
-
-### Version 12.0.0.rc3
-
-2017-05-12
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc2...v12.0.0.rc3)
-
-##### Manual Update Step
-
-- Switch from `Expires` to `Cache-Control` header for media uploads.
-  ([#753](https://github.com/codevise/pageflow/pull/753))
-
-  It’s recommended you update the files currently stored on S3:
-
-        $ s3cmd --recursive modify --add-header="Cache-Control: public, max-age=31536000" s3://yourbucket/
-        $ s3cmd --recursive modify --remove-header=Expires s3://yourbucket/
-
-  Tread carefully when you do this! As noted in
-  [this StackExchange answer](http://stackoverflow.com/questions/22501465/how-to-add-cache-control-in-aws-s3),
-  we have experienced that some public read permissions were lost
-  after running this script. Test first using just a single object. In
-  the AWS Management Console, you might want to grant public read
-  access on the entire bucket again to be safe.
-
-##### Minor Changes
-
-- Ensure public translations fall back to default locale
-  ([#757](https://github.com/codevise/pageflow/pull/757))
-- Depend on pageflow-public-i18n 1.9
-  ([#752](https://github.com/codevise/pageflow/pull/752))
-- Remove jQuery widgets formerly used by player controls
-  ([#756](https://github.com/codevise/pageflow/pull/756))
-- Bug fix: Use entry locale in CloseButton translations
-  ([#760](https://github.com/codevise/pageflow/pull/760))
-- Bug fix: Fix ensureValueDefined option of SelectInputView
-  ([#755](https://github.com/codevise/pageflow/pull/755))
-
-### Version 12.0.0.rc2
-
-2017-05-10
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0.rc1...v12.0.0.rc2)
-
-- Improve text track positioning for slim player controls
-  ([#749](https://github.com/codevise/pageflow/pull/749))
-- Bug fix: Fix HTML descriptions in infobox component
-  ([#751](https://github.com/codevise/pageflow/pull/751))
-- Use correct matcher to expect destroyed record
-  ([#750](https://github.com/codevise/pageflow/pull/750))
-
-### Version 12.0.0.rc1
-
-2017-04-25
-
-[Compare changes](https://github.com/codevise/pageflow/compare/0-11-stable...v12.0.0.rc1)
-
-##### Breaking Changes
 
 - The `pageflow-react` gem has been merged into the core `pageflow`
   gem. Remove the `pageflow-react` entry from your `Gemfile` if one
@@ -182,18 +50,61 @@
   background video pages into pages with video background type.
   ([#748](https://github.com/codevise/pageflow/pull/748))
 
+- The built-in widget types must now be registered in the host
+  application.
+  ([#774](https://github.com/codevise/pageflow/pull/774),
+   [#776](https://github.com/codevise/pageflow/pull/776))
+
+  To keep existing functionality from previous Pageflow versions, add
+  this line to the Pageflow initializer in your host application:
+
+        config.plugin(Pageflow.built_in_widget_types_plugin)
+
+- Remove legacy theme files. All themes have to be based on the
+  default theme.
+  ([#768](https://github.com/codevise/pageflow/pull/768))
+
+- Switch from `Expires` to `Cache-Control` header for media uploads.
+  ([#753](https://github.com/codevise/pageflow/pull/753))
+
+  It’s recommended you update the files currently stored on S3:
+
+        $ s3cmd --recursive modify --add-header="Cache-Control: public, max-age=31536000" s3://yourbucket/
+        $ s3cmd --recursive modify --remove-header=Expires s3://yourbucket/
+
+  Tread carefully when you do this! As noted in
+  [this StackExchange answer](http://stackoverflow.com/questions/22501465/how-to-add-cache-control-in-aws-s3),
+  we have experienced that some public read permissions were lost
+  after running this script. Test first using just a single object. In
+  the AWS Management Console, you might want to grant public read
+  access on the entire bucket again to be safe.
+
+- If the application uses the `nginx-upload-module`, its configuration
+  needs to be adjusted.
+  ([#814](https://github.com/codevise/pageflow/pull/814))
+
+  Update the location matcher, to prevent routes of the form
+  `../files/image_files/retry` from being matched:
+
+        location ~ ^/editor/entries/[0-9]+/files/[^/]+/?$ {
+
 ##### Public Site
 
 - Embed entries as iframes
   ([#665](https://github.com/codevise/pageflow/pull/665))
 - Use slim controls as android phone player
   ([#745](https://github.com/codevise/pageflow/pull/745))
+- Ensure public translations fall back to default locale
+  ([#757](https://github.com/codevise/pageflow/pull/757))
+- Buf fix: Preload page background images
+  ([#825](https://github.com/codevise/pageflow/pull/825))
 
 Media stack:
 
 - FullHD/4k video variants
   ([#653](https://github.com/codevise/pageflow/pull/653),
-   [#741](https://github.com/codevise/pageflow/pull/741))
+   [#741](https://github.com/codevise/pageflow/pull/741),
+   [#752](https://github.com/codevise/pageflow/pull/752))
 - Update Video.js and add Dash support
   ([#678](https://github.com/codevise/pageflow/pull/678),
    [#677](https://github.com/codevise/pageflow/pull/677),
@@ -201,7 +112,9 @@ Media stack:
 - Allow displaying text tracks on videos and audio pages
   ([#721](https://github.com/codevise/pageflow/pull/721),
    [#747](https://github.com/codevise/pageflow/pull/747),
-   [#743](https://github.com/codevise/pageflow/pull/743))
+   [#743](https://github.com/codevise/pageflow/pull/743),
+   [#827](https://github.com/codevise/pageflow/pull/827),
+   [#749](https://github.com/codevise/pageflow/pull/749))
 - Add feature detection for mobile video features
   ([#742](https://github.com/codevise/pageflow/pull/742))
 - Add ultra variant to image file and video file posters
@@ -243,6 +156,8 @@ Theme:
   ([#667](https://github.com/codevise/pageflow/pull/667))
 - Bug fix: Allow overriding widget theme options
   ([#723](https://github.com/codevise/pageflow/pull/723))
+- Bug fix: Mark %pageflow_widget_margin_right optional
+  ([#773](https://github.com/codevise/pageflow/pull/773))
 
 JavaScript API:
 
@@ -279,9 +194,12 @@ Widgets:
 - Player controls improvements
   ([#699](https://github.com/codevise/pageflow/pull/699),
    [#720](https://github.com/codevise/pageflow/pull/720),
-   [#739](https://github.com/codevise/pageflow/pull/739))
+   [#739](https://github.com/codevise/pageflow/pull/739),
+   [#751](https://github.com/codevise/pageflow/pull/751))
 - Prevent videojs controls from being displayed
   ([#697](https://github.com/codevise/pageflow/pull/697))
+- Remove jQuery widgets formerly used by player controls
+  ([#756](https://github.com/codevise/pageflow/pull/756))
 - Bug fix: Prevent line wrap in scroll indicator
   ([#729](https://github.com/codevise/pageflow/pull/729))
 - Bug fix: Fix sharing menu in mobile navigation
@@ -290,13 +208,17 @@ Widgets:
   ([#652](https://github.com/codevise/pageflow/pull/652))
 - Bug fix: Extend Facebook in-app browser fix to iOS platform
   ([#637](https://github.com/codevise/pageflow/pull/637))
+- Bug fix: Use entry locale in CloseButton translations
+  ([#760](https://github.com/codevise/pageflow/pull/760))
 
 ##### Admin
 
 - Role based account memberships
   ([#634](https://github.com/codevise/pageflow/pull/634),
    [#641](https://github.com/codevise/pageflow/pull/641),
-   [#640](https://github.com/codevise/pageflow/pull/640))
+   [#640](https://github.com/codevise/pageflow/pull/640),
+   [#769](https://github.com/codevise/pageflow/pull/769),
+   [#766](https://github.com/codevise/pageflow/pull/766))
 
 ##### Editor
 
@@ -342,6 +264,8 @@ Backbone Views:
   ([#725](https://github.com/codevise/pageflow/pull/725))
 - Add disabled option to referenceinputview
   ([#734](https://github.com/codevise/pageflow/pull/734))
+- Bug fix: Fix ensureValueDefined option of SelectInputView
+  ([#755](https://github.com/codevise/pageflow/pull/755))
 
 Help:
 
@@ -362,8 +286,14 @@ Help:
   ([#645](https://github.com/codevise/pageflow/pull/645))
 - Improve hls options fallback
   ([#708](https://github.com/codevise/pageflow/pull/708))
+- Export `measure` from `react-measure`
+  ([#823](https://github.com/codevise/pageflow/pull/823))
 - Link to plugins wiki page from readme
   ([#674](https://github.com/codevise/pageflow/pull/674))
+- Allow using `state_machine_job` gem 1.x
+  ([#819](https://github.com/codevise/pageflow/pull/819))
+- Improve `pageflow-support` gem
+  ([#818](https://github.com/codevise/pageflow/pull/818))
 
 ##### Internals
 
@@ -383,6 +313,12 @@ Help:
   ([#578](https://github.com/codevise/pageflow/pull/578))
 - Use create instead of build_stubbed in EditLock tests
   ([#689](https://github.com/codevise/pageflow/pull/689))
+- Update semmy
+  ([#820](https://github.com/codevise/pageflow/pull/820))
+- Upgrade to Sinon 2
+  ([#777](https://github.com/codevise/pageflow/pull/777))
+- Use correct matcher to expect destroyed record
+  ([#750](https://github.com/codevise/pageflow/pull/750))
 - Bug fix: Handle symbolized keys in mailer options
   ([#693](https://github.com/codevise/pageflow/pull/693))
 

@@ -13,7 +13,7 @@ import {combineSelectors} from 'utils';
  * build the default page structure.
  *
  * @alias pageflow.react.components.PageScroller
- * @since edge
+ * @since 12.0
  */
 class PageScroller extends React.Component {
   componentWillReceiveProps(nextProps) {

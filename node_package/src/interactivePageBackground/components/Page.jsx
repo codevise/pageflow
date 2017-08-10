@@ -26,7 +26,7 @@ import {combineSelectors} from 'utils';
  *
  * @alias pageflow.react.components.PageWithInteractiveBackground
  * @class
- * @since edge
+ * @since 12.0
  */
 class PageWithInteractiveBackground extends React.Component {
   constructor(props, context) {
