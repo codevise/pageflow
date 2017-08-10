@@ -124,8 +124,8 @@ things do not look too blank in development mode.
 ## Configuration
 
 Pageflow stores files in S3 buckets also in development
-mode. Otherwise there's no way to have Zencoder encode them. See the
-wiki page [Setting up external services](https://github.com/codevise/pageflow/wiki/Setting-up-External-Services).
+mode. Otherwise there's no way to have Zencoder encode them. See
+[setting up external services](./doc/setting_up_external_services.md).
 
 The host application can utilize environment variables to configure the API keys for S3 and Zencoder. The variables can be found in the generated Pageflow initializer.
 
