@@ -167,6 +167,14 @@ module Pageflow
         entry.theming ||= entry.account.default_theming
       end
 
+      def action_methods
+        if account_policy_scope.entry_creatable.any?
+          super
+        else
+          super - ['new']
+        end
+      end
+
       def update
         update! do |success, _|
           success.html { redirect_to(admin_entry_path(resource, params.slice(:tab))) }
