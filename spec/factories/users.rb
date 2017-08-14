@@ -48,6 +48,12 @@ module Pageflow
 
       trait :admin do
         admin true
+        after(:create) do |user, evaluator|
+          create(:membership,
+                 user: user,
+                 role: :member,
+                 entity: evaluator.on || create(:account))
+        end
       end
 
       trait :suspended do

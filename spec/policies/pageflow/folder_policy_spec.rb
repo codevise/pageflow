@@ -22,7 +22,7 @@ module Pageflow
     it 'does not permit admins when there is no more than one account' do
       Account.delete_all
       folder = create(:folder)
-      admin = create(:user, :admin)
+      admin = create(:user, :admin, on: folder.account)
 
       expect(FolderPolicy.new(admin, folder)).not_to permit_action(:show_account_selection_on)
     end
