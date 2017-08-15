@@ -257,6 +257,12 @@ module Pageflow
     # @since edge
     attr_accessor :account_admin_menu_options
 
+    attr_accessor :show_entry_features_to_non_admin
+
+    attr_accessor :show_admin_boolean_to_non_admin
+
+    attr_accessor :show_theming_dropdown_to_non_admin
+
     def initialize
       @paperclip_filesystem_default_options = {validate_media_type: false}
       @paperclip_s3_default_options = {validate_media_type: false}
@@ -301,6 +307,12 @@ module Pageflow
       @available_text_track_kinds = [:captions, :subtitles, :descriptions]
 
       @account_admin_menu_options = {}
+
+      @show_entry_features_to_non_admin = true
+
+      @show_admin_boolean_to_non_admin = true
+
+      @show_theming_dropdown_to_non_admin = true
     end
 
     # Activate a plugin.
