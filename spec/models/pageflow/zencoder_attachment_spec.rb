@@ -40,6 +40,12 @@ module Pageflow
 
         expect(attachment.original_filename).to eq('thumbnail.jpg')
       end
+
+      it 'supports slashes in file name pattern' do
+        attachment = ZencoderAttachment.new(file_double(id: 5), 'dash/video.mp4')
+
+        expect(attachment.original_filename).to eq('dash/video.mp4')
+      end
     end
 
     describe '#path' do
@@ -63,6 +69,13 @@ module Pageflow
 
         expect(attachment.path).to eq("/#{version}/test-host/files/000/000/005/thumbnail.jpg")
       end
+
+      it 'supports slashed in file name pattern' do
+        file = file_double(id: 5)
+        attachment = ZencoderAttachment.new(file, 'dash/video.mp4')
+
+        expect(attachment.path).to eq("/#{version}/test-host/files/000/000/005/dash/video.mp4")
+      end
     end
 
     describe '#url' do
@@ -81,6 +94,14 @@ module Pageflow
 
         expect(attachment.url).to eq("//#{s3_host_alias}/#{version}/" \
                                      'test-host/files/000/000/005/video.mp4')
+      end
+
+      it 'supports slashes file name pattern' do
+        file = file_double(id: 5)
+        attachment = ZencoderAttachment.new(file, 'dash/video.mp4')
+
+        expect(attachment.url).to eq("#{s3_protocol}://#{s3_host_alias}/#{version}/" \
+                                     'test-host/files/000/000/005/dash/video.mp4')
       end
 
       context 'with default_protocol options ' do
