@@ -128,7 +128,7 @@ module Pageflow
     end
 
     def update_feature_configuration_on?
-      manage_account_of?
+      Pageflow.config.show_entry_features_to_non_admin && manage_account_of?
     end
 
     def destroy?
