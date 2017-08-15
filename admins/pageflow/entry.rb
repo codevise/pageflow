@@ -168,7 +168,8 @@ module Pageflow
       end
 
       def action_methods
-        if account_policy_scope&.entry_creatable&.any?
+        if account_policy_scope &&
+           account_policy_scope.entry_creatable.any?
           super
         else
           super - ['new']
