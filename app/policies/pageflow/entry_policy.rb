@@ -120,7 +120,8 @@ module Pageflow
     end
 
     def update_theming_on?
-      publish_on_account_of?
+      Pageflow.config.show_theming_dropdown_to_non_admin &&
+        publish_on_account_of?
     end
 
     def manage_account_of?
