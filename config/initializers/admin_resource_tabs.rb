@@ -12,7 +12,7 @@ Pageflow.configure do |config|
 end
 
 Pageflow.after_configure do |config|
-  if config.show_entry_features_to_non_admin
+  if config.permissions.show_entry_features_to_non_admin
     config.admin_resource_tabs.register(:entry,
                                         name: :features,
                                         component: Pageflow::Admin::FeaturesTab,

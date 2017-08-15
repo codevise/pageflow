@@ -257,11 +257,9 @@ module Pageflow
     # @since edge
     attr_accessor :account_admin_menu_options
 
-    attr_accessor :show_entry_features_to_non_admin
-
-    attr_accessor :show_admin_boolean_to_non_admin
-
-    attr_accessor :show_theming_dropdown_to_non_admin
+    # Sublayer for permissions related config.
+    # @since edge
+    attr_accessor :permissions
 
     def initialize
       @paperclip_filesystem_default_options = {validate_media_type: false}
@@ -308,11 +306,7 @@ module Pageflow
 
       @account_admin_menu_options = {}
 
-      @show_entry_features_to_non_admin = true
-
-      @show_admin_boolean_to_non_admin = true
-
-      @show_theming_dropdown_to_non_admin = true
+      @permissions = Permissions.new
     end
 
     # Activate a plugin.

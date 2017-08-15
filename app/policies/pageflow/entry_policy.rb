@@ -120,7 +120,7 @@ module Pageflow
     end
 
     def update_theming_on?
-      Pageflow.config.show_theming_dropdown_to_non_admin &&
+      Pageflow.config.permissions.show_theming_dropdown_to_non_admin &&
         publish_on_account_of?
     end
 
@@ -129,7 +129,8 @@ module Pageflow
     end
 
     def update_feature_configuration_on?
-      Pageflow.config.show_entry_features_to_non_admin && manage_account_of?
+      Pageflow.config.permissions.show_entry_features_to_non_admin &&
+        manage_account_of?
     end
 
     def destroy?
