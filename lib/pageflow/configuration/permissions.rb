@@ -4,24 +4,24 @@ module Pageflow
     # initializer of the main app.
     class Permissions
       def initialize
-        @non_admin_may_update_features = true
-        @non_admin_may_see_admin_boolean = true
-        @non_admin_may_update_theming = true
+        @only_admins_may_update_features = false
+        @only_admins_may_see_admin_boolean = false
+        @only_admins_may_update_theming = false
       end
 
-      # Allow non-admin users to see entry features. Defaults to true.
+      # Allow non-admin users to see entry features. Defaults to false.
       # @since edge
-      attr_accessor :non_admin_may_update_features
+      attr_accessor :only_admins_may_update_features
 
       # Allow non-admin users to know about admin boolean. Defaults to
-      # true.
+      # false.
       # @since edge
-      attr_accessor :non_admin_may_see_admin_boolean
+      attr_accessor :only_admins_may_see_admin_boolean
 
       # Allow non-admin users to see theming dropdown on entry
-      # form. Defaults to true.
+      # form. Defaults to false.
       # @since edge
-      attr_accessor :non_admin_may_update_theming
+      attr_accessor :only_admins_may_update_theming
     end
   end
 end

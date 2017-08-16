@@ -120,7 +120,7 @@ module Pageflow
     end
 
     def update_theming_on?
-      permissions_config.non_admin_may_update_theming &&
+      !permissions_config.only_admins_may_update_theming &&
         publish_on_account_of?
     end
 
@@ -129,7 +129,7 @@ module Pageflow
     end
 
     def update_feature_configuration_on?
-      permissions_config.non_admin_may_update_features &&
+      !permissions_config.only_admins_may_update_features &&
         manage_account_of?
     end
 
