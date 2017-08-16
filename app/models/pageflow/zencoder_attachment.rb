@@ -1,3 +1,5 @@
+require 'uri'
+
 module Pageflow
   class ZencoderAttachment
     cattr_accessor :default_options
@@ -44,11 +46,13 @@ module Pageflow
     end
 
     def url_relative_to(attachment)
-      result = url
-      result.gsub!("#{File.dirname(attachment.url)}/", '') ||
-        raise("Could not generate relative url for #{result} based on #{attachment.url}.")
+      dir_path = File.dirname(URI.parse(attachment.url).path)
 
-      result
+      unless URI.parse(url).path.start_with?(dir_path)
+        raise("Could not generate relative url for #{url} based on #{attachment.url}.")
+      end
+
+      url.split("#{dir_path}/", 2).last
     end
 
     private

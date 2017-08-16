@@ -186,6 +186,17 @@ module Pageflow
         expect(result).to eq('high/rendition.mpd')
       end
 
+      it 'handles protocol relative urls correctly' do
+        Pageflow.config.zencoder_options[:s3_protocol] = ''
+        file = file_double(id: 5)
+        manifest = ZencoderAttachment.new(file, 'dash/manifest.mpd')
+        attachment = ZencoderAttachment.new(file, 'dash/high/rendition.mpd')
+
+        result = attachment.url_relative_to(manifest)
+
+        expect(result).to eq('high/rendition.mpd')
+      end
+
       it 'fails if other attachment is in other directory' do
         file = file_double(id: 5)
         manifest = ZencoderAttachment.new(file, 'other/manifest.mpd')
