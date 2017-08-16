@@ -47,6 +47,10 @@ module Pageflow
 
       trait :encoded do
       end
+
+      trait :with_highdef_encoding do
+        association :entry, :with_highdef_video_encoding
+      end
     end
   end
 end

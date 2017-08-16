@@ -82,8 +82,7 @@ module Pageflow
       end
 
       it 'produces highdef outputs if set to do so' do
-        video_file = build(:video_file)
-        video_file.entry.feature_states = {'highdef_video_encoding' => true}
+        video_file = build(:video_file, :with_highdef_encoding)
         definition = ZencoderVideoOutputDefinition.new(video_file)
         definition.skip_hls = false
         definition.skip_smil = false
