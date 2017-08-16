@@ -7,6 +7,10 @@ RSpec::Matchers.define :have_output do
     output_matchers[:label] = label
   end
 
+  chain :with_format do |format|
+    output_matchers[:format] = format
+  end
+
   chain :with_stream do |stream_attributes|
     output_matchers[:streams] = array_including(hash_including(stream_attributes))
   end

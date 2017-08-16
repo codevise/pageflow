@@ -350,17 +350,17 @@ module Pageflow
       [
         {
           source: 'hls-medium',
-          path: video_file.hls_medium.url(host: :hls_origin, default_protocol: 'http'),
+          path: video_file.hls_medium.url_relative_to(video_file.hls_playlist),
           bandwidth: 1769
         },
         {
           source: 'hls-low',
-          path: video_file.hls_low.url(host: :hls_origin, default_protocol: 'http'),
+          path: video_file.hls_low.url_relative_to(video_file.hls_playlist),
           bandwidth: 619
         },
         {
           source: 'hls-high',
-          path: video_file.hls_high.url(host: :hls_origin, default_protocol: 'http'),
+          path: video_file.hls_high.url_relative_to(video_file.hls_playlist),
           bandwidth: 3538
         }
       ] + hls_highdef_stream_definitions
@@ -371,12 +371,12 @@ module Pageflow
       [
         {
           source: 'hls-fullhd',
-          path: video_file.hls_fullhd.url(host: :hls_origin, default_protocol: 'http'),
+          path: video_file.hls_fullhd.url_relative_to(video_file.hls_playlist),
           bandwidth: 8575
         },
         {
           source: 'hls-4k',
-          path: video_file.hls_4k.url(host: :hls_origin, default_protocol: 'http'),
+          path: video_file.hls_4k.url_relative_to(video_file.hls_playlist),
           bandwidth: 32000
         }
       ]
