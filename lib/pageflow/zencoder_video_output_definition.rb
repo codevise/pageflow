@@ -34,7 +34,7 @@ module Pageflow
     private
 
     def mp4_highdef_definitions
-      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      return [] unless video_file.encode_highdef?
       [transferable(mp4_4k_definition), transferable(mp4_fullhd_definition)]
     end
 
@@ -128,7 +128,7 @@ module Pageflow
     end
 
     def dash_highdef_definitions
-      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      return [] unless video_file.encode_highdef?
 
       [
         non_transferable(dash_fullhd_definition),
@@ -149,7 +149,7 @@ module Pageflow
     end
 
     def hls_highdef_definitions
-      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      return [] unless video_file.encode_highdef?
 
       [
         non_transferable(hls_fullhd_definition),
@@ -257,7 +257,7 @@ module Pageflow
     end
 
     def dash_highdef_stream_definitions
-      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      return [] unless video_file.encode_highdef?
       [
         {
           source: 'dash-fullhd',
@@ -367,7 +367,7 @@ module Pageflow
     end
 
     def hls_highdef_stream_definitions
-      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      return [] unless video_file.encode_highdef?
       [
         {
           source: 'hls-fullhd',
@@ -404,7 +404,7 @@ module Pageflow
       # these cases the input file is just a tiny bit larger than the
       # next lower resolution, so we do not really care if the SMIL
       # file which does not include the higher quality does not win.
-      if video_file.entry.feature_state('highdef_video_encoding')
+      if video_file.encode_highdef?
         [
           non_transferable(smil_definition.merge(streams: smil_default_stream_definitions,
                                                  skip: {
