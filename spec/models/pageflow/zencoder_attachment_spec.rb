@@ -165,6 +165,38 @@ module Pageflow
       end
     end
 
+    describe '#url_relative_to' do
+      it 'returns url which is relative to given other ZencoderAttachment' do
+        file = file_double(id: 5)
+        manifest = ZencoderAttachment.new(file, 'manifest.mpd')
+        attachment = ZencoderAttachment.new(file, 'high/rendition.mpd')
+
+        result = attachment.url_relative_to(manifest)
+
+        expect(result).to eq('high/rendition.mpd')
+      end
+
+      it 'handles common sub directory' do
+        file = file_double(id: 5)
+        manifest = ZencoderAttachment.new(file, 'dash/manifest.mpd')
+        attachment = ZencoderAttachment.new(file, 'dash/high/rendition.mpd')
+
+        result = attachment.url_relative_to(manifest)
+
+        expect(result).to eq('high/rendition.mpd')
+      end
+
+      it 'fails if other attachment is in other directory' do
+        file = file_double(id: 5)
+        manifest = ZencoderAttachment.new(file, 'other/manifest.mpd')
+        attachment = ZencoderAttachment.new(file, 'dash/high/rendition.mpd')
+
+        expect {
+          attachment.url_relative_to(manifest)
+        }.to raise_error(/Could not generate relative url/)
+      end
+    end
+
     describe '#dir_name' do
       it 'returns directory path' do
         file = file_double(id: 5)

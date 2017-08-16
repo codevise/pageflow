@@ -43,6 +43,14 @@ module Pageflow
                               url_options)
     end
 
+    def url_relative_to(attachment)
+      result = url
+      result.gsub!("#{File.dirname(attachment.url)}/", '') ||
+        raise("Could not generate relative url for #{result} based on #{attachment.url}.")
+
+      result
+    end
+
     private
 
     def ensure_default_protocol(url, url_options)
