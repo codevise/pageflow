@@ -259,7 +259,7 @@ module Pageflow
 
     # Sublayer for permissions related config.
     # @since edge
-    attr_accessor :permissions
+    attr_reader :permissions
 
     def initialize
       @paperclip_filesystem_default_options = {validate_media_type: false}

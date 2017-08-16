@@ -63,7 +63,7 @@ module Pageflow
     end
 
     def see_admin_status?
-      if Pageflow.config.permissions.show_admin_boolean_to_non_admin
+      if permissions_config.show_admin_boolean_to_non_admin
         read?
       else
         admin?

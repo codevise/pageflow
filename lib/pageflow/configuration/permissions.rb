@@ -3,13 +3,10 @@ module Pageflow
     # Permissions related options to be defined in the pageflow
     # initializer of the main app.
     class Permissions
-      def initialize(options = {})
-        @show_entry_features_to_non_admin =
-          options.fetch(:show_entry_features_to_non_admin, true)
-        @show_admin_boolean_to_non_admin =
-          options.fetch(:show_admin_boolean_to_non_admin, true)
-        @show_theming_dropdown_to_non_admin =
-          options.fetch(:show_theming_dropdown_to_non_admin, true)
+      def initialize
+        @show_entry_features_to_non_admin = true
+        @show_admin_boolean_to_non_admin = true
+        @show_theming_dropdown_to_non_admin = true
       end
 
       # Allow non-admin users to see entry features. Defaults to true.
