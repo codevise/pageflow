@@ -20,6 +20,10 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
   config.infer_spec_type_from_file_location!
 
+  config.expect_with :rspec do |c|
+    c.include_chain_clauses_in_custom_matcher_descriptions = true
+  end
+
   config.example_status_persistence_file_path = './tmp/rspec_failures'
 
   config.order = "random"

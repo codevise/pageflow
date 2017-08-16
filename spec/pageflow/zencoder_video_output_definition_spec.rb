@@ -106,6 +106,15 @@ module Pageflow
         expect(definition).to have_output.to_s3(video_file.hls_playlist.path)
         expect(definition).to have_output.to_s3(video_file.smil.path)
       end
+
+      it 'uses relative urls in dash playlist' do
+        video_file = build(:video_file, :with_highdef_encoding)
+        definition = ZencoderVideoOutputDefinition.new(video_file)
+
+        expect(definition).to have_output
+          .with_label('dash-playlist')
+          .with_all_streams_having(path: a_relative_url)
+      end
     end
   end
 end

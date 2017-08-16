@@ -243,15 +243,15 @@ module Pageflow
       [
         {
           source: 'dash-low',
-          path: video_file.dash_low.url
+          path: video_file.dash_low.url_relative_to(video_file.dash_playlist)
         },
         {
           source: 'dash-medium',
-          path: video_file.dash_medium.url
+          path: video_file.dash_medium.url_relative_to(video_file.dash_playlist)
         },
         {
           source: 'dash-high',
-          path: video_file.dash_high.url
+          path: video_file.dash_high.url_relative_to(video_file.dash_playlist)
         }
       ] + dash_highdef_stream_definitions
     end
@@ -261,11 +261,11 @@ module Pageflow
       [
         {
           source: 'dash-fullhd',
-          path: video_file.dash_fullhd.url
+          path: video_file.dash_fullhd.url_relative_to(video_file.dash_playlist)
         },
         {
           source: 'dash-4k',
-          path: video_file.dash_4k.url
+          path: video_file.dash_4k.url_relative_to(video_file.dash_playlist)
         }
       ]
     end
