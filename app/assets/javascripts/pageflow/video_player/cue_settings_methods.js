@@ -50,7 +50,8 @@ pageflow.VideoPlayer.cueSettingsMethods = function(player) {
     // for a cue even though the previous call had the same
     // parameters.
     if ((this.prevLine !== line || changed) && (command != 'lazy')) {
-      player.tech({IWillNotUseThisInPlugins: true}).trigger('texttrackchange');
+      var tech = player.tech({IWillNotUseThisInPlugins: true});
+      tech && tech.trigger('texttrackchange');
     }
 
     this.prevLine = line;
