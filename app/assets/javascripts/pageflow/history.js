@@ -31,8 +31,11 @@ pageflow.History = function(slideshow, adapter) {
     slideshow.goToByPermaId(adapter.hash());
   });
 
+  this.getLandingPagePermaId = function() {
+    return adapter.hash() || pageParameter();
+  };
+
   this.start = function() {
-    slideshow.goToByPermaId(adapter.hash() || pageParameter());
     adapter.replaceState(null, '', slideshow.currentPage().attr('id'));
   };
 
