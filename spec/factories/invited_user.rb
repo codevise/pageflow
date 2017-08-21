@@ -4,6 +4,7 @@ module Pageflow
       email
       first_name 'Edison'
       last_name 'Editor'
+      initial_account { create(:account) }
     end
   end
 end

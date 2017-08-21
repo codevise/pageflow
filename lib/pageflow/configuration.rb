@@ -252,6 +252,11 @@ module Pageflow
     # take. Defaults to `[:captions, :subtitles, :descriptions]`.
     attr_reader :available_text_track_kinds
 
+    # Allow one user to be member of multiple accounts. Defaults to
+    # true.
+    # @since edge
+    attr_accessor :allow_multiaccount_users
+
     # Options hash for account admin menu. Options from config precede
     # defaults.
     # @since edge
@@ -299,6 +304,8 @@ module Pageflow
       @authorize_user_deletion = lambda { |_user| true }
 
       @available_text_track_kinds = [:captions, :subtitles, :descriptions]
+
+      @allow_multiaccount_users = true
 
       @account_admin_menu_options = {}
     end

@@ -86,17 +86,20 @@ module Pageflow
 
         sign_in(create(:user, :manager, on: account))
 
-        expect do
-          post :create, user: attributes_for(:valid_user, admin: true)
-        end.not_to change { User.admins.count }
+        expect {
+          post :create,
+               user: attributes_for(:invited_user,
+                                    admin: true,
+                                    initial_account: account)
+        }.not_to change { User.admins.count }
       end
 
       it 'allows admins to create admins' do
         sign_in(create(:user, :admin))
 
-        expect do
-          post :create, user: attributes_for(:valid_user, admin: true)
-        end.to change { User.admins.count }
+        expect {
+          post :create, user: attributes_for(:invited_user, admin: true)
+        }.to change { User.admins.count }
       end
 
       it 'does not allow account manager to create users for own account' do
@@ -104,9 +107,9 @@ module Pageflow
 
         sign_in(create(:user, :manager, on: account))
 
-        expect do
-          post :create, user: attributes_for(:valid_user)
-        end.to_not change { account.users.count }
+        expect {
+          post :create, user: attributes_for(:invited_user)
+        }.to_not change { account.users.count }
       end
 
       it 'does not create user if quota is exhausted and e-mail is new' do
@@ -115,10 +118,11 @@ module Pageflow
         Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
         sign_in(create(:user, :manager, on: account))
 
-        expect do
+        expect {
           request.env['HTTP_REFERER'] = admin_users_path
-          post :create, user: attributes_for(:valid_user)
-        end.not_to change { User.count }
+          post :create, user: attributes_for(:invited_user,
+                                             initial_account: account)
+        }.not_to change { User.count }
       end
 
       it 'creates user via membership in spite of exhausted quota ' \
@@ -129,13 +133,13 @@ module Pageflow
         Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
         sign_in(create(:user, :manager, on: account))
 
-        expect do
+        expect {
           request.env['HTTP_REFERER'] = admin_users_path
           post :create,
-               user: {email: 'existing_user@example.com',
-                      initial_role: :member,
-                      initial_account: account}
-        end.not_to change { account.users.count }
+               user: attributes_for(:invited_user,
+                                    email: 'existing_user@example.com',
+                                    initial_account: account)
+        }.not_to change { account.users.count }
       end
 
       it 'creates account membership if e-mail unknown but quota allows it' do
@@ -143,15 +147,13 @@ module Pageflow
 
         sign_in(create(:user, :manager, on: account))
 
-        expect do
+        expect {
           request.env['HTTP_REFERER'] = admin_users_path
           post :create,
-               user: {email: 'new_user@example.com',
-                      first_name: 'Adelheid',
-                      last_name: 'Doe',
-                      initial_role: :member,
-                      initial_account: account}
-        end.to change { account.users.count }
+               user: attributes_for(:invited_user,
+                                    email: 'new_user@example.com',
+                                    initial_account: account)
+        }.to change { account.users.count }
       end
 
       it 'creates invited user if e-mail unknown but quota allows it' do
@@ -159,15 +161,13 @@ module Pageflow
 
         sign_in(create(:user, :manager, on: account))
 
-        expect do
+        expect {
           request.env['HTTP_REFERER'] = admin_users_path
           post :create,
-               user: {email: 'new_user@example.com',
-                      first_name: 'Wiltrud',
-                      last_name: 'Doe',
-                      initial_role: :member,
-                      initial_account: account}
-        end.to change { User.count }
+               user: attributes_for(:invited_user,
+                                    email: 'new_user@example.com',
+                                    initial_account: account)
+        }.to change { User.count }
       end
 
       it 'redirects with flash if :users quota is exhausted and e-mail is unknown' do
@@ -177,7 +177,8 @@ module Pageflow
 
         sign_in(create(:user, :manager, on: account))
         request.env['HTTP_REFERER'] = admin_users_path
-        post(:create, user: attributes_for(:valid_user))
+        post(:create, user: attributes_for(:invited_user,
+                                           initial_account: account))
 
         expect(flash[:alert]).to eq(I18n.t('pageflow.quotas.exhausted'))
       end

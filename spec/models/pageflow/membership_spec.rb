@@ -36,6 +36,34 @@ module Pageflow
           membership.destroy
         end.to change { entry.users_count }.by(-1)
       end
+
+      it 'accepts second account membership if allow_multiaccount_users is '\
+         'true' do
+        pageflow_configure do |config|
+          config.allow_multiaccount_users = true
+        end
+
+        account_member = create(:user, :member, on: create(:account))
+
+        expect(Membership
+                 .new(user: account_member,
+                      role: :member,
+                      entity: create(:account))).to be_valid
+      end
+
+      it 'rejects second account membership if allow_multiaccount_users is '\
+         'false' do
+        pageflow_configure do |config|
+          config.allow_multiaccount_users = false
+        end
+
+        account_member = create(:user, :member, on: create(:account))
+
+        expect(Membership
+                 .new(user: account_member,
+                      role: :member,
+                      entity: create(:account))).to be_invalid
+      end
     end
   end
 end
