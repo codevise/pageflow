@@ -79,14 +79,16 @@ module Pageflow
       end
     end
 
+    attr_reader :user, :query
+
     def initialize(user, account)
       @user = user
       @account = account
+      @query = AccountRoleQuery.new(user, account)
     end
 
     def publish?
-      @user.admin? ||
-        allows?(%w(publisher manager))
+      user.admin? || query.has_at_least_role?(:publisher)
     end
 
     def configure_folder_on?
@@ -98,8 +100,7 @@ module Pageflow
     end
 
     def manage?
-      @user.admin? ||
-        allows?(%w(manager))
+      user.admin? || query.has_at_least_role?(:manager)
     end
 
     def read?
@@ -123,13 +124,13 @@ module Pageflow
     end
 
     def admin?
-      @user.admin?
+      user.admin?
     end
 
     def see_badge_belonging_to?
-      (@account.entries & @user.entries).any? ||
-        @user.memberships.on_accounts.as_previewer_or_above.where(entity: @account).any? ||
-        @user.admin?
+      (@account.entries & user.entries).any? ||
+        query.has_at_least_role?(:previewer) ||
+        user.admin?
     end
 
     def index?
@@ -139,7 +140,7 @@ module Pageflow
     private
 
     def allows?(roles)
-      @user.memberships.where(role: roles, entity: @account).any?
+      user.memberships.where(role: roles, entity: @account).any?
     end
   end
 end
