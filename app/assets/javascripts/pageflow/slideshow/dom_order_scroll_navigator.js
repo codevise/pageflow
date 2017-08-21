@@ -12,12 +12,15 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
     }
 
     slideshow.goTo(previousPage, {
-      position: position
+      position: position,
+      ignoreInHistory: true
     });
   };
 
   this.next = function(currentPage, pages) {
-    slideshow.goTo(this.getNextPage(currentPage, pages));
+    slideshow.goTo(this.getNextPage(currentPage, pages), {
+      ignoreInHistory: true
+    });
   };
 
   this.nextPageExists = function(currentPage, pages) {
