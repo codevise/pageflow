@@ -61,9 +61,11 @@ module Pageflow
            collection: -> { collection_for_entry_publication_states }
 
     sidebar :folders, only: :index do
-      text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'),
-                        new_admin_folder_path,
-                        class: 'new'))
+      if AccountPolicy::Scope.new(current_user, Account).folder_addable.any?
+        text_node(link_to(I18n.t('pageflow.admin.entries.add_folder'),
+                          new_admin_folder_path,
+                          class: 'new'))
+      end
       grouped_folder_list(Folder.accessible_by(current_ability, :read).includes(:account),
                           active_id: params[:folder_id],
                           grouped_by_accounts: authorized?(:see, :accounts))

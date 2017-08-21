@@ -70,9 +70,11 @@ jQuery(function($) {
         }
       });
 
-      $('#folders_sidebar_section')
-        .append('<a href="#" class="edit_toggle edit" title="Bearbeiten"></a>')
-        .append('<a href="#" class="edit_toggle done" title="Fertig"></a>');
+      if ($('#folders_sidebar_section a.new').length > 0) {
+        $('#folders_sidebar_section')
+          .append('<a href="#" class="edit_toggle edit" title="Bearbeiten"></a>')
+          .append('<a href="#" class="edit_toggle done" title="Fertig"></a>');
+      }
 
       $('#folders_sidebar_section .edit_toggle').on('click', function() {
         $('#folders_sidebar_section').toggleClass('editable');
