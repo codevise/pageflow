@@ -12,7 +12,14 @@ module Pageflow
     end
 
     [:of_entry, :of_account].each do |membership_type|
-      if params[membership_type]
+      next unless params[membership_type]
+
+      # This context needs to be here to create a scope for the `let`
+      # in the next line. Otherwise, when both the `:of_entry` and
+      # `:of_account` params are present, the second iteration of the
+      # loop will override the definition of the first, causing the
+      # specs to be defined for the account case two times.
+      context do
         let(:of) { params[membership_type] }
 
         it "allows #{membership_type == :of_account ? 'account' : 'entry'} #{params[:allows]} " \
