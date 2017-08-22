@@ -5,172 +5,157 @@ module Pageflow
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :manage,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :add_member_to,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :edit_role_on,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :destroy_membership_on,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :publisher,
                     but_forbids: :editor,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :publish,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :publisher,
                     but_forbids: :editor,
-                    of_account: -> (topic) { topic.account },
+                    of_account: ->(topic) { topic.account },
                     to: :create,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     forbids: :manager,
-                    of_entry: -> (topic) { topic },
+                    of_entry: ->(topic) { topic },
                     to: :create,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :publisher,
                     but_forbids: :editor,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :duplicate,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :editor,
                     but_forbids: :previewer,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :edit,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :editor,
                     but_forbids: :previewer,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :index_widgets_for,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :editor,
                     but_forbids: :previewer,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :edit_outline,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :editor,
                     but_forbids: :previewer,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :restore,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :editor,
                     but_forbids: :previewer,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :snapshot,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :editor,
                     but_forbids: :previewer,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :confirm_encoding,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :previewer,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :preview,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :previewer,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :read,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :previewer,
-                    of_entry: -> (topic) { topic },
-                    of_account: -> (topic) { topic.account },
+                    of_entry_or_its_account: ->(topic) { topic },
                     to: :use_files,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :publisher,
                     but_forbids: :editor,
-                    of_account: -> (topic) { topic.account },
+                    of_account: ->(topic) { topic.account },
                     to: :publish_on_account_of,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :publisher,
                     but_forbids: :editor,
-                    of_account: -> (topic) { topic.account },
+                    of_account: ->(topic) { topic.account },
                     to: :update_account_on,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :publisher,
                     but_forbids: :editor,
-                    of_account: -> (topic) { topic.account },
+                    of_account: ->(topic) { topic.account },
                     to: :update_theming_on,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_account: -> (topic) { topic.account },
+                    of_account: ->(topic) { topic.account },
                     to: :manage_account_of,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_account: -> (topic) { topic.account },
+                    of_account: ->(topic) { topic.account },
                     to: :update_feature_configuration_on,
                     topic: -> { create(:entry) }
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
-                    of_account: -> (topic) { topic.account },
+                    of_account: ->(topic) { topic.account },
                     to: :destroy,
                     topic: -> { create(:entry) }
 
