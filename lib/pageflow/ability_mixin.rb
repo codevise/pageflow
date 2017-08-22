@@ -15,6 +15,10 @@ module Pageflow
         AccountPolicy.new(user, account).update?
       end
 
+      can :update_feature_configuration_on, Account do |account|
+        AccountPolicy.new(user, account).update_feature_configuration_on?
+      end
+
       can :add_member_to, Account do |account|
         AccountPolicy.new(user, account).add_member_to?
       end

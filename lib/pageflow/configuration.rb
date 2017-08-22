@@ -257,6 +257,10 @@ module Pageflow
     # @since edge
     attr_accessor :account_admin_menu_options
 
+    # Sublayer for permissions related config.
+    # @since edge
+    attr_reader :permissions
+
     def initialize
       @paperclip_filesystem_default_options = {validate_media_type: false}
       @paperclip_s3_default_options = {validate_media_type: false}
@@ -301,6 +305,8 @@ module Pageflow
       @available_text_track_kinds = [:captions, :subtitles, :descriptions]
 
       @account_admin_menu_options = {}
+
+      @permissions = Permissions.new
     end
 
     # Activate a plugin.

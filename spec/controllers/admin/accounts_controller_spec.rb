@@ -5,6 +5,58 @@ module Admin
     describe '#show' do
       render_views
 
+      describe 'built in admin tabs' do
+        it 'account manager sees features tab' do
+          user = create(:user)
+          account = create(:account, with_manager: user)
+
+          sign_in(user)
+          get(:show, id: account.id)
+
+          expect(response.body).to have_selector('.admin_tabs_view .tabs .features')
+        end
+
+        context 'with config.permissions.only_admins_may_update_features' do
+          it 'account manager does not see features tab' do
+            pageflow_configure do |config|
+              config.permissions.only_admins_may_update_features = true
+            end
+
+            user = create(:user)
+            account = create(:account, with_manager: user)
+
+            sign_in(user)
+            get(:show, id: account.id)
+
+            expect(response.body).not_to have_selector('.admin_tabs_view .tabs .features')
+          end
+
+          it 'admin sees features tab' do
+            pageflow_configure do |config|
+              config.permissions.only_admins_may_update_features = true
+            end
+
+            user = create(:user, admin: true)
+            entry = create(:account)
+
+            sign_in(user)
+            get(:show, id: entry.id)
+
+            expect(response.body).to have_selector('.admin_tabs_view .tabs .features')
+          end
+        end
+
+        it 'account publisher does not see features tab' do
+          user = create(:user)
+          account = create(:account, with_publisher: user)
+
+          sign_in(user)
+          get(:show, id: account.id)
+
+          expect(response.body).not_to have_selector('.admin_tabs_view .tabs .features')
+        end
+      end
+
       describe 'additional admin resource tab' do
         let(:tab_view_component) do
           Class.new(Pageflow::ViewComponent) do
@@ -204,7 +256,7 @@ module Admin
         end.not_to change { Pageflow::Widget.count }
       end
 
-      it 'updates feature_configuration through feature_states param' do
+      it 'allows admin to update feature_configuration through feature_states param' do
         account = create(:account)
 
         sign_in(create(:user, :admin))
@@ -217,6 +269,79 @@ module Admin
               })
 
         expect(account.reload.feature_state('fancy_page_type')).to eq(true)
+      end
+
+      it 'allows account manager to update feature_configuration through feature_states param' do
+        user = create(:user)
+        account = create(:account, with_manager: user)
+
+        sign_in(user)
+        patch(:update,
+              id: account.id,
+              account: {
+                feature_states: {
+                  fancy_page_type: 'enabled'
+                }
+              })
+
+        expect(account.reload.feature_state('fancy_page_type')).to eq(true)
+      end
+
+      it 'does not allows account publisher to update feature_configuration' do
+        user = create(:user)
+        account = create(:account, with_publisher: user)
+
+        sign_in(user)
+        patch(:update,
+              id: account.id,
+              account: {
+                feature_states: {
+                  fancy_page_type: 'enabled'
+                }
+              })
+
+        expect(account.reload.feature_state('fancy_page_type')).not_to eq(true)
+      end
+
+      context 'with config.permissions.only_admins_may_update_features' do
+        it 'allows admin to update feature_configuration through feature_states param' do
+          pageflow_configure do |config|
+            config.permissions.only_admins_may_update_features = true
+          end
+
+          account = create(:account)
+
+          sign_in(create(:user, :admin))
+          patch(:update,
+                id: account.id,
+                account: {
+                  feature_states: {
+                    fancy_page_type: 'enabled'
+                  }
+                })
+
+          expect(account.reload.feature_state('fancy_page_type')).to eq(true)
+        end
+
+        it 'does not allow account manager to update feature_configuration' do
+          pageflow_configure do |config|
+            config.permissions.only_admins_may_update_features = true
+          end
+
+          user = create(:user)
+          account = create(:account, with_manager: user)
+
+          sign_in(user)
+          patch(:update,
+                id: account.id,
+                account: {
+                  feature_states: {
+                    fancy_page_type: 'enabled'
+                  }
+                })
+
+          expect(account.reload.feature_state('fancy_page_type')).not_to eq(true)
+        end
       end
 
       it 'updates custom account field registered as form input' do

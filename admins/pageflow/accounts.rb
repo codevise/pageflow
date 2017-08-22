@@ -89,8 +89,7 @@ module Pageflow
         result = params.permit(account: permitted_account_attributes)
 
         if result[:account]
-          feature_states = params[:account][:feature_states].try(:permit!)
-          result[:account].merge!(feature_states: feature_states || {})
+          permit_feature_states(result[:account])
         end
 
         result
@@ -134,6 +133,13 @@ module Pageflow
           Pageflow.config_for(resource).admin_form_inputs.permitted_attributes_for(resource_name)
         else
           []
+        end
+      end
+
+      def permit_feature_states(attributes)
+        if params[:id] && authorized?(:update_feature_configuration_on, resource)
+          feature_states = params[:account][:feature_states].try(:permit!)
+          attributes.merge!(feature_states: feature_states || {})
         end
       end
     end
