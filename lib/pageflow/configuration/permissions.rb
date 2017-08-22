@@ -6,6 +6,7 @@ module Pageflow
       def initialize
         @only_admins_may_update_features = false
         @only_admins_may_see_admin_boolean = false
+        @only_admins_may_update_theming = false
       end
 
       # Restrict access to features tabs to admins. Defaults to false.
@@ -16,6 +17,11 @@ module Pageflow
       # admins. Defaults to false.
       # @since edge
       attr_accessor :only_admins_may_see_admin_boolean
+
+      # Restrict access to theming drop down on entry edit admin page
+      # to admins. Defaults to false.
+      # @since edge
+      attr_accessor :only_admins_may_update_theming
     end
   end
 end
