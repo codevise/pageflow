@@ -483,6 +483,76 @@ describe Admin::EntriesController do
       expect(entry.reload.account).to eq(other_account)
     end
 
+    context 'without config.permissions.only_admins_may_update_theming' do
+      it 'does not change entry theming when account publisher moves entry to other account' do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_theming = false
+        end
+
+        user = create(:user)
+        account = create(:account, with_publisher: user)
+        other_account = create(:account, with_publisher: user)
+        entry = create(:entry, account: account)
+
+        sign_in(user)
+        patch :update, id: entry, entry: {account_id: other_account}
+
+        expect(entry.reload.theming).to eq(account.default_theming)
+      end
+    end
+
+    context 'with config.permissions.only_admins_may_update_theming' do
+      it 'updates entry theming to default theming of new account ' \
+         ' when account publisher moves entry to other account' do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_theming = true
+        end
+
+        user = create(:user)
+        account = create(:account, with_publisher: user)
+        other_account = create(:account, with_publisher: user)
+        entry = create(:entry, account: account)
+
+        sign_in(user)
+        patch :update, id: entry, entry: {account_id: other_account}
+
+        expect(entry.reload.theming).to eq(other_account.default_theming)
+      end
+
+      it 'does not change custom entry theming when account publisher updates entry ' \
+         'without changing the account' do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_theming = true
+        end
+
+        user = create(:user)
+        account = create(:account, with_publisher: user)
+        custom_theming = create(:theming)
+        entry = create(:entry, account: account, theming: custom_theming)
+
+        sign_in(user)
+        patch :update, id: entry, entry: {title: 'Some new title'}
+
+        expect(entry.reload.theming).to eq(custom_theming)
+      end
+
+      it 'does not change entry theming when admin moves entry to other account' do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_theming = true
+        end
+
+        user = create(:user, :admin)
+        account = create(:account)
+        other_account = create(:account)
+        entry = create(:entry, account: account)
+
+        sign_in(user)
+        patch :update, id: entry, entry: {account_id: other_account}
+
+        expect(entry.reload.theming).to eq(account.default_theming)
+      end
+    end
+
     it 'allows admin to change account' do
       account = create(:account)
       other_account = create(:account)
