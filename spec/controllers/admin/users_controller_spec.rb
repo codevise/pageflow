@@ -5,6 +5,51 @@ module Pageflow
     describe '#show' do
       render_views
 
+      it 'shows admin boolean for account managers' do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_see_admin_boolean = false
+        end
+
+        user = create(:user, :manager, on: create(:account))
+
+        sign_in(user)
+        get(:show, id: user.id)
+
+        expect(response.body)
+          .to have_css('.status_tag_row th',
+                       text: ::User.human_attribute_name(:admin))
+      end
+
+      context 'with config.permissions.only_admins_may_see_admin_boolean' do
+        it 'shows admin boolean for admin' do
+          pageflow_configure do |config|
+            config.permissions.only_admins_may_see_admin_boolean = true
+          end
+
+          user = create(:user, :admin)
+
+          sign_in(user)
+          get(:show, id: user.id)
+
+          expect(response.body).to have_css('.status_tag_row th',
+                                            text: ::User.human_attribute_name(:admin))
+        end
+
+        it 'does not show admin boolean for account manager' do
+          pageflow_configure do |config|
+            config.permissions.only_admins_may_see_admin_boolean = true
+          end
+
+          user = create(:user, :manager, on: create(:account))
+
+          sign_in(user)
+          get(:show, id: user.id)
+
+          expect(response.body).not_to have_css('.status_tag_row th',
+                                                text: ::User.human_attribute_name(:admin))
+        end
+      end
+
       describe 'additional admin resource tab' do
         let(:tab_view_component) do
           Class.new(Pageflow::ViewComponent) do
