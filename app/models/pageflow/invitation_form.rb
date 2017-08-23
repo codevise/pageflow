@@ -40,6 +40,7 @@ module Pageflow
 
     def existing_user
       @existing_user ||=
+        Pageflow.config.allow_multiaccount_users &&
         User.find_by_email(user.email)
     end
 
