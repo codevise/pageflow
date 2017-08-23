@@ -11,11 +11,19 @@
         </ul>
       <% end %>
 
-      <%= f.inputs "Details" do %>
-        <% @invitation_form.available_accounts.each do |account| %>
-          <%= quota_state_description(:users, account) %>
-        <% end %>
+      <%= f.inputs do %>
+        <%= m.input :entity_id,
+                    as: :select,
+                    collection: @invitation_form.available_accounts,
+                    include_blank: false,
+                    label: Pageflow::Membership.human_attribute_name(:account) %>
 
+        <% @invitation_form.available_accounts.each do |account| %>
+          <%= users_quota_state(account) %>
+        <% end %>
+      <% end %>
+
+      <%= f.inputs "Details", id: 'invitation_form_details' do %>
         <%= u.input :email, hint: I18n.t('pageflow.admin.users.email_invitation_hint') %>
         <%= u.input :first_name %>
         <%= u.input :last_name %>
@@ -23,11 +31,7 @@
                     as: :select,
                     include_blank: false,
                     collection: available_locales_collection %>
-        <%= m.input :entity_id,
-                    as: :select,
-                    collection: @invitation_form.available_accounts,
-                    include_blank: false,
-                    label: Pageflow::Membership.human_attribute_name(:account) %>
+
         <%= m.input :role,
                     collection: membership_roles_collection('Pageflow::Account'),
                     include_blank: false,

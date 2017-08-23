@@ -1,0 +1,7 @@
+<%= content_tag(:div, class: 'quota_state', data: data_attributes) do %>
+  <% if quota.exhausted? %>
+    <%= render 'pageflow/admin/users/quota_exhausted', account: account %>
+  <% else %>
+    <%= quota_state_description(:users, account) %>
+  <% end %>
+<% end %>

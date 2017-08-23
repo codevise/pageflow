@@ -76,7 +76,7 @@ module Pageflow
         sign_in(create(:user, :manager, on: account))
         get(:invitation)
 
-        expect(response.body).to have_content('Quota available')
+        expect(response.body).to have_content(QuotaDouble::AVAILABLE_DESCRIPTION)
       end
     end
 

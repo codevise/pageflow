@@ -1,4 +1,8 @@
 module QuotaDouble
+  AVAILABLE_DESCRIPTION = 'Quota available'.freeze
+  EXHAUSTED_DESCRIPTION = 'Quota exhausted'.freeze
+  EXCEEDED_DESCRIPTION = 'Quota exceeded'.freeze
+
   def self.available
     Class.new(Pageflow::Quota) do
       def state
@@ -6,7 +10,7 @@ module QuotaDouble
       end
 
       def state_description
-        'Quota available'
+        AVAILABLE_DESCRIPTION
       end
     end
   end
@@ -18,7 +22,7 @@ module QuotaDouble
       end
 
       def state_description
-        'Quota exhausted'
+        EXHAUSTED_DESCRIPTION
       end
     end
   end
@@ -30,7 +34,7 @@ module QuotaDouble
       end
 
       def state_description
-        'Quota exceeded'
+        EXCEEDED_DESCRIPTION
       end
     end
   end
