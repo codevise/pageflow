@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'as registered user, editing own profile' do
-  scenario 'change first and last name', focus: true do
+  scenario 'change first and last name' do
     create(:user, email: 'john@example.com', password: '@qwert12345')
 
     Dom::Admin::Page.sign_in(email: 'john@example.com', password: '@qwert12345')

@@ -65,7 +65,7 @@ module Pageflow
       end
     end
 
-    describe '#invite' do
+    describe 'get #invitation' do
       render_views
 
       it 'displays quota state description' do
@@ -74,112 +74,242 @@ module Pageflow
         Pageflow.config.quotas.register(:users, QuotaDouble.available)
 
         sign_in(create(:user, :manager, on: account))
-        get(:new)
+        get(:invitation)
 
         expect(response.body).to have_content('Quota available')
       end
     end
 
-    describe '#create' do
+    describe 'post #invitation' do
+      render_views
+
+      it 'allows account managers to create user' do
+        account = create(:account)
+
+        sign_in(create(:user, :manager, on: account))
+
+        expect {
+          post(:invitation,
+               invitation_form: {
+                 user: attributes_for(:valid_user),
+                 membership: {
+                   entity_id: account.id,
+                   role: 'member'
+                 }
+               })
+        }.to change { User.count }
+      end
+
+      it 'allows account managers to create user in account with manager role' do
+        account = create(:account)
+        account_members = AccountMemberQuery::Scope.new(account)
+
+        sign_in(create(:user, :manager, on: account))
+
+        expect {
+          post(:invitation,
+               invitation_form: {
+                 user: attributes_for(:valid_user),
+                 membership: {
+                   entity_id: account.id,
+                   role: 'manager'
+                 }
+               })
+        }.to change { account_members.with_role_at_least(:manager).count }
+      end
+
+      it 'create membership in account if user with email already exisits' do
+        account = create(:account)
+        user = create(:user, email: 'existing_user@example.com')
+
+        sign_in(create(:user, :manager, on: account))
+
+        expect {
+          post(:invitation,
+               invitation_form: {
+                 user: attributes_for(:valid_user,
+                                      email: user.email),
+                 membership: {
+                   entity_id: account.id,
+                   role: 'member'
+                 }
+               })
+        }.to change { account.users.count }
+      end
+
+      it 'responds with unprocessable entity if user is already member of account' do
+        account = create(:account)
+        existing_user = create(:user, :member, on: account)
+
+        sign_in(create(:user, :manager, on: account))
+
+        expect {
+          post(:invitation,
+               invitation_form: {
+                 user: attributes_for(:valid_user,
+                                      email: existing_user.email),
+                 membership: {
+                   entity_id: account.id,
+                   role: 'manager'
+                 }
+               })
+        }.not_to change { Membership.count }
+
+        expect(response).to have_http_status(422)
+        expect(response.body).to include(I18n.t('pageflow.admin.users.member_exists'))
+      end
+
+      it 'responds with unprocessable entity if initial role is invalid' do
+        account = create(:account)
+
+        sign_in(create(:user, :manager, on: account))
+
+        expect {
+          post(:invitation,
+               invitation_form: {
+                 user: attributes_for(:valid_user),
+                 membership: {
+                   entity_id: account.id,
+                   role: 'superman'
+                 }
+               })
+        }.not_to change { User.count }
+
+        expect(response).to have_http_status(422)
+      end
+
+      it 'responds with unprocessable entity if initial account is invalid' do
+        account = create(:account)
+
+        sign_in(create(:user, :manager, on: account))
+
+        expect {
+          post(:invitation,
+               invitation_form: {
+                 user: attributes_for(:valid_user),
+                 membership: {
+                   entity_id: -1,
+                   role: 'member'
+                 }
+               })
+        }.not_to change { User.count }
+
+        expect(response).to have_http_status(422)
+      end
+
       it 'does not allow account managers to create admins' do
         account = create(:account)
 
         sign_in(create(:user, :manager, on: account))
 
-        expect do
-          post :create, user: attributes_for(:valid_user, admin: true)
-        end.not_to change { User.admins.count }
+        expect {
+          post(:invitation,
+               invitation_form: {
+                 user: attributes_for(:valid_user,
+                                      admin: true),
+                 membership: {
+                   entity_id: account.id,
+                   role: 'member'
+                 }
+               })
+        }.not_to change { User.admins.count }
       end
 
       it 'allows admins to create admins' do
+        account = create(:account)
+
         sign_in(create(:user, :admin))
 
-        expect do
-          post :create, user: attributes_for(:valid_user, admin: true)
-        end.to change { User.admins.count }
+        expect {
+          post(:invitation,
+               invitation_form: {
+                 user: attributes_for(:valid_user,
+                                      admin: true),
+                 membership: {
+                   entity_id: account.id,
+                   role: 'member'
+                 }
+               })
+        }.to change { User.admins.count }
       end
 
-      it 'does not allow account manager to create users for own account' do
+      it 'does not allow account manager to create users for off-limits account' do
         account = create(:account)
+        other_account = create(:account)
 
         sign_in(create(:user, :manager, on: account))
 
-        expect do
-          post :create, user: attributes_for(:valid_user)
-        end.to_not change { account.users.count }
+        expect {
+          post(:invitation,
+               invitation_form: {
+                 user: attributes_for(:valid_user),
+                 membership: {
+                   entity_id: other_account.id,
+                   role: 'member'
+                 }
+               })
+        }.to_not change { other_account.users.count }
       end
 
-      it 'does not create user if quota is exhausted and e-mail is new' do
-        account = create(:account)
+      context 'when users quota is exhausted' do
+        it 'does not create new user' do
+          account = create(:account)
 
-        Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
-        sign_in(create(:user, :manager, on: account))
+          Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
+          sign_in(create(:user, :manager, on: account))
 
-        expect do
+          expect {
+            request.env['HTTP_REFERER'] = admin_users_path
+            post(:invitation,
+                 invitation_form: {
+                   user: attributes_for(:valid_user),
+                   membership: {
+                     entity_id: account.id,
+                     role: 'member'
+                   }
+                 })
+          }.not_to change { User.count }
+        end
+
+        it 'does not create membership for existing user' do
+          account = create(:account)
+          user = create(:user)
+
+          Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
+          sign_in(create(:user, :manager, on: account))
+
+          expect {
+            request.env['HTTP_REFERER'] = admin_users_path
+            post(:invitation,
+                 invitation_form: {
+                   user: attributes_for(:valid_user,
+                                        email: user.email),
+                   membership: {
+                     entity_id: account.id,
+                     role: 'member'
+                   }
+                 })
+          }.not_to change { account.users.count }
+        end
+
+        it 'redirects with flash' do
+          account = create(:account)
+
+          Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
+          sign_in(create(:user, :manager, on: account))
+
           request.env['HTTP_REFERER'] = admin_users_path
-          post :create, user: attributes_for(:valid_user)
-        end.not_to change { User.count }
-      end
+          post(:invitation,
+               invitation_form: {
+                 user: attributes_for(:valid_user),
+                 membership: {
+                   entity_id: account.id,
+                   role: 'member'
+                 }
+               })
 
-      it 'creates user via membership in spite of exhausted quota ' \
-         'if their e-mail was already in the database' do
-        account = create(:account)
-        create(:user, email: 'existing_user@example.com')
-
-        Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
-        sign_in(create(:user, :manager, on: account))
-
-        expect do
-          request.env['HTTP_REFERER'] = admin_users_path
-          post :create,
-               user: {email: 'existing_user@example.com',
-                      initial_role: :member,
-                      initial_account: account}
-        end.not_to change { account.users.count }
-      end
-
-      it 'creates account membership if e-mail unknown but quota allows it' do
-        account = create(:account)
-
-        sign_in(create(:user, :manager, on: account))
-
-        expect do
-          request.env['HTTP_REFERER'] = admin_users_path
-          post :create,
-               user: {email: 'new_user@example.com',
-                      first_name: 'Adelheid',
-                      last_name: 'Doe',
-                      initial_role: :member,
-                      initial_account: account}
-        end.to change { account.users.count }
-      end
-
-      it 'creates invited user if e-mail unknown but quota allows it' do
-        account = create(:account)
-
-        sign_in(create(:user, :manager, on: account))
-
-        expect do
-          request.env['HTTP_REFERER'] = admin_users_path
-          post :create,
-               user: {email: 'new_user@example.com',
-                      first_name: 'Wiltrud',
-                      last_name: 'Doe',
-                      initial_role: :member,
-                      initial_account: account}
-        end.to change { User.count }
-      end
-
-      it 'redirects with flash if :users quota is exhausted and e-mail is unknown' do
-        account = create(:account)
-
-        Pageflow.config.quotas.register(:users, QuotaDouble.exhausted)
-
-        sign_in(create(:user, :manager, on: account))
-        request.env['HTTP_REFERER'] = admin_users_path
-        post(:create, user: attributes_for(:valid_user))
-
-        expect(flash[:alert]).to eq(I18n.t('pageflow.quotas.exhausted'))
+          expect(flash[:alert]).to eq(I18n.t('pageflow.quotas.exhausted'))
+        end
       end
     end
 
