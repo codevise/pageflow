@@ -165,8 +165,7 @@ module Pageflow
                                      :current_password,
                                      :password,
                                      :password_confirmation,
-                                     :locale,
-                                     :admin)
+                                     :locale)
       end
 
       def permitted_params

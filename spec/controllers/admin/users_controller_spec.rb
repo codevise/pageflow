@@ -204,6 +204,75 @@ module Pageflow
       end
     end
 
+    describe '#me' do
+      it 'allows users to update their profile' do
+        user = create(:user,
+                      first_name: 'Tom',
+                      last_name: 'Tomson',
+                      locale: 'de')
+
+        sign_in(user)
+        patch(:me, user: {
+                first_name: 'Thom',
+                last_name: 'Thomson',
+                locale: 'en'
+              })
+
+        expect(user.reload).to have_attributes(first_name: 'Thom',
+                                               last_name: 'Thomson',
+                                               locale: 'en')
+      end
+
+      it 'allows users to update their password when passing current password and confirmation' do
+        user = create(:user, password: 'some!123pass')
+
+        sign_in(user)
+        patch(:me, user: {
+                current_password: 'some!123pass',
+                password: 'new!123pass',
+                password_confirmation: 'new!123pass'
+              })
+
+        expect(user.reload.valid_password?('new!123pass')).to eq(true)
+      end
+
+      it 'does not update password when current password is not correct' do
+        user = create(:user, password: 'some!123pass')
+
+        sign_in(user)
+        patch(:me, user: {
+                current_password: 'wrong!123pass',
+                password: 'new!123pass',
+                password_confirmation: 'new!123pass'
+              })
+
+        expect(user.reload.valid_password?('some!123pass')).to eq(true)
+      end
+
+      it 'does not update password when password confirmation does not match' do
+        user = create(:user, password: 'some!123pass')
+
+        sign_in(user)
+        patch(:me, user: {
+                current_password: 'some!123pass',
+                password: 'new!123pass',
+                password_confirmation: 'other!123pass'
+              })
+
+        expect(user.reload.valid_password?('some!123pass')).to eq(true)
+      end
+
+      it 'does not allow users to make themselves admin' do
+        account = create(:account)
+        user = create(:user, :manager, on: account)
+
+        sign_in(user)
+        patch(:me, user: {admin: true})
+
+        expect(user.reload).not_to be_admin
+      end
+    end
+
     describe '#delete_me' do
       it 'allows to destroy the user by default' do
         sign_in(create(:user, password: '@qwert123'))
