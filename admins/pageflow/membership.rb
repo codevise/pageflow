@@ -14,12 +14,6 @@ module Pageflow
       helper Pageflow::Admin::MembershipsHelper
       helper Pageflow::Admin::FormHelper
 
-      def permitted_params
-        result = params.permit(membership: [:user_id, :entity_id, :entity_type, :role])
-        restrict_attributes(result[:membership]) if result[:membership]
-        result
-      end
-
       def index
         if params[:user_id].present?
           redirect_to admin_user_url(params[:user_id])
