@@ -100,7 +100,9 @@ module Pageflow
     end
 
     def manage?
-      user.admin? || query.has_at_least_role?(:manager)
+      user.admin? ||
+        (query.has_at_least_role?(:manager) &&
+         Pageflow.config.allow_multiaccount_users)
     end
 
     def read?
@@ -116,11 +118,11 @@ module Pageflow
     end
 
     def edit_role_on?
-      manage?
+      user.admin? || query.has_at_least_role?(:manager)
     end
 
     def destroy_membership_on?
-      manage?
+      edit_role_on?
     end
 
     def admin?
@@ -134,7 +136,9 @@ module Pageflow
     end
 
     def index?
-      admin? || @user.memberships.on_accounts.as_manager.any?
+      admin? ||
+        (Pageflow.config.allow_multiaccount_users &&
+         @user.memberships.on_accounts.as_manager.any?)
     end
 
     private
