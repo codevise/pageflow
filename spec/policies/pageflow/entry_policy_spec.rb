@@ -159,6 +159,40 @@ module Pageflow
                     to: :destroy,
                     topic: -> { create(:entry) }
 
+    describe 'create_any?' do
+      it 'allows admin to view new entry form' do
+        user = create(:user, :admin)
+
+        policy = EntryPolicy.new(user, Entry.new)
+
+        expect(policy).to permit_action(:create_any)
+      end
+
+      it 'allows publisher of at least one account to view new entry form' do
+        user = create(:user, :publisher, on: create(:account))
+
+        policy = EntryPolicy.new(user, Entry.new)
+
+        expect(policy).to permit_action(:create_any)
+      end
+
+      it 'does not allow account editor to view new entry from' do
+        user = create(:user, :editor, on: create(:account))
+
+        policy = EntryPolicy.new(user, Entry.new)
+
+        expect(policy).not_to permit_action(:create_any)
+      end
+
+      it 'does not allow entry manager to view new entry form' do
+        user = create(:user, :manager, on: create(:entry))
+
+        policy = EntryPolicy.new(user, Entry.new)
+
+        expect(policy).not_to permit_action(:create_any)
+      end
+    end
+
     describe '.resolve' do
       it 'includes all entries for admins' do
         user = create(:user, :admin)

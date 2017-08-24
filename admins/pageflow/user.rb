@@ -1,6 +1,6 @@
 module Pageflow
   ActiveAdmin.register User do
-    menu priority: 2, if: proc { authorized?(:index, current_user) }
+    menu priority: 2
 
     actions :all, except: [:new, :create]
 
