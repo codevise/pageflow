@@ -6,12 +6,12 @@ feature 'as account manager, inviting a user' do
     Dom::Admin::Page.sign_in_as(:manager, on: account)
 
     visit(admin_users_path)
-    Dom::Admin::UserPage.first.invite_user_link.click
-    Dom::Admin::UserForm.first.submit_with(first_name: 'John',
-                                           last_name: 'Doe',
-                                           email: 'sepp@example.com')
+    Dom::Admin::UserPage.find!.invite_user_link.click
+    Dom::Admin::InvitationForm.find!.submit_with(first_name: 'John',
+                                                 last_name: 'Doe',
+                                                 email: 'sepp@example.com')
     visit(MailClient.of('sepp@example.com').receive_invitation_link)
-    Dom::Admin::NewPasswordForm.first.submit_with(password: '@new12345')
+    Dom::Admin::NewPasswordForm.find!.submit_with(password: '@new12345')
 
     expect(Dom::Admin::Page).to be_accessible_with(email: 'sepp@example.com', password: '@new12345')
   end
@@ -22,9 +22,9 @@ feature 'as account manager, inviting a user' do
 
     Dom::Admin::Page.sign_in_as(:manager, on: account)
     visit(admin_user_path(user))
-    Dom::Admin::UserPage.first.resend_invitation_link.click
+    Dom::Admin::UserPage.find!.resend_invitation_link.click
     visit(MailClient.of('heinz@example.com').receive_invitation_link)
-    Dom::Admin::NewPasswordForm.first.submit_with(password: '@new12345')
+    Dom::Admin::NewPasswordForm.find!.submit_with(password: '@new12345')
 
     expect(Dom::Admin::Page).to be_accessible_with(email: 'heinz@example.com',
                                                    password: '@new12345')
@@ -32,18 +32,24 @@ feature 'as account manager, inviting a user' do
 
   scenario 'inviting a user for another account' do
     account = create(:account, name: 'another account')
-    create(:user, email: 'existing_user@example.org', first_name: 'Walter', last_name: 'Doe')
+    create(:user,
+           :member,
+           on: create(:account),
+           email: 'existing_user@example.org',
+           first_name: 'Walter',
+           last_name: 'Doe')
 
     Dom::Admin::Page.sign_in_as(:manager, on: account)
     visit(admin_users_path)
-    Dom::Admin::UserPage.first.invite_user_link.click
-    Dom::Admin::UserForm.first.submit_with(account_id: account.id,
-                                           first_name: 'John',
-                                           last_name: 'Doe',
-                                           email: 'existing_user@example.org')
+    Dom::Admin::UserPage.find!.invite_user_link.click
+    Dom::Admin::InvitationForm.find!.submit_with(account_id: account.id,
+                                                 first_name: 'John',
+                                                 last_name: 'Doe',
+                                                 email: 'existing_user@example.org')
+
     visit(admin_users_path)
 
-    expect(Dom::Admin::UserInIndexTable.find_by_full_name('Walter Doe').account_names)
-      .to include(account.name)
+    expect(Dom::Admin::UserInIndexTable.find_by_full_name('John Doe')
+             .account_names).to include(account.name)
   end
 end

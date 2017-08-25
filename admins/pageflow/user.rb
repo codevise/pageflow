@@ -2,6 +2,8 @@ module Pageflow
   ActiveAdmin.register User do
     menu priority: 2, if: proc { authorized?(:index, current_user) }
 
+    actions :all, except: [:new, :create]
+
     config.batch_actions = false
     config.clear_action_items!
 
@@ -24,7 +26,7 @@ module Pageflow
 
     action_item(:invite, only: :index) do
       link_to I18n.t('pageflow.admin.users.invite_user'),
-              new_admin_user_path,
+              invitation_admin_users_path,
               data: {rel: 'invite_user'}
     end
 
@@ -91,6 +93,21 @@ module Pageflow
 
     form(partial: 'form')
 
+    collection_action :invitation, method: [:get, :post] do
+      @page_title = I18n.t('pageflow.admin.users.invite_user')
+      @invitation_form = InvitationForm.new(invitation_form_params.fetch(:invitation_form, {}),
+                                            AccountPolicy::Scope.new(current_user, Account)
+                                              .member_addable)
+
+      if request.post?
+        if @invitation_form.save
+          redirect_to(admin_user_path(@invitation_form.target_user))
+        else
+          render status: 422
+        end
+      end
+    end
+
     collection_action 'me', title: I18n.t('pageflow.admin.users.account'), method: [:get, :patch] do
       if request.patch?
         if current_user.update_with_password(user_profile_params)
@@ -137,26 +154,11 @@ module Pageflow
         super.includes(account_memberships: :entity)
       end
 
-      def build_new_resource
-        InvitedUser.new(permitted_params[:user])
-      end
-
-      def create_resource(user)
-        verify_quota!(:users, params[:user][:account])
-        known_user = User.find_by(email: resource.email)
-        membership_user = known_user ? known_user : resource
-        membership_params = {user: membership_user,
-                             entity_id: resource.initial_account,
-                             entity_type: 'Pageflow::Account'}
-        if resource.initial_role.present?
-          membership_params.merge!(role: resource.initial_role.to_sym)
-        end
-        Membership.create(membership_params)
-        if known_user
-          known_user
-        else
-          super
-        end
+      def invitation_form_params
+        params.permit(invitation_form: {
+                        user: permitted_user_attributes,
+                        membership: [:entity_id, :role]
+                      })
       end
 
       def user_profile_params
@@ -165,36 +167,25 @@ module Pageflow
                                      :current_password,
                                      :password,
                                      :password_confirmation,
-                                     :locale,
-                                     :admin)
+                                     :locale)
       end
 
       def permitted_params
-        result = params.permit(user: [:first_name,
-                                      :last_name,
-                                      :email,
-                                      :password,
-                                      :password_confirmation,
-                                      :locale,
-                                      :admin,
-                                      :initial_role,
-                                      :initial_account])
-        restrict_attributes(params[:id], result[:user]) if result[:user]
-        result
+        params.permit(user: permitted_user_attributes)
       end
 
       private
 
-      def restrict_attributes(_id, attributes)
-        unless authorized?(:set_admin, current_user)
-          attributes.delete(:admin)
-        end
+      def permitted_user_attributes
+        attributes = [
+          :first_name,
+          :last_name,
+          :email,
+          :locale
+        ]
 
-        if AccountPolicy::Scope.new(current_user, Pageflow::Account).member_addable.empty? ||
-           action_name.to_sym != :create
-          attributes.delete(:initial_role)
-          attributes.delete(:initial_account)
-        end
+        attributes << :admin if authorized?(:set_admin, current_user)
+        attributes
       end
     end
   end

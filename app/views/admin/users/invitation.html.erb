@@ -1,0 +1,42 @@
+<%= admin_form_for(@invitation_form, url: invitation_admin_users_path) do |f| %>
+  <%= f.semantic_fields_for(@invitation_form.membership) do |m| %>
+    <%= f.semantic_fields_for(@invitation_form.user) do |u| %>
+      <% if @invitation_form.existing_member %>
+        <ul class="errors">
+          <li>
+            <%= t('pageflow.admin.users.member_exists') %>
+            <%= link_to(t('pageflow.admin.users.member_exists_link'),
+                        admin_user_path(@invitation_form.existing_member)) %>
+          </li>
+        </ul>
+      <% end %>
+
+      <%= f.inputs "Details" do %>
+        <% @invitation_form.available_accounts.each do |account| %>
+          <%= quota_state_description(:users, account) %>
+        <% end %>
+
+        <%= u.input :email, hint: I18n.t('pageflow.admin.users.email_invitation_hint') %>
+        <%= u.input :first_name %>
+        <%= u.input :last_name %>
+        <%= u.input :locale,
+                    as: :select,
+                    include_blank: false,
+                    collection: available_locales_collection %>
+        <%= m.input :entity_id,
+                    as: :select,
+                    collection: @invitation_form.available_accounts,
+                    include_blank: false,
+                    label: Pageflow::Membership.human_attribute_name(:account) %>
+        <%= m.input :role,
+                    collection: membership_roles_collection('Pageflow::Account'),
+                    include_blank: false,
+                    hint: t('pageflow.admin.memberships.on_account.role.hint_html') %>
+        <%= u.input :admin if authorized?(:set_admin, current_user) %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action :submit, label: t('pageflow.admin.users.invite_user') %>
+  <% end %>
+<% end %>

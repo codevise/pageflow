@@ -1,0 +1,6 @@
+en:
+  pageflow:
+    admin:
+      users:
+        member_exists: "A user with the given email address is already member of the account."
+        member_exists_link: "View user"
