@@ -869,6 +869,8 @@ en:
           delete_account_hint: You don't want to continue using Pageflow?
           deleted: Your account has been deleted. You may sign-up for a new one at any time!
           updated: Your profile has been updated.
+        member_exists: A user with the given email address is already member of the account.
+        member_exists_link: View user
         no_accounts: No members
         no_entries: No stories
         none: There are no stories.

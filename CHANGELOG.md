@@ -1,5 +1,30 @@
 # CHANGELOG
 
+### Version 12.0.1
+
+2017-08-25
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.0...v12.0.1)
+
+#### Security Patch
+
+Prevent escalation of privileges
+([#845](https://github.com/codevise/pageflow/pull/845))
+
+There are two bugs in Pageflow 12.0.0 that allow signed in users
+to escalate their privileges.
+
+* With a manually crafted request, any signed in user can set the
+  admin flag on their own user account.
+
+* With a manually crafted request, a user with account manager role in
+  at least one account, can add users to arbitrary accounts. This can
+  be used to gain account manager privileges in any account.
+
+Affected versions: 12.0.0 (including all release candidates)
+Unaffected version: 0.11.x and older
+Versions fixes: 12.0.1
+
 ### Version 12.0.0
 
 2017-08-10

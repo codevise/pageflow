@@ -869,6 +869,8 @@ de:
           delete_account_hint: Du möchtest die Anwendung nicht mehr nutzen?
           deleted: Dein Benutzerkonto wurde gelöscht.
           updated: Dein Profil wurde aktualisiert.
+        member_exists: Ein Benutzer mit der angegebenen E-Mail-Adresse ist bereits Mitglied des Kontos.
+        member_exists_link: Benutzer anzeigen
         no_accounts: Keine Konten
         no_entries: Keine Beiträge
         none: Sie haben keine Beiträge.
