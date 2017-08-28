@@ -27,6 +27,14 @@ module Pageflow
 
         expect(user.errors).not_to be_empty
       end
+
+      it 'does not allow to set empty first and last name' do
+        user = create(:user, first_name: 'Bob', last_name: 'Bing')
+
+        user.update_with_password(first_name: '', last_name: '')
+
+        expect(user.reload.first_name).to eq('Bob')
+      end
     end
 
     describe '#destroy_with_password' do

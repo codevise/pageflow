@@ -111,9 +111,11 @@ module Pageflow
     end
 
     collection_action 'me', title: I18n.t('pageflow.admin.users.account'), method: [:get, :patch] do
+      @user = User.find(current_user.id)
+
       if request.patch?
-        if current_user.update_with_password(user_profile_params)
-          sign_in current_user, bypass: true
+        if @user.update_with_password(user_profile_params)
+          sign_in @user, bypass: true
           redirect_to admin_root_path, notice: I18n.t('pageflow.admin.users.me.updated')
         end
       end
