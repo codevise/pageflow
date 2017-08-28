@@ -26,6 +26,33 @@ describe Admin::EntriesController do
         expect(response.body).not_to have_selector('#q_account_id')
       end
     end
+
+    describe 'new entry button' do
+      let(:new_button_text) do
+        I18n.t('active_admin.new_model',
+               model: I18n.t('activerecord.models.entry.one'))
+      end
+
+      it 'is visible for account manager' do
+        user = create(:user)
+        create(:account, with_manager: user)
+
+        sign_in(user)
+        get :index
+
+        expect(response.body).to have_text(new_button_text)
+      end
+
+      it 'is hidden for account editors' do
+        user = create(:user)
+        create(:account, with_editor: user)
+
+        sign_in(user)
+        get :index
+
+        expect(response.body).not_to have_text(new_button_text)
+      end
+    end
   end
 
   describe '#show' do

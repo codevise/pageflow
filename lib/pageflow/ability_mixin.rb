@@ -1,6 +1,8 @@
 module Pageflow
   # Defines the default abilities for the Pageflow models.
   module AbilityMixin
+    include ActiveAdminCanCanFix
+
     # Call this in the ability initializer.
     def pageflow_default_abilities(user)
       return if user.nil?
@@ -11,10 +13,6 @@ module Pageflow
 
       can :update, Account do |account|
         AccountPolicy.new(user, account).update?
-      end
-
-      can :index, Account do |account|
-        AccountPolicy.new(user, account).index?
       end
 
       can :add_member_to, Account do |account|
@@ -43,6 +41,14 @@ module Pageflow
         MembershipPolicy.new(user, membership).destroy?
       end
 
+      can :index, :users do
+        UserPolicy.new(user, User.new).index?
+      end
+
+      can :create_any, :users do
+        UserPolicy.new(user, User.new).create_any?
+      end
+
       can :set_admin, ::User do |managed_user|
         UserPolicy.new(user, managed_user).set_admin?
       end
@@ -57,6 +63,12 @@ module Pageflow
 
       can :index, :accounts do
         AccountPolicy.new(user, Account.new).index?
+      end
+
+      can :index, :entries
+
+      can :create_any, :entries do
+        EntryPolicy.new(user, Entry.new).create_any?
       end
 
       can :see_own_role_on, :entries do
@@ -202,10 +214,6 @@ module Pageflow
           UserPolicy.new(user, managed_user).create?
         end
 
-        can :index, ::User, UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
-          UserPolicy.new(user, managed_user).index?
-        end
-
         can :read, ::User, UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
           UserPolicy.new(user, managed_user).read?
         end
@@ -223,6 +231,7 @@ module Pageflow
 
       if user.admin?
         can [:create, :configure_folder_on], Account
+        can :create_any, :accounts
         can :destroy, Account do |account|
           account.users.empty? && account.entries.empty?
         end

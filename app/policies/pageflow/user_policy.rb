@@ -29,9 +29,15 @@ module Pageflow
       end
     end
 
+    attr_reader :user
+
     def initialize(user, managed_user)
       @user = user
       @managed_user = managed_user
+    end
+
+    def create_any?
+      index?
     end
 
     def create?
@@ -39,7 +45,8 @@ module Pageflow
     end
 
     def index?
-      @user.memberships.on_accounts.where(role: 'manager').any?
+      @user.admin? ||
+        @user.memberships.on_accounts.where(role: 'manager').any?
     end
 
     def read?

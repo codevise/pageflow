@@ -90,6 +90,14 @@ module Pageflow
     end
 
     describe 'index?' do
+      it 'allows admin to index users' do
+        user = create(:user, :admin)
+
+        policy = UserPolicy.new(user, create(:user))
+
+        expect(policy).to permit_action(:index)
+      end
+
       it 'allows user with manager permissions on account to index users' do
         user = create(:user, :manager, on: create(:account))
 
@@ -112,6 +120,40 @@ module Pageflow
         policy = UserPolicy.new(user, create(:user))
 
         expect(policy).not_to permit_action(:index)
+      end
+    end
+
+    describe 'create_any?' do
+      it 'allows admin to view invite user form' do
+        user = create(:user, :admin)
+
+        policy = UserPolicy.new(user, create(:user))
+
+        expect(policy).to permit_action(:create_any)
+      end
+
+      it 'allows user with manager permissions on account to view invite user form' do
+        user = create(:user, :manager, on: create(:account))
+
+        policy = UserPolicy.new(user, User.new)
+
+        expect(policy).to permit_action(:create_any)
+      end
+
+      it 'does not allow user with publisher permissions on account to view invite user form' do
+        user = create(:user, :publisher, on: create(:account))
+
+        policy = UserPolicy.new(user, User.new)
+
+        expect(policy).not_to permit_action(:create_any)
+      end
+
+      it 'does not allow user with manager permissions on entry to view invite user form' do
+        user = create(:user, :manager, on: create(:entry))
+
+        policy = UserPolicy.new(user, User.new)
+
+        expect(policy).not_to permit_action(:create_any)
       end
     end
 

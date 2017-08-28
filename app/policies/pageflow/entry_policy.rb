@@ -86,6 +86,10 @@ module Pageflow
       query.has_at_least_role?(:publisher)
     end
 
+    def create_any?
+      AccountPolicy::Scope.new(@user, Account).entry_creatable.any?
+    end
+
     def create?
       query.has_at_least_account_role?(:publisher)
     end
