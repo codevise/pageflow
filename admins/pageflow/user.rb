@@ -43,7 +43,9 @@ module Pageflow
           row :locale do
             I18n.t('language', locale: user.locale)
           end
-          boolean_status_tag_row(:admin?, 'admin warning')
+          if authorized?(:see_admin_status, user)
+            boolean_status_tag_row(:admin?, 'admin warning')
+          end
         end
 
         para do

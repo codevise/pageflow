@@ -141,12 +141,34 @@ module Pageflow
                     to: :update_account_on,
                     topic: -> { create(:entry) }
 
-    it_behaves_like 'a membership-based permission that',
-                    allows: :publisher,
-                    but_forbids: :editor,
-                    of_account: -> (topic) { topic.account },
-                    to: :update_theming_on,
-                    topic: -> { create(:entry) }
+    context 'without only_admins_may_update_theming' do
+      before do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_theming = false
+        end
+      end
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: :publisher,
+                      but_forbids: :editor,
+                      of_account: ->(topic) { topic.account },
+                      to: :update_theming_on,
+                      topic: -> { create(:entry) }
+    end
+
+    context 'with only_admins_may_update_theming' do
+      before do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_theming = true
+        end
+      end
+
+      it_behaves_like 'an admin permission that',
+                      allows_admins_but_forbids_even_managers: true,
+                      of_account: ->(topic) { topic.account },
+                      to: :update_theming_on,
+                      topic: -> { create(:entry) }
+    end
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
@@ -155,12 +177,33 @@ module Pageflow
                     to: :manage_account_of,
                     topic: -> { create(:entry) }
 
-    it_behaves_like 'a membership-based permission that',
-                    allows: :manager,
-                    but_forbids: :publisher,
-                    of_account: -> (topic) { topic.account },
-                    to: :update_feature_configuration_on,
-                    topic: -> { create(:entry) }
+    context 'without only_admins_may_update_features' do
+      before do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_features = false
+        end
+      end
+      it_behaves_like 'a membership-based permission that',
+                      allows: :manager,
+                      but_forbids: :publisher,
+                      of_account: ->(topic) { topic.account },
+                      to: :update_feature_configuration_on,
+                      topic: -> { create(:entry) }
+    end
+
+    context 'with only_admins_may_update_features' do
+      before do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_features = true
+        end
+      end
+
+      it_behaves_like 'an admin permission that',
+                      allows_admins_but_forbids_even_managers: true,
+                      of_account: ->(topic) { topic.account },
+                      to: :update_feature_configuration_on,
+                      topic: -> { create(:entry) }
+    end
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,

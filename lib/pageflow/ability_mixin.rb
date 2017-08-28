@@ -210,6 +210,10 @@ module Pageflow
           UserPolicy.new(user, managed_user).read?
         end
 
+        can :see_admin_status, ::User do |managed_user|
+          UserPolicy.new(user, managed_user).see_admin_status?
+        end
+
         can :redirect_to_user,
             ::User,
             UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
