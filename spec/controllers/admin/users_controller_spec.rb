@@ -428,6 +428,8 @@ module Pageflow
     end
 
     describe '#me' do
+      render_views
+
       it 'allows users to update their profile' do
         user = create(:user,
                       first_name: 'Tom',
@@ -493,6 +495,19 @@ module Pageflow
         patch(:me, user: {admin: true})
 
         expect(user.reload).not_to be_admin
+      end
+
+      it 'does not change user name in navigation when validation fails' do
+        user = create(:user,
+                      first_name: 'Tom',
+                      last_name: 'Thomson')
+
+        sign_in(user)
+        patch(:me, user: {
+                first_name: ''
+              })
+
+        expect(response.body).to have_selector('#current_user > a', text: 'Tom Thomson')
       end
     end
 
