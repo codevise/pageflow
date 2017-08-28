@@ -76,7 +76,7 @@ module Pageflow
         sign_in(create(:user, :manager, on: account))
         get(:invitation)
 
-        expect(response.body).to have_content('Quota available')
+        expect(response.body).to have_content(QuotaDouble::AVAILABLE_DESCRIPTION)
       end
     end
 
@@ -309,6 +309,54 @@ module Pageflow
                })
 
           expect(flash[:alert]).to eq(I18n.t('pageflow.quotas.exhausted'))
+        end
+      end
+
+      context 'when config.allow_multiaccount_users is false' do
+        it 'allows create new user' do
+          account = create(:account)
+
+          pageflow_configure do |config|
+            config.allow_multiaccount_users = false
+          end
+
+          sign_in(create(:user, :manager, on: account))
+
+          expect {
+            post(:invitation,
+                 invitation_form: {
+                   user: attributes_for(:valid_user),
+                   membership: {
+                     entity_id: account.id,
+                     role: 'manager'
+                   }
+                 })
+          }.to change { account.users.count }
+        end
+
+        it 'does not allow to add existing users to another account' do
+          account = create(:account)
+          user = create(:user, email: 'existing_user@example.com')
+
+          pageflow_configure do |config|
+            config.allow_multiaccount_users = false
+          end
+
+          sign_in(create(:user, :manager, on: account))
+
+          expect {
+            post(:invitation,
+                 invitation_form: {
+                   user: attributes_for(:valid_user,
+                                        email: user.email),
+                   membership: {
+                     entity_id: account.id,
+                     role: 'member'
+                   }
+                 })
+          }.not_to change { account.users.count }
+
+          expect(response).to have_http_status(422)
         end
       end
     end
