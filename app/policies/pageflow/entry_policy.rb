@@ -124,7 +124,9 @@ module Pageflow
     end
 
     def update_theming_on?
-      publish_on_account_of?
+      user.admin? ||
+        (!permissions_config.only_admins_may_update_theming &&
+         publish_on_account_of?)
     end
 
     def manage_account_of?
@@ -132,7 +134,9 @@ module Pageflow
     end
 
     def update_feature_configuration_on?
-      manage_account_of?
+      user.admin? ||
+        (!permissions_config.only_admins_may_update_features &&
+         manage_account_of?)
     end
 
     def destroy?

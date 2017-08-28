@@ -15,6 +15,10 @@ module Pageflow
         AccountPolicy.new(user, account).update?
       end
 
+      can :update_feature_configuration_on, Account do |account|
+        AccountPolicy.new(user, account).update_feature_configuration_on?
+      end
+
       can :add_member_to, Account do |account|
         AccountPolicy.new(user, account).add_member_to?
       end
@@ -216,6 +220,10 @@ module Pageflow
 
         can :read, ::User, UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
           UserPolicy.new(user, managed_user).read?
+        end
+
+        can :see_admin_status, ::User do |managed_user|
+          UserPolicy.new(user, managed_user).see_admin_status?
         end
 
         can :redirect_to_user,

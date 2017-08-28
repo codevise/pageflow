@@ -9,6 +9,35 @@ module Pageflow
                     to: :read,
                     topic: -> { create(:user, :member, on: create(:account)) }
 
+    context 'without only_admins_may_see_admin_boolean' do
+      before do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_see_admin_boolean = false
+        end
+      end
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: :manager,
+                      but_forbids: :publisher,
+                      of_account: ->(topic) { topic.accounts.first },
+                      to: :see_admin_status,
+                      topic: -> { create(:user, :member, on: create(:account)) }
+    end
+
+    context 'with only_admins_may_see_admin_boolean' do
+      before do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_see_admin_boolean = true
+        end
+      end
+
+      it_behaves_like 'an admin permission that',
+                      allows_admins_but_forbids_even_managers: true,
+                      of_account: ->(topic) { topic.accounts.first },
+                      to: :see_admin_status,
+                      topic: -> { create(:user, :member, on: create(:account)) }
+    end
+
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,

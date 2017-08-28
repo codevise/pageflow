@@ -169,6 +169,12 @@ module Pageflow
         entry.theming ||= entry.account.default_theming
       end
 
+      before_update do |entry|
+        if entry.account_id_changed? && !authorized?(:update_theming_on, resource)
+          entry.theming = entry.account.default_theming
+        end
+      end
+
       def update
         update! do |success, _|
           success.html { redirect_to(admin_entry_path(resource, params.slice(:tab))) }

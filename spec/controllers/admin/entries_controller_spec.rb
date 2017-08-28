@@ -80,6 +80,37 @@ describe Admin::EntriesController do
         expect(response.body).to have_selector('.admin_tabs_view .tabs .features')
       end
 
+      context 'with config.permissions.only_admins_may_update_features' do
+        it 'account manager does not see features tab' do
+          pageflow_configure do |config|
+            config.permissions.only_admins_may_update_features = true
+          end
+
+          user = create(:user)
+          account = create(:account, with_manager: user)
+          entry = create(:entry, account: account)
+
+          sign_in(user)
+          get(:show, id: entry.id)
+
+          expect(response.body).not_to have_selector('.admin_tabs_view .tabs .features')
+        end
+
+        it 'admin sees features tab' do
+          pageflow_configure do |config|
+            config.permissions.only_admins_may_update_features = true
+          end
+
+          user = create(:user, admin: true)
+          entry = create(:entry)
+
+          sign_in(user)
+          get(:show, id: entry.id)
+
+          expect(response.body).to have_selector('.admin_tabs_view .tabs .features')
+        end
+      end
+
       it 'account publisher does not see features tab' do
         user = create(:user)
         account = create(:account, with_publisher: user)
@@ -452,6 +483,76 @@ describe Admin::EntriesController do
       expect(entry.reload.account).to eq(other_account)
     end
 
+    context 'without config.permissions.only_admins_may_update_theming' do
+      it 'does not change entry theming when account publisher moves entry to other account' do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_theming = false
+        end
+
+        user = create(:user)
+        account = create(:account, with_publisher: user)
+        other_account = create(:account, with_publisher: user)
+        entry = create(:entry, account: account)
+
+        sign_in(user)
+        patch :update, id: entry, entry: {account_id: other_account}
+
+        expect(entry.reload.theming).to eq(account.default_theming)
+      end
+    end
+
+    context 'with config.permissions.only_admins_may_update_theming' do
+      it 'updates entry theming to default theming of new account ' \
+         ' when account publisher moves entry to other account' do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_theming = true
+        end
+
+        user = create(:user)
+        account = create(:account, with_publisher: user)
+        other_account = create(:account, with_publisher: user)
+        entry = create(:entry, account: account)
+
+        sign_in(user)
+        patch :update, id: entry, entry: {account_id: other_account}
+
+        expect(entry.reload.theming).to eq(other_account.default_theming)
+      end
+
+      it 'does not change custom entry theming when account publisher updates entry ' \
+         'without changing the account' do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_theming = true
+        end
+
+        user = create(:user)
+        account = create(:account, with_publisher: user)
+        custom_theming = create(:theming)
+        entry = create(:entry, account: account, theming: custom_theming)
+
+        sign_in(user)
+        patch :update, id: entry, entry: {title: 'Some new title'}
+
+        expect(entry.reload.theming).to eq(custom_theming)
+      end
+
+      it 'does not change entry theming when admin moves entry to other account' do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_theming = true
+        end
+
+        user = create(:user, :admin)
+        account = create(:account)
+        other_account = create(:account)
+        entry = create(:entry, account: account)
+
+        sign_in(user)
+        patch :update, id: entry, entry: {account_id: other_account}
+
+        expect(entry.reload.theming).to eq(account.default_theming)
+      end
+    end
+
     it 'allows admin to change account' do
       account = create(:account)
       other_account = create(:account)
@@ -592,6 +693,49 @@ describe Admin::EntriesController do
             })
 
       expect(entry.reload.feature_state('fancy_page_type')).to eq(true)
+    end
+
+    context 'with config.permissions.only_admins_may_update_features' do
+      it 'allows admin to update feature_configuration through feature_states param' do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_features = true
+        end
+
+        user = create(:user, :admin)
+        entry = create(:entry)
+
+        sign_in(user)
+        patch(:update,
+              id: entry.id,
+              entry: {
+                feature_states: {
+                  fancy_page_type: 'enabled'
+                }
+              })
+
+        expect(entry.reload.feature_state('fancy_page_type')).to eq(true)
+      end
+
+      it 'does not allow account manager to update feature_configuration' do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_features = true
+        end
+
+        user = create(:user)
+        account = create(:account, with_manager: user)
+        entry = create(:entry, account: account)
+
+        sign_in(user)
+        patch(:update,
+              id: entry.id,
+              entry: {
+                feature_states: {
+                  fancy_page_type: 'enabled'
+                }
+              })
+
+        expect(entry.reload.feature_state('fancy_page_type')).not_to eq(true)
+      end
     end
 
     it 'does not allow account publisher and entry manager to update feature_configuration' do

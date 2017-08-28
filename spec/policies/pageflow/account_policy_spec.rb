@@ -44,6 +44,35 @@ module Pageflow
                     to: :update,
                     topic: -> { create(:account) }
 
+    context 'without only_admins_may_update_features' do
+      before do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_features = false
+        end
+      end
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: :manager,
+                      but_forbids: :publisher,
+                      of_account: ->(topic) { topic },
+                      to: :update_feature_configuration_on,
+                      topic: -> { create(:account) }
+    end
+
+    context 'with only_admins_may_update_features' do
+      before do
+        pageflow_configure do |config|
+          config.permissions.only_admins_may_update_features = true
+        end
+      end
+
+      it_behaves_like 'an admin permission that',
+                      allows_admins_but_forbids_even_managers: true,
+                      of_account: ->(topic) { topic },
+                      to: :update_feature_configuration_on,
+                      topic: -> { create(:account) }
+    end
+
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,

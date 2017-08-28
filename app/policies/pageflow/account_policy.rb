@@ -113,6 +113,12 @@ module Pageflow
       manage?
     end
 
+    def update_feature_configuration_on?
+      user.admin? ||
+        (!permissions_config.only_admins_may_update_features &&
+         manage?)
+    end
+
     def add_member_to?
       manage?
     end
