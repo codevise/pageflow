@@ -85,7 +85,7 @@ pageflow.app.addInitializer(function(options) {
   pageflow.editor.fileTypes.register('text_track_files', {
     model: pageflow.TextTrackFile,
     matchUpload: function(upload) {
-      return upload.type.match(/\/vtt$/) ||
+      return upload.name.match(/\.vtt$/) ||
         upload.name.match(/\.srt$/);
     },
     skipUploadConfirmation: true,
