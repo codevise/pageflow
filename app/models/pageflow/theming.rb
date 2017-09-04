@@ -3,7 +3,7 @@ module Pageflow
     include ThemeReferencer
 
     belongs_to :account
-    has_many :widgets, as: :subject
+    has_many :widgets, as: :subject, dependent: :destroy
 
     has_many :entries
 
