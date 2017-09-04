@@ -39,5 +39,19 @@ module Pageflow
         expect(video_file.present_outputs).to include(:'hls-playlist')
       end
     end
+
+    describe '#encode_highdef?' do
+      it 'returns false by default' do
+        video_file = build(:video_file)
+
+        expect(video_file.encode_highdef?).to eq(false)
+      end
+
+      it 'returns true if entry has highdef_video_encoding feature enabled' do
+        video_file = build(:video_file, :with_highdef_encoding)
+
+        expect(video_file.encode_highdef?).to eq(true)
+      end
+    end
   end
 end

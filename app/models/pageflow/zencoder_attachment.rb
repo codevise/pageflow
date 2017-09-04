@@ -1,12 +1,13 @@
+require 'uri'
+
 module Pageflow
   class ZencoderAttachment
-
     cattr_accessor :default_options
     self.default_options = {
-      path: "/:zencoder_asset_version/:host/:class/:id_partition/:filename",
-      url: ":zencoder_protocol//:zencoder_host_alias:zencoder_path",
-      hls_url: ":zencoder_protocol//:zencoder_hls_host_alias:zencoder_path",
-      hls_origin_url: ":zencoder_protocol//:zencoder_hls_origin_host_alias:zencoder_path"
+      path: '/:zencoder_asset_version/:host/:class/:id_partition/:filename',
+      url: ':zencoder_protocol//:zencoder_host_alias:zencoder_path',
+      hls_url: ':zencoder_protocol//:zencoder_hls_host_alias:zencoder_path',
+      hls_origin_url: ':zencoder_protocol//:zencoder_hls_origin_host_alias:zencoder_path'
     }
 
     attr_reader :file_name_pattern, :instance, :options, :styles
@@ -42,6 +43,16 @@ module Pageflow
     def url(url_options = {})
       ensure_default_protocol(interpolate(url_pattern(url_options)),
                               url_options)
+    end
+
+    def url_relative_to(attachment)
+      dir_path = File.dirname(URI.parse(attachment.url).path)
+
+      unless URI.parse(url).path.start_with?(dir_path)
+        raise("Could not generate relative url for #{url} based on #{attachment.url}.")
+      end
+
+      url.split("#{dir_path}/", 2).last
     end
 
     private

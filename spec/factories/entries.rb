@@ -56,6 +56,10 @@ module Pageflow
           create(:revision, :published, entry: entry, password_protected: true)
         end
       end
+
+      trait :with_highdef_video_encoding do
+        feature_states('highdef_video_encoding' => true)
+      end
     end
   end
 end

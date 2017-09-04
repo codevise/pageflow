@@ -34,7 +34,7 @@ module Pageflow
     private
 
     def mp4_highdef_definitions
-      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      return [] unless video_file.encode_highdef?
       [transferable(mp4_4k_definition), transferable(mp4_fullhd_definition)]
     end
 
@@ -128,7 +128,7 @@ module Pageflow
     end
 
     def dash_highdef_definitions
-      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      return [] unless video_file.encode_highdef?
 
       [
         non_transferable(dash_fullhd_definition),
@@ -149,7 +149,7 @@ module Pageflow
     end
 
     def hls_highdef_definitions
-      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      return [] unless video_file.encode_highdef?
 
       [
         non_transferable(hls_fullhd_definition),
@@ -243,29 +243,29 @@ module Pageflow
       [
         {
           source: 'dash-low',
-          path: video_file.dash_low.url
+          path: video_file.dash_low.url_relative_to(video_file.dash_playlist)
         },
         {
           source: 'dash-medium',
-          path: video_file.dash_medium.url
+          path: video_file.dash_medium.url_relative_to(video_file.dash_playlist)
         },
         {
           source: 'dash-high',
-          path: video_file.dash_high.url
+          path: video_file.dash_high.url_relative_to(video_file.dash_playlist)
         }
       ] + dash_highdef_stream_definitions
     end
 
     def dash_highdef_stream_definitions
-      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      return [] unless video_file.encode_highdef?
       [
         {
           source: 'dash-fullhd',
-          path: video_file.dash_fullhd.url
+          path: video_file.dash_fullhd.url_relative_to(video_file.dash_playlist)
         },
         {
           source: 'dash-4k',
-          path: video_file.dash_4k.url
+          path: video_file.dash_4k.url_relative_to(video_file.dash_playlist)
         }
       ]
     end
@@ -350,33 +350,33 @@ module Pageflow
       [
         {
           source: 'hls-medium',
-          path: video_file.hls_medium.url(host: :hls_origin, default_protocol: 'http'),
+          path: video_file.hls_medium.url_relative_to(video_file.hls_playlist),
           bandwidth: 1769
         },
         {
           source: 'hls-low',
-          path: video_file.hls_low.url(host: :hls_origin, default_protocol: 'http'),
+          path: video_file.hls_low.url_relative_to(video_file.hls_playlist),
           bandwidth: 619
         },
         {
           source: 'hls-high',
-          path: video_file.hls_high.url(host: :hls_origin, default_protocol: 'http'),
+          path: video_file.hls_high.url_relative_to(video_file.hls_playlist),
           bandwidth: 3538
         }
       ] + hls_highdef_stream_definitions
     end
 
     def hls_highdef_stream_definitions
-      return [] unless video_file.entry.feature_state('highdef_video_encoding')
+      return [] unless video_file.encode_highdef?
       [
         {
           source: 'hls-fullhd',
-          path: video_file.hls_fullhd.url(host: :hls_origin, default_protocol: 'http'),
+          path: video_file.hls_fullhd.url_relative_to(video_file.hls_playlist),
           bandwidth: 8575
         },
         {
           source: 'hls-4k',
-          path: video_file.hls_4k.url(host: :hls_origin, default_protocol: 'http'),
+          path: video_file.hls_4k.url_relative_to(video_file.hls_playlist),
           bandwidth: 32000
         }
       ]
@@ -404,7 +404,7 @@ module Pageflow
       # these cases the input file is just a tiny bit larger than the
       # next lower resolution, so we do not really care if the SMIL
       # file which does not include the higher quality does not win.
-      if video_file.entry.feature_state('highdef_video_encoding')
+      if video_file.encode_highdef?
         [
           non_transferable(smil_definition.merge(streams: smil_default_stream_definitions,
                                                  skip: {
