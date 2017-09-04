@@ -39,16 +39,28 @@ module Pageflow
             end
             column do |revision|
               text_node(link_to(t('pageflow.admin.entries.show'), pageflow.revision_path(revision), :class => 'show'))
-              text_node(link_to(t('pageflow.admin.entries.restore'), restore_admin_revision_path(revision), :method => :post, :class => 'restore', :data => {:confirm => I18n.t('pageflow.admin.entries.confirm_restore')}))
+              if authorized?(:restore, entry)
+                text_node(link_to(t('pageflow.admin.entries.restore'),
+                                  restore_admin_revision_path(revision),
+                                  method: :post,
+                                  class: 'restore',
+                                  data: {
+                                    confirm: I18n.t(
+                                      'pageflow.admin.entries.confirm_restore'
+                                    )
+                                  }))
+              end
             end
           end
         end
 
         para(I18n.t('pageflow.admin.entries.published_revision_legend'), :class => 'legend published')
 
-        text_node(button_to(t('pageflow.admin.entries.snapshot'),
-                            snapshot_admin_entry_path(entry),
-                            :method => :post))
+        if authorized?(:snapshot, entry)
+          text_node(button_to(t('pageflow.admin.entries.snapshot'),
+                              snapshot_admin_entry_path(entry),
+                              method: :post))
+        end
       end
     end
   end
