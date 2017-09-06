@@ -7,6 +7,7 @@
  */
 
 /*jshint browser: true, jquery: true */
+// We shrank the plugin so that it contains only what Pageflow needs.
 (function($){
   "use strict";
 
@@ -50,17 +51,6 @@
     $(document).on("fullscreenchange mozfullscreenchange webkitfullscreenchange", function(){
       // The full screen status is automatically
       // passed to our callback as an argument.
-
-
-      // Customized for Pageflow-Background-Audio
-
-      if(pageflow.activeBackgroundVideo) {
-        setTimeout(function() {
-          if(pageflow.activeBackgroundVideo.paused() && !pageflow.features.has('mobile platform')) {
-            pageflow.activeBackgroundVideo.play();
-          }
-        }, 300);
-      }
       callback(fullScreenStatus());
     });
   }
@@ -69,7 +59,7 @@
   $.support.fullscreen = supportFullScreen();
 
   // Creating the plugin
-  $.fn.fullScreen = function(props){
+  $.fn.fullScreen = function(options){
     if(!$.support.fullscreen || this.length !== 1) {
       // The plugin can be called only
       // on one element at a time
@@ -83,46 +73,9 @@
       return this;
     }
 
-    // You can potentially pas two arguments a color
-    // for the background and a callback function
+    var elem = this;
 
-    var options = $.extend({
-        'background'      : '#111',
-        'callback'        : $.noop( ),
-        'fullscreenClass' : 'fullScreen'
-      }, props),
-
-      elem = this,
-
-    // This temporary div is the element that is
-    // actually going to be enlarged in full screen
-
-      fs = $('<div>', {
-        'css' : {
-          'overflow-y' : 'auto',
-          'background' : options.background,
-          'width'      : '100%',
-          'height'     : '100%'
-        }
-      })
-        .insertBefore(elem)
-        .append(elem);
-
-    // You can use the .fullScreen class to
-    // apply styling to your element
-    elem.addClass( options.fullscreenClass );
-
-    // Inserting our element in the temporary
-    // div, after which we zoom it in fullscreen
-
-    requestFullScreen(fs.get(0));
-
-    fs.click(function(e){
-      if(e.target == this){
-        // If the black bar was clicked
-        cancelFullScreen();
-      }
-    });
+    requestFullScreen(elem.get(0));
 
     elem.cancel = function(){
       cancelFullScreen();
@@ -134,25 +87,14 @@
         // We have exited full screen.
         // Detach event listener
         $(document).off( 'fullscreenchange mozfullscreenchange webkitfullscreenchange' );
-        // Remove the class and destroy
-        // the temporary div
-
-        elem.removeClass( options.fullscreenClass ).insertBefore(fs);
-        fs.remove();
       }
 
-      // Calling the facultative user supplied callback
+      // Calling callback if user provided it
       if(options.callback) {
         options.callback(fullScreen);
       }
     });
 
     return elem;
-  };
-
-  $.fn.cancelFullScreen = function( ) {
-    cancelFullScreen();
-
-    return this;
   };
 }(jQuery));
