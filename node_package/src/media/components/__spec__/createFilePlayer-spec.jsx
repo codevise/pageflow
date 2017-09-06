@@ -345,7 +345,7 @@ describe('createFilePlayer', () => {
 
       // Emulate VideoJS textTracks interface
       textTracks: function() {
-        return this.el ? [].slice.call(this.el.querySelectorAll('track')).map(track => {
+        var list = this.el ? [].slice.call(this.el.querySelectorAll('track')).map(track => {
           const fakeTrack = {};
 
           ['id', 'label', 'mode', 'kind', 'src'].forEach(property =>
@@ -372,6 +372,9 @@ describe('createFilePlayer', () => {
 
           return fakeTrack;
         }) : [];
+
+        list.on = sinon.stub();
+        return list;
       },
 
       play: sinon.spy(),
