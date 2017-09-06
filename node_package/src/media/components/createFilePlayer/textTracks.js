@@ -3,6 +3,10 @@ export function initTextTracks(player, getActiveTexTrackFileId, getPosition) {
     updateOnNextPlay(player, getActiveTexTrackFileId, getPosition);
   });
 
+  player.textTracks().on('addtrack', () => {
+    updateTextTracks(player, null, getActiveTexTrackFileId(), getPosition());
+  });
+
   updateTextTracks(player, null, getActiveTexTrackFileId(), getPosition());
   updateOnNextPlay(player, getActiveTexTrackFileId, getPosition);
 }
