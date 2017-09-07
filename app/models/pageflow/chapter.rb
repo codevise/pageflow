@@ -3,7 +3,7 @@ module Pageflow
     include SerializedConfiguration
 
     belongs_to :storyline, touch: true
-    has_many :pages, -> { order('position ASC') }
+    has_many :pages, -> { order('position ASC') }, dependent: :destroy
 
     delegate :entry, to: :storyline
 
