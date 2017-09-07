@@ -41,7 +41,7 @@ export function textTracks({file, defaultTextTrackFileId = () => {}}) {
 
       return {
         files: files.sort((file1, file2) =>
-                          file1.displayLabel.localeCompare(file2.displayLabel)
+                          (file1.displayLabel || '').localeCompare(file2.displayLabel || '')
                          ),
         autoFile,
         activeFileId: getActiveTextTrackFileId(files,
