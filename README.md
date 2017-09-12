@@ -82,10 +82,15 @@ the database:
 
 ### Gem Dependencies
 
-Add this line to your application's Gemfile:
+Add these lines to your application's Gemfile, replacing `X.Y.Z` with
+the current Pageflow version number. It is recommended to depend on a
+specific minor version using the pessimistic version constraint
+operator. See Pageflow's
+[versioning policy](https://github.com/codevise/pageflow/blob/master/doc/versioning_policy)
+for details.
 
     # Gemfile
-    gem 'pageflow'
+    gem 'pageflow', '~> X.Y.Z'
 
     # Required for Rails 4.2 compatibility
     gem 'state_machine', git: 'https://github.com/codevise/state_machine.git'
