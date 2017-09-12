@@ -73,25 +73,57 @@ module Pageflow
                       topic: -> { create(:account) }
     end
 
-    it_behaves_like 'a membership-based permission that',
-                    allows: :manager,
-                    but_forbids: :publisher,
-                    of_account: -> (topic) { topic },
-                    to: :add_member_to,
-                    topic: -> { create(:account) }
+    context 'with allow_multiaccount_users' do
+      before do
+        pageflow_configure do |config|
+          config.allow_multiaccount_users = true
+        end
+      end
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: :manager,
+                      but_forbids: :publisher,
+                      of_account: ->(topic) { topic },
+                      to: :add_member_to,
+                      topic: -> { create(:account) }
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: :manager,
+                      but_forbids: :publisher,
+                      of_account: ->(topic) { topic },
+                      to: :destroy_membership_on,
+                      topic: -> { create(:account) }
+    end
+
+    context 'without allow_multiaccount_users' do
+      before do
+        pageflow_configure do |config|
+          config.allow_multiaccount_users = false
+        end
+      end
+
+      it 'does not even allow admins to add members to accounts' do
+        account = create(:account)
+        user = create(:user, :admin)
+        policy = AccountPolicy.new(user, account)
+
+        expect(policy).not_to permit_action(:add_member_to)
+      end
+
+      it 'does not even allow admins to remove members from accounts' do
+        account = create(:account)
+        user = create(:user, :admin)
+        policy = AccountPolicy.new(user, account)
+
+        expect(policy).not_to permit_action(:destroy_membership_on)
+      end
+    end
 
     it_behaves_like 'a membership-based permission that',
                     allows: :manager,
                     but_forbids: :publisher,
                     of_account: -> (topic) { topic },
                     to: :edit_role_on,
-                    topic: -> { create(:account) }
-
-    it_behaves_like 'a membership-based permission that',
-                    allows: :manager,
-                    but_forbids: :publisher,
-                    of_account: -> (topic) { topic },
-                    to: :destroy_membership_on,
                     topic: -> { create(:account) }
 
     it_behaves_like 'an admin permission that',

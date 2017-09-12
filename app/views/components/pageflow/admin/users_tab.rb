@@ -40,7 +40,9 @@ module Pageflow
               end
             end
           end
-          add_membership_button_if_needed(current_user, account, 'account')
+          if authorized?(:add_member_to, account)
+            add_membership_button(current_user, account, 'account')
+          end
         end
       end
     end

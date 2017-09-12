@@ -74,6 +74,23 @@ module Pageflow
 
         expect(rendered).to have_selector('a', class: 'disabled')
       end
+
+      it 'does not render add account button when multiaccounts are off' do
+        pageflow_configure do |config|
+          config.allow_multiaccount_users = false
+        end
+        first_account = create(:account)
+        user = create(:user, :member, on: first_account)
+        account_manager = create(:user, :manager, on: first_account)
+        sign_in(account_manager)
+
+        render do
+          add_membership_button_if_needed(user, user, 'account')
+        end
+
+        expect(rendered).to_not have_selector('a', text: 'Add Account')
+        expect(rendered).to_not have_selector('a', class: 'disabled')
+      end
     end
   end
 end

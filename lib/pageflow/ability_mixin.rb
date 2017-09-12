@@ -53,6 +53,10 @@ module Pageflow
         UserPolicy.new(user, User.new).create_any?
       end
 
+      can :add_account_to, :users do
+        UserPolicy.new(user, User.new).add_account_to?
+      end
+
       can :set_admin, ::User do |managed_user|
         UserPolicy.new(user, managed_user).set_admin?
       end

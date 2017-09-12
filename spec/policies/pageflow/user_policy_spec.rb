@@ -211,5 +211,29 @@ module Pageflow
         expect(policy).not_to permit_action(:create)
       end
     end
+
+    context 'with allow_multiaccount_users' do
+      it 'allows to add account to user' do
+        pageflow_configure do |config|
+          config.allow_multiaccount_users = true
+        end
+
+        policy = UserPolicy.new(create(:user), create(:user))
+
+        expect(policy).to permit_action(:add_account_to)
+      end
+    end
+
+    context 'without allow_multiaccount_users' do
+      it 'does not allow to add account to user' do
+        pageflow_configure do |config|
+          config.allow_multiaccount_users = false
+        end
+
+        policy = UserPolicy.new(create(:user), create(:user))
+
+        expect(policy).to_not permit_action(:add_account_to)
+      end
+    end
   end
 end

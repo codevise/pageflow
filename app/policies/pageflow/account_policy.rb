@@ -120,7 +120,9 @@ module Pageflow
     end
 
     def add_member_to?
-      manage?
+      Pageflow.config.allow_multiaccount_users &&
+        (user.admin? ||
+         query.has_at_least_role?(:manager))
     end
 
     def edit_role_on?
@@ -128,7 +130,7 @@ module Pageflow
     end
 
     def destroy_membership_on?
-      edit_role_on?
+      add_member_to?
     end
 
     def admin?

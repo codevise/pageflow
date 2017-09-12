@@ -37,12 +37,36 @@ module Pageflow
                     to: :destroy,
                     topic: -> { create(:entry_membership) }
 
-    it_behaves_like 'a membership-based permission that',
-                    allows: :manager,
-                    but_forbids: :publisher,
-                    of_account: -> (topic) { topic.entity },
-                    to: :destroy,
-                    topic: -> { create(:account_membership) }
+    context 'with allow_multiaccount_users' do
+      before do
+        pageflow_configure do |config|
+          config.allow_multiaccount_users = true
+        end
+      end
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: :manager,
+                      but_forbids: :publisher,
+                      of_account: ->(topic) { topic.entity },
+                      to: :destroy,
+                      topic: -> { create(:account_membership) }
+    end
+
+    context 'without allow_multiaccount users' do
+      before do
+        pageflow_configure do |config|
+          config.allow_multiaccount_users = false
+        end
+      end
+
+      it 'does not allow even admins to destroy an account membership' do
+        membership = create(:account_membership)
+        user = create(:user, :admin)
+        policy = MembershipPolicy.new(user, membership)
+
+        expect(policy).not_to permit_action(:destroy)
+      end
+    end
 
     describe '.indexable' do
       it 'includes all memberships for admins' do
