@@ -3,3 +3,4 @@ insert_after: "# CHANGELOG\n"
 label_prefixes:
   bug: "Bug fix:"
   "breaking change": "Breaking change:"
+  "manual update step": "Manual update step:"
