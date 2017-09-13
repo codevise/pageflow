@@ -21,8 +21,10 @@ engine provided by the `pageflow` gem, a pragmatic variation of the
 semantic versioning strategy is applied.
 
 - Patch level version updates: Only bug fixes, no API changes, no
-  manual update steps, no new features, except as necessary for
-  security features.
+  required manual update steps, no new features, except as necessary 
+  for security features. There may be optional manual update steps
+  like database migrations that only operate on data and leave the
+  schema unchanged.
 
 - Minior version updates: New features, no API changes, may require
   manual update steps.
@@ -41,5 +43,4 @@ Manual update steps include (but are not limited to) tasks like:
 For host applications, it is thus recommended to depend on a specific
 minor version of the `pageflow` gem (i.e. `~> 12.1.0`). That way patch
 level updates can be applied automatically via `bundle update
-pageflow`. For minor version updates, refer to the changelog for
-manual upate instructions.
+pageflow`. Always refer to the changelog for manual update instructions.
