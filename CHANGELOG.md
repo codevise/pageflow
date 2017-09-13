@@ -1,5 +1,33 @@
 # CHANGELOG
 
+### Version 12.0.2
+
+2017-09-13
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.1...v12.0.2)
+
+#### Manual Update Step
+
+The database migration for Pageflow 12.0 which updates output
+presences of existing video files is missing the HLS variant. This
+causes HLS urls of existing video files to be rendered as `undefined`.
+([#870](https://github.com/codevise/pageflow/pull/870))
+
+To apply the fix, install migrations and migrate your database.
+
+#### Bug Fixes
+
+- Update videojs and videojs-dash to improve Dash playback
+  ([#843](https://github.com/codevise/pageflow/pull/843))
+- Bug fix: Prevent calling `localeCompare` of null.
+  ([#865](https://github.com/codevise/pageflow/pull/865))
+- Bug fix: Prevent background videos from stopping on fullscreen toggle
+  ([#864](https://github.com/codevise/pageflow/pull/864))
+- Bug fix: Activate text track after it has been added
+  ([#859](https://github.com/codevise/pageflow/pull/859))
+- Bug fix: Fix file type detection for vtt uploads on safari
+  ([#851](https://github.com/codevise/pageflow/pull/851))
+
 ### Version 12.0.1
 
 2017-08-25
