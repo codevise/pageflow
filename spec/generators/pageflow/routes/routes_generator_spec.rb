@@ -12,10 +12,30 @@ module Pageflow
           "Rails.application.routes.draw do\n  ActiveAdmin.routes(self)\nend"
       end
 
+      let(:routes) { file('config/routes.rb') }
+
       it 'adds the Pageflow routes' do
         run_generator
-        routes = file('config/routes.rb')
+
         expect(routes).to contain("  Pageflow.routes(self)\n")
+      end
+
+      it 'adds Resque::Server' do
+        run_generator
+
+        expect(routes).to contain("Resque::Server")
+      end
+
+      it 'requires resque/server' do
+        run_generator
+
+        expect(routes).to contain("require 'resque/server'")
+      end
+
+      it 'requires resque_scheduler/server' do
+        run_generator
+
+        expect(routes).to contain("require 'resque_scheduler/server'")
       end
     end
   end
