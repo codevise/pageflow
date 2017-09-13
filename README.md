@@ -156,6 +156,10 @@ Consider using the [foreman gem](https://github.com/ddollar/foreman) to start al
 these processes (including the Rails server) with a single command in your
 development environment.
 
+The built-in Resque web server is mounted at `/background_jobs`. Use it to
+inspect the state of background jobs, and restart failed jobs. This functionality
+is only available for admins.
+
 ## Troubleshooting
 
 If you run into problems during the installation of Pageflow, please refer to the [Troubleshooting](https://github.com/codevise/pageflow/wiki/Troubleshooting) wiki
