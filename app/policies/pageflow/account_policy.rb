@@ -99,24 +99,20 @@ module Pageflow
       publish?
     end
 
-    def manage?
+    def read?
       user.admin? ||
         (query.has_at_least_role?(:manager) &&
          Pageflow.config.allow_multiaccount_users)
     end
 
-    def read?
-      manage?
-    end
-
     def update?
-      manage?
+      read?
     end
 
     def update_feature_configuration_on?
       user.admin? ||
         (!permissions_config.only_admins_may_update_features &&
-         manage?)
+         read?)
     end
 
     def add_member_to?
@@ -147,12 +143,6 @@ module Pageflow
       admin? ||
         (Pageflow.config.allow_multiaccount_users &&
          @user.memberships.on_accounts.as_manager.any?)
-    end
-
-    private
-
-    def allows?(roles)
-      user.memberships.where(role: roles, entity: @account).any?
     end
   end
 end

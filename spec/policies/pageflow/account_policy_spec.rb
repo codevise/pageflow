@@ -27,13 +27,6 @@ module Pageflow
                     allows: :manager,
                     but_forbids: :publisher,
                     of_account: -> (topic) { topic },
-                    to: :manage,
-                    topic: -> { create(:account) }
-
-    it_behaves_like 'a membership-based permission that',
-                    allows: :manager,
-                    but_forbids: :publisher,
-                    of_account: -> (topic) { topic },
                     to: :read,
                     topic: -> { create(:account) }
 
