@@ -1,7 +1,7 @@
 module Pageflow
   module Admin
-    class AddMembershipButtonIfNeeded < ViewComponent
-      builder_method :add_membership_button_if_needed
+    class AddMembershipButton < ViewComponent
+      builder_method :add_membership_button
 
       def build(user, parent, entity_type)
         if parent.is_a?(User)
