@@ -20,8 +20,8 @@ Semmy::Tasks.install do |config|
   config.source_files_with_docs_tags = '{app,lib,node_package/src}/**/*.{js,jsx,rb,scss}'
 end
 
-require File.expand_path('spec/support/pageflow/rails_version', File.dirname(__FILE__))
-APP_RAKEFILE = File.expand_path("../spec/dummy/rails-#{Pageflow::RailsVersion.detect}/Rakefile", __FILE__)
+require File.expand_path('spec/support/pageflow/dummy/app', File.dirname(__FILE__))
+APP_RAKEFILE = File.expand_path("../#{Pageflow::Dummy::App.new.directory}/Rakefile", __FILE__)
 
 load 'rails/tasks/engine.rake' if File.exists?(APP_RAKEFILE)
 load File.expand_path('lib/tasks/pageflow_tasks.rake', File.dirname(__FILE__))
