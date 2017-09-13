@@ -6,6 +6,8 @@ rvm:
 # User container based travis infrastructure which allows caching
 # features for open source projects.
 sudo: false
+dist: precise
+
 cache:
   bundler: true
   directories:
