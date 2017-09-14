@@ -11,6 +11,6 @@ pageflow.mediaPlayer.useSlimPlayerControlsDuringPhonePlayback = function(player)
       });
     }
 
-    originalPlay.apply(this, arguments);
+    return originalPlay.apply(this, arguments);
   };
 };
