@@ -28,9 +28,19 @@ describe('createReducer creates function that', () => {
       const {timeUpdate} = actionCreators();
       const reducer = createReducer();
 
-      const nextState = reducer({currentTime: 30}, timeUpdate({currentTime: 40}));
+      const nextState = reducer({currentTime: 30},
+                                timeUpdate({currentTime: 40, duration: 60}));
 
       expect(nextState.currentTime).to.eq(40);
+    });
+
+    it('updates duration', () => {
+      const {timeUpdate} = actionCreators();
+      const reducer = createReducer();
+
+      const nextState = reducer({}, timeUpdate({currentTime: 40, duration: 60}));
+
+      expect(nextState.duration).to.eq(60);
     });
   });
 
