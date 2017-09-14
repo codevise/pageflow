@@ -23,6 +23,8 @@ before_install:
 before_script:
   - bin/npm install
   - bin/npm run build
+  - bin/rake pageflow:dummy
+  - bin/rake app:assets:precompile
 
 script:
   - bin/rspec
