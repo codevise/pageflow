@@ -48,21 +48,23 @@ export default function({
           playsInline: props.playsInline
         });
 
-        initPlayerFromPlayerState(this.player,
-                                  () => this.props.playerState,
-                                  this.props.playerActions,
-                                  this.prevFileId,
-                                  this.props.file.id);
+        this.player.ready(() => {
+          initPlayerFromPlayerState(this.player,
+                                    () => this.props.playerState,
+                                    this.props.playerActions,
+                                    this.prevFileId,
+                                    this.props.file.id);
 
-        if (!this.displaysTextTracksInNativePlayer) {
-          initTextTracks(this.player,
-                         () => this.props.textTracks.activeFileId,
-                         () => this.props.textTrackPosition);
-        }
+          if (!this.displaysTextTracksInNativePlayer) {
+            initTextTracks(this.player,
+                           () => this.props.textTracks.activeFileId,
+                           () => this.props.textTrackPosition);
+          }
 
-        watchPlayer(this.player, this.props.playerActions);
+          watchPlayer(this.player, this.props.playerActions);
 
-        this.prevFileId = this.props.file.id;
+          this.prevFileId = this.props.file.id;
+        });
       };
 
       this.disposeMediaTag = () => {

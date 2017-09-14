@@ -343,6 +343,10 @@ describe('createFilePlayer', () => {
       duration: sinon.stub(),
       isAudio: sinon.stub(),
 
+      ready: function(callback) {
+        callback();
+      },
+
       // Emulate VideoJS textTracks interface
       textTracks: function() {
         var list = this.el ? [].slice.call(this.el.querySelectorAll('track')).map(track => {
