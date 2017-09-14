@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 12.0.3
+
+2017-09-14
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.2...v12.0.3)
+
+- Bug fix: Handle async tech loading in VideoJS 6
+  ([#875](https://github.com/codevise/pageflow/pull/875))
+
 ### Version 12.0.2
 
 2017-09-13
