@@ -19,7 +19,7 @@ module Pageflow
               if authorized?(:update, membership)
                 link_to(I18n.t('pageflow.admin.users.edit_role'),
                         edit_admin_account_membership_path(
-                          membership.entity,
+                          account,
                           membership,
                           entity_type: 'Pageflow::Account'
                         ),
@@ -31,7 +31,7 @@ module Pageflow
             column do |membership|
               if authorized?(:destroy, membership)
                 link_to(I18n.t('pageflow.admin.users.delete'),
-                        admin_account_membership_path(membership.entity, membership),
+                        admin_account_membership_path(account, membership),
                         method: :delete,
                         data: {
                           confirm: I18n.t('active_admin.delete_confirmation'),
