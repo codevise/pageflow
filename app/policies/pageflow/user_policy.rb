@@ -49,6 +49,10 @@ module Pageflow
         @user.memberships.on_accounts.where(role: 'manager').any?
     end
 
+    def add_account_to?
+      Pageflow.config.allow_multiaccount_users
+    end
+
     def read?
       manager_accounts = AccountPolicy::Scope
                          .new(@user, Account).member_addable

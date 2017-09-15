@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Pageflow
   module Admin
-    describe AddMembershipButtonIfNeeded, type: :view_component do
+    describe AddMembershipButton, type: :view_component do
       before do
         helper.extend(ActiveAdmin::ViewHelpers)
         helper.extend(Pageflow::Admin::MembershipsHelper)
@@ -23,7 +23,7 @@ module Pageflow
         sign_in(account_manager)
 
         render do
-          add_membership_button_if_needed(account_manager, account, 'account')
+          add_membership_button(account_manager, account, 'account')
         end
 
         expect(rendered).to have_selector('a', text: 'Add user')
@@ -37,7 +37,7 @@ module Pageflow
         sign_in(account_manager)
 
         render do
-          add_membership_button_if_needed(account_manager, account, 'account')
+          add_membership_button(account_manager, account, 'account')
         end
 
         expect(rendered).to have_selector('a', class: 'disabled')
@@ -55,7 +55,7 @@ module Pageflow
         sign_in(account_manager)
 
         render do
-          add_membership_button_if_needed(user, user, 'account')
+          add_membership_button(user, user, 'account')
         end
 
         expect(rendered).to have_selector('a', text: 'Add Account')
@@ -69,7 +69,7 @@ module Pageflow
         sign_in(account_manager)
 
         render do
-          add_membership_button_if_needed(user, user, 'account')
+          add_membership_button(user, user, 'account')
         end
 
         expect(rendered).to have_selector('a', class: 'disabled')

@@ -1,7 +1,7 @@
 module Pageflow
   module Admin
-    class AddMembershipButtonIfNeeded < ViewComponent
-      builder_method :add_membership_button_if_needed
+    class AddMembershipButton < ViewComponent
+      builder_method :add_membership_button
 
       def build(user, parent, entity_type)
         if parent.is_a?(User)
@@ -9,7 +9,8 @@ module Pageflow
           path = new_admin_user_membership_path(
             parent, entity_type: to_class_name(entity_type)
           )
-          data_tooltip = I18n.t("pageflow.admin.#{entity_type}.none_addable_tooltip")
+          data_tooltip = I18n.t("pageflow.admin.#{entity_type}."\
+                                'none_addable_tooltip')
           rel = "add_#{entity_type}_membership"
         elsif parent.is_a?(Entry)
           path = new_admin_entry_membership_path(

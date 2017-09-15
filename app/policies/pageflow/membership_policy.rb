@@ -98,8 +98,7 @@ module Pageflow
     end
 
     def destroy_for_account?
-      @user.admin? ||
-        AccountPolicy.new(@user, @membership.entity).destroy_membership_on?
+      AccountPolicy.new(@user, @membership.entity).destroy_membership_on?
     end
   end
 end

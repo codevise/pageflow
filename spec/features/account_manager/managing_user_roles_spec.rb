@@ -3,6 +3,9 @@ require 'spec_helper'
 feature 'as account manager, managing user roles' do
   context 'via user show page' do
     scenario 'giving a user account permissions' do
+      pageflow_configure do |config|
+        config.allow_multiaccount_users = true
+      end
       account = create(:account)
       user = create(:user)
       account_manager = Dom::Admin::Page.sign_in_as(:manager, on: account)
