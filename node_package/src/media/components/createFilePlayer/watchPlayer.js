@@ -17,7 +17,8 @@ export default function(player, actions) {
   player.on('bufferunderruncontinue', actions.bufferUnderrunContinue);
 
   player.on('timeupdate', () => actions.timeUpdate({
-    currentTime: player.currentTime()
+    currentTime: player.currentTime(),
+    duration: player.duration()
   }));
 
   player.on('ended', actions.ended);

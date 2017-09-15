@@ -161,6 +161,7 @@ export default function({scope = 'default'} = {}) {
       return {
         ...state,
         currentTime: action.payload.currentTime,
+        duration: action.payload.duration,
         isLoading: false
       };
     case ENDED:

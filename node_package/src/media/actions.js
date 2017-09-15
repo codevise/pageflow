@@ -113,9 +113,10 @@ export function actionCreators({scope = 'default'} = {}) {
       return pageAction(PAUSED);
     },
 
-    timeUpdate({currentTime}) {
+    timeUpdate({currentTime, duration}) {
       return pageAction(TIME_UPDATE, {
-        currentTime
+        currentTime,
+        duration
       });
     },
 
