@@ -3,6 +3,7 @@
 //= require support/chai-jq-0.0.7
 //= require support/sinon-chai
 
+//= require pageflow/vendor
 //= require pageflow/application
 //= require pageflow/editor
 

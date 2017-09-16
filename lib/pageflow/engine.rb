@@ -57,25 +57,6 @@ module Pageflow
       config.i18n.reload!
     end
 
-    # Precompile additional assets. pageflow/editor.* has to be
-    # provided by the main app.
-    config.assets.precompile += %w(pageflow/editor.js pageflow/editor.css
-                                   pageflow/application_with_simulated_media_queries.css
-                                   pageflow/print_view.css
-                                   pageflow/lt_ie9.js pageflow/lt_ie9.css pageflow/ie9.js pageflow/ie9.css
-                                   video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff)
-
-    config.assets.precompile << lambda do |path, _filename|
-      Pageflow.config.themes.any? do |theme|
-        path == theme.stylesheet_path
-      end
-    end
-
-    config.assets.precompile << lambda do |path, filename|
-      filename.start_with?(Engine.root.join('app/assets').to_s) &&
-        !['.js', '.css', ''].include?(File.extname(path))
-    end
-
     # Make sure the configuration is recreated when classes are
     # reloded. Otherwise registered page types might still point to
     # unloaded classes in development mode.
@@ -86,6 +67,30 @@ module Pageflow
     initializer "pageflow.factories", :after => "factory_girl.set_factory_paths" do
       if Pageflow.configured? && defined?(FactoryGirl)
         FactoryGirl.definition_file_paths.unshift(Engine.root.join('spec', 'factories'))
+      end
+    end
+
+    # Precompile additional assets. pageflow/editor.* has to be
+    # provided by the main app.
+    initializer 'pageflow.assets.precompile' do |app|
+      app.config.assets.precompile += %w(
+        pageflow/editor.js pageflow/editor.css
+        pageflow/application_with_simulated_media_queries.css
+        pageflow/print_view.css
+        pageflow/lt_ie9.js pageflow/lt_ie9.css pageflow/ie9.js pageflow/ie9.css
+        pageflow/vendor.js
+        video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff
+      )
+
+      app.config.assets.precompile << lambda do |path, _filename|
+        Pageflow.config.themes.any? do |theme|
+          path == theme.stylesheet_path
+        end
+      end
+
+      app.config.assets.precompile << lambda do |path, filename|
+        filename.start_with?(Engine.root.join('app/assets').to_s) &&
+          !['.js', '.css', ''].include?(File.extname(path))
       end
     end
   end
