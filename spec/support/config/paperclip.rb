@@ -10,3 +10,9 @@ RSpec.configure do |config|
     allow(Paperclip).to receive(:run).and_return('100x100')
   end
 end
+
+class Paperclip::Attachment
+  def bucket_name
+    'test'
+  end
+end
