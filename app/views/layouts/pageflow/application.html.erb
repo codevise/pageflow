@@ -7,7 +7,8 @@
     window.PAGEFLOW_EDITOR = <%= @editor_scope ? 'true' : 'false' %>;
   </script>
 
-  <%= javascript_include_tag "pageflow/application", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag 'pageflow/vendor', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'pageflow/application', 'data-turbolinks-track' => true %>
 
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1" />

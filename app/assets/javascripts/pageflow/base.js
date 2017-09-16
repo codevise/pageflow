@@ -1,31 +1,12 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// compiled file.
-//
-// Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
-// about supported directives.
-//
+// base JavaScript file for Pageflow.
+// This file is meant to hold code we develop.
+// And vendor code that changes a lot.
 
 //= require polyfills/bind
 
-//= require i18n
-//= require jquery
-//= require jquery-ui/widget
-//= require jquery_ujs
 //= require ./jquery_utils
-//= require iscroll
-//= require audio5.min
 //= require ./videojs
-//= require jquery.fullscreen
-//= require jquery.placeholder
 
-//= require react
-//= require backbone-rails
 //= require_self
 
 //= require ./object
