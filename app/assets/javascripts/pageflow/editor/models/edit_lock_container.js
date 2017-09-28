@@ -29,7 +29,7 @@ pageflow.EditLockContainer = Backbone.Model.extend({
     if (!this.pollingInteval) {
       this.pollingInteval = setInterval(_.bind(function() {
         this.acquire({polling: true});
-      }, this), 2000);
+      }, this), pageflow.config.editLockPollingIntervalInSeconds * 1000);
     }
   },
 

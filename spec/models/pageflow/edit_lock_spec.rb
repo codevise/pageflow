@@ -4,7 +4,7 @@ module Pageflow
   describe EditLock do
     describe 'active' do
       it 'excludes timed out EditLocks' do
-        lock = create(:edit_lock, updated_at: (EditLock::TIME_TO_LIVE + 1.minute).ago)
+        lock = create(:edit_lock, updated_at: (Time.now - EditLock.time_to_live - 1.minute))
 
         expect(EditLock.active).not_to include(lock)
       end
@@ -38,7 +38,7 @@ module Pageflow
           entry = build(:entry)
           edit_lock = build(:edit_lock, user: other_user, entry: entry)
 
-          Timecop.freeze(Time.now + EditLock::TIME_TO_LIVE + 1.minute)
+          Timecop.freeze(Time.now + EditLock.time_to_live + 1.minute)
           edit_lock.acquire(current_user)
 
           expect(entry.edit_lock).to be_held_by(current_user)
@@ -79,7 +79,7 @@ module Pageflow
           entry = build(:entry)
           edit_lock = build(:edit_lock, user: current_user, entry: entry)
 
-          Timecop.freeze(Time.now + EditLock::TIME_TO_LIVE + 1.minute)
+          Timecop.freeze(Time.now + EditLock.time_to_live + 1.minute)
           edit_lock.acquire(current_user, id: 'other_id')
 
           expect(entry.edit_lock).to be_held_by(current_user)
@@ -112,7 +112,7 @@ module Pageflow
           entry = build(:entry)
           edit_lock = create(:edit_lock, user: current_user, entry: entry)
 
-          Timecop.freeze(Time.now + EditLock::TIME_TO_LIVE + 1.minute)
+          Timecop.freeze(Time.now + EditLock.time_to_live + 1.minute)
           edit_lock.acquire(current_user, id: edit_lock.id)
 
           expect {
@@ -139,7 +139,7 @@ module Pageflow
           other_user = build(:user)
           edit_lock = build(:edit_lock, user: other_user)
 
-          Timecop.freeze(Time.now + EditLock::TIME_TO_LIVE + 1.minutes)
+          Timecop.freeze(Time.now + EditLock.time_to_live + 1.minutes)
 
           expect {
             edit_lock.verify!(current_user, id: 'other_id')
@@ -161,7 +161,7 @@ module Pageflow
           current_user = build(:user)
           edit_lock = build(:edit_lock, user: current_user)
 
-          Timecop.freeze(Time.now + EditLock::TIME_TO_LIVE + 1.minutes)
+          Timecop.freeze(Time.now + EditLock.time_to_live + 1.minutes)
 
           expect {
             edit_lock.verify!(current_user, id: 'other_id')
@@ -184,7 +184,7 @@ module Pageflow
           current_user = build(:user)
           edit_lock = create(:edit_lock, user: current_user)
 
-          Timecop.freeze(Time.now + EditLock::TIME_TO_LIVE + 1.minutes)
+          Timecop.freeze(Time.now + EditLock.time_to_live + 1.minutes)
           edit_lock.verify!(current_user, id: edit_lock.id)
 
           expect {

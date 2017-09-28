@@ -266,6 +266,11 @@ module Pageflow
     # @since edge
     attr_reader :permissions
 
+    # Defines the editor lock polling interval.
+    # @return [number]
+    # @since edge
+    attr_accessor :edit_lock_polling_interval
+
     def initialize
       @paperclip_filesystem_default_options = {validate_media_type: false}
       @paperclip_s3_default_options = {validate_media_type: false}
@@ -314,6 +319,8 @@ module Pageflow
       @account_admin_menu_options = {}
 
       @permissions = Permissions.new
+
+      @edit_lock_polling_interval = 15.seconds
     end
 
     # Activate a plugin.

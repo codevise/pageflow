@@ -1,8 +1,9 @@
 module Pageflow
   class EditLock < ActiveRecord::Base
-    TIME_TO_LIVE = 10.seconds
-
-    scope :active, ->(time = Time.now - TIME_TO_LIVE) { where('pageflow_edit_locks.updated_at >= ?', time) }
+    scope :active, (lambda do
+      time = Time.now - EditLock.time_to_live
+      where('pageflow_edit_locks.updated_at >= ?', time)
+    end)
 
     class Error < RuntimeError
       def code
@@ -24,6 +25,11 @@ module Pageflow
     belongs_to :user
     belongs_to :entry, :inverse_of => :edit_lock
 
+    def self.time_to_live
+      timer_tolerance = 2.3
+      Pageflow.config.edit_lock_polling_interval * timer_tolerance
+    end
+
     def held_by?(user)
       self.user == user
     end
@@ -33,7 +39,7 @@ module Pageflow
     end
 
     def timed_out?
-      Time.now > self.updated_at + TIME_TO_LIVE
+      Time.now > updated_at + EditLock.time_to_live
     end
 
     def acquire(current_user, options = {})
