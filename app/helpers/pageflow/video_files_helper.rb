@@ -42,6 +42,7 @@ module Pageflow
 
     def video_file_video_tag(video_file, options = {})
       defaults = {
+        crossorigin: 'anonymous',
         class: [
           'player video-js video-viewport vjs-default-skin',
           options.delete(:class)
