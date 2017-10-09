@@ -38,6 +38,14 @@ module Pageflow
 
         expect(result['availablePublicLocales']).to eq(['fr'])
       end
+
+      it 'includes edit lock interval' do
+        Pageflow.config.edit_lock_polling_interval = 5.seconds
+
+        result = JSON.parse(helper.editor_config_seeds)
+
+        expect(result['editLockPollingIntervalInSeconds']).to eq(5)
+      end
     end
   end
 end
