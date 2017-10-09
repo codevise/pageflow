@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 12.0.4
+
+2017-10-09
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.0.3...v12.0.4)
+
+- Bug fix: Add crossorigin attribute to video tag rendered by helper
+  ([#879](https://github.com/codevise/pageflow/pull/879))
+
 ### Version 12.0.3
 
 2017-09-14
