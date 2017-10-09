@@ -87,6 +87,7 @@ module Pageflow
       restored_revision.copy do |revision|
         revision.restored_from = restored_revision
         revision.frozen_at = nil
+        revision.snapshot_type = nil
         revision.published_at = nil
         revision.published_until = nil
         revision.password_protected = nil

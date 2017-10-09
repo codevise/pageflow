@@ -40,8 +40,8 @@ module Pageflow
 
     scope :publications, -> { where('published_at IS NOT NULL') }
     scope :publications_and_user_snapshots, -> { where('published_at IS NOT NULL OR snapshot_type = "user"') }
-    scope :user_snapshots, -> { where('snapshot_type = "user"') }
-    scope :auto_snapshots, -> { where('snapshot_type = "auto"') }
+    scope :user_snapshots, -> { where(snapshot_type: 'user') }
+    scope :auto_snapshots, -> { where(snapshot_type: 'auto') }
 
     validates :entry, :presence => true
     validates :creator, :presence => true, :if => :published?
