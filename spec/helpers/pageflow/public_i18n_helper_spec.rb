@@ -41,8 +41,8 @@ module Pageflow
       end
 
       it 'falls back to default locale for missing keys' do
-        translation(:es, 'pageflow.public.some', 'text')
-        translation(I18n.default_locale, 'pageflow.public.some', 'text')
+        translation(:es, 'pageflow.public.some', 'es_text')
+        translation(I18n.default_locale, 'pageflow.public.some', 'default_text')
         translation(I18n.default_locale, 'pageflow.public.some_new', 'new')
 
         entry = PublishedEntry.new(create(:entry,
@@ -51,6 +51,7 @@ module Pageflow
 
         result = helper.public_i18n_translations(entry)
 
+        expect(result[:pageflow][:public][:some]).to eq('es_text')
         expect(result[:pageflow][:public][:some_new]).to eq('new')
       end
     end

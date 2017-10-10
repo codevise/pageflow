@@ -9,9 +9,9 @@ module Pageflow
     def public_i18n_translations(entry)
       {
         pageflow: {
-          public: I18n.t('pageflow.public', locale: entry.locale)
+          public: I18n.t('pageflow.public', locale: I18n.default_locale)
                       .dup
-                      .deep_merge(I18n.t('pageflow.public', locale: I18n.default_locale))
+                      .deep_merge(I18n.t('pageflow.public', locale: entry.locale))
         }
       }
     end
