@@ -15,6 +15,12 @@ module Pageflow
           .where(either_membership_is_present)
       end
 
+      def with_account_role_at_least(role)
+        scope
+          .joins(memberships_for_account_of_entries_with_at_least_role(role))
+          .where(entry_account_membership_is_present)
+      end
+
       private
 
       def memberships_for_entries_with_at_least_role(role)
@@ -47,7 +53,15 @@ module Pageflow
       end
 
       def either_membership_is_present
-        'pageflow_entry_memberships.entity_id IS NOT NULL OR ' \
+        [entry_membership_is_present,
+         entry_account_membership_is_present].join(' OR ')
+      end
+
+      def entry_membership_is_present
+        'pageflow_entry_memberships.entity_id IS NOT NULL'
+      end
+
+      def entry_account_membership_is_present
         'pageflow_entry_account_memberships.entity_id IS NOT NULL'
       end
     end
