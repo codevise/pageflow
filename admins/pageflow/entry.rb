@@ -50,8 +50,9 @@ module Pageflow
 
     filter :title
     filter :account,
-           if: ->(_) { authorized?(:index, :accounts) },
-           collection: -> { Account.accessible_by(current_ability, :read) }
+           as: :searchable_select,
+           ajax: true,
+           if: ->(_) { authorized?(:index, :accounts) }
     filter :created_at
     filter :edited_at
     filter :first_published_at

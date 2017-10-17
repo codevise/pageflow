@@ -37,6 +37,13 @@ module Pageflow
 
     filter :name
 
+    searchable_select_options(text_attribute: :name,
+                              scope: lambda do
+                                Account
+                                  .accessible_by(current_ability, :read)
+                                  .order(:name)
+                              end)
+
     form :partial => 'form'
 
     show :title => :name do |account|
