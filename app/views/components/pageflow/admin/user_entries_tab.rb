@@ -47,7 +47,7 @@ module Pageflow
               end
             end
           end
-          add_membership_button(user, user, 'entry')
+          add_membership_button(current_user, user, 'entry')
         end
       end
     end

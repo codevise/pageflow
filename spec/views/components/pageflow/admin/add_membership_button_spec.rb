@@ -55,7 +55,7 @@ module Pageflow
         sign_in(account_manager)
 
         render do
-          add_membership_button(user, user, 'account')
+          add_membership_button(account_manager, user, 'account')
         end
 
         expect(rendered).to have_selector('a', text: 'Add Account')
@@ -69,7 +69,7 @@ module Pageflow
         sign_in(account_manager)
 
         render do
-          add_membership_button(user, user, 'account')
+          add_membership_button(account_manager, user, 'account')
         end
 
         expect(rendered).to have_selector('a', class: 'disabled')

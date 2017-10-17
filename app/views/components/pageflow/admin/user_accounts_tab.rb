@@ -44,7 +44,7 @@ module Pageflow
             end
           end
           if authorized?(:add_account_to, :users)
-            add_membership_button(user, user, 'account')
+            add_membership_button(current_user, user, 'account')
           end
         end
       end
