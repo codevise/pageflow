@@ -38,6 +38,11 @@ module Pageflow
 
     scope :editing, -> { joins(:edit_lock).merge(Pageflow::EditLock.active) }
 
+    scope(:include_account_name,
+          lambda do
+            joins(:account).select('pageflow_entries.*, pageflow_accounts.name AS account_name')
+          end)
+
     attr_accessor :skip_draft_creation
 
     after_create unless: :skip_draft_creation do
