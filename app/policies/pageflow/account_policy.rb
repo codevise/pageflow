@@ -1,18 +1,19 @@
 module Pageflow
   class AccountPolicy < ApplicationPolicy
     class Scope < Scope
-      attr_reader :user, :scope
+      attr_reader :user, :scope, :query
 
       def initialize(user, scope)
         @user = user
         @scope = scope
+        @query = AccountRoleQuery::Scope.new(user, scope)
       end
 
       def resolve
         if user.admin?
           scope.all
         else
-          scope.joins(memberships_for_account(user)).where(membership_is_present)
+          query.with_role_at_least(:member)
         end
       end
 
@@ -20,7 +21,7 @@ module Pageflow
         if user.admin?
           scope.all
         else
-          scope.joins(publisher_memberships_for_account(user)).where(membership_is_present)
+          query.with_role_at_least(:publisher)
         end
       end
 
@@ -40,42 +41,8 @@ module Pageflow
         if user.admin?
           scope.all
         else
-          scope.joins(manager_memberships_for_account(user)).where(membership_is_present)
+          query.with_role_at_least(:manager)
         end
-      end
-
-      private
-
-      def memberships_for_account(user)
-        sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \
-                            'pageflow_memberships.user_id = :user_id AND ' \
-                            'pageflow_memberships.entity_id = pageflow_accounts.id AND ' \
-                            'pageflow_memberships.entity_type = "Pageflow::Account" AND ' \
-                            'pageflow_memberships.role IN '\
-                            '("member", "previewer", "editor", "publisher", "manager")',
-                            user_id: user.id])
-      end
-
-      def publisher_memberships_for_account(user)
-        sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \
-                            'pageflow_memberships.user_id = :user_id AND ' \
-                            'pageflow_memberships.entity_id = pageflow_accounts.id AND ' \
-                            'pageflow_memberships.entity_type = "Pageflow::Account" AND ' \
-                            'pageflow_memberships.role IN ("publisher", "manager")',
-                            user_id: user.id])
-      end
-
-      def manager_memberships_for_account(user)
-        sanitize_sql_array(['LEFT OUTER JOIN pageflow_memberships ON ' \
-                            'pageflow_memberships.user_id = :user_id AND ' \
-                            'pageflow_memberships.entity_id = pageflow_accounts.id AND ' \
-                            'pageflow_memberships.entity_type = "Pageflow::Account" AND ' \
-                            'pageflow_memberships.role IN ("manager")',
-                            user_id: user.id])
-      end
-
-      def membership_is_present
-        'pageflow_memberships.entity_id IS NOT NULL'
       end
     end
 
