@@ -141,6 +141,38 @@ See
   in the "Setting up External Services" guide for details.
   ([#829](https://github.com/codevise/pageflow/pull/829))
 
+- Either SMIL or HLS outputs need to be disabled, to prevent exceeding
+  maximum number of Zencoder outputs.
+  ([#677](https://github.com/codevise/pageflow/pull/677))
+  
+  SMIL files can be used to have CDN providers generate HLS playlists
+  on the fly. Zencoder by default only allows a maximum number of 20 
+  output files per job. Due to Pageflow's newly added FullHD and 4K 
+  support, the overall number of possible output files exceeds this 
+  limit. Therefore, depending on whether you want to use Zencoder or 
+  CDN generated HLS playlists, you need to disable one of those output
+  types.
+  
+  In your Pageflow initializer, add one of the following settings to your 
+  `zencoder_options`:
+  
+        config.zencoder_options.merge!(
+          # ...
+ 
+          # Zencoder can generate SMIL files which can be used to have
+          # Akamai generate HLS-playlists. By default, Pageflow makes
+          # Zencoder generate HLS-playlists. To prevent hitting Zencoder's
+          # 20 outputs limit, we disable smil outputs.
+          skip_smil: true
+          
+          # OR
+          
+          # Zencoder generates SMIL files which will be used to have
+          # Akamai generate HLS-playlists. To prevent hitting Zencoder's
+          # 20 outputs limit, we disable the unneeded hls outputs.
+          skip_hls: true
+        )
+
 - Switch from `Expires` to `Cache-Control` header for media uploads.
   ([#753](https://github.com/codevise/pageflow/pull/753))
 
