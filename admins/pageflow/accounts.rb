@@ -44,6 +44,14 @@ module Pageflow
                                   .order(:name)
                               end)
 
+    searchable_select_options(name: :member_addable,
+                              text_attribute: :name,
+                              scope: lambda do
+                                AccountPolicy::Scope.new(current_user, Account)
+                                  .member_addable
+                                  .order(:name)
+                              end)
+
     form :partial => 'form'
 
     show :title => :name do |account|

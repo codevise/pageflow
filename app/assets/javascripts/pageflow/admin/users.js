@@ -1,33 +1,33 @@
 jQuery(function($) {
   $('.admin_users form.pageflow_invitation_form').each(function() {
-    var quotaStates = $('.quota_state', this);
+    var quotaStateContainer = $('#quota_state_container', this);
     var accountSelect = $('#invitation_form_membership_entity_id', this);
     var fieldsets = $('#invitation_form_details', this).add('fieldset.actions', this);
 
-    function filterQuotaStatesBySelectedAccount() {
+    function updateQutaState() {
       var selectedAccountId = accountSelect.val();
 
-      quotaStates.each(function(){
-        var quotaState = $(this);
-        var accountId = quotaState.data('accountId').toString();
-
-        if (accountId !== selectedAccountId) {
-          $(quotaState).hide();
-        }
-        else {
-          $(quotaState).show();
-
-          if ($(quotaState).data('state') === 'available') {
-            fieldsets.show();
-          }
-          else {
-            fieldsets.hide();
-          }
-        }
-      });
+      $.get('/admin/users/quota_state?account_id=' + selectedAccountId)
+        .success(function(html) {
+          quotaStateContainer.html(html);
+          updateForm();
+        });
     }
 
-    filterQuotaStatesBySelectedAccount();
-    accountSelect.on('change', filterQuotaStatesBySelectedAccount);
+    function updateForm() {
+      if (quotaAvailable()) {
+        fieldsets.show();
+      }
+      else {
+        fieldsets.hide();
+      }
+    }
+
+    function quotaAvailable() {
+      return !!quotaStateContainer.find('[data-state=available]').length;
+    }
+
+    accountSelect.on('change', updateQutaState);
+    updateForm();
   });
 });
