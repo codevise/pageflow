@@ -1,5 +1,5 @@
-$:.push File.expand_path('../lib', __FILE__)
-
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'pageflow/version'
 
 Gem::Specification.new do |s|
@@ -9,8 +9,10 @@ Gem::Specification.new do |s|
   s.email       = ['info@codevise.de']
   s.homepage    = 'http://www.pageflow.io'
   s.summary     = 'Multimedia story telling for the web.'
+  s.license     = 'MIT'
 
   s.files = Dir['{admins,app,config,db,lib,vendor,spec/factories,spec/fixtures}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
+  s.require_paths = ['lib']
 
   s.add_dependency 'rails', '~> 4.2.6'
 
@@ -117,6 +119,9 @@ Gem::Specification.new do |s|
 
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2', '~> 0.3.16'
+
+  s.add_development_dependency 'bundler'
+  s.add_development_dependency 'rake'
 
   # Testing framework
   s.add_development_dependency 'rspec-rails', '~> 3.4'
