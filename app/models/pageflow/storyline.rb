@@ -1,5 +1,5 @@
 module Pageflow
-  class Storyline < ActiveRecord::Base
+  class Storyline < ApplicationRecord
     include SerializedConfiguration
     include RevisionComponent
 

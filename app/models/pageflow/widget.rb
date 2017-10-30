@@ -1,5 +1,5 @@
 module Pageflow
-  class Widget < ActiveRecord::Base
+  class Widget < ApplicationRecord
     include SerializedConfiguration
 
     belongs_to :subject, polymorphic: true, touch: true

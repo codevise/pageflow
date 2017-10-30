@@ -1,5 +1,5 @@
 module Pageflow
-  class Chapter < ActiveRecord::Base
+  class Chapter < ApplicationRecord
     include SerializedConfiguration
 
     belongs_to :storyline, touch: true

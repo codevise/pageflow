@@ -1,5 +1,5 @@
 module Pageflow
-  class VideoFile < ActiveRecord::Base
+  class VideoFile < ApplicationRecord
     include HostedFile
     include EncodedFileStateMachine
     include OutputSource

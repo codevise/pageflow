@@ -1,5 +1,5 @@
 module Pageflow
-  class EditLock < ActiveRecord::Base
+  class EditLock < ApplicationRecord
     scope :active, (lambda do
       time = Time.now - EditLock.time_to_live
       where('pageflow_edit_locks.updated_at >= ?', time)

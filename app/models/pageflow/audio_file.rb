@@ -1,5 +1,5 @@
 module Pageflow
-  class AudioFile < ActiveRecord::Base
+  class AudioFile < ApplicationRecord
     include HostedFile
     include EncodedFileStateMachine
 

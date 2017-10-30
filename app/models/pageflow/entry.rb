@@ -1,5 +1,5 @@
 module Pageflow
-  class Entry < ActiveRecord::Base
+  class Entry < ApplicationRecord
     class PasswordMissingError < StandardError
     end
 

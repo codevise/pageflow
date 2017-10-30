@@ -1,5 +1,5 @@
 module Pageflow
-  class ImageFile < ActiveRecord::Base
+  class ImageFile < ApplicationRecord
     include ImageFileStateMachine
     include UploadedFile
 

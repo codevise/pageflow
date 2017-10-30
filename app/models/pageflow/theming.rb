@@ -1,5 +1,5 @@
 module Pageflow
-  class Theming < ActiveRecord::Base
+  class Theming < ApplicationRecord
     include ThemeReferencer
 
     belongs_to :account

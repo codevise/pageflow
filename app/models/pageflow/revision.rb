@@ -1,5 +1,5 @@
 module Pageflow
-  class Revision < ActiveRecord::Base
+  class Revision < ApplicationRecord
     PAGE_ORDER = [
       'pageflow_storylines.position ASC',
       'pageflow_chapters.position ASC',
