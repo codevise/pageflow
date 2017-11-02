@@ -30,8 +30,8 @@ module Pageflow
       medium: '-quality 70 -interlace Plane',
       large: '-quality 70 -interlace Plane',
       ultra: '-quality 90 -interlace Plane',
-      panorama_medium: '-quality 70 -interlace Plane',
-      panorama_large: '-quality 70 -interlace Plane',
+      panorama_medium: '-quality 90 -interlace Plane',
+      panorama_large: '-quality 90 -interlace Plane',
       panorama_mask: "-quality 70 -interlace Plane -dither None -colors 64 -remap #{palette_path}"
     }.freeze
 
