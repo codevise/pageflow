@@ -6,6 +6,7 @@
 //= require ./video_player/use_slim_controls_during_phone_playback
 //= require ./video_player/media_events
 //= require ./video_player/prebuffering
+//= require ./video_player/muted_autoplay_sound
 //= require ./video_player/buffer_underrun_waiting
 //= require ./video_player/filter_sources
 //= require ./video_player/lazy
@@ -16,6 +17,7 @@ pageflow.VideoPlayer = function(element, options) {
   options = options || {};
 
   element = pageflow.VideoPlayer.filterSources(element);
+
   var player = videojs(element, options);
 
   if (options.useSlimPlayerControlsDuringPhonePlayback) {
@@ -23,6 +25,7 @@ pageflow.VideoPlayer = function(element, options) {
   }
 
   pageflow.VideoPlayer.prebuffering(player);
+  pageflow.VideoPlayer.mutedAutoplaySound(player);
   pageflow.VideoPlayer.cueSettingsMethods(player);
   pageflow.VideoPlayer.getMediaElementMethod(player);
 

@@ -10,7 +10,7 @@
 //= require jquery.placeholder
 
 //= require iscroll
-//= require audio5.min
+//= require howler.min
 
 //= require react
 //= require backbone-rails
