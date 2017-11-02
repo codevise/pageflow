@@ -66,13 +66,13 @@ module Pageflow
       end
 
       it 'returns :user for snapshot of user type' do
-        revision = create(:revision, :frozen, :snapshot_type => 'user')
+        revision = create(:revision, :user_snapshot)
 
         expect(revision.created_with).to eq(:user)
       end
 
       it 'returns :auto for snapshot of auto type' do
-        revision = create(:revision, :frozen, :snapshot_type => 'auto')
+        revision = create(:revision, :auto_snapshot)
 
         expect(revision.created_with).to eq(:auto)
       end
@@ -333,7 +333,7 @@ module Pageflow
     end
 
     describe '.frozen' do
-      it 'does not invclude draft revisions' do
+      it 'does not include draft revisions' do
         revision = create(:revision)
 
         expect(Revision.frozen).not_to include(revision)
@@ -343,7 +343,104 @@ module Pageflow
         revision = create(:revision, :frozen)
 
         expect(Revision.frozen).to include(revision)
+      end
+    end
 
+    describe '.publications' do
+      it 'includes published revisions' do
+        revision = create(:revision, :published)
+
+        expect(Revision.publications).to include(revision)
+      end
+
+      it 'does not include draft revision' do
+        revision = create(:revision)
+
+        expect(Revision.publications).not_to include(revision)
+      end
+
+      it 'does not include snapshot revision' do
+        revision = create(:revision, :user_snapshot)
+
+        expect(Revision.publications).not_to include(revision)
+      end
+    end
+
+    describe '.publications_and_user_snapshots' do
+      it 'includes published revisions' do
+        revision = create(:revision, :published)
+
+        expect(Revision.publications_and_user_snapshots).to include(revision)
+      end
+
+      it 'does not include draft revision' do
+        revision = create(:revision)
+
+        expect(Revision.publications_and_user_snapshots).not_to include(revision)
+      end
+
+      it 'includes user snapshot revision' do
+        revision = create(:revision, :user_snapshot)
+
+        expect(Revision.publications_and_user_snapshots).to include(revision)
+      end
+
+      it 'does not include auto snapshot revision' do
+        revision = create(:revision, :auto_snapshot)
+
+        expect(Revision.publications_and_user_snapshots).not_to include(revision)
+      end
+    end
+
+    describe '.user_snapshots' do
+      it 'does not includes published revisions' do
+        revision = create(:revision, :published)
+
+        expect(Revision.user_snapshots).not_to include(revision)
+      end
+
+      it 'does not include draft revision' do
+        revision = create(:revision)
+
+        expect(Revision.user_snapshots).not_to include(revision)
+      end
+
+      it 'includes user snapshot revision' do
+        revision = create(:revision, :user_snapshot)
+
+        expect(Revision.user_snapshots).to include(revision)
+      end
+
+      it 'does not include auto snapshot revision' do
+        revision = create(:revision, :auto_snapshot)
+
+        expect(Revision.user_snapshots).not_to include(revision)
+      end
+    end
+
+    describe '.auto_snapshots' do
+      it 'does not includes published revisions' do
+        revision = create(:revision, :published)
+
+        expect(Revision.auto_snapshots).not_to include(revision)
+      end
+
+      it 'does not include draft revision' do
+        revision = create(:revision)
+
+        expect(Revision.auto_snapshots).not_to include(revision)
+      end
+
+      it 'does not include user snapshot revision' do
+        revision = create(:revision, :user_snapshot)
+
+        expect(Revision.auto_snapshots).not_to include(revision)
+      end
+
+      it 'includes auto snapshot revision' do
+        revision = create(:revision, :auto_snapshot)
+
+        expect(Revision.auto_snapshots).to include(revision)
       end
     end
 

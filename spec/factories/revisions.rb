@@ -18,6 +18,16 @@ module Pageflow
         published_until { 1.day.ago }
       end
 
+      trait :user_snapshot do
+        frozen
+        snapshot_type 'user'
+      end
+
+      trait :auto_snapshot do
+        frozen
+        snapshot_type 'auto'
+      end
+
       trait :with_home_button do
         home_button_enabled true
         home_url 'http://example.com'

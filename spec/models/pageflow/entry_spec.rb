@@ -321,15 +321,25 @@ module Pageflow
         end
       end
 
-      context 'for frozen revision' do
+      context 'for snapshot revision' do
         it 'turns copy of passed revision into new draft' do
           creator = create(:user)
           entry = create(:entry)
-          earlier_revision = create(:revision, :frozen, title: 'the way it was', entry: entry)
+          earlier_revision = create(:revision, :auto_snapshot, title: 'the way it was', entry: entry)
 
           entry.restore(revision: earlier_revision, creator: creator)
 
           expect(entry.draft(true).title).to eq('the way it was')
+        end
+
+        it 'resets snapshot type' do
+          creator = create(:user)
+          entry = create(:entry)
+          earlier_revision = create(:revision, :auto_snapshot, title: 'the way it was', entry: entry)
+
+          entry.restore(revision: earlier_revision, creator: creator)
+
+          expect(Revision.auto_snapshots).not_to include(entry.draft(true))
         end
       end
 
