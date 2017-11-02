@@ -1,5 +1,5 @@
 module Pageflow
-  class FileUsage < ActiveRecord::Base
+  class FileUsage < ApplicationRecord
     include SerializedConfiguration
 
     belongs_to :revision

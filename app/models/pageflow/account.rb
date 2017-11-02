@@ -1,5 +1,5 @@
 module Pageflow
-  class Account < ActiveRecord::Base
+  class Account < ApplicationRecord
     include FeatureTarget
 
     has_many :entries, dependent: :restrict_with_exception

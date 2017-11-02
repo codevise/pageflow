@@ -1,5 +1,5 @@
 module Pageflow
-  class TextTrackFile < ActiveRecord::Base
+  class TextTrackFile < ApplicationRecord
     include HostedFile
 
     processing_state_machine do
