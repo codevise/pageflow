@@ -15,11 +15,12 @@
     "_",
     "videojs",
     "Audio5js",
+    "Howl",
     "I18n",
 
     "pageflow",
     "editor",
-    
+
     "confirm",
     "alert",
 
