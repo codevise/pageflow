@@ -1,5 +1,3 @@
-require 'socket'
-
 Pageflow.configure do |config|
   config.paperclip_s3_default_options.merge!({
     storage: :s3,
@@ -61,16 +59,8 @@ Pageflow.configure do |config|
   }
 end
 
-if Rails.env.development?
-  Paperclip.interpolates(:host) do |attachment, style|
-    ENV.fetch('PAGEFLOW_ATTACHMENTS_SCOPE_NAME') { Socket.gethostname }
-  end
-end
-
-if Rails.env.production?
-  Paperclip.interpolates(:host) do |attachment, style|
-    'main'
-  end
+Paperclip.interpolates(:host) do |attachment, style|
+  'main'
 end
 
 Paperclip.interpolates(:pageflow_filesystem_root) do |attachment, style|
