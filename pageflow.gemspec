@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
 
   s.files = Dir['{admins,app,config,db,lib,vendor,spec/factories,spec/fixtures}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
+
   s.require_paths = ['lib']
 
   s.add_dependency 'rails', '~> 4.2.6'
@@ -119,9 +120,6 @@ Gem::Specification.new do |s|
 
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2', '~> 0.3.16'
-
-  s.add_development_dependency 'bundler'
-  s.add_development_dependency 'rake'
 
   # Testing framework
   s.add_development_dependency 'rspec-rails', '~> 3.4'
