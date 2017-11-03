@@ -10,14 +10,16 @@ module Paperclip
   end
 end
 
-Pageflow.configure do |config|
-  config.paperclip_s3_default_options.merge!(
-    storage: :filesystem,
-    path: ':rails_root/tmp/attachments/test/s3/:class/:attachment/:id_partition/:style/:filename'
-  )
-end
-
 RSpec.configure do |config|
+  config.before(:all) do
+    pageflow_configure do |config|
+      config.paperclip_s3_default_options.merge!(
+        storage: :filesystem,
+        path: ':rails_root/tmp/attachments/test/s3/:class/:attachment/:id_partition/:style/:filename'
+      )
+    end
+  end
+
   config.before(:each) do
     Dir.glob(Rails.root.join('tmp', 'attachments', 'test', '*')).each do |f|
       FileUtils.rm_r(f)
