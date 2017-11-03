@@ -272,6 +272,7 @@ module Pageflow
     attr_accessor :edit_lock_polling_interval
 
     def initialize
+      @paperclip_attachments_version = 'v1'
       @paperclip_filesystem_default_options = {validate_media_type: false}
       @paperclip_s3_default_options = {validate_media_type: false}
 
