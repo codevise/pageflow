@@ -59,8 +59,13 @@ Pageflow.configure do |config|
   }
 end
 
+# The dynamic :host ensures multiple developers can use a shared S3 bucket in development.
 Paperclip.interpolates(:host) do |attachment, style|
-  'main'
+  if Rails.env.development?
+    Socket.gethostname
+  else
+    'main'
+  end
 end
 
 Paperclip.interpolates(:pageflow_filesystem_root) do |attachment, style|
