@@ -12,8 +12,8 @@ end
 
 RSpec.configure do |config|
   config.before(:all) do
-    pageflow_configure do |config|
-      config.paperclip_s3_default_options.merge!(
+    pageflow_configure do |pageflow_config|
+      pageflow_config.paperclip_s3_default_options.merge!(
         storage: :filesystem,
         path: ':rails_root/tmp/attachments/test/s3/:class/:attachment/:id_partition/:style/:filename'
       )
