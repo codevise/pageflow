@@ -13,6 +13,55 @@ module Pageflow
       end
     end
 
+    describe 'accessors' do
+      it 'are defined' do
+        configuration = Configuration.new
+
+        %i(
+          paperclip_filesystem_default_options
+          paperclip_s3_default_options
+          paperclip_attachments_version
+          paperclip_filesystem_root
+          zencoder_options
+          editor_route_constraint
+          mailer_sender
+          features
+          hooks
+          quotas
+          themes
+          page_types
+          file_types
+          widget_types
+          help_entries
+          thumbnail_styles
+          css_rendered_thumbnail_styles
+          editor_routing_constraint
+          theming_request_scope
+          public_entry_request_scope
+          public_entry_url_options
+          entry_embed_url_options
+          confirm_encoding_jobs
+          admin_resource_tabs
+          admin_form_inputs
+          available_locales
+          available_public_locales
+          public_https_mode
+          default_keywords_meta_tag
+          default_author_meta_tag
+          default_publisher_meta_tag
+          authorize_user_deletion
+          available_text_track_kinds
+          allow_multiaccount_users
+          account_admin_menu_options
+          permissions
+          edit_lock_polling_interval
+
+        ).each do |message|
+          expect(configuration).to respond_to(message)
+        end
+      end
+    end
+
     describe 'deprecated #register_page_type method' do
       let(:page_type_class) do
         Class.new(PageType) do
