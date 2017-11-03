@@ -1,7 +1,7 @@
 Pageflow.configure do |config|
-  config.paperclip_s3_default_options.merge!({
+  config.paperclip_s3_default_options.merge!(
     storage: :s3,
-    s3_headers: {'Cache-Control' => "public, max-age=31536000"},
+    s3_headers: {'Cache-Control' => 'public, max-age=31536000'},
     s3_options: {max_retries: 10},
 
     url: ':s3_alias_url',
@@ -13,13 +13,13 @@ Pageflow.configure do |config|
     # master, but for us not deleting old files is good enough. They
     # might be in the CDN anyway.
     keep_old_files: true
-  })
+  )
 
-  config.paperclip_filesystem_default_options.merge!({
+  config.paperclip_filesystem_default_options.merge!(
     storage: :filesystem,
     path: ':pageflow_filesystem_root/:class/:attachment/:id_partition/:style/:filename',
     url: 'not_uploaded_yet'
-  })
+  )
 
   config.thumbnail_styles = {
     thumbnail: {
@@ -60,7 +60,7 @@ Pageflow.configure do |config|
 end
 
 # The dynamic :host ensures multiple developers can use a shared S3 bucket in development.
-Paperclip.interpolates(:host) do |attachment, style|
+Paperclip.interpolates(:host) do
   if Rails.env.development?
     Socket.gethostname
   else
@@ -68,19 +68,19 @@ Paperclip.interpolates(:host) do |attachment, style|
   end
 end
 
-Paperclip.interpolates(:pageflow_filesystem_root) do |attachment, style|
+Paperclip.interpolates(:pageflow_filesystem_root) do
   Pageflow.config.paperclip_filesystem_root
 end
 
-Paperclip.interpolates(:class_basename) do |attachment, style|
+Paperclip.interpolates(:class_basename) do |attachment|
   plural_cache.underscore_and_pluralize(attachment.instance.class.name.split('::').last)
 end
 
-Paperclip.interpolates(:pageflow_placeholder) do |attachment, style|
+Paperclip.interpolates(:pageflow_placeholder) do |_, style|
   "pageflow/placeholder_#{style}.jpg"
 end
 
-Paperclip.interpolates(:pageflow_attachments_version) do |attachment, style|
+Paperclip.interpolates(:pageflow_attachments_version) do |_, style|
   version = Pageflow.config.paperclip_attachments_version
 
   if version.present? && style != :original
