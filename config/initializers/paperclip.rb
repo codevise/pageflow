@@ -72,30 +72,18 @@ Pageflow.configure do |config|
 end
 
 if Rails.env.development?
-  Paperclip.interpolates(:pageflow_filesystem_root) do |attachment, style|
-    Rails.root.join('tmp/attachments/development/filesystem')
-  end
-
   Paperclip.interpolates(:host) do |attachment, style|
     ENV.fetch('PAGEFLOW_ATTACHMENTS_SCOPE_NAME') { Socket.gethostname }
   end
 end
 
 if Rails.env.production?
-  Paperclip.interpolates(:pageflow_filesystem_root) do |attachment, style|
-    Pageflow.config.paperclip_filesystem_root
-  end
-
   Paperclip.interpolates(:host) do |attachment, style|
     'main'
   end
 end
 
 if Rails.env.test?
-  Paperclip.interpolates(:pageflow_filesystem_root) do |attachment, style|
-    Rails.root.join('tmp/attachments/test/filesystem')
-  end
-
   Paperclip.interpolates(:host) do |attachment, style|
     'test-host'
   end
@@ -105,6 +93,10 @@ if Rails.env.test?
       'test'
     end
   end
+end
+
+Paperclip.interpolates(:pageflow_filesystem_root) do |attachment, style|
+  Pageflow.config.paperclip_filesystem_root
 end
 
 Paperclip.interpolates(:class_basename) do |attachment, style|
