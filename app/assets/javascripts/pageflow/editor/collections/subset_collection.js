@@ -1,6 +1,8 @@
 pageflow.SubsetCollection = Backbone.Collection.extend({
   constructor: function(options) {
     var adding = false;
+    var sorting = false;
+    var parentSorting = false;
 
     options = options || {};
 
@@ -41,8 +43,26 @@ pageflow.SubsetCollection = Backbone.Collection.extend({
       });
     }
 
+    if (options.sortOnParentSort) {
+      this.listenTo(this.parent, 'sort', function() {
+        parentSorting = true;
+
+        if (!sorting) {
+          this.sort();
+        }
+
+        parentSorting = false;
+      });
+    }
+
     this.listenTo(this, 'sort', function() {
-      this.parent.sort();
+      sorting = true;
+
+      if (!parentSorting) {
+        this.parent.sort();
+      }
+
+      sorting = false;
     });
 
     Backbone.Collection.prototype.constructor
