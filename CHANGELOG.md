@@ -1,5 +1,10 @@
 # CHANGELOG
 
+
+
+- Use searchable select boxes in admin forms
+  ([#888](https://github.com/codevise/pageflow/pull/888))
+
 ### Unreleased Changes
 
 [Compare changes](https://github.com/codevise/pageflow/compare/12-0-stable...master)
@@ -26,6 +31,16 @@
   of [#856](https://github.com/codevise/pageflow/issues/856) on how to
   add this to existing apps.
 
+##### Notable Changes
+
+- The theme configured on account level now only acts as a default for
+  new entries. After enabling the `selectable_themes` feature, a theme
+  selection dialog is available inside the editor from the "Title and
+  Options > Appearance" tab. The dialog allows configuring the theme
+  on a per revision basis.
+  ([#781](https://github.com/codevise/pageflow/pull/781),
+   [#897](https://github.com/codevise/pageflow/pull/897))
+
 ##### Public Site
 
 - Use page from url hash es landing page
@@ -43,8 +58,6 @@
 
 ##### Admin
 
-- Themes as features
-  ([#765](https://github.com/codevise/pageflow/pull/765))
 - Add config option to prevent multi account users
   ([#848](https://github.com/codevise/pageflow/pull/848),
    [#868](https://github.com/codevise/pageflow/pull/868))
@@ -65,11 +78,11 @@
 
 ##### Editor
 
-- Allow selecting themes via editor
-  ([#781](https://github.com/codevise/pageflow/pull/781))
 - Widget configuration
   ([#694](https://github.com/codevise/pageflow/pull/694),
    [#809](https://github.com/codevise/pageflow/pull/809))
+- Bug fix: Ensure page order in editor preview stays up to date
+  ([#898](https://github.com/codevise/pageflow/pull/898))
 - Bug fix: Switch off file meta data edit links when uploading
   ([#857](https://github.com/codevise/pageflow/pull/857))
 - Bug fix: Improve polling for HostedFile state
@@ -94,6 +107,8 @@
 
 ##### Rails Engine
 
+- Themes can now be guarded by feature flags
+  ([#765](https://github.com/codevise/pageflow/pull/765))
 - Extend EncodingConfirmation by public account attribute
   ([#817](https://github.com/codevise/pageflow/pull/817))
 - Extend query interface
@@ -162,6 +177,10 @@
   ([#834](https://github.com/codevise/pageflow/pull/834))
 - Fix dummy app generation on Travis for Rubygems 2.7
   ([#893](https://github.com/codevise/pageflow/pull/893))
+- Update contents of gemspec
+  ([#891](https://github.com/codevise/pageflow/pull/891))
+- Bug fix: Work around breaking change in resque_mailer 2.4.3
+  ([#894](https://github.com/codevise/pageflow/pull/894))
 
 See
 [12-0-stable](https://github.com/codevise/pageflow/blob/12-0-stable/CHANGELOG.md)
