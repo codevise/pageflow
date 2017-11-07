@@ -51,4 +51,12 @@ module Pageflow
       expect { account.destroy }.to change(Folder, :count).by(-1)
     end
   end
+
+  describe 'serialization' do
+    it 'does not include features_configuration' do
+      account = build(:account, features_configuration: {some_feature: true})
+
+      expect(account.to_json).not_to include('some_feature')
+    end
+  end
 end

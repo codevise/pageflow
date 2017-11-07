@@ -2,6 +2,26 @@ require 'spec_helper'
 
 module Admin
   describe AccountsController do
+    describe '#index' do
+      describe 'downloads' do
+        render_views
+
+        %w(csv json xml).each do |format|
+          describe "with #{format} format" do
+            it 'does not include sensitive data' do
+              user = create(:user, :admin)
+              create(:account, features_configuration: {some_feature: true})
+
+              sign_in(user)
+              get(:index, format: format)
+
+              expect(response.body).not_to include('some_feature')
+            end
+          end
+        end
+      end
+    end
+
     describe '#show' do
       render_views
 

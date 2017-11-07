@@ -2,6 +2,26 @@ require 'spec_helper'
 
 module Pageflow
   describe ::Admin::UsersController do
+    describe '#index' do
+      describe 'downloads' do
+        render_views
+
+        %w(csv json xml).each do |format|
+          describe "with #{format} format" do
+            it 'does not include sensitive data' do
+              user = create(:user, :admin)
+
+              sign_in(user)
+              get(:index, format: format)
+
+              expect(response.body).not_to include('password')
+              expect(response.body).not_to include(user.encrypted_password)
+            end
+          end
+        end
+      end
+    end
+
     describe '#show' do
       render_views
 

@@ -48,6 +48,14 @@ module Pageflow
       end
     end
 
+    csv do
+      column :slug
+      column :title
+      column :created_at
+      column :edited_at
+      column :published_at
+    end
+
     filter :title
     filter :account,
            as: :searchable_select,

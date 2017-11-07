@@ -431,4 +431,18 @@ module Pageflow
       expect(entry.account_name).to eq('Some account')
     end
   end
+
+  describe 'serialization' do
+    it 'does not include password_digest' do
+      entry = build(:entry, password_digest: 'secret')
+
+      expect(entry.to_json).not_to include('secret')
+    end
+
+    it 'does not include features configuration' do
+      entry = build(:entry, features_configuration: {some_feature: true})
+
+      expect(entry.to_json).not_to include('some_feature')
+    end
+  end
 end
