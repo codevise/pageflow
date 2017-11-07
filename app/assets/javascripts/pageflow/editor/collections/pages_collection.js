@@ -35,6 +35,7 @@ pageflow.PagesCollection = Backbone.Collection.extend({
     if (!this._persisted) {
       this._persisted = new pageflow.SubsetCollection({
         parent: this,
+        sortOnParentSort: true,
 
         filter: function(page) {
           return !page.isNew();
