@@ -1,0 +1,6 @@
+de:
+  pageflow:
+    admin:
+      accounts:
+        theming_defaults_inline_help: "Die folgenden Einstellungen werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus."
+        widgets_inline_help: "DELETED"

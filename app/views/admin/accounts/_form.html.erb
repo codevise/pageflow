@@ -12,7 +12,6 @@
 
   <%= f.semantic_fields_for :default_theming do |theming| %>
     <%= f.inputs do %>
-      <%= theming.input :theme_name, include_blank: false, collection: account_config.themes.names %>
       <%= theming.input :cname, hint: t('pageflow.admin.themings.cname_hint') %>
       <%= theming.input :additional_cnames, hint: t('pageflow.admin.themings.additional_cnames_hint') %>
       <%= theming.input :home_url, hint: t('pageflow.admin.themings.home_url_hint') %>
@@ -31,7 +30,6 @@
     <% end %>
 
     <%= f.inputs do %>
-      <%= theming.input :home_button_enabled_by_default %>
       <%= theming.input :imprint_link_label %>
       <%= theming.input :imprint_link_url %>
       <%= theming.input :copyright_link_label %>
@@ -43,7 +41,9 @@
     <% end %>
 
     <%= f.inputs do %>
-      <%= render('admin/accounts/widgets_inline_help') %>
+      <%= render('admin/accounts/theming_defaults_inline_help') %>
+      <%= theming.input :theme_name, include_blank: false, collection: account_config.themes.names %>
+      <%= theming.input :home_button_enabled_by_default %>
       <%= admin_widgets_fields(theming, account_config) %>
     <% end %>
   <% end %>
