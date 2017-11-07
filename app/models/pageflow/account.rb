@@ -1,6 +1,7 @@
 module Pageflow
   class Account < ApplicationRecord
     include FeatureTarget
+    include SerializationBlacklist
 
     has_many :entries, dependent: :restrict_with_exception
     has_many :folders, dependent: :destroy
@@ -21,6 +22,10 @@ module Pageflow
       super.tap do |theming|
         theming.account = self
       end
+    end
+
+    def blacklist_for_serialization
+      [:features_configuration]
     end
   end
 end

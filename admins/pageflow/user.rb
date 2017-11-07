@@ -20,6 +20,16 @@ module Pageflow
       boolean_status_tag_column :suspended?
     end
 
+    csv do
+      column :id
+      column :first_name
+      column :last_name
+      column :email
+      column :last_sign_in_at
+      column :sign_in_count
+      column :suspended?
+    end
+
     filter :last_name
     filter :first_name
     filter :email

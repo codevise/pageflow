@@ -35,6 +35,12 @@ module Pageflow
       end
     end
 
+    csv do
+      column :name
+      column :entries_count
+      column :users_count
+    end
+
     filter :name
 
     searchable_select_options(text_attribute: :name,

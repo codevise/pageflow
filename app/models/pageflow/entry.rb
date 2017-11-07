@@ -5,6 +5,7 @@ module Pageflow
 
     include FeatureTarget
     include EntryPublicationStates
+    include SerializationBlacklist
 
     extend FriendlyId
     friendly_id :slug_candidates, :use => [:finders, :slugged]
@@ -113,6 +114,10 @@ module Pageflow
 
     def self.ransackable_scopes(_)
       [:with_publication_state, :published]
+    end
+
+    def blacklist_for_serialization
+      [:password_digest, :features_configuration]
     end
 
     private

@@ -53,6 +53,22 @@ describe Admin::EntriesController do
         expect(response.body).not_to have_text(new_button_text)
       end
     end
+
+    describe 'downloads' do
+      %w(csv json xml).each do |format|
+        describe "with #{format} format" do
+          it 'does not include sensitive data' do
+            user = create(:user, :admin)
+            create(:entry, password_digest: 'secret')
+
+            sign_in(user)
+            get(:index, format: format)
+
+            expect(response.body).not_to include('secret')
+          end
+        end
+      end
+    end
   end
 
   describe '#show' do
