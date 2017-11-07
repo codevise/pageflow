@@ -50,8 +50,9 @@ module Pageflow
 
     filter :title
     filter :account,
-           if: ->(_) { authorized?(:index, :accounts) },
-           collection: -> { Account.accessible_by(current_ability, :read) }
+           as: :searchable_select,
+           ajax: true,
+           if: ->(_) { authorized?(:index, :accounts) }
     filter :created_at
     filter :edited_at
     filter :first_published_at
@@ -71,19 +72,52 @@ module Pageflow
                           grouped_by_accounts: authorized?(:see, :accounts))
     end
 
+    searchable_select_options(name: :eligible_accounts,
+                              text_attribute: :name,
+                              scope: lambda do
+                                AccountPolicy::Scope
+                                  .new(current_user, Account)
+                                  .entry_movable
+                                  .order(:name)
+                              end)
+
+    searchable_select_options(name: :eligible_themings,
+                              text_attribute: :name,
+                              scope: lambda do |params|
+                                entry = Entry.find(params[:entry_id])
+
+                                ThemingPolicy::Scope
+                                  .new(current_user, Theming)
+                                  .themings_allowed_for(entry.account)
+                              end)
+
     form do |f|
       f.inputs do
         f.input :title, hint: I18n.t('pageflow.admin.entries.title_hint')
 
         if authorized?(:update_account_on, resource)
-          f.input :account,
-                  collection: eligible_accounts,
+          f.input(:account,
+                  as: :searchable_select,
                   include_blank: false,
-                  input_html: {class: 'entry_account_input'}
+                  ajax: {
+                    resource: Entry,
+                    collection_name: :eligible_accounts
+                  },
+                  input_html: {class: 'entry_account_input', style: 'width: 200px'})
         end
 
         if authorized?(:update_theming_on, resource) && !f.object.new_record?
-          f.input :theming, collection: eligible_themings, include_blank: false
+          f.input(:theming,
+                  as: :searchable_select,
+                  ajax: {
+                    resource: Entry,
+                    collection_name: :eligible_themings,
+                    params: {
+                      entry_id: resource.id
+                    }
+                  },
+                  include_blank: false,
+                  input_html: {style: 'width: 200px'})
         end
 
         if authorized?(:configure_folder_for, resource)

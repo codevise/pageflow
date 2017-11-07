@@ -44,25 +44,29 @@ module Pageflow
       private
 
       def membership_possible_for(user, parent, entity_type)
-        entity_type == 'entry' && entry_membership_possible_for_creator_and(user, parent) ||
-          entity_type == 'account' && account_membership_possible_for_creator_and(user, parent)
+        if entity_type == 'entry'
+          entry_membership_possible_for_creator_and(user, parent)
+        else
+          account_membership_possible_for_creator_and(user, parent)
+        end
       end
 
       def entry_membership_possible_for_creator_and(user, parent)
-        Pageflow::EntryPolicy::Scope.new(user, Pageflow::Entry).member_addable &&
-          ((parent.is_a?(User) &&
-            !membership_entries_collection(parent, Pageflow::Membership.new(user: parent))
-              .blank?) ||
-           (parent.is_a?(Entry) &&
-            !membership_users_collection(parent, Membership.new(entity: parent)).blank?))
+        case parent
+        when User
+          PotentialMemberships.creatable_by(user).entries_for_user(parent).any?
+        when Entry
+          PotentialMemberships.creatable_by(user).users_for_entry(parent).any?
+        end
       end
 
       def account_membership_possible_for_creator_and(user, parent)
-        Pageflow::AccountPolicy::Scope.new(user, Pageflow::Account).member_addable &&
-          ((parent.is_a?(User) &&
-            !membership_accounts_collection(user, Pageflow::Membership.new(user: user)).blank?) ||
-           (parent.is_a?(Account) &&
-            !membership_users_collection(parent, Membership.new(entity: parent)).blank?))
+        case parent
+        when User
+          PotentialMemberships.creatable_by(user).accounts_for_user(parent).any?
+        when Account
+          PotentialMemberships.creatable_by(user).users_for_account(parent).any?
+        end
       end
 
       def to_class_name(entity_type)

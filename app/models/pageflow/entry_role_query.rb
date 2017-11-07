@@ -3,9 +3,10 @@ module Pageflow
     class Scope < Scope
       attr_reader :user, :scope
 
-      def initialize(user, scope)
+      def initialize(user, scope, table_alias_prefix: nil)
         @user = user
         @scope = scope
+        @table_alias_prefix = table_alias_prefix
       end
 
       def with_role_at_least(role)
@@ -15,10 +16,16 @@ module Pageflow
           .where(either_membership_is_present)
       end
 
+      def with_account_role_at_least(role)
+        scope
+          .joins(memberships_for_account_of_entries_with_at_least_role(role))
+          .where(entry_account_membership_is_present)
+      end
+
       private
 
       def memberships_for_entries_with_at_least_role(role)
-        join_memberships(table_alias: 'pageflow_entry_memberships',
+        join_memberships(table_alias: table_alias_for('entry'),
                          user_id: user.id,
                          roles: Roles.at_least(role),
                          entity_id_column: 'pageflow_entries.id',
@@ -26,7 +33,7 @@ module Pageflow
       end
 
       def memberships_for_account_of_entries_with_at_least_role(role)
-        join_memberships(table_alias: 'pageflow_entry_account_memberships',
+        join_memberships(table_alias: table_alias_for('entry_account'),
                          user_id: user.id,
                          roles: Roles.at_least(role),
                          entity_id_column: 'pageflow_entries.account_id',
@@ -47,8 +54,20 @@ module Pageflow
       end
 
       def either_membership_is_present
-        'pageflow_entry_memberships.entity_id IS NOT NULL OR ' \
-        'pageflow_entry_account_memberships.entity_id IS NOT NULL'
+        [entry_membership_is_present,
+         entry_account_membership_is_present].join(' OR ')
+      end
+
+      def entry_membership_is_present
+        "#{table_alias_for(:entry)}.entity_id IS NOT NULL"
+      end
+
+      def entry_account_membership_is_present
+        "#{table_alias_for(:entry_account)}.entity_id IS NOT NULL"
+      end
+
+      def table_alias_for(type)
+        [@table_alias_prefix, 'pageflow', type, 'memberships'].compact.join('_')
       end
     end
 

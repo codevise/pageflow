@@ -15,6 +15,7 @@ require 'resque_mailer'
 require 'resque_scheduler'
 
 require 'active_admin'
+require 'activeadmin-searchable_select'
 
 require 'jquery-layout-rails'
 require 'backbone-rails'

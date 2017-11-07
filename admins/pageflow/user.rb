@@ -110,6 +110,13 @@ module Pageflow
       end
     end
 
+    collection_action :quota_state do
+      @account = Pageflow::Account.find(params[:account_id])
+      authorize!(:add_member_to, @account)
+
+      render(layout: false)
+    end
+
     collection_action 'me', title: I18n.t('pageflow.admin.users.account'), method: [:get, :patch] do
       @user = User.find(current_user.id)
 

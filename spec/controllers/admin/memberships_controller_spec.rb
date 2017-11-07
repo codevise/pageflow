@@ -1,6 +1,45 @@
 require 'spec_helper'
 
 describe Admin::MembershipsController do
+  describe '#potential_entries_for_user_options' do
+    describe 'as member of single account' do
+      it 'includes entry account name in texts' do
+        account = create(:account, name: 'Account')
+        current_user = create(:user, :manager, on: account)
+        managed_user = create(:user, :member, on: account)
+        create(:entry, account: account, title: 'Some title')
+
+        sign_in(current_user)
+        get(:potential_entries_for_user_options, parent_id: managed_user.id)
+        option_texts = json_response(path: ['results', '*', 'text'])
+
+        expect(option_texts).to include('Some title')
+      end
+    end
+
+    describe 'as member of multiple accounts' do
+      it 'includes entry account name in texts' do
+        entry_account = create(:account, name: 'Entry account')
+        current_user = create(:user, :member, on: entry_account)
+        managed_user = create(:user, :member, on: entry_account)
+        create(:account,
+               with_manager: current_user,
+               with_member: managed_user,
+               name: 'Managed Account')
+        create(:entry,
+               account: entry_account,
+               with_manager: current_user,
+               title: 'Some title')
+
+        sign_in(current_user)
+        get(:potential_entries_for_user_options, parent_id: managed_user.id)
+        option_texts = json_response(path: ['results', '*', 'text'])
+
+        expect(option_texts).to include('Entry account / Some title')
+      end
+    end
+  end
+
   describe '#create' do
     describe 'as admin' do
       it 'allows to add user to account' do

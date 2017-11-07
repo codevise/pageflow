@@ -420,4 +420,15 @@ module Pageflow
       expect { entry.duplicate }.to change { Entry.count }
     end
   end
+
+  describe '.include_account_name' do
+    it 'sets virtual attribute on records' do
+      account = create(:account, name: 'Some account')
+      create(:entry, account: account)
+
+      entry = Entry.include_account_name.first
+
+      expect(entry.account_name).to eq('Some account')
+    end
+  end
 end

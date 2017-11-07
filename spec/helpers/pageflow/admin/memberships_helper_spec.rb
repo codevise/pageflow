@@ -3,254 +3,156 @@ require 'spec_helper'
 module Pageflow
   module Admin
     describe MembershipsHelper do
-      describe '#membership_users_collection' do
-        context 'via Entries#index' do
-          it 'returns pairs of formal name and id for new membership' do
-            user = create(:user, first_name: 'Randolph', last_name: 'Doe')
-            account = create(:account)
-            create(:membership, entity: account, role: :member, user: user)
-            new_membership = Membership.new
-            entry = create(:entry, account: account)
-            expect(helper).to receive(:current_user).and_return(user)
+      before(:each) do
+        helper.extend(Pageflow::Admin::FormHelper)
+        helper.extend(Rails.application.routes.url_helpers)
 
-            pairs = helper.membership_users_collection(entry, new_membership)
+        allow(helper).to receive(:active_admin_namespace)
+          .and_return(ActiveAdmin.application.namespaces[:admin])
+      end
 
-            expect(pairs).to eq([['Doe, Randolph', user.id]])
-          end
+      describe '#membership_users_select' do
+        describe 'with entry as parent' do
+          it 'renders select with potential_users_for_entry ajax url' do
+            parent = build(:entry)
+            membership = Membership.new
 
-          it 'returns only membership user if membership not new' do
-            user = create(:user, first_name: 'Rudolf', last_name: 'Doe')
-            account = create(:account)
-            membership = create(:membership, entity: account, role: :member, user: user)
-            create(:membership, entity: account, role: :member, user: create(:user))
-            entry = create(:entry, account: account)
+            html = with_form(membership) { |f| helper.membership_user_select(f, parent) }
 
-            pairs = membership_users_collection(entry, membership)
-
-            expect(pairs).to eq([['Doe, Rudolf', user.id]])
-          end
-
-          it 'filters users that are already members of parent' do
-            account = create(:account)
-            user = create(:user, first_name: 'John', last_name: 'Doe')
-            entry = create(:entry, account: account)
-            create(:membership, entity: entry, role: :previewer, user: user)
-            new_membership = Membership.new
-            expect(helper).to receive(:current_user).and_return(user)
-
-            pairs = helper.membership_users_collection(entry, new_membership)
-
-            expect(pairs).to eq([])
+            expect(html).to have_selector('select[data-ajax-url*=potential_users_for_entry]')
           end
         end
 
-        context 'via Users#index' do
-          it 'returns pair of formal name and id for new membership' do
-            user = create(:user, first_name: 'Randolph', last_name: 'Doe')
-            account = create(:account)
-            create(:membership, entity: account, role: :member, user: user)
-            new_membership = Membership.new
-            create(:entry, account: account)
-            expect(helper).to receive(:current_user).and_return(user)
+        describe 'with account as parent' do
+          it 'renders select with potential_users_for_account ajax url' do
+            parent = build(:account)
+            membership = Membership.new
 
-            pairs = helper.membership_users_collection(user, new_membership)
+            html = with_form(membership) { |f| helper.membership_user_select(f, parent) }
 
-            expect(pairs).to eq([['Doe, Randolph', user.id]])
-          end
-
-          it 'returns membership user if membership not new' do
-            user = create(:user, first_name: 'Rudolf', last_name: 'Doe')
-            account = create(:account)
-            membership = create(:membership, entity: account, role: :member, user: user)
-            create(:membership, entity: account, role: :member, user: create(:user))
-            create(:entry, account: account)
-
-            pairs = membership_users_collection(user, membership)
-
-            expect(pairs).to eq([['Doe, Rudolf', user.id]])
+            expect(html).to have_selector('select[data-ajax-url*=potential_users_for_account]')
           end
         end
 
-        context 'for Accounts#index' do
-          it 'returns pairs of formal name and id for new membership' do
-            user = create(:user, first_name: 'Randolph', last_name: 'Doe')
-            account_manager = create(:user)
-            account = create(:account, with_manager: account_manager)
-            create(:account, with_member: user, with_manager: account_manager)
-            new_membership = Membership.new
-            create(:entry, account: account)
-            expect(helper).to receive(:current_user).and_return(account_manager)
+        describe 'with user as parent' do
+          it 'renders disabled select with selected option' do
+            parent = build(:user, id: 5)
+            membership = Membership.new(user: parent)
 
-            pairs = helper.membership_users_collection(account, new_membership)
+            html = with_form(membership) { |f| helper.membership_user_select(f, parent) }
 
-            expect(pairs).to eq([['Doe, Randolph', user.id]])
+            expect(html).to have_selector('select[disabled]')
+            expect(html).to have_selector('option[selected][value="5"]')
           end
+        end
 
-          it 'returns only membership user if membership not new' do
-            user = create(:user, first_name: 'Rudolf', last_name: 'Doe')
-            account = create(:account)
-            membership = create(:membership, entity: account, role: :member, user: user)
-            create(:membership, entity: account, role: :member, user: create(:user))
-            create(:entry, account: account)
+        describe 'for persisted mebership' do
+          it 'renders disabled select with selected option' do
+            parent = build(:entry)
+            user = create(:user, id: 5)
+            membership = create(:membership, user: user, entity: parent)
 
-            pairs = membership_users_collection(account, membership)
+            html = with_form(membership) { |f| helper.membership_user_select(f, parent) }
 
-            expect(pairs).to eq([['Doe, Rudolf', user.id]])
-          end
-
-          it 'filters users that are already members of parent' do
-            account = create(:account)
-            user = create(:user, first_name: 'John', last_name: 'Doe')
-            entry = create(:entry, account: account)
-            create(:membership, entity: entry, role: :previewer, user: user)
-            new_membership = Membership.new
-            expect(helper).to receive(:current_user).and_return(user)
-
-            pairs = helper.membership_users_collection(account, new_membership)
-
-            expect(pairs).to eq([])
+            expect(html).to have_selector('select[disabled]')
+            expect(html).to have_selector('option[selected][value="5"]')
           end
         end
       end
 
-      describe '#membership_accounts_collection' do
-        context 'via user' do
-          it 'returns pairs of name and id for new membership' do
-            user = create(:user)
-            account_manager = create(:user)
-            account = create(:account, name: 'TVcorp', with_manager: account_manager)
-            new_membership = Membership.new
-            expect(helper).to receive(:current_user).and_return(account_manager)
+      describe '#membership_entity_select' do
+        describe 'for account entity type' do
+          describe 'with users as parent' do
+            it 'renders select with potential_accounts_for_user ajax url' do
+              parent = build(:user)
+              membership = Membership.new
 
-            pairs = helper.membership_accounts_collection(user, new_membership)
+              html = with_form(membership) do |f|
+                helper.membership_entity_select(f, parent, 'Pageflow::Account')
+              end
 
-            expect(pairs).to eq([['TVcorp', account.id]])
+              expect(html).to have_selector('select[data-ajax-url*=potential_accounts_for_user]')
+            end
           end
 
-          it 'returns only membership account if membership not new' do
-            user = create(:user)
-            account_manager = create(:user)
-            account = create(:account, name: 'Radiocorp', with_manager: account_manager)
-            create(:account, with_manager: account_manager)
-            membership = create(:membership, entity: account)
+          describe 'with account as parent' do
+            it 'renders disabled select with selected option' do
+              parent = build(:account, id: 5)
+              membership = Membership.new(entity: parent)
 
-            pairs = helper.membership_accounts_collection(user, membership)
+              html = with_form(membership) do |f|
+                helper.membership_entity_select(f, parent, 'Pageflow::Account')
+              end
 
-            expect(pairs).to eq([['Radiocorp', account.id]])
+              expect(html).to have_selector('select[disabled]')
+              expect(html).to have_selector('option[selected][value="5"]')
+            end
           end
 
-          it 'filters accounts that are already members of parent' do
-            user = create(:user)
-            account_manager = create(:user)
-            account = create(:account, name: 'Mediacorp', with_manager: account_manager)
-            create(:membership, entity: account, role: :member, user: user)
-            new_membership = Membership.new
-            expect(helper).to receive(:current_user).and_return(account_manager)
+          describe 'for persisted mebership' do
+            it 'renders disabled select with selected option' do
+              parent = build(:user)
+              account = create(:account, id: 5)
+              membership = create(:membership, entity: account, user: parent)
 
-            pairs = helper.membership_accounts_collection(user, new_membership)
+              html = with_form(membership) do |f|
+                helper.membership_entity_select(f, parent, 'Pageflow::Account')
+              end
 
-            expect(pairs).to eq([])
+              expect(html).to have_selector('select[disabled]')
+              expect(html).to have_selector('option[selected][value="5"]')
+            end
           end
         end
 
-        context 'via account' do
-          it 'returns pair of name and id for new membership' do
-            create(:user)
-            account_manager = create(:user)
-            account = create(:account, name: 'TVcorp', with_manager: account_manager)
-            new_membership = Membership.new
+        describe 'for entry entity type' do
+          describe 'with users as parent' do
+            it 'renders select with potential_accounts_for_user ajax url' do
+              parent = build(:user)
+              membership = Membership.new
 
-            pairs = helper.membership_accounts_collection(account, new_membership)
+              html = with_form(membership) do |f|
+                helper.membership_entity_select(f, parent, 'Pageflow::Entry')
+              end
 
-            expect(pairs).to eq([['TVcorp', account.id]])
+              expect(html).to have_selector('select[data-ajax-url*=potential_entries_for_user]')
+            end
           end
 
-          it 'returns membership account if membership not new' do
-            create(:user)
-            account_manager = create(:user)
-            account = create(:account, name: 'Radiocorp', with_manager: account_manager)
-            create(:account, with_manager: account_manager)
-            membership = create(:membership, entity: account)
+          describe 'with entry as parent' do
+            it 'renders disabled select with selected option' do
+              parent = build(:entry, id: 5)
+              membership = Membership.new(entity: parent)
 
-            pairs = helper.membership_accounts_collection(account, membership)
+              html = with_form(membership) do |f|
+                helper.membership_entity_select(f, parent, 'Pageflow::Entry')
+              end
 
-            expect(pairs).to eq([['Radiocorp', account.id]])
+              expect(html).to have_selector('select[disabled]')
+              expect(html).to have_selector('option[selected][value="5"]')
+            end
+          end
+
+          describe 'for persisted mebership' do
+            it 'renders disabled select with selected option' do
+              parent = build(:user)
+              entry = create(:entry, id: 5)
+              membership = create(:membership, entity: entry, user: parent)
+
+              html = with_form(membership) do |f|
+                helper.membership_entity_select(f, parent, 'Pageflow::Entry')
+              end
+
+              expect(html).to have_selector('select[disabled]')
+              expect(html).to have_selector('option[selected][value="5"]')
+            end
           end
         end
       end
 
-      describe '#membership_entries_collection' do
-        it 'returns pairs of title and id of only membership entry ' \
-           'with Entry as parent for new membership' do
-          account = create(:account)
-          entry = create(:entry, account: account, title: 'My Pageflow')
-          new_membership = Membership.new
-
-          pairs = membership_entries_collection(entry, new_membership)
-
-          expect(pairs).to eq([['My Pageflow', entry.id]])
-        end
-
-        it 'returns selection including account and entry referrer ' \
-           'with User as parent for new membership' do
-          account = create(:account, name: 'Codevise Ltd.')
-          create(:entry, account: account, title: 'My Pageflow')
-          user = create(:user, :member, on: account)
-          new_membership = Membership.new
-          expect(helper).to receive(:current_user).and_return(create(:user, :manager, on: account))
-
-          collection = helper.membership_entries_collection(user, new_membership)
-
-          expect(collection).to include('Codevise Ltd.')
-          expect(collection).to include('My Pageflow')
-        end
-
-        it 'returns selection including account and entry referrer of only membership entry ' \
-           'with User as parent for new membership' do
-          account = create(:account, name: 'Codevise Ltd.')
-          user = create(:user)
-          entry = create(:entry, account: account, title: 'My Pageflow')
-          create(:entry, title: 'Raucous title', with_previewer: user)
-          membership = create(:membership, user: user, role: :previewer, entity: entry)
-
-          pairs = helper.membership_entries_collection(user, membership)
-
-          expect(pairs).to eq([['My Pageflow', entry.id]])
-        end
-
-        it 'filters entries that the user is already member of' do
-          account = create(:account, name: 'Pageflowcorp')
-          entry = create(:entry, account: account, title: 'My Pageflow')
-          create(:entry, account: account, title: 'Not mine')
-          user = create(:user)
-          create(:membership, entity: entry, role: :previewer, user: user)
-          new_membership = Membership.new
-          expect(helper).to receive(:current_user).and_return(create(:user, :manager, on: account))
-
-          pairs = helper.membership_entries_collection(user, new_membership)
-
-          expect(pairs).not_to include('My Pageflow')
-        end
-      end
-
-      describe '#membership_roles_collection' do
-        it 'contains exactly the possible Account roles for Account' do
-          pairs = membership_roles_collection('Pageflow::Account')
-
-          expect(pairs).to eq([[I18n.t('pageflow.admin.users.roles.member'), :member],
-                               [I18n.t('pageflow.admin.users.roles.previewer'), :previewer],
-                               [I18n.t('pageflow.admin.users.roles.editor'), :editor],
-                               [I18n.t('pageflow.admin.users.roles.publisher'), :publisher],
-                               [I18n.t('pageflow.admin.users.roles.manager'), :manager]])
-        end
-
-        it 'contains exactly the possible Entry roles for Entry' do
-          pairs = membership_roles_collection('Pageflow::Entry')
-
-          expect(pairs).to eq([[I18n.t('pageflow.admin.users.roles.previewer'), :previewer],
-                               [I18n.t('pageflow.admin.users.roles.editor'), :editor],
-                               [I18n.t('pageflow.admin.users.roles.publisher'), :publisher],
-                               [I18n.t('pageflow.admin.users.roles.manager'), :manager]])
+      def with_form(membership)
+        helper.admin_form_for(membership, url: '/new') do |f|
+          return yield f
         end
       end
     end

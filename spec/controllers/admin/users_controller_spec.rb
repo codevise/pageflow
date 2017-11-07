@@ -110,10 +110,41 @@ module Pageflow
       end
     end
 
+    describe 'get #quota_state' do
+      render_views
+
+      it 'allows to display user quota state for account manager' do
+        account = create(:account)
+
+        sign_in(create(:user, :manager, on: account))
+        get(:quota_state, account_id: account)
+
+        expect(response.body).to have_selector('.quota_state')
+      end
+
+      it 'does not render layout' do
+        account = create(:account)
+
+        sign_in(create(:user, :manager, on: account))
+        get(:quota_state, account_id: account)
+
+        expect(response.body).not_to have_selector('body.active_admin')
+      end
+
+      it 'is forbidden for account publisher' do
+        account = create(:account)
+
+        sign_in(create(:user, :publisher, on: account))
+        get(:quota_state, account_id: account)
+
+        expect(response).to have_http_status(302)
+      end
+    end
+
     describe 'get #invitation' do
       render_views
 
-      it 'displays quota state description' do
+      it 'displays quota state description of selected account' do
         account = create(:account)
 
         Pageflow.config.quotas.register(:users, QuotaDouble.available)

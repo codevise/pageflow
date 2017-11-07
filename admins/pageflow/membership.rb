@@ -6,6 +6,63 @@ module Pageflow
 
     form partial: 'form'
 
+    searchable_select_options(name: :potential_accounts_for_user,
+                              text_attribute: :name,
+                              scope: lambda do |params|
+                                user = User.find(params[:parent_id])
+
+                                PotentialMemberships
+                                  .creatable_by(current_user)
+                                  .accounts_for_user(user)
+                                  .order(:name)
+                              end)
+
+    searchable_select_options(name: :potential_entries_for_user,
+                              display_text: lambda do |entry|
+                                [entry.try(:account_name), entry.title].compact.join(' / ')
+                              end,
+                              scope: lambda do |params|
+                                user = User.find(params[:parent_id])
+                                entries = PotentialMemberships
+                                  .creatable_by(current_user)
+                                  .entries_for_user(user)
+
+                                if can?(:see, :accounts)
+                                  entries.include_account_name.order('account_name', :title)
+                                else
+                                  entries.order(:title)
+                                end
+                              end,
+                              filter: lambda do |term, scope|
+                                EntryTitleOrAccountNameQuery::Scope.new(term, scope).resolve
+                              end)
+
+    searchable_select_options(name: :potential_users_for_account,
+                              text_attribute: :formal_name,
+                              scope: lambda do |params|
+                                account = Account.find(params[:parent_id])
+                                PotentialMemberships
+                                  .creatable_by(current_user)
+                                  .users_for_account(account)
+                                  .order(:last_name, :first_name)
+                              end,
+                              filter: lambda do |term, scope|
+                                UserNameQuery::Scope.new(term, scope).resolve
+                              end)
+
+    searchable_select_options(name: :potential_users_for_entry,
+                              text_attribute: :formal_name,
+                              scope: lambda do |params|
+                                entry = Entry.find(params[:parent_id])
+                                PotentialMemberships
+                                  .creatable_by(current_user)
+                                  .users_for_entry(entry)
+                                  .order(:last_name, :first_name)
+                              end,
+                              filter: lambda do |term, scope|
+                                UserNameQuery::Scope.new(term, scope).resolve
+                              end)
+
     controller do
       belongs_to :entry, parent_class: Pageflow::Entry, polymorphic: true
       belongs_to :account, parent_class: Pageflow::Account, polymorphic: true

@@ -36,16 +36,21 @@ module Pageflow
         initial_account && initial_account.users.find_by_email(user.email)
     end
 
+    def initial_account
+      @initial_account ||=
+        if initial_account_id
+          available_accounts.find_by_id(initial_account_id)
+        else
+          available_accounts.first
+        end
+    end
+
     private
 
     def existing_user
       @existing_user ||=
         Pageflow.config.allow_multiaccount_users &&
         User.find_by_email(user.email)
-    end
-
-    def initial_account
-      @initial_account ||= available_accounts.find_by_id(initial_account_id)
     end
 
     def initial_account_id

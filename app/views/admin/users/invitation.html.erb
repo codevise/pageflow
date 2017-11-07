@@ -13,14 +13,19 @@
 
       <%= f.inputs do %>
         <%= m.input :entity_id,
-                    as: :select,
-                    collection: @invitation_form.available_accounts,
+                    as: :searchable_select,
+                    ajax: {
+                      resource: Pageflow::Account,
+                      collection_name: :member_addable
+                    },
                     include_blank: false,
                     label: Pageflow::Membership.human_attribute_name(:account) %>
 
-        <% @invitation_form.available_accounts.each do |account| %>
-          <%= users_quota_state(account) %>
-        <% end %>
+        <div id="quota_state_container">
+          <% if @invitation_form.initial_account %>
+            <%= users_quota_state(@invitation_form.initial_account) %>
+          <% end %>
+        </div>
       <% end %>
 
       <%= f.inputs "Details", id: 'invitation_form_details' do %>

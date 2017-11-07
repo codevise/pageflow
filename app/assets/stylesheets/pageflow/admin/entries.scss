@@ -23,7 +23,7 @@
     float: right;
   }
 
-  span[title] {
+  td > span[title] {
     border-bottom: 1px #aaa dotted;
     cursor: default;
   }

@@ -1,16 +1,8 @@
 <%= admin_form_for [:admin, parent, resource] do |f| %>
   <% entity_type = resource.entity_type || params[:entity_type] %>
   <%= f.inputs do %>
-    <%= f.input :user,
-                collection: membership_users_collection(parent, resource),
-                include_blank: false,
-                input_html: { disabled: !f.object.new_record? ||
-                                          parent_type == :user } %>
-    <% if entity_type == 'Pageflow::Entry' %>
-      <%= render partial: 'admin/memberships/entity_entry_input', locals: {f: f} %>
-    <% else %>
-      <%= render partial: 'admin/memberships/entity_account_input', locals: {f: f} %>
-    <% end %>
+    <%= membership_user_select(f, parent) %>
+    <%= membership_entity_select(f, parent, entity_type) %>
     <%= f.hidden_field :entity_type, value: entity_type %>
   <% end %>
   <%= f.inputs do %>
