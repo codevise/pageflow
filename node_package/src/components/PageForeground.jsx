@@ -7,7 +7,7 @@ import React from 'react';
  *
  * @alias pageflow.react.components.PageForeground
  * @class
- * @since edge
+ * @since 12.1
  */
 export default function(props) {
   return (

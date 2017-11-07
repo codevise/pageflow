@@ -10,17 +10,17 @@ module Pageflow
       end
 
       # Restrict access to features tabs to admins. Defaults to false.
-      # @since edge
+      # @since 12.1
       attr_accessor :only_admins_may_update_features
 
       # Restrict visibility of admin flag on user admin page to
       # admins. Defaults to false.
-      # @since edge
+      # @since 12.1
       attr_accessor :only_admins_may_see_admin_boolean
 
       # Restrict access to theming drop down on entry edit admin page
       # to admins. Defaults to false.
-      # @since edge
+      # @since 12.1
       attr_accessor :only_admins_may_update_theming
     end
   end

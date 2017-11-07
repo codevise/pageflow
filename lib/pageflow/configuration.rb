@@ -254,21 +254,21 @@ module Pageflow
 
     # Allow one user to be member of multiple accounts. Defaults to
     # true.
-    # @since edge
+    # @since 12.1
     attr_accessor :allow_multiaccount_users
 
     # Options hash for account admin menu. Options from config precede
     # defaults.
-    # @since edge
+    # @since 12.1
     attr_accessor :account_admin_menu_options
 
     # Sublayer for permissions related config.
-    # @since edge
+    # @since 12.1
     attr_reader :permissions
 
     # Defines the editor lock polling interval.
     # @return [number]
-    # @since edge
+    # @since 12.1
     attr_accessor :edit_lock_polling_interval
 
     def initialize

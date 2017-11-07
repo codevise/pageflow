@@ -7,7 +7,7 @@ import mapping from './icons/mapping';
  *
  * @alias pageflow.react.components.Icon
  * @class
- * @since edge
+ * @since 12.1
  *
  * @prop name
  *   Required. The key to look up in the mapping.

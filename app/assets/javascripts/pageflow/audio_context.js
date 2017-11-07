@@ -2,7 +2,7 @@
  * Obtain the globally shared audio context. There can only be a
  * limited number of `AudioContext` objects in one page.
  *
- * @since edge
+ * @since 12.1
  */
 pageflow.audioContext = {
   /**

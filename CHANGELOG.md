@@ -1,13 +1,10 @@
 # CHANGELOG
 
+### Version 12.1.0
 
+2017-11-07
 
-- Use searchable select boxes in admin forms
-  ([#888](https://github.com/codevise/pageflow/pull/888))
-
-### Unreleased Changes
-
-[Compare changes](https://github.com/codevise/pageflow/compare/12-0-stable...master)
+[Compare changes](https://github.com/codevise/pageflow/compare/12-0-stable...v12.1.0)
 
 ##### Manual Update Steps
 
@@ -58,6 +55,10 @@
 
 ##### Admin
 
+- Use searchable select boxes in admin forms
+  ([#888](https://github.com/codevise/pageflow/pull/888))
+- Remove sensitive data from active admin downloads
+  ([#899](https://github.com/codevise/pageflow/pull/899))
 - Add config option to prevent multi account users
   ([#848](https://github.com/codevise/pageflow/pull/848),
    [#868](https://github.com/codevise/pageflow/pull/868))
