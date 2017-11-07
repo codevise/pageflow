@@ -194,6 +194,7 @@ de:
         share_image_id: Social Sharing Bild
         share_url: Social Sharing URL
         summary: Zusammenfassung
+        theme_name: Theme
         title: Titel
         updated_at: Geändert am
         url: Permalink
@@ -754,7 +755,8 @@ de:
       accounts:
         no_entries: Keine Beiträge
         no_members: Keine Benutzer
-        widgets_inline_help: Die hier ausgewählten Widgets werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus.
+        theming_defaults_inline_help: Die folgenden Einstellungen werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus.
+        widgets_inline_help: DELETED
       entries:
         add_folder: Ordner hinzufügen
         confirm_depublish: Soll der Beitrag wirklich depubliziert werden?
@@ -869,6 +871,8 @@ de:
           delete_account_hint: Du möchtest die Anwendung nicht mehr nutzen?
           deleted: Dein Benutzerkonto wurde gelöscht.
           updated: Dein Profil wurde aktualisiert.
+        member_exists: Ein Benutzer mit der angegebenen E-Mail-Adresse ist bereits Mitglied des Kontos.
+        member_exists_link: Benutzer anzeigen
         no_accounts: Keine Konten
         no_entries: Keine Beiträge
         none: Sie haben keine Beiträge.
@@ -979,6 +983,8 @@ de:
         captions: Ton-Ersatz-Textspur
         descriptions: Bild-Ersatz-Textspur
         subtitles: Übersetzungs-Textspur
+    default_theme:
+      name: Standard
     delayed_text_fade_in:
       feature_name: Text verzögert einblenden
     devise:
@@ -1123,6 +1129,11 @@ de:
             ratio4to3Portrait: 4:3 Portrait
           save: Speichern
           title: Bildausschnitt anpassen
+        change_theme_dialog:
+          close: Schließen
+          header: Themes
+          preview_header_prefix: Vorschau
+          preview_header_suffix: "-Theme"
         chapter_item:
           new_page: Neue Seite
           save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
@@ -1169,6 +1180,8 @@ de:
           outline: Gliederung
           retry: Erneut versuchen
           save_error: Beim Speichern des Erzählstrangs ist ein Problem aufgetreten.
+        edit_widget:
+          back: Erscheinungsbild
         embedded:
           page_link:
             reset: Zurücksetzen
@@ -1205,8 +1218,8 @@ de:
           open_help: Hilfe anzeigen
         inputs:
           reference:
-            edit: Verknüpfung ändern
-            reset: Verknüpfung entfernen
+            edit: DELETED
+            reset: DELETED
         list_blank_slate:
           text: "(Keine Einträge)"
         list_item:
@@ -1272,9 +1285,15 @@ de:
         text_tracks:
           edit_file_header: Metadaten
           upload: Hinzufügen
+        theme:
+          use: Verwenden
+        widget_item:
+          settings: Einstellungen
       text_track_files:
         label_missing: "(Label fehlt)"
         srclang_missing: "(Fehlt)"
+      themes:
+        header: Themes
       views:
         chapter_item_view:
           chapter: Kapitel
@@ -1317,7 +1336,11 @@ de:
             edit_file_settings: Datei-Einstellungen...
             no_default_text_track: "(Kein)"
           reference_input_view:
+            choose: Verknüpfung ändern
             none: "(Kein)"
+            unset: Verknüpfung entfernen
+          theme_input_view:
+            choose: Theme ändern
         page_item_view:
           unnamed: "(Unbenannt)"
         page_link_item_view:
@@ -1664,6 +1687,8 @@ de:
       scroll_right: Scrollen (von rechts)
     quotas:
       exhausted: Quota verbraucht.
+    selectable_themes:
+      feature_name: Editor-Theme-Auswahl
     storyline_attributes:
       main:
         inline_help: Macht die erste Seite dieses Erzählstrangs zur Startseite des Beitrags.

@@ -194,6 +194,7 @@ en:
         share_image_id: Social Sharing Image
         share_url: Social Sharing URL
         summary: Summary
+        theme_name: Theme
         title: Title
         updated_at: Updated at
         url: Permalink
@@ -754,7 +755,8 @@ en:
       accounts:
         no_entries: No Stories
         no_members: No members
-        widgets_inline_help: The widgets selected here will be used as defaults for new entries in this account. Changes do not affect existing entries.
+        theming_defaults_inline_help: The following settings will be used as defaults for new entries in this account. Changes do not affect existing entries.
+        widgets_inline_help: DELETED
       entries:
         add_folder: Add folder
         confirm_depublish: Unpublish this story?
@@ -869,6 +871,8 @@ en:
           delete_account_hint: You don't want to continue using Pageflow?
           deleted: Your account has been deleted. You may sign-up for a new one at any time!
           updated: Your profile has been updated.
+        member_exists: A user with the given email address is already member of the account.
+        member_exists_link: View user
         no_accounts: No members
         no_entries: No stories
         none: There are no stories.
@@ -977,6 +981,8 @@ en:
         captions: Audio Replacement Text Track
         descriptions: Image Description Text Track
         subtitles: Translation Text Track
+    default_theme:
+      name: Default
     delayed_text_fade_in:
       feature_name: Delayed text fade in
     devise:
@@ -1123,6 +1129,11 @@ en:
             ratio4to3Portrait: 4:3 Portrait
           save: Save
           title: Adjust position
+        change_theme_dialog:
+          close: Close
+          header: Themes
+          preview_header_prefix: Preview
+          preview_header_suffix: "-Theme"
         chapter_item:
           new_page: New page
           save_error: Errors were detected while saving this chapter.
@@ -1169,6 +1180,8 @@ en:
           outline: Outline
           retry: Retry
           save_error: Errors were detected while saving the storyline.
+        edit_widget:
+          back: Appearance
         embedded:
           page_link:
             reset: Reset
@@ -1205,8 +1218,8 @@ en:
           open_help: Open help
         inputs:
           reference:
-            edit: Edit
-            reset: Reset
+            edit: DELETED
+            reset: DELETED
         list_blank_slate:
           text: "(No items)"
         list_item:
@@ -1272,9 +1285,15 @@ en:
         text_tracks:
           edit_file_header: Metadata
           upload: Add
+        theme:
+          use: Use
+        widget_item:
+          settings: Settings
       text_track_files:
         label_missing: "(Label missing)"
         srclang_missing: "(Missing)"
+      themes:
+        header: Themes
       views:
         chapter_item_view:
           chapter: Chapter
@@ -1317,7 +1336,11 @@ en:
             edit_file_settings: File settings...
             no_default_text_track: "(None)"
           reference_input_view:
+            choose: Edit
             none: "(None)"
+            unset: Reset
+          theme_input_view:
+            choose: Change theme
         page_item_view:
           unnamed: "(New page)"
         page_link_item_view:
@@ -1636,6 +1659,8 @@ en:
       scroll_right: Scroll right
     quotas:
       exhausted: Quota exhausted
+    selectable_themes:
+      feature_name: Editor theme selection
     storyline_attributes:
       main:
         inline_help: Turns the first page of this storyline into the start page of the entry.

@@ -1,8 +1,0 @@
-en:
-  pageflow:
-    editor:
-      templates:
-        widget_item:
-          settings: "Settings"
-        edit_widget:
-          back: "Appearance"
