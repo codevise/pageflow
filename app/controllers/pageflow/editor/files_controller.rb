@@ -81,6 +81,7 @@ module Pageflow
         file_attachment_params
           .merge(file_configuration_params)
           .merge(file_parent_file_params)
+          .merge(file_custom_params)
       end
 
       def file_reuse_params
@@ -107,6 +108,10 @@ module Pageflow
 
       def file_parent_file_params
         file_params.permit(:parent_file_id, :parent_file_model_type)
+      end
+
+      def file_custom_params
+        file_params.permit(file_type.custom_attributes)
       end
 
       def file_params

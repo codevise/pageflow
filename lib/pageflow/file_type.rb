@@ -29,6 +29,10 @@ module Pageflow
     # @return [#call]
     attr_reader :url_templates
 
+    # Attributes that are custom to this file type.
+    # @return {Array<Symbol>}
+    attr_reader :custom_attributes
+
     # Create file type to be returned in {PageType#file_types}.
     #
     # @example
@@ -53,6 +57,9 @@ module Pageflow
     # @option options [#call] :url_templates
     #   Optional. Callable returning a hash of url template strings
     #   indexed by their names.
+    # @option options [Array<Symbol>] :custom_attributes
+    #   Optional. Array of strings containing attribute names that are
+    #   custom to this file type
     def initialize(options)
       @model_string_or_reference = options.fetch(:model)
       @partial = options[:partial]
@@ -61,6 +68,7 @@ module Pageflow
       @nested_file_types = options.fetch(:nested_file_types, [])
       @top_level_type = options.fetch(:top_level_type, false)
       @url_templates = options.fetch(:url_templates, ->() { {} })
+      @custom_attributes = options.fetch(:custom_attributes, [])
     end
 
     # ActiveRecord model that represents the files of this type.

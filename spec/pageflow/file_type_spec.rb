@@ -71,5 +71,14 @@ module Pageflow
         expect(file_type.editor_partial).to eq('pageflow/editor/image_files/image_file')
       end
     end
+
+    describe '#custom_attributes' do
+      it 'returns passed custom_attributes' do
+        file_type = FileType.new(model: ImageFile,
+                                 custom_attributes: [:neural_network_analysis])
+
+        expect(file_type.custom_attributes).to eq([:neural_network_analysis])
+      end
+    end
   end
 end

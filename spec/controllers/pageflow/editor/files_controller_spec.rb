@@ -94,6 +94,59 @@ module Pageflow
         expect(file.configuration['some']).to eq('value')
       end
 
+      it 'allows to set custom attribute defined by file type' do
+        pageflow_configure do |config|
+          TestFileType.register(config,
+                                model: Pageflow::TestHostedFile,
+                                custom_attributes: [:custom])
+        end
+
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'pageflow_test_hosted_files',
+               test_hosted_file: {
+                 attachment: image_fixture_upload,
+                 custom: 'some value'
+               }
+             },
+             format: 'json')
+
+        file = entry.draft.find_files(Pageflow::TestHostedFile).last
+        expect(file.custom).to eq('some value')
+      end
+
+      it 'does not allow to set attribute not defined as custom attributes in file type' do
+        pageflow_configure do |config|
+          TestFileType.register(config,
+                                model: Pageflow::TestHostedFile)
+        end
+
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'pageflow_test_hosted_files',
+               test_hosted_file: {
+                 attachment: image_fixture_upload,
+                 custom: 'some value'
+               }
+             },
+             format: 'json')
+
+        file = entry.draft.find_files(Pageflow::TestHostedFile).last
+        expect(file.custom).to be_blank
+      end
+
       it 'creates file for entry' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
@@ -438,6 +491,33 @@ module Pageflow
         expect(response.status).to eq(204)
         expect(used_file.rights).to eq('new')
         expect(used_file.configuration['some']).to eq('value')
+      end
+
+      it 'does not allow updating custom attribute defined by file type' do
+        pageflow_configure do |config|
+          TestFileType.register(config,
+                                model: Pageflow::TestHostedFile,
+                                custom_attributes: [:custom])
+        end
+
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        file = create(:hosted_file, used_in: entry.draft, custom: 'some value')
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {
+                entry_id: entry,
+                collection_name: 'pageflow_test_hosted_files',
+                id: file,
+                test_hosted_file: {
+                  custom: 'updated'
+                }
+              },
+              format: 'json')
+
+        expect(file.reload.custom).to eq('some value')
       end
 
       it 'does not allow to update file if the signed in user is not editor for its entry' do
