@@ -11,7 +11,6 @@ with the correct bucket names below.
 Grant read access to main bucket:
 
     {
-      "Version": "2017-06-20",
       "Id": "PageflowMainBucketPolicy",
       "Statement": [
         {
