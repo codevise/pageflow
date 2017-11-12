@@ -19,14 +19,14 @@ module Pageflow
     helper RenderJsonHelper
 
     def index
-      @theming = Theming.for_request(request).with_home_url.first!
-
       respond_to do |format|
         format.html do
+          @theming = Theming.for_request(request).with_home_url.first!
           redirect_to(@theming.home_url)
         end
 
         format.atom do
+          @theming = Theming.for_request(request).first!
           @account = @theming.account
           @entries = @account.entries
             .published_without_password_protection
