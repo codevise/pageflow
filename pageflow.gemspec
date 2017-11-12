@@ -20,6 +20,9 @@ Gem::Specification.new do |s|
   # Framework for admin interface
   s.add_dependency 'activeadmin', '1.0.0.pre4'
 
+  # Pagination library used by activeadmin and the Atom feed for published entries
+  s.add_dependency 'kaminari'
+
   # Searchable select boxes for filters and forms
   s.add_dependency 'activeadmin-searchable_select', '~> 1.0'
 

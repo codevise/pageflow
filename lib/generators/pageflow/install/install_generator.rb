@@ -8,6 +8,7 @@ module Pageflow
         generate 'active_admin:install User --skip-users'
         generate 'active_admin:devise User --no-default-user'
         generate 'friendly_id'
+        generate 'kaminari:config'
 
         invoke 'pageflow:cancan'
         invoke 'pageflow:resque'
