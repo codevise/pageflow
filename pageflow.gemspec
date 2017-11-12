@@ -136,8 +136,9 @@ Gem::Specification.new do |s|
   # Browser like integration testing
   s.add_development_dependency 'capybara', '~> 2.4'
 
-  # Headless browser testing
-  s.add_development_dependency 'poltergeist', '~> 1.15.0'
+  # Chrome Headless browser testing
+  s.add_development_dependency 'selenium-webdriver', '~> 3.6.x'
+  s.add_development_dependency 'chromedriver-helper', '~> 1.1.x'
 
   # View abstraction fro integration testing
   s.add_development_dependency 'domino', '~> 0.7.0'

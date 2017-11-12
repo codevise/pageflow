@@ -30,7 +30,8 @@ or the headless browser based Javascript test suite
 
     $ bin/teaspoon
 
-PhantomJS has to be installed on the system.
+Chrome 59 or newer has to be installed on the same computer you're running
+the tests on.
 
 The dummy Rails app used for tests is created automatically through the
 install generator during test runs. To have it regenerated,

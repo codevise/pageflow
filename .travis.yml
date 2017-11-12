@@ -1,3 +1,4 @@
+dist: rusty
 language: ruby
 rvm:
   - 2.1.7
@@ -19,6 +20,7 @@ services:
 
 before_install:
   - nvm install stable
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
 before_script:
   - bin/npm install
@@ -39,3 +41,6 @@ after_success:
 
 notifications:
   webhooks: https://coveralls.io/webhook?service_name=travis-ci
+
+addons:
+  chrome: stable
