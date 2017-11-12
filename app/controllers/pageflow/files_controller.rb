@@ -2,7 +2,6 @@ module Pageflow
   class FilesController < Pageflow::ApplicationController
     include PublicHttpsMode
     include EntryPasswordProtection
-    include EntryRequestScope
 
     before_filter :check_public_https_mode
 
@@ -21,6 +20,10 @@ module Pageflow
 
     def file_type
       @file_type ||= Pageflow.config.file_types.find_by_collection_name!(params[:collection_name])
+    end
+
+    def entry_request_scope
+      Pageflow.config.public_entry_request_scope.call(Entry, request)
     end
   end
 end
