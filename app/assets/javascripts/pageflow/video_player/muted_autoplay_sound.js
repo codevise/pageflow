@@ -1,18 +1,18 @@
 pageflow.VideoPlayer.mutedAutoplaySound = function(player) {
-  if (pageflow.browser.has('mobile platform')) {
-    function setupHowler() {
-      if (!player.howler) {
-        var videoSrc = player.currentSources().find(function(i){
-          return i.type === 'video/mp4';
-        }).src;
+  function setupHowler() {
+    if (!player.howler) {
+      var videoSrc = player.currentSources().find(function(i){
+        return i.type === 'video/mp4';
+      }).src;
 
-        player.howler = new Howl({
-          src: [ videoSrc ],
-          loop: true
-        });
-      }
+      player.howler = new Howl({
+        src: [ videoSrc ],
+        loop: true
+      });
     }
+  }
 
+  if (pageflow.browser.has('mobile platform')) {
     player.ready(function() {
       setupHowler();
     });
