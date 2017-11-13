@@ -44,7 +44,7 @@ pageflow.mediaPlayer.volumeFading.webAudio = function(player, audioContext) {
     }).promise();
   };
 
-  player.one('dispose', cancel);
+  player.once('dispose', cancel);
 
   function ensureGainNode() {
     if (!gainNode) {

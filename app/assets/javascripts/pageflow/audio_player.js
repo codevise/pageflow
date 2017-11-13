@@ -26,29 +26,29 @@
 pageflow.AudioPlayer = function(sources, options) {
   options = options || {};
 
-  var codecMapping = {
-    vorbis: 'audio/ogg',
-    mp4: 'audio/mp4',
-    mp3: 'audio/mpeg'
-  };
+  var codecMapping = ['audio/mpeg', 'audio/ogg', 'audio/mp4'];
 
-  var ready = new $.Deferred();
   var loaded = new $.Deferred();
 
-  var audio = new Audio5js({
-    reusedTag: options.tag,
-    swf_path: pageflow.assetUrls.audioSwf,
-    throw_errors: false,
-    format_time: false,
-    codecs: ['vorbis', 'mp4', 'mp3'],
-    ready: ready.resolve,
+  var source = _.find(sources || [], function(source) {
+    return _.contains(codecMapping, source.type);
+  });
+
+  var audio = new Howl({
+    format: ['ogg', 'mp3', 'mp4'],
+    src: (source ? source.src : ''),
     loop: options.loop
   });
 
-  audio.readyPromise = ready.promise();
   audio.loadedPromise = loaded.promise();
 
-  audio.on('load', loaded.resolve);
+  audio.on('load', function() {
+    loaded.resolve();
+
+    this.currentSrc = this._src;
+    this.position = 0;
+    //this.trigger('timeupdate', this.pos(), this.duration());
+  });
 
   if (options.mediaEvents) {
     pageflow.AudioPlayer.mediaEvents(audio, options.context);
@@ -65,31 +65,6 @@ pageflow.AudioPlayer = function(sources, options) {
   pageflow.AudioPlayer.seekWithInvalidStateHandling(audio);
   pageflow.AudioPlayer.rewindMethod(audio);
   pageflow.AudioPlayer.getMediaElementMethod(audio);
-
-  audio.src = function(sources) {
-    ready.then(function() {
-      var source = _.detect(sources || [], function(source) {
-        if (codecMapping[audio.settings.player.codec] === source.type) {
-          return source.src;
-        }
-      });
-
-      audio.load(source ? source.src : '');
-    });
-  };
-
-  var originalLoad = audio.load;
-  audio.load = function(src) {
-    if (!src) {
-      this.duration = 0;
-    }
-
-    this.currentSrc = src;
-    this.position = 0;
-    this.trigger('timeupdate', this.position, this.duration);
-
-    originalLoad.apply(this, arguments);
-  };
 
   var originalSeek = audio.seek;
   audio.seek = function() {
@@ -109,7 +84,6 @@ pageflow.AudioPlayer = function(sources, options) {
     return !audio.playing;
   };
 
-  audio.src(sources);
   return audio;
 };
 
