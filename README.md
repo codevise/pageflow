@@ -160,6 +160,25 @@ The built-in Resque web server is mounted at `/background_jobs`. Use it to
 inspect the state of background jobs, and restart failed jobs. This functionality
 is only available for admins.
 
+## Maintenance
+
+As editors work with entries, the database will amass snapshots. These are
+automatically saved periodically to preventn someone losing a catastrophic
+amount of work.
+
+After a while you can safely remove these snapshots. We provide a Rake task:
+
+    $ rake pageflow:prune_auto_snapshots_jobs:enqueue
+
+This fires off `Pageflow::AutoSnapshotPruning` which will tidy up.
+
+You can add this task to a monthly recurring job with something like [Whenever](https://github.com/javan/whenever):
+
+    # config/schedule.rb
+    every 1.month do
+      rake pageflow:prune_auto_snapshots_jobs:enqueue
+    end
+
 ## Troubleshooting
 
 If you run into problems during the installation of Pageflow, please refer to the [Troubleshooting](https://github.com/codevise/pageflow/wiki/Troubleshooting) wiki
