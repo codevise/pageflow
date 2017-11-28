@@ -7,8 +7,10 @@
 
   <h1 class="hidden"><%= entry.title %></h1>
 
-  <img src="<%= image_path("pageflow/themes/#{entry.theme.directory_name}/logo_print.png") %>" class="print_image" alt="<%= t('pageflow.public.logo') %>">
-  <span class="print_only page_url"><%= request.original_url %></span>
+  <section class="print_only">
+    <img src="<%= image_path("pageflow/themes/#{entry.theme.directory_name}/logo_print.png") %>" class="print_image" alt="<%= t('pageflow.public.logo') %>">
+    <span class="page_url"><%= request.original_url %></span>
+  </section>
 
   <%= content_tag :div, :id => 'content', :class => 'entry', :data => {:role => 'slideshow'} do %>
     <%= render entry.pages, entry: entry %>

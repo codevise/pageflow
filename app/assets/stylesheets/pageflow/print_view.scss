@@ -1,3 +1,12 @@
+.print_only {
+  display: block;
+  page-break-inside: avoid !important;
+}
+
+.page_url {
+  padding-left: 17px;
+}
+
 body {
 
   #outer_wrapper {
@@ -13,13 +22,6 @@ body {
 
   .navigation, .navigation_mobile, .scroll_indicator {
     display: none !important;
-  }
-
-  .print_image, .print_only {
-    display: block;
-  }
-  .print_only.page_url {
-    padding-left: 17px;
   }
 
   sidebar {
@@ -57,14 +59,12 @@ body {
       }
     }
 
-    .print_image, .print_only {
-      display: block;
+    .print_image {
       width: auto;
       height: auto;
       margin-left: auto;
       margin-right: auto;
       margin-bottom: 1em;
-      page-break-inside: avoid !important;
     }
 
     .page_header {
