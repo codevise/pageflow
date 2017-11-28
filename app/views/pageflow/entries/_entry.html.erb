@@ -8,7 +8,9 @@
   <h1 class="hidden"><%= entry.title %></h1>
 
   <section class="print_only">
-    <img src="<%= image_path("pageflow/themes/#{entry.theme.directory_name}/logo_print.png") %>" class="print_image" alt="<%= t('pageflow.public.logo') %>">
+    <%= image_tag print_logo_path(entry),
+      class: "print_image",
+      alt: t('pageflow.public.logo') if asset_exists?(print_logo_path(entry)) %>
     <span class="page_url"><%= request.original_url %></span>
   </section>
 
