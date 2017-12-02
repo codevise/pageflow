@@ -50,7 +50,6 @@ module Pageflow
     def entry_stylesheet_link_tag(entry)
       url = polymorphic_path(entry.stylesheet_model,
                              v: entry.stylesheet_cache_key,
-                             p: Pageflow::VERSION,
                              format: 'css')
 
       stylesheet_link_tag(url,
