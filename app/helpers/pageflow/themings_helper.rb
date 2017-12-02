@@ -1,7 +1,8 @@
 module Pageflow
   module ThemingsHelper
     DEFAULT_PUBLIC_ENTRY_OPTIONS = lambda do |theming|
-      theming.cname.present? ? {host: theming.cname} : nil
+      domain = theming.primary_domain
+      domain.present? ? {host: domain.name} : nil
     end
 
     def pretty_theming_url(theming)

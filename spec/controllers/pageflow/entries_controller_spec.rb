@@ -10,8 +10,9 @@ module Pageflow
     end
 
     describe '#index' do
-      it 'redirects to home url of theming with matching cname' do
-        create(:theming, cname: 'pageflow.example.com', home_url: 'http://example.com/overview')
+      it 'redirects to home url of theming with matching domain' do
+        theming = create(:theming, home_url: 'http://example.com/overview')
+        create(:domain, theming: theming, name: 'pageflow.example.com')
 
         request.env['HTTP_HOST'] = 'pageflow.example.com'
         get(:index)
@@ -19,15 +20,16 @@ module Pageflow
         expect(response).to redirect_to('http://example.com/overview')
       end
 
-      it 'responds with not found if no theming matches cname' do
+      it 'responds with not found if no theming matches domain' do
         request.env['HTTP_HOST'] = 'unknown.example.com'
         get(:index)
 
         expect(response.status).to eq(404)
       end
 
-      it 'responds with not found if theming with matching cname does not have home_url' do
-        create(:theming, cname: 'pageflow.example.com')
+      it 'responds with not found if theming with matching domain does not have home_url' do
+        theming = create(:theming)
+        create(:domain, theming: theming, name: 'pageflow.example.com')
 
         request.env['HTTP_HOST'] = 'pageflow.example.com'
         get(:index)

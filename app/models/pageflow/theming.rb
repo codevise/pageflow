@@ -4,6 +4,8 @@ module Pageflow
 
     belongs_to :account
     has_many :widgets, as: :subject, dependent: :destroy
+    has_many :domains, dependent: :destroy
+    has_one :primary_domain, -> { where(primary: true) }, class_name: "Domain"
 
     has_many :entries
 
