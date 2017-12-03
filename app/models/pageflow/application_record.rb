@@ -7,9 +7,7 @@ module Pageflow
     # A Pageflow version change warrants expiry of all caches.
     # TODO on Rails 5.2 move this code into the `version`.
     def cache_key
-      pageflow_version = Pageflow::VERSION.gsub('.', '')
-
-      super.sub(/\d+/, pageflow_version)
+      super.sub(/\d+/, Pageflow::VERSION.delete('.'))
     end
   end
 end
