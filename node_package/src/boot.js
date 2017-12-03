@@ -76,9 +76,9 @@ export default function(pageflow) {
       }))
     );
 
-    widgetTypeRegistry.forEach(({name, component}) =>
-      pageflow.widgetTypes.register(name, createWidgetType(component, store))
-    );
+    widgetTypeRegistry.forEach(({name, component}) => {
+      return pageflow.widgetTypes.register(name, createWidgetType(component, store))
+    });
   }
 
   return store;
