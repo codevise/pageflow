@@ -48,6 +48,8 @@
 //= require_tree ./widgets
 //= require ./react
 
+//= require ./test_embed
+
 pageflow = {
   log: function(text, options) {
     if (window.console && (pageflow.debugMode() || (options && options.force))) {

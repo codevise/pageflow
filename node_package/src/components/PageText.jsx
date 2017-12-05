@@ -1,5 +1,7 @@
 import {Component} from 'react';
 
+import textEmbeds from 'textEmbeds';
+
 /**
  * @desc Place inside
  * {@link pageflow.react.components.PageScroller|PageScroller} to
@@ -13,9 +15,32 @@ import {Component} from 'react';
  *   Required. The page object to read configuration properties from.
  */
 export default class PageText extends Component {
+  updateDOMRef(element) {
+    if (element) {
+      textEmbeds.mountInElement(element);
+    }
+    else {
+      textEmbeds.unmountInElement(this.element);
+    }
+
+    this.element = element;
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.page.text !== this.props.page.text;
+  }
+
+  componentWillUpdate() {
+    textEmbeds.unmountInElement(this.element);
+  }
+
+  componentDidUpdate() {
+    textEmbeds.mountInElement(this.element);
+  }
+
   render() {
     return (
-      <div className="contentText">
+      <div className="contentText" ref={this.updateDOMRef.bind(this)}>
         <p dangerouslySetInnerHTML={this.text()} />
         {this.props.children}
       </div>
@@ -23,6 +48,6 @@ export default class PageText extends Component {
   }
 
   text() {
-    return {__html: this.props.page.text};
+    return {__html: textEmbeds.renderInString(this.props.page.text || '')};
   }
 }

@@ -21,6 +21,8 @@ import registerPageType from 'registerPageType';
 import registerPageTypeWithDefaultBackground from 'registerPageTypeWithDefaultBackground';
 import registerWidgetType from 'registerWidgetType';
 
+import textEmbeds from 'textEmbeds';
+
 import iconMapping from 'components/icons/mapping';
 import SvgIcon from 'components/icons/Container';
 
@@ -59,6 +61,7 @@ module.exports = {
   registerPageType,
   registerPageTypeWithDefaultBackground,
   registerWidgetType,
+  registerTextEmbed: (...args) => textEmbeds.register(...args),
 
   mediaReduxModule,
   mediaPageBackgroundReduxModule,
