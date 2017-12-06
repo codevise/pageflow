@@ -23,10 +23,7 @@ before_install:
 before_script:
   - bin/npm install
   - bin/npm run build
-
-  # We need to use "bundle exec" instead of binstubs until
-  # https://github.com/rubygems/rubygems/issues/2055 is fixed
-  - bundle exec rake pageflow:dummy
+  - bin/rake pageflow:dummy
   - bin/rake app:assets:precompile
 
 script:
