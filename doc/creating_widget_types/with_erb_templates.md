@@ -30,7 +30,7 @@ Pageflow files.
 
 ## Creating the Plugin class
 
-We strart by creating a plugin class in our engine's Ruby code
+We start by creating a plugin class in our engine's Ruby code
 that users of our plugin can reference in their Pageflow initializer:
 
 ```ruby

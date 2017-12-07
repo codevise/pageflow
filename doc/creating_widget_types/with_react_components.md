@@ -2,7 +2,7 @@
 
 ## Ingredients of a Widget Type
 
-React based widget type are
+React-based widget types are
 [packaged as Rails engines](../creating_a_pageflow_plugin_rails_engine.md)
 that commonly contain the following elements:
 
@@ -117,7 +117,7 @@ end
 The first argument passed to `create_widget_type` has to match the
 widget type name passed to `registerWidgetType` in the JavaScript
 code. The second parameter is the role of the widget type. For every
-entry there can only ever be one widget of each role.
+entry there can only be one widget of each role at a time.
 
 Now the plugin can be used by host applications:
 

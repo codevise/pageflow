@@ -55,7 +55,7 @@ module SomePlugin
   class Engine < ::Rails::Engine
     isolate_namespace SomePlugin
 
-    # By default locales from sub directories are ignored
+    # By default, locales from subdirectories are ignored
     config.i18n.load_path += Dir[config.root.join('config', 'locales', '**', '*.yml').to_s]
   end
 end

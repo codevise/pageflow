@@ -102,8 +102,9 @@ connectInPage(combine({
 ```
 
 Whenever we now render an instance of `HugeTitle` inside a page, it
-will display the title of that page. This also works for the outer
-most component that is passed to `registerPageType`:
+will display the title of that page. This works up to and including
+the outermost component that is passed to `registerPageType` (`Page`,
+in the following example):
 
 ```jsx
 // rainbow/app/assets/javascripts/rainbow/components.jsx

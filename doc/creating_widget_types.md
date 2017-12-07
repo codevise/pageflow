@@ -6,7 +6,7 @@ used in entries.
 
 Once a widget type is registered, it can either be enabled on a
 theming or per-entry basis. Each widget type defines which roles its
-instances play in the context of an entry. By default Pagflow knows
+instances play in the context of an entry. By default, Pageflow knows
 the roles `'navigation'`, `'head'` and `'overview'`, but arbitrary new
 roles can be specified by a widget type. For each role only one widget
 will be rendered in the entry. Widgets associated with an entry
@@ -22,13 +22,3 @@ override those with the same role defined on the theming level.
 
   The recommended approach for widgets that include client side
   logic. Does not support server side rendering at the moment.
-
-
-
-
-
-
-
-
-
-

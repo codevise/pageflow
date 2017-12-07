@@ -1,6 +1,6 @@
 # Creating Page Types
 
-Page types present one of the main axis along which Pageflow can be
+Page types present one of the main axes along which Pageflow can be
 extended.
 
 ## Ingredients of a Page Type
@@ -36,18 +36,18 @@ Pageflow files.
 
 The React based approach outlined in this guide requires Pageflow 12
 or newer. A lot of the existing page types still rely on the legacy
-approach of using ERB-templates and jQuery to render pages. This is no
+approach of using ERB templates and jQuery to render pages. This is no
 longer recommended for new page types. Examples of page types using
-the recommended React based approach include:
+the recommended React-based approach include:
 
 * [`pageflow-timeline-page`](https://github.com/codevise/pageflow-timeline-page)
 * [`pageflow-vr`](https://github.com/codevise/pageflow-vr)
 * All of the
   [built in page types](https://github.com/codevise/pageflow/tree/master/node_package/src/builtInPageTypes). Note
   that the Pageflow gem itself internally
-  [uses a Webpack based build process](contributing/directory_layout_overview.md). This
+  [uses a Webpack-based build process](contributing/directory_layout_overview.md). This
   causes the source code to have a different shape than in the
-  Sprockets based examples in this guide.
+  Sprockets-based examples in this guide.
 
 ## JavaScript Directory Layout
 
@@ -141,9 +141,9 @@ pages. See the [reference documentation](#) for a list of existing
 components that you can use to build your page. Of course, you are
 always free to create additional components on your own.
 
-Some of the used components depend on the page's configuration. For
+Some of the components used depend on the page's configuration. For
 example, `PageHeader` needs to know the actual texts to display that
-were entered in the editor. They, therefore, expect an object
+were entered in the editor. Therefore, they expect an object
 containing all page attributes in a prop called `page`.
 
 Pageflow stores all of the entry's data including page configurations
