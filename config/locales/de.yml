@@ -1713,7 +1713,7 @@ de:
         label: Titel
     storylines:
       feature_name: Erzählstränge
-      main: Haupstrang
+      main: Hauptstrang
       untitled: Unbenannter Erzählstrang
     ui:
       configuration_editor:
