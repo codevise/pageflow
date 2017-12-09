@@ -4,7 +4,7 @@ feature 'as a bot, requesting the atom feed' do
   scenario 'sees a feed entry' do
     theming = create(:theming, cname: 'emma.example.com')
     account = create(:account, default_theming: theming)
-    entry = create(:entry, :published, account: account)
+    create(:entry, :published, account: account)
 
     visit(pageflow.entries_url(format: 'atom', host: 'emma.example.com'))
 

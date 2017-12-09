@@ -16,28 +16,28 @@ module Pageflow
         end
 
         it 'responds with success' do
-          get(:index, format: "atom")
+          get(:index, format: 'atom')
 
           expect(response.status).to eq(200)
         end
 
         it 'responds with the correct mime type' do
-          get(:index, format: "atom")
+          get(:index, format: 'atom')
           puts response.body
 
-          expect(response.content_type).to eq("application/atom+xml")
+          expect(response.content_type).to eq('application/atom+xml')
         end
 
         it 'responds with published entries' do
-          get(:index, format: "atom")
+          get(:index, format: 'atom')
 
-          expect(response.body).to include("<title>Atom-Powered Robots Run Amok</title>")
+          expect(response.body).to include('<title>Atom-Powered Robots Run Amok</title>')
         end
       end
 
       context 'html format' do
         it 'redirects to home url of theming with matching cname' do
-          theming = create(:theming, cname: 'pageflow.example.com', home_url: 'http://example.com/overview')
+          create(:theming, cname: 'pageflow.example.com', home_url: 'http://example.com/overview')
 
           request.env['HTTP_HOST'] = 'pageflow.example.com'
           get(:index)
@@ -66,7 +66,7 @@ module Pageflow
             themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
           end
           theming = create(:theming, home_url: 'http://example.com')
-          account = create(:account, name: 'some-example', default_theming: theming)
+          create(:account, name: 'some-example', default_theming: theming)
 
           request.env['HTTP_HOST'] = 'some-example.pageflow.io'
           get(:index)

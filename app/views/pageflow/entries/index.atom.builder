@@ -25,7 +25,7 @@ atom_feed do |feed|
         end
 
         social_share_image_urls(published_entry).each do |image_url|
-          entry.image published_entry.thumbnail_url if published_entry.thumbnail_file
+          entry.image image_url
         end
     end
   end

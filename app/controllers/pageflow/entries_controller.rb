@@ -28,10 +28,7 @@ module Pageflow
         format.atom do
           @theming = Theming.for_request(request).first!
           @account = @theming.account
-          @entries = @account.entries
-            .published_without_password_protection
-            .order(updated_at: :desc)
-            .page params[:page]
+          @entries = FeedEntriesQuery::Scope.new(@account.entries).resolve
         end
       end
     end

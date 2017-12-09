@@ -21,7 +21,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'activeadmin', '1.0.0.pre4'
 
   # Pagination library used by activeadmin and the Atom feed for published entries
-  s.add_dependency 'kaminari'
+  # An upgrade to activeadmin should also upgrade this very ancient version of kaminari.
+  s.add_dependency 'kaminari', '~> 0.15'
 
   # Searchable select boxes for filters and forms
   s.add_dependency 'activeadmin-searchable_select', '~> 1.0'
