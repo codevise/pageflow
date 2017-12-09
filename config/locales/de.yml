@@ -257,8 +257,6 @@ de:
         label: Label
         srclang: Sprache
       pageflow/theming:
-        additional_cnames: Zusätzliche CNAMES
-        cname: CNAME
         copyright_link_label: Copyright-Link Text
         copyright_link_url: Copyright-Link URL
         default_author: Standard Autor
@@ -461,7 +459,7 @@ de:
     - Fr
     - Sa
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mär
@@ -487,7 +485,7 @@ de:
       long: "%e. %B %Y"
       short: "%e. %b"
     month_names:
-    - 
+    -
     - Januar
     - Februar
     - März

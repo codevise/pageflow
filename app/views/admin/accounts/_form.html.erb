@@ -12,8 +12,6 @@
 
   <%= f.semantic_fields_for :default_theming do |theming| %>
     <%= f.inputs do %>
-      <%= theming.input :cname, hint: t('pageflow.admin.themings.cname_hint') %>
-      <%= theming.input :additional_cnames, hint: t('pageflow.admin.themings.additional_cnames_hint') %>
       <%= theming.input :home_url, hint: t('pageflow.admin.themings.home_url_hint') %>
     <% end %>
 
