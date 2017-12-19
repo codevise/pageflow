@@ -1,5 +1,6 @@
 //=require ./slideshow/atmo
 //=require ./slideshow/lazy_page_widget
+//=require ./slideshow/page_split_layout
 //=require ./slideshow/page_widget
 //=require ./slideshow/scroller_widget
 //=require ./slideshow/scroll_indicator
