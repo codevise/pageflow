@@ -50,7 +50,6 @@ Grant read access to main bucket:
 Grant full access to output bucket:
 
     {
-      "Version": "2017-06-20",
       "Id": "PageflowOutputBucketPolicy",
       "Statement": [
         {
