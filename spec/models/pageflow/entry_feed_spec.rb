@@ -35,11 +35,11 @@ module Pageflow
       expect(entries.second).to eq(older)
     end
 
-    it 'is paginated' do
-      Kaminari.configure { |config| config.default_per_page = 2 }
+    it 'is paginated with configurable per_page' do
       3.times { create(:entry, :published, account: account) }
 
       scope = EntryFeed::Scope.new(account.entries)
+      scope.per_page = 2
       entries = scope.entries
 
       expect(entries.length).to eq(2)
