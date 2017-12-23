@@ -22,4 +22,16 @@ feature 'as visitor, reading entry' do
 
     expect(Dom::Navigation.first.home_button_url).to eq('http://example.com')
   end
+
+  scenario 'html head contains a link to the atom feed' do
+    entry = create(:entry, :published)
+
+    visit(pageflow.entry_path(entry))
+
+    head = page.find 'head', visible: false
+    atom_link_tag = head.find('link[type="application/atom+xml"]', visible: false)
+
+    expect(atom_link_tag).to be_present
+    expect(atom_link_tag['href']).to eq(pageflow.entries_url(format: 'atom'))
+  end
 end

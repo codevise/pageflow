@@ -11,6 +11,7 @@
 
     <%= tag :link, :rel => 'icon', :href => image_path("pageflow/themes/#{@entry.theme.directory_name}/favicon.ico"), :type => 'image/ico' %>
     <%= meta_tags_for_entry(@entry) %>
+    <%= auto_discovery_link_tag(:atom, entries_url(format: 'atom')) %>
   <% end %>
 <% end %>
 
