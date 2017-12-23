@@ -28,7 +28,7 @@ module Pageflow
         format.atom do
           @theming = Theming.for_request(request).first!
           @account = @theming.account
-          @entries = FeedEntriesQuery::Scope.new(@account.entries).resolve
+          @entries = EntryFeed::Scope.new(@account.entries).entries
         end
       end
     end
