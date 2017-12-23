@@ -53,7 +53,7 @@ module Pageflow
         end
 
         it 'responds with not found if theming with matching cname does not have home_url' do
-          theming = create(:theming, cname: 'pageflow.example.com')
+          create(:theming, cname: 'pageflow.example.com')
 
           request.env['HTTP_HOST'] = 'pageflow.example.com'
           get(:index)
@@ -90,7 +90,7 @@ module Pageflow
             themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
           end
           theming = create(:theming)
-          account = create(:account, name: 'some-example', default_theming: theming)
+          create(:account, name: 'some-example', default_theming: theming)
 
           request.env['HTTP_HOST'] = 'some-example.pageflow.io'
           get(:index)
