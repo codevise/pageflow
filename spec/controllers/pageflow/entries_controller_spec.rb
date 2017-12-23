@@ -10,92 +10,66 @@ module Pageflow
     end
 
     describe '#index' do
-      context 'atom format with published entries' do
-        before do
-          create(:entry, :published, title: 'Atom-Powered Robots Run Amok')
-        end
+      it 'redirects to home url of theming with matching cname' do
+        create(:theming, cname: 'pageflow.example.com', home_url: 'http://example.com/overview')
 
-        it 'responds with success' do
-          get(:index, format: 'atom')
+        request.env['HTTP_HOST'] = 'pageflow.example.com'
+        get(:index)
 
-          expect(response.status).to eq(200)
-        end
-
-        it 'responds with the correct mime type' do
-          get(:index, format: 'atom')
-
-          expect(response.content_type).to eq('application/atom+xml')
-        end
-
-        it 'responds with published entries' do
-          get(:index, format: 'atom')
-
-          expect(response.body).to include('<title>Atom-Powered Robots Run Amok</title>')
-        end
+        expect(response).to redirect_to('http://example.com/overview')
       end
 
-      context 'html format' do
-        it 'redirects to home url of theming with matching cname' do
-          create(:theming, cname: 'pageflow.example.com', home_url: 'http://example.com/overview')
+      it 'responds with not found if no theming matches cname' do
+        request.env['HTTP_HOST'] = 'unknown.example.com'
+        get(:index)
 
-          request.env['HTTP_HOST'] = 'pageflow.example.com'
-          get(:index)
+        expect(response.status).to eq(404)
+      end
 
-          expect(response).to redirect_to('http://example.com/overview')
+      it 'responds with not found if theming with matching cname does not have home_url' do
+        create(:theming, cname: 'pageflow.example.com')
+
+        request.env['HTTP_HOST'] = 'pageflow.example.com'
+        get(:index)
+
+        expect(response.status).to eq(404)
+      end
+
+      it 'uses configures theming_request_scope' do
+        Pageflow.config.theming_request_scope = lambda do |themings, request|
+          themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
+        end
+        theming = create(:theming, home_url: 'http://example.com')
+        create(:account, name: 'some-example', default_theming: theming)
+
+        request.env['HTTP_HOST'] = 'some-example.pageflow.io'
+        get(:index)
+
+        expect(response).to redirect_to('http://example.com')
+      end
+
+      it 'responds with not found if theming_request_scope raises RecordNotFound' do
+        Pageflow.config.theming_request_scope = lambda do |themings, request|
+          themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
         end
 
-        it 'responds with not found if no theming matches cname' do
-          request.env['HTTP_HOST'] = 'unknown.example.com'
-          get(:index)
+        request.env['HTTP_HOST'] = 'none.pageflow.io'
+        get(:index)
 
-          expect(response.status).to eq(404)
+        expect(response.status).to eq(404)
+      end
+
+      it 'responds with not found if theming_request_scope returns theming with blank home_url' do
+        Pageflow.config.theming_request_scope = lambda do |themings, request|
+          themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
         end
+        theming = create(:theming)
+        create(:account, name: 'some-example', default_theming: theming)
 
-        it 'responds with not found if theming with matching cname does not have home_url' do
-          create(:theming, cname: 'pageflow.example.com')
+        request.env['HTTP_HOST'] = 'some-example.pageflow.io'
+        get(:index)
 
-          request.env['HTTP_HOST'] = 'pageflow.example.com'
-          get(:index)
-
-          expect(response.status).to eq(404)
-        end
-
-        it 'uses configures theming_request_scope' do
-          Pageflow.config.theming_request_scope = lambda do |themings, request|
-            themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
-          end
-          theming = create(:theming, home_url: 'http://example.com')
-          create(:account, name: 'some-example', default_theming: theming)
-
-          request.env['HTTP_HOST'] = 'some-example.pageflow.io'
-          get(:index)
-
-          expect(response).to redirect_to('http://example.com')
-        end
-
-        it 'responds with not found if theming_request_scope raises RecordNotFound' do
-          Pageflow.config.theming_request_scope = lambda do |themings, request|
-            themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
-          end
-
-          request.env['HTTP_HOST'] = 'none.pageflow.io'
-          get(:index)
-
-          expect(response.status).to eq(404)
-        end
-
-        it 'responds with not found if theming_request_scope returns theming with blank home_url' do
-          Pageflow.config.theming_request_scope = lambda do |themings, request|
-            themings.where(id: Account.find_by_name!(request.subdomain).default_theming_id)
-          end
-          theming = create(:theming)
-          create(:account, name: 'some-example', default_theming: theming)
-
-          request.env['HTTP_HOST'] = 'some-example.pageflow.io'
-          get(:index)
-
-          expect(response.status).to eq(404)
-        end
+        expect(response.status).to eq(404)
       end
     end
 

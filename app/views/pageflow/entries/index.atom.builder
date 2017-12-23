@@ -6,6 +6,7 @@ atom_feed do |feed|
   else
     feed.title 'Published entries'
     feed.url root_url
+    feed.favicon image_path("pageflow/themes/default/favicon.ico")
   end
 
   feed.updated @entries.first.updated_at if @entries.present?
