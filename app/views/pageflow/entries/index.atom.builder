@@ -1,9 +1,14 @@
 atom_feed do |feed|
-  feed.title @account.name
-  feed.url pretty_theming_url(@theming)
-  feed.updated @entries.first.updated_at if @entries.present?
-  feed.favicon image_path("pageflow/themes/#{@theming.theme.directory_name}/favicon.ico")
+  if @theming
+    feed.title @account.name
+    feed.url pretty_theming_url(@theming)
+    feed.favicon image_path("pageflow/themes/#{@theming.theme.directory_name}/favicon.ico")
+  else
+    feed.title 'Published entries'
+    feed.url root_url
+  end
 
+  feed.updated @entries.first.updated_at if @entries.present?
   # we can have next_url once we can upgrade ActiveAdmin->Kaminari
   # feed.next_url pretty_theming_url(path_to_next_page(@entries))
 

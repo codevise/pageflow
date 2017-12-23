@@ -23,7 +23,6 @@ module Pageflow
 
         it 'responds with the correct mime type' do
           get(:index, format: 'atom')
-          puts response.body
 
           expect(response.content_type).to eq('application/atom+xml')
         end

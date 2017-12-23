@@ -26,9 +26,14 @@ module Pageflow
         end
 
         format.atom do
-          @theming = Theming.for_request(request).first!
-          @account = @theming.account
-          @entries = EntryFeed::Scope.new(@account.entries).entries
+          @theming = Theming.for_request(request).first
+
+          if @theming
+            @account = @theming.account
+            @entries = EntryFeed::Scope.new(@account.entries).entries
+          else
+            @entries = EntryFeed::Scope.new(Entry).entries
+          end
         end
       end
     end
