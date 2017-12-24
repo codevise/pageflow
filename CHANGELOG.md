@@ -21,7 +21,7 @@ config.paperclip_s3_default_options.merge!(
   },
   s3_host_name: ENV.fetch('S3_HOST_NAME', 's3-eu-west-1.amazonaws.com'),
   s3_host_alias: ENV.fetch('S3_HOST_ALIAS', 'com-example-pageflow.s3-website-eu-west-1.amazonaws.com'),
-  s3_protocol: ENV.fetch('S3_PROTOCOL', 'http')
+  s3_protocol: ENV.fetch('S3_PROTOCOL', 'http'),
   s3_region: ENV.fetch('S3_REGION', 'eu-central-1')
 )
 ```
