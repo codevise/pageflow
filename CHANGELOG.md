@@ -28,7 +28,7 @@ config.paperclip_s3_default_options.merge!(
 
 **Internals**
 
-* Upgraded `paperclip` to 5.0.0 and migrated to `aws-sdk-s3`.
+* Upgraded `paperclip` to 5.0.0 and migrated to `aws-sdk-s3`. (#922)
 
 See
 [12-1-stable branch](https://github.com/codevise/pageflow/blob/12-1-stable/CHANGELOG.md)
