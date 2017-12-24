@@ -49,13 +49,13 @@ Gem::Specification.new do |s|
   s.add_dependency 'state_machine_job', ['>= 0.2.0', '< 2']
 
   # File attachments
-  s.add_dependency 'paperclip', '~> 4.2.4'
+  s.add_dependency 'paperclip', '~> 5.1.0'
 
   # zencoder
   s.add_dependency 'zencoder', '~> 2.5'
 
-  # Amazon AWS
-  s.add_dependency 'aws-sdk', '~> 1.60'
+  # S3 SDK, to store our media in the ☁️
+  s.add_dependency 'aws-sdk-s3', '~> 1'
 
   # Markdown parser
   s.add_dependency 'kramdown', '~> 1.5'

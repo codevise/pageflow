@@ -107,11 +107,12 @@ files to S3. Edit the `paperclip_s3_default_options` settings in
     s3_credentials: {
       bucket: 'com-example-pageflow-development',
       access_key_id: 'xxx',
-      secret_access_key: 'xxx',
-      s3_host_name: 's3-eu-west-1.amazonaws.com'
+      secret_access_key: 'xxx'
     },
+    s3_host_name: 's3-eu-west-1.amazonaws.com',
     s3_host_alias: 'com-example-pageflow.s3-website-eu-west-1.amazonaws.com',
-    s3_protocol: 'http'
+    s3_protocol: 'http',
+    s3_region: 'eu-central-1'
   )
 ```
 
@@ -139,6 +140,8 @@ The required options are:
 
 * `s3_protocol`: The protocol to use for public image URLs. Note that
   S3 Website endpoints only support `http`.
+
+* `s3_region`: The AWS region where you've created your buckets.
 
 Refer to the
 [Paperclip documentation](http://www.rubydoc.info/gems/paperclip/Paperclip/Storage/S3)
