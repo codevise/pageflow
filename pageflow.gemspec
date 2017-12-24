@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Pageflow::VERSION
   s.authors     = ['Codevise Solutions Ltd']
   s.email       = ['info@codevise.de']
-  s.homepage    = 'http://www.pageflow.io'
+  s.homepage    = 'https://pageflow.io'
   s.summary     = 'Multimedia story telling for the web.'
   s.license     = 'MIT'
 

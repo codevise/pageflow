@@ -5,10 +5,10 @@
 [![Coverage Status](https://coveralls.io/repos/github/codevise/pageflow/badge.svg?branch=master)](https://coveralls.io/github/codevise/pageflow?branch=master)
 [![Code Climate](https://codeclimate.com/github/codevise/pageflow/badges/gpa.svg)](https://codeclimate.com/github/codevise/pageflow)
 
-Multimedia story telling for the web.
+Multimedia storytelling for the web.
 
 For a high level introduction and example Pageflow stories see
-[pageflow.io](http://pageflow.io).
+[pageflow.io](https://pageflow.io).
 
 * [Getting Started](https://github.com/codevise/pageflow/wiki/Getting-Started)
 * [Guides](https://github.com/codevise/pageflow/blob/master/doc/index.md)
