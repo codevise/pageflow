@@ -1,8 +1,10 @@
-require "pageflow/engine"
-require "pageflow/global_config_api"
+require 'pageflow/engine'
+require 'pageflow/global_config_api'
+require 'pageflow/news_item_api'
 
 module Pageflow
   extend GlobalConfigApi
+  extend NewsItemApi
 
   def self.routes(router)
     router.instance_eval do

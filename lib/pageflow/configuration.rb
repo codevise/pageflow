@@ -271,6 +271,12 @@ module Pageflow
     # @since 12.1
     attr_accessor :edit_lock_polling_interval
 
+    # News collection to add items to. Can be used to integrate
+    # Pageflow with Krant (see https://github.com/codevise/krant).
+    # @return [#item]
+    # @since edge
+    attr_accessor :news
+
     def initialize
       @paperclip_filesystem_default_options = {validate_media_type: false}
       @paperclip_s3_default_options = {validate_media_type: false}

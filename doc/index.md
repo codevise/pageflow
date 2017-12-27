@@ -14,6 +14,12 @@ extend Pageflow.
 * [Creating File Types](./creating_file_types.md)
 * [Creating Page types](./creating_page_types.md)
 * [Creating Widget types](./creating_widget_types.md)
+* [Adding app news](./adding_app_news.md)
+
+### Integrations
+
+* [Using Krant to display broadcast messages and news](./using_krant_to_display_broadcast_messages_and_news.md)
+* [Using the Nginx upload module](./using_the_nginx_upload_module.md)
 
 ### Contributing
 
