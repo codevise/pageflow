@@ -37,3 +37,10 @@ install generator during test runs. To have it regenerated,
 simply delete the contents of the `spec/dummy` directory. This is
 required everytime new migrations are added or if tests are failing
 after pulling changes into the local working tree.
+
+## Developer console
+
+An IRb console is available with all Pageflow classes loaded.
+You can use this to try out any code you've touched.
+
+    $ bin/console
