@@ -13,13 +13,13 @@ module Pageflow
         entry.theming ||= entry.account.default_theming
       end
 
-      # inline membership creation
-
       transient do
         with_previewer nil
         with_editor nil
         with_publisher nil
         with_manager nil
+
+        with_feature nil
       end
 
       after(:create) do |entry, evaluator|
@@ -39,6 +39,11 @@ module Pageflow
                entity: entry,
                user: evaluator.with_manager,
                role: :manager) if evaluator.with_manager
+      end
+
+      after(:build) do |entry, evaluator|
+        entry.features_configuration =
+          entry.features_configuration.merge(evaluator.with_feature => true)
       end
 
       trait :published do

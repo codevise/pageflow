@@ -299,6 +299,61 @@ describe Admin::EntriesController do
         end
       end
     end
+
+    describe 'additional attributes table rows' do
+      it 'renders additional rows registered for entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        pageflow_configure do |config|
+          config.admin_attributes_table_rows.register(:entry, :custom) { 'custom attribute' }
+        end
+
+        sign_in(user)
+        get(:show, id: entry.id)
+
+        expect(response.body).to have_text('custom attribute')
+      end
+
+      it 'renders additional rows registered for entry in enabled feature' do
+        user = create(:user)
+        entry = create(:entry,
+                       with_previewer: user,
+                       with_feature: :custom_entry_attribute)
+
+        pageflow_configure do |config|
+          config.features.register('custom_entry_attribute') do |feature_config|
+            feature_config.admin_attributes_table_rows.register(:entry, :custom) do
+              'custom attribute'
+            end
+          end
+        end
+
+        sign_in(user)
+        get(:show, id: entry.id)
+
+        expect(response.body).to have_text('custom attribute')
+      end
+
+      it 'does not render additional rows registered for entry in disabled feature' do
+        user = create(:user)
+        entry = create(:entry,
+                       with_previewer: user)
+
+        pageflow_configure do |config|
+          config.features.register('custom_entry_attribute') do |feature_config|
+            feature_config.admin_attributes_table_rows.register(:entry, :custom) do
+              'custom attribute'
+            end
+          end
+        end
+
+        sign_in(user)
+        get(:show, id: entry.id)
+
+        expect(response.body).not_to have_text('custom attribute')
+      end
+    end
   end
 
   describe '#new' do

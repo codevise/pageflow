@@ -192,13 +192,29 @@ module Pageflow
     #
     # @example
     #
-    #     config.admin_form_inputs.register(:entry) do |form|
-    #       form.input(:custom_field)
-    #     end
+    #     config.admin_form_inputs.register(:entry, :custom_field) do
     #
     # @since 0.9
     # @return [Admin::FormInputs]
     attr_reader :admin_form_inputs
+
+    # Insert additional rows into admin attributes tables.
+    #
+    # @example
+    #
+    #     config.admin_attributes_table_rows.register(:entry, :custom)
+    #     config.admin_attributes_table_rows.register(:entry, :my_attribute, after: :title)
+    #     config.admin_attributes_table_rows.register(:entry, :some_attribute, before: :updated_at)
+    #
+    # @example Custom content
+    #
+    #     config.admin_attributes_table_rows.register(:entry, :custom) do |entry|
+    #       span(entry.custom_attribute)
+    #     end
+    #
+    # @since edge
+    # @return [Admin::AttributesTableRows]
+    attr_reader :admin_attributes_table_rows
 
     # Array of locales which can be chosen as interface language by a
     # user. Defaults to `[:en, :de]`.
@@ -306,6 +322,7 @@ module Pageflow
 
       @admin_resource_tabs = Pageflow::Admin::Tabs.new
       @admin_form_inputs = Pageflow::Admin::FormInputs.new
+      @admin_attributes_table_rows = Pageflow::Admin::AttributesTableRows.new
 
       @available_locales = [:en, :de]
       @available_public_locales = PublicI18n.available_locales
@@ -375,6 +392,7 @@ module Pageflow
       delegate :widget_types, to: :config
       delegate :help_entries, to: :config
       delegate :admin_form_inputs, to: :config
+      delegate :admin_attributes_table_rows, to: :config
       delegate :themes, to: :config
     end
   end

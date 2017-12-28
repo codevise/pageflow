@@ -6,14 +6,14 @@ FactoryGirl.define do
       account.default_theming ||= build(:theming, account: account)
     end
 
-    # inline membership creation
-
     transient do
       with_member nil
       with_previewer nil
       with_editor nil
       with_publisher nil
       with_manager nil
+
+      with_feature nil
     end
 
     after(:create) do |account, evaluator|
@@ -37,6 +37,11 @@ FactoryGirl.define do
              entity: account,
              user: evaluator.with_manager,
              role: :manager) if evaluator.with_manager
+    end
+
+    after(:build) do |entry, evaluator|
+      entry.features_configuration =
+        entry.features_configuration.merge(evaluator.with_feature => true)
     end
   end
 end

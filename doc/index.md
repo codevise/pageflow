@@ -14,6 +14,7 @@ extend Pageflow.
 * [Creating File Types](./creating_file_types.md)
 * [Creating Page types](./creating_page_types.md)
 * [Creating Widget types](./creating_widget_types.md)
+* [Extending Admin Resources](./extending_admin_resources.md)
 * [Adding app news](./adding_app_news.md)
 
 ### Integrations
