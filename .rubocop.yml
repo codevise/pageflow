@@ -10,7 +10,7 @@ Style/StringLiterals:
   EnforcedStyle: single_quotes
 
 # Place dots at the beginning of multiline method calls.
-Style/DotPosition:
+Layout/DotPosition:
   EnforcedStyle: leading
 
 # Allow using {} when chaining methods
@@ -32,3 +32,7 @@ Style/FrozenStringLiteralComment:
 # Allow `json.(:attribute)`
 Style/LambdaCall:
   Enabled: false
+
+# Ignore long RSpec describe blocks
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
