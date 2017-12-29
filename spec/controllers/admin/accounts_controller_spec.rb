@@ -136,6 +136,114 @@ module Admin
           end
         end
       end
+
+      describe 'additional attributes table rows' do
+        it 'renders additional rows registered for account' do
+          user = create(:user)
+          account = create(:account, with_manager: user)
+
+          pageflow_configure do |config|
+            config.admin_attributes_table_rows.register(:account, :custom) { 'custom attribute' }
+          end
+
+          sign_in(user)
+          get(:show, id: account.id)
+
+          expect(response.body).to have_text('custom attribute')
+        end
+
+        it 'renders additional rows registered for account in enabled feature' do
+          user = create(:user)
+          account = create(:account,
+                           with_manager: user,
+                           with_feature: :custom_account_attribute)
+
+          pageflow_configure do |config|
+            config.features.register('custom_account_attribute') do |feature_config|
+              feature_config.admin_attributes_table_rows.register(:account, :custom) do
+                'custom attribute'
+              end
+            end
+          end
+
+          sign_in(user)
+          get(:show, id: account.id)
+
+          expect(response.body).to have_text('custom attribute')
+        end
+
+        it 'does not render additional rows registered for account in disabled feature' do
+          user = create(:user)
+          account = create(:account,
+                           with_manager: user)
+
+          pageflow_configure do |config|
+            config.features.register('custom_account_attribute') do |feature_config|
+              feature_config.admin_attributes_table_rows.register(:account, :custom) do
+                'custom attribute'
+              end
+            end
+          end
+
+          sign_in(user)
+          get(:show, id: account.id)
+
+          expect(response.body).not_to have_text('custom attribute')
+        end
+
+        it 'renders additional rows registered for theming' do
+          user = create(:user)
+          account = create(:account, with_manager: user)
+
+          pageflow_configure do |config|
+            config.admin_attributes_table_rows.register(:theming, :custom) { 'custom attribute' }
+          end
+
+          sign_in(user)
+          get(:show, id: account.id)
+
+          expect(response.body).to have_text('custom attribute')
+        end
+
+        it 'renders additional rows registered for theming in enabled feature' do
+          user = create(:user)
+          account = create(:account,
+                           with_manager: user,
+                           with_feature: :custom_theming_attribute)
+
+          pageflow_configure do |config|
+            config.features.register('custom_theming_attribute') do |feature_config|
+              feature_config.admin_attributes_table_rows.register(:theming, :custom) do
+                'custom attribute'
+              end
+            end
+          end
+
+          sign_in(user)
+          get(:show, id: account.id)
+
+          expect(response.body).to have_text('custom attribute')
+        end
+
+        it 'does not render additional rows registered for account in disabled feature' do
+          user = create(:user)
+          account = create(:account,
+                           with_manager: user)
+
+          pageflow_configure do |config|
+            config.features.register('custom_theming_attribute') do |feature_config|
+              feature_config.admin_attributes_table_rows.register(:theming, :custom) do
+                'custom attribute'
+              end
+            end
+          end
+
+          sign_in(user)
+          get(:show, id: account.id)
+
+          expect(response.body).not_to have_text('custom attribute')
+        end
+      end
     end
 
     describe '#create' do

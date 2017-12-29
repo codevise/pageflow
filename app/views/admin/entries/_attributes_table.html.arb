@@ -1,4 +1,6 @@
-attributes_table_for entry do
+extensible_attributes_table_for(entry,
+                                Pageflow.config_for(entry)
+                                  .admin_attributes_table_rows.for(:entry)) do
   row :title, :class => 'title'
   if authorized?(:see_own_role_on, :entries)
     row :own_role do
