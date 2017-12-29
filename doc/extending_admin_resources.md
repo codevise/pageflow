@@ -51,6 +51,24 @@ end
 Follow ActiveRecord's conventions to define translations for human
 attribute names.
 
+### Writing Integration Tests
+
+Pageflow provides [Dominos](https://github.com/ngauthier/domino) to
+test that fields are integrated correctly:
+
+```ruby
+describe 'rainbow plugin', type: :feature do
+  it 'adds fields to entry edit form' do
+    entry = create(:entry)
+
+    Pageflow::Dom::Admin.sign_in_as(:admin)
+    form = Pageflow::Dom::Admin::EntryEditForm.for(entry)
+
+    expect(form).to have_input_for_attribute(:issn)
+  end
+end
+```
+
 ## Adding Rows to Attributes Tables
 
 We can display the value of the new attributes inside the resources'
@@ -87,6 +105,23 @@ def configure(config)
 end
 ```
 
+### Writing Integration Tests
+
+Again we can test the correct display:
+
+```ruby
+describe 'rainbow plugin', type: :feature do
+  it 'adds row to entry attributes table do
+    entry = create(:entry, issn: '123')
+
+    Pageflow::Dom::Admin.sign_in_as(:admin)
+    table = Pageflow::Dom::Admin::AttributesTable.for(entry)
+
+    expect(table.contents_of_row(:issn)).to have_text: '123'
+  end
+end
+```
+
 ## Guarding Admin Extensions behind a Feature Flag
 
 Both form inputs and attributes table rows can be wrapped in a
@@ -97,13 +132,20 @@ feature:
 module Rainbow
   class Plugin < Pageflow::Plugin
     def configure(config)
-      config.features.register('configurable_entry_teaser') do |feature_config|
+      config.features.register('rainbow.issn') do |feature_config|
         feature_config.admin_form_inputs.register(:entry, :issn)
         feature_config.admin_attributes_table_rows.register(:entry, :issn)
       end
     end
   end
 end
+```
+
+In tests, we can enable the feature for an entry or account via the
+`with_feature` trait:
+
+```ruby
+create(:entry, with_feature: 'rainbow.issn')
 ```
 
 ## Adding Tabs
