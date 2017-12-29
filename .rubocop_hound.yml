@@ -35,7 +35,6 @@ Style/IfUnlessModifier:
   Description: Favor modifier if/unless usage when you have a single-line body.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#if-as-a-modifier
   Enabled: false
-  MaxLineLength: 80
 Style/OptionHash:
   Description: Don't use option hashes when you can use keyword arguments.
   Enabled: false
