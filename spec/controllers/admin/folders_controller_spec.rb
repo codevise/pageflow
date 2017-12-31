@@ -6,7 +6,7 @@ describe Admin::FoldersController do
       it 'allows to add folder for any account' do
         account = create(:account)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           post :create, folder: attributes_for(:folder, account_id: account)
@@ -18,7 +18,7 @@ describe Admin::FoldersController do
       it 'does not allow to add folder to other account' do
         account = create(:account)
         other_account = create(:account)
-        sign_in(create(:user, :publisher, on: other_account))
+        sign_in(create(:user, :publisher, on: other_account), scope: :user)
 
         expect do
           post :create, folder: attributes_for(:folder, account_id: account)
@@ -27,7 +27,7 @@ describe Admin::FoldersController do
 
       it 'allows to add folder for own account' do
         account = create(:account)
-        sign_in(create(:user, :publisher, on: account))
+        sign_in(create(:user, :publisher, on: account), scope: :user)
 
         expect do
           post :create, folder: attributes_for(:folder, account_id: account)
@@ -39,7 +39,7 @@ describe Admin::FoldersController do
         other_account = create(:account)
         user = create(:user, :publisher, on: account)
         create(:membership, user: user, entity: other_account, role: :publisher)
-        sign_in(user)
+        sign_in(user, scope: :user)
 
         expect do
           post :create, folder: attributes_for(:folder, account_id: other_account)
@@ -53,7 +53,7 @@ describe Admin::FoldersController do
         user = create(:user)
         create(:membership, user: user, entity: entry.account, role: :editor)
         create(:membership, user: user, entity: entry, role: :manager)
-        sign_in(user)
+        sign_in(user, scope: :user)
 
         expect do
           post :create, folder: attributes_for(:folder, account_id: entry.account)
@@ -67,7 +67,7 @@ describe Admin::FoldersController do
       it 'allows to change name of folder for any account' do
         folder = create(:folder)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
         patch :update, id: folder, folder: {name: 'changed'}
 
         expect(folder.reload.name).to eq('changed')
@@ -77,7 +77,7 @@ describe Admin::FoldersController do
         folder = create(:folder)
         other_account = create(:account)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
         patch :update, id: folder, folder: {account_id: other_account}
 
         expect(folder.reload.account).not_to eq(other_account)
@@ -88,7 +88,7 @@ describe Admin::FoldersController do
       it 'does not allow to change name of folder of other account' do
         folder = create(:folder, name: 'old')
         other_account = create(:account)
-        sign_in(create(:user, :publisher, on: other_account))
+        sign_in(create(:user, :publisher, on: other_account), scope: :user)
         patch :update, id: folder, folder: {name: 'changed'}
 
         expect(folder.reload.name).to eq('old')
@@ -98,7 +98,7 @@ describe Admin::FoldersController do
         folder = create(:folder, name: 'old')
         user = create(:user, :publisher, on: folder.account)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         patch :update, id: folder, folder: {name: 'changed'}
 
         expect(folder.reload.name).to eq('changed')
@@ -113,7 +113,7 @@ describe Admin::FoldersController do
         create(:membership, user: user, entity: entry, role: :manager)
         folder = create(:folder, name: 'old', account: entry.account)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         patch :update, id: folder, folder: {name: 'changed'}
 
         expect(folder.reload.name).to eq('old')
@@ -126,7 +126,7 @@ describe Admin::FoldersController do
       it 'allows to destroy folder of any account' do
         folder = create(:folder)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           delete :destroy, id: folder
@@ -139,7 +139,7 @@ describe Admin::FoldersController do
         folder = create(:folder)
         other_account = create(:account)
 
-        sign_in(create(:user, :publisher, on: other_account))
+        sign_in(create(:user, :publisher, on: other_account), scope: :user)
 
         expect do
           delete :destroy, id: folder
@@ -150,7 +150,7 @@ describe Admin::FoldersController do
         folder = create(:folder)
         user = create(:user, :publisher, on: folder.account)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
 
         expect do
           delete :destroy, id: folder
@@ -166,7 +166,7 @@ describe Admin::FoldersController do
         create(:membership, user: user, entity: entry, role: :manager)
         folder = create(:folder, account: entry.account)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
 
         expect do
           delete :destroy, id: folder

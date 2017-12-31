@@ -11,7 +11,7 @@ module Pageflow
         entry = DraftEntry.new(create(:entry), build_stubbed(:revision))
         allow(DraftEntry).to receive(:accessible_by).and_return([entry])
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:index, format: 'json')
 
         expect(json_response(path: [0, 'id'])).to eq(entry.id)
@@ -29,7 +29,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:seed, id: entry, format: 'json')
 
         expect(response.status).to eq(200)
@@ -40,7 +40,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_previewer: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:seed, id: entry, format: 'json')
 
         expect(response.status).to eq(403)

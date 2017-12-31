@@ -15,7 +15,7 @@ module Pageflow
         entry = create(:entry, with_previewer: user)
         revision = create(:revision, entry: entry)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:show, id: revision)
 
         expect(response.status).to eq(200)
@@ -26,7 +26,7 @@ module Pageflow
         entry = create(:entry)
         revision = create(:revision, entry: entry)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:show, id: revision)
 
         expect(response.status).to eq(302)
@@ -48,7 +48,7 @@ module Pageflow
         revision = create(:revision, entry: entry)
         create(:widget, subject: revision, type_name: 'test_widget')
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:show, id: revision)
 
         expect(response.body).to have_selector('div.test_widget')
@@ -71,7 +71,7 @@ module Pageflow
         revision = create(:revision, entry: entry)
         create(:widget, subject: revision, type_name: 'test_widget')
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:show, id: revision)
 
         expect(response.body).not_to have_selector('div.test_widget')
@@ -81,7 +81,7 @@ module Pageflow
         user = create(:user)
         revision = create(:revision)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:show, id: revision)
 
         expect(response.status).to redirect_to(main_app.admin_root_path)
@@ -101,7 +101,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_publisher: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         delete(:depublish_current, entry_id: entry)
 
         expect(response.status).to redirect_to(main_app.admin_entry_path(entry))
@@ -111,7 +111,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, :published, with_publisher: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         delete(:depublish_current, entry_id: entry)
 
         expect(entry).not_to be_published
@@ -122,7 +122,7 @@ module Pageflow
         account = create(:account, with_editor: user)
         entry = create(:entry, account: account, with_editor: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         delete(:depublish_current, entry_id: entry)
 
         expect(response.status).to redirect_to(main_app.admin_root_path)

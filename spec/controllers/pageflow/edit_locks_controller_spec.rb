@@ -11,7 +11,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_editor: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:create, entry_id: entry, format: :json)
 
           expect(response.status).to eq(201)
@@ -21,7 +21,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_editor: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:create, entry_id: entry, format: :json)
 
           expect(json_response(path: ['id'])).to eq(entry.edit_lock.id)
@@ -31,7 +31,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_editor: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:create, entry_id: entry, format: :json)
 
           expect(entry.edit_lock).to be_held_by(user)
@@ -41,7 +41,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_previewer: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:create, entry_id: entry, format: :json)
 
           expect(response.status).to eq(403)
@@ -62,7 +62,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           entry.edit_lock.acquire(create(:user))
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:create, entry_id: entry, format: :json)
 
           expect(response.status).to eq(409)
@@ -74,7 +74,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           entry.edit_lock.acquire(other_user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:create, entry_id: entry, format: :json)
 
           expect(entry.edit_lock).to be_held_by(other_user)
@@ -86,7 +86,7 @@ module Pageflow
             entry = create(:entry, with_editor: user)
             entry.edit_lock.acquire(create(:user))
 
-            sign_in(user)
+            sign_in(user, scope: :user)
             post(:create, entry_id: entry, edit_lock: {force: true}, format: :json)
 
             expect(response.status).to eq(201)
@@ -97,7 +97,7 @@ module Pageflow
             entry = create(:entry, with_editor: user)
             entry.edit_lock.acquire(create(:user))
 
-            sign_in(user)
+            sign_in(user, scope: :user)
             post(:create, entry_id: entry, edit_lock: {force: true}, format: :json)
 
             expect(json_response(path: ['id'])).to eq(entry.reload.edit_lock.id)
@@ -109,7 +109,7 @@ module Pageflow
             entry = create(:entry, with_editor: user)
             entry.edit_lock.acquire(other_user)
 
-            sign_in(user)
+            sign_in(user, scope: :user)
             post(:create, entry_id: entry, edit_lock: {force: true}, format: :json)
 
             expect(entry.reload.edit_lock).to be_held_by(user)
@@ -124,7 +124,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_editor: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           put(:update, entry_id: entry, edit_lock: {id: 'not_there_anymore'})
 
           expect(response.status).to eq(204)
@@ -134,7 +134,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_editor: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           put(:update, entry_id: entry, edit_lock: {id: 'not_there_anymore'})
 
           expect(entry.edit_lock).to be_held_by(user)
@@ -144,7 +144,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_previewer: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           put(:update, entry_id: entry, edit_lock: {id: 'not_there_anymore'}, format: :json)
 
           expect(response.status).to eq(403)
@@ -165,7 +165,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           edit_lock = entry.edit_lock.acquire(user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           put(:update, entry_id: entry, edit_lock: {id: edit_lock.id})
 
           expect(response.status).to eq(204)
@@ -176,7 +176,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           edit_lock = entry.edit_lock.acquire(user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           put(:update, entry_id: entry, edit_lock: {id: edit_lock.id})
 
           expect(entry.edit_lock).to be_held_by(user)
@@ -187,7 +187,7 @@ module Pageflow
           entry = create(:entry, with_previewer: user)
           edit_lock = entry.edit_lock.acquire(user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           put(:update, entry_id: entry, edit_lock: {id: edit_lock.id}, format: :json)
 
           expect(response.status).to eq(403)
@@ -209,7 +209,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           entry.edit_lock.acquire(create(:user))
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           put(:update, entry_id: entry, edit_lock: {id: 'not_there_anymore'}, format: :json)
 
           expect(response.status).to eq(409)
@@ -221,7 +221,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           entry.edit_lock.acquire(other_user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           put(:update, entry_id: entry, edit_lock: {id: 'not_there_anymore'}, format: :json)
 
           expect(entry.edit_lock).to be_held_by(other_user)
@@ -235,7 +235,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_editor: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           delete(:destroy, entry_id: entry, format: :json)
 
           expect(response.status).to eq(204)
@@ -248,7 +248,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           entry.edit_lock.acquire(user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           delete(:destroy, entry_id: entry, format: :json)
 
           expect(response.status).to eq(204)
@@ -259,7 +259,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           entry.edit_lock.acquire(user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           delete(:destroy, entry_id: entry, format: :json)
 
           expect(entry.reload.edit_lock).to be_blank
@@ -282,7 +282,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           entry.edit_lock.acquire(other_user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           delete(:destroy, entry_id: entry, format: :json)
 
           expect(entry.edit_lock).to be_held_by(other_user)

@@ -78,7 +78,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:edit, id: entry)
 
         expect(response.status).to eq(200)
@@ -88,7 +88,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_previewer: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:edit, id: entry)
 
         expect(response).to redirect_to(main_app.admin_root_path)
@@ -108,7 +108,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
-        sign_in user
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         patch(:update, id: entry, entry: {title: 'new', credits: 'credits'}, format: 'json')
 
@@ -119,7 +119,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
-        sign_in user
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         patch(:update, id: entry, entry: {title: 'new', credits: 'credits'}, format: 'json')
 
@@ -131,7 +131,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_previewer: user)
 
-        sign_in user
+        sign_in(user, scope: :user)
         patch(:update, id: entry, entry: {}, format: 'json')
 
         expect(response.status).to eq(403)
@@ -413,7 +413,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_previewer: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           get(:show, id: entry, format: 'json')
 
           expect(response.status).to eq(200)
@@ -425,7 +425,7 @@ module Pageflow
           file = create(:image_file)
           usage = create(:file_usage, file: file, revision: entry.draft)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           get(:show, id: entry, format: 'json')
 
           expect(json_response(path: [:image_files, 0, :usage_id])).to eq(usage.id)
@@ -435,7 +435,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           get(:show, id: entry, format: 'json')
 
           expect(response.status).to eq(403)
@@ -472,7 +472,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_previewer: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:partials, id: entry)
 
         expect(response.status).to eq(200)
@@ -482,7 +482,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:partials, id: entry)
 
         expect(response).to redirect_to(main_app.admin_root_path)
@@ -516,7 +516,7 @@ module Pageflow
         create(:widget, subject: entry.draft, role: 'header', type_name: 'test_widget')
         create(:widget, subject: entry.draft, role: 'footer', type_name: 'non_editor_widget')
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:partials, id: entry)
 
         expect(response.body).to have_selector('div.test_widget')
@@ -538,7 +538,7 @@ module Pageflow
         create(:widget, subject: entry.draft, type_name: 'test_widget')
         entry.draft.update(locale: 'de')
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:partials, id: entry)
 
         expect(response.body).to have_selector('div[lang=de]')

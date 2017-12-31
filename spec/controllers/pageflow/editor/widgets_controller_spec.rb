@@ -16,7 +16,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           create(:widget, subject: entry.draft, type_name: 'test_widget')
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           get(:index, collection_name: 'entries', subject_id: entry.id, format: 'json')
 
           expect(response.status).to eq(200)
@@ -31,7 +31,7 @@ module Pageflow
                  type_name: 'test_widget',
                  configuration: {some: 'value'})
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           get(:index, collection_name: 'entries', subject_id: entry.id, format: 'json')
 
           expect(response.status).to eq(200)
@@ -42,7 +42,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_previewer: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           get(:index, collection_name: 'entries', subject_id: entry.id, format: 'json')
 
           expect(response.status).to eq(403)
@@ -54,7 +54,7 @@ module Pageflow
           theming = create(:theming, account: account)
           create(:widget, subject: theming, type_name: 'test_widget')
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           get(:index, collection_name: 'themings', subject_id: theming.id, format: 'json')
 
           expect(response.status).to eq(200)
@@ -67,7 +67,7 @@ module Pageflow
           theming = create(:theming, account: account)
           create(:widget, subject: theming, type_name: 'test_widget')
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           get(:index, collection_name: 'themings', subject_id: theming.id, format: 'json')
 
           expect(response.status).to eq(403)
@@ -89,7 +89,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_editor: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           patch(:batch,
                 collection_name: 'entries',
                 subject_id: entry.id,
@@ -110,7 +110,7 @@ module Pageflow
                           role: 'navigation',
                           type_name: 'test_widget')
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           patch(:batch,
                 collection_name: 'entries',
                 subject_id: entry.id,
@@ -136,7 +136,7 @@ module Pageflow
                           type_name: 'test_widget',
                           configuration: {some: 'value'})
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           patch(:batch,
                 collection_name: 'entries',
                 subject_id: entry.id,
@@ -156,7 +156,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_previewer: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           patch(:batch,
                 collection_name: 'entries',
                 subject_id: entry.id,
@@ -172,7 +172,7 @@ module Pageflow
           user = create(:user, :admin)
           entry = create(:entry)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           patch(:batch,
                 collection_name: 'entries',
                 subject_id: entry.id,
@@ -189,7 +189,7 @@ module Pageflow
           account = create(:account, with_editor: user)
           entry = create(:entry, account: account)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           patch(:batch,
                 collection_name: 'entries',
                 subject_id: entry.id,
@@ -206,7 +206,7 @@ module Pageflow
           create(:account, with_manager: user)
           entry = create(:entry)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           patch(:batch,
                 collection_name: 'entries',
                 subject_id: entry.id,
@@ -223,7 +223,7 @@ module Pageflow
           account = create(:account, with_publisher: user)
           theming = create(:theming, account: account)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           patch(:batch,
                 collection_name: 'themings',
                 subject_id: theming.id,
@@ -241,7 +241,7 @@ module Pageflow
           theming = create(:theming, account: account)
           create(:widget, subject: theming, type_name: 'test_widget')
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           patch(:batch,
                 collection_name: 'themings',
                 subject_id: theming.id,
@@ -258,7 +258,7 @@ module Pageflow
           create(:account, with_manager: user)
           theming = create(:theming)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           patch(:batch,
                 collection_name: 'themings',
                 subject_id: theming.id,
@@ -274,7 +274,7 @@ module Pageflow
           user = create(:user, :admin)
           theming = create(:theming)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           patch(:batch,
                 collection_name: 'themings',
                 subject_id: theming.id,

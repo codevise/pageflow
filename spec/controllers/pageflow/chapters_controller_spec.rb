@@ -11,7 +11,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
 
         expect do
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create,
                storyline_id: storyline,
@@ -26,7 +26,7 @@ module Pageflow
         entry = create(:entry, account: account)
         storyline = create(:storyline, revision: entry.draft)
 
-        sign_in user
+        sign_in(user, scope: :user)
         post(:create,
              storyline_id: storyline,
              chapter: attributes_for(:valid_chapter),
@@ -55,7 +55,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
 
         expect do
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:scaffold,
                storyline_id: storyline,
@@ -69,7 +69,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         storyline = create(:storyline, revision: entry.draft)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:scaffold,
              storyline_id: storyline,
@@ -84,7 +84,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         storyline = create(:storyline, revision: entry.draft)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:scaffold,
              storyline_id: storyline,
@@ -101,7 +101,7 @@ module Pageflow
         entry = create(:entry, account: account)
         storyline = create(:storyline, revision: entry.draft)
 
-        sign_in user
+        sign_in(user, scope: :user)
         post(:scaffold,
              storyline_id: storyline,
              chapter: attributes_for(:valid_chapter),
@@ -130,7 +130,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
         chapter = create(:chapter, storyline: storyline, title: 'old')
 
-        sign_in user
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         patch(:update,
               id: chapter,
@@ -147,7 +147,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
         chapter = create(:chapter, storyline: storyline)
 
-        sign_in user
+        sign_in(user, scope: :user)
         patch(:update, id: chapter, chapter: attributes_for(:valid_chapter), format: 'json')
 
         expect(response.status).to eq(403)
@@ -169,7 +169,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
         chapters = create_list(:chapter, 2, storyline: storyline)
 
-        sign_in user
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         put(:order,
             storyline_id: storyline,
@@ -185,7 +185,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
         chapters = create_list(:chapter, 2, storyline: storyline)
 
-        sign_in user
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         put(:order,
             storyline_id: storyline,
@@ -203,7 +203,7 @@ module Pageflow
         other_storyline = create(:storyline, revision: entry.draft)
         chapter = create(:chapter, storyline: storyline)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         put(:order, storyline_id: other_storyline, ids: [chapter.id])
 
@@ -218,7 +218,7 @@ module Pageflow
         chapter = create(:chapter, storyline: storyline)
         storyline_of_other_entry = create(:storyline, revision: other_entry.draft)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, other_entry)
         put(:order, storyline_id: storyline_of_other_entry, ids: [chapter.id])
 
@@ -232,7 +232,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
         chapters = create_list(:chapter, 2, storyline: storyline)
 
-        sign_in user
+        sign_in(user, scope: :user)
         put(:order,
             storyline_id: storyline,
             ids: [chapters.first.id, chapters.last.id],
@@ -258,7 +258,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
         chapter = create(:chapter, storyline: storyline, title: 'old')
 
-        sign_in user
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         delete(:destroy, id: chapter.id, format: 'json')
 
@@ -272,7 +272,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
         chapter = create(:chapter, storyline: storyline)
 
-        sign_in user
+        sign_in(user, scope: :user)
         delete(:destroy, id: chapter, format: 'json')
 
         expect(response.status).to eq(403)

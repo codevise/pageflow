@@ -9,7 +9,7 @@ describe Admin::MembershipsController do
         managed_user = create(:user, :member, on: account)
         create(:entry, account: account, title: 'Some title')
 
-        sign_in(current_user)
+        sign_in(current_user, scope: :user)
         get(:potential_entries_for_user_options, parent_id: managed_user.id)
         option_texts = json_response(path: ['results', '*', 'text'])
 
@@ -31,7 +31,7 @@ describe Admin::MembershipsController do
                with_manager: current_user,
                title: 'Some title')
 
-        sign_in(current_user)
+        sign_in(current_user, scope: :user)
         get(:potential_entries_for_user_options, parent_id: managed_user.id)
         option_texts = json_response(path: ['results', '*', 'text'])
 
@@ -46,7 +46,7 @@ describe Admin::MembershipsController do
         user = create(:user)
         account = create(:account)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           post :create, account_id: account, membership: {user_id: user, role: :manager}
@@ -57,7 +57,7 @@ describe Admin::MembershipsController do
         user = create(:user)
         account = create(:account)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           post :create, user_id: user, membership: {entity_id: account.id,
@@ -71,7 +71,7 @@ describe Admin::MembershipsController do
         entry = create(:entry)
         create(:account, with_manager: user)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           post :create,
@@ -85,7 +85,7 @@ describe Admin::MembershipsController do
         entry = create(:entry)
         create(:account, with_manager: user)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           post :create,
@@ -99,7 +99,7 @@ describe Admin::MembershipsController do
         user = create(:user, :member, on: account)
         entry = create(:entry, account: account)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           post :create, user_id: user, membership: {entity_id: entry.id,
@@ -113,7 +113,7 @@ describe Admin::MembershipsController do
         user = create(:user, :member, on: account)
         entry = create(:entry, account: account)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           post :create,
@@ -129,7 +129,7 @@ describe Admin::MembershipsController do
         account = create(:account, with_manager: account_admin)
         user = create(:user)
 
-        sign_in(account_admin)
+        sign_in(account_admin, scope: :user)
 
         expect do
           post :create, account_id: account, membership: {user_id: user, role: :manager}
@@ -141,7 +141,7 @@ describe Admin::MembershipsController do
         account = create(:account, with_manager: account_admin)
         user = create(:user)
 
-        sign_in(account_admin)
+        sign_in(account_admin, scope: :user)
 
         expect do
           post :create, user_id: user, membership: {entity_id: account.id,
@@ -156,7 +156,7 @@ describe Admin::MembershipsController do
         off_limits_account = create(:account)
         user = create(:user)
 
-        sign_in(account_admin)
+        sign_in(account_admin, scope: :user)
 
         expect do
           post :create, account_id: off_limits_account.id, membership: {user_id: user,
@@ -170,7 +170,7 @@ describe Admin::MembershipsController do
         off_limits_account = create(:account)
         user = create(:user)
 
-        sign_in(account_admin)
+        sign_in(account_admin, scope: :user)
 
         expect do
           post :create,
@@ -188,7 +188,7 @@ describe Admin::MembershipsController do
         account = create(:account, with_publisher: account_publisher)
         user = create(:user)
 
-        sign_in(account_publisher)
+        sign_in(account_publisher, scope: :user)
 
         expect do
           post :create, account_id: account, membership: {user_id: user, role: :manager}
@@ -200,7 +200,7 @@ describe Admin::MembershipsController do
         account = create(:account, with_publisher: account_publisher)
         user = create(:user)
 
-        sign_in(account_publisher)
+        sign_in(account_publisher, scope: :user)
 
         expect do
           post :create, user_id: user, membership: {account_id: account.id,
@@ -218,7 +218,7 @@ describe Admin::MembershipsController do
         user = create(:user, :manager, on: account)
         entry = create(:entry, account: other_account, with_manager: entry_admin)
 
-        sign_in(entry_admin)
+        sign_in(entry_admin, scope: :user)
 
         expect do
           post :create, entry_id: entry, membership: {user_id: user, role: :previewer}
@@ -232,7 +232,7 @@ describe Admin::MembershipsController do
         user = create(:user, :manager, on: account)
         entry = create(:entry, account: other_account, with_manager: entry_admin)
 
-        sign_in(entry_admin)
+        sign_in(entry_admin, scope: :user)
 
         expect do
           post :create, user_id: user, membership: {entity_id: entry.id,
@@ -248,7 +248,7 @@ describe Admin::MembershipsController do
         user = create(:user, :member, on: account)
         entry = create(:entry, account: account)
 
-        sign_in(entry_admin)
+        sign_in(entry_admin, scope: :user)
 
         expect do
           post :create, entry_id: entry, membership: {user_id: user, role: :previewer}
@@ -262,7 +262,7 @@ describe Admin::MembershipsController do
         user = create(:user, :member, on: account)
         entry = create(:entry, account: account)
 
-        sign_in(entry_admin)
+        sign_in(entry_admin, scope: :user)
 
         expect do
           post :create, user_id: user, membership: {entity_id: entry.id,
@@ -277,7 +277,7 @@ describe Admin::MembershipsController do
         user = create(:user, :member, on: account)
         entry = create(:entry, account: account, with_manager: entry_admin)
 
-        sign_in(entry_admin)
+        sign_in(entry_admin, scope: :user)
 
         expect do
           post :create, entry_id: entry, membership: {user_id: user, role: :manager}
@@ -290,7 +290,7 @@ describe Admin::MembershipsController do
         user = create(:user, :member, on: account)
         entry = create(:entry, account: account, with_manager: entry_admin)
 
-        sign_in(entry_admin)
+        sign_in(entry_admin, scope: :user)
 
         expect do
           post :create, user_id: user, membership: {entity_id: entry.id,
@@ -307,7 +307,7 @@ describe Admin::MembershipsController do
         user = create(:user, :manager, on: account)
         entry = create(:entry, account: account, with_publisher: entry_publisher)
 
-        sign_in(entry_publisher)
+        sign_in(entry_publisher, scope: :user)
 
         expect do
           post :create, entry_id: entry, membership: {user_id: user, role: :manager}
@@ -320,7 +320,7 @@ describe Admin::MembershipsController do
         user = create(:user, :manager, on: account)
         entry = create(:entry, account: account, with_publisher: entry_publisher)
 
-        sign_in(entry_publisher)
+        sign_in(entry_publisher, scope: :user)
 
         expect do
           post :create, user_id: user, membership: {entity_id: entry.id,
@@ -338,7 +338,7 @@ describe Admin::MembershipsController do
         account = create(:account)
         membership = create(:membership, entity: account, user: user, role: :manager)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           patch(:update, account_id: account, id: membership, membership: {role: :publisher})
@@ -350,7 +350,7 @@ describe Admin::MembershipsController do
         account = create(:account)
         membership = create(:membership, entity: account, user: user, role: :manager)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           patch(:update, user_id: user, id: membership, membership: {role: :publisher})
@@ -363,7 +363,7 @@ describe Admin::MembershipsController do
         entry = create(:entry, account: account)
         membership = create(:membership, entity: entry, user: user, role: :manager)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           patch :update, user_id: user, id: membership, membership: {role: :publisher}
@@ -376,7 +376,7 @@ describe Admin::MembershipsController do
         entry = create(:entry, account: account)
         membership = create(:membership, entity: entry, user: user, role: :manager)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect do
           patch :update, entry_id: entry, id: membership, membership: {role: :publisher}
@@ -390,7 +390,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: account, role: :manager)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             patch :update, account_id: account, id: membership, membership: {role: :publisher}
@@ -403,7 +403,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: account, role: :manager)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             patch :update, user_id: user, id: membership, membership: {role: :publisher}
@@ -417,7 +417,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: off_limits_account, role: :manager)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             patch :update,
@@ -434,7 +434,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: off_limits_account, role: :manager)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             patch :update, user_id: user, id: membership, membership: {role: :previewer}
@@ -449,7 +449,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: account, role: :manager)
 
-          sign_in(account_publisher)
+          sign_in(account_publisher, scope: :user)
 
           expect do
             patch :update, account_id: account, id: membership, membership: {role: :previewer}
@@ -462,7 +462,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: account, role: :manager)
 
-          sign_in(account_publisher)
+          sign_in(account_publisher, scope: :user)
 
           expect do
             patch :update, user_id: user, id: membership, membership: {role: :previewer}
@@ -478,7 +478,7 @@ describe Admin::MembershipsController do
           create(:entry, with_manager: entry_manager)
           membership = create(:membership, entity: create(:entry), user: user, role: :previewer)
 
-          sign_in(entry_manager)
+          sign_in(entry_manager, scope: :user)
 
           expect do
             patch :update, user_id: user, id: membership, membership: {role: :editor}
@@ -492,7 +492,7 @@ describe Admin::MembershipsController do
           entry = create(:entry)
           membership = create(:membership, entity: entry, user: user, role: :previewer)
 
-          sign_in(entry_manager)
+          sign_in(entry_manager, scope: :user)
 
           expect do
             patch :update, entry_id: entry, id: membership, membership: {role: :editor}
@@ -506,7 +506,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account, with_manager: entry_manager)
           membership = create(:membership, entity: entry, user: user, role: :manager)
 
-          sign_in(entry_manager)
+          sign_in(entry_manager, scope: :user)
 
           expect do
             patch :update, entry_id: entry, id: membership, membership: {role: :publisher}
@@ -520,7 +520,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account, with_manager: entry_manager)
           membership = create(:membership, entity: entry, user: user, role: :manager)
 
-          sign_in(entry_manager)
+          sign_in(entry_manager, scope: :user)
 
           expect do
             patch :update, user_id: user, id: membership, membership: {role: :publisher}
@@ -536,7 +536,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account, with_publisher: entry_publisher)
           membership = create(:membership, entity: entry, user: user, role: :previewer)
 
-          sign_in(entry_publisher)
+          sign_in(entry_publisher, scope: :user)
 
           expect do
             patch :update, entry_id: entry, id: membership, membership: {role: :editor}
@@ -550,7 +550,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account, with_publisher: entry_publisher)
           membership = create(:membership, entity: entry, user: user, role: :previewer)
 
-          sign_in(entry_publisher)
+          sign_in(entry_publisher, scope: :user)
 
           expect do
             patch :update, user_id: user, id: membership, membership: {role: :editor}
@@ -566,7 +566,7 @@ describe Admin::MembershipsController do
           account = create(:account)
           membership = create(:membership, entity: account, user: user, role: :manager)
 
-          sign_in(create(:user, :admin))
+          sign_in(create(:user, :admin), scope: :user)
 
           expect do
             delete(:destroy, account_id: account, id: membership)
@@ -578,7 +578,7 @@ describe Admin::MembershipsController do
           account = create(:account)
           membership = create(:membership, entity: account, user: user, role: :manager)
 
-          sign_in(create(:user, :admin))
+          sign_in(create(:user, :admin), scope: :user)
 
           expect do
             delete(:destroy, user_id: user, id: membership)
@@ -591,7 +591,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account)
           membership = create(:membership, entity: entry, user: user, role: :manager)
 
-          sign_in(create(:user, :admin))
+          sign_in(create(:user, :admin), scope: :user)
 
           expect do
             delete(:destroy, entry_id: entry, id: membership)
@@ -604,7 +604,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account)
           membership = create(:membership, entity: entry, user: user, role: :manager)
 
-          sign_in(create(:user, :admin))
+          sign_in(create(:user, :admin), scope: :user)
 
           expect do
             delete(:destroy, user_id: user, id: membership)
@@ -619,7 +619,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: account, role: :manager)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             delete(:destroy, account_id: account, id: membership)
@@ -632,7 +632,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: account, role: :manager)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             delete(:destroy, user_id: user, id: membership)
@@ -647,7 +647,7 @@ describe Admin::MembershipsController do
           account_membership = create(:membership, user: user, entity: account, role: :manager)
           create(:membership, user: user, entity: entry)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             delete(:destroy, user_id: user, id: account_membership)
@@ -663,7 +663,7 @@ describe Admin::MembershipsController do
           account_membership = create(:membership, user: user, entity: account, role: :manager)
           create(:membership, user: other_user, entity: entry)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             delete(:destroy, user_id: user, id: account_membership)
@@ -678,7 +678,7 @@ describe Admin::MembershipsController do
           account_membership = create(:membership, user: user, entity: account, role: :manager)
           create(:membership, user: user, entity: entry)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             delete(:destroy, user_id: user, id: account_membership)
@@ -695,7 +695,7 @@ describe Admin::MembershipsController do
           account_membership = create(:membership, user: user, entity: account, role: :manager)
           create(:membership, user: user, entity: entry)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             delete(:destroy, user_id: user, id: account_membership)
@@ -709,7 +709,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: off_limits_account, role: :manager)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             delete(:destroy, account_id: off_limits_account, id: membership)
@@ -723,7 +723,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: off_limits_account, role: :manager)
 
-          sign_in(account_admin)
+          sign_in(account_admin, scope: :user)
 
           expect do
             delete(:destroy, user_id: user, id: membership)
@@ -738,7 +738,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: account, role: :manager)
 
-          sign_in(account_publisher)
+          sign_in(account_publisher, scope: :user)
 
           expect do
             delete(:destroy, account_id: account, id: membership)
@@ -751,7 +751,7 @@ describe Admin::MembershipsController do
           user = create(:user)
           membership = create(:membership, user: user, entity: account, role: :manager)
 
-          sign_in(account_publisher)
+          sign_in(account_publisher, scope: :user)
 
           expect do
             delete(:destroy, user_id: user, id: membership)
@@ -767,7 +767,7 @@ describe Admin::MembershipsController do
           create(:entry, with_manager: entry_manager)
           membership = create(:membership, entity: create(:entry), user: user, role: :previewer)
 
-          sign_in(entry_manager)
+          sign_in(entry_manager, scope: :user)
 
           expect {
             delete(:destroy, user_id: user, id: membership)
@@ -781,7 +781,7 @@ describe Admin::MembershipsController do
           entry = create(:entry)
           membership = create(:membership, entity: entry, user: user, role: :previewer)
 
-          sign_in(entry_manager)
+          sign_in(entry_manager, scope: :user)
 
           expect do
             delete(:destroy, entry_id: entry, id: membership)
@@ -795,7 +795,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account, with_manager: entry_manager)
           membership = create(:membership, entity: entry, user: user, role: :manager)
 
-          sign_in(entry_manager)
+          sign_in(entry_manager, scope: :user)
 
           expect do
             delete(:destroy, entry_id: entry, id: membership)
@@ -809,7 +809,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account, with_manager: entry_manager)
           membership = create(:membership, entity: entry, user: user, role: :manager)
 
-          sign_in(entry_manager)
+          sign_in(entry_manager, scope: :user)
 
           expect do
             delete(:destroy, user_id: user, id: membership)
@@ -825,7 +825,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account, with_publisher: entry_publisher)
           membership = create(:membership, entity: entry, user: user, role: :previewer)
 
-          sign_in(entry_publisher)
+          sign_in(entry_publisher, scope: :user)
 
           expect do
             delete(:destroy, entry_id: entry, id: membership)
@@ -839,7 +839,7 @@ describe Admin::MembershipsController do
           entry = create(:entry, account: account, with_publisher: entry_publisher)
           membership = create(:membership, entity: entry, user: user, role: :previewer)
 
-          sign_in(entry_publisher)
+          sign_in(entry_publisher, scope: :user)
 
           expect do
             delete(:destroy, user_id: user, id: membership)

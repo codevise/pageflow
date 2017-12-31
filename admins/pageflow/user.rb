@@ -132,7 +132,7 @@ module Pageflow
 
       if request.patch?
         if @user.update_with_password(user_profile_params)
-          sign_in @user, bypass: true
+          bypass_sign_in @user, scope: :user
           redirect_to admin_root_path, notice: I18n.t('pageflow.admin.users.me.updated')
         end
       end
