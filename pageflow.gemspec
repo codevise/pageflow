@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib']
 
-  s.add_dependency 'rails', '~> 4.2.6'
+  s.add_dependency 'rails', '>= 4.2.10', '< 4.3.0'
 
   # Framework for admin interface
   s.add_dependency 'activeadmin', '1.0.0.pre4'
