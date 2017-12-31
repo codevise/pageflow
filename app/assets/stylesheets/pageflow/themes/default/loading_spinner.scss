@@ -40,6 +40,9 @@ $loading-spinner-glow-color: rgba(117, 149, 160, 0.8) !default;
 /// Apply opacity animation to glow or background image.
 $loading-spinner-animate-background: true !default;
 
+/// Size of the actual glowing area
+$loading-spinner-glow-size: 140px !default;
+
 @if not $custom-loading-spinner {
   .loading_spinner {
     // scss-lint:disable ImportantRule
@@ -59,7 +62,7 @@ $loading-spinner-animate-background: true !default;
         content: "";
         @include radial-gradient(circle,
                                  $loading-spinner-glow-color 0%,
-                                 $loading-spinner-background-color 140px);
+                                 $loading-spinner-background-color $loading-spinner-glow-size);
         background-size: 100% 100%;
       } @else if $loading-spinner-background == "custom" {
         content: "";
