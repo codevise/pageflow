@@ -19,6 +19,7 @@ services:
   - redis-server
 
 before_install:
+  - gem update --system
   - nvm install stable
 
 before_script:
