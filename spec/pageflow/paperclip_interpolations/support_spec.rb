@@ -7,7 +7,7 @@ module Pageflow
 
       it 'has pageflow_placeholder' do
         support = described_class.new(video_file.attachment_on_filesystem, 'thumbnailxl')
-        expect(support.pageflow_placeholder).to eq("pageflow/placeholder_thumbnailxl.jpg")
+        expect(support.pageflow_placeholder).to eq('pageflow/placeholder_thumbnailxl.jpg')
       end
 
       describe 'pageflow_attachments_version' do
@@ -17,7 +17,7 @@ module Pageflow
           end
 
           support = described_class.new(video_file.attachment_on_filesystem, 'thumbnailxl')
-          expect(support.pageflow_attachments_version).to eq("303/")
+          expect(support.pageflow_attachments_version).to eq('303/')
         end
 
         it 'is nil for :original style' do
@@ -41,7 +41,7 @@ module Pageflow
 
       it 'has class_basename' do
         support = described_class.new(video_file.attachment_on_filesystem, 'thumbnailxs')
-        expect(support.class_basename).to eq("video_files")
+        expect(support.class_basename).to eq('video_files')
       end
     end
   end
