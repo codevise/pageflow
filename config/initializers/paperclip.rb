@@ -1,4 +1,5 @@
 require 'socket'
+require 'pageflow/paperclip_interpolations/support'
 
 Pageflow.configure do |config|
   config.paperclip_attachments_version = 'v1'
@@ -107,20 +108,17 @@ if Rails.env.test?
   end
 end
 
+# Turns +Pageflow::VideoFile+ into +video_files+.
 Paperclip.interpolates(:class_basename) do |attachment, style|
-  plural_cache.underscore_and_pluralize(attachment.instance.class.name.split('::').last)
+  Pageflow::PaperclipInterpolations::Support.new(attachment, style).class_basename
 end
 
 Paperclip.interpolates(:pageflow_placeholder) do |attachment, style|
-  "pageflow/placeholder_#{style}.jpg"
+  Pageflow::PaperclipInterpolations::Support.new(attachment, style).pageflow_placeholder
 end
 
 Paperclip.interpolates(:pageflow_attachments_version) do |attachment, style|
-  version = Pageflow.config.paperclip_attachments_version
-
-  if version.present? && style != :original
-    "#{version}/"
-  end
+  Pageflow::PaperclipInterpolations::Support.new(attachment, style).pageflow_attachments_version
 end
 
 Paperclip.configure do |config|

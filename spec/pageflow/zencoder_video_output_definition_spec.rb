@@ -4,7 +4,7 @@ module Pageflow
   describe ZencoderVideoOutputDefinition do
     describe '#outputs' do
       it 'contains all definitions except highdef per default' do
-        video_file = build(:video_file)
+        video_file = create(:video_file)
         definition = ZencoderVideoOutputDefinition.new(video_file)
         definition.skip_hls = false
         definition.skip_smil = false

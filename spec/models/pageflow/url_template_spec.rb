@@ -3,50 +3,40 @@ require 'spec_helper'
 module Pageflow
   describe UrlTemplate do
     describe '.from_attachment' do
-      def create_attachment(url:, filename: 'file.png')
-        Class.new(ActiveRecord::Base) {
-          self.table_name = 'pageflow_pages'
-
-          has_attached_file(:thumbnail, url: url)
-          attr_accessor(:thumbnail_file_name)
-
-          def self.to_s
-            'Page'
-          end
-        }.new(id: 5, thumbnail_file_name: filename).thumbnail
-      end
+      let(:video_file) { create(:video_file, :on_filesystem) }
 
       it 'returns url with :id_partition placeholder' do
-        attachment = create_attachment(url: '/:class/:attachment/:id_partition/:style/:filename')
+        VideoFile.has_attached_file :attachment_on_filesystem,
+          url: '/:class/:attachment/:id_partition/:style/:filename'
+        result = described_class.from_attachment(video_file.attachment_on_filesystem)
 
-        result = UrlTemplate.from_attachment(attachment)
-
-        expect(result).to eq('/pages/thumbnails/:id_partition/original/file.png')
+        expect(result).to eq('/pageflow/video_files/attachment_on_filesystems/:id_partition/original/video.mp4?1356994800')
       end
 
       it 'only replaces last set of digits' do
-        attachment = create_attachment(url: '/123/:class/:id_partition/:style/:filename')
+        VideoFile.has_attached_file :attachment_on_filesystem,
+          url: '/123/:class/:id_partition/:style/:filename'
+        result = described_class.from_attachment(video_file.attachment_on_filesystem)
 
-        result = UrlTemplate.from_attachment(attachment)
-
-        expect(result).to eq('/123/pages/:id_partition/original/file.png')
+        expect(result).to eq('/123/pageflow/video_files/:id_partition/original/video.mp4?1356994800')
       end
 
       it 'ignores other numeric values in url pattern' do
-        attachment = create_attachment(url: '/_a123/_e1001/:class/:id_partition/:style/:filename')
+        VideoFile.has_attached_file :attachment_on_filesystem,
+          url: '/_a123/_e1001/:class/:id_partition/:style/:filename'
+        result = described_class.from_attachment(video_file.attachment_on_filesystem)
 
-        result = UrlTemplate.from_attachment(attachment)
-
-        expect(result).to eq('/_a123/_e1001/pages/:id_partition/original/file.png')
+        expect(result).to eq('/_a123/_e1001/pageflow/video_files/:id_partition/original/video.mp4?1356994800')
       end
 
       it 'ignores numeric file names' do
-        attachment = create_attachment(url: '/:class/:id_partition/:style/:filename',
-                                       filename: '123')
+        VideoFile.has_attached_file :attachment_on_filesystem,
+          url: '/:class/:id_partition/:style/:filename',
+          filename: '123'
+        video_file = create(:video_file, :numeric_filename_on_filesystem)
+        result = described_class.from_attachment(video_file.attachment_on_filesystem)
 
-        result = UrlTemplate.from_attachment(attachment)
-
-        expect(result).to eq('/pages/:id_partition/original/123')
+        expect(result).to eq('/pageflow/video_files/:id_partition/original/123.mp4?1356994800')
       end
     end
   end
