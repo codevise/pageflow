@@ -1,14 +1,47 @@
 require 'spec_helper'
 
-feature 'as a bot, requesting the atom feed' do
-  scenario 'sees a feed entry' do
-    theming = create(:theming, cname: 'emma.example.com')
-    account = create(:account, default_theming: theming)
-    create(:entry, :published, account: account)
+feature 'account using a custom domain' do
+  let(:account) { create(:account) }
 
+  before do
+    account.default_theming.update! cname: 'emma.example.com'
+    create(:entry, :published, account: account, title: 'Atom-Powered Robots Run Amok')
+  end
+
+  scenario 'sees a feed when requesting the atom feed' do
     visit(pageflow.entries_url(format: 'atom', host: 'emma.example.com'))
 
-    expect(Dom::Atom.title).to eq(account.name)
+    expect(page.driver.response.headers['Content-Type']).to start_with('application/atom+xml') #ignoring charset
+    expect(Dom::AtomFeed.title).to eq(account.name)
+    expect(Dom::AtomEntry.first.title).to eq('Atom-Powered Robots Run Amok')
+  end
+
+  scenario 'sees a feed with multiple pages' do
+    create_list(:entry, 3, :published, account: account )
+
+    visit(pageflow.entries_url(page: 2, format: 'atom', host: 'emma.example.com'))
+
+    expect(Dom::AtomEntry.first.title).to eq('Entry 2')
+  end
+
+  scenario 'sees a page not found when not using the custom domain' do
+    visit(pageflow.entries_url(format: 'atom'))
+
+    expect(page).to have_http_status(:not_found)
+  end
+end
+
+feature 'account not using a custom domain' do
+  let(:account) { create(:account) }
+
+  before do
+    create(:entry, :published, account: account, title: 'Atom-Powered Robots Run Amok')
+  end
+
+  scenario 'sees a page not found when requesting the atom feed' do
+    visit(pageflow.entries_url(format: 'atom'))
+
+    expect(page).to have_http_status(:not_found)
   end
 end
 

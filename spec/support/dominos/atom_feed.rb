@@ -1,5 +1,5 @@
 module Dom
-  class Atom < Domino
+  class AtomFeed < Domino
     selector 'feed'
 
     def title

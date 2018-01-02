@@ -7,7 +7,6 @@ module Pageflow
       def initialize(scope, page = nil)
         @scope = scope
         @page = page
-        @per_page = 25
       end
 
       def entries
