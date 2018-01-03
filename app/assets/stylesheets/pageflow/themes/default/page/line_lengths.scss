@@ -37,9 +37,8 @@ $page-content-width: 60% !default;
     width: 100%;
   }
 
-  // see pageflow/page.scss
-  $page-padding-left: 8%;
-  $page-padding-right: 14%;
+  $page-padding-left: $page-scroller-padding-left;
+  $page-padding-right: $page-scroller-padding-right;
   $page-content-wrapper-width: 100% - $page-padding-left - $page-padding-right;
 
   // On pages that support split layout (i.e. some kind of
