@@ -11,7 +11,9 @@
         maxDuration: 500
       }, this.options);
 
-      this.element.on('touchstart MSPointerDown pointerdown', _.bind(function(event) {
+      var selector = this.options.eventTargetSelector;
+
+      this.element.on('touchstart MSPointerDown pointerdown', selector, _.bind(function(event) {
         if (isNonTouchPointer(event)) { return; }
         var point = event.originalEvent.touches ? event.originalEvent.touches[0] : event.originalEvent;
 
@@ -24,7 +26,7 @@
         startTime = new Date().getTime();
       }, this));
 
-      this.element.on('touchmove MSPointerMove pointermove', _.bind(function(event) {
+      this.element.on('touchmove MSPointerMove pointermove', selector, _.bind(function(event) {
         if (isNonTouchPointer(event)) { return; }
         var point = event.originalEvent.touches ? event.originalEvent.touches[0] : event.originalEvent;
 
@@ -32,7 +34,7 @@
         distY = point.pageY - startY;
       }, this));
 
-      this.element.on('touchend MSPointerUp pointerup', _.bind(function(event) {
+      this.element.on('touchend MSPointerUp pointerup', selector, _.bind(function(event) {
         if (isNonTouchPointer(event)) { return; }
         var elapsedTime = new Date().getTime() - startTime;
 
