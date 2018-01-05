@@ -235,6 +235,10 @@ module Pageflow
             UserPolicy::Scope.new(user, ::User).resolve do |managed_user|
           UserPolicy.new(user, managed_user).redirect_to_user?
         end
+
+        can :suspend, ::User do |managed_user|
+          UserPolicy.new(user, managed_user).suspend?
+        end
       end
 
       can :delete_own_user, ::User do |user_to_delete|
