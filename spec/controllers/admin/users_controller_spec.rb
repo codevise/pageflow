@@ -478,6 +478,30 @@ module Pageflow
       end
     end
 
+    describe '#resend_invitation' do
+      it 'allows account manager to resend invitation' do
+        account = create(:account)
+        user = create(:user, :member, on: account)
+
+        sign_in(create(:user, :manager, on: account))
+        request.env['HTTP_REFERER'] = admin_users_path
+        post :resend_invitation, id: user
+
+        expect(ActionMailer::Base.deliveries).not_to be_empty
+      end
+
+      it 'does not allow account publisher to resend invitiation' do
+        account = create(:account)
+        user = create(:user, :member, on: account)
+
+        sign_in(create(:user, :publisher, on: account))
+        request.env['HTTP_REFERER'] = admin_users_path
+        post :resend_invitation, id: user
+
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
+
     describe '#suspend' do
       it 'allows admin to suspend user' do
         account = create(:account)

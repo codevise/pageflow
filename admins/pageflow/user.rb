@@ -149,7 +149,9 @@ module Pageflow
     end
 
     member_action :resend_invitation, method: :post do
-      InvitedUser.find(params[:id]).send_invitation!
+      user = InvitedUser.find(params[:id])
+      authorize!(:read, user)
+      user.send_invitation!
       redirect_to :back, notice: I18n.t('pageflow.admin.users.resent_invitation')
     end
 
