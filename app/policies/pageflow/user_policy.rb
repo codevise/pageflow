@@ -66,11 +66,11 @@ module Pageflow
     end
 
     def suspend?
-      if Pageflow.config.allow_multiaccount_users
-        user.admin?
-      else
-        AccountRoleQuery.new(user, managed_user.accounts.first).has_at_least_role?(:manager)
-      end
+      deny_sign_in?
+    end
+
+    def destroy?
+      deny_sign_in?
     end
 
     def admin?
@@ -96,5 +96,13 @@ module Pageflow
     private
 
     attr_reader :managed_user
+
+    def deny_sign_in?
+      if Pageflow.config.allow_multiaccount_users
+        user.admin?
+      else
+        AccountRoleQuery.new(user, managed_user.accounts.first).has_at_least_role?(:manager)
+      end
+    end
   end
 end

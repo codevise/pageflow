@@ -15,6 +15,12 @@ module Pageflow
                     to: :suspend,
                     topic: -> { create(:user, :member, on: create(:account)) }
 
+    it_behaves_like 'an admin permission that',
+                    allows_admins_but_forbids_even_managers: true,
+                    of_account: ->(topic) { topic.accounts.first },
+                    to: :destroy,
+                    topic: -> { create(:user, :member, on: create(:account)) }
+
     context 'when allow_multiaccount_users is false' do
       before do
         pageflow_configure do |config|
@@ -27,6 +33,13 @@ module Pageflow
                       but_forbids: :publisher,
                       of_account: ->(topic) { topic.accounts.first },
                       to: :suspend,
+                      topic: -> { create(:user, :member, on: create(:account)) }
+
+      it_behaves_like 'a membership-based permission that',
+                      allows: :manager,
+                      but_forbids: :publisher,
+                      of_account: ->(topic) { topic.accounts.first },
+                      to: :destroy,
                       topic: -> { create(:user, :member, on: create(:account)) }
     end
 

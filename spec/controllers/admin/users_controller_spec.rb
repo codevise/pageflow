@@ -590,6 +590,62 @@ module Pageflow
       end
     end
 
+    describe '#destroy' do
+      it 'allows admin to destroy user' do
+        account = create(:account)
+        user = create(:user, :member, on: account)
+
+        sign_in(create(:user, :admin))
+
+        expect {
+          delete :destroy, id: user
+        }.to(change { User.count })
+      end
+
+      it 'does not allow account manager to destroy user' do
+        account = create(:account)
+        user = create(:user, :member, on: account)
+
+        sign_in(create(:user, :manager, on: account))
+
+        expect {
+          delete :destroy, id: user
+        }.not_to(change { User.count })
+      end
+
+      context 'when config.allow_multiaccount_users is false' do
+        it 'allows account manager to destroy user' do
+          pageflow_configure do |config|
+            config.allow_multiaccount_users = false
+          end
+
+          account = create(:account)
+          user = create(:user, :member, on: account)
+
+          sign_in(create(:user, :manager, on: account))
+
+          expect {
+            delete :destroy, id: user
+          }.to(change { User.count })
+        end
+
+        it 'does not allow account publisher to destroy user' do
+          pageflow_configure do |config|
+            config.allow_multiaccount_users = false
+          end
+
+          account = create(:account)
+          user = create(:user, :member, on: account)
+
+          sign_in(create(:user, :publisher, on: account))
+
+          expect {
+            delete :destroy, id: user
+          }.not_to(change { User.count })
+        end
+      end
+    end
+
     describe '#me' do
       render_views
 
