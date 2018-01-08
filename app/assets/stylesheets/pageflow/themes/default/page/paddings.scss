@@ -1,0 +1,72 @@
+////
+/// @group page-typography
+////
+
+/// Space around page text inside scroller.
+$page-scroller-padding-top: 15% !default;
+
+/// Space around page text inside scroller.
+$page-scroller-mobile-padding-top: 25% !default;
+
+/// Space around page text inside scroller.
+$page-scroller-mobile-landscape-padding-top: 10% !default;
+
+/// Space around page text inside scroller.
+$page-scroller-padding-bottom: 5% !default;
+
+/// Space around page text inside scroller.
+$page-scroller-padding-left: 8% !default;
+
+/// Space around page text inside scroller.
+$page-scroller-padding-right: 14% !default;
+
+/// Space around page text inside scroller.
+$page-scroller-mobile-padding-right: 12% !default;
+
+/// Space for logo on first page.
+$page-scroller-first-page-padding-top: null !default;
+
+/// Space for logo on first page in mobile layout.
+$page-scroller-first-page-mobile-padding-top: 110px !default;
+
+/// Space for logo on first page in mobile landscape layout.
+$page-scroller-first-page-mobile-landscape-padding-top: 100px !default;
+
+/// Space for logo on first page in phone layout.
+$page-scroller-first-page-phone-padding-top: null !default;
+
+.page {
+  .scroller > div {
+    padding: $page-scroller-padding-top
+               $page-scroller-padding-right
+               $page-scroller-padding-bottom
+               $page-scroller-padding-left;
+
+    @include mobile {
+      padding-top: $page-scroller-mobile-padding-top;
+      padding-right: $page-scroller-mobile-padding-right;
+
+      @media (orientation: landscape) {
+        padding-top: $page-scroller-mobile-landscape-padding-top;
+      }
+    }
+  }
+}
+
+.page:first-child {
+  .scroller > div {
+    padding-top: $page-scroller-first-page-padding-top;
+
+    @include mobile {
+      padding-top: $page-scroller-first-page-mobile-padding-top;
+
+      @media (orientation: landscape) {
+        padding-top: $page-scroller-first-page-mobile-landscape-padding-top;
+      }
+    }
+
+    @include phone {
+      padding-top: $page-scroller-first-page-phone-padding-top;
+    }
+  }
+}
