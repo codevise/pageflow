@@ -149,17 +149,23 @@ module Pageflow
     end
 
     member_action :resend_invitation, method: :post do
-      InvitedUser.find(params[:id]).send_invitation!
+      user = InvitedUser.find(params[:id])
+      authorize!(:read, user)
+      user.send_invitation!
       redirect_to :back, notice: I18n.t('pageflow.admin.users.resent_invitation')
     end
 
     member_action :suspend, method: :post do
-      User.find(params[:id]).suspend!
+      user = User.find(params[:id])
+      authorize!(:suspend, user)
+      user.suspend!
       redirect_to :back, notice: I18n.t('pageflow.admin.users.suspended')
     end
 
     member_action :unsuspend, method: :post do
-      User.find(params[:id]).unsuspend!
+      user = User.find(params[:id])
+      authorize!(:suspend, user)
+      user.unsuspend!
       redirect_to :back, notice: I18n.t('pageflow.admin.users.unsuspended')
     end
 

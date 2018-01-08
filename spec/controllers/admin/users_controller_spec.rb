@@ -478,6 +478,198 @@ module Pageflow
       end
     end
 
+    describe '#resend_invitation' do
+      it 'allows account manager to resend invitation' do
+        account = create(:account)
+        user = create(:user, :member, on: account)
+
+        sign_in(create(:user, :manager, on: account))
+        request.env['HTTP_REFERER'] = admin_users_path
+        post :resend_invitation, id: user
+
+        expect(ActionMailer::Base.deliveries).not_to be_empty
+      end
+
+      it 'does not allow account publisher to resend invitiation' do
+        account = create(:account)
+        user = create(:user, :member, on: account)
+
+        sign_in(create(:user, :publisher, on: account))
+        request.env['HTTP_REFERER'] = admin_users_path
+        post :resend_invitation, id: user
+
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
+
+    describe '#suspend' do
+      it 'allows admin to suspend user' do
+        account = create(:account)
+        user = create(:user, :member, on: account)
+
+        sign_in(create(:user, :admin))
+        request.env['HTTP_REFERER'] = admin_users_path
+        post :suspend, id: user
+
+        expect(user.reload).to be_suspended
+      end
+
+      it 'does not allow account manager to suspend user' do
+        account = create(:account)
+        user = create(:user, :member, on: account)
+
+        sign_in(create(:user, :manager, on: account))
+        request.env['HTTP_REFERER'] = admin_users_path
+        post :suspend, id: user
+
+        expect(user.reload).not_to be_suspended
+      end
+
+      context 'when config.allow_multiaccount_users is false' do
+        it 'allows account manager to suspend user' do
+          pageflow_configure do |config|
+            config.allow_multiaccount_users = false
+          end
+
+          account = create(:account)
+          user = create(:user, :member, on: account)
+
+          sign_in(create(:user, :manager, on: account))
+          request.env['HTTP_REFERER'] = admin_users_path
+          post :suspend, id: user
+
+          expect(user.reload).to be_suspended
+        end
+
+        it 'does not allow account publisher to suspend user' do
+          pageflow_configure do |config|
+            config.allow_multiaccount_users = false
+          end
+
+          account = create(:account)
+          user = create(:user, :member, on: account)
+
+          sign_in(create(:user, :publisher, on: account))
+          request.env['HTTP_REFERER'] = admin_users_path
+          post :suspend, id: user
+
+          expect(user.reload).not_to be_suspended
+        end
+      end
+    end
+
+    describe '#unsuspend' do
+      it 'allows admin to unsuspend user' do
+        account = create(:account)
+        user = create(:user, :suspended, :member, on: account)
+
+        sign_in(create(:user, :admin))
+        request.env['HTTP_REFERER'] = admin_users_path
+        post :unsuspend, id: user
+
+        expect(user.reload).not_to be_suspended
+      end
+
+      it 'does not allow account manager to unsuspend user' do
+        account = create(:account)
+        user = create(:user, :suspended, :member, on: account)
+
+        sign_in(create(:user, :manager, on: account))
+        request.env['HTTP_REFERER'] = admin_users_path
+        post :unsuspend, id: user
+
+        expect(user.reload).to be_suspended
+      end
+
+      context 'when config.allow_multiaccount_users is false' do
+        it 'allows account manager to unsuspend user' do
+          pageflow_configure do |config|
+            config.allow_multiaccount_users = false
+          end
+
+          account = create(:account)
+          user = create(:user, :suspended, :member, on: account)
+
+          sign_in(create(:user, :manager, on: account))
+          request.env['HTTP_REFERER'] = admin_users_path
+          post :unsuspend, id: user
+
+          expect(user.reload).not_to be_suspended
+        end
+
+        it 'does not allow account publisher to unsuspend user' do
+          pageflow_configure do |config|
+            config.allow_multiaccount_users = false
+          end
+
+          account = create(:account)
+          user = create(:user, :suspended, :member, on: account)
+
+          sign_in(create(:user, :publisher, on: account))
+          request.env['HTTP_REFERER'] = admin_users_path
+          post :unsuspend, id: user
+
+          expect(user.reload).to be_suspended
+        end
+      end
+    end
+
+    describe '#destroy' do
+      it 'allows admin to destroy user' do
+        account = create(:account)
+        user = create(:user, :member, on: account)
+
+        sign_in(create(:user, :admin))
+
+        expect {
+          delete :destroy, id: user
+        }.to(change { User.count })
+      end
+
+      it 'does not allow account manager to destroy user' do
+        account = create(:account)
+        user = create(:user, :member, on: account)
+
+        sign_in(create(:user, :manager, on: account))
+
+        expect {
+          delete :destroy, id: user
+        }.not_to(change { User.count })
+      end
+
+      context 'when config.allow_multiaccount_users is false' do
+        it 'allows account manager to destroy user' do
+          pageflow_configure do |config|
+            config.allow_multiaccount_users = false
+          end
+
+          account = create(:account)
+          user = create(:user, :member, on: account)
+
+          sign_in(create(:user, :manager, on: account))
+
+          expect {
+            delete :destroy, id: user
+          }.to(change { User.count })
+        end
+
+        it 'does not allow account publisher to destroy user' do
+          pageflow_configure do |config|
+            config.allow_multiaccount_users = false
+          end
+
+          account = create(:account)
+          user = create(:user, :member, on: account)
+
+          sign_in(create(:user, :publisher, on: account))
+
+          expect {
+            delete :destroy, id: user
+          }.not_to(change { User.count })
+        end
+      end
+    end
+
     describe '#me' do
       render_views
 

@@ -35,4 +35,4 @@ Style/LambdaCall:
 
 # Ignore long RSpec describe blocks
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context']
+  ExcludedMethods: ['describe', 'context', 'feature']

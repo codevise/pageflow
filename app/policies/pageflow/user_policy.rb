@@ -65,6 +65,14 @@ module Pageflow
       read?
     end
 
+    def suspend?
+      deny_sign_in?
+    end
+
+    def destroy?
+      deny_sign_in?
+    end
+
     def admin?
       @user.admin?
     end
@@ -83,6 +91,18 @@ module Pageflow
 
     def delete_own_user?
       Pageflow.config.authorize_user_deletion.call(@managed_user) == true
+    end
+
+    private
+
+    attr_reader :managed_user
+
+    def deny_sign_in?
+      if Pageflow.config.allow_multiaccount_users
+        user.admin?
+      else
+        AccountRoleQuery.new(user, managed_user.accounts.first).has_at_least_role?(:manager)
+      end
     end
   end
 end
