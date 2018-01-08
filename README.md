@@ -177,6 +177,26 @@ mailing list.
 If you have found a security related bug, please contact
 `info(at)codevise.de` instead of creating a publicly visible issue.
 
+## Contributing
+
+Pull requests are welcome on GitHub at
+https://github.com/codevise/pageflow. Everyone interacting in the
+project's codebases, issue trackers and mailing lists is expected to
+follow the
+[code of conduct](https://github.com/codevise/pageflow/blob/master/CODE_OF_CONDUCT.md).
+
+See the
+[Contributing section](https://github.com/codevise/pageflow/blob/master/doc/index.md#contributing)
+in the guides list for instructions on how to setup your development
+environment. The
+[GitHub wiki](https://github.com/codevise/pageflow/wiki#contributing-to-pageflow)
+contains high level guides on common development workflows.
+
+## License
+
+The gem is available as open source under the terms of the
+[MIT License](https://github.com/codevise/pageflow/blob/master/MIT-LICENSE).
+
 ## Special Thanks
 
 We would like to express our special thanks to the following services
