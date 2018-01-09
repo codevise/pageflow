@@ -2,7 +2,7 @@ module Pageflow
   class StorylinesController < Pageflow::ApplicationController
     respond_to :json
 
-    before_filter :authenticate_user!
+    before_action :authenticate_user!
 
     def create
       entry = DraftEntry.find(params[:entry_id])

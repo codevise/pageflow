@@ -3,7 +3,7 @@ module Pageflow
     class EntriesController < Pageflow::ApplicationController
       respond_to :json
 
-      before_filter :authenticate_user!
+      before_action :authenticate_user!
 
       def index
         @entries = DraftEntry.accessible_by(current_ability, :use_files)

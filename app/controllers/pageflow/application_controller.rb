@@ -5,7 +5,7 @@ module Pageflow
   class ApplicationController < ActionController::Base
     layout 'pageflow/application'
 
-    before_filter do
+    before_action do
       I18n.locale = current_user.try(:locale) || locale_from_accept_language_header || I18n.default_locale
     end
 
