@@ -4,10 +4,12 @@ module Pageflow
     belongs_to :entity, polymorphic: true
     belongs_to :entry,
                -> { where(pageflow_memberships: {entity_type: 'Pageflow::Entry'}) },
-               foreign_key: 'entity_id'
+               foreign_key: 'entity_id',
+               optional: true
     belongs_to :account,
                -> { where(pageflow_memberships: {entity_type: 'Pageflow::Account'}) },
-               foreign_key: 'entity_id'
+               foreign_key: 'entity_id',
+               optional: true
 
     validates :user, :entity, :role, presence: true
     validates :user_id, uniqueness: {scope: [:entity_type, :entity_id]}

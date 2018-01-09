@@ -9,8 +9,8 @@ module Pageflow
     include ThemeReferencer
 
     belongs_to :entry, touch: :edited_at
-    belongs_to :creator, :class_name => 'User'
-    belongs_to :restored_from, :class_name => 'Pageflow::Revision'
+    belongs_to :creator, class_name: 'User', optional: true
+    belongs_to :restored_from, class_name: 'Pageflow::Revision', optional: true
 
     has_many :widgets, as: :subject, dependent: :destroy
 

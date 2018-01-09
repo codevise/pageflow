@@ -10,14 +10,16 @@ module Pageflow
 
     describe '#perma_id' do
       it 'is set on creation' do
-        revision_component = TestRevisionComponent.create!
+        revision = create(:revision)
+        revision_component = TestRevisionComponent.create!(revision: revision)
 
         expect(revision_component.perma_id).to be_present
       end
 
       it 'differs for separate RevisonComponents' do
-        revision_component1 = TestRevisionComponent.create!
-        revision_component2 = TestRevisionComponent.create!
+        revision = create(:revision)
+        revision_component1 = TestRevisionComponent.create!(revision: revision)
+        revision_component2 = TestRevisionComponent.create!(revision: revision)
 
         expect(revision_component1.perma_id).not_to eq(revision_component2.perma_id)
       end
@@ -25,11 +27,12 @@ module Pageflow
 
     describe '#copy_to' do
       it 'keeps perma_id' do
-        revision_component = TestRevisionComponent.create!
         revision = create(:revision)
+        revision_component = TestRevisionComponent.create!(revision: revision)
+        other_revision = create(:revision)
 
-        revision_component.copy_to(revision)
-        revision_component_copy = TestRevisionComponent.all_for_revision(revision).first
+        revision_component.copy_to(other_revision)
+        revision_component_copy = TestRevisionComponent.all_for_revision(other_revision).first
         expect(revision_component.perma_id).to eq(revision_component_copy.perma_id)
       end
     end
