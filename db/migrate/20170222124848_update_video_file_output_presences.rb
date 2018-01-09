@@ -1,4 +1,4 @@
-class UpdateVideoFileOutputPresences < ActiveRecord::Migration
+class UpdateVideoFileOutputPresences < ActiveRecord::Migration[4.2]
   def up
     execute(<<-SQL)
       UPDATE pageflow_video_files

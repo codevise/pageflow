@@ -1,4 +1,4 @@
-class CreateWidgets < ActiveRecord::Migration
+class CreateWidgets < ActiveRecord::Migration[4.2]
   def change
     create_table :pageflow_widgets do |t|
       t.belongs_to :subject, polymorphic: true

@@ -1,4 +1,4 @@
-class FixHlsOutputPresencesForLegacyVideoFiles < ActiveRecord::Migration
+class FixHlsOutputPresencesForLegacyVideoFiles < ActiveRecord::Migration[4.2]
   def up
     execute(<<-SQL)
       UPDATE pageflow_video_files

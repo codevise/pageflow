@@ -1,4 +1,4 @@
-class CreateTestRevisionComponent < ActiveRecord::Migration
+class CreateTestRevisionComponent < ActiveRecord::Migration[4.2]
   def change
     create_table :test_revision_components do |t|
       t.belongs_to :revision

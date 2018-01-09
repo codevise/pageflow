@@ -1,4 +1,4 @@
-class AddThemeNameToRevisions < ActiveRecord::Migration
+class AddThemeNameToRevisions < ActiveRecord::Migration[4.2]
   def change
     add_column :pageflow_revisions, :theme_name, :string, null: false, default: 'default'
 

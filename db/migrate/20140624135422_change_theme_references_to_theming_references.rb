@@ -1,4 +1,4 @@
-class ChangeThemeReferencesToThemingReferences < ActiveRecord::Migration
+class ChangeThemeReferencesToThemingReferences < ActiveRecord::Migration[4.2]
   def up
     add_reference :pageflow_accounts, :default_theming, :index => true
     add_reference :pageflow_entries, :theming, :index => true

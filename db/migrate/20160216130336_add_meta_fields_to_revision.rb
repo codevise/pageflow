@@ -1,4 +1,4 @@
-class AddMetaFieldsToRevision < ActiveRecord::Migration
+class AddMetaFieldsToRevision < ActiveRecord::Migration[4.2]
   def change
     add_column :pageflow_revisions, :author, :string
     add_column :pageflow_revisions, :publisher, :string

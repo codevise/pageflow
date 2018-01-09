@@ -1,4 +1,4 @@
-class AddParentFileToVideoFiles < ActiveRecord::Migration
+class AddParentFileToVideoFiles < ActiveRecord::Migration[4.2]
   def change
     add_column :pageflow_video_files, :parent_file_id, :integer
     add_column :pageflow_video_files, :parent_file_model_type, :string

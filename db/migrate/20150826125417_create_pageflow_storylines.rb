@@ -1,4 +1,4 @@
-class CreatePageflowStorylines < ActiveRecord::Migration
+class CreatePageflowStorylines < ActiveRecord::Migration[4.2]
   def change
     create_table :pageflow_storylines do |t|
       t.integer :perma_id

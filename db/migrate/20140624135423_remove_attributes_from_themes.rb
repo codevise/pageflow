@@ -1,4 +1,4 @@
-class RemoveAttributesFromThemes < ActiveRecord::Migration
+class RemoveAttributesFromThemes < ActiveRecord::Migration[4.2]
   def change
     remove_column :pageflow_themes, :copyright_link_url, :string
     remove_column :pageflow_themes, :copyright_link_label, :string
