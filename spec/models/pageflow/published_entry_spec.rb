@@ -96,7 +96,7 @@ module Pageflow
         published_entry = PublishedEntry.new(entry)
 
         expect {
-          entry.touch
+          Timecop.freeze(1.minute.from_now) { entry.touch }
         }.to change { published_entry.cache_key }
       end
 
@@ -106,7 +106,7 @@ module Pageflow
         published_entry = PublishedEntry.new(entry)
 
         expect {
-          revision.touch
+          Timecop.freeze(1.minute.from_now) { revision.touch }
         }.to change { published_entry.cache_key }
       end
 
@@ -116,7 +116,7 @@ module Pageflow
         published_entry = PublishedEntry.new(entry)
 
         expect {
-          entry.theming.touch
+          Timecop.freeze(1.minute.from_now) { entry.theming.touch }
         }.to change { published_entry.cache_key }
       end
     end
