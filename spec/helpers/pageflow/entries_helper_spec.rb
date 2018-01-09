@@ -1,10 +1,11 @@
 require 'spec_helper'
 
-# TODO
-ActionView::TestCase::TestController.send(:include, Pageflow::Engine.routes.url_helpers)
-
 module Pageflow
   describe EntriesHelper do
+    before(:each) do
+      helper.extend(Pageflow::Engine.routes.url_helpers)
+    end
+
     describe '#pretty_entry_title' do
       it 'equals the entry title by default' do
         entry = PublishedEntry.new(build(:entry, title: 'test'), build(:revision))
