@@ -262,7 +262,7 @@ module Pageflow
         acquire_edit_lock(user, entry)
         delete(:destroy, id: chapter.id, format: 'json')
 
-        expect(entry.draft(true)).to have(0).chapters
+        expect(entry.reload_draft).to have(0).chapters
       end
 
       it 'requires the signed in user to be editor of the parent entry' do

@@ -24,7 +24,7 @@ describe Admin::RevisionsController do
       sign_in(user, scope: :user)
       post(:restore, id: earlier_revision.id)
 
-      expect(entry.draft(true).title).to eq('the way it used to be')
+      expect(entry.reload_draft.title).to eq('the way it used to be')
     end
 
     it 'allows admin to restore revisions for other accounts' do
@@ -34,7 +34,7 @@ describe Admin::RevisionsController do
       sign_in(create(:user, :admin), scope: :user)
       post(:restore, id: earlier_revision.id)
 
-      expect(entry.draft(true).title).to eq('the way it used to be')
+      expect(entry.reload_draft.title).to eq('the way it used to be')
     end
 
     it 'allows editor to restore revisions for their entries' do
@@ -45,7 +45,7 @@ describe Admin::RevisionsController do
       sign_in(user, scope: :user)
       post(:restore, id: earlier_revision.id)
 
-      expect(entry.draft(true).title).to eq('the way it used to be')
+      expect(entry.reload_draft.title).to eq('the way it used to be')
     end
 
     it 'does not allow user to restore revisions for entries they are not editor of' do
