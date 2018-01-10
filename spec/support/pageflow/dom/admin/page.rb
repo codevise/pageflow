@@ -23,13 +23,13 @@ module Pageflow
         def self.sign_in_as(role, options = {})
           email = "#{role}@example.com"
           password = '!Pass123'
-          user = FactoryGirl.create(:user, options.reverse_merge(email: email, password: password))
+          user = FactoryBot.create(:user, options.reverse_merge(email: email, password: password))
 
           if role.to_sym == :admin
             user.admin = true
             user.save
           else
-            FactoryGirl.create(:membership, user: user, role: role, entity: options[:on])
+            FactoryBot.create(:membership, user: user, role: role, entity: options[:on])
           end
 
           visit '/admin/login'

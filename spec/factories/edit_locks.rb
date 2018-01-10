@@ -1,7 +1,5 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
-
 module Pageflow
-  FactoryGirl.define do
+  FactoryBot.define do
     factory :edit_lock, :class => EditLock do
       user nil
       entry { build(:entry) }

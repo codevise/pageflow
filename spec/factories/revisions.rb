@@ -1,5 +1,5 @@
 module Pageflow
-  FactoryGirl.define do
+  FactoryBot.define do
     factory :revision, :class => Revision do
       entry
 

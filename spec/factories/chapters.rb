@@ -1,7 +1,5 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
-
 module Pageflow
-  FactoryGirl.define do
+  FactoryBot.define do
     factory :chapter, :class => Chapter do
       storyline
 

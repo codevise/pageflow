@@ -1,5 +1,5 @@
 module Pageflow
-  FactoryGirl.define do
+  FactoryBot.define do
     factory :invited_user, class: InvitedUser do
       email
       first_name 'Edison'
