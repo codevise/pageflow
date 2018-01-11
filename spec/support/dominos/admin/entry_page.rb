@@ -11,13 +11,6 @@ module Dom
         node.has_selector?('[data-published=true]')
       end
 
-      def add_entry_link
-        within(node) do
-          find_link(I18n.t('active_admin.new_model',
-                           model: I18n.t('activerecord.models.entry.one')))
-        end
-      end
-
       def edit_entry_link
         within(node) do
           find_link(I18n.t('active_admin.edit_model',
