@@ -10,7 +10,7 @@
 //= require jquery.placeholder
 
 //= require iscroll
-//= require howler
+//= require howler.core
 
 //= require react
 //= require backbone-rails

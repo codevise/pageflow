@@ -2,6 +2,7 @@
 
 //= require_self
 
+//= require ./audio_player/proxy_player
 //= require ./audio_player/media_events
 //= require ./audio_player/null
 //= require ./audio_player/seek_with_invalid_state_handling
@@ -26,29 +27,7 @@
 pageflow.AudioPlayer = function(sources, options) {
   options = options || {};
 
-  var codecMapping = ['audio/mpeg', 'audio/ogg', 'audio/mp4'];
-
-  var loaded = new $.Deferred();
-
-  var source = _.find(sources || [], function(source) {
-    return _.contains(codecMapping, source.type);
-  });
-
-  var audio = new Howl({
-    format: ['ogg', 'mp3', 'mp4'],
-    src: (source ? source.src : ''),
-    loop: options.loop
-  });
-
-  audio.loadedPromise = loaded.promise();
-
-  audio.on('load', function() {
-    loaded.resolve();
-
-    this.currentSrc = this._src;
-    this.position = 0;
-    //this.trigger('timeupdate', this.pos(), this.duration());
-  });
+  var audio = pageflow.AudioPlayer.proxyPlayer(sources, options);
 
   if (options.mediaEvents) {
     pageflow.AudioPlayer.mediaEvents(audio, options.context);
@@ -65,24 +44,6 @@ pageflow.AudioPlayer = function(sources, options) {
   pageflow.AudioPlayer.seekWithInvalidStateHandling(audio);
   pageflow.AudioPlayer.rewindMethod(audio);
   pageflow.AudioPlayer.getMediaElementMethod(audio);
-
-  var originalSeek = audio.seek;
-  audio.seek = function() {
-    if (this.currentSrc) {
-      return originalSeek.apply(this, arguments);
-    }
-  };
-
-  var originalPlay = audio.play;
-  audio.play = function() {
-    if (this.currentSrc) {
-      originalPlay.apply(this, arguments);
-    }
-  };
-
-  audio.paused = function() {
-    return !audio.playing;
-  };
 
   return audio;
 };
