@@ -9,16 +9,6 @@ module Dom
         node.find('a.edit_chapter')
       end
 
-      def page_list
-        node.find('ul.pages')
-      end
-
-      def page_items
-        within(node) do
-          Dom::Editor::PageItem.all
-        end
-      end
-
       def has_page_item?
         node.has_selector?('ul.pages > li:not(.creating)')
       end

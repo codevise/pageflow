@@ -11,10 +11,6 @@ RSpec::Matchers.define :have_output do
     output_matchers[:format] = format
   end
 
-  chain :with_stream do |stream_attributes|
-    output_matchers[:streams] = array_including(hash_including(stream_attributes))
-  end
-
   chain :with_all_streams_having do |stream_attributes|
     output_matchers[:streams] = all(include(stream_attributes))
   end

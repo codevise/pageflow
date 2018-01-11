@@ -5,19 +5,12 @@ module Dom
 
       attribute :created_at, 'td.col-frozen_at'
       attribute :creator, 'td.col-creator'
-      attribute :published_at, 'td.col-frozen_at' do |text|
-        Date.parse(text) rescue :invalid_date
-      end
 
       attribute :published_until, 'td.col-published_until' do |text|
         Date.parse(text) rescue :invalid_date
       end
 
       attribute(:published?, 'td.col-frozen_at', &:present?)
-
-      def edit_link
-        node.find('a.edit')
-      end
 
       def show_link
         node.find('a.show')
