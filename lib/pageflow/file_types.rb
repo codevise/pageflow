@@ -31,6 +31,12 @@ module Pageflow
       end
     end
 
+    def with_css_background_image_support
+      select do |file_type|
+        file_type.css_background_image_urls.present?
+      end
+    end
+
     private
 
     def search_for_nested_file_types(higher_level_file_types)

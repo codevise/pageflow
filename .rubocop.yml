@@ -29,6 +29,10 @@ Style/FrozenStringLiteralComment:
 Style/LambdaCall:
   Enabled: false
 
+  # Do not use %i for symbol arrays
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
 # In specs methods using RSpec DSL often become complex
 Metrics/AbcSize:
   Exclude:

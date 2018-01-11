@@ -42,6 +42,20 @@ module Pageflow
         expect(html).to have_selector('div.video_poster_6')
       end
 
+      it 'supports custom file types' do
+        pageflow_configure do |config|
+          TestFileType.register(config,
+                                collection_name: 'test_hosted_files',
+                                css_background_image_urls: lambda do |file|
+                                  {default: file.attachment.url}
+                                end)
+        end
+        configuration = {'file_id' => 6}
+        html = helper.background_image_div(configuration, 'file', file_type: 'test_hosted_file')
+
+        expect(html).to have_selector('div.pageflow_test_hosted_file_6')
+      end
+
       it 'sets inline style for background position' do
         configuration = {'background_image_x' => 45, 'background_image_y' => 35}
         html = helper.background_image_div(configuration, 'background_image')

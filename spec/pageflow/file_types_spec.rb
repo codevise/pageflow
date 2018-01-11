@@ -106,5 +106,26 @@ module Pageflow
         expect(result).not_to include(file_type)
       end
     end
+
+    describe '#with_css_background_image_support' do
+      it 'includes file types with css_background_image_urls attribute set' do
+        file_type = FileType.new(model: ImageFile,
+                                 css_background_image_urls: -> {})
+        file_types = FileTypes.new([page_type_class.new(file_types: [file_type])])
+
+        result = file_types.with_css_background_image_support
+
+        expect(result).to include(file_type)
+      end
+
+      it 'does not include file types without css_background_image_urls attribute set' do
+        file_type = FileType.new(model: ImageFile)
+        file_types = FileTypes.new([page_type_class.new(file_types: [file_type])])
+
+        result = file_types.with_css_background_image_support
+
+        expect(result).not_to include(file_type)
+      end
+    end
   end
 end

@@ -22,11 +22,6 @@ module Pageflow
     end
 
     class Div
-      FILE_TYPE_CSS_CLASS_PREFIXES = {
-        'image_file' => 'image',
-        'video_file' => 'video_poster',
-      }
-
       attr_reader :configuration, :property_base_name, :options
 
       delegate :content_tag, :to => :@template
@@ -67,12 +62,17 @@ module Pageflow
       end
 
       def image_css_class_prefix
-        FILE_TYPE_CSS_CLASS_PREFIXES.fetch(options.fetch(:file_type, 'image_file'))
+        file_type.css_background_image_class_prefix
       end
 
       def background_position(coord)
         property_name = "#{property_base_name}_#{coord}"
         configuration.key?(property_name) ? "#{configuration[property_name]}%" : "50%"
+      end
+
+      def file_type
+        collection_name = options.fetch(:file_type, 'image_file').pluralize
+        Pageflow.config.file_types.find_by_collection_name!(collection_name)
       end
     end
 
@@ -110,10 +110,6 @@ module Pageflow
 
       def find_file
         file_type.model.find_by_id(file_id)
-      end
-
-      def file_type
-        Pageflow.config.file_types.find_by_collection_name!(options.fetch(:file_type, 'image_file').pluralize)
       end
     end
   end

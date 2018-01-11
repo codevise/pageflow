@@ -62,6 +62,14 @@ module Pageflow
                           file_type: file_type
                         })
         end
+
+        it 'provides css_background_image_urls that returns hash if present' do
+          if file_type.css_background_image_urls
+            result = file_type.css_background_image_urls.call(file)
+
+            expect(result).to be_a(Hash)
+          end
+        end
       end
     end
   end
