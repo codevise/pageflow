@@ -4,6 +4,8 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
     duration: 0
   };
 
+  var _playing = false;
+
   var emitter = _.extend({}, Backbone.Events);
 
   proxy.on = emitter.on.bind(emitter);
@@ -20,17 +22,46 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
     loop: options.loop,
 
     src: sources.map(function(source){ return source.src; }),
-    //src: 'https://howlerjs.com/assets/howler.js/examples/player/audio/running_out.webm',
 
     onload: function() {
       proxy.duration = this.duration();
       loaded.resolve();
       emitter.trigger('timeupdate', this.seek(), this.duration());
+    },
+    onplay: function() {
+      if (!_playing) {
+        _playing = true;
+        emitter.trigger('play');
+        startInterval();
+      }
+    },
+    onpause: function() {
+      if (_playing) {
+        _playing = false;
+        stopInterval();
+        emitter.trigger('pause');
+      }
+    },
+    onend: function() {
+      if (!this.playing()) {
+        _playing = false;
+        proxy.position = 0;
+        stopInterval();
+      }
+
+      emitter.trigger('ended');
+    },
+    ontimeupdate: function() {
+      if (_playing && this.state() === 'loaded') {
+        proxy.position = this.seek();
+        emitter.trigger('timeupdate', this.seek(), this.duration());
+      }
     }
   });
 
 
-  var methods = ['load', 'play', 'pause', 'playing', 'stop', 'mute', 'volume', 'rate', 'seek', 'fade'];
+  var methods = ['load', 'play', 'pause', 'stop', 'mute', 'volume',
+    'rate', 'seek', 'fade'];
   _.each(methods, function(method) {
     proxy[method] = player[method].bind(player);
   });
@@ -43,7 +74,10 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
     return player.seek();
   };
   proxy.paused = function() {
-    return !player.playing();
+    return !_playing;
+  };
+  proxy.playing = function() {
+    return _playing;
   };
 
   /**
@@ -68,37 +102,18 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
 
   var timeupdateInterval;
   function startInterval() {
-    timeupdateInterval = setInterval(function() {
-      player._emit('timeupdate');
-    }, 1000);
+    if (player._html5 && !timeupdateInterval) {
+      timeupdateInterval = setInterval(function() {
+        player._emit('timeupdate');
+      }, 1000);
+    }
   }
   function stopInterval() {
-    clearInterval(timeupdateInterval);
-    timeupdateInterval = null;
-  }
-
-  player.on('timeupdate', function() {
-    if (this.state() === 'loaded') {
-      proxy.position = this.seek();
-      emitter.trigger('timeupdate', this.seek(), this.duration());
+    if (player._html5 && timeupdateInterval) {
+      clearInterval(timeupdateInterval);
+      timeupdateInterval = null;
     }
-  });
-
-  player.on('play', function() {
-    this._html5 && startInterval();
-    emitter.trigger('play');
-  });
-
-  player.on('pause', function() {
-    this._html5 && stopInterval();
-    emitter.trigger('pause');
-  });
-
-  player.on('end', function() {
-    this._html5 && stopInterval();
-    proxy.position = 0,
-    emitter.trigger('ended');
-  });
+  }
 
   return proxy;
 };
