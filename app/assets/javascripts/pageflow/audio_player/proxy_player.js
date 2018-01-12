@@ -1,7 +1,8 @@
 pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
   var proxy = {
     position: 0,
-    duration: 0
+    duration: 0,
+    _usesHowler: true
   };
 
   var _playing = false;
