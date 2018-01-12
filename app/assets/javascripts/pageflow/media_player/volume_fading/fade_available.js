@@ -1,4 +1,4 @@
-pageflow.mediaPlayer.volumeFading.howlerFading = function(player) {
+pageflow.mediaPlayer.volumeFading.fadeAvailable = function(player) {
   player.fadeVolume = function(value, duration) {
     var currentValue = this.volume();
 
