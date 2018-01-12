@@ -1,8 +1,7 @@
 pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
   var proxy = {
     position: 0,
-    duration: 0,
-    _usesHowler: true
+    duration: 0
   };
 
   var _playing = false;
@@ -19,7 +18,7 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
   proxy.loadedPromise = loaded.promise();
 
   var player = new Howl({
-    html5: true,
+    //html5: true,
     loop: options.loop,
 
     src: sources.map(function(source){ return source.src; }),
@@ -27,7 +26,7 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
     onload: function() {
       proxy.duration = this.duration();
       loaded.resolve();
-      emitter.trigger('timeupdate', this.seek(), this.duration());
+      emitter.trigger('timeupdate', 0, proxy.duration);
     },
     onplay: function() {
       if (!_playing) {
@@ -55,7 +54,7 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
     ontimeupdate: function() {
       if (_playing && this.state() === 'loaded') {
         proxy.position = this.seek();
-        emitter.trigger('timeupdate', this.seek(), this.duration());
+        emitter.trigger('timeupdate', proxy.position, proxy.duration);
       }
     }
   });
@@ -103,14 +102,21 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
 
   var timeupdateInterval;
   function startInterval() {
-    if (player._html5 && !timeupdateInterval) {
-      timeupdateInterval = setInterval(function() {
-        player._emit('timeupdate');
-      }, 1000);
+    if (!timeupdateInterval) {
+      if (player._html5) {
+        timeupdateInterval = setInterval(function() {
+          player._emit('timeupdate');
+        }, 250);
+      } else {
+        timeupdateInterval = setInterval(function() {
+          proxy.position = player.seek();
+          emitter.trigger('timeupdate', proxy.position, proxy.duration);
+        }, 250);
+      }
     }
   }
   function stopInterval() {
-    if (player._html5 && timeupdateInterval) {
+    if (timeupdateInterval) {
       clearInterval(timeupdateInterval);
       timeupdateInterval = null;
     }
