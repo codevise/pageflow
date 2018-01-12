@@ -5,7 +5,7 @@
     initialize: function(slideshow, events, multiPlayer) {
       this.slideshow = slideshow;
       this.multiPlayer = multiPlayer;
-      this.disabled = pageflow.browser.has('mobile platform');
+      this.disabled = false;
 
       this.listenTo(events, 'page:change page:update', function() {
         this.update();
@@ -96,7 +96,7 @@
         crossFade: true,
         playFromBeginning: false,
         rewindOnChange: true,
-        pauseInBackground: true
+        pauseInBackground: false
       })
     );
   };
