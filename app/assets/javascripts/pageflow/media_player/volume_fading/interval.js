@@ -39,7 +39,7 @@ pageflow.mediaPlayer.volumeFading.interval = function(player) {
     });
   };
 
-  player.once('dispose', cancelFadeVolume);
+  player.one('dispose', cancelFadeVolume);
 
   function volume(/* arguments */) {
     return originalVolume.apply(player, arguments);
