@@ -31,7 +31,7 @@ pageflow.AudioPlayer.seekWithInvalidStateHandling = function(player) {
           deferred.resolve();
         }
         catch(e) {
-          player.once('progress', tryOrWaitForProgress);
+          player.one('progress', tryOrWaitForProgress);
         }
       }
 
