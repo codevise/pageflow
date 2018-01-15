@@ -18,9 +18,7 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
   proxy.loadedPromise = loaded.promise();
 
   var player = new Howl({
-    //html5: true,
     loop: options.loop,
-
     src: sources.map(function(source){ return source.src; }),
 
     onload: function() {
@@ -98,6 +96,15 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
     }
     return result;
   };
+
+  proxy.fadeVolume = function(newVolume, duration) {
+    var currentVolume = this.volume();
+
+    this.fade(currentVolume, newVolume, duration);
+
+    return new $.Deferred().resolve().promise();
+  };
+
 
 
   var timeupdateInterval;
