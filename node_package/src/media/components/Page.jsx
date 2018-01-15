@@ -33,7 +33,7 @@ export function MediaPage(props) {
 
   return (
     <PageWrapper className={pageWraperClassName(props.className,
-                                                willAutoplay(props),
+                                                props.page.autoplay,
                                                 props.textTracks,
                                                 playerState)}>
       <PageBackground pageHasPlayerControls={true}>
@@ -70,14 +70,8 @@ export default connect(combineSelectors({
   textTracks: textTracks({
     file: prop('file'),
     defaultTextTrackFileId: prop('page.defaultTextTrackFileId')
-  }),
-  hasAutoplaySupport: has('autoplay support')
+  })
 }))(MediaPage);
-
-function willAutoplay(props) {
-  return props.page.autoplay !== false &&
-         props.hasAutoplaySupport;
-}
 
 function pageWraperClassName(className, autoplay, textTracks, playerState) {
   return classNames(className, {
