@@ -8,6 +8,10 @@ pageflow.VideoPlayer.useHowlerForAudioOutput = function(player) {
     })
   });
 
+  player.volume = playerAudio.volume.bind(playerAudio);
+
+  player.muted = playerAudio.mute.bind(playerAudio);
+
   var originalPlay = player.play;
   player.play = function() {
     // Maintains video and audio sync when starting playback
