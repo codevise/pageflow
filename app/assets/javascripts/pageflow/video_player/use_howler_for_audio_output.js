@@ -1,5 +1,5 @@
 pageflow.VideoPlayer.useHowlerForAudioOutput = function(player) {
-  player.volume(0);
+  var fadeDeferred = $.Deferred();
 
   var playerAudio = new Howl({
     loop: player.options_.loop,
@@ -11,10 +11,8 @@ pageflow.VideoPlayer.useHowlerForAudioOutput = function(player) {
   var originalPlay = player.play;
   player.play = function() {
     // Maintains video and audio sync when starting playback
-    if (!playerAudio.playing()) {
-      var videoCurrentTime = this.currentTime();
-      playerAudio.seek(videoCurrentTime);
-    }
+    var videoCurrentTime = this.currentTime();
+    playerAudio.seek(videoCurrentTime);
 
     playerAudio.play();
     return originalPlay.apply(this, arguments);
@@ -28,9 +26,11 @@ pageflow.VideoPlayer.useHowlerForAudioOutput = function(player) {
 
   player.fadeVolume = function(newVolume, duration) {
     var currentVolume = playerAudio.volume();
-
     playerAudio.fade(currentVolume, newVolume, duration);
-
-    return new $.Deferred().resolve().promise();
+    return new fadeDeferred.promise();
   };
+
+  playerAudio.on('fade', function() {
+    fadeDeferred.resolve();
+  });
 };
