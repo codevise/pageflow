@@ -86,7 +86,7 @@
         crossFade: true,
         playFromBeginning: false,
         rewindOnChange: true,
-        pauseInBackground: false
+        pauseInBackground: true
       })
     );
   };
