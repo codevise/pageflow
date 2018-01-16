@@ -71,6 +71,22 @@ describe Admin::EntriesController do
     end
   end
 
+  describe '#eligible_themings_options' do
+    it 'can be filtered by account name' do
+      current_user = create(:user, :admin)
+      account = create(:account, name: 'one')
+      create(:account, name: 'two')
+      entry = create(:entry, account: account)
+
+      sign_in(current_user)
+      get(:eligible_themings_options, entry_id: entry.id, term: 'one')
+      option_texts = json_response(path: ['results', '*', 'text'])
+
+      expect(option_texts).to include('one')
+      expect(option_texts).not_to include('two')
+    end
+  end
+
   describe '#show' do
     describe 'built in admin tabs' do
       it 'entry editor sees members and revisions tabs' do
