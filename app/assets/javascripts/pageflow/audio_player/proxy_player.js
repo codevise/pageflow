@@ -4,7 +4,7 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
     duration: 0
   };
 
-  var _playing = false;
+  var playing = false;
 
   var emitter = _.extend({}, Backbone.Events);
 
@@ -27,22 +27,22 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
       emitter.trigger('timeupdate', 0, proxy.duration);
     },
     onplay: function() {
-      if (!_playing) {
-        _playing = true;
+      if (!playing) {
+        playing = true;
         emitter.trigger('play');
         startInterval();
       }
     },
     onpause: function() {
-      if (_playing) {
-        _playing = false;
+      if (playing) {
+        playing = false;
         stopInterval();
         emitter.trigger('pause');
       }
     },
     onend: function() {
       if (!this.playing()) {
-        _playing = false;
+        playing = false;
         proxy.position = 0;
         stopInterval();
       }
@@ -50,7 +50,7 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
       emitter.trigger('ended');
     },
     ontimeupdate: function() {
-      if (_playing && this.state() === 'loaded') {
+      if (playing && this.state() === 'loaded') {
         proxy.position = this.seek();
         emitter.trigger('timeupdate', proxy.position, proxy.duration);
       }
@@ -72,10 +72,10 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
     return player.seek();
   };
   proxy.paused = function() {
-    return !_playing;
+    return !playing;
   };
   proxy.playing = function() {
-    return _playing;
+    return playing;
   };
 
   /**
@@ -109,21 +109,15 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
 
   var timeupdateInterval;
   function startInterval() {
-    if (!timeupdateInterval) {
-      if (player._html5) {
-        timeupdateInterval = setInterval(function() {
-          player._emit('timeupdate');
-        }, 250);
-      } else {
-        timeupdateInterval = setInterval(function() {
-          proxy.position = player.seek();
-          emitter.trigger('timeupdate', proxy.position, proxy.duration);
-        }, 250);
-      }
+    if (player._webAudio && !timeupdateInterval) {
+      timeupdateInterval = setInterval(function() {
+        proxy.position = player.seek();
+        emitter.trigger('timeupdate', proxy.position, proxy.duration);
+      }, 250);
     }
   }
   function stopInterval() {
-    if (timeupdateInterval) {
+    if (player._webAudio && timeupdateInterval) {
       clearInterval(timeupdateInterval);
       timeupdateInterval = null;
     }
