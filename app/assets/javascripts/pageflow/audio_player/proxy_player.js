@@ -5,6 +5,7 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
   };
 
   var playing = false;
+  var fadeDeferred = $.Deferred();
 
   var emitter = _.extend({}, Backbone.Events);
 
@@ -40,13 +41,15 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
         emitter.trigger('pause');
       }
     },
+    onfade: function() {
+      fadeDeferred.resolve();
+    },
     onend: function() {
       if (!this.playing()) {
         playing = false;
         proxy.position = 0;
         stopInterval();
       }
-
       emitter.trigger('ended');
     },
     ontimeupdate: function() {
@@ -99,12 +102,9 @@ pageflow.AudioPlayer.proxyPlayer = function(sources, options) {
 
   proxy.fadeVolume = function(newVolume, duration) {
     var currentVolume = this.volume();
-
     this.fade(currentVolume, newVolume, duration);
-
-    return new $.Deferred().resolve().promise();
+    return fadeDeferred.promise();
   };
-
 
 
   var timeupdateInterval;
