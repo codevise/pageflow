@@ -33,7 +33,7 @@ export function MediaPage(props) {
 
   return (
     <PageWrapper className={pageWraperClassName(props.className,
-                                                props.page.autoplay,
+                                                (props.page.autoplay !== false),
                                                 props.textTracks,
                                                 playerState)}>
       <PageBackground pageHasPlayerControls={true}>
