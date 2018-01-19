@@ -1,5 +1,10 @@
 %anchor {
   @include fa-caret-right-icon;
+
+  [dir=rtl] & {
+    @include fa-caret-left-icon;
+  }
+
   text-decoration: none;
   pointer-events: all;
   position: relative;

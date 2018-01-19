@@ -20,27 +20,15 @@
 
   .shadow {
     @include transition(opacity 0.2s linear, visibility 0.2s linear);
-    @include shadow(#000);
     pointer-events: none;
   }
 
   &.invert {
     color: #000;
     background-color: #fff;
-
-    .shadow {
-      @include shadow(#fff);
-    }
-  }
-
-  &.text_position_right .shadow {
-    @include shadow-right(#000);
   }
 
   &.invert.text_position_right  {
-    color: #000;
-    background-color: #fff;
-
     .shadow {
       @include shadow-right(#fff);
     }

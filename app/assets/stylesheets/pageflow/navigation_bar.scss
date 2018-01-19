@@ -185,8 +185,9 @@
     min-width: 230px;
     min-height: 4px;
 
-    a.legal, a.copy {
-      float: left;
+    a.legal,
+    a.copy {
+      @include float-start;
     }
   }
 

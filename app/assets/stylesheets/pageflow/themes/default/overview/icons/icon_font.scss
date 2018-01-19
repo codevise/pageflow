@@ -36,15 +36,31 @@
     }
 
     &.left {
-      @include fa-angle-left-icon;
+      @include dir-ltr {
+        @include fa-angle-left-icon;
 
-      &:before {
-        margin-left: -2px;
+        &:before {
+          margin-left: -2px;
+        }
+      }
+
+      @include dir-rtl {
+        @include fa-angle-right-icon;
       }
     }
 
     &.right {
-      @include fa-angle-right-icon;
+      @include dir-ltr {
+        @include fa-angle-right-icon;
+      }
+
+      @include dir-rtl {
+        @include fa-angle-left-icon;
+
+        &:before {
+          margin-left: -2px;
+        }
+      }
     }
   }
 }
