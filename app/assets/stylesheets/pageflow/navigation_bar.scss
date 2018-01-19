@@ -135,6 +135,7 @@
   .navigation_thumbnails a {
     position: relative;
     outline: none;
+    direction: ltr;
 
     &:focus:before {
       content: " ";
@@ -173,6 +174,10 @@
     p {
       margin: 0 0 0.5em;
     }
+  }
+
+  .navigation_volume_box {
+    direction: ltr;
   }
 
   .navigation_share_box {

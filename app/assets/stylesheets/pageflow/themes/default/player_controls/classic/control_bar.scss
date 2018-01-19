@@ -48,6 +48,7 @@ $classic-player-controls-timestamp-position: "left" !default;
 
 %player_controls {
   &-control_bar {
+    direction: ltr;
     position: absolute;
     left: 50%;
     bottom: 100%;
