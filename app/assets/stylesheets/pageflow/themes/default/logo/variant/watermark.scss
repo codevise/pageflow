@@ -12,6 +12,9 @@ $logo-watermark-variant-fade-in-near-top: "first-page" !default;
 /// is displayed while the header is active.
 $logo-watermark-variant-fade-in-with-header: false !default;
 
+/// Set opacity value of watermark logos
+$logo-watermark-variant-opacity: 0.3 !default;
+
 @mixin logo-variant-watermark(
   $top,
   $width,
@@ -30,7 +33,7 @@ $logo-watermark-variant-fade-in-with-header: false !default;
     z-index: 1;
 
     pointer-events: none;
-    opacity: 0.3;
+    opacity: $logo-watermark-variant-opacity;
     @include transition(opacity 500ms);
 
     @include phone {

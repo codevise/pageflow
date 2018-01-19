@@ -63,12 +63,6 @@ module Dom
         end
       end
 
-      def delete_membership_link
-        within(node) do
-          find('[data-rel=delete_membership]')
-        end
-      end
-
       def add_account_membership_link
         within(node) do
           find('[data-rel=add_account_membership]')

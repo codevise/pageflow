@@ -33,7 +33,6 @@ pageflow.app.addInitializer(function(options) {
 
   pageflow.pages.sort();
 
-  // TODO
   pageflow.storylines.on('sort', _.debounce(function() {
     pageflow.storylines.saveOrder();
   }, 100));

@@ -93,10 +93,12 @@ module Pageflow
                               text_attribute: :name,
                               scope: lambda do |params|
                                 entry = Entry.find(params[:entry_id])
-
                                 ThemingPolicy::Scope
                                   .new(current_user, Theming)
                                   .themings_allowed_for(entry.account)
+                              end,
+                              filter: lambda do |term, scope|
+                                scope.ransack(account_name_cont: term).result
                               end)
 
     form do |f|

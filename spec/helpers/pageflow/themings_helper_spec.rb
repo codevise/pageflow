@@ -1,10 +1,11 @@
 require 'spec_helper'
 
-# TODO
-ActionView::TestCase::TestController.send(:include, Pageflow::Engine.routes.url_helpers)
-
 module Pageflow
   describe ThemingsHelper do
+    before(:each) do
+      helper.extend(Pageflow::Engine.routes.url_helpers)
+    end
+
     describe '#pretty_theming_url' do
       it 'uses default host' do
         theming = create(:theming, cname: '')
