@@ -1,4 +1,5 @@
 <% @page_title = pretty_entry_title(@entry) %>
+<% @page_text_direction = text_direction(@entry.locale) %>
 
 <% content_for(:head) do %>
   <%= cache [@entry, :head, @entry.share_target] do %>

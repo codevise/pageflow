@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%= content_tag(:html, lang: I18n.locale) do %>
+<%= content_tag(:html, lang: I18n.locale, dir: @page_text_direction) do %>
 <head>
   <title><%= @page_title.presence || 'Pageflow' %></title>
 

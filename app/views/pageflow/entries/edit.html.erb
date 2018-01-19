@@ -9,7 +9,7 @@
 <% end %>
 
 <main class="ui-layout-center">
-  <div id="entry_preview"></div>
+  <%= content_tag(:div, '', id: 'entry_preview', dir: text_direction(@entry.locale)) %>
   <div id="main_content"></div>
   <div id="editor_indicators"></div>
 </main>
