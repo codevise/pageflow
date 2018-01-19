@@ -31,7 +31,14 @@ $logo-background-image-variant-first-page-opacity: null !default;
       background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.png");
       background-repeat: no-repeat;
       background-size: contain;
-      background-position: #{$logo-alignment} top;
+
+      @include dir-ltr {
+        background-position: #{$logo-alignment} top;
+      }
+
+      @include dir-rtl {
+        background-position: #{if($logo-alignment == "left", "right", "left")} top;
+      }
 
       @include mobile {
         background-position: left top;

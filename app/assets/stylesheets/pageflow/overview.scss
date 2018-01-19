@@ -55,8 +55,8 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 8%;
-    right: 120px;
+    @include position-start(8%);
+    @include position-end(4%);
     height: 555px;
     overflow: hidden;
     z-index: 2;

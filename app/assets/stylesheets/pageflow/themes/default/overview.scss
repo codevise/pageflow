@@ -40,4 +40,8 @@ $overview-icon-font-options: () !default;
     width: 500%;
     @include position-end(0);
   }
+
+  .content {
+    @extend %pageflow_widget_margin_right !optional;
+  }
 }
