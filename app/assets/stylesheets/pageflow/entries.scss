@@ -50,20 +50,16 @@
       @include desktop {
         left: 8%;
       }
-
-      @include phone {
-        right: 15px;
-      }
     }
 
     @include dir-rtl {
       @include desktop {
         right: 8%;
       }
+    }
 
-      @include phone {
-        left: 15px;
-      }
+    @include phone {
+      right: 15px;
     }
 
     &.visible {

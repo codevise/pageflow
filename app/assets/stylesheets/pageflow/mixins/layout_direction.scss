@@ -35,3 +35,8 @@
   @include dir-ltr { float: right; }
   @include dir-rtl { float: left; }
 }
+
+@mixin text-align-end {
+  @include dir-ltr { text-align: right; }
+  @include dir-rtl { text-align: left; }
+}
