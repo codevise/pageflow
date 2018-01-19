@@ -95,12 +95,20 @@ jQuery(function($) {
       });
 
       if (scrollerWidth < wrapper.width()) {
-        var closeButtonLeft = Math.max(400, scrollerWidth - closeButton.width() - 10);
+        var closeButtonPos = Math.max(400, scrollerWidth - closeButton.width() - 10);
 
-        closeButton.css({
-          left: closeButtonLeft + 'px',
-          right: 'auto'
-        });
+        if (isDirLtr(closeButton)) {
+          closeButton.css({
+            left: closeButtonPos + 'px',
+            right: 'auto'
+          });
+        }
+        else {
+          closeButton.css({
+            right: closeButtonPos + 'px',
+            left: 'auto'
+          });
+        }
       }
 
       closeButton.click(toggleContent);
@@ -111,6 +119,11 @@ jQuery(function($) {
           toggleContent();
         }
       });
+
+      function isDirLtr(el) {
+        var styles = window.getComputedStyle(el[0]);
+        return styles.direction == 'ltr';
+      }
     }
   });
 });

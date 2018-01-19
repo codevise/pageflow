@@ -112,7 +112,7 @@ $page-content-text-line-height: 1.5em !default;
   }
 
   .shadow {
-    @include shadow($page-shadow-color);
+    @include shadow-start($page-shadow-color);
   }
 
   &.invert {
@@ -120,8 +120,16 @@ $page-content-text-line-height: 1.5em !default;
     background-color: $page-inverted-background-color;
 
     .shadow {
-      @include shadow($page-shadow-inverted-color);
+      @include shadow-start($page-shadow-inverted-color);
     }
+  }
+
+  &.text_position_right .shadow {
+    @include shadow-end($page-shadow-color);
+  }
+
+  &.invert.text_position_right .shadow {
+    @include shadow-end($page-shadow-inverted-color);
   }
 
   h2 {

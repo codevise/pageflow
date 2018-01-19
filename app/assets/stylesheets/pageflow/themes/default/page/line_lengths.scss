@@ -81,17 +81,13 @@ $page-content-width: 60% !default;
   }
 
   &.text_position_right {
-    .contentText > * {
-      margin-left: auto;
-    }
-
     h1,
     h2 .subtitle,
     h2 .title,
     h2 .tagline,
     h3,
     p {
-      margin-left: auto;
+      @include margin-start(auto);
       max-width: $page-content-position-right-max-width;
       width: 60%;
 

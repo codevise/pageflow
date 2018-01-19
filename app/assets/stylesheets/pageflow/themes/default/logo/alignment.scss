@@ -15,9 +15,9 @@ $logo-right: 14% !default;
 @mixin logo-alignment {
   @include desktop {
     @if $logo-alignment == "left" {
-      left: $logo-left;
+      @include position-start($logo-left);
     } @else {
-      right: $logo-right;
+      @include position-end($logo-right);
     }
   }
 
