@@ -1,6 +1,7 @@
 /*jshint trailing: false*/
 /*! iScroll v5.0.4 ~ (c) 2008-2013 Matteo Spinelli ~ http://cubiq.org/license */
 var IScroll = (function (window, document, Math) {
+
 var rAF = window.requestAnimationFrame	||
 	window.webkitRequestAnimationFrame	||
 	window.mozRequestAnimationFrame		||
@@ -138,21 +139,13 @@ var utils = (function () {
 		e.className = e.className.replace(re, '');
 	};
 
-	me.offset = function (el) {
-		var left = -el.offsetLeft,
-			top = -el.offsetTop;
+	me.isDirLtr = function (el) {
+		var styles = window.getComputedStyle(el);
+		return styles.direction == 'ltr';
+	};
 
-		// jshint -W084
-		while (el = el.offsetParent) {
-			left -= el.offsetLeft;
-			top -= el.offsetTop;
-		}
-		// jshint +W084
-
-		return {
-			left: left,
-			top: top
-		};
+	me.offsetRight = function (e) {
+		return e.offsetParent ? e.offsetParent.offsetWidth - e.offsetLeft - e.offsetWidth : 0;
 	};
 
 	me.extend(me.eventType = {}, {
@@ -257,7 +250,7 @@ function IScroll (el, options) {
 
 		snapThreshold: 0.334,
 
-// INSERT POINT: OPTIONS 
+// INSERT POINT: OPTIONS
 
 		startX: 0,
 		startY: 0,
@@ -312,11 +305,12 @@ function IScroll (el, options) {
 
 // INSERT POINT: NORMALIZATION
 
-	// Some defaults	
+	// Some defaults
 	this.x = 0;
 	this.y = 0;
 	this.directionX = 0;
 	this.directionY = 0;
+	this.dir = utils.isDirLtr(this.wrapper) ? 1 : -1;
 	this._events = {};
 
 // INSERT POINT: DEFAULTS
@@ -430,7 +424,7 @@ IScroll.prototype = {
 		}
 
 		var point		= e.touches ? e.touches[0] : e,
-			deltaX		= this.hasHorizontalScroll ? point.pageX - this.pointX : 0,
+			deltaX		= this.dir * (this.hasHorizontalScroll ? point.pageX - this.pointX : 0),
 			deltaY		= this.hasVerticalScroll   ? point.pageY - this.pointY : 0,
 			timestamp	= utils.getTime(),
 			newX, newY,
@@ -687,7 +681,7 @@ IScroll.prototype = {
 		this.directionX = 0;
 		this.directionY = 0;
 
-		this.wrapperOffset = utils.offset(this.wrapper);
+		this.wrapperOffset = this.offset(this.wrapper);
 
 		this._execEvent('refresh');
 
@@ -756,10 +750,10 @@ IScroll.prototype = {
 			return;
 		}
 
-		var pos = utils.offset(el);
+		var pos = this.offset(el);
 
-		pos.left -= this.wrapperOffset.left;
-		pos.top  -= this.wrapperOffset.top;
+		pos.x -= this.wrapperOffset.x;
+		pos.y  -= this.wrapperOffset.y;
 
 		// if offsetX/Y are true we center the element to the screen
 		if ( offsetX === true ) {
@@ -769,15 +763,15 @@ IScroll.prototype = {
 			offsetY = Math.round(el.offsetHeight / 2 - this.wrapper.offsetHeight / 2);
 		}
 
-		pos.left -= offsetX || 0;
-		pos.top  -= offsetY || 0;
+		pos.x -= offsetX || 0;
+		pos.y  -= offsetY || 0;
 
-		pos.left = pos.left > 0 ? 0 : pos.left < this.maxScrollX ? this.maxScrollX : pos.left;
-		pos.top  = pos.top  > 0 ? 0 : pos.top  < this.maxScrollY ? this.maxScrollY : pos.top;
+		pos.x = pos.x > 0 ? 0 : pos.x < this.maxScrollX ? this.maxScrollX : pos.x;
+		pos.y  = pos.y  > 0 ? 0 : pos.y  < this.maxScrollY ? this.maxScrollY : pos.y;
 
-		time = time === undefined || time === null || time === 'auto' ? Math.max(Math.abs(pos.left)*2, Math.abs(pos.top)*2) : time;
+		time = time === undefined || time === null || time === 'auto' ? Math.max(Math.abs(pos.x)*2, Math.abs(pos.y)*2) : time;
 
-		this.scrollTo(pos.left, pos.top, time, easing);
+		this.scrollTo(pos.x, pos.y, time, easing);
 	},
 
 	_transitionTime: function (time) {
@@ -819,7 +813,7 @@ IScroll.prototype = {
 
 /* REPLACE START: _translate */
 
-			this.scrollerStyle[utils.style.transform] = 'translate(' + x + 'px,' + y + 'px)' + this.translateZ;
+			this.scrollerStyle[utils.style.transform] = 'translate(' + (this.dir * x) + 'px,' + y + 'px)' + this.translateZ;
 
 /* REPLACE END: _translate */
 
@@ -878,13 +872,34 @@ IScroll.prototype = {
 		eventType(this.scroller, 'MSTransitionEnd', this);
 	},
 
+	offsetX: function (el) {
+		return this.dir > 0 ? el.offsetLeft : utils.offsetRight(el);
+	},
+
+	offset: function (el) {
+		var x = -this.offsetX(el),
+		y = -el.offsetTop;
+
+		// jshint -W084
+		while (el = el.offsetParent) {
+			x -= this.offsetX(el);
+			y -= el.offsetTop;
+		}
+		// jshint +W084
+
+		return {
+			x: x,
+			y: y
+		};
+	},
+
 	getComputedPosition: function () {
 		var matrix = window.getComputedStyle(this.scroller, null),
 			x, y;
 
 		if ( this.options.useTransform ) {
 			matrix = matrix[utils.style.transform].split(')')[0].split(', ');
-			x = +(matrix[12] || matrix[4]);
+			x = this.dir * (matrix[12] || matrix[4]);
 			y = +(matrix[13] || matrix[5]);
 		} else {
 			x = +matrix.left.replace(/[^-\d]/g, '');
@@ -1098,7 +1113,7 @@ IScroll.prototype = {
 				n = -1;
 
 				for ( ; i < l; i++ ) {
-					if ( i === 0 || el[i].offsetLeft <= el[i-1].offsetLeft ) {
+					if ( i === 0 || this.offsetX(el[i]) <= this.offsetX(el[i-1]) ) {
 						m = 0;
 						n++;
 					}
@@ -1107,7 +1122,7 @@ IScroll.prototype = {
 						this.pages[m] = [];
 					}
 
-					x = Math.max(-el[i].offsetLeft, this.maxScrollX);
+					x = Math.max(-this.offsetX(el[i]), this.maxScrollX);
 					y = Math.max(-el[i].offsetTop, this.maxScrollY);
 					cx = x - Math.round(el[i].offsetWidth / 2);
 					cy = y - Math.round(el[i].offsetHeight / 2);
@@ -1435,7 +1450,7 @@ IScroll.prototype = {
 			if ( now >= destTime ) {
 				that.isAnimating = false;
 				that._translate(destX, destY);
-				
+
 				if ( !that.resetPosition(that.options.bounceTime) ) {
 					that._execEvent('scrollEnd');
 				}
@@ -1736,7 +1751,7 @@ Indicator.prototype = {
 				this.indicatorWidth = this.indicator.clientWidth;
 			}
 			this.maxPosX = this.wrapperWidth - this.indicatorWidth;
-			this.sizeRatioX = this.options.speedRatioX || (this.scroller.maxScrollX && (this.maxPosX / this.scroller.maxScrollX));	
+			this.sizeRatioX = this.options.speedRatioX || (this.scroller.maxScrollX && (this.maxPosX / this.scroller.maxScrollX));
 		}
 
 		if ( this.options.listenY ) {
@@ -1770,7 +1785,7 @@ Indicator.prototype = {
 				y = 0;
 			} else if ( y > this.maxPosY ) {
 				y = this.maxPosY;
-			}		
+			}
 		}
 
 		this.x = x;
