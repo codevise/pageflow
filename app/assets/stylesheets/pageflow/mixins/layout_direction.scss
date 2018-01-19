@@ -1,0 +1,37 @@
+@mixin dir-ltr {
+  [dir=ltr] & { @content; }
+}
+
+@mixin dir-rtl {
+  [dir=rtl] & { @content; }
+}
+
+@mixin margin-start($value) {
+  @include dir-ltr { margin-left: $value; }
+  @include dir-rtl { margin-right: $value; }
+}
+
+@mixin margin-end($value) {
+  @include dir-ltr { margin-right: $value; }
+  @include dir-rtl { margin-left: $value; }
+}
+
+@mixin position-start($value) {
+  @include dir-ltr { left: $value; }
+  @include dir-rtl { right: $value; }
+}
+
+@mixin position-end($value) {
+  @include dir-ltr { right: $value; }
+  @include dir-rtl { left: $value; }
+}
+
+@mixin float-start {
+  @include dir-ltr { float: left; }
+  @include dir-rtl { float: right; }
+}
+
+@mixin float-end {
+  @include dir-ltr { float: right; }
+  @include dir-rtl { float: left; }
+}
