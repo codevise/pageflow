@@ -24,6 +24,10 @@ pageflow.FilesCollection = Backbone.Collection.extend({
     return Backbone.Collection.prototype.fetch.call(this, options);
   },
 
+  findOrCreateBy: function(attributes) {
+    return this.findWhere(attributes) || this.create(attributes, {fileType: this.fileType});
+  },
+
   getEntry: function() {
     return this.entry || pageflow.entry;
   },

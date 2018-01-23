@@ -102,8 +102,8 @@ pageflow.Entry = Backbone.Model.extend({
     });
   },
 
-  getFileCollection: function(fileType) {
-    return this.files[fileType.collectionName];
+  getFileCollection: function(fileTypeOrFileTypeName) {
+    return this.files[fileTypeOrFileTypeName.collectionName || fileTypeOrFileTypeName];
   },
 
   pollForPendingFiles: function() {

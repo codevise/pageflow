@@ -10,6 +10,34 @@ describe('Entry', function() {
     };
   });
 
+  describe('#getFileCollection', function() {
+    it('supports looking up via fileType object', function() {
+      var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, []);
+      var entry = this.buildEntry({}, {
+        files: {
+          image_files: imageFiles
+        }
+      });
+
+      var result = entry.getFileCollection(this.imageFileType);
+
+      expect(result).to.eq(imageFiles);
+    });
+
+    it('supports looking up via fileType collection name', function() {
+      var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, []);
+      var entry = this.buildEntry({}, {
+        files: {
+          image_files: imageFiles
+        }
+      });
+
+      var result = entry.getFileCollection(this.imageFileType.collectionName);
+
+      expect(result).to.eq(imageFiles);
+    });
+  });
+
   describe('#reuseFile', function() {
     support.useFakeXhr();
 

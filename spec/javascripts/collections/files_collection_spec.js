@@ -47,6 +47,55 @@ describe('FileCollection', function() {
     });
   });
 
+  describe('#findOrCreateBy', function() {
+    support.useFakeXhr();
+
+    it('creates file if non with matching attributes exists', function() {
+      var fileType = f.fileType();
+      var files = [];
+      var entry = f.entry();
+      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+
+      var file = collection.findOrCreateBy({source_image_id: 3});
+      this.requests[0].respond(201, {'Content-Type': 'application/json'}, JSON.stringify({id: 5}));
+
+      expect(file.isNew()).to.eq(false);
+    });
+
+    it('sets attribute on created file', function() {
+      var fileType = f.fileType();
+      var files = [];
+      var entry = f.entry();
+      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+
+      var file = collection.findOrCreateBy({source_image_id: 3});
+
+      expect(file.get('source_image_id')).to.eq(3);
+    });
+
+    it('sets fileType on created file', function() {
+      var fileType = f.fileType();
+      var files = [];
+      var entry = f.entry();
+      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+
+      var file = collection.findOrCreateBy({source_image_id: 3});
+
+      expect(file.fileType()).to.eq(fileType);
+    });
+
+    it('returns existing file with matching attributes', function() {
+      var fileType = f.fileType();
+      var files = [{file_name: 'existing.png', source_image_id: 3}];
+      var entry = f.entry();
+      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+
+      var file = collection.findOrCreateBy({source_image_id: 3});
+
+      expect(file.get('file_name')).to.eq('existing.png');
+    });
+  });
+
   describe('#uploadable', function() {
     it('always contains subset of files with state uploadable', function() {
       var fileType = f.fileType();

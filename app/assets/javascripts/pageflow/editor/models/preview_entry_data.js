@@ -10,6 +10,11 @@ pageflow.PreviewEntryData = pageflow.EntryData.extend({
     return this.entry.getTheme().get(name);
   },
 
+  getFile: function(collectionName, id) {
+    var file = this.entry.getFileCollection(collectionName).get(id);
+    return file && file.attributes;
+  },
+
   getStorylineConfiguration: function(id) {
     var storyline = this.storylines.get(id);
     return storyline ? storyline.configuration.attributes : {};

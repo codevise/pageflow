@@ -2,6 +2,15 @@ pageflow.SeedEntryData = pageflow.EntryData.extend({
   initialize: function(options) {
     this.theme = options.theme;
 
+    this.files = _(_.keys(options.files || {})).reduce(function(memo, collectionName) {
+      memo[collectionName] = _(options.files[collectionName]).reduce(function(result, file) {
+        result[file.id] = file;
+        return result;
+      }, {});
+
+      return memo;
+    }, {});
+
     this.storylineConfigurations = _(options.storylines).reduce(function(memo, storyline) {
       memo[storyline.id] = storyline.configuration;
       return memo;
@@ -41,6 +50,10 @@ pageflow.SeedEntryData = pageflow.EntryData.extend({
 
   getThemingOption: function(name) {
     return this.theme[name];
+  },
+
+  getFile: function(collectionName, id) {
+    return this.files[collectionName][id];
   },
 
   getChapterConfiguration: function(id) {
