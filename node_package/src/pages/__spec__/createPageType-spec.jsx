@@ -49,8 +49,7 @@ describe('createPageType', () => {
           return pageElement.find('span')[0];
         }
       });
-      const element = pageElement();
-      element.append('<span></span>');
+      const element = pageElement({innerHTML: '<span></span>'});
 
       pageType.enhance(element);
 
@@ -128,10 +127,13 @@ describe('createPageType', () => {
     });
   });
 
-  function pageElement() {
-    const element = jQuery(document.createElement('div'));
-    element.page = function() {};
+  function pageElement({innerHTML} = {innerHTML: ''}) {
+    const element = document.createElement('div');
+    element.innerHTML = innerHTML;
 
-    return element;
+    const result = jQuery(element);
+    result.page = function() {};
+
+    return result;
   }
 });
