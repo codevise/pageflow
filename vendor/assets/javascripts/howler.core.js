@@ -1,8 +1,13 @@
+/*
+ * THIS IS THE PATCHED VERSION WITH TIMEUPDATE HANDLERS
+ * https://github.com/rafaelteixeira/howler.js/blob/timeupdate/src/howler.core.js
+ */
+
 /*!
- *  howler.js v2.0.7
+ *  howler.js v2.0.8
  *  howlerjs.com
  *
- *  (c) 2013-2017, James Simpson of GoldFire Studios
+ *  (c) 2013-2018, James Simpson of GoldFire Studios
  *  goldfirestudios.com
  *
  *  MIT License
@@ -1167,28 +1172,20 @@
     _startFadeInterval: function(sound, from, to, len, id, isGroup) {
       var self = this;
       var vol = from;
-      var dir = from > to ? 'out' : 'in';
-      var diff = Math.abs(from - to);
-      var steps = diff / 0.01;
-      var stepLen = (steps > 0) ? len / steps : len;
-      var stepVol = diff / steps;
-
-      // Since browsers clamp timeouts to 4ms, we need to clamp our steps to that too.
-      if (stepLen < 4) {
-        steps = Math.ceil(steps * stepLen * 0.25);
-        stepLen = 4;
-        stepVol = diff / steps;
-      }
+      var diff = to - from;
+      var steps = Math.abs(diff / 0.01);
+      var stepLen = Math.max(4, (steps > 0) ? len / steps : len);
+      var lastTick = Date.now();
 
       // Store the value being faded to.
       sound._fadeTo = to;
 
       // Update the volume value on each interval tick.
       sound._interval = setInterval(function() {
-        // Update the volume amount, but only if the volume should change.
-        if (steps > 0) {
-          vol += (dir === 'in' ? stepVol : -stepVol);
-        }
+        // Update the volume based on the time since the last tick.
+        var tick = (Date.now() - lastTick) / len;
+        lastTick = Date.now();
+        vol += diff * tick;
 
         // Make sure the volume is in the right bounds.
         vol = Math.max(0, vol);
@@ -1362,7 +1359,7 @@
 
             // Change the playback rate.
             if (self._webAudio && sound._node && sound._node.bufferSource) {
-              sound._node.bufferSource.playbackRate.setValueAtTime(rate, Howler.ctx.currentTime);;
+              sound._node.bufferSource.playbackRate.setValueAtTime(rate, Howler.ctx.currentTime);
             } else if (sound._node) {
               sound._node.playbackRate = rate;
             }
@@ -1978,7 +1975,6 @@
       self._paused = true;
       self._ended = true;
       self._sprite = '__default';
-      self._currentTime = 0;
 
       // Generate a unique ID for this sound.
       self._id = ++Howler._counter;
@@ -2052,7 +2048,6 @@
       self._paused = true;
       self._ended = true;
       self._sprite = '__default';
-      self._currentTime = 0;
 
       // Generate a new ID so that it isn't confused with the previous sound.
       self._id = ++Howler._counter;
@@ -2065,7 +2060,6 @@
      */
     _timeUpdateListener: function() {
         var self = this;
-        self._currentTime = self._node.currentTime;
         self._parent._emit('timeupdate', self._id);
     },
 
