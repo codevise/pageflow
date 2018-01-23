@@ -217,11 +217,11 @@ pageflow.inputView = {
     }
 
     function updateVisible(model, value) {
-      view.$el.toggle(isVisible(value));
+      view.$el.toggleClass('input-hidden_via_binding', !isVisible(value));
     }
 
     function isVisible(value) {
-      if (view.options.visibleBindingValue) {
+      if ('visibleBindingValue' in view.options) {
         return value === view.options.visibleBindingValue;
       }
       else if (typeof view.options.visible === 'function') {

@@ -148,6 +148,37 @@ support.factories = {
 
   },
 
+  imageFilesFixture: function(options) {
+    var fileTypes = this.fileTypes(function() {
+      this.withImageFileType(options.fileTypeOptions);
+    });
+
+    var fileAttributes = {
+      image_files: [
+        _.extend({
+          id: 1,
+          state: 'processed'
+        }, options.imageFileAttributes)
+      ]
+    };
+
+    var entry = support.factories.entry({}, {
+      files: pageflow.FilesCollection.createForFileTypes(fileTypes,
+                                                         fileAttributes || {}),
+      fileTypes: fileTypes
+    });
+
+    var imageFiles = entry.getFileCollection(
+      fileTypes.findByCollectionName('image_files')
+    );
+
+    return {
+      entry: entry,
+      imageFile: imageFiles.first(),
+      imageFiles: imageFiles
+    };
+  },
+
   imageFile: function(attributes, options) {
     return new pageflow.ImageFile(attributes, _.extend({
       fileType: this.imageFileType()

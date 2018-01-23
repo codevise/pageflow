@@ -40,6 +40,14 @@ describe('stageProvider', function() {
     expect(model.stages.at(2).finishedStates).to.deep.eq(['finished']);
   });
 
+  it('provides subset collection of unfinished stages', function() {
+    var model = new Model({
+      state: 'check_running'
+    });
+
+    expect(model.unfinishedStages.pluck('name')).to.deep.eq(['checking', 'processing']);
+  });
+
   it('#stages can be function', function() {
     var model = new (Backbone.Model.extend({
       mixins: [pageflow.stageProvider],

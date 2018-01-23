@@ -23,6 +23,15 @@ support.dom.Base.classMethods = function(Constructor) {
       return new Constructor(element);
     },
 
+    findAll: function(view) {
+      var selector = Constructor.prototype.selector;
+      var elements = view.$el.find(selector);
+
+      return elements.map(function() {
+        return new Constructor($(this));
+      }).get();
+    },
+
     findBy: function(predicate, options) {
       var predicateString = options.predicateName ? ' filtered by ' + options.predicateName : '';
       var selector = Constructor.prototype.selector;

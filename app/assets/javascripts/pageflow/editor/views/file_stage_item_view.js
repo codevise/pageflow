@@ -16,6 +16,13 @@ pageflow.FileStageItemView = Backbone.Marionette.ItemView.extend({
   onRender: function() {
     this.update();
     this.$el.addClass(this.model.get('name'));
+
+    if (this.options.standAlone) {
+      this.$el.addClass('stand_alone');
+    }
+    else {
+      this.$el.addClass('indented');
+    }
   },
 
   update: function() {
