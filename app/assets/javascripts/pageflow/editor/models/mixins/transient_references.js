@@ -38,9 +38,18 @@ pageflow.transientReferences = {
 
   _setIdOnceSynced: function(attribute, record) {
     record.once('change:id', function() {
-      delete this.transientReferences[attribute];
-      this.set(attribute, record.id);
+      this._onceRecordCanBeFoundInCollection(record, function() {
+        delete this.transientReferences[attribute];
+        this.set(attribute, record.id);
+      });
     }, this);
+  },
+
+  _onceRecordCanBeFoundInCollection: function(record, callback) {
+    // Backbone collections update their modelsById map in the change
+    // event which is dispatched after the `change:<attribute>`
+    // events.
+    record.once('change', _.bind(callback, this));
   },
 
   _listenForReady: function(attribute, record) {
@@ -51,6 +60,7 @@ pageflow.transientReferences = {
         if (record.isReady()) {
           this._cleanUpReadyListener(attribute);
           this.trigger('change');
+          this.trigger('change:' + attribute + ':ready');
         }
       });
     }
