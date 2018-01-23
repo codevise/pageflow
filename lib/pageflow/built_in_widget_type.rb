@@ -24,6 +24,10 @@ module Pageflow
       new('default_mobile_navigation', ['mobile_navigation'], 'pageflow/entries/mobile_navigation')
     end
 
+    def self.mute_toggle
+      new('default_mute_toggle', ['player_controls'], 'pageflow/widgets/mute_toggle')
+    end
+
     def self.classic_player_controls
       new('classic_player_controls', ['player_controls'], 'pageflow/widgets/placeholder')
     end
