@@ -7,10 +7,6 @@
       var element = this.element;
       var volumeBeforeMute = 1;
 
-      if (!pageflow.browser.has('autoplay support')) {
-        pageflow.settings.set('volume', 0);
-      }
-
       element.on('click', toggleMute);
 
       pageflow.settings.on('change:volume', this.update, this);
