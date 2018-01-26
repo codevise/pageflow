@@ -5,7 +5,7 @@
     initialize: function(slideshow, events, multiPlayer) {
       this.slideshow = slideshow;
       this.multiPlayer = multiPlayer;
-      this.disabled = false;
+      this.disabled = pageflow.browser.has('mobile platform');
 
       this.listenTo(events, 'page:change page:update', function() {
         this.update();
