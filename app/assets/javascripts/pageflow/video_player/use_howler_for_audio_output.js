@@ -3,6 +3,7 @@ pageflow.VideoPlayer.useHowlerForAudioOutput = function(player) {
 
   var playerAudio = new Howl({
     loop: player.options_.loop,
+    mute: pageflow.backgroundMedia.muted,
     src: player.currentSources().map(function(source){
       return source.src;
     })

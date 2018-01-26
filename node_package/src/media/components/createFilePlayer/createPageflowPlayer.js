@@ -21,7 +21,7 @@ export default function createPageflowPlayer(
     useSlimPlayerControlsDuringPhonePlayback: !playsInline && !isAudio,
     fullscreenDuringPhonePlayback: !playsInline && !isAudio,
 
-    useHowlerForAudioOutput: (playsInline || isAudio),
+    useHowlerForAudioOutput: playsInline,
 
     volumeFading: true,
     hooks: pageflow.atmo.createMediaPlayerHooks(atmoSettings),

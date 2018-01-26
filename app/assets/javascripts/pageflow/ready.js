@@ -25,6 +25,8 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
           enabledFeatureNames: pageflow.enabledFeatureNames,
 
           beforeFirstUpdate: function() {
+            pageflow.backgroundMedia.setup();
+
             $('.header').header({slideshow: pageflow.slides});
             $('.overview').overview();
             $('.mute_toggle').muteToggle();

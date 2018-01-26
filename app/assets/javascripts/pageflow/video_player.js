@@ -15,7 +15,6 @@
 
 pageflow.VideoPlayer = function(element, options) {
   options = options || {};
-  options.muted = options.muted || options.useHowlerForAudioOutput;
 
   element = pageflow.VideoPlayer.filterSources(element);
 
