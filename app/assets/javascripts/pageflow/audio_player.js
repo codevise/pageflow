@@ -2,6 +2,7 @@
 
 //= require_self
 
+//= require ./audio_player/proxy_player
 //= require ./audio_player/media_events
 //= require ./audio_player/null
 //= require ./audio_player/seek_with_invalid_state_handling
@@ -26,29 +27,7 @@
 pageflow.AudioPlayer = function(sources, options) {
   options = options || {};
 
-  var codecMapping = {
-    vorbis: 'audio/ogg',
-    mp4: 'audio/mp4',
-    mp3: 'audio/mpeg'
-  };
-
-  var ready = new $.Deferred();
-  var loaded = new $.Deferred();
-
-  var audio = new Audio5js({
-    reusedTag: options.tag,
-    swf_path: pageflow.assetUrls.audioSwf,
-    throw_errors: false,
-    format_time: false,
-    codecs: ['vorbis', 'mp4', 'mp3'],
-    ready: ready.resolve,
-    loop: options.loop
-  });
-
-  audio.readyPromise = ready.promise();
-  audio.loadedPromise = loaded.promise();
-
-  audio.on('load', loaded.resolve);
+  var audio = pageflow.AudioPlayer.proxyPlayer(sources, options);
 
   if (options.mediaEvents) {
     pageflow.AudioPlayer.mediaEvents(audio, options.context);
@@ -66,50 +45,6 @@ pageflow.AudioPlayer = function(sources, options) {
   pageflow.AudioPlayer.rewindMethod(audio);
   pageflow.AudioPlayer.getMediaElementMethod(audio);
 
-  audio.src = function(sources) {
-    ready.then(function() {
-      var source = _.detect(sources || [], function(source) {
-        if (codecMapping[audio.settings.player.codec] === source.type) {
-          return source.src;
-        }
-      });
-
-      audio.load(source ? source.src : '');
-    });
-  };
-
-  var originalLoad = audio.load;
-  audio.load = function(src) {
-    if (!src) {
-      this.duration = 0;
-    }
-
-    this.currentSrc = src;
-    this.position = 0;
-    this.trigger('timeupdate', this.position, this.duration);
-
-    originalLoad.apply(this, arguments);
-  };
-
-  var originalSeek = audio.seek;
-  audio.seek = function() {
-    if (this.currentSrc) {
-      return originalSeek.apply(this, arguments);
-    }
-  };
-
-  var originalPlay = audio.play;
-  audio.play = function() {
-    if (this.currentSrc) {
-      originalPlay.apply(this, arguments);
-    }
-  };
-
-  audio.paused = function() {
-    return !audio.playing;
-  };
-
-  audio.src(sources);
   return audio;
 };
 

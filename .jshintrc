@@ -14,12 +14,13 @@
     "Cocktail",
     "_",
     "videojs",
-    "Audio5js",
+    "Howl",
+    "Howler",
     "I18n",
 
     "pageflow",
     "editor",
-    
+
     "confirm",
     "alert",
 

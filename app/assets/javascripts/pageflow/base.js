@@ -25,6 +25,7 @@
 //= require ./audio_player
 //= require ./audio_context
 //= require ./video_player
+//= require ./background_media
 //= require ./visited
 //= require ./print_layout
 //= require ./history

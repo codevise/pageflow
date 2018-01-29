@@ -10,6 +10,10 @@
       this.listenTo(events, 'page:change page:update', function() {
         this.update();
       });
+
+      this.listenTo(events, 'background_media:unmute', function() {
+        this.enable();
+      });
     },
 
     disable: function() {
@@ -27,21 +31,11 @@
     },
 
     pause: function() {
-      if (pageflow.browser.has('volume control support')) {
-        return this.multiPlayer.fadeOutAndPause();
-      }
-      else {
-        this.multiPlayer.pause();
-      }
+      return this.multiPlayer.fadeOutAndPause();
     },
 
     turnDown: function() {
-      if (pageflow.browser.has('volume control support')) {
-        return this.multiPlayer.changeVolumeFactor(0.2);
-      }
-      else {
-        this.multiPlayer.pause();
-      }
+      return this.multiPlayer.changeVolumeFactor(0.2);
     },
 
     resume: function() {
