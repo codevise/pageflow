@@ -10,6 +10,10 @@
       this.listenTo(events, 'page:change page:update', function() {
         this.update();
       });
+
+      this.listenTo(events, 'background_media:unmute', function() {
+        this.enable();
+      });
     },
 
     disable: function() {
