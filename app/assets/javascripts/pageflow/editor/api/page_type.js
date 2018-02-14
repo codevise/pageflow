@@ -50,5 +50,9 @@ pageflow.PageType = pageflow.Object.extend({
         'pageflow.common_page_link_attributes'
       ]
     }, options));
+  },
+
+  supportsPhoneEmulation: function() {
+    return !!this.options.supportsPhoneEmulation;
   }
 });

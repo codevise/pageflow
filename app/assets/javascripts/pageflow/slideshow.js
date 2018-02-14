@@ -44,10 +44,6 @@ pageflow.Slideshow = function($el, configurations) {
     return result;
   }
 
-  function currentPagePermaId() {
-    return parseInt(currentPage.attr('id'), 10);
-  }
-
   this.nextPageExists = function() {
     return this.scrollNavigator.nextPageExists(currentPage, pages);
   };
@@ -73,11 +69,13 @@ pageflow.Slideshow = function($el, configurations) {
   };
 
   this.parentPageExists = function() {
-    return !!pageflow.entryData.getParentPagePermaIdByPagePermaId(currentPagePermaId());
+    return !!pageflow.entryData.getParentPagePermaIdByPagePermaId(this.currentPagePermaId());
   };
 
   this.goToParentPage = function() {
-    this.goToByPermaId(pageflow.entryData.getParentPagePermaIdByPagePermaId(currentPagePermaId()));
+    this.goToByPermaId(pageflow.entryData.getParentPagePermaIdByPagePermaId(
+      this.currentPagePermaId()
+    ));
   };
 
   this.goToById = function(id, options) {
@@ -94,6 +92,18 @@ pageflow.Slideshow = function($el, configurations) {
     options = options || {};
 
     if (page.length && !page.is(currentPage)) {
+      var cancelled = false;
+
+      pageflow.events.trigger('page:changing', {
+        cancel: function() {
+          cancelled = true;
+        }
+      });
+
+      if (cancelled) {
+        return;
+      }
+
       transitionMutex(function() {
         var previousPage = currentPage;
         currentPage = page;
@@ -147,6 +157,10 @@ pageflow.Slideshow = function($el, configurations) {
 
   this.currentPage = function() {
     return currentPage;
+  };
+
+  this.currentPagePermaId = function() {
+    return parseInt(currentPage.attr('id'), 10);
   };
 
   this.currentPageConfiguration = function() {

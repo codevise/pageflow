@@ -1,0 +1,6 @@
+de:
+  pageflow:
+    editor:
+      templates:
+        entry_preview:
+          navigation_disabled_hint: "Seitenwechsel sind innerhalb der Phone Vorschau nicht möglich."

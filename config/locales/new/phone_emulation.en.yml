@@ -1,0 +1,6 @@
+en:
+  pageflow:
+    editor:
+      templates:
+        entry_preview:
+          navigation_disabled_hint: "Page changes not possible in phone preview."
