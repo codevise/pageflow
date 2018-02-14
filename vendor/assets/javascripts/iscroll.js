@@ -410,6 +410,8 @@ IScroll.prototype = {
 		this.absStartY = this.y;
 		this.pointX    = point.pageX;
 		this.pointY    = point.pageY;
+		this.startPointX = point.pageX;
+		this.startPointY = point.pageY;
 
 		this._execEvent('scrollStart');
 	},
@@ -436,7 +438,7 @@ IScroll.prototype = {
 		this.distX		+= deltaX;
 		this.distY		+= deltaY;
 		absDistX		= Math.abs(this.distX);
-		absDistY		= Math.abs(this.distY);
+		absDistY		= Math.abs(point.pageY - this.startPointY);
 
 		// We need to move at least 10 pixels for the scrolling to initiate
 		if ( timestamp - this.endTime > 300 && (absDistX < 10 && absDistY < 10) ) {
