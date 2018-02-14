@@ -842,25 +842,26 @@ IScroll.prototype = {
 
 	_initEvents: function (remove) {
 		var eventType = remove ? utils.removeEvent : utils.addEvent,
-			target = this.options.bindToWrapper ? this.wrapper : window;
+			target = this.options.bindToWrapper ? this.wrapper : window,
+			startEventTarget = this.options.eventListenerTarget || this.wrapper;
 
 		eventType(window, 'orientationchange', this);
 		eventType(window, 'resize', this);
 
-		eventType(this.wrapper, 'mousedown', this);
+		eventType(startEventTarget, 'mousedown', this);
 		eventType(document, 'mousemove', this);
 		eventType(document, 'mousecancel', this);
 		eventType(document, 'mouseup', this);
 
 		if ( utils.hasPointer ) {
-			eventType(this.wrapper, 'MSPointerDown', this);
+			eventType(startEventTarget, 'MSPointerDown', this);
 			eventType(target, 'MSPointerMove', this);
 			eventType(target, 'MSPointerCancel', this);
 			eventType(target, 'MSPointerUp', this);
 		}
 
 		if ( utils.hasTouch ) {
-			eventType(this.wrapper, 'touchstart', this);
+			eventType(startEventTarget, 'touchstart', this);
 			eventType(target, 'touchmove', this);
 			eventType(target, 'touchcancel', this);
 			eventType(target, 'touchend', this);
@@ -981,14 +982,16 @@ IScroll.prototype = {
 	},
 
 	_initWheel: function () {
-		utils.addEvent(this.wrapper, 'wheel', this);
-		utils.addEvent(this.wrapper, 'mousewheel', this);
-		utils.addEvent(this.wrapper, 'DOMMouseScroll', this);
+		var target = this.options.eventListenerTarget || this.wrapper;
+
+		utils.addEvent(target, 'wheel', this);
+		utils.addEvent(target, 'mousewheel', this);
+		utils.addEvent(target, 'DOMMouseScroll', this);
 
 		this.on('destroy', function () {
-			utils.removeEvent(this.wrapper, 'wheel', this);
-			utils.removeEvent(this.wrapper, 'mousewheel', this);
-			utils.removeEvent(this.wrapper, 'DOMMouseScroll', this);
+			utils.removeEvent(target, 'wheel', this);
+			utils.removeEvent(target, 'mousewheel', this);
+			utils.removeEvent(target, 'DOMMouseScroll', this);
 		});
 	},
 
