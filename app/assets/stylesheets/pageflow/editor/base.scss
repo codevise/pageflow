@@ -82,6 +82,8 @@
   @import "./page_links";
   @import "./storyline_picker";
   @import "./loading";
+  @import "./sidebar_footer";
+  @import "./emulation_mode_button";
 
   a.publish {
     @include eye-icon;
