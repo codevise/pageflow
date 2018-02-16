@@ -67,7 +67,6 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
     pageflow.events.trigger('page:update', this.model);
 
     this.refreshScroller();
-    this.ensureTargetBlankForContentLinks();
     this.updateChapterBeginningClass();
   },
 
@@ -86,10 +85,6 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
 
   refreshScroller: function() {
     this.$el.page('refreshScroller');
-  },
-
-  ensureTargetBlankForContentLinks: function() {
-    pageflow.links.ensureTargetBlankForContentLinks(this.el);
   },
 
   initEmbeddedViews: function() {
