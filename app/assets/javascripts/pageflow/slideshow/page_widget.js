@@ -6,6 +6,7 @@
       this.index = this.options.index;
 
       this._setupNearBoundaryCssClasses();
+      this._setupContentLinkTargetHandling();
 
       this.reinit();
     },
@@ -202,6 +203,27 @@
         element.on('scrollernotnear' + boundary, function() {
           element.removeClass('is_near_' + boundary);
         });
+      });
+    },
+
+    _setupContentLinkTargetHandling: function() {
+      this._on({
+        'click .contentText p a': function(event) {
+          var href = $(event.currentTarget).attr('href');
+
+          if (href[0] === '#') {
+            pageflow.slides.goToByPermaId(href.substr(1));
+          }
+          else {
+            // There was a time when the rich text editor did not add
+            // target attributes to inline links even though it should
+            // have. Ensure all content links to external urls open in
+            // new tab.
+            window.open(href, '_blank');
+          }
+
+          event.preventDefault();
+        }
       });
     }
   });

@@ -2,7 +2,6 @@ pageflow.links = {
   setup: function() {
     this.ensureClickOnEnterKeyPress();
     this.setupContentSkipLinks();
-    this.ensureTargetBlankForContentLinks();
   },
 
   ensureClickOnEnterKeyPress: function() {
@@ -25,11 +24,5 @@ pageflow.links = {
       e.preventDefault();
       return false;
     });
-  },
-
-  // There was a time when the rich text editor did not add target
-  // attributes to inline links even though it should have.
-  ensureTargetBlankForContentLinks: function(context) {
-    $('.contentText p a', context).attr('target', '_blank');
   }
 };
