@@ -2,7 +2,7 @@
   $.widget('pageflow.backgroundMediaUnmuteButton', {
     _create: function() {
       var audio = new Audio();
-      audio.setAttribute('src', '/assets/pageflow/unmute.mp3');
+      audio.setAttribute('src', pageflow.assetUrls.unmuteSound);
 
       this.element.on('click', function toggle() {
         pageflow.backgroundMedia.unmute();
