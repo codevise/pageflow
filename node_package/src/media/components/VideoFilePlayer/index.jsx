@@ -24,6 +24,7 @@ export default function(props) {
                        textTracksEnabled={props.textTracksEnabled}
                        loop={props.loop}
                        muted={props.muted}
+                       playAudioViaContext={props.playAudioViaContext}
                        playsInline={props.playsInline} />
     </Positioner>
   );

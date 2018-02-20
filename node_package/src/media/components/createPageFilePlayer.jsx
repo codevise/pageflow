@@ -18,6 +18,7 @@ export default function(FilePlayer) {
                     position={props.position}
                     loop={props.loop}
                     muted={props.muted}
+                    playAudioViaContext={props.playAudioViaContext}
                     playsInline={props.playsInline}
                     defaultTextTrackFileId={props.defaultTextTrackFileId}
                     textTracksEnabled={props.textTracksEnabled} />

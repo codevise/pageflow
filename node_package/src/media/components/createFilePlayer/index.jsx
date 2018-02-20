@@ -45,6 +45,7 @@ export default function({
           emulateTextTracksDisplay,
           atmoSettings: this.atmoSettings,
           mediaContext: this.context.mediaContext,
+          playAudioViaContext: props.playAudioViaContext,
           playsInline: props.playsInline
         });
 
@@ -110,7 +111,7 @@ export default function({
                                               this.props.textTracksEnabled)}
                   poster={poster(this.props.file, this.props.posterImageFile)}
                   loop={this.props.loop}
-                  muted={this.props.muted}
+                  muted={this.props.muted || this.props.playAudioViaContext}
                   playsInline={this.props.playsInline}
                   alt={this.props.file.alt}
 

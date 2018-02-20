@@ -1,6 +1,6 @@
 export default function createPageflowPlayer(
   element,
-  {emulateTextTracksDisplay, atmoSettings, mediaContext, playsInline}
+  {emulateTextTracksDisplay, atmoSettings, mediaContext, playsInline, playAudioViaContext}
 ) {
   const isAudio = element.tagName.toLowerCase() == 'audio';
 
@@ -21,7 +21,7 @@ export default function createPageflowPlayer(
     useSlimPlayerControlsDuringPhonePlayback: !playsInline && !isAudio,
     fullscreenDuringPhonePlayback: !playsInline && !isAudio,
 
-    playAudioViaContext: playsInline,
+    playAudioViaContext: playAudioViaContext,
 
     volumeFading: true,
     hooks: pageflow.atmo.createMediaPlayerHooks(atmoSettings),
