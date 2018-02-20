@@ -1,6 +1,52 @@
+$background-media-unmute-button-color: rgba(53, 53, 53, 0.9);
+
+$background-media-unmute-button-shadow-color: #ccc;
+
+$background-media-unmute-button-icon-color: #ddd;
+
+$background-media-unmute-button-icon-size: 24px;
+
+$background-media-unmute-button-size: 34px;
+
+$background-media-unmute-button-margin: 10px;
+
 .mute_toggle {
-  color: #fff;
-  background: #f00;
+  @include background-icon-center($color: $background-media-unmute-button-icon-color,
+                                  $font-size: $background-media-unmute-button-icon-size);
+  @include fa-volume-down-icon;
   position: absolute;
-  padding: 10px;
+
+  width: $background-media-unmute-button-size + $background-media-unmute-button-margin;
+  height: $background-media-unmute-button-size + $background-media-unmute-button-margin;
+
+  @extend %pageflow_widget_margin_right_max !optional;
+  @extend %pageflow_widget_margin_top !optional;
+
+  @include phone {
+    top: 70px;
+    right: 11px;
+  }
+
+  @include desktop {
+    top: 26px;
+    right: 25px;
+  }
+
+  &:before {
+    z-index: 2;
+  }
+
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: $background-media-unmute-button-size;
+    height: $background-media-unmute-button-size;
+    border-radius: $background-media-unmute-button-size / 2;
+    background-color: $background-media-unmute-button-color;
+    @include box-shadow(0 0 7px $background-media-unmute-button-shadow-color);
+    z-index: 1;
+  }
 }

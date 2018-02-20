@@ -4,28 +4,17 @@
       var audio = new Audio();
       audio.setAttribute('src', '/assets/pageflow/unmute.mp3');
 
-      var element = this.element;
-      element.on('click', toggle);
+      this.element.on('click', function toggle() {
+        pageflow.backgroundMedia.unmute();
+        audio.play();
+      });
 
-      pageflow.events.on('background_media:unmute', this.update, this);
+      pageflow.events.once('background_media:unmute', this.update, this);
       this.update();
-
-      function toggle() {
-        if (pageflow.backgroundMedia.muted) {
-          pageflow.backgroundMedia.unmute();
-          audio.play();
-        }
-      }
     },
 
     update: function() {
-      if (pageflow.backgroundMedia.muted) {
-        this.element
-          .attr('title', this.element.attr('data-muted-title'))
-          .addClass('muted')
-          .html('UNMUTE');
-      }
-      else {
+      if (!pageflow.backgroundMedia.muted) {
         this.element.remove();
         this.destroy();
       }
