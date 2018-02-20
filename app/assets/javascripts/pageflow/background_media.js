@@ -11,8 +11,10 @@ pageflow.backgroundMedia = {
   },
 
   unmute: function() {
-    this.muted = false;
-    Howler.mute(false);
-    pageflow.events.trigger('background_media:unmute');
+    if (this.muted) {
+      this.muted = false;
+      Howler.mute(false);
+      pageflow.events.trigger('background_media:unmute');
+    }
   }
 };

@@ -228,6 +228,8 @@ pageflow.Slideshow.setup = function(options) {
     }, {});
   }
 
+  pageflow.backgroundMedia.setup();
+
   pageflow.slides = new pageflow.Slideshow(
     options.element,
     configurationsById(options.pages)

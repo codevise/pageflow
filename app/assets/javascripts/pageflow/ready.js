@@ -19,8 +19,6 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
           audioFiles: pageflow.audioFiles
         });
 
-        pageflow.backgroundMedia.setup();
-
         pageflow.Slideshow.setup({
           element: $(this),
           pages: pageflow.pages,

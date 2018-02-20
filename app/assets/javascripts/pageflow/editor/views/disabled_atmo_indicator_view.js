@@ -3,6 +3,7 @@ pageflow.DisabledAtmoIndicatorView = Backbone.Marionette.View.extend({
 
   events: {
     'click': function() {
+      pageflow.backgroundMedia.unmute();
       pageflow.atmo.enable();
     }
   },
