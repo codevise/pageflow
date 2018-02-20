@@ -11,25 +11,18 @@ $background-media-unmute-button-size: 34px;
 $background-media-unmute-button-margin: 10px;
 
 .background_media_unmute_button {
-  @include background-icon-center($color: $background-media-unmute-button-icon-color,
-                                  $font-size: $background-media-unmute-button-icon-size);
-  @include fa-volume-down-icon;
   position: absolute;
-
+  top: 26px;
+  right: 25px;
   width: $background-media-unmute-button-size + $background-media-unmute-button-margin;
   height: $background-media-unmute-button-size + $background-media-unmute-button-margin;
 
   @extend %pageflow_widget_margin_right_max !optional;
   @extend %pageflow_widget_margin_top !optional;
 
-  @include phone {
+  @include mobile {
     top: 70px;
     right: 11px;
-  }
-
-  @include desktop {
-    top: 26px;
-    right: 25px;
   }
 
   &:before {
@@ -48,5 +41,28 @@ $background-media-unmute-button-margin: 10px;
     background-color: $background-media-unmute-button-color;
     @include box-shadow(0 0 7px $background-media-unmute-button-shadow-color);
     z-index: 1;
+  }
+
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    position: relative;
+    @include background-icon-center($color: $background-media-unmute-button-icon-color,
+                                    $font-size: $background-media-unmute-button-icon-size);
+    @include fa-volume-down-icon;
+
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 25px;
+      left: 22px;
+      top: 22px;
+      border-top: solid 2px $background-media-unmute-button-icon-color;
+      border-bottom: solid 1px $background-media-unmute-button-color;
+      @include transform(translate(-50%, -50%) rotate(45deg));
+    }
   }
 }
