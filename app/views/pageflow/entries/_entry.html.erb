@@ -16,7 +16,7 @@
   <% end %>
 
   <%= render 'pageflow/entries/header', :entry => entry %>
-  <%= render 'pageflow/entries/mute_toggle', entry: entry %>
+  <%= render 'pageflow/entries/background_media_unmute_button', entry: entry %>
   <%= render 'pageflow/entries/overview', :entry => entry %>
   <%= render_widgets(entry, :scope => widget_scope) %>
 <% end %>

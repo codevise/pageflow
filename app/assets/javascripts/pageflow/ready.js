@@ -29,7 +29,7 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
           beforeFirstUpdate: function() {
             $('.header').header({slideshow: pageflow.slides});
             $('.overview').overview();
-            $('.mute_toggle').muteToggle();
+            $('.background_media_unmute_button').backgroundMediaUnmuteButton();
             $('.multimedia_alert').multimediaAlert();
 
             pageflow.widgetTypes.enhance(body);

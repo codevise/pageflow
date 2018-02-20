@@ -10,7 +10,7 @@ $background-media-unmute-button-size: 34px;
 
 $background-media-unmute-button-margin: 10px;
 
-.mute_toggle {
+.background_media_unmute_button {
   @include background-icon-center($color: $background-media-unmute-button-icon-color,
                                   $font-size: $background-media-unmute-button-icon-size);
   @include fa-volume-down-icon;
