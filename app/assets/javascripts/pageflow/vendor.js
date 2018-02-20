@@ -10,7 +10,6 @@
 //= require jquery.placeholder
 
 //= require iscroll
-//= require audio5.min
 //= require howler.core
 
 //= require react
