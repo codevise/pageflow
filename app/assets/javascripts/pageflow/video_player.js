@@ -6,7 +6,7 @@
 //= require ./video_player/use_slim_controls_during_phone_playback
 //= require ./video_player/media_events
 //= require ./video_player/prebuffering
-//= require ./video_player/use_howler_for_audio_output
+//= require ./video_player/play_audio_via_context
 //= require ./video_player/buffer_underrun_waiting
 //= require ./video_player/filter_sources
 //= require ./video_player/lazy
@@ -20,8 +20,8 @@ pageflow.VideoPlayer = function(element, options) {
 
   var player = videojs(element, options);
 
-  if (options.useHowlerForAudioOutput) {
-    pageflow.VideoPlayer.useHowlerForAudioOutput(player);
+  if (options.playAudioViaContext) {
+    pageflow.VideoPlayer.playAudioViaContext(player);
   }
 
   if (options.useSlimPlayerControlsDuringPhonePlayback) {

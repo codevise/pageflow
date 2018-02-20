@@ -1,4 +1,4 @@
-pageflow.VideoPlayer.useHowlerForAudioOutput = function(player) {
+pageflow.VideoPlayer.playAudioViaContext = function(player) {
   var fadeDeferred = $.Deferred();
 
   var playerAudio = new Howl({
