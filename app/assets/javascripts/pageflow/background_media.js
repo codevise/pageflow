@@ -1,14 +1,13 @@
 /**
- *  Mute feature settings for background media (ATMO and background videos)
+ * Mute feature settings for background media (ATMO and background videos)
  *
  * @since edge
  */
-
 pageflow.backgroundMedia = {
   muted: false,
 
   setup: function() {
-    this.muted = pageflow.browser.has('mobile platform');
+    this.muted = pageflow.browser.has('only muted autoplay support');
   },
 
   unmute: function() {
