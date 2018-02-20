@@ -11,6 +11,7 @@
 
 //= require iscroll
 //= require audio5.min
+//= require howler.core
 
 //= require react
 //= require backbone-rails
