@@ -9,6 +9,10 @@ pageflow.VideoPlayer.playAudioViaContext = function(player) {
     })
   });
 
+  pageflow.events.once('background_media:unmute', function() {
+    playerAudio.mute(false);
+  });
+
   player.volume = playerAudio.volume.bind(playerAudio);
 
   player.muted = playerAudio.mute.bind(playerAudio);
