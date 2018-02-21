@@ -106,13 +106,14 @@ Teaspoon.configure do |config|
   # Available: phantomjs, selenium
   # PhantomJS: https://github.com/modeset/teaspoon/wiki/Using-PhantomJS
   # Selenium Webdriver: https://github.com/modeset/teaspoon/wiki/Using-Selenium-WebDriver
-  #config.driver = "phantomjs"
+  config.driver = "selenium"
 
   # Specify additional options for the driver.
   #
   # PhantomJS: https://github.com/modeset/teaspoon/wiki/Using-PhantomJS
   # Selenium Webdriver: https://github.com/modeset/teaspoon/wiki/Using-Selenium-WebDriver
-  #config.driver_options = nil
+  # FIXME waiting for https://github.com/jejacks0n/teaspoon/pull/519
+  config.driver_options = { client_driver: :chrome }
 
   # Specify the timeout for the driver. Specs are expected to complete within this time frame or the run will be
   # considered a failure. This is to avoid issues that can arise where tests stall.
