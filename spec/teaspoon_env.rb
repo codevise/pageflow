@@ -1,3 +1,5 @@
+require 'selenium-webdriver'
+
 # Set RAILS_ROOT and load the environment if it's not already loaded.
 unless defined?(Rails)
   require File.expand_path('../support/pageflow/rails_version', __FILE__)
@@ -106,13 +108,24 @@ Teaspoon.configure do |config|
   # Available: phantomjs, selenium
   # PhantomJS: https://github.com/modeset/teaspoon/wiki/Using-PhantomJS
   # Selenium Webdriver: https://github.com/modeset/teaspoon/wiki/Using-Selenium-WebDriver
-  #config.driver = "phantomjs"
+  config.driver = :selenium
 
   # Specify additional options for the driver.
   #
   # PhantomJS: https://github.com/modeset/teaspoon/wiki/Using-PhantomJS
   # Selenium Webdriver: https://github.com/modeset/teaspoon/wiki/Using-Selenium-WebDriver
-  #config.driver_options = nil
+  browser_options = ::Selenium::WebDriver::Chrome::Options.new
+  browser_options.args << '--headless'
+  browser_options.args << '--disable-gpu'
+  # Required for chrome to work in container based Travis environment
+  # (see https://docs.travis-ci.com/user/chrome)
+  browser_options.args << '--no-sandbox'
+  config.driver_options = {
+    client_driver: :chrome,
+    client_driver_opts: {
+      options: browser_options
+    }
+  }
 
   # Specify the timeout for the driver. Specs are expected to complete within this time frame or the run will be
   # considered a failure. This is to avoid issues that can arise where tests stall.
