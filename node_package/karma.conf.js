@@ -4,9 +4,17 @@ var webpackConfig = require('./webpack.karma.config.js');
 
 module.exports = function (config) {
   config.set({
-    browsers: ['PhantomJS'],
+    browsers: ['ChromeHeadlessNoSandbox'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        // Required for chrome to work in container based Travis
+        // environment (see https://docs.travis-ci.com/user/chrome)
+        flags: ['--no-sandbox']
+      }
+    },
     singleRun: false,
-    frameworks: ['mocha', 'chai', 'chai-sinon', 'phantomjs-shim'],
+    frameworks: ['mocha', 'chai', 'chai-sinon'],
     files: [
       'node_modules/babel-polyfill/dist/polyfill.js',
       'spec/index.js'
@@ -26,8 +34,7 @@ module.exports = function (config) {
       'karma-mocha',
       'karma-chai',
       'karma-chai-sinon',
-      require('karma-phantomjs-shim'),
-      'karma-phantomjs-launcher'
+      'karma-chrome-launcher'
     ],
     webpack: webpackConfig,
     webpackServer: {

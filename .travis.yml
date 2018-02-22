@@ -1,3 +1,4 @@
+dist: trusty
 language: ruby
 rvm:
   - 2.1.7
@@ -36,3 +37,6 @@ after_success:
 
 notifications:
   webhooks: https://coveralls.io/webhook?service_name=travis-ci
+
+addons:
+  chrome: stable
