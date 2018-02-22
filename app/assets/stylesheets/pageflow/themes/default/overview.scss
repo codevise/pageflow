@@ -35,9 +35,13 @@ $overview-icon-font-options: () !default;
 
   .close .label {
     position: absolute;
-    margin-right: 130%;
-    text-align: right;
+    @include margin-end(130%);
+    @include text-align-end;
     width: 500%;
-    right: 0;
+    @include position-end(0);
+  }
+
+  .content {
+    @extend %pageflow_widget_margin_right !optional;
   }
 }

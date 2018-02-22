@@ -46,8 +46,16 @@
     visibility: hidden;
     white-space: nowrap;
 
-    @include desktop {
-      left: 8%;
+    @include dir-ltr {
+      @include desktop {
+        left: 8%;
+      }
+    }
+
+    @include dir-rtl {
+      @include desktop {
+        right: 8%;
+      }
     }
 
     @include phone {
@@ -80,7 +88,7 @@
 
   .hidden_text_indicator {
     display: none;
-    left: 8%;
+    @include position-start(8%);
   }
 }
 

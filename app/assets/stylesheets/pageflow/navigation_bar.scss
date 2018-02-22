@@ -135,6 +135,7 @@
   .navigation_thumbnails a {
     position: relative;
     outline: none;
+    direction: ltr;
 
     &:focus:before {
       content: " ";
@@ -175,6 +176,10 @@
     }
   }
 
+  .navigation_volume_box {
+    direction: ltr;
+  }
+
   .navigation_share_box {
     .sub_share {
       display: none;
@@ -185,8 +190,9 @@
     min-width: 230px;
     min-height: 4px;
 
-    a.legal, a.copy {
-      float: left;
+    a.legal,
+    a.copy {
+      @include float-start;
     }
   }
 

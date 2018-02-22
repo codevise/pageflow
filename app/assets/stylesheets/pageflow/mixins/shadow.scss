@@ -1,3 +1,23 @@
+@mixin shadow-start($color) {
+  @include dir-ltr {
+    @include shadow($color)
+  }
+
+  @include dir-rtl {
+    @include shadow-right($color)
+  }
+}
+
+@mixin shadow-end($color) {
+  @include dir-ltr {
+    @include shadow-right($color)
+  }
+
+  @include dir-rtl {
+    @include shadow($color)
+  }
+}
+
 @mixin shadow($color) {
   /* Generated with http://www.colorzilla.com/gradient-editor */
   background: -moz-linear-gradient(left, rgba($color,1) 0%, rgba($color,0) 100%); /* FF3.6+ */
