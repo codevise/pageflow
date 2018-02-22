@@ -93,6 +93,10 @@ $page-content-text-line-height: 1.5em !default;
 @import "./page/line_lengths";
 
 .page {
+  .scroller {
+    @extend %pageflow_widget_margin_right !optional;
+  }
+
   @include typography(
     $page-typography,
     (
