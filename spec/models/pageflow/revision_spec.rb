@@ -573,5 +573,15 @@ module Pageflow
         expect(theming.theme.name).to eq('named_theme')
       end
     end
+
+    describe '#cache_key' do
+      it 'contains the Pageflow version with periods removed' do
+        revision = create(:revision, :published)
+        pageflow_version = Pageflow::VERSION.delete('.')
+
+        # should look like pageflow/revisions/1220dev-20121231230000000000000
+        expect(revision.cache_key).to include(pageflow_version)
+      end
+    end
   end
 end
