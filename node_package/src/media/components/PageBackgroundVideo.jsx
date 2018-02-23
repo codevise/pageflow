@@ -18,7 +18,7 @@ export function PageBackgroundVideo(props) {
     return (
       <PageVideoPlayer loop={true}
                        fit="cover"
-                       muted={props.hasMobilePlatform}
+                       muted={!props.hasAutoplaySupport}
                        playsInline={true}
                        textTracksEnabled={false}
                        {...props} />
@@ -33,5 +33,6 @@ function mobilePosterExists(props) {
 
 export default connect(combineSelectors({
   fileExists: fileExists(),
-  hasMobilePlatform: has('mobile platform')
+  hasMobilePlatform: has('mobile platform'),
+  hasAutoplaySupport: has('autoplay support')
 }))(PageBackgroundVideo);

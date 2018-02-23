@@ -24540,7 +24540,7 @@ pageflow = typeof pageflow === "object" ? pageflow : {}; pageflow["react"] =
 	  } else {
 	    return React.createElement(_PageVideoPlayer2.default, _extends({ loop: true,
 	      fit: 'cover',
-	      muted: props.hasMobilePlatform,
+	      muted: !props.hasAutoplaySupport,
 	      playsInline: true,
 	      textTracksEnabled: false
 	    }, props));
@@ -24554,7 +24554,8 @@ pageflow = typeof pageflow === "object" ? pageflow : {}; pageflow["react"] =
 
 	exports.default = (0, _reactRedux.connect)((0, _utils.combineSelectors)({
 	  fileExists: (0, _selectors.fileExists)(),
-	  hasMobilePlatform: (0, _selectors2.has)('mobile platform')
+	  hasMobilePlatform: (0, _selectors2.has)('mobile platform'),
+	  hasAutoplaySupport: (0, _selectors2.has)('autoplay support')
 	}))(PageBackgroundVideo);
 
 /***/ }),
