@@ -14,6 +14,7 @@ describe('PageBackgroundVideo', () => {
           mobilePosterImageId: 5
         },
         hasMobilePlatform: true,
+        hasAutoplaySupport: false,
         fileExists: fileExistsFn({
           imageFiles: [5]
         })
@@ -28,6 +29,7 @@ describe('PageBackgroundVideo', () => {
       const props = {
         page: {},
         hasMobilePlatform: true,
+        hasAutoplaySupport: false,
         fileExists: fileExistsFn({
           imageFiles: []
         })
@@ -47,7 +49,7 @@ describe('PageBackgroundVideo', () => {
           mobilePosterImageId: 5
         },
         hasMobilePlatform: false,
-        hasMuteVideoAutoplaySupport: true,
+        hasAutoplaySupport: true,
         fileExists: fileExistsFn({
           imageFiles: [5]
         })
