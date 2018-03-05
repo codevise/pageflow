@@ -6,6 +6,36 @@
   [dir=rtl] & { @content; }
 }
 
+@mixin border-start($value) {
+  @include dir-ltr { border-left: $value; }
+  @include dir-rtl { border-right: $value; }
+}
+
+@mixin border-end($value) {
+  @include dir-ltr { border-right: $value; }
+  @include dir-rtl { border-left: $value; }
+}
+
+@mixin border-start-width($value) {
+  @include dir-ltr { border-left-width: $value; }
+  @include dir-rtl { border-right-width: $value; }
+}
+
+@mixin border-end-width($value) {
+  @include dir-ltr { border-right-width: $value; }
+  @include dir-rtl { border-left-width: $value; }
+}
+
+@mixin padding-start($value) {
+  @include dir-ltr { padding-left: $value; }
+  @include dir-rtl { padding-right: $value; }
+}
+
+@mixin padding-end($value) {
+  @include dir-ltr { padding-right: $value; }
+  @include dir-rtl { padding-left: $value; }
+}
+
 @mixin margin-start($value) {
   @include dir-ltr { margin-left: $value; }
   @include dir-rtl { margin-right: $value; }
