@@ -9,6 +9,15 @@ $logo-background-image-variant-first-page-opacity: null !default;
 /// File extension of logo_header and logo_header_invert image files
 $logo-background-image-variant-file-extension: "png" !default;
 
+/// Display logo_banner.svg behind logo
+$logo-background-image-variant-banner: false !default;
+
+$logo-background-image-variant-banner-height: 100px !default;
+
+$logo-background-image-variant-banner-mobile-height: null !default;
+
+$logo-background-image-variant-banner-phone-height: null !default;
+
 @mixin logo-variant-background-image(
   $first-page-only,
   $top,
@@ -58,6 +67,31 @@ $logo-background-image-variant-file-extension: "png" !default;
 
     &.invert .content_and_background .scroller > div:after {
       background-image: image-url("pageflow/themes/#{$theme-name}/logo_header_invert.#{$logo-background-image-variant-file-extension}");
+    }
+
+    @if $logo-background-image-variant-banner {
+      .content_and_background .scroller > div:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 200;
+        width: 100%;
+        height: $logo-background-image-variant-banner-height;
+        padding-right: 100px;
+        background-image: image-url("pageflow/themes/#{$theme-name}/logo_banner.svg");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+
+        @include mobile {
+          height: $logo-background-image-variant-banner-mobile-height;
+        }
+
+        @include phone {
+          height: $logo-background-image-variant-banner-phone-height;
+        }
+
+      }
     }
   }
 
