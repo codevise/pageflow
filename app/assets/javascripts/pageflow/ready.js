@@ -8,6 +8,8 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
         readyDeferred.resolve();
       });
 
+      pageflow.Visited.setup();
+
       slideshow.each(function() {
         pageflow.events.trigger('seed:loaded');
 
