@@ -1,10 +1,17 @@
 /**
  * Input view for a color value in hex representation.
  *
- * @param {string} [options.defaultValue]
+ * @param {string|function} [options.defaultValue]
  *   Color value to display by default. The corresponding value is not
  *   stored in the model. Selecting the default value when a different
  *   value was set before, unsets the attribute in the model.
+ *
+ * @param {string} [options.defaultValueBinding]
+ *   Name of an attribute the default value depends on. If a function
+ *   is used as defaultValue option, it will be passed the value of the
+ *   defaultValueBinding attribute each time it changes. If no
+ *   defaultValue option is set, the value of the defaultValueBinding
+ *   attribute will be used as default value.
  *
  * @param {string[]} [options.swatches]
  *   Preset color values to be displayed inside the picker drop
@@ -30,16 +37,10 @@ pageflow.ColorInputView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.load();
-    this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
-
     this.ui.input.minicolors({
-      defaultValue: this.options.defaultValue,
-      swatches: this.getSwatches(),
-
       changeDelay: 200,
       change: _.bind(function(color) {
-        if (this.options.defaultValue && color === this.options.defaultValue) {
+        if (color === this.defaultValue()) {
           this.model.unset(this.options.propertyName);
         }
         else {
@@ -47,21 +48,58 @@ pageflow.ColorInputView = Backbone.Marionette.ItemView.extend({
         }
       }, this)
     });
+
+    this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
+
+    if (this.options.defaultValueBinding) {
+      this.listenTo(this.model, 'change:' + this.options.defaultValueBinding, this.updateSettings);
+    }
+
+    this.updateSettings();
+  },
+
+  updateSettings: function() {
+    this.ui.input.minicolors('settings', {
+      defaultValue: this.defaultValue(),
+      swatches: this.getSwatches()
+    });
+
+    this.load();
   },
 
   load: function() {
-    this.ui.input.val(this.model.get(this.options.propertyName));
+    this.ui.input.minicolors('value',
+                             this.model.get(this.options.propertyName) || this.defaultValue());
+    this.$el.toggleClass('is_default', !this.model.has(this.options.propertyName));
+  },
+
+  refreshPicker: function() {
+    this.ui.input.minicolors('value', {});
   },
 
   getSwatches: function() {
-    return _.chain([this.options.defaultValue, this.options.swatches])
+    return _.chain([this.defaultValue(), this.options.swatches])
       .flatten()
       .uniq()
       .compact()
       .value();
   },
 
-  refreshPicker: function() {
-    this.ui.input.minicolors('value', {});
+  defaultValue: function () {
+    var bindingValue;
+
+    if (this.options.defaultValueBinding) {
+      bindingValue = this.model.get(this.options.defaultValueBinding);
+    }
+
+    if (typeof this.options.defaultValue === 'function') {
+      return this.options.defaultValue(bindingValue);
+    }
+    else if ('defaultValue' in this.options) {
+      return this.options.defaultValue;
+    }
+    else {
+      return bindingValue;
+    }
   }
 });

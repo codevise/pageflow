@@ -14,4 +14,12 @@
     top: 3px;
     left: 2px;
   }
+
+  &.is_default input {
+    color: #888;
+  }
+
+  .minicolors-focus input {
+    color: #000;
+  }
 }
