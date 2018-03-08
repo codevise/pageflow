@@ -16,19 +16,26 @@ pageflow.browser.agent = {
   },
 
   matchesSafari9: function() {
-    var matchers = [/Safari\//i, /Version\/9/i];
-
-    return _.all(matchers, function(matcher) {
-      return navigator.userAgent.match(matcher);
-    });
+    return this.matchesSafari() &&
+      this._matches(/Version\/9/i);
   },
 
   matchesSafari10: function() {
-    var matchers = [/Safari\//i, /Version\/10/i];
+    return this.matchesSafari() &&
+      this._matches(/Version\/10/i);
+  },
 
-    return _.all(matchers, function(matcher) {
-      return navigator.userAgent.match(matcher);
-    });
+  matchesSafari11: function() {
+    return this.matchesSafari() &&
+      this._matches(/Version\/11/i);
+  },
+
+  matchesSafari: function() {
+    // - Chrome also reports to be a Safari
+    // - Safari does not report to be a Chrome
+    // - Edge also reports to be a Safari, but also reports to be Chrome
+    return this._matches(/Safari\//i) &&
+      !this._matches(/Chrome/i);
   },
 
   /**
@@ -69,5 +76,9 @@ pageflow.browser.agent = {
    */
   matchesFacebookInAppBrowser: function() {
     return navigator.userAgent.match(/FBAN/) && navigator.userAgent.match(/FBAV/);
+  },
+
+  _matches: function(exp) {
+    return navigator.userAgent.match(exp);
   }
 };
