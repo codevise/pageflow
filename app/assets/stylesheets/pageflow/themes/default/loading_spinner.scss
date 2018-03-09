@@ -43,6 +43,9 @@ $loading-spinner-animate-background: true !default;
 /// Size of the actual glowing area
 $loading-spinner-glow-size: 140px !default;
 
+/// File extension of background and logo
+$loading-spinner-image-file-extension: "png" !default;
+
 @if not $custom-loading-spinner {
   .loading_spinner {
     // scss-lint:disable ImportantRule
@@ -66,7 +69,7 @@ $loading-spinner-glow-size: 140px !default;
         background-size: 100% 100%;
       } @else if $loading-spinner-background == "custom" {
         content: "";
-        background-image: image-url("pageflow/themes/#{$theme-name}/loading_spinner/background.png");
+        background-image: image-url("pageflow/themes/#{$theme-name}/loading_spinner/background.#{$loading-spinner-image-file-extension}");
 
         @if $loading-spinner-background-size == "logo" {
           background-size: $loading-spinner-logo-width $loading-spinner-logo-height;
@@ -113,7 +116,7 @@ $loading-spinner-glow-size: 140px !default;
         position: absolute;
 
         @if $loading-spinner-logo == "custom" {
-          background-image: image-url("pageflow/themes/#{$theme-name}/loading_spinner/logo.png");
+          background-image: image-url("pageflow/themes/#{$theme-name}/loading_spinner/logo.#{$loading-spinner-image-file-extension}");
         } @else {
           background-image: image-url("pageflow/themes/default/loading_spinner/logo.png");
         }

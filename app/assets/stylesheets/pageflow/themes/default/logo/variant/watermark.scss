@@ -64,12 +64,12 @@ $logo-watermark-variant-opacity: 0.3 !default;
 
     &:before {
       opacity: 1;
-      background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.png");
+      background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.#{$logo-image-file-extension}");
     }
 
     &:after {
       opacity: 0;
-      background-image: image-url("pageflow/themes/#{$theme-name}/logo_header_invert.png");
+      background-image: image-url("pageflow/themes/#{$theme-name}/logo_header_invert.#{$logo-image-file-extension}");
     }
   }
 
