@@ -38,6 +38,9 @@ $logo-mobile-height: 35px !default;
 /// Height of the logo in phone layout. (Watermark variant only)
 $logo-phone-height: 24px !default;
 
+/// File extension of logo_header and logo_header_invert image files
+$logo-image-file-extension: "png" !default;
+
 @import "./logo/variant/background_image";
 @import "./logo/variant/watermark";
 
