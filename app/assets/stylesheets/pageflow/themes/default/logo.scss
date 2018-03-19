@@ -35,8 +35,8 @@ $logo-height: 50px !default;
 /// Height of the logo. (Non-watermark variants only)
 $logo-mobile-height: 35px !default;
 
-/// Height of the logo in phone layout. (Watermark variant only)
-$logo-phone-height: 24px !default;
+/// Height of the logo in phone layout. (Defaults to 24px for watermark variant)
+$logo-phone-height: null !default;
 
 /// File extension of logo_header and logo_header_invert image files
 $logo-image-file-extension: "png" !default;
@@ -45,6 +45,8 @@ $logo-image-file-extension: "png" !default;
 @import "./logo/variant/watermark";
 
 @if $logo-variant == "watermark" {
+  $logo-phone-height: 24px !default;
+
   @include logo-variant-watermark(
     $top: $logo-top,
     $width: $logo-width,
@@ -60,6 +62,7 @@ $logo-image-file-extension: "png" !default;
     $width: $logo-relative-width,
     $height: $logo-height,
     $mobile-height: $logo-mobile-height,
+    $phone-height: $logo-phone-height,
     $phone-top: $logo-phone-top
   );
 }
