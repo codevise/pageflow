@@ -1,3 +1,9 @@
+$multimedia-alert-typography: () !default;
+
+$multimedia-alert-headline-typography: () !default;
+
+$multimedia-alert-close-button-typography: () !default;
+
 .multimedia_alert {
   display: none;
   position: absolute;
@@ -11,7 +17,6 @@
   z-index: 90;
   color: white;
   text-align: center;
-  font-family: "SourceSansPro";
   overflow: hidden;
 
   .multimedia_alert_box {
@@ -23,7 +28,13 @@
     width: 500px;
     height: 580px;
     max-width: 500px;
-    font-size: 1.4em;
+    @include standard-typography(
+      $multimedia-alert-typography,
+      (
+        font-family: "SourceSansPro",
+        font-size: 1.4em
+      )
+    );
 
     @media (max-width: 500px) {
       margin-left: -155px;
@@ -33,22 +44,32 @@
       height: 350px;
     }
 
-    .alert_headline, .close {
-      font-family: "SourceSansProLight";
-      text-transform: uppercase;
-      font-weight: normal;
-    }
-
     .alert_headline {
-      font-size: 2.2em;
+      @include standard-typography(
+        $multimedia-alert-headline-typography,
+        (
+          font-family: "SourceSansProLight",
+          font-size: 2.2em,
+          text-transform: uppercase,
+          font-weight: normal
+        )
+      );
     }
     .close {
-      font-size: 1.4em;
       border: 1px solid white;
       border-radius: 7px;
       padding: 16px 32px;
       color: white;
       text-decoration: none;
+      @include standard-typography(
+        $multimedia-alert-close-button-typography,
+        (
+          font-family: "SourceSansProLight",
+          font-size: 1.4em,
+          text-transform: uppercase,
+          font-weight: normal
+        )
+      );
 
       &:hover {
         text-decoration: underline;
