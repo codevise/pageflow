@@ -27,7 +27,7 @@ export default function(reduxModules, options) {
   return store;
 }
 
-function createReducer(reduxModules, options) {
+export function createReducer(reduxModules, options) {
   const reducers = reduxModules.reduce((result, reduxModule) => {
     return reduxModule.createReducers ? {
       ...result,

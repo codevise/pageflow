@@ -54,6 +54,7 @@ export function register() {
     reduxModules: [
       mediaReduxModule({
         hideControls: true,
+        autoplayWhenBackgroundMediaMuted: true,
         playsInNativePlayer: has('native video player')
       })
     ]
