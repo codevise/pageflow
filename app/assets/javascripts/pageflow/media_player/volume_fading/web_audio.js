@@ -12,10 +12,31 @@ pageflow.mediaPlayer.volumeFading.webAudio = function(player, audioContext) {
 
   var allowedMinValue = 0.000001;
 
-  player.volume = function(value) {
-    ensureGainNode();
+  var originalPlay = player.play;
 
+  if (audioContext.state === 'suspended') {
+    pageflow.events.on('background_media:unmute', function() {
+      audioContext.resume();
+    });
+
+    audioContext.addEventListener('statechange', function() {
+      player.volume(currentValue);
+    });
+  }
+
+  player.play = function(/* arguments */) {
+    return originalPlay.apply(player, arguments);
+  };
+
+  player.volume = function(value) {
     if (typeof value !== 'undefined') {
+      if (audioContext.state === 'suspended') {
+        currentValue = ensureInAllowedRange(value);
+        return;
+      }
+
+      ensureGainNode();
+
       cancel();
       currentValue = ensureInAllowedRange(value);
 
@@ -27,6 +48,11 @@ pageflow.mediaPlayer.volumeFading.webAudio = function(player, audioContext) {
   };
 
   player.fadeVolume = function(value, duration) {
+    if (audioContext.state === 'suspended') {
+      currentValue = ensureInAllowedRange(value);
+      return new $.Deferred().resolve().promise();
+    }
+
     ensureGainNode();
 
     cancel();
