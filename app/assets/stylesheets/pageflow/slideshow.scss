@@ -63,7 +63,6 @@
 
     z-index: 2;
     overflow: hidden;
-    @include transition(0.5s ease);
   }
 
   .page.hidden_by_overlay .content {
