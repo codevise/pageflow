@@ -1,0 +1,27 @@
+/// Color of the gradient
+/// @group page-colors
+$page-shadow-color: #000 !default;
+
+/// Color of the gradient on inverted pages
+/// @group page-colors
+$page-shadow-inverted-color: #fff !default;
+
+.page {
+  .shadow {
+    @include shadow-start($page-shadow-color);
+  }
+
+  &.invert {
+    .shadow {
+      @include shadow-start($page-shadow-inverted-color);
+    }
+  }
+
+  &.text_position_right .shadow {
+    @include shadow-end($page-shadow-color);
+  }
+
+  &.invert.text_position_right .shadow {
+    @include shadow-end($page-shadow-inverted-color);
+  }
+}

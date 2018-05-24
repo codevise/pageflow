@@ -28,12 +28,6 @@
     background-color: #fff;
   }
 
-  &.invert.text_position_right  {
-    .shadow {
-      @include shadow-right(#fff);
-    }
-  }
-
   .content {
     width: 100%;
     position: relative;

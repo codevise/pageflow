@@ -55,14 +55,6 @@ $page-background-color: #000 !default;
 /// @group page-colors
 $page-inverted-background-color: #fff !default;
 
-/// Color of the gradient
-/// @group page-colors
-$page-shadow-color: #000 !default;
-
-/// Color of the gradient on inverted pages
-/// @group page-colors
-$page-shadow-inverted-color: #fff !default;
-
 // Deprecated. Use typography variables above.
 
 $page-font-family: $standard-font !default;
@@ -93,14 +85,12 @@ $page-content-text-line-height: 1.5em !default;
 
 @import "./page/anchors";
 @import "./page/paddings";
+@import "./page/scroller";
+@import "./page/shadow";
 
 @import "./page/line_lengths";
 
 .page {
-  .scroller {
-    @extend %pageflow_widget_margin_right !optional;
-  }
-
   @include typography(
     $page-typography,
     (
@@ -108,8 +98,18 @@ $page-content-text-line-height: 1.5em !default;
       font-size: $page-font-size
     )
   );
+
   color: $page-text-color;
   background-color: $page-background-color;
+
+  &.invert {
+    color: $page-inverted-text-color;
+    background-color: $page-inverted-background-color;
+
+    h2 .title {
+      color: $page-inverted-title-color;
+    }
+  }
 
   .content {
     font-size: $page-content-font-size;
@@ -117,31 +117,6 @@ $page-content-text-line-height: 1.5em !default;
     @include phone {
       font-size: $page-content-phone-font-size;
     }
-  }
-
-  .shadow {
-    @include shadow-start($page-shadow-color);
-  }
-
-  &.invert {
-    color: $page-inverted-text-color;
-    background-color: $page-inverted-background-color;
-
-    .shadow {
-      @include shadow-start($page-shadow-inverted-color);
-    }
-
-    h2 .title {
-      color: $page-inverted-title-color;
-    }
-  }
-
-  &.text_position_right .shadow {
-    @include shadow-end($page-shadow-color);
-  }
-
-  &.invert.text_position_right .shadow {
-    @include shadow-end($page-shadow-inverted-color);
   }
 
   h2 {
