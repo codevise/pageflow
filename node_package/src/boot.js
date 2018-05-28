@@ -3,6 +3,7 @@ import {registry as widgetTypeRegistry} from 'registerWidgetType';
 
 import createStore from 'createStore';
 
+import cookieNotice from 'cookieNotice';
 import storylinesModule from 'storylines';
 import chaptersModule from 'chapters';
 import pagesModule, {createPageType} from 'pages';
@@ -42,6 +43,7 @@ export default function(pageflow) {
     pages: collections.pages,
     widgets: isEditor ? pageflow.entry.widgets : seed.widgets,
 
+    cookies: pageflow.cookies,
     hideText: pageflow.hideText,
     events: pageflow.events,
     settings: pageflow.settings,
@@ -51,6 +53,7 @@ export default function(pageflow) {
   };
 
   const store = createStore([
+    cookieNotice,
     i18nModule,
     entryModule,
     currentModule,
