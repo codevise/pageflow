@@ -4,6 +4,8 @@ pageflow.Visited = function(entryId, pages, events, cookies) {
   var unvisitedPages = [];
 
   function init() {
+    pageflow.cookieNotice.request();
+
     if (!cookies.hasItem(cookieName)) {
       storeVisitedPageIds(getAllIds());
     }
