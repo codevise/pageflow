@@ -27,7 +27,8 @@ import {
 } from 'utils/selectors';
 
 import {
-  widgetAttributes
+  widgetAttributes,
+  editingWidget
 } from 'widgets/selectors';
 
 export {
@@ -46,5 +47,6 @@ export {
 
   prop,
 
-  widgetAttributes
+  widgetAttributes,
+  editingWidget
 };
