@@ -69,7 +69,7 @@ module Pageflow
       end
     end
 
-    describe '#entry_theming_seed' do
+    describe '#entry_theme_seed' do
       it 'includes page_change_by_scrolling theme option' do
         pageflow_configure do |config|
           config.themes.register(:custom, no_page_change_by_scrolling: true)
@@ -79,7 +79,7 @@ module Pageflow
                                             theme_name: 'custom'
                                           }))
 
-        result = helper.entry_theming_seed(entry)
+        result = helper.entry_theme_seed(entry)
 
         expect(result[:page_change_by_scrolling]).to eq(false)
       end
