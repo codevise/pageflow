@@ -34,6 +34,7 @@
       <%= theming.input :imprint_link_url %>
       <%= theming.input :copyright_link_label %>
       <%= theming.input :copyright_link_url %>
+      <%= theming.input :privacy_link_url %>
 
       <% account_config.admin_form_inputs.find_all_for(:theming).each do |form_input| %>
         <%= form_input.build(theming) %>

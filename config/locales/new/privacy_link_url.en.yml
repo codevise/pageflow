@@ -1,0 +1,5 @@
+en:
+  activerecord:
+    attributes:
+      "pageflow/theming":
+        privacy_link_url: "Privacy link URL"

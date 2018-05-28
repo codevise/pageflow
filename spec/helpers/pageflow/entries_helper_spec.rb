@@ -168,5 +168,55 @@ module Pageflow
         expect(result).to include("p=#{Pageflow::VERSION}")
       end
     end
+
+    describe '#entry_global_links' do
+      it 'does not output links by default' do
+        theming = create(:theming)
+        entry = PublishedEntry.new(create(:entry, theming: theming))
+
+        result = helper.entry_global_links(entry)
+
+        expect(result).not_to have_selector('a')
+      end
+
+      it 'includes imprint link if configured' do
+        theming = create(:theming,
+                         imprint_link_label: 'Imprint',
+                         imprint_link_url: 'https://example.com/legal')
+        entry = PublishedEntry.new(create(:entry, theming: theming))
+
+        result = helper.entry_global_links(entry)
+
+        expect(result).to have_selector('a[href="https://example.com/legal"]',
+                                        text: 'Imprint')
+      end
+
+      it 'includes copyright link if configured' do
+        theming = create(:theming,
+                         copyright_link_label: 'Copyright',
+                         copyright_link_url: 'https://example.com/copyright')
+        entry = PublishedEntry.new(create(:entry, theming: theming))
+
+        result = helper.entry_global_links(entry)
+
+        expect(result).to have_selector('a[href="https://example.com/copyright"]',
+                                        text: 'Copyright')
+      end
+
+      it 'includes privacy link if configured' do
+        theming = create(:theming,
+                         privacy_link_url: 'https://example.com/privacy')
+        entry = PublishedEntry.new(create(:entry,
+                                          :published,
+                                          theming: theming,
+                                          published_revision_attributes: {
+                                            locale: 'de'
+                                          }))
+
+        result = helper.entry_global_links(entry)
+
+        expect(result).to have_selector('a[href="https://example.com/privacy?lang=de"]')
+      end
+    end
   end
 end

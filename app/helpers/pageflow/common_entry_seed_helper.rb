@@ -10,6 +10,7 @@ module Pageflow
       {
         locale: entry.locale,
         slug: entry.slug,
+        theming: entry.theming.as_json(only: [:privacy_link_url]),
         page_types: PageTypesSeed.new(config).as_json,
         file_url_templates: FileUrlTemplatesSeed.new(config).as_json,
         file_model_types: config.file_types

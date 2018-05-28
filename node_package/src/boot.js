@@ -4,6 +4,7 @@ import {registry as widgetTypeRegistry} from 'registerWidgetType';
 import createStore from 'createStore';
 
 import cookieNotice from 'cookieNotice';
+import themingModule from 'theming';
 import storylinesModule from 'storylines';
 import chaptersModule from 'chapters';
 import pagesModule, {createPageType} from 'pages';
@@ -37,6 +38,7 @@ export default function(pageflow) {
 
     pageTypes: pageTypeRegistry,
 
+    theming: seed.theming,
     files: collections.files || {},
     storylines: collections.storylines,
     chapters: collections.chapters,
@@ -55,6 +57,7 @@ export default function(pageflow) {
   const store = createStore([
     cookieNotice,
     i18nModule,
+    themingModule,
     entryModule,
     currentModule,
     storylinesModule,
