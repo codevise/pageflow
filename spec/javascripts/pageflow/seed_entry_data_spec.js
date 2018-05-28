@@ -4,7 +4,7 @@ describe('pageflow.SeedEntryData', function() {
   describe('#getThemingOption', function() {
     it('returns option value by name', function() {
       var entryData = new p.SeedEntryData({
-        theming: {
+        theme: {
           page_change_by_scrolling: true
         }
       });

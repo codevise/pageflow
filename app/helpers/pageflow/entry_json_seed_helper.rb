@@ -11,7 +11,7 @@ module Pageflow
                                         entry: entry)).html_safe
     end
 
-    def entry_theming_seed(entry)
+    def entry_theme_seed(entry)
       theme = entry.theme
       {
         change_to_parent_page_at_storyline_boundary: theme.change_to_parent_page_at_storyline_boundary?,
