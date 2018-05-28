@@ -8,6 +8,15 @@ pageflow.EditWidgetView = Backbone.Marionette.ItemView.extend({
     }
   },
 
+  initialize: function() {
+    this.model.set('editing', true);
+  },
+
+  onClose: function() {
+    Backbone.Marionette.ItemView.prototype.onClose.call(this);
+    this.model.set('editing', false);
+  },
+
   onRender: function() {
     var configurationEditor = this.model.widgetType().createConfigurationEditorView({
       model: this.model.configuration,
