@@ -54,6 +54,19 @@ module Pageflow
         expect(result[:pageflow][:public][:some]).to eq('es_text')
         expect(result[:pageflow][:public][:some_new]).to eq('new')
       end
+
+      it 'ignores nils in translations' do
+        translation(:es, 'pageflow.public.some.key', nil)
+        translation(I18n.default_locale, 'pageflow.public.some.key', 'default_text')
+
+        entry = PublishedEntry.new(create(:entry,
+                                          :published,
+                                          published_revision_attributes: {locale: 'es'}))
+
+        result = helper.public_i18n_translations(entry)
+
+        expect(result[:pageflow][:public][:some][:key]).to eq('default_text')
+      end
     end
   end
 end
