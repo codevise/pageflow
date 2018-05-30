@@ -49,3 +49,9 @@ $cookie-notice-bar-dismiss-button-text-color: #fff;
     padding: 5px 10px;
   }
 }
+
+@include pageflow-widget-margin("cookie_notice_bar_visible", "bottom") {
+  @include desktop {
+    margin-bottom: 60px;
+  }
+}

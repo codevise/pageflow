@@ -1,11 +1,12 @@
 import {register as registerCookieNoticeBar} from './components/CookieNoticeBar';
 
-import {request, DISMISS} from './actions';
+import {request, DISMISS, REQUEST} from './actions';
+import {isCookieNoticeVisible} from './selectors';
 
 import createReducer from './createReducer';
 
 import {takeEvery} from 'redux-saga';
-import {call} from 'redux-saga/effects';
+import {take, call, select, cps} from 'redux-saga/effects';
 
 const COOKIE_KEY = 'cookie_notice_dismissed';
 
@@ -26,8 +27,17 @@ export default {
     };
   },
 
-  createSaga: function({cookies}) {
+  createSaga: function({widgetsApi, cookies}) {
     return function*() {
+      yield takeEvery(REQUEST, function*() {
+        if (yield select(isCookieNoticeVisible)) {
+          const resetWidgetMargin = yield cps(ensureWidgetMarginBottom, widgetsApi);
+
+          yield take(DISMISS);
+          yield call(resetWidgetMargin);
+        }
+      });
+
       yield takeEvery(DISMISS, function*() {
         yield call(function() {
           cookies.setItem(COOKIE_KEY, true);
@@ -36,6 +46,13 @@ export default {
     };
   }
 };
+
+function ensureWidgetMarginBottom(widgetsApi, callback) {
+  widgetsApi.use({
+    name: 'cookie_notice_bar_visible',
+    insteadOf: 'cookie_notice_bar'
+  }, reset => callback(null, reset));
+}
 
 export function registerWidgetTypes() {
   registerCookieNoticeBar();
