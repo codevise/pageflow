@@ -43,6 +43,10 @@ $page-text-color: #fff !default;
 /// @group page-colors
 $page-inverted-text-color: #000 !default;
 
+/// Color of title on inverted pages
+/// @group page-colors
+$page-inverted-title-color: null !default;
+
 /// Background-color of pages
 /// @group page-colors
 $page-background-color: #000 !default;
@@ -125,6 +129,10 @@ $page-content-text-line-height: 1.5em !default;
 
     .shadow {
       @include shadow-start($page-shadow-inverted-color);
+    }
+
+    h2 .title {
+      color: $page-inverted-title-color;
     }
   }
 
