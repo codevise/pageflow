@@ -7,7 +7,7 @@ $slim-player-controls-typography: $player-controls-typography !default;
 
 %player_controls {
   &-container,
-  &-background {
+  &-background::after {
     @include transition(opacity 0.2s linear, visibility 0.2s linear);
   }
 

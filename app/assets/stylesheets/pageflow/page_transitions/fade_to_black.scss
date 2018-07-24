@@ -37,7 +37,6 @@ section.fade_to_black {
     opacity: 0;
     background-color: black;
     -webkit-backface-visibility: hidden;
-    @include transition(opacity 1s ease 1s);
   }
 
   &.invert .backgroundArea {
@@ -53,7 +52,6 @@ section.fade_to_black {
   }
   &.animate-in-backwards .backgroundArea{
     opacity: 0;
-    @include transition(1s ease 1s);
   }
   &.animate-out-backwards .backgroundArea{
     opacity: 0;
@@ -66,14 +64,8 @@ section.fade_to_black {
   }
 
   .content {
-    @include transition(1s ease);
     -webkit-backface-visibility: hidden;
     opacity: 0;
-  }
-
-  &.active .backgroundArea {
-    opacity: 1;
-    @include transition(1s ease 1s);
   }
 
   &.active div.content {
@@ -95,7 +87,6 @@ section.fade_to_black {
   &.animate-in-backwards {
     .content {
       opacity: 0;
-      @include transition(1s ease 1s);
     }
   }
   &.animate-out-backwards {
