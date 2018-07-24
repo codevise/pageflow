@@ -1,35 +1,55 @@
-pageflow.visited = (function() {
+pageflow.Visited = function(entryId, pages, events, cookies) {
+  var cookieName = '_pageflow_visited';
 
-  var name, cookies = pageflow.cookies;
-
-  $(function() {
-    name = '_pageflow_' + pageflow.entryId + '_visited';
-
-    if (pageflow.visited.enabled) {
-      init();
-    }
-  });
+  var unvisitedPages = [];
 
   function init() {
-    if (!cookies.hasItem(name)) {
-      cookies.setItem(name, _getAllIds(), Infinity);
+    if (!cookies.hasItem(cookieName)) {
+      storeVisitedPageIds(getAllIds());
+    }
+    else {
+      var visitedIds = getVisitedPageIds();
+      unvisitedPages = _.difference(getAllIds(), visitedIds);
     }
 
-    pageflow.ready.then(function() {
-      pageflow.slides.on('pageactivate', function (e) {
-        var id = e.target.getAttribute('id');
-        var ids = _getCookieIds();
+    events.on('page:change', function (page) {
+      var id = page.getPermaId();
+      var ids = getVisitedPageIds();
 
-        if (ids.indexOf(id) < 0) {
-          ids.push(id);
-        }
+      if (ids.indexOf(id) < 0) {
+        ids.push(id);
+      }
 
-        cookies.setItem(name, ids, Infinity);
-      });
+      storeVisitedPageIds(ids);
     });
   }
 
-  function _getCookieIds() {
+  function migrateLegacyCookie() {
+    var legacyCookieName = '_pageflow_' + entryId + '_visited';
+
+    if (cookies.hasItem(legacyCookieName)) {
+      var ids = getCookieIds(legacyCookieName);
+      storeVisitedPageIds(_.uniq(ids));
+
+      cookies.removeItem(legacyCookieName);
+    }
+  }
+
+  function getAllIds() {
+    return pages.map(function(page) {
+      return page.perma_id;
+    });
+  }
+
+  function storeVisitedPageIds(ids) {
+    cookies.setItem(cookieName, ids, Infinity, location.pathname);
+  }
+
+  function getVisitedPageIds() {
+    return getCookieIds(cookieName);
+  }
+
+  function getCookieIds(name) {
     if (cookies.hasItem(name) && !!cookies.getItem(name)) {
       return cookies.getItem(name).split(',').map(function(id) {
         return parseInt(id, 10);
@@ -38,19 +58,27 @@ pageflow.visited = (function() {
     return [];
   }
 
-  function _getAllIds() {
-    return pageflow.pages.map(function(page) {
-      return page.perma_id;
-    });
-  }
-
   return {
+    init: function() {
+      migrateLegacyCookie();
+      init();
+    },
+
     getUnvisitedPages: function() {
-      if (pageflow.visited.enabled) {
-        var visitedIds = _getCookieIds();
-        return visitedIds.length ? _.difference(_getAllIds(), visitedIds) : visitedIds;
-      }
-      return [];
+      return unvisitedPages;
     }
   };
-}());
+};
+
+pageflow.Visited.setup = function() {
+  pageflow.visited = new pageflow.Visited(
+    pageflow.entryId,
+    pageflow.pages,
+    pageflow.events,
+    pageflow.cookies
+  );
+
+  if (pageflow.Visited.enabled) {
+    pageflow.visited.init();
+  }
+};
