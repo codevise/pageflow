@@ -59,6 +59,20 @@ prepend_to_file('config/initializers/pageflow.rb', <<-END)
   ActiveAdmin.application.load_paths.unshift(Dir[Rails.root.join('app/admin')].first)\n
 END
 
+# Add required files for test theme
+
+copy_file('test_theme.scss', 'app/assets/stylesheets/pageflow/themes/test_theme.scss')
+copy_file('test_theme_preview.png', 'app/assets/images/pageflow/themes/test_theme/preview.png')
+copy_file('test_theme_preview.png', 'app/assets/images/pageflow/themes/test_theme/preview_thumbnail.png')
+
+# Normally theme stylesheets are added to the precompile list
+# automatically. Since the test_theme is not yet registered when the
+# environment is loaded, we need to add its stylesheet manually.
+
+append_to_file('config/initializers/assets.rb', <<-END)
+  Rails.application.config.assets.precompile += %w( pageflow/themes/test_theme.css )
+END
+
 # Create database tables for fake hosted files and revision components.
 
 copy_file('create_test_hosted_file.rb', 'db/migrate/00000000000000_create_test_hosted_file.rb')
