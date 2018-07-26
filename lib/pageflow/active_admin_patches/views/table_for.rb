@@ -30,7 +30,7 @@ module Pageflow
             type = value ? types.first : types.last
 
             if type
-              status_tag(status, type, class: name.to_s.gsub(/\?$/, ''), label: text)
+              status_tag(status, class: [type, name.to_s.gsub(/\?$/, '')].join(' '), label: text)
             else
               text
             end
