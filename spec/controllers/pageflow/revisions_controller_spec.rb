@@ -16,7 +16,7 @@ module Pageflow
         revision = create(:revision, entry: entry)
 
         sign_in(user, scope: :user)
-        get(:show, id: revision)
+        get(:show, params: {id: revision})
 
         expect(response.status).to eq(200)
       end
@@ -27,7 +27,7 @@ module Pageflow
         revision = create(:revision, entry: entry)
 
         sign_in(user, scope: :user)
-        get(:show, id: revision)
+        get(:show, params: {id: revision})
 
         expect(response.status).to eq(302)
       end
@@ -49,7 +49,7 @@ module Pageflow
         create(:widget, subject: revision, type_name: 'test_widget')
 
         sign_in(user, scope: :user)
-        get(:show, id: revision)
+        get(:show, params: {id: revision})
 
         expect(response.body).to have_selector('div.test_widget')
         expect(response.body).to have_meta_tag.with_name('some_test')
@@ -72,7 +72,7 @@ module Pageflow
         create(:widget, subject: revision, type_name: 'test_widget')
 
         sign_in(user, scope: :user)
-        get(:show, id: revision)
+        get(:show, params: {id: revision})
 
         expect(response.body).not_to have_selector('div.test_widget')
       end
@@ -82,7 +82,7 @@ module Pageflow
         revision = create(:revision)
 
         sign_in(user, scope: :user)
-        get(:show, id: revision)
+        get(:show, params: {id: revision})
 
         expect(response.status).to redirect_to(main_app.admin_root_path)
       end
@@ -90,7 +90,7 @@ module Pageflow
       it 'requires authentication' do
         revision = create(:revision)
 
-        get(:show, id: revision)
+        get(:show, params: {id: revision})
 
         expect(response).to redirect_to(main_app.new_user_session_path)
       end
@@ -102,7 +102,7 @@ module Pageflow
         entry = create(:entry, with_publisher: user)
 
         sign_in(user, scope: :user)
-        delete(:depublish_current, entry_id: entry)
+        delete(:depublish_current, params: {entry_id: entry})
 
         expect(response.status).to redirect_to(main_app.admin_entry_path(entry))
       end
@@ -112,7 +112,7 @@ module Pageflow
         entry = create(:entry, :published, with_publisher: user)
 
         sign_in(user, scope: :user)
-        delete(:depublish_current, entry_id: entry)
+        delete(:depublish_current, params: {entry_id: entry})
 
         expect(entry).not_to be_published
       end
@@ -123,7 +123,7 @@ module Pageflow
         entry = create(:entry, account: account, with_editor: user)
 
         sign_in(user, scope: :user)
-        delete(:depublish_current, entry_id: entry)
+        delete(:depublish_current, params: {entry_id: entry})
 
         expect(response.status).to redirect_to(main_app.admin_root_path)
       end
@@ -131,7 +131,7 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        delete(:depublish_current, entry_id: entry)
+        delete(:depublish_current, params: {entry_id: entry})
 
         expect(response).to redirect_to(main_app.new_user_session_path)
       end

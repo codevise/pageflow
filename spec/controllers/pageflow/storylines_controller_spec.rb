@@ -13,7 +13,7 @@ module Pageflow
           sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create,
-               entry_id: entry, storyline: attributes_for(:valid_storyline), format: 'json')
+               params: {entry_id: entry, storyline: attributes_for(:valid_storyline)}, format: 'json')
         end.to change { entry.draft.storylines.count }.by(1)
       end
 
@@ -22,7 +22,7 @@ module Pageflow
         account = create(:account, with_previewer: user)
         entry = create(:entry, account: account)
 
-        post(:create, entry_id: entry, storyline: attributes_for(:valid_storyline), format: 'json')
+        post(:create, params: {entry_id: entry, storyline: attributes_for(:valid_storyline)}, format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -39,7 +39,7 @@ module Pageflow
           sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:scaffold,
-               entry_id: entry, storyline: attributes_for(:valid_storyline), format: 'json')
+               params: {entry_id: entry, storyline: attributes_for(:valid_storyline)}, format: 'json')
         end.to change { entry.draft.storylines.count }.by(1)
       end
 
@@ -50,7 +50,7 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:scaffold,
-             entry_id: entry, storyline: attributes_for(:valid_storyline), format: 'json')
+             params: {entry_id: entry, storyline: attributes_for(:valid_storyline)}, format: 'json')
         storyline = entry.draft.storylines.reorder('id').last
 
         expect(storyline.chapters).not_to be_empty
@@ -63,7 +63,7 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:scaffold,
-             entry_id: entry, storyline: attributes_for(:valid_storyline), format: 'json')
+             params: {entry_id: entry, storyline: attributes_for(:valid_storyline)}, format: 'json')
 
         expect(json_response(path: [:storyline, :id])).to be_present
         expect(json_response(path: [:chapter, :id])).to be_present
@@ -79,9 +79,11 @@ module Pageflow
           sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:scaffold,
-               entry_id: entry,
-               storyline: attributes_for(:valid_storyline, position: 1),
-               depth: 'page',
+               params: {
+                 entry_id: entry,
+                 storyline: attributes_for(:valid_storyline, position: 1),
+                 depth: 'page'
+               },
                format: 'json')
           storyline = entry.draft.storylines.reorder('id').last
           chapter = storyline.chapters.last
@@ -96,9 +98,11 @@ module Pageflow
           sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:scaffold,
-               entry_id: entry,
-               storyline: attributes_for(:valid_storyline),
-               depth: 'page',
+               params: {
+                 entry_id: entry,
+                 storyline: attributes_for(:valid_storyline),
+                 depth: 'page'
+               },
                format: 'json')
 
           expect(json_response(path: [:page, :id])).to be_present
@@ -112,8 +116,10 @@ module Pageflow
 
         sign_in(user, scope: :user)
         post(:scaffold,
-             entry_id: entry,
-             storyline: attributes_for(:valid_storyline),
+             params: {
+               entry_id: entry,
+               storyline: attributes_for(:valid_storyline)
+             },
              format: 'json')
 
         expect(response.status).to eq(403)
@@ -123,8 +129,10 @@ module Pageflow
         entry = create(:entry)
 
         post(:scaffold,
-             entry_id: entry,
-             storyline: attributes_for(:valid_storyline),
+             params: {
+               entry_id: entry,
+               storyline: attributes_for(:valid_storyline)
+             },
              format: 'json')
 
         expect(response.status).to eq(401)
@@ -140,8 +148,10 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         patch(:update,
-              id: storyline,
-              storyline: attributes_for(:valid_storyline, configuration: {some: 'updated value'}),
+              params: {
+                id: storyline,
+                storyline: attributes_for(:valid_storyline, configuration: {some: 'updated value'})
+              },
               format: 'json')
 
         expect(storyline.reload.configuration['some']).to eq('updated value')
@@ -154,7 +164,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
 
         sign_in(user, scope: :user)
-        patch(:update, id: storyline, storyline: attributes_for(:valid_storyline), format: 'json')
+        patch(:update, params: {id: storyline, storyline: attributes_for(:valid_storyline)}, format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -162,7 +172,7 @@ module Pageflow
       it 'requires authentication' do
         storyline = create(:storyline)
 
-        patch(:update, id: storyline, storyline: attributes_for(:valid_storyline), format: 'json')
+        patch(:update, params: {id: storyline, storyline: attributes_for(:valid_storyline)}, format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -176,8 +186,8 @@ module Pageflow
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
-        put(:order, entry_id: entry, ids: [storylines.first.id,
-                                           storylines.last.id], format: 'json')
+        put(:order, params: {entry_id: entry, ids: [storylines.first.id,
+                                           storylines.last.id]}, format: 'json')
 
         expect(response.status).to eq(204)
       end
@@ -189,8 +199,8 @@ module Pageflow
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
-        put(:order, entry_id: entry, ids: [storylines.first.id,
-                                           storylines.last.id], format: 'json')
+        put(:order, params: {entry_id: entry, ids: [storylines.first.id,
+                                           storylines.last.id]}, format: 'json')
 
         expect(storylines.first.reload.position).to eq(0)
         expect(storylines.last.reload.position).to eq(1)
@@ -203,7 +213,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
 
         sign_in(user, scope: :user)
-        put(:order, entry_id: entry, ids: [storyline.id], format: 'json')
+        put(:order, params: {entry_id: entry, ids: [storyline.id]}, format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -211,7 +221,7 @@ module Pageflow
       it 'requires authentication' do
         storyline = create(:storyline)
 
-        put(:order, entry_id: storyline.entry, ids: [storyline.id], format: 'json')
+        put(:order, params: {entry_id: storyline.entry, ids: [storyline.id]}, format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -227,7 +237,7 @@ module Pageflow
         acquire_edit_lock(user, entry)
 
         expect do
-          delete(:destroy, id: storyline, format: 'json')
+          delete(:destroy, params: {id: storyline}, format: 'json')
         end.to change { entry.draft.storylines.count }.by(-1)
       end
 
@@ -238,7 +248,7 @@ module Pageflow
         storyline = create(:storyline, revision: entry.draft)
 
         sign_in(user, scope: :user)
-        delete(:destroy, id: storyline, format: 'json')
+        delete(:destroy, params: {id: storyline}, format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -246,7 +256,7 @@ module Pageflow
       it 'requires authentication' do
         storyline = create(:storyline)
 
-        delete(:destroy, id: storyline, format: 'json')
+        delete(:destroy, params: {id: storyline}, format: 'json')
 
         expect(response.status).to eq(401)
       end

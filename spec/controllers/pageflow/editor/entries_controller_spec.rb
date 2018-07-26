@@ -30,7 +30,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
 
         sign_in(user, scope: :user)
-        get(:seed, id: entry, format: 'json')
+        get(:seed, params: {id: entry}, format: 'json')
 
         expect(response.status).to eq(200)
         expect { JSON.parse(response.body) }.not_to raise_error
@@ -41,7 +41,7 @@ module Pageflow
         entry = create(:entry, with_previewer: user)
 
         sign_in(user, scope: :user)
-        get(:seed, id: entry, format: 'json')
+        get(:seed, params: {id: entry}, format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -49,7 +49,7 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        get(:seed, id: entry, format: 'json')
+        get(:seed, params: {id: entry}, format: 'json')
 
         expect(response.status).to eq(401)
       end
