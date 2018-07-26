@@ -152,21 +152,21 @@ module Pageflow
       user = InvitedUser.find(params[:id])
       authorize!(:read, user)
       user.send_invitation!
-      redirect_to :back, notice: I18n.t('pageflow.admin.users.resent_invitation')
+      redirect_back fallback_location: admin_user_path(user), notice: I18n.t('pageflow.admin.users.resent_invitation')
     end
 
     member_action :suspend, method: :post do
       user = User.find(params[:id])
       authorize!(:suspend, user)
       user.suspend!
-      redirect_to :back, notice: I18n.t('pageflow.admin.users.suspended')
+      redirect_back fallback_location: admin_user_path(user), notice: I18n.t('pageflow.admin.users.suspended')
     end
 
     member_action :unsuspend, method: :post do
       user = User.find(params[:id])
       authorize!(:suspend, user)
       user.unsuspend!
-      redirect_to :back, notice: I18n.t('pageflow.admin.users.unsuspended')
+      redirect_back fallback_location: admin_user_path(user), notice: I18n.t('pageflow.admin.users.unsuspended')
     end
 
     controller do
