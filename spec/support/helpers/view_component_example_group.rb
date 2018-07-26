@@ -28,6 +28,11 @@ module ViewComponentExampleGroup
         end
       end
   end
+
+  def stub_active_admin_config
+    resource = ActiveAdmin.application.namespace(:admin).resource_for(User)
+    allow(helper).to receive(:active_admin_config).and_return(resource)
+  end
 end
 
 RSpec.configure do |config|

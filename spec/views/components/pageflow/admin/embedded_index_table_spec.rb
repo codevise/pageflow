@@ -5,6 +5,8 @@ module Pageflow
     before do
       helper.extend(ActiveAdmin::ViewHelpers)
       allow(helper).to receive(:url_for)
+
+      stub_active_admin_config
     end
 
     it 'renders table of entries' do
