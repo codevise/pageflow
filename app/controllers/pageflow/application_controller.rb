@@ -17,7 +17,7 @@ module Pageflow
 
     rescue_from ActionController::UnknownFormat do |exception|
       debug_log_with_backtrace(exception)
-      render(status: 404, text: 'Not found')
+      render(status: 404, plain: 'Not found')
     end
 
     rescue_from ActiveRecord::RecordNotFound do |exception|
