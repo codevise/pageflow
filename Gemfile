@@ -28,3 +28,6 @@ gem 'bootsnap', require: false
 group :development do
   gem 'listen'
 end
+
+# Required to make imports in Active Admin stylesheet work
+gem 'sass-rails'
