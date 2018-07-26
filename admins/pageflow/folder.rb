@@ -43,7 +43,7 @@ module Pageflow
       end
 
       def permitted_params
-        result = params.permit(folder: [:name, :account_id])
+        result = params.permit(folder: [:name, :account_id]).to_h
         restrict_attributes(result[:folder]) if result[:folder]
         result
       end

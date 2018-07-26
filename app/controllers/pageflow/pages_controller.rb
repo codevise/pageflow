@@ -53,7 +53,7 @@ module Pageflow
     private
 
     def page_params
-      configuration = params.require(:page)[:configuration].try(:permit!)
+      configuration = params.require(:page)[:configuration].try(:permit!) || {}
       params.require(:page).permit(:template, :position, :title).merge(:configuration => configuration)
     end
   end

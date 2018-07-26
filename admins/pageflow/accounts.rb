@@ -84,14 +84,14 @@ module Pageflow
 
       def create
         @account = Account.new(permitted_params[:account])
-        @account.build_default_theming(permitted_params[:account][:default_theming_attributes])
+        @account.build_default_theming(permitted_params.fetch(:account, {})[:default_theming_attributes])
         super
         update_widgets
       end
 
       def update
         update! do |success, failure|
-          success.html { redirect_to(admin_account_path(resource, params.slice(:tab))) }
+          success.html { redirect_to(admin_account_path(resource, params.permit(:tab))) }
         end
         update_widgets
       end
@@ -101,7 +101,7 @@ module Pageflow
       end
 
       def widgets_params
-        params.fetch(:widgets, {}).map do |role, type_name|
+        (params[:widgets].try(:permit!).to_h || {}).map do |role, type_name|
           {role: role, type_name: type_name}
         end
       end

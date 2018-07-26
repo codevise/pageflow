@@ -62,8 +62,7 @@ module Pageflow
     private
 
     def storyline_params
-      configuration = params.require(:storyline)[:configuration].try(:permit!)
-      params.require(:storyline).permit.merge(configuration: configuration)
+      {configuration: params.dig(:storyline, :configuration).try(:permit!)}
     end
   end
 end

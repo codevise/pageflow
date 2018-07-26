@@ -64,7 +64,7 @@ module Pageflow
     private
 
     def chapter_params
-      configuration = params.require(:chapter)[:configuration].try(:permit!)
+      configuration = params.require(:chapter)[:configuration].try(:permit!) || {}
 
       params.require(:chapter)
         .permit(:position, :title)
