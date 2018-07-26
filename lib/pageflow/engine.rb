@@ -17,6 +17,7 @@ require 'resque_scheduler'
 require 'active_admin'
 require 'activeadmin-searchable_select'
 
+require 'bourbon'
 require 'jquery-layout-rails'
 require 'backbone-rails'
 require 'marionette-rails'
