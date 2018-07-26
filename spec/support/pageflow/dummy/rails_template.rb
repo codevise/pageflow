@@ -36,16 +36,13 @@ gsub_file('app/assets/javascripts/application.js', %r'//=.*', '')
 # Recreate db. Ignore if it does not exist.
 
 log :rake, 'db:drop:all'
-in_root { run('rake db:drop:all 2> /dev/null', verbose: false) }
-
+in_root { run('rake db:environment:set db:drop:all 2> /dev/null', verbose: false) }
 rake 'db:create:all'
 
 # Install pageflow and the tested engine via their generators.
 
 generate 'pageflow:install', '--force'
 generate "#{ENV['PAGEFLOW_PLUGIN_ENGINE']}:install", '--force' if ENV['PAGEFLOW_PLUGIN_ENGINE']
-
-run 'rm -r spec'
 
 # Devise needs default_url_options for generating mails.
 
