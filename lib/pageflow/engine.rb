@@ -18,6 +18,7 @@ require 'active_admin'
 require 'activeadmin-searchable_select'
 
 require 'bourbon'
+require 'jquery-ui-rails'
 require 'jquery-layout-rails'
 require 'backbone-rails'
 require 'marionette-rails'
