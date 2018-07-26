@@ -187,7 +187,7 @@ module Pageflow
                },
                format: 'json')
 
-        expect(response).to be_success
+        expect(chapter.reload).to have(0).pages
       end
 
       it 'requires the signed in user to be editor of the parent entry' do
