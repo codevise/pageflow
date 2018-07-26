@@ -42,7 +42,7 @@ module Pageflow
     end
 
     def stylesheet_cache_key
-      revision.cache_key
+      revision.cache_key_with_version
     end
 
     def thumbnail_url(*args)
@@ -59,9 +59,8 @@ module Pageflow
       PublishedEntry.new(scope.published.find(id))
     end
 
-    def cache_key
-      "#{self.class.model_name.cache_key}/" \
-        "#{entry.cache_key}-#{revision.cache_key}-#{theming.cache_key}"
+    def cache_version
+      "#{entry.cache_version}-#{revision.cache_version}-#{theming.cache_version}"
     end
 
     def home_button
