@@ -212,7 +212,7 @@ module Pageflow
     #       span(entry.custom_attribute)
     #     end
     #
-    # @since edge
+    # @since 12.2
     # @return [Admin::AttributesTableRows]
     attr_reader :admin_attributes_table_rows
 
@@ -290,7 +290,7 @@ module Pageflow
     # News collection to add items to. Can be used to integrate
     # Pageflow with Krant (see https://github.com/codevise/krant).
     # @return [#item]
-    # @since edge
+    # @since 12.2
     attr_accessor :news
 
     def initialize

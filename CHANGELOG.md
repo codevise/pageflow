@@ -1,8 +1,10 @@
 # CHANGELOG
 
-### Unreleased Changes
+### Version 12.2.0
 
-[Compare changes](https://github.com/codevise/pageflow/compare/12-1-stable...master)
+2018-07-27
+
+[Compare changes](https://github.com/codevise/pageflow/compare/12-1-stable...v12.2.0)
 
 ##### Pubic Site
 

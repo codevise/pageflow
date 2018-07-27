@@ -6,7 +6,7 @@
  * Works closely with the `page-with_split_layout` CSS class (see
  * `pageflow/themes/default/page/line_lengths.scss`).
  *
- * @since edge
+ * @since 12.2
  */
 pageflow.pageSplitLayout = (function() {
   return {

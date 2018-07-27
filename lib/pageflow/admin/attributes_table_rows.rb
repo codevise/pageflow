@@ -2,7 +2,7 @@ module Pageflow
   # A registry of additional rows to display in attribute tables on
   # admin pages.
   #
-  # @since edge
+  # @since 12.2
   module Admin
     class AttributesTableRows
       # @api private
