@@ -4,7 +4,7 @@
 
 [Compare changes](https://github.com/codevise/pageflow/compare/12-x-stable...master)
 
-# Manual Update Steps
+#### Manual Update Steps
 
 - Upgraded to Devise 4.4.0
   ([#932](https://github.com/codevise/pageflow/pull/932))
