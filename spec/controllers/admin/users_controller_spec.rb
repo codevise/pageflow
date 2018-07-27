@@ -11,7 +11,7 @@ module Pageflow
             it 'does not include sensitive data' do
               user = create(:user, :admin)
 
-              sign_in(user)
+              sign_in(user, scope: :user)
               get(:index, format: format)
 
               expect(response.body).not_to include('password')
@@ -32,7 +32,7 @@ module Pageflow
 
         user = create(:user, :manager, on: create(:account))
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:show, id: user.id)
 
         expect(response.body)
@@ -48,7 +48,7 @@ module Pageflow
 
           user = create(:user, :admin)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           get(:show, id: user.id)
 
           expect(response.body).to have_css('.status_tag_row th',
@@ -62,7 +62,7 @@ module Pageflow
 
           user = create(:user, :manager, on: create(:account))
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           get(:show, id: user.id)
 
           expect(response.body).not_to have_css('.status_tag_row th',
@@ -93,7 +93,7 @@ module Pageflow
                                                        name: :some_tab,
                                                        component: tab_view_component,
                                                        required_account_role: :manager)
-          sign_in(user)
+          sign_in(user, scope: :user)
           get(:show, id: user.id)
 
           expect(response.body).to have_selector(tab_view_selector)
@@ -107,7 +107,7 @@ module Pageflow
                                                          name: :some_tab,
                                                          component: tab_view_component,
                                                          admin_only: true)
-            sign_in(user)
+            sign_in(user, scope: :user)
             get(:show, id: user.id)
 
             expect(response.body).to have_selector(tab_view_selector)
@@ -121,7 +121,7 @@ module Pageflow
                                                          name: :some_tab,
                                                          component: tab_view_component,
                                                          admin_only: true)
-            sign_in(user)
+            sign_in(user, scope: :user)
             get(:show, id: user.id)
 
             expect(response.body).not_to have_selector(tab_view_selector)
@@ -314,7 +314,7 @@ module Pageflow
       it 'allows admins to create admins' do
         account = create(:account)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
 
         expect {
           post(:invitation,
@@ -471,7 +471,7 @@ module Pageflow
       it 'allows admin to make users admin' do
         user = create(:user)
 
-        sign_in(create(:user, :admin))
+        sign_in(create(:user, :admin), scope: :user)
         patch :update, id: user, user: {admin: true}
 
         expect(user.reload).to be_admin
@@ -679,7 +679,7 @@ module Pageflow
                       last_name: 'Tomson',
                       locale: 'de')
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         patch(:me, user: {
                 first_name: 'Thom',
                 last_name: 'Thomson',
@@ -694,7 +694,7 @@ module Pageflow
       it 'allows users to update their password when passing current password and confirmation' do
         user = create(:user, password: 'some!123pass')
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         patch(:me, user: {
                 current_password: 'some!123pass',
                 password: 'new!123pass',
@@ -707,7 +707,7 @@ module Pageflow
       it 'does not update password when current password is not correct' do
         user = create(:user, password: 'some!123pass')
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         patch(:me, user: {
                 current_password: 'wrong!123pass',
                 password: 'new!123pass',
@@ -720,7 +720,7 @@ module Pageflow
       it 'does not update password when password confirmation does not match' do
         user = create(:user, password: 'some!123pass')
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         patch(:me, user: {
                 current_password: 'some!123pass',
                 password: 'new!123pass',
@@ -734,7 +734,7 @@ module Pageflow
         account = create(:account)
         user = create(:user, :manager, on: account)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         patch(:me, user: {admin: true})
 
         expect(user.reload).not_to be_admin
@@ -745,7 +745,7 @@ module Pageflow
                       first_name: 'Tom',
                       last_name: 'Thomson')
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         patch(:me, user: {
                 first_name: ''
               })
@@ -766,7 +766,7 @@ module Pageflow
       it 'does not allow to destroy the user when authorize_user_deletion non-true' do
         user = create(:user, password: '@qwert123')
         create(:membership, user: user, entity: create(:account))
-        sign_in(user)
+        sign_in(user, scope: :user)
         Pageflow.config.authorize_user_deletion =
           lambda do |user_to_delete|
             if user_to_delete.accounts.all? { |account| account.users.length > 1 }

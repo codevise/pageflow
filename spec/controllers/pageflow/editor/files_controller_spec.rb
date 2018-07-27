@@ -12,7 +12,7 @@ module Pageflow
         file = create(:image_file)
         create(:file_usage, revision: entry.draft, file: file)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:index, entry_id: entry.id, collection_name: 'image_files', format: 'json')
 
         expect(json_response(path: [0, 'id'])).to eq(file.id)
@@ -25,7 +25,7 @@ module Pageflow
         file = create(:image_file)
         create(:file_usage, revision: entry.draft, file: file)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:index, entry_id: entry.id, collection_name: 'image_files', format: 'json')
 
         expect(json_response(path: [0, 'id'])).to eq(file.id)
@@ -37,7 +37,7 @@ module Pageflow
         file = create(:image_file)
         create(:file_usage, revision: entry.draft, file: file)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         get(:index, entry_id: entry.id, collection_name: 'image_files', format: 'json')
 
         expect(response.status).to eq(403)
@@ -56,7 +56,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:create,
              entry_id: entry,
@@ -71,7 +71,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:create,
              entry_id: entry,
@@ -94,7 +94,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
 
         post(:create,
@@ -110,7 +110,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:create,
              entry_id: entry,
@@ -125,7 +125,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
-        sign_in user
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:create,
              entry_id: entry,
@@ -140,7 +140,7 @@ module Pageflow
         user = create(:user)
         entry = create(:entry, with_previewer: user)
 
-        sign_in user
+        sign_in(user, scope: :user)
         post(:create,
              entry_id: entry,
              collection_name: 'image_files',
@@ -167,7 +167,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         parent_file = create(:video_file, used_in: entry.draft)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
 
         post(:create,
@@ -187,7 +187,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         parent_file = create(:image_file, entry: entry)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
 
         post(:create,
@@ -207,7 +207,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         parent_file = create(:image_file)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
 
         post(:create,
@@ -238,7 +238,7 @@ module Pageflow
         other_entry = create(:entry, with_previewer: user)
         file = create(:image_file, used_in: other_entry.draft)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
 
         post(:reuse,
@@ -259,7 +259,7 @@ module Pageflow
         other_entry = create(:entry)
         file = create(:image_file, used_in: other_entry.draft)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
 
         post(:reuse,
@@ -280,7 +280,7 @@ module Pageflow
         other_entry = create(:entry, with_manager: user)
         file = create(:image_file, used_in: other_entry.draft)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
 
         post(:reuse,
@@ -320,7 +320,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         file = create(:image_file, :failed, used_in: entry.draft)
 
-        sign_in user
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:retry,
              entry_id: entry.id,
@@ -336,7 +336,7 @@ module Pageflow
         entry = create(:entry, with_previewer: user)
         file = create(:image_file, :failed, used_in: entry.draft)
 
-        sign_in user
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:retry,
              entry_id: entry.id,
@@ -365,7 +365,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         image_file = create(:image_file, used_in: entry.draft)
 
-        sign_in user
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:retry,
              entry_id: entry.id,
@@ -383,7 +383,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         file = create(:image_file, used_in: entry.draft, rights: 'old')
 
-        sign_in user
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         patch(:update,
               entry_id: entry.id,
@@ -407,7 +407,7 @@ module Pageflow
         entry = create(:entry, with_previewer: user)
         file = create(:image_file, used_in: entry.draft)
 
-        sign_in user
+        sign_in(user, scope: :user)
         patch(:update,
               entry_id: entry.id,
               collection_name: 'image_files',
@@ -439,7 +439,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         file = create(:image_file, used_in: entry.draft)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
 
         expect(entry.draft).to have(1).image_files
@@ -458,7 +458,7 @@ module Pageflow
         entry = create(:entry, with_previewer: user)
         file = create(:image_file, used_in: entry.draft)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
 
         delete(:destroy,
@@ -489,7 +489,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
         file = create(:image_file, used_in: entry.draft)
 
-        sign_in(user)
+        sign_in(user, scope: :user)
 
         delete(:destroy,
                entry_id: entry.id,

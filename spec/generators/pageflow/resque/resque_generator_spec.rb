@@ -11,7 +11,6 @@ module Pageflow
         expect(file('config/initializers/resque_mailer.rb')).to exist
         expect(file('config/initializers/resque_logger.rb')).to exist
         expect(file('config/initializers/resque_enqueue_after_commit_patch.rb')).to exist
-        expect(file('config/initializers/devise_async.rb')).to exist
       end
 
       it "generates 'lib/tasks/resque.rake'" do

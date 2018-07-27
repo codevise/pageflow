@@ -23,11 +23,8 @@ Gem::Specification.new do |s|
   # Searchable select boxes for filters and forms
   s.add_dependency 'activeadmin-searchable_select', '~> 1.0'
 
-  # Make devise mailers use resque. (Needs to be below active admin entry!)
-  s.add_dependency 'devise-async', '~> 0.9.0'
-
   # User authentication
-  s.add_dependency 'devise', '~> 3.5'
+  s.add_dependency 'devise', '~> 4.4.0'
 
   # Resque jobs and queues
   s.add_dependency 'resque', '~> 1.25'

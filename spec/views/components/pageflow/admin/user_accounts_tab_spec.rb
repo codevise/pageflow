@@ -21,7 +21,7 @@ module Pageflow
         create(:account, with_member: user, name: 'Account 1')
         create(:account, with_publisher: user, name: 'Account 2')
 
-        sign_in(user)
+        sign_in(user, scope: :user)
         params[:order] = order
 
         render(user)

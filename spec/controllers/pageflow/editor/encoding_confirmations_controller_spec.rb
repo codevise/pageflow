@@ -22,7 +22,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create,
                entry_id: entry.id,
@@ -37,7 +37,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           audio_file = create(:audio_file, :waiting_for_confirmation, used_in: entry.draft)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create,
                entry_id: entry.id,
@@ -53,7 +53,7 @@ module Pageflow
           other_entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: other_entry.draft)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:create,
                entry_id: entry.id,
                encoding_confirmation: {video_file_ids: [video_file.id]},
@@ -67,7 +67,7 @@ module Pageflow
           entry = create(:entry, with_previewer: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:create,
                entry_id: entry.id,
                encoding_confirmation: {video_file_ids: [video_file.id]},
@@ -82,7 +82,7 @@ module Pageflow
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
           Pageflow.config.quotas.register(:encoding, ExceededTestQuota)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:create,
                entry_id: entry.id,
                encoding_confirmation: {video_file_ids: [video_file.id]},
@@ -110,7 +110,7 @@ module Pageflow
           entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:check,
                entry_id: entry.id,
@@ -126,7 +126,7 @@ module Pageflow
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
           Pageflow.config.quotas.register(:encoding, ExceededTestQuota)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:check,
                entry_id: entry.id,
                encoding_confirmation: {video_file_ids: [video_file.id]},
@@ -141,7 +141,7 @@ module Pageflow
           other_entry = create(:entry, with_editor: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: other_entry.draft)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:check,
                entry_id: entry.id,
                encoding_confirmation: {video_file_ids: [video_file.id]},
@@ -155,7 +155,7 @@ module Pageflow
           entry = create(:entry, with_previewer: user)
           video_file = create(:video_file, :waiting_for_confirmation, used_in: entry.draft)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:check,
                entry_id: entry.id,
                encoding_confirmation: {video_file_ids: [video_file.id]},

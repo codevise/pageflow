@@ -8,7 +8,7 @@ describe Admin::RevisionsController do
       entry = create(:entry)
       earlier_revision = create(:revision, :frozen, entry: entry)
 
-      sign_in(user)
+      sign_in(user, scope: :user)
 
       expect do
         post(:restore, id: earlier_revision.id)
@@ -21,7 +21,7 @@ describe Admin::RevisionsController do
       entry = create(:entry, account: account)
       earlier_revision = create(:revision, :frozen, entry: entry, title: 'the way it used to be')
 
-      sign_in(user)
+      sign_in(user, scope: :user)
       post(:restore, id: earlier_revision.id)
 
       expect(entry.draft(true).title).to eq('the way it used to be')
@@ -31,7 +31,7 @@ describe Admin::RevisionsController do
       entry = create(:entry)
       earlier_revision = create(:revision, :frozen, entry: entry, title: 'the way it used to be')
 
-      sign_in(create(:user, :admin))
+      sign_in(create(:user, :admin), scope: :user)
       post(:restore, id: earlier_revision.id)
 
       expect(entry.draft(true).title).to eq('the way it used to be')
@@ -42,7 +42,7 @@ describe Admin::RevisionsController do
       entry = create(:entry, with_editor: user)
       earlier_revision = create(:revision, :frozen, entry: entry, title: 'the way it used to be')
 
-      sign_in(user)
+      sign_in(user, scope: :user)
       post(:restore, id: earlier_revision.id)
 
       expect(entry.draft(true).title).to eq('the way it used to be')
@@ -53,7 +53,7 @@ describe Admin::RevisionsController do
       entry = create(:entry, with_previewer: user)
       earlier_revision = create(:revision, :frozen, entry: entry)
 
-      sign_in(user)
+      sign_in(user, scope: :user)
       post(:restore, id: earlier_revision.id)
 
       expect do
@@ -67,7 +67,7 @@ describe Admin::RevisionsController do
       earlier_revision = create(:revision, :frozen, entry: entry)
 
       acquire_edit_lock(create(:user), entry)
-      sign_in(user)
+      sign_in(user, scope: :user)
       request.env['HTTP_REFERER'] = admin_entry_path(entry)
 
       expect do

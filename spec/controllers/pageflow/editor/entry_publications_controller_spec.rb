@@ -11,7 +11,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_publisher: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create, entry_id: entry.id, entry_publication: {}, format: :json)
 
@@ -22,7 +22,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_publisher: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create,
                entry_id: entry,
@@ -37,7 +37,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_publisher: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create, entry_id: entry, entry_publication: {
                  published_until: 1.month.from_now
@@ -51,7 +51,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_publisher: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create, entry_id: entry, entry_publication: {
                  password_protected: true,
@@ -65,7 +65,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_publisher: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create, entry_id: entry, entry_publication: {
                  password_protected: true
@@ -78,7 +78,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_publisher: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create, entry_id: entry, entry_publication: {}, format: :json)
 
@@ -89,7 +89,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_editor: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:create, entry_id: entry, entry_publication: {}, format: :json)
 
           expect(response.status).to eq(403)
@@ -109,7 +109,7 @@ module Pageflow
 
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.exceeded)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create, entry_id: entry, entry_publication: {}, format: :json)
 
@@ -123,7 +123,7 @@ module Pageflow
 
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.exhausted)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create, entry_id: entry, entry_publication: {}, format: :json)
 
@@ -134,7 +134,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_publisher: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:create, entry_id: entry.id, entry_publication: {}, format: 'json')
 
@@ -147,7 +147,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_publisher: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           acquire_edit_lock(user, entry)
           post(:check, entry_id: entry.id, entry_publication: {}, format: 'json')
 
@@ -159,7 +159,7 @@ module Pageflow
           entry = create(:entry, with_publisher: user)
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.exceeded)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:check, entry_id: entry.id, entry_publication: {}, format: 'json')
 
           expect(json_response(path: :exceeding)).to eq(true)
@@ -170,7 +170,7 @@ module Pageflow
           entry = create(:entry, with_publisher: user)
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.available)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:check, entry_id: entry.id, entry_publication: {}, format: 'json')
 
           expect(json_response(path: [:quota, :state])).to eq('available')
@@ -182,7 +182,7 @@ module Pageflow
           entry = create(:entry, with_publisher: user)
           Pageflow.config.quotas.register(:published_entries, QuotaDouble.available)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:check, entry_id: entry.id, entry_publication: {}, format: 'json')
 
           expect(json_response(path: :exhausted_html)).to be_present
@@ -192,7 +192,7 @@ module Pageflow
           user = create(:user)
           entry = create(:entry, with_editor: user)
 
-          sign_in(user)
+          sign_in(user, scope: :user)
           post(:check, entry_id: entry.id, entry_publication: {}, format: 'json')
 
           expect(response.status).to eq(403)
