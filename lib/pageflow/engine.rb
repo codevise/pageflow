@@ -65,9 +65,9 @@ module Pageflow
       Pageflow.configure!
     end
 
-    initializer "pageflow.factories", :after => "factory_girl.set_factory_paths" do
-      if Pageflow.configured? && defined?(FactoryGirl)
-        FactoryGirl.definition_file_paths.unshift(Engine.root.join('spec', 'factories'))
+    initializer 'pageflow.factories', after: 'factory_bot.set_factory_paths' do
+      if Pageflow.configured? && defined?(FactoryBot)
+        FactoryBot.definition_file_paths.unshift(Engine.root.join('spec', 'factories'))
       end
     end
 

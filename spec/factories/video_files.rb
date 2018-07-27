@@ -1,5 +1,5 @@
 module Pageflow
-  FactoryGirl.define do
+  FactoryBot.define do
     factory :video_file, :class => VideoFile do
       entry
       uploader { create(:user) }

@@ -1,5 +1,5 @@
 module Pageflow
-  FactoryGirl.define do
+  FactoryBot.define do
     hosted_file_model = Class.new(ActiveRecord::Base) do
       self.table_name = 'test_hosted_files'
       include HostedFile

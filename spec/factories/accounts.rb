@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :account, class: Pageflow::Account do
     name 'Account Name'
 

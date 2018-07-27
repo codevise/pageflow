@@ -1,5 +1,5 @@
 module Pageflow
-  FactoryGirl.define do
+  FactoryBot.define do
     factory :audio_file, :class => AudioFile do
       entry
       uploader { create(:user) }

@@ -1,5 +1,5 @@
 module Pageflow
-  FactoryGirl.define do
+  FactoryBot.define do
     sequence :email do |n|
       "person#{n}@example.com"
     end

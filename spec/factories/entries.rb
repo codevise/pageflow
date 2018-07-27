@@ -1,5 +1,5 @@
 module Pageflow
-  FactoryGirl.define do
+  FactoryBot.define do
     sequence :title do |n|
       "Entry #{n}"
     end

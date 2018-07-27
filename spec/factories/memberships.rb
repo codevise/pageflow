@@ -1,5 +1,5 @@
 module Pageflow
-  FactoryGirl.define do
+  FactoryBot.define do
     factory :membership, class: Membership do
       user
       association :entity, factory: :entry
