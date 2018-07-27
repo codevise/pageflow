@@ -1,10 +1,10 @@
 module Pageflow
-  class ProcessFileJob
-    @queue = :resizing
+  class ProcessFileJob < ApplicationJob
+    queue_as :resizing
 
-    extend StateMachineJob
+    include StateMachineJob
 
-    def self.perform_with_result(file, _options)
+    def perform_with_result(file, _options)
       file.processed_attachment = file.unprocessed_attachment
       file.save!
 

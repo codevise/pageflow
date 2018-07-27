@@ -1,11 +1,11 @@
 module Pageflow
-  FactoryBot.define do
-    hosted_file_model = Class.new(ActiveRecord::Base) do
-      self.table_name = 'test_hosted_files'
-      include HostedFile
-    end
+  class TestHostedFile < ActiveRecord::Base
+    self.table_name = 'test_hosted_files'
+    include HostedFile
+  end
 
-    factory :hosted_file, class: hosted_file_model do
+  FactoryBot.define do
+    factory :hosted_file, class: TestHostedFile do
       trait :on_filesystem do
         attachment_on_filesystem File.open(Engine.root.join('spec', 'fixtures', 'image.png'))
         attachment_on_s3 nil

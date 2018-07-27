@@ -1,10 +1,10 @@
 module Pageflow
-  class SubmitFileToZencoderJob
-    @queue = :default
+  class SubmitFileToZencoderJob < ApplicationJob
+    queue_as :default
 
-    extend StateMachineJob
+    include StateMachineJob
 
-    def self.perform_with_result(file, options, api = ZencoderApi.instance)
+    def perform_with_result(file, _options, api = ZencoderApi.instance)
       file.job_id = api.create_job(file.output_definition)
       file.save!
 

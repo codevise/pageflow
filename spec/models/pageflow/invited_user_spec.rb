@@ -15,8 +15,8 @@ module Pageflow
         user = create(:invited_user)
 
         expect(UserMailer).to receive(:invitation)
-          .with('user_id' => user.id, 'password_token' => kind_of(String))
-          .and_return(double(deliver: true))
+          .with(user: kind_of(User), password_token: kind_of(String))
+          .and_return(double(deliver_later: true))
 
         user.send_invitation!
       end
@@ -35,9 +35,9 @@ module Pageflow
         user = build(:invited_user, password: nil)
 
         expect(UserMailer).to receive(:invitation)
-          .with('user_id' => kind_of(Numeric),
-                'password_token' => kind_of(String))
-          .and_return(double(deliver: true))
+          .with(user: kind_of(User),
+                password_token: kind_of(String))
+          .and_return(double(deliver_later: true))
 
         user.save
       end

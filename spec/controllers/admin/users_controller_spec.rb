@@ -506,7 +506,7 @@ module Pageflow
       end
     end
 
-    describe '#resend_invitation' do
+    describe '#resend_invitation', perform_jobs: true do
       it 'allows account manager to resend invitation' do
         account = create(:account)
         user = create(:user, :member, on: account)

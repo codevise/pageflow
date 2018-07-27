@@ -1,10 +1,10 @@
 module Pageflow
-  class RequestMetaDataFromZencoderJob
-    @queue = :default
+  class RequestMetaDataFromZencoderJob < ApplicationJob
+    queue_as :default
 
-    extend StateMachineJob
+    include StateMachineJob
 
-    def self.perform_with_result(file, options, api = ZencoderApi.instance)
+    def perform_with_result(file, _options, api = ZencoderApi.instance)
       file.job_id = api.create_job(ZencoderMetaDataOutputDefinition.new(file))
       file.save!
 

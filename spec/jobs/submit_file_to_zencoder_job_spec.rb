@@ -7,7 +7,7 @@ module Pageflow
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.creating_job_with_id(43))
 
-      SubmitFileToZencoderJob.perform_with_result(file, {})
+      SubmitFileToZencoderJob.new.perform_with_result(file, {})
 
       expect(file.reload.job_id).to eq(43)
     end

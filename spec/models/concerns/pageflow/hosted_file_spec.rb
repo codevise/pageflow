@@ -1,25 +1,10 @@
 require 'spec_helper'
 
 module Pageflow
-  describe HostedFile, inline_resque: true do
-    class TestHostedFile < ActiveRecord::Base
-      self.table_name = :test_hosted_files
-      include HostedFile
-    end
-
+  describe HostedFile, perform_jobs: true do
     describe '#publish' do
-      it 'performs UploadFileToS3Job' do
-        hosted_file = TestHostedFile.create!
-
-        expect(UploadFileToS3Job).to receive(:perform_with_result).and_return(:ok)
-
-        hosted_file.publish!
-      end
-
-      it 'transitions to uploaded_to_s3 state on result :ok' do
-        hosted_file = TestHostedFile.create!
-
-        allow(UploadFileToS3Job).to receive(:perform_with_result).and_return(:ok)
+      it 'transitions to uploaded_to_s3 state' do
+        hosted_file = create(:hosted_file, :on_filesystem)
 
         hosted_file.publish!
 
@@ -27,45 +12,46 @@ module Pageflow
       end
 
       it 'transitions to uploading_to_s3_failed state on result :error' do
-        hosted_file = TestHostedFile.create!
+        hosted_file = create(:hosted_file)
 
-        allow(UploadFileToS3Job).to receive(:perform_with_result).and_return(:error)
+        allow_any_instance_of(UploadFileToS3Job).to receive(:perform_with_result).and_return(:error)
 
         hosted_file.publish!
 
         expect(hosted_file.reload.state).to eq('uploading_to_s3_failed')
       end
 
-      it 're-schedules the job on result :pending' do
-        hosted_file = TestHostedFile.create!
+      it 're-schedules the job on result :pending', perform_jobs: :except_enqued_at do
+        hosted_file = create(:hosted_file)
 
-        allow(UploadFileToS3Job).to receive(:perform_with_result).and_return(:pending)
-        expect(UploadFileToS3Job).to receive(:scheduled)
+        allow_any_instance_of(UploadFileToS3Job)
+          .to receive(:perform_with_result).and_return(:pending)
 
         hosted_file.publish!
+
+        expect(UploadFileToS3Job).to have_been_enqueued.at(30.seconds.from_now)
       end
     end
 
     describe '#retry' do
-      it 'performs UploadFileToS3Job if failed' do
-        hosted_file = TestHostedFile.create!
+      it 'transitions to uploaded_to_s3 state from failed' do
+        hosted_file = create(:hosted_file, :uploading_to_s3_failed)
 
-        expect(UploadFileToS3Job).to receive(:perform_with_result).twice.and_return(:error)
+        hosted_file.retry!
 
-        hosted_file.publish!
-        hosted_file.reload.retry!
+        expect(hosted_file.reload.state).to eq('uploaded_to_s3')
       end
     end
 
     describe '#retryable?' do
       it 'returns true if failed' do
-        hosted_file = TestHostedFile.create!(state: 'uploading_to_s3_failed')
+        hosted_file = create(:hosted_file, :uploading_to_s3_failed)
 
         expect(hosted_file).to be_retryable
       end
 
       it 'returns false if uploaded to s3' do
-        hosted_file = TestHostedFile.create!(state: 'uploaded_to_s3')
+        hosted_file = create(:hosted_file, :uploaded_to_s3)
 
         expect(hosted_file).not_to be_retryable
       end
@@ -85,9 +71,8 @@ module Pageflow
 
       describe '#publish' do
         it 'triggers process event' do
-          hosted_file = ProcessedTestHostedFile.create!
-
-          allow(UploadFileToS3Job).to receive(:perform_with_result).and_return(:ok)
+          hosted_file = ProcessedTestHostedFile.create!(attributes_for(:hosted_file,
+                                                                       :on_filesystem))
 
           hosted_file.publish!
 
@@ -99,7 +84,7 @@ module Pageflow
 
   describe 'basename' do
     it 'returns the original file name without extention' do
-      hosted_file = TestHostedFile.new(attachment_on_s3_file_name: 'video.mp4')
+      hosted_file = create(:hosted_file, attachment_on_s3_file_name: 'video.mp4')
 
       expect(hosted_file.basename).to eq('video')
     end

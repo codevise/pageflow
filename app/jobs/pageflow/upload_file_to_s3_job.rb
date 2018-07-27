@@ -1,12 +1,12 @@
 module Pageflow
-  class UploadFileToS3Job
-    @queue = :slow
+  class UploadFileToS3Job < ApplicationJob
+    queue_as :slow
 
-    extend StateMachineJob
+    include StateMachineJob
 
-    def self.perform_with_result(file, options = {})
+    def perform_with_result(file, _options = {})
       if file && file.attachment_on_filesystem.file?
-        if File.exists?(file.attachment_on_filesystem.path)
+        if File.exist?(file.attachment_on_filesystem.path)
           file.attachment_on_s3 = file.attachment_on_filesystem
           file.save!
 
