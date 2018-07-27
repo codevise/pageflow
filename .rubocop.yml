@@ -1,9 +1,5 @@
-# Inherit from Hound default configuration so we can perform the same
-# checks locally.
-inherit_from: ./.rubocop_hound.yml
-
 AllCops:
-  TargetRubyVersion: 2.1
+  TargetRubyVersion: 2.3
 
 # Use double quotes only for interpolation.
 Style/StringLiterals:
@@ -22,7 +18,7 @@ Metrics/LineLength:
   Max: 100
 
 # Only place spaces inside blocks written with braces.
-Style/SpaceInsideHashLiteralBraces:
+Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
 # Do not warn about missing magic comment
