@@ -3,7 +3,7 @@ module Pageflow
     class EntryPublicationsController < Pageflow::ApplicationController
       respond_to :json
 
-      before_filter :authenticate_user!
+      before_action :authenticate_user!
 
       def create
         entry = Entry.find(params[:entry_id])

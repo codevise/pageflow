@@ -1,4 +1,4 @@
-class InsertMainStorylines < ActiveRecord::Migration
+class InsertMainStorylines < ActiveRecord::Migration[4.2]
   def up
     create_storyline_for_each_revision
     update_each_chapter_to_reference_a_storyline

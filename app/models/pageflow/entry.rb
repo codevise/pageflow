@@ -11,7 +11,7 @@ module Pageflow
     friendly_id :slug_candidates, :use => [:finders, :slugged]
 
     belongs_to :account, counter_cache: true
-    belongs_to :folder
+    belongs_to :folder, optional: true
     belongs_to :theming
 
     has_many :revisions, -> { order('frozen_at DESC') }

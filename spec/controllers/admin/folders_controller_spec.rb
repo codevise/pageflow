@@ -9,7 +9,7 @@ describe Admin::FoldersController do
         sign_in(create(:user, :admin), scope: :user)
 
         expect do
-          post :create, folder: attributes_for(:folder, account_id: account)
+          post :create, params: {folder: attributes_for(:folder, account_id: account)}
         end.to change { account.folders.count }
       end
     end
@@ -21,7 +21,7 @@ describe Admin::FoldersController do
         sign_in(create(:user, :publisher, on: other_account), scope: :user)
 
         expect do
-          post :create, folder: attributes_for(:folder, account_id: account)
+          post :create, params: {folder: attributes_for(:folder, account_id: account)}
         end.not_to change { account.folders.count }
       end
 
@@ -30,7 +30,7 @@ describe Admin::FoldersController do
         sign_in(create(:user, :publisher, on: account), scope: :user)
 
         expect do
-          post :create, folder: attributes_for(:folder, account_id: account)
+          post :create, params: {folder: attributes_for(:folder, account_id: account)}
         end.to change { account.folders.count }
       end
 
@@ -42,7 +42,7 @@ describe Admin::FoldersController do
         sign_in(user, scope: :user)
 
         expect do
-          post :create, folder: attributes_for(:folder, account_id: other_account)
+          post :create, params: {folder: attributes_for(:folder, account_id: other_account)}
         end.to change { other_account.folders.count }
       end
     end
@@ -56,7 +56,7 @@ describe Admin::FoldersController do
         sign_in(user, scope: :user)
 
         expect do
-          post :create, folder: attributes_for(:folder, account_id: entry.account)
+          post :create, params: {folder: attributes_for(:folder, account_id: entry.account)}
         end.not_to change { entry.account.folders.count }
       end
     end
@@ -68,7 +68,7 @@ describe Admin::FoldersController do
         folder = create(:folder)
 
         sign_in(create(:user, :admin), scope: :user)
-        patch :update, id: folder, folder: {name: 'changed'}
+        patch :update, params: {id: folder, folder: {name: 'changed'}}
 
         expect(folder.reload.name).to eq('changed')
       end
@@ -78,7 +78,7 @@ describe Admin::FoldersController do
         other_account = create(:account)
 
         sign_in(create(:user, :admin), scope: :user)
-        patch :update, id: folder, folder: {account_id: other_account}
+        patch :update, params: {id: folder, folder: {account_id: other_account}}
 
         expect(folder.reload.account).not_to eq(other_account)
       end
@@ -89,7 +89,7 @@ describe Admin::FoldersController do
         folder = create(:folder, name: 'old')
         other_account = create(:account)
         sign_in(create(:user, :publisher, on: other_account), scope: :user)
-        patch :update, id: folder, folder: {name: 'changed'}
+        patch :update, params: {id: folder, folder: {name: 'changed'}}
 
         expect(folder.reload.name).to eq('old')
       end
@@ -99,7 +99,7 @@ describe Admin::FoldersController do
         user = create(:user, :publisher, on: folder.account)
 
         sign_in(user, scope: :user)
-        patch :update, id: folder, folder: {name: 'changed'}
+        patch :update, params: {id: folder, folder: {name: 'changed'}}
 
         expect(folder.reload.name).to eq('changed')
       end
@@ -114,7 +114,7 @@ describe Admin::FoldersController do
         folder = create(:folder, name: 'old', account: entry.account)
 
         sign_in(user, scope: :user)
-        patch :update, id: folder, folder: {name: 'changed'}
+        patch :update, params: {id: folder, folder: {name: 'changed'}}
 
         expect(folder.reload.name).to eq('old')
       end
@@ -129,7 +129,7 @@ describe Admin::FoldersController do
         sign_in(create(:user, :admin), scope: :user)
 
         expect do
-          delete :destroy, id: folder
+          delete :destroy, params: {id: folder}
         end.to change { Pageflow::Folder.count }
       end
     end
@@ -142,7 +142,7 @@ describe Admin::FoldersController do
         sign_in(create(:user, :publisher, on: other_account), scope: :user)
 
         expect do
-          delete :destroy, id: folder
+          delete :destroy, params: {id: folder}
         end.not_to change { Pageflow::Folder.count }
       end
 
@@ -153,7 +153,7 @@ describe Admin::FoldersController do
         sign_in(user, scope: :user)
 
         expect do
-          delete :destroy, id: folder
+          delete :destroy, params: {id: folder}
         end.to change { Pageflow::Folder.count }
       end
     end
@@ -169,7 +169,7 @@ describe Admin::FoldersController do
         sign_in(user, scope: :user)
 
         expect do
-          delete :destroy, id: folder
+          delete :destroy, params: {id: folder}
         end.not_to change { Pageflow::Folder.count }
       end
     end

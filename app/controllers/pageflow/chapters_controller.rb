@@ -2,7 +2,7 @@ module Pageflow
   class ChaptersController < Pageflow::ApplicationController
     respond_to :json
 
-    before_filter :authenticate_user!
+    before_action :authenticate_user!
 
     def create
       storyline = Storyline.find(params[:storyline_id])
@@ -64,7 +64,7 @@ module Pageflow
     private
 
     def chapter_params
-      configuration = params.require(:chapter)[:configuration].try(:permit!)
+      configuration = params.require(:chapter)[:configuration].try(:permit!) || {}
 
       params.require(:chapter)
         .permit(:position, :title)

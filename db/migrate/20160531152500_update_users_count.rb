@@ -1,4 +1,4 @@
-class UpdateUsersCount < ActiveRecord::Migration
+class UpdateUsersCount < ActiveRecord::Migration[4.2]
   def self.up
     add_column :pageflow_entries, :users_count, :integer, default: 0, null: false
 

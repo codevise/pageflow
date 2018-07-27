@@ -14,15 +14,13 @@ module Pageflow
 
     describe '#theme_json_seeds' do
       it 'renders basic properties' do
-        config = Configuration.new
-        config.themes.register(:test_theme)
+        Pageflow.config.themes.register(:test_theme)
 
-        result = helper.theme_json_seeds(config)
+        result = JSON.parse(helper.theme_json_seeds(Pageflow.config)).last
 
-        expect(result).to include('"name":"test_theme"')
-        expect(result).to(
-          include('"preview_image_url":'\
-                  '"http://test.host/images/pageflow/themes/test_theme/preview.png"')
+        expect(result['name']).to eq('test_theme')
+        expect(result['preview_image_url']).to(
+          match(%r'http://test\.host/assets/pageflow/themes/test_theme/preview-[a-f0-9]+\.png')
         )
       end
     end

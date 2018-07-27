@@ -11,7 +11,7 @@ describe Admin::RevisionsController do
       sign_in(user, scope: :user)
 
       expect do
-        post(:restore, id: earlier_revision.id)
+        post(:restore, params: {id: earlier_revision.id})
       end.not_to change { entry.revisions.count }
     end
 
@@ -22,9 +22,9 @@ describe Admin::RevisionsController do
       earlier_revision = create(:revision, :frozen, entry: entry, title: 'the way it used to be')
 
       sign_in(user, scope: :user)
-      post(:restore, id: earlier_revision.id)
+      post(:restore, params: {id: earlier_revision.id})
 
-      expect(entry.draft(true).title).to eq('the way it used to be')
+      expect(entry.reload_draft.title).to eq('the way it used to be')
     end
 
     it 'allows admin to restore revisions for other accounts' do
@@ -32,9 +32,9 @@ describe Admin::RevisionsController do
       earlier_revision = create(:revision, :frozen, entry: entry, title: 'the way it used to be')
 
       sign_in(create(:user, :admin), scope: :user)
-      post(:restore, id: earlier_revision.id)
+      post(:restore, params: {id: earlier_revision.id})
 
-      expect(entry.draft(true).title).to eq('the way it used to be')
+      expect(entry.reload_draft.title).to eq('the way it used to be')
     end
 
     it 'allows editor to restore revisions for their entries' do
@@ -43,9 +43,9 @@ describe Admin::RevisionsController do
       earlier_revision = create(:revision, :frozen, entry: entry, title: 'the way it used to be')
 
       sign_in(user, scope: :user)
-      post(:restore, id: earlier_revision.id)
+      post(:restore, params: {id: earlier_revision.id})
 
-      expect(entry.draft(true).title).to eq('the way it used to be')
+      expect(entry.reload_draft.title).to eq('the way it used to be')
     end
 
     it 'does not allow user to restore revisions for entries they are not editor of' do
@@ -54,10 +54,10 @@ describe Admin::RevisionsController do
       earlier_revision = create(:revision, :frozen, entry: entry)
 
       sign_in(user, scope: :user)
-      post(:restore, id: earlier_revision.id)
+      post(:restore, params: {id: earlier_revision.id})
 
       expect do
-        post(:restore, id: earlier_revision.id)
+        post(:restore, params: {id: earlier_revision.id})
       end.not_to change { entry.revisions.count }
     end
 
@@ -71,7 +71,7 @@ describe Admin::RevisionsController do
       request.env['HTTP_REFERER'] = admin_entry_path(entry)
 
       expect do
-        post(:restore, id: earlier_revision.id)
+        post(:restore, params: {id: earlier_revision.id})
       end.not_to change { entry.revisions.count }
     end
   end

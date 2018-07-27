@@ -1,4 +1,4 @@
-class UpdateAudioLoopPagesToUseAtmo < ActiveRecord::Migration
+class UpdateAudioLoopPagesToUseAtmo < ActiveRecord::Migration[4.2]
   # Pageflow::Page might have gotten out of sync with schema at this
   # point. Use local model instead.
   class MigratedPage < ActiveRecord::Base

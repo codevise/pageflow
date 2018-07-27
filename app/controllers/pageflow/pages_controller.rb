@@ -2,7 +2,7 @@ module Pageflow
   class PagesController < Pageflow::ApplicationController
     respond_to :json
 
-    before_filter :authenticate_user!
+    before_action :authenticate_user!
 
     def create
       chapter = Chapter.find(params[:chapter_id])
@@ -53,7 +53,7 @@ module Pageflow
     private
 
     def page_params
-      configuration = params.require(:page)[:configuration].try(:permit!)
+      configuration = params.require(:page)[:configuration].try(:permit!) || {}
       params.require(:page).permit(:template, :position, :title).merge(:configuration => configuration)
     end
   end

@@ -1,4 +1,4 @@
-class MoveConfigurationFromFileToFileUsage < ActiveRecord::Migration
+class MoveConfigurationFromFileToFileUsage < ActiveRecord::Migration[4.2]
   def up
     add_column :pageflow_file_usages, :configuration, :text
 

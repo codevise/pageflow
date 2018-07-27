@@ -3,9 +3,9 @@ module Pageflow
     extend ActiveSupport::Concern
 
     included do
-      belongs_to :uploader, :class_name => 'User'
-      belongs_to :entry
-      belongs_to :parent_file, polymorphic: true, foreign_type: :parent_file_model_type
+      belongs_to :uploader, class_name: 'User', optional: true
+      belongs_to :entry, optional: true
+      belongs_to :parent_file, polymorphic: true, foreign_type: :parent_file_model_type, optional: true
 
       has_many :usages, :as => :file, :class_name => 'Pageflow::FileUsage', :dependent => :destroy
       has_many :using_revisions, :through => :usages, :source => :revision

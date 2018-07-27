@@ -2,6 +2,7 @@ module Pageflow
   class UsedFile < SimpleDelegator
     def initialize(file, usage = nil)
       super(file)
+      @file = file
       @usage = usage || file.usages.first
     end
 
@@ -16,6 +17,17 @@ module Pageflow
 
     def usage_id
       @usage.id
+    end
+
+    # Not delegated by default. Required to allow using instances in
+    # Active Record conditions.
+
+    def is_a?(klass)
+      @file.is_a?(klass)
+    end
+
+    def class
+      @file.class
     end
   end
 end

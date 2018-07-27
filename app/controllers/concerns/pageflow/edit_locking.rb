@@ -5,7 +5,7 @@ module Pageflow
     included do
       rescue_from EditLock::NotHeldError, EditLock::HeldByOtherSessionError do |exception|
         respond_to do |format|
-          format.html { redirect_to :back, :alert => t('pageflow.edit_locks.required') }
+          format.html { redirect_back fallback_location: admin_root_path, :alert => t('pageflow.edit_locks.required') }
           format.json do
             render(:status => :conflict, :json => {
                      :error_message => exception.message,
@@ -17,7 +17,7 @@ module Pageflow
 
       rescue_from EditLock::HeldByOtherUserError do |exception|
         respond_to do |format|
-          format.html { redirect_to :back, :alert => t('pageflow.edit_locks.required_but_held_by_other_user') }
+          format.html { redirect_back fallback_location: admin_root_path, :alert => t('pageflow.edit_locks.required_but_held_by_other_user') }
           format.json do
             render(:status => :conflict, :json => {
                      :error_message => exception.message,

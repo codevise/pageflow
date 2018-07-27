@@ -1,4 +1,4 @@
-class AddFirstPublishedAtToEntries < ActiveRecord::Migration
+class AddFirstPublishedAtToEntries < ActiveRecord::Migration[4.2]
   def change
     add_column :pageflow_entries, :first_published_at, :datetime
 

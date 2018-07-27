@@ -1,4 +1,4 @@
-class AddMetaFieldsToTheming < ActiveRecord::Migration
+class AddMetaFieldsToTheming < ActiveRecord::Migration[4.2]
   def change
     add_column :pageflow_themings, :default_author, :string
     add_column :pageflow_themings, :default_publisher, :string

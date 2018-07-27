@@ -1,4 +1,4 @@
-class AddParentFileToAudioFiles < ActiveRecord::Migration
+class AddParentFileToAudioFiles < ActiveRecord::Migration[4.2]
   def change
     add_column :pageflow_audio_files, :parent_file_id, :integer
     add_column :pageflow_audio_files, :parent_file_model_type, :string

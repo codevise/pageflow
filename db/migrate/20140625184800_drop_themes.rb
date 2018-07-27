@@ -1,4 +1,4 @@
-class DropThemes < ActiveRecord::Migration
+class DropThemes < ActiveRecord::Migration[4.2]
   def up
     rename_column :pageflow_accounts_themes, :theme_id, :theme_name
     add_column :pageflow_themings, :theme_name, :string

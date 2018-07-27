@@ -1,4 +1,4 @@
-class ResetCopiedSnapshotType < ActiveRecord::Migration
+class ResetCopiedSnapshotType < ActiveRecord::Migration[4.2]
   def up
     fix_restored_drafts
     fix_publications_created_from_restored_drafts

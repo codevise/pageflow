@@ -79,7 +79,7 @@ module Pageflow
         entry = create(:entry, with_editor: user)
 
         sign_in(user, scope: :user)
-        get(:edit, id: entry)
+        get(:edit, params: {id: entry})
 
         expect(response.status).to eq(200)
       end
@@ -89,7 +89,7 @@ module Pageflow
         entry = create(:entry, with_previewer: user)
 
         sign_in(user, scope: :user)
-        get(:edit, id: entry)
+        get(:edit, params: {id: entry})
 
         expect(response).to redirect_to(main_app.admin_root_path)
       end
@@ -97,7 +97,7 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        get(:edit, id: entry)
+        get(:edit, params: {id: entry})
 
         expect(response).to redirect_to(main_app.new_user_session_path)
       end
@@ -110,7 +110,7 @@ module Pageflow
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
-        patch(:update, id: entry, entry: {title: 'new', credits: 'credits'}, format: 'json')
+        patch(:update, params: {id: entry, entry: {title: 'new', credits: 'credits'}}, format: 'json')
 
         expect(response.status).to eq(204)
       end
@@ -121,7 +121,7 @@ module Pageflow
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
-        patch(:update, id: entry, entry: {title: 'new', credits: 'credits'}, format: 'json')
+        patch(:update, params: {id: entry, entry: {title: 'new', credits: 'credits'}}, format: 'json')
 
         expect(entry.draft.reload.title).to eq('new')
         expect(entry.draft.credits).to eq('credits')
@@ -132,7 +132,7 @@ module Pageflow
         entry = create(:entry, with_previewer: user)
 
         sign_in(user, scope: :user)
-        patch(:update, id: entry, entry: {}, format: 'json')
+        patch(:update, params: {id: entry, entry: {}}, format: 'json')
 
         expect(response.status).to eq(403)
       end
@@ -140,7 +140,7 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        patch(:update, id: entry, chapter: {}, format: 'json')
+        patch(:update, params: {id: entry, chapter: {}}, format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -152,7 +152,7 @@ module Pageflow
           entry = create(:entry, :published_with_password, password: 'abc123abc')
 
           request.env['HTTP_ACCEPT'] = '*/*'
-          get(:show, id: entry)
+          get(:show, params: {id: entry})
 
           expect(response.status).to eq(401)
         end
@@ -162,7 +162,7 @@ module Pageflow
         it 'responds with success for published entry' do
           entry = create(:entry, :published)
 
-          get(:show, id: entry)
+          get(:show, params: {id: entry})
 
           expect(response.status).to eq(200)
         end
@@ -170,7 +170,7 @@ module Pageflow
         it 'responds with not found for non-published entry' do
           entry = create(:entry)
 
-          get(:show, id: entry)
+          get(:show, params: {id: entry})
 
           expect(response.status).to eq(404)
         end
@@ -178,7 +178,7 @@ module Pageflow
         it 'responds with forbidden for entry published with password' do
           entry = create(:entry, :published_with_password, password: 'abc123abc')
 
-          get(:show, id: entry)
+          get(:show, params: {id: entry})
 
           expect(response.status).to eq(401)
         end
@@ -189,7 +189,7 @@ module Pageflow
 
           request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic
                                               .encode_credentials('Pageflow', 'abc123abc')
-          get(:show, id: entry)
+          get(:show, params: {id: entry})
 
           expect(response.status).to eq(200)
         end
@@ -197,7 +197,7 @@ module Pageflow
         it 'uses locale of entry' do
           entry = create(:entry, :published, published_revision_attributes: {locale: 'de'})
 
-          get(:show, id: entry)
+          get(:show, params: {id: entry})
 
           expect(response.body).to have_selector('html[lang=de]')
         end
@@ -213,7 +213,7 @@ module Pageflow
           entry = create(:entry, :published)
           create(:widget, subject: entry.published_revision, type_name: 'test_widget')
 
-          get(:show, id: entry)
+          get(:show, params: {id: entry})
 
           expect(response.body).to have_selector('div.test_widget')
         end
@@ -231,7 +231,7 @@ module Pageflow
           entry = create(:entry, :published)
           create(:widget, subject: entry.published_revision, type_name: 'test_widget')
 
-          get(:show, id: entry)
+          get(:show, params: {id: entry})
 
           expect(response.body).to have_selector('div.test_widget')
         end
@@ -248,7 +248,7 @@ module Pageflow
           entry = create(:entry, :published)
           create(:widget, subject: entry.published_revision, type_name: 'test_widget')
 
-          get(:show, id: entry)
+          get(:show, params: {id: entry})
 
           expect(response.body).to have_meta_tag.with_name('some_test')
         end
@@ -265,7 +265,7 @@ module Pageflow
             entry = create(:entry, :published, account: account)
 
             request.host = 'news.example.com'
-            get(:show, id: entry)
+            get(:show, params: {id: entry})
 
             expect(response.status).to eq(200)
           end
@@ -274,7 +274,7 @@ module Pageflow
             entry = create(:entry, :published)
 
             request.host = 'news.example.com'
-            get(:show, id: entry)
+            get(:show, params: {id: entry})
 
             expect(response.status).to eq(404)
           end
@@ -287,7 +287,7 @@ module Pageflow
             chapter = create(:chapter, storyline: storyline)
             page = create(:page, configuration: {title: 'Shared page'}, chapter: chapter)
 
-            get(:show, id: entry, page: page.perma_id)
+            get(:show, params: {id: entry, page: page.perma_id})
 
             expect(response.body).to have_meta_tag
               .for_property('og:title')
@@ -298,7 +298,7 @@ module Pageflow
         it 'sets X-Frame-Options header' do
           entry = create(:entry, :published)
 
-          get(:show, id: entry)
+          get(:show, params: {id: entry})
 
           expect(response.headers).to include('X-Frame-Options')
         end
@@ -307,7 +307,7 @@ module Pageflow
           it 'does not set X-Frame-Options header' do
             entry = create(:entry, :published)
 
-            get(:show, id: entry, embed: '1')
+            get(:show, params: {id: entry, embed: '1'})
 
             expect(response.headers).not_to include('X-Frame-Options')
           end
@@ -319,7 +319,7 @@ module Pageflow
           it 'redirects to https when https is enforced' do
             Pageflow.config.public_https_mode = :enforce
 
-            get(:show, id: entry)
+            get(:show, params: {id: entry})
 
             expect(response).to redirect_to("https://test.host/entries/#{entry.to_param}")
           end
@@ -328,7 +328,7 @@ module Pageflow
             Pageflow.config.public_https_mode = :prevent
             request.env['HTTPS'] = 'on'
 
-            get(:show, id: entry)
+            get(:show, params: {id: entry})
 
             expect(response).to redirect_to("http://test.host/entries/#{entry.to_param}")
           end
@@ -337,7 +337,7 @@ module Pageflow
             Pageflow.config.public_https_mode = :ignore
             request.env['HTTPS'] = 'on'
 
-            get(:show, id: entry)
+            get(:show, params: {id: entry})
 
             expect(response.status).to eq(200)
           end
@@ -345,7 +345,7 @@ module Pageflow
           it 'stays on http when https mode is ignored' do
             Pageflow.config.public_https_mode = :ignore
 
-            get(:show, id: entry)
+            get(:show, params: {id: entry})
 
             expect(response.status).to eq(200)
           end
@@ -356,7 +356,7 @@ module Pageflow
         it 'responds with success for published entry' do
           entry = create(:entry, :published)
 
-          get(:show, id: entry, format: 'css')
+          get(:show, params: {id: entry}, format: 'css')
 
           expect(response.status).to eq(200)
         end
@@ -364,7 +364,7 @@ module Pageflow
         it 'responds with success for entry published with password' do
           entry = create(:entry, :published_with_password, password: 'abc123abc')
 
-          get(:show, id: entry, format: 'css')
+          get(:show, params: {id: entry}, format: 'css')
 
           expect(response.status).to eq(200)
         end
@@ -372,7 +372,7 @@ module Pageflow
         it 'responds with not found for not published entry' do
           entry = create(:entry)
 
-          get(:show, id: entry, format: 'css')
+          get(:show, params: {id: entry}, format: 'css')
 
           expect(response.status).to eq(404)
         end
@@ -381,7 +381,7 @@ module Pageflow
           entry = create(:entry, :published)
           image_file = create(:image_file, used_in: entry.published_revision)
 
-          get(:show, id: entry, format: 'css')
+          get(:show, params: {id: entry}, format: 'css')
 
           expect(response.body).to include(".image_#{image_file.id}")
           expect(response.body).to include("url('#{image_file.attachment.url(:large)}')")
@@ -391,7 +391,7 @@ module Pageflow
           entry = create(:entry, :published)
           video_file = create(:video_file, used_in: entry.published_revision)
 
-          get(:show, id: entry, format: 'css')
+          get(:show, params: {id: entry}, format: 'css')
 
           expect(response.body).to include(".video_poster_#{video_file.id}")
           expect(response.body).to include("url('#{video_file.poster.url(:large)}')")
@@ -401,7 +401,7 @@ module Pageflow
           entry = create(:entry, :published)
           image_file = create(:image_file, used_in: entry.published_revision)
 
-          get(:show, id: entry, format: 'css')
+          get(:show, params: {id: entry}, format: 'css')
 
           expect(response.body).to include(".image_panorama_#{image_file.id}")
           expect(response.body).to include("url('#{image_file.attachment.url(:panorama_large)}')")
@@ -414,7 +414,7 @@ module Pageflow
           entry = create(:entry, with_previewer: user)
 
           sign_in(user, scope: :user)
-          get(:show, id: entry, format: 'json')
+          get(:show, params: {id: entry}, format: 'json')
 
           expect(response.status).to eq(200)
         end
@@ -426,7 +426,7 @@ module Pageflow
           usage = create(:file_usage, file: file, revision: entry.draft)
 
           sign_in(user, scope: :user)
-          get(:show, id: entry, format: 'json')
+          get(:show, params: {id: entry}, format: 'json')
 
           expect(json_response(path: [:image_files, 0, :usage_id])).to eq(usage.id)
         end
@@ -436,7 +436,7 @@ module Pageflow
           entry = create(:entry)
 
           sign_in(user, scope: :user)
-          get(:show, id: entry, format: 'json')
+          get(:show, params: {id: entry}, format: 'json')
 
           expect(response.status).to eq(403)
         end
@@ -444,7 +444,7 @@ module Pageflow
         it 'requires authentication' do
           entry = create(:entry)
 
-          get(:show, id: entry, format: 'json')
+          get(:show, params: {id: entry}, format: 'json')
 
           expect(response.status).to eq(401)
         end
@@ -452,7 +452,7 @@ module Pageflow
 
       context 'with other known format' do
         it 'responds with not found' do
-          get(:show, id: 1, format: 'png')
+          get(:show, params: {id: 1}, format: 'png')
 
           expect(response.status).to eq(404)
         end
@@ -460,7 +460,7 @@ module Pageflow
 
       context 'with unknown format' do
         it 'responds with not found' do
-          get(:show, id: 1, format: 'php')
+          get(:show, params: {id: 1}, format: 'php')
 
           expect(response.status).to eq(404)
         end
@@ -473,7 +473,7 @@ module Pageflow
         entry = create(:entry, with_previewer: user)
 
         sign_in(user, scope: :user)
-        get(:partials, id: entry)
+        get(:partials, params: {id: entry})
 
         expect(response.status).to eq(200)
       end
@@ -483,7 +483,7 @@ module Pageflow
         entry = create(:entry)
 
         sign_in(user, scope: :user)
-        get(:partials, id: entry)
+        get(:partials, params: {id: entry})
 
         expect(response).to redirect_to(main_app.admin_root_path)
       end
@@ -491,7 +491,7 @@ module Pageflow
       it 'requires authentication' do
         entry = create(:entry)
 
-        get(:partials, id: entry)
+        get(:partials, params: {id: entry})
 
         expect(response).to redirect_to(main_app.new_user_session_path)
       end
@@ -517,7 +517,7 @@ module Pageflow
         create(:widget, subject: entry.draft, role: 'footer', type_name: 'non_editor_widget')
 
         sign_in(user, scope: :user)
-        get(:partials, id: entry)
+        get(:partials, params: {id: entry})
 
         expect(response.body).to have_selector('div.test_widget')
         expect(response.body).not_to have_selector('div.non_editor_widget')
@@ -539,7 +539,7 @@ module Pageflow
         entry.draft.update(locale: 'de')
 
         sign_in(user, scope: :user)
-        get(:partials, id: entry)
+        get(:partials, params: {id: entry})
 
         expect(response.body).to have_selector('div[lang=de]')
       end
@@ -552,7 +552,7 @@ module Pageflow
         chapter = create(:chapter, storyline: storyline)
         page = create(:page, chapter: chapter)
 
-        get(:page, id: entry, page_index: 0)
+        get(:page, params: {id: entry, page_index: 0})
 
         expect(response).to redirect_to("/report##{page.perma_id}")
       end
@@ -563,7 +563,7 @@ module Pageflow
         chapter = create(:chapter, storyline: storyline)
         page = create(:page, chapter: chapter)
 
-        get(:page, id: entry, page_index: '0-some-title')
+        get(:page, params: {id: entry, page_index: '0-some-title'})
 
         expect(response).to redirect_to("/report##{page.perma_id}")
       end
@@ -574,7 +574,7 @@ module Pageflow
         chapter = create(:chapter, storyline: storyline)
         create(:page, chapter: chapter)
 
-        get(:page, id: entry, page_index: '100-not-there')
+        get(:page, params: {id: entry, page_index: '100-not-there'})
 
         expect(response).to redirect_to('/report')
       end
@@ -594,7 +594,7 @@ module Pageflow
           page = create(:page, chapter: chapter)
 
           request.host = 'news.example.com'
-          get(:page, id: entry, page_index: 0)
+          get(:page, params: {id: entry, page_index: 0})
 
           expect(response).to redirect_to("/report##{page.perma_id}")
         end
@@ -603,7 +603,7 @@ module Pageflow
           entry = create(:entry, :published)
 
           request.host = 'news.example.com'
-          get(:page, id: entry, page_index: 0)
+          get(:page, params: {id: entry, page_index: 0})
 
           expect(response.status).to eq(404)
         end

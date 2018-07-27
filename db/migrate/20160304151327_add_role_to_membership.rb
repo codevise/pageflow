@@ -1,4 +1,4 @@
-class AddRoleToMembership < ActiveRecord::Migration
+class AddRoleToMembership < ActiveRecord::Migration[4.2]
   def change
     add_column :pageflow_memberships, :role, :string, null: false, default: 'editor'
 

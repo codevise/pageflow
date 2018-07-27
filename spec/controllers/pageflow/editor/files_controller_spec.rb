@@ -13,7 +13,7 @@ module Pageflow
         create(:file_usage, revision: entry.draft, file: file)
 
         sign_in(user, scope: :user)
-        get(:index, entry_id: entry.id, collection_name: 'image_files', format: 'json')
+        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
 
         expect(json_response(path: [0, 'id'])).to eq(file.id)
       end
@@ -26,7 +26,7 @@ module Pageflow
         create(:file_usage, revision: entry.draft, file: file)
 
         sign_in(user, scope: :user)
-        get(:index, entry_id: entry.id, collection_name: 'image_files', format: 'json')
+        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
 
         expect(json_response(path: [0, 'id'])).to eq(file.id)
       end
@@ -38,14 +38,14 @@ module Pageflow
         create(:file_usage, revision: entry.draft, file: file)
 
         sign_in(user, scope: :user)
-        get(:index, entry_id: entry.id, collection_name: 'image_files', format: 'json')
+        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
 
         expect(response.status).to eq(403)
       end
 
       it 'requires user to be signed in' do
         entry = create(:entry)
-        get(:index, entry_id: entry.id, collection_name: 'image_files', format: 'json')
+        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -59,9 +59,11 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:create,
-             entry_id: entry,
-             collection_name: 'image_files',
-             image_file: {attachment: image_fixture_upload},
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {attachment: image_fixture_upload}
+             },
              format: 'json')
 
         expect(response.status).to eq(200)
@@ -74,13 +76,15 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:create,
-             entry_id: entry,
-             collection_name: 'image_files',
-             image_file: {
-               attachment: image_fixture_upload,
-               rights: 'someone',
-               configuration: {
-                 some: 'value'
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {
+                 attachment: image_fixture_upload,
+                 rights: 'someone',
+                 configuration: {
+                   some: 'value'
+                 }
                }
              },
              format: 'json')
@@ -98,9 +102,11 @@ module Pageflow
         acquire_edit_lock(user, entry)
 
         post(:create,
-             entry_id: entry,
-             collection_name: 'image_files',
-             image_file: {attachment: image_fixture_upload},
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {attachment: image_fixture_upload}
+             },
              format: 'json')
 
         expect(entry.image_files).to have(1).item
@@ -113,9 +119,11 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:create,
-             entry_id: entry,
-             collection_name: 'image_files',
-             image_file: {attachment: image_fixture_upload},
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {attachment: image_fixture_upload}
+             },
              format: 'json')
 
         expect(json_response(path: [:usage_id])).to be_present
@@ -128,9 +136,11 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:create,
-             entry_id: entry,
-             collection_name: 'image_files',
-             image_file: {attachment: image_fixture_upload},
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {attachment: image_fixture_upload}
+             },
              format: 'json')
 
         expect(entry.image_files.first.unprocessed_attachment_file_name).to be_present
@@ -142,9 +152,11 @@ module Pageflow
 
         sign_in(user, scope: :user)
         post(:create,
-             entry_id: entry,
-             collection_name: 'image_files',
-             image_file: {attachment: image_fixture_upload},
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {attachment: image_fixture_upload}
+             },
              format: 'json')
 
         expect(response.status).to eq(403)
@@ -154,9 +166,11 @@ module Pageflow
         entry = create(:entry)
 
         post(:create,
-             entry_id: entry,
-             collection_name: 'image_files',
-             image_file: {attachment: image_fixture_upload},
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {attachment: image_fixture_upload}
+             },
              format: 'json')
 
         expect(response.status).to eq(401)
@@ -171,11 +185,13 @@ module Pageflow
         acquire_edit_lock(user, entry)
 
         post(:create,
-             entry_id: entry,
-             collection_name: 'text_track_files',
-             text_track_file: {attachment: text_track_fixture_upload,
-                               parent_file_id: parent_file.id,
-                               parent_file_model_type: 'Pageflow::VideoFile'},
+             params: {
+               entry_id: entry,
+               collection_name: 'text_track_files',
+               text_track_file: {attachment: text_track_fixture_upload,
+                                 parent_file_id: parent_file.id,
+                                 parent_file_model_type: 'Pageflow::VideoFile'}
+             },
              format: 'json')
 
         expect(parent_file.nested_files(Pageflow::TextTrackFile)).not_to be_empty
@@ -191,11 +207,13 @@ module Pageflow
         acquire_edit_lock(user, entry)
 
         post(:create,
-             entry_id: entry,
-             collection_name: 'image_files',
-             image_file: {attachment: image_fixture_upload,
-                          parent_file_id: parent_file.id,
-                          parent_file_model_type: 'Pageflow::ImageFile'},
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {attachment: image_fixture_upload,
+                            parent_file_id: parent_file.id,
+                            parent_file_model_type: 'Pageflow::ImageFile'}
+             },
              format: 'json')
 
         expect(parent_file.nested_files(Pageflow::ImageFile)).to be_empty
@@ -211,11 +229,13 @@ module Pageflow
         acquire_edit_lock(user, entry)
 
         post(:create,
-             entry_id: entry,
-             collection_name: 'text_track_files',
-             text_track_file: {attachment: text_track_fixture_upload,
-                               parent_file_id: parent_file.id,
-                               parent_file_model_type: 'Pageflow::ImageFile'},
+             params: {
+               entry_id: entry,
+               collection_name: 'text_track_files',
+               text_track_file: {attachment: text_track_fixture_upload,
+                                 parent_file_id: parent_file.id,
+                                 parent_file_model_type: 'Pageflow::ImageFile'}
+             },
              format: 'json')
 
         expect(parent_file.nested_files(Pageflow::TextTrackFile)).to be_empty
@@ -242,11 +262,13 @@ module Pageflow
         acquire_edit_lock(user, entry)
 
         post(:reuse,
-             entry_id: entry.id,
-             collection_name: 'image_files',
-             file_reuse: {
-               other_entry_id: other_entry.id,
-               file_id: file.id
+             params: {
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               file_reuse: {
+                 other_entry_id: other_entry.id,
+                 file_id: file.id
+               }
              },
              format: 'json')
 
@@ -263,11 +285,13 @@ module Pageflow
         acquire_edit_lock(user, entry)
 
         post(:reuse,
-             entry_id: entry.id,
-             collection_name: 'image_files',
-             file_reuse: {
-               other_entry_id: other_entry.id,
-               file_id: file.id
+             params: {
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               file_reuse: {
+                 other_entry_id: other_entry.id,
+                 file_id: file.id
+               }
              },
              format: 'json')
 
@@ -284,11 +308,13 @@ module Pageflow
         acquire_edit_lock(user, entry)
 
         post(:reuse,
-             entry_id: entry.id,
-             collection_name: 'image_files',
-             file_reuse: {
-               other_entry_id: other_entry.id,
-               file_id: file.id
+             params: {
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               file_reuse: {
+                 other_entry_id: other_entry.id,
+                 file_id: file.id
+               }
              },
              format: 'json')
 
@@ -302,11 +328,13 @@ module Pageflow
         file = create(:image_file, used_in: other_entry.draft)
 
         post(:reuse,
-             entry_id: entry.id,
-             collection_name: 'image_files',
-             file_reuse: {
-               other_entry_id: other_entry.id,
-               file_id: file.id
+             params: {
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               file_reuse: {
+                 other_entry_id: other_entry.id,
+                 file_id: file.id
+               }
              },
              format: 'json')
 
@@ -323,9 +351,11 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:retry,
-             entry_id: entry.id,
-             collection_name: 'image_files',
-             id: file,
+             params: {
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               id: file
+             },
              format: 'json')
 
         expect(response.status).to eq(201)
@@ -339,9 +369,11 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:retry,
-             entry_id: entry.id,
-             collection_name: 'image_files',
-             id: file,
+             params: {
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               id: file
+             },
              format: 'json')
 
         expect(response.status).to eq(403)
@@ -352,9 +384,11 @@ module Pageflow
         file = create(:image_file, :failed, used_in: entry.draft)
 
         post(:retry,
-             entry_id: entry.id,
-             collection_name: 'image_files',
-             id: file,
+             params: {
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               id: file
+             },
              format: 'json')
 
         expect(response.status).to eq(401)
@@ -368,9 +402,11 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         post(:retry,
-             entry_id: entry.id,
-             collection_name: 'image_files',
-             id: image_file,
+             params: {
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               id: image_file
+             },
              format: 'json')
 
         expect(response.status).to eq(400)
@@ -386,12 +422,14 @@ module Pageflow
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
         patch(:update,
-              entry_id: entry.id,
-              collection_name: 'image_files',
-              id: file,
-              image_file: {
-                rights: 'new',
-                configuration: {some: 'value'}
+              params: {
+                entry_id: entry.id,
+                collection_name: 'image_files',
+                id: file,
+                image_file: {
+                  rights: 'new',
+                  configuration: {some: 'value'}
+                }
               },
               format: 'json')
 
@@ -409,10 +447,12 @@ module Pageflow
 
         sign_in(user, scope: :user)
         patch(:update,
-              entry_id: entry.id,
-              collection_name: 'image_files',
-              id: file,
-              image_file: {rights: 'new'},
+              params: {
+                entry_id: entry.id,
+                collection_name: 'image_files',
+                id: file,
+                image_file: {rights: 'new'}
+              },
               format: 'json')
 
         expect(response.status).to eq(403)
@@ -423,10 +463,12 @@ module Pageflow
         file = create(:image_file, used_in: entry.draft)
 
         patch(:update,
-              entry_id: entry.id,
-              collection_name: 'image_files',
-              id: file,
-              image_file: {rights: 'new'},
+              params: {
+                entry_id: entry.id,
+                collection_name: 'image_files',
+                id: file,
+                image_file: {rights: 'new'}
+              },
               format: 'json')
 
         expect(response.status).to eq(401)
@@ -445,9 +487,11 @@ module Pageflow
         expect(entry.draft).to have(1).image_files
 
         delete(:destroy,
-               entry_id: entry.id,
-               collection_name: 'image_files',
-               id: file.id,
+               params: {
+                 entry_id: entry.id,
+                 collection_name: 'image_files',
+                 id: file.id
+               },
                format: 'json')
 
         expect(entry.draft).to have(0).image_files
@@ -462,9 +506,11 @@ module Pageflow
         acquire_edit_lock(user, entry)
 
         delete(:destroy,
-               entry_id: entry.id,
-               collection_name: 'image_files',
-               id: file.id,
+               params: {
+                 entry_id: entry.id,
+                 collection_name: 'image_files',
+                 id: file.id
+               },
                format: 'json')
 
         expect(response.status).to eq(403)
@@ -476,9 +522,11 @@ module Pageflow
         file = create(:image_file, used_in: entry.draft)
 
         delete(:destroy,
-               entry_id: entry.id,
-               collection_name: 'image_files',
-               id: file.id,
+               params: {
+                 entry_id: entry.id,
+                 collection_name: 'image_files',
+                 id: file.id
+               },
                format: 'json')
 
         expect(response.status).to eq(401)
@@ -492,9 +540,11 @@ module Pageflow
         sign_in(user, scope: :user)
 
         delete(:destroy,
-               entry_id: entry.id,
-               collection_name: 'image_files',
-               id: file.id,
+               params: {
+                 entry_id: entry.id,
+                 collection_name: 'image_files',
+                 id: file.id
+               },
                format: 'json')
 
         expect(response.status).to eq(409)

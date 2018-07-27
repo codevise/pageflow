@@ -22,3 +22,15 @@ gem 'coveralls', require: false
 
 # Early failure output
 gem 'rspec-instafail', '~> 0.4.0', require: false
+
+gem 'bootsnap', require: false
+
+group :development do
+  gem 'listen'
+end
+
+# Required to make imports in Active Admin stylesheet work
+gem 'sass-rails'
+
+# Required for XML serialization in Active Admin
+gem 'activemodel-serializers-xml'

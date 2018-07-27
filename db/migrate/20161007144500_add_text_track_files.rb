@@ -1,4 +1,4 @@
-class AddTextTrackFiles < ActiveRecord::Migration
+class AddTextTrackFiles < ActiveRecord::Migration[4.2]
   def change
     create_table :pageflow_text_track_files do |t|
       t.belongs_to(:entry, index: true)

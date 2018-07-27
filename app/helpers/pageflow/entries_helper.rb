@@ -61,7 +61,7 @@ module Pageflow
     def entry_mobile_navigation_pages(entry)
       entry.pages.displayed_in_navigation.tap do |pages|
         if entry.pages.any? && !entry.pages.first.display_in_navigation
-          pages.unshift(entry.pages.first)
+          [entry.pages.first, pages].flatten
         end
       end
     end

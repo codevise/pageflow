@@ -15,10 +15,10 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib']
 
-  s.add_dependency 'rails', '~> 4.2.6'
+  s.add_dependency 'rails', '~> 5.2.0'
 
   # Framework for admin interface
-  s.add_dependency 'activeadmin', '1.0.0.pre4'
+  s.add_dependency 'activeadmin', '1.3.0'
 
   # Searchable select boxes for filters and forms
   s.add_dependency 'activeadmin-searchable_select', '~> 1.0'
@@ -64,7 +64,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'htmlentities', '~> 4.3'
 
   # Use jquery as the JavaScript library
-  s.add_dependency 'jquery-rails', '~> 3.0'
+  s.add_dependency 'jquery-rails', '~> 4.3'
 
   # Advanced ui widgets for the editor.
   #
@@ -107,7 +107,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bourbon', '~> 3.1.8'
 
   # Pretty URLs
-  s.add_dependency 'friendly_id', '~> 5.0'
+  s.add_dependency 'friendly_id', '~> 5.2'
 
   # Build JSON APIs with ease.
   s.add_dependency 'jbuilder', '>= 1.5', '< 3.0'
@@ -122,7 +122,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bcrypt', '~> 3.1.7'
 
   # Used by the dummy rails application
-  s.add_development_dependency 'mysql2', '~> 0.3.16'
+  s.add_development_dependency 'mysql2', '~> 0.5.2'
 
   # Testing framework
   s.add_development_dependency 'rspec-rails', '~> 3.4'

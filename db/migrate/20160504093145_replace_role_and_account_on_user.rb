@@ -1,4 +1,4 @@
-class ReplaceRoleAndAccountOnUser < ActiveRecord::Migration
+class ReplaceRoleAndAccountOnUser < ActiveRecord::Migration[4.2]
   def up
     add_account_member_membership_for_each_user
     update_membership_role_to_manager_for_each_account_manager

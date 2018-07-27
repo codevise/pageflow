@@ -303,7 +303,7 @@ module Pageflow
 
           entry.restore(revision: earlier_revision, creator: creator)
 
-          expect(entry.draft(true).title).to eq('the way it was')
+          expect(entry.reload_draft.title).to eq('the way it was')
         end
 
         it 'resets password_protected flag' do
@@ -317,7 +317,7 @@ module Pageflow
 
           entry.restore(revision: earlier_revision, creator: creator)
 
-          expect(entry.draft(true)).not_to be_password_protected
+          expect(entry.reload_draft).not_to be_password_protected
         end
       end
 
@@ -329,7 +329,7 @@ module Pageflow
 
           entry.restore(revision: earlier_revision, creator: creator)
 
-          expect(entry.draft(true).title).to eq('the way it was')
+          expect(entry.reload_draft.title).to eq('the way it was')
         end
 
         it 'resets snapshot type' do
@@ -339,7 +339,7 @@ module Pageflow
 
           entry.restore(revision: earlier_revision, creator: creator)
 
-          expect(Revision.auto_snapshots).not_to include(entry.draft(true))
+          expect(Revision.auto_snapshots).not_to include(entry.reload_draft)
         end
       end
 
@@ -361,7 +361,7 @@ module Pageflow
 
         entry.restore(revision: earlier_revision, creator: creator)
 
-        expect(entry.draft(true).restored_from).to eq(earlier_revision)
+        expect(entry.reload_draft.restored_from).to eq(earlier_revision)
       end
     end
 

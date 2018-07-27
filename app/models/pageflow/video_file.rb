@@ -4,7 +4,7 @@ module Pageflow
     include EncodedFileStateMachine
     include OutputSource
 
-    belongs_to :confirmed_by, :class_name => 'User'
+    belongs_to :confirmed_by, class_name: 'User', optional: true
 
     has_attached_file(:poster, Pageflow.config.paperclip_s3_default_options
                         .merge(default_url: ':pageflow_placeholder',

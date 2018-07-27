@@ -1,4 +1,4 @@
-class RenameMembershipEntryAndMakePolymorphic < ActiveRecord::Migration
+class RenameMembershipEntryAndMakePolymorphic < ActiveRecord::Migration[4.2]
   def change
     rename_column :pageflow_memberships, :entry_id, :entity_id
     add_column :pageflow_memberships, :entity_type, :string

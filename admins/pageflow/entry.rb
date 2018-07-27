@@ -221,7 +221,7 @@ module Pageflow
 
       def update
         update! do |success, _|
-          success.html { redirect_to(admin_entry_path(resource, params.slice(:tab))) }
+          success.html { redirect_to(admin_entry_path(resource, params.permit(:tab))) }
         end
       end
 

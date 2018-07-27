@@ -1,4 +1,4 @@
-class AddProcessedAttachmentToTextTrackFiles < ActiveRecord::Migration
+class AddProcessedAttachmentToTextTrackFiles < ActiveRecord::Migration[4.2]
   def change
     add_column :pageflow_text_track_files, :processed_attachment_file_name, :string
     add_column :pageflow_text_track_files, :processed_attachment_content_type, :string

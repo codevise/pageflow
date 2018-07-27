@@ -17,6 +17,8 @@ require 'resque_scheduler'
 require 'active_admin'
 require 'activeadmin-searchable_select'
 
+require 'bourbon'
+require 'jquery-ui-rails'
 require 'jquery-layout-rails'
 require 'backbone-rails'
 require 'marionette-rails'
@@ -54,9 +56,6 @@ module Pageflow
       I18n.default_locale = :en
       config.i18n.load_path += Dir[Engine.root.join('config', 'locales', '**', '*.yml').to_s]
       config.i18n.locale = :en
-      # bypasses rails bug with i18n in production
-      I18n.reload!
-      config.i18n.reload!
     end
 
     # Make sure the configuration is recreated when classes are

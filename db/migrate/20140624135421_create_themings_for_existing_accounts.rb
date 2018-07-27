@@ -1,4 +1,4 @@
-class CreateThemingsForExistingAccounts < ActiveRecord::Migration
+class CreateThemingsForExistingAccounts < ActiveRecord::Migration[4.2]
   def up
     # For each account create a theming. Copy link attributes from
     # theme to theming. Store account_id on theming so we can identify

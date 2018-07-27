@@ -31,7 +31,7 @@ module Admin
           account = create(:account, with_manager: user)
 
           sign_in(user, scope: :user)
-          get(:show, id: account.id)
+          get(:show, params: {id: account.id})
 
           expect(response.body).to have_selector('.admin_tabs_view .tabs .features')
         end
@@ -46,7 +46,7 @@ module Admin
             account = create(:account, with_manager: user)
 
             sign_in(user, scope: :user)
-            get(:show, id: account.id)
+            get(:show, params: {id: account.id})
 
             expect(response.body).not_to have_selector('.admin_tabs_view .tabs .features')
           end
@@ -60,7 +60,7 @@ module Admin
             entry = create(:account)
 
             sign_in(user, scope: :user)
-            get(:show, id: entry.id)
+            get(:show, params: {id: entry.id})
 
             expect(response.body).to have_selector('.admin_tabs_view .tabs .features')
           end
@@ -71,7 +71,7 @@ module Admin
           account = create(:account, with_publisher: user)
 
           sign_in(user, scope: :user)
-          get(:show, id: account.id)
+          get(:show, params: {id: account.id})
 
           expect(response.body).not_to have_selector('.admin_tabs_view .tabs .features')
         end
@@ -101,7 +101,7 @@ module Admin
                                                        component: tab_view_component,
                                                        required_account_role: :manager)
           sign_in(user, scope: :user)
-          get(:show, id: account.id)
+          get(:show, params: {id: account.id})
 
           expect(response.body).to have_selector(tab_view_selector)
         end
@@ -116,7 +116,7 @@ module Admin
                                                          component: tab_view_component,
                                                          admin_only: true)
             sign_in(user, scope: :user)
-            get(:show, id: account.id)
+            get(:show, params: {id: account.id})
 
             expect(response.body).to have_selector(tab_view_selector)
           end
@@ -130,7 +130,7 @@ module Admin
                                                          component: tab_view_component,
                                                          admin_only: true)
             sign_in(user, scope: :user)
-            get(:show, id: account.id)
+            get(:show, params: {id: account.id})
 
             expect(response.body).not_to have_selector(tab_view_selector)
           end
@@ -147,7 +147,7 @@ module Admin
           end
 
           sign_in(user, scope: :user)
-          get(:show, id: account.id)
+          get(:show, params: {id: account.id})
 
           expect(response.body).to have_text('custom attribute')
         end
@@ -167,7 +167,7 @@ module Admin
           end
 
           sign_in(user, scope: :user)
-          get(:show, id: account.id)
+          get(:show, params: {id: account.id})
 
           expect(response.body).to have_text('custom attribute')
         end
@@ -186,7 +186,7 @@ module Admin
           end
 
           sign_in(user, scope: :user)
-          get(:show, id: account.id)
+          get(:show, params: {id: account.id})
 
           expect(response.body).not_to have_text('custom attribute')
         end
@@ -200,7 +200,7 @@ module Admin
           end
 
           sign_in(user, scope: :user)
-          get(:show, id: account.id)
+          get(:show, params: {id: account.id})
 
           expect(response.body).to have_text('custom attribute')
         end
@@ -220,7 +220,7 @@ module Admin
           end
 
           sign_in(user, scope: :user)
-          get(:show, id: account.id)
+          get(:show, params: {id: account.id})
 
           expect(response.body).to have_text('custom attribute')
         end
@@ -239,7 +239,7 @@ module Admin
           end
 
           sign_in(user, scope: :user)
-          get(:show, id: account.id)
+          get(:show, params: {id: account.id})
 
           expect(response.body).not_to have_text('custom attribute')
         end
@@ -253,10 +253,13 @@ module Admin
         end
 
         sign_in(create(:user, :admin), scope: :user)
-        post(:create, account: {
-               default_theming_attributes: {
-                 theme_name: 'custom',
-                 imprint_link_url: 'http://example.com/new'
+        post(:create,
+             params: {
+               account: {
+                 default_theming_attributes: {
+                   theme_name: 'custom',
+                   imprint_link_url: 'http://example.com/new'
+                 }
                }
              })
 
@@ -270,13 +273,15 @@ module Admin
 
         sign_in(create(:user, :admin), scope: :user)
         post(:create,
-             account: {
-               default_theming_attributes: {
-                 theme_name: 'custom'
+             params: {
+               account: {
+                 default_theming_attributes: {
+                   theme_name: 'custom'
+                 }
+               },
+               widgets: {
+                 navigation: 'some_widget'
                }
-             },
-             widgets: {
-               navigation: 'some_widget'
              })
 
         expect(Pageflow::Account.last.default_theming.widgets)
@@ -292,9 +297,11 @@ module Admin
 
         expect do
           post(:create,
-               account: {},
-               widgets: {
-                 navigation: 'some_widget'
+               params: {
+                 account: {},
+                 widgets: {
+                   navigation: 'some_widget'
+                 }
                })
         end.not_to change { Pageflow::Widget.count }
       end
@@ -311,7 +318,7 @@ module Admin
         end
 
         sign_in(create(:user, :admin), scope: :user)
-        get :edit, id: account
+        get :edit, params: {id: account}
 
         expect(response.body).to have_selector('[name="account[custom_field]"]')
       end
@@ -324,7 +331,7 @@ module Admin
         end
 
         sign_in(create(:user, :admin), scope: :user)
-        get :edit, id: account
+        get :edit, params: {id: account}
 
         expect(response.body)
           .to have_selector('[name="account[default_theming_attributes][custom_field]"]')
@@ -340,12 +347,12 @@ module Admin
         account = create(:account, default_theming: theming)
 
         sign_in(create(:user, :admin), scope: :user)
-        put(:update, id: account.id, account: {
+        put(:update, params: {id: account.id, account: {
               default_theming_attributes: {
                 theme_name: 'custom',
                 imprint_link_url: 'http://example.com/new'
               }
-            })
+            }})
 
         expect(theming.reload.theme_name).to eq('custom')
         expect(theming.imprint_link_url).to eq('http://example.com/new')
@@ -357,9 +364,11 @@ module Admin
 
         sign_in(create(:user, :admin), scope: :user)
         patch(:update,
-              id: account.id,
-              widgets: {
-                navigation: 'some_widget'
+              params: {
+                id: account.id,
+                widgets: {
+                  navigation: 'some_widget'
+                }
               })
 
         expect(theming.widgets).to include_record_with(role: 'navigation', type_name: 'some_widget')
@@ -372,14 +381,16 @@ module Admin
         sign_in(create(:user, :admin), scope: :user)
         expect do
           patch(:update,
-                id: account.id,
-                account: {
-                  default_theming_attributes: {
-                    theme_name: 'invalid'
+                params: {
+                  id: account.id,
+                  account: {
+                    default_theming_attributes: {
+                      theme_name: 'invalid'
+                    }
+                  },
+                  widgets: {
+                    navigation: 'some_widget'
                   }
-                },
-                widgets: {
-                  navigation: 'some_widget'
                 })
         end.not_to change { Pageflow::Widget.count }
       end
@@ -389,10 +400,12 @@ module Admin
 
         sign_in(create(:user, :admin), scope: :user)
         patch(:update,
-              id: account.id,
-              account: {
-                feature_states: {
-                  fancy_page_type: 'enabled'
+              params: {
+                id: account.id,
+                account: {
+                  feature_states: {
+                    fancy_page_type: 'enabled'
+                  }
                 }
               })
 
@@ -405,10 +418,12 @@ module Admin
 
         sign_in(user, scope: :user)
         patch(:update,
-              id: account.id,
-              account: {
-                feature_states: {
-                  fancy_page_type: 'enabled'
+              params: {
+                id: account.id,
+                account: {
+                  feature_states: {
+                    fancy_page_type: 'enabled'
+                  }
                 }
               })
 
@@ -421,10 +436,12 @@ module Admin
 
         sign_in(user, scope: :user)
         patch(:update,
-              id: account.id,
-              account: {
-                feature_states: {
-                  fancy_page_type: 'enabled'
+              params: {
+                id: account.id,
+                account: {
+                  feature_states: {
+                    fancy_page_type: 'enabled'
+                  }
                 }
               })
 
@@ -441,10 +458,12 @@ module Admin
 
           sign_in(create(:user, :admin), scope: :user)
           patch(:update,
-                id: account.id,
-                account: {
-                  feature_states: {
-                    fancy_page_type: 'enabled'
+                params: {
+                  id: account.id,
+                  account: {
+                    feature_states: {
+                      fancy_page_type: 'enabled'
+                    }
                   }
                 })
 
@@ -461,10 +480,12 @@ module Admin
 
           sign_in(user, scope: :user)
           patch(:update,
-                id: account.id,
-                account: {
-                  feature_states: {
-                    fancy_page_type: 'enabled'
+                params: {
+                  id: account.id,
+                  account: {
+                    feature_states: {
+                      fancy_page_type: 'enabled'
+                    }
                   }
                 })
 
@@ -480,7 +501,7 @@ module Admin
         end
 
         sign_in(create(:user, :admin), scope: :user)
-        patch(:update, id: account, account: {custom_field: 'some value'})
+        patch(:update, params: {id: account, account: {custom_field: 'some value'}})
 
         expect(account.reload.custom_field).to eq('some value')
       end
@@ -489,7 +510,7 @@ module Admin
         account = create(:account)
 
         sign_in(create(:user, :admin), scope: :user)
-        patch(:update, id: account, account: {custom_field: 'some value'})
+        patch(:update, params: {id: account, account: {custom_field: 'some value'}})
 
         expect(account.reload.custom_field).to eq(nil)
       end
@@ -503,10 +524,12 @@ module Admin
 
         sign_in(create(:user, :admin), scope: :user)
         patch(:update,
-              id: account,
-              account: {
-                default_theming_attributes: {
-                  custom_field: 'some value'
+              params: {
+                id: account,
+                account: {
+                  default_theming_attributes: {
+                    custom_field: 'some value'
+                  }
                 }
               })
 
@@ -518,10 +541,12 @@ module Admin
 
         sign_in(create(:user, :admin), scope: :user)
         patch(:update,
-              id: account,
-              account: {
-                default_theming_attributes: {
-                  custom_field: 'some value'
+              params: {
+                id: account,
+                account: {
+                  default_theming_attributes: {
+                    custom_field: 'some value'
+                  }
                 }
               })
 
@@ -533,9 +558,11 @@ module Admin
 
         sign_in(create(:user, :admin), scope: :user)
         patch(:update,
-              id: account.id,
-              account: {},
-              tab: 'features')
+              params: {
+                id: account.id,
+                account: {},
+                tab: 'features'
+              })
 
         expect(response).to redirect_to(admin_account_path(tab: 'features'))
       end
@@ -547,7 +574,7 @@ module Admin
 
         sign_in(create(:user, :admin), scope: :user)
 
-        expect { delete :destroy, id: account }.to change { Pageflow::Account.count }
+        expect { delete :destroy, params: {id: account} }.to change { Pageflow::Account.count }
       end
 
       it 'does not allow to destroy account with user' do
@@ -556,7 +583,7 @@ module Admin
 
         sign_in(create(:user, :admin), scope: :user)
 
-        expect { delete :destroy, id: account }.not_to change { Pageflow::Account.count }
+        expect { delete :destroy, params: {id: account} }.not_to change { Pageflow::Account.count }
       end
 
       it 'does not allow to destroy account with entry' do
@@ -565,7 +592,7 @@ module Admin
 
         sign_in(create(:user, :admin), scope: :user)
 
-        expect { delete :destroy, id: account }.not_to change { Pageflow::Account.count }
+        expect { delete :destroy, params: {id: account} }.not_to change { Pageflow::Account.count }
       end
     end
   end

@@ -6,7 +6,7 @@ module Pageflow
       rescue_from Quota::ExhaustedError do |exception|
         respond_to do |format|
           format.html do
-            redirect_to :back, :alert => t('pageflow.quotas.exhausted')
+            redirect_back fallback_location: admin_root_path, alert: t('pageflow.quotas.exhausted')
           end
           format.json do
             render(:status => :forbidden,

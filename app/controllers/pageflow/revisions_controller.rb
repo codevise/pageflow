@@ -2,7 +2,7 @@ module Pageflow
   class RevisionsController < Pageflow::ApplicationController
     include QuotaVerification
 
-    before_filter :authenticate_user!, :unless => lambda { |controller| controller.request.format.css? }
+    before_action :authenticate_user!, :unless => lambda { |controller| controller.request.format.css? }
 
     respond_to :json
 

@@ -87,7 +87,7 @@ module Pageflow
       end
     end
 
-    describe '#cache_key' do
+    describe '#cache_version' do
       before { Timecop.travel }
 
       it 'changes when entry changes' do
@@ -96,8 +96,8 @@ module Pageflow
         published_entry = PublishedEntry.new(entry)
 
         expect {
-          entry.touch
-        }.to change { published_entry.cache_key }
+          Timecop.freeze(1.minute.from_now) { entry.touch }
+        }.to change { published_entry.cache_version }
       end
 
       it 'changes when revision changes' do
@@ -106,8 +106,8 @@ module Pageflow
         published_entry = PublishedEntry.new(entry)
 
         expect {
-          revision.touch
-        }.to change { published_entry.cache_key }
+          Timecop.freeze(1.minute.from_now) { revision.touch }
+        }.to change { published_entry.cache_version }
       end
 
       it 'changes when theming changes' do
@@ -116,8 +116,8 @@ module Pageflow
         published_entry = PublishedEntry.new(entry)
 
         expect {
-          entry.theming.touch
-        }.to change { published_entry.cache_key }
+          Timecop.freeze(1.minute.from_now) { entry.theming.touch }
+        }.to change { published_entry.cache_version }
       end
     end
 

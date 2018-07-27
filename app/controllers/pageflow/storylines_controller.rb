@@ -2,7 +2,7 @@ module Pageflow
   class StorylinesController < Pageflow::ApplicationController
     respond_to :json
 
-    before_filter :authenticate_user!
+    before_action :authenticate_user!
 
     def create
       entry = DraftEntry.find(params[:entry_id])
@@ -62,8 +62,7 @@ module Pageflow
     private
 
     def storyline_params
-      configuration = params.require(:storyline)[:configuration].try(:permit!)
-      params.require(:storyline).permit.merge(configuration: configuration)
+      {configuration: params.dig(:storyline, :configuration).try(:permit!)}
     end
   end
 end

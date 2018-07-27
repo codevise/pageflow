@@ -1,5 +1,6 @@
 @import "active_admin/searchable_select";
 
+@import "bourbon";
 @import "pageflow/mixins";
 
 @import "pageflow/admin/badge_list";
@@ -15,6 +16,7 @@
 @import "pageflow/admin/icon_link";
 @import "pageflow/admin/publication_state_indicator";
 @import "pageflow/admin/quotas";
+@import "pageflow/admin/status_tags";
 @import "pageflow/admin/tabs_view";
 @import "pageflow/admin/tooltip_bubble";
 

@@ -1,4 +1,4 @@
-class MoveCnameFromAccountToTheming < ActiveRecord::Migration
+class MoveCnameFromAccountToTheming < ActiveRecord::Migration[4.2]
   def up
     add_column :pageflow_themings, :cname, :string, null: false, default: ''
     add_index :pageflow_themings, :cname

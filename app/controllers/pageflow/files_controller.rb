@@ -3,7 +3,7 @@ module Pageflow
     include PublicHttpsMode
     include EntryPasswordProtection
 
-    before_filter :check_public_https_mode
+    before_action :check_public_https_mode
 
     def show
       respond_to do |format|

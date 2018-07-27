@@ -3,9 +3,9 @@ module Pageflow
     include PublicHttpsMode
     include EntryPasswordProtection
 
-    before_filter :authenticate_user!, except: [:index, :show, :page]
+    before_action :authenticate_user!, except: [:index, :show, :page]
 
-    before_filter :check_public_https_mode,
+    before_action :check_public_https_mode,
                   only: [:index, :show],
                   unless: lambda { |controller| controller.request.format.json? }
 

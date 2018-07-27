@@ -1,4 +1,4 @@
-class AddEditedAtToEntries < ActiveRecord::Migration
+class AddEditedAtToEntries < ActiveRecord::Migration[4.2]
   def change
     add_column :pageflow_entries, :edited_at, :datetime
 
