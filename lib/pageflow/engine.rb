@@ -11,9 +11,6 @@ require 'htmlentities'
 require 'kramdown'
 require 'react-rails'
 
-require 'resque_mailer'
-require 'resque_scheduler'
-
 require 'active_admin'
 require 'activeadmin-searchable_select'
 

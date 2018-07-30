@@ -11,7 +11,7 @@ module Pageflow
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.pending)
 
-      result = PollZencoderJob.perform_with_result(video_file, {})
+      PollZencoderJob.new.perform_with_result(video_file, {})
 
       expect(ZencoderApi.instance).to have_received(:get_info).with(43)
     end
@@ -21,7 +21,7 @@ module Pageflow
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.pending)
 
-      result = PollZencoderJob.perform_with_result(video_file, {})
+      result = PollZencoderJob.new.perform_with_result(video_file, {})
 
       expect(result).to eq(:pending)
     end
@@ -31,7 +31,7 @@ module Pageflow
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.pending(:progress => 30))
 
-      result = PollZencoderJob.perform_with_result(video_file, {})
+      PollZencoderJob.new.perform_with_result(video_file, {})
 
       expect(video_file.encoding_progress).to eq(30)
     end
@@ -41,7 +41,7 @@ module Pageflow
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.recoverably_failing)
 
-      result = PollZencoderJob.perform_with_result(video_file, {})
+      result = PollZencoderJob.new.perform_with_result(video_file, {})
 
       expect(result).to eq(:pending)
     end
@@ -51,7 +51,7 @@ module Pageflow
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.recoverably_failing)
 
-      PollZencoderJob.perform_with_result(video_file, {})
+      PollZencoderJob.new.perform_with_result(video_file, {})
 
       expect(video_file.reload.encoding_error_message).to be_present
     end
@@ -61,7 +61,10 @@ module Pageflow
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.unrecoverably_failing)
 
-      PollZencoderJob.perform_with_result(video_file, {}) rescue :ignore
+      begin
+        PollZencoderJob.new.perform_with_result(video_file, {})
+      rescue ZencoderApi::UnrecoverableError # rubocop:disable Lint/HandleExceptions
+      end
 
       expect(video_file.reload.encoding_error_message).to be_present
     end
@@ -72,7 +75,7 @@ module Pageflow
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
       stub_request(:get, /.*amazonaws\.com/).to_return(:status => 404)
 
-      result = PollZencoderJob.perform_with_result(video_file, {})
+      result = PollZencoderJob.new.perform_with_result(video_file, {})
 
       expect(result).to eq(:pending)
     end
@@ -83,7 +86,7 @@ module Pageflow
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
       stub_request(:get, /.*amazonaws\.com/).to_return(:status => 404)
 
-      result = PollZencoderJob.perform_with_result(video_file, {:skip_thumbnail => true})
+      result = PollZencoderJob.new.perform_with_result(video_file, skip_thumbnail: true)
 
       expect(result).to eq(:ok)
     end
@@ -95,7 +98,7 @@ module Pageflow
       stub_request(:any, /#{zencoder_options[:s3_host_alias]}/)
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
 
-      result = PollZencoderJob.perform_with_result(video_file, {})
+      result = PollZencoderJob.new.perform_with_result(video_file, {})
 
       expect(result).to eq(:ok)
     end
@@ -105,7 +108,7 @@ module Pageflow
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
-      result = PollZencoderJob.perform_with_result(audio_file, {})
+      result = PollZencoderJob.new.perform_with_result(audio_file, {})
 
       expect(result).to eq(:ok)
     end
@@ -115,7 +118,7 @@ module Pageflow
 
       allow(ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished_but_failed)
 
-      result = PollZencoderJob.perform_with_result(audio_file, {})
+      result = PollZencoderJob.new.perform_with_result(audio_file, {})
 
       expect(result).to eq(:error)
     end
@@ -127,7 +130,7 @@ module Pageflow
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
 
-      result = PollZencoderJob.perform_with_result(video_file, {})
+      PollZencoderJob.new.perform_with_result(video_file, {})
 
       expect(ZencoderApi.instance).to have_received(:get_details).with(43)
     end
@@ -143,7 +146,7 @@ module Pageflow
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
       allow(video_file).to receive(:meta_data_attributes=)
 
-      result = PollZencoderJob.perform_with_result(video_file, {})
+      PollZencoderJob.new.perform_with_result(video_file, {})
 
       expect(video_file).to have_received(:meta_data_attributes=).with(meta_data)
     end

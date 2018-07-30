@@ -26,14 +26,7 @@ Gem::Specification.new do |s|
   # User authentication
   s.add_dependency 'devise', '~> 4.4.0'
 
-  # Resque jobs and queues
-  s.add_dependency 'resque', '~> 1.25'
-  s.add_dependency 'resque-scheduler', '~> 2.5'
-  s.add_dependency 'resque-logger', '~> 0.2.0'
-  s.add_dependency 'resque_mailer', '~> 2.2'
-  s.add_dependency 'ar_after_transaction', '~> 0.4.0'
-  s.add_dependency 'redis', '~> 3.0'
-  s.add_dependency 'redis-namespace', '~> 1.5'
+  # Faster JSON backend
   s.add_dependency 'yajl-ruby', '~> 1.2'
 
   # Authorization
@@ -43,7 +36,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'state_machine', '~> 1.2'
 
   # Trigger resque jobs with a state machine
-  s.add_dependency 'state_machine_job', ['>= 0.2.0', '< 2']
+  s.add_dependency 'state_machine_job', '~> 2.0'
 
   # File attachments
   s.add_dependency 'paperclip', '~> 4.2.4'
@@ -123,6 +116,13 @@ Gem::Specification.new do |s|
 
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2', '~> 0.5.2'
+
+  # Resque as default Active Job backend
+  s.add_development_dependency 'resque', '~> 1.25'
+  s.add_development_dependency 'resque-scheduler', '~> 2.5'
+  s.add_development_dependency 'ar_after_transaction', '~> 0.4.0'
+  s.add_development_dependency 'redis', '~> 3.0'
+  s.add_development_dependency 'redis-namespace', '~> 1.5'
 
   # Testing framework
   s.add_development_dependency 'rspec-rails', '~> 3.4'

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'as visitor, recovering password' do
-  scenario 'with email', inline_resque: true do
+  scenario 'with email', perform_jobs: true do
     create(:user, email: 'john@example.com', password: '@qwert12345')
 
     visit('/admin')

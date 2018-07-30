@@ -259,7 +259,6 @@ module Pageflow
         can :manage, [Entry, Revision]
         can :manage, Pageflow.config.file_types.map(&:model)
         can :manage, Folder
-        can :manage, Resque
         can :manage, Theming
         can :manage, ::User
       end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Pageflow
-  describe ImageFileStateMachine, :inline_resque => true do
+  describe ImageFileStateMachine, perform_jobs: true do
     describe '#process event' do
       context 'for unprocessed file' do
         it 'processes attachment' do

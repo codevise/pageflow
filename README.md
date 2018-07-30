@@ -40,7 +40,7 @@ Pageflow assumes the following choice of libraries:
 * [Devise](https://github.com/plataformatec/devise) for authentication
 * [CanCanCan](https://github.com/CanCanCommunity/cancancan) for authorization
 * [ActiveAdmin](http://activeadmin.info/) for administration
-* [Resque](https://github.com/resque/resque) for background jobs
+* [Resque](https://github.com/resque/resque) for as default for background jobs
 * [FriendlyId](https://github.com/norman/friendly_id) for pretty URLs
 * [Paperclip](https://github.com/thoughtbot/paperclip) for attachment handling
 * [Backbone](http://backbonejs.org/) [Marionette](http://marionettejs.com/) for the editor
@@ -94,6 +94,13 @@ for details.
 
     # Required for Rails 4.2 compatibility
     gem 'state_machine', git: 'https://github.com/codevise/state_machine.git'
+
+    # The install generator sets up Resque as Active Job backend
+    gem 'resque', '~> 1.25'
+    gem 'resque-scheduler', '~> 2.5'
+    gem 'ar_after_transaction', '~> 0.4.0'
+    gem 'redis', '~> 3.0'
+    gem 'redis-namespace', '~> 1.5'
 
 Run bundler to install dependencies:
 

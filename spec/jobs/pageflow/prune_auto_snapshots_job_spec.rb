@@ -10,7 +10,7 @@ module Pageflow
         3.times { entry.snapshot(creator: user) }
       end
 
-      PruneAutoSnapshotsJob.perform(entry.id, keep_count: 2, created_before: 1.month.ago)
+      PruneAutoSnapshotsJob.perform_now(entry.id, keep_count: 2, created_before: 1.month.ago)
 
       expect(entry.reload.revisions.auto_snapshots.count).to eq(2)
     end

@@ -31,7 +31,7 @@ module Pageflow
     end
 
     def send_invitation
-      UserMailer.invitation('user_id' => id, 'password_token' => @token).deliver
+      UserMailer.invitation(user: self, password_token: @token).deliver_later
     end
   end
 end
