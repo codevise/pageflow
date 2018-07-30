@@ -1,8 +1,10 @@
 # CHANGELOG
 
-### Unreleased Changes
+### Version 13.0.0.beta1
 
-[Compare changes](https://github.com/codevise/pageflow/compare/12-x-stable...master)
+2018-07-30
+
+[Compare changes](https://github.com/codevise/pageflow/compare/12-x-stable...v13.0.0.beta1)
 
 #### Breaking Changes
 
