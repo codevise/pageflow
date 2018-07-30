@@ -9,7 +9,7 @@ module Pageflow
 
     def build
       if @options[:depth] == 'page'
-        @page = @chapter.pages.build(chapter: @chapter, template: 'background_image')
+        @page = @chapter.pages.build(template: 'background_image')
       end
 
       self
@@ -27,7 +27,7 @@ module Pageflow
     end
 
     def self.build(storyline, attributes, options)
-      new(storyline.chapters.build(attributes.merge(storyline: storyline)), options).build
+      new(storyline.chapters.build(attributes), options).build
     end
   end
 end
