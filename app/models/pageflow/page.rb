@@ -2,7 +2,7 @@ module Pageflow
   class Page < ApplicationRecord
     include SerializedConfiguration
 
-    belongs_to :chapter, :touch => true
+    belongs_to :chapter, touch: true
 
     attr_accessor :is_first
 

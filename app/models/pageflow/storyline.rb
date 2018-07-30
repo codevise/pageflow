@@ -5,7 +5,11 @@ module Pageflow
 
     belongs_to :revision, touch: true
 
-    has_many :chapters, -> { order('pageflow_chapters.position ASC') }, dependent: :destroy
+    has_many(:chapters,
+             -> { order('pageflow_chapters.position ASC') },
+             dependent: :destroy,
+             inverse_of: :storyline)
+
     has_many :pages, through: :chapters
 
     delegate :entry, to: :revision
