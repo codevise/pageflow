@@ -92,9 +92,6 @@ for details.
     # Gemfile
     gem 'pageflow', '~> X.Y.Z'
 
-    # Required for Rails 4.2 compatibility
-    gem 'state_machine', git: 'https://github.com/codevise/state_machine.git'
-
     # The install generator sets up Resque as Active Job backend
     gem 'resque', '~> 1.25'
     gem 'resque-scheduler', '~> 2.5'
