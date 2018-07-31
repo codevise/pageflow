@@ -1,5 +1,18 @@
 # CHANGELOG
 
+### Version 13.0.0.beta2
+
+2018-07-31
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v13.0.0.beta1...v13.0.0.beta2)
+
+- Require resque in initializer
+  ([#980](https://github.com/codevise/pageflow/pull/980))
+- Use `ar_after_transaction` 0.5
+  ([#979](https://github.com/codevise/pageflow/pull/979))
+- Fix handling of null object in presence validation
+  ([#978](https://github.com/codevise/pageflow/pull/978))
+
 ### Version 13.0.0.beta1
 
 2018-07-30
