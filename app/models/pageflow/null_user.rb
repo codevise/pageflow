@@ -11,5 +11,9 @@ module Pageflow
     def blank?
       true
     end
+
+    def to_ary
+      []
+    end
   end
 end
