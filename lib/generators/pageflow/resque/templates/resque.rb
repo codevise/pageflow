@@ -1,3 +1,6 @@
+require 'resque'
+require 'resque_scheduler'
+
 # Change to use your favorite method of configuration. Consider the
 # dotenv gem to setup your environment with a .env file.
 
