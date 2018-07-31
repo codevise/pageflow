@@ -120,7 +120,7 @@ Gem::Specification.new do |s|
   # Resque as default Active Job backend
   s.add_development_dependency 'resque', '~> 1.25'
   s.add_development_dependency 'resque-scheduler', '~> 2.5'
-  s.add_development_dependency 'ar_after_transaction', '~> 0.4.0'
+  s.add_development_dependency 'ar_after_transaction', '~> 0.5.0'
   s.add_development_dependency 'redis', '~> 3.0'
   s.add_development_dependency 'redis-namespace', '~> 1.5'
 

@@ -98,7 +98,7 @@ for details.
     # The install generator sets up Resque as Active Job backend
     gem 'resque', '~> 1.25'
     gem 'resque-scheduler', '~> 2.5'
-    gem 'ar_after_transaction', '~> 0.4.0'
+    gem 'ar_after_transaction', '~> 0.5.0'
     gem 'redis', '~> 3.0'
     gem 'redis-namespace', '~> 1.5'
 
