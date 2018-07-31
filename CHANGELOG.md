@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 13.0.0.beta3
+
+2018-07-31
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v13.0.0.beta2...v13.0.0.beta3)
+
+- Breaking change: Migrate to state_machines gem
+  ([#981](https://github.com/codevise/pageflow/pull/981))
+
 ### Version 13.0.0.beta2
 
 2018-07-31
