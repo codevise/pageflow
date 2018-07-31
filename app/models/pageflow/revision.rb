@@ -43,13 +43,11 @@ module Pageflow
     scope :user_snapshots, -> { where(snapshot_type: 'user') }
     scope :auto_snapshots, -> { where(snapshot_type: 'auto') }
 
-    validates :entry, :presence => true
+    validates :entry, presence: true
+    validates :creator, presence: true, if: :published?
 
-    # Workaround for https://github.com/rails/rails/issues/33445
-    validates_with ActiveModel::Validations::PresenceValidator, attributes: [:creator], if: :published?
-
-    validate :published_until_unchanged, :if => :published_until_was_in_past?
-    validate :published_until_blank, :if => :published_at_blank?
+    validate :published_until_unchanged, if: :published_until_was_in_past?
+    validate :published_until_blank, if: :published_at_blank?
 
     def main_storyline_chapters
       main_storyline = storylines.first
