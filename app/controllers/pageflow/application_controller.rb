@@ -1,5 +1,5 @@
 require 'cancan'
-require 'state_machine'
+require 'state_machines'
 
 module Pageflow
   class ApplicationController < ActionController::Base
@@ -43,7 +43,7 @@ module Pageflow
       end
     end
 
-    rescue_from StateMachine::InvalidTransition do |exception|
+    rescue_from StateMachines::InvalidTransition do |exception|
       debug_log_with_backtrace(exception)
       respond_to do |format|
         format.html { redirect_to main_app.admin_root_path, :alert => t('pageflow.invalid_transition') }

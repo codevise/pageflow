@@ -33,10 +33,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'cancancan', '~> 1.10'
 
   # State machines for active record
-  s.add_dependency 'state_machine', '~> 1.2'
+  s.add_dependency 'state_machines-activerecord', '~> 0.5.1'
 
   # Trigger resque jobs with a state machine
-  s.add_dependency 'state_machine_job', '~> 2.0'
+  s.add_dependency 'state_machine_job', '~> 3.0'
 
   # File attachments
   s.add_dependency 'paperclip', '~> 4.2.4'
