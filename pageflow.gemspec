@@ -85,9 +85,6 @@ Gem::Specification.new do |s|
   # Templating engine used to render jst tempaltes.
   s.add_dependency 'ejs', '~> 1.1'
 
-  # Templating engine used to compile scss templates.
-  s.add_dependency 'sass-rails', '~> 5.0'
-
   # Scss compiler
   s.add_dependency 'sass', '~> 3.4'
 
@@ -123,6 +120,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'ar_after_transaction', '~> 0.5.0'
   s.add_development_dependency 'redis', '~> 3.0'
   s.add_development_dependency 'redis-namespace', '~> 1.5'
+
+  # Faster scss compilation
+  s.add_development_dependency 'sassc-rails', '~> 1.0'
 
   # Testing framework
   s.add_development_dependency 'rspec-rails', '~> 3.4'
