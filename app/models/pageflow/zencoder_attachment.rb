@@ -4,7 +4,7 @@ module Pageflow
   class ZencoderAttachment
     cattr_accessor :default_options
     self.default_options = {
-      path: '/:zencoder_asset_version/:host/:class/:id_partition/:filename',
+      path: '/:zencoder_asset_version/:host/:class/:id_partition/:zencoder_filename',
       url: ':zencoder_protocol//:zencoder_host_alias:zencoder_path',
       hls_url: ':zencoder_protocol//:zencoder_hls_host_alias:zencoder_path',
       hls_origin_url: ':zencoder_protocol//:zencoder_hls_origin_host_alias:zencoder_path'

@@ -52,9 +52,10 @@ Pageflow.configure do |config|
     s3_credentials: {
       bucket: ENV.fetch('S3_BUCKET', 'com-example-pageflow-development'),
       access_key_id: ENV.fetch('S3_ACCESS_KEY', 'xxx'),
-      secret_access_key: ENV.fetch('S3_SECRET_KEY', 'xxx'),
-      s3_host_name: ENV.fetch('S3_HOST_NAME', 's3-eu-west-1.amazonaws.com')
+      secret_access_key: ENV.fetch('S3_SECRET_KEY', 'xxx')
     },
+    s3_host_name: ENV.fetch('S3_HOST_NAME', 's3-eu-west-1.amazonaws.com'),
+    s3_region: ENV.fetch('S3_REGION', 'eu-west-1'),
     s3_host_alias: ENV.fetch('S3_HOST_ALIAS',
                              'com-example-pageflow.s3-website-eu-west-1.amazonaws.com'),
     s3_protocol: ENV.fetch('S3_PROTOCOL', 'http')

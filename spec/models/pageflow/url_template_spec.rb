@@ -10,7 +10,7 @@ module Pageflow
           has_attached_file(:thumbnail, url: url)
           attr_accessor(:thumbnail_file_name)
 
-          def self.to_s
+          def self.name
             'Page'
           end
         }.new(id: 5, thumbnail_file_name: filename).thumbnail

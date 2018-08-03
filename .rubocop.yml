@@ -36,3 +36,7 @@ Metrics/BlockLength:
 # Both ['...'] and %w(...) are fine
 Style/WordArray:
   Enabled: false
+
+# extend self is fine
+Style/ModuleFunction:
+  Enabled: false
