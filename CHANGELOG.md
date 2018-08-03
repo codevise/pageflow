@@ -1,13 +1,49 @@
 # CHANGELOG
 
+#### Manual Update Steps
+
+- Upgraded to Paperclip 6.1
+  ([#983](https://github.com/codevise/pageflow/pull/983))
+
+  Set the name of the S3 region you are using in
+  `config/initializers/pageflow.rb`. The complete configuration looks
+  like this:
+
+        config.paperclip_s3_default_options.merge!(
+          s3_credentials: {
+            bucket: ENV.fetch('S3_BUCKET', 'com-example-pageflow-development'),
+            access_key_id: ENV.fetch('S3_ACCESS_KEY', 'xxx'),
+            secret_access_key: ENV.fetch('S3_SECRET_KEY', 'xxx'),
+          },
+          s3_host_name: ENV.fetch('S3_HOST_NAME', 's3-eu-west-1.amazonaws.com'),
+          s3_region: ENV.fetch('S3_REGION', 'eu-central-1'), # <= new line
+          s3_host_alias: ENV.fetch('S3_HOST_ALIAS', 'com-example-pageflow.s3-website-eu-west-1.amazonaws.com'),
+          s3_protocol: ENV.fetch('S3_PROTOCOL', 'http')
+        )
+
+#### Rails Engine
+
+- Allow using `sassc-rails`
+  ([#982](https://github.com/codevise/pageflow/pull/982))
+
+#### Internals
+
+- Ensure `lib/pagefow` is eager loaded in production
+  ([#984](https://github.com/codevise/pageflow/pull/984))
+
 ### Version 13.0.0.beta3
 
 2018-07-31
 
 [Compare changes](https://github.com/codevise/pageflow/compare/v13.0.0.beta2...v13.0.0.beta3)
 
-- Breaking change: Migrate to state_machines gem
+#### Breaking Changes
+
+- Migrated to `state_machines` gem
   ([#981](https://github.com/codevise/pageflow/pull/981))
+
+  Pageflow no longer depends on a fork of the `state_machine` gem. The
+  corresponding `Gemfile` entry has to be removed.
 
 ### Version 13.0.0.beta2
 
