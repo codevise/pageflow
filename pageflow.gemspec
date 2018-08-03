@@ -39,13 +39,13 @@ Gem::Specification.new do |s|
   s.add_dependency 'state_machine_job', '~> 3.0'
 
   # File attachments
-  s.add_dependency 'paperclip', '~> 4.2.4'
+  s.add_dependency 'paperclip', '~> 6.1'
 
   # zencoder
   s.add_dependency 'zencoder', '~> 2.5'
 
   # Amazon AWS
-  s.add_dependency 'aws-sdk', '~> 1.60'
+  s.add_dependency 'aws-sdk-s3', '~> 1.0'
 
   # Markdown parser
   s.add_dependency 'kramdown', '~> 1.5'
