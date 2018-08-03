@@ -107,9 +107,10 @@ files to S3. Edit the `paperclip_s3_default_options` settings in
     s3_credentials: {
       bucket: 'com-example-pageflow-development',
       access_key_id: 'xxx',
-      secret_access_key: 'xxx',
-      s3_host_name: 's3-eu-west-1.amazonaws.com'
+      secret_access_key: 'xxx'
     },
+    s3_host_name: 's3-eu-west-1.amazonaws.com',
+    s3_region: 'eu-west-1',
     s3_host_alias: 'com-example-pageflow.s3-website-eu-west-1.amazonaws.com',
     s3_protocol: 'http'
   )
@@ -130,6 +131,8 @@ The required options are:
   for more information.  **Important**: Be sure NOT to enter an S3
   Website endpoint (`s3-website-*.amazonaws.com`) here. Those enpoints
   can only be used for read access to files from your buckets.
+
+* `s3_region`: The AWS region where you've created your buckets.
 
 * `s3_host_alias`: The host name that shall be used for image URLs in
   your published entries. This can be the hostname of some CDN you
