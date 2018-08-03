@@ -19,7 +19,7 @@ module Pageflow
     end
 
     def file_double(id:)
-      double('File', id: id, class: double(to_s: 'File'))
+      double('File', id: id, class: double(name: 'File'))
     end
 
     describe '#original_filename' do
