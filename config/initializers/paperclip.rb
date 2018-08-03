@@ -14,7 +14,6 @@ Pageflow.configure do |config|
     config.paperclip_s3_default_options.merge!({
       storage: :s3,
       s3_headers: {'Cache-Control' => "public, max-age=31536000"},
-      s3_options: {max_retries: 10},
 
       url: ':s3_alias_url',
       path: ':host/:class_basename/:attachment/:id_partition/:pageflow_attachments_version:style/:filename',
