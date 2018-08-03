@@ -123,3 +123,5 @@ end
 Paperclip.configure do |config|
   config.register_processor(:pageflow_vtt, Pageflow::PaperclipProcessors::Vtt)
 end
+
+Paperclip::UriAdapter.register
