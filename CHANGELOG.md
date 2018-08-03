@@ -95,6 +95,10 @@
         gem 'redis', '~> 3.0'
         gem 'redis-namespace', '~> 1.5'
 
+  Then set Resque as default queue adapter in `config/application.rb`:
+
+        config.active_job.queue_adapter = :resque
+
   The `resque-logger` and `resque_mailer` gems are no longer
   used. Their initializers need to be removed from the host
   application:
