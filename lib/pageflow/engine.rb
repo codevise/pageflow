@@ -36,8 +36,38 @@ module Pageflow
   class Engine < ::Rails::Engine
     isolate_namespace Pageflow
 
-    config.autoload_paths << File.join(config.root, 'lib')
-    config.autoload_paths << File.join(config.root, 'app', 'views', 'components')
+    config.paths.add('app/views/components', autoload: true)
+    config.paths.add('lib', autoload: true)
+
+    def eager_load!
+      # Manually eager load `lib/pageflow` as the least bad option:
+      #
+      # - Autoload paths are not eager loaded in production.
+      #
+      # - `lib` cannot be an eager load path since otherwise templates
+      #   in `lib/generators` are also executed.
+      #
+      # - `lib/pageflow` cannot be an eager load path since eager load
+      #   paths are automatically used as autoload paths. That way
+      #   `lib/pageflow/admin/something.rb` could be autoloaded via
+      #   `Admin::Something`.
+      #
+      # - Using `require` in `lib/pageflow.rb` disables code
+      #   reloading.
+      #
+      # - Using `require_dependency` in `lib/pageflow.rb` does not
+      #   activate code reloading either since it requires the
+      #   autoload path to be set up correctly, which only happens
+      #   during initialization.
+      super
+
+      lib_path = config.root.join('lib')
+      matcher = %r{\A#{Regexp.escape(lib_path.to_s)}/(.*)\.rb\Z}
+
+      Dir.glob("#{lib_path}/pageflow/**/*.rb").sort.each do |file|
+        require_dependency(file.sub(matcher, '\1'))
+      end
+    end
 
     config.i18n.load_path += Dir[config.root.join('config', 'locales', '**', '*.yml').to_s]
     config.i18n.available_locales = [:en, :de] | PublicI18n.available_locales
