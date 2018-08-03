@@ -46,3 +46,7 @@ end
 Paperclip.interpolates(:zencoder_path) do |attachment, style|
   attachment.path
 end
+
+Paperclip.interpolates(:zencoder_filename) do |attachment, _style|
+  attachment.original_filename
+end
