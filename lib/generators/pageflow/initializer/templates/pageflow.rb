@@ -25,7 +25,28 @@ Pageflow.configure do |config|
   # Path to the location in the filesystem where attachments shall
   # be stored. The value of this option is available via the
   # pageflow_filesystem_root paperclip interpolation.
-  config.paperclip_filesystem_root = 'tmp/attachments/production'
+
+  # The directory on the server where uploads are stored before processing.
+  # If you are using more than one server to host Pageflow, it is required
+  # that all web servers and all process servers have write access to it. You
+  # will need to create a shared folder and mount it on your servers.
+  #
+  # For single servers, you must take care to retain access to it between
+  # deployments. That's why the default value points to the system folder, which
+  # is usually automatically symlinked by Capistrano.
+  config.paperclip_filesystem_root = Rails.public_path.join('system/uploads')
+
+  # Allow multiple development instances to share one S3 bucket by
+  # keeping each instance's files in a separate folder named after the
+  # system's hostname. Use a generic `main` folder in all other
+  # environments.
+  config.paperclip_s3_root =
+    if Rails.env.development?
+      require 'socket'
+      Socket.gethostname
+    else
+      'main'
+    end
 
   # How to handle https requests for URLs which will have assets in the page.
   # If you wish to serve all assets over http and prevent mixed-content warnings,
