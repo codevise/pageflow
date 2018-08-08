@@ -19,6 +19,13 @@ module Pageflow
     # pageflow_filesystem_root paperclip interpolation.
     attr_accessor :paperclip_filesystem_root
 
+    # Root folder in S3 bucket to store files in. Can be used to
+    # separate files of multiple development instances in a shared
+    # development S3 bucket.
+    #
+    # @since edge
+    attr_accessor :paperclip_s3_root
+
     # Refer to the pageflow initializer template for a list of
     # supported options.
     attr_accessor :zencoder_options
@@ -294,8 +301,12 @@ module Pageflow
     attr_accessor :news
 
     def initialize
-      @paperclip_filesystem_default_options = {validate_media_type: false}
-      @paperclip_s3_default_options = {validate_media_type: false}
+      @paperclip_attachments_version = 'v1'
+      @paperclip_filesystem_root = Rails.public_path.join('system/uploads')
+      @paperclip_s3_root = 'main'
+
+      @paperclip_filesystem_default_options = Defaults::PAPERCLIP_FILESYSTEM_DEFAULT_OPTIONS.dup
+      @paperclip_s3_default_options = Defaults::PAPERCLIP_S3_DEFAULT_OPTIONS.dup
 
       @zencoder_options = {}
 
@@ -310,8 +321,8 @@ module Pageflow
       @widget_types = WidgetTypes.new
       @help_entries = HelpEntries.new
 
-      @thumbnail_styles = {}
-      @css_rendered_thumbnail_styles = Pageflow::PagesHelper::CSS_RENDERED_THUMBNAIL_STYLES
+      @thumbnail_styles = Defaults::THUMBNAIL_STYLES.dup
+      @css_rendered_thumbnail_styles = Defaults::CSS_RENDERED_THUMBNAIL_STYLES.dup
 
       @theming_request_scope = CnameThemingRequestScope.new
       @public_entry_request_scope = lambda { |entries, request| entries }

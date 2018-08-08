@@ -37,6 +37,10 @@ Metrics/BlockLength:
 Style/WordArray:
   Enabled: false
 
+# Both [] and %i(...) are fine
+Style/SymbolArray:
+  Enabled: false
+
 # extend self is fine
 Style/ModuleFunction:
   Enabled: false
