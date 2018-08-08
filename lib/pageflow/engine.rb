@@ -64,8 +64,16 @@ module Pageflow
       lib_path = config.root.join('lib')
       matcher = %r{\A#{Regexp.escape(lib_path.to_s)}/(.*)\.rb\Z}
 
+      already_required_files = [
+        'pageflow/engine',
+        'pageflow/global_config_api',
+        'pageflow/news_item_api',
+        'pageflow/version'
+      ]
+
       Dir.glob("#{lib_path}/pageflow/**/*.rb").sort.each do |file|
-        require_dependency(file.sub(matcher, '\1'))
+        logical_path = file.sub(matcher, '\1')
+        require_dependency(logical_path) unless already_required_files.include?(logical_path)
       end
     end
 

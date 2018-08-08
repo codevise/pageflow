@@ -1,5 +1,4 @@
 require 'zencoder'
-require 'pageflow/zencoder_api'
 
 Pageflow.after_global_configure do |config|
   zencoder_options = config.zencoder_options

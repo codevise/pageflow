@@ -1,7 +1,3 @@
-require 'pageflow/zencoder_output_definition'
-require 'pageflow/zencoder_video_output_definition'
-require 'pageflow/zencoder_audio_output_definition'
-
 module Pageflow
   class ZencoderApi
     class Error < StandardError; end

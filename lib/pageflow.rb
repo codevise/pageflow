@@ -1,6 +1,7 @@
 require 'pageflow/engine'
 require 'pageflow/global_config_api'
 require 'pageflow/news_item_api'
+require 'pageflow/version'
 
 module Pageflow
   extend GlobalConfigApi
