@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### Version 13.0.0.beta4
+
+2018-08-08
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v13.0.0.beta3...v13.0.0.beta4)
+
 #### Manual Update Steps
 
 - Upgraded to Paperclip 6.1

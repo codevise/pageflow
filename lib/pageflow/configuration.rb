@@ -23,7 +23,7 @@ module Pageflow
     # separate files of multiple development instances in a shared
     # development S3 bucket.
     #
-    # @since edge
+    # @since 13.0
     attr_accessor :paperclip_s3_root
 
     # Refer to the pageflow initializer template for a list of
