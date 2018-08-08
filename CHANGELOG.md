@@ -21,6 +21,29 @@
           s3_protocol: ENV.fetch('S3_PROTOCOL', 'http')
         )
 
+- The `:host` interpolation has been renamed to `:pageflow_s3_root`.
+  ([#985](https://github.com/codevise/pageflow/pull/985)
+
+  Pageflow plugins using the interpolation in Paperclip options need
+  to be updated.
+
+- The name of the root folder in the S3 bucket needs to be configured
+  explicitly.
+  ([#985](https://github.com/codevise/pageflow/pull/985)
+
+  Add the following code to your Pageflow initializer to keep using
+  host specific root folders in development S3 buckets.
+
+         config.paperclip_s3_root =
+           if Rails.env.development?
+             require 'socket'
+             Socket.gethostname
+           else
+             'main'
+           end
+
+  This used to be the default behavior.
+
 #### Rails Engine
 
 - Allow using `sassc-rails`
@@ -29,7 +52,8 @@
 #### Internals
 
 - Ensure `lib/pagefow` is eager loaded in production
-  ([#984](https://github.com/codevise/pageflow/pull/984))
+  ([#984](https://github.com/codevise/pageflow/pull/984),
+   [#987](https://github.com/codevise/pageflow/pull/987))
 
 ### Version 13.0.0.beta3
 
