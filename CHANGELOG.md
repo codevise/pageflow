@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 13.0.0.beta5
+
+2018-08-09
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v13.0.0.beta4...v13.0.0.beta5)
+
+- Move config overrides for test env to pageflow-supprt
+  ([#988](https://github.com/codevise/pageflow/pull/988))
+
 ### Version 13.0.0.beta4
 
 2018-08-08
