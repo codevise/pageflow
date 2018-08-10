@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'support/shared_contexts/cache_versioning'
 
 module Pageflow
   describe PublishedEntry do
@@ -87,37 +88,115 @@ module Pageflow
       end
     end
 
+    describe '#cache_key' do
+      include_context 'cache versioning'
+
+      describe 'with cache_versioning' do
+        before(:each) { enable_cache_versioning }
+
+        it 'is different for different revisions' do
+          entry = create(:entry)
+          create(:revision, :published, entry: entry)
+          other_revision = create(:revision, entry: entry)
+          published_entry = PublishedEntry.new(entry)
+          other_published_entry = PublishedEntry.new(entry, other_revision)
+
+          expect(published_entry.cache_key).not_to eq(other_published_entry)
+        end
+
+        it 'changes when different theming is used' do
+          entry = create(:entry)
+          create(:revision, :published, entry: entry)
+          published_entry = PublishedEntry.new(entry)
+
+          expect {
+            entry.update(theming: create(:theming))
+          }.to(change { published_entry.cache_key })
+        end
+      end
+
+      describe 'when cache_versioning' do
+        before(:each) { disable_cache_versioning }
+
+        it 'changes when entry changes' do
+          entry = create(:entry)
+          create(:revision, :published, entry: entry)
+          published_entry = PublishedEntry.new(entry)
+
+          expect {
+            Timecop.freeze(1.minute.from_now) { entry.touch }
+          }.to(change { published_entry.cache_key })
+        end
+
+        it 'changes when revision changes' do
+          entry = create(:entry)
+          revision = create(:revision, :published, entry: entry)
+          published_entry = PublishedEntry.new(entry)
+
+          expect {
+            Timecop.freeze(1.minute.from_now) { revision.touch }
+          }.to(change { published_entry.cache_key })
+        end
+
+        it 'changes when theming changes' do
+          entry = create(:entry)
+          create(:revision, :published, entry: entry)
+          published_entry = PublishedEntry.new(entry)
+
+          expect {
+            Timecop.freeze(1.minute.from_now) { entry.theming.touch }
+          }.to(change { published_entry.cache_key })
+        end
+      end
+    end
+
     describe '#cache_version' do
-      before { Timecop.travel }
+      include_context 'cache versioning'
 
-      it 'changes when entry changes' do
-        entry = create(:entry)
-        create(:revision, :published, entry: entry)
-        published_entry = PublishedEntry.new(entry)
+      describe 'with cache_versioning' do
+        before(:each) { enable_cache_versioning }
 
-        expect {
-          Timecop.freeze(1.minute.from_now) { entry.touch }
-        }.to change { published_entry.cache_version }
+        it 'changes when entry changes' do
+          entry = create(:entry)
+          create(:revision, :published, entry: entry)
+          published_entry = PublishedEntry.new(entry)
+
+          expect {
+            Timecop.freeze(1.minute.from_now) { entry.touch }
+          }.to(change { published_entry.cache_version })
+        end
+
+        it 'changes when revision changes' do
+          entry = create(:entry)
+          revision = create(:revision, :published, entry: entry)
+          published_entry = PublishedEntry.new(entry)
+
+          expect {
+            Timecop.freeze(1.minute.from_now) { revision.touch }
+          }.to(change { published_entry.cache_version })
+        end
+
+        it 'changes when theming changes' do
+          entry = create(:entry)
+          create(:revision, :published, entry: entry)
+          published_entry = PublishedEntry.new(entry)
+
+          expect {
+            Timecop.freeze(1.minute.from_now) { entry.theming.touch }
+          }.to(change { published_entry.cache_version })
+        end
       end
 
-      it 'changes when revision changes' do
-        entry = create(:entry)
-        revision = create(:revision, :published, entry: entry)
-        published_entry = PublishedEntry.new(entry)
+      describe 'without cache_versioning' do
+        before(:each) { disable_cache_versioning }
 
-        expect {
-          Timecop.freeze(1.minute.from_now) { revision.touch }
-        }.to change { published_entry.cache_version }
-      end
+        it 'returns nil' do
+          entry = create(:entry)
+          create(:revision, :published, entry: entry)
+          published_entry = PublishedEntry.new(entry)
 
-      it 'changes when theming changes' do
-        entry = create(:entry)
-        create(:revision, :published, entry: entry)
-        published_entry = PublishedEntry.new(entry)
-
-        expect {
-          Timecop.freeze(1.minute.from_now) { entry.theming.touch }
-        }.to change { published_entry.cache_version }
+          expect(published_entry.cache_version).to eq(nil)
+        end
       end
     end
 
