@@ -59,8 +59,21 @@ module Pageflow
       PublishedEntry.new(scope.published.find(id))
     end
 
+    def cache_key
+      [
+        self.class.model_name.cache_key,
+        entry.cache_key,
+        revision.cache_key,
+        theming.cache_key
+      ].compact.join('-')
+    end
+
     def cache_version
-      "#{entry.cache_version}-#{revision.cache_version}-#{theming.cache_version}"
+      [
+        entry.cache_version,
+        revision.cache_version,
+        theming.cache_version
+      ].compact.join('-').presence
     end
 
     def home_button
