@@ -16,6 +16,10 @@ For a high level introduction and example Pageflow stories see
 * [Theme API Reference](http://codevise.github.io/pageflow/theme/master/)
 * [List of Plugins](https://github.com/codevise/pageflow/wiki/List-of-Plugins)
 
+**NOTE:** The master branch now hosts the code for v13.x.x. 
+Please refer to [12-x-stable](https://github.com/codevise/pageflow/tree/12-x-stable) 
+branch for 12.x documentation.
+
 ## Updating
 
 For instructions on how to update from a prior version of the gem see
