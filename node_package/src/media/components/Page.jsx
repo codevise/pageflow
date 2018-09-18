@@ -87,6 +87,7 @@ function pageWraperClassName(className, autoplay, textTracks, playerState) {
     'is_control_bar_hovered': playerState.userHoveringControls,
     'is_control_bar_hidden': playerState.controlsHidden,
     'unplayed': playerState.unplayed && !autoplay,
+    'should_play': playerState.shouldPlay,
     'has_played': playerState.hasPlayed
   });
 }
