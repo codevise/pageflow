@@ -47,7 +47,7 @@
 
   .wrapper {
     text-align: center;
-    margin: 20px;
+    margin: 35px;
   }
 
   .previews {
@@ -96,6 +96,7 @@
   .slider {
     position: absolute;
     border: none;
+    background: #ddd;
 
     a {
       @include background-icon-center($font-size: 20px);
@@ -113,10 +114,10 @@
     }
 
     &.horizontal {
-      bottom: 0;
-      left: 40px;
-      right: 40px;
-      height: 0;
+      bottom: -10px;
+      left: 9px;
+      right: 11px;
+      height: 2px;
 
       a {
         @include transform(rotate(90deg));
@@ -126,16 +127,39 @@
     }
 
     &.vertical {
-      right: 0;
-      top: 40px;
-      bottom: 40px;
-      width: 0;
+      right: -10px;
+      top: 12px;
+      bottom: 11px;
+      width: 2px;
       height: auto;
 
       a {
         margin-left: -20px;
         margin-bottom: -20px;
       }
+    }
+  }
+
+  .percent {
+    position: absolute;
+    font-size: 12px;
+    white-space: nowrap;
+
+    input {
+      width: 45px;
+      height: 25px;
+      box-sizing: border-box;
+      text-align: right;
+    }
+
+    &.horizontal {
+      left: -65px;
+      bottom: -26px;
+    }
+
+    &.vertical {
+      left: 100%;
+      top: -30px;
     }
   }
 

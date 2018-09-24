@@ -6,7 +6,10 @@ pageflow.BackgroundPositioningSlidersView = Backbone.Marionette.ItemView.extend(
     container: '.container',
 
     sliderHorizontal: '.horizontal.slider',
-    sliderVertical: '.vertical.slider'
+    sliderVertical: '.vertical.slider',
+
+    inputHorizontal: '.percent.horizontal input',
+    inputVertical: '.percent.vertical input'
   },
 
   events: {
@@ -34,6 +37,10 @@ pageflow.BackgroundPositioningSlidersView = Backbone.Marionette.ItemView.extend(
     }
   },
 
+  modelEvents: {
+    change: 'update'
+  },
+
   onRender: function() {
     var view = this;
     var file = this.model.getReference(this.options.propertyName, this.options.filesCollection),
@@ -43,52 +50,59 @@ pageflow.BackgroundPositioningSlidersView = Backbone.Marionette.ItemView.extend(
 
     this.ui.sliderVertical.slider({
       orientation: 'vertical',
-      step: 0.01,
-      value: 100 - this.model.getFilePosition(this.options.propertyName, 'y'),
 
-      change: function() {
-        view.save();
+      change: function(event, ui) {
+        view.save('y', 100 - ui.value);
       },
 
       slide: function(event, ui) {
-        view.save({y: ui.value});
+        view.save('y', 100 - ui.value);
       }
     });
 
     this.ui.sliderHorizontal.slider({
       orientation: 'horizontal',
-      step: 0.01,
-      value: this.model.getFilePosition(this.options.propertyName, 'x'),
 
-      change: function() {
-        view.save();
+      change: function(event, ui) {
+        view.save('x', ui.value);
       },
 
       slide: function(event, ui) {
-        view.save({y: ui.value});
+        view.save('x', ui.value);
       }
     });
+
+    this.ui.inputVertical.on('change', function() {
+      view.save('y', $(this).val());
+    });
+
+    this.ui.inputHorizontal.on('change', function() {
+      view.save('x', $(this).val());
+    });
+
+    this.update();
   },
 
-  onShow: function() {
+  update: function() {
+    var x = this.model.getFilePosition(this.options.propertyName, 'x');
+    var y = this.model.getFilePosition(this.options.propertyName, 'y');
+
+    this.ui.sliderVertical.slider('value', 100 - y);
+    this.ui.sliderHorizontal.slider('value', x);
+
+    this.ui.inputVertical.val(y);
+    this.ui.inputHorizontal.val(x);
   },
 
   saveFromEvent: function(event) {
     var x = event.pageX - this.ui.container.offset().left;
     var y = event.pageY - this.ui.container.offset().top;
 
-    this.ui.sliderHorizontal.slider('value', x / this.ui.container.width() * 100);
-    this.ui.sliderVertical.slider('value', (1 - y / this.ui.container.height()) * 100);
-    this.save();
+    this.save('x', Math.round(x / this.ui.container.width() * 100));
+    this.save('y', Math.round(y / this.ui.container.width() * 100));
   },
 
-  save: function(options) {
-    options = options || {};
-
-    var x = x in options ? options.x : this.ui.sliderHorizontal.slider('value');
-    var y = y in options ? options.y : 100 - this.ui.sliderVertical.slider('value');
-
-    this.model.setFilePosition(this.options.propertyName, 'x', x);
-    this.model.setFilePosition(this.options.propertyName, 'y', y);
+  save: function(coord, value) {
+    this.model.setFilePosition(this.options.propertyName, coord, Math.min(100, Math.max(0, value)));
   }
 });
