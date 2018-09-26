@@ -13,7 +13,7 @@ export default {
       collectionName: 'widgets',
       dispatch,
 
-      attributes: ['role', 'type_name'],
+      attributes: ['role', 'type_name', 'editing'],
       includeConfiguration: true
     });
   },

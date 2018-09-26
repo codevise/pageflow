@@ -1,0 +1,14 @@
+de:
+  pageflow:
+    widgets:
+      roles:
+        cookie_notice: "Cookie Hinweis"
+    cookie_notice_bar:
+      widget_type_name: "Leiste am unteren Seitenrand"
+    editor:
+      cookie_notice_bar:
+        widget_type_info_box_text: "Der Hinweis wird beim ersten Öffnen von Beiträgen, die Cookies verwenden, am unteren Seitenrand angezeigt. Cookies werden gesetzt, falls ein Dienst zur Erhebnung von Nutzungsdaten (z.B. Google Analytics) verwendet wird oder wenn die Funktion 'Neue Seiten hervorheben' aktiv ist."
+    ui:
+      configuration_editor:
+        tabs:
+          cookie_notice_bar: "Cookie Hinweis"

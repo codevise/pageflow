@@ -33,6 +33,12 @@ Style/LambdaCall:
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'feature']
 
+# Do not require class documentation for specs and migrations
+Style/Documentation:
+  Exclude:
+    - spec/**/*
+    - db/migrate/*
+
 # Both ['...'] and %w(...) are fine
 Style/WordArray:
   Enabled: false

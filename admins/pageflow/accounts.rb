@@ -140,6 +140,7 @@ module Pageflow
           :imprint_link_label,
           :copyright_link_url,
           :copyright_link_label,
+          :privacy_link_url,
           :home_url,
           :home_button_enabled_by_default,
           :default_author,

@@ -142,6 +142,18 @@ module Pageflow
           expect(result[:file_model_types]['test_files']).to eq('Pageflow::VideoFile')
         end
       end
+
+      describe '["theming"]' do
+        it 'contains privacy link url and label' do
+          theming = create(:theming,
+                           privacy_link_url: 'https://example.com/privacy')
+          entry = PublishedEntry.new(create(:entry, :published, theming: theming))
+
+          result = common_entry_seed(entry)
+
+          expect(result[:theming]['privacy_link_url']).to eq('https://example.com/privacy')
+        end
+      end
     end
   end
 end

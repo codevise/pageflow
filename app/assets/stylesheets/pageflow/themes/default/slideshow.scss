@@ -1,3 +1,4 @@
 .slideshow {
   @extend %pageflow_widget_margin_top !optional;
+  @extend %pageflow_widget_margin_bottom !optional;
 }
