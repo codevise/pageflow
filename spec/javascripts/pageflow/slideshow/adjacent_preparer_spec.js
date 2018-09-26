@@ -13,6 +13,47 @@ describe('pageflow.AdjacentPreparer', function() {
       expect(adjacentPage.prepare).to.have.been.called;
     });
 
+    it('limits maximal number of prepared pages', function() {
+      var page = fakePage({id: 'current'});
+      var pages = _.times(10, function() { return fakePage() });
+      var adjacentPages = fakeAdjacentPages([page, pages]);
+      var adjacentPreparer = new p.AdjacentPreparer(adjacentPages);
+
+      adjacentPreparer.prepareAdjacent(page);
+
+      expect(pages[0].prepare).to.have.been.called;
+      expect(pages[1].prepare).to.have.been.called;
+      expect(pages[9].prepare).not.to.have.been.called;
+    });
+
+    it('supports configuring limit via setting in debugMode', function() {
+      var page = fakePage({id: 'current'});
+      var pages = _.times(2, function() { return fakePage() });
+      var adjacentPages = fakeAdjacentPages([page, pages]);
+      var settings = new Backbone.Model();
+      var adjacentPreparer = new p.AdjacentPreparer(adjacentPages, settings, true);
+
+      settings.set('max_prepared_adjacent_pages', 1);
+      adjacentPreparer.prepareAdjacent(page);
+
+      expect(pages[0].prepare).to.have.been.called;
+      expect(pages[1].prepare).not.to.have.been.called;
+    });
+
+    it('ignores setting when not in debugMode', function() {
+      var page = fakePage({id: 'current'});
+      var pages = _.times(2, function() { return fakePage() });
+      var adjacentPages = fakeAdjacentPages([page, pages]);
+      var settings = new Backbone.Model();
+      var adjacentPreparer = new p.AdjacentPreparer(adjacentPages, settings);
+
+      settings.set('max_prepared_adjacent_pages', 1);
+      adjacentPreparer.prepareAdjacent(page);
+
+      expect(pages[0].prepare).to.have.been.called;
+      expect(pages[1].prepare).to.have.been.called;
+    });
+
     it('does not call prepare for previously prepared pages which are also adjacent of current page', function() {
       var lastPage = fakePage();
       var page = fakePage();
