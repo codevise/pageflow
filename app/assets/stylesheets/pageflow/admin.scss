@@ -1,5 +1,10 @@
 @import "active_admin/searchable_select";
 
+// Needs to be imported before bourbon which redefines functions used
+// by active admin mixins (i.e. `linear-gradient` used by
+// `light-button`)
+@import "pageflow/admin/active_admin_patches";
+
 @import "bourbon";
 @import "pageflow/mixins";
 
@@ -19,25 +24,3 @@
 @import "pageflow/admin/status_tags";
 @import "pageflow/admin/tabs_view";
 @import "pageflow/admin/tooltip_bubble";
-
-#wrapper {
-  overflow: hidden;
-  position: relative;
-}
-
-.action_items {
-  form, div {
-    display: inline;
-  }
-
-  input[type="submit"] {
-    @include light-button;
-    padding: 12px 17px 10px;
-    span.icon { vertical-align: bottom; margin-right: 4px;}
-    margin: 0px;
-  }
-}
-
-.blank_slate_container {
-  margin: 10px 0;
-}
