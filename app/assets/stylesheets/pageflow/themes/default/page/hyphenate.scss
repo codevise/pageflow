@@ -1,0 +1,24 @@
+/// Let browser break words in header.
+///
+/// - `"narrow"`: Only allow hyphenating words when header is narrow,
+///   i.e. in portrait phone layout.
+///
+/// - `"always"`: Always break words
+///
+/// - `"never"`: Never break words
+$page-hyphenate-header: "narrow" !default;
+
+.page {
+  h2 {
+    @if $page-hyphenate-header == "always" {
+
+      hyphens: auto;
+
+    } @else if $page-hyphenate-header == "narrow" {
+
+      @include phone_portrait {
+        hyphens: auto;
+      }
+    }
+  }
+}
