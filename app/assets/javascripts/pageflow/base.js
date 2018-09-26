@@ -13,6 +13,7 @@
 //= require ./entry_data
 //= require ./seed_entry_data
 //= require ./cookies
+//= require ./cookie_notice
 //= require ./events
 //= require ./page_type
 //= require ./page_transitions

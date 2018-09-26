@@ -27,11 +27,29 @@ module Pageflow
 
     def entry_global_links(entry)
       links = []
+
       if entry.theming.imprint_link_label.present? && entry.theming.imprint_link_url.present?
-        links << link_to(raw(entry.theming.imprint_link_label), entry.theming.imprint_link_url, :target => '_blank', :tabindex => 2, :class => 'legal')
+        links << link_to(raw(entry.theming.imprint_link_label),
+                         entry.theming.imprint_link_url,
+                         target: '_blank',
+                         tabindex: 2,
+                         class: 'legal')
       end
+
       if entry.theming.copyright_link_label.present? && entry.theming.copyright_link_url.present?
-        links << link_to(raw(entry.theming.copyright_link_label), entry.theming.copyright_link_url, :target => '_blank', :tabindex => 2, :class => 'copy')
+        links << link_to(raw(entry.theming.copyright_link_label),
+                         entry.theming.copyright_link_url,
+                         target: '_blank',
+                         tabindex: 2,
+                         class: 'copy')
+      end
+
+      if entry.theming.privacy_link_url.present?
+        links << link_to(I18n.t('pageflow.public.privacy_notice'),
+                         "#{entry.theming.privacy_link_url}?lang=#{entry.locale}",
+                         target: '_blank',
+                         tabindex: 2,
+                         class: 'privacy')
       end
 
       if links.any?

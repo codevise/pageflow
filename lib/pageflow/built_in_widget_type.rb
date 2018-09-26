@@ -31,5 +31,9 @@ module Pageflow
     def self.slim_player_controls
       new('slim_player_controls', ['player_controls'], 'pageflow/widgets/placeholder')
     end
+
+    def self.cookie_notice_bar
+      Pageflow::React.create_widget_type('cookie_notice_bar', 'cookie_notice')
+    end
   end
 end

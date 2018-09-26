@@ -1,0 +1,57 @@
+/// Color of the cookie notice bar
+$cookie-notice-bar-background-color: rgba(20, 20, 20, 0.9);
+
+/// Color of the text inside cookie notice bar
+$cookie-notice-bar-text-color: #fff;
+
+$cookie-notice-bar-link-text-color: $main-color;
+
+$cookie-notice-bar-typography: ();
+
+$cookie-notice-bar-dismiss-button-background-color: $main-color-dark;
+
+$cookie-notice-bar-dismiss-button-text-color: #fff;
+
+.cookie_notice_bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: $cookie-notice-bar-background-color;
+  color: $cookie-notice-bar-text-color;
+  padding: 10px 20px;
+  z-index: 2;
+
+  @include standard-typography(
+    $cookie-notice-bar-typography
+  );
+
+  &-content {
+    @extend %pageflow_widget_margin_right_max !optional;
+  }
+
+  &-text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+
+    a {
+      color: $cookie-notice-bar-link-text-color;
+    }
+  }
+
+  &-dismiss {
+    background-color: $cookie-notice-bar-dismiss-button-background-color;
+    color: $cookie-notice-bar-dismiss-button-text-color;
+    border-radius: 3px;
+    float: right;
+    margin-top: 5px;
+    padding: 5px 10px;
+  }
+}
+
+@include pageflow-widget-margin("cookie_notice_bar_visible", "bottom") {
+  @include desktop {
+    margin-bottom: 60px;
+  }
+}

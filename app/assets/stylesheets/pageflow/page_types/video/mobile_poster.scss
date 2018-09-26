@@ -1,0 +1,15 @@
+.videoPage .background_image {
+  display: none;
+}
+
+.has_phone_platform {
+  // Show mobile poster only on phone platform
+  .videoPage .background_image {
+    display: block;
+  }
+
+  // But not while playing inline (e.g. on Android)
+  &.has_no_native_video_player .videoPage.should_play .background_image {
+    display: none;
+  }
+}

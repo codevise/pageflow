@@ -1,6 +1,6 @@
 pageflow.SeedEntryData = pageflow.EntryData.extend({
   initialize: function(options) {
-    this.theming = options.theming;
+    this.theme = options.theme;
 
     this.storylineConfigurations = _(options.storylines).reduce(function(memo, storyline) {
       memo[storyline.id] = storyline.configuration;
@@ -40,7 +40,7 @@ pageflow.SeedEntryData = pageflow.EntryData.extend({
   },
 
   getThemingOption: function(name) {
-    return this.theming[name];
+    return this.theme[name];
   },
 
   getChapterConfiguration: function(id) {

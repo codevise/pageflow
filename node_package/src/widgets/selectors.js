@@ -10,3 +10,10 @@ export function widgetAttributes({role}) {
     widget => widget
   );
 }
+
+export function editingWidget({role}) {
+  return memoizedSelector(
+    selector({id: role}),
+    widget => !!widget.editing
+  );
+}

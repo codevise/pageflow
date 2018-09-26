@@ -63,5 +63,5 @@ pageflow.BackgroundPositioningView = Backbone.Marionette.ItemView.extend({
 });
 
 pageflow.BackgroundPositioningView.open = function(options) {
-  pageflow.app.dialogRegion.show(new pageflow.BackgroundPositioningView(options).render());
+  pageflow.app.dialogRegion.show(new pageflow.BackgroundPositioningView(options));
 };
