@@ -1,8 +1,10 @@
 //= require ./adjacent_pages
 
 pageflow.AdjacentPreparer = pageflow.Object.extend({
-  initialize: function(adjacentPages) {
+  initialize: function(adjacentPages, settings, debugMode) {
     this.adjacentPages = adjacentPages;
+    this.settings = settings || new Backbone.Model();
+    this.debugMode = debugMode;
   },
 
   attach: function(events) {
@@ -17,7 +19,10 @@ pageflow.AdjacentPreparer = pageflow.Object.extend({
   },
 
   prepareAdjacent: function(page) {
-    var adjacentPages = this.adjacentPages.of(page);
+    var max = this.settings.has('max_prepared_adjacent_pages') && this.debugMode ?
+              this.settings.get('max_prepared_adjacent_pages') :
+              5;
+    var adjacentPages = _.first(this.adjacentPages.of(page), max);
     var noLongerPreparedPages = _.difference(this.lastPreparedPages, adjacentPages, [page]);
     var newAdjacentPages = _.difference(adjacentPages, this.lastPreparedPages);
 
@@ -41,6 +46,8 @@ pageflow.AdjacentPreparer.create = function(pages, scrollNavigator) {
     new pageflow.AdjacentPages(
       pages,
       scrollNavigator
-    )
+    ),
+    pageflow.settings,
+    pageflow.debugMode()
   );
 };
