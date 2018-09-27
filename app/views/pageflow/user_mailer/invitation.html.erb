@@ -2,8 +2,8 @@
 
 <p><%= t('.instruction') %></p>
 
-<p><%= link_to main_app.edit_user_password_url(@user, reset_password_token: @password_token),
-               main_app.edit_user_password_url(@user, reset_password_token: @password_token) %></p>
+<p><%= link_to edit_admin_initial_password_url(reset_password_token: @password_token),
+               edit_admin_initial_password_url(reset_password_token: @password_token) %></p>
 
 <p><%= t('.ending') %></p>
 
