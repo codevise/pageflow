@@ -15,8 +15,13 @@ pageflow.navigationDirection = (function() {
   };
 
   return {
+    isHorizontalOnPhone: function() {
+      return pageflow.widgets.isPresent('phone_horizontal_slideshow_mode');
+    },
+
     isHorizontal: function() {
-      return pageflow.browser.has('phone platform');
+      return this.isHorizontalOnPhone() &&
+             pageflow.browser.has('phone platform');
     },
 
     getEventName: function(name) {

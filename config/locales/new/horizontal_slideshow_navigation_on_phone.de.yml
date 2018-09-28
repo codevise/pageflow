@@ -1,0 +1,16 @@
+de:
+  pageflow:
+    widgets:
+      roles:
+        slideshow_mode: "Steuerungsgesten"
+      type_names:
+        default_slideshow_mode: "Vertikales Scrollen/Wischen"
+        phone_horizontal_slideshow_mode: "Horizontales Wischen auf Phones"
+    editor:
+      phone_horizontal_slideshow_mode:
+        page_transitions_inline_help: "<br /><br />Unter 'Titel und Optionen > Erscheinungsbild' sind horizontale Steuerungsgesten für Smartphones aktiviert. Vertikale Seitenübergänge (z.B. von unten nach oben) ändern sich im Phone-Layout automatisch in horizontale Übergangseffekte (z.B. von rechts nach links) und umgekehrt."
+        widget_type_info_box_text: "<p>Auf Smartphones mit horizontalen Wisch-Gesten zwischen Seiten wechseln.</p><p>Vertikale Seitenübergänge (z.B. von unten nach oben) ändern sich in horizontale Übergangseffekte (z.B. von rechts nach links) und umgekehrt.</p><p>Im Desktop-Layout und auf Tablets hat die Einstellung keine Auswirkung.</p>"
+    ui:
+      configuration_editor:
+        tabs:
+          phone_horizontal_slideshow_mode: "Horizontales Wischen auf Phones"

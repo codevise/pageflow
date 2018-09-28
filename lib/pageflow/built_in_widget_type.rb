@@ -32,6 +32,14 @@ module Pageflow
       new('slim_player_controls', ['player_controls'], 'pageflow/widgets/placeholder')
     end
 
+    def self.default_slideshow_mode
+      new('default_slideshow_mode', ['slideshow_mode'], 'pageflow/widgets/placeholder')
+    end
+
+    def self.phone_horizontal_slideshow_mode
+      new('phone_horizontal_slideshow_mode', ['slideshow_mode'], 'pageflow/widgets/placeholder')
+    end
+
     def self.cookie_notice_bar
       Pageflow::React.create_widget_type('cookie_notice_bar', 'cookie_notice')
     end
