@@ -1,7 +1,7 @@
 (function($) {
   var boundaries = {
-    up: 'top',
-    down: 'bottom'
+    back: 'top',
+    next: 'bottom'
   };
 
   $.widget('pageflow.scrollIndicator', {
@@ -23,8 +23,8 @@
 
       function hiddenByMode(page) {
         return (page.hasClass('scroll_indicator_mode_non') ||
-                (page.hasClass('scroll_indicator_mode_only_next') && direction === 'up') ||
-                (page.hasClass('scroll_indicator_mode_only_back') && direction === 'down'));
+                (page.hasClass('scroll_indicator_mode_only_next') && direction === 'back') ||
+                (page.hasClass('scroll_indicator_mode_only_back') && direction === 'next'));
       }
 
       function invertIndicator(page) {
@@ -51,7 +51,7 @@
       }
 
       function targetPageExists() {
-        return direction === 'down' ? parent.nextPageExists() : parent.previousPageExists();
+        return direction === 'next' ? parent.nextPageExists() : parent.previousPageExists();
       }
 
       parent.on('pageactivate', function(event) {
@@ -85,7 +85,7 @@
         },
       });
 
-      parent.on('scrollerhint' + direction, function() {
+      parent.on(pageflow.navigationDirection.getEventName('scrollerhint' + direction), function() {
         that.element.addClass('animate');
         setTimeout(function() {
           that.element.removeClass('animate');
@@ -114,7 +114,7 @@
       });
 
       this.element.on('click', function() {
-        if (direction === 'down') {
+        if (direction === 'next') {
           parent.next();
         }
         else {
