@@ -107,12 +107,13 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
 
   updateSimulatedMediaQueryClasses: function() {
     var width = this.ui.container.width();
-    var portrait = this.ui.container.width() < this.ui.container.height();
+    var height = this.ui.container.height();
+    var portrait = width < height;
 
     $('html')
       .toggleClass('simulate_mobile', width <= 900)
-      .toggleClass('simulate_phone', width <= 700)
-      .toggleClass('simulate_desktop', width > 700)
+      .toggleClass('simulate_phone', (portrait && width <= 500) || (!portrait && height <= 500))
+      .toggleClass('simulate_desktop', (portrait && width > 500) || (!portrait && height > 500))
       .toggleClass('simulate_narrow_desktop', width <= 1200)
       .toggleClass('simulate_wide_desktop', width > 1600)
       .toggleClass('simulate_pad_portrait', width <= 768 && portrait)
