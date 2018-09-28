@@ -92,6 +92,15 @@
       pointer-events: none;
       z-index: 0;
     }
+
+    &-swipe,
+    .has_mobile_platform &-scroll {
+      display: none;
+    }
+
+    .has_mobile_platform &-swipe {
+      display: inline;
+    }
   }
 
   .hidden_text_indicator {
