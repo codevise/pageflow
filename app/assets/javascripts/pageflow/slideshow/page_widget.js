@@ -152,9 +152,10 @@
 
     animateTransition: function(destination, options, callback) {
       var otherDestination = destination === 'in' ? 'out' : 'in';
-      var transition = options.transition || this.configuration.transition || 'fade';
-      var duration = pageflow.pageTransitions.get(transition).duration;
-      var animateClass = transition + ' animate-' + destination + '-' + options.direction;
+      var transition = pageflow.pageTransitions.get(options.transition ||
+                                                    this.configuration.transition ||
+                                                    'fade');
+      var animateClass = transition.className + ' animate-' + destination + '-' + options.direction;
 
       this.element
         .removeClass('animate-' + otherDestination + '-forwards animate-' + otherDestination + '-backwards')
@@ -163,9 +164,9 @@
       setTimeout(_.bind(function() {
         this.element.removeClass(animateClass);
         callback.call(this);
-      }, this), duration);
+      }, this), transition.duration);
 
-      return duration;
+      return transition.duration;
     },
 
     _triggerDelayedPageTypeHook: function(name) {

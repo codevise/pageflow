@@ -1,20 +1,105 @@
 /* scroll transition to left*/
 
 section.scroll {
-  &.animate-in-forwards, &.animate-in-backwards {
-    z-index: 2;
+  @include animation-duration(1s);
+  @include animation-fill-mode(forwards);
+
+  &-fast {
+    @include animation-duration(0.5s);
   }
 
-  &.animate-in-forwards {
-    @include animation(scroll-in-forwards forwards 1s 1);
+  &-in {
+    &.animate-in-forwards,
+    &.animate-in-backwards {
+      z-index: 2;
+    }
   }
-  &.animate-in-backwards {
-    @include animation(scroll-in-backwards forwards 1s 1);
+
+  &-over {
+    &.animate-in-forwards,
+    &.animate-out-backwards {
+      z-index: 2;
+    }
   }
-  &.animate-out-forwards {
-    @include animation(scroll-out-forwards forwards 1s 1);
+
+  &-from_right {
+    &.animate-in-forwards {
+      @include animation-name(scroll-in-right);
+    }
+
+    &.animate-out-backwards {
+      @include animation-name(scroll-out-right);
+    }
+
+    &.scroll-in {
+      &.animate-in-backwards {
+        @include animation-name(scroll-in-left);
+      }
+
+      &.animate-out-forwards {
+        @include animation-name(scroll-out-left);
+      }
+    }
   }
-  &.animate-out-backwards {
-    @include animation(scroll-out-backwards forwards 1s 1);
+
+  &-from_left {
+    &.animate-in-forwards {
+      @include animation-name(scroll-in-left);
+    }
+
+    &.animate-out-backwards {
+      @include animation-name(scroll-out-left);
+    }
+
+    &.scroll-in {
+      &.animate-in-backwards {
+        @include animation-name(scroll-in-right);
+      }
+
+      &.animate-out-forwards {
+        @include animation-name(scroll-out-right);
+      }
+    }
+  }
+
+
+  &-from_bottom {
+    &.animate-in-forwards {
+      @include animation-name(scroll-in-forwards);
+    }
+
+    &.animate-out-backwards {
+      @include animation-name(scroll-out-backwards);
+    }
+
+    &.scroll-in {
+      &.animate-in-backwards {
+        @include animation-name(scroll-in-backwards);
+      }
+
+      &.animate-out-forwards {
+        @include animation-name(scroll-out-forwards);
+      }
+    }
+  }
+
+  &-from_top {
+    &.animate-in-forwards {
+      @include animation-name(scroll-in-backwards);
+    }
+
+    &.animate-out-backwards {
+      @include animation-name(scroll-out-forwards);
+    }
+
+    &.scroll-in {
+      &.animate-in-backwards {
+        @include animation-name(scroll-in-forwards);
+      }
+
+      &.animate-out-forwards {
+        @include animation-name(scroll-out-backwards);
+      }
+    }
   }
 }
