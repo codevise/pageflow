@@ -9,3 +9,15 @@
     @include transform(translateY(0));
   }
 }
+
+@include keyframes(bounce_x) {
+  0% {
+    @include transform(translateX(0));
+  }
+  10% {
+    @include transform(translateX(-30px));
+  }
+  100% {
+    @include transform(translateX(0));
+  }
+}

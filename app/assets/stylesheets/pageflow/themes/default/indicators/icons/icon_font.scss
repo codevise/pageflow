@@ -23,5 +23,11 @@
     > .scroll_next_indicator {
       @include fa-angle-down-icon($position: "after");
     }
+
+    .widget_phone_horizontal_slideshow_mode_present & > .scroll_next_indicator {
+      @include phone {
+        @include fa-angle-right-icon($position: "after");
+      }
+    }
   }
 }

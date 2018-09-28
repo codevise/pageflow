@@ -20,13 +20,23 @@
     opacity: 0;
     @include transition(opacity 1s ease);
 
+    &.visible.attract,
+    &.animate {
+      @include animation(bounce 0.5s ease);
+
+      .widget_phone_horizontal_slideshow_mode_present & {
+        @include phone {
+          @include animation-name(bounce_x)
+        }
+      }
+    }
+
     &.visible {
       opacity: 1;
       @include transition(opacity 0.5s ease 0.5s);
 
       &.attract {
-        @include animation(bounce 0.5s ease);
-        @include animation-iteration-count(3)
+        @include animation-iteration-count(3);
       }
     }
 
@@ -34,10 +44,6 @@
       opacity: 0;
       @include transition(opacity 0.5s ease);
       top: auto; /* collision with .hidden class from application.css.scss */
-    }
-
-    &.animate {
-      @include animation(bounce 0.5s ease);
     }
   }
 
