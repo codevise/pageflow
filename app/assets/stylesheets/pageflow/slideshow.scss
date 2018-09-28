@@ -49,10 +49,6 @@
     background-color: white;
   }
 
-  section.scroll .content_and_background {
-    z-index: 4; /* bring scrolling content always to front */
-  }
-
   .content {
     position: absolute;
     top: 0;
