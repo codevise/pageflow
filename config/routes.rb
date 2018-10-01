@@ -30,6 +30,12 @@ Pageflow::Engine.routes.draw do
       resource :edit_lock
     end
 
+    namespace :admin do
+      devise_scope :user do
+        resource :initial_password, only: [:edit, :update]
+      end
+    end
+
     namespace :editor do
       resources :entries, :only => :index, :shallow => true do
         get :seed, :on => :member
