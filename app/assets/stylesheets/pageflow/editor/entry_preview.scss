@@ -7,12 +7,18 @@
     height: 100%;
   }
 
-  &.emulation_mode_phone > .container {
-    width: 400px;
-    height: 700px;
-    margin: auto;
-    top: 30px;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 4px 0px
+  &.emulation_mode_phone {
+    > .container {
+      width: 400px;
+      height: 700px;
+      margin: auto;
+      top: 30px;
+      box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 4px 0px;
+    }
+
+    .scroll_next_indicator {
+      display: none;
+    }
   }
 
   .navigation_disabled_hint {

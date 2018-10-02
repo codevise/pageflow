@@ -82,6 +82,10 @@
       visibility: hidden;
     }
 
+    &.hidden_by_scoll_indicator_mode {
+      display: none;
+    }
+
     .bigScreen & {
       opacity: 0;
       visibility: 0;
