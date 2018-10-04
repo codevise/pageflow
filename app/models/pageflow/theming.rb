@@ -8,6 +8,7 @@ module Pageflow
     has_many :entries
 
     scope :with_home_url, -> { where.not(home_url: '') }
+    scope :with_cname, -> { where.not(cname: '') }
     scope :for_request, ->(request) { Pageflow.config.theming_request_scope.call(all, request) }
 
     validates :account, :presence => true

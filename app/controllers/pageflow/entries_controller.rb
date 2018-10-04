@@ -19,14 +19,25 @@ module Pageflow
     helper RenderJsonHelper
 
     def index
-      theming = Theming.for_request(request).with_home_url.first!
+      respond_to do |format|
+        format.html do
+          @theming = Theming.for_request(request).with_home_url.first!
+          redirect_to(@theming.home_url)
+        end
 
-      redirect_to(theming.home_url)
+        # Atom feed is only available for accounts with a CNAME.
+        format.atom do
+          @theming = Theming.for_request(request).first!
+          @account = @theming.account
+          @entries = EntryFeed::Scope.new(@account.entries, params[:page]).entries
+        end
+      end
     end
 
     def show
       respond_to do |format|
         format.any(:html, :css) do
+          @theming = Theming.for_request(request).with_cname.first
           @entry = PublishedEntry.find(params[:id], entry_request_scope)
           I18n.locale = @entry.locale
 
