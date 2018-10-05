@@ -12,12 +12,12 @@ import {has} from 'utils';
 export default function*(options = {}) {
   const sagas = [
     togglePlaying(),
-    muteBackgroundMediaOnPlayFailed()
+    muteBackgroundMediaOnPlayFailed(),
+    disableScrollIndicatorDuringPlayback()
   ];
 
   if (!options.playsInNativePlayer || !options.playsInNativePlayer()) {
     sagas.push([
-      disableScrollIndicatorDuringPlayback(),
       goToNextPageOnEnd(),
       fadeOutWhenPageWillDeactivate(),
       hasNotBeenPlayingForAMoment()
