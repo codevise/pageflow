@@ -87,6 +87,10 @@
  *   An array of prefixes to lookup translations for labels and
  *   inline help texts based on attribute names.
  *
+ * @param {string} [options.additionalInlineHelpText]
+ *   A text that will be appended to the translation based inline
+ *   text.
+ *
  * @param {boolean} [options.disabled]
  *   Render input as disabled.
  *
@@ -190,7 +194,10 @@ pageflow.inputView = {
       keys = pageflow.i18nUtils.translationKeysWithSuffix(keys, 'disabled');
     }
 
-    return pageflow.i18nUtils.findTranslation(keys, {defaultValue: '', html: true});
+    return _.compact([
+      pageflow.i18nUtils.findTranslation(keys, {defaultValue: '', html: true}),
+      this.options.additionalInlineHelpText
+    ]).join(' ');
   },
 
   updateDisabled: function() {
