@@ -7,7 +7,7 @@ pageflow.ConfigurationEditorTabView.groups.define('options', function(options) {
     this.input('emphasize_in_navigation', pageflow.CheckBoxInputView);
   }
 
-  this.group('page_transitions');
+  this.group('page_transitions', {propertyName: 'transition'});
 
   if (pageflow.features.isEnabled('delayed_text_fade_in')) {
     this.input('delayed_text_fade_in', pageflow.SelectInputView, {values: pageflow.Page.delayedTextFadeIn});
