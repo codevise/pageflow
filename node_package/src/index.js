@@ -31,10 +31,12 @@ import {combine} from 'utils';
 
 
 import ServerSidePage from 'pages/ServerSidePage';
+import ServerSideWidget from 'widgets/ServerSideWidget';
 
 import {register as registerBuiltInPageTypes} from 'builtInPageTypes';
 import {registerWidgetTypes as registerBackgroundMediaWidgetTypes} from 'backgroundMedia';
 import {registerWidgetTypes as registerCookieNoticeWidgetTypes} from 'cookieNotice';
+import {registerWidgetTypes as registerLoadingSpinnerWidgetTypes} from 'loadingSpinner';
 
 import pageflow from 'pageflow';
 import boot from 'boot';
@@ -42,6 +44,7 @@ import boot from 'boot';
 registerBuiltInPageTypes();
 registerCookieNoticeWidgetTypes();
 registerBackgroundMediaWidgetTypes();
+registerLoadingSpinnerWidgetTypes();
 
 if (pageflow.events) {
   pageflow.events.on('seed:loaded', () => boot(pageflow));
@@ -78,5 +81,6 @@ module.exports = {
   combineReducers,
   combine,
 
-  ServerSidePage
+  ServerSidePage,
+  ServerSideWidget
 };

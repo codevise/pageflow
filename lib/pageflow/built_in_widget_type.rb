@@ -47,5 +47,12 @@ module Pageflow
     def self.unmute_button
       Pageflow::React.create_widget_type('unmute_button', 'background_media_control')
     end
+
+    def self.classic_loading_spinner
+      Pageflow::React.create_widget_type('classic_loading_spinner',
+                                         'loading_spinner',
+                                         insert_point: :before_entry,
+                                         server_rendering: true)
+    end
   end
 end

@@ -17,8 +17,11 @@ module Pageflow
         @options[:insert_point] || super
       end
 
-      def render(template, _)
-        template.render(File.join('pageflow', 'react', 'widget'), name: name)
+      def render(template, entry)
+        template.render(File.join('pageflow', 'react', 'widget'),
+                        entry: entry,
+                        name: name,
+                        server_rendering: options[:server_rendering])
       end
     end
   end

@@ -5,6 +5,9 @@ module Pageflow
                                    default: true)
       config.widget_types.register(Pageflow::BuiltInWidgetType.phone_horizontal_slideshow_mode)
 
+      config.widget_types.register(Pageflow::BuiltInWidgetType.classic_loading_spinner,
+                                   default: true)
+
       config.widget_types.register(Pageflow::BuiltInWidgetType.navigation, default: true)
       config.widget_types.register(Pageflow::BuiltInWidgetType.mobile_navigation, default: true)
       config.widget_types.register(Pageflow::BuiltInWidgetType.slim_player_controls)

@@ -14,6 +14,6 @@ export function widgetAttributes({role}) {
 export function editingWidget({role}) {
   return memoizedSelector(
     selector({id: role}),
-    widget => !!widget.editing
+    widget => !!(widget && widget.editing)
   );
 }
