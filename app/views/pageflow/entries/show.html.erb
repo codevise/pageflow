@@ -20,6 +20,7 @@
   <%= render 'pageflow/entries/ie8_hint' %>
   <%= render 'pageflow/entries/loading_spinner' %>
   <%= render 'pageflow/entries/multimedia_alert' %>
+  <%= render_widgets(@entry, scope: @widget_scope, insert_point: :before_entry) %>
   <%= render @entry, :widget_scope => @widget_scope %>
 
   <script>

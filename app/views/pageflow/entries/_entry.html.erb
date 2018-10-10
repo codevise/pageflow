@@ -17,5 +17,5 @@
 
   <%= render 'pageflow/entries/header', :entry => entry %>
   <%= render 'pageflow/entries/overview', :entry => entry %>
-  <%= render_widgets(entry, :scope => widget_scope) %>
+  <%= render_widgets(entry, scope: widget_scope, insert_point: :bottom_of_entry) %>
 <% end %>
