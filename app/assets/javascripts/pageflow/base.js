@@ -10,6 +10,7 @@
 //= require_self
 
 //= require ./object
+//= require ./background_media
 //= require ./entry_data
 //= require ./seed_entry_data
 //= require ./cookies
