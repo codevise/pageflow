@@ -3,7 +3,7 @@ import {HOTKEY_SPACE} from 'hotkeys/actions';
 import {playerState} from '../selectors';
 
 import {takeEvery} from 'redux-saga';
-import {put, select} from 'redux-saga/effects';
+import {put, select, call} from 'redux-saga/effects';
 
 export default function*() {
   yield takeEvery([HOTKEY_SPACE, TOGGLE_PLAYING], toggle, actionCreators());
@@ -16,6 +16,7 @@ function* toggle({play, pause}) {
     yield put(pause());
   }
   else {
+    yield call(() => pageflow.backgroundMedia.unmute());
     yield put(play());
   }
 }
