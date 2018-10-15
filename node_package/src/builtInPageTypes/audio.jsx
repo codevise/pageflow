@@ -50,7 +50,9 @@ export function register() {
     )(AudioPage),
 
     reduxModules: [
-      mediaReduxModule(),
+      mediaReduxModule({
+        retryOnUnmute: true
+      }),
       mediaPageBackgroundReduxModule
     ]
   });

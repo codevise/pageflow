@@ -81,6 +81,61 @@ describe('handlePageDidActivate', () => {
     expect(run.put).to.have.been.calledWith(sinon.match({type: PLAY}));
   });
 
+  describe('with retryOnUnmute option', function() {
+    it('plays media once unmuted', () => {
+      const run = runSagaInPageScope(handlePageDidActivate, {
+        reduxModules: [backgroundMediaModule],
+        args: [{
+          retryOnUnmute: true,
+          canAutoplay: true
+        }]
+      })
+        .stubCall(delay)
+        .dispatch(backgroundMediaMute())
+        .dispatch(pageDidActivate())
+        .dispatch(backgroundMediaUnmute())
+        .dispatch(prebuffered());
+
+      expect(run.put).to.have.been.calledWith(sinon.match({type: PLAY}));
+    });
+
+    it('does not retry if page has been deactivated', () => {
+      const run = runSagaInPageScope(handlePageDidActivate, {
+        reduxModules: [backgroundMediaModule],
+        args: [{
+          retryOnUnmute: true,
+          canAutoplay: true
+        }]
+      })
+        .stubCall(delay)
+        .dispatch(backgroundMediaMute())
+        .dispatch(pageDidActivate())
+        .dispatch(pageWillDeactivate())
+        .dispatch(backgroundMediaUnmute())
+        .dispatch(prebuffered());
+
+      expect(run.put).not.to.have.been.calledWith(sinon.match({type: PLAY}));
+    });
+
+    it('does not retry if autoplay is false', () => {
+      const run = runSagaInPageScope(handlePageDidActivate, {
+        reduxModules: [backgroundMediaModule],
+        page: {attributes: {autoplay: false}},
+        args: [{
+          retryOnUnmute: true,
+          canAutoplay: true,
+        }]
+      })
+        .stubCall(delay)
+        .dispatch(backgroundMediaMute())
+        .dispatch(pageDidActivate())
+        .dispatch(backgroundMediaUnmute())
+        .dispatch(prebuffered());
+
+      expect(run.put).not.to.have.been.calledWith(sinon.match({type: PLAY}));
+    });
+  });
+
   it('does not play video if page is deactivated while prebuffering', () => {
     const run = runSagaInPageScope(handlePageDidActivate, {
       reduxModules: [backgroundMediaModule],
