@@ -1,4 +1,5 @@
 import togglePlaying from './togglePlaying';
+import muteBackgroundMediaOnPlayFailed from './muteBackgroundMediaOnPlayFailed';
 import handlePageDidActivate from './handlePageDidActivate';
 import disableScrollIndicatorDuringPlayback from './disableScrollIndicatorDuringPlayback';
 import hasNotBeenPlayingForAMoment from './hasNotBeenPlayingForAMoment';
@@ -11,6 +12,7 @@ import {has} from 'utils';
 export default function*(options = {}) {
   const sagas = [
     togglePlaying(),
+    muteBackgroundMediaOnPlayFailed()
   ];
 
   if (!options.playsInNativePlayer || !options.playsInNativePlayer()) {
