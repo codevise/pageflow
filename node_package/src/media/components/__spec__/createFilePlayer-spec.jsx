@@ -100,6 +100,14 @@ describe('createFilePlayer', () => {
       expect(wrapper.render()).to.have.descendants('video[data-poster="some-poster.png"]');
     });
 
+    it('renders muted media tag if muted prop is true', () => {
+      const {FilePlayer} = setup();
+
+      const wrapper = mount(<FilePlayer {...requiredProps} muted={true} />);
+
+      expect(wrapper.render()).to.have.descendants('video[muted]');
+    });
+
     it('renders media tag with ready text tracks from props', () => {
       const {FilePlayer} = setup();
       const textTracks = {
@@ -207,6 +215,28 @@ describe('createFilePlayer', () => {
       wrapper.setProps({playerState: {shouldPlay: false, fadeDuration: 500}});
 
       expect(mockPlayer.fadeOutAndPause).to.have.been.calledWith(500);
+    });
+
+    it('mutes the player when muted changes to true', () => {
+      const {FilePlayer, mockPlayer} = setup();
+
+      const wrapper = mount(<FilePlayer {...requiredProps}
+                                        muted={false} />);
+
+      wrapper.setProps({muted: true});
+
+      expect(mockPlayer.muted).to.have.been.calledWith(true);
+    });
+
+    it('unmutes the player when muted changes to false', () => {
+      const {FilePlayer, mockPlayer} = setup();
+
+      const wrapper = mount(<FilePlayer {...requiredProps}
+                                        muted={true} />);
+
+      wrapper.setProps({muted: false});
+
+      expect(mockPlayer.muted).to.have.been.calledWith(false);
     });
 
     it('disposes the player when the component unmounts', () => {
@@ -390,6 +420,7 @@ describe('createFilePlayer', () => {
       playAndFadeIn: sinon.spy(),
       pause: sinon.spy(),
       fadeOutAndPause: sinon.spy(),
+      muted: sinon.spy(),
       dispose: sinon.spy(),
 
       updateCueLineSettings: sinon.spy(),
