@@ -1,5 +1,5 @@
 import {
-  PLAY, PLAYING, PAUSE, PAUSED, SCRUB_TO, SEEK_TO,
+  PLAY, PLAYING, PLAY_FAILED, PAUSE, PAUSED, SCRUB_TO, SEEK_TO,
   FADE_OUT_AND_PAUSE, PLAY_AND_FADE_IN,
   PREBUFFER, PREBUFFERED,
   BUFFER_UNDERRUN, BUFFER_UNDERRUN_CONTINUE, WAITING, SEEKING, SEEKED,
@@ -46,6 +46,7 @@ export default function({scope = 'default'} = {}) {
       return {
         ...state,
         shouldPlay: true,
+        playFailed: false,
         hasBeenPlayingJustNow: true,
         unplayed: false,
         fadeDuration: null,
@@ -55,6 +56,16 @@ export default function({scope = 'default'} = {}) {
       return {
         ...state,
         isPlaying: true
+      };
+    case PLAY_FAILED:
+      return {
+        ...state,
+        shouldPlay: false,
+        playFailed: true,
+        hasBeenPlayingJustNow: false,
+        unplayed: true,
+        fadeDuration: null,
+        isLoading: false
       };
     case PLAY_AND_FADE_IN:
       return {

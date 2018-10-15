@@ -5,6 +5,8 @@ export const PLAY = 'MEDIA_PLAY';
 export const PLAY_AND_FADE_IN = 'MEDIA_PLAY_AND_FADE_IN';
 export const PAUSE = 'MEDIA_PAUSE';
 export const FADE_OUT_AND_PAUSE = 'MEDIA_FADE_OUT_AND_PAUSE';
+export const PLAY_FAILED = 'MEDIA_PLAY_FAILED';
+export const PLAY_MUTED = 'MEDIA_PLAY_MUTED';
 
 export const SCRUB_TO = 'MEDIA_SCRUB_TO';
 export const SEEK_TO = 'MEDIA_SEEK_TO';
@@ -67,6 +69,14 @@ export function actionCreators({scope = 'default'} = {}) {
       return pageAction(FADE_OUT_AND_PAUSE, {
         fadeDuration
       });
+    },
+
+    playFailed() {
+      return pageAction(PLAY_FAILED);
+    },
+
+    playMuted() {
+      return pageAction(PLAY_MUTED);
     },
 
 
