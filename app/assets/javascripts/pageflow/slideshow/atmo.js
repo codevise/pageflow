@@ -2,13 +2,18 @@
   var attributeName = 'atmo_audio_file_id';
 
   pageflow.Atmo = pageflow.Object.extend({
-    initialize: function(slideshow, events, multiPlayer) {
-      this.slideshow = slideshow;
-      this.multiPlayer = multiPlayer;
+    initialize: function(options) {
+      this.slideshow = options.slideshow;
+      this.multiPlayer = options.multiPlayer;
+      this.backgroundMedia = options.backgroundMedia;
       this.disabled = pageflow.browser.has('mobile platform');
 
-      this.listenTo(events, 'page:change page:update', function() {
+      this.listenTo(options.events, 'page:change page:update background_media:unmute', function() {
         this.update();
+      });
+
+      this.listenTo(options.multiPlayer, 'playfailed', function() {
+        options.backgroundMedia.mute();
       });
     },
 
@@ -46,7 +51,7 @@
 
     resume: function() {
       if (this.multiPlayer.paused()) {
-        if (this.disabled) {
+        if (this.disabled || this.backgroundMedia.muted) {
           return new $.Deferred().resolve().promise();
         }
         else {
@@ -62,7 +67,12 @@
       var configuration = this.slideshow.currentPageConfiguration();
 
       if (!this.disabled) {
-        this.multiPlayer.fadeTo(configuration[attributeName]);
+        if (this.backgroundMedia.muted) {
+          this.multiPlayer.fadeOutAndPause();
+        }
+        else {
+          this.multiPlayer.fadeTo(configuration[attributeName]);
+        }
       }
     },
 
@@ -86,11 +96,12 @@
     }
   });
 
-  pageflow.Atmo.create = function(slideshow, events, audio) {
-    return new pageflow.Atmo(
-      slideshow,
-      events,
-      audio.createMultiPlayer({
+  pageflow.Atmo.create = function(slideshow, events, audio, backgroundMedia) {
+    return new pageflow.Atmo({
+      slideshow: slideshow,
+      events: events,
+      backgroundMedia: backgroundMedia,
+      multiPlayer: audio.createMultiPlayer({
         loop: true,
         fadeDuration: 500,
         crossFade: true,
@@ -98,7 +109,7 @@
         rewindOnChange: true,
         pauseInBackground: true
       })
-    );
+    });
   };
 
   pageflow.Atmo.duringPlaybackModes = ['play', 'mute', 'turn_down'];

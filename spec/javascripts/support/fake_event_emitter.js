@@ -1,3 +1,3 @@
-support.fakeEventEmitter = function() {
-  return _.extend({}, Backbone.Events);
+support.fakeEventEmitter = function(obj) {
+  return _.extend(obj || {}, Backbone.Events);
 };
