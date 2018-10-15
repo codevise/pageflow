@@ -17,7 +17,7 @@ import NonJsLinks from './NonJsLinks';
 import playerStateClassNames from './playerStateClassNames';
 import {combine, combineSelectors} from 'utils';
 import {prop, has} from 'utils/selectors';
-import {textTracks} from 'media/selectors';
+import {textTracks, pageShouldAutoplay} from 'media/selectors';
 
 import classNames from 'classnames';
 import {connect} from 'react-redux';
@@ -71,12 +71,17 @@ export default connect(combineSelectors({
     file: prop('file'),
     defaultTextTrackFileId: prop('page.defaultTextTrackFileId')
   }),
-  hasAutoplaySupport: has('autoplay support')
+  hasAutoplaySupport: has('autoplay support'),
+  shouldAutoplay: pageShouldAutoplay({
+    id: prop('page.permaId'),
+    autoplayWhenBackgroundMediaMuted: prop('autoplayWhenBackgroundMediaMuted')
+  })
 }))(MediaPage);
 
 function willAutoplay(props) {
-  return props.page.autoplay !== false &&
-         props.hasAutoplaySupport;
+  return props.shouldAutoplay &&
+         props.hasAutoplaySupport &&
+         !props.playerState.playFailed;
 }
 
 function pageWraperClassName(className, autoplay, textTracks, playerState) {
