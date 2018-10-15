@@ -33,6 +33,7 @@ import {combine} from 'utils';
 import ServerSidePage from 'pages/ServerSidePage';
 
 import {register as registerBuiltInPageTypes} from 'builtInPageTypes';
+import {registerWidgetTypes as registerBackgroundMediaWidgetTypes} from 'backgroundMedia';
 import {registerWidgetTypes as registerCookieNoticeWidgetTypes} from 'cookieNotice';
 
 import pageflow from 'pageflow';
@@ -40,6 +41,7 @@ import boot from 'boot';
 
 registerBuiltInPageTypes();
 registerCookieNoticeWidgetTypes();
+registerBackgroundMediaWidgetTypes();
 
 if (pageflow.events) {
   pageflow.events.on('seed:loaded', () => boot(pageflow));
