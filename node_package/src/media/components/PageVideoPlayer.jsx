@@ -1,5 +1,6 @@
 import VideoFilePlayer from './VideoFilePlayer';
 import createPageFilePlayer from './createPageFilePlayer';
+import {muted as backgroundMediaMuted} from 'backgroundMedia/selectors';
 import {file} from 'files/selectors';
 import {prop} from 'selectors';
 import {camelize, combineSelectors} from 'utils';
@@ -8,8 +9,13 @@ import {connect} from 'react-redux';
 
 export const VideoPlayer = connect(combineSelectors({
   file: file('videoFiles', {id: prop('videoFileId')}),
-  posterImageFile: file('imageFiles', {id: prop('posterImageFileId')})
+  posterImageFile: file('imageFiles', {id: prop('posterImageFileId')}),
+  muted
 }))(createPageFilePlayer(VideoFilePlayer));
+
+function muted(state, props) {
+  return props.muted || backgroundMediaMuted(state);
+}
 
 export default function PageVideoPlayer(props) {
   const page = props.page;
