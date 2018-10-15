@@ -1,5 +1,6 @@
 //= require_self
-//= require ./media_player/catch_play_promise
+
+//= require ./media_player/handle_failed_play
 //= require ./media_player/volume_fading
 //= require ./media_player/volume_binding
 //= require ./media_player/load_waiting
@@ -8,7 +9,10 @@
 
 pageflow.mediaPlayer = {
   enhance: function(player, options) {
-    pageflow.mediaPlayer.catchPlayerPromise(player);
+    pageflow.mediaPlayer.handleFailedPlay(player, _.extend({
+      hasAutoplaySupport: pageflow.browser.has('autoplay support')
+    }, options));
+
     pageflow.mediaPlayer.asyncPlay(player);
 
     if (options.hooks) {
