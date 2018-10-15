@@ -3,17 +3,37 @@ import {call, put, select, take, race} from 'redux-saga/effects';
 
 import {PAGE_DID_ACTIVATE, PAGE_WILL_DEACTIVATE} from 'pages/actions';
 import {PREBUFFERED, actionCreators} from 'media/actions';
-import {pageShouldAutoplay} from 'media/selectors';
+import {UNMUTE as BACKGROUND_MEDIA_UNMUTE} from 'backgroundMedia/actions';
+import {pageShouldAutoplay, pageHasAutoplayOption} from 'media/selectors';
 
 const {play, prebuffer, waiting} = actionCreators();
 
 export default function*(options) {
   yield takeEvery(PAGE_DID_ACTIVATE, function*(action) {
-    yield race({
-      task: call(prebufferAndPlay, options),
+    yield [
+      race({
+        task: call(prebufferAndPlay, options),
+        cancel: take(PAGE_WILL_DEACTIVATE)
+      }),
+      race({
+        task: call(prebufferAndPlayOnUnmute, options),
+        cancel: take(PAGE_WILL_DEACTIVATE)
+      })
+    ];
+  });
+}
+
+function* prebufferAndPlayOnUnmute(options) {
+  if (options.retryOnUnmute && (yield select(pageHasAutoplayOption()))) {
+    const {unmute} = yield race({
+      unmute: take(BACKGROUND_MEDIA_UNMUTE),
       cancel: take(PAGE_WILL_DEACTIVATE)
     });
-  });
+
+    if (unmute) {
+      yield* prebufferAndPlay(options);
+    }
+  }
 }
 
 function* prebufferAndPlay(options) {
