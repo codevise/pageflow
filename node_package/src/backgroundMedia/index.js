@@ -1,6 +1,11 @@
 import backgroundMedia from './reducer';
 
-import {mute, unmute} from './actions';
+import {mute, unmute, UNMUTE} from './actions';
+
+import {register as registerUnmuteButton} from './components/UnmuteButton';
+
+import {takeEvery} from 'redux-saga';
+import {call} from 'redux-saga/effects';
 
 export default {
   init({isServerSide, events, dispatch}) {
@@ -15,5 +20,17 @@ export default {
 
   createReducers() {
     return {backgroundMedia};
+  },
+
+  createSaga: function() {
+    return function*() {
+      yield takeEvery(UNMUTE, function*() {
+        yield call(() => pageflow.backgroundMedia.unmute());
+      });
+    };
   }
 };
+
+export function registerWidgetTypes() {
+  registerUnmuteButton();
+}
