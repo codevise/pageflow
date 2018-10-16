@@ -16,13 +16,21 @@ function UnmuteButton(props) {
   if (muted) {
     return (
       <div className="background_media_unmute_button">
-        <a title={t('pageflow.public.mute_off')} onClick={unmute} href="#"></a>
+        <a title={t('pageflow.public.mute_off')}
+           onClick={() => { playUnmuteSound(); unmute(); }}
+           href="#"></a>
       </div>
     );
   }
   else {
     return null;
   }
+}
+
+function playUnmuteSound() {
+  new pageflow.AudioPlayer([
+    {src: pageflow.assetUrls.unmuteSound, type: 'audio/mpeg'}
+  ], {codecs: ['mp3']}).play();
 }
 
 export function register() {
