@@ -40,7 +40,7 @@ pageflow.AudioPlayer = function(sources, options) {
     swf_path: pageflow.assetUrls.audioSwf,
     throw_errors: false,
     format_time: false,
-    codecs: ['vorbis', 'mp4', 'mp3'],
+    codecs: options.codecs || ['vorbis', 'mp4', 'mp3'],
     ready: ready.resolve,
     loop: options.loop
   });
