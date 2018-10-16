@@ -1,19 +1,19 @@
 FactoryBot.define do
   factory :account, class: Pageflow::Account do
-    name 'Account Name'
+    name { 'Account Name' }
 
     after(:build) do |account|
       account.default_theming ||= build(:theming, account: account)
     end
 
     transient do
-      with_member nil
-      with_previewer nil
-      with_editor nil
-      with_publisher nil
-      with_manager nil
+      with_member { nil }
+      with_previewer { nil }
+      with_editor { nil }
+      with_publisher { nil }
+      with_manager { nil }
 
-      with_feature nil
+      with_feature { nil }
     end
 
     after(:create) do |account, evaluator|

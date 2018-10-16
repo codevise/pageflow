@@ -6,14 +6,14 @@ module Pageflow
 
     factory :user do
       transient do
-        on nil
+        on { nil }
       end
 
       email
-      first_name 'John'
-      last_name 'Doe'
+      first_name { 'John' }
+      last_name { 'Doe' }
 
-      password '@qwert12345'
+      password { '@qwert12345' }
       password_confirmation { password }
 
       trait :member do
@@ -47,7 +47,7 @@ module Pageflow
       end
 
       trait :admin do
-        admin true
+        admin { true }
         after(:create) do |user, evaluator|
           create(:membership,
                  user: user,
@@ -63,8 +63,8 @@ module Pageflow
 
     factory :valid_user, class: User do
       email
-      first_name 'Edison'
-      last_name 'Editor'
+      first_name { 'Edison' }
+      last_name { 'Editor' }
     end
   end
 end

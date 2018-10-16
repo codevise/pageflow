@@ -4,11 +4,11 @@ module Pageflow
       entry
       uploader { create(:user) }
 
-      attachment File.open(Engine.root.join('spec', 'fixtures', 'image.jpg'))
-      state 'processed'
+      attachment { File.open(Engine.root.join('spec', 'fixtures', 'image.jpg')) }
+      state { 'processed' }
 
       transient do
-        used_in nil
+        used_in { nil }
       end
 
       before(:create) do |file, evaluator|
@@ -20,19 +20,19 @@ module Pageflow
       end
 
       trait :processed do
-        processed_attachment File.open(Engine.root.join('spec', 'fixtures', 'image.jpg'))
+        processed_attachment { File.open(Engine.root.join('spec', 'fixtures', 'image.jpg')) }
       end
 
       trait :unprocessed do
-        unprocessed_attachment File.open(Engine.root.join('spec', 'fixtures', 'image.jpg'))
-        processed_attachment nil
-        state 'not_processed'
+        unprocessed_attachment { File.open(Engine.root.join('spec', 'fixtures', 'image.jpg')) }
+        processed_attachment { nil }
+        state { 'not_processed' }
       end
 
       trait :failed do
-        unprocessed_attachment File.open(Engine.root.join('spec', 'fixtures', 'image.jpg'))
-        processed_attachment nil
-        state 'processing_failed'
+        unprocessed_attachment { File.open(Engine.root.join('spec', 'fixtures', 'image.jpg')) }
+        processed_attachment { nil }
+        state { 'processing_failed' }
       end
 
       trait :encoded do

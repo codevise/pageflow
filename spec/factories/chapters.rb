@@ -4,7 +4,7 @@ module Pageflow
       storyline
 
       transient do
-        in_main_storyline_of nil
+        in_main_storyline_of { nil }
       end
 
       before(:create) do |chapter, evaluator|
@@ -16,7 +16,7 @@ module Pageflow
     end
 
     factory :valid_chapter, :class => Chapter do
-      title "Introduction"
+      title { 'Introduction' }
     end
   end
 end

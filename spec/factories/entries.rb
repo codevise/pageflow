@@ -14,12 +14,12 @@ module Pageflow
       end
 
       transient do
-        with_previewer nil
-        with_editor nil
-        with_publisher nil
-        with_manager nil
+        with_previewer { nil }
+        with_editor { nil }
+        with_publisher { nil }
+        with_manager { nil }
 
-        with_feature nil
+        with_feature { nil }
       end
 
       after(:create) do |entry, evaluator|
@@ -48,7 +48,7 @@ module Pageflow
 
       trait :published do
         transient do
-          published_revision_attributes({})
+          published_revision_attributes { {} }
         end
 
         after(:create) do |entry, evaluator|
@@ -63,7 +63,7 @@ module Pageflow
       end
 
       trait :with_highdef_video_encoding do
-        feature_states('highdef_video_encoding' => true)
+        feature_states { {'highdef_video_encoding' => true} }
       end
     end
   end
