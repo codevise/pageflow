@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '~> 5.2.0'
 
   # Framework for admin interface
-  s.add_dependency 'activeadmin', '1.3.0'
+  s.add_dependency 'activeadmin', '~> 1.3.0'
 
   # Searchable select boxes for filters and forms
   s.add_dependency 'activeadmin-searchable_select', '~> 1.0'
