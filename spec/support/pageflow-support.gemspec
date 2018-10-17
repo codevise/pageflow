@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'mysql2', '~> 0.5.2'
 
   s.add_runtime_dependency 'domino', '~> 0.7.0'
+  s.add_runtime_dependency 'factory_bot', '~> 4.8'
 
   s.add_runtime_dependency 'listen', '~> 3.0'
   s.add_runtime_dependency 'bootsnap', '~> 1.0'
