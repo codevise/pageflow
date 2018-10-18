@@ -249,3 +249,19 @@ option to ensure all required image sizes will be generated.
 
 Pageflow automatically takes care of passing thumbails urls to the
 editor and displaying them in the appropriate places.
+
+## Using Shared Examples to Test Integration
+
+Pageflow provides a set of shared examples that can be used in a
+plugin's test suite to ensure the file type integrates correctly:
+
+    require 'spec_helper'
+    require 'pageflow/lint'
+
+    module Pageflow
+      module Panorama
+        Pageflow::Lint.file_type(:image_file,
+                                 create_file_type: -> { Panorama.package_file_type },
+                                 create_file: -> { create(:panorama_package) })
+      end
+    end
