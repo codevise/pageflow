@@ -1,5 +1,22 @@
 # CHANGELOG
 
+### Version 13.0.0.beta6
+
+2018-10-18
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v13.0.0.beta5...v13.0.0.beta6)
+
+- Relax Active Admin dependency
+  ([#1012](https://github.com/codevise/pageflow/pull/1012))
+- Add factory_bot dependency to pageflow-support
+  ([#1014](https://github.com/codevise/pageflow/pull/1014))
+- Rewrite factories to use dynamic attributes
+  ([#1011](https://github.com/codevise/pageflow/pull/1011))
+- Fix background color of form buttons in admin action items
+  ([#991](https://github.com/codevise/pageflow/pull/991))
+- Fix fragment caching for published entries
+  ([#989](https://github.com/codevise/pageflow/pull/989))
+
 ### Version 13.0.0.beta5
 
 2018-08-09
