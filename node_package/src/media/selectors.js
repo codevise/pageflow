@@ -1,8 +1,9 @@
 import {actionCreators} from './actions';
 import {nestedFiles} from 'files/selectors';
-import {pageState} from 'pages/selectors';
+import {pageState, pageAttribute} from 'pages/selectors';
 import {setting} from 'settings/selectors';
 import {t, locale} from 'i18n/selectors';
+import {muted as backgroundMediaMuted} from 'backgroundMedia/selectors';
 import {memoizedSelector} from 'utils';
 
 import {bindActionCreators} from 'redux';
@@ -102,4 +103,24 @@ function getActiveTextTrackFileId(textTrackFiles, autoTextTrackFile, options) {
 
 export function videoQualitySetting() {
   return setting({property: 'videoQuality'});
+}
+
+export function pageShouldAutoplay({autoplayWhenBackgroundMediaMuted, id}) {
+  return memoizedSelector(
+    autoplayWhenBackgroundMediaMuted,
+    pageHasAutoplayOption({id: id}),
+    backgroundMediaMuted,
+    (autoplayWhenBackgroundMediaMuted, autoplayOption, isBackgroudMediaMuted) => {
+      return autoplayOption && (!isBackgroudMediaMuted || autoplayWhenBackgroundMediaMuted);
+    }
+  );
+}
+
+export function pageHasAutoplayOption(options) {
+  return memoizedSelector(
+    pageAttribute('autoplay', options),
+    (autoplayOption) => {
+      return autoplayOption !== false;
+    }
+  );
 }

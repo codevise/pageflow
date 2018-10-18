@@ -128,6 +128,10 @@ pageflow.Audio.MultiPlayer = function(pool, options) {
     that.listenTo(player, 'ended', function() {
       that.trigger('ended', {audioFileId: id});
     });
+
+    that.listenTo(player, 'playfailed', function() {
+      that.trigger('playfailed', {audioFileId: id});
+    });
   }
 
   function stopEventPropagation(player) {

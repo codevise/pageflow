@@ -25,7 +25,8 @@ function VideoPage(props) {
                qualities={qualities}
                playerState={props.playerState}
                playerActions={props.playerActions}
-               controlBarText={props.t('pageflow.public.start_video')}>
+               controlBarText={props.t('pageflow.public.start_video')}
+               autoplayWhenBackgroundMediaMuted={true}>
 
       <PageVideoPlayer page={props.page}
                        playerState={props.playerState}
@@ -53,6 +54,7 @@ export function register() {
     reduxModules: [
       mediaReduxModule({
         hideControls: true,
+        autoplayWhenBackgroundMediaMuted: true,
         playsInNativePlayer: has('native video player')
       })
     ]

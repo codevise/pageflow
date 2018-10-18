@@ -295,6 +295,19 @@ describe('pageflow.Audio.MultiPlayer', function() {
     expect(handler).not.to.have.been.called;
   });
 
+  it('propagates playfailed event', function() {
+    var player = new pageflow.AudioPlayer.Null();
+    var pool = fakePlayerPool({5: player});
+    var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {fadeDuration: 1000});
+    var handler = sinon.spy();
+
+    multiPlayer.on('playfailed', handler);
+    multiPlayer.play(5);
+    player.trigger('playfailed');
+
+    expect(handler).to.have.been.called;
+  });
+
   function fakePlayerPool(players) {
     return {
       get: function(id) {

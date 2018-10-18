@@ -9,6 +9,8 @@ export default function(player, actions) {
   }));
 
   player.on('play', actions.playing);
+  player.on('playfailed', actions.playFailed);
+  player.on('playmuted', actions.playMuted);
   player.on('pause', actions.paused);
   player.on('waiting', actions.waiting);
   player.on('seeking', actions.seeking);

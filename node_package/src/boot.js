@@ -3,6 +3,7 @@ import {registry as widgetTypeRegistry} from 'registerWidgetType';
 
 import createStore from 'createStore';
 
+import backgroundMedia from 'backgroundMedia';
 import cookieNotice from 'cookieNotice';
 import themingModule from 'theming';
 import storylinesModule from 'storylines';
@@ -55,6 +56,7 @@ export default function(pageflow) {
   };
 
   const store = createStore([
+    backgroundMedia,
     cookieNotice,
     i18nModule,
     themingModule,

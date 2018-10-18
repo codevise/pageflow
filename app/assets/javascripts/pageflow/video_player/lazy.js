@@ -80,7 +80,7 @@ pageflow.VideoPlayer.Lazy = function(template, options) {
     return videoPlayer && videoPlayer.posterImage.unlockShowing();
   };
 
-  _.each(['play', 'playAndFadeIn', 'pause', 'fadeOutAndPause', 'prebuffer', 'src', 'on', 'load', 'currentTime'], function(method) {
+  _.each(['play', 'playAndFadeIn', 'pause', 'fadeOutAndPause', 'prebuffer', 'src', 'on', 'load', 'currentTime', 'muted'], function(method) {
     that[method] = function(/* args */) {
       var args = arguments;
 

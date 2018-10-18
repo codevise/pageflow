@@ -238,7 +238,8 @@ pageflow.Slideshow.setup = function(options) {
   pageflow.atmo = pageflow.Atmo.create(
     pageflow.slides,
     pageflow.events,
-    pageflow.audio
+    pageflow.audio,
+    pageflow.backgroundMedia
   );
 
   pageflow.history = pageflow.History.create(
