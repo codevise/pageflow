@@ -1,5 +1,0 @@
-de:
-  activerecord:
-    attributes:
-      "pageflow/theming":
-        privacy_link_url: "Datenschutz-Link URL"

@@ -268,6 +268,7 @@ en:
         home_url: Redirect URL
         imprint_link_label: Legal notice link label
         imprint_link_url: Legal notice link URL
+        privacy_link_url: Privacy link URL
         theme_name: Theme
       pageflow/video_file:
         dimensions: Dimensions
@@ -981,6 +982,8 @@ en:
         captions: Audio Replacement Text Track
         descriptions: Image Description Text Track
         subtitles: Translation Text Track
+    cookie_notice_bar:
+      widget_type_name: Bar at lower page margin
     default_theme:
       name: Default
     delayed_text_fade_in:
@@ -1017,6 +1020,8 @@ en:
         header: This is an empty Pageflow
         intro: Each Pageflow consist of chapters and pages. The editor panel to your right shows the outline of your story.
         outro: In this area, a live preview will be shown.
+      cookie_notice_bar:
+        widget_type_info_box_text: The notice is displayed when visiting an entry that uses Cookies. Cookies are set, if an analytics integration is active or the 'Emphasize new pages' feature has been enabled.
       entries:
         unsupported_browser_hint:
           message: The Pageflow editor does not support the browser version you are using. We recommend upgrading your browser to the most recent version.
@@ -1624,6 +1629,9 @@ en:
         image_rights: Credits
     highdef_video_encoding:
       feature_name: Full HD and 4K videos
+    initial_password:
+      submit: Save and sign in
+      title: Set your password
     invalid_transition: Invalid transition
     languages:
       ar: Arabic
@@ -1690,6 +1698,7 @@ en:
     ui:
       configuration_editor:
         tabs:
+          cookie_notice_bar: Cookie Notice
           files: Files
           general: General
           links: Links
@@ -1800,6 +1809,7 @@ en:
       none: "(none)"
       roles:
         analytics: Tracking
+        cookie_notice: Cookie Notice
         mobile_navigation: Mobile navigation
         navigation: Navigation bar
         player_controls: Player Controls

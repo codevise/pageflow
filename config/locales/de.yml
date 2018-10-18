@@ -268,6 +268,7 @@ de:
         home_url: Redirect URL
         imprint_link_label: Impressum-Link Text
         imprint_link_url: Impressum-Link URL
+        privacy_link_url: Datenschutz-Link URL
         theme_name: Theme
       pageflow/video_file:
         dimensions: Maße
@@ -983,6 +984,8 @@ de:
         captions: Ton-Ersatz-Textspur
         descriptions: Bild-Ersatz-Textspur
         subtitles: Übersetzungs-Textspur
+    cookie_notice_bar:
+      widget_type_name: Leiste am unteren Seitenrand
     default_theme:
       name: Standard
     delayed_text_fade_in:
@@ -1017,6 +1020,8 @@ de:
         header: Dies ist ein leerer Pageflow
         intro: Pageflows bestehen aus Kapiteln und Seiten. In der Seitenleiste rechts findest Du die Gliederung.
         outro: Hier siehst Du dann eine Vorschau deines Pageflows.
+      cookie_notice_bar:
+        widget_type_info_box_text: Der Hinweis wird beim ersten Öffnen von Beiträgen, die Cookies verwenden, am unteren Seitenrand angezeigt. Cookies werden gesetzt, falls ein Dienst zur Erhebnung von Nutzungsdaten (z.B. Google Analytics) verwendet wird oder wenn die Funktion 'Neue Seiten hervorheben' aktiv ist.
       entries:
         unsupported_browser_hint:
           message: Die Version Ihres Browsers wird vom Pageflow Editor nicht unterstützt. Bitte benutzen Sie einen aktuellen Browser.
@@ -1652,6 +1657,9 @@ de:
         image_rights: Bildrechte
     highdef_video_encoding:
       feature_name: Full HD und 4K Videos
+    initial_password:
+      submit: Speichern und anmelden
+      title: Passwort festlegen
     invalid_transition: Der gewünschte Statuswechsel ist nicht erlaubt.
     languages:
       ar: Arabisch
@@ -1718,6 +1726,7 @@ de:
     ui:
       configuration_editor:
         tabs:
+          cookie_notice_bar: Cookie Hinweis
           files: Dateien
           general: Allgemein
           links: Verweise
@@ -1763,7 +1772,7 @@ de:
 
             Alle Änderungen sind in der linken Frontend-Ansicht sichtbar, sobald das entsprechende Texteingabefeld im Editierbereich verlassen wurde.
           thumbnail_image_id: Das Thumbnail ersetzt das ansonsten automatisch generierte Vorschaubild in der Navigation und in der Übersicht.
-          transition: Wähle hier den Effekt, der beim Erreichen dieser der Seite benutzt werden soll.
+          transition: Wähle hier den Effekt, der beim Erreichen dieser Seite benutzt werden soll.
       templates:
         inputs:
           file_input:
@@ -1825,6 +1834,7 @@ de:
       none: "(Kein)"
       roles:
         analytics: Zählpixel
+        cookie_notice: Cookie Hinweis
         mobile_navigation: Mobile Navigation
         navigation: Navigationsleiste
         player_controls: Player Controls
