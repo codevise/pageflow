@@ -23,7 +23,8 @@ function AudioPage(props) {
                file={props.audioFile}
                playerState={props.playerState}
                playerActions={props.playerActions}
-               controlBarText={props.t('pageflow.public.start_audio')}>
+               controlBarText={props.t('pageflow.public.start_audio')}
+               autoplayWhenBackgroundMediaMuted={false}>
 
       <PageBackgroundAsset />
       <PageAudioFilePlayer file={props.audioFile}
@@ -49,7 +50,9 @@ export function register() {
     )(AudioPage),
 
     reduxModules: [
-      mediaReduxModule(),
+      mediaReduxModule({
+        retryOnUnmute: true
+      }),
       mediaPageBackgroundReduxModule
     ]
   });

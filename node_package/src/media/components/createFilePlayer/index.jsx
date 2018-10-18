@@ -38,6 +38,8 @@ export default function({
       this.displaysTextTracksInNativePlayer =
         this.props.hasNativeVideoPlayer && tagName == 'video';
 
+      this.initiallyMuted = this.props.muted;
+
       this.updateAtmoSettings();
 
       this.setupMediaTag = element => {
@@ -78,11 +80,12 @@ export default function({
         return;
       }
 
+      updatePlayerMuted(this.player, prevProps.muted, this.props.muted);
+
       updatePlayerFromPlayerState(this.player,
                                   prevProps.playerState,
                                   this.props.playerState,
-                                  this.props.playerActions,
-                                  this.props.playsInline);
+                                  this.props.playerActions);
 
       if (!this.displaysTextTracksInNativePlayer) {
         updateTextTracks(this.player,
@@ -110,7 +113,7 @@ export default function({
                                               this.props.textTracksEnabled)}
                   poster={poster(this.props.file, this.props.posterImageFile)}
                   loop={this.props.loop}
-                  muted={this.props.muted}
+                  muted={this.initiallyMuted}
                   playsInline={this.props.playsInline}
                   alt={this.props.file.alt}
 
@@ -170,5 +173,11 @@ function textTrackPosition(state, {playerState}) {
   }
   else {
     return playerState.controlsHidden ? 'auto.lazy' : 'top';
+  }
+}
+
+function updatePlayerMuted(player, prevMuted, muted) {
+  if (prevMuted !== muted) {
+    player.muted(muted);
   }
 }

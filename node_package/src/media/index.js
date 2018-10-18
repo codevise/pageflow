@@ -11,6 +11,7 @@ import pageSaga from './sagas';
 
 import fadeInWhenPageWillActivate from './sagas/fadeInWhenPageWillActivate';
 import fadeOutWhenPageWillDeactivate from './sagas/fadeOutWhenPageWillDeactivate';
+import muteBackgroundMediaOnPlayFailed from './sagas/muteBackgroundMediaOnPlayFailed';
 
 export function reduxModule(options) {
   return {
@@ -32,7 +33,8 @@ export const pageBackgroundReduxModule = {
   saga: function*() {
     yield [
       fadeInWhenPageWillActivate({scope: 'background'}),
-      fadeOutWhenPageWillDeactivate({scope: 'background'})
+      fadeOutWhenPageWillDeactivate({scope: 'background'}),
+      muteBackgroundMediaOnPlayFailed()
     ];
   }
 };

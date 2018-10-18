@@ -65,4 +65,34 @@ describe('createReducer creates function that', () => {
       expect(nextState.duration).to.eq(50);
     });
   });
+
+  it('sets playFailed to true on PLAY_FAILED action', () => {
+    const {playFailed} = actionCreators();
+    const reducer = createReducer();
+
+    const nextState = reducer({}, playFailed());
+
+    expect(nextState.playFailed).to.eq(true);
+  });
+
+  it('makes state look unplayed again in PLAY_FAILED action', () => {
+    const {play, playFailed} = actionCreators();
+    const reducer = createReducer();
+
+    let state = {};
+    state = reducer(state, play());
+    state = reducer(state, playFailed());
+
+    expect(state.shouldPlay).to.eq(false);
+    expect(state.unplayed).to.eq(true);
+  });
+
+  it('resets playFailed on PLAY action', () => {
+    const {play} = actionCreators();
+    const reducer = createReducer();
+
+    const nextState = reducer({playFailed: true}, play());
+
+    expect(nextState.playFailed).to.eq(false);
+  });
 });
