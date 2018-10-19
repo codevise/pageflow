@@ -29,9 +29,19 @@ Style/FrozenStringLiteralComment:
 Style/LambdaCall:
   Enabled: false
 
+# In specs methods using RSpec DSL often become complex
+Metrics/AbcSize:
+  Exclude:
+    - spec/**/*
+
 # Ignore long RSpec describe blocks
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'feature']
+
+# In specs methods using RSpec DSL often become long
+Metrics/MethodLength:
+  Exclude:
+    - spec/**/*
 
 # Do not require class documentation for specs and migrations
 Style/Documentation:
