@@ -1,0 +1,13 @@
+de:
+  pageflow:
+    editor_emulation_mode:
+      feature_name: "Editor Phone Emulationsmodus"
+    editor:
+      templates:
+        entry_preview:
+          navigation_disabled_hint: "Seitenwechsel sind innerhalb der Phone Vorschau nicht möglich."
+        emulation_mode_button:
+          header: "Vorschau Modus:"
+          disabled_hint: "Von diesem Seitentyp nicht unterstützt"
+          phone: "Phone"
+          desktop: "Desktop"

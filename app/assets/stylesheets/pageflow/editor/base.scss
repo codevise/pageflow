@@ -7,6 +7,7 @@
 @import "./blank_entry";
 @import "./dialogs";
 @import "./colors";
+@import "./entry_preview";
 @import "./background_positioning";
 @import "./page_selection";
 @import "./files_explorer";
@@ -81,6 +82,8 @@
   @import "./page_links";
   @import "./storyline_picker";
   @import "./loading";
+  @import "./sidebar_footer";
+  @import "./emulation_mode_button";
 
   a.publish {
     @include eye-icon;

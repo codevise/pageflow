@@ -6,4 +6,5 @@ Pageflow.configure do |config|
     feature_config.help_entries.register('pageflow.help_entries.storylines', priority: 7)
   end
   config.features.register('selectable_themes')
+  config.features.register('editor_emulation_mode')
 end

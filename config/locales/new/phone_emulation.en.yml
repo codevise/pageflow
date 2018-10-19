@@ -1,0 +1,13 @@
+en:
+  pageflow:
+    editor_emulation_mode:
+      feature_name: "Editor phone emulation mode"
+    editor:
+      templates:
+        entry_preview:
+          navigation_disabled_hint: "Page changes not possible in phone preview."
+        emulation_mode_button:
+          header: "Preview mode:"
+          disabled_hint: "Not supported by this page type"
+          phone: "Phone"
+          desktop: "Desktop"

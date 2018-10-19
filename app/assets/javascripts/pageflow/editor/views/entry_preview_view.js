@@ -1,11 +1,13 @@
 pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   template: 'templates/entry_preview',
-  className: 'container',
+  className: 'entry_preview',
 
   ui: {
-    header: '> .header',
-    entry: '> .entry',
-    overview: '> .overview'
+    container: '> .container',
+    header: '> .container > .header',
+    entry: '> .container > .entry',
+    overview: '> .container > .overview',
+    navigationDisabledHint: '.navigation_disabled_hint'
   },
 
   initialize: function() {
@@ -31,6 +33,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
     this.listenTo(pageflow.entry, 'change:configuration', function() {
       pageflow.entry.once('sync', this.update, this);
     });
+    this.listenTo(pageflow.entry, 'change:emulation_mode', this.updateEmulationMode);
 
     this.listenTo(pageflow.storylines, 'sync', this.update);
     this.listenTo(pageflow.chapters, 'sync', this.update);
@@ -39,6 +42,23 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
     this.listenTo(pageflow.audioFiles, 'sync', this.update);
     this.listenTo(pageflow.imageFiles, 'sync', this.update);
     this.listenTo(pageflow.videoFiles, 'sync', this.update);
+
+    this.listenTo(pageflow.events, 'page:changing', function(event) {
+      if (pageflow.entry.get('emulation_mode')) {
+        this.ui.navigationDisabledHint.css('opacity', 1);
+
+        clearTimeout(this.navigationDisabledHintTimeout);
+        this.navigationDisabledHintTimeout = setTimeout(_.bind(function() {
+          this.ui.navigationDisabledHint.css('opacity', 0);
+        }, this), 2000);
+
+        event.cancel();
+      }
+    });
+
+    this.listenTo(pageflow.events, 'page:change', function(page) {
+      this.updateEmulationModeSupport(page.getPermaId());
+    });
   },
 
   onShow: function() {
@@ -57,6 +77,12 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
     });
 
     this.listenTo(this.pages, 'edit', function(model) {
+      if (this.lastEditedPage != model) {
+        pageflow.entry.unset('emulation_mode');
+      }
+
+      this.lastEditedPage = model;
+
       slideshow.goTo(this.pageViews.itemViews.findByModel(model).$el);
     });
 
@@ -65,12 +91,23 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
       this.updateSimulatedMediaQueryClasses();
     });
 
+    this.listenTo(pageflow.pages, 'change:template', function() {
+      this.updateEmulationModeSupport(slideshow.currentPagePermaId());
+    });
+
     this.updateSimulatedMediaQueryClasses();
   },
 
+  updateEmulationModeSupport: function(permaId) {
+    var model = pageflow.pages.getByPermaId(permaId);
+
+    pageflow.entry.set('current_page_supports_emulation_mode',
+                       model && model.pageType().supportsPhoneEmulation());
+  },
+
   updateSimulatedMediaQueryClasses: function() {
-    var width = this.$el.width();
-    var portrait = this.$el.width() < this.$el.height();
+    var width = this.ui.container.width();
+    var portrait = this.ui.container.width() < this.ui.container.height();
 
     $('html')
       .toggleClass('simulate_mobile', width <= 900)
@@ -137,5 +174,21 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
     return widgets.map(function() {
       return 'widget_' + $(this).data('widget') + '_present';
     }).get();
+  },
+
+  updateEmulationMode: function() {
+    if (pageflow.entry.previous('emulation_mode')) {
+      this.$el.removeClass(this.emulationModeClassName(pageflow.entry.previous('emulation_mode')));
+    }
+
+    if (pageflow.entry.get('emulation_mode')) {
+      this.$el.addClass(this.emulationModeClassName(pageflow.entry.get('emulation_mode')));
+    }
+
+    pageflow.app.trigger('resize');
+  },
+
+  emulationModeClassName: function(mode) {
+    return 'emulation_mode_' + mode;
   }
 });

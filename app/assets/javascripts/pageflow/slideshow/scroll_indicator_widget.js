@@ -13,21 +13,18 @@
           fadeTimeout;
 
       function update(page) {
-        if (page.hasClass('scroll_indicator_mode_non') ||
-            (page.hasClass('scroll_indicator_mode_only_next') && direction === 'up') ||
-            (page.hasClass('scroll_indicator_mode_only_back') && direction === 'down')) {
-
-          that.element.hide();
-        }
-        else {
-          that.element.show();
-        }
-
+        that.element.toggleClass('hidden_by_scoll_indicator_mode', hiddenByMode(page));
         that.element.toggleClass('hidden_for_page', hideScrollIndicatorForPage(page));
 
         that.element.toggleClass('invert', invertIndicator(page));
         that.element.toggleClass('horizontal', page.hasClass('scroll_indicator_orientation_horizontal'));
         that.element.toggleClass('available', targetPageExists());
+      }
+
+      function hiddenByMode(page) {
+        return (page.hasClass('scroll_indicator_mode_non') ||
+                (page.hasClass('scroll_indicator_mode_only_next') && direction === 'up') ||
+                (page.hasClass('scroll_indicator_mode_only_back') && direction === 'down'));
       }
 
       function invertIndicator(page) {

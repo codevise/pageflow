@@ -62,6 +62,10 @@
       right: 15px;
     }
 
+    .emulation_mode_phone & {
+      display: none;
+    }
+
     &.visible {
       pointer-events: all;
       visibility: visible;
@@ -76,6 +80,10 @@
     &.hidden_for_page {
       opacity: 0;
       visibility: hidden;
+    }
+
+    &.hidden_by_scoll_indicator_mode {
+      display: none;
     }
 
     .bigScreen & {

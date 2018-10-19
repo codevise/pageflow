@@ -12,9 +12,11 @@ pageflow.app.addInitializer(function(options) {
     model: pageflow.entry
   }));
 
-  pageflow.app.indicatorsRegion.show(new pageflow.DisabledAtmoIndicatorView().render());
-  pageflow.app.notificationsRegion.show(new pageflow.NotificationsView().render());
-  pageflow.app.helpButtonRegion.show(new pageflow.HelpButtonView().render());
+  pageflow.app.indicatorsRegion.show(new pageflow.DisabledAtmoIndicatorView());
+  pageflow.app.notificationsRegion.show(new pageflow.NotificationsView());
+  pageflow.app.sidebarFooterRegion.show(new pageflow.SidebarFooterView({
+    model: pageflow.entry
+  }));
 
   Backbone.history.start({root: options.root});
 });
@@ -26,5 +28,5 @@ pageflow.app.addRegions({
   sidebarRegion: 'sidebar .container',
   dialogRegion: '.dialog_container',
   notificationsRegion: 'sidebar .notifications_container',
-  helpButtonRegion: 'sidebar .help_button_container'
+  sidebarFooterRegion: 'sidebar .sidebar_footer_container'
 });
