@@ -50,8 +50,8 @@ module Pageflow
 
     def page_media_breakpoints
       {
-        :large => :default,
-        :medium => 'max-width: 900px'
+        desktop: :default,
+        mobile: 'max-width: 900px'
       }
     end
 

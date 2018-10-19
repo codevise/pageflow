@@ -24,6 +24,28 @@ module Pageflow
     # @return {Boolean}
     attr_reader :top_level_type
 
+    # Callable that receives a file record and returns a hash of one
+    # of the following forms:
+    #
+    #     {
+    #       poster: "url/of/image"
+    #     }
+    #
+    # where `poster` is an arbitrary css class infix. Use `default` to
+    # skip the infix in the generated css class name. Or
+    #
+    #     {
+    #       poster: {
+    #         desktop: "desktop/url/of/image",
+    #         mobile: "mobile/url/of/image"
+    #       }
+    #     }
+    #
+    # to provide different urls for the two media breakpoints.
+    #
+    # @return [#call]
+    attr_reader :css_background_image_urls
+
     # Callable that returns a hash of url template strings indexed by
     # their names.
     # @return [#call]
@@ -54,6 +76,8 @@ module Pageflow
     #   model `Pageflow::Rainbow::File`.
     # @option options [Array<FileType>] :nested_file_types
     #   Optional. Array of FileTypes allowed for nested files. Defaults to [].
+    # @option options [#call] :css_background_image_urls
+    #   Optional. See {#css_background_image_urls}
     # @option options [#call] :url_templates
     #   Optional. Callable returning a hash of url template strings
     #   indexed by their names.
@@ -67,6 +91,8 @@ module Pageflow
       @collection_name_or_blank = options[:collection_name]
       @nested_file_types = options.fetch(:nested_file_types, [])
       @top_level_type = options.fetch(:top_level_type, false)
+      @css_background_image_urls = options[:css_background_image_urls]
+      @css_background_image_class_prefix = options[:css_background_image_class_prefix]
       @url_templates = options.fetch(:url_templates, ->() { {} })
       @custom_attributes = options.fetch(:custom_attributes, [])
     end
@@ -90,6 +116,11 @@ module Pageflow
       else
         @collection_name_or_blank
       end
+    end
+
+    # @api private
+    def css_background_image_class_prefix
+      @css_background_image_class_prefix || model.model_name.singular
     end
 
     # @api private
