@@ -15,6 +15,18 @@ module Pageflow
         expect(result).to include('some\\u2028text')
       end
 
+      it 'escapes closing tags' do
+        revision = create(:revision, :published)
+        storyline = create(:storyline, revision: revision)
+        chapter = create(:chapter, storyline: storyline)
+        create(:page, chapter: chapter, configuration: {text: '</script>'})
+        entry = PublishedEntry.new(create(:entry, published_revision: revision))
+
+        result = helper.entry_json_seed(entry)
+
+        expect(result).to include('<\/script>')
+      end
+
       it 'renders ids of files' do
         entry = PublishedEntry.new(create(:entry, :published))
         video_file = create(:video_file, used_in: entry.revision)
