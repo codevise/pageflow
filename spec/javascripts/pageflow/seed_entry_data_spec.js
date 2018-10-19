@@ -15,6 +15,25 @@ describe('pageflow.SeedEntryData', function() {
     });
   });
 
+  describe('#getFile', function() {
+    it('returns file attributes by collection name and file id', function() {
+      var entryData = new p.SeedEntryData({
+        files: {
+          image_files: [
+            {
+              id: 1,
+              url: 'image.png'
+            }
+          ]
+        }
+      });
+
+      var result = entryData.getFile('image_files', 1);
+
+      expect(result.url).to.eq('image.png');
+    });
+  });
+
   describe('#getStorylineConfiguration', function() {
     it('returns configruation by chapter id', function() {
       var configuration = {};

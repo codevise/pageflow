@@ -26,6 +26,32 @@ describe('pageflow.PreviewEntryData', function() {
     });
   });
 
+  describe('#getFile', function() {
+    it('returns file attributes by collection name and file id', function() {
+      var entry = support.factories.entry({}, {
+        fileTypes: support.factories.fileTypesWithImageFileType(),
+        files: {
+          image_files: pageflow.FilesCollection.createForFileType(
+            support.factories.imageFileType(),
+            [
+              {
+                id: 1,
+                url: 'image.png'
+              }
+            ]
+          )
+        }
+      });
+      var entryData = new p.PreviewEntryData({
+        entry: entry
+      });
+
+      var result = entryData.getFile('image_files', 1);
+
+      expect(result.url).to.eq('image.png');
+    });
+  });
+
   describe('#getStorylineConfiguration', function() {
     it('returns configuration by storyline id', function() {
       var configuration = {title: 'some text'};

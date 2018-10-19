@@ -3,6 +3,10 @@ pageflow.EntryData = pageflow.Object.extend({
     throw 'Not implemented';
   },
 
+  getFile: function(collectionName, id) {
+    throw 'Not implemented';
+  },
+
   getPageConfiguration: function(permaId) {
     throw 'Not implemented';
   },
