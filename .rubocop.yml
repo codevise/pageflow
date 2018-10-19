@@ -37,6 +37,8 @@ Metrics/AbcSize:
 # Ignore long RSpec describe blocks
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'feature']
+  Exclude:
+    - spec/factories/*.rb
 
 # In specs methods using RSpec DSL often become long
 Metrics/MethodLength:
