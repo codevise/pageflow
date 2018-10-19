@@ -56,6 +56,18 @@ describe('transientReferences', function() {
       expect(changeListener.called).to.be.ok;
     });
 
+    it('triggers change:<attribute>:ready event once the file is ready', function() {
+      var record = new Model(),
+          imageFile = new pageflow.ImageFile(),
+          changeListener = sinon.spy();
+
+      record.setReference('image_file_id', imageFile);
+      record.on('change:image_file_id:ready', changeListener);
+      imageFile.set('state', 'processed');
+
+      expect(changeListener.called).to.be.ok;
+    });
+
     it('does not trigger change event if reference was updated before ready', function() {
       var record = new Model(),
           imageFile = new pageflow.ImageFile(),
@@ -68,6 +80,22 @@ describe('transientReferences', function() {
       imageFile.set('state', 'processed');
 
       expect(changeListener.called).to.equal(false);
+    });
+
+    it('when change event triggers record can already be looked up in collection', function() {
+      var record = new Model(),
+          imageFiles = new Backbone.Collection(),
+          imageFile = new pageflow.ImageFile(),
+          imageFileFromCollection;
+
+      imageFiles.add(imageFile);
+      record.setReference('image_file_id', imageFile);
+      record.on('change', function() {
+        imageFileFromCollection = imageFiles.get(5);
+      });
+      imageFile.set('id', 5);
+
+      expect(imageFileFromCollection).to.equal(imageFile);
     });
   });
 });
