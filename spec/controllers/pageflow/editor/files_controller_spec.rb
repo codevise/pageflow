@@ -520,7 +520,7 @@ module Pageflow
 
         user = create(:user)
         entry = create(:entry, with_editor: user)
-        file = create(:hosted_file, :uploaded_to_s3, used_in: entry.draft, custom: 'some value')
+        file = create(:hosted_file, used_in: entry.draft, custom: 'some value')
 
         sign_in(user)
         acquire_edit_lock(user, entry)

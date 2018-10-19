@@ -3,7 +3,7 @@ require 'spec_helper'
 module Pageflow
   describe HostedFile, perform_jobs: true do
     it 'is invalid if attachment is missing' do
-      hosted_file = build(:hosted_file, attachment: nil)
+      hosted_file = build(:hosted_file, attachment_on_filesystem: nil, attachment_on_s3: nil)
 
       hosted_file.valid?
 
