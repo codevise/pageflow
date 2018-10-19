@@ -223,11 +223,130 @@ describe('pageflow.inputView', function() {
     });
   });
 
-  function createInputView(options) {
-    var view = {options: options};
-    view.model = options.model;
-    _.extend(view, pageflow.inputView);
+  describe('visibleBinding', function() {
+    it('sets hidden class when attribute is false', function() {
+      var view = createInputView({
+        model: new Backbone.Model({active: false}),
+        visibleBinding: 'active'
+      });
 
-    return view;
+      view.render();
+
+      expect(view.$el).to.have.$class('input-hidden_via_binding');
+    });
+
+    it('does not set hidden class when function returns true', function() {
+      var view = createInputView({
+        model: new Backbone.Model({active: true}),
+        visibleBinding: 'active'
+      });
+
+      view.render();
+
+      expect(view.$el).not.to.have.$class('input-hidden_via_binding');
+    });
+
+    it('sets hidden class when attribute changes to false', function() {
+      var view = createInputView({
+        model: new Backbone.Model({active: true}),
+        visibleBinding: 'active'
+      });
+
+      view.render();
+
+      view.model.set('active', false);
+
+      expect(view.$el).to.have.$class('input-hidden_via_binding');
+    });
+
+    describe('with visibleBindingValue option', function() {
+      it('sets hidden class when value of attribute does not match', function() {
+        var view = createInputView({
+          model: new Backbone.Model({hidden: true}),
+          visibleBinding: 'hidden',
+          visibleBindingValue: false
+        });
+
+        view.render();
+
+        expect(view.$el).to.have.$class('input-hidden_via_binding');
+      });
+
+      it('does not set hidden class when value of attribute matches', function() {
+        var view = createInputView({
+          model: new Backbone.Model({hidden: false}),
+          visibleBinding: 'hidden',
+          visibleBindingValue: false
+        });
+
+        view.render();
+
+        expect(view.$el).not.to.have.$class('input-hidden_via_binding');
+      });
+    });
+
+    describe('with function for visible option', function() {
+      it('sets hidden class when function returns false', function() {
+        var view = createInputView({
+          model: new Backbone.Model({hidden: true}),
+          visibleBinding: 'hidden',
+          visible: function(value) { return !value; }
+        });
+
+        view.render();
+
+        expect(view.$el).to.have.$class('input-hidden_via_binding');
+      });
+
+      it('does not set hidden class when function returns true', function() {
+        var view = createInputView({
+          model: new Backbone.Model({hidden: false}),
+          visibleBinding: 'hidden',
+          visible: function(value) { return !value; }
+        });
+
+        view.render();
+
+        expect(view.$el).not.to.have.$class('input-hidden_via_binding');
+      });
+    });
+
+    describe('with boolean for visible option', function() {
+      it('sets hidden class if false', function() {
+        var view = createInputView({
+          model: new Backbone.Model({hidden: true}),
+          visibleBinding: 'hidden',
+          visible: false
+        });
+
+        view.render();
+
+        expect(view.$el).to.have.$class('input-hidden_via_binding');
+      });
+
+      it('does not set hidden if true', function() {
+        var view = createInputView({
+          model: new Backbone.Model({hidden: true}),
+          visibleBinding: 'hidden',
+          visible: true
+        });
+
+        view.render();
+
+        expect(view.$el).not.to.have.$class('input-hidden_via_binding');
+      });
+    });
+  });
+
+  function createInputView(options) {
+    var View = Backbone.Marionette.ItemView.extend({
+      template: function() {
+        return '';
+      }
+    });
+
+    Cocktail.mixin(View, pageflow.inputView);
+
+    return new View(options);
   }
 });

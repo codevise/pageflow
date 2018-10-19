@@ -1,0 +1,18 @@
+.file_processing_state_display {
+  position: relative;
+  margin-top: -6px;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 62px;
+    height: 100%;
+    background-color: #eee;
+  }
+
+  &-empty {
+    display: none;
+  }
+}

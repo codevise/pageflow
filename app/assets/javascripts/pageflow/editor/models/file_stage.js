@@ -56,6 +56,11 @@ pageflow.FileStage = Backbone.Model.extend({
   },
 
   localizedDescription: function() {
-    return I18n.t('pageflow.editor.files.stages.' + this.get('name') + '.' + this.get('state'));
+    var prefix = 'pageflow.editor.files.stages.';
+    var suffix = this.get('name') + '.' + this.get('state');
+
+    return I18n.t(prefix + this.file.i18nKey + '.' + suffix, {
+      defaultValue: I18n.t(prefix + suffix)
+    });
   }
 });

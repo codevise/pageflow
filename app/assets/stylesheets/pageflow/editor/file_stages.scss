@@ -6,10 +6,18 @@
 }
 
 .file_stage_item {
-  @include background-icon-center($left: 20px, $color: #bbb);
-  margin-left: -60px;
-  padding: 10px 0 5px 60px;
   white-space: normal;
+
+  &.indented {
+    @include background-icon-center($left: 20px, $color: #bbb);
+    padding: 10px 0 5px 60px;
+    margin-left: -60px;
+  }
+
+  &.stand_alone {
+    @include background-icon-center($left: 31px, $color: #bbb);
+    padding-left: 70px;
+}
 
   &.action_required,
   &.active {

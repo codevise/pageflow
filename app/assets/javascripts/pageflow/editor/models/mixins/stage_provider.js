@@ -14,6 +14,15 @@ pageflow.stageProvider = {
 
       return fileStage;
     }, this).reverse().value());
+
+    this.unfinishedStages = new pageflow.SubsetCollection({
+      parent: this.stages,
+      watchAttribute: 'finished',
+
+      filter: function(stage) {
+        return !stage.get('finished');
+      }
+    });
   },
 
   currentStage: function() {
