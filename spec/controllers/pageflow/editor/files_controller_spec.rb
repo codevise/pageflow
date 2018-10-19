@@ -199,6 +199,24 @@ module Pageflow
         expect(entry.image_files.first.unprocessed_attachment_file_name).to be_present
       end
 
+      it 'does not allow to create file without required attachment' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {attachment: nil}
+             },
+             format: 'json')
+
+        expect(response.status).to eq(422)
+      end
+
       it 'does not allow to create file for entry the signed in user is not editor of' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
@@ -270,7 +288,7 @@ module Pageflow
              format: 'json')
 
         expect(parent_file.nested_files(Pageflow::ImageFile)).to be_empty
-        expect(response.status).to eq(400)
+        expect(response.status).to eq(422)
       end
 
       it 'does not allow to create file with associated parent file on other entry' do
@@ -292,7 +310,7 @@ module Pageflow
              format: 'json')
 
         expect(parent_file.nested_files(Pageflow::TextTrackFile)).to be_empty
-        expect(response.status).to eq(400)
+        expect(response.status).to eq(422)
       end
 
       def image_fixture_upload
@@ -502,7 +520,7 @@ module Pageflow
 
         user = create(:user)
         entry = create(:entry, with_editor: user)
-        file = create(:hosted_file, used_in: entry.draft, custom: 'some value')
+        file = create(:hosted_file, :uploaded_to_s3, used_in: entry.draft, custom: 'some value')
 
         sign_in(user)
         acquire_edit_lock(user, entry)
