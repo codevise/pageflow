@@ -45,6 +45,8 @@ module Pageflow
                                source_file_options: SOURCE_FILE_OPTIONS,
                                convert_options: CONVERT_OPTIONS))
 
+    validates :attachment, presence: true
+
     do_not_validate_attachment_file_type(:unprocessed_attachment)
     do_not_validate_attachment_file_type(:processed_attachment)
 

@@ -7,6 +7,8 @@ module Pageflow
       has_attached_file(:attachment_on_filesystem, Pageflow.config.paperclip_filesystem_default_options)
       has_attached_file(:attachment_on_s3, Pageflow.config.paperclip_s3_default_options)
 
+      validates :attachment, presence: true
+
       do_not_validate_attachment_file_type(:attachment_on_filesystem)
       do_not_validate_attachment_file_type(:attachment_on_s3)
 

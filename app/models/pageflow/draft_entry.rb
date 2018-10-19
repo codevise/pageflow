@@ -35,8 +35,8 @@ module Pageflow
       entry.title
     end
 
-    def create_file(model, attributes)
-      file = model.create(attributes.except(:configuration)) do |f|
+    def create_file!(model, attributes)
+      file = model.create!(attributes.except(:configuration)) do |f|
         f.entry = entry
       end
 

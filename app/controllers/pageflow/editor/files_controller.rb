@@ -19,10 +19,13 @@ module Pageflow
         authorize!(:edit, entry.to_model)
         verify_edit_lock!(entry)
 
-        @file = entry.create_file(file_type.model, create_params)
+        @file = entry.create_file!(file_type.model, create_params)
         @file.publish!
 
         respond_with(:editor, @file)
+      rescue ActiveRecord::RecordInvalid => e
+        debug_log_with_backtrace(e)
+        head :unprocessable_entity
       end
 
       def reuse

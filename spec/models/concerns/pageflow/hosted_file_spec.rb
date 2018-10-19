@@ -2,6 +2,26 @@ require 'spec_helper'
 
 module Pageflow
   describe HostedFile, perform_jobs: true do
+    it 'is invalid if attachment is missing' do
+      hosted_file = build(:hosted_file, attachment: nil)
+
+      hosted_file.valid?
+
+      expect(hosted_file).to have(1).errors_on(:attachment)
+    end
+
+    it 'is valid if attachment_on_filesystem is present' do
+      hosted_file = build(:hosted_file, :on_filesystem)
+
+      expect(hosted_file).to be_valid
+    end
+
+    it 'is valid if attachment_on_s3 is present' do
+      hosted_file = build(:hosted_file, :uploaded_to_s3)
+
+      expect(hosted_file).to be_valid
+    end
+
     describe '#publish' do
       it 'transitions to uploaded_to_s3 state' do
         hosted_file = create(:hosted_file, :on_filesystem)
@@ -12,7 +32,7 @@ module Pageflow
       end
 
       it 'transitions to uploading_to_s3_failed state on result :error' do
-        hosted_file = create(:hosted_file)
+        hosted_file = create(:hosted_file, :on_filesystem)
 
         allow_any_instance_of(UploadFileToS3Job).to receive(:perform_with_result).and_return(:error)
 
@@ -22,7 +42,7 @@ module Pageflow
       end
 
       it 're-schedules the job on result :pending', perform_jobs: :except_enqued_at do
-        hosted_file = create(:hosted_file)
+        hosted_file = create(:hosted_file, :on_filesystem)
 
         allow_any_instance_of(UploadFileToS3Job)
           .to receive(:perform_with_result).and_return(:pending)

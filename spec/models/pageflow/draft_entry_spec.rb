@@ -15,12 +15,12 @@ module Pageflow
       end
     end
 
-    describe '#create_file' do
+    describe '#create_file!' do
       it 'creates image_file on draft' do
         entry = create(:entry)
         draft_entry = DraftEntry.new(entry)
 
-        image_file = draft_entry.create_file(ImageFile, {})
+        draft_entry.create_file!(ImageFile, attachment: fixture_file)
 
         expect(entry.draft.reload).to have(1).image_file
       end
@@ -29,9 +29,22 @@ module Pageflow
         entry = create(:entry)
         draft_entry = DraftEntry.new(entry)
 
-        image_file = draft_entry.create_file(ImageFile, {})
+        image_file = draft_entry.create_file!(ImageFile, attachment: fixture_file)
 
         expect(image_file.usage_id).to be_present
+      end
+
+      it 'raises exception if record is invalid' do
+        entry = create(:entry)
+        draft_entry = DraftEntry.new(entry)
+
+        expect {
+          draft_entry.create_file!(ImageFile, {})
+        }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+      def fixture_file
+        File.open(Engine.root.join('spec', 'fixtures', 'image.jpg'))
       end
     end
 
