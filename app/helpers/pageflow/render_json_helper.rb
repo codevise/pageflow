@@ -23,10 +23,11 @@ module Pageflow
 
     ESCAPED_CHARS = {
       "\u2028" => '\u2028',
-      "\u2029" => '\u2029'
+      "\u2029" => '\u2029',
+      '</' => '<\/'
     }
 
-    ESCAPED_CHARS_REGEX = /[\u2028\u2029]/u
+    ESCAPED_CHARS_REGEX = %r{</|[\u2028\u2029]}u
 
     def sanitize_json(json)
       json.gsub(ESCAPED_CHARS_REGEX, ESCAPED_CHARS)
