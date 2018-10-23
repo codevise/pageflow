@@ -4,6 +4,10 @@ section.crossfade {
   @include transition(1s ease);
   -webkit-backface-visibility: hidden;
 
+  &-fast {
+    @include transition(0.5s ease);
+  }
+
   .blackLayer {
     display: none;
   }
