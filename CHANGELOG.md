@@ -1,5 +1,79 @@
 # CHANGELOG
 
+### Version 13.0.0.beta7
+
+2018-10-23
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v13.0.0.beta6...v13.0.0.beta7)
+
+#### Breaking Changes
+
+- Breaking change: Remove panorama mask image file style
+  ([#1044](https://github.com/codevise/pageflow/pull/1044))
+
+- Semi-official JavaScript API for registering custom page transitions
+  changed
+  ([#1043](https://github.com/codevise/pageflow/pull/1043),
+   [#1045](https://github.com/codevise/pageflow/pull/1045))
+
+#### Published Entries
+
+- Option to allow horizontal swiping to change pages on phone
+  ([#1040](https://github.com/codevise/pageflow/pull/1040),
+   [#1042](https://github.com/codevise/pageflow/pull/1042),
+   [#1041](https://github.com/codevise/pageflow/pull/1041))
+- Use "swipe to continue" for scroll indicator on mobile
+  ([#1037](https://github.com/codevise/pageflow/pull/1037))
+- Prevent using desktop layout for landscape phones
+  ([#1039](https://github.com/codevise/pageflow/pull/1039))
+- Hide scroll indicator during video also on iOS
+  ([#1038](https://github.com/codevise/pageflow/pull/1038))
+- Make JSON seed safe to embed in html
+  ([#1030](https://github.com/codevise/pageflow/pull/1030))
+- Fix position of scroll indicator arrow icon
+  ([#1021](https://github.com/codevise/pageflow/pull/1021))
+- Improve iScroll
+  ([#1020](https://github.com/codevise/pageflow/pull/1020))
+- Improve quality of panorama image file styles
+  ([#1019](https://github.com/codevise/pageflow/pull/1019))
+
+#### Editor
+
+- Add additionalInlineHelpText option to input views
+  ([#1036](https://github.com/codevise/pageflow/pull/1036))
+- Allow displaying help images in editor
+  ([#1035](https://github.com/codevise/pageflow/pull/1035))
+- Allow using html in infobox view
+  ([#1034](https://github.com/codevise/pageflow/pull/1034))
+- Add phone emulation mode to editor
+  ([#1027](https://github.com/codevise/pageflow/pull/1027))
+- Validate attachment presence for image and hosted files
+  ([#1028](https://github.com/codevise/pageflow/pull/1028))
+- Improve files js api
+  ([#1025](https://github.com/codevise/pageflow/pull/1025))
+- Add view to display unfinished file stages
+  ([#1023](https://github.com/codevise/pageflow/pull/1023))
+- Improve transient references
+  ([#1022](https://github.com/codevise/pageflow/pull/1022))
+
+#### Rails Engine
+
+- Add shared example to pageflow-support to lint file types
+  ([#1026](https://github.com/codevise/pageflow/pull/1026))
+- Custom params for file types
+  ([#1024](https://github.com/codevise/pageflow/pull/1024))
+- File type background image rules for generated css
+  ([#944](https://github.com/codevise/pageflow/pull/944))
+
+#### Internal
+
+- Add Ruby 2.5.3 to Travis file
+  ([#1031](https://github.com/codevise/pageflow/pull/1031))
+- Add "Reviewed by Hound" badge
+  ([#1032](https://github.com/codevise/pageflow/pull/1032))
+- Improve hosted file factory
+  ([#1029](https://github.com/codevise/pageflow/pull/1029))
+
 ### Version 13.0.0.beta6
 
 2018-10-18
