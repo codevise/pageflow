@@ -109,6 +109,10 @@ body {
     @include transform(translate3d(0, -100px, 0));
     @include transition(transform 0.4s ease, visibility 0.4s, right 250ms);
 
+    .widget_phone_horizontal_slideshow_mode_present & {
+      @include fa-arrow-up-icon;
+    }
+
     &.is_visible {
       visibility: visible;
       @include transform(translate3d(0, 0, 0));

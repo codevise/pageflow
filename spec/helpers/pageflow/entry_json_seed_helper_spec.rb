@@ -148,12 +148,18 @@ module Pageflow
     describe '#entry_widgets_seed' do
       it 'includes type_name, role and configuration' do
         revision = create(:revision, :published)
+        widget_type = TestWidgetType.new(name: 'fancy_bar', roles: 'navigation')
         create(:widget,
                subject: revision,
                type_name: 'fancy_bar',
                role: 'navigation',
                configuration: {some: 'setting'})
         entry = PublishedEntry.new(create(:entry, published_revision: revision))
+
+        pageflow_configure do |config|
+          config.widget_types.clear
+          config.widget_types.register(widget_type)
+        end
 
         result = helper.entry_widgets_seed(entry)
 

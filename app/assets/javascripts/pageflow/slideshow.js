@@ -12,6 +12,7 @@
 //=require ./slideshow/hide_text
 //=require ./slideshow/hide_text_on_swipe
 //=require ./slideshow/dom_order_scroll_navigator
+//=require ./slideshow/navigation_direction
 
 pageflow.Slideshow = function($el, configurations) {
   var transitioning = false,
@@ -205,11 +206,12 @@ pageflow.Slideshow = function($el, configurations) {
     pageflow.events.trigger('resize');
   };
 
-  $el.on('scrollerbumpup', _.bind(function(event) {
+
+  $el.on(pageflow.navigationDirection.getEventName('scrollerbumpback'), _.bind(function(event) {
     this.back();
   }, this));
 
-  $el.on('scrollerbumpdown', _.bind(function(event) {
+  $el.on(pageflow.navigationDirection.getEventName('scrollerbumpnext'), _.bind(function(event) {
     this.next();
   }, this));
 

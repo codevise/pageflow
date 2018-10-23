@@ -7,7 +7,9 @@ module Pageflow
       render_views
 
       before do
-        Pageflow.config.widget_types.clear
+        pageflow_configure do |config|
+          config.widget_types.clear
+        end
       end
 
       describe '#index' do

@@ -185,6 +185,7 @@
 
     _setupHideTextOnSwipe: function() {
       if (pageflow.entryData.getThemingOption('hide_text_on_swipe') &&
+          !pageflow.navigationDirection.isHorizontal() &&
           !this.pageType.noHideTextOnSwipe) {
         this.element.hideTextOnSwipe({
           eventTargetSelector: '.content > .scroller'

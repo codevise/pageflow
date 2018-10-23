@@ -216,11 +216,17 @@ module Pageflow
     describe '#widgets_json_seeds' do
       it 'includes role as id, type_name, configuration' do
         entry = DraftEntry.new(create(:entry))
+        widget_type = TestWidgetType.new(name: 'fancy_bar', roles: 'navigation')
         create(:widget,
                subject: entry.draft,
                type_name: 'fancy_bar',
                role: 'navigation',
                configuration: {some: 'setting'})
+
+        pageflow_configure do |config|
+          config.widget_types.clear
+          config.widget_types.register(widget_type)
+        end
 
         result = JSON.parse(helper.widgets_json_seeds(entry))
 
