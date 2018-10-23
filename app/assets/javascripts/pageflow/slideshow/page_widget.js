@@ -101,6 +101,10 @@
       return this._triggerPageTypeHook('linkedPages');
     },
 
+    isPageChangeAllowed: function(options) {
+      return this._triggerPageTypeHook('isPageChangeAllowed', options);
+    },
+
     preload: function() {
       var page = this;
 

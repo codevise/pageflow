@@ -206,13 +206,16 @@ pageflow.Slideshow = function($el, configurations) {
     pageflow.events.trigger('resize');
   };
 
-
   $el.on(pageflow.navigationDirection.getEventName('scrollerbumpback'), _.bind(function(event) {
-    this.back();
+    if (currentPage.page('isPageChangeAllowed', {type: 'bumpback'})) {
+      this.back();
+    }
   }, this));
 
   $el.on(pageflow.navigationDirection.getEventName('scrollerbumpnext'), _.bind(function(event) {
-    this.next();
+    if (currentPage.page('isPageChangeAllowed', {type: 'bumpnext'})) {
+      this.next();
+    }
   }, this));
 
   $el.on('click', 'a.to_top', _.bind(function() {

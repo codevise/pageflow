@@ -21,6 +21,10 @@ pageflow.pageType = (function() {
       return [];
     },
 
+    isPageChangeAllowed: function(pageElement, configuarion, options) {
+      return true;
+    },
+
     prepareNextPageTimeout: 200
   };
 
