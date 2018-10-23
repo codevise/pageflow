@@ -20,7 +20,8 @@ $simulated-media-queries: false !default;
     }
   }
   @else {
-    @media screen and (max-width: 700px) {
+    @media screen and (orientation: portrait) and (max-width: 500px),
+           screen and (orientation: landscape) and (max-height: 500px) {
       @content;
     }
   }
@@ -33,7 +34,8 @@ $simulated-media-queries: false !default;
     }
   }
   @else {
-    @media screen and (min-width: 701px) {
+    @media screen and (orientation: portrait) and (min-width: 501px),
+           screen and (orientation: landscape) and (min-height: 501px) {
       @content;
     }
   }
