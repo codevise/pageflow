@@ -131,7 +131,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec-collection_matchers', '~> 1.1'
 
   # Browser like integration testing
-  s.add_development_dependency 'capybara', '~> 2.4'
+  s.add_development_dependency 'capybara', '~> 3.9'
+
+  # Server for Capybara
+  s.add_development_dependency 'puma', '~> 3.12'
 
   # Chrome Headless browser testing
   s.add_development_dependency 'selenium-webdriver', '~> 3.6.x'
@@ -159,7 +162,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'teaspoon-mocha', '~> 2.3'
 
   # Stub HTTP requests in tests
-  s.add_development_dependency 'webmock', '~> 1.20'
+  s.add_development_dependency 'webmock', '~> 3.4'
 
   # Semantic versioning rake tasks
   s.add_development_dependency 'semmy', '~> 1.0'

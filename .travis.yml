@@ -2,6 +2,7 @@ dist: trusty
 language: ruby
 rvm:
   - 2.3.1
+  - 2.5.3
 
 # User container based travis infrastructure which allows caching
 # features for open source projects.
