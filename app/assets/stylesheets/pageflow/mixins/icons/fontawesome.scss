@@ -272,7 +272,7 @@
 @mixin fa-angle-double-up-icon { @include fontawesome-icon("\f102"); }
 @mixin fa-angle-double-down-icon { @include fontawesome-icon("\f103"); }
 @mixin fa-angle-left-icon { @include fontawesome-icon("\f104"); }
-@mixin fa-angle-right-icon { @include fontawesome-icon("\f105"); }
+@mixin fa-angle-right-icon($args...) { @include fontawesome-icon("\f105", $args...); }
 @mixin fa-angle-up-icon { @include fontawesome-icon("\f106"); }
 @mixin fa-angle-down-icon($args...) { @include fontawesome-icon("\f107", $args...); }
 @mixin fa-desktop-icon { @include fontawesome-icon("\f108"); }
