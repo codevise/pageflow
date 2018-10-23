@@ -144,6 +144,21 @@ describe('pageflow.inputView', function() {
 
           expect(result).to.eq('Rainbow Help Disabled');
         });
+
+        it('supports appending additional inline help text', function() {
+          var view = createInputView({
+            attributeTranslationKeyPrefixes: [
+              'pageflow.rainbows.page_attributes'
+            ],
+            model: {i18nKey: 'page'},
+            propertyName: 'title',
+            additionalInlineHelpText: 'Extra'
+          });
+
+          var result = view.inlineHelpText();
+
+          expect(result).to.eq('Rainbow Help Extra');
+        });
       });
 
       describe('with multiple prefixed attribute translations', function() {
