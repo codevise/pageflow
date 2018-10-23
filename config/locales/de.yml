@@ -757,7 +757,6 @@ de:
         no_entries: Keine Beiträge
         no_members: Keine Benutzer
         theming_defaults_inline_help: Die folgenden Einstellungen werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus.
-        widgets_inline_help: DELETED
       entries:
         add_folder: Ordner hinzufügen
         confirm_depublish: Soll der Beitrag wirklich depubliziert werden?
@@ -1116,6 +1115,9 @@ de:
             column_header: Sprache
             inline_help_html: "<ul><li>Die Sprache einer Textspur wird als Zwei-Buchstaben-Code nach ISO 639.1 angegeben.</li> <li><strong>Beispiele:</strong> 'de' für Deutsch oder 'en' für Englisch.</li> <li>Den Sprachcode findet man meist auf der Wikipedia-Seite zur jeweiligen Sprache.</li></ul>"
             label: Sprache
+      phone_horizontal_slideshow_mode:
+        page_transitions_inline_help: "<br /><br />Unter 'Titel und Optionen > Erscheinungsbild' sind horizontale Steuerungsgesten für Smartphones aktiviert. Vertikale Seitenübergänge (z.B. von unten nach oben) ändern sich im Phone-Layout automatisch in horizontale Übergangseffekte (z.B. von rechts nach links) und umgekehrt."
+        widget_type_info_box_text: "<p>Auf Smartphones mit horizontalen Wisch-Gesten zwischen Seiten wechseln.</p><p>Vertikale Seitenübergänge (z.B. von unten nach oben) ändern sich in horizontale Übergangseffekte (z.B. von rechts nach links) und umgekehrt.</p><p>Im Desktop-Layout und auf Tablets hat die Einstellung keine Auswirkung.</p>"
       quotas:
         loading: Quotas überprüfen...
       templates:
@@ -1190,6 +1192,13 @@ de:
         embedded:
           page_link:
             reset: Zurücksetzen
+        emulation_mode_button:
+          desktop: Desktop
+          disabled_hint: Von diesem Seitentyp nicht unterstützt
+          header: 'Vorschau Modus:'
+          phone: Phone
+        entry_preview:
+          navigation_disabled_hint: Seitenwechsel sind innerhalb der Phone Vorschau nicht möglich.
         file_item:
           cancel: Abbrechen
           confirm: Überprüfen und bestätigen
@@ -1221,10 +1230,6 @@ de:
           title: Hilfe
         help_button:
           open_help: Hilfe anzeigen
-        inputs:
-          reference:
-            edit: DELETED
-            reset: DELETED
         list_blank_slate:
           text: "(Keine Einträge)"
         list_item:
@@ -1310,14 +1315,11 @@ de:
             Dieser Schritt kann nicht rückgängig gemacht werden.
         edit_entry_view:
           cannot_publish: Sie sind nicht berechtigt diesen Beitrag zu veröffentlichen.
-        edit_page_link_view:
-          default_page_transition: "(Standard)"
         edit_page_view:
           confirm_destroy: Seite wirklich löschen?
         edit_storyline_view:
           cannot_destroy: Nur leere Erzählstränge können gelöscht werden.
           confirm_destroy: Erzählstrang wirklich löschen?
-          default_parent_page_transition: "(Standard)"
         editor_views:
           files_pending_warning: Es werden noch Dateien hochgeladen. Wenn Sie die Seite verlassen werden die Uploads abgebrochen.
           hide_editor: Editorleiste ausblenden
@@ -1354,6 +1356,8 @@ de:
         storylines_picker_view:
           label: Erzählstrang
           without_parent_page: Ohne übergeordnete Seite
+    editor_emulation_mode:
+      feature_name: Editor Phone Emulationsmodus
     entry:
       duplicated_title: Kopie von %{title}
     help_entries:
@@ -1686,6 +1690,7 @@ de:
     page_transitions:
       crossfade: Überblenden
       cut: Harter Schnitt
+      default: "(Standard)"
       fade: Hintergrund Blenden/Vordergrund Scrollen
       fade_to_black: Schwarzblende
       scroll: Scrollen
@@ -1731,6 +1736,7 @@ de:
           general: Allgemein
           links: Verweise
           options: Optionen
+          phone_horizontal_slideshow_mode: Horizontales Wischen auf Phones
           social: Social
           widgets: Erscheinungsbild
       inline_help:
@@ -1812,6 +1818,8 @@ de:
             url_hint: URL muss mit http:// beginnen.
             url_hint_https: URL muss mit http:// oder https:// beginnen.
     unauthorized: Sie sind nicht berechtigt diese Seite anzuzeigen.
+    unmute_button:
+      widget_type_name: "'Ton ein'-Button"
     user_mailer:
       invitation:
         ending: Dankeschön und viel Spaß,
@@ -1834,14 +1842,18 @@ de:
       none: "(Kein)"
       roles:
         analytics: Zählpixel
+        background_media_control: Hintergrund-Media-Control
         cookie_notice: Cookie Hinweis
         mobile_navigation: Mobile Navigation
         navigation: Navigationsleiste
         player_controls: Player Controls
+        slideshow_mode: Steuerungsgesten
       type_names:
         classic_player_controls: Klassisch
         default_mobile_navigation: Navigationsmenü mit Thumbnails
         default_navigation: Navigationsleiste mit Thumbnails
+        default_slideshow_mode: Vertikales Scrollen/Wischen
+        phone_horizontal_slideshow_mode: Horizontales Wischen auf Phones
         slim_player_controls: Minimalistisch
   support:
     array:

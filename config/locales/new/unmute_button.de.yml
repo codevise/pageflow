@@ -1,7 +1,0 @@
-de:
-  pageflow:
-    widgets:
-      roles:
-        background_media_control: "Hintergrund-Media-Control"
-    unmute_button:
-      widget_type_name: "'Ton ein'-Button"
