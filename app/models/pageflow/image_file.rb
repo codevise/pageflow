@@ -13,17 +13,8 @@ module Pageflow
                large: ['1920x1920>', :JPG],
                ultra: ['3840x3840>', :JPG],
                panorama_medium: ['1024x1024^', panorama_format],
-               panorama_large: ['1920x1080^', panorama_format],
-               panorama_mask: ['1920x1080^', panorama_format])
+               panorama_large: ['1920x1080^', panorama_format])
     end
-
-    SOURCE_FILE_OPTIONS = {
-      # Prevent anti aliasing. Otherwise, when processing color map
-      # images, borders between areas are blurred.
-      panorama_mask: '-filter point'
-    }.freeze
-
-    palette_path = File.expand_path('../../../../lib/pageflow/images/palette.png', __FILE__)
 
     CONVERT_OPTIONS = {
       print: '-quality 10 -interlace Plane',
@@ -31,8 +22,7 @@ module Pageflow
       large: '-quality 70 -interlace Plane',
       ultra: '-quality 90 -interlace Plane',
       panorama_medium: '-quality 90 -interlace Plane',
-      panorama_large: '-quality 90 -interlace Plane',
-      panorama_mask: "-quality 70 -interlace Plane -dither None -colors 64 -remap #{palette_path}"
+      panorama_large: '-quality 90 -interlace Plane'
     }.freeze
 
     has_attached_file(:unprocessed_attachment,
@@ -42,7 +32,6 @@ module Pageflow
                       Pageflow.config.paperclip_s3_default_options
                         .merge(default_url: ':pageflow_placeholder',
                                styles: STYLES,
-                               source_file_options: SOURCE_FILE_OPTIONS,
                                convert_options: CONVERT_OPTIONS))
 
     validates :attachment, presence: true
@@ -83,12 +72,6 @@ module Pageflow
     def panorama_url
       if processed_attachment.present?
         attachment.url(:panorama_large)
-      end
-    end
-
-    def panorama_mask_url
-      if processed_attachment.present?
-        attachment.url(:panorama_mask)
       end
     end
 
