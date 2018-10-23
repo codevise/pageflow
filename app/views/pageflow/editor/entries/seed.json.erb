@@ -16,5 +16,7 @@
   "page_types": <%= page_type_json_seeds(@entry_config) %>,
   "themes": <%= theme_json_seeds(@entry_config) %>,
 
-  "common": <%= common_entry_seed(@entry).to_json.html_safe %>
+  "common": <%= common_entry_seed(@entry).to_json.html_safe %>,
+
+  "asset_urls": <%= editor_asset_urls %>
 }
