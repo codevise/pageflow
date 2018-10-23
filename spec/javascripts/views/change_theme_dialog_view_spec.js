@@ -2,8 +2,8 @@ describe('ChangeThemeDialogView', function() {
   it('shows preview on item hover', function() {
     var view = new pageflow.ChangeThemeDialogView({
       themes: new pageflow.ThemesCollection([
-        {name: 'default', preview_image_url: 'path_to_default_preview_image'},
-        {name: 'acme', preview_image_url: 'path_to_acme_preview_image'}
+        {name: 'default', preview_image_url: '/assets/pageflow/themes/default/preview.png'},
+        {name: 'acme', preview_image_url: '/assets/pageflow/themes/test_theme/preview.png'}
       ]),
       themeInUse: 'default'
     });
@@ -13,14 +13,15 @@ describe('ChangeThemeDialogView', function() {
 
     themeItem.hover();
 
-    expect(view.ui.previewImage).to.have.$attr('src', 'path_to_acme_preview_image');
+    expect(view.ui.previewImage).to.have.$attr('src',
+                                               '/assets/pageflow/themes/test_theme/preview.png');
   });
 
   it('shows preview on item click', function() {
     var view = new pageflow.ChangeThemeDialogView({
       themes: new pageflow.ThemesCollection([
-        {name: 'default', preview_image_url: 'path_to_default_preview_image'},
-        {name: 'acme', preview_image_url: 'path_to_acme_preview_image'}
+        {name: 'default', preview_image_url: '/assets/pageflow/themes/default/preview.png'},
+        {name: 'acme', preview_image_url: '/assets/pageflow/themes/test_theme/preview.png'}
       ]),
       themeInUse: 'default'
     });
@@ -30,14 +31,15 @@ describe('ChangeThemeDialogView', function() {
 
     themeItem.click();
 
-    expect(view.ui.previewImage).to.have.$attr('src', 'path_to_acme_preview_image');
+    expect(view.ui.previewImage).to.have.$attr('src',
+                                               '/assets/pageflow/themes/test_theme/preview.png');
   });
 
   it('calls onUse with theme model when clicking use theme button',
      function() {
        var themes = new pageflow.ThemesCollection([
-         {name: 'default', preview_image_url: 'path_to_default_preview_image'},
-         {name: 'acme', preview_image_url: 'path_to_acme_preview_image'}
+         {name: 'default', preview_image_url: '/assets/pageflow/themes/default/preview.png'},
+         {name: 'acme', preview_image_url: '/assets/pageflow/themes/test_theme/preview.png'}
        ]);
        var onUseHandler = sinon.spy();
        var view = new pageflow.ChangeThemeDialogView({
