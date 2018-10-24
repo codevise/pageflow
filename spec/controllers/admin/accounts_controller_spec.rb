@@ -33,7 +33,7 @@ module Admin
           sign_in(user, scope: :user)
           get(:show, params: {id: account.id})
 
-          expect(response.body).to have_selector('.admin_tabs_view .tabs .features')
+          expect(response.body).to have_selector('.admin_tabs_view-tabs .features')
         end
 
         context 'with config.permissions.only_admins_may_update_features' do
@@ -48,7 +48,7 @@ module Admin
             sign_in(user, scope: :user)
             get(:show, params: {id: account.id})
 
-            expect(response.body).not_to have_selector('.admin_tabs_view .tabs .features')
+            expect(response.body).not_to have_selector('.admin_tabs_view-tabs .features')
           end
 
           it 'admin sees features tab' do
@@ -62,7 +62,7 @@ module Admin
             sign_in(user, scope: :user)
             get(:show, params: {id: entry.id})
 
-            expect(response.body).to have_selector('.admin_tabs_view .tabs .features')
+            expect(response.body).to have_selector('.admin_tabs_view-tabs .features')
           end
         end
 
@@ -73,7 +73,7 @@ module Admin
           sign_in(user, scope: :user)
           get(:show, params: {id: account.id})
 
-          expect(response.body).not_to have_selector('.admin_tabs_view .tabs .features')
+          expect(response.body).not_to have_selector('.admin_tabs_view-tabs .features')
         end
       end
 

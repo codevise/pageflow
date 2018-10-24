@@ -24,7 +24,7 @@ module Pageflow
 
         render(tabs)
 
-        expect(rendered).to have_selector('.admin_tabs_view ul.tabs li.some_tab a')
+        expect(rendered).to have_selector('.admin_tabs_view ul.admin_tabs_view-tabs li.some_tab a')
       end
 
       it 'filters query parameters in tab link' do
@@ -44,7 +44,7 @@ module Pageflow
 
         render(tabs)
 
-        expect(rendered).to have_selector('.admin_tabs_view .tab_container.active .tab_view_component')
+        expect(rendered).to have_selector('.admin_tabs_view-container.active .tab_view_component')
       end
 
       it 'renders tab from tab param as active' do
@@ -56,7 +56,8 @@ module Pageflow
         controller.request.params.merge!(tab: 'other_tab')
         render(tabs)
 
-        expect(rendered).to have_selector('.admin_tabs_view .tab_container.active .other_tab_view_component')
+        expect(rendered)
+          .to have_selector('.admin_tabs_view-container.active .other_tab_view_component')
       end
 
       it 'renders current tab component as active' do
@@ -67,7 +68,8 @@ module Pageflow
 
         render(tabs, current_tab: :other_tab)
 
-        expect(rendered).to have_selector('.admin_tabs_view .tab_container.active .other_tab_view_component')
+        expect(rendered)
+          .to have_selector('.admin_tabs_view-container.active .other_tab_view_component')
       end
 
       it 'also renders inactive tabs' do
@@ -78,7 +80,7 @@ module Pageflow
 
         render(tabs, current_tab: :other_tab)
 
-        expect(rendered).to have_selector('.admin_tabs_view .tab_container .tab_view_component')
+        expect(rendered).to have_selector('.admin_tabs_view-container .tab_view_component')
       end
 
       it 'allows passing arguments to tab view component build method' do
@@ -91,7 +93,8 @@ module Pageflow
 
         render(tabs, build_args: ['custom'])
 
-        expect(rendered).to have_selector('.admin_tabs_view .tab_container .tab_view_component[data-custom="custom"]')
+        expect(rendered)
+          .to have_selector('.admin_tabs_view-container .tab_view_component[data-custom="custom"]')
       end
 
       context 'with :authorize options' do
@@ -102,7 +105,7 @@ module Pageflow
 
           render(tabs, authorize: :see_some_tab)
 
-          expect(rendered).not_to have_selector('.admin_tabs_view ul.tabs li.some_tab a')
+          expect(rendered).not_to have_selector('ul.admin_tabs_view-tabs li.some_tab a')
         end
 
         it 'renders links for tabs we are authorized for' do
@@ -112,7 +115,7 @@ module Pageflow
 
           render(tabs, authorize: :see_some_tab)
 
-          expect(rendered).to have_selector('.admin_tabs_view ul.tabs li.some_tab a')
+          expect(rendered).to have_selector('ul.admin_tabs_view-tabs li.some_tab a')
         end
 
         it 'passes :view action and component class to authorized? method' do

@@ -3,7 +3,7 @@
   background-color: #f4f4f4;
   @include inset-shadow(0, 1px, 4px, #ddd);
 
-  > .tabs {
+  &-tabs {
     @include gradient(#efefef, #dfe1e2);
     box-shadow: 0 1px 1px rgba(0,0,0,0.10), 0 1px 0 0 rgba(255,255,255, 0.8) inset;
     border: solid 1px #c7c7c7;
@@ -37,7 +37,7 @@
     }
   }
 
-  > .tab_container {
+  &-container {
     @include clearfix;
     @extend .panel_contents;
 

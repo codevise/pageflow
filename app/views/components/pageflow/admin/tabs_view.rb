@@ -26,7 +26,7 @@ module Pageflow
       end
 
       def build_tab_list
-        ul(class: 'tabs') do
+        ul(class: 'admin_tabs_view-tabs') do
           tabs.each do |tab|
             build_tab_item(tab)
           end
@@ -66,8 +66,8 @@ module Pageflow
 
       def tab_container_class(tab_name)
         [
-          'tab_container',
-          "#{tab_name}_tab_container",
+          'admin_tabs_view-container',
+          "admin_tabs_view-#{tab_name}_container",
           current_tab?(tab_name) ? 'active' : nil
         ].compact.join(' ')
       end
