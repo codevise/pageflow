@@ -32,3 +32,6 @@ gem 'sassc-rails'
 
 # Required for XML serialization in Active Admin
 gem 'activemodel-serializers-xml'
+
+# Make tests fail on JS errors
+gem 'capybara-chromedriver-logger', git: 'https://github.com/codevise/capybara-chromedriver-logger', branch: 'do-not-raise-on-filtered-errors', require: false
