@@ -17,7 +17,6 @@
 //= require ./cookie_notice
 //= require ./events
 //= require ./page_type
-//= require ./page_transitions
 //= require ./asset_urls
 //= require ./preload
 //= require ./bandwidth
@@ -46,6 +45,7 @@
 //= require ./settings
 
 //= require ./slideshow
+//= require ./page_transitions
 //= require ./ready
 //= require_tree ./widgets
 //= require ./react
