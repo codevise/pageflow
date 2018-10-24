@@ -13,7 +13,7 @@ module Dom
 
       def features_tab
         within(node) do
-          find('.tabs > .features a')
+          find('.admin_tabs_view-tabs > .features a')
         end
       end
 
