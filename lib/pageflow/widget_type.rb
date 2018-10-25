@@ -25,6 +25,14 @@ module Pageflow
       true
     end
 
+    # Point in DOM where widget should be inserted. Possible values
+    # are `:bottom_of_entry` (default) or `:before_entry`.
+    #
+    # @since edge
+    def insert_point
+      :bottom_of_entry
+    end
+
     # Override instead of render to use the widget
     # configuration. Return html as string.
     def render_with_configuration(template, entry, _configuration)

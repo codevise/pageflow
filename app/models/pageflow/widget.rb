@@ -14,14 +14,9 @@ module Pageflow
       record.save!
     end
 
-    def enabled?(options)
-      if options[:scope] == :editor
-        widget_type.enabled_in_editor?
-      elsif options[:scope] == :preview
-        widget_type.enabled_in_preview?
-      else
-        true
-      end
+    def matches?(options)
+      enabled_for_scope?(options[:scope]) &&
+        for_insert_point?(options.fetch(:insert_point, :bottom_of_entry))
     end
 
     def self.copy_all_to(subject)
@@ -40,10 +35,26 @@ module Pageflow
       Resolver.new(config, options).result
     end
 
+    private
+
+    def enabled_for_scope?(scope)
+      if scope == :editor
+        widget_type.enabled_in_editor?
+      elsif scope == :preview
+        widget_type.enabled_in_preview?
+      else
+        true
+      end
+    end
+
+    def for_insert_point?(insert_point)
+      widget_type.insert_point == insert_point
+    end
+
     Resolver = Struct.new(:config, :options) do
       def result
         assign_widget_types(all).select do |widget|
-          widget.enabled?(options)
+          widget.matches?(options)
         end
       end
 

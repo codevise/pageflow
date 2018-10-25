@@ -202,7 +202,7 @@ module Pageflow
           expect(response.body).to have_selector('html[lang=de]')
         end
 
-        it 'renders widgets for entry' do
+        it 'renders widgets at bottom of entry' do
           widget_type = TestWidgetType.new(name: 'test_widget',
                                            rendered: '<div class="test_widget"></div>')
 
@@ -215,7 +215,24 @@ module Pageflow
 
           get(:show, params: {id: entry})
 
-          expect(response.body).to have_selector('div.test_widget')
+          expect(response.body).to have_selector('#outer_wrapper > div.test_widget')
+        end
+
+        it 'renders widgets at before_entry insert point' do
+          widget_type = TestWidgetType.new(name: 'test_widget',
+                                           rendered: '<div class="test_widget"></div>',
+                                           insert_point: :before_entry)
+
+          pageflow_configure do |config|
+            config.widget_types.register(widget_type)
+          end
+
+          entry = create(:entry, :published)
+          create(:widget, subject: entry.published_revision, type_name: 'test_widget')
+
+          get(:show, params: {id: entry})
+
+          expect(response.body).to have_selector('body > div.test_widget')
         end
 
         it 'renders widgets which are disabled in editor and preview' do
