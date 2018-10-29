@@ -51,6 +51,7 @@ export default function(pageflow) {
     events: pageflow.events,
     settings: pageflow.settings,
     widgetsApi: pageflow.widgets,
+    backgroundMedia: pageflow.backgroundMedia,
 
     window: isServerSide ? null : window
   };

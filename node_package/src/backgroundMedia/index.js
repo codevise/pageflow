@@ -22,10 +22,10 @@ export default {
     return {backgroundMedia};
   },
 
-  createSaga: function() {
+  createSaga: function({backgroundMedia}) {
     return function*() {
       yield takeEvery(UNMUTE, function*() {
-        yield call(() => pageflow.backgroundMedia.unmute());
+        yield call(() => backgroundMedia.unmute());
       });
     };
   }
