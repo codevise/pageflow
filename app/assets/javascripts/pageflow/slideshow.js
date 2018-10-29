@@ -6,7 +6,6 @@
 //=require ./slideshow/scroll_indicator
 //=require ./slideshow/scroll_indicator_widget
 //=require ./slideshow/hidden_text_indicator_widget
-//=require ./slideshow/progressive_preload
 //=require ./slideshow/adjacent_preloader
 //=require ./slideshow/successor_preparer
 //=require ./slideshow/swipe_gesture
@@ -16,7 +15,6 @@
 
 pageflow.Slideshow = function($el, configurations) {
   var transitioning = false,
-      preload = new pageflow.ProgressivePreload(),
       currentPage = $(),
       pages = $(),
       that = this,
@@ -117,7 +115,7 @@ pageflow.Slideshow = function($el, configurations) {
           transition: transition
         });
 
-        preload.start(currentPage);
+        currentPage.page('preload');
         $el.trigger('slideshowchangepage', [options]);
 
         return Math.max(outDuration, inDuration);
@@ -162,7 +160,7 @@ pageflow.Slideshow = function($el, configurations) {
       currentPageIndex = currentPage.index();
 
       currentPage.page('activateAsLandingPage');
-      preload.start(currentPage);
+      currentPage.page('preload');
     }
   }
 
