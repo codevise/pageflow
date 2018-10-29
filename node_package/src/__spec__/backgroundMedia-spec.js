@@ -1,15 +1,18 @@
-import backgroundMedia from 'backgroundMedia';
+import backgroundMediaModule from 'backgroundMedia';
+import {unmute} from 'backgroundMedia/actions';
 import {muted} from 'backgroundMedia/selectors';
 import createStore from 'createStore';
 import Backbone from 'backbone';
 
 import {expect} from 'support';
+import sinon from 'sinon';
 
 describe('backgroundMedia', () => {
   function setup() {
+    const backgroundMedia = {unmute: sinon.spy()};
     const events = {...Backbone.Events};
 
-    const store = createStore([backgroundMedia], {events});
+    const store = createStore([backgroundMediaModule], {backgroundMedia, events});
 
     return {
       dispatch: store.dispatch.bind(store),
@@ -18,6 +21,7 @@ describe('backgroundMedia', () => {
         return selector(store.getState());
       },
 
+      backgroundMedia,
       events
     };
   }
@@ -47,5 +51,13 @@ describe('backgroundMedia', () => {
     const result = select(muted);
 
     expect(result).to.eq(false);
+  });
+
+  it('calls pageflow.backgroundMedia.unmute on unmute action', () => {
+    const {dispatch, backgroundMedia} = setup();
+
+    dispatch(unmute());
+
+    expect(backgroundMedia.unmute).to.have.been.called;
   });
 });
