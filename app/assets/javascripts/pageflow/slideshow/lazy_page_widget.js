@@ -1,10 +1,10 @@
 (function($) {
   var creatingMethods = [
-    'reinit', 'reactivate', 'activate', 'activateAsLandingPage', 'prepare', 'linkedPages'
+    'reinit', 'reactivate', 'activate', 'activateAsLandingPage', 'preload', 'prepare', 'linkedPages'
   ];
 
   var ignoredMethods = [
-    'cleanup', 'refreshScroller', 'resize', 'preload', 'deactivate', 'unprepare',
+    'cleanup', 'refreshScroller', 'resize', 'deactivate', 'unprepare',
     'isPageChangeAllowed'
   ];
 

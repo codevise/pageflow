@@ -1,4 +1,8 @@
-import createPageFilePlayer from './createPageFilePlayer';
+import PageFilePlayer from './PageFilePlayer';
 import AudioFilePlayer from './AudioFilePlayer';
 
-export default createPageFilePlayer(AudioFilePlayer);
+export default function PageAudioFilePlayer(props) {
+  return (
+    <PageFilePlayer {...props} playerComponent={AudioFilePlayer} />
+  );
+}
