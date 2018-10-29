@@ -7,7 +7,7 @@ pageflow.AdjacentPages = pageflow.Object.extend({
   of: function(page) {
     var result = [];
     var pages = this.pages();
-    var nextPage = this.scrollNavigator.getNextPage(page.element, pages);
+    var nextPage = this.nextPage(page);
 
     if (nextPage.length) {
       result.push(nextPage.page('instance'));
@@ -22,5 +22,10 @@ pageflow.AdjacentPages = pageflow.Object.extend({
     }, this);
 
     return result;
+  },
+
+  nextPage: function(page) {
+    var nextPage = this.scrollNavigator.getNextPage(page.element, this.pages());
+    return nextPage.length && nextPage.page('instance');
   }
 });

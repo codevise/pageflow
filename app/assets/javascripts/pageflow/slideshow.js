@@ -7,7 +7,8 @@
 //=require ./slideshow/scroll_indicator_widget
 //=require ./slideshow/hidden_text_indicator_widget
 //=require ./slideshow/progressive_preload
-//=require ./slideshow/adjacent_preparer
+//=require ./slideshow/adjacent_preloader
+//=require ./slideshow/successor_preparer
 //=require ./slideshow/swipe_gesture
 //=require ./slideshow/hide_text
 //=require ./slideshow/hide_text_on_swipe
@@ -236,7 +237,14 @@ pageflow.Slideshow = function($el, configurations) {
   $el.find('.scroll_indicator').scrollIndicator({parent: this});
 
   this.scrollNavigator = new pageflow.DomOrderScrollNavigator(this, pageflow.entryData);
-  this.preparer = pageflow.AdjacentPreparer.create(function() { return pages; }, this.scrollNavigator).attach(pageflow.events);
+
+  pageflow.AdjacentPreloader
+          .create(function() { return pages; }, this.scrollNavigator)
+          .attach(pageflow.events);
+
+  pageflow.SuccessorPreparer
+          .create(function() { return pages; }, this.scrollNavigator)
+          .attach(pageflow.events);
 };
 
 pageflow.Slideshow.setup = function(options) {
