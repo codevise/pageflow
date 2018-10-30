@@ -268,6 +268,7 @@ de:
         home_url: Redirect URL
         imprint_link_label: Impressum-Link Text
         imprint_link_url: Impressum-Link URL
+        privacy_link_url: Datenschutz-Link URL
         theme_name: Theme
       pageflow/video_file:
         dimensions: Maße
@@ -756,7 +757,6 @@ de:
         no_entries: Keine Beiträge
         no_members: Keine Benutzer
         theming_defaults_inline_help: Die folgenden Einstellungen werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus.
-        widgets_inline_help: DELETED
       entries:
         add_folder: Ordner hinzufügen
         confirm_depublish: Soll der Beitrag wirklich depubliziert werden?
@@ -983,6 +983,8 @@ de:
         captions: Ton-Ersatz-Textspur
         descriptions: Bild-Ersatz-Textspur
         subtitles: Übersetzungs-Textspur
+    cookie_notice_bar:
+      widget_type_name: Leiste am unteren Seitenrand
     default_theme:
       name: Standard
     delayed_text_fade_in:
@@ -1017,6 +1019,8 @@ de:
         header: Dies ist ein leerer Pageflow
         intro: Pageflows bestehen aus Kapiteln und Seiten. In der Seitenleiste rechts findest Du die Gliederung.
         outro: Hier siehst Du dann eine Vorschau deines Pageflows.
+      cookie_notice_bar:
+        widget_type_info_box_text: Der Hinweis wird beim ersten Öffnen von Beiträgen, die Cookies verwenden, am unteren Seitenrand angezeigt. Cookies werden gesetzt, falls ein Dienst zur Erhebnung von Nutzungsdaten (z.B. Google Analytics) verwendet wird oder wenn die Funktion 'Neue Seiten hervorheben' aktiv ist.
       entries:
         unsupported_browser_hint:
           message: Die Version Ihres Browsers wird vom Pageflow Editor nicht unterstützt. Bitte benutzen Sie einen aktuellen Browser.
@@ -1216,10 +1220,6 @@ de:
           title: Hilfe
         help_button:
           open_help: Hilfe anzeigen
-        inputs:
-          reference:
-            edit: DELETED
-            reset: DELETED
         list_blank_slate:
           text: "(Keine Einträge)"
         list_item:
@@ -1652,6 +1652,9 @@ de:
         image_rights: Bildrechte
     highdef_video_encoding:
       feature_name: Full HD und 4K Videos
+    initial_password:
+      submit: Speichern und anmelden
+      title: Passwort festlegen
     invalid_transition: Der gewünschte Statuswechsel ist nicht erlaubt.
     languages:
       ar: Arabisch
@@ -1718,6 +1721,7 @@ de:
     ui:
       configuration_editor:
         tabs:
+          cookie_notice_bar: Cookie Hinweis
           files: Dateien
           general: Allgemein
           links: Verweise
@@ -1763,7 +1767,7 @@ de:
 
             Alle Änderungen sind in der linken Frontend-Ansicht sichtbar, sobald das entsprechende Texteingabefeld im Editierbereich verlassen wurde.
           thumbnail_image_id: Das Thumbnail ersetzt das ansonsten automatisch generierte Vorschaubild in der Navigation und in der Übersicht.
-          transition: Wähle hier den Effekt, der beim Erreichen dieser der Seite benutzt werden soll.
+          transition: Wähle hier den Effekt, der beim Erreichen dieser Seite benutzt werden soll.
       templates:
         inputs:
           file_input:
@@ -1803,6 +1807,8 @@ de:
             url_hint: URL muss mit http:// beginnen.
             url_hint_https: URL muss mit http:// oder https:// beginnen.
     unauthorized: Sie sind nicht berechtigt diese Seite anzuzeigen.
+    unmute_button:
+      widget_type_name: "'Ton ein'-Button"
     user_mailer:
       invitation:
         ending: Dankeschön und viel Spaß,
@@ -1825,6 +1831,8 @@ de:
       none: "(Kein)"
       roles:
         analytics: Zählpixel
+        background_media_control: Hintergrund-Media-Control
+        cookie_notice: Cookie Hinweis
         mobile_navigation: Mobile Navigation
         navigation: Navigationsleiste
         player_controls: Player Controls

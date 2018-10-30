@@ -1,7 +1,0 @@
-en:
-  pageflow:
-    widgets:
-      roles:
-        background_media_control: "Background media control"
-    unmute_button:
-      widget_type_name: "Unmute button"

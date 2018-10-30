@@ -268,6 +268,7 @@ en:
         home_url: Redirect URL
         imprint_link_label: Legal notice link label
         imprint_link_url: Legal notice link URL
+        privacy_link_url: Privacy link URL
         theme_name: Theme
       pageflow/video_file:
         dimensions: Dimensions
@@ -756,13 +757,12 @@ en:
         no_entries: No Stories
         no_members: No members
         theming_defaults_inline_help: The following settings will be used as defaults for new entries in this account. Changes do not affect existing entries.
-        widgets_inline_help: DELETED
       entries:
         add_folder: Add folder
-        confirm_depublish: Unpublish this story?
+        confirm_depublish: Depublish this story?
         confirm_duplicate: Duplicate this story?
         confirm_restore: Restore story to the selected version? A snapshot will be created, so that you can roll back later.
-        depublish: Unpublish story
+        depublish: Depublish story
         duplicate: Copy Story
         edit: Edit
         edit_config: Edit configuration
@@ -981,6 +981,8 @@ en:
         captions: Audio Replacement Text Track
         descriptions: Image Description Text Track
         subtitles: Translation Text Track
+    cookie_notice_bar:
+      widget_type_name: Bar at lower page margin
     default_theme:
       name: Default
     delayed_text_fade_in:
@@ -1017,6 +1019,8 @@ en:
         header: This is an empty Pageflow
         intro: Each Pageflow consist of chapters and pages. The editor panel to your right shows the outline of your story.
         outro: In this area, a live preview will be shown.
+      cookie_notice_bar:
+        widget_type_info_box_text: The notice is displayed when visiting an entry that uses Cookies. Cookies are set, if an analytics integration is active or the 'Emphasize new pages' feature has been enabled.
       entries:
         unsupported_browser_hint:
           message: The Pageflow editor does not support the browser version you are using. We recommend upgrading your browser to the most recent version.
@@ -1216,10 +1220,6 @@ en:
           title: Help
         help_button:
           open_help: Open help
-        inputs:
-          reference:
-            edit: DELETED
-            reset: DELETED
         list_blank_slate:
           text: "(No items)"
         list_item:
@@ -1559,7 +1559,7 @@ en:
           click on a page type on the left column.
       publishing:
         menu_item: Publishing
-        text: "# Publishing\n\nClick on the „Publish“ button to publish your Pageflow. A\nPageflow can be published at any point in time. \n\nBesides this, there is the possibility to publish Pageflows with \na password protection. Just activate „Protect with password“. \nPageflow uses the name of the account as user name and \nautomatically generates a password, which can be changed afterwords. \n\nAlready published stories can also be protected with a password by \npublishing another version - the other way round works as well. \nFor this please just click on the „Publishing“ button. The following \nsteps will then be shown and explained within the dialog window.\n\nPublished\nPageflows can also be unpublished manually at any time. If a\nPageflow has already been published, changes will not be\nshown until you publish your report again.  A Pageflow can\nonly be edited by one author at one time.\n\nThumbnail for embedding the Pageflow on external websites\nAfter publishing your Pageflow, the system generates a\nthumbnail, which can be embedded as an iframe to the\nhyperlink of another website. By means of the code, the size\nof the iframe can be adjusted. The minimum size is a height\n150px and a width of 220px."
+        text: "# Publishing\n\nClick on the „Publish“ button to publish your Pageflow. A\nPageflow can be published at any point in time. \n\nBesides this, there is the possibility to publish Pageflows with \na password protection. Just activate „Protect with password“. \nPageflow uses the name of the account as user name and \nautomatically generates a password, which can be changed afterwords. \n\nAlready published stories can also be protected with a password by \npublishing another version - the other way round works as well. \nFor this please just click on the „Publishing“ button. The following \nsteps will then be shown and explained within the dialog window.\n\nPublished\nPageflows can also be depublished manually at any time. If a\nPageflow has already been published, changes will not be\nshown until you publish your report again.  A Pageflow can\nonly be edited by one author at one time.\n\nThumbnail for embedding the Pageflow on external websites\nAfter publishing your Pageflow, the system generates a\nthumbnail, which can be embedded as an iframe to the\nhyperlink of another website. By means of the code, the size\nof the iframe can be adjusted. The minimum size is a height\n150px and a width of 220px."
       storylines:
         menu_item: Storylines
         text: "# Storylines\n\nIn addition to linear narrations from top to bottom, further storylines can be used as non linear excursions to enlarge upon parts of a story. A „Storyline“ consists of chapters and pages, which users scroll through. Distinguishable is the so called main storyline from further subordinate ones. The user starts off in the main storyline and can then navigate to different excursions.\n\nTo create such an excursion from the main storyline use one of the „Link“ pages (Mosaic, Collage, Hotspot) and create the desired connections via „Links“.\n\nBy choosing a „Parent page“ you can determine to which page users return after scrolling the storyline´s last page.\n\nTransitions to subordinate storylines are visually supported by a horizontal animation as the default setting for entering and leaving. \n\nStorylines are created by clicking onto the plus button next to the storyline menu. Thereby a new chapter opens automatically in which further pages can be added. \n\n\n### Parent pages\n\nIn every subordinate  storyline a „Parent page“ must be determined to define where users land when scrolling back.\n\nThis target page can be chosen by clicking on the pen symbol next to the storyline menu. When a „Parent page“ is defined, a back button will be shown automatically in the subordinate storyline that will always lead users back to the „Parent page“.\n\n\n### Chapter hierarchy\n\nThe use of more than one „subordinary“ storylines and the definition of „Parent pages“ leads to a chapter hierarchy as known from books:\n\n1. (Main storyline), 1.1. (Superior sub storyline), 1.1.1. (Subordinate sub storyline) and so on.\n\nThis hierarchy can be edited afterwards by clicking on the pen symbol next to the storyline menu. A subordinate storyline can be turned into the main storyline as well.\n\n\n### Scroll successors\n\nIf you want to lead users from a last page of a subordinate chapter (1.1.1) to another position than\nthe „Parent page“ (e.g. to 2.1) you can define a „Scroll successor“. Therefore click on the blue pen symbol within the storyline settings. As an example the following sequence might be imaginable: 1 -> 1.1 -> 1.1.1 -> 2.1\n\nAttention: While editing only the selected chapter will be shown in the sidebar. To switch to the other chapters click onto the storyline menu."
@@ -1624,6 +1624,9 @@ en:
         image_rights: Credits
     highdef_video_encoding:
       feature_name: Full HD and 4K videos
+    initial_password:
+      submit: Save and sign in
+      title: Set your password
     invalid_transition: Invalid transition
     languages:
       ar: Arabic
@@ -1690,6 +1693,7 @@ en:
     ui:
       configuration_editor:
         tabs:
+          cookie_notice_bar: Cookie Notice
           files: Files
           general: General
           links: Links
@@ -1778,6 +1782,8 @@ en:
             url_hint: 'URL must start with http:// '
             url_hint_https: URL must start with http:// or https://
     unauthorized: You are not authorized to view this page.
+    unmute_button:
+      widget_type_name: Unmute button
     user_mailer:
       invitation:
         ending: Thank you and have fun,
@@ -1800,6 +1806,8 @@ en:
       none: "(none)"
       roles:
         analytics: Tracking
+        background_media_control: Background media control
+        cookie_notice: Cookie Notice
         mobile_navigation: Mobile navigation
         navigation: Navigation bar
         player_controls: Player Controls
