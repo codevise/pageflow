@@ -8,6 +8,7 @@ pageflow.Widget = Backbone.Model.extend({
     this.configuration = new pageflow.WidgetConfiguration(
       this.get('configuration') || {}
     );
+    this.configuration.parent = this;
 
     this.listenTo(this.configuration, 'change', function() {
       this.trigger('change:configuration', this);
