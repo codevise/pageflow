@@ -1,0 +1,156 @@
+$title-loading-spinner-typography: () !default;
+
+$title-loading-spinner-title-typography: () !default;
+
+$title-loading-spinner-phone-title-typography: () !default;
+
+$title-loading-spinner-subtitle-typography: () !default;
+
+$title-loading-spinner-phone-subtitle-typography: () !default;
+
+.title_loading_spinner {
+  $duration: 7s;
+
+  @include animation(fade_out 1s ease 1);
+  @include animation-delay($duration + 0.5s);
+  @include animation-fill-mode(forwards);
+
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.15);
+  }
+
+  &-image {
+    background-size: cover;
+    filter: blur(50px);
+    height: 100%;
+  }
+
+  &-titles {
+    @include standard-typography(
+      $title-loading-spinner-typography,
+      (
+        text-align: center
+      )
+    );
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 100%;
+    padding: 1em;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    color: #fff;
+    opacity: 0;
+  }
+
+  &-fade .title_loading_spinner-titles {
+    @include animation(title_fade $duration ease-out 1);
+    @include animation-fill-mode(forwards);
+  }
+
+  &-title {
+    &:after {
+      content: "";
+      display: block;
+      width: 100px;
+      border-bottom: solid 2px #fff;
+      margin: 20px auto;
+    }
+
+    @include typography(
+      $title-loading-spinner-title-typography,
+      (
+        font-weight: bold,
+        font-size: 5.3em
+      )
+    );
+
+    @include phone {
+      &:after {
+        border-bottom-width: 1px;
+      }
+
+      @include typography(
+        $title-loading-spinner-phone-title-typography,
+        (
+          font-size: 2em
+        )
+      );
+    }
+  }
+
+  &-subtitle {
+    @include typography(
+      $title-loading-spinner-subtitle-typography,
+      (
+        font-size: 1.5em,
+      )
+    );
+
+    @include phone {
+      @include typography(
+        $title-loading-spinner-phone-subtitle-typography,
+        (
+          font-size: 1em
+        )
+      );
+    }
+  }
+
+  &-logo {
+    @extend %pageflow_widget_margin_right !optional;
+    position: relative;
+
+    &:after {
+      @extend %background_logo;
+      content: "";
+      display: block;
+      z-index: 1;
+      opacity: 0;
+    }
+  }
+
+  &-fade .title_loading_spinner-logo:after {
+    @include animation(fade_in 1s ease-out 1);
+    @include animation-fill-mode(forwards);
+  }
+
+  @include keyframes(title_fade) {
+    0% {
+      @include transform(translate(-50%, -30%));
+      opacity: 0;
+    }
+
+    20% {
+      @include transform(translate(-50%, -30%));
+      opacity: 0;
+    }
+
+    50% {
+      opacity: 1;
+    }
+
+    60% {
+      @include transform(translate(-50%, -50%));
+    }
+
+    70% {
+      @include transform(translate(-50%, -50%));
+      opacity: 1;
+    }
+
+    100% {
+      @include transform(translate(-50%, -50%));
+      opacity: 0;
+    }
+  }
+}
