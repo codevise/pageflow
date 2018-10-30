@@ -182,9 +182,10 @@ pageflow.Slideshow = function($el, configurations) {
   function findNewCurrentPage(options) {
     if (!currentPage.length) {
       var permaId = options && options.landingPagePermaId;
+      var landingPage = permaId ? getPageByPermaId(permaId) : $();
 
-      return permaId ?
-        getPageByPermaId(permaId) :
+      return landingPage.length ?
+        landingPage :
         that.scrollNavigator.getLandingPage(pages);
     }
     else if (!currentPage.parent().length) {
