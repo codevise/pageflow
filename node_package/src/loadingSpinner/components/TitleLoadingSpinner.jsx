@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import classNames from 'classnames';
 
 import registerWidgetType from 'registerWidgetType';
+import {entryAttribute} from 'entry/selectors';
 import {editingWidget, widgetAttribute} from 'widgets/selectors';
 import {file} from 'files/selectors';
 
@@ -36,7 +37,7 @@ class TitleLoadingSpinner extends React.Component {
   }
 
   render() {
-    const {editing, title, subtitle} = this.props;
+    const {editing, title, subtitle, entryTitle} = this.props;
     const {hidden, fade} = this.state;
 
     if (editing || !hidden) {
@@ -49,7 +50,7 @@ class TitleLoadingSpinner extends React.Component {
                style={backgroundImageInlineStyles(this.props)} />
           <div className="title_loading_spinner-titles">
             <div className="title_loading_spinner-title">
-              {title}
+              {title || entryTitle}
             </div>
             <div className="title_loading_spinner-subtitle">
               {subtitle}
@@ -97,6 +98,7 @@ export function register() {
           role: 'loading_spinner'
         })
       }),
+      entryTitle: entryAttribute('title'),
       title: widgetAttribute('title', {role: 'loading_spinner'}),
       subtitle: widgetAttribute('subtitle', {role: 'loading_spinner'})
     }))(TitleLoadingSpinner)
