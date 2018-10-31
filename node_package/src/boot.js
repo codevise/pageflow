@@ -31,7 +31,7 @@ export default function(pageflow) {
     isServerSide,
 
     locale: seed.locale,
-    slug: seed.slug,
+    entry: collections.entry,
 
     fileUrlTemplates: seed['file_url_templates'],
     modelTypes: seed['file_model_types'],

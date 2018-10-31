@@ -27,6 +27,26 @@ module Pageflow
         expect(result).to include('<\/script>')
       end
 
+      it 'contains entry slug' do
+        entry = PublishedEntry.new(create(:entry,
+                                          :published,
+                                          title: 'My Entry'))
+
+        result = helper.entry_json_seed(entry)
+
+        expect(json_get(result, path: %w(entry slug))).to eq('my-entry')
+      end
+
+      it 'contains entry title' do
+        entry = PublishedEntry.new(create(:entry,
+                                          :published,
+                                          title: 'My Entry'))
+
+        result = helper.entry_json_seed(entry)
+
+        expect(json_get(result, path: %w(entry title))).to eq('My Entry')
+      end
+
       it 'renders ids of files' do
         entry = PublishedEntry.new(create(:entry, :published))
         video_file = create(:video_file, used_in: entry.revision)
