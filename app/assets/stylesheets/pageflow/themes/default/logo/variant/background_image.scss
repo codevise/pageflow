@@ -32,40 +32,45 @@ $logo-background-image-variant-banner-phone-height: null !default;
 ) {
   $page-selector: if($first-page-only, ":first-child", "");
 
+  %background_logo {
+    top: $top;
+    position: absolute;
+    min-width: $min-width;
+    max-width: $max-width;
+    width: $width;
+    height: $height;
+    background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.#{$logo-image-file-extension}");
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    @include dir-ltr {
+      background-position: #{$logo-alignment} top;
+    }
+
+    @include dir-rtl {
+      background-position: #{if($logo-alignment == "left", "right", "left")} top;
+    }
+
+    @include mobile {
+      background-position: left top;
+      padding-top: $logo-background-image-variant-mobile-padding-top;
+      height: $mobile-height;
+    }
+
+    @include phone {
+      height: $phone-height;
+      top: $phone-top;
+    }
+
+    @include logo-alignment;
+  }
+
   .page#{$page-selector} {
     .content_and_background .scroller > div:after {
+      @extend %background_logo;
+
       content: "";
-      position: absolute;
-      top: $top;
       z-index: 200;
-      min-width: $min-width;
-      max-width: $max-width;
-      width: $width;
-      height: $height;
-      background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.#{$logo-image-file-extension}");
-      background-repeat: no-repeat;
-      background-size: contain;
-
-      @include dir-ltr {
-        background-position: #{$logo-alignment} top;
-      }
-
-      @include dir-rtl {
-        background-position: #{if($logo-alignment == "left", "right", "left")} top;
-      }
-
-      @include mobile {
-        background-position: left top;
-        padding-top: $logo-background-image-variant-mobile-padding-top;
-        height: $mobile-height;
-      }
-
-      @include phone {
-        height: $phone-height;
-        top: $phone-top;
-      }
-
-      @include logo-alignment;
     }
 
     &.invert .content_and_background .scroller > div:after {

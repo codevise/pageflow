@@ -21,20 +21,11 @@ $logo-watermark-variant-opacity: 0.3 !default;
   $height,
   $phone-height
 ) {
-  .header_logo {
-    @extend %pageflow_widget_margin_top !optional;
-    display: none;
-
-    @include hide-text;
+  %logo {
     position: absolute;
     width: $width;
     height: $height;
     top: $top;
-    z-index: 1;
-
-    pointer-events: none;
-    opacity: $logo-watermark-variant-opacity;
-    @include transition(opacity 500ms);
 
     @include phone {
       width: $phone-height * $width / $height;
@@ -43,6 +34,30 @@ $logo-watermark-variant-opacity: 0.3 !default;
     }
 
     @include logo-alignment;
+  }
+
+  %background_logo {
+    @extend %logo;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-image: image-url("pageflow/themes/#{$theme-name}/logo_header.#{$logo-image-file-extension}");
+  }
+
+  .header {
+    @extend %pageflow_widget_margin_right !optional;
+    position: relative;
+  }
+
+  .header_logo {
+    @extend %pageflow_widget_margin_top !optional;
+    @extend %logo;
+    @include hide-text;
+
+    display: none;
+    z-index: 1;
+    pointer-events: none;
+    opacity: $logo-watermark-variant-opacity;
+    @include transition(opacity 500ms);
 
     .js & {
       display: block;
