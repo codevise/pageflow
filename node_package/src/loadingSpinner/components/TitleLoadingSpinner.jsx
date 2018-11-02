@@ -8,6 +8,7 @@ import registerWidgetType from 'registerWidgetType';
 import {entryAttribute} from 'entry/selectors';
 import {editingWidget, widgetAttribute} from 'widgets/selectors';
 import {file} from 'files/selectors';
+import {pageBackgroundImageUrl, firstPageAttribures} from 'pages/selectors';
 
 class TitleLoadingSpinner extends React.Component {
   constructor(props) {
@@ -77,10 +78,12 @@ function inlineStyle() {
   };
 }
 
-function backgroundImageInlineStyles({backgroundImage}) {
-  if (backgroundImage) {
+function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundImage}) {
+  const url = backgroundImage ? backgroundImage.urls.medium : firstPageBackgroundImageUrl;
+
+  if (url) {
     return {
-      backgroundImage: `url("${backgroundImage.urls.medium}")`
+      backgroundImage: `url("${url}")`
     };
   }
 }
@@ -93,6 +96,10 @@ export function register() {
   registerWidgetType('title_loading_spinner', {
     component: connect(combineSelectors({
       editing: editingWidget({role: 'loading_spinner'}),
+      firstPageBackgroundImageUrl: pageBackgroundImageUrl({
+        variant: 'medium',
+        page: firstPageAttribures()
+      }),
       backgroundImage: file('imageFiles', {
         id: widgetAttribute('customBackgroundImageId', {
           role: 'loading_spinner'
