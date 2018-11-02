@@ -1,5 +1,6 @@
 import createItemsSelector from './createItemsSelector';
 import createItemSelector from './createItemSelector';
+import createFirstItemSelector from './createFirstItemSelector';
 
 import createReducer from './createReducer';
 
@@ -13,6 +14,7 @@ import watch from './watch';
 export {
   createItemsSelector,
   createItemSelector,
+  createFirstItemSelector,
 
   createReducer,
 

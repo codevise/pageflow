@@ -1,6 +1,7 @@
 import {watch,
         createReducer as createCollectionReducer,
-        createItemSelector as createCollectionItemSelector} from '../collections';
+        createItemSelector as createCollectionItemSelector,
+        createFirstItemSelector as createFirstCollectionItemSelector} from '../collections';
 
 import Backbone from 'backbone';
 import {createStore, combineReducers} from 'redux';
@@ -14,6 +15,7 @@ describe('collections', () => {
     }));
 
     this.getPost = createCollectionItemSelector('posts');
+    this.getFirstPost = createFirstCollectionItemSelector('posts');
   });
 
   describe('keeping store data in sync with a Backbone collection', () => {
@@ -78,6 +80,89 @@ describe('collections', () => {
         expect(this.getPost({id: 5})(this.store.getState())).to.eq(undefined);
         done();
       }.bind(this), 0);
+    });
+
+    it('initializes order of collection', function() {
+      const collection = new Backbone.Collection(
+        [
+          {id: 5, title: 'Second', position: 2},
+          {id: 6, title: 'First', position: 1}
+        ],
+        {comparator: 'position'}
+      );
+
+      watch({
+        collection: collection,
+        dispatch: this.store.dispatch,
+        collectionName: 'posts',
+        attributes: ['id', 'title']
+      });
+
+      expect(this.getFirstPost(this.store.getState()).title).to.eql('First');
+    });
+
+    it('updates order on add', function() {
+      const collection = new Backbone.Collection(
+        [{id: 5, title: 'Original first', position: 2}],
+        {comparator: 'position'}
+      );
+
+      watch({
+        collection: collection,
+        dispatch: this.store.dispatch,
+        collectionName: 'posts',
+        attributes: ['id', 'title']
+      });
+
+      collection.add({id: 6, title: 'New first', position: 1});
+
+      expect(this.getFirstPost(this.store.getState()).title).to.eql('New first');
+    });
+
+    it('updates order on sort', function() {
+      const collection = new Backbone.Collection(
+        [
+          {id: 5, title: 'Second', position: 2},
+          {id: 6, title: 'First', position: 1}
+        ],
+        {comparator: 'position'}
+      );
+
+      watch({
+        collection: collection,
+        dispatch: this.store.dispatch,
+        collectionName: 'posts',
+        attributes: ['id', 'title']
+      });
+
+      collection.first().set('position', 3);
+      collection.sort();
+
+      expect(this.getFirstPost(this.store.getState()).title).to.eql('Second');
+    });
+
+    it('updates order on remove after delay', function(done) {
+      const collection = new Backbone.Collection(
+        [
+          {id: 5, title: 'Second', position: 2},
+          {id: 6, title: 'First', position: 1}
+        ],
+        {comparator: 'position'}
+      );
+
+      watch({
+        collection: collection,
+        dispatch: this.store.dispatch,
+        collectionName: 'posts',
+        attributes: ['id', 'title']
+      });
+
+      collection.remove(6);
+
+      setTimeout(() => {
+        expect(this.getFirstPost(this.store.getState()).title).to.eql('Second');
+        done();
+      }, 0);
     });
   });
 
