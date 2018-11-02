@@ -1,8 +1,22 @@
-import {createItemSelector} from 'collections';
+import {createItemSelector, createFirstItemSelector} from 'collections';
 
 import {memoizedSelector} from 'utils';
 
+import pageBackgroundImageUrl from './pageBackgroundImageUrl';
+
+export {
+  pageBackgroundImageUrl
+};
+
 export const selector = createItemSelector('pages');
+export const firstPage = createFirstItemSelector('pages');
+
+export function firstPageAttribures() {
+  return memoizedSelector(
+    firstPage,
+    page => page && page.attributes
+  );
+}
 
 export function pageAttribute(property, options) {
   return memoizedSelector(

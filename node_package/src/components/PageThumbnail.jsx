@@ -4,7 +4,8 @@ import {connectInPage} from 'pages';
 import {pageType} from 'pageTypes/selectors';
 import {fileExists} from 'files/selectors';
 
-import {combineSelectors, camelize} from 'utils';
+import {findThumbnailCandidate, thumbnailCandidateId} from 'pages/thumbnailCandidates';
+import {combineSelectors} from 'utils';
 
 export function PageThumbnail(props) {
   return (
@@ -30,32 +31,14 @@ function typeClassName(pageType) {
 }
 
 function thumbnailClassName(props) {
-  var candidate = findThumbnailCandidate(props);
+  var candidate = findThumbnailCandidate({
+    candidates: thumbnailCandidates(props),
+    page: props.page,
+    fileExists: props.fileExists
+  });
 
   if (candidate) {
     return thumbnailCandidateClassName(props, candidate);
-  }
-}
-
-function findThumbnailCandidate(props) {
-  return thumbnailCandidates(props).find(candidate => {
-    if (candidate.condition && !conditionMet(candidate.condition, props.page)) {
-      return false;
-    }
-
-    var id = thumbnailCandidateId(props, candidate);
-    return props.fileExists(camelize(candidate.collectionName), id);
-  });
-}
-
-function conditionMet(condition, page) {
-  const value = page[camelize(condition.attribute)];
-
-  if (condition.negated) {
-    return value != condition.value;
-  }
-  else {
-    return value == condition.value;
   }
 }
 
@@ -83,12 +66,8 @@ function thumbnailCandidateClassName(props, candidate) {
     props.lazy ? 'lazy' : null,
     candidate.cssClassPrefix,
     props.imageStyle,
-    thumbnailCandidateId(props, candidate)
+    thumbnailCandidateId(props.page, candidate)
   ].filter(Boolean).join('_');
-}
-
-function thumbnailCandidateId(props, candidate) {
-  return 'id' in candidate ? candidate.id : props.page[camelize(candidate.attribute)];
 }
 
 export default connectInPage(combineSelectors({
