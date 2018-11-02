@@ -1,4 +1,4 @@
-import {RESET, ADD, CHANGE, REMOVE, add} from './actions';
+import {RESET, ADD, CHANGE, REMOVE, ORDER, add} from './actions';
 import attributesItemReducer from './attributesItemReducer';
 
 export default function(collectionName,
@@ -6,7 +6,12 @@ export default function(collectionName,
                           idAttribute = 'id',
                           itemReducer = attributesItemReducer
                         } = {}) {
-  return function(state = {}, action) {
+  const initialState = {
+    order: [],
+    items: {}
+  };
+
+  return function(state = initialState, action) {
     let clone, id;
 
     if (!action.meta || action.meta.collectionName != collectionName) {
@@ -15,45 +20,66 @@ export default function(collectionName,
 
     switch (action.type) {
     case RESET:
-      return action.payload.items.reduce((result, item) => {
-        result[item[idAttribute]] = itemReducer(undefined, add({
-          collectioName: action.payload.collectioName,
-          attributes: item
-        }));
+      return {
+        order: action.payload.items.map(item => item[idAttribute]),
+        items: action.payload.items.reduce((result, item) => {
+          result[item[idAttribute]] = itemReducer(undefined, add({
+            collectioName: action.payload.collectioName,
+            attributes: item
+          }));
 
-        return result;
-      }, {});
+          return result;
+        }, {})
+      };
 
     case ADD:
       return {
-        ...state,
-        [action.payload.attributes[idAttribute]]: itemReducer(undefined, action)
+        order: action.payload.order,
+        items: {
+          ...state.items,
+          [action.payload.attributes[idAttribute]]: itemReducer(undefined, action)
+        }
       };
 
     case CHANGE:
       id = action.payload.attributes[idAttribute];
 
       return {
-        ...state,
-        [id]: itemReducer(state[id], action)
+        order: state.order,
+        items: {
+          ...state.items,
+          [id]: itemReducer(state.items[id], action)
+        }
       };
 
     case REMOVE:
       id = action.payload.attributes[idAttribute];
 
-      clone = {...state};
+      clone = {...state.items};
       delete clone[id];
-      return clone;
+      return {
+        order: action.payload.order,
+        items: clone
+      };
+
+    case ORDER:
+      return {
+        items: state.items,
+        order: action.payload.order
+      };
 
     default:
       if (action.meta.itemId) {
-        const item = state[action.meta.itemId];
+        const item = state.items[action.meta.itemId];
         const reducedItem = itemReducer(item, action);
 
         if (reducedItem !== item) {
           return {
-            ...state,
-            [action.meta.itemId]: reducedItem
+            order: state.order,
+            items: {
+              ...state.items,
+              [action.meta.itemId]: reducedItem
+            }
           };
         }
       }

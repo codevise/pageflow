@@ -7,6 +7,7 @@ export default function({
   collection,
   collectionName,
   dispatch,
+  idAttribute,
   attributes,
   includeConfiguration
 }) {
@@ -17,6 +18,7 @@ export default function({
     collection,
     collectionName,
     dispatch,
+    idAttribute,
     attributes,
     includeConfiguration
   });

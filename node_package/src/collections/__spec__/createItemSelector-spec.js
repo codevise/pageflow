@@ -7,8 +7,10 @@ describe('createItemSelector', () => {
     it('can look up item by id', () => {
       const state = {
         posts: {
-          4: {id: 4, title: 'Minor news'},
-          5: {id: 5, title: 'Big news'}
+          items: {
+            4: {id: 4, title: 'Minor news'},
+            5: {id: 5, title: 'Big news'}
+          }
         }
       };
       const selector = createItemSelector('posts');
@@ -19,8 +21,7 @@ describe('createItemSelector', () => {
     });
 
     it('throws descriptive error if collection is unknown', () => {
-      const state = {
-      };
+      const state = {};
       const selector = createItemSelector('ufos');
 
       expect(() => {
@@ -31,16 +32,20 @@ describe('createItemSelector', () => {
     it('id can be a function taking state and props', () => {
       const state = {
         posts: {
-          4: {id: 4, title: 'Minor news'},
-          5: {id: 5, title: 'Big news'}
+          items: {
+            4: {id: 4, title: 'Minor news'},
+            5: {id: 5, title: 'Big news'}
+          }
         },
         comments: {
-          50: {id: 50, postId: 5}
+          items: {
+            50: {id: 50, postId: 5}
+          }
         }
       };
       const selector = createItemSelector('posts');
       const props = {commentId: 50};
-      const commentPostId = (s, p) => s.comments[p.commentId].postId;
+      const commentPostId = (s, p) => s.comments.items[p.commentId].postId;
 
       const result = selector({id: commentPostId})(state, props);
 
@@ -49,7 +54,9 @@ describe('createItemSelector', () => {
 
     it('return undefined if no item with id exists', () => {
       const state = {
-        posts: {}
+        posts: {
+          items: {}
+        }
       };
       const selector = createItemSelector('posts');
 
@@ -62,8 +69,10 @@ describe('createItemSelector', () => {
       const state = {
         __posts_connectedId: 5,
         posts: {
-          4: {id: 4, title: 'Minor news'},
-          5: {id: 5, title: 'Big news'}
+          items: {
+            4: {id: 4, title: 'Minor news'},
+            5: {id: 5, title: 'Big news'}
+          }
         }
       };
       const selector = createItemSelector('posts');
@@ -78,8 +87,10 @@ describe('createItemSelector', () => {
         const state = {
           myNamespace: {
             posts: {
-              4: {id: 4, title: 'Minor news'},
-              5: {id: 5, title: 'Big news'}
+              items: {
+                4: {id: 4, title: 'Minor news'},
+                5: {id: 5, title: 'Big news'}
+              }
             }
           }
         };

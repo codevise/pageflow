@@ -1,5 +1,5 @@
 import watchBackboneCollection from '../watchBackboneCollection';
-import {RESET, CHANGE} from '../actions';
+import {RESET, CHANGE, ORDER} from '../actions';
 
 import Backbone from 'backbone';
 
@@ -196,6 +196,28 @@ describe('watchBackboneCollection', () => {
       type: CHANGE,
       payload: {
         attributes: {some: 'changed'}
+      }
+    }));
+  });
+
+  it('dispatches order action on sort event', () => {
+    const model = new Backbone.Model({id: 5, position: 1});
+    const collection = new Backbone.Collection([model], {comparator: 'position'});
+    const dispatch = sinon.spy();
+
+    watchBackboneCollection({
+      collectionName: 'posts',
+      collection,
+      dispatch,
+      attributes: ['title']
+    });
+
+    collection.sort();
+
+    expect(dispatch).to.have.been.calledWith(sinon.match({
+      type: ORDER,
+      payload: {
+        order: [5]
       }
     }));
   });
