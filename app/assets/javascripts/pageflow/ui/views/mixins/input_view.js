@@ -56,7 +56,7 @@
  * ### Inline Help for Disabled Inputs
  *
  * For each inline help translation key, a separate key with an
- * `"_disbaled"` suffix can be supplied, which provides a help string
+ * `"_disabled"` suffix can be supplied, which provides a help string
  * that shall be displayed when the input is disabled. More specific
  * attribute translation key prefixes take precedence over suffixed
  * keys:

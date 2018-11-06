@@ -4,6 +4,11 @@
  * @param {boolean} [options.required=false]
  *   Display an error if the input is blank.
  *
+ * @param {number} [options.maxLength=255]
+ *   Maximum length of characters for this input.
+ *   To support legacy data which consists of more characters than the specified maxLength,
+ *   the option will only take effect for data which is shorter than the specified maxLength.
+ *
  * @see
  * {@link module:pageflow/ui.pageflow.inputWithPlaceholderText pageflow.inputWithPlaceholderText}
  * for placeholder related further options
@@ -33,8 +38,9 @@ pageflow.TextInputView = Backbone.Marionette.ItemView.extend({
   },
 
   onChange: function() {
-    this.validate();
-    this.save();
+    if(this.validate()) {
+      this.save();
+    }
   },
 
   onClose: function() {
@@ -46,15 +52,31 @@ pageflow.TextInputView = Backbone.Marionette.ItemView.extend({
   },
 
   load: function() {
-    this.ui.input.val(this.model.get(this.options.propertyName));
+    var input = this.ui.input;
+    input.val(this.model.get(this.options.propertyName));
+
+    // set mysql varchar length as default for non-legacy data
+    this.options.maxLength = this.options.maxLength || 255;
+    // do not validate legacy data which length exceeds the specified maximum
+    // for new and maxLength-conforming data: add validation
+    this.validateMaxLength = (input.val().length <= this.options.maxLength);
   },
 
   validate: function() {
-    if (this.options.required && !this.ui.input.val()) {
+    var input = this.ui.input;
+    if (this.options.required && !input.val()) {
       this.displayValidationError(I18n.t('pageflow.ui.views.inputs.text_input_view.required_field'));
+      return false;
+    } if (this.validateMaxLength && (input.val().length > this.options.maxLength)) {
+      this.displayValidationError(
+        I18n.t('pageflow.ui.views.inputs.text_input_view.max_characters_exceeded',
+               {max_length: this.options.maxLength})
+      );
+      return false;
     }
     else {
       this.resetValidationError();
+      return true;
     }
   },
 
