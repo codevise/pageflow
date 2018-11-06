@@ -1,3 +1,7 @@
+/// Color of the caret icon displayed in front of links. Same as text
+/// color by default.
+$anchor-icon-color: null !default;
+
 %anchor {
   @include fa-caret-right-icon;
 
@@ -25,5 +29,6 @@
     top: 7px;
     width: 10px;
     height: 12px;
+    color: $anchor-icon-color;
   }
 }
