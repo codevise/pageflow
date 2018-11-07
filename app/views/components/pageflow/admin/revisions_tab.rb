@@ -41,7 +41,7 @@ module Pageflow
               text_node(link_to(t('pageflow.admin.entries.show'), pageflow.revision_path(revision), :class => 'show'))
               if authorized?(:restore, entry)
                 text_node(link_to(t('pageflow.admin.entries.restore'),
-                                  restore_admin_revision_path(revision),
+                                  restore_admin_revision_path(revision, params.permit(:tab)),
                                   method: :post,
                                   class: 'restore',
                                   data: {
@@ -58,7 +58,7 @@ module Pageflow
 
         if authorized?(:snapshot, entry)
           text_node(button_to(t('pageflow.admin.entries.snapshot'),
-                              snapshot_admin_entry_path(entry),
+                              snapshot_admin_entry_path(entry, params.permit(:tab)),
                               method: :post))
         end
       end
