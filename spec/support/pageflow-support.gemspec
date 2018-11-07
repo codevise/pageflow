@@ -4,7 +4,7 @@ require 'pageflow/version'
 
 Gem::Specification.new do |s|
   s.name        = 'pageflow-support'
-  s.version     = Pageflow::VERSION
+  s.version     = "#{Pageflow::VERSION}.1"
   s.authors     = ['Codevise Solutions Ltd']
   s.email       = ['info@codevise.de']
   s.homepage    = 'https://pageflow.io'
