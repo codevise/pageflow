@@ -1,0 +1,7 @@
+de:
+  pageflow:
+    ui:
+      views:
+        inputs:
+          text_input_view:
+            max_characters_exceeded: Maximale Zeichenanzahl überschritten (%{max_length})

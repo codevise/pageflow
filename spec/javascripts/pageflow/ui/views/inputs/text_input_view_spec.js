@@ -75,4 +75,39 @@ describe('pageflow.TextInputView', function() {
 
     expect(input).to.have.$attr('placeholder', 'otherValue');
   });
+
+  describe('max length validation', function() {
+    describe('for existing data exceeding specified maxLength', function() {
+      it('skips validation', function() {
+        var legacyTitle = new Array(300).join();
+        var model = new Backbone.Model({title: legacyTitle});
+        var textInputView = new pageflow.TextInputView({
+          model: model,
+          propertyName: 'title'
+        });
+
+        textInputView.render();
+
+        expect(textInputView.$el.hasClass('invalid')).to.eq(false);
+      });
+    });
+
+    describe('for new entries and data shorter than specified maxLength', function() {
+      it('validates maximum character count with maxLength option', function() {
+        var model = new Backbone.Model({});
+        var textInputView = new pageflow.TextInputView({
+          model: model,
+          propertyName: 'title'
+        });
+
+        textInputView.render();
+
+        var input = textInputView.$el.find('input');
+        input.val(new Array(300).join());
+        input.trigger('change');
+
+        expect(textInputView.$el.hasClass('invalid')).to.eq(true);
+      });
+    });
+  });
 });
