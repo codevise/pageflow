@@ -1,5 +1,8 @@
 /*global module*/
 
+// Fix Array#reverse in Safari 12
+import 'array-reverse-polyfill';
+
 import * as actions from 'actions';
 import * as components from 'components';
 import * as selectors from 'selectors';
