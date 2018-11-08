@@ -162,6 +162,15 @@ module Pageflow
     #     end
     attr_accessor :public_entry_request_scope
 
+    # Either a lambda or an object with a `call` method taking an
+    # {Entry} record and an {ActionDispatch::Request} object and
+    # returning `nil` or a path to redirect to. Can be used in
+    # conjuction with {PrimaryDomainEntryRedirect} to make sure
+    # entries are accessed via their account's configured cname.
+    #
+    # @since 12.4
+    attr_accessor :public_entry_redirect
+
     # Either a lambda or an object with a `call` method taking a
     # {Theming} as paramater and returing a hash of options used to
     # construct the url of a published entry.
@@ -326,6 +335,7 @@ module Pageflow
 
       @theming_request_scope = CnameThemingRequestScope.new
       @public_entry_request_scope = lambda { |entries, request| entries }
+      @public_entry_redirect = ->(_entry, _request) { nil }
       @public_entry_url_options = Pageflow::ThemingsHelper::DEFAULT_PUBLIC_ENTRY_OPTIONS
       @entry_embed_url_options = {protocol: 'https'}
 
