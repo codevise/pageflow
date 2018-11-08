@@ -132,7 +132,7 @@ body {
       height: 34px;
       border-radius: 17px;
       background-color: rgba(53, 53, 53, 0.9);
-      @include box-shadow(0 0 7px #ccc);
+      box-shadow: 0 0 7px #ccc;
       z-index: 1;
     }
   }
