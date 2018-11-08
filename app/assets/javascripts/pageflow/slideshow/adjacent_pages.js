@@ -9,8 +9,8 @@ pageflow.AdjacentPages = pageflow.Object.extend({
     var pages = this.pages();
     var nextPage = this.nextPage(page);
 
-    if (nextPage.length) {
-      result.push(nextPage.page('instance'));
+    if (nextPage) {
+      result.push(nextPage);
     }
 
     _(page.linkedPages()).each(function(permaId) {
