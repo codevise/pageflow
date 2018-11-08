@@ -38,7 +38,7 @@ $background-media-unmute-button-custom-image: false !default;
       height: $background-media-unmute-button-size;
       border-radius: $background-media-unmute-button-size / 2;
       background-color: $background-media-unmute-button-color;
-      @include box-shadow(0 0 7px $background-media-unmute-button-shadow-color);
+      box-shadow: 0 0 7px $background-media-unmute-button-shadow-color;
       z-index: 1;
     }
   }
