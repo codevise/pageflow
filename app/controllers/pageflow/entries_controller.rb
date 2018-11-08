@@ -5,10 +5,6 @@ module Pageflow
 
     before_filter :authenticate_user!, except: [:index, :show, :page]
 
-    before_filter :check_public_https_mode,
-                  only: [:index, :show],
-                  unless: lambda { |controller| controller.request.format.json? }
-
     after_action :allow_iframe_for_embed, only: :show
 
     helper_method :render_to_string
@@ -29,6 +25,12 @@ module Pageflow
         format.any(:html, :css) do
           @entry = PublishedEntry.find(params[:id], entry_request_scope)
           I18n.locale = @entry.locale
+
+          if redirect_location = entry_redirect(@entry)
+            return redirect_to(redirect_location, status: :moved_permanently)
+          end
+
+          return if redirect_according_to_public_https_mode
 
           if !request.format.css?
             check_entry_password_protection(@entry)
@@ -95,6 +97,10 @@ module Pageflow
 
     def entry_request_scope
       Pageflow.config.public_entry_request_scope.call(Entry, request)
+    end
+
+    def entry_redirect(entry)
+      Pageflow.config.public_entry_redirect.call(entry, request)
     end
 
     def allow_iframe_for_embed

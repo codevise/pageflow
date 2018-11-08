@@ -280,6 +280,51 @@ module Pageflow
           end
         end
 
+        describe 'with configured public_entry_redirect' do
+          it 'redirects to returned location' do
+            entry = create(:entry, :published)
+
+            Pageflow.config.public_entry_redirect = ->(_, _) { '/some_location' }
+
+            get(:show, id: entry)
+
+            expect(response).to redirect_to('/some_location')
+          end
+
+          it 'redirects even before https redirect takes place' do
+            entry = create(:entry, :published)
+
+            Pageflow.config.public_https_mode = :enforce
+            Pageflow.config.public_entry_redirect = ->(_, _) { '/some_location' }
+
+            get(:show, id: entry)
+
+            expect(response).to redirect_to('/some_location')
+          end
+
+          it 'passes entry and request' do
+            some_entry = create(:entry, :published, title: 'My Entry')
+
+            Pageflow.config.public_entry_redirect = lambda do |entry, request|
+              "#{request.protocol}#{request.host}/#{entry.slug}"
+            end
+
+            get(:show, id: some_entry, q: 1)
+
+            expect(response).to redirect_to('http://test.host/my-entry')
+          end
+
+          it 'does not redirect if nil is returned' do
+            entry = create(:entry, :published, title: 'My Entry')
+
+            Pageflow.config.public_entry_redirect = ->(_, _) { nil }
+
+            get(:show, id: entry)
+
+            expect(response.status).to eq(200)
+          end
+        end
+
         context 'with page parameter' do
           it 'renders social sharing meta tags for page' do
             entry = create(:entry, :published)
