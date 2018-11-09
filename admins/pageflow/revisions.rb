@@ -12,10 +12,9 @@ module Pageflow
       authorize!(:restore, entry)
 
       entry.edit_lock.acquire(current_user)
-      revision.entry.restore(:revision => revision, :creator => current_user)
+      revision.entry.restore(revision: revision, creator: current_user)
       entry.edit_lock.release(current_user)
-
-      redirect_to(admin_entry_path(entry, :notice => I18n.t('pageflow.admin.revisions.restored')))
+      redirect_to(admin_entry_path(entry), notice: I18n.t('pageflow.admin.revisions.restored'))
     end
 
     controller do
@@ -24,7 +23,7 @@ module Pageflow
       helper Pageflow::Admin::FormHelper
 
       def permitted_params
-        params.permit(:revision => [:published_until])
+        params.permit(revision: [:published_until])
       end
 
       def show
