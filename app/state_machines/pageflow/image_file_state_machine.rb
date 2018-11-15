@@ -3,17 +3,16 @@ module Pageflow
     extend ActiveSupport::Concern
 
     included do
-      state_machine :initial => 'not_processed' do
+      state_machine :initial => 'uploadable' do
         extend StateMachineJob::Macro
 
+        state 'uploadable'
         state 'not_processed'
         state 'processing'
         state 'processed'
 
-        state 'processing_to_s3_failed'
-
         event :process do
-          transition 'not_processed' => 'processing'
+          transition 'uploadable' => 'processing'
           transition 'processing_failed' => 'processing'
         end
 

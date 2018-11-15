@@ -28,8 +28,8 @@
 <div class="editor" id="editor_menu_container">
 </div>
 
-<%= form_for editor_entry_files_path(@entry, collection_name: 'image_files'), :html => {:multipart => true, :id => 'upload'} do |f| %>
-  <%= f.file_field :attachment, :multiple => true, :name => 'image_file[attachment]' %>
+<%= form_tag '#', :multipart => true, :id => 'upload' do %>
+  <%= file_field_tag :file, :multiple => true %>
 <% end %>
 
 <script>

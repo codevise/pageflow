@@ -3,6 +3,8 @@ module Pageflow
     include ImageFileStateMachine
     include UploadedFile
 
+    alias_attribute :file_name, :unprocessed_attachment_file_name
+
     STYLES = lambda do |attachment|
       panorama_format = File.extname(attachment.original_filename) == '.png' ? :PNG : :JPG
 

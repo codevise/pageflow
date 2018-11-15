@@ -108,7 +108,9 @@ pageflow.UploadedFile = Backbone.Model.extend({
   },
 
   toJSON: function() {
-    return _.extend(_.pick(this.attributes, 'rights', 'parent_file_id', 'parent_file_model_type'), {
+    return _.extend(_.pick(this.attributes,
+      'file_name', 'rights', 'parent_file_id', 'parent_file_model_type'
+    ), {
       configuration: this.configuration.toJSON()
     });
   },
@@ -125,5 +127,14 @@ pageflow.UploadedFile = Backbone.Model.extend({
     this.unset('uploading_progress');
 
     this.trigger('uploadFailed');
+
+    // destroy created image file?
+    // this.destroy();
+  },
+
+  publish: function() {
+    this.save({}, {
+      url: this.url() + '/publish'
+    });
   }
 });

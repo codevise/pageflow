@@ -55,5 +55,16 @@ module Pageflow
       # prevent caching outdated information.
       "#{super}-#{state}"
     end
+
+    def s3_direct_upload_config
+      presigned_post = attachment.s3_bucket.presigned_post(key: attachment.path,
+                                                           success_action_status: '201',
+                                                           acl: 'public-read')
+      {
+        fields: presigned_post.fields,
+        url: presigned_post.url,
+        host: URI.parse(presigned_post.url).host
+      }
+    end
   end
 end

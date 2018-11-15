@@ -1,10 +1,6 @@
 pageflow.UploaderView = Backbone.Marionette.View.extend({
   el: 'form#upload',
 
-  ui: {
-    authToken: 'input[name="authenticity_token"]'
-  },
-
   initialize: function() {
     this.listenTo(pageflow.app, 'request-upload', this.openFileDialog);
   },
@@ -14,51 +10,40 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
 
     this.bindUIElements();
 
-    this.$el.fileupload({
-      acceptFileTypes: new RegExp ('(\\.|\\/)(bmp|gif|jpe?g|png|ti?f|wmv|mp4|mpg|mov|asf|asx|avi|' +
-                                   'm?v|mpeg|qt|3g2|3gp|3ivx|divx|3vx|vob|flv|dvx|xvid|mkv|vtt)$',
-                                   'i'),
-      dataType: 'json',
-
+    var form = this.$el;
+    var fileInput = this.$('input:file');
+    fileInput.fileupload({
+      fileInput: fileInput,
+      type: 'POST',
+      autoUpload: false,
+      paramName: 'file',
+      dataType: 'XML',
+      replaceFileInput: false,
+      acceptFileTypes: new RegExp('(\\.|\\/)(bmp|gif|jpe?g|png|ti?f|wmv|mp4|mpg|mov|asf|asx|avi|' +
+        'm?v|mpeg|qt|3g2|3gp|3ivx|divx|3vx|vob|flv|dvx|xvid|mkv|vtt)$',
+        'i'),
       add: function(event, data) {
-        try {
-          pageflow.fileUploader.add(data.files[0]).then(function(record) {
-            data.record = record;
-            var xhr = data.submit();
+        pageflow.fileUploader.add(data.files[0]).then(function (record) {
+          data.record = record;
 
-            that.listenTo(data.record, 'uploadCancelled', function() {
-              xhr.abort();
-            });
+          var s3UplopadConfig = record.attributes.s3_direct_upload_config;
+          form.data({host: s3UplopadConfig.host});
+          fileInput.fileupload({
+            url: s3UplopadConfig.url,
+            formData: s3UplopadConfig.fields
           });
-        }
-        catch(e) {
-          if (e instanceof pageflow.UploadError) {
-            pageflow.app.trigger('error', e);
-          }
-          else {
-            throw(e);
-          }
-        }
+          data.submit();
+        });
       },
-
       progress: function(event, data) {
         data.record.set('uploading_progress', parseInt(data.loaded / data.total * 100, 10));
-      },
-
-      submit: function(event, data) {
-        var record = data.record;
-
-        this.action = record.url();
-
-        data.paramName = record.modelName + '[attachment]';
-        data.formData = _.extend({
-          authenticity_token: that.ui.authToken.attr('value')
-        }, pageflow.formDataUtils.fromModel(record));
       },
 
       done: function(event, data) {
         data.record.unset('uploading_progress');
         data.record.set(data.result);
+
+        data.record.publish();
       },
 
       fail: function(event, data) {
