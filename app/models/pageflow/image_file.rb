@@ -3,7 +3,7 @@ module Pageflow
     include ImageFileStateMachine
     include UploadedFile
 
-    alias_attribute :file_name, :unprocessed_attachment_file_name
+    alias_attribute :file_name, :attachment_on_s3_file_name
 
     STYLES = lambda do |attachment|
       panorama_format = File.extname(attachment.original_filename) == '.png' ? :PNG : :JPG
@@ -27,60 +27,50 @@ module Pageflow
       panorama_large: '-quality 90 -interlace Plane'
     }.freeze
 
-    has_attached_file(:unprocessed_attachment,
-                      Pageflow.config.paperclip_s3_default_options)
-
-    has_attached_file(:processed_attachment,
+    has_attached_file(:attachment_on_s3,
                       Pageflow.config.paperclip_s3_default_options
                         .merge(default_url: ':pageflow_placeholder',
                                styles: STYLES,
                                convert_options: CONVERT_OPTIONS))
 
-    validates :attachment, presence: true
+    validates :attachment_on_s3, presence: true
 
-    do_not_validate_attachment_file_type(:unprocessed_attachment)
-    do_not_validate_attachment_file_type(:processed_attachment)
+    do_not_validate_attachment_file_type(:attachment_on_s3)
 
-    after_unprocessed_attachment_post_process :save_image_dimensions
+    after_attachment_on_s3_post_process :save_image_dimensions
 
     def attachment
-      processed_attachment.present? ? processed_attachment : unprocessed_attachment
+      attachment_on_s3
     end
 
     def attachment=(value)
-      self.unprocessed_attachment = value
+      self.attachment_on_s3 = value
     end
 
     def basename
-      File.basename(attachment.original_filename, '.*')
+      File.basename(attachment_on_s3.original_filename, '.*')
     end
 
     def thumbnail_url(*args)
-      processed_attachment.url(*args)
+      attachment_on_s3.url(*args)
     end
 
     def url
-      if processed_attachment.present?
-        attachment.url(:large)
-      end
+      attachment_on_s3.url(:large)
     end
 
     def original_url
-      if processed_attachment.present?
-        attachment.url
-      end
+      attachment_on_s3.url
     end
 
     def panorama_url
-      if processed_attachment.present?
-        attachment.url(:panorama_large)
-      end
+      attachment_on_s3.url(:panorama_large)
     end
 
     private
 
     def save_image_dimensions
-      geo = Paperclip::Geometry.from_file(unprocessed_attachment.queued_for_write[:original])
+      geo = Paperclip::Geometry.from_file(attachment_on_s3.queued_for_write[:original])
       self.width = geo.width
       self.height = geo.height
     rescue Paperclip::Errors::NotIdentifiedByImageMagickError
