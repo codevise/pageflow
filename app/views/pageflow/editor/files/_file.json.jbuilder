@@ -5,7 +5,8 @@ json.partial!(partial: 'pageflow/files/file',
 json.call(file,
           :state,
           :rights,
-          :usage_id)
+          :usage_id,
+          :s3_direct_upload_config)
 
 json.retryable(file.retryable?)
 json.file_name(file.attachment.original_filename)

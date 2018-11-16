@@ -4,51 +4,39 @@ module Pageflow
     include UploadedFile
 
     included do
-      has_attached_file(:attachment_on_filesystem, Pageflow.config.paperclip_filesystem_default_options)
       has_attached_file(:attachment_on_s3, Pageflow.config.paperclip_s3_default_options)
 
       validates :attachment, presence: true
 
-      do_not_validate_attachment_file_type(:attachment_on_filesystem)
       do_not_validate_attachment_file_type(:attachment_on_s3)
 
-      state_machine initial: 'not_uploaded_to_s3' do
+      state_machine initial: 'uploadable' do
         extend StateMachineJob::Macro
 
-        state 'not_uploaded_to_s3'
+        state 'uploadable'
         state 'uploading_to_s3'
         state 'uploaded_to_s3'
         state 'uploading_to_s3_failed'
 
         event :publish do
-          transition 'not_uploaded_to_s3' => 'uploading_to_s3'
+          transition 'uploadable' => 'uploaded_to_s3'
         end
 
-        event :retry do
-          transition 'uploading_to_s3_failed' => 'uploading_to_s3'
-        end
-
-        job UploadFileToS3Job do
-          on_enter 'uploading_to_s3'
-          result :pending, retry_after: 30.seconds
-          result :ok, state: 'uploaded_to_s3'
-          result :error, state: 'uploading_to_s3_failed'
-        end
+        # TODO: Set this in case the direct upload fails?
+        # job UploadFileToS3Job do
+        #   result :error, state: 'uploading_failed'
+        # end
 
         event :process
       end
     end
 
     def attachment
-      attachment_on_s3.present? ? attachment_on_s3 : attachment_on_filesystem
+      attachment_on_s3
     end
 
     def attachment=(value)
-      self.attachment_on_filesystem = value
-    end
-
-    def retryable?
-      can_retry?
+      self.attachment_on_s3 = value
     end
 
     def ready?

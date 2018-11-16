@@ -125,11 +125,8 @@ pageflow.UploadedFile = Backbone.Model.extend({
   uploadFailed: function() {
     this.set('state', 'upload_failed');
     this.unset('uploading_progress');
-
     this.trigger('uploadFailed');
-
-    // destroy created image file?
-    // this.destroy();
+    this.destroy();
   },
 
   publish: function() {
