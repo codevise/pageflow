@@ -4,30 +4,12 @@ pageflow.manualStart = (function($) {
 
   $(function() {
     if (pageflow.manualStart.enabled) {
+      pageflow.delayedStart.waitFor(waitDeferred);
       requiredDeferred.resolve(waitDeferred.resolve);
-    }
-    else {
-      waitDeferred.resolve();
     }
   });
 
   return {
-    wait: function(callback) {
-      var cancelled = false;
-
-      waitDeferred.then(function() {
-        if (!cancelled) {
-          callback();
-        }
-      });
-
-      return {
-        cancel: function() {
-          cancelled = true;
-        }
-      };
-    },
-
     required: function() {
       return requiredDeferred.promise();
     }

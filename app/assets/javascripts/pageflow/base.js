@@ -29,6 +29,7 @@
 //= require ./visited
 //= require ./print_layout
 //= require ./history
+//= require ./delayed_start
 //= require ./manual_start
 //= require ./widgets
 //= require ./widget_types
