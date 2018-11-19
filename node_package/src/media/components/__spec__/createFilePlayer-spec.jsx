@@ -146,7 +146,7 @@ describe('createFilePlayer', () => {
     [
       {event: 'play', action: 'playing'},
       {event: 'playfailed', action: 'playFailed'},
-      {event: 'playmuted', action: 'playMuted'},
+      {event: 'playmuted', action: 'playingMuted'},
       {event: 'pause', action: 'paused'},
       {event: 'loadedmetadata', action: 'metaDataLoaded', payload: {currentTime: 5, duration: 10}},
       {event: 'progress', action: 'progress', payload: {bufferedEnd: 7}},
