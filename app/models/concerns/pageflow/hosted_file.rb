@@ -4,9 +4,9 @@ module Pageflow
     include UploadedFile
 
     included do
-      has_attached_file(:attachment_on_s3, Pageflow.config.paperclip_s3_default_options)
+      alias_attribute :file_name, :attachment_on_s3_file_name
 
-      validates :attachment, presence: true
+      validates :attachment_on_s3, presence: true
 
       do_not_validate_attachment_file_type(:attachment_on_s3)
 
@@ -14,12 +14,16 @@ module Pageflow
         extend StateMachineJob::Macro
 
         state 'uploadable'
-        state 'uploading_to_s3'
-        state 'uploaded_to_s3'
-        state 'uploading_to_s3_failed'
+        state 'uploading'
+        state 'uploaded'
+        state 'uploading_failed'
+
+        event :upload do
+          transition 'uploadable' => 'uploading'
+        end
 
         event :publish do
-          transition 'uploadable' => 'uploaded_to_s3'
+          transition 'uploading' => 'uploaded'
         end
 
         # TODO: Set this in case the direct upload fails?
@@ -35,12 +39,8 @@ module Pageflow
       attachment_on_s3
     end
 
-    def attachment=(value)
-      self.attachment_on_s3 = value
-    end
-
     def ready?
-      attachment_on_s3.present?
+      attachment.present?
     end
 
     def basename
@@ -48,7 +48,7 @@ module Pageflow
     end
 
     def url
-      if attachment_on_s3.present?
+      if attachment.present?
         attachment.url
       end
     end
@@ -62,9 +62,7 @@ module Pageflow
         state_machine do
           extend StateMachineJob::Macro
 
-          after_transition(any => 'uploaded_to_s3') do |hosted_file|
-            hosted_file.process!
-          end
+          after_transition(any => 'uploaded', &:process!)
 
           instance_eval(&block)
         end

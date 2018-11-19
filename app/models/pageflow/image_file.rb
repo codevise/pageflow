@@ -1,7 +1,7 @@
 module Pageflow
   class ImageFile < ApplicationRecord
+    include HostedFile
     include ImageFileStateMachine
-    include UploadedFile
 
     STYLES = lambda do |attachment|
       panorama_format = File.extname(attachment.original_filename) == '.png' ? :PNG : :JPG
@@ -31,23 +31,9 @@ module Pageflow
                                styles: STYLES,
                                convert_options: CONVERT_OPTIONS))
 
-    validates :attachment_on_s3, presence: true
-
     do_not_validate_attachment_file_type(:attachment_on_s3)
 
     after_attachment_on_s3_post_process :save_image_dimensions
-
-    def attachment
-      attachment_on_s3
-    end
-
-    def attachment=(value)
-      self.attachment_on_s3 = value
-    end
-
-    def basename
-      File.basename(attachment_on_s3.original_filename, '.*')
-    end
 
     def thumbnail_url(*args)
       attachment_on_s3.url(*args)

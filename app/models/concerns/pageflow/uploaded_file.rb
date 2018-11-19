@@ -3,8 +3,6 @@ module Pageflow
     extend ActiveSupport::Concern
 
     included do
-      alias_attribute :file_name, :attachment_on_s3_file_name
-
       belongs_to :uploader, class_name: 'User', optional: true
       belongs_to :entry, optional: true
       belongs_to :parent_file, polymorphic: true, foreign_type: :parent_file_model_type, optional: true

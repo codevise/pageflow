@@ -5,7 +5,7 @@ module Pageflow
     include StateMachineJob
 
     def perform_with_result(file, _options)
-      file.attachment_on_s3.reprocess!
+      file.attachment.reprocess!
 
       :ok
     rescue ActiveRecord::RecordInvalid, Errno::ENAMETOOLONG

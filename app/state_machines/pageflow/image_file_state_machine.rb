@@ -3,17 +3,15 @@ module Pageflow
     extend ActiveSupport::Concern
 
     included do
-      state_machine :initial => 'uploadable' do
+      processing_state_machine do
         extend StateMachineJob::Macro
 
-        state 'uploadable'
-        state 'not_processed'
         state 'processing'
         state 'processed'
+        state 'processing_failed'
 
         event :process do
-          transition 'uploadable' => 'processing'
-          transition 'processing_failed' => 'processing'
+          transition any => 'processing'
         end
 
         job ProcessFileJob do

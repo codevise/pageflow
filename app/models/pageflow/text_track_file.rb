@@ -18,6 +18,9 @@ module Pageflow
       end
     end
 
+    has_attached_file(:attachment_on_s3,
+                      Pageflow.config.paperclip_s3_default_options)
+
     has_attached_file(:processed_attachment,
                       Pageflow.config.paperclip_s3_default_options
                         .merge(styles: {

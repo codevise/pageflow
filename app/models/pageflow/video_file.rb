@@ -6,6 +6,9 @@ module Pageflow
 
     belongs_to :confirmed_by, class_name: 'User', optional: true
 
+    has_attached_file(:attachment_on_s3,
+                      Pageflow.config.paperclip_s3_default_options)
+
     has_attached_file(:poster, Pageflow.config.paperclip_s3_default_options
                         .merge(default_url: ':pageflow_placeholder',
                                styles: Pageflow.config.thumbnail_styles

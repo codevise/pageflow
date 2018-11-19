@@ -56,6 +56,16 @@ module Pageflow
                                                      collection_name: params[:collection_name]))
       end
 
+      def upload
+        entry = DraftEntry.find(params[:entry_id])
+        file = entry.find_file(file_type.model, params[:id])
+
+        authorize!(:update, file.to_model)
+        file.upload!
+
+        head(:no_content)
+      end
+
       def publish
         entry = DraftEntry.find(params[:entry_id])
         file = entry.find_file(file_type.model, params[:id])

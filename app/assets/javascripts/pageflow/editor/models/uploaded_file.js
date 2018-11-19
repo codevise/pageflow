@@ -115,6 +115,12 @@ pageflow.UploadedFile = Backbone.Model.extend({
     });
   },
 
+  upload: function() {
+    this.save({}, {
+      url: this.url() + '/upload'
+    });
+  },
+
   cancelUpload: function() {
     if (this.get('state') === 'uploading') {
       this.trigger('uploadCancelled');

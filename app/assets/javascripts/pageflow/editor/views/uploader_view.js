@@ -33,12 +33,11 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
             formData: s3UplopadConfig.fields
           });
           data.submit();
+          data.record.upload();
         });
       },
+
       progress: function(event, data) {
-        if(!data.record.isUploading()) {
-          data.record.set('state', 'uploading');
-        }
         data.record.set('uploading_progress', parseInt(data.loaded / data.total * 100, 10));
       },
 
