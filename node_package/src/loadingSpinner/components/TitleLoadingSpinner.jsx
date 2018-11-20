@@ -10,45 +10,63 @@ import {editingWidget, widgetAttribute} from 'widgets/selectors';
 import {file} from 'files/selectors';
 import {pageBackgroundImageUrl, firstPageAttribures} from 'pages/selectors';
 
+const animationDuration = 9000;
+
 class TitleLoadingSpinner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fade: false,
-      hidden: PAGEFLOW_EDITOR
+      hidden: PAGEFLOW_EDITOR,
+      animating: true
     };
   }
 
   componentDidMount() {
-    this.setState({fade: true});
-
     if (PAGEFLOW_EDITOR) {
-      return;
+      this.loopAnimation();
     }
+    else {
+      this.hideAfterTimeout();
+    }
+  }
 
+  loopAnimation() {
+    const loop = () => {
+      this.setState({animating: false});
+
+      setTimeout(() => {
+        this.setState({animating: true});
+        this.loopTimeout = setTimeout(loop, animationDuration);
+      }, 1000);
+    };
+
+    this.loopTimeout = setTimeout(loop, animationDuration);
+  }
+
+  hideAfterTimeout() {
     pageflow.delayedStart.waitFor(resolve => {
       this.hiddenTimeout = setTimeout(
         () => {
           this.setState({hidden: true});
           resolve();
         },
-        9000
+        animationDuration
       );
     });
   }
 
   componentWillUnmount() {
-    clearTimeout(this.fadeTimeout);
     clearTimeout(this.hiddenTimeout);
+    clearInterval(this.loopTimeout);
   }
 
   render() {
     const {editing, title, subtitle, entryTitle} = this.props;
-    const {hidden, fade} = this.state;
+    const {hidden, animating} = this.state;
 
     if (editing || !hidden) {
       return (
-        <div className={classNames('title_loading_spinner', {'title_loading_spinner-fade': fade})}
+        <div className={classNames('title_loading_spinner', {'title_loading_spinner-fade': animating})}
              onTouchMove={preventScrollBouncing}
              style={inlineStyle()}>
           <div className="title_loading_spinner-logo" />

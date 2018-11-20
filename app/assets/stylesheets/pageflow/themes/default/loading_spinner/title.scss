@@ -11,10 +11,6 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
 .title_loading_spinner {
   $duration: 7s;
 
-  @include animation(fade_out 1s ease 1);
-  @include animation-delay($duration + 0.5s);
-  @include animation-fill-mode(forwards);
-
   &:before {
     content: "";
     display: block;
@@ -50,11 +46,6 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
     z-index: 1;
     color: #fff;
     opacity: 0;
-  }
-
-  &-fade .title_loading_spinner-titles {
-    @include animation(title_fade $duration ease-out 1);
-    @include animation-fill-mode(forwards);
   }
 
   &-title {
@@ -119,9 +110,20 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
     }
   }
 
-  &-fade .title_loading_spinner-logo:after {
-    @include animation(fade_in 1s ease-out 1);
+  &-fade {
+    @include animation(fade_out 1s ease 1);
+    @include animation-delay($duration + 0.5s);
     @include animation-fill-mode(forwards);
+
+    .title_loading_spinner-titles {
+      @include animation(title_fade $duration ease-out 1);
+      @include animation-fill-mode(forwards);
+    }
+
+    .title_loading_spinner-logo:after {
+      @include animation(fade_in 1s ease-out 1);
+      @include animation-fill-mode(forwards);
+    }
   }
 
   @include keyframes(title_fade) {
