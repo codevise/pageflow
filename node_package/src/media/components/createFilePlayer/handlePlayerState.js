@@ -24,7 +24,7 @@ export function initPlayer(player, getPlayerState, playerActions, prevFileId, fi
 
 export function updatePlayer(player, playerState, nextPlayerState, playerActions) {
   if (!playerState.shouldPrebuffer && nextPlayerState.shouldPrebuffer) {
-    player.prebuffer().then(playerActions.prebuffered);
+    player.prebuffer().then(() => setTimeout(playerActions.prebuffered, 0));
   }
 
   if (!playerState.shouldPlay && nextPlayerState.shouldPlay) {

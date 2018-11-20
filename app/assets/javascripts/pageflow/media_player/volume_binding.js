@@ -7,6 +7,7 @@ pageflow.mediaPlayer.volumeBinding = function(player, settings, options) {
   var volumeFactor = 'volumeFactor' in options ? options.volumeFactor : 1;
 
   player.play = function() {
+    player.intendToPlay();
     player.volume(player.targetVolume());
     listenToVolumeSetting();
 
