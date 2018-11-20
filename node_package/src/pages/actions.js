@@ -16,7 +16,7 @@ export const CLEANUP = 'PAGE_CLEANUP';
 export const UPDATE_PAGE_ATTRIBUTE = 'UPDATE_PAGE_ATTRIBUTE';
 export const UPDATE_PAGE_LINK = 'UPDATE_PAGE_LINK';
 
-export function pageWillActivate({id, position}) {
+export function pageWillActivate({id, position} = {}) {
   return pageAction(PAGE_WILL_ACTIVATE, id, {position});
 }
 

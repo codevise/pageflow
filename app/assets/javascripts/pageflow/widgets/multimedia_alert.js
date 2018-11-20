@@ -23,6 +23,7 @@
 
         widget.element.find('.close').one('click', function() {
           hide();
+          pageflow.backgroundMedia.unmute();
 
           pageflow.events.trigger('button:close_multimedia_alert');
           start();
