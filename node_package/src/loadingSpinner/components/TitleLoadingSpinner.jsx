@@ -26,10 +26,15 @@ class TitleLoadingSpinner extends React.Component {
       return;
     }
 
-    this.hiddenTimeout = setTimeout(
-      () => this.setState({hidden: true}),
-      9000
-    );
+    pageflow.delayedStart.waitFor(resolve => {
+      this.hiddenTimeout = setTimeout(
+        () => {
+          this.setState({hidden: true});
+          resolve();
+        },
+        9000
+      );
+    });
   }
 
   componentWillUnmount() {
