@@ -1,5 +1,5 @@
-<%= content_tag(:div, '', data: {widget: name}) do %>
-  <% if server_rendering %>
+<%= content_tag(:div, '', data: {widget: name}) do -%>
+  <% if server_rendering -%>
     <% concat React::ServerRendering.render(
        'pageflow.react.ServerSideWidget',
        %Q'{ "resolverSeed": #{@_pageflow_react_entry_seed ||= entry_json_seed(entry)}, "widgetTypeName": "#{name}" }',
