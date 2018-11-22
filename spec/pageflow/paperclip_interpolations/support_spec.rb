@@ -3,7 +3,7 @@ require 'spec_helper'
 module Pageflow
   module PaperclipInterpolations
     RSpec.describe Support do
-      let(:video_file) { build(:video_file, :on_filesystem) }
+      let(:video_file) { build(:video_file, :uploadable) }
 
       it 'has pageflow_placeholder' do
         result = Support.pageflow_placeholder(video_file.attachment, 'thumbnailxl')

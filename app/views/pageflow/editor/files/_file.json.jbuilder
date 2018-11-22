@@ -8,7 +8,7 @@ json.call(file,
           :usage_id,
           :s3_direct_upload_config)
 
-json.retryable(file.retryable?)
+json.retryable(file.respond_to?(:retryable?) ? file.retryable? : false)
 json.file_name(file.attachment.original_filename)
 
 if file.url.present?

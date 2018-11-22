@@ -1,5 +1,5 @@
 module Pageflow
-  module ImageFileStateMachine
+  module ProcessedFileStateMachine
     extend ActiveSupport::Concern
 
     included do
@@ -11,7 +11,8 @@ module Pageflow
         state 'processing_failed'
 
         event :process do
-          transition any => 'processing'
+          transition 'uploaded' => 'processing'
+          transition 'processing_failed' => 'processing'
         end
 
         job ProcessFileJob do
@@ -23,10 +24,6 @@ module Pageflow
     end
 
     def retry!
-      process!
-    end
-
-    def publish!
       process!
     end
 

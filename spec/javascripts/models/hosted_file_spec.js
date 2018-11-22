@@ -12,7 +12,7 @@ describe('HostedFile', function() {
       });
       var hostedFile = new File();
 
-      expect(hostedFile.stages.pluck('name')).to.deep.eq(['uploading', 'uploading_to_s3', 'unpacking']);
+      expect(hostedFile.stages.pluck('name')).to.deep.eq(['uploading', 'unpacking']);
     });
 
     it('can be a function', function() {
@@ -29,7 +29,7 @@ describe('HostedFile', function() {
       });
       var hostedFile = new File();
 
-      expect(hostedFile.stages.pluck('name')).to.deep.eq(['uploading', 'uploading_to_s3', 'unpacking']);
+      expect(hostedFile.stages.pluck('name')).to.deep.eq(['uploading', 'unpacking']);
     });
   });
 });

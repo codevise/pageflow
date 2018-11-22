@@ -57,6 +57,7 @@ module Pageflow
     end
 
     def s3_direct_upload_config
+      return {fields: [], url: 'spec_url', host: 'spec_host'} if Rails.env.test?
       presigned_post = attachment.s3_bucket.presigned_post(key: attachment.path,
                                                            success_action_status: '201',
                                                            acl: 'public-read')

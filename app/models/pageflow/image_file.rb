@@ -1,7 +1,7 @@
 module Pageflow
   class ImageFile < ApplicationRecord
     include HostedFile
-    include ImageFileStateMachine
+    include ProcessedFileStateMachine
 
     STYLES = lambda do |attachment|
       panorama_format = File.extname(attachment.original_filename) == '.png' ? :PNG : :JPG

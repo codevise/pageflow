@@ -25,16 +25,20 @@ module Pageflow
         end
       end
 
-      trait :on_filesystem do
-        attachment_on_filesystem { File.open(Engine.root.join('spec', 'fixtures', 'video.mp4')) }
-        attachment_on_s3 { nil }
-        state { 'not_uploaded_to_s3' }
+      trait :uploadable do
+        state { 'uploadable' }
       end
 
-      trait :uploading_to_s3_failed do
-        attachment_on_filesystem { File.open(Engine.root.join('spec', 'fixtures', 'video.mp4')) }
-        attachment_on_s3 { nil }
-        state { 'uploading_to_s3_failed' }
+      trait :uploading do
+        state { 'uploading' }
+      end
+
+      trait :uploaded do
+        state { 'uploaded' }
+      end
+
+      trait :uploading_failed do
+        state { 'uploading_failed' }
       end
 
       trait :waiting_for_confirmation do

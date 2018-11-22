@@ -2,7 +2,7 @@ module Pageflow
   FactoryBot.define do
     factory :hosted_file, class: 'Pageflow::TestHostedFile' do
       attachment_on_s3 { File.open(Engine.root.join('spec', 'fixtures', 'image.png')) }
-      state { 'uploaded_to_s3' }
+      state { 'uploaded' }
 
       transient do
         used_in { nil }
@@ -12,19 +12,19 @@ module Pageflow
         create(:file_usage, file: file, revision: evaluator.used_in) if evaluator.used_in
       end
 
-      trait :on_filesystem do
-        attachment_on_filesystem { File.open(Engine.root.join('spec', 'fixtures', 'image.png')) }
-        attachment_on_s3 { nil }
-        state { 'not_uploaded_to_s3' }
+      trait :uploadable do
+        state { 'uploadable' }
       end
 
-      trait :uploading_to_s3_failed do
-        attachment_on_filesystem { File.open(Engine.root.join('spec', 'fixtures', 'image.png')) }
-        attachment_on_s3 { nil }
-        state { 'uploading_to_s3_failed' }
+      trait :uploading do
+        state { 'uploading' }
       end
 
-      trait :uploaded_to_s3 do
+      trait :uploaded do
+      end
+
+      trait :uploading_failed do
+        state { 'uploading_failed' }
       end
     end
   end
