@@ -16,7 +16,7 @@ module Pageflow
 
     def matches?(options)
       enabled_for_scope?(options[:scope]) &&
-        for_insert_point?(options.fetch(:insert_point, :bottom_of_entry))
+        for_insert_point?(options.fetch(:insert_point, :any))
     end
 
     def self.copy_all_to(subject)
@@ -48,7 +48,7 @@ module Pageflow
     end
 
     def for_insert_point?(insert_point)
-      widget_type.insert_point == insert_point
+      insert_point == :any || widget_type.insert_point == insert_point
     end
 
     Resolver = Struct.new(:config, :options) do
