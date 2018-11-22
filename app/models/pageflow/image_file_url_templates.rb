@@ -9,7 +9,7 @@ module Pageflow
     private
 
     def styles
-      ImageFile::STYLES.call(example_file.attachment).keys
+      example_file.attachment_styles(example_file.attachment).keys
     end
 
     def example_file

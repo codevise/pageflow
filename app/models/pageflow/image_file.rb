@@ -3,33 +3,36 @@ module Pageflow
     include HostedFile
     include ProcessedFileStateMachine
 
-    STYLES = lambda do |attachment|
+    def attachment_styles(attachment)
       panorama_format = File.extname(attachment.original_filename) == '.png' ? :PNG : :JPG
 
       Pageflow
         .config.thumbnail_styles
-        .merge(print: ['300x300>', :JPG],
-               medium: ['1024x1024>', :JPG],
-               large: ['1920x1920>', :JPG],
-               ultra: ['3840x3840>', :JPG],
-               panorama_medium: ['1024x1024^', panorama_format],
-               panorama_large: ['1920x1080^', panorama_format])
+        .merge(
+          print: {geometry: '300x300>',
+                  format: :JPG,
+                  convert_options: '-quality 10 -interlace Plane'},
+          medium: {geometry: '1024x1024>',
+                   format: :JPG,
+                   convert_options: '-quality 70 -interlace Plane'},
+          large: {geometry: '1920x1920>',
+                  format: :JPG,
+                  convert_options: '-quality 70 -interlace Plane'},
+          ultra: {geometry: '3840x3840>',
+                  format: :JPG,
+                  convert_options: '-quality 90 -interlace Plane'},
+          panorama_medium: {geometry: '1024x1024^',
+                            format: panorama_format,
+                            convert_options: '-quality 90 -interlace Plane'},
+          panorama_large: {geometry: '1920x1080^',
+                           format: panorama_format,
+                           convert_options: '-quality 90 -interlace Plane'}
+        )
     end
 
-    CONVERT_OPTIONS = {
-      print: '-quality 10 -interlace Plane',
-      medium: '-quality 70 -interlace Plane',
-      large: '-quality 70 -interlace Plane',
-      ultra: '-quality 90 -interlace Plane',
-      panorama_medium: '-quality 90 -interlace Plane',
-      panorama_large: '-quality 90 -interlace Plane'
-    }.freeze
-
-    has_attached_file(:attachment_on_s3,
-                      Pageflow.config.paperclip_s3_default_options
-                        .merge(default_url: ':pageflow_placeholder',
-                               styles: STYLES,
-                               convert_options: CONVERT_OPTIONS))
+    def attachment_default_url
+      ':pageflow_placeholder'
+    end
 
     do_not_validate_attachment_file_type(:attachment_on_s3)
 

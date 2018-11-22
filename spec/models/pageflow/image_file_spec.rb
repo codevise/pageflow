@@ -43,7 +43,7 @@ module Pageflow
         Pageflow.config.thumbnail_styles[:square] = '100x100'
 
         image_file = create(:image_file)
-        styles = ImageFile::STYLES.call(image_file.attachment_on_s3)
+        styles = image_file.attachment_styles(image_file.attachment_on_s3)
 
         expect(styles[:square]).to eq('100x100')
       end
@@ -52,28 +52,28 @@ module Pageflow
         image_file = create(:image_file, attachment_on_s3: png_fixture_file)
         styles = image_file.attachment_styles(image_file.attachment_on_s3)
 
-        expect(styles[:medium][1]).to eq(:JPG)
+        expect(styles[:medium][:format]).to eq(:JPG)
       end
 
       it 'preserves png file extension for panorama styles' do
         image_file = create(:image_file, attachment_on_s3: png_fixture_file)
         styles = image_file.attachment_styles(image_file.attachment_on_s3)
 
-        expect(styles[:panorama_large][1]).to eq(:PNG)
+        expect(styles[:panorama_large][:format]).to eq(:PNG)
       end
 
       it 'preserves jpg file extension for panorama styles' do
         image_file = create(:image_file, attachment_on_s3: jpg_fixture_file)
         styles = image_file.attachment_styles(image_file.attachment_on_s3)
 
-        expect(styles[:panorama_large][1]).to eq(:JPG)
+        expect(styles[:panorama_large][:format]).to eq(:JPG)
       end
 
       it 'turns gif file into jpg for panorama styles' do
         image_file = create(:image_file, attachment_on_s3: gif_fixture_file)
         styles = image_file.attachment_styles(image_file.attachment_on_s3)
 
-        expect(styles[:panorama_large][1]).to eq(:JPG)
+        expect(styles[:panorama_large][:format]).to eq(:JPG)
       end
     end
 

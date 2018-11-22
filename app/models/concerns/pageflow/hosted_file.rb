@@ -6,6 +6,17 @@ module Pageflow
     included do
       alias_attribute :file_name, :attachment_on_s3_file_name
 
+      has_attached_file(:attachment_on_s3,
+                        Pageflow.config.paperclip_s3_default_options
+                          .merge(
+                            default_url: lambda do |attachment|
+                              attachment.instance.attachment_default_url
+                            end,
+                            styles: lambda do |attachment|
+                              attachment.instance.attachment_styles(attachment)
+                            end
+                          ))
+
       validates :attachment_on_s3, presence: true
 
       do_not_validate_attachment_file_type(:attachment_on_s3)
@@ -37,6 +48,14 @@ module Pageflow
 
     def attachment
       attachment_on_s3
+    end
+
+    def attachment_default_url
+      ''
+    end
+
+    def attachment_styles(_attachment)
+      {}
     end
 
     def ready?
