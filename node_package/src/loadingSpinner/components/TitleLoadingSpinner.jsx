@@ -26,7 +26,16 @@ class TitleLoadingSpinner extends React.Component {
       this.loopAnimation();
     }
     else {
-      this.hideAfterTimeout();
+      pageflow.delayedStart.waitFor(resolve => {
+        this.resolveDelayedStart = resolve;
+      });
+    }
+  }
+
+  hideIfNotEditor(el) {
+    if (!PAGEFLOW_EDITOR && el.target === el.currentTarget) {
+      this.setState({hidden: true});
+      this.resolveDelayedStart();
     }
   }
 
@@ -43,18 +52,6 @@ class TitleLoadingSpinner extends React.Component {
     this.loopTimeout = setTimeout(loop, animationDuration);
   }
 
-  hideAfterTimeout() {
-    pageflow.delayedStart.waitFor(resolve => {
-      this.hiddenTimeout = setTimeout(
-        () => {
-          this.setState({hidden: true});
-          resolve();
-        },
-        animationDuration
-      );
-    });
-  }
-
   componentWillUnmount() {
     clearTimeout(this.hiddenTimeout);
     clearInterval(this.loopTimeout);
@@ -67,6 +64,7 @@ class TitleLoadingSpinner extends React.Component {
     if (editing || !hidden) {
       return (
         <div className={classNames('title_loading_spinner', {'title_loading_spinner-fade': animating})}
+             onAnimationEnd={(event) => this.hideIfNotEditor(event)}
              onTouchMove={preventScrollBouncing}
              style={inlineStyle()}>
           <div className="title_loading_spinner-logo" />
