@@ -5,7 +5,7 @@ module Pageflow
       uploader { create(:user) }
       parent_file { nil }
 
-      attachment_on_s3 { File.open(Engine.root.join('spec', 'fixtures', 'sample.vtt')) }
+      attachment { File.open(Engine.root.join('spec', 'fixtures', 'sample.vtt')) }
 
       transient do
         used_in { nil }
@@ -21,7 +21,7 @@ module Pageflow
       end
 
       trait :from_srt_file do
-        attachment_on_s3 { File.open(Engine.root.join('spec', 'fixtures', 'sample.srt')) }
+        attachment { File.open(Engine.root.join('spec', 'fixtures', 'sample.srt')) }
       end
 
       trait :uploadable do

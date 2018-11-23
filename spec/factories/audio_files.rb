@@ -4,7 +4,7 @@ module Pageflow
       entry
       uploader { create(:user) }
 
-      attachment_on_s3 { File.open(Engine.root.join('spec', 'fixtures', 'et.ogg')) }
+      attachment { File.open(Engine.root.join('spec', 'fixtures', 'et.ogg')) }
 
       transient do
         used_in { nil }

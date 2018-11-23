@@ -16,8 +16,8 @@ module Pageflow
 
         text_track_file.process!
 
-        expect(text_track_file.reload.attachment_on_s3.path(:vtt)).to match(/\.vtt$/)
-        expect(text_track_file.reload.attachment_on_s3.exists?(:vtt)).to eq(true)
+        expect(text_track_file.reload.attachment.path(:vtt)).to match(/\.vtt$/)
+        expect(text_track_file.reload.attachment.exists?(:vtt)).to eq(true)
       end
 
       it 'creates vtt variant for srt file' do
@@ -25,8 +25,8 @@ module Pageflow
 
         text_track_file.process!
 
-        expect(text_track_file.reload.attachment_on_s3.path(:vtt)).to match(/\.vtt$/)
-        expect(text_track_file.reload.attachment_on_s3.exists?(:vtt)).to eq(true)
+        expect(text_track_file.reload.attachment.path(:vtt)).to match(/\.vtt$/)
+        expect(text_track_file.reload.attachment.exists?(:vtt)).to eq(true)
       end
     end
   end

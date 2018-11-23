@@ -1,7 +1,7 @@
 module Pageflow
   FactoryBot.define do
     factory :hosted_file, class: 'Pageflow::TestHostedFile' do
-      attachment_on_s3 { File.open(Engine.root.join('spec', 'fixtures', 'image.png')) }
+      attachment { File.open(Engine.root.join('spec', 'fixtures', 'image.png')) }
       state { 'uploaded' }
 
       transient do

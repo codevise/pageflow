@@ -22,7 +22,7 @@ module Pageflow
         end
 
         it 'sets state to error if attachment cannot be processed' do
-          file = create(:image_file, :uploaded, attachment_on_s3: broken_file)
+          file = create(:image_file, :uploaded, attachment: broken_file)
 
           file.process
 
@@ -48,7 +48,7 @@ module Pageflow
         end
 
         it 'sets state to error if attachment cannot be processed' do
-          file = create(:image_file, :processing_failed, attachment_on_s3: broken_file)
+          file = create(:image_file, :processing_failed, attachment: broken_file)
 
           file.process
 

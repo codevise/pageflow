@@ -15,10 +15,10 @@ class CreateTestHostedFile < ActiveRecord::Migration[4.2]
       t.integer(:attachment_on_filesystem_file_size, limit: 8)
       t.datetime(:attachment_on_filesystem_updated_at)
 
-      t.string(:attachment_on_s3_file_name)
-      t.string(:attachment_on_s3_content_type)
-      t.integer(:attachment_on_s3_file_size, limit: 8)
-      t.datetime(:attachment_on_s3_updated_at)
+      t.string(:attachment_file_name)
+      t.string(:attachment_content_type)
+      t.integer(:attachment_file_size, limit: 8)
+      t.datetime(:attachment_updated_at)
 
       t.timestamps
 

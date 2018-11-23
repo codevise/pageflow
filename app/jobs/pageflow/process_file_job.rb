@@ -9,7 +9,7 @@ module Pageflow
 
       :ok
     rescue ActiveRecord::RecordInvalid, Errno::ENAMETOOLONG
-      file.attachment_on_s3 = nil
+      file.attachment = nil
       file.save!
       :error
     end

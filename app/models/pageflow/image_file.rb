@@ -34,30 +34,30 @@ module Pageflow
       ':pageflow_placeholder'
     end
 
-    do_not_validate_attachment_file_type(:attachment_on_s3)
+    do_not_validate_attachment_file_type(:attachment)
 
-    after_attachment_on_s3_post_process :save_image_dimensions
+    after_attachment_post_process :save_image_dimensions
 
     def thumbnail_url(*args)
-      attachment_on_s3.url(*args)
+      attachment.url(*args)
     end
 
     def url
-      attachment_on_s3.url(:large)
+      attachment.url(:large)
     end
 
     def original_url
-      attachment_on_s3.url
+      attachment.url
     end
 
     def panorama_url
-      attachment_on_s3.url(:panorama_large)
+      attachment.url(:panorama_large)
     end
 
     private
 
     def save_image_dimensions
-      geo = Paperclip::Geometry.from_file(attachment_on_s3.queued_for_write[:original])
+      geo = Paperclip::Geometry.from_file(attachment.queued_for_write[:original])
       self.width = geo.width
       self.height = geo.height
     rescue Paperclip::Errors::NotIdentifiedByImageMagickError

@@ -20,7 +20,7 @@ module Pageflow
         entry = create(:entry)
         draft_entry = DraftEntry.new(entry)
 
-        draft_entry.create_file!(ImageFile, attachment_on_s3: fixture_file)
+        draft_entry.create_file!(ImageFile, attachment: fixture_file)
 
         expect(entry.draft.reload).to have(1).image_file
       end
@@ -29,7 +29,7 @@ module Pageflow
         entry = create(:entry)
         draft_entry = DraftEntry.new(entry)
 
-        image_file = draft_entry.create_file!(ImageFile, attachment_on_s3: fixture_file)
+        image_file = draft_entry.create_file!(ImageFile, attachment: fixture_file)
 
         expect(image_file.usage_id).to be_present
       end

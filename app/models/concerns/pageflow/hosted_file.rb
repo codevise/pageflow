@@ -4,9 +4,9 @@ module Pageflow
     include UploadedFile
 
     included do
-      alias_attribute :file_name, :attachment_on_s3_file_name
+      alias_attribute :file_name, :attachment_file_name
 
-      has_attached_file(:attachment_on_s3,
+      has_attached_file(:attachment,
                         Pageflow.config.paperclip_s3_default_options
                           .merge(
                             default_url: lambda do |attachment|
@@ -17,9 +17,9 @@ module Pageflow
                             end
                           ))
 
-      validates :attachment_on_s3, presence: true
+      validates :attachment, presence: true
 
-      do_not_validate_attachment_file_type(:attachment_on_s3)
+      do_not_validate_attachment_file_type(:attachment)
 
       state_machine initial: 'uploadable' do
         extend StateMachineJob::Macro
@@ -44,10 +44,6 @@ module Pageflow
 
         event :process
       end
-    end
-
-    def attachment
-      attachment_on_s3
     end
 
     def attachment_default_url

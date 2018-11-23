@@ -3,14 +3,14 @@ require 'spec_helper'
 module Pageflow
   describe HostedFile, perform_jobs: true do
     it 'is invalid if attachment is missing' do
-      hosted_file = build(:hosted_file, attachment_on_s3: nil)
+      hosted_file = build(:hosted_file, attachment: nil)
 
       hosted_file.valid?
 
-      expect(hosted_file).to have(1).errors_on(:attachment_on_s3)
+      expect(hosted_file).to have(1).errors_on(:attachment)
     end
 
-    it 'is valid if attachment_on_s3 is present' do
+    it 'is valid if attachment is present' do
       hosted_file = build(:hosted_file, :uploaded)
 
       expect(hosted_file).to be_valid
@@ -52,7 +52,7 @@ module Pageflow
 
   describe 'basename' do
     it 'returns the original file name without extention' do
-      hosted_file = create(:hosted_file, attachment_on_s3_file_name: 'video.mp4')
+      hosted_file = create(:hosted_file, attachment_file_name: 'video.mp4')
 
       expect(hosted_file.basename).to eq('video')
     end
