@@ -182,7 +182,7 @@ module Pageflow
         expect(json_response(path: [:usage_id])).to be_present
       end
 
-      it 'supplies S3 direct upload config for client upload' do
+      it 'supplies direct upload config for client upload' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
@@ -196,7 +196,7 @@ module Pageflow
              },
              format: 'json')
 
-        expect(entry.image_files.first.s3_direct_upload_config).to be_present
+        expect(entry.image_files.first.direct_upload_config).to be_present
       end
 
       it 'does not allow to create file without required attachment file name' do

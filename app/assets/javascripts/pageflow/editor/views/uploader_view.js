@@ -30,10 +30,9 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
           pageflow.fileUploader.add(data.files[0]).then(function (record) {
             data.record = record;
 
-            var s3UplopadConfig = record.get('s3_direct_upload_config');
-            this.host = s3UplopadConfig.host;
-            data.url = s3UplopadConfig.url;
-            data.formData = s3UplopadConfig.fields;
+            var directUploadConfig = record.get('direct_upload_config');
+            data.url = directUploadConfig.url;
+            data.formData = directUploadConfig.fields;
             data.submit();
             data.record.upload();
           });

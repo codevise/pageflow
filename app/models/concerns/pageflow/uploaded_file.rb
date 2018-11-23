@@ -56,15 +56,11 @@ module Pageflow
       "#{super}-#{state}"
     end
 
-    def s3_direct_upload_config
-      return {fields: [], url: 'spec_url', host: 'spec_host'} if Rails.env.test?
-      presigned_post = attachment.s3_bucket.presigned_post(key: attachment.path,
-                                                           success_action_status: '201',
-                                                           acl: 'public-read')
+    def direct_upload_config
+      presigned_post_config = Pageflow.config.paperclip_direct_upload_options.call(attachment)
       {
-        fields: presigned_post.fields,
-        url: presigned_post.url,
-        host: URI.parse(presigned_post.url).host
+        url: presigned_post_config.url,
+        fields: presigned_post_config.fields
       }
     end
   end
