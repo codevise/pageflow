@@ -10,7 +10,7 @@ module Pageflow
           file.attachment_on_s3 = file.attachment_on_filesystem
           file.save!
 
-          file.attachment_on_filesystem.destroy unless file.keep_on_filesystem_after_upload_to_s3?
+          file.attachment_on_filesystem.destroy
           :ok
         else
           logger.info "#{file.class.name} #{file.id} not yet transfered to instance."
