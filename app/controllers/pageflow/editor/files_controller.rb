@@ -93,7 +93,6 @@ module Pageflow
         authorize!(:edit, entry.to_model)
         verify_edit_lock!(entry)
         entry.remove_file(file)
-        file.destroy if file.uploadable?
 
         head(:no_content)
       end
@@ -101,7 +100,7 @@ module Pageflow
       private
 
       def create_params
-        file_attachment_params
+        file_params.permit(:file_name)
           .merge(file_configuration_params)
           .merge(file_parent_file_params)
           .merge(file_custom_params)
@@ -113,12 +112,6 @@ module Pageflow
 
       def update_params
         file_configuration_params
-      end
-
-      def file_attachment_params
-        file_params
-          .permit(:file_name, attachment: [:tmp_path, :original_name, :content_type])
-          .merge(file_params.permit(:file_name, :attachment))
       end
 
       def file_configuration_params

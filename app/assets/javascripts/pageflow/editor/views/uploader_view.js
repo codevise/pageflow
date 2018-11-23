@@ -1,6 +1,10 @@
 pageflow.UploaderView = Backbone.Marionette.View.extend({
   el: 'form#upload',
 
+  ui: {
+    input: 'input:file'
+  },
+
   initialize: function() {
     this.listenTo(pageflow.app, 'request-upload', this.openFileDialog);
   },
@@ -10,8 +14,7 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
 
     this.bindUIElements();
 
-    var form = this.$el;
-    var fileInput = this.$('input:file');
+    var fileInput = this.ui.input;
     fileInput.fileupload({
       fileInput: fileInput,
       type: 'POST',
@@ -23,18 +26,26 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
         'm?v|mpeg|qt|3g2|3gp|3ivx|divx|3vx|vob|flv|dvx|xvid|mkv|vtt)$',
         'i'),
       add: function(event, data) {
-        pageflow.fileUploader.add(data.files[0]).then(function (record) {
-          data.record = record;
+        try {
+          pageflow.fileUploader.add(data.files[0]).then(function (record) {
+            data.record = record;
 
-          var s3UplopadConfig = record.attributes.s3_direct_upload_config;
-          form.data({host: s3UplopadConfig.host});
-          fileInput.fileupload({
-            url: s3UplopadConfig.url,
-            formData: s3UplopadConfig.fields
+            var s3UplopadConfig = record.get('s3_direct_upload_config');
+            this.host = s3UplopadConfig.host;
+            data.url = s3UplopadConfig.url;
+            data.formData = s3UplopadConfig.fields;
+            data.submit();
+            data.record.upload();
           });
-          data.submit();
-          data.record.upload();
-        });
+        }
+        catch(e) {
+          if (e instanceof pageflow.UploadError) {
+            pageflow.app.trigger('error', e);
+          }
+          else {
+            throw(e);
+          }
+        }
       },
 
       progress: function(event, data) {
@@ -63,6 +74,6 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
   },
 
   openFileDialog: function() {
-    this.$('input:file').click();
+    this.ui.input.click();
   }
 });
