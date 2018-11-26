@@ -47,10 +47,6 @@ module Pageflow
       self.attachment_on_filesystem = value
     end
 
-    def keep_on_filesystem_after_upload_to_s3?
-      false
-    end
-
     def retryable?
       can_retry?
     end

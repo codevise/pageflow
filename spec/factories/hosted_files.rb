@@ -26,14 +26,6 @@ module Pageflow
 
       trait :uploaded_to_s3 do
       end
-
-      trait :with_overridden_keep_on_filesystem do
-        after(:build) do |hosted_file|
-          def hosted_file.keep_on_filesystem_after_upload_to_s3?
-            true
-          end
-        end
-      end
     end
   end
 end
