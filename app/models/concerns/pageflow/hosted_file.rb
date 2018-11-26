@@ -21,26 +21,16 @@ module Pageflow
 
       do_not_validate_attachment_file_type(:attachment)
 
-      state_machine initial: 'uploadable' do
+      state_machine initial: 'uploading' do
         extend StateMachineJob::Macro
 
-        state 'uploadable'
         state 'uploading'
         state 'uploaded'
         state 'uploading_failed'
 
-        event :upload do
-          transition 'uploadable' => 'uploading'
-        end
-
         event :publish do
           transition 'uploading' => 'uploaded'
         end
-
-        # TODO: Set this in case the direct upload fails?
-        # job UploadFileToS3Job do
-        #   result :error, state: 'uploading_failed'
-        # end
 
         event :process
       end

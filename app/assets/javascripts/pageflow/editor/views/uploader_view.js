@@ -30,11 +30,12 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
           pageflow.fileUploader.add(data.files[0]).then(function (record) {
             data.record = record;
 
-            var directUploadConfig = record.get('direct_upload_config');
-            data.url = directUploadConfig.url;
-            data.formData = directUploadConfig.fields;
-            data.submit();
-            data.record.upload();
+            data.record.upload().then(function (record) {
+              var directUploadConfig = record.get('direct_upload_config');
+              data.url = directUploadConfig.url;
+              data.formData = directUploadConfig.fields;
+              data.submit();
+            });
           });
         }
         catch(e) {

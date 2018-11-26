@@ -33,7 +33,7 @@ pageflow.FileUploader = pageflow.Object.extend({
                                                   fileTypes: this.fileTypes}));
     }
 
-    this.entry.getFileCollection(fileType).create(file);
+    this.entry.getFileCollection(fileType).add(file);
 
     var deferred = new $.Deferred();
 

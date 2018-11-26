@@ -24,10 +24,6 @@ module Pageflow
         attachment { File.open(Engine.root.join('spec', 'fixtures', 'sample.srt')) }
       end
 
-      trait :uploadable do
-        state { 'uploadable' }
-      end
-
       trait :uploading do
         state { 'uploading' }
       end

@@ -18,10 +18,6 @@ module Pageflow
         create(:file_usage, :file => file, :revision => evaluator.used_in) if evaluator.used_in
       end
 
-      trait :uploadable do
-        state { 'uploadable' }
-      end
-
       trait :uploading do
         state { 'uploading' }
       end

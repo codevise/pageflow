@@ -22,10 +22,6 @@ module Pageflow
       trait :processed do
       end
 
-      trait :uploadable do
-        state { 'uploadable' }
-      end
-
       trait :uploading do
         state { 'uploading' }
       end
