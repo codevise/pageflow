@@ -124,6 +124,21 @@ module Pageflow
         expect(widgets).to include_record_with(type_name: nil, role: 'header')
       end
 
+      it 'does not filter widgets by insert point by default' do
+        before_widget_type = TestWidgetType.new(name: 'before', insert_point: :before_entry)
+        bottom_widget_type = TestWidgetType.new(name: 'bottom', insert_point: :bottom_of_entry)
+        config = Configuration.new
+        config.widget_types.register(before_widget_type)
+        config.widget_types.register(bottom_widget_type)
+        revision = create(:revision)
+        before_widget = create(:widget, subject: revision, role: 'header', type_name: 'before')
+        bottom_widget = create(:widget, subject: revision, role: 'footer', type_name: 'bottom')
+
+        widgets = revision.widgets.resolve(config)
+
+        expect(widgets).to eq([before_widget, bottom_widget])
+      end
+
       it 'filters widgets by insert point' do
         before_widget_type = TestWidgetType.new(name: 'before', insert_point: :before_entry)
         bottom_widget_type = TestWidgetType.new(name: 'bottom', insert_point: :bottom_of_entry)
