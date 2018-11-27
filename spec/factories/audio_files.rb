@@ -5,6 +5,7 @@ module Pageflow
       uploader { create(:user) }
 
       attachment { File.open(Engine.root.join('spec', 'fixtures', 'et.ogg')) }
+      state { 'encoded' }
 
       transient do
         used_in { nil }
@@ -19,10 +20,21 @@ module Pageflow
       end
 
       trait :uploading do
+        attachment { nil }
+        attachment_file_name { 'et.ogg' }
         state { 'uploading' }
+
+        after :create do |audio_file|
+          FileUtils.mkdir_p(File.dirname(audio_file.attachment.path))
+          attachment_path = Engine.root.join('spec', 'fixtures', 'et.ogg')
+          unless File.identical?(attachment_path, audio_file.attachment.path)
+            FileUtils.cp(attachment_path, audio_file.attachment.path)
+          end
+        end
       end
 
       trait :uploaded do
+        uploading
         state { 'uploaded' }
       end
 
@@ -39,7 +51,6 @@ module Pageflow
       end
 
       trait :encoded do
-        state { 'encoded' }
       end
     end
   end

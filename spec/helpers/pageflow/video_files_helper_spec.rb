@@ -156,7 +156,7 @@ module Pageflow
 
       it 'sets data-poster and data-large-poster attribute by custom poster image' do
         video_file = build(:video_file)
-        image_file = create(:image_file, attachment_file_name: 'image.jpg')
+        image_file = create(:image_file)
 
         html = helper.video_file_video_tag(video_file, poster_image_id: image_file.id)
 
@@ -166,7 +166,7 @@ module Pageflow
 
       it 'sets data-mobile-poster and data-mobile-large-poster attribute by custom mobile image' do
         video_file = build(:video_file)
-        image_file = create(:image_file, attachment_file_name: 'image.jpg')
+        image_file = create(:image_file)
 
         html = helper.video_file_video_tag(video_file, mobile_poster_image_id: image_file.id)
 

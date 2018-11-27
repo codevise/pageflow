@@ -3,8 +3,7 @@ require 'spec_helper'
 module Pageflow
   describe ProcessedFileStateMachine, perform_jobs: true do
     describe '#process event' do
-      let(:broken_file) { File.open(Engine.root.join('spec', 'fixtures', 'broken.jpg')) }
-      context 'for unprocessed file' do
+      context 'for uploaded file' do
         it 'processes attachment' do
           file = create(:image_file, :uploaded)
 
@@ -22,11 +21,29 @@ module Pageflow
         end
 
         it 'sets state to error if attachment cannot be processed' do
-          file = create(:image_file, :uploaded, attachment: broken_file)
+          file = create(:image_file, :uploaded, attachment_file_name: 'broken.jpg')
 
           file.process
 
           expect(file.reload.state).to eq('processing_failed')
+        end
+
+        it 'saves image width and height of original attachment' do
+          file = create(:image_file, :uploaded, attachment_file_name: '7x15.png')
+
+          file.process
+
+          expect(file.reload.width).to eq(7)
+          expect(file.reload.height).to eq(15)
+        end
+
+        it 'sets width and height to nil if image cannot be identified' do
+          file = create(:image_file, :uploaded, attachment_file_name: 'broken.jpg')
+
+          file.process
+
+          expect(file.reload.width).to be_nil
+          expect(file.reload.height).to be_nil
         end
       end
 
@@ -48,7 +65,13 @@ module Pageflow
         end
 
         it 'sets state to error if attachment cannot be processed' do
-          file = create(:image_file, :processing_failed, attachment: broken_file)
+          file = create(:image_file,
+                        :processing_failed,
+                        attachment: nil,
+                        attachment_file_name: 'broken.jpg')
+
+          FileUtils.mkdir_p(File.dirname(file.attachment.path))
+          FileUtils.cp(Engine.root.join('spec', 'fixtures', 'broken.jpg'), file.attachment.path)
 
           file.process
 
@@ -65,7 +88,7 @@ module Pageflow
       end
 
       it 'returns false if processed' do
-        file = create(:image_file)
+        file = create(:image_file, :processed)
 
         expect(file).not_to be_retryable
       end

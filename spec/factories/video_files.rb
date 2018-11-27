@@ -26,10 +26,21 @@ module Pageflow
       end
 
       trait :uploading do
+        attachment { nil }
+        attachment_file_name { 'video.mp4' }
         state { 'uploading' }
+
+        after :create do |video_file|
+          FileUtils.mkdir_p(File.dirname(video_file.attachment.path))
+          attachment_path = Engine.root.join('spec', 'fixtures', video_file.attachment_file_name)
+          unless File.identical?(attachment_path, video_file.attachment.path)
+            FileUtils.cp(attachment_path, video_file.attachment.path)
+          end
+        end
       end
 
       trait :uploaded do
+        uploading
         state { 'uploaded' }
       end
 

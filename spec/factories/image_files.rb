@@ -19,15 +19,32 @@ module Pageflow
         create(:file_usage, :file => file, :revision => evaluator.used_in) if evaluator.used_in
       end
 
-      trait :processed do
-      end
-
       trait :uploading do
+        attachment { nil }
+        attachment_file_name { 'image.jpg' }
         state { 'uploading' }
+
+        # simulate direct upload in background
+        # Caveat: attachment_file_name must map to a file in fixtures
+        after :create do |image_file|
+          FileUtils.mkdir_p(File.dirname(image_file.attachment.path))
+          attachment_path = Engine.root.join('spec', 'fixtures', image_file.attachment_file_name)
+          unless File.identical?(attachment_path, image_file.attachment.path)
+            FileUtils.cp(attachment_path, image_file.attachment.path)
+          end
+        end
       end
 
       trait :uploaded do
+        uploading
         state { 'uploaded' }
+      end
+
+      trait :processing do
+        state { 'processing' }
+      end
+
+      trait :processed do
       end
 
       trait :processing_failed do

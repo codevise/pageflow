@@ -13,7 +13,17 @@ module Pageflow
       end
 
       trait :uploading do
+        attachment { nil }
+        attachment_file_name { 'image.jpg' }
         state { 'uploading' }
+
+        after :create do |hosted_file|
+          FileUtils.mkdir_p(File.dirname(hosted_file.attachment.path))
+          attachment_path = Engine.root.join('spec', 'fixtures', hosted_file.attachment_file_name)
+          unless File.identical?(attachment_path, hosted_file.attachment.path)
+            FileUtils.cp(attachment_path, hosted_file.attachment.path)
+          end
+        end
       end
 
       trait :uploaded do

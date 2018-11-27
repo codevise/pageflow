@@ -7,10 +7,14 @@ module Pageflow
     def perform_with_result(file, _options)
       file.attachment.reprocess!
 
-      :ok
+      if file.valid?
+        :ok
+      else
+        raise ActiveRecord::RecordInvalid
+      end
     rescue ActiveRecord::RecordInvalid, Errno::ENAMETOOLONG
       file.attachment = nil
-      file.save!
+      file.attachment_file_name = 'error'
       :error
     end
   end

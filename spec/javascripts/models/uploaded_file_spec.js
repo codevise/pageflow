@@ -78,10 +78,11 @@ describe('UploadedFile', function() {
   });
 
   describe('#toJSON', function() {
-    it('includes rights and configuration', function() {
+    it('includes rights, configuration and file_name', function() {
       var file = new File({
         state: 'processed',
         rights: 'someone',
+        file_name: 'image_jpg',
         configuration: {
           some: 'value'
         }
@@ -89,6 +90,7 @@ describe('UploadedFile', function() {
 
       expect(file.toJSON()).to.eql({
         rights: 'someone',
+        file_name: 'image_jpg',
         configuration: {
           some: 'value'
         }
