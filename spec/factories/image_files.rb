@@ -21,14 +21,14 @@ module Pageflow
 
       trait :uploading do
         attachment { nil }
-        attachment_file_name { 'image.jpg' }
+        attachment_on_s3_file_name { 'image.jpg' }
         state { 'uploading' }
 
         # simulate direct upload in background
-        # Caveat: attachment_file_name must map to a file in fixtures
+        # Caveat: attachment_on_s3_file_name must map to a file in fixtures
         after :create do |image_file|
           FileUtils.mkdir_p(File.dirname(image_file.attachment.path))
-          attachment_path = Engine.root.join('spec', 'fixtures', image_file.attachment_file_name)
+          attachment_path = Engine.root.join('spec', 'fixtures', image_file.attachment_on_s3_file_name)
           unless File.identical?(attachment_path, image_file.attachment.path)
             FileUtils.cp(attachment_path, image_file.attachment.path)
           end

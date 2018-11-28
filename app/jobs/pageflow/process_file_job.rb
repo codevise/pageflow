@@ -10,12 +10,19 @@ module Pageflow
       if file.valid?
         :ok
       else
-        raise ActiveRecord::RecordInvalid
+        reset_invalid_attachment(file)
+        :error
       end
     rescue ActiveRecord::RecordInvalid, Errno::ENAMETOOLONG
-      file.attachment = nil
-      file.attachment_file_name = 'error'
+      reset_invalid_attachment(file)
+
       :error
+    end
+
+    def reset_invalid_attachment(file)
+      file_name = file.attachment_on_s3_file_name
+      file.attachment = nil
+      file.attachment_on_s3_file_name = file_name
     end
   end
 end

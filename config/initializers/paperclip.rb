@@ -10,6 +10,11 @@ Paperclip.interpolates(:class_basename) do |attachment, style|
   Pageflow::PaperclipInterpolations::Support.class_basename(attachment, style)
 end
 
+Paperclip.interpolates(:attachments_path_name) do |attachment, _style|
+  record = attachment.instance
+  record.respond_to?(:attachments_path_name) ? record.attachments_path_name : 'attachment_on_s3s'
+end
+
 Paperclip.interpolates(:pageflow_placeholder) do |attachment, style|
   Pageflow::PaperclipInterpolations::Support.pageflow_placeholder(attachment, style)
 end

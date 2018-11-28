@@ -1,20 +1,13 @@
 module Pageflow
   class Configuration
     module Defaults
-      PAPERCLIP_FILESYSTEM_DEFAULT_OPTIONS = {
-        storage: :filesystem,
-        path: ':pageflow_filesystem_root/:class/:attachment/:id_partition/:style/:filename',
-        url: 'not_uploaded_yet',
-        validate_media_type: false
-      }.freeze
-
       PAPERCLIP_S3_DEFAULT_OPTIONS = {
         storage: :s3,
         s3_headers: {'Cache-Control' => 'public, max-age=31536000'},
 
         url: ':s3_alias_url',
-        path: ':pageflow_s3_root/:class_basename/:attachment/' \
-          ':id_partition/:pageflow_attachments_version:style/:filename',
+        path: ':pageflow_s3_root/:class_basename/:attachments_path_name/' \
+              ':id_partition/:pageflow_attachments_version:style/:filename',
 
         validate_media_type: false,
 

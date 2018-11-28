@@ -21,7 +21,7 @@ module Pageflow
         end
 
         it 'sets state to error if attachment cannot be processed' do
-          file = create(:image_file, :uploaded, attachment_file_name: 'broken.jpg')
+          file = create(:image_file, :uploaded, attachment_on_s3_file_name: 'broken.jpg')
 
           file.process
 
@@ -29,7 +29,7 @@ module Pageflow
         end
 
         it 'saves image width and height of original attachment' do
-          file = create(:image_file, :uploaded, attachment_file_name: '7x15.png')
+          file = create(:image_file, :uploaded, attachment_on_s3_file_name: '7x15.png')
 
           file.process
 
@@ -38,7 +38,7 @@ module Pageflow
         end
 
         it 'sets width and height to nil if image cannot be identified' do
-          file = create(:image_file, :uploaded, attachment_file_name: 'broken.jpg')
+          file = create(:image_file, :uploaded, attachment_on_s3_file_name: 'broken.jpg')
 
           file.process
 
@@ -68,7 +68,7 @@ module Pageflow
           file = create(:image_file,
                         :processing_failed,
                         attachment: nil,
-                        attachment_file_name: 'broken.jpg')
+                        attachment_on_s3_file_name: 'broken.jpg')
 
           FileUtils.mkdir_p(File.dirname(file.attachment.path))
           FileUtils.cp(Engine.root.join('spec', 'fixtures', 'broken.jpg'), file.attachment.path)

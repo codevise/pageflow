@@ -1,10 +1,6 @@
 module Pageflow
   # Options to be defined in the pageflow initializer of the main app.
   class Configuration
-    # Default options for paperclip attachments which are supposed to
-    # use filesystem storage.
-    attr_accessor :paperclip_filesystem_default_options
-
     # Default options for paperclip attachments which are supposed to use
     # s3 storage.
     attr_accessor :paperclip_s3_default_options
@@ -324,7 +320,6 @@ module Pageflow
       @paperclip_filesystem_root = Rails.public_path.join('system/uploads')
       @paperclip_s3_root = 'main'
 
-      @paperclip_filesystem_default_options = Defaults::PAPERCLIP_FILESYSTEM_DEFAULT_OPTIONS.dup
       @paperclip_s3_default_options = Defaults::PAPERCLIP_S3_DEFAULT_OPTIONS.dup
 
       @paperclip_direct_upload_options = lambda { |attachment|

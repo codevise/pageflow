@@ -7,7 +7,7 @@ module Pageflow
 
       hosted_file.valid?
 
-      expect(hosted_file).to have(1).errors_on(:attachment)
+      expect(hosted_file).to have(1).errors_on(:attachment_on_s3)
     end
 
     it 'is valid if attachment is present' do
@@ -52,7 +52,7 @@ module Pageflow
 
   describe 'basename' do
     it 'returns the original file name without extention' do
-      hosted_file = create(:hosted_file, attachment_file_name: 'video.mp4')
+      hosted_file = create(:hosted_file, attachment_on_s3_file_name: 'video.mp4')
 
       expect(hosted_file.basename).to eq('video')
     end

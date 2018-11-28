@@ -13,7 +13,7 @@ module Pageflow
     end
 
     def example_file
-      @example_file ||= ImageFile.new(id: 0, attachment_file_name: ':basename.jpg')
+      @example_file ||= ImageFile.new(id: 0, attachment_on_s3_file_name: ':basename.jpg')
     end
   end
 end

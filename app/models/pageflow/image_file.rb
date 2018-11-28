@@ -34,9 +34,15 @@ module Pageflow
       ':pageflow_placeholder'
     end
 
-    do_not_validate_attachment_file_type(:attachment)
+    # used in paperclip initializer to interpolate the storage path
+    # needs to be "processed_attachments" for images for legacy reasons
+    def attachments_path_name
+      'processed_attachments'
+    end
 
-    after_attachment_post_process :save_image_dimensions
+    do_not_validate_attachment_file_type(:attachment_on_s3)
+
+    after_attachment_on_s3_post_process :save_image_dimensions
 
     def thumbnail_url(*args)
       attachment.url(*args)
