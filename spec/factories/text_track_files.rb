@@ -31,11 +31,7 @@ module Pageflow
         state { 'uploading' }
 
         after :create do |text_track_file|
-          FileUtils.mkdir_p(File.dirname(text_track_file.attachment.path))
-          attachment_path = Engine.root.join('spec', 'fixtures', 'sample.vtt')
-          unless File.identical?(attachment_path, text_track_file.attachment.path)
-            FileUtils.cp(attachment_path, text_track_file.attachment.path)
-          end
+          simulate_direct_upload(text_track_file)
         end
       end
 

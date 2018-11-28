@@ -31,11 +31,7 @@ module Pageflow
         state { 'uploading' }
 
         after :create do |video_file|
-          FileUtils.mkdir_p(File.dirname(video_file.attachment.path))
-          attachment_path = Engine.root.join('spec', 'fixtures', video_file.attachment_on_s3_file_name)
-          unless File.identical?(attachment_path, video_file.attachment.path)
-            FileUtils.cp(attachment_path, video_file.attachment.path)
-          end
+          simulate_direct_upload(video_file)
         end
       end
 

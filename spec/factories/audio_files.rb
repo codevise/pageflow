@@ -25,11 +25,7 @@ module Pageflow
         state { 'uploading' }
 
         after :create do |audio_file|
-          FileUtils.mkdir_p(File.dirname(audio_file.attachment.path))
-          attachment_path = Engine.root.join('spec', 'fixtures', 'et.ogg')
-          unless File.identical?(attachment_path, audio_file.attachment.path)
-            FileUtils.cp(attachment_path, audio_file.attachment.path)
-          end
+          simulate_direct_upload(audio_file)
         end
       end
 
