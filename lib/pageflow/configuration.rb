@@ -323,9 +323,13 @@ module Pageflow
       @paperclip_s3_default_options = Defaults::PAPERCLIP_S3_DEFAULT_OPTIONS.dup
 
       @paperclip_direct_upload_options = lambda { |attachment|
-        attachment.s3_bucket.presigned_post(key: attachment.path,
-                                            success_action_status: '201',
-                                            acl: 'public-read')
+        presigned_post_config = attachment.s3_bucket.presigned_post(key: attachment.path,
+                                                                    success_action_status: '201',
+                                                                    acl: 'public-read')
+        {
+          url: presigned_post_config.url,
+          fields: presigned_post_config.fields
+        }
       }
 
       @zencoder_options = {}

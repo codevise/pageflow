@@ -57,11 +57,7 @@ module Pageflow
     end
 
     def direct_upload_config
-      presigned_post_config = Pageflow.config.paperclip_direct_upload_options.call(attachment)
-      {
-        url: presigned_post_config.url,
-        fields: presigned_post_config.fields
-      }
+      Pageflow.config.paperclip_direct_upload_options.call(attachment)
     end
   end
 end

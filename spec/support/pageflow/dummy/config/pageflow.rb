@@ -9,7 +9,10 @@ Pageflow.configure do |config|
   )
 
   config.paperclip_direct_upload_options = lambda do |_|
-    OpenStruct.new(url: '#', fields: [])
+    {
+      url: '#',
+      fields: []
+    }
   end
 end
 
