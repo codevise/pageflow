@@ -115,21 +115,6 @@ pageflow.UploadedFile = Backbone.Model.extend({
     });
   },
 
-  upload: function() {
-    var file = this;
-    var deferred = new $.Deferred();
-
-    this.save().done(function () {
-      deferred.resolve();
-    });
-
-    return deferred.promise().then(
-      function() {
-        return file;
-      }
-    );
-  },
-
   cancelUpload: function() {
     if (this.get('state') === 'uploading') {
       this.trigger('uploadCancelled');
