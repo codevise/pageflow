@@ -21,7 +21,7 @@ module Pageflow
 
       trait :uploading do
         attachment { nil }
-        attachment_on_s3_file_name { 'image.jpg' }
+        file_name { 'image.jpg' }
         state { 'uploading' }
 
         after :create do |image_file|

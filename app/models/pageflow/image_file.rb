@@ -40,8 +40,6 @@ module Pageflow
       'processed_attachments'
     end
 
-    do_not_validate_attachment_file_type(:attachment_on_s3)
-
     after_attachment_on_s3_post_process :save_image_dimensions
 
     def thumbnail_url(*args)

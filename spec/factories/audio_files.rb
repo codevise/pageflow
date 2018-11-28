@@ -21,7 +21,7 @@ module Pageflow
 
       trait :uploading do
         attachment { nil }
-        attachment_on_s3_file_name { 'et.ogg' }
+        file_name { 'et.ogg' }
         state { 'uploading' }
 
         after :create do |audio_file|

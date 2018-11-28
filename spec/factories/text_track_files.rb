@@ -23,11 +23,12 @@ module Pageflow
 
       trait :from_srt_file do
         attachment { File.open(Engine.root.join('spec', 'fixtures', 'sample.srt')) }
+        file_name { 'sample.srt' }
       end
 
       trait :uploading do
         attachment { nil }
-        attachment_on_s3_file_name { 'sample.vtt' }
+        file_name { 'sample.vtt' }
         state { 'uploading' }
 
         after :create do |text_track_file|

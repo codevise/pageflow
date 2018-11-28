@@ -5,7 +5,7 @@ module FactoryBot
         FileUtils.mkdir_p(File.dirname(hosted_file.attachment.path))
         attachment_path = Pageflow::Engine.root.join('spec',
                                                      'fixtures',
-                                                     hosted_file.attachment_on_s3_file_name)
+                                                     hosted_file.file_name)
         unless File.identical?(attachment_path, hosted_file.attachment.path)
           FileUtils.cp(attachment_path, hosted_file.attachment.path)
         end

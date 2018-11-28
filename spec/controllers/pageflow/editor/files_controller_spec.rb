@@ -182,7 +182,7 @@ module Pageflow
         expect(json_response(path: [:usage_id])).to be_present
       end
 
-      it 'supplies direct upload config for client upload' do
+      it 'supplies direct upload config for client upload in response' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
@@ -197,6 +197,23 @@ module Pageflow
              format: 'json')
 
         expect(entry.image_files.first.direct_upload_config).to be_present
+      end
+
+      it 'does not allow to create file with path for attachment' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {file_name: '../../image.jpg'}
+             },
+             format: 'json')
+
+        expect(response.status).to eq(422)
       end
 
       it 'does not allow to create file without required attachment file name' do

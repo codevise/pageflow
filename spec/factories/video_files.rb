@@ -27,7 +27,7 @@ module Pageflow
 
       trait :uploading do
         attachment { nil }
-        attachment_on_s3_file_name { 'video.mp4' }
+        file_name { 'video.mp4' }
         state { 'uploading' }
 
         after :create do |video_file|

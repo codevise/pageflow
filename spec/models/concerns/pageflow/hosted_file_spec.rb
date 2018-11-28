@@ -52,7 +52,7 @@ module Pageflow
 
   describe 'basename' do
     it 'returns the original file name without extention' do
-      hosted_file = create(:hosted_file, attachment_on_s3_file_name: 'video.mp4')
+      hosted_file = create(:hosted_file, file_name: 'video.mp4')
 
       expect(hosted_file.basename).to eq('video')
     end

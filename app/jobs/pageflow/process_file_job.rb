@@ -20,9 +20,9 @@ module Pageflow
     end
 
     def reset_invalid_attachment(file)
-      file_name = file.attachment_on_s3_file_name
+      file_name = file.file_name
       file.attachment = nil
-      file.attachment_on_s3_file_name = file_name
+      file.file_name = file_name
     end
   end
 end
