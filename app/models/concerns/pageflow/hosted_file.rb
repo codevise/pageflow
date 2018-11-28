@@ -52,6 +52,10 @@ module Pageflow
       {}
     end
 
+    def retryable?
+      false
+    end
+
     def ready?
       attachment.present?
     end
