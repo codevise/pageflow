@@ -12,62 +12,84 @@ pageflow.mediaPlayer.volumeFading.webAudio = function(player, audioContext) {
 
   var allowedMinValue = 0.000001;
 
-  var originalPlay = player.play;
-
   if (audioContext.state === 'suspended') {
     pageflow.events.on('background_media:unmute', function() {
-      audioContext.resume();
-    });
-
-    audioContext.addEventListener('statechange', function() {
       player.volume(currentValue);
     });
   }
 
-  player.play = function(/* arguments */) {
-    return originalPlay.apply(player, arguments);
-  };
+  function tryResumeIfSuspended() {
+    return new $.Deferred(function(deferred) {
+      if (audioContext.state === 'suspended') {
+        var maybePromise = audioContext.resume();
+
+        if (maybePromise && maybePromise.then) {
+          maybePromise.then(handleDeferred);
+        }
+        else {
+          setTimeout(handleDeferred, 0);
+        }
+      }
+      else {
+        deferred.resolve();
+      }
+
+      function handleDeferred() {
+        if (audioContext.state === 'suspended') {
+          deferred.reject();
+        }
+        else {
+          deferred.resolve();
+        }
+      }
+    }).promise();
+  }
 
   player.volume = function(value) {
     if (typeof value !== 'undefined') {
-      if (audioContext.state === 'suspended') {
-        currentValue = ensureInAllowedRange(value);
-        return;
-      }
+      tryResumeIfSuspended().then(
+        function() {
+          ensureGainNode();
 
-      ensureGainNode();
+          cancel();
+          currentValue = ensureInAllowedRange(value);
 
-      cancel();
-      currentValue = ensureInAllowedRange(value);
-
-      return gainNode.gain.setValueAtTime(currentValue,
-                                          audioContext.currentTime);
+          gainNode.gain.setValueAtTime(currentValue,
+                                       audioContext.currentTime);
+        },
+        function() {
+          currentValue = ensureInAllowedRange(value);
+        }
+      );
     }
 
     return Math.round(currentValue * 100) / 100;
   };
 
   player.fadeVolume = function(value, duration) {
-    if (audioContext.state === 'suspended') {
-      currentValue = ensureInAllowedRange(value);
-      return new $.Deferred().resolve().promise();
-    }
+    return tryResumeIfSuspended().then(
+      function() {
+        ensureGainNode();
 
-    ensureGainNode();
+        cancel();
+        recordFadeStart(duration);
 
-    cancel();
-    recordFadeStart(duration);
+        currentValue = ensureInAllowedRange(value);
 
-    currentValue = ensureInAllowedRange(value);
+        gainNode.gain.setValueAtTime(lastStartValue, audioContext.currentTime);
+        gainNode.gain.linearRampToValueAtTime(currentValue,
+                                              audioContext.currentTime + duration / 1000);
 
-    gainNode.gain.setValueAtTime(lastStartValue, audioContext.currentTime);
-    gainNode.gain.linearRampToValueAtTime(currentValue,
-                                          audioContext.currentTime + duration / 1000);
-
-    return new $.Deferred(function(deferred) {
-      currentTimeout = setTimeout(resolve, duration);
-      currentDeferred = deferred;
-    }).promise();
+        return new $.Deferred(function(deferred) {
+          currentTimeout = setTimeout(resolve, duration);
+          currentDeferred = deferred;
+        }).promise();
+      },
+      function() {
+        currentValue = ensureInAllowedRange(value);
+        return new $.Deferred().resolve().promise();
+      }
+    );
   };
 
   player.one('dispose', cancel);
@@ -119,9 +141,10 @@ pageflow.mediaPlayer.volumeFading.webAudio = function(player, audioContext) {
     if (gainNode.gain.value == 1) {
       var performedDuration = (audioContext.currentTime - lastStartTime) * 1000;
       var lastDelta = currentValue - lastStartValue;
+      var performedFraction = lastDelta > 0 ? performedDuration / lastDuration : 1;
 
       currentValue = ensureInAllowedRange(
-        lastStartValue + (performedDuration / lastDuration * lastDelta)
+        lastStartValue + performedFraction * lastDelta
       );
     }
     else {
