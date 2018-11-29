@@ -146,7 +146,7 @@ describe('createFilePlayer', () => {
     [
       {event: 'play', action: 'playing'},
       {event: 'playfailed', action: 'playFailed'},
-      {event: 'playmuted', action: 'playMuted'},
+      {event: 'playmuted', action: 'playingMuted'},
       {event: 'pause', action: 'paused'},
       {event: 'loadedmetadata', action: 'metaDataLoaded', payload: {currentTime: 5, duration: 10}},
       {event: 'progress', action: 'progress', payload: {bufferedEnd: 7}},
@@ -215,6 +215,17 @@ describe('createFilePlayer', () => {
       wrapper.setProps({playerState: {shouldPlay: false, fadeDuration: 500}});
 
       expect(mockPlayer.fadeOutAndPause).to.have.been.calledWith(500);
+    });
+
+    it('calls changeVolumeFactor on player when volumeFactor changes', () => {
+      const {FilePlayer, mockPlayer} = setup();
+
+      const wrapper = mount(<FilePlayer {...requiredProps}
+                                        playerState={{}} />);
+
+      wrapper.setProps({playerState: {volumeFactor: 0.2, volumeFactorFadeDuration: 500}});
+
+      expect(mockPlayer.changeVolumeFactor).to.have.been.calledWith(0.2, 500);
     });
 
     it('mutes the player when muted changes to true', () => {
@@ -421,6 +432,7 @@ describe('createFilePlayer', () => {
       pause: sinon.spy(),
       fadeOutAndPause: sinon.spy(),
       muted: sinon.spy(),
+      changeVolumeFactor: sinon.spy(),
       dispose: sinon.spy(),
 
       updateCueLineSettings: sinon.spy(),

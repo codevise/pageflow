@@ -66,7 +66,7 @@ export default function({
           watchPlayer(this.player, this.props.playerActions);
 
           this.prevFileId = this.props.file.id;
-        });
+        }, true);
       };
 
       this.disposeMediaTag = () => {
@@ -80,12 +80,21 @@ export default function({
         return;
       }
 
-      updatePlayerMuted(this.player, prevProps.muted, this.props.muted);
+      this.player.ready(() =>  {
+        updatePlayerMuted(this.player,
+                          prevProps.muted,
+                          this.props.muted);
 
-      updatePlayerFromPlayerState(this.player,
-                                  prevProps.playerState,
-                                  this.props.playerState,
-                                  this.props.playerActions);
+        updatePlayerVolumeFactor(this.player,
+                                 prevProps.playerState.volumeFactor,
+                                 this.props.playerState.volumeFactor,
+                                 this.props.playerState.volumeFactorFadeDuration);
+
+        updatePlayerFromPlayerState(this.player,
+                                    prevProps.playerState,
+                                    this.props.playerState,
+                                    this.props.playerActions);
+      }, true);
 
       if (!this.displaysTextTracksInNativePlayer) {
         updateTextTracks(this.player,
@@ -179,5 +188,11 @@ function textTrackPosition(state, {playerState}) {
 function updatePlayerMuted(player, prevMuted, muted) {
   if (prevMuted !== muted) {
     player.muted(muted);
+  }
+}
+
+function updatePlayerVolumeFactor(player, prevVolumeFactor, volumeFactor, fadeDuration) {
+  if (prevVolumeFactor !== volumeFactor) {
+    player.changeVolumeFactor(volumeFactor, fadeDuration);
   }
 }
