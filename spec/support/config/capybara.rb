@@ -16,8 +16,16 @@ Capybara.javascript_driver = :selenium_chrome_headless_no_sandbox
 
 Capybara::Chromedriver::Logger.raise_js_errors = true
 Capybara::Chromedriver::Logger.filters = [
+  # Bandwidth probe files are not available in tests
   /bandwidth_probe.*Failed to load resource/i,
-  /Target node has markup rendered by React/i
+
+  # React does not like the server rendered "back to top" link inside
+  # page sections.
+  /Target node has markup rendered by React/i,
+
+  # Ignore failure of debounced request to refresh partials while db
+  # has already been cleaned
+  /partials - Failed to load resource: the server responded with a status of 401/
 ]
 
 RSpec.configure do |config|
