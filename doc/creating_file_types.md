@@ -24,15 +24,25 @@ associated with the new type of file:
 
 Including the `Pageflow::HostedFile` module provides the base
 functionality of associating files with entries and handling storage
-of uploaded files. In the corresponding migration you can use the
-`Pageflow::HostedFile.columns` to provide the required columns for the
-model.
+of uploaded files. In the corresponding migration you need to provide
+the required columns for the model.
 
     # db/migrate/xxxxx_create_package.rb
     class CreateTestHostedFile < ActiveRecord::Migration
       def change
         create_table :pageflow_panorama_packages do |t|
-          Pageflow::HostedFile.columns(t)
+          t.belongs_to(:entry, index: true)
+          t.belongs_to(:uploader, index: true)
+
+          t.string(:state)
+          t.string(:rights)
+
+          t.string(:attachment_on_s3_file_name)
+          t.string(:attachment_on_s3_content_type)
+          t.integer(:attachment_on_s3_file_size, limit: 8)
+          t.datetime(:attachment_on_s3_updated_at)
+
+          t.timestamps
         end
       end
     end
