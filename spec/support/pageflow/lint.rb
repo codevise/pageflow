@@ -5,7 +5,7 @@ module Pageflow
   # Shared examples providing integration level specs for Pageflow
   # components commonly defined by plugins.
   #
-  # @since edge
+  # @since 13.0
   module Lint
     # Ensure file type json partials render correctly.
     #

@@ -6,7 +6,7 @@ module Pageflow
   # inside a test does not work since there is no easy way to tear it
   # down after the test.
   #
-  # @since edge
+  # @since 13.0
   module GlobalConfigApiTestHelper
     mattr_accessor :custom_configure_block
 

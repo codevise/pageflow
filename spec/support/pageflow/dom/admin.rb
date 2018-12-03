@@ -7,7 +7,7 @@ module Pageflow
   module Dom
     # Dominos for admin ui elements and helper methods.
     #
-    # @since edge
+    # @since 12.2
     module Admin
       # Sign in with the given role
       #

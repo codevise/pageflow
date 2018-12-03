@@ -1,5 +1,70 @@
 # CHANGELOG
 
+### Version 13.0.0.rc1
+
+2018-12-03
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v13.0.0.beta7...v13.0.0.rc1)
+
+#### Breaking Changes
+
+- Remove deprecated `HostedFile.columns` method
+  ([#1085](https://github.com/codevise/pageflow/pull/1085))
+
+  Migrations for models including `Pageflow::HostedFile` can no longer
+  use `Pageflow::HostedFile.columns`. The call has to be replaced with
+  the list of columns. See the
+  [guide on creating files types](doc/creating_file_types.md) for an
+  updated migration template.
+
+- Remove `HostedFile#keep_on_filesystem_after_upload_to_s3`
+  ([#1082](https://github.com/codevise/pageflow/pull/1082))
+
+  Pageflow plugins defining file types need to change their jobs to
+  redownload attachments for processing.
+
+#### Published Entries
+
+- Introduce widget insert points
+  ([#1050](https://github.com/codevise/pageflow/pull/1050),
+   [#1081](https://github.com/codevise/pageflow/pull/1081))
+- Init page transitions after navigation direction
+  ([#1047](https://github.com/codevise/pageflow/pull/1047))
+
+#### Editor
+
+- Add maxlength attribute to text input fields
+  ([#1063](https://github.com/codevise/pageflow/pull/1063),
+   [#1075](https://github.com/codevise/pageflow/pull/1075))
+
+#### Admin
+
+- Redirect to active tab when modifying revisions
+  ([#1066](https://github.com/codevise/pageflow/pull/1066))
+- Bug fix: Run checkbox toggle script for accounts only on new and edit
+  ([#1072](https://github.com/codevise/pageflow/pull/1072))
+- Bug fix: Fix flash notice on revision restore
+  ([#1071](https://github.com/codevise/pageflow/pull/1071))
+- Bug fix: Prevent class name collision in admin tabs view
+  ([#1046](https://github.com/codevise/pageflow/pull/1046))
+
+#### Rails Engine
+
+- Fix example migration in file type guide
+  ([#1087](https://github.com/codevise/pageflow/pull/1087))
+
+#### Internal
+
+- Add js feature spec for published entry
+  ([#1049](https://github.com/codevise/pageflow/pull/1049))
+- Fix bourbon deprecation warnings
+  ([#1070](https://github.com/codevise/pageflow/pull/1070))
+- Fix warnings caused by Enzyme 2.8.2
+  ([#1053](https://github.com/codevise/pageflow/pull/1053))
+- Make js specs fail on js errors
+  ([#1048](https://github.com/codevise/pageflow/pull/1048),
+   [#1086](https://github.com/codevise/pageflow/pull/1086))
+
 ### Version 13.0.0.beta7
 
 2018-10-23

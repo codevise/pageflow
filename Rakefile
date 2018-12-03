@@ -17,7 +17,7 @@ end
 require 'semmy'
 Semmy::Tasks.install do |config|
   config.github_repository = 'codevise/pageflow'
-  config.source_files_with_docs_tags = '{app,lib,node_package/src}/**/*.{js,jsx,rb,scss}'
+  config.source_files_with_docs_tags = '{app,lib,node_package/src,spec/support/pageflow}/**/*.{js,jsx,rb,scss}'
 end
 
 require File.expand_path('spec/support/pageflow/dummy/app', File.dirname(__FILE__))

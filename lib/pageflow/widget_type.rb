@@ -28,7 +28,7 @@ module Pageflow
     # Point in DOM where widget should be inserted. Possible values
     # are `:bottom_of_entry` (default) or `:before_entry`.
     #
-    # @since edge
+    # @since 13.0
     def insert_point
       :bottom_of_entry
     end

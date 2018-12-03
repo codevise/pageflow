@@ -3,7 +3,7 @@ module Pageflow
     module Admin
       # Base class for admin form dominos
       #
-      # @since edge
+      # @since 12.2
       class EditForm < Domino
         # Visit the edit page and find the form.
         def self.for(resource)
@@ -30,7 +30,7 @@ module Pageflow
 
       # Edit form of entry admin.
       #
-      # @since edge
+      # @since 12.2
       class EntryEditForm < EditForm
         selector '.edit.admin_entries'
 
@@ -48,7 +48,7 @@ module Pageflow
 
       # Edit form of account admin.
       #
-      # @since edge
+      # @since 12.2
       class AccountEditForm < EditForm
         selector '.edit.admin_accounts'
 
@@ -66,7 +66,7 @@ module Pageflow
 
       # Edit form for theming in account admin.
       #
-      # @since edge
+      # @since 12.2
       class ThemingEditForm < EditForm
         selector '.edit.admin_accounts'
 

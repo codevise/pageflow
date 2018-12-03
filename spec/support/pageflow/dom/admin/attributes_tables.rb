@@ -3,7 +3,7 @@ module Pageflow
     module Admin
       # Base class for attribute table dominos.
       #
-      # @since edge
+      # @since 12.2
       class AttributesTable < Domino
         # Visit the admin page of the given resource and find the
         # attributes table.
@@ -26,7 +26,7 @@ module Pageflow
 
       # The attributes table on the account page.
       #
-      # @since edge
+      # @since 12.2
       class AccountAttributesTable < AttributesTable
         selector '.attributes_table.pageflow_account'
 
@@ -38,7 +38,7 @@ module Pageflow
 
       # The attributes table on the entry page
       #
-      # @since edge
+      # @since 12.2
       class EntryAttributesTable < AttributesTable
         selector '.attributes_table.pageflow_entry'
 
@@ -50,7 +50,7 @@ module Pageflow
 
       # The theming attributes table on the account page
       #
-      # @since edge
+      # @since 12.2
       class ThemingAttributesTable < AttributesTable
         selector '.attributes_table.pageflow_theming'
 

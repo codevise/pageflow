@@ -1,7 +1,7 @@
 /**
  * Mute feature settings for background media (ATMO and background videos)
  *
- * @since edge
+ * @since 13.0
  */
 pageflow.backgroundMedia = {
   muted: false,
