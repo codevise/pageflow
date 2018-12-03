@@ -831,6 +831,7 @@ de:
         users: Benutzer
       revisions:
         published_until_hint: Freilassen, um Beitrag unbegrenzt zu veröffentlichen.
+        restored: Revision wiederhergestellt
       themings:
         additional_cnames_hint: Kommaseparierte Liste von weiteren CNAMES. Ausschließlich zur Auswahl der Redirect URL genutzt.
         cname_hint: Wird in Share Links verwendet.
@@ -1811,6 +1812,7 @@ de:
             none: "(Kein)"
             placeholder: Standard (%{text})
           text_input_view:
+            max_characters_exceeded: Maximale Zeichenanzahl überschritten (%{max_length})
             required_field: Muss ausgefüllt werden
           url_input_view:
             required_field: Muss ausgefüllt werden

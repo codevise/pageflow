@@ -831,6 +831,7 @@ en:
         users: User
       revisions:
         published_until_hint: Leave blank to publish indefinitely.
+        restored: Version restored
       themings:
         additional_cnames_hint: Comma separated list of additional CNAMES. Used only to select the correct redirect URL.
         cname_hint: Used in public sharing URLs.
@@ -1786,6 +1787,7 @@ en:
             none: "(none)"
             placeholder: Default (%{text})
           text_input_view:
+            max_characters_exceeded: Maximum number of characters exceeded (%{max_length})
             required_field: Required field
           url_input_view:
             required_field: Required field
