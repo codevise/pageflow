@@ -104,7 +104,7 @@
         that.element.removeClass('visible');
       });
 
-      $.when(pageflow.ready, pageflow.manualStart).done(function() {
+      $.when(pageflow.ready, pageflow.delayedStart.promise()).done(function() {
         setTimeout(function() {
           that.element.addClass('attract');
           setTimeout(function() {

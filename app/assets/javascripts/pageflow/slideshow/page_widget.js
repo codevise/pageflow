@@ -175,7 +175,7 @@
 
     _triggerDelayedPageTypeHook: function(name) {
       var that = this;
-      var handle = pageflow.manualStart.wait(function() {
+      var handle = pageflow.delayedStart.wait(function() {
         that._triggerPageTypeHook(name);
       });
 
