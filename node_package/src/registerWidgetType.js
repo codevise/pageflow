@@ -1,8 +1,5 @@
-export const registry = [];
+import WidgetTypeRegistry from './WidgetTypeRegistry';
 
-export default function(name, {component}) {
-  registry.push({
-    name,
-    component
-  });
-}
+export const registry = new WidgetTypeRegistry();
+
+export default registry.register;
