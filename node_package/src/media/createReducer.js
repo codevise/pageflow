@@ -56,6 +56,7 @@ export default function({scope = 'default'} = {}) {
     case PLAYING:
       return {
         ...state,
+        shouldPlay: true,
         isPlaying: true
       };
     case PLAY_FAILED:
@@ -103,7 +104,6 @@ export default function({scope = 'default'} = {}) {
       return {
         ...state,
         shouldPlay: false,
-        isPlaying: false,
         fadeDuration: action.payload.fadeDuration,
         isLoading: false
       };

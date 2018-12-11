@@ -95,4 +95,141 @@ describe('createReducer creates function that', () => {
 
     expect(nextState.playFailed).to.eq(false);
   });
+
+  it('sets shouldPlay to true on PLAY', () => {
+    const {play} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, play());
+
+    expect(state.shouldPlay).to.eq(true);
+  });
+
+  it('sets shouldPlay to true on PLAYING even if play started playing by itself', () => {
+    const {playing} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, playing());
+
+    expect(state.shouldPlay).to.eq(true);
+  });
+
+  it('resets shouldPlay to false on PAUSE', () => {
+    const {play, pause} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, play());
+    state = reducer(state, pause());
+
+    expect(state.shouldPlay).to.eq(false);
+  });
+
+  it('sets shouldPlay to false on PAUSED even if player pauses by itself', () => {
+    const {play, playing, paused} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, play());
+    state = reducer(state, playing());
+    state = reducer(state, paused());
+
+    expect(state.shouldPlay).to.eq(false);
+  });
+
+  it('resets shouldPlay to false on ENDED', () => {
+    const {play, playing, ended} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, play());
+    state = reducer(state, playing());
+    state = reducer(state, ended());
+
+    expect(state.shouldPlay).to.eq(false);
+  });
+
+  it('leaves shouldPlay true on PAUSED action during buffer underuns', () => {
+    const {play, paused, bufferUnderrun} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, play());
+    state = reducer(state, bufferUnderrun());
+    state = reducer(state, paused());
+
+    expect(state.shouldPlay).to.eq(true);
+  });
+
+  it('sets shouldPlay to false on PAUSED action again after buffer underun', () => {
+    const {play, paused, bufferUnderrun, bufferUnderrunContinue} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, play());
+    state = reducer(state, bufferUnderrun());
+    state = reducer(state, bufferUnderrunContinue());
+    state = reducer(state, paused());
+
+    expect(state.shouldPlay).to.eq(false);
+  });
+
+
+  it('sets isPlaying to true on PLAYING action', () => {
+    const {playing} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, playing());
+
+    expect(state.isPlaying).to.eq(true);
+  });
+
+  it('resets isPlaying to false on PAUSED action', () => {
+    const {playing, paused} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, playing());
+    state = reducer(state, paused());
+
+    expect(state.isPlaying).to.eq(false);
+  });
+
+  it('resets isPlaying to false on ENDED action', () => {
+    const {playing, ended} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, playing());
+    state = reducer(state, ended());
+
+    expect(state.isPlaying).to.eq(false);
+  });
+
+  it('does not change isPlaying on actions that only intend to play', () => {
+    const {paused, play, playAndFadeIn} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, paused());
+    state = reducer(state, play());
+    state = reducer(state, playAndFadeIn({fadeDuration: 1000}));
+
+    expect(state.isPlaying).to.eq(false);
+  });
+
+  it('does not change isPlaying on actions that only intend to pause', () => {
+    const {playing, pause, fadeOutAndPause} = actionCreators();
+    const reducer = createReducer();
+    var state = {};
+
+    state = reducer(state, playing());
+    state = reducer(state, pause());
+    state = reducer(state, fadeOutAndPause({fadeDuration: 1000}));
+
+    expect(state.isPlaying).to.eq(true);
+  });
 });
