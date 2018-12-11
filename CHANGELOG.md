@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 12.4.1
+
+2018-12-11
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v12.4.0...v12.4.1)
+
+- Bug fix: Sanitize page perma id from URL fragment
+  ([#1091](https://github.com/codevise/pageflow/pull/1091))
+
 ### Version 12.4.0
 
 2018-11-29
