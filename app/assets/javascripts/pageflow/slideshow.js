@@ -179,7 +179,7 @@ pageflow.Slideshow = function($el, configurations) {
   }
 
   function getPageByPermaId(permaId) {
-    return $el.find('#' + permaId);
+    return $el.find('#' + parseInt(permaId, 10));
   }
 
   this.on = function() {
