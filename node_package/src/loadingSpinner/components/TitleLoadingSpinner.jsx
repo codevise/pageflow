@@ -10,20 +10,18 @@ import {editingWidget, widgetAttribute} from 'widgets/selectors';
 import {file} from 'files/selectors';
 import {pageBackgroundImageUrl, firstPageAttribures} from 'pages/selectors';
 
-const animationDuration = 9000;
-
 class TitleLoadingSpinner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hidden: PAGEFLOW_EDITOR,
+      hidden: false,
       animating: true
     };
   }
 
   componentDidMount() {
     if (PAGEFLOW_EDITOR) {
-      this.loopAnimation();
+      this.setState({hidden: true});
     }
     else {
       pageflow.delayedStart.waitFor(resolve => {
