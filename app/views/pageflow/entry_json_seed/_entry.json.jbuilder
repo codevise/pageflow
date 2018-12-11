@@ -1,5 +1,6 @@
 json.merge! common_entry_seed(entry)
 
+json.entry entry_attributes_seed(entry)
 json.theme entry_theme_seed(entry)
 
 json.storylines entry_storylines_seed(entry)

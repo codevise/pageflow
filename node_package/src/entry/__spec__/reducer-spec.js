@@ -5,7 +5,8 @@ import {expect} from 'support/chai';
 
 describe('entry reducer', () => {
   it('sets slug on init', () => {
-    const result = reducer(undefined, init({slug: 'my-entry'}));
+    const entry = {slug: 'my-entry'};
+    const result = reducer(undefined, init({entry}));
 
     expect(result.slug).to.eq('my-entry');
   });

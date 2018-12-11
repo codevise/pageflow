@@ -1,10 +1,10 @@
-export const INIT = 'ENTRY_INIT';
+export const UPDATE = 'ENTRY_UPDATE';
 
-export function init({slug}) {
+export function init({entry}) {
   return {
-    type: INIT,
+    type: UPDATE,
     payload: {
-      slug
+      entry
     }
   };
 }

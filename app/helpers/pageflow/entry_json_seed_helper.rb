@@ -11,6 +11,13 @@ module Pageflow
                                         entry: entry)).html_safe
     end
 
+    def entry_attributes_seed(entry)
+      {
+        title: entry.title,
+        slug: entry.slug
+      }
+    end
+
     def entry_theme_seed(entry)
       theme = entry.theme
       {

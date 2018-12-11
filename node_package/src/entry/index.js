@@ -1,12 +1,45 @@
 import {init} from './actions';
 import reducer from './reducer';
 
+import Backbone from 'backbone';
+
 export default {
-  init({slug, dispatch}) {
-    dispatch(init({slug}));
+  init({entry, dispatch}) {
+    if (Backbone.Model && entry instanceof Backbone.Model) {
+      watchModel({entry, dispatch});
+    }
+    else {
+      loadFromSeed({entry, dispatch});
+    }
   },
 
   createReducers() {
     return {entry: reducer};
   }
 };
+
+function watchModel({entry, dispatch}) {
+  updateFromModel({entry, dispatch});
+
+  entry.configuration.on('change:title', () => {
+    updateFromModel({entry, dispatch});
+  });
+}
+
+function updateFromModel({entry, dispatch}) {
+  dispatch(init({
+    entry: {
+      slug: entry.get('slug'),
+      title: entry.configuration.get('title') || entry.get('entry_title')
+    }
+  }));
+}
+
+function loadFromSeed({entry, dispatch}) {
+  dispatch(init({
+    entry: {
+      slug: entry.slug,
+      title: entry.title
+    }
+  }));
+}

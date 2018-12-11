@@ -1,9 +1,9 @@
-import {INIT} from './actions';
+import {UPDATE} from './actions';
 
 export default function(state = {}, action) {
   switch (action.type) {
-  case INIT:
-    return {slug: action.payload.slug};
+  case UPDATE:
+    return action.payload.entry;
   default:
     return state;
   }
