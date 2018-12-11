@@ -1,0 +1,30 @@
+en:
+  pageflow:
+    widgets:
+      roles:
+        loading_spinner: "Loading View"
+    editor:
+      widgets:
+        attributes:
+          title_loading_spinner:
+            title:
+              label: "Title"
+              inline_help: "Title to display in loadiner view. Defaults to entry title."
+            subtitle:
+              label: "Subtitle"
+              inline_help: "Subtitle to display in loadiner view."
+            custom_background_image_id:
+              label: "Background image"
+              inline_help: "By default the background image of the first page is used."
+      classic_loading_spinner:
+        widget_type_info_box_text: "This is a preview of the classic loading spinner. It is displayed while the page is loading."
+      title_loading_spinner:
+        widget_type_info_box_text: "This is a preview of the 'Title and Image' loading view. The animation runs while the page is loading."
+    classic_loading_spinner:
+      widget_type_name: "Classic"
+    title_loading_spinner:
+      widget_type_name: "Title and Image"
+    ui:
+      configuration_editor:
+        tabs:
+          loading_spinner: "Loading View"

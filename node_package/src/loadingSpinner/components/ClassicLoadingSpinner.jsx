@@ -20,13 +20,14 @@ class ClassicLoadingSpinner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fade: false,
-      hidden: PAGEFLOW_EDITOR
+      fading: false,
+      hidden: false
     };
   }
 
   componentDidMount() {
     if (PAGEFLOW_EDITOR) {
+      this.setState({hidden: true});
       return;
     }
 
