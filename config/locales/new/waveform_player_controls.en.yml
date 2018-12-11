@@ -1,5 +1,7 @@
 en:
   pageflow:
+    waveform_player_controls:
+      feature_name: "Waveform player controls variant for audio page"
     audio:
       page_attributes:
         audio_player_controls_variant:

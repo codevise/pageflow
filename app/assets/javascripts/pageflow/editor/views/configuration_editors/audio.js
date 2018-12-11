@@ -20,9 +20,12 @@ pageflow.ConfigurationEditorView.register('audio', {
     });
 
     this.tab('options', function() {
-      this.input('audio_player_controls_variant', pageflow.SelectInputView, {
-        values: ['default', 'waveform']
-      });
+      if (pageflow.features.isEnabled('waveform_player_controls')) {
+        this.input('audio_player_controls_variant', pageflow.SelectInputView, {
+          values: ['default', 'waveform']
+        });
+      }
+
       this.input('waveform_color', pageflow.ColorInputView, {
         visibleBinding: 'audio_player_controls_variant',
         visibleBindingValue: 'waveform',
