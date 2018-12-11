@@ -8,6 +8,6 @@ export default function(collectionName, {namespace} = {}) {
       state = state[namespace];
     }
 
-    return state[collectionName] || {};
+    return state[collectionName].items || {};
   };
 }

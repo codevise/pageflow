@@ -28,7 +28,7 @@ export default function(collectionName, {namespace} = {}) {
         return null;
       }
 
-      return namespacedState[collectionName][modelId];
+      return namespacedState[collectionName].items[modelId];
     };
   };
 }

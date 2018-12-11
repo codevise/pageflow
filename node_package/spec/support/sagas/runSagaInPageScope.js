@@ -13,7 +13,9 @@ export default function(saga, {
   const stateFixture = {
     ...addItemScope({
       pages: {
-        5: page
+        items: {
+          5: page
+        }
       }
     }, 'pages', 5)
   };

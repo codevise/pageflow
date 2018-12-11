@@ -1,9 +1,10 @@
-import {reset, add, change, remove} from './actions';
+import {reset, add, change, remove, order} from './actions';
 
 import pickAttributes from './pickAttributes';
 
 export default function({
   collection, dispatch, collectionName,
+  idAttribute = 'id',
   attributes = ['id'],
   includeConfiguration = false
 }) {
@@ -24,7 +25,8 @@ export default function({
   collection.on('change:id', (model) => {
     dispatch(add({
       collectionName,
-      attributes: modelToAttributes(model)
+      attributes: modelToAttributes(model),
+      order: collection.pluck(idAttribute)
     }));
   });
 
@@ -50,9 +52,17 @@ export default function({
     setTimeout(() => {
       dispatch(remove({
         collectionName,
-        attributes: modelToAttributes(model)
+        attributes: modelToAttributes(model),
+        order: collection.pluck(idAttribute)
       }));
     }, 0);
+  });
+
+  collection.on('sort', () => {
+    dispatch(order({
+      collectionName,
+      order: collection.pluck(idAttribute)
+    }));
   });
 
   const watchedAttributes = attributes.map(attribute =>
