@@ -1,10 +1,16 @@
-import {init} from './actions';
+import {update, ready} from './actions';
 import reducer from './reducer';
 
 import Backbone from 'backbone';
 
 export default {
-  init({entry, dispatch}) {
+  init({entry, dispatch, events, isServerSide}) {
+    if (!isServerSide) {
+      events.once('ready', () =>
+        dispatch(ready())
+      );
+    }
+
     if (Backbone.Model && entry instanceof Backbone.Model) {
       watchModel({entry, dispatch});
     }
@@ -27,7 +33,7 @@ function watchModel({entry, dispatch}) {
 }
 
 function updateFromModel({entry, dispatch}) {
-  dispatch(init({
+  dispatch(update({
     entry: {
       slug: entry.get('slug'),
       title: entry.configuration.get('title') || entry.get('entry_title')
@@ -36,7 +42,7 @@ function updateFromModel({entry, dispatch}) {
 }
 
 function loadFromSeed({entry, dispatch}) {
-  dispatch(init({
+  dispatch(update({
     entry: {
       slug: entry.slug,
       title: entry.title
