@@ -1,4 +1,5 @@
 export const INIT = 'ENTRY_INIT';
+export const READY = 'ENTRY_READY';
 
 export function init({slug}) {
   return {
@@ -6,5 +7,11 @@ export function init({slug}) {
     payload: {
       slug
     }
+  };
+}
+
+export function ready() {
+  return {
+    type: READY
   };
 }
