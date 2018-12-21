@@ -19,6 +19,7 @@
       $('.menu.index', element).click(function() {
         if(!$(element).hasClass('sharing') && !$(element).hasClass('imprint')) {
           $(element).toggleClass('active');
+          element.loadLazyImages();
         }
         $(element).removeClass('imprint sharing');
       });
