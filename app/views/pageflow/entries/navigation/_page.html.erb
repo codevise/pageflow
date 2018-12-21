@@ -4,6 +4,8 @@
   <% end %>
   <div class="navigation_site_detail">
     <%= page.title %>
-    <div class="thumbnail is_<%= page.template %>" style="background-image: url('<%= asset_path(page.thumbnail_url(:navigation_thumbnail_large)) %>')"></div>
+    <div class="thumbnail is_<%= page.template %>">
+      <%= image_tag('', data: {src: page.thumbnail_url(:navigation_thumbnail_large)}) %>
+    </div>
   </div>
 </li>

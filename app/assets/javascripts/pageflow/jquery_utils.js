@@ -10,3 +10,10 @@ $.fn.updateTitle = function () {
     this.attr('title', this.data('title'));
   }
 };
+
+$.fn.loadLazyImages = function() {
+  this.find('img[data-src]').each(function() {
+    var img = $(this);
+    img.attr('src', img.data('src'));
+  });
+};

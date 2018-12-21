@@ -18,6 +18,8 @@ jQuery(function($) {
         var scrollIndicator = $('.slideshow .scroll_indicator');
 
         overview.toggleClass('active', state);
+        overview.loadLazyImages();
+
         indexButton
           .toggleClass('active', state)
           .updateTitle();

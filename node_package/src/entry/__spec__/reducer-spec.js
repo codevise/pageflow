@@ -1,12 +1,12 @@
 import reducer from '../reducer';
-import {init} from '../actions';
+import {update} from '../actions';
 
 import {expect} from 'support/chai';
 
 describe('entry reducer', () => {
-  it('sets slug on init', () => {
+  it('sets slug on update', () => {
     const entry = {slug: 'my-entry'};
-    const result = reducer(undefined, init({entry}));
+    const result = reducer(undefined, update({entry}));
 
     expect(result.slug).to.eq('my-entry');
   });

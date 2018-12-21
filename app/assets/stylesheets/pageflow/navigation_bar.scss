@@ -158,10 +158,6 @@
 
   .navigation_site_detail {
     @include box(-40px);
-
-    img {
-      margin-top: 12px;
-    }
   }
 
   .navigation_bg, .navigation_bullet .button {
