@@ -7,9 +7,8 @@
       <span class="heading-1"><%= t('pageflow.public.overview') %></span>
       <div class="wrapper">
         <ul class="pages">
-          <%= render :partial => 'pageflow/entries/navigation/page',
-                     :collection => entry_mobile_navigation_pages(entry),
-                     :locals => {:image_style => :thumbnail_overview_mobile, :image_width => nil} %>
+          <%= render :partial => 'pageflow/entries/mobile_navigation/page',
+                     :collection => entry_mobile_navigation_pages(entry) %>
         </ul>
       </div>
   </div>

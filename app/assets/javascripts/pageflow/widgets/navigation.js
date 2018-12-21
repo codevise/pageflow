@@ -87,6 +87,7 @@
         var handlerIn = function() {
           if (!('ontouchstart' in document.documentElement)) {
             $(overlays[index]).css("top", $(this).offset().top).addClass('visible').removeClass('hidden');
+            overlays.loadLazyImages();
           }
         };
 
