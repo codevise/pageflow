@@ -25,6 +25,11 @@ pageflow.browser.feature('mp4 support only', function(has) {
     pageflow.browser.agent.matchesDesktopSafari10();
 });
 
+pageflow.browser.feature('mse and native hls support', function(has) {
+  return pageflow.browser.agent.matchesSafari() &&
+    !pageflow.browser.agent.matchesMobilePlatform();
+});
+
 pageflow.browser.feature('native video player', function(has) {
   return has('iphone platform');
 });
