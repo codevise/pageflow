@@ -1,10 +1,14 @@
 import {connect} from 'react-redux';
 import {connectInPage} from 'pages';
+import {isEntryReady} from 'entry/selectors';
 import {pageIsPrepared} from 'pages/selectors';
 import {file, prop} from 'selectors';
 import {combineSelectors} from 'utils';
 
-export default function PagePrintImage({page}) {
+function PagePrintImage({page, isEntryReady}) {
+  if (!isEntryReady) {
+    return null;
+  }
   if (page.backgroundType == 'video' || page.type == 'video') {
     return (
       <PrintVideoPoster videoId={page.videoFileId} posterImageId={page.posterImageId} />
@@ -16,6 +20,10 @@ export default function PagePrintImage({page}) {
     );
   }
 }
+
+export default connect(combineSelectors({
+  isEntryReady
+}))(PagePrintImage);
 
 const PrintVideoPoster = connect(combineSelectors({
   videoFile: file('videoFiles', {

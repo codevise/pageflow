@@ -3,3 +3,7 @@ export function entryAttribute(name) {
     return state.entry[name];
   };
 }
+
+export function isEntryReady(state) {
+  return !!state.entry.isReady;
+}

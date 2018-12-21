@@ -6,6 +6,7 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
 
       body.one('pagepreloaded', function() {
         readyDeferred.resolve();
+        pageflow.events.trigger('ready');
       });
 
       pageflow.Visited.setup();
