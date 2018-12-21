@@ -4,6 +4,6 @@
         <%= overview_page_description(page) %>
       </p>
     </div>
-    <%= image_tag('', data: {src: page.thumbnail_url(:thumbnail_overview_desktop)}) %>
+    <%= image_tag('', data: {src: asset_path(page.thumbnail_url(:thumbnail_overview_desktop))}) %>
     <div class="pictogram"></div>
 <% end %>
