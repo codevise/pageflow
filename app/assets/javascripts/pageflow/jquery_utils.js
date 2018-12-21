@@ -14,6 +14,9 @@ $.fn.updateTitle = function () {
 $.fn.loadLazyImages = function() {
   this.find('img[data-src]').each(function() {
     var img = $(this);
-    img.attr('src', img.data('src'));
+
+    if (!img.attr('src')) {
+      img.attr('src', img.data('src'));
+    }
   });
 };
