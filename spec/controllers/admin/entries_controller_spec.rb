@@ -479,6 +479,16 @@ describe Admin::EntriesController do
 
       expect(Pageflow::Entry.last.custom_field).to eq(nil)
     end
+
+    it 'sets the entry revisions locale to the current users locale' do
+      user = create(:user, locale: 'es')
+      create(:account, with_publisher: user)
+
+      sign_in(user, scope: :user)
+      post(:create, params: {entry: {title: 'some_title'}})
+
+      expect(Pageflow::Entry.last.revisions.first.locale).to eq('es')
+    end
   end
 
   describe '#edit' do
