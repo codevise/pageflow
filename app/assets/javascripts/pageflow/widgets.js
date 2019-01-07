@@ -35,6 +35,7 @@ pageflow.widgets = (function() {
       .addClass(replacement);
 
     pageflow.events.trigger('widgets:update');
+    pageflow.slides.triggerResizeHooks();
   }
 
   function className(name, state) {
