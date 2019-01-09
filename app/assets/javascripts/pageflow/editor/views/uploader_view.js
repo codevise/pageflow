@@ -1,10 +1,6 @@
 pageflow.UploaderView = Backbone.Marionette.View.extend({
   el: 'form#upload',
 
-  ui: {
-    input: 'input:file'
-  },
-
   initialize: function() {
     this.listenTo(pageflow.app, 'request-upload', this.openFileDialog);
   },
@@ -12,19 +8,14 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
   render: function() {
     var that = this;
 
-    this.bindUIElements();
-
-    var fileInput = this.ui.input;
-    fileInput.fileupload({
-      fileInput: fileInput,
+    this.$el.fileupload({
       type: 'POST',
-      autoUpload: false,
       paramName: 'file',
       dataType: 'XML',
-      replaceFileInput: false,
       acceptFileTypes: new RegExp('(\\.|\\/)(bmp|gif|jpe?g|png|ti?f|wmv|mp4|mpg|mov|asf|asx|avi|' +
-        'm?v|mpeg|qt|3g2|3gp|3ivx|divx|3vx|vob|flv|dvx|xvid|mkv|vtt)$',
-        'i'),
+                                  'm?v|mpeg|qt|3g2|3gp|3ivx|divx|3vx|vob|flv|dvx|xvid|mkv|vtt)$',
+                                  'i'),
+
       add: function(event, data) {
         try {
           pageflow.fileUploader.add(data.files[0]).then(function (record) {
@@ -78,6 +69,6 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
   },
 
   openFileDialog: function() {
-    this.ui.input.click();
+    this.$('input:file').click();
   }
 });
