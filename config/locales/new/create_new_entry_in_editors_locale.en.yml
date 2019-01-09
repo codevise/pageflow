@@ -7,3 +7,14 @@ en:
     admin:
       themings:
         default_locale_hint: Default language for entries
+    languages:
+      bg: Bulgarian
+      cs-CZ: Czech
+      fa-IR: Persian
+      gn: Guarani
+      id: Indonesian
+      ms: Malay
+      nl-BE: Dutch (Belgium)
+      pl-PL: Polish
+      pt-BR: Portuguese (Brazil)
+      ru-RU: Russian

@@ -21,7 +21,9 @@
       <%= theming.input :default_locale,
                         as: :select,
                         include_blank: false,
-                        collection: available_locales_collection,
+                        collection: Pageflow.config.available_public_locales.map{ |locale|
+                          [I18n.t("pageflow.languages.#{locale}"), locale.to_s]
+                        },
                         hint: t('pageflow.admin.themings.default_locale_hint') %>
       <%= theming.input :default_author,
         hint: t('pageflow.admin.themings.default_author_hint'),
