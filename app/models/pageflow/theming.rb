@@ -37,7 +37,8 @@ module Pageflow
         publisher: default_publisher.presence || Pageflow.config.default_publisher_meta_tag,
         keywords: default_keywords.presence || Pageflow.config.default_keywords_meta_tag,
         theme_name: theme_name,
-        home_button_enabled: home_button_enabled_by_default
+        home_button_enabled: home_button_enabled_by_default,
+        locale: default_locale
       )
     end
 

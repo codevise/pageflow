@@ -5,6 +5,7 @@ extensible_attributes_table_for(account.default_theming,
   row :theme, class: 'theme' do
     account.default_theming.theme.name
   end
+  row :default_locale, class: 'default_locale'
   row :default_author, class: 'default_author'
   row :default_publisher, class: 'default_publisher'
   row :default_keywords, class: 'default_keywords'

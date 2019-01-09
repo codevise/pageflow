@@ -1,0 +1,9 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/theming:
+        default_locale: Standard Sprache
+  pageflow:
+    admin:
+      themings:
+        default_locale_hint: Voreinstellung Sprache für Einträge

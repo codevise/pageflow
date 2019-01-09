@@ -213,10 +213,6 @@ module Pageflow
         entry.theming ||= entry.account.default_theming
       end
 
-      after_create do |entry|
-        entry.revisions.first&.update(locale: current_user.locale)
-      end
-
       before_update do |entry|
         if entry.account_id_changed? && !authorized?(:update_theming_on, resource)
           entry.theming = entry.account.default_theming
