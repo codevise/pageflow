@@ -5,6 +5,8 @@ module Pageflow
 
     included do
       alias_attribute :file_name, :attachment_on_s3_file_name
+      alias_attribute :content_type, :attachment_on_s3_content_type
+      alias_attribute :file_size, :attachment_on_s3_file_size
 
       has_attached_file(:attachment_on_s3,
                         Pageflow.config.paperclip_s3_default_options

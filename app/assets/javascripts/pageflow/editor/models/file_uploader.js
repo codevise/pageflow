@@ -12,7 +12,9 @@ pageflow.FileUploader = pageflow.Object.extend({
     var fileType = this.fileTypes.findByUpload(upload);
     var file = new fileType.model({
       state: 'uploadable',
-      file_name: upload.name
+      file_name: upload.name,
+      content_type: upload.type,
+      file_size: upload.size
     }, {
       fileType: fileType
     });
