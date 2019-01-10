@@ -323,9 +323,12 @@ module Pageflow
       @paperclip_s3_default_options = Defaults::PAPERCLIP_S3_DEFAULT_OPTIONS.dup
 
       @paperclip_direct_upload_options = lambda { |attachment|
-        presigned_post_config = attachment.s3_bucket.presigned_post(key: attachment.path,
-                                                                    success_action_status: '201',
-                                                                    acl: 'public-read')
+        max_upload_size = 4_294_967_296 # max file size in bytes
+        presigned_post_config = attachment.s3_bucket
+                                          .presigned_post(key: attachment.path,
+                                                          success_action_status: '201',
+                                                          acl: 'public-read',
+                                                          content_length_range: 0..max_upload_size)
         {
           url: presigned_post_config.url,
           fields: presigned_post_config.fields
