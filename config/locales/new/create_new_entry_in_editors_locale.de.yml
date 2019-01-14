@@ -7,14 +7,3 @@ de:
     admin:
       themings:
         default_locale_hint: Voreinstellung Sprache für Einträge
-    languages:
-      bg: Bulgarisch
-      cs-CZ: Tschechisch
-      fa-IR: Persisch
-      gn: Guarani
-      id: Indonesisch
-      ms: Malaysisch
-      nl-BE: Holländisch (Belgien)
-      pl-PL: Polnisch
-      pt-BR: Portugiesisch (Brasilien)
-      ru-RU: Russisch
