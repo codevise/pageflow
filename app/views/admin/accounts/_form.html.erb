@@ -18,6 +18,13 @@
     <% end %>
 
     <%= f.inputs do %>
+      <%= theming.input :default_locale,
+                        as: :select,
+                        include_blank: false,
+                        collection: Pageflow.config.available_public_locales.map{ |locale|
+                          [t('pageflow.public._language', locale: locale), locale.to_s]
+                        },
+                        hint: t('pageflow.admin.themings.default_locale_hint') %>
       <%= theming.input :default_author,
         hint: t('pageflow.admin.themings.default_author_hint'),
         placeholder: Pageflow.config.default_author_meta_tag %>

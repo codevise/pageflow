@@ -479,6 +479,17 @@ describe Admin::EntriesController do
 
       expect(Pageflow::Entry.last.custom_field).to eq(nil)
     end
+
+    it 'sets the entry revisions locale to the default locale of the accounts theming' do
+      user = create(:user, locale: 'en')
+      account = create(:account, with_publisher: user)
+      account.default_theming.update(default_locale: user.locale)
+
+      sign_in(user, scope: :user)
+      post(:create, params: {entry: {title: 'some_title'}})
+
+      expect(Pageflow::Entry.last.revisions.first.locale).to eq('en')
+    end
   end
 
   describe '#edit' do

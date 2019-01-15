@@ -72,14 +72,15 @@ module Pageflow
 
     controller do
       helper Pageflow::Admin::FeaturesHelper
-      helper Pageflow::Admin::WidgetsHelper
       helper Pageflow::Admin::FormHelper
+      helper Pageflow::Admin::LocalesHelper
       helper Pageflow::Admin::MembershipsHelper
+      helper Pageflow::Admin::WidgetsHelper
       helper ThemesHelper
 
       def new
         @account = Account.new
-        @account.build_default_theming
+        @account.build_default_theming(default_locale: current_user.locale)
       end
 
       def create
@@ -145,7 +146,8 @@ module Pageflow
           :home_button_enabled_by_default,
           :default_author,
           :default_publisher,
-          :default_keywords
+          :default_keywords,
+          :default_locale
         ] +
           permitted_attributes_for(:theming)
       end
