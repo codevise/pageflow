@@ -38,12 +38,7 @@ pageflow.UploadedFile = Backbone.Model.extend({
   },
 
   urlRoot: function() {
-    if (this.isNew() && this.options.noUpload) {
-      return this.collection.url() + '/empty';
-    }
-    else {
-      return this.collection.url();
-    }
+    return this.collection.url();
   },
 
   fileType: function() {

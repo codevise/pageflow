@@ -20,7 +20,6 @@ extend Pageflow.
 ### Integrations
 
 * [Using Krant to display broadcast messages and news](./using_krant_to_display_broadcast_messages_and_news.md)
-* [Using the Nginx upload module](./using_the_nginx_upload_module.md)
 
 ### Contributing
 
