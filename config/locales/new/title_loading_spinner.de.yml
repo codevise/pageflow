@@ -24,6 +24,7 @@ de:
       widget_type_name: "Klassisch"
     title_loading_spinner:
       widget_type_name: "Titel und Bild"
+      feature_name: "'Titel und Bild'-Lade-Ansicht"
     ui:
       configuration_editor:
         tabs:
