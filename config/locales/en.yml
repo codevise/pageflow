@@ -263,6 +263,7 @@ en:
         copyright_link_url: Copyright link URL
         default_author: Default author
         default_keywords: Default keywords
+        default_locale: Default locale
         default_publisher: Default publisher
         home_button_enabled_by_default: "'Home'-Button enabled by default"
         home_url: Redirect URL
@@ -836,6 +837,7 @@ en:
         cname_hint: Used in public sharing URLs.
         default_author_hint: Default 'author' meta field for entries
         default_keywords_hint: Default 'keywords' meta field for entries
+        default_locale_hint: Default language for entries
         default_publisher_hint: Default 'publisher' meta field for entries
         home_url_hint: Used for requests to the root path with one of the above CNAMES. Default target location for the home button.
         name: "%{account_name}"

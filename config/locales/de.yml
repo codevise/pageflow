@@ -263,6 +263,7 @@ de:
         copyright_link_url: Copyright-Link URL
         default_author: Standard Autor
         default_keywords: Standard Schlüsselwörter
+        default_locale: Standard Sprache
         default_publisher: Standard Herausgeber
         home_button_enabled_by_default: Home-Button in neuen Beiträgen anzeigen
         home_url: Redirect URL
@@ -836,6 +837,7 @@ de:
         cname_hint: Wird in Share Links verwendet.
         default_author_hint: Voreinstellung 'author' Meta-Feld für Eintrage
         default_keywords_hint: Voreinstellung 'keywords' Meta-Feld für Eintrage
+        default_locale_hint: Voreinstellung Sprache für Einträge
         default_publisher_hint: Voreinstellung 'publisher' Meta-Feld für Eintrage
         home_url_hint: Wird einer der obigen CNAMES ohne Pfad in der URL verwendet, wird zu dieser URL umgeleitet. Standard Link Ziel des Home Buttons.
         name: "%{account_name}"
