@@ -7,7 +7,10 @@ module Pageflow
 
       config.widget_types.register(Pageflow::BuiltInWidgetType.classic_loading_spinner,
                                    default: true)
-      config.widget_types.register(Pageflow::BuiltInWidgetType.title_loading_spinner)
+
+      config.features.register('title_loading_spinner') do |feature_config|
+        feature_config.widget_types.register(Pageflow::BuiltInWidgetType.title_loading_spinner)
+      end
 
       config.widget_types.register(Pageflow::BuiltInWidgetType.navigation, default: true)
       config.widget_types.register(Pageflow::BuiltInWidgetType.mobile_navigation, default: true)

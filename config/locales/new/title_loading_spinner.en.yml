@@ -24,6 +24,7 @@ en:
       widget_type_name: "Classic"
     title_loading_spinner:
       widget_type_name: "Title and Image"
+      feature_name: "'Title and image' loading view"
     ui:
       configuration_editor:
         tabs:
