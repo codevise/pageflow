@@ -263,6 +263,7 @@ en:
         copyright_link_url: Copyright link URL
         default_author: Default author
         default_keywords: Default keywords
+        default_locale: Default locale
         default_publisher: Default publisher
         home_button_enabled_by_default: "'Home'-Button enabled by default"
         home_url: Redirect URL
@@ -837,6 +838,7 @@ en:
         cname_hint: Used in public sharing URLs.
         default_author_hint: Default 'author' meta field for entries
         default_keywords_hint: Default 'keywords' meta field for entries
+        default_locale_hint: Default language for entries
         default_publisher_hint: Default 'publisher' meta field for entries
         home_url_hint: Used for requests to the root path with one of the above CNAMES. Default target location for the home button.
         name: "%{account_name}"
@@ -956,6 +958,8 @@ en:
       page_type_name: Background image/video
     chapter_hierachy:
       feature_name: Chapter Hierachy
+    classic_loading_spinner:
+      widget_type_name: Classic
     common_page_attributes:
       background_type:
         inline_help: The page background can either display an image or a video loop.
@@ -1020,6 +1024,8 @@ en:
         header: This is an empty Pageflow
         intro: Each Pageflow consist of chapters and pages. The editor panel to your right shows the outline of your story.
         outro: In this area, a live preview will be shown.
+      classic_loading_spinner:
+        widget_type_info_box_text: This is a preview of the classic loading spinner. It is displayed while the page is loading.
       cookie_notice_bar:
         widget_type_info_box_text: The notice is displayed when visiting an entry that uses Cookies. Cookies are set, if an analytics integration is active or the 'Emphasize new pages' feature has been enabled.
       entries:
@@ -1305,6 +1311,8 @@ en:
         srclang_missing: "(Missing)"
       themes:
         header: Themes
+      title_loading_spinner:
+        widget_type_info_box_text: This is a preview of the 'Title and Image' loading view. The animation runs while the page is loading.
       views:
         chapter_item_view:
           chapter: Chapter
@@ -1357,6 +1365,18 @@ en:
         storylines_picker_view:
           label: Storyline
           without_parent_page: Without parent page
+      widgets:
+        attributes:
+          title_loading_spinner:
+            custom_background_image_id:
+              inline_help: By default the background image of the first page is used.
+              label: Background image
+            subtitle:
+              inline_help: Subtitle to display in loadiner view.
+              label: Subtitle
+            title:
+              inline_help: Title to display in loadiner view. Defaults to entry title.
+              label: Title
     editor_emulation_mode:
       feature_name: Editor phone emulation mode
     entry:
@@ -1671,6 +1691,8 @@ en:
       scroll_over_from_left: Scroll over from left
       scroll_over_from_right: Scroll over from right
       scroll_right: Scroll right
+    phone_horizontal_slideshow_mode:
+      feature_name: Horizontal swipe on phone
     quotas:
       exhausted: Quota exhausted
     selectable_themes:
@@ -1701,6 +1723,9 @@ en:
       feature_name: Storylines
       main: Main storyline
       untitled: Unnamed storyline
+    title_loading_spinner:
+      feature_name: "'Title and image' loading view"
+      widget_type_name: Title and Image
     ui:
       configuration_editor:
         tabs:
@@ -1708,6 +1733,7 @@ en:
           files: Files
           general: General
           links: Links
+          loading_spinner: Loading View
           options: Options
           phone_horizontal_slideshow_mode: Horizontal swipe on phone
           social: Social
@@ -1821,6 +1847,7 @@ en:
         analytics: Tracking
         background_media_control: Background media control
         cookie_notice: Cookie Notice
+        loading_spinner: Loading View
         mobile_navigation: Mobile navigation
         navigation: Navigation bar
         player_controls: Player Controls

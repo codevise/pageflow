@@ -263,6 +263,7 @@ de:
         copyright_link_url: Copyright-Link URL
         default_author: Standard Autor
         default_keywords: Standard Schlüsselwörter
+        default_locale: Standard Sprache
         default_publisher: Standard Herausgeber
         home_button_enabled_by_default: Home-Button in neuen Beiträgen anzeigen
         home_url: Redirect URL
@@ -837,6 +838,7 @@ de:
         cname_hint: Wird in Share Links verwendet.
         default_author_hint: Voreinstellung 'author' Meta-Feld für Eintrage
         default_keywords_hint: Voreinstellung 'keywords' Meta-Feld für Eintrage
+        default_locale_hint: Voreinstellung Sprache für Einträge
         default_publisher_hint: Voreinstellung 'publisher' Meta-Feld für Eintrage
         home_url_hint: Wird einer der obigen CNAMES ohne Pfad in der URL verwendet, wird zu dieser URL umgeleitet. Standard Link Ziel des Home Buttons.
         name: "%{account_name}"
@@ -958,6 +960,8 @@ de:
       page_type_name: Hintergrund Bild/Video
     chapter_hierachy:
       feature_name: Kapitel Hierachie
+    classic_loading_spinner:
+      widget_type_name: Klassisch
     common_page_attributes:
       background_type:
         inline_help: Im Hintergund der Seite kann entweder ein Bild oder ein Video-Loop angezeigt werden.
@@ -1020,6 +1024,8 @@ de:
         header: Dies ist ein leerer Pageflow
         intro: Pageflows bestehen aus Kapiteln und Seiten. In der Seitenleiste rechts findest Du die Gliederung.
         outro: Hier siehst Du dann eine Vorschau deines Pageflows.
+      classic_loading_spinner:
+        widget_type_info_box_text: Dies ist eine Vorschau der klassischen Lade-Ansicht. Wird angezeigt, während der Beitrag lädt.
       cookie_notice_bar:
         widget_type_info_box_text: Der Hinweis wird beim ersten Öffnen von Beiträgen, die Cookies verwenden, am unteren Seitenrand angezeigt. Cookies werden gesetzt, falls ein Dienst zur Erhebnung von Nutzungsdaten (z.B. Google Analytics) verwendet wird oder wenn die Funktion 'Neue Seiten hervorheben' aktiv ist.
       entries:
@@ -1305,6 +1311,8 @@ de:
         srclang_missing: "(Fehlt)"
       themes:
         header: Themes
+      title_loading_spinner:
+        widget_type_info_box_text: Dies ist eine Vorschau der 'Titel und Bild'-Lade-Ansicht. Die Animation läuft ab, während der Beitrag lädt.
       views:
         chapter_item_view:
           chapter: Kapitel
@@ -1357,6 +1365,18 @@ de:
         storylines_picker_view:
           label: Erzählstrang
           without_parent_page: Ohne übergeordnete Seite
+      widgets:
+        attributes:
+          title_loading_spinner:
+            custom_background_image_id:
+              inline_help: Standardmäßig wird das Hintergrundbild der ersten Seite verwendet.
+              label: Hintegrundbild
+            subtitle:
+              inline_help: Untertitel, der in der Lade-Ansicht gezeigt werden soll.
+              label: Untertitel
+            title:
+              inline_help: Titel, der in der Lade-Ansicht gezeigt werden soll. Standardmäßig wird der Beitragstitel verwendet.
+              label: Titel
     editor_emulation_mode:
       feature_name: Editor Phone Emulationsmodus
     entry:
@@ -1699,6 +1719,8 @@ de:
       scroll_over_from_left: Überlagern (von links)
       scroll_over_from_right: Überlagern (von rechts)
       scroll_right: Scrollen (von rechts)
+    phone_horizontal_slideshow_mode:
+      feature_name: Horizontales Wischen auf Phones
     quotas:
       exhausted: Quota verbraucht.
     selectable_themes:
@@ -1729,6 +1751,9 @@ de:
       feature_name: Erzählstränge
       main: Hauptstrang
       untitled: Unbenannter Erzählstrang
+    title_loading_spinner:
+      feature_name: "'Titel und Bild'-Lade-Ansicht"
+      widget_type_name: Titel und Bild
     ui:
       configuration_editor:
         tabs:
@@ -1736,6 +1761,7 @@ de:
           files: Dateien
           general: Allgemein
           links: Verweise
+          loading_spinner: Lade-Ansicht
           options: Optionen
           phone_horizontal_slideshow_mode: Horizontales Wischen auf Phones
           social: Social
@@ -1846,6 +1872,7 @@ de:
         analytics: Zählpixel
         background_media_control: Hintergrund-Media-Control
         cookie_notice: Cookie Hinweis
+        loading_spinner: Lade-Ansicht
         mobile_navigation: Mobile Navigation
         navigation: Navigationsleiste
         player_controls: Player Controls
