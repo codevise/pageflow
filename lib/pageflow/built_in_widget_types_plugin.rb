@@ -3,7 +3,11 @@ module Pageflow
     def configure(config)
       config.widget_types.register(Pageflow::BuiltInWidgetType.default_slideshow_mode,
                                    default: true)
-      config.widget_types.register(Pageflow::BuiltInWidgetType.phone_horizontal_slideshow_mode)
+
+      config.features.register('phone_horizontal_slideshow_mode') do |feature_config|
+        feature_config.widget_types.register(Pageflow::BuiltInWidgetType
+                                               .phone_horizontal_slideshow_mode)
+      end
 
       config.widget_types.register(Pageflow::BuiltInWidgetType.classic_loading_spinner,
                                    default: true)
