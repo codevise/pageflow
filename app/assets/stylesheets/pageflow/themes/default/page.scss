@@ -11,6 +11,9 @@ $page-header-typography: () !default;
 /// Typography for header tagline.
 $page-header-tagline-typography: () !default;
 
+/// Typography for header tagline in phone layout.
+$page-header-tagline-phone-typography: () !default;
+
 /// Typography for header title.
 $page-header-title-typography: () !default;
 
@@ -25,6 +28,9 @@ $page-header-first-page-title-phone-typography: () !default;
 
 /// Typography for header subtitle.
 $page-header-subtitle-typography: () !default;
+
+/// Typography for header subtitle in phone layout.
+$page-header-subtitle-phone-typography: () !default;
 
 /// Typography for content text.
 $page-content-text-typography: () !default;
@@ -142,6 +148,12 @@ $page-content-text-line-height: 1.5em !default;
           letter-spacing: 0
         )
       );
+
+      @include phone {
+        @include typography(
+          $page-header-tagline-phone-typography
+        );
+      }
     }
 
     .title {
@@ -182,6 +194,12 @@ $page-content-text-line-height: 1.5em !default;
           margin-bottom: $page-header-subtitle-margin-bottom
         )
       );
+
+      @include phone {
+        @include typography(
+          $page-header-subtitle-phone-typography
+        );
+      }
     }
   }
 
