@@ -71,9 +71,16 @@ module Pageflow
                              p: Pageflow::VERSION,
                              format: 'css')
 
-      stylesheet_link_tag(url,
-                          media: 'all',
-                          data: {name: 'entry'})
+      # We cannot use stylesheet_link_tag here since that always uses
+      # the asset host. Entry stylesheet requests are subject to
+      # `Configuration#public_entry_request_scope` and
+      # `Configuration#public_entry_redirect` which might depend on
+      # the hostname.
+      tag(:link,
+          rel: 'stylesheet',
+          href: url,
+          media: 'all',
+          data: {name: 'entry'})
     end
 
     def entry_mobile_navigation_pages(entry)
