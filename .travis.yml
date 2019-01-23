@@ -22,7 +22,7 @@ before_install:
   - nvm install stable
 
 before_script:
-  - bin/npm install
+  - bin/npm ci
   - bin/npm run build
   - bin/rake pageflow:dummy
   - bin/rake app:assets:precompile
