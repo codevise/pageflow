@@ -14,6 +14,10 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
+task 'release' do
+  Rake.application['pageflow:release:pageflow_support'].invoke
+end
+
 require 'semmy'
 Semmy::Tasks.install do |config|
   config.github_repository = 'codevise/pageflow'
