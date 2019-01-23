@@ -12,6 +12,16 @@ namespace :pageflow do
     end
   end
 
+  namespace :release do
+    task :pageflow_support do
+      Dir.chdir('spec/support') do
+        puts '=== Releasing pageflow-support ==='
+        system('bundle exec rake release')
+        puts '==='
+      end
+    end
+  end
+
   namespace :prune_auto_snapshots_jobs do
     desc 'Enqueue jobs to destroy old auto snapshot revisions'
     task :enqueue => :environment do
