@@ -11,4 +11,3 @@ spec/dummy/*
 .idea
 /app/assets/javascripts/pageflow/dist
 .localeapp
-/node_package/package-lock.json
