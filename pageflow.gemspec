@@ -165,7 +165,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'webmock', '~> 3.4'
 
   # Semantic versioning rake tasks
-  s.add_development_dependency 'semmy', '~> 1.0'
+  s.add_development_dependency 'semmy', '~> 1.1'
 
   # A gem that makes it easy to write specs for your Rails 3 Generators.
   s.add_development_dependency 'ammeter', '~> 1.1'
