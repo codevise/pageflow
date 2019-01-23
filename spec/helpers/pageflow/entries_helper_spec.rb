@@ -114,6 +114,34 @@ module Pageflow
     end
 
     describe '#entry_stylesheet_link_tag' do
+      it 'renders stylesheet link tag' do
+        revision = build_stubbed(:revision)
+        entry = PublishedEntry.new(build_stubbed(:entry), revision)
+
+        result = helper.entry_stylesheet_link_tag(entry)
+
+        expect(result).to have_selector('link[rel=stylesheet][media=all]', visible: false)
+      end
+
+      it 'sets data-name attribute' do
+        revision = build_stubbed(:revision)
+        entry = PublishedEntry.new(build_stubbed(:entry), revision)
+
+        result = helper.entry_stylesheet_link_tag(entry)
+
+        expect(result).to have_selector('link[data-name=entry]', visible: false)
+      end
+
+      it 'does not use asset_host' do
+        revision = build_stubbed(:revision)
+        entry = PublishedEntry.new(build_stubbed(:entry), revision)
+
+        controller.config.asset_host = 'some-asset-host'
+        result = helper.entry_stylesheet_link_tag(entry)
+
+        expect(result).not_to include('some-asset-host')
+      end
+
       it 'returns revision css for published entry with custom revision' do
         revision = build_stubbed(:revision)
         entry = PublishedEntry.new(build_stubbed(:entry), revision)
