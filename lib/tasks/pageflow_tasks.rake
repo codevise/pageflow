@@ -8,7 +8,7 @@ namespace :pageflow do
   namespace :node_package do
     desc 'Build node package'
     task :build do
-      system('bin/npm run build')
+      system('bin/npm ci && bin/npm run build')
     end
   end
 
