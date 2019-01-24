@@ -78,14 +78,3 @@
     }
   }
 }
-
-.contentText {
-  @include phone {
-    margin-bottom: 40px;
-  }
-}
-.videoPage .contentText, .audioPage .contentText {
-  @include phone {
-    margin-bottom: 80px;
-  }
-}

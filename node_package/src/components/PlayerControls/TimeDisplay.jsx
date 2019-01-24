@@ -2,7 +2,7 @@ import classNames from 'classnames';
 
 export default function TimeDisplay(props) {
   return (
-    <div className={classNames(props.className, 'vjs-current-time')}>
+    <div className={classNames(props.className)}>
       {format(props.value)}
     </div>
   );

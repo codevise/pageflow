@@ -1,9 +1,11 @@
 import {Page as MediaPage,
         PageBackgroundAsset,
+        PageAudioFilePlayer,
+        WaveformPlayerControls,
         reduxModule as mediaReduxModule,
         pageBackgroundReduxModule as mediaPageBackgroundReduxModule} from 'media';
 
-import PageAudioFilePlayer from 'media/components/PageAudioFilePlayer';
+import {PlayerControls} from 'components';
 
 import registerPageType from 'registerPageType';
 
@@ -17,6 +19,8 @@ import {file} from 'files/selectors';
 import {combine, combineSelectors} from 'utils';
 
 function AudioPage(props) {
+  const playerControlsVariant = props.page.audioPlayerControlsVariant;
+
   return (
     <MediaPage className="audioPage"
                page={props.page}
@@ -24,6 +28,8 @@ function AudioPage(props) {
                playerState={props.playerState}
                playerActions={props.playerActions}
                controlBarText={props.t('pageflow.public.start_audio')}
+               playerControlsComponent={playerControlsComponent(playerControlsVariant)}
+               dynamicPageScrollerMargin={playerControlsVariant == 'waveform'}
                autoplayWhenBackgroundMediaMuted={false}>
 
       <PageBackgroundAsset />
@@ -32,6 +38,15 @@ function AudioPage(props) {
                            playerActions={props.playerActions} />
     </MediaPage>
   );
+}
+
+function playerControlsComponent(variant) {
+  if (variant == 'waveform') {
+    return WaveformPlayerControls;
+  }
+  else {
+    return PlayerControls;
+  }
 }
 
 export function register() {

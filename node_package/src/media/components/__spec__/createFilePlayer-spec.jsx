@@ -30,10 +30,15 @@ describe('createFilePlayer', () => {
       return {FilePlayer, mockPlayer};
     }
 
+    const requiredPlayerActions = {
+      saveMediaElementId() {},
+      discardMediaElementId() {}
+    };
+
     const requiredProps = {
       file: {},
       playerState: {},
-      playerActions: {},
+      playerActions: requiredPlayerActions,
 
       updateTextTrackSettings() {}
     };
@@ -58,7 +63,9 @@ describe('createFilePlayer', () => {
         src: 'some.mp4'
       };
 
-      const wrapper = mount(<FilePlayer file={file} playerState={{}} playerActions={{}}/>);
+      const wrapper = mount(<FilePlayer file={file}
+                                        playerState={{}}
+                                        playerActions={requiredPlayerActions}/>);
 
       expect(wrapper.render()).to.have.descendants('source[src="some.mp4"]');
     });
@@ -156,6 +163,7 @@ describe('createFilePlayer', () => {
       it(`invokes ${action} playerAction when player emits ${event}`, () => {
         const {FilePlayer, mockPlayer} = setup();
         const playerActions = {
+          ...requiredPlayerActions,
           [action]: sinon.spy()
         };
 

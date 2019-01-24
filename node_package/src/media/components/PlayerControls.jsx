@@ -27,6 +27,8 @@ export function MediaPlayerControls(props) {
     }
   };
 
+  const PlayerControls = props.playerControlsComponent;
+
   return (
     <PlayerControls hasProgress={true}
                     controlBarText={props.controlBarText}
@@ -37,6 +39,8 @@ export function MediaPlayerControls(props) {
                                  playerState.scrubbingAt : playerState.currentTime}
                     bufferedEnd={playerState.bufferedEnd}
                     duration={playerState.duration}
+
+                    mediaElementId={playerState.mediaElementId}
 
                     onPlayButtonClick={actions.togglePlaying}
                     onScrub={actions.scrubTo}
@@ -75,6 +79,7 @@ export function MediaPlayerControls(props) {
 }
 
 MediaPlayerControls.defaultProps = {
+  playerControlsComponent: PlayerControls,
   qualities: [],
   textTracks: {
     files: []

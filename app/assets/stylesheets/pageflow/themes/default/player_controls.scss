@@ -28,6 +28,8 @@ $player-controls-typography: () !default;
   @import "./player_controls/slim";
 }
 
+@import "./player_controls/waveform";
+
 // Extend vjs specific css classes with placeholders:
 
 @import "./player_controls/vjs_mapping";

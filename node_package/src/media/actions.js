@@ -48,6 +48,9 @@ export const SHOW_INFO_BOX_DURING_PLAYBACK = 'SHOW_INFO_BOX_DURING_PLAYBACK';
 export const HIDE_INFO_BOX_DURING_PLAYBACK = 'HIDE_INFO_BOX_DURING_PLAYBACK';
 export const TOGGLE_INFO_BOX_DURING_PLAYBACK = 'TOGGLE_INFO_BOX_DURING_PLAYBACK';
 
+export const SAVE_MEDIA_ELEMENT_ID = 'MEDIA_SAVE_MEDIA_ELEMENT_ID';
+export const DISCARD_MEDIA_ELEMENT_ID = 'MEDIA_DISCARD_MEDIA_ELEMENT_ID';
+
 export function actionCreators({scope = 'default'} = {}) {
   return {
     togglePlaying() {
@@ -216,6 +219,14 @@ export function actionCreators({scope = 'default'} = {}) {
 
     toggleInfoBoxDuringPlayback() {
       return pageAction(TOGGLE_INFO_BOX_DURING_PLAYBACK);
+    },
+
+    saveMediaElementId(id) {
+      return pageAction(SAVE_MEDIA_ELEMENT_ID, {id});
+    },
+
+    discardMediaElementId() {
+      return pageAction(DISCARD_MEDIA_ELEMENT_ID);
     }
   };
 

@@ -13,12 +13,17 @@
     doubleBumpThreshold: 500,
 
     _create: function() {
+      this.eventListenerTarget = this.options.eventListenerTarget ?
+        $(this.options.eventListenerTarget) :
+        this.element;
+
       this.iscroll = new IScroll(this.element[0], _.extend({
         mouseWheel: true,
         bounce: false,
         keyBindings: true,
         probeType: 2,
-        preventDefault: false
+        preventDefault: false,
+        eventListenerTarget: this.eventListenerTarget[0]
       }, _.pick(this.options, 'freeScroll', 'scrollX', 'noMouseWheelScrollX')));
 
       this.iscroll.disable();
@@ -218,7 +223,7 @@
           allowRight = false,
           startX, startY;
 
-      this.element.on('touchstart MSPointerDown pointerdown', _.bind(function(event) {
+      this.eventListenerTarget.on('touchstart MSPointerDown pointerdown', _.bind(function(event) {
         var point = event.originalEvent.touches ?
                     event.originalEvent.touches[0] : event.originalEvent;
 
@@ -233,7 +238,7 @@
         }
       }, this));
 
-      this.element.on('touchmove MSPointerMove pointermove', _.bind(function(event) {
+      this.eventListenerTarget.on('touchmove MSPointerMove pointermove', _.bind(function(event) {
         var point = event.originalEvent.touches ?
                     event.originalEvent.touches[0] : event.originalEvent;
 
@@ -266,7 +271,7 @@
         }
       }, this));
 
-      this.element.on('touchend MSPointerUp pointerup', _.bind(function(event) {
+      this.eventListenerTarget.on('touchend MSPointerUp pointerup', _.bind(function(event) {
         var point = event.originalEvent.touches ?
                     event.originalEvent.changedTouches[0] : event.originalEvent;
 

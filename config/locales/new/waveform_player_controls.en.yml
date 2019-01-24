@@ -1,0 +1,15 @@
+en:
+  pageflow:
+    waveform_player_controls:
+      feature_name: "Waveform player controls variant for audio page"
+    audio:
+      page_attributes:
+        audio_player_controls_variant:
+          label: "Player Controls Variante"
+          inline_help: "The audio page supports different display variants of player controls."
+          values:
+            default: "Standard"
+            waveform: "Waveform"
+        waveform_color:
+          label: "Waveform Color"
+          inline_help: "Color of the waveform's parts that represents the already played part of the audio."

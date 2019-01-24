@@ -15,12 +15,13 @@ import {
 import MediaPlayerControls from './PlayerControls';
 import NonJsLinks from './NonJsLinks';
 import playerStateClassNames from './playerStateClassNames';
-import {combine, combineSelectors} from 'utils';
+import {combineSelectors} from 'utils';
 import {prop, has} from 'utils/selectors';
 import {textTracks, pageShouldAutoplay} from 'media/selectors';
+import {pageScrollerMarginBottom} from '../pageScrollerMargin/selectors';
+import {connectInPage} from 'pages';
 
 import classNames from 'classnames';
-import {connect} from 'react-redux';
 
 export function MediaPage(props) {
   const page = props.page;
@@ -45,19 +46,23 @@ export function MediaPage(props) {
                                          props.playerActions.userInteraction()}
                       classNames={playerStateClassNames(playerState)}>
 
-
         <MediaPlayerControls file={props.file}
                              textTracks={props.textTracks}
                              playerState={playerState}
                              playerActions={props.playerActions}
                              qualities={props.qualities}
                              controlBarText={props.controlBarText}
-                             infoBox={infoBox} />
+                             infoBox={infoBox}
+                             playerControlsComponent={props.playerControlsComponent} />
 
-        <PageScroller className={playerStateClassNames(playerState)}>
+        <PageScroller className={playerStateClassNames(playerState)}
+                      marginBottom={props.dynamicPageScrollerMargin &&
+                                    props.pageScrollerMarginBottom}>
+
           <PageHeader page={page} />
           <PagePrintImage page={page} />
-          <PageText page={page}>
+          <PageText page={page}
+                    marginBottom={props.dynamicPageScrollerMargin ? 'none' : 'for_player_controls'}>
             <NonJsLinks file={props.file} />
           </PageText>
         </PageScroller>
@@ -66,7 +71,12 @@ export function MediaPage(props) {
   );
 }
 
-export default connect(combineSelectors({
+MediaPage.defaultProps = {
+  playerControlsCanOverlapPageText: true
+};
+
+export default connectInPage(combineSelectors({
+  pageScrollerMarginBottom,
   textTracks: textTracks({
     file: prop('file'),
     defaultTextTrackFileId: prop('page.defaultTextTrackFileId')

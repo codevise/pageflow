@@ -7,4 +7,5 @@ Pageflow.configure do |config|
   end
   config.features.register('selectable_themes')
   config.features.register('editor_emulation_mode')
+  config.features.register('waveform_player_controls')
 end
