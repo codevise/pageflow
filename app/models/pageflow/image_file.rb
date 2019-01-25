@@ -43,19 +43,20 @@ module Pageflow
     after_attachment_on_s3_post_process :save_image_dimensions
 
     def thumbnail_url(*args)
+      return '' unless ready?
       attachment.url(*args)
     end
 
     def url
-      attachment.url(:large)
+      attachment.url(:large) if ready?
     end
 
     def original_url
-      attachment.url
+      attachment.url if ready?
     end
 
     def panorama_url
-      attachment.url(:panorama_large)
+      attachment.url(:panorama_large) if ready?
     end
 
     private
