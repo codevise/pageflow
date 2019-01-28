@@ -1,3 +1,3 @@
 module Pageflow
-  VERSION = '12.6.0'.freeze
+  VERSION = '12.7.0.dev'.freeze
 end
