@@ -925,6 +925,16 @@ en:
           menu_item: Audio
           text: "# Audio\n\n*Playing audio-files with controls*\n    \nHere you can combine audio-files with pictures or background videos and\ntext-content. Controls similar to the page type „Video“\nare shown.  In addition to that you can write a\ndescription into an „Infobox“.\n\nExamples of application: interviews, direct quotes, music"
       open: Play audio
+      page_attributes:
+        audio_player_controls_variant:
+          inline_help: The audio page supports different display variants of player controls.
+          label: Player Controls Variante
+          values:
+            default: Standard
+            waveform: Waveform
+        waveform_color:
+          inline_help: Color of the waveform's parts that represents the already played part of the audio.
+          label: Waveform Color
       page_type_category_name: Media
       page_type_description: Audio player with controls
       page_type_name: Audio
@@ -1841,6 +1851,8 @@ en:
       page_type_category_name: Media
       page_type_description: Video player with controls
       page_type_name: Video
+    waveform_player_controls:
+      feature_name: Waveform player controls variant for audio page
     widgets:
       none: "(none)"
       roles:

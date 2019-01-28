@@ -925,6 +925,16 @@ de:
           menu_item: Audio
           text: "# Audio\n\n*Wiedergabe von Audiodatei mit Steuerelementen* \n    \nHiermit kannst Du Audiodateien mit Hintergrund-Bild oder Hintergrund-Video und Textinhalten\nkombinieren. Wie beim Seitentyp „Video“ werden\nSteuerelemente angezeigt, und ebenso kann eine zusätzliche\nInfobox mit Text befüllt werden.\n\nTypische Anwendungsbeispiele: Interview, O-Töne,\nMusikstücke"
       open: Audio anhören
+      page_attributes:
+        audio_player_controls_variant:
+          inline_help: Die Audio-Seite unterstützt alternative Darstellunsvarianten der Player-Controls.
+          label: Player Controls Variante
+          values:
+            default: Standard
+            waveform: Waveform
+        waveform_color:
+          inline_help: Farbe des Bereichs der Waveform, der den bereits abgespielten Teil der Audio-Datei repräsentiert.
+          label: Waveform Farbe
       page_type_category_name: Media
       page_type_description: Wiedergabe von Audiodatei mit Steuerelementen
       page_type_name: Audio
@@ -1866,6 +1876,8 @@ de:
       page_type_category_name: Media
       page_type_description: Wiedergabe einer Videodatei mit Steuerelementen
       page_type_name: Video
+    waveform_player_controls:
+      feature_name: Waveform-Steuerlement-Variante für Audio-Seite
     widgets:
       none: "(Kein)"
       roles:
