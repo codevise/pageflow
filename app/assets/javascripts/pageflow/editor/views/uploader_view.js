@@ -49,8 +49,6 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
 
       done: function(event, data) {
         data.record.unset('uploading_progress');
-        data.record.set(data.result);
-
         data.record.publish();
       },
 
