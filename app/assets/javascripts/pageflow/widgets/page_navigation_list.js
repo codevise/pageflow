@@ -95,9 +95,14 @@
         return $.when(animation.enabled && animationDurationElapsed()).then(function() {
           links.each(function() {
             var link = $(this);
+            var pageIsVisible = visible(currentPagePermaId, link);
 
-            animation.finish(link.parent(), visible(currentPagePermaId, link));
-            link.parent().andSelf().toggleClass('filtered', !visible(currentPagePermaId, link));
+            animation.finish(link.parent(), pageIsVisible);
+            link.parent().andSelf().toggleClass('filtered', !pageIsVisible);
+
+            if (pageIsVisible && options.lazyLoadImages) {
+              link.loadLazyImages();
+            }
           });
 
           scroller.refresh();

@@ -187,6 +187,7 @@
           scroller: scroller,
           scrollToActive: true,
           animationDuration: 500,
+          lazyLoadImages: true,
           onAnimationStart: function() {
             element.addClass('is_animating');
           },
