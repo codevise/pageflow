@@ -12,7 +12,8 @@ end
 
 Paperclip.interpolates(:attachments_path_name) do |attachment, _style|
   record = attachment.instance
-  record.respond_to?(:attachments_path_name) ? record.attachments_path_name : 'attachment_on_s3s'
+  return record.attachments_path_name if record.respond_to?(:attachments_path_name)
+  attachment.name.to_s.pluralize
 end
 
 Paperclip.interpolates(:pageflow_placeholder) do |attachment, style|
