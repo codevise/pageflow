@@ -67,7 +67,7 @@ module Pageflow
     end
 
     def url
-      if ready?
+      if attachment.present?
         attachment.url
       end
     end
