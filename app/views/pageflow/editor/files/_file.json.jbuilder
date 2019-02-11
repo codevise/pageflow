@@ -5,8 +5,11 @@ json.partial!(partial: 'pageflow/files/file',
 json.call(file,
           :state,
           :rights,
-          :usage_id,
-          :direct_upload_config)
+          :usage_id)
+
+if file.uploading?
+  json.direct_upload_config(file.direct_upload_config)
+end
 
 json.retryable(file.retryable?)
 json.file_name(file.attachment.original_filename)

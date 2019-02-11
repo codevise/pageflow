@@ -43,6 +43,19 @@ module Pageflow
         expect(response.status).to eq(403)
       end
 
+      it 'omits direct upload config for uploaded files' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, account: account)
+        file = create(:image_file)
+        create(:file_usage, revision: entry.draft, file: file)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
+
+        expect(json_response(path: [0]).key?('direct_upload_config')).to be_falsey
+      end
+
       it 'requires user to be signed in' do
         entry = create(:entry)
         get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
@@ -196,7 +209,7 @@ module Pageflow
              },
              format: 'json')
 
-        expect(entry.image_files.first.direct_upload_config).to be_present
+        expect(json_response(path: :direct_upload_config)).to be_present
       end
 
       it 'does not allow to create file with path for attachment' do

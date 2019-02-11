@@ -57,9 +57,6 @@ module Pageflow
     end
 
     def direct_upload_config
-      # the direct uploaad config is only needed for the initial upload.
-      # It can be omitted once the instance leaves the initial "uploading" state
-      return {} unless uploading?
       Pageflow.config.paperclip_direct_upload_options.call(attachment)
     end
   end
