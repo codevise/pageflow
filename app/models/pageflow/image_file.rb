@@ -43,7 +43,9 @@ module Pageflow
     after_attachment_on_s3_post_process :save_image_dimensions
 
     def thumbnail_url(*args)
-      return '' unless ready?
+      unless ready?
+        return Pageflow::PaperclipInterpolations::Support.pageflow_placeholder(attachment, *args)
+      end
       attachment.url(*args)
     end
 

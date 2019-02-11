@@ -53,7 +53,7 @@ const PrintImage = connectInPage(combineSelectors({
 }))(PrintImageTag);
 
 function PrintImageTag({file}) {
-  if (file && pageIsPrepared) {
+  if (file && file.isReady && pageIsPrepared) {
     return (
       <img src={file.urls.print}
            alt={file.alt}

@@ -9,7 +9,8 @@ module Pageflow
     end
 
     def background_image_tag(image_id, options = {})
-      if image = ImageFile.find_by_id(image_id)
+      image = ImageFile.find_by_id(image_id)
+      if image&.ready?
         options = options.merge(:'data-src' => image.attachment.url(:medium))
         options = options.merge(:'data-printsrc' => image.attachment.url(:print))
         image_tag('', options)

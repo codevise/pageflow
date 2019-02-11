@@ -63,10 +63,10 @@ module Pageflow
     end
 
     describe 'thumbnail_url' do
-      it 'returns empty string unless image is processed' do
+      it 'returns a placeholder unless image is processed' do
         image_file = build(:image_file, :uploading, file_name: 'image.jpg')
 
-        expect(image_file.thumbnail_url).to eq('')
+        expect(image_file.thumbnail_url(:medium)).to match(/placeholder/)
       end
     end
   end
