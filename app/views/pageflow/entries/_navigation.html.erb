@@ -5,8 +5,7 @@
   <div class="scroller">
     <ul class="navigation_thumbnails">
       <%= render :partial => 'pageflow/entries/navigation/page',
-                 :collection => entry.pages.displayed_in_navigation,
-                 :locals => {:image_style => :navigation_thumbnail_small, :image_width => 85} %>
+                 :collection => entry.pages.displayed_in_navigation %>
     </ul>
   </div>
   <%= render 'pageflow/entries/navigation/bar_bottom', :entry => entry %>
