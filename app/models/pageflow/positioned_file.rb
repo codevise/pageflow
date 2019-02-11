@@ -34,7 +34,7 @@ module Pageflow
       end
 
       def thumbnail_url(*args)
-        ImageFile.new.thumbnail_url(*args)
+        ImageFile.new.attachment.url(*args)
       end
 
       def blank?

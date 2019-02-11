@@ -84,7 +84,7 @@ module Pageflow
         revision = create(:revision, :published, :entry => entry)
         published_entry = PublishedEntry.new(entry)
 
-        expect(published_entry.thumbnail_url).to eq(ImageFile.new.thumbnail_url)
+        expect(published_entry.thumbnail_url).to eq(ImageFile.new.attachment.url)
       end
     end
 
