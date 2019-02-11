@@ -10,10 +10,10 @@ Paperclip.interpolates(:class_basename) do |attachment, style|
   Pageflow::PaperclipInterpolations::Support.class_basename(attachment, style)
 end
 
-Paperclip.interpolates(:attachments_path_name) do |attachment, _style|
+Paperclip.interpolates(:attachments_path_name) do |attachment, style|
   record = attachment.instance
   return record.attachments_path_name if record.respond_to?(:attachments_path_name)
-  attachment.name.to_s.pluralize
+  self.attachment(attachment, style)
 end
 
 Paperclip.interpolates(:pageflow_placeholder) do |attachment, style|
