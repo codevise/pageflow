@@ -24,7 +24,7 @@ Capybara::Chromedriver::Logger.filters = [
   /Target node has markup rendered by React/i,
 
   # Ignore failure of debounced request to save order of storylines
-  %r{stroyline/order - Failed to load resource: the server responded with a status of 401},
+  %r{storylines/order - Failed to load resource: the server responded with a status of 401},
 
   # Ignore failure of debounced request to refresh partials while db
   # has already been cleaned
