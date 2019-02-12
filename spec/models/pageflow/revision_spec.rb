@@ -318,6 +318,32 @@ module Pageflow
       end
     end
 
+    describe '.published' do
+      it 'includes revisions that are published indefinitely' do
+        revision = create(:revision, :published)
+
+        expect(Revision.published).to include(revision)
+      end
+
+      it 'includes revisions that are published and not yet depublished' do
+        revision = create(:revision, :not_yet_depublished)
+
+        expect(Revision.published).to include(revision)
+      end
+
+      it 'does not include revisions that are not published' do
+        revision = create(:revision)
+
+        expect(Revision.published).not_to include(revision)
+      end
+
+      it 'does not include revisions that are depublished' do
+        revision = create(:revision, :depublished)
+
+        expect(Revision.published).not_to include(revision)
+      end
+    end
+
     describe '.editable' do
       it 'includes draft revisions' do
         revision = create(:revision)
