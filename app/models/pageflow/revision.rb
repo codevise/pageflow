@@ -27,10 +27,31 @@ module Pageflow
     has_many :audio_files, -> { extending WithFileUsageExtension },
     :through => :file_usages, :source => :file, :source_type => 'Pageflow::AudioFile'
 
-    scope :published, -> do
-      where([':now >= published_at AND (published_until IS NULL OR :now < published_until)',
-              {:now => Time.now}])
-    end
+    scope(:published,
+          lambda do
+            # The following query would be much easier expressed as
+            #
+            #   where.not(published_at: nil)
+            #     .where(['(published_until IS NULL OR published_until > :now)',
+            #            {now: Time.now}])
+            #
+            # But referencing `published_until` without qualifying it
+            # with a table name or alias makes it ambiguous when the
+            # revisions table is joined multiple times in a query.
+            #
+            # The hash syntax makes sure the correct dynamically
+            # generated table alias is used.
+
+            published_indefinitely =
+              where.not(published_at: nil).where(published_until: nil)
+
+            published_until_gt_now = {published_until: 1.second.from_now..DateTime::Infinity.new}
+
+            published_and_not_yet_depublished =
+              where.not(published_at: nil).where(published_until_gt_now)
+
+            published_indefinitely.or(published_and_not_yet_depublished)
+          end)
 
     scope(:with_password_protection, -> { where('password_protected IS TRUE') })
     scope(:without_password_protection, -> { where('password_protected IS NOT TRUE') })

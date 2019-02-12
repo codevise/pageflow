@@ -13,6 +13,11 @@ module Pageflow
         published_at { 1.day.ago }
       end
 
+      trait :not_yet_depublished do
+        published
+        published_until { 1.day.from_now }
+      end
+
       trait :depublished do
         published
         published_until { 1.day.ago }
