@@ -10,11 +10,6 @@ module Pageflow
     # reprocessing attachments.
     attr_accessor :paperclip_attachments_version
 
-    # Path to the location in the filesystem where attachments shall
-    # be stored. The value of this option is available via the
-    # pageflow_filesystem_root paperclip interpolation.
-    attr_accessor :paperclip_filesystem_root
-
     # Root folder in S3 bucket to store files in. Can be used to
     # separate files of multiple development instances in a shared
     # development S3 bucket.
@@ -317,7 +312,6 @@ module Pageflow
 
     def initialize
       @paperclip_attachments_version = 'v1'
-      @paperclip_filesystem_root = Rails.public_path.join('system/uploads')
       @paperclip_s3_root = 'main'
 
       @paperclip_s3_default_options = Defaults::PAPERCLIP_S3_DEFAULT_OPTIONS.dup
