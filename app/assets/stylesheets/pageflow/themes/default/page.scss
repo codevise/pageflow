@@ -26,6 +26,12 @@ $page-header-first-page-title-typography: () !default;
 /// Typography for title on first page in phone layout.
 $page-header-first-page-title-phone-typography: () !default;
 
+/// Typography for title on first page of chapter.
+$page-header-chapter-beginning-title-typography: () !default;
+
+/// Typography for title on first page of chapter in phone layout.
+$page-header-chapter-beginning-title-phone-typography: () !default;
+
 /// Typography for header subtitle.
 $page-header-subtitle-typography: () !default;
 
@@ -237,6 +243,20 @@ $page-content-text-line-height: 1.5em !default;
         (
           font-size: $page-header-first-page-title-phone-font-size
         )
+      );
+    }
+  }
+}
+
+.emphasize_chapter_beginning .page.chapter_beginning:nth-of-type(n+2) {
+  h2 .title {
+    @include typography(
+      $page-header-chapter-beginning-title-typography
+    );
+
+    @include phone {
+      @include typography(
+        $page-header-chapter-beginning-title-phone-typography
       );
     }
   }
