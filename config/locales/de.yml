@@ -93,9 +93,13 @@ de:
         contains: Enthält
         ends_with: Endet mit
         equals: Ist gleich
+        from: Von
         greater_than: Größer als
+        gteq_datetime: Größer gleich
         less_than: Kleiner als
+        lteq_datetime: Kleiner gleich
         starts_with: Beginnt mit
+        to: Bis
     greater_than: Größer als
     has_many_delete: Löschen
     has_many_new: "%{model} hinzufügen"

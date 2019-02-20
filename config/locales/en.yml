@@ -93,9 +93,13 @@ en:
         contains: Contains
         ends_with: Ends with
         equals: Equals
+        from: From
         greater_than: Greater than
+        gteq_datetime: Greater or equal to
         less_than: Less than
+        lteq_datetime: Lesser or equal to
         starts_with: Starts with
+        to: To
     greater_than: Greater than
     has_many_delete: Delete
     has_many_new: Add New %{model}

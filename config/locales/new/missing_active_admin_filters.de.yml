@@ -1,8 +1,0 @@
-de:
-  active_admin:
-    filters:
-      predicates:
-        gteq_datetime: "Größer gleich"
-        lteq_datetime: "Kleiner gleich"
-        from: "Von"
-        to: "Bis"
