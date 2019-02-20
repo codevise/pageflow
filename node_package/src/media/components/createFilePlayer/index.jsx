@@ -174,7 +174,11 @@ export default function({
 
 const slimPlayerControlsPresent = widgetPresent('slimPlayerControls');
 
-function textTrackPosition(state, {playerState}) {
+function textTrackPosition(state, {playerState, textTrackPosition}) {
+  if (textTrackPosition) {
+    return textTrackPosition;
+  }
+
   if (slimPlayerControlsPresent(state)) {
     // see pageflow.VideoPlayer#updateCueLineSettings for explanation of values.
     if (playerState.controlsHidden) {

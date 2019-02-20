@@ -35,7 +35,8 @@ function AudioPage(props) {
       <PageBackgroundAsset />
       <PageAudioFilePlayer file={props.audioFile}
                            playerState={props.playerState}
-                           playerActions={props.playerActions} />
+                           playerActions={props.playerActions}
+                           textTrackPosition={textTrackPosition(playerControlsVariant)} />
     </MediaPage>
   );
 }
@@ -46,6 +47,12 @@ function playerControlsComponent(variant) {
   }
   else {
     return PlayerControls;
+  }
+}
+
+function textTrackPosition(variant) {
+  if (variant == 'waveform') {
+    return 'top';
   }
 }
 

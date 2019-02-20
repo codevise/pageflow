@@ -21,7 +21,8 @@ export function PageFilePlayer(props) {
                   muted={props.muted}
                   playsInline={props.playsInline}
                   defaultTextTrackFileId={props.defaultTextTrackFileId}
-                  textTracksEnabled={props.textTracksEnabled} />
+                  textTracksEnabled={props.textTracksEnabled}
+                  textTrackPosition={props.textTrackPosition} />
     );
   }
   else if (props.preloadComponent && fileReady && props.pageIsPreloaded) {
