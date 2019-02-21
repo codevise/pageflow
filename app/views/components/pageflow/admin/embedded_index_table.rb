@@ -10,11 +10,16 @@ module Pageflow
         @scopes = []
         @sort_columns = []
         @blank_slate_text = options[:blank_slate_text]
+        @model = options[:model]
         super()
       end
 
       def scope(*args)
-        scopes << ActiveAdmin::Scope.new(*args)
+        options = args.extract_options!
+        title = args[0]
+        method = args[1]
+        options[:localizer] ||= ActiveAdmin::Localizers::ResourceLocalizer.new(@model&.model_name)
+        scopes << ActiveAdmin::Scope.new(title, method, options)
       end
 
       def table_for_collection(options = {}, &block)
@@ -49,7 +54,7 @@ module Pageflow
       end
 
       def scoped_collection
-        current_scope ? base_collection.send(current_scope.id) : base_collection
+        current_scope ? base_collection.send(current_scope.scope_method) : base_collection
       end
 
       def current_scope
