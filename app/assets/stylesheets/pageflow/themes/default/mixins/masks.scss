@@ -1,7 +1,8 @@
-  // scss-lint:disable VendorPrefix
+// scss-lint:disable VendorPrefix
 
 @mixin mask-bottom {
-  -webkit-mask-image: image-url("pageflow/themes/default/mask_bottom.png");
+  // Safari 12 requires CORS headers for mask images
+  -webkit-mask-image: image-path-ignoring-asset-host("pageflow/themes/default/mask_bottom.png");
   -webkit-mask-position: bottom left;
   -webkit-mask-repeat: repeat-x;
 }
