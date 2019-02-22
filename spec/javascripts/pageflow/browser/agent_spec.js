@@ -55,4 +55,24 @@ describe('pageflow.browser.Agent', function() {
       expect(agent.matchesSafari11AndAbove()).to.eq(false);
     });
   });
+
+  describe('#matchesDesktopSafari', function() {
+    it('returns true for Safari 12', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14) ' +
+        'AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Safari/605.1.15'
+      );
+
+      expect(agent.matchesDesktopSafari()).to.eq(true);
+    });
+
+    it('returns false for Safari on iPhone', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_1 like Mac OS X) '+
+        'AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Mobile/14A403 Safari/602.1'
+      );
+
+      expect(agent.matchesDesktopSafari()).to.eq(false);
+    });
+  });
 });
