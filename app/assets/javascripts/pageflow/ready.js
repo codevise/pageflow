@@ -1,10 +1,14 @@
 pageflow.ready = new $.Deferred(function(readyDeferred) {
+  var pagePreloaded = new $.Deferred(function(pagePreloadedDeferred) {
+    $(document).one('pagepreloaded', pagePreloadedDeferred.resolve);
+  }).promise();
+
   window.onload = function() {
     pageflow.browser.detectFeatures().then(function() {
       var slideshow = $('[data-role=slideshow]');
       var body = $('body');
 
-      body.one('pagepreloaded', function() {
+      pagePreloaded.then(function() {
         readyDeferred.resolve();
         pageflow.events.trigger('ready');
       });
