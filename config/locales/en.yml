@@ -161,7 +161,7 @@ en:
         created_at: Created at
         default_file_rights: Default file credits
         default_theming: Default theming
-        entries_count: "# Entries"
+        entries_count: "# Stories"
         landing_page_name: Landing page
         name: Name
         own_role: Own Role
@@ -347,7 +347,7 @@ en:
         pageflow/entry:
           attributes:
             folder:
-              must_be_same_account: Folder must belong to same account as entry
+              must_be_same_account: Folder must belong to same account as story
     models:
       account:
         one: Account
@@ -761,7 +761,7 @@ en:
       accounts:
         no_entries: No Stories
         no_members: No members
-        theming_defaults_inline_help: The following settings will be used as defaults for new entries in this account. Changes do not affect existing entries.
+        theming_defaults_inline_help: The following settings will be used as defaults for new stories in this account. Changes do not affect existing stories.
       entries:
         add_folder: Add folder
         confirm_depublish: Depublish this story?
@@ -774,7 +774,7 @@ en:
         edit_revision: Edit
         editor: Editor
         editor_hint: Open editor
-        embed_code_hint: Embed the published entry on a website.
+        embed_code_hint: Embed the published story on a website.
         entries: Stories
         forever: "(unlimited)"
         members: Members
@@ -806,8 +806,8 @@ en:
         snapshot: Save current version
         title_hint: This field determines the URL for this story.
       entry:
-        add: Add Entry
-        none_addable_tooltip: No entry available
+        add: Add Story
+        none_addable_tooltip: No story available
       features:
         states:
           default: Default (%{inherited})
@@ -822,10 +822,10 @@ en:
       memberships:
         on_account:
           role:
-            hint_html: You can assign roles on individual entries of this account to a <strong>Member</strong>.<br>A <strong>Previewer</strong> can additionally preview all entries of this account.<br>An <strong>Editor</strong> can additionally edit all entries of this account.<br>A <strong>Publisher</strong> can additionally publish all entries of this account.<br>A <strong>Manager</strong> can additionally set user roles on all entries of this account and edit them.
+            hint_html: You can assign roles on individual stories of this account to a <strong>Member</strong>.<br>A <strong>Previewer</strong> can additionally preview all stories of this account.<br>An <strong>Editor</strong> can additionally edit all stories of this account.<br>A <strong>Publisher</strong> can additionally publish all stories of this account.<br>A <strong>Manager</strong> can additionally set user roles on all stories of this account and edit them.
         on_entry:
           role:
-            hint_html: A <strong>Previewer</strong> can preview this entry.<br>An <strong>Editor</strong> can additionally edit this entry.<br>A <strong>Publisher</strong> can additionally publish this entry.<br>A <strong>Manager</strong> can additionally set user roles on this entry and edit them.
+            hint_html: A <strong>Previewer</strong> can preview this story.<br>An <strong>Editor</strong> can additionally edit this story.<br>A <strong>Publisher</strong> can additionally publish this story.<br>A <strong>Manager</strong> can additionally set user roles on this story and edit them.
       resource_tabs:
         account_editor_hint: Users who are assigned on an account level are not listed here
         accounts: Accounts
@@ -840,10 +840,10 @@ en:
       themings:
         additional_cnames_hint: Comma separated list of additional CNAMES. Used only to select the correct redirect URL.
         cname_hint: Used in public sharing URLs.
-        default_author_hint: Default 'author' meta field for entries
-        default_keywords_hint: Default 'keywords' meta field for entries
-        default_locale_hint: Default language for entries
-        default_publisher_hint: Default 'publisher' meta field for entries
+        default_author_hint: Default 'author' meta field for stories
+        default_keywords_hint: Default 'keywords' meta field for stories
+        default_locale_hint: Default language for stories
+        default_publisher_hint: Default 'publisher' meta field for stories
         home_url_hint: Used for requests to the root path with one of the above CNAMES. Default target location for the home button.
         name: "%{account_name}"
         remove_logo: Remove logo
@@ -860,8 +860,8 @@ en:
         delete_account_membership_confirmation: |-
           Really delete the account membership of this user?
 
-          CAUTION: All of the user's entry memberships in this account are also deleted.
-        delete_entry_membership_confirmation: Really delete the entry membership of this user?
+          CAUTION: All of the user's story memberships in this account are also deleted.
+        delete_entry_membership_confirmation: Really delete the story membership of this user?
         delete_me:
           cancel_label: No, do not delete my account!
           delete_label: Delete account
@@ -889,34 +889,34 @@ en:
           account_manager: Konto-Administrator
           accounts:
             tooltip:
-              editor: Can edit entries of this account
+              editor: Can edit stories of this account
               manager: Can set roles on this account
-              member: Can be assigned roles on entries of this account
-              previewer: Can preview entries of this account
-              publisher: Can publish entries of this account
+              member: Can be assigned roles on stories of this account
+              previewer: Can preview stories of this account
+              publisher: Can publish stories of this account
           admin: System-Administrator
           editor: Editor
           entries:
             tooltip:
-              editor: Can edit this entry
-              manager: Can set roles on this entry
-              previewer: Can preview this entry
-              publisher: Can publish this entry
+              editor: Can edit this story
+              manager: Can set roles on this story
+              previewer: Can preview this story
+              publisher: Can publish this story
           manager: Manager
           member: Member
           own_account_role:
             tooltip:
-              editor: You can edit entries in this account
-              manager: You can manage user and entries in this account
-              member: You can be assigned roles on entries in this account
-              previewer: You can preview entries in this account
-              publisher: You can publish entries in this account
+              editor: You can edit stories in this account
+              manager: You can manage user and stories in this account
+              member: You can be assigned roles on stories in this account
+              previewer: You can preview stories in this account
+              publisher: You can publish stories in this account
           own_entry_role:
             tooltip:
-              editor: You can edit this entry
-              manager: You can set roles on this entry
-              previewer: You can preview this entry
-              publisher: You can publish this entry
+              editor: You can edit this story
+              manager: You can set roles on this story
+              previewer: You can preview this story
+              publisher: You can publish this story
           previewer: Previewer
           publisher: Publisher
         suspend: Suspend
@@ -1041,7 +1041,7 @@ en:
       classic_loading_spinner:
         widget_type_info_box_text: This is a preview of the classic loading spinner. It is displayed while the page is loading.
       cookie_notice_bar:
-        widget_type_info_box_text: The notice is displayed when visiting an entry that uses Cookies. Cookies are set, if an analytics integration is active or the 'Emphasize new pages' feature has been enabled.
+        widget_type_info_box_text: The notice is displayed when visiting a story that uses Cookies. Cookies are set, if an analytics integration is active or the 'Emphasize new pages' feature has been enabled.
       entries:
         unsupported_browser_hint:
           message: The Pageflow editor does not support the browser version you are using. We recommend upgrading your browser to the most recent version.
@@ -1059,7 +1059,7 @@ en:
       files:
         common_attributes:
           alt:
-            inline_help: A hint describing the contents of the displayed element. Not displayed in the entry, but can be used by screen reader software. Improves accessibility of the content.
+            inline_help: A hint describing the contents of the displayed element. Not displayed in the story, but can be used by screen reader software. Improves accessibility of the content.
             label: Alt-Text
           file_name:
             column_header: File name
@@ -1071,7 +1071,7 @@ en:
               blank: Still blank
               present: 'Present: %v{value}'
             column_header: Rights
-            inline_help: Displayed in copyright area of entry.
+            inline_help: Displayed in copyright area of story.
             label: Rights
           text_tracks:
             label: Subtitles
@@ -1285,15 +1285,15 @@ en:
           ok: OK
           title: Select target page
         publish_entry:
-          already_published_with_password_help: This entry is already published with a password. Leave password field blank to keep the previous password.
-          already_published_without_password_help: This entry is published without a password at the moment. Setting a password will prevent public access from now on.
+          already_published_with_password_help: This story is already published with a password. Leave password field blank to keep the previous password.
+          already_published_without_password_help: This story is published without a password at the moment. Setting a password will prevent public access from now on.
           date: Date
           files_pending_notice: Please wait until all files have been processed and check the results. You may then publish your story.
           not_published_notice: This story is currently not published.
           password: Password
-          password_help: Restrict access to the published version of this entry. Visiters will have to enter a password.
+          password_help: Restrict access to the published version of this story. Visitors will have to enter a password.
           password_protected: Protect with Password
-          previously_published_with_password_help: This entry was published with a password before. Leave password field blank to keep the previous password.
+          previously_published_with_password_help: This story was published with a password before. Leave password field blank to keep the previous password.
           publish: Publish
           publish_current: Publish current version
           publish_success: Your story has been sucessfully published.
@@ -1337,7 +1337,7 @@ en:
 
             This operation cannot be undone.
         edit_entry_view:
-          cannot_publish: You do not have sufficient rights to publish this entry.
+          cannot_publish: You do not have sufficient rights to publish this story.
         edit_page_view:
           confirm_destroy: Really delete this page?
         edit_storyline_view:
@@ -1386,10 +1386,10 @@ en:
               inline_help: By default the background image of the first page is used.
               label: Background image
             subtitle:
-              inline_help: Subtitle to display in loadiner view.
+              inline_help: Subtitle to display in loading view.
               label: Subtitle
             title:
-              inline_help: Title to display in loadiner view. Defaults to entry title.
+              inline_help: Title to display in loading view. Defaults to story title.
               label: Title
     editor_emulation_mode:
       feature_name: Editor phone emulation mode
@@ -1409,7 +1409,7 @@ en:
 
           You find the atmo settings on the „Options“ tab of each page.
 
-          Should you ever feel distracted by the atmo audio while working on your entry, you can use the hot key „Alt + a“ to temporarily mute it. Simply press „Alt + a“ again to reactivate atmo audio.
+          Should you ever feel distracted by the atmo audio while working on your story, you can use the hot key „Alt + a“ to temporarily mute it. Simply press „Alt + a“ again to reactivate atmo audio.
 
           CAUTION: Atmo audio does not play on mobile devices.
       files:
@@ -1640,9 +1640,9 @@ en:
 
 
           * If a file has a text track of kind "translation" in the
-            language of the entry, it is displayed as subtitle
+            language of the story, it is displayed as subtitle
             automatically. This is meant for people who are able to
-            understand the language of the entry, but not the language
+            understand the language of the story, but not the language
             spoken in the video or audio.
 
           * If instead the file has a text track of kind "audio
@@ -1713,8 +1713,8 @@ en:
       feature_name: Editor theme selection
     storyline_attributes:
       main:
-        inline_help: Turns the first page of this storyline into the start page of the entry.
-        inline_help_disabled: The first page of this storyline is the start page of the entry.
+        inline_help: Turns the first page of this storyline into the start page of the story.
+        inline_help_disabled: The first page of this storyline is the start page of the story.
         label: Main storyline
       navigation_bar_mode:
         label: Navigation bar mode
@@ -1769,7 +1769,7 @@ en:
           overview_button_enabled: The overview displays chapters and pages of the main storyline.
           overview_button_enabled_disabled: This option is not available for your theme.
           publisher: The publisher's name or company name.
-          share_url: URL to share via social media buttons. Leave blank to use URL of published entry.
+          share_url: URL to share via social media buttons. Leave blank to use URL of published story.
           summary: Here you can write a description, which is shown, when your Pageflow is shared in social networks.
           title: Here you can choose a title for your Pageflow. It will be shown on the title bar of the browser window. It also acts as an indicator for search engines once the report is published.
         pageflow/page:
