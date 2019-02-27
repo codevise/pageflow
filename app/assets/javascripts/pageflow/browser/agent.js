@@ -8,6 +8,10 @@ pageflow.browser.Agent = function(userAgent) {
       return matches(/\bSilk\b/);
     },
 
+    matchesDesktopSafari: function() {
+      return this.matchesSafari() && !this.matchesMobilePlatform();
+    },
+
     matchesDesktopSafari9: function() {
       return this.matchesSafari9() && !this.matchesMobilePlatform();
     },

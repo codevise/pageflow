@@ -5,7 +5,8 @@ pageflow.mediaPlayer.volumeFading = function(player) {
   if (!pageflow.browser.has('volume control support')) {
     return pageflow.mediaPlayer.volumeFading.noop(player);
   }
-  else if (pageflow.audioContext.get() && player.getMediaElement) {
+  else if (pageflow.browser.has('audio context volume fading support') &&
+           pageflow.audioContext.get() && player.getMediaElement) {
     return pageflow.mediaPlayer.volumeFading.webAudio(
       player,
       pageflow.audioContext.get()

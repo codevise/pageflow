@@ -81,10 +81,17 @@ pageflow.browser = (function(){
 
       var asyncHas = function(name) {
         var runTest = function() {
-          if ((pageflow.debugMode() || pageflow.ALLOW_FEATURE_OVERRIDES) &&
-              window.localStorage &&
-              typeof window.localStorage['override ' + name] !== 'undefined') {
-            var value = (window.localStorage['override ' + name] === 'on');
+          var value, underscoredName = name.replace(/ /g, '_');
+
+          if (pageflow.debugMode() && location.href.indexOf('&has=' + underscoredName) >= 0) {
+            value = location.href.indexOf('&has=' + underscoredName + '_on') >= 0;
+            pageflow.log('FEATURE OVERRIDDEN ' + name + ': ' + value, {force: true});
+            return value;
+          }
+          else if ((pageflow.debugMode() || pageflow.ALLOW_FEATURE_OVERRIDES) &&
+                   window.localStorage &&
+                   typeof window.localStorage['override ' + name] !== 'undefined') {
+            value = (window.localStorage['override ' + name] === 'on');
             pageflow.log('FEATURE OVERRIDDEN ' + name + ': ' + value, {force: true});
             return value;
           }
