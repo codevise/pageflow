@@ -10,6 +10,7 @@
     display: inline-block;
     width: 25px;
     height: 25px;
+    vertical-align: top;
 
     border: solid 1px #eee;
 
@@ -38,11 +39,19 @@
 
   [data-wysihtml5-command="createLink"] {
     @include link-icon;
+
+    &.wysihtml5-command-active + .dialog [data-wysihtml5-dialog-action="cancel"] {
+      display: none;
+    }
+  }
+
+  .wysihtml5-command-dialog-opened {
+    margin-bottom: 83px;
   }
 
   .dialog {
     position: absolute;
-    bottom: 30px;
+    top: 30px;
     left: -2px;
     right: -6px;
     padding: 5px 10px;
@@ -60,24 +69,24 @@
   .dialog:before {
     content: " ";
     position: absolute;
-    bottom: -20px;
+    top: -20px;
     left: 97px;
     pointer-events: none;
-    border-top: solid 10px #222;
+    border-top: solid 10px transparent;
     border-right: solid 10px transparent;
-    border-bottom: solid 10px transparent;
+    border-bottom: solid 10px #222;
     border-left: solid 10px transparent;
   }
 
   .dialog:after {
     content: " ";
     position: absolute;
-    bottom: -18px;
+    top: -18px;
     left: 98px;
     pointer-events: none;
-    border-top: solid 9px #fff;
+    border-top: solid 9px transparent;
     border-right: solid 9px transparent;
-    border-bottom: solid 9px transparent;
+    border-bottom: solid 9px #fff;
     border-left: solid 9px transparent;
   }
 }
