@@ -5,7 +5,8 @@ module Pageflow
       uploader { create(:user) }
       parent_file { nil }
 
-      attachment_on_s3 { File.open(Engine.root.join('spec', 'fixtures', 'sample.vtt')) }
+      attachment { File.open(Engine.root.join('spec', 'fixtures', 'sample.vtt')) }
+      state { 'processed' }
 
       transient do
         used_in { nil }
@@ -21,19 +22,38 @@ module Pageflow
       end
 
       trait :from_srt_file do
-        attachment_on_s3 { File.open(Engine.root.join('spec', 'fixtures', 'sample.srt')) }
+        attachment { File.open(Engine.root.join('spec', 'fixtures', 'sample.srt')) }
+        file_name { 'sample.srt' }
       end
 
-      trait :on_filesystem do
-        attachment_on_filesystem { File.open(Engine.root.join('spec', 'fixtures', 'et.ogg')) }
-        attachment_on_s3 { nil }
-        state { 'not_uploaded_to_s3' }
+      trait :uploading do
+        attachment { nil }
+        file_name { 'sample.vtt' }
+        state { 'uploading' }
+
+        after :create do |text_track_file|
+          simulate_direct_upload(text_track_file)
+        end
       end
 
-      trait :uploading_to_s3_failed do
-        attachment_on_filesystem { File.open(Engine.root.join('spec', 'fixtures', 'et.ogg')) }
-        attachment_on_s3 { nil }
-        state { 'uploading_to_s3_failed' }
+      trait :uploaded do
+        uploading
+        state { 'uploaded' }
+      end
+
+      trait :uploading_failed do
+        state { 'uploading_failed' }
+      end
+
+      trait :processing do
+        state { 'processing' }
+      end
+
+      trait :processed do
+      end
+
+      trait :processing_failed do
+        state { 'processing_failed' }
       end
     end
   end

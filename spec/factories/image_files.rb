@@ -19,23 +19,30 @@ module Pageflow
         create(:file_usage, :file => file, :revision => evaluator.used_in) if evaluator.used_in
       end
 
+      trait :uploading do
+        attachment { nil }
+        file_name { 'image.jpg' }
+        state { 'uploading' }
+
+        after :create do |image_file|
+          simulate_direct_upload(image_file)
+        end
+      end
+
+      trait :uploaded do
+        uploading
+        state { 'uploaded' }
+      end
+
+      trait :processing do
+        state { 'processing' }
+      end
+
       trait :processed do
-        processed_attachment { File.open(Engine.root.join('spec', 'fixtures', 'image.jpg')) }
       end
 
-      trait :unprocessed do
-        unprocessed_attachment { File.open(Engine.root.join('spec', 'fixtures', 'image.jpg')) }
-        processed_attachment { nil }
-        state { 'not_processed' }
-      end
-
-      trait :failed do
-        unprocessed_attachment { File.open(Engine.root.join('spec', 'fixtures', 'image.jpg')) }
-        processed_attachment { nil }
+      trait :processing_failed do
         state { 'processing_failed' }
-      end
-
-      trait :encoded do
       end
     end
   end

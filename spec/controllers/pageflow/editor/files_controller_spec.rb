@@ -43,6 +43,19 @@ module Pageflow
         expect(response.status).to eq(403)
       end
 
+      it 'omits direct upload config for uploaded files' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, account: account)
+        file = create(:image_file)
+        create(:file_usage, revision: entry.draft, file: file)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
+
+        expect(json_response(path: [0]).key?('direct_upload_config')).to be_falsey
+      end
+
       it 'requires user to be signed in' do
         entry = create(:entry)
         get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
@@ -62,7 +75,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {attachment: image_fixture_upload}
+               image_file: {file_name: 'image.jpg'}
              },
              format: 'json')
 
@@ -80,7 +93,7 @@ module Pageflow
                entry_id: entry,
                collection_name: 'image_files',
                image_file: {
-                 attachment: image_fixture_upload,
+                 file_name: 'image.jpg',
                  rights: 'someone',
                  configuration: {
                    some: 'value'
@@ -111,7 +124,7 @@ module Pageflow
                entry_id: entry,
                collection_name: 'pageflow_test_hosted_files',
                test_hosted_file: {
-                 attachment: image_fixture_upload,
+                 file_name: 'image.jpg',
                  custom: 'some value'
                }
              },
@@ -137,7 +150,7 @@ module Pageflow
                entry_id: entry,
                collection_name: 'pageflow_test_hosted_files',
                test_hosted_file: {
-                 attachment: image_fixture_upload,
+                 file_name: 'image.jpg',
                  custom: 'some value'
                }
              },
@@ -158,7 +171,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {attachment: image_fixture_upload}
+               image_file: {file_name: 'image.jpg'}
              },
              format: 'json')
 
@@ -175,14 +188,14 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {attachment: image_fixture_upload}
+               image_file: {file_name: 'image.jpg'}
              },
              format: 'json')
 
         expect(json_response(path: [:usage_id])).to be_present
       end
 
-      it 'uploads attachment' do
+      it 'supplies direct upload config for client upload in response' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
@@ -192,14 +205,31 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {attachment: image_fixture_upload}
+               image_file: {file_name: 'image.jpg'}
              },
              format: 'json')
 
-        expect(entry.image_files.first.unprocessed_attachment_file_name).to be_present
+        expect(json_response(path: :direct_upload_config)).to be_present
       end
 
-      it 'does not allow to create file without required attachment' do
+      it 'does not allow to create file with path for attachment' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {file_name: '../../image.jpg'}
+             },
+             format: 'json')
+
+        expect(response.status).to eq(422)
+      end
+
+      it 'does not allow to create file without required attachment file name' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
 
@@ -210,7 +240,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {attachment: nil}
+               image_file: {file_name: nil}
              },
              format: 'json')
 
@@ -226,7 +256,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {attachment: image_fixture_upload}
+               image_file: {file_name: 'image.jpg'}
              },
              format: 'json')
 
@@ -240,7 +270,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {attachment: image_fixture_upload}
+               image_file: {file_name: 'image.jpg'}
              },
              format: 'json')
 
@@ -259,7 +289,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'text_track_files',
-               text_track_file: {attachment: text_track_fixture_upload,
+               text_track_file: {file_name: 'sample.vtt',
                                  parent_file_id: parent_file.id,
                                  parent_file_model_type: 'Pageflow::VideoFile'}
              },
@@ -281,7 +311,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'image_files',
-               image_file: {attachment: image_fixture_upload,
+               image_file: {file_name: 'image.jpg',
                             parent_file_id: parent_file.id,
                             parent_file_model_type: 'Pageflow::ImageFile'}
              },
@@ -303,7 +333,7 @@ module Pageflow
              params: {
                entry_id: entry,
                collection_name: 'text_track_files',
-               text_track_file: {attachment: text_track_fixture_upload,
+               text_track_file: {file_name: 'sample.vtt',
                                  parent_file_id: parent_file.id,
                                  parent_file_model_type: 'Pageflow::ImageFile'}
              },
@@ -311,14 +341,6 @@ module Pageflow
 
         expect(parent_file.nested_files(Pageflow::TextTrackFile)).to be_empty
         expect(response.status).to eq(422)
-      end
-
-      def image_fixture_upload
-        fixture_file_upload(Engine.root.join('spec', 'fixtures', 'image.jpg'), 'image/jpeg')
-      end
-
-      def text_track_fixture_upload
-        fixture_file_upload(Engine.root.join('spec', 'fixtures', 'sample.vtt'), 'text/vtt')
       end
     end
 
@@ -417,7 +439,7 @@ module Pageflow
       it 'succeeds if encoding/processing failed' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
-        file = create(:image_file, :failed, used_in: entry.draft)
+        file = create(:image_file, :processing_failed, used_in: entry.draft)
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
@@ -435,7 +457,7 @@ module Pageflow
       it 'does not allow to retry encoding of file for entry the user is not editor of' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
-        file = create(:image_file, :failed, used_in: entry.draft)
+        file = create(:image_file, :processing_failed, used_in: entry.draft)
 
         sign_in(user, scope: :user)
         acquire_edit_lock(user, entry)
@@ -452,7 +474,7 @@ module Pageflow
 
       it 'does not allow to retry encoding of file if not signed in' do
         entry = create(:entry)
-        file = create(:image_file, :failed, used_in: entry.draft)
+        file = create(:image_file, :processing_failed, used_in: entry.draft)
 
         post(:retry,
              params: {

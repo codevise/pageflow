@@ -13,7 +13,7 @@ shared_examples 'encoded file state machine' do |model|
       end
 
       it 'creates zencoder job for file' do
-        file = create(model, :on_filesystem)
+        file = create(model, :uploading)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
@@ -23,7 +23,7 @@ shared_examples 'encoded file state machine' do |model|
       end
 
       it 'polls zencoder' do
-        file = create(model, :on_filesystem)
+        file = create(model, :uploading)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
 
@@ -33,7 +33,7 @@ shared_examples 'encoded file state machine' do |model|
       end
 
       it 'sets state to encoded after job has finished' do
-        file = create(model, :on_filesystem)
+        file = create(model, :uploading)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
@@ -43,7 +43,7 @@ shared_examples 'encoded file state machine' do |model|
       end
 
       it 'invokes file_encoded hook' do
-        file = create(model, :on_filesystem)
+        file = create(model, :uploading)
         subscriber = double('subscriber', :call => nil)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
@@ -56,7 +56,7 @@ shared_examples 'encoded file state machine' do |model|
 
       context 'when encoding fails' do
         it 'invokes file_encoding_failed hook' do
-          file = create(model, :on_filesystem)
+          file = create(model, :uploading)
           subscriber = double('subscriber', :call => nil)
 
           allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished_but_failed)
@@ -75,7 +75,7 @@ shared_examples 'encoded file state machine' do |model|
       end
 
       it 'creates zencoder job for file meta data' do
-        file = create(model, :on_filesystem)
+        file = create(model, :uploading)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
@@ -85,7 +85,7 @@ shared_examples 'encoded file state machine' do |model|
       end
 
       it 'polls zencoder' do
-        file = create(model, :on_filesystem)
+        file = create(model, :uploading)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
 
@@ -95,7 +95,7 @@ shared_examples 'encoded file state machine' do |model|
       end
 
       it 'sets state to waiting_for_confirmation' do
-        file = create(model, :on_filesystem)
+        file = create(model, :uploading)
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
@@ -142,18 +142,6 @@ shared_examples 'encoded file state machine' do |model|
     before do
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
-    end
-
-    context 'when upload to s3 failed' do
-      it 'sets state to encoded after job has finished' do
-        file = create(model, :uploading_to_s3_failed)
-
-        allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
-
-        file.retry
-
-        expect(file.reload.state).to eq('encoded')
-      end
     end
 
     context 'when encoding failed' do

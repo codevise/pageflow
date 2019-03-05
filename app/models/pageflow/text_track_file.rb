@@ -1,41 +1,24 @@
 module Pageflow
   class TextTrackFile < ApplicationRecord
     include HostedFile
+    include ProcessedFileStateMachine
 
-    processing_state_machine do
-      state 'processing'
-      state 'processed'
-      state 'processing_failed'
-
-      event :process do
-        transition any => 'processing'
-      end
-
-      job ProcessFileJob do
-        on_enter 'processing'
-        result :ok, state: 'processed'
-        result :error, state: 'processing_failed'
-      end
+    def attachment_styles(_attachment)
+      {
+        vtt: {
+          format: 'vtt',
+          processors: [:pageflow_vtt],
+          s3_headers: {
+            'Content-Type' => 'text/vtt'
+          }
+        }
+      }
     end
 
-    has_attached_file(:processed_attachment,
-                      Pageflow.config.paperclip_s3_default_options
-                        .merge(styles: {
-                                 vtt: {
-                                   format: 'vtt',
-                                   processors: [:pageflow_vtt],
-                                   s3_headers: {
-                                     'Content-Type' => 'text/vtt'
-                                   }
-                                 }
-                               }))
-
-    def ready?
-      processed?
-    end
-
-    def unprocessed_attachment
-      attachment_on_s3
+    # used in paperclip initializer to interpolate the storage path
+    # needs to be "processed_attachments" for text tracks for legacy reasons
+    def attachments_path_name
+      'processed_attachments'
     end
 
     def meta_data_attributes=(attributes)

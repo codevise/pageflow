@@ -55,9 +55,9 @@ Pageflow::Engine.routes.draw do
         resources :files,
                   path: 'files/:collection_name',
                   only: [:index, :create, :update, :destroy] do
-          post :empty, on: :collection, to: 'files#create'
           post :reuse, on: :collection
           post :retry, on: :member
+          put :publish, on: :member
         end
       end
 

@@ -15,7 +15,7 @@ module Pageflow
     end
 
     def example_file
-      @example_file ||= AudioFile.new(id: 0, attachment_on_s3_file_name: ':basename.mp3')
+      @example_file ||= AudioFile.new(id: 0, file_name: ':basename.mp3')
     end
   end
 end

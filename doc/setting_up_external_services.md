@@ -68,8 +68,9 @@ trouble when using https.
 * You need to enable Cross Origin Resource Sharing (CORS).
 
   * Still in the Permissions screen, click _CORS Configuration_.
-  * Paste the code below. This grants everyone GET requests, which is
-    what Pageflow needs.
+  * Paste the code below. The first rule grants everyone GET requests, which is
+    what Pageflow needs. The second rule grants POST access to your origin. 
+    This is required for file uploads to work.
 
 ```
 <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
@@ -79,9 +80,16 @@ trouble when using https.
         <MaxAgeSeconds>28800</MaxAgeSeconds>
         <AllowedHeader>*</AllowedHeader>
     </CORSRule>
+    <CORSRule>
+        <AllowedOrigin>{insert your origin here}</AllowedOrigin>
+        <AllowedMethod>POST</AllowedMethod>
+        <MaxAgeSeconds>3000</MaxAgeSeconds>
+        <AllowedHeader>*</AllowedHeader>
+    </CORSRule>
 </CORSConfiguration>
 ```
 
+You will need to make sure that your production bucket has an appropriate origin set for _AllowedOrigin_.
 You can tweak these rules if you want to. See the
 [Amazon Developer Guide](https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html#how-do-i-enable-cors).
 

@@ -5,14 +5,24 @@ module Pageflow
     include StateMachineJob
 
     def perform_with_result(file, _options)
-      file.processed_attachment = file.unprocessed_attachment
-      file.save!
+      file.attachment.reprocess!
 
-      :ok
+      if file.valid?
+        :ok
+      else
+        reset_invalid_attachment(file)
+        :error
+      end
     rescue ActiveRecord::RecordInvalid, Errno::ENAMETOOLONG
-      file.processed_attachment = nil
-      file.save!
+      reset_invalid_attachment(file)
+
       :error
+    end
+
+    def reset_invalid_attachment(file)
+      file_name = file.file_name
+      file.attachment = nil
+      file.file_name = file_name
     end
   end
 end

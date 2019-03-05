@@ -1,19 +1,17 @@
 module Pageflow
-  module ImageFileStateMachine
+  module ProcessedFileStateMachine
     extend ActiveSupport::Concern
 
     included do
-      state_machine :initial => 'not_processed' do
+      processing_state_machine do
         extend StateMachineJob::Macro
 
-        state 'not_processed'
         state 'processing'
         state 'processed'
-
-        state 'processing_to_s3_failed'
+        state 'processing_failed'
 
         event :process do
-          transition 'not_processed' => 'processing'
+          transition 'uploaded' => 'processing'
           transition 'processing_failed' => 'processing'
         end
 
@@ -26,10 +24,6 @@ module Pageflow
     end
 
     def retry!
-      process!
-    end
-
-    def publish!
       process!
     end
 

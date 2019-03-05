@@ -40,7 +40,7 @@ module Pageflow
     end
 
     def attachment_s3_url
-      "s3://#{File.join(attachment_on_s3.bucket_name, attachment_on_s3.path)}"
+      "s3://#{File.join(attachment.bucket_name, attachment.path)}"
     end
 
     def encode_highdef?

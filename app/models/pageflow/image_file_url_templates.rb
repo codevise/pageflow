@@ -9,11 +9,11 @@ module Pageflow
     private
 
     def styles
-      ImageFile::STYLES.call(example_file.attachment).keys
+      example_file.attachment_styles(example_file.attachment).keys
     end
 
     def example_file
-      @example_file ||= ImageFile.new(id: 0, processed_attachment_file_name: ':basename.jpg')
+      @example_file ||= ImageFile.new(id: 0, file_name: ':basename.jpg')
     end
   end
 end

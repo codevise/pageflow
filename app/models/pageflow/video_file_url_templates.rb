@@ -26,7 +26,7 @@ module Pageflow
 
     def example_file
       @example_file ||= VideoFile.new(id: 0).tap do |video_file|
-        video_file.attachment_on_s3_file_name = ':basename.mp4'
+        video_file.file_name = ':basename.mp4'
         video_file.poster_file_name = video_file.zencoder_poster.original_filename
       end
     end

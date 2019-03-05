@@ -20,7 +20,6 @@ module Pageflow
         verify_edit_lock!(entry)
 
         @file = entry.create_file!(file_type.model, create_params)
-        @file.publish!
 
         respond_with(:editor, @file)
       rescue ActiveRecord::RecordInvalid => e
@@ -57,6 +56,16 @@ module Pageflow
                                                      collection_name: params[:collection_name]))
       end
 
+      def publish
+        entry = DraftEntry.find(params[:entry_id])
+        file = entry.find_file(file_type.model, params[:id])
+
+        authorize!(:update, file.to_model)
+        file.publish!
+
+        head(:no_content)
+      end
+
       def update
         entry = DraftEntry.find(params[:entry_id])
         file = entry.find_file(file_type.model, params[:id])
@@ -81,7 +90,7 @@ module Pageflow
       private
 
       def create_params
-        file_attachment_params
+        file_params.permit(:file_name, :content_type, :file_size)
           .merge(file_configuration_params)
           .merge(file_parent_file_params)
           .merge(file_custom_params)
@@ -93,12 +102,6 @@ module Pageflow
 
       def update_params
         file_configuration_params
-      end
-
-      def file_attachment_params
-        file_params
-          .permit(attachment: [:tmp_path, :original_name, :content_type])
-          .merge(file_params.permit(:attachment))
       end
 
       def file_configuration_params

@@ -1,10 +1,6 @@
 module Pageflow
   # Options to be defined in the pageflow initializer of the main app.
   class Configuration
-    # Default options for paperclip attachments which are supposed to
-    # use filesystem storage.
-    attr_accessor :paperclip_filesystem_default_options
-
     # Default options for paperclip attachments which are supposed to use
     # s3 storage.
     attr_accessor :paperclip_s3_default_options
@@ -25,6 +21,16 @@ module Pageflow
     #
     # @since 13.0
     attr_accessor :paperclip_s3_root
+
+    # Upload options provided to direct upload form.
+    # Defaults to S3 storage options.
+    # returns a hash with keys:
+    # - url: The URL to use as the action of the form
+    # - fields: A hash of fields that will be included in the direct upload form.
+    #           This hash should include the signed POST policy, the access key ID and
+    #           security token (if present), etc.
+    #           These fields will be included as input elements of type 'hidden' on the form
+    attr_accessor :paperclip_direct_upload_options
 
     # Refer to the pageflow initializer template for a list of
     # supported options.
@@ -314,8 +320,20 @@ module Pageflow
       @paperclip_filesystem_root = Rails.public_path.join('system/uploads')
       @paperclip_s3_root = 'main'
 
-      @paperclip_filesystem_default_options = Defaults::PAPERCLIP_FILESYSTEM_DEFAULT_OPTIONS.dup
       @paperclip_s3_default_options = Defaults::PAPERCLIP_S3_DEFAULT_OPTIONS.dup
+
+      @paperclip_direct_upload_options = lambda { |attachment|
+        max_upload_size = 4_294_967_296 # max file size in bytes
+        presigned_post_config = attachment.s3_bucket
+                                          .presigned_post(key: attachment.path,
+                                                          success_action_status: '201',
+                                                          acl: 'public-read',
+                                                          content_length_range: 0..max_upload_size)
+        {
+          url: presigned_post_config.url,
+          fields: presigned_post_config.fields
+        }
+      }
 
       @zencoder_options = {}
 

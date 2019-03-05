@@ -8,7 +8,7 @@ describe('encodedFile', function() {
       it('does not include fetching meta data', function() {
         var encodedFile = new pageflow.VideoFile();
 
-        expect(encodedFile.stages.pluck('name')).to.deep.eq(['uploading', 'uploading_to_s3', 'encoding']);
+        expect(encodedFile.stages.pluck('name')).to.deep.eq(['uploading', 'encoding']);
       });
     });
 
@@ -20,7 +20,9 @@ describe('encodedFile', function() {
       it('includes fetching meta data', function() {
         var encodedFile = new pageflow.VideoFile();
 
-        expect(encodedFile.stages.pluck('name')).to.deep.eq(['uploading', 'uploading_to_s3', 'fetching_meta_data', 'encoding']);
+        expect(encodedFile.stages.pluck('name')).to.deep.eq(
+          ['uploading', 'fetching_meta_data', 'encoding']
+        );
       });
     });
   });

@@ -23,10 +23,6 @@
       @include up-bold-icon;
     }
 
-    &.uploading_to_s3 {
-      @include cloud-icon;
-    }
-
     &.fetching_meta_data {
       @include clipboard-icon;
     }

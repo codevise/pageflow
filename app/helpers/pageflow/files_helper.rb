@@ -2,6 +2,7 @@ module Pageflow
   module FilesHelper
     include RenderJsonHelper
     include VideoFilesHelper
+    include AudioFilesHelper
 
     def file_format(file)
       file.format.presence || '-'

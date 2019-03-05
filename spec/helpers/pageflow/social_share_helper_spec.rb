@@ -133,9 +133,9 @@ module Pageflow
     describe '#social_share_entry_image_tags', stub_paperclip: true do
       before :each do
         @entry = create(:entry, :published)
-        @image1 = create(:image_file, :processed, entry: @entry)
-        @image2 = create(:image_file, :processed, entry: @entry)
-        @image3 = create(:image_file, :processed, entry: @entry)
+        @image1 = create(:image_file, entry: @entry)
+        @image2 = create(:image_file, entry: @entry)
+        @image3 = create(:image_file, entry: @entry)
       end
 
       it 'renders share image meta tags if share image was chosen' do

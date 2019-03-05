@@ -57,7 +57,7 @@ module Pageflow
           .destroy_all
       end
 
-      file.destroy if file.usages.empty?
+      file.destroy if file.usages.reload.empty?
     end
 
     def use_file(file)

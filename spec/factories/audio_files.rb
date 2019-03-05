@@ -4,7 +4,8 @@ module Pageflow
       entry
       uploader { create(:user) }
 
-      attachment_on_s3 { File.open(Engine.root.join('spec', 'fixtures', 'et.ogg')) }
+      attachment { File.open(Engine.root.join('spec', 'fixtures', 'et.ogg')) }
+      state { 'encoded' }
 
       transient do
         used_in { nil }
@@ -18,16 +19,23 @@ module Pageflow
         create(:file_usage, :file => file, :revision => evaluator.used_in) if evaluator.used_in
       end
 
-      trait :on_filesystem do
-        attachment_on_filesystem { File.open(Engine.root.join('spec', 'fixtures', 'et.ogg')) }
-        attachment_on_s3 { nil }
-        state { 'not_uploaded_to_s3' }
+      trait :uploading do
+        attachment { nil }
+        file_name { 'et.ogg' }
+        state { 'uploading' }
+
+        after :create do |audio_file|
+          simulate_direct_upload(audio_file)
+        end
       end
 
-      trait :uploading_to_s3_failed do
-        attachment_on_filesystem { File.open(Engine.root.join('spec', 'fixtures', 'et.ogg')) }
-        attachment_on_s3 { nil }
-        state { 'uploading_to_s3_failed' }
+      trait :uploaded do
+        uploading
+        state { 'uploaded' }
+      end
+
+      trait :uploading_failed do
+        state { 'uploading_failed' }
       end
 
       trait :waiting_for_confirmation do
@@ -39,7 +47,6 @@ module Pageflow
       end
 
       trait :encoded do
-        state { 'encoded' }
       end
     end
   end

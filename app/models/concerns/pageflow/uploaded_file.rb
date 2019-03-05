@@ -55,5 +55,9 @@ module Pageflow
       # prevent caching outdated information.
       "#{super}-#{state}"
     end
+
+    def direct_upload_config
+      Pageflow.config.paperclip_direct_upload_options.call(attachment)
+    end
   end
 end

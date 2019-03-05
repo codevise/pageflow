@@ -38,12 +38,7 @@ pageflow.UploadedFile = Backbone.Model.extend({
   },
 
   urlRoot: function() {
-    if (this.isNew() && this.options.noUpload) {
-      return this.collection.url() + '/empty';
-    }
-    else {
-      return this.collection.url();
-    }
+    return this.collection.url();
   },
 
   fileType: function() {
@@ -108,7 +103,9 @@ pageflow.UploadedFile = Backbone.Model.extend({
   },
 
   toJSON: function() {
-    return _.extend(_.pick(this.attributes, 'rights', 'parent_file_id', 'parent_file_model_type'), {
+    return _.extend(_.pick(this.attributes,
+      'file_name', 'rights', 'parent_file_id', 'parent_file_model_type', 'content_type', 'file_size'
+    ), {
       configuration: this.configuration.toJSON()
     });
   },
@@ -123,7 +120,13 @@ pageflow.UploadedFile = Backbone.Model.extend({
   uploadFailed: function() {
     this.set('state', 'upload_failed');
     this.unset('uploading_progress');
-
     this.trigger('uploadFailed');
+    this.destroy();
+  },
+
+  publish: function() {
+    this.save({}, {
+      url: this.url() + '/publish'
+    });
   }
 });

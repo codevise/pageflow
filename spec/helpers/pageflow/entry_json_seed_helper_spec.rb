@@ -82,7 +82,7 @@ module Pageflow
 
       it 'renders basenames of files' do
         entry = PublishedEntry.new(create(:entry, :published))
-        create(:video_file, used_in: entry.revision, attachment_on_s3_file_name: 'some-video.mp4')
+        create(:video_file, used_in: entry.revision, file_name: 'some-video.mp4')
 
         result = helper.entry_json_seed(entry)
         value = json_get(result, path: ['files', 'video_files', 0, 'basename'])

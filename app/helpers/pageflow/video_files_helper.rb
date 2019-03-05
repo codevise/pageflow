@@ -29,7 +29,7 @@ module Pageflow
       video_file = VideoFile.find_by_id(video_id)
       poster = ImageFile.find_by_id(poster_image_id)
 
-      if poster
+      if poster&.ready?
         options = options.merge('data-src' => poster.attachment.url(:medium))
         options = options.merge('data-printsrc' => poster.attachment.url(:print))
       elsif video_file
@@ -58,12 +58,12 @@ module Pageflow
 
       options[:data] = {}
 
-      if mobile_poster
+      if mobile_poster&.ready?
         options[:data][:mobile_poster] = mobile_poster.attachment.url(:medium)
         options[:data][:mobile_large_poster] = mobile_poster.attachment.url(:large)
       end
 
-      if poster
+      if poster&.ready?
         options[:data][:poster] = poster.attachment.url(:medium)
         options[:data][:large_poster] = poster.attachment.url(:large)
       elsif video_file
