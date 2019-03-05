@@ -106,6 +106,7 @@
 
   a {
     display: block;
+    @include hide-text;
 
     span {
       display: block;

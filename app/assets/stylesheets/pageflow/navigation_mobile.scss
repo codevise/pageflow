@@ -189,6 +189,10 @@ body {
     width: 200px;
   }
 
+  .overview_mobile a {
+    @include hide-text;
+  }
+
   .wrapper {
     position: absolute;
     top: 0;
