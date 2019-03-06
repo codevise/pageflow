@@ -50,7 +50,7 @@ export class PageScroller extends React.Component {
   render() {
     return (
       <Scroller ref="scroller" className={className(this.props)} style={style(this.props)}>
-        <div className="contentWrapper">
+        <div className="content_wrapper">
           {this.props.children}
         </div>
       </Scroller>

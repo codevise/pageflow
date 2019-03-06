@@ -16,10 +16,13 @@ module Pageflow
             end
           end
 
-          it 'renderer page template without error' do
-            expect {
-              render_page(page_type)
-            }.not_to raise_error
+          it 'rendered page has valid DOM structure' do
+            html = render_page(page_type)
+
+            expect(html).to have_selector('div.content_and_background')
+            expect(html).to have_selector('div.content_and_background > div.page_background')
+            expect(html).to have_selector('div.content_and_background > div.content')
+            expect(html).to have_selector('div.scroller > div > div.content_wrapper')
           end
 
           it 'renders json seed template without error' do

@@ -81,7 +81,7 @@ $page-content-text-line-height: 1.5em !default;
     }
   }
 
-  .contentText > * {
+  .page_text > * {
     @include typography(
       $page-content-text-typography,
       (

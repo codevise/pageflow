@@ -62,7 +62,7 @@
   }
 }
 
-.videoPage {
+.video_page {
   .fade-in {
     visibility: visible !important;
   }
@@ -72,7 +72,8 @@
   }
 }
 
-.js .page .videoPage .add_info_box, .js .audioPage .add_info_box {
+.js .page .video_page .add_info_box,
+.js .audio_page .add_info_box {
   margin: 0 0 63px -214px;
   max-width: 434px;
 }
@@ -142,8 +143,7 @@
   }
 }
 
-
-
-.hideText .slideshow .content .contentWrapper, .hidden_text_indicator {
+.hideText .slideshow .content .content_wrapper,
+.hidden_text_indicator {
   display: none;
 }

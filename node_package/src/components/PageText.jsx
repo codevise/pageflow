@@ -33,8 +33,8 @@ PageText.propTypes = {
 };
 
 function className(props) {
-  return classNames('contentText', {
-    [`contentText-margin_${props.marginBottom}`]: props.marginBottom != PageText.defaultProps.marginBottom
+  return classNames('page_text', {
+    [`page_text-margin_${props.marginBottom}`]: props.marginBottom != PageText.defaultProps.marginBottom
   });
 }
 

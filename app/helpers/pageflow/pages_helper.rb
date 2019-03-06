@@ -21,6 +21,37 @@ module Pageflow
       classes.join(' ')
     end
 
+    def page_default_content(page)
+      safe_join([
+                  page_header(page),
+                  page_print_image(page),
+                  page_text(page)
+                ])
+    end
+
+    def page_header(page)
+      content_tag(:h3, class: 'page_header') do
+        safe_join([
+                    content_tag(:span, page.configuration['tagline'],
+                                class: 'page_header-tagline'),
+                    content_tag(:span, page.configuration['title'],
+                                class: 'page_header-title'),
+                    content_tag(:span, page.configuration['subtitle'],
+                                class: 'page_header-subtitle')
+                  ])
+      end
+    end
+
+    def page_print_image(page)
+      background_image_tag(page.configuration['background_image_id'], 'class' => 'print_image')
+    end
+
+    def page_text(page)
+      content_tag(:div, class: 'page_text') do
+        content_tag(:p, raw(page.configuration['text']))
+      end
+    end
+
     # @api private
     def page_has_content(page)
       has_title = ['title','subtitle','tagline'].any? do |attribute|

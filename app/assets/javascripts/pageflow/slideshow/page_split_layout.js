@@ -31,21 +31,21 @@ pageflow.pageSplitLayout = (function() {
   };
 
   function getContentClientRect(pageElement, pageClientRect) {
-    var pageTitle = pageElement.find('.page_header .title');
-    var contentText = pageElement.find('.contentText p');
+    var pageTitle = pageElement.find('.page_header-title');
+    var pageText = pageElement.find('.page_text p');
 
     var pageTitleClientRect = pageTitle[0].getBoundingClientRect();
-    var contentTextClientRect = contentText[0].getBoundingClientRect();
+    var pageTextClientRect = pageText[0].getBoundingClientRect();
 
     var contentRight;
     var contentLeft;
 
     if (isTitleHidden(pageTitleClientRect)) {
-      contentRight = contentTextClientRect.right;
-      contentLeft = contentTextClientRect.left;
+      contentRight = pageTextClientRect.right;
+      contentLeft = pageTextClientRect.left;
     }
     else {
-      contentRight = Math.max(pageTitleClientRect.right, contentTextClientRect.right);
+      contentRight = Math.max(pageTitleClientRect.right, pageTextClientRect.right);
       contentLeft = pageTitleClientRect.left;
     }
 
@@ -63,7 +63,7 @@ pageflow.pageSplitLayout = (function() {
   }
 
   function getContentTranslationCausedByHiddenText(pageElement, pageClientRect) {
-    var contentWrapper = pageElement.find('.contentWrapper');
+    var contentWrapper = pageElement.find('.content_wrapper');
     var contentWrapperClientRect = contentWrapper[0].getBoundingClientRect();
 
     var contentWrapperMarginInsidePage = contentWrapper[0].offsetLeft;

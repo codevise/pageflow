@@ -1,5 +1,5 @@
-.js .audioPage.has_text_tracks,
-.js .videoPage {
+.js .audio_page.has_text_tracks,
+.js .video_page {
   .scroller {
     @include transition(opacity 0.2s linear);
   }

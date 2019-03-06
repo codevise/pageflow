@@ -4,12 +4,6 @@ import {expect} from 'support/chai';
 import {shallow} from 'enzyme';
 
 describe('PageBackground', () => {
-  it('has backgroundArea class', () => {
-    const wrapper = shallow(<PageBackground />);
-
-    expect(wrapper).to.have.className('backgroundArea');
-  });
-
   it('has page_background class', () => {
     const wrapper = shallow(<PageBackground />);
 

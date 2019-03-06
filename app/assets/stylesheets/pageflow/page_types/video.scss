@@ -1,7 +1,7 @@
 @import "./video/content_hiding";
 @import "./video/mobile_poster";
 
-.has_native_video_player .page .videoPage .videoWrapper {
+.has_native_video_player .page .video_page .uncropped_media_wrapper {
   margin-right: 0;
   position: initial;
   height: 100%;
@@ -32,7 +32,7 @@
   }
 }
 
-.videoPage .video-js {
+.video_page .video-js {
   background-color: transparent;
 
   .vjs-tech {
@@ -40,12 +40,12 @@
   }
 }
 
-.page .videoPage {
+.page .video_page {
   .shadow {
     display: none;
   }
 
-  .contentText {
+  .page_text {
     padding-top: 2em;
   }
 
@@ -70,7 +70,7 @@
     background-color: black;
   }
 
-  .backgroundArea {
+  .page_background {
     height: initial;
   }
 
@@ -80,8 +80,8 @@
   }
 }
 
-.js .page .videoPage {
-  .contentText {
+.js .page .video_page {
+  .page_text {
     padding-top: initial;
   }
 
@@ -89,7 +89,7 @@
     display: block;
   }
 
-  .backgroundArea {
+  .page_background {
     height: 100%;
   }
 
@@ -98,7 +98,7 @@
   }
 }
 
-.non_js .text_position_right .videoPage {
+.non_js .text_position_right .video_page {
   .page_header {
     margin-left: 0;
     max-width: initial;

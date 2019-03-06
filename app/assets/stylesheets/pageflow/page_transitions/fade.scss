@@ -11,27 +11,27 @@ section.fade {
     background-color: transparent;
   }
 
-  .blackLayer {
+  .black_layer {
     display: none;
   }
 
-  .backgroundArea {
+  .page_background {
     background-color: black;
     -webkit-backface-visibility: hidden;
   }
 
-  &.invert .backgroundArea {
+  &.invert .page_background {
     background-color: white;
   }
 
-  &.animate-in-forwards .backgroundArea,
-  &.animate-in-backwards .backgroundArea {
+  &.animate-in-forwards .page_background,
+  &.animate-in-backwards .page_background {
     opacity: 0;
   }
 
-  &.animate-out-forwards .backgroundArea,
-  &.animate-out-backwards .backgroundArea,
-  &.active .backgroundArea {
+  &.animate-out-forwards .page_background,
+  &.animate-out-backwards .page_background,
+  &.active .page_background {
     opacity: 1;
   }
 
@@ -45,9 +45,9 @@ section.fade {
   }
 
   @mixin define($translate, $duration) {
-    &.active .backgroundArea,
-    &.animate-out-forwards .backgroundArea,
-    &.animate-out-backwards .backgroundArea {
+    &.active .page_background,
+    &.animate-out-forwards .page_background,
+    &.animate-out-backwards .page_background {
       @include transition(opacity $duration ease);
     }
 
