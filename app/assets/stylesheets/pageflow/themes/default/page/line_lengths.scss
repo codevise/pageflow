@@ -19,10 +19,9 @@ $page-header-title-min-width-for-split-layout: 525px !default;
 $page-content-width: 60% !default;
 
 .page {
-  h1,
-  h2 .subtitle,
-  h2 .tagline,
-  h3,
+  &_header-subtitle,
+  &_header-tagline,
+  &_sub_header,
   p {
     max-width: $page-content-max-width;
     width: $page-content-width;
@@ -32,7 +31,7 @@ $page-content-width: 60% !default;
     }
   }
 
-  h2 .title {
+  &_header-title {
     max-width: $page-header-title-max-width;
     width: 100%;
   }
@@ -70,10 +69,10 @@ $page-content-width: 60% !default;
 
   @media screen and (min-width: $page-min-width-for-split-layout) {
     &-with_split_layout {
-      h2 .subtitle,
-      h2 .title,
-      h2 .tagline,
-      h3,
+      .page_header-subtitle,
+      .page_header-title,
+      .page_header-tagline,
+      .page_sub_header,
       p {
         width: $page-content-split-layout-width;
       }
@@ -81,11 +80,10 @@ $page-content-width: 60% !default;
   }
 
   &.text_position_right {
-    h1,
-    h2 .subtitle,
-    h2 .title,
-    h2 .tagline,
-    h3,
+    .page_header-subtitle,
+    .page_header-title,
+    .page_header-tagline,
+    .page_sub_header,
     p {
       @include margin-start(auto);
       max-width: $page-content-position-right-max-width;
