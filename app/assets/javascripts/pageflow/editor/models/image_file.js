@@ -3,7 +3,7 @@ pageflow.ImageFile = pageflow.UploadedFile.extend({
     {
       name: 'uploading',
       activeStates: ['uploading'],
-      failedStates: ['upload_failed']
+      failedStates: ['uploading_failed']
     },
     {
       name: 'processing',

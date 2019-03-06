@@ -75,7 +75,7 @@ pageflow.UploadedFile = Backbone.Model.extend({
   },
 
   isUploaded: function() {
-    return this.get('state') !== 'uploading' && this.get('state') !== 'upload_failed';
+    return this.get('state') !== 'uploading' && this.get('state') !== 'uploading_failed';
   },
 
   isPending: function() {
@@ -118,10 +118,9 @@ pageflow.UploadedFile = Backbone.Model.extend({
   },
 
   uploadFailed: function() {
-    this.set('state', 'upload_failed');
+    this.set('state', 'uploading_failed');
     this.unset('uploading_progress');
     this.trigger('uploadFailed');
-    this.destroy();
   },
 
   publish: function() {
