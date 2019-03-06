@@ -19,11 +19,12 @@ $overview-close-button-typography: () !default;
 
 @include standard-typography($overview-typography, ());
 
-h2 {
+.overview_headline {
   @include typography(
     $overview-header-typography,
     (
       font-size: 3em,
+      font-weight: bold
     )
   );
 }

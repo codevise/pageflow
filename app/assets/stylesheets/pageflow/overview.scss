@@ -64,7 +64,7 @@
     @include transition(0.5s ease);
     @include transform(translate(200%,0));
 
-    h2 {
+    .overview_headline {
       @include margin-start(10px);
       margin-bottom: 0;
       margin-top: 0;
