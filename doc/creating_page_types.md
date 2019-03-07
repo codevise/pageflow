@@ -259,8 +259,12 @@ that users of our plugin can reference in their Pageflow initializer:
 module Rainbow
   class Plugin < Pageflow::Plugin
     def configure(config)
-      config.page_types.register(Pageflow::React.create_page_type('rainbow'))
+      config.page_types.register(Rainbow.page_type)
     end
+  end
+
+  def self.page_type
+    Pageflow::React.create_page_type('rainbow')
   end
 
   def self.plugin
@@ -284,3 +288,16 @@ There are some advanced customizations:
 
 * [Defining thumbnail candidates](#)
 * [Defining revision components](#)
+
+## Using Shared Examples to Test Integration
+
+Pageflow provides a set of shared examples that can be used in a
+plugin's test suite to ensure the page type integrates correctly:
+
+```ruby
+# rainbow/spec/integration/page_type_spec.rb
+require 'spec_helper'
+require 'pageflow/lint'
+
+Pageflow::Lint.page_type(Pageflow::Rainbow.page_type)
+```
