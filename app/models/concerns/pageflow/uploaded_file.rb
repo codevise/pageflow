@@ -56,6 +56,12 @@ module Pageflow
       "#{super}-#{state}"
     end
 
+    def can_upload?
+      # Overwritten in HostedFile based on initial state_machine-state.
+      # Only true directly after creation.
+      false
+    end
+
     def direct_upload_config
       Pageflow.config.paperclip_direct_upload_options.call(attachment)
     end

@@ -54,6 +54,10 @@ module Pageflow
       {}
     end
 
+    def can_upload?
+      uploading?
+    end
+
     def retryable?
       false
     end
