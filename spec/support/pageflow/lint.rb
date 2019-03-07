@@ -35,7 +35,7 @@ module Pageflow
     #
     # @param page_type [PageType] Page type to run specs for
     #
-    # @since edge
+    # @since 13.6
     #
     # @example
     #
