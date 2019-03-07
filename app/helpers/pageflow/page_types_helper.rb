@@ -8,6 +8,12 @@ module Pageflow
                           as: :page_type)
     end
 
+    def page_type_json_seed(json, page_type)
+      if page_type.json_seed_template
+        json.partial!(template: page_type.json_seed_template, locals: {page_type: page_type})
+      end
+    end
+
     def page_type_templates(entry)
       safe_join(Pageflow.config.page_types.map do |page_type|
         content_tag(:script,

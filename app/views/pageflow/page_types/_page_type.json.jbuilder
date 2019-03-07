@@ -17,6 +17,4 @@ json.thumbnail_candidates(page_type.thumbnail_candidates) do |candidate|
   end
 end
 
-if page_type.json_seed_template
-  json.partial!(:template => page_type.json_seed_template, :locals => {:page_type => page_type})
-end
+page_type_json_seed(json, page_type)
