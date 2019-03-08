@@ -4,7 +4,7 @@ pageflow.HostedFile = pageflow.UploadedFile.extend({
       {
         name: 'uploading',
         activeStates: ['uploading'],
-        failedStates: ['upload_failed']
+        failedStates: ['uploading_failed']
       }
     ].concat(_.result(this, 'processingStages'));
   },

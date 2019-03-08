@@ -8,7 +8,7 @@ describe('stageProvider', function() {
       {
         name: 'uploading',
         activeStates: ['upload_running'],
-        failedStates: ['upload_failed']
+        failedStates: ['uploading_failed']
       },
       {
         name: 'checking',
@@ -59,7 +59,7 @@ describe('stageProvider', function() {
           {
             name: 'uploading',
             activeStates: ['upload_running'],
-            failedStates: ['upload_failed']
+            failedStates: ['uploading_failed']
           }
         ];
       }

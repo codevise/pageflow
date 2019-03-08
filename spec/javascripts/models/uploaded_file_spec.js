@@ -22,7 +22,7 @@ describe('UploadedFile', function() {
 
   describe('#isFailed', function() {
     it('returns true if state ends with _failed', function() {
-      var file = new File({state: 'upload_failed'});
+      var file = new File({state: 'uploading_failed'});
 
       expect(file.isFailed()).to.eq(true);
     });

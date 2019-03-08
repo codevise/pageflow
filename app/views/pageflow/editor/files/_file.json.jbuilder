@@ -7,7 +7,7 @@ json.call(file,
           :rights,
           :usage_id)
 
-if file.uploading?
+if file.can_upload?
   json.direct_upload_config(file.direct_upload_config)
 end
 
