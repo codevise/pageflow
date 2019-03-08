@@ -3,7 +3,7 @@
 
   Backbone.sync = function(method, model, options) {
     if (model.paramRoot && !options.attrs) {
-      options.attrs = {};
+      options.attrs = options.queryParams || {};
       options.attrs[model.paramRoot] = model.toJSON(options);
     }
 

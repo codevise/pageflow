@@ -27,7 +27,8 @@ pageflow.FilesCollection = Backbone.Collection.extend({
   findOrCreateBy: function(attributes) {
     return this.findWhere(attributes) ||
       this.create(attributes, {
-        fileType: this.fileType
+        fileType: this.fileType,
+        queryParams: { no_upload: true }
       });
   },
 
