@@ -26,7 +26,7 @@ PageBackground.propTypes = {
 };
 
 function className({pageHasPlayerControls}) {
-  return classNames('backgroundArea page_background', {
+  return classNames('page_background', {
     'page_background-for_page_with_player_controls': pageHasPlayerControls
   });
 }

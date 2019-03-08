@@ -1,0 +1,172 @@
+////
+/// @group page-typography
+////
+
+/// Typography for header.
+$page-header-typography: () !default;
+
+/// Typography for header tagline.
+$page-header-tagline-typography: () !default;
+
+/// Typography for header tagline in phone layout.
+$page-header-tagline-phone-typography: () !default;
+
+/// Typography for header title.
+$page-header-title-typography: () !default;
+
+/// Typography for header title in phone layout.
+$page-header-title-phone-typography: () !default;
+
+/// Typography for title on first page.
+$page-header-first-page-title-typography: () !default;
+
+/// Typography for title on first page in phone layout.
+$page-header-first-page-title-phone-typography: () !default;
+
+/// Typography for title on first page of chapter.
+$page-header-chapter-beginning-title-typography: () !default;
+
+/// Typography for title on first page of chapter in phone layout.
+$page-header-chapter-beginning-title-phone-typography: () !default;
+
+/// Typography for header subtitle.
+$page-header-subtitle-typography: () !default;
+
+/// Typography for header subtitle in phone layout.
+$page-header-subtitle-phone-typography: () !default;
+
+// Deprecated. Use typography variables above.
+
+$page-header-font-family: $page-font-family !default;
+$page-header-font-size: 1.375em !default;
+$page-header-font-weight: normal !default;
+$page-header-tagline-font-size: 1em !default;
+$page-header-tagline-font-weight: $page-header-font-weight !default;
+$page-header-tagline-line-height: normal !default;
+$page-header-tagline-margin-top: 0 !default;
+$page-header-title-font-size: 2.3em !default;
+$page-header-title-phone-font-size: 1.8em !default;
+$page-header-first-page-title-font-size: 2.5em !default;
+$page-header-first-page-title-phone-font-size: 2em !default;
+$page-header-title-font-weight: $page-header-font-weight !default;
+$page-header-title-line-height: 1em !default;
+$page-header-first-page-title-line-height: 1em !default;
+$page-header-title-margin-top: 0.4em !default;
+$page-header-title-margin-bottom: 0.4em !default;
+$page-header-subtitle-font-size: 1em !default;
+$page-header-subtitle-font-weight: $page-header-font-weight !default;
+$page-header-subtitle-line-height: normal !default;
+$page-header-subtitle-margin-bottom: 1.875em !default;
+
+.page_header {
+  @include typography(
+    $page-header-typography,
+    (
+      font-family: $page-header-font-family,
+      font-size: $page-header-font-size
+    )
+  );
+
+  &-tagline {
+    display: block;
+
+    @include typography(
+      $page-header-tagline-typography,
+      (
+        font-size: $page-header-tagline-font-size,
+        font-weight: $page-header-tagline-font-weight,
+        line-height: $page-header-tagline-line-height,
+        margin-top: $page-header-tagline-margin-top,
+        letter-spacing: 0
+      )
+    );
+
+    @include phone {
+      @include typography(
+        $page-header-tagline-phone-typography
+      );
+    }
+  }
+
+  &-title {
+    display: block;
+
+    @include typography(
+      $page-header-title-typography,
+      (
+        font-size: $page-header-title-font-size,
+          font-weight: $page-header-title-font-weight,
+          line-height: $page-header-title-line-height,
+          margin-top: $page-header-title-margin-top,
+          margin-bottom: $page-header-title-margin-bottom,
+          letter-spacing: 0
+      )
+    );
+
+    @include phone {
+      @include typography(
+        $page-header-title-phone-typography,
+        (
+          font-size: $page-header-title-phone-font-size
+        )
+      );
+    }
+  }
+
+  &-subtitle {
+    display: block;
+
+    @include typography(
+      $page-header-subtitle-typography,
+      (
+        font-size: $page-header-subtitle-font-size,
+        font-weight: $page-header-subtitle-font-weight,
+        line-height: $page-header-subtitle-line-height,
+        margin-top: 0,
+        margin-bottom: $page-header-subtitle-margin-bottom
+      )
+    );
+
+    @include phone {
+      @include typography(
+        $page-header-subtitle-phone-typography
+      );
+    }
+  }
+}
+
+.page:first-child {
+  .page_header-title {
+    @include typography(
+      $page-header-first-page-title-typography,
+      (
+        font-size: $page-header-first-page-title-font-size,
+        line-height: $page-header-first-page-title-line-height,
+        letter-spacing: 0
+      )
+    );
+
+    @include phone {
+      @include typography(
+        $page-header-first-page-title-phone-typography,
+        (
+          font-size: $page-header-first-page-title-phone-font-size
+        )
+      );
+    }
+  }
+}
+
+.emphasize_chapter_beginning .page.chapter_beginning:nth-of-type(n+2) {
+  .page_header-title {
+    @include typography(
+      $page-header-chapter-beginning-title-typography
+    );
+
+    @include phone {
+      @include typography(
+        $page-header-chapter-beginning-title-phone-typography
+      );
+    }
+  }
+}

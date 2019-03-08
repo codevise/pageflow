@@ -9,7 +9,7 @@
 $page-hyphenate-header: "narrow" !default;
 
 .page {
-  h2 {
+  .page_header {
     @if $page-hyphenate-header == "always" {
 
       hyphens: auto;

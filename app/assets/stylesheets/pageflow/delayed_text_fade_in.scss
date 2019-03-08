@@ -1,17 +1,18 @@
 .has_css_animations section.active {
-
   &.delayed_text_fade_in_short {
     .page_header {
       opacity: 0;
 
       @include animation(fade_in ease forwards 2s 1s);
     }
+
     .shadow_wrapper {
       opacity: 0;
 
       @include animation(fade_in ease forwards 2s 0s);
     }
-    .contentText {
+
+    .page_text {
       opacity: 0;
       @include animation(fade_in ease forwards 2s 2s);
     }
@@ -22,11 +23,13 @@
       opacity: 0;
       @include animation(fade_in ease forwards 2s 3s);
     }
+
     .shadow_wrapper {
       opacity: 0;
       @include animation(fade_in ease forwards 2s 2s);
     }
-    .contentText {
+
+    .page_text {
       opacity: 0;
       @include animation(fade_in ease forwards 2s 4s);
     }
@@ -37,11 +40,13 @@
       opacity: 0;
       @include animation(fade_in ease forwards 2s 5s);
     }
+
     .shadow_wrapper {
       opacity: 0;
       @include animation(fade_in ease forwards 2s 4s);
     }
-    .contentText {
+
+    .page_text {
       opacity: 0;
       @include animation(fade_in ease forwards 2s 6s);
     }

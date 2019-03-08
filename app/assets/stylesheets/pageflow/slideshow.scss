@@ -8,8 +8,8 @@
   z-index: 0;
 
 
-  .blackLayer,
-  .backgroundArea {
+  .black_layer,
+  .page_background {
     -webkit-backface-visibility: hidden;
     position: relative;
   }
@@ -36,16 +36,17 @@
   section.active {
     display: block;
     -webkit-backface-visibility: hidden;
-    .backgroundArea {
+
+    .page_background {
       opacity: 1;
     }
   }
 
-  section .videoPage .video-js {
+  section .video_page .video-js {
     background-color: black;
   }
 
-  section.invert .videoPage .video-js {
+  section.invert .video_page .video-js {
     background-color: white;
   }
 

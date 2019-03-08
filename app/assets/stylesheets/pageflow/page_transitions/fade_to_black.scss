@@ -8,7 +8,7 @@ section.fade_to_black {
     background-color: transparent;
   }
 
-  .blackLayer {
+  .black_layer {
     @include transition(1s ease);
     opacity: 0;
     background-color: black;
@@ -17,11 +17,11 @@ section.fade_to_black {
     position: absolute;
   }
 
-  &.invert .blackLayer {
+  &.invert .black_layer {
     background-color: white;
   }
 
-  &.active .blackLayer {
+  &.active .black_layer {
     opacity: 1;
   }
 
@@ -33,32 +33,35 @@ section.fade_to_black {
     z-index: 2;
   }
 
-  .backgroundArea {
+  .page_background {
     opacity: 0;
     background-color: black;
     -webkit-backface-visibility: hidden;
   }
 
-  &.invert .backgroundArea {
+  &.invert .page_background {
     background-color: white;
   }
 
-  &.animate-in-forwards .backgroundArea {
+  &.animate-in-forwards .page_background {
     opacity: 0;
   }
-  &.animate-out-forwards .backgroundArea{
-    opacity: 0;
-    @include transition(1s ease);
-  }
-  &.animate-in-backwards .backgroundArea{
-    opacity: 0;
-  }
-  &.animate-out-backwards .backgroundArea{
+
+  &.animate-out-forwards .page_background {
     opacity: 0;
     @include transition(1s ease);
   }
 
-  &.active .backgroundArea {
+  &.animate-in-backwards .page_background {
+    opacity: 0;
+  }
+
+  &.animate-out-backwards .page_background {
+    opacity: 0;
+    @include transition(1s ease);
+  }
+
+  &.active .page_background {
     opacity: 1;
     @include transition(1s ease 1s);
   }

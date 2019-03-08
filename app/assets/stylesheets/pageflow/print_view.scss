@@ -71,11 +71,14 @@ body {
       page-break-inside: avoid !important;
     }
 
-    .contentText, .videoPage .contentText, .audioPage .contentText {
+    .page_text,
+    .video_page .page_text,
+    .audio_page .page_text {
       margin-bottom: 20px;
     }
 
-    .videoPage .vjs-control-bar, .audioPage .-vjs-control-bar {
+    .video_page .vjs-control-bar,
+    .audio_page .vjs-control-bar {
       display: none !important;
     }
 
@@ -116,7 +119,7 @@ body {
     }
 
 
-    .backgroundArea {
+    .page_background {
       width: initial;
       height: initial;
       position: absolute;
@@ -147,7 +150,7 @@ body {
     }
   }
 
-  .blackLayer {
+  .black_layer {
     display: none !important;
   }
 

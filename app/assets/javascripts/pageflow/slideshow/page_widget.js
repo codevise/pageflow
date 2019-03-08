@@ -214,7 +214,7 @@
 
     _setupContentLinkTargetHandling: function() {
       this._on({
-        'click .contentText p a': function(event) {
+        'click .page_text p a': function(event) {
           var href = $(event.currentTarget).attr('href');
 
           if (href[0] === '#') {

@@ -24,7 +24,7 @@ function renderWrapper(props, wrapperDimensions) {
                                    props.position,
                                    wrapperDimensions);
   return (
-    <div className="videoWrapper">
+    <div className="uncropped_media_wrapper">
       <div className={getCueOffsetClassName(dimensions, wrapperDimensions)}
            style={style(dimensions)}>
         {props.children}

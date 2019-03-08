@@ -106,5 +106,67 @@ module Pageflow
         expect(css_class).to eq("pageflow_image_file_link_thumbnail_large_#{image_file.id}")
       end
     end
+
+    describe '#page_default_content' do
+      before { helper.extend(BackgroundImageHelper) }
+
+      it 'renders header, print image and page text' do
+        image_file = create(:image_file)
+        page = build(:page, configuration: {
+                       'background_image_id' => image_file.id,
+                       'title' => 'Title',
+                       'tagline' => 'Tagline',
+                       'subtitle' => 'Subtitle'
+                     })
+
+        html = helper.page_default_content(page)
+
+        expect(html).to have_selector('.page_header')
+        expect(html).to have_selector('.print_image')
+        expect(html).to have_selector('.page_text')
+      end
+    end
+
+    describe '#page_header' do
+      it 'renders h3 tag with tagline, title and subtitle' do
+        page = build(:page, configuration: {
+                       'title' => 'Title',
+                       'tagline' => 'Tagline',
+                       'subtitle' => 'Subtitle'
+                     })
+
+        html = helper.page_header(page)
+
+        expect(html).to have_selector('h3.page_header')
+        expect(html).to have_selector('.page_header-tagline', text: 'Tagline')
+        expect(html).to have_selector('.page_header-title', text: 'Title')
+        expect(html).to have_selector('.page_header-subtitle', text: 'Subtitle')
+      end
+    end
+
+    describe '#page_print_image' do
+      before { helper.extend(BackgroundImageHelper) }
+
+      it 'renders img tag' do
+        image_file = create(:image_file)
+        page = build(:page, configuration: {
+                       'background_image_id' => image_file.id
+                     })
+
+        html = helper.page_print_image(page)
+
+        expect(html).to have_selector('img.print_image')
+      end
+    end
+
+    describe '#page_text' do
+      it 'renders content_text div with html content' do
+        page = build(:page, configuration: {'text' => '<b>Text</b>'})
+
+        html = helper.page_text(page)
+
+        expect(html).to have_selector('.page_text p b', text: 'Text')
+      end
+    end
   end
 end

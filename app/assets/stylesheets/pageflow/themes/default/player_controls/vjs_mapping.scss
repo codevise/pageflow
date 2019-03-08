@@ -1,8 +1,8 @@
 // Map placeholder names to concrete vjs css class names.
 
 $vjs-selector-mapping: (
-  page-with_progress_bar: ".audioPage, .videoPage",
-  page-audio: ".audioPage",
+  page-with_progress_bar: ".audio_page, .video_page",
+  page-audio: ".audio_page",
 
   background: ".page_background-for_page_with_player_controls",
 
@@ -14,12 +14,12 @@ $vjs-selector-mapping: (
   // Use playing class that is removed with delay to prevent
   // mask image on scroller from being removed too early in slim
   // player controls.
-  scroller-playing: ".videoPage .scroller.is_playing_delayed, .audioPage .scroller.is_playing_delayed",
+  scroller-playing: ".video_page .scroller.is_playing_delayed, .audio_page .scroller.is_playing_delayed",
 
   // If video has played, content is faded immediately. This can be
   // used by the slim player controls to not display the scroller mask
   // if the content fades anyway.
-  scroller-fading: ".videoPage.has_played .scroller",
+  scroller-fading: ".video_page.has_played .scroller",
 
   container: ".controls",
 
@@ -31,8 +31,8 @@ $vjs-selector-mapping: (
   container-hover: ".is_control_bar_hovered .controls",
   container-focused: ".is_control_bar_focused .controls",
 
-  container-video: ".videoPage .controls",
-  container-fading: ".videoPage .controls",
+  container-video: ".video_page .controls",
+  container-fading: ".video_page .controls",
 
   container-unplayed: ".unplayed .controls",
 

@@ -1,4 +1,4 @@
-.slideshow .content .contentWrapper {
+.slideshow .content .content_wrapper {
   -webkit-transition: 0.8s ease !important;
   -moz-transition: 0.8s ease !important;
   -ms-transition: 0.8s ease !important;
@@ -15,7 +15,7 @@
     visibility: hidden;
   }
 
-  .slideshow .content .contentWrapper {
+  .slideshow .content .content_wrapper {
     @include transform(translate3d(-200%,0,0));
   }
 

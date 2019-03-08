@@ -63,7 +63,7 @@ class PageWithInteractiveBackground extends React.Component {
                  hiddenOnPhone={this.props.textHasBeenHidden && !this.props.textIsHidden} />
 
         <PageBackground pageHasPlayerControls={true}>
-          <div className="videoWrapper">
+          <div className="uncropped_media_wrapper">
             {this.props.children}
           </div>
           <PageShadow page={page} />

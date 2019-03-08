@@ -22,7 +22,7 @@ function AudioPage(props) {
   const playerControlsVariant = props.page.audioPlayerControlsVariant;
 
   return (
-    <MediaPage className="audioPage"
+    <MediaPage className="audio_page"
                page={props.page}
                file={props.audioFile}
                playerState={props.playerState}
