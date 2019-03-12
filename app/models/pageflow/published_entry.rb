@@ -11,6 +11,7 @@ module Pageflow
              :enabled_feature_names,
              :to_model, :to_key, :persisted?,
              :authenticate,
+             :first_published_at,
              :to => :entry)
 
     delegate(:widgets,
@@ -25,6 +26,7 @@ module Pageflow
              :author, :publisher, :keywords,
              :theme,
              :password_protected?,
+             :published_at,
              :to => :revision)
 
     def initialize(entry, revision = nil)

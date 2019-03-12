@@ -270,6 +270,14 @@ module Pageflow
           expect(response.body).to have_meta_tag.with_name('some_test')
         end
 
+        it 'renders structured data for entry' do
+          entry = create(:entry, :published)
+
+          get(:show, params: {id: entry})
+
+          expect(response.body).to have_json_ld('@type' => 'Article')
+        end
+
         context 'with configured entry_request_scope' do
           before do
             Pageflow.config.public_entry_request_scope = lambda do |entries, request|

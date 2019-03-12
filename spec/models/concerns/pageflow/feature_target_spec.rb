@@ -11,7 +11,7 @@ module Pageflow
 
         result = target.enabled_feature_names
 
-        expect(result).to eq(['sitemap'])
+        expect(result).to include('sitemap')
       end
 
       it 'includes features which are enabled by default' do
@@ -22,7 +22,7 @@ module Pageflow
 
         result = target.enabled_feature_names
 
-        expect(result).to eq(['fancy_page_type'])
+        expect(result).to include('fancy_page_type')
       end
 
       it 'does not include default features which are disabled for target' do
@@ -33,7 +33,7 @@ module Pageflow
 
         result = target.enabled_feature_names
 
-        expect(result).to eq([])
+        expect(result).not_to include('fancy_page_type')
       end
 
       describe 'overriding inherited_feature_state' do
@@ -42,7 +42,7 @@ module Pageflow
           account = build(:account, features_configuration: {'some_page_type' => true})
           entry = build(:entry, account: account)
 
-          expect(entry.enabled_feature_names).to eq(['some_page_type'])
+          expect(entry.enabled_feature_names).to include('some_page_type')
         end
 
         it 'includes features enabled by default' do
@@ -52,7 +52,7 @@ module Pageflow
           end
           entry = build(:entry)
 
-          expect(entry.enabled_feature_names).to eq(['some_page_type'])
+          expect(entry.enabled_feature_names).to include('some_page_type')
         end
 
         it 'allows to disable inherited enabled features' do
@@ -60,7 +60,7 @@ module Pageflow
           account = build(:account, features_configuration: {'some' => true})
           entry = build(:entry, account: account, features_configuration: {'some' => false})
 
-          expect(entry.enabled_feature_names).to eq([])
+          expect(entry.enabled_feature_names).not_to include('some')
         end
 
         it 'allows to disable inherited features enabled by default' do
@@ -70,7 +70,7 @@ module Pageflow
           end
           entry = build(:entry, features_configuration: {'some_page_type' => false})
 
-          expect(entry.enabled_feature_names).to eq([])
+          expect(entry.enabled_feature_names).not_to include('some_page_type')
         end
 
         it 'allows parent to disable features enabled by default' do
@@ -79,7 +79,7 @@ module Pageflow
           account = build(:account, features_configuration: {'some_page_type' => false})
           entry = build(:entry, account: account)
 
-          expect(entry.enabled_feature_names).to eq([])
+          expect(entry.enabled_feature_names).not_to include('some_page_type')
         end
       end
     end

@@ -20,6 +20,10 @@ module Pageflow
       "pageflow/themes/#{name}/preview_thumbnail.png"
     end
 
+    def print_logo_path
+      "pageflow/themes/#{name}/logo_print.png"
+    end
+
     def has_home_button?
       !@options[:no_home_button]
     end

@@ -10,6 +10,7 @@ module Pageflow
              :published_until, :published?,
              :password_digest,
              :to_model, :to_key, :persisted?, :to_json,
+             :first_published_at,
              :to => :entry)
 
     delegate(:title, :summary, :credits, :manual_start,
@@ -23,6 +24,7 @@ module Pageflow
              :locale,
              :author, :publisher, :keywords,
              :theme,
+             :published_at,
              :to => :draft)
 
     def initialize(entry, draft = nil)
