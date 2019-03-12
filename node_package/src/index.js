@@ -35,6 +35,7 @@ import {combine} from 'utils';
 
 import ServerSidePage from 'pages/ServerSidePage';
 import ServerSideWidget from 'widgets/ServerSideWidget';
+import ServerSidePageBackgroundAsset from 'pages/ServerSidePageBackgroundAsset';
 
 import {register as registerBuiltInPageTypes} from 'builtInPageTypes';
 import {registerWidgetTypes as registerBackgroundMediaWidgetTypes} from 'backgroundMedia';
@@ -85,5 +86,6 @@ module.exports = {
   combine,
 
   ServerSidePage,
-  ServerSideWidget
+  ServerSideWidget,
+  ServerSidePageBackgroundAsset
 };
