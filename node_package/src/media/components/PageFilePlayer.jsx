@@ -6,7 +6,23 @@ import {combineSelectors} from 'utils';
 export function PageFilePlayer(props) {
   const fileReady = props.file && props.file.isReady;
 
-  if (fileReady && props.pageIsPrepared) {
+  if (fileReady) {
+    const StructuredDataComponent = props.structuredDataComponent || function() { return null; };
+
+    return (
+      <div style={{height: '100%'}}>
+        {renderFile(props)}
+        <StructuredDataComponent file={props.file} />
+      </div>
+    );
+  }
+  else {
+    return <noscript />;
+  }
+}
+
+function renderFile(props) {
+  if (props.pageIsPrepared) {
     const FilePlayer = props.playerComponent;
 
     return (
@@ -25,7 +41,7 @@ export function PageFilePlayer(props) {
                   textTrackPosition={props.textTrackPosition} />
     );
   }
-  else if (props.preloadComponent && fileReady && props.pageIsPreloaded) {
+  else if (props.preloadComponent && props.pageIsPreloaded) {
     const Preload = props.preloadComponent;
 
     return (

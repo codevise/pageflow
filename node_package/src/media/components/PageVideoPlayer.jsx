@@ -1,4 +1,5 @@
 import VideoFilePlayer, {VideoFilePlayerPreload} from './VideoFilePlayer';
+import VideoStructuredData from './VideoStructuredData';
 import PageFilePlayer from './PageFilePlayer';
 import {muted as backgroundMediaMuted} from 'backgroundMedia/selectors';
 import {file} from 'files/selectors';
@@ -11,7 +12,8 @@ function PageVideoFilePlayer(props) {
   return (
     <PageFilePlayer {...props}
                     playerComponent={VideoFilePlayer}
-                    preloadComponent={VideoFilePlayerPreload} />
+                    preloadComponent={VideoFilePlayerPreload}
+                    structuredDataComponent={VideoStructuredData} />
   );
 }
 

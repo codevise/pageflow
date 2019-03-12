@@ -18,7 +18,7 @@ export default {
         attributes: [
           'id', 'basename', 'variants', 'is_ready',
           'parent_file_id', 'parent_file_model_type',
-          'width', 'height'
+          'width', 'height', 'duration_in_ms', 'rights', 'created_at'
         ],
         includeConfiguration: true
       });

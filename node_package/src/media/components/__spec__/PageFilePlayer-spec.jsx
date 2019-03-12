@@ -69,4 +69,20 @@ describe('PageFilePlayer', () => {
 
     expect(wrapper).to.have.descendants('noscript');
   });
+
+  it('supports rendering structured data component', () => {
+    const Player = function() {};
+    const Preload = function() {};
+    const StructuredData = function() {};
+    const file = {isReady: true};
+
+    const wrapper = shallow(<PageFilePlayer file={file}
+                                            pageIsPrepared={false}
+                                            playerComponent={Player}
+                                            preloadComponent={Preload}
+                                            structuredDataComponent={StructuredData} />);
+
+    expect(wrapper).to.have.descendants(StructuredData);
+    expect(wrapper.find(StructuredData)).to.have.prop('file', file);
+  });
 });

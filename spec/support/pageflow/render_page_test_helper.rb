@@ -3,8 +3,15 @@ require 'factory_bot_rails'
 
 module Pageflow
   module RenderPageTestHelper
-    def render_page(page_type, configuration = {})
-      page = FactoryBot.create(:page, template: page_type.name, configuration: configuration)
+    def render_page(page_type_or_page, configuration = {})
+      page, page_type =
+        if page_type_or_page.is_a?(Page)
+          [page_type_or_page, page_type_or_page.page_type]
+        else
+          [FactoryBot.create(:page, template: page_type_or_page.name, configuration: configuration),
+           page_type_or_page]
+        end
+
       revision = page.chapter.storyline.revision
       entry = PublishedEntry.new(revision.entry, revision)
 

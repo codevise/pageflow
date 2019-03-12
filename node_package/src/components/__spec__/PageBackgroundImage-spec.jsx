@@ -2,7 +2,7 @@ import PageBackgroundImage from '../PageBackgroundImage';
 import LazyBackgroundImage from '../LazyBackgroundImage';
 
 import {expect} from 'support/chai';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 
 describe('PageBackgroundImage', () => {
   it('uses backgroudImageId by default', () => {

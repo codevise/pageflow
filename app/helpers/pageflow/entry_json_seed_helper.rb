@@ -14,7 +14,8 @@ module Pageflow
     def entry_attributes_seed(entry)
       {
         title: entry.title,
-        slug: entry.slug
+        slug: entry.slug,
+        published_at: entry.published_at.try(:iso8601, 0)
       }
     end
 
