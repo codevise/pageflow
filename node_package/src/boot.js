@@ -5,6 +5,7 @@ import createStore from 'createStore';
 
 import backgroundMedia from 'backgroundMedia';
 import cookieNotice from 'cookieNotice';
+import featuresModule from 'features';
 import themingModule from 'theming';
 import storylinesModule from 'storylines';
 import chaptersModule from 'chapters';
@@ -34,6 +35,7 @@ export default function(pageflow) {
     locale: seed.locale,
     entry: collections.entry,
 
+    enabledFeatureNames: seed['enabled_feature_names'],
     fileUrlTemplates: seed['file_url_templates'],
     modelTypes: seed['file_model_types'],
     pageTypesSeed: seed['page_types'],
@@ -60,6 +62,7 @@ export default function(pageflow) {
   const store = createStore([
     backgroundMedia,
     cookieNotice,
+    featuresModule,
     i18nModule,
     themingModule,
     entryModule,
