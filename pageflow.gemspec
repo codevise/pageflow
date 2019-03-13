@@ -138,7 +138,7 @@ Gem::Specification.new do |s|
 
   # Chrome Headless browser testing
   s.add_development_dependency 'selenium-webdriver', '~> 3.6.x'
-  s.add_development_dependency 'chromedriver-helper', '~> 1.1.x'
+  s.add_development_dependency 'chromedriver-helper', '~> 2.1.x'
 
   # View abstraction fro integration testing
   s.add_development_dependency 'domino', '~> 0.7.0'

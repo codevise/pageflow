@@ -1,4 +1,5 @@
 require 'selenium-webdriver'
+require 'chromedriver-helper'
 
 # Set RAILS_ROOT and load the environment if it's not already loaded.
 unless defined?(Rails)
