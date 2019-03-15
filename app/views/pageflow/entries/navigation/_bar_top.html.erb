@@ -15,13 +15,7 @@
   <%= render('pageflow/entries/navigation/overview_button', overview_button: entry.overview_button) %>
   <li class="navigation_menu share" tabindex="2">
     <div class="navigation_menu_box navigation_share_box">
-      <%= render 'pageflow/entries/share_menu/facebook_link', entry: entry %>
-      <%= render 'pageflow/entries/share_menu/twitter_link', entry: entry %>
-      <%= render 'pageflow/entries/share_menu/google_link', entry: entry %>
-      <div class="sub_share">
-        <a tabindex="2" target="_blank"><%= I18n.t('pageflow.public.share_this_entry') %></a>
-        <a tabindex="2" target="_blank"><%= I18n.t('pageflow.public.share_this_page') %></a>
-      </div>
+      <%= render 'pageflow/entries/navigation/share_box_content', :entry => entry %>
     </div>
     <a title="<%= t('pageflow.public.share') %>">
       <span class="hint"><%= t('pageflow.public.share') %></span>

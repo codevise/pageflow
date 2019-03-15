@@ -338,9 +338,6 @@ body {
     }
 
     .sharing_mobile {
-      .wrapper {
-        top: 0;
-      }
       li {
         width: 200px;
         border-bottom: 1px solid #465b73;
@@ -352,28 +349,30 @@ body {
           border: 0;
           height: 80px;
 
-          &:before {
-            content: "";
+          svg {
             position: absolute;
-            width: 42px;
-            height: 37px;
-            background-size: 100% auto;
-            left: 30px;
-            top: 30px;
-          }
-
-          &.facebook:before {
-            background-position: center top;
-          }
-          &.twitter:before {
-            background-position: center 122px;
-          }
-          &.google:before {
-            background-position: center bottom;
+            left: 25px;
+            top: 28px;
+            width: 38px;
+            height: 38px;
           }
         }
       }
+
+      // only show WhatsApp share button on iOS devices
+      @supports (-webkit-overflow-scrolling: touch) {
+        li.whats_app {
+          display: block;
+        }
+      }
+
+      @supports not (-webkit-overflow-scrolling: touch) {
+        li.whats_app {
+          display: none;
+        }
+      }
     }
+
     .sub_share {
       display: none;
     }

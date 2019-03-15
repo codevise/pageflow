@@ -97,8 +97,8 @@ $mobile-navigation-pictogram-visibility: $standard-page-pictogram-visibility !de
   .sharing_mobile a {
     color: $mobile-navigation-share-link-color;
 
-    &::before {
-      background-image: image-url("#{$image-dir}/sharing_icons_sprite.png");
+    svg {
+      fill: $mobile-navigation-share-link-color;
     }
   }
 }
