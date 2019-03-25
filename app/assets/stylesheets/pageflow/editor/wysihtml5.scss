@@ -7,6 +7,7 @@
     @include background-icon-center($font-size: 12px);
     @include hidden-text;
 
+    margin: 0;
     display: inline-block;
     width: 25px;
     height: 25px;
@@ -35,6 +36,14 @@
 
   [data-wysihtml5-command="underline"] {
     @include font-underline-icon;
+  }
+
+  [data-wysihtml5-command="insertOrderedList"] {
+    @include font-list-ol-icon;
+  }
+
+  [data-wysihtml5-command="insertUnorderedList"] {
+    @include font-list-ul-icon;
   }
 
   [data-wysihtml5-command="createLink"] {

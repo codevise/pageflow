@@ -49,6 +49,9 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
           u: {unwrap: this.options.disableRichtext ? 1 : 0},
           b: {unwrap: this.options.disableRichtext ? 1 : 0},
           i: {unwrap: this.options.disableRichtext ? 1 : 0},
+          ol: {unwrap: this.options.disableRichtext ? 1 : 0},
+          ul: {unwrap: this.options.disableRichtext ? 1 : 0},
+          li: {unwrap: this.options.disableRichtext ? 1 : 0},
           br: {},
           a: {
             unwrap: this.options.disableLinks ? 1 : 0,
@@ -68,7 +71,15 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
       this.ui.toolbar.find('a[data-wysihtml5-command="bold"]').hide();
       this.ui.toolbar.find('a[data-wysihtml5-command="italic"]').hide();
       this.ui.toolbar.find('a[data-wysihtml5-command="underline"]').hide();
+      this.ui.toolbar.find('a[data-wysihtml5-command="insertOrderedList"]').hide();
+      this.ui.toolbar.find('a[data-wysihtml5-command="insertUnorderedList"]').hide();
     }
+
+    if (!this.options.enableLists) {
+      this.ui.toolbar.find('a[data-wysihtml5-command="insertOrderedList"]').hide();
+      this.ui.toolbar.find('a[data-wysihtml5-command="insertUnorderedList"]').hide();
+    }
+
     if (this.options.disableLinks) {
       this.ui.toolbar.find('a[data-wysihtml5-command="createLink"]').hide();
     }

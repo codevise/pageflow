@@ -20,3 +20,5 @@
 @mixin font-italic-icon         { @include fontawesome-icon("\f033");   }
 @mixin font-underline-icon      { @include fontawesome-icon("\f0cd");   }
 @mixin font-bold-icon           { @include fontawesome-icon("\f032");   }
+@mixin font-list-ol-icon        { @include fontawesome-icon("\f0cb");   }
+@mixin font-list-ul-icon        { @include fontawesome-icon("\f0ca");   }
