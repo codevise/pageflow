@@ -342,6 +342,43 @@ module Pageflow
         expect(parent_file.nested_files(Pageflow::TextTrackFile)).to be_empty
         expect(response.status).to eq(422)
       end
+
+      it 'does not publish newly created file' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {file_name: 'image.jpg'}
+             },
+             format: 'json')
+
+        expect(entry.image_files.first).to be_uploading
+      end
+
+      it 'publishes file directly when no_upload param is present' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+
+        post(:create,
+             params: {
+               no_upload: true,
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {file_name: 'image.jpg'}
+             },
+             format: 'json')
+
+        expect(entry.image_files.first).to be_processing
+      end
     end
 
     describe '#reuse' do

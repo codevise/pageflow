@@ -20,6 +20,7 @@ module Pageflow
         verify_edit_lock!(entry)
 
         @file = entry.create_file!(file_type.model, create_params)
+        @file.publish! if params[:no_upload]
 
         respond_with(:editor, @file)
       rescue ActiveRecord::RecordInvalid => e
