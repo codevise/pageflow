@@ -6,6 +6,11 @@ module Pageflow
       'pageflow_pages.position ASC'
     ].join(',')
 
+    CHAPTER_ORDER = [
+      'pageflow_storylines.position ASC',
+      'pageflow_chapters.position ASC'
+    ].join(',')
+
     include ThemeReferencer
 
     belongs_to :entry, touch: :edited_at
@@ -15,7 +20,7 @@ module Pageflow
     has_many :widgets, as: :subject, dependent: :destroy
 
     has_many :storylines, -> { order('pageflow_storylines.position ASC') }, dependent: :destroy
-    has_many :chapters, -> { order('position ASC') }, through: :storylines
+    has_many :chapters, -> { order(CHAPTER_ORDER) }, through: :storylines
     has_many :pages, -> { reorder(PAGE_ORDER) }, through: :storylines
 
     has_many :file_usages, dependent: :destroy

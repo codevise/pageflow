@@ -32,7 +32,8 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
   };
 
   this.getNextPage = function(currentPage, pages) {
-    var nextPage = currentPage.next('.page');
+    var currentPageIndex = pages.index(currentPage);
+    var nextPage = currentPageIndex < pages.length - 1 ? $(pages.get(currentPageIndex + 1)) : $();
 
     if (sameStoryline(currentPage, nextPage)) {
       return nextPage;
@@ -48,7 +49,8 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
   };
 
   this.getPreviousPage = function(currentPage, pages) {
-    var previousPage =  currentPage.prev('.page');
+    var currentPageIndex = pages.index(currentPage);
+    var previousPage = currentPageIndex > 0 ? $(pages.get(currentPageIndex - 1)) : $();
 
     if (sameStoryline(currentPage, previousPage)) {
       return previousPage;
@@ -57,8 +59,8 @@ pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
     return getParentPage(currentPage, pages);
   };
 
-  this.getTransitionDirection = function(previousPage, currentPage, options) {
-    return (currentPage.index() > previousPage.index() ? 'forwards' : 'backwards');
+  this.getTransitionDirection = function(previousPage, currentPage, pages, options) {
+    return (pages.index(currentPage) > pages.index(previousPage) ? 'forwards' : 'backwards');
   };
 
   this.getDefaultTransition = function(previousPage, currentPage, pages) {
