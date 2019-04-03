@@ -33,7 +33,8 @@ export default class PageBackgroundImage extends React.Component {
       <LazyBackgroundImage fileId={page[`${property}Id`]}
                            fileCollection={this.props.fileCollection}
                            position={[page[`${property}X`], page[`${property}Y`]]}
-                           className="background background_image" />
+                           className="background background_image"
+                           structuredDataComponent={this.props.structuredDataComponent} />
     );
   }
 }

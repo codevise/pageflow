@@ -20,6 +20,7 @@ module Pageflow
         entry = PublishedEntry.new(create(:entry, :published))
 
         helper.extend(EntryJsonSeedHelper)
+        helper.extend(ReactServerSideRenderingHelper)
         html = widget_type.render(helper, entry)
 
         expect(html).to have_selector('.loading_spinner')

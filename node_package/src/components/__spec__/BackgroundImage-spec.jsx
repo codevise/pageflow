@@ -67,4 +67,19 @@ describe('BackgroundImage', () => {
 
     expect(result).to.have.style('backgroundPosition', '10% 20%');
   });
+
+  it('supports rendering structured data component', () => {
+    const StructuredData = function() {};
+    const props = {
+      fileId: 5,
+      fileCollection: 'videoFiles',
+      structuredDataComponent: StructuredData
+    };
+
+    const result = shallow(<BackgroundImage {...props} />);
+
+    expect(result).to.have.descendants(StructuredData);
+    expect(result.find(StructuredData)).to.have.prop('fileCollection', 'videoFiles');
+    expect(result.find(StructuredData)).to.have.prop('fileId', 5);
+  });
 });

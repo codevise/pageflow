@@ -36,7 +36,8 @@ function updateFromModel({entry, dispatch}) {
   dispatch(update({
     entry: {
       slug: entry.get('slug'),
-      title: entry.configuration.get('title') || entry.get('entry_title')
+      title: entry.configuration.get('title') || entry.get('entry_title'),
+      publishedAt: null
     }
   }));
 }
@@ -45,7 +46,8 @@ function loadFromSeed({entry, dispatch}) {
   dispatch(update({
     entry: {
       slug: entry.slug,
-      title: entry.title
+      title: entry.title,
+      publishedAt: entry.published_at
     }
   }));
 }

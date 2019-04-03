@@ -142,6 +142,22 @@ module Pageflow
           expect(result[:theming]['privacy_link_url']).to eq('https://example.com/privacy')
         end
       end
+
+      describe '["enabled_feature_names"]' do
+        it 'contains list of enabled features' do
+          pageflow_configure do |config|
+            config.features.register('some_feature')
+            config.features.register('other_feature')
+          end
+
+          entry = PublishedEntry.new(create(:entry, :published, with_feature: 'some_feature'))
+
+          result = common_entry_seed(entry)
+
+          expect(result[:enabled_feature_names]).to include('some_feature')
+          expect(result[:enabled_feature_names]).not_to include('other_feature')
+        end
+      end
     end
   end
 end

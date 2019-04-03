@@ -20,6 +20,7 @@ module Pageflow
         with_manager { nil }
 
         with_feature { nil }
+        without_feature { nil }
       end
 
       after(:create) do |entry, evaluator|
@@ -43,7 +44,8 @@ module Pageflow
 
       after(:build) do |entry, evaluator|
         entry.features_configuration =
-          entry.features_configuration.merge(evaluator.with_feature => true)
+          entry.features_configuration.merge(evaluator.with_feature => true,
+                                             evaluator.without_feature => false)
       end
 
       trait :published do

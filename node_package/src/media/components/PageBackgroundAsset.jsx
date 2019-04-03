@@ -1,5 +1,6 @@
 import {PageBackgroundImage} from 'components';
 import PageBackgroundVideo from './PageBackgroundVideo';
+import ImageStructuredData from './ImageStructuredData';
 import {playerState, playerActions} from 'media/selectors';
 
 import {connectInPage} from 'pages';
@@ -24,7 +25,8 @@ export function PageBackgroundAsset({page,
   else {
     return (
       <PageBackgroundImage page={page}
-                           propertyNamePrefix={propertyNamePrefix} />
+                           propertyNamePrefix={propertyNamePrefix}
+                           structuredDataComponent={ImageStructuredData} />
     );
   }
 }

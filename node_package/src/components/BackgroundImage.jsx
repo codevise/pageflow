@@ -25,6 +25,7 @@ export default class BackgroundImage extends React.Component {
   render() {
     return (
       <div className={this.cssClass()} style={this.style()} ref={element => this.element = element}>
+        {this.renderStructuredData()}
       </div>
     );
   }
@@ -64,6 +65,17 @@ export default class BackgroundImage extends React.Component {
     }
 
     return coordinate;
+  }
+
+  renderStructuredData() {
+    if (this.props.structuredDataComponent) {
+      const StructuredDataComponent = this.props.structuredDataComponent;
+
+      return (
+        <StructuredDataComponent fileCollection={this.props.fileCollection}
+                                 fileId={this.props.fileId} />
+      );
+    }
   }
 }
 

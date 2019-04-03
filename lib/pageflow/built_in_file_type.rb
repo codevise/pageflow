@@ -5,6 +5,7 @@ module Pageflow
     # available as built-ins.
     def self.image
       FileType.new(model: 'Pageflow::ImageFile',
+                   partial: 'pageflow/image_files/image_file',
                    editor_partial: 'pageflow/editor/image_files/image_file',
                    collection_name: 'image_files',
                    url_templates: ImageFileUrlTemplates.new,
@@ -27,6 +28,7 @@ module Pageflow
 
     def self.audio
       FileType.new(model: 'Pageflow::AudioFile',
+                   partial: 'pageflow/audio_files/audio_file',
                    editor_partial: 'pageflow/editor/audio_files/audio_file',
                    collection_name: 'audio_files',
                    url_templates: AudioFileUrlTemplates.new,

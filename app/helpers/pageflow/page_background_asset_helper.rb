@@ -1,8 +1,12 @@
 module Pageflow
   module PageBackgroundAssetHelper
-    def page_background_asset(configuration)
+    include EntryJsonSeedHelper
+    include ReactServerSideRenderingHelper
+
+    def page_background_asset(page, entry = @entry)
       render('pageflow/page_background_asset/element',
-             configuration: configuration)
+             entry: entry,
+             page: page)
     end
   end
 end

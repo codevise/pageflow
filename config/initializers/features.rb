@@ -8,4 +8,7 @@ Pageflow.configure do |config|
   config.features.register('selectable_themes')
   config.features.register('editor_emulation_mode')
   config.features.register('waveform_player_controls')
+  config.features.register('structured_data')
+
+  config.features.enable_by_default('structured_data')
 end
