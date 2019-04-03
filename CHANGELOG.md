@@ -1,5 +1,22 @@
 # CHANGELOG
 
+### Version 14.0.0.beta2
+
+2019-04-03
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v14.0.0.beta1...v14.0.0.beta2)
+
+- Structured data for videos, audios and background images
+  ([#1145](https://github.com/codevise/pageflow/pull/1145))
+- Change header structure to improve document outline
+  ([#1139](https://github.com/codevise/pageflow/pull/1139))
+- Allow passing custom query params for collection.create
+  ([#1136](https://github.com/codevise/pageflow/pull/1136))
+- Bug fix: Setup visited pages before resolving ready
+  ([#1144](https://github.com/codevise/pageflow/pull/1144))
+- Update chromedriver-helper to fix travis build
+  ([#1140](https://github.com/codevise/pageflow/pull/1140))
+
 ### Version 14.0.0.beta1
 
 2019-03-08
