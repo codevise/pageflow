@@ -8,12 +8,12 @@ pageflow.ready = new $.Deferred(function(readyDeferred) {
       var slideshow = $('[data-role=slideshow]');
       var body = $('body');
 
+      pageflow.Visited.setup();
+
       pagePreloaded.then(function() {
         readyDeferred.resolve();
         pageflow.events.trigger('ready');
       });
-
-      pageflow.Visited.setup();
 
       slideshow.each(function() {
         pageflow.events.trigger('seed:loaded');
