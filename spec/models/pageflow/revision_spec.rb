@@ -280,6 +280,42 @@ module Pageflow
         expect(pages[2]).to eq(page_3)
         expect(pages[3]).to eq(page_4)
       end
+
+      it 'sets is_first on first page' do
+        revision = create(:revision)
+        storyline1 = create(:storyline, revision: revision, position: 1)
+        storyline2 = create(:storyline, revision: revision, position: 2)
+        chapter1 = create(:chapter, storyline: storyline1, position: 1)
+        chapter2 = create(:chapter, storyline: storyline1, position: 1)
+        chapter3 = create(:chapter, storyline: storyline2, position: 1)
+        create(:page, chapter: chapter1, position: 1)
+        create(:page, chapter: chapter1, position: 2)
+        create(:page, chapter: chapter2, position: 1)
+        create(:page, chapter: chapter3, position: 1)
+
+        pages = revision.pages
+
+        expect(pages.map(&:is_first)).to eq([true, nil, nil, nil])
+      end
+    end
+
+    describe '#chapters' do
+      it 'sets is_first on first page' do
+        revision = create(:revision)
+        storyline1 = create(:storyline, revision: revision, position: 1)
+        storyline2 = create(:storyline, revision: revision, position: 2)
+        chapter1 = create(:chapter, storyline: storyline1, position: 1)
+        chapter2 = create(:chapter, storyline: storyline1, position: 1)
+        chapter3 = create(:chapter, storyline: storyline2, position: 1)
+        create(:page, chapter: chapter1, position: 1)
+        create(:page, chapter: chapter1, position: 2)
+        create(:page, chapter: chapter2, position: 1)
+        create(:page, chapter: chapter3, position: 1)
+
+        pages = revision.chapters.map(&:pages).flatten
+
+        expect(pages.map(&:is_first)).to eq([true, nil, nil, nil])
+      end
     end
 
     describe '#main_storyline_chapters' do

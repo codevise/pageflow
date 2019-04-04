@@ -30,7 +30,7 @@ $logo-background-image-variant-banner-phone-height: null !default;
   $phone-height,
   $phone-top
 ) {
-  $page-selector: if($first-page-only, ":first-child", "");
+  $page-selector: if($first-page-only, ".first_page", ".page");
 
   %background_logo {
     top: $top;
@@ -65,7 +65,7 @@ $logo-background-image-variant-banner-phone-height: null !default;
     @include logo-alignment;
   }
 
-  .page#{$page-selector} {
+  #{$page-selector} {
     .content_and_background .scroller > div:after {
       @extend %background_logo;
 
@@ -107,7 +107,7 @@ $logo-background-image-variant-banner-phone-height: null !default;
     opacity: $logo-background-image-variant-opacity;
   }
 
-  .page:first-child .scroller > div:after {
+  .first_page .scroller > div:after {
     opacity: $logo-background-image-variant-first-page-opacity;
   }
 }

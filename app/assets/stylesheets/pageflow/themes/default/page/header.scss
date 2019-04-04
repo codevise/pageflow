@@ -135,7 +135,7 @@ $page-header-subtitle-margin-bottom: 1.875em !default;
   }
 }
 
-.page:first-child {
+.first_page {
   .page_header-title {
     @include typography(
       $page-header-first-page-title-typography,
@@ -157,7 +157,7 @@ $page-header-subtitle-margin-bottom: 1.875em !default;
   }
 }
 
-.emphasize_chapter_beginning .page.chapter_beginning:nth-of-type(n+2) {
+.emphasize_chapter_beginning .page.chapter_beginning:not(.first_page) {
   .page_header-title {
     @include typography(
       $page-header-chapter-beginning-title-typography

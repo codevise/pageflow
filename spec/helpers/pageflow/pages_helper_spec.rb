@@ -83,6 +83,22 @@ module Pageflow
         expect(css_classes).to include('page')
         expect(css_classes).to include('text_position_right')
       end
+
+      it 'does not contain first_page class by default' do
+        page = build(:page)
+
+        css_classes = helper.page_css_class(page).split(' ')
+
+        expect(css_classes).not_to include('first_page')
+      end
+
+      it 'contains first_page class if page has is_first attribute set' do
+        page = build(:page, is_first: true)
+
+        css_classes = helper.page_css_class(page).split(' ')
+
+        expect(css_classes).to include('first_page')
+      end
     end
 
     describe '#page_thumbnail_image_class' do
