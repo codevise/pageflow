@@ -2,6 +2,15 @@
 
 ### Version 14.0.0.beta2
 
+2019-04-04
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v14.0.0.beta2...v14.0.0.beta3)
+
+- Bug fix: Assign @entry attribute in render_page test helper
+  ([#1146](https://github.com/codevise/pageflow/pull/1146))
+
+### Version 14.0.0.beta2
+
 2019-04-03
 
 [Compare changes](https://github.com/codevise/pageflow/compare/v14.0.0.beta1...v14.0.0.beta2)
