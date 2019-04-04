@@ -1,6 +1,17 @@
 # CHANGELOG
 
-### Version 14.0.0.beta2
+### Version 14.0.0.rc1
+
+2019-04-04
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v14.0.0.beta3...v14.0.0.rc1)
+
+- Add migration to fix "processing_failed"-image files
+  ([#1147](https://github.com/codevise/pageflow/pull/1147))
+- Do not require content_wrapper in page type lint specs
+  ([#1148](https://github.com/codevise/pageflow/pull/1148))
+
+### Version 14.0.0.beta3
 
 2019-04-04
 
