@@ -26,6 +26,8 @@ module Pageflow
         helper.extend(page_type_helper)
       end
 
+      assign(:entry, entry)
+
       helper.render_page_template(page, entry: entry)
     end
   end
