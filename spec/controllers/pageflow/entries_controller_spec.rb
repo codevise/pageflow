@@ -202,6 +202,16 @@ module Pageflow
           expect(response.body).to have_selector('html[lang=de]')
         end
 
+        it 'sets first_page css class on first page' do
+          entry = create(:entry, :published)
+          create(:page, revision: entry.published_revision)
+          create(:page, revision: entry.published_revision)
+
+          get(:show, params: {id: entry})
+
+          expect(response.body).to have_selector('.first_page', count: 1)
+        end
+
         it 'renders widgets at bottom of entry' do
           widget_type = TestWidgetType.new(name: 'test_widget',
                                            rendered: '<div class="test_widget"></div>')

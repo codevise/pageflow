@@ -44,7 +44,7 @@ body {
       z-index: 1;
     }
 
-    &:first-child {
+    &.first_page {
       .content_and_background .scroller > div:after {
         content: " ";
         position: absolute;
@@ -167,7 +167,7 @@ body {
     background-color: white !important;
   }
 
-  &.js .page:first-child.invert .content_and_background .scroller > div:after {
+  &.js .first_page.invert .content_and_background .scroller > div:after {
     background-image: none !important;
   }
 

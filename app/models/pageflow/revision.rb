@@ -103,6 +103,10 @@ module Pageflow
       super.tap { |p| p.first.is_first = true if p.present? }
     end
 
+    def chapters
+      super.tap { |c| c.first.is_first = true if c.present? }
+    end
+
     def published?
       (published_at.present? && Time.now >= published_at) &&
         (published_until.blank? || Time.now < published_until)

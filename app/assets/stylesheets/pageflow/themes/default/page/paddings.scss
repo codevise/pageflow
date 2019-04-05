@@ -53,7 +53,7 @@ $page-scroller-first-page-phone-padding-top: null !default;
   }
 }
 
-.page:first-child {
+.first_page {
   .scroller > div {
     padding-top: $page-scroller-first-page-padding-top;
 

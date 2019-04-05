@@ -44,7 +44,17 @@ pageflow.Page = Backbone.Model.extend({
   },
 
   chapterPosition: function() {
-    return (this.chapter && this.chapter.get('position')) || -1;
+    return this.chapter && this.chapter.has('position') ? this.chapter.get('position') : -1;
+  },
+
+  isFirstPage: function() {
+    return this.isChapterBeginning() &&
+           this.chapterPosition() === 0 &&
+           this.storylinePosition() === 1;
+  },
+
+  isChapterBeginning: function() {
+    return this.get('position') === 0;
   },
 
   title: function() {
