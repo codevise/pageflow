@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 14.0.0.rc2
+
+2019-04-08
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v14.0.0.rc1...v14.0.0.rc2)
+
+- Fix first page selectors in themes
+  ([#1149](https://github.com/codevise/pageflow/pull/1149))
+
 ### Version 14.0.0.rc1
 
 2019-04-04
