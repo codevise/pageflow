@@ -1,56 +1,13 @@
 # CHANGELOG
 
-### Version 14.0.0.rc2
+### Version 14.0.0
 
 2019-04-08
 
-[Compare changes](https://github.com/codevise/pageflow/compare/v14.0.0.rc1...v14.0.0.rc2)
+[Compare changes](https://github.com/codevise/pageflow/compare/13-x-stable...v14.0.0)
 
-- Fix first page selectors in themes
-  ([#1149](https://github.com/codevise/pageflow/pull/1149))
-
-### Version 14.0.0.rc1
-
-2019-04-04
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v14.0.0.beta3...v14.0.0.rc1)
-
-- Add migration to fix "processing_failed"-image files
-  ([#1147](https://github.com/codevise/pageflow/pull/1147))
-- Do not require content_wrapper in page type lint specs
-  ([#1148](https://github.com/codevise/pageflow/pull/1148))
-
-### Version 14.0.0.beta3
-
-2019-04-04
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v14.0.0.beta2...v14.0.0.beta3)
-
-- Bug fix: Assign @entry attribute in render_page test helper
-  ([#1146](https://github.com/codevise/pageflow/pull/1146))
-
-### Version 14.0.0.beta2
-
-2019-04-03
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v14.0.0.beta1...v14.0.0.beta2)
-
-- Structured data for videos, audios and background images
-  ([#1145](https://github.com/codevise/pageflow/pull/1145))
-- Change header structure to improve document outline
-  ([#1139](https://github.com/codevise/pageflow/pull/1139))
-- Allow passing custom query params for collection.create
-  ([#1136](https://github.com/codevise/pageflow/pull/1136))
-- Bug fix: Setup visited pages before resolving ready
-  ([#1144](https://github.com/codevise/pageflow/pull/1144))
-- Update chromedriver-helper to fix travis build
-  ([#1140](https://github.com/codevise/pageflow/pull/1140))
-
-### Version 14.0.0.beta1
-
-2019-03-08
-
-[Compare changes](https://github.com/codevise/pageflow/compare/13-x-stable...v14.0.0.beta1)
+See
+[changes grouped by pre releases](https://github.com/codevise/pageflow/blob/v14.0.0.rc2/CHANGELOG.md).
 
 #### Manual Update Steps
 
@@ -71,7 +28,9 @@
 #### Breaking Changes for Pageflow Plugins
 
 - Page DOM layout change
-  ([#1135](https://github.com/codevise/pageflow/pull/1135))
+  ([#1135](https://github.com/codevise/pageflow/pull/1135),
+   [#1149](https://github.com/codevise/pageflow/pull/1149),
+   [#1148](https://github.com/codevise/pageflow/pull/1148))
 
   Page headers are now have level 3 instead of level 2. There is a new
   helper which is recommended to render the default page header and
@@ -104,7 +63,8 @@
         <%= page_default_content(page) %>
 
 - Direct upload to S3
-  ([#1132](https://github.com/codevise/pageflow/pull/1132))
+  ([#1132](https://github.com/codevise/pageflow/pull/1132),
+   [#1147](https://github.com/codevise/pageflow/pull/1147))
 
   Files are now uploaded directly to S3 from the browser. The state
   machine defined by `HostedFile` therefore no longer includes states
@@ -115,12 +75,23 @@
 
 #### Minor Changes
 
+- Structured data for videos, audios and background images
+  ([#1145](https://github.com/codevise/pageflow/pull/1145))
+- Change header structure to improve document outline
+  ([#1139](https://github.com/codevise/pageflow/pull/1139))
+- Allow passing custom query params for collection.create
+  ([#1136](https://github.com/codevise/pageflow/pull/1136))
+- Bug fix: Setup visited pages before resolving ready
+  ([#1144](https://github.com/codevise/pageflow/pull/1144))
 - Add shared specs to pageflow-support to lint page types
-  ([#1133](https://github.com/codevise/pageflow/pull/1133))
+  ([#1133](https://github.com/codevise/pageflow/pull/1133),
+   [#1146](https://github.com/codevise/pageflow/pull/1146))
 - Increase max length for page tagline, title and subtitles
   ([#1131](https://github.com/codevise/pageflow/pull/1131))
 - Include text in navigation bar links
   ([#1129](https://github.com/codevise/pageflow/pull/1129))
+- Update chromedriver-helper to fix travis build
+  ([#1140](https://github.com/codevise/pageflow/pull/1140))
 
 See
 [13-x-stable branch](https://github.com/codevise/pageflow/blob/13-x-stable/CHANGELOG.md)
