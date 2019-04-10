@@ -1,0 +1,8 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/theming:
+        default_share_providers: Standard Share Links
+        share_providers: Standard Share Links
+      pageflow/entry:
+        share_providers: Share Links

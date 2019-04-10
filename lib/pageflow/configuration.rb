@@ -246,6 +246,11 @@ module Pageflow
     # @since 0.10
     attr_accessor :available_public_locales
 
+    # Array of sharing providers which can be configured on theming level.
+    # Defaults to `[:facebook, :twitter, :linked_in, :whats_app, :telegram, :email]`.
+    # @since 14.1
+    attr_accessor :available_share_providers
+
     # How to handle https requests for URLs which will have assets in the page.
     # If you wish to serve all assets over http and prevent mixed-content warnings,
     # you can force a redirect to http. The inverse is also true: you can force
@@ -267,6 +272,13 @@ module Pageflow
     attr_accessor :default_keywords_meta_tag
     attr_accessor :default_author_meta_tag
     attr_accessor :default_publisher_meta_tag
+
+    # Share provider defaults.
+    #
+    # Default share providers for new themings.
+    # Must be a subset or equal to `available_share_providers`
+    # @since 14.1
+    attr_accessor :default_share_providers
 
     # Whether a user can be deleted.
     #
@@ -361,12 +373,15 @@ module Pageflow
 
       @available_locales = [:en, :de]
       @available_public_locales = PublicI18n.available_locales
+      @available_share_providers = [:email, :facebook, :linked_in, :twitter, :telegram, :whats_app]
 
       @public_https_mode = :prevent
 
       @default_keywords_meta_tag = 'pageflow, multimedia, reportage'
       @default_author_meta_tag = 'Pageflow'
       @default_publisher_meta_tag = 'Pageflow'
+
+      @default_share_providers = @available_share_providers
 
       @authorize_user_deletion = lambda { |_user| true }
 
