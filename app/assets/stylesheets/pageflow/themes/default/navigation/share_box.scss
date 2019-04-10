@@ -6,6 +6,11 @@
     display: flex;
     text-align: center;
 
+    a.share.whats_app,
+    a.share.telegram {
+      display: none;
+    }
+
     a {
       float: left;
       position: relative;

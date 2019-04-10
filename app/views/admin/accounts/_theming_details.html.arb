@@ -12,6 +12,6 @@ extensible_attributes_table_for(account.default_theming,
   row :default_publisher, class: 'default_publisher'
   row :default_keywords, class: 'default_keywords'
   row :default_share_providers, class: 'default_share_providers' do
-    account.default_theming.default_share_providers&.keys&.map(&:camelize)&.join(', ')
+    account.default_theming.default_share_providers.keys.map(&:camelize).join(', ')
   end
 end

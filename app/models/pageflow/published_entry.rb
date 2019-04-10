@@ -22,6 +22,7 @@ module Pageflow
              :emphasize_chapter_beginning,
              :emphasize_new_pages,
              :share_url, :share_image_id, :share_image_x, :share_image_y,
+             :share_providers, :active_share_providers,
              :locale,
              :author, :publisher, :keywords,
              :theme,

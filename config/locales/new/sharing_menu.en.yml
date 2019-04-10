@@ -5,4 +5,10 @@ en:
         default_share_providers: Default share links
         share_providers: Default Share Links
       pageflow/entry:
-        share_providers: Share Links
+        share_providers:
+          email: Email
+          facebook: Facebook
+          linked_in: LinkedIn
+          telegram: Telegram (only mobile)
+          twitter: Twitter
+          whats_app: WhatsApp (only mobile)

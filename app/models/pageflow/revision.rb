@@ -13,6 +13,8 @@ module Pageflow
 
     include ThemeReferencer
 
+    serialize :share_providers, JSON
+
     belongs_to :entry, touch: :edited_at
     belongs_to :creator, class_name: 'User', optional: true
     belongs_to :restored_from, class_name: 'Pageflow::Revision', optional: true
@@ -89,6 +91,14 @@ module Pageflow
     def find_file(model, id)
       file = files(model).find(id)
       UsedFile.new(file)
+    end
+
+    def share_providers
+      self[:share_providers] || entry.theming.default_share_providers
+    end
+
+    def active_share_providers
+      share_providers.select { |_k, v| v }.keys
     end
 
     def creator

@@ -15,24 +15,11 @@
   <div class="sharing_mobile">
     <div class="wrapper">
       <ul>
-        <li>
-          <%= render 'pageflow/entries/share_menu/facebook_link', entry: entry %>
-        </li>
-        <li>
-          <%= render 'pageflow/entries/share_menu/twitter_link', entry: entry %>
-        </li>
-        <li>
-          <%= render 'pageflow/entries/share_menu/linked_in_link', entry: entry %>
-        </li>
-        <li class="whats_app">
-          <%= render 'pageflow/entries/share_menu/whats_app_link', entry: entry %>
-        </li>
-        <li>
-          <%= render 'pageflow/entries/share_menu/telegram_link', entry: entry %>
-        </li>
-        <li>
-          <%= render 'pageflow/entries/share_menu/email_link', entry: entry %>
-        </li>
+        <% entry.active_share_providers.each do |provider| %>
+          <li>
+            <%= render "pageflow/entries/share_menu/#{provider}_link", entry: entry %>
+          </li>
+        <% end  %>
       </ul>
     </div>
     <div class="sub_share">

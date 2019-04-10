@@ -31,12 +31,16 @@ module Pageflow
       copy_attributes_to(revision)
     end
 
-    def share_providers=(share_providers)
-      self.default_share_providers = hashify_provider_array(share_providers)
+    def share_providers=(share_providers_array)
+      self.default_share_providers = hashify_provider_array(share_providers_array)
     end
 
     def share_providers
       default_share_providers.to_a
+    end
+
+    def default_share_providers
+      self[:default_share_providers].presence || hashify_provider_array(Pageflow.config.default_share_providers)
     end
 
     private
@@ -46,7 +50,7 @@ module Pageflow
         author: default_author.presence || Pageflow.config.default_author_meta_tag,
         publisher: default_publisher.presence || Pageflow.config.default_publisher_meta_tag,
         keywords: default_keywords.presence || Pageflow.config.default_keywords_meta_tag,
-        share_providers: default_share_providers.presence || hashify_provider_array(Pageflow.config.default_share_providers),
+        share_providers: default_share_providers,
         theme_name: theme_name,
         home_button_enabled: home_button_enabled_by_default,
         locale: default_locale
@@ -57,8 +61,8 @@ module Pageflow
       Pageflow.config_for(account).themes
     end
 
-    def hashify_provider_array(a)
-      Hash[a.reject(&:blank?).collect { |v| [v, true] }]
+    def hashify_provider_array(arr)
+      Hash[arr.reject(&:blank?).map { |v| [v.to_s, true] }]
     end
   end
 end
