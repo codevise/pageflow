@@ -5,6 +5,9 @@ de:
         default_share_providers: Standard Share Links
         share_providers: Standard Share Links
       pageflow/entry:
+        share_providers: Social Share Links
+    values:
+      pageflow/entry:
         share_providers:
           email: Email
           facebook: Facebook
@@ -12,3 +15,8 @@ de:
           telegram: Telegram (nur Mobilgeräte)
           twitter: Twitter
           whats_app: WhatsApp (nur Mobilgeräte)
+  pageflow:
+    ui:
+      inline_help:
+        pageflow/entry:
+          share_providers: Social Media Plattformen, die unter dem Menüpunkt "Teilen" des Beitrags angezeigt werden sollen

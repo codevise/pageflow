@@ -2,8 +2,11 @@ en:
   activerecord:
     attributes:
       pageflow/theming:
-        default_share_providers: Default share links
+        default_share_providers: Default Share Links
         share_providers: Default Share Links
+      pageflow/entry:
+        share_providers: Social Share Links
+    values:
       pageflow/entry:
         share_providers:
           email: Email
@@ -12,3 +15,8 @@ en:
           telegram: Telegram (only mobile)
           twitter: Twitter
           whats_app: WhatsApp (only mobile)
+    pageflow:
+      ui:
+        inline_help:
+          pageflow/entry:
+            share_providers: Social media platforms to be listed in the "Share"-dialog of the entry
