@@ -55,7 +55,11 @@
   }
 
   .wysihtml5-command-dialog-opened {
-    margin-bottom: 83px;
+    margin-bottom: 150px;
+
+    &.url_only {
+      margin-bottom: 90px;
+    }
   }
 
   .dialog {
@@ -71,7 +75,30 @@
     a {
       @include button;
       padding: 5px 10px;
-      margin-top: 5px;
+      margin: 5px 0;
+    }
+
+    .link_type.page_link {
+      margin: 0 -2px;
+
+      label {
+        margin: -1px 2px;
+      }
+    }
+
+    .link_type_select {
+      input, label {
+        display: inline;
+      }
+
+      input[type="radio"] {
+        width: 15px;
+        margin: 5px 0;
+
+        &:focus {
+          outline: none;
+        }
+      }
     }
   }
 

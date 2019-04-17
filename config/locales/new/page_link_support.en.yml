@@ -1,0 +1,10 @@
+en:
+  pageflow:
+    ui:
+      templates:
+        inputs:
+          text_area_input:
+            target: Target
+            link_type:
+              url: URL
+              page_link: Page

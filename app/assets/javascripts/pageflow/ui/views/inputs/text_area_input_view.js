@@ -27,7 +27,10 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
 
   ui: {
     input: 'textarea',
-    toolbar: '.toolbar'
+    toolbar: '.toolbar',
+    urlInput: '.toolbar .dialog input.current_url',
+    urlRadioButton: '.toolbar .dialog .link_type_select input.url',
+    pageLinkRadioButton: '.toolbar .dialog .link_type_select input.page_link'
   },
 
   events: {
@@ -86,6 +89,7 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
 
     this.editor.on('change', _.bind(this.save, this));
     this.editor.on('aftercommand:composer', _.bind(this.save, this));
+    this.editor.on('show:dialog', _.bind(this.addPageLinkInputView, this));
   },
 
   save: function() {
@@ -94,6 +98,51 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
 
   load: function() {
     this.ui.input.val(this.model.get(this.options.propertyName));
+  },
+
+  addPageLinkInputView: function() {
+    if (!this.options.enablePageLinks) {
+      $('.toolbar .dialog .link_type_select').remove();
+      $('.toolbar a.wysihtml5-command-dialog-opened').addClass('url_only')
+      return;
+    }
+
+    this.ui.urlRadioButton.on('change', function() {
+      $('.toolbar .dialog .link_type.url').show();
+      $('.toolbar .dialog .link_type.page_link').hide();
+    });
+
+    this.ui.pageLinkRadioButton.on('change', function() {
+      $('.toolbar .dialog .link_type.url').hide();
+      $('.toolbar .dialog .link_type.page_link').show();
+    });
+
+    var currentUrl = this.ui.urlInput.val();
+
+    this.pageLink = new Backbone.Model(
+      {pageId: currentUrl.startsWith('#') ? currentUrl.substr(1) : ''}
+    );
+
+    this.listenTo(this.pageLink, 'change', function() {
+      this.ui.urlInput.val('#'+this.pageLink.get('pageId'));
+    });
+
+    this.pageLinkInput = new pageflow.PageLinkInputView(_.extend({
+      model: this.pageLink,
+      propertyName: 'pageId',
+      label: I18n.t('pageflow.ui.templates.inputs.text_area_input.target')
+    }));
+
+    this.ui.toolbar.find('.dialog .link_type.page_link')
+      .empty()
+      .append(this.pageLinkInput.render().el);
+
+    if(currentUrl.startsWith('#')) {
+      this.ui.urlInput.val('http://');
+      this.ui.toolbar.find('.dialog .link_type_select .page_link').click();
+    } else {
+      this.ui.toolbar.find('.dialog .link_type_select .url').click();
+    }
   }
 });
 

@@ -15,10 +15,21 @@
   <a data-wysihtml5-command="insertUnorderedList" title="<%= I18n.t('pageflow.ui.templates.inputs.text_area_input.insert_unordered_list') %>"></a>
 
   <div data-wysihtml5-dialog="createLink" class="dialog" style="display: none;">
-    <label>
-        <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.url') %>:
-      <input data-wysihtml5-dialog-field="href" value="http://">
-    </label>
+    <div class="link_type_select">
+      <input type="radio" name="link_type" class="url">
+      <label><%= I18n.t('pageflow.ui.templates.inputs.text_area_input.link_type.url') %></label>
+      <input type="radio" name="link_type" class="page_link">
+      <label><%= I18n.t('pageflow.ui.templates.inputs.text_area_input.link_type.page_link') %></label>
+    </div>
+    <div class="link_type url">
+      <label>
+        <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.target') %>
+        <input data-wysihtml5-dialog-field="href" class="current_url" value="http://">
+      </label>
+    </div>
+    <div class="link_type page_link">
+      <!-- PageLinkInputView is inserted here -->
+    </div>
     <a data-wysihtml5-dialog-action="save"><%= I18n.t('pageflow.ui.templates.inputs.text_area_input.ok') %></a>
     <a data-wysihtml5-dialog-action="cancel"><%= I18n.t('pageflow.ui.templates.inputs.text_area_input.cancel') %></a>
   </div>
