@@ -1,7 +1,3 @@
-Paperclip.interpolates(:pageflow_filesystem_root) do |_attachment, _style|
-  Pageflow.config.paperclip_filesystem_root
-end
-
 Paperclip.interpolates(:pageflow_s3_root) do |_attachment, _style|
   Pageflow.config.paperclip_s3_root
 end

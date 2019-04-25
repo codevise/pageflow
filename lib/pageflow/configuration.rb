@@ -10,11 +10,6 @@ module Pageflow
     # reprocessing attachments.
     attr_accessor :paperclip_attachments_version
 
-    # Path to the location in the filesystem where attachments shall
-    # be stored. The value of this option is available via the
-    # pageflow_filesystem_root paperclip interpolation.
-    attr_accessor :paperclip_filesystem_root
-
     # Root folder in S3 bucket to store files in. Can be used to
     # separate files of multiple development instances in a shared
     # development S3 bucket.
@@ -30,6 +25,8 @@ module Pageflow
     #           This hash should include the signed POST policy, the access key ID and
     #           security token (if present), etc.
     #           These fields will be included as input elements of type 'hidden' on the form
+    #
+    # # @since 14.0
     attr_accessor :paperclip_direct_upload_options
 
     # Refer to the pageflow initializer template for a list of
@@ -317,7 +314,6 @@ module Pageflow
 
     def initialize
       @paperclip_attachments_version = 'v1'
-      @paperclip_filesystem_root = Rails.public_path.join('system/uploads')
       @paperclip_s3_root = 'main'
 
       @paperclip_s3_default_options = Defaults::PAPERCLIP_S3_DEFAULT_OPTIONS.dup
@@ -397,6 +393,16 @@ module Pageflow
     def register_page_type(page_type)
       ActiveSupport::Deprecation.warn('Pageflow::Configuration#register_page_type is deprecated. Use config.page_types.register instead.', caller)
       page_types.register(page_type)
+    end
+
+    # @deprecated Pageflow now supports direct uploads to S3 via signed post requests.
+    # Please change your forms accordingly.
+    def paperclip_filesystem_root
+      ActiveSupport::Deprecation.warn('Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller)
+    end
+
+    def paperclip_filesystem_root=(_val)
+      ActiveSupport::Deprecation.warn('Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller)
     end
 
     def revision_components
