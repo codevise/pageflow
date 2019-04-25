@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -ex
+
+bin/npm ci
+bin/npm run build
+git add -f app/assets/javascripts/pageflow/dist/react-*.js
+git commit app/assets/javascripts/pageflow/dist/react-*.js -m "Build"
