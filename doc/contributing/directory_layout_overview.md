@@ -25,4 +25,3 @@ With Rails 5.1 support for Yarn and Webpack, it will be possible to
 let Rails applications depend on the `pageflow` node package
 directly. This opens up interesting opportunities, including
 distributing Pageflow plugins as Node packages.
-<
