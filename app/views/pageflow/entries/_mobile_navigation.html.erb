@@ -1,4 +1,6 @@
-<div class="navigation_mobile" data-widget="default_mobile_navigation">
+<%= content_tag(:div,
+                class: navigation_bar_css_class(entry, class: 'navigation_mobile'),
+                data: {widget: 'default_mobile_navigation'}) do %>
   <div class="parent_page" title="<%= t('pageflow.public.back') %>"></div>
   <div class="menu index"></div>
   <div class="menu sharing"></div>
@@ -37,4 +39,4 @@
         </ul>
       </div>
   </div>
-</div>
+<% end %>

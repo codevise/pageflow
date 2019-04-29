@@ -137,6 +137,10 @@ body {
     }
   }
 
+  &.without_sharing_button .menu.sharing {
+    display: none;
+  }
+
   .overview_mobile, .imprint_mobile, .sharing_mobile {
     position: absolute;
     top: 0;

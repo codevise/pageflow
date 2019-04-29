@@ -4,7 +4,8 @@ module Pageflow
       [
         options[:class],
         entry.home_button.enabled? ? 'with_home_button' : nil,
-        entry.overview_button.enabled? ? 'with_overview_button' : nil
+        entry.overview_button.enabled? ? 'with_overview_button' : nil,
+        entry.active_share_providers.empty? ? 'without_sharing_button' : nil
       ].compact.join(' ')
     end
   end
