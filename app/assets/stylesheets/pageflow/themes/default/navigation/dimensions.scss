@@ -86,7 +86,7 @@ $scroll-indicator-offset: 35px;
     @include top_positions($top-height + 2 * $top-item-height);
   }
 
-  /* dynamically added class when no share providers are configured */
+  // dynamically added class when no share providers are configured
   &.without_sharing_button {
     @if $navigation-display-share-button {
       .navigation_menu.share {

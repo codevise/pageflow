@@ -170,5 +170,34 @@ module Pageflow
         expect(result).to eq([matching_theming])
       end
     end
+
+    describe '#share_providers' do
+      it 'converts array of share providers to a config hash stored as default_share_providers' do
+        theming = build(:theming, share_providers: %w[facebook twitter])
+
+        expect(theming.default_share_providers).to eq('facebook' => true, 'twitter' => true)
+      end
+
+      it 'returns the share_providers as array' do
+        theming = build(:theming, share_providers: %w[facebook twitter])
+
+        expect(theming.share_providers).to eq([['facebook', true], ['twitter', true]])
+      end
+    end
+
+    describe '#default_share_providers' do
+      it 'falls back to default_share_providers specified in config if none are given' do
+        theming = build(:theming)
+
+        expect(theming.default_share_providers).to eq(
+          'email' => true,
+          'facebook' => true,
+          'linked_in' => true,
+          'telegram' => true,
+          'twitter' => true,
+          'whats_app' => true
+         )
+      end
+    end
   end
 end
