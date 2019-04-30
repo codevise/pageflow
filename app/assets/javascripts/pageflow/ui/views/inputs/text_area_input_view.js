@@ -149,7 +149,8 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
       var fragmentLinkInput = new this.options.fragmentLinkInputView({
         model: this.fragmentLinkModel,
         propertyName: 'linkId',
-        label: I18n.t('pageflow.ui.templates.inputs.text_area_input.target')
+        label: I18n.t('pageflow.ui.templates.inputs.text_area_input.target'),
+        hideUnsetButton: true
       });
 
       this.ui.fragmentLinkPanel.append(fragmentLinkInput.render().el);

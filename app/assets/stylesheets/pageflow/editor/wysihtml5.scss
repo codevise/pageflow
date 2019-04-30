@@ -40,13 +40,25 @@
   [data-wysihtml5-command="createLink"] {
     @include link-icon;
 
-    &.wysihtml5-command-active + .dialog [data-wysihtml5-dialog-action="cancel"] {
-      display: none;
+    &.wysihtml5-command-active + .dialog {
+      [data-wysihtml5-dialog-action="cancel"] {
+        display: none;
+      }
+
+      [data-wysihtml5-command="removeLink"] {
+        display: block;
+      }
     }
   }
 
+  [data-wysihtml5-command="removeLink"] {
+    display: none;
+    float: right;
+    margin-top: 8px;
+  }
+
   .wysihtml5-command-dialog-opened {
-    margin-bottom: 110px;
+    margin-bottom: 133px;
   }
 
   &.fragment_link_panel_active {
@@ -117,7 +129,7 @@
     background-color: #fff;
     border: solid 1px #444;
 
-    a {
+    .button {
       @include button;
       padding: 5px 10px;
       margin-top: 5px;

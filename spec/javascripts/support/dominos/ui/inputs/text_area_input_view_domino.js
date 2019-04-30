@@ -24,6 +24,10 @@ support.dom.TextAreaInputView = support.dom.Base.extend({
     this._click('[data-wysihtml5-command=createLink]');
   },
 
+  clickRemoveLink: function() {
+    this._click('[data-wysihtml5-command=removeLink]');
+  },
+
   clickUrlLinkRadioButton: function() {
     this._click('.url_link_radio_button');
   },

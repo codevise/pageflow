@@ -194,6 +194,28 @@ describe('pageflow.TextAreaInputView', function() {
     });
   });
 
+  it('allows removing links', function(done) {
+    var model = new Backbone.Model({
+      text: 'Some <a href="http://example.com">link</a>'
+    });
+    var textAreaInputView = new pageflow.TextAreaInputView({
+      model: model,
+      propertyName: 'text'
+    });
+
+    var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+      textAreaInputView,
+      {appendTo: $('body')}
+    );
+
+    textAreaInputViewDomino.selectFirstLink(function() {
+      textAreaInputViewDomino.clickRemoveLink();
+
+      expect(model.get('text')).to.contain('Some link');
+      done();
+    });
+  });
+
   describe('with fragmentLinkInputView option', function() {
     it('renders given view', function() {
       var model = new Backbone.Model({});
