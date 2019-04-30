@@ -8,3 +8,5 @@ de:
             link_type:
               url: URL
               page_link: Seite
+            open_in_new_tab: In neuem Tab öffnen
+            open_in_new_tab_help: Empfohlen, damit der Beitrag nach Betrachten des Links nicht erneut geladen werden muss. Bitte beachte, dass Links in der Editor-Vorschau immer in einem neuen Tab geöffnet werden.

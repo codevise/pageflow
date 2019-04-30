@@ -216,6 +216,7 @@
       this._on({
         'click .page_text p a': function(event) {
           var href = $(event.currentTarget).attr('href');
+          var target = PAGEFLOW_EDITOR ? '_blank' : $(event.currentTarget).attr('target');
 
           if (href[0] === '#') {
             pageflow.slides.goToByPermaId(href.substr(1));
@@ -224,8 +225,8 @@
             // There was a time when the rich text editor did not add
             // target attributes to inline links even though it should
             // have. Ensure all content links to external urls open in
-            // new tab.
-            window.open(href, '_blank');
+            // new tab, except explicitly specified otherwise by editor.
+            window.open(href, target || '_blank');
           }
 
           event.preventDefault();

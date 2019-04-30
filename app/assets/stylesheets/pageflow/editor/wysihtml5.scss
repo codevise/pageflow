@@ -78,6 +78,20 @@
     }
   }
 
+  .open_in_new_tab_section {
+    position: relative;
+    margin: 4px -4px 0 0;
+    padding-right: 20px;
+
+    label {
+      z-index: 4;
+    }
+
+    .inline_help {
+      top: -3px;
+    }
+  }
+
   .internal {
     display: none;
   }

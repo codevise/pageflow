@@ -35,6 +35,7 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
     toolbar: '.toolbar',
 
     urlInput: '.current_url',
+    targetInput: '.current_target',
 
     linkTypeSelection: '.link_type_select',
     urlLinkRadioButton: '.url_link_radio_button',
@@ -42,6 +43,7 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
 
     urlLinkPanel: '.url_link_panel',
     displayUrlInput: '.display_url',
+    openInNewTabCheckBox: '.open_in_new_tab',
 
     fragmentLinkPanel: '.fragment_link_panel',
   },
@@ -52,6 +54,7 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
     'click .url_link_radio_button': 'showUrlLinkPanel',
     'click .fragment_link_radio_button': 'showFragmentLinkPanel',
 
+    'change .open_in_new_tab': 'setTargetFromOpenInNewTabCheckBox',
     'change .display_url': 'setUrlFromDisplayUrl'
   },
 
@@ -74,11 +77,11 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
           a: {
             unwrap: this.options.disableLinks ? 1 : 0,
             check_attributes: {
-              href: "href"
+              href: 'href',
+              target: 'any'
             },
             set_attributes: {
-              rel: "nofollow",
-              target: "_blank"
+              rel: 'nofollow'
             }
           }
         }
@@ -121,6 +124,7 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
       var displayUrl = currentUrl.startsWith('#') ? 'http://' : currentUrl;
 
       this.ui.displayUrlInput.val(displayUrl);
+      this.ui.openInNewTabCheckBox.prop('checked', this.ui.targetInput.val() !== '_self');
     }, this));
   },
 
@@ -170,6 +174,7 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
   showUrlLinkPanel: function() {
     this.ui.toolbar.removeClass('fragment_link_panel_active');
     this.setUrlFromDisplayUrl();
+    this.setTargetFromOpenInNewTabCheckBox();
   },
 
   showFragmentLinkPanel: function() {
@@ -179,9 +184,14 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
 
   setInputsFromFragmentLinkModel: function() {
     this.ui.urlInput.val('#' + (this.fragmentLinkModel.get('linkId') || ''));
+    this.ui.targetInput.val('_self');
   },
 
   setUrlFromDisplayUrl: function() {
     this.ui.urlInput.val(this.ui.displayUrlInput.val());
+  },
+
+  setTargetFromOpenInNewTabCheckBox: function() {
+    this.ui.targetInput.val(this.ui.openInNewTabCheckBox.is(':checked') ? '_blank' : '_self');
   }
 });

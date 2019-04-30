@@ -147,6 +147,53 @@ describe('pageflow.TextAreaInputView', function() {
     });
   });
 
+  it('creates target blank links by default', function(done) {
+    var model = new Backbone.Model({
+      text: 'Some link'
+    });
+    var textAreaInputView = new pageflow.TextAreaInputView({
+      model: model,
+      propertyName: 'text'
+    });
+
+    var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+      textAreaInputView,
+      {appendTo: $('body')}
+    );
+
+    textAreaInputViewDomino.selectAll(function() {
+      textAreaInputViewDomino.clickLinkButton();
+      textAreaInputViewDomino.clickSaveInLinkDialog();
+
+      expect(model.get('text')).to.contain('target="_blank"');
+      done();
+    });
+  });
+
+  it('allows creating target self link', function(done) {
+    var model = new Backbone.Model({
+      text: 'Some link'
+    });
+    var textAreaInputView = new pageflow.TextAreaInputView({
+      model: model,
+      propertyName: 'text'
+    });
+
+    var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+      textAreaInputView,
+      {appendTo: $('body')}
+    );
+
+    textAreaInputViewDomino.selectAll(function() {
+      textAreaInputViewDomino.clickLinkButton();
+      textAreaInputViewDomino.toggleOpenInNewTab(false);
+      textAreaInputViewDomino.clickSaveInLinkDialog();
+
+      expect(model.get('text')).to.contain('target="_self"');
+      done();
+    });
+  });
+
   describe('with fragmentLinkInputView option', function() {
     it('renders given view', function() {
       var model = new Backbone.Model({});
@@ -336,6 +383,40 @@ describe('pageflow.TextAreaInputView', function() {
       });
     });
 
+    it('does not change url link target when toggling link type back and forth', function(done) {
+      var model = new Backbone.Model({
+        text: 'Some <a href="http://example.com" target="_self">link</a>'
+      });
+      var updateFragmentLink;
+      var FragmentLinkInputView = Backbone.Marionette.View.extend({
+        initialize: function() {
+          updateFragmentLink = _.bind(function(value) {
+            this.model.set(this.options.propertyName, value);
+          }, this);
+        }
+      });
+      var textAreaInputView = new pageflow.TextAreaInputView({
+        model: model,
+        propertyName: 'text',
+        fragmentLinkInputView: FragmentLinkInputView
+      });
+
+      var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+        textAreaInputView,
+        {appendTo: $('body')}
+      );
+
+      textAreaInputViewDomino.selectFirstLink(function() {
+        textAreaInputViewDomino.clickFragmentLinkRadioButton();
+        updateFragmentLink(123);
+        textAreaInputViewDomino.clickUrlLinkRadioButton();
+        textAreaInputViewDomino.clickSaveInLinkDialog();
+
+        expect(model.get('text')).to.contain('target="_self"');
+        done();
+      });
+    });
+
     it('allows creating url link', function(done) {
       var model = new Backbone.Model({
         text: 'Some link'
@@ -392,6 +473,32 @@ describe('pageflow.TextAreaInputView', function() {
         textAreaInputViewDomino.clickSaveInLinkDialog();
 
         expect(model.get('text')).to.contain('href="#123"');
+        done();
+      });
+    });
+
+    it('creates fragment link with target self', function(done) {
+      var model = new Backbone.Model({
+        text: 'Some link'
+      });
+      var FragmentLinkInputView = Backbone.Marionette.View.extend({});
+      var textAreaInputView = new pageflow.TextAreaInputView({
+        model: model,
+        propertyName: 'text',
+        fragmentLinkInputView: FragmentLinkInputView
+      });
+
+      var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+        textAreaInputView,
+        {appendTo: $('body')}
+      );
+
+      textAreaInputViewDomino.selectAll(function() {
+        textAreaInputViewDomino.clickLinkButton();
+        textAreaInputViewDomino.clickFragmentLinkRadioButton();
+        textAreaInputViewDomino.clickSaveInLinkDialog();
+
+        expect(model.get('text')).to.contain('target="_self"');
         done();
       });
     });
