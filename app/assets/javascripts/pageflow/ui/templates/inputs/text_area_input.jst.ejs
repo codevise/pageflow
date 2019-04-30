@@ -14,20 +14,30 @@
 
   <div data-wysihtml5-dialog="createLink" class="dialog" style="display: none;">
     <div class="link_type_select">
-      <input type="radio" name="link_type" class="url">
-      <label><%= I18n.t('pageflow.ui.templates.inputs.text_area_input.link_type.url') %></label>
-      <input type="radio" name="link_type" class="page_link">
-      <label><%= I18n.t('pageflow.ui.templates.inputs.text_area_input.link_type.page_link') %></label>
-    </div>
-    <div class="link_type url">
       <label>
-        <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.target') %>
-        <input data-wysihtml5-dialog-field="href" class="current_url" value="http://">
+        <input type="radio" name="link_type" class="url_link_radio_button">
+        <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.link_type.url') %>
+      </label>
+      <label>
+        <input type="radio" name="link_type" class="fragment_link_radio_button">
+        <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.link_type.page_link') %>
       </label>
     </div>
-    <div class="link_type page_link">
-      <!-- PageLinkInputView is inserted here -->
+    <div class="url_link_panel">
+      <label>
+        <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.target') %>
+      </label>
+      <input type="text" class="display_url">
     </div>
+    <div class="fragment_link_panel">
+      <!-- LinkInputView is inserted here -->
+    </div>
+
+    <!-- wysihtml5 does not handle hidden fields correctly -->
+    <div class="internal">
+      <input type="text" data-wysihtml5-dialog-field="href" class="current_url" value="http://">
+    </div>
+
     <a data-wysihtml5-dialog-action="save"><%= I18n.t('pageflow.ui.templates.inputs.text_area_input.ok') %></a>
     <a data-wysihtml5-dialog-action="cancel"><%= I18n.t('pageflow.ui.templates.inputs.text_area_input.cancel') %></a>
   </div>

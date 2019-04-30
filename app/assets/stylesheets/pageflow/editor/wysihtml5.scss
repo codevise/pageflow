@@ -19,7 +19,7 @@
     }
   }
 
-  .wysihtml5-command-active {
+  > .wysihtml5-command-active {
     border: solid 1px #bbb;
     background-color: #ddd;
   }
@@ -46,10 +46,50 @@
   }
 
   .wysihtml5-command-dialog-opened {
-    margin-bottom: 150px;
+    margin-bottom: 110px;
+  }
 
-    &.url_only {
-      margin-bottom: 90px;
+  &.fragment_link_panel_active {
+    .wysihtml5-command-dialog-opened {
+      margin-bottom: 143px;
+    }
+
+    .fragment_link_panel {
+      display: block;
+    }
+
+    .url_link_panel {
+      display: none;
+    }
+  }
+
+  .fragment_link_panel {
+    display: none;
+    margin: 0 -2px;
+
+    label {
+      margin: -1px 2px;
+    }
+  }
+
+  .link_type_select {
+    label {
+      display: inline;
+    }
+  }
+
+  .internal {
+    display: none;
+  }
+
+  label input {
+    display: inline;
+    width: 15px;
+    margin: 5px 0;
+    vertical-align: middle;
+
+    &:focus {
+      outline: none;
     }
   }
 
@@ -66,30 +106,7 @@
     a {
       @include button;
       padding: 5px 10px;
-      margin: 5px 0;
-    }
-
-    .link_type.page_link {
-      margin: 0 -2px;
-
-      label {
-        margin: -1px 2px;
-      }
-    }
-
-    .link_type_select {
-      input, label {
-        display: inline;
-      }
-
-      input[type="radio"] {
-        width: 15px;
-        margin: 5px 0;
-
-        &:focus {
-          outline: none;
-        }
-      }
+      margin-top: 5px;
     }
   }
 

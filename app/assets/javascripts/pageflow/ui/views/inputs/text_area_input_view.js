@@ -12,6 +12,11 @@
  * @param {boolean} [options.disableRichtext=false]
  *   Do not provide text formatting options.
  *
+ * @param {Backbone.View} [options.fragmentLinkInputView]
+ *   A view to select an id to use in links which only consist
+ *   of a url fragment. Will receive a model with a `linkId`
+ *   attribute.
+ *
  * @see
  * {@link module:pageflow/ui.pageflow.inputWithPlaceholderText pageflow.inputWithPlaceholderText}
  * for placeholder related options
@@ -28,13 +33,26 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
   ui: {
     input: 'textarea',
     toolbar: '.toolbar',
-    urlInput: '.toolbar .dialog input.current_url',
-    urlRadioButton: '.toolbar .dialog .link_type_select input.url',
-    pageLinkRadioButton: '.toolbar .dialog .link_type_select input.page_link'
+
+    urlInput: '.current_url',
+
+    linkTypeSelection: '.link_type_select',
+    urlLinkRadioButton: '.url_link_radio_button',
+    fragmentLinkRadioButton: '.fragment_link_radio_button',
+
+    urlLinkPanel: '.url_link_panel',
+    displayUrlInput: '.display_url',
+
+    fragmentLinkPanel: '.fragment_link_panel',
   },
 
   events: {
-    'change': 'save'
+    'change textarea': 'save',
+
+    'click .url_link_radio_button': 'showUrlLinkPanel',
+    'click .fragment_link_radio_button': 'showFragmentLinkPanel',
+
+    'change .display_url': 'setUrlFromDisplayUrl'
   },
 
   onRender: function() {
@@ -72,13 +90,17 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
       this.ui.toolbar.find('a[data-wysihtml5-command="italic"]').hide();
       this.ui.toolbar.find('a[data-wysihtml5-command="underline"]').hide();
     }
+
     if (this.options.disableLinks) {
       this.ui.toolbar.find('a[data-wysihtml5-command="createLink"]').hide();
+    }
+    else {
+      this.setupUrlLinkPanel();
+      this.setupFragmentLinkPanel();
     }
 
     this.editor.on('change', _.bind(this.save, this));
     this.editor.on('aftercommand:composer', _.bind(this.save, this));
-    this.editor.on('show:dialog', _.bind(this.addPageLinkInputView, this));
   },
 
   onClose: function() {
@@ -93,48 +115,73 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
     this.ui.input.val(this.model.get(this.options.propertyName));
   },
 
-  addPageLinkInputView: function() {
-    if (!this.options.enablePageLinks) {
-      $('.toolbar .dialog .link_type_select').remove();
-      $('.toolbar a.wysihtml5-command-dialog-opened').addClass('url_only')
-      return;
+  setupUrlLinkPanel: function() {
+    this.editor.on('show:dialog', _.bind(function() {
+      var currentUrl = this.ui.urlInput.val();
+      var displayUrl = currentUrl.startsWith('#') ? 'http://' : currentUrl;
+
+      this.ui.displayUrlInput.val(displayUrl);
+    }, this));
+  },
+
+  setupFragmentLinkPanel: function() {
+    if (this.options.fragmentLinkInputView) {
+      this.fragmentLinkModel = new Backbone.Model();
+
+      this.listenTo(this.fragmentLinkModel, 'change', function(model, options) {
+        if (!options.skipCurrentUrlUpdate) {
+          this.setInputsFromFragmentLinkModel();
+        }
+      });
+
+      this.editor.on('show:dialog', _.bind(function() {
+        var currentUrl = this.ui.urlInput.val();
+        var id = currentUrl.startsWith('#') ? currentUrl.substr(1) : null;
+
+        this.fragmentLinkModel.set('linkId', id, {skipCurrentUrlUpdate: true});
+        this.initLinkTypePanels(!id);
+      }, this));
+
+      var fragmentLinkInput = new this.options.fragmentLinkInputView({
+        model: this.fragmentLinkModel,
+        propertyName: 'linkId',
+        label: I18n.t('pageflow.ui.templates.inputs.text_area_input.target')
+      });
+
+      this.ui.fragmentLinkPanel.append(fragmentLinkInput.render().el);
+    }
+    else {
+      this.ui.linkTypeSelection.hide();
+      this.ui.fragmentLinkPanel.hide();
+    }
+  },
+
+  initLinkTypePanels: function(isUrlLink) {
+    if (isUrlLink) {
+      this.ui.urlLinkRadioButton.prop('checked', true);
+    }
+    else {
+      this.ui.fragmentLinkRadioButton.prop('checked', true);
     }
 
-    this.ui.urlRadioButton.on('change', function() {
-      $('.toolbar .dialog .link_type.url').show();
-      $('.toolbar .dialog .link_type.page_link').hide();
-    });
+    this.ui.toolbar.toggleClass('fragment_link_panel_active', !isUrlLink);
+  },
 
-    this.ui.pageLinkRadioButton.on('change', function() {
-      $('.toolbar .dialog .link_type.url').hide();
-      $('.toolbar .dialog .link_type.page_link').show();
-    });
+  showUrlLinkPanel: function() {
+    this.ui.toolbar.removeClass('fragment_link_panel_active');
+    this.setUrlFromDisplayUrl();
+  },
 
-    var currentUrl = this.ui.urlInput.val();
+  showFragmentLinkPanel: function() {
+    this.ui.toolbar.addClass('fragment_link_panel_active');
+    this.setInputsFromFragmentLinkModel();
+  },
 
-    this.pageLink = new Backbone.Model(
-      {pageId: currentUrl.startsWith('#') ? currentUrl.substr(1) : ''}
-    );
+  setInputsFromFragmentLinkModel: function() {
+    this.ui.urlInput.val('#' + (this.fragmentLinkModel.get('linkId') || ''));
+  },
 
-    this.listenTo(this.pageLink, 'change', function() {
-      this.ui.urlInput.val('#'+this.pageLink.get('pageId'));
-    });
-
-    this.pageLinkInput = new pageflow.PageLinkInputView(_.extend({
-      model: this.pageLink,
-      propertyName: 'pageId',
-      label: I18n.t('pageflow.ui.templates.inputs.text_area_input.target')
-    }));
-
-    this.ui.toolbar.find('.dialog .link_type.page_link')
-      .empty()
-      .append(this.pageLinkInput.render().el);
-
-    if(currentUrl.startsWith('#')) {
-      this.ui.urlInput.val('http://');
-      this.ui.toolbar.find('.dialog .link_type_select .page_link').click();
-    } else {
-      this.ui.toolbar.find('.dialog .link_type_select .url').click();
-    }
+  setUrlFromDisplayUrl: function() {
+    this.ui.urlInput.val(this.ui.displayUrlInput.val());
   }
 });
