@@ -57,7 +57,7 @@ pageflow.CheckBoxGroupInputView = Backbone.Marionette.ItemView.extend({
 
   save: function() {
     var configured = {};
-    _.each($('.check_boxes_container').find('input'), function(input) {
+    _.each(this.ui.container.find('input'), function(input) {
       configured[$(input).attr('name')] = $(input).prop('checked');
     });
     this.model.set(this.options.propertyName, configured);
