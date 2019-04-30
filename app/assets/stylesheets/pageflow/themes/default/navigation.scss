@@ -48,14 +48,14 @@ $navigation-opacity: 0.9 !default;
 $navigation-current-page-marker-color: $main-color !default;
 
 @import "./navigation/widget_margin";
+@import "./navigation_share_box";
+@import "./navigation_share_box_icon_colors";
 
 .navigation {
   @import "./navigation/dimensions";
   @import "./navigation/icons/icon_font";
   @import "./navigation/icons/sprite";
-  @import "./navigation/icons/share_icons";
   @import "./navigation/menu_boxes";
-  @import "./navigation/share_box";
   @import "./navigation/credits";
   @import "./navigation/separator_lines";
   @import "./navigation/volume_control";
