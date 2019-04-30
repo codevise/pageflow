@@ -40,7 +40,7 @@ describe('pageflow.CheckBoxGroupInputView', function() {
   function optionTexts(view) {
     view.render();
 
-    return jQuery(view.el).find('.input .name').map(function() {
+    return jQuery(view.el).find('.check_boxes_container label').map(function() {
       return jQuery(this).text();
     }).get();
   }

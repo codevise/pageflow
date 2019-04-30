@@ -8,8 +8,8 @@
 pageflow.CheckBoxGroupInputView = Backbone.Marionette.ItemView.extend({
   mixins: [pageflow.inputView],
 
-  template: 'pageflow/ui/templates/inputs/check_box_group',
-  className: 'check_box_group',
+  template: 'pageflow/ui/templates/inputs/check_box_group_input',
+  className: 'check_box_group_input',
 
   events: {
     'change': 'save'
@@ -48,9 +48,9 @@ pageflow.CheckBoxGroupInputView = Backbone.Marionette.ItemView.extend({
 
   appendOptions: function () {
     _.each(this.options.values, function(value, index) {
-      var option = '<div class="check_box_input input">'+
+      var option = '<div class="check_box">'+
         '<input type="checkbox" name="'+value+'" />'+
-        '<label><span class="name">'+this.options.texts[index]+'</span></label></div>';
+        '<label>'+this.options.texts[index]+'</label></div>';
       this.ui.container.append($(option));
     }, this);
   },

@@ -1,0 +1,15 @@
+.check_box_group_input {
+  .check_box {
+    margin: 5px 0;
+
+    input {
+      display: inline;
+      width: auto;
+      margin: 0 5px 0 0;
+    }
+
+    label {
+      display: inline;
+    }
+  }
+}
