@@ -81,6 +81,10 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
     this.editor.on('show:dialog', _.bind(this.addPageLinkInputView, this));
   },
 
+  onClose: function() {
+    this.editor.fire('destroy:composer');
+  },
+
   save: function() {
     this.model.set(this.options.propertyName, this.editor.getValue());
   },
@@ -134,16 +138,3 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
     }
   }
 });
-
-(function() {
-  var isIE11 = navigator.userAgent.indexOf("Trident") !== -1;
-  // This browser detections is copied from wysihtml5.
-  var isGecko = navigator.userAgent.indexOf("Gecko") !== -1 && navigator.userAgent.indexOf("KHTML") === -1;
-
-  wysihtml5.browser.insertsLineBreaksOnReturn = function() {
-    // Used to be only isGecko. Unfortunately IE 11 is detected as
-    // Gecko since it says "like Gecko" in its user agent. Make sure
-    // we really are not IE 11.
-    return isGecko && !isIE11;
-  };
-}());
