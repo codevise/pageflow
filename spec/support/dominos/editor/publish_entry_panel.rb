@@ -55,6 +55,8 @@ module Dom
 
       def blur_input_fields
         node.find('h2').click
+        # Wait for date drop down to fade out
+        sleep 1
       end
     end
   end

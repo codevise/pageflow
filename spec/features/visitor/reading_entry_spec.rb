@@ -37,7 +37,9 @@ feature 'as visitor, reading entry' do
            configuration: {title: 'Page two'})
 
     visit(pageflow.entry_path(entry))
-    Dom::Entry.find!.go_to_next_page
+    entry = Dom::Entry.find!
+    entry.wait_until_loading_spinner_disappears
+    entry.go_to_next_page
 
     expect(Dom::Page.active).to have_text('Page two')
   end
