@@ -49,8 +49,8 @@ pageflow.CheckBoxGroupInputView = Backbone.Marionette.ItemView.extend({
   appendOptions: function () {
     _.each(this.options.values, function(value, index) {
       var option = '<div class="check_box">'+
-        '<input type="checkbox" name="'+value+'" />'+
-        '<label>'+this.options.texts[index]+'</label></div>';
+                   '<label><input type="checkbox" name="'+value+'" />'+
+                   this.options.texts[index]+'</label></div>';
       this.ui.container.append($(option));
     }, this);
   },

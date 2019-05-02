@@ -48,8 +48,6 @@ $navigation-opacity: 0.9 !default;
 $navigation-current-page-marker-color: $main-color !default;
 
 @import "./navigation/widget_margin";
-@import "./navigation_share_box";
-@import "./navigation_share_box_icon_colors";
 
 .navigation {
   @import "./navigation/dimensions";
@@ -100,4 +98,11 @@ $navigation-current-page-marker-color: $main-color !default;
 .navigation .scroller a:after {
   background-color: $navigation-bar-background-color;
   background-image: $navigation-background-image;
+}
+
+body.has_no_phone_platform {
+  a.share.whats_app,
+  a.share.telegram {
+    display: none !important;
+  }
 }

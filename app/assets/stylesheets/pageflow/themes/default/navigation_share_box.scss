@@ -1,4 +1,6 @@
 .navigation_share_box {
+  @import "./navigation_share_box/icon_colors";
+
   padding: 15px;
   text-align: center;
 
@@ -11,22 +13,17 @@
       margin: 0 auto;
     }
 
-    a.share.whats_app,
-    a.share.telegram {
-      display: none;
-    }
-
     a {
       float: left;
       position: relative;
-      width: 60px;
+      width: 70px;
       height: 45px;
       text-align: center;
       text-decoration: none;
       margin: 0 auto;
 
       svg {
-        width: 60px;
+        width: 70px;
         height: 25px;
         margin-bottom: 7px;
       }

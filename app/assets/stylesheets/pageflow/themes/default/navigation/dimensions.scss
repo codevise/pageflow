@@ -87,7 +87,8 @@ $scroll-indicator-offset: 35px;
   }
 
   // dynamically added class when no share providers are configured
-  &.without_sharing_button {
+  &.without_sharing_button,
+  &.mobile_sharing_only {
     @if $navigation-display-share-button {
       .navigation_menu.share {
         display: none;
