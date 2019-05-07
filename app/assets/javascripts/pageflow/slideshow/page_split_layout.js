@@ -32,7 +32,7 @@ pageflow.pageSplitLayout = (function() {
 
   function getContentClientRect(pageElement, pageClientRect) {
     var pageTitle = pageElement.find('.page_header-title');
-    var pageText = pageElement.find('.page_text p');
+    var pageText = pageElement.find('.page_text .paragraph');
 
     var pageTitleClientRect = pageTitle[0].getBoundingClientRect();
     var pageTextClientRect = pageText[0].getBoundingClientRect();

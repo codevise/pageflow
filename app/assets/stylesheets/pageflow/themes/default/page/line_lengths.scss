@@ -22,7 +22,7 @@ $page-content-width: 60% !default;
   &_header-subtitle,
   &_header-tagline,
   &_sub_header,
-  p {
+  .paragraph {
     max-width: $page-content-max-width;
     width: $page-content-width;
 
@@ -73,7 +73,7 @@ $page-content-width: 60% !default;
       .page_header-title,
       .page_header-tagline,
       .page_sub_header,
-      p {
+      .paragraph {
         width: $page-content-split-layout-width;
       }
     }
@@ -84,7 +84,7 @@ $page-content-width: 60% !default;
     .page_header-title,
     .page_header-tagline,
     .page_sub_header,
-    p {
+    .paragraph {
       @include margin-start(auto);
       max-width: $page-content-position-right-max-width;
       width: 60%;

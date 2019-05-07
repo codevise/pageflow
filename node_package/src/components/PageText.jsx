@@ -16,7 +16,7 @@ import classNames from 'classnames';
 export default function PageText(props) {
   return (
     <div className={className(props)}>
-      <p dangerouslySetInnerHTML={text(props)} />
+      <div className='paragraph' dangerouslySetInnerHTML={text(props)} />
       {props.children}
     </div>
   );
