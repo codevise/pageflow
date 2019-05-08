@@ -121,10 +121,15 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
   setupUrlLinkPanel: function() {
     this.editor.on('show:dialog', _.bind(function() {
       var currentUrl = this.ui.urlInput.val();
-      var displayUrl = currentUrl.startsWith('#') ? 'http://' : currentUrl;
 
-      this.ui.displayUrlInput.val(displayUrl);
-      this.ui.openInNewTabCheckBox.prop('checked', this.ui.targetInput.val() !== '_self');
+      if (currentUrl.startsWith('#')) {
+        this.ui.displayUrlInput.val('http://');
+        this.ui.openInNewTabCheckBox.prop('checked', true);
+      }
+      else {
+        this.ui.displayUrlInput.val(currentUrl);
+        this.ui.openInNewTabCheckBox.prop('checked', this.ui.targetInput.val() !== '_self');
+      }
     }, this));
   },
 

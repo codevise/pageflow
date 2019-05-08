@@ -319,6 +319,31 @@ describe('pageflow.TextAreaInputView', function() {
       });
     });
 
+    it('resets target to blank when switching from fragment link to url link', function(done) {
+      var model = new Backbone.Model({
+        text: 'Some <a href="#123" target="_self">link</a>'
+      });
+      var FragmentLinkInputView = Backbone.Marionette.View.extend({});
+      var textAreaInputView = new pageflow.TextAreaInputView({
+        model: model,
+        propertyName: 'text',
+        fragmentLinkInputView: FragmentLinkInputView
+      });
+
+      var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+        textAreaInputView,
+        {appendTo: $('body')}
+      );
+
+      textAreaInputViewDomino.selectFirstLink(function() {
+        textAreaInputViewDomino.clickUrlLinkRadioButton();
+        textAreaInputViewDomino.clickSaveInLinkDialog();
+
+        expect(model.get('text')).to.contain('target="_blank"');
+        done();
+      });
+    });
+
     it('does not change fragment link when toggling link type back and forth', function(done) {
       var model = new Backbone.Model({
         text: 'Some <a href="#123">link</a>'
