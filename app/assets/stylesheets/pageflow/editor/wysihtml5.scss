@@ -19,7 +19,7 @@
     }
   }
 
-  .wysihtml5-command-active {
+  > .wysihtml5-command-active {
     border: solid 1px #bbb;
     background-color: #ddd;
   }
@@ -40,13 +40,83 @@
   [data-wysihtml5-command="createLink"] {
     @include link-icon;
 
-    &.wysihtml5-command-active + .dialog [data-wysihtml5-dialog-action="cancel"] {
+    &.wysihtml5-command-active + .dialog {
+      [data-wysihtml5-dialog-action="cancel"] {
+        display: none;
+      }
+
+      [data-wysihtml5-command="removeLink"] {
+        display: block;
+      }
+    }
+  }
+
+  [data-wysihtml5-command="removeLink"] {
+    display: none;
+    float: right;
+    margin-top: 8px;
+  }
+
+  .wysihtml5-command-dialog-opened {
+    margin-bottom: 133px;
+  }
+
+  &.fragment_link_panel_active {
+    .wysihtml5-command-dialog-opened {
+      margin-bottom: 143px;
+    }
+
+    .fragment_link_panel {
+      display: block;
+    }
+
+    .url_link_panel {
       display: none;
     }
   }
 
-  .wysihtml5-command-dialog-opened {
-    margin-bottom: 83px;
+  .fragment_link_panel {
+    display: none;
+    margin: 0 -2px;
+
+    label {
+      margin: -1px 2px;
+    }
+  }
+
+  .link_type_select {
+    label {
+      display: inline;
+    }
+  }
+
+  .open_in_new_tab_section {
+    position: relative;
+    margin: 4px -4px 0 0;
+    padding-right: 20px;
+
+    label {
+      z-index: 4;
+    }
+
+    .inline_help {
+      top: -3px;
+    }
+  }
+
+  .internal {
+    display: none;
+  }
+
+  label input {
+    display: inline;
+    width: 15px;
+    margin: 5px 0;
+    vertical-align: middle;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .dialog {
@@ -59,7 +129,7 @@
     background-color: #fff;
     border: solid 1px #444;
 
-    a {
+    .button {
       @include button;
       padding: 5px 10px;
       margin-top: 5px;

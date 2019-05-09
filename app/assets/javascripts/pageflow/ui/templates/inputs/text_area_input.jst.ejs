@@ -13,11 +13,48 @@
   <a data-wysihtml5-command="createLink" title="<%= I18n.t('pageflow.ui.templates.inputs.text_area_input.create_link') %>"></a>
 
   <div data-wysihtml5-dialog="createLink" class="dialog" style="display: none;">
-    <label>
-        <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.url') %>:
-      <input data-wysihtml5-dialog-field="href" value="http://">
-    </label>
-    <a data-wysihtml5-dialog-action="save"><%= I18n.t('pageflow.ui.templates.inputs.text_area_input.ok') %></a>
-    <a data-wysihtml5-dialog-action="cancel"><%= I18n.t('pageflow.ui.templates.inputs.text_area_input.cancel') %></a>
+    <div class="link_type_select">
+      <label>
+        <input type="radio" name="link_type" class="url_link_radio_button">
+        <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.link_type.url') %>
+      </label>
+      <label>
+        <input type="radio" name="link_type" class="fragment_link_radio_button">
+        <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.link_type.page_link') %>
+      </label>
+    </div>
+    <div class="url_link_panel">
+      <label>
+        <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.target') %>
+      </label>
+      <input type="text" class="display_url">
+      <div class="open_in_new_tab_section">
+        <label>
+          <input type="checkbox" class="open_in_new_tab">
+          <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.open_in_new_tab') %>
+        </label>
+        <span class="inline_help">
+          <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.open_in_new_tab_help') %>
+        </span>
+      </div>
+    </div>
+    <div class="fragment_link_panel">
+      <!-- LinkInputView is inserted here -->
+    </div>
+
+    <!-- wysihtml5 does not handle hidden fields correctly -->
+    <div class="internal">
+      <input type="text" data-wysihtml5-dialog-field="href" class="current_url" value="http://">
+      <input type="text" data-wysihtml5-dialog-field="target" class="current_target" value="_blank">
+    </div>
+
+    <a class="button" data-wysihtml5-dialog-action="save">
+      <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.save') %>
+    </a>
+    <a class="button" data-wysihtml5-dialog-action="cancel">
+      <%= I18n.t('pageflow.ui.templates.inputs.text_area_input.cancel') %>
+    </a>
+
+    <a data-wysihtml5-command="removeLink"><%= I18n.t('pageflow.ui.templates.inputs.text_area_input.remove_link') %></a>
   </div>
 </div>

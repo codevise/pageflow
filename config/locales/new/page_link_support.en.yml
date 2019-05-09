@@ -1,0 +1,15 @@
+en:
+  pageflow:
+    ui:
+      templates:
+        inputs:
+          text_area_input:
+            target: Target
+            link_type:
+              url: URL
+              page_link: Page
+            open_in_new_tab: Open in new tab
+            open_in_new_tab_help: Recommended. Otherwise the entry has to be reloaded when returning from the link. Please note that inside the editor preview links always open in a new tab.
+            remove_link: Remove link
+            save: Save
+            ok: DELETED

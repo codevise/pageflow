@@ -92,7 +92,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'i18n-js', '~> 2.1'
 
   # WYSIWYG editor
-  s.add_dependency 'wysihtml5x-rails', '0.4.17'
+  s.add_dependency 'wysihtml-rails', '0.5.5'
 
   s.add_dependency 'bourbon', '~> 3.1.8'
 

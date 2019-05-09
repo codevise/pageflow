@@ -12,6 +12,11 @@
  * @param {boolean} [options.disableRichtext=false]
  *   Do not provide text formatting options.
  *
+ * @param {Backbone.View} [options.fragmentLinkInputView]
+ *   A view to select an id to use in links which only consist
+ *   of a url fragment. Will receive a model with a `linkId`
+ *   attribute.
+ *
  * @see
  * {@link module:pageflow/ui.pageflow.inputWithPlaceholderText pageflow.inputWithPlaceholderText}
  * for placeholder related options
@@ -27,11 +32,30 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
 
   ui: {
     input: 'textarea',
-    toolbar: '.toolbar'
+    toolbar: '.toolbar',
+
+    urlInput: '.current_url',
+    targetInput: '.current_target',
+
+    linkTypeSelection: '.link_type_select',
+    urlLinkRadioButton: '.url_link_radio_button',
+    fragmentLinkRadioButton: '.fragment_link_radio_button',
+
+    urlLinkPanel: '.url_link_panel',
+    displayUrlInput: '.display_url',
+    openInNewTabCheckBox: '.open_in_new_tab',
+
+    fragmentLinkPanel: '.fragment_link_panel',
   },
 
   events: {
-    'change': 'save'
+    'change textarea': 'save',
+
+    'click .url_link_radio_button': 'showUrlLinkPanel',
+    'click .fragment_link_radio_button': 'showFragmentLinkPanel',
+
+    'change .open_in_new_tab': 'setTargetFromOpenInNewTabCheckBox',
+    'change .display_url': 'setUrlFromDisplayUrl'
   },
 
   onRender: function() {
@@ -53,11 +77,11 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
           a: {
             unwrap: this.options.disableLinks ? 1 : 0,
             check_attributes: {
-              href: "href"
+              href: 'href',
+              target: 'any'
             },
             set_attributes: {
-              rel: "nofollow",
-              target: "_blank"
+              rel: 'nofollow'
             }
           }
         }
@@ -69,12 +93,21 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
       this.ui.toolbar.find('a[data-wysihtml5-command="italic"]').hide();
       this.ui.toolbar.find('a[data-wysihtml5-command="underline"]').hide();
     }
+
     if (this.options.disableLinks) {
       this.ui.toolbar.find('a[data-wysihtml5-command="createLink"]').hide();
+    }
+    else {
+      this.setupUrlLinkPanel();
+      this.setupFragmentLinkPanel();
     }
 
     this.editor.on('change', _.bind(this.save, this));
     this.editor.on('aftercommand:composer', _.bind(this.save, this));
+  },
+
+  onClose: function() {
+    this.editor.fire('destroy:composer');
   },
 
   save: function() {
@@ -83,18 +116,88 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
 
   load: function() {
     this.ui.input.val(this.model.get(this.options.propertyName));
+  },
+
+  setupUrlLinkPanel: function() {
+    this.editor.on('show:dialog', _.bind(function() {
+      var currentUrl = this.ui.urlInput.val();
+
+      if (currentUrl.startsWith('#')) {
+        this.ui.displayUrlInput.val('http://');
+        this.ui.openInNewTabCheckBox.prop('checked', true);
+      }
+      else {
+        this.ui.displayUrlInput.val(currentUrl);
+        this.ui.openInNewTabCheckBox.prop('checked', this.ui.targetInput.val() !== '_self');
+      }
+    }, this));
+  },
+
+  setupFragmentLinkPanel: function() {
+    if (this.options.fragmentLinkInputView) {
+      this.fragmentLinkModel = new Backbone.Model();
+
+      this.listenTo(this.fragmentLinkModel, 'change', function(model, options) {
+        if (!options.skipCurrentUrlUpdate) {
+          this.setInputsFromFragmentLinkModel();
+        }
+      });
+
+      this.editor.on('show:dialog', _.bind(function() {
+        var currentUrl = this.ui.urlInput.val();
+        var id = currentUrl.startsWith('#') ? currentUrl.substr(1) : null;
+
+        this.fragmentLinkModel.set('linkId', id, {skipCurrentUrlUpdate: true});
+        this.initLinkTypePanels(!id);
+      }, this));
+
+      var fragmentLinkInput = new this.options.fragmentLinkInputView({
+        model: this.fragmentLinkModel,
+        propertyName: 'linkId',
+        label: I18n.t('pageflow.ui.templates.inputs.text_area_input.target'),
+        hideUnsetButton: true
+      });
+
+      this.ui.fragmentLinkPanel.append(fragmentLinkInput.render().el);
+    }
+    else {
+      this.ui.linkTypeSelection.hide();
+      this.ui.fragmentLinkPanel.hide();
+    }
+  },
+
+  initLinkTypePanels: function(isUrlLink) {
+    if (isUrlLink) {
+      this.ui.urlLinkRadioButton.prop('checked', true);
+    }
+    else {
+      this.ui.fragmentLinkRadioButton.prop('checked', true);
+    }
+
+    this.ui.toolbar.toggleClass('fragment_link_panel_active', !isUrlLink);
+  },
+
+  showUrlLinkPanel: function() {
+    this.ui.toolbar.removeClass('fragment_link_panel_active');
+    this.setUrlFromDisplayUrl();
+    this.setTargetFromOpenInNewTabCheckBox();
+  },
+
+  showFragmentLinkPanel: function() {
+    this.ui.toolbar.addClass('fragment_link_panel_active');
+    this.setInputsFromFragmentLinkModel();
+  },
+
+  setInputsFromFragmentLinkModel: function() {
+    this.ui.urlInput.val('#' + (this.fragmentLinkModel.get('linkId') || ''));
+    this.ui.targetInput.val('_self');
+  },
+
+  setUrlFromDisplayUrl: function() {
+    this.ui.urlInput.val(this.ui.displayUrlInput.val());
+  },
+
+  setTargetFromOpenInNewTabCheckBox: function() {
+    this.ui.targetInput.val(this.ui.openInNewTabCheckBox.is(':checked') ? '_blank' : '_self');
   }
 });
-
-(function() {
-  var isIE11 = navigator.userAgent.indexOf("Trident") !== -1;
-  // This browser detections is copied from wysihtml5.
-  var isGecko = navigator.userAgent.indexOf("Gecko") !== -1 && navigator.userAgent.indexOf("KHTML") === -1;
-
-  wysihtml5.browser.insertsLineBreaksOnReturn = function() {
-    // Used to be only isGecko. Unfortunately IE 11 is detected as
-    // Gecko since it says "like Gecko" in its user agent. Make sure
-    // we really are not IE 11.
-    return isGecko && !isIE11;
-  };
-}());
