@@ -49,7 +49,7 @@ module Pageflow
 
     def page_text(page)
       content_tag(:div, class: 'page_text') do
-        content_tag(:p, raw(page.configuration['text']))
+        content_tag(:div, raw(page.configuration['text']), class: 'paragraph')
       end
     end
 

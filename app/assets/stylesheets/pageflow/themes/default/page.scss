@@ -41,6 +41,8 @@ $page-font-size: 16px !default;
 $page-content-text-font-family: $page-font-family !default;
 $page-content-text-font-size: 1.2em !default;
 $page-content-text-line-height: 1.5em !default;
+$page-content-list-margin: 1em !default;
+$page-content-list-indent: 40px !default;
 
 @import "./page/anchors";
 @import "./page/header";
@@ -92,7 +94,9 @@ $page-content-text-line-height: 1.5em !default;
     );
   }
 
-  p {
-    margin-top: 0;
+  .page_text > .paragraph ul,
+  .page_text > .paragraph ol {
+    margin: $page-content-list-margin 0;
+    padding: 0 0 0 $page-content-list-indent;
   }
 }

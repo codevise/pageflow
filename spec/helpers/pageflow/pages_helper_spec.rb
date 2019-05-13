@@ -181,7 +181,7 @@ module Pageflow
 
         html = helper.page_text(page)
 
-        expect(html).to have_selector('.page_text p b', text: 'Text')
+        expect(html).to have_selector('.page_text .paragraph b', text: 'Text')
       end
     end
   end

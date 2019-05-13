@@ -214,7 +214,7 @@
 
     _setupContentLinkTargetHandling: function() {
       this._on({
-        'click .page_text p a': function(event) {
+        'click .page_text .paragraph a': function(event) {
           var href = $(event.currentTarget).attr('href');
           var target = PAGEFLOW_EDITOR ? '_blank' : $(event.currentTarget).attr('target');
 
