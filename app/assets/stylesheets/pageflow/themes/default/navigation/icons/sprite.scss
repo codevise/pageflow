@@ -88,18 +88,6 @@
     @include pageflow-sprite-icon-credits;
   }
 
-  .share_google {
-    @include pageflow-sprite-icon-google($offset: -5px);
-  }
-
-  .share_twitter {
-    @include pageflow-sprite-icon-twitter($offset: -5px);
-  }
-
-  .share_facebook {
-    @include pageflow-sprite-icon-facebook($offset: -5px);
-  }
-
   .volume-control {
     &:before,
     &:after {

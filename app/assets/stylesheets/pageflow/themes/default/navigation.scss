@@ -54,7 +54,6 @@ $navigation-current-page-marker-color: $main-color !default;
   @import "./navigation/icons/icon_font";
   @import "./navigation/icons/sprite";
   @import "./navigation/menu_boxes";
-  @import "./navigation/share_box";
   @import "./navigation/credits";
   @import "./navigation/separator_lines";
   @import "./navigation/volume_control";
@@ -99,4 +98,11 @@ $navigation-current-page-marker-color: $main-color !default;
 .navigation .scroller a:after {
   background-color: $navigation-bar-background-color;
   background-image: $navigation-background-image;
+}
+
+body.has_no_phone_platform {
+  a.share.whats_app,
+  a.share.telegram {
+    display: none !important;
+  }
 }

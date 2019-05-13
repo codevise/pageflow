@@ -137,6 +137,10 @@ body {
     }
   }
 
+  &.without_sharing_button .menu.sharing {
+    display: none;
+  }
+
   .overview_mobile, .imprint_mobile, .sharing_mobile {
     position: absolute;
     top: 0;
@@ -338,9 +342,6 @@ body {
     }
 
     .sharing_mobile {
-      .wrapper {
-        top: 0;
-      }
       li {
         width: 200px;
         border-bottom: 1px solid #465b73;
@@ -348,32 +349,25 @@ body {
         > a {
           text-decoration: none;
           font-size: 24px;
-          padding: 10px 15px 10px 78px;
+          padding: 10px 10px 10px 72px;
           border: 0;
           height: 80px;
 
-          &:before {
-            content: "";
+          svg {
             position: absolute;
-            width: 42px;
-            height: 37px;
-            background-size: 100% auto;
-            left: 30px;
-            top: 30px;
+            left: 25px;
+            top: 36px;
+            width: 30px;
+            height: 30px;
           }
 
-          &.facebook:before {
-            background-position: center top;
-          }
-          &.twitter:before {
-            background-position: center 122px;
-          }
-          &.google:before {
-            background-position: center bottom;
+          p {
+            padding-top: 3px;
           }
         }
       }
     }
+
     .sub_share {
       display: none;
     }

@@ -1,0 +1,9 @@
+<div class="share_box_icons">
+  <% entry.active_share_providers.each do |provider| %>
+    <%= render "pageflow/entries/share_menu/#{provider}_link", entry: entry %>
+  <% end %>
+</div>
+<div class="sub_share">
+  <a tabindex="2" target="_blank"><%= I18n.t('pageflow.public.share_this_entry') %></a>
+  <a tabindex="2" target="_blank"><%= I18n.t('pageflow.public.share_this_page') %></a>
+</div>

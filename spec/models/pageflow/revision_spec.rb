@@ -635,5 +635,13 @@ module Pageflow
         expect(theming.theme.name).to eq('named_theme')
       end
     end
+
+    describe '#active_share_providers' do
+      it 'returns the configured share providers as array of keys' do
+        revision = build(:revision, share_providers: {facebook: true, twitter: false})
+
+        expect(revision.active_share_providers).to eq(['facebook'])
+      end
+    end
   end
 end

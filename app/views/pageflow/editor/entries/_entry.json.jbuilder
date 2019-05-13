@@ -9,7 +9,7 @@ json.password_protected(entry.password_digest.present?)
 
 json.configuration do
   json.(entry,
-        :title, :locale, :summary, :credits, :author, :publisher, :keywords,
+        :title, :locale, :summary, :credits, :author, :publisher, :keywords, :share_providers,
         :manual_start, :emphasize_chapter_beginning, :emphasize_new_pages,
         :share_url, :share_image_id, :share_image_x, :share_image_y)
   json.theme_name entry.theme.name

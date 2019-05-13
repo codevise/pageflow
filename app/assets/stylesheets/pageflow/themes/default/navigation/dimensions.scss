@@ -2,14 +2,15 @@
 $navigation-bar-padding-top: null !default;
 
 $top-height: 44px;
-$item-height: 44px;
+$top-item-height: 44px;
 $bottom-height: 268px;
+$bottom-item-height: 36px;
 
 $scroll-indicator-height: 30px;
 $scroll-indicator-offset: 35px;
 
 @if $navigation-display-header-button {
-  $top-height: $top-height + $item-height;
+  $top-height: $top-height + $top-item-height;
 } @else {
   .menu_li {
     display: none;
@@ -18,10 +19,10 @@ $scroll-indicator-offset: 35px;
 
 @if not $navigation-display-share-button and
     not $navigation-display-hide-text-button {
-  $bottom-height: 196px;
+  $bottom-height: $bottom-height - 2 * $bottom-item-height;
 } @elseif not $navigation-display-share-button or
     not $navigation-display-hide-text-button{
-  $bottom-height: 232px;
+  $bottom-height: $bottom-height - $bottom-item-height;
 }
 
 @if not $navigation-display-share-button {
@@ -62,15 +63,15 @@ $scroll-indicator-offset: 35px;
 
   @mixin top_positions($top-height) {
     .navigation_bar_top {
-      height: $top-height + $item-height;
+      height: $top-height + $top-item-height;
     }
 
     .scroller {
-      top: $top-height + $item-height;
+      top: $top-height + $top-item-height;
     }
 
     .navigation_scroll_indicator.top {
-      top: $top-height + $item-height - $scroll-indicator-offset;
+      top: $top-height + $top-item-height - $scroll-indicator-offset;
     }
   }
 
@@ -78,10 +79,34 @@ $scroll-indicator-offset: 35px;
 
   &.with_home_button,
   &.with_overview_button {
-    @include top_positions($top-height + $item-height);
+    @include top_positions($top-height + $top-item-height);
   }
 
   &.with_home_button.with_overview_button {
-    @include top_positions($top-height + 2 * $item-height);
+    @include top_positions($top-height + 2 * $top-item-height);
+  }
+
+  // dynamically added class when no share providers are configured
+  &.without_sharing_button,
+  &.mobile_sharing_only {
+    @if $navigation-display-share-button {
+      .navigation_menu.share {
+        display: none;
+      }
+
+      .navigation_bar_bottom {
+        height: $bottom-height - $bottom-item-height;
+      }
+
+      .scroller {
+        bottom: $bottom-height - $bottom-item-height;
+      }
+
+      .navigation_scroll_indicator {
+        &.bottom {
+          bottom: $bottom-height - $scroll-indicator-offset - $bottom-item-height;
+        }
+      }
+    }
   }
 }

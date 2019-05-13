@@ -3,9 +3,13 @@ module Pageflow
     include SocialShareHelper
 
     PROVIDER_URL_TEMPLATES = {
+      email: 'mailto:?body=%{url}',
       facebook: 'http://www.facebook.com/sharer/sharer.php?u=%{url}',
       google: 'https://plus.google.com/share?url=%{url}',
-      twitter: 'http://twitter.com/home?status=%{url}'
+      linked_in: 'https://www.linkedin.com/shareArticle?mini=true&url=%{url}',
+      telegram: 'tg://msg?text=%{url}',
+      twitter: 'http://twitter.com/home?status=%{url}',
+      whats_app: 'WhatsApp://send?text=%{url}'
     }.freeze
 
     def social_share_link(provider, entry, &block)

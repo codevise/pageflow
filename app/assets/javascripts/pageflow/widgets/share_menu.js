@@ -51,7 +51,7 @@
 
       if(!!$closeOnMouseLeaving) {
         $closeOnMouseLeaving.on('mouseleave', function() {
-          $links.removeClass('active');
+          $links.removeClass('active').blur();
           $(this).find('.button').removeClass('pressed');
           $subMenu.hide();
         });

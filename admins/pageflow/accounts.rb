@@ -80,7 +80,10 @@ module Pageflow
 
       def new
         @account = Account.new
-        @account.build_default_theming(default_locale: current_user.locale)
+        @account.build_default_theming(
+          default_locale: current_user.locale,
+          share_providers: Pageflow.config.default_share_providers
+        )
       end
 
       def create
@@ -147,7 +150,8 @@ module Pageflow
           :default_author,
           :default_publisher,
           :default_keywords,
-          :default_locale
+          :default_locale,
+          share_providers: []
         ] +
           permitted_attributes_for(:theming)
       end

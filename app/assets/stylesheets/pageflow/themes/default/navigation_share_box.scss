@@ -1,0 +1,40 @@
+.navigation_share_box {
+  @import "./navigation_share_box/icon_colors";
+
+  padding: 15px;
+  text-align: center;
+
+  .share_box_icons {
+    display: flex;
+    text-align: center;
+
+    .menu_item {
+      min-height: 50px;
+      margin: 0 auto;
+    }
+
+    a {
+      float: left;
+      position: relative;
+      width: 70px;
+      height: 45px;
+      text-align: center;
+      text-decoration: none;
+      margin: 0 auto;
+
+      svg {
+        width: 70px;
+        height: 25px;
+        margin-bottom: 7px;
+      }
+
+      p {
+        font-family: SourceSansPro;
+        font-size: 13px;
+        text-align: center;
+        line-height: 1;
+        margin: 0;
+      }
+    }
+  }
+}

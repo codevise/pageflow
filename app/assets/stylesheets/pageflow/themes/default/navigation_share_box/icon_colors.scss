@@ -1,0 +1,46 @@
+$share-icon-color: #fff !default;
+$share-icon-hover-color: $main-color !default;
+$share-icon-active-color: $share-icon-hover-color !default;
+
+a {
+  color: $share-icon-color;
+
+  svg {
+    fill: $share-icon-color;
+  }
+
+  p {
+    color: $share-icon-color;
+  }
+}
+
+a:hover {
+  color: $share-icon-hover-color;
+
+  svg {
+    fill: $share-icon-hover-color;
+  }
+
+  p {
+    color: $share-icon-hover-color;
+  }
+}
+
+a.active,
+button.pressed {
+  color: $share-icon-active-color;
+
+  svg {
+    fill: $share-icon-active-color;
+  }
+
+  p {
+    color: $share-icon-active-color;
+  }
+}
+
+.sub_share {
+  a, a:hover {
+    color: #ffffff;
+  }
+}

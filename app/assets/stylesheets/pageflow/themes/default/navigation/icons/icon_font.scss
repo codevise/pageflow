@@ -6,10 +6,7 @@
   $active-button-icon-color,
   $deactivated-button-icon-color,
 
-  $scroll-indicator-color: #888,
-
-  $share-icon-color: #fff,
-  $active-share-icon-color: $main-color
+  $scroll-indicator-color: #888
 ) {
 
   .navigation_bullet,
@@ -160,55 +157,6 @@
     .navigation_credits {
       font-weight: bold;
       @include fa-info-icon;
-    }
-  }
-
-  .navigation_share_box {
-    a {
-      text-align: center;
-
-      p {
-        font-family: SourceSansPro;
-        font-size: 12px;
-      }
-    }
-
-    .share_google,
-    .share_facebook,
-    .share_twitter {
-      font-size: 1.5em;
-
-      &:before {
-        font-family: "FontAwesome";
-        color: $share-icon-color;
-        text-shadow: none;
-      }
-    }
-
-    a:hover {
-      p {
-        color: $active-share-icon-color;
-      }
-
-      .share_google,
-      .share_facebook,
-      .share_twitter {
-        &:before {
-          color: $active-share-icon-color;
-        }
-      }
-    }
-
-    .share_google {
-      @include fa-google-plus-icon;
-    }
-
-    .share_facebook {
-      @include fa-facebook-icon;
-    }
-
-    .share_twitter {
-      @include fa-twitter-icon;
     }
   }
 

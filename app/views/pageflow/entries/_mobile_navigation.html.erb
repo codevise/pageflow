@@ -1,4 +1,6 @@
-<div class="navigation_mobile" data-widget="default_mobile_navigation">
+<%= content_tag(:div,
+                class: navigation_bar_css_class(entry, class: 'navigation_mobile'),
+                data: {widget: 'default_mobile_navigation'}) do %>
   <div class="parent_page" title="<%= t('pageflow.public.back') %>"></div>
   <div class="menu index"></div>
   <div class="menu sharing"></div>
@@ -15,15 +17,11 @@
   <div class="sharing_mobile">
     <div class="wrapper">
       <ul>
-        <li>
-          <%= render 'pageflow/entries/share_menu/facebook_link', entry: entry %>
-        </li>
-        <li>
-          <%= render 'pageflow/entries/share_menu/twitter_link', entry: entry %>
-        </li>
-        <li>
-          <%= render 'pageflow/entries/share_menu/google_link', entry: entry %>
-        </li>
+        <% entry.active_share_providers.each do |provider| %>
+          <li>
+            <%= render "pageflow/entries/share_menu/#{provider}_link", entry: entry %>
+          </li>
+        <% end  %>
       </ul>
     </div>
     <div class="sub_share">
@@ -41,4 +39,4 @@
         </ul>
       </div>
   </div>
-</div>
+<% end %>

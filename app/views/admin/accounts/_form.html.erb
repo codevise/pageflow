@@ -34,6 +34,11 @@
       <%= theming.input :default_keywords,
         hint: t('pageflow.admin.themings.default_keywords_hint'),
         placeholder: Pageflow.config.default_keywords_meta_tag %>
+      <%= theming.input :share_providers,
+                        as: :check_boxes,
+                        collection: Pageflow.config.available_share_providers,
+                        member_label: Proc.new { |s| s.to_s.camelize } %>
+
     <% end %>
 
     <%= f.inputs do %>

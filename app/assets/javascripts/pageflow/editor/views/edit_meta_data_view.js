@@ -91,6 +91,10 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
       this.input('share_url', pageflow.TextInputView, {
         placeholder: pageflow.entry.get('pretty_url')
       });
+      this.input('share_providers', pageflow.CheckBoxGroupInputView, {
+        values: pageflow.config.availableShareProviders,
+        translationKeyPrefix: 'activerecord.values.pageflow/entry.share_providers'
+      });
     });
 
     this.listenTo(entry.configuration, 'change:theme_name', function() {
