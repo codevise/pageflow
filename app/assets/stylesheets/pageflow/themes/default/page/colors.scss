@@ -1,0 +1,41 @@
+/// Color of text
+/// @group page-colors
+$page-text-color: #fff !default;
+
+/// Color of text on inverted pages
+/// @group page-colors
+$page-inverted-text-color: #000 !default;
+
+/// Background-color of pages
+/// @group page-colors
+$page-background-color: #000 !default;
+
+/// Background-color of inverted pages
+/// @group page-colors
+$page-inverted-background-color: #fff !default;
+
+/// Color of title
+/// @group page-colors
+$page-title-color: null !default;
+
+/// Color of title on inverted pages
+/// @group page-colors
+$page-inverted-title-color: null !default;
+
+.page {
+  color: $page-text-color;
+  background-color: $page-background-color;
+
+  .page_header-title {
+    color: $page-title-color;
+  }
+
+  &.invert {
+    color: $page-inverted-text-color;
+    background-color: $page-inverted-background-color;
+
+    .page_header-title {
+      color: $page-inverted-title-color;
+    }
+  }
+}

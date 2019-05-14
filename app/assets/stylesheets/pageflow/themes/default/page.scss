@@ -14,25 +14,6 @@ $page-content-font-size: 1em !default;
 /// Base font size for page content in phone layout
 $page-content-phone-font-size: 0.7em !default;
 
-/// Color of text
-/// @group page-colors
-$page-text-color: #fff !default;
-
-/// Color of text on inverted pages
-/// @group page-colors
-$page-inverted-text-color: #000 !default;
-
-/// Color of title on inverted pages
-/// @group page-colors
-$page-inverted-title-color: null !default;
-
-/// Background-color of pages
-/// @group page-colors
-$page-background-color: #000 !default;
-
-/// Background-color of inverted pages
-/// @group page-colors
-$page-inverted-background-color: #fff !default;
 
 // Deprecated. Use typography variables above.
 
@@ -45,6 +26,7 @@ $page-content-list-margin: 1em !default;
 $page-content-list-indent: 40px !default;
 
 @import "./page/anchors";
+@import "./page/colors";
 @import "./page/header";
 @import "./page/hyphenate";
 @import "./page/paddings";
@@ -62,18 +44,6 @@ $page-content-list-indent: 40px !default;
       font-size: $page-font-size
     )
   );
-
-  color: $page-text-color;
-  background-color: $page-background-color;
-
-  &.invert {
-    color: $page-inverted-text-color;
-    background-color: $page-inverted-background-color;
-
-    .page_header-title {
-      color: $page-inverted-title-color;
-    }
-  }
 
   .content {
     font-size: $page-content-font-size;
