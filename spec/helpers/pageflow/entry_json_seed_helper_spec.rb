@@ -24,7 +24,8 @@ module Pageflow
 
         result = helper.entry_json_seed(entry)
 
-        expect(result).to include('<\/script>')
+        # Changed in jbuilder 2.9
+        expect(result).to include('<\/script>').or include('\\u003c/script\\u003e')
       end
 
       it 'contains entry slug' do
