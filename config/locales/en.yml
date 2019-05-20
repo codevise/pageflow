@@ -196,6 +196,7 @@ en:
         published_revision_published_at: Published since
         publisher: Publisher
         share_image_id: Social Sharing Image
+        share_providers: Social Share Links
         share_url: Social Sharing URL
         summary: Summary
         theme_name: Theme
@@ -269,11 +270,13 @@ en:
         default_keywords: Default keywords
         default_locale: Default locale
         default_publisher: Default publisher
+        default_share_providers: Default Share Links
         home_button_enabled_by_default: "'Home'-Button enabled by default"
         home_url: Redirect URL
         imprint_link_label: Legal notice link label
         imprint_link_url: Legal notice link URL
         privacy_link_url: Privacy link URL
+        share_providers: Default Share Links
         theme_name: Theme
       pageflow/video_file:
         dimensions: Dimensions
@@ -417,6 +420,13 @@ en:
           not_published: Not published
           published_with_password_protection: Published with password protection
           published_without_password_protection: Published without password protection
+        share_providers:
+          email: Email
+          facebook: Facebook
+          linked_in: LinkedIn
+          telegram: Telegram (only mobile)
+          twitter: Twitter
+          whats_app: WhatsApp (only mobile)
       pageflow/membership:
         role:
           editor: Editor
@@ -1771,6 +1781,7 @@ en:
           overview_button_enabled: The overview displays chapters and pages of the main storyline.
           overview_button_enabled_disabled: This option is not available for your theme.
           publisher: The publisher's name or company name.
+          share_providers: Social media platforms to be listed in the "Share"-dialog of the entry
           share_url: URL to share via social media buttons. Leave blank to use URL of published story.
           summary: Here you can write a description, which is shown, when your Pageflow is shared in social networks.
           title: Here you can choose a title for your Pageflow. It will be shown on the title bar of the browser window. It also acts as an indicator for search engines once the report is published.
@@ -1808,8 +1819,18 @@ en:
             bold: Bold
             cancel: Cancel
             create_link: Insert link
+            insert_ordered_list: Insert ordered list
+            insert_unordered_list: Insert unordered list
             italic: Italic
-            ok: Ok
+            link_type:
+              page_link: Page
+              url: URL
+            ok: DELETED
+            open_in_new_tab: Open in new tab
+            open_in_new_tab_help: Recommended. Otherwise the entry has to be reloaded when returning from the link. Please note that inside the editor preview links always open in a new tab.
+            remove_link: Remove link
+            save: Save
+            target: Target
             underline: Underline
             url: URL
           url_display:

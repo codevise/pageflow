@@ -248,7 +248,7 @@ module Pageflow
 
     # Array of sharing providers which can be configured on theming level.
     # Defaults to `[:facebook, :twitter, :linked_in, :whats_app, :telegram, :email]`.
-    # @since edge
+    # @since 14.1
     attr_accessor :available_share_providers
 
     # How to handle https requests for URLs which will have assets in the page.
@@ -277,7 +277,7 @@ module Pageflow
     #
     # Default share providers for new themings.
     # Must be a subset or equal to `available_share_providers`
-    # @since edge
+    # @since 14.1
     attr_accessor :default_share_providers
 
     # Whether a user can be deleted.

@@ -1,8 +1,0 @@
-de:
-  pageflow:
-    ui:
-      templates:
-        inputs:
-          text_area_input:
-            insert_unordered_list: Aufzählungsliste einfügen
-            insert_ordered_list: Nummerierte Liste einfügen

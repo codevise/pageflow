@@ -1,8 +1,0 @@
-en:
-  pageflow:
-    ui:
-      templates:
-        inputs:
-          text_area_input:
-            insert_unordered_list: Insert unordered list
-            insert_ordered_list: Insert ordered list
