@@ -34,6 +34,9 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
     input: 'textarea',
     toolbar: '.toolbar',
 
+    linkButton: '.link_button',
+    linkDialog: '.link_dialog',
+
     urlInput: '.current_url',
     targetInput: '.current_target',
 
@@ -103,7 +106,7 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
       this.ui.toolbar.find('a[data-wysihtml5-command="insertOrderedList"]').hide();
       this.ui.toolbar.find('a[data-wysihtml5-command="insertUnorderedList"]').hide();
     }
-    
+
     if (this.options.disableLinks) {
       this.ui.toolbar.find('a[data-wysihtml5-command="createLink"]').hide();
     }
@@ -130,6 +133,9 @@ pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
 
   setupUrlLinkPanel: function() {
     this.editor.on('show:dialog', _.bind(function() {
+      this.ui.linkDialog.toggleClass('for_existing_link',
+                                     this.ui.linkButton.hasClass('wysihtml5-command-active'));
+
       var currentUrl = this.ui.urlInput.val();
 
       if (currentUrl.startsWith('#')) {
