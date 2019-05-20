@@ -1,6 +1,14 @@
 # CHANGELOG
 
-  
+### Version 14.1.1
+
+2019-05-20
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v14.1.0...v14.1.1)
+
+- Ensure remove link button is show in text editor (14.1 Backport)
+  ([#1162](https://github.com/codevise/pageflow/pull/1162))
+
 ### Version 14.1.0
 
 2019-05-20
