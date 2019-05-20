@@ -10,11 +10,11 @@
   <a data-wysihtml5-command="bold" title="<%= I18n.t('pageflow.ui.templates.inputs.text_area_input.bold') %>"></a>
   <a data-wysihtml5-command="italic" title="<%= I18n.t('pageflow.ui.templates.inputs.text_area_input.italic') %>"></a>
   <a data-wysihtml5-command="underline" title="<%= I18n.t('pageflow.ui.templates.inputs.text_area_input.underline') %>"></a>
-  <a data-wysihtml5-command="createLink" title="<%= I18n.t('pageflow.ui.templates.inputs.text_area_input.create_link') %>"></a>
+  <a data-wysihtml5-command="createLink" class="link_button" title="<%= I18n.t('pageflow.ui.templates.inputs.text_area_input.create_link') %>"></a>
   <a data-wysihtml5-command="insertOrderedList" title="<%= I18n.t('pageflow.ui.templates.inputs.text_area_input.insert_ordered_list') %>"></a>
   <a data-wysihtml5-command="insertUnorderedList" title="<%= I18n.t('pageflow.ui.templates.inputs.text_area_input.insert_unordered_list') %>"></a>
 
-  <div data-wysihtml5-dialog="createLink" class="dialog" style="display: none;">
+  <div data-wysihtml5-dialog="createLink" class="dialog link_dialog" style="display: none;">
     <div class="link_type_select">
       <label>
         <input type="radio" name="link_type" class="url_link_radio_button">
