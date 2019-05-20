@@ -48,15 +48,15 @@
 
   [data-wysihtml5-command="createLink"] {
     @include link-icon;
+  }
 
-    &.wysihtml5-command-active + .dialog {
-      [data-wysihtml5-dialog-action="cancel"] {
-        display: none;
-      }
+  .link_dialog.for_existing_link {
+    [data-wysihtml5-dialog-action="cancel"] {
+      display: none;
+    }
 
-      [data-wysihtml5-command="removeLink"] {
-        display: block;
-      }
+    [data-wysihtml5-command="removeLink"] {
+      display: block;
     }
   }
 
