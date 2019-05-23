@@ -13,6 +13,14 @@ module Pageflow
       has_many :using_accounts, :through => :using_entries, :source => :account
 
       validate :parent_allows_type_for_nesting, :parent_belongs_to_same_entry
+
+      after_create { update_column(:perma_id, id) }
+    end
+
+    class_methods do
+      def find_in_entry(entry, perma_id)
+        find_by(entry_id: entry.id, perma_id: perma_id)
+      end
     end
 
     def parent_allows_type_for_nesting
