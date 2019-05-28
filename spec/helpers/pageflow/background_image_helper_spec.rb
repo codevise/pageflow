@@ -73,24 +73,27 @@ module Pageflow
 
     describe '#background_image_div_with_size' do
       it 'returns div with data-width and data-height attributes from image' do
-        image_file = create(:image_file, :width => 123, :height => 456)
-        configuration = {'background_image_id' => image_file.id}
+        @entry = PublishedEntry.new(create(:entry, :published))
+        image_file = create(:used_file, model: :image_file, width: 123, height: 456, revision: @entry.revision)
+        configuration = {'background_image_id' => image_file.perma_id}
         html = helper.background_image_div_with_size(configuration, 'background_image')
 
         expect(html).to have_selector('div.background_image[data-width="123"][data-height="456"]')
       end
 
       it 'returns div with data-width and data-height attributes from image' do
-        image_file = create(:image_file, :width => 200, :height => 100)
-        configuration = {'background_image_id' => image_file.id}
+        @entry = PublishedEntry.new(create(:entry, :published))
+        image_file = create(:used_file, model: :image_file, width: 200, height: 100, revision: @entry.revision)
+        configuration = {'background_image_id' => image_file.perma_id}
         html = helper.background_image_div_with_size(configuration, 'background_image', :spanning => true)
 
         expect(html).to have_selector('div.background_image[style*="padding-top: 50.0%"][style*="width: 100%"]')
       end
 
       it 'returns div with data-width and data-height attributes from video' do
-        video_file = create(:video_file, :width => 123, :height => 456)
-        configuration = {'video_id' => video_file.id}
+        @entry = PublishedEntry.new(create(:entry, :published))
+        video_file = create(:used_file, model: :video_file, width: 123, height: 456, revision: @entry.revision)
+        configuration = {'video_id' => video_file.perma_id}
         html = helper.background_image_div_with_size(configuration, 'video', file_type: 'video_file')
 
         expect(html).to have_selector('div.background_image[data-width="123"][data-height="456"]')
@@ -99,11 +102,12 @@ module Pageflow
 
     describe '#background_image_lazy_loading_css_class' do
       it 'returns css classes prefixed with .load_all_images and .load_image' do
-        image_file = create(:image_file)
+        entry = PublishedEntry.new(create(:entry, :published))
+        image_file = create(:used_file, model: :image_file, revision: entry.revision)
 
         css_class = helper.background_image_lazy_loading_css_class('image', image_file)
 
-        expect(css_class).to eq(".load_all_images .image_#{image_file.id}, .load_image.image_#{image_file.id}")
+        expect(css_class).to eq(".load_all_images .image_#{image_file.perma_id}, .load_image.image_#{image_file.perma_id}")
       end
     end
   end

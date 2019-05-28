@@ -27,9 +27,9 @@ module Pageflow
                   style: "background-position: #{position[:x]}% #{position[:y]}%;")
     end
 
-    def poster_image_tag(video_id, poster_image_id = nil, options = {})
-      video_file = find_file_in_entry(VideoFile, video_id)
-      poster = poster_image_id.present? ? find_file_in_entry(ImageFile, poster_image_id) : nil
+    def poster_image_tag(video_file_perma_id, poster_image_perma_id = nil, options = {})
+      video_file = find_file_in_entry(VideoFile, video_file_perma_id)
+      poster = poster_image_perma_id.present? ? find_file_in_entry(ImageFile, poster_image_perma_id) : nil
 
       if poster&.ready?
         options = options.merge('data-src' => poster.attachment.url(:medium))
@@ -91,8 +91,8 @@ module Pageflow
       video_file_script_tag(video_id, options.merge(poster_image_id: poster_image_id))
     end
 
-    def video_file_script_tag(video_id, options = {})
-      video_file = find_file_in_entry(VideoFile, video_id)
+    def video_file_script_tag(video_file_perma_id, options = {})
+      video_file = find_file_in_entry(VideoFile, video_file_perma_id)
 
       script_tag_data = {template: 'video'}
 
@@ -107,8 +107,8 @@ module Pageflow
              options: options)
     end
 
-    def video_file_non_js_link(entry, video_file_id)
-      video_file = find_file_in_entry(VideoFile, video_file_id)
+    def video_file_non_js_link(entry, video_file_perma_id)
+      video_file = find_file_in_entry(VideoFile, video_file_perma_id)
       return unless video_file
 
       link_to(t('pageflow.public.play_video'),

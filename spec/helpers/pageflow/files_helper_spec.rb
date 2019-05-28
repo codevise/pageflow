@@ -80,6 +80,7 @@ module Pageflow
         video_file_seed = files_seed['video_files'].first
 
         expect(video_file_seed).to have_key('id')
+        expect(video_file_seed).to have_key('perma_id')
         expect(video_file_seed).to have_key('file_name')
         expect(video_file_seed).to have_key('link_thumbnail_url')
         expect(video_file_seed).to have_key('original_url')

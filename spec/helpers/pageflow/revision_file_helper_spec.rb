@@ -29,10 +29,10 @@ module Pageflow
           entry = create(:entry)
           revision = entry.draft
           image_file = create(:image_file)
-          create(:file_usage, revision: revision, file: image_file)
+          usage = create(:file_usage, revision: revision, file: image_file)
           @entry = DraftEntry.new(entry)
 
-          result = helper.find_file_in_entry(ImageFile, image_file.id)
+          result = helper.find_file_in_entry(ImageFile, usage.perma_id)
           expect(result).to eq(image_file)
         end
       end
@@ -42,10 +42,10 @@ module Pageflow
           entry = create(:entry)
           revision = create(:revision, :published, entry: entry)
           image_file = create(:image_file)
-          create(:file_usage, revision: revision, file: image_file)
+          usage = create(:file_usage, revision: revision, file: image_file)
           @entry = PublishedEntry.new(entry)
 
-          result = helper.find_file_in_entry(ImageFile, image_file.id)
+          result = helper.find_file_in_entry(ImageFile, usage.perma_id)
           expect(result).to eq(image_file)
         end
       end

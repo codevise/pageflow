@@ -137,7 +137,7 @@ module Pageflow
       it 'renders share image meta tags if share image was chosen' do
         @entry = PublishedEntry.new(create(:entry, :published))
         image_file = create(:used_file, model: :image_file, revision: @entry.revision)
-        @entry.revision.share_image_id = image_file.id
+        @entry.revision.share_image_id = image_file.perma_id
 
         html = helper.social_share_entry_image_tags(@entry)
 
@@ -152,9 +152,9 @@ module Pageflow
         image_file3 = create(:used_file, model: :image_file, revision: @entry.revision)
         storyline = create(:storyline, revision: @entry.revision)
         chapter = create(:chapter, storyline: storyline)
-        create(:page, configuration: {thumbnail_image_id: image_file1.id}, chapter: chapter)
-        create(:page, configuration: {thumbnail_image_id: image_file2.id}, chapter: chapter)
-        create(:page, configuration: {thumbnail_image_id: image_file3.id}, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file1.perma_id}, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file2.perma_id}, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file3.perma_id}, chapter: chapter)
 
         html = helper.social_share_entry_image_tags(@entry)
 
@@ -168,10 +168,11 @@ module Pageflow
         @entry = PublishedEntry.new(create(:entry, :published))
         image_file1 = create(:used_file, model: :image_file, revision: @entry.revision)
         image_file2 = create(:used_file, model: :image_file, revision: @entry.revision)
+
         storyline = create(:storyline, revision: @entry.revision)
         chapter = create(:chapter, storyline: storyline)
-        create(:page, configuration: {thumbnail_image_id: image_file1.id}, chapter: chapter)
-        create(:page, configuration: {thumbnail_image_id: image_file2.id}, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file1.perma_id}, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file2.perma_id}, chapter: chapter)
 
         html = helper.social_share_entry_image_tags(@entry)
 
@@ -185,9 +186,9 @@ module Pageflow
         image_file2 = create(:used_file, model: :image_file, revision: @entry.revision)
         storyline = create(:storyline, revision: @entry.revision)
         chapter = create(:chapter, storyline: storyline)
-        create(:page, configuration: {thumbnail_image_id: image_file2.id}, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file2.perma_id}, chapter: chapter)
 
-        @entry.revision.share_image_id = image_file1.id
+        @entry.revision.share_image_id = image_file1.perma_id
         image_file1.destroy
         html = helper.social_share_entry_image_tags(@entry)
 

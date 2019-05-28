@@ -16,7 +16,7 @@ module Pageflow
 
     delegate(:widgets,
              :storylines, :main_storyline_chapters, :chapters, :pages,
-             :find_files, :find_file, :find_file_by_id,
+             :find_files, :find_file, :find_file_by_perma_id,
              :image_files, :video_files, :audio_files,
              :summary, :credits, :manual_start,
              :emphasize_chapter_beginning,

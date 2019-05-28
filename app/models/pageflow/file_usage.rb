@@ -1,8 +1,10 @@
 module Pageflow
   class FileUsage < ApplicationRecord
     include SerializedConfiguration
+    include RevisionComponent
 
-    belongs_to :revision
+    alias_attribute :perma_id, :file_perma_id
+
     belongs_to :file, polymorphic: true
 
     def copy_to(revision)

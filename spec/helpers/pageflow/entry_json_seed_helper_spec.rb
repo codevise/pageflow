@@ -192,13 +192,12 @@ module Pageflow
 
     describe '#entry_file_ids_seed' do
       it 'indexes list of ids by collection name' do
-        revision = create(:revision, :published)
-        image_file = create(:image_file, used_in: revision)
-        entry = PublishedEntry.new(create(:entry, published_revision: revision))
+        entry = PublishedEntry.new(create(:entry, :published))
+        image_file = create(:used_file, model: :image_file, revision: entry.revision)
 
         result = helper.entry_file_ids_seed(entry)
 
-        expect(result['image_files']).to eq([image_file.id])
+        expect(result['image_files']).to eq([image_file.perma_id])
       end
     end
 
@@ -206,14 +205,13 @@ module Pageflow
       before { helper.extend(AudioFilesHelper) }
 
       it 'indexes sources of entries audio files by id' do
-        revision = create(:revision, :published)
-        audio_file = create(:audio_file, used_in: revision)
-        entry = PublishedEntry.new(create(:entry, published_revision: revision))
+        entry = PublishedEntry.new(create(:entry, :published))
+        audio_file = create(:used_file, model: :audio_file, revision: entry.revision)
 
         result = JSON.parse(helper.entry_audio_files_json_seed(entry))
 
-        expect(result[audio_file.id.to_s].first['type']).to be_present
-        expect(result[audio_file.id.to_s].first['src']).to be_present
+        expect(result[audio_file.perma_id.to_s].first['type']).to be_present
+        expect(result[audio_file.perma_id.to_s].first['src']).to be_present
       end
     end
   end

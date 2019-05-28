@@ -3,15 +3,15 @@ module Pageflow
     include RevisionFileHelper
 
     def background_image_div(configuration, property_base_name, options = {})
-      Div.new(self, configuration, property_base_name, options).render
+      Div.new(@entry, self, configuration, property_base_name, options).render
     end
 
     def background_image_div_with_size(configuration, property_base_name, options = {})
-      DivWithSizeAttributes.new(self, configuration, property_base_name, options).render
+      DivWithSizeAttributes.new(@entry, self, configuration, property_base_name, options).render
     end
 
-    def background_image_tag(image_id, options = {})
-      image = find_file_in_entry(ImageFile, image_id)
+    def background_image_tag(image_perma_id, options = {})
+      image = find_file_in_entry(ImageFile, image_perma_id)
       return unless image&.ready?
 
       options = options.merge('data-src': image.attachment.url(:medium))
@@ -20,7 +20,7 @@ module Pageflow
     end
 
     def background_image_lazy_loading_css_class(prefix, model)
-      css_class = [prefix, model.id].join('_')
+      css_class = [prefix, model.perma_id].join('_')
       ".load_all_images .#{css_class}, .load_image.#{css_class}"
     end
 
@@ -29,7 +29,8 @@ module Pageflow
 
       delegate :content_tag, to: :@template
 
-      def initialize(template, configuration, property_base_name, options)
+      def initialize(entry, template, configuration, property_base_name, options)
+        @entry = entry
         @template = template
         @configuration = configuration
         @property_base_name = property_base_name
@@ -46,7 +47,7 @@ module Pageflow
         options.slice(:style_group)
       end
 
-      def file_id
+      def file_perma_id
         configuration["#{property_base_name}_id"]
       end
 
@@ -61,7 +62,7 @@ module Pageflow
       end
 
       def image_css_class
-        [image_css_class_prefix, options[:style_group], file_id || 'none'].compact.join('_')
+        [image_css_class_prefix, options[:style_group], file_perma_id || 'none'].compact.join('_')
       end
 
       def image_css_class_prefix
@@ -80,6 +81,8 @@ module Pageflow
     end
 
     class DivWithSizeAttributes < Div
+      include RevisionFileHelper
+
       def data_attributes
         if file
           super.merge(width: file.width, height: file.height)
@@ -112,7 +115,7 @@ module Pageflow
       end
 
       def find_file
-        file_type.model.find_by_id(file_id)
+        find_file_in_entry(file_type.model, file_perma_id)
       end
     end
   end

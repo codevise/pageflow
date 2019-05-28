@@ -69,7 +69,7 @@ module Pageflow
         end
       end
 
-      render 'pageflow/social_share/image_tags', :image_urls => image_urls
+      render 'pageflow/social_share/image_tags', image_urls: image_urls
     end
 
     def social_share_normalize_protocol(url)
