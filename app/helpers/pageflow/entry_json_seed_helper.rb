@@ -50,13 +50,13 @@ module Pageflow
 
     def entry_file_ids_seed(entry)
       Pageflow.config.file_types.with_thumbnail_support.each_with_object({}) do |file_type, result|
-        result[file_type.collection_name] = entry.find_files(file_type.model).map(&:id)
+        result[file_type.collection_name] = entry.find_files(file_type.model).map(&:perma_id)
       end
     end
 
     def entry_audio_files_json_seed(entry)
-      seed = entry.audio_files.each_with_object({}) do |audio_file, result|
-        result[audio_file.id] = audio_file_sources(audio_file)
+      seed = entry.find_files(AudioFile).each_with_object({}) do |audio_file, result|
+        result[audio_file.perma_id] = audio_file_sources(audio_file)
       end
 
       sanitize_json(seed.to_json).html_safe

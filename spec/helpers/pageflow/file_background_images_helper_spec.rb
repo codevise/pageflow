@@ -13,11 +13,11 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        hosted_file = create(:hosted_file, used_in: entry.revision)
+        hosted_file = create(:used_file, model: :hosted_file, revision: entry.revision)
 
         result = helper.file_background_images_css(entry, :desktop)
 
-        expect(result).to include(".pageflow_test_hosted_file_poster_#{hosted_file.id}")
+        expect(result).to include(".pageflow_test_hosted_file_poster_#{hosted_file.perma_id}")
       end
 
       it 'generates css rules using given urls' do
@@ -47,11 +47,11 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        hosted_file = create(:hosted_file, used_in: entry.revision)
+        hosted_file = create(:used_file, model: :hosted_file, revision: entry.revision)
 
         result = helper.file_background_images_css(entry, :desktop)
 
-        expect(result).to include(".pageflow_test_hosted_file_#{hosted_file.id}")
+        expect(result).to include(".pageflow_test_hosted_file_#{hosted_file.perma_id}")
       end
 
       it 'supports urls index by breakpoint name' do
@@ -68,11 +68,11 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        hosted_file = create(:hosted_file, used_in: entry.revision)
+        hosted_file = create(:used_file, model: :hosted_file, revision: entry.revision)
 
         result = helper.file_background_images_css(entry, :desktop)
 
-        expect(result).to include(".pageflow_test_hosted_file_poster_#{hosted_file.id}")
+        expect(result).to include(".pageflow_test_hosted_file_poster_#{hosted_file.perma_id}")
       end
 
       it 'fails with helpful error when unknown breakpoint is used' do
@@ -130,11 +130,11 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        hosted_file = create(:hosted_file, used_in: entry.revision)
+        hosted_file = create(:used_file, model: :hosted_file, revision: entry.revision)
 
         result = helper.file_background_images_css(entry, :desktop)
 
-        expect(result).to include(".custom_poster_#{hosted_file.id}")
+        expect(result).to include(".custom_poster_#{hosted_file.perma_id}")
       end
     end
   end

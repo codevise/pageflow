@@ -459,31 +459,31 @@ module Pageflow
 
         it 'includes image rules for image files' do
           entry = create(:entry, :published)
-          image_file = create(:image_file, used_in: entry.published_revision)
+          image_file = create(:used_file, model: :image_file, revision: entry.published_revision)
 
           get(:show, params: {id: entry}, format: 'css')
 
-          expect(response.body).to include(".image_#{image_file.id}")
+          expect(response.body).to include(".image_#{image_file.perma_id}")
           expect(response.body).to include("url('#{image_file.attachment.url(:large)}')")
         end
 
         it 'includes poster image rules for video files' do
           entry = create(:entry, :published)
-          video_file = create(:video_file, used_in: entry.published_revision)
+          video_file = create(:used_file, model: :video_file, revision: entry.published_revision)
 
           get(:show, params: {id: entry}, format: 'css')
 
-          expect(response.body).to include(".video_poster_#{video_file.id}")
+          expect(response.body).to include(".video_poster_#{video_file.perma_id}")
           expect(response.body).to include("url('#{video_file.poster.url(:large)}')")
         end
 
         it 'includes panorama style group rules for image files' do
           entry = create(:entry, :published)
-          image_file = create(:image_file, used_in: entry.published_revision)
+          image_file = create(:used_file, model: :image_file, revision: entry.published_revision)
 
           get(:show, params: {id: entry}, format: 'css')
 
-          expect(response.body).to include(".image_panorama_#{image_file.id}")
+          expect(response.body).to include(".image_panorama_#{image_file.perma_id}")
           expect(response.body).to include("url('#{image_file.attachment.url(:panorama_large)}')")
         end
       end

@@ -1,5 +1,7 @@
 module Pageflow
   module BackgroundImageHelper
+    include RevisionFileHelper
+
     def background_image_div(configuration, property_base_name, options = {})
       Div.new(self, configuration, property_base_name, options).render
     end
@@ -9,16 +11,16 @@ module Pageflow
     end
 
     def background_image_tag(image_id, options = {})
-      image = ImageFile.find_by_id(image_id)
-      if image&.ready?
-        options = options.merge(:'data-src' => image.attachment.url(:medium))
-        options = options.merge(:'data-printsrc' => image.attachment.url(:print))
-        image_tag('', options)
-      end
+      image = find_file_in_entry(ImageFile, image_id)
+      return unless image&.ready?
+
+      options = options.merge(:'data-src' => image.attachment.url(:medium))
+      options = options.merge(:'data-printsrc' => image.attachment.url(:print))
+      image_tag('', options)
     end
 
     def background_image_lazy_loading_css_class(prefix, model)
-      css_class = [prefix, model.id].join('_')
+      css_class = [prefix, model.perma_id].join('_')
       ".load_all_images .#{css_class}, .load_image.#{css_class}"
     end
 

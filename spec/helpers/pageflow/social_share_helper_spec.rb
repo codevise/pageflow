@@ -1,7 +1,10 @@
 require 'spec_helper'
+require 'pageflow/revision_file_test_helper'
 
 module Pageflow
   describe SocialShareHelper do
+    include RevisionFileTestHelper
+
     describe '#social_share_entry_url' do
       it 'returns share_url if present' do
         entry = create(:entry, :published, published_revision_attributes: {
@@ -141,6 +144,7 @@ module Pageflow
       it 'renders share image meta tags if share image was chosen' do
         @entry.published_revision.share_image_id = @image1.id
         published_entry = PublishedEntry.new(@entry)
+        entry_has_file(@image1)
 
         html = helper.social_share_entry_image_tags(published_entry)
 

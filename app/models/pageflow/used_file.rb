@@ -19,6 +19,10 @@ module Pageflow
       @usage.id
     end
 
+    def perma_id
+      @usage.perma_id
+    end
+
     # Not delegated by default. Required to allow using instances in
     # Active Record conditions.
 
