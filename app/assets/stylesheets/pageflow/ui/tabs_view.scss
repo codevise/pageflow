@@ -1,32 +1,38 @@
 .tabs_view {
-  > ul {
-    background-color: #e5e5e5;
-    width: 100%;
-    white-space: nowrap;
+  &-scroller {
+    position: relative;
     overflow: hidden;
-    padding: 0;
+    height: 35px;
   }
 
-  > ul > li {
-    display: inline-block;
-    padding: 10px 10px;
+  &-headers {
     background-color: #e5e5e5;
-    cursor: pointer;
+    white-space: nowrap;
+    padding: 0;
+    position: absolute;
 
-    &.active {
-      background-color: #fff;
+    li {
+      display: inline-block;
+      padding: 10px 10px;
+      background-color: #e5e5e5;
+      cursor: pointer;
+
+      &.active {
+        background-color: #fff;
+      }
+
+      &.spinner {
+        padding-left: 27px;
+        @include background-icon-left;
+        @include background-icon-animation(blink);
+        @include up-bold-icon;
+      }
     }
   }
 
-  > div {
+  &-container {
     background-color: #fff;
     padding: 10px;
   }
 
-  > ul > li.spinner {
-    padding-left: 27px;
-    @include background-icon-left;
-    @include background-icon-animation(blink);
-    @include up-bold-icon;
-  }
 }

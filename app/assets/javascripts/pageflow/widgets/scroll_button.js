@@ -1,5 +1,3 @@
-/*global IScroll*/
-
 (function($) {
   var ENTER_KEY = 13;
   var SPACE_KEY = 32;

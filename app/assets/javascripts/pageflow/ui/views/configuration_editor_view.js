@@ -25,8 +25,18 @@ pageflow.ConfigurationEditorView = Backbone.Marionette.View.extend({
     }, this));
   },
 
+  /**
+   * Rerender current tab.
+   */
   refresh: function() {
     this.tabsView.refresh();
+  },
+
+  /**
+   * Adjust tabs scroller to changed width of view.
+   */
+  refreshScroller: function() {
+    this.tabsView.refreshScroller();
   },
 
   render: function() {

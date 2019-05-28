@@ -1,5 +1,3 @@
-/*global IScroll*/
-
 (function($) {
   $.widget('pageflow.navigation', {
     _create: function() {
