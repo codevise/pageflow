@@ -80,4 +80,34 @@ describe('EditPageView', function() {
       expect(configurationEditor.tabLabels()).to.eql(['Specific', 'Common', 'Fallback']);
     });
   });
+
+  it('renders common page configuration tabs with prefixed property names', function() {
+    var api = f.editorApi(function(editor) {
+      editor.pageTypes.register('rainbow', {
+        configurationEditorView: pageflow.ConfigurationEditorView.extend({
+          configure: function() {
+            this.tab('general', function() {
+              this.input('title', pageflow.TextInputView);
+            });
+          }
+        })
+      });
+
+      editor.commonPageConfigurationTabs.register('extras', function() {
+        this.input('text', pageflow.TextInputView);
+      });
+    });
+    var page = new pageflow.Page({template: 'rainbow'});
+    var view = new pageflow.EditPageView({
+      model: page,
+      api: api,
+      tab: 'extras'
+    });
+
+    view.render();
+    var configurationEditor = support.dom.ConfigurationEditor.find(view);
+
+    expect(configurationEditor.tabNames()).to.eql(['general', 'extras']);
+    expect(configurationEditor.inputPropertyNames()).to.eql(['extras_text']);
+  });
 });
