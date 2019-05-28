@@ -1,5 +1,5 @@
 pageflow.ConfigurationEditorTabView = Backbone.Marionette.View.extend({
-  className: 'configuration_editor',
+  className: 'configuration_editor_tab',
 
   initialize: function() {
     this.groups = this.options.groups || pageflow.ConfigurationEditorTabView.groups;

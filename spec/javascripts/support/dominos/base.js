@@ -8,9 +8,10 @@ support.dom.Base = pageflow.Object.extend({
 
 support.dom.Base.classMethods = function(Constructor) {
   return {
-    find: function(view) {
+    find: function(viewOrParentElement) {
       var selector = Constructor.prototype.selector;
-      var element = view.$el.find(selector);
+      var parentElement = viewOrParentElement.$el || viewOrParentElement;
+      var element = parentElement.find(selector);
 
       if (element.length > 1) {
         throw new Error('Selector "' + selector + '" matches multiple elements in view. Expected only one');
@@ -23,9 +24,10 @@ support.dom.Base.classMethods = function(Constructor) {
       return new Constructor(element);
     },
 
-    findAll: function(view) {
+    findAll: function(viewOrParentElement) {
       var selector = Constructor.prototype.selector;
-      var elements = view.$el.find(selector);
+      var parentElement = viewOrParentElement.$el || viewOrParentElement;
+      var elements = parentElement.find(selector);
 
       return elements.map(function() {
         return new Constructor($(this));
