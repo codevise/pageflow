@@ -233,4 +233,13 @@ pageflow.EditorApi = pageflow.Object.extend(
     var payloadJson = JSON.parse(decodeURIComponent(encodedPayload));
     return new this.fileSelectionHandlers[handlerName](payloadJson);
   },
+
+  createPageConfigurationEditorView: function(page, options) {
+    var view = this.pageTypes
+                   .findByPage(page)
+                   .createConfigurationEditorView(_.extend(options, {
+                     model: page.configuration
+                   }));
+    return view;
+  }
 });

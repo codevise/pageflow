@@ -33,6 +33,10 @@ pageflow.PageType = pageflow.Object.extend({
     options.pageType = this.seed;
 
     return new constructor(_.extend({
+      tabTranslationKeyPrefixes: [
+        this.seed.translation_key_prefix + '.page_configuration_tabs',
+        'pageflow.common_page_configuration_tabs'
+      ],
       attributeTranslationKeyPrefixes: [
         this.seed.translation_key_prefix + '.page_attributes',
         'pageflow.common_page_attributes'
@@ -45,6 +49,10 @@ pageflow.PageType = pageflow.Object.extend({
       pageflow.PageLinkConfigurationEditorView;
 
     return new constructor(_.extend({
+      tabTranslationKeyPrefixes: [
+        this.seed.translation_key_prefix + '.page_link_configuration_tabs',
+        'pageflow.common_page_link_configuration_tabs'
+      ],
       attributeTranslationKeyPrefixes: [
         this.seed.translation_key_prefix + '.page_link_attributes',
         'pageflow.common_page_link_attributes'

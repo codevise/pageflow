@@ -22,7 +22,7 @@ pageflow.EditPageView = Backbone.Marionette.Layout.extend({
     this.pageTypeContainer.show(new pageflow.ExtendedSelectInputView({
       model: this.model,
       propertyName: 'template',
-      collection: pageflow.editor.pageTypes.pluck('seed'),
+      collection: this.options.api.pageTypes.pluck('seed'),
       valueProperty: 'name',
       translationKeyProperty: 'translation_key',
       groupTranslationKeyProperty: 'category_translation_key',
@@ -31,7 +31,7 @@ pageflow.EditPageView = Backbone.Marionette.Layout.extend({
       pictogramClass: 'type_pictogram',
 
       helpLinkClicked: function(value) {
-        var pageType = pageflow.editor.pageTypes.findByName(value);
+        var pageType = this.options.api.pageTypes.findByName(value);
         pageflow.app.trigger('toggle-help', pageType.seed.help_entry_translation_key);
       }
     }));
@@ -45,8 +45,7 @@ pageflow.EditPageView = Backbone.Marionette.Layout.extend({
   },
 
   load: function() {
-    this.configurationEditor = this.model.pageType().createConfigurationEditorView({
-      model: this.model.configuration,
+    this.configurationEditor = this.options.api.createPageConfigurationEditorView(this.model, {
       tab: this.options.tab
     });
 

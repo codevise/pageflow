@@ -16,7 +16,8 @@ pageflow.EditPageLinkView = Backbone.Marionette.Layout.extend({
   },
 
   onRender: function() {
-    var configurationEditor = this.options.page.pageType().createPageLinkConfigurationEditorView({
+    var pageType = this.options.api.pageTypes.findByPage(this.options.page);
+    var configurationEditor = pageType.createPageLinkConfigurationEditorView({
       model: this.model,
       page: this.options.page
     });

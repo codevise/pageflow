@@ -64,6 +64,7 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
 
     this.region.show(new pageflow.EditPageView({
       model: page,
+      api: pageflow.editor,
       tab: tab
     }));
 
@@ -76,7 +77,8 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
 
     this.region.show(new pageflow.EditPageLinkView({
       model: page.pageLinks().get(linkId),
-      page: page
+      page: page,
+      api: pageflow.editor
     }));
   },
 
