@@ -5,5 +5,11 @@ support.dom.Tabs = support.dom.Base.extend({
     return this.$el.find('[data-tab-name]').map(function() {
       return $(this).data('tabName');
     }).get();
+  },
+
+  tabLabels: function() {
+    return this.$el.find('[data-tab-name]').map(function() {
+      return $(this).text();
+    }).get();
   }
 });
