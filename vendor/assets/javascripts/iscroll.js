@@ -141,7 +141,7 @@ var utils = (function () {
 
 	me.isDirLtr = function (el) {
 		var styles = window.getComputedStyle(el);
-		return styles.direction == 'ltr';
+		return styles.direction != 'rtl';
 	};
 
 	me.offsetRight = function (e) {
