@@ -28,7 +28,7 @@ group :development do
 end
 
 # Required to make imports in Active Admin stylesheet work
-gem 'sassc-rails'
+gem 'sassc-rails', '~> 1.0'
 
 # Required for XML serialization in Active Admin
 gem 'activemodel-serializers-xml'
