@@ -1,4 +1,3 @@
-/*global IScroll*/
 (function($) {
   /**
    * Wrapper widget around iScroll adding special bump events which
