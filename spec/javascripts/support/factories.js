@@ -206,5 +206,25 @@ support.factories = {
 
     widgetTypes.setup(attributesListsByRole);
     return widgetTypes;
+  },
+
+  editorApi: function(beforeSetup) {
+    var api = new pageflow.EditorApi();
+
+    if (beforeSetup) {
+      beforeSetup(api);
+    }
+
+    api.pageTypes.setup(_.map(api.pageTypes.clientSideConfigs, function(config, name) {
+      return {
+        name: name,
+        translation_key_prefix: 'pageflow.' + name,
+        translation_key: 'pageflow.' + name + '.name',
+        category_translation_key: 'pageflow.' + name + '.category',
+        description_translation_key: 'pageflow.' + name + '.description'
+      };
+    }));
+
+    return api;
   }
 };

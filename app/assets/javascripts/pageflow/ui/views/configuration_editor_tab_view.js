@@ -1,7 +1,8 @@
 pageflow.ConfigurationEditorTabView = Backbone.Marionette.View.extend({
-  className: 'configuration_editor',
+  className: 'configuration_editor_tab',
 
   initialize: function() {
+    this.inputs = new Backbone.ChildViewContainer();
     this.groups = this.options.groups || pageflow.ConfigurationEditorTabView.groups;
   },
 
@@ -14,7 +15,6 @@ pageflow.ConfigurationEditorTabView = Backbone.Marionette.View.extend({
   },
 
   view: function(view, options) {
-    this.inputs = this.inputs || new Backbone.ChildViewContainer();
     this.inputs.add(new view(_.extend({
       model: this.model,
       parentTab: this.options.tab

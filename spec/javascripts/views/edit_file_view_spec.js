@@ -15,7 +15,7 @@ describe('EditFileView', function() {
     });
 
     view.render();
-    var configurationEditor = support.dom.ConfigurationEditor.find(view);
+    var configurationEditor = support.dom.ConfigurationEditorTab.find(view);
 
     expect(configurationEditor.inputPropertyNames()).to.contain('custom');
   });
@@ -38,7 +38,7 @@ describe('EditFileView', function() {
     });
 
     view.render();
-    var configurationEditor = support.dom.ConfigurationEditor.find(view);
+    var configurationEditor = support.dom.ConfigurationEditorTab.find(view);
 
     expect(configurationEditor.inputPropertyNames()).to.contain('custom');
     expect(inputsFunction).to.have.been.calledWith(model);

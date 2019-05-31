@@ -31,6 +31,10 @@ pageflow.PageTypes = pageflow.Object.extend({
     }
 
     return result;
+  },
+
+  findByPage: function(page) {
+    return this.findByName(page.get('template'));
   }
 });
 
