@@ -38,7 +38,8 @@ input {
   margin: 0 -2px;
 }
 
-.invalid input {
+.invalid input,
+.invalid textarea {
   border: solid 1px red;
 }
 
