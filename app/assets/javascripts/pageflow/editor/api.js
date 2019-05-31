@@ -35,6 +35,13 @@ pageflow.EditorApi = pageflow.Object.extend(
     this.pageTypes = new pageflow.PageTypes();
 
     /**
+     * Add tabs to the configuration editor of all pages.
+     * @alias commonPageConfigurationTabs
+     * @memberof module:pageflow/editor.pageflow.editor
+     */
+    this.commonPageConfigurationTabs = new pageflow.CommonPageConfigurationTabs();
+
+    /**
      * Setup editor integration for widget types.
      * @alias widgetType
      * @memberof module:pageflow/editor.pageflow.editor
@@ -240,6 +247,8 @@ pageflow.EditorApi = pageflow.Object.extend(
                    .createConfigurationEditorView(_.extend(options, {
                      model: page.configuration
                    }));
+
+    this.commonPageConfigurationTabs.apply(view);
     return view;
   }
 });

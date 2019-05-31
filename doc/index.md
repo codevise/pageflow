@@ -13,6 +13,7 @@ extend Pageflow.
 * [Creating a Rails Engine for a Pageflow Plugin](creating_a_pageflow_plugin_rails_engine.md)
 * [Creating File Types](./creating_file_types.md)
 * [Creating Page types](./creating_page_types.md)
+* [Adding common page configuration tabs](./adding_common_page_configuration_tabs.md)
 * [Creating Widget types](./creating_widget_types.md)
 * [Extending Admin Resources](./extending_admin_resources.md)
 * [Adding app news](./adding_app_news.md)
