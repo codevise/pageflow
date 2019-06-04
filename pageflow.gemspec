@@ -111,6 +111,9 @@ Gem::Specification.new do |s|
   # Password encryption
   s.add_dependency 'bcrypt', '~> 3.1.7'
 
+  # Files archiver for entry export
+  s.add_dependency 'rubyzip'
+
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2', '~> 0.5.2'
 

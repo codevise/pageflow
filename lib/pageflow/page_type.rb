@@ -94,6 +94,24 @@ module Pageflow
       []
     end
 
+    # Current plugin version for import support
+    def version
+      begin
+        "#{self.class.to_s.deconstantize}::VERSION".constantize
+      rescue
+        Pageflow::VERSION
+      end
+    end
+
+    # Gets included in JSON file during export of an entry.
+    # The host application needs to compare this version with the version (above)
+    # for each page type before importing.
+    # Defaults to the plugins version but can be overwritten during registry of the page type,
+    # using the same notation as version requirements in the Gemfile.
+    def import_version_requirement
+      version
+    end
+
     # A list of hashes used to determine a thumbnail for a page. Each
     # hash in the list must contain two keys: `attribute` and
     # `file_collection`.

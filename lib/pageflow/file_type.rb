@@ -55,6 +55,10 @@ module Pageflow
     # @return {Array<Symbol>}
     attr_reader :custom_attributes
 
+    # Importer-class encapsulating all logic required to recreate this file type from JSON.
+    # @return {Class}
+    attr_reader :importer
+
     # Create file type to be returned in {PageType#file_types}.
     #
     # @example
@@ -84,6 +88,10 @@ module Pageflow
     # @option options [Array<Symbol>] :custom_attributes
     #   Optional. Array of strings containing attribute names that are
     #   custom to this file type
+    # @option options [Class] :importer
+    #   Optional. Importer-class with call(file_type, file_data)-method
+    #   encapsulating all logic to re-create this file type.
+    #   Defaults to Pageflow::EntryExportImport::FileTypeImporters::BuiltInFileTypeImporter
     def initialize(options)
       @model_string_or_reference = options.fetch(:model)
       @partial = options[:partial]
@@ -93,8 +101,10 @@ module Pageflow
       @top_level_type = options.fetch(:top_level_type, false)
       @css_background_image_urls = options[:css_background_image_urls]
       @css_background_image_class_prefix = options[:css_background_image_class_prefix]
-      @url_templates = options.fetch(:url_templates, ->() { {} })
+      @url_templates = options.fetch(:url_templates, -> { {} })
       @custom_attributes = options.fetch(:custom_attributes, [])
+      default_importer = Pageflow::EntryExportImport::FileTypeImporters::BuiltInFileTypeImporter
+      @importer = options.fetch(:importer, default_importer)
     end
 
     # ActiveRecord model that represents the files of this type.
