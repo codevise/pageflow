@@ -14,7 +14,9 @@ pageflow.Storyline = Backbone.Model.extend({
     this.configuration = new pageflow.StorylineConfiguration(this.get('configuration') || {});
 
     this.listenTo(this.configuration, 'change', function() {
-      this.save();
+      if (!this.isNew()) {
+        this.save();
+      }
       this.trigger('change:configuration', this);
     });
 
