@@ -68,7 +68,7 @@ export default class MediaTag extends React.Component {
     const wrapper = document.createElement('div');
     const mediaElement = document.createElement(this.props.tagName);
 
-    mediaElement.setAttribute('preload', 'auto');
+    mediaElement.setAttribute('preload', 'none');
     mediaElement.setAttribute('crossorigin', 'anonymous');
     mediaElement.setAttribute('alt', this.props.alt);
 
@@ -110,7 +110,7 @@ export default class MediaTag extends React.Component {
     });
 
     wrapper.appendChild(mediaElement);
-    return {__html: wrapper.innerHTML};
+    return {__html: wrapper.innerHTML.replace('preload="none"', 'preload="auto"')};
   }
 }
 
