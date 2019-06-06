@@ -134,8 +134,10 @@ pageflow.TabsView = Backbone.Marionette.Layout.extend({
   },
 
   _refreshScrollerOnSideBarResize: function() {
-    this.listenTo(pageflow.app, 'resize', function() {
-      this.scroller.refresh();
-    });
+    if (pageflow.app) {
+      this.listenTo(pageflow.app, 'resize', function() {
+        this.scroller.refresh();
+      });
+    }
   }
 });
