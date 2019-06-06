@@ -193,7 +193,12 @@
           !pageflow.navigationDirection.isHorizontal() &&
           !this.pageType.noHideTextOnSwipe) {
         this.element.hideTextOnSwipe({
-          eventTargetSelector: '.content > .scroller'
+          eventTargetSelector: // legacy ERB pages
+                               '.content > .scroller,' +
+                               // React based pages
+                               '.content > .scroller-wrapper > .scroller,' +
+                               // internal links/text page
+                               '.content.scroller'
         });
       }
     },
