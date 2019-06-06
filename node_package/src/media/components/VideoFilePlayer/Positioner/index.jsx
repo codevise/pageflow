@@ -6,7 +6,7 @@ import Measure from 'react-measure';
 
 export default function Positioner(props) {
   return (
-    <Measure whitelist={['width', 'height']}>
+    <Measure whitelist={['width', 'height']} cloneOptions={{noCloneOnZeroDimension: true}}>
       {wrapperDimensions => renderWrapper(props, wrapperDimensions)}
     </Measure>
   );
