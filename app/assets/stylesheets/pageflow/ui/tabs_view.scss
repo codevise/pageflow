@@ -1,12 +1,12 @@
 .tabs_view {
   &-scroller {
+    background-color: #e5e5e5;
     position: relative;
     overflow: hidden;
     height: 35px;
   }
 
   &-headers {
-    background-color: #e5e5e5;
     white-space: nowrap;
     padding: 0;
     position: absolute;
