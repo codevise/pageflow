@@ -48,7 +48,7 @@
       height: 100%;
       position: relative;
 
-      > div {
+      .tabs_view-container {
         @include position(absolute, 37px  0 0px 0);
         height: auto;
       }
