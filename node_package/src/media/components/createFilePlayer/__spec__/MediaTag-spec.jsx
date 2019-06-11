@@ -58,6 +58,12 @@ describe('MediaTag', () => {
     expect(wrapper).to.have.descendants('video[playsinline]');
   });
 
+  it('sets preload attribute to auto', () => {
+    const wrapper = render(<MediaTag />);
+
+    expect(wrapper).to.have.descendants('video[preload="auto"]');
+  });
+
   it('re-renders when source changes', () => {
     const sources = [{type: 'video/mp4', src: 'some.mp4'}];
     const changedSources = [{type: 'video/mp4', src: 'new.mp4'}];
