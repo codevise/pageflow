@@ -1,10 +1,10 @@
 describe('FileInputView', function() {
   it('can render button to edit background position', function() {
     var fixture = support.factories.videoFileWithTextTrackFiles({
-      videoFileAttributes: {file_name: 'video.mp4', state: 'encoded'}
+      videoFileAttributes: {perma_id: 5, file_name: 'video.mp4', state: 'encoded'}
     });
     var model = new pageflow.Configuration({
-      file_id: 1,
+      file_id: 5,
     });
 
     var fileInputView = new pageflow.FileInputView({
@@ -23,16 +23,18 @@ describe('FileInputView', function() {
   describe('for selecting a default text track file', function() {
     beforeEach(function() {
       this.fixture = support.factories.videoFileWithTextTrackFiles({
-        videoFileAttributes: {file_name: 'video.mp4', state: 'encoded'},
+        videoFileAttributes: {perma_id: 5, file_name: 'video.mp4', state: 'encoded'},
         textTrackFilesAttributes: [
           {
-            id: 10,
+            id: 1,
+            perma_id: 10,
             configuration: {
               label: 'English'
             }
           },
           {
-            id: 11,
+            id: 2,
+            perma_id: 11,
             configuration: {
               label: 'German'
             }
@@ -43,7 +45,7 @@ describe('FileInputView', function() {
 
     it('displays text track files', function() {
       var model = new pageflow.Configuration({
-        file_id: 1,
+        file_id: 5,
       });
 
       var fileInputView = new pageflow.FileInputView({
@@ -63,7 +65,7 @@ describe('FileInputView', function() {
 
     it('allows selecting default text track file', function() {
       var model = new pageflow.Configuration({
-        file_id: 1,
+        file_id: 5,
       });
 
       var fileInputView = new pageflow.FileInputView({
@@ -83,7 +85,7 @@ describe('FileInputView', function() {
 
     it('allows unsetting default text track file', function() {
       var model = new pageflow.Configuration({
-        file_id: 1,
+        file_id: 5,
         default_text_track_file_id: 10
       });
 

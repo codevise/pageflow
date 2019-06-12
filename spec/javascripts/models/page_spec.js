@@ -48,8 +48,8 @@ describe('Page', function() {
             pageflow.editor.fileTypes,
             {
               image_files: [
-                {id: 5},
-                {id: 6}
+                {id: 1, perma_id: 5},
+                {id: 2, perma_id: 6}
               ]
             }
           )
@@ -67,7 +67,7 @@ describe('Page', function() {
 
       var thumbnailFile = page.thumbnailFile();
 
-      expect(thumbnailFile.id).to.eq(5);
+      expect(thumbnailFile.get('perma_id')).to.eq(5);
     });
 
     it('returns undefined if no candidate matches', function() {
@@ -120,7 +120,7 @@ describe('Page', function() {
 
       var thumbnailFile = page.thumbnailFile();
 
-      expect(thumbnailFile.id).to.eq(5);
+      expect(thumbnailFile.get('perma_id')).to.eq(5);
     });
 
     it('returns present file if negated candidate condition is not met', function() {
@@ -134,7 +134,7 @@ describe('Page', function() {
 
       var thumbnailFile = page.thumbnailFile();
 
-      expect(thumbnailFile.id).to.eq(5);
+      expect(thumbnailFile.get('perma_id')).to.eq(5);
     });
   });
 });
