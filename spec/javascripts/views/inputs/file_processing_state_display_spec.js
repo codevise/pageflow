@@ -2,7 +2,8 @@ describe('pageflow.FileProcessingStateDisplayView', function() {
   it('displays unfinished file stages', function() {
     var fixture = support.factories.imageFilesFixture({
       imageFileAttributes: {
-        id: 5,
+        id: 1,
+        perma_id: 5,
         state: 'processing'
       }
     });
@@ -24,7 +25,8 @@ describe('pageflow.FileProcessingStateDisplayView', function() {
   it('does not display finished file stages', function() {
     var fixture = support.factories.imageFilesFixture({
       imageFileAttributes: {
-        id: 5,
+        id: 1,
+        perma_id: 5,
         state: 'processed'
       }
     });

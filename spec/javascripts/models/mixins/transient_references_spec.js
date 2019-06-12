@@ -22,24 +22,33 @@ describe('transientReferences', function() {
       expect(record.get('image_file_id')).to.equal(null);
     });
 
-    it('sets record id once it is saved', function() {
+    it('sets records perma_id once it is saved', function() {
       var record = new Model(),
           imageFile = new pageflow.ImageFile();
 
       record.setReference('image_file_id', imageFile);
-      imageFile.set('id', 5);
+      imageFile.set({id: 1, perma_id: 5});
 
       expect(record.get('image_file_id')).to.equal(5);
     });
 
-    it('does not set record id if reference updated before save', function() {
+    it('sets records perma_id if present', function() {
+      var record = new Model(),
+          imageFile = new pageflow.ImageFile({id: 1, perma_id: 7});
+
+      record.setReference('image_file_id', imageFile);
+
+      expect(record.get('image_file_id')).to.equal(7);
+    });
+
+    it('does not set records perma_id if reference updated before save', function() {
       var record = new Model(),
           imageFile = new pageflow.ImageFile(),
-          otherFile = new pageflow.ImageFile({id: 7});
+          otherFile = new pageflow.ImageFile({id: 1, perma_id: 7});
 
       record.setReference('image_file_id', imageFile);
       record.setReference('image_file_id', otherFile);
-      imageFile.set('id', 5);
+      imageFile.set({id: 2, perma_id: 5});
 
       expect(record.get('image_file_id')).to.equal(7);
     });
@@ -71,7 +80,7 @@ describe('transientReferences', function() {
     it('does not trigger change event if reference was updated before ready', function() {
       var record = new Model(),
           imageFile = new pageflow.ImageFile(),
-          otherFile = new pageflow.ImageFile({id: 7}),
+          otherFile = new pageflow.ImageFile({perma_id: 7}),
           changeListener = sinon.spy();
 
       record.setReference('image_file_id', imageFile);
@@ -91,9 +100,9 @@ describe('transientReferences', function() {
       imageFiles.add(imageFile);
       record.setReference('image_file_id', imageFile);
       record.on('change', function() {
-        imageFileFromCollection = imageFiles.get(5);
+        imageFileFromCollection = imageFiles.getByPermaId(5);
       });
-      imageFile.set('id', 5);
+      imageFile.set('perma_id', 5);
 
       expect(imageFileFromCollection).to.equal(imageFile);
     });

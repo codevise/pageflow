@@ -11,7 +11,7 @@ pageflow.transientReferences = {
     }
 
     return this.transientReferences[attribute] ||
-      collection.get(this.get(attribute));
+      collection.getByPermaId(this.get(attribute));
   },
 
   setReference: function(attribute, record) {
@@ -32,15 +32,15 @@ pageflow.transientReferences = {
       this._setIdOnceSynced(attribute, record);
     }
     else {
-      this.set(attribute, record.id);
+      this.set(attribute, record.get('perma_id'));
     }
   },
 
   _setIdOnceSynced: function(attribute, record) {
-    record.once('change:id', function() {
+    record.once('change:perma_id', function() {
       this._onceRecordCanBeFoundInCollection(record, function() {
         delete this.transientReferences[attribute];
-        this.set(attribute, record.id);
+        this.set(attribute, record.get('perma_id'));
       });
     }, this);
   },
@@ -73,7 +73,7 @@ pageflow.transientReferences = {
 
   _cleanUpSaveListener: function(attribute) {
     if (this.transientReferences[attribute]) {
-      this.stopListening(this.transientReferences[attribute], 'change:id');
+      this.stopListening(this.transientReferences[attribute], 'change:perma_id');
       delete this.transientReferences[attribute];
     }
   },

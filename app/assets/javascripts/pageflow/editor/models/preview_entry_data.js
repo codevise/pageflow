@@ -10,8 +10,8 @@ pageflow.PreviewEntryData = pageflow.EntryData.extend({
     return this.entry.getTheme().get(name);
   },
 
-  getFile: function(collectionName, id) {
-    var file = this.entry.getFileCollection(collectionName).get(id);
+  getFile: function(collectionName, permaId) {
+    var file = this.entry.getFileCollection(collectionName).getByPermaId(permaId);
     return file && file.attributes;
   },
 
