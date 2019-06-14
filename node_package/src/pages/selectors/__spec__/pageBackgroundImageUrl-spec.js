@@ -10,7 +10,7 @@ describe('pageBackgroundImageUrl', () => {
   it('returns url of image file thumbnail candidiate', () => {
     const page = {
       type: 'image',
-      backgroundImageId: 10
+      backgroundImageId: 100
     };
     const state = sample({
       pageTypes: {
@@ -24,7 +24,7 @@ describe('pageBackgroundImageUrl', () => {
         }
       },
       files: {
-        'image_files': [{id: 10, variants: ['medium']}]
+        'image_files': [{id: 10, perma_id: 100, variants: ['medium']}]
       },
       fileUrlTemplates: {
         'image_files': {
@@ -41,7 +41,7 @@ describe('pageBackgroundImageUrl', () => {
   it('returns poster url of video file thumbnail candidiate', () => {
     const page = {
       type: 'video',
-      videoId: 10
+      videoId: 100
     };
     const state = sample({
       pageTypes: {
@@ -55,7 +55,7 @@ describe('pageBackgroundImageUrl', () => {
         }
       },
       files: {
-        'video_files': [{id: 10, variants: ['poster_medium']}]
+        'video_files': [{id: 10, perma_id: 100, variants: ['poster_medium']}]
       },
       fileUrlTemplates: {
         'video_files': {

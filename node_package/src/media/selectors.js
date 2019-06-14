@@ -58,7 +58,7 @@ export function textTracks({file, defaultTextTrackFileId = () => {}}) {
 function autoTextTrackFile(textTrackFiles, defaultTextTrackFileId, locale, volume) {
   if (defaultTextTrackFileId) {
     const defaultTextTrackFile = textTrackFiles.find(textTrackFile =>
-      textTrackFile.id == defaultTextTrackFileId
+      textTrackFile.permaId == defaultTextTrackFileId
     );
 
     if (defaultTextTrackFile) {
