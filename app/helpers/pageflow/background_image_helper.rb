@@ -1,5 +1,7 @@
 module Pageflow
   module BackgroundImageHelper
+    include RevisionFileHelper
+
     def background_image_div(configuration, property_base_name, options = {})
       Div.new(self, configuration, property_base_name, options).render
     end
@@ -9,12 +11,12 @@ module Pageflow
     end
 
     def background_image_tag(image_id, options = {})
-      image = ImageFile.find_by_id(image_id)
-      if image&.ready?
-        options = options.merge(:'data-src' => image.attachment.url(:medium))
-        options = options.merge(:'data-printsrc' => image.attachment.url(:print))
-        image_tag('', options)
-      end
+      image = find_file_in_entry(ImageFile, image_id)
+      return unless image&.ready?
+
+      options = options.merge('data-src': image.attachment.url(:medium))
+      options = options.merge('data-printsrc': image.attachment.url(:print))
+      image_tag('', options)
     end
 
     def background_image_lazy_loading_css_class(prefix, model)
@@ -25,7 +27,7 @@ module Pageflow
     class Div
       attr_reader :configuration, :property_base_name, :options
 
-      delegate :content_tag, :to => :@template
+      delegate :content_tag, to: :@template
 
       def initialize(template, configuration, property_base_name, options)
         @template = template
@@ -35,7 +37,7 @@ module Pageflow
       end
 
       def render
-        content_tag(:div, '', :class => css_class, :style => inline_style, :data => data_attributes)
+        content_tag(:div, '', class: css_class, style: inline_style, data: data_attributes)
       end
 
       protected
@@ -80,7 +82,7 @@ module Pageflow
     class DivWithSizeAttributes < Div
       def data_attributes
         if file
-          super.merge(:width => file.width, :height => file.height)
+          super.merge(width: file.width, height: file.height)
         else
           super
         end

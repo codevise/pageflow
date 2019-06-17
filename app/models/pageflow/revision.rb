@@ -93,6 +93,12 @@ module Pageflow
       UsedFile.new(file)
     end
 
+    def find_file_by_id(model, id)
+      file = files(model).find_by(id: id)
+      return unless file
+      UsedFile.new(file)
+    end
+
     def share_providers
       self[:share_providers] || entry.theming.default_share_providers
     end
