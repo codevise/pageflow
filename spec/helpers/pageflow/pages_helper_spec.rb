@@ -1,7 +1,10 @@
 require 'spec_helper'
+require 'pageflow/revision_file_test_helper'
 
 module Pageflow
   describe PagesHelper do
+    include RevisionFileTestHelper
+
     describe '#render_page_template' do
       let(:page_type_class) do
         Class.new(Pageflow::PageType) do
@@ -128,6 +131,8 @@ module Pageflow
 
       it 'renders header, print image and page text' do
         image_file = create(:image_file)
+        entry_has_file(image_file)
+
         page = build(:page, configuration: {
                        'background_image_id' => image_file.id,
                        'title' => 'Title',
@@ -165,6 +170,8 @@ module Pageflow
 
       it 'renders img tag' do
         image_file = create(:image_file)
+        entry_has_file(image_file)
+
         page = build(:page, configuration: {
                        'background_image_id' => image_file.id
                      })

@@ -1,5 +1,7 @@
 module Pageflow
   module VideoFilesHelper
+    include RevisionFileHelper
+
     def mobile_poster_image_div(config = {})
       classes = ['background', 'background_image']
       position = {x: 50, y: 50}
@@ -25,9 +27,9 @@ module Pageflow
                   style: "background-position: #{position[:x]}% #{position[:y]}%;")
     end
 
-    def poster_image_tag(video_id, poster_image_id, options = {})
-      video_file = VideoFile.find_by_id(video_id)
-      poster = ImageFile.find_by_id(poster_image_id)
+    def poster_image_tag(video_id, poster_image_id = nil, options = {})
+      video_file = find_file_in_entry(VideoFile, video_id)
+      poster = poster_image_id.present? ? find_file_in_entry(ImageFile, poster_image_id) : nil
 
       if poster&.ready?
         options = options.merge('data-src' => poster.attachment.url(:medium))
@@ -53,8 +55,10 @@ module Pageflow
       options.reverse_merge! defaults
       url_options = {unique_id: options.delete(:unique_id)}
 
-      poster = ImageFile.find_by_id(options.delete(:poster_image_id))
-      mobile_poster = ImageFile.find_by_id(options.delete(:mobile_poster_image_id))
+      poster_image_id = options.delete(:poster_image_id)
+      poster = poster_image_id.present? ? find_file_in_entry(ImageFile, poster_image_id) : nil
+      mobile_poster_image_id = options.delete(:mobile_poster_image_id)
+      mobile_poster = mobile_poster_image_id.present? ? find_file_in_entry(ImageFile, mobile_poster_image_id) : nil
 
       options[:data] = {}
 
@@ -88,7 +92,7 @@ module Pageflow
     end
 
     def video_file_script_tag(video_id, options = {})
-      video_file = VideoFile.find_by_id(video_id)
+      video_file = find_file_in_entry(VideoFile, video_id)
 
       script_tag_data = {template: 'video'}
 
@@ -104,11 +108,12 @@ module Pageflow
     end
 
     def video_file_non_js_link(entry, video_file_id)
-      if (video_file = VideoFile.find_by_id(video_file_id))
-        link_to(t('pageflow.public.play_video'),
-                short_video_file_path(entry, video_file),
-                class: 'hint')
-      end
+      video_file = find_file_in_entry(VideoFile, video_file_id)
+      return unless video_file
+
+      link_to(t('pageflow.public.play_video'),
+              short_video_file_path(entry, video_file),
+              class: 'hint')
     end
 
     def video_file_sources(video_file, options = {})

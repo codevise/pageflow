@@ -1,7 +1,10 @@
 require 'spec_helper'
+require 'pageflow/revision_file_test_helper'
 
 module Pageflow
   describe SocialShareHelper do
+    include RevisionFileTestHelper
+
     describe '#social_share_entry_url' do
       it 'returns share_url if present' do
         entry = create(:entry, :published, published_revision_attributes: {
@@ -131,64 +134,65 @@ module Pageflow
     end
 
     describe '#social_share_entry_image_tags', stub_paperclip: true do
-      before :each do
-        @entry = create(:entry, :published)
-        @image1 = create(:image_file, entry: @entry)
-        @image2 = create(:image_file, entry: @entry)
-        @image3 = create(:image_file, entry: @entry)
-      end
-
       it 'renders share image meta tags if share image was chosen' do
-        @entry.published_revision.share_image_id = @image1.id
-        published_entry = PublishedEntry.new(@entry)
+        @entry = PublishedEntry.new(create(:entry, :published))
+        image_file = create(:used_file, model: :image_file, revision: @entry.revision)
+        @entry.revision.share_image_id = image_file.id
 
-        html = helper.social_share_entry_image_tags(published_entry)
+        html = helper.social_share_entry_image_tags(@entry)
 
-        expect(html).to have_css("meta[content=\"#{@image1.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
-        expect(html).to have_css("meta[content=\"#{@image1.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]", visible: false, count: 1)
+        expect(html).to have_css("meta[content=\"#{image_file.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
+        expect(html).to have_css("meta[content=\"#{image_file.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]", visible: false, count: 1)
       end
 
       it 'renders up to three open graph image meta tags for page thumbnails' do
-        published_entry = PublishedEntry.new(@entry)
-        storyline = create(:storyline, revision: @entry.published_revision)
+        @entry = PublishedEntry.new(create(:entry, :published))
+        image_file1 = create(:used_file, model: :image_file, revision: @entry.revision)
+        image_file2 = create(:used_file, model: :image_file, revision: @entry.revision)
+        image_file3 = create(:used_file, model: :image_file, revision: @entry.revision)
+        storyline = create(:storyline, revision: @entry.revision)
         chapter = create(:chapter, storyline: storyline)
-        create(:page, configuration: { thumbnail_image_id: @image1.id }, chapter: chapter)
-        create(:page, configuration: { thumbnail_image_id: @image2.id }, chapter: chapter)
-        create(:page, configuration: { thumbnail_image_id: @image3.id }, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file1.id}, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file2.id}, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file3.id}, chapter: chapter)
 
-        html = helper.social_share_entry_image_tags(published_entry)
+        html = helper.social_share_entry_image_tags(@entry)
 
-        expect(html).to have_css("meta[content=\"#{@image1.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
-        expect(html).to have_css("meta[content=\"#{@image2.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
-        expect(html).to have_css("meta[content=\"#{@image3.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
+        expect(html).to have_css("meta[content=\"#{image_file1.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
+        expect(html).to have_css("meta[content=\"#{image_file2.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
+        expect(html).to have_css("meta[content=\"#{image_file3.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
         expect(html).to have_css('meta[property="og:image"]', visible: false, maximum: 3)
       end
 
       it 'renders one twitter image meta tag with first page thumbnail' do
-        published_entry = PublishedEntry.new(@entry)
-        storyline = create(:storyline, revision: @entry.published_revision)
+        @entry = PublishedEntry.new(create(:entry, :published))
+        image_file1 = create(:used_file, model: :image_file, revision: @entry.revision)
+        image_file2 = create(:used_file, model: :image_file, revision: @entry.revision)
+        storyline = create(:storyline, revision: @entry.revision)
         chapter = create(:chapter, storyline: storyline)
-        create(:page, configuration: { thumbnail_image_id: @image1.id }, chapter: chapter)
-        create(:page, configuration: { thumbnail_image_id: @image2.id }, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file1.id}, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file2.id}, chapter: chapter)
 
-        html = helper.social_share_entry_image_tags(published_entry)
+        html = helper.social_share_entry_image_tags(@entry)
 
-        expect(html).to have_css("meta[content=\"#{@image1.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]", visible: false)
+        expect(html).to have_css("meta[content=\"#{image_file1.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]", visible: false)
         expect(html).to have_css('meta[name="twitter:image:src"]', visible: false, count: 1)
       end
 
       it 'falls back to page thumbnails if share image references missing image' do
-        @entry.published_revision.share_image_id = @image1.id
-        published_entry = PublishedEntry.new(@entry)
-        storyline = create(:storyline, revision: @entry.published_revision)
+        @entry = PublishedEntry.new(create(:entry, :published))
+        image_file1 = create(:used_file, model: :image_file, revision: @entry.revision)
+        image_file2 = create(:used_file, model: :image_file, revision: @entry.revision)
+        storyline = create(:storyline, revision: @entry.revision)
         chapter = create(:chapter, storyline: storyline)
-        create(:page, configuration: {thumbnail_image_id: @image2.id}, chapter: chapter)
+        create(:page, configuration: {thumbnail_image_id: image_file2.id}, chapter: chapter)
 
-        @image1.destroy
-        html = helper.social_share_entry_image_tags(published_entry)
+        @entry.revision.share_image_id = image_file1.id
+        image_file1.destroy
+        html = helper.social_share_entry_image_tags(@entry)
 
         expect(html).to have_css(<<-END.strip, visible: false, count: 1)
-          meta[content="#{@image2.thumbnail_url(:medium)}"][property="og:image"]
+          meta[content="#{image_file2.thumbnail_url(:medium)}"][property="og:image"]
         END
       end
     end

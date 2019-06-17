@@ -1,7 +1,10 @@
 require 'spec_helper'
+require 'pageflow/revision_file_test_helper'
 
 module Pageflow
   describe VideoFilesHelper do
+    include RevisionFileTestHelper
+
     describe '#mobile_poster_image_div' do
       it 'has default css classes' do
         html = helper.mobile_poster_image_div
@@ -82,7 +85,10 @@ module Pageflow
       context 'with separate poster image' do
         it 'includes the poster image url' do
           video_file = create(:video_file)
+          entry_has_file(video_file)
+
           poster_image = create(:image_file)
+          entry_has_file(poster_image)
 
           html = helper.poster_image_tag(video_file.id, poster_image.id)
 
@@ -94,8 +100,9 @@ module Pageflow
       context 'with unknown poster image id' do
         it 'includes the video file poster url' do
           video_file = create(:video_file)
+          entry_has_file(video_file)
 
-          html = helper.poster_image_tag(video_file.id, 'unknown')
+          html = helper.poster_image_tag(video_file.id, nil)
 
           expect(html).to include(video_file.poster.url(:medium))
           expect(html).to include(video_file.poster.url(:print))
@@ -157,6 +164,7 @@ module Pageflow
       it 'sets data-poster and data-large-poster attribute by custom poster image' do
         video_file = build(:video_file)
         image_file = create(:image_file)
+        entry_has_file(image_file)
 
         html = helper.video_file_video_tag(video_file, poster_image_id: image_file.id)
 
@@ -167,6 +175,7 @@ module Pageflow
       it 'sets data-mobile-poster and data-mobile-large-poster attribute by custom mobile image' do
         video_file = build(:video_file)
         image_file = create(:image_file)
+        entry_has_file(image_file)
 
         html = helper.video_file_video_tag(video_file, mobile_poster_image_id: image_file.id)
 
@@ -186,6 +195,7 @@ module Pageflow
     describe '#video_file_script_tag' do
       it 'renders script tag containing video tag html' do
         video_file = create(:video_file)
+        entry_has_file(video_file)
 
         html = helper.video_file_script_tag(video_file.id)
 
@@ -194,6 +204,7 @@ module Pageflow
 
       it 'sets data-template attribute' do
         video_file = create(:video_file)
+        entry_has_file(video_file)
 
         html = helper.video_file_script_tag(video_file.id)
 
@@ -202,6 +213,7 @@ module Pageflow
 
       it 'sets width and height data attributes' do
         video_file = create(:video_file, width: 100, height: 50)
+        entry_has_file(video_file)
 
         html = helper.video_file_script_tag(video_file.id)
 
@@ -210,6 +222,7 @@ module Pageflow
 
       it 'passes options to video tag helper' do
         video_file = create(:video_file)
+        entry_has_file(video_file)
 
         html = helper.video_file_script_tag(video_file.id, controls: true)
 
@@ -221,6 +234,7 @@ module Pageflow
       it 'renders link to short video file path' do
         entry = create(:entry)
         video_file = create(:video_file, id: 100)
+        entry_has_file(video_file)
 
         expect(helper).to receive(:short_video_file_path).with(entry, video_file).and_return('/video')
 
