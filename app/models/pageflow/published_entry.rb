@@ -54,8 +54,14 @@ module Pageflow
 
     def thumbnail_file
       share_image_file ||
-        pages.first.try(:thumbnail_file) ||
+        page_thumbnail_file(pages.first) ||
         PositionedFile.null
+    end
+
+    def page_thumbnail_file(page)
+      return unless page.present?
+      ThumbnailFileResolver.new(self, page.page_type.thumbnail_candidates, page.configuration)
+                           .find_thumbnail
     end
 
     def self.find(id, scope = Entry)
@@ -98,7 +104,7 @@ module Pageflow
     end
 
     def share_image_file
-      PositionedFile.wrap(ImageFile.find_by_id(share_image_id), share_image_x, share_image_y)
+      PositionedFile.wrap(find_file_by_perma_id(ImageFile, share_image_id), share_image_x, share_image_y)
     end
   end
 end

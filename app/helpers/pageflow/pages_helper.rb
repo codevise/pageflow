@@ -88,7 +88,16 @@ module Pageflow
     end
 
     def page_thumbnail_image_class(page, hero)
-      file_thumbnail_css_class(page.thumbnail_file, hero ? :link_thumbnail_large : :link_thumbnail)
+      file_thumbnail_css_class(page_thumbnail_file(page), hero ? :link_thumbnail_large : :link_thumbnail)
+    end
+
+    def page_thumbnail_url(page, *args)
+      page_thumbnail_file(page).thumbnail_url(*args)
+    end
+
+    def page_thumbnail_file(page)
+      ThumbnailFileResolver.new(@entry, page.page_type.thumbnail_candidates, page.configuration)
+                           .find_thumbnail
     end
   end
 end

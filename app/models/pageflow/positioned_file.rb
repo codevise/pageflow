@@ -13,7 +13,8 @@ module Pageflow
     def ==(other)
       super(other) ||
         other == file ||
-        (other.is_a?(PositionedFile) && other.file == file)
+        (other.is_a?(PositionedFile) && other.file == file) ||
+        (other.class == file.class && other.id == file.id)
     end
 
     def to_model

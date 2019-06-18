@@ -108,8 +108,9 @@ module Pageflow
       before { helper.extend(FileThumbnailsHelper) }
 
       it 'returns file_thumbnail_css_class of thumbnail_file of page' do
-        image_file = create(:image_file)
-        page = build(:page, template: 'background_image', configuration: {'thumbnail_image_id' => image_file.id})
+        @entry = PublishedEntry.new(create(:entry, :published))
+        image_file = create(:used_file, model: :image_file, revision: @entry.revision)
+        page = build(:page, template: 'background_image', configuration: {'thumbnail_image_id' => image_file.perma_id})
 
         css_class = helper.page_thumbnail_image_class(page, false)
 
@@ -117,8 +118,9 @@ module Pageflow
       end
 
       it 'returns large variant for hero' do
-        image_file = create(:image_file)
-        page = build(:page, template: 'background_image', configuration: {'thumbnail_image_id' => image_file.id})
+        @entry = PublishedEntry.new(create(:entry, :published))
+        image_file = create(:used_file, model: :image_file, revision: @entry.revision)
+        page = build(:page, template: 'background_image', configuration: {'thumbnail_image_id' => image_file.perma_id})
 
         css_class = helper.page_thumbnail_image_class(page, true)
 

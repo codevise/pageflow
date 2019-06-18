@@ -16,14 +16,6 @@ module Pageflow
       configuration['title'].presence || configuration['additional_title']
     end
 
-    def thumbnail_url(*args)
-      thumbnail_file.thumbnail_url(*args)
-    end
-
-    def thumbnail_file
-      ThumbnailFileResolver.new(page_type.thumbnail_candidates, configuration).find
-    end
-
     def page_type
       Pageflow.config.page_types.find_by_name!(template)
     end

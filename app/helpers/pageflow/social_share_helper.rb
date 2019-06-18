@@ -1,6 +1,7 @@
 module Pageflow
   module SocialShareHelper
     include EntriesHelper
+    include PagesHelper
     include RevisionFileHelper
 
     def social_share_meta_tags_for(target)
@@ -63,7 +64,7 @@ module Pageflow
           if image_urls.size >= 4
             break
           else
-            image_urls << page.thumbnail_url(:medium)
+            image_urls << page_thumbnail_url(page, :medium)
             image_urls.uniq!
           end
         end
