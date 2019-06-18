@@ -1843,6 +1843,8 @@ en:
         inputs:
           file_input_view:
             none: "(none)"
+          json_input_view:
+            invalid: Invalid JSON data.
           proxy_url_input_view:
             http_error: The given URL could not be fetched. (The server answered with a HTTP status code ' %{status}')
             url_validation: Checking URL...

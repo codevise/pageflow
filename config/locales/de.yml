@@ -1868,6 +1868,8 @@ de:
         inputs:
           file_input_view:
             none: "(Kein)"
+          json_input_view:
+            invalid: Ungültige JSON Daten.
           proxy_url_input_view:
             http_error: Die URL konnte nicht erfolgreich abgerufen werden (Der Server antwortete mit HTTP Status Code ' %{status}')
             url_validation: Prüfe Erreichbarkeit der URL...

@@ -1,7 +1,0 @@
-de:
-  pageflow:
-    ui:
-      views:
-        inputs:
-          json_input_view:
-            invalid: "Ungültige JSON Daten."
