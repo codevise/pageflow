@@ -132,11 +132,11 @@ module Pageflow
       before { helper.extend(BackgroundImageHelper) }
 
       it 'renders header, print image and page text' do
-        image_file = create(:image_file)
-        entry_has_file(image_file)
+        @entry = PublishedEntry.new(create(:entry, :published))
+        image_file = create(:used_file, model: :image_file, revision: @entry.revision)
 
         page = build(:page, configuration: {
-                       'background_image_id' => image_file.id,
+                       'background_image_id' => image_file.perma_id,
                        'title' => 'Title',
                        'tagline' => 'Tagline',
                        'subtitle' => 'Subtitle'
@@ -171,11 +171,11 @@ module Pageflow
       before { helper.extend(BackgroundImageHelper) }
 
       it 'renders img tag' do
-        image_file = create(:image_file)
-        entry_has_file(image_file)
+        @entry = PublishedEntry.new(create(:entry, :published))
+        image_file = create(:used_file, model: :image_file, revision: @entry.revision)
 
         page = build(:page, configuration: {
-                       'background_image_id' => image_file.id
+                       'background_image_id' => image_file.perma_id
                      })
 
         html = helper.page_print_image(page)
