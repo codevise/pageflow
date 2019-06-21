@@ -1,6 +1,6 @@
 module Pageflow
   class ImageFile < ApplicationRecord
-    include HostedFile
+    include UploadableFile
     include ProcessedFileStateMachine
 
     def attachment_styles(attachment)

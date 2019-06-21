@@ -1,4 +1,4 @@
-pageflow.HostedFile = pageflow.UploadedFile.extend({
+pageflow.UploadableFile = pageflow.UploadedFile.extend({
   stages: function() {
     return [
       {

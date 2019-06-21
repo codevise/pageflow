@@ -1,6 +1,6 @@
 module Pageflow
   class AudioFile < ApplicationRecord
-    include HostedFile
+    include UploadableFile
     include EncodedFileStateMachine
 
     belongs_to :confirmed_by, class_name: 'User', optional: true

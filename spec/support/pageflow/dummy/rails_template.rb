@@ -58,9 +58,12 @@ END
 
 # Add required files for test theme
 
-copy_file('test_theme.scss', 'app/assets/stylesheets/pageflow/themes/test_theme.scss')
-copy_file('test_theme_preview.png', 'app/assets/images/pageflow/themes/test_theme/preview.png')
-copy_file('test_theme_preview.png', 'app/assets/images/pageflow/themes/test_theme/preview_thumbnail.png')
+copy_file('test_theme.scss',
+          'app/assets/stylesheets/pageflow/themes/test_theme.scss')
+copy_file('test_theme_preview.png',
+          'app/assets/images/pageflow/themes/test_theme/preview.png')
+copy_file('test_theme_preview.png',
+          'app/assets/images/pageflow/themes/test_theme/preview_thumbnail.png')
 
 # Normally theme stylesheets are added to the precompile list
 # automatically. Since the test_theme is not yet registered when the
@@ -72,8 +75,11 @@ END
 
 # Create database tables for fake hosted files and revision components.
 
-copy_file('create_test_hosted_file.rb', 'db/migrate/00000000000000_create_test_hosted_file.rb')
-copy_file('create_test_revision_component.rb', 'db/migrate/00000000000001_create_test_revision_component.rb')
-copy_file('add_custom_fields.rb', 'db/migrate/99990000000000_add_custom_fields.rb')
+copy_file('create_test_uploadable_file.rb',
+          'db/migrate/00000000000000_create_test_uploadable_file.rb')
+copy_file('create_test_revision_component.rb',
+          'db/migrate/00000000000001_create_test_revision_component.rb')
+copy_file('add_custom_fields.rb',
+          'db/migrate/99990000000000_add_custom_fields.rb')
 
 rake 'db:migrate db:test:load', env: 'development'

@@ -17,18 +17,18 @@ associated with the new type of file:
     module Pageflow
       module Panorama
         class Package < ActiveRecord::Base
-          include HostedFile
+          include UploadableFile
         end
       end
     end
 
-Including the `Pageflow::HostedFile` module provides the base
+Including the `Pageflow::UploadableFile` module provides the base
 functionality of associating files with entries and handling storage
 of uploaded files. In the corresponding migration you need to provide
 the required columns for the model.
 
     # db/migrate/xxxxx_create_package.rb
-    class CreateTestHostedFile < ActiveRecord::Migration
+    class CreateTestUploadableFile < ActiveRecord::Migration
       def change
         create_table :pageflow_panorama_packages do |t|
           t.belongs_to(:entry, index: true)
@@ -80,10 +80,10 @@ whenever the page type is registered in a Pageflow application.
 
 Now it is time for the editor integration. First define a Backbone
 model to handle client side persistence for the new type of
-files. Simply extend `pageflow.HostedFile`:
+files. Simply extend `pageflow.UploadableFile`:
 
     # app/assets/javascripts/pageflow/panorama/editor/models/package.js
-    pageflow.panorama.Package = pageflow.HostedFile.extend({
+    pageflow.panorama.Package = pageflow.UploadableFile.extend({
     });
 
 Just like in the server side code we need to register the newly
@@ -164,10 +164,10 @@ can also create a custom view by extending
 
 ## Custom Processing Stages
 
-The `HostedFile` mixin defines a state machine which captures the
+The `UploadableFile` mixin defines a state machine which captures the
 process of storing an attachment on S3. Often though, additional
 processing steps are required: image files need to be resized, videos
-require transcoding. The `HostedFile` mixin therefore provides a way
+require transcoding. The `UploadableFile` mixin therefore provides a way
 to extend the state machine associated with a file via the
 `processing_state_machine` method. The basic state machine DSL is
 defined by the
@@ -187,7 +187,7 @@ a custom Resque job provided by the `pageflow-panorama` gem.
     module Pageflow
       module Panorama
         class Package < ActiveRecord::Base
-          include HostedFile
+          include UploadableFile
 
           processing_state_machine do
             state 'unpacking'
@@ -196,10 +196,6 @@ a custom Resque job provided by the `pageflow-panorama` gem.
 
             event :process do
               transition any => 'unpacking'
-            end
-
-            event :retry do
-              transition 'unpacking_failed' => 'unpacking'
             end
 
             job UnpackPackageJob do
@@ -217,7 +213,7 @@ will be visualized in the Pageflow editor. Moreover, Pageflow needs to
 know when a file shall be regarded as ready.
 
     # app/assets/javascripts/pageflow/panorama/editor/models/package.js
-    pageflow.panorama.Package = pageflow.HostedFile.extend({
+    pageflow.panorama.Package = pageflow.UploadableFile.extend({
       processingStages: [
         {
           name: 'unpacking',
@@ -233,7 +229,7 @@ There is a special SCSS mixin which can be used to associate a
 pictogram with the processing stage:
 
     # app/assets/stylesheets/pageflow/panorama/editor.css.scss
-    @include pageflow-hosted-file-stage('unpacking') {
+    @include pageflow-uploadable-file-stage('unpacking') {
       @include archive-icon;
     }
 
@@ -253,7 +249,7 @@ option to ensure all required image sizes will be generated.
     module Pageflow
       module Panorama
         class Package < ActiveRecord::Base
-          include HostedFile
+          include UploadableFile
 
           has_attached_file(:thumbnail, Pageflow.config.paperclip_s3_default_options
                               .merge(default_url: ':pageflow_placeholder',

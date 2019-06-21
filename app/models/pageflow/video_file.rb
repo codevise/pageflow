@@ -1,6 +1,6 @@
 module Pageflow
   class VideoFile < ApplicationRecord
-    include HostedFile
+    include UploadableFile
     include EncodedFileStateMachine
     include OutputSource
 

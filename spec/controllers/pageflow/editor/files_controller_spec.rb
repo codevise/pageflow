@@ -110,7 +110,7 @@ module Pageflow
       it 'allows to set custom attribute defined by file type' do
         pageflow_configure do |config|
           TestFileType.register(config,
-                                model: Pageflow::TestHostedFile,
+                                model: Pageflow::TestUploadableFile,
                                 custom_attributes: [:custom])
         end
 
@@ -122,22 +122,22 @@ module Pageflow
         post(:create,
              params: {
                entry_id: entry,
-               collection_name: 'pageflow_test_hosted_files',
-               test_hosted_file: {
+               collection_name: 'pageflow_test_uploadable_files',
+               test_uploadable_file: {
                  file_name: 'image.jpg',
                  custom: 'some value'
                }
              },
              format: 'json')
 
-        file = entry.draft.find_files(Pageflow::TestHostedFile).last
+        file = entry.draft.find_files(Pageflow::TestUploadableFile).last
         expect(file.custom).to eq('some value')
       end
 
       it 'does not allow to set attribute not defined as custom attributes in file type' do
         pageflow_configure do |config|
           TestFileType.register(config,
-                                model: Pageflow::TestHostedFile)
+                                model: Pageflow::TestUploadableFile)
         end
 
         user = create(:user)
@@ -148,15 +148,15 @@ module Pageflow
         post(:create,
              params: {
                entry_id: entry,
-               collection_name: 'pageflow_test_hosted_files',
-               test_hosted_file: {
+               collection_name: 'pageflow_test_uploadable_files',
+               test_uploadable_file: {
                  file_name: 'image.jpg',
                  custom: 'some value'
                }
              },
              format: 'json')
 
-        file = entry.draft.find_files(Pageflow::TestHostedFile).last
+        file = entry.draft.find_files(Pageflow::TestUploadableFile).last
         expect(file.custom).to be_blank
       end
 
@@ -573,22 +573,22 @@ module Pageflow
       it 'does not allow updating custom attribute defined by file type' do
         pageflow_configure do |config|
           TestFileType.register(config,
-                                model: Pageflow::TestHostedFile,
+                                model: Pageflow::TestUploadableFile,
                                 custom_attributes: [:custom])
         end
 
         user = create(:user)
         entry = create(:entry, with_editor: user)
-        file = create(:hosted_file, used_in: entry.draft, custom: 'some value')
+        file = create(:uploadable_file, used_in: entry.draft, custom: 'some value')
 
         sign_in(user)
         acquire_edit_lock(user, entry)
         patch(:update,
               params: {
                 entry_id: entry,
-                collection_name: 'pageflow_test_hosted_files',
+                collection_name: 'pageflow_test_uploadable_files',
                 id: file,
-                test_hosted_file: {
+                test_uploadable_file: {
                   custom: 'updated'
                 }
               },

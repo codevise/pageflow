@@ -1,4 +1,4 @@
-pageflow.TextTrackFile = pageflow.HostedFile.extend({
+pageflow.TextTrackFile = pageflow.UploadableFile.extend({
   defaults: {
     configuration: {
       kind: 'captions'

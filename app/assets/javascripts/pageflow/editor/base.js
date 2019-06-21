@@ -18,7 +18,7 @@
 //= require_tree ./utils
 //= require_tree ./models/mixins
 //= require ./models/uploaded_file
-//= require ./models/hosted_file
+//= require ./models/uploadable_file
 //= require ./models/encoded_file
 //= require ./models/configuration
 //= require ./models/scaffold

@@ -1,6 +1,6 @@
-class CreateTestHostedFile < ActiveRecord::Migration[4.2]
+class CreateTestUploadableFile < ActiveRecord::Migration[4.2]
   def change
-    create_table :test_hosted_files do |t|
+    create_table :test_uploadable_files do |t|
       t.belongs_to(:entry, index: true)
       t.belongs_to(:uploader, index: true)
 

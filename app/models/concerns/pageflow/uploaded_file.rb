@@ -57,7 +57,7 @@ module Pageflow
     end
 
     def can_upload?
-      # Overwritten in HostedFile based on initial state_machine-state.
+      # Overwritten in UploadableFile based on initial state_machine-state.
       # Only true directly after creation.
       false
     end

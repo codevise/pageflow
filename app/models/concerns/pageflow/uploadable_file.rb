@@ -1,5 +1,5 @@
 module Pageflow
-  module HostedFile
+  module UploadableFile
     extend ActiveSupport::Concern
     include UploadedFile
 

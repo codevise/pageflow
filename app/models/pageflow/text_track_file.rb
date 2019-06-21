@@ -1,6 +1,6 @@
 module Pageflow
   class TextTrackFile < ApplicationRecord
-    include HostedFile
+    include UploadableFile
     include ProcessedFileStateMachine
 
     def attachment_styles(_attachment)
