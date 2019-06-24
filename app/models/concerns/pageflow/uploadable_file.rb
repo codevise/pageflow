@@ -1,7 +1,7 @@
 module Pageflow
   module UploadableFile
     extend ActiveSupport::Concern
-    include UploadedFile
+    include ReusableFile
 
     included do
       alias_attribute :file_name, :attachment_on_s3_file_name
@@ -36,6 +36,10 @@ module Pageflow
 
         event :process
       end
+    end
+
+    def direct_upload_config
+      Pageflow.config.paperclip_direct_upload_options.call(attachment)
     end
 
     def attachment

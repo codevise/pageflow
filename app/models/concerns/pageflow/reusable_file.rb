@@ -1,5 +1,5 @@
 module Pageflow
-  module UploadedFile
+  module ReusableFile
     extend ActiveSupport::Concern
 
     included do
@@ -60,10 +60,6 @@ module Pageflow
       # Overwritten in UploadableFile based on initial state_machine-state.
       # Only true directly after creation.
       false
-    end
-
-    def direct_upload_config
-      Pageflow.config.paperclip_direct_upload_options.call(attachment)
     end
   end
 end

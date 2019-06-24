@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Pageflow
-  describe UploadedFile do
+  describe ReusableFile do
     context 'nesting files' do
       describe 'parent_allows_type_for_nesting validation' do
         it 'returns invalid if nested type is unregistered with parent' do

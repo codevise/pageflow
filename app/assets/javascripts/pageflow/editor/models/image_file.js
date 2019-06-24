@@ -1,4 +1,4 @@
-pageflow.ImageFile = pageflow.UploadedFile.extend({
+pageflow.ImageFile = pageflow.ReusableFile.extend({
   stages: [
     {
       name: 'uploading',
