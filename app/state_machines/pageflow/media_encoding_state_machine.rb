@@ -1,5 +1,5 @@
 module Pageflow
-  module EncodedFileStateMachine
+  module MediaEncodingStateMachine
     extend ActiveSupport::Concern
 
     included do
@@ -15,13 +15,13 @@ module Pageflow
         state 'encoding_failed'
 
         event :process do
-          transition any => 'waiting_for_meta_data', :if => lambda { Pageflow.config.confirm_encoding_jobs }
+          transition any => 'waiting_for_meta_data', :if => lambda {Pageflow.config.confirm_encoding_jobs}
           transition any => 'waiting_for_encoding'
         end
 
-        event :retry do
-          transition 'encoding_failed' => 'waiting_for_confirmation', :if => lambda { Pageflow.config.confirm_encoding_jobs }
-          transition 'encoded' => 'waiting_for_confirmation', :if => lambda { Pageflow.config.confirm_encoding_jobs }
+        event :retry_encoding do
+          transition 'encoding_failed' => 'waiting_for_confirmation', :if => lambda {Pageflow.config.confirm_encoding_jobs}
+          transition 'encoded' => 'waiting_for_confirmation', :if => lambda {Pageflow.config.confirm_encoding_jobs}
 
           transition 'encoding_failed' => 'waiting_for_encoding'
           transition 'encoded' => 'waiting_for_encoding'
@@ -71,8 +71,9 @@ module Pageflow
       end
     end
 
+    # UploadableFile-overrides
     def retryable?
-      can_retry? && !encoded?
+      can_retry_encoding? && !encoded?
     end
 
     def ready?
@@ -84,5 +85,10 @@ module Pageflow
         fetching_meta_data_failed? ||
         encoding_failed?
     end
+
+    def retry!
+      retry_encoding!
+    end
   end
 end
+

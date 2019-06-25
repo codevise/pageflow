@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Pageflow
   describe VideoFile do
-    include_examples 'encoded file state machine', :video_file
+    include_examples 'media encoding state machine', :video_file
 
     describe '#meta_data_attributes=' do
       it 'assigns format, duration_in_ms, width and height' do

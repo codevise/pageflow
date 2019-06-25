@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-shared_examples 'encoded file state machine' do |model|
+shared_examples 'media encoding state machine' do |model|
   let(:zencoder_options) do
     Pageflow.config.zencoder_options
   end
@@ -17,7 +17,7 @@ shared_examples 'encoded file state machine' do |model|
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
-        file.publish
+        file.publish!
 
         expect(Pageflow::ZencoderApi.instance).to have_received(:create_job).with(file.reload.output_definition)
       end
@@ -27,7 +27,7 @@ shared_examples 'encoded file state machine' do |model|
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
 
-        file.publish
+        file.publish!
 
         expect(Pageflow::ZencoderApi.instance).to have_received(:get_info).with(file.reload.job_id).twice
       end
@@ -37,7 +37,7 @@ shared_examples 'encoded file state machine' do |model|
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
-        file.publish
+        file.publish!
 
         expect(file.reload.state).to eq('encoded')
       end
@@ -49,7 +49,7 @@ shared_examples 'encoded file state machine' do |model|
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
         Pageflow.config.hooks.on(:file_encoded, subscriber)
-        file.publish
+        file.publish!
 
         expect(subscriber).to have_received(:call).with({file: file})
       end
@@ -62,7 +62,7 @@ shared_examples 'encoded file state machine' do |model|
           allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished_but_failed)
 
           Pageflow.config.hooks.on(:file_encoding_failed, subscriber)
-          file.publish
+          file.publish!
 
           expect(subscriber).to have_received(:call).with({file: file})
         end
@@ -79,7 +79,7 @@ shared_examples 'encoded file state machine' do |model|
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
-        file.publish
+        file.publish!
 
         expect(Pageflow::ZencoderApi.instance).to have_received(:create_job).with(Pageflow::ZencoderMetaDataOutputDefinition.new(file.reload))
       end
@@ -89,7 +89,7 @@ shared_examples 'encoded file state machine' do |model|
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.once_pending_then_finished)
 
-        file.publish
+        file.publish!
 
         expect(Pageflow::ZencoderApi.instance).to have_received(:get_info).with(file.reload.job_id).twice
       end
@@ -99,7 +99,7 @@ shared_examples 'encoded file state machine' do |model|
 
         allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
-        file.publish
+        file.publish!
 
         expect(file.reload.state).to eq('waiting_for_confirmation')
       end

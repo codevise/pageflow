@@ -1,7 +1,7 @@
 module Pageflow
   class TextTrackFile < ApplicationRecord
     include UploadableFile
-    include ProcessedFileStateMachine
+    include ImageAndTextTrackProcessingStateMachine
 
     # used in paperclip initializer to interpolate the storage path
     # needs to be "processed_attachments" for text tracks for legacy reasons

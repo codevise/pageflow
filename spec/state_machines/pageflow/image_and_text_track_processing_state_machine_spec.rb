@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Pageflow
-  describe ProcessedFileStateMachine, perform_jobs: true do
+  describe ImageAndTextTrackProcessingStateMachine, perform_jobs: true do
     describe '#process event' do
       context 'for uploaded file' do
         it 'processes attachment' do
