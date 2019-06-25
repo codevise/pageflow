@@ -30,7 +30,7 @@ module Pageflow
         state 'uploaded'
         state 'uploading_failed'
 
-        event :publish do
+        event :file_uploaded do
           transition 'uploading' => 'uploaded'
         end
 
@@ -38,24 +38,41 @@ module Pageflow
       end
     end
 
-    def direct_upload_config
-      Pageflow.config.paperclip_direct_upload_options.call(attachment)
-    end
-
-    def attachment
-      attachment_on_s3
-    end
-
     def attachment=(value)
       self.attachment_on_s3 = value
     end
 
+    def direct_upload_config
+      Pageflow.config.paperclip_direct_upload_options.call(attachment)
+    end
+
+    # Overwritten if a file type wants to merge its attachments default_url into
+    # Pageflow.config.paperclip_s3_default_options.
+    # (See Pageflow::ImageFile for example)
     def attachment_default_url
       ''
     end
 
+    # Overwritten if a file type wants to add additional styles to
+    # Pageflow.config.paperclip_s3_default_options.
+    # (See Pageflow::ImageFile for example)
     def attachment_styles(_attachment)
       {}
+    end
+
+    # ReusableFile-overrides:
+    def url
+      if attachment.present?
+        attachment.url
+      end
+    end
+
+    def basename
+      File.basename(attachment.original_filename, '.*')
+    end
+
+    def attachment
+      attachment_on_s3
     end
 
     def can_upload?
@@ -73,19 +90,8 @@ module Pageflow
     def failed?
       uploading_failed?
     end
-
-    def basename
-      File.basename(attachment.original_filename, '.*')
-    end
-
-    def url
-      if attachment.present?
-        attachment.url
-      end
-    end
-
-    def original_url
-      url
+    def publish!
+      file_uploaded!
     end
 
     module ClassMethods

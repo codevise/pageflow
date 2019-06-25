@@ -56,10 +56,59 @@ module Pageflow
       "#{super}-#{state}"
     end
 
+
+    # The following are method defaults for file types that do not require processing/encoding.
+    # They are overwritten with default values in UploadableFile for files that are uploaded
+    # through the editor.
+
+    # Overwritten if a file type provides a default url for its file.
+    def url
+      ''
+    end
+
+    # Overwritten in case of a file type providing its original (unprocessed) file
+    # for download in the editor.
+    # Defaults to the default url of the file (see above)
+    def original_url
+      url
+    end
+
+    # Overwritten with the basename of the file.
+    def basename
+      'unused'
+    end
+
+    # Overwritten with the actual attachment of the file type.
+    # Unifies the handling of attachments throughout the codebase by relying on
+    # `attachment` always being present regardless of its actual name.
+    def attachment
+      require 'ostruct'
+      OpenStruct.new(original_file: 'unused')
+    end
+
+    # Overwritten in UploadableFile based on initial state_machine-state.
+    # Defaults to false for files that only use the ReusableFile module
     def can_upload?
-      # Overwritten in UploadableFile based on initial state_machine-state.
-      # Only true directly after creation.
       false
+    end
+
+    # Overwritten with the conditions that need to be fulfilled in order to `retry`
+    # whatever the file does (i.e. processing/transcoding).
+    def retryable?
+      raise 'Not implemented!'
+    end
+
+    # Overwritten with the conditions the need to be fulfilled in order to (re)use the file.
+    def ready?
+      raise 'Not implemented!'
+    end
+
+    # Gets called to trigger the `publish` event in the upload state machine of UploadableFile.
+    # Files that are not uploaded through the editor (and therefore not using the
+    # upload state machine of UploadableFile) can overwrite this method to trigger whatever
+    # the file does (i.e. processing/transcoding).
+    def publish!
+      raise 'Not implemented!'
     end
   end
 end
