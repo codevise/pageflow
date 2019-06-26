@@ -6,7 +6,8 @@ module Pageflow
     # must always be available in views using this helper, otherwise an exception is raised.
     #
     # When testing helpers which use the RevisionFileHelper to find their respective files,
-    # you can stub its functionality using the RevisionFileTestHelpers `entry_has_file`-method:
+    # you can stub its functionality by including the shared context
+    # "usage agnostic file association" and specifying `entry_has_file` for the file:
     #
     #     image_file = create(:image_file)
     #     entry_has_file(image_file)
