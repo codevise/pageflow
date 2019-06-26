@@ -51,26 +51,27 @@ class TitleLoadingSpinner extends React.Component {
   }
 
   render() {
-    const {editing, title, subtitle, entryTitle} = this.props;
+    const {editing, title, subtitle, entryTitle, invert} = this.props;
     const {hidden, animating} = this.state;
-
+    
+    
     if (editing || !hidden) {
       return (
-        <div className={classNames('title_loading_spinner', {'title_loading_spinner-fade': animating})}
+        <div className={classNames('title_loading_spinner', {'title_loading_spinner-fade': animating}, {'loading_spinner_invert': invert})}
              onAnimationEnd={(event) => this.hideOrLoop(event)}
              onTouchMove={preventScrollBouncing}
-             style={inlineStyle()}>
+             style={inlineStyle(invert)}>
           <div className="title_loading_spinner-logo" />
           <div className="title_loading_spinner-image"
                style={backgroundImageInlineStyles(this.props)} />
-          <div className="title_loading_spinner-titles">
+          <h3 className={classNames('title_loading_spinner-titles', {'loading_spinner_invert': invert})}>
             <div className="title_loading_spinner-title">
               {title || entryTitle}
             </div>
             <div className="title_loading_spinner-subtitle">
               {subtitle}
             </div>
-          </div>
+          </h3>
         </div>
       );
     }
@@ -80,7 +81,7 @@ class TitleLoadingSpinner extends React.Component {
   }
 }
 
-function inlineStyle() {
+function inlineStyle(invert = false) {
   return {
     position: 'absolute',
     top: 0,
@@ -88,7 +89,7 @@ function inlineStyle() {
     width: '100%',
     height: '100%',
     zIndex: 100,
-    backgroundColor: '#000'
+    backgroundColor: invert ? '#fff':'#000'
   };
 }
 
@@ -121,7 +122,8 @@ export function register() {
       }),
       entryTitle: entryAttribute('title'),
       title: widgetAttribute('title', {role: 'loading_spinner'}),
-      subtitle: widgetAttribute('subtitle', {role: 'loading_spinner'})
+      subtitle: widgetAttribute('subtitle', {role: 'loading_spinner'}),
+      invert: widgetAttribute('invert', {role: 'loading_spinner'})
     }))(TitleLoadingSpinner)
   });
 }
