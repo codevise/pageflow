@@ -138,7 +138,7 @@ shared_examples 'media encoding state machine' do |model|
     end
   end
 
-  describe '#retry event', perform_jobs: true, stub_paperclip: true do
+  describe '#retry_encoding event', perform_jobs: true, stub_paperclip: true do
     before do
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
@@ -171,7 +171,7 @@ shared_examples 'media encoding state machine' do |model|
 
           allow(Pageflow::ZencoderApi).to receive(:instance).and_return(ZencoderApiDouble.finished)
 
-          file.retry
+          file.retry!
 
           expect(file.reload.state).to eq('encoded')
         end
@@ -185,7 +185,7 @@ shared_examples 'media encoding state machine' do |model|
         it 'sets state to waiting_for_confirmation' do
           file = create(model, :encoding_failed)
 
-          file.retry
+          file.retry!
 
           expect(file.reload.state).to eq('waiting_for_confirmation')
         end

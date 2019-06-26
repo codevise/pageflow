@@ -103,10 +103,17 @@ module Pageflow
       raise 'Not implemented!'
     end
 
-    # Gets called to trigger the `publish` event in the upload state machine of UploadableFile.
+    # If the conditions in retryable? are met then this method specifies what should happen when
+    # a retry is requested, depending on the including class' processing state machine.
+    def retry!
+      raise 'Not implemented!'
+    end
+
+    # Gets called to trigger the `file_uploaded` event in the upload state machine of UploadableFile.
     # Files that are not uploaded through the editor (and therefore not using the
     # upload state machine of UploadableFile) can overwrite this method to trigger whatever
-    # the file does (i.e. processing/transcoding).
+    # the file does (i.e. processing/transcoding), depending on the including class'
+    # processing state machine.
     def publish!
       raise 'Not implemented!'
     end
