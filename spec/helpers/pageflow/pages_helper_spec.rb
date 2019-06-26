@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'pageflow/revision_file_test_helper'
+require 'shared_contexts/usage_agnostic_file_association'
 
 module Pageflow
   describe PagesHelper do
-    include RevisionFileTestHelper
+    include_context 'usage agnostic file association'
 
     describe '#render_page_template' do
       let(:page_type_class) do

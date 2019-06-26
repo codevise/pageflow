@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'pageflow/revision_file_test_helper'
+require 'shared_contexts/usage_agnostic_file_association'
 
 module Pageflow
   describe VideoFilesHelper do
-    include RevisionFileTestHelper
+    include_context 'usage agnostic file association'
 
     describe '#mobile_poster_image_div' do
       it 'has default css classes' do

@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'pageflow/revision_file_test_helper'
+require 'shared_contexts/usage_agnostic_file_association'
 
 module Pageflow
   describe AudioFilesHelper do
-    include RevisionFileTestHelper
+    include_context 'usage agnostic file association'
 
     describe '#audio_file_audio_tag' do
       it 'renders audio tag for audio file with sources' do
