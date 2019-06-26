@@ -10,6 +10,7 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
 
 .title_loading_spinner {
   $duration: 7s;
+  
 
   &:before {
     content: "";
@@ -53,15 +54,15 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
       content: "";
       display: block;
       width: 100px;
-      border-bottom: solid 2px #fff;
+      border-bottom: solid 2px;
       margin: 20px auto;
     }
 
     @include typography(
       $title-loading-spinner-title-typography,
       (
-        font-weight: bold,
-        font-size: 5.3em
+        font-weight: $page-header-title-font-weight,
+        font-size: $page-header-title-font-size
       )
     );
 
@@ -83,7 +84,8 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
     @include typography(
       $title-loading-spinner-subtitle-typography,
       (
-        font-size: 1.5em,
+        font-weight: $page-header-subtitle-font-weight,
+        font-size: $page-header-subtitle-font-size,
       )
     );
 
@@ -155,4 +157,9 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
       opacity: 0;
     }
   }
+}
+
+
+.loading_spinner_invert {
+  color: #000;
 }

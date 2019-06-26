@@ -14,6 +14,7 @@ pageflow.editor.widgetTypes.register('title_loading_spinner', {
           collection: 'image_files',
           fileSelectionHandler: 'widgetConfiguration'
         });
+        this.input('invert', pageflow.CheckBoxInputView);
       });
     }
   })

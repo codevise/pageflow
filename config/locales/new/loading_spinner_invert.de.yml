@@ -1,0 +1,5 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/widget:
+        invert: Farben invertieren
