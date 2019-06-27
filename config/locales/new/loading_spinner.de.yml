@@ -1,0 +1,19 @@
+de:
+  pageflow:
+    editor:
+      widgets:
+        attributes:
+          media_loading_spinner:
+            custom_background_image_id:
+              inline_help: Standardmäßig wird das Hintergrundbild der ersten Seite verwendet.
+              label: Hintegrundbild
+            remove_logo:
+              label: Logo entfernen
+      media_loading_spinner:
+        widget_type_info_box_text: Dies ist eine Vorschau der Lade-Ansicht von 'Bild'. Die Animation wird ausgeführt, während die Seite geladen wird.
+    media_loading_spinner:
+      widget_type_name: Bild Lade-Ansicht
+  activerecord:
+    attributes:
+      pageflow/widget:
+        invert: Farben invertieren

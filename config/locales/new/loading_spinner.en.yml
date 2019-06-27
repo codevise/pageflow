@@ -1,0 +1,19 @@
+en:
+  pageflow:
+    editor:
+      widgets:
+        attributes:
+          media_loading_spinner:
+            custom_background_image_id:
+              inline_help: By default, the background image of the first page is used.
+              label: Background Image
+            remove_logo:
+              label: Remove logo
+      media_loading_spinner:
+        widget_type_info_box_text: This is a preview of the 'Image' loading view. The animation runs while the page is loading.
+    media_loading_spinner:
+      widget_type_name: Image loading view
+  activerecord:
+    attributes:
+      pageflow/widget:
+        invert: Invert Color
