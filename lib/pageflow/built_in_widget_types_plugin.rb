@@ -10,7 +10,12 @@ module Pageflow
       end
 
       config.widget_types.register(Pageflow::BuiltInWidgetType.classic_loading_spinner,
-                                   default: true)
+                                   default: true,
+                                   default_configurations: {
+                                     blur_strength: 50,
+                                     remove_logo: true,
+                                     invert: false
+                                   })
 
       config.features.register('title_loading_spinner') do |feature_config|
         feature_config.widget_types.register(Pageflow::BuiltInWidgetType.title_loading_spinner)
