@@ -10,7 +10,7 @@ import {editingWidget, widgetAttribute} from 'widgets/selectors';
 import {file} from 'files/selectors';
 import {pageBackgroundImageUrl, firstPageAttribures} from 'pages/selectors';
 
-class TitleLoadingSpinner extends React.Component {
+export class TitleLoadingSpinner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -81,7 +81,7 @@ class TitleLoadingSpinner extends React.Component {
   }
 }
 
-function inlineStyle(invert = false) {
+export function inlineStyle(invert = false) {
   return {
     position: 'absolute',
     top: 0,
@@ -93,7 +93,7 @@ function inlineStyle(invert = false) {
   };
 }
 
-function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundImage}) {
+export function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundImage}) {
   const url = backgroundImage ? backgroundImage.urls.medium : firstPageBackgroundImageUrl;
 
   if (url) {
@@ -103,7 +103,7 @@ function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundIma
   }
 }
 
-function preventScrollBouncing(e) {
+export function preventScrollBouncing(e) {
   e.preventDefault();
 }
 
