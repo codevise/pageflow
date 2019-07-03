@@ -10,6 +10,9 @@ $page-header-title-max-width: 700px !default;
 /// Maximal width for right positioned headlines and content text.
 $page-content-position-right-max-width: 500px !default;
 
+/// Maximal width for center positioned headlines and content text.
+$page-content-position-center-max-width: $page-content-max-width !default;
+
 /// Min width the header title is supposed to have in a split layout
 /// (i.e. when the page has two columns and some kind of embed is
 /// displayed on the right) with text positioned on the left.
@@ -79,7 +82,12 @@ $page-content-width: 60% !default;
     }
   }
 
-  &.text_position_right {
+  // Not all page types support text position "center" so far. Make
+  // sure styles only apply to those that explicitly opt in by setting
+  // a class on their wrapper element.
+
+  &.text_position_right,
+  &.text_position_center .supports_text_position_center {
     .page_header-subtitle,
     .page_header-title,
     .page_header-tagline,
@@ -101,6 +109,16 @@ $page-content-width: 60% !default;
       @include mobile {
         width: 100%;
       }
+    }
+  }
+
+  &.text_position_center .supports_text_position_center {
+    .page_header-subtitle,
+    .page_header-title,
+    .page_header-tagline,
+    .paragraph {
+      @include margin-end(auto);
+      max-width: $page-content-position-center-max-width;
     }
   }
 }

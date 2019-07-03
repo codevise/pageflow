@@ -1,7 +1,7 @@
 pageflow.ConfigurationEditorView.register('background_image', {
   configure: function() {
     this.tab('general', function() {
-      this.group('general');
+      this.group('general', {supportsTextPositionCenter: true});
     });
 
     this.tab('files', function() {

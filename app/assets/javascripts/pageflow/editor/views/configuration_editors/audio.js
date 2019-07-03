@@ -1,7 +1,7 @@
 pageflow.ConfigurationEditorView.register('audio', {
   configure: function() {
     this.tab('general', function() {
-      this.group('general');
+      this.group('general', {supportsTextPositionCenter: true});
 
       this.input('additional_title', pageflow.TextInputView);
       this.input('additional_description', pageflow.TextAreaInputView, {size: 'short'});

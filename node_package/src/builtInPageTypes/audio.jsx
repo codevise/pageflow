@@ -22,7 +22,7 @@ function AudioPage(props) {
   const playerControlsVariant = props.page.audioPlayerControlsVariant;
 
   return (
-    <MediaPage className="audio_page"
+    <MediaPage className="audio_page supports_text_position_center"
                page={props.page}
                file={props.audioFile}
                playerState={props.playerState}

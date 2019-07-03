@@ -11,17 +11,29 @@ $page-shadow-inverted-color: #fff !default;
     @include shadow-start($page-shadow-color);
   }
 
-  &.invert {
-    .shadow {
-      @include shadow-start($page-shadow-inverted-color);
-    }
-  }
-
   &.text_position_right .shadow {
     @include shadow-end($page-shadow-color);
   }
 
-  &.invert.text_position_right .shadow {
-    @include shadow-end($page-shadow-inverted-color);
+  // Not all page types support text position "center" so far. Make
+  // sure styles only apply to those that explicitly opt in by setting
+  // a class on their wrapper element.
+
+  &.text_position_center .supports_text_position_center .shadow {
+    background: transparentize($page-shadow-color, 0.3);
+  }
+
+  &.invert {
+    .shadow {
+      @include shadow-start($page-shadow-inverted-color);
+    }
+
+    &.text_position_right .shadow {
+      @include shadow-end($page-shadow-inverted-color);
+    }
+
+    &.text_position_center .supports_text_position_center .shadow {
+      background: transparentize($page-shadow-inverted-color, 0.3);
+    }
   }
 }
