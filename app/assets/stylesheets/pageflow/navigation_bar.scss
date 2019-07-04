@@ -106,7 +106,6 @@
 
   a {
     display: block;
-    @include hide-text;
 
     span {
       display: block;
@@ -134,6 +133,7 @@
   }
 
   .navigation_thumbnails a {
+    @include hide-text;
     position: relative;
     outline: none;
     direction: ltr;
