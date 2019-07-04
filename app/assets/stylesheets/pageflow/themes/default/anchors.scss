@@ -2,6 +2,8 @@
 /// color by default.
 $anchor-icon-color: null !default;
 
+$anchor-external-links-icon: false !default;
+
 %anchor {
   @include fa-caret-right-icon;
 
@@ -30,5 +32,17 @@ $anchor-icon-color: null !default;
     width: 10px;
     height: 12px;
     color: $anchor-icon-color;
+  }
+
+  @if $anchor-external-links-icon {
+    &[target="_blank"] {
+      @include fa-external-link-icon;
+
+      &:before {
+        width: 18px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
   }
 }
