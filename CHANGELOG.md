@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 14.2.1
+
+2019-07-04
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v14.2.0...v14.2.1)
+
+- Bug fix: Prevent hiding links in credits menu
+  ([#1185](https://github.com/codevise/pageflow/pull/1185))
+
 ### Version 14.2.0
 
 2019-06-18
