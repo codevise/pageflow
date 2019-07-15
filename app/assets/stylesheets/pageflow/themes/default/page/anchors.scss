@@ -16,6 +16,7 @@ $page-anchor-typography: () !default;
     @extend %anchor;
     color: $page-anchor-color;
     pointer-events: all;
+    margin-right: 0;
     @include typography($page-anchor-typography)
   }
 
