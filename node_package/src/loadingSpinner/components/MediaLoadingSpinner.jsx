@@ -49,7 +49,8 @@ export function register() {
           role: 'loading_spinner'
         })
       }),
-      removeLogo: widgetAttribute('removeLogo', {role: 'loading_spinner'})
+      removeLogo: widgetAttribute('removeLogo', {role: 'loading_spinner'}),
+      blurStrength: widgetAttribute('blurStrength', {role: 'loading_spinner'})
     }))(MediaLoadingSpinner)
   });
 }

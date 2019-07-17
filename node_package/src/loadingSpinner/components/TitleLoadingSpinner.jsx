@@ -93,12 +93,13 @@ export function inlineStyle(invert = false) {
   };
 }
 
-export function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundImage}) {
+export function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundImage, blurStrength}) {
   const url = backgroundImage ? backgroundImage.urls.medium : firstPageBackgroundImageUrl;
 
   if (url) {
     return {
-      backgroundImage: `url("${url}")`
+      backgroundImage: `url("${url}")`,
+      filter: 'blur('+blurStrength+'px)'
     };
   }
 }
@@ -123,7 +124,8 @@ export function register() {
       entryTitle: entryAttribute('title'),
       title: widgetAttribute('title', {role: 'loading_spinner'}),
       subtitle: widgetAttribute('subtitle', {role: 'loading_spinner'}),
-      invert: widgetAttribute('invert', {role: 'loading_spinner'})
+      invert: widgetAttribute('invert', {role: 'loading_spinner'}),
+      blurStrength: widgetAttribute('blurStrength', {role: 'loading_spinner'})
     }))(TitleLoadingSpinner)
   });
 }

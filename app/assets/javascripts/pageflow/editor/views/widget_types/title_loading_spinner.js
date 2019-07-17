@@ -15,6 +15,7 @@ pageflow.editor.widgetTypes.register('title_loading_spinner', {
           fileSelectionHandler: 'widgetConfiguration'
         });
         this.input('invert', pageflow.CheckBoxInputView);
+        this.input('blur_strength', pageflow.SliderInputView);
       });
     }
   })
