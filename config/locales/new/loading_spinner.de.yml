@@ -9,6 +9,13 @@ de:
               label: Hintegrundbild
             remove_logo:
               label: Logo entfernen
+            blur_strength:
+              inline_help: Control the bluriness of background image.
+              label: Blur Strength
+          title_loading_spinner:
+            blur_strength:
+              inline_help: Steuern Sie die Unschärfe des Hintergrundbilds.
+              label: Unschärfe
       media_loading_spinner:
         widget_type_info_box_text: Dies ist eine Vorschau der Lade-Ansicht von 'Bild'. Die Animation wird ausgeführt, während die Seite geladen wird.
     media_loading_spinner:
@@ -17,3 +24,4 @@ de:
     attributes:
       pageflow/widget:
         invert: Farben invertieren
+        blue_strength: Unschärfe

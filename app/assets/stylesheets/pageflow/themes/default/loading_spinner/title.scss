@@ -10,8 +10,6 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
 
 .title_loading_spinner {
   $duration: 7s;
-  
-
   &:before {
     content: "";
     display: block;
@@ -26,7 +24,6 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
 
   &-image {
     background-size: cover;
-    filter: blur(50px);
     height: 100%;
   }
 
@@ -158,7 +155,6 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
     }
   }
 }
-
 
 .loading_spinner_invert {
   color: #000;
