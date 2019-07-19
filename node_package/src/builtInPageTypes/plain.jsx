@@ -21,7 +21,7 @@ function PlainPage(props) {
   const page = props.page;
 
   return (
-    <PageWrapper>
+    <PageWrapper className="supports_text_position_center">
       <PageBackground page={page} />
 
       <PageForeground>

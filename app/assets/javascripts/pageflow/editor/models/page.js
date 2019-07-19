@@ -104,7 +104,8 @@ function conditionMet(condition, configuration) {
 }
 
 pageflow.Page.linkedPagesLayouts = ['default', 'hero_top_left', 'hero_top_right'];
-pageflow.Page.textPositions = ['left', 'right'];
+pageflow.Page.textPositions = ['left', 'center', 'right'];
+pageflow.Page.textPositionsWithoutCenterOption = ['left', 'right'];
 
 pageflow.Page.scrollIndicatorModes = ['all', 'only_back', 'only_next', 'non'];
 pageflow.Page.scrollIndicatorOrientations = ['vertical', 'horizontal'];

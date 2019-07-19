@@ -19,7 +19,7 @@ const qualities = ['auto', '4k', 'fullhd', 'medium'];
 
 function VideoPage(props) {
   return (
-    <MediaPage className="video_page"
+    <MediaPage className="video_page supports_text_position_center"
                page={props.page}
                file={props.videoFile}
                qualities={qualities}
