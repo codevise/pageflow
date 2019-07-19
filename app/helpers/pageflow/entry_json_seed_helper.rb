@@ -15,7 +15,7 @@ module Pageflow
       {
         title: entry.title,
         slug: entry.slug,
-        published_at: entry.published_at.try(:iso8601, 0)
+        published_at: entry.published_at.try(:utc).try(:iso8601, 0)
       }
     end
 
