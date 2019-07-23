@@ -46,7 +46,9 @@ $loading-spinner-glow-size: 140px !default;
 /// File extension of background and logo
 $loading-spinner-image-file-extension: "png" !default;
 
+@import "./loading_spinner/media";
 @import "./loading_spinner/title";
+
 
 @if not $custom-loading-spinner {
   .loading_spinner {

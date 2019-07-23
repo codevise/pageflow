@@ -19,7 +19,10 @@ en:
       media_loading_spinner:
         widget_type_info_box_text: This is a preview of the 'Image' loading view. The animation runs while the page is loading.
     media_loading_spinner:
-      widget_type_name: Image loading view
+      feature_name : "'Title and Image' loading view"
+      widget_type_name: Media
+    title_loading_spinner:
+      feature_name: "DELETED"
   activerecord:
     attributes:
       pageflow/widget:

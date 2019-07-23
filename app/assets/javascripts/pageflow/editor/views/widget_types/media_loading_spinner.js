@@ -9,6 +9,7 @@ pageflow.editor.widgetTypes.register('media_loading_spinner', {
           collection: 'image_files',
           fileSelectionHandler: 'widgetConfiguration'
         });
+        this.input('invert', pageflow.CheckBoxInputView);
         this.input('remove_logo', pageflow.CheckBoxInputView);
         this.input('blur_strength', pageflow.SliderInputView);
       });
