@@ -23,7 +23,7 @@ class MediaLoadingSpinner extends TitleLoadingSpinner {
         <div className={classNames('title_loading_spinner', {'title_loading_spinner-fade': animating})}
              onAnimationEnd={(event) => this.hideOrLoop(event)}
              onTouchMove={preventScrollBouncing}
-             style={inlineStyle()}>
+             style={inlineStyle(this.props)}>
           {logoElement}
           <div className="title_loading_spinner-image"
                style={backgroundImageInlineStyles(this.props)} />
