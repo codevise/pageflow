@@ -1753,7 +1753,7 @@ en:
       main: Main storyline
       untitled: Unnamed storyline
     structured_data:
-      feature_name: Embedded structured data
+      feature_name: Embedded structured data 
     title_loading_spinner:
       feature_name: "'Title and image' loading view"
       widget_type_name: Title and Image
