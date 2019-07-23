@@ -89,9 +89,8 @@ module Pageflow
     #   Optional. Array of strings containing attribute names that are
     #   custom to this file type
     # @option options [Class] :importer
-    #   Optional. Importer-class with call(file_type, file_data)-method
-    #   encapsulating all logic to re-create this file type.
-    #   Defaults to Pageflow::EntryExportImport::FileTypeImporters::BuiltInFileTypeImporter
+    #   Required. Importer-class encapsulating all logic to re-create
+    #   this file from exported data and files by Pageflow::EntryExportImport::EntryExporter.
     def initialize(options)
       @model_string_or_reference = options.fetch(:model)
       @partial = options[:partial]
@@ -103,8 +102,7 @@ module Pageflow
       @css_background_image_class_prefix = options[:css_background_image_class_prefix]
       @url_templates = options.fetch(:url_templates, -> { {} })
       @custom_attributes = options.fetch(:custom_attributes, [])
-      default_importer = Pageflow::EntryExportImport::FileTypeImporters::BuiltInFileTypeImporter
-      @importer = options.fetch(:importer, default_importer)
+      @importer = options[:importer]
     end
 
     # ActiveRecord model that represents the files of this type.
