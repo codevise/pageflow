@@ -14,7 +14,7 @@ module Pageflow
             client = bucket.client
             sub_directory = File.join(target_directory,
                                       reusable_file.file_type.collection_name,
-                                      file_usage.perma_id.to_s)
+                                      reusable_file.id.to_s)
             target_file = File.join(sub_directory, reusable_file.file_name)
             next if File.exist?(target_file)
 

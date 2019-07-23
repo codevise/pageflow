@@ -3,7 +3,7 @@ module Pageflow
     # Uploads a file from the specified local_path
     # to the bucket defined by the reusable file
     class S3FileUploader
-      def upload_file(local_path, reusable_file)
+      def upload_file(reusable_file, local_path)
         attachment = reusable_file.attachment
         bucket = attachment.s3_bucket
         obj = bucket.object(attachment.path)
