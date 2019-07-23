@@ -8,7 +8,7 @@ import registerWidgetType from 'registerWidgetType';
 import {entryAttribute} from 'entry/selectors';
 import {editingWidget, widgetAttribute} from 'widgets/selectors';
 import {file} from 'files/selectors';
-import {pageBackgroundImageUrl, firstPageAttribures} from 'pages/selectors';
+import {pageBackgroundImageUrl, firstPageAttribures, firstPageAttribute} from 'pages/selectors';
 
 export class TitleLoadingSpinner extends React.Component {
   constructor(props) {
@@ -54,13 +54,12 @@ export class TitleLoadingSpinner extends React.Component {
     const {editing, title, subtitle, entryTitle, invert} = this.props;
     const {hidden, animating} = this.state;
     
-    
     if (editing || !hidden) {
       return (
         <div className={classNames('title_loading_spinner', {'title_loading_spinner-fade': animating}, {'loading_spinner_invert': invert})}
              onAnimationEnd={(event) => this.hideOrLoop(event)}
              onTouchMove={preventScrollBouncing}
-             style={inlineStyle(invert)}>
+             style={inlineStyle(this.props)}>
           <div className="title_loading_spinner-logo" />
           <div className="title_loading_spinner-image"
                style={backgroundImageInlineStyles(this.props)} />
@@ -81,7 +80,12 @@ export class TitleLoadingSpinner extends React.Component {
   }
 }
 
-export function inlineStyle(invert = false) {
+export function inlineStyle(props) {
+  const {backgroundImage, firstPageInvert, invert} = props;
+  var spinnerInvert = invert;
+  if (!backgroundImage && !invert) {
+    spinnerInvert = firstPageInvert
+  }
   return {
     position: 'absolute',
     top: 0,
@@ -89,7 +93,7 @@ export function inlineStyle(invert = false) {
     width: '100%',
     height: '100%',
     zIndex: 100,
-    backgroundColor: invert ? '#fff':'#000'
+    backgroundColor: spinnerInvert ? '#fff':'#000'
   };
 }
 
@@ -112,6 +116,7 @@ export function register() {
   registerWidgetType('title_loading_spinner', {
     component: connect(combineSelectors({
       editing: editingWidget({role: 'loading_spinner'}),
+      firstPageInvert: firstPageAttribute('invert'),
       firstPageBackgroundImageUrl: pageBackgroundImageUrl({
         variant: 'medium',
         page: firstPageAttribures()
