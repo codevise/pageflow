@@ -1,6 +1,0 @@
-en:
-  activerecord:
-    values:
-      pageflow/page:
-        text_position:
-          center: Center

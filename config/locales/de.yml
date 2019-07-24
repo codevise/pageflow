@@ -462,6 +462,7 @@ de:
           internal_links: Seiten-Verweise
           video: Video
         text_position:
+          center: Mittig
           left: Links
           right: Rechts
         transition:

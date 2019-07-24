@@ -1,6 +1,0 @@
-de:
-  activerecord:
-    values:
-      pageflow/page:
-        text_position:
-          center: Mittig
