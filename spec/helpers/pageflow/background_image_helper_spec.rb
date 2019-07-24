@@ -2,6 +2,8 @@ require 'spec_helper'
 
 module Pageflow
   describe BackgroundImageHelper do
+    include UsedFileTestHelper
+
     describe '#background_image_div' do
       it 'returns div with background_image css class' do
         html = helper.background_image_div({}, 'background_image')
@@ -73,8 +75,7 @@ module Pageflow
 
     describe '#background_image_div_with_size' do
       it 'returns div with data-width and data-height attributes from image' do
-        @entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, width: 123, height: 456, revision: @entry.revision)
+        image_file = create_used_file(:image_file, width: 123, height: 456)
         configuration = {'background_image_id' => image_file.perma_id}
         html = helper.background_image_div_with_size(configuration, 'background_image')
 
@@ -82,8 +83,7 @@ module Pageflow
       end
 
       it 'returns div with data-width and data-height attributes from image' do
-        @entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, width: 200, height: 100, revision: @entry.revision)
+        image_file = create_used_file(:image_file, width: 200, height: 100)
         configuration = {'background_image_id' => image_file.perma_id}
         html = helper.background_image_div_with_size(configuration, 'background_image', :spanning => true)
 
@@ -91,8 +91,7 @@ module Pageflow
       end
 
       it 'returns div with data-width and data-height attributes from video' do
-        @entry = PublishedEntry.new(create(:entry, :published))
-        video_file = create(:used_file, model: :video_file, width: 123, height: 456, revision: @entry.revision)
+        video_file = create_used_file(:video_file, width: 123, height: 456)
         configuration = {'video_id' => video_file.perma_id}
         html = helper.background_image_div_with_size(configuration, 'video', file_type: 'video_file')
 
@@ -102,8 +101,7 @@ module Pageflow
 
     describe '#background_image_lazy_loading_css_class' do
       it 'returns css classes prefixed with .load_all_images and .load_image' do
-        entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: entry.revision)
+        image_file = create_used_file(:image_file)
 
         css_class = helper.background_image_lazy_loading_css_class('image', image_file)
 

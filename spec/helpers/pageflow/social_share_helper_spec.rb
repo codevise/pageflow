@@ -1,10 +1,7 @@
 require 'spec_helper'
-require 'shared_contexts/usage_agnostic_file_association'
 
 module Pageflow
   describe SocialShareHelper do
-    include_context 'usage agnostic file association'
-
     describe '#social_share_entry_url' do
       it 'returns share_url if present' do
         entry = create(:entry, :published, published_revision_attributes: {
@@ -134,29 +131,31 @@ module Pageflow
     end
 
     describe '#social_share_entry_image_tags', stub_paperclip: true do
-      it 'renders share image meta tags if share image was chosen' do
-        @entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: @entry.revision)
-        @entry.revision.share_image_id = image_file.perma_id
+      include UsedFileTestHelper
 
-        html = helper.social_share_entry_image_tags(@entry)
+      it 'renders share image meta tags if share image was chosen' do
+        entry = PublishedEntry.new(create(:entry, :published))
+        image_file = create_used_file(:image_file, entry: entry)
+        entry.revision.share_image_id = image_file.perma_id
+
+        html = helper.social_share_entry_image_tags(entry)
 
         expect(html).to have_css("meta[content=\"#{image_file.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
         expect(html).to have_css("meta[content=\"#{image_file.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]", visible: false, count: 1)
       end
 
       it 'renders up to three open graph image meta tags for page thumbnails' do
-        @entry = PublishedEntry.new(create(:entry, :published))
-        image_file1 = create(:used_file, model: :image_file, revision: @entry.revision)
-        image_file2 = create(:used_file, model: :image_file, revision: @entry.revision)
-        image_file3 = create(:used_file, model: :image_file, revision: @entry.revision)
-        storyline = create(:storyline, revision: @entry.revision)
+        entry = PublishedEntry.new(create(:entry, :published))
+        image_file1 = create_used_file(:image_file, entry: entry)
+        image_file2 = create_used_file(:image_file, entry: entry)
+        image_file3 = create_used_file(:image_file, entry: entry)
+        storyline = create(:storyline, revision: entry.revision)
         chapter = create(:chapter, storyline: storyline)
         create(:page, configuration: {thumbnail_image_id: image_file1.perma_id}, chapter: chapter)
         create(:page, configuration: {thumbnail_image_id: image_file2.perma_id}, chapter: chapter)
         create(:page, configuration: {thumbnail_image_id: image_file3.perma_id}, chapter: chapter)
 
-        html = helper.social_share_entry_image_tags(@entry)
+        html = helper.social_share_entry_image_tags(entry)
 
         expect(html).to have_css("meta[content=\"#{image_file1.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
         expect(html).to have_css("meta[content=\"#{image_file2.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
@@ -165,32 +164,32 @@ module Pageflow
       end
 
       it 'renders one twitter image meta tag with first page thumbnail' do
-        @entry = PublishedEntry.new(create(:entry, :published))
-        image_file1 = create(:used_file, model: :image_file, revision: @entry.revision)
-        image_file2 = create(:used_file, model: :image_file, revision: @entry.revision)
+        entry = PublishedEntry.new(create(:entry, :published))
+        image_file1 = create_used_file(:image_file, entry: entry)
+        image_file2 = create_used_file(:image_file, entry: entry)
 
-        storyline = create(:storyline, revision: @entry.revision)
+        storyline = create(:storyline, revision: entry.revision)
         chapter = create(:chapter, storyline: storyline)
         create(:page, configuration: {thumbnail_image_id: image_file1.perma_id}, chapter: chapter)
         create(:page, configuration: {thumbnail_image_id: image_file2.perma_id}, chapter: chapter)
 
-        html = helper.social_share_entry_image_tags(@entry)
+        html = helper.social_share_entry_image_tags(entry)
 
         expect(html).to have_css("meta[content=\"#{image_file1.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]", visible: false)
         expect(html).to have_css('meta[name="twitter:image:src"]', visible: false, count: 1)
       end
 
       it 'falls back to page thumbnails if share image references missing image' do
-        @entry = PublishedEntry.new(create(:entry, :published))
-        image_file1 = create(:used_file, model: :image_file, revision: @entry.revision)
-        image_file2 = create(:used_file, model: :image_file, revision: @entry.revision)
-        storyline = create(:storyline, revision: @entry.revision)
+        entry = PublishedEntry.new(create(:entry, :published))
+        image_file1 = create_used_file(:image_file, entry: entry)
+        image_file2 = create_used_file(:image_file, entry: entry)
+        storyline = create(:storyline, revision: entry.revision)
         chapter = create(:chapter, storyline: storyline)
         create(:page, configuration: {thumbnail_image_id: image_file2.perma_id}, chapter: chapter)
 
-        @entry.revision.share_image_id = image_file1.perma_id
+        entry.revision.share_image_id = image_file1.perma_id
         image_file1.destroy
-        html = helper.social_share_entry_image_tags(@entry)
+        html = helper.social_share_entry_image_tags(entry)
 
         expect(html).to have_css(<<-END.strip, visible: false, count: 1)
           meta[content="#{image_file2.thumbnail_url(:medium)}"][property="og:image"]

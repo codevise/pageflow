@@ -25,7 +25,7 @@ module Pageflow
       end
 
       context 'draft' do
-        it 'finds a file specified by id within the revisions usage scope' do
+        it 'finds a file specified by its usages perma_id within the revisions usage scope' do
           entry = create(:entry)
           revision = entry.draft
           image_file = create(:image_file)
@@ -38,7 +38,7 @@ module Pageflow
       end
 
       context 'published entry' do
-        it 'finds a file specified by id within the revisions usage scope' do
+        it 'finds a file specified by its usages perma_id within the revisions usage scope' do
           entry = create(:entry)
           revision = create(:revision, :published, entry: entry)
           image_file = create(:image_file)

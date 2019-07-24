@@ -1,10 +1,9 @@
 require 'spec_helper'
-require 'shared_contexts/usage_agnostic_file_association'
 
 module Pageflow
   describe PagesHelper do
-    include_context 'usage agnostic file association'
-
+    include UsedFileTestHelper
+    
     describe '#render_page_template' do
       let(:page_type_class) do
         Class.new(Pageflow::PageType) do
@@ -108,9 +107,10 @@ module Pageflow
       before { helper.extend(FileThumbnailsHelper) }
 
       it 'returns file_thumbnail_css_class of thumbnail_file of page' do
-        @entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: @entry.revision)
-        page = build(:page, template: 'background_image', configuration: {'thumbnail_image_id' => image_file.perma_id})
+        image_file = create_used_file(:image_file)
+        page = build(:page,
+                     template: 'background_image',
+                     configuration: {'thumbnail_image_id' => image_file.perma_id})
 
         css_class = helper.page_thumbnail_image_class(page, false)
 
@@ -118,9 +118,10 @@ module Pageflow
       end
 
       it 'returns large variant for hero' do
-        @entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: @entry.revision)
-        page = build(:page, template: 'background_image', configuration: {'thumbnail_image_id' => image_file.perma_id})
+        image_file = create_used_file(:image_file)
+        page = build(:page,
+                     template: 'background_image',
+                     configuration: {'thumbnail_image_id' => image_file.perma_id})
 
         css_class = helper.page_thumbnail_image_class(page, true)
 
@@ -132,8 +133,7 @@ module Pageflow
       before { helper.extend(BackgroundImageHelper) }
 
       it 'renders header, print image and page text' do
-        @entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: @entry.revision)
+        image_file = create_used_file(:image_file)
 
         page = build(:page, configuration: {
                        'background_image_id' => image_file.perma_id,
@@ -171,9 +171,7 @@ module Pageflow
       before { helper.extend(BackgroundImageHelper) }
 
       it 'renders img tag' do
-        @entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: @entry.revision)
-
+        image_file = create_used_file(:image_file)
         page = build(:page, configuration: {
                        'background_image_id' => image_file.perma_id
                      })
