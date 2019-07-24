@@ -95,8 +95,13 @@ module Pageflow
       raise 'Not implemented!'
     end
 
-    # Overwritten with the conditions the need to be fulfilled in order to (re)use the file.
+    # Overwritten with the conditions that need to be fulfilled in order to (re)use the file.
     def ready?
+      raise 'Not implemented!'
+    end
+
+    # Overwritten with the conditions that indicate failure during processing.
+    def failed?
       raise 'Not implemented!'
     end
 

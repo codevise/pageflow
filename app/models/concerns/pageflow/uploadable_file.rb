@@ -90,6 +90,7 @@ module Pageflow
     def failed?
       uploading_failed?
     end
+
     def publish!
       file_uploaded!
     end
