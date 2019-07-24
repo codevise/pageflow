@@ -93,5 +93,31 @@ module Pageflow
         expect(file).not_to be_retryable
       end
     end
+
+    describe '#failed?' do
+      it 'returns false if file is uploading' do
+        image_file = build(:image_file, :uploading)
+
+        expect(image_file).not_to be_failed
+      end
+
+      it 'returns false if file is processed' do
+        image_file = build(:image_file, :processed)
+
+        expect(image_file).not_to be_failed
+      end
+
+      it 'returns true if upload failed' do
+        image_file = build(:image_file, :uploading_failed)
+
+        expect(image_file).to be_failed
+      end
+
+      it 'returns true if processing failed' do
+        image_file = build(:image_file, :processing_failed)
+
+        expect(image_file).to be_failed
+      end
+    end
   end
 end

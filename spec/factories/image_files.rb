@@ -40,6 +40,10 @@ module Pageflow
         state { 'uploaded' }
       end
 
+      trait :uploading_failed do
+        state { 'uploading_failed' }
+      end
+
       trait :processing do
         state { 'processing' }
       end

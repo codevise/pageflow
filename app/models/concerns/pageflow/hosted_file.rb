@@ -66,6 +66,10 @@ module Pageflow
       attachment.present?
     end
 
+    def failed?
+      uploading_failed?
+    end
+
     def basename
       File.basename(attachment.original_filename, '.*')
     end

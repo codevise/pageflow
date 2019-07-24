@@ -48,6 +48,10 @@ module Pageflow
         state { 'waiting_for_confirmation' }
       end
 
+      trait :fetching_meta_data_failed do
+        state { 'fetching_meta_data_failed' }
+      end
+
       trait :encoding_failed do
         state { 'encoding_failed' }
       end

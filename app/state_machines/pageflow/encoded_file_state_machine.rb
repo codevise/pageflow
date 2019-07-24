@@ -78,5 +78,11 @@ module Pageflow
     def ready?
       encoded?
     end
+
+    def failed?
+      super ||
+        fetching_meta_data_failed? ||
+        encoding_failed?
+    end
   end
 end
