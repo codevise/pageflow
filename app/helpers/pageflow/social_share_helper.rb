@@ -72,7 +72,7 @@ module Pageflow
     end
 
     def social_share_normalize_protocol(url)
-      url.gsub(/^(\/\/|https:\/\/)/, 'http://')
+      url.gsub(%r{^//}, 'https://')
     end
 
     private
