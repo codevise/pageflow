@@ -38,6 +38,10 @@ module Pageflow
       end
     end
 
+    def attachment
+      attachment_on_s3
+    end
+
     def attachment=(value)
       self.attachment_on_s3 = value
     end
@@ -69,10 +73,6 @@ module Pageflow
 
     def basename
       File.basename(attachment.original_filename, '.*')
-    end
-
-    def attachment
-      attachment_on_s3
     end
 
     def can_upload?

@@ -78,12 +78,9 @@ module Pageflow
       'unused'
     end
 
-    # Overwritten with the actual attachment of the file type.
-    # Unifies the handling of attachments throughout the codebase by relying on
-    # `attachment` always being present regardless of its actual name.
-    def attachment
-      require 'ostruct'
-      OpenStruct.new(original_file: 'unused')
+    # Overwritten in UploadableFile with attachment filename.
+    def file_name
+      'unused'
     end
 
     # Overwritten in UploadableFile based on initial state_machine-state.
