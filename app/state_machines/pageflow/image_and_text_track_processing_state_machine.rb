@@ -1,5 +1,5 @@
 module Pageflow
-  module ProcessedFileStateMachine
+  module ImageAndTextTrackProcessingStateMachine
     extend ActiveSupport::Concern
 
     included do
@@ -15,7 +15,7 @@ module Pageflow
           transition 'processing_failed' => 'processing'
         end
 
-        job ProcessFileJob do
+        job ProcessImageOrTextTrackJob do
           on_enter 'processing'
           result :ok => 'processed'
           result :error => 'processing_failed'
@@ -23,6 +23,7 @@ module Pageflow
       end
     end
 
+    # UploadableFile-overrides
     def retry!
       process!
     end

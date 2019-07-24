@@ -1,7 +1,7 @@
 module Pageflow
   class VideoFile < ApplicationRecord
-    include HostedFile
-    include EncodedFileStateMachine
+    include UploadableFile
+    include MediaEncodingStateMachine
     include OutputSource
 
     belongs_to :confirmed_by, class_name: 'User', optional: true

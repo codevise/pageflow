@@ -1,6 +1,6 @@
 module Pageflow
   FactoryBot.define do
-    factory :hosted_file, class: 'Pageflow::TestHostedFile' do
+    factory :uploadable_file, class: 'Pageflow::TestUploadableFile' do
       attachment { File.open(Engine.root.join('spec', 'fixtures', 'image.png')) }
       state { 'uploaded' }
 
@@ -17,8 +17,8 @@ module Pageflow
         file_name { 'image.jpg' }
         state { 'uploading' }
 
-        after :create do |hosted_file|
-          simulate_direct_upload(hosted_file)
+        after :create do |uploadable_file|
+          simulate_direct_upload(uploadable_file)
         end
       end
 

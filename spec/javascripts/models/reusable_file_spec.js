@@ -1,5 +1,5 @@
-describe('UploadedFile', function() {
-  var File = pageflow.UploadedFile.extend({
+describe('ReusableFile', function() {
+  var File = pageflow.ReusableFile.extend({
     readyState: 'ready'
   });
 

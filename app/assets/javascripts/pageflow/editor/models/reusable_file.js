@@ -1,4 +1,4 @@
-pageflow.UploadedFile = Backbone.Model.extend({
+pageflow.ReusableFile = Backbone.Model.extend({
   mixins: [pageflow.stageProvider, pageflow.retryable],
 
   initialize: function(attributes, options) {

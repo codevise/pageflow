@@ -45,15 +45,15 @@ module Pageflow
       it 'supports custom file types' do
         pageflow_configure do |config|
           TestFileType.register(config,
-                                collection_name: 'test_hosted_files',
+                                collection_name: 'test_uploadable_files',
                                 css_background_image_urls: lambda do |file|
                                   {default: file.attachment.url}
                                 end)
         end
         configuration = {'file_id' => 6}
-        html = helper.background_image_div(configuration, 'file', file_type: 'test_hosted_file')
+        html = helper.background_image_div(configuration, 'file', file_type: 'test_uploadable_file')
 
-        expect(html).to have_selector('div.pageflow_test_hosted_file_6')
+        expect(html).to have_selector('div.pageflow_test_uploadable_file_6')
       end
 
       it 'sets inline style for background position' do

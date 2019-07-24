@@ -1,7 +1,35 @@
 module Pageflow
   class ImageFile < ApplicationRecord
-    include HostedFile
-    include ProcessedFileStateMachine
+    include UploadableFile
+    include ImageAndTextTrackProcessingStateMachine
+
+    # used in paperclip initializer to interpolate the storage path
+    # needs to be "processed_attachments" for images for legacy reasons
+    def attachments_path_name
+      'processed_attachments'
+    end
+
+    after_attachment_on_s3_post_process :save_image_dimensions
+
+    def thumbnail_url(*args)
+      unless ready?
+        return Pageflow::PaperclipInterpolations::Support.pageflow_placeholder(attachment, *args)
+      end
+      attachment.url(*args)
+    end
+
+    def original_url
+      attachment.url if ready?
+    end
+
+    def panorama_url
+      attachment.url(:panorama_large) if ready?
+    end
+
+    # UploadableFile-overrides ->
+    def attachment_default_url
+      ':pageflow_placeholder'
+    end
 
     def attachment_styles(attachment)
       panorama_format = File.extname(attachment.original_filename) == '.png' ? :PNG : :JPG
@@ -30,36 +58,10 @@ module Pageflow
         )
     end
 
-    def attachment_default_url
-      ':pageflow_placeholder'
-    end
-
-    # used in paperclip initializer to interpolate the storage path
-    # needs to be "processed_attachments" for images for legacy reasons
-    def attachments_path_name
-      'processed_attachments'
-    end
-
-    after_attachment_on_s3_post_process :save_image_dimensions
-
-    def thumbnail_url(*args)
-      unless ready?
-        return Pageflow::PaperclipInterpolations::Support.pageflow_placeholder(attachment, *args)
-      end
-      attachment.url(*args)
-    end
-
     def url
       attachment.url(:large) if ready?
     end
-
-    def original_url
-      attachment.url if ready?
-    end
-
-    def panorama_url
-      attachment.url(:panorama_large) if ready?
-    end
+    # <- UploadableFile-overrides
 
     private
 

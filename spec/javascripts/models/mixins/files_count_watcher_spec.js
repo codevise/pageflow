@@ -3,7 +3,7 @@ describe('filesCountWatcher', function() {
     mixins: [pageflow.filesCountWatcher]
   });
 
-  var FileModel = pageflow.UploadedFile.extend({
+  var FileModel = pageflow.ReusableFile.extend({
     readyState: 'processed'
   });
 

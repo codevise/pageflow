@@ -1,8 +1,19 @@
 module Pageflow
   class TextTrackFile < ApplicationRecord
-    include HostedFile
-    include ProcessedFileStateMachine
+    include UploadableFile
+    include ImageAndTextTrackProcessingStateMachine
 
+    # used in paperclip initializer to interpolate the storage path
+    # needs to be "processed_attachments" for text tracks for legacy reasons
+    def attachments_path_name
+      'processed_attachments'
+    end
+
+    def meta_data_attributes=(attributes)
+      self.attributes = attributes.symbolize_keys.slice(:label, :kind, :srclang)
+    end
+
+    # UploadableFile-overrides ->
     def attachment_styles(_attachment)
       {
         vtt: {
@@ -13,16 +24,6 @@ module Pageflow
           }
         }
       }
-    end
-
-    # used in paperclip initializer to interpolate the storage path
-    # needs to be "processed_attachments" for text tracks for legacy reasons
-    def attachments_path_name
-      'processed_attachments'
-    end
-
-    def meta_data_attributes=(attributes)
-      self.attributes = attributes.symbolize_keys.slice(:label, :kind, :srclang)
     end
   end
 end

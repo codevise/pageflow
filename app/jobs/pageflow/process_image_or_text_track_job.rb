@@ -1,5 +1,5 @@
 module Pageflow
-  class ProcessFileJob < ApplicationJob
+  class ProcessImageOrTextTrackJob < ApplicationJob
     queue_as :resizing
 
     include StateMachineJob

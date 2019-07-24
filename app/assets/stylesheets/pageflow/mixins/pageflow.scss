@@ -29,7 +29,7 @@
   }
 }
 
-@mixin pageflow-hosted-file-stage($stage-name) {
+@mixin pageflow-uploadable-file-stage($stage-name) {
   .editor {
     .file_thumbnail .pictogram.#{$stage-name},
     .file_stage_item.#{$stage-name} {

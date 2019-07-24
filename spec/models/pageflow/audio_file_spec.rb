@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Pageflow
   describe AudioFile do
-    include_examples 'encoded file state machine', :audio_file
+    include_examples 'media encoding state machine', :audio_file
 
     describe '#meta_data_attributes=' do
       it 'assigns format and duration_in_ms' do

@@ -1,4 +1,4 @@
-pageflow.EncodedFile = pageflow.HostedFile.extend({
+pageflow.EncodedFile = pageflow.UploadableFile.extend({
   processingStages: function() {
     var stages = [];
 

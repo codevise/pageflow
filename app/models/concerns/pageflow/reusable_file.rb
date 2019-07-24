@@ -1,5 +1,5 @@
 module Pageflow
-  module UploadedFile
+  module ReusableFile
     extend ActiveSupport::Concern
 
     included do
@@ -56,14 +56,68 @@ module Pageflow
       "#{super}-#{state}"
     end
 
+
+    # The following are method defaults for file types that do not require processing/encoding.
+    # They are overwritten with default values in UploadableFile for files that are uploaded
+    # through the editor.
+
+    # Overwritten if a file type provides a default url for its file.
+    def url
+      ''
+    end
+
+    # Overwritten in case of a file type providing its original (unprocessed) file
+    # for download in the editor.
+    # Defaults to the default url of the file (see above)
+    def original_url
+      url
+    end
+
+    # Overwritten with the basename of the file.
+    def basename
+      'unused'
+    end
+
+    # Overwritten in UploadableFile with attachment filename.
+    def file_name
+      'unused'
+    end
+
+    # Overwritten in UploadableFile based on initial state_machine-state.
+    # Defaults to false for files that only use the ReusableFile module
     def can_upload?
-      # Overwritten in HostedFile based on initial state_machine-state.
-      # Only true directly after creation.
       false
     end
 
-    def direct_upload_config
-      Pageflow.config.paperclip_direct_upload_options.call(attachment)
+    # Overwritten with the conditions that need to be fulfilled in order to `retry`
+    # whatever the file does (i.e. processing/transcoding).
+    def retryable?
+      raise 'Not implemented!'
+    end
+
+    # Overwritten with the conditions that need to be fulfilled in order to (re)use the file.
+    def ready?
+      raise 'Not implemented!'
+    end
+
+    # Overwritten with the conditions that indicate failure during processing.
+    def failed?
+      raise 'Not implemented!'
+    end
+
+    # If the conditions in retryable? are met then this method specifies what should happen when
+    # a retry is requested, depending on the including class' processing state machine.
+    def retry!
+      raise 'Not implemented!'
+    end
+
+    # Gets called to trigger the `file_uploaded` event in the upload state machine of UploadableFile.
+    # Files that are not uploaded through the editor (and therefore not using the
+    # upload state machine of UploadableFile) can overwrite this method to trigger whatever
+    # the file does (i.e. processing/transcoding), depending on the including class'
+    # processing state machine.
+    def publish!
+      raise 'Not implemented!'
     end
   end
 end

@@ -1,4 +1,4 @@
-pageflow.TextTrackFile = pageflow.HostedFile.extend({
+pageflow.TextTrackFile = pageflow.UploadableFile.extend({
   defaults: {
     configuration: {
       kind: 'captions'
@@ -16,7 +16,7 @@ pageflow.TextTrackFile = pageflow.HostedFile.extend({
   readyState: 'processed',
 
   initialize: function(attributes, options) {
-    pageflow.UploadedFile.prototype.initialize.apply(this, arguments);
+    pageflow.ReusableFile.prototype.initialize.apply(this, arguments);
 
     if (this.isNew() && !this.configuration.get('srclang')) {
       this.configuration.set('srclang', this.extractLanguageCodeFromFilename());
