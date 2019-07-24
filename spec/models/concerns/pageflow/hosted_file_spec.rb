@@ -48,13 +48,33 @@ module Pageflow
         end
       end
     end
-  end
 
-  describe 'basename' do
-    it 'returns the original file name without extention' do
-      hosted_file = create(:hosted_file, file_name: 'video.mp4')
+    describe 'basename' do
+      it 'returns the original file name without extention' do
+        hosted_file = create(:hosted_file, file_name: 'video.mp4')
 
-      expect(hosted_file.basename).to eq('video')
+        expect(hosted_file.basename).to eq('video')
+      end
+    end
+
+    describe '#failed?' do
+      it 'returns false if file is uploading' do
+        hosted_file = build(:hosted_file, :uploading)
+
+        expect(hosted_file).not_to be_failed
+      end
+
+      it 'returns false if file is uploaded' do
+        hosted_file = build(:hosted_file, :uploaded)
+
+        expect(hosted_file).not_to be_failed
+      end
+
+      it 'returns true if upload failed' do
+        hosted_file = build(:hosted_file, :uploading_failed)
+
+        expect(hosted_file).to be_failed
+      end
     end
   end
 end

@@ -205,5 +205,37 @@ shared_examples 'encoded file state machine' do |model|
         expect(file).not_to be_retryable
       end
     end
+
+    describe '#failed?' do
+      it 'returns false if file is uploading' do
+        file = build(model, :uploading)
+
+        expect(file).not_to be_failed
+      end
+
+      it 'returns false if file is encoded' do
+        file = build(model, :encoded)
+
+        expect(file).not_to be_failed
+      end
+
+      it 'returns true if upload failed' do
+        file = build(model, :uploading_failed)
+
+        expect(file).to be_failed
+      end
+
+      it 'returns true if fetching metadata failed' do
+        file = build(model, :fetching_meta_data_failed)
+
+        expect(file).to be_failed
+      end
+
+      it 'returns true if encoding failed' do
+        file = build(model, :encoding_failed)
+
+        expect(file).to be_failed
+      end
+    end
   end
 end

@@ -34,5 +34,9 @@ module Pageflow
     def ready?
       processed?
     end
+
+    def failed?
+      super || processing_failed?
+    end
   end
 end
