@@ -1,7 +1,5 @@
 module Pageflow
   class ThumbnailFileResolver < Struct.new(:entry, :candidates, :configuration)
-    include RevisionFileHelper
-
     def find_thumbnail
       candidates.detect do |candidate|
         condition = candidate[:unless] || candidate[:if]
@@ -37,8 +35,7 @@ module Pageflow
     end
 
     def find_file_by_candidate(candidate)
-      @entry = entry # must be set for finding file in usage scope
-      find_file_in_entry(file_model(candidate), record_id(candidate))
+      entry.find_file_by_perma_id(file_model(candidate), record_id(candidate))
     end
 
     def file_model(candidate)
