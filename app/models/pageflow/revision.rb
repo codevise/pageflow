@@ -93,15 +93,7 @@ module Pageflow
       UsedFile.new(file)
     end
 
-    def find_file_by_id(model, id)
-      file = files(model).find_by(id: id)
-      return unless file
-      UsedFile.new(file)
-    end
-
     def find_file_by_perma_id(model, perma_id)
-      # model = pageflow.config.file_types.find(model).model
-      # Pageflow::FileUsage.find_by(revision: rev, file_type: model, file_perma_id: perma_id)&.file
       file = files(model).find_by(pageflow_file_usages: {file_perma_id: perma_id})
       return unless file
       UsedFile.new(file)
