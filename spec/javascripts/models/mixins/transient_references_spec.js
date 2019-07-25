@@ -93,7 +93,9 @@ describe('transientReferences', function() {
 
     it('when change event triggers record can already be looked up in collection', function() {
       var record = new Model(),
-          imageFiles = new Backbone.Collection(),
+          imageFiles = pageflow.FilesCollection.createForFileType(
+            support.factories.imageFileType(), []
+          ),
           imageFile = new pageflow.ImageFile(),
           imageFileFromCollection;
 

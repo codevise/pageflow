@@ -27,7 +27,7 @@ describe('pageflow.PreviewEntryData', function() {
   });
 
   describe('#getFile', function() {
-    it('returns file attributes by collection name and file id', function() {
+    it('returns file attributes by collection name and file perma_id', function() {
       var entry = support.factories.entry({}, {
         fileTypes: support.factories.fileTypesWithImageFileType(),
         files: {
@@ -36,6 +36,7 @@ describe('pageflow.PreviewEntryData', function() {
             [
               {
                 id: 1,
+                perma_id: 1,
                 url: 'image.png'
               }
             ]
