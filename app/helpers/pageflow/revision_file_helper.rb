@@ -6,13 +6,16 @@ module Pageflow
     # must always be available in views using this helper, otherwise an exception is raised.
     #
     # When testing helpers which use the RevisionFileHelper to find their respective files,
-    # you can stub its functionality by including the shared context
-    # "usage agnostic file association" and specifying `entry_has_file` for the file:
+    # you can use the UsedfileTestHelper to create the file. This will set the @entry-variable
+    # and create a file usage for the file:
     #
-    #     image_file = create(:image_file)
-    #     entry_has_file(image_file)
+    #     image_file = create_used_file(:image_file)
     #
     # This simplifies spec setup by eliminating the need to set up the entry and usages first.
+    # If you need to setup the entry explicitely, you can optionally pass it to the helper like so:
+    #
+    #     entry = PublishedEntry.new(create(:entry, :published))
+    #     image_file = create_used_file(:image_file, entry: entry)
     #
     # @since edge
     # @returns UsedFile

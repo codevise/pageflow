@@ -112,7 +112,7 @@ module Pageflow
       return unless video_file
 
       link_to(t('pageflow.public.play_video'),
-              short_video_file_path(entry, video_file),
+              short_video_file_path(entry, video_file.id),
               class: 'hint')
     end
 

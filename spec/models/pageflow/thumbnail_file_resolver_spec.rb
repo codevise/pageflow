@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Pageflow
   describe ThumbnailFileResolver do
-    describe '#find' do
+    describe '#find_thumbnail' do
       it 'returns first exisiting file' do
         entry = PublishedEntry.new(create(:entry, :published))
         image_file = create(:used_file, model: :image_file, revision: entry.revision)

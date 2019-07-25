@@ -29,14 +29,14 @@ pageflow.transientReferences = {
     if (record.isNew()) {
       this.transientReferences[attribute] = record;
       this.set(attribute, null);
-      this._setIdOnceSynced(attribute, record);
+      this._setPermaIdOnceSynced(attribute, record);
     }
     else {
       this.set(attribute, record.get('perma_id'));
     }
   },
 
-  _setIdOnceSynced: function(attribute, record) {
+  _setPermaIdOnceSynced: function(attribute, record) {
     record.once('change:perma_id', function() {
       this._onceRecordCanBeFoundInCollection(record, function() {
         delete this.transientReferences[attribute];
