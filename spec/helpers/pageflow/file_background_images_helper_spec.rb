@@ -17,7 +17,8 @@ module Pageflow
 
         result = helper.file_background_images_css(entry, :desktop)
 
-        expect(result).to include(".pageflow_test_uploadable_file_poster_#{uploadable_file.id}")
+        expect(result)
+          .to include(".pageflow_test_uploadable_file_poster_#{uploadable_file.perma_id}")
       end
 
       it 'generates css rules using given urls' do
@@ -51,7 +52,7 @@ module Pageflow
 
         result = helper.file_background_images_css(entry, :desktop)
 
-        expect(result).to include(".pageflow_test_uploadable_file_#{uploadable_file.id}")
+        expect(result).to include(".pageflow_test_uploadable_file_#{uploadable_file.perma_id}")
       end
 
       it 'supports urls index by breakpoint name' do
@@ -72,7 +73,8 @@ module Pageflow
 
         result = helper.file_background_images_css(entry, :desktop)
 
-        expect(result).to include(".pageflow_test_uploadable_file_poster_#{uploadable_file.id}")
+        expect(result)
+          .to include(".pageflow_test_uploadable_file_poster_#{uploadable_file.perma_id}")
       end
 
       it 'fails with helpful error when unknown breakpoint is used' do
@@ -134,7 +136,7 @@ module Pageflow
 
         result = helper.file_background_images_css(entry, :desktop)
 
-        expect(result).to include(".custom_poster_#{uploadable_file.id}")
+        expect(result).to include(".custom_poster_#{uploadable_file.perma_id}")
       end
     end
   end
