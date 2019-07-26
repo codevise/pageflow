@@ -34,8 +34,10 @@ module Pageflow
         p 'uploading files...'
         upload_files
         p '...Done!'
-        # Step 3: Publish files
-        publish_files
+        # Step 3: Publish files not included in upload stage
+        p 'publishing generated files...'
+        publish_generated_files
+        p '...Done!'
       end
 
       private
@@ -102,44 +104,41 @@ module Pageflow
         end
 
         # create files and usages
-        create_files_for_revision(file_usages_data.deep_dup, revision)
-        update_file_association_ids(file_usages_data)
+        create_files_for_revision(file_usages_data, revision)
       end
 
+      # Create files in the order their file type has been registered.
+      # This ensures top level file types being created first and ready for foreign key remapping
+      # in lower-level file types
       def create_files_for_revision(file_usages_data, revision)
-        file_usages_data.each do |file_usage_data|
-          file_model = file_usage_data['file_type'].constantize
-          file_type = Pageflow.config.file_types.find_by_model!(file_model)
+        Pageflow.config.file_types.each do |file_type|
+          file_type_name = file_type.type_name
+          p "importing #{file_type_name}s"
 
-          file_data = file_usage_data.delete('file')
-          exported_file_id = file_data.delete('id')
+          file_type_usages_data = file_usages_data.select { |file_usage|
+            file_usage['file_type'].eql?(file_type_name)
+          }
 
-          # prepare data for file creation
-          file_data['uploader_id'] = @user.id if file_data['uploader_id'].present?
-          file_data['confirmed_by_id'] = @user.id if file_data['confirmed_by_id'].present?
-          file_data['entry_id'] = @entry.id # required for nested_file validation
+          file_type_usages_data.each do |file_type_usage_data|
+            file_data = file_type_usage_data.delete('file')
+            exported_file_id = file_data.delete('id')
 
-          p "importing #{file_type.type_name}"
-          file = file_type.importer.import_file(file_data)
+            # prepare data for file creation
+            file_data['uploader_id'] = @user.id if file_data['uploader_id'].present?
+            file_data['confirmed_by_id'] = @user.id if file_data['confirmed_by_id'].present?
+            file_data['entry_id'] = @entry.id # required for nested_file validation
 
-          # overwrite file id with new id
-          file_usage_data['file_id'] = file.id
-          revision.file_usages.create!(file_usage_data.except(*DEFAULT_REMOVAL_COLUMNS))
+            importer = file_type.importer
+            file = importer.import_file(file_data, @file_mappings)
 
-          # map file by type from old to new id for linking associated files
-          file_type_collection_name = file_type.collection_name
-          @file_mappings[file_type_collection_name] ||= {}
-          @file_mappings[file_type_collection_name][exported_file_id] = file.id
-        end
-      end
+            # overwrite file id with new id
+            file_type_usage_data['file_id'] = file.id
+            revision.file_usages.create!(file_type_usage_data.except(*DEFAULT_REMOVAL_COLUMNS))
 
-      def update_file_association_ids(file_usages_data)
-        file_usages_data.each do |file_usage_data|
-          file_model = file_usage_data['file_type'].constantize
-          file_type = Pageflow.config.file_types.find_by_model!(file_model)
-          importer = file_type.importer
-          if importer.respond_to?(:update_association_ids)
-            importer.update_association_ids(file_usage_data['file'], @file_mappings)
+            # map file by type from old to new id for linking associated files
+            file_type_collection_name = file_type.collection_name
+            @file_mappings[file_type_collection_name] ||= {}
+            @file_mappings[file_type_collection_name][exported_file_id] = file.id
           end
         end
       end
@@ -153,17 +152,19 @@ module Pageflow
           file_type = Pageflow.config.file_types.find_by_collection_name!(collection_name)
           collection_directory = File.join(@attachments_root_path, collection_name)
           importer = file_type.importer
+
+          # special uploads handling (see Pageflow::Chart's ScrapedSiteImporter for example)
           if importer.respond_to?(:upload_files)
-            # special uploads handling (see Pageflow::Chart's ScrapedSiteImporter for example)
             importer.upload_files(collection_directory, @file_mappings)
           else
             # upload case for file types with standard uploadable file type
             Dir.foreach(collection_directory) do |exported_id|
               next if %w[. ..].include?(exported_id)
 
-              uploadable_file = ImportUtils.find_file_by_exported_id(@file_mappings,
-                                                                     file_type.model.name,
-                                                                     exported_id)
+              uploadable_file_id = ImportUtils.file_id_for_exported_id(@file_mappings,
+                                                                       file_type.model.name,
+                                                                       exported_id)
+              uploadable_file = file_type.model.find(uploadable_file_id)
               attachment_file_path = File.join(collection_directory,
                                                exported_id,
                                                uploadable_file.file_name)
@@ -175,8 +176,12 @@ module Pageflow
         end
       end
 
-      def publish_files
-
+      # file publishing for generated files
+      def publish_generated_files
+        Pageflow.config.file_types.each do |file_type|
+          importer = file_type.importer
+          importer.publish_files(@entry) if importer.respond_to?(:publish_files)
+        end
       end
 
       def data_compatible_for_import?(page_type_version_requirements)

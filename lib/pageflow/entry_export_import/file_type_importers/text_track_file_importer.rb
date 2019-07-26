@@ -2,27 +2,21 @@ module Pageflow
   module EntryExportImport
     module FileTypeImporters
       class TextTrackFileImporter
-        def self.import_file(file_data)
+        def self.import_file(file_data, file_mappings)
+          update_association_ids(file_data, file_mappings)
           TextTrackFile.create!(file_data.except('id',
                                                  'updated_at',
-                                                 'state',
-                                                 'parent_file_id',
-                                                 'parent_file_model_type'))
+                                                 'state'))
         end
 
         def self.update_association_ids(file_data, file_mappings)
-          parent_file = ImportUtils.find_file_by_exported_id(
+          new_parent_file_id = ImportUtils.file_id_for_exported_id(
             file_mappings,
             file_data['parent_file_model_type'],
             file_data['parent_file_id']
           )
 
-          text_track = ImportUtils.find_file_by_exported_id(
-            file_mappings,
-            'Pageflow::TextTrackFile',
-            file_data['id'])
-
-          text_track.update!(parent_file: parent_file)
+          file_data['parent_file_id'] = new_parent_file_id
         end
       end
     end

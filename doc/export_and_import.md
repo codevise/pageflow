@@ -20,15 +20,15 @@ format and a `files`-directory with all files used in the revisions) will automa
 archived to zip format for portability.
 
 ### Separation of Data and Files
-The `EntryExporter` serializes the entry to a JSON file. The file will also contain a block with 
-plugin version compatibility information (see "Import - Data Compatibility" below). 
-It then downloads all files used by the entries revisions and creates a zip archive of the whole 
-exported directory.
+The `EntryExporter` serializes the entry (with its two revisions mentioned above) to a JSON file.
+The file will also contain a block with plugin version compatibility information (see "Import - Data 
+Compatibility" below). It then downloads all files used by the entries revisions and creates a zip 
+archive of the whole exported directory.
 
 By default only the main attachments source file will be downloaded. This is controlled through 
 the `attachments_for_download`-method of Pageflows `ReusableFile`. If more files should be 
-included in the export, this method can be overwritten (as with all of the model-specific methods in `ReusableFile`)
-in the model definition like so:
+included in the export, this method can be overwritten (as with all of the model-specific methods in 
+`ReusableFile`) in the model definition like so:
 ```
 # lib/pageflow/chart/scraped_site.rb
 module Pageflow
@@ -60,8 +60,8 @@ guarantee data compatibility. The comparison is done on page type level, so all 
 register page types must either be on the same version or specify a required version for the import.
 The version specification on export defaults to the plugins `VERSION`.
 
-The compatibility version specification for the import can be overwritten in the page types definition via the 
-`import_version_requirement`-method. The requirement comparison follows the dependency 
+The compatibility version specification for the import can be overwritten in the page types definition 
+via the `import_version_requirement`-method. The requirement comparison follows the dependency 
 notations in `Gemfile`s used by RubyGems and bundler.
 
 ### Example import 
@@ -92,20 +92,22 @@ end
 
 The specified importer class can implement 3 specific class methods which are called during the 
 diferent stages of the import:
-- `import_file(file_data)` - called once for each exported file (in this case the registered 
-`Package` file), with the data of the file formatted as a ruby hash.
-- `update_association_ids(file_data, file_mappings)` - file types that reference other 
- ActiveRecord models through ActiveRecord associations need to update the foreign keys which 
- point to the associated record upon import. Therefore in a second pass (after re-creating the record via 
- `import_file`) the importer is passed the files data again plus a `file_mapping` hash which 
- stores the the transition from old to new id.
- File types which do not reference other files via `belongs_to` associations can simply omit this
-  method. 
+- `import_file(file_data, file_mappings)` - called once for each exported file (in this case the 
+  registered `Package` file), with the data of the file formatted as a ruby hash.
+  File types that reference other ActiveRecord models through ActiveRecord associations need to 
+  update the foreign keys which point to the associated record upon import. To achieve this, the 
+  importer is passed the files data plus a `file_mapping` hash which stores the transition from old 
+  to new id. File types which do not reference other files via `belongs_to` associations can 
+  simply ignore this parameter. 
 - `upload_files(collection_directory, file_mappings)` - after data import, when all records are 
 recreated and their foreign keys updated, the attachment files need to get uploaded (and 
 eventually reprocessed). The importer class can specify how this upload is being achieved.
 If this method is omitted, it is assumed that the file type adheres to the 
-`UploadableFile`-interface and has a single `attachment` which gets `publish!`ed after upload. 
+`UploadableFile`-interface and has a single `attachment` which gets `publish!`ed after upload.
+- `publish_files(entry)` - some files rely on other (associated) files as prerequisites for processing.
+In this last step of import, the importer class' `publish_files` method is called with the newly 
+crteated entry as a parameter. The importer class is responsible to publish/process all files 
+created by it.   
  
 #### The `import_file` stage
 In this first stage the importer class is responsible for creating the record with all 
@@ -123,7 +125,7 @@ module Pageflow
     module EntryExportImport
       module FileTypeImporters
         class PackageImporter
-          def self.import_file(file_data)
+          def self.import_file(file_data, _file_mappings)
             Package.create!(file_data.except('id',
                                              'updated_at',
                                              'state',
@@ -137,17 +139,17 @@ module Pageflow
 end
 ```
 
-Notice that the `PackageImporter` class specifies neither the `update_association_ids`-method 
-(since the `Package`-model does not reference any other models), nor the `upload_files`-method, 
-since the `Package`-model only has a single `attachment` via `UploadableFile` and thus benefits 
-from the standard upload mechanism defined in Pageflows `EntryImporter`.
+Notice that the `PackageImporter` class does not update any association ids 
+(since the `Package`-model does not reference any other models), nor implements the 
+`upload_files` or `publish_files`-methods, since the `Package`-model only has a single `attachment` 
+via `UploadableFile` and thus benefits from the standard upload mechanism defined in Pageflows 
+`EntryImporter`.
 
-#### The `update_association_ids` stage
-In the next stage of import the importer needs to update the foreign keys of its records. The 
-method is passed the data of a single file, from which its own id and the associations id (both 
-originating from the export application) can be extracted.
+If a file does however reference other files, the importer needs to update the foreign keys upon 
+import. The `import_file`-method is passed the data of a single file, from which its own id and the 
+associations id (both originating from the export application) can be extracted.
 The `file_mapings`-Hash can be passed to Pageflows `ImportUtils.find_file_by_exported_id`-method,
-along with the file model and the exported id to lookup the filex needed for updating the foreign
+along with the file model and the exported id to lookup the files needed for updating the foreign
 key:
 
 ```
@@ -156,27 +158,21 @@ module Pageflow
   module EntryExportImport
     module FileTypeImporters
       class TextTrackFileImporter
-        def self.import_file(file_data)
+        def self.import_file(file_data, file_mappings)
+          update_association_ids(file_data, file_mappings)
           TextTrackFile.create!(file_data.except('id',
                                                  'updated_at',
-                                                 'state',
-                                                 'parent_file_id',
-                                                 'parent_file_model_type'))
+                                                 'state'))
         end
 
         def self.update_association_ids(file_data, file_mappings)
-          parent_file = ImportUtils.find_file_by_exported_id(
+          new_parent_file_id = ImportUtils.file_id_for_exported_id(
             file_mappings,
             file_data['parent_file_model_type'],
             file_data['parent_file_id']
           )
 
-          text_track = ImportUtils.find_file_by_exported_id(
-            file_mappings,
-            'Pageflow::TextTrackFile',
-            file_data['id'])
-
-          text_track.update!(parent_file: parent_file)
+          file_data['parent_file_id'] = new_parent_file_id
         end
       end
     end
@@ -204,40 +200,91 @@ engines importer simply reuses its attachments and skips processing/scraping by 
 records with the `processed` state and defining the upload handling itself:
 
  ```
- # lib/pageflow/chart/entry_export_import/file_type_importers/scraped_site_importer.rb
- module Pageflow
-   module Chart
-     module EntryExportImport
-       module FileTypeImporters
-         class ScrapedSiteImporter
-           def self.import_file(file_data)
-             ScrapedSite.create!(file_data.except('id', 'updated_at'))
-           end
- 
-           def self.upload_files(collection_directory, file_mappings)
-             Dir.foreach(collection_directory) do |exported_id|
-               next if exported_id == '.' or exported_id == '..'
- 
-               attachments_directory_path = File.join(collection_directory,
-                                                      exported_id)
- 
-               scraped_site = ImportUtils.find_file_by_exported_id(file_mappings,
-                                                                   'Pageflow::Chart::ScrapedSite',
-                                                                   exported_id)
- 
-               UploadAttachmentsJob.perform_later('Pageflow::Chart::ScrapedSite',
-                                                  scraped_site.id,
-                                                  attachments_directory_path)
-             end
-           end
-         end
-       end
-     end
-   end
- end
+# lib/pageflow/chart/entry_export_import/file_type_importers/scraped_site_importer.rb
+module Pageflow
+  module Chart
+    module EntryExportImport
+      module FileTypeImporters
+        class ScrapedSiteImporter
+          def self.import_file(file_data)
+            ScrapedSite.create!(file_data.except('id', 'updated_at'))
+          end
+
+          def self.upload_files(collection_directory, file_mappings)
+            Dir.foreach(collection_directory) do |exported_id|
+              next if exported_id == '.' or exported_id == '..'
+
+              attachments_directory_path = File.join(collection_directory,
+                                                     exported_id)
+
+              scraped_site_id = ImportUtils.file_id_for_exported_id(file_mappings,
+                                                                    'Pageflow::Chart::ScrapedSite',
+                                                                    exported_id)
+
+              UploadAttachmentsJob.perform_later('Pageflow::Chart::ScrapedSite',
+                                                 scraped_site_id,
+                                                 attachments_directory_path)
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
 ```
 
 The `UploadAttachmentsJob` seen here iterates over the `attachments_for_export` defined by the 
-model and uploads them all in one go.
+model and uploads them all in one go. Notice that it also keeps the `state` unchanged, since it 
+does not re-process its files but simply re-creates them in the `processed`-state.
 
- 
+#### The `publish_files` stage
+
+In this last stage of import, the importer class is given the chance to trigger processing on its
+ files. Looking at the `Pageflow::LinkmapPage`-engine for example, we see that this engine does not
+ specify uploadable files but only reusable files which it creates itself from source files. Its 
+ importer classes therefore do not implement the `upload_files` method, but do however implement 
+ `publish_files`:
+
+```
+# lib/pageflow/linkmap_page/entry_export_import/file_type_importers/color_map_file_importer.rb
+module Pageflow
+  module LinkmapPage
+    module EntryExportImport
+      module FileTypeImporters
+        class ColorMapFileImporter
+          def self.import_file(file_data, file_mappings)
+            update_association_ids(file_data, file_mappings)
+            ColorMapFile.create!(file_data.except('id',
+                                                    'state',
+                                                    'processing_progress',
+                                                    'updated_at'))
+          end
+
+          def self.update_association_ids(file_data, file_mappings)
+            return unless file_data['source_image_file_id'].present?
+            source_image_file_id = Pageflow::EntryExportImport::ImportUtils.file_id_for_exported_id(
+              file_mappings,
+              'Pageflow::ImageFile',
+              file_data['source_image_file_id']
+            )
+
+            file_data['source_image_file_id'] = source_image_file_id
+          end
+
+          def self.publish_files(entry)
+            entry_color_map_files = entry.draft.find_files(Pageflow::LinkmapPage::ColorMapFile)
+            if entry.published?
+              entry_color_map_files += entry.published_revision
+                                            .find_files(Pageflow::LinkmapPage::ColorMapFile)
+            end
+            entry_color_map_files.uniq(&:id).each do |color_map_file|
+              color_map_file.publish!
+            end
+          end
+        end
+      end
+    end
+  end
+end
+```
