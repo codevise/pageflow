@@ -80,5 +80,16 @@ module Pageflow
         expect(file_type.custom_attributes).to eq([:neural_network_analysis])
       end
     end
+
+    describe '#importer' do
+      it 'returns passed importer class' do
+        file_type = FileType.new(
+          model: TextTrackFile,
+          importer: EntryExportImport::FileTypeImporters::TextTrackFileImporter
+        )
+
+        expect(file_type.importer).to eq(EntryExportImport::FileTypeImporters::TextTrackFileImporter)
+      end
+    end
   end
 end
