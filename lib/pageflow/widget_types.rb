@@ -15,8 +15,10 @@ module Pageflow
           defaults_by_role[role] = widget_type
         end
       end
-      @default_configurations[widget_type.name] = options[:default_configurations] if options[
-        :default_configurations].present?
+    end
+
+    def register_widget_defaults(widget_role, default_configurations)
+      @default_configurations[widget_role] = default_configurations
     end
 
     def clear

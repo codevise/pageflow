@@ -64,9 +64,8 @@ module Pageflow
         initial_widgets = placeholders_by_role.merge(defaults_by_role)
         initial_widgets.merge(from_db_by_role) { |_role_key, old_val, new_val|
           if old_val.configuration.present?
-            old_val.configuration.each do |key, value|
-              new_val.configuration[key] = value unless new_val.configuration.key?(key)
-            end
+            new_val.configuration = {} if new_val.configuration.nil?
+            new_val.configuration = old_val.configuration.merge(new_val.configuration)
           end
           new_val
         }.values
@@ -81,7 +80,7 @@ module Pageflow
           result[role] = Widget.new(role: role, type_name: widget_type.name,
                                     subject: nil,
                                     configuration:
-                                      config.widget_types.default_configuration(widget_type.name))
+                                      config.widget_types.default_configuration(role))
         end
       end
 
