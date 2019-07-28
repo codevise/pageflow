@@ -64,7 +64,8 @@ module Pageflow
           if image_urls.size >= 4
             break
           else
-            image_urls << page_thumbnail_url(page, :medium)
+            url = page.social_share_url(:medium)
+            image_urls << url if url.present?
             image_urls.uniq!
           end
         end
