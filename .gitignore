@@ -7,6 +7,7 @@ log/*.log
 pkg/
 tmp/
 spec/dummy/*
+spec/fixtures/exported_entry/entry.json
 /coverage
 .idea
 /app/assets/javascripts/pageflow/dist
