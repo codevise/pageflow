@@ -113,8 +113,6 @@ module Pageflow
       def create_files_for_revision(file_usages_data, revision)
         Pageflow.config.file_types.each do |file_type|
           file_type_name = file_type.type_name
-          p "importing #{file_type_name}s"
-
           file_type_usages_data = file_usages_data.select { |file_usage|
             file_usage['file_type'].eql?(file_type_name)
           }

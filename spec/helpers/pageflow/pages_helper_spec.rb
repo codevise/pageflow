@@ -129,6 +129,18 @@ module Pageflow
       end
     end
 
+    describe '#page_thumbnail_file' do
+      it 'returns the thumbnail file configured for the page' do
+        image_file = create_used_file(:image_file)
+        page = build(:page,
+                     template: 'background_image',
+                     configuration: {'thumbnail_image_id' => image_file.perma_id})
+
+        thumbnail_file = helper.page_thumbnail_file(page)
+        expect(thumbnail_file).to eq(image_file)
+      end
+    end
+
     describe '#page_default_content' do
       before { helper.extend(BackgroundImageHelper) }
 
