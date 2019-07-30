@@ -2,7 +2,7 @@ module Pageflow
   class PositionedFile
     attr_reader :file, :position_x, :position_y
 
-    delegate :thumbnail_url, to: :file
+    delegate :thumbnail_url, :perma_id, to: :file
 
     def initialize(file, position_x = nil, position_y = nil)
       @file = file
