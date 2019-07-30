@@ -1,4 +1,4 @@
-$media-duration: 7s;
+$media-loading-spinner-duration: 7s;
 
 .media_loading_spinner {
   &:before {
@@ -33,7 +33,7 @@ $media-duration: 7s;
 
   &-fade {
     @include animation(fade_out 1s ease 1);
-    @include animation-delay($media-duration + 0.5s);
+    @include animation-delay($media-loading-spinner-duration + 0.5s);
     @include animation-fill-mode(forwards);
 
     .media_loading_spinner-logo:after {
