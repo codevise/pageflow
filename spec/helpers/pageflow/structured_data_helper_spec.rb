@@ -2,13 +2,15 @@ require 'spec_helper'
 
 module Pageflow
   describe StructuredDataHelper do
+    include UsedFileTestHelper
+
     it 'renders structured data for entry' do
       first_publication_date = 1.month.ago
       last_publication_date = 3.days.ago
 
 
       entry = PublishedEntry.new(create(:entry, :published, first_published_at: first_publication_date))
-      image_file = create(:used_file, model: :image_file, file_name: 'share.jpg', revision: entry.revision)
+      image_file = create_used_file(:image_file, entry: entry, file_name: 'share.jpg')
       entry.revision.update(title: 'Some entry',
                             summary: 'Summary text',
                             author: 'Some author',

@@ -2,6 +2,8 @@ require 'spec_helper'
 
 module Pageflow
   describe EntryJsonSeedHelper do
+    include UsedFileTestHelper
+
     describe '#entry_json_seed' do
       it 'escapes illegal characters' do
         revision = create(:revision, :published)
@@ -193,7 +195,7 @@ module Pageflow
     describe '#entry_file_ids_seed' do
       it 'indexes list of ids by collection name' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: entry.revision)
+        image_file = create_used_file(:image_file, entry: entry)
 
         result = helper.entry_file_ids_seed(entry)
 
@@ -206,7 +208,7 @@ module Pageflow
 
       it 'indexes sources of entries audio files by id' do
         entry = PublishedEntry.new(create(:entry, :published))
-        audio_file = create(:used_file, model: :audio_file, revision: entry.revision)
+        audio_file = create_used_file(:audio_file, entry: entry)
 
         result = JSON.parse(helper.entry_audio_files_json_seed(entry))
 

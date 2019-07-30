@@ -3,6 +3,8 @@ require 'support/shared_contexts/cache_versioning'
 
 module Pageflow
   describe PublishedEntry do
+    include UsedFileTestHelper
+
     describe '#title' do
       let(:entry) { create(:entry, title: 'Metropolis') }
       let(:published_entry) { PublishedEntry.new(entry) }
@@ -21,7 +23,7 @@ module Pageflow
     describe '#thumbnail_file' do
       it 'returns positioned share image of published revision' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: entry.revision)
+        image_file = create_used_file(:image_file, entry: entry)
         entry.revision.share_image_id = image_file.perma_id
         entry.revision.share_image_x = 10
         entry.revision.share_image_y = 30
@@ -33,7 +35,7 @@ module Pageflow
 
       it 'returns positioned thumbnail file of first page of published revision' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: entry.revision)
+        image_file = create_used_file(:image_file, entry: entry)
         storyline = create(:storyline, revision: entry.revision)
         chapter = create(:chapter, storyline: storyline)
         create(:page, chapter: chapter, configuration: {
@@ -59,7 +61,7 @@ module Pageflow
     describe '#thumbnail_url' do
       it 'returns thumbnail of first page of published revision' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: entry.revision)
+        image_file = create_used_file(:image_file, entry: entry)
         storyline = create(:storyline, revision: entry.revision)
         chapter = create(:chapter, storyline: storyline)
         page = create(:page, chapter: chapter, configuration: {

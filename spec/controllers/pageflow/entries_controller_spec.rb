@@ -433,6 +433,8 @@ module Pageflow
       end
 
       context 'with format css' do
+        include UsedFileTestHelper
+
         it 'responds with success for published entry' do
           entry = create(:entry, :published)
 
@@ -458,8 +460,8 @@ module Pageflow
         end
 
         it 'includes image rules for image files' do
-          entry = create(:entry, :published)
-          image_file = create(:used_file, model: :image_file, revision: entry.published_revision)
+          entry = PublishedEntry.new(create(:entry, :published))
+          image_file = create_used_file(:image_file, entry: entry)
 
           get(:show, params: {id: entry}, format: 'css')
 
@@ -468,8 +470,8 @@ module Pageflow
         end
 
         it 'includes poster image rules for video files' do
-          entry = create(:entry, :published)
-          video_file = create(:used_file, model: :video_file, revision: entry.published_revision)
+          entry = PublishedEntry.new(create(:entry, :published))
+          video_file = create_used_file(:video_file, entry: entry)
 
           get(:show, params: {id: entry}, format: 'css')
 
@@ -478,8 +480,8 @@ module Pageflow
         end
 
         it 'includes panorama style group rules for image files' do
-          entry = create(:entry, :published)
-          image_file = create(:used_file, model: :image_file, revision: entry.published_revision)
+          entry = PublishedEntry.new(create(:entry, :published))
+          image_file = create_used_file(:image_file, entry: entry)
 
           get(:show, params: {id: entry}, format: 'css')
 

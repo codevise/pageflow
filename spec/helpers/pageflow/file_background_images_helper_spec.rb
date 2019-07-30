@@ -2,6 +2,8 @@ require 'spec_helper'
 
 module Pageflow
   describe FileBackgroundImagesHelper do
+    include UsedFileTestHelper
+
     describe '#file_background_images_css' do
       it 'generates css rules with given names' do
         pageflow_configure do |config|
@@ -13,7 +15,7 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        uploadable_file = create(:used_file, model: :uploadable_file, revision: entry.revision)
+        uploadable_file = create_used_file(:uploadable_file, entry: entry)
 
         result = helper.file_background_images_css(entry, :desktop)
 
@@ -48,7 +50,7 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        uploadable_file = create(:used_file, model: :uploadable_file, revision: entry.revision)
+        uploadable_file = create_used_file(:uploadable_file, entry: entry)
 
         result = helper.file_background_images_css(entry, :desktop)
 
@@ -69,7 +71,7 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        uploadable_file = create(:used_file, model: :uploadable_file, revision: entry.revision)
+        uploadable_file = create_used_file(:uploadable_file, entry: entry)
 
         result = helper.file_background_images_css(entry, :desktop)
 
@@ -132,7 +134,7 @@ module Pageflow
         end
 
         entry = PublishedEntry.new(create(:entry, :published))
-        uploadable_file = create(:used_file, model: :uploadable_file, revision: entry.revision)
+        uploadable_file = create_used_file(:uploadable_file, entry: entry)
 
         result = helper.file_background_images_css(entry, :desktop)
 

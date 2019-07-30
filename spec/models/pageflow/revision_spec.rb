@@ -260,19 +260,6 @@ module Pageflow
       end
     end
 
-    describe '#find_file_by_perma_id' do
-      it 'returns a UsedFile for the file specified by its usages perma_id' do
-        entry = create(:entry)
-        revision = entry.draft
-        image_file = create(:used_file, model: :image_file, revision: revision)
-        usage_perma_id = image_file.perma_id
-
-        result = revision.find_file_by_perma_id(Pageflow::ImageFile, usage_perma_id)
-
-        expect(result.perma_id).to eq(usage_perma_id)
-      end
-    end
-
     describe '#pages' do
       it 'orders by storyline position first then by chapter and page position' do
         revision = create(:revision)

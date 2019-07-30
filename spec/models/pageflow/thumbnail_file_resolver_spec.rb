@@ -2,10 +2,12 @@ require 'spec_helper'
 
 module Pageflow
   describe ThumbnailFileResolver do
+    include UsedFileTestHelper
+
     describe '#find_thumbnail' do
       it 'returns first exisiting file' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: entry.revision)
+        image_file = create_used_file(:image_file, entry: entry)
         candidates = [
           {attribute: 'thumbnail_id', file_collection: 'image_files'}
         ]
@@ -19,7 +21,7 @@ module Pageflow
 
       it 'skips missing records' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: entry.revision)
+        image_file = create_used_file(:image_file, entry: entry)
         candidates = [
           {attribute: 'missing_id', file_collection: 'image_files'},
           {attribute: 'thumbnail_id', file_collection: 'image_files'}
@@ -34,7 +36,7 @@ module Pageflow
 
       it 'skips missing attributes' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: entry.revision)
+        image_file = create_used_file(:image_file, entry: entry)
         candidates = [
           {attribute: 'missing_id', file_collection: 'image_files'},
           {attribute: 'thumbnail_id', file_collection: 'image_files'}
@@ -64,7 +66,7 @@ module Pageflow
 
       it 'returns positioned file with coordinates from configuration' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: entry.revision)
+        image_file = create_used_file(:image_file, entry: entry)
         candidates = [
           {attribute: 'thumbnail_id', file_collection: 'image_files'}
         ]
@@ -79,7 +81,7 @@ module Pageflow
 
       it 'returns positioned file with default coordinates' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create(:used_file, model: :image_file, revision: entry.revision)
+        image_file = create_used_file(:image_file, entry: entry)
         candidates = [
           {attribute: 'thumbnail_id', file_collection: 'image_files'}
         ]
@@ -95,8 +97,8 @@ module Pageflow
       context 'with conditions' do
         it 'skips candidate if condition is not met' do
           entry = PublishedEntry.new(create(:entry, :published))
-          image_file = create(:used_file, model: :image_file, revision: entry.revision)
-          panorama_image_file = create(:used_file, model: :image_file, revision: entry.revision)
+          image_file = create_used_file(:image_file, entry: entry)
+          panorama_image_file = create_used_file(:image_file, entry: entry)
           candidates = [
             {
               attribute: 'panorama_id',
@@ -123,8 +125,8 @@ module Pageflow
 
         it 'skips candidate if condition given via unless is met' do
           entry = PublishedEntry.new(create(:entry, :published))
-          image_file = create(:used_file, model: :image_file, revision: entry.revision)
-          panorama_image_file = create(:used_file, model: :image_file, revision: entry.revision)
+          image_file = create_used_file(:image_file, entry: entry)
+          panorama_image_file = create_used_file(:image_file, entry: entry)
           candidates = [
             {
               attribute: 'panorama_id',
