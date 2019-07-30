@@ -12,7 +12,7 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
 
   &-fade {
     .media_loading_spinner-titles {
-      @include animation(title_fade $media-duration ease-out 1);
+      @include animation(title_fade $media-loading-spinner-duration ease-out 1);
       @include animation-fill-mode(forwards);
     }
   }
