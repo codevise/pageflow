@@ -119,24 +119,32 @@ module Pageflow
 
           file_type_usages_data.each do |file_type_usage_data|
             file_data = file_type_usage_data.delete('file')
-            exported_file_id = file_data.delete('id')
 
-            # prepare data for file creation
-            file_data['uploader_id'] = @user.id if file_data['uploader_id'].present?
-            file_data['confirmed_by_id'] = @user.id if file_data['confirmed_by_id'].present?
-            file_data['entry_id'] = @entry.id # required for nested_file validation
-
-            importer = file_type.importer
-            file = importer.import_file(file_data, @file_mappings)
-
-            # overwrite file id with new id
-            file_type_usage_data['file_id'] = file.id
-            revision.file_usages.create!(file_type_usage_data.except(*DEFAULT_REMOVAL_COLUMNS))
-
-            # map file by type from old to new id for linking associated files
             file_type_collection_name = file_type.collection_name
-            @file_mappings[file_type_collection_name] ||= {}
-            @file_mappings[file_type_collection_name][exported_file_id] = file.id
+            exported_file_id = file_data.delete('id')
+            imported_file_id = @file_mappings.dig(file_type_collection_name, exported_file_id)
+
+            if imported_file_id.present?
+              # file has already been imported
+              file_type_usage_data['file_id'] = imported_file_id
+            else
+              # prepare data for file creation
+              file_data['uploader_id'] = @user.id if file_data['uploader_id'].present?
+              file_data['confirmed_by_id'] = @user.id if file_data['confirmed_by_id'].present?
+              file_data['entry_id'] = @entry.id # required for nested_file validation
+
+              importer = file_type.importer
+              file = importer.import_file(file_data, @file_mappings)
+
+              # map file by type from old to new id for linking associated files
+              @file_mappings[file_type_collection_name] ||= {}
+              @file_mappings[file_type_collection_name][exported_file_id] = file.id
+
+              # overwrite file id with new id
+              file_type_usage_data['file_id'] = file.id
+            end
+
+            revision.file_usages.create!(file_type_usage_data.except(*DEFAULT_REMOVAL_COLUMNS))
           end
         end
       end
