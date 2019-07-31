@@ -17,7 +17,7 @@ module Pageflow
     #     entry = PublishedEntry.new(create(:entry, :published))
     #     image_file = create_used_file(:image_file, entry: entry)
     #
-    # @since edge
+    # @since 15.0
     # @returns UsedFile
     def find_file_in_entry(file_type, file_perma_id)
       raise 'No entry of type PublishedEntry or DraftEntry set.' unless @entry.present?
