@@ -2,6 +2,8 @@ require 'spec_helper'
 
 module Pageflow
   describe PagesHelper do
+    include UsedFileTestHelper
+    
     describe '#render_page_template' do
       let(:page_type_class) do
         Class.new(Pageflow::PageType) do
@@ -105,21 +107,25 @@ module Pageflow
       before { helper.extend(FileThumbnailsHelper) }
 
       it 'returns file_thumbnail_css_class of thumbnail_file of page' do
-        image_file = create(:image_file)
-        page = build(:page, template: 'background_image', configuration: {'thumbnail_image_id' => image_file.id})
+        image_file = create_used_file(:image_file)
+        page = build(:page,
+                     template: 'background_image',
+                     configuration: {'thumbnail_image_id' => image_file.perma_id})
 
         css_class = helper.page_thumbnail_image_class(page, false)
 
-        expect(css_class).to eq("pageflow_image_file_link_thumbnail_#{image_file.id}")
+        expect(css_class).to eq("pageflow_image_file_link_thumbnail_#{image_file.perma_id}")
       end
 
       it 'returns large variant for hero' do
-        image_file = create(:image_file)
-        page = build(:page, template: 'background_image', configuration: {'thumbnail_image_id' => image_file.id})
+        image_file = create_used_file(:image_file)
+        page = build(:page,
+                     template: 'background_image',
+                     configuration: {'thumbnail_image_id' => image_file.perma_id})
 
         css_class = helper.page_thumbnail_image_class(page, true)
 
-        expect(css_class).to eq("pageflow_image_file_link_thumbnail_large_#{image_file.id}")
+        expect(css_class).to eq("pageflow_image_file_link_thumbnail_large_#{image_file.perma_id}")
       end
     end
 
@@ -127,9 +133,10 @@ module Pageflow
       before { helper.extend(BackgroundImageHelper) }
 
       it 'renders header, print image and page text' do
-        image_file = create(:image_file)
+        image_file = create_used_file(:image_file)
+
         page = build(:page, configuration: {
-                       'background_image_id' => image_file.id,
+                       'background_image_id' => image_file.perma_id,
                        'title' => 'Title',
                        'tagline' => 'Tagline',
                        'subtitle' => 'Subtitle'
@@ -164,9 +171,9 @@ module Pageflow
       before { helper.extend(BackgroundImageHelper) }
 
       it 'renders img tag' do
-        image_file = create(:image_file)
+        image_file = create_used_file(:image_file)
         page = build(:page, configuration: {
-                       'background_image_id' => image_file.id
+                       'background_image_id' => image_file.perma_id
                      })
 
         html = helper.page_print_image(page)

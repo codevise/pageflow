@@ -32,6 +32,10 @@ pageflow.FilesCollection = Backbone.Collection.extend({
       });
   },
 
+  getByPermaId: function(permaId) {
+    return this.findWhere({perma_id: parseInt(permaId, 10)});
+  },
+
   getEntry: function() {
     return this.entry || pageflow.entry;
   },

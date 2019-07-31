@@ -11,6 +11,7 @@ module Pageflow
     it 'renders structured data for video file' do
       upload_date = 2.day.ago
       publication_date = 1.day.ago
+
       revision = create(:revision, :published, published_at: publication_date)
       video_file = create(:video_file,
                           file_name: 'some-video.mp4',
@@ -23,10 +24,13 @@ module Pageflow
                           poster_file_name: 'poster-0.jpg',
                           rights: 'some author',
                           duration_in_ms: (3 * 60 + 43) * 1000 + 120)
+
+      file_usage = revision.file_usages.first
+
       page = create(:page,
                     template: 'video',
                     revision: revision,
-                    configuration: {video_file_id: video_file.id})
+                    configuration: {video_file_id: file_usage.perma_id})
 
       html = render_page(page)
 

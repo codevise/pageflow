@@ -15,8 +15,9 @@ export default {
         collectionName: camelize(collectionName),
         dispatch,
 
+        idAttribute: 'perma_id',
         attributes: [
-          'id', 'basename', 'variants', 'is_ready',
+          'id', 'perma_id', 'basename', 'variants', 'is_ready',
           'parent_file_id', 'parent_file_model_type',
           'width', 'height', 'duration_in_ms', 'rights', 'created_at'
         ],
@@ -32,7 +33,9 @@ export default {
     return {
       files: combineReducers(Object.keys(files).reduce((result, collectionName) => {
         collectionName = camelize(collectionName);
-        result[collectionName] = createCollectionReducer(collectionName);
+        result[collectionName] = createCollectionReducer(collectionName, {
+          idAttribute: 'permaId'
+        });
         return result;
       }, {})),
 

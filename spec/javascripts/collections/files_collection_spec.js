@@ -96,6 +96,19 @@ describe('FileCollection', function() {
     });
   });
 
+  describe('#getByPermaId', function () {
+    it('returns existing file with permaId', function() {
+      var fileType = f.fileType();
+      var files = [{file_name: 'existing.png', perma_id: 300}];
+      var entry = f.entry();
+      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+
+      var file = collection.getByPermaId(300);
+
+      expect(file.get('file_name')).to.eq('existing.png');
+    });
+  });
+
   describe('#uploadable', function() {
     it('always contains subset of files with state uploadable', function() {
       var fileType = f.fileType();

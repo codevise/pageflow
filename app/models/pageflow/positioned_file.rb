@@ -2,7 +2,7 @@ module Pageflow
   class PositionedFile
     attr_reader :file, :position_x, :position_y
 
-    delegate :thumbnail_url, to: :file
+    delegate :thumbnail_url, :perma_id, to: :file
 
     def initialize(file, position_x = nil, position_y = nil)
       @file = file
@@ -13,7 +13,8 @@ module Pageflow
     def ==(other)
       super(other) ||
         other == file ||
-        (other.is_a?(PositionedFile) && other.file == file)
+        (other.is_a?(PositionedFile) && other.file == file) ||
+        (other.class == file.class && other.id == file.id)
     end
 
     def to_model

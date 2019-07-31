@@ -1,6 +1,6 @@
 module Pageflow
-  class ThumbnailFileResolver < Struct.new(:candidates, :configuration)
-    def find
+  class ThumbnailFileResolver < Struct.new(:entry, :candidates, :configuration)
+    def find_thumbnail
       candidates.detect do |candidate|
         condition = candidate[:unless] || candidate[:if]
         next if condition && !condition_met?(condition, candidate[:unless])
@@ -35,7 +35,7 @@ module Pageflow
     end
 
     def find_file_by_candidate(candidate)
-      file_model(candidate).find_by_id(record_id(candidate))
+      entry.find_file_by_perma_id(file_model(candidate), record_id(candidate))
     end
 
     def file_model(candidate)

@@ -12,7 +12,7 @@ module Pageflow
 
     def file_thumbnail_css_class(file, style)
       return if file.blank?
-      [file.to_model.class.model_name.singular, style, file.to_model.id] * '_'
+      [file.to_model.class.model_name.singular, style, file.perma_id] * '_'
     end
   end
 end

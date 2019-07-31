@@ -23,11 +23,14 @@ module Pageflow
                           poster_file_name: 'poster-0.jpg',
                           rights: 'some author',
                           duration_in_ms: (3 * 60 + 43) * 1000 + 120)
+
+      file_usage = revision.file_usages.first
+
       page = create(:page,
                     template: 'background_image',
                     revision: revision,
                     configuration: {
-                      video_file_id: video_file.id,
+                      video_file_id: file_usage.perma_id,
                       background_type: 'video'
                     })
 
@@ -62,10 +65,13 @@ module Pageflow
                           width: 100,
                           height: 200,
                           rights: 'some author')
+
+      file_usage = revision.file_usages.first
+
       page = create(:page,
                     template: 'background_image',
                     revision: revision,
-                    configuration: {background_image_id: image_file.id})
+                    configuration: {background_image_id: file_usage.perma_id})
 
       html = render_page(page)
 

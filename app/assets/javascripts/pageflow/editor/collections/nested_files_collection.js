@@ -23,5 +23,9 @@ pageflow.NestedFilesCollection = pageflow.SubsetCollection.extend({
                     'change:configuration:' + nestedFilesOrder.binding,
                     this.sort);
     }
+  },
+
+  getByPermaId: function(permaId) {
+    return this.findWhere({perma_id: parseInt(permaId, 10)});
   }
 });

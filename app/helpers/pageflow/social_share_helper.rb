@@ -1,6 +1,8 @@
 module Pageflow
   module SocialShareHelper
     include EntriesHelper
+    include PagesHelper
+    include RevisionFileHelper
 
     def social_share_meta_tags_for(target)
       if target.is_a?(Page)
@@ -53,7 +55,7 @@ module Pageflow
 
     def social_share_entry_image_tags(entry)
       image_urls = []
-      image_file = ImageFile.find_by_id(entry.share_image_id)
+      image_file = find_file_in_entry(ImageFile, entry.share_image_id)
 
       if image_file
         image_urls << image_file.thumbnail_url(:medium)
@@ -62,13 +64,13 @@ module Pageflow
           if image_urls.size >= 4
             break
           else
-            image_urls << page.thumbnail_url(:medium)
+            image_urls << page_thumbnail_url(page, :medium)
             image_urls.uniq!
           end
         end
       end
 
-      render 'pageflow/social_share/image_tags', :image_urls => image_urls
+      render 'pageflow/social_share/image_tags', image_urls: image_urls
     end
 
     def social_share_normalize_protocol(url)

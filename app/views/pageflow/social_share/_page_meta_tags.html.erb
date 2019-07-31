@@ -1,6 +1,6 @@
 <%= tag :link, rel: "canonical", href: social_share_page_url(entry, page) %>
 
-<%= tag :meta, property: "og:image", content: social_share_normalize_protocol(page.thumbnail_url(:medium)) %>
+<%= tag :meta, property: "og:image", content: social_share_normalize_protocol(page_thumbnail_url(page, :medium)) %>
 
 <%= tag :meta, property: "og:title", content: social_share_page_title(page) %>
 <%= tag :meta, property: "og:description", name: "description", content: social_share_page_description(entry, page) %>
