@@ -7,9 +7,9 @@ module Pageflow
 
     def meta_tags_data_for_entry(entry)
       {
-        keywords: entry.keywords.presence || Pageflow.config.default_keywords_meta_tag,
-        author: entry.author.presence || Pageflow.config.default_author_meta_tag,
-        publisher: entry.publisher.presence || Pageflow.config.default_publisher_meta_tag
+        keywords: entry.keywords.presence,
+        author: entry.author.presence,
+        publisher: entry.publisher.presence
       }
     end
   end
