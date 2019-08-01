@@ -54,24 +54,26 @@ module Pageflow
     end
 
     def social_share_entry_image_tags(entry)
-      image_urls = []
+      share_images = []
       image_file = find_file_in_entry(ImageFile, entry.share_image_id)
 
       if image_file
-        image_urls << image_file.thumbnail_url(:medium)
+        image_url = image_file.thumbnail_url(:medium)
+        share_images.push(image_url: image_url, width: image_file.width, height: image_file.height)
       else
         entry.pages.each do |page|
-          if image_urls.size >= 4
-            break
-          else
-            url = page.social_share_url(:medium)
-            image_urls << url if url.present?
-            image_urls.uniq!
-          end
+          break if share_images.size >= 4
+          thumbnail_file = page_thumbnail_file(page)
+          next unless thumbnail_file.present?
+          image_url = thumbnail_file.thumbnail_url(:medium)
+          share_images.push(image_url: image_url,
+                            width: thumbnail_file.file.width,
+                            height: thumbnail_file.file.height)
+          share_images.uniq!
         end
       end
 
-      render 'pageflow/social_share/image_tags', image_urls: image_urls
+      render 'pageflow/social_share/image_tags', share_images: share_images
     end
 
     def social_share_normalize_protocol(url)
