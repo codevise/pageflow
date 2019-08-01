@@ -5,5 +5,6 @@ RSpec.configure do |config|
     end
   end
 
-  config.include(StubTemplateTestHelper, :type => :helper)
+  config.include(StubTemplateTestHelper, type: :helper)
+  config.include(StubTemplateTestHelper, type: :view_component)
 end
