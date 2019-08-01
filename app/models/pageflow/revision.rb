@@ -103,6 +103,18 @@ module Pageflow
       self[:share_providers] || entry.theming.default_share_providers
     end
 
+    def author
+      read_attribute(:author) || Pageflow.config.default_author_meta_tag
+    end
+
+    def publisher
+      read_attribute(:publisher) || Pageflow.config.default_publisher_meta_tag
+    end
+
+    def keywords
+      read_attribute(:keywords) || Pageflow.config.default_keywords_meta_tag
+    end
+
     def active_share_providers
       share_providers.select { |_k, v| v }.keys
     end
