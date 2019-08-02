@@ -27,17 +27,17 @@ module Pageflow
         end
 
         # Step 1: Create data
-        p 'importing records...'
+        Rails.logger.info 'importing records...'
         import_records(import_data)
-        p '...done!'
+        Rails.logger.info '...done!'
         # Step 2: Upload files
-        p 'uploading files...'
+        Rails.logger.info 'uploading files...'
         upload_files
-        p '...done!'
+        Rails.logger.info '...done!'
         # Step 3: Publish files not included in upload stage
-        p 'publishing generated files...'
+        Rails.logger.info 'publishing generated files...'
         publish_generated_files
-        p '...done!'
+        Rails.logger.info '...done!'
       end
 
       private

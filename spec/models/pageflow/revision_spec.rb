@@ -261,10 +261,12 @@ module Pageflow
     end
 
     describe '#find_file_by_perma_id' do
+      include UsedFileTestHelper
+
       it 'returns a UsedFile for the file specified by its usages perma_id' do
-        entry = create(:entry)
-        revision = entry.draft
-        image_file = create(:used_file, model: :image_file, revision: revision)
+        entry = PublishedEntry.new(create(:entry, :published))
+        revision = entry.revision
+        image_file = create_used_file(:image_file, entry: entry)
         usage_perma_id = image_file.perma_id
 
         result = revision.find_file_by_perma_id(Pageflow::ImageFile, usage_perma_id)
