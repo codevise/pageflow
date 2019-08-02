@@ -96,11 +96,9 @@ module Pageflow
 
     # Current plugin version for import support
     def version
-      begin
-        "#{self.class.to_s.deconstantize}::VERSION".constantize
-      rescue
-        Pageflow::VERSION
-      end
+      "#{self.class.to_s.deconstantize}::VERSION".constantize
+    rescue NameError
+      Pageflow::VERSION
     end
 
     # Gets included in JSON file during export of an entry.

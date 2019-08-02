@@ -28,12 +28,12 @@ module Pageflow
       end
 
       describe 'importing entries' do
-        let(:import_data) {
+        let(:import_data) do
           {
             page_type_version_requirements: {},
             entry: JSON.parse(EntrySerializer.new.serialize(entry))
           }.to_json
-        }
+        end
 
         it 'calls each import stages method' do
           pageflow_configure do |config|
