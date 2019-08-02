@@ -16,12 +16,12 @@ module Pageflow
       end
 
       describe 'file download' do
-        before do
-          published_entry = PublishedEntry.new(entry)
-          create(:used_file, model: :image_file, revision: published_entry.revision)
-        end
+        include UsedFileTestHelper
 
         it 'downloads the files specified by the file types #attachments_for_export method' do
+          published_entry = PublishedEntry.new(entry)
+          create_used_file(:image_file, entry: published_entry)
+
           exporter = EntryExporter.new(export_directory)
           allow(exporter).to receive(:page_type_version_requirements)
           allow(exporter).to receive(:generate_export_zip_file)

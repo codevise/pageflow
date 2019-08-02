@@ -26,16 +26,6 @@ module Pageflow
       attachment.url(:panorama_large) if ready?
     end
 
-    # Do not leave orphaned records behind
-    # for which the record is a source_image_file
-    after_destroy do |record|
-      begin
-        LinkmapPage::ColorMapFile.find_by(source_image_file_id: record.id).destroy
-      rescue
-        # linkmap page not defined in current host application
-      end
-    end
-
     # UploadableFile-overrides ->
     def attachment_default_url
       ':pageflow_placeholder'
