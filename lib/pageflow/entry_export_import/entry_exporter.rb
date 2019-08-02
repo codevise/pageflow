@@ -12,9 +12,12 @@ module Pageflow
 
       def call(entry)
         serialized_entry = Pageflow::EntrySerializer.new.serialize(entry)
+        export_data = {
+          page_type_version_requirements: page_type_version_requirements,
+          entry: JSON.parse(serialized_entry)
+        }
 
-        @export_file.write({page_type_version_requirements: page_type_version_requirements,
-                           entry: JSON.parse(serialized_entry)}.to_json)
+        @export_file.write(export_data.to_json)
         @export_file.close
 
         download_entry_files_to_directory(entry)

@@ -88,7 +88,8 @@ module Pageflow
           importer: EntryExportImport::FileTypeImporters::TextTrackFileImporter
         )
 
-        expect(file_type.importer).to eq(EntryExportImport::FileTypeImporters::TextTrackFileImporter)
+        expect(file_type.importer)
+          .to eq(EntryExportImport::FileTypeImporters::TextTrackFileImporter)
       end
     end
   end

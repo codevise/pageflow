@@ -9,7 +9,7 @@ of stories in a well-defined fashion.
 ## Export
 To export an entry in a host application simply invoke the Rake-task 
 `pageflow:entries:export[entry_id]` with the entries id. This will export all of the entries data 
-along with its latest draft and the published revision (if thje entry is published) to a 
+along with its latest draft and the published revision (if the entry is published) to a 
 timestamped directory underneath the `tmp` directory of the host application.
 
 The revisions also include their respective widgets, storylines with 
@@ -66,8 +66,8 @@ notations in `Gemfile`s used by RubyGems and bundler.
 
 ### Example import 
 The code in the following example is taken from the `pageflow-panorama` engine, which adds a page
- type for 360° degree panoramas, including a file type with an attachment (in this case a 
- zip-file with the contents of the panorama) 
+type for 360° degree panoramas, including a file type with an attachment (in this case a
+zip-file with the contents of the panorama) 
 
 To support import for a page type, the plugin must register an importer-class for each
 file type it registers:
@@ -96,18 +96,18 @@ diferent stages of the import:
   registered `Package` file), with the data of the file formatted as a ruby hash.
   File types that reference other ActiveRecord models through ActiveRecord associations need to 
   update the foreign keys which point to the associated record upon import. To achieve this, the 
-  importer is passed the files data plus a `file_mapping` hash which stores the transition from old 
-  to new id. File types which do not reference other files via `belongs_to` associations can 
-  simply ignore this parameter. 
-- `upload_files(collection_directory, file_mappings)` - after data import, when all records are 
-recreated and their foreign keys updated, the attachment files need to get uploaded (and 
-eventually reprocessed). The importer class can specify how this upload is being achieved.
-If this method is omitted, it is assumed that the file type adheres to the 
-`UploadableFile`-interface and has a single `attachment` which gets `publish!`ed after upload.
+  importer is passed the files data plus a `file_mapping` hash which stores the transitions from old 
+  to new ids for each file type. File types which do not reference other files via `belongs_to`
+  associations can simply ignore this parameter. 
+- `upload_files(collection_directory, file_mappings)` - after data import, when all records are
+  recreated and their foreign keys updated, the attachment files need to get uploaded (and 
+  eventually reprocessed). The importer class can specify how this upload is being achieved.
+  If this method is omitted, it is assumed that the file type adheres to the 
+  `UploadableFile`-interface and has a single `attachment` which gets `publish!`ed after upload.
 - `publish_files(entry)` - some files rely on other (associated) files as prerequisites for processing.
-In this last step of import, the importer class' `publish_files` method is called with the newly 
-crteated entry as a parameter. The importer class is responsible to publish/process all files 
-created by it.   
+  In this last step of import, the importer class' `publish_files` method is called with the newly 
+  created entry as a parameter. The importer class is responsible to publish/process all files 
+  created by it.   
  
 #### The `import_file` stage
 In this first stage the importer class is responsible for creating the record with all 
@@ -241,10 +241,10 @@ does not re-process its files but simply re-creates them in the `processed`-stat
 #### The `publish_files` stage
 
 In this last stage of import, the importer class is given the chance to trigger processing on its
- files. Looking at the `Pageflow::LinkmapPage`-engine for example, we see that this engine does not
- specify uploadable files but only reusable files which it creates itself from source files. Its 
- importer classes therefore do not implement the `upload_files` method, but do however implement 
- `publish_files`:
+files. Looking at the `Pageflow::LinkmapPage`-engine for example, we see that this engine does not
+specify uploadable files but only reusable files which it creates itself from source files. Its
+importer classes therefore do not implement the `upload_files` method, but do however implement
+`publish_files`:
 
 ```
 # lib/pageflow/linkmap_page/entry_export_import/file_type_importers/color_map_file_importer.rb

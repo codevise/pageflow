@@ -180,9 +180,9 @@ module Pageflow
     def serialized_components
       components = []
       revision_components do |revision_component|
-        components << {revision_component.class.name => revision_component
-                                                          .attributes
-                                                          .except('revision_id')}
+        components << {
+          revision_component.class.name => revision_component.attributes.except('revision_id')
+        }
       end
       components
     end

@@ -29,15 +29,15 @@ module Pageflow
         # Step 1: Create data
         p 'importing records...'
         import_records(import_data)
-        p '...Done!'
+        p '...done!'
         # Step 2: Upload files
         p 'uploading files...'
         upload_files
-        p '...Done!'
+        p '...done!'
         # Step 3: Publish files not included in upload stage
         p 'publishing generated files...'
         publish_generated_files
-        p '...Done!'
+        p '...done!'
       end
 
       private
@@ -83,11 +83,11 @@ module Pageflow
         end
 
         # create revision components
-        revision_components_data.each do |data|
-          component_class_name = data.keys.first
-          component_data = data[component_class_name].except(*DEFAULT_REMOVAL_COLUMNS)
+        revision_components_data.each do |revision_component_data|
+          component_class_name = revision_component_data.keys.first
+          component_data = revision_component_data[component_class_name]
           component_data['revision_id'] = revision.id
-          component_class_name.constantize.create!(component_data) # page type concept?
+          component_class_name.constantize.create!(component_data.except(*DEFAULT_REMOVAL_COLUMNS))
         end
 
         # create storylines with chapters and pages
@@ -113,9 +113,9 @@ module Pageflow
       def create_files_for_revision(file_usages_data, revision)
         Pageflow.config.file_types.each do |file_type|
           file_type_name = file_type.type_name
-          file_type_usages_data = file_usages_data.select { |file_usage|
+          file_type_usages_data = file_usages_data.select do |file_usage|
             file_usage['file_type'].eql?(file_type_name)
-          }
+          end
 
           file_type_usages_data.each do |file_type_usage_data|
             file_data = file_type_usage_data.delete('file')
@@ -195,7 +195,7 @@ module Pageflow
           page_type = Pageflow.config.page_types.find_by_name!(plugin_name)
           current_version = Gem::Version.new(page_type.version)
           return false unless Gem::Requirement.new(plugin_version_requirement)
-                                .satisfied_by?(current_version)
+                                              .satisfied_by?(current_version)
         end
         true
       end
