@@ -135,20 +135,23 @@ module Pageflow
 
       it 'renders share image meta tags if share image was chosen' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:image_file, entry: entry, width: 1200, height: 600)
         entry.revision.share_image_id = image_file.perma_id
 
         html = helper.social_share_entry_image_tags(entry)
 
         expect(html).to have_css("meta[content=\"#{image_file.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
+        expect(html).to have_css("meta[content=\"#{image_file.width}\"][property=\"og:image:width\"]", visible: false, count: 1)
+        expect(html).to have_css("meta[content=\"#{image_file.height}\"][property=\"og:image:height\"]", visible: false, count: 1)
+
         expect(html).to have_css("meta[content=\"#{image_file.thumbnail_url(:medium)}\"][name=\"twitter:image:src\"]", visible: false, count: 1)
       end
 
       it 'renders up to three open graph image meta tags for page thumbnails' do
         entry = PublishedEntry.new(create(:entry, :published))
-        image_file1 = create_used_file(:image_file, entry: entry)
-        image_file2 = create_used_file(:image_file, entry: entry)
-        image_file3 = create_used_file(:image_file, entry: entry)
+        image_file1 = create_used_file(:image_file, entry: entry, width: 1200, height: 600)
+        image_file2 = create_used_file(:image_file, entry: entry, width: 1200, height: 600)
+        image_file3 = create_used_file(:image_file, entry: entry, width: 600, height: 300)
         storyline = create(:storyline, revision: entry.revision)
         chapter = create(:chapter, storyline: storyline)
         create(:page, configuration: {thumbnail_image_id: image_file1.perma_id}, chapter: chapter)
@@ -160,7 +163,14 @@ module Pageflow
         expect(html).to have_css("meta[content=\"#{image_file1.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
         expect(html).to have_css("meta[content=\"#{image_file2.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
         expect(html).to have_css("meta[content=\"#{image_file3.thumbnail_url(:medium)}\"][property=\"og:image\"]", visible: false, count: 1)
+        expect(html).to have_css("meta[content=\"#{image_file1.width}\"][property=\"og:image:width\"]", visible: false, count: 2)
+        expect(html).to have_css("meta[content=\"#{image_file1.height}\"][property=\"og:image:height\"]", visible: false, count: 2)
+        expect(html).to have_css("meta[content=\"#{image_file3.width}\"][property=\"og:image:width\"]", visible: false, count: 1)
+        expect(html).to have_css("meta[content=\"#{image_file3.height}\"][property=\"og:image:height\"]", visible: false, count: 1)
+
         expect(html).to have_css('meta[property="og:image"]', visible: false, maximum: 3)
+        expect(html).to have_css('meta[property="og:image:width"]', visible: false, maximum: 3)
+        expect(html).to have_css('meta[property="og:image:height"]', visible: false, maximum: 3)
       end
 
       it 'renders one twitter image meta tag with first page thumbnail' do
