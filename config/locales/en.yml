@@ -351,6 +351,10 @@ en:
           attributes:
             folder:
               must_be_same_account: Folder must belong to same account as story
+        pageflow/membership:
+          attributes:
+            user:
+              required: User must be selected
     models:
       account:
         one: Account

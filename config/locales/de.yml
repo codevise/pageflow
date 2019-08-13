@@ -351,6 +351,10 @@ de:
           attributes:
             folder:
               must_be_same_account: Ordner muss zu gleichem Konto gehören wie Beitrag
+        pageflow/membership:
+          attributes:
+            user:
+              required: Benutzer muss ausgewählt sein
     models:
       account:
         one: Konto
