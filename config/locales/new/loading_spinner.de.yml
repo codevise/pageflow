@@ -18,11 +18,6 @@ de:
               label: Unschärfe
       media_loading_spinner:
         widget_type_info_box_text: Dies ist eine Vorschau der Lade-Ansicht von 'Bild'. Die Animation wird ausgeführt, während die Seite geladen wird.
-    media_loading_spinner:
-      feature_name: "DELETED"
-    title_loading_spinner:
-      feature_name: "DELETED"
-      widget_type_name: "DELETED"
   activerecord:
     attributes:
       pageflow/widget:

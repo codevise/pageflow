@@ -54,7 +54,7 @@ export class MediaLoadingSpinnerComponent extends React.Component {
   render() {
     const {editing, invert} = this.props;
     const {hidden, animating} = this.state;
-    var logoElement = <div className="media_loading_spinner-logo" />
+    var logoElement = <div className={classNames("media_loading_spinner-logo", {'media_loading_spinner-logo-invert': invert})} />
     if (this.props.removeLogo) {
       logoElement = ''
     }
