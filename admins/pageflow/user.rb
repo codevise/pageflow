@@ -18,6 +18,11 @@ module Pageflow
       column :last_sign_in_at
       column :sign_in_count
       boolean_status_tag_column :suspended?
+      if current_user.respond_to?(:can_impersonate?) && current_user.can_impersonate?
+        column 'impersonate' do |user|
+          link_to(user.full_name, "#{admin_user_path(user)}/impersonate")
+        end
+      end
     end
 
     csv do
@@ -146,6 +151,18 @@ module Pageflow
           redirect_to admin_root_path, notice: I18n.t('pageflow.admin.users.me.updated')
         end
       end
+    end
+
+    member_action :impersonate do
+      user = User.find(params[:id])
+      impersonate_user(user) if current_user.respond_to?(:can_impersonate?) &&
+                                current_user.can_impersonate?
+      redirect_to root_path
+    end
+
+    member_action :stop_impersonating do
+      stop_impersonating_user
+      redirect_to root_path
     end
 
     member_action :resend_invitation, method: :post do
