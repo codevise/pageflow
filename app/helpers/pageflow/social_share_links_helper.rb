@@ -8,7 +8,7 @@ module Pageflow
       google: 'https://plus.google.com/share?url=%{url}',
       linked_in: 'https://www.linkedin.com/shareArticle?mini=true&url=%{url}',
       telegram: 'tg://msg?text=%{url}',
-      twitter: 'http://twitter.com/home?status=%{url}',
+      twitter: 'https://twitter.com/intent/tweet?url=%{url}',
       whats_app: 'WhatsApp://send?text=%{url}'
     }.freeze
 
