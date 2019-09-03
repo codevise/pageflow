@@ -2,7 +2,7 @@
 
 class SetupSchema < ActiveRecord::Migration[5.2]
   def change
-    create_table 'friendly_id_slugs', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'friendly_id_slugs', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.string 'slug', null: false
       t.integer 'sluggable_id', null: false
       t.string 'sluggable_type', limit: 50
@@ -14,7 +14,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['sluggable_type'], name: 'index_friendly_id_slugs_on_sluggable_type'
     end
 
-    create_table 'pageflow_accounts', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_accounts', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.string 'name', default: '', null: false
       t.datetime 'created_at'
       t.datetime 'updated_at'
@@ -27,12 +27,12 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['default_theming_id'], name: 'index_pageflow_accounts_on_default_theming_id'
     end
 
-    create_table 'pageflow_accounts_themes', id: false, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_accounts_themes', id: false, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.integer 'account_id'
       t.integer 'theme_name'
     end
 
-    create_table 'pageflow_audio_files', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_audio_files', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.integer 'entry_id'
       t.integer 'uploader_id'
       t.string 'attachment_on_filesystem_file_name'
@@ -58,7 +58,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['parent_file_id', 'parent_file_model_type'], name: 'index_audio_files_on_parent_id_and_parent_model_type'
     end
 
-    create_table 'pageflow_chapters', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_chapters', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.datetime 'created_at'
       t.datetime 'updated_at'
       t.integer 'position', default: 0, null: false
@@ -68,7 +68,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['storyline_id'], name: 'index_pageflow_chapters_on_storyline_id'
     end
 
-    create_table 'pageflow_edit_locks', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_edit_locks', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.integer 'user_id'
       t.integer 'entry_id'
       t.datetime 'created_at'
@@ -77,7 +77,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['user_id'], name: 'index_pageflow_edit_locks_on_user_id'
     end
 
-    create_table 'pageflow_entries', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_entries', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.string 'title', default: '', null: false
       t.datetime 'created_at'
       t.datetime 'updated_at'
@@ -96,7 +96,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['theming_id'], name: 'index_pageflow_entries_on_theming_id'
     end
 
-    create_table 'pageflow_file_usages', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_file_usages', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.integer 'revision_id'
       t.integer 'file_id'
       t.string 'file_type'
@@ -107,7 +107,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['revision_id'], name: 'index_pageflow_file_usages_on_revision_id'
     end
 
-    create_table 'pageflow_folders', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_folders', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.string 'name'
       t.integer 'account_id'
       t.datetime 'created_at'
@@ -115,7 +115,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['account_id'], name: 'index_pageflow_folders_on_account_id'
     end
 
-    create_table 'pageflow_image_files', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_image_files', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.integer 'entry_id'
       t.integer 'uploader_id'
       t.string 'unprocessed_attachment_file_name'
@@ -137,7 +137,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['parent_file_id', 'parent_file_model_type'], name: 'index_image_files_on_parent_id_and_parent_model_type'
     end
 
-    create_table 'pageflow_memberships', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_memberships', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.integer 'user_id'
       t.integer 'entity_id'
       t.string 'name'
@@ -149,7 +149,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['user_id'], name: 'index_pageflow_memberships_on_user_id'
     end
 
-    create_table 'pageflow_pages', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_pages', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.integer 'chapter_id'
       t.string 'template', default: '', null: false
       t.text 'configuration'
@@ -162,7 +162,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['perma_id'], name: 'index_pageflow_pages_on_perma_id'
     end
 
-    create_table 'pageflow_revisions', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_revisions', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.integer 'entry_id'
       t.integer 'creator_id'
       t.datetime 'published_at'
@@ -195,7 +195,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['restored_from_id'], name: 'index_pageflow_revisions_on_restored_from_id'
     end
 
-    create_table 'pageflow_storylines', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_storylines', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.integer 'perma_id'
       t.integer 'revision_id'
       t.integer 'position'
@@ -205,7 +205,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['revision_id'], name: 'index_pageflow_storylines_on_revision_id'
     end
 
-    create_table 'pageflow_text_track_files', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_text_track_files', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.integer 'entry_id'
       t.integer 'uploader_id'
       t.string 'state'
@@ -232,7 +232,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['uploader_id'], name: 'index_pageflow_text_track_files_on_uploader_id'
     end
 
-    create_table 'pageflow_themings', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_themings', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.string 'imprint_link_url'
       t.string 'imprint_link_label'
       t.string 'copyright_link_url'
@@ -251,7 +251,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['cname'], name: 'index_pageflow_themings_on_cname'
     end
 
-    create_table 'pageflow_video_files', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_video_files', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.integer 'entry_id'
       t.integer 'uploader_id'
       t.string 'attachment_on_filesystem_file_name'
@@ -284,7 +284,7 @@ class SetupSchema < ActiveRecord::Migration[5.2]
       t.index ['parent_file_id', 'parent_file_model_type'], name: 'index_video_files_on_parent_id_and_parent_model_type'
     end
 
-    create_table 'pageflow_widgets', id: :integer, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8', force: :cascade do |t|
+    create_table 'pageflow_widgets', id: :integer, options: 'ENGINE=InnoDB', force: :cascade do |t|
       t.string 'subject_type'
       t.integer 'subject_id'
       t.string 'type_name'
