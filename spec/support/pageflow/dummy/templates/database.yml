@@ -1,6 +1,6 @@
 common: &common
   adapter: mysql2
-  encoding: utf8
+  encoding: utf8mb4
   username: <%= ENV.fetch('PAGEFLOW_DB_USER', 'root') %>
   password: <%= ENV.fetch('PAGEFLOW_DB_PASSWORD', '') %>
   pool: 5
