@@ -34,6 +34,7 @@ export function register() {
       entryTitle: entryAttribute('title'),
       title: widgetAttribute('title', {role: 'loading_spinner'}),
       subtitle: widgetAttribute('subtitle', {role: 'loading_spinner'}),
+      removeLogo: widgetAttribute('removeLogo', {role: 'loading_spinner'}),
       invert: widgetAttribute('invert', {role: 'loading_spinner'}),
     }))(TitleLoadingSpinner)
   });

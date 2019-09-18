@@ -24,4 +24,5 @@ en:
     attributes:
       pageflow/widget:
         invert: Invert Color
+        remove_logo: Remove Logo
         blur_strength: Bluriness
