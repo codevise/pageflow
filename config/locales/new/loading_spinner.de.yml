@@ -22,4 +22,5 @@ de:
     attributes:
       pageflow/widget:
         invert: Farben invertieren
+        remove_logo: Logo entfernen
         blue_strength: Unschärfe
