@@ -20,6 +20,7 @@ module Pageflow
         feature_config.widget_types.register(Pageflow::BuiltInWidgetType.media_loading_spinner)
         feature_config.widget_types.register(Pageflow::BuiltInWidgetType.title_loading_spinner)
       end
+      config.features.enable_by_default('title_loading_spinner')
 
       config.widget_types.register(Pageflow::BuiltInWidgetType.navigation, default: true)
       config.widget_types.register(Pageflow::BuiltInWidgetType.mobile_navigation, default: true)
