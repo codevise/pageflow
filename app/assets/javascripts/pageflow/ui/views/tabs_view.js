@@ -64,7 +64,8 @@ pageflow.TabsView = Backbone.Marionette.Layout.extend({
       scrollX: true,
       scrollY: false,
       bounce: false,
-      mouseWheel: true
+      mouseWheel: true,
+      preventDefault: false,
     });
 
     this.changeTab(this.defaultTab());
