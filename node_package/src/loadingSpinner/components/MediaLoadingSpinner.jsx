@@ -52,8 +52,9 @@ export class MediaLoadingSpinnerComponent extends React.Component {
 
 
   render() {
-    const {editing, invert} = this.props;
+    const {editing} = this.props;
     const {hidden, animating} = this.state;
+    var invert = getInvert(this.props);
     var logoElement = <div className={classNames("media_loading_spinner-logo", {'media_loading_spinner-logo-invert': invert})} />
     if (this.props.removeLogo) {
       logoElement = ''
@@ -91,12 +92,15 @@ function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundIma
   }
 }
 
-function inlineStyle(props) {
-  const {backgroundImage, firstPageInvert, invert} = props;
-  var spinnerInvert = invert;
-  if (!backgroundImage && !invert) {
-    spinnerInvert = firstPageInvert
+export function getInvert(props){
+  if (!props.backgroundImage && props.invert == undefined) {
+    return props.firstPageInvert
   }
+  return props.invert;
+}
+
+function inlineStyle(props) {
+  var invert = getInvert(props);
   return {
     position: 'absolute',
     top: 0,
@@ -104,7 +108,7 @@ function inlineStyle(props) {
     width: '100%',
     height: '100%',
     zIndex: 100,
-    backgroundColor: spinnerInvert ? '#fff':'#000'
+    backgroundColor: invert ? '#fff':'#000'
   };
 }
 
