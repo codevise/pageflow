@@ -31,6 +31,12 @@ $media-loading-spinner-duration: 7s;
     }
   }
 
+  &-logo-invert {
+    &:after{
+      background-image: image-url("pageflow/themes/#{$theme-name}/logo_header_invert.#{$logo-image-file-extension}");
+    }
+  }
+
   &-fade {
     @include animation(fade_out 1s ease 1);
     @include animation-delay($media-loading-spinner-duration + 0.5s);
