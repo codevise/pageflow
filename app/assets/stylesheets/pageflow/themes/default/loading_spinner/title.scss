@@ -48,8 +48,8 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
     @include typography(
       $title-loading-spinner-title-typography,
       (
-        font-weight: $page-header-title-font-weight,
-        font-size: $page-header-title-font-size
+        font-weight: bold,
+        font-size: 5.3em
       )
     );
 
@@ -71,8 +71,7 @@ $title-loading-spinner-phone-subtitle-typography: () !default;
     @include typography(
       $title-loading-spinner-subtitle-typography,
       (
-        font-weight: $page-header-subtitle-font-weight,
-        font-size: $page-header-subtitle-font-size,
+        font-size: 1.5em,
       )
     );
 

@@ -17,14 +17,14 @@ export class TitleLoadingSpinner extends React.Component {
     var invert = getInvert(this.props);
     return (
         <MediaLoadingSpinner>
-          <h3 className={classNames('media_loading_spinner-titles', {'media_loading_spinner-invert': invert})}>
+          <div className={classNames('media_loading_spinner-titles', {'media_loading_spinner-invert': invert})}>
             <div className="media_loading_spinner-title">
               {title || entryTitle}
             </div>
             <div className="media_loading_spinner-subtitle">
               {subtitle}
             </div>
-          </h3>
+          </div>
         </MediaLoadingSpinner>
       );
   }
