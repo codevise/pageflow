@@ -15,6 +15,9 @@ $logo-watermark-variant-fade-in-with-header: false !default;
 /// Set opacity value of watermark logos
 $logo-watermark-variant-opacity: 0.3 !default;
 
+/// Height of the logo in phone layout.
+$logo-watermark-mobile-height: null !default;
+
 @mixin logo-variant-watermark(
   $top,
   $width,
@@ -32,7 +35,13 @@ $logo-watermark-variant-opacity: 0.3 !default;
       height: $phone-height;
       top: 21px;
     }
-
+    @if $logo-watermark-mobile-height {
+      @include mobile {
+        width: $logo-watermark-mobile-height * $width / $height;
+        height: $logo-watermark-mobile-height;
+        top: 21px;
+      }
+    }
     @include logo-alignment;
   }
 
