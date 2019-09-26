@@ -78,6 +78,11 @@ $classic-player-controls-info-box-border-radius: 4px !default;
 
   .js &-info_box {
     pointer-events: none;
+
+    a {
+      pointer-events: all;
+    }
+
     margin: 0;
     margin-bottom: 60px + $classic-player-controls-border-width * 4;
     width: 434px;
