@@ -10,8 +10,8 @@ de:
             remove_logo:
               label: Logo entfernen
             blur_strength:
-              inline_help: Control the bluriness of background image.
-              label: Blur Strength
+              inline_help: Steuern Sie die Unschärfe des Hintergrundbilds.
+              label: Unschärfe
           title_loading_spinner:
             blur_strength:
               inline_help: Steuern Sie die Unschärfe des Hintergrundbilds.
