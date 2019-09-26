@@ -73,6 +73,10 @@ $slim-player-controls-info-box-header-typography: () !default;
     @include transition(opacity 0.2s linear, visibility 0.2s linear, transform 0.2s ease);
     pointer-events: none;
 
+    a {
+      pointer-events: all;
+    }
+
     position: absolute;
     left: 50%;
     @include transform(translate3d(-50%, 0, 0));
