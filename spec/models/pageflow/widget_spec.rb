@@ -83,6 +83,38 @@ module Pageflow
         expect(widgets.first.widget_type).to be_kind_of(WidgetType::Null)
       end
 
+      it 'assigns default configurations to widgets' do
+        widget_type = TestWidgetType.new(name: 'default_header', roles: ['header'])
+        config = Configuration.new
+        default_configurations = {'test' => 'test value'}
+        config.widget_types.register_widget_defaults('header', default_configurations)
+        config.widget_types.register(widget_type, default: true)
+        revision = create(:revision)
+        create(:widget, subject: revision, role: 'header', type_name: 'default_header')
+        widgets = revision.widgets.resolve(config, scope: :editor)
+
+        expect(widgets.first.configuration).to eq(default_configurations)
+      end
+
+      it 'default configuration do not override existing configurations' do
+        widget_type = TestWidgetType.new(name: 'default_header', roles: ['header'])
+        config = Configuration.new
+        default_configurations = {'test' => 'test value', 'test2' => 'test 2'}
+        config.widget_types.register_widget_defaults('header', default_configurations)
+        config.widget_types.register(widget_type, default: true)
+        revision = create(:revision)
+        test_widget = create(:widget,
+                             subject: revision,
+                             role: 'header',
+                             type_name: 'default_header')
+        test_widget.configuration = {'test2' => 'test'}
+        test_widget.save!
+        widgets = revision.widgets.resolve(config, scope: :editor)
+
+        expect(widgets.first.configuration['test']).to eq(default_configurations['test'])
+        expect(widgets.first.configuration['test2']).to eq('test')
+      end
+
       it 'filters widgets disabled in editor' do
         non_editor_widget_type = TestWidgetType.new(name: 'non_editor', enabled_in_editor: false)
         non_preview_widget_type = TestWidgetType.new(name: 'non_preview', enabled_in_preview: false)

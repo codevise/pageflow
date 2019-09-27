@@ -12,7 +12,6 @@ pageflow.WidgetType = pageflow.Object.extend({
 
   createConfigurationEditorView: function(options) {
     var constructor = this.configurationEditorView;
-
     return new constructor(_.extend({
       attributeTranslationKeyPrefixes: [
         'pageflow.editor.widgets.attributes.' + this.name,

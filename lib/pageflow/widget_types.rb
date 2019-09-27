@@ -10,7 +10,6 @@ module Pageflow
 
     def register(widget_type, options = {})
       @widget_types[widget_type.name] = widget_type
-
       if options[:default]
         widget_type.roles.each do |role|
           defaults_by_role[role] = widget_type
@@ -18,9 +17,14 @@ module Pageflow
       end
     end
 
+    def register_widget_defaults(widget_role, default_configurations)
+      @default_configurations[widget_role] = default_configurations
+    end
+
     def clear
       @widget_types = {}
       @defaults_by_role = {}
+      @default_configurations = {}
     end
 
     def each(&block)
@@ -35,6 +39,10 @@ module Pageflow
 
     def fetch_by_name(name, &block)
       @widget_types.fetch(name, &block)
+    end
+
+    def default_configuration(name)
+      @default_configurations[name]
     end
 
     def find_all_by_role(role)

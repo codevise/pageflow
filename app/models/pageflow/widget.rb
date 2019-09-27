@@ -61,10 +61,14 @@ module Pageflow
       private
 
       def all
-        placeholders_by_role
-          .merge(defaults_by_role)
-          .merge(from_db_by_role)
-          .values
+        initial_widgets = placeholders_by_role.merge(defaults_by_role)
+        initial_widgets.merge(from_db_by_role) { |_role_key, old_val, new_val|
+          if old_val.configuration.present?
+            new_val.configuration = {} if new_val.configuration.nil?
+            new_val.configuration = old_val.configuration.merge(new_val.configuration)
+          end
+          new_val
+        }.values
       end
 
       def from_db_by_role
@@ -73,13 +77,15 @@ module Pageflow
 
       def defaults_by_role
         config.widget_types.defaults_by_role.each_with_object({}) do |(role, widget_type), result|
-          result[role] = Widget.new(role: role, type_name: widget_type.name, subject: nil)
+          result[role] = Widget.new(role: role, type_name: widget_type.name,
+                                    subject: nil,
+                                    configuration:
+                                      config.widget_types.default_configuration(role))
         end
       end
 
       def placeholders_by_role
         return {} unless options[:include_placeholders]
-
         config.widget_types.roles.each_with_object({}) do |role, result|
           result[role] = Widget.new(role: role, type_name: nil, subject: nil)
         end

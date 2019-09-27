@@ -1,0 +1,56 @@
+$media-loading-spinner-duration: 7s;
+
+.media_loading_spinner {
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.15);
+  }
+
+  &-image {
+    background-size: cover;
+    height: 100%;
+  }
+
+  &-logo {
+    @extend %pageflow_widget_margin_right !optional;
+    position: relative;
+
+    &:after {
+      @extend %background_logo;
+      content: "";
+      display: block;
+      z-index: 1;
+      opacity: 0;
+    }
+  }
+
+  &-logo-invert {
+    &:after{
+      background-image: image-url("pageflow/themes/#{$theme-name}/logo_header_invert.#{$logo-image-file-extension}");
+    }
+  }
+
+  &-fade {
+    @include animation(fade_out 1s ease 1);
+    @include animation-delay($media-loading-spinner-duration + 0.5s);
+    @include animation-fill-mode(forwards);
+
+    .media_loading_spinner-logo:after {
+      @include animation(fade_in 1s ease-out 1);
+      @include animation-fill-mode(forwards);
+    }
+  }
+
+  &-invert {
+    color: #000 !important;
+  }
+
+}
+
