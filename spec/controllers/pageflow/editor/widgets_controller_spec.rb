@@ -22,7 +22,8 @@ module Pageflow
           get(:index, params: {collection_name: 'entries', subject_id: entry.id}, format: 'json')
 
           expect(response.status).to eq(200)
-          expect(json_response(path: [0, :type_name])).to eq('test_widget')
+          response_widget = json_response.detect { |w| w['type_name'] == 'test_widget' }
+          expect(response_widget).not_to be_nil
         end
 
         it 'includes widget configuration in response' do
@@ -37,7 +38,8 @@ module Pageflow
           get(:index, params: {collection_name: 'entries', subject_id: entry.id}, format: 'json')
 
           expect(response.status).to eq(200)
-          expect(json_response(path: [0, :configuration, :some])).to eq('value')
+          response_widget = json_response.detect { |w| w['type_name'] == 'test_widget' }
+          expect(response_widget['configuration']).to eq('some' => 'value')
         end
 
         it 'requires permission to edit entry' do
@@ -60,7 +62,8 @@ module Pageflow
           get(:index, params: {collection_name: 'themings', subject_id: theming.id}, format: 'json')
 
           expect(response.status).to eq(200)
-          expect(json_response(path: [0, :type_name])).to eq('test_widget')
+          response_widget = json_response.detect { |w| w['type_name'] == 'test_widget' }
+          expect(response_widget).not_to be_nil
         end
 
         it 'requires permission to index themings' do

@@ -18,6 +18,13 @@ export function firstPageAttribures() {
   );
 }
 
+export function firstPageAttribute(property) {
+  return memoizedSelector(
+    firstPage,
+    page => page && page.attributes[property]
+  );
+}
+
 export function pageAttribute(property, options) {
   return memoizedSelector(
     selector(options),

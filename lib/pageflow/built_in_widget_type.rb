@@ -61,5 +61,12 @@ module Pageflow
                                          insert_point: :before_entry,
                                          server_rendering: true)
     end
+
+    def self.media_loading_spinner
+      Pageflow::React.create_widget_type('media_loading_spinner',
+                                         'loading_spinner',
+                                         insert_point: :before_entry,
+                                         server_rendering: true)
+    end
   end
 end
