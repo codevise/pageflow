@@ -51,6 +51,19 @@ module Pageflow
               expect(result).to be_a(Hash)
             end
           end
+
+          it 'can be exported and imported without error' do
+            exported_revision = create(:revision)
+            create(:file_usage, file: file, revision: exported_revision)
+
+            data = EntryExportImport::RevisionSerialization.dump(exported_revision)
+            imported_revision =
+              EntryExportImport::RevisionSerialization.import(data,
+                                                              entry: create(:entry),
+                                                              creator: create(:user))
+
+            expect(imported_revision.find_files(file_type.model)).to be_present
+          end
         end
       end
     end

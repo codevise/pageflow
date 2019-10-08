@@ -27,10 +27,10 @@ functionality of associating files with entries and handling storage
 of uploaded files. In the corresponding migration you need to provide
 the required columns for the model.
 
-    # db/migrate/xxxxx_create_package.rb
-    class CreateTestUploadableFile < ActiveRecord::Migration
+    # db/migrate/xxxxx_create_my_file.rb
+    class CreateMyFile < ActiveRecord::Migration
       def change
-        create_table :pageflow_panorama_packages do |t|
+        create_table :my_files do |t|
           t.belongs_to(:entry, index: true)
           t.belongs_to(:uploader, index: true)
 
@@ -50,6 +50,8 @@ the required columns for the model.
           t.string(:attachment_on_s3_content_type)
           t.integer(:attachment_on_s3_file_size, limit: 8)
           t.datetime(:attachment_on_s3_updated_at)
+
+          # Further custom columns...
 
           t.timestamps
         end
@@ -280,3 +282,7 @@ plugin's test suite to ensure the file type integrates correctly:
                                  create_file: -> { create(:panorama_package) })
       end
     end
+
+## Import/Export
+
+Pageflow entries can be exported to zip archives

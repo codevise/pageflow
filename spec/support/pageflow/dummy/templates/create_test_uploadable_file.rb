@@ -23,6 +23,7 @@ class CreateTestUploadableFile < ActiveRecord::Migration[4.2]
       t.timestamps
 
       t.string :custom
+      t.belongs_to(:related_image_file)
     end
   end
 end

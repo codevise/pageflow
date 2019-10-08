@@ -5,6 +5,7 @@ class CreateTestRevisionComponent < ActiveRecord::Migration[4.2]
       t.integer :perma_id
 
       t.string :text
+      t.timestamps
     end
   end
 end

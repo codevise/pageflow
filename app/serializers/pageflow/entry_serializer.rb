@@ -27,8 +27,7 @@ module Pageflow
             }
           }
         }
-      },
-      methods: :serialized_components
+      }
     }.freeze
 
     def serialize(entry)

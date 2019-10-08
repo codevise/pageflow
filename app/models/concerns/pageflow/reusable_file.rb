@@ -86,7 +86,7 @@ module Pageflow
     # Overwritten with the list of attachments of the file type
     # that should get included in export archives.
     def attachments_for_export
-      [attachment]
+      []
     end
 
     # Overwritten in UploadableFile based on initial state_machine-state.
