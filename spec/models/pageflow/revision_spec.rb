@@ -166,21 +166,8 @@ module Pageflow
       end
 
       context 'with registered RevisionComponent' do
-        class TestRevisionComponent < ActiveRecord::Base
-          include RevisionComponent
-          self.table_name = :test_revision_components
-        end
-
-        class RevisionTestPageType < PageType
-          name :test
-
-          def revision_components
-            [TestRevisionComponent]
-          end
-        end
-
         it 'copies registered RevisionComponents' do
-          Pageflow.config.page_types.register(RevisionTestPageType.new)
+          TestRevisionComponent.register(Pageflow.config)
           revision = create(:revision)
           TestRevisionComponent.create!(revision: revision)
 
