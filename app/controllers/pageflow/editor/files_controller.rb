@@ -19,11 +19,11 @@ module Pageflow
         authorize!(:edit, entry.to_model)
         verify_edit_lock!(entry)
 
-        @file = entry.create_file!(file_type.model, create_params)
+        @file = entry.create_file!(file_type, create_params)
         @file.publish! if params[:no_upload]
 
         respond_with(:editor, @file)
-      rescue ActiveRecord::RecordInvalid => e
+      rescue ActiveRecord::RecordInvalid, DraftEntry::InvalidForeignKeyCustomAttributeError => e
         debug_log_with_backtrace(e)
         head :unprocessable_entity
       end
@@ -118,7 +118,10 @@ module Pageflow
       end
 
       def file_custom_params
-        file_params.permit(file_type.custom_attributes)
+        file_params.permit(file_type
+                             .custom_attributes
+                             .select { |_, options| options[:permitted_create_param] }
+                             .keys)
       end
 
       def file_params

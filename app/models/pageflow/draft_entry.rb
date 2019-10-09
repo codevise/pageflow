@@ -2,6 +2,8 @@ module Pageflow
   class DraftEntry
     include ActiveModel::Conversion
 
+    class InvalidForeignKeyCustomAttributeError < StandardError; end
+
     attr_reader :entry, :draft
 
     delegate(:id, :slug,
@@ -38,8 +40,10 @@ module Pageflow
       entry.title
     end
 
-    def create_file!(model, attributes)
-      file = model.create!(attributes.except(:configuration)) do |f|
+    def create_file!(file_type, attributes)
+      check_foreign_key_custom_attributes(file_type.custom_attributes, attributes)
+
+      file = file_type.model.create!(attributes.except(:configuration)) do |f|
         f.entry = entry
       end
 
@@ -108,6 +112,26 @@ module Pageflow
 
     def resolve_widgets(options = {})
       widgets.resolve(Pageflow.config_for(entry), options)
+    end
+
+    private
+
+    def check_foreign_key_custom_attributes(custom_attributes, attributes)
+      custom_attributes
+        .each do |attribute_name, options|
+          file_type = options[:model]
+          file_id = attributes[attribute_name]
+
+          next if !file_type || file_is_used(file_type, file_id)
+
+          raise(InvalidForeignKeyCustomAttributeError,
+                "Custom attribute #{attribute_name} references #{file_type} #{file_id} " \
+                'which is not used in this revsion')
+        end
+    end
+
+    def file_is_used(file_type, file_id)
+      draft.file_usages.where(file_type: file_type, file_id: file_id).exists?
     end
   end
 end

@@ -51,8 +51,7 @@ module Pageflow
     # @return [#call]
     attr_reader :url_templates
 
-    # Attributes that are custom to this file type.
-    # @return {Array<Symbol>}
+    # @api private
     attr_reader :custom_attributes
 
     # Importer-class encapsulating all logic required to recreate this file type from JSON.
@@ -101,7 +100,7 @@ module Pageflow
       @css_background_image_urls = options[:css_background_image_urls]
       @css_background_image_class_prefix = options[:css_background_image_class_prefix]
       @url_templates = options.fetch(:url_templates, -> { {} })
-      @custom_attributes = options.fetch(:custom_attributes, [])
+      @custom_attributes = convert_custom_attributes_option(options[:custom_attributes])
       @importer = options[:importer]
     end
 
@@ -147,6 +146,20 @@ module Pageflow
     # @api private
     def i18n_key
       model.model_name.i18n_key
+    end
+
+    private
+
+    def convert_custom_attributes_option(custom_attributes)
+      if custom_attributes.is_a?(Array)
+        custom_attributes.each_with_object({}) do |attribute_name, result|
+          result[attribute_name] = {permitted_create_param: true}
+        end
+      elsif custom_attributes.is_a?(Hash)
+        custom_attributes
+      else
+        {}
+      end
     end
   end
 end
