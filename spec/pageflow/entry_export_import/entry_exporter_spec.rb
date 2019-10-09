@@ -8,7 +8,6 @@ module Pageflow
 
       it 'calls each export stages method' do
         exporter = EntryExporter.new(export_directory)
-        allow(exporter).to receive(:page_type_version_requirements)
         allow(exporter).to receive(:download_entry_files_to_directory)
         allow(exporter).to receive(:generate_export_zip_file)
 
@@ -23,7 +22,6 @@ module Pageflow
           create_used_file(:image_file, entry: published_entry)
 
           exporter = EntryExporter.new(export_directory)
-          allow(exporter).to receive(:page_type_version_requirements)
           allow(exporter).to receive(:generate_export_zip_file)
 
           allow_any_instance_of(ImageFile)

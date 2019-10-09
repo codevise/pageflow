@@ -11,20 +11,11 @@ module Pageflow
       def initialize(user, attachments_root_path)
         @user = user
         @account = @user.accounts.first
-        @theming = @account.themings.first
         @attachments_root_path = attachments_root_path
-
-        # file-mapping from exported to new id for associated files.
-        @file_mappings = {}
       end
 
       def call(json_data)
         import_data = JSON.parse(json_data)
-
-        page_type_version_requirements = import_data['page_type_version_requirements']
-        unless data_compatible_for_import?(page_type_version_requirements)
-          raise 'Incompatible Plugin versions detected!'
-        end
 
         # Step 1: Create data
         Rails.logger.info 'importing records...'
@@ -42,111 +33,10 @@ module Pageflow
 
       private
 
+      attr_reader :user, :account, :attachments_root_path
+
       def import_records(import_data)
-        entry_data = import_data['entry']
-        draft_data = entry_data.delete('draft')
-        published_revision_data = entry_data.delete('published_revision')
-
-        Entry.transaction do
-          @entry = create_entry(entry_data)
-          create_revision(draft_data) if draft_data.present?
-          create_revision(published_revision_data) if published_revision_data.present?
-        end
-      end
-
-      # Create an entry with given data after removing all host-specific information.
-      def create_entry(data)
-        entry_data = data.except(*DEFAULT_REMOVAL_COLUMNS)
-        entry_data['account_id'] = @account.id
-        entry_data['theming_id'] = @theming.id
-        Pageflow::Entry.create!(entry_data.merge(skip_draft_creation: true))
-      end
-
-      def create_revision(data)
-        revision_data = data.except(*DEFAULT_REMOVAL_COLUMNS)
-        revision_data['creator_id'] = @user.id
-        unless Pageflow.config.themes.map(&:name).include?(revision_data['theme_name'])
-          revision_data['theme_name'] = 'default'
-        end
-
-        widgets_data = revision_data.delete('widgets')
-        revision_components_data = revision_data.delete('serialized_components')
-        storylines_data = revision_data.delete('storylines')
-        file_usages_data = revision_data.delete('file_usages')
-
-        # create revision
-        revision = @entry.revisions.create!(revision_data)
-
-        # create widgets
-        widgets_data.each do |widget_data|
-          revision.widgets.create!(widget_data.except(*DEFAULT_REMOVAL_COLUMNS))
-        end
-
-        # create revision components
-        revision_components_data.each do |revision_component_data|
-          component_class_name = revision_component_data.keys.first
-          component_data = revision_component_data[component_class_name]
-          component_data['revision_id'] = revision.id
-          component_class_name.constantize.create!(component_data.except(*DEFAULT_REMOVAL_COLUMNS))
-        end
-
-        # create storylines with chapters and pages
-        storylines_data.each do |storyline_data|
-          chapters_data = storyline_data.delete('chapters')
-          storyline = revision.storylines.create!(storyline_data.except(*DEFAULT_REMOVAL_COLUMNS))
-          chapters_data.each do |chapter_data|
-            pages_data = chapter_data.delete('pages')
-            chapter = storyline.chapters.create!(chapter_data.except(*DEFAULT_REMOVAL_COLUMNS))
-            pages_data.each do |page_data|
-              chapter.pages.create!(page_data.except(*DEFAULT_REMOVAL_COLUMNS))
-            end
-          end
-        end
-
-        # create files and usages
-        create_files_for_revision(file_usages_data, revision)
-      end
-
-      # Create files in the order their file type has been registered.
-      # This ensures top level file types being created first and ready for foreign key remapping
-      # in lower-level file types
-      def create_files_for_revision(file_usages_data, revision)
-        Pageflow.config.file_types.each do |file_type|
-          file_type_name = file_type.type_name
-          file_type_usages_data = file_usages_data.select do |file_usage|
-            file_usage['file_type'].eql?(file_type_name)
-          end
-
-          file_type_usages_data.each do |file_type_usage_data|
-            file_data = file_type_usage_data.delete('file')
-
-            file_type_collection_name = file_type.collection_name
-            exported_file_id = file_data.delete('id')
-            imported_file_id = @file_mappings.dig(file_type_collection_name, exported_file_id)
-
-            if imported_file_id.present?
-              # file has already been imported
-              file_type_usage_data['file_id'] = imported_file_id
-            else
-              # prepare data for file creation
-              file_data['uploader_id'] = @user.id if file_data['uploader_id'].present?
-              file_data['confirmed_by_id'] = @user.id if file_data['confirmed_by_id'].present?
-              file_data['entry_id'] = @entry.id # required for nested_file validation
-
-              importer = file_type.importer
-              file = importer.import_file(file_data, @file_mappings)
-
-              # map file by type from old to new id for linking associated files
-              @file_mappings[file_type_collection_name] ||= {}
-              @file_mappings[file_type_collection_name][exported_file_id] = file.id
-
-              # overwrite file id with new id
-              file_type_usage_data['file_id'] = file.id
-            end
-
-            revision.file_usages.create!(file_type_usage_data.except(*DEFAULT_REMOVAL_COLUMNS))
-          end
-        end
+        EntrySerialization.import(import_data, creator: user, account: account)
       end
 
       # Recursively upload all files included in the export directory.
