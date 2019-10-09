@@ -3,20 +3,11 @@ require 'spec_helper'
 module Pageflow
   describe PagesHelper do
     include UsedFileTestHelper
-    
+
     describe '#render_page_template' do
-      let(:page_type_class) do
-        Class.new(Pageflow::PageType) do
-          name 'test'
-
-          def template_path
-            'pageflow/test/page'
-          end
-        end
-      end
-
       it 'renders page template given by page type' do
-        Pageflow.config.page_types.register(page_type_class.new)
+        page_type = TestPageType.new(name: 'test', template_path: 'pageflow/test/page')
+        Pageflow.config.page_types.register(page_type)
         page = build(:page, template: 'test')
 
         stub_template('pageflow/test/page.html.erb' => '<div>test page</div>')
@@ -26,7 +17,8 @@ module Pageflow
       end
 
       it 'passes configuration as local' do
-        Pageflow.config.page_types.register(page_type_class.new)
+        page_type = TestPageType.new(name: 'test', template_path: 'pageflow/test/page')
+        Pageflow.config.page_types.register(page_type)
         page = build(:page, template: 'test', configuration: {
                        'text' => 'Some text'
                      })
@@ -38,7 +30,8 @@ module Pageflow
       end
 
       it 'passes page as local' do
-        Pageflow.config.page_types.register(page_type_class.new)
+        page_type = TestPageType.new(name: 'test', template_path: 'pageflow/test/page')
+        Pageflow.config.page_types.register(page_type)
         page = build(:page, template: 'test')
 
         stub_template('pageflow/test/page.html.erb' => 'Page <%= page.template %>')
@@ -48,7 +41,8 @@ module Pageflow
       end
 
       it 'passes additional locals' do
-        Pageflow.config.page_types.register(page_type_class.new)
+        page_type = TestPageType.new(name: 'test', template_path: 'pageflow/test/page')
+        Pageflow.config.page_types.register(page_type)
         page = build(:page, template: 'test')
 
         stub_template('pageflow/test/page.html.erb' => 'Page <%= some %>')

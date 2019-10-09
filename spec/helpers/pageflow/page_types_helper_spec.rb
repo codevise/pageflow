@@ -4,16 +4,9 @@ module Pageflow
   describe PageTypesHelper do
     describe '#page_type_json_seeds' do
       it 'renders custom json seed template' do
-        page_type_class = Class.new(Pageflow::PageType) do
-          name 'test'
-
-          def json_seed_template
-            'pageflow/test/page'
-          end
-        end
-
+        page_type = TestPageType.new(name: 'test', json_seed_template: 'pageflow/test/page')
         config = Configuration.new
-        config.page_types.register(page_type_class.new)
+        config.page_types.register(page_type)
 
         stub_template('pageflow/test/page.json.jbuilder' => 'json.key "value"')
         result = helper.page_type_json_seeds(config)
@@ -22,15 +15,9 @@ module Pageflow
       end
 
       it 'only renders basic properties if json seed template is nil' do
-        page_type_class = Class.new(Pageflow::PageType) do
-          name 'test'
-
-          def json_seed_template
-          end
-        end
-
+        page_type = TestPageType.new(name: 'test', json_seed_template: nil)
         config = Configuration.new
-        config.page_types.register(page_type_class.new)
+        config.page_types.register(page_type)
 
         result = helper.page_type_json_seeds(config)
 
@@ -38,21 +25,15 @@ module Pageflow
       end
 
       it 'includes thumbnail_candidates' do
-        page_type_class = Class.new(Pageflow::PageType) do
-          name 'test'
-
-          def thumbnail_candidates
-            [
-              {
-                attribute: 'thumbnail_image_id',
-                file_collection: 'image_files'
-              }
-            ]
-          end
-        end
-
+        page_type = TestPageType.new(name: 'test',
+                                     thumbnail_candidates: [
+                                       {
+                                         attribute: 'thumbnail_image_id',
+                                         file_collection: 'image_files'
+                                       }
+                                     ])
         config = Configuration.new
-        config.page_types.register(page_type_class.new)
+        config.page_types.register(page_type)
 
         result = JSON.parse(helper.page_type_json_seeds(config))
         candidate = result[0]['thumbnail_candidates'][0]
@@ -62,22 +43,16 @@ module Pageflow
       end
 
       it 'includes thumbnail_candidates with condition' do
-        page_type_class = Class.new(Pageflow::PageType) do
-          name 'test'
-
-          def thumbnail_candidates
-            [
-              {
-                attribute: 'background_image_id',
-                file_collection: 'image_files',
-                if: {attribute: 'background_type', value: 'image'}
-              }
-            ]
-          end
-        end
-
+        page_type = TestPageType.new(name: 'test',
+                                     thumbnail_candidates: [
+                                       {
+                                         attribute: 'background_image_id',
+                                         file_collection: 'image_files',
+                                         if: {attribute: 'background_type', value: 'image'}
+                                       }
+                                     ])
         config = Configuration.new
-        config.page_types.register(page_type_class.new)
+        config.page_types.register(page_type)
 
         result = JSON.parse(helper.page_type_json_seeds(config))
         candidate = result[0]['thumbnail_candidates'][0]
@@ -88,22 +63,16 @@ module Pageflow
       end
 
       it 'includes thumbnail_candidates with negated condition' do
-        page_type_class = Class.new(Pageflow::PageType) do
-          name 'test'
-
-          def thumbnail_candidates
-            [
-              {
-                attribute: 'background_image_id',
-                file_collection: 'image_files',
-                unless: {attribute: 'background_type', value: 'image'}
-              }
-            ]
-          end
-        end
-
+        page_type = TestPageType.new(name: 'test',
+                                     thumbnail_candidates: [
+                                       {
+                                         attribute: 'background_image_id',
+                                         file_collection: 'image_files',
+                                         unless: {attribute: 'background_type', value: 'image'}
+                                       }
+                                     ])
         config = Configuration.new
-        config.page_types.register(page_type_class.new)
+        config.page_types.register(page_type)
 
         result = JSON.parse(helper.page_type_json_seeds(config))
         candidate = result[0]['thumbnail_candidates'][0]
@@ -122,16 +91,11 @@ module Pageflow
       end
 
       it 'renders page templates in script tags' do
-        page_type_class = Class.new(Pageflow::PageType) do
-          name 'test'
-
-          def template_path
-            'pageflow/test/page'
-          end
-        end
+        page_type = TestPageType.new(name: 'test',
+                                     template_path: 'pageflow/test/page')
+        Pageflow.config.page_types.register(page_type)
         entry = build(:entry)
 
-        allow(Pageflow.config).to receive(:page_types).and_return([page_type_class.new])
         stub_template('pageflow/test/page.html.erb' => 'template')
 
         result = helper.page_type_templates(entry)

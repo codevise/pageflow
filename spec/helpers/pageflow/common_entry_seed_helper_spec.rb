@@ -3,19 +3,6 @@ require 'spec_helper'
 module Pageflow
   describe CommonEntrySeedHelper do
     describe '#common_entry_seed' do
-      let(:page_type) do
-        Class.new(PageType) do
-          name 'test_page_type'
-
-          attr_reader :file_types, :thumbnail_candidates
-
-          def initialize(options = {})
-            @file_types = options.fetch(:file_types, [])
-            @thumbnail_candidates = options.fetch(:thumbnail_candidates, [])
-          end
-        end
-      end
-
       describe '["page_types"]' do
         it 'includes thumbnail candidates of page types registered for entry' do
           thumbnail_candidates = [
@@ -39,7 +26,8 @@ module Pageflow
           ]
 
           pageflow_configure do |config|
-            config.page_types.register(page_type.new(thumbnail_candidates: thumbnail_candidates))
+            config.page_types.register(TestPageType.new(name: 'test_page_type',
+                                                        thumbnail_candidates: thumbnail_candidates))
           end
 
           revision = create(:revision, :published)
@@ -101,7 +89,9 @@ module Pageflow
 
           pageflow_configure do |config|
             config.page_types.clear
-            config.page_types.register(page_type.new(file_types: [file_type]))
+            config.page_types.register(TestPageType.new(name: 'test',
+                                                        file_types: [file_type],
+                                                        thumbnail_candidates: []))
           end
 
           entry = PublishedEntry.new(create(:entry, :published))
@@ -120,7 +110,9 @@ module Pageflow
 
           pageflow_configure do |config|
             config.page_types.clear
-            config.page_types.register(page_type.new(file_types: [file_type]))
+            config.page_types.register(TestPageType.new(name: 'test',
+                                                        file_types: [file_type],
+                                                        thumbnail_candidates: []))
           end
 
           entry = PublishedEntry.new(create(:entry, :published))

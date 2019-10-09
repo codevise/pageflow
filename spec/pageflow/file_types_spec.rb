@@ -2,18 +2,6 @@ require 'spec_helper'
 
 module Pageflow
   describe FileTypes do
-    let(:page_type_class) do
-      Class.new(PageType) do
-        name 'test'
-
-        def initialize(options)
-          @file_types = options.fetch(:file_types)
-        end
-
-        attr_reader :file_types
-      end
-    end
-
     describe 'as Enumerable' do
       it 'returns all FileTypes and nested FileTypes of given PageTypes' do
         nested_file_type = FileType.new(model: TextTrackFile,
@@ -26,8 +14,8 @@ module Pageflow
                                   collection_name: 'video_files',
                                   editor_partial: 'path',
                                   nested_file_types: [nested_file_type])
-        file_types = FileTypes.new([page_type_class.new(file_types: [file_type1]),
-                                    page_type_class.new(file_types: [file_type2])])
+        file_types = FileTypes.new([TestPageType.new(name: 'test', file_types: [file_type1]),
+                                    TestPageType.new(name: 'test', file_types: [file_type2])])
 
         expect(file_types.to_a).to eq([file_type1, file_type2, nested_file_type])
       end
@@ -40,8 +28,9 @@ module Pageflow
                                   collection_name: 'video_files',
                                   editor_partial: 'path',
                                   nested_file_types: [file_type1])
-        file_types = FileTypes.new([page_type_class.new(file_types: [file_type1]),
-                                    page_type_class.new(file_types: [file_type1, file_type2])])
+        file_types = FileTypes.new([TestPageType.new(name: 'test', file_types: [file_type1]),
+                                    TestPageType.new(name: 'test',
+                                                     file_types: [file_type1, file_type2])])
 
         expect(file_types.to_a).to eq([file_type1, file_type2])
       end
@@ -52,7 +41,7 @@ module Pageflow
         file_type = FileType.new(model: ImageFile,
                                  collection_name: 'image_files',
                                  editor_partial: 'path')
-        file_types = FileTypes.new([page_type_class.new(file_types: [file_type])])
+        file_types = FileTypes.new([TestPageType.new(name: 'test', file_types: [file_type])])
 
         result = file_types.find_by_collection_name!('image_files')
 
@@ -73,7 +62,7 @@ module Pageflow
         file_type = FileType.new(model: ImageFile,
                                  collection_name: 'image_files',
                                  editor_partial: 'path')
-        file_types = FileTypes.new([page_type_class.new(file_types: [file_type])])
+        file_types = FileTypes.new([TestPageType.new(name: 'test', file_types: [file_type])])
 
         result = file_types.find_by_model!(ImageFile)
 
@@ -90,7 +79,7 @@ module Pageflow
     describe '#with_thumbnail_support' do
       it 'includes file types whose models have thumbnail_url instance method' do
         file_type = FileType.new(model: ImageFile)
-        file_types = FileTypes.new([page_type_class.new(file_types: [file_type])])
+        file_types = FileTypes.new([TestPageType.new(name: 'test', file_types: [file_type])])
 
         result = file_types.with_thumbnail_support
 
@@ -99,7 +88,7 @@ module Pageflow
 
       it 'does not include file types whose models do not have thumbnail_url instance method' do
         file_type = FileType.new(model: AudioFile)
-        file_types = FileTypes.new([page_type_class.new(file_types: [file_type])])
+        file_types = FileTypes.new([TestPageType.new(name: 'test', file_types: [file_type])])
 
         result = file_types.with_thumbnail_support
 
@@ -111,7 +100,7 @@ module Pageflow
       it 'includes file types with css_background_image_urls attribute set' do
         file_type = FileType.new(model: ImageFile,
                                  css_background_image_urls: -> {})
-        file_types = FileTypes.new([page_type_class.new(file_types: [file_type])])
+        file_types = FileTypes.new([TestPageType.new(name: 'test', file_types: [file_type])])
 
         result = file_types.with_css_background_image_support
 
@@ -120,7 +109,7 @@ module Pageflow
 
       it 'does not include file types without css_background_image_urls attribute set' do
         file_type = FileType.new(model: ImageFile)
-        file_types = FileTypes.new([page_type_class.new(file_types: [file_type])])
+        file_types = FileTypes.new([TestPageType.new(name: 'test', file_types: [file_type])])
 
         result = file_types.with_css_background_image_support
 
