@@ -8,6 +8,7 @@ module Pageflow
 
       def dump(entry)
         {
+          'page_type_versions' => PageTypeVersions.dump,
           # features_configuration is excluded via
           # `Entry#blacklist_for_serialization` to prevent it from
           # showing up in Active Admin JSON exports, but should be
@@ -21,6 +22,8 @@ module Pageflow
       end
 
       def import(data, options)
+        PageTypeVersions.verify_compatibility!(data['page_type_versions'])
+
         entry_data = data['entry']
         entry = create_entry(entry_data.except('draft', 'last_publication'), options)
 

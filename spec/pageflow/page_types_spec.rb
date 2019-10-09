@@ -2,13 +2,24 @@ require 'spec_helper'
 
 module Pageflow
   describe PageTypes do
-    let(:page_type_class) do
-      Class.new(PageType) do
-        def initialize(options)
-          @name = options.fetch(:name)
-        end
+    describe '#register' do
+      let(:page_type_class_without_export_version) do
+        Class.new(PageType) do
+          def initialize(options)
+            @name = options.fetch(:name)
+          end
 
-        attr_reader :name
+          attr_reader :name
+        end
+      end
+
+      it 'ensures page type defines export_version' do
+        page_types = PageTypes.new
+        page_type = page_type_class_without_export_version.new(name: 'rainbow')
+
+        expect {
+          page_types.register(page_type)
+        }.to raise_error(/rainbow needs to define export_version/)
       end
     end
 

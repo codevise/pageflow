@@ -140,6 +140,21 @@ module Pageflow
         expect(imported_entry.draft.image_files.first)
           .to eq(imported_entry.revisions.publications.first.image_files.first)
       end
+
+      it 'raise error if dumped versions do not match page type versions' do
+        Pageflow.config.page_types.register(TestPageType.new(name: 'test',
+                                                             export_version: '2.1.0',
+                                                             import_version_requirement: '2.2.0'))
+        exported_entry = create(:entry)
+
+        data = EntrySerialization.dump(exported_entry)
+
+        expect {
+          EntrySerialization.import(data,
+                                    account: create(:account),
+                                    creator: create(:user))
+        }.to raise_error PageTypeVersions::IncompatibleVersionsError
+      end
     end
   end
 end

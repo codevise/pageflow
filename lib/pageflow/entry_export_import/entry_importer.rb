@@ -193,7 +193,7 @@ module Pageflow
       def data_compatible_for_import?(page_type_version_requirements)
         page_type_version_requirements.each do |plugin_name, plugin_version_requirement|
           page_type = Pageflow.config.page_types.find_by_name!(plugin_name)
-          current_version = Gem::Version.new(page_type.version)
+          current_version = Gem::Version.new(page_type.export_version)
           return false unless Gem::Requirement.new(plugin_version_requirement)
                                               .satisfied_by?(current_version)
         end
