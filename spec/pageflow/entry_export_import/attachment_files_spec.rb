@@ -14,7 +14,7 @@ module Pageflow
 
             archive_path = File.join('image_files',
                                      image_file.id.to_s,
-                                     image_file.attachments_for_export.first.to_s,
+                                     image_file.attachments_for_export.first.name.to_s,
                                      image_file.attachment.original_filename)
             expect(archive).to include(archive_path)
           end
@@ -56,7 +56,7 @@ module Pageflow
 
             archive_path = File.join('image_files',
                                      image_file.id.to_s,
-                                     image_file.attachments_for_export.first.to_s,
+                                     image_file.attachments_for_export.first.name.to_s,
                                      image_file.attachment.original_filename)
             archive.add(archive_path, StringIO.new('already there'))
 

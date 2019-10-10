@@ -24,7 +24,7 @@ module Pageflow
     def publish!; end
 
     def attachments_for_export
-      [:first_attachment, :second_attachment]
+      [first_attachment, second_attachment]
     end
   end
 end

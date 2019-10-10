@@ -8,8 +8,8 @@ module Pageflow
         revision.file_usages.each do |file_usage|
           reusable_file = file_usage.file
 
-          reusable_file.attachments_for_export.each do |attachment_name|
-            download_and_archive_attachment_file(reusable_file, attachment_name, archive)
+          reusable_file.attachments_for_export.each do |attachment|
+            download_and_archive_attachment_file(reusable_file, attachment, archive)
           end
         end
       end
@@ -40,8 +40,7 @@ module Pageflow
         end
       end
 
-      def download_and_archive_attachment_file(reusable_file, attachment_name, archive)
-        attachment = reusable_file.send(attachment_name)
+      def download_and_archive_attachment_file(reusable_file, attachment, archive)
         archive_path = archive_path(reusable_file, attachment)
 
         return if archive.include?(archive_path)

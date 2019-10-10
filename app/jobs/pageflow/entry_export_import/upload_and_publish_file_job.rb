@@ -8,8 +8,7 @@ module Pageflow
       def perform(reusable_file, exported_id, archive_file_name)
         archive = ZipArchive.new(archive_file_name)
 
-        reusable_file.attachments_for_export.each do |attachment_name|
-          attachment = reusable_file.send(attachment_name)
+        reusable_file.attachments_for_export.each do |attachment|
           archive_path = AttachmentFiles.archive_path(reusable_file,
                                                       attachment,
                                                       exported_id: exported_id)
@@ -23,7 +22,7 @@ module Pageflow
             attachment.assign(tempfile)
 
             # Calling `attachment.assign` changes the
-            # `<attachment_name>_file_name` attribute based on the
+            # `<attachment-name>_file_name` attribute based on the
             # name of the tempfile. To prevent `flush_writes` from
             # using these new values when constructing the
             # destionation path, we need to undo the attribute

@@ -67,7 +67,7 @@ module Pageflow
     # ReusableFile-overrides:
 
     def attachments_for_export
-      [:attachment_on_s3]
+      [attachment]
     end
 
     def url

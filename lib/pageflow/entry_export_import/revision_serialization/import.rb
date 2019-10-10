@@ -145,11 +145,11 @@ module Pageflow
         end
 
         def assign_attachments_attributes(file, file_data)
-          file.attachments_for_export.each do |attachment_name|
-            file.assign_attributes(file_data.slice("#{attachment_name}_file_name",
-                                                   "#{attachment_name}_content_type",
-                                                   "#{attachment_name}_file_size",
-                                                   "#{attachment_name}_updated_at"))
+          file.attachments_for_export.each do |attachment|
+            file.assign_attributes(file_data.slice("#{attachment.name}_file_name",
+                                                   "#{attachment.name}_content_type",
+                                                   "#{attachment.name}_file_size",
+                                                   "#{attachment.name}_updated_at"))
           end
         end
       end
