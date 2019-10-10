@@ -11,8 +11,7 @@ module Pageflow
                    url_templates: ImageFileUrlTemplates.new,
                    css_background_image_urls: ImageFileCssBackgroundImageUrls.new,
                    css_background_image_class_prefix: 'image',
-                   top_level_type: true,
-                   importer: EntryExportImport::FileTypeImporters::ImageFileImporter)
+                   top_level_type: true)
     end
 
     def self.video
@@ -24,8 +23,7 @@ module Pageflow
                    css_background_image_urls: VideoFileCssBackgroundImageUrls.new,
                    css_background_image_class_prefix: 'video_poster',
                    top_level_type: true,
-                   nested_file_types: [BuiltInFileType.text_track],
-                   importer: EntryExportImport::FileTypeImporters::VideoFileImporter)
+                   nested_file_types: [BuiltInFileType.text_track])
     end
 
     def self.audio
@@ -35,15 +33,13 @@ module Pageflow
                    collection_name: 'audio_files',
                    url_templates: AudioFileUrlTemplates.new,
                    top_level_type: true,
-                   nested_file_types: [BuiltInFileType.text_track],
-                   importer: EntryExportImport::FileTypeImporters::AudioFileImporter)
+                   nested_file_types: [BuiltInFileType.text_track])
     end
 
     def self.text_track
       FileType.new(model: 'Pageflow::TextTrackFile',
                    collection_name: 'text_track_files',
-                   url_templates: TextTrackFileUrlTemplates.new,
-                   importer: EntryExportImport::FileTypeImporters::TextTrackFileImporter)
+                   url_templates: TextTrackFileUrlTemplates.new)
     end
   end
 end
