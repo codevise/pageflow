@@ -89,12 +89,12 @@ module Pageflow
         expect(imported_entry.draft.title).to eq('My draft')
       end
 
-      it 'preserves published revision in unpublished state' do
+      it 'preserves given published revision in unpublished state' do
         exported_entry = create(:entry,
                                 :published,
                                 published_revision_attributes: {title: 'My story'})
 
-        data = EntrySerialization.dump(exported_entry)
+        data = EntrySerialization.dump(exported_entry, exported_entry.published_revision)
         imported_entry = EntrySerialization.import(data,
                                                    account: create(:account),
                                                    creator: create(:user))
@@ -104,34 +104,14 @@ module Pageflow
         expect(imported_entry.revisions.publications.first.title).to eq('My story')
       end
 
-      it 'preserves last previously published revision' do
-        user = create(:user)
-        exported_entry = create(:entry)
-        exported_entry.draft.update(title: 'Version 1')
-        exported_entry.publish(creator: user)
-        Timecop.freeze(1.day.from_now)
-        exported_entry.draft.update(title: 'Version 2')
-        exported_entry.publish(creator: user, published_until: 1.day.from_now)
-        Timecop.freeze(1.week.from_now)
-
-        expect(exported_entry).not_to be_published
-
-        data = EntrySerialization.dump(exported_entry)
-        imported_entry = EntrySerialization.import(data,
-                                                   account: create(:account),
-                                                   creator: create(:user))
-
-        expect(imported_entry.revisions.publications).to have(1).item
-        expect(imported_entry.revisions.publications.first.title).to eq('Version 2')
-      end
-
-      it 'reuses files between draft and published revision' do
+      it 'reuses files between draft and given published revision' do
         user = create(:user)
         exported_entry = create(:entry)
         create(:image_file, used_in: exported_entry.draft)
         exported_entry.publish(creator: user)
 
-        data = EntrySerialization.dump(exported_entry)
+        data = EntrySerialization.dump(exported_entry,
+                                       exported_entry.published_revision)
         imported_entry = EntrySerialization.import(data,
                                                    account: create(:account),
                                                    creator: create(:user))
@@ -139,6 +119,21 @@ module Pageflow
         expect(imported_entry.draft.image_files).to have(1).item
         expect(imported_entry.draft.image_files.first)
           .to eq(imported_entry.revisions.publications.first.image_files.first)
+      end
+
+      it 'allows passing FileMappings object' do
+        exported_entry = create(:entry)
+        exported_image_file = create(:image_file, used_in: exported_entry.draft)
+
+        file_mappings = FileMappings.new
+        data = EntrySerialization.dump(exported_entry)
+        EntrySerialization.import(data,
+                                  account: create(:account),
+                                  creator: create(:user),
+                                  file_mappings: file_mappings)
+
+        expect(file_mappings.imported_id_for(exported_image_file.class.name,
+                                             exported_image_file.id)).to be_positive
       end
 
       it 'raise error if dumped versions do not match page type versions' do

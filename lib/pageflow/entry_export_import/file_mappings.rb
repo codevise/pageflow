@@ -21,11 +21,11 @@ module Pageflow
       end
 
       def imported_id_for(model_name, exported_id)
-        @file_mappings[model_name][exported_id]
+        @file_mappings.fetch(model_name)[exported_id]
       end
 
       def exported_id_for(model_name, imported_id)
-        @file_mappings[model_name].invert[imported_id]
+        @file_mappings.fetch(model_name).invert[imported_id]
       end
     end
   end

@@ -6,7 +6,7 @@ module Pageflow
 
       DEFAULT_REMOVAL_COLUMNS = %w[id updated_at].freeze
 
-      def dump(entry)
+      def dump(entry, publication = nil)
         {
           'page_type_versions' => PageTypeVersions.dump,
           # features_configuration is excluded via
@@ -17,7 +17,7 @@ module Pageflow
             .as_json(except: [:folder_id, :password_digest, :users_count])
             .merge('features_configuration' => entry.features_configuration,
                    'draft' => RevisionSerialization.dump(entry.draft),
-                   'last_publication' => dump_most_recent_publication(entry))
+                   'last_publication' => dump_publication(publication))
         }
       end
 
@@ -27,7 +27,7 @@ module Pageflow
         entry_data = data['entry']
         entry = create_entry(entry_data.except('draft', 'last_publication'), options)
 
-        file_mappings = FileMappings.new
+        file_mappings = options.fetch(:file_mappings, FileMappings.new)
 
         import_draft(entry_data, options, entry, file_mappings)
         import_last_publication(entry_data, options, entry, file_mappings)
@@ -37,9 +37,8 @@ module Pageflow
 
       private
 
-      def dump_most_recent_publication(entry)
-        most_recent_publication = entry.revisions.publications.first
-        most_recent_publication && RevisionSerialization.dump(most_recent_publication)
+      def dump_publication(publication)
+        publication && RevisionSerialization.dump(publication)
       end
 
       def create_entry(data, options)
