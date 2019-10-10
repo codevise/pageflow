@@ -7,7 +7,7 @@ module Pageflow
         COMMON_FILE_COLUMNS = %w[entry_id rights created_at uploader_id
                                  confirmed_by_id parent_file_id parent_file_model_type].freeze
 
-        def initialize(entry:, creator:, file_mappings: {})
+        def initialize(entry:, creator:, file_mappings: FileMappings.new)
           @entry = entry
           @creator = creator
           @file_mappings = file_mappings
@@ -90,7 +90,7 @@ module Pageflow
               file_data = file_type_usage_data.delete('file')
 
               file_type_usage_data['file_id'] =
-                find_or_store_in_file_id_mapping(file_data['id'], file_type) do
+                file_mappings.find_or_store(file_data['id'], file_type) do
                   create_file(file_data, file_type)
                 end
 
@@ -102,21 +102,6 @@ module Pageflow
         def filter_by_file_type(file_usages_data, file_type)
           file_usages_data.select do |file_usage|
             file_usage['file_type'].eql?(file_type.type_name)
-          end
-        end
-
-        def find_or_store_in_file_id_mapping(exported_file_id, file_type)
-          imported_file_id = file_mappings.dig(file_type.model.name, exported_file_id)
-
-          if imported_file_id.present?
-            imported_file_id
-          else
-            file = yield
-
-            file_mappings[file_type.model.name] ||= {}
-            file_mappings[file_type.model.name][exported_file_id] = file.id
-
-            file.id
           end
         end
 
@@ -154,7 +139,9 @@ module Pageflow
 
         def rewrite_foreign_key(attributes, attribute_name, model_name)
           exported_id = attributes[attribute_name]
-          attributes[attribute_name] = file_mappings[model_name][exported_id] if exported_id
+          return unless exported_id
+
+          attributes[attribute_name] = file_mappings.imported_id_for(model_name, exported_id)
         end
 
         def assign_attachments_attributes(file, file_data)

@@ -1,6 +1,6 @@
 RSpec.configure do |config|
   config.before(:each) do
-    Dir.glob(Rails.root.join('tmp', 'attachments', 'test', '*')).each do |f|
+    Dir.glob(Rails.root.join('public', 'system', 's3', '*')).each do |f|
       FileUtils.rm_r(f)
     end
   end

@@ -27,7 +27,7 @@ module Pageflow
         entry_data = data['entry']
         entry = create_entry(entry_data.except('draft', 'last_publication'), options)
 
-        file_mappings = {}
+        file_mappings = FileMappings.new
 
         import_draft(entry_data, options, entry, file_mappings)
         import_last_publication(entry_data, options, entry, file_mappings)

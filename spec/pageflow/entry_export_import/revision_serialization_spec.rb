@@ -296,7 +296,7 @@ module Pageflow
         exported_file = create(:image_file)
         create(:file_usage, file: exported_file, revision: exported_revision)
         user = create(:user)
-        file_mappings = {}
+        file_mappings = FileMappings.new
 
         data = RevisionSerialization.dump(exported_revision)
         previously_imported_revision = RevisionSerialization.import(data.deep_dup,
