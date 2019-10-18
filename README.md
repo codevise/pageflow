@@ -6,7 +6,7 @@
 [![Code Climate](https://codeclimate.com/github/codevise/pageflow/badges/gpa.svg)](https://codeclimate.com/github/codevise/pageflow)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
-Multimedia storytelling for the web.
+Multimedia storytelling for the web. Built in cooperation with [WDR](https://wdr.de).
 
 For a high level introduction and example Pageflow stories see
 [pageflow.io](https://pageflow.io).
@@ -207,6 +207,10 @@ The gem is available as open source under the terms of the
 [MIT License](https://github.com/codevise/pageflow/blob/master/MIT-LICENSE).
 
 ## Special Thanks
+
+Built in cooperation with:
+
+[![WDR](doc/supporter_logos/wdr.png)](https://wdr.de)
 
 We would like to express our special thanks to the following services
 for supporting Pageflow through free open source plans:
