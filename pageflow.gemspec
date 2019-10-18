@@ -121,6 +121,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'redis', '~> 3.0'
   s.add_development_dependency 'redis-namespace', '~> 1.5'
 
+  # Sprockets 4 does not support procs in config.assets.precompile
+  # which we currently depend on in pageflow/engine.rb
+  s.add_development_dependency 'sprockets', '< 4'
+
   # Faster scss compilation
   s.add_development_dependency 'sassc-rails', '~> 1.0'
 
