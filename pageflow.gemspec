@@ -112,7 +112,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bcrypt', '~> 3.1.7'
 
   # Files archiver for entry export
-  s.add_dependency 'rubyzip'
+  s.add_dependency 'rubyzip', '~> 1.2'
 
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2', '~> 0.5.2'
