@@ -1,18 +1,17 @@
 module Pageflow
   module EntryExportImport
-    # Turn entry into JSON compatible data structure.
     module EntrySerialization
       extend self
 
       DEFAULT_REMOVAL_COLUMNS = %w[id updated_at].freeze
 
+      # Turn entry into JSON compatible data structure.
       def dump(entry, publication = nil)
         {
           'page_type_versions' => PageTypeVersions.dump,
-          # features_configuration is excluded via
-          # `Entry#blacklist_for_serialization` to prevent it from
-          # showing up in Active Admin JSON exports, but should be
-          # part of export
+          # features_configuration is specifically excluded via `Entry#blacklist_for_serialization`
+          # to prevent it from showing up in Active Admin JSON exports.
+          # It is included separately as part of the entry export.
           'entry' => entry
             .as_json(except: [:folder_id, :password_digest, :users_count])
             .merge('features_configuration' => entry.features_configuration,
@@ -21,6 +20,7 @@ module Pageflow
         }
       end
 
+      # Create entry from serialized JSON export
       def import(data, options)
         PageTypeVersions.verify_compatibility!(data['page_type_versions'])
 

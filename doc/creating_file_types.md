@@ -114,6 +114,7 @@ JSON data passed to the editor. In order to do so, set the
       module
         def self.package_file_type
           FileType.new(model: Package,
+                       custom_attributes: %i[index_document]
                        editor_partial: 'pageflow/panorama/editor/packages/package')
         end
       end
@@ -124,10 +125,12 @@ attributes that shall be included in the JSON represenation of the
 file passed to the editor.
 
     # app/views/pageflow/panorama/editor/packages/_package.json.jbuilder
-    json.(:index_url)
+    json.(:index_document)
 
-Given the above partial, the `'index_url'` attribute is now available
+Given the above partial, the `index_document` attribute is now available
 in the Backbone model.
+Furthermore, specifying these custom attributes is also necessary to include them in 
+export/serialisation (See chapter "Import/Export" below). 
 
 ## Custom Meta Data Items
 
@@ -284,5 +287,14 @@ plugin's test suite to ensure the file type integrates correctly:
     end
 
 ## Import/Export
-
-Pageflow entries can be exported to zip archives
+Pageflow entries can be exported to and imported from zip archives. This is used when moving entries 
+from one host application to another for example.
+In order to make a `FileType` compatible for export and import please follow the instructions in
+`doc/export_and_import.md` and make sure that:
+- your model specifies a list of `attachments_for_export` if it has any more or other attachments 
+  than the default one specified in `Pageflow::UploadableFile`
+- you specify the list of `custom_attributes` during registration of the `FileType` if there are 
+  any other than the ones defined in
+  `Pageflow::EntryExportImport::RevisionSerialization::Import::COMMON_FILE_COLUMNS` that should be
+  considered for export/import
+- 

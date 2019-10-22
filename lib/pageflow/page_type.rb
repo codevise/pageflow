@@ -94,7 +94,7 @@ module Pageflow
       []
     end
 
-    # Current plugin version for import support
+    # Current plugin version
     def export_version
       "Pageflow::#{name.camelize}::VERSION".constantize
     rescue NameError

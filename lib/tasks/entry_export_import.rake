@@ -15,13 +15,13 @@ namespace :pageflow do
     end
 
     desc 'Import entries from file containing one or multiple lines of JSON describing an entry.'
-    task :import, [:archive_file_name, :user_id] => :environment do |_t, args|
-      archive_file_name = args[:archive_file_name]
-      raise 'Could not find JSON file for import' unless File.exist?(archive_file_name)
+    task :import, [:archive_file_path, :user_id] => :environment do |_t, args|
+      archive_file_path = args[:archive_file_path]
+      raise 'Could not find JSON file for import' unless File.exist?(archive_file_path)
 
       user = User.find(args[:user_id])
 
-      Pageflow::EntryExportImport.import(archive_file_name, creator: user)
+      Pageflow::EntryExportImport.import(archive_file_path, creator: user)
     end
   end
 end
