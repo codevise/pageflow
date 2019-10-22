@@ -3,6 +3,7 @@ module Pageflow
     factory :image_file, :class => ImageFile do
       entry
       uploader { create(:user) }
+
       attachment { File.open(Engine.root.join('spec', 'fixtures', 'image.jpg')) }
       state { 'processed' }
 
