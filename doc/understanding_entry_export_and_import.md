@@ -1,4 +1,4 @@
-# Export and Import of Stories
+# Understanding Entry Export and Importx
 
 Pageflow and all of its plugin are run in a host application which
 combines their functionality with user authentication, authorization

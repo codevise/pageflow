@@ -17,6 +17,7 @@ extend Pageflow.
 * [Creating Widget types](./creating_widget_types.md)
 * [Extending Admin Resources](./extending_admin_resources.md)
 * [Adding app news](./adding_app_news.md)
+* [Understanding Entry Export and Import](./understanding_entry_export_and_import.md)
 
 ### Integrations
 
