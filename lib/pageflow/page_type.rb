@@ -94,6 +94,26 @@ module Pageflow
       []
     end
 
+    # Current plugin version
+    def export_version
+      "Pageflow::#{name.camelize}::VERSION".constantize
+    rescue NameError
+      begin
+        "#{name.camelize}::VERSION".constantize
+      rescue NameError
+        raise "PageType #{name} needs to define export_version."
+      end
+    end
+
+    # Gets included in JSON file during export of an entry.
+    # The host application needs to compare this version with the version (above)
+    # for each page type before importing.
+    # Defaults to the plugins version but can be overwritten during registry of the page type,
+    # using the same notation as version requirements in the Gemfile.
+    def import_version_requirement
+      export_version
+    end
+
     # A list of hashes used to determine a thumbnail for a page. Each
     # hash in the list must contain two keys: `attribute` and
     # `file_collection`.

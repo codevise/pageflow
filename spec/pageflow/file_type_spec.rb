@@ -73,11 +73,12 @@ module Pageflow
     end
 
     describe '#custom_attributes' do
-      it 'returns passed custom_attributes' do
+      it 'converts passed custom_attributes symbol array to hash' do
         file_type = FileType.new(model: ImageFile,
                                  custom_attributes: [:neural_network_analysis])
 
-        expect(file_type.custom_attributes).to eq([:neural_network_analysis])
+        expect(file_type.custom_attributes)
+          .to eq(neural_network_analysis: {permitted_create_param: true})
       end
     end
   end

@@ -2,12 +2,6 @@ require 'spec_helper'
 
 module Pageflow
   describe RevisionComponent do
-
-    class TestRevisionComponent < ActiveRecord::Base
-      include RevisionComponent
-      self.table_name = :test_revision_components
-    end
-
     describe '#perma_id' do
       it 'is set on creation' do
         revision = create(:revision)

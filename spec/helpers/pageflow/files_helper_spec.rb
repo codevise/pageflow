@@ -45,18 +45,6 @@ module Pageflow
     end
 
     describe '#files_json_seeds' do
-      let(:page_type_class) do
-        Class.new(PageType) do
-          name 'test'
-
-          def initialize(options)
-            @file_types = options.fetch(:file_types)
-          end
-
-          attr_reader :file_types
-        end
-      end
-
       it 'has keys for all built-in file types' do
         revision = create(:revision, :published)
         entry = create(:entry, published_revision: revision)
@@ -123,7 +111,8 @@ module Pageflow
                                       collection_name: 'stub_files',
                                       top_level_type: true)
         Pageflow.config.page_types.clear
-        Pageflow.config.page_types.register(page_type_class.new(file_types: [stub_file_type]))
+        Pageflow.config.page_types.register(TestPageType.new(name: 'test',
+                                                             file_types: [stub_file_type]))
 
         entry = PublishedEntry.new(create(:entry, :published))
         create(:video_file, used_in: entry.revision)
@@ -141,7 +130,8 @@ module Pageflow
                                       collection_name: 'stub_files',
                                       top_level_type: true)
         Pageflow.config.page_types.clear
-        Pageflow.config.page_types.register(page_type_class.new(file_types: [stub_file_type]))
+        Pageflow.config.page_types.register(TestPageType.new(name: 'test',
+                                                             file_types: [stub_file_type]))
 
         entry = PublishedEntry.new(create(:entry, :published))
         create(:video_file, used_in: entry.revision)

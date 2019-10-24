@@ -2,7 +2,7 @@ require 'pageflow/test_page_type'
 
 module Pageflow
   class TestFileType
-    def self.register(config, options)
+    def self.register(config, options = {})
       file_type = FileType.new(model: TestUploadableFile, **options)
 
       page_type = TestPageType.new(name: :test,

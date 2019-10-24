@@ -173,14 +173,18 @@ module Pageflow
         file_usage.copy_to(revision)
       end
 
-      Pageflow.config.revision_components.each do |model|
-        model.all_for_revision(self).each do |record|
-          record.copy_to(revision)
-        end
+      find_revision_components.each do |revision_component|
+        revision_component.copy_to(revision)
       end
 
       revision.save!
       revision
+    end
+
+    def find_revision_components
+      Pageflow.config.revision_components.flat_map do |model|
+        model.all_for_revision(self).to_a
+      end
     end
 
     def self.depublish_all

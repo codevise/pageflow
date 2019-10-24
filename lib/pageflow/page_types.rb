@@ -14,6 +14,8 @@ module Pageflow
     def register(page_type)
       @page_types << page_type
       @page_types_by_name[page_type.name] = page_type
+
+      ensure_export_version_implemented(page_type)
     end
 
     def find_by_name!(name)
@@ -28,6 +30,12 @@ module Pageflow
 
     def each(&block)
       @page_types.each(&block)
+    end
+
+    private
+
+    def ensure_export_version_implemented(page_type)
+      page_type.export_version
     end
   end
 end

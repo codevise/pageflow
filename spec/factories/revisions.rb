@@ -50,6 +50,12 @@ module Pageflow
       trait :without_overview_button do
         overview_button_enabled { false }
       end
+
+      trait :with_meta_data do
+        author { 'Some author' }
+        publisher { 'Some publisher' }
+        keywords { 'Some keywords' }
+      end
     end
   end
 end

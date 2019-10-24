@@ -166,21 +166,8 @@ module Pageflow
       end
 
       context 'with registered RevisionComponent' do
-        class TestRevisionComponent < ActiveRecord::Base
-          include RevisionComponent
-          self.table_name = :test_revision_components
-        end
-
-        class RevisionTestPageType < PageType
-          name :test
-
-          def revision_components
-            [TestRevisionComponent]
-          end
-        end
-
         it 'copies registered RevisionComponents' do
-          Pageflow.config.page_types.register(RevisionTestPageType.new)
+          TestRevisionComponent.register(Pageflow.config)
           revision = create(:revision)
           TestRevisionComponent.create!(revision: revision)
 
@@ -257,6 +244,21 @@ module Pageflow
         result = revision.find_files(Pageflow::ImageFile)
 
         expect(result.first.usage_id).to be_present
+      end
+    end
+
+    describe '#find_file_by_perma_id' do
+      include UsedFileTestHelper
+
+      it 'returns a UsedFile for the file specified by its usages perma_id' do
+        entry = PublishedEntry.new(create(:entry, :published))
+        revision = entry.revision
+        image_file = create_used_file(:image_file, entry: entry)
+        usage_perma_id = image_file.perma_id
+
+        result = revision.find_file_by_perma_id(Pageflow::ImageFile, usage_perma_id)
+
+        expect(result.perma_id).to eq(usage_perma_id)
       end
     end
 

@@ -107,7 +107,7 @@ module Pageflow
         expect(file.configuration['some']).to eq('value')
       end
 
-      it 'allows to set custom attribute defined by file type' do
+      it 'allows to set custom attribute defined via array in file type' do
         pageflow_configure do |config|
           TestFileType.register(config,
                                 model: Pageflow::TestUploadableFile,
@@ -134,6 +134,67 @@ module Pageflow
         expect(file.custom).to eq('some value')
       end
 
+      it 'allows to set custom attribute with permitted_create_param option in file type ' do
+        pageflow_configure do |config|
+          TestFileType.register(config,
+                                model: Pageflow::TestUploadableFile,
+                                custom_attributes: {
+                                  custom: {
+                                    permitted_create_param: true
+                                  }
+                                })
+        end
+
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'pageflow_test_uploadable_files',
+               test_uploadable_file: {
+                 file_name: 'image.jpg',
+                 custom: 'some value'
+               }
+             },
+             format: 'json')
+
+        file = entry.draft.find_files(Pageflow::TestUploadableFile).last
+        expect(file.custom).to eq('some value')
+      end
+
+      it 'does not allow to set custom attribute without permitted_create_param ' \
+         'option in file type' do
+        pageflow_configure do |config|
+          TestFileType.register(config,
+                                model: Pageflow::TestUploadableFile,
+                                custom_attributes: {
+                                  custom: {}
+                                })
+        end
+
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'pageflow_test_uploadable_files',
+               test_uploadable_file: {
+                 file_name: 'image.jpg',
+                 custom: 'some value'
+               }
+             },
+             format: 'json')
+
+        file = entry.draft.find_files(Pageflow::TestUploadableFile).last
+        expect(file.custom).to be_blank
+      end
+
       it 'does not allow to set attribute not defined as custom attributes in file type' do
         pageflow_configure do |config|
           TestFileType.register(config,
@@ -158,6 +219,70 @@ module Pageflow
 
         file = entry.draft.find_files(Pageflow::TestUploadableFile).last
         expect(file.custom).to be_blank
+      end
+
+      it 'does not allow to set foreign key custom attribute for file not used in revsion' do
+        pageflow_configure do |config|
+          TestFileType.register(config,
+                                model: Pageflow::TestUploadableFile,
+                                custom_attributes: {
+                                  related_image_file_id: {
+                                    permitted_create_param: true,
+                                    model: 'Pageflow::ImageFile'
+                                  }
+                                })
+        end
+
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        image_file = create(:image_file)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'pageflow_test_uploadable_files',
+               test_uploadable_file: {
+                 file_name: 'image.jpg',
+                 related_image_file_id: image_file.id
+               }
+             },
+             format: 'json')
+
+        expect(response.status).to eq(422)
+      end
+
+      it 'allow to set foreign key custom attribute for file used in revsion' do
+        pageflow_configure do |config|
+          TestFileType.register(config,
+                                model: Pageflow::TestUploadableFile,
+                                custom_attributes: {
+                                  related_image_file_id: {
+                                    permitted_create_param: true,
+                                    model: 'Pageflow::ImageFile'
+                                  }
+                                })
+        end
+
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        image_file = create(:image_file, used_in: entry.draft)
+
+        sign_in(user)
+        acquire_edit_lock(user, entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'pageflow_test_uploadable_files',
+               test_uploadable_file: {
+                 file_name: 'image.jpg',
+                 related_image_file_id: image_file.id
+               }
+             },
+             format: 'json')
+
+        expect(response.status).to eq(200)
       end
 
       it 'creates file for entry' do

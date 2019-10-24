@@ -65,6 +65,11 @@ module Pageflow
     end
 
     # ReusableFile-overrides:
+
+    def attachments_for_export
+      [attachment]
+    end
+
     def url
       if attachment.present?
         attachment.url
