@@ -16,6 +16,12 @@ module Pageflow
     # @param create_file_type [#call] Proc creating the file type to test
     # @param create_file [#call] Proc creating a fixture file of the
     #   file type
+    # @param create_prerequisite_file_types [#call] Proc returning
+    #   array of additional file types to register.
+    # @param get_prerequisite_files [#call] Proc that takes the file
+    #   returned by create_file and returns an array of files that
+    #   shall be included in the exported revision during
+    #   export/import test.
     #
     # @example
     #

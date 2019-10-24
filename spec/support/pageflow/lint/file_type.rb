@@ -6,7 +6,11 @@ module Pageflow
   module Lint
     # @api private
     module FileType
-      def self.lint(name, create_file_type:, create_file:)
+      def self.lint(name,
+                    create_file_type:,
+                    create_file:,
+                    create_prerequisite_file_types: -> { [] },
+                    get_prerequisite_files: ->(_file) { [] })
         GlobalConfigApiTestHelper.setup
 
         RSpec.describe "file type #{name}", type: :helper do
@@ -14,10 +18,15 @@ module Pageflow
 
           let(:file, &create_file)
 
+          let(:prerequisite_file_types, &create_prerequisite_file_types)
+
           before do
             pageflow_configure do |config|
               page_type = TestPageType.new(name: 'test',
-                                           file_types: [file_type])
+                                           file_types: [
+                                             *prerequisite_file_types,
+                                             file_type
+                                           ])
               config.page_types.clear
               config.page_types.register(page_type)
             end
@@ -57,6 +66,10 @@ module Pageflow
             exported_entry = create(:entry)
             create(:file_usage, file: file, revision: exported_entry.draft)
             user = create(:user, :manager, on: create(:account))
+
+            get_prerequisite_files.call(file).each do |prerequisite_file|
+              create(:file_usage, file: prerequisite_file, revision: exported_entry.draft)
+            end
 
             Dir.mktmpdir do |dir|
               archive_file_path = File.join(dir, 'export.zip')
