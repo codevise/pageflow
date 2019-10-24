@@ -1,5 +1,18 @@
 # CHANGELOG
 
+### Version 15.0.0.beta4
+
+2019-10-24
+
+[Compare changes](https://github.com/codevise/pageflow/compare/14-x-stable...v15.0.0.beta4)
+
+- Add sassc-rails as development dependency
+  ([#1222](https://github.com/codevise/pageflow/pull/1222))
+- Allow specifying prerequisites in file type lint specs
+  ([#1221](https://github.com/codevise/pageflow/pull/1221))
+- Restrict sprockets as runtime depenency
+  ([#1220](https://github.com/codevise/pageflow/pull/1220))
+
 ### Version 15.0.0.beta3
 
 2019-10-24
@@ -63,7 +76,7 @@
   from a Rails perspective, it has 4-byte-character-friendlier default
   settings. Also see MySQL's official guide on converting between
   3-byte and 4-byte character sets [3].
-  ([#1210](https://github.com/codevise/pageflow/pull/1194))
+  ([#1210](https://github.com/codevise/pageflow/pull/1210))
 
   [1] https://github.com/rails/rails/pull/33608
 
