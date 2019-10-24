@@ -1,7 +1,9 @@
-<% image_urls.each do |image_url| %>
-  <%= tag :meta, property: "og:image", content: social_share_normalize_protocol(image_url) %>
+<% share_images.each do |share_image| %>
+  <%= tag :meta, property: "og:image", content: social_share_normalize_protocol(share_image[:image_url]) %>
+  <%= tag :meta, property: "og:image:width", content: share_image[:width] %>
+  <%= tag :meta, property: "og:image:height", content: share_image[:height] %>
 <% end %>
 
-<% if image_urls.first.present? %>
-  <%= tag :meta, name: "twitter:image:src", content: social_share_normalize_protocol(image_urls.first) %>
+<% if share_images.first.present? %>
+  <%= tag :meta, name: "twitter:image:src", content: social_share_normalize_protocol(share_images.first[:image_url]) %>
 <% end %>
