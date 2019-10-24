@@ -31,4 +31,6 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'redis', '~> 3.0'
   s.add_runtime_dependency 'redis-namespace', '~> 1.5'
+
+  s.add_runtime_dependency 'sassc-rails', '~> 1.0'
 end
