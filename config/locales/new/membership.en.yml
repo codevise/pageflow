@@ -1,8 +1,0 @@
-en:
-  activerecord:
-    errors:
-      models:
-        pageflow/membership:
-          attributes:
-            user:
-              required: User must be selected

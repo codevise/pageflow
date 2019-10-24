@@ -282,6 +282,10 @@ de:
         dimensions: Maße
         duration: Länge
         format: Format
+      pageflow/widget:
+        blur_strength: Unschärfe
+        invert: Farben invertieren
+        remove_logo: Logo entfernen
       user:
         account: Konto
         admin: System-Administrator
@@ -351,6 +355,10 @@ de:
           attributes:
             folder:
               must_be_same_account: Ordner muss zu gleichem Konto gehören wie Beitrag
+        pageflow/membership:
+          attributes:
+            user:
+              required: Benutzer muss ausgewählt sein
     models:
       account:
         one: Konto
@@ -1120,6 +1128,8 @@ de:
           audio_files: Audios
           image_files: Bilder
           video_files: Videos
+      media_loading_spinner:
+        widget_type_info_box_text: Dies ist eine Vorschau der Lade-Ansicht von 'Bild'. Die Animation wird ausgeführt, während die Seite geladen wird.
       nested_files:
         text_track_files:
           delete:
@@ -1392,7 +1402,19 @@ de:
           without_parent_page: Ohne übergeordnete Seite
       widgets:
         attributes:
+          media_loading_spinner:
+            blur_strength:
+              inline_help: Steuern Sie die Unschärfe des Hintergrundbilds.
+              label: Unschärfe
+            custom_background_image_id:
+              inline_help: Standardmäßig wird das Hintergrundbild der ersten Seite verwendet.
+              label: Hintegrundbild
+            remove_logo:
+              label: Logo entfernen
           title_loading_spinner:
+            blur_strength:
+              inline_help: Steuern Sie die Unschärfe des Hintergrundbilds.
+              label: Unschärfe
             custom_background_image_id:
               inline_help: Standardmäßig wird das Hintergrundbild der ersten Seite verwendet.
               label: Hintegrundbild
@@ -1733,6 +1755,8 @@ de:
       tr: Türkisch
       unknown: "(Unbekannt)"
       zh: Chinesisch
+    media_loading_spinner:
+      widget_type_name: Media
     page_transitions:
       crossfade: Überblenden
       cut: Harter Schnitt
