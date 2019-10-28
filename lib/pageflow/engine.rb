@@ -10,6 +10,7 @@ require 'jbuilder'
 require 'htmlentities'
 require 'kramdown'
 require 'react-rails'
+require 'with_advisory_lock'
 
 require 'active_admin'
 require 'activeadmin-searchable_select'

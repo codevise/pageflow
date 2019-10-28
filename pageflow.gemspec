@@ -41,6 +41,9 @@ Gem::Specification.new do |s|
   # File attachments
   s.add_dependency 'paperclip', '~> 6.1'
 
+  # MySQL/Postgres advisory locks
+  s.add_dependency 'with_advisory_lock', '~> 4.6'
+
   # zencoder
   s.add_dependency 'zencoder', '~> 2.5'
 
