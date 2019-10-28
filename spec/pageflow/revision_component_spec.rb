@@ -2,6 +2,16 @@ require 'spec_helper'
 
 module Pageflow
   describe RevisionComponent do
+    it 'touches revision on create' do
+      revision = create(:revision)
+
+      expect {
+        Timecop.freeze(1.minute.from_now) do
+          TestRevisionComponent.create!(revision: revision)
+        end
+      }.to(change { revision.reload.updated_at })
+    end
+
     describe '#perma_id' do
       it 'is set on creation' do
         revision = create(:revision)

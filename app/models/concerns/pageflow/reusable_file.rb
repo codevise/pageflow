@@ -13,6 +13,10 @@ module Pageflow
       has_many :using_accounts, :through => :using_entries, :source => :account
 
       validate :parent_allows_type_for_nesting, :parent_belongs_to_same_entry
+
+      after_save do
+        usages.each(&:touch) if ready?
+      end
     end
 
     def parent_allows_type_for_nesting

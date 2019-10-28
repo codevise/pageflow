@@ -8,7 +8,7 @@ module Pageflow
     extend ActiveSupport::Concern
 
     included do
-      belongs_to :revision, class_name: 'Pageflow::Revision'
+      belongs_to :revision, class_name: 'Pageflow::Revision', touch: true
       before_save :ensure_perma_id
     end
 

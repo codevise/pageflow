@@ -53,5 +53,27 @@ module Pageflow
         expect(nested_text_track_files.first).to eq(nested_file)
       end
     end
+
+    it 'touches all using revisions when file becomes ready' do
+      revision = create(:revision)
+      file = create(:image_file, state: 'processing', used_in: revision)
+
+      Timecop.freeze(1.minute.from_now) do
+        file.reload.update!(state: 'processed')
+
+        expect(revision.reload.updated_at).to eq(Time.zone.now)
+      end
+    end
+
+    it 'does not touch usages when file is saved but is not yet ready' do
+      revision = create(:revision)
+      file = create(:image_file, state: 'processing', used_in: revision)
+
+      Timecop.freeze(1.minute.from_now) do
+        expect {
+          file.reload.update!(width: 100, height: 200)
+        }.not_to(change { revision.reload.updated_at })
+      end
+    end
   end
 end
