@@ -1,5 +1,17 @@
 # CHANGELOG
 
+### Version 15.0.0.rc1
+
+2019-10-28
+
+[Compare changes](https://github.com/codevise/pageflow/compare/14-x-stable...v15.0.0.rc1)
+
+- Prevent perma_id clashes for concurrently created revision components
+  ([#1225](https://github.com/codevise/pageflow/pull/1225))
+- Ensure caching of generated stylesheet is invaliated when files are
+  added.
+  ([#1224](https://github.com/codevise/pageflow/pull/1224))
+
 ### Version 15.0.0.beta4
 
 2019-10-24
