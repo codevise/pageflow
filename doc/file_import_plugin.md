@@ -7,7 +7,7 @@ should be implemented according to the standard way of developing [Pageflow ERB 
 File import plugin should contain the following element:
 
 * A Ruby class extending Pageflow::ImportPlugin that can be registered in
-  a host application's Pageflow initializer.
+  a host application's Pageflow initializer. 
 
 * An ERB template to render the file import view.
 

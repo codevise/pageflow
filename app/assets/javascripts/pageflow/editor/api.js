@@ -54,6 +54,14 @@ pageflow.EditorApi = pageflow.Object.extend(
      * Set up editor integration for file types
      */
     this.fileTypes = new pageflow.FileTypes();
+
+
+    /**
+     * List of available file import plugins
+     * @alias fileImporters
+     *  
+     */
+    this.fileImporters = new pageflow.FileImporters();
   },
 
   /**

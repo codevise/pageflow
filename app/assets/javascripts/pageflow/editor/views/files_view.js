@@ -9,6 +9,7 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    
     this.addFileModel = new Backbone.Model({
       label: I18n.t('pageflow.editor.views.files_view.add'),
       options: [
@@ -22,6 +23,21 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
             pageflow.FilesExplorerView.open({
               callback: function(otherEntry, file) {
                 pageflow.entry.reuseFile(otherEntry, file);
+              }
+            });
+          }
+        },
+        {
+          label: I18n.t('pageflow.editor.views.files_view.import'),
+          handler: function () {
+            pageflow.ChooseImporterView.open({
+              callback: function (importer_key) {
+                pageflow.FilesImporterView.open({
+                  importer_key: importer_key,
+                  callback: function(otherEntry, file) {
+                    //pageflow.entry.reuseFile(otherEntry, file);
+                  }
+                });
               }
             });
           }
