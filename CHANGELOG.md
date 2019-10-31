@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 14.5.1
+
+2019-10-31
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v14.5.0...v14.5.1)
+
+- Require Sprockets < 4 (14.x Backport)
+  ([#1235](https://github.com/codevise/pageflow/pull/1235))
+
 ### Version 14.5.0
 
 2019-10-31
