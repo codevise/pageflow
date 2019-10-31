@@ -100,5 +100,13 @@ $mobile-navigation-pictogram-visibility: $standard-page-pictogram-visibility !de
     svg {
       fill: $mobile-navigation-share-link-color;
     }
+
+    &.active {
+      color: $main-color;
+
+      svg {
+        fill: $main-color;
+      }
+    }
   }
 }
