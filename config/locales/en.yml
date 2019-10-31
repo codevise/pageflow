@@ -282,6 +282,10 @@ en:
         dimensions: Dimensions
         duration: Duration
         format: Format
+      pageflow/widget:
+        blur_strength: Blurriness
+        invert: Invert Color
+        remove_logo: Remove Logo
       user:
         account: Account
         admin: System administrator
@@ -1124,6 +1128,8 @@ en:
           audio_files: Audios
           image_files: Images
           video_files: Videos
+      media_loading_spinner:
+        widget_type_info_box_text: This is a preview of the 'Image' loading view. The animation runs while the page is loading.
       nested_files:
         text_track_files:
           delete:
@@ -1396,7 +1402,19 @@ en:
           without_parent_page: Without parent page
       widgets:
         attributes:
+          media_loading_spinner:
+            blur_strength:
+              inline_help: Control the bluriness of background image.
+              label: Blur Strength
+            custom_background_image_id:
+              inline_help: By default, the background image of the first page is used.
+              label: Background Image
+            remove_logo:
+              label: Remove logo
           title_loading_spinner:
+            blur_strength:
+              inline_help: Control the bluriness of background image.
+              label: Blur Strength
             custom_background_image_id:
               inline_help: By default the background image of the first page is used.
               label: Background image
@@ -1709,6 +1727,8 @@ en:
       tr: Turkish
       unknown: "(Unknown)"
       zh: Chinese
+    media_loading_spinner:
+      widget_type_name: Media
     page_transitions:
       crossfade: Crossfade
       cut: Cut
@@ -1753,7 +1773,7 @@ en:
       main: Main storyline
       untitled: Unnamed storyline
     structured_data:
-      feature_name: Embedded structured data 
+      feature_name: Embedded structured data
     title_loading_spinner:
       feature_name: "'Title and image' loading view"
       widget_type_name: Title and Image
