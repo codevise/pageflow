@@ -26,36 +26,16 @@ module Pageflow
       self.perma_id ||= (self.class.maximum(:perma_id) || 0) + 1
     end
 
-    def save(*)
-      with_advisory_lock_for_perma_id_generation! do
-        super
-      end
-    end
-
-    def save!(*)
-      with_advisory_lock_for_perma_id_generation! do
-        super
-      end
-    end
-
-    private
-
-    def with_advisory_lock_for_perma_id_generation!(&block)
-      return yield if perma_id.present?
-
-      r = with_advisory_lock_result_for_perma_id_generation(&block)
-      raise(PermaIdGenerationAdvisoryLockTimeout) unless r.lock_was_acquired?
-
-      r.result
-    end
-
-    def with_advisory_lock_result_for_perma_id_generation(&block)
-      self.class.with_advisory_lock_result("#{self.class.table_name}_perma_id",
-                                           timeout_seconds: ADVISORY_LOCK_TIMEOUT_SECONDS,
-                                           &block)
-    end
-
     module ClassMethods
+      # Recommended way to create revision components. Uses an
+      # advisory lock to ensure concurrently created records are not
+      # assigned the same perma id.
+      def create_with_lock!(attributes, &block)
+        with_advisory_lock_for_perma_id_generation! do
+          create!(attributes, &block)
+        end
+      end
+
       def all_for_revision(revision)
         where(revision_id: revision.id)
       end
@@ -66,6 +46,21 @@ module Pageflow
         perma_ids.map do |perma_id|
           find_by_revision_id_and_perma_id(revision.id, perma_id)
         end.compact
+      end
+
+      private
+
+      def with_advisory_lock_for_perma_id_generation!(&block)
+        r = with_advisory_lock_result_for_perma_id_generation(&block)
+        raise(PermaIdGenerationAdvisoryLockTimeout) unless r.lock_was_acquired?
+
+        r.result
+      end
+
+      def with_advisory_lock_result_for_perma_id_generation(&block)
+        with_advisory_lock_result("#{table_name}_perma_id",
+                                  timeout_seconds: ADVISORY_LOCK_TIMEOUT_SECONDS,
+                                  &block)
       end
     end
   end
