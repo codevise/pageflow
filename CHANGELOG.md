@@ -1,5 +1,18 @@
 # CHANGELOG
 
+### Version 15.0.0.rc2
+
+2019-10-31
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.0.0.rc1...v15.0.0.rc2)
+
+- Tweak import/export zip options
+  ([#1234](https://github.com/codevise/pageflow/pull/1234))
+- Prevent further cases of perma id clashes
+  ([#1233](https://github.com/codevise/pageflow/pull/1233))
+- Add active class color styling for mobile share panel
+  ([#1232](https://github.com/codevise/pageflow/pull/1232))
+
 ### Version 15.0.0.rc1
 
 2019-10-28
