@@ -88,6 +88,10 @@ Gem::Specification.new do |s|
   # Scss compiler
   s.add_dependency 'sass', '~> 3.4'
 
+  # Sprockets 4 does not support procs in config.assets.precompile
+  # which we currently depend on in pageflow/engine.rb
+  s.add_dependency 'sprockets', '< 4'
+
   # Using translations from rails locales in javascript code.
   s.add_dependency 'i18n-js', '~> 2.1'
 
