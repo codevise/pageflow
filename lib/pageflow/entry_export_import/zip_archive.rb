@@ -5,6 +5,9 @@ module Pageflow
     # Read and write files from and to zip archives
     class ZipArchive
       def initialize(file_name)
+        Zip.force_entry_names_encoding = 'UTF-8'
+        Zip.write_zip64_support = true
+
         @file = Zip::File.open(file_name, Zip::File::CREATE)
       end
 
