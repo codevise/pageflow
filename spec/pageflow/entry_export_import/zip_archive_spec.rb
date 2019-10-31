@@ -74,6 +74,19 @@ module Pageflow
           expect(archive).not_to include('not/there/file')
         end
       end
+
+      it 'can handle UTF8 character is file paths' do
+        Dir.mktmpdir do |dir|
+          archive_file_name = File.join(dir, 'archive.zip')
+          archive = ZipArchive.new(archive_file_name)
+
+          archive.add('öäü/1/file', StringIO.new('File 1'))
+          archive.close
+          archive = ZipArchive.new(archive_file_name)
+
+          expect(archive).to include('öäü/1/file')
+        end
+      end
     end
   end
 end
