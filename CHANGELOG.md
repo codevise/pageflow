@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### Version 15.0.1
+
+2019-11-04
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.0.0...v15.0.1)
+
+- Version 15.0.0 contained an out-of-date Webpack built.
+
 ### Version 15.0.0
 
 2019-11-04
