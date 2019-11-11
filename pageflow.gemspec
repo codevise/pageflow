@@ -184,4 +184,8 @@ Gem::Specification.new do |s|
 
   # Scss code linter
   s.add_development_dependency 'scss_lint', '~> 0.50.0'
+  
+  # For oauth authentication
+  s.add_development_dependency 'omniauth', '~> 1.9'
+  s.add_development_dependency 'omniauth-facebook', '~> 4.0'
 end
