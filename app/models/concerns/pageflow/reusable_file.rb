@@ -8,6 +8,11 @@ module Pageflow
       belongs_to :parent_file, polymorphic: true, foreign_type: :parent_file_model_type, optional: true
 
       has_many :usages, :as => :file, :class_name => 'Pageflow::FileUsage', :dependent => :destroy
+      has_one  :import,
+               as: :file,
+               class_name: 'Pageflow::FileImport',
+               required: false,
+               dependent: :destroy
       has_many :using_revisions, :through => :usages, :source => :revision
       has_many :using_entries, :through => :using_revisions, :source => :entry
       has_many :using_accounts, :through => :using_entries, :source => :account

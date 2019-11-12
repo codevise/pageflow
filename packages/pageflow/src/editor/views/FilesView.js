@@ -27,6 +27,7 @@ export const FilesView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    
     this.addFileModel = new Backbone.Model({
       label: I18n.t('pageflow.editor.views.files_view.add'),
       options: [
@@ -40,6 +41,18 @@ export const FilesView = Marionette.ItemView.extend({
             FilesExplorerView.open({
               callback: function(otherEntry, file) {
                 state.entry.reuseFile(otherEntry, file);
+              }
+            });
+          }
+        },
+        {
+          label: I18n.t('pageflow.editor.views.files_view.import'),
+          handler: function () {
+            pageflow.ChooseImporterView.open({
+              callback: function (importer_key) {
+                pageflow.FilesImporterView.open({
+                  importer_key: importer_key
+                });
               }
             });
           }

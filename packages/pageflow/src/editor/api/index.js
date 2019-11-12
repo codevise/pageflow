@@ -5,6 +5,7 @@ import {Object} from '$pageflow/ui';
 import {CommonPageConfigurationTabs} from './CommonPageConfigurationTabs';
 import {FailuresAPI} from './Failures';
 import {FileTypes} from './FileTypes';
+import {FileImporters} from './FileImporters' 
 import {PageTypes} from './PageTypes';
 import {WidgetTypes} from './WidgetTypes';
 import {app} from '../app';
@@ -64,6 +65,14 @@ export const EditorApi = Object.extend(
      * Set up editor integration for file types
      */
     this.fileTypes = new FileTypes();
+
+
+    /**
+     * List of available file import plugins
+     * @alias fileImporters
+     *  
+     */
+    this.fileImporters = new FileImporters();
   },
 
   /**
