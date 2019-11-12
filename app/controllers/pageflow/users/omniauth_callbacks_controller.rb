@@ -21,15 +21,14 @@ module Pageflow
       protected
 
       def create_auth_token(user)
-        AuthenticationToken.create(user_id: user.id,
-                                   provider: auth_provider,
-                                   auth_token: auth_token,
-                                   expiry_time: Time.at(auth_expiry))
+        AuthenticationToken.create_auth_token(user.id,
+                                              auth_provider,
+                                              auth_token,
+                                              auth_expiry)
       end
 
       def update_auth_token(token)
-        token.update(auth_token: auth_token,
-                     expiry_time: Time.at(auth_expiry))
+        AuthenticationToken.update_token token.first, auth_token, auth_expiry
       end
 
       def render_or_redirect
@@ -54,7 +53,7 @@ module Pageflow
       end
 
       def auth_provider
-        auth_hash[:provider]
+        auth_hash['provider']
       end
 
       def auth_token
@@ -65,7 +64,7 @@ module Pageflow
         if auth_hash['credentials']['expires']
           auth_hash['credentials']['expires_at']
         else
-          '92503680000' # far far future
+          92503680000 # far far future
         end
       end
     end

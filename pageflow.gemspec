@@ -188,4 +188,7 @@ Gem::Specification.new do |s|
   # For oauth authentication
   s.add_dependency 'omniauth', '~> 1.9'
   s.add_dependency 'omniauth-facebook', '~> 4.0'
+
+  # to encrypt auth token
+  s.add_dependency 'attr_encrypted', '~> 3.1.0'
 end
