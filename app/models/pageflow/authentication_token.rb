@@ -8,9 +8,5 @@ module Pageflow
       where(user_id: current_user.id,
             provider: provider)
     end
-
-    def self.user_from_omniauth(auth)
-      User.find_by('email = ?', auth['info']['email'])
-    end
   end
 end
