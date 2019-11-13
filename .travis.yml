@@ -36,6 +36,8 @@ before_script:
 
 script:
   - bin/rspec
+  - (cd entry_types/paged; bin/rspec)
+  - (cd entry_types/scrolled; bin/rspec)
   - (cd packages/pageflow; yarn test)
   - (cd packages/pageflow-react; yarn test)
 
