@@ -14,6 +14,14 @@ module Pageflow
       write_attribute(:auth_token, SymmetricEncryption.encrypt(token))
     end
 
+    def auth_token
+      SymmetricEncryption.decrypt(read_attribute(:auth_token))
+    end
+
+    def auth_token=(token)
+      write_attribute(:auth_token, SymmetricEncryption.encrypt(token))
+    end
+
     def self.create_auth_token(user_id, auth_provider, auth_token, expiry_time)
       token = AuthenticationToken.new
       token.user_id = user_id

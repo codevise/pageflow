@@ -30,3 +30,6 @@ gem 'activemodel-serializers-xml'
 
 # Make tests fail on JS errors
 gem 'capybara-chromedriver-logger', git: 'https://github.com/codevise/capybara-chromedriver-logger', branch: 'do-not-raise-on-filtered-errors', require: false
+
+# to encrypt auth token
+gem 'symmetric-encryption', '~> 4.3.1', require: false
