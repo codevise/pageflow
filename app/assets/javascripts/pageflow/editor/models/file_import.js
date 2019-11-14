@@ -52,40 +52,14 @@ pageflow.FileImport = Backbone.Model.extend({
     this.set('selectedFiles', []);
   },
   search: function (query) {
-    this.action = 'search';
-    return this.fetchData({
-      data: {
-        query: query
-      }
-    });
-  },
-  nextPage: function () {
-    var nextPageURL = this.get('nextPageURL');
-    if (nextPageURL) {
-      this.action = 'search' + nextPageURL.search;
-      return this.fetchData();
-    }
-  },
-  previousPage: function () {
-    var prevPageURL = this.get('previousPageURL');
-    if (prevPageURL) {
-      this.action = 'search' + prevPageURL.search;
-      return this.fetchData();
-    }
+    this.action = 'search/?query='+query;
+    return this.fetchData();
   },
   fetchData: function (options) {
-    this.set('nextPageURL', undefined);
-    this.set('previousPageURL', undefined);
-    var self = this;
     return this.fetch(options).then(function (data) {
-      if (data.next_page) {
-        self.set('nextPageURL', new URL(data.next_page));
+      if (data && data.data) {
+        return data.data;
       }
-      if (data.prev_page) {
-        self.set('previousPageURL', new URL(data.prev_page));
-      }
-      self.set('currentPage', data.page);
-      return data;
     });
   },
   getFilesMetaData: function (options) {

@@ -6,7 +6,7 @@
   bottom: 20px;
   right: 20px;
   max-width: 1100px;
-  height: 640px;
+  height: 70vh;
   .content{
     display: table;
     height: 80%;
@@ -67,7 +67,7 @@
   bottom: 20px;
   right: 20px;
   max-width: 1100px;
-  height: 642px;
+  height: 70vh;
   .content_panel{
     width: 100%;
     .lds-spinner{
@@ -80,9 +80,16 @@
     }
   }
   .footer{
+    width: 100%;
     position: absolute;
     bottom: 10px;
     right: 15px;
+    .disclaimer{
+      margin-left: 20px;
+      font-size: 10px;
+      float: left;
+      margin-top: 10px;
+    }
     .import{
       border: 1px solid #1c86fe;
       border-radius: 3px;
