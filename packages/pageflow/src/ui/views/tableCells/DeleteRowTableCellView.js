@@ -1,6 +1,6 @@
 import {TableCellView} from './TableCellView';
 
-import template from '../../../editor/templates/deleteRowTableCell.jst';
+import template from '../../templates/tableCells/deleteRowTableCell.jst';
 
 /**
  * A table cell providing a button which destroys the model that the

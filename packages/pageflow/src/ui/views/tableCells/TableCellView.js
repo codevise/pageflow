@@ -3,7 +3,7 @@ import _ from 'underscore';
 
 import {findTranslation} from '../../utils/i18nUtils';
 
-import template from '../../../editor/templates/tableCell.jst';
+import template from '../../templates/tableCells/tableCell.jst';
 
 /**
  * Base class for table cell views.
