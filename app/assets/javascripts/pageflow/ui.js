@@ -6,4 +6,4 @@
 
 //= require pageflow/dist/ui
 
-_.extend(pageflow, pageflow.ui);
+_.extend(pageflow, pageflow._uiGlobalInterop);
