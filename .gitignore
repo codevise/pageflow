@@ -11,3 +11,5 @@ spec/dummy/*
 .idea
 /app/assets/javascripts/pageflow/dist
 .localeapp
+
+/packages/*/node_modules
