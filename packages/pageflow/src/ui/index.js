@@ -7,6 +7,7 @@ import './renderer';
 import * as i18nUtils from './utils/i18nUtils';
 
 export { i18nUtils };
+export {default as Object} from './Object';
 
 export * from './views/SortableCollectionView';
 export * from './views/CollectionView';
