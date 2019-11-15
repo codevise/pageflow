@@ -1,7 +1,7 @@
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {attributeTranslation} from '$pageflow/ui';
+import {i18nUtils} from '$pageflow/ui';
 
 import template from '../templates/fileMetaDataItem.jst';
 
@@ -25,7 +25,7 @@ export const FileMetaDataItemView = Marionette.ItemView.extend({
   },
 
   labelText: function() {
-    return attributeTranslation(this.options.name, 'label', {
+    return i18nUtils.attributeTranslation(this.options.name, 'label', {
       prefixes: [
         'pageflow.editor.files.attributes.' + this.model.fileType().collectionName,
         'pageflow.editor.files.common_attributes'

@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
-import {CollectionView, findTranslation} from '$pageflow/ui';
+import {CollectionView, i18nUtils} from '$pageflow/ui';
 
 import {editor} from '../base';
 
@@ -71,7 +71,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   filterTranslation: function(keyName, options) {
     var filterName = this.options.filterName;
 
-    return findTranslation([
+    return i18nUtils.findTranslation([
       'pageflow.editor.files.filters.' +
         this.options.fileType.collectionName + '.' +
         filterName + '.' +
