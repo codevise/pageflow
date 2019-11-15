@@ -6,8 +6,7 @@ import {TableHeaderCellView} from './tableCells/TableHeaderCellView';
 import {TableRowView} from './TableRowView';
 
 import template from '../templates/table.jst';
-
-import template from '../templates/tableBlankSlate.jst';
+import blankSlateTemplate from '../templates/tableBlankSlate.jst';
 
 export const TableView = Marionette.ItemView.extend({
   tagName: 'table',
@@ -44,7 +43,7 @@ export const TableView = Marionette.ItemView.extend({
       blankSlateViewConstructor: Marionette.ItemView.extend({
         tagName: 'tr',
         className: 'blank_slate',
-        template,
+        blankSlateTemplate,
 
         serializeData: function() {
           return {
