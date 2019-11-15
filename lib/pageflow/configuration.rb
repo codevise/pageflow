@@ -33,6 +33,10 @@ module Pageflow
     # supported options.
     attr_accessor :zencoder_options
 
+    # Contains key and iv used to encrypt string
+    # used by SymmetricEncryption
+    attr_accessor :encryption_options
+
     # A constraint used by the pageflow engine to restrict access to
     # the editor related HTTP end points. This can be used to ensure
     # the editor is only accessable via a certain host when different
@@ -349,6 +353,8 @@ module Pageflow
       }
 
       @zencoder_options = {}
+
+      @encryption_options = {}
 
       @mailer_sender = 'pageflow@example.com'
 

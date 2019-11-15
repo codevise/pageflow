@@ -5,11 +5,11 @@ module Pageflow
     # oAuth callbacks are handled by this controller
     class OmniauthCallbacksController < Pageflow::ApplicationController
       def auth_callback
-        token = AuthenticationToken.find_auth_token(current_user, auth_provider)
-        if token.empty?
+        result = AuthenticationToken.find_auth_token(current_user, auth_provider)
+        if result.empty?
           create_auth_token current_user
         else
-          update_auth_token token
+          update_auth_token result.first
         end
         render_or_redirect
       end
@@ -28,7 +28,7 @@ module Pageflow
       end
 
       def update_auth_token(token)
-        AuthenticationToken.update_token token.first, auth_token, auth_expiry
+        AuthenticationToken.update_token token, auth_token, auth_expiry
       end
 
       def render_or_redirect
