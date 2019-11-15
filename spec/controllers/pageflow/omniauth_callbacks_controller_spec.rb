@@ -14,6 +14,14 @@ module Pageflow
         }
       end
       describe 'auth_callback' do
+
+        it 'should ignore unauthenticated requests'
+          old_token_count = AuthenticationToken.all.count
+          post :auth_callback, params: {provider: :default}
+          expect(response.status).to eq(401)
+          expect(AuthenticationToken.all.count).to eq(old_token_count)
+        end
+
         it 'should create authentication token' do
           user = create(:user)
           sign_in(user, scope: :user)
@@ -23,7 +31,7 @@ module Pageflow
           expect(token).not_to be_empty
         end
 
-        it 'should not create auth token and redirect to root path' do
+        it 'should not create auth token and redirect to root path when auth hash is invalid' do
           request.env['omniauth.auth'] = :invalid_credentials
           user = create(:user)
           sign_in(user, scope: :user)
