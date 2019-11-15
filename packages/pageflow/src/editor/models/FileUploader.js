@@ -4,7 +4,7 @@ import _ from 'underscore';
 import {Object} from '$pageflow/ui';
 
 import {InvalidNestedTypeError, NestedTypeError} from '../api/errors';
-import {editor} from '../base';
+import {editor as editorApi} from '../base';
 
 export const FileUploader = Object.extend({
   initialize: function(options) {
@@ -16,7 +16,7 @@ export const FileUploader = Object.extend({
 
   add: function(upload, options) {
     options = options || {};
-    var editor = options.editor || editor;
+    var editor = options.editor || editorApi;
     var fileType = this.fileTypes.findByUpload(upload);
     var file = new fileType.model({
       state: 'uploadable',
