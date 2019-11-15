@@ -17,7 +17,7 @@ ConfigurationEditorView.register('audio', {
 
     this.tab('files', function() {
       this.input('audio_file_id', FileInputView, {
-        collection: pageflow.audioFiles,
+        collection: state.audioFiles,
         defaultTextTrackFilePropertyName: 'default_text_track_file_id'
       });
       this.group('background');

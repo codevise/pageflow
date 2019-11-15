@@ -24,7 +24,7 @@ ConfigurationEditorTabView.groups.define('options', function(options) {
   this.input('description', TextAreaInputView, {size: 'short', disableLinks: true});
 
   this.input('atmo_audio_file_id', FileInputView, {
-    collection: pageflow.audioFiles
+    collection: state.audioFiles
   });
 
   if (options.canPauseAtmo) {
