@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import Marionette from 'backbone.marionette';
 
 import {EditorApi} from './api';
 import {app} from './app';
@@ -72,7 +71,6 @@ import {app} from './app';
  * @module pageflow/editor
  */
 
-export const app = new Marionette.Application();
 export const editor = new EditorApi();
 
 export const startEditor = function(options) {
