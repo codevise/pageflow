@@ -7,6 +7,6 @@ OmniAuth.config.mock_auth[:default] = OmniAuth::AuthHash.new(
   credentials: {
     token: '123456789',
     expires: true,
-    expires_at: 92503680000
+    expires_at: 925_036_800_00
   }
 )

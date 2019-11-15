@@ -1,6 +1,6 @@
-var AuthenticationProvider =  Backbone.Model.extend({
+var AuthenticationProvider =  pageflow.Object.extend({
   authenticate: function (parent, provider) {
-    this.authenticationPopup("/auth/"+provider,800, 600);
+    this.authenticationPopup('/auth/'+provider,800, 600);
     this.authParent = parent;
   },
   authenticationPopup: function (linkUrl, width, height) {

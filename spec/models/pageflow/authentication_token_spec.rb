@@ -1,7 +1,6 @@
 require 'spec_helper'
 require 'symmetric_encryption/core'
 
-
 module Pageflow
   describe AuthenticationToken do
     describe 'attributes' do

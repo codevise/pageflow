@@ -6,7 +6,7 @@ module Pageflow
       routes { Engine.routes }
       render_views
 
-      before do 
+      before do
         request.env['devise.mapping'] = Devise.mappings[:user]
         request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:default]
         request.env['omniauth.params'] = {
@@ -14,11 +14,10 @@ module Pageflow
         }
       end
       describe 'auth_callback' do
-
-        it 'should ignore unauthenticated requests'
+        it 'should ignore unauthenticated requests' do
           old_token_count = AuthenticationToken.all.count
-          post :auth_callback, params: {provider: :default}
-          expect(response.status).to eq(401)
+          get :auth_callback, params: {provider: :default}
+          expect(response.status).to eq(302) # because of redirect
           expect(AuthenticationToken.all.count).to eq(old_token_count)
         end
 

@@ -66,7 +66,7 @@ module Pageflow
         if auth_hash['credentials']['expires']
           auth_hash['credentials']['expires_at']
         else
-          92503680000 # far far future
+          925_036_800_00 # far far future
         end
       end
     end
