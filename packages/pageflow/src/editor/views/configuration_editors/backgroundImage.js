@@ -1,4 +1,10 @@
-pageflow.ConfigurationEditorView.register('background_image', {
+import {ConfigurationEditorView} from '$pageflow/ui';
+
+import {FileInputView} from '../inputs/FileInputView';
+
+import {state} from '$state';
+
+ConfigurationEditorView.register('background_image', {
   configure: function() {
     this.tab('general', function() {
       this.group('general', {supportsTextPositionCenter: true});
@@ -7,8 +13,8 @@ pageflow.ConfigurationEditorView.register('background_image', {
     this.tab('files', function() {
       this.group('background');
 
-      this.input('thumbnail_image_id', pageflow.FileInputView, {
-        collection: pageflow.imageFiles,
+      this.input('thumbnail_image_id', FileInputView, {
+        collection: state.imageFiles,
         positioning: false
       });
     });

@@ -1,4 +1,17 @@
-pageflow.EditorView = Backbone.View.extend({
+import $ from 'jquery';
+import Backbone from 'backbone';
+import I18n from 'i18n-js';
+import _ from 'underscore';
+
+import {app} from '../app';
+
+import {HelpView} from './HelpView';
+import {LockedView} from './LockedView';
+import {UploaderView} from './UploaderView';
+
+import {state} from '$state';
+
+export const EditorView = Backbone.View.extend({
   scrollNavigationKeys: _.values({
     pageUp: 33,
     pageDown: 34,
@@ -27,7 +40,7 @@ pageflow.EditorView = Backbone.View.extend({
 
   initialize: function() {
     $(window).on('beforeunload', function(event) {
-      if (pageflow.entry.get('uploading_files_count') > 0)  {
+      if (state.entry.get('uploading_files_count') > 0)  {
         return I18n.t('pageflow.editor.views.editor_views.files_pending_warning');
       }
     });
@@ -43,17 +56,17 @@ pageflow.EditorView = Backbone.View.extend({
       fxName: 'none',
 
       onresize: function() {
-        pageflow.app.trigger('resize');
+        app.trigger('resize');
       }
     });
 
-    new pageflow.UploaderView().render();
+    new UploaderView().render();
 
-    this.$el.append(new pageflow.LockedView({
-      model: pageflow.editLock
+    this.$el.append(new LockedView({
+      model: state.editLock
     }).render().el);
 
-    this.$el.append(new pageflow.HelpView().render().el);
+    this.$el.append(new HelpView().render().el);
   },
 
   preventScrollingPreviewWhileFocusInSidebar: function(event) {

@@ -1,5 +1,16 @@
-pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/publish_entry',
+import $ from 'jquery';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {BackButtonDecoratorView} from './BackButtonDecoratorView';
+import {EntryPublicationQuotaDecoratorView} from './EntryPublicationQuotaDecoratorView';
+
+import {state} from '$state';
+
+import template from '../../templates/publishEntry.jst';
+
+export const PublishEntryView = Marionette.ItemView.extend({
+  template,
   className: 'publish_entry',
 
   ui: {
@@ -80,7 +91,7 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
       this.ui.publishUntilField.datepicker('setDate', oneYearFromNow());
     }
 
-    this.ui.userNameField.val(pageflow.account.get('name'));
+    this.ui.userNameField.val(state.account.get('name'));
 
     if (this.model.get('password_protected')) {
       this.ui.passwordProtectedCheckBox.prop('checked', true);
@@ -281,11 +292,11 @@ pageflow.PublishEntryView = Backbone.Marionette.ItemView.extend({
   }
 });
 
-pageflow.PublishEntryView.create = function(options) {
-  return new pageflow.BackButtonDecoratorView({
-    view: new pageflow.EntryPublicationQuotaDecoratorView({
+PublishEntryView.create = function(options) {
+  return new BackButtonDecoratorView({
+    view: new EntryPublicationQuotaDecoratorView({
       model: options.entryPublication,
-      view: new pageflow.PublishEntryView(options)
+      view: new PublishEntryView(options)
     })
   });
 };

@@ -1,9 +1,13 @@
-pageflow.HelpImageView = Backbone.Marionette.View.extend({
+import Marionette from 'backbone.marionette';
+
+import {state} from '$state';
+
+export const HelpImageView = Marionette.View.extend({
   tagName: 'img',
   className: 'help_image',
 
   render: function() {
-    this.$el.attr('src', pageflow.editorAssetUrls.help[this.options.imageName]);
+    this.$el.attr('src', state.editorAssetUrls.help[this.options.imageName]);
     return this;
   }
 });

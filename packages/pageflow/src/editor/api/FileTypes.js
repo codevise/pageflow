@@ -1,4 +1,11 @@
-pageflow.FileTypes = pageflow.Object.extend({
+import _ from 'underscore';
+
+import {Object} from '$pageflow/ui';
+
+import {FileTypesCollection} from '../collections/FileTypesCollection';
+import {FileType} from './FileType';
+
+export const FileTypes = Object.extend({
   modifyableProperties: [
     'configurationEditorInputs',
     'configurationUpdaters',
@@ -32,8 +39,8 @@ pageflow.FileTypes = pageflow.Object.extend({
     var clientSideConfigs = this.clientSideConfigs;
     this._setup = true;
 
-    this.collection = new pageflow.
-      FileTypesCollection(_.map(serverSideConfigs, function(serverSideConfig) {
+    this.collection =
+      new FileTypesCollection(_.map(serverSideConfigs, function(serverSideConfig) {
         var clientSideConfig = clientSideConfigs[serverSideConfig.collectionName];
 
         if (!clientSideConfig) {
@@ -47,13 +54,13 @@ pageflow.FileTypes = pageflow.Object.extend({
             this.applyModification(clientSideConfig, modification);
           }, this);
 
-        return new pageflow.FileType(_.extend({}, serverSideConfig, clientSideConfig));
+        return new FileType(_.extend({}, serverSideConfig, clientSideConfig));
       }, this));
     var those = this;
 
     _.map(serverSideConfigs, function(serverSideConfig) {
       var fileType = those.findByCollectionName(serverSideConfig.collectionName);
-      fileType.setNestedFileTypes(new pageflow.FileTypesCollection(
+      fileType.setNestedFileTypes(new FileTypesCollection(
         _.map(serverSideConfig.nestedFileTypes, function(nestedFileType) {
           return those.findByCollectionName(nestedFileType.collectionName);
         })
@@ -92,7 +99,7 @@ _.each(['each',
         'contains',
         'filter'],
        function(method) {
-         pageflow.FileTypes.prototype[method] = function() {
+         FileTypes.prototype[method] = function() {
            if (!this._setup) {
              throw  'File types are not yet set up.';
            }

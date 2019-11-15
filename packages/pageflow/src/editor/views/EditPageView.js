@@ -1,8 +1,19 @@
-pageflow.EditPageView = Backbone.Marionette.Layout.extend({
-  template: 'templates/edit_page',
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {ExtendedSelectInputView} from '$pageflow/ui';
+
+import {app} from '../app';
+
+import {failureIndicatingView} from './mixins/failureIndicatingView';
+
+import template from '../../templates/editPage.jst';
+
+export const EditPageView = Marionette.Layout.extend({
+  template,
   className: 'edit_page',
 
-  mixins: [pageflow.failureIndicatingView],
+  mixins: [failureIndicatingView],
 
   regions: {
     pageTypeContainer: '.page_type',
@@ -19,7 +30,7 @@ pageflow.EditPageView = Backbone.Marionette.Layout.extend({
   },
 
   onRender: function() {
-    this.pageTypeContainer.show(new pageflow.ExtendedSelectInputView({
+    this.pageTypeContainer.show(new ExtendedSelectInputView({
       model: this.model,
       propertyName: 'template',
       collection: this.options.api.pageTypes.pluck('seed'),
@@ -32,7 +43,7 @@ pageflow.EditPageView = Backbone.Marionette.Layout.extend({
 
       helpLinkClicked: function(value) {
         var pageType = this.options.api.pageTypes.findByName(value);
-        pageflow.app.trigger('toggle-help', pageType.seed.help_entry_translation_key);
+        app.trigger('toggle-help', pageType.seed.help_entry_translation_key);
       }
     }));
 

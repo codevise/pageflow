@@ -1,7 +1,23 @@
-pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/edit_entry',
+import $ from 'jquery';
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
 
-  mixins: [pageflow.failureIndicatingView, pageflow.tooltipContainer],
+import {tooltipContainer} from '$pageflow/ui';
+
+import {editor} from '../base';
+
+import {StorylinePickerView} from './StorylinePickerView';
+import {failureIndicatingView} from './mixins/failureIndicatingView';
+
+import {state} from '$state';
+
+import template from '../../templates/editEntry.jst';
+
+export const EditEntryView = Marionette.ItemView.extend({
+  template,
+
+  mixins: [failureIndicatingView, tooltipContainer],
 
   ui: {
     publishButton: 'a.publish',
@@ -12,8 +28,8 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click a.close': function() {
-      $.when(pageflow.editLock.release()).then(function() {
-        window.location = '/admin/entries/' + pageflow.entry.id;
+      $.when(state.editLock.release()).then(function() {
+        window.location = '/admin/entries/' + state.entry.id;
       });
     },
 
@@ -35,7 +51,7 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
     this._addMenuItems();
     this._updatePublishButton();
 
-    this.subview(new pageflow.StorylinePickerView({
+    this.subview(new StorylinePickerView({
       el: this.ui.storylines,
       navigatable: true,
       editable: true,
@@ -46,7 +62,7 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
   },
 
   _updatePublishButton: function() {
-    var disabled = !pageflow.entry.get('publishable');
+    var disabled = !state.entry.get('publishable');
 
     this.ui.publishButton.toggleClass('disabled', disabled);
 
@@ -62,7 +78,7 @@ pageflow.EditEntryView = Backbone.Marionette.ItemView.extend({
   _addMenuItems: function() {
     var view = this;
 
-    _.each(pageflow.editor.mainMenuItems, function(options) {
+    _.each(editor.mainMenuItems, function(options) {
       var item = $('<li><a href="#"></a></li>');
       var link = item.find('a');
 

@@ -1,4 +1,10 @@
-pageflow.orderedCollection = {
+import $ from 'jquery';
+import Backbone from 'backbone';
+
+import {OrderingFailure} from '../../api/Failure';
+import {editor} from '../../base';
+
+export const orderedCollection = {
   initialize: function() {
     if (this.autoConsolidatePositions !== false) {
       this.listenTo(this, 'remove', function() {
@@ -32,7 +38,7 @@ pageflow.orderedCollection = {
       },
 
       error: function(jqXHR,  textStatus, errorThrown) {
-        pageflow.editor.failures.add(new pageflow.OrderingFailure(parentModel, collection));
+        editor.failures.add(new OrderingFailure(parentModel, collection));
       }
     });
   }

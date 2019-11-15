@@ -1,4 +1,6 @@
-pageflow.AudioFile = pageflow.EncodedFile.extend({
+import {EncodedFile} from './EncodedFile';
+
+export const AudioFile = EncodedFile.extend({
   thumbnailPictogram: 'audio',
 
   getSources: function(attribute) {

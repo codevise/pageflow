@@ -1,12 +1,22 @@
-pageflow.FileProcessingStateDisplayView = Backbone.Marionette.View.extend({
+import Marionette from 'backbone.marionette';
+
+import {CollectionView, inputView} from '$pageflow/ui';
+
+import {editor} from '../../base';
+
+import {FileStageItemView} from '../FileStageItemView';
+
+import {state} from '$state';
+
+export const FileProcessingStateDisplayView = Marionette.View.extend({
   className: 'file_processing_state_display',
 
-  mixins: [pageflow.inputView],
+  mixins: [inputView],
 
   initialize: function() {
     if (typeof this.options.collection === 'string') {
-      this.options.collection = pageflow.entry.getFileCollection(
-        pageflow.editor.fileTypes.findByCollectionName(this.options.collection)
+      this.options.collection = state.entry.getFileCollection(
+        editor.fileTypes.findByCollectionName(this.options.collection)
       );
     }
 
@@ -31,10 +41,10 @@ pageflow.FileProcessingStateDisplayView = Backbone.Marionette.View.extend({
     if (this.file) {
       this.listenTo(this.file.unfinishedStages, 'add remove', this._updateClassNames);
 
-      this.fileStagesView = new pageflow.CollectionView({
+      this.fileStagesView = new CollectionView({
         tagName: 'ul',
         collection: this.file.unfinishedStages,
-        itemViewConstructor: pageflow.FileStageItemView,
+        itemViewConstructor: FileStageItemView,
         itemViewOptions: {
           standAlone: true
         }

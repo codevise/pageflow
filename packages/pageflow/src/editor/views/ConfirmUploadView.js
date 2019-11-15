@@ -1,8 +1,19 @@
-pageflow.ConfirmUploadView = Backbone.Marionette.Layout.extend({
-  template: 'templates/confirm_upload',
+import Backbone from 'backbone';
+import Marionette from 'backbone.marionette';
+
+import {app} from '../app';
+
+import {EditFileView} from './EditFileView';
+import {UploadableFilesView} from './UploadableFilesView';
+import {dialogView} from './mixins/dialogView';
+
+import template from '../../templates/confirmUpload.jst';
+
+export const ConfirmUploadView = Marionette.Layout.extend({
+  template,
   className: 'confirm_upload editor dialog',
 
-  mixins: [pageflow.dialogView],
+  mixins: [dialogView],
 
   regions: {
     selectedFileRegion: '.selected_file_region'
@@ -26,7 +37,7 @@ pageflow.ConfirmUploadView = Backbone.Marionette.Layout.extend({
 
   onRender: function() {
     this.options.fileTypes.each(function(fileType) {
-      this.ui.filesPanel.append(this.subview(new pageflow.UploadableFilesView({
+      this.ui.filesPanel.append(this.subview(new UploadableFilesView({
         collection: this.options.files[fileType.collectionName],
         fileType: fileType,
         selection: this.selection
@@ -44,7 +55,7 @@ pageflow.ConfirmUploadView = Backbone.Marionette.Layout.extend({
     var file = this.selection.get('file');
 
     if (file) {
-      this.selectedFileRegion.show(new pageflow.EditFileView({
+      this.selectedFileRegion.show(new EditFileView({
         model: file
       }));
     }
@@ -54,9 +65,9 @@ pageflow.ConfirmUploadView = Backbone.Marionette.Layout.extend({
   }
 });
 
-pageflow.ConfirmUploadView.watch = function(fileUploader, fileTypes, files) {
+ConfirmUploadView.watch = function(fileUploader, fileTypes, files) {
   fileUploader.on('new:batch', function() {
-    pageflow.ConfirmUploadView.open({
+    ConfirmUploadView.open({
       fileUploader: fileUploader,
       fileTypes: fileTypes,
       files: files
@@ -64,6 +75,6 @@ pageflow.ConfirmUploadView.watch = function(fileUploader, fileTypes, files) {
   });
 };
 
-pageflow.ConfirmUploadView.open = function(options) {
-  pageflow.app.dialogRegion.show(new pageflow.ConfirmUploadView(options));
+ConfirmUploadView.open = function(options) {
+  app.dialogRegion.show(new ConfirmUploadView(options));
 };

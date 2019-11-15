@@ -1,4 +1,6 @@
-pageflow.ChapterScaffold = pageflow.Scaffold.extend({
+import {Scaffold} from './Scaffold';
+
+export const ChapterScaffold = Scaffold.extend({
   build: function() {
     this.chapter = this.parent.buildChapter(this.options.chapterAttributes);
     this.page = this.chapter.buildPage();

@@ -1,4 +1,7 @@
-pageflow.ScrollingView = Backbone.Marionette.View.extend({
+import Backbone from 'backbone';
+import Marionette from 'backbone.marionette';
+
+export const ScrollingView = Marionette.View.extend({
 
   events: {
     scroll: function() {

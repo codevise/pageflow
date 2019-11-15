@@ -1,4 +1,6 @@
-pageflow.StorylineOrdering = function(storylines, pages) {
+import _ from 'underscore';
+
+export const StorylineOrdering = function(storylines, pages) {
   var storylinesByParent;
 
   this.watch = function() {

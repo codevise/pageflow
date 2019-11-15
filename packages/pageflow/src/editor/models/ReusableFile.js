@@ -1,10 +1,19 @@
-pageflow.ReusableFile = Backbone.Model.extend({
-  mixins: [pageflow.stageProvider, pageflow.retryable],
+import $ from 'jquery';
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {FileConfiguration} from './FileConfiguration';
+import {NestedFilesCollection} from '../collections/NestedFilesCollection';
+import {retryable} from './mixins/retryable';
+import {stageProvider} from './mixins/stageProvider';
+
+export const ReusableFile = Backbone.Model.extend({
+  mixins: [stageProvider, retryable],
 
   initialize: function(attributes, options) {
     this.options = options || {};
 
-    this.configuration = new pageflow.FileConfiguration(
+    this.configuration = new FileConfiguration(
       this.get('configuration') || {}
     );
 
@@ -62,7 +71,7 @@ pageflow.ReusableFile = Backbone.Model.extend({
     this.nestedFilesCollections = this.nestedFilesCollections || {};
 
     this.nestedFilesCollections[collectionName] = this.nestedFilesCollections[collectionName] ||
-      new pageflow.NestedFilesCollection({
+      new NestedFilesCollection({
         parent: supersetCollection,
         parentFile: this
       });

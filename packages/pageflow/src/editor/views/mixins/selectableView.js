@@ -1,4 +1,4 @@
-pageflow.selectableView = {
+export const selectableView = {
   initialize: function() {
     this.selectionAttribute = this.selectionAttribute || this.model.modelName;
 

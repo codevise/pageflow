@@ -1,5 +1,17 @@
-pageflow.TextTracksView = Backbone.Marionette.Layout.extend({
-  template: 'templates/text_tracks',
+import Backbone from 'backbone';
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {app} from '../app';
+import {editor} from '../base';
+
+import {EditFileView} from './EditFileView';
+import {NestedFilesView} from './NestedFilesView';
+
+import template from '../../templates/textTracks.jst';
+
+export const TextTracksView = Marionette.Layout.extend({
+  template,
   className: 'text_tracks',
 
   regions: {
@@ -22,9 +34,9 @@ pageflow.TextTracksView = Backbone.Marionette.Layout.extend({
   },
 
   onRender: function() {
-    this.nestedFilesView = new pageflow.NestedFilesView({
+    this.nestedFilesView = new NestedFilesView({
       collection: this.model.nestedFiles(this.options.supersetCollection),
-      fileType: pageflow.editor.fileTypes.findByCollectionName('text_track_files'),
+      fileType: editor.fileTypes.findByCollectionName('text_track_files'),
       selection: this.selection,
       model: this.model,
       tableBlankSlateText:
@@ -35,17 +47,17 @@ pageflow.TextTracksView = Backbone.Marionette.Layout.extend({
 
     this.update();
 
-    pageflow.editor.setUploadTargetFile(this.model);
+    editor.setUploadTargetFile(this.model);
   },
 
   onClose: function() {
-    pageflow.editor.setUploadTargetFile(undefined);
+    editor.setUploadTargetFile(undefined);
   },
 
   update: function() {
     var selectedFile = this.selection.get('file');
     if (selectedFile) {
-      this.selectedFileRegion.show(new pageflow.EditFileView({
+      this.selectedFileRegion.show(new EditFileView({
         model: selectedFile,
         attributeTranslationKeyPrefixes: [
           'pageflow.editor.nested_files.text_track_files'
@@ -60,6 +72,6 @@ pageflow.TextTracksView = Backbone.Marionette.Layout.extend({
   },
 
   upload: function() {
-    pageflow.app.trigger('request-upload');
+    app.trigger('request-upload');
   }
 });

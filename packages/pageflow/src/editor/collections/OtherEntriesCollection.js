@@ -1,5 +1,12 @@
-pageflow.OtherEntriesCollection = Backbone.Collection.extend({
-  model: pageflow.OtherEntry,
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {OtherEntry} from '../models/OtherEntry';
+
+import {state} from '$state';
+
+export const OtherEntriesCollection = Backbone.Collection.extend({
+  model: OtherEntry,
   url: '/editor/entries',
 
   initialize: function(models, options) {
@@ -17,6 +24,6 @@ pageflow.OtherEntriesCollection = Backbone.Collection.extend({
   },
 
   getExcludeEntry: function() {
-    return this.excludeEntry || pageflow.entry;
+    return this.excludeEntry || state.entry;
   }
 });

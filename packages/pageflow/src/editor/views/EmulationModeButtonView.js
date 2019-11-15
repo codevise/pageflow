@@ -1,5 +1,9 @@
-pageflow.EmulationModeButtonView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/emulation_mode_button',
+import Marionette from 'backbone.marionette';
+
+import template from '../../templates/emulationModeButton.jst';
+
+export const EmulationModeButtonView = Marionette.ItemView.extend({
+  template,
   className: 'emulation_mode_button',
 
   ui: {

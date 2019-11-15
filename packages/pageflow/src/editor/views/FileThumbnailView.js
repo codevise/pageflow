@@ -1,6 +1,10 @@
-pageflow.FileThumbnailView = Backbone.Marionette.ItemView.extend({
+import Marionette from 'backbone.marionette';
+
+import template from '../../templates/fileThumbnail.jst';
+
+export const FileThumbnailView = Marionette.ItemView.extend({
   className: 'file_thumbnail',
-  template: 'templates/file_thumbnail',
+  template,
 
   modelEvents: {
     'change:state': 'update'

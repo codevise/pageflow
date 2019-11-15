@@ -1,7 +1,25 @@
-pageflow.app.addInitializer(function(options) {
+import $ from 'jquery';
+import I18n from 'i18n-js';
+
+import {IconTableCellView, SelectInputView, TextInputView, TextTableCellView} from '$pageflow/ui';
+
+import {AudioFile} from '../models/AudioFile';
+import {ImageFile} from '../models/ImageFile';
+import {TextTrackFile} from '../models/TextTrackFile';
+import {VideoFile} from '../models/VideoFile';
+import {app} from '../app';
+import {editor} from '../base';
+
+import {TextFileMetaDataItemValueView} from '../views/TextFileMetaDataItemValueView';
+import {TextTracksFileMetaDataItemValueView} from '../views/TextTracksFileMetaDataItemValueView';
+import {TextTracksView} from '../views/TextTracksView';
+
+import {state} from '$state';
+
+app.addInitializer(function(options) {
   var textTracksMetaDataAttribute = {
     name: 'text_tracks',
-    valueView: pageflow.TextTracksFileMetaDataItemValueView,
+    valueView: TextTracksFileMetaDataItemValueView,
     valueViewOptions: {
       settingsDialogTabLink: 'text_tracks',
     }
@@ -9,25 +27,25 @@ pageflow.app.addInitializer(function(options) {
 
   var textTracksSettingsDialogTab = {
     name: 'text_tracks',
-    view: pageflow.TextTracksView,
+    view: TextTracksView,
     viewOptions: {
       supersetCollection: function() {
-        return pageflow.textTrackFiles;
+        return state.textTrackFiles;
       }
     }
   };
 
   var altMetaDataAttribute = {
     name: 'alt',
-    valueView: pageflow.TextFileMetaDataItemValueView,
+    valueView: TextFileMetaDataItemValueView,
     valueViewOptions: {
       fromConfiguration: true,
       settingsDialogTabLink: 'general'
     }
   };
 
-  pageflow.editor.fileTypes.register('image_files', {
-    model: pageflow.ImageFile,
+  editor.fileTypes.register('image_files', {
+    model: ImageFile,
     metaDataAttributes: [
       'dimensions',
       altMetaDataAttribute
@@ -36,13 +54,13 @@ pageflow.app.addInitializer(function(options) {
     configurationEditorInputs: [
       {
         name: 'alt',
-        inputView: pageflow.TextInputView
+        inputView: TextInputView
       }
     ]
   });
 
-  pageflow.editor.fileTypes.register('video_files', {
-    model: pageflow.VideoFile,
+  editor.fileTypes.register('video_files', {
+    model: VideoFile,
     metaDataAttributes: [
       'format',
       'dimensions',
@@ -54,7 +72,7 @@ pageflow.app.addInitializer(function(options) {
     configurationEditorInputs: [
       {
         name: 'alt',
-        inputView: pageflow.TextInputView
+        inputView: TextInputView
       }
     ],
     settingsDialogTabs: [
@@ -62,8 +80,8 @@ pageflow.app.addInitializer(function(options) {
     ]
   });
 
-  pageflow.editor.fileTypes.register('audio_files', {
-    model: pageflow.AudioFile,
+  editor.fileTypes.register('audio_files', {
+    model: AudioFile,
     metaDataAttributes: [
       'format',
       'duration',
@@ -74,7 +92,7 @@ pageflow.app.addInitializer(function(options) {
     configurationEditorInputs: [
       {
         name: 'alt',
-        inputView: pageflow.TextInputView
+        inputView: TextInputView
       }
     ],
     settingsDialogTabs: [
@@ -82,8 +100,8 @@ pageflow.app.addInitializer(function(options) {
     ]
   });
 
-  pageflow.editor.fileTypes.register('text_track_files', {
-    model: pageflow.TextTrackFile,
+  editor.fileTypes.register('text_track_files', {
+    model: TextTrackFile,
     matchUpload: function(upload) {
       return upload.name.match(/\.vtt$/) ||
         upload.name.match(/\.srt$/);
@@ -92,26 +110,26 @@ pageflow.app.addInitializer(function(options) {
     configurationEditorInputs: [
       {
         name: 'label',
-        inputView: pageflow.TextInputView,
+        inputView: TextInputView,
         inputViewOptions: {
           placeholder: function(configuration) {
             var textTrackFile = configuration.parent;
             return textTrackFile.inferredLabel();
           },
-          placeholderBinding: pageflow.TextTrackFile.displayLabelBinding
+          placeholderBinding: TextTrackFile.displayLabelBinding
         }
       },
       {
         name: 'kind',
-        inputView: pageflow.SelectInputView,
+        inputView: SelectInputView,
         inputViewOptions: {
-          values: pageflow.config.availableTextTrackKinds,
+          values: state.config.availableTextTrackKinds,
           translationKeyPrefix: 'pageflow.config.text_track_kind'
         }
       },
       {
         name: 'srclang',
-        inputView: pageflow.TextInputView,
+        inputView: TextInputView,
         inputViewOptions: {
           required: true
         }
@@ -120,22 +138,22 @@ pageflow.app.addInitializer(function(options) {
     nestedFileTableColumns: [
       {
         name: 'label',
-        cellView: pageflow.TextTableCellView,
+        cellView: TextTableCellView,
         value: function(textTrackFile) {
           return textTrackFile.displayLabel();
         },
-        contentBinding: pageflow.TextTrackFile.displayLabelBinding
+        contentBinding: TextTrackFile.displayLabelBinding
       },
       {
         name: 'srclang',
-        cellView: pageflow.TextTableCellView,
+        cellView: TextTableCellView,
         default: I18n.t('pageflow.editor.text_track_files.srclang_missing')
       },
       {
         name: 'kind',
-        cellView: pageflow.IconTableCellView,
+        cellView: IconTableCellView,
         cellViewOptions: {
-          icons: pageflow.config.availableTextTrackKinds
+          icons: state.config.availableTextTrackKinds
         }
       },
     ],
@@ -147,5 +165,5 @@ pageflow.app.addInitializer(function(options) {
     }
   });
 
-  pageflow.editor.fileTypes.setup(options.config.fileTypes);
+  editor.fileTypes.setup(options.config.fileTypes);
 });

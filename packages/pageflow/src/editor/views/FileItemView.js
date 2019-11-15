@@ -1,8 +1,24 @@
-pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
-  tagName: 'li',
-  template: 'templates/file_item',
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
 
-  mixins: [pageflow.loadable],
+import {CollectionView} from '$pageflow/ui';
+
+import {editor} from '../base';
+
+import {FileMetaDataItemView} from './FileMetaDataItemView';
+import {FileSettingsDialogView} from './FileSettingsDialogView';
+import {FileStageItemView} from './FileStageItemView';
+import {FileThumbnailView} from './FileThumbnailView';
+import {TextFileMetaDataItemValueView} from './TextFileMetaDataItemValueView';
+import {loadable} from './mixins/loadable';
+
+import template from '../../templates/fileItem.jst';
+
+export const FileItemView = Marionette.ItemView.extend({
+  tagName: 'li',
+  template,
+
+  mixins: [loadable],
 
   ui: {
     fileName: '.file_name',
@@ -27,7 +43,7 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
       var result = this.options.selectionHandler.call(this.model);
 
       if (result !== false) {
-        pageflow.editor.navigate(this.options.selectionHandler.getReferer(),
+        editor.navigate(this.options.selectionHandler.getReferer(),
                                  {trigger: true});
       }
 
@@ -35,7 +51,7 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
     },
 
     'click .settings': function() {
-      pageflow.FileSettingsDialogView.open({
+      FileSettingsDialogView.open({
         model: this.model
       });
     },
@@ -58,15 +74,15 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
   onRender: function() {
     this.update();
 
-    this.subview(new pageflow.FileThumbnailView({
+    this.subview(new FileThumbnailView({
       el: this.ui.thumbnail,
       model: this.model
     }));
 
-    this.subview(new pageflow.CollectionView({
+    this.subview(new CollectionView({
       el: this.ui.stageItems,
       collection: this.model.stages,
-      itemViewConstructor: pageflow.FileStageItemView
+      itemViewConstructor: FileStageItemView
     }));
 
     _.each(this.metaDataViews(), function(view) {
@@ -103,11 +119,11 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
       if (typeof options === 'string') {
         options = {
           name: options,
-          valueView: pageflow.TextFileMetaDataItemValueView
+          valueView: TextFileMetaDataItemValueView
         };
       }
 
-      return new pageflow.FileMetaDataItemView(_.extend({
+      return new FileMetaDataItemView(_.extend({
         model: model
       }, options));
     });
@@ -133,7 +149,7 @@ pageflow.FileItemView = Backbone.Marionette.ItemView.extend({
   },
 
   confirm: function() {
-    pageflow.editor.navigate('/confirmable_files?type=' + this.model.modelName + '&id=' + this.model.id, {trigger: true});
+    editor.navigate('/confirmable_files?type=' + this.model.modelName + '&id=' + this.model.id, {trigger: true});
   },
 
   retry: function() {

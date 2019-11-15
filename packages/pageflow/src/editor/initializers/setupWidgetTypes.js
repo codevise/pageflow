@@ -1,7 +1,10 @@
-pageflow.app.addInitializer(function(options) {
-  pageflow.editor.widgetTypes.registerRole('navigation', {
+import {app} from '../app';
+import {editor} from '../base';
+
+app.addInitializer(function(options) {
+  editor.widgetTypes.registerRole('navigation', {
     isOptional: true
   });
 
-  pageflow.editor.widgetTypes.setup(options.widget_types);
+  editor.widgetTypes.setup(options.widget_types);
 });

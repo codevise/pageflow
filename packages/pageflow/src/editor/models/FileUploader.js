@@ -1,4 +1,12 @@
-pageflow.FileUploader = pageflow.Object.extend({
+import $ from 'jquery';
+import _ from 'underscore';
+
+import {Object} from '$pageflow/ui';
+
+import {InvalidNestedTypeError, NestedTypeError} from '../api/Errors';
+import {editor} from '../base';
+
+export const FileUploader = Object.extend({
   initialize: function(options) {
     this.fileTypes = options.fileTypes;
     this.entry = options.entry;
@@ -8,7 +16,7 @@ pageflow.FileUploader = pageflow.Object.extend({
 
   add: function(upload, options) {
     options = options || {};
-    var editor = options.editor || pageflow.editor;
+    var editor = options.editor || editor;
     var fileType = this.fileTypes.findByUpload(upload);
     var file = new fileType.model({
       state: 'uploadable',
@@ -24,14 +32,14 @@ pageflow.FileUploader = pageflow.Object.extend({
     if (setTargetFile){
       if (fileType.topLevelType ||
           !setTargetFile.fileType().nestedFileTypes.contains(fileType)) {
-        throw(new pageflow.InvalidNestedTypeError(upload, {editor: editor,
+        throw(new InvalidNestedTypeError(upload, {editor: editor,
                                                            fileType: fileType}));
       }
       file.set({parent_file_id: setTargetFile.get('id'),
                 parent_file_model_type: setTargetFile.fileType().typeName});
     }
     else if (!fileType.topLevelType) {
-      throw(new pageflow.NestedTypeError(upload, {fileType: fileType,
+      throw(new NestedTypeError(upload, {fileType: fileType,
                                                   fileTypes: this.fileTypes}));
     }
 

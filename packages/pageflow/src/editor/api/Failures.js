@@ -1,19 +1,26 @@
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {Object} from '$pageflow/ui';
+
+import {SavingFailure} from './Failure';
+
 /**
  * API to allow access to failure UI and recovery.
  *
  * Can watch collections for errors saving models and display the error
  * allong with a retry button.
  *
- *     pageflow.editor.failures.watch(collection);
+ *     editor.failures.watch(collection);
  *
- * It's possible to add failures to the UI by adding instances of subclasses of pageflow.Failure:
+ * It's possible to add failures to the UI by adding instances of subclasses of Failure:
  *
- *     pageflow.editor.failures.add(new pageflow.OrderingFailure(model, collection));
+ *     editor.failures.add(new OrderingFailure(model, collection));
  *
  * @alias pageflow.Failures
  * @memberof module:pageflow/editor
  */
-pageflow.FailuresAPI = pageflow.Object.extend(
+export const FailuresAPI = Object.extend(
 /** @lends module:pageflow/editor.pageflow.Failures */{
   initialize: function() {
     this.failures = {};
@@ -22,15 +29,15 @@ pageflow.FailuresAPI = pageflow.Object.extend(
 
   /**
    * Listen to the `error` and `sync` events of a collection and
-   * create {@link module:pageflow/editor.pageflow.SavingFailure
-   * pageflow.SavingFailure} objects.
+   * create {@link module:pageflow/editor.SavingFailure
+   * SavingFailure} objects.
    */
   watch: function(collection) {
     this.listenTo(collection, 'sync', this.remove);
 
     this.listenTo(collection, 'error', function(model) {
       if (!model.isNew()) {
-        this.add(new pageflow.SavingFailure(model));
+        this.add(new SavingFailure(model));
       }
     });
   },
@@ -49,7 +56,7 @@ pageflow.FailuresAPI = pageflow.Object.extend(
   /**
    * Record that a failure occured.
    *
-   * @param {pageflow.Failure} failure
+   * @param {Failure} failure
    * The failure object to add.
    */
   add: function(failure) {
@@ -67,4 +74,4 @@ pageflow.FailuresAPI = pageflow.Object.extend(
   }
 });
 
-_.extend(pageflow.FailuresAPI.prototype, Backbone.Events);
+_.extend(FailuresAPI.prototype, Backbone.Events);

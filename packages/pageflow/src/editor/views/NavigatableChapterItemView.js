@@ -1,5 +1,9 @@
-pageflow.NavigatableChapterItemView = pageflow.ChapterItemView.extend({
-  mixins: [pageflow.loadable, pageflow.failureIndicatingView],
+import {ChapterItemView} from './ChapterItemView';
+import {failureIndicatingView} from './mixins/failureIndicatingView';
+import {loadable} from './mixins/loadable';
+
+export const NavigatableChapterItemView = ChapterItemView.extend({
+  mixins: [loadable, failureIndicatingView],
 
   events: {
     'click a.add_page': function() {

@@ -1,5 +1,7 @@
+import {Object} from '$pageflow/ui';
+
 /**
- * pageflow.Failure and subclasses are used in the failures api.
+ * Failure and subclasses are used in the failures api.
  *
  * Subclasses that represent failures that are can not be retried should
  * override `catRetry` with false.
@@ -8,7 +10,7 @@
  * @class
  * @memberof module:pageflow/editor
  */
-pageflow.Failure = pageflow.Object.extend({
+export const Failure = Object.extend({
   canRetry: true,
   type: 'Failure',
 
@@ -38,22 +40,22 @@ pageflow.Failure = pageflow.Object.extend({
  * @class
  * @memberof module:pageflow/editor
  */
-pageflow.SavingFailure = pageflow.Failure.extend({
+export const SavingFailure = Failure.extend({
   type: 'SavingFailure'
 });
 
 /**
  *  OrderingFailure represent a unsuccessful attempt to save
- *  the ordering of a pageflow.orderedCollection.
+ *  the ordering of a orderedCollection.
  *
  * @class
  * @memberof module:pageflow/editor
  */
-pageflow.OrderingFailure = pageflow.Failure.extend({
+export const OrderingFailure = Failure.extend({
   type: 'OrderingFailure',
 
   initialize: function(model, collection) {
-    pageflow.Failure.prototype.initialize.call(this, model);
+    Failure.prototype.initialize.call(this, model);
     this.collection = collection;
   },
 

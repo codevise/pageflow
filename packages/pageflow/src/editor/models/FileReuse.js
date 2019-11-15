@@ -1,4 +1,6 @@
-pageflow.FileReuse = Backbone.Model.extend({
+import Backbone from 'backbone';
+
+export const FileReuse = Backbone.Model.extend({
   modelName: 'file_reuse',
   paramRoot: 'file_reuse',
 
@@ -12,8 +14,8 @@ pageflow.FileReuse = Backbone.Model.extend({
   }
 });
 
-pageflow.FileReuse.submit = function(otherEntry, file, options) {
-  new pageflow.FileReuse({
+FileReuse.submit = function(otherEntry, file, options) {
+  new FileReuse({
     other_entry_id: otherEntry.get('id'),
     file_id: file.get('id')
   }, {

@@ -1,4 +1,8 @@
-pageflow.EntryPublication = Backbone.Model.extend({
+import Backbone from 'backbone';
+
+import {state} from '$state';
+
+export const EntryPublication = Backbone.Model.extend({
   paramRoot: 'entry_publication',
 
   quota: function() {
@@ -25,7 +29,7 @@ pageflow.EntryPublication = Backbone.Model.extend({
 
     return this.save(attributes, {
       success: function(model) {
-        pageflow.entry.parse(model.get('entry'));
+        state.entry.parse(model.get('entry'));
       },
 
       error: function(model, xhr) {
@@ -35,6 +39,6 @@ pageflow.EntryPublication = Backbone.Model.extend({
   },
 
   url: function() {
-    return '/editor/entries/' + pageflow.entry.get('id') + '/entry_publications';
+    return '/editor/entries/' + state.entry.get('id') + '/entry_publications';
   }
 });

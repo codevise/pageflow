@@ -1,4 +1,4 @@
-pageflow.dialogView = {
+export const dialogView = {
   events: {
     'click .close': function() {
       this.close();

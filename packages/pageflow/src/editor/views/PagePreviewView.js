@@ -1,4 +1,9 @@
-pageflow.PagePreviewView = Backbone.Marionette.View.extend({
+import $ from 'jquery';
+import ChildViewContainer from 'backbone.babysitter';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+export const PagePreviewView = Marionette.View.extend({
   tagName: 'section',
   className: 'page',
 
@@ -94,7 +99,7 @@ pageflow.PagePreviewView = Backbone.Marionette.View.extend({
       view.embeddedViews.call('close');
     }
 
-    view.embeddedViews = new Backbone.ChildViewContainer();
+    view.embeddedViews = new ChildViewContainer();
 
     _.each(view.embeddedViewDefinitions(), function(item, selector) {
       view.$(selector).each(function() {

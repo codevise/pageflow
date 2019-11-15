@@ -1,10 +1,16 @@
+import Marionette from 'backbone.marionette';
+
+import {selectableView} from './mixins/selectableView';
+
+import template from '../../pageflow/editor/templates/themeItem.jst';
+
 /** @api private */
-pageflow.ThemeItemView = Backbone.Marionette.ItemView.extend({
+export const ThemeItemView = Marionette.ItemView.extend({
   tagName: 'li',
-  template: 'pageflow/editor/templates/theme_item',
+  template,
   className: 'theme_item',
 
-  mixins: [pageflow.selectableView],
+  mixins: [selectableView],
 
   selectionAttribute: 'theme',
 

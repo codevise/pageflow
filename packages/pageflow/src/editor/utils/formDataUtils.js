@@ -1,4 +1,7 @@
-pageflow.formDataUtils = {
+import $ from 'jquery';
+import _ from 'underscore';
+
+export const formDataUtils = {
   fromModel: function(model) {
     var object = {};
     object[model.modelName] = model.toJSON();

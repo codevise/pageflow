@@ -1,4 +1,6 @@
-pageflow.NestedFilesCollection = pageflow.SubsetCollection.extend({
+import {SubsetCollection} from './SubsetCollection';
+
+export const NestedFilesCollection = SubsetCollection.extend({
   constructor: function(options) {
     var parent = options.parent;
     var parentFile = options.parentFile;
@@ -6,7 +8,7 @@ pageflow.NestedFilesCollection = pageflow.SubsetCollection.extend({
     var modelType = parentFile.fileType().typeName;
     var nestedFilesOrder = parent.fileType.nestedFilesOrder;
 
-    pageflow.SubsetCollection.prototype.constructor.call(this, {
+    SubsetCollection.prototype.constructor.call(this, {
       parent: parent,
       parentModel: parentFile,
 

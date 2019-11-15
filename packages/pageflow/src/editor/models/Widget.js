@@ -1,11 +1,15 @@
-pageflow.Widget = Backbone.Model.extend({
+import Backbone from 'backbone';
+
+import {WidgetConfiguration} from './WidgetConfiguration';
+
+export const Widget = Backbone.Model.extend({
   paramRoot: 'widget',
   i18nKey: 'pageflow/widget',
 
   initialize: function(attributes, options) {
     this.widgetTypes = options.widgetTypes;
 
-    this.configuration = new pageflow.WidgetConfiguration(
+    this.configuration = new WidgetConfiguration(
       this.get('configuration') || {}
     );
     this.configuration.parent = this;

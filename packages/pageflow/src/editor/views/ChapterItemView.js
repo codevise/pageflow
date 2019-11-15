@@ -1,6 +1,15 @@
-pageflow.ChapterItemView = Backbone.Marionette.ItemView.extend({
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {CollectionView, SortableCollectionView} from '$pageflow/ui';
+
+import {NavigatablePageItemView} from './NavigatablePageItemView';
+
+import template from '../../templates/chapterItem.jst';
+
+export const ChapterItemView = Marionette.ItemView.extend({
   tagName: 'li',
-  template: 'templates/chapter_item',
+  template,
 
   ui: {
     title: '> a > .title',
@@ -13,12 +22,12 @@ pageflow.ChapterItemView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    var collectionView = this.options.sortable ? pageflow.SortableCollectionView : pageflow.CollectionView;
+    var collectionView = this.options.sortable ? SortableCollectionView : CollectionView;
 
     this.subview(new collectionView({
       el: this.ui.pages,
       collection: this.model.pages,
-      itemViewConstructor: this.options.pageItemView || pageflow.NavigatablePageItemView,
+      itemViewConstructor: this.options.pageItemView || NavigatablePageItemView,
       itemViewOptions: this.options.pageItemViewOptions,
       connectWith: 'ul.pages'
     }));

@@ -1,4 +1,10 @@
-pageflow.TextTrackFile = pageflow.UploadableFile.extend({
+import I18n from 'i18n-js';
+import _ from 'underscore';
+
+import {ReusableFile} from './ReusableFile';
+import {UploadableFile} from './UploadableFile';
+
+export const TextTrackFile = UploadableFile.extend({
   defaults: {
     configuration: {
       kind: 'captions'
@@ -16,7 +22,7 @@ pageflow.TextTrackFile = pageflow.UploadableFile.extend({
   readyState: 'processed',
 
   initialize: function(attributes, options) {
-    pageflow.ReusableFile.prototype.initialize.apply(this, arguments);
+    ReusableFile.prototype.initialize.apply(this, arguments);
 
     if (this.isNew() && !this.configuration.get('srclang')) {
       this.configuration.set('srclang', this.extractLanguageCodeFromFilename());
@@ -45,4 +51,4 @@ pageflow.TextTrackFile = pageflow.UploadableFile.extend({
   }
 });
 
-pageflow.TextTrackFile.displayLabelBinding = 'srclang';
+TextTrackFile.displayLabelBinding = 'srclang';

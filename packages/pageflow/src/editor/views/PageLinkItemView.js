@@ -1,5 +1,14 @@
-pageflow.PageLinkItemView = Backbone.Marionette.ItemView.extend({
-  template: 'pageflow/editor/templates/page_link_item',
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {editor} from '../base';
+
+import {PageThumbnailView} from './PageThumbnailView';
+
+import template from '../../pageflow/editor/templates/pageLinkItem.jst';
+
+export const PageLinkItemView = Marionette.ItemView.extend({
+  template,
 
   tagName: 'li',
   className: 'page_link',
@@ -14,7 +23,7 @@ pageflow.PageLinkItemView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click .edit': function() {
-      pageflow.editor.navigate(this.model.editPath(), {trigger: true});
+      editor.navigate(this.model.editPath(), {trigger: true});
       return false;
     },
 
@@ -37,7 +46,7 @@ pageflow.PageLinkItemView = Backbone.Marionette.ItemView.extend({
     var page = this.model.targetPage();
 
     if (page) {
-      this.subview(new pageflow.PageThumbnailView({
+      this.subview(new PageThumbnailView({
         el: this.ui.thumbnail,
         model: page
       }));

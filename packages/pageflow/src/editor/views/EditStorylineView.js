@@ -1,8 +1,20 @@
-pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
-  template: 'templates/edit_storyline',
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {CheckBoxInputView, ConfigurationEditorView, SelectInputView, TextInputView, tooltipContainer} from '$pageflow/ui';
+
+import {PageLinkInputView} from './inputs/PageLinkInputView';
+import {failureIndicatingView} from './mixins/failureIndicatingView';
+
+import {state} from '$state';
+
+import template from '../../templates/editStoryline.jst';
+
+export const EditStorylineView = Marionette.Layout.extend({
+  template,
   className: 'edit_storyline',
 
-  mixins: [pageflow.failureIndicatingView, pageflow.tooltipContainer],
+  mixins: [failureIndicatingView, tooltipContainer],
 
   regions: {
     formContainer: '.form_container'
@@ -18,7 +30,7 @@ pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
   },
 
   onRender: function() {
-    var configurationEditor = new pageflow.ConfigurationEditorView({
+    var configurationEditor = new ConfigurationEditorView({
       model: this.model.configuration,
       attributeTranslationKeyPrefixes: ['pageflow.storyline_attributes']
     });
@@ -44,33 +56,33 @@ pageflow.EditStorylineView = Backbone.Marionette.Layout.extend({
 
   configure: function(configurationEditor, storylineChildPages) {
     configurationEditor.tab('general', function() {
-      this.input('title', pageflow.TextInputView);
-      this.input('main', pageflow.CheckBoxInputView, {
+      this.input('title', TextInputView);
+      this.input('main', CheckBoxInputView, {
         disabled: true,
         visibleBinding: 'main'
       });
       this.group('page_transitions', {
         includeBlank: true
       });
-      this.input('main', pageflow.CheckBoxInputView, {
+      this.input('main', CheckBoxInputView, {
         visibleBinding: 'main',
         visible: function(isMain) {
           return !isMain;
         }
       });
-      this.input('parent_page_perma_id', pageflow.PageLinkInputView, {
+      this.input('parent_page_perma_id', PageLinkInputView, {
         visibleBinding: 'main',
         visible: function(isMain) {
-          return !isMain && pageflow.storylines.length > 1;
+          return !isMain && state.storylines.length > 1;
         },
         isAllowed: function(page) {
           return !storylineChildPages.contain(page);
         }
       });
-      this.input('scroll_successor_id', pageflow.PageLinkInputView);
+      this.input('scroll_successor_id', PageLinkInputView);
 
       if (pageflow.features.isEnabled('chapter_hierachy')) {
-        this.input('navigation_bar_mode', pageflow.SelectInputView, {
+        this.input('navigation_bar_mode', SelectInputView, {
           values: pageflow.ChapterFilter.strategies
         });
       }

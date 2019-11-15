@@ -1,8 +1,20 @@
-pageflow.PageSelectionView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/page_selection',
+import $ from 'jquery';
+import Marionette from 'backbone.marionette';
+
+import {app} from '../app';
+
+import {StorylinePickerView} from './StorylinePickerView';
+import {dialogView} from './mixins/dialogView';
+
+import {state} from '$state';
+
+import template from '../../templates/pageSelection.jst';
+
+export const PageSelectionView = Marionette.ItemView.extend({
+  template,
   className: 'page_selection dialog',
 
-  mixins: [pageflow.dialogView],
+  mixins: [dialogView],
 
   ui: {
     storylines: '.storyline_picker',
@@ -11,7 +23,7 @@ pageflow.PageSelectionView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click ul.pages li': function(event) {
-      this.options.onSelect(pageflow.pages.get($(event.currentTarget).data('id')));
+      this.options.onSelect(state.pages.get($(event.currentTarget).data('id')));
       this.close();
     }
   },
@@ -19,7 +31,7 @@ pageflow.PageSelectionView = Backbone.Marionette.ItemView.extend({
   onRender: function() {
     var options = this.options;
 
-    this.subview(new pageflow.StorylinePickerView({
+    this.subview(new StorylinePickerView({
       el: this.ui.storylines,
       pageItemViewOptions: {
         isDisabled: function(page) {
@@ -30,10 +42,10 @@ pageflow.PageSelectionView = Backbone.Marionette.ItemView.extend({
   }
 });
 
-pageflow.PageSelectionView.selectPage = function(options) {
+PageSelectionView.selectPage = function(options) {
   return $.Deferred(function(deferred) {
-    var view = new pageflow.PageSelectionView({
-      model: pageflow.entry,
+    var view = new PageSelectionView({
+      model: state.entry,
       onSelect: deferred.resolve,
       isAllowed: options && options.isAllowed
     });
@@ -42,6 +54,6 @@ pageflow.PageSelectionView.selectPage = function(options) {
       deferred.reject();
     });
 
-    pageflow.app.dialogRegion.show(view.render());
+    app.dialogRegion.show(view.render());
   }).promise();
 };

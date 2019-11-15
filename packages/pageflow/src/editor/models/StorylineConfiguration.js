@@ -1,4 +1,6 @@
-pageflow.StorylineConfiguration = pageflow.Configuration.extend({
+import {Configuration} from './Configuration';
+
+export const StorylineConfiguration = Configuration.extend({
   modelName: 'storyline',
   i18nKey: 'pageflow/storyline',
 

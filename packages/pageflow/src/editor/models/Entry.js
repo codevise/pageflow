@@ -1,33 +1,46 @@
-pageflow.Entry = Backbone.Model.extend({
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {EntryConfiguration} from './EntryConfiguration';
+import {FileReuse} from './FileReuse';
+import {StorylineScaffold} from './StorylineScaffold';
+import {editor} from '../base';
+import {failureTracking} from './mixins/failureTracking';
+import {filesCountWatcher} from './mixins/filesCountWatcher';
+import {polling} from './mixins/polling';
+
+import {state} from '$state';
+
+export const Entry = Backbone.Model.extend({
   paramRoot: 'entry',
   urlRoot: '/entries',
   modelName: 'entry',
   i18nKey: 'pageflow/entry',
   collectionName: 'entries',
 
-  mixins: [pageflow.filesCountWatcher,
-           pageflow.polling,
-           pageflow.failureTracking],
+  mixins: [filesCountWatcher,
+           polling,
+           failureTracking],
 
   initialize: function(attributes, options) {
     options = options || {};
 
-    this.configuration = new pageflow.EntryConfiguration(this.get('configuration') || {});
+    this.configuration = new EntryConfiguration(this.get('configuration') || {});
     this.configuration.parent = this;
 
-    this.themes = options.themes || pageflow.themes;
-    this.files = options.files || pageflow.files;
-    this.fileTypes = options.fileTypes || pageflow.editor.fileTypes;
-    this.storylines = options.storylines || pageflow.storylines;
+    this.themes = options.themes || state.themes;
+    this.files = options.files || state.files;
+    this.fileTypes = options.fileTypes || editor.fileTypes;
+    this.storylines = options.storylines || state.storylines;
     this.storylines.parentModel = this;
-    this.chapters = options.chapters || pageflow.chapters;
+    this.chapters = options.chapters || state.chapters;
     this.chapters.parentModel = this;
-    this.pages = pageflow.pages;
+    this.pages = state.pages;
     this.widgets = options.widgets;
 
-    this.imageFiles = pageflow.imageFiles;
-    this.videoFiles = pageflow.videoFiles;
-    this.audioFiles = pageflow.audioFiles;
+    this.imageFiles = state.imageFiles;
+    this.videoFiles = state.videoFiles;
+    this.audioFiles = state.audioFiles;
 
     this.fileTypes.each(function(fileType) {
       this.watchFileCollection(fileType.collectionName, this.getFileCollection(fileType));
@@ -75,7 +88,7 @@ pageflow.Entry = Backbone.Model.extend({
   },
 
   scaffoldStoryline: function(options) {
-    var scaffold = new pageflow.StorylineScaffold(this, options);
+    var scaffold = new StorylineScaffold(this, options);
     scaffold.create();
 
     return scaffold;
@@ -92,7 +105,7 @@ pageflow.Entry = Backbone.Model.extend({
   reuseFile: function(otherEntry, file) {
     var entry = this;
 
-    pageflow.FileReuse.submit(otherEntry, file, {
+    FileReuse.submit(otherEntry, file, {
       entry: entry,
 
       success: function(model, response) {

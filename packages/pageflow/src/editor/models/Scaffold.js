@@ -1,4 +1,8 @@
-pageflow.Scaffold = pageflow.Object.extend({
+import Backbone from 'backbone';
+
+import {Object} from '$pageflow/ui';
+
+export const Scaffold = Object.extend({
   initialize: function(parent, options) {
     this.parent = parent;
     this.options = options || {};

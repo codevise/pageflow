@@ -1,21 +1,31 @@
-pageflow.Page = Backbone.Model.extend({
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {Configuration} from './Configuration';
+import {delayedDestroying} from './mixins/delayedDestroying';
+import {editor} from '../base';
+import {failureTracking} from './mixins/failureTracking';
+
+import template from '../../backgroundImage.jst';
+
+export const Page = Backbone.Model.extend({
   modelName: 'page',
   paramRoot: 'page',
   i18nKey: 'pageflow/page',
 
   defaults: function() {
     return {
-      template: 'background_image',
+      template,
       configuration: {},
       active: false,
       perma_id: ''
     };
   },
 
-  mixins: [pageflow.failureTracking, pageflow.delayedDestroying],
+  mixins: [failureTracking, delayedDestroying],
 
   initialize: function() {
-    this.configuration = new pageflow.Configuration(this.get('configuration') || {});
+    this.configuration = new Configuration(this.get('configuration') || {});
     this.configuration.parent = this.configuration.page = this;
 
     this.listenTo(this.configuration, 'change', function() {
@@ -80,7 +90,7 @@ pageflow.Page = Backbone.Model.extend({
   },
 
   pageType: function() {
-    return pageflow.editor.pageTypes.findByName(this.get('template'));
+    return editor.pageTypes.findByName(this.get('template'));
   },
 
   toJSON: function() {
@@ -103,10 +113,10 @@ function conditionMet(condition, configuration) {
   }
 }
 
-pageflow.Page.linkedPagesLayouts = ['default', 'hero_top_left', 'hero_top_right'];
-pageflow.Page.textPositions = ['left', 'center', 'right'];
-pageflow.Page.textPositionsWithoutCenterOption = ['left', 'right'];
+Page.linkedPagesLayouts = ['default', 'hero_top_left', 'hero_top_right'];
+Page.textPositions = ['left', 'center', 'right'];
+Page.textPositionsWithoutCenterOption = ['left', 'right'];
 
-pageflow.Page.scrollIndicatorModes = ['all', 'only_back', 'only_next', 'non'];
-pageflow.Page.scrollIndicatorOrientations = ['vertical', 'horizontal'];
-pageflow.Page.delayedTextFadeIn = ['no_fade', 'short', 'medium', 'long'];
+Page.scrollIndicatorModes = ['all', 'only_back', 'only_next', 'non'];
+Page.scrollIndicatorOrientations = ['vertical', 'horizontal'];
+Page.delayedTextFadeIn = ['no_fade', 'short', 'medium', 'long'];

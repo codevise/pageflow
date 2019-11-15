@@ -1,4 +1,6 @@
-pageflow.InfoBoxView = Backbone.Marionette.View.extend({
+import Marionette from 'backbone.marionette';
+
+export const InfoBoxView = Marionette.View.extend({
   className: 'info_box',
 
   render: function() {

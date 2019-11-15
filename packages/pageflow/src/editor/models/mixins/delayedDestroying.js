@@ -1,4 +1,6 @@
-pageflow.delayedDestroying = {
+import Backbone from 'backbone';
+
+export const delayedDestroying = {
   initialize: function() {
     this._destroying = false;
   },

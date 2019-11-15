@@ -1,6 +1,10 @@
-pageflow.EntryConfigurationFileSelectionHandler = function(options) {
+import {editor} from '../base';
+
+import {state} from '$state';
+
+export const EntryConfigurationFileSelectionHandler = function(options) {
   this.call = function(file) {
-    pageflow.entry.configuration.setReference(options.attributeName, file);
+    state.entry.configuration.setReference(options.attributeName, file);
   };
 
   this.getReferer = function() {
@@ -8,4 +12,4 @@ pageflow.EntryConfigurationFileSelectionHandler = function(options) {
   };
 };
 
-pageflow.editor.registerFileSelectionHandler('entryConfiguration', pageflow.EntryConfigurationFileSelectionHandler);
+editor.registerFileSelectionHandler('entryConfiguration', EntryConfigurationFileSelectionHandler);

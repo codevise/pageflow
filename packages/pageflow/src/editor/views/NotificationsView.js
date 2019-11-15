@@ -1,7 +1,15 @@
-pageflow.NotificationsView = Backbone.Marionette.ItemView.extend({
+import Marionette from 'backbone.marionette';
+
+import {editor} from '../base';
+
+import {state} from '$state';
+
+import template from '../../templates/notifications.jst';
+
+export const NotificationsView = Marionette.ItemView.extend({
   className: 'notifications',
   tagName: 'ul',
-  template: 'templates/notifications',
+  template,
 
   ui: {
     failedCount: '.failed .count',
@@ -11,28 +19,28 @@ pageflow.NotificationsView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click .retry': function() {
-      pageflow.editor.failures.retry();
+      editor.failures.retry();
     }
   },
 
   onRender: function() {
-    this.listenTo(pageflow.entry, 'change:uploading_files_count', this.notifyUploadCount);
-    this.listenTo(pageflow.entry, 'change:confirmable_files_count', this.notifyConfirmableFilesCount);
+    this.listenTo(state.entry, 'change:uploading_files_count', this.notifyUploadCount);
+    this.listenTo(state.entry, 'change:confirmable_files_count', this.notifyConfirmableFilesCount);
 
-    this.listenTo(pageflow.savingRecords, 'add', this.update);
-    this.listenTo(pageflow.savingRecords, 'remove', this.update);
+    this.listenTo(state.savingRecords, 'add', this.update);
+    this.listenTo(state.savingRecords, 'remove', this.update);
 
-    this.listenTo(pageflow.editor.failures, 'add', this.update);
-    this.listenTo(pageflow.editor.failures, 'remove', this.update);
+    this.listenTo(editor.failures, 'add', this.update);
+    this.listenTo(editor.failures, 'remove', this.update);
 
     this.update();
     this.notifyConfirmableFilesCount();
   },
 
   update: function() {
-    this.$el.toggleClass('failed', !pageflow.editor.failures.isEmpty());
-    this.$el.toggleClass('saving', !pageflow.savingRecords.isEmpty());
-    this.ui.failedCount.text(pageflow.editor.failures.count());
+    this.$el.toggleClass('failed', !editor.failures.isEmpty());
+    this.$el.toggleClass('saving', !state.savingRecords.isEmpty());
+    this.ui.failedCount.text(editor.failures.count());
   },
 
   notifyUploadCount: function(model, uploadCount) {
@@ -41,7 +49,7 @@ pageflow.NotificationsView = Backbone.Marionette.ItemView.extend({
   },
 
   notifyConfirmableFilesCount: function() {
-    var confirmableFilesCount = pageflow.entry.get('confirmable_files_count');
+    var confirmableFilesCount = state.entry.get('confirmable_files_count');
 
     this.$el.toggleClass('has_confirmable_files', confirmableFilesCount > 0);
     this.ui.confirmableFilesCount.text(confirmableFilesCount);

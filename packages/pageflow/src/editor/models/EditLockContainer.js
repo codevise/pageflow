@@ -1,13 +1,21 @@
-pageflow.EditLockContainer = Backbone.Model.extend({
+import $ from 'jquery';
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {EditLock} from './EditLock';
+
+import {state} from '$state';
+
+export const EditLockContainer = Backbone.Model.extend({
   initialize: function() {
-    this.storageKey = 'pageflow.edit_lock.' + pageflow.entry.id;
+    this.storageKey = 'pageflow.edit_lock.' + state.entry.id;
   },
 
   acquire: function(options) {
     options = options || {};
     var container = this;
 
-    var lock = new pageflow.EditLock({
+    var lock = new EditLock({
       id: options.force ? null : sessionStorage[this.storageKey],
       force: options.force
     });
@@ -29,7 +37,7 @@ pageflow.EditLockContainer = Backbone.Model.extend({
     if (!this.pollingInteval) {
       this.pollingInteval = setInterval(_.bind(function() {
         this.acquire({polling: true});
-      }, this), pageflow.config.editLockPollingIntervalInSeconds * 1000);
+      }, this), state.config.editLockPollingIntervalInSeconds * 1000);
     }
   },
 

@@ -1,4 +1,8 @@
-pageflow.UploadableFile = pageflow.ReusableFile.extend({
+import _ from 'underscore';
+
+import {ReusableFile} from './ReusableFile';
+
+export const UploadableFile = ReusableFile.extend({
   stages: function() {
     return [
       {

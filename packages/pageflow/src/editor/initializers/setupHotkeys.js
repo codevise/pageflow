@@ -1,4 +1,9 @@
-pageflow.app.addInitializer(function(options) {
+import $ from 'jquery';
+
+import {app} from '../app';
+import {editor} from '../base';
+
+app.addInitializer(function(options) {
   var KEY_A = 65;
   var KEY_X = 88;
 
@@ -12,7 +17,7 @@ pageflow.app.addInitializer(function(options) {
       }
     }
     else if (event.altKey && event.which === KEY_X) {
-      pageflow.editor.navigate('pages/' + pageflow.slides.currentPage().data('id'), {trigger: true});
+      editor.navigate('pages/' + pageflow.slides.currentPage().data('id'), {trigger: true});
     }
   });
 });

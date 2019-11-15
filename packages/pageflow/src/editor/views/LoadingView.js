@@ -1,5 +1,9 @@
-pageflow.LoadingView = Backbone.Marionette.ItemView.extend({
-  template: 'pageflow/editor/templates/loading',
+import Marionette from 'backbone.marionette';
+
+import template from '../../pageflow/editor/templates/loading.jst';
+
+export const LoadingView = Marionette.ItemView.extend({
+  template,
   className: 'loading',
   tagName: 'li'
 });

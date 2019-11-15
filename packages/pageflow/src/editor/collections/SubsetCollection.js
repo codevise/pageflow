@@ -1,4 +1,7 @@
-pageflow.SubsetCollection = Backbone.Collection.extend({
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+export const SubsetCollection = Backbone.Collection.extend({
   constructor: function(options) {
     var adding = false;
     var sorting = false;

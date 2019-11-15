@@ -1,4 +1,6 @@
-pageflow.filesCountWatcher = {
+import _ from 'underscore';
+
+export const filesCountWatcher = {
   watchFileCollection: function(name, collection) {
     this.watchedFileCollectionNames = this.watchedFileCollectionNames || [];
     this.watchedFileCollectionNames.push(name);

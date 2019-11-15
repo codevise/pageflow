@@ -1,8 +1,12 @@
-pageflow.EncodedFile = pageflow.UploadableFile.extend({
+import {UploadableFile} from './UploadableFile';
+
+import {state} from '$state';
+
+export const EncodedFile = UploadableFile.extend({
   processingStages: function() {
     var stages = [];
 
-    if (pageflow.config.confirmEncodingJobs) {
+    if (state.config.confirmEncodingJobs) {
       stages.push({
         name: 'fetching_meta_data',
         activeStates: ['waiting_for_meta_data', 'fetching_meta_data'],

@@ -1,5 +1,10 @@
-pageflow.WidgetsCollection = Backbone.Collection.extend({
-  model: pageflow.Widget,
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {Widget} from '../models/Widget';
+
+export const WidgetsCollection = Backbone.Collection.extend({
+  model: Widget,
 
   initialize: function() {
     this.listenTo(this, 'change:type_name change:configuration', function() {

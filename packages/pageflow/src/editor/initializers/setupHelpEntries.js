@@ -1,5 +1,10 @@
-pageflow.app.addInitializer(function() {
+import Backbone from 'backbone';
+
+import {app} from '../app';
+import {editor} from '../base';
+
+app.addInitializer(function() {
   Backbone.history.on('route', function() {
-    pageflow.editor.applyDefaultHelpEntry();
+    editor.applyDefaultHelpEntry();
   });
 });

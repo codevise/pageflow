@@ -1,3 +1,7 @@
-pageflow.app.addInitializer(function(options) {
-  pageflow.editorAssetUrls = options.asset_urls;
+import {app} from '../app';
+
+import {state} from '$state';
+
+app.addInitializer(function(options) {
+  state.editorAssetUrls = options.asset_urls;
 });

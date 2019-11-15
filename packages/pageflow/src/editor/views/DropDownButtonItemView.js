@@ -1,6 +1,12 @@
+import Marionette from 'backbone.marionette';
+
+import {DropDownButtonItemListView} from './DropDownButtonItemListView';
+
+import template from '../../pageflow/editor/templates/dropDownButtonItem.jst';
+
 /** @api private */
-pageflow.DropDownButtonItemView = Backbone.Marionette.ItemView.extend({
-  template: 'pageflow/editor/templates/drop_down_button_item',
+export const DropDownButtonItemView = Marionette.ItemView.extend({
+  template,
   tagName: 'li',
   className: 'drop_down_button_item',
 
@@ -27,7 +33,7 @@ pageflow.DropDownButtonItemView = Backbone.Marionette.ItemView.extend({
     this.update();
 
     if (this.model.get('items')) {
-      this.appendSubview(new pageflow.DropDownButtonItemListView({
+      this.appendSubview(new DropDownButtonItemListView({
         items: this.model.get('items')
       }));
     }

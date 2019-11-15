@@ -1,8 +1,17 @@
-pageflow.ExplorerFileItemView = Backbone.Marionette.ItemView.extend({
-  tagName: 'li',
-  template: 'templates/explorer_file_item',
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
 
-  mixins: [pageflow.loadable, pageflow.selectableView],
+import {FileThumbnailView} from './FileThumbnailView';
+import {loadable} from './mixins/loadable';
+import {selectableView} from './mixins/selectableView';
+
+import template from '../../templates/explorerFileItem.jst';
+
+export const ExplorerFileItemView = Marionette.ItemView.extend({
+  tagName: 'li',
+  template,
+
+  mixins: [loadable, selectableView],
 
   selectionAttribute: 'file',
 
@@ -27,7 +36,7 @@ pageflow.ExplorerFileItemView = Backbone.Marionette.ItemView.extend({
   onRender: function() {
     this.update();
 
-    this.subview(new pageflow.FileThumbnailView({
+    this.subview(new FileThumbnailView({
       el: this.ui.thumbnail,
       model: this.model
     }));

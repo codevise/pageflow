@@ -1,4 +1,10 @@
-pageflow.WidgetTypes = pageflow.Object.extend({
+import _ from 'underscore';
+
+import {Object} from '$pageflow/ui';
+
+import {WidgetType} from './WidgetType';
+
+export const WidgetTypes = Object.extend({
   initialize: function() {
     this._clientSideConfigs = {};
     this._optionalRoles = {};
@@ -21,7 +27,7 @@ pageflow.WidgetTypes = pageflow.Object.extend({
     this._widgetTypesByRole = roles.reduce(_.bind(function(result, role) {
       result[role] = serverSideConfigsByRole[role].map(_.bind(function(serverSideConfig) {
         var clientSideConfig = this._clientSideConfigs[serverSideConfig.name] || {};
-        var widgetType = new pageflow.WidgetType(serverSideConfig, clientSideConfig);
+        var widgetType = new WidgetType(serverSideConfig, clientSideConfig);
 
         this._widgetTypesByName[serverSideConfig.name] = widgetType;
         return widgetType;

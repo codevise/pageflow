@@ -1,5 +1,9 @@
-pageflow.WidgetConfigurationFileSelectionHandler = function(options) {
-  var widget = pageflow.entry.widgets.get(options.id);
+import {editor} from '../base';
+
+import {state} from '$state';
+
+export const WidgetConfigurationFileSelectionHandler = function(options) {
+  var widget = state.entry.widgets.get(options.id);
 
   this.call = function(file) {
     widget.configuration.setReference(options.attributeName, file);
@@ -10,7 +14,7 @@ pageflow.WidgetConfigurationFileSelectionHandler = function(options) {
   };
 };
 
-pageflow.editor.registerFileSelectionHandler(
+editor.registerFileSelectionHandler(
   'widgetConfiguration',
-  pageflow.WidgetConfigurationFileSelectionHandler
+  WidgetConfigurationFileSelectionHandler
 );

@@ -1,5 +1,13 @@
-pageflow.HelpView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/help',
+import $ from 'jquery';
+import Marionette from 'backbone.marionette';
+
+import {app} from '../app';
+import {editor} from '../base';
+
+import template from '../../templates/help.jst';
+
+export const HelpView = Marionette.ItemView.extend({
+  template,
   className: 'help',
 
   ui: {
@@ -41,10 +49,10 @@ pageflow.HelpView = Backbone.Marionette.ItemView.extend({
   },
 
   initialize: function() {
-    this.listenTo(pageflow.app, 'toggle-help', function(name) {
+    this.listenTo(app, 'toggle-help', function(name) {
       this.toggle();
       this.showSection(name ||
-                       pageflow.editor.defaultHelpEntry ||
+                       editor.defaultHelpEntry ||
                        this.defaultHelpEntry(),
                        {scrollIntoView: true});
     });

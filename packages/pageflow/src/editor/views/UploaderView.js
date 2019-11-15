@@ -1,8 +1,16 @@
-pageflow.UploaderView = Backbone.Marionette.View.extend({
+import $ from 'jquery';
+import Marionette from 'backbone.marionette';
+
+import {UploadError} from '../api/Errors';
+import {app} from '../app';
+
+import {state} from '$state';
+
+export const UploaderView = Marionette.View.extend({
   el: 'form#upload',
 
   initialize: function() {
-    this.listenTo(pageflow.app, 'request-upload', this.openFileDialog);
+    this.listenTo(app, 'request-upload', this.openFileDialog);
   },
 
   render: function() {
@@ -18,7 +26,7 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
 
       add: function(event, data) {
         try {
-          pageflow.fileUploader.add(data.files[0]).then(function (record) {
+          state.fileUploader.add(data.files[0]).then(function (record) {
             data.record = record;
             record.save(null, {
               success: function() {
@@ -34,8 +42,8 @@ pageflow.UploaderView = Backbone.Marionette.View.extend({
           });
         }
         catch(e) {
-          if (e instanceof pageflow.UploadError) {
-            pageflow.app.trigger('error', e);
+          if (e instanceof UploadError) {
+            app.trigger('error', e);
           }
           else {
             throw(e);

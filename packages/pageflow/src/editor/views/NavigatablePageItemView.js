@@ -1,5 +1,9 @@
-pageflow.NavigatablePageItemView = pageflow.PageItemView.extend({
-  mixins: [pageflow.loadable, pageflow.failureIndicatingView],
+import {PageItemView} from './PageItemView';
+import {failureIndicatingView} from './mixins/failureIndicatingView';
+import {loadable} from './mixins/loadable';
+
+export const NavigatablePageItemView = PageItemView.extend({
+  mixins: [loadable, failureIndicatingView],
   className: 'draggable',
 
   events: {

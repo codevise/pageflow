@@ -1,3 +1,7 @@
-pageflow.app.addInitializer(function(options) {
-  pageflow.seed = options.common;
+import {app} from '../app';
+
+import {state} from '$state';
+
+app.addInitializer(function(options) {
+  state.seed = options.common;
 });

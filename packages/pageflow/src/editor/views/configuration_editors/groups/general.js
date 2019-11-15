@@ -1,17 +1,23 @@
-pageflow.ConfigurationEditorTabView.groups.define('general', function(options) {
-  this.input('title', pageflow.TextInputView, {required: true, maxLength: 5000});
-  this.input('hide_title', pageflow.CheckBoxInputView);
-  this.input('tagline', pageflow.TextInputView, {maxLength: 5000});
-  this.input('subtitle', pageflow.TextInputView, {maxLength: 5000});
-  this.input('text', pageflow.TextAreaInputView, {
-    fragmentLinkInputView: pageflow.PageLinkInputView,
+import {CheckBoxInputView, ConfigurationEditorTabView, SelectInputView, SliderInputView, TextAreaInputView, TextInputView} from '$pageflow/ui';
+
+import {Page} from '../../../models/Page';
+
+import {PageLinkInputView} from '../../inputs/PageLinkInputView';
+
+ConfigurationEditorTabView.groups.define('general', function(options) {
+  this.input('title', TextInputView, {required: true, maxLength: 5000});
+  this.input('hide_title', CheckBoxInputView);
+  this.input('tagline', TextInputView, {maxLength: 5000});
+  this.input('subtitle', TextInputView, {maxLength: 5000});
+  this.input('text', TextAreaInputView, {
+    fragmentLinkInputView: PageLinkInputView,
     enableLists: true
   });
-  this.input('text_position', pageflow.SelectInputView, {
+  this.input('text_position', SelectInputView, {
     values: options.supportsTextPositionCenter ?
-            pageflow.Page.textPositions :
-            pageflow.Page.textPositionsWithoutCenterOption
+            Page.textPositions :
+            Page.textPositionsWithoutCenterOption
   });
-  this.input('gradient_opacity', pageflow.SliderInputView);
-  this.input('invert', pageflow.CheckBoxInputView);
+  this.input('gradient_opacity', SliderInputView);
+  this.input('invert', CheckBoxInputView);
 });

@@ -1,3 +1,10 @@
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {DropDownButtonItemListView} from './DropDownButtonItemListView';
+
+import template from '../../pageflow/editor/templates/dropDownButton.jst';
+
 /**
  * A button that displays a drop down menu on hover.
  *
@@ -24,8 +31,8 @@
  * @class
  * @memberof module:pageflow/editor
  */
-pageflow.DropDownButtonView = Backbone.Marionette.ItemView.extend({
-  template: 'pageflow/editor/templates/drop_down_button',
+export const DropDownButtonView = Marionette.ItemView.extend({
+  template,
   className: 'drop_down_button',
 
   ui: {
@@ -52,7 +59,7 @@ pageflow.DropDownButtonView = Backbone.Marionette.ItemView.extend({
 
     this.ui.button.text(this.options.label);
 
-    this.ui.menu.append(this.subview(new pageflow.DropDownButtonItemListView({
+    this.ui.menu.append(this.subview(new DropDownButtonItemListView({
       items: this.options.items
     })).el);
 
@@ -90,11 +97,11 @@ pageflow.DropDownButtonView = Backbone.Marionette.ItemView.extend({
   },
 
   ensureOnlyOneDropDownButtonShowsMenu: function() {
-    if (pageflow.DropDownButtonView.currentlyShowingMenu) {
-      pageflow.DropDownButtonView.currentlyShowingMenu.hideMenu();
+    if (DropDownButtonView.currentlyShowingMenu) {
+      DropDownButtonView.currentlyShowingMenu.hideMenu();
     }
 
-    pageflow.DropDownButtonView.currentlyShowingMenu = this;
+    DropDownButtonView.currentlyShowingMenu = this;
   },
 
   hideMenu: function() {

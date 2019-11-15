@@ -1,7 +1,12 @@
-pageflow.FileStageItemView = Backbone.Marionette.ItemView.extend({
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import template from '../../templates/fileStageItem.jst';
+
+export const FileStageItemView = Marionette.ItemView.extend({
   tagName: 'li',
   className: 'file_stage_item',
-  template: 'templates/file_stage_item',
+  template,
 
   ui: {
     description: '.description',

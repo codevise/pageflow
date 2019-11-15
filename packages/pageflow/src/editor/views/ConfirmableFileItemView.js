@@ -1,6 +1,10 @@
-pageflow.ConfirmableFileItemView = Backbone.Marionette.ItemView.extend({
+import Marionette from 'backbone.marionette';
+
+import template from '../../templates/confirmableFileItem.jst';
+
+export const ConfirmableFileItemView = Marionette.ItemView.extend({
   tagName: 'li',
-  template: 'templates/confirmable_file_item',
+  template,
 
   ui: {
     fileName: '.file_name',

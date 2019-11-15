@@ -1,8 +1,25 @@
-pageflow.FilesExplorerView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/files_explorer',
+import Backbone from 'backbone';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {CollectionView, TabsView} from '$pageflow/ui';
+
+import {app} from '../app';
+import {editor} from '../base';
+
+import {ExplorerFileItemView} from './ExplorerFileItemView';
+import {OtherEntriesCollectionView} from './OtherEntriesCollectionView';
+import {dialogView} from './mixins/dialogView';
+
+import {state} from '$state';
+
+import template from '../../templates/filesExplorer.jst';
+
+export const FilesExplorerView = Marionette.ItemView.extend({
+  template,
   className: 'files_explorer editor dialog',
 
-  mixins: [pageflow.dialogView],
+  mixins: [dialogView],
 
   ui: {
     entriesPanel: '.entries_panel',
@@ -33,18 +50,18 @@ pageflow.FilesExplorerView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.subview(new pageflow.OtherEntriesCollectionView({
+    this.subview(new OtherEntriesCollectionView({
       el: this.ui.entriesPanel,
       selection: this.selection
     }));
 
-    this.tabsView = new pageflow.TabsView({
+    this.tabsView = new TabsView({
       model: this.model,
       i18n: 'pageflow.editor.files.tabs',
       defaultTab: this.options.tabName
     });
 
-    pageflow.editor.fileTypes.each(function(fileType) {
+    editor.fileTypes.each(function(fileType) {
       if (fileType.topLevelType) {
         this.tab(fileType);
       }
@@ -58,13 +75,13 @@ pageflow.FilesExplorerView = Backbone.Marionette.ItemView.extend({
   tab: function(fileType) {
     this.tabsView.tab(fileType.collectionName, _.bind(function() {
       var collection = this._collection(fileType);
-      var disabledIds = pageflow.entry.getFileCollection(fileType).pluck('id');
+      var disabledIds = state.entry.getFileCollection(fileType).pluck('id');
 
-      return new pageflow.CollectionView({
+      return new CollectionView({
         tagName: 'ul',
         className: 'files_gallery',
         collection: collection,
-        itemViewConstructor: pageflow.ExplorerFileItemView,
+        itemViewConstructor: ExplorerFileItemView,
         itemViewOptions: {
           selection: this.selection,
           disabledIds: disabledIds
@@ -88,12 +105,12 @@ pageflow.FilesExplorerView = Backbone.Marionette.ItemView.extend({
   },
 
   _blankSlateConstructor: function() {
-    return Backbone.Marionette.ItemView.extend({
+    return Marionette.ItemView.extend({
       template: this.selection.get('entry') ? 'templates/files_gallery_blank_slate' : 'templates/files_explorer_blank_slate'
     });
   }
 });
 
-pageflow.FilesExplorerView.open = function(options) {
-  pageflow.app.dialogRegion.show(new pageflow.FilesExplorerView(options));
+FilesExplorerView.open = function(options) {
+  app.dialogRegion.show(new FilesExplorerView(options));
 };

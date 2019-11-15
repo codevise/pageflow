@@ -1,3 +1,5 @@
+import Backbone from 'backbone';
+
 (function() {
   var sync = Backbone.sync;
 

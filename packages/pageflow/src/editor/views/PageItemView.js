@@ -1,6 +1,15 @@
-pageflow.PageItemView = Backbone.Marionette.ItemView.extend({
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {editor} from '../base';
+
+import {PageThumbnailView} from './PageThumbnailView';
+
+import template from '../../templates/pageItem.jst';
+
+export const PageItemView = Marionette.ItemView.extend({
   tagName: 'li',
-  template: 'templates/page_item',
+  template,
 
   ui: {
     title: '.title',
@@ -14,7 +23,7 @@ pageflow.PageItemView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.subview(new pageflow.PageThumbnailView({
+    this.subview(new PageThumbnailView({
       el: this.ui.pageThumbnail,
       model: this.model
     }));
@@ -31,7 +40,7 @@ pageflow.PageItemView = Backbone.Marionette.ItemView.extend({
                          !!(this.options.isDisabled && this.options.isDisabled(this.model)));
     this.$el.toggleClass('display_in_navigation', !!this.model.configuration.get('display_in_navigation'));
     this.$el
-      .removeClass(pageflow.editor.pageTypes.pluck('name').join(' '))
+      .removeClass(editor.pageTypes.pluck('name').join(' '))
       .addClass(this.model.get('template'));
 
     this.ui.pictogram.attr('title', this._getPictogramTitle());

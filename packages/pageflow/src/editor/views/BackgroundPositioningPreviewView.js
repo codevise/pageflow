@@ -1,5 +1,9 @@
-pageflow.BackgroundPositioningPreviewView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/background_positioning_preview',
+import Marionette from 'backbone.marionette';
+
+import template from '../../templates/backgroundPositioningPreview.jst';
+
+export const BackgroundPositioningPreviewView = Marionette.ItemView.extend({
+  template,
   className: 'preview',
 
   modelEvents: {

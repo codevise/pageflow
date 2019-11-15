@@ -1,10 +1,27 @@
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {CheckBoxGroupInputView, CheckBoxInputView, ConfigurationEditorView, SelectInputView, TextAreaInputView, TextInputView} from '$pageflow/ui';
+
+import {editor} from '../base';
+
+import {EditWidgetsView} from './EditWidgetsView';
+import {FileInputView} from './inputs/FileInputView';
+import {ThemeInputView} from './inputs/ThemeInputView';
+import {failureIndicatingView} from './mixins/failureIndicatingView';
+
+import {state} from '$state';
+
+import template from '../../templates/editMetaData.jst';
+
 /*global editor*/
 
-pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
-  template: 'templates/edit_meta_data',
+export const EditMetaDataView = Marionette.Layout.extend({
+  template,
   className: 'edit_meta_data',
 
-  mixins: [pageflow.failureIndicatingView],
+  mixins: [failureIndicatingView],
 
   regions: {
     formContainer: '.form_fields'
@@ -17,82 +34,82 @@ pageflow.EditMetaDataView = Backbone.Marionette.Layout.extend({
   onRender: function() {
     var entry = this.model;
 
-    var configurationEditor = new pageflow.ConfigurationEditorView({
+    var configurationEditor = new ConfigurationEditorView({
       model: entry.configuration,
       tab: this.options.tab
     });
 
     configurationEditor.tab('general', function() {
-      this.input('title', pageflow.TextInputView, {
+      this.input('title', TextInputView, {
         placeholder: entry.get('entry_title')
       });
-      this.input('locale', pageflow.SelectInputView, {
-        values: pageflow.config.availablePublicLocales,
-        texts: _.map(pageflow.config.availablePublicLocales, function(locale) {
+      this.input('locale', SelectInputView, {
+        values: state.config.availablePublicLocales,
+        texts: _.map(state.config.availablePublicLocales, function(locale) {
           return I18n.t('pageflow.public._language', {locale: locale});
         })
       });
 
-      this.input('credits', pageflow.TextAreaInputView);
+      this.input('credits', TextAreaInputView);
 
-      this.input('author', pageflow.TextInputView, {
-        placeholder: pageflow.config.defaultAuthorMetaTag
+      this.input('author', TextInputView, {
+        placeholder: state.config.defaultAuthorMetaTag
       });
-      this.input('publisher', pageflow.TextInputView, {
-        placeholder: pageflow.config.defaultPublisherMetaTag
+      this.input('publisher', TextInputView, {
+        placeholder: state.config.defaultPublisherMetaTag
       });
-      this.input('keywords', pageflow.TextInputView, {
-        placeholder: pageflow.config.defaultKeywordsMetaTag
+      this.input('keywords', TextInputView, {
+        placeholder: state.config.defaultKeywordsMetaTag
       });
     });
 
     configurationEditor.tab('widgets', function() {
       var theme = entry.getTheme();
 
-      this.input('manual_start', pageflow.CheckBoxInputView);
-      this.input('emphasize_chapter_beginning', pageflow.CheckBoxInputView);
-      this.input('emphasize_new_pages', pageflow.CheckBoxInputView);
-      this.input('home_button_enabled', pageflow.CheckBoxInputView, {
+      this.input('manual_start', CheckBoxInputView);
+      this.input('emphasize_chapter_beginning', CheckBoxInputView);
+      this.input('emphasize_new_pages', CheckBoxInputView);
+      this.input('home_button_enabled', CheckBoxInputView, {
         disabled: !theme.hasHomeButton(),
         displayUncheckedIfDisabled: true
       });
-      this.input('overview_button_enabled', pageflow.CheckBoxInputView, {
+      this.input('overview_button_enabled', CheckBoxInputView, {
         disabled: !theme.hasOverviewButton(),
         displayUncheckedIfDisabled: true
       });
       if (theme.hasHomeButton()) {
-        this.input('home_url', pageflow.TextInputView, {
-          placeholder: pageflow.theming.get('pretty_url'),
+        this.input('home_url', TextInputView, {
+          placeholder: state.theming.get('pretty_url'),
           visibleBinding: 'home_button_enabled'
         });
       }
-      this.view(pageflow.EditWidgetsView, {
+      this.view(EditWidgetsView, {
         model: entry,
-        widgetTypes: pageflow.editor.widgetTypes
+        widgetTypes: editor.widgetTypes
       });
       if (pageflow.features.isEnabled('selectable_themes') &&
-          pageflow.themes.length > 1) {
-        this.view(pageflow.ThemeInputView, {
-          themes: pageflow.themes,
+          state.themes.length > 1) {
+        this.view(ThemeInputView, {
+          themes: state.themes,
           propertyName: 'theme_name'
         });
       }
     });
 
     configurationEditor.tab('social', function() {
-      this.input('share_image_id', pageflow.FileInputView, {
-        collection: pageflow.imageFiles,
+      this.input('share_image_id', FileInputView, {
+        collection: state.imageFiles,
         fileSelectionHandler: 'entryConfiguration'
       });
-      this.input('summary', pageflow.TextAreaInputView, {
+      this.input('summary', TextAreaInputView, {
         disableRichtext: true,
         disableLinks: true
       });
-      this.input('share_url', pageflow.TextInputView, {
-        placeholder: pageflow.entry.get('pretty_url')
+      this.input('share_url', TextInputView, {
+        placeholder: state.entry.get('pretty_url')
       });
-      this.input('share_providers', pageflow.CheckBoxGroupInputView, {
-        values: pageflow.config.availableShareProviders,
+      this.input('share_providers', CheckBoxGroupInputView, {
+        values: state.config.availableShareProviders,
         translationKeyPrefix: 'activerecord.values.pageflow/entry.share_providers'
       });
     });

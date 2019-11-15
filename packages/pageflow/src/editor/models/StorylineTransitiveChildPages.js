@@ -1,4 +1,4 @@
-pageflow.StorylineTransitiveChildPages = function(storyline, storylines, pages) {
+export const StorylineTransitiveChildPages = function(storyline, storylines, pages) {
   var isTranstiveChildStoryline;
 
   this.contain = function(page) {

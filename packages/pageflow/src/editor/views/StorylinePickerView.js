@@ -1,5 +1,20 @@
-pageflow.StorylinePickerView = Backbone.Marionette.Layout.extend({
-  template: 'templates/storyline_picker',
+import Backbone from 'backbone';
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {SelectInputView} from '$pageflow/ui';
+
+import {editor} from '../base';
+
+import {StorylineOutlineView} from './StorylineOutlineView';
+
+import {state} from '$state';
+
+import template from '../../templates/storylinePicker.jst';
+
+export const StorylinePickerView = Marionette.Layout.extend({
+  template,
   className: 'storyline_picker',
 
   regions: {
@@ -13,7 +28,7 @@ pageflow.StorylinePickerView = Backbone.Marionette.Layout.extend({
 
   events: {
     'click .add_storyline': function() {
-      var storyline = pageflow.entry.scaffoldStoryline({
+      var storyline = state.entry.scaffoldStoryline({
         depth: 'page'
       }).storyline;
 
@@ -26,7 +41,7 @@ pageflow.StorylinePickerView = Backbone.Marionette.Layout.extend({
     },
 
     'click .edit_storyline': function() {
-      pageflow.editor.navigate('storylines/' + this.model.get('storyline_id'), {trigger: true});
+      editor.navigate('storylines/' + this.model.get('storyline_id'), {trigger: true});
       return false;
     }
   },
@@ -36,7 +51,7 @@ pageflow.StorylinePickerView = Backbone.Marionette.Layout.extend({
       storyline_id: this.defaultStorylineId()
     });
 
-    this.listenTo(pageflow.storylines, 'add sort remove', this.updateSelect);
+    this.listenTo(state.storylines, 'add sort remove', this.updateSelect);
     this.listenTo(this.model, 'change', this.load);
   },
 
@@ -49,15 +64,15 @@ pageflow.StorylinePickerView = Backbone.Marionette.Layout.extend({
   },
 
   updateSelect: function() {
-    this.selectRegion.show(new pageflow.SelectInputView({
+    this.selectRegion.show(new SelectInputView({
       model: this.model,
       label: I18n.t('pageflow.editor.views.storylines_picker_view.label'),
       propertyName: 'storyline_id',
-      values: pageflow.storylines.pluck('id'),
-      texts: pageflow.storylines.map(function(storyline) {
+      values: state.storylines.pluck('id'),
+      texts: state.storylines.map(function(storyline) {
         return this.indentation(storyline) + storyline.displayTitle();
       }, this),
-      groups: pageflow.storylines.reduce(function(result, storyline) {
+      groups: state.storylines.reduce(function(result, storyline) {
         if (storyline.isMain() || storyline.parentPage()) {
           result.push(_.last(result));
         }
@@ -70,11 +85,11 @@ pageflow.StorylinePickerView = Backbone.Marionette.Layout.extend({
   },
 
   load: function() {
-    var storyline = pageflow.storylines.get(this.model.get('storyline_id'));
+    var storyline = state.storylines.get(this.model.get('storyline_id'));
 
     this.saveRememberedStorylineId(storyline.id);
 
-    this.mainRegion.show(new pageflow.StorylineOutlineView({
+    this.mainRegion.show(new StorylineOutlineView({
       model: storyline,
       navigatable: this.options.navigatable,
       sortable: this.options.editable,
@@ -87,22 +102,22 @@ pageflow.StorylinePickerView = Backbone.Marionette.Layout.extend({
 
   defaultStorylineId: function() {
     var storyline =
-      pageflow.storylines.get(this.options.storylineId) ||
-      pageflow.storylines.get(this.rememberedStorylineId()) ||
-      pageflow.storylines.first();
+      state.storylines.get(this.options.storylineId) ||
+      state.storylines.get(this.rememberedStorylineId()) ||
+      state.storylines.first();
 
     return storyline.id;
   },
 
   rememberedStorylineId: function() {
     if (this.options.rememberLastSelection) {
-      return pageflow.StorylinePickerView._rememberedStorylineId;
+      return StorylinePickerView._rememberedStorylineId;
     }
   },
 
   saveRememberedStorylineId: function(id) {
     if (this.options.rememberLastSelection) {
-      pageflow.StorylinePickerView._rememberedStorylineId = id;
+      StorylinePickerView._rememberedStorylineId = id;
     }
   },
 

@@ -1,5 +1,15 @@
-pageflow.PageLinksView = Backbone.Marionette.ItemView.extend({
-  template: 'pageflow/editor/templates/page_links',
+import Marionette from 'backbone.marionette';
+
+import {CollectionView, SortableCollectionView} from '$pageflow/ui';
+
+import {editor} from '../base';
+
+import {PageLinkItemView} from './PageLinkItemView';
+
+import template from '../../pageflow/editor/templates/pageLinks.jst';
+
+export const PageLinksView = Marionette.ItemView.extend({
+  template,
   className: 'page_links',
 
   ui: {
@@ -11,7 +21,7 @@ pageflow.PageLinksView = Backbone.Marionette.ItemView.extend({
     'click .add_link': function() {
       var view = this;
 
-      pageflow.editor.selectPage().then(function(page) {
+      editor.selectPage().then(function(page) {
         view.model.pageLinks().addLink(page.get('perma_id'));
       });
 
@@ -21,12 +31,12 @@ pageflow.PageLinksView = Backbone.Marionette.ItemView.extend({
 
   onRender: function() {
     var pageLinks = this.model.pageLinks();
-    var collectionViewConstructor = pageLinks.saveOrder ? pageflow.SortableCollectionView : pageflow.CollectionView;
+    var collectionViewConstructor = pageLinks.saveOrder ? SortableCollectionView : CollectionView;
 
     this.subview(new collectionViewConstructor({
       el: this.ui.links,
       collection: pageLinks,
-      itemViewConstructor: pageflow.PageLinkItemView,
+      itemViewConstructor: PageLinkItemView,
       itemViewOptions: {
         pageLinks: pageLinks
       }

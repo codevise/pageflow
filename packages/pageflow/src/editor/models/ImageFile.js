@@ -1,4 +1,6 @@
-pageflow.ImageFile = pageflow.ReusableFile.extend({
+import {ReusableFile} from './ReusableFile';
+
+export const ImageFile = ReusableFile.extend({
   stages: [
     {
       name: 'uploading',

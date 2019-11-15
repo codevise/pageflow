@@ -1,13 +1,31 @@
+import Backbone from 'backbone';
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {inputView} from '$pageflow/ui';
+
+import {editor} from '../../base';
+
+import {BackgroundPositioningView} from '../BackgroundPositioningView';
+import {DropDownButtonView} from '../DropDownButtonView';
+import {FileSettingsDialogView} from '../FileSettingsDialogView';
+import {FileThumbnailView} from '../FileThumbnailView';
+
+import {state} from '$state';
+
+import template from '../../../pageflow/editor/templates/inputs/fileInput.jst';
+
 /**
  * Input view to reference a file.
  *
  * @class
  * @memberof module:pageflow/editor
  */
-pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
-  mixins: [pageflow.inputView],
+export const FileInputView = Marionette.ItemView.extend({
+  mixins: [inputView],
 
-  template: 'pageflow/editor/templates/inputs/file_input',
+  template,
   className: 'file_input',
 
   ui: {
@@ -17,7 +35,7 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click .choose': function() {
-      pageflow.editor.selectFile(
+      editor.selectFile(
         {
           name: this.options.collection.name,
           filter: this.options.filter
@@ -42,12 +60,12 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
   initialize: function() {
     this.options = _.extend({
       positioning: true,
-      textTrackFiles: pageflow.textTrackFiles
+      textTrackFiles: state.textTrackFiles
     }, this.options);
 
     if (typeof this.options.collection === 'string') {
-      this.options.collection = pageflow.entry.getFileCollection(
-        pageflow.editor.fileTypes.findByCollectionName(this.options.collection)
+      this.options.collection = state.entry.getFileCollection(
+        editor.fileTypes.findByCollectionName(this.options.collection)
       );
     }
 
@@ -61,7 +79,7 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
     var dropDownMenuItems = this._dropDownMenuItems();
 
     if (dropDownMenuItems.length) {
-      this.appendSubview(new pageflow.DropDownButtonView({
+      this.appendSubview(new DropDownButtonView({
         items: dropDownMenuItems
       }));
     }
@@ -77,7 +95,7 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
                           file.get('file_name') :
                           I18n.t('pageflow.ui.views.inputs.file_input_view.none'));
 
-    this.subview(new pageflow.FileThumbnailView({
+    this.subview(new FileThumbnailView({
       el: this.ui.thumbnail,
       model: file
     }));
@@ -96,7 +114,7 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
     }
 
     if (this.options.positioning && file && file.isPositionable()) {
-      items.add(new pageflow.FileInputView.EditBackgroundPositioningMenuItem({
+      items.add(new FileInputView.EditBackgroundPositioningMenuItem({
         name: 'edit_background_positioning',
         label: I18n.t('pageflow.editor.views.inputs.file_input.edit_background_positioning')
       }, {
@@ -107,7 +125,7 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
     }
 
     if (file) {
-      items.add(new pageflow.FileInputView.EditFileSettingsMenuItem({
+      items.add(new FileInputView.EditFileSettingsMenuItem({
         name: 'edit_file_settings',
         label: I18n.t('pageflow.editor.views.inputs.file_input.edit_file_settings')
       }, {
@@ -136,7 +154,7 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
     var models = [null].concat(this.textTrackFiles.toArray());
 
     this.textTrackMenuItems.set(models.map(function(textTrackFile) {
-      return new pageflow.FileInputView.DefaultTextTrackFileMenuItem({}, {
+      return new FileInputView.DefaultTextTrackFileMenuItem({}, {
         textTrackFiles: this.textTrackFiles,
         textTrackFile: textTrackFile,
         inputModel: this.model,
@@ -150,13 +168,13 @@ pageflow.FileInputView = Backbone.Marionette.ItemView.extend({
   }
 });
 
-pageflow.FileInputView.EditBackgroundPositioningMenuItem = Backbone.Model.extend({
+FileInputView.EditBackgroundPositioningMenuItem = Backbone.Model.extend({
   initialize: function(attributes, options) {
     this.options = options;
   },
 
   selected: function() {
-    pageflow.BackgroundPositioningView.open({
+    BackgroundPositioningView.open({
       model: this.options.inputModel,
       propertyName: this.options.propertyName,
       filesCollection: this.options.filesCollection
@@ -164,19 +182,19 @@ pageflow.FileInputView.EditBackgroundPositioningMenuItem = Backbone.Model.extend
   }
 });
 
-pageflow.FileInputView.EditFileSettingsMenuItem = Backbone.Model.extend({
+FileInputView.EditFileSettingsMenuItem = Backbone.Model.extend({
   initialize: function(attributes, options) {
     this.options = options;
   },
 
   selected: function() {
-    pageflow.FileSettingsDialogView.open({
+    FileSettingsDialogView.open({
       model: this.options.file
     });
   }
 });
 
-pageflow.FileInputView.DefaultTextTrackFileMenuItem = Backbone.Model.extend({
+FileInputView.DefaultTextTrackFileMenuItem = Backbone.Model.extend({
   initialize: function(attributes, options) {
     this.options = options;
 

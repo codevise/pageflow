@@ -1,19 +1,28 @@
-pageflow.app.addInitializer(function() {
-  _.each(pageflow.editor.sideBarRoutings, function(options) {
+import _ from 'underscore';
+
+import {SidebarController} from '../controllers/SidebarController';
+import {SidebarRouter} from '../routers/SidebarRouter';
+import {app} from '../app';
+import {editor} from '../base';
+
+import {state} from '$state';
+
+app.addInitializer(function() {
+  _.each(editor.sideBarRoutings, function(options) {
     new options.router({
       controller: new options.controller({
-        region: pageflow.app.sidebarRegion,
-        entry: pageflow.entry
+        region: app.sidebarRegion,
+        entry: state.entry
       })
     });
   });
 
-  pageflow.editor.router = new pageflow.SidebarRouter({
-    controller: new pageflow.SidebarController({
-      region: pageflow.app.sidebarRegion,
-      entry: pageflow.entry
+  editor.router = new SidebarRouter({
+    controller: new SidebarController({
+      region: app.sidebarRegion,
+      entry: state.entry
     })
   });
 
-  window.editor = pageflow.editor.router;
+  window.editor = editor.router;
 });

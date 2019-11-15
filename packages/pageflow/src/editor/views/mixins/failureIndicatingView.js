@@ -1,11 +1,13 @@
-pageflow.failureIndicatingView = {
+import {editor} from '../../base';
+
+export const failureIndicatingView = {
   modelEvents: {
     'change:failed': 'updateFailIndicator'
   },
 
   events: {
     'click .retry': function() {
-      pageflow.editor.failures.retry();
+      editor.failures.retry();
       return false;
     }
   },

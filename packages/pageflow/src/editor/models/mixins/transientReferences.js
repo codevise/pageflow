@@ -1,4 +1,11 @@
-pageflow.transientReferences = {
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {editor} from '../../base';
+
+import {state} from '$state';
+
+export const transientReferences = {
   initialize: function() {
     this.transientReferences = {};
     this.pendingReferences = {};
@@ -6,8 +13,8 @@ pageflow.transientReferences = {
 
   getReference: function(attribute, collection) {
     if (typeof collection === 'string') {
-      var fileType = pageflow.editor.fileTypes.findByCollectionName(collection);
-      collection = pageflow.entry.getFileCollection(fileType);
+      var fileType = editor.fileTypes.findByCollectionName(collection);
+      collection = state.entry.getFileCollection(fileType);
     }
 
     return this.transientReferences[attribute] ||

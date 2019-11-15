@@ -1,5 +1,9 @@
-pageflow.StaticThumbnailView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/static_thumbnail',
+import Marionette from 'backbone.marionette';
+
+import template from '../../templates/staticThumbnail.jst';
+
+export const StaticThumbnailView = Marionette.ItemView.extend({
+  template,
   className: 'static_thumbnail',
 
   modelEvents: {

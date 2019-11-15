@@ -1,4 +1,6 @@
-pageflow.retryable = {
+import _ from 'underscore';
+
+export const retryable = {
   retry: function(options) {
     options = options ? _.clone(options) : {};
     if (options.parse === void 0) options.parse = true;

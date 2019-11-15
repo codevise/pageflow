@@ -1,4 +1,6 @@
-pageflow.SidebarRouter = Backbone.Marionette.AppRouter.extend({
+import Marionette from 'backbone.marionette';
+
+export const SidebarRouter = Marionette.AppRouter.extend({
   appRoutes: {
     'page_links/:id': 'pageLink',
     'pages/:id': 'page',

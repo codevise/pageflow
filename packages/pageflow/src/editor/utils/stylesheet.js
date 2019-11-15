@@ -1,4 +1,6 @@
-pageflow.stylesheet = {
+import $ from 'jquery';
+
+export const stylesheet = {
   reload: function(name) {
     var link = this.selectLink(name);
 

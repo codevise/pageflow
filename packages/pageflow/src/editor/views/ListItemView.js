@@ -1,6 +1,13 @@
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {ModelThumbnailView} from './ModelThumbnailView';
+
+import template from '../../pageflow/editor/templates/listItem.jst';
+
 /** @api private */
-pageflow.ListItemView = Backbone.Marionette.ItemView.extend({
-  template: 'pageflow/editor/templates/list_item',
+export const ListItemView = Marionette.ItemView.extend({
+  template,
 
   tagName: 'li',
   className: 'list_item',
@@ -43,7 +50,7 @@ pageflow.ListItemView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.subview(new pageflow.ModelThumbnailView({
+    this.subview(new ModelThumbnailView({
       el: this.ui.thumbnail,
       model: this.model
     }));

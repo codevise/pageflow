@@ -1,10 +1,14 @@
-pageflow.ChapterPagesCollection = pageflow.SubsetCollection.extend({
-  mixins: [pageflow.orderedCollection],
+import {SubsetCollection} from './SubsetCollection';
+import {editor} from '../base';
+import {orderedCollection} from './mixins/orderedCollection';
+
+export const ChapterPagesCollection = SubsetCollection.extend({
+  mixins: [orderedCollection],
 
   constructor: function(options) {
     var chapter = options.chapter;
 
-    pageflow.SubsetCollection.prototype.constructor.call(this, {
+    SubsetCollection.prototype.constructor.call(this, {
       parent: options.pages,
       parentModel: chapter,
 
@@ -25,7 +29,7 @@ pageflow.ChapterPagesCollection = pageflow.SubsetCollection.extend({
       model.chapter = chapter;
       model.set('chapter_id', chapter.id);
 
-      pageflow.editor.trigger('add:page', model);
+      editor.trigger('add:page', model);
     });
 
     this.listenTo(this, 'remove', function(model) {

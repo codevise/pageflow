@@ -1,5 +1,17 @@
-pageflow.StorylineOutlineView = Backbone.Marionette.Layout.extend({
-  template: 'templates/storyline_outline',
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {CollectionView, SortableCollectionView} from '$pageflow/ui';
+
+import {ChapterItemView} from './ChapterItemView';
+import {NavigatableChapterItemView} from './NavigatableChapterItemView';
+import {NavigatablePageItemView} from './NavigatablePageItemView';
+import {PageItemView} from './PageItemView';
+
+import template from '../../templates/storylineOutline.jst';
+
+export const StorylineOutlineView = Marionette.Layout.extend({
+  template,
   className: 'storyline_outline',
 
   ui: {
@@ -15,15 +27,15 @@ pageflow.StorylineOutlineView = Backbone.Marionette.Layout.extend({
   onRender: function() {
     this.ui.chapters.toggleClass('outline navigatable', !!this.options.navigatable);
 
-    var collectionView = this.options.sortable ? pageflow.SortableCollectionView : pageflow.CollectionView;
+    var collectionView = this.options.sortable ? SortableCollectionView : CollectionView;
 
     new collectionView({
       el: this.ui.chapters,
       collection: this.model.chapters,
-      itemViewConstructor: this.options.navigatable ? pageflow.NavigatableChapterItemView : pageflow.ChapterItemView,
+      itemViewConstructor: this.options.navigatable ? NavigatableChapterItemView : ChapterItemView,
       itemViewOptions: {
         sortable: this.options.sortable,
-        pageItemView: this.options.navigatable ? pageflow.NavigatablePageItemView : pageflow.PageItemView,
+        pageItemView: this.options.navigatable ? NavigatablePageItemView : PageItemView,
         pageItemViewOptions: _.extend({
           displayInNavigationHint: this.options.displayInNavigationHint
         }, this.options.pageItemViewOptions || {})

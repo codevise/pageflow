@@ -1,17 +1,23 @@
+import {editor} from '../../base';
+
+import {ReferenceInputView} from './ReferenceInputView';
+
+import {state} from '$state';
+
 /**
  * Input view to reference a page.
  *
  * @class
  * @memberof module:pageflow/editor
  */
-pageflow.PageLinkInputView = pageflow.ReferenceInputView.extend({
+export const PageLinkInputView = ReferenceInputView.extend({
   choose: function() {
-    return pageflow.editor.selectPage({
+    return editor.selectPage({
       isAllowed: this.options.isAllowed
     });
   },
 
   getTarget: function(permaId) {
-    return pageflow.pages.getByPermaId(permaId);
+    return state.pages.getByPermaId(permaId);
   }
 });

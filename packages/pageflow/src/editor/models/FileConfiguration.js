@@ -1,4 +1,8 @@
-pageflow.FileConfiguration = pageflow.Configuration.extend({
+import _ from 'underscore';
+
+import {Configuration} from './Configuration';
+
+export const FileConfiguration = Configuration.extend({
   defaults: {
   },
 

@@ -1,3 +1,3 @@
-pageflow.fileWithType = {
+export const fileWithType = {
 
 };

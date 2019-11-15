@@ -1,5 +1,12 @@
-pageflow.EditPageLinkView = Backbone.Marionette.Layout.extend({
-  template: 'pageflow/editor/templates/edit_page_link',
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {editor} from '../base';
+
+import template from '../../pageflow/editor/templates/editPageLink.jst';
+
+export const EditPageLinkView = Marionette.Layout.extend({
+  template,
 
   regions: {
     formContainer: '.form_container'
@@ -43,6 +50,6 @@ pageflow.EditPageLinkView = Backbone.Marionette.Layout.extend({
   },
 
   goBack: function() {
-    pageflow.editor.navigate('/pages/' + this.options.page.id + '/links', {trigger: true});
+    editor.navigate('/pages/' + this.options.page.id + '/links', {trigger: true});
   }
 });

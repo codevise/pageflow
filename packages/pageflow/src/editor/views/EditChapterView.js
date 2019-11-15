@@ -1,8 +1,17 @@
-pageflow.EditChapterView = Backbone.Marionette.Layout.extend({
-  template: 'templates/edit_chapter',
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {CheckBoxInputView, ConfigurationEditorView, TextInputView} from '$pageflow/ui';
+
+import {failureIndicatingView} from './mixins/failureIndicatingView';
+
+import template from '../../templates/editChapter.jst';
+
+export const EditChapterView = Marionette.Layout.extend({
+  template,
   className: 'edit_chapter',
 
-  mixins: [pageflow.failureIndicatingView],
+  mixins: [failureIndicatingView],
 
   regions: {
     formContainer: '.form_container'
@@ -14,7 +23,7 @@ pageflow.EditChapterView = Backbone.Marionette.Layout.extend({
   },
 
   onRender: function() {
-    var configurationEditor = new pageflow.ConfigurationEditorView({
+    var configurationEditor = new ConfigurationEditorView({
       model: this.model.configuration
     });
 
@@ -26,12 +35,12 @@ pageflow.EditChapterView = Backbone.Marionette.Layout.extend({
     var view = this;
 
     configurationEditor.tab('general', function() {
-      this.input('title', pageflow.TextInputView, {
+      this.input('title', TextInputView, {
         model: view.model
       });
 
       if (pageflow.features.isEnabled('chapter_hierachy')) {
-        this.input('display_parent_page_button', pageflow.CheckBoxInputView);
+        this.input('display_parent_page_button', CheckBoxInputView);
       }
     });
   },

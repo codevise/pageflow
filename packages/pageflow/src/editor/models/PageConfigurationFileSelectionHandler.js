@@ -1,5 +1,9 @@
-pageflow.PageConfigurationFileSelectionHandler = function(options) {
-  var page = pageflow.pages.get(options.id);
+import {editor} from '../base';
+
+import {state} from '$state';
+
+export const PageConfigurationFileSelectionHandler = function(options) {
+  var page = state.pages.get(options.id);
 
   this.call = function(file) {
     page.configuration.setReference(options.attributeName, file);
@@ -10,4 +14,4 @@ pageflow.PageConfigurationFileSelectionHandler = function(options) {
   };
 };
 
-pageflow.editor.registerFileSelectionHandler('pageConfiguration', pageflow.PageConfigurationFileSelectionHandler);
+editor.registerFileSelectionHandler('pageConfiguration', PageConfigurationFileSelectionHandler);

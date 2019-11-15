@@ -1,5 +1,9 @@
-pageflow.BackButtonDecoratorView = Backbone.Marionette.Layout.extend({
-  template: 'templates/back_button_decorator',
+import Marionette from 'backbone.marionette';
+
+import template from '../../templates/backButtonDecorator.jst';
+
+export const BackButtonDecoratorView = Marionette.Layout.extend({
+  template,
   className: 'back_button_decorator',
 
   events: {

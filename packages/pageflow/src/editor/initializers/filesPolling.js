@@ -1,3 +1,7 @@
-pageflow.app.addInitializer(function(options) {
-  pageflow.entry.pollForPendingFiles();
+import {app} from '../app';
+
+import {state} from '$state';
+
+app.addInitializer(function(options) {
+  state.entry.pollForPendingFiles();
 });

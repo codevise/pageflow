@@ -1,27 +1,41 @@
-pageflow.app.addInitializer(function(options) {
-  new pageflow.EditorView({
+import $ from 'jquery';
+import Backbone from 'backbone';
+
+import {app} from '../app';
+
+import {DisabledAtmoIndicatorView} from '../views/DisabledAtmoIndicatorView';
+import {EditorView} from '../views/EditorView';
+import {EntryPreviewView} from '../views/EntryPreviewView';
+import {NotificationsView} from '../views/NotificationsView';
+import {ScrollingView} from '../views/ScrollingView';
+import {SidebarFooterView} from '../views/SidebarFooterView';
+
+import {state} from '$state';
+
+app.addInitializer(function(options) {
+  new EditorView({
     el: $('body')
   }).render();
 
-  new pageflow.ScrollingView({
+  new ScrollingView({
     el: $('sidebar .scrolling'),
-    region: pageflow.app.sidebarRegion
+    region: app.sidebarRegion
   }).render();
 
-  pageflow.app.previewRegion.show(new pageflow.EntryPreviewView({
-    model: pageflow.entry
+  app.previewRegion.show(new EntryPreviewView({
+    model: state.entry
   }));
 
-  pageflow.app.indicatorsRegion.show(new pageflow.DisabledAtmoIndicatorView());
-  pageflow.app.notificationsRegion.show(new pageflow.NotificationsView());
-  pageflow.app.sidebarFooterRegion.show(new pageflow.SidebarFooterView({
-    model: pageflow.entry
+  app.indicatorsRegion.show(new DisabledAtmoIndicatorView());
+  app.notificationsRegion.show(new NotificationsView());
+  app.sidebarFooterRegion.show(new SidebarFooterView({
+    model: state.entry
   }));
 
   Backbone.history.start({root: options.root});
 });
 
-pageflow.app.addRegions({
+app.addRegions({
   previewRegion: '#entry_preview',
   mainRegion: '#main_content',
   indicatorsRegion: '#editor_indicators',

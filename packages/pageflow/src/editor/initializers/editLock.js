@@ -1,6 +1,11 @@
-pageflow.app.addInitializer(function(options) {
-  pageflow.editLock = new pageflow.EditLockContainer();
+import {EditLockContainer} from '../models/EditLockContainer';
+import {app} from '../app';
 
-  pageflow.editLock.watchForErrors();
-  pageflow.editLock.acquire();
+import {state} from '$state';
+
+app.addInitializer(function(options) {
+  state.editLock = new EditLockContainer();
+
+  state.editLock.watchForErrors();
+  state.editLock.acquire();
 });

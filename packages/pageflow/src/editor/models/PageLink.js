@@ -1,10 +1,17 @@
-pageflow.PageLink = Backbone.Model.extend({
-  mixins: [pageflow.transientReferences],
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {transientReferences} from './mixins/transientReferences';
+
+import {state} from '$state';
+
+export const PageLink = Backbone.Model.extend({
+  mixins: [transientReferences],
 
   i18nKey: 'pageflow/page_link',
 
   targetPage: function() {
-    return pageflow.pages.getByPermaId(this.get('target_page_id'));
+    return state.pages.getByPermaId(this.get('target_page_id'));
   },
 
   label: function() {

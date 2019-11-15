@@ -1,4 +1,8 @@
-pageflow.CommonPageConfigurationTabs = pageflow.Object.extend({
+import _ from 'underscore';
+
+import {Object} from '$pageflow/ui';
+
+export const CommonPageConfigurationTabs = Object.extend({
   initialize: function() {
     this.configureFns = {};
   },

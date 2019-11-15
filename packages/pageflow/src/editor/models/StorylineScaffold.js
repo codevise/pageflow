@@ -1,4 +1,7 @@
-pageflow.StorylineScaffold = pageflow.Scaffold.extend({
+import {Scaffold} from './Scaffold';
+import {editor} from '../base';
+
+export const StorylineScaffold = Scaffold.extend({
   build: function() {
     this.storyline = this.parent.buildStoryline(this.options.storylineAttributes);
     this.chapter = this.storyline.buildChapter();
@@ -7,7 +10,7 @@ pageflow.StorylineScaffold = pageflow.Scaffold.extend({
       this.page = this.chapter.buildPage();
     }
 
-    pageflow.editor.trigger('scaffold:storyline', this.storyline);
+    editor.trigger('scaffold:storyline', this.storyline);
 
     return this.storyline;
   },

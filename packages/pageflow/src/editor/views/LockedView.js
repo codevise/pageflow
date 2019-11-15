@@ -1,5 +1,12 @@
-pageflow.LockedView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/locked',
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {state} from '$state';
+
+import template from '../../templates/locked.jst';
+
+export const LockedView = Marionette.ItemView.extend({
+  template,
   className: 'locked checking',
 
   ui: {
@@ -26,7 +33,7 @@ pageflow.LockedView = Backbone.Marionette.ItemView.extend({
   },
 
   goBack: function() {
-    window.location = "/admin/entries/" + pageflow.entry.id;
+    window.location = "/admin/entries/" + state.entry.id;
   },
 
   show: function(info, options) {

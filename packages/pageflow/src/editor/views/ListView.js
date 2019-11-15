@@ -1,3 +1,14 @@
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {CollectionView, SortableCollectionView} from '$pageflow/ui';
+
+import {ListItemView} from './ListItemView';
+
+import template from '../../pageflow/editor/templates/list.jst';
+
+import template from '../../pageflow/editor/templates/listBlankSlate.jst';
+
 /**
  * A generic list view with items consisting of a thumbnail, text and
  * possibly some buttons or a navigation arrow.
@@ -28,8 +39,8 @@
  * @class
  * @memberof module:pageflow/editor
  */
-pageflow.ListView = Backbone.Marionette.ItemView.extend({
-  template: 'pageflow/editor/templates/list',
+export const ListView = Marionette.ItemView.extend({
+  template,
   className: 'list',
 
   ui: {
@@ -39,14 +50,14 @@ pageflow.ListView = Backbone.Marionette.ItemView.extend({
 
   onRender: function() {
     var collectionViewConstructor = this.options.sortable ?
-      pageflow.SortableCollectionView :
-      pageflow.CollectionView;
+      SortableCollectionView :
+      CollectionView;
 
     this.subview(new collectionViewConstructor({
       el: this.ui.items,
       collection: this.collection,
 
-      itemViewConstructor: pageflow.ListItemView,
+      itemViewConstructor: ListItemView,
 
       itemViewOptions: _.extend({
         description: this.options.itemDescription,
@@ -55,10 +66,10 @@ pageflow.ListView = Backbone.Marionette.ItemView.extend({
         isInvalid: this.options.itemIsInvalid
       }, _(this.options).pick('onEdit', 'onDelete', 'highlight')),
 
-      blankSlateViewConstructor: Backbone.Marionette.ItemView.extend({
+      blankSlateViewConstructor: Marionette.ItemView.extend({
         tagName: 'li',
         className: 'list_blank_slate',
-        template: 'pageflow/editor/templates/list_blank_slate'
+        template
       })
     }));
 

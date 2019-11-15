@@ -1,6 +1,8 @@
+import {PageLinksCollection} from './PageLinksCollection';
+
 //= require ./page_links_collection
 
-pageflow.OrderedPageLinksCollection = pageflow.PageLinksCollection.extend({
+export const OrderedPageLinksCollection = PageLinksCollection.extend({
   comparator: 'position',
 
   saveOrder: function() {

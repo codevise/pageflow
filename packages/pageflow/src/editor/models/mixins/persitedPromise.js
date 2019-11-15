@@ -1,4 +1,7 @@
-pageflow.persistedPromise = {
+import Backbone from 'backbone';
+import Cocktail from 'cocktail';
+
+export const persistedPromise = {
   persisted: function() {
     var model = this;
 
@@ -15,4 +18,4 @@ pageflow.persistedPromise = {
   }
 };
 
-Cocktail.mixin(Backbone.Model, pageflow.persistedPromise);
+Cocktail.mixin(Backbone.Model, persistedPromise);

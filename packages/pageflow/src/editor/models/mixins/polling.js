@@ -1,4 +1,6 @@
-pageflow.polling = {
+import _ from 'underscore';
+
+export const polling = {
   togglePolling: function(enabled) {
     if (enabled) {
       this.startPolling();

@@ -1,3 +1,10 @@
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {FileSettingsDialogView} from './FileSettingsDialogView';
+
+import template from '../../templates/fileMetaDataItemValueView.jst';
+
 /**
  * Base class for views used as `valueView` for file type meta data
  * attributes.
@@ -14,8 +21,8 @@
  * @class
  * @memberof module:pageflow/editor
  */
-pageflow.FileMetaDataItemValueView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/file_meta_data_item_value_view',
+export const FileMetaDataItemValueView = Marionette.ItemView.extend({
+  template,
 
   ui: {
     value: '.value',
@@ -24,7 +31,7 @@ pageflow.FileMetaDataItemValueView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click .edit': function() {
-      pageflow.FileSettingsDialogView.open({
+      FileSettingsDialogView.open({
         model: this.model,
         tabName: this.options.settingsDialogTabLink
       });

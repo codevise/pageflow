@@ -1,4 +1,4 @@
-pageflow.loadable = {
+export const loadable = {
   modelEvents: {
     'change:id': function() {
       this.$el.removeClass('creating');

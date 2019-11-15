@@ -1,6 +1,13 @@
-pageflow.FileMetaDataItemView = Backbone.Marionette.ItemView.extend({
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {attributeTranslation} from '$pageflow/ui';
+
+import template from '../../templates/fileMetaDataItem.jst';
+
+export const FileMetaDataItemView = Marionette.ItemView.extend({
   tagName: 'tr',
-  template: 'templates/file_meta_data_item',
+  template,
 
   ui: {
     label: 'th',
@@ -18,7 +25,7 @@ pageflow.FileMetaDataItemView = Backbone.Marionette.ItemView.extend({
   },
 
   labelText: function() {
-    return pageflow.i18nUtils.attributeTranslation(this.options.name, 'label', {
+    return attributeTranslation(this.options.name, 'label', {
       prefixes: [
         'pageflow.editor.files.attributes.' + this.model.fileType().collectionName,
         'pageflow.editor.files.common_attributes'

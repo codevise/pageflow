@@ -1,6 +1,17 @@
-pageflow.OtherEntriesCollectionView = Backbone.Marionette.View.extend({
+import Marionette from 'backbone.marionette';
+
+import {CollectionView} from '$pageflow/ui';
+
+import {OtherEntriesCollection} from '../collections/OtherEntriesCollection';
+
+import {LoadingView} from './LoadingView';
+import {OtherEntryItemView} from './OtherEntryItemView';
+
+import template from '../../templates/otherEntriesBlankSlate.jst';
+
+export const OtherEntriesCollectionView = Marionette.View.extend({
   initialize: function() {
-    this.otherEntries = new pageflow.OtherEntriesCollection();
+    this.otherEntries = new OtherEntriesCollection();
 
     this.listenTo(this.otherEntries, 'sync', function() {
       if (this.otherEntries.length === 1) {
@@ -10,19 +21,19 @@ pageflow.OtherEntriesCollectionView = Backbone.Marionette.View.extend({
   },
 
   render: function() {
-    this.subview(new pageflow.CollectionView({
+    this.subview(new CollectionView({
       el: this.el,
       collection: this.otherEntries,
-      itemViewConstructor: pageflow.OtherEntryItemView,
+      itemViewConstructor: OtherEntryItemView,
       itemViewOptions: {
         selection: this.options.selection
       },
-      blankSlateViewConstructor: Backbone.Marionette.ItemView.extend({
-        template: 'templates/other_entries_blank_slate',
+      blankSlateViewConstructor: Marionette.ItemView.extend({
+        template,
         tagName: 'li',
         className: 'blank_slate'
       }),
-      loadingViewConstructor: pageflow.LoadingView
+      loadingViewConstructor: LoadingView
     }));
 
     this.otherEntries.fetch();

@@ -1,12 +1,19 @@
-pageflow.StorylinesCollection = Backbone.Collection.extend({
+import Backbone from 'backbone';
+
+import {Storyline} from '../models/Storyline';
+import {orderedCollection} from './mixins/orderedCollection';
+
+import {state} from '$state';
+
+export const StorylinesCollection = Backbone.Collection.extend({
   autoConsolidatePositions: false,
 
-  mixins: [pageflow.orderedCollection],
+  mixins: [orderedCollection],
 
-  model: pageflow.Storyline,
+  model: Storyline,
 
   url: function() {
-    return '/entries/' + pageflow.entry.get('id') + '/storylines';
+    return '/entries/' + state.entry.get('id') + '/storylines';
   },
 
   initialize: function() {

@@ -1,8 +1,22 @@
-pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/change_theme_dialog',
+import $ from 'jquery';
+import Backbone from 'backbone';
+import Marionette from 'backbone.marionette';
+
+import {CollectionView} from '$pageflow/ui';
+
+import {app} from '../app';
+
+import {LoadingView} from './LoadingView';
+import {ThemeItemView} from './ThemeItemView';
+import {dialogView} from './mixins/dialogView';
+
+import template from '../../templates/changeThemeDialog.jst';
+
+export const ChangeThemeDialogView = Marionette.ItemView.extend({
+  template,
   className: 'change_theme dialog editor',
 
-  mixins: [pageflow.dialogView],
+  mixins: [dialogView],
 
   ui: {
     content: '.content',
@@ -27,10 +41,10 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
 
   onRender: function() {
     var themes = this.options.themes;
-    this.themesView = new pageflow.CollectionView({
+    this.themesView = new CollectionView({
       collection: themes,
       tagName: 'ul',
-      itemViewConstructor: pageflow.ThemeItemView,
+      itemViewConstructor: ThemeItemView,
       itemViewOptions: {
         selection: this.selection,
         onUse: this.options.onUse,
@@ -41,7 +55,7 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
 
     this.ui.themesPanel.append(this.subview(this.themesView).el);
 
-    this.ui.previewPanel.append(this.subview(new pageflow.LoadingView({tagName: 'div'})).el);
+    this.ui.previewPanel.append(this.subview(new LoadingView({tagName: 'div'})).el);
 
     this.update();
   },
@@ -58,19 +72,19 @@ pageflow.ChangeThemeDialogView = Backbone.Marionette.ItemView.extend({
   }
 });
 
-pageflow.ChangeThemeDialogView.changeTheme = function(options) {
+ChangeThemeDialogView.changeTheme = function(options) {
   return $.Deferred(function(deferred) {
     options.onUse = function(theme) {
       deferred.resolve(theme);
       view.close();
     };
 
-    var view = new pageflow.ChangeThemeDialogView(options);
+    var view = new ChangeThemeDialogView(options);
 
     view.on('close', function() {
       deferred.reject();
     });
 
-    pageflow.app.dialogRegion.show(view.render());
+    app.dialogRegion.show(view.render());
   }).promise();
 };

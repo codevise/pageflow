@@ -1,49 +1,68 @@
-pageflow.app.addInitializer(function(options) {
-  pageflow.files = pageflow.FilesCollection.createForFileTypes(pageflow.editor.fileTypes, options.files);
+import Backbone from 'backbone';
+import _ from 'underscore';
 
-  pageflow.imageFiles = pageflow.files.image_files;
-  pageflow.videoFiles = pageflow.files.video_files;
-  pageflow.audioFiles = pageflow.files.audio_files;
-  pageflow.textTrackFiles = pageflow.files.text_track_files;
+import {ChaptersCollection} from '../collections/ChaptersCollection';
+import {Entry} from '../models/Entry';
+import {FilesCollection} from '../collections/FilesCollection';
+import {PagesCollection} from '../collections/PagesCollection';
+import {PreviewEntryData} from '../models/PreviewEntryData';
+import {SavingRecordsCollection} from '../collections/SavingRecordsCollection';
+import {StorylineOrdering} from '../models/StorylineOrdering';
+import {StorylinesCollection} from '../collections/StorylinesCollection';
+import {ThemesCollection} from '../collections/ThemesCollection';
+import {Theming} from '../models/Theming';
+import {WidgetsCollection} from '../collections/WidgetsCollection';
+import {app} from '../app';
+import {editor} from '../base';
 
-  var widgets = new pageflow.WidgetsCollection(options.widgets, {
-    widgetTypes: pageflow.editor.widgetTypes
+import {state} from '$state';
+
+app.addInitializer(function(options) {
+  state.files = FilesCollection.createForFileTypes(editor.fileTypes, options.files);
+
+  state.imageFiles = state.files.image_files;
+  state.videoFiles = state.files.video_files;
+  state.audioFiles = state.files.audio_files;
+  state.textTrackFiles = state.files.text_track_files;
+
+  var widgets = new WidgetsCollection(options.widgets, {
+    widgetTypes: editor.widgetTypes
   });
 
-  pageflow.themes = new pageflow.ThemesCollection(options.themes);
-  pageflow.pages = new pageflow.PagesCollection(options.pages);
-  pageflow.chapters = new pageflow.ChaptersCollection(options.chapters);
-  pageflow.storylines = new pageflow.StorylinesCollection(options.storylines);
-  pageflow.entry = new pageflow.Entry(options.entry, {widgets: widgets});
-  pageflow.theming = new pageflow.Theming(options.theming);
-  pageflow.account = new Backbone.Model(options.account);
+  state.themes = new ThemesCollection(options.themes);
+  state.pages = new PagesCollection(options.pages);
+  state.chapters = new ChaptersCollection(options.chapters);
+  state.storylines = new StorylinesCollection(options.storylines);
+  state.entry = new Entry(options.entry, {widgets: widgets});
+  state.theming = new Theming(options.theming);
+  state.account = new Backbone.Model(options.account);
 
-  widgets.subject = pageflow.entry;
+  widgets.subject = state.entry;
 
-  pageflow.entryData = new pageflow.PreviewEntryData({
-    entry: pageflow.entry,
-    storylines: pageflow.storylines,
-    chapters: pageflow.chapters,
-    pages: pageflow.pages
+  state.entryData = new PreviewEntryData({
+    entry: state.entry,
+    storylines: state.storylines,
+    chapters: state.chapters,
+    pages: state.pages
   });
 
-  pageflow.storylineOrdering = new pageflow.StorylineOrdering(pageflow.storylines, pageflow.pages);
-  pageflow.storylineOrdering.sort({silent: true});
-  pageflow.storylineOrdering.watch();
+  state.storylineOrdering = new StorylineOrdering(state.storylines, state.pages);
+  state.storylineOrdering.sort({silent: true});
+  state.storylineOrdering.watch();
 
-  pageflow.pages.sort();
+  state.pages.sort();
 
-  pageflow.storylines.on('sort', _.debounce(function() {
-    pageflow.storylines.saveOrder();
+  state.storylines.on('sort', _.debounce(function() {
+    state.storylines.saveOrder();
   }, 100));
 
-  pageflow.editor.failures.watch(pageflow.entry);
-  pageflow.editor.failures.watch(pageflow.pages);
-  pageflow.editor.failures.watch(pageflow.chapters);
+  editor.failures.watch(state.entry);
+  editor.failures.watch(state.pages);
+  editor.failures.watch(state.chapters);
 
-  pageflow.savingRecords = new pageflow.SavingRecordsCollection();
-  pageflow.savingRecords.watch(pageflow.pages);
-  pageflow.savingRecords.watch(pageflow.chapters);
+  state.savingRecords = new SavingRecordsCollection();
+  state.savingRecords.watch(state.pages);
+  state.savingRecords.watch(state.chapters);
 
   pageflow.events.trigger('seed:loaded');
 });

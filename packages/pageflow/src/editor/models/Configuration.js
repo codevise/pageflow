@@ -1,8 +1,16 @@
-pageflow.Configuration = Backbone.Model.extend({
+import $ from 'jquery';
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {transientReferences} from './mixins/transientReferences';
+
+import {state} from '$state';
+
+export const Configuration = Backbone.Model.extend({
   modelName: 'page',
   i18nKey: 'pageflow/page',
 
-  mixins: [pageflow.transientReferences],
+  mixins: [transientReferences],
 
   defaults: {
     gradient_opacity: 100,
@@ -36,7 +44,7 @@ pageflow.Configuration = Backbone.Model.extend({
   },
 
   getImageFile: function(attribute) {
-    return this.getReference(attribute, pageflow.imageFiles);
+    return this.getReference(attribute, state.imageFiles);
   },
 
   getFilePosition: function(attribute, coord) {
@@ -73,7 +81,7 @@ pageflow.Configuration = Backbone.Model.extend({
   },
 
   getVideoFile: function(attribute) {
-    return this.getReference(attribute, pageflow.videoFiles);
+    return this.getReference(attribute, state.videoFiles);
   },
 
   getAudioFileSources: function(attribute) {
@@ -87,12 +95,12 @@ pageflow.Configuration = Backbone.Model.extend({
   },
 
   getAudioFile: function(attribute) {
-    return this.getReference(attribute, pageflow.audioFiles);
+    return this.getReference(attribute, state.audioFiles);
   },
 
   getVideoPosterUrl: function() {
-    var posterFile = this.getReference('poster_image_id', pageflow.imageFiles),
-        videoFile = this.getReference('video_file_id', pageflow.videoFiles);
+    var posterFile = this.getReference('poster_image_id', state.imageFiles),
+        videoFile = this.getReference('video_file_id', state.videoFiles);
 
     if (posterFile) {
       return posterFile.get('url');

@@ -1,5 +1,23 @@
-pageflow.FilesView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/files',
+import Backbone from 'backbone';
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {TabsView} from '$pageflow/ui';
+
+import {app} from '../app';
+import {editor} from '../base';
+
+import {FilesExplorerView} from './FilesExplorerView';
+import {FilteredFilesView} from './FilteredFilesView';
+import {SelectButtonView} from './SelectButtonView';
+
+import {state} from '$state';
+
+import template from '../../templates/files.jst';
+
+export const FilesView = Marionette.ItemView.extend({
+  template,
   className: 'manage_files',
 
   events: {
@@ -19,9 +37,9 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
         {
           label: I18n.t('pageflow.editor.views.files_view.reuse'),
           handler: function() {
-            pageflow.FilesExplorerView.open({
+            FilesExplorerView.open({
               callback: function(otherEntry, file) {
-                pageflow.entry.reuseFile(otherEntry, file);
+                state.entry.reuseFile(otherEntry, file);
               }
             });
           }
@@ -29,15 +47,15 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
       ]
     });
 
-    this.$el.append(this.subview(new pageflow.SelectButtonView({model: this.addFileModel })).el);
+    this.$el.append(this.subview(new SelectButtonView({model: this.addFileModel })).el);
 
-    this.tabsView = new pageflow.TabsView({
+    this.tabsView = new TabsView({
       model: this.model,
       i18n: 'pageflow.editor.files.tabs',
       defaultTab: this.options.tabName
     });
 
-    pageflow.editor.fileTypes.each(function(fileType) {
+    editor.fileTypes.each(function(fileType) {
       if (fileType.topLevelType) {
         this.tab(fileType);
       }
@@ -50,8 +68,8 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
     var selectionMode = this.options.tabName === fileType.collectionName;
 
     this.tabsView.tab(fileType.collectionName, _.bind(function() {
-      return this.subview(new pageflow.FilteredFilesView({
-        entry: pageflow.entry,
+      return this.subview(new FilteredFilesView({
+        entry: state.entry,
         fileType: fileType,
         selectionHandler: selectionMode && this.options.selectionHandler,
         filterName: selectionMode && this.options.filterName
@@ -73,6 +91,6 @@ pageflow.FilesView = Backbone.Marionette.ItemView.extend({
   },
 
   upload: function() {
-    pageflow.app.trigger('request-upload');
+    app.trigger('request-upload');
   }
 });

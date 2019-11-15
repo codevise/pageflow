@@ -1,4 +1,6 @@
-pageflow.BackgroundImageEmbeddedView = Backbone.Marionette.View.extend({
+import Marionette from 'backbone.marionette';
+
+export const BackgroundImageEmbeddedView = Marionette.View.extend({
   modelEvents: {
     'change': 'update'
   },

@@ -1,4 +1,4 @@
-pageflow.failureTracking = {
+export const failureTracking = {
   initialize: function() {
     this._saveFailed = false;
 

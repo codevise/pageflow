@@ -1,5 +1,20 @@
-pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/entry_preview',
+import $ from 'jquery';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {CollectionView} from '$pageflow/ui';
+
+import {app} from '../app';
+
+import {BlankEntryView} from './BlankEntryView';
+import {PagePreviewView} from './PagePreviewView';
+
+import {state} from '$state';
+
+import template from '../../templates/entryPreview.jst';
+
+export const EntryPreviewView = Marionette.ItemView.extend({
+  template,
   className: 'entry_preview',
 
   ui: {
@@ -18,33 +33,33 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.pageViews = this.subview(new pageflow.CollectionView({
+    this.pageViews = this.subview(new CollectionView({
       el: this.ui.entry,
       collection: this.pages,
-      itemViewConstructor: pageflow.PagePreviewView,
-      blankSlateViewConstructor: pageflow.BlankEntryView
+      itemViewConstructor: PagePreviewView,
+      blankSlateViewConstructor: BlankEntryView
     }));
 
     this.ui.entry.append($('#indicators_seed > *'));
 
     this.update();
 
-    this.listenTo(pageflow.entry, 'sync:order sync:widgets', this.update);
-    this.listenTo(pageflow.entry, 'change:configuration', function() {
-      pageflow.entry.once('sync', this.update, this);
+    this.listenTo(state.entry, 'sync:order sync:widgets', this.update);
+    this.listenTo(state.entry, 'change:configuration', function() {
+      state.entry.once('sync', this.update, this);
     });
-    this.listenTo(pageflow.entry, 'change:emulation_mode', this.updateEmulationMode);
+    this.listenTo(state.entry, 'change:emulation_mode', this.updateEmulationMode);
 
-    this.listenTo(pageflow.storylines, 'sync', this.update);
-    this.listenTo(pageflow.chapters, 'sync', this.update);
-    this.listenTo(pageflow.pages, 'sync', this.update);
+    this.listenTo(state.storylines, 'sync', this.update);
+    this.listenTo(state.chapters, 'sync', this.update);
+    this.listenTo(state.pages, 'sync', this.update);
 
-    this.listenTo(pageflow.audioFiles, 'sync', this.update);
-    this.listenTo(pageflow.imageFiles, 'sync', this.update);
-    this.listenTo(pageflow.videoFiles, 'sync', this.update);
+    this.listenTo(state.audioFiles, 'sync', this.update);
+    this.listenTo(state.imageFiles, 'sync', this.update);
+    this.listenTo(state.videoFiles, 'sync', this.update);
 
     this.listenTo(pageflow.events, 'page:changing', function(event) {
-      if (pageflow.entry.get('emulation_mode')) {
+      if (state.entry.get('emulation_mode')) {
         this.ui.navigationDisabledHint.css('opacity', 1);
 
         clearTimeout(this.navigationDisabledHintTimeout);
@@ -64,7 +79,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   onShow: function() {
     var slideshow = pageflow.Slideshow.setup({
       element: this.ui.entry,
-      enabledFeatureNames: pageflow.entry.get('enabled_feature_names'),
+      enabledFeatureNames: state.entry.get('enabled_feature_names'),
       simulateHistory: true
     });
 
@@ -80,7 +95,7 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
 
     this.listenTo(this.pages, 'edit', function(model) {
       if (this.lastEditedPage != model) {
-        pageflow.entry.unset('emulation_mode');
+        state.entry.unset('emulation_mode');
       }
 
       this.lastEditedPage = model;
@@ -88,12 +103,12 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
       slideshow.goTo(this.pageViews.itemViews.findByModel(model).$el);
     });
 
-    this.listenTo(pageflow.app, 'resize', function() {
+    this.listenTo(app, 'resize', function() {
       slideshow.triggerResizeHooks();
       this.updateSimulatedMediaQueryClasses();
     });
 
-    this.listenTo(pageflow.pages, 'change:template', function() {
+    this.listenTo(state.pages, 'change:template', function() {
       this.updateEmulationModeSupport(slideshow.currentPagePermaId());
     });
 
@@ -101,9 +116,9 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   },
 
   updateEmulationModeSupport: function(permaId) {
-    var model = pageflow.pages.getByPermaId(permaId);
+    var model = state.pages.getByPermaId(permaId);
 
-    pageflow.entry.set('current_page_supports_emulation_mode',
+    state.entry.set('current_page_supports_emulation_mode',
                        model && model.pageType().supportsPhoneEmulation());
   },
 
@@ -180,15 +195,15 @@ pageflow.EntryPreviewView = Backbone.Marionette.ItemView.extend({
   },
 
   updateEmulationMode: function() {
-    if (pageflow.entry.previous('emulation_mode')) {
-      this.$el.removeClass(this.emulationModeClassName(pageflow.entry.previous('emulation_mode')));
+    if (state.entry.previous('emulation_mode')) {
+      this.$el.removeClass(this.emulationModeClassName(state.entry.previous('emulation_mode')));
     }
 
-    if (pageflow.entry.get('emulation_mode')) {
-      this.$el.addClass(this.emulationModeClassName(pageflow.entry.get('emulation_mode')));
+    if (state.entry.get('emulation_mode')) {
+      this.$el.addClass(this.emulationModeClassName(state.entry.get('emulation_mode')));
     }
 
-    pageflow.app.trigger('resize');
+    app.trigger('resize');
   },
 
   emulationModeClassName: function(mode) {

@@ -1,3 +1,9 @@
+import $ from 'jquery';
+import Marionette from 'backbone.marionette';
+
+import {EditorApi} from './api';
+import {app} from './app';
+
 //= require cocktail
 //= require backbone.marionette
 //= require pageflow/ui
@@ -66,17 +72,17 @@
  * @module pageflow/editor
  */
 
-pageflow.app = new Backbone.Marionette.Application();
-pageflow.editor = new pageflow.EditorApi();
+export const app = new Marionette.Application();
+export const editor = new EditorApi();
 
-pageflow.startEditor = function(options) {
+export const startEditor = function(options) {
   jQuery(function() {
     $.when(
       $.getJSON('/editor/entries/' + options.entryId + '/seed'),
       pageflow.browser.detectFeatures()
     )
       .done(function(result) {
-        pageflow.app.start(result[0]);
+        app.start(result[0]);
       })
       .fail(function() {
         alert('Error while starting editor.');

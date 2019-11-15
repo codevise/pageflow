@@ -1,4 +1,11 @@
-pageflow.FileType = pageflow.Object.extend({
+import _ from 'underscore';
+
+import {Object} from '$pageflow/ui';
+
+import {EditFileView} from '../views/EditFileView';
+import {TextFileMetaDataItemValueView} from '../views/TextFileMetaDataItemValueView';
+
+export const FileType = Object.extend({
   initialize: function(options) {
     this.model = options.model;
     this.typeName = options.typeName;
@@ -18,7 +25,7 @@ pageflow.FileType = pageflow.Object.extend({
     this.metaDataAttributes = [
       {
         name: 'rights',
-        valueView: pageflow.TextFileMetaDataItemValueView,
+        valueView: TextFileMetaDataItemValueView,
         valueViewOptions: {
           settingsDialogTabLink: 'general'
         }
@@ -28,7 +35,7 @@ pageflow.FileType = pageflow.Object.extend({
     this.settingsDialogTabs = [
       {
         name: 'general',
-        view: pageflow.EditFileView
+        view: EditFileView
       }
     ].concat(options.settingsDialogTabs || []);
 

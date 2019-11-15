@@ -1,4 +1,7 @@
-pageflow.Theme = Backbone.Model.extend({
+import Backbone from 'backbone';
+import I18n from 'i18n-js';
+
+export const Theme = Backbone.Model.extend({
   title: function() {
     return I18n.t('pageflow.' + this.get('name') + '_theme.name');
   },

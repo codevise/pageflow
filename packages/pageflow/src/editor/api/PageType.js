@@ -1,4 +1,10 @@
-pageflow.PageType = pageflow.Object.extend({
+import _ from 'underscore';
+
+import {ConfigurationEditorView, Object} from '$pageflow/ui';
+
+import {PageLinkConfigurationEditorView} from '../views/PageLinkConfigurationEditorView';
+
+export const PageType = Object.extend({
   initialize: function(name, options, seed) {
     this.name = name;
     this.options = options;
@@ -21,7 +27,7 @@ pageflow.PageType = pageflow.Object.extend({
 
   configurationEditorView: function() {
     return this.options.configurationEditorView ||
-      pageflow.ConfigurationEditorView.repository[this.name];
+      ConfigurationEditorView.repository[this.name];
   },
 
   embeddedViews: function() {
@@ -46,7 +52,7 @@ pageflow.PageType = pageflow.Object.extend({
 
   createPageLinkConfigurationEditorView: function(options) {
     var constructor = this.options.pageLinkConfigurationEditorView ||
-      pageflow.PageLinkConfigurationEditorView;
+      PageLinkConfigurationEditorView;
 
     return new constructor(_.extend({
       tabTranslationKeyPrefixes: [

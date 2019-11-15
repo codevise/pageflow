@@ -1,5 +1,10 @@
-pageflow.BackgroundPositioningSlidersView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/background_positioning_sliders',
+import $ from 'jquery';
+import Marionette from 'backbone.marionette';
+
+import template from '../../templates/backgroundPositioningSliders.jst';
+
+export const BackgroundPositioningSlidersView = Marionette.ItemView.extend({
+  template,
   className: '',
 
   ui: {

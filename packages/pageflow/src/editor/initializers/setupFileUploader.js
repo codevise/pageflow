@@ -1,10 +1,18 @@
-pageflow.app.addInitializer(function(options) {
-  pageflow.fileUploader = new pageflow.FileUploader({
-    entry: pageflow.entry,
-    fileTypes: pageflow.editor.fileTypes
+import {FileUploader} from '../models/FileUploader';
+import {app} from '../app';
+import {editor} from '../base';
+
+import {ConfirmUploadView} from '../views/ConfirmUploadView';
+
+import {state} from '$state';
+
+app.addInitializer(function(options) {
+  state.fileUploader = new FileUploader({
+    entry: state.entry,
+    fileTypes: editor.fileTypes
   });
 
-  pageflow.ConfirmUploadView.watch(pageflow.fileUploader,
-                                   pageflow.editor.fileTypes,
-                                   pageflow.files);
+  ConfirmUploadView.watch(state.fileUploader,
+                                   editor.fileTypes,
+                                   state.files);
 });

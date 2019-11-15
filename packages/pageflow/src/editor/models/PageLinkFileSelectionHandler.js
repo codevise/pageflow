@@ -1,5 +1,9 @@
-pageflow.PageLinkFileSelectionHandler = function(options) {
-  var page = pageflow.pages.getByPermaId(options.id.split(':')[0]);
+import {editor} from '../base';
+
+import {state} from '$state';
+
+export const PageLinkFileSelectionHandler = function(options) {
+  var page = state.pages.getByPermaId(options.id.split(':')[0]);
   var pageLink = page.pageLinks().get(options.id);
 
   this.call = function(file) {
@@ -11,4 +15,4 @@ pageflow.PageLinkFileSelectionHandler = function(options) {
   };
 };
 
-pageflow.editor.registerFileSelectionHandler('pageLink', pageflow.PageLinkFileSelectionHandler);
+editor.registerFileSelectionHandler('pageLink', PageLinkFileSelectionHandler);

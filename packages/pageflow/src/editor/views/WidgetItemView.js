@@ -1,5 +1,14 @@
-pageflow.WidgetItemView = Backbone.Marionette.Layout.extend({
-  template: 'templates/widget_item',
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {SelectInputView} from '$pageflow/ui';
+
+import {editor} from '../base';
+
+import template from '../../templates/widgetItem.jst';
+
+export const WidgetItemView = Marionette.Layout.extend({
+  template,
   tagName: 'li',
   className: 'widget_item',
 
@@ -17,7 +26,7 @@ pageflow.WidgetItemView = Backbone.Marionette.Layout.extend({
 
   events: {
     'click .settings': function() {
-      pageflow.editor.navigate('/widgets/' + this.model.role(), {trigger: true});
+      editor.navigate('/widgets/' + this.model.role(), {trigger: true});
       return false;
     },
   },
@@ -26,7 +35,7 @@ pageflow.WidgetItemView = Backbone.Marionette.Layout.extend({
     var widgetTypes = this.options.widgetTypes.findAllByRole(this.model.role()) || [];
     var isOptional = this.options.widgetTypes.isOptional(this.model.role());
 
-    this.widgetTypeContainer.show(new pageflow.SelectInputView({
+    this.widgetTypeContainer.show(new SelectInputView({
       model: this.model,
       propertyName: 'type_name',
       label: I18n.t('pageflow.widgets.roles.' + this.model.role()),

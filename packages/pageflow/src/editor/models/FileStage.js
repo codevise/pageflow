@@ -1,4 +1,7 @@
-pageflow.FileStage = Backbone.Model.extend({
+import Backbone from 'backbone';
+import I18n from 'i18n-js';
+
+export const FileStage = Backbone.Model.extend({
   initialize: function(attributes,  options) {
     this.file = options.file;
 

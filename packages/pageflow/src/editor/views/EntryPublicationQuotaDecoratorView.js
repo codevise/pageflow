@@ -1,5 +1,10 @@
-pageflow.EntryPublicationQuotaDecoratorView = Backbone.Marionette.Layout.extend({
-  template: 'templates/entry_publication_quota_decorator',
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import template from '../../templates/entryPublicationQuotaDecorator.jst';
+
+export const EntryPublicationQuotaDecoratorView = Marionette.Layout.extend({
+  template,
   className: 'quota_decorator',
 
   regions: {

@@ -1,8 +1,20 @@
-pageflow.BackgroundPositioningView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/background_positioning',
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {app} from '../app';
+
+import {BackgroundPositioningPreviewView} from './BackgroundPositioningPreviewView';
+import {BackgroundPositioningSlidersView} from './BackgroundPositioningSlidersView';
+import {dialogView} from './mixins/dialogView';
+
+import template from '../../templates/backgroundPositioning.jst';
+
+export const BackgroundPositioningView = Marionette.ItemView.extend({
+  template,
   className: 'background_positioning dialog',
 
-  mixins: [pageflow.dialogView],
+  mixins: [dialogView],
 
   ui: {
     previews: '.previews > div',
@@ -29,7 +41,7 @@ pageflow.BackgroundPositioningView = Backbone.Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.ui.wrapper.append(this.subview(new pageflow.BackgroundPositioningSlidersView({
+    this.ui.wrapper.append(this.subview(new BackgroundPositioningSlidersView({
       model: this.transientModel,
       propertyName: this.options.propertyName,
       filesCollection: this.options.filesCollection
@@ -50,7 +62,7 @@ pageflow.BackgroundPositioningView = Backbone.Marionette.ItemView.extend({
     var view = this;
 
     _.each(view.previews, function(ratio, name) {
-      view.ui.previews.append(view.subview(new pageflow.BackgroundPositioningPreviewView({
+      view.ui.previews.append(view.subview(new BackgroundPositioningPreviewView({
         model: view.transientModel,
         propertyName: view.options.propertyName,
         filesCollection: view.options.filesCollection,
@@ -62,6 +74,6 @@ pageflow.BackgroundPositioningView = Backbone.Marionette.ItemView.extend({
   }
 });
 
-pageflow.BackgroundPositioningView.open = function(options) {
-  pageflow.app.dialogRegion.show(new pageflow.BackgroundPositioningView(options));
+BackgroundPositioningView.open = function(options) {
+  app.dialogRegion.show(new BackgroundPositioningView(options));
 };

@@ -1,4 +1,12 @@
-pageflow.UploadError = pageflow.Object.extend({
+import Cocktail from 'cocktail';
+import I18n from 'i18n-js';
+import _ from 'underscore';
+
+import {Object} from '$pageflow/ui';
+
+import {InvalidNestedTypeError, NestedTypeError, UploadError, validFileTypeTranslationList} from './Errors';
+
+export const UploadError = Object.extend({
   setMessage: function(options) {
     this.upload = options.upload;
 
@@ -19,7 +27,7 @@ pageflow.UploadError = pageflow.Object.extend({
   }
 });
 
-pageflow.UnmatchedUploadError = pageflow.UploadError.extend({
+export const UnmatchedUploadError = UploadError.extend({
   name: 'UnmatchedUploadError',
 
   initialize: function(upload) {
@@ -28,7 +36,7 @@ pageflow.UnmatchedUploadError = pageflow.UploadError.extend({
   }
 });
 
-pageflow.validFileTypeTranslationList = {
+export const validFileTypeTranslationList = {
   validFileTypeTranslations: function(validFileTypes) {
     return _.map(validFileTypes,
             function(validFileType) {
@@ -37,7 +45,7 @@ pageflow.validFileTypeTranslationList = {
   }
 };
 
-pageflow.NestedTypeError = pageflow.UploadError.extend({
+export const NestedTypeError = UploadError.extend({
   name: 'NestedTypeError',
 
   initialize: function(upload, options) {
@@ -57,9 +65,9 @@ pageflow.NestedTypeError = pageflow.UploadError.extend({
                      validList: validParentFileTypeTranslations});
   }
 });
-Cocktail.mixin(pageflow.NestedTypeError, pageflow.validFileTypeTranslationList);
+Cocktail.mixin(NestedTypeError, validFileTypeTranslationList);
 
-pageflow.InvalidNestedTypeError = pageflow.UploadError.extend({
+export const InvalidNestedTypeError = UploadError.extend({
   name: 'InvalidNestedTypeError',
 
   initialize: function(upload, options) {
@@ -77,4 +85,4 @@ pageflow.InvalidNestedTypeError = pageflow.UploadError.extend({
                      validList: validFileTypeTranslations});
   }
 });
-Cocktail.mixin(pageflow.InvalidNestedTypeError, pageflow.validFileTypeTranslationList);
+Cocktail.mixin(InvalidNestedTypeError, validFileTypeTranslationList);

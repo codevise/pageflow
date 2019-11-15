@@ -1,4 +1,10 @@
-pageflow.stageProvider = {
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {FileStage} from '../FileStage';
+import {SubsetCollection} from '../../collections/SubsetCollection';
+
+export const stageProvider = {
   initialize: function() {
     var finishedStates = [this.readyState];
     var stages = _.result(this, 'stages') || [];
@@ -9,13 +15,13 @@ pageflow.stageProvider = {
       options.file = this;
       options.finishedStates = finishedStates;
 
-      var fileStage = new pageflow.FileStage({name: name}, options);
+      var fileStage = new FileStage({name: name}, options);
       finishedStates = finishedStates.concat(fileStage.nonFinishedStates);
 
       return fileStage;
     }, this).reverse().value());
 
-    this.unfinishedStages = new pageflow.SubsetCollection({
+    this.unfinishedStages = new SubsetCollection({
       parent: this.stages,
       watchAttribute: 'finished',
 

@@ -1,4 +1,11 @@
-pageflow.FilesCollection = Backbone.Collection.extend({
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {SubsetCollection} from './SubsetCollection';
+
+import {state} from '$state';
+
+export const FilesCollection = Backbone.Collection.extend({
   initialize: function(models, options) {
     options = options || {};
 
@@ -37,11 +44,11 @@ pageflow.FilesCollection = Backbone.Collection.extend({
   },
 
   getEntry: function() {
-    return this.entry || pageflow.entry;
+    return this.entry || state.entry;
   },
 
   confirmable: function() {
-    return new pageflow.SubsetCollection({
+    return new SubsetCollection({
       parent: this,
       watchAttribute: 'state',
 
@@ -53,7 +60,7 @@ pageflow.FilesCollection = Backbone.Collection.extend({
 
   uploadable: function() {
     this._uploadableSubsetCollection = this._uploadableSubsetCollection ||
-      new pageflow.SubsetCollection({
+      new SubsetCollection({
         parent: this,
         watchAttribute: 'state',
 
@@ -66,7 +73,7 @@ pageflow.FilesCollection = Backbone.Collection.extend({
   },
 
   withFilter: function(filterName) {
-    return new pageflow.SubsetCollection({
+    return new SubsetCollection({
       parent: this,
       watchAttribute: 'configuration',
 
@@ -75,9 +82,9 @@ pageflow.FilesCollection = Backbone.Collection.extend({
   }
 });
 
-pageflow.FilesCollection.createForFileTypes = function(fileTypes, files, options) {
+FilesCollection.createForFileTypes = function(fileTypes, files, options) {
   return fileTypes.reduce(function(result, fileType) {
-    result[fileType.collectionName] = pageflow.FilesCollection.createForFileType(
+    result[fileType.collectionName] = FilesCollection.createForFileType(
       fileType,
       files[fileType.collectionName],
       options
@@ -86,8 +93,8 @@ pageflow.FilesCollection.createForFileTypes = function(fileTypes, files, options
   }, {});
 };
 
-pageflow.FilesCollection.createForFileType = function(fileType, files, options) {
-  return new pageflow.FilesCollection(
+FilesCollection.createForFileType = function(fileType, files, options) {
+  return new FilesCollection(
     files,
     _.extend({
       fileType: fileType,

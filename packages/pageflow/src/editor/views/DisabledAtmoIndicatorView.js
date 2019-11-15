@@ -1,4 +1,7 @@
-pageflow.DisabledAtmoIndicatorView = Backbone.Marionette.View.extend({
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+export const DisabledAtmoIndicatorView = Marionette.View.extend({
   className: 'disabled_atmo_indicator',
 
   events: {

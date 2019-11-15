@@ -1,4 +1,6 @@
-pageflow.SavingRecordsCollection = pageflow.MultiCollection.extend({
+import {MultiCollection} from './MultiCollection';
+
+export const SavingRecordsCollection = MultiCollection.extend({
   watch: function(collection) {
     var that = this;
 

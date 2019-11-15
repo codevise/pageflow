@@ -1,5 +1,9 @@
-pageflow.ThemesCollection = Backbone.Collection.extend({
-  model: pageflow.Theme,
+import Backbone from 'backbone';
+
+import {Theme} from '../models/Theme';
+
+export const ThemesCollection = Backbone.Collection.extend({
+  model: Theme,
 
   findByName: function(name) {
     var theme = this.findWhere({name: name});

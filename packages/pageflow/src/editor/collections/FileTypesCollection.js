@@ -1,4 +1,10 @@
-pageflow.FileTypesCollection = pageflow.Object.extend({
+import _ from 'underscore';
+
+import {Object} from '$pageflow/ui';
+
+import {UnmatchedUploadError} from '../api/Errors';
+
+export const FileTypesCollection = Object.extend({
   initialize: function(fileTypes) {
     this._fileTypes = fileTypes;
   },
@@ -9,7 +15,7 @@ pageflow.FileTypesCollection = pageflow.Object.extend({
     });
 
     if (!result) {
-      throw(new pageflow.UnmatchedUploadError(upload));
+      throw(new UnmatchedUploadError(upload));
     }
 
     return result;
@@ -29,7 +35,7 @@ pageflow.FileTypesCollection = pageflow.Object.extend({
 });
 
 _.each(['each', 'map', 'reduce', 'first', 'find', 'contains', 'filter'], function(method) {
-  pageflow.FileTypesCollection.prototype[method] = function() {
+  FileTypesCollection.prototype[method] = function() {
     var args = Array.prototype.slice.call(arguments);
     args.unshift(this._fileTypes);
     return _[method].apply(_, args);

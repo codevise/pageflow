@@ -1,5 +1,9 @@
-pageflow.EditWidgetView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/edit_widget',
+import Marionette from 'backbone.marionette';
+
+import template from '../../templates/editWidget.jst';
+
+export const EditWidgetView = Marionette.ItemView.extend({
+  template,
   className: 'edit_widget',
 
   events: {
@@ -13,7 +17,7 @@ pageflow.EditWidgetView = Backbone.Marionette.ItemView.extend({
   },
 
   onClose: function() {
-    Backbone.Marionette.ItemView.prototype.onClose.call(this);
+    Marionette.ItemView.prototype.onClose.call(this);
     this.model.set('editing', false);
   },
 

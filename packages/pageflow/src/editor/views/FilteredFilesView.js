@@ -1,5 +1,18 @@
-pageflow.FilteredFilesView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/filtered_files',
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {CollectionView, findTranslation} from '$pageflow/ui';
+
+import {editor} from '../base';
+
+import {FileItemView} from './FileItemView';
+
+import template from '../../templates/filteredFiles.jst';
+
+import template from '../../templates/filesBlankSlate.jst';
+
+export const FilteredFilesView = Marionette.ItemView.extend({
+  template,
   className: 'filtered_files',
 
   ui: {
@@ -9,7 +22,7 @@ pageflow.FilteredFilesView = Backbone.Marionette.ItemView.extend({
 
   events: {
     'click .filtered_files-reset_filter': function() {
-      pageflow.editor.navigate('/files/' + this.options.fileType.collectionName, {trigger: true});
+      editor.navigate('/files/' + this.options.fileType.collectionName, {trigger: true});
       return false;
     }
   },
@@ -29,17 +42,17 @@ pageflow.FilteredFilesView = Backbone.Marionette.ItemView.extend({
       blankSlateText = this.filterTranslation('blank_slate');
     }
 
-    this.appendSubview(new pageflow.CollectionView({
+    this.appendSubview(new CollectionView({
       tagName: 'ul',
       className: 'files expandable',
       collection: collection,
-      itemViewConstructor: pageflow.FileItemView,
+      itemViewConstructor: FileItemView,
       itemViewOptions: {
         metaDataAttributes: fileType.metaDataAttributes,
         selectionHandler: this.options.selectionHandler,
       },
-      blankSlateViewConstructor: Backbone.Marionette.ItemView.extend({
-        template: 'templates/files_blank_slate',
+      blankSlateViewConstructor: Marionette.ItemView.extend({
+        template,
         serializeData: function(){
           return {
             text: blankSlateText
@@ -58,7 +71,7 @@ pageflow.FilteredFilesView = Backbone.Marionette.ItemView.extend({
   filterTranslation: function(keyName, options) {
     var filterName = this.options.filterName;
 
-    return pageflow.i18nUtils.findTranslation([
+    return findTranslation([
       'pageflow.editor.files.filters.' +
         this.options.fileType.collectionName + '.' +
         filterName + '.' +

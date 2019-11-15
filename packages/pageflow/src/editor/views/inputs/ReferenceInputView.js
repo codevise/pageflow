@@ -1,15 +1,24 @@
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {inputView} from '$pageflow/ui';
+
+import {ModelThumbnailView} from '../ModelThumbnailView';
+
+import template from '../../../pageflow/editor/templates/inputs/reference.jst';
+
 /**
  * Base class for input views that reference models.
  *
  * @class
  * @memberof module:pageflow/editor
  */
-pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
-/** @lends module:pageflow/editor.pageflow.ReferenceInputView# */{
+export const ReferenceInputView = Marionette.ItemView.extend(
+/** @lends module:pageflow/editor.ReferenceInputView# */{
 
-  mixins: [pageflow.inputView],
+  mixins: [inputView],
 
-  template: 'pageflow/editor/templates/inputs/reference',
+  template,
   className: 'reference_input',
 
   ui: {
@@ -69,7 +78,7 @@ pageflow.ReferenceInputView = Backbone.Marionette.ItemView.extend(
   },
 
   createThumbnailView: function(target) {
-    return new pageflow.ModelThumbnailView({
+    return new ModelThumbnailView({
       model: target
     });
   },

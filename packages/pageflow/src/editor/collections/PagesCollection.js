@@ -1,5 +1,11 @@
-pageflow.PagesCollection = Backbone.Collection.extend({
-  model: pageflow.Page,
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {Page} from '../models/Page';
+import {SubsetCollection} from './SubsetCollection';
+
+export const PagesCollection = Backbone.Collection.extend({
+  model: Page,
 
   url: '/pages',
 
@@ -33,7 +39,7 @@ pageflow.PagesCollection = Backbone.Collection.extend({
 
   persisted: function() {
     if (!this._persisted) {
-      this._persisted = new pageflow.SubsetCollection({
+      this._persisted = new SubsetCollection({
         parent: this,
         sortOnParentSort: true,
 

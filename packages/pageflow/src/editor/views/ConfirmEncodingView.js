@@ -1,5 +1,16 @@
-pageflow.ConfirmEncodingView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/confirm_encoding',
+import Marionette from 'backbone.marionette';
+
+import {CollectionView} from '$pageflow/ui';
+
+import {BackButtonDecoratorView} from './BackButtonDecoratorView';
+import {ConfirmableFileItemView} from './ConfirmableFileItemView';
+
+import {state} from '$state';
+
+import template from '../../templates/confirmEncoding.jst';
+
+export const ConfirmEncodingView = Marionette.ItemView.extend({
+  template,
   className: 'confirm_encoding',
 
   ui: {
@@ -18,8 +29,8 @@ pageflow.ConfirmEncodingView = Backbone.Marionette.ItemView.extend({
   },
 
   initialize: function() {
-    this.confirmableVideoFiles = pageflow.videoFiles.confirmable();
-    this.confirmableAudioFiles = pageflow.audioFiles.confirmable();
+    this.confirmableVideoFiles = state.videoFiles.confirmable();
+    this.confirmableAudioFiles = state.audioFiles.confirmable();
   },
 
   onRender: function() {
@@ -28,21 +39,21 @@ pageflow.ConfirmEncodingView = Backbone.Marionette.ItemView.extend({
     this.listenTo(this.confirmableAudioFiles, 'add remove', this.updateBlankSlate);
     this.listenTo(this.confirmableVideoFiles, 'add remove', this.updateBlankSlate);
 
-    this.ui.videoFilesPanel.append(this.subview(new pageflow.CollectionView({
+    this.ui.videoFilesPanel.append(this.subview(new CollectionView({
       tagName: 'ul',
       className: 'confirmable_files',
       collection: this.confirmableVideoFiles,
-      itemViewConstructor: pageflow.ConfirmableFileItemView,
+      itemViewConstructor: ConfirmableFileItemView,
       itemViewOptions: {
         selectedFiles: this.model.videoFiles
       }
     })).el);
 
-    this.ui.audioFilesPanel.append(this.subview(new pageflow.CollectionView({
+    this.ui.audioFilesPanel.append(this.subview(new CollectionView({
       tagName: 'ul',
       className: 'confirmable_files',
       collection: this.confirmableAudioFiles,
-      itemViewConstructor: pageflow.ConfirmableFileItemView,
+      itemViewConstructor: ConfirmableFileItemView,
       itemViewOptions: {
         selectedFiles: this.model.audioFiles
       }
@@ -75,8 +86,8 @@ pageflow.ConfirmEncodingView = Backbone.Marionette.ItemView.extend({
   }
 });
 
-pageflow.ConfirmEncodingView.create = function(options) {
-  return new pageflow.BackButtonDecoratorView({
-    view: new pageflow.ConfirmEncodingView(options)
+ConfirmEncodingView.create = function(options) {
+  return new BackButtonDecoratorView({
+    view: new ConfirmEncodingView(options)
   });
 };

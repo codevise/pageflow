@@ -1,5 +1,12 @@
-pageflow.NestedFilesView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/nested_files',
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {DeleteRowTableCellView, TableView} from '$pageflow/ui';
+
+import template from '../../templates/nestedFiles.jst';
+
+export const NestedFilesView = Marionette.ItemView.extend({
+  template,
 
   className: 'nested_files',
 
@@ -27,7 +34,7 @@ pageflow.NestedFilesView = Backbone.Marionette.ItemView.extend({
       this.collection.parentModel.get('file_name')
     );
 
-    this.appendSubview(new pageflow.TableView({
+    this.appendSubview(new TableView({
       collection: this.collection,
       attributeTranslationKeyPrefixes: [
         'pageflow.editor.nested_files.' + this.options.fileType.collectionName
@@ -54,7 +61,7 @@ pageflow.NestedFilesView = Backbone.Marionette.ItemView.extend({
 
     nestedFilesColumns.push({
       name: 'delete',
-      cellView: pageflow.DeleteRowTableCellView,
+      cellView: DeleteRowTableCellView,
       cellViewOptions: {
         toggleDeleteButton: 'isUploading',
         invertToggleDeleteButton: true

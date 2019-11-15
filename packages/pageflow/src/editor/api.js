@@ -1,13 +1,29 @@
+import Cocktail from 'cocktail';
+import _ from 'underscore';
+
+import {Object} from '$pageflow/ui';
+
+import {CommonPageConfigurationTabs} from './api/CommonPageConfigurationTabs';
+import {Configuration} from './models/Configuration';
+import {FailuresAPI} from './api/Failures';
+import {FileTypes} from './api/FileTypes';
+import {PageTypes} from './api/PageTypes';
+import {WidgetTypes} from './api/WidgetTypes';
+import {app} from './app';
+import {editor} from './base';
+
+import {PageSelectionView} from './views/PageSelectionView';
+
 //= require_tree ./api
 //= require_self
 
 /**
  * Interface for engines providing editor extensions.
- * @alias pageflow.editor
+ * @alias editor
  * @memberof module:pageflow/editor
  */
-pageflow.EditorApi = pageflow.Object.extend(
-/** @lends module:pageflow/editor.pageflow.editor */{
+export const EditorApi = Object.extend(
+/** @lends module:pageflow/editor.editor */{
 
   initialize: function(options) {
     this.router = options && options.router;
@@ -23,37 +39,37 @@ pageflow.EditorApi = pageflow.Object.extend(
      * @returns {pageflow.Failures}
      *
      * @alias failures
-     * @memberof module:pageflow/editor.pageflow.editor
+     * @memberof module:pageflow/editor.editor
      */
-    this.failures = new pageflow.FailuresAPI();
+    this.failures = new FailuresAPI();
 
     /**
      * Set up editor integration for page types.
      * @alias pageTypes
-     * @memberof module:pageflow/editor.pageflow.editor
+     * @memberof module:pageflow/editor.editor
      */
-    this.pageTypes = new pageflow.PageTypes();
+    this.pageTypes = new PageTypes();
 
     /**
      * Add tabs to the configuration editor of all pages.
      * @alias commonPageConfigurationTabs
-     * @memberof module:pageflow/editor.pageflow.editor
+     * @memberof module:pageflow/editor.editor
      */
-    this.commonPageConfigurationTabs = new pageflow.CommonPageConfigurationTabs();
+    this.commonPageConfigurationTabs = new CommonPageConfigurationTabs();
 
     /**
      * Setup editor integration for widget types.
      * @alias widgetType
-     * @memberof module:pageflow/editor.pageflow.editor
+     * @memberof module:pageflow/editor.editor
      */
-    this.widgetTypes = new pageflow.WidgetTypes();
+    this.widgetTypes = new WidgetTypes();
 
     /**
      * @alias fileTypes
-     * @memberof module:pageflow/editor.pageflow.editor
+     * @memberof module:pageflow/editor.editor
      * Set up editor integration for file types
      */
-    this.fileTypes = new pageflow.FileTypes();
+    this.fileTypes = new FileTypes();
   },
 
   /**
@@ -61,14 +77,14 @@ pageflow.EditorApi = pageflow.Object.extend(
    *  of the editor.
    */
   showViewInMainPanel: function(view) {
-    pageflow.app.mainRegion.show(view);
+    app.mainRegion.show(view);
   },
 
   /**
    *  Display the Pageflow-Preview inside the main panel.
    */
   showPreview: function() {
-    pageflow.app.mainRegion.$el.empty();
+    app.mainRegion.$el.empty();
   },
 
   /**
@@ -144,23 +160,23 @@ pageflow.EditorApi = pageflow.Object.extend(
    *
    * Example:
    *
-   *     pageflow.editor.registerPageConfigurationMixin({
+   *     editor.registerPageConfigurationMixin({
    *       externalLinks: function() {
    *         return new Backbone.Collection(this.get('external_links'));
    *       }
    *     }
    *
-   *     pageflow.pages.get(1).configuration.externalLinks().each(...);
+   *     state.pages.get(1).configuration.externalLinks().each(...);
    */
   registerPageConfigurationMixin: function(mixin) {
-    Cocktail.mixin(pageflow.Configuration, mixin);
+    Cocktail.mixin(Configuration, mixin);
   },
 
   /**
    * File selection handlers let editor extensions use the files view
    * to select files for usage in their custom models.
    *
-   * See {@link module:pageflow/editor.pageflow.editor.selectFile
+   * See {@link module:pageflow/editor.editor.selectFile
    * selectFile} method for details how to trigger file selection.
    *
    * Example:
@@ -173,7 +189,7 @@ pageflow.EditorApi = pageflow.Object.extend(
    *         selection return '/some/path'; } }
    *
    *
-         pageflow.editor.registerFileSelectionHandler('my_file_selection_handler',
+         editor.registerFileSelectionHandler('my_file_selection_handler',
          MyFileSelectionHandler);
    */
   registerFileSelectionHandler: function(name, handler) {
@@ -191,18 +207,18 @@ pageflow.EditorApi = pageflow.Object.extend(
    *
    * @param {string} handlerName
    *   The name of a handler registered via {@link
-   *   module:pageflow/editor.pageflow.editor.registerFileSelectionHandler}.
+   *   module:pageflow/editor.editor.registerFileSelectionHandler}.
    *
    * @param {Object} payload
    *   Options passed to the file selection handler.
    *
    * @example
    *
-   * pageflow.editor.selectFile('image_files',
+   * editor.selectFile('image_files',
    *                            'my_file_selection_handler',
    *                            {some: 'option for handler'});
    *
-   * pageflow.editor.selectFile({name: 'image_files', filter: 'some_filter'},
+   * editor.selectFile({name: 'image_files', filter: 'some_filter'},
    *                            'my_file_selection_handler',
    *                            {some: 'option for handler'});
    */
@@ -229,7 +245,7 @@ pageflow.EditorApi = pageflow.Object.extend(
    *   whether the page is a valid selection
    */
   selectPage: function(options) {
-    return pageflow.PageSelectionView.selectPage(options);
+    return PageSelectionView.selectPage(options);
   },
 
   createFileSelectionHandler: function(handlerName, encodedPayload) {

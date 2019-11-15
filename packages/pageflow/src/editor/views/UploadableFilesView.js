@@ -1,5 +1,13 @@
-pageflow.UploadableFilesView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/uploadable_files',
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {PresenceTableCellView, TableView, TextTableCellView} from '$pageflow/ui';
+
+import template from '../../templates/uploadableFiles.jst';
+
+export const UploadableFilesView = Marionette.ItemView.extend({
+  template,
 
   className: 'uploadable_files',
 
@@ -20,7 +28,7 @@ pageflow.UploadableFilesView = Backbone.Marionette.ItemView.extend({
       I18n.t('pageflow.editor.files.tabs.' + this.options.fileType.collectionName)
     );
 
-    this.appendSubview(new pageflow.TableView({
+    this.appendSubview(new TableView({
       collection: this.uploadableFiles,
       attributeTranslationKeyPrefixes: [
         'pageflow.editor.files.attributes.' + this.options.fileType.collectionName,
@@ -41,8 +49,8 @@ pageflow.UploadableFilesView = Backbone.Marionette.ItemView.extend({
 
   commonColumns: function() {
     return [
-      {name: 'file_name', cellView: pageflow.TextTableCellView},
-      {name: 'rights', cellView: pageflow.PresenceTableCellView}
+      {name: 'file_name', cellView: TextTableCellView},
+      {name: 'rights', cellView: PresenceTableCellView}
     ];
   },
 

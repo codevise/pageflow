@@ -1,10 +1,16 @@
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {FileThumbnailView} from './FileThumbnailView';
+import {StaticThumbnailView} from './StaticThumbnailView';
+
 /**
  * Base thumbnail view for models supporting a `thumbnailFile` method.
  *
  * @class
  * @memberof module:pageflow/editor
  */
-pageflow.ModelThumbnailView = Backbone.Marionette.View.extend({
+export const ModelThumbnailView = Marionette.View.extend({
   className: 'model_thumbnail',
 
   modelEvents: {
@@ -27,7 +33,7 @@ pageflow.ModelThumbnailView = Backbone.Marionette.View.extend({
 
         this.currentFileThumbnail = file;
 
-        this.newThumbnailView = new pageflow.FileThumbnailView({
+        this.newThumbnailView = new FileThumbnailView({
           model: file,
           className: 'thumbnail file_thumbnail',
           imageUrlPropertyName: this.options.imageUrlPropertyName
@@ -35,7 +41,7 @@ pageflow.ModelThumbnailView = Backbone.Marionette.View.extend({
       }
       else {
         this.newThumbnailView = this.newThumbnailView ||
-          new pageflow.StaticThumbnailView({
+          new StaticThumbnailView({
             model: this.model
           });
       }

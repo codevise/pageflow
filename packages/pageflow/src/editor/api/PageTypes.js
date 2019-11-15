@@ -1,4 +1,10 @@
-pageflow.PageTypes = pageflow.Object.extend({
+import _ from 'underscore';
+
+import {Object} from '$pageflow/ui';
+
+import {PageType} from './PageType';
+
+export const PageTypes = Object.extend({
   initialize: function() {
     this.clientSideConfigs = {};
   },
@@ -17,7 +23,7 @@ pageflow.PageTypes = pageflow.Object.extend({
 
     this.pageTypes = _.map(serverSideConfigs, function(serverSideConfig) {
       var clientSideConfig = clientSideConfigs[serverSideConfig.name] || {};
-      return new pageflow.PageType(serverSideConfig.name, clientSideConfig, serverSideConfig);
+      return new PageType(serverSideConfig.name, clientSideConfig, serverSideConfig);
     });
   },
 
@@ -39,7 +45,7 @@ pageflow.PageTypes = pageflow.Object.extend({
 });
 
 _.each(['each', 'map', 'reduce', 'first', 'find', 'pluck'], function(method) {
-  pageflow.PageTypes.prototype[method] = function() {
+  PageTypes.prototype[method] = function() {
     if (!this._setup) {
       throw  'Page types are not yet set up.';
     }

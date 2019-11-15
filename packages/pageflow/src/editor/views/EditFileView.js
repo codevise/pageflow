@@ -1,12 +1,21 @@
-pageflow.EditFileView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/edit_file',
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {ConfigurationEditorTabView, TextInputView, UrlDisplayView} from '$pageflow/ui';
+
+import {state} from '$state';
+
+import template from '../../templates/editFile.jst';
+
+export const EditFileView = Marionette.ItemView.extend({
+  template,
   className: 'edit_file',
 
   onRender: function() {
     var fileType = this.model.fileType();
-    var entry = this.options.entry || pageflow.entry;
+    var entry = this.options.entry || state.entry;
 
-    var tab = new pageflow.ConfigurationEditorTabView({
+    var tab = new ConfigurationEditorTabView({
       model: this.model.configuration,
       attributeTranslationKeyPrefixes: [
         'pageflow.editor.files.attributes.' + fileType.collectionName,
@@ -16,12 +25,12 @@ pageflow.EditFileView = Backbone.Marionette.ItemView.extend({
       ]
     });
 
-    tab.input('file_name', pageflow.TextInputView, {
+    tab.input('file_name', TextInputView, {
       model: this.model,
       disabled: true
     });
 
-    tab.input('rights', pageflow.TextInputView, {
+    tab.input('rights', TextInputView, {
       model: this.model,
       placeholder: entry.get('default_file_rights')
     });
@@ -30,7 +39,7 @@ pageflow.EditFileView = Backbone.Marionette.ItemView.extend({
       tab.input(options.name, options.inputView, options.inputViewOptions);
     });
 
-    tab.input('original_url', pageflow.UrlDisplayView, {
+    tab.input('original_url', UrlDisplayView, {
       model: this.model
     });
 

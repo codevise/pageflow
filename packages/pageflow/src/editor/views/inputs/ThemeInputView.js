@@ -1,4 +1,9 @@
-pageflow.ThemeInputView = pageflow.ReferenceInputView.extend({
+import I18n from 'i18n-js';
+
+import {ChangeThemeDialogView} from '../ChangeThemeDialogView';
+import {ReferenceInputView} from './ReferenceInputView';
+
+export const ThemeInputView = ReferenceInputView.extend({
   options: function() {
     return {
       chooseButtonTitle: I18n.t('pageflow.editor.views.inputs.theme_input_view.choose'),
@@ -7,7 +12,7 @@ pageflow.ThemeInputView = pageflow.ReferenceInputView.extend({
   },
 
   choose: function() {
-    return pageflow.ChangeThemeDialogView.changeTheme({
+    return ChangeThemeDialogView.changeTheme({
       model: this.model,
       themes: this.options.themes,
       themeInUse: this.model.get(this.options.propertyName)

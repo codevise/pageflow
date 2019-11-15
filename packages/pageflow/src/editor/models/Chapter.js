@@ -1,13 +1,23 @@
-pageflow.Chapter = Backbone.Model.extend({
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {ChapterConfiguration} from './ChapterConfiguration';
+import {ChapterPagesCollection} from '../collections/ChapterPagesCollection';
+import {delayedDestroying} from './mixins/delayedDestroying';
+import {failureTracking} from './mixins/failureTracking';
+
+import {state} from '$state';
+
+export const Chapter = Backbone.Model.extend({
   modelName: 'chapter',
   paramRoot: 'chapter',
   i18nKey: 'pageflow/chapter',
 
-  mixins: [pageflow.failureTracking, pageflow.delayedDestroying],
+  mixins: [failureTracking, delayedDestroying],
 
   initialize: function(attributes, options) {
-    this.pages = new pageflow.ChapterPagesCollection({
-      pages: options.pages || pageflow.pages,
+    this.pages = new ChapterPagesCollection({
+      pages: options.pages || state.pages,
       chapter: this
     });
 
@@ -15,7 +25,7 @@ pageflow.Chapter = Backbone.Model.extend({
       this.save();
     });
 
-    this.configuration = new pageflow.ChapterConfiguration(this.get('configuration') || {});
+    this.configuration = new ChapterConfiguration(this.get('configuration') || {});
 
     this.listenTo(this.configuration, 'change', function() {
       this.save();

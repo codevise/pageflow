@@ -1,4 +1,7 @@
-pageflow.LazyVideoEmbeddedView = Backbone.Marionette.View.extend({
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+export const LazyVideoEmbeddedView = Marionette.View.extend({
   modelEvents: {
     'change': 'update'
   },

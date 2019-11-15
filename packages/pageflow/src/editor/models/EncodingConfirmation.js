@@ -1,4 +1,8 @@
-pageflow.EncodingConfirmation = Backbone.Model.extend({
+import Backbone from 'backbone';
+
+import {state} from '$state';
+
+export const EncodingConfirmation = Backbone.Model.extend({
   paramRoot: 'encoding_confirmation',
 
   initialize: function() {
@@ -52,7 +56,7 @@ pageflow.EncodingConfirmation = Backbone.Model.extend({
   },
 
   url: function() {
-    return '/editor/entries/' + pageflow.entry.get('id') + '/encoding_confirmations';
+    return '/editor/entries/' + state.entry.get('id') + '/encoding_confirmations';
   },
 
   toJSON: function() {
@@ -63,15 +67,15 @@ pageflow.EncodingConfirmation = Backbone.Model.extend({
   }
 });
 
-pageflow.EncodingConfirmation.createWithPreselection = function(options) {
-  var model = new pageflow.EncodingConfirmation();
+EncodingConfirmation.createWithPreselection = function(options) {
+  var model = new EncodingConfirmation();
 
   if (options.fileId) {
     if (options.fileType === 'video_file') {
-      model.videoFiles.add(pageflow.videoFiles.get(options.fileId));
+      model.videoFiles.add(state.videoFiles.get(options.fileId));
     }
     else {
-      model.audioFiles.add(pageflow.audioFiles.get(options.fileId));
+      model.audioFiles.add(state.audioFiles.get(options.fileId));
     }
   }
 

@@ -1,5 +1,10 @@
-pageflow.PageLinksCollection = Backbone.Collection.extend({
-  model: pageflow.PageLink,
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {PageLink} from '../models/PageLink';
+
+export const PageLinksCollection = Backbone.Collection.extend({
+  model: PageLink,
 
   initialize: function(models, options) {
     this.configuration = options.configuration;

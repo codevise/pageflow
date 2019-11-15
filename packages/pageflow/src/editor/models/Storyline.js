@@ -1,17 +1,30 @@
-pageflow.Storyline = Backbone.Model.extend({
+import Backbone from 'backbone';
+import I18n from 'i18n-js';
+import _ from 'underscore';
+
+import {ChapterScaffold} from './ChapterScaffold';
+import {StorylineChaptersCollection} from '../collections/StorylineChaptersCollection';
+import {StorylineConfiguration} from './StorylineConfiguration';
+import {StorylineTransitiveChildPages} from './StorylineTransitiveChildPages';
+import {delayedDestroying} from './mixins/delayedDestroying';
+import {failureTracking} from './mixins/failureTracking';
+
+import {state} from '$state';
+
+export const Storyline = Backbone.Model.extend({
   modelName: 'storyline',
   paramRoot: 'storyline',
   i18nKey: 'pageflow/storyline',
 
-  mixins: [pageflow.failureTracking, pageflow.delayedDestroying],
+  mixins: [failureTracking, delayedDestroying],
 
   initialize: function(attributes, options) {
-    this.chapters = new pageflow.StorylineChaptersCollection({
-      chapters: options.chapters || pageflow.chapters,
+    this.chapters = new StorylineChaptersCollection({
+      chapters: options.chapters || state.chapters,
       storyline: this
     });
 
-    this.configuration = new pageflow.StorylineConfiguration(this.get('configuration') || {});
+    this.configuration = new StorylineConfiguration(this.get('configuration') || {});
 
     this.listenTo(this.configuration, 'change', function() {
       if (!this.isNew()) {
@@ -58,11 +71,11 @@ pageflow.Storyline = Backbone.Model.extend({
   },
 
   parentPage: function() {
-    return pageflow.pages.getByPermaId(this.parentPagePermaId());
+    return state.pages.getByPermaId(this.parentPagePermaId());
   },
 
   transitiveChildPages: function() {
-    return new pageflow.StorylineTransitiveChildPages(this, pageflow.storylines, pageflow.pages);
+    return new StorylineTransitiveChildPages(this, state.storylines, state.pages);
   },
 
   addChapter: function(attributes) {
@@ -83,7 +96,7 @@ pageflow.Storyline = Backbone.Model.extend({
   },
 
   scaffoldChapter: function(options) {
-    var scaffold = new pageflow.ChapterScaffold(this, options);
+    var scaffold = new ChapterScaffold(this, options);
     scaffold.create();
 
     return scaffold;

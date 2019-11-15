@@ -1,30 +1,49 @@
-pageflow.SidebarController = Backbone.Marionette.Controller.extend({
+import Marionette from 'backbone.marionette';
+
+import {EncodingConfirmation} from '../models/EncodingConfirmation';
+import {EntryPublication} from '../models/EntryPublication';
+import {editor} from '../base';
+
+import {ConfirmEncodingView} from '../views/ConfirmEncodingView';
+import {EditChapterView} from '../views/EditChapterView';
+import {EditEntryView} from '../views/EditEntryView';
+import {EditMetaDataView} from '../views/EditMetaDataView';
+import {EditPageLinkView} from '../views/EditPageLinkView';
+import {EditPageView} from '../views/EditPageView';
+import {EditStorylineView} from '../views/EditStorylineView';
+import {EditWidgetView} from '../views/EditWidgetView';
+import {FilesView} from '../views/FilesView';
+import {PublishEntryView} from '../views/PublishEntryView';
+
+import {state} from '$state';
+
+export const SidebarController = Marionette.Controller.extend({
   initialize: function(options) {
     this.region = options.region;
     this.entry = options.entry;
   },
 
   index: function(storylineId) {
-    this.region.show(new pageflow.EditEntryView({
+    this.region.show(new EditEntryView({
       model: this.entry,
       storylineId: storylineId
     }));
   },
 
   files: function(collectionName, handler, payload, filterName) {
-    this.region.show(new pageflow.FilesView({
+    this.region.show(new FilesView({
       model: this.entry,
-      selectionHandler: handler && pageflow.editor.createFileSelectionHandler(handler, payload),
+      selectionHandler: handler && editor.createFileSelectionHandler(handler, payload),
       tabName: collectionName,
       filterName: filterName
     }));
 
-    pageflow.editor.setDefaultHelpEntry('pageflow.help_entries.files');
+    editor.setDefaultHelpEntry('pageflow.help_entries.files');
   },
 
   confirmableFiles: function(preselectedFileType, preselectedFileId) {
-    this.region.show(pageflow.ConfirmEncodingView.create({
-      model: pageflow.EncodingConfirmation.createWithPreselection({
+    this.region.show(ConfirmEncodingView.create({
+      model: EncodingConfirmation.createWithPreselection({
         fileType: preselectedFileType,
         fileId: preselectedFileId
       })
@@ -32,29 +51,29 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
   },
 
   metaData: function(tab) {
-    this.region.show(new pageflow.EditMetaDataView({
+    this.region.show(new EditMetaDataView({
       model: this.entry,
       tab: tab
     }));
   },
 
   publish: function() {
-    this.region.show(pageflow.PublishEntryView.create({
+    this.region.show(PublishEntryView.create({
       model: this.entry,
-      entryPublication: new pageflow.EntryPublication()
+      entryPublication: new EntryPublication()
     }));
 
-    pageflow.editor.setDefaultHelpEntry('pageflow.help_entries.publish');
+    editor.setDefaultHelpEntry('pageflow.help_entries.publish');
   },
 
   storyline: function(id) {
-    this.region.show(new pageflow.EditStorylineView({
+    this.region.show(new EditStorylineView({
       model: this.entry.storylines.get(id)
     }));
   },
 
   chapter: function(id) {
-    this.region.show(new pageflow.EditChapterView({
+    this.region.show(new EditChapterView({
       model: this.entry.chapters.get(id)
     }));
   },
@@ -62,28 +81,28 @@ pageflow.SidebarController = Backbone.Marionette.Controller.extend({
   page: function(id, tab) {
     var page = this.entry.pages.get(id);
 
-    this.region.show(new pageflow.EditPageView({
+    this.region.show(new EditPageView({
       model: page,
-      api: pageflow.editor,
+      api: editor,
       tab: tab
     }));
 
-    pageflow.editor.setDefaultHelpEntry(page.pageType().help_entry_translation_key);
+    editor.setDefaultHelpEntry(page.pageType().help_entry_translation_key);
   },
 
   pageLink: function(linkId) {
     var pageId = linkId.split(':')[0];
-    var page = pageflow.pages.getByPermaId(pageId);
+    var page = state.pages.getByPermaId(pageId);
 
-    this.region.show(new pageflow.EditPageLinkView({
+    this.region.show(new EditPageLinkView({
       model: page.pageLinks().get(linkId),
       page: page,
-      api: pageflow.editor
+      api: editor
     }));
   },
 
   widget: function(id) {
-    this.region.show(new pageflow.EditWidgetView({
+    this.region.show(new EditWidgetView({
       model: this.entry.widgets.get(id)
     }));
   },
