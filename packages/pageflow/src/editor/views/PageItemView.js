@@ -5,7 +5,7 @@ import {editor} from '../base';
 
 import {PageThumbnailView} from './PageThumbnailView';
 
-import template from '../../templates/pageItem.jst';
+import template from '../templates/pageItem.jst';
 
 export const PageItemView = Marionette.ItemView.extend({
   tagName: 'li',

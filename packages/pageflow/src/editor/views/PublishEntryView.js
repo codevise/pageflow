@@ -7,7 +7,7 @@ import {EntryPublicationQuotaDecoratorView} from './EntryPublicationQuotaDecorat
 
 import {state} from '$state';
 
-import template from '../../templates/publishEntry.jst';
+import template from '../templates/publishEntry.jst';
 
 export const PublishEntryView = Marionette.ItemView.extend({
   template,

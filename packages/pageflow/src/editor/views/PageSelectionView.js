@@ -8,7 +8,7 @@ import {dialogView} from './mixins/dialogView';
 
 import {state} from '$state';
 
-import template from '../../templates/pageSelection.jst';
+import template from '../templates/pageSelection.jst';
 
 export const PageSelectionView = Marionette.ItemView.extend({
   template,

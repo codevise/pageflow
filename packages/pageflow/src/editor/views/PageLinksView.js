@@ -6,7 +6,7 @@ import {editor} from '../base';
 
 import {PageLinkItemView} from './PageLinkItemView';
 
-import template from '../../pageflow/editor/templates/pageLinks.jst';
+import template from '../templates/pageLinks.jst';
 
 export const PageLinksView = Marionette.ItemView.extend({
   template,

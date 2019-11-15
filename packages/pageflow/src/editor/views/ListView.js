@@ -5,9 +5,9 @@ import {CollectionView, SortableCollectionView} from '$pageflow/ui';
 
 import {ListItemView} from './ListItemView';
 
-import template from '../../pageflow/editor/templates/list.jst';
+import template from '../templates/list.jst';
 
-import template from '../../pageflow/editor/templates/listBlankSlate.jst';
+import blankSlateTemplate from '../templates/listBlankSlate.jst';
 
 /**
  * A generic list view with items consisting of a thumbnail, text and
@@ -69,7 +69,7 @@ export const ListView = Marionette.ItemView.extend({
       blankSlateViewConstructor: Marionette.ItemView.extend({
         tagName: 'li',
         className: 'list_blank_slate',
-        template
+        template: blankSlateTemplate
       })
     }));
 

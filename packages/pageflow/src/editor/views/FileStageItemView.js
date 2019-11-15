@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
-import template from '../../templates/fileStageItem.jst';
+import template from '../templates/fileStageItem.jst';
 
 export const FileStageItemView = Marionette.ItemView.extend({
   tagName: 'li',

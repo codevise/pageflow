@@ -7,7 +7,7 @@ import {ConfirmableFileItemView} from './ConfirmableFileItemView';
 
 import {state} from '$state';
 
-import template from '../../templates/confirmEncoding.jst';
+import template from '../templates/confirmEncoding.jst';
 
 export const ConfirmEncodingView = Marionette.ItemView.extend({
   template,

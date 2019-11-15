@@ -8,7 +8,7 @@ import {BackgroundPositioningPreviewView} from './BackgroundPositioningPreviewVi
 import {BackgroundPositioningSlidersView} from './BackgroundPositioningSlidersView';
 import {dialogView} from './mixins/dialogView';
 
-import template from '../../templates/backgroundPositioning.jst';
+import template from '../templates/backgroundPositioning.jst';
 
 export const BackgroundPositioningView = Marionette.ItemView.extend({
   template,

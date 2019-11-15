@@ -4,7 +4,7 @@ import _ from 'underscore';
 
 import {PresenceTableCellView, TableView, TextTableCellView} from '$pageflow/ui';
 
-import template from '../../templates/uploadableFiles.jst';
+import template from '../templates/uploadableFiles.jst';
 
 export const UploadableFilesView = Marionette.ItemView.extend({
   template,

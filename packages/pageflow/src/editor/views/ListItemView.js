@@ -3,7 +3,7 @@ import Marionette from 'backbone.marionette';
 
 import {ModelThumbnailView} from './ModelThumbnailView';
 
-import template from '../../pageflow/editor/templates/listItem.jst';
+import template from '../templates/listItem.jst';
 
 /** @api private */
 export const ListItemView = Marionette.ItemView.extend({

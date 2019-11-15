@@ -3,7 +3,7 @@ import _ from 'underscore';
 
 import {DeleteRowTableCellView, TableView} from '$pageflow/ui';
 
-import template from '../../templates/nestedFiles.jst';
+import template from '../templates/nestedFiles.jst';
 
 export const NestedFilesView = Marionette.ItemView.extend({
   template,

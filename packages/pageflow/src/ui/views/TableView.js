@@ -43,7 +43,7 @@ export const TableView = Marionette.ItemView.extend({
       blankSlateViewConstructor: Marionette.ItemView.extend({
         tagName: 'tr',
         className: 'blank_slate',
-        blankSlateTemplate,
+        template: blankSlateTemplate,
 
         serializeData: function() {
           return {

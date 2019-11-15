@@ -5,7 +5,7 @@ import {inputView} from '$pageflow/ui';
 
 import {ModelThumbnailView} from '../ModelThumbnailView';
 
-import template from '../../../pageflow/editor/templates/inputs/reference.jst';
+import template from '../../templates/inputs/reference.jst';
 
 /**
  * Base class for input views that reference models.

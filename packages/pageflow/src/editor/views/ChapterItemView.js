@@ -5,7 +5,7 @@ import {CollectionView, SortableCollectionView} from '$pageflow/ui';
 
 import {NavigatablePageItemView} from './NavigatablePageItemView';
 
-import template from '../../templates/chapterItem.jst';
+import template from '../templates/chapterItem.jst';
 
 export const ChapterItemView = Marionette.ItemView.extend({
   tagName: 'li',

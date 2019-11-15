@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-import template from '../../templates/backButtonDecorator.jst';
+import template from '../templates/backButtonDecorator.jst';
 
 export const BackButtonDecoratorView = Marionette.Layout.extend({
   template,

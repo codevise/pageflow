@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 
-import template from '../../templates/selectButton.jst';
+import template from '../templates/selectButton.jst';
 
 export const SelectButtonView = Marionette.ItemView.extend({
   template,

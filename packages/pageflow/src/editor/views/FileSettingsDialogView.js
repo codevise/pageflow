@@ -7,7 +7,7 @@ import {app} from '../app';
 
 import {dialogView} from './mixins/dialogView';
 
-import template from '../../templates/fileSettingsDialog.jst';
+import template from '../templates/fileSettingsDialog.jst';
 
 export const FileSettingsDialogView = Marionette.ItemView.extend({
   template,

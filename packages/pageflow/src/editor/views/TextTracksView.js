@@ -8,7 +8,7 @@ import {editor} from '../base';
 import {EditFileView} from './EditFileView';
 import {NestedFilesView} from './NestedFilesView';
 
-import template from '../../templates/textTracks.jst';
+import template from '../templates/textTracks.jst';
 
 export const TextTracksView = Marionette.Layout.extend({
   template,

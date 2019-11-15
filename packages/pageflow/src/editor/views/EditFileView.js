@@ -5,7 +5,7 @@ import {ConfigurationEditorTabView, TextInputView, UrlDisplayView} from '$pagefl
 
 import {state} from '$state';
 
-import template from '../../templates/editFile.jst';
+import template from '../templates/editFile.jst';
 
 export const EditFileView = Marionette.ItemView.extend({
   template,

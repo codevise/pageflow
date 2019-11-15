@@ -7,7 +7,7 @@ import {EditFileView} from './EditFileView';
 import {UploadableFilesView} from './UploadableFilesView';
 import {dialogView} from './mixins/dialogView';
 
-import template from '../../templates/confirmUpload.jst';
+import template from '../templates/confirmUpload.jst';
 
 export const ConfirmUploadView = Marionette.Layout.extend({
   template,

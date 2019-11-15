@@ -3,7 +3,7 @@ import _ from 'underscore';
 
 import {DropDownButtonItemListView} from './DropDownButtonItemListView';
 
-import template from '../../pageflow/editor/templates/dropDownButton.jst';
+import template from '../templates/dropDownButton.jst';
 
 /**
  * A button that displays a drop down menu on hover.

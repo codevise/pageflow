@@ -4,7 +4,7 @@ import Marionette from 'backbone.marionette';
 import {app} from '../app';
 import {editor} from '../base';
 
-import template from '../../templates/help.jst';
+import template from '../templates/help.jst';
 
 export const HelpView = Marionette.ItemView.extend({
   template,

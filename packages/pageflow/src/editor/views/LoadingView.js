@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-import template from '../../pageflow/editor/templates/loading.jst';
+import template from '../templates/loading.jst';
 
 export const LoadingView = Marionette.ItemView.extend({
   template,

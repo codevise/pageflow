@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-import template from '../../templates/backgroundPositioningPreview.jst';
+import template from '../templates/backgroundPositioningPreview.jst';
 
 export const BackgroundPositioningPreviewView = Marionette.ItemView.extend({
   template,

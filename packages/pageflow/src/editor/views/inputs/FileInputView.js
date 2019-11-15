@@ -14,7 +14,7 @@ import {FileThumbnailView} from '../FileThumbnailView';
 
 import {state} from '$state';
 
-import template from '../../../pageflow/editor/templates/inputs/fileInput.jst';
+import template from '../../templates/inputs/fileInput.jst';
 
 /**
  * Input view to reference a file.

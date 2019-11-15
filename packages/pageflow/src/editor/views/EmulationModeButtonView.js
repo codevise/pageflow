@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-import template from '../../templates/emulationModeButton.jst';
+import template from '../templates/emulationModeButton.jst';
 
 export const EmulationModeButtonView = Marionette.ItemView.extend({
   template,

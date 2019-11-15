@@ -12,7 +12,7 @@ import {failureIndicatingView} from './mixins/failureIndicatingView';
 
 import {state} from '$state';
 
-import template from '../../templates/editEntry.jst';
+import template from '../templates/editEntry.jst';
 
 export const EditEntryView = Marionette.ItemView.extend({
   template,

@@ -3,7 +3,7 @@ import Marionette from 'backbone.marionette';
 
 import {FileSettingsDialogView} from './FileSettingsDialogView';
 
-import template from '../../templates/fileMetaDataItemValueView.jst';
+import template from '../templates/fileMetaDataItemValueView.jst';
 
 /**
  * Base class for views used as `valueView` for file type meta data

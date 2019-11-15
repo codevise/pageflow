@@ -3,7 +3,7 @@ import Marionette from 'backbone.marionette';
 
 import {editor} from '../base';
 
-import template from '../../pageflow/editor/templates/editPageLink.jst';
+import template from '../templates/editPageLink.jst';
 
 export const EditPageLinkView = Marionette.Layout.extend({
   template,

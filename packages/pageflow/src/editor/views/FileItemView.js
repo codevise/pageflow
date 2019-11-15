@@ -12,7 +12,7 @@ import {FileThumbnailView} from './FileThumbnailView';
 import {TextFileMetaDataItemValueView} from './TextFileMetaDataItemValueView';
 import {loadable} from './mixins/loadable';
 
-import template from '../../templates/fileItem.jst';
+import template from '../templates/fileItem.jst';
 
 export const FileItemView = Marionette.ItemView.extend({
   tagName: 'li',

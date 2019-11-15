@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-import template from '../../templates/editWidget.jst';
+import template from '../templates/editWidget.jst';
 
 export const EditWidgetView = Marionette.ItemView.extend({
   template,

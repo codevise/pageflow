@@ -2,7 +2,7 @@ import Marionette from 'backbone.marionette';
 
 import {DropDownButtonItemListView} from './DropDownButtonItemListView';
 
-import template from '../../pageflow/editor/templates/dropDownButtonItem.jst';
+import template from '../templates/dropDownButtonItem.jst';
 
 /** @api private */
 export const DropDownButtonItemView = Marionette.ItemView.extend({

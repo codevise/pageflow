@@ -8,7 +8,7 @@ import {NavigatableChapterItemView} from './NavigatableChapterItemView';
 import {NavigatablePageItemView} from './NavigatablePageItemView';
 import {PageItemView} from './PageItemView';
 
-import template from '../../templates/storylineOutline.jst';
+import template from '../templates/storylineOutline.jst';
 
 export const StorylineOutlineView = Marionette.Layout.extend({
   template,

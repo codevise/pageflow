@@ -5,7 +5,7 @@ import {FileThumbnailView} from './FileThumbnailView';
 import {loadable} from './mixins/loadable';
 import {selectableView} from './mixins/selectableView';
 
-import template from '../../templates/explorerFileItem.jst';
+import template from '../templates/explorerFileItem.jst';
 
 export const ExplorerFileItemView = Marionette.ItemView.extend({
   tagName: 'li',

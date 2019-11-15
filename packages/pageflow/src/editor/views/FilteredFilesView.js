@@ -7,9 +7,9 @@ import {editor} from '../base';
 
 import {FileItemView} from './FileItemView';
 
-import template from '../../templates/filteredFiles.jst';
+import template from '../templates/filteredFiles.jst';
 
-import template from '../../templates/filesBlankSlate.jst';
+import blankSlateTemplate from '../templates/filesBlankSlate.jst';
 
 export const FilteredFilesView = Marionette.ItemView.extend({
   template,
@@ -52,7 +52,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
         selectionHandler: this.options.selectionHandler,
       },
       blankSlateViewConstructor: Marionette.ItemView.extend({
-        template,
+        template: blankSlateTemplate,
         serializeData: function(){
           return {
             text: blankSlateText

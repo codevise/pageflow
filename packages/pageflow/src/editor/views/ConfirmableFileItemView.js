@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-import template from '../../templates/confirmableFileItem.jst';
+import template from '../templates/confirmableFileItem.jst';
 
 export const ConfirmableFileItemView = Marionette.ItemView.extend({
   tagName: 'li',

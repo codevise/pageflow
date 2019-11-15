@@ -2,7 +2,7 @@ import Marionette from 'backbone.marionette';
 
 import {selectableView} from './mixins/selectableView';
 
-import template from '../../templates/otherEntryItem.jst';
+import template from '../templates/otherEntryItem.jst';
 
 export const OtherEntryItemView = Marionette.ItemView.extend({
   template,

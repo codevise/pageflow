@@ -7,7 +7,7 @@ import {OtherEntriesCollection} from '../collections/OtherEntriesCollection';
 import {LoadingView} from './LoadingView';
 import {OtherEntryItemView} from './OtherEntryItemView';
 
-import template from '../../templates/otherEntriesBlankSlate.jst';
+import template from '../templates/otherEntriesBlankSlate.jst';
 
 export const OtherEntriesCollectionView = Marionette.View.extend({
   initialize: function() {

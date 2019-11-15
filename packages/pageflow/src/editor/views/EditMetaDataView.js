@@ -13,7 +13,7 @@ import {failureIndicatingView} from './mixins/failureIndicatingView';
 
 import {state} from '$state';
 
-import template from '../../templates/editMetaData.jst';
+import template from '../templates/editMetaData.jst';
 
 /*global editor*/
 

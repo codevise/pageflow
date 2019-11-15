@@ -10,7 +10,7 @@ import {LoadingView} from './LoadingView';
 import {ThemeItemView} from './ThemeItemView';
 import {dialogView} from './mixins/dialogView';
 
-import template from '../../templates/changeThemeDialog.jst';
+import template from '../templates/changeThemeDialog.jst';
 
 export const ChangeThemeDialogView = Marionette.ItemView.extend({
   template,

@@ -8,7 +8,7 @@ import {failureIndicatingView} from './mixins/failureIndicatingView';
 
 import {state} from '$state';
 
-import template from '../../templates/editStoryline.jst';
+import template from '../templates/editStoryline.jst';
 
 export const EditStorylineView = Marionette.Layout.extend({
   template,

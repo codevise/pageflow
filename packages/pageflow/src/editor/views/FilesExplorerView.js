@@ -13,7 +13,9 @@ import {dialogView} from './mixins/dialogView';
 
 import {state} from '$state';
 
-import template from '../../templates/filesExplorer.jst';
+import template from '../templates/filesExplorer.jst';
+import filesGalleryBlankSlateTemplate from '../templates/filesGalleryBlankSlate.jst';
+import filesExplorerBlankSlateTemplate from '../templates/filesExplorerBlankSlate.jst';
 
 export const FilesExplorerView = Marionette.ItemView.extend({
   template,
@@ -106,7 +108,7 @@ export const FilesExplorerView = Marionette.ItemView.extend({
 
   _blankSlateConstructor: function() {
     return Marionette.ItemView.extend({
-      template: this.selection.get('entry') ? 'templates/files_gallery_blank_slate' : 'templates/files_explorer_blank_slate'
+      template: this.selection.get('entry') ? filesGalleryBlankSlateTemplate : filesExplorerBlankSlateTemplate
     });
   }
 });

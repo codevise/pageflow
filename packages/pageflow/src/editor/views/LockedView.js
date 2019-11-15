@@ -3,7 +3,7 @@ import Marionette from 'backbone.marionette';
 
 import {state} from '$state';
 
-import template from '../../templates/locked.jst';
+import template from '../templates/locked.jst';
 
 export const LockedView = Marionette.ItemView.extend({
   template,

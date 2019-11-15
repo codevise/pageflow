@@ -11,7 +11,7 @@ import {StorylineOutlineView} from './StorylineOutlineView';
 
 import {state} from '$state';
 
-import template from '../../templates/storylinePicker.jst';
+import template from '../templates/storylinePicker.jst';
 
 export const StorylinePickerView = Marionette.Layout.extend({
   template,

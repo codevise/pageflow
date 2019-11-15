@@ -7,7 +7,7 @@ import {app} from '../app';
 
 import {failureIndicatingView} from './mixins/failureIndicatingView';
 
-import template from '../../templates/editPage.jst';
+import template from '../templates/editPage.jst';
 
 export const EditPageView = Marionette.Layout.extend({
   template,

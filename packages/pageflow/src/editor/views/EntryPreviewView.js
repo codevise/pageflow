@@ -11,7 +11,7 @@ import {PagePreviewView} from './PagePreviewView';
 
 import {state} from '$state';
 
-import template from '../../templates/entryPreview.jst';
+import template from '../templates/entryPreview.jst';
 
 export const EntryPreviewView = Marionette.ItemView.extend({
   template,

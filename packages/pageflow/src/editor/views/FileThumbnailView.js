@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-import template from '../../templates/fileThumbnail.jst';
+import template from '../templates/fileThumbnail.jst';
 
 export const FileThumbnailView = Marionette.ItemView.extend({
   className: 'file_thumbnail',

@@ -4,7 +4,7 @@ import {editor} from '../base';
 
 import {state} from '$state';
 
-import template from '../../templates/notifications.jst';
+import template from '../templates/notifications.jst';
 
 export const NotificationsView = Marionette.ItemView.extend({
   className: 'notifications',

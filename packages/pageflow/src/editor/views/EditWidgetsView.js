@@ -4,7 +4,7 @@ import {CollectionView} from '$pageflow/ui';
 
 import {WidgetItemView} from './WidgetItemView';
 
-import template from '../../templates/editWidgets.jst';
+import template from '../templates/editWidgets.jst';
 
 export const EditWidgetsView = Marionette.Layout.extend({
   template,

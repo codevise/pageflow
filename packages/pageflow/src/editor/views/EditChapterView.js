@@ -5,7 +5,7 @@ import {CheckBoxInputView, ConfigurationEditorView, TextInputView} from '$pagefl
 
 import {failureIndicatingView} from './mixins/failureIndicatingView';
 
-import template from '../../templates/editChapter.jst';
+import template from '../templates/editChapter.jst';
 
 export const EditChapterView = Marionette.Layout.extend({
   template,

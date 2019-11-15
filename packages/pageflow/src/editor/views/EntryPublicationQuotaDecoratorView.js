@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
-import template from '../../templates/entryPublicationQuotaDecorator.jst';
+import template from '../templates/entryPublicationQuotaDecorator.jst';
 
 export const EntryPublicationQuotaDecoratorView = Marionette.Layout.extend({
   template,

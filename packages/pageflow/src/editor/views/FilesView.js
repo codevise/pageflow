@@ -14,7 +14,7 @@ import {SelectButtonView} from './SelectButtonView';
 
 import {state} from '$state';
 
-import template from '../../templates/files.jst';
+import template from '../templates/files.jst';
 
 export const FilesView = Marionette.ItemView.extend({
   template,

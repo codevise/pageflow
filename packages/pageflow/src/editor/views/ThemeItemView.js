@@ -2,7 +2,7 @@ import Marionette from 'backbone.marionette';
 
 import {selectableView} from './mixins/selectableView';
 
-import template from '../../pageflow/editor/templates/themeItem.jst';
+import template from '../templates/themeItem.jst';
 
 /** @api private */
 export const ThemeItemView = Marionette.ItemView.extend({

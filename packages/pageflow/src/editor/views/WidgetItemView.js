@@ -5,7 +5,7 @@ import {SelectInputView} from '$pageflow/ui';
 
 import {editor} from '../base';
 
-import template from '../../templates/widgetItem.jst';
+import template from '../templates/widgetItem.jst';
 
 export const WidgetItemView = Marionette.Layout.extend({
   template,
