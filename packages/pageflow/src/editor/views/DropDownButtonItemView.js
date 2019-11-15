@@ -1,7 +1,5 @@
 import Marionette from 'backbone.marionette';
 
-import {DropDownButtonItemListView} from './DropDownButtonItemListView';
-
 import template from '../templates/dropDownButtonItem.jst';
 
 /** @api private */
@@ -33,7 +31,7 @@ export const DropDownButtonItemView = Marionette.ItemView.extend({
     this.update();
 
     if (this.model.get('items')) {
-      this.appendSubview(new DropDownButtonItemListView({
+      this.appendSubview(new this.options.listView({
         items: this.model.get('items')
       }));
     }

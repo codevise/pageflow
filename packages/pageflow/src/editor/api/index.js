@@ -1,18 +1,13 @@
-import Cocktail from 'cocktail';
 import _ from 'underscore';
 
 import {Object} from '$pageflow/ui';
 
 import {CommonPageConfigurationTabs} from './CommonPageConfigurationTabs';
-import {Configuration} from '../models/Configuration';
 import {FailuresAPI} from './Failures';
 import {FileTypes} from './FileTypes';
 import {PageTypes} from './PageTypes';
 import {WidgetTypes} from './WidgetTypes';
 import {app} from '../app';
-import {editor} from '../base';
-
-import {PageSelectionView} from '../views/PageSelectionView';
 
 /**
  * Interface for engines providing editor extensions.
@@ -166,7 +161,7 @@ export const EditorApi = Object.extend(
    *     state.pages.get(1).configuration.externalLinks().each(...);
    */
   registerPageConfigurationMixin: function(mixin) {
-    Cocktail.mixin(Configuration, mixin);
+    app.trigger('mixin:configuration', mixin);
   },
 
   /**
@@ -242,7 +237,7 @@ export const EditorApi = Object.extend(
    *   whether the page is a valid selection
    */
   selectPage: function(options) {
-    return PageSelectionView.selectPage(options);
+    return this.pageSelectionView.selectPage(options);
   },
 
   createFileSelectionHandler: function(handlerName, encodedPayload) {

@@ -2,6 +2,7 @@ import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 
 import {app} from '../app';
+import {editor} from '../base';
 
 import {StorylinePickerView} from './StorylinePickerView';
 import {dialogView} from './mixins/dialogView';
@@ -57,3 +58,5 @@ PageSelectionView.selectPage = function(options) {
     app.dialogRegion.show(view.render());
   }).promise();
 };
+
+editor.pageSelectionView = PageSelectionView;

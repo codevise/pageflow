@@ -8,6 +8,7 @@ export const DropDownButtonItemListView = function(options) {
     tagName: 'ul',
     className: 'drop_down_button_items',
     collection: options.items,
-    itemViewConstructor: DropDownButtonItemView
+    itemViewConstructor: DropDownButtonItemView,
+    itemViewOptions: {listView: DropDownButtonItemListView}
   });
 };

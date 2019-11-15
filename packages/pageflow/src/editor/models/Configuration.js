@@ -1,6 +1,9 @@
 import $ from 'jquery';
+import Cocktail from 'cocktail';
 import Backbone from 'backbone';
 import _ from 'underscore';
+
+import {app} from '../app';
 
 import {transientReferences} from './mixins/transientReferences';
 
@@ -125,4 +128,8 @@ export const Configuration = Backbone.Model.extend({
       return clone;
     });
   }
+});
+
+app.on('mixin:configuration', mixin => {
+  Cocktail.mixin(Configuration, mixin);
 });
