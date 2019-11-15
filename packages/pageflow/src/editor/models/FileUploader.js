@@ -3,7 +3,7 @@ import _ from 'underscore';
 
 import {Object} from '$pageflow/ui';
 
-import {InvalidNestedTypeError, NestedTypeError} from '../api/Errors';
+import {InvalidNestedTypeError, NestedTypeError} from '../api/errors';
 import {editor} from '../base';
 
 export const FileUploader = Object.extend({

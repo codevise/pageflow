@@ -4,8 +4,6 @@ import _ from 'underscore';
 
 import {Object} from '$pageflow/ui';
 
-import {InvalidNestedTypeError, NestedTypeError, UploadError, validFileTypeTranslationList} from './Errors';
-
 export const UploadError = Object.extend({
   setMessage: function(options) {
     this.upload = options.upload;

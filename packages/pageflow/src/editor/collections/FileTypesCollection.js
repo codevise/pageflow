@@ -2,7 +2,7 @@ import _ from 'underscore';
 
 import {Object} from '$pageflow/ui';
 
-import {UnmatchedUploadError} from '../api/Errors';
+import {UnmatchedUploadError} from '../api/errors';
 
 export const FileTypesCollection = Object.extend({
   initialize: function(fileTypes) {

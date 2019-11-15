@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 
-import {UploadError} from '../api/Errors';
+import {UploadError} from '../api/errors';
 import {app} from '../app';
 
 import {state} from '$state';
