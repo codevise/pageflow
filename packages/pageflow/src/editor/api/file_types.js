@@ -32,8 +32,8 @@ pageflow.FileTypes = pageflow.Object.extend({
     var clientSideConfigs = this.clientSideConfigs;
     this._setup = true;
 
-    this.collection =
-      new FileTypesCollection(_.map(serverSideConfigs, function(serverSideConfig) {
+    this.collection = new pageflow.
+      FileTypesCollection(_.map(serverSideConfigs, function(serverSideConfig) {
         var clientSideConfig = clientSideConfigs[serverSideConfig.collectionName];
 
         if (!clientSideConfig) {
