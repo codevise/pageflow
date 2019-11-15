@@ -1,3 +1,12 @@
+import $ from 'jquery';
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {inputView} from '../mixins/inputView';
+
+import template from '../../templates/inputs/urlInput.jst';
+
 /**
  * Input view for URLs.
  *
@@ -10,16 +19,16 @@
  * @param {boolean} [options.permitHttps=false]
  *   Allow urls with https protocol.
  *
- * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
  * @memberof module:pageflow/ui
  */
-pageflow.UrlInputView = Backbone.Marionette.Layout.extend(
-  /** @lends module:pageflow/ui.pageflow.UrlInputView# */{
+export const UrlInputView = Marionette.Layout.extend(
+  /** @lends module:pageflow/ui.UrlInputView# */{
 
-  mixins: [pageflow.inputView],
+  mixins: [inputView],
 
-  template: 'pageflow/ui/templates/inputs/url_input',
+  template,
 
   ui: {
     input: 'input',

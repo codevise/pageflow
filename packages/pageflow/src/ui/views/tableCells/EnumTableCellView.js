@@ -1,3 +1,5 @@
+import {TableCellView} from './TableCellView';
+
 /**
  * A table cell mapping column attribute values to a list of
  * translations.
@@ -13,7 +15,7 @@
  *
  * @since 12.0
  */
-pageflow.EnumTableCellView = pageflow.TableCellView.extend({
+export const EnumTableCellView = TableCellView.extend({
   className: 'enum_table_cell',
 
   update: function() {

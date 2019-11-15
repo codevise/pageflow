@@ -1,3 +1,7 @@
+import _ from 'underscore';
+
+import {attributeTranslationKeys, findTranslation, translationKeysWithSuffix} from '../../utils/i18nUtils';
+
 /**
  * Mixin for input views handling common concerns like labels,
  * inline help, visiblity and disabling.
@@ -110,7 +114,7 @@
  * @mixin
  * @memberof module:pageflow/ui
  */
-pageflow.inputView = {
+export const inputView = {
   ui: {
     labelText: 'label .name',
     inlineHelp: 'label .inline_help'
@@ -121,12 +125,12 @@ pageflow.inputView = {
    * `attributeTranslationKeyPrefixes` option and the given keyName.
    *
    * Combined with {@link
-   * module:pageflow/ui.pageflow.i18nUtils.findTranslation
+   * module:pageflow/ui.findTranslation
    * i18nUtils.findTranslation}, this can be used inside input views
    * to obtain additional translations with the same logic as for
    * labels and inline help texts.
    *
-   *      pageflow.i18nUtils.findTranslation(this.attributeTranslationKeys('default_value'));
+   *      findTranslation(this.attributeTranslationKeys('default_value'));
    *
    * @param {string} keyName
    * Suffix to append to prefixes.
@@ -140,7 +144,7 @@ pageflow.inputView = {
    * @member
    */
   attributeTranslationKeys: function(keyName, options) {
-    return pageflow.i18nUtils.attributeTranslationKeys(
+    return attributeTranslationKeys(
       this.options.propertyName,
       keyName,
       _.extend({
@@ -176,7 +180,7 @@ pageflow.inputView = {
   },
 
   localizedAttributeName: function() {
-    return pageflow.i18nUtils.findTranslation(this.attributeTranslationKeys('label', {
+    return findTranslation(this.attributeTranslationKeys('label', {
       fallbackPrefix: 'activerecord.attributes'
     }));
   },
@@ -191,11 +195,11 @@ pageflow.inputView = {
     });
 
     if (this.options.disabled) {
-      keys = pageflow.i18nUtils.translationKeysWithSuffix(keys, 'disabled');
+      keys = translationKeysWithSuffix(keys, 'disabled');
     }
 
     return _.compact([
-      pageflow.i18nUtils.findTranslation(keys, {defaultValue: '', html: true}),
+      findTranslation(keys, {defaultValue: '', html: true}),
       this.options.additionalInlineHelpText
     ]).join(' ');
   },

@@ -1,3 +1,9 @@
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {ConfigurationEditorTabView} from './ConfigurationEditorTabView';
+import {TabsView} from './TabsView';
+
 /**
  * Render a inputs on multiple tabs.
  *
@@ -22,11 +28,11 @@
  * @class
  * @memberof module:pageflow/ui
  */
-pageflow.ConfigurationEditorView = Backbone.Marionette.View.extend({
+export const ConfigurationEditorView = Marionette.View.extend({
   className: 'configuration_editor',
 
   initialize: function() {
-    this.tabsView = new pageflow.TabsView({
+    this.tabsView = new TabsView({
       translationKeyPrefixes: this.options.tabTranslationKeyPrefixes ||
                               [this.options.tabTranslationKeyPrefix],
       fallbackTranslationKeyPrefix: 'pageflow.ui.configuration_editor.tabs',
@@ -39,7 +45,7 @@ pageflow.ConfigurationEditorView = Backbone.Marionette.View.extend({
 
   tab: function(name, callback) {
     this.tabsView.tab(name, _.bind(function() {
-      var tabView = new pageflow.ConfigurationEditorTabView({
+      var tabView = new ConfigurationEditorTabView({
         model: this.model,
         placeholderModel: this.options.placeholderModel,
         tab: name,
@@ -71,9 +77,9 @@ pageflow.ConfigurationEditorView = Backbone.Marionette.View.extend({
   }
 });
 
-_.extend(pageflow.ConfigurationEditorView, {
+_.extend(ConfigurationEditorView, {
   repository: {},
   register: function(pageTypeName, prototype) {
-    this.repository[pageTypeName] = pageflow.ConfigurationEditorView.extend(prototype);
+    this.repository[pageTypeName] = ConfigurationEditorView.extend(prototype);
   }
 });

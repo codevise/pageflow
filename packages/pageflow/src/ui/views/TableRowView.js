@@ -1,4 +1,7 @@
-pageflow.TableRowView = Backbone.Marionette.View.extend({
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+export const TableRowView = Marionette.View.extend({
   tagName: 'tr',
 
   events: {

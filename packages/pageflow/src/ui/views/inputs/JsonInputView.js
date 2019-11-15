@@ -1,7 +1,14 @@
-pageflow.JsonInputView = Backbone.Marionette.ItemView.extend({
-  mixins: [pageflow.inputView],
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
 
-  template: 'pageflow/ui/templates/inputs/json_input',
+import {inputView} from '../mixins/inputView';
+
+import template from '../../templates/inputs/jsonInput.jst';
+
+export const JsonInputView = Marionette.ItemView.extend({
+  mixins: [inputView],
+
+  template,
   className: 'json_input',
 
   ui: {

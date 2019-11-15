@@ -1,3 +1,9 @@
+import Marionette from 'backbone.marionette';
+
+import {inputView} from '../mixins/inputView';
+
+import template from '../../templates/inputs/checkBox.jst';
+
 /**
  * Input view for boolean values.
  *
@@ -5,14 +11,14 @@
  *   Ignore the attribute value if the input is disabled and display
  *   an unchecked check box.
  *
- * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
  * @memberof module:pageflow/ui
  */
-pageflow.CheckBoxInputView = Backbone.Marionette.ItemView.extend({
-  mixins: [pageflow.inputView],
+export const CheckBoxInputView = Marionette.ItemView.extend({
+  mixins: [inputView],
 
-  template: 'pageflow/ui/templates/inputs/check_box',
+  template,
   className: 'check_box_input',
 
   events: {

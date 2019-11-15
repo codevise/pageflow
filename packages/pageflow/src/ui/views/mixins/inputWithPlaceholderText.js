@@ -20,7 +20,7 @@
  * @mixin
  * @memberof module:pageflow/ui
  */
-pageflow.inputWithPlaceholderText = {
+export const inputWithPlaceholderText = {
   onRender: function() {
     this.updatePlaceholder();
 

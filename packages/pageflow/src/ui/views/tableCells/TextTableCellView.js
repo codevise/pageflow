@@ -1,3 +1,7 @@
+import I18n from 'i18n-js';
+
+import {TableCellView} from './TableCellView';
+
 /**
  * A table cell using the row model's value of the column attribute as
  * text. If attribute value is empty, use most specific default
@@ -15,7 +19,7 @@
  *
  * @since 12.0
  */
-pageflow.TextTableCellView = pageflow.TableCellView.extend({
+export const TextTableCellView = TableCellView.extend({
   className: 'text_table_cell',
 
   update: function() {

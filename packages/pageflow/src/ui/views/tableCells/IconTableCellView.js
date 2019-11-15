@@ -1,3 +1,5 @@
+import {TableCellView} from './TableCellView';
+
 /**
  * A table cell mapping column attribute values to icons.
  *
@@ -16,7 +18,7 @@
  *
  * @since 12.0
  */
-pageflow.IconTableCellView = pageflow.TableCellView.extend({
+export const IconTableCellView = TableCellView.extend({
   className: 'icon_table_cell',
 
   update: function() {

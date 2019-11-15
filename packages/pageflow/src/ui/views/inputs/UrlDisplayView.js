@@ -1,18 +1,25 @@
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {inputView} from '../mixins/inputView';
+
+import template from '../../templates/inputs/urlDisplay.jst';
+
 /**
  * Display view for a link to a URL, to be used like an input view.
  *
  * @param {string} [options.propertyName]
  *   Target URL for link
  *
- * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
  * @memberof module:pageflow/ui
  */
 
-pageflow.UrlDisplayView = Backbone.Marionette.ItemView.extend({
-  mixins: [pageflow.inputView],
+export const UrlDisplayView = Marionette.ItemView.extend({
+  mixins: [inputView],
 
-  template: 'pageflow/ui/templates/inputs/url_display',
+  template,
 
   ui: {
     link: 'a'

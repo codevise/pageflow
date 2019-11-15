@@ -1,7 +1,11 @@
-pageflow.CollectionView = Backbone.Marionette.View.extend({
+import ChildViewContainer from 'backbone.babysitter';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+export const CollectionView = Marionette.View.extend({
   initialize: function() {
     this.rendered = false;
-    this.itemViews = new Backbone.ChildViewContainer();
+    this.itemViews = new ChildViewContainer();
 
     this.collection.map(this.addItem, this);
 

@@ -1,8 +1,14 @@
-pageflow.ExtendedSelectInputView = pageflow.SelectInputView.extend({
+import $ from 'jquery';
+import I18n from 'i18n-js';
+import _ from 'underscore';
+
+import {SelectInputView} from './SelectInputView';
+
+export const ExtendedSelectInputView = SelectInputView.extend({
   className: 'extended_select_input',
 
   initialize: function() {
-    pageflow.SelectInputView.prototype.initialize.apply(this, arguments);
+    SelectInputView.prototype.initialize.apply(this, arguments);
 
     if (this.options.collection) {
       if (this.options.descriptionProperty) {
@@ -24,7 +30,7 @@ pageflow.ExtendedSelectInputView = pageflow.SelectInputView.extend({
     var view = this,
         options = this.options;
 
-    pageflow.SelectInputView.prototype.onRender.apply(this, arguments);
+    SelectInputView.prototype.onRender.apply(this, arguments);
 
     $.widget("custom.extendedselectmenu", $.ui.selectmenu, {
       _renderItem: function(ul, item) {

@@ -1,7 +1,18 @@
-pageflow.TableView = Backbone.Marionette.ItemView.extend({
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {CollectionView} from './CollectionView';
+import {TableHeaderCellView} from './tableCells/TableHeaderCellView';
+import {TableRowView} from './TableRowView';
+
+import template from '../templates/table.jst';
+
+import template from '../templates/tableBlankSlate.jst';
+
+export const TableView = Marionette.ItemView.extend({
   tagName: 'table',
   className: 'table_view',
-  template: 'pageflow/ui/templates/table',
+  template,
 
   ui: {
     headRow: 'thead tr',
@@ -12,17 +23,17 @@ pageflow.TableView = Backbone.Marionette.ItemView.extend({
     var view = this;
 
     _(this.options.columns).each(function(column) {
-      this.ui.headRow.append(this.subview(new pageflow.TableHeaderCellView({
+      this.ui.headRow.append(this.subview(new TableHeaderCellView({
         column: column,
         attributeTranslationKeyPrefixes: this.options.attributeTranslationKeyPrefixes
       })).el);
     }, this);
 
-    this.subview(new pageflow.CollectionView({
+    this.subview(new CollectionView({
       el: this.ui.body,
       collection: this.collection,
 
-      itemViewConstructor: pageflow.TableRowView,
+      itemViewConstructor: TableRowView,
       itemViewOptions: {
         columns: this.options.columns,
         selection: this.options.selection,
@@ -30,10 +41,10 @@ pageflow.TableView = Backbone.Marionette.ItemView.extend({
         attributeTranslationKeyPrefixes: this.options.attributeTranslationKeyPrefixes
       },
 
-      blankSlateViewConstructor: Backbone.Marionette.ItemView.extend({
+      blankSlateViewConstructor: Marionette.ItemView.extend({
         tagName: 'tr',
         className: 'blank_slate',
-        template: 'pageflow/ui/templates/table_blank_slate',
+        template,
 
         serializeData: function() {
           return {

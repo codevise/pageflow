@@ -1,3 +1,9 @@
+import $ from 'jquery';
+import I18n from 'i18n-js';
+import _ from 'underscore';
+
+import {UrlInputView} from './UrlInputView';
+
 //= require ./url_input_view
 
 /**
@@ -31,7 +37,7 @@
  *
  * @example
  *
- * this.input('url, pageflow.ProxyUrlInputView, {
+ * this.input('url, ProxyUrlInputView, {
  *   proxies: [
  *     {
  *       url: 'http://example.com',
@@ -40,12 +46,12 @@
  *   ]
  * });
  *
- * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
  * @memberof module:pageflow/ui
  */
-pageflow.ProxyUrlInputView = pageflow.UrlInputView.extend(
-  /** @lends module:pageflow/ui.pageflow.ProxyUrlInputView# */{
+export const ProxyUrlInputView = UrlInputView.extend(
+  /** @lends module:pageflow/ui.ProxyUrlInputView# */{
 
   // @override
   validateUrl: function(url) {

@@ -1,6 +1,9 @@
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
 /*global JST*/
 
-Backbone.Marionette.Renderer.render = function(template, data) {
+Marionette.Renderer.render = function(template, data) {
   if (_.isFunction(template)) {
     return template(data);
   }

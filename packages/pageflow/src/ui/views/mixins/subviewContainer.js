@@ -1,6 +1,10 @@
-pageflow.subviewContainer = {
+import ChildViewContainer from 'backbone.babysitter';
+import Cocktail from 'cocktail';
+import Marionette from 'backbone.marionette';
+
+export const subviewContainer = {
   subview: function(view) {
-    this.subviews = this.subviews || new Backbone.ChildViewContainer();
+    this.subviews = this.subviews || new ChildViewContainer();
     this.subviews.add(view.render());
     return view;
   },
@@ -16,4 +20,4 @@ pageflow.subviewContainer = {
   }
 };
 
-Cocktail.mixin(Backbone.Marionette.View, pageflow.subviewContainer);
+Cocktail.mixin(Marionette.View, subviewContainer);

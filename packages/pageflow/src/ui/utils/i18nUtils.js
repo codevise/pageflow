@@ -1,9 +1,13 @@
+import $ from 'jquery';
+import I18n from 'i18n-js';
+import _ from 'underscore';
+
 /**
  * Helpers functions for handling translations.
  *
  * @memberof module:pageflow/ui
  */
-pageflow.i18nUtils = {
+export const i18nUtils = {
   /**
    * Returns an array of translation keys based on the `prefixes`
    * option and the given `keyName`.
@@ -45,7 +49,7 @@ pageflow.i18nUtils = {
 
   /**
    * Takes the same parameters as {@link
-   * module:pageflow/ui.pageflow.i18nUtils.attributeTranslationKeys
+   * module:pageflow/ui.attributeTranslationKeys
    * i18nUtils.attributeTranslationKeys}, but returns the first
    * existing translation.
    *
@@ -53,7 +57,7 @@ pageflow.i18nUtils = {
    * @since 12.0
    */
   attributeTranslation: function(attributeName, keyName, options) {
-    return pageflow.i18nUtils.findTranslation(
+    return findTranslation(
       this.attributeTranslationKeys(attributeName, keyName, options)
     );
   },

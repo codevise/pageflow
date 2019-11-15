@@ -1,4 +1,9 @@
-pageflow.tooltipContainer = {
+import $ from 'jquery';
+import I18n from 'i18n-js';
+
+import {TooltipView} from '../TooltipView';
+
+export const tooltipContainer = {
   events: {
     'mouseover [data-tooltip]': function(event) {
       if (!this.tooltip.visible) {
@@ -37,6 +42,6 @@ pageflow.tooltipContainer = {
   },
 
   onRender: function() {
-    this.appendSubview(this.tooltip = new pageflow.TooltipView());
+    this.appendSubview(this.tooltip = new TooltipView());
   }
 };

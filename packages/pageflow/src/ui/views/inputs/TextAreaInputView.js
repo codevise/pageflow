@@ -1,3 +1,14 @@
+import Backbone from 'backbone';
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+import wysihtml5 from 'wysihtml5';
+
+import {inputView} from '../mixins/inputView';
+import {inputWithPlaceholderText} from '../mixins/inputWithPlaceholderText';
+
+import template from '../../templates/inputs/textAreaInput.jst';
+
 /*global wysihtml5*/
 
 /**
@@ -18,17 +29,17 @@
  *   attribute.
  *
  * @see
- * {@link module:pageflow/ui.pageflow.inputWithPlaceholderText pageflow.inputWithPlaceholderText}
+ * {@link module:pageflow/ui.inputWithPlaceholderText inputWithPlaceholderText}
  * for placeholder related options
  *
- * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
  * @memberof module:pageflow/ui
  */
-pageflow.TextAreaInputView = Backbone.Marionette.ItemView.extend({
-  mixins: [pageflow.inputView, pageflow.inputWithPlaceholderText],
+export const TextAreaInputView = Marionette.ItemView.extend({
+  mixins: [inputView, inputWithPlaceholderText],
 
-  template: 'pageflow/ui/templates/inputs/text_area_input',
+  template,
 
   ui: {
     input: 'textarea',

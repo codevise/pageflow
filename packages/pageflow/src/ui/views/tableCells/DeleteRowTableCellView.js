@@ -1,3 +1,7 @@
+import {TableCellView} from './TableCellView';
+
+import template from '../../../editor/templates/deleteRowTableCell.jst';
+
 /**
  * A table cell providing a button which destroys the model that the
  * current row refers to.
@@ -18,9 +22,9 @@
  *
  * @since 12.0
  */
-pageflow.DeleteRowTableCellView = pageflow.TableCellView.extend({
+export const DeleteRowTableCellView = TableCellView.extend({
   className: 'delete_row_table_cell',
-  template: 'templates/delete_row_table_cell',
+  template,
 
   ui: {
     removeButton: '.remove'

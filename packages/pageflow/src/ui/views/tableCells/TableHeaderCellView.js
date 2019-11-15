@@ -1,4 +1,6 @@
-pageflow.TableHeaderCellView = pageflow.TableCellView.extend({
+import {TableCellView} from './TableCellView';
+
+export const TableHeaderCellView = TableCellView.extend({
   tagName: 'th',
 
   render: function() {

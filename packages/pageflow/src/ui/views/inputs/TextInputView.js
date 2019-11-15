@@ -1,3 +1,11 @@
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+
+import {inputView} from '../mixins/inputView';
+import {inputWithPlaceholderText} from '../mixins/inputWithPlaceholderText';
+
+import template from '../../templates/inputs/textInput.jst';
+
 /**
  * Input view for a single line of text.
  *
@@ -10,17 +18,17 @@
  *   the option will only take effect for data which is shorter than the specified maxLength.
  *
  * @see
- * {@link module:pageflow/ui.pageflow.inputWithPlaceholderText pageflow.inputWithPlaceholderText}
+ * {@link module:pageflow/ui.inputWithPlaceholderText inputWithPlaceholderText}
  * for placeholder related further options
  *
- * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
  * @memberof module:pageflow/ui
  */
-pageflow.TextInputView = Backbone.Marionette.ItemView.extend({
-  mixins: [pageflow.inputView, pageflow.inputWithPlaceholderText],
+export const TextInputView = Marionette.ItemView.extend({
+  mixins: [inputView, inputWithPlaceholderText],
 
-  template: 'pageflow/ui/templates/inputs/text_input',
+  template,
 
   ui: {
     input: 'input'

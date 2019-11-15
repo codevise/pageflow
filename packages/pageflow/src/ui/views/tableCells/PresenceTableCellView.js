@@ -1,3 +1,5 @@
+import {TableCellView} from './TableCellView';
+
 /**
  * A table cell representing whether the column attribute is present
  * on the row model.
@@ -14,7 +16,7 @@
  *
  * @since 12.0
  */
-pageflow.PresenceTableCellView = pageflow.TableCellView.extend({
+export const PresenceTableCellView = TableCellView.extend({
   className: 'presence_table_cell',
 
   update: function() {

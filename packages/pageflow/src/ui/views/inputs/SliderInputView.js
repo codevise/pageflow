@@ -1,15 +1,21 @@
+import Marionette from 'backbone.marionette';
+
+import {inputView} from '../mixins/inputView';
+
+import template from '../../templates/inputs/sliderInput.jst';
+
 /**
  * A slider for numeric inputs.
  *
- * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for options
+ * @see {@link module:pageflow/ui.inputView inputView} for options
  * @class
  * @memberof module:pageflow/ui
  */
-pageflow.SliderInputView = Backbone.Marionette.ItemView.extend({
-  mixins: [pageflow.inputView],
+export const SliderInputView = Marionette.ItemView.extend({
+  mixins: [inputView],
 
   className: 'slider_input',
-  template: 'pageflow/ui/templates/inputs/slider_input',
+  template,
 
   ui: {
     widget: '.slider',

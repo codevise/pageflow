@@ -1,3 +1,10 @@
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {inputView} from '../mixins/inputView';
+
+import template from '../../templates/inputs/textInput.jst';
+
 /**
  * Input view for a color value in hex representation.
  *
@@ -18,14 +25,14 @@
  *   down. The default value, if present, is always used as the
  *   first swatch automatically.
  *
- * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
  * @memberof module:pageflow/ui
  */
-pageflow.ColorInputView = Backbone.Marionette.ItemView.extend({
-  mixins: [pageflow.inputView],
+export const ColorInputView = Marionette.ItemView.extend({
+  mixins: [inputView],
 
-  template: 'pageflow/ui/templates/inputs/text_input',
+  template,
   className: 'color_input',
 
   ui: {

@@ -1,5 +1,10 @@
-pageflow.TooltipView = Backbone.Marionette.ItemView.extend({
-  template: 'pageflow/ui/templates/tooltip',
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import template from '../templates/tooltip.jst';
+
+export const TooltipView = Marionette.ItemView.extend({
+  template,
   className: 'tooltip',
 
   ui: {

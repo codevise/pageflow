@@ -1,3 +1,13 @@
+import $ from 'jquery';
+import I18n from 'i18n-js';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {findKeyWithTranslation} from '../../utils/i18nUtils';
+import {inputView} from '../mixins/inputView';
+
+import template from '../../templates/inputs/selectInput.jst';
+
 /**
  * A drop down with support for grouped items.
  *
@@ -13,7 +23,7 @@
  * @param {string[]} [options.translationKeyPrefix]
  *   Obtain texts for items from translations by appending the item
  *   value to this prefix separated by a dot. By default the
- *   [`attributeTranslationKeyPrefixes` option]{@link module:pageflow/ui:pageflow.inputView}
+ *   [`attributeTranslationKeyPrefixes` option]{@link module:pageflow/ui:inputView}
  *   is used by appending the suffix `.values` to each candidate.
  *
  * @param {string[]} [options.groups]
@@ -67,14 +77,14 @@
  *   value of the `placeholderModel` occurs whenever the attribute is
  *   blank.
  *
- * @see {@link module:pageflow/ui.pageflow.inputView pageflow.inputView} for further options
+ * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
  * @memberof module:pageflow/ui
  */
-pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
-  mixins: [pageflow.inputView],
+export const SelectInputView = Marionette.ItemView.extend({
+  mixins: [inputView],
 
-  template: 'pageflow/ui/templates/inputs/select_input',
+  template,
 
   events: {
     'change': 'save'
@@ -107,7 +117,7 @@ pageflow.SelectInputView = Backbone.Marionette.ItemView.extend({
     if (!this.options.texts) {
       if (!this.options.translationKeys) {
         var translationKeyPrefix = this.options.translationKeyPrefix ||
-          pageflow.i18nUtils.findKeyWithTranslation(this.attributeTranslationKeys('values', {
+          findKeyWithTranslation(this.attributeTranslationKeys('values', {
             fallbackPrefix: 'activerecord.values'
           }));
 

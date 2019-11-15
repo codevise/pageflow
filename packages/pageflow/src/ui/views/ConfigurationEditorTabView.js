@@ -1,9 +1,13 @@
-pageflow.ConfigurationEditorTabView = Backbone.Marionette.View.extend({
+import ChildViewContainer from 'backbone.babysitter';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+export const ConfigurationEditorTabView = Marionette.View.extend({
   className: 'configuration_editor_tab',
 
   initialize: function() {
-    this.inputs = new Backbone.ChildViewContainer();
-    this.groups = this.options.groups || pageflow.ConfigurationEditorTabView.groups;
+    this.inputs = new ChildViewContainer();
+    this.groups = this.options.groups || ConfigurationEditorTabView.groups;
   },
 
   input: function(propertyName, view, options) {
@@ -40,7 +44,7 @@ pageflow.ConfigurationEditorTabView = Backbone.Marionette.View.extend({
   }
 });
 
-pageflow.ConfigurationEditorTabView.Groups = function() {
+ConfigurationEditorTabView.Groups = function() {
   var groups = {};
 
   this.define = function(name, fn) {
@@ -60,4 +64,4 @@ pageflow.ConfigurationEditorTabView.Groups = function() {
   };
 };
 
-pageflow.ConfigurationEditorTabView.groups = new pageflow.ConfigurationEditorTabView.Groups();
+ConfigurationEditorTabView.groups = new ConfigurationEditorTabView.Groups();

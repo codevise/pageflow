@@ -1,6 +1,11 @@
-pageflow.SortableCollectionView = pageflow.CollectionView.extend({
+import $ from 'jquery';
+import _ from 'underscore';
+
+import {CollectionView} from './CollectionView';
+
+export const SortableCollectionView = CollectionView.extend({
   render: function() {
-    pageflow.CollectionView.prototype.render.call(this);
+    CollectionView.prototype.render.call(this);
 
     this.$el.sortable({
       connectWith: this.options.connectWith,
@@ -36,13 +41,13 @@ pageflow.SortableCollectionView = pageflow.CollectionView.extend({
 
   addItem: function(item) {
     if (!this.itemViews.findByModel(item)) {
-      pageflow.CollectionView.prototype.addItem.call(this, item);
+      CollectionView.prototype.addItem.call(this, item);
     }
   },
 
   removeItem: function(item) {
     if (this.itemViews.findByModel(item)) {
-      pageflow.CollectionView.prototype.removeItem.call(this, item);
+      CollectionView.prototype.removeItem.call(this, item);
     }
   },
 

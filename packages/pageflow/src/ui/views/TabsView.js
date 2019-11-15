@@ -1,3 +1,13 @@
+import $ from 'jquery';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {findTranslation} from '../utils/i18nUtils';
+
+import {app} from '../../editor/app';
+
+import template from '../templates/tabsView.jst';
+
 /**
  * Switch between different views using tabs.
  *
@@ -17,8 +27,8 @@
  * @class
  * @memberof module:pageflow/ui
  */
-pageflow.TabsView = Backbone.Marionette.Layout.extend({
-  template: 'pageflow/ui/templates/tabs_view',
+export const TabsView = Marionette.Layout.extend({
+  template,
   className: 'tabs_view',
 
   ui: {
@@ -51,7 +61,7 @@ pageflow.TabsView = Backbone.Marionette.Layout.extend({
 
   onRender: function() {
     _.each(this.tabNames, function(name) {
-      var label = pageflow.i18nUtils.findTranslation(this._labelTranslationKeys(name));
+      var label = findTranslation(this._labelTranslationKeys(name));
 
       this.ui.headers.append(
         $('<li />')
@@ -135,8 +145,8 @@ pageflow.TabsView = Backbone.Marionette.Layout.extend({
   },
 
   _refreshScrollerOnSideBarResize: function() {
-    if (pageflow.app) {
-      this.listenTo(pageflow.app, 'resize', function() {
+    if (app) {
+      this.listenTo(app, 'resize', function() {
         this.scroller.refresh();
       });
     }

@@ -1,3 +1,10 @@
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {findTranslation} from '../../utils/i18nUtils';
+
+import template from '../../../editor/templates/tableCell.jst';
+
 /**
  * Base class for table cell views.
  *
@@ -10,9 +17,9 @@
  *
  * @since 12.0
  */
-pageflow.TableCellView = Backbone.Marionette.ItemView.extend({
+export const TableCellView = Marionette.ItemView.extend({
   tagName: 'td',
-  template: 'templates/table_cell',
+  template,
 
   className: function() {
     return this.options.className;
@@ -71,7 +78,7 @@ pageflow.TableCellView = Backbone.Marionette.ItemView.extend({
    * // <table_view_translation_key_prefix>.<column_attribute>.cell_title
    */
   attributeTranslation: function(keyName, options) {
-    return pageflow.i18nUtils.findTranslation(
+    return findTranslation(
       this.attributeTranslationKeys(keyName),
       options
     );
