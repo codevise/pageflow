@@ -1,7 +1,7 @@
 # Node Package Development
 
 The repository contains bin stubs to run `npm` commands inside the
-`node_package` directory.
+`packages/pageflow-react` directory.
 
 ## Installing Dependencies
 
@@ -13,7 +13,7 @@ readme. From the repository root run:
 ## Running the Test Suite
 
 The node package contains co-located tests inside
-`node_package/src/**/__spec__` directories. Those can run from the
+`packages/pageflow-react/src/**/__spec__` directories. Those can run from the
 repository root:
 
     $ bin/npm test

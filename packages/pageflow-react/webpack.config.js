@@ -43,7 +43,7 @@ module.exports = ['client', 'server'].map(function(target) {
     },
 
     output: {
-      path: __dirname + '/../app/assets/javascripts/pageflow/dist',
+      path: __dirname + '/../../app/assets/javascripts/pageflow/dist',
       filename: 'react-' + target +'.js',
 
       libraryTarget: 'assign',

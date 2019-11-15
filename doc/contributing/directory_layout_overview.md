@@ -7,8 +7,8 @@ Pageflow consists of a two main parts:
   entries. The engine is located at the root of the repository,
   following standard Rails conventions for the directory layout.
 
-* A Node module located inside the `node_package` directory that
-  contains JavaScript built using Webpack.
+* A Node module located inside the `packages/pageflow-react` directory
+  that contains JavaScript built using Webpack.
 
 Historically, all of the assets (JavaScript, stylesheets and images)
 where contained in the Rails engine and built using Sprockets. With
