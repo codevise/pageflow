@@ -4,8 +4,6 @@ import _ from 'underscore';
 
 import {UrlInputView} from './UrlInputView';
 
-//= require ./url_input_view
-
 /**
  * Input view that verifies that a certain URL is reachable via a
  * proxy. To conform with same origin restrictions, this input view
