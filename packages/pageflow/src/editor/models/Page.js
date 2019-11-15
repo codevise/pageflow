@@ -6,8 +6,6 @@ import {delayedDestroying} from './mixins/delayedDestroying';
 import {editor} from '../base';
 import {failureTracking} from './mixins/failureTracking';
 
-import template from '../../backgroundImage.jst';
-
 export const Page = Backbone.Model.extend({
   modelName: 'page',
   paramRoot: 'page',
@@ -15,7 +13,7 @@ export const Page = Backbone.Model.extend({
 
   defaults: function() {
     return {
-      template,
+      template: 'background_image',
       configuration: {},
       active: false,
       perma_id: ''
