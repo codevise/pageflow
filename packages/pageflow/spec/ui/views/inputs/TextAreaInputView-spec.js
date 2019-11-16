@@ -19,7 +19,7 @@ describe('pageflow.TextAreaInputView', () => {
     textAreaInputView.render();
     var input = textAreaInputView.$el.find('textarea');
 
-    expect(input).to.have.$attr('disabled', 'disabled');
+    expect(input).toHaveAttr('disabled', 'disabled');
   });
 
   test('supports placeholder text', () => {
@@ -33,7 +33,7 @@ describe('pageflow.TextAreaInputView', () => {
     textAreaInputView.render();
     var input = textAreaInputView.$el.find('textarea');
 
-    expect(input).to.have.$attr('placeholder', 'Default');
+    expect(input).toHaveAttr('placeholder', 'Default');
   });
 
   test('supports placeholder as function', () => {
@@ -49,7 +49,7 @@ describe('pageflow.TextAreaInputView', () => {
     textAreaInputView.render();
     var input = textAreaInputView.$el.find('textarea');
 
-    expect(input).to.have.$attr('placeholder', 'otherValue');
+    expect(input).toHaveAttr('placeholder', 'otherValue');
   });
 
   test(
@@ -69,7 +69,7 @@ describe('pageflow.TextAreaInputView', () => {
       var input = textAreaInputView.$el.find('textarea');
       model.set('other', 'new');
 
-      expect(input).to.have.$attr('placeholder', 'new');
+      expect(input).toHaveAttr('placeholder', 'new');
     }
   );
 
@@ -85,7 +85,7 @@ describe('pageflow.TextAreaInputView', () => {
     textAreaInputView.render();
     var input = textAreaInputView.$el.find('textarea');
 
-    expect(input).to.have.$attr('placeholder', 'otherValue');
+    expect(input).toHaveAttr('placeholder', 'otherValue');
   });
 
   test('prefills url field with http:// when creating new link', done => {

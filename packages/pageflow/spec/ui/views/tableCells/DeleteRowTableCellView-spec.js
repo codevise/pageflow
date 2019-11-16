@@ -21,7 +21,7 @@ describe('DeleteRowTableCellView', () => {
 
     cell.render();
 
-    expect(cell.ui.removeButton).to.have.$attr('title', 'Delete information');
+    expect(cell.ui.removeButton).toHaveAttr('title', 'Delete information');
   });
 
   test('displays the delete button', () => {
@@ -35,7 +35,7 @@ describe('DeleteRowTableCellView', () => {
 
     cell.render();
 
-    expect(cell.ui.removeButton).to.have.$class('remove');
+    expect(cell.ui.removeButton).toHaveClass('remove');
   });
 
   test(
@@ -57,7 +57,7 @@ describe('DeleteRowTableCellView', () => {
 
       cell.render();
 
-      expect(cell.ui.removeButton).to.have.$class('remove');
+      expect(cell.ui.removeButton).toHaveClass('remove');
     }
   );
 
@@ -80,7 +80,7 @@ describe('DeleteRowTableCellView', () => {
 
       cell.render();
 
-      expect(cell.ui.removeButton).not.to.have.$class('remove');
+      expect(cell.ui.removeButton).not.toHaveClass('remove');
     }
   );
 
@@ -103,7 +103,7 @@ describe('DeleteRowTableCellView', () => {
 
        cell.render();
 
-       expect(cell.ui.removeButton).to.have.$class('remove');
+       expect(cell.ui.removeButton).toHaveClass('remove');
      });
 
   test(
@@ -127,7 +127,7 @@ describe('DeleteRowTableCellView', () => {
 
          cell.render();
 
-         expect(cell.ui.removeButton).not.to.have.$class('remove');
+         expect(cell.ui.removeButton).not.toHaveClass('remove');
        }
   );
 

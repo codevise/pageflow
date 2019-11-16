@@ -68,7 +68,7 @@ describe('pageflow.JsonInputView', () => {
     textArea.val('{not "json"}');
     textArea.trigger('change');
 
-    expect(jsonInputView.$el).to.have.$class('invalid');
+    expect(jsonInputView.$el).toHaveClass('invalid');
     expect(model.get('json')).toEqual({some: 'data'});
   });
 });

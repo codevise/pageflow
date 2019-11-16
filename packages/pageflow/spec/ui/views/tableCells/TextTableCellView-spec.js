@@ -23,7 +23,7 @@ describe('TextTableCellView', () => {
 
       cell.render();
 
-      expect(cell.$el).to.have.$text('Jane');
+      expect(cell.$el).toHaveText('Jane');
     }
   );
 
@@ -41,7 +41,7 @@ describe('TextTableCellView', () => {
 
       cell.render();
 
-      expect(cell.$el).to.have.$text('China');
+      expect(cell.$el).toHaveText('China');
     }
   );
 
@@ -58,7 +58,7 @@ describe('TextTableCellView', () => {
 
       cell.render();
 
-      expect(cell.$el).to.have.$text('(empty)');
+      expect(cell.$el).toHaveText('(empty)');
     }
   );
 
@@ -78,7 +78,7 @@ describe('TextTableCellView', () => {
 
       cell.render();
 
-      expect(cell.$el).to.have.$text('Italy');
+      expect(cell.$el).toHaveText('Italy');
     }
   );
 
@@ -99,7 +99,7 @@ describe('TextTableCellView', () => {
 
       cell.render();
 
-      expect(cell.$el).to.have.$text('Whichever country Baarle is located in');
+      expect(cell.$el).toHaveText('Whichever country Baarle is located in');
     }
   );
 });

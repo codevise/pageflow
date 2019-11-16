@@ -24,7 +24,7 @@ describe('PresenceTableCellView', () => {
 
       cell.render();
 
-      expect(cell.$el).to.have.$attr('title', 'Present: Jane');
+      expect(cell.$el).toHaveAttr('title', 'Present: Jane');
     }
   );
 
@@ -40,7 +40,7 @@ describe('PresenceTableCellView', () => {
 
     cell.render();
 
-    expect(cell.$el).to.have.$attr('title', 'Blank');
+    expect(cell.$el).toHaveAttr('title', 'Blank');
   });
 
   test('adds is_present class if column attribute is present', () => {
@@ -54,7 +54,7 @@ describe('PresenceTableCellView', () => {
 
     cell.render();
 
-    expect(cell.$el).to.have.$class('is_present');
+    expect(cell.$el).toHaveClass('is_present');
   });
 
   test('does not add is_present class if column attribute is blank', () => {
@@ -68,6 +68,6 @@ describe('PresenceTableCellView', () => {
 
     cell.render();
 
-    expect(cell.$el).not.to.have.$class('is_present');
+    expect(cell.$el).not.toHaveClass('is_present');
   });
 });

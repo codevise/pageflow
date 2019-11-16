@@ -39,7 +39,7 @@ describe('TableView', () => {
     tableView.render();
     selection.set('current', collection.last());
 
-    expect(tableView.$el.find('tbody tr.is_selected td')).to.have.$text('John');
+    expect(tableView.$el.find('tbody tr.is_selected td')).toHaveText('John');
   });
 
   test('allows setting a custom selection attribute name', () => {
@@ -57,7 +57,7 @@ describe('TableView', () => {
     tableView.render();
     selection.set('person', collection.last());
 
-    expect(tableView.$el.find('tbody tr.is_selected td')).to.have.$text('John');
+    expect(tableView.$el.find('tbody tr.is_selected td')).toHaveText('John');
   });
 
   test('sets selection when row is clicked', () => {
@@ -171,7 +171,7 @@ describe('TableView', () => {
 
       tableView.render();
 
-      expect(tableView.$el.find('tbody td')).to.have.$text('Test');
+      expect(tableView.$el.find('tbody td')).toHaveText('Test');
     });
   });
 });

@@ -270,7 +270,7 @@ describe('pageflow.inputView', () => {
 
       view.render();
 
-      expect(view.$el).to.have.$class('input-hidden_via_binding');
+      expect(view.$el).toHaveClass('input-hidden_via_binding');
     });
 
     test('does not set hidden class when function returns true', () => {
@@ -281,7 +281,7 @@ describe('pageflow.inputView', () => {
 
       view.render();
 
-      expect(view.$el).not.to.have.$class('input-hidden_via_binding');
+      expect(view.$el).not.toHaveClass('input-hidden_via_binding');
     });
 
     test('sets hidden class when attribute changes to false', () => {
@@ -294,7 +294,7 @@ describe('pageflow.inputView', () => {
 
       view.model.set('active', false);
 
-      expect(view.$el).to.have.$class('input-hidden_via_binding');
+      expect(view.$el).toHaveClass('input-hidden_via_binding');
     });
 
     describe('with visibleBindingValue option', () => {
@@ -307,7 +307,7 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).to.have.$class('input-hidden_via_binding');
+        expect(view.$el).toHaveClass('input-hidden_via_binding');
       });
 
       test('does not set hidden class when value of attribute matches', () => {
@@ -319,7 +319,7 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).not.to.have.$class('input-hidden_via_binding');
+        expect(view.$el).not.toHaveClass('input-hidden_via_binding');
       });
     });
 
@@ -333,7 +333,7 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).to.have.$class('input-hidden_via_binding');
+        expect(view.$el).toHaveClass('input-hidden_via_binding');
       });
 
       test('does not set hidden class when function returns true', () => {
@@ -345,7 +345,7 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).not.to.have.$class('input-hidden_via_binding');
+        expect(view.$el).not.toHaveClass('input-hidden_via_binding');
       });
     });
 
@@ -359,7 +359,7 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).to.have.$class('input-hidden_via_binding');
+        expect(view.$el).toHaveClass('input-hidden_via_binding');
       });
 
       test('does not set hidden if true', () => {
@@ -371,7 +371,7 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).not.to.have.$class('input-hidden_via_binding');
+        expect(view.$el).not.toHaveClass('input-hidden_via_binding');
       });
     });
   });

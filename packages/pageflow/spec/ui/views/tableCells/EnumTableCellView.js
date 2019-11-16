@@ -24,7 +24,7 @@ describe('EnumTableCellView', () => {
 
       cell.render();
 
-      expect(cell.$el).to.have.$text('All');
+      expect(cell.$el).toHaveText('All');
     }
   );
 
@@ -42,7 +42,7 @@ describe('EnumTableCellView', () => {
 
       cell.render();
 
-      expect(cell.$el).to.have.$text('Blank');
+      expect(cell.$el).toHaveText('Blank');
     }
   );
 });

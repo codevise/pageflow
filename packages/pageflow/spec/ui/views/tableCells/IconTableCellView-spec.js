@@ -27,7 +27,7 @@ describe('IconTableCellView', () => {
 
       cell.render();
 
-      expect(cell.$el).to.have.$attr('title', 'Biogefährdung');
+      expect(cell.$el).toHaveAttr('title', 'Biogefährdung');
     }
   );
 
@@ -44,7 +44,7 @@ describe('IconTableCellView', () => {
 
     cell.render();
 
-    expect(cell.$el).to.have.$attr('title', 'Unbedenklich');
+    expect(cell.$el).toHaveAttr('title', 'Unbedenklich');
   });
 
   test('adds class corresponding to column attribute value', () => {
@@ -59,7 +59,7 @@ describe('IconTableCellView', () => {
 
     cell.render();
 
-    expect(cell.$el).to.have.$class('caustic');
+    expect(cell.$el).toHaveClass('caustic');
   });
 
   test(
@@ -80,8 +80,8 @@ describe('IconTableCellView', () => {
 
       cell.render();
 
-      expect(cell.$el).not.to.have.$class('caustic');
-      expect(cell.$el).to.have.$class('radioactive');
+      expect(cell.$el).not.toHaveClass('caustic');
+      expect(cell.$el).toHaveClass('radioactive');
     }
   );
 });

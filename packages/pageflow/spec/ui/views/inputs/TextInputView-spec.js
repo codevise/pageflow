@@ -14,7 +14,7 @@ describe('pageflow.TextInputView', () => {
     textInputView.render();
     var input = textInputView.$el.find('input');
 
-    expect(input).to.have.$attr('disabled', 'disabled');
+    expect(input).toHaveAttr('disabled', 'disabled');
   });
 
   test('supports placeholder text', () => {
@@ -28,7 +28,7 @@ describe('pageflow.TextInputView', () => {
     textInputView.render();
     var input = textInputView.$el.find('input');
 
-    expect(input).to.have.$attr('placeholder', 'Default');
+    expect(input).toHaveAttr('placeholder', 'Default');
   });
 
   test('supports placeholder as function', () => {
@@ -44,7 +44,7 @@ describe('pageflow.TextInputView', () => {
     textInputView.render();
     var input = textInputView.$el.find('input');
 
-    expect(input).to.have.$attr('placeholder', 'otherValue');
+    expect(input).toHaveAttr('placeholder', 'otherValue');
   });
 
   test(
@@ -64,7 +64,7 @@ describe('pageflow.TextInputView', () => {
       var input = textInputView.$el.find('input');
       model.set('other', 'new');
 
-      expect(input).to.have.$attr('placeholder', 'new');
+      expect(input).toHaveAttr('placeholder', 'new');
     }
   );
 
@@ -80,7 +80,7 @@ describe('pageflow.TextInputView', () => {
     textInputView.render();
     var input = textInputView.$el.find('input');
 
-    expect(input).to.have.$attr('placeholder', 'otherValue');
+    expect(input).toHaveAttr('placeholder', 'otherValue');
   });
 
   describe('max length validation', () => {

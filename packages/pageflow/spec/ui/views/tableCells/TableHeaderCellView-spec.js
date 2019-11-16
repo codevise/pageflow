@@ -17,6 +17,6 @@ describe('TableHeaderCellView', () => {
 
     cell.render();
 
-    expect(cell.$el).to.have.$text('First Name');
+    expect(cell.$el).toHaveText('First Name');
   });
 });
