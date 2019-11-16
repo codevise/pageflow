@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import Backbone from 'backbone';
 
 import {SelectInputView} from '$pageflow/ui';
@@ -184,8 +185,8 @@ describe('pageflow.SelectInputView', () => {
   function optionTexts(view) {
     view.render();
 
-    return jQuery(view.el).find('option').map(function() {
-      return jQuery(this).text();
+    return $(view.el).find('option').map(function() {
+      return $(this).text();
     }).get();
   }
 });

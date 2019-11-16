@@ -6,8 +6,6 @@ import {TableCellView, TableView, TextTableCellView} from '$pageflow/ui';
 import * as support from '$support';
 
 describe('TableView', () => {
-  var $ = jQuery;
-
   test('renders a table with rows of cells for collection items', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var tableView = new TableView({

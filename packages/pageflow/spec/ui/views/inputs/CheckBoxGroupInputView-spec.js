@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import Backbone from 'backbone';
 
 import {CheckBoxGroupInputView} from '$pageflow/ui';
@@ -46,8 +47,8 @@ describe('pageflow.CheckBoxGroupInputView', () => {
   function optionTexts(view) {
     view.render();
 
-    return jQuery(view.el).find('.check_boxes_container label').map(function() {
-      return jQuery(this).text();
+    return $(view.el).find('.check_boxes_container label').map(function() {
+      return $(this).text();
     }).get();
   }
 });
