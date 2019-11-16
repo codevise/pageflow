@@ -2,6 +2,7 @@
 
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
+import IScroll from 'iscroll';
 import _ from 'underscore';
 
 import {findTranslation} from '../utils/i18nUtils';
