@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
+import Cocktail from 'cocktail';
 
 //     Backbone.js 1.0.0
 
@@ -1567,6 +1568,7 @@ import _ from 'underscore';
     };
   };
 
+  Cocktail.patch(Backbone);
 }).call(window);
 
 export default Backbone;

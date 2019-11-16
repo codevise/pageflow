@@ -1,4 +1,3 @@
-import Backbone from 'backbone';
 import _ from 'underscore';
 
 //     Cocktail.js 0.3.0
@@ -78,7 +77,5 @@ import _ from 'underscore';
             klass.extend = originalExtend;
         });
     };
-
-    Cocktail.patch(Backbone);
 
 export default Cocktail;
