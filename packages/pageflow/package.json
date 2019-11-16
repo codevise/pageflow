@@ -10,15 +10,21 @@
     "@babel/core": "^7.7.2",
     "babel-preset-react-app": "^9.0.2",
     "@rollup/plugin-alias": "^2.2.0",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0",
+    "jest-jquery-matchers": "^2.1.0",
+    "jest-sinon": "^1.0.0",
     "rollup": "^1.26.3",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-jst": "^1.2.0",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "sinon": "^7.5.0"
   },
   "scripts": {
     "start": "NODE_ENV=development rollup --config rollup.config.js --watch",
-    "build": "NODE_ENV=production rollup --config rollup.config.js"
+    "build": "NODE_ENV=production rollup --config rollup.config.js",
+    "test": "jest"
   },
   "dependencies": {
     "core-js": "^3.4.1"

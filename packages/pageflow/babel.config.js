@@ -1,3 +1,6 @@
 module.exports = {
-  presets: ['react-app']
+  presets: ['react-app'],
+  exclude: [
+    'node_modules/**'
+  ]
 };
