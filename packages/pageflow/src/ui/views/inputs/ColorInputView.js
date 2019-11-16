@@ -1,5 +1,6 @@
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
+import 'jquery.minicolors';
 
 import {inputView} from '../mixins/inputView';
 
