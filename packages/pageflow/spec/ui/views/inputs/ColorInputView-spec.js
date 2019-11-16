@@ -1,15 +1,21 @@
-describe('pageflow.ColorInputView', function() {
+describe('pageflow.ColorInputView', () => {
+  let testContext;
+
+  beforeEach(() => {
+    testContext = {};
+  });
+
   support.useHtmlSandbox();
 
-  beforeEach(function () {
-    this.clock = sinon.useFakeTimers();
+  beforeEach(() => {
+    testContext.clock = sinon.useFakeTimers();
   });
 
-  afterEach(function () {
-    this.clock.restore();
+  afterEach(() => {
+    testContext.clock.restore();
   });
 
-  it('loads value into input', function() {
+  test('loads value into input', () => {
     var model = new Backbone.Model({
       color: '#ababab'
     });
@@ -20,10 +26,10 @@ describe('pageflow.ColorInputView', function() {
 
     var colorInputViewDomino = support.dom.ColorInputView.render(colorInputView);
 
-    expect(colorInputViewDomino.value()).to.eq('#ababab');
+    expect(colorInputViewDomino.value()).toBe('#ababab');
   });
 
-  it('updates input when model changes', function() {
+  test('updates input when model changes', () => {
     var model = new Backbone.Model();
     var colorInputView = new pageflow.ColorInputView({
       model: model,
@@ -33,10 +39,10 @@ describe('pageflow.ColorInputView', function() {
     var colorInputViewDomino = support.dom.ColorInputView.render(colorInputView);
     model.set('color', '#ababab');
 
-    expect(colorInputViewDomino.value()).to.eq('#ababab');
+    expect(colorInputViewDomino.value()).toBe('#ababab');
   });
 
-  it('saves value to model on change', function() {
+  test('saves value to model on change', () => {
     var model = new Backbone.Model({
       color: '#ababab'
     });
@@ -47,14 +53,14 @@ describe('pageflow.ColorInputView', function() {
 
     var colorInputViewDomino = support.dom.ColorInputView.render(
       colorInputView,
-      {appendTo: this.htmlSandbox}
+      {appendTo: testContext.htmlSandbox}
     );
-    colorInputViewDomino.fillIn('#bbb', this.clock);
+    colorInputViewDomino.fillIn('#bbb', testContext.clock);
 
-    expect(model.get('color')).to.eq('#bbbbbb');
+    expect(model.get('color')).toBe('#bbbbbb');
   });
 
-  it('allows passing swatches', function() {
+  test('allows passing swatches', () => {
     var model = new Backbone.Model();
     var colorInputView = new pageflow.ColorInputView({
       model: model,
@@ -64,14 +70,14 @@ describe('pageflow.ColorInputView', function() {
 
     var colorInputViewDomino = support.dom.ColorInputView.render(
       colorInputView,
-      {appendTo: this.htmlSandbox}
+      {appendTo: testContext.htmlSandbox}
     );
 
-    expect(colorInputViewDomino.swatches()).to.eql(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
+    expect(colorInputViewDomino.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
   });
 
-  describe('with defaultValue option', function() {
-    it('falls back to default value', function() {
+  describe('with defaultValue option', () => {
+    test('falls back to default value', () => {
       var model = new Backbone.Model();
       var colorInputView = new pageflow.ColorInputView({
         model: model,
@@ -83,10 +89,10 @@ describe('pageflow.ColorInputView', function() {
         colorInputView
       );
 
-      expect(colorInputViewDomino.value()).to.eq('#cdcdcd');
+      expect(colorInputViewDomino.value()).toBe('#cdcdcd');
     });
 
-    it('does not store default value in model', function() {
+    test('does not store default value in model', () => {
       var model = new Backbone.Model();
       var colorInputView = new pageflow.ColorInputView({
         model: model,
@@ -96,14 +102,14 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#cdcdcd', this.clock);
+      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
 
-      expect(model.has('color')).to.eq(false);
+      expect(model.has('color')).toBe(false);
     });
 
-    it('stores non default value in model', function() {
+    test('stores non default value in model', () => {
       var model = new Backbone.Model();
       var colorInputView = new pageflow.ColorInputView({
         model: model,
@@ -113,14 +119,14 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#ababab', this.clock);
+      colorInputViewDomino.fillIn('#ababab', testContext.clock);
 
-      expect(model.get('color')).to.eq('#ababab');
+      expect(model.get('color')).toBe('#ababab');
     });
 
-    it('unsets attribute in model if choosing default value', function() {
+    test('unsets attribute in model if choosing default value', () => {
       var model = new Backbone.Model({
         color: '#fff'
       });
@@ -132,14 +138,14 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#cdcdcd', this.clock);
+      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
 
-      expect(model.has('color')).to.eq(false);
+      expect(model.has('color')).toBe(false);
     });
 
-    it('includes swatch for default value', function() {
+    test('includes swatch for default value', () => {
       var model = new Backbone.Model();
       var colorInputView = new pageflow.ColorInputView({
         model: model,
@@ -150,13 +156,13 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
 
-      expect(colorInputViewDomino.swatches()).to.eql(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
+      expect(colorInputViewDomino.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
     });
 
-    it('does not duplicate swatch', function() {
+    test('does not duplicate swatch', () => {
       var model = new Backbone.Model();
       var colorInputView = new pageflow.ColorInputView({
         model: model,
@@ -167,15 +173,15 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
 
-      expect(colorInputViewDomino.swatches()).to.eql(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
+      expect(colorInputViewDomino.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
     });
   });
 
-  describe('with function as defaultValue option', function() {
-    it('falls back to default value', function() {
+  describe('with function as defaultValue option', () => {
+    test('falls back to default value', () => {
       var model = new Backbone.Model();
       var colorInputView = new pageflow.ColorInputView({
         model: model,
@@ -187,10 +193,10 @@ describe('pageflow.ColorInputView', function() {
         colorInputView
       );
 
-      expect(colorInputViewDomino.value()).to.eq('#cdcdcd');
+      expect(colorInputViewDomino.value()).toBe('#cdcdcd');
     });
 
-    it('does not store default value in model', function() {
+    test('does not store default value in model', () => {
       var model = new Backbone.Model();
       var colorInputView = new pageflow.ColorInputView({
         model: model,
@@ -200,14 +206,14 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#cdcdcd', this.clock);
+      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
 
-      expect(model.has('color')).to.eq(false);
+      expect(model.has('color')).toBe(false);
     });
 
-    it('stores non default value in model', function() {
+    test('stores non default value in model', () => {
       var model = new Backbone.Model();
       var colorInputView = new pageflow.ColorInputView({
         model: model,
@@ -217,14 +223,14 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#ababab', this.clock);
+      colorInputViewDomino.fillIn('#ababab', testContext.clock);
 
-      expect(model.get('color')).to.eq('#ababab');
+      expect(model.get('color')).toBe('#ababab');
     });
 
-    it('unsets attribute in model if choosing default value', function() {
+    test('unsets attribute in model if choosing default value', () => {
       var model = new Backbone.Model({
         color: '#fff'
       });
@@ -236,14 +242,14 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#cdcdcd', this.clock);
+      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
 
-      expect(model.has('color')).to.eq(false);
+      expect(model.has('color')).toBe(false);
     });
 
-    it('includes swatch for default value', function() {
+    test('includes swatch for default value', () => {
       var model = new Backbone.Model();
       var colorInputView = new pageflow.ColorInputView({
         model: model,
@@ -254,15 +260,15 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
 
-      expect(colorInputViewDomino.swatches()).to.eql(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
+      expect(colorInputViewDomino.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
     });
   });
 
-  describe('with defaultValueBinding option', function() {
-    it('uses value of binding attribute as default value', function() {
+  describe('with defaultValueBinding option', () => {
+    test('uses value of binding attribute as default value', () => {
       var model = new Backbone.Model({
         default_color: '#cdcdcd'
       });
@@ -276,48 +282,31 @@ describe('pageflow.ColorInputView', function() {
         colorInputView
       );
 
-      expect(colorInputViewDomino.value()).to.eq('#cdcdcd');
+      expect(colorInputViewDomino.value()).toBe('#cdcdcd');
     });
 
-    it('updates displayed default value when binding attribute changes', function() {
-      var model = new Backbone.Model({
-        default_color: '#aaaaaa'
-      });
-      var colorInputView = new pageflow.ColorInputView({
-        model: model,
-        propertyName: 'color',
-        defaultValueBinding: 'default_color'
-      });
+    test(
+      'updates displayed default value when binding attribute changes',
+      () => {
+        var model = new Backbone.Model({
+          default_color: '#aaaaaa'
+        });
+        var colorInputView = new pageflow.ColorInputView({
+          model: model,
+          propertyName: 'color',
+          defaultValueBinding: 'default_color'
+        });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
-        colorInputView
-      );
-      model.set('default_color', '#cdcdcd');
+        var colorInputViewDomino = support.dom.ColorInputView.render(
+          colorInputView
+        );
+        model.set('default_color', '#cdcdcd');
 
-      expect(colorInputViewDomino.value()).to.eq('#cdcdcd');
-    });
+        expect(colorInputViewDomino.value()).toBe('#cdcdcd');
+      }
+    );
 
-    it('does not store default value in model', function() {
-      var model = new Backbone.Model({
-        default_color: '#cdcdcd'
-      });
-      var colorInputView = new pageflow.ColorInputView({
-        model: model,
-        propertyName: 'color',
-        defaultValueBinding: 'default_color'
-      });
-
-      var colorInputViewDomino = support.dom.ColorInputView.render(
-        colorInputView,
-        {appendTo: this.htmlSandbox}
-      );
-      model.set('default_color', '#aaaaaa');
-      colorInputViewDomino.fillIn('#aaaaaa', this.clock);
-
-      expect(model.has('color')).to.eq(false);
-    });
-
-    it('stores non default value in model', function() {
+    test('does not store default value in model', () => {
       var model = new Backbone.Model({
         default_color: '#cdcdcd'
       });
@@ -329,15 +318,35 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
       model.set('default_color', '#aaaaaa');
-      colorInputViewDomino.fillIn('#cdcdcd', this.clock);
+      colorInputViewDomino.fillIn('#aaaaaa', testContext.clock);
 
-      expect(model.get('color')).to.eq('#cdcdcd');
+      expect(model.has('color')).toBe(false);
     });
 
-    it('unsets attribute in model if choosing default value', function() {
+    test('stores non default value in model', () => {
+      var model = new Backbone.Model({
+        default_color: '#cdcdcd'
+      });
+      var colorInputView = new pageflow.ColorInputView({
+        model: model,
+        propertyName: 'color',
+        defaultValueBinding: 'default_color'
+      });
+
+      var colorInputViewDomino = support.dom.ColorInputView.render(
+        colorInputView,
+        {appendTo: testContext.htmlSandbox}
+      );
+      model.set('default_color', '#aaaaaa');
+      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
+
+      expect(model.get('color')).toBe('#cdcdcd');
+    });
+
+    test('unsets attribute in model if choosing default value', () => {
       var model = new Backbone.Model({
         color: '#fff'
       });
@@ -349,17 +358,17 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
       model.set('default_color', '#cdcdcd');
-      colorInputViewDomino.fillIn('#cdcdcd', this.clock);
+      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
 
-      expect(model.has('color')).to.eq(false);
+      expect(model.has('color')).toBe(false);
     });
   });
 
-  describe('with function as defaultValue and defaultValueBinding option', function() {
-    it('passes binding attribute to default value function', function() {
+  describe('with function as defaultValue and defaultValueBinding option', () => {
+    test('passes binding attribute to default value function', () => {
       var model = new Backbone.Model({
         light: true
       });
@@ -374,50 +383,32 @@ describe('pageflow.ColorInputView', function() {
         colorInputView
       );
 
-      expect(colorInputViewDomino.value()).to.eq('#fefefe');
+      expect(colorInputViewDomino.value()).toBe('#fefefe');
     });
 
-    it('updates displayed default value when binding attribute changes', function() {
-      var model = new Backbone.Model({
-        light: true
-      });
-      var colorInputView = new pageflow.ColorInputView({
-        model: model,
-        propertyName: 'color',
-        defaultValueBinding: 'light',
-        defaultValue: function(light) { return light ? '#fefefe' : '#010101'; }
-      });
+    test(
+      'updates displayed default value when binding attribute changes',
+      () => {
+        var model = new Backbone.Model({
+          light: true
+        });
+        var colorInputView = new pageflow.ColorInputView({
+          model: model,
+          propertyName: 'color',
+          defaultValueBinding: 'light',
+          defaultValue: function(light) { return light ? '#fefefe' : '#010101'; }
+        });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
-        colorInputView
-      );
-      model.set('light', false);
+        var colorInputViewDomino = support.dom.ColorInputView.render(
+          colorInputView
+        );
+        model.set('light', false);
 
-      expect(colorInputViewDomino.value()).to.eq('#010101');
-    });
+        expect(colorInputViewDomino.value()).toBe('#010101');
+      }
+    );
 
-    it('does not store default value in model', function() {
-      var model = new Backbone.Model({
-        light: true
-      });
-      var colorInputView = new pageflow.ColorInputView({
-        model: model,
-        propertyName: 'color',
-        defaultValueBinding: 'light',
-        defaultValue: function(light) { return light ? '#fefefe' : '#010101'; }
-      });
-
-      var colorInputViewDomino = support.dom.ColorInputView.render(
-        colorInputView,
-        {appendTo: this.htmlSandbox}
-      );
-      model.set('light', false);
-      colorInputViewDomino.fillIn('#010101', this.clock);
-
-      expect(model.has('color')).to.eq(false);
-    });
-
-    it('stores non default value in model', function() {
+    test('does not store default value in model', () => {
       var model = new Backbone.Model({
         light: true
       });
@@ -430,15 +421,15 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
       model.set('light', false);
-      colorInputViewDomino.fillIn('#fefefe', this.clock);
+      colorInputViewDomino.fillIn('#010101', testContext.clock);
 
-      expect(model.get('color')).to.eq('#fefefe');
+      expect(model.has('color')).toBe(false);
     });
 
-    it('unsets attribute in model if choosing default value', function() {
+    test('stores non default value in model', () => {
       var model = new Backbone.Model({
         light: true
       });
@@ -451,12 +442,33 @@ describe('pageflow.ColorInputView', function() {
 
       var colorInputViewDomino = support.dom.ColorInputView.render(
         colorInputView,
-        {appendTo: this.htmlSandbox}
+        {appendTo: testContext.htmlSandbox}
       );
       model.set('light', false);
-      colorInputViewDomino.fillIn('#010101', this.clock);
+      colorInputViewDomino.fillIn('#fefefe', testContext.clock);
 
-      expect(model.has('color')).to.eq(false);
+      expect(model.get('color')).toBe('#fefefe');
+    });
+
+    test('unsets attribute in model if choosing default value', () => {
+      var model = new Backbone.Model({
+        light: true
+      });
+      var colorInputView = new pageflow.ColorInputView({
+        model: model,
+        propertyName: 'color',
+        defaultValueBinding: 'light',
+        defaultValue: function(light) { return light ? '#fefefe' : '#010101'; }
+      });
+
+      var colorInputViewDomino = support.dom.ColorInputView.render(
+        colorInputView,
+        {appendTo: testContext.htmlSandbox}
+      );
+      model.set('light', false);
+      colorInputViewDomino.fillIn('#010101', testContext.clock);
+
+      expect(model.has('color')).toBe(false);
     });
   });
 });

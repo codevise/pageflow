@@ -1,5 +1,5 @@
-describe('pageflow.TextAreaInputView', function() {
-  it('supports disabled option', function() {
+describe('pageflow.TextAreaInputView', () => {
+  test('supports disabled option', () => {
     var model = new Backbone.Model({});
     var textAreaInputView = new pageflow.TextAreaInputView({
       model: model,
@@ -13,7 +13,7 @@ describe('pageflow.TextAreaInputView', function() {
     expect(input).to.have.$attr('disabled', 'disabled');
   });
 
-  it('supports placeholder text', function() {
+  test('supports placeholder text', () => {
     var model = new Backbone.Model({});
     var textAreaInputView = new pageflow.TextAreaInputView({
       model: model,
@@ -27,7 +27,7 @@ describe('pageflow.TextAreaInputView', function() {
     expect(input).to.have.$attr('placeholder', 'Default');
   });
 
-  it('supports placeholder as function', function() {
+  test('supports placeholder as function', () => {
     var model = new Backbone.Model({other: 'otherValue'});
     var textAreaInputView = new pageflow.TextAreaInputView({
       model: model,
@@ -43,25 +43,28 @@ describe('pageflow.TextAreaInputView', function() {
     expect(input).to.have.$attr('placeholder', 'otherValue');
   });
 
-  it('updates placeholder when placeholderBinding attribute changes', function() {
-    var model = new Backbone.Model({other: 'old'});
-    var textAreaInputView = new pageflow.TextAreaInputView({
-      model: model,
-      propertyName: 'name',
-      placeholder: function(m) {
-        return m.get('other');
-      },
-      placeholderBinding: 'other'
-    });
+  test(
+    'updates placeholder when placeholderBinding attribute changes',
+    () => {
+      var model = new Backbone.Model({other: 'old'});
+      var textAreaInputView = new pageflow.TextAreaInputView({
+        model: model,
+        propertyName: 'name',
+        placeholder: function(m) {
+          return m.get('other');
+        },
+        placeholderBinding: 'other'
+      });
 
-    textAreaInputView.render();
-    var input = textAreaInputView.$el.find('textarea');
-    model.set('other', 'new');
+      textAreaInputView.render();
+      var input = textAreaInputView.$el.find('textarea');
+      model.set('other', 'new');
 
-    expect(input).to.have.$attr('placeholder', 'new');
-  });
+      expect(input).to.have.$attr('placeholder', 'new');
+    }
+  );
 
-  it('supports reading placeholder from other model', function() {
+  test('supports reading placeholder from other model', () => {
     var placeholderModel = new Backbone.Model({name: 'otherValue'});
     var model = new Backbone.Model({});
     var textAreaInputView = new pageflow.TextAreaInputView({
@@ -76,7 +79,7 @@ describe('pageflow.TextAreaInputView', function() {
     expect(input).to.have.$attr('placeholder', 'otherValue');
   });
 
-  it('prefills url field with http:// when creating new link', function(done) {
+  test('prefills url field with http:// when creating new link', done => {
     var model = new Backbone.Model({
       text: 'Some link'
     });
@@ -94,12 +97,12 @@ describe('pageflow.TextAreaInputView', function() {
       textAreaInputViewDomino.clickLinkButton();
       textAreaInputViewDomino.clickSaveInLinkDialog();
 
-      expect(model.get('text')).to.contain('href="http://"');
+      expect(model.get('text')).toEqual(expect.arrayContaining(['href="http://"']));
       done();
     });
   });
 
-  it('allows creating url link', function(done) {
+  test('allows creating url link', done => {
     var model = new Backbone.Model({
       text: 'Some link'
     });
@@ -118,12 +121,12 @@ describe('pageflow.TextAreaInputView', function() {
       textAreaInputViewDomino.enterLinkUrl('https://example.com');
       textAreaInputViewDomino.clickSaveInLinkDialog();
 
-      expect(model.get('text')).to.contain('href="https://example.com"');
+      expect(model.get('text')).toEqual(expect.arrayContaining(['href="https://example.com"']));
       done();
     });
   });
 
-  it('allows updating url link', function(done) {
+  test('allows updating url link', done => {
     var model = new Backbone.Model({
       text: '<a href="https://new.example.com">Some link</a>'
     });
@@ -142,12 +145,12 @@ describe('pageflow.TextAreaInputView', function() {
       textAreaInputViewDomino.enterLinkUrl('https://new.example.com');
       textAreaInputViewDomino.clickSaveInLinkDialog();
 
-      expect(model.get('text')).to.contain('href="https://new.example.com"');
+      expect(model.get('text')).toEqual(expect.arrayContaining(['href="https://new.example.com"']));
       done();
     });
   });
 
-  it('creates target blank links by default', function(done) {
+  test('creates target blank links by default', done => {
     var model = new Backbone.Model({
       text: 'Some link'
     });
@@ -165,12 +168,12 @@ describe('pageflow.TextAreaInputView', function() {
       textAreaInputViewDomino.clickLinkButton();
       textAreaInputViewDomino.clickSaveInLinkDialog();
 
-      expect(model.get('text')).to.contain('target="_blank"');
+      expect(model.get('text')).toEqual(expect.arrayContaining(['target="_blank"']));
       done();
     });
   });
 
-  it('allows creating target self link', function(done) {
+  test('allows creating target self link', done => {
     var model = new Backbone.Model({
       text: 'Some link'
     });
@@ -189,12 +192,12 @@ describe('pageflow.TextAreaInputView', function() {
       textAreaInputViewDomino.toggleOpenInNewTab(false);
       textAreaInputViewDomino.clickSaveInLinkDialog();
 
-      expect(model.get('text')).to.contain('target="_self"');
+      expect(model.get('text')).toEqual(expect.arrayContaining(['target="_self"']));
       done();
     });
   });
 
-  it('allows removing links', function(done) {
+  test('allows removing links', done => {
     var model = new Backbone.Model({
       text: 'Some <a href="http://example.com">link</a>'
     });
@@ -211,13 +214,13 @@ describe('pageflow.TextAreaInputView', function() {
     textAreaInputViewDomino.selectFirstLink(function() {
       textAreaInputViewDomino.clickRemoveLink();
 
-      expect(model.get('text')).to.contain('Some link');
+      expect(model.get('text')).toEqual(expect.arrayContaining(['Some link']));
       done();
     });
   });
 
-  describe('with fragmentLinkInputView option', function() {
-    it('renders given view', function() {
+  describe('with fragmentLinkInputView option', () => {
+    test('renders given view', () => {
       var model = new Backbone.Model({});
       var FragmentLinkInputView = Backbone.View.extend({
         className: 'some_fragment_link_input_view'
@@ -230,39 +233,42 @@ describe('pageflow.TextAreaInputView', function() {
 
       textAreaInputView.render();
 
-      expect(textAreaInputView.$el.find('.some_fragment_link_input_view').length).to.eq(1);
+      expect(textAreaInputView.$el.find('.some_fragment_link_input_view').length).toBe(1);
     });
 
-    it('passes property value to fragment link view when selecting link', function(done) {
-      var model = new Backbone.Model({
-        text: 'Some <a href="#123">link</a>'
-      });
-      var propertyValue;
-      var FragmentLinkInputView = Backbone.Marionette.View.extend({
-        modelEvents: {
-          'change': function() {
-            propertyValue = this.model.get(this.options.propertyName);
+    test(
+      'passes property value to fragment link view when selecting link',
+      done => {
+        var model = new Backbone.Model({
+          text: 'Some <a href="#123">link</a>'
+        });
+        var propertyValue;
+        var FragmentLinkInputView = Backbone.Marionette.View.extend({
+          modelEvents: {
+            'change': function() {
+              propertyValue = this.model.get(this.options.propertyName);
+            }
           }
-        }
-      });
-      var textAreaInputView = new pageflow.TextAreaInputView({
-        model: model,
-        propertyName: 'text',
-        fragmentLinkInputView: FragmentLinkInputView
-      });
+        });
+        var textAreaInputView = new pageflow.TextAreaInputView({
+          model: model,
+          propertyName: 'text',
+          fragmentLinkInputView: FragmentLinkInputView
+        });
 
-      var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
-        textAreaInputView,
-        {appendTo: $('body')}
-      );
+        var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+          textAreaInputView,
+          {appendTo: $('body')}
+        );
 
-      textAreaInputViewDomino.selectFirstLink(function() {
-        expect(propertyValue).to.eq('123');
-        done();
-      });
-    });
+        textAreaInputViewDomino.selectFirstLink(function() {
+          expect(propertyValue).toBe('123');
+          done();
+        });
+      }
+    );
 
-    it('updates link when view sets property value', function(done) {
+    test('updates link when view sets property value', done => {
       var model = new Backbone.Model({
         text: 'Some <a href="#123">link</a>'
       });
@@ -289,14 +295,202 @@ describe('pageflow.TextAreaInputView', function() {
         updateFragmentLink(456);
         textAreaInputViewDomino.clickSaveInLinkDialog();
 
-        expect(model.get('text')).to.contain('href="#456"');
+        expect(model.get('text')).toEqual(expect.arrayContaining(['href="#456"']));
         done();
       });
     });
 
-    it('resets url field to http:// when switching from fragment link to url link', function(done) {
+    test(
+      'resets url field to http:// when switching from fragment link to url link',
+      done => {
+        var model = new Backbone.Model({
+          text: 'Some <a href="#123">link</a>'
+        });
+        var FragmentLinkInputView = Backbone.Marionette.View.extend({});
+        var textAreaInputView = new pageflow.TextAreaInputView({
+          model: model,
+          propertyName: 'text',
+          fragmentLinkInputView: FragmentLinkInputView
+        });
+
+        var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+          textAreaInputView,
+          {appendTo: $('body')}
+        );
+
+        textAreaInputViewDomino.selectFirstLink(function() {
+          textAreaInputViewDomino.clickUrlLinkRadioButton();
+          textAreaInputViewDomino.clickSaveInLinkDialog();
+
+          expect(model.get('text')).toEqual(expect.arrayContaining(['href="http://"']));
+          done();
+        });
+      }
+    );
+
+    test(
+      'resets target to blank when switching from fragment link to url link',
+      done => {
+        var model = new Backbone.Model({
+          text: 'Some <a href="#123" target="_self">link</a>'
+        });
+        var FragmentLinkInputView = Backbone.Marionette.View.extend({});
+        var textAreaInputView = new pageflow.TextAreaInputView({
+          model: model,
+          propertyName: 'text',
+          fragmentLinkInputView: FragmentLinkInputView
+        });
+
+        var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+          textAreaInputView,
+          {appendTo: $('body')}
+        );
+
+        textAreaInputViewDomino.selectFirstLink(function() {
+          textAreaInputViewDomino.clickUrlLinkRadioButton();
+          textAreaInputViewDomino.clickSaveInLinkDialog();
+
+          expect(model.get('text')).toEqual(expect.arrayContaining(['target="_blank"']));
+          done();
+        });
+      }
+    );
+
+    test(
+      'does not change fragment link when toggling link type back and forth',
+      done => {
+        var model = new Backbone.Model({
+          text: 'Some <a href="#123">link</a>'
+        });
+        var FragmentLinkInputView = Backbone.Marionette.View.extend({});
+        var textAreaInputView = new pageflow.TextAreaInputView({
+          model: model,
+          propertyName: 'text',
+          fragmentLinkInputView: FragmentLinkInputView
+        });
+
+        var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+          textAreaInputView,
+          {appendTo: $('body')}
+        );
+
+        textAreaInputViewDomino.selectFirstLink(function() {
+          textAreaInputViewDomino.clickUrlLinkRadioButton();
+          textAreaInputViewDomino.enterLinkUrl('https://example.com');
+          textAreaInputViewDomino.clickFragmentLinkRadioButton();
+          textAreaInputViewDomino.clickSaveInLinkDialog();
+
+          expect(model.get('text')).toEqual(expect.arrayContaining(['href="#123"']));
+          done();
+        });
+      }
+    );
+
+    test(
+      'resets url to # when switching from url link to fragment link',
+      done => {
+        var model = new Backbone.Model({
+          text: 'Some <a href="https://example.com">link</a>'
+        });
+        var FragmentLinkInputView = Backbone.Marionette.View.extend({});
+        var textAreaInputView = new pageflow.TextAreaInputView({
+          model: model,
+          propertyName: 'text',
+          fragmentLinkInputView: FragmentLinkInputView
+        });
+
+        var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+          textAreaInputView,
+          {appendTo: $('body')}
+        );
+
+        textAreaInputViewDomino.selectFirstLink(function() {
+          textAreaInputViewDomino.clickFragmentLinkRadioButton();
+          textAreaInputViewDomino.clickSaveInLinkDialog();
+
+          expect(model.get('text')).toEqual(expect.arrayContaining(['href="#"']));
+          done();
+        });
+      }
+    );
+
+    test(
+      'does not change url link when toggling link type back and forth',
+      done => {
+        var model = new Backbone.Model({
+          text: 'Some <a href="http://example.com">link</a>'
+        });
+        var updateFragmentLink;
+        var FragmentLinkInputView = Backbone.Marionette.View.extend({
+          initialize: function() {
+            updateFragmentLink = _.bind(function(value) {
+              this.model.set(this.options.propertyName, value);
+            }, this);
+          }
+        });
+        var textAreaInputView = new pageflow.TextAreaInputView({
+          model: model,
+          propertyName: 'text',
+          fragmentLinkInputView: FragmentLinkInputView
+        });
+
+        var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+          textAreaInputView,
+          {appendTo: $('body')}
+        );
+
+        textAreaInputViewDomino.selectFirstLink(function() {
+          textAreaInputViewDomino.clickFragmentLinkRadioButton();
+          updateFragmentLink(123);
+          textAreaInputViewDomino.clickUrlLinkRadioButton();
+          textAreaInputViewDomino.clickSaveInLinkDialog();
+
+          expect(model.get('text')).toEqual(expect.arrayContaining(['href="http://example.com"']));
+          done();
+        });
+      }
+    );
+
+    test(
+      'does not change url link target when toggling link type back and forth',
+      done => {
+        var model = new Backbone.Model({
+          text: 'Some <a href="http://example.com" target="_self">link</a>'
+        });
+        var updateFragmentLink;
+        var FragmentLinkInputView = Backbone.Marionette.View.extend({
+          initialize: function() {
+            updateFragmentLink = _.bind(function(value) {
+              this.model.set(this.options.propertyName, value);
+            }, this);
+          }
+        });
+        var textAreaInputView = new pageflow.TextAreaInputView({
+          model: model,
+          propertyName: 'text',
+          fragmentLinkInputView: FragmentLinkInputView
+        });
+
+        var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
+          textAreaInputView,
+          {appendTo: $('body')}
+        );
+
+        textAreaInputViewDomino.selectFirstLink(function() {
+          textAreaInputViewDomino.clickFragmentLinkRadioButton();
+          updateFragmentLink(123);
+          textAreaInputViewDomino.clickUrlLinkRadioButton();
+          textAreaInputViewDomino.clickSaveInLinkDialog();
+
+          expect(model.get('text')).toEqual(expect.arrayContaining(['target="_self"']));
+          done();
+        });
+      }
+    );
+
+    test('allows creating url link', done => {
       var model = new Backbone.Model({
-        text: 'Some <a href="#123">link</a>'
+        text: 'Some link'
       });
       var FragmentLinkInputView = Backbone.Marionette.View.extend({});
       var textAreaInputView = new pageflow.TextAreaInputView({
@@ -310,187 +504,17 @@ describe('pageflow.TextAreaInputView', function() {
         {appendTo: $('body')}
       );
 
-      textAreaInputViewDomino.selectFirstLink(function() {
-        textAreaInputViewDomino.clickUrlLinkRadioButton();
-        textAreaInputViewDomino.clickSaveInLinkDialog();
-
-        expect(model.get('text')).to.contain('href="http://"');
-        done();
-      });
-    });
-
-    it('resets target to blank when switching from fragment link to url link', function(done) {
-      var model = new Backbone.Model({
-        text: 'Some <a href="#123" target="_self">link</a>'
-      });
-      var FragmentLinkInputView = Backbone.Marionette.View.extend({});
-      var textAreaInputView = new pageflow.TextAreaInputView({
-        model: model,
-        propertyName: 'text',
-        fragmentLinkInputView: FragmentLinkInputView
-      });
-
-      var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
-        textAreaInputView,
-        {appendTo: $('body')}
-      );
-
-      textAreaInputViewDomino.selectFirstLink(function() {
-        textAreaInputViewDomino.clickUrlLinkRadioButton();
-        textAreaInputViewDomino.clickSaveInLinkDialog();
-
-        expect(model.get('text')).to.contain('target="_blank"');
-        done();
-      });
-    });
-
-    it('does not change fragment link when toggling link type back and forth', function(done) {
-      var model = new Backbone.Model({
-        text: 'Some <a href="#123">link</a>'
-      });
-      var FragmentLinkInputView = Backbone.Marionette.View.extend({});
-      var textAreaInputView = new pageflow.TextAreaInputView({
-        model: model,
-        propertyName: 'text',
-        fragmentLinkInputView: FragmentLinkInputView
-      });
-
-      var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
-        textAreaInputView,
-        {appendTo: $('body')}
-      );
-
-      textAreaInputViewDomino.selectFirstLink(function() {
-        textAreaInputViewDomino.clickUrlLinkRadioButton();
+      textAreaInputViewDomino.selectAll(function() {
+        textAreaInputViewDomino.clickLinkButton();
         textAreaInputViewDomino.enterLinkUrl('https://example.com');
-        textAreaInputViewDomino.clickFragmentLinkRadioButton();
         textAreaInputViewDomino.clickSaveInLinkDialog();
 
-        expect(model.get('text')).to.contain('href="#123"');
+        expect(model.get('text')).toEqual(expect.arrayContaining(['href="https://example.com"']));
         done();
       });
     });
 
-    it('resets url to # when switching from url link to fragment link', function(done) {
-      var model = new Backbone.Model({
-        text: 'Some <a href="https://example.com">link</a>'
-      });
-      var FragmentLinkInputView = Backbone.Marionette.View.extend({});
-      var textAreaInputView = new pageflow.TextAreaInputView({
-        model: model,
-        propertyName: 'text',
-        fragmentLinkInputView: FragmentLinkInputView
-      });
-
-      var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
-        textAreaInputView,
-        {appendTo: $('body')}
-      );
-
-      textAreaInputViewDomino.selectFirstLink(function() {
-        textAreaInputViewDomino.clickFragmentLinkRadioButton();
-        textAreaInputViewDomino.clickSaveInLinkDialog();
-
-        expect(model.get('text')).to.contain('href="#"');
-        done();
-      });
-    });
-
-    it('does not change url link when toggling link type back and forth', function(done) {
-      var model = new Backbone.Model({
-        text: 'Some <a href="http://example.com">link</a>'
-      });
-      var updateFragmentLink;
-      var FragmentLinkInputView = Backbone.Marionette.View.extend({
-        initialize: function() {
-          updateFragmentLink = _.bind(function(value) {
-            this.model.set(this.options.propertyName, value);
-          }, this);
-        }
-      });
-      var textAreaInputView = new pageflow.TextAreaInputView({
-        model: model,
-        propertyName: 'text',
-        fragmentLinkInputView: FragmentLinkInputView
-      });
-
-      var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
-        textAreaInputView,
-        {appendTo: $('body')}
-      );
-
-      textAreaInputViewDomino.selectFirstLink(function() {
-        textAreaInputViewDomino.clickFragmentLinkRadioButton();
-        updateFragmentLink(123);
-        textAreaInputViewDomino.clickUrlLinkRadioButton();
-        textAreaInputViewDomino.clickSaveInLinkDialog();
-
-        expect(model.get('text')).to.contain('href="http://example.com"');
-        done();
-      });
-    });
-
-    it('does not change url link target when toggling link type back and forth', function(done) {
-      var model = new Backbone.Model({
-        text: 'Some <a href="http://example.com" target="_self">link</a>'
-      });
-      var updateFragmentLink;
-      var FragmentLinkInputView = Backbone.Marionette.View.extend({
-        initialize: function() {
-          updateFragmentLink = _.bind(function(value) {
-            this.model.set(this.options.propertyName, value);
-          }, this);
-        }
-      });
-      var textAreaInputView = new pageflow.TextAreaInputView({
-        model: model,
-        propertyName: 'text',
-        fragmentLinkInputView: FragmentLinkInputView
-      });
-
-      var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
-        textAreaInputView,
-        {appendTo: $('body')}
-      );
-
-      textAreaInputViewDomino.selectFirstLink(function() {
-        textAreaInputViewDomino.clickFragmentLinkRadioButton();
-        updateFragmentLink(123);
-        textAreaInputViewDomino.clickUrlLinkRadioButton();
-        textAreaInputViewDomino.clickSaveInLinkDialog();
-
-        expect(model.get('text')).to.contain('target="_self"');
-        done();
-      });
-    });
-
-    it('allows creating url link', function(done) {
-      var model = new Backbone.Model({
-        text: 'Some link'
-      });
-      var FragmentLinkInputView = Backbone.Marionette.View.extend({});
-      var textAreaInputView = new pageflow.TextAreaInputView({
-        model: model,
-        propertyName: 'text',
-        fragmentLinkInputView: FragmentLinkInputView
-      });
-
-      var textAreaInputViewDomino = support.dom.TextAreaInputView.render(
-        textAreaInputView,
-        {appendTo: $('body')}
-      );
-
-      textAreaInputViewDomino.selectAll(function() {
-        textAreaInputViewDomino.clickLinkButton();
-        textAreaInputViewDomino.enterLinkUrl('https://example.com');
-        textAreaInputViewDomino.clickSaveInLinkDialog();
-
-        expect(model.get('text')).to.contain('href="https://example.com"');
-        done();
-      });
-    });
-
-    it('allows creating fragment link', function(done) {
+    test('allows creating fragment link', done => {
       var model = new Backbone.Model({
         text: 'Some link'
       });
@@ -519,12 +543,12 @@ describe('pageflow.TextAreaInputView', function() {
         updateFragmentLink(123);
         textAreaInputViewDomino.clickSaveInLinkDialog();
 
-        expect(model.get('text')).to.contain('href="#123"');
+        expect(model.get('text')).toEqual(expect.arrayContaining(['href="#123"']));
         done();
       });
     });
 
-    it('creates fragment link with target self', function(done) {
+    test('creates fragment link with target self', done => {
       var model = new Backbone.Model({
         text: 'Some link'
       });
@@ -545,7 +569,7 @@ describe('pageflow.TextAreaInputView', function() {
         textAreaInputViewDomino.clickFragmentLinkRadioButton();
         textAreaInputViewDomino.clickSaveInLinkDialog();
 
-        expect(model.get('text')).to.contain('target="_self"');
+        expect(model.get('text')).toEqual(expect.arrayContaining(['target="_self"']));
         done();
       });
     });

@@ -1,11 +1,11 @@
-describe('TabsView', function() {
-  describe('with i18n option', function() {
+describe('TabsView', () => {
+  describe('with i18n option', () => {
     support.useFakeTranslations({
       'tabs.one': 'Tab one',
       'tabs.two': 'Tab two'
     });
 
-    it('uses prefix for tab labels', function() {
+    test('uses prefix for tab labels', () => {
       var tabsView = new pageflow.TabsView({
         i18n: 'tabs'
       });
@@ -15,17 +15,17 @@ describe('TabsView', function() {
 
       var tabs = support.dom.Tabs.render(tabsView);
 
-      expect(tabs.tabLabels()).to.eql(['Tab one', 'Tab two']);
+      expect(tabs.tabLabels()).toEqual(['Tab one', 'Tab two']);
     });
   });
 
-  describe('with fallbackTranslationKeyPrefix option', function() {
+  describe('with fallbackTranslationKeyPrefix option', () => {
     support.useFakeTranslations({
       'tabs.one': 'Tab one',
       'tabs.two': 'Tab two'
     });
 
-    it('uses prefix for tab labels', function() {
+    test('uses prefix for tab labels', () => {
       var tabsView = new pageflow.TabsView({
         fallbackTranslationKeyPrefix: 'tabs'
       });
@@ -35,17 +35,17 @@ describe('TabsView', function() {
 
       var tabs = support.dom.Tabs.render(tabsView);
 
-      expect(tabs.tabLabels()).to.eql(['Tab one', 'Tab two']);
+      expect(tabs.tabLabels()).toEqual(['Tab one', 'Tab two']);
     });
   });
 
-  describe('with translationKeyPrefixes option', function() {
+  describe('with translationKeyPrefixes option', () => {
     support.useFakeTranslations({
       'tabs.one': 'Tab one',
       'fallback.two': 'Tab two'
     });
 
-    it('uses first present translation based', function() {
+    test('uses first present translation based', () => {
       var tabsView = new pageflow.TabsView({
         translationKeyPrefixes: ['tabs', 'fallback']
       });
@@ -55,17 +55,17 @@ describe('TabsView', function() {
 
       var tabs = support.dom.Tabs.render(tabsView);
 
-      expect(tabs.tabLabels()).to.eql(['Tab one', 'Tab two']);
+      expect(tabs.tabLabels()).toEqual(['Tab one', 'Tab two']);
     });
   });
 
-  describe('with translationKeyPrefixes and fallbackTranslationKeyPrefix options', function() {
+  describe('with translationKeyPrefixes and fallbackTranslationKeyPrefix options', () => {
     support.useFakeTranslations({
       'tabs.one': 'Tab one',
       'fallback.two': 'Tab two'
     });
 
-    it('uses first present translation based', function() {
+    test('uses first present translation based', () => {
       var tabsView = new pageflow.TabsView({
         translationKeyPrefixes: ['tabs'],
         fallbackTranslationKeyPrefix: 'fallback'
@@ -76,7 +76,7 @@ describe('TabsView', function() {
 
       var tabs = support.dom.Tabs.render(tabsView);
 
-      expect(tabs.tabLabels()).to.eql(['Tab one', 'Tab two']);
+      expect(tabs.tabLabels()).toEqual(['Tab one', 'Tab two']);
     });
   });
 });

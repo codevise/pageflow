@@ -1,5 +1,5 @@
-describe('pageflow.CollectionView', function() {
-  describe('with blankSlateViewConstructor option', function() {
+describe('pageflow.CollectionView', () => {
+  describe('with blankSlateViewConstructor option', () => {
     function createCollectionView(collection) {
       var BlankSlateView = Backbone.Marionette.View.extend({className: 'blank'});
       var ItemView = Backbone.Marionette.View.extend({className: 'item'});
@@ -11,27 +11,27 @@ describe('pageflow.CollectionView', function() {
       });
     }
 
-    it('displays blank slate initially', function() {
+    test('displays blank slate initially', () => {
       var collection = new Backbone.Collection();
       var collectionView = createCollectionView(collection);
 
       collectionView.render();
 
-      expect(collectionView.$el.find('.blank').length).to.eq(1);
+      expect(collectionView.$el.find('.blank').length).toBe(1);
     });
 
-    it('removes blank slate when item is added', function() {
+    test('removes blank slate when item is added', () => {
       var collection = new Backbone.Collection();
       var collectionView = createCollectionView(collection);
 
       collectionView.render();
       collection.add([{name: 'something'}]);
 
-      expect(collectionView.$el.find('.blank').length).to.eq(0);
+      expect(collectionView.$el.find('.blank').length).toBe(0);
     });
   });
 
-  describe('with loadingViewConstructor and blankSlateViewConstructor option', function() {
+  describe('with loadingViewConstructor and blankSlateViewConstructor option', () => {
     function createCollectionView(collection) {
       var LoadingView = Backbone.Marionette.View.extend({className: 'loading'});
       var BlankSlateView = Backbone.Marionette.View.extend({className: 'blank'});
@@ -43,26 +43,26 @@ describe('pageflow.CollectionView', function() {
       });
     }
 
-    it('displays blank slate initially', function() {
+    test('displays blank slate initially', () => {
       var collection = new Backbone.Collection();
       var collectionView = createCollectionView(collection);
 
       collectionView.render();
 
-      expect(collectionView.$el.find('.blank').length).to.eq(1);
+      expect(collectionView.$el.find('.blank').length).toBe(1);
     });
 
-    it('displays loading view when collection starts request', function() {
+    test('displays loading view when collection starts request', () => {
       var collection = new Backbone.Collection();
       var collectionView = createCollectionView(collection);
 
       collectionView.render();
       collection.trigger('request');
 
-      expect(collectionView.$el.find('.loading').length).to.eq(1);
+      expect(collectionView.$el.find('.loading').length).toBe(1);
     });
 
-    it('displays placeholder view again when collection syncs', function() {
+    test('displays placeholder view again when collection syncs', () => {
       var collection = new Backbone.Collection();
       var collectionView = createCollectionView(collection);
 
@@ -70,7 +70,7 @@ describe('pageflow.CollectionView', function() {
       collection.trigger('request');
       collection.trigger('sync');
 
-      expect(collectionView.$el.find('.blank').length).to.eq(1);
+      expect(collectionView.$el.find('.blank').length).toBe(1);
     });
   });
 });

@@ -1,59 +1,65 @@
-describe('pageflow.inputView', function() {
-  describe('attributeTranslationKeys', function() {
-    describe('without attributeTranslationKeyPrefixes', function() {
-      it('constructs fallback key from fallback prefix, model i18nKey and propertyName', function() {
-        var view = createInputView({
-          model: {i18nKey: 'page'},
-          propertyName: 'title'
-        });
+describe('pageflow.inputView', () => {
+  describe('attributeTranslationKeys', () => {
+    describe('without attributeTranslationKeyPrefixes', () => {
+      test(
+        'constructs fallback key from fallback prefix, model i18nKey and propertyName',
+        () => {
+          var view = createInputView({
+            model: {i18nKey: 'page'},
+            propertyName: 'title'
+          });
 
-        var result = view.attributeTranslationKeys('label', {fallbackPrefix: 'activerecord.attributes'});
+          var result = view.attributeTranslationKeys('label', {fallbackPrefix: 'activerecord.attributes'});
 
-        expect(result).to.deep.eq(['activerecord.attributes.page.title']);
-      });
+          expect(result).toEqual(['activerecord.attributes.page.title']);
+        }
+      );
     });
 
-    describe('with attributeTranslationKeyPrefixes', function() {
-      it('constructs additional candidates from prefix, propertyName and given key', function() {
-        var view = createInputView({
-          attributeTranslationKeyPrefixes: [
-            'pageflow.rainbows.page_attributes',
-            'pageflow.common_page_attributes'
-          ],
-          model: {i18nKey: 'page'},
-          propertyName: 'title'
-        });
+    describe('with attributeTranslationKeyPrefixes', () => {
+      test(
+        'constructs additional candidates from prefix, propertyName and given key',
+        () => {
+          var view = createInputView({
+            attributeTranslationKeyPrefixes: [
+              'pageflow.rainbows.page_attributes',
+              'pageflow.common_page_attributes'
+            ],
+            model: {i18nKey: 'page'},
+            propertyName: 'title'
+          });
 
-        var result = view.attributeTranslationKeys('label', {fallbackPrefix: 'activerecord.attributes'});
+          var result = view.attributeTranslationKeys('label', {fallbackPrefix: 'activerecord.attributes'});
 
-        expect(result).to.deep.eq([
-          'pageflow.rainbows.page_attributes.title.label',
-          'pageflow.common_page_attributes.title.label',
-          'activerecord.attributes.page.title'
-        ]);
-      });
+          expect(result).toEqual([
+            'pageflow.rainbows.page_attributes.title.label',
+            'pageflow.common_page_attributes.title.label',
+            'activerecord.attributes.page.title'
+          ]);
+        }
+      );
     });
   });
 
-  describe('#labelText', function() {
-    describe('with label option', function() {
-      it('returns label option', function() {
+  describe('#labelText', () => {
+    describe('with label option', () => {
+      test('returns label option', () => {
         var view = createInputView({label: 'Some Label'});
 
         var result = view.labelText();
 
-        expect(result).to.eq('Some Label');
+        expect(result).toBe('Some Label');
       });
     });
 
-    describe('with attributeTranslationKeyPrefixes option', function() {
-      describe('with present prefixed attribute translation', function() {
+    describe('with attributeTranslationKeyPrefixes option', () => {
+      describe('with present prefixed attribute translation', () => {
         support.useFakeTranslations({
           'pageflow.rainbows.page_attributes.title.label': 'Rainbow Text',
           'activerecord.attributes.page.title': 'AR Text'
         });
 
-        it('uses prefixed attribute translation', function() {
+        test('uses prefixed attribute translation', () => {
           var view = createInputView({
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
@@ -64,16 +70,16 @@ describe('pageflow.inputView', function() {
 
           var result = view.labelText();
 
-          expect(result).to.eq('Rainbow Text');
+          expect(result).toBe('Rainbow Text');
         });
       });
 
-      describe('with missing prefixed attribute translation', function() {
+      describe('with missing prefixed attribute translation', () => {
         support.useFakeTranslations({
           'activerecord.attributes.page.title': 'AR Text'
         });
 
-        it('falls back to active record attribute translation', function() {
+        test('falls back to active record attribute translation', () => {
           var view = createInputView({
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
@@ -84,17 +90,17 @@ describe('pageflow.inputView', function() {
 
           var result = view.labelText();
 
-          expect(result).to.eq('AR Text');
+          expect(result).toBe('AR Text');
         });
       });
     });
 
-    describe('without attributeTranslationKeyPrefixes', function() {
+    describe('without attributeTranslationKeyPrefixes', () => {
       support.useFakeTranslations({
         'activerecord.attributes.page.title': 'AR Text'
       });
 
-      it('uses active record attribute translation', function() {
+      test('uses active record attribute translation', () => {
         var view = createInputView({
           model: {i18nKey: 'page'},
           propertyName: 'title'
@@ -102,21 +108,21 @@ describe('pageflow.inputView', function() {
 
         var result = view.labelText();
 
-        expect(result).to.eq('AR Text');
+        expect(result).toBe('AR Text');
       });
     });
   });
 
-  describe('#inlineHelpText', function() {
-    describe('with attributeTranslationKeyPrefixes option', function() {
-      describe('with present prefixed attribute translation', function() {
+  describe('#inlineHelpText', () => {
+    describe('with attributeTranslationKeyPrefixes option', () => {
+      describe('with present prefixed attribute translation', () => {
         support.useFakeTranslations({
           'pageflow.rainbows.page_attributes.title.inline_help': 'Rainbow Help',
           'pageflow.rainbows.page_attributes.title.inline_help_disabled': 'Rainbow Help Disabled',
           'pageflow.ui.inline_help.page.title': 'Model/Attribute Help'
         });
 
-        it('uses prefixed inline help translation', function() {
+        test('uses prefixed inline help translation', () => {
           var view = createInputView({
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
@@ -127,25 +133,28 @@ describe('pageflow.inputView', function() {
 
           var result = view.inlineHelpText();
 
-          expect(result).to.eq('Rainbow Help');
+          expect(result).toBe('Rainbow Help');
         });
 
-        it('prefers prefixed inline help translation for disabled input', function() {
-          var view = createInputView({
-            attributeTranslationKeyPrefixes: [
-              'pageflow.rainbows.page_attributes'
-            ],
-            model: {i18nKey: 'page'},
-            propertyName: 'title',
-            disabled: true
-          });
+        test(
+          'prefers prefixed inline help translation for disabled input',
+          () => {
+            var view = createInputView({
+              attributeTranslationKeyPrefixes: [
+                'pageflow.rainbows.page_attributes'
+              ],
+              model: {i18nKey: 'page'},
+              propertyName: 'title',
+              disabled: true
+            });
 
-          var result = view.inlineHelpText();
+            var result = view.inlineHelpText();
 
-          expect(result).to.eq('Rainbow Help Disabled');
-        });
+            expect(result).toBe('Rainbow Help Disabled');
+          }
+        );
 
-        it('supports appending additional inline help text', function() {
+        test('supports appending additional inline help text', () => {
           var view = createInputView({
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
@@ -157,11 +166,11 @@ describe('pageflow.inputView', function() {
 
           var result = view.inlineHelpText();
 
-          expect(result).to.eq('Rainbow Help Extra');
+          expect(result).toBe('Rainbow Help Extra');
         });
       });
 
-      describe('with multiple prefixed attribute translations', function() {
+      describe('with multiple prefixed attribute translations', () => {
         support.useFakeTranslations({
           'pageflow.rainbows.page_attributes.title.inline_help': 'Rainbow Help',
           'pageflow.common_page_attributes.title.inline_help': 'Common Help',
@@ -169,51 +178,57 @@ describe('pageflow.inputView', function() {
           'pageflow.ui.inline_help.page.title': 'Model/Attribute Help'
         });
 
-        it('prefers more specific inline help over disabled inline help', function() {
-          var view = createInputView({
-            attributeTranslationKeyPrefixes: [
-              'pageflow.rainbows.page_attributes',
-              'pageflow.common_page_attributes'
-            ],
-            model: {i18nKey: 'page'},
-            propertyName: 'title',
-            disabled: true
-          });
+        test(
+          'prefers more specific inline help over disabled inline help',
+          () => {
+            var view = createInputView({
+              attributeTranslationKeyPrefixes: [
+                'pageflow.rainbows.page_attributes',
+                'pageflow.common_page_attributes'
+              ],
+              model: {i18nKey: 'page'},
+              propertyName: 'title',
+              disabled: true
+            });
 
-          var result = view.inlineHelpText();
+            var result = view.inlineHelpText();
 
-          expect(result).to.eq('Rainbow Help');
-        });
+            expect(result).toBe('Rainbow Help');
+          }
+        );
       });
 
-      describe('with missing prefixed attribute translation', function() {
+      describe('with missing prefixed attribute translation', () => {
         support.useFakeTranslations({
           'pageflow.ui.inline_help.page.title_html': '<strong>Model/Attribute Help</strong>'
         });
 
-        it('falls back to model/attribute based inline help translation', function() {
-          var view = createInputView({
-            attributeTranslationKeyPrefixes: [
-              'pageflow.rainbows.page_attributes'
-            ],
-            model: {i18nKey: 'page'},
-            propertyName: 'title'
-          });
+        test(
+          'falls back to model/attribute based inline help translation',
+          () => {
+            var view = createInputView({
+              attributeTranslationKeyPrefixes: [
+                'pageflow.rainbows.page_attributes'
+              ],
+              model: {i18nKey: 'page'},
+              propertyName: 'title'
+            });
 
-          var result = view.inlineHelpText();
+            var result = view.inlineHelpText();
 
-          expect(result).to.eq('<strong>Model/Attribute Help</strong>');
-        });
+            expect(result).toBe('<strong>Model/Attribute Help</strong>');
+          }
+        );
       });
     });
 
-    describe('without attributeTranslationKeyPrefixes', function() {
+    describe('without attributeTranslationKeyPrefixes', () => {
       support.useFakeTranslations({
         'pageflow.ui.inline_help.page.title': 'Model/Attribute Help',
         'pageflow.ui.inline_help.page.title_disabled': 'Model/Attribute Help Disabled'
       });
 
-      it('uses model/attribute based inline help translation', function() {
+      test('uses model/attribute based inline help translation', () => {
         var view = createInputView({
           model: {i18nKey: 'page'},
           propertyName: 'title'
@@ -221,10 +236,10 @@ describe('pageflow.inputView', function() {
 
         var result = view.inlineHelpText();
 
-        expect(result).to.eq('Model/Attribute Help');
+        expect(result).toBe('Model/Attribute Help');
       });
 
-      it('prefers disabled suffix if disabled', function() {
+      test('prefers disabled suffix if disabled', () => {
         var view = createInputView({
           model: {i18nKey: 'page'},
           propertyName: 'title',
@@ -233,13 +248,13 @@ describe('pageflow.inputView', function() {
 
         var result = view.inlineHelpText();
 
-        expect(result).to.eq('Model/Attribute Help Disabled');
+        expect(result).toBe('Model/Attribute Help Disabled');
       });
     });
   });
 
-  describe('visibleBinding', function() {
-    it('sets hidden class when attribute is false', function() {
+  describe('visibleBinding', () => {
+    test('sets hidden class when attribute is false', () => {
       var view = createInputView({
         model: new Backbone.Model({active: false}),
         visibleBinding: 'active'
@@ -250,7 +265,7 @@ describe('pageflow.inputView', function() {
       expect(view.$el).to.have.$class('input-hidden_via_binding');
     });
 
-    it('does not set hidden class when function returns true', function() {
+    test('does not set hidden class when function returns true', () => {
       var view = createInputView({
         model: new Backbone.Model({active: true}),
         visibleBinding: 'active'
@@ -261,7 +276,7 @@ describe('pageflow.inputView', function() {
       expect(view.$el).not.to.have.$class('input-hidden_via_binding');
     });
 
-    it('sets hidden class when attribute changes to false', function() {
+    test('sets hidden class when attribute changes to false', () => {
       var view = createInputView({
         model: new Backbone.Model({active: true}),
         visibleBinding: 'active'
@@ -274,8 +289,8 @@ describe('pageflow.inputView', function() {
       expect(view.$el).to.have.$class('input-hidden_via_binding');
     });
 
-    describe('with visibleBindingValue option', function() {
-      it('sets hidden class when value of attribute does not match', function() {
+    describe('with visibleBindingValue option', () => {
+      test('sets hidden class when value of attribute does not match', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: true}),
           visibleBinding: 'hidden',
@@ -287,7 +302,7 @@ describe('pageflow.inputView', function() {
         expect(view.$el).to.have.$class('input-hidden_via_binding');
       });
 
-      it('does not set hidden class when value of attribute matches', function() {
+      test('does not set hidden class when value of attribute matches', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: false}),
           visibleBinding: 'hidden',
@@ -300,8 +315,8 @@ describe('pageflow.inputView', function() {
       });
     });
 
-    describe('with function for visible option', function() {
-      it('sets hidden class when function returns false', function() {
+    describe('with function for visible option', () => {
+      test('sets hidden class when function returns false', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: true}),
           visibleBinding: 'hidden',
@@ -313,7 +328,7 @@ describe('pageflow.inputView', function() {
         expect(view.$el).to.have.$class('input-hidden_via_binding');
       });
 
-      it('does not set hidden class when function returns true', function() {
+      test('does not set hidden class when function returns true', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: false}),
           visibleBinding: 'hidden',
@@ -326,8 +341,8 @@ describe('pageflow.inputView', function() {
       });
     });
 
-    describe('with boolean for visible option', function() {
-      it('sets hidden class if false', function() {
+    describe('with boolean for visible option', () => {
+      test('sets hidden class if false', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: true}),
           visibleBinding: 'hidden',
@@ -339,7 +354,7 @@ describe('pageflow.inputView', function() {
         expect(view.$el).to.have.$class('input-hidden_via_binding');
       });
 
-      it('does not set hidden if true', function() {
+      test('does not set hidden if true', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: true}),
           visibleBinding: 'hidden',

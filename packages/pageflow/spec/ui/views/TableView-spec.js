@@ -1,7 +1,7 @@
-describe('TableView', function() {
+describe('TableView', () => {
   var $ = jQuery;
 
-  it('renders a table with rows of cells for collection items', function() {
+  test('renders a table with rows of cells for collection items', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var tableView = new pageflow.TableView({
       collection: collection,
@@ -12,13 +12,13 @@ describe('TableView', function() {
 
     tableView.render();
 
-    expect(tableView.$el.is('table')).to.eq(true);
+    expect(tableView.$el.is('table')).toBe(true);
     expect(tableView.$el.find('tbody tr td').map(function() {
       return $(this).text();
-    }).get()).to.eql(['Claire', 'John']);
+    }).get()).toEqual(['Claire', 'John']);
   });
 
-  it('adds selected class to row for selected model', function() {
+  test('adds selected class to row for selected model', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
     var tableView = new pageflow.TableView({
@@ -35,7 +35,7 @@ describe('TableView', function() {
     expect(tableView.$el.find('tbody tr.is_selected td')).to.have.$text('John');
   });
 
-  it('allows setting a custom selection attribute name', function() {
+  test('allows setting a custom selection attribute name', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
     var tableView = new pageflow.TableView({
@@ -53,7 +53,7 @@ describe('TableView', function() {
     expect(tableView.$el.find('tbody tr.is_selected td')).to.have.$text('John');
   });
 
-  it('sets selection when row is clicked', function() {
+  test('sets selection when row is clicked', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
     var tableView = new pageflow.TableView({
@@ -67,10 +67,10 @@ describe('TableView', function() {
     tableView.render();
     tableView.$el.find('tbody tr:last-child td').click();
 
-    expect(selection.get('current')).to.eq(collection.last());
+    expect(selection.get('current')).toBe(collection.last());
   });
 
-  it('sets custom selection attribute when row is clicked', function() {
+  test('sets custom selection attribute when row is clicked', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
     var tableView = new pageflow.TableView({
@@ -85,10 +85,10 @@ describe('TableView', function() {
     tableView.render();
     tableView.$el.find('tbody tr:last-child td').click();
 
-    expect(selection.get('person')).to.eq(collection.last());
+    expect(selection.get('person')).toBe(collection.last());
   });
 
-  it('allows passing options for cell views', function() {
+  test('allows passing options for cell views', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var tableView = new pageflow.TableView({
       collection: collection,
@@ -105,10 +105,10 @@ describe('TableView', function() {
 
     tableView.render();
 
-    expect(tableView.$el.find('tbody tr td.custom').length).to.eq(2);
+    expect(tableView.$el.find('tbody tr td.custom').length).toBe(2);
   });
 
-  describe('attributeTranslationKeyPrefixes option', function() {
+  describe('attributeTranslationKeyPrefixes option', () => {
     support.useFakeTranslations({
       'columns.first_name.column_header': 'First Name',
       'columns.last_name.column_header': 'Last Name',
@@ -116,7 +116,7 @@ describe('TableView', function() {
       'columns.first_name.text': 'Test'
     });
 
-    it('is used for column header texts', function() {
+    test('is used for column header texts', () => {
       var collection = new Backbone.Collection();
       var tableView = new pageflow.TableView({
         collection: collection,
@@ -139,10 +139,10 @@ describe('TableView', function() {
 
       expect(tableView.$el.find('thead th').map(function() {
         return $(this).text();
-      }).get()).to.eql(['First Name', 'Last Name']);
+      }).get()).toEqual(['First Name', 'Last Name']);
     });
 
-    it('can be used inside cells', function() {
+    test('can be used inside cells', () => {
       var collection = new Backbone.Collection([{}]);
       var CellView = pageflow.TableCellView.extend({
         update: function() {

@@ -1,11 +1,11 @@
-describe('ConfigurationEditorView', function() {
-  describe('without tab translation key option', function() {
+describe('ConfigurationEditorView', () => {
+  describe('without tab translation key option', () => {
     support.useFakeTranslations({
       'pageflow.ui.configuration_editor.tabs.one': 'Tab one',
       'pageflow.ui.configuration_editor.tabs.two': 'Tab two'
     });
 
-    it('uses default translation key prefix', function() {
+    test('uses default translation key prefix', () => {
       var configurationEditorView = new pageflow.ConfigurationEditorView();
 
       configurationEditorView.tab('one', function() {});
@@ -14,17 +14,17 @@ describe('ConfigurationEditorView', function() {
       configurationEditorView.render();
       var tabs = support.dom.Tabs.find(configurationEditorView);
 
-      expect(tabs.tabLabels()).to.eql(['Tab one', 'Tab two']);
+      expect(tabs.tabLabels()).toEqual(['Tab one', 'Tab two']);
     });
   });
 
-  describe('with tabTranslationKeyPrefix option', function() {
+  describe('with tabTranslationKeyPrefix option', () => {
     support.useFakeTranslations({
       'custom.one': 'Tab custom',
       'pageflow.ui.configuration_editor.tabs.one': 'Tab one'
     });
 
-    it('uses custom translation key prefix', function() {
+    test('uses custom translation key prefix', () => {
       var configurationEditorView = new pageflow.ConfigurationEditorView({
         tabTranslationKeyPrefix: 'custom'
       });
@@ -34,18 +34,18 @@ describe('ConfigurationEditorView', function() {
       configurationEditorView.render();
       var tabs = support.dom.Tabs.find(configurationEditorView);
 
-      expect(tabs.tabLabels()).to.eql(['Tab custom']);
+      expect(tabs.tabLabels()).toEqual(['Tab custom']);
     });
   });
 
-  describe('with tabTranslationKeyPrefixes option', function() {
+  describe('with tabTranslationKeyPrefixes option', () => {
     support.useFakeTranslations({
       'custom.one': 'Tab custom',
       'fallback.two': 'Tab fallback',
       'pageflow.ui.configuration_editor.tabs.two': 'Tab two'
     });
 
-    it('uses first present translation', function() {
+    test('uses first present translation', () => {
       var configurationEditorView = new pageflow.ConfigurationEditorView({
         tabTranslationKeyPrefixes: ['custom', 'fallback']
       });
@@ -56,7 +56,7 @@ describe('ConfigurationEditorView', function() {
       configurationEditorView.render();
       var tabs = support.dom.Tabs.find(configurationEditorView);
 
-      expect(tabs.tabLabels()).to.eql(['Tab custom', 'Tab fallback']);
+      expect(tabs.tabLabels()).toEqual(['Tab custom', 'Tab fallback']);
     });
   });
 });

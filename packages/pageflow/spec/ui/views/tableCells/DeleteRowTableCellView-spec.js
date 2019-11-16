@@ -1,9 +1,9 @@
-describe('DeleteRowTableCellView', function() {
+describe('DeleteRowTableCellView', () => {
   support.useFakeTranslations({
     'information.delete.cell_title': 'Delete information'
   });
 
-  it('sets cell title attribute', function() {
+  test('sets cell title attribute', () => {
     var kompromat = new Backbone.Model();
     var cell = new pageflow.DeleteRowTableCellView({
       column: {
@@ -18,7 +18,7 @@ describe('DeleteRowTableCellView', function() {
     expect(cell.ui.removeButton).to.have.$attr('title', 'Delete information');
   });
 
-  it('displays the delete button', function() {
+  test('displays the delete button', () => {
     var kompromat = new Backbone.Model();
     var cell = new pageflow.DeleteRowTableCellView({
       column: {
@@ -32,48 +32,54 @@ describe('DeleteRowTableCellView', function() {
     expect(cell.ui.removeButton).to.have.$class('remove');
   });
 
-  it('displays the delete button when toggleDeleteButton returns true', function() {
-    var Information = Backbone.Model.extend({
-      subjectDeceased: function() {
-        return true;
-      }
-    });
-    var kompromat = new Information();
-    var cell = new pageflow.DeleteRowTableCellView({
-      column: {
-        name: 'delete'
-      },
-      model: kompromat,
-      toggleDeleteButton: 'subjectDeceased'
-    });
+  test(
+    'displays the delete button when toggleDeleteButton returns true',
+    () => {
+      var Information = Backbone.Model.extend({
+        subjectDeceased: function() {
+          return true;
+        }
+      });
+      var kompromat = new Information();
+      var cell = new pageflow.DeleteRowTableCellView({
+        column: {
+          name: 'delete'
+        },
+        model: kompromat,
+        toggleDeleteButton: 'subjectDeceased'
+      });
 
-    cell.render();
+      cell.render();
 
-    expect(cell.ui.removeButton).to.have.$class('remove');
-  });
+      expect(cell.ui.removeButton).to.have.$class('remove');
+    }
+  );
 
-  it('does not display the delete button when toggleDeleteButton returns false', function() {
-    var Information = Backbone.Model.extend({
-      subjectDeceased: function() {
-        return false;
-      }
-    });
-    var kompromat = new Information();
-    var cell = new pageflow.DeleteRowTableCellView({
-      column: {
-        name: 'delete'
-      },
-      model: kompromat,
-      toggleDeleteButton: 'subjectDeceased'
-    });
+  test(
+    'does not display the delete button when toggleDeleteButton returns false',
+    () => {
+      var Information = Backbone.Model.extend({
+        subjectDeceased: function() {
+          return false;
+        }
+      });
+      var kompromat = new Information();
+      var cell = new pageflow.DeleteRowTableCellView({
+        column: {
+          name: 'delete'
+        },
+        model: kompromat,
+        toggleDeleteButton: 'subjectDeceased'
+      });
 
-    cell.render();
+      cell.render();
 
-    expect(cell.ui.removeButton).not.to.have.$class('remove');
-  });
+      expect(cell.ui.removeButton).not.to.have.$class('remove');
+    }
+  );
 
-  it('displays the delete button when toggleDeleteButton returns false and ' +
-     'invertToggleDeleteButton is true', function() {
+  test('displays the delete button when toggleDeleteButton returns false and ' +
+     'invertToggleDeleteButton is true', () => {
        var Information = Backbone.Model.extend({
          subjectActive: function() {
            return false;
@@ -94,29 +100,32 @@ describe('DeleteRowTableCellView', function() {
        expect(cell.ui.removeButton).to.have.$class('remove');
      });
 
-  it('does not display the delete button when toggleDeleteButton returns true and '+
-     'invertToggleDeleteButton is true', function() {
-       var Information = Backbone.Model.extend({
-         subjectActive: function() {
-           return true;
-         }
-       });
-       var kompromat = new Information();
-       var cell = new pageflow.DeleteRowTableCellView({
-         column: {
-           name: 'delete'
-         },
-         model: kompromat,
-         toggleDeleteButton: 'subjectActive',
-         invertToggleDeleteButton: true
-       });
+  test(
+    'does not display the delete button when toggleDeleteButton returns true and '+
+       'invertToggleDeleteButton is true',
+    () => {
+         var Information = Backbone.Model.extend({
+           subjectActive: function() {
+             return true;
+           }
+         });
+         var kompromat = new Information();
+         var cell = new pageflow.DeleteRowTableCellView({
+           column: {
+             name: 'delete'
+           },
+           model: kompromat,
+           toggleDeleteButton: 'subjectActive',
+           invertToggleDeleteButton: true
+         });
 
-       cell.render();
+         cell.render();
 
-       expect(cell.ui.removeButton).not.to.have.$class('remove');
-     });
+         expect(cell.ui.removeButton).not.to.have.$class('remove');
+       }
+  );
 
-  it('removes model when button is clicked', function() {
+  test('removes model when button is clicked', () => {
     var kompromat = new Backbone.Model();
     sinon.spy(kompromat, 'destroy');
     var cell = new pageflow.DeleteRowTableCellView({

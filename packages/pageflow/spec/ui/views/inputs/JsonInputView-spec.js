@@ -1,5 +1,5 @@
-describe('pageflow.JsonInputView', function() {
-  it('displays attribute value as pretty printed JSON', function() {
+describe('pageflow.JsonInputView', () => {
+  test('displays attribute value as pretty printed JSON', () => {
     var model = new Backbone.Model({
       json: {some: 'data'}
     });
@@ -12,10 +12,10 @@ describe('pageflow.JsonInputView', function() {
 
     var textArea = jsonInputView.$el.find('textarea');
 
-    expect(textArea.val()).to.eq('{\n  "some": "data"\n}');
+    expect(textArea.val()).toBe('{\n  "some": "data"\n}');
   });
 
-  it('saves parsed JSON to attribute if valid', function() {
+  test('saves parsed JSON to attribute if valid', () => {
     var model = new Backbone.Model();
     var jsonInputView = new pageflow.JsonInputView({
       model: model,
@@ -28,10 +28,10 @@ describe('pageflow.JsonInputView', function() {
     textArea.val('{"some": "data"}');
     textArea.trigger('change');
 
-    expect(model.get('json')).to.eql({some: 'data'});
+    expect(model.get('json')).toEqual({some: 'data'});
   });
 
-  it('sets attribute to null if text is empty', function() {
+  test('sets attribute to null if text is empty', () => {
     var model = new Backbone.Model({
       json: {some: 'data'}
     });
@@ -46,10 +46,10 @@ describe('pageflow.JsonInputView', function() {
     textArea.val('');
     textArea.trigger('change');
 
-    expect(model.get('json')).to.eq(null);
+    expect(model.get('json')).toBeNull();
   });
 
-  it('does save invalid JSON but displays validation error', function() {
+  test('does save invalid JSON but displays validation error', () => {
     var model = new Backbone.Model({
       json: {some: 'data'}
     });
@@ -65,6 +65,6 @@ describe('pageflow.JsonInputView', function() {
     textArea.trigger('change');
 
     expect(jsonInputView.$el).to.have.$class('invalid');
-    expect(model.get('json')).to.eql({some: 'data'});
+    expect(model.get('json')).toEqual({some: 'data'});
   });
 });

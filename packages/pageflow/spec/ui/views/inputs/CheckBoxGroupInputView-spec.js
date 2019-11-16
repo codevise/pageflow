@@ -1,15 +1,15 @@
-describe('pageflow.CheckBoxGroupInputView', function() {
+describe('pageflow.CheckBoxGroupInputView', () => {
   var Model = Backbone.Model.extend({
     i18nKey: 'page'
   });
 
-  describe('without texts option', function() {
+  describe('without texts option', () => {
     support.useFakeTranslations({
       'activerecord.values.page.some_attribute.one': 'One',
       'activerecord.values.page.some_attribute.two': 'Two'
     });
 
-    it('uses activerecord values translations for items', function() {
+    test('uses activerecord values translations for items', () => {
       var checkBoxGroupInputView = new pageflow.CheckBoxGroupInputView({
         model: new Model({some_attribute: {'one': true, 'two': false}}),
         propertyName: 'some_attribute',
@@ -18,12 +18,12 @@ describe('pageflow.CheckBoxGroupInputView', function() {
 
       var texts = optionTexts(checkBoxGroupInputView);
 
-      expect(texts).to.deep.eq(['One', 'Two']);
+      expect(texts).toEqual(['One', 'Two']);
     });
   });
 
-  describe('with texts option', function() {
-    it('uses texts for items', function() {
+  describe('with texts option', () => {
+    test('uses texts for items', () => {
       var checkBoxGroupInputView = new pageflow.CheckBoxGroupInputView({
         model: new Model({some_attribute: {'one': true, 'two': false}}),
         propertyName: 'some_attribute',
@@ -33,7 +33,7 @@ describe('pageflow.CheckBoxGroupInputView', function() {
 
       var texts = optionTexts(checkBoxGroupInputView);
 
-      expect(texts).to.deep.eq(['One', 'Two']);
+      expect(texts).toEqual(['One', 'Two']);
     });
   });
 
