@@ -1,3 +1,9 @@
+import Backbone from 'backbone';
+
+import {TabsView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('TabsView', () => {
   describe('with i18n option', () => {
     support.useFakeTranslations({
@@ -6,7 +12,7 @@ describe('TabsView', () => {
     });
 
     test('uses prefix for tab labels', () => {
-      var tabsView = new pageflow.TabsView({
+      var tabsView = new TabsView({
         i18n: 'tabs'
       });
 
@@ -26,7 +32,7 @@ describe('TabsView', () => {
     });
 
     test('uses prefix for tab labels', () => {
-      var tabsView = new pageflow.TabsView({
+      var tabsView = new TabsView({
         fallbackTranslationKeyPrefix: 'tabs'
       });
 
@@ -46,7 +52,7 @@ describe('TabsView', () => {
     });
 
     test('uses first present translation based', () => {
-      var tabsView = new pageflow.TabsView({
+      var tabsView = new TabsView({
         translationKeyPrefixes: ['tabs', 'fallback']
       });
 
@@ -66,7 +72,7 @@ describe('TabsView', () => {
     });
 
     test('uses first present translation based', () => {
-      var tabsView = new pageflow.TabsView({
+      var tabsView = new TabsView({
         translationKeyPrefixes: ['tabs'],
         fallbackTranslationKeyPrefix: 'fallback'
       });

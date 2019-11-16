@@ -1,12 +1,19 @@
+import $ from 'jquery';
+import Backbone from 'backbone';
+
+import {TableCellView, TableView, TextTableCellView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('TableView', () => {
   var $ = jQuery;
 
   test('renders a table with rows of cells for collection items', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
-    var tableView = new pageflow.TableView({
+    var tableView = new TableView({
       collection: collection,
       columns: [
-        {name: 'firstName', cellView: pageflow.TextTableCellView}
+        {name: 'firstName', cellView: TextTableCellView}
       ]
     });
 
@@ -21,10 +28,10 @@ describe('TableView', () => {
   test('adds selected class to row for selected model', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
-    var tableView = new pageflow.TableView({
+    var tableView = new TableView({
       collection: collection,
       columns: [
-        {name: 'firstName', cellView: pageflow.TextTableCellView}
+        {name: 'firstName', cellView: TextTableCellView}
       ],
       selection: selection
     });
@@ -38,10 +45,10 @@ describe('TableView', () => {
   test('allows setting a custom selection attribute name', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
-    var tableView = new pageflow.TableView({
+    var tableView = new TableView({
       collection: collection,
       columns: [
-        {name: 'firstName', cellView: pageflow.TextTableCellView}
+        {name: 'firstName', cellView: TextTableCellView}
       ],
       selection: selection,
       selectionAttribute: 'person'
@@ -56,10 +63,10 @@ describe('TableView', () => {
   test('sets selection when row is clicked', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
-    var tableView = new pageflow.TableView({
+    var tableView = new TableView({
       collection: collection,
       columns: [
-        {name: 'firstName', cellView: pageflow.TextTableCellView}
+        {name: 'firstName', cellView: TextTableCellView}
       ],
       selection: selection
     });
@@ -73,10 +80,10 @@ describe('TableView', () => {
   test('sets custom selection attribute when row is clicked', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
-    var tableView = new pageflow.TableView({
+    var tableView = new TableView({
       collection: collection,
       columns: [
-        {name: 'firstName', cellView: pageflow.TextTableCellView}
+        {name: 'firstName', cellView: TextTableCellView}
       ],
       selection: selection,
       selectionAttribute: 'person'
@@ -90,12 +97,12 @@ describe('TableView', () => {
 
   test('allows passing options for cell views', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
-    var tableView = new pageflow.TableView({
+    var tableView = new TableView({
       collection: collection,
       columns: [
         {
           name: 'firstName',
-          cellView: pageflow.TextTableCellView,
+          cellView: TextTableCellView,
           cellViewOptions: {
             className: 'custom'
           }
@@ -118,16 +125,16 @@ describe('TableView', () => {
 
     test('is used for column header texts', () => {
       var collection = new Backbone.Collection();
-      var tableView = new pageflow.TableView({
+      var tableView = new TableView({
         collection: collection,
         columns: [
           {
             name: 'first_name',
-            cellView: pageflow.TextTableCellView
+            cellView: TextTableCellView
           },
           {
             name: 'last_name',
-            cellView: pageflow.TextTableCellView
+            cellView: TextTableCellView
           }
         ],
         attributeTranslationKeyPrefixes: [
@@ -144,12 +151,12 @@ describe('TableView', () => {
 
     test('can be used inside cells', () => {
       var collection = new Backbone.Collection([{}]);
-      var CellView = pageflow.TableCellView.extend({
+      var CellView = TableCellView.extend({
         update: function() {
           this.$el.text(this.attributeTranslation('text'));
         }
       });
-      var tableView = new pageflow.TableView({
+      var tableView = new TableView({
         collection: collection,
         columns: [
           {

@@ -1,9 +1,13 @@
+import Backbone from 'backbone';
+
+import {JsonInputView} from '$pageflow/ui';
+
 describe('pageflow.JsonInputView', () => {
   test('displays attribute value as pretty printed JSON', () => {
     var model = new Backbone.Model({
       json: {some: 'data'}
     });
-    var jsonInputView = new pageflow.JsonInputView({
+    var jsonInputView = new JsonInputView({
       model: model,
       propertyName: 'json'
     });
@@ -17,7 +21,7 @@ describe('pageflow.JsonInputView', () => {
 
   test('saves parsed JSON to attribute if valid', () => {
     var model = new Backbone.Model();
-    var jsonInputView = new pageflow.JsonInputView({
+    var jsonInputView = new JsonInputView({
       model: model,
       propertyName: 'json'
     });
@@ -35,7 +39,7 @@ describe('pageflow.JsonInputView', () => {
     var model = new Backbone.Model({
       json: {some: 'data'}
     });
-    var jsonInputView = new pageflow.JsonInputView({
+    var jsonInputView = new JsonInputView({
       model: model,
       propertyName: 'json'
     });
@@ -53,7 +57,7 @@ describe('pageflow.JsonInputView', () => {
     var model = new Backbone.Model({
       json: {some: 'data'}
     });
-    var jsonInputView = new pageflow.JsonInputView({
+    var jsonInputView = new JsonInputView({
       model: model,
       propertyName: 'json'
     });

@@ -1,3 +1,9 @@
+import Backbone from 'backbone';
+
+import {PresenceTableCellView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('PresenceTableCellView', () => {
   support.useFakeTranslations({
     'columns.first_name.cell_title.present': 'Present: %{value}',
@@ -8,7 +14,7 @@ describe('PresenceTableCellView', () => {
     'sets cell title attribute with interpolation if column attribute is present',
     () => {
       var person = new Backbone.Model({first_name: 'Jane'});
-      var cell = new pageflow.PresenceTableCellView({
+      var cell = new PresenceTableCellView({
         column: {
           name: 'first_name'
         },
@@ -24,7 +30,7 @@ describe('PresenceTableCellView', () => {
 
   test('sets cell title attribute if column attribute is blank', () => {
     var person = new Backbone.Model({first_name: ''});
-    var cell = new pageflow.PresenceTableCellView({
+    var cell = new PresenceTableCellView({
       column: {
         name: 'first_name'
       },
@@ -39,7 +45,7 @@ describe('PresenceTableCellView', () => {
 
   test('adds is_present class if column attribute is present', () => {
     var person = new Backbone.Model({first_name: 'Jane'});
-    var cell = new pageflow.PresenceTableCellView({
+    var cell = new PresenceTableCellView({
       column: {
         name: 'first_name'
       },
@@ -53,7 +59,7 @@ describe('PresenceTableCellView', () => {
 
   test('does not add is_present class if column attribute is blank', () => {
     var person = new Backbone.Model({first_name: ''});
-    var cell = new pageflow.PresenceTableCellView({
+    var cell = new PresenceTableCellView({
       column: {
         name: 'first_name'
       },

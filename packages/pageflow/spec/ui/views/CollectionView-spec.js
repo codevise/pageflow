@@ -1,10 +1,15 @@
+import Backbone from 'backbone';
+import Marionette from 'backbone.marionette';
+
+import {CollectionView} from '$pageflow/ui';
+
 describe('pageflow.CollectionView', () => {
   describe('with blankSlateViewConstructor option', () => {
     function createCollectionView(collection) {
-      var BlankSlateView = Backbone.Marionette.View.extend({className: 'blank'});
-      var ItemView = Backbone.Marionette.View.extend({className: 'item'});
+      var BlankSlateView = Marionette.View.extend({className: 'blank'});
+      var ItemView = Marionette.View.extend({className: 'item'});
 
-      return new pageflow.CollectionView({
+      return new CollectionView({
         collection: collection,
         itemViewConstructor: ItemView,
         blankSlateViewConstructor: BlankSlateView
@@ -33,10 +38,10 @@ describe('pageflow.CollectionView', () => {
 
   describe('with loadingViewConstructor and blankSlateViewConstructor option', () => {
     function createCollectionView(collection) {
-      var LoadingView = Backbone.Marionette.View.extend({className: 'loading'});
-      var BlankSlateView = Backbone.Marionette.View.extend({className: 'blank'});
+      var LoadingView = Marionette.View.extend({className: 'loading'});
+      var BlankSlateView = Marionette.View.extend({className: 'blank'});
 
-      return new pageflow.CollectionView({
+      return new CollectionView({
         collection: collection,
         loadingViewConstructor: LoadingView,
         blankSlateViewConstructor: BlankSlateView

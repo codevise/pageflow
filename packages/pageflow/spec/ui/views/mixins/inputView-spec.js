@@ -1,3 +1,11 @@
+import Backbone from 'backbone';
+import Cocktail from 'cocktail';
+import Marionette from 'backbone.marionette';
+
+import {inputView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('pageflow.inputView', () => {
   describe('attributeTranslationKeys', () => {
     describe('without attributeTranslationKeyPrefixes', () => {
@@ -369,13 +377,13 @@ describe('pageflow.inputView', () => {
   });
 
   function createInputView(options) {
-    var View = Backbone.Marionette.ItemView.extend({
+    var View = Marionette.ItemView.extend({
       template: function() {
         return '';
       }
     });
 
-    Cocktail.mixin(View, pageflow.inputView);
+    Cocktail.mixin(View, inputView);
 
     return new View(options);
   }

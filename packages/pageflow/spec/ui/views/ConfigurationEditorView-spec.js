@@ -1,3 +1,7 @@
+import {ConfigurationEditorView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('ConfigurationEditorView', () => {
   describe('without tab translation key option', () => {
     support.useFakeTranslations({
@@ -6,7 +10,7 @@ describe('ConfigurationEditorView', () => {
     });
 
     test('uses default translation key prefix', () => {
-      var configurationEditorView = new pageflow.ConfigurationEditorView();
+      var configurationEditorView = new ConfigurationEditorView();
 
       configurationEditorView.tab('one', function() {});
       configurationEditorView.tab('two', function() {});
@@ -25,7 +29,7 @@ describe('ConfigurationEditorView', () => {
     });
 
     test('uses custom translation key prefix', () => {
-      var configurationEditorView = new pageflow.ConfigurationEditorView({
+      var configurationEditorView = new ConfigurationEditorView({
         tabTranslationKeyPrefix: 'custom'
       });
 
@@ -46,7 +50,7 @@ describe('ConfigurationEditorView', () => {
     });
 
     test('uses first present translation', () => {
-      var configurationEditorView = new pageflow.ConfigurationEditorView({
+      var configurationEditorView = new ConfigurationEditorView({
         tabTranslationKeyPrefixes: ['custom', 'fallback']
       });
 

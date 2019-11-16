@@ -1,3 +1,9 @@
+import Backbone from 'backbone';
+
+import {SelectInputView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('pageflow.SelectInputView', () => {
   var Model = Backbone.Model.extend({
     i18nKey: 'page'
@@ -10,7 +16,7 @@ describe('pageflow.SelectInputView', () => {
     });
 
     test('uses activerecord values translations for item', () => {
-      var selectInputView = new pageflow.SelectInputView({
+      var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'modes',
         values: ['one', 'two']
@@ -24,7 +30,7 @@ describe('pageflow.SelectInputView', () => {
 
   describe('with texts option', () => {
     test('uses texts for items', () => {
-      var selectInputView = new pageflow.SelectInputView({
+      var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'size',
         values: [1, 2],
@@ -44,7 +50,7 @@ describe('pageflow.SelectInputView', () => {
     });
 
     test('uses translations for items', () => {
-      var selectInputView = new pageflow.SelectInputView({
+      var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'size',
         values: [1, 2],
@@ -64,7 +70,7 @@ describe('pageflow.SelectInputView', () => {
     });
 
     test('uses translation keys from values for items', () => {
-      var selectInputView = new pageflow.SelectInputView({
+      var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'modes',
         values: ['one', 'two'],
@@ -92,7 +98,7 @@ describe('pageflow.SelectInputView', () => {
     });
 
     test('uses attribute values translation keys', () => {
-      var selectInputView = new pageflow.SelectInputView({
+      var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'modes',
         values: ['one', 'two'],
@@ -105,7 +111,7 @@ describe('pageflow.SelectInputView', () => {
     });
 
     test('prefers first attribute translation key prefix', () => {
-      var selectInputView = new pageflow.SelectInputView({
+      var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'modes',
         values: ['one', 'two'],
@@ -118,7 +124,7 @@ describe('pageflow.SelectInputView', () => {
     });
 
     test('falls back to second attribute translation key prefix', () => {
-      var selectInputView = new pageflow.SelectInputView({
+      var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'fallback',
         values: ['one', 'two'],
@@ -131,7 +137,7 @@ describe('pageflow.SelectInputView', () => {
     });
 
     test('falls back active record values translations', () => {
-      var selectInputView = new pageflow.SelectInputView({
+      var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'legacy',
         values: ['one', 'two'],
@@ -147,7 +153,7 @@ describe('pageflow.SelectInputView', () => {
   describe('without ensureValueDefined option', () => {
     test('does not assign value when rendered', () => {
       var model = new Model();
-      var selectInputView = new pageflow.SelectInputView({
+      var selectInputView = new SelectInputView({
         model: model,
         propertyName: 'value',
         values: ['one', 'two']
@@ -162,7 +168,7 @@ describe('pageflow.SelectInputView', () => {
   describe('with ensureValueDefined option', () => {
     test('assigns value of first option when rendered', () => {
       var model = new Model();
-      var selectInputView = new pageflow.SelectInputView({
+      var selectInputView = new SelectInputView({
         model: model,
         propertyName: 'value',
         values: ['one', 'two'],

@@ -1,8 +1,14 @@
+import Backbone from 'backbone';
+
+import {TableCellView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('TableCellView', () => {
   describe('#attributeValue', () => {
     test('returns value of column attribute', () => {
       var person = new Backbone.Model({first_name: 'Tom'});
-      var tableCellView = new pageflow.TableCellView({
+      var tableCellView = new TableCellView({
         column: {name: 'first_name'},
         model: person
       });
@@ -16,7 +22,7 @@ describe('TableCellView', () => {
       'supports getting value from function passed as value option',
       () => {
         var person = new Backbone.Model({first_name: 'Tom'});
-        var tableCellView = new pageflow.TableCellView({
+        var tableCellView = new TableCellView({
           column: {
             name: 'first_name',
             value: function(person) {
@@ -36,7 +42,7 @@ describe('TableCellView', () => {
       test('supports reading from configuration', () => {
         var person = new Backbone.Model();
         person.configuration = new Backbone.Model({first_name: 'Tom'});
-        var tableCellView = new pageflow.TableCellView({
+        var tableCellView = new TableCellView({
           column: {
             name: 'first_name',
             configurationAttribute: true
@@ -52,7 +58,7 @@ describe('TableCellView', () => {
       test('still passes model to value function', () => {
         var person = new Backbone.Model();
         person.configuration = new Backbone.Model({first_name: 'Tom'});
-        var tableCellView = new pageflow.TableCellView({
+        var tableCellView = new TableCellView({
           column: {
             name: 'first_name',
             configurationAttribute: true,
@@ -79,7 +85,7 @@ describe('TableCellView', () => {
     test(
       'returns first present translation from attributeTranslationKeyPrefixes',
       () => {
-        var tableCellView = new pageflow.TableCellView({
+        var tableCellView = new TableCellView({
           column: {name: 'first_name'},
           attributeTranslationKeyPrefixes: [
             'missing',
@@ -96,7 +102,7 @@ describe('TableCellView', () => {
     test(
       'returns first present translation from attributeTranslationKeyPrefixes',
       () => {
-        var tableCellView = new pageflow.TableCellView({
+        var tableCellView = new TableCellView({
           column: {name: 'first_name'},
           attributeTranslationKeyPrefixes: ['columns']
         });
@@ -112,7 +118,7 @@ describe('TableCellView', () => {
     test(
       'triggers update() on rendering TableCellView if contentBinding is declared',
       () => {
-        var FunnelCellView = pageflow.TableCellView.extend({
+        var FunnelCellView = TableCellView.extend({
           template: function(serializedModel) {
             return serializedModel.jargon;
           },
@@ -141,7 +147,7 @@ describe('TableCellView', () => {
     test(
       'updates TableCellView when value of variable that is bound to changes',
       () => {
-        var FunnelCellView = pageflow.TableCellView.extend({
+        var FunnelCellView = TableCellView.extend({
           template: function(serializedModel) {
             return serializedModel.jargon;
           },

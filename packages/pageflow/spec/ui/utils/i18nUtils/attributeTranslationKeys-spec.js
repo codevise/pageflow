@@ -1,5 +1,7 @@
+import {i18nUtils} from '$pageflow/ui';
+
 describe('pageflow.i18nUtils.attributeTranslationKeys', () => {
-  var attributeTranslationKeys = pageflow.i18nUtils.attributeTranslationKeys;
+  var attributeTranslationKeys = i18nUtils.attributeTranslationKeys;
 
   describe('without prefixes', () => {
     test(

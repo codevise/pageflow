@@ -1,3 +1,7 @@
+import {i18nUtils} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('pageflow.i18nUtils.findTranslation', () => {
   support.useFakeTranslations({
     'some.key': 'Some text',
@@ -8,7 +12,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
   });
 
   test('returns first present translation', () => {
-    var result = pageflow.i18nUtils.findTranslation(
+    var result = i18nUtils.findTranslation(
       ['not.there', 'some.key', 'fallback']
     );
 
@@ -16,7 +20,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
   });
 
   test('falls back to defaultValue', () => {
-    var result = pageflow.i18nUtils.findTranslation(
+    var result = i18nUtils.findTranslation(
       ['not.there'],
       {defaultValue: 'Default'}
     );
@@ -25,7 +29,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
   });
 
   test('supports interpolations', () => {
-    var result = pageflow.i18nUtils.findTranslation(
+    var result = i18nUtils.findTranslation(
       ['with.interpolation'],
       {value: 'interpolated'}
     );
@@ -34,7 +38,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
   });
 
   test('does not escape html if html flag is not set', () => {
-    var result = pageflow.i18nUtils.findTranslation(
+    var result = i18nUtils.findTranslation(
       ['html.key.without.suffix']
     );
 
@@ -42,7 +46,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
   });
 
   test('searches for keys ending in _html if flag is set', () => {
-    var result = pageflow.i18nUtils.findTranslation(
+    var result = i18nUtils.findTranslation(
       ['html.key.with.suffix'],
       {html: true}
     );
@@ -54,7 +58,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
     'HTML-escapes translations the key of which does not end in _html, if html flag '+
        'is set',
     () => {
-         var result = pageflow.i18nUtils.findTranslation(
+         var result = i18nUtils.findTranslation(
            ['html.key.without.suffix'],
            {html: true}
          );
@@ -64,7 +68,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
   );
 
   test('does not escape default value if html flag is not set', () => {
-    var result = pageflow.i18nUtils.findTranslation(
+    var result = i18nUtils.findTranslation(
       ['not.there'],
       {defaultValue: '<div />'}
     );
@@ -73,7 +77,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
   });
 
   test('does not escape default value if html flag is set', () => {
-    var result = pageflow.i18nUtils.findTranslation(
+    var result = i18nUtils.findTranslation(
       ['not.there'],
       {defaultValue: '<div />', html: true}
     );

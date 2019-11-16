@@ -1,5 +1,9 @@
+import {i18nUtils} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('pageflow.i18nUtils.attributeTranslation', () => {
-  var attributeTranslation = pageflow.i18nUtils.attributeTranslation;
+  var attributeTranslation = i18nUtils.attributeTranslation;
 
   describe('with prefixes option', () => {
     describe('with present prefixed attribute translation', () => {

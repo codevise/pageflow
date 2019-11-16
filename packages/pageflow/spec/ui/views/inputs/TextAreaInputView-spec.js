@@ -1,7 +1,16 @@
+import $ from 'jquery';
+import Backbone from 'backbone';
+import Marionette from 'backbone.marionette';
+import _ from 'underscore';
+
+import {TextAreaInputView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('pageflow.TextAreaInputView', () => {
   test('supports disabled option', () => {
     var model = new Backbone.Model({});
-    var textAreaInputView = new pageflow.TextAreaInputView({
+    var textAreaInputView = new TextAreaInputView({
       model: model,
       propertyName: 'name',
       disabled: true
@@ -15,7 +24,7 @@ describe('pageflow.TextAreaInputView', () => {
 
   test('supports placeholder text', () => {
     var model = new Backbone.Model({});
-    var textAreaInputView = new pageflow.TextAreaInputView({
+    var textAreaInputView = new TextAreaInputView({
       model: model,
       propertyName: 'name',
       placeholder: 'Default'
@@ -29,7 +38,7 @@ describe('pageflow.TextAreaInputView', () => {
 
   test('supports placeholder as function', () => {
     var model = new Backbone.Model({other: 'otherValue'});
-    var textAreaInputView = new pageflow.TextAreaInputView({
+    var textAreaInputView = new TextAreaInputView({
       model: model,
       propertyName: 'name',
       placeholder: function(m) {
@@ -47,7 +56,7 @@ describe('pageflow.TextAreaInputView', () => {
     'updates placeholder when placeholderBinding attribute changes',
     () => {
       var model = new Backbone.Model({other: 'old'});
-      var textAreaInputView = new pageflow.TextAreaInputView({
+      var textAreaInputView = new TextAreaInputView({
         model: model,
         propertyName: 'name',
         placeholder: function(m) {
@@ -67,7 +76,7 @@ describe('pageflow.TextAreaInputView', () => {
   test('supports reading placeholder from other model', () => {
     var placeholderModel = new Backbone.Model({name: 'otherValue'});
     var model = new Backbone.Model({});
-    var textAreaInputView = new pageflow.TextAreaInputView({
+    var textAreaInputView = new TextAreaInputView({
       model: model,
       propertyName: 'name',
       placeholderModel: placeholderModel
@@ -83,7 +92,7 @@ describe('pageflow.TextAreaInputView', () => {
     var model = new Backbone.Model({
       text: 'Some link'
     });
-    var textAreaInputView = new pageflow.TextAreaInputView({
+    var textAreaInputView = new TextAreaInputView({
       model: model,
       propertyName: 'text'
     });
@@ -106,7 +115,7 @@ describe('pageflow.TextAreaInputView', () => {
     var model = new Backbone.Model({
       text: 'Some link'
     });
-    var textAreaInputView = new pageflow.TextAreaInputView({
+    var textAreaInputView = new TextAreaInputView({
       model: model,
       propertyName: 'text'
     });
@@ -130,7 +139,7 @@ describe('pageflow.TextAreaInputView', () => {
     var model = new Backbone.Model({
       text: '<a href="https://new.example.com">Some link</a>'
     });
-    var textAreaInputView = new pageflow.TextAreaInputView({
+    var textAreaInputView = new TextAreaInputView({
       model: model,
       propertyName: 'text'
     });
@@ -154,7 +163,7 @@ describe('pageflow.TextAreaInputView', () => {
     var model = new Backbone.Model({
       text: 'Some link'
     });
-    var textAreaInputView = new pageflow.TextAreaInputView({
+    var textAreaInputView = new TextAreaInputView({
       model: model,
       propertyName: 'text'
     });
@@ -177,7 +186,7 @@ describe('pageflow.TextAreaInputView', () => {
     var model = new Backbone.Model({
       text: 'Some link'
     });
-    var textAreaInputView = new pageflow.TextAreaInputView({
+    var textAreaInputView = new TextAreaInputView({
       model: model,
       propertyName: 'text'
     });
@@ -201,7 +210,7 @@ describe('pageflow.TextAreaInputView', () => {
     var model = new Backbone.Model({
       text: 'Some <a href="http://example.com">link</a>'
     });
-    var textAreaInputView = new pageflow.TextAreaInputView({
+    var textAreaInputView = new TextAreaInputView({
       model: model,
       propertyName: 'text'
     });
@@ -225,7 +234,7 @@ describe('pageflow.TextAreaInputView', () => {
       var FragmentLinkInputView = Backbone.View.extend({
         className: 'some_fragment_link_input_view'
       });
-      var textAreaInputView = new pageflow.TextAreaInputView({
+      var textAreaInputView = new TextAreaInputView({
         model: model,
         propertyName: 'text',
         fragmentLinkInputView: FragmentLinkInputView
@@ -243,14 +252,14 @@ describe('pageflow.TextAreaInputView', () => {
           text: 'Some <a href="#123">link</a>'
         });
         var propertyValue;
-        var FragmentLinkInputView = Backbone.Marionette.View.extend({
+        var FragmentLinkInputView = Marionette.View.extend({
           modelEvents: {
             'change': function() {
               propertyValue = this.model.get(this.options.propertyName);
             }
           }
         });
-        var textAreaInputView = new pageflow.TextAreaInputView({
+        var textAreaInputView = new TextAreaInputView({
           model: model,
           propertyName: 'text',
           fragmentLinkInputView: FragmentLinkInputView
@@ -273,14 +282,14 @@ describe('pageflow.TextAreaInputView', () => {
         text: 'Some <a href="#123">link</a>'
       });
       var updateFragmentLink;
-      var FragmentLinkInputView = Backbone.Marionette.View.extend({
+      var FragmentLinkInputView = Marionette.View.extend({
         initialize: function() {
           updateFragmentLink = _.bind(function(value) {
             this.model.set(this.options.propertyName, value);
           }, this);
         }
       });
-      var textAreaInputView = new pageflow.TextAreaInputView({
+      var textAreaInputView = new TextAreaInputView({
         model: model,
         propertyName: 'text',
         fragmentLinkInputView: FragmentLinkInputView
@@ -306,8 +315,8 @@ describe('pageflow.TextAreaInputView', () => {
         var model = new Backbone.Model({
           text: 'Some <a href="#123">link</a>'
         });
-        var FragmentLinkInputView = Backbone.Marionette.View.extend({});
-        var textAreaInputView = new pageflow.TextAreaInputView({
+        var FragmentLinkInputView = Marionette.View.extend({});
+        var textAreaInputView = new TextAreaInputView({
           model: model,
           propertyName: 'text',
           fragmentLinkInputView: FragmentLinkInputView
@@ -334,8 +343,8 @@ describe('pageflow.TextAreaInputView', () => {
         var model = new Backbone.Model({
           text: 'Some <a href="#123" target="_self">link</a>'
         });
-        var FragmentLinkInputView = Backbone.Marionette.View.extend({});
-        var textAreaInputView = new pageflow.TextAreaInputView({
+        var FragmentLinkInputView = Marionette.View.extend({});
+        var textAreaInputView = new TextAreaInputView({
           model: model,
           propertyName: 'text',
           fragmentLinkInputView: FragmentLinkInputView
@@ -362,8 +371,8 @@ describe('pageflow.TextAreaInputView', () => {
         var model = new Backbone.Model({
           text: 'Some <a href="#123">link</a>'
         });
-        var FragmentLinkInputView = Backbone.Marionette.View.extend({});
-        var textAreaInputView = new pageflow.TextAreaInputView({
+        var FragmentLinkInputView = Marionette.View.extend({});
+        var textAreaInputView = new TextAreaInputView({
           model: model,
           propertyName: 'text',
           fragmentLinkInputView: FragmentLinkInputView
@@ -392,8 +401,8 @@ describe('pageflow.TextAreaInputView', () => {
         var model = new Backbone.Model({
           text: 'Some <a href="https://example.com">link</a>'
         });
-        var FragmentLinkInputView = Backbone.Marionette.View.extend({});
-        var textAreaInputView = new pageflow.TextAreaInputView({
+        var FragmentLinkInputView = Marionette.View.extend({});
+        var textAreaInputView = new TextAreaInputView({
           model: model,
           propertyName: 'text',
           fragmentLinkInputView: FragmentLinkInputView
@@ -421,14 +430,14 @@ describe('pageflow.TextAreaInputView', () => {
           text: 'Some <a href="http://example.com">link</a>'
         });
         var updateFragmentLink;
-        var FragmentLinkInputView = Backbone.Marionette.View.extend({
+        var FragmentLinkInputView = Marionette.View.extend({
           initialize: function() {
             updateFragmentLink = _.bind(function(value) {
               this.model.set(this.options.propertyName, value);
             }, this);
           }
         });
-        var textAreaInputView = new pageflow.TextAreaInputView({
+        var textAreaInputView = new TextAreaInputView({
           model: model,
           propertyName: 'text',
           fragmentLinkInputView: FragmentLinkInputView
@@ -458,14 +467,14 @@ describe('pageflow.TextAreaInputView', () => {
           text: 'Some <a href="http://example.com" target="_self">link</a>'
         });
         var updateFragmentLink;
-        var FragmentLinkInputView = Backbone.Marionette.View.extend({
+        var FragmentLinkInputView = Marionette.View.extend({
           initialize: function() {
             updateFragmentLink = _.bind(function(value) {
               this.model.set(this.options.propertyName, value);
             }, this);
           }
         });
-        var textAreaInputView = new pageflow.TextAreaInputView({
+        var textAreaInputView = new TextAreaInputView({
           model: model,
           propertyName: 'text',
           fragmentLinkInputView: FragmentLinkInputView
@@ -492,8 +501,8 @@ describe('pageflow.TextAreaInputView', () => {
       var model = new Backbone.Model({
         text: 'Some link'
       });
-      var FragmentLinkInputView = Backbone.Marionette.View.extend({});
-      var textAreaInputView = new pageflow.TextAreaInputView({
+      var FragmentLinkInputView = Marionette.View.extend({});
+      var textAreaInputView = new TextAreaInputView({
         model: model,
         propertyName: 'text',
         fragmentLinkInputView: FragmentLinkInputView
@@ -519,14 +528,14 @@ describe('pageflow.TextAreaInputView', () => {
         text: 'Some link'
       });
       var updateFragmentLink;
-      var FragmentLinkInputView = Backbone.Marionette.View.extend({
+      var FragmentLinkInputView = Marionette.View.extend({
         initialize: function() {
           updateFragmentLink = _.bind(function(value) {
             this.model.set(this.options.propertyName, value);
           }, this);
         }
       });
-      var textAreaInputView = new pageflow.TextAreaInputView({
+      var textAreaInputView = new TextAreaInputView({
         model: model,
         propertyName: 'text',
         fragmentLinkInputView: FragmentLinkInputView
@@ -552,8 +561,8 @@ describe('pageflow.TextAreaInputView', () => {
       var model = new Backbone.Model({
         text: 'Some link'
       });
-      var FragmentLinkInputView = Backbone.Marionette.View.extend({});
-      var textAreaInputView = new pageflow.TextAreaInputView({
+      var FragmentLinkInputView = Marionette.View.extend({});
+      var textAreaInputView = new TextAreaInputView({
         model: model,
         propertyName: 'text',
         fragmentLinkInputView: FragmentLinkInputView

@@ -1,3 +1,9 @@
+import Backbone from 'backbone';
+
+import {DeleteRowTableCellView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('DeleteRowTableCellView', () => {
   support.useFakeTranslations({
     'information.delete.cell_title': 'Delete information'
@@ -5,7 +11,7 @@ describe('DeleteRowTableCellView', () => {
 
   test('sets cell title attribute', () => {
     var kompromat = new Backbone.Model();
-    var cell = new pageflow.DeleteRowTableCellView({
+    var cell = new DeleteRowTableCellView({
       column: {
         name: 'delete'
       },
@@ -20,7 +26,7 @@ describe('DeleteRowTableCellView', () => {
 
   test('displays the delete button', () => {
     var kompromat = new Backbone.Model();
-    var cell = new pageflow.DeleteRowTableCellView({
+    var cell = new DeleteRowTableCellView({
       column: {
         name: 'delete'
       },
@@ -41,7 +47,7 @@ describe('DeleteRowTableCellView', () => {
         }
       });
       var kompromat = new Information();
-      var cell = new pageflow.DeleteRowTableCellView({
+      var cell = new DeleteRowTableCellView({
         column: {
           name: 'delete'
         },
@@ -64,7 +70,7 @@ describe('DeleteRowTableCellView', () => {
         }
       });
       var kompromat = new Information();
-      var cell = new pageflow.DeleteRowTableCellView({
+      var cell = new DeleteRowTableCellView({
         column: {
           name: 'delete'
         },
@@ -86,7 +92,7 @@ describe('DeleteRowTableCellView', () => {
          }
        });
        var kompromat = new Information();
-       var cell = new pageflow.DeleteRowTableCellView({
+       var cell = new DeleteRowTableCellView({
          column: {
            name: 'delete'
          },
@@ -110,7 +116,7 @@ describe('DeleteRowTableCellView', () => {
            }
          });
          var kompromat = new Information();
-         var cell = new pageflow.DeleteRowTableCellView({
+         var cell = new DeleteRowTableCellView({
            column: {
              name: 'delete'
            },
@@ -128,7 +134,7 @@ describe('DeleteRowTableCellView', () => {
   test('removes model when button is clicked', () => {
     var kompromat = new Backbone.Model();
     sinon.spy(kompromat, 'destroy');
-    var cell = new pageflow.DeleteRowTableCellView({
+    var cell = new DeleteRowTableCellView({
       column: {
         name: 'delete'
       },

@@ -1,3 +1,9 @@
+import Backbone from 'backbone';
+
+import {TextTableCellView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('TextTableCellView', () => {
   support.useFakeTranslations({
     'pageflow.ui.text_table_cell_view.empty': '(empty)'
@@ -7,7 +13,7 @@ describe('TextTableCellView', () => {
     'renders value from column attribute also when default is given',
     () => {
       var person = new Backbone.Model({first_name: 'Jane'});
-      var cell = new pageflow.TextTableCellView({
+      var cell = new TextTableCellView({
         column: {
           name: 'first_name',
           default: 'Heinz'
@@ -25,7 +31,7 @@ describe('TextTableCellView', () => {
     'renders default value if column attribute is empty and default is present',
     () => {
       var passport = new Backbone.Model({issuing_authority: 'Studienstelle für Auslandsfragen'});
-      var cell = new pageflow.TextTableCellView({
+      var cell = new TextTableCellView({
         column: {
           name: 'country',
           default: 'China'
@@ -43,7 +49,7 @@ describe('TextTableCellView', () => {
     'renders default value if column attribute is empty and default is not present',
     () => {
       var passport = new Backbone.Model({issuing_authority: 'Studienstelle für Auslandsfragen'});
-      var cell = new pageflow.TextTableCellView({
+      var cell = new TextTableCellView({
         column: {
           name: 'country'
         },
@@ -60,7 +66,7 @@ describe('TextTableCellView', () => {
     'renders return value of default function if column attribute is empty',
     () => {
       var passport = new Backbone.Model({issuing_authority: 'Studienstelle für Auslandsfragen'});
-      var cell = new pageflow.TextTableCellView({
+      var cell = new TextTableCellView({
         column: {
           name: 'country',
           default: function() {
@@ -80,7 +86,7 @@ describe('TextTableCellView', () => {
     'renders return value of default function if column attribute is empty',
     () => {
       var passport = new Backbone.Model({place_of_birth: 'Baarle'});
-      var cell = new pageflow.TextTableCellView({
+      var cell = new TextTableCellView({
         column: {
           name: 'country',
           default: function(options) {

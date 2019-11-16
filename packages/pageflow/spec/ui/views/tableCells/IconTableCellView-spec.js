@@ -1,3 +1,9 @@
+import Backbone from 'backbone';
+
+import {IconTableCellView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('IconTableCellView', () => {
   support.useFakeTranslations({
     'toxins.warning.cell_title.biohazard': 'Biogefährdung',
@@ -10,7 +16,7 @@ describe('IconTableCellView', () => {
     'sets cell title attribute according to column attribute value',
     () => {
       var toxin = new Backbone.Model({warning: 'biohazard'});
-      var cell = new pageflow.IconTableCellView({
+      var cell = new IconTableCellView({
         column: {
           name: 'warning'
         },
@@ -27,7 +33,7 @@ describe('IconTableCellView', () => {
 
   test('sets cell title attribute if column is blank', () => {
     var toxin = new Backbone.Model();
-    var cell = new pageflow.IconTableCellView({
+    var cell = new IconTableCellView({
       column: {
         name: 'warning'
       },
@@ -43,7 +49,7 @@ describe('IconTableCellView', () => {
 
   test('adds class corresponding to column attribute value', () => {
     var toxin = new Backbone.Model({warning: 'caustic'});
-    var cell = new pageflow.IconTableCellView({
+    var cell = new IconTableCellView({
       column: {
         name: 'warning'
       },
@@ -60,7 +66,7 @@ describe('IconTableCellView', () => {
     'removes previous class when changing column attribute value',
     () => {
       var toxin = new Backbone.Model({warning: 'caustic'});
-      var cell = new pageflow.IconTableCellView({
+      var cell = new IconTableCellView({
         column: {
           name: 'warning'
         },

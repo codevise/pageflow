@@ -1,3 +1,9 @@
+import Backbone from 'backbone';
+
+import {CheckBoxGroupInputView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('pageflow.CheckBoxGroupInputView', () => {
   var Model = Backbone.Model.extend({
     i18nKey: 'page'
@@ -10,7 +16,7 @@ describe('pageflow.CheckBoxGroupInputView', () => {
     });
 
     test('uses activerecord values translations for items', () => {
-      var checkBoxGroupInputView = new pageflow.CheckBoxGroupInputView({
+      var checkBoxGroupInputView = new CheckBoxGroupInputView({
         model: new Model({some_attribute: {'one': true, 'two': false}}),
         propertyName: 'some_attribute',
         values: ['one', 'two']
@@ -24,7 +30,7 @@ describe('pageflow.CheckBoxGroupInputView', () => {
 
   describe('with texts option', () => {
     test('uses texts for items', () => {
-      var checkBoxGroupInputView = new pageflow.CheckBoxGroupInputView({
+      var checkBoxGroupInputView = new CheckBoxGroupInputView({
         model: new Model({some_attribute: {'one': true, 'two': false}}),
         propertyName: 'some_attribute',
         values: [1, 2],

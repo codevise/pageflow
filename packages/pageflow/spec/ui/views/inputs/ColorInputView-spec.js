@@ -1,3 +1,9 @@
+import Backbone from 'backbone';
+
+import {ColorInputView} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('pageflow.ColorInputView', () => {
   let testContext;
 
@@ -19,7 +25,7 @@ describe('pageflow.ColorInputView', () => {
     var model = new Backbone.Model({
       color: '#ababab'
     });
-    var colorInputView = new pageflow.ColorInputView({
+    var colorInputView = new ColorInputView({
       model: model,
       propertyName: 'color'
     });
@@ -31,7 +37,7 @@ describe('pageflow.ColorInputView', () => {
 
   test('updates input when model changes', () => {
     var model = new Backbone.Model();
-    var colorInputView = new pageflow.ColorInputView({
+    var colorInputView = new ColorInputView({
       model: model,
       propertyName: 'color'
     });
@@ -46,7 +52,7 @@ describe('pageflow.ColorInputView', () => {
     var model = new Backbone.Model({
       color: '#ababab'
     });
-    var colorInputView = new pageflow.ColorInputView({
+    var colorInputView = new ColorInputView({
       model: model,
       propertyName: 'color'
     });
@@ -62,7 +68,7 @@ describe('pageflow.ColorInputView', () => {
 
   test('allows passing swatches', () => {
     var model = new Backbone.Model();
-    var colorInputView = new pageflow.ColorInputView({
+    var colorInputView = new ColorInputView({
       model: model,
       propertyName: 'color',
       swatches: ['#cdcdcd', '#dedede']
@@ -79,7 +85,7 @@ describe('pageflow.ColorInputView', () => {
   describe('with defaultValue option', () => {
     test('falls back to default value', () => {
       var model = new Backbone.Model();
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValue: '#cdcdcd'
@@ -94,7 +100,7 @@ describe('pageflow.ColorInputView', () => {
 
     test('does not store default value in model', () => {
       var model = new Backbone.Model();
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValue: '#cdcdcd'
@@ -111,7 +117,7 @@ describe('pageflow.ColorInputView', () => {
 
     test('stores non default value in model', () => {
       var model = new Backbone.Model();
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValue: '#cdcdcd'
@@ -130,7 +136,7 @@ describe('pageflow.ColorInputView', () => {
       var model = new Backbone.Model({
         color: '#fff'
       });
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValue: '#cdcdcd'
@@ -147,7 +153,7 @@ describe('pageflow.ColorInputView', () => {
 
     test('includes swatch for default value', () => {
       var model = new Backbone.Model();
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValue: '#cdcdcd',
@@ -164,7 +170,7 @@ describe('pageflow.ColorInputView', () => {
 
     test('does not duplicate swatch', () => {
       var model = new Backbone.Model();
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValue: '#cdcdcd',
@@ -183,7 +189,7 @@ describe('pageflow.ColorInputView', () => {
   describe('with function as defaultValue option', () => {
     test('falls back to default value', () => {
       var model = new Backbone.Model();
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValue: function() { return '#cdcdcd'; }
@@ -198,7 +204,7 @@ describe('pageflow.ColorInputView', () => {
 
     test('does not store default value in model', () => {
       var model = new Backbone.Model();
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValue: function() { return '#cdcdcd'; }
@@ -215,7 +221,7 @@ describe('pageflow.ColorInputView', () => {
 
     test('stores non default value in model', () => {
       var model = new Backbone.Model();
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValue: function() { return '#cdcdcd'; }
@@ -234,7 +240,7 @@ describe('pageflow.ColorInputView', () => {
       var model = new Backbone.Model({
         color: '#fff'
       });
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValue: function() { return '#cdcdcd'; }
@@ -251,7 +257,7 @@ describe('pageflow.ColorInputView', () => {
 
     test('includes swatch for default value', () => {
       var model = new Backbone.Model();
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValue: function() { return '#cdcdcd'; },
@@ -272,7 +278,7 @@ describe('pageflow.ColorInputView', () => {
       var model = new Backbone.Model({
         default_color: '#cdcdcd'
       });
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValueBinding: 'default_color'
@@ -291,7 +297,7 @@ describe('pageflow.ColorInputView', () => {
         var model = new Backbone.Model({
           default_color: '#aaaaaa'
         });
-        var colorInputView = new pageflow.ColorInputView({
+        var colorInputView = new ColorInputView({
           model: model,
           propertyName: 'color',
           defaultValueBinding: 'default_color'
@@ -310,7 +316,7 @@ describe('pageflow.ColorInputView', () => {
       var model = new Backbone.Model({
         default_color: '#cdcdcd'
       });
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValueBinding: 'default_color'
@@ -330,7 +336,7 @@ describe('pageflow.ColorInputView', () => {
       var model = new Backbone.Model({
         default_color: '#cdcdcd'
       });
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValueBinding: 'default_color'
@@ -350,7 +356,7 @@ describe('pageflow.ColorInputView', () => {
       var model = new Backbone.Model({
         color: '#fff'
       });
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValueBinding: 'default_color'
@@ -372,7 +378,7 @@ describe('pageflow.ColorInputView', () => {
       var model = new Backbone.Model({
         light: true
       });
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValueBinding: 'light',
@@ -392,7 +398,7 @@ describe('pageflow.ColorInputView', () => {
         var model = new Backbone.Model({
           light: true
         });
-        var colorInputView = new pageflow.ColorInputView({
+        var colorInputView = new ColorInputView({
           model: model,
           propertyName: 'color',
           defaultValueBinding: 'light',
@@ -412,7 +418,7 @@ describe('pageflow.ColorInputView', () => {
       var model = new Backbone.Model({
         light: true
       });
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValueBinding: 'light',
@@ -433,7 +439,7 @@ describe('pageflow.ColorInputView', () => {
       var model = new Backbone.Model({
         light: true
       });
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValueBinding: 'light',
@@ -454,7 +460,7 @@ describe('pageflow.ColorInputView', () => {
       var model = new Backbone.Model({
         light: true
       });
-      var colorInputView = new pageflow.ColorInputView({
+      var colorInputView = new ColorInputView({
         model: model,
         propertyName: 'color',
         defaultValueBinding: 'light',

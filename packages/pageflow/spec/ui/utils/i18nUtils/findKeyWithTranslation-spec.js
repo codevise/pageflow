@@ -1,3 +1,7 @@
+import {i18nUtils} from '$pageflow/ui';
+
+import * as support from '$support';
+
 describe('pageflow.i18nUtils.findKeyWithTranslation', () => {
   support.useFakeTranslations({
     'some.key': 'Some text',
@@ -5,7 +9,7 @@ describe('pageflow.i18nUtils.findKeyWithTranslation', () => {
   });
 
   test('returns key withpresent translation', () => {
-    var result = pageflow.i18nUtils.findKeyWithTranslation(
+    var result = i18nUtils.findKeyWithTranslation(
       ['not.there', 'some.key', 'fallback']
     );
 
@@ -13,7 +17,7 @@ describe('pageflow.i18nUtils.findKeyWithTranslation', () => {
   });
 
   test('falls back first key if all are missing', () => {
-    var result = pageflow.i18nUtils.findKeyWithTranslation(
+    var result = i18nUtils.findKeyWithTranslation(
       ['not.there', 'also.not.there']
     );
 

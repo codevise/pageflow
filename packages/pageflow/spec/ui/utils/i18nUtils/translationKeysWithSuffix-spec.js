@@ -1,6 +1,8 @@
+import {i18nUtils} from '$pageflow/ui';
+
 describe('pageflow.i18nUtils.translationKeysWithSuffix', () => {
   test('returns array with additional suffixed key for each item', () => {
-    var result = pageflow.i18nUtils.translationKeysWithSuffix(
+    var result = i18nUtils.translationKeysWithSuffix(
       ['some.key', 'fallback'],
       'disabled'
     );
