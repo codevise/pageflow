@@ -97,6 +97,7 @@ I18n.interpolate = function(message, options) {
     , placeholder
     , value
     , name
+    , regex
   ;
 
   if (!matches) {
