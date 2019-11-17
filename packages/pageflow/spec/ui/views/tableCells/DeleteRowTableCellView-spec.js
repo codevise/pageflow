@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import sinon from 'sinon';
 
 import {DeleteRowTableCellView} from '$pageflow/ui';
 
@@ -145,6 +146,6 @@ describe('DeleteRowTableCellView', () => {
 
     cell.ui.removeButton.click();
 
-    expect(kompromat.destroy).to.have.been.called;
+    expect(kompromat.destroy).toHaveBeenCalled();
   });
 });

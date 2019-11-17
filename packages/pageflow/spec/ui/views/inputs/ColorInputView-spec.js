@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import sinon from 'sinon';
 
 import {ColorInputView} from '$pageflow/ui';
 
