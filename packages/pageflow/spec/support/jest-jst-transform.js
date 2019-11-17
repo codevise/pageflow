@@ -3,6 +3,6 @@ const jst = jstPlugin();
 
 module.exports = {
   process(data, id) {
-    return jst.transform(data, id).replace('export default', 'module.exports =');
+    return jst.transform(data, id).replace('export default', 'var I18n = require("i18n-js").default; module.exports =');
   }
 };
