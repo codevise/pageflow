@@ -1,4 +1,6 @@
-export const PreviewEntryData = pageflow.EntryData.extend({
+import {EntryData} from '../../EntryData';
+
+export const PreviewEntryData = EntryData.extend({
   initialize: function(options) {
     this.entry = options.entry;
     this.storylines = options.storylines;
