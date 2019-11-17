@@ -18,7 +18,7 @@ module.exports = {
     "^cocktail$": "<rootDir>/src/vendor/cocktail",
     "^i18n-js$": "<rootDir>/src/vendor/i18n",
     "^iscroll$": "<rootDir>/src/vendor/iscroll",
-    "^wysihtml5": "<rootDir>/src/vendor/iscroll",
+    "^wysihtml5": "<rootDir>/spec/support/wysihtmlStub",
   },
   transform: {
     "^.+\\.jst$": "<rootDir>/spec/support/jest-jst-transform",
