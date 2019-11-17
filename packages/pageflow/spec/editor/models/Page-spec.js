@@ -1,5 +1,5 @@
-describe('Page', function() {
-  describe('#thumbnailFile', function() {
+describe('Page', () => {
+  describe('#thumbnailFile', () => {
     support.setupGlobals({
       editor: function() {
         var api = new pageflow.EditorApi();
@@ -57,7 +57,7 @@ describe('Page', function() {
       }
     });
 
-    it('returns first present file', function() {
+    test('returns first present file', () => {
       var page = new pageflow.Page({
         template: 'video',
         configuration: {
@@ -67,10 +67,10 @@ describe('Page', function() {
 
       var thumbnailFile = page.thumbnailFile();
 
-      expect(thumbnailFile.get('perma_id')).to.eq(5);
+      expect(thumbnailFile.get('perma_id')).toBe(5);
     });
 
-    it('returns undefined if no candidate matches', function() {
+    test('returns undefined if no candidate matches', () => {
       var page = new pageflow.Page({
         template: 'video',
         configuration: {}
@@ -78,10 +78,10 @@ describe('Page', function() {
 
       var thumbnailFile = page.thumbnailFile();
 
-      expect(thumbnailFile).to.eq(undefined);
+      expect(thumbnailFile).toBeUndefined();
     });
 
-    it('returns undefined if candidate condition is not met', function() {
+    test('returns undefined if candidate condition is not met', () => {
       var page = new pageflow.Page({
         template: 'video',
         configuration: {
@@ -92,10 +92,10 @@ describe('Page', function() {
 
       var thumbnailFile = page.thumbnailFile();
 
-      expect(thumbnailFile).to.eq(undefined);
+      expect(thumbnailFile).toBeUndefined();
     });
 
-    it('returns undefined if negated candidate condition is met', function() {
+    test('returns undefined if negated candidate condition is met', () => {
       var page = new pageflow.Page({
         template: 'video',
         configuration: {
@@ -106,10 +106,10 @@ describe('Page', function() {
 
       var thumbnailFile = page.thumbnailFile();
 
-      expect(thumbnailFile).to.eq(undefined);
+      expect(thumbnailFile).toBeUndefined();
     });
 
-    it('returns present file if candidate condition is met', function() {
+    test('returns present file if candidate condition is met', () => {
       var page = new pageflow.Page({
         template: 'video',
         configuration: {
@@ -120,21 +120,24 @@ describe('Page', function() {
 
       var thumbnailFile = page.thumbnailFile();
 
-      expect(thumbnailFile.get('perma_id')).to.eq(5);
+      expect(thumbnailFile.get('perma_id')).toBe(5);
     });
 
-    it('returns present file if negated candidate condition is not met', function() {
-      var page = new pageflow.Page({
-        template: 'video',
-        configuration: {
-          poster_id: 5,
-          background_type: 'video'
-        }
-      });
+    test(
+      'returns present file if negated candidate condition is not met',
+      () => {
+        var page = new pageflow.Page({
+          template: 'video',
+          configuration: {
+            poster_id: 5,
+            background_type: 'video'
+          }
+        });
 
-      var thumbnailFile = page.thumbnailFile();
+        var thumbnailFile = page.thumbnailFile();
 
-      expect(thumbnailFile.get('perma_id')).to.eq(5);
-    });
+        expect(thumbnailFile.get('perma_id')).toBe(5);
+      }
+    );
   });
 });

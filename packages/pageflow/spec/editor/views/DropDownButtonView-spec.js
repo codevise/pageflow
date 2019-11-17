@@ -1,5 +1,5 @@
-describe('DropDownButtonView', function() {
-  it('renders menu items for collection items', function() {
+describe('DropDownButtonView', () => {
+  test('renders menu items for collection items', () => {
     var dropDownButtonView = new pageflow.DropDownButtonView({
       items: new Backbone.Collection([
         {label: 'Item 1'},
@@ -10,10 +10,10 @@ describe('DropDownButtonView', function() {
     dropDownButtonView.render();
     var itemTexts = mapToText(dropDownButtonView.$el.find('ul li a'));
 
-    expect(itemTexts).to.eql(['Item 1', 'Item 2']);
+    expect(itemTexts).toEqual(['Item 1', 'Item 2']);
   });
 
-  it('renders nested menu items', function() {
+  test('renders nested menu items', () => {
     var dropDownButtonView = new pageflow.DropDownButtonView({
       items: new Backbone.Collection([
         {
@@ -29,10 +29,10 @@ describe('DropDownButtonView', function() {
     dropDownButtonView.render();
     var itemTexts = mapToText(dropDownButtonView.$el.find('li li a'));
 
-    expect(itemTexts).to.eql(['Item 1', 'Item 2']);
+    expect(itemTexts).toEqual(['Item 1', 'Item 2']);
   });
 
-  it('supports disabling items', function() {
+  test('supports disabling items', () => {
     var dropDownButtonView = new pageflow.DropDownButtonView({
       items: new Backbone.Collection([
         {label: 'Item 1', disabled: true},
@@ -47,7 +47,7 @@ describe('DropDownButtonView', function() {
     expect(items.eq(1)).not.to.have.$class('is_disabled');
   });
 
-  it('supports checking items', function() {
+  test('supports checking items', () => {
     var dropDownButtonView = new pageflow.DropDownButtonView({
       items: new Backbone.Collection([
         {label: 'Item 1', checked: true},
@@ -62,7 +62,7 @@ describe('DropDownButtonView', function() {
     expect(items.eq(1)).not.to.have.$class('is_checked');
   });
 
-  it('marks items whose model has a selected method', function() {
+  test('marks items whose model has a selected method', () => {
     var itemModels = new Backbone.Collection([
       {label: 'Item 1'},
       {label: 'Item 2'}
@@ -79,7 +79,7 @@ describe('DropDownButtonView', function() {
     expect(items.eq(1)).not.to.have.$class('is_selectable');
   });
 
-  it('calls selected function on model when item is clicked', function() {
+  test('calls selected function on model when item is clicked', () => {
     var itemModels = new Backbone.Collection([
       {label: 'Item 1'}
     ]);
@@ -95,21 +95,24 @@ describe('DropDownButtonView', function() {
     expect(selectedHandler).to.have.been.called;
   });
 
-  it('does not call selected method on model when disabled item is clicked', function() {
-    var itemModels = new Backbone.Collection([
-      {label: 'Item 1', disabled: true}
-    ]);
-    var selectedHandler = sinon.spy();
-    itemModels.first().selected = selectedHandler;
-    var dropDownButtonView = new pageflow.DropDownButtonView({
-      items: itemModels
-    });
+  test(
+    'does not call selected method on model when disabled item is clicked',
+    () => {
+      var itemModels = new Backbone.Collection([
+        {label: 'Item 1', disabled: true}
+      ]);
+      var selectedHandler = sinon.spy();
+      itemModels.first().selected = selectedHandler;
+      var dropDownButtonView = new pageflow.DropDownButtonView({
+        items: itemModels
+      });
 
-    dropDownButtonView.render();
-    dropDownButtonView.$el.find('ul li a').first().trigger('click');
+      dropDownButtonView.render();
+      dropDownButtonView.$el.find('ul li a').first().trigger('click');
 
-    expect(selectedHandler).not.to.have.been.called;
-  });
+      expect(selectedHandler).not.to.have.been.called;
+    }
+  );
 
   function mapToText(el) {
     return el.map(function() {

@@ -1,5 +1,5 @@
-describe('FileItemView', function() {
-  it('renders meta data items given as string', function() {
+describe('FileItemView', () => {
+  test('renders meta data items given as string', () => {
     var file = support.factories.file(
       {dimension: '200x100px'}
     );
@@ -11,10 +11,10 @@ describe('FileItemView', function() {
     fileItemView.render();
     var fileMetaDataTable = support.dom.FileMetaDataTable.find(fileItemView);
 
-    expect(fileMetaDataTable.values()).include('200x100px');
+    expect(fileMetaDataTable.values()).toEqual(expect.arrayContaining(['200x100px']));
   });
 
-  it('renders meta data items with custom view and options', function() {
+  test('renders meta data items with custom view and options', () => {
     var file = support.factories.file(
       {dimension: '200x100px'}
     );
@@ -38,6 +38,6 @@ describe('FileItemView', function() {
     fileItemView.render();
     var fileMetaDataTable = support.dom.FileMetaDataTable.find(fileItemView);
 
-    expect(fileMetaDataTable.values()).include('200x100px!!');
+    expect(fileMetaDataTable.values()).toEqual(expect.arrayContaining(['200x100px!!']));
   });
 });

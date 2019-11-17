@@ -1,54 +1,60 @@
-describe('Entry', function() {
-  beforeEach(function() {
-    this.fileTypes = support.factories.fileTypesWithImageFileType();
-    this.imageFileType = this.fileTypes.first();
+describe('Entry', () => {
+  let testContext;
 
-    this.buildEntry = function(attributes, options) {
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
+    testContext.fileTypes = support.factories.fileTypesWithImageFileType();
+    testContext.imageFileType = testContext.fileTypes.first();
+
+    testContext.buildEntry = function(attributes, options) {
       return support.factories.entry(attributes, _.extend({
-        fileTypes: this.fileTypes
+        fileTypes: testContext.fileTypes
       }, options));
     };
   });
 
-  describe('#getFileCollection', function() {
-    it('supports looking up via fileType object', function() {
-      var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, []);
-      var entry = this.buildEntry({}, {
+  describe('#getFileCollection', () => {
+    test('supports looking up via fileType object', () => {
+      var imageFiles = pageflow.FilesCollection.createForFileType(testContext.imageFileType, []);
+      var entry = testContext.buildEntry({}, {
         files: {
           image_files: imageFiles
         }
       });
 
-      var result = entry.getFileCollection(this.imageFileType);
+      var result = entry.getFileCollection(testContext.imageFileType);
 
-      expect(result).to.eq(imageFiles);
+      expect(result).toBe(imageFiles);
     });
 
-    it('supports looking up via fileType collection name', function() {
-      var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, []);
-      var entry = this.buildEntry({}, {
+    test('supports looking up via fileType collection name', () => {
+      var imageFiles = pageflow.FilesCollection.createForFileType(testContext.imageFileType, []);
+      var entry = testContext.buildEntry({}, {
         files: {
           image_files: imageFiles
         }
       });
 
-      var result = entry.getFileCollection(this.imageFileType.collectionName);
+      var result = entry.getFileCollection(testContext.imageFileType.collectionName);
 
-      expect(result).to.eq(imageFiles);
+      expect(result).toBe(imageFiles);
     });
   });
 
-  describe('#reuseFile', function() {
+  describe('#reuseFile', () => {
     support.useFakeXhr();
 
-    it('posts file usage to server', function() {
-      var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, [{id: 12}]);
-      var entry = this.buildEntry({id: 1}, {
+    test('posts file usage to server', () => {
+      var imageFiles = pageflow.FilesCollection.createForFileType(testContext.imageFileType, [{id: 12}]);
+      var entry = testContext.buildEntry({id: 1}, {
         files: {
           image_files: new Backbone.Collection()
         }
       });
-      var otherEntry = this.buildEntry({id: 2}, {
+      var otherEntry = testContext.buildEntry({id: 2}, {
         files: {
           image_files: new Backbone.Collection()
         }
@@ -57,8 +63,8 @@ describe('Entry', function() {
 
       entry.reuseFile(otherEntry, file);
 
-      expect(this.requests[0].url).to.eq('/editor/entries/1/files/image_files/reuse');
-      expect(JSON.parse(this.requests[0].requestBody)).to.deep.eq({
+      expect(testContext.requests[0].url).toBe('/editor/entries/1/files/image_files/reuse');
+      expect(JSON.parse(testContext.requests[0].requestBody)).toEqual({
         file_reuse: {
           file_id: 12,
           other_entry_id: 2
@@ -66,38 +72,38 @@ describe('Entry', function() {
       });
     });
 
-    it('adds file to files collection on success', function() {
-      var entry = this.buildEntry({id: 1}, {
+    test('adds file to files collection on success', () => {
+      var entry = testContext.buildEntry({id: 1}, {
         files: {
           image_files: pageflow.FilesCollection.createForFileType(this.imageFileType, [])
         }
       });
-      var imageFiles = pageflow.FilesCollection.createForFileType(this.imageFileType, [{}]);
-      var otherEntry = this.buildEntry({id: 2}, {
+      var imageFiles = pageflow.FilesCollection.createForFileType(testContext.imageFileType, [{}]);
+      var otherEntry = testContext.buildEntry({id: 2}, {
         files: {
           image_files: imageFiles
         }
       });
       var file = imageFiles.first();
 
-      this.server.respondWith('POST', '/editor/entries/1/files/image_files/reuse',
+      testContext.server.respondWith('POST', '/editor/entries/1/files/image_files/reuse',
                               [200, {'Content-Type': 'application/json'}, JSON.stringify({
                                 image_files: [{id: 234}]
                               })]);
 
       entry.reuseFile(otherEntry, file);
-      this.server.respond();
+      testContext.server.respond();
 
-      var imageFile = entry.getFileCollection(this.imageFileType).first();
+      var imageFile = entry.getFileCollection(testContext.imageFileType).first();
 
-      expect(imageFile.id).to.eq(234);
-      expect(imageFile.fileType()).to.eq(this.imageFileType);
+      expect(imageFile.id).toBe(234);
+      expect(imageFile.fileType()).toBe(testContext.imageFileType);
     });
   });
 
-  describe('#parse', function() {
-    it('updates files in files collections', function() {
-      var entry = this.buildEntry({id: 1}, {
+  describe('#parse', () => {
+    test('updates files in files collections', () => {
+      var entry = testContext.buildEntry({id: 1}, {
         files: {
           image_files: pageflow.FilesCollection.createForFileType(this.imageFileType,
                                                                   [{id: 12, state: 'uploading'}])
@@ -108,26 +114,26 @@ describe('Entry', function() {
         image_files: [{id: 12, state: 'processed'}]
       });
 
-      expect(entry.getFileCollection(this.imageFileType).first().get('state')).to.eq('processed');
+      expect(entry.getFileCollection(testContext.imageFileType).first().get('state')).toBe('processed');
     });
   });
 
-  describe('file collection count attribute', function() {
-    it('is kept for each registed file type', function() {
-      var entry = this.buildEntry({}, {
+  describe('file collection count attribute', () => {
+    test('is kept for each registed file type', () => {
+      var entry = testContext.buildEntry({}, {
         files: {
           image_files: new Backbone.Collection()
         }
       });
 
-      entry.getFileCollection(this.imageFileType).add(new pageflow.ImageFile({state: 'processing'}));
+      entry.getFileCollection(testContext.imageFileType).add(new pageflow.ImageFile({state: 'processing'}));
 
-      expect(entry.get('pending_image_files_count')).to.eq(1);
+      expect(entry.get('pending_image_files_count')).toBe(1);
     });
   });
 
-  describe('#getTheme', function() {
-    it('returns theme based on theme_name configuration attribute', function() {
+  describe('#getTheme', () => {
+    test('returns theme based on theme_name configuration attribute', () => {
       var themes = new pageflow.ThemesCollection([
         {
           name: 'custom',
@@ -145,7 +151,7 @@ describe('Entry', function() {
 
       var result = entry.getTheme();
 
-      expect(result).to.eq(themes.first());
+      expect(result).toBe(themes.first());
     });
   });
 });

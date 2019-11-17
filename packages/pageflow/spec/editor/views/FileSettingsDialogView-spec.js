@@ -1,9 +1,9 @@
-describe('FileSettingsDialogView', function() {
+describe('FileSettingsDialogView', () => {
   var f = support.factories;
 
   support.setupGlobals({entry: f.entry});
 
-  it('renders settingsDialogTabs of file type', function() {
+  test('renders settingsDialogTabs of file type', () => {
     var fileType = f.fileType({
       settingsDialogTabs: [
         {name: 'custom', view: pageflow.TextInputView}
@@ -18,6 +18,6 @@ describe('FileSettingsDialogView', function() {
     view.render();
     var tabView = support.dom.Tabs.find(view);
 
-    expect(tabView.tabNames()).to.include('custom');
+    expect(tabView.tabNames()).toEqual(expect.arrayContaining(['custom']));
   });
 });

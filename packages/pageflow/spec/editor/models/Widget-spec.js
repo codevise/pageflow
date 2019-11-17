@@ -1,8 +1,8 @@
-describe('Widget', function() {
+describe('Widget', () => {
   var f = support.factories;
 
-  describe('#toJSON', function() {
-    it('includes role, type_name and configuration', function() {
+  describe('#toJSON', () => {
+    test('includes role, type_name and configuration', () => {
       var widget = new pageflow.Widget({
         id: 'navigation',
         type_name: 'fancy_bar',
@@ -15,7 +15,7 @@ describe('Widget', function() {
         ])
       });
 
-      expect(widget.toJSON()).to.eql({
+      expect(widget.toJSON()).toEqual({
         role: 'navigation',
         type_name: 'fancy_bar',
         configuration: {

@@ -1,7 +1,7 @@
-describe('NestedFilesView', function() {
+describe('NestedFilesView', () => {
   var f = support.factories;
 
-  it('renders nestedFileTableColumns of file type', function() {
+  test('renders nestedFileTableColumns of file type', () => {
     var fileType = f.fileType({
       nestedFileTableColumns: [
         {name: 'predicted_infractions', cellView: pageflow.TextTableCellView}
@@ -19,6 +19,6 @@ describe('NestedFilesView', function() {
     view.render();
     var table = support.dom.Table.find(view);
 
-    expect(table.columnNames()).to.contain('predicted_infractions');
+    expect(table.columnNames()).toEqual(expect.arrayContaining(['predicted_infractions']));
   });
 });

@@ -1,59 +1,62 @@
-describe('transientReferences', function() {
+describe('transientReferences', () => {
   var Model = Backbone.Model.extend({
     mixins: [pageflow.transientReferences]
   });
 
-  describe('#setReference', function() {
-    it('returns unsaved record', function() {
+  describe('#setReference', () => {
+    test('returns unsaved record', () => {
       var record = new Model(),
           imageFile = new pageflow.ImageFile();
 
       record.setReference('image_file_id', imageFile);
 
-      expect(record.getReference('image_file_id')).to.equal(imageFile);
+      expect(record.getReference('image_file_id')).toBe(imageFile);
     });
 
-    it('resets attribute while record is unsaved', function() {
+    test('resets attribute while record is unsaved', () => {
       var record = new Model({image_file_id: 3}),
           imageFile = new pageflow.ImageFile();
 
       record.setReference('image_file_id', imageFile);
 
-      expect(record.get('image_file_id')).to.equal(null);
+      expect(record.get('image_file_id')).toBeNull();
     });
 
-    it('sets records perma_id once it is saved', function() {
+    test('sets records perma_id once it is saved', () => {
       var record = new Model(),
           imageFile = new pageflow.ImageFile();
 
       record.setReference('image_file_id', imageFile);
       imageFile.set({id: 1, perma_id: 5});
 
-      expect(record.get('image_file_id')).to.equal(5);
+      expect(record.get('image_file_id')).toBe(5);
     });
 
-    it('sets records perma_id if present', function() {
+    test('sets records perma_id if present', () => {
       var record = new Model(),
           imageFile = new pageflow.ImageFile({id: 1, perma_id: 7});
 
       record.setReference('image_file_id', imageFile);
 
-      expect(record.get('image_file_id')).to.equal(7);
+      expect(record.get('image_file_id')).toBe(7);
     });
 
-    it('does not set records perma_id if reference updated before save', function() {
-      var record = new Model(),
-          imageFile = new pageflow.ImageFile(),
-          otherFile = new pageflow.ImageFile({id: 1, perma_id: 7});
+    test(
+      'does not set records perma_id if reference updated before save',
+      () => {
+        var record = new Model(),
+            imageFile = new pageflow.ImageFile(),
+            otherFile = new pageflow.ImageFile({id: 1, perma_id: 7});
 
-      record.setReference('image_file_id', imageFile);
-      record.setReference('image_file_id', otherFile);
-      imageFile.set({id: 2, perma_id: 5});
+        record.setReference('image_file_id', imageFile);
+        record.setReference('image_file_id', otherFile);
+        imageFile.set({id: 2, perma_id: 5});
 
-      expect(record.get('image_file_id')).to.equal(7);
-    });
+        expect(record.get('image_file_id')).toBe(7);
+      }
+    );
 
-    it('triggers change event once the file is ready', function() {
+    test('triggers change event once the file is ready', () => {
       var record = new Model(),
           imageFile = new pageflow.ImageFile(),
           changeListener = sinon.spy();
@@ -62,51 +65,60 @@ describe('transientReferences', function() {
       record.on('change', changeListener);
       imageFile.set('state', 'processed');
 
-      expect(changeListener.called).to.be.ok;
+      expect(changeListener.called).toBeTruthy();
     });
 
-    it('triggers change:<attribute>:ready event once the file is ready', function() {
-      var record = new Model(),
-          imageFile = new pageflow.ImageFile(),
-          changeListener = sinon.spy();
+    test(
+      'triggers change:<attribute>:ready event once the file is ready',
+      () => {
+        var record = new Model(),
+            imageFile = new pageflow.ImageFile(),
+            changeListener = sinon.spy();
 
-      record.setReference('image_file_id', imageFile);
-      record.on('change:image_file_id:ready', changeListener);
-      imageFile.set('state', 'processed');
+        record.setReference('image_file_id', imageFile);
+        record.on('change:image_file_id:ready', changeListener);
+        imageFile.set('state', 'processed');
 
-      expect(changeListener.called).to.be.ok;
-    });
+        expect(changeListener.called).toBeTruthy();
+      }
+    );
 
-    it('does not trigger change event if reference was updated before ready', function() {
-      var record = new Model(),
-          imageFile = new pageflow.ImageFile(),
-          otherFile = new pageflow.ImageFile({perma_id: 7}),
-          changeListener = sinon.spy();
+    test(
+      'does not trigger change event if reference was updated before ready',
+      () => {
+        var record = new Model(),
+            imageFile = new pageflow.ImageFile(),
+            otherFile = new pageflow.ImageFile({perma_id: 7}),
+            changeListener = sinon.spy();
 
-      record.setReference('image_file_id', imageFile);
-      record.setReference('image_file_id', otherFile);
-      record.on('change', changeListener);
-      imageFile.set('state', 'processed');
+        record.setReference('image_file_id', imageFile);
+        record.setReference('image_file_id', otherFile);
+        record.on('change', changeListener);
+        imageFile.set('state', 'processed');
 
-      expect(changeListener.called).to.equal(false);
-    });
+        expect(changeListener.called).toBe(false);
+      }
+    );
 
-    it('when change event triggers record can already be looked up in collection', function() {
-      var record = new Model(),
-          imageFiles = pageflow.FilesCollection.createForFileType(
-            support.factories.imageFileType(), []
-          ),
-          imageFile = new pageflow.ImageFile(),
-          imageFileFromCollection;
+    test(
+      'when change event triggers record can already be looked up in collection',
+      () => {
+        var record = new Model(),
+            imageFiles = pageflow.FilesCollection.createForFileType(
+              support.factories.imageFileType(), []
+            ),
+            imageFile = new pageflow.ImageFile(),
+            imageFileFromCollection;
 
-      imageFiles.add(imageFile);
-      record.setReference('image_file_id', imageFile);
-      record.on('change', function() {
-        imageFileFromCollection = imageFiles.getByPermaId(5);
-      });
-      imageFile.set('perma_id', 5);
+        imageFiles.add(imageFile);
+        record.setReference('image_file_id', imageFile);
+        record.on('change', function() {
+          imageFileFromCollection = imageFiles.getByPermaId(5);
+        });
+        imageFile.set('perma_id', 5);
 
-      expect(imageFileFromCollection).to.equal(imageFile);
-    });
+        expect(imageFileFromCollection).toBe(imageFile);
+      }
+    );
   });
 });

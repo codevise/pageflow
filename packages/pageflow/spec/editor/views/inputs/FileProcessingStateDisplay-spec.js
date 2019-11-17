@@ -1,5 +1,5 @@
-describe('pageflow.FileProcessingStateDisplayView', function() {
-  it('displays unfinished file stages', function() {
+describe('pageflow.FileProcessingStateDisplayView', () => {
+  test('displays unfinished file stages', () => {
     var fixture = support.factories.imageFilesFixture({
       imageFileAttributes: {
         id: 1,
@@ -18,11 +18,11 @@ describe('pageflow.FileProcessingStateDisplayView', function() {
 
     view.render();
 
-    expect(support.dom.FileStageItemView.findAll(view).length).to.eq(1);
+    expect(support.dom.FileStageItemView.findAll(view).length).toBe(1);
     expect(view.$el).not.to.have.$class('file_processing_state_display-empty');
   });
 
-  it('does not display finished file stages', function() {
+  test('does not display finished file stages', () => {
     var fixture = support.factories.imageFilesFixture({
       imageFileAttributes: {
         id: 1,
@@ -41,7 +41,7 @@ describe('pageflow.FileProcessingStateDisplayView', function() {
 
     view.render();
 
-    expect(support.dom.FileStageItemView.findAll(view).length).to.eq(0);
+    expect(support.dom.FileStageItemView.findAll(view).length).toBe(0);
     expect(view.$el).to.have.$class('file_processing_state_display-empty');
   });
 });

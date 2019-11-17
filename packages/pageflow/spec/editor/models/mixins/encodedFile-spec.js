@@ -1,28 +1,26 @@
-describe('encodedFile', function() {
-  describe('#stages', function() {
-    describe('when confirmEncodingJobs is off', function() {
+describe('encodedFile', () => {
+  describe('#stages', () => {
+    describe('when confirmEncodingJobs is off', () => {
       support.setupGlobals({
         config: {confirmEncodingJobs: false}
       });
 
-      it('does not include fetching meta data', function() {
+      test('does not include fetching meta data', () => {
         var encodedFile = new pageflow.VideoFile();
 
-        expect(encodedFile.stages.pluck('name')).to.deep.eq(['uploading', 'encoding']);
+        expect(encodedFile.stages.pluck('name')).toEqual(['uploading', 'encoding']);
       });
     });
 
-    describe('when confirmEncodingJobs is on', function() {
+    describe('when confirmEncodingJobs is on', () => {
       support.setupGlobals({
         config: {confirmEncodingJobs: true}
       });
 
-      it('includes fetching meta data', function() {
+      test('includes fetching meta data', () => {
         var encodedFile = new pageflow.VideoFile();
 
-        expect(encodedFile.stages.pluck('name')).to.deep.eq(
-          ['uploading', 'fetching_meta_data', 'encoding']
-        );
+        expect(encodedFile.stages.pluck('name')).toEqual(['uploading', 'fetching_meta_data', 'encoding']);
       });
     });
   });

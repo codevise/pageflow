@@ -1,6 +1,6 @@
-describe('UploadableFile', function() {
-  describe('#processingStages', function() {
-    it('is appended to stages', function() {
+describe('UploadableFile', () => {
+  describe('#processingStages', () => {
+    test('is appended to stages', () => {
       var File = pageflow.UploadableFile.extend({
         processingStages: [
           {
@@ -12,10 +12,10 @@ describe('UploadableFile', function() {
       });
       var uploadableFile = new File();
 
-      expect(uploadableFile.stages.pluck('name')).to.deep.eq(['uploading', 'unpacking']);
+      expect(uploadableFile.stages.pluck('name')).toEqual(['uploading', 'unpacking']);
     });
 
-    it('can be a function', function() {
+    test('can be a function', () => {
       var File = pageflow.UploadableFile.extend({
         processingStages: function() {
           return [
@@ -29,7 +29,7 @@ describe('UploadableFile', function() {
       });
       var uploadableFile = new File();
 
-      expect(uploadableFile.stages.pluck('name')).to.deep.eq(['uploading', 'unpacking']);
+      expect(uploadableFile.stages.pluck('name')).toEqual(['uploading', 'unpacking']);
     });
   });
 });

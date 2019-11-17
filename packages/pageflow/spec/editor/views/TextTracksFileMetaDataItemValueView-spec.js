@@ -1,6 +1,12 @@
-describe('TextTracksFileMetaDataItemValueView', function() {
-  beforeEach(function() {
-    this.fixture = support.factories.videoFileWithTextTrackFiles({
+describe('TextTracksFileMetaDataItemValueView', () => {
+  let testContext;
+
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
+    testContext.fixture = support.factories.videoFileWithTextTrackFiles({
       textTrackFilesAttributes: [
         {configuration: {label: 'English'}},
         {configuration: {label: 'German'}}
@@ -12,13 +18,13 @@ describe('TextTracksFileMetaDataItemValueView', function() {
     textTrackFiles: function() { return this.fixture.textTrackFiles; }
   });
 
-  it('renders a comman separated list of text track labels', function() {
+  test('renders a comman separated list of text track labels', () => {
     var view = new pageflow.TextTracksFileMetaDataItemValueView({
-      model: this.fixture.videoFile
+      model: testContext.fixture.videoFile
     });
 
     view.render();
 
-    expect(view.$el.text()).to.include('English');
+    expect(view.$el.text()).toEqual(expect.arrayContaining(['English']));
   });
 });

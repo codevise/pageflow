@@ -1,7 +1,13 @@
-describe('EditPageView', function() {
+describe('EditPageView', () => {
+  let testContext;
+
+  beforeEach(() => {
+    testContext = {};
+  });
+
   var f = support.factories;
 
-  it('renders configurationEditorView of page type', function() {
+  test('renders configurationEditorView of page type', () => {
     var api = f.editorApi(function(editor) {
       editor.pageTypes.register('rainbow', {
         configurationEditorView: pageflow.ConfigurationEditorView.extend({
@@ -22,11 +28,11 @@ describe('EditPageView', function() {
     view.render();
     var configurationEditor = support.dom.ConfigurationEditor.find(view);
 
-    expect(configurationEditor.tabNames()).to.contain('general');
-    expect(configurationEditor.inputPropertyNames()).to.contain('title');
+    expect(configurationEditor.tabNames()).toEqual(expect.arrayContaining(['general']));
+    expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining(['title']));
   });
 
-  it('passes page configuration as model', function() {
+  test('passes page configuration as model', () => {
     var passedModel;
     var api = f.editorApi(function(editor) {
       editor.pageTypes.register('rainbow', {
@@ -46,68 +52,74 @@ describe('EditPageView', function() {
 
     view.render();
 
-    expect(passedModel).to.eq(page.configuration);
+    expect(passedModel).toBe(page.configuration);
   });
 
-  describe('tab label translations', function() {
+  describe('tab label translations', () => {
     support.useFakeTranslations({
       'pageflow.rainbow.page_configuration_tabs.specific': 'Specific',
       'pageflow.common_page_configuration_tabs.common': 'Common',
       'pageflow.ui.configuration_editor.tabs.fallback': 'Fallback'
     });
 
-    it('uses page type specific translations and fallbacks for tab labels', function() {
+    test(
+      'uses page type specific translations and fallbacks for tab labels',
+      () => {
+        var api = f.editorApi(function(editor) {
+          editor.pageTypes.register('rainbow', {
+            configurationEditorView: pageflow.ConfigurationEditorView.extend({
+              configure: function() {
+                this.tab('specific', function() {});
+                this.tab('common', function() {});
+                this.tab('fallback', function() {});
+              }
+            })
+          });
+        });
+        var page = new pageflow.Page({template: 'rainbow'});
+        var view = new pageflow.EditPageView({
+          model: page,
+          api: api
+        });
+
+        view.render();
+        var configurationEditor = support.dom.ConfigurationEditor.find(view);
+
+        expect(configurationEditor.tabLabels()).toEqual(['Specific', 'Common', 'Fallback']);
+      }
+    );
+  });
+
+  test(
+    'renders common page configuration tabs with prefixed property names',
+    () => {
       var api = f.editorApi(function(editor) {
         editor.pageTypes.register('rainbow', {
           configurationEditorView: pageflow.ConfigurationEditorView.extend({
             configure: function() {
-              this.tab('specific', function() {});
-              this.tab('common', function() {});
-              this.tab('fallback', function() {});
+              this.tab('general', function() {
+                this.input('title', pageflow.TextInputView);
+              });
             }
           })
+        });
+
+        editor.commonPageConfigurationTabs.register('extras', function() {
+          testContext.input('text', pageflow.TextInputView);
         });
       });
       var page = new pageflow.Page({template: 'rainbow'});
       var view = new pageflow.EditPageView({
         model: page,
-        api: api
+        api: api,
+        tab: 'extras'
       });
 
       view.render();
       var configurationEditor = support.dom.ConfigurationEditor.find(view);
 
-      expect(configurationEditor.tabLabels()).to.eql(['Specific', 'Common', 'Fallback']);
-    });
-  });
-
-  it('renders common page configuration tabs with prefixed property names', function() {
-    var api = f.editorApi(function(editor) {
-      editor.pageTypes.register('rainbow', {
-        configurationEditorView: pageflow.ConfigurationEditorView.extend({
-          configure: function() {
-            this.tab('general', function() {
-              this.input('title', pageflow.TextInputView);
-            });
-          }
-        })
-      });
-
-      editor.commonPageConfigurationTabs.register('extras', function() {
-        this.input('text', pageflow.TextInputView);
-      });
-    });
-    var page = new pageflow.Page({template: 'rainbow'});
-    var view = new pageflow.EditPageView({
-      model: page,
-      api: api,
-      tab: 'extras'
-    });
-
-    view.render();
-    var configurationEditor = support.dom.ConfigurationEditor.find(view);
-
-    expect(configurationEditor.tabNames()).to.eql(['general', 'extras']);
-    expect(configurationEditor.inputPropertyNames()).to.eql(['extras_text']);
-  });
+      expect(configurationEditor.tabNames()).toEqual(['general', 'extras']);
+      expect(configurationEditor.inputPropertyNames()).toEqual(['extras_text']);
+    }
+  );
 });

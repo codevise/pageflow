@@ -1,5 +1,11 @@
-describe('FileInputView', function() {
-  it('can render button to edit background position', function() {
+describe('FileInputView', () => {
+  let testContext;
+
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  test('can render button to edit background position', () => {
     var fixture = support.factories.videoFileWithTextTrackFiles({
       videoFileAttributes: {perma_id: 5, file_name: 'video.mp4', state: 'encoded'}
     });
@@ -17,12 +23,12 @@ describe('FileInputView', function() {
     fileInputView.render();
     var dropDownButton = support.dom.DropDownButton.find(fileInputView);
 
-    expect(dropDownButton.menuItemNames()).to.include('edit_background_positioning');
+    expect(dropDownButton.menuItemNames()).toEqual(expect.arrayContaining(['edit_background_positioning']));
   });
 
-  describe('for selecting a default text track file', function() {
-    beforeEach(function() {
-      this.fixture = support.factories.videoFileWithTextTrackFiles({
+  describe('for selecting a default text track file', () => {
+    beforeEach(() => {
+      testContext.fixture = support.factories.videoFileWithTextTrackFiles({
         videoFileAttributes: {perma_id: 5, file_name: 'video.mp4', state: 'encoded'},
         textTrackFilesAttributes: [
           {
@@ -43,36 +49,36 @@ describe('FileInputView', function() {
       });
     });
 
-    it('displays text track files', function() {
+    test('displays text track files', () => {
       var model = new pageflow.Configuration({
         file_id: 5,
       });
 
       var fileInputView = new pageflow.FileInputView({
-        collection: this.fixture.videoFiles,
+        collection: testContext.fixture.videoFiles,
         model: model,
         propertyName: 'file_id',
-        textTrackFiles: this.fixture.textTrackFiles,
+        textTrackFiles: testContext.fixture.textTrackFiles,
         defaultTextTrackFilePropertyName: 'default_text_track_file_id'
       });
 
       fileInputView.render();
       var dropDownButton = support.dom.DropDownButton.find(fileInputView);
 
-      expect(dropDownButton.menuItemLabels()).to.include('English');
-      expect(dropDownButton.menuItemLabels()).to.include('German');
+      expect(dropDownButton.menuItemLabels()).toEqual(expect.arrayContaining(['English']));
+      expect(dropDownButton.menuItemLabels()).toEqual(expect.arrayContaining(['German']));
     });
 
-    it('allows selecting default text track file', function() {
+    test('allows selecting default text track file', () => {
       var model = new pageflow.Configuration({
         file_id: 5,
       });
 
       var fileInputView = new pageflow.FileInputView({
-        collection: this.fixture.videoFiles,
+        collection: testContext.fixture.videoFiles,
         model: model,
         propertyName: 'file_id',
-        textTrackFiles: this.fixture.textTrackFiles,
+        textTrackFiles: testContext.fixture.textTrackFiles,
         defaultTextTrackFilePropertyName: 'default_text_track_file_id'
       });
 
@@ -80,20 +86,20 @@ describe('FileInputView', function() {
       var dropDownButton = support.dom.DropDownButton.find(fileInputView);
       dropDownButton.selectMenuItemByLabel('English');
 
-      expect(model.get('default_text_track_file_id')).to.eq(10);
+      expect(model.get('default_text_track_file_id')).toBe(10);
     });
 
-    it('allows unsetting default text track file', function() {
+    test('allows unsetting default text track file', () => {
       var model = new pageflow.Configuration({
         file_id: 5,
         default_text_track_file_id: 10
       });
 
       var fileInputView = new pageflow.FileInputView({
-        collection: this.fixture.videoFiles,
+        collection: testContext.fixture.videoFiles,
         model: model,
         propertyName: 'file_id',
-        textTrackFiles: this.fixture.textTrackFiles,
+        textTrackFiles: testContext.fixture.textTrackFiles,
         defaultTextTrackFilePropertyName: 'default_text_track_file_id'
       });
 
@@ -101,7 +107,7 @@ describe('FileInputView', function() {
       var dropDownButton = support.dom.DropDownButton.find(fileInputView);
       dropDownButton.selectMenuItemByName('no_default_text_track');
 
-      expect(model.get('default_text_track_file_id')).to.eq(null);
+      expect(model.get('default_text_track_file_id')).toBeNull();
     });
   });
 });

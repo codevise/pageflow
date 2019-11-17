@@ -1,34 +1,37 @@
-describe('WidgetTypes', function() {
-  describe('#register/#findAllByRole', function() {
-    it('allows getting a list of widget types with name and translation key', function() {
-      var widgetTypes = new pageflow.WidgetTypes();
+describe('WidgetTypes', () => {
+  describe('#register/#findAllByRole', () => {
+    test(
+      'allows getting a list of widget types with name and translation key',
+      () => {
+        var widgetTypes = new pageflow.WidgetTypes();
 
-      widgetTypes.setup({
-        navigation: [
-          {
-            name: 'fancy_bar',
-            translationKey: 'pageflow.fancy_bar.widget_type_name'
-          }
-        ]
-      });
+        widgetTypes.setup({
+          navigation: [
+            {
+              name: 'fancy_bar',
+              translationKey: 'pageflow.fancy_bar.widget_type_name'
+            }
+          ]
+        });
 
-      var widgetType = widgetTypes.findAllByRole('navigation')[0];
+        var widgetType = widgetTypes.findAllByRole('navigation')[0];
 
-      expect(widgetType.name).to.eq('fancy_bar');
-      expect(widgetType.translationKey).to.eq('pageflow.fancy_bar.widget_type_name');
-    });
+        expect(widgetType.name).toBe('fancy_bar');
+        expect(widgetType.translationKey).toBe('pageflow.fancy_bar.widget_type_name');
+      }
+    );
 
-    it('returns empty array for unknown role', function() {
+    test('returns empty array for unknown role', () => {
       var widgetTypes = new pageflow.WidgetTypes();
 
       widgetTypes.setup({});
 
-      expect(widgetTypes.findAllByRole('not_there')).to.eql([]);
+      expect(widgetTypes.findAllByRole('not_there')).toEqual([]);
     });
   });
 
-  describe('#register/#findByName', function() {
-    it('allows getting a widget type by name', function() {
+  describe('#register/#findByName', () => {
+    test('allows getting a widget type by name', () => {
       var widgetTypes = new pageflow.WidgetTypes();
 
       widgetTypes.setup({
@@ -42,31 +45,34 @@ describe('WidgetTypes', function() {
 
       var widgetType = widgetTypes.findByName('fancy_bar');
 
-      expect(widgetType.name).to.eq('fancy_bar');
+      expect(widgetType.name).toBe('fancy_bar');
     });
   });
 
-  describe('#register/#setup/#findByName', function() {
-    it('allows supplying a configuration editor view for a widget type', function() {
-      var widgetTypes = new pageflow.WidgetTypes();
-      var viewConstructor = sinon.spy();
+  describe('#register/#setup/#findByName', () => {
+    test(
+      'allows supplying a configuration editor view for a widget type',
+      () => {
+        var widgetTypes = new pageflow.WidgetTypes();
+        var viewConstructor = sinon.spy();
 
-      widgetTypes.register('fancy_bar', {
-        configurationEditorView: viewConstructor
-      });
-      widgetTypes.setup({
-        navigation: [
-          {
-            name: 'fancy_bar',
-            translationKey: 'pageflow.fancy_bar.widget_type_name'
-          }
-        ]
-      });
+        widgetTypes.register('fancy_bar', {
+          configurationEditorView: viewConstructor
+        });
+        widgetTypes.setup({
+          navigation: [
+            {
+              name: 'fancy_bar',
+              translationKey: 'pageflow.fancy_bar.widget_type_name'
+            }
+          ]
+        });
 
-      var widgetType = widgetTypes.findByName('fancy_bar');
-      widgetType.createConfigurationEditorView({some: 'option'});
+        var widgetType = widgetTypes.findByName('fancy_bar');
+        widgetType.createConfigurationEditorView({some: 'option'});
 
-      expect(viewConstructor).to.have.been.calledWith(sinon.match({some: 'option'}));
-    });
+        expect(viewConstructor).to.have.been.calledWith(sinon.match({some: 'option'}));
+      }
+    );
   });
 });

@@ -1,5 +1,5 @@
-describe('ThemeInputView', function() {
-  it('updates attribute on clicking "use theme button"', function() {
+describe('ThemeInputView', () => {
+  test('updates attribute on clicking "use theme button"', () => {
     var model = new Backbone.Model({theme_name: 'default'});
     var themes = new pageflow.ThemesCollection([
       {name: 'default', preview_image_url: '/assets/pageflow/themes/default/preview.png'},
@@ -18,6 +18,6 @@ describe('ThemeInputView', function() {
 
     themeItemView.clickUseButton();
 
-    expect(model.get('theme_name')).to.equal('acme');
+    expect(model.get('theme_name')).toBe('acme');
   });
 });

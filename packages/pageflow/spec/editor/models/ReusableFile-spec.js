@@ -1,4 +1,10 @@
-describe('ReusableFile', function() {
+describe('ReusableFile', () => {
+  let testContext;
+
+  beforeEach(() => {
+    testContext = {};
+  });
+
   var File = pageflow.ReusableFile.extend({
     readyState: 'ready'
   });
@@ -12,53 +18,53 @@ describe('ReusableFile', function() {
     }
   });
 
-  describe('#isReady', function() {
-    it('returns true if state equals readyState', function() {
+  describe('#isReady', () => {
+    test('returns true if state equals readyState', () => {
       var file = new File({state: 'ready'});
 
-      expect(file.isReady()).to.eq(true);
+      expect(file.isReady()).toBe(true);
     });
   });
 
-  describe('#isFailed', function() {
-    it('returns true if state ends with _failed', function() {
+  describe('#isFailed', () => {
+    test('returns true if state ends with _failed', () => {
       var file = new File({state: 'uploading_failed'});
 
-      expect(file.isFailed()).to.eq(true);
+      expect(file.isFailed()).toBe(true);
     });
 
-    it('returns false if state does not end with _failed', function() {
+    test('returns false if state does not end with _failed', () => {
       var file = new File({state: 'uploading'});
 
-      expect(file.isFailed()).to.eq(false);
+      expect(file.isFailed()).toBe(false);
     });
   });
 
-  describe('#isPending', function() {
-    it('returns true if neither ready nor failed ', function() {
+  describe('#isPending', () => {
+    test('returns true if neither ready nor failed ', () => {
       var file = new File({state: 'processing'});
 
-      expect(file.isPending()).to.eq(true);
+      expect(file.isPending()).toBe(true);
     });
 
-    it('returns false if ready', function() {
+    test('returns false if ready', () => {
       var file = new File({state: 'ready'});
 
-      expect(file.isPending()).to.eq(false);
+      expect(file.isPending()).toBe(false);
     });
 
-    it('returns false if failed', function() {
+    test('returns false if failed', () => {
       var file = new File({state: 'processing_failed'});
 
-      expect(file.isPending()).to.eq(false);
+      expect(file.isPending()).toBe(false);
     });
   });
 
-  describe('#set', function() {
+  describe('#set', () => {
     var f = support.factories;
 
-    describe('with applyConfigurationUpdaters option', function() {
-      it('applies file type updaters', function() {
+    describe('with applyConfigurationUpdaters option', () => {
+      test('applies file type updaters', () => {
         var fileType = f.fileType({
           configurationUpdaters: [
             function(configuration, newAttributes) {
@@ -72,13 +78,13 @@ describe('ReusableFile', function() {
 
         file.set(attributes, {applyConfigurationUpdaters: true});
 
-        expect(file.configuration.get('custom')).to.eq('updated');
+        expect(file.configuration.get('custom')).toBe('updated');
       });
     });
   });
 
-  describe('#toJSON', function() {
-    it('includes rights, configuration and file_name', function() {
+  describe('#toJSON', () => {
+    test('includes rights, configuration and file_name', () => {
       var file = new File({
         state: 'processed',
         rights: 'someone',
@@ -88,7 +94,7 @@ describe('ReusableFile', function() {
         }
       });
 
-      expect(file.toJSON()).to.eql({
+      expect(file.toJSON()).toEqual({
         rights: 'someone',
         file_name: 'image_jpg',
         configuration: {
@@ -98,116 +104,121 @@ describe('ReusableFile', function() {
     });
   });
 
-  describe('#nestedFiles', function() {
-    beforeEach(function() {
-      this.textTrackFileType = new pageflow.FileType({collectionName: 'text_track_files',
+  describe('#nestedFiles', () => {
+    beforeEach(() => {
+      testContext.textTrackFileType = new pageflow.FileType({collectionName: 'text_track_files',
                                                       typeName: 'Pageflow::TextTrackFile',
                                                       model: File,
                                                       matchUpload: /^text_track/});
-      this.imageFileType = new pageflow.FileType({collectionName: 'image_files',
+      testContext.imageFileType = new pageflow.FileType({collectionName: 'image_files',
                                                   typeName: 'Pageflow::ImageFile',
                                                   model: File,
                                                   matchUpload: /^image/});
-      this.videoFileType = new pageflow.FileType({collectionName: 'video_files',
+      testContext.videoFileType = new pageflow.FileType({collectionName: 'video_files',
                                                   typeName: 'Pageflow::VideoFile',
                                                   model: File,
                                                   matchUpload: /^video/});
-      this.videoFileType.nestedFileTypes = new pageflow.FileTypesCollection([this.textTrackFileType,
-                                                                             this.imageFileType]);
-      this.textTrackFiles = new FilesCollection({fileType: this.textTrackFileType});
-      this.imageFiles = new FilesCollection({fileType: this.imageFileType});
+      testContext.videoFileType.nestedFileTypes = new pageflow.FileTypesCollection([testContext.textTrackFileType,
+                                                                             testContext.imageFileType]);
+      testContext.textTrackFiles = new FilesCollection({fileType: testContext.textTrackFileType});
+      testContext.imageFiles = new FilesCollection({fileType: testContext.imageFileType});
     });
 
-    it('returns a SubsetCollection', function() {
-      var parentFile = new File({}, {fileType: this.videoFileType});
-      var nestedFile = new File({}, {fileType: this.textTrackFileType, parentFile: parentFile});
-      this.textTrackFiles.add(nestedFile);
+    test('returns a SubsetCollection', () => {
+      var parentFile = new File({}, {fileType: testContext.videoFileType});
+      var nestedFile = new File({}, {fileType: testContext.textTrackFileType, parentFile: parentFile});
+      testContext.textTrackFiles.add(nestedFile);
 
-      expect(parentFile.nestedFiles(this.textTrackFiles))
-        .to.be.instanceof(pageflow.SubsetCollection);
+      expect(parentFile.nestedFiles(testContext.textTrackFiles)).toBeInstanceOf(pageflow.SubsetCollection);
     });
 
-    it('contains nested files of expected type', function() {
-      var parentFile = new File({id: 43}, {fileType: this.videoFileType});
+    test('contains nested files of expected type', () => {
+      var parentFile = new File({id: 43}, {fileType: testContext.videoFileType});
       var otherNestedFile = new File({file_name: 'not_nested.vtt'},
-                                     {fileType: this.textTrackFileType});
+                                     {fileType: testContext.textTrackFileType});
       var nestedFile = new File({parent_file_id: parentFile.id,
                                  parent_file_model_type: 'Pageflow::VideoFile',
                                  file_name: 'nested.vtt'},
-                                {fileType: this.textTrackFileType, parentFile: parentFile});
-      this.textTrackFiles.add(otherNestedFile);
-      this.textTrackFiles.add(nestedFile);
+                                {fileType: testContext.textTrackFileType, parentFile: parentFile});
+      testContext.textTrackFiles.add(otherNestedFile);
+      testContext.textTrackFiles.add(nestedFile);
 
-      var nestedFilesViaParent = parentFile.nestedFiles(this.textTrackFiles);
+      var nestedFilesViaParent = parentFile.nestedFiles(testContext.textTrackFiles);
       var nestedFileViaParent = nestedFilesViaParent.first();
 
-      expect(nestedFilesViaParent.length).to.eq(1);
-      expect(nestedFileViaParent.get('file_name')).to.eq('nested.vtt');
+      expect(nestedFilesViaParent.length).toBe(1);
+      expect(nestedFileViaParent.get('file_name')).toBe('nested.vtt');
     });
 
-    it('returns same collection on repeated call', function() {
-      var parentFile = new File({id: 43}, {fileType: this.videoFileType});
+    test('returns same collection on repeated call', () => {
+      var parentFile = new File({id: 43}, {fileType: testContext.videoFileType});
       var nestedFile = new File({parent_file_id: parentFile.id,
                                  parent_file_model_type: 'Pageflow::VideoFile',
                                  file_name: 'nested.vtt'},
-                                {fileType: this.textTrackFileType, parentFile: parentFile});
-      this.textTrackFiles.add(nestedFile);
+                                {fileType: testContext.textTrackFileType, parentFile: parentFile});
+      testContext.textTrackFiles.add(nestedFile);
 
-      var nestedFileCollection = parentFile.nestedFiles(this.textTrackFiles);
-      var nestedFileCollection2 = parentFile.nestedFiles(this.textTrackFiles);
+      var nestedFileCollection = parentFile.nestedFiles(testContext.textTrackFiles);
+      var nestedFileCollection2 = parentFile.nestedFiles(testContext.textTrackFiles);
 
-      expect(nestedFileCollection).to.eq(nestedFileCollection2);
+      expect(nestedFileCollection).toBe(nestedFileCollection2);
     });
 
-    it('returns different backbone collection for different filetypes', function() {
-      var parentFile = new File({id: 43}, {fileType: this.videoFileType});
-      var nestedTextTrackFile = new File({parent_file_id: parentFile.id,
-                                          parent_file_model_type: 'Pageflow::VideoFile',
-                                          file_name: 'nested.vtt'},
-                                         {fileType: this.textTrackFileType,
-                                          parentFile: parentFile});
-      var nestedImageFile = new File({parent_file_id: parentFile.id,
-                                      parent_file_model_type: 'Pageflow::ImageFile',
-                                      file_name: 'nested.tiff'},
-                                     {fileType: this.textTrackFileType, parentFile: parentFile});
-      this.textTrackFiles.add(nestedTextTrackFile);
-      this.imageFiles.add(nestedImageFile);
+    test(
+      'returns different backbone collection for different filetypes',
+      () => {
+        var parentFile = new File({id: 43}, {fileType: testContext.videoFileType});
+        var nestedTextTrackFile = new File({parent_file_id: parentFile.id,
+                                            parent_file_model_type: 'Pageflow::VideoFile',
+                                            file_name: 'nested.vtt'},
+                                           {fileType: testContext.textTrackFileType,
+                                            parentFile: parentFile});
+        var nestedImageFile = new File({parent_file_id: parentFile.id,
+                                        parent_file_model_type: 'Pageflow::ImageFile',
+                                        file_name: 'nested.tiff'},
+                                       {fileType: testContext.textTrackFileType, parentFile: parentFile});
+        testContext.textTrackFiles.add(nestedTextTrackFile);
+        testContext.imageFiles.add(nestedImageFile);
 
-      var nestedFileCollection = parentFile.nestedFiles(this.textTrackFiles);
-      var nestedFileCollection2 = parentFile.nestedFiles(this.imageFiles);
+        var nestedFileCollection = parentFile.nestedFiles(testContext.textTrackFiles);
+        var nestedFileCollection2 = parentFile.nestedFiles(testContext.imageFiles);
 
-      expect(nestedFileCollection).not.to.eq(nestedFileCollection2);
-    });
+        expect(nestedFileCollection).not.toBe(nestedFileCollection2);
+      }
+    );
 
-    it('contains nested files of expected type', function() {
-      var parentFile = new File({id: 43}, {fileType: this.videoFileType});
+    test('contains nested files of expected type', () => {
+      var parentFile = new File({id: 43}, {fileType: testContext.videoFileType});
       var nestedFile = new File({parent_file_id: parentFile.id,
                                  parent_file_model_type: 'Pageflow::VideoFile',
                                  file_name: 'nested.vtt'},
-                                {fileType: this.textTrackFileType, parentFile: parentFile});
-      this.textTrackFiles.add(nestedFile);
+                                {fileType: testContext.textTrackFileType, parentFile: parentFile});
+      testContext.textTrackFiles.add(nestedFile);
 
-      var nestedFileViaParent = parentFile.nestedFiles(this.textTrackFiles).first();
+      var nestedFileViaParent = parentFile.nestedFiles(testContext.textTrackFiles).first();
 
-      expect(nestedFileViaParent.fileType()).to.eq(this.textTrackFileType);
+      expect(nestedFileViaParent.fileType()).toBe(testContext.textTrackFileType);
     });
 
-    it('does not contains nested files of other file with same id but different type', function() {
-      var parentFile = new File({id: 43}, {fileType: this.videoFileType});
-      var nestedFile = new File({parent_file_id: parentFile.id,
-                                 parent_file_model_type: 'Pageflow::AudioFile',
-                                 file_name: 'nested.vtt'},
-                                {fileType: this.textTrackFileType, parentFile: parentFile});
-      this.textTrackFiles.add(nestedFile);
+    test(
+      'does not contains nested files of other file with same id but different type',
+      () => {
+        var parentFile = new File({id: 43}, {fileType: testContext.videoFileType});
+        var nestedFile = new File({parent_file_id: parentFile.id,
+                                   parent_file_model_type: 'Pageflow::AudioFile',
+                                   file_name: 'nested.vtt'},
+                                  {fileType: testContext.textTrackFileType, parentFile: parentFile});
+        testContext.textTrackFiles.add(nestedFile);
 
-      var nestedFilesCount = parentFile.nestedFiles(this.textTrackFiles).length;
+        var nestedFilesCount = parentFile.nestedFiles(testContext.textTrackFiles).length;
 
-      expect(nestedFilesCount).to.eq(0);
-    });
+        expect(nestedFilesCount).toBe(0);
+      }
+    );
   });
 
-  describe('changing the configuration', function() {
-    it('triggers change:configuration event', function() {
+  describe('changing the configuration', () => {
+    test('triggers change:configuration event', () => {
       var file = new File();
       var handler = sinon.spy();
 
@@ -217,25 +228,31 @@ describe('ReusableFile', function() {
       expect(handler).to.have.been.called;
     });
 
-    it('triggers change:configuration:[attribute] events per changed attribute', function() {
-      var file = new File();
-      var handler = sinon.spy();
+    test(
+      'triggers change:configuration:[attribute] events per changed attribute',
+      () => {
+        var file = new File();
+        var handler = sinon.spy();
 
-      file.on('change:configuration:some', handler);
-      file.configuration.set('some', 'value');
+        file.on('change:configuration:some', handler);
+        file.configuration.set('some', 'value');
 
-      expect(handler).to.have.been.called;
-    });
+        expect(handler).to.have.been.called;
+      }
+    );
 
-    it('does not trigger change:configuration:[attribute] for unchanged attribute', function() {
-      var file = new File();
-      var handler = sinon.spy();
+    test(
+      'does not trigger change:configuration:[attribute] for unchanged attribute',
+      () => {
+        var file = new File();
+        var handler = sinon.spy();
 
-      file.configuration.set('other', 'value');
-      file.on('change:configuration:other', handler);
-      file.configuration.set('some', 'value');
+        file.configuration.set('other', 'value');
+        file.on('change:configuration:other', handler);
+        file.configuration.set('some', 'value');
 
-      expect(handler).not.to.have.been.called;
-    });
+        expect(handler).not.to.have.been.called;
+      }
+    );
   });
 });

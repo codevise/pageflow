@@ -1,5 +1,5 @@
-describe('pageflow.NestedFilesCollection', function() {
-  it('supports custom order defined by nested file type', function() {
+describe('pageflow.NestedFilesCollection', () => {
+  test('supports custom order defined by nested file type', () => {
     var fixture = support.factories.videoFileWithTextTrackFiles({
       textTrackFileTypeOptions: {
         nestedFilesOrder: {
@@ -24,10 +24,10 @@ describe('pageflow.NestedFilesCollection', function() {
     var labels = nestedFiles.map(function(textTrackFile) {
       return textTrackFile.configuration.get('label');
     });
-    expect(labels).to.eql(['A', 'B', 'Z']);
+    expect(labels).toEqual(['A', 'B', 'Z']);
   });
 
-  it('sort when nested files order binding changes', function() {
+  test('sort when nested files order binding changes', () => {
     var fixture = support.factories.videoFileWithTextTrackFiles({
       textTrackFileTypeOptions: {
         nestedFilesOrder: {
@@ -54,6 +54,6 @@ describe('pageflow.NestedFilesCollection', function() {
     var labels = nestedFiles.map(function(textTrackFile) {
       return textTrackFile.configuration.get('label');
     });
-    expect(labels).to.eql(['B', 'D', 'Z']);
+    expect(labels).toEqual(['B', 'D', 'Z']);
   });
 });

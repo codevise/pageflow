@@ -1,4 +1,4 @@
-describe('stageProvider', function() {
+describe('stageProvider', () => {
   var Model = Backbone.Model.extend({
     mixins: [pageflow.stageProvider],
 
@@ -24,31 +24,36 @@ describe('stageProvider', function() {
     ]
   });
 
-  it('rewrites #stages to FileStage collection', function() {
+  test('rewrites #stages to FileStage collection', () => {
     var model = new Model();
 
-    expect(model.stages.at(0).get('name')).to.eq('uploading');
-    expect(model.stages.at(1).get('name')).to.eq('checking');
-    expect(model.stages.at(2).get('name')).to.eq('processing');
+    expect(model.stages.at(0).get('name')).toBe('uploading');
+    expect(model.stages.at(1).get('name')).toBe('checking');
+    expect(model.stages.at(2).get('name')).toBe('processing');
   });
 
-  it('sets finished states to union states of following stages and readyState', function() {
-    var model = new Model();
+  test(
+    'sets finished states to union states of following stages and readyState',
+    () => {
+      var model = new Model();
 
-    expect(model.stages.at(0).finishedStates).to.deep.eq(['finished', 'process_running', 'process_failed', 'check_running', 'check_failed', 'check_unconfirmed']);
-    expect(model.stages.at(1).finishedStates).to.deep.eq(['finished', 'process_running', 'process_failed']);
-    expect(model.stages.at(2).finishedStates).to.deep.eq(['finished']);
-  });
+      expect(model.stages.at(0).finishedStates).toEqual(
+        ['finished', 'process_running', 'process_failed', 'check_running', 'check_failed', 'check_unconfirmed']
+      );
+      expect(model.stages.at(1).finishedStates).toEqual(['finished', 'process_running', 'process_failed']);
+      expect(model.stages.at(2).finishedStates).toEqual(['finished']);
+    }
+  );
 
-  it('provides subset collection of unfinished stages', function() {
+  test('provides subset collection of unfinished stages', () => {
     var model = new Model({
       state: 'check_running'
     });
 
-    expect(model.unfinishedStages.pluck('name')).to.deep.eq(['checking', 'processing']);
+    expect(model.unfinishedStages.pluck('name')).toEqual(['checking', 'processing']);
   });
 
-  it('#stages can be function', function() {
+  test('#stages can be function', () => {
     var model = new (Backbone.Model.extend({
       mixins: [pageflow.stageProvider],
 
@@ -65,6 +70,6 @@ describe('stageProvider', function() {
       }
     }))();
 
-    expect(model.stages.at(0).get('name')).to.eq('uploading');
+    expect(model.stages.at(0).get('name')).toBe('uploading');
   });
 });

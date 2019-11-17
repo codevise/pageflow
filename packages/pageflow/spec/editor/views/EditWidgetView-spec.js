@@ -1,7 +1,7 @@
-describe('EditWidgetView', function() {
+describe('EditWidgetView', () => {
   var f = support.factories;
 
-  it('renders widget configuration editor', function() {
+  test('renders widget configuration editor', () => {
     var widgetTypes = f.widgetTypes([
       {name: 'default_bar', role: 'navigation'},
       {name: 'fancy_bar', role: 'navigation'}
@@ -23,6 +23,6 @@ describe('EditWidgetView', function() {
 
     view.render();
 
-    expect(view.$el.find('.edit_fancy_bar').length).to.eq(1);
+    expect(view.$el.find('.edit_fancy_bar').length).toBe(1);
   });
 });

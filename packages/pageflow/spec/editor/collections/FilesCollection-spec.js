@@ -1,19 +1,25 @@
-describe('FileCollection', function() {
+describe('FileCollection', () => {
+  let testContext;
+
+  beforeEach(() => {
+    testContext = {};
+  });
+
   var f = support.factories;
 
-  describe('.createForFileTypes', function() {
-    it('creates file collections index by collection name', function() {
+  describe('.createForFileTypes', () => {
+    test('creates file collections index by collection name', () => {
       var fileType = f.imageFileType();
       var files = {
         image_files: [{file_name: 'image.png'}]
       };
       var collections = pageflow.FilesCollection.createForFileTypes([fileType], files);
 
-      expect(collections.image_files.name).to.eq('image_files');
-      expect(collections.image_files.model).to.eq(fileType.model);
+      expect(collections.image_files.name).toBe('image_files');
+      expect(collections.image_files.model).toBe(fileType.model);
     });
 
-    it('allows passing options to collection constructors', function() {
+    test('allows passing options to collection constructors', () => {
       var fileType = f.imageFileType();
       var files = {
         image_files: [{file_name: 'image.png'}]
@@ -21,10 +27,10 @@ describe('FileCollection', function() {
       var entry = {};
       var collections = pageflow.FilesCollection.createForFileTypes([fileType], files, {entry: entry});
 
-      expect(collections.image_files.entry).to.eq(entry);
+      expect(collections.image_files.entry).toBe(entry);
     });
 
-    it('sets file type on created file models', function() {
+    test('sets file type on created file models', () => {
       var fileType = f.imageFileType();
       var files = {
         image_files: [{file_name: 'image.png'}]
@@ -32,48 +38,37 @@ describe('FileCollection', function() {
       var entry = {};
       var collection = pageflow.FilesCollection.createForFileTypes([fileType], files);
 
-      expect(collection.image_files.first().fileType()).to.eq(fileType);
+      expect(collection.image_files.first().fileType()).toBe(fileType);
     });
   });
 
-  describe('.createForFileType', function() {
-    it('passes fileType to files', function() {
+  describe('.createForFileType', () => {
+    test('passes fileType to files', () => {
       var fileType = f.imageFileType();
       var files = [{file_name: 'image.png'}];
       var entry = {};
       var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
 
-      expect(collection.first().fileType()).to.eq(fileType);
+      expect(collection.first().fileType()).toBe(fileType);
     });
   });
 
-  describe('#findOrCreateBy', function() {
+  describe('#findOrCreateBy', () => {
     support.useFakeXhr();
 
-    it('creates file if non with matching attributes exists', function() {
+    test('creates file if non with matching attributes exists', () => {
       var fileType = f.fileType();
       var files = [];
       var entry = f.entry();
       var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
 
       var file = collection.findOrCreateBy({source_image_id: 3});
-      this.requests[0].respond(201, {'Content-Type': 'application/json'}, JSON.stringify({id: 5}));
+      testContext.requests[0].respond(201, {'Content-Type': 'application/json'}, JSON.stringify({id: 5}));
 
-      expect(file.isNew()).to.eq(false);
+      expect(file.isNew()).toBe(false);
     });
 
-    it('sets attribute on created file', function() {
-      var fileType = f.fileType();
-      var files = [];
-      var entry = f.entry();
-      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
-
-      var file = collection.findOrCreateBy({source_image_id: 3});
-
-      expect(file.get('source_image_id')).to.eq(3);
-    });
-
-    it('sets fileType on created file', function() {
+    test('sets attribute on created file', () => {
       var fileType = f.fileType();
       var files = [];
       var entry = f.entry();
@@ -81,10 +76,21 @@ describe('FileCollection', function() {
 
       var file = collection.findOrCreateBy({source_image_id: 3});
 
-      expect(file.fileType()).to.eq(fileType);
+      expect(file.get('source_image_id')).toBe(3);
     });
 
-    it('returns existing file with matching attributes', function() {
+    test('sets fileType on created file', () => {
+      var fileType = f.fileType();
+      var files = [];
+      var entry = f.entry();
+      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+
+      var file = collection.findOrCreateBy({source_image_id: 3});
+
+      expect(file.fileType()).toBe(fileType);
+    });
+
+    test('returns existing file with matching attributes', () => {
       var fileType = f.fileType();
       var files = [{file_name: 'existing.png', source_image_id: 3}];
       var entry = f.entry();
@@ -92,12 +98,12 @@ describe('FileCollection', function() {
 
       var file = collection.findOrCreateBy({source_image_id: 3});
 
-      expect(file.get('file_name')).to.eq('existing.png');
+      expect(file.get('file_name')).toBe('existing.png');
     });
   });
 
-  describe('#getByPermaId', function () {
-    it('returns existing file with permaId', function() {
+  describe('#getByPermaId', () => {
+    test('returns existing file with permaId', () => {
       var fileType = f.fileType();
       var files = [{file_name: 'existing.png', perma_id: 300}];
       var entry = f.entry();
@@ -105,12 +111,12 @@ describe('FileCollection', function() {
 
       var file = collection.getByPermaId(300);
 
-      expect(file.get('file_name')).to.eq('existing.png');
+      expect(file.get('file_name')).toBe('existing.png');
     });
   });
 
-  describe('#uploadable', function() {
-    it('always contains subset of files with state uploadable', function() {
+  describe('#uploadable', () => {
+    test('always contains subset of files with state uploadable', () => {
       var fileType = f.fileType();
       var files = [{
         file_name: 'image.png'
@@ -121,12 +127,12 @@ describe('FileCollection', function() {
       var uploadableFiles = collection.uploadable();
       collection.first().set('state', 'uploadable');
 
-      expect(uploadableFiles.length).to.eq(1);
+      expect(uploadableFiles.length).toBe(1);
     });
   });
 
-  describe('#withFilter', function() {
-    it('always contains subset of files matching given filter', function() {
+  describe('#withFilter', () => {
+    test('always contains subset of files matching given filter', () => {
       var fileType = f.fileType({
         filters: [
           {
@@ -151,12 +157,12 @@ describe('FileCollection', function() {
       var uploadableFiles = collection.withFilter('with_custom_field');
       collection.first().configuration.set('custom', 'some value');
 
-      expect(uploadableFiles.length).to.eq(1);
+      expect(uploadableFiles.length).toBe(1);
     });
   });
 
-  describe('#fetch', function() {
-    it('sets file type on fetched file models', function() {
+  describe('#fetch', () => {
+    test('sets file type on fetched file models', () => {
       var fileType = f.fileType();
       var files = [{
         file_name: 'image.png'
@@ -170,7 +176,7 @@ describe('FileCollection', function() {
 
       collection.fetch();
 
-      expect(collection.first().fileType()).to.eq(fileType);
+      expect(collection.first().fileType()).toBe(fileType);
     });
   });
 });

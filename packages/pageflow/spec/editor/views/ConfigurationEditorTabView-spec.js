@@ -1,6 +1,6 @@
-describe('ConfigurationEditorTabView', function() {
-  describe('#group', function() {
-    it('delegates to groups.apply', function() {
+describe('ConfigurationEditorTabView', () => {
+  describe('#group', () => {
+    test('delegates to groups.apply', () => {
       var groups = new pageflow.ConfigurationEditorTabView.Groups();
       var groupFn = sinon.spy();
       var tabView = new pageflow.ConfigurationEditorTabView({
@@ -14,19 +14,22 @@ describe('ConfigurationEditorTabView', function() {
     });
   });
 
-  describe('.Groups', function() {
-    describe('#define', function() {
-      it('fails with explanation when trying to define group with non function', function() {
-        var groups = new pageflow.ConfigurationEditorTabView.Groups();
+  describe('.Groups', () => {
+    describe('#define', () => {
+      test(
+        'fails with explanation when trying to define group with non function',
+        () => {
+          var groups = new pageflow.ConfigurationEditorTabView.Groups();
 
-        expect(function() {
-          groups.define('myGroup', 'yay');
-        }).to.throw(/group has to be function/i);
-      });
+          expect(function() {
+            groups.define('myGroup', 'yay');
+          }).toThrowError(/group has to be function/i);
+        }
+      );
     });
 
-    describe('#apply', function() {
-      it('applies function given in #define', function() {
+    describe('#apply', () => {
+      test('applies function given in #define', () => {
         var groups = new pageflow.ConfigurationEditorTabView.Groups();
         var groupFn = sinon.spy();
         var context = {};
@@ -37,13 +40,13 @@ describe('ConfigurationEditorTabView', function() {
         expect(groupFn).to.have.been.calledOn(context);
       });
 
-      it('fails with explanation when group is not defined', function() {
+      test('fails with explanation when group is not defined', () => {
         var groups = new pageflow.ConfigurationEditorTabView.Groups();
         var context = {};
 
         expect(function() {
           groups.apply('undefinedGroup', context);
-        }).to.throw(/undefined group/i);
+        }).toThrowError(/undefined group/i);
       });
     });
   });

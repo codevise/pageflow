@@ -1,6 +1,6 @@
-describe('formDataUtils', function() {
-  describe('fromObject', function() {
-    it('returns flat hash with keys in angle bracket notation', function() {
+describe('formDataUtils', () => {
+  describe('fromObject', () => {
+    test('returns flat hash with keys in angle bracket notation', () => {
       var object = {
         some: {
           nested: 'value',
@@ -12,13 +12,13 @@ describe('formDataUtils', function() {
 
       var result = pageflow.formDataUtils.fromObject(object);
 
-      expect(result).to.eql({
+      expect(result).toEqual({
         'some[nested]': 'value',
         'some[deeply][nested]': 'data'
       });
     });
 
-    it('handles spaces, +, = and & signs correctly', function() {
+    test('handles spaces, +, = and & signs correctly', () => {
       var object = {
         some: {
           value: '1 + 1 = 2 & a',
@@ -27,14 +27,14 @@ describe('formDataUtils', function() {
 
       var result = pageflow.formDataUtils.fromObject(object);
 
-      expect(result).to.eql({
+      expect(result).toEqual({
         'some[value]': '1 + 1 = 2 & a',
       });
     });
   });
 
-  describe('fromModel', function() {
-    it('return flat hash using model name and json representation', function() {
+  describe('fromModel', () => {
+    test('return flat hash using model name and json representation', () => {
       var Model = Backbone.Model.extend({
         modelName: 'person',
 
@@ -46,7 +46,7 @@ describe('formDataUtils', function() {
 
       var result = pageflow.formDataUtils.fromModel(model);
 
-      expect(result).to.eql({
+      expect(result).toEqual({
         'person[name]': 'Tom'
       });
     });

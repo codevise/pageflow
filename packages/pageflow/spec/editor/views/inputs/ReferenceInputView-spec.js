@@ -1,4 +1,4 @@
-describe('pageflow.ReferenceInputView', function() {
+describe('pageflow.ReferenceInputView', () => {
   var Model = Backbone.Model.extend({
     i18nKey: 'page'
   });
@@ -19,7 +19,7 @@ describe('pageflow.ReferenceInputView', function() {
     }
   });
 
-  it('displays title of target if there is a target', function() {
+  test('displays title of target if there is a target', () => {
     var view = new TestView({
       model: new Model(),
       property_name: 'custom_attribute',
@@ -30,11 +30,11 @@ describe('pageflow.ReferenceInputView', function() {
 
     view.render();
 
-    expect(view.ui.title.text()).to.equal('Money, money, money');
+    expect(view.ui.title.text()).toBe('Money, money, money');
   });
 
-  describe('with disabled option', function() {
-    it('sets disabled attributes on buttons', function() {
+  describe('with disabled option', () => {
+    test('sets disabled attributes on buttons', () => {
       var view = new TestView({
         model: new Model(),
         propertyName: 'some_id',
@@ -47,8 +47,8 @@ describe('pageflow.ReferenceInputView', function() {
     });
   });
 
-  describe('with hideUnsetButton', function() {
-    it('hides the unset button', function() {
+  describe('with hideUnsetButton', () => {
+    test('hides the unset button', () => {
       var view = new TestView({
         model: new Model(),
         propertyName: 'some_id',
@@ -57,11 +57,11 @@ describe('pageflow.ReferenceInputView', function() {
 
       view.render();
 
-      expect(view.ui.unsetButton.css('display')).to.eq('none');
+      expect(view.ui.unsetButton.css('display')).toBe('none');
     });
   });
 
-  describe('view implementing choose', function() {
+  describe('view implementing choose', () => {
     var TestViewWithChoose = TestView.extend({
       choose: function() {
         return $.Deferred(function(deferred) {
@@ -72,22 +72,23 @@ describe('pageflow.ReferenceInputView', function() {
       }
     });
 
-    it('sets model attribute to perma_id of model that choose resolves to',
-       function() {
-         var model = new Model();
-         var view = new TestViewWithChoose({
-           model: model,
-           propertyName: 'some_id'
-         });
+    test(
+      'sets model attribute to perma_id of model that choose resolves to',
+      () => {
+        var model = new Model();
+        var view = new TestViewWithChoose({
+          model: model,
+          propertyName: 'some_id'
+        });
 
-         support.dom.ReferenceInputView.render(view).clickChooseButton();
+        support.dom.ReferenceInputView.render(view).clickChooseButton();
 
-         expect(model.get('some_id')).to.equal(46);
-       }
-      );
+        expect(model.get('some_id')).toBe(46);
+      }
+    );
   });
 
-  describe('view implementing chooseValue', function() {
+  describe('view implementing chooseValue', () => {
     var TestViewWithChooseValue = TestView.extend({
       chooseValue: function() {
         return $.Deferred(function(deferred) {
@@ -96,23 +97,21 @@ describe('pageflow.ReferenceInputView', function() {
       }
     });
 
-    it('sets model attribute to chooseValue resolution',
-       function() {
-         var model = new Model();
-         var view = new TestViewWithChooseValue({
-           model: model,
-           propertyName: 'an_id'
-         });
+    test('sets model attribute to chooseValue resolution', () => {
+      var model = new Model();
+      var view = new TestViewWithChooseValue({
+        model: model,
+        propertyName: 'an_id'
+      });
 
-         support.dom.ReferenceInputView.render(view).clickChooseButton();
+      support.dom.ReferenceInputView.render(view).clickChooseButton();
 
-         expect(model.get('an_id')).to.equal(47);
-       }
-      );
+      expect(model.get('an_id')).toBe(47);
+    });
   });
 
-  describe('choose button title', function() {
-    it('has default value', function() {
+  describe('choose button title', () => {
+    test('has default value', () => {
       var model = new Model();
       var view = new TestView({
         model: model,
@@ -124,7 +123,7 @@ describe('pageflow.ReferenceInputView', function() {
       expect(view.ui.chooseButton).to.have.$attr('title');
     });
 
-    it('can be set via option', function() {
+    test('can be set via option', () => {
       var model = new Model();
       var view = new TestView({
         model: model,
@@ -138,8 +137,8 @@ describe('pageflow.ReferenceInputView', function() {
     });
   });
 
-  describe('unset button title', function() {
-    it('has default value', function() {
+  describe('unset button title', () => {
+    test('has default value', () => {
       var model = new Model();
       var view = new TestView({
         model: model,
@@ -151,7 +150,7 @@ describe('pageflow.ReferenceInputView', function() {
       expect(view.ui.unsetButton).to.have.$attr('title');
     });
 
-    it('can be set via option', function() {
+    test('can be set via option', () => {
       var model = new Model();
       var view = new TestView({
         model: model,

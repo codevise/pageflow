@@ -1,6 +1,6 @@
-describe('pageflow.EditorApi', function() {
-  describe('#selectFile', function() {
-    it('navigates to files route for file type given as string', function() {
+describe('pageflow.EditorApi', () => {
+  describe('#selectFile', () => {
+    test('navigates to files route for file type given as string', () => {
       var router = fakeRouter();
       var api = new pageflow.EditorApi({router: router});
 
@@ -11,7 +11,7 @@ describe('pageflow.EditorApi', function() {
       );
     });
 
-    it('navigates to files route for file type given as object', function() {
+    test('navigates to files route for file type given as object', () => {
       var router = fakeRouter();
       var api = new pageflow.EditorApi({router: router});
 
@@ -24,7 +24,7 @@ describe('pageflow.EditorApi', function() {
       );
     });
 
-    it('passes payload as serialized string', function() {
+    test('passes payload as serialized string', () => {
       var router = fakeRouter();
       var api = new pageflow.EditorApi({router: router});
 

@@ -1,4 +1,4 @@
-describe('SubsetCollection', function() {
+describe('SubsetCollection', () => {
   var SubsetCollection = pageflow.SubsetCollection;
   var ParentCollection = Backbone.Collection.extend({
     comparator: function(item) {
@@ -6,7 +6,7 @@ describe('SubsetCollection', function() {
     }
   });
 
-  it('propagates sort to parent', function() {
+  test('propagates sort to parent', () => {
     var parentCollection = new ParentCollection([
       {position: 0, inSubset: true},
       {position: 1, inSubset: true},
@@ -23,11 +23,11 @@ describe('SubsetCollection', function() {
     subsetCollection.at(1).set('position', 10);
     subsetCollection.sort();
 
-    expect(parentCollection.pluck('position')).to.eql([0, 2, 10]);
+    expect(parentCollection.pluck('position')).toEqual([0, 2, 10]);
   });
 
-  describe('with sortOnParentSort option set to true', function() {
-    it('sorts when parent is sorted', function() {
+  describe('with sortOnParentSort option set to true', () => {
+    test('sorts when parent is sorted', () => {
       var parentCollection = new ParentCollection([
         {position: 0, inSubset: true},
         {position: 1, inSubset: false},
@@ -45,33 +45,36 @@ describe('SubsetCollection', function() {
       parentCollection.at(0).set('position', 10);
       parentCollection.sort();
 
-      expect(subsetCollection.pluck('position')).to.eql([2, 10]);
+      expect(subsetCollection.pluck('position')).toEqual([2, 10]);
     });
 
-    it('does not propagate sort back to parent if sort origininated on parent', function() {
-      var parentCollection = new ParentCollection([
-        {position: 0, inSubset: true},
-        {position: 1, inSubset: false},
-        {position: 2, inSubset: true}
-      ]);
-      new SubsetCollection({
-        parent: parentCollection,
-        sortOnParentSort: true,
+    test(
+      'does not propagate sort back to parent if sort origininated on parent',
+      () => {
+        var parentCollection = new ParentCollection([
+          {position: 0, inSubset: true},
+          {position: 1, inSubset: false},
+          {position: 2, inSubset: true}
+        ]);
+        new SubsetCollection({
+          parent: parentCollection,
+          sortOnParentSort: true,
 
-        filter: function(item) {
-          return item.get('inSubset');
-        }
-      });
-      var sortEventHandler = sinon.spy();
+          filter: function(item) {
+            return item.get('inSubset');
+          }
+        });
+        var sortEventHandler = sinon.spy();
 
-      parentCollection.at(0).set('position', 10);
-      parentCollection.on('sort', sortEventHandler);
-      parentCollection.sort();
+        parentCollection.at(0).set('position', 10);
+        parentCollection.on('sort', sortEventHandler);
+        parentCollection.sort();
 
-      expect(sortEventHandler).to.have.been.calledOnce;
-    });
+        expect(sortEventHandler).to.have.been.calledOnce;
+      }
+    );
 
-    it('does not sort again in response to propagated parent sort', function() {
+    test('does not sort again in response to propagated parent sort', () => {
       var parentCollection = new ParentCollection([
         {position: 0, inSubset: true},
         {position: 1, inSubset: true},

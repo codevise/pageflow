@@ -1,4 +1,10 @@
-describe('orderedCollection', function() {
+describe('orderedCollection', () => {
+  let testContext;
+
+  beforeEach(() => {
+    testContext = {};
+  });
+
   support.useFakeXhr();
 
   var Item = Backbone.Model.extend({
@@ -18,8 +24,8 @@ describe('orderedCollection', function() {
     }
   });
 
-  describe('#consolidatePositions', function() {
-    it('updates position attributes', function() {
+  describe('#consolidatePositions', () => {
+    test('updates position attributes', () => {
       var collection = new OrderedCollection([
         new Item(),
         new Item(),
@@ -28,12 +34,12 @@ describe('orderedCollection', function() {
 
       collection.consolidatePositions();
 
-      expect(collection.pluck('position')).to.eql([0,1,2]);
+      expect(collection.pluck('position')).toEqual([0,1,2]);
     });
   });
 
-  describe('#saveOrder', function() {
-    it('sends patch request to /order', function() {
+  describe('#saveOrder', () => {
+    test('sends patch request to /order', () => {
       var first = new Item({position: 0});
       var second = new Item({position: 1});
       var third = new Item({position: 2});
@@ -42,12 +48,12 @@ describe('orderedCollection', function() {
 
       collection.saveOrder();
 
-      expect(this.requests[0].url).to.eq('/fake/order');
+      expect(testContext.requests[0].url).toBe('/fake/order');
     });
   });
 
-  describe('removing an item', function() {
-    it('consolidates positions', function() {
+  describe('removing an item', () => {
+    test('consolidates positions', () => {
       var first = new Item({position: 0});
       var second = new Item({position: 1});
       var third = new Item({position: 2});
@@ -56,7 +62,7 @@ describe('orderedCollection', function() {
 
       collection.remove(second);
 
-      expect(third.get('position')).to.eq(1);
+      expect(third.get('position')).toBe(1);
     });
   });
 });

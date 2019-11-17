@@ -1,7 +1,7 @@
-describe('EditFileView', function() {
+describe('EditFileView', () => {
   var f = support.factories;
 
-  it('renders configurationEditorInputs of file type', function() {
+  test('renders configurationEditorInputs of file type', () => {
     var fileType = f.fileType({
       configurationEditorInputs: [
         {name: 'custom', inputView: pageflow.TextInputView}
@@ -17,30 +17,33 @@ describe('EditFileView', function() {
     view.render();
     var configurationEditor = support.dom.ConfigurationEditorTab.find(view);
 
-    expect(configurationEditor.inputPropertyNames()).to.contain('custom');
+    expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining(['custom']));
   });
 
-  it('supports function for configurationEditorInputs option of file type', function() {
-    var inputsFunction = sinon.spy(function(model) {
-      return [
-        {name: 'custom', inputView: pageflow.TextInputView}
-      ];
-    });
-    var fileType = f.fileType({
-      configurationEditorInputs: inputsFunction
-    });
-    var model = f.file({}, {
-      fileType: fileType
-    });
-    var view = new pageflow.EditFileView({
-      model: model,
-      entry: new Backbone.Model()
-    });
+  test(
+    'supports function for configurationEditorInputs option of file type',
+    () => {
+      var inputsFunction = sinon.spy(function(model) {
+        return [
+          {name: 'custom', inputView: pageflow.TextInputView}
+        ];
+      });
+      var fileType = f.fileType({
+        configurationEditorInputs: inputsFunction
+      });
+      var model = f.file({}, {
+        fileType: fileType
+      });
+      var view = new pageflow.EditFileView({
+        model: model,
+        entry: new Backbone.Model()
+      });
 
-    view.render();
-    var configurationEditor = support.dom.ConfigurationEditorTab.find(view);
+      view.render();
+      var configurationEditor = support.dom.ConfigurationEditorTab.find(view);
 
-    expect(configurationEditor.inputPropertyNames()).to.contain('custom');
-    expect(inputsFunction).to.have.been.calledWith(model);
-  });
+      expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining(['custom']));
+      expect(inputsFunction).to.have.been.calledWith(model);
+    }
+  );
 });

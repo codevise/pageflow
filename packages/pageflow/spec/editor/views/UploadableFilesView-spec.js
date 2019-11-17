@@ -1,7 +1,7 @@
-describe('UploadableFilesView', function() {
+describe('UploadableFilesView', () => {
   var f = support.factories;
 
-  it('renders confirmUploadTableColumns of file type', function() {
+  test('renders confirmUploadTableColumns of file type', () => {
     var fileType = f.fileType({
       confirmUploadTableColumns: [
         {name: 'custom', cellView: pageflow.TextTableCellView}
@@ -18,6 +18,6 @@ describe('UploadableFilesView', function() {
     view.render();
     var table = support.dom.Table.find(view);
 
-    expect(table.columnNames()).to.contain('custom');
+    expect(table.columnNames()).toEqual(expect.arrayContaining(['custom']));
   });
 });
