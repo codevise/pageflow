@@ -12,7 +12,7 @@ describe('pageflow.ColorInputView', () => {
     testContext = {};
   });
 
-  support.useHtmlSandbox();
+  support.useHtmlSandbox(() => testContext);
 
   beforeEach(() => {
     testContext.clock = sinon.useFakeTimers();
