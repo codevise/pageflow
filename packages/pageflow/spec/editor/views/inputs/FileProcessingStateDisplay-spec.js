@@ -6,7 +6,7 @@ import * as support from '$support';
 import {FileStageItem} from '$support/dominos/editor';
 
 describe('pageflow.FileProcessingStateDisplayView', () => {
-  test('displays unfinished file stages', () => {
+  it('displays unfinished file stages', () => {
     var fixture = support.factories.imageFilesFixture({
       imageFileAttributes: {
         id: 1,
@@ -29,7 +29,7 @@ describe('pageflow.FileProcessingStateDisplayView', () => {
     expect(view.$el).not.toHaveClass('file_processing_state_display-empty');
   });
 
-  test('does not display finished file stages', () => {
+  it('does not display finished file stages', () => {
     var fixture = support.factories.imageFilesFixture({
       imageFileAttributes: {
         id: 1,

@@ -4,7 +4,7 @@ import * as support from '$support';
 
 describe('TextTrackFile', () => {
   describe('#extractLanguageCodeFromFilename', () => {
-    test(
+    it(
       'returns null if filename does not follow facebook convention',
       () => {
         var textTrackFile = new TextTrackFile(
@@ -16,7 +16,7 @@ describe('TextTrackFile', () => {
       }
     );
 
-    test(
+    it(
       'returns the language code if filename does follow facebook convention',
       () => {
         var textTrackFile = new TextTrackFile(
@@ -35,7 +35,7 @@ describe('TextTrackFile', () => {
       'pageflow.editor.text_track_files.label_missing': 'missing'
     });
 
-    test('uses label configuration attribute', () => {
+    it('uses label configuration attribute', () => {
       var textTrackFile = new TextTrackFile({
         configuration: {
           label: 'German'
@@ -45,7 +45,7 @@ describe('TextTrackFile', () => {
       expect(textTrackFile.displayLabel()).toBe('German');
     });
 
-    test('falls back to inferred label', () => {
+    it('falls back to inferred label', () => {
       var textTrackFile = new TextTrackFile({
         configuration: {
           label: '',
@@ -56,7 +56,7 @@ describe('TextTrackFile', () => {
       expect(textTrackFile.displayLabel()).toBe('German');
     });
 
-    test('falls back to placeholder', () => {
+    it('falls back to placeholder', () => {
       var textTrackFile = new TextTrackFile({
         configuration: {
           label: ''
@@ -72,7 +72,7 @@ describe('TextTrackFile', () => {
       'pageflow.languages.de': 'German'
     });
 
-    test('returns label based on srclang', () => {
+    it('returns label based on srclang', () => {
       var textTrackFile = new TextTrackFile({
         configuration: {
           label: '',
@@ -83,7 +83,7 @@ describe('TextTrackFile', () => {
       expect(textTrackFile.inferredLabel()).toBe('German');
     });
 
-    test('return undefined if srclang is blank', () => {
+    it('return undefined if srclang is blank', () => {
       var textTrackFile = new TextTrackFile({
         configuration: {
           label: '',
@@ -94,7 +94,7 @@ describe('TextTrackFile', () => {
       expect(textTrackFile.inferredLabel()).toBe(undefined);
     });
 
-    test('return empty string if srclang is unknown', () => {
+    it('return empty string if srclang is unknown', () => {
       var textTrackFile = new TextTrackFile({
         configuration: {
           label: '',

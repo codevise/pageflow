@@ -2,7 +2,7 @@ import {UploadableFile} from '$pageflow/editor';
 
 describe('UploadableFile', () => {
   describe('#processingStages', () => {
-    test('is appended to stages', () => {
+    it('is appended to stages', () => {
       var File = UploadableFile.extend({
         processingStages: [
           {
@@ -17,7 +17,7 @@ describe('UploadableFile', () => {
       expect(uploadableFile.stages.pluck('name')).toEqual(['uploading', 'unpacking']);
     });
 
-    test('can be a function', () => {
+    it('can be a function', () => {
       var File = UploadableFile.extend({
         processingStages: function() {
           return [

@@ -8,7 +8,7 @@ describe('pageflow.i18nUtils.findKeyWithTranslation', () => {
     'fallback': 'Fallback'
   });
 
-  test('returns key withpresent translation', () => {
+  it('returns key withpresent translation', () => {
     var result = i18nUtils.findKeyWithTranslation(
       ['not.there', 'some.key', 'fallback']
     );
@@ -16,7 +16,7 @@ describe('pageflow.i18nUtils.findKeyWithTranslation', () => {
     expect(result).toBe('some.key');
   });
 
-  test('falls back first key if all are missing', () => {
+  it('falls back first key if all are missing', () => {
     var result = i18nUtils.findKeyWithTranslation(
       ['not.there', 'also.not.there']
     );

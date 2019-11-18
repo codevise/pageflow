@@ -6,7 +6,7 @@ import * as support from '$support';
 
 describe('TableCellView', () => {
   describe('#attributeValue', () => {
-    test('returns value of column attribute', () => {
+    it('returns value of column attribute', () => {
       var person = new Backbone.Model({first_name: 'Tom'});
       var tableCellView = new TableCellView({
         column: {name: 'first_name'},
@@ -18,7 +18,7 @@ describe('TableCellView', () => {
       expect(result).toBe('Tom');
     });
 
-    test(
+    it(
       'supports getting value from function passed as value option',
       () => {
         var person = new Backbone.Model({first_name: 'Tom'});
@@ -39,7 +39,7 @@ describe('TableCellView', () => {
     );
 
     describe('with configurationAttribute option set to true', () => {
-      test('supports reading from configuration', () => {
+      it('supports reading from configuration', () => {
         var person = new Backbone.Model();
         person.configuration = new Backbone.Model({first_name: 'Tom'});
         var tableCellView = new TableCellView({
@@ -55,7 +55,7 @@ describe('TableCellView', () => {
         expect(result).toBe('Tom');
       });
 
-      test('still passes model to value function', () => {
+      it('still passes model to value function', () => {
         var person = new Backbone.Model();
         person.configuration = new Backbone.Model({first_name: 'Tom'});
         var tableCellView = new TableCellView({
@@ -82,7 +82,7 @@ describe('TableCellView', () => {
       'columns.first_name.with.interpolaton': '%{value}',
     });
 
-    test(
+    it(
       'returns first present translation from attributeTranslationKeyPrefixes',
       () => {
         var tableCellView = new TableCellView({
@@ -99,7 +99,7 @@ describe('TableCellView', () => {
       }
     );
 
-    test(
+    it(
       'returns first present translation from attributeTranslationKeyPrefixes',
       () => {
         var tableCellView = new TableCellView({
@@ -115,7 +115,7 @@ describe('TableCellView', () => {
   });
 
   describe('#setupContentBinding', () => {
-    test(
+    it(
       'triggers update() on rendering TableCellView if contentBinding is declared',
       () => {
         var FunnelCellView = TableCellView.extend({
@@ -144,7 +144,7 @@ describe('TableCellView', () => {
       }
     );
 
-    test(
+    it(
       'updates TableCellView when value of variable that is bound to changes',
       () => {
         var FunnelCellView = TableCellView.extend({

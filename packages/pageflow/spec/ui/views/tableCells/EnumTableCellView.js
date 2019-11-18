@@ -10,7 +10,7 @@ describe('EnumTableCellView', () => {
     'columns.first_name.cell_title.blank': 'Blank',
   });
 
-  test(
+  it(
     'sets text from attribute translation if attribute is present',
     () => {
       var person = new Backbone.Model({mode: 'all'});
@@ -28,7 +28,7 @@ describe('EnumTableCellView', () => {
     }
   );
 
-  test(
+  it(
     'sets text from attribute translation if column attribute is blank',
     () => {
       var person = new Backbone.Model({mode: ''});

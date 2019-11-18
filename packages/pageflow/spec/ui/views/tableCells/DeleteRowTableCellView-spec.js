@@ -10,7 +10,7 @@ describe('DeleteRowTableCellView', () => {
     'information.delete.cell_title': 'Delete information'
   });
 
-  test('sets cell title attribute', () => {
+  it('sets cell title attribute', () => {
     var kompromat = new Backbone.Model();
     var cell = new DeleteRowTableCellView({
       column: {
@@ -25,7 +25,7 @@ describe('DeleteRowTableCellView', () => {
     expect(cell.ui.removeButton).toHaveAttr('title', 'Delete information');
   });
 
-  test('displays the delete button', () => {
+  it('displays the delete button', () => {
     var kompromat = new Backbone.Model();
     var cell = new DeleteRowTableCellView({
       column: {
@@ -39,7 +39,7 @@ describe('DeleteRowTableCellView', () => {
     expect(cell.ui.removeButton).toHaveClass('remove');
   });
 
-  test(
+  it(
     'displays the delete button when toggleDeleteButton returns true',
     () => {
       var Information = Backbone.Model.extend({
@@ -62,7 +62,7 @@ describe('DeleteRowTableCellView', () => {
     }
   );
 
-  test(
+  it(
     'does not display the delete button when toggleDeleteButton returns false',
     () => {
       var Information = Backbone.Model.extend({
@@ -85,7 +85,7 @@ describe('DeleteRowTableCellView', () => {
     }
   );
 
-  test('displays the delete button when toggleDeleteButton returns false and ' +
+  it('displays the delete button when toggleDeleteButton returns false and ' +
      'invertToggleDeleteButton is true', () => {
        var Information = Backbone.Model.extend({
          subjectActive: function() {
@@ -107,7 +107,7 @@ describe('DeleteRowTableCellView', () => {
        expect(cell.ui.removeButton).toHaveClass('remove');
      });
 
-  test(
+  it(
     'does not display the delete button when toggleDeleteButton returns true and '+
        'invertToggleDeleteButton is true',
     () => {
@@ -132,7 +132,7 @@ describe('DeleteRowTableCellView', () => {
        }
   );
 
-  test('removes model when button is clicked', () => {
+  it('removes model when button is clicked', () => {
     var kompromat = new Backbone.Model();
     sinon.spy(kompromat, 'destroy');
     var cell = new DeleteRowTableCellView({

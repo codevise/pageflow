@@ -4,7 +4,7 @@ import * as support from '$support';
 import {FileMetaDataTable} from '$support/dominos/editor';
 
 describe('FileItemView', () => {
-  test('renders meta data items given as string', () => {
+  it('renders meta data items given as string', () => {
     var file = support.factories.file(
       {dimension: '200x100px'}
     );
@@ -19,7 +19,7 @@ describe('FileItemView', () => {
     expect(fileMetaDataTable.values()).toEqual(expect.arrayContaining(['200x100px']));
   });
 
-  test('renders meta data items with custom view and options', () => {
+  it('renders meta data items with custom view and options', () => {
     var file = support.factories.file(
       {dimension: '200x100px'}
     );

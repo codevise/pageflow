@@ -10,7 +10,7 @@ import {ConfigurationEditor} from '$support/dominos/ui';
 describe('EditPageView', () => {
   var f = support.factories;
 
-  test('renders configurationEditorView of page type', () => {
+  it('renders configurationEditorView of page type', () => {
     var api = f.editorApi(function(editor) {
       editor.pageTypes.register('rainbow', {
         configurationEditorView: ConfigurationEditorView.extend({
@@ -35,7 +35,7 @@ describe('EditPageView', () => {
     expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining(['title']));
   });
 
-  test('passes page configuration as model', () => {
+  it('passes page configuration as model', () => {
     var passedModel;
     var api = f.editorApi(function(editor) {
       editor.pageTypes.register('rainbow', {
@@ -65,7 +65,7 @@ describe('EditPageView', () => {
       'pageflow.ui.configuration_editor.tabs.fallback': 'Fallback'
     });
 
-    test(
+    it(
       'uses page type specific translations and fallbacks for tab labels',
       () => {
         var api = f.editorApi(function(editor) {
@@ -93,7 +93,7 @@ describe('EditPageView', () => {
     );
   });
 
-  test(
+  it(
     'renders common page configuration tabs with prefixed property names',
     () => {
       var api = f.editorApi(function(editor) {

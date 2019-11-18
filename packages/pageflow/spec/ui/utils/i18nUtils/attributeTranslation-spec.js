@@ -12,7 +12,7 @@ describe('pageflow.i18nUtils.attributeTranslation', () => {
         'activerecord.attributes.page.title': 'AR Text'
       });
 
-      test('uses prefixed attribute translation', () => {
+      it('uses prefixed attribute translation', () => {
         var result = attributeTranslation('title', 'label', {
           prefixes: [
             'pageflow.rainbows.page_attributes'
@@ -29,7 +29,7 @@ describe('pageflow.i18nUtils.attributeTranslation', () => {
         'activerecord.attributes.page.title': 'AR Text'
       });
 
-      test('falls back to active record attribute translation', () => {
+      it('falls back to active record attribute translation', () => {
         var result = attributeTranslation('title', 'label', {
           prefixes: [
             'pageflow.rainbows.page_attributes'
@@ -48,7 +48,7 @@ describe('pageflow.i18nUtils.attributeTranslation', () => {
       'activerecord.attributes.page.title': 'AR Text'
     });
 
-    test('uses active record attribute translation', () => {
+    it('uses active record attribute translation', () => {
       var result = attributeTranslation('title', 'label', {
         fallbackPrefix: 'activerecord.attributes',
         fallbackModelI18nKey: 'page',

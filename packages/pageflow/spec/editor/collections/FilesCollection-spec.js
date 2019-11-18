@@ -12,7 +12,7 @@ describe('FileCollection', () => {
   var f = support.factories;
 
   describe('.createForFileTypes', () => {
-    test('creates file collections index by collection name', () => {
+    it('creates file collections index by collection name', () => {
       var fileType = f.imageFileType();
       var files = {
         image_files: [{file_name: 'image.png'}]
@@ -23,7 +23,7 @@ describe('FileCollection', () => {
       expect(collections.image_files.model).toBe(fileType.model);
     });
 
-    test('allows passing options to collection constructors', () => {
+    it('allows passing options to collection constructors', () => {
       var fileType = f.imageFileType();
       var files = {
         image_files: [{file_name: 'image.png'}]
@@ -34,7 +34,7 @@ describe('FileCollection', () => {
       expect(collections.image_files.entry).toBe(entry);
     });
 
-    test('sets file type on created file models', () => {
+    it('sets file type on created file models', () => {
       var fileType = f.imageFileType();
       var files = {
         image_files: [{file_name: 'image.png'}]
@@ -47,7 +47,7 @@ describe('FileCollection', () => {
   });
 
   describe('.createForFileType', () => {
-    test('passes fileType to files', () => {
+    it('passes fileType to files', () => {
       var fileType = f.imageFileType();
       var files = [{file_name: 'image.png'}];
       var entry = {};
@@ -60,7 +60,7 @@ describe('FileCollection', () => {
   describe('#findOrCreateBy', () => {
     support.useFakeXhr(() => testContext);
 
-    test('creates file if non with matching attributes exists', () => {
+    it('creates file if non with matching attributes exists', () => {
       var fileType = f.fileType();
       var files = [];
       var entry = f.entry();
@@ -72,7 +72,7 @@ describe('FileCollection', () => {
       expect(file.isNew()).toBe(false);
     });
 
-    test('sets attribute on created file', () => {
+    it('sets attribute on created file', () => {
       var fileType = f.fileType();
       var files = [];
       var entry = f.entry();
@@ -83,7 +83,7 @@ describe('FileCollection', () => {
       expect(file.get('source_image_id')).toBe(3);
     });
 
-    test('sets fileType on created file', () => {
+    it('sets fileType on created file', () => {
       var fileType = f.fileType();
       var files = [];
       var entry = f.entry();
@@ -94,7 +94,7 @@ describe('FileCollection', () => {
       expect(file.fileType()).toBe(fileType);
     });
 
-    test('returns existing file with matching attributes', () => {
+    it('returns existing file with matching attributes', () => {
       var fileType = f.fileType();
       var files = [{file_name: 'existing.png', source_image_id: 3}];
       var entry = f.entry();
@@ -107,7 +107,7 @@ describe('FileCollection', () => {
   });
 
   describe('#getByPermaId', () => {
-    test('returns existing file with permaId', () => {
+    it('returns existing file with permaId', () => {
       var fileType = f.fileType();
       var files = [{file_name: 'existing.png', perma_id: 300}];
       var entry = f.entry();
@@ -120,7 +120,7 @@ describe('FileCollection', () => {
   });
 
   describe('#uploadable', () => {
-    test('always contains subset of files with state uploadable', () => {
+    it('always contains subset of files with state uploadable', () => {
       var fileType = f.fileType();
       var files = [{
         file_name: 'image.png'
@@ -136,7 +136,7 @@ describe('FileCollection', () => {
   });
 
   describe('#withFilter', () => {
-    test('always contains subset of files matching given filter', () => {
+    it('always contains subset of files matching given filter', () => {
       var fileType = f.fileType({
         filters: [
           {
@@ -166,7 +166,7 @@ describe('FileCollection', () => {
   });
 
   describe('#fetch', () => {
-    test('sets file type on fetched file models', () => {
+    it('sets file type on fetched file models', () => {
       var fileType = f.fileType();
       var files = [{
         file_name: 'image.png'

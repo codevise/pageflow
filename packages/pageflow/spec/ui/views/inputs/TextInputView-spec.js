@@ -3,7 +3,7 @@ import Backbone from 'backbone';
 import {TextInputView} from '$pageflow/ui';
 
 describe('pageflow.TextInputView', () => {
-  test('supports disabled option', () => {
+  it('supports disabled option', () => {
     var model = new Backbone.Model({});
     var textInputView = new TextInputView({
       model: model,
@@ -17,7 +17,7 @@ describe('pageflow.TextInputView', () => {
     expect(input).toHaveAttr('disabled', 'disabled');
   });
 
-  test('supports placeholder text', () => {
+  it('supports placeholder text', () => {
     var model = new Backbone.Model({});
     var textInputView = new TextInputView({
       model: model,
@@ -31,7 +31,7 @@ describe('pageflow.TextInputView', () => {
     expect(input).toHaveAttr('placeholder', 'Default');
   });
 
-  test('supports placeholder as function', () => {
+  it('supports placeholder as function', () => {
     var model = new Backbone.Model({other: 'otherValue'});
     var textInputView = new TextInputView({
       model: model,
@@ -47,7 +47,7 @@ describe('pageflow.TextInputView', () => {
     expect(input).toHaveAttr('placeholder', 'otherValue');
   });
 
-  test(
+  it(
     'updates placeholder when placeholderBinding attribute changes',
     () => {
       var model = new Backbone.Model({other: 'old'});
@@ -68,7 +68,7 @@ describe('pageflow.TextInputView', () => {
     }
   );
 
-  test('supports reading placeholder from other model', () => {
+  it('supports reading placeholder from other model', () => {
     var placeholderModel = new Backbone.Model({name: 'otherValue'});
     var model = new Backbone.Model({});
     var textInputView = new TextInputView({
@@ -85,7 +85,7 @@ describe('pageflow.TextInputView', () => {
 
   describe('max length validation', () => {
     describe('for existing data exceeding specified maxLength', () => {
-      test('skips validation', () => {
+      it('skips validation', () => {
         var legacyTitle = new Array(300).join();
         var model = new Backbone.Model({title: legacyTitle});
         var textInputView = new TextInputView({
@@ -100,7 +100,7 @@ describe('pageflow.TextInputView', () => {
     });
 
     describe('for new entries and data shorter than specified maxLength', () => {
-      test('validates maximum character count with maxLength option', () => {
+      it('validates maximum character count with maxLength option', () => {
         var model = new Backbone.Model({});
         var textInputView = new TextInputView({
           model: model,

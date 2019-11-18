@@ -11,7 +11,7 @@ import {ConfigurationEditorTab} from '$support/dominos/ui';
 describe('EditFileView', () => {
   var f = support.factories;
 
-  test('renders configurationEditorInputs of file type', () => {
+  it('renders configurationEditorInputs of file type', () => {
     var fileType = f.fileType({
       configurationEditorInputs: [
         {name: 'custom', inputView: TextInputView}
@@ -30,7 +30,7 @@ describe('EditFileView', () => {
     expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining(['custom']));
   });
 
-  test(
+  it(
     'supports function for configurationEditorInputs option of file type',
     () => {
       var inputsFunction = sinon.spy(function(model) {

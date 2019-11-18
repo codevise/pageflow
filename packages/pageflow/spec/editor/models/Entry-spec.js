@@ -24,7 +24,7 @@ describe('Entry', () => {
   });
 
   describe('#getFileCollection', () => {
-    test('supports looking up via fileType object', () => {
+    it('supports looking up via fileType object', () => {
       var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, []);
       var entry = testContext.buildEntry({}, {
         files: {
@@ -37,7 +37,7 @@ describe('Entry', () => {
       expect(result).toBe(imageFiles);
     });
 
-    test('supports looking up via fileType collection name', () => {
+    it('supports looking up via fileType collection name', () => {
       var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, []);
       var entry = testContext.buildEntry({}, {
         files: {
@@ -54,7 +54,7 @@ describe('Entry', () => {
   describe('#reuseFile', () => {
     support.useFakeXhr(() => testContext);
 
-    test('posts file usage to server', () => {
+    it('posts file usage to server', () => {
       var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, [{id: 12}]);
       var entry = testContext.buildEntry({id: 1}, {
         files: {
@@ -79,7 +79,7 @@ describe('Entry', () => {
       });
     });
 
-    test('adds file to files collection on success', () => {
+    it('adds file to files collection on success', () => {
       var entry = testContext.buildEntry({id: 1}, {
         files: {
           image_files: FilesCollection.createForFileType(testContext.imageFileType, [])
@@ -109,7 +109,7 @@ describe('Entry', () => {
   });
 
   describe('#parse', () => {
-    test('updates files in files collections', () => {
+    it('updates files in files collections', () => {
       var entry = testContext.buildEntry({id: 1}, {
         files: {
           image_files: FilesCollection.createForFileType(testContext.imageFileType,
@@ -126,7 +126,7 @@ describe('Entry', () => {
   });
 
   describe('file collection count attribute', () => {
-    test('is kept for each registed file type', () => {
+    it('is kept for each registed file type', () => {
       var entry = testContext.buildEntry({}, {
         files: {
           image_files: new Backbone.Collection()
@@ -140,7 +140,7 @@ describe('Entry', () => {
   });
 
   describe('#getTheme', () => {
-    test('returns theme based on theme_name configuration attribute', () => {
+    it('returns theme based on theme_name configuration attribute', () => {
       var themes = new ThemesCollection([
         {
           name: 'custom',

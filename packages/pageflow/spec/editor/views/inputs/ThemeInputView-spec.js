@@ -8,7 +8,7 @@ import * as support from '$support';
 import {ReferenceInput, ThemeItem} from '$support/dominos/editor';
 
 describe('ThemeInputView', () => {
-  test('updates attribute on clicking "use theme button"', () => {
+  it('updates attribute on clicking "use theme button"', () => {
     var model = new Backbone.Model({theme_name: 'default'});
     var themes = new ThemesCollection([
       {name: 'default', preview_image_url: '/assets/pageflow/themes/default/preview.png'},

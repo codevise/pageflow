@@ -6,7 +6,7 @@ import {DropDownButtonView} from '$pageflow/editor';
 import sinon from 'sinon';
 
 describe('DropDownButtonView', () => {
-  test('renders menu items for collection items', () => {
+  it('renders menu items for collection items', () => {
     var dropDownButtonView = new DropDownButtonView({
       items: new Backbone.Collection([
         {label: 'Item 1'},
@@ -20,7 +20,7 @@ describe('DropDownButtonView', () => {
     expect(itemTexts).toEqual(['Item 1', 'Item 2']);
   });
 
-  test('renders nested menu items', () => {
+  it('renders nested menu items', () => {
     var dropDownButtonView = new DropDownButtonView({
       items: new Backbone.Collection([
         {
@@ -39,7 +39,7 @@ describe('DropDownButtonView', () => {
     expect(itemTexts).toEqual(['Item 1', 'Item 2']);
   });
 
-  test('supports disabling items', () => {
+  it('supports disabling items', () => {
     var dropDownButtonView = new DropDownButtonView({
       items: new Backbone.Collection([
         {label: 'Item 1', disabled: true},
@@ -54,7 +54,7 @@ describe('DropDownButtonView', () => {
     expect(items.eq(1)).not.toHaveClass('is_disabled');
   });
 
-  test('supports checking items', () => {
+  it('supports checking items', () => {
     var dropDownButtonView = new DropDownButtonView({
       items: new Backbone.Collection([
         {label: 'Item 1', checked: true},
@@ -69,7 +69,7 @@ describe('DropDownButtonView', () => {
     expect(items.eq(1)).not.toHaveClass('is_checked');
   });
 
-  test('marks items whose model has a selected method', () => {
+  it('marks items whose model has a selected method', () => {
     var itemModels = new Backbone.Collection([
       {label: 'Item 1'},
       {label: 'Item 2'}
@@ -86,7 +86,7 @@ describe('DropDownButtonView', () => {
     expect(items.eq(1)).not.toHaveClass('is_selectable');
   });
 
-  test('calls selected function on model when item is clicked', () => {
+  it('calls selected function on model when item is clicked', () => {
     var itemModels = new Backbone.Collection([
       {label: 'Item 1'}
     ]);
@@ -102,7 +102,7 @@ describe('DropDownButtonView', () => {
     expect(selectedHandler).toHaveBeenCalled();
   });
 
-  test(
+  it(
     'does not call selected method on model when disabled item is clicked',
     () => {
       var itemModels = new Backbone.Collection([

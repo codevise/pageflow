@@ -22,7 +22,7 @@ describe('TextTracksFileMetaDataItemValueView', () => {
     textTrackFiles: function() { return testContext.fixture.textTrackFiles; }
   });
 
-  test('renders a comman separated list of text track labels', () => {
+  it('renders a comman separated list of text track labels', () => {
     var view = new TextTracksFileMetaDataItemValueView({
       model: testContext.fixture.videoFile
     });

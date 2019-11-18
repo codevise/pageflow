@@ -11,7 +11,7 @@ describe('SubsetCollection', () => {
     }
   });
 
-  test('propagates sort to parent', () => {
+  it('propagates sort to parent', () => {
     var parentCollection = new ParentCollection([
       {position: 0, inSubset: true},
       {position: 1, inSubset: true},
@@ -32,7 +32,7 @@ describe('SubsetCollection', () => {
   });
 
   describe('with sortOnParentSort option set to true', () => {
-    test('sorts when parent is sorted', () => {
+    it('sorts when parent is sorted', () => {
       var parentCollection = new ParentCollection([
         {position: 0, inSubset: true},
         {position: 1, inSubset: false},
@@ -53,7 +53,7 @@ describe('SubsetCollection', () => {
       expect(subsetCollection.pluck('position')).toEqual([2, 10]);
     });
 
-    test(
+    it(
       'does not propagate sort back to parent if sort origininated on parent',
       () => {
         var parentCollection = new ParentCollection([
@@ -79,7 +79,7 @@ describe('SubsetCollection', () => {
       }
     );
 
-    test('does not sort again in response to propagated parent sort', () => {
+    it('does not sort again in response to propagated parent sort', () => {
       var parentCollection = new ParentCollection([
         {position: 0, inSubset: true},
         {position: 1, inSubset: true},

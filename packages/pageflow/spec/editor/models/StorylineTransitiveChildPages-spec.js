@@ -2,7 +2,7 @@ import {ChaptersCollection, PagesCollection, StorylineTransitiveChildPages, Stor
 
 describe('pageflow.StorylineTransitiveChildPages', () => {
   describe('#contain', () => {
-    test('returns true for page of storyline', () => {
+    it('returns true for page of storyline', () => {
       var pages = new PagesCollection([
         {perma_id: 1, chapter_id: 10}
       ]);
@@ -18,7 +18,7 @@ describe('pageflow.StorylineTransitiveChildPages', () => {
       expect(childPages.contain(pages.getByPermaId(1))).toBe(true);
     });
 
-    test('returns false for page of unrelated storyline', () => {
+    it('returns false for page of unrelated storyline', () => {
       var pages = new PagesCollection([
         {perma_id: 1, chapter_id: 10}
       ]);
@@ -35,7 +35,7 @@ describe('pageflow.StorylineTransitiveChildPages', () => {
       expect(childPages.contain(pages.getByPermaId(1))).toBe(false);
     });
 
-    test('returns true for page of direct child storyline', () => {
+    it('returns true for page of direct child storyline', () => {
       var pages = new PagesCollection([
         {perma_id: 1, chapter_id: 10},
         {perma_id: 2, chapter_id: 20},
@@ -54,7 +54,7 @@ describe('pageflow.StorylineTransitiveChildPages', () => {
       expect(childPages.contain(pages.getByPermaId(2))).toBe(true);
     });
 
-    test('returns true for page of indirect child storyline', () => {
+    it('returns true for page of indirect child storyline', () => {
       var pages = new PagesCollection([
         {perma_id: 1, chapter_id: 10},
         {perma_id: 2, chapter_id: 20},
@@ -76,7 +76,7 @@ describe('pageflow.StorylineTransitiveChildPages', () => {
       expect(childPages.contain(pages.getByPermaId(3))).toBe(true);
     });
 
-    test('returns false for page of parent storyline', () => {
+    it('returns false for page of parent storyline', () => {
       var pages = new PagesCollection([
         {perma_id: 1, chapter_id: 10},
         {perma_id: 2, chapter_id: 20},

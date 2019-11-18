@@ -10,7 +10,7 @@ import {Table} from '$support/dominos/ui';
 describe('NestedFilesView', () => {
   var f = support.factories;
 
-  test('renders nestedFileTableColumns of file type', () => {
+  it('renders nestedFileTableColumns of file type', () => {
     var fileType = f.fileType({
       nestedFileTableColumns: [
         {name: 'predicted_infractions', cellView: TextTableCellView}

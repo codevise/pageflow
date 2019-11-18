@@ -7,7 +7,7 @@ import {FileTypes} from '$pageflow/editor/api/FileTypes';
 
 describe('FileTypes', () => {
   describe('#register/#setup', () => {
-    test(
+    it(
       'creates file types for given server side configs from registered client side configs',
       () => {
         var fileTypes = new FileTypes();
@@ -20,7 +20,7 @@ describe('FileTypes', () => {
       }
     );
 
-    test(
+    it(
       'creates nested file types for given server side configs from registered ' +
          'client side configs',
       () => {
@@ -39,7 +39,7 @@ describe('FileTypes', () => {
          }
     );
 
-    test('throws exception if client side config is missing', () => {
+    it('throws exception if client side config is missing', () => {
       var fileTypes = new FileTypes();
 
       expect(function() {
@@ -49,7 +49,7 @@ describe('FileTypes', () => {
   });
 
   describe('#modify', () => {
-    test('allows adding additional configurationEditorInputs', () => {
+    it('allows adding additional configurationEditorInputs', () => {
       var fileTypes = new FileTypes();
 
       fileTypes.register('image_files', {
@@ -77,7 +77,7 @@ describe('FileTypes', () => {
       expect(inputNames).toEqual(['custom_field', 'other_field']);
     });
 
-    test('allows adding additional configurationUpdaters', () => {
+    it('allows adding additional configurationUpdaters', () => {
       var fileTypes = new FileTypes();
       var updater1 = function() {};
       var updater2 = function() {};
@@ -96,7 +96,7 @@ describe('FileTypes', () => {
       expect(fileTypes.first().configurationUpdaters).toEqual([updater1, updater2]);
     });
 
-    test('allows adding additional confirmUploadTableColumns', () => {
+    it('allows adding additional confirmUploadTableColumns', () => {
       var fileTypes = new FileTypes();
 
       fileTypes.register('image_files', {
@@ -124,7 +124,7 @@ describe('FileTypes', () => {
       expect(columnNames).toEqual(['custom_field', 'other_field']);
     });
 
-    test('throws error when trying to modify unsupported property', () => {
+    it('throws error when trying to modify unsupported property', () => {
       var fileTypes = new FileTypes();
 
       fileTypes.register('image_files', {

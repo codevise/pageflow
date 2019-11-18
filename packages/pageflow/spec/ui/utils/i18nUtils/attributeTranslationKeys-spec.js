@@ -4,7 +4,7 @@ describe('pageflow.i18nUtils.attributeTranslationKeys', () => {
   var attributeTranslationKeys = i18nUtils.attributeTranslationKeys;
 
   describe('without prefixes', () => {
-    test(
+    it(
       'constructs fallback key from fallback prefix, model i18nKey and propertyName',
       () => {
         var result = attributeTranslationKeys('title', 'label', {
@@ -18,7 +18,7 @@ describe('pageflow.i18nUtils.attributeTranslationKeys', () => {
   });
 
   describe('with prefixes', () => {
-    test(
+    it(
       'constructs additional candidates from prefix, propertyName and given key',
       () => {
         var result = attributeTranslationKeys('title', 'label', {

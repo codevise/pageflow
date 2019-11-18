@@ -12,7 +12,7 @@ describe('FileInputView', () => {
     testContext = {};
   });
 
-  test('can render button to edit background position', () => {
+  it('can render button to edit background position', () => {
     var fixture = support.factories.videoFileWithTextTrackFiles({
       videoFileAttributes: {perma_id: 5, file_name: 'video.mp4', state: 'encoded'}
     });
@@ -56,7 +56,7 @@ describe('FileInputView', () => {
       });
     });
 
-    test('displays text track files', () => {
+    it('displays text track files', () => {
       var model = new Configuration({
         file_id: 5,
       });
@@ -76,7 +76,7 @@ describe('FileInputView', () => {
       expect(dropDownButton.menuItemLabels()).toEqual(expect.arrayContaining(['German']));
     });
 
-    test('allows selecting default text track file', () => {
+    it('allows selecting default text track file', () => {
       var model = new Configuration({
         file_id: 5,
       });
@@ -96,7 +96,7 @@ describe('FileInputView', () => {
       expect(model.get('default_text_track_file_id')).toBe(10);
     });
 
-    test('allows unsetting default text track file', () => {
+    it('allows unsetting default text track file', () => {
       var model = new Configuration({
         file_id: 5,
         default_text_track_file_id: 10

@@ -7,7 +7,7 @@ describe('TableHeaderCellView', () => {
     'columns.first_name.column_header': 'First Name'
   });
 
-  test('uses attribute translation as text', () => {
+  it('uses attribute translation as text', () => {
     var cell = new TableHeaderCellView({
       column: {
         name: 'first_name'

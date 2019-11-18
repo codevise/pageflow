@@ -4,7 +4,7 @@ import * as support from '$support';
 
 describe('pageflow.PreviewEntryData', () => {
   describe('#getThemingOption', () => {
-    test('returns option value by name', () => {
+    it('returns option value by name', () => {
       var entry = support.factories.entry(
         {
           configuration: {theme_name: 'custom'}
@@ -29,7 +29,7 @@ describe('pageflow.PreviewEntryData', () => {
   });
 
   describe('#getFile', () => {
-    test(
+    it(
       'returns file attributes by collection name and file perma_id',
       () => {
         var entry = support.factories.entry({}, {
@@ -59,7 +59,7 @@ describe('pageflow.PreviewEntryData', () => {
   });
 
   describe('#getStorylineConfiguration', () => {
-    test('returns configuration by storyline id', () => {
+    it('returns configuration by storyline id', () => {
       var configuration = {title: 'some text'};
       var storyline = new Storyline({id: 1, configuration: configuration}, {
         chapters: new ChaptersCollection([])
@@ -75,7 +75,7 @@ describe('pageflow.PreviewEntryData', () => {
   });
 
   describe('#getChapterConfiguration', () => {
-    test('returns configuration by chapter id', () => {
+    it('returns configuration by chapter id', () => {
       var configuration = {title: 'some text'};
       var chapter = new Chapter({id: 1, configuration: configuration}, {
         pages: new PagesCollection([])
@@ -91,7 +91,7 @@ describe('pageflow.PreviewEntryData', () => {
   });
 
   describe('#getChapterPagePermaIds', () => {
-    test('returns perma ids of pages of chapter by chapter id', () => {
+    it('returns perma ids of pages of chapter by chapter id', () => {
       var chapter = new Chapter({id: 1}, {
         pages: new PagesCollection([
           {id: 1, chapter_id: 1, perma_id: 100},
@@ -109,7 +109,7 @@ describe('pageflow.PreviewEntryData', () => {
   });
 
   describe('#getPageConfiguration', () => {
-    test('returns configruation by page perma id', () => {
+    it('returns configruation by page perma id', () => {
       var configuration = {title: 'some text'};
       var page = new Page({perma_id: 100, configuration: configuration});
       var entryData = new PreviewEntryData({
@@ -123,7 +123,7 @@ describe('pageflow.PreviewEntryData', () => {
   });
 
   describe('#getPagePosition', () => {
-    test('returns configruation by page perma id', () => {
+    it('returns configruation by page perma id', () => {
       var page1 = new Page({perma_id: 100});
       var page2 = new Page({perma_id: 101});
       var entryData = new PreviewEntryData({
@@ -136,7 +136,7 @@ describe('pageflow.PreviewEntryData', () => {
   });
 
   describe('#getChapterIdByPagePermaId', () => {
-    test('returns id of pages parent chapter ', () => {
+    it('returns id of pages parent chapter ', () => {
       var page = new Page({perma_id: 102, chapter_id: 2});
       var entryData = new PreviewEntryData({
         pages: new PagesCollection([page])
@@ -149,7 +149,7 @@ describe('pageflow.PreviewEntryData', () => {
   });
 
   describe('#getStorylineIdByChapterId', () => {
-    test('returns id of chapter`s parent storyline', () => {
+    it('returns id of chapter`s parent storyline', () => {
       var chapter = new Chapter({id: 102, storyline_id: 2}, {
         pages: new PagesCollection([])
       });

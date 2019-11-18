@@ -4,7 +4,7 @@ import {PageTypes} from '$pageflow/editor/api/PageTypes';
 
 describe('PageTypes', () => {
   describe('#register/#findByName', () => {
-    test('allows getting a page type by name', () => {
+    it('allows getting a page type by name', () => {
       var pageTypes = new PageTypes();
       pageTypes.setup([{name: 'rainbow'}]);
 
@@ -15,7 +15,7 @@ describe('PageTypes', () => {
   });
 
   describe('#register/#findByPage', () => {
-    test('allows getting a page type by page', () => {
+    it('allows getting a page type by page', () => {
       var pageTypes = new PageTypes();
       pageTypes.setup([{name: 'rainbow'}]);
       var page = new Page({template: 'rainbow'});

@@ -6,7 +6,7 @@ import {TableCellView, TableView, TextTableCellView} from '$pageflow/ui';
 import * as support from '$support';
 
 describe('TableView', () => {
-  test('renders a table with rows of cells for collection items', () => {
+  it('renders a table with rows of cells for collection items', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var tableView = new TableView({
       collection: collection,
@@ -23,7 +23,7 @@ describe('TableView', () => {
     }).get()).toEqual(['Claire', 'John']);
   });
 
-  test('adds selected class to row for selected model', () => {
+  it('adds selected class to row for selected model', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
     var tableView = new TableView({
@@ -40,7 +40,7 @@ describe('TableView', () => {
     expect(tableView.$el.find('tbody tr.is_selected td')).toHaveText('John');
   });
 
-  test('allows setting a custom selection attribute name', () => {
+  it('allows setting a custom selection attribute name', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
     var tableView = new TableView({
@@ -58,7 +58,7 @@ describe('TableView', () => {
     expect(tableView.$el.find('tbody tr.is_selected td')).toHaveText('John');
   });
 
-  test('sets selection when row is clicked', () => {
+  it('sets selection when row is clicked', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
     var tableView = new TableView({
@@ -75,7 +75,7 @@ describe('TableView', () => {
     expect(selection.get('current')).toBe(collection.last());
   });
 
-  test('sets custom selection attribute when row is clicked', () => {
+  it('sets custom selection attribute when row is clicked', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var selection = new Backbone.Model();
     var tableView = new TableView({
@@ -93,7 +93,7 @@ describe('TableView', () => {
     expect(selection.get('person')).toBe(collection.last());
   });
 
-  test('allows passing options for cell views', () => {
+  it('allows passing options for cell views', () => {
     var collection = new Backbone.Collection([{firstName: 'Claire'}, {firstName: 'John'}]);
     var tableView = new TableView({
       collection: collection,
@@ -121,7 +121,7 @@ describe('TableView', () => {
       'columns.first_name.text': 'Test'
     });
 
-    test('is used for column header texts', () => {
+    it('is used for column header texts', () => {
       var collection = new Backbone.Collection();
       var tableView = new TableView({
         collection: collection,
@@ -147,7 +147,7 @@ describe('TableView', () => {
       }).get()).toEqual(['First Name', 'Last Name']);
     });
 
-    test('can be used inside cells', () => {
+    it('can be used inside cells', () => {
       var collection = new Backbone.Collection([{}]);
       var CellView = TableCellView.extend({
         update: function() {

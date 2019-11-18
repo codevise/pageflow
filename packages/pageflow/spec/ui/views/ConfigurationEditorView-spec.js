@@ -10,7 +10,7 @@ describe('ConfigurationEditorView', () => {
       'pageflow.ui.configuration_editor.tabs.two': 'Tab two'
     });
 
-    test('uses default translation key prefix', () => {
+    it('uses default translation key prefix', () => {
       var configurationEditorView = new ConfigurationEditorView();
 
       configurationEditorView.tab('one', function() {});
@@ -29,7 +29,7 @@ describe('ConfigurationEditorView', () => {
       'pageflow.ui.configuration_editor.tabs.one': 'Tab one'
     });
 
-    test('uses custom translation key prefix', () => {
+    it('uses custom translation key prefix', () => {
       var configurationEditorView = new ConfigurationEditorView({
         tabTranslationKeyPrefix: 'custom'
       });
@@ -50,7 +50,7 @@ describe('ConfigurationEditorView', () => {
       'pageflow.ui.configuration_editor.tabs.two': 'Tab two'
     });
 
-    test('uses first present translation', () => {
+    it('uses first present translation', () => {
       var configurationEditorView = new ConfigurationEditorView({
         tabTranslationKeyPrefixes: ['custom', 'fallback']
       });

@@ -2,7 +2,7 @@ import {ChaptersCollection, PagesCollection, StorylineOrdering, StorylinesCollec
 
 describe('pageflow.StorylineOrdering', () => {
   describe('#sort', () => {
-    test(
+    it(
       'sets positions based on depth first search along chapter hierachy',
       () => {
         var pages = new PagesCollection([
@@ -26,7 +26,7 @@ describe('pageflow.StorylineOrdering', () => {
       }
     );
 
-    test(
+    it(
       'orders children of the main storyline before other storylines without parent',
       () => {
         var pages = new PagesCollection([]);
@@ -44,7 +44,7 @@ describe('pageflow.StorylineOrdering', () => {
       }
     );
 
-    test(
+    it(
       'orders storylines with same parent storyline by parent page order',
       () => {
         var pages = new PagesCollection([
@@ -69,7 +69,7 @@ describe('pageflow.StorylineOrdering', () => {
       }
     );
 
-    test('orders storylines with same parent page by row and lane', () => {
+    it('orders storylines with same parent page by row and lane', () => {
       var pages = new PagesCollection([
         {perma_id: 1, chapter_id: 10}
       ]);
@@ -89,7 +89,7 @@ describe('pageflow.StorylineOrdering', () => {
       expect(storylines.pluck('level')).toEqual([0, 1, 1, 1]);
     });
 
-    test('orders storylines with same row and lane by title', () => {
+    it('orders storylines with same row and lane by title', () => {
       var pages = new PagesCollection([
         {perma_id: 1, chapter_id: 10}
       ]);

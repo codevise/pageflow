@@ -6,7 +6,7 @@ import {FileThumbnail, StaticThumbnail} from '$support/dominos/editor';
 describe('ModelThumbnailView', () => {
   var f = support.factories;
 
-  test(
+  it(
     'uses FileThumbnailView when model offers thumbnailFile function',
     () => {
       var view = new ModelThumbnailView({
@@ -20,7 +20,7 @@ describe('ModelThumbnailView', () => {
     }
   );
 
-  test(
+  it(
     'uses StaticThumbnailView when model does not offer thumbnailFile function',
     () => {
       var view = new ModelThumbnailView({

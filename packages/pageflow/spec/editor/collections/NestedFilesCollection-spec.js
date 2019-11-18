@@ -3,7 +3,7 @@ import {NestedFilesCollection} from '$pageflow/editor';
 import * as support from '$support';
 
 describe('pageflow.NestedFilesCollection', () => {
-  test('supports custom order defined by nested file type', () => {
+  it('supports custom order defined by nested file type', () => {
     var fixture = support.factories.videoFileWithTextTrackFiles({
       textTrackFileTypeOptions: {
         nestedFilesOrder: {
@@ -31,7 +31,7 @@ describe('pageflow.NestedFilesCollection', () => {
     expect(labels).toEqual(['A', 'B', 'Z']);
   });
 
-  test('sort when nested files order binding changes', () => {
+  it('sort when nested files order binding changes', () => {
     var fixture = support.factories.videoFileWithTextTrackFiles({
       textTrackFileTypeOptions: {
         nestedFilesOrder: {

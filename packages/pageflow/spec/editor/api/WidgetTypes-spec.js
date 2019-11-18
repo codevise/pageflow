@@ -4,7 +4,7 @@ import sinon from 'sinon';
 
 describe('WidgetTypes', () => {
   describe('#register/#findAllByRole', () => {
-    test(
+    it(
       'allows getting a list of widget types with name and translation key',
       () => {
         var widgetTypes = new WidgetTypes();
@@ -25,7 +25,7 @@ describe('WidgetTypes', () => {
       }
     );
 
-    test('returns empty array for unknown role', () => {
+    it('returns empty array for unknown role', () => {
       var widgetTypes = new WidgetTypes();
 
       widgetTypes.setup({});
@@ -35,7 +35,7 @@ describe('WidgetTypes', () => {
   });
 
   describe('#register/#findByName', () => {
-    test('allows getting a widget type by name', () => {
+    it('allows getting a widget type by name', () => {
       var widgetTypes = new WidgetTypes();
 
       widgetTypes.setup({
@@ -54,7 +54,7 @@ describe('WidgetTypes', () => {
   });
 
   describe('#register/#setup/#findByName', () => {
-    test(
+    it(
       'allows supplying a configuration editor view for a widget type',
       () => {
         var widgetTypes = new WidgetTypes();

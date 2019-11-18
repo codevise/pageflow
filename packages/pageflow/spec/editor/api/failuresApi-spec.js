@@ -5,7 +5,7 @@ import {Failure} from '$pageflow/editor/api/Failure';
 
 describe('Failures API', () => {
   describe('#add', () => {
-    test('accepts multiple failure objects', () => {
+    it('accepts multiple failure objects', () => {
       var editor = new EditorApi(),
           modelA = new Backbone.Model(),
           modelB = new Backbone.Model();
@@ -18,7 +18,7 @@ describe('Failures API', () => {
       expect(editor.failures.count()).toBe(2);
     });
 
-    test('overwrites failure objects of the same type and model', () => {
+    it('overwrites failure objects of the same type and model', () => {
       var editor = new EditorApi(),
           modelA = new Backbone.Model();
 
@@ -31,7 +31,7 @@ describe('Failures API', () => {
   });
 
   describe('#remove', () => {
-    test('removes a failure by key', () => {
+    it('removes a failure by key', () => {
       var editor = new EditorApi(),
           failureA = new Failure(new Backbone.Model()),
           failureB = new Failure(new Backbone.Model());
@@ -46,7 +46,7 @@ describe('Failures API', () => {
   });
 
   describe('#watch', () => {
-    test('adds failures when watched collection emits error', () => {
+    it('adds failures when watched collection emits error', () => {
       var editor = new EditorApi(),
           collection = new Backbone.Collection();
 
@@ -56,7 +56,7 @@ describe('Failures API', () => {
       expect(editor.failures.count()).toBe(1);
     });
 
-    test('does not add failures for unsaved models', () => {
+    it('does not add failures for unsaved models', () => {
       var editor = new EditorApi(),
           collection = new Backbone.Collection();
 
@@ -68,7 +68,7 @@ describe('Failures API', () => {
   });
 
   describe('#retry', () => {
-    test('calls retry on failures', done => {
+    it('calls retry on failures', done => {
       var editor = new EditorApi(),
           collection = new Backbone.Collection(),
           SomeFailure = Failure.extend({

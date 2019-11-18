@@ -28,7 +28,7 @@ describe('stageProvider', () => {
     ]
   });
 
-  test('rewrites #stages to FileStage collection', () => {
+  it('rewrites #stages to FileStage collection', () => {
     var model = new Model();
 
     expect(model.stages.at(0).get('name')).toBe('uploading');
@@ -36,7 +36,7 @@ describe('stageProvider', () => {
     expect(model.stages.at(2).get('name')).toBe('processing');
   });
 
-  test(
+  it(
     'sets finished states to union states of following stages and readyState',
     () => {
       var model = new Model();
@@ -49,7 +49,7 @@ describe('stageProvider', () => {
     }
   );
 
-  test('provides subset collection of unfinished stages', () => {
+  it('provides subset collection of unfinished stages', () => {
     var model = new Model({
       state: 'check_running'
     });
@@ -57,7 +57,7 @@ describe('stageProvider', () => {
     expect(model.unfinishedStages.pluck('name')).toEqual(['checking', 'processing']);
   });
 
-  test('#stages can be function', () => {
+  it('#stages can be function', () => {
     var model = new (Backbone.Model.extend({
       mixins: [stageProvider],
 

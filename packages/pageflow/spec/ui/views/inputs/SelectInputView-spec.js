@@ -16,7 +16,7 @@ describe('pageflow.SelectInputView', () => {
       'activerecord.values.page.modes.two': 'Two'
     });
 
-    test('uses activerecord values translations for item', () => {
+    it('uses activerecord values translations for item', () => {
       var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'modes',
@@ -30,7 +30,7 @@ describe('pageflow.SelectInputView', () => {
   });
 
   describe('with texts option', () => {
-    test('uses texts for items', () => {
+    it('uses texts for items', () => {
       var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'size',
@@ -50,7 +50,7 @@ describe('pageflow.SelectInputView', () => {
       'items.two': 'Two'
     });
 
-    test('uses translations for items', () => {
+    it('uses translations for items', () => {
       var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'size',
@@ -70,7 +70,7 @@ describe('pageflow.SelectInputView', () => {
       'items.two': 'Two'
     });
 
-    test('uses translation keys from values for items', () => {
+    it('uses translation keys from values for items', () => {
       var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'modes',
@@ -98,7 +98,7 @@ describe('pageflow.SelectInputView', () => {
       'activerecord.values.page.legacy.two': 'AR Two'
     });
 
-    test('uses attribute values translation keys', () => {
+    it('uses attribute values translation keys', () => {
       var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'modes',
@@ -111,7 +111,7 @@ describe('pageflow.SelectInputView', () => {
       expect(texts).toEqual(['One', 'Two']);
     });
 
-    test('prefers first attribute translation key prefix', () => {
+    it('prefers first attribute translation key prefix', () => {
       var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'modes',
@@ -124,7 +124,7 @@ describe('pageflow.SelectInputView', () => {
       expect(texts).toEqual(['One', 'Two']);
     });
 
-    test('falls back to second attribute translation key prefix', () => {
+    it('falls back to second attribute translation key prefix', () => {
       var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'fallback',
@@ -137,7 +137,7 @@ describe('pageflow.SelectInputView', () => {
       expect(texts).toEqual(['Fallback One', 'Fallback Two']);
     });
 
-    test('falls back active record values translations', () => {
+    it('falls back active record values translations', () => {
       var selectInputView = new SelectInputView({
         model: new Model(),
         propertyName: 'legacy',
@@ -152,7 +152,7 @@ describe('pageflow.SelectInputView', () => {
   });
 
   describe('without ensureValueDefined option', () => {
-    test('does not assign value when rendered', () => {
+    it('does not assign value when rendered', () => {
       var model = new Model();
       var selectInputView = new SelectInputView({
         model: model,
@@ -167,7 +167,7 @@ describe('pageflow.SelectInputView', () => {
   });
 
   describe('with ensureValueDefined option', () => {
-    test('assigns value of first option when rendered', () => {
+    it('assigns value of first option when rendered', () => {
       var model = new Model();
       var selectInputView = new SelectInputView({
         model: model,

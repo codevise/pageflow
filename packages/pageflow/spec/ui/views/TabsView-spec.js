@@ -12,7 +12,7 @@ describe('TabsView', () => {
       'tabs.two': 'Tab two'
     });
 
-    test('uses prefix for tab labels', () => {
+    it('uses prefix for tab labels', () => {
       var tabsView = new TabsView({
         i18n: 'tabs'
       });
@@ -32,7 +32,7 @@ describe('TabsView', () => {
       'tabs.two': 'Tab two'
     });
 
-    test('uses prefix for tab labels', () => {
+    it('uses prefix for tab labels', () => {
       var tabsView = new TabsView({
         fallbackTranslationKeyPrefix: 'tabs'
       });
@@ -52,7 +52,7 @@ describe('TabsView', () => {
       'fallback.two': 'Tab two'
     });
 
-    test('uses first present translation based', () => {
+    it('uses first present translation based', () => {
       var tabsView = new TabsView({
         translationKeyPrefixes: ['tabs', 'fallback']
       });
@@ -72,7 +72,7 @@ describe('TabsView', () => {
       'fallback.two': 'Tab two'
     });
 
-    test('uses first present translation based', () => {
+    it('uses first present translation based', () => {
       var tabsView = new TabsView({
         translationKeyPrefixes: ['tabs'],
         fallbackTranslationKeyPrefix: 'fallback'

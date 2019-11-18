@@ -27,7 +27,7 @@ describe('pageflow.ReferenceInputView', () => {
     }
   });
 
-  test('displays title of target if there is a target', () => {
+  it('displays title of target if there is a target', () => {
     var view = new TestView({
       model: new Model(),
       property_name: 'custom_attribute',
@@ -42,7 +42,7 @@ describe('pageflow.ReferenceInputView', () => {
   });
 
   describe('with disabled option', () => {
-    test('sets disabled attributes on buttons', () => {
+    it('sets disabled attributes on buttons', () => {
       var view = new TestView({
         model: new Model(),
         propertyName: 'some_id',
@@ -56,7 +56,7 @@ describe('pageflow.ReferenceInputView', () => {
   });
 
   describe('with hideUnsetButton', () => {
-    test('hides the unset button', () => {
+    it('hides the unset button', () => {
       var view = new TestView({
         model: new Model(),
         propertyName: 'some_id',
@@ -80,7 +80,7 @@ describe('pageflow.ReferenceInputView', () => {
       }
     });
 
-    test(
+    it(
       'sets model attribute to perma_id of model that choose resolves to',
       () => {
         var model = new Model();
@@ -105,7 +105,7 @@ describe('pageflow.ReferenceInputView', () => {
       }
     });
 
-    test('sets model attribute to chooseValue resolution', () => {
+    it('sets model attribute to chooseValue resolution', () => {
       var model = new Model();
       var view = new TestViewWithChooseValue({
         model: model,
@@ -119,7 +119,7 @@ describe('pageflow.ReferenceInputView', () => {
   });
 
   describe('choose button title', () => {
-    test('has default value', () => {
+    it('has default value', () => {
       var model = new Model();
       var view = new TestView({
         model: model,
@@ -131,7 +131,7 @@ describe('pageflow.ReferenceInputView', () => {
       expect(view.ui.chooseButton).toHaveAttr('title');
     });
 
-    test('can be set via option', () => {
+    it('can be set via option', () => {
       var model = new Model();
       var view = new TestView({
         model: model,
@@ -146,7 +146,7 @@ describe('pageflow.ReferenceInputView', () => {
   });
 
   describe('unset button title', () => {
-    test('has default value', () => {
+    it('has default value', () => {
       var model = new Model();
       var view = new TestView({
         model: model,
@@ -158,7 +158,7 @@ describe('pageflow.ReferenceInputView', () => {
       expect(view.ui.unsetButton).toHaveAttr('title');
     });
 
-    test('can be set via option', () => {
+    it('can be set via option', () => {
       var model = new Model();
       var view = new TestView({
         model: model,

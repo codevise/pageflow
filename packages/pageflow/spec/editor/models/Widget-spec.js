@@ -6,7 +6,7 @@ describe('Widget', () => {
   var f = support.factories;
 
   describe('#toJSON', () => {
-    test('includes role, type_name and configuration', () => {
+    it('includes role, type_name and configuration', () => {
       var widget = new Widget({
         id: 'navigation',
         type_name: 'fancy_bar',

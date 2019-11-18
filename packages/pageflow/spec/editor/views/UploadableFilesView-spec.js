@@ -10,7 +10,7 @@ import {Table} from '$support/dominos/ui';
 describe('UploadableFilesView', () => {
   var f = support.factories;
 
-  test('renders confirmUploadTableColumns of file type', () => {
+  it('renders confirmUploadTableColumns of file type', () => {
     var fileType = f.fileType({
       confirmUploadTableColumns: [
         {name: 'custom', cellView: TextTableCellView}

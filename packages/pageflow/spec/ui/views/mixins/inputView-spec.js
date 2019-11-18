@@ -9,7 +9,7 @@ import * as support from '$support';
 describe('pageflow.inputView', () => {
   describe('attributeTranslationKeys', () => {
     describe('without attributeTranslationKeyPrefixes', () => {
-      test(
+      it(
         'constructs fallback key from fallback prefix, model i18nKey and propertyName',
         () => {
           var view = createInputView({
@@ -25,7 +25,7 @@ describe('pageflow.inputView', () => {
     });
 
     describe('with attributeTranslationKeyPrefixes', () => {
-      test(
+      it(
         'constructs additional candidates from prefix, propertyName and given key',
         () => {
           var view = createInputView({
@@ -51,7 +51,7 @@ describe('pageflow.inputView', () => {
 
   describe('#labelText', () => {
     describe('with label option', () => {
-      test('returns label option', () => {
+      it('returns label option', () => {
         var view = createInputView({label: 'Some Label'});
 
         var result = view.labelText();
@@ -67,7 +67,7 @@ describe('pageflow.inputView', () => {
           'activerecord.attributes.page.title': 'AR Text'
         });
 
-        test('uses prefixed attribute translation', () => {
+        it('uses prefixed attribute translation', () => {
           var view = createInputView({
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
@@ -87,7 +87,7 @@ describe('pageflow.inputView', () => {
           'activerecord.attributes.page.title': 'AR Text'
         });
 
-        test('falls back to active record attribute translation', () => {
+        it('falls back to active record attribute translation', () => {
           var view = createInputView({
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
@@ -108,7 +108,7 @@ describe('pageflow.inputView', () => {
         'activerecord.attributes.page.title': 'AR Text'
       });
 
-      test('uses active record attribute translation', () => {
+      it('uses active record attribute translation', () => {
         var view = createInputView({
           model: {i18nKey: 'page'},
           propertyName: 'title'
@@ -130,7 +130,7 @@ describe('pageflow.inputView', () => {
           'pageflow.ui.inline_help.page.title': 'Model/Attribute Help'
         });
 
-        test('uses prefixed inline help translation', () => {
+        it('uses prefixed inline help translation', () => {
           var view = createInputView({
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
@@ -144,7 +144,7 @@ describe('pageflow.inputView', () => {
           expect(result).toBe('Rainbow Help');
         });
 
-        test(
+        it(
           'prefers prefixed inline help translation for disabled input',
           () => {
             var view = createInputView({
@@ -162,7 +162,7 @@ describe('pageflow.inputView', () => {
           }
         );
 
-        test('supports appending additional inline help text', () => {
+        it('supports appending additional inline help text', () => {
           var view = createInputView({
             attributeTranslationKeyPrefixes: [
               'pageflow.rainbows.page_attributes'
@@ -186,7 +186,7 @@ describe('pageflow.inputView', () => {
           'pageflow.ui.inline_help.page.title': 'Model/Attribute Help'
         });
 
-        test(
+        it(
           'prefers more specific inline help over disabled inline help',
           () => {
             var view = createInputView({
@@ -211,7 +211,7 @@ describe('pageflow.inputView', () => {
           'pageflow.ui.inline_help.page.title_html': '<strong>Model/Attribute Help</strong>'
         });
 
-        test(
+        it(
           'falls back to model/attribute based inline help translation',
           () => {
             var view = createInputView({
@@ -236,7 +236,7 @@ describe('pageflow.inputView', () => {
         'pageflow.ui.inline_help.page.title_disabled': 'Model/Attribute Help Disabled'
       });
 
-      test('uses model/attribute based inline help translation', () => {
+      it('uses model/attribute based inline help translation', () => {
         var view = createInputView({
           model: {i18nKey: 'page'},
           propertyName: 'title'
@@ -247,7 +247,7 @@ describe('pageflow.inputView', () => {
         expect(result).toBe('Model/Attribute Help');
       });
 
-      test('prefers disabled suffix if disabled', () => {
+      it('prefers disabled suffix if disabled', () => {
         var view = createInputView({
           model: {i18nKey: 'page'},
           propertyName: 'title',
@@ -262,7 +262,7 @@ describe('pageflow.inputView', () => {
   });
 
   describe('visibleBinding', () => {
-    test('sets hidden class when attribute is false', () => {
+    it('sets hidden class when attribute is false', () => {
       var view = createInputView({
         model: new Backbone.Model({active: false}),
         visibleBinding: 'active'
@@ -273,7 +273,7 @@ describe('pageflow.inputView', () => {
       expect(view.$el).toHaveClass('input-hidden_via_binding');
     });
 
-    test('does not set hidden class when function returns true', () => {
+    it('does not set hidden class when function returns true', () => {
       var view = createInputView({
         model: new Backbone.Model({active: true}),
         visibleBinding: 'active'
@@ -284,7 +284,7 @@ describe('pageflow.inputView', () => {
       expect(view.$el).not.toHaveClass('input-hidden_via_binding');
     });
 
-    test('sets hidden class when attribute changes to false', () => {
+    it('sets hidden class when attribute changes to false', () => {
       var view = createInputView({
         model: new Backbone.Model({active: true}),
         visibleBinding: 'active'
@@ -298,7 +298,7 @@ describe('pageflow.inputView', () => {
     });
 
     describe('with visibleBindingValue option', () => {
-      test('sets hidden class when value of attribute does not match', () => {
+      it('sets hidden class when value of attribute does not match', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: true}),
           visibleBinding: 'hidden',
@@ -310,7 +310,7 @@ describe('pageflow.inputView', () => {
         expect(view.$el).toHaveClass('input-hidden_via_binding');
       });
 
-      test('does not set hidden class when value of attribute matches', () => {
+      it('does not set hidden class when value of attribute matches', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: false}),
           visibleBinding: 'hidden',
@@ -324,7 +324,7 @@ describe('pageflow.inputView', () => {
     });
 
     describe('with function for visible option', () => {
-      test('sets hidden class when function returns false', () => {
+      it('sets hidden class when function returns false', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: true}),
           visibleBinding: 'hidden',
@@ -336,7 +336,7 @@ describe('pageflow.inputView', () => {
         expect(view.$el).toHaveClass('input-hidden_via_binding');
       });
 
-      test('does not set hidden class when function returns true', () => {
+      it('does not set hidden class when function returns true', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: false}),
           visibleBinding: 'hidden',
@@ -350,7 +350,7 @@ describe('pageflow.inputView', () => {
     });
 
     describe('with boolean for visible option', () => {
-      test('sets hidden class if false', () => {
+      it('sets hidden class if false', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: true}),
           visibleBinding: 'hidden',
@@ -362,7 +362,7 @@ describe('pageflow.inputView', () => {
         expect(view.$el).toHaveClass('input-hidden_via_binding');
       });
 
-      test('does not set hidden if true', () => {
+      it('does not set hidden if true', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: true}),
           visibleBinding: 'hidden',

@@ -11,7 +11,7 @@ describe('transientReferences', () => {
   });
 
   describe('#setReference', () => {
-    test('returns unsaved record', () => {
+    it('returns unsaved record', () => {
       var record = new Model(),
           imageFile = new ImageFile();
 
@@ -20,7 +20,7 @@ describe('transientReferences', () => {
       expect(record.getReference('image_file_id')).toBe(imageFile);
     });
 
-    test('resets attribute while record is unsaved', () => {
+    it('resets attribute while record is unsaved', () => {
       var record = new Model({image_file_id: 3}),
           imageFile = new ImageFile();
 
@@ -29,7 +29,7 @@ describe('transientReferences', () => {
       expect(record.get('image_file_id')).toBeNull();
     });
 
-    test('sets records perma_id once it is saved', () => {
+    it('sets records perma_id once it is saved', () => {
       var record = new Model(),
           imageFile = new ImageFile();
 
@@ -39,7 +39,7 @@ describe('transientReferences', () => {
       expect(record.get('image_file_id')).toBe(5);
     });
 
-    test('sets records perma_id if present', () => {
+    it('sets records perma_id if present', () => {
       var record = new Model(),
           imageFile = new ImageFile({id: 1, perma_id: 7});
 
@@ -48,7 +48,7 @@ describe('transientReferences', () => {
       expect(record.get('image_file_id')).toBe(7);
     });
 
-    test(
+    it(
       'does not set records perma_id if reference updated before save',
       () => {
         var record = new Model(),
@@ -63,7 +63,7 @@ describe('transientReferences', () => {
       }
     );
 
-    test('triggers change event once the file is ready', () => {
+    it('triggers change event once the file is ready', () => {
       var record = new Model(),
           imageFile = new ImageFile(),
           changeListener = sinon.spy();
@@ -75,7 +75,7 @@ describe('transientReferences', () => {
       expect(changeListener.called).toBeTruthy();
     });
 
-    test(
+    it(
       'triggers change:<attribute>:ready event once the file is ready',
       () => {
         var record = new Model(),
@@ -90,7 +90,7 @@ describe('transientReferences', () => {
       }
     );
 
-    test(
+    it(
       'does not trigger change event if reference was updated before ready',
       () => {
         var record = new Model(),
@@ -107,7 +107,7 @@ describe('transientReferences', () => {
       }
     );
 
-    test(
+    it(
       'when change event triggers record can already be looked up in collection',
       () => {
         var record = new Model(),

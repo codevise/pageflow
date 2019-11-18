@@ -9,7 +9,7 @@ import * as support from '$support';
 describe('EditWidgetView', () => {
   var f = support.factories;
 
-  test('renders widget configuration editor', () => {
+  it('renders widget configuration editor', () => {
     var widgetTypes = f.widgetTypes([
       {name: 'default_bar', role: 'navigation'},
       {name: 'fancy_bar', role: 'navigation'}

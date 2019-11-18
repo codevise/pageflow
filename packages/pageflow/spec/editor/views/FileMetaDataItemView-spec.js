@@ -10,7 +10,7 @@ describe('FileMetaDataItemView', () => {
       'activerecord.attributes.pageflow/image_files.rights': 'Rights'
     });
 
-    test('uses file type specific translatons', () => {
+    it('uses file type specific translatons', () => {
       var view = new FileMetaDataItemView({
         model: support.factories.imageFile(),
         name: 'alt'
@@ -21,7 +21,7 @@ describe('FileMetaDataItemView', () => {
       expect(result).toBe('Image alt text');
     });
 
-    test('falls back to common file translation', () => {
+    it('falls back to common file translation', () => {
       var view = new FileMetaDataItemView({
         model: support.factories.imageFile(),
         name: 'text_tracks'
@@ -32,7 +32,7 @@ describe('FileMetaDataItemView', () => {
       expect(result).toBe('Text tracks');
     });
 
-    test('falls back to legacy translation', () => {
+    it('falls back to legacy translation', () => {
       var view = new FileMetaDataItemView({
         model: support.factories.imageFile(),
         name: 'rights'

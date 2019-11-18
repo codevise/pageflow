@@ -57,7 +57,7 @@ describe('Page', () => {
       }
     });
 
-    test('returns first present file', () => {
+    it('returns first present file', () => {
       var page = new Page({
         template: 'video',
         configuration: {
@@ -70,7 +70,7 @@ describe('Page', () => {
       expect(thumbnailFile.get('perma_id')).toBe(5);
     });
 
-    test('returns undefined if no candidate matches', () => {
+    it('returns undefined if no candidate matches', () => {
       var page = new Page({
         template: 'video',
         configuration: {}
@@ -81,7 +81,7 @@ describe('Page', () => {
       expect(thumbnailFile).toBeUndefined();
     });
 
-    test('returns undefined if candidate condition is not met', () => {
+    it('returns undefined if candidate condition is not met', () => {
       var page = new Page({
         template: 'video',
         configuration: {
@@ -95,7 +95,7 @@ describe('Page', () => {
       expect(thumbnailFile).toBeUndefined();
     });
 
-    test('returns undefined if negated candidate condition is met', () => {
+    it('returns undefined if negated candidate condition is met', () => {
       var page = new Page({
         template: 'video',
         configuration: {
@@ -109,7 +109,7 @@ describe('Page', () => {
       expect(thumbnailFile).toBeUndefined();
     });
 
-    test('returns present file if candidate condition is met', () => {
+    it('returns present file if candidate condition is met', () => {
       var page = new Page({
         template: 'video',
         configuration: {
@@ -123,7 +123,7 @@ describe('Page', () => {
       expect(thumbnailFile.get('perma_id')).toBe(5);
     });
 
-    test(
+    it(
       'returns present file if negated candidate condition is not met',
       () => {
         var page = new Page({

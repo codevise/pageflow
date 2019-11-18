@@ -10,7 +10,7 @@ describe('FileSettingsDialogView', () => {
 
   support.setupGlobals({entry: f.entry});
 
-  test('renders settingsDialogTabs of file type', () => {
+  it('renders settingsDialogTabs of file type', () => {
     var fileType = f.fileType({
       settingsDialogTabs: [
         {name: 'custom', view: TextInputView}

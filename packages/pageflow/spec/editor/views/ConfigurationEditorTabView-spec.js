@@ -4,7 +4,7 @@ import sinon from 'sinon';
 
 describe('ConfigurationEditorTabView', () => {
   describe('#group', () => {
-    test('delegates to groups.apply', () => {
+    it('delegates to groups.apply', () => {
       var groups = new ConfigurationEditorTabView.Groups();
       var groupFn = sinon.spy();
       var tabView = new ConfigurationEditorTabView({
@@ -20,7 +20,7 @@ describe('ConfigurationEditorTabView', () => {
 
   describe('.Groups', () => {
     describe('#define', () => {
-      test(
+      it(
         'fails with explanation when trying to define group with non function',
         () => {
           var groups = new ConfigurationEditorTabView.Groups();
@@ -33,7 +33,7 @@ describe('ConfigurationEditorTabView', () => {
     });
 
     describe('#apply', () => {
-      test('applies function given in #define', () => {
+      it('applies function given in #define', () => {
         var groups = new ConfigurationEditorTabView.Groups();
         var groupFn = sinon.spy();
         var context = {};
@@ -44,7 +44,7 @@ describe('ConfigurationEditorTabView', () => {
         expect(groupFn).toHaveBeenCalledOn(context);
       });
 
-      test('fails with explanation when group is not defined', () => {
+      it('fails with explanation when group is not defined', () => {
         var groups = new ConfigurationEditorTabView.Groups();
         var context = {};
 

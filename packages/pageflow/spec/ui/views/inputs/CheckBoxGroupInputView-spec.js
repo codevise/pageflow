@@ -16,7 +16,7 @@ describe('pageflow.CheckBoxGroupInputView', () => {
       'activerecord.values.page.some_attribute.two': 'Two'
     });
 
-    test('uses activerecord values translations for items', () => {
+    it('uses activerecord values translations for items', () => {
       var checkBoxGroupInputView = new CheckBoxGroupInputView({
         model: new Model({some_attribute: {'one': true, 'two': false}}),
         propertyName: 'some_attribute',
@@ -30,7 +30,7 @@ describe('pageflow.CheckBoxGroupInputView', () => {
   });
 
   describe('with texts option', () => {
-    test('uses texts for items', () => {
+    it('uses texts for items', () => {
       var checkBoxGroupInputView = new CheckBoxGroupInputView({
         model: new Model({some_attribute: {'one': true, 'two': false}}),
         propertyName: 'some_attribute',

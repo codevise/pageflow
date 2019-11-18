@@ -9,7 +9,7 @@ describe('encodedFile', () => {
         config: {confirmEncodingJobs: false}
       });
 
-      test('does not include fetching meta data', () => {
+      it('does not include fetching meta data', () => {
         var encodedFile = new VideoFile();
 
         expect(encodedFile.stages.pluck('name')).toEqual(['uploading', 'encoding']);
@@ -21,7 +21,7 @@ describe('encodedFile', () => {
         config: {confirmEncodingJobs: true}
       });
 
-      test('includes fetching meta data', () => {
+      it('includes fetching meta data', () => {
         var encodedFile = new VideoFile();
 
         expect(encodedFile.stages.pluck('name')).toEqual(['uploading', 'fetching_meta_data', 'encoding']);

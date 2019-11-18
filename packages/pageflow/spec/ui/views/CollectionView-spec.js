@@ -16,7 +16,7 @@ describe('pageflow.CollectionView', () => {
       });
     }
 
-    test('displays blank slate initially', () => {
+    it('displays blank slate initially', () => {
       var collection = new Backbone.Collection();
       var collectionView = createCollectionView(collection);
 
@@ -25,7 +25,7 @@ describe('pageflow.CollectionView', () => {
       expect(collectionView.$el.find('.blank').length).toBe(1);
     });
 
-    test('removes blank slate when item is added', () => {
+    it('removes blank slate when item is added', () => {
       var collection = new Backbone.Collection();
       var collectionView = createCollectionView(collection);
 
@@ -48,7 +48,7 @@ describe('pageflow.CollectionView', () => {
       });
     }
 
-    test('displays blank slate initially', () => {
+    it('displays blank slate initially', () => {
       var collection = new Backbone.Collection();
       var collectionView = createCollectionView(collection);
 
@@ -57,7 +57,7 @@ describe('pageflow.CollectionView', () => {
       expect(collectionView.$el.find('.blank').length).toBe(1);
     });
 
-    test('displays loading view when collection starts request', () => {
+    it('displays loading view when collection starts request', () => {
       var collection = new Backbone.Collection();
       var collectionView = createCollectionView(collection);
 
@@ -67,7 +67,7 @@ describe('pageflow.CollectionView', () => {
       expect(collectionView.$el.find('.loading').length).toBe(1);
     });
 
-    test('displays placeholder view again when collection syncs', () => {
+    it('displays placeholder view again when collection syncs', () => {
       var collection = new Backbone.Collection();
       var collectionView = createCollectionView(collection);
 

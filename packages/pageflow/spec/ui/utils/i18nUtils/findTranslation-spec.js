@@ -11,7 +11,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
     'html.key.with.suffix_html': '<div />'
   });
 
-  test('returns first present translation', () => {
+  it('returns first present translation', () => {
     var result = i18nUtils.findTranslation(
       ['not.there', 'some.key', 'fallback']
     );
@@ -19,7 +19,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
     expect(result).toBe('Some text');
   });
 
-  test('falls back to defaultValue', () => {
+  it('falls back to defaultValue', () => {
     var result = i18nUtils.findTranslation(
       ['not.there'],
       {defaultValue: 'Default'}
@@ -28,7 +28,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
     expect(result).toBe('Default');
   });
 
-  test('supports interpolations', () => {
+  it('supports interpolations', () => {
     var result = i18nUtils.findTranslation(
       ['with.interpolation'],
       {value: 'interpolated'}
@@ -37,7 +37,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
     expect(result).toBe('Value interpolated');
   });
 
-  test('does not escape html if html flag is not set', () => {
+  it('does not escape html if html flag is not set', () => {
     var result = i18nUtils.findTranslation(
       ['html.key.without.suffix']
     );
@@ -45,7 +45,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
     expect(result).toBe('<div />');
   });
 
-  test('searches for keys ending in _html if flag is set', () => {
+  it('searches for keys ending in _html if flag is set', () => {
     var result = i18nUtils.findTranslation(
       ['html.key.with.suffix'],
       {html: true}
@@ -54,7 +54,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
     expect(result).toBe('<div />');
   });
 
-  test(
+  it(
     'HTML-escapes translations the key of which does not end in _html, if html flag '+
        'is set',
     () => {
@@ -67,7 +67,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
        }
   );
 
-  test('does not escape default value if html flag is not set', () => {
+  it('does not escape default value if html flag is not set', () => {
     var result = i18nUtils.findTranslation(
       ['not.there'],
       {defaultValue: '<div />'}
@@ -76,7 +76,7 @@ describe('pageflow.i18nUtils.findTranslation', () => {
     expect(result).toBe('<div />');
   });
 
-  test('does not escape default value if html flag is set', () => {
+  it('does not escape default value if html flag is set', () => {
     var result = i18nUtils.findTranslation(
       ['not.there'],
       {defaultValue: '<div />', html: true}

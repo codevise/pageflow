@@ -23,7 +23,7 @@ describe('pageflow.ColorInputView', () => {
     testContext.clock.restore();
   });
 
-  test('loads value into input', () => {
+  it('loads value into input', () => {
     var model = new Backbone.Model({
       color: '#ababab'
     });
@@ -37,7 +37,7 @@ describe('pageflow.ColorInputView', () => {
     expect(colorInput.value()).toBe('#ababab');
   });
 
-  test('updates input when model changes', () => {
+  it('updates input when model changes', () => {
     var model = new Backbone.Model();
     var colorInputView = new ColorInputView({
       model: model,
@@ -50,7 +50,7 @@ describe('pageflow.ColorInputView', () => {
     expect(colorInput.value()).toBe('#ababab');
   });
 
-  test('saves value to model on change', () => {
+  it('saves value to model on change', () => {
     var model = new Backbone.Model({
       color: '#ababab'
     });
@@ -68,7 +68,7 @@ describe('pageflow.ColorInputView', () => {
     expect(model.get('color')).toBe('#bbbbbb');
   });
 
-  test('allows passing swatches', () => {
+  it('allows passing swatches', () => {
     var model = new Backbone.Model();
     var colorInputView = new ColorInputView({
       model: model,
@@ -85,7 +85,7 @@ describe('pageflow.ColorInputView', () => {
   });
 
   describe('with defaultValue option', () => {
-    test('falls back to default value', () => {
+    it('falls back to default value', () => {
       var model = new Backbone.Model();
       var colorInputView = new ColorInputView({
         model: model,
@@ -100,7 +100,7 @@ describe('pageflow.ColorInputView', () => {
       expect(colorInput.value()).toBe('#cdcdcd');
     });
 
-    test('does not store default value in model', () => {
+    it('does not store default value in model', () => {
       var model = new Backbone.Model();
       var colorInputView = new ColorInputView({
         model: model,
@@ -117,7 +117,7 @@ describe('pageflow.ColorInputView', () => {
       expect(model.has('color')).toBe(false);
     });
 
-    test('stores non default value in model', () => {
+    it('stores non default value in model', () => {
       var model = new Backbone.Model();
       var colorInputView = new ColorInputView({
         model: model,
@@ -134,7 +134,7 @@ describe('pageflow.ColorInputView', () => {
       expect(model.get('color')).toBe('#ababab');
     });
 
-    test('unsets attribute in model if choosing default value', () => {
+    it('unsets attribute in model if choosing default value', () => {
       var model = new Backbone.Model({
         color: '#fff'
       });
@@ -153,7 +153,7 @@ describe('pageflow.ColorInputView', () => {
       expect(model.has('color')).toBe(false);
     });
 
-    test('includes swatch for default value', () => {
+    it('includes swatch for default value', () => {
       var model = new Backbone.Model();
       var colorInputView = new ColorInputView({
         model: model,
@@ -170,7 +170,7 @@ describe('pageflow.ColorInputView', () => {
       expect(colorInput.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
     });
 
-    test('does not duplicate swatch', () => {
+    it('does not duplicate swatch', () => {
       var model = new Backbone.Model();
       var colorInputView = new ColorInputView({
         model: model,
@@ -189,7 +189,7 @@ describe('pageflow.ColorInputView', () => {
   });
 
   describe('with function as defaultValue option', () => {
-    test('falls back to default value', () => {
+    it('falls back to default value', () => {
       var model = new Backbone.Model();
       var colorInputView = new ColorInputView({
         model: model,
@@ -204,7 +204,7 @@ describe('pageflow.ColorInputView', () => {
       expect(colorInput.value()).toBe('#cdcdcd');
     });
 
-    test('does not store default value in model', () => {
+    it('does not store default value in model', () => {
       var model = new Backbone.Model();
       var colorInputView = new ColorInputView({
         model: model,
@@ -221,7 +221,7 @@ describe('pageflow.ColorInputView', () => {
       expect(model.has('color')).toBe(false);
     });
 
-    test('stores non default value in model', () => {
+    it('stores non default value in model', () => {
       var model = new Backbone.Model();
       var colorInputView = new ColorInputView({
         model: model,
@@ -238,7 +238,7 @@ describe('pageflow.ColorInputView', () => {
       expect(model.get('color')).toBe('#ababab');
     });
 
-    test('unsets attribute in model if choosing default value', () => {
+    it('unsets attribute in model if choosing default value', () => {
       var model = new Backbone.Model({
         color: '#fff'
       });
@@ -257,7 +257,7 @@ describe('pageflow.ColorInputView', () => {
       expect(model.has('color')).toBe(false);
     });
 
-    test('includes swatch for default value', () => {
+    it('includes swatch for default value', () => {
       var model = new Backbone.Model();
       var colorInputView = new ColorInputView({
         model: model,
@@ -276,7 +276,7 @@ describe('pageflow.ColorInputView', () => {
   });
 
   describe('with defaultValueBinding option', () => {
-    test('uses value of binding attribute as default value', () => {
+    it('uses value of binding attribute as default value', () => {
       var model = new Backbone.Model({
         default_color: '#cdcdcd'
       });
@@ -293,7 +293,7 @@ describe('pageflow.ColorInputView', () => {
       expect(colorInput.value()).toBe('#cdcdcd');
     });
 
-    test(
+    it(
       'updates displayed default value when binding attribute changes',
       () => {
         var model = new Backbone.Model({
@@ -314,7 +314,7 @@ describe('pageflow.ColorInputView', () => {
       }
     );
 
-    test('does not store default value in model', () => {
+    it('does not store default value in model', () => {
       var model = new Backbone.Model({
         default_color: '#cdcdcd'
       });
@@ -334,7 +334,7 @@ describe('pageflow.ColorInputView', () => {
       expect(model.has('color')).toBe(false);
     });
 
-    test('stores non default value in model', () => {
+    it('stores non default value in model', () => {
       var model = new Backbone.Model({
         default_color: '#cdcdcd'
       });
@@ -354,7 +354,7 @@ describe('pageflow.ColorInputView', () => {
       expect(model.get('color')).toBe('#cdcdcd');
     });
 
-    test('unsets attribute in model if choosing default value', () => {
+    it('unsets attribute in model if choosing default value', () => {
       var model = new Backbone.Model({
         color: '#fff'
       });
@@ -376,7 +376,7 @@ describe('pageflow.ColorInputView', () => {
   });
 
   describe('with function as defaultValue and defaultValueBinding option', () => {
-    test('passes binding attribute to default value function', () => {
+    it('passes binding attribute to default value function', () => {
       var model = new Backbone.Model({
         light: true
       });
@@ -394,7 +394,7 @@ describe('pageflow.ColorInputView', () => {
       expect(colorInput.value()).toBe('#fefefe');
     });
 
-    test(
+    it(
       'updates displayed default value when binding attribute changes',
       () => {
         var model = new Backbone.Model({
@@ -416,7 +416,7 @@ describe('pageflow.ColorInputView', () => {
       }
     );
 
-    test('does not store default value in model', () => {
+    it('does not store default value in model', () => {
       var model = new Backbone.Model({
         light: true
       });
@@ -437,7 +437,7 @@ describe('pageflow.ColorInputView', () => {
       expect(model.has('color')).toBe(false);
     });
 
-    test('stores non default value in model', () => {
+    it('stores non default value in model', () => {
       var model = new Backbone.Model({
         light: true
       });
@@ -458,7 +458,7 @@ describe('pageflow.ColorInputView', () => {
       expect(model.get('color')).toBe('#fefefe');
     });
 
-    test('unsets attribute in model if choosing default value', () => {
+    it('unsets attribute in model if choosing default value', () => {
       var model = new Backbone.Model({
         light: true
       });

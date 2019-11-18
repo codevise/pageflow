@@ -10,7 +10,7 @@ describe('PresenceTableCellView', () => {
     'columns.first_name.cell_title.blank': 'Blank',
   });
 
-  test(
+  it(
     'sets cell title attribute with interpolation if column attribute is present',
     () => {
       var person = new Backbone.Model({first_name: 'Jane'});
@@ -28,7 +28,7 @@ describe('PresenceTableCellView', () => {
     }
   );
 
-  test('sets cell title attribute if column attribute is blank', () => {
+  it('sets cell title attribute if column attribute is blank', () => {
     var person = new Backbone.Model({first_name: ''});
     var cell = new PresenceTableCellView({
       column: {
@@ -43,7 +43,7 @@ describe('PresenceTableCellView', () => {
     expect(cell.$el).toHaveAttr('title', 'Blank');
   });
 
-  test('adds is_present class if column attribute is present', () => {
+  it('adds is_present class if column attribute is present', () => {
     var person = new Backbone.Model({first_name: 'Jane'});
     var cell = new PresenceTableCellView({
       column: {
@@ -57,7 +57,7 @@ describe('PresenceTableCellView', () => {
     expect(cell.$el).toHaveClass('is_present');
   });
 
-  test('does not add is_present class if column attribute is blank', () => {
+  it('does not add is_present class if column attribute is blank', () => {
     var person = new Backbone.Model({first_name: ''});
     var cell = new PresenceTableCellView({
       column: {

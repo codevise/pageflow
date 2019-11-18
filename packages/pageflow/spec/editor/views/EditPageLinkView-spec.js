@@ -10,7 +10,7 @@ import {ConfigurationEditor} from '$support/dominos/ui';
 describe('EditPageLinkView', () => {
   var f = support.factories;
 
-  test('renders pageLinkConfigurationEditorView of page type', () => {
+  it('renders pageLinkConfigurationEditorView of page type', () => {
     var api = f.editorApi(function(editor) {
       editor.pageTypes.register('rainbow', {
         pageLinkConfigurationEditorView: ConfigurationEditorView.extend({
@@ -37,7 +37,7 @@ describe('EditPageLinkView', () => {
     expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining(['label']));
   });
 
-  test('passes page link configuration as model and page option', () => {
+  it('passes page link configuration as model and page option', () => {
     var passedModel, passedPage;
     var api = f.editorApi(function(editor) {
       editor.pageTypes.register('rainbow', {
@@ -72,7 +72,7 @@ describe('EditPageLinkView', () => {
       'pageflow.ui.configuration_editor.tabs.fallback': 'Fallback'
     });
 
-    test(
+    it(
       'uses page type specific translations and fallbacks for tab labels',
       () => {
         var api = f.editorApi(function(editor) {

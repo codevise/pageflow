@@ -9,7 +9,7 @@ describe('TextTableCellView', () => {
     'pageflow.ui.text_table_cell_view.empty': '(empty)'
   });
 
-  test(
+  it(
     'renders value from column attribute also when default is given',
     () => {
       var person = new Backbone.Model({first_name: 'Jane'});
@@ -27,7 +27,7 @@ describe('TextTableCellView', () => {
     }
   );
 
-  test(
+  it(
     'renders default value if column attribute is empty and default is present',
     () => {
       var passport = new Backbone.Model({issuing_authority: 'Studienstelle für Auslandsfragen'});
@@ -45,7 +45,7 @@ describe('TextTableCellView', () => {
     }
   );
 
-  test(
+  it(
     'renders default value if column attribute is empty and default is not present',
     () => {
       var passport = new Backbone.Model({issuing_authority: 'Studienstelle für Auslandsfragen'});
@@ -62,7 +62,7 @@ describe('TextTableCellView', () => {
     }
   );
 
-  test(
+  it(
     'renders return value of default function if column attribute is empty',
     () => {
       var passport = new Backbone.Model({issuing_authority: 'Studienstelle für Auslandsfragen'});
@@ -82,7 +82,7 @@ describe('TextTableCellView', () => {
     }
   );
 
-  test(
+  it(
     'renders return value of default function if column attribute is empty',
     () => {
       var passport = new Backbone.Model({place_of_birth: 'Baarle'});

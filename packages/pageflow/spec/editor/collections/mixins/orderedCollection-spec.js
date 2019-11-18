@@ -31,7 +31,7 @@ describe('orderedCollection', () => {
   });
 
   describe('#consolidatePositions', () => {
-    test('updates position attributes', () => {
+    it('updates position attributes', () => {
       var collection = new OrderedCollection([
         new Item(),
         new Item(),
@@ -45,7 +45,7 @@ describe('orderedCollection', () => {
   });
 
   describe('#saveOrder', () => {
-    test('sends patch request to /order', () => {
+    it('sends patch request to /order', () => {
       var first = new Item({position: 0});
       var second = new Item({position: 1});
       var third = new Item({position: 2});
@@ -59,7 +59,7 @@ describe('orderedCollection', () => {
   });
 
   describe('removing an item', () => {
-    test('consolidates positions', () => {
+    it('consolidates positions', () => {
       var first = new Item({position: 0});
       var second = new Item({position: 1});
       var third = new Item({position: 2});

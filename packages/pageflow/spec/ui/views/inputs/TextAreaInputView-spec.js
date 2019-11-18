@@ -9,7 +9,7 @@ import * as support from '$support';
 import {TextAreaInput} from '$support/dominos/ui'
 
 describe('pageflow.TextAreaInputView', () => {
-  test('supports disabled option', () => {
+  it('supports disabled option', () => {
     var model = new Backbone.Model({});
     var textAreaInputView = new TextAreaInputView({
       model: model,
@@ -23,7 +23,7 @@ describe('pageflow.TextAreaInputView', () => {
     expect(input).toHaveAttr('disabled', 'disabled');
   });
 
-  test('supports placeholder text', () => {
+  it('supports placeholder text', () => {
     var model = new Backbone.Model({});
     var textAreaInputView = new TextAreaInputView({
       model: model,
@@ -37,7 +37,7 @@ describe('pageflow.TextAreaInputView', () => {
     expect(input).toHaveAttr('placeholder', 'Default');
   });
 
-  test('supports placeholder as function', () => {
+  it('supports placeholder as function', () => {
     var model = new Backbone.Model({other: 'otherValue'});
     var textAreaInputView = new TextAreaInputView({
       model: model,
@@ -53,7 +53,7 @@ describe('pageflow.TextAreaInputView', () => {
     expect(input).toHaveAttr('placeholder', 'otherValue');
   });
 
-  test(
+  it(
     'updates placeholder when placeholderBinding attribute changes',
     () => {
       var model = new Backbone.Model({other: 'old'});
@@ -74,7 +74,7 @@ describe('pageflow.TextAreaInputView', () => {
     }
   );
 
-  test('supports reading placeholder from other model', () => {
+  it('supports reading placeholder from other model', () => {
     var placeholderModel = new Backbone.Model({name: 'otherValue'});
     var model = new Backbone.Model({});
     var textAreaInputView = new TextAreaInputView({

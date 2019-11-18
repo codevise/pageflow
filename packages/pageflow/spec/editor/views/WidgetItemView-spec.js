@@ -8,7 +8,7 @@ import {SelectInput} from '$support/dominos/ui';
 describe('WidgetItemView', () => {
   var f = support.factories;
 
-  test('renders selects for widget type roles', () => {
+  it('renders selects for widget type roles', () => {
     var widgetTypes = f.widgetTypes([
       {name: 'default_bar', role: 'navigation'},
       {name: 'fancy_bar', role: 'navigation'}
@@ -28,7 +28,7 @@ describe('WidgetItemView', () => {
     expect(select.values()).toEqual(['default_bar', 'fancy_bar']);
   });
 
-  test('includes blank item in select for optional role', () => {
+  it('includes blank item in select for optional role', () => {
     var widgetTypes = f.widgetTypes([
       {name: 'default_bar', role: 'navigation'},
       {name: 'fancy_bar', role: 'navigation'}
@@ -52,7 +52,7 @@ describe('WidgetItemView', () => {
     expect(select.values()).toEqual(['', 'default_bar', 'fancy_bar']);
   });
 
-  test(
+  it(
     'includes blank item in select for non optional role if type name is blank',
     () => {
       var widgetTypes = f.widgetTypes([
@@ -75,7 +75,7 @@ describe('WidgetItemView', () => {
     }
   );
 
-  test('hides item if only one widget type is available', () => {
+  it('hides item if only one widget type is available', () => {
     var widgetTypes = f.widgetTypes([
       {name: 'default_bar', role: 'navigation'}
     ]);
@@ -93,7 +93,7 @@ describe('WidgetItemView', () => {
     expect(view.$el).toHaveClass('is_hidden');
   });
 
-  test(
+  it(
     'displays item for optional role if only one widget type is available',
     () => {
       var widgetTypes = f.widgetTypes([
@@ -118,7 +118,7 @@ describe('WidgetItemView', () => {
     }
   );
 
-  test(
+  it(
     'displays item for non-optional role if only available widget type has settings',
     () => {
       var widgetTypes = f.widgetTypes([
@@ -143,7 +143,7 @@ describe('WidgetItemView', () => {
     }
   );
 
-  test('displays settings button if widget type has settings', () => {
+  it('displays settings button if widget type has settings', () => {
     var widgetTypes = f.widgetTypes([
       {name: 'default_bar', role: 'navigation'},
       {name: 'fancy_bar', role: 'navigation'}
@@ -166,7 +166,7 @@ describe('WidgetItemView', () => {
     expect(view.$el).toHaveClass('has_settings');
   });
 
-  test(
+  it(
     'does not display settings button if no widget type is selected',
     () => {
       var widgetTypes = f.widgetTypes([

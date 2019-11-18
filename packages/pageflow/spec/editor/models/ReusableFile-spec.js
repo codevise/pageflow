@@ -28,7 +28,7 @@ describe('ReusableFile', () => {
   });
 
   describe('#isReady', () => {
-    test('returns true if state equals readyState', () => {
+    it('returns true if state equals readyState', () => {
       var file = new File({state: 'ready'});
 
       expect(file.isReady()).toBe(true);
@@ -36,13 +36,13 @@ describe('ReusableFile', () => {
   });
 
   describe('#isFailed', () => {
-    test('returns true if state ends with _failed', () => {
+    it('returns true if state ends with _failed', () => {
       var file = new File({state: 'uploading_failed'});
 
       expect(file.isFailed()).toBe(true);
     });
 
-    test('returns false if state does not end with _failed', () => {
+    it('returns false if state does not end with _failed', () => {
       var file = new File({state: 'uploading'});
 
       expect(file.isFailed()).toBe(false);
@@ -50,19 +50,19 @@ describe('ReusableFile', () => {
   });
 
   describe('#isPending', () => {
-    test('returns true if neither ready nor failed ', () => {
+    it('returns true if neither ready nor failed ', () => {
       var file = new File({state: 'processing'});
 
       expect(file.isPending()).toBe(true);
     });
 
-    test('returns false if ready', () => {
+    it('returns false if ready', () => {
       var file = new File({state: 'ready'});
 
       expect(file.isPending()).toBe(false);
     });
 
-    test('returns false if failed', () => {
+    it('returns false if failed', () => {
       var file = new File({state: 'processing_failed'});
 
       expect(file.isPending()).toBe(false);
@@ -73,7 +73,7 @@ describe('ReusableFile', () => {
     var f = support.factories;
 
     describe('with applyConfigurationUpdaters option', () => {
-      test('applies file type updaters', () => {
+      it('applies file type updaters', () => {
         var fileType = f.fileType({
           configurationUpdaters: [
             function(configuration, newAttributes) {
@@ -93,7 +93,7 @@ describe('ReusableFile', () => {
   });
 
   describe('#toJSON', () => {
-    test('includes rights, configuration and file_name', () => {
+    it('includes rights, configuration and file_name', () => {
       var file = new File({
         state: 'processed',
         rights: 'someone',
@@ -133,7 +133,7 @@ describe('ReusableFile', () => {
       testContext.imageFiles = new FilesCollection({fileType: testContext.imageFileType});
     });
 
-    test('returns a SubsetCollection', () => {
+    it('returns a SubsetCollection', () => {
       var parentFile = new File({}, {fileType: testContext.videoFileType});
       var nestedFile = new File({}, {fileType: testContext.textTrackFileType, parentFile: parentFile});
       testContext.textTrackFiles.add(nestedFile);
@@ -141,7 +141,7 @@ describe('ReusableFile', () => {
       expect(parentFile.nestedFiles(testContext.textTrackFiles)).toBeInstanceOf(SubsetCollection);
     });
 
-    test('contains nested files of expected type', () => {
+    it('contains nested files of expected type', () => {
       var parentFile = new File({id: 43}, {fileType: testContext.videoFileType});
       var otherNestedFile = new File({file_name: 'not_nested.vtt'},
                                      {fileType: testContext.textTrackFileType});
@@ -159,7 +159,7 @@ describe('ReusableFile', () => {
       expect(nestedFileViaParent.get('file_name')).toBe('nested.vtt');
     });
 
-    test('returns same collection on repeated call', () => {
+    it('returns same collection on repeated call', () => {
       var parentFile = new File({id: 43}, {fileType: testContext.videoFileType});
       var nestedFile = new File({parent_file_id: parentFile.id,
                                  parent_file_model_type: 'Pageflow::VideoFile',
@@ -173,7 +173,7 @@ describe('ReusableFile', () => {
       expect(nestedFileCollection).toBe(nestedFileCollection2);
     });
 
-    test(
+    it(
       'returns different backbone collection for different filetypes',
       () => {
         var parentFile = new File({id: 43}, {fileType: testContext.videoFileType});
@@ -196,7 +196,7 @@ describe('ReusableFile', () => {
       }
     );
 
-    test('contains nested files of expected type', () => {
+    it('contains nested files of expected type', () => {
       var parentFile = new File({id: 43}, {fileType: testContext.videoFileType});
       var nestedFile = new File({parent_file_id: parentFile.id,
                                  parent_file_model_type: 'Pageflow::VideoFile',
@@ -209,7 +209,7 @@ describe('ReusableFile', () => {
       expect(nestedFileViaParent.fileType()).toBe(testContext.textTrackFileType);
     });
 
-    test(
+    it(
       'does not contains nested files of other file with same id but different type',
       () => {
         var parentFile = new File({id: 43}, {fileType: testContext.videoFileType});
@@ -227,7 +227,7 @@ describe('ReusableFile', () => {
   });
 
   describe('changing the configuration', () => {
-    test('triggers change:configuration event', () => {
+    it('triggers change:configuration event', () => {
       var file = new File();
       var handler = sinon.spy();
 
@@ -237,7 +237,7 @@ describe('ReusableFile', () => {
       expect(handler).toHaveBeenCalled();
     });
 
-    test(
+    it(
       'triggers change:configuration:[attribute] events per changed attribute',
       () => {
         var file = new File();
@@ -250,7 +250,7 @@ describe('ReusableFile', () => {
       }
     );
 
-    test(
+    it(
       'does not trigger change:configuration:[attribute] for unchanged attribute',
       () => {
         var file = new File();

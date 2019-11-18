@@ -3,7 +3,7 @@ import Backbone from 'backbone';
 import {JsonInputView} from '$pageflow/ui';
 
 describe('pageflow.JsonInputView', () => {
-  test('displays attribute value as pretty printed JSON', () => {
+  it('displays attribute value as pretty printed JSON', () => {
     var model = new Backbone.Model({
       json: {some: 'data'}
     });
@@ -19,7 +19,7 @@ describe('pageflow.JsonInputView', () => {
     expect(textArea.val()).toBe('{\n  "some": "data"\n}');
   });
 
-  test('saves parsed JSON to attribute if valid', () => {
+  it('saves parsed JSON to attribute if valid', () => {
     var model = new Backbone.Model();
     var jsonInputView = new JsonInputView({
       model: model,
@@ -35,7 +35,7 @@ describe('pageflow.JsonInputView', () => {
     expect(model.get('json')).toEqual({some: 'data'});
   });
 
-  test('sets attribute to null if text is empty', () => {
+  it('sets attribute to null if text is empty', () => {
     var model = new Backbone.Model({
       json: {some: 'data'}
     });
@@ -53,7 +53,7 @@ describe('pageflow.JsonInputView', () => {
     expect(model.get('json')).toBeNull();
   });
 
-  test('does save invalid JSON but displays validation error', () => {
+  it('does save invalid JSON but displays validation error', () => {
     var model = new Backbone.Model({
       json: {some: 'data'}
     });

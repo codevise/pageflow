@@ -31,7 +31,7 @@ describe('FileUploader', () => {
 
   describe('#add', () => {
     describe('non-nested file', () => {
-      test('adds file to files collection of file type', () => {
+      it('adds file to files collection of file type', () => {
         var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
@@ -43,7 +43,7 @@ describe('FileUploader', () => {
         expect(testContext.entry.getFileCollection(testContext.imageFileType).length).toBe(1);
       });
 
-      test(
+      it(
         'returns promise that resolves to file when FileUploader#submit is called',
         () => {
           var fileUploader = new FileUploader({
@@ -62,7 +62,7 @@ describe('FileUploader', () => {
         }
       );
 
-      test(
+      it(
         'returns promise that is rejected when FileUploader#abort is called',
         () => {
           var fileUploader = new FileUploader({
@@ -78,7 +78,7 @@ describe('FileUploader', () => {
         }
       );
 
-      test('emits new:batch event on first add', () => {
+      it('emits new:batch event on first add', () => {
         var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
@@ -93,7 +93,7 @@ describe('FileUploader', () => {
         expect(handler).toHaveBeenCalledOnce();
       });
 
-      test('emits new:batch event on first add after abort', () => {
+      it('emits new:batch event on first add after abort', () => {
         var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
@@ -109,7 +109,7 @@ describe('FileUploader', () => {
         expect(handler).toHaveBeenCalledTwice();
       });
 
-      test('emits new:batch event on first add after submit', () => {
+      it('emits new:batch event on first add after submit', () => {
         var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
@@ -125,7 +125,7 @@ describe('FileUploader', () => {
         expect(handler).toHaveBeenCalledTwice();
       });
 
-      test('throws exception if target set', () => {
+      it('throws exception if target set', () => {
         var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
@@ -145,7 +145,7 @@ describe('FileUploader', () => {
     });
 
     describe('nested file', () => {
-      test(
+      it(
         'adds file to nested files collection of file type on target file',
         () => {
           var fileUploader = new FileUploader({
@@ -166,7 +166,7 @@ describe('FileUploader', () => {
         }
       );
 
-      test(
+      it(
         'resolves to file without the need to call any external function',
         () => {
           var fileUploader = new FileUploader({
@@ -188,7 +188,7 @@ describe('FileUploader', () => {
         }
       );
 
-      test('throws exception if target not set', () => {
+      it('throws exception if target not set', () => {
         var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
@@ -201,7 +201,7 @@ describe('FileUploader', () => {
         }).toThrowError(NestedTypeError);
       });
 
-      test(
+      it(
         'throws exception if target does not allow to nest type of file',
         () => {
           var fileUploader = new FileUploader({
@@ -225,7 +225,7 @@ describe('FileUploader', () => {
   });
 
   describe('#abort', () => {
-    test('removes the files from the files collection', () => {
+    it('removes the files from the files collection', () => {
       var fileUploader = new FileUploader({
         entry: testContext.entry,
         fileTypes: testContext.fileTypes

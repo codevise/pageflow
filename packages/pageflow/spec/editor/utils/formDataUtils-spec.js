@@ -5,7 +5,7 @@ import {formDataUtils} from '$pageflow/editor';
 
 describe('formDataUtils', () => {
   describe('fromObject', () => {
-    test('returns flat hash with keys in angle bracket notation', () => {
+    it('returns flat hash with keys in angle bracket notation', () => {
       var object = {
         some: {
           nested: 'value',
@@ -23,7 +23,7 @@ describe('formDataUtils', () => {
       });
     });
 
-    test('handles spaces, +, = and & signs correctly', () => {
+    it('handles spaces, +, = and & signs correctly', () => {
       var object = {
         some: {
           value: '1 + 1 = 2 & a',
@@ -39,7 +39,7 @@ describe('formDataUtils', () => {
   });
 
   describe('fromModel', () => {
-    test('return flat hash using model name and json representation', () => {
+    it('return flat hash using model name and json representation', () => {
       var Model = Backbone.Model.extend({
         modelName: 'person',
 

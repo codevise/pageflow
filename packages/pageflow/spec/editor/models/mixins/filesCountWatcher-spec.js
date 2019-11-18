@@ -20,7 +20,7 @@ describe('filesCountWatcher', () => {
     });
   }
 
-  test('initializes uploading files count', () => {
+  it('initializes uploading files count', () => {
     var record = new Model();
 
     record.imageFiles = createFilesCollection([
@@ -32,7 +32,7 @@ describe('filesCountWatcher', () => {
     expect(record.get('uploading_image_files_count')).toBe(1);
   });
 
-  test('initializes pending files count', () => {
+  it('initializes pending files count', () => {
     var record = new Model();
 
     record.imageFiles = createFilesCollection([
@@ -44,7 +44,7 @@ describe('filesCountWatcher', () => {
     expect(record.get('pending_image_files_count')).toBe(1);
   });
 
-  test('updates uploading files count when file state changes', () => {
+  it('updates uploading files count when file state changes', () => {
     var record = new Model();
 
     record.imageFiles = createFilesCollection([
@@ -57,7 +57,7 @@ describe('filesCountWatcher', () => {
     expect(record.get('uploading_image_files_count')).toBe(0);
   });
 
-  test('updates pending files count when file state changes', () => {
+  it('updates pending files count when file state changes', () => {
     var record = new Model();
 
     record.imageFiles = createFilesCollection([
@@ -70,7 +70,7 @@ describe('filesCountWatcher', () => {
     expect(record.get('pending_image_files_count')).toBe(0);
   });
 
-  test('updates uploading files count when adding a file', () => {
+  it('updates uploading files count when adding a file', () => {
     var record = new Model();
 
     record.imageFiles = createFilesCollection();
@@ -80,7 +80,7 @@ describe('filesCountWatcher', () => {
     expect(record.get('uploading_image_files_count')).toBe(1);
   });
 
-  test('updates uploading files count when removing a file', () => {
+  it('updates uploading files count when removing a file', () => {
     var record = new Model();
 
     record.imageFiles = createFilesCollection([
@@ -93,7 +93,7 @@ describe('filesCountWatcher', () => {
     expect(record.get('uploading_image_files_count')).toBe(1);
   });
 
-  test(
+  it(
     'updates uploading_files_count to sum of uploading files counts',
     () => {
       var record = new Model();

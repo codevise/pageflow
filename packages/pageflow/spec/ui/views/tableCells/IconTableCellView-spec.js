@@ -12,7 +12,7 @@ describe('IconTableCellView', () => {
 
   var icons = ['caustic', 'biohazard', 'radioactive'];
 
-  test(
+  it(
     'sets cell title attribute according to column attribute value',
     () => {
       var toxin = new Backbone.Model({warning: 'biohazard'});
@@ -31,7 +31,7 @@ describe('IconTableCellView', () => {
     }
   );
 
-  test('sets cell title attribute if column is blank', () => {
+  it('sets cell title attribute if column is blank', () => {
     var toxin = new Backbone.Model();
     var cell = new IconTableCellView({
       column: {
@@ -47,7 +47,7 @@ describe('IconTableCellView', () => {
     expect(cell.$el).toHaveAttr('title', 'Unbedenklich');
   });
 
-  test('adds class corresponding to column attribute value', () => {
+  it('adds class corresponding to column attribute value', () => {
     var toxin = new Backbone.Model({warning: 'caustic'});
     var cell = new IconTableCellView({
       column: {
@@ -62,7 +62,7 @@ describe('IconTableCellView', () => {
     expect(cell.$el).toHaveClass('caustic');
   });
 
-  test(
+  it(
     'removes previous class when changing column attribute value',
     () => {
       var toxin = new Backbone.Model({warning: 'caustic'});

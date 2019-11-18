@@ -3,7 +3,7 @@ import {FileTypes} from '$pageflow/editor/api/FileTypes';
 
 describe('FileTypesCollection', () => {
   describe('#findByUpload', () => {
-    test(
+    it(
       'returns first FileType whose matchUpload method returns true',
       () => {
         var fileTypes = new FileTypes();
@@ -32,7 +32,7 @@ describe('FileTypesCollection', () => {
       }
     );
 
-    test(
+    it(
       'returns first FileType whose uploadType matches type of upload',
       () => {
         var fileTypes = new FileTypes();
@@ -57,7 +57,7 @@ describe('FileTypesCollection', () => {
       }
     );
 
-    test('throws exception if no file type matches', () => {
+    it('throws exception if no file type matches', () => {
       var fileTypes = new FileTypes();
       var upload = {type: 'video/mp4'};
 
@@ -70,7 +70,7 @@ describe('FileTypesCollection', () => {
   });
 
   describe('#findByCollectionName', () => {
-    test('returns file type with given collection name', () => {
+    it('returns file type with given collection name', () => {
       var fileTypes = new FileTypes();
 
       fileTypes.register('image_files', {
@@ -91,7 +91,7 @@ describe('FileTypesCollection', () => {
       expect(result.collectionName).toBe('video_files');
     });
 
-    test(
+    it(
       'throws exception if no file type with collection name exists',
       () => {
         var fileTypes = new FileTypes();
