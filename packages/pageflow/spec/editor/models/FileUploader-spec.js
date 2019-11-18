@@ -1,3 +1,8 @@
+import {EditorApi, FileUploader, FilesCollection, ImageFile, InvalidNestedTypeError, NestedTypeError, TextTrackFile} from '$pageflow/editor';
+
+import * as support from '$support';
+import sinon from 'sinon';
+
 describe('FileUploader', () => {
   let testContext;
 
@@ -17,7 +22,7 @@ describe('FileUploader', () => {
     testContext.textTrackFileType = testContext.fileTypes.findByCollectionName('text_track_files');
 
     testContext.entry = support.factories.entry({}, {
-      files: pageflow.FilesCollection.createForFileTypes([this.imageFileType,
+      files: FilesCollection.createForFileTypes([this.imageFileType,
                                                           this.videoFileType,
                                                           this.textTrackFileType], {}),
       fileTypes: testContext.fileTypes
@@ -27,7 +32,7 @@ describe('FileUploader', () => {
   describe('#add', () => {
     describe('non-nested file', () => {
       test('adds file to files collection of file type', () => {
-        var fileUploader = new pageflow.FileUploader({
+        var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
         });
@@ -41,7 +46,7 @@ describe('FileUploader', () => {
       test(
         'returns promise that resolves to file when FileUploader#submit is called',
         () => {
-          var fileUploader = new pageflow.FileUploader({
+          var fileUploader = new FileUploader({
             entry: testContext.entry,
             fileTypes: testContext.fileTypes
           });
@@ -53,14 +58,14 @@ describe('FileUploader', () => {
           });
           fileUploader.submit();
 
-          expect(result).toBeInstanceOf(pageflow.ImageFile);
+          expect(result).toBeInstanceOf(ImageFile);
         }
       );
 
       test(
         'returns promise that is rejected when FileUploader#abort is called',
         () => {
-          var fileUploader = new pageflow.FileUploader({
+          var fileUploader = new FileUploader({
             entry: testContext.entry,
             fileTypes: testContext.fileTypes
           });
@@ -74,7 +79,7 @@ describe('FileUploader', () => {
       );
 
       test('emits new:batch event on first add', () => {
-        var fileUploader = new pageflow.FileUploader({
+        var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
         });
@@ -89,7 +94,7 @@ describe('FileUploader', () => {
       });
 
       test('emits new:batch event on first add after abort', () => {
-        var fileUploader = new pageflow.FileUploader({
+        var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
         });
@@ -105,7 +110,7 @@ describe('FileUploader', () => {
       });
 
       test('emits new:batch event on first add after submit', () => {
-        var fileUploader = new pageflow.FileUploader({
+        var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
         });
@@ -121,7 +126,7 @@ describe('FileUploader', () => {
       });
 
       test('throws exception if target set', () => {
-        var fileUploader = new pageflow.FileUploader({
+        var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
         });
@@ -130,12 +135,12 @@ describe('FileUploader', () => {
         fileUploader.submit();
         var targetFile = testContext.entry.getFileCollection(testContext.videoFileType).first();
         var nonNestedUpload = {name: 'nested_video.mp4', type: 'video/mp4'};
-        var editor = new pageflow.EditorApi();
+        var editor = new EditorApi();
         editor.setUploadTargetFile(targetFile);
 
         expect(function() {
           fileUploader.add(nonNestedUpload, {editor: editor});
-        }).toThrowError(pageflow.InvalidNestedTypeError);
+        }).toThrowError(InvalidNestedTypeError);
       });
     });
 
@@ -143,7 +148,7 @@ describe('FileUploader', () => {
       test(
         'adds file to nested files collection of file type on target file',
         () => {
-          var fileUploader = new pageflow.FileUploader({
+          var fileUploader = new FileUploader({
             entry: testContext.entry,
             fileTypes: testContext.fileTypes
           });
@@ -152,7 +157,7 @@ describe('FileUploader', () => {
           fileUploader.submit();
           var targetFile = testContext.entry.getFileCollection(testContext.videoFileType).first();
           var nestedFileUpload = {name: 'text_track.vtt', type: 'text/vtt'};
-          var editor = new pageflow.EditorApi();
+          var editor = new EditorApi();
           editor.setUploadTargetFile(targetFile);
           fileUploader.add(nestedFileUpload, {editor: editor});
           expect(editor.nextUploadTargetFile.nestedFiles(
@@ -164,7 +169,7 @@ describe('FileUploader', () => {
       test(
         'resolves to file without the need to call any external function',
         () => {
-          var fileUploader = new pageflow.FileUploader({
+          var fileUploader = new FileUploader({
             entry: testContext.entry,
             fileTypes: testContext.fileTypes
           });
@@ -173,33 +178,33 @@ describe('FileUploader', () => {
           fileUploader.submit();
           var targetFile = testContext.entry.getFileCollection(testContext.videoFileType).first();
           var nestedFileUpload = {name: 'text_track.vtt', type: 'text/vtt'};
-          var editor = new pageflow.EditorApi();
+          var editor = new EditorApi();
           editor.setUploadTargetFile(targetFile);
           var result;
           fileUploader.add(nestedFileUpload, {editor: editor}).then(function(file) {
             result = file;
           });
-          expect(result).toBeInstanceOf(pageflow.TextTrackFile);
+          expect(result).toBeInstanceOf(TextTrackFile);
         }
       );
 
       test('throws exception if target not set', () => {
-        var fileUploader = new pageflow.FileUploader({
+        var fileUploader = new FileUploader({
           entry: testContext.entry,
           fileTypes: testContext.fileTypes
         });
         var nestedFileUpload = {name: 'text_track.vtt', type: 'text/vtt'};
-        var editor = new pageflow.EditorApi();
+        var editor = new EditorApi();
 
         expect(function() {
           fileUploader.add(nestedFileUpload, {editor: editor});
-        }).toThrowError(pageflow.NestedTypeError);
+        }).toThrowError(NestedTypeError);
       });
 
       test(
         'throws exception if target does not allow to nest type of file',
         () => {
-          var fileUploader = new pageflow.FileUploader({
+          var fileUploader = new FileUploader({
             entry: testContext.entry,
             fileTypes: testContext.fileTypes
           });
@@ -208,12 +213,12 @@ describe('FileUploader', () => {
           fileUploader.submit();
           var targetFile = testContext.entry.getFileCollection(testContext.videoFileType).first();
           var nestedFileUpload = {name: 'cannot_nest_image.png', type: 'image/png'};
-          var editor = new pageflow.EditorApi();
+          var editor = new EditorApi();
           editor.setUploadTargetFile(targetFile);
 
           expect(function() {
             fileUploader.add(nestedFileUpload, {editor: editor});
-          }).toThrowError(pageflow.InvalidNestedTypeError);
+          }).toThrowError(InvalidNestedTypeError);
         }
       );
     });
@@ -221,7 +226,7 @@ describe('FileUploader', () => {
 
   describe('#abort', () => {
     test('removes the files from the files collection', () => {
-      var fileUploader = new pageflow.FileUploader({
+      var fileUploader = new FileUploader({
         entry: testContext.entry,
         fileTypes: testContext.fileTypes
       });

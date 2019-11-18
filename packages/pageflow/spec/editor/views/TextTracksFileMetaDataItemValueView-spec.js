@@ -1,3 +1,7 @@
+import {TextTracksFileMetaDataItemValueView} from '$pageflow/editor';
+
+import * as support from '$support';
+
 describe('TextTracksFileMetaDataItemValueView', () => {
   let testContext;
 
@@ -19,7 +23,7 @@ describe('TextTracksFileMetaDataItemValueView', () => {
   });
 
   test('renders a comman separated list of text track labels', () => {
-    var view = new pageflow.TextTracksFileMetaDataItemValueView({
+    var view = new TextTracksFileMetaDataItemValueView({
       model: testContext.fixture.videoFile
     });
 

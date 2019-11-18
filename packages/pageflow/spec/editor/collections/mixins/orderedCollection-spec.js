@@ -1,3 +1,9 @@
+import Backbone from 'backbone';
+
+import {orderedCollection} from '$pageflow/editor';
+
+import * as support from '$support';
+
 describe('orderedCollection', () => {
   let testContext;
 
@@ -16,7 +22,7 @@ describe('orderedCollection', () => {
   });
 
   var OrderedCollection = Backbone.Collection.extend({
-    mixins: [pageflow.orderedCollection],
+    mixins: [orderedCollection],
     url: function() { return '/fake'; },
 
     comparator: function(item) {

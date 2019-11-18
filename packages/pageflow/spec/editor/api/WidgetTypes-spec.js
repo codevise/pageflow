@@ -1,9 +1,13 @@
+import {WidgetTypes} from '$pageflow/editor';
+
+import sinon from 'sinon';
+
 describe('WidgetTypes', () => {
   describe('#register/#findAllByRole', () => {
     test(
       'allows getting a list of widget types with name and translation key',
       () => {
-        var widgetTypes = new pageflow.WidgetTypes();
+        var widgetTypes = new WidgetTypes();
 
         widgetTypes.setup({
           navigation: [
@@ -22,7 +26,7 @@ describe('WidgetTypes', () => {
     );
 
     test('returns empty array for unknown role', () => {
-      var widgetTypes = new pageflow.WidgetTypes();
+      var widgetTypes = new WidgetTypes();
 
       widgetTypes.setup({});
 
@@ -32,7 +36,7 @@ describe('WidgetTypes', () => {
 
   describe('#register/#findByName', () => {
     test('allows getting a widget type by name', () => {
-      var widgetTypes = new pageflow.WidgetTypes();
+      var widgetTypes = new WidgetTypes();
 
       widgetTypes.setup({
         navigation: [
@@ -53,7 +57,7 @@ describe('WidgetTypes', () => {
     test(
       'allows supplying a configuration editor view for a widget type',
       () => {
-        var widgetTypes = new pageflow.WidgetTypes();
+        var widgetTypes = new WidgetTypes();
         var viewConstructor = sinon.spy();
 
         widgetTypes.register('fancy_bar', {

@@ -1,3 +1,7 @@
+import {VideoFile} from '$pageflow/editor';
+
+import * as support from '$support';
+
 describe('encodedFile', () => {
   describe('#stages', () => {
     describe('when confirmEncodingJobs is off', () => {
@@ -6,7 +10,7 @@ describe('encodedFile', () => {
       });
 
       test('does not include fetching meta data', () => {
-        var encodedFile = new pageflow.VideoFile();
+        var encodedFile = new VideoFile();
 
         expect(encodedFile.stages.pluck('name')).toEqual(['uploading', 'encoding']);
       });
@@ -18,7 +22,7 @@ describe('encodedFile', () => {
       });
 
       test('includes fetching meta data', () => {
-        var encodedFile = new pageflow.VideoFile();
+        var encodedFile = new VideoFile();
 
         expect(encodedFile.stages.pluck('name')).toEqual(['uploading', 'fetching_meta_data', 'encoding']);
       });

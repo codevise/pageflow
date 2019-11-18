@@ -1,13 +1,22 @@
+import Backbone from 'backbone';
+
+import {TextTableCellView} from '$pageflow/ui';
+
+import {UploadableFilesView} from '$pageflow/editor';
+
+import * as support from '$support';
+import {Table} from '$support/dominos/ui';
+
 describe('UploadableFilesView', () => {
   var f = support.factories;
 
   test('renders confirmUploadTableColumns of file type', () => {
     var fileType = f.fileType({
       confirmUploadTableColumns: [
-        {name: 'custom', cellView: pageflow.TextTableCellView}
+        {name: 'custom', cellView: TextTableCellView}
       ]
     });
-    var view = new pageflow.UploadableFilesView({
+    var view = new UploadableFilesView({
       collection: f.filesCollection({
         fileType: fileType
       }),
@@ -16,7 +25,7 @@ describe('UploadableFilesView', () => {
     });
 
     view.render();
-    var table = support.dom.Table.find(view);
+    var table = Table.find(view);
 
     expect(table.columnNames()).toEqual(expect.arrayContaining(['custom']));
   });

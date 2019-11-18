@@ -1,3 +1,7 @@
+import {NestedFilesCollection} from '$pageflow/editor';
+
+import * as support from '$support';
+
 describe('pageflow.NestedFilesCollection', () => {
   test('supports custom order defined by nested file type', () => {
     var fixture = support.factories.videoFileWithTextTrackFiles({
@@ -16,7 +20,7 @@ describe('pageflow.NestedFilesCollection', () => {
       ]
     });
 
-    var nestedFiles = new pageflow.NestedFilesCollection({
+    var nestedFiles = new NestedFilesCollection({
       parent: fixture.textTrackFiles,
       parentFile: fixture.videoFile
     });
@@ -45,7 +49,7 @@ describe('pageflow.NestedFilesCollection', () => {
       ]
     });
 
-    var nestedFiles = new pageflow.NestedFilesCollection({
+    var nestedFiles = new NestedFilesCollection({
       parent: fixture.textTrackFiles,
       parentFile: fixture.videoFile
     });

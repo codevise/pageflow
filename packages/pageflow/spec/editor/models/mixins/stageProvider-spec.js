@@ -1,6 +1,10 @@
+import Backbone from 'backbone';
+
+import {stageProvider} from '$pageflow/editor';
+
 describe('stageProvider', () => {
   var Model = Backbone.Model.extend({
-    mixins: [pageflow.stageProvider],
+    mixins: [stageProvider],
 
     readyState: 'finished',
 
@@ -55,7 +59,7 @@ describe('stageProvider', () => {
 
   test('#stages can be function', () => {
     var model = new (Backbone.Model.extend({
-      mixins: [pageflow.stageProvider],
+      mixins: [stageProvider],
 
       readyState: 'finished',
 

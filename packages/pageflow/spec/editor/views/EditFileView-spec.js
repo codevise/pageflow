@@ -1,13 +1,23 @@
+import Backbone from 'backbone';
+
+import {TextInputView} from '$pageflow/ui';
+
+import {EditFileView} from '$pageflow/editor';
+
+import * as support from '$support';
+import sinon from 'sinon';
+import {ConfigurationEditorTab} from '$support/dominos/ui';
+
 describe('EditFileView', () => {
   var f = support.factories;
 
   test('renders configurationEditorInputs of file type', () => {
     var fileType = f.fileType({
       configurationEditorInputs: [
-        {name: 'custom', inputView: pageflow.TextInputView}
+        {name: 'custom', inputView: TextInputView}
       ]
     });
-    var view = new pageflow.EditFileView({
+    var view = new EditFileView({
       model: f.file({}, {
         fileType: fileType
       }),
@@ -15,7 +25,7 @@ describe('EditFileView', () => {
     });
 
     view.render();
-    var configurationEditor = support.dom.ConfigurationEditorTab.find(view);
+    var configurationEditor = ConfigurationEditorTab.find(view);
 
     expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining(['custom']));
   });
@@ -25,7 +35,7 @@ describe('EditFileView', () => {
     () => {
       var inputsFunction = sinon.spy(function(model) {
         return [
-          {name: 'custom', inputView: pageflow.TextInputView}
+          {name: 'custom', inputView: TextInputView}
         ];
       });
       var fileType = f.fileType({
@@ -34,13 +44,13 @@ describe('EditFileView', () => {
       var model = f.file({}, {
         fileType: fileType
       });
-      var view = new pageflow.EditFileView({
+      var view = new EditFileView({
         model: model,
         entry: new Backbone.Model()
       });
 
       view.render();
-      var configurationEditor = support.dom.ConfigurationEditorTab.find(view);
+      var configurationEditor = ConfigurationEditorTab.find(view);
 
       expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining(['custom']));
       expect(inputsFunction).to.have.been.calledWith(model);

@@ -1,8 +1,24 @@
+import {EditorApi, FilesCollection, Page, editor} from '$pageflow/editor';
+
+import * as support from '$support';
+
+import template from '../video.jst';
+
+import template from '../video.jst';
+
+import template from '../video.jst';
+
+import template from '../video.jst';
+
+import template from '../video.jst';
+
+import template from '../video.jst';
+
 describe('Page', () => {
   describe('#thumbnailFile', () => {
     support.setupGlobals({
       editor: function() {
-        var api = new pageflow.EditorApi();
+        var api = new EditorApi();
 
         api.pageTypes.register('audio', {});
         api.pageTypes.setup([
@@ -38,14 +54,14 @@ describe('Page', () => {
       },
 
       entry: function() {
-        pageflow.editor.fileTypes = support.factories.fileTypes(function() {
+        editor.fileTypes = support.factories.fileTypes(function() {
           this.withImageFileType();
         });
 
         return support.factories.entry({}, {
-          fileTypes: pageflow.editor.fileTypes,
-          files: pageflow.FilesCollection.createForFileTypes(
-            pageflow.editor.fileTypes,
+          fileTypes: editor.fileTypes,
+          files: FilesCollection.createForFileTypes(
+            editor.fileTypes,
             {
               image_files: [
                 {id: 1, perma_id: 5},
@@ -58,8 +74,8 @@ describe('Page', () => {
     });
 
     test('returns first present file', () => {
-      var page = new pageflow.Page({
-        template: 'video',
+      var page = new Page({
+        template,
         configuration: {
           thumbnail_id: 5
         }
@@ -71,8 +87,8 @@ describe('Page', () => {
     });
 
     test('returns undefined if no candidate matches', () => {
-      var page = new pageflow.Page({
-        template: 'video',
+      var page = new Page({
+        template,
         configuration: {}
       });
 
@@ -82,8 +98,8 @@ describe('Page', () => {
     });
 
     test('returns undefined if candidate condition is not met', () => {
-      var page = new pageflow.Page({
-        template: 'video',
+      var page = new Page({
+        template,
         configuration: {
           image_id: 5,
           background_type: 'video'
@@ -96,8 +112,8 @@ describe('Page', () => {
     });
 
     test('returns undefined if negated candidate condition is met', () => {
-      var page = new pageflow.Page({
-        template: 'video',
+      var page = new Page({
+        template,
         configuration: {
           poster_id: 5,
           background_type: 'image'
@@ -110,8 +126,8 @@ describe('Page', () => {
     });
 
     test('returns present file if candidate condition is met', () => {
-      var page = new pageflow.Page({
-        template: 'video',
+      var page = new Page({
+        template,
         configuration: {
           image_id: 5,
           background_type: 'image'
@@ -126,8 +142,8 @@ describe('Page', () => {
     test(
       'returns present file if negated candidate condition is not met',
       () => {
-        var page = new pageflow.Page({
-          template: 'video',
+        var page = new Page({
+          template,
           configuration: {
             poster_id: 5,
             background_type: 'video'

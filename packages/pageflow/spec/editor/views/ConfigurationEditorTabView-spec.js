@@ -1,9 +1,13 @@
+import {ConfigurationEditorTabView} from '$pageflow/ui';
+
+import sinon from 'sinon';
+
 describe('ConfigurationEditorTabView', () => {
   describe('#group', () => {
     test('delegates to groups.apply', () => {
-      var groups = new pageflow.ConfigurationEditorTabView.Groups();
+      var groups = new ConfigurationEditorTabView.Groups();
       var groupFn = sinon.spy();
-      var tabView = new pageflow.ConfigurationEditorTabView({
+      var tabView = new ConfigurationEditorTabView({
         groups: groups
       });
 
@@ -19,7 +23,7 @@ describe('ConfigurationEditorTabView', () => {
       test(
         'fails with explanation when trying to define group with non function',
         () => {
-          var groups = new pageflow.ConfigurationEditorTabView.Groups();
+          var groups = new ConfigurationEditorTabView.Groups();
 
           expect(function() {
             groups.define('myGroup', 'yay');
@@ -30,7 +34,7 @@ describe('ConfigurationEditorTabView', () => {
 
     describe('#apply', () => {
       test('applies function given in #define', () => {
-        var groups = new pageflow.ConfigurationEditorTabView.Groups();
+        var groups = new ConfigurationEditorTabView.Groups();
         var groupFn = sinon.spy();
         var context = {};
 
@@ -41,7 +45,7 @@ describe('ConfigurationEditorTabView', () => {
       });
 
       test('fails with explanation when group is not defined', () => {
-        var groups = new pageflow.ConfigurationEditorTabView.Groups();
+        var groups = new ConfigurationEditorTabView.Groups();
         var context = {};
 
         expect(function() {

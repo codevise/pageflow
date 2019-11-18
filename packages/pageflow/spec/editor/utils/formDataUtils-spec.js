@@ -1,3 +1,8 @@
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {formDataUtils} from '$pageflow/editor';
+
 describe('formDataUtils', () => {
   describe('fromObject', () => {
     test('returns flat hash with keys in angle bracket notation', () => {
@@ -10,7 +15,7 @@ describe('formDataUtils', () => {
         }
       };
 
-      var result = pageflow.formDataUtils.fromObject(object);
+      var result = formDataUtils.fromObject(object);
 
       expect(result).toEqual({
         'some[nested]': 'value',
@@ -25,7 +30,7 @@ describe('formDataUtils', () => {
         }
       };
 
-      var result = pageflow.formDataUtils.fromObject(object);
+      var result = formDataUtils.fromObject(object);
 
       expect(result).toEqual({
         'some[value]': '1 + 1 = 2 & a',
@@ -44,7 +49,7 @@ describe('formDataUtils', () => {
       });
       var model = new Model({name: 'Tom', ignored: 'attribute'});
 
-      var result = pageflow.formDataUtils.fromModel(model);
+      var result = formDataUtils.fromModel(model);
 
       expect(result).toEqual({
         'person[name]': 'Tom'

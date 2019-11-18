@@ -1,3 +1,7 @@
+import {FileMetaDataItemView} from '$pageflow/editor';
+
+import * as support from '$support';
+
 describe('FileMetaDataItemView', () => {
   describe('#labelText', () => {
     support.useFakeTranslations({
@@ -7,7 +11,7 @@ describe('FileMetaDataItemView', () => {
     });
 
     test('uses file type specific translatons', () => {
-      var view = new pageflow.FileMetaDataItemView({
+      var view = new FileMetaDataItemView({
         model: support.factories.imageFile(),
         name: 'alt'
       });
@@ -18,7 +22,7 @@ describe('FileMetaDataItemView', () => {
     });
 
     test('falls back to common file translation', () => {
-      var view = new pageflow.FileMetaDataItemView({
+      var view = new FileMetaDataItemView({
         model: support.factories.imageFile(),
         name: 'text_tracks'
       });
@@ -29,7 +33,7 @@ describe('FileMetaDataItemView', () => {
     });
 
     test('falls back to legacy translation', () => {
-      var view = new pageflow.FileMetaDataItemView({
+      var view = new FileMetaDataItemView({
         model: support.factories.imageFile(),
         name: 'rights'
       });

@@ -1,3 +1,10 @@
+import {Widget} from '$pageflow/editor';
+
+import {WidgetItemView} from '$pageflow/editor';
+
+import * as support from '$support';
+import {SelectInputView} from '$support/dominos/ui';
+
 describe('WidgetItemView', () => {
   var f = support.factories;
 
@@ -6,17 +13,17 @@ describe('WidgetItemView', () => {
       {name: 'default_bar', role: 'navigation'},
       {name: 'fancy_bar', role: 'navigation'}
     ]);
-    var widget = new pageflow.Widget({
+    var widget = new Widget({
       id: 'navigation',
       type_name: 'default_bar'
     }, {widgetTypes: widgetTypes});
-    var view = new pageflow.WidgetItemView({
+    var view = new WidgetItemView({
       model: widget,
       widgetTypes: widgetTypes
     });
 
     view.render();
-    var select = support.dom.SelectInputView.find(view);
+    var select = SelectInputView.find(view);
 
     expect(select.values()).toEqual(['default_bar', 'fancy_bar']);
   });
@@ -30,17 +37,17 @@ describe('WidgetItemView', () => {
         isOptional: true
       });
     });
-    var widget = new pageflow.Widget({
+    var widget = new Widget({
       id: 'navigation',
       type_name: 'default_bar'
     }, {widgetTypes: widgetTypes});
-    var view = new pageflow.WidgetItemView({
+    var view = new WidgetItemView({
       model: widget,
       widgetTypes: widgetTypes
     });
 
     view.render();
-    var select = support.dom.SelectInputView.find(view);
+    var select = SelectInputView.find(view);
 
     expect(select.values()).toEqual(['', 'default_bar', 'fancy_bar']);
   });
@@ -52,17 +59,17 @@ describe('WidgetItemView', () => {
         {name: 'default_bar', role: 'navigation'},
         {name: 'fancy_bar', role: 'navigation'}
       ]);
-      var widget = new pageflow.Widget({
+      var widget = new Widget({
         id: 'navigation',
         type_name: null
       }, {widgetTypes: widgetTypes});
-      var view = new pageflow.WidgetItemView({
+      var view = new WidgetItemView({
         model: widget,
         widgetTypes: widgetTypes
       });
 
       view.render();
-      var select = support.dom.SelectInputView.find(view);
+      var select = SelectInputView.find(view);
 
       expect(select.values()).toEqual(['', 'default_bar', 'fancy_bar']);
     }
@@ -72,11 +79,11 @@ describe('WidgetItemView', () => {
     var widgetTypes = f.widgetTypes([
       {name: 'default_bar', role: 'navigation'}
     ]);
-    var widget = new pageflow.Widget({
+    var widget = new Widget({
       id: 'navigation',
       type_name: 'default_bar'
     }, {widgetTypes: widgetTypes});
-    var view = new pageflow.WidgetItemView({
+    var view = new WidgetItemView({
       model: widget,
       widgetTypes: widgetTypes
     });
@@ -96,11 +103,11 @@ describe('WidgetItemView', () => {
           isOptional: true
         });
       });
-      var widget = new pageflow.Widget({
+      var widget = new Widget({
         id: 'navigation',
         type_name: 'default_bar'
       }, {widgetTypes: widgetTypes});
-      var view = new pageflow.WidgetItemView({
+      var view = new WidgetItemView({
         model: widget,
         widgetTypes: widgetTypes
       });
@@ -121,11 +128,11 @@ describe('WidgetItemView', () => {
           configurationEditorView: function() {}
         });
       });
-      var widget = new pageflow.Widget({
+      var widget = new Widget({
         id: 'navigation',
         type_name: 'fancy_bar'
       }, {widgetTypes: widgetTypes});
-      var view = new pageflow.WidgetItemView({
+      var view = new WidgetItemView({
         model: widget,
         widgetTypes: widgetTypes
       });
@@ -145,11 +152,11 @@ describe('WidgetItemView', () => {
         configurationEditorView: function() {}
       });
     });
-    var widget = new pageflow.Widget({
+    var widget = new Widget({
       id: 'navigation',
       type_name: 'fancy_bar'
     }, {widgetTypes: widgetTypes});
-    var view = new pageflow.WidgetItemView({
+    var view = new WidgetItemView({
       model: widget,
       widgetTypes: widgetTypes
     });
@@ -166,11 +173,11 @@ describe('WidgetItemView', () => {
         {name: 'default_bar', role: 'navigation'},
         {name: 'fancy_bar', role: 'navigation'}
       ]);
-      var widget = new pageflow.Widget({
+      var widget = new Widget({
         id: 'navigation',
         type_name: null
       }, {widgetTypes: widgetTypes});
-      var view = new pageflow.WidgetItemView({
+      var view = new WidgetItemView({
         model: widget,
         widgetTypes: widgetTypes
       });

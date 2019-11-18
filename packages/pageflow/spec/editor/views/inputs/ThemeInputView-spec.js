@@ -1,19 +1,28 @@
+import Backbone from 'backbone';
+
+import {ThemesCollection, app} from '$pageflow/editor';
+
+import {ThemeInputView} from '$pageflow/editor';
+
+import * as support from '$support';
+import {ReferenceInputView, ThemeItemView} from '$support/dominos/editor';
+
 describe('ThemeInputView', () => {
   test('updates attribute on clicking "use theme button"', () => {
     var model = new Backbone.Model({theme_name: 'default'});
-    var themes = new pageflow.ThemesCollection([
+    var themes = new ThemesCollection([
       {name: 'default', preview_image_url: '/assets/pageflow/themes/default/preview.png'},
       {name: 'acme', preview_image_url: '/assets/pageflow/themes/test_theme/preview.png'}
     ]);
-    var view = new pageflow.ThemeInputView({
+    var view = new ThemeInputView({
       model: model,
       propertyName: 'theme_name',
       themes: themes
     });
 
-    support.dom.ReferenceInputView.render(view).clickChooseButton();
-    var themeItemView = support.dom.ThemeItemView.findByName('acme', {
-      inView: pageflow.app.dialogRegion.currentView
+    ReferenceInputView.render(view).clickChooseButton();
+    var themeItemView = ThemeItemView.findByName('acme', {
+      inView: app.dialogRegion.currentView
     });
 
     themeItemView.clickUseButton();

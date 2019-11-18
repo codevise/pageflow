@@ -1,3 +1,10 @@
+import Backbone from 'backbone';
+
+import {FileTypesCollection, FileType, ReusableFile, SubsetCollection} from '$pageflow/editor';
+
+import * as support from '$support';
+import sinon from 'sinon';
+
 describe('ReusableFile', () => {
   let testContext;
 
@@ -5,7 +12,7 @@ describe('ReusableFile', () => {
     testContext = {};
   });
 
-  var File = pageflow.ReusableFile.extend({
+  var File = ReusableFile.extend({
     readyState: 'ready'
   });
 
@@ -106,19 +113,19 @@ describe('ReusableFile', () => {
 
   describe('#nestedFiles', () => {
     beforeEach(() => {
-      testContext.textTrackFileType = new pageflow.FileType({collectionName: 'text_track_files',
+      testContext.textTrackFileType = new FileType({collectionName: 'text_track_files',
                                                       typeName: 'Pageflow::TextTrackFile',
                                                       model: File,
                                                       matchUpload: /^text_track/});
-      testContext.imageFileType = new pageflow.FileType({collectionName: 'image_files',
+      testContext.imageFileType = new FileType({collectionName: 'image_files',
                                                   typeName: 'Pageflow::ImageFile',
                                                   model: File,
                                                   matchUpload: /^image/});
-      testContext.videoFileType = new pageflow.FileType({collectionName: 'video_files',
+      testContext.videoFileType = new FileType({collectionName: 'video_files',
                                                   typeName: 'Pageflow::VideoFile',
                                                   model: File,
                                                   matchUpload: /^video/});
-      testContext.videoFileType.nestedFileTypes = new pageflow.FileTypesCollection([testContext.textTrackFileType,
+      testContext.videoFileType.nestedFileTypes = new FileTypesCollection([testContext.textTrackFileType,
                                                                              testContext.imageFileType]);
       testContext.textTrackFiles = new FilesCollection({fileType: testContext.textTrackFileType});
       testContext.imageFiles = new FilesCollection({fileType: testContext.imageFileType});
@@ -129,7 +136,7 @@ describe('ReusableFile', () => {
       var nestedFile = new File({}, {fileType: testContext.textTrackFileType, parentFile: parentFile});
       testContext.textTrackFiles.add(nestedFile);
 
-      expect(parentFile.nestedFiles(testContext.textTrackFiles)).toBeInstanceOf(pageflow.SubsetCollection);
+      expect(parentFile.nestedFiles(testContext.textTrackFiles)).toBeInstanceOf(SubsetCollection);
     });
 
     test('contains nested files of expected type', () => {

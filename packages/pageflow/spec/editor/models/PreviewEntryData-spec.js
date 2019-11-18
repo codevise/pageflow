@@ -1,3 +1,7 @@
+import {ChaptersCollection, Chapter, FilesCollection, PagesCollection, Page, PreviewEntryData, StorylinesCollection, Storyline, ThemesCollection} from '$pageflow/editor';
+
+import * as support from '$support';
+
 describe('pageflow.PreviewEntryData', () => {
   describe('#getThemingOption', () => {
     test('returns option value by name', () => {
@@ -6,7 +10,7 @@ describe('pageflow.PreviewEntryData', () => {
           configuration: {theme_name: 'custom'}
         },
         {
-          themes: new pageflow.ThemesCollection([
+          themes: new ThemesCollection([
             {
               name: 'custom',
               page_change_by_scrolling: true
@@ -14,7 +18,7 @@ describe('pageflow.PreviewEntryData', () => {
           ])
         }
       );
-      var entryData = new pageflow.PreviewEntryData({
+      var entryData = new PreviewEntryData({
         entry: entry
       });
 
@@ -31,7 +35,7 @@ describe('pageflow.PreviewEntryData', () => {
         var entry = support.factories.entry({}, {
           fileTypes: support.factories.fileTypesWithImageFileType(),
           files: {
-            image_files: pageflow.FilesCollection.createForFileType(
+            image_files: FilesCollection.createForFileType(
               support.factories.imageFileType(),
               [
                 {
@@ -43,7 +47,7 @@ describe('pageflow.PreviewEntryData', () => {
             )
           }
         });
-        var entryData = new pageflow.PreviewEntryData({
+        var entryData = new PreviewEntryData({
           entry: entry
         });
 
@@ -57,11 +61,11 @@ describe('pageflow.PreviewEntryData', () => {
   describe('#getStorylineConfiguration', () => {
     test('returns configuration by storyline id', () => {
       var configuration = {title: 'some text'};
-      var storyline = new pageflow.Storyline({id: 1, configuration: configuration}, {
-        chapters: new pageflow.ChaptersCollection([])
+      var storyline = new Storyline({id: 1, configuration: configuration}, {
+        chapters: new ChaptersCollection([])
       });
-      var entryData = new pageflow.PreviewEntryData({
-        storylines: new pageflow.StorylinesCollection([storyline])
+      var entryData = new PreviewEntryData({
+        storylines: new StorylinesCollection([storyline])
       });
 
       var result = entryData.getStorylineConfiguration(1);
@@ -73,11 +77,11 @@ describe('pageflow.PreviewEntryData', () => {
   describe('#getChapterConfiguration', () => {
     test('returns configuration by chapter id', () => {
       var configuration = {title: 'some text'};
-      var chapter = new pageflow.Chapter({id: 1, configuration: configuration}, {
-        pages: new pageflow.PagesCollection([])
+      var chapter = new Chapter({id: 1, configuration: configuration}, {
+        pages: new PagesCollection([])
       });
-      var entryData = new pageflow.PreviewEntryData({
-        chapters: new pageflow.ChaptersCollection([chapter])
+      var entryData = new PreviewEntryData({
+        chapters: new ChaptersCollection([chapter])
       });
 
       var result = entryData.getChapterConfiguration(1);
@@ -88,14 +92,14 @@ describe('pageflow.PreviewEntryData', () => {
 
   describe('#getChapterPagePermaIds', () => {
     test('returns perma ids of pages of chapter by chapter id', () => {
-      var chapter = new pageflow.Chapter({id: 1}, {
-        pages: new pageflow.PagesCollection([
+      var chapter = new Chapter({id: 1}, {
+        pages: new PagesCollection([
           {id: 1, chapter_id: 1, perma_id: 100},
           {id: 2, chapter_id: 1, perma_id: 101}
         ])
       });
-      var entryData = new pageflow.PreviewEntryData({
-        chapters: new pageflow.ChaptersCollection([chapter])
+      var entryData = new PreviewEntryData({
+        chapters: new ChaptersCollection([chapter])
       });
 
       var result = entryData.getChapterPagePermaIds(1);
@@ -107,9 +111,9 @@ describe('pageflow.PreviewEntryData', () => {
   describe('#getPageConfiguration', () => {
     test('returns configruation by page perma id', () => {
       var configuration = {title: 'some text'};
-      var page = new pageflow.Page({perma_id: 100, configuration: configuration});
-      var entryData = new pageflow.PreviewEntryData({
-        pages: new pageflow.PagesCollection([page])
+      var page = new Page({perma_id: 100, configuration: configuration});
+      var entryData = new PreviewEntryData({
+        pages: new PagesCollection([page])
       });
 
       var result = entryData.getPageConfiguration(100);
@@ -120,10 +124,10 @@ describe('pageflow.PreviewEntryData', () => {
 
   describe('#getPagePosition', () => {
     test('returns configruation by page perma id', () => {
-      var page1 = new pageflow.Page({perma_id: 100});
-      var page2 = new pageflow.Page({perma_id: 101});
-      var entryData = new pageflow.PreviewEntryData({
-        pages: new pageflow.PagesCollection([page1, page2])
+      var page1 = new Page({perma_id: 100});
+      var page2 = new Page({perma_id: 101});
+      var entryData = new PreviewEntryData({
+        pages: new PagesCollection([page1, page2])
       });
 
       expect(entryData.getPagePosition(100)).toBe(0);
@@ -133,9 +137,9 @@ describe('pageflow.PreviewEntryData', () => {
 
   describe('#getChapterIdByPagePermaId', () => {
     test('returns id of pages parent chapter ', () => {
-      var page = new pageflow.Page({perma_id: 102, chapter_id: 2});
-      var entryData = new pageflow.PreviewEntryData({
-        pages: new pageflow.PagesCollection([page])
+      var page = new Page({perma_id: 102, chapter_id: 2});
+      var entryData = new PreviewEntryData({
+        pages: new PagesCollection([page])
       });
 
       var result = entryData.getChapterIdByPagePermaId(102);
@@ -146,11 +150,11 @@ describe('pageflow.PreviewEntryData', () => {
 
   describe('#getStorylineIdByChapterId', () => {
     test('returns id of chapter`s parent storyline', () => {
-      var chapter = new pageflow.Chapter({id: 102, storyline_id: 2}, {
-        pages: new pageflow.PagesCollection([])
+      var chapter = new Chapter({id: 102, storyline_id: 2}, {
+        pages: new PagesCollection([])
       });
-      var entryData = new pageflow.PreviewEntryData({
-        chapters: new pageflow.ChaptersCollection([chapter])
+      var entryData = new PreviewEntryData({
+        chapters: new ChaptersCollection([chapter])
       });
 
       var result = entryData.getStorylineIdByChapterId(102);

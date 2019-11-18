@@ -1,8 +1,12 @@
+import {EditorApi} from '$pageflow/editor';
+
+import sinon from 'sinon';
+
 describe('pageflow.EditorApi', () => {
   describe('#selectFile', () => {
     test('navigates to files route for file type given as string', () => {
       var router = fakeRouter();
-      var api = new pageflow.EditorApi({router: router});
+      var api = new EditorApi({router: router});
 
       api.selectFile('image_files', 'some_handler');
 
@@ -13,7 +17,7 @@ describe('pageflow.EditorApi', () => {
 
     test('navigates to files route for file type given as object', () => {
       var router = fakeRouter();
-      var api = new pageflow.EditorApi({router: router});
+      var api = new EditorApi({router: router});
 
       api.selectFile({name: 'image_files', filter: 'large'}, 'some_handler');
 
@@ -26,7 +30,7 @@ describe('pageflow.EditorApi', () => {
 
     test('passes payload as serialized string', () => {
       var router = fakeRouter();
-      var api = new pageflow.EditorApi({router: router});
+      var api = new EditorApi({router: router});
 
       api.selectFile('image_files', 'some_handler', {some: 'payload'});
 

@@ -1,3 +1,11 @@
+import $ from 'jquery';
+import Backbone from 'backbone';
+
+import {ReferenceInputView} from '$pageflow/editor';
+
+import * as support from '$support';
+import {ReferenceInputView} from '$support/dominos/editor';
+
 describe('pageflow.ReferenceInputView', () => {
   var Model = Backbone.Model.extend({
     i18nKey: 'page'
@@ -13,7 +21,7 @@ describe('pageflow.ReferenceInputView', () => {
     }
   });
 
-  var TestView = pageflow.ReferenceInputView.extend({
+  var TestView = ReferenceInputView.extend({
     getTarget: function() {
       return this.options.target;
     }
@@ -81,7 +89,7 @@ describe('pageflow.ReferenceInputView', () => {
           propertyName: 'some_id'
         });
 
-        support.dom.ReferenceInputView.render(view).clickChooseButton();
+        ReferenceInputView.render(view).clickChooseButton();
 
         expect(model.get('some_id')).toBe(46);
       }
@@ -104,7 +112,7 @@ describe('pageflow.ReferenceInputView', () => {
         propertyName: 'an_id'
       });
 
-      support.dom.ReferenceInputView.render(view).clickChooseButton();
+      ReferenceInputView.render(view).clickChooseButton();
 
       expect(model.get('an_id')).toBe(47);
     });

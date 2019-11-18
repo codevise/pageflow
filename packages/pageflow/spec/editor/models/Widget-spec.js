@@ -1,9 +1,13 @@
+import {Widget} from '$pageflow/editor';
+
+import * as support from '$support';
+
 describe('Widget', () => {
   var f = support.factories;
 
   describe('#toJSON', () => {
     test('includes role, type_name and configuration', () => {
-      var widget = new pageflow.Widget({
+      var widget = new Widget({
         id: 'navigation',
         type_name: 'fancy_bar',
         configuration: {

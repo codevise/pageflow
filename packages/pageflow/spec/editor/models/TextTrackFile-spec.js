@@ -1,9 +1,13 @@
+import {TextTrackFile} from '$pageflow/editor';
+
+import * as support from '$support';
+
 describe('TextTrackFile', () => {
   describe('#extractLanguageCodeFromFilename', () => {
     test(
       'returns null if filename does not follow facebook convention',
       () => {
-        var textTrackFile = new pageflow.TextTrackFile(
+        var textTrackFile = new TextTrackFile(
           {
             file_name: 'does_not_follow_convention.en.vtt'
           });
@@ -15,7 +19,7 @@ describe('TextTrackFile', () => {
     test(
       'returns the language code if filename does follow facebook convention',
       () => {
-        var textTrackFile = new pageflow.TextTrackFile(
+        var textTrackFile = new TextTrackFile(
           {
             file_name: 'does_follow_convention.en_EN.vtt'
           });
@@ -32,7 +36,7 @@ describe('TextTrackFile', () => {
     });
 
     test('uses label configuration attribute', () => {
-      var textTrackFile = new pageflow.TextTrackFile({
+      var textTrackFile = new TextTrackFile({
         configuration: {
           label: 'German'
         }
@@ -42,7 +46,7 @@ describe('TextTrackFile', () => {
     });
 
     test('falls back to inferred label', () => {
-      var textTrackFile = new pageflow.TextTrackFile({
+      var textTrackFile = new TextTrackFile({
         configuration: {
           label: '',
           srclang: 'de'
@@ -53,7 +57,7 @@ describe('TextTrackFile', () => {
     });
 
     test('falls back to placeholder', () => {
-      var textTrackFile = new pageflow.TextTrackFile({
+      var textTrackFile = new TextTrackFile({
         configuration: {
           label: ''
         }
@@ -65,7 +69,7 @@ describe('TextTrackFile', () => {
 
   describe('#inferredLabel', () => {
     test('returns label based on srclang', () => {
-      var textTrackFile = new pageflow.TextTrackFile({
+      var textTrackFile = new TextTrackFile({
         configuration: {
           label: '',
           srclang: 'de'
@@ -76,7 +80,7 @@ describe('TextTrackFile', () => {
     });
 
     test('return null if srclang is blank', () => {
-      var textTrackFile = new pageflow.TextTrackFile({
+      var textTrackFile = new TextTrackFile({
         configuration: {
           label: '',
           srclang: ''
@@ -87,7 +91,7 @@ describe('TextTrackFile', () => {
     });
 
     test('return null if srclang is unknown', () => {
-      var textTrackFile = new pageflow.TextTrackFile({
+      var textTrackFile = new TextTrackFile({
         configuration: {
           label: '',
           srclang: 'unknown'

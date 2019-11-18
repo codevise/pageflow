@@ -1,7 +1,9 @@
+import {Chapter, PagesCollection, Page} from '$pageflow/editor';
+
 describe('ChapterPagesCollection', () => {
-  var Chapter = pageflow.Chapter;
-  var PagesCollection = pageflow.PagesCollection;
-  var Page = pageflow.Page;
+  var Chapter = Chapter;
+  var PagesCollection = PagesCollection;
+  var Page = Page;
 
   test('filters pages by chapter', () => {
     var pages = new PagesCollection([

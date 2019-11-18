@@ -1,3 +1,10 @@
+import {Configuration} from '$pageflow/editor';
+
+import {FileProcessingStateDisplayView} from '$pageflow/editor';
+
+import * as support from '$support';
+import {FileStageItemView} from '$support/dominos/editor';
+
 describe('pageflow.FileProcessingStateDisplayView', () => {
   test('displays unfinished file stages', () => {
     var fixture = support.factories.imageFilesFixture({
@@ -7,10 +14,10 @@ describe('pageflow.FileProcessingStateDisplayView', () => {
         state: 'processing'
       }
     });
-    var model = new pageflow.Configuration({
+    var model = new Configuration({
       imageFileId: 5
     });
-    var view = new pageflow.FileProcessingStateDisplayView({
+    var view = new FileProcessingStateDisplayView({
       collection: fixture.imageFiles,
       propertyName: 'imageFileId',
       model: model
@@ -18,7 +25,7 @@ describe('pageflow.FileProcessingStateDisplayView', () => {
 
     view.render();
 
-    expect(support.dom.FileStageItemView.findAll(view).length).toBe(1);
+    expect(FileStageItemView.findAll(view).length).toBe(1);
     expect(view.$el).not.to.have.$class('file_processing_state_display-empty');
   });
 
@@ -30,10 +37,10 @@ describe('pageflow.FileProcessingStateDisplayView', () => {
         state: 'processed'
       }
     });
-    var model = new pageflow.Configuration({
+    var model = new Configuration({
       imageFileId: 5
     });
-    var view = new pageflow.FileProcessingStateDisplayView({
+    var view = new FileProcessingStateDisplayView({
       collection: fixture.imageFiles,
       propertyName: 'imageFileId',
       model: model
@@ -41,7 +48,7 @@ describe('pageflow.FileProcessingStateDisplayView', () => {
 
     view.render();
 
-    expect(support.dom.FileStageItemView.findAll(view).length).toBe(0);
+    expect(FileStageItemView.findAll(view).length).toBe(0);
     expect(view.$el).to.have.$class('file_processing_state_display-empty');
   });
 });

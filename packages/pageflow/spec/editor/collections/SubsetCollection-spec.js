@@ -1,5 +1,11 @@
+import Backbone from 'backbone';
+
+import {SubsetCollection} from '$pageflow/editor';
+
+import sinon from 'sinon';
+
 describe('SubsetCollection', () => {
-  var SubsetCollection = pageflow.SubsetCollection;
+  var SubsetCollection = SubsetCollection;
   var ParentCollection = Backbone.Collection.extend({
     comparator: function(item) {
       return item.get('position');

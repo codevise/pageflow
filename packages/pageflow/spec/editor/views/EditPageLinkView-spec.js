@@ -1,28 +1,43 @@
+import {ConfigurationEditorView, TextInputView} from '$pageflow/ui';
+
+import {PageLink, Page} from '$pageflow/editor';
+
+import {EditPageLinkView} from '$pageflow/editor';
+
+import * as support from '$support';
+import {ConfigurationEditor} from '$support/dominos/ui';
+
+import template from '../rainbow.jst';
+
+import template from '../rainbow.jst';
+
+import template from '../rainbow.jst';
+
 describe('EditPageLinkView', () => {
   var f = support.factories;
 
   test('renders pageLinkConfigurationEditorView of page type', () => {
     var api = f.editorApi(function(editor) {
       editor.pageTypes.register('rainbow', {
-        pageLinkConfigurationEditorView: pageflow.ConfigurationEditorView.extend({
+        pageLinkConfigurationEditorView: ConfigurationEditorView.extend({
           configure: function() {
             this.tab('general', function() {
-              this.input('label', pageflow.TextInputView);
+              this.input('label', TextInputView);
             });
           }
         })
       });
     });
-    var page = new pageflow.Page({template: 'rainbow'});
-    var pageLink = new pageflow.PageLink();
-    var view = new pageflow.EditPageLinkView({
+    var page = new Page({template});
+    var pageLink = new PageLink();
+    var view = new EditPageLinkView({
       model: pageLink,
       page: page,
       api: api
     });
 
     view.render();
-    var configurationEditor = support.dom.ConfigurationEditor.find(view);
+    var configurationEditor = ConfigurationEditor.find(view);
 
     expect(configurationEditor.tabNames()).toEqual(expect.arrayContaining(['general']));
     expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining(['label']));
@@ -32,7 +47,7 @@ describe('EditPageLinkView', () => {
     var passedModel, passedPage;
     var api = f.editorApi(function(editor) {
       editor.pageTypes.register('rainbow', {
-        pageLinkConfigurationEditorView: pageflow.ConfigurationEditorView.extend({
+        pageLinkConfigurationEditorView: ConfigurationEditorView.extend({
           configure: function() {
             passedModel = this.model;
             passedPage = this.options.page;
@@ -42,9 +57,9 @@ describe('EditPageLinkView', () => {
         })
       });
     });
-    var page = new pageflow.Page({template: 'rainbow'});
-    var pageLink = new pageflow.PageLink();
-    var view = new pageflow.EditPageLinkView({
+    var page = new Page({template});
+    var pageLink = new PageLink();
+    var view = new EditPageLinkView({
       model: pageLink,
       page: page,
       api: api
@@ -68,7 +83,7 @@ describe('EditPageLinkView', () => {
       () => {
         var api = f.editorApi(function(editor) {
           editor.pageTypes.register('rainbow', {
-            pageLinkConfigurationEditorView: pageflow.ConfigurationEditorView.extend({
+            pageLinkConfigurationEditorView: ConfigurationEditorView.extend({
               configure: function() {
                 this.tab('specific', function() {});
                 this.tab('common', function() {});
@@ -77,16 +92,16 @@ describe('EditPageLinkView', () => {
             })
           });
         });
-        var page = new pageflow.Page({template: 'rainbow'});
-        var pageLink = new pageflow.PageLink();
-        var view = new pageflow.EditPageLinkView({
+        var page = new Page({template});
+        var pageLink = new PageLink();
+        var view = new EditPageLinkView({
           model: pageLink,
           page: page,
           api: api
         });
 
         view.render();
-        var configurationEditor = support.dom.ConfigurationEditor.find(view);
+        var configurationEditor = ConfigurationEditor.find(view);
 
         expect(configurationEditor.tabLabels()).toEqual(['Specific', 'Common', 'Fallback']);
       }

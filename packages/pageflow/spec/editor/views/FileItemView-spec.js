@@ -1,15 +1,20 @@
+import {FileItemView, FileMetaDataItemValueView} from '$pageflow/editor';
+
+import * as support from '$support';
+import {FileMetaDataTable} from '$support/dominos/editor';
+
 describe('FileItemView', () => {
   test('renders meta data items given as string', () => {
     var file = support.factories.file(
       {dimension: '200x100px'}
     );
-    var fileItemView = new pageflow.FileItemView({
+    var fileItemView = new FileItemView({
       model: file,
       metaDataAttributes: ['dimension']
     });
 
     fileItemView.render();
-    var fileMetaDataTable = support.dom.FileMetaDataTable.find(fileItemView);
+    var fileMetaDataTable = FileMetaDataTable.find(fileItemView);
 
     expect(fileMetaDataTable.values()).toEqual(expect.arrayContaining(['200x100px']));
   });
@@ -18,12 +23,12 @@ describe('FileItemView', () => {
     var file = support.factories.file(
       {dimension: '200x100px'}
     );
-    var fileItemView = new pageflow.FileItemView({
+    var fileItemView = new FileItemView({
       model: file,
       metaDataAttributes: [
         {
           name: 'dimension',
-          valueView: pageflow.FileMetaDataItemValueView.extend({
+          valueView: FileMetaDataItemValueView.extend({
             getText: function() {
               return this.model.get(this.options.name) + this.options.suffix;
             }
@@ -36,7 +41,7 @@ describe('FileItemView', () => {
     });
 
     fileItemView.render();
-    var fileMetaDataTable = support.dom.FileMetaDataTable.find(fileItemView);
+    var fileMetaDataTable = FileMetaDataTable.find(fileItemView);
 
     expect(fileMetaDataTable.values()).toEqual(expect.arrayContaining(['200x100px!!']));
   });

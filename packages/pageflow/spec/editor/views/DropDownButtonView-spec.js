@@ -1,6 +1,13 @@
+import $ from 'jquery';
+import Backbone from 'backbone';
+
+import {DropDownButtonView} from '$pageflow/editor';
+
+import sinon from 'sinon';
+
 describe('DropDownButtonView', () => {
   test('renders menu items for collection items', () => {
-    var dropDownButtonView = new pageflow.DropDownButtonView({
+    var dropDownButtonView = new DropDownButtonView({
       items: new Backbone.Collection([
         {label: 'Item 1'},
         {label: 'Item 2'}
@@ -14,7 +21,7 @@ describe('DropDownButtonView', () => {
   });
 
   test('renders nested menu items', () => {
-    var dropDownButtonView = new pageflow.DropDownButtonView({
+    var dropDownButtonView = new DropDownButtonView({
       items: new Backbone.Collection([
         {
           label: 'Group 1',
@@ -33,7 +40,7 @@ describe('DropDownButtonView', () => {
   });
 
   test('supports disabling items', () => {
-    var dropDownButtonView = new pageflow.DropDownButtonView({
+    var dropDownButtonView = new DropDownButtonView({
       items: new Backbone.Collection([
         {label: 'Item 1', disabled: true},
         {label: 'Item 2'}
@@ -48,7 +55,7 @@ describe('DropDownButtonView', () => {
   });
 
   test('supports checking items', () => {
-    var dropDownButtonView = new pageflow.DropDownButtonView({
+    var dropDownButtonView = new DropDownButtonView({
       items: new Backbone.Collection([
         {label: 'Item 1', checked: true},
         {label: 'Item 2'}
@@ -68,7 +75,7 @@ describe('DropDownButtonView', () => {
       {label: 'Item 2'}
     ]);
     itemModels.first().selected = function() {};
-    var dropDownButtonView = new pageflow.DropDownButtonView({
+    var dropDownButtonView = new DropDownButtonView({
       items: itemModels
     });
 
@@ -85,7 +92,7 @@ describe('DropDownButtonView', () => {
     ]);
     var selectedHandler = sinon.spy();
     itemModels.first().selected = selectedHandler;
-    var dropDownButtonView = new pageflow.DropDownButtonView({
+    var dropDownButtonView = new DropDownButtonView({
       items: itemModels
     });
 
@@ -103,7 +110,7 @@ describe('DropDownButtonView', () => {
       ]);
       var selectedHandler = sinon.spy();
       itemModels.first().selected = selectedHandler;
-      var dropDownButtonView = new pageflow.DropDownButtonView({
+      var dropDownButtonView = new DropDownButtonView({
         items: itemModels
       });
 

@@ -1,3 +1,11 @@
+import Backbone from 'backbone';
+
+import {Widget} from '$pageflow/editor';
+
+import {EditWidgetView} from '$pageflow/editor';
+
+import * as support from '$support';
+
 describe('EditWidgetView', () => {
   var f = support.factories;
 
@@ -12,11 +20,11 @@ describe('EditWidgetView', () => {
         })
       });
     });
-    var widget = new pageflow.Widget({
+    var widget = new Widget({
       id: 'navigation',
       type_name: 'fancy_bar'
     }, {widgetTypes: widgetTypes});
-    var view = new pageflow.EditWidgetView({
+    var view = new EditWidgetView({
       model: widget,
       widgetTypes: widgetTypes
     });

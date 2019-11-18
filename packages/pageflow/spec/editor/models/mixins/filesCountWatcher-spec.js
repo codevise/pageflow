@@ -1,14 +1,18 @@
+import Backbone from 'backbone';
+
+import {FilesCollection, ReusableFile, filesCountWatcher} from '$pageflow/editor';
+
 describe('filesCountWatcher', () => {
   var Model = Backbone.Model.extend({
-    mixins: [pageflow.filesCountWatcher]
+    mixins: [filesCountWatcher]
   });
 
-  var FileModel = pageflow.ReusableFile.extend({
+  var FileModel = ReusableFile.extend({
     readyState: 'processed'
   });
 
   function createFilesCollection(items) {
-    return new pageflow.FilesCollection(items, {
+    return new FilesCollection(items, {
       model: FileModel,
       fileType: {
         collectionName: 'image_files'

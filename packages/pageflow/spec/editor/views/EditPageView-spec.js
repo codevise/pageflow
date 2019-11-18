@@ -1,3 +1,20 @@
+import {ConfigurationEditorView, TextInputView} from '$pageflow/ui';
+
+import {Page} from '$pageflow/editor';
+
+import {EditPageView} from '$pageflow/editor';
+
+import * as support from '$support';
+import {ConfigurationEditor} from '$support/dominos/ui';
+
+import template from '../rainbow.jst';
+
+import template from '../rainbow.jst';
+
+import template from '../rainbow.jst';
+
+import template from '../rainbow.jst';
+
 describe('EditPageView', () => {
   let testContext;
 
@@ -10,23 +27,23 @@ describe('EditPageView', () => {
   test('renders configurationEditorView of page type', () => {
     var api = f.editorApi(function(editor) {
       editor.pageTypes.register('rainbow', {
-        configurationEditorView: pageflow.ConfigurationEditorView.extend({
+        configurationEditorView: ConfigurationEditorView.extend({
           configure: function() {
             this.tab('general', function() {
-              this.input('title', pageflow.TextInputView);
+              this.input('title', TextInputView);
             });
           }
         })
       });
     });
-    var page = new pageflow.Page({template: 'rainbow'});
-    var view = new pageflow.EditPageView({
+    var page = new Page({template});
+    var view = new EditPageView({
       model: page,
       api: api
     });
 
     view.render();
-    var configurationEditor = support.dom.ConfigurationEditor.find(view);
+    var configurationEditor = ConfigurationEditor.find(view);
 
     expect(configurationEditor.tabNames()).toEqual(expect.arrayContaining(['general']));
     expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining(['title']));
@@ -36,7 +53,7 @@ describe('EditPageView', () => {
     var passedModel;
     var api = f.editorApi(function(editor) {
       editor.pageTypes.register('rainbow', {
-        configurationEditorView: pageflow.ConfigurationEditorView.extend({
+        configurationEditorView: ConfigurationEditorView.extend({
           configure: function() {
             passedModel = this.model;
             this.tab('general', function() {});
@@ -44,8 +61,8 @@ describe('EditPageView', () => {
         })
       });
     });
-    var page = new pageflow.Page({template: 'rainbow'});
-    var view = new pageflow.EditPageView({
+    var page = new Page({template});
+    var view = new EditPageView({
       model: page,
       api: api
     });
@@ -67,7 +84,7 @@ describe('EditPageView', () => {
       () => {
         var api = f.editorApi(function(editor) {
           editor.pageTypes.register('rainbow', {
-            configurationEditorView: pageflow.ConfigurationEditorView.extend({
+            configurationEditorView: ConfigurationEditorView.extend({
               configure: function() {
                 this.tab('specific', function() {});
                 this.tab('common', function() {});
@@ -76,14 +93,14 @@ describe('EditPageView', () => {
             })
           });
         });
-        var page = new pageflow.Page({template: 'rainbow'});
-        var view = new pageflow.EditPageView({
+        var page = new Page({template});
+        var view = new EditPageView({
           model: page,
           api: api
         });
 
         view.render();
-        var configurationEditor = support.dom.ConfigurationEditor.find(view);
+        var configurationEditor = ConfigurationEditor.find(view);
 
         expect(configurationEditor.tabLabels()).toEqual(['Specific', 'Common', 'Fallback']);
       }
@@ -95,28 +112,28 @@ describe('EditPageView', () => {
     () => {
       var api = f.editorApi(function(editor) {
         editor.pageTypes.register('rainbow', {
-          configurationEditorView: pageflow.ConfigurationEditorView.extend({
+          configurationEditorView: ConfigurationEditorView.extend({
             configure: function() {
               this.tab('general', function() {
-                this.input('title', pageflow.TextInputView);
+                this.input('title', TextInputView);
               });
             }
           })
         });
 
         editor.commonPageConfigurationTabs.register('extras', function() {
-          testContext.input('text', pageflow.TextInputView);
+          testContext.input('text', TextInputView);
         });
       });
-      var page = new pageflow.Page({template: 'rainbow'});
-      var view = new pageflow.EditPageView({
+      var page = new Page({template});
+      var view = new EditPageView({
         model: page,
         api: api,
         tab: 'extras'
       });
 
       view.render();
-      var configurationEditor = support.dom.ConfigurationEditor.find(view);
+      var configurationEditor = ConfigurationEditor.find(view);
 
       expect(configurationEditor.tabNames()).toEqual(['general', 'extras']);
       expect(configurationEditor.inputPropertyNames()).toEqual(['extras_text']);

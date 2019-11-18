@@ -1,15 +1,21 @@
+import _ from 'underscore';
+
+import {TextInputView, TextTableCellView} from '$pageflow/ui';
+
+import {FileTypes, ImageFile, TextTrackFile, VideoFile} from '$pageflow/editor';
+
 describe('FileTypes', () => {
   describe('#register/#setup', () => {
     test(
       'creates file types for given server side configs from registered client side configs',
       () => {
-        var fileTypes = new pageflow.FileTypes();
+        var fileTypes = new FileTypes();
 
-        fileTypes.register('image_files', {model: pageflow.ImageFile, matchUpload: /^image/});
+        fileTypes.register('image_files', {model: ImageFile, matchUpload: /^image/});
         fileTypes.setup([{collectionName: 'image_files'}]);
 
         expect(fileTypes.first().collectionName).toBe('image_files');
-        expect(fileTypes.first().model).toBe(pageflow.ImageFile);
+        expect(fileTypes.first().model).toBe(ImageFile);
       }
     );
 
@@ -17,23 +23,23 @@ describe('FileTypes', () => {
       'creates nested file types for given server side configs from registered ' +
          'client side configs',
       () => {
-           var fileTypes = new pageflow.FileTypes();
+           var fileTypes = new FileTypes();
 
-           fileTypes.register('video_files', {model: pageflow.VideoFile, matchUpload: /^video/});
+           fileTypes.register('video_files', {model: VideoFile, matchUpload: /^video/});
            fileTypes.register('text_track_files',
-                              {model: pageflow.TextTrackFile, matchUpload: /^text_track/});
+                              {model: TextTrackFile, matchUpload: /^text_track/});
            fileTypes.setup([{collectionName: 'video_files',
                              nestedFileTypes: [{collectionName: 'text_track_files'}]},
                             {collectionName: 'text_track_files'}]);
 
            var nestedFileType = fileTypes.findByCollectionName('video_files').nestedFileTypes.first();
            expect(nestedFileType.collectionName).toBe('text_track_files');
-           expect(nestedFileType.model).toBe(pageflow.TextTrackFile);
+           expect(nestedFileType.model).toBe(TextTrackFile);
          }
     );
 
     test('throws exception if client side config is missing', () => {
-      var fileTypes = new pageflow.FileTypes();
+      var fileTypes = new FileTypes();
 
       expect(function() {
         fileTypes.setup([{collectionName: 'image_files'}]);
@@ -43,15 +49,15 @@ describe('FileTypes', () => {
 
   describe('#modify', () => {
     test('allows adding additional configurationEditorInputs', () => {
-      var fileTypes = new pageflow.FileTypes();
+      var fileTypes = new FileTypes();
 
       fileTypes.register('image_files', {
-        model: pageflow.ImageFile,
+        model: ImageFile,
         matchUpload: /^image/,
         configurationEditorInputs: [
           {
             name: 'custom_field',
-            input: pageflow.TextInputView
+            input: TextInputView
           }
         ]
       });
@@ -59,7 +65,7 @@ describe('FileTypes', () => {
         configurationEditorInputs: [
           {
             name: 'other_field',
-            input: pageflow.TextInputView
+            input: TextInputView
           }
         ]
       });
@@ -71,12 +77,12 @@ describe('FileTypes', () => {
     });
 
     test('allows adding additional configurationUpdaters', () => {
-      var fileTypes = new pageflow.FileTypes();
+      var fileTypes = new FileTypes();
       var updater1 = function() {};
       var updater2 = function() {};
 
       fileTypes.register('image_files', {
-        model: pageflow.ImageFile,
+        model: ImageFile,
         matchUpload: /^image/,
         configurationUpdaters: [updater1]
       });
@@ -90,15 +96,15 @@ describe('FileTypes', () => {
     });
 
     test('allows adding additional confirmUploadTableColumns', () => {
-      var fileTypes = new pageflow.FileTypes();
+      var fileTypes = new FileTypes();
 
       fileTypes.register('image_files', {
-        model: pageflow.ImageFile,
+        model: ImageFile,
         matchUpload: /^image/,
         confirmUploadTableColumns: [
           {
             name: 'custom_field',
-            cellView: pageflow.TextTableCellView
+            cellView: TextTableCellView
           }
         ]
       });
@@ -106,7 +112,7 @@ describe('FileTypes', () => {
         confirmUploadTableColumns: [
           {
             name: 'other_field',
-            cellView: pageflow.TextTableCellView
+            cellView: TextTableCellView
           }
         ]
       });
@@ -118,15 +124,15 @@ describe('FileTypes', () => {
     });
 
     test('throws error when trying to modify unsupported property', () => {
-      var fileTypes = new pageflow.FileTypes();
+      var fileTypes = new FileTypes();
 
       fileTypes.register('image_files', {
-        model: pageflow.ImageFile,
+        model: ImageFile,
         matchUpload: /^image/,
         confirmUploadTableColumns: [
           {
             name: 'custom_field',
-            cellView: pageflow.TextTableCellView
+            cellView: TextTableCellView
           }
         ]
       });

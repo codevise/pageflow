@@ -1,3 +1,7 @@
+import {FilesCollection} from '$pageflow/editor';
+
+import * as support from '$support';
+
 describe('FileCollection', () => {
   let testContext;
 
@@ -13,7 +17,7 @@ describe('FileCollection', () => {
       var files = {
         image_files: [{file_name: 'image.png'}]
       };
-      var collections = pageflow.FilesCollection.createForFileTypes([fileType], files);
+      var collections = FilesCollection.createForFileTypes([fileType], files);
 
       expect(collections.image_files.name).toBe('image_files');
       expect(collections.image_files.model).toBe(fileType.model);
@@ -25,7 +29,7 @@ describe('FileCollection', () => {
         image_files: [{file_name: 'image.png'}]
       };
       var entry = {};
-      var collections = pageflow.FilesCollection.createForFileTypes([fileType], files, {entry: entry});
+      var collections = FilesCollection.createForFileTypes([fileType], files, {entry: entry});
 
       expect(collections.image_files.entry).toBe(entry);
     });
@@ -36,7 +40,7 @@ describe('FileCollection', () => {
         image_files: [{file_name: 'image.png'}]
       };
       var entry = {};
-      var collection = pageflow.FilesCollection.createForFileTypes([fileType], files);
+      var collection = FilesCollection.createForFileTypes([fileType], files);
 
       expect(collection.image_files.first().fileType()).toBe(fileType);
     });
@@ -47,7 +51,7 @@ describe('FileCollection', () => {
       var fileType = f.imageFileType();
       var files = [{file_name: 'image.png'}];
       var entry = {};
-      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+      var collection = FilesCollection.createForFileType(fileType, files, {entry: entry});
 
       expect(collection.first().fileType()).toBe(fileType);
     });
@@ -60,7 +64,7 @@ describe('FileCollection', () => {
       var fileType = f.fileType();
       var files = [];
       var entry = f.entry();
-      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+      var collection = FilesCollection.createForFileType(fileType, files, {entry: entry});
 
       var file = collection.findOrCreateBy({source_image_id: 3});
       testContext.requests[0].respond(201, {'Content-Type': 'application/json'}, JSON.stringify({id: 5}));
@@ -72,7 +76,7 @@ describe('FileCollection', () => {
       var fileType = f.fileType();
       var files = [];
       var entry = f.entry();
-      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+      var collection = FilesCollection.createForFileType(fileType, files, {entry: entry});
 
       var file = collection.findOrCreateBy({source_image_id: 3});
 
@@ -83,7 +87,7 @@ describe('FileCollection', () => {
       var fileType = f.fileType();
       var files = [];
       var entry = f.entry();
-      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+      var collection = FilesCollection.createForFileType(fileType, files, {entry: entry});
 
       var file = collection.findOrCreateBy({source_image_id: 3});
 
@@ -94,7 +98,7 @@ describe('FileCollection', () => {
       var fileType = f.fileType();
       var files = [{file_name: 'existing.png', source_image_id: 3}];
       var entry = f.entry();
-      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+      var collection = FilesCollection.createForFileType(fileType, files, {entry: entry});
 
       var file = collection.findOrCreateBy({source_image_id: 3});
 
@@ -107,7 +111,7 @@ describe('FileCollection', () => {
       var fileType = f.fileType();
       var files = [{file_name: 'existing.png', perma_id: 300}];
       var entry = f.entry();
-      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+      var collection = FilesCollection.createForFileType(fileType, files, {entry: entry});
 
       var file = collection.getByPermaId(300);
 
@@ -122,7 +126,7 @@ describe('FileCollection', () => {
         file_name: 'image.png'
       }];
       var entry = {};
-      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+      var collection = FilesCollection.createForFileType(fileType, files, {entry: entry});
 
       var uploadableFiles = collection.uploadable();
       collection.first().set('state', 'uploadable');
@@ -152,7 +156,7 @@ describe('FileCollection', () => {
         }
       ];
       var entry = {};
-      var collection = pageflow.FilesCollection.createForFileType(fileType, files, {entry: entry});
+      var collection = FilesCollection.createForFileType(fileType, files, {entry: entry});
 
       var uploadableFiles = collection.withFilter('with_custom_field');
       collection.first().configuration.set('custom', 'some value');
@@ -168,7 +172,7 @@ describe('FileCollection', () => {
         file_name: 'image.png'
       }];
       var entry = {};
-      var collection = pageflow.FilesCollection.createForFileType(fileType, [], {entry: entry});
+      var collection = FilesCollection.createForFileType(fileType, [], {entry: entry});
 
       collection.sync = function(method, collecton, options) {
         options.success(files);
