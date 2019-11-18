@@ -71,13 +71,13 @@ describe('Failures API', () => {
     test('calls retry on failures', done => {
       var editor = new EditorApi(),
           collection = new Backbone.Collection(),
-          Failure = Failure.extend({
+          SomeFailure = Failure.extend({
             retryAction: function() {
               done();
             }
           });
 
-      editor.failures.add(new Failure(new Backbone.Model()));
+      editor.failures.add(new SomeFailure(new Backbone.Model()));
 
       editor.failures.retry();
     });

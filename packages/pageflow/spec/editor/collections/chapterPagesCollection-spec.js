@@ -1,10 +1,6 @@
 import {Chapter, PagesCollection, Page} from '$pageflow/editor';
 
 describe('ChapterPagesCollection', () => {
-  var Chapter = Chapter;
-  var PagesCollection = PagesCollection;
-  var Page = Page;
-
   test('filters pages by chapter', () => {
     var pages = new PagesCollection([
       new Page({chapter_id: 1}),
