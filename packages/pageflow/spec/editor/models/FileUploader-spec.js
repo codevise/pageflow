@@ -12,9 +12,9 @@ describe('FileUploader', () => {
 
   beforeEach(() => {
     testContext.fileTypes = support.factories.fileTypes(function() {
-      testContext.withImageFileType();
-      testContext.withVideoFileType();
-      testContext.withTextTrackFileType();
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
     });
 
     testContext.imageFileType = testContext.fileTypes.findByCollectionName('image_files');
@@ -22,9 +22,9 @@ describe('FileUploader', () => {
     testContext.textTrackFileType = testContext.fileTypes.findByCollectionName('text_track_files');
 
     testContext.entry = support.factories.entry({}, {
-      files: FilesCollection.createForFileTypes([this.imageFileType,
-                                                          this.videoFileType,
-                                                          this.textTrackFileType], {}),
+      files: FilesCollection.createForFileTypes([testContext.imageFileType,
+                                                 testContext.videoFileType,
+                                                 testContext.textTrackFileType], {}),
       fileTypes: testContext.fileTypes
     });
   });

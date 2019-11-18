@@ -8,12 +8,6 @@ import * as support from '$support';
 import {ConfigurationEditor} from '$support/dominos/ui';
 
 describe('EditPageView', () => {
-  let testContext;
-
-  beforeEach(() => {
-    testContext = {};
-  });
-
   var f = support.factories;
 
   test('renders configurationEditorView of page type', () => {
@@ -114,7 +108,7 @@ describe('EditPageView', () => {
         });
 
         editor.commonPageConfigurationTabs.register('extras', function() {
-          testContext.input('text', TextInputView);
+          this.input('text', TextInputView);
         });
       });
       var page = new Page({template: 'rainbow'});

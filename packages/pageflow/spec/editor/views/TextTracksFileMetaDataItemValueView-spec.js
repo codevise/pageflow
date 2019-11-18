@@ -19,7 +19,7 @@ describe('TextTracksFileMetaDataItemValueView', () => {
   });
 
   support.setupGlobals({
-    textTrackFiles: function() { return this.fixture.textTrackFiles; }
+    textTrackFiles: function() { return testContext.fixture.textTrackFiles; }
   });
 
   test('renders a comman separated list of text track labels', () => {

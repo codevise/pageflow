@@ -82,7 +82,7 @@ describe('Entry', () => {
     test('adds file to files collection on success', () => {
       var entry = testContext.buildEntry({id: 1}, {
         files: {
-          image_files: FilesCollection.createForFileType(this.imageFileType, [])
+          image_files: FilesCollection.createForFileType(testContext.imageFileType, [])
         }
       });
       var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, [{}]);
@@ -112,8 +112,8 @@ describe('Entry', () => {
     test('updates files in files collections', () => {
       var entry = testContext.buildEntry({id: 1}, {
         files: {
-          image_files: FilesCollection.createForFileType(this.imageFileType,
-                                                                  [{id: 12, state: 'uploading'}])
+          image_files: FilesCollection.createForFileType(testContext.imageFileType,
+                                                         [{id: 12, state: 'uploading'}])
         }
       });
 
