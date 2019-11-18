@@ -4,6 +4,7 @@ import sinon from 'sinon';
 import {ColorInputView} from '$pageflow/ui';
 
 import * as support from '$support';
+import {ColorInput} from '$support/dominos/ui'
 
 describe('pageflow.ColorInputView', () => {
   let testContext;
@@ -31,9 +32,9 @@ describe('pageflow.ColorInputView', () => {
       propertyName: 'color'
     });
 
-    var colorInputViewDomino = support.dom.ColorInputView.render(colorInputView);
+    var colorInput = ColorInput.render(colorInputView);
 
-    expect(colorInputViewDomino.value()).toBe('#ababab');
+    expect(colorInput.value()).toBe('#ababab');
   });
 
   test('updates input when model changes', () => {
@@ -43,10 +44,10 @@ describe('pageflow.ColorInputView', () => {
       propertyName: 'color'
     });
 
-    var colorInputViewDomino = support.dom.ColorInputView.render(colorInputView);
+    var colorInput = ColorInput.render(colorInputView);
     model.set('color', '#ababab');
 
-    expect(colorInputViewDomino.value()).toBe('#ababab');
+    expect(colorInput.value()).toBe('#ababab');
   });
 
   test('saves value to model on change', () => {
@@ -58,11 +59,11 @@ describe('pageflow.ColorInputView', () => {
       propertyName: 'color'
     });
 
-    var colorInputViewDomino = support.dom.ColorInputView.render(
+    var colorInput = ColorInput.render(
       colorInputView,
       {appendTo: testContext.htmlSandbox}
     );
-    colorInputViewDomino.fillIn('#bbb', testContext.clock);
+    colorInput.fillIn('#bbb', testContext.clock);
 
     expect(model.get('color')).toBe('#bbbbbb');
   });
@@ -75,12 +76,12 @@ describe('pageflow.ColorInputView', () => {
       swatches: ['#cdcdcd', '#dedede']
     });
 
-    var colorInputViewDomino = support.dom.ColorInputView.render(
+    var colorInput = ColorInput.render(
       colorInputView,
       {appendTo: testContext.htmlSandbox}
     );
 
-    expect(colorInputViewDomino.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
+    expect(colorInput.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
   });
 
   describe('with defaultValue option', () => {
@@ -92,11 +93,11 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: '#cdcdcd'
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView
       );
 
-      expect(colorInputViewDomino.value()).toBe('#cdcdcd');
+      expect(colorInput.value()).toBe('#cdcdcd');
     });
 
     test('does not store default value in model', () => {
@@ -107,11 +108,11 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: '#cdcdcd'
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
+      colorInput.fillIn('#cdcdcd', testContext.clock);
 
       expect(model.has('color')).toBe(false);
     });
@@ -124,11 +125,11 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: '#cdcdcd'
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#ababab', testContext.clock);
+      colorInput.fillIn('#ababab', testContext.clock);
 
       expect(model.get('color')).toBe('#ababab');
     });
@@ -143,11 +144,11 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: '#cdcdcd'
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
+      colorInput.fillIn('#cdcdcd', testContext.clock);
 
       expect(model.has('color')).toBe(false);
     });
@@ -161,12 +162,12 @@ describe('pageflow.ColorInputView', () => {
         swatches: ['#dedede']
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
 
-      expect(colorInputViewDomino.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
+      expect(colorInput.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
     });
 
     test('does not duplicate swatch', () => {
@@ -178,12 +179,12 @@ describe('pageflow.ColorInputView', () => {
         swatches: ['#dedede', '#cdcdcd']
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
 
-      expect(colorInputViewDomino.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
+      expect(colorInput.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
     });
   });
 
@@ -196,11 +197,11 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: function() { return '#cdcdcd'; }
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView
       );
 
-      expect(colorInputViewDomino.value()).toBe('#cdcdcd');
+      expect(colorInput.value()).toBe('#cdcdcd');
     });
 
     test('does not store default value in model', () => {
@@ -211,11 +212,11 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: function() { return '#cdcdcd'; }
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
+      colorInput.fillIn('#cdcdcd', testContext.clock);
 
       expect(model.has('color')).toBe(false);
     });
@@ -228,11 +229,11 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: function() { return '#cdcdcd'; }
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#ababab', testContext.clock);
+      colorInput.fillIn('#ababab', testContext.clock);
 
       expect(model.get('color')).toBe('#ababab');
     });
@@ -247,11 +248,11 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: function() { return '#cdcdcd'; }
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
-      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
+      colorInput.fillIn('#cdcdcd', testContext.clock);
 
       expect(model.has('color')).toBe(false);
     });
@@ -265,12 +266,12 @@ describe('pageflow.ColorInputView', () => {
         swatches: ['#dedede']
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
 
-      expect(colorInputViewDomino.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
+      expect(colorInput.swatches()).toEqual(['rgb(205, 205, 205)', 'rgb(222, 222, 222)']);
     });
   });
 
@@ -285,11 +286,11 @@ describe('pageflow.ColorInputView', () => {
         defaultValueBinding: 'default_color'
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView
       );
 
-      expect(colorInputViewDomino.value()).toBe('#cdcdcd');
+      expect(colorInput.value()).toBe('#cdcdcd');
     });
 
     test(
@@ -304,12 +305,12 @@ describe('pageflow.ColorInputView', () => {
           defaultValueBinding: 'default_color'
         });
 
-        var colorInputViewDomino = support.dom.ColorInputView.render(
+        var colorInput = ColorInput.render(
           colorInputView
         );
         model.set('default_color', '#cdcdcd');
 
-        expect(colorInputViewDomino.value()).toBe('#cdcdcd');
+        expect(colorInput.value()).toBe('#cdcdcd');
       }
     );
 
@@ -323,12 +324,12 @@ describe('pageflow.ColorInputView', () => {
         defaultValueBinding: 'default_color'
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
       model.set('default_color', '#aaaaaa');
-      colorInputViewDomino.fillIn('#aaaaaa', testContext.clock);
+      colorInput.fillIn('#aaaaaa', testContext.clock);
 
       expect(model.has('color')).toBe(false);
     });
@@ -343,12 +344,12 @@ describe('pageflow.ColorInputView', () => {
         defaultValueBinding: 'default_color'
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
       model.set('default_color', '#aaaaaa');
-      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
+      colorInput.fillIn('#cdcdcd', testContext.clock);
 
       expect(model.get('color')).toBe('#cdcdcd');
     });
@@ -363,12 +364,12 @@ describe('pageflow.ColorInputView', () => {
         defaultValueBinding: 'default_color'
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
       model.set('default_color', '#cdcdcd');
-      colorInputViewDomino.fillIn('#cdcdcd', testContext.clock);
+      colorInput.fillIn('#cdcdcd', testContext.clock);
 
       expect(model.has('color')).toBe(false);
     });
@@ -386,11 +387,11 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: function(light) { return light ? '#fefefe' : '#010101'; }
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView
       );
 
-      expect(colorInputViewDomino.value()).toBe('#fefefe');
+      expect(colorInput.value()).toBe('#fefefe');
     });
 
     test(
@@ -406,12 +407,12 @@ describe('pageflow.ColorInputView', () => {
           defaultValue: function(light) { return light ? '#fefefe' : '#010101'; }
         });
 
-        var colorInputViewDomino = support.dom.ColorInputView.render(
+        var colorInput = ColorInput.render(
           colorInputView
         );
         model.set('light', false);
 
-        expect(colorInputViewDomino.value()).toBe('#010101');
+        expect(colorInput.value()).toBe('#010101');
       }
     );
 
@@ -426,12 +427,12 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: function(light) { return light ? '#fefefe' : '#010101'; }
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
       model.set('light', false);
-      colorInputViewDomino.fillIn('#010101', testContext.clock);
+      colorInput.fillIn('#010101', testContext.clock);
 
       expect(model.has('color')).toBe(false);
     });
@@ -447,12 +448,12 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: function(light) { return light ? '#fefefe' : '#010101'; }
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
       model.set('light', false);
-      colorInputViewDomino.fillIn('#fefefe', testContext.clock);
+      colorInput.fillIn('#fefefe', testContext.clock);
 
       expect(model.get('color')).toBe('#fefefe');
     });
@@ -468,12 +469,12 @@ describe('pageflow.ColorInputView', () => {
         defaultValue: function(light) { return light ? '#fefefe' : '#010101'; }
       });
 
-      var colorInputViewDomino = support.dom.ColorInputView.render(
+      var colorInput = ColorInput.render(
         colorInputView,
         {appendTo: testContext.htmlSandbox}
       );
       model.set('light', false);
-      colorInputViewDomino.fillIn('#010101', testContext.clock);
+      colorInput.fillIn('#010101', testContext.clock);
 
       expect(model.has('color')).toBe(false);
     });

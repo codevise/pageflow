@@ -1,7 +1,7 @@
 import {ModelThumbnailView} from '$pageflow/editor';
 
 import * as support from '$support';
-import {FileThumbnailView, StaticThumbnailView} from '$support/dominos/editor';
+import {FileThumbnail, StaticThumbnail} from '$support/dominos/editor';
 
 describe('ModelThumbnailView', () => {
   var f = support.factories;
@@ -14,9 +14,9 @@ describe('ModelThumbnailView', () => {
       });
 
       view.render();
-      var fileThumbnailView = FileThumbnailView.find(view);
+      var fileThumbnail = FileThumbnail.find(view);
 
-      expect(fileThumbnailView.backgroundImage()).toContain('actual_thumb_nail');
+      expect(fileThumbnail.backgroundImage()).toContain('actual_thumb_nail');
     }
   );
 
@@ -28,9 +28,9 @@ describe('ModelThumbnailView', () => {
       });
 
       view.render();
-      var staticThumbnailView = StaticThumbnailView.find(view);
+      var staticThumbnail = StaticThumbnail.find(view);
 
-      expect(staticThumbnailView.backgroundImage()).toContain('file_for_use_on_thumb_nails');
+      expect(staticThumbnail.backgroundImage()).toContain('file_for_use_on_thumb_nails');
     }
   );
 });

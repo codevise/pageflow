@@ -3,6 +3,7 @@ import Backbone from 'backbone';
 import {TabsView} from '$pageflow/ui';
 
 import * as support from '$support';
+import {Tabs} from '$support/dominos/ui'
 
 describe('TabsView', () => {
   describe('with i18n option', () => {
@@ -19,7 +20,7 @@ describe('TabsView', () => {
       tabsView.tab('one', function() { return new Backbone.View(); });
       tabsView.tab('two', function() { return new Backbone.View(); });
 
-      var tabs = support.dom.Tabs.render(tabsView);
+      var tabs = Tabs.render(tabsView);
 
       expect(tabs.tabLabels()).toEqual(['Tab one', 'Tab two']);
     });
@@ -39,7 +40,7 @@ describe('TabsView', () => {
       tabsView.tab('one', function() { return new Backbone.View(); });
       tabsView.tab('two', function() { return new Backbone.View(); });
 
-      var tabs = support.dom.Tabs.render(tabsView);
+      var tabs = Tabs.render(tabsView);
 
       expect(tabs.tabLabels()).toEqual(['Tab one', 'Tab two']);
     });
@@ -59,7 +60,7 @@ describe('TabsView', () => {
       tabsView.tab('one', function() { return new Backbone.View(); });
       tabsView.tab('two', function() { return new Backbone.View(); });
 
-      var tabs = support.dom.Tabs.render(tabsView);
+      var tabs = Tabs.render(tabsView);
 
       expect(tabs.tabLabels()).toEqual(['Tab one', 'Tab two']);
     });
@@ -80,7 +81,7 @@ describe('TabsView', () => {
       tabsView.tab('one', function() { return new Backbone.View(); });
       tabsView.tab('two', function() { return new Backbone.View(); });
 
-      var tabs = support.dom.Tabs.render(tabsView);
+      var tabs = Tabs.render(tabsView);
 
       expect(tabs.tabLabels()).toEqual(['Tab one', 'Tab two']);
     });

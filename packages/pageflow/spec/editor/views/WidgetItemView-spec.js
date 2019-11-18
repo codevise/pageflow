@@ -3,7 +3,7 @@ import {Widget} from '$pageflow/editor';
 import {WidgetItemView} from '$pageflow/editor';
 
 import * as support from '$support';
-import {SelectInputView} from '$support/dominos/ui';
+import {SelectInput} from '$support/dominos/ui';
 
 describe('WidgetItemView', () => {
   var f = support.factories;
@@ -23,7 +23,7 @@ describe('WidgetItemView', () => {
     });
 
     view.render();
-    var select = SelectInputView.find(view);
+    var select = SelectInput.find(view);
 
     expect(select.values()).toEqual(['default_bar', 'fancy_bar']);
   });
@@ -47,7 +47,7 @@ describe('WidgetItemView', () => {
     });
 
     view.render();
-    var select = SelectInputView.find(view);
+    var select = SelectInput.find(view);
 
     expect(select.values()).toEqual(['', 'default_bar', 'fancy_bar']);
   });
@@ -69,7 +69,7 @@ describe('WidgetItemView', () => {
       });
 
       view.render();
-      var select = SelectInputView.find(view);
+      var select = SelectInput.find(view);
 
       expect(select.values()).toEqual(['', 'default_bar', 'fancy_bar']);
     }

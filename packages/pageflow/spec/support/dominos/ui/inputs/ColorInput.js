@@ -1,6 +1,6 @@
 import {Base} from '../../Base';
 
-export const ColorInputView = Base.extend({
+export const ColorInput = Base.extend({
   value: function() {
     return this._input().val();
   },

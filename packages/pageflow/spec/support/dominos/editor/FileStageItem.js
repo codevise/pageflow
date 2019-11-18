@@ -1,5 +1,5 @@
 import {Base} from '../Base';
 
-export const FileStageItemView = Base.extend({
+export const FileStageItem = Base.extend({
   selector: '.file_stage_item'
 });

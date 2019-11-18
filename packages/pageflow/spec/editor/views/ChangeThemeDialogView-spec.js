@@ -4,7 +4,7 @@ import {ChangeThemeDialogView} from '$pageflow/editor';
 
 import * as support from '$support';
 import sinon from 'sinon';
-import {ThemeItemView} from '$support/dominos/editor';
+import {ThemeItem} from '$support/dominos/editor';
 
 describe('ChangeThemeDialogView', () => {
   test('shows preview on item hover', () => {
@@ -17,7 +17,7 @@ describe('ChangeThemeDialogView', () => {
     });
 
     view.render();
-    var themeItem = ThemeItemView.findByName('acme', {inView: view});
+    var themeItem = ThemeItem.findByName('acme', {inView: view});
 
     themeItem.hover();
 
@@ -35,7 +35,7 @@ describe('ChangeThemeDialogView', () => {
     });
 
     view.render();
-    var themeItem = ThemeItemView.findByName('acme', {inView: view});
+    var themeItem = ThemeItem.findByName('acme', {inView: view});
 
     themeItem.click();
 
@@ -58,7 +58,7 @@ describe('ChangeThemeDialogView', () => {
       });
 
       view.render();
-      var themeItem = ThemeItemView.findByName('acme', {inView: view});
+      var themeItem = ThemeItem.findByName('acme', {inView: view});
 
       themeItem.clickUseButton();
 

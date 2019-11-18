@@ -5,7 +5,7 @@ import {ThemesCollection, app} from '$pageflow/editor';
 import {ThemeInputView} from '$pageflow/editor';
 
 import * as support from '$support';
-import {ReferenceInputView, ThemeItemView} from '$support/dominos/editor';
+import {ReferenceInput, ThemeItem} from '$support/dominos/editor';
 
 describe('ThemeInputView', () => {
   test('updates attribute on clicking "use theme button"', () => {
@@ -20,8 +20,8 @@ describe('ThemeInputView', () => {
       themes: themes
     });
 
-    ReferenceInputView.render(view).clickChooseButton();
-    var themeItemView = ThemeItemView.findByName('acme', {
+    ReferenceInput.render(view).clickChooseButton();
+    var themeItemView = ThemeItem.findByName('acme', {
       inView: app.dialogRegion.currentView
     });
 

@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 import {Base} from '../../Base';
 
-export const SelectInputView = Base.extend({
+export const SelectInput = Base.extend({
   selector: 'select',
 
   values: function() {

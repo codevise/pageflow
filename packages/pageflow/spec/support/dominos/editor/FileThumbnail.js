@@ -1,6 +1,6 @@
 import {Base} from '../Base';
 
-export const FileThumbnailView = Base.extend({
+export const FileThumbnail = Base.extend({
   selector: '.file_thumbnail',
 
   backgroundImage: function() {

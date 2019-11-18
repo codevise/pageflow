@@ -1,6 +1,7 @@
 import {ConfigurationEditorView} from '$pageflow/ui';
 
 import * as support from '$support';
+import {Tabs} from '$support/dominos/ui'
 
 describe('ConfigurationEditorView', () => {
   describe('without tab translation key option', () => {
@@ -16,7 +17,7 @@ describe('ConfigurationEditorView', () => {
       configurationEditorView.tab('two', function() {});
 
       configurationEditorView.render();
-      var tabs = support.dom.Tabs.find(configurationEditorView);
+      var tabs = Tabs.find(configurationEditorView);
 
       expect(tabs.tabLabels()).toEqual(['Tab one', 'Tab two']);
     });
@@ -36,7 +37,7 @@ describe('ConfigurationEditorView', () => {
       configurationEditorView.tab('one', function() {});
 
       configurationEditorView.render();
-      var tabs = support.dom.Tabs.find(configurationEditorView);
+      var tabs = Tabs.find(configurationEditorView);
 
       expect(tabs.tabLabels()).toEqual(['Tab custom']);
     });
@@ -58,7 +59,7 @@ describe('ConfigurationEditorView', () => {
       configurationEditorView.tab('two', function() {});
 
       configurationEditorView.render();
-      var tabs = support.dom.Tabs.find(configurationEditorView);
+      var tabs = Tabs.find(configurationEditorView);
 
       expect(tabs.tabLabels()).toEqual(['Tab custom', 'Tab fallback']);
     });

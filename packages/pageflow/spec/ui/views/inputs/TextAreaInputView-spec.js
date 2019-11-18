@@ -6,6 +6,7 @@ import _ from 'underscore';
 import {TextAreaInputView} from '$pageflow/ui';
 
 import * as support from '$support';
+import {TextAreaInput} from '$support/dominos/ui'
 
 describe('pageflow.TextAreaInputView', () => {
   test('supports disabled option', () => {
