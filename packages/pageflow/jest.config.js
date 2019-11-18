@@ -11,6 +11,7 @@ module.exports = {
     "^\\$state$": "<rootDir>/spec/support/state.js",
 
     "^jquery$": "<rootDir>/src/vendor/jquery",
+    "^jquery-ui$": "<rootDir>/src/vendor/jquery-ui",
     "^jquery.minicolors$": "<rootDir>/src/vendor/jquery.minicolors",
     "^backbone.marionette$": "<rootDir>/src/vendor/backbone.marionette",
     "^backbone.babysitter$": "<rootDir>/src/vendor/backbone.babysitter",

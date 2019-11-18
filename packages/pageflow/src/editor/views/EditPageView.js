@@ -1,5 +1,6 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
+import 'jquery-ui';
 
 import {ExtendedSelectInputView} from '$pageflow/ui';
 
