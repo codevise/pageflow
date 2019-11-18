@@ -1,6 +1,8 @@
 import Backbone from 'backbone';
 
-import {FileTypesCollection, FileType, ReusableFile, SubsetCollection} from '$pageflow/editor';
+import {FileTypesCollection, ReusableFile, SubsetCollection} from '$pageflow/editor';
+import {FileType} from '$pageflow/editor/api/FileType';
+import {FileTypes} from '$pageflow/editor/api/FileTypes';
 
 import * as support from '$support';
 import sinon from 'sinon';

@@ -1,6 +1,6 @@
-import {PageTypes, Page} from '$pageflow/editor';
+import {Page} from '$pageflow/editor';
+import {PageTypes} from '$pageflow/editor/api/PageTypes';
 
-import template from '../rainbow.jst';
 
 describe('PageTypes', () => {
   describe('#register/#findByName', () => {
@@ -18,7 +18,7 @@ describe('PageTypes', () => {
     test('allows getting a page type by page', () => {
       var pageTypes = new PageTypes();
       pageTypes.setup([{name: 'rainbow'}]);
-      var page = new Page({template});
+      var page = new Page({template: 'rainbow'});
 
       var pageType = pageTypes.findByPage(page);
 

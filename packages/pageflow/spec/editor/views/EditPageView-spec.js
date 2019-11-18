@@ -7,14 +7,6 @@ import {EditPageView} from '$pageflow/editor';
 import * as support from '$support';
 import {ConfigurationEditor} from '$support/dominos/ui';
 
-import template from '../rainbow.jst';
-
-import template from '../rainbow.jst';
-
-import template from '../rainbow.jst';
-
-import template from '../rainbow.jst';
-
 describe('EditPageView', () => {
   let testContext;
 
@@ -36,7 +28,7 @@ describe('EditPageView', () => {
         })
       });
     });
-    var page = new Page({template});
+    var page = new Page({template: 'rainbow'});
     var view = new EditPageView({
       model: page,
       api: api
@@ -61,7 +53,7 @@ describe('EditPageView', () => {
         })
       });
     });
-    var page = new Page({template});
+    var page = new Page({template: 'rainbow'});
     var view = new EditPageView({
       model: page,
       api: api
@@ -93,7 +85,7 @@ describe('EditPageView', () => {
             })
           });
         });
-        var page = new Page({template});
+        var page = new Page({template: 'rainbow'});
         var view = new EditPageView({
           model: page,
           api: api
@@ -125,7 +117,7 @@ describe('EditPageView', () => {
           testContext.input('text', TextInputView);
         });
       });
-      var page = new Page({template});
+      var page = new Page({template: 'rainbow'});
       var view = new EditPageView({
         model: page,
         api: api,

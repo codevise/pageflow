@@ -1,4 +1,4 @@
-import {WidgetTypes} from '$pageflow/editor';
+import {WidgetTypes} from '$pageflow/editor/api/WidgetTypes';
 
 import sinon from 'sinon';
 

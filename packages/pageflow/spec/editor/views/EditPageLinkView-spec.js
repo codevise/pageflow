@@ -7,12 +7,6 @@ import {EditPageLinkView} from '$pageflow/editor';
 import * as support from '$support';
 import {ConfigurationEditor} from '$support/dominos/ui';
 
-import template from '../rainbow.jst';
-
-import template from '../rainbow.jst';
-
-import template from '../rainbow.jst';
-
 describe('EditPageLinkView', () => {
   var f = support.factories;
 
@@ -28,7 +22,7 @@ describe('EditPageLinkView', () => {
         })
       });
     });
-    var page = new Page({template});
+    var page = new Page({template: 'rainbow'});
     var pageLink = new PageLink();
     var view = new EditPageLinkView({
       model: pageLink,
@@ -57,7 +51,7 @@ describe('EditPageLinkView', () => {
         })
       });
     });
-    var page = new Page({template});
+    var page = new Page({template: 'rainbow'});
     var pageLink = new PageLink();
     var view = new EditPageLinkView({
       model: pageLink,
@@ -92,7 +86,7 @@ describe('EditPageLinkView', () => {
             })
           });
         });
-        var page = new Page({template});
+        var page = new Page({template: 'rainbow'});
         var pageLink = new PageLink();
         var view = new EditPageLinkView({
           model: pageLink,

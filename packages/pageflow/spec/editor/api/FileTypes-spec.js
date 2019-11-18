@@ -2,7 +2,8 @@ import _ from 'underscore';
 
 import {TextInputView, TextTableCellView} from '$pageflow/ui';
 
-import {FileTypes, ImageFile, TextTrackFile, VideoFile} from '$pageflow/editor';
+import {ImageFile, TextTrackFile, VideoFile} from '$pageflow/editor';
+import {FileTypes} from '$pageflow/editor/api/FileTypes';
 
 describe('FileTypes', () => {
   describe('#register/#setup', () => {

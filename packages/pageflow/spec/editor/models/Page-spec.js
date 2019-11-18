@@ -2,18 +2,6 @@ import {EditorApi, FilesCollection, Page, editor} from '$pageflow/editor';
 
 import * as support from '$support';
 
-import template from '../video.jst';
-
-import template from '../video.jst';
-
-import template from '../video.jst';
-
-import template from '../video.jst';
-
-import template from '../video.jst';
-
-import template from '../video.jst';
-
 describe('Page', () => {
   describe('#thumbnailFile', () => {
     support.setupGlobals({
@@ -75,7 +63,7 @@ describe('Page', () => {
 
     test('returns first present file', () => {
       var page = new Page({
-        template,
+        template: 'video',
         configuration: {
           thumbnail_id: 5
         }
@@ -88,7 +76,7 @@ describe('Page', () => {
 
     test('returns undefined if no candidate matches', () => {
       var page = new Page({
-        template,
+        template: 'video',
         configuration: {}
       });
 
@@ -99,7 +87,7 @@ describe('Page', () => {
 
     test('returns undefined if candidate condition is not met', () => {
       var page = new Page({
-        template,
+        template: 'video',
         configuration: {
           image_id: 5,
           background_type: 'video'
@@ -113,7 +101,7 @@ describe('Page', () => {
 
     test('returns undefined if negated candidate condition is met', () => {
       var page = new Page({
-        template,
+        template: 'video',
         configuration: {
           poster_id: 5,
           background_type: 'image'
@@ -127,7 +115,7 @@ describe('Page', () => {
 
     test('returns present file if candidate condition is met', () => {
       var page = new Page({
-        template,
+        template: 'video',
         configuration: {
           image_id: 5,
           background_type: 'image'
@@ -143,7 +131,7 @@ describe('Page', () => {
       'returns present file if negated candidate condition is not met',
       () => {
         var page = new Page({
-          template,
+          template: 'video',
           configuration: {
             poster_id: 5,
             background_type: 'video'
