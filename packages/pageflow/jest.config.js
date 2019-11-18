@@ -8,6 +8,7 @@ module.exports = {
   moduleNameMapper: {
     "^\\$support(.*)$": "<rootDir>/spec/support$1",
     "^\\$pageflow(.*)$": "<rootDir>/src$1",
+    "^\\$state$": "<rootDir>/spec/support/state.js",
 
     "^jquery$": "<rootDir>/src/vendor/jquery",
     "^jquery.minicolors$": "<rootDir>/src/vendor/jquery.minicolors",
