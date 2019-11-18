@@ -1,6 +1,8 @@
 import _ from 'underscore';
 
-support.setupGlobals = function(mapping) {
+import {state} from '$state';
+
+export const setupGlobals = function(mapping) {
   beforeEach(() => {
     if (this.globalsBackup) {
       throw new Error('There can only be one setupGlobals call per test.');
@@ -9,14 +11,14 @@ support.setupGlobals = function(mapping) {
     this.globalsBackup = {};
 
     _.each(mapping, function(value, key) {
-      this.globalsBackup[key] = pageflow[key];
-      pageflow[key] = typeof value === 'function' ? value.call(this) : value;
+      this.globalsBackup[key] = state[key];
+      state[key] = typeof value === 'function' ? value.call(this) : value;
     }, this);
   });
 
   afterEach(() => {
     _.each(mapping, function(_, key) {
-      pageflow[key] = this.globalsBackup[key];
+      state[key] = this.globalsBackup[key];
     }, this);
 
     this.globalsBackup = null;

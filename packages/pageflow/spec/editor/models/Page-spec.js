@@ -4,43 +4,39 @@ import * as support from '$support';
 
 describe('Page', () => {
   describe('#thumbnailFile', () => {
-    support.setupGlobals({
-      editor: function() {
-        var api = new EditorApi();
-
-        api.pageTypes.register('audio', {});
-        api.pageTypes.setup([
-          {
-            name: 'video',
-            thumbnail_candidates: [
-              {
-                attribute: 'thumbnail_id',
-                file_collection: 'image_files',
-              },
-              {
-                attribute: 'image_id',
-                file_collection: 'image_files',
-                condition: {
-                  attribute: 'background_type',
-                  value: 'image'
-                }
-              },
-              {
-                attribute: 'poster_id',
-                file_collection: 'image_files',
-                condition: {
-                  attribute: 'background_type',
-                  value: 'image',
-                  negated: true
-                }
+    beforeAll(() => {
+      editor.pageTypes.register('audio', {});
+      editor.pageTypes.setup([
+        {
+          name: 'video',
+          thumbnail_candidates: [
+            {
+              attribute: 'thumbnail_id',
+              file_collection: 'image_files',
+            },
+            {
+              attribute: 'image_id',
+              file_collection: 'image_files',
+              condition: {
+                attribute: 'background_type',
+                value: 'image'
               }
-            ]
-          }
-        ]);
+            },
+            {
+              attribute: 'poster_id',
+              file_collection: 'image_files',
+              condition: {
+                attribute: 'background_type',
+                value: 'image',
+                negated: true
+              }
+            }
+          ]
+        }
+      ]);
+    });
 
-        return api;
-      },
-
+    support.setupGlobals({
       entry: function() {
         editor.fileTypes = support.factories.fileTypes(function() {
           this.withImageFileType();

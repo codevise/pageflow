@@ -1,10 +1,13 @@
-support.useFakeXhr = function(fn) {
+import sinon from 'sinon';
+
+export const useFakeXhr = function(getTestContext) {
   beforeEach(() => {
-    this.server = sinon.fakeServer.create();
-    this.requests = this.server.requests;
+    const testContext = getTestContext();
+    testContext.server = sinon.fakeServer.create();
+    testContext.requests = testContext.server.requests;
   });
 
   afterEach(() => {
-    this.server.restore();
+    getTestContext().server.restore();
   });
 };

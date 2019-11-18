@@ -68,6 +68,10 @@ describe('TextTrackFile', () => {
   });
 
   describe('#inferredLabel', () => {
+    support.useFakeTranslations({
+      'pageflow.languages.de': 'German'
+    });
+
     test('returns label based on srclang', () => {
       var textTrackFile = new TextTrackFile({
         configuration: {
@@ -79,7 +83,7 @@ describe('TextTrackFile', () => {
       expect(textTrackFile.inferredLabel()).toBe('German');
     });
 
-    test('return null if srclang is blank', () => {
+    test('return undefined if srclang is blank', () => {
       var textTrackFile = new TextTrackFile({
         configuration: {
           label: '',
@@ -87,10 +91,10 @@ describe('TextTrackFile', () => {
         }
       });
 
-      expect(textTrackFile.displayLabel()).to.be.falsy;
+      expect(textTrackFile.inferredLabel()).toBe(undefined);
     });
 
-    test('return null if srclang is unknown', () => {
+    test('return empty string if srclang is unknown', () => {
       var textTrackFile = new TextTrackFile({
         configuration: {
           label: '',
@@ -98,7 +102,7 @@ describe('TextTrackFile', () => {
         }
       });
 
-      expect(textTrackFile.displayLabel()).to.be.falsy;
+      expect(textTrackFile.inferredLabel()).toBe('');
     });
   });
 });

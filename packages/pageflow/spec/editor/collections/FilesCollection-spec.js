@@ -58,7 +58,7 @@ describe('FileCollection', () => {
   });
 
   describe('#findOrCreateBy', () => {
-    support.useFakeXhr();
+    support.useFakeXhr(() => testContext);
 
     test('creates file if non with matching attributes exists', () => {
       var fileType = f.fileType();

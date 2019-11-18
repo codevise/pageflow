@@ -11,7 +11,7 @@ describe('orderedCollection', () => {
     testContext = {};
   });
 
-  support.useFakeXhr();
+  support.useFakeXhr(() => testContext);
 
   var Item = Backbone.Model.extend({
     paramRoot: 'item'

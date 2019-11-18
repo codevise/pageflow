@@ -1,12 +1,12 @@
 import $ from 'jquery';
 
-support.useHtmlSandbox = function() {
+export const useHtmlSandbox = function(getTestContext) {
   beforeEach(function() {
-    this.htmlSandbox = $('<div />');
-    $('body').append(this.htmlSandbox);
+    getTestContext().htmlSandbox = $('<div />');
+    $('body').append(getTestContext().htmlSandbox);
   });
 
   afterEach(function() {
-    this.htmlSandbox.remove();
+    getTestContext().htmlSandbox.remove();
   });
 };

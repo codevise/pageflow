@@ -52,7 +52,7 @@ describe('Entry', () => {
   });
 
   describe('#reuseFile', () => {
-    support.useFakeXhr();
+    support.useFakeXhr(() => testContext);
 
     test('posts file usage to server', () => {
       var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, [{id: 12}]);

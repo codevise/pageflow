@@ -29,6 +29,6 @@ describe('TextTracksFileMetaDataItemValueView', () => {
 
     view.render();
 
-    expect(view.$el.text()).toEqual(expect.arrayContaining(['English']));
+    expect(view.$el.text()).toContain('English');
   });
 });

@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import _ from 'underscore';
 
-support.useFakeTranslations = function(translations) {
+export const useFakeTranslations = function(translations) {
   beforeEach(function() {
     this._originalTranslations = I18n.translations;
 

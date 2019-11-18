@@ -16,7 +16,7 @@ describe('ModelThumbnailView', () => {
       view.render();
       var fileThumbnailView = FileThumbnailView.find(view);
 
-      expect(fileThumbnailView.backgroundImage()).toEqual(expect.arrayContaining(['actual_thumb_nail']));
+      expect(fileThumbnailView.backgroundImage()).toContain('actual_thumb_nail');
     }
   );
 
@@ -30,7 +30,7 @@ describe('ModelThumbnailView', () => {
       view.render();
       var staticThumbnailView = StaticThumbnailView.find(view);
 
-      expect(staticThumbnailView.backgroundImage()).toEqual(expect.arrayContaining(['file_for_use_on_thumb_nails']));
+      expect(staticThumbnailView.backgroundImage()).toContain('file_for_use_on_thumb_nails');
     }
   );
 });
