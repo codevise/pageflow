@@ -20,17 +20,26 @@ services:
   - mysql
 
 before_install:
-  - nvm install stable
+  - nvm install v10.17.0
   - gem update bundler
 
 before_script:
+  - bin/yarn install
+  - bin/yarn run build
+
   - bin/npm ci
   - bin/npm run build
+
   - bin/rake pageflow:dummy
   - bin/rake app:assets:precompile
 
+  # Precompile triggers `yarn install --production` which strips away
+  # dev dependencies like Jest which are required below
+  - bin/yarn install
+
 script:
   - bin/rspec
+  - (cd packages/pageflow; yarn test)
   - bin/teaspoon
   - bin/npm test
 
