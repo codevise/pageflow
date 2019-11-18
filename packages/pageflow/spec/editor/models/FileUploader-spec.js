@@ -90,7 +90,7 @@ describe('FileUploader', () => {
         fileUploader.add(upload);
         fileUploader.add(upload);
 
-        expect(handler).to.have.been.calledOnce;
+        expect(handler).toHaveBeenCalledOnce();
       });
 
       test('emits new:batch event on first add after abort', () => {
@@ -106,7 +106,7 @@ describe('FileUploader', () => {
         fileUploader.abort();
         fileUploader.add(upload);
 
-        expect(handler).to.have.been.calledTwice;
+        expect(handler).toHaveBeenCalledTwice();
       });
 
       test('emits new:batch event on first add after submit', () => {
@@ -122,7 +122,7 @@ describe('FileUploader', () => {
         fileUploader.submit();
         fileUploader.add(upload);
 
-        expect(handler).to.have.been.calledTwice;
+        expect(handler).toHaveBeenCalledTwice();
       });
 
       test('throws exception if target set', () => {

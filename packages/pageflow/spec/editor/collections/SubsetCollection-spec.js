@@ -76,7 +76,7 @@ describe('SubsetCollection', () => {
         parentCollection.on('sort', sortEventHandler);
         parentCollection.sort();
 
-        expect(sortEventHandler).to.have.been.calledOnce;
+        expect(sortEventHandler).toHaveBeenCalledOnce();
       }
     );
 
@@ -100,7 +100,7 @@ describe('SubsetCollection', () => {
       subsetCollection.on('sort', sortEventHandler);
       subsetCollection.sort();
 
-      expect(sortEventHandler).to.have.been.calledOnce;
+      expect(sortEventHandler).toHaveBeenCalledOnce();
     });
   });
 });

@@ -10,7 +10,7 @@ describe('pageflow.EditorApi', () => {
 
       api.selectFile('image_files', 'some_handler');
 
-      expect(router.navigate).to.have.been.calledWith(
+      expect(router.navigate).toHaveBeenCalledWith(
         sinon.match('/files/image_files').and(sinon.match('handler=some_handler'))
       );
     });
@@ -21,7 +21,7 @@ describe('pageflow.EditorApi', () => {
 
       api.selectFile({name: 'image_files', filter: 'large'}, 'some_handler');
 
-      expect(router.navigate).to.have.been.calledWith(
+      expect(router.navigate).toHaveBeenCalledWith(
         sinon.match('/files/image_files')
           .and(sinon.match('handler=some_handler'))
           .and(sinon.match('filter=large'))
@@ -34,7 +34,7 @@ describe('pageflow.EditorApi', () => {
 
       api.selectFile('image_files', 'some_handler', {some: 'payload'});
 
-      expect(router.navigate).to.have.been.calledWith(
+      expect(router.navigate).toHaveBeenCalledWith(
         sinon.match('payload=%7B%22some%22%3A%22payload%22%7D')
       );
     });

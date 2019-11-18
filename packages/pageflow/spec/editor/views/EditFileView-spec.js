@@ -53,7 +53,7 @@ describe('EditFileView', () => {
       var configurationEditor = ConfigurationEditorTab.find(view);
 
       expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining(['custom']));
-      expect(inputsFunction).to.have.been.calledWith(model);
+      expect(inputsFunction).toHaveBeenCalledWith(model);
     }
   );
 });

@@ -50,8 +50,8 @@ describe('DropDownButtonView', () => {
     dropDownButtonView.render();
     var items = dropDownButtonView.$el.find('ul li');
 
-    expect(items.eq(0)).to.have.$class('is_disabled');
-    expect(items.eq(1)).not.to.have.$class('is_disabled');
+    expect(items.eq(0)).toHaveClass('is_disabled');
+    expect(items.eq(1)).not.toHaveClass('is_disabled');
   });
 
   test('supports checking items', () => {
@@ -65,8 +65,8 @@ describe('DropDownButtonView', () => {
     dropDownButtonView.render();
     var items = dropDownButtonView.$el.find('ul li');
 
-    expect(items.eq(0)).to.have.$class('is_checked');
-    expect(items.eq(1)).not.to.have.$class('is_checked');
+    expect(items.eq(0)).toHaveClass('is_checked');
+    expect(items.eq(1)).not.toHaveClass('is_checked');
   });
 
   test('marks items whose model has a selected method', () => {
@@ -82,8 +82,8 @@ describe('DropDownButtonView', () => {
     dropDownButtonView.render();
     var items = dropDownButtonView.$el.find('ul li');
 
-    expect(items.eq(0)).to.have.$class('is_selectable');
-    expect(items.eq(1)).not.to.have.$class('is_selectable');
+    expect(items.eq(0)).toHaveClass('is_selectable');
+    expect(items.eq(1)).not.toHaveClass('is_selectable');
   });
 
   test('calls selected function on model when item is clicked', () => {
@@ -99,7 +99,7 @@ describe('DropDownButtonView', () => {
     dropDownButtonView.render();
     dropDownButtonView.$el.find('ul li a').first().trigger('click');
 
-    expect(selectedHandler).to.have.been.called;
+    expect(selectedHandler).toHaveBeenCalled();
   });
 
   test(
@@ -117,7 +117,7 @@ describe('DropDownButtonView', () => {
       dropDownButtonView.render();
       dropDownButtonView.$el.find('ul li a').first().trigger('click');
 
-      expect(selectedHandler).not.to.have.been.called;
+      expect(selectedHandler).not.toHaveBeenCalled();
     }
   );
 

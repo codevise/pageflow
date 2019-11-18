@@ -26,7 +26,7 @@ describe('pageflow.FileProcessingStateDisplayView', () => {
     view.render();
 
     expect(FileStageItemView.findAll(view).length).toBe(1);
-    expect(view.$el).not.to.have.$class('file_processing_state_display-empty');
+    expect(view.$el).not.toHaveClass('file_processing_state_display-empty');
   });
 
   test('does not display finished file stages', () => {
@@ -49,6 +49,6 @@ describe('pageflow.FileProcessingStateDisplayView', () => {
     view.render();
 
     expect(FileStageItemView.findAll(view).length).toBe(0);
-    expect(view.$el).to.have.$class('file_processing_state_display-empty');
+    expect(view.$el).toHaveClass('file_processing_state_display-empty');
   });
 });

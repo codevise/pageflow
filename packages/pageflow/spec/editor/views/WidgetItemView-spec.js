@@ -90,7 +90,7 @@ describe('WidgetItemView', () => {
 
     view.render();
 
-    expect(view.$el).to.have.$class('is_hidden');
+    expect(view.$el).toHaveClass('is_hidden');
   });
 
   test(
@@ -114,7 +114,7 @@ describe('WidgetItemView', () => {
 
       view.render();
 
-      expect(view.$el).not.to.have.$class('is_hidden');
+      expect(view.$el).not.toHaveClass('is_hidden');
     }
   );
 
@@ -139,7 +139,7 @@ describe('WidgetItemView', () => {
 
       view.render();
 
-      expect(view.$el).not.to.have.$class('is_hidden');
+      expect(view.$el).not.toHaveClass('is_hidden');
     }
   );
 
@@ -163,7 +163,7 @@ describe('WidgetItemView', () => {
 
     view.render();
 
-    expect(view.$el).to.have.$class('has_settings');
+    expect(view.$el).toHaveClass('has_settings');
   });
 
   test(
@@ -184,7 +184,7 @@ describe('WidgetItemView', () => {
 
       view.render();
 
-      expect(view.$el).not.to.have.$class('has_settings');
+      expect(view.$el).not.toHaveClass('has_settings');
     }
   );
 });

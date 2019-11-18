@@ -51,7 +51,7 @@ describe('pageflow.ReferenceInputView', () => {
 
       view.render();
 
-      expect(view.ui.buttons).to.have.$attr('disabled');
+      expect(view.ui.buttons).toHaveAttr('disabled');
     });
   });
 
@@ -128,7 +128,7 @@ describe('pageflow.ReferenceInputView', () => {
 
       view.render();
 
-      expect(view.ui.chooseButton).to.have.$attr('title');
+      expect(view.ui.chooseButton).toHaveAttr('title');
     });
 
     test('can be set via option', () => {
@@ -141,7 +141,7 @@ describe('pageflow.ReferenceInputView', () => {
 
       view.render();
 
-      expect(view.ui.chooseButton).to.have.$attr('title', 'Change value');
+      expect(view.ui.chooseButton).toHaveAttr('title', 'Change value');
     });
   });
 
@@ -155,7 +155,7 @@ describe('pageflow.ReferenceInputView', () => {
 
       view.render();
 
-      expect(view.ui.unsetButton).to.have.$attr('title');
+      expect(view.ui.unsetButton).toHaveAttr('title');
     });
 
     test('can be set via option', () => {
@@ -168,7 +168,7 @@ describe('pageflow.ReferenceInputView', () => {
 
       view.render();
 
-      expect(view.ui.unsetButton).to.have.$attr('title', 'No value');
+      expect(view.ui.unsetButton).toHaveAttr('title', 'No value');
     });
   });
 });

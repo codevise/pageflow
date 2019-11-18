@@ -232,7 +232,7 @@ describe('ReusableFile', () => {
       file.on('change:configuration', handler);
       file.configuration.set('some', 'value');
 
-      expect(handler).to.have.been.called;
+      expect(handler).toHaveBeenCalled();
     });
 
     test(
@@ -244,7 +244,7 @@ describe('ReusableFile', () => {
         file.on('change:configuration:some', handler);
         file.configuration.set('some', 'value');
 
-        expect(handler).to.have.been.called;
+        expect(handler).toHaveBeenCalled();
       }
     );
 
@@ -258,7 +258,7 @@ describe('ReusableFile', () => {
         file.on('change:configuration:other', handler);
         file.configuration.set('some', 'value');
 
-        expect(handler).not.to.have.been.called;
+        expect(handler).not.toHaveBeenCalled();
       }
     );
   });

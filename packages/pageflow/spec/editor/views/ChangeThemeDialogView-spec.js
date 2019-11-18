@@ -21,7 +21,7 @@ describe('ChangeThemeDialogView', () => {
 
     themeItem.hover();
 
-    expect(view.ui.previewImage).to.have.$attr('src',
+    expect(view.ui.previewImage).toHaveAttr('src',
                                                '/assets/pageflow/themes/test_theme/preview.png');
   });
 
@@ -39,7 +39,7 @@ describe('ChangeThemeDialogView', () => {
 
     themeItem.click();
 
-    expect(view.ui.previewImage).to.have.$attr('src',
+    expect(view.ui.previewImage).toHaveAttr('src',
                                                '/assets/pageflow/themes/test_theme/preview.png');
   });
 
@@ -62,7 +62,7 @@ describe('ChangeThemeDialogView', () => {
 
       themeItem.clickUseButton();
 
-      expect(onUseHandler).to.have.been.calledWith(themes.findByName('acme'));
+      expect(onUseHandler).toHaveBeenCalledWith(themes.findByName('acme'));
     }
   );
 });

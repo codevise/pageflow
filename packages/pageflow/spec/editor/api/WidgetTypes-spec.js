@@ -75,7 +75,7 @@ describe('WidgetTypes', () => {
         var widgetType = widgetTypes.findByName('fancy_bar');
         widgetType.createConfigurationEditorView({some: 'option'});
 
-        expect(viewConstructor).to.have.been.calledWith(sinon.match({some: 'option'}));
+        expect(viewConstructor).toHaveBeenCalledWith(sinon.match({some: 'option'}));
       }
     );
   });

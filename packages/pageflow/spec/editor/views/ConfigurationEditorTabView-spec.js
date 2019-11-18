@@ -14,7 +14,7 @@ describe('ConfigurationEditorTabView', () => {
       groups.define('someGroup', groupFn);
       tabView.group('someGroup');
 
-      expect(groupFn).to.have.been.calledOn(tabView);
+      expect(groupFn).toHaveBeenCalledOn(tabView);
     });
   });
 
@@ -41,7 +41,7 @@ describe('ConfigurationEditorTabView', () => {
         groups.define('someGroup', groupFn);
         groups.apply('someGroup', context);
 
-        expect(groupFn).to.have.been.calledOn(context);
+        expect(groupFn).toHaveBeenCalledOn(context);
       });
 
       test('fails with explanation when group is not defined', () => {
