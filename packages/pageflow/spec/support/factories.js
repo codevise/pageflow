@@ -2,18 +2,11 @@ import $ from 'jquery';
 import Backbone from 'backbone';
 import _ from 'underscore';
 
-import {EditorApi} from '../../editor/api';
-import {Entry} from '../../editor/models/Entry';
-import {FileTypes} from '../../editor/api/FileTypes';
-import {FilesCollection} from '../../editor/collections/FilesCollection';
-import {ImageFile} from '../../editor/models/ImageFile';
-import {SubsetCollection} from '../../editor/collections/SubsetCollection';
-import {TextTrackFile} from '../../editor/models/TextTrackFile';
-import {Theme} from '../../editor/models/Theme';
-import {VideoFile} from '../../editor/models/VideoFile';
-import {WidgetTypes} from '../../editor/api/WidgetTypes';
+import {EditorApi, Entry, FilesCollection, ImageFile, SubsetCollection, TextTrackFile, Theme, VideoFile} from '$pageflow/editor';
+import {WidgetTypes} from '$pageflow/editor/api/WidgetTypes';
+import {FileTypes} from '$pageflow/editor/api/FileTypes';
 
-support.factories = {
+export const factories = {
   entry: function entry(attributes, options) {
     var fileTypes = new FileTypes();
     fileTypes.setup([]);
@@ -95,11 +88,11 @@ support.factories = {
   },
 
   imageFileType: function(options) {
-    return support.factories.fileTypesWithImageFileType(options).first();
+    return factories.fileTypesWithImageFileType(options).first();
   },
 
   fileType: function(options) {
-    return support.factories.imageFileType(options);
+    return factories.imageFileType(options);
   },
 
   filesCollection: function(options) {
@@ -109,11 +102,11 @@ support.factories = {
 
   nestedFilesCollection: function(options) {
     return new SubsetCollection({
-      parentModel: support.factories.file({file_name: options.parentFileName}),
+      parentModel: factories.file({file_name: options.parentFileName}),
       filter: function() {
         return true;
       },
-      parent: support.factories.filesCollection(
+      parent: factories.filesCollection(
         {fileType: options.fileType}
       )
     });
@@ -140,7 +133,7 @@ support.factories = {
       })
     };
 
-    var entry = support.factories.entry({}, {
+    var entry = factories.entry({}, {
       files: FilesCollection.createForFileTypes(fileTypes,
                                                          fileAttributes || {}),
       fileTypes: fileTypes
@@ -177,7 +170,7 @@ support.factories = {
       ]
     };
 
-    var entry = support.factories.entry({}, {
+    var entry = factories.entry({}, {
       files: FilesCollection.createForFileTypes(fileTypes,
                                                          fileAttributes || {}),
       fileTypes: fileTypes
