@@ -1,4 +1,8 @@
-support.dom.ConfigurationEditorTab = support.dom.Base.extend({
+import $ from 'jquery';
+
+import {Base} from '../Base';
+
+export const ConfigurationEditorTab = Base.extend({
   selector: '.configuration_editor_tab',
 
   inputPropertyNames: function() {

@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 support.setupGlobals = function(mapping) {
   beforeEach(() => {
     if (this.globalsBackup) {

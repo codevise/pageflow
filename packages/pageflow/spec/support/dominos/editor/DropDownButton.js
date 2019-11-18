@@ -1,4 +1,8 @@
-support.dom.DropDownButton = support.dom.Base.extend({
+import $ from 'jquery';
+
+import {Base} from '../Base';
+
+export const DropDownButton = Base.extend({
   selector: '.drop_down_button',
 
   menuItemNames: function() {

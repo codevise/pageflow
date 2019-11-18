@@ -1,4 +1,8 @@
-support.dom.FileMetaDataTable = support.dom.Base.extend({
+import $ from 'jquery';
+
+import {Base} from '../Base';
+
+export const FileMetaDataTable = Base.extend({
   selector: '.file_meta_data table',
 
   values: function() {

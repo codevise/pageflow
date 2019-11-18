@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 support.useHtmlSandbox = function() {
   beforeEach(function() {
     this.htmlSandbox = $('<div />');

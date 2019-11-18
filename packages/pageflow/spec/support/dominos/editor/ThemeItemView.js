@@ -1,4 +1,8 @@
-support.dom.ThemeItemView = support.dom.Base.extend({
+import _ from 'underscore';
+
+import {Base} from '../Base';
+
+export const ThemeItemView = Base.extend({
   selector: '.theme_item',
 
   hover: function() {
@@ -14,7 +18,7 @@ support.dom.ThemeItemView = support.dom.Base.extend({
   }
 });
 
-support.dom.ThemeItemView.findByName = function(themeName, options) {
+ThemeItemView.findByName = function(themeName, options) {
   return this.findBy(function($el) {
     return $el.data('themeName') === themeName;
   }, _.extend({predicateName: 'theme name ' + themeName}, options));

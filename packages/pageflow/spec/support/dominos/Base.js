@@ -1,12 +1,15 @@
-support.dom = {};
+import $ from 'jquery';
+import _ from 'underscore';
 
-support.dom.Base = pageflow.Object.extend({
+import {Object} from '$pageflow/ui';
+
+export const Base = Object.extend({
   initialize: function($el) {
     this.$el = $el;
   }
 });
 
-support.dom.Base.classMethods = function(Constructor) {
+Base.classMethods = function(Constructor) {
   return {
     find: function(viewOrParentElement) {
       var selector = Constructor.prototype.selector;
@@ -66,8 +69,8 @@ support.dom.Base.classMethods = function(Constructor) {
   };
 };
 
-support.dom.Base.extend = function(/* arguments */) {
-  var result = pageflow.Object.extend.apply(this, arguments);
-  _.extend(result, support.dom.Base.classMethods(result));
+Base.extend = function(/* arguments */) {
+  var result = Object.extend.apply(this, arguments);
+  _.extend(result, Base.classMethods(result));
   return result;
 };

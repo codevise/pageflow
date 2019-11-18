@@ -1,9 +1,24 @@
+import $ from 'jquery';
+import Backbone from 'backbone';
+import _ from 'underscore';
+
+import {EditorApi} from '../../editor/api';
+import {Entry} from '../../editor/models/Entry';
+import {FileTypes} from '../../editor/api/FileTypes';
+import {FilesCollection} from '../../editor/collections/FilesCollection';
+import {ImageFile} from '../../editor/models/ImageFile';
+import {SubsetCollection} from '../../editor/collections/SubsetCollection';
+import {TextTrackFile} from '../../editor/models/TextTrackFile';
+import {Theme} from '../../editor/models/Theme';
+import {VideoFile} from '../../editor/models/VideoFile';
+import {WidgetTypes} from '../../editor/api/WidgetTypes';
+
 support.factories = {
   entry: function entry(attributes, options) {
-    var fileTypes = new pageflow.FileTypes();
+    var fileTypes = new FileTypes();
     fileTypes.setup([]);
 
-    return new pageflow.Entry(attributes, _.extend({
+    return new Entry(attributes, _.extend({
       storylines: new Backbone.Collection(),
       chapters: new Backbone.Collection(),
       files: {},
@@ -12,17 +27,17 @@ support.factories = {
   },
 
   theme: function theme(attributes, options) {
-    return new pageflow.Theme(attributes, options);
+    return new Theme(attributes, options);
   },
 
   fileTypes: function(fn) {
-    var fileTypes = new pageflow.FileTypes();
+    var fileTypes = new FileTypes();
     var fileTypesSetupArray = [];
 
     fn.call({
       withImageFileType: function(options) {
         fileTypes.register('image_files', _.extend({
-          model: pageflow.ImageFile,
+          model: ImageFile,
           matchUpload: /^image/,
           topLevelType: true
         }, options));
@@ -38,7 +53,7 @@ support.factories = {
 
       withVideoFileType: function(options) {
         fileTypes.register('video_files', _.extend({
-          model: pageflow.VideoFile,
+          model: VideoFile,
           matchUpload: /^video/,
           topLevelType: true
         }, options));
@@ -55,7 +70,7 @@ support.factories = {
 
       withTextTrackFileType: function(options) {
         fileTypes.register('text_track_files', _.extend({
-          model: pageflow.TextTrackFile,
+          model: TextTrackFile,
           matchUpload: /vtt$/
         }, options));
 
@@ -88,12 +103,12 @@ support.factories = {
   },
 
   filesCollection: function(options) {
-    return pageflow.FilesCollection.createForFileType(options.fileType,
+    return FilesCollection.createForFileType(options.fileType,
                                                       [{}, {}]);
   },
 
   nestedFilesCollection: function(options) {
-    return new pageflow.SubsetCollection({
+    return new SubsetCollection({
       parentModel: support.factories.file({file_name: options.parentFileName}),
       filter: function() {
         return true;
@@ -126,7 +141,7 @@ support.factories = {
     };
 
     var entry = support.factories.entry({}, {
-      files: pageflow.FilesCollection.createForFileTypes(fileTypes,
+      files: FilesCollection.createForFileTypes(fileTypes,
                                                          fileAttributes || {}),
       fileTypes: fileTypes
     });
@@ -163,7 +178,7 @@ support.factories = {
     };
 
     var entry = support.factories.entry({}, {
-      files: pageflow.FilesCollection.createForFileTypes(fileTypes,
+      files: FilesCollection.createForFileTypes(fileTypes,
                                                          fileAttributes || {}),
       fileTypes: fileTypes
     });
@@ -180,7 +195,7 @@ support.factories = {
   },
 
   imageFile: function(attributes, options) {
-    return new pageflow.ImageFile(attributes, _.extend({
+    return new ImageFile(attributes, _.extend({
       fileType: this.imageFileType()
     }, options));
   },
@@ -190,7 +205,7 @@ support.factories = {
   },
 
   widgetTypes: function(attributesList, beforeSetup) {
-    var widgetTypes = new pageflow.WidgetTypes();
+    var widgetTypes = new WidgetTypes();
     var attributesListsByRole = {};
 
     _(attributesList).each(function(attributes) {
@@ -209,7 +224,7 @@ support.factories = {
   },
 
   editorApi: function(beforeSetup) {
-    var api = new pageflow.EditorApi();
+    var api = new EditorApi();
 
     if (beforeSetup) {
       beforeSetup(api);

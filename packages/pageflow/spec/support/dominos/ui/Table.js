@@ -1,4 +1,8 @@
-support.dom.Table = support.dom.Base.extend({
+import $ from 'jquery';
+
+import {Base} from '../Base';
+
+export const Table = Base.extend({
   selector: '.table_view',
 
   columnNames: function() {

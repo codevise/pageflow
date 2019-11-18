@@ -1,4 +1,8 @@
-support.dom.Tabs = support.dom.Base.extend({
+import $ from 'jquery';
+
+import {Base} from '../Base';
+
+export const Tabs = Base.extend({
   selector: '.tabs_view',
 
   tabNames: function() {

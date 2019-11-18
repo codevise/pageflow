@@ -1,4 +1,6 @@
-support.dom.ColorInputView = support.dom.Base.extend({
+import {Base} from '../../Base';
+
+export const ColorInputView = Base.extend({
   value: function() {
     return this._input().val();
   },

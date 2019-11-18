@@ -1,4 +1,8 @@
-support.dom.SelectInputView = support.dom.Base.extend({
+import $ from 'jquery';
+
+import {Base} from '../../Base';
+
+export const SelectInputView = Base.extend({
   selector: 'select',
 
   values: function() {

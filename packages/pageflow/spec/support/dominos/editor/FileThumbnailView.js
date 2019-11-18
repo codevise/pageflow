@@ -1,4 +1,6 @@
-support.dom.FileThumbnailView = support.dom.Base.extend({
+import {Base} from '../Base';
+
+export const FileThumbnailView = Base.extend({
   selector: '.file_thumbnail',
 
   backgroundImage: function() {

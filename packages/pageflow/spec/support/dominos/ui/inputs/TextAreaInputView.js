@@ -1,4 +1,9 @@
-support.dom.TextAreaInputView = support.dom.Base.extend({
+import _ from 'underscore';
+import wysihtml5 from 'wysihtml5';
+
+import {Base} from '../../Base';
+
+export const TextAreaInputView = Base.extend({
   selectFirstLink: function(callback) {
     var iframe = this.$el.find('iframe');
 
