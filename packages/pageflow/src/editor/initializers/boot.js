@@ -2,10 +2,10 @@ import $ from 'jquery';
 import Backbone from 'backbone';
 
 import {app} from '../app';
+import {editor} from '../base';
 
 import {DisabledAtmoIndicatorView} from '../views/DisabledAtmoIndicatorView';
 import {EditorView} from '../views/EditorView';
-import {EntryPreviewView} from '../views/EntryPreviewView';
 import {NotificationsView} from '../views/NotificationsView';
 import {ScrollingView} from '../views/ScrollingView';
 import {SidebarFooterView} from '../views/SidebarFooterView';
@@ -22,7 +22,7 @@ app.addInitializer(function(options) {
     region: app.sidebarRegion
   }).render();
 
-  app.previewRegion.show(new EntryPreviewView({
+  app.previewRegion.show(new editor.entryType.previewView({
     model: state.entry
   }));
 
