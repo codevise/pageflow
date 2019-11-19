@@ -1,0 +1,12 @@
+{
+  "name": "pageflow-scrolled",
+  "version": "0.1.0",
+  "description": "Pageflow entry type using native scrolling.",
+  "main": "index.js",
+  "repository": "https://github.com/codevise/pageflow",
+  "author": "Codevise Solutions GmbH <info@codevise.de>",
+  "license": "MIT",
+  "dependencies": {
+    "pageflow": "15.1.0"
+  }
+}

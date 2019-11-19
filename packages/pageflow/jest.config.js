@@ -25,6 +25,6 @@ module.exports = {
   },
   transform: {
     "^.+\\.jst$": "<rootDir>/spec/support/jest/jst-transform",
-    "^.+\\.[t|j]sx?$": "babel-jest"
+    "^.+\\.[t|j]sx?$": "<rootDir>/spec/support/jest/upwardBabelTransform"
   }
 };
