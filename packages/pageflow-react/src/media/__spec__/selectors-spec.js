@@ -12,7 +12,6 @@ import i18nModule from 'i18n';
 import Backbone from 'backbone';
 import createStore from 'createStore';
 
-import {expect} from 'support/chai';
 
 describe('textTracks selector', () => {
   beforeEach(() => {

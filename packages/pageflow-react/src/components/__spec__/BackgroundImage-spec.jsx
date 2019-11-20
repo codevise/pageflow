@@ -1,6 +1,5 @@
 import BackgroundImage from '../BackgroundImage';
 
-import {expect} from 'support/chai';
 import {shallow, mount} from 'enzyme';
 
 describe('BackgroundImage', () => {

@@ -4,7 +4,6 @@ import {muted} from 'backgroundMedia/selectors';
 import createStore from 'createStore';
 import Backbone from 'backbone';
 
-import {expect} from 'support';
 import sinon from 'sinon';
 
 describe('backgroundMedia', () => {

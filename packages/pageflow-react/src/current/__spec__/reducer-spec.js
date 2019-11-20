@@ -1,7 +1,6 @@
 import reducer from '../reducer';
 import {pageChange} from '../actions';
 
-import {expect} from 'support/chai';
 
 describe('reducer', () => {
   it('updates id when page is activating', () => {

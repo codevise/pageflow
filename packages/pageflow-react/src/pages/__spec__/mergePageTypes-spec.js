@@ -1,6 +1,5 @@
 import mergePageTypes from '../mergePageTypes';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('mergePageTypes', () => {

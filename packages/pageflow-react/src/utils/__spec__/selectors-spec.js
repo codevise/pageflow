@@ -1,6 +1,5 @@
 import {prop, map, has} from '../selectors';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('prop selector', () => {

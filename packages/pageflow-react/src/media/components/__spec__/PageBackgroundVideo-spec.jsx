@@ -2,7 +2,6 @@ import {PageBackgroundVideo} from '../PageBackgroundVideo';
 import MobilePageVideoPoster from '../MobilePageVideoPoster';
 import PageVideoPlayer from '../PageVideoPlayer';
 
-import {expect} from 'support/chai';
 import fileExistsFn from 'support/fileExistsFn';
 import {shallow} from 'enzyme';
 

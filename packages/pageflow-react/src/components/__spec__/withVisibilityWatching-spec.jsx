@@ -1,6 +1,5 @@
 import withVisibilityWatching from '../withVisibilityWatching';
 
-import {expect} from 'support/chai';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
 import lolex from 'lolex';

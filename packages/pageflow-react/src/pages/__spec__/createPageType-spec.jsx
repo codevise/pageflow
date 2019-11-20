@@ -5,7 +5,6 @@ import {createStore} from 'redux';
 import {connect} from 'react-redux';
 import jQuery from 'jquery';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('createPageType', () => {

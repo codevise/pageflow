@@ -2,7 +2,6 @@ import {PageBackgroundAsset} from '../PageBackgroundAsset';
 import PageBackgroundVideo from '../PageBackgroundVideo';
 import {PageBackgroundImage} from 'components';
 
-import {expect} from 'support/chai';
 import {shallow} from 'enzyme';
 
 describe('PageBackgroundAsset', () => {

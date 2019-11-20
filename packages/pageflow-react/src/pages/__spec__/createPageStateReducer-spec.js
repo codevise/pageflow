@@ -2,7 +2,6 @@ import createPageStateReducer from '../createPageStateReducer';
 
 import {change} from 'collections/actions';
 
-import {expect} from 'support/chai';
 
 describe('createPageStateReducer', () => {
   describe('returns a reducer that', () => {

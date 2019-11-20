@@ -2,7 +2,6 @@ import i18nModule from 'i18n';
 import {t, locale} from 'i18n/selectors';
 import createStore from 'createStore';
 
-import {expect} from 'support/chai';
 import stubI18n from 'support/stubI18n';
 
 describe('i18n', () => {

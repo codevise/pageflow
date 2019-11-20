@@ -2,7 +2,6 @@ import chaptersModule from 'chapters';
 import {chapterAttribute} from 'chapters/selectors';
 import createStore from 'createStore';
 
-import {expect} from 'support/chai';
 
 describe('chapters', () => {
   it('exports redux module for chapters collection', () => {

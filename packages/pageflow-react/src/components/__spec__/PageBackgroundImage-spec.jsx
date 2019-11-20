@@ -1,7 +1,6 @@
 import PageBackgroundImage from '../PageBackgroundImage';
 import LazyBackgroundImage from '../LazyBackgroundImage';
 
-import {expect} from 'support/chai';
 import {shallow, mount} from 'enzyme';
 
 describe('PageBackgroundImage', () => {

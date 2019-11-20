@@ -1,7 +1,6 @@
 import {MediaPage as Page} from '../Page';
 import MediaPlayerControls from '../PlayerControls';
 
-import {expect} from 'support/chai';
 import {shallow} from 'enzyme';
 
 describe('Page', () => {

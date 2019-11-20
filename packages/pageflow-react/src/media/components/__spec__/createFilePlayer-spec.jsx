@@ -1,6 +1,5 @@
 import createFilePlayer from '../createFilePlayer';
 
-import {expect} from 'support/chai';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
 import Backbone from 'backbone';

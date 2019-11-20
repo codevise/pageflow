@@ -1,7 +1,6 @@
 import ProgressSlider from '../ProgressSlider';
 
 import {mount} from 'enzyme';
-import {expect} from 'support/chai';
 
 describe('ProgressSlider', () => {
   it('sets width of load progress', () => {

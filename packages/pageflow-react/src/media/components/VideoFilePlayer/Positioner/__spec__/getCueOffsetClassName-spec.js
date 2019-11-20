@@ -1,6 +1,5 @@
 import getCueOffsetClassName from '../getCueOffsetClassName';
 
-import {expect} from 'support/chai';
 
 describe('getCueOffsetClassName', () => {
   it('returns css class for offset', () => {

@@ -9,7 +9,6 @@ import createStore from 'createStore';
 import Backbone from 'backbone';
 import {takeEvery} from 'redux-saga';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('hotkeys.watchEvents', () => {

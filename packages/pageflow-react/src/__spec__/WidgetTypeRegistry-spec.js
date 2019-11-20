@@ -1,6 +1,5 @@
 import WidgetTypeRegistry from '../WidgetTypeRegistry';
 
-import {expect} from 'support';
 
 describe('WidgetTypeRegistry', () => {
   describe('#findByName', () => {

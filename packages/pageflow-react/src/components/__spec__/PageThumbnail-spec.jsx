@@ -1,6 +1,5 @@
 import {PageThumbnail} from '../PageThumbnail';
 
-import {expect} from 'support/chai';
 import fileExistsFn from 'support/fileExistsFn';
 import {shallow} from 'enzyme';
 

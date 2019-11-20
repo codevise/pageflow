@@ -1,7 +1,6 @@
 import loadFromSeed from '../loadFromSeed';
 import {RESET} from '../actions';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('loadFromSeed', () => {

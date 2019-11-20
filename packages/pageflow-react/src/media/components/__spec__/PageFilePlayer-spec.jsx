@@ -1,7 +1,6 @@
 import {PageFilePlayer} from '../PageFilePlayer';
 
 import {shallow} from 'enzyme';
-import {expect} from 'support';
 
 describe('PageFilePlayer', () => {
   it('renders player component if file is ready and page is is prepared', () => {

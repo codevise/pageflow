@@ -1,6 +1,5 @@
 import memoizedSelector, {unwrap, combine} from '../memoizedSelector';
 
-import {expect} from 'support/chai';
 
 describe('memoizedSelector', () => {
   describe('unwrap', () => {

@@ -5,7 +5,6 @@ import backgroundMediaModule from 'backgroundMedia';
 
 import {delay} from 'redux-saga';
 
-import {expect} from 'support/chai';
 import {runSagaInPageScope} from 'support/sagas';
 import sinon from 'sinon';
 

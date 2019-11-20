@@ -3,7 +3,6 @@ import {entryAttribute, isEntryReady} from 'entry/selectors';
 import createStore from 'createStore';
 import Backbone from 'backbone';
 
-import {expect} from 'support';
 
 describe('entry', () => {
   function setup({entry} = {entry: {}}) {

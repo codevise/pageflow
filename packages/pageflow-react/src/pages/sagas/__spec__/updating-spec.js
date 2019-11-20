@@ -3,7 +3,6 @@ import {updatePageAttribute, updatePageLink} from '../../actions';
 
 import Backbone from 'backbone';
 
-import {expect} from 'support/chai';
 import {runSaga} from 'support/sagas';
 
 describe('updating saga', () => {

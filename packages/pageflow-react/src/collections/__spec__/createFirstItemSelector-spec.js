@@ -1,6 +1,5 @@
 import createFirstItemSelector from '../createFirstItemSelector';
 
-import {expect} from 'support/chai';
 
 describe('createFirstItemSelector', () => {
   describe('creates selector that', () => {

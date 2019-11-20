@@ -2,7 +2,6 @@ import createStore from '../createStore';
 
 import {call} from 'redux-saga/effects';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('createStore', () => {

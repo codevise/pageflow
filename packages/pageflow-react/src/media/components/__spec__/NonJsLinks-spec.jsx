@@ -1,6 +1,5 @@
 import {NonJsLinks} from '../NonJsLinks';
 
-import {expect} from 'support/chai';
 import {mount} from 'enzyme';
 
 describe('NonJsLinks', () => {

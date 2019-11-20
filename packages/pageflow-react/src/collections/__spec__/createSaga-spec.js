@@ -7,7 +7,6 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {call, select, put, take, fork} from 'redux-saga/effects';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('createSaga', () => {

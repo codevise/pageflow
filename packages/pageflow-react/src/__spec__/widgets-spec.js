@@ -5,7 +5,6 @@ import createStore from 'createStore';
 
 import Backbone from 'backbone';
 
-import {expect} from 'support/chai';
 
 describe('widgets', () => {
   it('exports redux module for widgets collection', () => {

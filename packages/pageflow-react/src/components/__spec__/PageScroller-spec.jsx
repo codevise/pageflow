@@ -1,6 +1,5 @@
 import {PageScroller} from '../PageScroller';
 
-import {expect} from 'support';
 import {mount} from 'enzyme';
 
 describe('PageScroller', () => {

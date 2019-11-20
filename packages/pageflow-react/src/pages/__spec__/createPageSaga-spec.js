@@ -3,7 +3,6 @@ import {enhance, cleanup} from '../actions';
 
 import {call, take} from 'redux-saga/effects';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 import {runSagaInPageScope} from 'support/sagas';
 

@@ -9,7 +9,6 @@ import Backbone from 'backbone';
 import createStore from 'createStore';
 import {combineReducers} from 'redux';
 
-import {expect} from 'support/chai';
 
 describe('current', () => {
   function setup() {

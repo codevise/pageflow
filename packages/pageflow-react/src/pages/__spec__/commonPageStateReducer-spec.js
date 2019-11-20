@@ -1,7 +1,6 @@
 import commonPageStateReducer from '../commonPageStateReducer';
 import {pageWillActivate, pageWillDeactivate, pageDidPreload, pageDidPrepare, pageDidUnprepare} from '../actions';
 
-import {expect} from 'support/chai';
 
 describe('commonPageStateReducer', () => {
   it('sets default properties', () => {

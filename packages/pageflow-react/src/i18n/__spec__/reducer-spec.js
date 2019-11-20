@@ -1,7 +1,6 @@
 import reducer from '../reducer';
 import {init} from '../actions';
 
-import {expect} from 'support/chai';
 
 describe('reducer', () => {
   it('sets locale on init', () => {

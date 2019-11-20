@@ -1,6 +1,5 @@
 import camelize from '../camelize';
 
-import {expect} from 'support/chai';
 
 describe('camelize', () => {
   it('turns snake case into camel case', () => {

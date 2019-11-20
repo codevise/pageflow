@@ -1,7 +1,6 @@
 import reducer from '../reducer';
 import {update} from '../actions';
 
-import {expect} from 'support/chai';
 
 describe('entry reducer', () => {
   it('sets slug on update', () => {

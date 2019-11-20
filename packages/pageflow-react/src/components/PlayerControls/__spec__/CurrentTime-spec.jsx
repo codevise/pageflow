@@ -2,7 +2,6 @@ import CurrentTime from '../CurrentTime';
 import TimeDisplay from '../TimeDisplay';
 
 import {shallow} from 'enzyme';
-import {expect} from 'support/chai';
 
 describe('CurrentTime', () => {
   it('displays currentTime prop', () => {

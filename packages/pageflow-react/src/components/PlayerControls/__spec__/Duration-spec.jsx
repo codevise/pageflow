@@ -2,7 +2,6 @@ import Duration from '../Duration';
 import TimeDisplay from '../TimeDisplay';
 
 import {shallow} from 'enzyme';
-import {expect} from 'support/chai';
 
 describe('Duration', () => {
   it('displays duration prop', () => {

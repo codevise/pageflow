@@ -3,7 +3,6 @@ import {pageScheduleUnprepare, pageDidPrepare, PAGE_DID_UNPREPARE} from '../../a
 
 import {delay} from 'redux-saga';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 import {runSagaInPageScope} from 'support/sagas';
 

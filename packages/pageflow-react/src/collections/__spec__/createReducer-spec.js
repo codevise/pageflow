@@ -1,7 +1,6 @@
 import createReducer from '../createReducer';
 import {reset, add, change, remove, order} from '../actions';
 
-import {expect} from 'support/chai';
 
 describe('createReducer', () => {
   describe('creates reducer that', () => {

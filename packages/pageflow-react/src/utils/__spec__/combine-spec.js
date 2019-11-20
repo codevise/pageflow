@@ -1,6 +1,5 @@
 import combine from '../combine';
 
-import {expect} from 'support/chai';
 
 describe('combine', () => {
   describe('returns function that', () => {

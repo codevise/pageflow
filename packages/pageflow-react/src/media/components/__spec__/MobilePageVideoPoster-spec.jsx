@@ -1,7 +1,6 @@
 import {MobilePageVideoPoster} from '../MobilePageVideoPoster';
 import {PageBackgroundImage} from 'components';
 
-import {expect} from 'support/chai';
 import fileExistsFn from 'support/fileExistsFn';
 import {shallow} from 'enzyme';
 

@@ -1,7 +1,6 @@
 import TimeDisplay, {unknownTimePlaceholder} from '../TimeDisplay';
 
 import {shallow} from 'enzyme';
-import {expect} from 'support/chai';
 
 describe('TimeDisplay', () => {
   it('applies className prop', () => {

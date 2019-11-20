@@ -11,7 +11,6 @@ import {call} from 'redux-saga/effects';
 import Backbone from 'backbone';
 import jQuery from 'jquery';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('pages', () => {

@@ -3,7 +3,6 @@ import {PAGE_CHANGE} from '../actions';
 
 import Backbone from 'backbone';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('watch', () => {

@@ -4,7 +4,6 @@ import pageTypesModule from 'pageTypes';
 
 import createStore from 'createStore';
 
-import {expect} from 'support';
 
 describe('pageBackgroundImageUrl', () => {
   it('returns url of image file thumbnail candidiate', () => {

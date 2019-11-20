@@ -1,6 +1,5 @@
 import PageVideoPlayer, {VideoPlayer} from '../PageVideoPlayer';
 
-import {expect} from 'support/chai';
 import {shallow} from 'enzyme';
 
 describe('PageVideoPlayer', () => {

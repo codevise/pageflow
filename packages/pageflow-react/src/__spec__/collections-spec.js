@@ -6,7 +6,6 @@ import {watch,
 import Backbone from 'backbone';
 import {createStore, combineReducers} from 'redux';
 
-import {expect} from 'support/chai';
 
 describe('collections', () => {
   let testContext;

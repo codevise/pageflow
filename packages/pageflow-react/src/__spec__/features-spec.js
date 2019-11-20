@@ -2,7 +2,6 @@ import featuresModule from '../features';
 import {isFeatureEnabled} from '../features/selectors';
 import createStore from 'createStore';
 
-import {expect} from 'support';
 
 describe('features', () => {
   function setup({enabledFeatureNames}) {

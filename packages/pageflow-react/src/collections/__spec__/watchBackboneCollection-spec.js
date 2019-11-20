@@ -3,7 +3,6 @@ import {RESET, CHANGE, ORDER} from '../actions';
 
 import Backbone from 'backbone';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('watchBackboneCollection', () => {

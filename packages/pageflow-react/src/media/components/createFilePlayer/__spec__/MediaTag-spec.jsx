@@ -1,7 +1,6 @@
 import MediaTag from '../MediaTag';
 
 import {mount, render} from 'enzyme';
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 import {findDOMNode} from 'react-dom';
 

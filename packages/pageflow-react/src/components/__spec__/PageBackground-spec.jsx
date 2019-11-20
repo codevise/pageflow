@@ -1,6 +1,5 @@
 import PageBackground from '../PageBackground';
 
-import {expect} from 'support/chai';
 import {shallow} from 'enzyme';
 
 describe('PageBackground', () => {

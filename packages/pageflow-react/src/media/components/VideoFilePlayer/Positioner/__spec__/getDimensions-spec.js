@@ -1,6 +1,5 @@
 import getDimensions from '../getDimensions';
 
-import {expect} from 'support/chai';
 
 describe('getDimensions', () => {
   describe('in contain fit', () => {

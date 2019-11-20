@@ -10,7 +10,6 @@ import {pageChange} from 'current/actions';
 
 import createStore from 'createStore';
 
-import {expect} from 'support/chai';
 
 describe('current', () => {
   function createStoreFromSeed(collections) {

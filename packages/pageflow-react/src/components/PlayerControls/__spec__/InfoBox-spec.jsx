@@ -1,7 +1,6 @@
 import InfoBox, {isEmpty} from '../InfoBox';
 
 import {mount} from 'enzyme';
-import {expect} from 'support/chai';
 
 describe('InfoBox', () => {
   it('renders header for title', () => {

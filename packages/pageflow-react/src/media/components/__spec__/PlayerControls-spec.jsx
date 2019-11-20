@@ -1,7 +1,6 @@
 import {MediaPlayerControls} from '../PlayerControls';
 import PlayerControls from 'components/PlayerControls';
 
-import {expect} from 'support/chai';
 import {shallow} from 'enzyme';
 
 describe('PlayerControls', () => {

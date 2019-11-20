@@ -1,6 +1,5 @@
 import {formatTimeDuration} from '../iso8601';
 
-import {expect} from 'support/chai';
 
 describe('timeDuration', () => {
   const seconds = 1000;

@@ -1,6 +1,5 @@
 import PageTypeRegistry from '../PageTypeRegistry';
 
-import {expect} from 'support/chai';
 
 describe('PageTypeRegistry', () => {
   describe('#register', () => {

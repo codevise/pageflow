@@ -6,7 +6,6 @@ import createStore from 'createStore';
 import {combineReducers} from 'redux';
 import Backbone from 'backbone';
 
-import {expect} from 'support/chai';
 
 describe('settings', () => {
   it('initializes the store when calling watch', () => {

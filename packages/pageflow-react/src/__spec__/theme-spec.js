@@ -2,7 +2,6 @@ import themeModule from 'theme';
 import {mainColor} from 'theme/selectors';
 import createStore from 'createStore';
 
-import {expect} from 'support/chai';
 
 describe('theme', () => {
   let testContext;

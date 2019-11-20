@@ -4,7 +4,6 @@ import createItemScopeProvider from '../createItemScopeProvider';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 import {mount} from 'enzyme';
 

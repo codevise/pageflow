@@ -4,7 +4,6 @@ import {dismiss} from 'cookieNotice/actions';
 import createStore from 'createStore';
 import Backbone from 'backbone';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('cookieNotice', () => {
