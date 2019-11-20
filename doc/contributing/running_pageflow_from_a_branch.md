@@ -1,6 +1,6 @@
 # Running Pageflow from a Branch
 
-Since the Webpack build artifacts are ignored by Git, it is not
+Since the Webpack/Rollup build artifacts are ignored by Git, it is not
 possible to simply reference `master` or any other branch inside a
 Host application's `Gemfile`. Instead we need to create a so called
 edge branch which contains a separate commit which adds these build

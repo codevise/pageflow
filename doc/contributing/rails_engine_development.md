@@ -8,9 +8,11 @@ readme. From the repository root run:
     $ gem install bundler
     $ bundle install
     $ bin/npm install
+    $ bin/yarn install
 
-Build node package to `assets` directory:
+Build node packages to `assets` directory:
 
+    $ bin/yarn run build
     $ bin/npm run build
 
 ## Running the Test Suite
