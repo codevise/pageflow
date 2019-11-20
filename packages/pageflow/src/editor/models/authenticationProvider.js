@@ -1,4 +1,6 @@
-var AuthenticationProvider =  pageflow.Object.extend({
+import {Object} from '$pageflow/ui';
+
+var AuthenticationProvider =  Object.extend({
   authenticate: function (parent, provider) {
     this.authenticationPopup('/auth/'+provider,800, 600);
     this.authParent = parent;
@@ -17,4 +19,4 @@ var AuthenticationProvider =  pageflow.Object.extend({
   }
 });
 
-pageflow.authenticationProvider = new AuthenticationProvider();
+export const authenticationProvider =  new AuthenticationProvider();
