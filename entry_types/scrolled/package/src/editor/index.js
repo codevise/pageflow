@@ -1,3 +1,12 @@
-import {TextInputView} from 'pageflow/ui';
+import {editor, startEditor} from 'pageflow/editor';
 
-console.log(TextInputView);
+import {BlankView} from './views/BlankView';
+
+import * as globalInterop from 'pageflow/editor';
+
+editor.registerEntryType('scrolled', {
+  previewView: BlankView,
+  outlineView: BlankView
+});
+
+Object.assign(pageflow, globalInterop);

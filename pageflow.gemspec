@@ -98,6 +98,9 @@ Gem::Specification.new do |s|
   # which we currently depend on in pageflow/engine.rb
   s.add_dependency 'sprockets', '< 4'
 
+  # Used for Webpack build in host application
+  s.add_dependency 'webpacker', '~> 4.2'
+
   # Using translations from rails locales in javascript code.
   s.add_dependency 'i18n-js', '~> 2.1'
 
