@@ -40,7 +40,7 @@ describe('withVisibilityWatching creates component that', () => {
     wrapper.setProps({style: {visibility: 'hidden'}});
     this.clock.runToLast();
 
-    expect(handler).to.have.been.calledOnce;
+    expect(handler).toHaveBeenCalledOnce();
   });
 
   it('calls onVisible handler when element becomes visible', function() {
@@ -53,7 +53,7 @@ describe('withVisibilityWatching creates component that', () => {
     wrapper.setProps({style: {visibility: 'visible'}});
     this.clock.runToLast();
 
-    expect(handler).to.have.been.calledOnce;
+    expect(handler).toHaveBeenCalledOnce();
   });
 
   it('does not call handlers when element is display none', function() {
@@ -72,7 +72,7 @@ describe('withVisibilityWatching creates component that', () => {
     }});
     this.clock.runToLast();
 
-    expect(handler).not.to.have.been.called;
+    expect(handler).not.toHaveBeenCalled();
   });
 
   it('does not call handlers watchVisibility is set to false', function() {
@@ -85,6 +85,6 @@ describe('withVisibilityWatching creates component that', () => {
     wrapper.setProps({style: {visibility: 'visible'}});
     this.clock.runToLast();
 
-    expect(handler).not.to.have.been.called;
+    expect(handler).not.toHaveBeenCalled();
   });
 });

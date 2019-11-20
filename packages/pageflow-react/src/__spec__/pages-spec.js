@@ -93,7 +93,7 @@ describe('pages', () => {
 
     store.dispatch(pageEnhance({id: 5}));
 
-    expect(spy).to.have.been.called;
+    expect(spy).toHaveBeenCalled();
   });
 
   describe('createPageType', () => {

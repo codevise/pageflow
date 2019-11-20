@@ -17,7 +17,7 @@ describe('fadeInWhenPageWillActivate', () => {
     })
       .dispatch(pageWillActivate());
 
-    expect(run.put).to.have.been.calledWith(action(PREBUFFER));
+    expect(run.put).toHaveBeenCalledWith(action(PREBUFFER));
   });
 
   it('does not play video before it is prebuffered', () => {
@@ -26,7 +26,7 @@ describe('fadeInWhenPageWillActivate', () => {
     })
       .dispatch(pageWillActivate());
 
-    expect(run.put).not.to.have.been.calledWith(action(PLAY));
+    expect(run.put).not.toHaveBeenCalledWith(action(PLAY));
   });
 
   it('plays video silently once it is prebuffered', () => {
@@ -37,8 +37,8 @@ describe('fadeInWhenPageWillActivate', () => {
       .dispatch(pageWillActivate())
       .dispatch(prebuffered());
 
-    expect(run.put).to.have.been.calledWith(action(CHANGE_VOLUME_FACTOR, {volumeFactor: 0}));
-    expect(run.put).to.have.been.calledWith(action(PLAY));
+    expect(run.put).toHaveBeenCalledWith(action(CHANGE_VOLUME_FACTOR, {volumeFactor: 0}));
+    expect(run.put).toHaveBeenCalledWith(action(PLAY));
   });
 
   it(
@@ -51,7 +51,7 @@ describe('fadeInWhenPageWillActivate', () => {
         .dispatch(pageWillDeactivate())
         .dispatch(prebuffered());
 
-      expect(run.put).not.to.have.been.calledWith(action(PLAY));
+      expect(run.put).not.toHaveBeenCalledWith(action(PLAY));
     }
   );
 
@@ -61,7 +61,7 @@ describe('fadeInWhenPageWillActivate', () => {
     })
       .dispatch(pageWillActivate());
 
-    expect(run.put).not.to.have.been.calledWith(action(CHANGE_VOLUME_FACTOR, {volumeFactor: 1}));
+    expect(run.put).not.toHaveBeenCalledWith(action(CHANGE_VOLUME_FACTOR, {volumeFactor: 1}));
   });
 
   it('does not turn up volume before page did activate', () => {
@@ -70,7 +70,7 @@ describe('fadeInWhenPageWillActivate', () => {
     })
       .dispatch(prebuffered());
 
-    expect(run.put).not.to.have.been.calledWith(action(CHANGE_VOLUME_FACTOR, {volumeFactor: 1}));
+    expect(run.put).not.toHaveBeenCalledWith(action(CHANGE_VOLUME_FACTOR, {volumeFactor: 1}));
   });
 
   it('turns up volume when video is prebuffered and page did acticate', () => {
@@ -82,7 +82,7 @@ describe('fadeInWhenPageWillActivate', () => {
       .dispatch(prebuffered())
       .dispatch(pageDidActivate());
 
-    expect(run.put).to.have.been.calledWith(action(CHANGE_VOLUME_FACTOR, {volumeFactor: 1}));
+    expect(run.put).toHaveBeenCalledWith(action(CHANGE_VOLUME_FACTOR, {volumeFactor: 1}));
   });
 
   it('does not turn up volume when page is deactivated again', () => {
@@ -95,7 +95,7 @@ describe('fadeInWhenPageWillActivate', () => {
       .dispatch(pageWillDeactivate())
       .dispatch(prebuffered());
 
-    expect(run.put).not.to.have.been.calledWith(action(CHANGE_VOLUME_FACTOR, {volumeFactor: 1}));
+    expect(run.put).not.toHaveBeenCalledWith(action(CHANGE_VOLUME_FACTOR, {volumeFactor: 1}));
   });
 
   function action(type, payload = {}) {

@@ -12,7 +12,7 @@ describe('mergePageTypes', () => {
     const result = mergePageTypes(base, mixin);
     result.enhance();
 
-    expect(base.enhance).to.have.been.called;
+    expect(base.enhance).toHaveBeenCalled();
   });
 
   it('keeps method only defined in mixin', () => {
@@ -24,7 +24,7 @@ describe('mergePageTypes', () => {
     const result = mergePageTypes(base, mixin);
     result.enhance();
 
-    expect(mixin.enhance).to.have.been.called;
+    expect(mixin.enhance).toHaveBeenCalled();
   });
 
   it('calls both methods when page types provide conflicting method ', () => {
@@ -38,8 +38,8 @@ describe('mergePageTypes', () => {
     const result = mergePageTypes(base, mixin);
     result.enhance();
 
-    expect(base.enhance).to.have.been.called;
-    expect(mixin.enhance).to.have.been.called;
+    expect(base.enhance).toHaveBeenCalled();
+    expect(mixin.enhance).toHaveBeenCalled();
   });
 
   it('uses return value of mixin', () => {

@@ -16,7 +16,7 @@ describe('loadFromSeed', () => {
       attributes: ['title']
     });
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: RESET,
       payload: {
         collectionName: 'posts',
@@ -37,7 +37,7 @@ describe('loadFromSeed', () => {
       attributes: ['long_title']
     });
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: RESET,
       payload: {
         items: [{longTitle: 'News'}]
@@ -57,7 +57,7 @@ describe('loadFromSeed', () => {
       attributes: [{type: 'post_type'}]
     });
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: RESET,
       payload: {
         items: [{type: 'gallery'}]
@@ -78,7 +78,7 @@ describe('loadFromSeed', () => {
       includeConfiguration: true
     });
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: RESET,
       payload: {
         items: [{some: 'setting'}]

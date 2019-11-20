@@ -174,10 +174,10 @@ describe('createFilePlayer', () => {
         mockPlayer.trigger(event);
 
         if (payload) {
-          expect(playerActions[action]).to.have.been.calledWith(payload);
+          expect(playerActions[action]).toHaveBeenCalledWith(payload);
         }
         else {
-          expect(playerActions[action]).to.have.been.called;
+          expect(playerActions[action]).toHaveBeenCalled();
         }
       });
     });
@@ -189,7 +189,7 @@ describe('createFilePlayer', () => {
 
       wrapper.setProps({playerState: {shouldPlay: true}});
 
-      expect(mockPlayer.play).to.have.been.called;
+      expect(mockPlayer.play).toHaveBeenCalled();
     });
 
     it('calls playAndFadeIn on player when shouldPlay changes to true and fadeDuration is present', () => {
@@ -199,7 +199,7 @@ describe('createFilePlayer', () => {
 
       wrapper.setProps({playerState: {shouldPlay: true, fadeDuration: 500}});
 
-      expect(mockPlayer.playAndFadeIn).to.have.been.calledWith(500);
+      expect(mockPlayer.playAndFadeIn).toHaveBeenCalledWith(500);
     });
 
     it('calls pause on player when isPlaying and shouldPlay changes to false in playerState',
@@ -211,7 +211,7 @@ describe('createFilePlayer', () => {
 
          wrapper.setProps({playerState: {isPlaying: true, shouldPlay: false}});
 
-         expect(mockPlayer.pause).to.have.been.called;
+         expect(mockPlayer.pause).toHaveBeenCalled();
        }
     );
 
@@ -231,7 +231,7 @@ describe('createFilePlayer', () => {
           }
         });
 
-        expect(mockPlayer.fadeOutAndPause).to.have.been.calledWith(500);
+        expect(mockPlayer.fadeOutAndPause).toHaveBeenCalledWith(500);
       }
     );
 
@@ -243,7 +243,7 @@ describe('createFilePlayer', () => {
 
       wrapper.setProps({playerState: {volumeFactor: 0.2, volumeFactorFadeDuration: 500}});
 
-      expect(mockPlayer.changeVolumeFactor).to.have.been.calledWith(0.2, 500);
+      expect(mockPlayer.changeVolumeFactor).toHaveBeenCalledWith(0.2, 500);
     });
 
     it('mutes the player when muted changes to true', () => {
@@ -254,7 +254,7 @@ describe('createFilePlayer', () => {
 
       wrapper.setProps({muted: true});
 
-      expect(mockPlayer.muted).to.have.been.calledWith(true);
+      expect(mockPlayer.muted).toHaveBeenCalledWith(true);
     });
 
     it('unmutes the player when muted changes to false', () => {
@@ -265,7 +265,7 @@ describe('createFilePlayer', () => {
 
       wrapper.setProps({muted: false});
 
-      expect(mockPlayer.muted).to.have.been.calledWith(false);
+      expect(mockPlayer.muted).toHaveBeenCalledWith(false);
     });
 
     it('disposes the player when the component unmounts', () => {
@@ -275,7 +275,7 @@ describe('createFilePlayer', () => {
 
       wrapper.unmount();
 
-      expect(mockPlayer.dispose).to.have.been.called;
+      expect(mockPlayer.dispose).toHaveBeenCalled();
     });
 
     it('passes atmo settings to createPlayer function', () => {

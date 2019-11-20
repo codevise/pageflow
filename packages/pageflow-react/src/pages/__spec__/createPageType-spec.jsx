@@ -80,7 +80,7 @@ describe('createPageType', () => {
         element.attr('id', '5');
         pageType[hookName].call(pageType, element, configuration, options);
 
-        expect(reducer).to.have.been.calledWith(sinon.match.any,
+        expect(reducer).toHaveBeenCalledWith(sinon.match.any,
                                                 sinon.match({
                                                   type: actionType,
                                                   meta: {
@@ -103,7 +103,7 @@ describe('createPageType', () => {
       element.attr('id', '5');
       pageType.activating(element, configuration, options);
 
-      expect(reducer).to.have.been.calledWith(sinon.match.any,
+      expect(reducer).toHaveBeenCalledWith(sinon.match.any,
                                               sinon.match({
                                                 payload: {
                                                   position: 'bottom'

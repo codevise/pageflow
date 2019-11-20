@@ -12,7 +12,7 @@ describe('i18n', () => {
 
     t(store.getState())('some.key');
 
-    expect(I18n.t).to.have.been.calledWith('some.key', {locale: 'fr'});
+    expect(I18n.t).toHaveBeenCalledWith('some.key', {locale: 'fr'});
   });
 
   it('provides locale selector to fetch locale name', () => {

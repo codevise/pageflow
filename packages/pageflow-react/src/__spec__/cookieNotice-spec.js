@@ -91,7 +91,7 @@ describe('cookieNotice', () => {
 
     events.trigger('cookie_notice:request');
 
-    expect(widgetsApi.use).to.have.been.calledWith({
+    expect(widgetsApi.use).toHaveBeenCalledWith({
       name: 'cookie_notice_bar_visible',
       insteadOf: 'cookie_notice_bar'
     });
@@ -103,7 +103,7 @@ describe('cookieNotice', () => {
     events.trigger('cookie_notice:request');
     dispatch(dismiss());
 
-    expect(widgetsApi.resetCallback).to.have.been.called;
+    expect(widgetsApi.resetCallback).toHaveBeenCalled();
   });
 
   it(
@@ -118,7 +118,7 @@ describe('cookieNotice', () => {
 
       events.trigger('cookie_notice:request');
 
-      expect(widgetsApi.use).not.to.have.been.calledWith({
+      expect(widgetsApi.use).not.toHaveBeenCalledWith({
         name: 'cookie_notice_bar_visible',
         insteadOf: 'cookie_notice_bar'
       });

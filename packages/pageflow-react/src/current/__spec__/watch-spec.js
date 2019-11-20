@@ -13,7 +13,7 @@ describe('watch', () => {
     watch(events, dispatch);
     events.trigger('page:change', {getPermaId() { return 2; }});
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: PAGE_CHANGE,
       payload: {id: 2}
     }));

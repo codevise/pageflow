@@ -18,7 +18,7 @@ describe('watchBackboneCollection', () => {
       attributes: ['title']
     });
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: RESET,
       payload: {
         collectionName: 'posts',
@@ -39,7 +39,7 @@ describe('watchBackboneCollection', () => {
       attributes: ['long_title']
     });
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: RESET,
       payload: {
         items: [{longTitle: 'News'}]
@@ -59,7 +59,7 @@ describe('watchBackboneCollection', () => {
       attributes: [{type: 'post_type'}]
     });
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: RESET,
       payload: {
         items: [{type: 'gallery'}]
@@ -81,7 +81,7 @@ describe('watchBackboneCollection', () => {
       includeConfiguration: true
     });
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: RESET,
       payload: {
         items: [{some: 'setting'}]
@@ -103,7 +103,7 @@ describe('watchBackboneCollection', () => {
 
     model.set('title', 'changed');
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: CHANGE,
       payload: {
         attributes: {title: 'changed'}
@@ -127,7 +127,7 @@ describe('watchBackboneCollection', () => {
 
       model.set('full_title', 'changed');
 
-      expect(dispatch).to.have.been.calledWith(sinon.match({
+      expect(dispatch).toHaveBeenCalledWith(sinon.match({
         type: CHANGE,
         payload: {
           attributes: {fullTitle: 'changed'}
@@ -150,7 +150,7 @@ describe('watchBackboneCollection', () => {
 
     model.set('other', 'changed');
 
-    expect(dispatch).not.to.have.been.calledWith(sinon.match({
+    expect(dispatch).not.toHaveBeenCalledWith(sinon.match({
       type: CHANGE
     }));
   });
@@ -176,7 +176,7 @@ describe('watchBackboneCollection', () => {
         body: 'changed'
       });
 
-      expect(dispatch).to.have.been.calledOnce;
+      expect(dispatch).toHaveBeenCalledOnce();
     }
   );
 
@@ -199,7 +199,7 @@ describe('watchBackboneCollection', () => {
       model.configuration.set('some', 'changed');
       model.trigger('change:configuration', model);
 
-      expect(dispatch).to.have.been.calledWith(sinon.match({
+      expect(dispatch).toHaveBeenCalledWith(sinon.match({
         type: CHANGE,
         payload: {
           attributes: {some: 'changed'}
@@ -222,7 +222,7 @@ describe('watchBackboneCollection', () => {
 
     collection.sort();
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: ORDER,
       payload: {
         order: [5]

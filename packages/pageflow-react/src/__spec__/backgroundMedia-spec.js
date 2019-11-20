@@ -57,6 +57,6 @@ describe('backgroundMedia', () => {
 
     dispatch(unmute());
 
-    expect(backgroundMedia.unmute).to.have.been.called;
+    expect(backgroundMedia.unmute).toHaveBeenCalled();
   });
 });

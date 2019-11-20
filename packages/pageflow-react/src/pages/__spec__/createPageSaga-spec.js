@@ -17,7 +17,7 @@ describe('createPageSaga', () => {
         page: {attributes: {type: 'video'}}
       });
 
-      expect(spy).not.to.have.been.called;
+      expect(spy).not.toHaveBeenCalled();
     });
 
     it('runs page type saga on enhance', () => {
@@ -30,7 +30,7 @@ describe('createPageSaga', () => {
       })
         .dispatch(enhance());
 
-      expect(spy).to.have.been.called;
+      expect(spy).toHaveBeenCalled();
     });
 
     it('cancels page type saga on cleanup', () => {
@@ -51,7 +51,7 @@ describe('createPageSaga', () => {
         .dispatch(enhance())
         .dispatch(cleanup());
 
-      expect(spy).to.have.been.called;
+      expect(spy).toHaveBeenCalled();
     });
   });
 });

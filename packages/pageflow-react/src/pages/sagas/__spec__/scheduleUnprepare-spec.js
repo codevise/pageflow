@@ -13,7 +13,7 @@ describe('scheduleUnprepare', () => {
       .dispatch(pageScheduleUnprepare())
       .returnFromCall(delay);
 
-    expect(run.put).to.have.been.calledWith(sinon.match({type: PAGE_DID_UNPREPARE}));
+    expect(run.put).toHaveBeenCalledWith(sinon.match({type: PAGE_DID_UNPREPARE}));
   });
 
   it(
@@ -25,7 +25,7 @@ describe('scheduleUnprepare', () => {
         .dispatch(pageDidPrepare())
         .returnFromCall(delay);
 
-      expect(run.put).not.to.have.been.calledWith(sinon.match({type: PAGE_DID_UNPREPARE}));
+      expect(run.put).not.toHaveBeenCalledWith(sinon.match({type: PAGE_DID_UNPREPARE}));
     }
   );
 });
