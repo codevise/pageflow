@@ -7,6 +7,8 @@ import {failureIndicatingView} from './mixins/failureIndicatingView';
 
 import template from '../templates/editChapter.jst';
 
+import {editor} from '../base';
+
 export const EditChapterView = Marionette.Layout.extend({
   template,
   className: 'edit_chapter',

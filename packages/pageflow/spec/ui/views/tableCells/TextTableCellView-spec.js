@@ -83,7 +83,7 @@ describe('TextTableCellView', () => {
   );
 
   it(
-    'renders return value of default function if column attribute is empty',
+    'renders return value of default function with options if column attribute is empty',
     () => {
       var passport = new Backbone.Model({place_of_birth: 'Baarle'});
       var cell = new TextTableCellView({

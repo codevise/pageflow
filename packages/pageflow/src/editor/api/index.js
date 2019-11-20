@@ -9,6 +9,8 @@ import {PageTypes} from './PageTypes';
 import {WidgetTypes} from './WidgetTypes';
 import {app} from '../app';
 
+export * from './errors';
+
 /**
  * Interface for engines providing editor extensions.
  * @alias editor

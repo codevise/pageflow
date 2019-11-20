@@ -5,6 +5,7 @@ import 'jquery-ui';
 import {ExtendedSelectInputView} from '$pageflow/ui';
 
 import {app} from '../app';
+import {editor} from '../base';
 
 import {failureIndicatingView} from './mixins/failureIndicatingView';
 

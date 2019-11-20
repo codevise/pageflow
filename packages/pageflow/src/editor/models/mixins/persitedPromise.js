@@ -1,5 +1,6 @@
 import Backbone from 'backbone';
 import Cocktail from 'cocktail';
+import jQuery from 'jquery';
 
 export const persistedPromise = {
   persisted: function() {

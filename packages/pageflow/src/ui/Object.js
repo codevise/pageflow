@@ -6,7 +6,8 @@ import _ from 'underscore';
 
 export default function BaseObject(options) {
   this.initialize.apply(this, arguments);
-};
+}
+
 _.extend(BaseObject.prototype, Backbone.Events, {
   initialize: function(options) {}
 });

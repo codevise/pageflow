@@ -2,6 +2,8 @@ import {PageItemView} from './PageItemView';
 import {failureIndicatingView} from './mixins/failureIndicatingView';
 import {loadable} from './mixins/loadable';
 
+import {editor} from '../base';
+
 export const NavigatablePageItemView = PageItemView.extend({
   mixins: [loadable, failureIndicatingView],
   className: 'draggable',

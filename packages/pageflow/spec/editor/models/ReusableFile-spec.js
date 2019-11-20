@@ -2,7 +2,6 @@ import Backbone from 'backbone';
 
 import {FileTypesCollection, ReusableFile, SubsetCollection} from '$pageflow/editor';
 import {FileType} from '$pageflow/editor/api/FileType';
-import {FileTypes} from '$pageflow/editor/api/FileTypes';
 
 import * as support from '$support';
 import sinon from 'sinon';
@@ -141,7 +140,7 @@ describe('ReusableFile', () => {
       expect(parentFile.nestedFiles(testContext.textTrackFiles)).toBeInstanceOf(SubsetCollection);
     });
 
-    it('contains nested files of expected type', () => {
+    it('contains nested files with expected name', () => {
       var parentFile = new File({id: 43}, {fileType: testContext.videoFileType});
       var otherNestedFile = new File({file_name: 'not_nested.vtt'},
                                      {fileType: testContext.textTrackFileType});

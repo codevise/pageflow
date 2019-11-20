@@ -1,12 +1,6 @@
-import $ from 'jquery';
 import Backbone from 'backbone';
-import Marionette from 'backbone.marionette';
-import _ from 'underscore';
 
 import {TextAreaInputView} from '$pageflow/ui';
-
-import * as support from '$support';
-import {TextAreaInput} from '$support/dominos/ui'
 
 describe('pageflow.TextAreaInputView', () => {
   it('supports disabled option', () => {

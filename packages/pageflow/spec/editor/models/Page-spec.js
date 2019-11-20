@@ -1,4 +1,4 @@
-import {EditorApi, FilesCollection, Page, editor} from '$pageflow/editor';
+import {FilesCollection, Page, editor} from '$pageflow/editor';
 
 import * as support from '$support';
 

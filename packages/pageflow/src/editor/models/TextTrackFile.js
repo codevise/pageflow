@@ -1,5 +1,4 @@
 import I18n from 'i18n-js';
-import _ from 'underscore';
 
 import {ReusableFile} from './ReusableFile';
 import {UploadableFile} from './UploadableFile';

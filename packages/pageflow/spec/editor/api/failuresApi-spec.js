@@ -68,18 +68,20 @@ describe('Failures API', () => {
   });
 
   describe('#retry', () => {
-    it('calls retry on failures', done => {
-      var editor = new EditorApi(),
-          collection = new Backbone.Collection(),
-          SomeFailure = Failure.extend({
-            retryAction: function() {
-              done();
-            }
-          });
+    // eslint-disable-next-line jest/expect-expect
+    it('calls retry on failures', () => {
+      return new Promise(done => {
+        var editor = new EditorApi(),
+            SomeFailure = Failure.extend({
+              retryAction: function() {
+                done();
+              }
+            });
 
-      editor.failures.add(new SomeFailure(new Backbone.Model()));
+        editor.failures.add(new SomeFailure(new Backbone.Model()));
 
-      editor.failures.retry();
+        editor.failures.retry();
+      });
     });
   });
 });

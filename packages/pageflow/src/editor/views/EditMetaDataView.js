@@ -15,8 +15,6 @@ import {state} from '$state';
 
 import template from '../templates/editMetaData.jst';
 
-/*global editor*/
-
 export const EditMetaDataView = Marionette.Layout.extend({
   template,
   className: 'edit_meta_data',

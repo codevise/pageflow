@@ -3,7 +3,6 @@ import Backbone from 'backbone';
 
 import {ReferenceInputView} from '$pageflow/editor';
 
-import * as support from '$support';
 import {ReferenceInput} from '$support/dominos/editor';
 
 describe('pageflow.ReferenceInputView', () => {

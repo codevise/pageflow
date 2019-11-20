@@ -25,8 +25,6 @@ export const EntryPublication = Backbone.Model.extend({
   },
 
   publish: function(attributes) {
-    var model = this;
-
     return this.save(attributes, {
       success: function(model) {
         state.entry.parse(model.get('entry'));

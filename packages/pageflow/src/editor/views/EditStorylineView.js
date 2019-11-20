@@ -6,6 +6,7 @@ import {CheckBoxInputView, ConfigurationEditorView, SelectInputView, TextInputVi
 import {PageLinkInputView} from './inputs/PageLinkInputView';
 import {failureIndicatingView} from './mixins/failureIndicatingView';
 
+import {editor} from '../base';
 import {state} from '$state';
 
 import template from '../templates/editStoryline.jst';

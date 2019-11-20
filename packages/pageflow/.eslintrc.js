@@ -29,6 +29,12 @@ module.exports = {
   },
   "overrides": [
     {
+      "files": ["*.config.js", "spec/support/jest/*.js"],
+      "env": {
+        "node": true
+      }
+    },
+    {
       "files": ["spec/**/*.js"],
       "env": {
         'jest/globals': true,

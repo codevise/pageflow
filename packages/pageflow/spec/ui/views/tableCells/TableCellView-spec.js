@@ -100,7 +100,7 @@ describe('TableCellView', () => {
     );
 
     it(
-      'returns first present translation from attributeTranslationKeyPrefixes',
+      'returns first present translation with interpolation from attributeTranslationKeyPrefixes',
       () => {
         var tableCellView = new TableCellView({
           column: {name: 'first_name'},

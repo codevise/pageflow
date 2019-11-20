@@ -27,12 +27,12 @@ export const TextTableCellView = TableCellView.extend({
   },
 
   _updateText: function() {
-    if (!!this.attributeValue()) {
+    if (this.attributeValue()) {
       return this.attributeValue();
     }
     else if (typeof this.options.column.default === 'function') {
       var options = {};
-      if (!!this.options.column.contentBinding) {
+      if (this.options.column.contentBinding) {
         options = {
           contentBinding: this.options.column.contentBinding,
           model: this.getModel()

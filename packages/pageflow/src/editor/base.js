@@ -11,7 +11,7 @@ import {app} from './app';
 export const editor = new EditorApi();
 
 export const startEditor = function(options) {
-  jQuery(function() {
+  $(function() {
     $.when(
       $.getJSON('/editor/entries/' + options.entryId + '/seed'),
       pageflow.browser.detectFeatures()

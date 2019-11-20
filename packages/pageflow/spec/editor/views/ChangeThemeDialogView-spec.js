@@ -1,8 +1,5 @@
-import {ThemesCollection} from '$pageflow/editor';
+import {ChangeThemeDialogView, ThemesCollection} from '$pageflow/editor';
 
-import {ChangeThemeDialogView} from '$pageflow/editor';
-
-import * as support from '$support';
 import sinon from 'sinon';
 import {ThemeItem} from '$support/dominos/editor';
 

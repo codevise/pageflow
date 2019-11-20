@@ -9,8 +9,6 @@ import {inputWithPlaceholderText} from '../mixins/inputWithPlaceholderText';
 
 import template from '../../templates/inputs/textAreaInput.jst';
 
-/*global wysihtml5*/
-
 /**
  * Input view for multi line text with simple formatting options.
  *

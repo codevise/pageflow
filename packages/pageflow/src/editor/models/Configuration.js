@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import Cocktail from 'cocktail';
 import Backbone from 'backbone';
 import _ from 'underscore';

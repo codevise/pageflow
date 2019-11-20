@@ -39,7 +39,6 @@ describe('FileCollection', () => {
       var files = {
         image_files: [{file_name: 'image.png'}]
       };
-      var entry = {};
       var collection = FilesCollection.createForFileTypes([fileType], files);
 
       expect(collection.image_files.first().fileType()).toBe(fileType);

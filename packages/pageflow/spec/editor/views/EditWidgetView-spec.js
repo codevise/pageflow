@@ -1,8 +1,6 @@
 import Backbone from 'backbone';
 
-import {Widget} from '$pageflow/editor';
-
-import {EditWidgetView} from '$pageflow/editor';
+import {Widget, EditWidgetView} from '$pageflow/editor';
 
 import * as support from '$support';
 
