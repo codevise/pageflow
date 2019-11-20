@@ -15,7 +15,7 @@ describe('updating saga', () => {
     runSaga(updating, {args: [collection]})
       .dispatch(updatePageAttribute({id: 5, name: 'title', value: 'New Title'}));
 
-    expect(page.configuration.get('title')).to.eq('New Title');
+    expect(page.configuration.get('title')).toBe('New Title');
   });
 
   it('updates page link on update page link action', () => {
@@ -32,6 +32,6 @@ describe('updating saga', () => {
         value: 'circle'
       }));
 
-    expect(pageLinks.first().get('style')).to.eq('circle');
+    expect(pageLinks.first().get('style')).toBe('circle');
   });
 });

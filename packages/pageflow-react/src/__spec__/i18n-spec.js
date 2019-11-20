@@ -21,6 +21,6 @@ describe('i18n', () => {
 
     const result = locale(store.getState());
 
-    expect(result).to.eq('fr');
+    expect(result).toBe('fr');
   });
 });

@@ -16,7 +16,7 @@ describe('widgets', () => {
 
     const result = widgetAttributes({role: 'navigation'})(store.getState());
 
-    expect(result).to.include({typeName: 'fancy', large: true});
+    expect(result).toMatchObject({typeName: 'fancy', large: true});
   });
 
   describe('editingWidget selector', () => {
@@ -28,7 +28,7 @@ describe('widgets', () => {
 
       const result = editingWidget({role: 'navigation'})(store.getState());
 
-      expect(result).to.eq(false);
+      expect(result).toBe(false);
     });
 
     it('returns true if editing attribute is set on widget', () => {
@@ -40,7 +40,7 @@ describe('widgets', () => {
       widgetModel.set('editing', true);
       const result = editingWidget({role: 'navigation'})(store.getState());
 
-      expect(result).to.eq(true);
+      expect(result).toBe(true);
     });
   });
 });

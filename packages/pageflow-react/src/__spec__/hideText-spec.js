@@ -43,7 +43,7 @@ describe('current', () => {
 
       const result = select(textIsHidden);
 
-      expect(result).to.eq(false);
+      expect(result).toBe(false);
     });
 
     it('returns true after activate action', () => {
@@ -52,7 +52,7 @@ describe('current', () => {
       hideText.activate();
       const result = select(textIsHidden);
 
-      expect(result).to.eq(true);
+      expect(result).toBe(true);
     });
 
     it('returns false after deactivate action', () => {
@@ -62,7 +62,7 @@ describe('current', () => {
       hideText.deactivate();
       const result = select(textIsHidden);
 
-      expect(result).to.eq(false);
+      expect(result).toBe(false);
     });
   });
 
@@ -72,7 +72,7 @@ describe('current', () => {
 
       const result = select(textHasBeenHidden);
 
-      expect(result).to.eq(false);
+      expect(result).toBe(false);
     });
 
     it('returns true after activate action', () => {
@@ -81,7 +81,7 @@ describe('current', () => {
       hideText.activate();
       const result = select(textHasBeenHidden);
 
-      expect(result).to.eq(true);
+      expect(result).toBe(true);
     });
 
     it('returns true after deactivate action', () => {
@@ -91,7 +91,7 @@ describe('current', () => {
       hideText.deactivate();
       const result = select(textHasBeenHidden);
 
-      expect(result).to.eq(true);
+      expect(result).toBe(true);
     });
 
     it('returns false after page change action', () => {
@@ -101,7 +101,7 @@ describe('current', () => {
       dispatch(pageChange({id: 3}));
       const result = select(textHasBeenHidden);
 
-      expect(result).to.eq(false);
+      expect(result).toBe(false);
     });
   });
 });

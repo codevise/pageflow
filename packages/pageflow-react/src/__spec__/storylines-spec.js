@@ -16,6 +16,6 @@ describe('storylines', () => {
     ];
     const store = createStore([storylinesModule], {storylines});
 
-    expect(storylineAttribute('parentPageId', {id: 100})(store.getState())).to.eq(1);
+    expect(storylineAttribute('parentPageId', {id: 100})(store.getState())).toBe(1);
   });
 });

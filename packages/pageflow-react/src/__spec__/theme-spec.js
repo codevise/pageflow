@@ -5,22 +5,28 @@ import createStore from 'createStore';
 import {expect} from 'support/chai';
 
 describe('theme', () => {
-  beforeEach(function() {
-    this.container = document.createElement('div');
-    document.body.appendChild(this.container);
+  let testContext;
+
+  beforeEach(() => {
+    testContext = {};
   });
 
-  afterEach(function() {
-    document.body.removeChild(this.container);
+  beforeEach(() => {
+    testContext.container = document.createElement('div');
+    document.body.appendChild(testContext.container);
   });
 
-  it('provides selector to fetch mainColor', function() {
-    insertThemeProbeElement(this.container, 'main_color', 'background-color: rgb(170, 170, 170)');
+  afterEach(() => {
+    document.body.removeChild(testContext.container);
+  });
+
+  it('provides selector to fetch mainColor', () => {
+    insertThemeProbeElement(testContext.container, 'main_color', 'background-color: rgb(170, 170, 170)');
     const store = createStore([themeModule], {});
 
     const result = mainColor(store.getState());
 
-    expect(result).to.eq('rgb(170, 170, 170)');
+    expect(result).toBe('rgb(170, 170, 170)');
   });
 
   function insertThemeProbeElement(container, name, style) {

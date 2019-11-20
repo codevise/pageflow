@@ -31,7 +31,7 @@ describe('backgroundMedia', () => {
 
     const result = select(muted);
 
-    expect(result).to.eq(false);
+    expect(result).toBe(false);
   });
 
   it('is muted after mute event', () => {
@@ -40,7 +40,7 @@ describe('backgroundMedia', () => {
     events.trigger('background_media:mute');
     const result = select(muted);
 
-    expect(result).to.eq(true);
+    expect(result).toBe(true);
   });
 
   it('is no longer muted after unmute event', () => {
@@ -50,7 +50,7 @@ describe('backgroundMedia', () => {
     events.trigger('background_media:unmute');
     const result = select(muted);
 
-    expect(result).to.eq(false);
+    expect(result).toBe(false);
   });
 
   it('calls pageflow.backgroundMedia.unmute on unmute action', () => {

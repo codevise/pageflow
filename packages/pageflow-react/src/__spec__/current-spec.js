@@ -45,7 +45,7 @@ describe('current', () => {
 
       const result = currentParentPageAttributes()(store.getState());
 
-      expect(result.permaId).to.eq(1);
+      expect(result.permaId).toBe(1);
     });
 
     it('returns null if current storyline does not have parent page', () => {
@@ -65,7 +65,7 @@ describe('current', () => {
 
       const result = currentParentPageAttributes()(store.getState());
 
-      expect(result).to.eq(null);
+      expect(result).toBeNull();
     });
   });
 
@@ -90,7 +90,7 @@ describe('current', () => {
 
       const result = currentParentChapterAttributes()(store.getState());
 
-      expect(result.title).to.eq('Overview');
+      expect(result.title).toBe('Overview');
     });
 
     it('returns null if current storyline does not have parent page', () => {
@@ -110,7 +110,7 @@ describe('current', () => {
 
       const result = currentParentChapterAttributes()(store.getState());
 
-      expect(result).to.eq(null);
+      expect(result).toBeNull();
     });
   });
 });

@@ -17,7 +17,7 @@ describe('createItemsSelector', () => {
 
       const result = selector(state);
 
-      expect(result).to.eq(state.posts.items);
+      expect(result).toBe(state.posts.items);
     });
 
     it('return empty object if collection with name exists', () => {
@@ -28,7 +28,7 @@ describe('createItemsSelector', () => {
 
       const result = selector(state);
 
-      expect(result).to.eql({});
+      expect(result).toEqual({});
     });
 
     describe('with namespace option', () => {
@@ -47,7 +47,7 @@ describe('createItemsSelector', () => {
 
         const result = selector(state);
 
-        expect(result).to.eq(state.myNamespace.posts.items);
+        expect(result).toBe(state.myNamespace.posts.items);
       });
 
       it('throws descriptive error if namespace is unknown', () => {
@@ -57,7 +57,7 @@ describe('createItemsSelector', () => {
 
         expect(() => {
           selector(state);
-        }).to.throw(/unknown namespace/);
+        }).toThrowError(/unknown namespace/);
       });
     });
   });

@@ -14,7 +14,7 @@ describe('memoizedSelector', () => {
 
       const result = unwrap(selectorCreator)({value: 'foo'});
 
-      expect(result).to.eq('foo');
+      expect(result).toBe('foo');
     });
 
     it('returns selector that memoizes return value for same arguments', () => {
@@ -32,24 +32,27 @@ describe('memoizedSelector', () => {
       selector({value: 'foo'});
       const result = selector({value: 'foo'});
 
-      expect(result).to.eq('foo');
-      expect(counter).to.eq(1);
+      expect(result).toBe('foo');
+      expect(counter).toBe(1);
     });
 
-    it('returns selector that return different values for different arguments', () => {
-      const selectorCreator = memoizedSelector(
-        state => state.value,
-        function(value) {
-          return value;
-        }
-      );
+    it(
+      'returns selector that return different values for different arguments',
+      () => {
+        const selectorCreator = memoizedSelector(
+          state => state.value,
+          function(value) {
+            return value;
+          }
+        );
 
-      const selector = unwrap(selectorCreator);
-      selector({value: 'foo'});
-      const result = selector({value: 'other'});
+        const selector = unwrap(selectorCreator);
+        selector({value: 'foo'});
+        const result = selector({value: 'other'});
 
-      expect(result).to.eq('other');
-    });
+        expect(result).toBe('other');
+      }
+    );
 
     it('returns selectors that memoize individually on subsequent calls', () => {
       let counter = 0;
@@ -72,9 +75,9 @@ describe('memoizedSelector', () => {
       const result1 = selector1(state1);
       const result2 = selector2(state2);
 
-      expect(result1).to.eq('foo');
-      expect(result2).to.eq('bar');
-      expect(counter).to.eq(2);
+      expect(result1).toBe('foo');
+      expect(result2).toBe('bar');
+      expect(counter).toBe(2);
     });
 
     it('returns non memoized selector unaltered', () => {
@@ -85,7 +88,7 @@ describe('memoizedSelector', () => {
       const selector = unwrap(vanillaSelector);
       const result = selector({value: 'foo'});
 
-      expect(result).to.eq('foo');
+      expect(result).toBe('foo');
     });
   });
 
@@ -100,7 +103,7 @@ describe('memoizedSelector', () => {
 
       const result = selector({value: 'foo'});
 
-      expect(result).to.eq('foo');
+      expect(result).toBe('foo');
     });
 
     it('can be called multiple times', () => {
@@ -114,7 +117,7 @@ describe('memoizedSelector', () => {
       selector({value: 'foo'});
       const result = selector({value: 'foo'});
 
-      expect(result).to.eq('foo');
+      expect(result).toBe('foo');
     });
   });
 
@@ -135,37 +138,40 @@ describe('memoizedSelector', () => {
 
     const result = unwrap(selectorCreator)({value: 'foo'});
 
-    expect(result).to.eq('foo');
+    expect(result).toBe('foo');
   });
 
   describe('combine', () => {
-    it('returns selector creator for selector returning object with input selector values under given keys', () => {
-      const selectorCreatorA = memoizedSelector(
-        state => state.value,
-        function(value) {
-          return `a ${value}`;
-        }
-      );
+    it(
+      'returns selector creator for selector returning object with input selector values under given keys',
+      () => {
+        const selectorCreatorA = memoizedSelector(
+          state => state.value,
+          function(value) {
+            return `a ${value}`;
+          }
+        );
 
-      const selectorCreatorB = memoizedSelector(
-        state => state.value,
-        function(value) {
-          return `b ${value}`;
-        }
-      );
+        const selectorCreatorB = memoizedSelector(
+          state => state.value,
+          function(value) {
+            return `b ${value}`;
+          }
+        );
 
-      const combinedSelectorCreator = combine({
-        a: selectorCreatorA,
-        b: selectorCreatorB
-      });
+        const combinedSelectorCreator = combine({
+          a: selectorCreatorA,
+          b: selectorCreatorB
+        });
 
-      const result = unwrap(combinedSelectorCreator)({value: 'foo'});
+        const result = unwrap(combinedSelectorCreator)({value: 'foo'});
 
-      expect(result).to.eql({
-        a: 'a foo',
-        b: 'b foo'
-      });
-    });
+        expect(result).toEqual({
+          a: 'a foo',
+          b: 'b foo'
+        });
+      }
+    );
 
     it('supports combining non memoized selectors', () => {
       const selectorA = function(state) {
@@ -186,7 +192,7 @@ describe('memoizedSelector', () => {
 
       const result = unwrap(combinedSelectorCreator)({value: 'foo'});
 
-      expect(result).to.eql({
+      expect(result).toEqual({
         a: 'a foo',
         b: 'b foo'
       });
@@ -207,7 +213,7 @@ describe('memoizedSelector', () => {
 
       const result = unwrap(combinedSelectorCreator)({value: 'foo'});
 
-      expect(result).to.eql({
+      expect(result).toEqual({
         a: 'a foo',
         b: 'b foo'
       });

@@ -9,8 +9,8 @@ describe('getCueOffsetClassName', () => {
 
     const result = getCueOffsetClassName(videoDimensions, wrapperDimensions);
 
-    expect(result).to.contain('cue_offset ');
-    expect(result).to.contain('cue_offset_2');
+    expect(result).toEqual(expect.arrayContaining(['cue_offset ']));
+    expect(result).toEqual(expect.arrayContaining(['cue_offset_2']));
   });
 
   it('returns css class for margins', () => {
@@ -19,7 +19,7 @@ describe('getCueOffsetClassName', () => {
 
     const result = getCueOffsetClassName(videoDimensions, wrapperDimensions);
 
-    expect(result).to.contain('cue_margin_left_1');
-    expect(result).to.contain('cue_margin_right_2');
+    expect(result).toEqual(expect.arrayContaining(['cue_margin_left_1']));
+    expect(result).toEqual(expect.arrayContaining(['cue_margin_right_2']));
   });
 });

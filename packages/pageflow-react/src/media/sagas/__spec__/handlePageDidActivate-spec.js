@@ -81,7 +81,7 @@ describe('handlePageDidActivate', () => {
     expect(run.put).to.have.been.calledWith(sinon.match({type: PLAY}));
   });
 
-  describe('with retryOnUnmute option', function() {
+  describe('with retryOnUnmute option', () => {
     it('plays media once unmuted', () => {
       const run = runSagaInPageScope(handlePageDidActivate, {
         reduxModules: [backgroundMediaModule],

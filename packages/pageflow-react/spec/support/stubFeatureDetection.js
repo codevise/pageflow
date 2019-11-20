@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 
 export default function stubFeatureDetection() {
-  beforeEach(function() {
+  beforeEach(() => {
     window.pageflow = window.pageflow || {};
     this.browserBackup = window.pageflow.browser;
 
@@ -10,7 +10,7 @@ export default function stubFeatureDetection() {
     };
   });
 
-  afterEach(function () {
+  afterEach(() => {
     window.pageflow.browser = this.browserBackup;
   });
 }

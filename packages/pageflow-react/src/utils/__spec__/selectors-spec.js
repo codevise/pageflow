@@ -10,7 +10,7 @@ describe('prop selector', () => {
 
     const result = prop('label')(state, props);
 
-    expect(result).to.eq('Text');
+    expect(result).toBe('Text');
   });
 
   it('supports path lookup', () => {
@@ -19,7 +19,7 @@ describe('prop selector', () => {
 
     const result = prop('nested.label')(state, props);
 
-    expect(result).to.eq('Text');
+    expect(result).toBe('Text');
   });
 
   it('throws error if top level prop is missing', () => {
@@ -28,7 +28,7 @@ describe('prop selector', () => {
 
     expect(() => {
       prop('label')(state, props);
-    }).to.throw(/Missing required prop/);
+    }).toThrowError(/Missing required prop/);
   });
 
   it('returns undefined if nested prop is missing', () => {
@@ -37,7 +37,7 @@ describe('prop selector', () => {
 
     const result = prop('nested.not.there')(state, props);
 
-    expect(result).to.eq(undefined);
+    expect(result).toBeUndefined();
   });
 });
 
@@ -52,7 +52,7 @@ describe('has selector', () => {
     const resultForPresentFeature = has('some present feature')({}, {}, browser);
     const resultForAbsentFeature = has('some absent feature')({}, {}, browser);
 
-    expect(resultForPresentFeature).to.eq(true);
-    expect(resultForAbsentFeature).to.eq(false);
+    expect(resultForPresentFeature).toBe(true);
+    expect(resultForAbsentFeature).toBe(false);
   });
 });

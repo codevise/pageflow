@@ -53,7 +53,7 @@ describe('mergePageTypes', () => {
 
     const result = mergePageTypes(base, mixin);
 
-    expect(result.enhance()).to.eq(5);
+    expect(result.enhance()).toBe(5);
   });
 
   it('keeps properties only defined in base', () => {
@@ -64,7 +64,7 @@ describe('mergePageTypes', () => {
 
     const result = mergePageTypes(base, mixin);
 
-    expect(result.scroller).to.eq(true);
+    expect(result.scroller).toBe(true);
   });
 
   it('keeps properties only defined in mixin', () => {
@@ -75,7 +75,7 @@ describe('mergePageTypes', () => {
 
     const result = mergePageTypes(base, mixin);
 
-    expect(result.scroller).to.eq(true);
+    expect(result.scroller).toBe(true);
   });
 
   it('lets mixin properties win', () => {
@@ -88,6 +88,6 @@ describe('mergePageTypes', () => {
 
     const result = mergePageTypes(base, mixin);
 
-    expect(result.scroller).to.eq(true);
+    expect(result.scroller).toBe(true);
   });
 });

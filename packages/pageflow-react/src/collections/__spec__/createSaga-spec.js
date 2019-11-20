@@ -186,8 +186,8 @@ describe('createSaga', () => {
         itemId: 5
       }});
 
-      expect(itemSelector({id: 5})(store.getState()).seen).to.eq(true);
-      expect(itemSelector({id: 6})(store.getState()).seen).to.eq(undefined);
+      expect(itemSelector({id: 5})(store.getState()).seen).toBe(true);
+      expect(itemSelector({id: 6})(store.getState()).seen).toBeUndefined();
     });
 
     it('dispatches actions in context of own item', () => {
@@ -222,7 +222,7 @@ describe('createSaga', () => {
         ]
       }));
 
-      expect(itemSelector({id: 5})(store.getState()).seen).to.eq(true);
+      expect(itemSelector({id: 5})(store.getState()).seen).toBe(true);
     });
 
     it('takes collection actions for own item', () => {

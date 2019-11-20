@@ -42,16 +42,19 @@ describe('fadeInWhenPageWillActivate', () => {
     expect(run.put).to.have.been.calledWith(action(PLAY));
   });
 
-  it('does not play video if page is deactivated before video is prebuffered', () => {
-    const run = runSagaInPageScope(fadeInWhenPageWillActivate, {
-      reduxModules: [backgroundMediaModule]
-    })
-      .dispatch(pageWillActivate())
-      .dispatch(pageWillDeactivate())
-      .dispatch(prebuffered());
+  it(
+    'does not play video if page is deactivated before video is prebuffered',
+    () => {
+      const run = runSagaInPageScope(fadeInWhenPageWillActivate, {
+        reduxModules: [backgroundMediaModule]
+      })
+        .dispatch(pageWillActivate())
+        .dispatch(pageWillDeactivate())
+        .dispatch(prebuffered());
 
-    expect(run.put).not.to.have.been.calledWith(action(PLAY));
-  });
+      expect(run.put).not.to.have.been.calledWith(action(PLAY));
+    }
+  );
 
   it('does not turn up volume before video is prebuffered', () => {
     const run = runSagaInPageScope(fadeInWhenPageWillActivate, {

@@ -18,7 +18,7 @@ describe('features', () => {
   it('provides selector to get feature state', () => {
     const {select} = setup({enabledFeatureNames: ['some_feature']});
 
-    expect(select(isFeatureEnabled('some_feature'))).to.eq(true);
-    expect(select(isFeatureEnabled('other_feature'))).to.eq(false);
+    expect(select(isFeatureEnabled('some_feature'))).toBe(true);
+    expect(select(isFeatureEnabled('other_feature'))).toBe(false);
   });
 });

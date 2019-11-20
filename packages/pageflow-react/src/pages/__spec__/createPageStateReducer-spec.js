@@ -23,7 +23,7 @@ describe('createPageStateReducer', () => {
 
       const reducedPage = reducer(page, 'PLAY');
 
-      expect(reducedPage.state.custom.isPlaying).to.eq(true);
+      expect(reducedPage.state.custom.isPlaying).toBe(true);
     });
 
     it('does not alter attributes', () => {
@@ -32,7 +32,7 @@ describe('createPageStateReducer', () => {
 
       const reducedPage = reducer(page, 'PLAY');
 
-      expect(reducedPage.attributes.type).to.eq('video');
+      expect(reducedPage.attributes.type).toBe('video');
     });
 
     it('does not applies reducer for other page type', () => {
@@ -41,7 +41,7 @@ describe('createPageStateReducer', () => {
 
       const reducedPage = reducer(page, 'PLAY');
 
-      expect(reducedPage.state.custom.isPlaying).to.eq(undefined);
+      expect(reducedPage.state.custom.isPlaying).toBeUndefined();
     });
 
     it('returns same page if state did not change', () => {
@@ -51,7 +51,7 @@ describe('createPageStateReducer', () => {
       const initializedPage = reducer(page, 'INIT');
       const reducedPage = reducer(initializedPage, 'UNKNOWN');
 
-      expect(reducedPage).to.eq(initializedPage);
+      expect(reducedPage).toBe(initializedPage);
     });
 
     it('resets custom page state when type changes', () => {
@@ -66,8 +66,8 @@ describe('createPageStateReducer', () => {
         attributes: {type: 'video'}
       }));
 
-      expect(reducedPage.attributes.type).to.eq('video');
-      expect(reducedPage.state.custom).to.eql({});
+      expect(reducedPage.attributes.type).toBe('video');
+      expect(reducedPage.state.custom).toEqual({});
     });
   });
 });

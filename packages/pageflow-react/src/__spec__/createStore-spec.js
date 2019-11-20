@@ -21,7 +21,7 @@ describe('createStore', () => {
     const store = createStore([reduxModule], options);
     store.dispatch({type: 'ACTION'});
 
-    expect(store.getState()).to.eql({test: 'new state'});
+    expect(store.getState()).toEqual({test: 'new state'});
   });
 
   it('passes options to createReducers function', () => {
@@ -39,7 +39,7 @@ describe('createStore', () => {
     const store = createStore([reduxModule], options);
     store.dispatch({type: 'ACTION'});
 
-    expect(store.getState()).to.eql({test: 'new state'});
+    expect(store.getState()).toEqual({test: 'new state'});
   });
 
   it('runs sagas of passed Redux modules', () => {
@@ -157,7 +157,7 @@ describe('createStore', () => {
 
     createStore([reduxModule], options);
 
-    expect(result).to.eql({test: 'initial'});
+    expect(result).toEqual({test: 'initial'});
   });
 
   it('lets redux module define custom middleware', () => {

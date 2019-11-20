@@ -12,6 +12,6 @@ describe('theming', () => {
       }
     });
 
-    expect(privacyLinkUrl(store.getState())).to.eq('/privacy');
+    expect(privacyLinkUrl(store.getState())).toBe('/privacy');
   });
 });

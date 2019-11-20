@@ -18,7 +18,7 @@ describe('createFirstItemSelector', () => {
 
       const result = selector(state);
 
-      expect(result.id).to.eq(5);
+      expect(result.id).toBe(5);
     });
 
     it('returns undefined for empty collection', () => {
@@ -32,7 +32,7 @@ describe('createFirstItemSelector', () => {
 
       const result = selector(state);
 
-      expect(result).to.eq(undefined);
+      expect(result).toBeUndefined();
     });
 
     describe('with namespace option', () => {
@@ -52,7 +52,7 @@ describe('createFirstItemSelector', () => {
 
         const result = selector(state);
 
-        expect(result.id).to.eq(4);
+        expect(result.id).toBe(4);
       });
 
       it('throws descriptive error if namespace is unknown', () => {
@@ -62,7 +62,7 @@ describe('createFirstItemSelector', () => {
 
         expect(() => {
           selector(state);
-        }).to.throw(/unknown namespace/);
+        }).toThrowError(/unknown namespace/);
       });
     });
   });
