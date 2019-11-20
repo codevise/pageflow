@@ -54,6 +54,7 @@ export const EditEntryView = Marionette.Layout.extend({
     this._updatePublishButton();
 
     this.outlineRegion.show(new editor.entryType.outlineView({
+      entry: state.entry,
       navigatable: true,
       editable: true,
       displayInNavigationHint: true,

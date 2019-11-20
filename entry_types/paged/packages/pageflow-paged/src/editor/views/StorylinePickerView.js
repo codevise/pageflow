@@ -3,13 +3,11 @@ import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {SelectInputView} from '$pageflow/ui';
+import {SelectInputView} from 'pageflow/ui';
 
-import {editor} from '../base';
+import {editor} from 'pageflow/editor';
 
 import {StorylineOutlineView} from './StorylineOutlineView';
-
-import {state} from '$state';
 
 import template from '../templates/storylinePicker.jst';
 
@@ -28,7 +26,7 @@ export const StorylinePickerView = Marionette.Layout.extend({
 
   events: {
     'click .add_storyline': function() {
-      var storyline = state.entry.scaffoldStoryline({
+      var storyline = this.options.entry.scaffoldStoryline({
         depth: 'page'
       }).storyline;
 
@@ -51,7 +49,7 @@ export const StorylinePickerView = Marionette.Layout.extend({
       storyline_id: this.defaultStorylineId()
     });
 
-    this.listenTo(state.storylines, 'add sort remove', this.updateSelect);
+    this.listenTo(this.options.entry.storylines, 'add sort remove', this.updateSelect);
     this.listenTo(this.model, 'change', this.load);
   },
 
@@ -64,15 +62,17 @@ export const StorylinePickerView = Marionette.Layout.extend({
   },
 
   updateSelect: function() {
+    var storylines = this.options.entry.storylines;
+
     this.selectRegion.show(new SelectInputView({
       model: this.model,
       label: I18n.t('pageflow.editor.views.storylines_picker_view.label'),
       propertyName: 'storyline_id',
-      values: state.storylines.pluck('id'),
-      texts: state.storylines.map(function(storyline) {
+      values: storylines.pluck('id'),
+      texts: storylines.map(function(storyline) {
         return this.indentation(storyline) + storyline.displayTitle();
       }, this),
-      groups: state.storylines.reduce(function(result, storyline) {
+      groups: storylines.reduce(function(result, storyline) {
         if (storyline.isMain() || storyline.parentPage()) {
           result.push(_.last(result));
         }
@@ -85,7 +85,7 @@ export const StorylinePickerView = Marionette.Layout.extend({
   },
 
   load: function() {
-    var storyline = state.storylines.get(this.model.get('storyline_id'));
+    var storyline = this.options.entry.storylines.get(this.model.get('storyline_id'));
 
     this.saveRememberedStorylineId(storyline.id);
 
@@ -102,9 +102,9 @@ export const StorylinePickerView = Marionette.Layout.extend({
 
   defaultStorylineId: function() {
     var storyline =
-      state.storylines.get(this.options.storylineId) ||
-      state.storylines.get(this.rememberedStorylineId()) ||
-      state.storylines.first();
+      this.options.entry.storylines.get(this.options.storylineId) ||
+      this.options.entry.storylines.get(this.rememberedStorylineId()) ||
+      this.options.entry.storylines.first();
 
     return storyline.id;
   },

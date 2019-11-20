@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
-import {CollectionView, SortableCollectionView} from '$pageflow/ui';
+import {CollectionView, SortableCollectionView} from 'pageflow/ui';
 
 import {NavigatablePageItemView} from './NavigatablePageItemView';
 

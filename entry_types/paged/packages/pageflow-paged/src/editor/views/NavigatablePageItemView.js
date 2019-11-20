@@ -1,8 +1,5 @@
 import {PageItemView} from './PageItemView';
-import {failureIndicatingView} from './mixins/failureIndicatingView';
-import {loadable} from './mixins/loadable';
-
-import {editor} from '../base';
+import {failureIndicatingView, loadable, editor} from 'pageflow/editor';
 
 export const NavigatablePageItemView = PageItemView.extend({
   mixins: [loadable, failureIndicatingView],
