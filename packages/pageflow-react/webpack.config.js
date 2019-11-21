@@ -1,5 +1,3 @@
-/*global module, require, __dirname*/
-
 var path = require('path');
 
 // Allow excluding packages from one of the builds. On the client,
