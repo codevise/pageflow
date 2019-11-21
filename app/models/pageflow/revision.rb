@@ -124,7 +124,7 @@ module Pageflow
     end
 
     def locale
-      super.presence || I18n.default_locale
+      super.presence || I18n.default_locale.to_s
     end
 
     def pages
