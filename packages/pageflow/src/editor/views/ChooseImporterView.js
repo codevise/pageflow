@@ -1,8 +1,16 @@
-pageflow.ChooseImporterView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/choose_importer',
+import Backbone from 'backbone';
+import Marionette from 'backbone.marionette';
+
+import template from '../templates/chooseImporter.jst';
+import {dialogView} from './mixins/dialogView';
+import {app} from '../app';
+import {editor} from '../base'
+
+export const ChooseImporterView = Marionette.ItemView.extend({
+  template,
   className: 'choose_importer editor dialog',
 
-  mixins: [pageflow.dialogView],
+  mixins: [dialogView],
 
   ui: {
     importersList: '.importers_panel',
@@ -26,13 +34,13 @@ pageflow.ChooseImporterView = Backbone.Marionette.ItemView.extend({
 
   onRender: function() {
     var self = this;
-    pageflow.editor.fileImporters.keys().forEach(function (fileImporter) {
+    editor.fileImporters.keys().forEach(function (fileImporter) {
       var label = I18n.t('pageflow.editor.file_importers.'+fileImporter+'.label');
       self.ui.importersList.append('<li><button class="importer" data-key="'+ fileImporter +'">' + label + '</button></li>');
     });
   },
 });
 
-pageflow.ChooseImporterView.open = function(options) {
-  pageflow.app.dialogRegion.show(new pageflow.ChooseImporterView(options).render());
+ChooseImporterView.open = function(options) {
+  app.dialogRegion.show(new ChooseImporterView(options).render());
 };

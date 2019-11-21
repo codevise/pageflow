@@ -1,8 +1,17 @@
-pageflow.ConfirmFileImportUploadView = Backbone.Marionette.Layout.extend({
-  template: 'templates/confirm_upload',
+import Backbone from 'backbone';
+import Marionette from 'backbone.marionette';
+
+import template from '../templates/confirmUpload.jst';
+import {dialogView} from './mixins/dialogView';
+import {UploadableFilesView} from './UploadableFilesView'
+import {app} from '../app';
+import {state} from '$state';
+
+export const ConfirmFileImportUploadView = Marionette.Layout.extend({
+  template,
   className: 'confirm_upload editor dialog',
 
-  mixins: [pageflow.dialogView],
+  mixins: [dialogView],
 
   regions: {
     selectedFileRegion: '.selected_file_region'
@@ -22,9 +31,9 @@ pageflow.ConfirmFileImportUploadView = Backbone.Marionette.Layout.extend({
   },
   getSelectedFiles: function () {
     var files = [];
-    for (var key in pageflow.files) {
-      if (pageflow.files.hasOwnProperty(key)) {
-        var collection = pageflow.files[key];
+    for (var key in state.files) {
+      if (state.files.hasOwnProperty(key)) {
+        var collection = state.files[key];
         if (collection.length>0) {
           files = files.concat(collection.toJSON());
         }
@@ -39,7 +48,7 @@ pageflow.ConfirmFileImportUploadView = Backbone.Marionette.Layout.extend({
 
   onRender: function() {
     this.options.fileTypes.each(function(fileType) {
-      this.ui.filesPanel.append(this.subview(new pageflow.UploadableFilesView({
+      this.ui.filesPanel.append(this.subview(new UploadableFilesView({
         collection: this.options.files[fileType.collectionName],
         fileType: fileType,
         selection: this.selection
@@ -74,6 +83,6 @@ pageflow.ConfirmFileImportUploadView = Backbone.Marionette.Layout.extend({
 });
 
 
-pageflow.ConfirmFileImportUploadView.open = function(options) {
-  pageflow.app.dialogRegion.show(new pageflow.ConfirmFileImportUploadView(options));
+ConfirmFileImportUploadView.open = function(options) {
+  app.dialogRegion.show(new ConfirmFileImportUploadView(options));
 };

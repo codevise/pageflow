@@ -60,6 +60,7 @@ export * from './models/Entry';
 export * from './models/FileConfiguration';
 export * from './models/FileStage';
 export * from './models/authenticationProvider';
+export * from './models/FileImport';
 
 export * from './collections/ChaptersCollection';
 export * from './collections/SubsetCollection';
@@ -167,6 +168,10 @@ export * from './views/mixins/loadable';
 export * from './views/mixins/dialogView';
 export * from './views/FileStageItemView';
 export * from './views/ConfirmUploadView';
+export * from './views/ChooseImporterView';
+export * from './views/FilesImporterView';
+export * from './views/ConfirmFileImportUploadView';
+
 
 import './views/configurationEditors/audio';
 import './views/configurationEditors/backgroundImage';

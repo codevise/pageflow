@@ -1,4 +1,6 @@
-pageflow.FileImporters = pageflow.Object.extend({
+import {Object} from '$pageflow/ui';
+
+export const FileImporters = Object.extend({
   initialize: function() {
     this.importers = {};
   },
@@ -20,10 +22,10 @@ pageflow.FileImporters = pageflow.Object.extend({
     return this.importers[name];
   },
   keys: function () {
-    return Object.keys(this.importers);
+    return _.keys(this.importers);
   },
   values: function () {
-    return Object.values(this.importers);
+    return _.values(this.importers);
   }
 
 });

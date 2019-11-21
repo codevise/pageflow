@@ -1,8 +1,20 @@
-pageflow.FilesImporterView = Backbone.Marionette.ItemView.extend({
-  template: 'templates/files_importer',
+import Backbone from 'backbone';
+import Marionette from 'backbone.marionette';
+
+
+import template from '../templates/filesImporter.jst';
+import {dialogView} from './mixins/dialogView';
+import {app} from '../app';
+import {editor} from '../base'
+import {FileImport} from '../models/FileImport'
+import {ConfirmFileImportUploadView} from './ConfirmFileImportUploadView'
+import {state} from '$state';
+
+export const FilesImporterView = Marionette.ItemView.extend({
+  template,
   className: 'files_importer editor dialog',
 
-  mixins: [pageflow.dialogView],
+  mixins: [dialogView],
 
   ui: {
     contentPanel: '.content_panel',
@@ -20,7 +32,10 @@ pageflow.FilesImporterView = Backbone.Marionette.ItemView.extend({
   initialize: function(options) {
     this.model = new Backbone.Model({
       importer_key: options.importer_key,
-      importer: new pageflow.FileImport(options.importer_key)
+      importer: new FileImport({
+        importer_key: options.importer_key,
+        currentEntry: state.entry
+      })
     });
 
     this.listenTo(this.model.get('importer'), "change", function (event) {
@@ -47,10 +62,10 @@ pageflow.FilesImporterView = Backbone.Marionette.ItemView.extend({
     this.model.get('importer').getFilesMetaData().then(function (metaData) {
       if (metaData) {
         self.model.set('metaData', metaData);
-        // add each selected file meta to pageflow.files
+        // add each selected file meta to state.files
         for(var i = 0; i<metaData.files.length; i++){
           var file = metaData.files[i];
-          var fileType = pageflow.editor.fileTypes.findByUpload(file);
+          var fileType = editor.fileTypes.findByUpload(file);
 
            var file = new fileType.model({
             state: 'uploadable',
@@ -63,12 +78,12 @@ pageflow.FilesImporterView = Backbone.Marionette.ItemView.extend({
             fileType: fileType
           });
 
-          pageflow.entry.getFileCollection(fileType).add(file);
+          state.entry.getFileCollection(fileType).add(file);
         }
-        pageflow.ConfirmFileImportUploadView.open({
-          fileTypes: pageflow.editor.fileTypes,
+        ConfirmFileImportUploadView.open({
+          fileTypes: editor.fileTypes,
           fileImportModel: self.model,
-          files: pageflow.files
+          files: state.files
         });
       }
     });
@@ -76,6 +91,6 @@ pageflow.FilesImporterView = Backbone.Marionette.ItemView.extend({
   }
 });
 
-pageflow.FilesImporterView.open = function(options) {
-  pageflow.app.dialogRegion.show(new pageflow.FilesImporterView(options).render());
+FilesImporterView.open = function(options) {
+  app.dialogRegion.show(new FilesImporterView(options).render());
 };
