@@ -1,9 +1,11 @@
 import sinon from 'sinon';
 
 export default function stubFeatureDetection() {
+  let browserBackup = {};
+
   beforeEach(() => {
     window.pageflow = window.pageflow || {};
-    this.browserBackup = window.pageflow.browser;
+    browserBackup = window.pageflow.browser;
 
     window.pageflow.browser  = {
       has: sinon.stub().returns(false)
@@ -11,6 +13,6 @@ export default function stubFeatureDetection() {
   });
 
   afterEach(() => {
-    window.pageflow.browser = this.browserBackup;
+    window.pageflow.browser = browserBackup;
   });
 }

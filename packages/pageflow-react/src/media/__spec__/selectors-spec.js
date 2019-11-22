@@ -81,8 +81,8 @@ describe('textTracks selector', () => {
       file: file('videoFiles', {id: videoFile1PermaId})
     })(state);
 
-    expect(result).toHaveProperty('files[0].id', videoFile1TextTrackEnId);
-    expect(result).toHaveProperty('files[1].id', videoFile1TextTrackDeId);
+    expect(result).toHaveProperty('files', 0, 'id', videoFile1TextTrackEnId);
+    expect(result).toHaveProperty('files', 1, 'id', videoFile1TextTrackDeId);
   });
 
   it('sets activeFileId to id of selected text track', () => {
@@ -141,7 +141,7 @@ describe('textTracks selector', () => {
         defaultTextTrackFileId: () => 8000
       })(state);
 
-      expect(result.activeFileId).to.be.falsy;
+      expect(result.activeFileId).toBeFalsy();
     }
   );
 
@@ -156,7 +156,7 @@ describe('textTracks selector', () => {
       defaultTextTrackFileId: () => videoFile2TextTrackDePermaId
     })(state);
 
-    expect(result.activeFileId).to.be.falsy;
+    expect(result.activeFileId).toBeFalsy();
   });
 
   it('sets activeFileId to id of of first captions if mute', () => {
@@ -193,7 +193,7 @@ describe('textTracks selector', () => {
       file: file('videoFiles', {id: videoFile1PermaId})
     })(state);
 
-    expect(result).toHaveProperty('files[1].displayLabel', 'German');
+    expect(result).toHaveProperty(['files', 1, 'displayLabel'], 'German');
   });
 });
 

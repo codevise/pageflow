@@ -7,6 +7,6 @@ describe('Duration', () => {
   it('displays duration prop', () => {
     const result = shallow(<Duration duration={10} />);
 
-    expect(result.find(TimeDisplay)).to.have.prop('value', 10);
+    expect(result.find(TimeDisplay)).toHaveProp('value', 10);
   });
 });

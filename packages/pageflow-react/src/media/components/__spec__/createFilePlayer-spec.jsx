@@ -49,7 +49,7 @@ describe('createFilePlayer', () => {
 
       const wrapper = mount(<FilePlayer {...requiredProps} />);
 
-      expect(wrapper.render()).to.have.descendants('audio');
+      expect(wrapper.render()).toHaveDescendant('audio');
     });
 
     it('renders media tag with given sources', () => {
@@ -66,7 +66,7 @@ describe('createFilePlayer', () => {
                                         playerState={{}}
                                         playerActions={requiredPlayerActions}/>);
 
-      expect(wrapper.render()).to.have.descendants('source[src="some.mp4"]');
+      expect(wrapper.render()).toHaveDescendant('source[src="some.mp4"]');
     });
 
     it('passes quality to sources function', () => {
@@ -78,7 +78,7 @@ describe('createFilePlayer', () => {
 
       const wrapper = mount(<FilePlayer {...requiredProps} quality="high" />);
 
-      expect(wrapper.render()).to.have.descendants('source[src="high.mp4"]');
+      expect(wrapper.render()).toHaveDescendant('source[src="high.mp4"]');
     });
 
     it('passes hasHighBandwidth option to sources', () => {
@@ -90,7 +90,7 @@ describe('createFilePlayer', () => {
 
       const wrapper = mount(<FilePlayer {...requiredProps} hasHighBandwidth={true} />);
 
-      expect(wrapper.render()).to.have.descendants('source[src="high.mp4"]');
+      expect(wrapper.render()).toHaveDescendant('source[src="high.mp4"]');
     });
 
     it('renders media tag with poster given by option', () => {
@@ -103,7 +103,7 @@ describe('createFilePlayer', () => {
 
       const wrapper = mount(<FilePlayer {...requiredProps} file={file} />);
 
-      expect(wrapper.render()).to.have.descendants('video[data-poster="some-poster.png"]');
+      expect(wrapper.render()).toHaveDescendant('video[data-poster="some-poster.png"]');
     });
 
     it('renders muted media tag if muted prop is true', () => {
@@ -111,7 +111,7 @@ describe('createFilePlayer', () => {
 
       const wrapper = mount(<FilePlayer {...requiredProps} muted={true} />);
 
-      expect(wrapper.render()).to.have.descendants('video[muted]');
+      expect(wrapper.render()).toHaveDescendant('video[muted]');
     });
 
     it('renders media tag with ready text tracks from props', () => {
@@ -122,7 +122,7 @@ describe('createFilePlayer', () => {
 
       const wrapper = mount(<FilePlayer {...requiredProps} textTracks={textTracks} />);
 
-      expect(wrapper.render()).to.have.descendants('track[srclang="en"]');
+      expect(wrapper.render()).toHaveDescendant('track[srclang="en"]');
     });
 
     it('does not render text tracks that are not ready', () => {
@@ -133,7 +133,7 @@ describe('createFilePlayer', () => {
 
       const wrapper = mount(<FilePlayer {...requiredProps} textTracks={textTracks} />);
 
-      expect(wrapper.render()).not.to.have.descendants('track');
+      expect(wrapper.render()).not.toHaveDescendant('track');
     });
 
     it('does not render text tracks when text tracks are disabled', () => {
@@ -146,7 +146,7 @@ describe('createFilePlayer', () => {
                                         textTracksEnabled={false}
                                         textTracks={textTracks} />);
 
-      expect(wrapper.render()).not.to.have.descendants('track');
+      expect(wrapper.render()).not.toHaveDescendant('track');
     });
 
     [
@@ -290,7 +290,7 @@ describe('createFilePlayer', () => {
       mount(<FilePlayer {...requiredProps}
                         atmoDuringPlayback="pause" />);
 
-      expect(passedAtmoSettings).to.eql({'atmo_during_playback': 'pause'});
+      expect(passedAtmoSettings).toEqual({'atmo_during_playback': 'pause'});
     });
 
     it('updates atmo settings that are passed to player in place', () => {
@@ -307,7 +307,7 @@ describe('createFilePlayer', () => {
 
       wrapper.setProps({atmoDuringPlayback: 'play'});
 
-      expect(passedAtmoSettings).to.eql({'atmo_during_playback': 'play'});
+      expect(passedAtmoSettings).toEqual({'atmo_during_playback': 'play'});
     });
 
     it('passes emulateTextTracksDisplay to createPlayer function', () => {
@@ -323,7 +323,7 @@ describe('createFilePlayer', () => {
       mount(<FilePlayer {...requiredProps}
                         atmoDuringPlayback="pause" />);
 
-      expect(passedValue).to.eq(true);
+      expect(passedValue).toEqual(true);
     });
 
     it('passes mediaContext from context to createPlayer function', () => {
@@ -340,7 +340,7 @@ describe('createFilePlayer', () => {
       mount(<FilePlayer {...requiredProps} />,
             {context: {mediaContext}});
 
-      expect(passedMediaContext).to.eq(mediaContext);
+      expect(passedMediaContext).toEqual(mediaContext);
     });
 
     it('updates text track modes on mount', () => {
@@ -356,8 +356,8 @@ describe('createFilePlayer', () => {
       mount(<FilePlayer {...requiredProps}
                         textTracks={textTracks} />);
 
-      expect(mockPlayer.textTracks()[0].mode).to.eq('showing');
-      expect(mockPlayer.textTracks()[1].mode).to.eq('disabled');
+      expect(mockPlayer.textTracks()[0].mode).toEqual('showing');
+      expect(mockPlayer.textTracks()[1].mode).toEqual('disabled');
     });
 
     it('updates text track modes when text tracks settings change', () => {
@@ -378,8 +378,8 @@ describe('createFilePlayer', () => {
         }
       });
 
-      expect(mockPlayer.textTracks()[0].mode).to.eq('showing');
-      expect(mockPlayer.textTracks()[1].mode).to.eq('disabled');
+      expect(mockPlayer.textTracks()[0].mode).toEqual('showing');
+      expect(mockPlayer.textTracks()[1].mode).toEqual('disabled');
     });
 
     it('does not reset text track modes if browser has native video player', () => {
@@ -396,7 +396,7 @@ describe('createFilePlayer', () => {
                         textTracks={textTracks}
                         hasNativeVideoPlayer={true} />);
 
-      expect(mockPlayer.textTracks()[0].mode).not.to.eq('showing');
+      expect(mockPlayer.textTracks()[0].mode).not.toEqual('showing');
     });
   });
 

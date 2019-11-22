@@ -26,7 +26,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).to.have.className('pageflow_image_file_thumbnail_10');
+    expect(result).toHaveClassName('pageflow_image_file_thumbnail_10');
   });
 
   it('supports lazy thumbnail css class', () => {
@@ -52,7 +52,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).to.have.className('lazy_pageflow_image_file_thumbnail_10');
+    expect(result).toHaveClassName('lazy_pageflow_image_file_thumbnail_10');
   });
 
   it('adds load_image class if loaded prop is present', () => {
@@ -79,7 +79,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).to.have.className('load_image');
+    expect(result).toHaveClassName('load_image');
   });
 
   it('skips candidates whose attributes point to non existing files', () => {
@@ -111,7 +111,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).to.have.className('pageflow_video_file_thumbnail_5');
+    expect(result).toHaveClassName('pageflow_video_file_thumbnail_5');
   });
 
   it('skips candidates whose attributes are not defined', () => {
@@ -130,7 +130,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).not.to.have.className('pageflow_image_file');
+    expect(result).not.toHaveClassName('pageflow_image_file');
   });
 
   it('skips candidates whose condition is not met', () => {
@@ -160,7 +160,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).not.to.have.className('pageflow_image_file_thumbnail_5');
+    expect(result).not.toHaveClassName('pageflow_image_file_thumbnail_5');
   });
 
   it('uses candidate whose condition is met', () => {
@@ -190,7 +190,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).to.have.className('pageflow_image_file_thumbnail_5');
+    expect(result).toHaveClassName('pageflow_image_file_thumbnail_5');
   });
 
   it('skips candidates with negated met condition', () => {
@@ -221,7 +221,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).not.to.have.className('pageflow_image_file_thumbnail_5');
+    expect(result).not.toHaveClassName('pageflow_image_file_thumbnail_5');
   });
 
   it('uses candidate with negated unmet condition', () => {
@@ -252,7 +252,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).to.have.className('pageflow_image_file_thumbnail_5');
+    expect(result).toHaveClassName('pageflow_image_file_thumbnail_5');
   });
 
   it('prefers custom thumbnail id', () => {
@@ -279,7 +279,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).to.have.className('pageflow_image_file_thumbnail_11');
+    expect(result).toHaveClassName('pageflow_image_file_thumbnail_11');
   });
 
   it('skips custom thumbnail id pointing to non existent file', () => {
@@ -297,7 +297,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).not.to.have.className('pageflow_image_file_thumbnail_11');
+    expect(result).not.toHaveClassName('pageflow_image_file_thumbnail_11');
   });
 
   it('takes className prop', () => {
@@ -312,7 +312,7 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).to.have.className('custom');
+    expect(result).toHaveClassName('custom');
   });
 
   it('sets page type modifier class name', () => {
@@ -327,10 +327,10 @@ describe('PageThumbnail', () => {
 
     const result = shallow(<PageThumbnail {...props} />);
 
-    expect(result).to.have.className('is_video');
+    expect(result).toHaveClassName('is_video');
   });
 
-  context('when page is null', function() {
+  describe('when page is null', function() {
     it('sets is_dangling class name', () => {
       const props =  {
         page: null,
@@ -340,7 +340,7 @@ describe('PageThumbnail', () => {
 
       const result = shallow(<PageThumbnail {...props} />);
 
-      expect(result).to.have.className('is_dangling');
+      expect(result).toHaveClassName('is_dangling');
     });
   });
 });

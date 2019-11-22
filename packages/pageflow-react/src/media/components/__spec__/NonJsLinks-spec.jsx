@@ -12,7 +12,7 @@ describe('NonJsLinks', () => {
                                       file={file}
                                       t={() => {}}/>);
 
-    expect(wrapper.find('a')).to.have.prop('href', '/my-entry/audio/5');
+    expect(wrapper.find('a')).toHaveProp('href', '/my-entry/audio/5');
   });
 
   it('renders link to video file', () => {
@@ -24,7 +24,7 @@ describe('NonJsLinks', () => {
                                       file={file}
                                       t={() => {}}/>);
 
-    expect(wrapper.find('a')).to.have.prop('href', '/my-entry/videos/6');
+    expect(wrapper.find('a')).toHaveProp('href', '/my-entry/videos/6');
   });
 
   it('renders nothing when no file is given', () => {
@@ -32,6 +32,6 @@ describe('NonJsLinks', () => {
                                       file={null}
                                       t={() => {}}/>);
 
-    expect(wrapper).not.to.have.descendants('a');
+    expect(wrapper).not.toContainMatchingElement('a');
   });
 });

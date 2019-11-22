@@ -8,7 +8,7 @@ describe('commonPageStateReducer', () => {
 
     const result = commonPageStateReducer(state, {type: 'INIT'});
 
-    expect(result).toEqual(expect.arrayContaining([
+    expect(Object.keys(result)).toEqual(expect.arrayContaining([
       'isActive', 'isActivated', 'isPrepared', 'isPreloaded', 'initialScrollerPosition'
     ]));
   });

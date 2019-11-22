@@ -4,19 +4,20 @@ import {mount, render} from 'enzyme';
 import sinon from 'sinon';
 import {findDOMNode} from 'react-dom';
 
+
 describe('MediaTag', () => {
   it('renders tag with given name', () => {
     const wrapper = render(<MediaTag tagName="audio" />);
 
-    expect(wrapper).to.have.descendants('audio');
+    expect(wrapper).toHaveDescendant('audio');
   });
 
   it('renders given sources', () => {
     const sources = [{type: 'video/mp4', src: 'some.mp4'}];
     const wrapper = render(<MediaTag sources={sources} />);
 
-    expect(wrapper).to.have.exactly(1).descendants('source');
-    expect(wrapper).to.have.descendants('source[type="video/mp4"][src="some.mp4"]');
+    expect(wrapper).toHaveExactlyOneDescendant('source');
+    expect(wrapper).toHaveDescendant('source[type="video/mp4"][src="some.mp4"]');
   });
 
   it('renders given tracks', () => {
@@ -25,42 +26,42 @@ describe('MediaTag', () => {
     }];
     const wrapper = render(<MediaTag tracks={tracks} />);
 
-    expect(wrapper).to.have.exactly(1).descendants('track');
-    expect(wrapper).to.have.descendants('track[id="1"]');
-    expect(wrapper).to.have.descendants('track[kind="captions"]');
-    expect(wrapper).to.have.descendants('track[label="Captions"]');
-    expect(wrapper).to.have.descendants('track[srclang="en"]');
-    expect(wrapper).to.have.descendants('track[src="some.vtt"]');
+    expect(wrapper).toHaveExactlyOneDescendant('track');
+    expect(wrapper).toHaveDescendant('track[id="1"]');
+    expect(wrapper).toHaveDescendant('track[kind="captions"]');
+    expect(wrapper).toHaveDescendant('track[label="Captions"]');
+    expect(wrapper).toHaveDescendant('track[srclang="en"]');
+    expect(wrapper).toHaveDescendant('track[src="some.vtt"]');
   });
 
   it('renders data-poster attribute for given poster', () => {
     const wrapper = render(<MediaTag poster="http://example.com/poster.png" />);
 
-    expect(wrapper).to.have.descendants('video[data-poster*="poster.png"]');
+    expect(wrapper).toHaveDescendant('video[data-poster*="poster.png"]');
   });
 
   it('renders loop attribute', () => {
     const wrapper = render(<MediaTag loop={true} />);
 
-    expect(wrapper).to.have.descendants('video[loop]');
+    expect(wrapper).toHaveDescendant('video[loop]');
   });
 
   it('renders muted attribute', () => {
     const wrapper = render(<MediaTag muted={true} />);
 
-    expect(wrapper).to.have.descendants('video[muted]');
+    expect(wrapper).toHaveDescendant('video[muted]');
   });
 
   it('renders playsinline attribute', () => {
     const wrapper = render(<MediaTag playsInline={true} />);
 
-    expect(wrapper).to.have.descendants('video[playsinline]');
+    expect(wrapper).toHaveDescendant('video[playsinline]');
   });
 
   it('sets preload attribute to auto', () => {
     const wrapper = render(<MediaTag />);
 
-    expect(wrapper).to.have.descendants('video[preload="auto"]');
+    expect(wrapper).toHaveDescendant('video[preload="auto"]');
   });
 
   it('re-renders when source changes', () => {
@@ -70,15 +71,16 @@ describe('MediaTag', () => {
 
     wrapper.setProps({sources: changedSources});
 
-    expect(wrapper.render()).to.have.descendants('source[src="new.mp4"]');
+    expect(wrapper.render()).toHaveDescendant('source[src="new.mp4"]');
   });
 
   it('re-renders when poster changes', () => {
     const wrapper = mount(<MediaTag />);
 
     wrapper.setProps({poster: 'http://example.com/poster.png'});
+    wrapper.update();
 
-    expect(wrapper.render()).to.have.descendants('video[data-poster*="poster.png"]');
+    expect(wrapper.render()).toHaveDescendant('video[data-poster*="poster.png"]');
   });
 
   it('re-renders when track changes', () => {
@@ -92,14 +94,14 @@ describe('MediaTag', () => {
 
     wrapper.setProps({tracks: changedTracks});
 
-    expect(wrapper.render()).to.have.descendants('track[srclang="de"]');
+    expect(wrapper.render()).toHaveDescendant('track[srclang="de"]');
   });
 
   it('triggers onSetup when component mounts', () => {
     const callback = sinon.spy();
     mount(<MediaTag onSetup={callback} />);
 
-    expect(callback).to.have.beenCalled;
+    expect(callback).toHaveBeenCalled();
   });
 
   it('triggers onDispose when component unmounts', () => {
@@ -108,7 +110,7 @@ describe('MediaTag', () => {
 
     wrapper.unmount();
 
-    expect(callback).to.have.beenCalled;
+    expect(callback).toHaveBeenCalled();
   });
 
   it('triggers onDispose and onSetup when component re-renders', () => {
@@ -121,9 +123,8 @@ describe('MediaTag', () => {
     onSetup.reset();
     wrapper.setProps({tagName: 'video'});
 
-    expect(sinon.assert).to.have.beenCalled;
-    expect(onDispose).to.have.beenCalled;
-    expect(onSetup.calledAfter(onDispose)).to.ok;
+    expect(onDispose).toHaveBeenCalled();
+    expect(onSetup.calledAfter(onDispose)).toBeTruthy();
   });
 
   it('discards dom changes on re-render', () => {
@@ -132,7 +133,7 @@ describe('MediaTag', () => {
     appendElement(wrapper, 'p');
     wrapper.setProps({tagName: 'video'});
 
-    expect(wrapper.render()).to.not.have.descendants('p');
+    expect(wrapper.render()).not.toHaveDescendant('p');
   });
 
   it('keeps dom changes when props did not change', () => {
@@ -141,7 +142,7 @@ describe('MediaTag', () => {
     appendElement(wrapper, 'p');
     wrapper.update();
 
-    expect(wrapper.render()).to.have.descendants('p');
+    expect(wrapper.render()).toHaveDescendant('p');
   });
 
   function appendElement(wrapper, tagName) {

@@ -11,7 +11,7 @@ describe('PageBackgroundImage', () => {
 
     const wrapper = shallow(<PageBackgroundImage page={page} />);
 
-    expect(wrapper.find(LazyBackgroundImage)).to.have.prop('fileId', 5);
+    expect(wrapper.find(LazyBackgroundImage)).toHaveProp('fileId', 5);
   });
 
   it('passes position', () => {
@@ -23,7 +23,7 @@ describe('PageBackgroundImage', () => {
 
     const wrapper = shallow(<PageBackgroundImage page={page} />);
 
-    expect(wrapper.find(LazyBackgroundImage)).to.have.prop('position').eql([70, 20]);
+    expect(wrapper.find(LazyBackgroundImage)).toHaveProp('position', [70, 20]);
   });
 
   describe('with propertyBaseName', () => {
@@ -34,7 +34,7 @@ describe('PageBackgroundImage', () => {
 
       const wrapper = shallow(<PageBackgroundImage page={page} propertyBaseName="image" />);
 
-      expect(wrapper.find(LazyBackgroundImage)).to.have.prop('fileId', 5);
+      expect(wrapper.find(LazyBackgroundImage)).toHaveProp('fileId', 5);
     });
 
     it('uses custom position properties', () => {
@@ -46,7 +46,7 @@ describe('PageBackgroundImage', () => {
 
       const wrapper = shallow(<PageBackgroundImage page={page} propertyBaseName="image" />);
 
-      expect(wrapper.find(LazyBackgroundImage)).to.have.prop('position').eql([70, 20]);
+      expect(wrapper.find(LazyBackgroundImage)).toHaveProp('position', [70, 20]);
     });
   });
 
@@ -58,7 +58,7 @@ describe('PageBackgroundImage', () => {
 
       const wrapper = shallow(<PageBackgroundImage page={page} propertyNamePrefix="fallback" />);
 
-      expect(wrapper.find(LazyBackgroundImage)).to.have.prop('fileId', 5);
+      expect(wrapper.find(LazyBackgroundImage)).toHaveProp('fileId', 5);
     });
 
     it('uses custom position properties', () => {
@@ -70,7 +70,7 @@ describe('PageBackgroundImage', () => {
 
       const wrapper = shallow(<PageBackgroundImage page={page} propertyNamePrefix="fallback" />);
 
-      expect(wrapper.find(LazyBackgroundImage)).to.have.prop('position').eql([70, 20]);
+      expect(wrapper.find(LazyBackgroundImage)).toHaveProp('position', [70, 20]);
     });
   });
 });

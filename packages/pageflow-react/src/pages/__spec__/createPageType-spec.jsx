@@ -19,7 +19,7 @@ describe('createPageType', () => {
 
       pageType.enhance(element);
 
-      expect(element.html()).to.include('Rendered component');
+      expect(element.html()).toContain('Rendered component');
     });
 
     it('renders component in context of store', () => {
@@ -32,7 +32,7 @@ describe('createPageType', () => {
 
       pageType.enhance(element);
 
-      expect(element.html()).to.include('Text from store');
+      expect(element.html()).toContain('Text from store');
     });
 
     it('allows rendering into custom element', () => {
@@ -52,7 +52,7 @@ describe('createPageType', () => {
 
       pageType.enhance(element);
 
-      expect(element.find('span').html()).to.include('Rendered component');
+      expect(element.find('span').html()).toContain('Rendered component');
     });
 
     [
@@ -122,7 +122,7 @@ describe('createPageType', () => {
       pageType.enhance(element);
       pageType.cleanup(element);
 
-      expect(element.html()).to.eql('');
+      expect(element.html()).toEqual('');
     });
   });
 

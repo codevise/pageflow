@@ -2,7 +2,7 @@ import {VideoFilePlayerPreload} from '../VideoFilePlayer';
 
 import {mount} from 'enzyme';
 import sinon from 'sinon';
-import {expect, stubFeatureDetection} from 'support';
+import {stubFeatureDetection} from 'support';
 
 describe('VideoFilePlayerPreload', () => {
   stubFeatureDetection();

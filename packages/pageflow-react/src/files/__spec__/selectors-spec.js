@@ -12,7 +12,7 @@ describe('file', () => {
     const result = file('videoFiles', {id: 50})(state);
 
     expect(result).toHaveProperty('id', 5);
-    expect(result).toHaveProperty('variants[0]', 'high');
+    expect(result).toHaveProperty(['variants', 0], 'high');
   });
 
   it('selects null if id is unknown', () => {
@@ -122,7 +122,7 @@ describe('nestedFiles', () => {
       parent: file('videoFiles', {id: 31})
     })(state);
 
-    expect(result).toHaveProperty('[0].id', 3001);
+    expect(result).toHaveProperty([0, 'id'], 3001);
   });
 
   it('filters out unsaved files', () => {
@@ -185,7 +185,7 @@ describe('nestedFiles', () => {
       parent: file('videoFiles', {id: 31})
     })(state);
 
-    expect(result).toHaveProperty('[0].urls.original');
+    expect(result).toHaveProperty([0, 'urls', 'original']);
   });
 });
 

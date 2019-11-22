@@ -13,7 +13,7 @@ describe('PageFilePlayer', () => {
                                             playerComponent={Player}
                                             preloadComponent={Preload} />);
 
-    expect(wrapper).to.have.descendants(Player);
+    expect(wrapper).toContainMatchingElement(Player);
   });
 
   it('renders placeholder if page is is prepared but file not ready', () => {
@@ -26,7 +26,7 @@ describe('PageFilePlayer', () => {
                                             playerComponent={Player}
                                             preloadComponent={Preload} />);
 
-    expect(wrapper).to.have.descendants('noscript');
+    expect(wrapper).toContainMatchingElement('noscript');
   });
 
   it('renders preload component if file is ready and page is preloaded', () => {
@@ -40,7 +40,7 @@ describe('PageFilePlayer', () => {
                                             playerComponent={Player}
                                             preloadComponent={Preload} />);
 
-    expect(wrapper).to.have.descendants(Preload);
+    expect(wrapper).toContainMatchingElement(Preload);
   });
 
   it('renders placeholder if page is is preloaded but file not ready', () => {
@@ -54,7 +54,7 @@ describe('PageFilePlayer', () => {
                                             playerComponent={Player}
                                             preloadComponent={Preload} />);
 
-    expect(wrapper).to.have.descendants('noscript');
+    expect(wrapper).toContainMatchingElement('noscript');
   });
 
   it('renders placeholder if page is is preloaded but preload component not present', () => {
@@ -66,7 +66,7 @@ describe('PageFilePlayer', () => {
                                             pageIsPreloaded={true}
                                             playerComponent={Player} />);
 
-    expect(wrapper).to.have.descendants('noscript');
+    expect(wrapper).toContainMatchingElement('noscript');
   });
 
   it('supports rendering structured data component', () => {
@@ -81,7 +81,7 @@ describe('PageFilePlayer', () => {
                                             preloadComponent={Preload}
                                             structuredDataComponent={StructuredData} />);
 
-    expect(wrapper).to.have.descendants(StructuredData);
-    expect(wrapper.find(StructuredData)).to.have.prop('file', file);
+    expect(wrapper).toContainMatchingElement(StructuredData);
+    expect(wrapper.find(StructuredData)).toHaveProp('file', file);
   });
 });

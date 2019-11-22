@@ -21,7 +21,7 @@ describe('PageBackgroundVideo', () => {
 
       const wrapper = shallow(<PageBackgroundVideo {...props} />);
 
-      expect(wrapper).to.have.descendants(MobilePageVideoPoster);
+      expect(wrapper).toContainMatchingElement(MobilePageVideoPoster);
     });
 
     it('renders muted video player on mobile if no mobile poster is present', () => {
@@ -36,8 +36,8 @@ describe('PageBackgroundVideo', () => {
 
       const wrapper = shallow(<PageBackgroundVideo {...props} />);
 
-      expect(wrapper).to.have.descendants(PageVideoPlayer);
-      expect(wrapper.find(PageVideoPlayer)).to.have.prop('muted', true);
+      expect(wrapper).toContainMatchingElement(PageVideoPlayer);
+      expect(wrapper.find(PageVideoPlayer)).toHaveProp('muted', true);
     });
   });
 
@@ -56,8 +56,8 @@ describe('PageBackgroundVideo', () => {
 
       const wrapper = shallow(<PageBackgroundVideo {...props} />);
 
-      expect(wrapper).to.have.descendants(PageVideoPlayer);
-      expect(wrapper.find(PageVideoPlayer)).to.have.prop('muted', false);
+      expect(wrapper).toContainMatchingElement(PageVideoPlayer);
+      expect(wrapper.find(PageVideoPlayer)).toHaveProp('muted', false);
     });
   });
 });

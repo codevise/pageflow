@@ -10,7 +10,7 @@ describe('PageVideoPlayer', () => {
 
     const wrapper = shallow(<PageVideoPlayer page={page} />);
 
-    expect(wrapper.find(VideoPlayer)).to.have.prop('videoFileId', 5);
+    expect(wrapper.find(VideoPlayer)).toHaveProp('videoFileId', 5);
   });
 
   it('uses posterImageId by default', () => {
@@ -20,7 +20,7 @@ describe('PageVideoPlayer', () => {
 
     const wrapper = shallow(<PageVideoPlayer page={page} />);
 
-    expect(wrapper.find(VideoPlayer)).to.have.prop('posterImageFileId', 6);
+    expect(wrapper.find(VideoPlayer)).toHaveProp('posterImageFileId', 6);
   });
 
   it('passes position', () => {
@@ -32,7 +32,7 @@ describe('PageVideoPlayer', () => {
 
     const wrapper = shallow(<PageVideoPlayer page={page} />);
 
-    expect(wrapper.find(VideoPlayer)).to.have.prop('position').eql([70, 20]);
+    expect(wrapper.find(VideoPlayer)).toHaveProp('position', [70, 20]);
   });
 
   describe('with videoPropertyBaseName', () => {
@@ -43,7 +43,7 @@ describe('PageVideoPlayer', () => {
 
       const wrapper = shallow(<PageVideoPlayer page={page} videoPropertyBaseName="video" />);
 
-      expect(wrapper.find(VideoPlayer)).to.have.prop('videoFileId', 5);
+      expect(wrapper.find(VideoPlayer)).toHaveProp('videoFileId', 5);
     });
 
     it('uses custom position properties', () => {
@@ -55,7 +55,7 @@ describe('PageVideoPlayer', () => {
 
       const wrapper = shallow(<PageVideoPlayer page={page} videoPropertyBaseName="video" />);
 
-      expect(wrapper.find(VideoPlayer)).to.have.prop('position').eql([70, 20]);
+      expect(wrapper.find(VideoPlayer)).toHaveProp('position', [70, 20]);
     });
   });
 
@@ -67,7 +67,7 @@ describe('PageVideoPlayer', () => {
 
       const wrapper = shallow(<PageVideoPlayer page={page} posterImagePropertyBaseName="customPoster" />);
 
-      expect(wrapper.find(VideoPlayer)).to.have.prop('posterImageFileId', 5);
+      expect(wrapper.find(VideoPlayer)).toHaveProp('posterImageFileId', 5);
     });
   });
 
@@ -79,7 +79,7 @@ describe('PageVideoPlayer', () => {
 
       const wrapper = shallow(<PageVideoPlayer page={page} propertyNamePrefix="fallback" />);
 
-      expect(wrapper.find(VideoPlayer)).to.have.prop('videoFileId', 5);
+      expect(wrapper.find(VideoPlayer)).toHaveProp('videoFileId', 5);
     });
 
     it('uses custom posterImageId by default', () => {
@@ -89,7 +89,7 @@ describe('PageVideoPlayer', () => {
 
       const wrapper = shallow(<PageVideoPlayer page={page} propertyNamePrefix="fallback" />);
 
-      expect(wrapper.find(VideoPlayer)).to.have.prop('posterImageFileId', 6);
+      expect(wrapper.find(VideoPlayer)).toHaveProp('posterImageFileId', 6);
     });
 
     it('uses custom position properties', () => {
@@ -101,7 +101,7 @@ describe('PageVideoPlayer', () => {
 
       const wrapper = shallow(<PageVideoPlayer page={page} propertyNamePrefix="fallback" />);
 
-      expect(wrapper.find(VideoPlayer)).to.have.prop('position').eql([70, 20]);
+      expect(wrapper.find(VideoPlayer)).toHaveProp('position', [70, 20]);
     });
   });
 });

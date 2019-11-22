@@ -13,7 +13,7 @@ describe('PageBackgroundAsset', () => {
 
       const wrapper = shallow(<PageBackgroundAsset page={page} />);
 
-      expect(wrapper).to.have.descendants(PageBackgroundImage);
+      expect(wrapper).toContainMatchingElement(PageBackgroundImage);
     });
 
     it('passes propertyNamePrefix', () => {
@@ -25,7 +25,7 @@ describe('PageBackgroundAsset', () => {
         <PageBackgroundAsset page={page} propertyNamePrefix="fallback"/>
       ).find(PageBackgroundImage);
 
-      expect(image).to.have.prop('propertyNamePrefix', 'fallback');
+      expect(image).toHaveProp('propertyNamePrefix', 'fallback');
     });
   });
 
@@ -37,7 +37,7 @@ describe('PageBackgroundAsset', () => {
 
       const wrapper = shallow(<PageBackgroundAsset page={page} />);
 
-      expect(wrapper).to.have.descendants(PageBackgroundVideo);
+      expect(wrapper).toContainMatchingElement(PageBackgroundVideo);
     });
 
     it('passes propertyNamePrefix', () => {
@@ -49,7 +49,7 @@ describe('PageBackgroundAsset', () => {
         <PageBackgroundAsset page={page} propertyNamePrefix="fallback"/>
       ).find(PageBackgroundVideo);
 
-      expect(video).to.have.prop('propertyNamePrefix', 'fallback');
+      expect(video).toHaveProp('propertyNamePrefix', 'fallback');
     });
   });
 
@@ -60,6 +60,6 @@ describe('PageBackgroundAsset', () => {
 
     const wrapper = shallow(<PageBackgroundAsset page={page} propertyNamePrefix="fallback" />);
 
-    expect(wrapper).to.have.descendants(PageBackgroundVideo);
+    expect(wrapper).toContainMatchingElement(PageBackgroundVideo);
   });
 });

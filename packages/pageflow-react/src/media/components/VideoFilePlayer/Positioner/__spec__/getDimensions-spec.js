@@ -24,10 +24,10 @@ describe('getDimensions', () => {
 
       const result = getDimensions(videoFile, fit, position, wrapperDimensions);
 
-      expect(result.left).toBe(0);
-      expect(result.top).toBe(-50);
-      expect(result.width).toBe(400);
-      expect(result.height).toBe(200);
+      expect(result.left).toEqual(0);
+      expect(result.top).toEqual(-50);
+      expect(result.width).toEqual(400);
+      expect(result.height).toEqual(200);
     });
 
     it('scales video to fit height of narrow wrapper', () => {
@@ -38,10 +38,10 @@ describe('getDimensions', () => {
 
       const result = getDimensions(videoFile, fit, position, wrapperDimensions);
 
-      expect(result.left).toBe(-150);
-      expect(result.top).toBe(0);
-      expect(result.width).toBe(400);
-      expect(result.height).toBe(200);
+      expect(result.left).toEqual(-150);
+      expect(result.top).toEqual(0);
+      expect(result.width).toEqual(400);
+      expect(result.height).toEqual(200);
     });
 
     it('applies x position if video is scaled to match height', () => {
@@ -52,10 +52,10 @@ describe('getDimensions', () => {
 
       const result = getDimensions(videoFile, fit, position, wrapperDimensions);
 
-      expect(result.left).toBe(-300);
-      expect(result.top).toBe(0);
-      expect(result.width).toBe(400);
-      expect(result.height).toBe(200);
+      expect(result.left).toEqual(-300);
+      expect(result.top).toEqual(0);
+      expect(result.width).toEqual(400);
+      expect(result.height).toEqual(200);
     });
 
     it('applies y position if video is scaled to match width', () => {
@@ -66,10 +66,10 @@ describe('getDimensions', () => {
 
       const result = getDimensions(videoFile, fit, position, wrapperDimensions);
 
-      expect(result.left).toBe(0);
-      expect(result.top).toBe(0);
-      expect(result.width).toBe(400);
-      expect(result.height).toBe(200);
+      expect(result.left).toEqual(0);
+      expect(result.top).toEqual(-0);
+      expect(result.width).toEqual(400);
+      expect(result.height).toEqual(200);
     });
   });
 
@@ -82,10 +82,10 @@ describe('getDimensions', () => {
 
       const result = getDimensions(videoFile, fit, position, wrapperDimensions);
 
-      expect(result.left).toBe(0);
-      expect(result.top).toBe(-2.5);
-      expect(result.width).toBe(210);
-      expect(result.height).toBe(105);
+      expect(result.left).toEqual(0);
+      expect(result.top).toEqual(-2.5);
+      expect(result.width).toEqual(210);
+      expect(result.height).toEqual(105);
     });
 
     it('ignores position', () => {
@@ -96,10 +96,10 @@ describe('getDimensions', () => {
 
       const result = getDimensions(videoFile, fit, position, wrapperDimensions);
 
-      expect(result.left).toBe(0);
-      expect(result.top).toBe(-2.5);
-      expect(result.width).toBe(210);
-      expect(result.height).toBe(105);
+      expect(result.left).toEqual(0);
+      expect(result.top).toEqual(-2.5);
+      expect(result.width).toEqual(210);
+      expect(result.height).toEqual(105);
     });
 
     it('scales video to fit height of wrapper that is a bit too narrow', () => {
@@ -110,10 +110,10 @@ describe('getDimensions', () => {
 
       const result = getDimensions(videoFile, fit, position, wrapperDimensions);
 
-      expect(result.left).toBe(-5);
-      expect(result.top).toBe(0);
-      expect(result.width).toBe(200);
-      expect(result.height).toBe(100);
+      expect(result.left).toEqual(-5);
+      expect(result.top).toEqual(0);
+      expect(result.width).toEqual(200);
+      expect(result.height).toEqual(100);
     });
 
     it('returns undefined if wrapper is too narrow', () => {

@@ -8,13 +8,13 @@ describe('BackgroundImage', () => {
 
     const result = shallow(<BackgroundImage {...props} />);
 
-    expect(result).to.have.className('image_5');
+    expect(result).toHaveClassName('image_5');
   });
 
   it('has image_none css class if not fileId is given', () => {
     var result = shallow(<BackgroundImage />);
 
-    expect(result).to.have.className('image_none');
+    expect(result).toHaveClassName('image_none');
   });
 
   it('has load_image css class if loaded prop is present', () => {
@@ -22,7 +22,7 @@ describe('BackgroundImage', () => {
 
     const result = shallow(<BackgroundImage {...props} />);
 
-    expect(result).to.have.className('load_image');
+    expect(result).toHaveClassName('load_image');
   });
 
   it('has image file css class', () => {
@@ -30,7 +30,7 @@ describe('BackgroundImage', () => {
 
     const result = shallow(<BackgroundImage {...props} />);
 
-    expect(result).to.have.className('image_5');
+    expect(result).toHaveClassName('image_5');
   });
 
   describe('with fileCollection prop set to videoFiles', () => {
@@ -39,7 +39,7 @@ describe('BackgroundImage', () => {
 
       const result = shallow(<BackgroundImage {...props} />);
 
-      expect(result).to.have.className('video_poster_5');
+      expect(result.find('div')).toHaveClassName('video_poster_5');
     });
   });
 
@@ -48,7 +48,7 @@ describe('BackgroundImage', () => {
 
     const result = mount(<BackgroundImage {...props} />);
 
-    expect(result).to.style('backgroundPosition', '50% 50%');
+    expect(result.find('div')).toHaveStyle('backgroundPosition', '50% 50%');
   });
 
   it('defaults background position to center', () => {
@@ -56,7 +56,7 @@ describe('BackgroundImage', () => {
 
     const result = mount(<BackgroundImage {...props} />);
 
-    expect(result).to.have.style('backgroundPosition', '50% 50%');
+    expect(result.find('div')).toHaveStyle('backgroundPosition', '50% 50%');
   });
 
   it('sets background position inline styles', () => {
@@ -64,7 +64,7 @@ describe('BackgroundImage', () => {
 
     const result = mount(<BackgroundImage {...props} />);
 
-    expect(result).to.have.style('backgroundPosition', '10% 20%');
+    expect(result.find('div')).toHaveStyle('backgroundPosition', '10% 20%');
   });
 
   it('supports rendering structured data component', () => {
@@ -77,8 +77,8 @@ describe('BackgroundImage', () => {
 
     const result = shallow(<BackgroundImage {...props} />);
 
-    expect(result).to.have.descendants(StructuredData);
-    expect(result.find(StructuredData)).to.have.prop('fileCollection', 'videoFiles');
-    expect(result.find(StructuredData)).to.have.prop('fileId', 5);
+    expect(result).toContainMatchingElement(StructuredData);
+    expect(result.find(StructuredData)).toHaveProp('fileCollection', 'videoFiles');
+    expect(result.find(StructuredData)).toHaveProp('fileId', 5);
   });
 });

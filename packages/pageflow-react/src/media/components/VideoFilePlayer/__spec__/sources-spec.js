@@ -7,7 +7,7 @@ describe('sources', () => {
 
     const result = sources(videoFile);
 
-    expect(result.map(s => s.type)).toEqual(expect.arrayContaining(['application/x-mpegURL']));
+    expect(result.map(s => s.type)).toContain('application/x-mpegURL');
   });
 
   it('includes mp4 variant by default', () => {
@@ -15,7 +15,7 @@ describe('sources', () => {
 
     const result = sources(videoFile);
 
-    expect(result.map(s => s.type)).toEqual(expect.arrayContaining(['video/mp4']));
+    expect(result.map(s => s.type)).toContain('video/mp4');
   });
 
   it('does not include dash variant by default', () => {
@@ -23,7 +23,7 @@ describe('sources', () => {
 
     const result = sources(videoFile);
 
-    expect(result.map(s => s.type)).toEqual(expect.arrayContaining(['application/dash+xml']));
+    expect(result.map(s => s.type)).not.toContain('application/dash+xml');
   });
 
   it('includes dash variant if file has dash playlist url', () => {
@@ -31,7 +31,7 @@ describe('sources', () => {
 
     const result = sources(videoFile);
 
-    expect(result.map(s => s.type)).toEqual(expect.arrayContaining(['application/dash+xml']));
+    expect(result.map(s => s.type)).toContain('application/dash+xml');
   });
 
   it('includes high variant if high bandwidth', () => {
@@ -42,7 +42,7 @@ describe('sources', () => {
 
     const result = sources(videoFile, 'auto', {hasHighBandwidth: true});
 
-    expect(result.filter(s => (s.type == 'video/mp4'))[0].src).toEqual(expect.arrayContaining(['high.mp4']));
+    expect(result.filter(s => (s.type == 'video/mp4'))[0].src).toContain('high.mp4');
   });
 
   it('includes medium variant if not high bandwidth', () => {
@@ -53,7 +53,7 @@ describe('sources', () => {
 
     const result = sources(videoFile, 'auto', {hasHighBandwidth: false});
 
-    expect(result.filter(s => (s.type == 'video/mp4'))[0].src).toEqual(expect.arrayContaining(['medium.mp4']));
+    expect(result.filter(s => (s.type == 'video/mp4'))[0].src).toContain('medium.mp4');
   });
 
   it('uses medium quality if requested', () => {
@@ -62,7 +62,7 @@ describe('sources', () => {
     const result = sources(videoFile, 'medium');
 
     expect(result.length).toBe(1);
-    expect(result[0].src).toEqual(expect.arrayContaining(['medium.mp4']));
+    expect(result[0].src).toContain('medium.mp4');
   });
 
   it('uses fullhd quality if requested and available', () => {
@@ -74,7 +74,7 @@ describe('sources', () => {
     const result = sources(videoFile, 'fullhd');
 
     expect(result.length).toBe(1);
-    expect(result[0].src).toEqual(expect.arrayContaining(['fullhd.mp4']));
+    expect(result[0].src).toContain('fullhd.mp4');
   });
 
   it(
@@ -87,7 +87,7 @@ describe('sources', () => {
       const result = sources(videoFile, 'fullhd');
 
       expect(result.length).toBe(1);
-      expect(result[0].src).toEqual(expect.arrayContaining(['high.mp4']));
+      expect(result[0].src).toContain('high.mp4');
     }
   );
 
@@ -100,7 +100,7 @@ describe('sources', () => {
     const result = sources(videoFile, '4k');
 
     expect(result.length).toBe(1);
-    expect(result[0].src).toEqual(expect.arrayContaining(['4k.mp4']));
+    expect(result[0].src).toContain('4k.mp4');
   });
 
   it('falls back to high quality if 4k is requested but not available', () => {
@@ -111,6 +111,6 @@ describe('sources', () => {
     const result = sources(videoFile, '4k');
 
     expect(result.length).toBe(1);
-    expect(result[0].src).toEqual(expect.arrayContaining(['high.mp4']));
+    expect(result[0].src).toContain('high.mp4');
   });
 });

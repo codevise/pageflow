@@ -5,21 +5,24 @@ import sinon from 'sinon';
 import lolex from 'lolex';
 
 describe('withVisibilityWatching creates component that', () => {
+  let testContext;
+
   beforeEach(function() {
-    this.container = document.createElement('div');
-    document.body.appendChild(this.container);
+    testContext = {};
+    testContext.container = document.createElement('div');
+    document.body.appendChild(testContext.container);
   });
 
   afterEach(function() {
-    document.body.removeChild(this.container);
+    document.body.removeChild(testContext.container);
   });
 
   beforeEach(function() {
-    this.clock = lolex.install();
+    testContext.clock = lolex.install();
   });
 
   afterEach(function() {
-    this.clock.uninstall();
+    testContext.clock.uninstall();
   });
 
   const Component = function(props) {
@@ -35,10 +38,10 @@ describe('withVisibilityWatching creates component that', () => {
     const handler = sinon.spy();
     const wrapper = mount(<ComponentWithVisibilityWatching watchVisibility={true}
                                                            onHidden={handler} />,
-                         {attachTo: this.container});
+                         {attachTo: testContext.container});
 
     wrapper.setProps({style: {visibility: 'hidden'}});
-    this.clock.runToLast();
+    testContext.clock.runToLast();
 
     expect(handler).toHaveBeenCalledOnce();
   });
@@ -48,10 +51,10 @@ describe('withVisibilityWatching creates component that', () => {
     const wrapper = mount(<ComponentWithVisibilityWatching watchVisibility={true}
                                                            style={{visibility: 'hidden'}}
                                                            onVisible={handler} />,
-                          {attachTo: this.container});
+                          {attachTo: testContext.container});
 
     wrapper.setProps({style: {visibility: 'visible'}});
-    this.clock.runToLast();
+    testContext.clock.runToLast();
 
     expect(handler).toHaveBeenCalledOnce();
   });
@@ -64,13 +67,13 @@ describe('withVisibilityWatching creates component that', () => {
                                                              visibility: 'hidden'
                                                            }}
                                                            onVisible={handler} />,
-                          {attachTo: this.container});
+                          {attachTo: testContext.container});
 
     wrapper.setProps({style: {
       display: 'none',
       visibility: 'visible'
     }});
-    this.clock.runToLast();
+    testContext.clock.runToLast();
 
     expect(handler).not.toHaveBeenCalled();
   });
@@ -80,10 +83,10 @@ describe('withVisibilityWatching creates component that', () => {
     const wrapper = mount(<ComponentWithVisibilityWatching watchVisibility={false}
                                                            style={{visibility: 'hidden'}}
                                                            onVisible={handler} />,
-                          {attachTo: this.container});
+                          {attachTo: testContext.container});
 
     wrapper.setProps({style: {visibility: 'visible'}});
-    this.clock.runToLast();
+    testContext.clock.runToLast();
 
     expect(handler).not.toHaveBeenCalled();
   });

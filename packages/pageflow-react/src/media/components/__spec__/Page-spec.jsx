@@ -13,7 +13,7 @@ describe('Page', () => {
 
     const result = shallow(<Page {...props} />);
 
-    expect(result).to.be.ok;
+    expect(result).toBeTruthy();
   });
 
   it('passes playerControlsComponent prop to MediaPlayerControls', () => {
@@ -27,6 +27,6 @@ describe('Page', () => {
 
     const wrapper = shallow(<Page {...props} />).find(MediaPlayerControls);
 
-    expect(wrapper).to.be.have.prop('playerControlsComponent', playerControlsComponent);
+    expect(wrapper).toHaveProp('playerControlsComponent', playerControlsComponent);
   });
 });
