@@ -1,6 +1,3 @@
-//= require_self
-//= require_tree ./browser
-
 /**
  * Browser feature detection.
  *

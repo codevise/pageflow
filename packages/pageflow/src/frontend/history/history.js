@@ -1,6 +1,3 @@
-//= require_self
-//= require_tree ./history
-
 pageflow.History = function(slideshow, adapter) {
   slideshow.on('slideshowchangepage', function(event, options) {
     var hash = slideshow.currentPage().attr('id');

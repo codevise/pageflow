@@ -1,11 +1,11 @@
-//= require_self
+//= require ./media
 
-//= require ./media_player/handle_failed_play
-//= require ./media_player/volume_fading
-//= require ./media_player/volume_binding
-//= require ./media_player/load_waiting
-//= require ./media_player/hooks
-//= require ./media_player/async_play
+//= require ./handle_failed_play
+//= require ./volume_fading
+//= require ./volume_binding
+//= require ./load_waiting
+//= require ./hooks
+//= require ./async_play
 
 pageflow.mediaPlayer = {
   enhance: function(player, options) {

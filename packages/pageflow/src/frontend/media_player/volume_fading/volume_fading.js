@@ -1,6 +1,3 @@
-//= require_self
-//= require_tree ./volume_fading
-
 pageflow.mediaPlayer.volumeFading = function(player) {
   if (!pageflow.browser.has('volume control support')) {
     return pageflow.mediaPlayer.volumeFading.noop(player);

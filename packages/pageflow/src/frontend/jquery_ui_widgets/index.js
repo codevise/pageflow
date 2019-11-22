@@ -1,0 +1,17 @@
+//= require ./events
+//= require ./fullscreen_button
+//= require ./header
+//= require ./multimedia_alert
+//= require ./mute_button
+//= require ./navigation
+//= require ./navigation_mobile
+//= require ./overview
+//= require ./page_navigation_list_animation
+//= require ./page_navigation_list
+//= require ./parent_page_button
+//= require ./player_controls
+//= require ./scroll_button
+//= require ./share_menu
+//= require ./skip_page_button
+//= require ./top_button
+//= require ./volume_slider

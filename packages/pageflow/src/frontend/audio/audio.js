@@ -1,7 +1,3 @@
-//= require_self
-//= require ./audio/player_pool
-//= require ./audio/multi_player
-
 /**
  * Playing audio files.
  * @alias pageflow.audio

@@ -1,14 +1,3 @@
-//= require ./media_player
-
-//= require_self
-
-//= require ./audio_player/media_events
-//= require ./audio_player/null
-//= require ./audio_player/seek_with_invalid_state_handling
-//= require ./audio_player/rewind_method
-//= require ./audio_player/pause_in_background
-//= require ./audio_player/get_media_element_method
-
 /**
  * Playing audio sources
  *

@@ -1,5 +1,8 @@
-//= require_self
-//= require_tree ./page_types/mixins
+//= require ./page_types/mixins/common_page_css_classes
+//= require ./page_types/mixins/default_page_content
+//= require ./page_types/mixins/info_box
+//= require ./page_types/mixins/video_helpers
+//= require ./page_types/mixins/volume_fade
 
 pageflow.pageType = (function() {
   var base = {

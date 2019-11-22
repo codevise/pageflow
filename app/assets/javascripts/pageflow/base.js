@@ -49,7 +49,7 @@
 //= require ./slideshow
 //= require ./page_transitions
 //= require ./ready
-//= require_tree ./widgets
+//= require ./jquery_ui_widgets
 //= require ./react
 
 pageflow = {
