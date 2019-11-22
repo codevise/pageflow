@@ -5,15 +5,12 @@
 Ensure the development machine meets the requirements listed in the
 readme. From the repository root run:
 
-    $ gem install bundler
     $ bundle install
-    $ bin/npm install
-    $ bin/yarn install
+    $ yarn install
 
 Build node packages to `assets` directory:
 
-    $ bin/yarn run build
-    $ bin/npm run build
+    $ bin/build-packages
 
 ## Running the Test Suite
 
@@ -24,13 +21,9 @@ different host, you can specify a MySQL host in the environment
 variable `$PAGEFLOW_DB_HOST` and a port in `$PAGEFLOW_DB_PORT`
 (default: 3306).
 
-Use the binstubs to invoke the Ruby test suite
+Use the binstub to invoke the Ruby test suite
 
     $ bin/rspec
-
-or the headless browser based Javascript test suite
-
-    $ bin/teaspoon
 
 Chrome 59 or newer has to be installed on the same computer you're running
 the tests on.

@@ -2,11 +2,8 @@
 
 set -ex
 
-bin/yarn install --frozen-lockfile
-bin/yarn run build
-
-bin/npm ci
-bin/npm run build
+yarn install --frozen-lockfile
+./build-packages
 
 git add -f app/assets/javascripts/pageflow/dist/{react-*,editor}.js
 git commit app/assets/javascripts/pageflow/dist/{react-*,editor}.js -m "Build"

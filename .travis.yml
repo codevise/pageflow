@@ -24,24 +24,21 @@ before_install:
   - gem update bundler
 
 before_script:
-  - bin/yarn install
-  - bin/yarn run build
-
-  - bin/npm ci
-  - bin/npm run build
+  - yarn install
+  - bin/build-packages
 
   - bin/rake pageflow:dummy
   - bin/rake app:assets:precompile
 
   # Precompile triggers `yarn install --production` which strips away
   # dev dependencies like Jest which are required below
-  - bin/yarn install
+  - yarn install
 
 script:
   - bin/rspec
   - (cd packages/pageflow; yarn test)
+  - (cd packages/pageflow-react; yarn test)
   - bin/teaspoon
-  - bin/npm test
 
 after_success:
   - bundle exec publish-pageflow-theme-doc
