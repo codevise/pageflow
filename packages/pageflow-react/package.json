@@ -1,5 +1,5 @@
 {
-  "name": "pageflow",
+  "name": "pageflow-react",
   "version": "0.0.0",
   "description": "React/Redux based JavaScript.",
   "main": "src/index.js",
@@ -15,8 +15,8 @@
       "karma": "karma start"
     }
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Codevise Solutions GmbH <info@codevise.de>",
+  "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
