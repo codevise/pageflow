@@ -5,13 +5,14 @@
   "main": "src/index.js",
   "scripts": {
     "start": "noreman development",
-    "build": "grunt build",
+    "build": "NODE_ENV=production webpack --production --mode=production",
+    "build-dev": "NODE_ENV=development webpack --mode=development",
     "test": "jest",
     "lint": "eslint src spec"
   },
   "processes": {
     "development": {
-      "webpack": "webpack --watch",
+      "webpack": "NODE_ENV=development webpack --watch --mode=development",
       "jest": "jest --watch"
     }
   },
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
     "babel-preset-react-app": "^9.0.2",
     "backbone": "^1.2.2",
     "enzyme": "^3.10.0",
@@ -38,7 +40,10 @@
     "noreman": "0.0.0",
     "react-addons-test-utils": "^0.14.7",
     "sinon": "^2.3.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
     "array-reverse-polyfill": "^1.0.9",

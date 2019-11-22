@@ -1,7 +1,7 @@
-/*global module*/
-
 // Fix Array#reverse in Safari 12
 import 'array-reverse-polyfill';
+
+import 'core-js/stable';
 
 import * as actions from 'actions';
 import * as components from 'components';
@@ -54,10 +54,7 @@ if (pageflow.events) {
   pageflow.events.on('seed:loaded', () => boot(pageflow));
 }
 
-// `export default` does not play well with Webpack's `libraryTarget:
-// 'assign'` at the moment. See
-// https://github.com/webpack/webpack/issues/706
-module.exports = {
+export default {
   components: {
     MediaPageBackground,
     PageWithInteractiveBackground,
