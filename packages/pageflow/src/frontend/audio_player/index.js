@@ -1,10 +1,10 @@
-//= require ../media_player
+import '../media_player';
 
-//= require ./audio_player
+import './audio_player';
 
-//= require ./media_events
-//= require ./null
-//= require ./seek_with_invalid_state_handling
-//= require ./rewind_method
-//= require ./pause_in_background
-//= require ./get_media_element_method
+import './media_events';
+import './null';
+import './seek_with_invalid_state_handling';
+import './rewind_method';
+import './pause_in_background';
+import './get_media_element_method';

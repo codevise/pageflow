@@ -1,4 +1,4 @@
-//= require ./audio
+import './audio';
 
-//= require ./player_pool
-//= require ./audio/multi_player
+import './player_pool';
+import './multi_player';

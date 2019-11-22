@@ -1,4 +1,4 @@
-//= require ./page_navigation_list_animation
+import './page_navigation_list_animation';
 
 (function($) {
   $.widget('pageflow.pageNavigationList', {

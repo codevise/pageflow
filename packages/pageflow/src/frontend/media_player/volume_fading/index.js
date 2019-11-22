@@ -1,5 +1,5 @@
-//= require ./volume_fading
+import './volume_fading';
 
-//= require ./interval
-//= require ./noop
-//= require ./web_audio
+import './interval';
+import './noop';
+import './web_audio';

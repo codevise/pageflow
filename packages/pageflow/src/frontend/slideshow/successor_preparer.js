@@ -1,4 +1,4 @@
-//= require ./adjacent_pages
+import './adjacent_pages';
 
 pageflow.SuccessorPreparer = pageflow.Object.extend({
   initialize: function(adjacentPages) {

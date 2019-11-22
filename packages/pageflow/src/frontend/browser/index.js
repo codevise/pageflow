@@ -1,17 +1,16 @@
-//= require ./browser
+import './browser';
 
-//= require ./agent
-//= require ./autoplay_support
-//= require ./css_animations
-//= require ./facebook
-//= require ./high_bandwidth
-//= require ./ie_platform
-//= require ./index
-//= require ./ios_platform
-//= require ./mobile_platform
-//= require ./phone_platform
-//= require ./pushstate_support
-//= require ./request_animation_frame_support
-//= require ./touch_support
-//= require ./video
-//= require ./volume_control_support
+import './agent';
+import './autoplay_support';
+import './css_animations';
+import './facebook';
+import './high_bandwidth';
+import './ie_platform';
+import './ios_platform';
+import './mobile_platform';
+import './phone_platform';
+import './pushstate_support';
+import './request_animation_frame_support';
+import './touch_support';
+import './video';
+import './volume_control_support';

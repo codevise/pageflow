@@ -1,5 +1,5 @@
-//= require ./history
+import './history';
 
-//= require ./hash_adapter
-//= require ./push_state_adapter
-//= require ./simulated_adapter
+import './hash_adapter';
+import './push_state_adapter';
+import './simulated_adapter';
