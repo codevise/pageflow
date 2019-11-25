@@ -108,6 +108,10 @@ module Pageflow
     # @return [WidgetTypes]
     attr_reader :widget_types
 
+    # Used to register new file importers, to be used for importing files
+    # @return [fileImporters]
+    attr_reader :file_importers
+
     # Used to add new sections to the help dialog displayed in the
     # editor.
     #
@@ -366,6 +370,7 @@ module Pageflow
       @page_types = PageTypes.new
       @file_types = FileTypes.new(page_types)
       @widget_types = WidgetTypes.new
+      @file_importers = FileImporters.new
       @help_entries = HelpEntries.new
 
       @thumbnail_styles = Defaults::THUMBNAIL_STYLES.dup
@@ -466,6 +471,7 @@ module Pageflow
       delegate :admin_form_inputs, to: :config
       delegate :admin_attributes_table_rows, to: :config
       delegate :themes, to: :config
+      delegate :file_importers, to: :config
     end
   end
 end
