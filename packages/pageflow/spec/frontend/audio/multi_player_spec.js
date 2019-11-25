@@ -1,3 +1,7 @@
+import '$pageflow/frontend';
+
+import sinon from 'sinon';
+
 describe('pageflow.Audio.MultiPlayer', function() {
   describe('#fadeTo', function() {
     it('plays and fades in new player', function() {

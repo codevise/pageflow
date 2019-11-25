@@ -1,3 +1,7 @@
+import '$pageflow/frontend';
+
+import sinon from 'sinon';
+
 describe('pageflow.Features', function() {
   var p = pageflow;
 

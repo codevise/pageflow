@@ -1,3 +1,5 @@
+import '$pageflow/frontend';
+
 describe('pageflow.PageTransitions', function() {
   var PageTransitions = pageflow.PageTransitions;
 

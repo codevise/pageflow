@@ -1,3 +1,7 @@
+import _ from 'underscore';
+
+import '$pageflow/frontend';
+
 describe('pageflow.browser.Agent', function() {
   var Agent = pageflow.browser.Agent;
 

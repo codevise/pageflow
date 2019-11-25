@@ -1,3 +1,7 @@
+import '$pageflow/frontend';
+
+import sinon from 'sinon';
+
 describe('pageflow.DelayedStart', function() {
   var DelayedStart = pageflow.DelayedStart;
 

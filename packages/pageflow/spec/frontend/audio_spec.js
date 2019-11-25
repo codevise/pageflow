@@ -1,3 +1,7 @@
+import '$pageflow/frontend';
+
+import sinon from 'sinon';
+
 describe('pageflow.Audio', function() {
   var p = pageflow;
 

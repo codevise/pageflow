@@ -1,3 +1,5 @@
+import '$pageflow/frontend';
+
 describe('pageflow.ChapterFilter', function() {
   var p = pageflow;
 

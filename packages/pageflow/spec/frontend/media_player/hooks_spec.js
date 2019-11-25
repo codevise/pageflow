@@ -1,3 +1,9 @@
+import _ from 'underscore';
+
+import '$pageflow/frontend';
+
+import sinon from 'sinon';
+
 describe('pageflow.mediaPlayer.hooks', function() {
   describe('#play', function() {
     describe('without before option', function() {

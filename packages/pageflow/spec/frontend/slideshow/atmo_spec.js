@@ -1,3 +1,10 @@
+import _ from 'underscore';
+
+import '$pageflow/frontend';
+
+import * as support from '$support';
+import sinon from 'sinon';
+
 describe('pageflow.Slideshow.Atmo', function() {
   _.each(['page:change', 'page:update', 'background_media:unmute'], function(event) {
     describe('on ' + event + ' event', function() {

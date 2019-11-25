@@ -1,3 +1,7 @@
+import '$pageflow/frontend';
+
+import sinon from 'sinon';
+
 describe('pageflow.Audio.PlayerPool', function() {
   describe('#get', function() {
     it('creates player for new audio file id', function() {

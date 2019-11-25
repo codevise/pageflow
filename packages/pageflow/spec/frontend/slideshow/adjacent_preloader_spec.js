@@ -1,3 +1,10 @@
+import _ from 'underscore';
+
+import '$pageflow/frontend';
+
+import * as support from '$support';
+import sinon from 'sinon';
+
 describe('pageflow.AdjacentPreloader', function() {
   var p = pageflow;
 

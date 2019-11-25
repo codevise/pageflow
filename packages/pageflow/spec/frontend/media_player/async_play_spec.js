@@ -1,3 +1,7 @@
+import '$pageflow/frontend';
+
+import sinon from 'sinon';
+
 describe('pageflow.mediaPlayer.asyncPlay', function() {
   describe('#play', function() {
     it('sets intendingToPlay to true', function() {

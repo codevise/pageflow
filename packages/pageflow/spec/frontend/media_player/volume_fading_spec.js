@@ -1,3 +1,7 @@
+import '$pageflow/frontend';
+
+import sinon from 'sinon';
+
 describe('pageflow.mediaPlayer.volumeFading', function() {
   describe('#volume', function() {
     it('rejects promise of running fade', function() {

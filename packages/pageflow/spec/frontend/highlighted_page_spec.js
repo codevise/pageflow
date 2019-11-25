@@ -1,3 +1,5 @@
+import '$pageflow/frontend';
+
 describe('pageflow.HighlightedPage', function() {
   var p = pageflow;
 

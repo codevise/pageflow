@@ -1,3 +1,9 @@
+import _ from 'underscore';
+
+import '$pageflow/frontend';
+
+import * as support from '$support';
+
 describe('pageflow.Visited', function() {
   it('reports no pages as unvisited if init is not called', function() {
     var entryId = 5;

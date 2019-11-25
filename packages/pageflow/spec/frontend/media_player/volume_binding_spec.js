@@ -1,3 +1,7 @@
+import '$pageflow/frontend';
+
+import sinon from 'sinon';
+
 describe('pageflow.mediaPlayer.volumeBinding', function() {
   function itBehavesLikePlayMethod(callPlayMethod) {
     it('aborts intent to pause', function() {

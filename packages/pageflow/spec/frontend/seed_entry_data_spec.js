@@ -1,3 +1,5 @@
+import '$pageflow/frontend';
+
 describe('pageflow.SeedEntryData', function() {
   var p = pageflow;
 
