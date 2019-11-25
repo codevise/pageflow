@@ -35,6 +35,12 @@ module.exports = {
       }
     },
     {
+      "files": ["src/frontend/**/*.js", "spec/frontend/**/*.js"],
+      "globals": {
+        "pageflow": true
+      }
+    },
+    {
       "files": ["spec/**/*.js"],
       "env": {
         'jest/globals': true,
