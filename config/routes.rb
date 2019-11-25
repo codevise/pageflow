@@ -64,7 +64,6 @@
           get :authenticate_importer
           get :search
           get :authentication_provider
-          get :download_file
           post :files_meta_data
           post :start_import_job
         end

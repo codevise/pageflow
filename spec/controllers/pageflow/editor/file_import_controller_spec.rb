@@ -169,24 +169,5 @@ module Pageflow
         assert_performed_jobs files.length * 2 # one job for file import and one for upload
       end
     end
-
-    describe '#download_file' do
-      it 'responds with the file source as returned by file importer' do
-        user = create(:user)
-        entry = create(:entry, with_editor: user)
-        sign_in(user, scope: :user)
-        file_importer = create(:file_importer)
-        pageflow_configure do |config|
-          config.file_importers.register(file_importer.name, file_importer)
-        end
-        selected_file = file_importer.search(nil, nil)['photos'].first
-        file_source = file_importer.download_file(nil, selected_file)
-        get(:download_file, params: {file: selected_file,
-                                     file_import_id: file_importer.name,
-                                     entry_id: entry})
-        expectation = {data: file_source}.to_json
-        expect(response.body).to eq(expectation)
-      end
-    end
   end
 end
