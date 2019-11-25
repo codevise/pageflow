@@ -1,7 +1,5 @@
 import jQuery from 'jquery';
 
-import $ from 'jquery';
-
 (function($) {
   $.widget('pageflow.multimediaAlert', {
     _create: function() {

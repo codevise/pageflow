@@ -1,6 +1,4 @@
 import jQuery from 'jquery';
-
-import $ from 'jquery';
 import IScroll from 'iscroll';
 import _ from 'underscore';
 

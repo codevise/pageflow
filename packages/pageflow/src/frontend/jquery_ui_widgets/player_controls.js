@@ -1,8 +1,6 @@
-import jQuery from 'jquery';
-
 import $ from 'jquery';
 
-jQuery.widget('pageflow.playerControls', {
+$.widget('pageflow.playerControls', {
   _create: function() {
     var player = this.options.player;
 
@@ -12,7 +10,6 @@ jQuery.widget('pageflow.playerControls', {
     var currentTimeDisplay = this.element.find('.vjs-current-time-display');
     var durationDisplay = this.element.find('.vjs-duration-display');
     var progressHandler = this.element.find('.vjs-slider-handle');
-    var seeking = false;
     var smallTimestamp = durationDisplay.html().length === 5 && durationDisplay.html().charAt(0) === "0";
 
     if(smallTimestamp) {

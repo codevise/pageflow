@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import _ from 'underscore';
 
 pageflow.widgets = (function() {
   return {

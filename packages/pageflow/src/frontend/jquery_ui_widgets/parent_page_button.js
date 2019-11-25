@@ -1,7 +1,5 @@
 import jQuery from 'jquery';
 
-import $ from 'jquery';
-
 (function($) {
   $.widget('pageflow.parentPageButton', {
     _create: function() {

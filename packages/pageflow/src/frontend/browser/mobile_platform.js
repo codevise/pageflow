@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import _ from 'underscore';
 
 pageflow.browser.feature('mobile platform', function() {
   return pageflow.browser.agent.matchesMobilePlatform();

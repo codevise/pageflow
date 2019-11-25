@@ -1,14 +1,11 @@
 import jQuery from 'jquery';
 
-import $ from 'jquery';
-
 (function($) {
   $.widget('pageflow.volumeSlider', {
     _create: function() {
       var element = this.element;
       var orientation = this.options.orientation;
       var slider = $('.volume-slider', element);
-      var handlingVolume = false;
 
       element.on('mousedown', function(event) {
         var parent = $('body');

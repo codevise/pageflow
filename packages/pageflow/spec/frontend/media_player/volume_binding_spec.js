@@ -1,23 +1,11 @@
 import jQuery from 'jquery';
+import Backbone from 'backbone';
 
 import '$pageflow/frontend';
 
 import sinon from 'sinon';
 
 describe('pageflow.mediaPlayer.volumeBinding', function() {
-  function itBehavesLikePlayMethod(callPlayMethod) {
-    it('aborts intent to pause', function() {
-      var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
-
-      player.intendToPause();
-      callPlayMethod(player);
-
-      expect(player.intendingToPause()).toBe(false);
-    });
-  }
-
   describe('#play', function() {
     it('sets volume to settings volume', function() {
       var player = fakePlayer();

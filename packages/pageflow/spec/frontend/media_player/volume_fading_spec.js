@@ -18,54 +18,50 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
   });
 
   describe('#fadeVolume', function() {
-    it('resolves promise after fading down', function(done) {
+    it('resolves promise after fading down', function() {
       var player = fakePlayer({volume: 100});
       pageflow.mediaPlayer.volumeFading(player);
 
-      player.fadeVolume(50, 10).then(function() {
+      return player.fadeVolume(50, 10).then(function() {
         expect(player.volume()).toBe(50);
-
-        done();
       });
     });
 
-    it('resolves promise after fading up', function(done) {
+    it('resolves promise after fading up', function() {
       var player = fakePlayer({volume: 50});
       pageflow.mediaPlayer.volumeFading(player);
 
-      player.fadeVolume(100, 10).then(function() {
+      return player.fadeVolume(100, 10).then(function() {
         expect(player.volume()).toBe(100);
-        done();
       });
     });
 
-    it('resolves promise if unchanged', function(done) {
+    it('resolves promise if unchanged', function() {
       var player = fakePlayer({volume: 100});
       pageflow.mediaPlayer.volumeFading(player);
 
-      player.fadeVolume(100, 10).then(function() {
+      return player.fadeVolume(100, 10).then(function() {
         expect(player.volume()).toBe(100);
-        done();
       });
     });
 
-    it('does not change volume directly', function(done) {
+    it('does not change volume directly', function() {
       var player = fakePlayer({volume: 50});
       pageflow.mediaPlayer.volumeFading(player);
 
-      player.fadeVolume(100, 10).then(done);
+      var promise = player.fadeVolume(100, 10);
       expect(player.volume()).toBe(50);
+      return promise;
     });
 
-    it('rejects promise if called again before fade is finished', function(done) {
+    it('rejects promise if called again before fade is finished', function() {
       var failHandler = sinon.spy();
       var player = fakePlayer({volume: 100});
       pageflow.mediaPlayer.volumeFading(player);
 
       player.fadeVolume(50, 10).fail(failHandler);
-      player.fadeVolume(90, 10).then(function() {
+      return player.fadeVolume(90, 10).then(function() {
         expect(failHandler).toHaveBeenCalled();
-        done();
       });
     });
   });

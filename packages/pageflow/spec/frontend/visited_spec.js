@@ -1,5 +1,3 @@
-import _ from 'underscore';
-
 import '$pageflow/frontend';
 
 import * as support from '$support';

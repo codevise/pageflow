@@ -1,12 +1,12 @@
-import $ from 'jquery';
-
 //  https://developer.mozilla.org/en-US/docs/Web/API/document.cookie
 pageflow.cookies = {
   getItem: function (sKey) {
     if (!sKey) { return null; }
+    // eslint-disable-next-line no-useless-escape
     return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
   },
   setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+    // eslint-disable-next-line no-useless-escape
     if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
     var sExpires = "";
     if (vEnd) {
@@ -32,9 +32,11 @@ pageflow.cookies = {
   },
   hasItem: function (sKey) {
     if (!sKey) { return false; }
+    // eslint-disable-next-line no-useless-escape
     return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
   },
   keys: function () {
+    // eslint-disable-next-line no-useless-escape
     var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
     for (var nLen = aKeys.length, nIdx = 0; nIdx < nLen; nIdx++) { aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]); }
     return aKeys;

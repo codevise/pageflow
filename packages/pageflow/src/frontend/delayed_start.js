@@ -1,7 +1,5 @@
 import jQuery from 'jquery';
 
-import $ from 'jquery';
-
 pageflow.DelayedStart = (function($) {
   return function() {
     var waitDeferred = new $.Deferred();

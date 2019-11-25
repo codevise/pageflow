@@ -1,8 +1,8 @@
 import _ from 'underscore';
+import Backbone from 'backbone';
 
 import '$pageflow/frontend';
 
-import * as support from '$support';
 import sinon from 'sinon';
 
 describe('pageflow.mediaPlayer.handleFailedPlay', function() {

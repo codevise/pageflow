@@ -1,7 +1,5 @@
 import jQuery from 'jquery';
 
-import $ from 'jquery';
-
 pageflow.mediaPlayer.volumeBinding = function(player, settings, options) {
   options = options || {};
 
@@ -26,7 +24,7 @@ pageflow.mediaPlayer.volumeBinding = function(player, settings, options) {
     player.intendToPlay();
     player.volume(0);
 
-    return $.when(originalPlay.call(player)).then(function() {
+    return jQuery.when(originalPlay.call(player)).then(function() {
       listenToVolumeSetting();
       return player.fadeVolume(player.targetVolume(), duration).then(null, function() {
         return new jQuery.Deferred().resolve().promise();

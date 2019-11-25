@@ -45,7 +45,7 @@ pageflow.pageType = (function() {
     },
 
     get: function(name) {
-      if (!this.repository.hasOwnProperty(name)) {
+      if (!this.repository[name]) {
         throw 'Unknown page type "' + name + '"';
       }
 

@@ -37,7 +37,10 @@ module.exports = {
     {
       "files": ["src/frontend/**/*.js", "spec/frontend/**/*.js"],
       "globals": {
-        "pageflow": true
+        "pageflow": true,
+        "videojs": true,
+        "Audio5js": true,
+        "PAGEFLOW_EDITOR": true
       }
     },
     {

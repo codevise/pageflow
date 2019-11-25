@@ -1,9 +1,6 @@
 import jQuery from 'jquery';
 
-import $ from 'jquery';
-
 (function($) {
-  var ENTER_KEY = 13;
   var SPACE_KEY = 32;
 
   $.widget('pageflow.scrollButton', {
@@ -11,7 +8,6 @@ import $ from 'jquery';
       var element = this.element;
       var scroller = this.options.scroller;
       var direction = this.options.direction;
-      var interval;
 
       scroller.on('scrollEnd', function() {
         updateVisibility();
@@ -52,21 +48,6 @@ import $ from 'jquery';
         }
         else if (direction === 'down' || direction === 'right') {
           scroller.next();
-        }
-      }
-
-      function scrollBy(delta, duration) {
-        if (direction === 'top') {
-          scroller.scrollBy(0, delta, duration);
-        }
-        else if (direction === 'left') {
-          scroller.scrollBy(delta, 0, duration);
-        }
-        else if (direction === 'down') {
-          scroller.scrollBy(0, -delta, duration);
-        }
-        else {
-          scroller.scrollBy(-delta, 0, duration);
         }
       }
 

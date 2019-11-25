@@ -1,7 +1,5 @@
 import jQuery from 'jquery';
 
-import $ from 'jquery';
-
 pageflow.manualStart = (function($) {
   var requiredDeferred = $.Deferred();
   var waitDeferred = $.Deferred();

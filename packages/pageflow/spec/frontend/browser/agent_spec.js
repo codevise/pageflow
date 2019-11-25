@@ -1,5 +1,3 @@
-import _ from 'underscore';
-
 import '$pageflow/frontend';
 
 describe('pageflow.browser.Agent', function() {

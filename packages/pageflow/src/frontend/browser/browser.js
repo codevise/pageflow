@@ -58,7 +58,7 @@ pageflow.browser = (function(){
         throw 'Feature detection has not finished yet.';
       }
 
-      if (!results.hasOwnProperty(name)) {
+      if (results[name] === undefined) {
         throw 'Unknown feature "' + name +'".';
       }
 

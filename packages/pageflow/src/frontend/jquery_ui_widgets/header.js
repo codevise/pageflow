@@ -1,7 +1,5 @@
 import jQuery from 'jquery';
 
-import $ from 'jquery';
-
 jQuery(function($) {
   $.widget('pageflow.header', {
     _create: function() {

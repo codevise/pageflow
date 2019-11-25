@@ -1,7 +1,5 @@
 import jQuery from 'jquery';
 
-import $ from 'jquery';
-
 (function($) {
   var boundaries = {
     back: 'top',

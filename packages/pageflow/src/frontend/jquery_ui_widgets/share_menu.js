@@ -1,7 +1,5 @@
 import jQuery from 'jquery';
 
-import $ from 'jquery';
-
 (function($) {
   $.widget('pageflow.shareMenu', {
     _create: function() {
@@ -53,7 +51,7 @@ import $ from 'jquery';
         }
       });
 
-      if(!!$closeOnMouseLeaving) {
+      if($closeOnMouseLeaving) {
         $closeOnMouseLeaving.on('mouseleave', function() {
           $links.removeClass('active').blur();
           $(this).find('.button').removeClass('pressed');
