@@ -11,7 +11,7 @@ module Pageflow
       import_model = FileImport.find(import_model_id)
       file_record = import_model.file
       download_options = JSON.parse import_model.download_options
-      file_source = download_file_source download_options, credentials
+      file_source = import_model.file_importer.download_file credentials, download_options
       temp_file = save_to_tempfile(file_source)
       upload_attachment file_record, temp_file
       file_record.publish!
@@ -24,11 +24,6 @@ module Pageflow
       attachment.assign(temp_file)
       file_record.restore_attributes
       attachment.flush_writes
-    end
-
-    def download_file_source(download_options, credentials)
-      importer = Pageflow.config.file_importers.find_by_name!(download_options['importer'])
-      importer.download_file credentials, download_options
     end
 
     def save_to_tempfile(data)

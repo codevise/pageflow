@@ -8,7 +8,7 @@ module Pageflow
     describe '#search' do
       it 'requires user to be signed in' do
         entry = create(:entry)
-        get(:search, params: {query: 'test', entry_id: entry.id, file_import_id: 'default'})
+        get(:search, params: {query: 'test', entry_id: entry.id, file_import_name: 'default'})
 
         expect(response.status).to eq(302)
       end
@@ -84,7 +84,7 @@ module Pageflow
         selected_file = file_importer.search(nil, nil)['photos'].first
         selected_files = {file1: selected_file}
         post(:files_meta_data, params: {files: selected_files,
-                                        file_import_id: file_importer.name,
+                                        file_import_name: file_importer.name,
                                         entry_id: entry})
         expectation = {data: file_importer.files_meta_data(nil, selected_files)}.to_json
         expect(response.body).to eq(expectation)
@@ -141,7 +141,7 @@ module Pageflow
         meta_data = file_importer.files_meta_data(nil, selected_files)
         post(:start_import_job, params: {files: meta_data['files'],
                                          collection: meta_data['collection'],
-                                         file_import_id: file_importer.name,
+                                         file_import_name: file_importer.name,
                                          entry_id: entry})
         files = JSON.parse(response.body)['data']
         expect(files.length).to eq(meta_data['files'].length)
@@ -162,7 +162,7 @@ module Pageflow
         meta_data = file_importer.files_meta_data(nil, selected_files)
         post(:start_import_job, params: {files: meta_data['files'],
                                          collection: meta_data['collection'],
-                                         file_import_id: file_importer.name,
+                                         file_import_name: file_importer.name,
                                          entry_id: entry})
         files = JSON.parse(response.body)['data']
         expect(files.length).to eq(meta_data['files'].length)

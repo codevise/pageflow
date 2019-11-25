@@ -20,7 +20,7 @@ module Pageflow
     private
 
     def file_importer
-      importer_key = params[:file_import_id]
+      importer_key = params[:file_import_name]
       Pageflow.config.file_importers.find_by_name!(importer_key)
     end
 

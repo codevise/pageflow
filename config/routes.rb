@@ -60,13 +60,11 @@
           put :publish, on: :member
         end
 
-        resources :file_import, :only => [:index] do
-          get :authenticate_importer
-          get :search
-          get :authentication_provider
-          post :files_meta_data
-          post :start_import_job
-        end
+        get '/file_import/:file_import_name/authenticate_importer' => 'file_import#authenticate_importer'
+        get '/file_import/:file_import_name/search' => 'file_import#search'
+        get '/file_import/:file_import_name/authentication_provider' => 'file_import#authentication_provider'
+        post '/file_import/:file_import_name/files_meta_data' => 'file_import#files_meta_data'
+        post '/file_import/:file_import_name/start_import_job' => 'file_import#start_import_job'
       end
 
       resources :subjects, path: '/subjects/:collection_name', only: [] do
@@ -94,6 +92,6 @@
   # Authentication provider call back
   get '/auth/:provider/callback', to: 'users/omniauth_callbacks#auth_callback'
   # used to check if auth call is required to be made
-  get '/authentication_providers/:file_import_id/authenticate_importer', to:
+  get '/authentication_providers/:file_import_name/authenticate_importer', to:
     'authentication_provider#authenticate_importer'
 end

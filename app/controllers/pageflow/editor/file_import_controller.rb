@@ -19,7 +19,6 @@ module Pageflow
       def start_import_job
         entry = DraftEntry.find(entry_name)
         result = []
-
         selected_files.each do |key, file|
           file = key if file.nil?
           file = file.permit(:file_name,
@@ -89,11 +88,12 @@ module Pageflow
         token = AuthenticationToken.find_auth_token(current_user, authentication_provider) if
           authentication_provider.present?
         unless token.nil?
-          if token.empty?
-            token = nil
-          else
-            token = token.first.auth_token
-          end
+          token =
+            if token.empty?
+              nil
+            else
+              token.first.auth_token
+            end
         end
         token
       end
