@@ -2,8 +2,12 @@ pageflow.FileImport = Backbone.Model.extend({
   modelName: 'file_import',
   action: 'search',
   url: function () {
-    var slug = pageflow.entry.get('slug');
-    return '/editor/entries/'+slug+'/file_import/'+this.importer.key+'/'+this.action
+    if (this.action == 'authenticate_importer') {
+      return '/authentication_providers/'+this.importer.key+'/authenticate_importer'
+    } else {
+      var slug = pageflow.entry.get('slug');
+      return '/editor/entries/'+slug+'/file_import/'+this.importer.key+'/'+this.action
+    }
   },
   initialize: function(importer_key) {
     this.importer = pageflow.editor.fileImporters.find(importer_key)
@@ -17,17 +21,7 @@ pageflow.FileImport = Backbone.Model.extend({
       this.fetch().then(function (data) {
         if (data) {
           if (data.authenticationRequired) {
-            function centerPopup(linkUrl, width, height) {
-              var sep = (linkUrl.indexOf('?') !== -1) ? '&' : '?',
-                  url = linkUrl + sep + 'popup=true',
-                  left = (screen.width - width) / 2 - 16,
-                  top = (screen.height - height) / 2 - 50,
-                  windowFeatures = 'menubar=no,toolbar=no,status=no,width=' + width +
-                      ',height=' + height + ',left=' + left + ',top=' + top;
-              return window.open(url, 'authPopup', windowFeatures);
-            }
-            centerPopup("/auth/"+data.provider,800, 600);
-            window.pageflow.editor.tempFileModel = self;
+            pageflow.authenticationProvider.authenticate(self, data.provider);
             self.popUped = true;
           } else {
             self.authenticateCallback()
@@ -40,7 +34,6 @@ pageflow.FileImport = Backbone.Model.extend({
   authenticateCallback: function () {
     clearInterval(this.authenticationInterval);
     this.set('isAuthenticated', true);
-    window.pageflow.editor.tempFileModel = undefined;
     this.popUped = false;
   },
   createFileImportDialogView: function () {

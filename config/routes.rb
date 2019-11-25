@@ -1,4 +1,4 @@
-Pageflow::Engine.routes.draw do
+  Pageflow::Engine.routes.draw do
   constraints Pageflow.config(:ignore_not_configured => true).editor_route_constraint do
     resources :entries, :only => [:edit, :update], :shallow => true do
       get :partials, :on => :member
@@ -91,5 +91,9 @@ Pageflow::Engine.routes.draw do
 
   get ':id/pages/:page_index', to: 'entries#page'
 
+  # Authentication provider call back
   get '/auth/:provider/callback', to: 'users/omniauth_callbacks#auth_callback'
+  # used to check if auth call is required to be made
+  get '/authentication_providers/:file_import_id/authenticate_importer', to:
+    'authentication_provider#authenticate_importer'
 end
