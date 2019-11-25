@@ -13,7 +13,7 @@ describe('pageflow.SeedEntryData', function() {
 
       var result = entryData.getThemingOption('page_change_by_scrolling');
 
-      expect(result).to.eq(true);
+      expect(result).toBe(true);
     });
   });
 
@@ -32,7 +32,7 @@ describe('pageflow.SeedEntryData', function() {
 
       var result = entryData.getFile('image_files', 1);
 
-      expect(result.url).to.eq('image.png');
+      expect(result.url).toBe('image.png');
     });
   });
 
@@ -50,7 +50,7 @@ describe('pageflow.SeedEntryData', function() {
 
       var result = entryData.getStorylineConfiguration(1);
 
-      expect(result).to.eq(configuration);
+      expect(result).toBe(configuration);
     });
   });
 
@@ -66,7 +66,7 @@ describe('pageflow.SeedEntryData', function() {
 
       var result = entryData.getChapterConfiguration(1);
 
-      expect(result).to.eq(configuration);
+      expect(result).toBe(configuration);
     });
   });
 
@@ -82,7 +82,7 @@ describe('pageflow.SeedEntryData', function() {
 
       var result = entryData.getChapterPagePermaIds(1);
 
-      expect(result).to.deep.eq([100, 101]);
+      expect(result).toEqual([100, 101]);
     });
   });
 
@@ -97,7 +97,7 @@ describe('pageflow.SeedEntryData', function() {
 
       var result = entryData.getPageConfiguration(100);
 
-      expect(result).to.eq(configuration);
+      expect(result).toBe(configuration);
     });
   });
 
@@ -110,8 +110,8 @@ describe('pageflow.SeedEntryData', function() {
         ]
       });
 
-      expect(entryData.getPagePosition(100)).to.eq(0);
-      expect(entryData.getPagePosition(101)).to.eq(1);
+      expect(entryData.getPagePosition(100)).toBe(0);
+      expect(entryData.getPagePosition(101)).toBe(1);
     });
   });
 
@@ -125,7 +125,7 @@ describe('pageflow.SeedEntryData', function() {
 
       var result = entryData.getChapterIdByPagePermaId(102);
 
-      expect(result).to.eq(2);
+      expect(result).toBe(2);
     });
   });
 
@@ -139,7 +139,7 @@ describe('pageflow.SeedEntryData', function() {
 
       var result = entryData.getStorylineIdByChapterId(102);
 
-      expect(result).to.eq(2);
+      expect(result).toBe(2);
     });
   });
 });

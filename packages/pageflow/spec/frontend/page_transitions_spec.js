@@ -12,8 +12,8 @@ describe('pageflow.PageTransitions', function() {
     });
     var transition = pageTransitions.get('scroll');
 
-    expect(transition.className).to.eq('scroll-v');
-    expect(transition.duration).to.eq(500);
+    expect(transition.className).toBe('scroll-v');
+    expect(transition.duration).toBe(500);
   });
 
   it('returns matching options if navigation direction is horizontal', function() {
@@ -25,8 +25,8 @@ describe('pageflow.PageTransitions', function() {
     });
     var transition = pageTransitions.get('scroll');
 
-    expect(transition.className).to.eq('scroll-h');
-    expect(transition.duration).to.eq(700);
+    expect(transition.className).toBe('scroll-h');
+    expect(transition.duration).toBe(700);
   });
 
   it('allows getting names of registered transitions', function() {
@@ -42,7 +42,7 @@ describe('pageflow.PageTransitions', function() {
     });
     var names = pageTransitions.names();
 
-    expect(names).to.eql(['scroll', 'fade']);
+    expect(names).toEqual(['scroll', 'fade']);
   });
 
   function fakeNavigationDirection(direction) {

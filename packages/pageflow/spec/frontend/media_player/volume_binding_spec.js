@@ -1,3 +1,5 @@
+import jQuery from 'jquery';
+
 import '$pageflow/frontend';
 
 import sinon from 'sinon';
@@ -12,7 +14,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.intendToPause();
       callPlayMethod(player);
 
-      expect(player.intendingToPause()).to.eq(false);
+      expect(player.intendingToPause()).toBe(false);
     });
   }
 
@@ -24,7 +26,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.play();
 
-      expect(player.currentVolume).to.eq(98);
+      expect(player.currentVolume).toBe(98);
     });
 
     it('starts listenting to settings changes', function() {
@@ -35,7 +37,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.play();
       settings.set('volume', 50);
 
-      expect(player.fadingVolume).to.eq(50);
+      expect(player.fadingVolume).toBe(50);
     });
 
     it('calls original play method', function() {
@@ -45,7 +47,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.play();
 
-      expect(player.originalPlay).to.have.been.called;
+      expect(player.originalPlay).toHaveBeenCalled();
     });
 
     it('aborts intent to pause', function() {
@@ -56,7 +58,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.intendToPause();
       player.play();
 
-      expect(player.intendingToPause()).to.eq(false);
+      expect(player.intendingToPause()).toBe(false);
     });
 
     describe('with volumeFactor option', function() {
@@ -67,7 +69,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
         player.play();
 
-        expect(player.currentVolume).to.eq(50);
+        expect(player.currentVolume).toBe(50);
       });
     });
   });
@@ -80,9 +82,9 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.playAndFadeIn(500);
 
-      expect(player.currentVolume).to.eq(0);
-      expect(player.fadingVolume).to.eq(98);
-      expect(player.fadingDuration).to.eq(500);
+      expect(player.currentVolume).toBe(0);
+      expect(player.fadingVolume).toBe(98);
+      expect(player.fadingDuration).toBe(500);
     });
 
     it('starts listenting to settings changes', function() {
@@ -93,7 +95,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.playAndFadeIn(500);
       settings.set('volume', 50);
 
-      expect(player.fadingVolume).to.eq(50);
+      expect(player.fadingVolume).toBe(50);
     });
 
     it('does not fade in until promise returned by play is resolved', function() {
@@ -105,7 +107,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.playAndFadeIn(500);
 
-      expect(player.fadingVolume).to.eq(undefined);
+      expect(player.fadingVolume).toBe(undefined);
     });
 
     it('fades in after promise returned by play is resolved', function() {
@@ -118,7 +120,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.playAndFadeIn(500);
       deferred.resolve();
 
-      expect(player.fadingVolume).to.eq(98);
+      expect(player.fadingVolume).toBe(98);
     });
 
     it('returns promise which resolves after fade', function() {
@@ -130,7 +132,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.playAndFadeIn(500).then(callback);
       player.fadingDeferred.resolve();
 
-      expect(callback).to.be.have.been.called;
+      expect(callback).toHaveBeenCalled();
     });
 
     it('returns promise which resolves even if fade is canceled', function() {
@@ -142,7 +144,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.playAndFadeIn(500).then(callback);
       player.fadingDeferred.reject();
 
-      expect(callback).to.be.have.been.called;
+      expect(callback).toHaveBeenCalled();
     });
 
     it('calls original play method', function() {
@@ -152,7 +154,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.playAndFadeIn();
 
-      expect(player.originalPlay).to.have.been.called;
+      expect(player.originalPlay).toHaveBeenCalled();
     });
 
     it('aborts intent to pause', function() {
@@ -163,7 +165,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.intendToPause();
       player.playAndFadeIn(500);
 
-      expect(player.intendingToPause()).to.eq(false);
+      expect(player.intendingToPause()).toBe(false);
     });
 
     it('returns resolved promise if alreay playing', function() {
@@ -174,7 +176,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.playAndFadeIn(500).then(callback);
 
-      expect(callback).to.have.been.called;
+      expect(callback).toHaveBeenCalled();
     });
 
     describe('with volumeFactor option', function() {
@@ -185,9 +187,9 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
         player.playAndFadeIn(500);
 
-        expect(player.currentVolume).to.eq(0);
-        expect(player.fadingVolume).to.eq(50);
-        expect(player.fadingDuration).to.eq(500);
+        expect(player.currentVolume).toBe(0);
+        expect(player.fadingVolume).toBe(50);
+        expect(player.fadingDuration).toBe(500);
       });
 
       it('uses multiplied volume on settings change', function() {
@@ -198,7 +200,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
         player.playAndFadeIn(500);
         settings.set('volume', 80);
 
-        expect(player.fadingVolume).to.eq(40);
+        expect(player.fadingVolume).toBe(40);
       });
     });
   });
@@ -213,7 +215,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.pause();
       settings.set('volume', 50);
 
-      expect(player.fadingVolume).to.eq(undefined);
+      expect(player.fadingVolume).toBe(undefined);
     });
 
     it('calls original play method', function() {
@@ -223,7 +225,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.pause();
 
-      expect(player.originalPause).to.have.been.called;
+      expect(player.originalPause).toHaveBeenCalled();
     });
 
     it('aborts intent to play', function() {
@@ -234,7 +236,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.intendToPlay();
       player.pause();
 
-      expect(player.intendingToPlay()).to.eq(false);
+      expect(player.intendingToPlay()).toBe(false);
     });
   });
 
@@ -246,8 +248,8 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.fadeOutAndPause(500);
 
-      expect(player.fadingVolume).to.eq(0);
-      expect(player.fadingDuration).to.eq(500);
+      expect(player.fadingVolume).toBe(0);
+      expect(player.fadingDuration).toBe(500);
     });
 
     it('stops listenting to settings changes', function() {
@@ -259,7 +261,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.fadeOutAndPause(500);
       settings.set('volume', 50);
 
-      expect(player.fadingVolume).to.eq(0);
+      expect(player.fadingVolume).toBe(0);
     });
 
     it('calls original pause when fading promise resolves', function() {
@@ -269,9 +271,9 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.fadeOutAndPause(500);
 
-      expect(player.originalPause).not.to.have.been.called;
+      expect(player.originalPause).not.toHaveBeenCalled();
       player.fadingDeferred.resolve();
-      expect(player.originalPause).to.have.been.called;
+      expect(player.originalPause).toHaveBeenCalled();
     });
 
     it('calls original pause even when fade is canceled', function() {
@@ -282,7 +284,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.fadeOutAndPause(500);
 
       player.fadingDeferred.reject();
-      expect(player.originalPause).to.have.been.called;
+      expect(player.originalPause).toHaveBeenCalled();
     });
 
     it('does not calls original pause when played during fade out', function() {
@@ -294,7 +296,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.play();
       player.fadingDeferred.resolve();
 
-      expect(player.originalPause).not.to.have.been.called;
+      expect(player.originalPause).not.toHaveBeenCalled();
     });
 
     it('aborts intent to play', function() {
@@ -305,7 +307,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.intendToPlay();
       player.fadeOutAndPause(500);
 
-      expect(player.intendingToPlay()).to.eq(false);
+      expect(player.intendingToPlay()).toBe(false);
     });
 
     it('returns fadeVolume promise', function() {
@@ -317,7 +319,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.fadeOutAndPause(500).then(callback);
 
       player.fadingDeferred.resolve();
-      expect(callback).to.have.been.called;
+      expect(callback).toHaveBeenCalled();
     });
 
     it('returns resolved promise if not playing', function() {
@@ -328,7 +330,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.fadeOutAndPause(500).then(callback);
 
-      expect(callback).to.have.been.called;
+      expect(callback).toHaveBeenCalled();
     });
   });
 
@@ -340,9 +342,9 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
 
       player.changeVolumeFactor(0.5, 500);
 
-      expect(player.currentVolume).to.eq(100);
-      expect(player.fadingVolume).to.eq(50);
-      expect(player.fadingDuration).to.eq(500);
+      expect(player.currentVolume).toBe(100);
+      expect(player.fadingVolume).toBe(50);
+      expect(player.fadingDuration).toBe(500);
     });
 
     it('returns fadeVolume promise', function() {
@@ -354,7 +356,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       player.changeVolumeFactor(0.5, 500).then(callback);
 
       player.fadingDeferred.resolve();
-      expect(callback).to.have.been.called;
+      expect(callback).toHaveBeenCalled();
     });
   });
 

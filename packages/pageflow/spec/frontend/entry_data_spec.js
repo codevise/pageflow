@@ -28,7 +28,7 @@ describe('pageflow.EntryData', function() {
 
       var result = entryData.getParentPagePermaIdByPagePermaId(5);
 
-      expect(result).to.eq(6);
+      expect(result).toBe(6);
     });
   });
 
@@ -47,7 +47,7 @@ describe('pageflow.EntryData', function() {
 
       var result = entryData.getStorylineIdByPagePermaId(5);
 
-      expect(result).to.eq(1000);
+      expect(result).toBe(1000);
     });
   });
 
@@ -85,7 +85,7 @@ describe('pageflow.EntryData', function() {
 
       var result = entryData.getParentStorylineId(1001);
 
-      expect(result).to.eq(1000);
+      expect(result).toBe(1000);
     });
 
     it('returns undefined if there is no parent page', function() {
@@ -97,7 +97,7 @@ describe('pageflow.EntryData', function() {
 
       var result = entryData.getParentStorylineId(1001);
 
-      expect(result).to.eq(undefined);
+      expect(result).toBe(undefined);
     });
   });
 
@@ -122,7 +122,7 @@ describe('pageflow.EntryData', function() {
 
       var result = entryData.getParentChapterId(100);
 
-      expect(result).to.eq(101);
+      expect(result).toBe(101);
     });
   });
 
@@ -139,7 +139,7 @@ describe('pageflow.EntryData', function() {
 
       var result = entryData.getParentPagePermaId(1000);
 
-      expect(result).to.eq(6);
+      expect(result).toBe(6);
     });
   });
 
@@ -185,9 +185,9 @@ describe('pageflow.EntryData', function() {
         ]
       });
 
-      expect(entryData.getStorylineLevel(1000)).to.eq(0);
-      expect(entryData.getStorylineLevel(1001)).to.eq(1);
-      expect(entryData.getStorylineLevel(1002)).to.eq(2);
+      expect(entryData.getStorylineLevel(1000)).toBe(0);
+      expect(entryData.getStorylineLevel(1001)).toBe(1);
+      expect(entryData.getStorylineLevel(1002)).toBe(2);
     });
   });
 });

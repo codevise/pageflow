@@ -27,7 +27,7 @@ describe('pageflow.HighlightedPage', function() {
 
         var result = outline.getPagePermaId(100);
 
-        expect(result).to.eq(100);
+        expect(result).toBe(100);
       });
 
       it('returns perma id of previous page if page is not displayed in navigation', function() {
@@ -59,7 +59,7 @@ describe('pageflow.HighlightedPage', function() {
 
         var result = outline.getPagePermaId(101);
 
-        expect(result).to.eq(100);
+        expect(result).toBe(100);
       });
     });
 
@@ -95,7 +95,7 @@ describe('pageflow.HighlightedPage', function() {
 
         var result = outline.getPagePermaId(100);
 
-        expect(result).to.eq(101);
+        expect(result).toBe(101);
       });
     });
 
@@ -132,7 +132,7 @@ describe('pageflow.HighlightedPage', function() {
 
         var result = outline.getPagePermaId(100);
 
-        expect(result).to.eq(102);
+        expect(result).toBe(102);
       });
     });
 
@@ -180,7 +180,7 @@ describe('pageflow.HighlightedPage', function() {
 
         var result = outline.getPagePermaId(100);
 
-        expect(result).to.eq(102);
+        expect(result).toBe(102);
       });
     });
   });

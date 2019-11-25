@@ -12,7 +12,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/602.4.8 (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8'
       );
 
-      expect(agent.matchesSafari11AndAbove()).to.eq(false);
+      expect(agent.matchesSafari11AndAbove()).toBe(false);
     });
 
     it('returns true for Safari 11', function() {
@@ -21,7 +21,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/604.1.28 (KHTML, like Gecko) Version/11.0 Safari/604.1.28'
       );
 
-      expect(agent.matchesSafari11AndAbove()).to.eq(true);
+      expect(agent.matchesSafari11AndAbove()).toBe(true);
     });
 
     it('returns true for Safari 12', function() {
@@ -30,7 +30,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Safari/605.1.15'
       );
 
-      expect(agent.matchesSafari11AndAbove()).to.eq(true);
+      expect(agent.matchesSafari11AndAbove()).toBe(true);
     });
 
     it('returns false for anything only containing a matching version string', function() {
@@ -38,7 +38,7 @@ describe('pageflow.browser.Agent', function() {
         'Version/11.0 something else'
       );
 
-      expect(agent.matchesSafari11AndAbove()).to.eq(false);
+      expect(agent.matchesSafari11AndAbove()).toBe(false);
     });
 
     it('returns false for Chrome', function() {
@@ -47,7 +47,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'
       );
 
-      expect(agent.matchesSafari11AndAbove()).to.eq(false);
+      expect(agent.matchesSafari11AndAbove()).toBe(false);
     });
 
     it('returns false for Edge', function() {
@@ -56,7 +56,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'
       );
 
-      expect(agent.matchesSafari11AndAbove()).to.eq(false);
+      expect(agent.matchesSafari11AndAbove()).toBe(false);
     });
   });
 
@@ -67,7 +67,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Safari/605.1.15'
       );
 
-      expect(agent.matchesDesktopSafari()).to.eq(true);
+      expect(agent.matchesDesktopSafari()).toBe(true);
     });
 
     it('returns false for Safari on iPhone', function() {
@@ -76,7 +76,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Mobile/14A403 Safari/602.1'
       );
 
-      expect(agent.matchesDesktopSafari()).to.eq(false);
+      expect(agent.matchesDesktopSafari()).toBe(false);
     });
   });
 });

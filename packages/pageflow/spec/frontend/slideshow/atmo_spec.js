@@ -2,6 +2,7 @@ import _ from 'underscore';
 
 import '$pageflow/frontend';
 
+import '$support/fakeBrowserFeatures';
 import * as support from '$support';
 import sinon from 'sinon';
 
@@ -24,7 +25,7 @@ describe('pageflow.Slideshow.Atmo', function() {
 
         events.trigger(event);
 
-        expect(multiPlayer.fadeTo).to.have.been.calledWith(5);
+        expect(multiPlayer.fadeTo).toHaveBeenCalledWith(5);
       });
 
       it('does not fade to audio file if atmo is disabled', function() {
@@ -47,7 +48,7 @@ describe('pageflow.Slideshow.Atmo', function() {
         atmo.disable();
         events.trigger(event);
 
-        expect(multiPlayer.fadeTo).not.to.have.been.calledWith(5);
+        expect(multiPlayer.fadeTo).not.toHaveBeenCalledWith(5);
       });
 
       it('pauses multiPlayer if backgroundMedia is muted', function() {
@@ -71,7 +72,7 @@ describe('pageflow.Slideshow.Atmo', function() {
 
         events.trigger(event);
 
-        expect(multiPlayer.fadeOutAndPause).to.have.been.called;
+        expect(multiPlayer.fadeOutAndPause).toHaveBeenCalled();
       });
     });
   });
@@ -87,7 +88,7 @@ describe('pageflow.Slideshow.Atmo', function() {
 
       multiPlayer.trigger('playfailed');
 
-      expect(backgroundMedia.mute).to.have.been.called;
+      expect(backgroundMedia.mute).toHaveBeenCalled();
     });
   });
 
@@ -100,7 +101,7 @@ describe('pageflow.Slideshow.Atmo', function() {
 
       atmo.pause();
 
-      expect(multiPlayer.fadeOutAndPause).to.have.been.called;
+      expect(multiPlayer.fadeOutAndPause).toHaveBeenCalled();
     });
   });
 
@@ -117,7 +118,7 @@ describe('pageflow.Slideshow.Atmo', function() {
 
         atmo.resume();
 
-        expect(multiPlayer.resumeAndFadeIn).to.have.been.called;
+        expect(multiPlayer.resumeAndFadeIn).toHaveBeenCalled();
       });
 
       it('does not call resumeAndFadeIn on multiPlayer if atmo is disabled', function() {
@@ -133,7 +134,7 @@ describe('pageflow.Slideshow.Atmo', function() {
         atmo.disable();
         atmo.resume();
 
-        expect(multiPlayer.resumeAndFadeIn).not.to.have.been.called;
+        expect(multiPlayer.resumeAndFadeIn).not.toHaveBeenCalled();
       });
 
       it('does not call resumeAndFadeIn on multiPlayer if background media is muted', function() {
@@ -152,7 +153,7 @@ describe('pageflow.Slideshow.Atmo', function() {
 
         atmo.resume();
 
-        expect(multiPlayer.resumeAndFadeIn).not.to.have.been.called;
+        expect(multiPlayer.resumeAndFadeIn).not.toHaveBeenCalled();
       });
     });
   });
@@ -176,7 +177,7 @@ describe('pageflow.Slideshow.Atmo', function() {
       atmo.disable();
       atmo.enable();
 
-      expect(multiPlayer.fadeTo).to.have.been.calledWith(5);
+      expect(multiPlayer.fadeTo).toHaveBeenCalledWith(5);
     });
   });
 

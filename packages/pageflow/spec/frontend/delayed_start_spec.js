@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import '$pageflow/frontend';
 
 import sinon from 'sinon';
@@ -12,7 +14,7 @@ describe('pageflow.DelayedStart', function() {
     delayedStart.wait(callback);
     delayedStart.perform();
 
-    expect(callback).to.have.been.called;
+    expect(callback).toHaveBeenCalled();
   });
 
   it('delays callbacks by promises passed to #waitFor', function() {
@@ -24,7 +26,7 @@ describe('pageflow.DelayedStart', function() {
     delayedStart.waitFor(deferred.promise());
     delayedStart.perform();
 
-    expect(callback).not.to.have.been.called;
+    expect(callback).not.toHaveBeenCalled();
   });
 
   it('invokes callback when all #waitFor promises are resolved', function() {
@@ -37,7 +39,7 @@ describe('pageflow.DelayedStart', function() {
     delayedStart.perform();
     deferred.resolve();
 
-    expect(callback).to.have.been.called;
+    expect(callback).toHaveBeenCalled();
   });
 
   it('resolves #promise on #perform', function() {
@@ -47,7 +49,7 @@ describe('pageflow.DelayedStart', function() {
     delayedStart.promise().then(callback);
     delayedStart.perform();
 
-    expect(callback).to.have.been.called;
+    expect(callback).toHaveBeenCalled();
   });
 
   it('resolves #promise only after promises passed to #waitFor have been resolved', function() {
@@ -59,7 +61,7 @@ describe('pageflow.DelayedStart', function() {
     delayedStart.waitFor(deferred.promise());
     delayedStart.perform();
 
-    expect(callback).not.to.have.been.called;
+    expect(callback).not.toHaveBeenCalled();
   });
 
   it('resolves #promise when all #waitFor promises are resolved', function() {
@@ -72,7 +74,7 @@ describe('pageflow.DelayedStart', function() {
     delayedStart.perform();
     deferred.resolve();
 
-    expect(callback).to.have.been.called;
+    expect(callback).toHaveBeenCalled();
   });
 
   it('supports passing a function to #waitFor', function() {
@@ -87,6 +89,6 @@ describe('pageflow.DelayedStart', function() {
     delayedStart.perform();
     delayedStartResolve();
 
-    expect(callback).to.have.been.called;
+    expect(callback).toHaveBeenCalled();
   });
 });

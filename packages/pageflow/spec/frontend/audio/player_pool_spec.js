@@ -14,7 +14,7 @@ describe('pageflow.Audio.PlayerPool', function() {
 
       var result = pool.get(audioFileId);
 
-      expect(result).to.eq(player);
+      expect(result).toBe(player);
     });
 
     it('passes options when creating player', function() {
@@ -28,7 +28,7 @@ describe('pageflow.Audio.PlayerPool', function() {
 
       pool.get(audioFileId);
 
-      expect(audio.createPlayer).to.have.been.calledWith(audioFileId, options);
+      expect(audio.createPlayer).toHaveBeenCalledWith(audioFileId, options);
     });
 
     it('caches player for audio file id', function() {
@@ -42,8 +42,8 @@ describe('pageflow.Audio.PlayerPool', function() {
       pool.get(audioFileId);
       var result = pool.get(audioFileId);
 
-      expect(result).to.eq(player);
-      expect(audio.createPlayer).to.have.been.calledOnce;
+      expect(result).toBe(player);
+      expect(audio.createPlayer).toHaveBeenCalledOnce();
     });
 
     it('recreates players after dispose', function() {
@@ -58,7 +58,7 @@ describe('pageflow.Audio.PlayerPool', function() {
       pool.dispose();
       pool.get(audioFileId);
 
-      expect(audio.createPlayer).to.have.been.calledTwice;
+      expect(audio.createPlayer).toHaveBeenCalledTwice();
     });
   });
 });

@@ -7,13 +7,14 @@ import sinon from 'sinon';
 
 describe('pageflow.SuccessorPreparer', function() {
   var p = pageflow;
+  var clock;
 
   beforeEach(function() {
-    this.clock = sinon.useFakeTimers();
+    clock = sinon.useFakeTimers();
   });
 
   afterEach(function() {
-    this.clock.restore();
+    clock.restore();
   });
 
   describe('on page:change event', function() {
@@ -27,9 +28,9 @@ describe('pageflow.SuccessorPreparer', function() {
 
       new p.SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page);
-      this.clock.tick();
+      clock.tick();
 
-      expect(nextPage.prepare).to.have.been.called;
+      expect(nextPage.prepare).toHaveBeenCalled();
     });
 
     it('does not prepare next page before prepareNextPageTimeout', function() {
@@ -43,9 +44,9 @@ describe('pageflow.SuccessorPreparer', function() {
 
       new p.SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page);
-      this.clock.tick(500);
+      clock.tick(500);
 
-      expect(nextPage.prepare).not.to.have.been.called;
+      expect(nextPage.prepare).not.toHaveBeenCalled();
     });
 
     it('prepares next page after prepareNextPageTimeout', function() {
@@ -59,9 +60,9 @@ describe('pageflow.SuccessorPreparer', function() {
 
       new p.SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page);
-      this.clock.tick(1100);
+      clock.tick(1100);
 
-      expect(nextPage.prepare).to.have.been.called;
+      expect(nextPage.prepare).toHaveBeenCalled();
     });
 
     it('does not prepare page if page changes again before prepareNextPageTimeout', function() {
@@ -80,11 +81,11 @@ describe('pageflow.SuccessorPreparer', function() {
 
       new p.SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page1);
-      this.clock.tick();
+      clock.tick();
       events.trigger('page:change', page2);
-      this.clock.tick(2000);
+      clock.tick(2000);
 
-      expect(nextPage.prepare).not.to.have.been.called;
+      expect(nextPage.prepare).not.toHaveBeenCalled();
     });
 
     it('does not call prepare if next page does not change', function() {
@@ -101,11 +102,11 @@ describe('pageflow.SuccessorPreparer', function() {
 
       new p.SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page1);
-      this.clock.tick();
+      clock.tick();
       events.trigger('page:change', page2);
-      this.clock.tick();
+      clock.tick();
 
-      expect(nextPage.prepare).to.have.been.calledOnce;
+      expect(nextPage.prepare).toHaveBeenCalledOnce();
     });
 
     it('calls unprepare for previously prepared page which is not next page', function() {
@@ -123,11 +124,11 @@ describe('pageflow.SuccessorPreparer', function() {
 
       new p.SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page1);
-      this.clock.tick();
+      clock.tick();
       events.trigger('page:change', page2);
-      this.clock.tick();
+      clock.tick();
 
-      expect(nextPage1.unprepare).to.have.been.called;
+      expect(nextPage1.unprepare).toHaveBeenCalled();
     });
 
     it('does not call unprepare for previously prepared page which is next page', function() {
@@ -144,11 +145,11 @@ describe('pageflow.SuccessorPreparer', function() {
 
       new p.SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page1);
-      this.clock.tick();
+      clock.tick();
       events.trigger('page:change', page2);
-      this.clock.tick();
+      clock.tick();
 
-      expect(nextPage.unprepare).not.to.have.been.called;
+      expect(nextPage.unprepare).not.toHaveBeenCalled();
     });
 
     it('does not call unprepare for previously prepared page that become current page', function() {
@@ -165,11 +166,11 @@ describe('pageflow.SuccessorPreparer', function() {
 
       new p.SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page1);
-      this.clock.tick();
+      clock.tick();
       events.trigger('page:change', page2);
-      this.clock.tick();
+      clock.tick();
 
-      expect(page2.unprepare).not.to.have.been.calledOnce;
+      expect(page2.unprepare).not.toHaveBeenCalledOnce();
     });
   });
 

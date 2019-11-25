@@ -1,3 +1,5 @@
+import jQuery from 'jquery';
+
 import _ from 'underscore';
 
 import '$pageflow/frontend';
@@ -13,7 +15,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
 
         player.play();
 
-        expect(player.originalPlay).to.have.been.called;
+        expect(player.originalPlay).toHaveBeenCalled();
       });
     });
 
@@ -27,7 +29,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
 
         player.play();
 
-        expect(beforeCallback).to.have.been.called;
+        expect(beforeCallback).toHaveBeenCalled();
       });
 
       it('emits beforeplay event', function() {
@@ -40,7 +42,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
         player.on('beforeplay', eventHandler);
         player.play();
 
-        expect(eventHandler).to.have.been.called;
+        expect(eventHandler).toHaveBeenCalled();
       });
 
       it('aborts intent to pause', function() {
@@ -55,7 +57,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
         player.intendToPause();
         player.play();
 
-        expect(player.intendingToPause()).to.eq(false);
+        expect(player.intendingToPause()).toBe(false);
       });
 
       it('calls original play method when promise returned by before is resolved', function() {
@@ -70,7 +72,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
         player.play();
         deferred.resolve();
 
-        expect(player.originalPlay).to.have.been.called;
+        expect(player.originalPlay).toHaveBeenCalled();
       });
 
       it('does not call original play method until promise returned by before is resolved', function() {
@@ -84,7 +86,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
 
         player.play();
 
-        expect(player.originalPlay).not.to.have.been.called;
+        expect(player.originalPlay).not.toHaveBeenCalled();
       });
 
       it('calls original play method if before does not return promise', function() {
@@ -95,7 +97,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
 
         player.play();
 
-        expect(player.originalPlay).to.have.been.called;
+        expect(player.originalPlay).toHaveBeenCalled();
       });
 
       it('does not call original play method if player is paused before promise returned by before is resolved', function() {
@@ -111,7 +113,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
         player.pause();
         deferred.resolve();
 
-        expect(player.originalPlay).not.to.have.been.called;
+        expect(player.originalPlay).not.toHaveBeenCalled();
       });
     });
   });

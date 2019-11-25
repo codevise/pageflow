@@ -1,5 +1,6 @@
 import '$pageflow/frontend';
 
+import '$support/fakeBrowserFeatures';
 import sinon from 'sinon';
 
 describe('pageflow.mediaPlayer.volumeFading', function() {
@@ -12,7 +13,7 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
       player.fadeVolume(50, 10).fail(failHandler);
       player.volume(90);
 
-      expect(failHandler).to.have.been.called;
+      expect(failHandler).toHaveBeenCalled();
     });
   });
 
@@ -22,7 +23,7 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
       pageflow.mediaPlayer.volumeFading(player);
 
       player.fadeVolume(50, 10).then(function() {
-        expect(player.volume()).to.eq(50);
+        expect(player.volume()).toBe(50);
 
         done();
       });
@@ -33,7 +34,7 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
       pageflow.mediaPlayer.volumeFading(player);
 
       player.fadeVolume(100, 10).then(function() {
-        expect(player.volume()).to.eq(100);
+        expect(player.volume()).toBe(100);
         done();
       });
     });
@@ -43,7 +44,7 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
       pageflow.mediaPlayer.volumeFading(player);
 
       player.fadeVolume(100, 10).then(function() {
-        expect(player.volume()).to.eq(100);
+        expect(player.volume()).toBe(100);
         done();
       });
     });
@@ -53,7 +54,7 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
       pageflow.mediaPlayer.volumeFading(player);
 
       player.fadeVolume(100, 10).then(done);
-      expect(player.volume()).to.eq(50);
+      expect(player.volume()).toBe(50);
     });
 
     it('rejects promise if called again before fade is finished', function(done) {
@@ -63,7 +64,7 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
 
       player.fadeVolume(50, 10).fail(failHandler);
       player.fadeVolume(90, 10).then(function() {
-        expect(failHandler).to.have.been.called;
+        expect(failHandler).toHaveBeenCalled();
         done();
       });
     });

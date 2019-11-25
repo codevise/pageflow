@@ -13,7 +13,7 @@ describe('pageflow.Visited', function() {
 
     var visited = new pageflow.Visited(entryId, pages, events, cookies);
 
-    expect(visited.getUnvisitedPages()).to.eql([]);
+    expect(visited.getUnvisitedPages()).toEqual([]);
   });
 
   it('reports no pages as unvisited after first init call', function() {
@@ -25,7 +25,7 @@ describe('pageflow.Visited', function() {
     var visited = new pageflow.Visited(entryId, pages, events, cookies);
     visited.init();
 
-    expect(visited.getUnvisitedPages()).to.eql([]);
+    expect(visited.getUnvisitedPages()).toEqual([]);
   });
 
   it('marks all pages as visitied on first init call', function() {
@@ -39,7 +39,7 @@ describe('pageflow.Visited', function() {
     var visited = new pageflow.Visited(entryId, pages, events, cookies);
     visited.init();
 
-    expect(visited.getUnvisitedPages()).to.eql([]);
+    expect(visited.getUnvisitedPages()).toEqual([]);
   });
 
   it('reports added pages since last init call', function() {
@@ -54,7 +54,7 @@ describe('pageflow.Visited', function() {
     var visited = new pageflow.Visited(entryId, pages, events, cookies);
     visited.init();
 
-    expect(visited.getUnvisitedPages()).to.eql([102]);
+    expect(visited.getUnvisitedPages()).toEqual([102]);
   });
 
   it('no longer reports pages once seen', function() {
@@ -72,7 +72,7 @@ describe('pageflow.Visited', function() {
     var visited = new pageflow.Visited(entryId, pages, events, cookies);
     visited.init();
 
-    expect(visited.getUnvisitedPages()).to.eql([]);
+    expect(visited.getUnvisitedPages()).toEqual([]);
   });
 
   it('does not store additional data when visiting pages multiple times', function() {
@@ -89,7 +89,7 @@ describe('pageflow.Visited', function() {
     events.trigger('page:change', {getPermaId: function() { return 102; }});
     events.trigger('page:change', {getPermaId: function() { return 102; }});
 
-    expect(cookies.usedStorage()).to.eq(usedStorageBefore);
+    expect(cookies.usedStorage()).toBe(usedStorageBefore);
   });
 
   it('migrates legacy cookie', function() {
@@ -102,8 +102,8 @@ describe('pageflow.Visited', function() {
     var visited = new pageflow.Visited(entryId, pages, events, cookies);
     visited.init();
 
-    expect(visited.getUnvisitedPages()).to.eql([102]);
-    expect(cookies.hasItem('_pageflow_5_visited')).to.eq(false);
+    expect(visited.getUnvisitedPages()).toEqual([102]);
+    expect(cookies.hasItem('_pageflow_5_visited')).toBe(false);
   });
 
   function fakeCookieStore() {

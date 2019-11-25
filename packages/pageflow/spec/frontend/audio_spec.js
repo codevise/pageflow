@@ -12,7 +12,7 @@ describe('pageflow.Audio', function() {
 
       audio.createPlayer(5);
 
-      expect(getSources).to.have.been.calledWith(5);
+      expect(getSources).toHaveBeenCalledWith(5);
     });
 
     it('removes suffix from audio file id', function() {
@@ -21,7 +21,7 @@ describe('pageflow.Audio', function() {
 
       audio.createPlayer('5.suffix');
 
-      expect(getSources).to.have.been.calledWith(5);
+      expect(getSources).toHaveBeenCalledWith(5);
     });
 
     it('passes null id to getSources', function() {
@@ -30,7 +30,7 @@ describe('pageflow.Audio', function() {
 
       audio.createPlayer(null);
 
-      expect(getSources).to.have.been.calledWith(null);
+      expect(getSources).toHaveBeenCalledWith(null);
     });
   });
 });

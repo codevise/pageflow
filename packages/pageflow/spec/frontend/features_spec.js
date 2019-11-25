@@ -13,7 +13,7 @@ describe('pageflow.Features', function() {
       features.register('editor', 'atmo', fn);
       features.enable('editor', ['atmo']);
 
-      expect(fn).to.have.been.called;
+      expect(fn).toHaveBeenCalled();
     });
 
     it('does not call functions registered for other scope', function() {
@@ -23,7 +23,7 @@ describe('pageflow.Features', function() {
       features.register('slideshow', 'atmo', fn);
       features.enable('editor', ['atmo']);
 
-      expect(fn).not.to.have.been.called;
+      expect(fn).not.toHaveBeenCalled();
     });
 
     it('does not call functions for non-enabled features', function() {
@@ -33,7 +33,7 @@ describe('pageflow.Features', function() {
       features.register('editor', 'atmo', fn);
       features.enable('editor', ['other']);
 
-      expect(fn).not.to.have.been.called;
+      expect(fn).not.toHaveBeenCalled();
     });
 
     it('marks features as enabled', function() {
@@ -41,8 +41,8 @@ describe('pageflow.Features', function() {
 
       features.enable('editor', ['atmo']);
 
-      expect(features.isEnabled('atmo')).to.eq(true);
-      expect(features.isEnabled('other')).to.eq(false);
+      expect(features.isEnabled('atmo')).toBe(true);
+      expect(features.isEnabled('other')).toBe(false);
     });
   });
 });

@@ -5,8 +5,6 @@ import '$pageflow/frontend';
 import * as support from '$support';
 import sinon from 'sinon';
 
-/*global Promise*/
-
 describe('pageflow.mediaPlayer.handleFailedPlay', function() {
   it('triggers playfailed event when play returns rejected promise', function() {
     var player = fakePlayer();
@@ -19,7 +17,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
     player.on('playfailed', playfailedHandler);
 
     return player.play().then(function() {
-      expect(playfailedHandler).to.have.been.called;
+      expect(playfailedHandler).toHaveBeenCalled();
     });
   });
 
@@ -34,7 +32,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
     player.on('playfailed', playfailedHandler);
 
     return player.play().then(function() {
-      expect(playfailedHandler).not.to.have.been.called;
+      expect(playfailedHandler).not.toHaveBeenCalled();
     });
   });
 
@@ -47,7 +45,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
     });
 
     return player.play().then(function() {
-      expect(player.originalPlay).to.have.been.calledOnce;
+      expect(player.originalPlay).toHaveBeenCalledOnce();
     });
   });
 
@@ -63,7 +61,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       player.on('playfailed', playfailedHandler);
 
       return player.play().then(function() {
-        expect(playfailedHandler).not.to.have.been.called;
+        expect(playfailedHandler).not.toHaveBeenCalled();
       });
     });
   });
@@ -81,7 +79,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
 
       expect(function() {
         player.play();
-      }).not.to.throw();
+      }).not.toThrow();
     });
   });
 
@@ -97,8 +95,8 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       });
 
       return player.play().then(function() {
-        expect(player.muted).to.have.been.called;
-        expect(player.originalPlay).to.have.been.calledTwice;
+        expect(player.muted).toHaveBeenCalled();
+        expect(player.originalPlay).toHaveBeenCalledTwice();
       });
     });
 
@@ -115,7 +113,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       player.on('playmuted', playmutedHandler);
 
       return player.play().then(function() {
-        expect(playmutedHandler).to.have.been.called;
+        expect(playmutedHandler).toHaveBeenCalled();
       });
     });
 
@@ -132,7 +130,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       player.on('playfailed', playfailedHandler);
 
       return player.play().then(function() {
-        expect(playfailedHandler).not.to.have.been.called;
+        expect(playfailedHandler).not.toHaveBeenCalled();
       });
     });
 
@@ -149,7 +147,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       player.on('playfailed', playfailedHandler);
 
       return player.play().then(function() {
-        expect(playfailedHandler).to.have.been.called;
+        expect(playfailedHandler).toHaveBeenCalled();
       });
     });
   });

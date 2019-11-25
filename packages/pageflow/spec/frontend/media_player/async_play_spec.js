@@ -10,7 +10,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
 
       player.play();
 
-      expect(player.intendingToPlay()).to.eq(true);
+      expect(player.intendingToPlay()).toBe(true);
     });
 
     it('sets intendingToPause to false', function() {
@@ -19,7 +19,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
 
       player.play();
 
-      expect(player.intendingToPause()).to.eq(false);
+      expect(player.intendingToPause()).toBe(false);
     });
   });
 
@@ -30,7 +30,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
 
       player.pause();
 
-      expect(player.intendingToPause()).to.eq(true);
+      expect(player.intendingToPause()).toBe(true);
     });
 
     it('sets intendingToPlay to false', function() {
@@ -39,7 +39,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
 
       player.pause();
 
-      expect(player.intendingToPlay()).to.eq(false);
+      expect(player.intendingToPlay()).toBe(false);
     });
   });
 
@@ -52,7 +52,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
       player.intendToPlay();
       player.ifIntendingToPlay().then(handler);
 
-      expect(handler).to.have.been.called;
+      expect(handler).toHaveBeenCalled();
     });
 
     it('rejects if not intending to play', function() {
@@ -62,7 +62,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
 
       player.ifIntendingToPlay().fail(handler);
 
-      expect(handler).to.have.been.called;
+      expect(handler).toHaveBeenCalled();
     });
   });
 
@@ -75,7 +75,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
       player.intendToPause();
       player.ifIntendingToPause().then(handler);
 
-      expect(handler).to.have.been.called;
+      expect(handler).toHaveBeenCalled();
     });
 
     it('rejects if not intending to pause', function() {
@@ -85,7 +85,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
 
       player.ifIntendingToPause().fail(handler);
 
-      expect(handler).to.have.been.called;
+      expect(handler).toHaveBeenCalled();
     });
   });
 

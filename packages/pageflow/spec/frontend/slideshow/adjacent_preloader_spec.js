@@ -20,7 +20,7 @@ describe('pageflow.AdjacentPreloader', function() {
       new p.AdjacentPreloader(adjacentPages).attach(events);
       events.trigger('page:change', page);
 
-      expect(adjacentPage.preload).to.have.been.called;
+      expect(adjacentPage.preload).toHaveBeenCalled();
     });
   });
 

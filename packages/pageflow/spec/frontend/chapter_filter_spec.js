@@ -29,9 +29,9 @@ describe('pageflow.ChapterFilter', function() {
           ]
         }));
 
-        expect(chapterFilter.chapterVisibleFromChapter(1, 1)).to.eq(true);
-        expect(chapterFilter.chapterVisibleFromChapter(1, 2)).to.eq(true);
-        expect(chapterFilter.chapterVisibleFromChapter(1, 3)).to.eq(false);
+        expect(chapterFilter.chapterVisibleFromChapter(1, 1)).toBe(true);
+        expect(chapterFilter.chapterVisibleFromChapter(1, 2)).toBe(true);
+        expect(chapterFilter.chapterVisibleFromChapter(1, 3)).toBe(false);
       });
     });
 
@@ -66,9 +66,9 @@ describe('pageflow.ChapterFilter', function() {
           ]
         }));
 
-        expect(chapterFilter.chapterVisibleFromChapter(1, 1)).to.eq(false);
-        expect(chapterFilter.chapterVisibleFromChapter(1, 2)).to.eq(false);
-        expect(chapterFilter.chapterVisibleFromChapter(1, 3)).to.eq(true);
+        expect(chapterFilter.chapterVisibleFromChapter(1, 1)).toBe(false);
+        expect(chapterFilter.chapterVisibleFromChapter(1, 2)).toBe(false);
+        expect(chapterFilter.chapterVisibleFromChapter(1, 3)).toBe(true);
       });
     });
 
@@ -95,8 +95,8 @@ describe('pageflow.ChapterFilter', function() {
           ]
         }));
 
-        expect(chapterFilter.chapterVisibleFromChapter(1, 1)).to.eq(false);
-        expect(chapterFilter.chapterVisibleFromChapter(1, 2)).to.eq(false);
+        expect(chapterFilter.chapterVisibleFromChapter(1, 1)).toBe(false);
+        expect(chapterFilter.chapterVisibleFromChapter(1, 2)).toBe(false);
       });
     });
   });
