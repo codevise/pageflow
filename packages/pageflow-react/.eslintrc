@@ -24,6 +24,9 @@
         "jest": {
           "jestConfigFile": "./jest.config.js"
         }
+      },
+      "react": {
+        "version": "0.14",
       }
     },
     "extends": [
@@ -32,12 +35,12 @@
       "plugin:import/errors",
       "plugin:import/warnings"
     ],
+    "parser": "babel-eslint",
     "parserOptions": {
+      "ecmaVersion": 2018,
       "sourceType": "module",
       "ecmaFeatures": {
-          "jsx": true,
-          "experimentalObjectRestSpread": true,
-          "modules": true
+        "jsx": true
       }
     },
     "plugins": ["react", "import", "jest"],
