@@ -1,3 +1,6 @@
+import Backbone from 'backbone';
+import _ from 'underscore';
+
 import './page_types/mixins/common_page_css_classes';
 import './page_types/mixins/default_page_content';
 import './page_types/mixins/info_box';

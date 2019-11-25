@@ -1,3 +1,7 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+
 (function($) {
   $.widget('pageflow.fullscreenButton', {
     _create: function() {

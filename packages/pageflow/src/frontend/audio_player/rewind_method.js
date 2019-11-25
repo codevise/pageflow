@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.AudioPlayer.rewindMethod = function(player) {
   /**
    * Seek to beginning of file. If already at the beginning do

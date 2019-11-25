@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 (function() {
   var attributeName = 'atmo_audio_file_id';
 

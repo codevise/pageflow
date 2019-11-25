@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 import './adjacent_pages';
 
 pageflow.SuccessorPreparer = pageflow.Object.extend({

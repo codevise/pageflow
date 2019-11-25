@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 pageflow.volumeFade = {
   fadeSound: function(media, endVolume, fadeTime) {
     var fadeResolution = 10;

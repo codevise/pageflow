@@ -1,3 +1,7 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+
 import './page_navigation_list_animation';
 
 (function($) {

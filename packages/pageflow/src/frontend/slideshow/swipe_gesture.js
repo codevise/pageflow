@@ -1,3 +1,8 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+import _ from 'underscore';
+
 (function($) {
   $.widget('pageflow.swipeGesture', {
     _create: function() {

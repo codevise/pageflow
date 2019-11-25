@@ -1,3 +1,7 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+
 jQuery(function($) {
   $('body').on('click', 'a.navigation_main', function() {
     pageflow.events.trigger('button:header');

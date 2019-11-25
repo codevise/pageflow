@@ -1,3 +1,6 @@
+import $ from 'jquery';
+import _ from 'underscore';
+
 pageflow.commonPageCssClasses = {
   updateCommonPageCssClasses: function(pageElement, configuration) {
     pageElement.toggleClass('invert', configuration.get('invert'));

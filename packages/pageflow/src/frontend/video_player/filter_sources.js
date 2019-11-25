@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.VideoPlayer.filterSources = function(playerElement) {
   if (!$(playerElement).is('video')) {
     return playerElement;

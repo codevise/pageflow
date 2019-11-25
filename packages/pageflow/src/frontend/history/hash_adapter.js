@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.History.HashAdapter = function() {
   var counter = 0;
 

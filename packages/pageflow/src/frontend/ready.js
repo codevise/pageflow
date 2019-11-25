@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.ready = new $.Deferred(function(readyDeferred) {
   var pagePreloaded = new $.Deferred(function(pagePreloadedDeferred) {
     $(document).one('pagepreloaded', pagePreloadedDeferred.resolve);

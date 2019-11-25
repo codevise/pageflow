@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 pageflow.VideoPlayer.cueSettingsMethods = function(player) {
   /**
    * Specify the display position of text tracks. This method can also

@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.History.PushStateAdapter = function() {
   var counter = 0;
 

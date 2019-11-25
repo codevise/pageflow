@@ -1,3 +1,7 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+
 jQuery.widget('pageflow.playerControls', {
   _create: function() {
     var player = this.options.player;

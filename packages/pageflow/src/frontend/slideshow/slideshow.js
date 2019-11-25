@@ -1,3 +1,6 @@
+import $ from 'jquery';
+import _ from 'underscore';
+
 pageflow.Slideshow = function($el, configurations) {
   var transitioning = false,
       currentPage = $(),

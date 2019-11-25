@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.infoBox = {
   updateInfoBox: function(pageElement, configuration) {
     var infoBox = pageElement.find('.add_info_box');

@@ -1,3 +1,6 @@
+import $ from 'jquery';
+import _ from 'underscore';
+
 pageflow.browser.feature('phone platform', function() {
   var matchers = [/iPod/i, /iPad/i, /iPhone/i, /Android/i, /IEMobile/i];
 

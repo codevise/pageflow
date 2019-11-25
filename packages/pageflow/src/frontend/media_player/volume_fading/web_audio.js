@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.mediaPlayer.volumeFading.webAudio = function(player, audioContext) {
   var gainNode;
 

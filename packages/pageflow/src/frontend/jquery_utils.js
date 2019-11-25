@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 $.fn.updateTitle = function () {
   if (!this.data('title')) {
     this.data('title', this.attr('title'));

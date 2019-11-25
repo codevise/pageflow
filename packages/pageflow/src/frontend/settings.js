@@ -1,3 +1,5 @@
+import Backbone from 'backbone';
+
 pageflow.Settings = Backbone.Model.extend({
   defaults: {
     volume: 1

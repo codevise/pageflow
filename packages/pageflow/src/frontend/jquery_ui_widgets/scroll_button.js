@@ -1,3 +1,7 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+
 (function($) {
   var ENTER_KEY = 13;
   var SPACE_KEY = 32;

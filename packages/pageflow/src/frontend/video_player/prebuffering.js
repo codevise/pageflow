@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.VideoPlayer.prebuffering = function(player) {
   player.isBufferedAhead = function(delta, silent) {
     // video.js only gives us one time range starting from 0 here. We

@@ -1,3 +1,6 @@
+import $ from 'jquery';
+import _ from 'underscore';
+
 // A proxy which lazily initializes the real video player.
 pageflow.VideoPlayer.Lazy = function(template, options) {
   var placeholder = $('<span class="video_placeholder" />'),

@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 pageflow.History = function(slideshow, adapter) {
   slideshow.on('slideshowchangepage', function(event, options) {
     var hash = slideshow.currentPage().attr('id');

@@ -1,3 +1,6 @@
+import Backbone from 'backbone';
+import _ from 'underscore';
+
 /*global console*/
 
 pageflow.History.SimulatedAdapter = function() {

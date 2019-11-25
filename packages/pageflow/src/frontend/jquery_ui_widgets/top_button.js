@@ -1,3 +1,7 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+
 (function($) {
   $.widget('pageflow.topButton', {
     _create: function() {

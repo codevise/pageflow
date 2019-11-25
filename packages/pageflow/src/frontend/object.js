@@ -1,3 +1,6 @@
+import Backbone from 'backbone';
+import _ from 'underscore';
+
 (function() {
   // Class-y constructor by github.com/opensas
   // https://github.com/jashkenas/backbone/issues/2601

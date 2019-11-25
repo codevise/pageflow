@@ -1,3 +1,5 @@
+import jQuery from 'jquery';
+
 pageflow.mediaPlayer.loadWaiting = function(player) {
   var originalFadeVolume = player.fadeVolume;
 

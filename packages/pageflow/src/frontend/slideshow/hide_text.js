@@ -1,3 +1,6 @@
+import $ from 'jquery';
+import _ from 'underscore';
+
 pageflow.hideText = (function() {
   function element() {
     return $('body');

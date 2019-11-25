@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.links = {
   setup: function() {
     this.ensureClickOnEnterKeyPress();

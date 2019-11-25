@@ -1,3 +1,7 @@
+import $ from 'jquery';
+import Backbone from 'backbone';
+import _ from 'underscore';
+
 pageflow.AudioPlayer.Null = function() {
   this.playAndFadeIn = function() {
     return new $.Deferred().resolve().promise();

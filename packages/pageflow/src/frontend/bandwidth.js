@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.bandwidth = function() {
   var maxLoadTime = 5000;
 

@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.mediaPlayer.volumeFading.interval = function(player) {
   var originalVolume = player.volume;
 

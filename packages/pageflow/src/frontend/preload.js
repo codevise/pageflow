@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 (function() {
   pageflow.preload = {
     image: function(url) {

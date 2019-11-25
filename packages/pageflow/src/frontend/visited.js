@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 pageflow.Visited = function(entryId, pages, events, cookies) {
   var cookieName = '_pageflow_visited';
 

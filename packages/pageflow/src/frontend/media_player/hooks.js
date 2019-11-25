@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.mediaPlayer.hooks = function(player, hooks) {
   var originalPlay = player.play;
   var originalPlayAndFadeIn = player.play;

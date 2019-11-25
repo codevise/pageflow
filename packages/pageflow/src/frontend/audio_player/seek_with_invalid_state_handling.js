@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 /**
  * Calling seek before the media tag is ready causes InvalidState
  * exeption. If this happens, we wait for the next progress event and

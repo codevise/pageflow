@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 pageflow.AdjacentPages = pageflow.Object.extend({
   initialize: function(pages, scrollNavigator) {
     this.pages = pages;

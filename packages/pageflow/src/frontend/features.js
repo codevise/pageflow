@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 /**
  * Let plugins register functions which extend the editor or
  * slideshow with certain functionality when a named feature is

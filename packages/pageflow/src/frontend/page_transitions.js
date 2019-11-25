@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 pageflow.PageTransitions = pageflow.Object.extend({
   initialize: function(navigationDirection) {
     this.repository = {};

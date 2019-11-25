@@ -1,3 +1,6 @@
+import $ from 'jquery';
+import _ from 'underscore';
+
 pageflow.widgetTypes = (function() {
   var registry = {};
 

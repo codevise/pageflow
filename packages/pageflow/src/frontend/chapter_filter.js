@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 pageflow.ChapterFilter = pageflow.Object.extend({
   initialize: function(entryData) {
     this.entry = entryData;

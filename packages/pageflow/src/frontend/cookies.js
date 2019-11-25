@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 //  https://developer.mozilla.org/en-US/docs/Web/API/document.cookie
 pageflow.cookies = {
   getItem: function (sKey) {

@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 pageflow.SeedEntryData = pageflow.EntryData.extend({
   initialize: function(options) {
     this.theme = options.theme;

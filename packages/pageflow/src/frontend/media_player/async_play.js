@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.mediaPlayer.asyncPlay = function(player) {
   var originalPlay = player.play;
   var originalPause = player.pause;

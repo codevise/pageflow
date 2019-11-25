@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 /**
  * Detect browser via user agent. Use only if feature detection is not
  * an option.

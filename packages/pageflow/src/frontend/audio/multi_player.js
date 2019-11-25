@@ -1,3 +1,7 @@
+import $ from 'jquery';
+import Backbone from 'backbone';
+import _ from 'underscore';
+
 /**
  * Play and fade between multiple audio files.
  *

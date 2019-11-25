@@ -1,3 +1,8 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+import _ from 'underscore';
+
 (function($) {
   var creatingMethods = [
     'reinit', 'reactivate', 'activate', 'activateAsLandingPage', 'preload', 'prepare', 'linkedPages'

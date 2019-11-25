@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.DomOrderScrollNavigator = function(slideshow, entryData) {
   this.getLandingPage = function(pages) {
     return pages.first();

@@ -1,3 +1,5 @@
+import 'jquery-ui';
+
 import './jquery_utils';
 
 import './base';

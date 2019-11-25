@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 pageflow.mediaPlayer = {
   enhance: function(player, options) {
     pageflow.mediaPlayer.handleFailedPlay(player, _.extend({

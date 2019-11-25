@@ -1,3 +1,7 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+
 pageflow.mediaPlayer.volumeBinding = function(player, settings, options) {
   options = options || {};
 

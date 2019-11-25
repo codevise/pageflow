@@ -1,3 +1,8 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+import IScroll from 'iscroll';
+
 (function($) {
   $.widget('pageflow.navigationMobile', {
     _create: function() {

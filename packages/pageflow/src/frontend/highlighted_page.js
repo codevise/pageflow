@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 pageflow.HighlightedPage = pageflow.Object.extend({
   initialize: function(entryData, options) {
     this.customNavigationBarMode = options && options.customNavigationBarMode;

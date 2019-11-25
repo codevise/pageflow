@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 pageflow.Fullscreen = pageflow.Object.extend({
   toggle: function() {
     var fullscreen = this;

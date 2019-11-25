@@ -1,3 +1,7 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+
 /**
  * A promise that is resolved once the document is printed.
  */

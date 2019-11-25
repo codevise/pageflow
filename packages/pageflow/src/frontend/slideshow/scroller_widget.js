@@ -1,3 +1,9 @@
+import jQuery from 'jquery';
+
+import $ from 'jquery';
+import IScroll from 'iscroll';
+import _ from 'underscore';
+
 (function($) {
   /**
    * Wrapper widget around iScroll adding special bump events which
