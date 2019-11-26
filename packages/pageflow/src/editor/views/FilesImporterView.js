@@ -32,9 +32,9 @@ export const FilesImporterView = Marionette.ItemView.extend({
 
   initialize: function(options) {
     this.model = new Backbone.Model({
-      importerKey: options.importerKey,
+      importerKey: options.importer.key,
       importer: new FileImport({
-        importerKey: options.importerKey,
+        importer: options.importer,
         currentEntry: state.entry
       })
     });

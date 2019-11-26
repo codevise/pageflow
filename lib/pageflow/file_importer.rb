@@ -13,6 +13,11 @@ module Pageflow
       raise(NotImplementedError, 'FileImporter subclass needs to define name method.')
     end
 
+    # returns the source for logo shown in the importer select view
+    def logo_source
+      raise(NotImplementedError, 'FileImporter subclass should define logo_source')
+    end
+
     # Return authentication provider name e.g. :facebook
     def authentication_provider
       nil

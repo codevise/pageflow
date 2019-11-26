@@ -28,9 +28,9 @@ export const ChooseImporterView = Marionette.ItemView.extend({
   },
   onRender: function() {
     let self = this;
-    editor.fileImporters.keys().forEach((fileImporter) => {
+    editor.fileImporters.values().forEach((fileImporter) => {
       let importerSelectView = new ImporterSelectView({
-        importerKey: fileImporter,
+        importer: fileImporter,
         parentView: self
       }).render();
       self.ui.importersList.append(importerSelectView.$el);

@@ -9,16 +9,13 @@ export const ImporterSelectView = Marionette.ItemView.extend({
   tagName: 'li',
   events: {
     'click .importer': function(event) {
-      this.options.parentView.importerSelected(this.options.importerKey);
+      this.options.parentView.importerSelected(this.options.importer);
     }
   },
-
-  initialize: function(options) {
-    event.target.getAttribute('data-key')
-  },
+  initialize: function(options) {},
   serializeData: function(){
     return {
-      fileImporter: this.options.importerKey
+      fileImporter: this.options.importer
     };
   }
 });

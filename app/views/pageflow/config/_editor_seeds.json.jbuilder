@@ -17,6 +17,7 @@ json.file_types Pageflow.config.file_types do |file_type|
 end
 json.file_importers Pageflow.config.file_importers do |file_importer|
   json.importer_name file_importer.name
+  json.logo_source file_importer.logo_source
   json.authentication_provider file_importer.authentication_provider
   json.authentication_required file_importer.authentication_required current_user
 end
