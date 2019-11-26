@@ -1,7 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
 import ReactCompareImage from '../vendor/react-compare-image/ReactCompareImage';
-import beforeImage from '../images/before_after/haldern_church1.jpg';
-import afterImage from '../images/before_after/haldern_church2.jpg';
 import styles from './BeforeAfter.module.css';
 
 export default ({state,
@@ -84,6 +82,9 @@ export default ({state,
     }
   }, [current, setBeforeAfterPos, scrollPos, state, setIsSliding]);
 
+  const awsBucket = '//s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/presentation-images/';
+  const beforeImage = awsBucket+'before_after/haldern_church1.jpg';
+  const afterImage = awsBucket+'before_after/haldern_church2.jpg';
 
   return (
     <div ref={beforeAfterRef} className={styles.container}>
