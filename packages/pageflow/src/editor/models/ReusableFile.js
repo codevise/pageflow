@@ -112,7 +112,7 @@ export const ReusableFile = Backbone.Model.extend({
 
   toJSON: function() {
     return _.extend(_.pick(this.attributes,
-      'file_name', 'rights', 'parent_file_id', 'parent_file_model_type', 'content_type', 'file_size', 'url'
+      'file_name', 'rights', 'parent_file_id', 'parent_file_model_type', 'content_type', 'file_size'
     ), {
       configuration: this.configuration.toJSON()
     });

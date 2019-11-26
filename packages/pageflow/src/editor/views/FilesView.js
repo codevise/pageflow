@@ -50,9 +50,9 @@ export const FilesView = Marionette.ItemView.extend({
           label: I18n.t('pageflow.editor.views.files_view.import'),
           handler: function () {
             ChooseImporterView.open({
-              callback: function (importer_key) {
+              callback: function (importerKey) {
                 FilesImporterView.open({
-                  importer_key: importer_key
+                  importerKey: importerKey
                 });
               }
             });

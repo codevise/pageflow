@@ -2,6 +2,7 @@ import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 
 
+import {LoadingView} from './LoadingView';
 import template from '../templates/filesImporter.jst';
 import {dialogView} from './mixins/dialogView';
 import {app} from '../app';
@@ -25,15 +26,15 @@ export const FilesImporterView = Marionette.ItemView.extend({
 
   events: {
     'click .import': function () {
-      this.get_meta_data();
+      this.getMetaData();
     }
   },
 
   initialize: function(options) {
     this.model = new Backbone.Model({
-      importer_key: options.importer_key,
+      importerKey: options.importerKey,
       importer: new FileImport({
-        importer_key: options.importer_key,
+        importerKey: options.importerKey,
         currentEntry: state.entry
       })
     });
@@ -57,7 +58,7 @@ export const FilesImporterView = Marionette.ItemView.extend({
     var importer = this.model.get('importer');
     this.ui.importButton.prop('disabled', importer.get('selectedFiles').length < 1);
   },
-  get_meta_data: function () {
+  getMetaData: function () {
     var self = this;
     this.model.get('importer').getFilesMetaData().then(function (metaData) {
       if (metaData) {
@@ -73,7 +74,7 @@ export const FilesImporterView = Marionette.ItemView.extend({
             content_type: file.type,
             file_size: -1,
             rights: file.rights,
-            url: file.url
+            source_url: file.url
           }, {
             fileType: fileType
           });
@@ -88,6 +89,11 @@ export const FilesImporterView = Marionette.ItemView.extend({
       }
     });
     this.close();
+  },
+  onRender: function () {
+    if (!this.isInitialized) {
+      this.ui.contentPanel.append(this.subview(new LoadingView({tagName: 'div'})).el);  
+    }
   }
 });
 

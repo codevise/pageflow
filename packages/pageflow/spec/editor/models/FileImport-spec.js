@@ -4,7 +4,7 @@ import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 import * as support from '$support';
 
-import {app, FileImport, editor} from '$pageflow/editor';
+import {app, FileImport, editor, authenticationProvider} from '$pageflow/editor';
 
 describe('FileImport', () => {
   let testContext;
@@ -25,11 +25,11 @@ describe('FileImport', () => {
   });
 
 
-  describe('importer_key', () => {
-    it('wraps registered file importer given with importer_key', () => {
+  describe('importerKey', () => {
+    it('wraps registered file importer', () => {
       expect(()=>{
         new FileImport({
-          importer_key: 'test_importer',
+          importer: editor.fileImporters.find('test_importer'),
           currentEntry: testContext.entry
         });
       }).not.toThrow();
@@ -40,7 +40,7 @@ describe('FileImport', () => {
   describe('selectedFiles', () => {
     it('FileImport initiates an empty list of SelectedFiles', () => {
         let fileImport = new FileImport({
-          importer_key: 'test_importer',
+          importer: editor.fileImporters.find('test_importer'),
           currentEntry: testContext.entry
         });
         let selectedFiles = fileImport.get('selectedFiles');
@@ -50,7 +50,7 @@ describe('FileImport', () => {
 
     it('only selects Backbone Model', () => {
       let fileImport = new FileImport({
-        importer_key: 'test_importer',
+        importer: editor.fileImporters.find('test_importer'),
         currentEntry: testContext.entry
       });
       let selectedFiles = fileImport.get('selectedFiles');
@@ -64,7 +64,7 @@ describe('FileImport', () => {
 
     it('select, unselect and clearSelections method manipulate selectedFiles list', () => {
         let fileImport = new FileImport({
-          importer_key: 'test_importer',
+          importer: editor.fileImporters.find('test_importer'),
           currentEntry: testContext.entry
         });
         let selectedFiles = fileImport.get('selectedFiles');
@@ -86,12 +86,16 @@ describe('FileImport', () => {
 
     it('FileImport initiates authentication on initialization', () => {
         jest.useFakeTimers();
-        new FileImport({
-          importer_key: 'test_importer',
+        authenticationProvider.authenticate = jest.fn();
+        let fileImporter = editor.fileImporters.find('test_importer');
+        fileImporter.authenticationRequired = true;
+        fileImporter.authenticationProvider = 'test';
+        let fileImport = new FileImport({
+          importer: fileImporter,
           currentEntry: testContext.entry
         });
         jest.advanceTimersByTime(4000);
-        expect(testContext.server.lastRequest.url).toBe('/authentication_providers/test_importer/authenticate_importer');
+        expect(authenticationProvider.authenticate).toBeCalledWith(fileImport, 'test');
     });
   });
 
@@ -101,7 +105,7 @@ describe('FileImport', () => {
 
     it('FileImport makes a request to server, to search files against given query', () => {
         let fileImport = new FileImport({
-          importer_key: 'test_importer',
+          importer: editor.fileImporters.find('test_importer'),
           currentEntry: testContext.entry
         });
         fileImport.search('test');
@@ -114,7 +118,7 @@ describe('FileImport', () => {
 
     it('FileImport makes a request to server, to get meta data for selected files', () => {
         let fileImport = new FileImport({
-          importer_key: 'test_importer',
+          importer: editor.fileImporters.find('test_importer'),
           currentEntry: testContext.entry
         });
         let testObject = new Backbone.Model({test: 123});

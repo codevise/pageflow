@@ -1,17 +1,14 @@
 <div class="box file_importer_box">
-  <div class="dialog-header">
-    <h2><%= I18n.t('pageflow.editor.file_importers.'+data.importer_key+'.dialog_label') %></h2>
-  </div>
-  
+  <h1 class="dialog-header"><%= I18n.t('pageflow.editor.file_importers.'+data.importerKey+'.dialog_label') %></h1>
 
   <div class="content_panel">
-    <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-      <span><%= I18n.t('pageflow.editor.views.files_view.authenticating') %></span>
-    </div>
+    
   </div>
 
   <div class="footer">
-    <div class="disclaimer"><%= I18n.t('pageflow.editor.file_importers.'+data.importer_key+'.disclaimer') %></div>
+    <div class="disclaimer">
+      <p><%= I18n.t('pageflow.editor.file_importers.'+data.importerKey+'.disclaimer') %></p>
+    </div>
     <button class="import"><%= I18n.t('pageflow.editor.views.files_view.import') %></button>
     <button class="close"><%= I18n.t('pageflow.editor.templates.files_explorer.cancel') %></button>
   </div>
