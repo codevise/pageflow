@@ -8,8 +8,8 @@ import FillColor from './FillColor';
 import MotifArea from './MotifArea';
 import useDimension from './useDimension';
 
-import images from '../images';
-import videos from '../videos';
+import images from './images';
+import videos from './videos';
 import BeforeAfter from './BeforeAfter';
 
 import styles from './Backdrop.module.css';

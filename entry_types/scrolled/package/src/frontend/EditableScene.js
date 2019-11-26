@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import images from '../images';
+import images from './images';
 import Scene from './Scene';
 
 import styles from './EditableScene.module.css';

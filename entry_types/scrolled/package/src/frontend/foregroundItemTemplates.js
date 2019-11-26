@@ -5,7 +5,7 @@ import InlineVideo from './InlineVideo';
 import InlineBeforeAfter from './InlineBeforeAfter';
 import SoundDisclaimer from './SoundDisclaimer';
 
-import {loremIpsum1, loremIpsum2, loremIpsum3} from '../utils/loremIpsum';
+import {loremIpsum1, loremIpsum2, loremIpsum3} from './loremIpsum';
 
 export default {
   heading: {
