@@ -14,6 +14,11 @@ export const FileImporters = Object.extend({
   },
   setup: function(serverSideConfigs) {
     this._setup = true;
+    let importers = this.importers;
+    serverSideConfigs.forEach(function (importer) {
+      importers[importer.importerName]['authenticationRequired'] = importer.authenticationRequired
+      importers[importer.importerName]['authenticationProvider'] = importer.authenticationProvider
+    });    
   },
   find: function(name) {
     if (!this.importers[name]) {

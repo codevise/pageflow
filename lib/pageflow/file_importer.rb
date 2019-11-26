@@ -49,5 +49,14 @@ module Pageflow
     def download_file(_credentials, _options)
       raise(NotImplementedError, 'FileImporter subclass needs to define download_file method.')
     end
+
+    def authentication_required(user)
+      if authentication_provider.present?
+        token = AuthenticationToken.find_auth_token(user, authentication_provider)
+        token.nil? || token.empty?
+      else
+        false
+      end
+    end
   end
 end

@@ -15,6 +15,11 @@ json.file_types Pageflow.config.file_types do |file_type|
     json.collection_name nested_file_type.collection_name
   end
 end
+json.file_importers Pageflow.config.file_importers do |file_importer|
+  json.importer_name file_importer.name
+  json.authentication_provider file_importer.authentication_provider
+  json.authentication_required file_importer.authentication_required current_user
+end
 json.default_author_meta_tag Pageflow.config.default_author_meta_tag
 json.default_publisher_meta_tag Pageflow.config.default_publisher_meta_tag
 json.default_keywords_meta_tag Pageflow.config.default_keywords_meta_tag

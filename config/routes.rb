@@ -59,8 +59,7 @@
           post :retry, on: :member
           put :publish, on: :member
         end
-
-        get '/file_import/:file_import_name/authenticate_importer' => 'file_import#authenticate_importer'
+        
         get '/file_import/:file_import_name/search' => 'file_import#search'
         get '/file_import/:file_import_name/authentication_provider' => 'file_import#authentication_provider'
         post '/file_import/:file_import_name/files_meta_data' => 'file_import#files_meta_data'
