@@ -1,0 +1,42 @@
+.root {
+}
+
+.group {
+  clear: right;
+  margin-left: 8%;
+  margin-right: 8%;
+}
+
+.group-full {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.sticky,
+.inline {
+  max-width: 500px;
+}
+
+.right .inline {
+  margin-left: auto;
+}
+
+@media (max-width: 949px) {
+  .right .sticky {
+    margin-left: auto;
+  }
+}
+
+@media (min-width: 950px) {
+  .sticky {
+    position: sticky;
+    float: right;
+    top: 33%;
+    width: 30%;
+    max-width: 600px;
+  }
+
+  .right .sticky {
+    float: left;
+  }
+}

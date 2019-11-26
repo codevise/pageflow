@@ -1,0 +1,15 @@
+.backdrop {
+  position: absolute;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  height: 100%;
+}
+
+.backdropInner {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}

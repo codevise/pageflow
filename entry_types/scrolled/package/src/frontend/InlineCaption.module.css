@@ -1,0 +1,10 @@
+@value text-base from './typography.module.css';
+
+.root {
+  padding: 3px 10px 5px;
+  background-color: #fff;
+  color: #222;
+  font-size: text-s;
+  line-height: 1.4;
+  text-shadow: none;
+}

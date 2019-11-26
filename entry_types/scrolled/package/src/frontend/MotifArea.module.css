@@ -1,0 +1,45 @@
+.root {
+  position: absolute;
+  background: hsla(0, 0%, 100%, 0.2);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.active {
+  opacity: 1;
+}
+
+.corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+}
+
+.topLeft {
+  composes: corner;
+  border-top: solid 2px #fff;
+  border-left: solid 2px #fff;
+}
+
+.topRight {
+  composes: corner;
+  right: 0;
+  border-top: solid 2px #fff;
+  border-right: solid 2px #fff;
+}
+
+.bottomLeft {
+  composes: corner;
+  bottom: 0;
+  border-bottom: solid 2px #fff;
+  border-left: solid 2px #fff;
+}
+
+.bottomRight {
+  composes: corner;
+  right: 0;
+  bottom: 0;
+  border-bottom: solid 2px #fff;
+  border-right: solid 2px #fff;
+}

@@ -1,0 +1,25 @@
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+  transition: opacity 1s ease;
+}
+
+.align-right .shadow,
+.align-left .shadow {
+  background: linear-gradient(to right, #000 0%,rgba(0, 0, 0, 0) 100%);
+}
+
+@media (min-width: 950px) {
+  .align-right .shadow {
+    background: linear-gradient(to left, #000 0%,rgba(0, 0, 0, 0) 100%);
+  }
+}
+
+.intersecting .shadow,
+.align-center .shadow {
+  background: #000;
+}

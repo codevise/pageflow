@@ -1,0 +1,28 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+:global(.wiggle) {
+  animation: shake 1.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-20%, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(40%, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-80%, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(80%, 0, 0);
+  }
+}

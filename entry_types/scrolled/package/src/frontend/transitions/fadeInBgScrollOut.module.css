@@ -1,0 +1,35 @@
+@value fade-duration from './values.module.css';
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.backdropInner {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+
+.backdropInner2 {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.foreground {
+  min-height: 100vh;
+}
+
+.backdrop {
+  transition: opacity fade-duration ease, visibility fade-duration;
+}
+
+.backdrop-below {
+  opacity: 0;
+  visibility: hidden;
+}
