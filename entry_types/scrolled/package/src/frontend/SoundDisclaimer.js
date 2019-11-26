@@ -1,12 +1,12 @@
 import React from 'react';
-import {MutedContextConsumer} from './Entry';
+import MutedContext from './MutedContext';
 import classNames from 'classnames';
 
 import styles from './SoundDisclaimer.module.css';
 
 export default function UnmuteButton() {
   return (
-    <MutedContextConsumer>
+    <MutedContext.Consumer>
       {mutedSettings =>
         <div className={classNames(styles.soundDisclaimer)}
              onClick={() => mutedSettings.setMuted(false)}>
@@ -16,6 +16,6 @@ export default function UnmuteButton() {
           </p>
         </div>
       }
-    </MutedContextConsumer>
+    </MutedContext.Consumer>
   );
 }

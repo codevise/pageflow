@@ -1,8 +1,8 @@
 import React, {useRef, useEffect} from 'react';
 import classNames from 'classnames';
 
-import {ScrollToSceneContextConsumer} from './Entry';
-import {MutedContextConsumer} from './Entry';
+import ScrollToSceneContext from './ScrollToSceneContext';
+import MutedContext from './MutedContext';
 
 import styles from './Video.module.css';
 
@@ -71,9 +71,9 @@ export default function Video(props) {
 
   return (
     <div className={styles.root}>
-      <MutedContextConsumer>
+      <MutedContext.Consumer>
         {mutedSettings =>
-          <ScrollToSceneContextConsumer>
+          <ScrollToSceneContext.Consumer>
             {scrollToScene =>
               <video src={videoUrl}
                      ref={videoRef}
@@ -85,9 +85,9 @@ export default function Video(props) {
                      muted={mutedSettings.muted}
                      poster={posterUrl} />
             }
-          </ScrollToSceneContextConsumer>
+          </ScrollToSceneContext.Consumer>
         }
-      </MutedContextConsumer>
+      </MutedContext.Consumer>
     </div>
   )
 }

@@ -1,14 +1,10 @@
 import React, {useState} from 'react';
 
 import Scene from './EditableScene';
+import MutedContext from './MutedContext';
+import ScrollToSceneContext from './ScrollToSceneContext';
 
 import styles from './Entry.module.css';
-
-const ScrollToSceneContext = React.createContext();
-export const ScrollToSceneContextConsumer = ScrollToSceneContext.Consumer;
-
-const MutedContext = React.createContext();
-export const MutedContextConsumer = MutedContext.Consumer;
 
 const fragment = window.location.hash.replace('#', '');
 const localStorageKey = `scene${fragment}`;
