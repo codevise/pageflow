@@ -1,3 +1,5 @@
+const {moduleNameMapper, transform} = require('./config/jest')
+
 module.exports = {
   testMatch: ["<rootDir>/spec/**/*spec.js"],
   globals: {
@@ -11,20 +13,7 @@ module.exports = {
     "^\\$pageflow(.*)$": "<rootDir>/src$1",
     "^\\$state$": "<rootDir>/spec/support/state.js",
 
-    "^jquery$": "<rootDir>/src/vendor/jquery",
-    "^jquery-ui$": "<rootDir>/src/vendor/jquery-ui",
-    "^jquery.minicolors$": "<rootDir>/src/vendor/jquery.minicolors",
-    "^backbone.marionette$": "<rootDir>/src/vendor/backbone.marionette",
-    "^backbone.babysitter$": "<rootDir>/src/vendor/backbone.babysitter",
-    "^backbone$": "<rootDir>/src/vendor/backbone",
-    "^underscore$": "<rootDir>/src/vendor/underscore",
-    "^cocktail$": "<rootDir>/src/vendor/cocktail",
-    "^i18n-js$": "<rootDir>/src/vendor/i18n",
-    "^iscroll$": "<rootDir>/src/vendor/iscroll",
-    "^wysihtml5": "<rootDir>/spec/support/wysihtmlStub",
+    ...moduleNameMapper
   },
-  transform: {
-    "^.+\\.jst$": "<rootDir>/spec/support/jest/jst-transform",
-    "^.+\\.[t|j]sx?$": "<rootDir>/spec/support/jest/upwardBabelTransform"
-  }
+  transform
 };
