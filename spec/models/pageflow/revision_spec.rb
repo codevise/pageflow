@@ -585,10 +585,10 @@ module Pageflow
     end
 
     describe '#locale' do
-      it 'falls back to default_locale' do
+      it 'falls back to default_locale as string' do
         revision = build(:revision, locale: '')
 
-        expect(revision.locale).to eq(I18n.default_locale)
+        expect(revision.locale).to eq(I18n.default_locale.to_s)
       end
 
       it 'returns present attribute' do
