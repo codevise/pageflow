@@ -4,7 +4,7 @@ pageflow.SeedEntryData = pageflow.EntryData.extend({
 
     this.files = _(_.keys(options.files || {})).reduce(function(memo, collectionName) {
       memo[collectionName] = _(options.files[collectionName]).reduce(function(result, file) {
-        result[file.id] = file;
+        result[file.perma_id] = file;
         return result;
       }, {});
 
@@ -52,8 +52,8 @@ pageflow.SeedEntryData = pageflow.EntryData.extend({
     return this.theme[name];
   },
 
-  getFile: function(collectionName, id) {
-    return this.files[collectionName][id];
+  getFile: function(collectionName, permaId) {
+    return this.files[collectionName][permaId];
   },
 
   getChapterConfiguration: function(id) {
