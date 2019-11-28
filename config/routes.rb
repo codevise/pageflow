@@ -1,4 +1,4 @@
-  Pageflow::Engine.routes.draw do
+Pageflow::Engine.routes.draw do
   constraints Pageflow.config(:ignore_not_configured => true).editor_route_constraint do
     resources :entries, :only => [:edit, :update], :shallow => true do
       get :partials, :on => :member
@@ -59,9 +59,8 @@
           post :retry, on: :member
           put :publish, on: :member
         end
-        
+
         get '/file_import/:file_import_name/search' => 'file_import#search'
-        get '/file_import/:file_import_name/authentication_provider' => 'file_import#authentication_provider'
         post '/file_import/:file_import_name/files_meta_data' => 'file_import#files_meta_data'
         post '/file_import/:file_import_name/start_import_job' => 'file_import#start_import_job'
       end
@@ -90,7 +89,4 @@
 
   # Authentication provider call back
   get '/auth/:provider/callback', to: 'users/omniauth_callbacks#auth_callback'
-  # used to check if auth call is required to be made
-  get '/authentication_providers/:file_import_name/authenticate_importer', to:
-    'authentication_provider#authenticate_importer'
 end
