@@ -4,7 +4,6 @@ import createItemScopeProvider from '../createItemScopeProvider';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 import {mount} from 'enzyme';
 
@@ -28,7 +27,7 @@ describe('createItemScopeConnector', () => {
         </Provider>
       );
 
-      expect(mapStateToProps).to.have.been.calledWith(sinon.match({
+      expect(mapStateToProps).toHaveBeenCalledWith(sinon.match({
         __pages_connectedId: 5,
         other: 'stuff'
       }));
@@ -52,7 +51,7 @@ describe('createItemScopeConnector', () => {
         </Provider>
       );
 
-      expect(mapStateToProps).to.have.been.calledWith(sinon.match({
+      expect(mapStateToProps).toHaveBeenCalledWith(sinon.match({
         __pages_connectedId: 5,
         other: 'stuff'
       }));
@@ -77,7 +76,7 @@ describe('createItemScopeConnector', () => {
       );
       store.dispatch({type: 'SOMETHING'});
 
-      expect(mapStateToPropsFactory).to.have.been.calledOnce;
+      expect(mapStateToPropsFactory).toHaveBeenCalledOnce();
     });
 
     it('sets meta info of item actions', () => {
@@ -106,7 +105,7 @@ describe('createItemScopeConnector', () => {
         </Provider>
       );
 
-      expect(reducer).to.have.been.calledWith(undefined, sinon.match({
+      expect(reducer).toHaveBeenCalledWith(undefined, sinon.match({
         type: 'PAGE_ACTION',
         meta: {
           collectionName: 'pages',
@@ -141,7 +140,7 @@ describe('createItemScopeConnector', () => {
         </Provider>
       );
 
-      expect(reducer).to.have.been.calledWith(undefined, sinon.match({
+      expect(reducer).toHaveBeenCalledWith(undefined, sinon.match({
         type: 'PAGE_ACTION',
         meta: {
           collectionName: 'pages',
@@ -176,7 +175,7 @@ describe('createItemScopeConnector', () => {
         </Provider>
       );
 
-      expect(reducer).to.have.been.calledWith(undefined, sinon.match({
+      expect(reducer).toHaveBeenCalledWith(undefined, sinon.match({
         type: 'PAGE_ACTION',
         meta: {
           collectionName: 'pages',

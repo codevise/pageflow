@@ -2,7 +2,6 @@ import createStore from '../createStore';
 
 import {call} from 'redux-saga/effects';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('createStore', () => {
@@ -21,7 +20,7 @@ describe('createStore', () => {
     const store = createStore([reduxModule], options);
     store.dispatch({type: 'ACTION'});
 
-    expect(store.getState()).to.eql({test: 'new state'});
+    expect(store.getState()).toEqual({test: 'new state'});
   });
 
   it('passes options to createReducers function', () => {
@@ -39,7 +38,7 @@ describe('createStore', () => {
     const store = createStore([reduxModule], options);
     store.dispatch({type: 'ACTION'});
 
-    expect(store.getState()).to.eql({test: 'new state'});
+    expect(store.getState()).toEqual({test: 'new state'});
   });
 
   it('runs sagas of passed Redux modules', () => {
@@ -55,7 +54,7 @@ describe('createStore', () => {
 
     createStore([reduxModule], options);
 
-    expect(spy).to.have.been.called;
+    expect(spy).toHaveBeenCalled();
   });
 
   it('passes options to saga', () => {
@@ -71,7 +70,7 @@ describe('createStore', () => {
 
     createStore([reduxModule], options);
 
-    expect(spy).to.have.been.calledWith('value');
+    expect(spy).toHaveBeenCalledWith('value');
   });
 
   it('does not run sagas if isServerSide is true', () => {
@@ -88,7 +87,7 @@ describe('createStore', () => {
 
     createStore([reduxModule], options);
 
-    expect(spy).not.to.have.been.called;
+    expect(spy).not.toHaveBeenCalled();
   });
 
   it('calls init function of passed Redux modules', () => {
@@ -100,7 +99,7 @@ describe('createStore', () => {
 
     createStore([reduxModule], options);
 
-    expect(spy).to.have.been.called;
+    expect(spy).toHaveBeenCalled();
   });
 
   it('passes options to init', () => {
@@ -112,7 +111,7 @@ describe('createStore', () => {
 
     createStore([reduxModule], options);
 
-    expect(spy).to.have.been.calledWith(sinon.match(options));
+    expect(spy).toHaveBeenCalledWith(sinon.match(options));
   });
 
   it('passes dispatch to init', () => {
@@ -135,7 +134,7 @@ describe('createStore', () => {
 
     createStore([reduxModule], options);
 
-    expect(spy).to.have.been.calledWith({type: 'ACTION'});
+    expect(spy).toHaveBeenCalledWith({type: 'ACTION'});
   });
 
   it('passes getState to init', () => {
@@ -157,7 +156,7 @@ describe('createStore', () => {
 
     createStore([reduxModule], options);
 
-    expect(result).to.eql({test: 'initial'});
+    expect(result).toEqual({test: 'initial'});
   });
 
   it('lets redux module define custom middleware', () => {
@@ -177,7 +176,7 @@ describe('createStore', () => {
     const store = createStore([reduxModule], options);
     store.dispatch({type: 'ACTION'});
 
-    expect(spy).to.have.been.calledWith('ACTION');
+    expect(spy).toHaveBeenCalledWith('ACTION');
   });
 
   it('passes options to createMiddleware', () => {
@@ -197,6 +196,6 @@ describe('createStore', () => {
     const store = createStore([reduxModule], options);
     store.dispatch({type: 'ACTION'});
 
-    expect(spy).to.have.been.calledWith('value');
+    expect(spy).toHaveBeenCalledWith('value');
   });
 });

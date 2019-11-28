@@ -2,7 +2,6 @@ import createReducer from '../createReducer';
 
 import {actionCreators} from '../actions';
 
-import {expect} from 'support/chai';
 
 describe('createReducer creates function that', () => {
   it('handles actions for given media scope', () => {
@@ -11,7 +10,7 @@ describe('createReducer creates function that', () => {
 
     const nextState = reducer({}, play());
 
-    expect(nextState.shouldPlay).to.eq(true);
+    expect(nextState.shouldPlay).toBe(true);
   });
 
   it('ignores actions for other media scope', () => {
@@ -20,7 +19,7 @@ describe('createReducer creates function that', () => {
 
     const nextState = reducer({}, play());
 
-    expect(nextState.shouldPlay).not.to.eq(true);
+    expect(nextState.shouldPlay).not.toBe(true);
   });
 
   describe('for TIME_UPDATE action', () => {
@@ -31,7 +30,7 @@ describe('createReducer creates function that', () => {
       const nextState = reducer({currentTime: 30},
                                 timeUpdate({currentTime: 40, duration: 60}));
 
-      expect(nextState.currentTime).to.eq(40);
+      expect(nextState.currentTime).toBe(40);
     });
 
     it('updates duration', () => {
@@ -40,7 +39,7 @@ describe('createReducer creates function that', () => {
 
       const nextState = reducer({}, timeUpdate({currentTime: 40, duration: 60}));
 
-      expect(nextState.duration).to.eq(60);
+      expect(nextState.duration).toBe(60);
     });
   });
 
@@ -51,7 +50,7 @@ describe('createReducer creates function that', () => {
 
       const nextState = reducer({}, progress({bufferedEnd: 40}));
 
-      expect(nextState.bufferedEnd).to.eq(40);
+      expect(nextState.bufferedEnd).toBe(40);
     });
   });
 
@@ -62,7 +61,7 @@ describe('createReducer creates function that', () => {
 
       const nextState = reducer({}, metaDataLoaded({duration: 50}));
 
-      expect(nextState.duration).to.eq(50);
+      expect(nextState.duration).toBe(50);
     });
   });
 
@@ -72,7 +71,7 @@ describe('createReducer creates function that', () => {
 
     const nextState = reducer({}, playFailed());
 
-    expect(nextState.playFailed).to.eq(true);
+    expect(nextState.playFailed).toBe(true);
   });
 
   it('makes state look unplayed again in PLAY_FAILED action', () => {
@@ -83,8 +82,8 @@ describe('createReducer creates function that', () => {
     state = reducer(state, play());
     state = reducer(state, playFailed());
 
-    expect(state.shouldPlay).to.eq(false);
-    expect(state.unplayed).to.eq(true);
+    expect(state.shouldPlay).toBe(false);
+    expect(state.unplayed).toBe(true);
   });
 
   it('resets playFailed on PLAY action', () => {
@@ -93,7 +92,7 @@ describe('createReducer creates function that', () => {
 
     const nextState = reducer({playFailed: true}, play());
 
-    expect(nextState.playFailed).to.eq(false);
+    expect(nextState.playFailed).toBe(false);
   });
 
   it('sets shouldPlay to true on PLAY', () => {
@@ -103,18 +102,21 @@ describe('createReducer creates function that', () => {
 
     state = reducer(state, play());
 
-    expect(state.shouldPlay).to.eq(true);
+    expect(state.shouldPlay).toBe(true);
   });
 
-  it('sets shouldPlay to true on PLAYING even if play started playing by itself', () => {
-    const {playing} = actionCreators();
-    const reducer = createReducer();
-    var state = {};
+  it(
+    'sets shouldPlay to true on PLAYING even if play started playing by itself',
+    () => {
+      const {playing} = actionCreators();
+      const reducer = createReducer();
+      var state = {};
 
-    state = reducer(state, playing());
+      state = reducer(state, playing());
 
-    expect(state.shouldPlay).to.eq(true);
-  });
+      expect(state.shouldPlay).toBe(true);
+    }
+  );
 
   it('resets shouldPlay to false on PAUSE', () => {
     const {play, pause} = actionCreators();
@@ -124,20 +126,23 @@ describe('createReducer creates function that', () => {
     state = reducer(state, play());
     state = reducer(state, pause());
 
-    expect(state.shouldPlay).to.eq(false);
+    expect(state.shouldPlay).toBe(false);
   });
 
-  it('sets shouldPlay to false on PAUSED even if player pauses by itself', () => {
-    const {play, playing, paused} = actionCreators();
-    const reducer = createReducer();
-    var state = {};
+  it(
+    'sets shouldPlay to false on PAUSED even if player pauses by itself',
+    () => {
+      const {play, playing, paused} = actionCreators();
+      const reducer = createReducer();
+      var state = {};
 
-    state = reducer(state, play());
-    state = reducer(state, playing());
-    state = reducer(state, paused());
+      state = reducer(state, play());
+      state = reducer(state, playing());
+      state = reducer(state, paused());
 
-    expect(state.shouldPlay).to.eq(false);
-  });
+      expect(state.shouldPlay).toBe(false);
+    }
+  );
 
   it('resets shouldPlay to false on ENDED', () => {
     const {play, playing, ended} = actionCreators();
@@ -148,7 +153,7 @@ describe('createReducer creates function that', () => {
     state = reducer(state, playing());
     state = reducer(state, ended());
 
-    expect(state.shouldPlay).to.eq(false);
+    expect(state.shouldPlay).toBe(false);
   });
 
   it('leaves shouldPlay true on PAUSED action during buffer underuns', () => {
@@ -160,21 +165,24 @@ describe('createReducer creates function that', () => {
     state = reducer(state, bufferUnderrun());
     state = reducer(state, paused());
 
-    expect(state.shouldPlay).to.eq(true);
+    expect(state.shouldPlay).toBe(true);
   });
 
-  it('sets shouldPlay to false on PAUSED action again after buffer underun', () => {
-    const {play, paused, bufferUnderrun, bufferUnderrunContinue} = actionCreators();
-    const reducer = createReducer();
-    var state = {};
+  it(
+    'sets shouldPlay to false on PAUSED action again after buffer underun',
+    () => {
+      const {play, paused, bufferUnderrun, bufferUnderrunContinue} = actionCreators();
+      const reducer = createReducer();
+      var state = {};
 
-    state = reducer(state, play());
-    state = reducer(state, bufferUnderrun());
-    state = reducer(state, bufferUnderrunContinue());
-    state = reducer(state, paused());
+      state = reducer(state, play());
+      state = reducer(state, bufferUnderrun());
+      state = reducer(state, bufferUnderrunContinue());
+      state = reducer(state, paused());
 
-    expect(state.shouldPlay).to.eq(false);
-  });
+      expect(state.shouldPlay).toBe(false);
+    }
+  );
 
 
   it('sets isPlaying to true on PLAYING action', () => {
@@ -184,7 +192,7 @@ describe('createReducer creates function that', () => {
 
     state = reducer(state, playing());
 
-    expect(state.isPlaying).to.eq(true);
+    expect(state.isPlaying).toBe(true);
   });
 
   it('resets isPlaying to false on PAUSED action', () => {
@@ -195,7 +203,7 @@ describe('createReducer creates function that', () => {
     state = reducer(state, playing());
     state = reducer(state, paused());
 
-    expect(state.isPlaying).to.eq(false);
+    expect(state.isPlaying).toBe(false);
   });
 
   it('resets isPlaying to false on ENDED action', () => {
@@ -206,7 +214,7 @@ describe('createReducer creates function that', () => {
     state = reducer(state, playing());
     state = reducer(state, ended());
 
-    expect(state.isPlaying).to.eq(false);
+    expect(state.isPlaying).toBe(false);
   });
 
   it('does not change isPlaying on actions that only intend to play', () => {
@@ -218,7 +226,7 @@ describe('createReducer creates function that', () => {
     state = reducer(state, play());
     state = reducer(state, playAndFadeIn({fadeDuration: 1000}));
 
-    expect(state.isPlaying).to.eq(false);
+    expect(state.isPlaying).toBe(false);
   });
 
   it('does not change isPlaying on actions that only intend to pause', () => {
@@ -230,6 +238,6 @@ describe('createReducer creates function that', () => {
     state = reducer(state, pause());
     state = reducer(state, fadeOutAndPause({fadeDuration: 1000}));
 
-    expect(state.isPlaying).to.eq(true);
+    expect(state.isPlaying).toBe(true);
   });
 });

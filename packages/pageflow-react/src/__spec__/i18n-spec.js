@@ -2,7 +2,6 @@ import i18nModule from 'i18n';
 import {t, locale} from 'i18n/selectors';
 import createStore from 'createStore';
 
-import {expect} from 'support/chai';
 import stubI18n from 'support/stubI18n';
 
 describe('i18n', () => {
@@ -13,7 +12,7 @@ describe('i18n', () => {
 
     t(store.getState())('some.key');
 
-    expect(I18n.t).to.have.been.calledWith('some.key', {locale: 'fr'});
+    expect(I18n.t).toHaveBeenCalledWith('some.key', {locale: 'fr'});
   });
 
   it('provides locale selector to fetch locale name', () => {
@@ -21,6 +20,6 @@ describe('i18n', () => {
 
     const result = locale(store.getState());
 
-    expect(result).to.eq('fr');
+    expect(result).toBe('fr');
   });
 });

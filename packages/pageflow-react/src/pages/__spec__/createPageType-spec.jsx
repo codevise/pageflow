@@ -5,7 +5,6 @@ import {createStore} from 'redux';
 import {connect} from 'react-redux';
 import jQuery from 'jquery';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('createPageType', () => {
@@ -20,7 +19,7 @@ describe('createPageType', () => {
 
       pageType.enhance(element);
 
-      expect(element.html()).to.include('Rendered component');
+      expect(element.html()).toContain('Rendered component');
     });
 
     it('renders component in context of store', () => {
@@ -33,7 +32,7 @@ describe('createPageType', () => {
 
       pageType.enhance(element);
 
-      expect(element.html()).to.include('Text from store');
+      expect(element.html()).toContain('Text from store');
     });
 
     it('allows rendering into custom element', () => {
@@ -53,7 +52,7 @@ describe('createPageType', () => {
 
       pageType.enhance(element);
 
-      expect(element.find('span').html()).to.include('Rendered component');
+      expect(element.find('span').html()).toContain('Rendered component');
     });
 
     [
@@ -81,7 +80,7 @@ describe('createPageType', () => {
         element.attr('id', '5');
         pageType[hookName].call(pageType, element, configuration, options);
 
-        expect(reducer).to.have.been.calledWith(sinon.match.any,
+        expect(reducer).toHaveBeenCalledWith(sinon.match.any,
                                                 sinon.match({
                                                   type: actionType,
                                                   meta: {
@@ -104,7 +103,7 @@ describe('createPageType', () => {
       element.attr('id', '5');
       pageType.activating(element, configuration, options);
 
-      expect(reducer).to.have.been.calledWith(sinon.match.any,
+      expect(reducer).toHaveBeenCalledWith(sinon.match.any,
                                               sinon.match({
                                                 payload: {
                                                   position: 'bottom'
@@ -123,7 +122,7 @@ describe('createPageType', () => {
       pageType.enhance(element);
       pageType.cleanup(element);
 
-      expect(element.html()).to.eql('');
+      expect(element.html()).toEqual('');
     });
   });
 

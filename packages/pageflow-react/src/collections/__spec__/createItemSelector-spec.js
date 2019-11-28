@@ -1,6 +1,5 @@
 import createItemSelector from '../createItemSelector';
 
-import {expect} from 'support/chai';
 
 describe('createItemSelector', () => {
   describe('creates selector that', () => {
@@ -17,7 +16,7 @@ describe('createItemSelector', () => {
 
       const result = selector({id: 5})(state);
 
-      expect(result.title).to.eq('Big news');
+      expect(result.title).toBe('Big news');
     });
 
     it('throws descriptive error if collection is unknown', () => {
@@ -26,7 +25,7 @@ describe('createItemSelector', () => {
 
       expect(() => {
         selector({id: 5})(state);
-      }).to.throw(/unknown collection/);
+      }).toThrowError(/unknown collection/);
     });
 
     it('id can be a function taking state and props', () => {
@@ -49,7 +48,7 @@ describe('createItemSelector', () => {
 
       const result = selector({id: commentPostId})(state, props);
 
-      expect(result.title).to.eq('Big news');
+      expect(result.title).toBe('Big news');
     });
 
     it('return undefined if no item with id exists', () => {
@@ -62,7 +61,7 @@ describe('createItemSelector', () => {
 
       const result = selector({id: 5})(state);
 
-      expect(result).to.eq(undefined);
+      expect(result).toBeUndefined();
     });
 
     it('uses connected id from state if id is missing', () => {
@@ -79,7 +78,7 @@ describe('createItemSelector', () => {
 
       const result = selector()(state);
 
-      expect(result.title).to.eq('Big news');
+      expect(result.title).toBe('Big news');
     });
 
     describe('with namespace option', () => {
@@ -98,7 +97,7 @@ describe('createItemSelector', () => {
 
         const result = selector({id: 5})(state);
 
-        expect(result.title).to.eq('Big news');
+        expect(result.title).toBe('Big news');
       });
 
       it('throws descriptive error if namespace is unknown', () => {
@@ -108,7 +107,7 @@ describe('createItemSelector', () => {
 
         expect(() => {
           selector({id: 5})(state);
-        }).to.throw(/unknown namespace/);
+        }).toThrowError(/unknown namespace/);
       });
     });
   });

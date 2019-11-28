@@ -4,7 +4,6 @@ import {muted} from 'backgroundMedia/selectors';
 import createStore from 'createStore';
 import Backbone from 'backbone';
 
-import {expect} from 'support';
 import sinon from 'sinon';
 
 describe('backgroundMedia', () => {
@@ -31,7 +30,7 @@ describe('backgroundMedia', () => {
 
     const result = select(muted);
 
-    expect(result).to.eq(false);
+    expect(result).toBe(false);
   });
 
   it('is muted after mute event', () => {
@@ -40,7 +39,7 @@ describe('backgroundMedia', () => {
     events.trigger('background_media:mute');
     const result = select(muted);
 
-    expect(result).to.eq(true);
+    expect(result).toBe(true);
   });
 
   it('is no longer muted after unmute event', () => {
@@ -50,7 +49,7 @@ describe('backgroundMedia', () => {
     events.trigger('background_media:unmute');
     const result = select(muted);
 
-    expect(result).to.eq(false);
+    expect(result).toBe(false);
   });
 
   it('calls pageflow.backgroundMedia.unmute on unmute action', () => {
@@ -58,6 +57,6 @@ describe('backgroundMedia', () => {
 
     dispatch(unmute());
 
-    expect(backgroundMedia.unmute).to.have.been.called;
+    expect(backgroundMedia.unmute).toHaveBeenCalled();
   });
 });

@@ -3,7 +3,6 @@ import {pageScheduleUnprepare, pageDidPrepare, PAGE_DID_UNPREPARE} from '../../a
 
 import {delay} from 'redux-saga';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 import {runSagaInPageScope} from 'support/sagas';
 
@@ -14,16 +13,19 @@ describe('scheduleUnprepare', () => {
       .dispatch(pageScheduleUnprepare())
       .returnFromCall(delay);
 
-    expect(run.put).to.have.been.calledWith(sinon.match({type: PAGE_DID_UNPREPARE}));
+    expect(run.put).toHaveBeenCalledWith(sinon.match({type: PAGE_DID_UNPREPARE}));
   });
 
-  it('does not put unprepare if page is prepared again before delay elapses', () => {
-    const run = runSagaInPageScope(scheduleUnprepare)
-      .blockOnCall(delay)
-      .dispatch(pageScheduleUnprepare())
-      .dispatch(pageDidPrepare())
-      .returnFromCall(delay);
+  it(
+    'does not put unprepare if page is prepared again before delay elapses',
+    () => {
+      const run = runSagaInPageScope(scheduleUnprepare)
+        .blockOnCall(delay)
+        .dispatch(pageScheduleUnprepare())
+        .dispatch(pageDidPrepare())
+        .returnFromCall(delay);
 
-    expect(run.put).not.to.have.been.calledWith(sinon.match({type: PAGE_DID_UNPREPARE}));
-  });
+      expect(run.put).not.toHaveBeenCalledWith(sinon.match({type: PAGE_DID_UNPREPARE}));
+    }
+  );
 });

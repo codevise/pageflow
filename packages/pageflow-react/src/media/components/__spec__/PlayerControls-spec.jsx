@@ -1,7 +1,6 @@
 import {MediaPlayerControls} from '../PlayerControls';
 import PlayerControls from 'components/PlayerControls';
 
-import {expect} from 'support/chai';
 import {shallow} from 'enzyme';
 
 describe('PlayerControls', () => {
@@ -15,7 +14,7 @@ describe('PlayerControls', () => {
   it('renders ok', () => {
     const result = shallow(<MediaPlayerControls {...requiredProps} />);
 
-    expect(result).to.be.ok;
+    expect(result).toBeTruthy();
   });
 
   it('renders auto, off and id menu items when text tracks are passed', () => {
@@ -31,7 +30,7 @@ describe('PlayerControls', () => {
       .prop('textTracksMenuItems')
       .map(item => item.value);
 
-    expect(menuItemValues).to.eql(['auto', 'off', 5]);
+    expect(menuItemValues).toEqual(['auto', 'off', 5]);
   });
 
   it('does not pass text track menu items when no text track files are passed', () => {
@@ -42,13 +41,13 @@ describe('PlayerControls', () => {
     const wrapper = shallow(<MediaPlayerControls {...requiredProps} textTracks={textTracks} />);
     const menuItems = wrapper.find(PlayerControls).prop('textTracksMenuItems');
 
-    expect(menuItems).to.eql([]);
+    expect(menuItems).toEqual([]);
   });
 
   it('uses PlayerControls by default', () => {
     const wrapper = shallow(<MediaPlayerControls {...requiredProps} />);
 
-    expect(wrapper).to.be.have.descendants(PlayerControls);
+    expect(wrapper).toContainMatchingElement(PlayerControls);
   });
 
   it('supports using custom player controls component', () => {
@@ -57,6 +56,6 @@ describe('PlayerControls', () => {
     const wrapper = shallow(<MediaPlayerControls playerControlsComponent={CustomPlayerControls}
                                                  {...requiredProps} />);
 
-    expect(wrapper).to.be.have.descendants(CustomPlayerControls);
+    expect(wrapper).toContainMatchingElement(CustomPlayerControls);
   });
 });

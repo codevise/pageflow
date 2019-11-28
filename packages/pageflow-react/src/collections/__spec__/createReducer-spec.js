@@ -1,7 +1,6 @@
 import createReducer from '../createReducer';
 import {reset, add, change, remove, order} from '../actions';
 
-import {expect} from 'support/chai';
 
 describe('createReducer', () => {
   describe('creates reducer that', () => {
@@ -19,7 +18,7 @@ describe('createReducer', () => {
           items: [{id: 1, title: 'Other'}]
         }));
 
-        expect(result.items['1'].title).to.eq('Other');
+        expect(result.items['1'].title).toBe('Other');
       });
 
       it('updates order', () => {
@@ -36,7 +35,7 @@ describe('createReducer', () => {
           items: [{id: 2, title: 'Other'}]
         }));
 
-        expect(result.order).to.eql([2]);
+        expect(result.order).toEqual([2]);
       });
 
       it('supports custom id attribute', () => {
@@ -50,7 +49,7 @@ describe('createReducer', () => {
           items: [{perma_id: 1, title: 'Other'}]
         }));
 
-        expect(result.items['1'].title).to.eq('Other');
+        expect(result.items['1'].title).toBe('Other');
       });
 
       it('ignores actions other collection', () => {
@@ -66,7 +65,7 @@ describe('createReducer', () => {
           items: [{id: 1, text: 'Some text'}]
         }));
 
-        expect(result.items['1'].title).to.eq('News');
+        expect(result.items['1'].title).toBe('News');
       });
     });
 
@@ -82,7 +81,7 @@ describe('createReducer', () => {
           attributes: {id: '6', title: 'News'}
         }));
 
-        expect(result.items['6'].title).to.eq('News');
+        expect(result.items['6'].title).toBe('News');
       });
 
       it('supports updating order', () => {
@@ -97,7 +96,7 @@ describe('createReducer', () => {
           attributes: {id: '6', title: 'News'}
         }));
 
-        expect(result.order).to.eql([6]);
+        expect(result.order).toEqual([6]);
       });
 
       it('supports custom id attribute', () => {
@@ -111,7 +110,7 @@ describe('createReducer', () => {
           attributes: {perma_id: '6', title: 'News'}
         }));
 
-        expect(result.items['6'].title).to.eq('News');
+        expect(result.items['6'].title).toBe('News');
       });
 
       it('ignores actions for other collections', () => {
@@ -125,7 +124,7 @@ describe('createReducer', () => {
           attributes: {id: '6', text: 'Some text'}
         }));
 
-        expect(result.items).to.eql({});
+        expect(result.items).toEqual({});
       });
     });
 
@@ -143,7 +142,7 @@ describe('createReducer', () => {
           attributes: {id: '2', title: 'Old'}
         }));
 
-        expect(result.items['2'].title).to.eq('Old');
+        expect(result.items['2'].title).toBe('Old');
       });
 
       it('supports custom id attribute', () => {
@@ -159,7 +158,7 @@ describe('createReducer', () => {
           attributes: {perma_id: '2', title: 'Old'}
         }));
 
-        expect(result.items['2'].title).to.eq('Old');
+        expect(result.items['2'].title).toBe('Old');
       });
 
       it('keeps order unchanged', () => {
@@ -176,7 +175,7 @@ describe('createReducer', () => {
           attributes: {id: '2', title: 'Old'}
         }));
 
-        expect(result.order).to.eq(state.order);
+        expect(result.order).toBe(state.order);
       });
 
       it('ignores actions for other collection', () => {
@@ -192,7 +191,7 @@ describe('createReducer', () => {
           attributes: {id: '2', title: 'New'}
         }));
 
-        expect(result.items['2'].title).to.eq('Old');
+        expect(result.items['2'].title).toBe('Old');
       });
     });
 
@@ -210,7 +209,7 @@ describe('createReducer', () => {
           attributes: {id: 5}
         }));
 
-        expect(result.items['5']).to.eq(undefined);
+        expect(result.items['5']).toBeUndefined();
       });
 
       it('supports updating order', () => {
@@ -228,7 +227,7 @@ describe('createReducer', () => {
           order: []
         }));
 
-        expect(result.order).to.eql([]);
+        expect(result.order).toEqual([]);
       });
 
       it('supports custom id attribute', () => {
@@ -244,7 +243,7 @@ describe('createReducer', () => {
           attributes: {perma_id: 5}
         }));
 
-        expect(result.items['5']).to.eq(undefined);
+        expect(result.items['5']).toBeUndefined();
       });
 
       it('ignores actions for other collection', () => {
@@ -260,7 +259,7 @@ describe('createReducer', () => {
           attributes: {id: 5}
         }));
 
-        expect(result.items['5'].title).to.eq('News');
+        expect(result.items['5'].title).toBe('News');
       });
     });
 
@@ -278,7 +277,7 @@ describe('createReducer', () => {
           order: [1]
         }));
 
-        expect(result.order).to.eql([1]);
+        expect(result.order).toEqual([1]);
       });
 
       it('does not change items', () => {
@@ -294,7 +293,7 @@ describe('createReducer', () => {
           order: [1]
         }));
 
-        expect(result.items).to.eql(state.items);
+        expect(result.items).toEqual(state.items);
       });
 
       it('ignores actions for other collection', () => {
@@ -311,7 +310,7 @@ describe('createReducer', () => {
           order: [6]
         }));
 
-        expect(result.order).to.eql([5]);
+        expect(result.order).toEqual([5]);
       });
     });
 
@@ -333,7 +332,7 @@ describe('createReducer', () => {
           items: [{id: 5}]
         }));
 
-        expect(result.items['5'].some).to.eq('default');
+        expect(result.items['5'].some).toBe('default');
       });
 
       it('applies reducer to added item', () => {
@@ -353,7 +352,7 @@ describe('createReducer', () => {
           attributes: {id: 5}
         }));
 
-        expect(result.items['5'].some).to.eq('default');
+        expect(result.items['5'].some).toBe('default');
       });
 
       it('applies reducer when item changes', () => {
@@ -373,8 +372,8 @@ describe('createReducer', () => {
           attributes: {id: 5}
         }));
 
-        expect(result.items['5'].some).to.eq('default');
-        expect(result.items['5'].title).to.eq('News');
+        expect(result.items['5'].some).toBe('default');
+        expect(result.items['5'].title).toBe('News');
       });
 
       it('applies reducer to item for unknown action', () => {
@@ -401,7 +400,7 @@ describe('createReducer', () => {
           }
         });
 
-        expect(result.items['5'].title).to.eq('Edited');
+        expect(result.items['5'].title).toBe('Edited');
       });
 
       it('keeps order unchanged', () => {
@@ -429,29 +428,32 @@ describe('createReducer', () => {
           }
         });
 
-        expect(result.order).to.eq(state.order);
+        expect(result.order).toBe(state.order);
       });
 
-      it('does not change state for unknown action if item reducer does not change state', () => {
-        const state = {
-          items: {
-            5: {id: 5}
-          }
-        };
-        const reducer = createReducer('posts', {
-          itemReducer: item => item
-        });
+      it(
+        'does not change state for unknown action if item reducer does not change state',
+        () => {
+          const state = {
+            items: {
+              5: {id: 5}
+            }
+          };
+          const reducer = createReducer('posts', {
+            itemReducer: item => item
+          });
 
-        const result = reducer(state, {
-          type: 'UNKNOWN',
-          meta: {
-            collectionName: 'posts',
-            itemId: '5'
-          }
-        });
+          const result = reducer(state, {
+            type: 'UNKNOWN',
+            meta: {
+              collectionName: 'posts',
+              itemId: '5'
+            }
+          });
 
-        expect(result.items).to.eq(state.items);
-      });
+          expect(result.items).toBe(state.items);
+        }
+      );
     });
   });
 });

@@ -3,7 +3,6 @@ import {pageType} from 'pageTypes/selectors';
 
 import createStore from 'createStore';
 
-import {expect} from 'support/chai';
 
 describe('pageType', () => {
   it('provides selector to get page type config of a page', () => {
@@ -14,7 +13,7 @@ describe('pageType', () => {
 
     const result = pageType({page: {type: 'video'}})(store.getState());
 
-    expect(result.name).to.eq('video');
+    expect(result.name).toBe('video');
   });
 
   it('allows to get page from selector props', () => {
@@ -30,7 +29,7 @@ describe('pageType', () => {
       page: props => props.targetPage
     })(store.getState(), props);
 
-    expect(result.name).to.eq('video');
+    expect(result.name).toBe('video');
   });
 
   it('return null if page is null', () => {
@@ -43,6 +42,6 @@ describe('pageType', () => {
       page: props => props.targetPage
     })(store.getState(), {});
 
-    expect(result).to.eq(null);
+    expect(result).toBeNull();
   });
 });

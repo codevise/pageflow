@@ -3,7 +3,6 @@ import {PAGE_CHANGE} from '../actions';
 
 import Backbone from 'backbone';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('watch', () => {
@@ -14,7 +13,7 @@ describe('watch', () => {
     watch(events, dispatch);
     events.trigger('page:change', {getPermaId() { return 2; }});
 
-    expect(dispatch).to.have.been.calledWith(sinon.match({
+    expect(dispatch).toHaveBeenCalledWith(sinon.match({
       type: PAGE_CHANGE,
       payload: {id: 2}
     }));

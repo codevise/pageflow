@@ -1,6 +1,5 @@
 import mergePageTypes from '../mergePageTypes';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('mergePageTypes', () => {
@@ -13,7 +12,7 @@ describe('mergePageTypes', () => {
     const result = mergePageTypes(base, mixin);
     result.enhance();
 
-    expect(base.enhance).to.have.been.called;
+    expect(base.enhance).toHaveBeenCalled();
   });
 
   it('keeps method only defined in mixin', () => {
@@ -25,7 +24,7 @@ describe('mergePageTypes', () => {
     const result = mergePageTypes(base, mixin);
     result.enhance();
 
-    expect(mixin.enhance).to.have.been.called;
+    expect(mixin.enhance).toHaveBeenCalled();
   });
 
   it('calls both methods when page types provide conflicting method ', () => {
@@ -39,8 +38,8 @@ describe('mergePageTypes', () => {
     const result = mergePageTypes(base, mixin);
     result.enhance();
 
-    expect(base.enhance).to.have.been.called;
-    expect(mixin.enhance).to.have.been.called;
+    expect(base.enhance).toHaveBeenCalled();
+    expect(mixin.enhance).toHaveBeenCalled();
   });
 
   it('uses return value of mixin', () => {
@@ -53,7 +52,7 @@ describe('mergePageTypes', () => {
 
     const result = mergePageTypes(base, mixin);
 
-    expect(result.enhance()).to.eq(5);
+    expect(result.enhance()).toBe(5);
   });
 
   it('keeps properties only defined in base', () => {
@@ -64,7 +63,7 @@ describe('mergePageTypes', () => {
 
     const result = mergePageTypes(base, mixin);
 
-    expect(result.scroller).to.eq(true);
+    expect(result.scroller).toBe(true);
   });
 
   it('keeps properties only defined in mixin', () => {
@@ -75,7 +74,7 @@ describe('mergePageTypes', () => {
 
     const result = mergePageTypes(base, mixin);
 
-    expect(result.scroller).to.eq(true);
+    expect(result.scroller).toBe(true);
   });
 
   it('lets mixin properties win', () => {
@@ -88,6 +87,6 @@ describe('mergePageTypes', () => {
 
     const result = mergePageTypes(base, mixin);
 
-    expect(result.scroller).to.eq(true);
+    expect(result.scroller).toBe(true);
   });
 });

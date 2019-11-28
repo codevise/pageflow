@@ -1,5 +1,3 @@
-/*global module, require, __dirname*/
-
 var path = require('path');
 
 // Allow excluding packages from one of the builds. On the client,
@@ -22,22 +20,24 @@ var targetExternals = {
 module.exports = ['client', 'server'].map(function(target) {
   return {
     context: __dirname + '/src',
-    entry: [
-      'babel-polyfill',
-      './index.js'
-    ],
+    entry: './index.js',
 
     resolve: {
-      extensions: ['', '.js', '.jsx'],
-      root: [path.join(__dirname, 'src')]
+      extensions: ['.js', '.jsx'],
+      modules: [
+        'node_modules',
+        path.resolve(__dirname, 'src')
+      ]
     },
 
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.jsx?$/,
           exclude: /node_modules/,
-          loaders: ['babel-loader'],
+          use: {
+            loader: 'babel-loader'
+          }
         }
       ],
     },
@@ -47,6 +47,7 @@ module.exports = ['client', 'server'].map(function(target) {
       filename: 'react-' + target +'.js',
 
       libraryTarget: 'assign',
+      libraryExport: 'default',
       library: ['pageflow', 'react']
     },
 

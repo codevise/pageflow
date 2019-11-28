@@ -9,7 +9,6 @@ import createStore from 'createStore';
 import Backbone from 'backbone';
 import {takeEvery} from 'redux-saga';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('hotkeys.watchEvents', () => {
@@ -38,7 +37,7 @@ describe('hotkeys.watchEvents', () => {
     store.dispatch(pageChange({id: 5}));
     window.trigger({keyCode: TAB});
 
-    expect(spy).to.have.been.calledWith(sinon.match({
+    expect(spy).toHaveBeenCalledWith(sinon.match({
       type: HOTKEY_TAB,
       meta: {
         itemId: 5

@@ -3,7 +3,6 @@ import filesModule from 'files';
 
 import createStore from 'createStore';
 
-import {expect} from 'support/chai';
 
 describe('file', () => {
   it('selects file id and variants', () => {
@@ -12,8 +11,8 @@ describe('file', () => {
 
     const result = file('videoFiles', {id: 50})(state);
 
-    expect(result).to.have.property('id', 5);
-    expect(result).to.have.deep.property('variants[0]', 'high');
+    expect(result).toHaveProperty('id', 5);
+    expect(result).toHaveProperty(['variants', 0], 'high');
   });
 
   it('selects null if id is unknown', () => {
@@ -22,7 +21,7 @@ describe('file', () => {
 
     const result = file('videoFiles', {id: 5})(state);
 
-    expect(result).to.eql(null);
+    expect(result).toBe(null);
   });
 
   it('includes parent file info', () => {
@@ -36,8 +35,8 @@ describe('file', () => {
 
     const result = file('textTrackFiles', {id: 50})(state);
 
-    expect(result).to.have.property('parentFileId', 6);
-    expect(result).to.have.deep.property('parentFileModelType', 'Pageflow::VideoFile');
+    expect(result).toHaveProperty('parentFileId', 6);
+    expect(result).toHaveProperty('parentFileModelType', 'Pageflow::VideoFile');
   });
 
   it('sets modelType from mapping', () => {
@@ -47,7 +46,7 @@ describe('file', () => {
 
     const result = file('videoFiles', {id: 50})(state);
 
-    expect(result).to.have.property('modelType', 'Pageflow::VideoFile');
+    expect(result).toHaveProperty('modelType', 'Pageflow::VideoFile');
   });
 
   it('sets collectionName', () => {
@@ -57,7 +56,7 @@ describe('file', () => {
 
     const result = file('videoFiles', {id: 50})(state);
 
-    expect(result).to.have.property('collectionName', 'videoFiles');
+    expect(result).toHaveProperty('collectionName', 'videoFiles');
   });
 
   it('interpolates id partition into file url template', () => {
@@ -67,7 +66,7 @@ describe('file', () => {
 
     const result = file('videoFiles', {id: 31})(state);
 
-    expect(result).to.have.deep.property('urls.high', 'http://example.com/000/002/004/high.mp4');
+    expect(result).toHaveProperty('urls.high', 'http://example.com/000/002/004/high.mp4');
   });
 
   it('interpolates basename into file url template', () => {
@@ -77,7 +76,7 @@ describe('file', () => {
 
     const result = file('videoFiles', {id: 31})(state);
 
-    expect(result).to.have.deep.property('urls.high', 'http://example.com/my-video.mp4');
+    expect(result).toHaveProperty('urls.high', 'http://example.com/my-video.mp4');
   });
 
   it('skips url with missing template', () => {
@@ -87,7 +86,7 @@ describe('file', () => {
 
     const result = file('videoFiles', {id: 31})(state);
 
-    expect(result).not.to.have.deep.property('urls.unknown');
+    expect(result).not.toHaveProperty('urls.unknown');
   });
 
   it('includes urls for all templates if variants is undefined', () => {
@@ -97,7 +96,7 @@ describe('file', () => {
 
     const result = file('videoFiles', {id: 31})(state);
 
-    expect(result).to.have.deep.property('urls.high');
+    expect(result).toHaveProperty('urls.high');
   });
 });
 
@@ -123,7 +122,7 @@ describe('nestedFiles', () => {
       parent: file('videoFiles', {id: 31})
     })(state);
 
-    expect(result).to.have.deep.property('[0].id', 3001);
+    expect(result).toHaveProperty([0, 'id'], 3001);
   });
 
   it('filters out unsaved files', () => {
@@ -142,7 +141,7 @@ describe('nestedFiles', () => {
       parent: file('videoFiles', {id: 31})
     })(state);
 
-    expect(result).to.eql([]);
+    expect(result).toEqual([]);
   });
 
   it('selects empty array if parent is undefined', () => {
@@ -162,7 +161,7 @@ describe('nestedFiles', () => {
       parent: file('videoFiles', {id: 'not_there'})
     })(state);
 
-    expect(result).to.eql([]);
+    expect(result).toEqual([]);
   });
 
   it('expands urls in files', () => {
@@ -186,7 +185,7 @@ describe('nestedFiles', () => {
       parent: file('videoFiles', {id: 31})
     })(state);
 
-    expect(result).to.have.deep.property('[0].urls.original');
+    expect(result).toHaveProperty([0, 'urls', 'original']);
   });
 });
 
@@ -200,9 +199,9 @@ describe('fileExists', () => {
 
     const fn = fileExists()(state);
 
-    expect(fn('imageFiles', 205)).to.eq(true);
-    expect(fn('imageFiles', 206)).to.eq(false);
-    expect(fn('videoFiles', 205)).to.eq(false);
+    expect(fn('imageFiles', 205)).toBe(true);
+    expect(fn('imageFiles', 206)).toBe(false);
+    expect(fn('videoFiles', 205)).toBe(false);
   });
 });
 

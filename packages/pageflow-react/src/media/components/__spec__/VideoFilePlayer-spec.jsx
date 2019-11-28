@@ -2,7 +2,7 @@ import {VideoFilePlayerPreload} from '../VideoFilePlayer';
 
 import {mount} from 'enzyme';
 import sinon from 'sinon';
-import {expect, stubFeatureDetection} from 'support';
+import {stubFeatureDetection} from 'support';
 
 describe('VideoFilePlayerPreload', () => {
   stubFeatureDetection();
@@ -13,7 +13,7 @@ describe('VideoFilePlayerPreload', () => {
 
     mount(<VideoFilePlayerPreload file={videoFile} preloadImage={preloadImage} />);
 
-    expect(preloadImage).to.have.been.calledWith('poster.png');
+    expect(preloadImage).toHaveBeenCalledWith('poster.png');
   });
 
   it('prefers custom poster', () => {
@@ -25,6 +25,6 @@ describe('VideoFilePlayerPreload', () => {
                                   posterImageFile={posterImageFile}
                                   preloadImage={preloadImage} />);
 
-    expect(preloadImage).to.have.been.calledWith('custom.png');
+    expect(preloadImage).toHaveBeenCalledWith('custom.png');
   });
 });

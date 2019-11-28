@@ -4,7 +4,6 @@ import pageTypesModule from 'pageTypes';
 
 import createStore from 'createStore';
 
-import {expect} from 'support';
 
 describe('pageBackgroundImageUrl', () => {
   it('returns url of image file thumbnail candidiate', () => {
@@ -35,7 +34,7 @@ describe('pageBackgroundImageUrl', () => {
 
     const result = pageBackgroundImageUrl({page: () => page, variant: 'medium'})(state);
 
-    expect(result).to.eq('http://example.com/000/000/010/medium.jpg');
+    expect(result).toBe('http://example.com/000/000/010/medium.jpg');
   });
 
   it('returns poster url of video file thumbnail candidiate', () => {
@@ -66,7 +65,7 @@ describe('pageBackgroundImageUrl', () => {
 
     const result = pageBackgroundImageUrl({page: () => page, variant: 'medium'})(state);
 
-    expect(result).to.eq('http://example.com/000/000/010/poster_medium.jpg');
+    expect(result).toBe('http://example.com/000/000/010/poster_medium.jpg');
   });
 
   it('returns undefined if thumbnail candidate is not present', () => {
@@ -97,7 +96,7 @@ describe('pageBackgroundImageUrl', () => {
 
     const result = pageBackgroundImageUrl({page: () => page, variant: 'medium'})(state);
 
-    expect(result).to.eq(undefined);
+    expect(result).toBeUndefined();
   });
 
   it('returns undefined for unsupported thumbnail candidate', () => {
@@ -125,7 +124,7 @@ describe('pageBackgroundImageUrl', () => {
 
     const result = pageBackgroundImageUrl({page: () => page, variant: 'medium'})(state);
 
-    expect(result).to.eq(undefined);
+    expect(result).toBeUndefined();
   });
 
   it('returns undefined if page is undefined', () => {
@@ -142,7 +141,7 @@ describe('pageBackgroundImageUrl', () => {
 
     const result = pageBackgroundImageUrl({page: () => undefined, variant: 'medium'})(state);
 
-    expect(result).to.eq(undefined);
+    expect(result).toBeUndefined();
   });
 });
 

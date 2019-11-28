@@ -4,7 +4,6 @@ import {dismiss} from 'cookieNotice/actions';
 import createStore from 'createStore';
 import Backbone from 'backbone';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('cookieNotice', () => {
@@ -51,7 +50,7 @@ describe('cookieNotice', () => {
 
     const result = select(isCookieNoticeVisible);
 
-    expect(result).to.eq(false);
+    expect(result).toBe(false);
   });
 
   it('becomes visible once requested', () => {
@@ -60,7 +59,7 @@ describe('cookieNotice', () => {
     events.trigger('cookie_notice:request');
     const result = select(isCookieNoticeVisible);
 
-    expect(result).to.eq(true);
+    expect(result).toBe(true);
   });
 
   it('is hidden on dismiss', () => {
@@ -70,7 +69,7 @@ describe('cookieNotice', () => {
     dispatch(dismiss());
     const result = select(isCookieNoticeVisible);
 
-    expect(result).to.eq(false);
+    expect(result).toBe(false);
   });
 
   it('stays invisible if dismissed before', () => {
@@ -84,7 +83,7 @@ describe('cookieNotice', () => {
     events.trigger('cookie_notice:request');
     const result = select(isCookieNoticeVisible);
 
-    expect(result).to.eq(false);
+    expect(result).toBe(false);
   });
 
   it('uses cookie_notice_bar_visible widget when it becomes visible', () => {
@@ -92,7 +91,7 @@ describe('cookieNotice', () => {
 
     events.trigger('cookie_notice:request');
 
-    expect(widgetsApi.use).to.have.been.calledWith({
+    expect(widgetsApi.use).toHaveBeenCalledWith({
       name: 'cookie_notice_bar_visible',
       insteadOf: 'cookie_notice_bar'
     });
@@ -104,22 +103,25 @@ describe('cookieNotice', () => {
     events.trigger('cookie_notice:request');
     dispatch(dismiss());
 
-    expect(widgetsApi.resetCallback).to.have.been.called;
+    expect(widgetsApi.resetCallback).toHaveBeenCalled();
   });
 
-  it('does not use cookie_notice_bar_visible widget if dismissed before', () => {
-    const cookies = fakeCookies();
+  it(
+    'does not use cookie_notice_bar_visible widget if dismissed before',
+    () => {
+      const cookies = fakeCookies();
 
-    const {dispatch} = setup(cookies);
-    dispatch(dismiss());
+      const {dispatch} = setup(cookies);
+      dispatch(dismiss());
 
-    const {events, widgetsApi} = setup(cookies);
+      const {events, widgetsApi} = setup(cookies);
 
-    events.trigger('cookie_notice:request');
+      events.trigger('cookie_notice:request');
 
-    expect(widgetsApi.use).not.to.have.been.calledWith({
-      name: 'cookie_notice_bar_visible',
-      insteadOf: 'cookie_notice_bar'
-    });
-  });
+      expect(widgetsApi.use).not.toHaveBeenCalledWith({
+        name: 'cookie_notice_bar_visible',
+        insteadOf: 'cookie_notice_bar'
+      });
+    }
+  );
 });

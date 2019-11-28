@@ -1,16 +1,18 @@
 import sinon from 'sinon';
 
 export default function stubFeatureDetection() {
-  beforeEach(function() {
+  let browserBackup = {};
+
+  beforeEach(() => {
     window.pageflow = window.pageflow || {};
-    this.browserBackup = window.pageflow.browser;
+    browserBackup = window.pageflow.browser;
 
     window.pageflow.browser  = {
       has: sinon.stub().returns(false)
     };
   });
 
-  afterEach(function () {
-    window.pageflow.browser = this.browserBackup;
+  afterEach(() => {
+    window.pageflow.browser = browserBackup;
   });
 }

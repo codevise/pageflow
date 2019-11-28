@@ -3,7 +3,6 @@ import {entryAttribute, isEntryReady} from 'entry/selectors';
 import createStore from 'createStore';
 import Backbone from 'backbone';
 
-import {expect} from 'support';
 
 describe('entry', () => {
   function setup({entry} = {entry: {}}) {
@@ -25,7 +24,7 @@ describe('entry', () => {
     };
     const {select} = setup({entry});
 
-    expect(select(entryAttribute('slug'))).to.eq('my-entry');
+    expect(select(entryAttribute('slug'))).toBe('my-entry');
   });
 
   it('provides selector to get title from seed', () => {
@@ -34,30 +33,36 @@ describe('entry', () => {
     };
     const {select} = setup({entry});
 
-    expect(select(entryAttribute('title'))).to.eq('Some Title');
+    expect(select(entryAttribute('title'))).toBe('Some Title');
   });
 
-  it('provides selector to get title from Backbone model configuration', () => {
-    const entry = new Backbone.Model({
-      entry_title: 'Title from Entry'
-    });
-    entry.configuration = new Backbone.Model({
-      title: 'Title from Revision'
-    });
-    const {select} = setup({entry});
+  it(
+    'provides selector to get title from Backbone model configuration',
+    () => {
+      const entry = new Backbone.Model({
+        entry_title: 'Title from Entry'
+      });
+      entry.configuration = new Backbone.Model({
+        title: 'Title from Revision'
+      });
+      const {select} = setup({entry});
 
-    expect(select(entryAttribute('title'))).to.eq('Title from Revision');
-  });
+      expect(select(entryAttribute('title'))).toBe('Title from Revision');
+    }
+  );
 
-  it('Backbone model title selector falls back to entry_title attribute', () => {
-    const entry = new Backbone.Model({
-      entry_title: 'Some Title'
-    });
-    entry.configuration = new Backbone.Model();
-    const {select} = setup({entry});
+  it(
+    'Backbone model title selector falls back to entry_title attribute',
+    () => {
+      const entry = new Backbone.Model({
+        entry_title: 'Some Title'
+      });
+      entry.configuration = new Backbone.Model();
+      const {select} = setup({entry});
 
-    expect(select(entryAttribute('title'))).to.eq('Some Title');
-  });
+      expect(select(entryAttribute('title'))).toBe('Some Title');
+    }
+  );
 
   it('title selector gets correct value after configuration change', () => {
     const entry = new Backbone.Model();
@@ -68,7 +73,7 @@ describe('entry', () => {
 
     entry.configuration.set('title', 'New Title');
 
-    expect(select(entryAttribute('title'))).to.eq('New Title');
+    expect(select(entryAttribute('title'))).toBe('New Title');
   });
 
   it('sets isEntryReady to false by default', () => {
@@ -76,7 +81,7 @@ describe('entry', () => {
 
     const result = select(isEntryReady);
 
-    expect(result).to.eq(false);
+    expect(result).toBe(false);
   });
 
   it('changes isEntryReady to true on ready event', () => {
@@ -85,6 +90,6 @@ describe('entry', () => {
     events.trigger('ready');
     const result = select(isEntryReady, events);
 
-    expect(result).to.eq(true);
+    expect(result).toBe(true);
   });
 });

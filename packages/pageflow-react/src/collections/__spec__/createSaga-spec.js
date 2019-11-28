@@ -7,7 +7,6 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {call, select, put, take, fork} from 'redux-saga/effects';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('createSaga', () => {
@@ -43,7 +42,7 @@ describe('createSaga', () => {
         ]
       }));
 
-      expect(spy).to.have.been.calledTwice;
+      expect(spy).toHaveBeenCalledTwice();
     });
 
     it('runs saga for each for added item', () => {
@@ -60,7 +59,7 @@ describe('createSaga', () => {
         attributes: {id: 5, title: 'Some post'}
       }));
 
-      expect(spy).to.have.been.called;
+      expect(spy).toHaveBeenCalled();
     });
 
     it('cancels sagas when item is removed', () => {
@@ -83,7 +82,7 @@ describe('createSaga', () => {
       }));
       store.dispatch({type: 'DISPATCHED_AFTER_REMOVAL'});
 
-      expect(spy).not.to.have.been.called;
+      expect(spy).not.toHaveBeenCalled();
     });
 
     it('cancels sagas when collection is reset', () => {
@@ -106,7 +105,7 @@ describe('createSaga', () => {
       }));
       store.dispatch({type: 'DISPATCHED_AFTER_RESET'});
 
-      expect(spy).not.to.have.been.called;
+      expect(spy).not.toHaveBeenCalled();
     });
 
     it('allows to select in context of own item', () => {
@@ -125,7 +124,7 @@ describe('createSaga', () => {
         items: [{id: 5, title: 'Some post'}]
       }));
 
-      expect(spy).to.have.been.calledWith('Some post');
+      expect(spy).toHaveBeenCalledWith('Some post');
     });
 
     it('preserves selector args', () => {
@@ -147,7 +146,7 @@ describe('createSaga', () => {
         ]
       }));
 
-      expect(spy).to.have.been.calledWith('Other post');
+      expect(spy).toHaveBeenCalledWith('Other post');
     });
 
     it('dispatches actions in context of own item', () => {
@@ -186,8 +185,8 @@ describe('createSaga', () => {
         itemId: 5
       }});
 
-      expect(itemSelector({id: 5})(store.getState()).seen).to.eq(true);
-      expect(itemSelector({id: 6})(store.getState()).seen).to.eq(undefined);
+      expect(itemSelector({id: 5})(store.getState()).seen).toBe(true);
+      expect(itemSelector({id: 6})(store.getState()).seen).toBeUndefined();
     });
 
     it('dispatches actions in context of own item', () => {
@@ -222,7 +221,7 @@ describe('createSaga', () => {
         ]
       }));
 
-      expect(itemSelector({id: 5})(store.getState()).seen).to.eq(true);
+      expect(itemSelector({id: 5})(store.getState()).seen).toBe(true);
     });
 
     it('takes collection actions for own item', () => {
@@ -249,7 +248,7 @@ describe('createSaga', () => {
         }
       });
 
-      expect(spy).to.have.been.calledOnce;
+      expect(spy).toHaveBeenCalledOnce();
     });
 
     it('does not take collection actions for other item', () => {
@@ -276,7 +275,7 @@ describe('createSaga', () => {
         }
       });
 
-      expect(spy).not.to.have.been.called;
+      expect(spy).not.toHaveBeenCalled();
     });
 
     it('takes non collection actions', () => {
@@ -299,7 +298,7 @@ describe('createSaga', () => {
         type: 'GLOBAL'
       });
 
-      expect(spy).to.have.been.called;
+      expect(spy).toHaveBeenCalled();
     });
   });
 });

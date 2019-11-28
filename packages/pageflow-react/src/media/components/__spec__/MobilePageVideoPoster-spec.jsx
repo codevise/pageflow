@@ -1,7 +1,6 @@
 import {MobilePageVideoPoster} from '../MobilePageVideoPoster';
 import {PageBackgroundImage} from 'components';
 
-import {expect} from 'support/chai';
 import fileExistsFn from 'support/fileExistsFn';
 import {shallow} from 'enzyme';
 
@@ -21,8 +20,8 @@ describe('MobilePageVideoPoster', () => {
 
     const wrapper = shallow(<MobilePageVideoPoster {...props} />);
 
-    expect(wrapper.find(PageBackgroundImage)).to.have.prop('propertyBaseName', 'mobilePosterImage');
-    expect(wrapper.find(PageBackgroundImage)).to.have.prop('fileCollection', 'imageFiles');
+    expect(wrapper.find(PageBackgroundImage)).toHaveProp('propertyBaseName', 'mobilePosterImage');
+    expect(wrapper.find(PageBackgroundImage)).toHaveProp('fileCollection', 'imageFiles');
   });
 
   it('prefers posterImageId over video file poster', () => {
@@ -39,8 +38,8 @@ describe('MobilePageVideoPoster', () => {
 
     const wrapper = shallow(<MobilePageVideoPoster {...props} />);
 
-    expect(wrapper.find(PageBackgroundImage)).to.have.prop('propertyBaseName', 'posterImage');
-    expect(wrapper.find(PageBackgroundImage)).to.have.prop('fileCollection', 'imageFiles');
+    expect(wrapper.find(PageBackgroundImage)).toHaveProp('propertyBaseName', 'posterImage');
+    expect(wrapper.find(PageBackgroundImage)).toHaveProp('fileCollection', 'imageFiles');
   });
 
   it('falls back to video file poster if poster does not exist', () => {
@@ -57,8 +56,8 @@ describe('MobilePageVideoPoster', () => {
 
     const wrapper = shallow(<MobilePageVideoPoster {...props} />);
 
-    expect(wrapper.find(PageBackgroundImage)).to.have.prop('propertyBaseName', 'videoFile');
-    expect(wrapper.find(PageBackgroundImage)).to.have.prop('fileCollection', 'videoFiles');
+    expect(wrapper.find(PageBackgroundImage)).toHaveProp('propertyBaseName', 'videoFile');
+    expect(wrapper.find(PageBackgroundImage)).toHaveProp('fileCollection', 'videoFiles');
   });
 
   it('supports propertyNamePrefix', () => {
@@ -77,7 +76,7 @@ describe('MobilePageVideoPoster', () => {
 
     const wrapper = shallow(<MobilePageVideoPoster {...props} />);
 
-    expect(wrapper.find(PageBackgroundImage)).to.have.prop('propertyBaseName', 'fallbackMobilePosterImage');
-    expect(wrapper.find(PageBackgroundImage)).to.have.prop('fileCollection', 'imageFiles');
+    expect(wrapper.find(PageBackgroundImage)).toHaveProp('propertyBaseName', 'fallbackMobilePosterImage');
+    expect(wrapper.find(PageBackgroundImage)).toHaveProp('fileCollection', 'imageFiles');
   });
 });

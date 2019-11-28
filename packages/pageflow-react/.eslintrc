@@ -1,6 +1,6 @@
 {
     "rules": {
-        "indent": [ 1, 2 ],
+        "indent": 0,
         "quotes": [ 2, "single" ],
         "linebreak-style": [ 2, "unix" ],
         "semi": [ 2, "always" ],
@@ -21,9 +21,12 @@
     },
     "settings": {
       "import/resolver": {
-        "webpack": {
-          "config": "./webpack.karma.config.js"
+        "jest": {
+          "jestConfigFile": "./jest.config.js"
         }
+      },
+      "react": {
+        "version": "0.14",
       }
     },
     "extends": [
@@ -32,19 +35,51 @@
       "plugin:import/errors",
       "plugin:import/warnings"
     ],
+    "parser": "babel-eslint",
     "parserOptions": {
+      "ecmaVersion": 2018,
       "sourceType": "module",
       "ecmaFeatures": {
-          "jsx": true,
-          "experimentalObjectRestSpread": true,
-          "modules": true
+        "jsx": true
       }
     },
-    "plugins": ["react", "import"],
+    "plugins": ["react", "import", "jest"],
     "globals": {
       "React": true,
       "pageflow": true,
       "PAGEFLOW_EDITOR": true,
       "I18n": true
-    }
+    },
+    "overrides": [
+      {
+        "files": ['*.config.js'],
+        "env": {
+          "node": true
+        }
+      },
+      {
+        "files": ["spec/**/*.js", "**/__spec__/*"],
+        "env": {
+          'jest/globals': true
+        },
+        "rules": {
+          'jest/expect-expect': 'warn',
+          'jest/no-commented-out-tests': 'warn',
+          'jest/no-disabled-tests': 'warn',
+          'jest/no-export': 'error',
+          'jest/no-focused-tests': 'error',
+          'jest/no-identical-title': 'error',
+          'jest/no-jest-import': 'error',
+          'jest/no-mocks-import': 'error',
+          'jest/no-jasmine-globals': 'warn',
+          'jest/no-standalone-expect': 'error',
+          'jest/no-test-callback': 'error',
+          'jest/no-test-prefixes': 'error',
+          'jest/no-try-expect': 'error',
+          'jest/valid-describe': 'error',
+          'jest/valid-expect': 'error',
+          'jest/valid-expect-in-promise': 'error'
+        }
+      }
+    ]
 }

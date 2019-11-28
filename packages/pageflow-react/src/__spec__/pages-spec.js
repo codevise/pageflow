@@ -11,10 +11,15 @@ import {call} from 'redux-saga/effects';
 import Backbone from 'backbone';
 import jQuery from 'jquery';
 
-import {expect} from 'support/chai';
 import sinon from 'sinon';
 
 describe('pages', () => {
+  let testContext;
+
+  beforeEach(() => {
+    testContext = {};
+  });
+
   const component = function() {
     return '';
   };
@@ -25,8 +30,8 @@ describe('pages', () => {
     const pages = new Backbone.Collection([pageModel]);
     const store = createStore([pagesModule], {pages});
 
-    expect(pageAttribute('type', {id: 5})(store.getState())).to.eq('video');
-    expect(pageAttribute('title', {id: 5})(store.getState())).to.eq('First page');
+    expect(pageAttribute('type', {id: 5})(store.getState())).toBe('video');
+    expect(pageAttribute('title', {id: 5})(store.getState())).toBe('First page');
   });
 
   it('supports page type state reducers', () => {
@@ -50,7 +55,7 @@ describe('pages', () => {
 
     const result = pageState('isPlaying', {id: 5})(store.getState());
 
-    expect(result).to.eq(true);
+    expect(result).toBe(true);
   });
 
   it('provides actions to update pages', () => {
@@ -65,7 +70,7 @@ describe('pages', () => {
       value: 'Updated'
     }));
 
-    expect(pageModel.configuration.get('title')).to.eq('Updated');
+    expect(pageModel.configuration.get('title')).toBe('Updated');
   });
 
   it('supports page type sagas', () => {
@@ -88,7 +93,7 @@ describe('pages', () => {
 
     store.dispatch(pageEnhance({id: 5}));
 
-    expect(spy).to.have.been.called;
+    expect(spy).toHaveBeenCalled();
   });
 
   describe('createPageType', () => {
@@ -105,43 +110,46 @@ describe('pages', () => {
 
       const result = pageIsActive({id: 5})(store.getState());
 
-      expect(result).to.eq(true);
+      expect(result).toBe(true);
     });
   });
 
   describe('connectInPage', () => {
-    beforeEach('given a collection of pages', function() {
+    beforeEach(() => {
       const pageModel = new Backbone.Model({perma_id: 5, template: 'video'});
       pageModel.configuration = new Backbone.Model();
 
-      this.pages = new Backbone.Collection([pageModel]);
+      testContext.pages = new Backbone.Collection([pageModel]);
     });
 
     describe('given a store synced with the collection', () => {
-      beforeEach(function() {
-        this.store = createStore([pagesModule], {pages: this.pages});
+      beforeEach(() => {
+        testContext.store = createStore([pagesModule], {pages: testContext.pages});
       });
 
-      it('allows to use selectors which refer to the surrounding page', function() {
-        const Component = function(props) {
-          return (<span>{props.pageIsPrepared ? 'prepared' : '-'}</span>);
-        };
-        const ComponentConntectedToPage = connectInPage(combine({
-          pageIsPrepared: pageIsPrepared()
-        }))(Component);
+      it(
+        'allows to use selectors which refer to the surrounding page',
+        () => {
+          const Component = function(props) {
+            return (<span>{props.pageIsPrepared ? 'prepared' : '-'}</span>);
+          };
+          const ComponentConntectedToPage = connectInPage(combine({
+            pageIsPrepared: pageIsPrepared()
+          }))(Component);
 
-        const pageType = createPageType({Component: ComponentConntectedToPage, store: this.store});
-        const element = pageElement({id: 5});
+          const pageType = createPageType({Component: ComponentConntectedToPage, store: testContext.store});
+          const element = pageElement({id: 5});
 
-        pageType.enhance(element);
-        pageType.prepare(element);
+          pageType.enhance(element);
+          pageType.prepare(element);
 
-        expect(element.text()).to.eq('prepared');
-      });
+          expect(element.text()).toBe('prepared');
+        }
+      );
     });
 
     describe('given a store with a page state reducer for the page type', () => {
-      beforeEach(function() {
+      beforeEach(() => {
         const pageTypes = new PageTypeRegistry();
         pageTypes.register('video', {
           component,
@@ -159,10 +167,10 @@ describe('pages', () => {
           }]
         });
 
-        this.store = createStore([pagesModule], {pages: this.pages, pageTypes});
+        testContext.store = createStore([pagesModule], {pages: testContext.pages, pageTypes});
       });
 
-      it('allows to dispatch page actions for the surrounding page', function() {
+      it('allows to dispatch page actions for the surrounding page', () => {
         const Component = class extends React.Component {
           componentDidMount() {
             this.props.onMount();
@@ -181,12 +189,12 @@ describe('pages', () => {
           })
         )(Component);
 
-        const pageType = createPageType({Component: ComponentConntectedToPage, store: this.store});
+        const pageType = createPageType({Component: ComponentConntectedToPage, store: testContext.store});
         const element = pageElement({id: 5});
 
         pageType.enhance(element);
 
-        expect(element.text()).to.eq('toggled');
+        expect(element.text()).toBe('toggled');
       });
     });
   });

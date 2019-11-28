@@ -12,7 +12,6 @@ import i18nModule from 'i18n';
 import Backbone from 'backbone';
 import createStore from 'createStore';
 
-import {expect} from 'support/chai';
 
 describe('textTracks selector', () => {
   beforeEach(() => {
@@ -82,8 +81,8 @@ describe('textTracks selector', () => {
       file: file('videoFiles', {id: videoFile1PermaId})
     })(state);
 
-    expect(result).to.have.deep.property('files[0].id', videoFile1TextTrackEnId);
-    expect(result).to.have.deep.property('files[1].id', videoFile1TextTrackDeId);
+    expect(result).toHaveProperty('files', 0, 'id', videoFile1TextTrackEnId);
+    expect(result).toHaveProperty('files', 1, 'id', videoFile1TextTrackDeId);
   });
 
   it('sets activeFileId to id of selected text track', () => {
@@ -96,7 +95,7 @@ describe('textTracks selector', () => {
       file: file('videoFiles', {id: videoFile1PermaId})
     })(state);
 
-    expect(result).to.have.deep.property('activeFileId', videoFile1TextTrackDeId);
+    expect(result).toHaveProperty('activeFileId', videoFile1TextTrackDeId);
   });
 
   it('sets activeFileId to id of text track with matching language', () => {
@@ -109,36 +108,42 @@ describe('textTracks selector', () => {
       file: file('videoFiles', {id: videoFile2PermaId})
     })(state);
 
-    expect(result).to.have.deep.property('activeFileId', videoFile2TextTrackDeId);
+    expect(result).toHaveProperty('activeFileId', videoFile2TextTrackDeId);
   });
 
-  it('sets activeFileId to id of text track given by defaultTextTrackFileId selector if non matches setting', () => {
-    const state = sample({
-      files,
-      selectedTextTrack: file('textTrackFiles', {id: videoFile1TextTrackEnPermaId}),
-    });
+  it(
+    'sets activeFileId to id of text track given by defaultTextTrackFileId selector if non matches setting',
+    () => {
+      const state = sample({
+        files,
+        selectedTextTrack: file('textTrackFiles', {id: videoFile1TextTrackEnPermaId}),
+      });
 
-    const result = textTracks({
-      file: file('videoFiles', {id: videoFile2PermaId}),
-      defaultTextTrackFileId: () => videoFile2TextTrackDePermaId
-    })(state);
+      const result = textTracks({
+        file: file('videoFiles', {id: videoFile2PermaId}),
+        defaultTextTrackFileId: () => videoFile2TextTrackDePermaId
+      })(state);
 
-    expect(result).to.have.deep.property('activeFileId', videoFile2TextTrackDeId);
-  });
+      expect(result).toHaveProperty('activeFileId', videoFile2TextTrackDeId);
+    }
+  );
 
-  it('sets activeFileId to falsy if defaultTextTrackFileId selector gives unknown id', () => {
-    const state = sample({
-      files,
-      selectedTextTrack: file('textTrackFiles', {id: videoFile1TextTrackEnPermaId}),
-    });
+  it(
+    'sets activeFileId to falsy if defaultTextTrackFileId selector gives unknown id',
+    () => {
+      const state = sample({
+        files,
+        selectedTextTrack: file('textTrackFiles', {id: videoFile1TextTrackEnPermaId}),
+      });
 
-    const result = textTracks({
-      file: file('videoFiles', {id: videoFile2PermaId}),
-      defaultTextTrackFileId: () => 8000
-    })(state);
+      const result = textTracks({
+        file: file('videoFiles', {id: videoFile2PermaId}),
+        defaultTextTrackFileId: () => 8000
+      })(state);
 
-    expect(result.activeFileId).to.be.falsy;
-  });
+      expect(result.activeFileId).toBeFalsy();
+    }
+  );
 
   it('sets activeFileId to null if kind is "off"', () => {
     const state = sample({
@@ -151,7 +156,7 @@ describe('textTracks selector', () => {
       defaultTextTrackFileId: () => videoFile2TextTrackDePermaId
     })(state);
 
-    expect(result.activeFileId).to.be.falsy;
+    expect(result.activeFileId).toBeFalsy();
   });
 
   it('sets activeFileId to id of of first captions if mute', () => {
@@ -165,7 +170,7 @@ describe('textTracks selector', () => {
       file: file('videoFiles', {id: videoFile1PermaId})
     })(state);
 
-    expect(result).to.have.deep.property('activeFileId', videoFile1TextTrackDeId);
+    expect(result).toHaveProperty('activeFileId', videoFile1TextTrackDeId);
   });
 
   it('sets activeFileId to id of of subtitles matching entry locale', () => {
@@ -178,7 +183,7 @@ describe('textTracks selector', () => {
       file: file('videoFiles', {id: videoFile1PermaId})
     })(state);
 
-    expect(result).to.have.deep.property('activeFileId', videoFile1TextTrackEnId);
+    expect(result).toHaveProperty('activeFileId', videoFile1TextTrackEnId);
   });
 
   it('adds displayLabel', () => {
@@ -188,7 +193,7 @@ describe('textTracks selector', () => {
       file: file('videoFiles', {id: videoFile1PermaId})
     })(state);
 
-    expect(result).to.have.deep.property('files[1].displayLabel', 'German');
+    expect(result).toHaveProperty(['files', 1, 'displayLabel'], 'German');
   });
 });
 

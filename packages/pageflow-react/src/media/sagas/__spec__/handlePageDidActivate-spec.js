@@ -6,7 +6,6 @@ import {mute as backgroundMediaMute, unmute as backgroundMediaUnmute} from 'back
 
 import {delay} from 'redux-saga';
 
-import {expect} from 'support/chai';
 import {runSagaInPageScope} from 'support/sagas';
 import sinon from 'sinon';
 
@@ -24,7 +23,7 @@ describe('handlePageDidActivate', () => {
     })
       .dispatch(pageDidActivate());
 
-    expect(run.put).to.have.been.calledWith(sinon.match({type: PREBUFFER}));
+    expect(run.put).toHaveBeenCalledWith(sinon.match({type: PREBUFFER}));
   });
 
   it('plays video once it is prebuffered', () => {
@@ -36,7 +35,7 @@ describe('handlePageDidActivate', () => {
       .dispatch(pageDidActivate())
       .dispatch(prebuffered());
 
-    expect(run.put).to.have.been.calledWith(sinon.match({type: PLAY}));
+    expect(run.put).toHaveBeenCalledWith(sinon.match({type: PLAY}));
   });
 
   it('does not play video once prebuffered if autoplay is false', () => {
@@ -49,7 +48,7 @@ describe('handlePageDidActivate', () => {
       .dispatch(pageDidActivate())
       .dispatch(prebuffered());
 
-    expect(run.put).not.to.have.been.calledWith(sinon.match({type: PLAY}));
+    expect(run.put).not.toHaveBeenCalledWith(sinon.match({type: PLAY}));
   });
 
   it('does not play video once prebuffered if background media muted', () => {
@@ -62,7 +61,7 @@ describe('handlePageDidActivate', () => {
       .dispatch(pageDidActivate())
       .dispatch(prebuffered());
 
-    expect(run.put).not.to.have.been.calledWith(sinon.match({type: PLAY}));
+    expect(run.put).not.toHaveBeenCalledWith(sinon.match({type: PLAY}));
   });
 
   it('supports option to play even if background media muted', () => {
@@ -78,10 +77,10 @@ describe('handlePageDidActivate', () => {
       .dispatch(pageDidActivate())
       .dispatch(prebuffered());
 
-    expect(run.put).to.have.been.calledWith(sinon.match({type: PLAY}));
+    expect(run.put).toHaveBeenCalledWith(sinon.match({type: PLAY}));
   });
 
-  describe('with retryOnUnmute option', function() {
+  describe('with retryOnUnmute option', () => {
     it('plays media once unmuted', () => {
       const run = runSagaInPageScope(handlePageDidActivate, {
         reduxModules: [backgroundMediaModule],
@@ -96,7 +95,7 @@ describe('handlePageDidActivate', () => {
         .dispatch(backgroundMediaUnmute())
         .dispatch(prebuffered());
 
-      expect(run.put).to.have.been.calledWith(sinon.match({type: PLAY}));
+      expect(run.put).toHaveBeenCalledWith(sinon.match({type: PLAY}));
     });
 
     it('does not retry if page has been deactivated', () => {
@@ -114,7 +113,7 @@ describe('handlePageDidActivate', () => {
         .dispatch(backgroundMediaUnmute())
         .dispatch(prebuffered());
 
-      expect(run.put).not.to.have.been.calledWith(sinon.match({type: PLAY}));
+      expect(run.put).not.toHaveBeenCalledWith(sinon.match({type: PLAY}));
     });
 
     it('does not retry if autoplay is false', () => {
@@ -132,7 +131,7 @@ describe('handlePageDidActivate', () => {
         .dispatch(backgroundMediaUnmute())
         .dispatch(prebuffered());
 
-      expect(run.put).not.to.have.been.calledWith(sinon.match({type: PLAY}));
+      expect(run.put).not.toHaveBeenCalledWith(sinon.match({type: PLAY}));
     });
   });
 
@@ -146,6 +145,6 @@ describe('handlePageDidActivate', () => {
       .dispatch(pageWillDeactivate())
       .dispatch(prebuffered());
 
-    expect(run.put).not.to.have.been.calledWith(sinon.match({type: PLAY}));
+    expect(run.put).not.toHaveBeenCalledWith(sinon.match({type: PLAY}));
   });
 });
