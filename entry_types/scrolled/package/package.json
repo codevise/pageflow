@@ -8,5 +8,12 @@
   "license": "MIT",
   "dependencies": {
     "pageflow": "15.1.0"
+  },
+  "devDependencies": {
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
