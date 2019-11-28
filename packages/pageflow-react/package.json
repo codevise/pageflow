@@ -4,17 +4,11 @@
   "description": "React/Redux based JavaScript.",
   "main": "src/index.js",
   "scripts": {
-    "start": "noreman development",
+    "start": "NODE_ENV=development webpack --watch --mode=development",
     "build": "NODE_ENV=production webpack --production --mode=production",
     "build-dev": "NODE_ENV=development webpack --mode=development",
     "test": "jest",
     "lint": "eslint src spec"
-  },
-  "processes": {
-    "development": {
-      "webpack": "NODE_ENV=development webpack --watch --mode=development",
-      "jest": "jest --watch"
-    }
   },
   "author": "Codevise Solutions GmbH <info@codevise.de>",
   "license": "MIT",
@@ -38,7 +32,6 @@
     "jest-sinon": "^1.0.1",
     "jquery": "^3.1.0",
     "lolex": "^1.6.0",
-    "noreman": "0.0.0",
     "react-addons-test-utils": "^0.14.7",
     "sinon": "^2.3.0",
     "underscore": "^1.8.3",
