@@ -1,5 +1,18 @@
 # CHANGELOG
 
+### Version 15.0.2
+
+2019-11-28
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.0.1...v15.0.2)
+
+- Change revision#locale to always return string
+  ([#1243](https://github.com/codevise/pageflow/pull/1243))
+- Add text track languages
+  ([#1244](https://github.com/codevise/pageflow/pull/1244))
+- Index seed entry data files by perma id
+  ([#1245](https://github.com/codevise/pageflow/pull/1245))
+
 ### Version 15.0.1
 
 2019-11-04
