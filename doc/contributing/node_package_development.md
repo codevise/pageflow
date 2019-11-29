@@ -10,9 +10,15 @@ readme. From the repository root run:
 ### Running the Test Suites
 
 The Jest test suites need to be run from the respective package
-roots. To run the specs from `packages/pageflow/spec`:
+roots. To run the specs from `./spec`:
 
     $ cd packages/pageflow
+    $ yarn test
+
+    $ cd entry_types/paged/packages/pageflow-paged
+    $ yarn test
+
+    $ cd packages/scrolled/package
     $ yarn test
 
 The `pageflow-react` contains co-located tests inside
@@ -23,13 +29,14 @@ The `pageflow-react` contains co-located tests inside
 
 ### Running Development Watchers
 
-To invoke the Rollup/Webpack build when changing files, run the following
-command from the respective package roots:
+To invoke the Rollup build when changing files, run the following
+command from the repository root:
 
-    $ cd packages/pageflow-react
     $ yarn start
 
-    $ cd packages/pageflow
+The Weback built for `pageflow-react` needs to be started separately:
+
+    $ cd packages/pageflow-react
     $ yarn start
 
 ### Building for Release
