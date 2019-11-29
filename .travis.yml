@@ -38,7 +38,6 @@ script:
   - bin/rspec
   - (cd packages/pageflow; yarn test)
   - (cd packages/pageflow-react; yarn test)
-  - bin/teaspoon
 
 after_success:
   - bundle exec publish-pageflow-theme-doc

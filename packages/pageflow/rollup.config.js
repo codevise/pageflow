@@ -43,6 +43,17 @@ const plugins = [
 
 export default [
   {
+    input: 'src/frontend/index.js',
+    output: {
+      file: '../../app/assets/javascripts/pageflow/dist/frontend.js',
+      format: 'iife',
+      name: 'pageflow',
+      globals
+    },
+    external,
+    plugins
+  },
+  {
     input: 'src/ui/index.js',
     output: {
       file: '../../app/assets/javascripts/pageflow/dist/ui.js',

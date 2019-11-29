@@ -1,1 +1,0 @@
-pageflow.events = _.extend({}, Backbone.Events);

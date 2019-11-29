@@ -1,4 +1,4 @@
-import Object from './ui/Object';
+import Object from './Object';
 
 export const EntryData = Object.extend({
   getThemingOption: function(name) {

@@ -7,12 +7,7 @@ gem 'rails', Pageflow::RailsVersion.detect
 
 gem 'pageflow-support', path: 'spec/support'
 
-# Ensure that teaspoon is required via Bundler.require inside the
-# dummy app. Otherwise teaspoon fails to initialize correctly.
-gem 'teaspoon-mocha', git: 'https://github.com/codevise/teaspoon', branch: 'pageflow'
-
 gem 'spring-commands-rspec', group: :development
-gem 'spring-commands-teaspoon', group: :development
 
 gem 'pageflow-theme-doc-publisher', git: 'https://github.com/tf/pageflow-theme-doc-publisher'
 
