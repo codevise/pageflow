@@ -5,6 +5,3 @@ javascript:
   ignore_file: .jshintignore
 scss:
   config_file: .scss-lint.yml
-eslint:
-  config_file: packages/pageflow-react/.eslintrc
-  ignore_file: .eslintignore
