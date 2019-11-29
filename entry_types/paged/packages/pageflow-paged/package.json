@@ -1,27 +1,24 @@
 {
-  "name": "pageflow",
-  "version": "15.1.0",
-  "description": "Multimedia storytelling for the web",
-  "module": "dist/index.js",
+  "name": "pageflow-paged",
+  "version": "0.1.0",
+  "description": "Page based Pageflow entry type.",
+  "main": "index.js",
   "repository": "https://github.com/codevise/pageflow",
   "author": "Codevise Solutions GmbH <info@codevise.de>",
   "license": "MIT",
+  "dependencies": {
+    "pageflow": "15.1.0"
+  },
   "devDependencies": {
     "babel-jest": "^24.9.0",
-    "eslint": "^6.6.0",
+    "eslint": "^6.7.1",
     "eslint-import-resolver-jest": "^3.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.0.4",
-    "jest": "^24.9.0",
-    "jest-jquery-matchers": "^2.1.0",
-    "jest-sinon": "^1.0.0",
-    "sinon": "^7.5.0"
+    "jest": "^24.9.0"
   },
   "scripts": {
     "test": "jest",
     "lint": "eslint ."
-  },
-  "dependencies": {
-    "core-js": "^3.4.1"
   }
 }

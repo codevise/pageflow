@@ -8,10 +8,6 @@ module.exports = {
     "plugin:import/errors",
     "plugin:import/warnings"
   ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
@@ -29,22 +25,16 @@ module.exports = {
   },
   "overrides": [
     {
-      "files": ["*.config.js", "spec/support/jest/*.js", "config/**/*.js"],
+      "files": ["*.config.js"],
       "env": {
         "node": true
       }
     },
     {
-      "files": ["src/frontend/**/*.js", "spec/frontend/**/*.js"],
-      "globals": {
-        "pageflow": true,
-        "videojs": true,
-        "Audio5js": true,
-        "PAGEFLOW_EDITOR": true
-      }
-    },
-    {
       "files": ["spec/**/*.js"],
+      "env": {
+        'jest/globals': true,
+      },
       "extends": ["plugin:jest/recommended"]
     }
   ]

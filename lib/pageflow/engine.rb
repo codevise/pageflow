@@ -27,6 +27,9 @@ require 'i18n-js'
 require 'http_accept_language'
 require 'pageflow-public-i18n'
 
+require 'pageflow_paged'
+require 'pageflow_scrolled'
+
 if Gem::Specification.find_all_by_name('pageflow-react', '>= 0.0').any?
   fail('The pageflow-react gem has been merged into the pageflow gem. ' \
        'See the pageflow changelog for update instructions.')

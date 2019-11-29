@@ -1,4 +1,11 @@
+const {moduleNameMapper, transform} = require('./config/jest')
+
 module.exports = {
+  // Required to make eslint-import-resolver-jest work with absolute
+  // paths in moduleNameMapper:
+  // https://github.com/JoinColony/eslint-import-resolver-jest/issues/55
+  rootDir: require('path').resolve(__dirname),
+
   testMatch: ["<rootDir>/spec/**/*spec.js"],
   globals: {
     pageflow: {},
@@ -11,20 +18,7 @@ module.exports = {
     "^\\$pageflow(.*)$": "<rootDir>/src$1",
     "^\\$state$": "<rootDir>/spec/support/state.js",
 
-    "^jquery$": "<rootDir>/src/vendor/jquery",
-    "^jquery-ui$": "<rootDir>/src/vendor/jquery-ui",
-    "^jquery.minicolors$": "<rootDir>/src/vendor/jquery.minicolors",
-    "^backbone.marionette$": "<rootDir>/src/vendor/backbone.marionette",
-    "^backbone.babysitter$": "<rootDir>/src/vendor/backbone.babysitter",
-    "^backbone$": "<rootDir>/src/vendor/backbone",
-    "^underscore$": "<rootDir>/src/vendor/underscore",
-    "^cocktail$": "<rootDir>/src/vendor/cocktail",
-    "^i18n-js$": "<rootDir>/src/vendor/i18n",
-    "^iscroll$": "<rootDir>/src/vendor/iscroll",
-    "^wysihtml5": "<rootDir>/spec/support/wysihtmlStub",
+    ...moduleNameMapper
   },
-  transform: {
-    "^.+\\.jst$": "<rootDir>/spec/support/jest/jst-transform",
-    "^.+\\.[t|j]sx?$": "babel-jest"
-  }
+  transform
 };
