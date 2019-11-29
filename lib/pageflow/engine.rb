@@ -29,6 +29,7 @@ require 'pageflow-public-i18n'
 
 require 'pageflow_paged'
 require 'pageflow_scrolled'
+require 'symmetric-encryption'
 
 if Gem::Specification.find_all_by_name('pageflow-react', '>= 0.0').any?
   fail('The pageflow-react gem has been merged into the pageflow gem. ' \

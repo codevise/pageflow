@@ -59,6 +59,14 @@ Pageflow::Engine.routes.draw do
           post :retry, on: :member
           put :publish, on: :member
         end
+
+        resources :file_import, :only => [:index] do
+          get :authenticate_importer
+          get :search
+          get :authentication_provider
+          post :files_meta_data
+          post :start_import_job
+        end
       end
 
       resources :subjects, path: '/subjects/:collection_name', only: [] do
