@@ -70,26 +70,7 @@ module Pageflow
       @entry_config = Pageflow.config_for(@entry)
     end
 
-    def update
-      @entry = DraftEntry.find(params[:id])
-
-      authorize!(:update, @entry.to_model)
-      @entry.update_meta_data!(entry_params)
-
-      head(:no_content)
-    end
-
     protected
-
-    def entry_params
-      params.require(:entry).permit(:title, :summary, :credits, :manual_start,
-                                    :home_url, :home_button_enabled,
-                                    :overview_button_enabled,
-                                    :emphasize_chapter_beginning, :emphasize_new_pages,
-                                    :share_url, :share_image_id, :share_image_x, :share_image_y,
-                                    :locale, :author, :publisher, :keywords, :theme_name,
-                                    share_providers: {})
-    end
 
     def entry_request_scope
       Pageflow.config.public_entry_request_scope.call(Entry, request)

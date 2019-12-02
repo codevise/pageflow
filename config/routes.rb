@@ -1,6 +1,6 @@
 Pageflow::Engine.routes.draw do
   constraints Pageflow.config(:ignore_not_configured => true).editor_route_constraint do
-    resources :entries, :only => [:edit, :update], :shallow => true do
+    resources :entries, only: [:edit], shallow: true do
       get :partials, :on => :member
 
       resources :revisions, :only => [:show] do
@@ -37,7 +37,7 @@ Pageflow::Engine.routes.draw do
     end
 
     namespace :editor do
-      resources :entries, only: [:index, :show], shallow: true do
+      resources :entries, only: [:index, :show, :update], shallow: true do
         get :seed, :on => :member
 
         resources :file_usages, :only => [:create, :destroy]
