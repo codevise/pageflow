@@ -40,7 +40,7 @@ module Pageflow
 
         file_reuse.save!
 
-        redirect_to(entry_url(entry))
+        redirect_to(editor_entry_url(entry))
       end
 
       def retry

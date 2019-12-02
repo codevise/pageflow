@@ -54,5 +54,47 @@ module Pageflow
         expect(response.status).to eq(401)
       end
     end
+
+    describe '#show' do
+      it 'responds with success for previewers of the entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        get(:show, params: {id: entry}, format: 'json')
+
+        expect(response.status).to eq(200)
+      end
+
+      it 'includes file usage ids in response' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        file = create(:image_file)
+        usage = create(:file_usage, file: file, revision: entry.draft)
+
+        sign_in(user, scope: :user)
+        get(:show, params: {id: entry}, format: 'json')
+
+        expect(json_response(path: [:image_files, 0, :usage_id])).to eq(usage.id)
+      end
+
+      it 'requires the signed in user to be previewer of the parent entry' do
+        user = create(:user)
+        entry = create(:entry)
+
+        sign_in(user, scope: :user)
+        get(:show, params: {id: entry}, format: 'json')
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'requires authentication' do
+        entry = create(:entry)
+
+        get(:show, params: {id: entry}, format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+    end
   end
 end

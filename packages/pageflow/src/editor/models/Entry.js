@@ -13,7 +13,7 @@ import {state} from '$state';
 
 export const Entry = Backbone.Model.extend({
   paramRoot: 'entry',
-  urlRoot: '/entries',
+  urlRoot: '/editor/entries',
   modelName: 'entry',
   i18nKey: 'pageflow/entry',
   collectionName: 'entries',

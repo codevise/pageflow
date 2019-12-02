@@ -37,7 +37,7 @@ Pageflow::Engine.routes.draw do
     end
 
     namespace :editor do
-      resources :entries, :only => :index, :shallow => true do
+      resources :entries, only: [:index, :show], shallow: true do
         get :seed, :on => :member
 
         resources :file_usages, :only => [:create, :destroy]

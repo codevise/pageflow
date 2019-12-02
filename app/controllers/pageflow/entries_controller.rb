@@ -42,11 +42,6 @@ module Pageflow
             @entry.share_target = @entry
           end
         end
-        format.json do
-          authenticate_user!
-          @entry = DraftEntry.find(params[:id])
-          authorize!(:show, @entry.to_model)
-        end
       end
     end
 

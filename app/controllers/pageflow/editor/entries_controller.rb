@@ -16,6 +16,11 @@ module Pageflow
 
         @entry_config = Pageflow.config_for(@entry)
       end
+
+      def show
+        @entry = DraftEntry.find(params[:id])
+        authorize!(:show, @entry.to_model)
+      end
     end
   end
 end
