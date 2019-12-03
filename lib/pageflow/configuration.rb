@@ -86,6 +86,11 @@ module Pageflow
     # @return [Themes]
     attr_reader :themes
 
+    # Register new types of entries.
+    # @return [EntryTypes]
+    # @since edge
+    attr_reader :entry_types
+
     # Register new types of pages.
     # @return [PageTypes]
     # @since 0.9
@@ -351,6 +356,7 @@ module Pageflow
       @hooks = Hooks.new
       @quotas = Quotas.new
       @themes = Themes.new
+      @entry_types = EntryTypes.new
       @page_types = PageTypes.new
       @file_types = FileTypes.new(page_types)
       @widget_types = WidgetTypes.new

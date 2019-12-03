@@ -60,6 +60,18 @@ module Pageflow
       end
     end
 
+    describe '#entry_type' do
+      it 'returns entry type' do
+        pageflow_configure do |config|
+          TestEntryType.register(config, name: 'test')
+        end
+
+        entry = create(:entry, type_name: 'test')
+
+        expect(entry.entry_type.name).to eq('test')
+      end
+    end
+
     context 'validation' do
       it 'ensures folder belongs to same account' do
         folder = build(:folder, account: build_stubbed(:account))
