@@ -3,8 +3,9 @@ Pageflow::Engine.routes.draw do
     resources :entries, only: [:edit], shallow: true do
       get :partials, :on => :member
 
-      resources :revisions, :only => [:show] do
-        delete :current, :to => 'revisions#depublish_current', :on => :collection
+      resources :revisions, only: [:show] do
+        get :stylesheet, on: :member
+        delete :current, to: 'revisions#depublish_current', on: :collection
       end
 
       resources :storylines, only: [:create, :update, :destroy] do
@@ -78,7 +79,9 @@ Pageflow::Engine.routes.draw do
   get ':entry_id/videos/:id', :to => 'files#show', :as => :short_video_file, :defaults => {:collection_name => 'video_files'}
   get ':entry_id/audio/:id', :to => 'files#show', :as => :short_audio_file, :defaults => {:collection_name => 'audio_files'}
 
-  resources :entries, :only => [:show]
+  resources :entries, only: [:show] do
+    get :stylesheet, on: :member
+  end
 
   get ':id', to: 'entries#show', as: :short_entry
   get ':id/embed', to: 'entries#show', defaults: {embed: '1'}, as: :entry_embed

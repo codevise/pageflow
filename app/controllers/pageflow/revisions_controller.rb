@@ -2,19 +2,27 @@ module Pageflow
   class RevisionsController < Pageflow::ApplicationController
     include QuotaVerification
 
-    before_action :authenticate_user!, :unless => lambda { |controller| controller.request.format.css? }
+    before_action :authenticate_user!, except: [:stylesheet]
 
     respond_to :json
 
     def show
       revision = Revision.find(params[:id])
-      authorize!(:show, revision) unless request.format.css?
+      authorize!(:show, revision)
 
       @entry = PublishedEntry.new(revision.entry, revision)
       I18n.locale = @entry.locale
 
       @widget_scope = :preview
-      render :template => 'pageflow/entries/show'
+      render template: 'pageflow/entries/show'
+    end
+
+    def stylesheet
+      revision = Revision.find(params[:id])
+
+      @entry = PublishedEntry.new(revision.entry, revision)
+
+      render template: 'pageflow/entries/stylesheet'
     end
 
     def depublish_current

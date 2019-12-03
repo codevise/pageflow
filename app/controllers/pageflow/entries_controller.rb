@@ -3,7 +3,7 @@ module Pageflow
     include PublicHttpsMode
     include EntryPasswordProtection
 
-    before_action :authenticate_user!, except: [:index, :show, :page]
+    before_action :authenticate_user!, except: [:index, :show, :stylesheet, :page]
 
     after_action :allow_iframe_for_embed, only: :show
 
@@ -22,7 +22,7 @@ module Pageflow
 
     def show
       respond_to do |format|
-        format.any(:html, :css) do
+        format.html do
           @entry = PublishedEntry.find(params[:id], entry_request_scope)
           I18n.locale = @entry.locale
 
@@ -31,16 +31,21 @@ module Pageflow
           end
 
           return if redirect_according_to_public_https_mode
-
-          if !request.format.css?
-            check_entry_password_protection(@entry)
-          end
+          check_entry_password_protection(@entry)
 
           if params[:page].present?
             @entry.share_target = @entry.pages.find_by_perma_id(params[:page])
           else
             @entry.share_target = @entry
           end
+        end
+      end
+    end
+
+    def stylesheet
+      respond_to do |format|
+        format.css do
+          @entry = PublishedEntry.find(params[:id], entry_request_scope)
         end
       end
     end

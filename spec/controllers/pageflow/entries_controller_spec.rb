@@ -389,64 +389,6 @@ module Pageflow
         end
       end
 
-      context 'with format css' do
-        include UsedFileTestHelper
-
-        it 'responds with success for published entry' do
-          entry = create(:entry, :published)
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.status).to eq(200)
-        end
-
-        it 'responds with success for entry published with password' do
-          entry = create(:entry, :published_with_password, password: 'abc123abc')
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.status).to eq(200)
-        end
-
-        it 'responds with not found for not published entry' do
-          entry = create(:entry)
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.status).to eq(404)
-        end
-
-        it 'includes image rules for image files' do
-          entry = PublishedEntry.new(create(:entry, :published))
-          image_file = create_used_file(:image_file, entry: entry)
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.body).to include(".image_#{image_file.perma_id}")
-          expect(response.body).to include("url('#{image_file.attachment.url(:large)}')")
-        end
-
-        it 'includes poster image rules for video files' do
-          entry = PublishedEntry.new(create(:entry, :published))
-          video_file = create_used_file(:video_file, entry: entry)
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.body).to include(".video_poster_#{video_file.perma_id}")
-          expect(response.body).to include("url('#{video_file.poster.url(:large)}')")
-        end
-
-        it 'includes panorama style group rules for image files' do
-          entry = PublishedEntry.new(create(:entry, :published))
-          image_file = create_used_file(:image_file, entry: entry)
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.body).to include(".image_panorama_#{image_file.perma_id}")
-          expect(response.body).to include("url('#{image_file.attachment.url(:panorama_large)}')")
-        end
-      end
-
       context 'with other known format' do
         it 'responds with not found' do
           get(:show, params: {id: 1}, format: 'png')
@@ -460,6 +402,66 @@ module Pageflow
           get(:show, params: {id: 1}, format: 'php')
 
           expect(response.status).to eq(404)
+        end
+      end
+    end
+
+    describe '#stylesheet' do
+      context 'with format css' do
+        include UsedFileTestHelper
+
+        it 'responds with success for published entry' do
+          entry = create(:entry, :published)
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.status).to eq(200)
+        end
+
+        it 'responds with success for entry published with password' do
+          entry = create(:entry, :published_with_password, password: 'abc123abc')
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.status).to eq(200)
+        end
+
+        it 'responds with not found for not published entry' do
+          entry = create(:entry)
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.status).to eq(404)
+        end
+
+        it 'includes image rules for image files' do
+          entry = PublishedEntry.new(create(:entry, :published))
+          image_file = create_used_file(:image_file, entry: entry)
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.body).to include(".image_#{image_file.perma_id}")
+          expect(response.body).to include("url('#{image_file.attachment.url(:large)}')")
+        end
+
+        it 'includes poster image rules for video files' do
+          entry = PublishedEntry.new(create(:entry, :published))
+          video_file = create_used_file(:video_file, entry: entry)
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.body).to include(".video_poster_#{video_file.perma_id}")
+          expect(response.body).to include("url('#{video_file.poster.url(:large)}')")
+        end
+
+        it 'includes panorama style group rules for image files' do
+          entry = PublishedEntry.new(create(:entry, :published))
+          image_file = create_used_file(:image_file, entry: entry)
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.body).to include(".image_panorama_#{image_file.perma_id}")
+          expect(response.body).to include("url('#{image_file.attachment.url(:panorama_large)}')")
         end
       end
     end
