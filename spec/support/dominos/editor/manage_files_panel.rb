@@ -8,7 +8,7 @@ module Dom
       end
 
       def reuse_file_menu_item
-        node.find('.select_button li:last-child a')
+        node.find('.select_button li a[data-index="1"]')
       end
 
       def request_file_reuse
