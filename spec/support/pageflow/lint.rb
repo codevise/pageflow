@@ -3,6 +3,7 @@ require 'pageflow/test_page_type'
 
 require 'pageflow/lint/file_type'
 require 'pageflow/lint/page_type'
+require 'pageflow/lint/file_import'
 
 module Pageflow
   # Shared examples providing integration level specs for Pageflow
@@ -53,6 +54,19 @@ module Pageflow
     #   end
     def self.page_type(*args)
       Lint::PageType.lint(*args)
+    end
+
+    # Contracts specs for file import plugin
+    # @example
+    #
+    #   require 'spec_helper'
+    #   require 'pageflow/lint'
+    #
+    #   module SomePlugin
+    #     Pageflow::Lint.file_import(SomePLugin.file_import)
+    #   end
+    def self.file_import(*args)
+      Lint::FileImport.lint(*args)
     end
   end
 end

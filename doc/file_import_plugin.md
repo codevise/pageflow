@@ -33,7 +33,8 @@ should provide the implementation of the following methods:
    This method is optional but it's very important if file importer requires authentication. This
    method should return the name of authentication provider e.g. in case of facebook it should return
    `:facebook`. XYZ has its simple authentication which requires the authorization header to be included in
-   all the API calls, so that's why we will not use pageflow oauth based authentication provider.
+   all the API calls, so that's why we will not use pageflow oauth based authentication provider. For more 
+   details you can read about [Authentication Provider](./authentication_provider.md)
 2. **search(credentials, params)**
    This method should return the list representing the files against search query present in params.
    If authentication is required to talk to the provider then credentials will contain the access token,

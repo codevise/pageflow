@@ -89,7 +89,11 @@ module Pageflow
         token = AuthenticationToken.find_auth_token(current_user, authentication_provider) if
           authentication_provider.present?
         unless token.nil?
-          token = nil if token.empty?
+          if token.empty?
+            token = nil
+          else
+            token = token.first.auth_token
+          end
         end
         token
       end

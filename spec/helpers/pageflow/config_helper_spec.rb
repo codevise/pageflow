@@ -46,6 +46,12 @@ module Pageflow
 
         expect(result['editLockPollingIntervalInSeconds']).to eq(5)
       end
+
+      it 'includes file importers data' do
+        result = JSON.parse(helper.editor_config_seeds)
+        file_importers = result['fileImporters']
+        expect(file_importers).to be
+      end
     end
   end
 end
