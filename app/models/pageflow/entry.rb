@@ -52,6 +52,10 @@ module Pageflow
       theming.copy_defaults_to(draft)
     end
 
+    def entry_type
+      Pageflow.config_for(self).entry_types.find_by_name!(type_name)
+    end
+
     def edit_lock
       super || EditLock::Null.new(self)
     end

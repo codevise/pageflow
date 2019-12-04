@@ -7,6 +7,7 @@ module Pageflow
     attr_accessor :share_target
 
     delegate(:id, :slug,
+             :entry_type,
              :account, :theming,
              :enabled_feature_names,
              :to_model, :to_key, :persisted?,

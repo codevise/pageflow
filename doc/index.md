@@ -11,6 +11,7 @@ extend Pageflow.
 
 * [Understanding Plugins and Features](./understanding_plugins_and_features.md)
 * [Creating a Rails Engine for a Pageflow Plugin](creating_a_pageflow_plugin_rails_engine.md)
+* [Creating Entry Types](./creating_entry_types.md)
 * [Creating File Types](./creating_file_types.md)
 * [Creating Page types](./creating_page_types.md)
 * [Adding common page configuration tabs](./adding_common_page_configuration_tabs.md)
