@@ -1,11 +1,6 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-%w[paged scrolled].each do |engine_name|
-  engine_lib = File.expand_path("entry_types/#{engine_name}/lib", __dir__)
-  $LOAD_PATH.unshift(engine_lib) unless $LOAD_PATH.include?(engine_lib)
-end
-
 require 'pageflow/version'
 
 Gem::Specification.new do |s|
@@ -20,7 +15,7 @@ Gem::Specification.new do |s|
   s.files = Dir['{admins,app,config,db,entry_types,lib,vendor,spec/factories,spec/fixtures}/**/*',
                 'MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
 
-  s.require_paths = ['lib']
+  s.require_paths = ['lib', 'entry_types/paged/lib', 'entry_types/scrolled/lib']
 
   s.add_dependency 'rails', '~> 5.2.0'
 
