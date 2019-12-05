@@ -1,7 +1,7 @@
 require 'capybara/rspec'
 require 'selenium-webdriver'
 require 'capybara/chromedriver/logger'
-require 'chromedriver-helper'
+require 'webdrivers/chromedriver'
 
 Capybara.register_driver :selenium_chrome_headless_no_sandbox do |app|
   browser_options = ::Selenium::WebDriver::Chrome::Options.new
