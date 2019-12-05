@@ -86,7 +86,7 @@ Pageflow.configure do |config|
     skip_smil: true
   )
 
-  # Symmetric Encryption config options
+  # Used to encrypt stored access tokens.
   config.encryption_options.merge!(
     key: ENV.fetch('SYMMETRIC_ENC_KEY', '1234567890ABCDEF'),
     iv: ENV.fetch('SYMMETRIC_ENC_IV', '1234567890ABCDEF')

@@ -22,6 +22,7 @@ extend Pageflow.
 
 ### Integrations
 
+* [Using OmniAuth to authenticate with third party APIs](./using_omniauth_to_authenticate_with_third_party_apis.md)
 * [Using Krant to display broadcast messages and news](./using_krant_to_display_broadcast_messages_and_news.md)
 
 ### Contributing
