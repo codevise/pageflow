@@ -26,6 +26,8 @@ module Pageflow
     has_many :video_files
     has_many :audio_files
 
+    has_many :imports, class_name: 'Pageflow::FileImport', dependent: :destroy
+
     has_one :draft, -> { editable }, :class_name => 'Revision'
     has_one :published_revision, -> { published }, :class_name => 'Revision'
 

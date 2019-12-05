@@ -19,9 +19,7 @@ module Pageflow
       token.user_id = user_id
       token.provider = auth_provider
       token.auth_token = auth_token
-      if expiry_time.present? && expiry_time.is_a?(Integer)
-        token.expiry_time = Time.at(expiry_time)
-      end
+      token.expiry_time = Time.at(expiry_time) if expiry_time.present? && expiry_time.is_a?(Integer)
       token.save!
       token
     end

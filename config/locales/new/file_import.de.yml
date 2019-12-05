@@ -1,0 +1,9 @@
+de:
+  pageflow:
+    editor:
+      views:
+        files_view:
+          import: Importieren
+          authenticating: Authentifizieren
+          importer:
+            heading: Dateien importieren von

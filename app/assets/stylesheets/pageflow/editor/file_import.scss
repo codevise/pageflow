@@ -1,0 +1,111 @@
+
+.choose_importer_box {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  bottom: 20px;
+  right: 20px;
+  max-width: 1100px;
+  height: 70vh;
+
+  .content {
+    display: table;
+    height: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+
+    .close {
+      @include icon-button(#888);
+    }
+  }
+}
+
+.importers_panel {
+  display: table-row;
+
+  li.importer_select {
+    display: table-cell;
+    vertical-align: middle;
+
+    button.importer {
+      padding: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  }
+}
+
+.importer .logo {
+  display: inline-block;
+  margin-right: 10px;
+
+  img {
+    width: 50px;
+  }
+}
+
+.importer .text {
+  display: inline-block;
+  text-align: left;
+  vertical-align: super;
+}
+
+.file_importer_box {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  bottom: 20px;
+  right: 20px;
+  max-width: 1100px;
+  height: 70vh;
+
+  .content_panel {
+    width: 100%;
+  }
+
+  .footer {
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+
+    .import {
+      @include icon-button();
+    }
+
+    .close {
+      @include icon-button(#888);
+    }
+  }
+
+  .disclaimer {
+    @include info-circled-icon;
+    text-align: left;
+    font-size: 25px;
+    position: absolute;
+    left: 44px;
+    width: 25px;
+    height: 30px;
+    overflow: hidden;
+    top: -3px;
+    background-color: #a9a9a959;
+
+    &:hover {
+      width: 75%;
+    }
+
+    p {
+      position: absolute;
+      top: 5px;
+      left: 30px;
+      font-size: 0.4em;
+    }
+  }
+}

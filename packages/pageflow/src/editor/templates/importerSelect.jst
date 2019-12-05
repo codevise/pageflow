@@ -1,0 +1,9 @@
+<button class='importer' data-key='<%= data.fileImporter.key %>'>
+  <div class="logo">
+    <img alt="Free high resolution images" src="<%= data.fileImporter.logoSource %>">
+  </div>
+  <div class="text">
+    <h3 class="name"><%= I18n.t('pageflow.editor.file_importers.'+data.fileImporter.key+'.select_title')%></h3>
+    <p class="select_label"><%= I18n.t('pageflow.editor.file_importers.'+data.fileImporter.key+'.select_label')%></p>
+  </div>
+</button>

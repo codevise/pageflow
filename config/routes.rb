@@ -59,6 +59,10 @@ Pageflow::Engine.routes.draw do
           post :retry, on: :member
           put :publish, on: :member
         end
+
+        get '/file_import/:file_import_name/search' => 'file_import#search'
+        post '/file_import/:file_import_name/files_meta_data' => 'file_import#files_meta_data'
+        post '/file_import/:file_import_name/start_import_job' => 'file_import#start_import_job'
       end
 
       resources :subjects, path: '/subjects/:collection_name', only: [] do
@@ -83,5 +87,6 @@ Pageflow::Engine.routes.draw do
 
   get ':id/pages/:page_index', to: 'entries#page'
 
+  # Authentication provider call back
   get '/auth/:provider/callback', to: 'users/omniauth_callbacks#auth_callback'
 end

@@ -22,3 +22,4 @@
 @mixin font-bold-icon           { @include fontawesome-icon("\f032");   }
 @mixin font-list-ol-icon        { @include fontawesome-icon("\f0cb");   }
 @mixin font-list-ul-icon        { @include fontawesome-icon("\f0ca");   }
+@mixin font-check-square        { @include fontawesome-icon("\f046");   }
