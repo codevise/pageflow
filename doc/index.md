@@ -14,6 +14,7 @@ extend Pageflow.
 * [Creating Entry Types](./creating_entry_types.md)
 * [Creating File Types](./creating_file_types.md)
 * [Creating Page types](./creating_page_types.md)
+* [Creating file importers](./creating_file_importers.md)
 * [Adding common page configuration tabs](./adding_common_page_configuration_tabs.md)
 * [Creating Widget types](./creating_widget_types.md)
 * [Extending Admin Resources](./extending_admin_resources.md)
