@@ -82,4 +82,6 @@ Pageflow::Engine.routes.draw do
   get '/', to: 'entries#index', as: :public_root
 
   get ':id/pages/:page_index', to: 'entries#page'
+
+  get '/auth/:provider/callback', to: 'users/omniauth_callbacks#auth_callback'
 end

@@ -123,6 +123,9 @@ Gem::Specification.new do |s|
   # Files archiver for entry export
   s.add_dependency 'rubyzip', '~> 1.2'
 
+  # string encryptor/decryptor
+  s.add_dependency 'symmetric-encryption', '~> 4.3.1'
+
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2', '~> 0.5.2'
 
@@ -184,4 +187,7 @@ Gem::Specification.new do |s|
 
   # Scss code linter
   s.add_development_dependency 'scss_lint', '~> 0.50.0'
+
+  # For oauth authentication
+  s.add_development_dependency 'omniauth', '~> 1.9'
 end

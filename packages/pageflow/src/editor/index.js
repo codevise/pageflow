@@ -59,6 +59,8 @@ export * from './models/mixins/polling';
 export * from './models/Entry';
 export * from './models/FileConfiguration';
 export * from './models/FileStage';
+export * from './models/authenticationProvider';
+
 export * from './collections/ChaptersCollection';
 export * from './collections/SubsetCollection';
 export * from './collections/StorylineChaptersCollection';

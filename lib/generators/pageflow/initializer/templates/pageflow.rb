@@ -86,6 +86,12 @@ Pageflow.configure do |config|
     skip_smil: true
   )
 
+  # Used to encrypt stored access tokens.
+  config.encryption_options.merge!(
+    key: ENV.fetch('SYMMETRIC_ENC_KEY', '1234567890ABCDEF'),
+    iv: ENV.fetch('SYMMETRIC_ENC_IV', '1234567890ABCDEF')
+  )
+
   # Specify default meta tags to use in published stories.
   # These defaults will be included in the page <head> unless overriden by the Entry.
   # If you set these to <tt>nil</tt> or <tt>""</tt> the meta tag won't be included.
