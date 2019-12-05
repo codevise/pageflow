@@ -1,7 +1,7 @@
 module Pageflow
   # A collection of {EntryType} objects.
   #
-  # @since edge
+  # @since 15.1
   class EntryTypes
     # @api private
     def initialize

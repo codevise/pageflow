@@ -92,7 +92,7 @@ module Pageflow
 
     # Register new types of entries.
     # @return [EntryTypes]
-    # @since edge
+    # @since 15.1
     attr_reader :entry_types
 
     # Register new types of pages.

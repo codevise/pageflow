@@ -1,7 +1,7 @@
 module Pageflow
   # Captures details of how to render entries of a certain type
   #
-  # @since edge
+  # @since 15.1
   class EntryType
     # @api private
     attr_reader :name
