@@ -32,4 +32,4 @@ load File.expand_path('lib/tasks/pageflow_tasks.rake', File.dirname(__FILE__))
 
 Bundler::GemHelper.install_tasks
 
-task 'release:prepare' => 'pageflow:node_package:build'
+task 'release:prepare' => 'pageflow:packages:build'

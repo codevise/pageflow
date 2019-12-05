@@ -5,10 +5,10 @@ namespace :pageflow do
     Pageflow::Dummy.setup
   end
 
-  namespace :node_package do
-    desc 'Build node package'
+  namespace :packages do
+    desc 'Build JavaScript packages'
     task :build do
-      system('bin/npm ci && bin/npm run build')
+      system('yarn install --frozen-lockfile && bin/build-packages ')
     end
   end
 
