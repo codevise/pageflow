@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 15.1.0.beta2
+
+2019-12-05
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.1.0.beta1...v15.1.0.beta2)
+
+- Exclude entry type spec dummy directories from gem which were
+  included by accident and multiplied the gem file size.
+
 ### Version 15.1.0.beta1
 
 2019-12-05
