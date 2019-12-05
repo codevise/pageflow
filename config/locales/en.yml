@@ -1375,6 +1375,10 @@ en:
           blank: "-"
         files_view:
           add: Add
+          authenticating: Authenticating
+          import: Import
+          importer:
+            heading: Import files from
           reuse: Reuse
           upload: Upload
         filtered_files_view:
@@ -1713,17 +1717,24 @@ en:
       el: Greek
       en: English
       es: Spanish
+      fi: Finnish
       fr: French
       fy: Frisian
       hi: Hindi
       it: Italian
+      ja: Japanese
       lb: Letzeburgesch
+      nb: Norsk Bokmål
       nl: Dutch
+      nn: Norsk Nynorsk
+      'no': Norsk
       pl: Polish
       pt: Portuguese
       rm: Romansh
       ru: Russian
+      se: Northern Sami
       sr: Serbian
+      sv: Swedish
       tr: Turkish
       unknown: "(Unknown)"
       zh: Chinese

@@ -1375,6 +1375,10 @@ de:
           blank: "-"
         files_view:
           add: Hinzufügen
+          authenticating: Authentifizieren
+          import: Importieren
+          importer:
+            heading: Dateien importieren von
           reuse: Wiederverwenden
           upload: Hochladen
         filtered_files_view:
@@ -1741,17 +1745,24 @@ de:
       el: Griechisch
       en: Englisch
       es: Spanisch
+      fi: Finnisch
       fr: Französisch
       fy: Friesisch
       hi: Hindi
       it: Italienisch
+      ja: Japanisch
       lb: Luxemburgisch
+      nb: Bokmål
       nl: Holländisch
+      nn: Nynorsk
+      'no': Norwegisch
       pl: Polnisch
       pt: Portugiesisch
       rm: Rätoromanisch
       ru: Russisch
+      se: Nordsamisch
       sr: Serbisch
+      sv: Schwedisch
       tr: Türkisch
       unknown: "(Unbekannt)"
       zh: Chinesisch

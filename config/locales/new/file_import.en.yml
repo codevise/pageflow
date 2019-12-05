@@ -1,9 +1,0 @@
-en:
-  pageflow:
-    editor:
-      views:
-        files_view:
-          import: Import
-          authenticating: Authenticating
-          importer:
-            heading: Import files from
