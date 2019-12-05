@@ -12,7 +12,8 @@ Gem::Specification.new do |s|
   s.summary     = 'Multimedia story telling for the web.'
   s.license     = 'MIT'
 
-  s.files = Dir['{admins,app,config,db,entry_types,lib,vendor,spec/factories,spec/fixtures}/**/*',
+  s.files = Dir['{,entry_types/*/}' \
+                '{admins,app,config,db,lib,vendor,spec/factories,spec/fixtures}/**/*',
                 'MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
 
   s.require_paths = ['lib', 'entry_types/paged/lib', 'entry_types/scrolled/lib']
