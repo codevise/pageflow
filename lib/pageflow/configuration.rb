@@ -100,7 +100,8 @@ module Pageflow
     # @since 0.9
     attr_reader :page_types
 
-    # List of {FileType} instances provided by page types.
+    # List of {FileType} instances.
+    # Can be registered globally or provided by page types.
     # @return [FileTypes]
     attr_reader :file_types
 
@@ -368,7 +369,7 @@ module Pageflow
       @themes = Themes.new
       @entry_types = EntryTypes.new
       @page_types = PageTypes.new
-      @file_types = FileTypes.new(page_types)
+      @file_types = FileTypes.new
       @widget_types = WidgetTypes.new
       @file_importers = FileImporters.new
       @help_entries = HelpEntries.new

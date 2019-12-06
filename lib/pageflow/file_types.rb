@@ -2,12 +2,20 @@ module Pageflow
   class FileTypes
     include Enumerable
 
-    def initialize(page_types)
-      @page_types = page_types
+    def initialize
+      @file_types = []
+    end
+
+    def register(file_type)
+      @file_types << file_type
+    end
+
+    def clear
+      @file_types = []
     end
 
     def each(&block)
-      first_level_file_types = @page_types.map(&:file_types).flatten
+      first_level_file_types = @file_types
       lower_level_file_types = search_for_nested_file_types(first_level_file_types)
       (first_level_file_types + lower_level_file_types).uniq(&:model).each(&block)
     end
