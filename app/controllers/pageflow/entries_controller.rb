@@ -83,7 +83,7 @@ module Pageflow
     end
 
     def delegate_to_entry_type_frontend_app!(entry)
-      EntriesControllerEnvHelper.add_published_entry_to_env(request.env, entry)
+      EntriesControllerEnvHelper.add_entry_info_to_env(request.env, entry: entry, mode: :published)
 
       delegate_to_rack_app!(entry.entry_type.frontend_app) do |_status, headers, _body|
         allow_iframe_for_embed(headers)

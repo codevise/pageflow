@@ -37,10 +37,11 @@ module Pageflow
       let(:entry_type_app) do
         lambda do |env|
           entry = EntriesControllerEnvHelper.get_published_entry_from_env(env)
+          mode = EntriesControllerEnvHelper.get_entry_mode_from_env(env)
 
           ['200',
            {'Content-Type' => 'text/html'},
-           ["#{entry.title} rendered by entry type frontend app."]]
+           ["#{entry.title} #{mode} rendered by entry type frontend app."]]
         end
       end
 
@@ -58,7 +59,7 @@ module Pageflow
         get(short_entry_url(entry))
 
         expect(response.status).to eq(200)
-        expect(response.body).to include('some-entry rendered by entry type frontend app')
+        expect(response.body).to include('some-entry published rendered by entry type frontend app')
       end
 
       it 'responds with not found for non-published entry' do

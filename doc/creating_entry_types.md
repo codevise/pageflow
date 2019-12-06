@@ -60,7 +60,21 @@ def entry_type
 end
 ```
 
-Pageflow can use any Rack app to render the entry.
+Pageflow can use any Rack app to render the entry. Pagefow also stores
+a symbol on the request env which indicates whether currently a
+preview or a publicly available site is rendered:
+
+```
+module Rainbow
+  class EntriesController < ActionController::Base
+    include Pageflow::EntriesControllerEnvHelper
+
+    def show
+      @mode = get_entry_mode_from_env # => either :published or :preview
+    end
+  end
+end
+```
 
 There is also a test helper to invoke your controller action the same
 way Pageflow does:
@@ -76,7 +90,7 @@ module Rainbow
     describe '#show' do
       entry = create(:entry, :published)
 
-      get_with_entry_env(:show, entry: entry, params: {some: 'param'})
+      get_with_entry_env(:show, entry: entry, mode: :published, params: {some: 'param'})
 
       expect(response.body).to include(/something/)
     end

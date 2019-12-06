@@ -13,17 +13,32 @@ module Pageflow
     # Use {EntriesControllerTestHelper} to set up the request
     # environment in controller tests.
     def get_published_entry_from_env(env = request.env)
-      pageflow_hash = env.fetch('pageflow') do
-        throw('Missing pageflow key in request env. Use Pageflow::EntriesControllerTestHelper ' \
-              'to set it in controller tests.')
-      end
+      EntriesControllerEnvHelper.get_pageflow_hash(env)['published_entry']
+    end
 
-      pageflow_hash['published_entry']
+    # Returns `:preview` if a signed in user is currently viewing the
+    # entry via the preview feature. Returns `:published` if the entry
+    # is rendered on a publicly available site.  The information will
+    # be placed in the request env by the Pageflow engine before
+    # delegating to the entry type's frontend app.
+    #
+    # Use {EntriesControllerTestHelper} to set up the request
+    # environment in controller tests.
+    def get_entry_mode_from_env(env = request.env)
+      EntriesControllerEnvHelper.get_pageflow_hash(env)['entry_mode']
     end
 
     # @api private
-    def add_published_entry_to_env(env, entry)
-      env['pageflow'] = {'published_entry' => entry}
+    def self.add_entry_info_to_env(env, entry:, mode: nil)
+      env['pageflow'] = {'published_entry' => entry, 'entry_mode' => mode}
+    end
+
+    # @api private
+    def self.get_pageflow_hash(env)
+      env.fetch('pageflow') do
+        throw('Missing pageflow key in request env. Use Pageflow::EntriesControllerTestHelper ' \
+              'to set it in controller tests.')
+      end
     end
   end
 end

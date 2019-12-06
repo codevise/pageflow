@@ -22,13 +22,28 @@ module Pageflow
       end
     end
 
-    # Invoke the show action of the entries controller with the
-    # request env set up just like when Pageflow calls the
-    # controller as a .
-    def get_with_entry_env(action, entry:, params: {})
-      published_entry = PublishedEntry.new(entry, entry.published_revision)
-      EntriesControllerEnvHelper.add_published_entry_to_env(request.env, published_entry)
+    # Invoke an action of the entries controller with the request env
+    # set up just like when Pageflow delegates to the entry type's
+    # frontend app.
+    #
+    # @param action [Symbol] Name of the action to invoke
+    #
+    # @param entry [Entry] Entry to render.
+    #
+    # @param mode [:published|:preview] Whether to render the
+    #   published revision or the draft.
+    def get_with_entry_env(action, entry:, mode: :published, params: {})
+      revision =
+        if mode == :published
+          entry.published_revision
+        else
+          entry.draft
+        end
 
+      published_entry = PublishedEntry.new(entry, revision)
+      EntriesControllerEnvHelper.add_entry_info_to_env(request.env,
+                                                       entry: published_entry,
+                                                       mode: mode)
       get(action, params: {**params})
     end
   end

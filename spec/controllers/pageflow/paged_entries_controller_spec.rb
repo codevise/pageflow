@@ -52,7 +52,7 @@ module Pageflow
         expect(response.body).to have_selector('body > div.test_widget')
       end
 
-      it 'renders widgets which are disabled in editor and preview' do
+      it 'renders widgets which are disabled in editor and preview in published mode' do
         widget_type = TestWidgetType.new(name: 'test_widget',
                                          enabled_in_editor: false,
                                          enabled_in_preview: false,
@@ -65,9 +65,50 @@ module Pageflow
         entry = create(:entry, :published)
         create(:widget, subject: entry.published_revision, type_name: 'test_widget')
 
-        get_with_entry_env(:show, entry: entry)
+        get_with_entry_env(:show, entry: entry, mode: :published)
 
         expect(response.body).to have_selector('div.test_widget')
+      end
+
+      context 'in preview mode' do
+        it 'renders widgets which are enabled in preview' do
+          widget_type =
+            TestWidgetType.new(name: 'test_widget',
+                               enabled_in_preview: true,
+                               rendered_head_fragment: '<meta name="some_test" content="value">',
+                               rendered: '<div class="test_widget"></div>')
+
+          pageflow_configure do |config|
+            config.widget_types.register(widget_type)
+          end
+
+          entry = create(:entry)
+          create(:widget, subject: entry.draft, type_name: 'test_widget')
+
+          get_with_entry_env(:show, entry: entry, mode: :preview)
+
+          expect(response.body).to have_selector('div.test_widget')
+          expect(response.body).to have_meta_tag.with_name('some_test')
+        end
+
+        it 'does not render widgets which are disabled in preview' do
+          widget_type =
+            TestWidgetType.new(name: 'test_widget',
+                               enabled_in_preview: false,
+                               rendered_head_fragment: '<meta name="some_test" content="value">',
+                               rendered: '<div class="test_widget"></div>')
+
+          pageflow_configure do |config|
+            config.widget_types.register(widget_type)
+          end
+
+          entry = create(:entry)
+          create(:widget, subject: entry.draft, type_name: 'test_widget')
+
+          get_with_entry_env(:show, entry: entry, mode: :preview)
+
+          expect(response.body).not_to have_selector('div.test_widget')
+        end
       end
 
       it 'renders widget\'s head fragments for entry' do

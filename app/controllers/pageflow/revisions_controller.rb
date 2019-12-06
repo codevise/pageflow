@@ -1,5 +1,6 @@
 module Pageflow
   class RevisionsController < Pageflow::ApplicationController
+    include ControllerDelegation
     include QuotaVerification
 
     before_action :authenticate_user!, except: [:stylesheet]
@@ -10,11 +11,8 @@ module Pageflow
       revision = Revision.find(params[:id])
       authorize!(:show, revision)
 
-      @entry = PublishedEntry.new(revision.entry, revision)
-      I18n.locale = @entry.locale
-
-      @widget_scope = :preview
-      render template: 'pageflow/entries/show'
+      entry = PublishedEntry.new(revision.entry, revision)
+      delegate_to_entry_type_frontend_app!(entry)
     end
 
     def stylesheet
@@ -37,6 +35,11 @@ module Pageflow
 
     def revision_params
       params.fetch(:revision, {}).permit(:published_until)
+    end
+
+    def delegate_to_entry_type_frontend_app!(entry)
+      EntriesControllerEnvHelper.add_entry_info_to_env(request.env, entry: entry, mode: :preview)
+      delegate_to_rack_app!(entry.entry_type.frontend_app)
     end
   end
 end
