@@ -104,6 +104,11 @@ module Pageflow
     # @return [FileTypes]
     attr_reader :file_types
 
+    # Used to register components whose current state must be
+    # persisted as part of a revision.
+    # @return [RevisionComponents]
+    attr_reader :revision_components
+
     # Used to register new types of widgets to be displayed in entries.
     # @return [WidgetTypes]
     attr_reader :widget_types
@@ -372,6 +377,7 @@ module Pageflow
       @widget_types = WidgetTypes.new
       @file_importers = FileImporters.new
       @help_entries = HelpEntries.new
+      @revision_components = RevisionComponents.new
 
       @thumbnail_styles = Defaults::THUMBNAIL_STYLES.dup
       @css_rendered_thumbnail_styles = Defaults::CSS_RENDERED_THUMBNAIL_STYLES.dup
@@ -435,10 +441,6 @@ module Pageflow
 
     def paperclip_filesystem_root=(_val)
       ActiveSupport::Deprecation.warn('Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller)
-    end
-
-    def revision_components
-      page_types.map(&:revision_components).flatten.uniq
     end
 
     # @api private

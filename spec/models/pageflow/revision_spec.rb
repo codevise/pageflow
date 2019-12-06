@@ -167,7 +167,7 @@ module Pageflow
 
       context 'with registered RevisionComponent' do
         it 'copies registered RevisionComponents' do
-          TestRevisionComponent.register(Pageflow.config)
+          Pageflow.config.revision_components.register(TestRevisionComponent)
           revision = create(:revision)
           TestRevisionComponent.create!(revision: revision)
 

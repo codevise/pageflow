@@ -78,6 +78,16 @@ module Pageflow
         expect(config.help_entries.count).to eq(1)
         expect(config.help_entries.flat.count).to eq(2)
       end
+
+      it 'registers revision components' do
+        config = Configuration.new
+        page_types = config.page_types
+        page_types.register(TestPageType.new(name: 'test', revision_components: [:the_comp]))
+
+        page_types.setup(config)
+
+        expect(config.revision_components.to_a).to eq([:the_comp])
+      end
     end
   end
 end

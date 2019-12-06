@@ -209,7 +209,7 @@ module Pageflow
 
       it 'preserves revision components' do
         pageflow_configure do |config|
-          TestRevisionComponent.register(config)
+          config.revision_components.register(TestRevisionComponent)
         end
 
         exported_revision = create(:revision)

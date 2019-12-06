@@ -37,6 +37,10 @@ module Pageflow
       each do |page_type|
         config.help_entries.register(page_type.help_entry_translation_key,
                                      parent: 'pageflow.help_entries.page_types')
+
+        page_type.revision_components.each do |component|
+          config.revision_components.register(component)
+        end
       end
     end
 

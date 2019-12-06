@@ -27,24 +27,20 @@ module Pageflow
     end
 
     describe '#revision_components' do
-      it 'returns all RevisionComponents of registered PageTypes' do
+      it 'returns all revision components' do
         conf = Configuration.new
-        conf.page_types.register(TestPageType.new(name: 'test',
-                                                  revision_components: [:component1]))
-        conf.page_types.register(TestPageType.new(name: 'test',
-                                                  revision_components: [:component2]))
+        conf.revision_components.register(:component)
 
-        expect(conf.revision_components).to eq([:component1, :component2])
+        expect(conf.revision_components.to_a).to eq([:component])
       end
 
-      it 'does not return duplicate RevisionComponents' do
+      it 'does not contain duplicate RevisionComponents' do
         conf = Configuration.new
-        conf.page_types.register(TestPageType.new(name: 'test',
-                                                  revision_components: [:component1]))
-        conf.page_types.register(TestPageType.new(name: 'test',
-                                                  revision_components: [:component1, :component2]))
+        conf.revision_components.register(:component1)
+        conf.revision_components.register(:component1)
+        conf.revision_components.register(:component2)
 
-        expect(conf.revision_components).to eq([:component1, :component2])
+        expect(conf.revision_components.to_a).to eq([:component1, :component2])
       end
     end
 
