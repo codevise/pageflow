@@ -88,6 +88,17 @@ module Pageflow
 
         expect(config.revision_components.to_a).to eq([:the_comp])
       end
+
+      it 'registers file types' do
+        config = Configuration.new
+        page_types = config.page_types
+        file_type = FileType.new(model: TestUploadableFile)
+        page_types.register(TestPageType.new(name: 'test', file_types: [file_type]))
+
+        page_types.setup(config)
+
+        expect(config.file_types.count).to eq(1)
+      end
     end
   end
 end
