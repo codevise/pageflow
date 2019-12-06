@@ -32,6 +32,14 @@ module Pageflow
       @page_types.each(&block)
     end
 
+    def setup(config)
+      config.help_entries.register('pageflow.help_entries.page_types', priority: 10)
+      each do |page_type|
+        config.help_entries.register(page_type.help_entry_translation_key,
+                                     parent: 'pageflow.help_entries.page_types')
+      end
+    end
+
     private
 
     def ensure_export_version_implemented(page_type)

@@ -66,5 +66,18 @@ module Pageflow
         expect(result).to be(page_type)
       end
     end
+
+    describe '#setup' do
+      it 'registers help entries' do
+        config = Configuration.new
+        page_types = config.page_types
+        page_types.register(TestPageType.new(name: 'test'))
+
+        page_types.setup(config)
+
+        expect(config.help_entries.count).to eq(1)
+        expect(config.help_entries.flat.count).to eq(2)
+      end
+    end
   end
 end
