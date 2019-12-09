@@ -46,8 +46,12 @@ module Pageflow
 
     describe '#file_types' do
       it 'returns all registered FileTypes' do
-        file_type1 = FileType.new(model: ImageFile, collection_name: 'image_files', editor_partial: 'path')
-        file_type2 = FileType.new(model: VideoFile, collection_name: 'video_files', editor_partial: 'path')
+        file_type1 = FileType.new(model: 'Pageflow::ImageFile',
+                                  collection_name: 'image_files',
+                                  editor_partial: 'path')
+        file_type2 = FileType.new(model: 'Pageflow::VideoFile',
+                                  collection_name: 'video_files',
+                                  editor_partial: 'path')
         conf = Configuration.new
         conf.file_types.register(file_type1)
         conf.file_types.register(file_type2)
