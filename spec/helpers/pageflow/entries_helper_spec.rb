@@ -148,7 +148,7 @@ module Pageflow
 
         result = helper.entry_stylesheet_link_tag(entry)
 
-        expect(result).to include(%Q'href="/revisions/#{revision.id}.css')
+        expect(result).to include(%(href="/revisions/#{revision.id}/stylesheet.css))
       end
 
       it 'returns entry css for published entry without custom revision' do
@@ -157,7 +157,7 @@ module Pageflow
 
         result = helper.entry_stylesheet_link_tag(entry)
 
-        expect(result).to include(%Q'href="/entries/#{entry.entry.id}.css')
+        expect(result).to include(%(href="/entries/#{entry.entry.id}/stylesheet.css))
       end
 
       it 'appends revision cache key for published entry without custom revision' do

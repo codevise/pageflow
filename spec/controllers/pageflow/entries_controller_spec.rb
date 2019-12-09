@@ -103,49 +103,6 @@ module Pageflow
       end
     end
 
-    describe '#update' do
-      it 'responds with success' do
-        user = create(:user)
-        entry = create(:entry, with_editor: user)
-
-        sign_in(user, scope: :user)
-        acquire_edit_lock(user, entry)
-        patch(:update, params: {id: entry, entry: {title: 'new', credits: 'credits'}}, format: 'json')
-
-        expect(response.status).to eq(204)
-      end
-
-      it 'updates title and credits in draft' do
-        user = create(:user)
-        entry = create(:entry, with_editor: user)
-
-        sign_in(user, scope: :user)
-        acquire_edit_lock(user, entry)
-        patch(:update, params: {id: entry, entry: {title: 'new', credits: 'credits'}}, format: 'json')
-
-        expect(entry.draft.reload.title).to eq('new')
-        expect(entry.draft.credits).to eq('credits')
-      end
-
-      it 'requires the signed in user to be editor of the parent entry' do
-        user = create(:user)
-        entry = create(:entry, with_previewer: user)
-
-        sign_in(user, scope: :user)
-        patch(:update, params: {id: entry, entry: {}}, format: 'json')
-
-        expect(response.status).to eq(403)
-      end
-
-      it 'requires authentication' do
-        entry = create(:entry)
-
-        patch(:update, params: {id: entry, chapter: {}}, format: 'json')
-
-        expect(response.status).to eq(401)
-      end
-    end
-
     describe '#show' do
       context 'with format */*' do
         it 'responds with forbidden for entry published with password' do
@@ -432,106 +389,6 @@ module Pageflow
         end
       end
 
-      context 'with format css' do
-        include UsedFileTestHelper
-
-        it 'responds with success for published entry' do
-          entry = create(:entry, :published)
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.status).to eq(200)
-        end
-
-        it 'responds with success for entry published with password' do
-          entry = create(:entry, :published_with_password, password: 'abc123abc')
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.status).to eq(200)
-        end
-
-        it 'responds with not found for not published entry' do
-          entry = create(:entry)
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.status).to eq(404)
-        end
-
-        it 'includes image rules for image files' do
-          entry = PublishedEntry.new(create(:entry, :published))
-          image_file = create_used_file(:image_file, entry: entry)
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.body).to include(".image_#{image_file.perma_id}")
-          expect(response.body).to include("url('#{image_file.attachment.url(:large)}')")
-        end
-
-        it 'includes poster image rules for video files' do
-          entry = PublishedEntry.new(create(:entry, :published))
-          video_file = create_used_file(:video_file, entry: entry)
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.body).to include(".video_poster_#{video_file.perma_id}")
-          expect(response.body).to include("url('#{video_file.poster.url(:large)}')")
-        end
-
-        it 'includes panorama style group rules for image files' do
-          entry = PublishedEntry.new(create(:entry, :published))
-          image_file = create_used_file(:image_file, entry: entry)
-
-          get(:show, params: {id: entry}, format: 'css')
-
-          expect(response.body).to include(".image_panorama_#{image_file.perma_id}")
-          expect(response.body).to include("url('#{image_file.attachment.url(:panorama_large)}')")
-        end
-      end
-
-      context 'with format json' do
-        it 'responds with success for previewers of the entry' do
-          user = create(:user)
-          entry = create(:entry, with_previewer: user)
-
-          sign_in(user, scope: :user)
-          get(:show, params: {id: entry}, format: 'json')
-
-          expect(response.status).to eq(200)
-        end
-
-        it 'includes file usage ids in response' do
-          user = create(:user)
-          entry = create(:entry, with_previewer: user)
-          file = create(:image_file)
-          usage = create(:file_usage, file: file, revision: entry.draft)
-
-          sign_in(user, scope: :user)
-          get(:show, params: {id: entry}, format: 'json')
-
-          expect(json_response(path: [:image_files, 0, :usage_id])).to eq(usage.id)
-        end
-
-        it 'requires the signed in user to be previewer of the parent entry' do
-          user = create(:user)
-          entry = create(:entry)
-
-          sign_in(user, scope: :user)
-          get(:show, params: {id: entry}, format: 'json')
-
-          expect(response.status).to eq(403)
-        end
-
-        it 'requires authentication' do
-          entry = create(:entry)
-
-          get(:show, params: {id: entry}, format: 'json')
-
-          expect(response.status).to eq(401)
-        end
-      end
-
       context 'with other known format' do
         it 'responds with not found' do
           get(:show, params: {id: 1}, format: 'png')
@@ -545,6 +402,66 @@ module Pageflow
           get(:show, params: {id: 1}, format: 'php')
 
           expect(response.status).to eq(404)
+        end
+      end
+    end
+
+    describe '#stylesheet' do
+      context 'with format css' do
+        include UsedFileTestHelper
+
+        it 'responds with success for published entry' do
+          entry = create(:entry, :published)
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.status).to eq(200)
+        end
+
+        it 'responds with success for entry published with password' do
+          entry = create(:entry, :published_with_password, password: 'abc123abc')
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.status).to eq(200)
+        end
+
+        it 'responds with not found for not published entry' do
+          entry = create(:entry)
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.status).to eq(404)
+        end
+
+        it 'includes image rules for image files' do
+          entry = PublishedEntry.new(create(:entry, :published))
+          image_file = create_used_file(:image_file, entry: entry)
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.body).to include(".image_#{image_file.perma_id}")
+          expect(response.body).to include("url('#{image_file.attachment.url(:large)}')")
+        end
+
+        it 'includes poster image rules for video files' do
+          entry = PublishedEntry.new(create(:entry, :published))
+          video_file = create_used_file(:video_file, entry: entry)
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.body).to include(".video_poster_#{video_file.perma_id}")
+          expect(response.body).to include("url('#{video_file.poster.url(:large)}')")
+        end
+
+        it 'includes panorama style group rules for image files' do
+          entry = PublishedEntry.new(create(:entry, :published))
+          image_file = create_used_file(:image_file, entry: entry)
+
+          get(:stylesheet, params: {id: entry}, format: 'css')
+
+          expect(response.body).to include(".image_panorama_#{image_file.perma_id}")
+          expect(response.body).to include("url('#{image_file.attachment.url(:panorama_large)}')")
         end
       end
     end

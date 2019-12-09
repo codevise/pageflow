@@ -6,7 +6,7 @@ export const EditLock = Backbone.Model.extend({
   paramRoot: 'edit_lock',
 
   url: function() {
-    return state.entry.url() + '/edit_lock?timestamp=' + new Date().getTime();
+    return '/entries/' + state.entry.get('id') + '/edit_lock?timestamp=' + new Date().getTime();
   },
 
   toJSON: function() {

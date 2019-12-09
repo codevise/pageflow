@@ -3,7 +3,7 @@ module Pageflow
     include PublicHttpsMode
     include EntryPasswordProtection
 
-    before_action :authenticate_user!, except: [:index, :show, :page]
+    before_action :authenticate_user!, except: [:index, :show, :stylesheet, :page]
 
     after_action :allow_iframe_for_embed, only: :show
 
@@ -22,7 +22,7 @@ module Pageflow
 
     def show
       respond_to do |format|
-        format.any(:html, :css) do
+        format.html do
           @entry = PublishedEntry.find(params[:id], entry_request_scope)
           I18n.locale = @entry.locale
 
@@ -31,10 +31,7 @@ module Pageflow
           end
 
           return if redirect_according_to_public_https_mode
-
-          if !request.format.css?
-            check_entry_password_protection(@entry)
-          end
+          check_entry_password_protection(@entry)
 
           if params[:page].present?
             @entry.share_target = @entry.pages.find_by_perma_id(params[:page])
@@ -42,10 +39,13 @@ module Pageflow
             @entry.share_target = @entry
           end
         end
-        format.json do
-          authenticate_user!
-          @entry = DraftEntry.find(params[:id])
-          authorize!(:show, @entry.to_model)
+      end
+    end
+
+    def stylesheet
+      respond_to do |format|
+        format.css do
+          @entry = PublishedEntry.find(params[:id], entry_request_scope)
         end
       end
     end
@@ -75,26 +75,7 @@ module Pageflow
       @entry_config = Pageflow.config_for(@entry)
     end
 
-    def update
-      @entry = DraftEntry.find(params[:id])
-
-      authorize!(:update, @entry.to_model)
-      @entry.update_meta_data!(entry_params)
-
-      head(:no_content)
-    end
-
     protected
-
-    def entry_params
-      params.require(:entry).permit(:title, :summary, :credits, :manual_start,
-                                    :home_url, :home_button_enabled,
-                                    :overview_button_enabled,
-                                    :emphasize_chapter_beginning, :emphasize_new_pages,
-                                    :share_url, :share_image_id, :share_image_x, :share_image_y,
-                                    :locale, :author, :publisher, :keywords, :theme_name,
-                                    share_providers: {})
-    end
 
     def entry_request_scope
       Pageflow.config.public_entry_request_scope.call(Entry, request)

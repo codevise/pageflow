@@ -54,5 +54,94 @@ module Pageflow
         expect(response.status).to eq(401)
       end
     end
+
+    describe '#show' do
+      it 'responds with success for previewers of the entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        get(:show, params: {id: entry}, format: 'json')
+
+        expect(response.status).to eq(200)
+      end
+
+      it 'includes file usage ids in response' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        file = create(:image_file)
+        usage = create(:file_usage, file: file, revision: entry.draft)
+
+        sign_in(user, scope: :user)
+        get(:show, params: {id: entry}, format: 'json')
+
+        expect(json_response(path: [:image_files, 0, :usage_id])).to eq(usage.id)
+      end
+
+      it 'requires the signed in user to be previewer of the parent entry' do
+        user = create(:user)
+        entry = create(:entry)
+
+        sign_in(user, scope: :user)
+        get(:show, params: {id: entry}, format: 'json')
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'requires authentication' do
+        entry = create(:entry)
+
+        get(:show, params: {id: entry}, format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+    end
+
+    describe '#update' do
+      it 'responds with success' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {id: entry, entry: {title: 'new', credits: 'credits'}},
+              format: 'json')
+
+        expect(response.status).to eq(204)
+      end
+
+      it 'updates title and credits in draft' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {id: entry, entry: {title: 'new', credits: 'credits'}},
+              format: 'json')
+
+        expect(entry.draft.reload.title).to eq('new')
+        expect(entry.draft.credits).to eq('credits')
+      end
+
+      it 'requires the signed in user to be editor of the parent entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        patch(:update, params: {id: entry, entry: {}}, format: 'json')
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'requires authentication' do
+        entry = create(:entry)
+
+        patch(:update, params: {id: entry, chapter: {}}, format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+    end
   end
 end

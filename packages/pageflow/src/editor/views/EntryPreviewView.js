@@ -146,7 +146,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
   fetchWidgets: function() {
     var view = this;
 
-    $.ajax(this.model.url() + '/partials').success(function(response) {
+    $.ajax('/entries/' + this.model.get('id') + '/partials').success(function(response) {
       var partials = $('<div />').html(response);
 
       view.ui.header.replaceWith(partials.find('> .header'));
