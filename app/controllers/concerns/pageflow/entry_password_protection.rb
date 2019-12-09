@@ -3,11 +3,11 @@ module Pageflow
     private
 
     def check_entry_password_protection(entry)
-      return unless entry.password_protected?
+      return true unless entry.password_protected?
+      return true if authenticate_with_http_basic { |_, password| entry.authenticate(password) }
 
-      authenticate_or_request_with_http_basic('Pageflow') do |_, password|
-        entry.authenticate(password)
-      end
+      request_http_basic_authentication('Pageflow')
+      false
     end
   end
 end
