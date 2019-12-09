@@ -5,8 +5,7 @@ module Pageflow
     describe '#find_by_name!' do
       it 'returns entry type with given name' do
         entry_types = EntryTypes.new
-        entry_type = EntryType.new(name: 'test',
-                                   frontend_app: -> {})
+        entry_type = TestEntryType.new(name: 'test')
 
         entry_types.register(entry_type)
         result = entry_types.find_by_name!('test')
