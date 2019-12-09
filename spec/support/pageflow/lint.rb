@@ -1,6 +1,7 @@
 require 'pageflow/global_config_api_test_helper'
 require 'pageflow/test_page_type'
 
+require 'pageflow/lint/entry_type'
 require 'pageflow/lint/file_type'
 require 'pageflow/lint/page_type'
 require 'pageflow/lint/file_import'
@@ -11,6 +12,23 @@ module Pageflow
   #
   # @since 13.0
   module Lint
+    # Contract specs for page types. Ensure editor fragments render
+    # without error.
+    #
+    # @param entry_type [EntryType] Page type to run specs for
+    #
+    # @since eddge
+    #
+    # @example
+    #
+    #   require 'spec_helper'
+    #   require 'pageflow/lint'
+    #
+    #   Pageflow::Lint.entry_type(SomePlugin.entry_type)
+    def self.entry_type(*args)
+      Lint::EntryType.lint(*args)
+    end
+
     # Ensure file type json partials render correctly.
     #
     # @param name [String] File type name to use in spec descriptions
