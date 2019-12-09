@@ -66,5 +66,39 @@ module Pageflow
         expect(result).to be(page_type)
       end
     end
+
+    describe '#setup' do
+      it 'registers help entries' do
+        config = Configuration.new
+        page_types = config.page_types
+        page_types.register(TestPageType.new(name: 'test'))
+
+        page_types.setup(config)
+
+        expect(config.help_entries.count).to eq(1)
+        expect(config.help_entries.flat.count).to eq(2)
+      end
+
+      it 'registers revision components' do
+        config = Configuration.new
+        page_types = config.page_types
+        page_types.register(TestPageType.new(name: 'test', revision_components: [:the_comp]))
+
+        page_types.setup(config)
+
+        expect(config.revision_components.to_a).to eq([:the_comp])
+      end
+
+      it 'registers file types' do
+        config = Configuration.new
+        page_types = config.page_types
+        file_type = FileType.new(model: TestUploadableFile)
+        page_types.register(TestPageType.new(name: 'test', file_types: [file_type]))
+
+        page_types.setup(config)
+
+        expect(config.file_types.count).to eq(1)
+      end
+    end
   end
 end

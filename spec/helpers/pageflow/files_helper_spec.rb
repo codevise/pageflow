@@ -110,9 +110,8 @@ module Pageflow
                                       editor_partial: 'pageflow/editor/stub_files/stub_file',
                                       collection_name: 'stub_files',
                                       top_level_type: true)
-        Pageflow.config.page_types.clear
-        Pageflow.config.page_types.register(TestPageType.new(name: 'test',
-                                                             file_types: [stub_file_type]))
+        Pageflow.config.file_types.clear
+        Pageflow.config.file_types.register(stub_file_type)
 
         entry = PublishedEntry.new(create(:entry, :published))
         create(:video_file, used_in: entry.revision)
@@ -129,9 +128,8 @@ module Pageflow
                                       partial: 'pageflow/stub_files/stub_file',
                                       collection_name: 'stub_files',
                                       top_level_type: true)
-        Pageflow.config.page_types.clear
-        Pageflow.config.page_types.register(TestPageType.new(name: 'test',
-                                                             file_types: [stub_file_type]))
+        Pageflow.config.file_types.clear
+        Pageflow.config.file_types.register(stub_file_type)
 
         entry = PublishedEntry.new(create(:entry, :published))
         create(:video_file, used_in: entry.revision)
