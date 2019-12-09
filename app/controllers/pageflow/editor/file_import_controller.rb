@@ -81,7 +81,7 @@ module Pageflow
 
       def file_importer
         importer_key = params[:file_import_name]
-        Pageflow.config.file_importers.find_by_name!(importer_key)
+        Pageflow.config_for(DraftEntry.find(entry_name)).file_importers.find_by_name!(importer_key)
       end
 
       def file_importer_credentials
