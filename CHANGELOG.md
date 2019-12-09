@@ -36,7 +36,7 @@
 - Bug fix: Change revision#locale to always return string
   ([#1239](https://github.com/codevise/pageflow/pull/1239))
 
-#### Intenal
+#### Internal
 
 - Add entry type engines
   ([#1247](https://github.com/codevise/pageflow/pull/1247))
