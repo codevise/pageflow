@@ -29,36 +29,41 @@ export const FilesView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
+
+    let menuOptions = [
+      {
+        label: I18n.t('pageflow.editor.views.files_view.upload'),
+        handler: this.upload.bind(this)
+      },
+      {
+        label: I18n.t('pageflow.editor.views.files_view.reuse'),
+        handler: function() {
+          FilesExplorerView.open({
+            callback: function(otherEntry, file) {
+              state.entry.reuseFile(otherEntry, file);
+            }
+          });
+        }
+      }
+    ]
+    if(editor.fileImporters.keys().length > 0){
+      menuOptions.push({
+        label: I18n.t('pageflow.editor.views.files_view.import'),
+        handler: function () {
+          ChooseImporterView.open({
+            callback: function (importer) {
+              FilesImporterView.open({
+                importer: importer
+              });
+            }
+          });
+        }
+      });
+    }
+
     this.addFileModel = new Backbone.Model({
       label: I18n.t('pageflow.editor.views.files_view.add'),
-      options: [
-        {
-          label: I18n.t('pageflow.editor.views.files_view.upload'),
-          handler: this.upload.bind(this)
-        },
-        {
-          label: I18n.t('pageflow.editor.views.files_view.reuse'),
-          handler: function() {
-            FilesExplorerView.open({
-              callback: function(otherEntry, file) {
-                state.entry.reuseFile(otherEntry, file);
-              }
-            });
-          }
-        },
-        {
-          label: I18n.t('pageflow.editor.views.files_view.import'),
-          handler: function () {
-            ChooseImporterView.open({
-              callback: function (importer) {
-                FilesImporterView.open({
-                  importer: importer
-                });
-              }
-            });
-          }
-        }
-      ]
+      options: menuOptions
     });
 
     this.$el.append(this.subview(new SelectButtonView({model: this.addFileModel })).el);

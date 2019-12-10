@@ -8,8 +8,8 @@ module Pageflow
       clear
     end
 
-    def register(name, file_importer)
-      @file_importers[name] = file_importer
+    def register(file_importer)
+      @file_importers[file_importer.name] = file_importer
     end
 
     def clear

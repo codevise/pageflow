@@ -13,13 +13,36 @@ module Pageflow
         expect(response.status).to eq(302)
       end
 
-      it 'makes the call to the specified file importer' do
+      it 'does not invoke the disabled importer' do
         user = create(:user)
+        file_importer = TestFileImporter.new
         entry = create(:entry, with_editor: user)
         sign_in(user, scope: :user)
-        file_importer = FileImporterDummy.new
         pageflow_configure do |config|
-          config.file_importers.register(file_importer.name, file_importer)
+          config.features.register('test_file_importer') do |feature_config|
+            feature_config.file_importers.register(file_importer)
+          end
+        end
+
+        expect(file_importer).not_to receive(:search)
+        expect {
+          get(:search,
+              params: {query: 'test', file_import_name: file_importer.name, entry_id: entry})
+        }.to raise_error(RuntimeError, "Unknown file importer with name '#{file_importer.name}'.")
+      end
+
+      it 'makes the call to the specified file importer' do
+        user = create(:user)
+        file_importer = TestFileImporter.new
+        entry = create(:entry,
+                       with_editor: user,
+                       with_feature: :test_file_importer)
+        sign_in(user, scope: :user)
+
+        pageflow_configure do |config|
+          config.features.register('test_file_importer') do |feature_config|
+            feature_config.file_importers.register(file_importer)
+          end
         end
 
         expect(file_importer).to receive(:search).with(nil, 'test')
@@ -28,12 +51,17 @@ module Pageflow
 
       it 'call the search method of specified file importer with credentials' do
         user = create(:user)
-        entry = create(:entry, with_editor: user)
+        file_importer = TestFileImporter.new
+        entry = create(:entry,
+                       with_editor: user,
+                       with_feature: :test_file_importer)
         sign_in(user, scope: :user)
-        file_importer = FileImporterDummy.new
         pageflow_configure do |config|
-          config.file_importers.register(file_importer.name, file_importer)
+          config.features.register('test_file_importer') do |feature_config|
+            feature_config.file_importers.register(file_importer)
+          end
         end
+
         token = create(:authentication_token, user: user)
 
         expect(file_importer).to receive(:search).with(token.auth_token, 'test')
@@ -42,12 +70,18 @@ module Pageflow
 
       it 'returns the search result as received from file importer' do
         user = create(:user)
-        entry = create(:entry, with_editor: user)
+        file_importer = TestFileImporter.new
+        entry = create(:entry,
+                       with_editor: user,
+                       with_feature: :test_file_importer)
         sign_in(user, scope: :user)
-        file_importer = FileImporterDummy.new
+
         pageflow_configure do |config|
-          config.file_importers.register(file_importer.name, file_importer)
+          config.features.register('test_file_importer') do |feature_config|
+            feature_config.file_importers.register(file_importer)
+          end
         end
+
         file_importer_response = file_importer.search(nil, 'test')
         get(:search, params: {query: 'test', file_import_name: file_importer.name, entry_id: entry})
 
@@ -58,12 +92,18 @@ module Pageflow
     describe '#files_meta_data' do
       it 'call files_meta_data method of the specified file importer with credentials' do
         user = create(:user)
-        entry = create(:entry, with_editor: user)
+        file_importer = TestFileImporter.new
+        entry = create(:entry,
+                       with_editor: user,
+                       with_feature: :test_file_importer)
         sign_in(user, scope: :user)
-        file_importer = FileImporterDummy.new
+
         pageflow_configure do |config|
-          config.file_importers.register(file_importer.name, file_importer)
+          config.features.register('test_file_importer') do |feature_config|
+            feature_config.file_importers.register(file_importer)
+          end
         end
+
         token = create(:authentication_token, user: user)
         selected_file = file_importer.search(nil, nil)['photos'].first
         selected_files = {file1: selected_file}
@@ -75,12 +115,18 @@ module Pageflow
 
       it 'returns the files meta data as received from specified file importer' do
         user = create(:user)
-        entry = create(:entry, with_editor: user)
+        file_importer = TestFileImporter.new
+        entry = create(:entry,
+                       with_editor: user,
+                       with_feature: :test_file_importer)
         sign_in(user, scope: :user)
-        file_importer = FileImporterDummy.new
+
         pageflow_configure do |config|
-          config.file_importers.register(file_importer.name, file_importer)
+          config.features.register('test_file_importer') do |feature_config|
+            feature_config.file_importers.register(file_importer)
+          end
         end
+
         selected_file = file_importer.search(nil, nil)['photos'].first
         selected_files = {file1: selected_file}
         post(:files_meta_data, params: {files: selected_files,
@@ -108,14 +154,44 @@ module Pageflow
         clear_performed_jobs
       end
 
-      it 'makes the download_file call to the specified file importer with credentials' do
+      it 'does not start the import job if importer is disabled' do
         user = create(:user)
+        file_importer = TestFileImporter.new
         entry = create(:entry, with_editor: user)
         sign_in(user, scope: :user)
-        file_importer = FileImporterDummy.new
         pageflow_configure do |config|
-          config.file_importers.register(file_importer.name, file_importer)
+          config.features.register('test_file_importer') do |feature_config|
+            feature_config.file_importers.register(file_importer)
+          end
         end
+
+        selected_files = file_importer.search(nil, nil)['photos']
+        meta_data = file_importer.files_meta_data(nil, selected_files)
+        expect(file_importer).not_to receive(:donwload_file)
+        expect {
+          post(:start_import_job, params: {files: meta_data['files'],
+                                           collection: meta_data['collection'],
+                                           file_import_name: file_importer.name,
+                                           entry_id: entry})
+        }.to raise_error(RuntimeError, "Unknown file importer with name '#{file_importer.name}'.")
+
+        assert_performed_jobs 0
+      end
+
+      it 'makes the download_file call to the specified file importer with credentials' do
+        user = create(:user)
+        file_importer = TestFileImporter.new
+        entry = create(:entry,
+                       with_editor: user,
+                       with_feature: :test_file_importer)
+        sign_in(user, scope: :user)
+
+        pageflow_configure do |config|
+          config.features.register('test_file_importer') do |feature_config|
+            feature_config.file_importers.register(file_importer)
+          end
+        end
+
         token = create(:authentication_token, user: user)
 
         selected_file = file_importer.search(nil, nil)['photos'].first
@@ -130,12 +206,18 @@ module Pageflow
 
       it 'creates the entry file and usage record in the database for each selected file' do
         user = create(:user)
-        entry = create(:entry, with_editor: user)
+        file_importer = TestFileImporter.new
+        entry = create(:entry,
+                       with_editor: user,
+                       with_feature: :test_file_importer)
         sign_in(user, scope: :user)
-        file_importer = FileImporterDummy.new
+
         pageflow_configure do |config|
-          config.file_importers.register(file_importer.name, file_importer)
+          config.features.register('test_file_importer') do |feature_config|
+            feature_config.file_importers.register(file_importer)
+          end
         end
+
         selected_file = file_importer.search(nil, nil)['photos'].first
         selected_files = {file1: selected_file}
         meta_data = file_importer.files_meta_data(nil, selected_files)
@@ -152,12 +234,18 @@ module Pageflow
 
       it 'starts the file import job for each selected file' do
         user = create(:user)
-        entry = create(:entry, with_editor: user)
+        file_importer = TestFileImporter.new
+        entry = create(:entry,
+                       with_editor: user,
+                       with_feature: :test_file_importer)
         sign_in(user, scope: :user)
-        file_importer = FileImporterDummy.new
+
         pageflow_configure do |config|
-          config.file_importers.register(file_importer.name, file_importer)
+          config.features.register('test_file_importer') do |feature_config|
+            feature_config.file_importers.register(file_importer)
+          end
         end
+
         selected_files = file_importer.search(nil, nil)['photos']
         meta_data = file_importer.files_meta_data(nil, selected_files)
         post(:start_import_job, params: {files: meta_data['files'],

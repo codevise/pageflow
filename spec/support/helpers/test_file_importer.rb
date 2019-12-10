@@ -1,11 +1,15 @@
 module Pageflow
-  class FileImporterDummy < Pageflow::FileImporter
+  class TestFileImporter < Pageflow::FileImporter
     def name
       'test_file_importer'
     end
 
     def authentication_provider
       'default'
+    end
+
+    def logo_source
+      'cl'
     end
 
     def search(_adf, _asd)

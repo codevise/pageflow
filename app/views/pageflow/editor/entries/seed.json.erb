@@ -1,6 +1,6 @@
 {
   "root": "<%= edit_entry_path(@entry).html_safe %>",
-  "config": <%= editor_config_seeds %>,
+  "config": <%= editor_config_seeds(@entry) %>,
 
   "entry": <%= render_json_seed(@entry) %>,
   "storylines": <%= @entry.storylines.to_json.html_safe %>,
