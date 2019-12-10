@@ -14,9 +14,18 @@ module Pageflow
       @renderer = controller.renderer
     end
 
-    # @api private
     def head_fragment(entry)
-      @renderer.render(partial: 'head',
+      render('head', entry)
+    end
+
+    def body_fragment(entry)
+      render('body', entry)
+    end
+
+    private
+
+    def render(partial, entry)
+      @renderer.render(partial: partial,
                        formats: :html,
                        locals: {entry: entry})
     end

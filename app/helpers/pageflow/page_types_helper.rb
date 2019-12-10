@@ -21,7 +21,10 @@ module Pageflow
                                      locals: {
                                        configuration: {},
                                        page: Page.new,
-                                       entry: entry
+                                       entry: entry,
+
+                                       # Required by RevisionFileHelper#find_file_in_entry
+                                       :@entry => entry
                                      },
                                      layout: false).to_str,
                     type: 'text/html', data: {template: "#{page_type.name}_page"})

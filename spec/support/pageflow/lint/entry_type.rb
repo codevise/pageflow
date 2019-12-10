@@ -16,6 +16,14 @@ module Pageflow
                 entry_type.editor_fragment_renderer.head_fragment(entry)
               }.not_to raise_error
             end
+
+            it 'renders body fragment without error' do
+              entry = DraftEntry.new(FactoryBot.create(:entry))
+
+              expect {
+                entry_type.editor_fragment_renderer.body_fragment(entry)
+              }.not_to raise_error
+            end
           end
         end
       end

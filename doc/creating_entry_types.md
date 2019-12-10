@@ -109,6 +109,9 @@ accepts an object that implements the following methods:
   editor page. The returned HTML needs to include asset tags that load
   all JavaScript and CSS required for the editor.
 
+* `body_fragment(entry)`: HTML included in the body element of the
+  editor page. Can be used to include static seed data `script` tags.
+
 Pageflow provides a helper class that can be used to render these
 fragments from partials:
 
@@ -127,5 +130,6 @@ end
 This will render the following partials with a local `entry` variable:
 
 * `rainbow/editor/entries/_head.html.erb`
+* `rainbow/editor/entries/_body.html.erb`
 
 The given controller determines the available view helpers.
