@@ -97,3 +97,35 @@ module Rainbow
   end
 end
 ```
+
+## Customizing the Editor
+
+To make the editor work for entries of a new entry type, we first need
+to provide some partials that will be used while rendering the
+editor. `EntryType` takes an `editor_fragment_renderer` option, which
+accepts an object that implements the following methods:
+
+* `head_fragment(entry)`: HTML included in the head element of the
+  editor page. The returned HTML needs to include asset tags that load
+  all JavaScript and CSS required for the editor.
+
+Pageflow provides a helper class that can be used to render these
+fragments from partials:
+
+```ruby
+def entry_type
+  Pageflow::EntryType.new(name: 'rainbow',
+                          ...
+                          editor_fragment_renderer: editor_fragment_renderer)
+end
+
+def editor_fragment_renderer
+  Pageflow::PartialEditorFragmentRenderer.new(Rainbow::Editor::EntriesController)
+end
+```
+
+This will render the following partials with a local `entry` variable:
+
+* `rainbow/editor/entries/_head.html.erb`
+
+The given controller determines the available view helpers.

@@ -101,6 +101,26 @@ module Pageflow
 
         expect(response).to redirect_to(main_app.new_user_session_path)
       end
+
+      it 'renders entry type specific head fragment' do
+        renderer = double('renderer')
+        pageflow_configure do |config|
+          TestEntryType.register(config,
+                                 name: 'test',
+                                 editor_fragment_renderer: renderer)
+        end
+        user = create(:user)
+        entry = create(:entry, with_editor: user, type_name: 'test')
+
+        allow(renderer)
+          .to receive(:head_fragment).and_return('<script src="/test/editor.js">'.html_safe)
+
+        sign_in(user, scope: :user)
+        get(:edit, params: {id: entry})
+
+        expect(response.body).to have_selector('script[src^="/test/editor.js"]',
+                                               visible: false)
+      end
     end
 
     # Specs for #show can be found in

@@ -111,11 +111,9 @@ module Pageflow
       end
     end
 
-    # Precompile additional assets. pageflow/editor.* has to be
-    # provided by the main app.
+    # Precompile additional assets.
     initializer 'pageflow.assets.precompile' do |app|
       app.config.assets.precompile += %w(
-        pageflow/editor.js pageflow/editor.css
         pageflow/application_with_simulated_media_queries.css
         pageflow/print_view.css
         pageflow/lt_ie9.js pageflow/lt_ie9.css pageflow/ie9.js pageflow/ie9.css
