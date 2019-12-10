@@ -75,7 +75,7 @@ whenever the page type is registered in a Pageflow application.
         end
 
         def self.package_file_type
-          FileType.new(model: Package)
+          FileType.new(model: 'Pageflow::Panorama::Package')
         end
       end
     end
@@ -113,7 +113,7 @@ JSON data passed to the editor. In order to do so, set the
     module Pageflow
       module
         def self.package_file_type
-          FileType.new(model: Package,
+          FileType.new(model: 'Pageflow::Panorama::Package',
                        editor_partial: 'pageflow/panorama/editor/packages/package')
         end
       end
@@ -375,7 +375,7 @@ specified when registering the file type:
         end
 
         def self.scraped_site_file_type
-          FileType.new(model: ScrapedSite,
+          FileType.new(model: 'Pageflow::Chart::ScrapedSite',
                        editor_partial: 'pageflow/chart/editor/scraped_sites/scraped_site',
                        custom_attributes: {
                          url: {
@@ -411,7 +411,7 @@ from:
          end
 
          def self.color_map_file_type
-           FileType.new(model: ColorMapFile,
+           FileType.new(model: 'Pageflow::LinkmapPage::ColorMapFile',
                         # ...
                         custom_attributes: {
                           source_image_file_id: {

@@ -59,9 +59,13 @@ module Pageflow
     end
 
     def register_file_types(config, page_type)
-      page_type.file_types.each do |file_type|
-        config.file_types.register(file_type)
-      end
+      # After a deprecation period against initializing FileType with
+      # a model reference instead of a model name string, we could
+      # rewrite this to register the page type's file types one by one
+      # right here instead of lazily in FileTypes#each.
+      config.file_types.register(
+        -> { page_type.file_types }
+      )
     end
   end
 end

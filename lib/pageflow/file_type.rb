@@ -58,12 +58,13 @@ module Pageflow
     #
     # @example
     #
-    #   Pageflow::FileType.new(model: Pageflow::Rainbow::File,
+    #   Pageflow::FileType.new(model: 'Pageflow::Rainbow::File',
     #                          editor_partial: 'pageflow/rainbow/editor/files/file')
     #
     # @param [Hash] options
     # @option options [ActiveRecord::Base, String] :model
-    #   Required. Model representing the file, or name of that model.
+    #   Required. Name of model representing the file. Model reference
+    #   still works, but is deprecated
     # @option options [String] :partial
     #   Optional. Path of a partial to include in json representations
     #   of the file both inside  the editor and published entries.

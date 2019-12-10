@@ -161,7 +161,7 @@ module Pageflow
     [...]
 
     def self.scraped_site_file_type
-      FileType.new(model: ScrapedSite,
+      FileType.new(model: 'Pageflow::Chart::ScrapedSite',
                    custom_attributes: %i[url use_custom_theme],
                    editor_partial: 'pageflow/chart/editor/scraped_sites/scraped_site')
     end

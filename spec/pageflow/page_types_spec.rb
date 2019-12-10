@@ -92,7 +92,7 @@ module Pageflow
       it 'registers file types' do
         config = Configuration.new
         page_types = config.page_types
-        file_type = FileType.new(model: TestUploadableFile)
+        file_type = FileType.new(model: 'Pageflow::TestUploadableFile')
         page_types.register(TestPageType.new(name: 'test', file_types: [file_type]))
 
         page_types.setup(config)
