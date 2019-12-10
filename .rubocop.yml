@@ -36,28 +36,28 @@ Style/SymbolArray:
 # In specs methods using RSpec DSL often become complex
 Metrics/AbcSize:
   Exclude:
-    - spec/**/*
+    - '**/spec/**/*'
 
 # Ignore long RSpec describe blocks
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'feature', 'it']
   Exclude:
-    - spec/factories/*.rb
+    - '**/spec/factories/*.rb'
 
 # In specs methods using RSpec DSL often become long
 Metrics/MethodLength:
   Exclude:
-    - spec/**/*
+    - '**/spec/**/*'
 
 # Long spec files are ok
 Metrics/ModuleLength:
   Exclude:
-    - spec/**/*
+    - '**/spec/**/*'
 
 # Do not require class documentation for specs and migrations
 Style/Documentation:
   Exclude:
-    - spec/**/*
+    - '**/spec/**/*'
     - db/migrate/*
 
 # Both ['...'] and %w(...) are fine
