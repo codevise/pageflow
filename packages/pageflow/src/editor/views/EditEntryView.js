@@ -7,14 +7,13 @@ import {tooltipContainer} from '$pageflow/ui';
 
 import {editor} from '../base';
 
-import {StorylinePickerView} from './StorylinePickerView';
 import {failureIndicatingView} from './mixins/failureIndicatingView';
 
 import {state} from '$state';
 
 import template from '../templates/editEntry.jst';
 
-export const EditEntryView = Marionette.ItemView.extend({
+export const EditEntryView = Marionette.Layout.extend({
   template,
 
   mixins: [failureIndicatingView, tooltipContainer],
@@ -22,8 +21,11 @@ export const EditEntryView = Marionette.ItemView.extend({
   ui: {
     publishButton: 'a.publish',
     publicationStateButton: 'a.publication_state',
-    menu: '.menu',
-    storylines: '.edit_entry_storylines'
+    menu: '.menu'
+  },
+
+  regions: {
+    outlineRegion: '.edit_entry_outline_region'
   },
 
   events: {
@@ -51,8 +53,8 @@ export const EditEntryView = Marionette.ItemView.extend({
     this._addMenuItems();
     this._updatePublishButton();
 
-    this.subview(new StorylinePickerView({
-      el: this.ui.storylines,
+    this.outlineRegion.show(new editor.entryType.outlineView({
+      entry: state.entry,
       navigatable: true,
       editable: true,
       displayInNavigationHint: true,
@@ -62,7 +64,7 @@ export const EditEntryView = Marionette.ItemView.extend({
   },
 
   _updatePublishButton: function() {
-    var disabled = !state.entry.get('publishable');
+    var disabled = !this.model.get('publishable');
 
     this.ui.publishButton.toggleClass('disabled', disabled);
 

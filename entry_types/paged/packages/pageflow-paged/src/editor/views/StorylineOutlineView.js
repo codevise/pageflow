@@ -1,7 +1,7 @@
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {CollectionView, SortableCollectionView} from '$pageflow/ui';
+import {CollectionView, SortableCollectionView} from 'pageflow/ui';
 
 import {ChapterItemView} from './ChapterItemView';
 import {NavigatableChapterItemView} from './NavigatableChapterItemView';

@@ -2,14 +2,12 @@ import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {CollectionView} from '$pageflow/ui';
+import {CollectionView} from 'pageflow/ui';
 
-import {app} from '../app';
+import {app} from 'pageflow/editor';
 
 import {BlankEntryView} from './BlankEntryView';
 import {PagePreviewView} from './PagePreviewView';
-
-import {state} from '$state';
 
 import template from '../templates/entryPreview.jst';
 
@@ -44,22 +42,22 @@ export const EntryPreviewView = Marionette.ItemView.extend({
 
     this.update();
 
-    this.listenTo(state.entry, 'sync:order sync:widgets', this.update);
-    this.listenTo(state.entry, 'change:configuration', function() {
-      state.entry.once('sync', this.update, this);
+    this.listenTo(this.model, 'sync:order sync:widgets', this.update);
+    this.listenTo(this.model, 'change:configuration', function() {
+      this.model.once('sync', this.update, this);
     });
-    this.listenTo(state.entry, 'change:emulation_mode', this.updateEmulationMode);
+    this.listenTo(this.model, 'change:emulation_mode', this.updateEmulationMode);
 
-    this.listenTo(state.storylines, 'sync', this.update);
-    this.listenTo(state.chapters, 'sync', this.update);
-    this.listenTo(state.pages, 'sync', this.update);
+    this.listenTo(this.model.storylines, 'sync', this.update);
+    this.listenTo(this.model.chapters, 'sync', this.update);
+    this.listenTo(this.model.pages, 'sync', this.update);
 
-    this.listenTo(state.audioFiles, 'sync', this.update);
-    this.listenTo(state.imageFiles, 'sync', this.update);
-    this.listenTo(state.videoFiles, 'sync', this.update);
+    this.listenTo(this.model.audioFiles, 'sync', this.update);
+    this.listenTo(this.model.imageFiles, 'sync', this.update);
+    this.listenTo(this.model.videoFiles, 'sync', this.update);
 
     this.listenTo(pageflow.events, 'page:changing', function(event) {
-      if (state.entry.get('emulation_mode')) {
+      if (this.model.get('emulation_mode')) {
         this.ui.navigationDisabledHint.css('opacity', 1);
 
         clearTimeout(this.navigationDisabledHintTimeout);
@@ -79,7 +77,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
   onShow: function() {
     var slideshow = pageflow.Slideshow.setup({
       element: this.ui.entry,
-      enabledFeatureNames: state.entry.get('enabled_feature_names'),
+      enabledFeatureNames: this.model.get('enabled_feature_names'),
       simulateHistory: true
     });
 
@@ -95,7 +93,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
 
     this.listenTo(this.pages, 'edit', function(model) {
       if (this.lastEditedPage != model) {
-        state.entry.unset('emulation_mode');
+        this.model.unset('emulation_mode');
       }
 
       this.lastEditedPage = model;
@@ -108,7 +106,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
       this.updateSimulatedMediaQueryClasses();
     });
 
-    this.listenTo(state.pages, 'change:template', function() {
+    this.listenTo(this.model.pages, 'change:template', function() {
       this.updateEmulationModeSupport(slideshow.currentPagePermaId());
     });
 
@@ -116,9 +114,9 @@ export const EntryPreviewView = Marionette.ItemView.extend({
   },
 
   updateEmulationModeSupport: function(permaId) {
-    var model = state.pages.getByPermaId(permaId);
+    var model = this.model.pages.getByPermaId(permaId);
 
-    state.entry.set('current_page_supports_emulation_mode',
+    this.model.set('current_page_supports_emulation_mode',
                        model && model.pageType().supportsPhoneEmulation());
   },
 
@@ -195,12 +193,12 @@ export const EntryPreviewView = Marionette.ItemView.extend({
   },
 
   updateEmulationMode: function() {
-    if (state.entry.previous('emulation_mode')) {
-      this.$el.removeClass(this.emulationModeClassName(state.entry.previous('emulation_mode')));
+    if (this.model.previous('emulation_mode')) {
+      this.$el.removeClass(this.emulationModeClassName(this.model.previous('emulation_mode')));
     }
 
-    if (state.entry.get('emulation_mode')) {
-      this.$el.addClass(this.emulationModeClassName(state.entry.get('emulation_mode')));
+    if (this.model.get('emulation_mode')) {
+      this.$el.addClass(this.emulationModeClassName(this.model.get('emulation_mode')));
     }
 
     app.trigger('resize');

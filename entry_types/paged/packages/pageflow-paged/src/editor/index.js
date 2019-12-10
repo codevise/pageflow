@@ -1,3 +1,11 @@
-import {TextInputView} from 'pageflow/ui';
+import {editor} from 'pageflow/editor';
 
-console.log(TextInputView);
+import {EntryOutlineView} from './views/EntryOutlineView';
+import {EntryPreviewView} from './views/EntryPreviewView';
+
+editor.registerEntryType('paged', {
+  previewView: EntryPreviewView,
+  outlineView: EntryOutlineView
+});
+
+export * from 'pageflow/editor';

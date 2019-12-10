@@ -75,6 +75,10 @@ export const EditorApi = Object.extend(
     this.fileImporters = new FileImporters();
   },
 
+  registerEntryType(name, options) {
+    this.entryType = options;
+  },
+
   /**
    *  Display Backbone/Marionette View inside the main panel
    *  of the editor.
