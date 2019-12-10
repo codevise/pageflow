@@ -3,6 +3,7 @@
   "config": <%= editor_config_seeds(@entry) %>,
 
   "entry": <%= render_json_seed(@entry) %>,
+  "entry_type": <%= editor_entry_type_fragment(@entry, :seed).html_safe %>,
   "storylines": <%= @entry.storylines.to_json.html_safe %>,
   "chapters": <%= @entry.chapters.to_json.html_safe %>,
   "pages": <%= @entry.pages.to_json.html_safe %>,

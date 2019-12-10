@@ -53,6 +53,25 @@ module Pageflow
 
         expect(response.status).to eq(401)
       end
+
+      it 'renders entry type specific seed fragment' do
+        renderer = double('renderer').as_null_object
+        pageflow_configure do |config|
+          TestEntryType.register(config,
+                                 name: 'test',
+                                 editor_fragment_renderer: renderer)
+        end
+        user = create(:user)
+        entry = create(:entry, with_editor: user, type_name: 'test')
+
+        allow(renderer)
+          .to receive(:seed_fragment).and_return('{"some": "json"}')
+
+        sign_in(user, scope: :user)
+        get(:seed, params: {id: entry}, format: 'json')
+
+        expect(JSON.parse(response.body)).to include('entry_type' => {'some' => 'json'})
+      end
     end
 
     describe '#show' do

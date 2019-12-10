@@ -103,7 +103,7 @@ module Pageflow
       end
 
       it 'renders entry type specific head fragment' do
-        renderer = double('renderer')
+        renderer = double('renderer').as_null_object
         pageflow_configure do |config|
           TestEntryType.register(config,
                                  name: 'test',

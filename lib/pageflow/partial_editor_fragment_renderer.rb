@@ -22,11 +22,15 @@ module Pageflow
       render('body', entry)
     end
 
+    def seed_fragment(entry)
+      render('seed', entry, format: :json)
+    end
+
     private
 
-    def render(partial, entry)
+    def render(partial, entry, format: :html)
       @renderer.render(partial: partial,
-                       formats: :html,
+                       formats: format,
                        locals: {entry: entry})
     end
   end
