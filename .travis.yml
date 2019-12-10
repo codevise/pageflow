@@ -1,53 +1,74 @@
 dist: xenial
-language: ruby
-rvm:
-  - 2.3.1
-  - 2.5.3
 
-# User container based travis infrastructure which allows caching
-# features for open source projects.
-sudo: false
 cache:
   bundler: true
   directories:
     - node_modules
 
-env:
-  - PUBLISH_THEME_DOC=true COVERALLS_PARALLEL=true
-
 services:
   - redis-server
   - mysql
-
-before_install:
-  - nvm install v10.17.0
-  - gem update bundler
-
-before_script:
-  - yarn install
-  - bin/build-packages
-
-  - bin/rake pageflow:dummy
-  - bin/rake app:assets:precompile
-
-  # Precompile triggers `yarn install --production` which strips away
-  # dev dependencies like Jest which are required below
-  - yarn install
-
-script:
-  - bin/rspec
-  - (cd entry_types/paged; bin/rspec)
-  - (cd entry_types/scrolled; bin/rspec)
-  - (cd packages/pageflow; yarn test)
-  - (cd packages/pageflow-react; yarn test)
-  - (cd entry_types/paged/packages/pageflow-paged; yarn test)
-  - (cd entry_types/scrolled/package; yarn test)
-
-after_success:
-  - bundle exec publish-pageflow-theme-doc
 
 notifications:
   webhooks: https://coveralls.io/webhook?service_name=travis-ci
 
 addons:
   chrome: stable
+
+_ruby_job: &ruby_job
+  language: ruby
+  before_install:
+    - nvm install v10.17.0
+    - gem update bundler
+
+_pageflow_ruby_job: &pageflow_ruby_job
+  <<: *ruby_job
+  rvm: 2.3.1
+  before_script:
+    - yarn install
+    - bin/build-packages
+
+    - bin/rake pageflow:dummy
+    - bin/rake app:assets:precompile
+  script: bin/rspec
+
+jobs:
+  include:
+    - name: RSpec - pageflow (Ruby 2.3)
+      <<: *pageflow_ruby_job
+      rvm: 2.3.1
+      env:
+        - COVERALLS_PARALLEL=true
+
+    - name: RSpec - pageflow (Ruby 2.5)
+      <<: *pageflow_ruby_job
+      rvm: 2.5.3
+      env:
+        - PUBLISH_THEME_DOC=true COVERALLS_PARALLEL=true
+      after_success:
+        - bundle exec publish-pageflow-theme-doc
+
+    - name: RSpec - pageflow-paged
+      <<: *ruby_job
+      before_script:
+        - yarn install
+        - bin/build-packages
+      script: (cd entry_types/paged; bin/rspec)
+
+    - name: RSpec - pageflow-scrolled
+      <<: *ruby_job
+      before_script:
+        - yarn install
+        - bin/build-packages
+      script: (cd entry_types/scrolled; bin/rspec)
+
+    - name: Jest
+      language: node_js
+      node_js: 10.17.0
+      install: yarn install
+      before_script: yarn run build
+      script:
+        - (cd packages/pageflow; yarn test)
+        - (cd packages/pageflow-react; yarn test)
+        - (cd entry_types/paged/packages/pageflow-paged; yarn test)
+        - (cd entry_types/scrolled/package; yarn test)
