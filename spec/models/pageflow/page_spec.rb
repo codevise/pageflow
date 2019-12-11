@@ -10,14 +10,6 @@ module Pageflow
 
         expect(page.display_in_navigation).to eq(false)
       end
-
-      it 'stores arbitrary options' do
-        page = build(:page)
-
-        page.configuration = {'some' => 'option'}
-
-        expect(page.configuration['some']).to eq('option')
-      end
     end
   end
 end
