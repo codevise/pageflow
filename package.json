@@ -15,7 +15,8 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-jst": "^1.2.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-postcss": "^2.0.3"
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-react-svg": "^3.0.3"
   },
   "scripts": {
     "start": "NODE_ENV=development rollup --config rollup.config.js --watch",
