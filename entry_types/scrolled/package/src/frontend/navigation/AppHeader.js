@@ -6,12 +6,12 @@ import useNativeScrollPrevention from '../useNativeScrollPrevention';
 import AppHeaderTooltip from "./AppHeaderTooltip";
 import ChapterLink from "./ChapterLink";
 
-import '../../assets/stylesheets/hamburger_icons.css'
+import hamburgerIcons from './hamburgerIcons.module.css'
 import styles from './AppHeader.module.css';
 
-import {ReactComponent as WDRlogo} from '../../assets/images/navigation/wdr_logo_header.svg';
-import {ReactComponent as ShareIcon} from '../../assets/images/navigation/icons/share_icon.svg';
-import {ReactComponent as InfoIcon} from '../../assets/images/navigation/icons/information_icon.svg';
+import WDRlogo from '../assets/images/navigation/wdr_logo_header.svg';
+import ShareIcon from '../assets/images/navigation/icons/share_icon.svg';
+import InfoIcon from '../assets/images/navigation/icons/information_icon.svg';
 
 export default function AppHeader() {
   const [navExpanded, setNavExpanded] = useState(true);
@@ -60,11 +60,11 @@ export default function AppHeader() {
     <header className={classNames(styles.navigationBar, {[styles.navigationBarExpanded]: navExpanded})}>
       <div className={styles.navigationBarContentWrapper}>
         <button className={classNames(styles.menuIcon, styles.burgerMenuIcon,
-                                      'hamburger', 'hamburger--collapse',
-                                      {['is-active']: !mobileNavHidden})}
+                                      hamburgerIcons.hamburger, hamburgerIcons['hamburger--collapse'],
+                                      {[hamburgerIcons['is-active']]: !mobileNavHidden})}
                 type="button" onClick={handleBurgerMenuClick}>
-          <span className="hamburger-box">
-            <span className="hamburger-inner"></span>
+          <span className={hamburgerIcons['hamburger-box']}>
+            <span className={hamburgerIcons['hamburger-inner']}></span>
           </span>
         </button>
 

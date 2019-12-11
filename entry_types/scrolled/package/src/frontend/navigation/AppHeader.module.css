@@ -8,6 +8,9 @@
 }
 
 .navigationBar {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   position: sticky;
   top: -50px;
   transition: top .15s;

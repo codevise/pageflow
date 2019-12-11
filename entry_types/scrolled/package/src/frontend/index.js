@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import AppHeader from './navigation/AppHeader';
 import Entry from './Entry';
 
 import example from './example';
@@ -13,7 +14,10 @@ const examples = {
 
 export default function Example() {
   return (
-    <Entry examples={examples} defaultExample="example" />
+    <>
+      <AppHeader />
+      <Entry examples={examples} defaultExample="example" />
+    </>
   );
 }
 

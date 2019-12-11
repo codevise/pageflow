@@ -35,7 +35,7 @@ const externalCoreJs = function(id) {
 };
 const externalScrolledDependenciesAndCoreJs = function(id) {
   return [
-    'react', 'react-dom'
+    'react', 'react-dom', 'react-tooltip'
   ].indexOf(id) >= 0 || externalCoreJs(id);
 };
 const externalEditorGlobalsAndCoreJs = function(id) {
