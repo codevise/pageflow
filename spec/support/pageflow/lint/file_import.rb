@@ -11,7 +11,7 @@ module Pageflow
         RSpec.describe "file importer #{file_importer.name}" do
           before do
             pageflow_configure do |config|
-              config.file_importers.register(file_importer.name, file_importer)
+              config.file_importers.register(file_importer)
             end
           end
 
@@ -36,13 +36,21 @@ module Pageflow
             }.not_to raise_error
           end
 
+          it 'has a logo_source method which returns string source' do
+            expect(file_importer.class.method_defined?(:logo_source)).to be(true)
+            expect {
+              source = file_importer.logo_source
+              expect(source).to be_instance_of(String)
+            }.not_to raise_error
+          end
+
           it 'has a authentication_provider method' do
             expect(file_importer.class.method_defined?(:authentication_provider)).to be(true)
             provider = file_importer.authentication_provider
             expect(provider).to be_nil.or be_a(Symbol)
           end
 
-          it 'has a search method' do
+          it 'has a search method', :vcr do
             expect(file_importer.class.method_defined?(:search)).to be(true)
             expect {
               provider = file_importer.authentication_provider
