@@ -110,10 +110,16 @@ plugged into the host application.
 
 module RainbowStock::Plugin
   def configure(config)
-    config.file_importers.register('rainbow_stock', RainbowStock::FileImporter.new)
+    config.features.register('rainbow_stock_importer') do |feature_config|
+      feature_config.file_importers.register(RainbowStock::FileImporter.new)
+    end
   end
 end
 ```
+
+In the above code it can be seen that importer is registered against the feature `rainbow_stock_importer`.
+End user will be able to see the importer when feature is enabled for that user.
+
 
 ## Javascript
 
