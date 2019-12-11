@@ -54,6 +54,7 @@ export const EditorView = Backbone.View.extend({
       resizerTip: I18n.t('pageflow.editor.views.editor_views.resize_editor'),
       enableCursorHotkey: false,
       fxName: 'none',
+      maskIframesOnResize: true,
 
       onresize: function() {
         app.trigger('resize');
