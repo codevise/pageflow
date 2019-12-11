@@ -19,7 +19,7 @@ export const DisabledAtmoIndicatorView = Marionette.View.extend({
       this.$el.hide();
     });
 
-    this.$el.toggle(pageflow.atmo.disabled);
+    this.$el.toggle(!!pageflow.atmo && pageflow.atmo.disabled);
   },
 
   render: function() {
