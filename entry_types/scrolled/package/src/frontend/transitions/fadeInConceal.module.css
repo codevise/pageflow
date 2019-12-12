@@ -1,0 +1,24 @@
+@value fade-duration from './values.module.css';
+
+.backdrop {
+  position: absolute;
+  height: 100%;
+}
+
+.backdropInner {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+}
+
+.backdrop,
+.foreground {
+  transition: opacity fade-duration ease, visibility fade-duration;
+}
+
+.backdrop-below,
+.foreground-below {
+  opacity: 0;
+  visibility: hidden;
+}

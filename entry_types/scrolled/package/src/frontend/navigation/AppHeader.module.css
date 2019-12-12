@@ -1,0 +1,156 @@
+:global(header svg) {
+  fill: #c2c2c2;
+  cursor: pointer;
+}
+
+:global(header svg:hover) {
+  fill: rgb(0, 55, 90);;
+}
+
+.navigationBar {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  position: sticky;
+  top: -50px;
+  transition: top .15s;
+  z-index: 10000;
+  width: 100%;
+  text-align: center;
+}
+
+.navigationBarExpanded {
+  top: 0;
+}
+
+.navigationBarContentWrapper {
+  position: relative;
+  z-index: 2;
+  background-color: #fff;
+  height: 50px;
+}
+
+.menuIcon {
+  position: absolute;
+}
+
+.wdrLogo {
+  position: absolute;
+  top: 12px;
+  left: 15px;
+  width: 80px;
+}
+
+.burgerMenuIcon {
+  display: none;
+  top: 12px;
+  left: 12px;
+  outline: none;
+}
+
+.infoIcon {
+  top: 12px;
+  right: 55px;
+  width: 26px;
+}
+
+.shareIcon {
+  top: 5px;
+  right: 10px;
+  width: 40px;
+}
+
+.chapterList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.chapterListItem {
+  position: relative;
+  display: inline-block;
+  padding: 0 15px;
+  border-right: 1px solid #e9e9e9;
+}
+
+.chapterListItem:last-of-type {
+  border-right: none;
+}
+
+.progressBar {
+  background-color: rgba(194,194,194,0.8);
+  height: 8px;
+  width: 100%;
+}
+
+.progressIndicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0vw;
+  height: 100%;
+  background-color: #e10028;
+}
+
+/* mobile view */
+@media (max-width: 780px) {
+  .burgerMenuIcon {
+    display: block;
+  }
+
+  .wdrLogo {
+    position: inherit;
+  }
+
+  .navigationChapters {
+    touch-action: none;
+    display: block;
+    position: fixed;
+    top: 60px;
+    left: 0px;
+    background: rgba(255, 255, 255, 0.95);
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .navigationChaptersHidden {
+    display: none;
+  }
+
+  .chapterList {
+    margin-top: 50px;
+  }
+
+  .chapterListItem {
+    display: list-item;
+    width: 80vw;
+    padding: 25px 10vw;
+    border-right: none;
+  }
+
+  .chapterListItem::before,
+  .chapterListItem::after {
+    display: table;
+    content: " ";
+    border-top: 1px solid rgb(100, 100, 100);
+    width: 30%;
+    margin: 0 35%;
+    transition: width .15s, margin .15s;
+  }
+
+  .chapterListItem:hover::before,
+  .chapterListItem:hover::after {
+    border-top: 1px solid rgb(0, 55, 90);
+    width: 80%;
+    margin: 0 10%;
+  }
+
+  .chapterLink,
+  .chapterLink:hover {
+    padding: 10px 0px;
+  }
+
+  .progressBar {
+    height: 10px;
+  }
+}

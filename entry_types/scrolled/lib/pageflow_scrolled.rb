@@ -9,9 +9,7 @@ module PageflowScrolled
 
     def entry_type
       Pageflow::EntryType.new(name: 'scrolled',
-                              frontend_app: lambda do |_env|
-                                [200, {'Content-Type' => 'text/html'}, ['Scrolled']]
-                              end,
+                              frontend_app: PageflowScrolled::EntriesController.action(:show),
                               editor_fragment_renderer: editor_fragment_renderer)
     end
 

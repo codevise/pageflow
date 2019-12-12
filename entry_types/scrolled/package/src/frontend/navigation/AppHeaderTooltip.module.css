@@ -1,0 +1,15 @@
+:global(.navigationTooltip) {
+  opacity: 1 !important;
+  border-bottom: 3px solid #e10028;
+}
+
+.tooltipHeadline {
+  margin: 5px 0 0px;
+  color: #e10028;
+}
+
+@media (max-width: 780px) {
+  :global(.navigationTooltip) {
+    display: none !important;
+  }
+}

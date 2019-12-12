@@ -7,14 +7,25 @@
   "author": "Codevise Solutions GmbH <info@codevise.de>",
   "license": "MIT",
   "dependencies": {
-    "pageflow": "15.1.0"
+    "pageflow": "15.1.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-tooltip": "^3.11.1"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "2.x",
+    "@typescript-eslint/parser": "2.x",
+    "babel-eslint": "10.x",
     "babel-jest": "^24.9.0",
-    "eslint": "^6.6.0",
+    "eslint": "6.x",
+    "eslint-config-react-app": "^5.1.0",
     "eslint-import-resolver-jest": "^3.0.0",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-flowtype": "3.x",
+    "eslint-plugin-import": "2.x",
     "eslint-plugin-jest": "^23.0.4",
+    "eslint-plugin-jsx-a11y": "6.x",
+    "eslint-plugin-react": "7.x",
+    "eslint-plugin-react-hooks": "1.x",
     "jest": "^24.9.0"
   },
   "scripts": {

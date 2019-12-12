@@ -15,6 +15,12 @@ module PageflowScrolled
           import 'pageflow-scrolled/editor';
         JS
       end
+
+      def frontend_pack
+        create_file 'app/javascript/packs/pageflow-scrolled-frontend.js', <<-JS
+          import 'pageflow-scrolled/frontend';
+        JS
+      end
     end
   end
 end

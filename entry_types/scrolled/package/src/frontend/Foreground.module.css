@@ -1,0 +1,27 @@
+.Foreground {
+  position: relative;
+  z-index: 3;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.fullFadeHeight {
+  min-height: 51vh;
+}
+
+.fullHeight {
+  min-height: 100vh;
+}
+
+.fullFadeHeight.enlarge,
+.fullHeight.enlarge {
+  min-height: 130vh;
+}
+
+.hidden {
+  visibility: hidden;
+}

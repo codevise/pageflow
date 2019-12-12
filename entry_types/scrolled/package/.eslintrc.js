@@ -1,21 +1,9 @@
 module.exports = {
-  "env": {
-    "browser": true,
-    "es6": true
-  },
   "extends": [
-    "eslint:recommended",
+    "react-app",
     "plugin:import/errors",
     "plugin:import/warnings"
   ],
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module"
-  },
-  "plugins": ["import", "jest"],
-  "rules": {
-    "no-unused-vars": [ "warn", {"vars": "all", "args": "none"} ],
-  },
   "settings": {
     "import/resolver": {
       "jest": {
@@ -24,12 +12,6 @@ module.exports = {
     }
   },
   "overrides": [
-    {
-      "files": ["*.config.js"],
-      "env": {
-        "node": true
-      }
-    },
     {
       "files": ["spec/**/*.js"],
       "env": {

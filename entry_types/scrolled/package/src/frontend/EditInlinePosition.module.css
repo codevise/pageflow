@@ -1,0 +1,10 @@
+.root {
+  position: relative;
+}
+
+.select {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 4;
+}

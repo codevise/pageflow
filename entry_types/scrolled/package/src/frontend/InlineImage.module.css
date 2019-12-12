@@ -1,0 +1,22 @@
+.root {
+  position: relative;
+  margin-top: 1em;
+}
+
+.container {
+  position: relative;
+  margin-top: 1em;
+}
+
+.spacer {
+  padding-top: 75%;
+}
+
+.inner {
+  border: solid 2px #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}

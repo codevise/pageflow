@@ -3,6 +3,8 @@ import jst from 'rollup-plugin-jst';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
+import postcss from 'rollup-plugin-postcss';
+import reactSvg from "rollup-plugin-react-svg";
 
 const pageflowPackageRoot = 'packages/pageflow';
 const pageflowPagedEngineRoot = 'entry_types/paged';
@@ -28,18 +30,26 @@ const editorGlobals = {
 };
 
 const externalEditorGlobals = Object.keys(editorGlobals);
+const externalCoreJs = function(id) {
+  return id.match(/^core-js/);
+};
+const externalScrolledDependenciesAndCoreJs = function(id) {
+  return [
+    'react', 'react-dom', 'react-tooltip'
+  ].indexOf(id) >= 0 || externalCoreJs(id);
+};
 const externalEditorGlobalsAndCoreJs = function(id) {
   return externalEditorGlobals.indexOf(id) >= 0 ||
-         id.match(/^core-js/);
-}
+         externalCoreJs(id);
+};
 const externalPageflowEditorGlobalsAndCoreJs = function(id) {
   return id.match(/^pageflow\//) || externalEditorGlobalsAndCoreJs(id);
-}
+};
 
 const plugins = [
-  jst(),
-  resolve(),
-  commonjs(),
+  postcss({
+    modules: true
+  }),
   babel({
     exclude: 'node_modules/**',
 
@@ -48,6 +58,12 @@ const plugins = [
     // @babel/plugin-transform-runtime which already takes care of
     // this.
     runtimeHelpers: true
+  }),
+  jst(),
+  resolve(),
+  commonjs(),
+  reactSvg({
+    svgo: {multipass: true}
   })
 ];
 
@@ -141,5 +157,21 @@ export default [
     },
     external: externalPageflowEditorGlobalsAndCoreJs,
     plugins
+  },
+  {
+    input: pageflowScrolledPackageRoot + '/src/frontend/index.js',
+    output: {
+      file: pageflowScrolledPackageRoot + '/frontend.js',
+      format: 'esm',
+    },
+    external: externalScrolledDependenciesAndCoreJs,
+    plugins,
+
+    onwarn: function(warning, warn) {
+      // Ignore noisy warning
+      // https://github.com/babel/babel/issues/9149
+      if (warning.code === 'THIS_IS_UNDEFINED') { return; }
+      warn(warning);
+    }
   }
 ];

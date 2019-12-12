@@ -8,13 +8,15 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.7.2",
-    "babel-preset-react-app": "^9.0.2",
     "@rollup/plugin-alias": "^2.2.0",
+    "babel-preset-react-app": "^9.0.2",
     "rollup": "^1.26.3",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-jst": "^1.2.0",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-react-svg": "^3.0.3"
   },
   "scripts": {
     "start": "NODE_ENV=development rollup --config rollup.config.js --watch",
