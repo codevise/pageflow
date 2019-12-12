@@ -109,6 +109,20 @@ accepts an object that implements the following methods:
   editor page. The returned HTML needs to include asset tags that load
   all JavaScript and CSS required for the editor.
 
+* `body_fragment(entry)`: HTML included in the body element of the
+  editor page. Can be used to include static seed data `script` tags.
+
+* `seed_fragment(entry)`: JSON included in asynchronously fetched
+  editor seed data that is passed to Backbone Marionette initializers:
+
+  ```javascript
+  import {editor} from 'pageflow/editor';
+
+  editor.addInitializer(options => {
+    options.entry_type // => seed fragment data
+  })
+  ```
+
 Pageflow provides a helper class that can be used to render these
 fragments from partials:
 
@@ -127,5 +141,7 @@ end
 This will render the following partials with a local `entry` variable:
 
 * `rainbow/editor/entries/_head.html.erb`
+* `rainbow/editor/entries/_body.html.erb`
+* `rainbow/editor/entries/_seed.json.jbuilder`
 
 The given controller determines the available view helpers.

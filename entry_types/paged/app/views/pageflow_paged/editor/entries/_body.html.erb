@@ -1,0 +1,4 @@
+<% I18n.with_locale(entry.locale) do %>
+  <%= page_type_templates(entry) %>
+  <%= render('pageflow_paged/editor/entries/indicators_seed', theme: entry.theme) %>
+<% end %>

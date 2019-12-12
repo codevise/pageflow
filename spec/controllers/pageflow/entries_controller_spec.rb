@@ -103,7 +103,7 @@ module Pageflow
       end
 
       it 'renders entry type specific head fragment' do
-        renderer = double('renderer')
+        renderer = double('renderer').as_null_object
         pageflow_configure do |config|
           TestEntryType.register(config,
                                  name: 'test',
@@ -120,6 +120,25 @@ module Pageflow
 
         expect(response.body).to have_selector('script[src^="/test/editor.js"]',
                                                visible: false)
+      end
+
+      it 'renders entry type specific body fragment' do
+        renderer = double('renderer').as_null_object
+        pageflow_configure do |config|
+          TestEntryType.register(config,
+                                 name: 'test',
+                                 editor_fragment_renderer: renderer)
+        end
+        user = create(:user)
+        entry = create(:entry, with_editor: user, type_name: 'test')
+
+        allow(renderer)
+          .to receive(:body_fragment).and_return('<div class="seed"></div>'.html_safe)
+
+        sign_in(user, scope: :user)
+        get(:edit, params: {id: entry})
+
+        expect(response.body).to have_selector('div.seed')
       end
     end
 
