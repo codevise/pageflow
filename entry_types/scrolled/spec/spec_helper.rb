@@ -6,7 +6,9 @@ Pageflow::Dummy.setup
 
 require 'rspec/rails'
 
-Dir[File.join(File.dirname(__FILE__), 'support/config/**/*.rb')].each { |file| require(file) }
+Dir[File.join(File.dirname(__FILE__), 'support/{config,helpers}/**/*.rb')].each do |file|
+  require(file)
+end
 
 require 'pageflow_scrolled'
 
