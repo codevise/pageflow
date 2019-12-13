@@ -16,7 +16,7 @@ module PageflowScrolled
       it 'groups the sections content elements as array under "foreground""-key' do
         revision = create(:scrolled_revision, :published)
         section = create(:section, revision: revision)
-        create(:heading, section: section)
+        create(:content_element, :heading, section: section)
         entry = PageflowScrolled::PublishedEntry.new(
           create(:entry, published_revision: revision)
         )
@@ -40,7 +40,7 @@ module PageflowScrolled
       it 'returns a hash with :foreground key' do
         revision = create(:scrolled_revision, :published)
         section = create(:section, revision: revision)
-        create(:heading, section: section)
+        create(:content_element, :heading, section: section)
         result = helper.section_content_elements_seed(section)
 
         expect(result[:foreground]).to be_present
@@ -49,7 +49,7 @@ module PageflowScrolled
       it 'specifies the components type from content elements type_name attribute' do
         revision = create(:scrolled_revision, :published)
         section = create(:section, revision: revision)
-        heading = create(:heading, section: section)
+        heading = create(:content_element, :heading, section: section)
 
         result = helper.section_content_elements_seed(section)
 
@@ -59,7 +59,7 @@ module PageflowScrolled
       it 'specifies the components props from content elements configuration attribute' do
         revision = create(:scrolled_revision, :published)
         section = create(:section, revision: revision)
-        heading = create(:heading, section: section)
+        heading = create(:content_element, :heading, section: section)
 
         result = helper.section_content_elements_seed(section)
 

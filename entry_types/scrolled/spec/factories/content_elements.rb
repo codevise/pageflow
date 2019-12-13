@@ -1,7 +1,10 @@
 module PageflowScrolled
   FactoryBot.define do
-    factory :heading, class: ContentElement do
+    factory :content_element, class: ContentElement do
       section
+    end
+
+    trait :heading do
       type_name { 'heading' }
       configuration do
         {
@@ -10,7 +13,7 @@ module PageflowScrolled
       end
     end
 
-    factory :text_block, class: ContentElement do
+    trait :text_block do
       section
       type_name { 'textBlock' }
       configuration do
