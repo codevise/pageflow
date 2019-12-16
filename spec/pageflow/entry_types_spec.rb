@@ -2,6 +2,16 @@ require 'spec_helper'
 
 module Pageflow
   describe EntryTypes do
+    it 'is enumarable' do
+      entry_types = EntryTypes.new
+      entry_type = TestEntryType.new(name: 'test')
+
+      entry_types.register(entry_type)
+      result = entry_types.map(&:name)
+
+      expect(result).to eq(['test'])
+    end
+
     describe '#find_by_name!' do
       it 'returns entry type with given name' do
         entry_types = EntryTypes.new

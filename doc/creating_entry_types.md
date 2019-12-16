@@ -100,6 +100,8 @@ end
 
 ## Customizing the Editor
 
+### Rendered Fragments
+
 To make the editor work for entries of a new entry type, we first need
 to provide some partials that will be used while rendering the
 editor. `EntryType` takes an `editor_fragment_renderer` option, which
@@ -145,6 +147,47 @@ This will render the following partials with a local `entry` variable:
 * `rainbow/editor/entries/_seed.json.jbuilder`
 
 The given controller determines the available view helpers.
+
+### REST Controllers
+
+Entry types can define new editor controllers, which can then be used
+by custom Backbone collections in the editor:
+
+```ruby
+module Rainbow
+  module Editor
+    class UnicornsController < ActionController::Base
+    end
+  end
+end
+```
+
+It is recommended to put all editor controllers into a `Editor`
+module. The easiest way is to use the routes defined by the entry type
+Rails engine:
+
+```ruby
+# rainbow/config/routes.rb
+scope module: 'editor' do
+  resources :unicorns
+end
+```
+
+The `scope` call is required to use controllers from the
+`Rainbow::Editor` module. Pass the engine as `editor_app` when
+registering the entry type:
+
+```ruby
+def entry_type
+  Pageflow::EntryType.new(name: 'rainbow',
+                          ...
+                          editor_app: Rainbow::Engine)
+end
+```
+
+The editor app will be mounted at
+`/editor/entries/:id/<entry_type_name>/`. So the example above would
+add the route `/editor/entries/:id/test/unicorns`.
 
 ## Adding to the Configuration
 
