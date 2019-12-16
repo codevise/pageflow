@@ -471,24 +471,38 @@ module Pageflow
 
     # @api private
     def enable_features(names)
-      features.enable(names, FeatureLevelConfiguration.new(self))
+      features.enable(names, FeatureLevelConfiguration.new(config: self))
     end
 
     # @api private
     def enable_all_features
-      features.enable_all(FeatureLevelConfiguration.new(self))
+      features.enable_all(FeatureLevelConfiguration.new(config: self))
     end
 
     # Restricts the configuration interface to those parts which can
     # be used from inside features.
-    class FeatureLevelConfiguration < Struct.new(:config)
-      delegate :page_types, to: :config
-      delegate :widget_types, to: :config
-      delegate :help_entries, to: :config
-      delegate :admin_form_inputs, to: :config
-      delegate :admin_attributes_table_rows, to: :config
-      delegate :themes, to: :config
-      delegate :file_importers, to: :config
+    class FeatureLevelConfiguration < Struct.new(:config, :additional_featurables, keyword_init: true)
+      def self.featurables(additionals = nil)
+        originals = [
+          :admin_attributes_table_rows,
+          :admin_form_inputs,
+          :file_importers,
+          :help_entries,
+          :page_types,
+          :themes,
+          :widget_types
+        ]
+
+        if additionals
+          originals + additionals
+        else
+          originals
+        end
+      end
+
+      featurables.each do |featurable|
+        delegate featurable, to: :config
+      end
     end
 
     module EntryTypeConfiguration
