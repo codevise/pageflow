@@ -60,7 +60,7 @@ def entry_type
 end
 ```
 
-Pageflow can use any Rack app to render the entry. Pagefow also stores
+Pageflow can use any Rack app to render the entry. Pageflow also stores
 a symbol on the request env which indicates whether currently a
 preview or a publicly available site is rendered:
 
@@ -145,3 +145,24 @@ This will render the following partials with a local `entry` variable:
 * `rainbow/editor/entries/_seed.json.jbuilder`
 
 The given controller determines the available view helpers.
+
+## Adding to the Configuration
+
+`EntryType` provides a `configuration` option, which accepts a class
+that mixes in `Pageflow::Configuration::EntryTypeConfiguration`.
+
+For example, this can be used to add `page_types` to a `paged` entry
+type:
+
+``` ruby
+class PagedConfiguration
+  include Pageflow::Configuration::EntryTypeConfiguration
+
+  attr_accessor :page_types
+
+  def initialize(config)
+    @page_types = PageTypes.new
+    super(config)
+  end
+end
+```

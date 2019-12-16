@@ -1,4 +1,4 @@
-require 'rspec'
+require 'spec_helper'
 
 module Pageflow
   describe GlobalConfigApi do
@@ -131,6 +131,128 @@ module Pageflow
 
         expect(result).to be(true)
         expect(result_other).to be(false)
+      end
+
+      it 'returns config with custom attributes for entry type' do
+        phaged_config = Class.new do
+          include Pageflow::Configuration::EntryTypeConfiguration
+
+          attr_accessor :phage_types
+
+          def initialize(config)
+            @phage_types = PageTypes.new
+            super(config)
+          end
+        end
+        entry_type = TestEntryType.new(name: 'phaged')
+        pageflow = PageflowModule.new
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'phaged', configuration: phaged_config)
+          config.for_entry_type(entry_type) do |c|
+            c.phage_types.register(TestPageType.new(name: 'Rainbow'))
+          end
+        end
+
+        entry = double('entry', type_name: 'phaged', enabled_feature_names: [])
+        config_for_target = pageflow.config_for(entry)
+
+        expect(config_for_target.phage_types.names).to include('Rainbow')
+      end
+
+      it "doesn't return config with custom attributes for another entry type" do
+        phaged_config = Class.new do
+          include Pageflow::Configuration::EntryTypeConfiguration
+
+          attr_accessor :phage_types
+
+          def initialize(config)
+            @phage_types = PageTypes.new
+            super(config)
+          end
+        end
+        skulled_config = Class.new do
+          include Pageflow::Configuration::EntryTypeConfiguration
+
+          def initialize(config)
+            super(config)
+          end
+        end
+        entry_type = TestEntryType.new(name: 'phaged')
+        pageflow = PageflowModule.new
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'phaged', configuration: phaged_config)
+          config.for_entry_type(entry_type) do |c|
+            c.phage_types.register(TestPageType.new(name: 'Rainbow'))
+          end
+          TestEntryType.register(config,
+                                 name: 'skulled',
+                                 configuration: skulled_config)
+        end
+
+        entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
+        config_for_target = pageflow.config_for(entry)
+
+        expect(config_for_target.respond_to?(:phage_types)).to be_falsy
+      end
+
+      it 'returns values of constant type independent of for_entry_type calls' do
+        entry_type = TestEntryType.new(name: 'skulled')
+        entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
+        skulled_config = Class.new do
+          include Pageflow::Configuration::EntryTypeConfiguration
+          attr_accessor :data
+
+          def initialize(config)
+            super(config)
+            @data = 'empty'
+          end
+        end
+        pageflow = PageflowModule.new
+        pageflow.configure do |config|
+          TestEntryType.register(config,
+                                 name: 'skulled',
+                                 configuration: skulled_config)
+        end
+        config_for_target = pageflow.config_for(entry)
+        pageflow.configure do |config|
+          config.for_entry_type(entry_type) do |c|
+            c.data = 'full'
+          end
+        end
+        config_for_target2 = pageflow.config_for(entry)
+
+        expect(config_for_target.class).to eq config_for_target2.class
+      end
+
+      it 'returns same config object independent of for_entry_type calls' do
+        entry_type = TestEntryType.new(name: 'skulled')
+        entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
+        skulled_config = Class.new do
+          include Pageflow::Configuration::EntryTypeConfiguration
+          attr_accessor :data, :other_data
+
+          def initialize(config)
+            super(config)
+            @data = 'empty'
+            @other_data = 'empty'
+          end
+        end
+        pageflow = PageflowModule.new
+        pageflow.configure do |config|
+          TestEntryType.register(config,
+                                 name: 'skulled',
+                                 configuration: skulled_config)
+          config.for_entry_type(entry_type) do |c|
+            c.data = 'full'
+          end
+          config.for_entry_type(entry_type) do |c|
+            c.other_data = 'fuller'
+          end
+        end
+        config_for_target = pageflow.config_for(entry)
+
+        expect(config_for_target.data).to eq 'full'
+        expect(config_for_target.other_data).to eq 'fuller'
       end
     end
   end

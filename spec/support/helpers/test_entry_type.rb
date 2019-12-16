@@ -8,7 +8,16 @@ module Pageflow
       EntryType.new(name: 'test',
                     editor_fragment_renderer: nil,
                     frontend_app: -> {},
+                    configuration: TestEntryTypeConfiguration,
                     **options)
+    end
+
+    class TestEntryTypeConfiguration
+      include Configuration::EntryTypeConfiguration
+
+      def initialize(config)
+        super(config)
+      end
     end
   end
 end
