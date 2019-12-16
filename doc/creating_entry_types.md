@@ -189,6 +189,56 @@ The editor app will be mounted at
 `/editor/entries/:id/<entry_type_name>/`. So the example above would
 add the route `/editor/entries/:id/test/unicorns`.
 
+Pageflow provides the `Pageflow::EditorController` module to take care
+of common editor controller concerns like:
+
+* Authenticating the user
+* Finding the entry from request params
+* Authorizing the usere
+* Ensuring the current user holds an edit lock for the entry
+
+```ruby
+module Rainbow
+  module Editor
+    class UnicornsController < ActionController::Base
+      include Pageflow::EditorController
+
+      def update
+        @entry # => Pageflow::DraftEntry
+      end
+    end
+  end
+end
+```
+
+In controller specs, you can use
+`Pageflow::EditorControllerTestHelper#authorize_for_editor_controller`
+to make sure the test request is authorized for the action:
+
+```ruby
+require 'spec_helper'
+require 'pageflow/editor_controller_test_helper'
+
+module Rainbow
+  RSpec.describe Editor::UnicornsController, type: :controller do
+    include Pageflow::EditorControllerTestHelper
+
+    routes { Rainbow::Engine.routes }
+
+    describe '#create' do
+      it 'succeeds' do
+        entry = create(:entry)
+
+        authorize_for_editor_controller(entry)
+        post(:create, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.status).to eq(204)
+      end
+    end
+  end
+end
+```
+
 ## Adding to the Configuration
 
 `EntryType` provides a `configuration` option, which accepts a class
