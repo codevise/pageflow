@@ -52,6 +52,7 @@ const plugins = [
   }),
   babel({
     exclude: 'node_modules/**',
+    extensions: ['js', 'jsx', 'svg'],
 
     // By default rollup-plugin-babel deduplicates runtime helpers
     // inserted by Babel. babel-preset-react-app uses
