@@ -2,6 +2,25 @@ require 'spec_helper'
 
 module Pageflow
   describe '/:slug request', type: :request do
+    let(:entry_type_app) do
+      lambda do |env|
+        entry = EntriesControllerEnvHelper.get_published_entry_from_env(env)
+        mode = EntriesControllerEnvHelper.get_entry_mode_from_env(env)
+
+        ['200',
+         {'Content-Type' => 'text/html'},
+         ["#{entry.title} #{mode} rendered by entry type frontend app."]]
+      end
+    end
+
+    before do
+      pageflow_configure do |config|
+        TestEntryType.register(config,
+                               name: 'test',
+                               frontend_app: entry_type_app)
+      end
+    end
+
     context 'with format */*' do
       it 'responds with forbidden for entry published with password' do
         entry = create(:entry, :published_with_password,
@@ -34,25 +53,6 @@ module Pageflow
     end
 
     describe 'with html format' do
-      let(:entry_type_app) do
-        lambda do |env|
-          entry = EntriesControllerEnvHelper.get_published_entry_from_env(env)
-          mode = EntriesControllerEnvHelper.get_entry_mode_from_env(env)
-
-          ['200',
-           {'Content-Type' => 'text/html'},
-           ["#{entry.title} #{mode} rendered by entry type frontend app."]]
-        end
-      end
-
-      before do
-        pageflow_configure do |config|
-          TestEntryType.register(config,
-                                 name: 'test',
-                                 frontend_app: entry_type_app)
-        end
-      end
-
       it 'delegates to entry type frontend app for published entry' do
         entry = create(:entry, :published, type_name: 'test', title: 'some-entry')
 
@@ -82,7 +82,7 @@ module Pageflow
       end
 
       it 'responds with success for entry published with password when correct password is '\
-        'supplied' do
+         'supplied' do
         entry = create(:entry, :published_with_password,
                        type_name: 'test',
                        password: 'abc123abc')
@@ -219,7 +219,7 @@ module Pageflow
       context 'https mode' do
         it 'redirects to https when https is enforced' do
           entry = create(:entry, :published,
-                         type_name: 'test_with_frame_header',
+                         type_name: 'test',
                          title: 'some-entry')
 
           Pageflow.config.public_https_mode = :enforce

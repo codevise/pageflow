@@ -1,4 +1,4 @@
-require 'rspec'
+require 'spec_helper'
 
 module Pageflow
   describe GlobalConfigApi do
@@ -131,6 +131,68 @@ module Pageflow
 
         expect(result).to be(true)
         expect(result_other).to be(false)
+      end
+
+      it 'returns config with custom attributes for entry type' do
+        phaged_config = Class.new do
+          include Pageflow::Configuration::EntryTypeConfiguration
+
+          attr_accessor :phage_types
+
+          def initialize(config)
+            @phage_types = PageTypes.new
+            super(config)
+          end
+        end
+        entry_type = TestEntryType.new(name: 'phaged')
+        pageflow = PageflowModule.new
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'phaged', configuration: phaged_config)
+          config.for_entry_type(entry_type) do |c|
+            c.phage_types.register(TestPageType.new(name: 'Rainbow'))
+          end
+        end
+
+        entry = double('entry', type_name: 'phaged', enabled_feature_names: [])
+        config_for_target = pageflow.config_for(entry)
+
+        expect(config_for_target.phage_types.names).to include('Rainbow')
+      end
+
+      it "doesn't return config with custom attributes for another entry type" do
+        phaged_config = Class.new do
+          include Pageflow::Configuration::EntryTypeConfiguration
+
+          attr_accessor :phage_types
+
+          def initialize(config)
+            @phage_types = PageTypes.new
+            super(config)
+          end
+        end
+        skulled_config = Class.new do
+          include Pageflow::Configuration::EntryTypeConfiguration
+
+          def initialize(config)
+            super(config)
+          end
+        end
+        entry_type = TestEntryType.new(name: 'phaged')
+        pageflow = PageflowModule.new
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'phaged', configuration: phaged_config)
+          config.for_entry_type(entry_type) do |c|
+            c.phage_types.register(TestPageType.new(name: 'Rainbow'))
+          end
+          TestEntryType.register(config,
+                                 name: 'skulled',
+                                 configuration: skulled_config)
+        end
+
+        entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
+        config_for_target = pageflow.config_for(entry)
+
+        expect(config_for_target.respond_to?(:phage_types)).to be_falsy
       end
     end
   end

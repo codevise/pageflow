@@ -4,7 +4,7 @@ module Pageflow
   # @since 15.1
   class EntryType
     # @api private
-    attr_reader :name, :frontend_app, :editor_fragment_renderer
+    attr_reader :name, :frontend_app, :editor_fragment_renderer, :configuration
 
     # @param name [String] A unique name.
     #
@@ -12,10 +12,11 @@ module Pageflow
     #   when not in the editor (i.e. preview and published entries).
     #
     # @param editor_fragment_renderer
-    def initialize(name:, frontend_app:, editor_fragment_renderer:)
+    def initialize(name:, frontend_app:, editor_fragment_renderer:, configuration:)
       @name = name
       @frontend_app = frontend_app
       @editor_fragment_renderer = editor_fragment_renderer
+      @configuration = configuration
     end
   end
 end

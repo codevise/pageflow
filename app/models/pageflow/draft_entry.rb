@@ -14,6 +14,7 @@ module Pageflow
              :password_digest,
              :to_model, :to_key, :persisted?, :to_json,
              :first_published_at,
+             :type_name,
              :to => :entry)
 
     delegate(:title, :summary, :credits, :manual_start,

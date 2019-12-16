@@ -44,8 +44,13 @@ module Pageflow
     # @return [Configuration]
     # @since 0.9
     def config_for(target)
-      build_config do |config|
-        config.enable_features(target.enabled_feature_names)
+      config = build_config do |c|
+        c.enable_features(target.enabled_feature_names)
+      end
+      if target.respond_to?(:type_name) && config.entry_type_configs.key?(target.type_name)
+        ConfigDelegator.new(config, target.type_name)
+      else
+        config
       end
     end
 
@@ -113,6 +118,30 @@ module Pageflow
         @after_configure_blocks.each do |block|
           block.call(config)
         end
+      end
+    end
+
+    class ConfigDelegator
+      attr_accessor :config, :type_name
+
+      def initialize(config, type_name)
+        @config = config
+        @type_name = type_name
+      end
+
+      def method_missing(method, *args)
+        type_config = config.entry_type_configs[type_name]
+        if @config.respond_to?(method)
+          config.send(method, *args)
+        elsif type_config.respond_to?(method)
+          type_config.send(method, *args)
+        else
+          super
+        end
+      end
+
+      def respond_to_missing?(method_name, include_private = false)
+        @config.respond_to?(method_name) || super
       end
     end
   end
