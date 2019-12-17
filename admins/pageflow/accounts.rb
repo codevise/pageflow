@@ -71,7 +71,6 @@ module Pageflow
     end
 
     controller do
-      helper Pageflow::Admin::AccountsHelper
       helper Pageflow::Admin::FeaturesHelper
       helper Pageflow::Admin::FormHelper
       helper Pageflow::Admin::LocalesHelper
