@@ -5,8 +5,9 @@
 
 import './renderer';
 import * as i18nUtils from './utils/i18nUtils';
+import * as cssModulesUtils from './utils/cssModulesUtils';
 
-export { i18nUtils };
+export { i18nUtils, cssModulesUtils };
 export {default as Object} from '../Object';
 
 export * from './views/SortableCollectionView';
