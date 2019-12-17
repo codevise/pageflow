@@ -5,7 +5,7 @@ json.call(Pageflow.config,
           :available_public_locales,
           :available_text_track_kinds,
           :available_share_providers)
-json.file_types Pageflow.config.file_types do |file_type|
+json.file_types Pageflow.config_for(entry).file_types do |file_type|
   json.collection_name file_type.collection_name
   json.top_level_type file_type.top_level_type
   json.type_name file_type.type_name

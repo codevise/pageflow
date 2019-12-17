@@ -17,6 +17,31 @@ module Pageflow
         expect(result['fileTypes'][0]['collectionName']).to eq('image_files')
       end
 
+      it 'does not include file types of disabled feature' do
+        pageflow_configure do |config|
+          config.features.register('test_file_type') do |feature_config|
+            TestFileType.register(feature_config, collection_name: 'test')
+          end
+        end
+
+        result = JSON.parse(helper.editor_config_seeds(create(:entry)))
+
+        expect(result['fileTypes'].map { |h| h['collectionName'] }).not_to include('test')
+      end
+
+      it 'includes file types of enabled feature' do
+        pageflow_configure do |config|
+          config.features.register('test_file_type') do |feature_config|
+            TestFileType.register(feature_config, collection_name: 'test')
+          end
+        end
+        entry = create(:entry, with_feature: 'test_file_type')
+
+        result = JSON.parse(helper.editor_config_seeds(entry))
+
+        expect(result['fileTypes'].map { |h| h['collectionName'] }).to include('test')
+      end
+
       it 'includes nested file type collection names' do
         result = JSON.parse(helper.editor_config_seeds(create(:entry)))
 
