@@ -39,6 +39,36 @@ The Weback built for `pageflow-react` needs to be started separately:
     $ cd packages/pageflow-react
     $ yarn start
 
+### Using Local Packages in a Host Application
+
+To temporarily use a your local version of a package in a host
+application, first run `yarn link` in the package directory:
+
+    $ cd my-projects/pageflow/packages/pageflow
+    $ yarn link
+
+or
+
+    $ cd my-projects/entry_types/scrolled/package
+    $ yarn link
+
+In the host application run:
+
+    $ cd my-projects/pageflow-host-app
+    $ yarn link pageflow
+
+or
+
+    $ cd my-projects/pageflow-host-app
+    $ yarn link pageflow-scrolled
+
+Restart the development servers. Note that development watchers need
+to be running for the pageflow repository.
+
+You can return to using the version specified in the `package.json`
+file, by running `yarn unlink pageflow`/`yarn unlink
+pageflow-scrolled` and `yarn install --force`.
+
 ### Building for Release
 
 To output a production ready build, run from the repository run:
