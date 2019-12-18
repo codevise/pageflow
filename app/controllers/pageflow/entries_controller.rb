@@ -1,17 +1,9 @@
 module Pageflow
+  # @api private
   class EntriesController < Pageflow::ApplicationController
     include ControllerDelegation
     include PublicHttpsMode
     include EntryPasswordProtection
-
-    before_action :authenticate_user!, except: [:index, :show, :stylesheet, :page]
-
-    helper_method :render_to_string
-
-    helper PagesHelper
-    helper NavigationBarHelper
-    helper BackgroundImageHelper
-    helper RenderJsonHelper
 
     def index
       theming = Theming.for_request(request).with_home_url.first!
@@ -46,17 +38,6 @@ module Pageflow
       index = params[:page_index].split('-').first.to_i
 
       redirect_to(short_entry_path(entry.to_model, :anchor => entry.pages[index].try(:perma_id)))
-    end
-
-    def partials
-      authenticate_user!
-      @entry = DraftEntry.find(params[:id])
-      I18n.locale = @entry.locale
-      authorize!(:show, @entry.to_model)
-
-      respond_to do |format|
-        format.html { render :action => 'partials', :layout => false }
-      end
     end
 
     protected
