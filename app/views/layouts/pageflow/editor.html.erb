@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%= content_tag(:html, lang: I18n.locale, dir: @page_text_direction) do %>
+<%= content_tag(:html, lang: I18n.locale) do %>
 <head>
   <title><%= @page_title.presence || 'Pageflow' %></title>
 
@@ -16,17 +16,10 @@
 
   <%= yield :head %>
 
-  <%= stylesheet_link_tag 'pageflow/print_view', media: 'print', 'data-turbolinks-track' => true %>
-  <%= render 'layouts/pageflow/loading_spinner_inline_script' %>
-
   <%= render 'layouts/pageflow/ie_include_tags' %>
 </head>
 
-<body class="load_all_images has_no_mobile_platform non_js">
-  <script>
-    jQuery('body').removeClass('load_all_images');
-    jQuery("body").removeClass('non_js').addClass('js');
-  </script>
+<body class="js">
   <%= yield %>
   <%= render 'layouts/pageflow/theme_probes' %>
 </body>
