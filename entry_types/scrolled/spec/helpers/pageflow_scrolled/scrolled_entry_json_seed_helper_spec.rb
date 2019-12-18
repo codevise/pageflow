@@ -59,6 +59,21 @@ module PageflowScrolled
 
         expect(json_get(result, path: [0, 'foreground', 0, 'props'])).to eql(heading.configuration)
       end
+
+      it 'converts the "position"-configuration to top-level prop' do
+        revision = create(:revision, :published)
+        section = create(:section, revision: revision)
+        create(:content_element,
+               :text_block,
+               section: section,
+               configuration: {position: 'full'})
+        entry = Pageflow::PublishedEntry.new(
+          create(:entry, published_revision: revision)
+        )
+        result = helper.scrolled_entry_json_seed(entry)
+
+        expect(json_get(result, path: [0, 'foreground', 0, 'position'])).to eql('full')
+      end
     end
   end
 end
