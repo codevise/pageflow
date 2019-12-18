@@ -1,3 +1,7 @@
-<%= stylesheet_link_tag 'pageflow_paged/editor', media: "all" %>
+<%= stylesheet_link_tag 'pageflow_paged/editor', media: 'all' %>
+
+<%= javascript_include_tag 'pageflow/vendor' %>
+<%# Next line can be removed once remaining mentions of pageflow global in editor are removed %>
+<%= javascript_include_tag 'pageflow/application' %>
 <%= javascript_include_tag 'pageflow/editor/vendor' %>
 <%= javascript_pack_tag 'pageflow-scrolled-editor' %>

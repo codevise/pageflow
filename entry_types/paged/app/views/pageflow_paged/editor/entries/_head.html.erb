@@ -1,2 +1,12 @@
-<%= stylesheet_link_tag 'pageflow_paged/editor', media: "all" %>
+<%= stylesheet_link_tag 'pageflow/application_with_simulated_media_queries', media: 'all' %>
+<%= stylesheet_link_tag 'pageflow_paged/editor', media: 'all' %>
+
+<script>
+  window.PAGEFLOW_EDITOR = true;
+</script>
+
+<%= javascript_include_tag 'pageflow/vendor' %>
+<%= javascript_include_tag 'pageflow/application' %>
 <%= javascript_include_tag 'pageflow_paged/editor' %>
+
+<%= render 'layouts/pageflow/ie_include_tags' %>
