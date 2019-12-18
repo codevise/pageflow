@@ -1,9 +1,18 @@
 #!/bin/bash
 
+add_and_commit() {
+  git add -f $@
+  git commit $@ -m "Build"
+}
+
 set -ex
 
 yarn install --frozen-lockfile
-./build-packages
+bin/build-packages
 
-git add -f app/assets/javascripts/pageflow/dist/{react-*,editor}.js
-git commit app/assets/javascripts/pageflow/dist/{react-*,editor}.js -m "Build"
+add_and_commit \
+    app/assets/javascripts/pageflow/dist/{react-*,editor,ui,frontend}.js \
+    packages/pageflow/{editor,ui}.js \
+    entry_types/paged/app/assets/javascripts/pageflow_paged/dist/editor.js \
+    entry_types/scrolled/package/{editor,frontend}.js \
+
