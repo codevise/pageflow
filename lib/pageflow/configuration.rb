@@ -95,6 +95,9 @@ module Pageflow
     # @since 15.1
     attr_reader :entry_types
 
+    # @api private
+    attr_reader :entry_type_configs
+
     # Register new types of pages.
     # @return [PageTypes]
     # @since 0.9
@@ -373,6 +376,7 @@ module Pageflow
       @quotas = Quotas.new
       @themes = Themes.new
       @entry_types = EntryTypes.new
+      @entry_type_configs = {}
       @page_types = PageTypes.new
       @file_types = FileTypes.new
       @widget_types = WidgetTypes.new
@@ -444,6 +448,14 @@ module Pageflow
       ActiveSupport::Deprecation.warn('Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller)
     end
 
+    def for_entry_type(type, &_block)
+      type_name = type.name
+      entry_type_configs[type_name] ||= entry_types.find_by_name!(type_name).configuration.new(self)
+      config = entry_type_configs[type_name]
+
+      yield(config)
+    end
+
     # @api private
     def lint!
       @features.lint!
@@ -475,6 +487,12 @@ module Pageflow
       delegate :admin_attributes_table_rows, to: :config
       delegate :themes, to: :config
       delegate :file_importers, to: :config
+    end
+
+    module EntryTypeConfiguration
+      def initialize(config)
+        @config = config
+      end
     end
   end
 end

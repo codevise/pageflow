@@ -13,6 +13,7 @@ module Pageflow
              :to_model, :to_key, :persisted?,
              :authenticate,
              :first_published_at,
+             :type_name,
              :to => :entry)
 
     delegate(:widgets,
