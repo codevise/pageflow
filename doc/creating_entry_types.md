@@ -239,6 +239,24 @@ module Rainbow
 end
 ```
 
+For controller actions that do not alter data, you can consider
+skipping edit lock verification:
+
+```ruby
+module Rainbow
+  module Editor
+    class UnicornsController < ActionController::Base
+      include Pageflow::EditorController
+
+      skip_before_action :verify_edit_lock, only: :show
+
+      def show
+      end
+    end
+  end
+end
+```
+
 ## Adding to the Configuration
 
 `EntryType` provides a `configuration` option, which accepts a class

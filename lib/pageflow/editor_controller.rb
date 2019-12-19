@@ -28,13 +28,17 @@ module Pageflow
         end
       end
 
-      before_action do
-        verify_edit_lock!(@entry)
-      end
+      before_action :verify_edit_lock
 
       before_action do
         head :bad_request if params[:entry_type] && @entry.entry_type.name != params[:entry_type]
       end
+    end
+
+    private
+
+    def verify_edit_lock
+      verify_edit_lock!(@entry)
     end
   end
 end

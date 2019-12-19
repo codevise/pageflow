@@ -8,6 +8,10 @@ module Pageflow
     controller(ActionController::Base) do
       include EditorController
 
+      skip_before_action :verify_edit_lock, only: :index
+
+      def index; end
+
       def create; end
     end
 
@@ -56,6 +60,19 @@ module Pageflow
            format: 'json')
 
       expect(response.status).to eq(409)
+    end
+
+    it 'allows skipping the verify_edit_lock before action' do
+      user = create(:user)
+      account = create(:account, with_editor: user)
+      entry = create(:entry, account: account)
+
+      sign_in(user, scope: :user)
+      post(:index,
+           params: {entry_id: entry},
+           format: 'json')
+
+      expect(response.status).to eq(204)
     end
 
     it 'is allowed for entry editor with edit lock' do
