@@ -31,7 +31,7 @@ module Pageflow
 
       column class: 'buttons' do |entry|
         if authorized?(:edit, entry)
-          icon_link_to(pageflow.edit_entry_path(entry),
+          icon_link_to(pageflow.editor_entry_path(entry),
                        tooltip: I18n.t('pageflow.admin.entries.editor_hint'),
                        class: 'editor')
         end

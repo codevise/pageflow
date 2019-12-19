@@ -8,7 +8,7 @@ feature 'as entry editor, reusing a file', js: true do
     other_entry = create(:entry, title: 'Other Entry', with_previewer: user, account: account)
     file = create(:image_file, used_in: other_entry.draft)
 
-    visit(pageflow.edit_entry_path(entry))
+    visit(pageflow.editor_entry_path(entry))
     Dom::Editor::Sidebar.find!.manage_files_menu_item.click
     Dom::Editor::ManageFilesPanel.find!.request_file_reuse
     Dom::Editor::FilesExplorer.find!.select_file(entry, file)

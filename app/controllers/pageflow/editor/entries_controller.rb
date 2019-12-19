@@ -19,7 +19,14 @@ module Pageflow
 
       def show
         @entry = DraftEntry.find(params[:id])
-        authorize!(:show, @entry.to_model)
+        authorize!(:edit, @entry.to_model)
+
+        @entry_config = Pageflow.config_for(@entry)
+
+        respond_to do |format|
+          format.html
+          format.json
+        end
       end
 
       def update

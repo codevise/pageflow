@@ -4,6 +4,12 @@ ENV['PAGEFLOW_PLUGIN_ENGINE'] = 'pageflow_paged'
 require 'pageflow/support'
 Pageflow::Dummy.setup
 
+require 'rspec/rails'
+
+Dir[File.join(File.dirname(__FILE__), 'support/config/**/*.rb')].each do |file|
+  require(file)
+end
+
 require 'pageflow_paged'
 
 RSpec.configure do |config|

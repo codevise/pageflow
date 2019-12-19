@@ -24,7 +24,7 @@ module Pageflow
       @insert_point || super
     end
 
-    def render(template, entry)
+    def render(_template, _entry)
       if @rendered.respond_to?(:call)
         @rendered.call.html_safe
       else
@@ -32,7 +32,7 @@ module Pageflow
       end
     end
 
-    def render_head_fragment(template, entry)
+    def render_head_fragment(_template, _entry)
       @rendered_head_fragment.html_safe
     end
   end

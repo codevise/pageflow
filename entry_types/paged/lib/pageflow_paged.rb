@@ -10,8 +10,9 @@ module PageflowPaged
     def entry_type
       Pageflow::EntryType.new(name: 'paged',
                               frontend_app: Pageflow::PagedEntriesController.action(:show),
-                              editor_fragment_renderer: editor_fragment_renderer,
-                              configuration: Plugin::PagedConfiguration)
+                              configuration: Plugin::PagedConfiguration,
+                              editor_app: PageflowPaged::Engine,
+                              editor_fragment_renderer: editor_fragment_renderer)
     end
 
     private

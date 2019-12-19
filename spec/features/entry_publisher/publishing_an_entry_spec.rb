@@ -5,7 +5,7 @@ feature 'as entry publisher, publishing an entry', js: true do
     entry = create(:entry, title: 'Test Entry')
     Dom::Admin::Page.sign_in_as(:publisher, on: entry)
 
-    visit(pageflow.edit_entry_path(entry))
+    visit(pageflow.editor_entry_path(entry))
     editor_sidebar = Dom::Editor::Sidebar.find!
     editor_sidebar.publish_button.click
     Dom::Editor::PublishEntryPanel.find!.publish
@@ -18,7 +18,7 @@ feature 'as entry publisher, publishing an entry', js: true do
     entry = create(:entry, title: 'Test Entry')
     Dom::Admin::Page.sign_in_as(:publisher, on: entry)
 
-    visit(pageflow.edit_entry_path(entry))
+    visit(pageflow.editor_entry_path(entry))
     editor_sidebar = Dom::Editor::Sidebar.find!
     editor_sidebar.publish_button.click
     Dom::Editor::PublishEntryPanel.find!.publish_until(1.month.from_now)
@@ -31,7 +31,7 @@ feature 'as entry publisher, publishing an entry', js: true do
     entry = create(:entry, title: 'Test Entry')
     Dom::Admin::Page.sign_in_as(:publisher, on: entry)
 
-    visit(pageflow.edit_entry_path(entry))
+    visit(pageflow.editor_entry_path(entry))
     editor_sidebar = Dom::Editor::Sidebar.find!
     editor_sidebar.publish_button.click
     publish_panel = Dom::Editor::PublishEntryPanel.find!
@@ -46,7 +46,7 @@ feature 'as entry publisher, publishing an entry', js: true do
     entry = create(:entry, title: 'Test Entry')
     Dom::Admin::Page.sign_in_as(:publisher, on: entry)
 
-    visit(pageflow.edit_entry_path(entry))
+    visit(pageflow.editor_entry_path(entry))
     editor_sidebar = Dom::Editor::Sidebar.find!
     editor_sidebar.publish_button.click
     publish_panel = Dom::Editor::PublishEntryPanel.find!
