@@ -1,13 +1,9 @@
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 
-import {app} from '../app';
-import {editor} from '../base';
+import {app, editor, dialogView} from 'pageflow/editor';
 
 import {StorylinePickerView} from './StorylinePickerView';
-import {dialogView} from './mixins/dialogView';
-
-import {state} from '$state';
 
 import template from '../templates/pageSelection.jst';
 
@@ -24,7 +20,7 @@ export const PageSelectionView = Marionette.ItemView.extend({
 
   events: {
     'click ul.pages li': function(event) {
-      this.options.onSelect(state.pages.get($(event.currentTarget).data('id')));
+      this.options.onSelect(this.model.pages.get($(event.currentTarget).data('id')));
       this.close();
     }
   },
@@ -34,6 +30,7 @@ export const PageSelectionView = Marionette.ItemView.extend({
 
     this.subview(new StorylinePickerView({
       el: this.ui.storylines,
+      entry: this.model,
       pageItemViewOptions: {
         isDisabled: function(page) {
           return options.isAllowed && !options.isAllowed(page);
@@ -46,7 +43,7 @@ export const PageSelectionView = Marionette.ItemView.extend({
 PageSelectionView.selectPage = function(options) {
   return $.Deferred(function(deferred) {
     var view = new PageSelectionView({
-      model: state.entry,
+      model: options.entry,
       onSelect: deferred.resolve,
       isAllowed: options && options.isAllowed
     });

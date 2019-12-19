@@ -9,6 +9,7 @@ import {FileImporters} from './FileImporters'
 import {PageTypes} from './PageTypes';
 import {WidgetTypes} from './WidgetTypes';
 import {app} from '../app';
+import {state} from '$state';
 
 export * from './errors';
 
@@ -252,7 +253,7 @@ export const EditorApi = Object.extend(
    *   whether the page is a valid selection
    */
   selectPage: function(options) {
-    return this.pageSelectionView.selectPage(options);
+    return this.pageSelectionView.selectPage({...options, entry: state.entry});
   },
 
   createFileSelectionHandler: function(handlerName, encodedPayload) {
