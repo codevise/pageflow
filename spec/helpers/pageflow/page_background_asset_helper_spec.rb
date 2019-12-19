@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'pageflow/matchers/have_json_ld'
+
 module Pageflow
   describe PageBackgroundAssetHelper do
     include UsedFileTestHelper
