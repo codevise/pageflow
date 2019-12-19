@@ -50,6 +50,8 @@ Pageflow::Engine.routes.draw do
         resources :entry_publications, :only => [:create] do
           post :check, :on => :collection
         end
+
+        Pageflow.config(ignore_not_configured: true).entry_types.routes(self)
       end
 
       resources :entries, only: [] do

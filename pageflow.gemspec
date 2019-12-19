@@ -149,6 +149,9 @@ Gem::Specification.new do |s|
   # Matchers like "to have(3).items"
   s.add_development_dependency 'rspec-collection_matchers', '~> 1.1'
 
+  # Use assigns in controller specs
+  s.add_development_dependency 'rails-controller-testing', '~> 1.0'
+
   # Browser like integration testing
   s.add_development_dependency 'capybara', '~> 3.9'
 

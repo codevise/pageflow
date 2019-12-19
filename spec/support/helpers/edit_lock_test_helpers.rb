@@ -1,10 +1,5 @@
-module EditLockTestHelpers
-  def acquire_edit_lock(user, entry)
-    edit_lock = create(:edit_lock, :user => user, :entry => entry)
-    request.headers['X-Edit-Lock'] = edit_lock.id
-  end
-end
+require 'pageflow/edit_lock_test_helper'
 
 RSpec.configure do |config|
-  config.include EditLockTestHelpers, :type => :controller
+  config.include Pageflow::EditLockTestHelpers, type: :controller
 end

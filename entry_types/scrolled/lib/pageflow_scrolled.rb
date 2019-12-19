@@ -10,8 +10,9 @@ module PageflowScrolled
     def entry_type
       Pageflow::EntryType.new(name: 'scrolled',
                               frontend_app: PageflowScrolled::EntriesController.action(:show),
+                              configuration: Plugin::ScrolledConfiguration,
                               editor_fragment_renderer: editor_fragment_renderer,
-                              configuration: Plugin::ScrolledConfiguration)
+                              editor_app: PageflowScrolled::Engine)
     end
 
     private
