@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '~> 5.2.0'
 
   # Framework for admin interface
-  s.add_dependency 'activeadmin', '~> 1.3.0'
+  s.add_dependency 'activeadmin', '~> 2.5.0'
 
   # Searchable select boxes for filters and forms
   s.add_dependency 'activeadmin-searchable_select', '~> 1.0'
@@ -141,7 +141,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'redis-namespace', '~> 1.5'
 
   # Faster scss compilation
-  s.add_development_dependency 'sassc-rails', '~> 1.0'
+  s.add_development_dependency 'sassc-rails', '~> 2.1'
 
   # Testing framework
   s.add_development_dependency 'rspec-rails', '~> 3.4'

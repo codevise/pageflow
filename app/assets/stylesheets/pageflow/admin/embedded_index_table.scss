@@ -1,6 +1,6 @@
 .embedded_index_table {
   .sortable a {
-    background: url("/assets/active_admin/orderable.png") no-repeat 100% 2px;
+    background: url($orderable-icon-url) no-repeat 100% 2px;
     padding-right: 13px;
   }
 

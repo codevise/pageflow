@@ -12,7 +12,7 @@ module Pageflow
         FileUtils.mkdir_p "#{destination_root}/app/assets/stylesheets"
         FileUtils.mkdir_p "#{destination_root}/config"
 
-        FileUtils.touch "#{destination_root}/app/assets/javascripts/active_admin.js.coffee"
+        FileUtils.touch "#{destination_root}/app/assets/javascripts/active_admin.js"
         FileUtils.touch "#{destination_root}/app/assets/stylesheets/active_admin.scss"
         FileUtils.touch "#{destination_root}/config/application.rb"
       end
@@ -31,8 +31,8 @@ module Pageflow
 
       it 'requires pageflow in active_admin JavaScript' do
         run_generator
-        asset = file('app/assets/javascripts/active_admin.js.coffee')
-        expect(asset).to contain("#= require pageflow/admin\n")
+        asset = file('app/assets/javascripts/active_admin.js')
+        expect(asset).to contain("//= require pageflow/admin\n")
       end
 
       it 'requires pageflow in active_admin SCSS' do

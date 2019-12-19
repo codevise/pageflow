@@ -16,8 +16,8 @@ module Pageflow
 
         template 'components.js', 'app/assets/javascripts/components.js'
 
-        append_to_file 'app/assets/javascripts/active_admin.js.coffee' do
-          "#= require pageflow/admin\n"
+        append_to_file 'app/assets/javascripts/active_admin.js' do
+          "//= require pageflow/admin\n"
         end
 
         append_to_file 'app/assets/stylesheets/active_admin.scss' do

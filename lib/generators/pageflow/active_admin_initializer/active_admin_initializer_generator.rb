@@ -7,7 +7,7 @@ module Pageflow
 
       def configure_active_admin_load_path
         prepend_to_file 'config/initializers/active_admin.rb' do
-          "ActiveAdmin.application.load_paths.unshift(Pageflow.active_admin_load_path)\n\n"
+          "ActiveAdmin.application.load_paths += [Pageflow.active_admin_load_path]\n\n"
         end
       end
 
