@@ -9,6 +9,8 @@ require 'rspec/collection_matchers'
 require 'domino'
 require 'ammeter/init'
 require 'pundit/matchers'
+
+require 'pageflow/test_widget_type'
 require 'pageflow/used_file_test_helper'
 
 Dir[File.join(File.dirname(__FILE__), 'support/{config,dominos,helpers,matchers}/**/*.rb')].each { |file| require(file) }
