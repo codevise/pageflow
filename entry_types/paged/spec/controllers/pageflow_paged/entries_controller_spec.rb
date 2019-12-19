@@ -1,10 +1,17 @@
 require 'spec_helper'
 
+require 'pageflow/global_config_api_test_helper'
 require 'pageflow/entries_controller_test_helper'
+require 'pageflow/test_widget_type'
 
-module Pageflow
-  describe PagedEntriesController do
-    include EntriesControllerTestHelper
+require 'pageflow/matchers/have_json_ld'
+require 'pageflow/matchers/have_meta_tag'
+
+Pageflow::GlobalConfigApiTestHelper.setup
+
+module PageflowPaged
+  RSpec.describe EntriesController, type: :controller do
+    include Pageflow::EntriesControllerTestHelper
 
     render_views
 
@@ -20,8 +27,8 @@ module Pageflow
       end
 
       it 'renders widgets at bottom of entry' do
-        widget_type = TestWidgetType.new(name: 'test_widget',
-                                         rendered: '<div class="test_widget"></div>')
+        widget_type = Pageflow::TestWidgetType.new(name: 'test_widget',
+                                                   rendered: '<div class="test_widget"></div>')
 
         pageflow_configure do |config|
           config.widget_types.register(widget_type)
@@ -36,9 +43,9 @@ module Pageflow
       end
 
       it 'renders widgets at before_entry insert point' do
-        widget_type = TestWidgetType.new(name: 'test_widget',
-                                         rendered: '<div class="test_widget"></div>',
-                                         insert_point: :before_entry)
+        widget_type = Pageflow::TestWidgetType.new(name: 'test_widget',
+                                                   rendered: '<div class="test_widget"></div>',
+                                                   insert_point: :before_entry)
 
         pageflow_configure do |config|
           config.widget_types.register(widget_type)
@@ -53,10 +60,10 @@ module Pageflow
       end
 
       it 'renders widgets which are disabled in editor and preview in published mode' do
-        widget_type = TestWidgetType.new(name: 'test_widget',
-                                         enabled_in_editor: false,
-                                         enabled_in_preview: false,
-                                         rendered: '<div class="test_widget"></div>')
+        widget_type = Pageflow::TestWidgetType.new(name: 'test_widget',
+                                                   enabled_in_editor: false,
+                                                   enabled_in_preview: false,
+                                                   rendered: '<div class="test_widget"></div>')
 
         pageflow_configure do |config|
           config.widget_types.register(widget_type)
@@ -72,11 +79,11 @@ module Pageflow
 
       context 'in preview mode' do
         it 'renders widgets which are enabled in preview' do
-          widget_type =
-            TestWidgetType.new(name: 'test_widget',
-                               enabled_in_preview: true,
-                               rendered_head_fragment: '<meta name="some_test" content="value">',
-                               rendered: '<div class="test_widget"></div>')
+          widget_type = Pageflow::TestWidgetType
+                        .new(name: 'test_widget',
+                             enabled_in_preview: true,
+                             rendered_head_fragment: '<meta name="some_test" content="value">',
+                             rendered: '<div class="test_widget"></div>')
 
           pageflow_configure do |config|
             config.widget_types.register(widget_type)
@@ -92,11 +99,11 @@ module Pageflow
         end
 
         it 'does not render widgets which are disabled in preview' do
-          widget_type =
-            TestWidgetType.new(name: 'test_widget',
-                               enabled_in_preview: false,
-                               rendered_head_fragment: '<meta name="some_test" content="value">',
-                               rendered: '<div class="test_widget"></div>')
+          widget_type = Pageflow::TestWidgetType
+                        .new(name: 'test_widget',
+                             enabled_in_preview: false,
+                             rendered_head_fragment: '<meta name="some_test" content="value">',
+                             rendered: '<div class="test_widget"></div>')
 
           pageflow_configure do |config|
             config.widget_types.register(widget_type)
@@ -112,9 +119,9 @@ module Pageflow
       end
 
       it 'renders widget\'s head fragments for entry' do
-        widget_type =
-          TestWidgetType.new(name: 'test_widget',
-                             rendered_head_fragment: '<meta name="some_test" content="value">')
+        widget_type = Pageflow::TestWidgetType
+                      .new(name: 'test_widget',
+                           rendered_head_fragment: '<meta name="some_test" content="value">')
 
         pageflow_configure do |config|
           config.widget_types.register(widget_type)

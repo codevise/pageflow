@@ -4,7 +4,7 @@
   <title><%= @page_title.presence || 'Pageflow' %></title>
 
   <script>
-    window.PAGEFLOW_EDITOR = <%= @editor_scope ? 'true' : 'false' %>;
+    window.PAGEFLOW_EDITOR = false;
   </script>
 
   <%= javascript_include_tag 'pageflow/vendor', 'data-turbolinks-track' => true %>
@@ -17,9 +17,9 @@
   <%= yield :head %>
 
   <%= stylesheet_link_tag 'pageflow/print_view', media: 'print', 'data-turbolinks-track' => true %>
-  <%= render 'layouts/pageflow/loading_spinner_inline_script' %>
+  <%= render 'layouts/pageflow_paged/loading_spinner_inline_script' %>
 
-  <%= render 'layouts/pageflow/ie_include_tags' %>
+  <%= render 'layouts/pageflow_paged/ie_include_tags' %>
 </head>
 
 <body class="load_all_images has_no_mobile_platform non_js">

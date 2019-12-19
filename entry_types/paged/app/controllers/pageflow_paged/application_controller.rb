@@ -1,6 +1,8 @@
 module PageflowPaged
   # @api private
   class ApplicationController < ActionController::Base
+    layout 'pageflow_paged/application'
+
     helper Pageflow::AudioFilesHelper
     helper Pageflow::BackgroundImageHelper
     helper Pageflow::EntriesHelper
