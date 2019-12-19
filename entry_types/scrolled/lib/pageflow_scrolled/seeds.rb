@@ -53,15 +53,16 @@ module PageflowScrolled
       section = Section.create!(revision: revision,
                                 position: position,
                                 configuration: section_config)
-      content_elements_config['foreground'].each do |content_element_attributes|
-        create_content_element(section, content_element_attributes)
+      content_elements_config['foreground'].each_with_index do |content_element_config, i|
+        create_content_element(section, content_element_config, i)
       end
     end
 
-    def create_content_element(section, content_element_attributes)
+    def create_content_element(section, content_element_config, position)
       section.content_elements.create!(
-        type_name: content_element_attributes['type'],
-        configuration: content_element_attributes['props']
+        type_name: content_element_config['type'],
+        configuration: content_element_config['props'],
+        position: position
       )
     end
   end
