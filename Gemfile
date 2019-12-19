@@ -23,10 +23,16 @@ group :development do
 end
 
 # Required to make imports in Active Admin stylesheet work
-gem 'sassc-rails', '~> 1.0'
+gem 'sassc-rails'
 
 # Required for XML serialization in Active Admin
 gem 'activemodel-serializers-xml'
+
+# Make webpacker available in specs. Host applications that want to
+# use webpacker need to add it to their Gemfile themselves. Requiring
+# webpacker in an engine file (like we normally do) would force all
+# host application to install webpacker.
+gem 'webpacker'
 
 # Make tests fail on JS errors
 gem 'capybara-chromedriver-logger', git: 'https://github.com/codevise/capybara-chromedriver-logger', branch: 'do-not-raise-on-filtered-errors', require: false

@@ -1,5 +1,3 @@
-require 'webpacker'
-
 module PageflowScrolled
   # Rails integration
   class Engine < ::Rails::Engine
