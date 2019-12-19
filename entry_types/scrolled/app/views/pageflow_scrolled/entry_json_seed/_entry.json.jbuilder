@@ -1,8 +1,9 @@
 json.array!(sections) do |section|
   json.merge! section.configuration
   json.foreground do
-    section.content_elements.each do |content_element|
+    json.array! section.content_elements.each do |content_element|
       json.type content_element.type_name
+      json.position content_element.configuration['position']
       json.props content_element.configuration
     end
   end

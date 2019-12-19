@@ -44,7 +44,6 @@ export default {
   inlineImage: {
     name: 'Inline Bild',
     component: InlineImage,
-    position: 'inline',
     inlinePositioning: true
   },
   inlineVideo: {
@@ -60,7 +59,6 @@ export default {
   stickyImage: {
     name: 'Sticky Bild',
     component: InlineImage,
-    position: 'sticky',
     inlinePositioning: true
   }
 }

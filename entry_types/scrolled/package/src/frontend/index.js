@@ -4,12 +4,10 @@ import ReactDOM from 'react-dom';
 import AppHeader from './navigation/AppHeader';
 import Entry from './Entry';
 
-import example from './example';
-
 import './global.module.css';
 
 const examples = {
-  example
+  example: pageflowScrolledSeed
 }
 
 export default function Example() {
