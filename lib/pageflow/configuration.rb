@@ -96,7 +96,7 @@ module Pageflow
     attr_reader :entry_types
 
     # @api private
-    attr_reader :entry_type_configs
+    attr_reader :entry_type_configs, :entry_type_configure_blocks
 
     # Register new types of pages.
     # @return [PageTypes]
@@ -377,6 +377,7 @@ module Pageflow
       @themes = Themes.new
       @entry_types = EntryTypes.new
       @entry_type_configs = {}
+      @entry_type_configure_blocks = Hash.new { |h, k| h[k] = [] }
       @page_types = PageTypes.new
       @file_types = FileTypes.new
       @widget_types = WidgetTypes.new
@@ -448,12 +449,8 @@ module Pageflow
       ActiveSupport::Deprecation.warn('Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller)
     end
 
-    def for_entry_type(type, &_block)
-      type_name = type.name
-      entry_type_configs[type_name] ||= entry_types.find_by_name!(type_name).configuration.new(self)
-      config = entry_type_configs[type_name]
-
-      yield(config)
+    def for_entry_type(type, &block)
+      entry_type_configure_blocks[type.name] << block
     end
 
     # @api private
@@ -477,6 +474,27 @@ module Pageflow
       features.enable_all(FeatureLevelConfiguration.new(self))
     end
 
+    # @api private
+    def configure_entry_type(type_name)
+      type_config = get_entry_type_config_view(type_name)
+      entry_type_configure_blocks[type_name].each do |block|
+        block.call(type_config)
+      end
+    end
+
+    # @api_private
+    def configure_all_entry_types
+      entry_type_configure_blocks.each do |entry_type_name, blocks|
+        type_config = get_entry_type_config_view(entry_type_name)
+        blocks.each { |block| block.call(type_config) }
+      end
+    end
+
+    # @api private
+    def get_entry_type_config_view(type_name)
+      ConfigView.new(self, type_name).type_config
+    end
+
     # Restricts the configuration interface to those parts which can
     # be used from inside features.
     class FeatureLevelConfiguration < Struct.new(:config)
@@ -492,6 +510,39 @@ module Pageflow
     module EntryTypeConfiguration
       def initialize(config)
         @config = config
+      end
+
+      delegate :file_types, to: :@config
+      delegate :widget_types, to: :@config
+    end
+
+    class ConfigView
+      attr_accessor :config, :type_name
+
+      def initialize(config, type_name)
+        @config = config
+        @type_name = type_name
+      end
+
+      def method_missing(method, *args)
+        if @config.respond_to?(method)
+          config.send(method, *args)
+        elsif type_config.respond_to?(method)
+          type_config.send(method, *args)
+        else
+          super
+        end
+      end
+
+      def respond_to_missing?(method_name, include_private = false)
+        @config.respond_to?(method_name) ||
+          type_config.respond_to?(method_name) ||
+          super
+      end
+
+      def type_config
+        config.entry_type_configs[type_name] ||=
+          config.entry_types.find_by_name!(type_name).configuration.new(config)
       end
     end
   end

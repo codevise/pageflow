@@ -33,7 +33,7 @@ module Pageflow
 
     def find_by_name!(name)
       fetch_by_name(name) do
-        raise "Unknown widget type with name '#{name}'."
+        raise(WidgetType::NotFoundError, "Unknown widget type with name '#{name}'.")
       end
     end
 
