@@ -1,7 +1,7 @@
 module PageflowScrolled
   FactoryBot.define do
     factory :section, class: Section do
-      revision
+      chapter { create(:scrolled_chapter) }
       configuration do
         {
           transition: 'scroll',

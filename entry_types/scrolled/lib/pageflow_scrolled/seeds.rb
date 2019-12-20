@@ -29,9 +29,14 @@ module PageflowScrolled
           yield(created_entry) if block_given?
         end
 
-        revision = entry.draft
+        chapter = nil
         attributes[:sections].each_with_index do |section_config, i|
-          create_section(revision, section_config, i)
+          # A section where the first content element defines an "anchor" opens a new chapter.
+          chapter_title = section_config['foreground'].first&.dig('props', 'anchor')
+          if chapter_title
+            chapter = Chapter.create!(revision: entry.draft, configuration: {title: chapter_title})
+          end
+          create_section(chapter, section_config, i)
         end
       end
 
@@ -48,9 +53,9 @@ module PageflowScrolled
       say("   sample scrolled entry '#{entry.title}'\n")
     end
 
-    def create_section(revision, section_config, position)
+    def create_section(chapter, section_config, position)
       content_elements_config = section_config.extract!('foreground')
-      section = Section.create!(revision: revision,
+      section = Section.create!(chapter: chapter,
                                 position: position,
                                 configuration: section_config)
       content_elements_config['foreground'].each_with_index do |content_element_config, i|
@@ -61,7 +66,7 @@ module PageflowScrolled
     def create_content_element(section, content_element_config, position)
       section.content_elements.create!(
         type_name: content_element_config['type'],
-        configuration: content_element_config['props'],
+        configuration: content_element_config['props'].except('anchor'),
         position: position
       )
     end
