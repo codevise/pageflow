@@ -5,7 +5,9 @@
         <span class="heading-5"><%= "#{t('pageflow.public.chapter')} #{chapter.position + 1}" if index == 0 %></span>
       <% end %>
       <span class="heading-4"><%= chapter.title if index == 0 %></span>
-      <%= render :partial => 'pageflow/entries/overview/page', :collection => page_group, :locals => {:chapter => chapter} %>
+      <%= render(partial: 'pageflow_paged/entries/overview/page',
+                 collection: page_group,
+                 locals: {chapter: chapter}) %>
     </div>
 
 <% end %>

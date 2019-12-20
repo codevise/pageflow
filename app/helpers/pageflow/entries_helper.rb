@@ -66,11 +66,11 @@ module Pageflow
     end
 
     def entry_stylesheet_link_tag(entry)
-      url = polymorphic_path(entry.stylesheet_model,
-                             action: :stylesheet,
-                             v: entry.stylesheet_cache_key,
-                             p: Pageflow::VERSION,
-                             format: 'css')
+      url = pageflow.polymorphic_path(entry.stylesheet_model,
+                                      action: :stylesheet,
+                                      v: entry.stylesheet_cache_key,
+                                      p: Pageflow::VERSION,
+                                      format: 'css')
 
       # We cannot use stylesheet_link_tag here since that always uses
       # the asset host. Entry stylesheet requests are subject to

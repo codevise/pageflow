@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 require 'pageflow/lint'
+require 'pageflow/matchers/have_json_ld'
 
 module Pageflow
   Pageflow::Lint.page_type(BuiltInPageType.audio)

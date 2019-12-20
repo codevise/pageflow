@@ -1,0 +1,7 @@
+<section class="chapter">
+  <h2><%= chapter.title %></h2>
+
+  <%= render(partial: 'pageflow_paged/pages/page',
+             collection: chapter.pages,
+             locals: {entry: entry}) %>
+</section>

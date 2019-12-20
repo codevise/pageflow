@@ -4,7 +4,7 @@
                 class: entry_css_class(entry)) do %>
   <%= structured_data_for_entry(entry) %>
 
-  <%= render 'pageflow/entries/skip_links' %>
+  <%= render 'pageflow_paged/entries/skip_links' %>
 
   <h1 class="hidden"><%= entry.title %></h1>
 
@@ -12,11 +12,13 @@
   <span class="print_only page_url"><%= request.original_url %></span>
 
   <%= content_tag :div, :id => 'content', :class => 'entry', :data => {:role => 'slideshow'} do %>
-    <%= render entry.chapters, entry: entry %>
-    <%= render 'pageflow/entries/indicators', :theme => entry.theme %>
+    <%= render(partial: 'pageflow_paged/chapters/chapter',
+               collection: entry.chapters,
+               locals: {entry: entry}) %>
+    <%= render 'pageflow_paged/entries/indicators', theme: entry.theme %>
   <% end %>
 
-  <%= render 'pageflow/entries/header', :entry => entry %>
-  <%= render 'pageflow/entries/overview', :entry => entry %>
+  <%= render 'pageflow_paged/entries/header', entry: entry %>
+  <%= render 'pageflow_paged/entries/overview', entry: entry %>
   <%= render_widgets(entry, scope: widget_scope, insert_point: :bottom_of_entry) %>
 <% end %>

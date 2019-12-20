@@ -13,7 +13,7 @@
 
     <div class="wrapper">
       <div class="scroller">
-        <%= render(partial: 'pageflow/entries/overview/chapter',
+        <%= render(partial: 'pageflow_paged/entries/overview/chapter',
                    collection: entry.main_storyline_chapters,
                    locals: {chapters_count: entry.main_storyline_chapters.count}) %>
       </div>

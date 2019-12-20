@@ -17,10 +17,10 @@
 
 <%= cache [@entry, :body, @widget_scope] do %>
 
-  <%= render 'pageflow/entries/ie8_hint' %>
-  <%= render 'pageflow/entries/multimedia_alert' %>
+  <%= render 'pageflow_paged/entries/ie8_hint' %>
+  <%= render 'pageflow_paged/entries/multimedia_alert' %>
   <%= render_widgets(@entry, scope: @widget_scope, insert_point: :before_entry) %>
-  <%= render @entry, :widget_scope => @widget_scope %>
+  <%= render 'pageflow_paged/entries/entry', entry: @entry, widget_scope: @widget_scope %>
 
   <script>
     pageflow.seed = <%= entry_json_seed(@entry) %>;
