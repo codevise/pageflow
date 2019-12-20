@@ -1,6 +1,8 @@
 module Pageflow
   module Editor
     class EntriesController < Pageflow::ApplicationController
+      layout 'pageflow/editor'
+
       respond_to :json
 
       before_action :authenticate_user!
