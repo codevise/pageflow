@@ -47,7 +47,7 @@ application, first run `yarn link` in the package directory:
     $ cd my-projects/pageflow/packages/pageflow
     $ yarn link
 
-or
+and
 
     $ cd my-projects/entry_types/scrolled/package
     $ yarn link
@@ -57,13 +57,14 @@ In the host application run:
     $ cd my-projects/pageflow-host-app
     $ yarn link pageflow
 
-or
+and
 
     $ cd my-projects/pageflow-host-app
     $ yarn link pageflow-scrolled
 
 Restart the development servers. Note that development watchers need
-to be running for the pageflow repository.
+to be running for the pageflow repository. Run `yarn install` in the
+host application.
 
 You can return to using the version specified in the `package.json`
 file, by running `yarn unlink pageflow`/`yarn unlink
