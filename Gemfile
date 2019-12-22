@@ -20,9 +20,6 @@ group :development do
   gem 'listen'
 end
 
-# Required to make imports in Active Admin stylesheet work
-gem 'sassc-rails', '~> 2.1'
-
 # Required for XML serialization in Active Admin
 gem 'activemodel-serializers-xml'
 
@@ -34,7 +31,3 @@ gem 'webpacker'
 
 # Make tests fail on JS errors
 gem 'capybara-chromedriver-logger', git: 'https://github.com/codevise/capybara-chromedriver-logger', branch: 'do-not-raise-on-filtered-errors', require: false
-
-# temporary fix, so that we dont have to upgrade ruby version
-gem 'inherited_resources', '~> 1.9.0'
-gem 'responders', '~> 2.4.1'
