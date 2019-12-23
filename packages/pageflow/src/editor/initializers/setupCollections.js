@@ -2,7 +2,6 @@ import Backbone from 'backbone';
 import _ from 'underscore';
 
 import {ChaptersCollection} from '../collections/ChaptersCollection';
-import {Entry} from '../models/Entry';
 import {FilesCollection} from '../collections/FilesCollection';
 import {PagesCollection} from '../collections/PagesCollection';
 import {PreviewEntryData} from '../models/PreviewEntryData';
@@ -33,7 +32,7 @@ app.addInitializer(function(options) {
   state.pages = new PagesCollection(options.pages);
   state.chapters = new ChaptersCollection(options.chapters);
   state.storylines = new StorylinesCollection(options.storylines);
-  state.entry = new Entry(options.entry, {widgets: widgets});
+  state.entry = editor.createEntryModel(options, {widgets: widgets});
   state.theming = new Theming(options.theming);
   state.account = new Backbone.Model(options.account);
 

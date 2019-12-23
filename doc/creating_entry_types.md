@@ -115,15 +115,8 @@ accepts an object that implements the following methods:
   editor page. Can be used to include static seed data `script` tags.
 
 * `seed_fragment(entry)`: JSON included in asynchronously fetched
-  editor seed data that is passed to Backbone Marionette initializers:
-
-  ```javascript
-  import {editor} from 'pageflow/editor';
-
-  editor.addInitializer(options => {
-    options.entry_type // => seed fragment data
-  })
-  ```
+  editor seed data. Implement a `setupFromEntryTypeSeed` method as
+  described below to access the data.
 
 Pageflow provides a helper class that can be used to render these
 fragments from partials:
@@ -147,6 +140,43 @@ This will render the following partials with a local `entry` variable:
 * `rainbow/editor/entries/_seed.json.jbuilder`
 
 The given controller determines the available view helpers.
+
+### Backbone Integration
+
+Register the entry type in the editor JavaScript code loaded by the
+editor head fragment:
+
+```javascript
+import {editor} from 'pageflow/editor;
+
+import {RainbowEntry} from './models/RainbowEntry';
+
+import {EntryOutlineView} from './views/EntryOutlineView';
+import {EntryPreviewView} from './views/EntryPreviewView';
+
+editor.registerEntryType('rainbow', {
+  entryModel: RainbowEntry,
+
+  previewView: EntryPreviewView,
+  outlineView: EntryOutlineView
+});
+```
+
+When the editor is started the `entryModel` is instanciated and passed
+the seed data. Extend the `Entry` model provided by `pageflow/editor`.
+
+```javascript
+import {Entry} from 'pageflow/editor';
+
+export const RainbowEntry = Entry.extend({
+  setupFromEntryTypeSeed(seed) {
+    // receives seed data rendered by editor seed fragment
+  }
+});
+```
+
+The preview and outline views need to be Backbone views, that will
+reveive the entry via the `model` option.
 
 ### REST Controllers
 
