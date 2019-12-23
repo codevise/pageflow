@@ -13,9 +13,29 @@ export const EntryPreviewView = Marionette.ItemView.extend({
 
   ui: cssModulesUtils.ui(styles, 'iframe'),
 
+  initialize() {
+    this.messageListener = this.onMessage.bind(this)
+  },
+
   onShow() {
+    window.addEventListener('message', this.messageListener);
+
     inject(this.ui.iframe[0],
            unescape($('[data-template="iframe_seed"]').html()));
+  },
+
+  onClose() {
+    window.removeEventListener('message', this.messageListener);
+  },
+
+  onMessage(message) {
+    if (window.location.href.indexOf(message.origin) === 0 &&
+        message.data.type === 'READY') {
+      this.ui.iframe[0].contentWindow.postMessage(
+        {type: 'SET_SCENES', payload: this.model.scenes},
+        window.location.origin
+      );
+    }
   }
 });
 

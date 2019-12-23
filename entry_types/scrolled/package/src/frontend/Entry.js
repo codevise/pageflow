@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import Scene from './EditableScene';
 import MutedContext from './MutedContext';
@@ -24,6 +24,22 @@ export default function Entry(props) {
   const [scrollTargetSceneIndex, setScrollTargetSceneIndex] = useState(null);
 
   const [muted, setMuted] = useState(true);
+
+  useEffect(() => {
+    if (window.parent) {
+      window.addEventListener('message', receive)
+      window.parent.postMessage({type: 'READY'}, window.location.origin);
+    }
+
+    return () => window.removeEventListener('message', receive);
+
+    function receive(message) {
+      if (window.location.href.indexOf(message.origin) === 0 &&
+          message.data.type === 'SET_SCENES') {
+        setScenes(message.data.payload);
+      }
+    }
+  }, []);
 
   function scrollToScene(index) {
     if (index === 'next') {
