@@ -11,8 +11,10 @@ Capybara.register_driver :selenium_chrome_headless_no_sandbox do |app|
   # (see https://docs.travis-ci.com/user/chrome)
   browser_options.args << '--no-sandbox'
 
-  # see https://github.com/dbalatero/capybara-chromedriver-logger/issues/11
   capabilities = {
+    # see https://github.com/SeleniumHQ/selenium/issues/3738
+    loggingPrefs: {browser: 'ALL'},
+    # see https://github.com/dbalatero/capybara-chromedriver-logger/issues/11
     chromeOptions: {
       w3c: false
     }
@@ -30,6 +32,15 @@ Capybara::Chromedriver::Logger.raise_js_errors = true
 Capybara::Chromedriver::Logger.filters = [
   # Bandwidth probe files are not available in tests
   /bandwidth_probe.*Failed to load resource/i,
+
+  # Logged by Pageflow after legacy bandwidth detection
+  /Detected bandwidth/,
+
+  # Not helpful in specs
+  /Download the React DevTools/,
+
+  # Caused by sign in form
+  /Input elements should have autocomplete attributes/,
 
   # React does not like the server rendered "back to top" link inside
   # page sections.
