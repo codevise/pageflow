@@ -10,6 +10,7 @@ Dir[File.join(File.dirname(__FILE__), 'support/{config,helpers}/**/*.rb')].each 
   require(file)
 end
 
+require 'pageflow/support/config/capybara'
 require 'pageflow_scrolled'
 
 RSpec.configure do |config|

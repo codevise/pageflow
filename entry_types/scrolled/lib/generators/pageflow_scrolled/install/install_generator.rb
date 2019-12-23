@@ -10,6 +10,14 @@ module PageflowScrolled
         rake "webpacker:install BUNDLE_GEMFILE=#{gemfile}"
       end
 
+      def webpack_environment
+        inject_into_file('config/webpack/environment.js',
+                         before: "module.exports = environment\n") do
+          "const pageflowConfig = require('pageflow/config/webpack')\n" \
+          "environment.config.merge(pageflowConfig)\n\n"
+        end
+      end
+
       def editor_pack
         create_file 'app/javascript/packs/pageflow-scrolled-editor.js', <<-JS
           import 'pageflow-scrolled/editor';
