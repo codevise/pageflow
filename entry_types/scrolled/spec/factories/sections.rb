@@ -7,7 +7,7 @@ module PageflowScrolled
           transition: 'scroll',
           fullHeight: true,
           backdrop: {
-            image: 'some_image'
+            image: 'darkPattern'
           }
         }
       end

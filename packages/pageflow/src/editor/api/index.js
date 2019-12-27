@@ -5,7 +5,7 @@ import {Object} from '$pageflow/ui';
 import {CommonPageConfigurationTabs} from './CommonPageConfigurationTabs';
 import {FailuresAPI} from './Failures';
 import {FileTypes} from './FileTypes';
-import {FileImporters} from './FileImporters' 
+import {FileImporters} from './FileImporters'
 import {PageTypes} from './PageTypes';
 import {WidgetTypes} from './WidgetTypes';
 import {app} from '../app';
@@ -71,13 +71,36 @@ export const EditorApi = Object.extend(
     /**
      * List of available file import plugins
      * @alias fileImporters
-     *  
      */
     this.fileImporters = new FileImporters();
   },
 
+  /**
+   * Configure editor for entry type.
+   *
+   * @param {string} name
+   *   Must match name of entry type registered in Ruby configuration.
+   * @param {Object} options
+   * @param {function} options.EntryModel
+   *   Backbone model extending {Entry} to store entry state.
+   * @param {function} options.EntryPreviewView
+   *   Backbone view that will render the live preview of the entry.
+   * @param {function} options.EntryOutlineView
+   *   Backbone view that will be rendered in the side bar.
+   */
   registerEntryType(name, options) {
     this.entryType = options;
+  },
+
+  /** @api private */
+  createEntryModel(seed, options) {
+    const entry = new this.entryType.entryModel(seed.entry, options);
+
+    if (entry.setupFromEntryTypeSeed) {
+      entry.setupFromEntryTypeSeed(seed.entry_type, state);
+    }
+
+    return entry;
   },
 
   /**

@@ -5,11 +5,21 @@ module PageflowScrolled
   module EntryJsonSeedHelper
     include Pageflow::RenderJsonHelper
 
-    def scrolled_entry_json_seed(scrolled_entry)
+    def scrolled_entry_json_seed_script_tag(scrolled_entry)
+      seed_json = render_json do |json|
+        scrolled_entry_json_seed(json, scrolled_entry)
+      end
+
+      content_tag(:script, <<-JS.html_safe)
+        var pageflowScrolledSeed = #{sanitize_json(seed_json)};
+      JS
+    end
+
+    def scrolled_entry_json_seed(json, scrolled_entry)
       sections = Section.all_for_revision(scrolled_entry.revision)
 
-      sanitize_json(render_json_partial('pageflow_scrolled/entry_json_seed/entry',
-                                        sections: sections)).html_safe
+      json.partial!('pageflow_scrolled/entry_json_seed/entry',
+                    sections: sections)
     end
   end
 end

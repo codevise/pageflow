@@ -7,7 +7,7 @@ import Entry from './Entry';
 import './global.module.css';
 
 const examples = {
-  example: pageflowScrolledSeed
+  example: window.pageflowScrolledSeed || []
 }
 
 export default function Example() {

@@ -37,6 +37,8 @@ module Pageflow
       @draft = draft || entry.draft
     end
 
+    alias revision draft
+
     # So we can always get to the original Entry title.
     def entry_title
       entry.title
