@@ -14,7 +14,6 @@ module PageflowScrolled
     end
 
     trait :text_block do
-      section
       type_name { 'textBlock' }
       configuration do
         {
