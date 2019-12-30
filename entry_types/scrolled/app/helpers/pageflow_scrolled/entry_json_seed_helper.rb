@@ -17,9 +17,14 @@ module PageflowScrolled
 
     def scrolled_entry_json_seed(json, scrolled_entry)
       sections = Section.all_for_revision(scrolled_entry.revision)
+                        .order(position: :asc)
+
+      content_elements = ContentElement.all_for_revision(scrolled_entry.revision)
+                                       .order(position: :asc)
 
       json.partial!('pageflow_scrolled/entry_json_seed/entry',
-                    sections: sections)
+                    sections: sections,
+                    content_elements: content_elements)
     end
   end
 end
