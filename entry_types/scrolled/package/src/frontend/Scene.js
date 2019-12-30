@@ -13,8 +13,6 @@ import useScrollTarget from './useScrollTarget';
 import styles from './Scene.module.css';
 import {getTransitionStyles} from './transitions'
 
-import foregroundItemTemplates from './foregroundItemTemplates';
-
 // Shadows
 import NoOpShadow from './shadows/NoOpShadow';
 import GradientShadow from './shadows/GradientShadow';
@@ -80,7 +78,6 @@ export default function Scene(props) {
                                              {[styles.invert]: props.invert})}>
       <div ref={activityProbeRef} className={styles.activityProbe} />
       <Backdrop {...props.backdrop}
-                editMode={props.editMode}
                 motifAreaRef={motifAreaRef}
                 onScreen={onScreen}
                 offset={Math.max(0, Math.max(1, -contentAreaRect.top / 200)) }
@@ -110,12 +107,9 @@ export default function Scene(props) {
           <Layout items={indexItems(props.foreground)}
                   appearance={props.appearance}
                   contentAreaRef={contentAreaRef}
-                  layout={props.layout}
-                  onPositionChange={props.onForgroundItemPositionChange}>
+                  layout={props.layout}>
             {(children) => <BoxWrapper>{children}</BoxWrapper>}
           </Layout>
-          {renderAddSelect(props)}
-          <button onClick={props.onReset}>Abschnitt leeren</button>
         </Box>
       </Foreground>
     </section>
@@ -140,15 +134,4 @@ function heightMode(props) {
   }
 
   return 'dynamic';
-}
-
-function renderAddSelect(props) {
-  return (
-    <select value="blank" onChange={event => props.onAdd(event.target.value)}>
-      <option value="blank">(Hinzufügen)</option>
-      {Object.keys(foregroundItemTemplates).map(key =>
-        <option key={key} value={key}>{foregroundItemTemplates[key].name}</option>
-       )}
-    </select>
-  );
 }

@@ -48,8 +48,7 @@ function renderContent(props, containerDimension, containerRef) {
                offset={props.offset}
                interactive={props.interactive}
                nextSceneOnEnd={props.nextSceneOnEnd} />
-        <MotifArea active={props.editMode}
-                   ref={props.motifAreaRef}
+        <MotifArea ref={props.motifAreaRef}
                    image={video}
                    containerWidth={containerDimension.width}
                    containerHeight={containerDimension.height} />
@@ -81,8 +80,7 @@ function renderContent(props, containerDimension, containerRef) {
     return (
       <Fullscreen ref={containerRef}>
         {backgroundImages}
-        <MotifArea active={props.editMode}
-                   ref={props.motifAreaRef}
+        <MotifArea ref={props.motifAreaRef}
                    image={image}
                    containerWidth={containerDimension.width}
                    containerHeight={containerDimension.height} />

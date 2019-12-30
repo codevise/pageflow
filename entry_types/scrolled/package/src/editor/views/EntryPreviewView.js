@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import {cssModulesUtils} from 'pageflow/ui';
+import {watchCollections} from '../../useEntryState';
 
 import styles from './EntryPreviewView.module.css'
 
@@ -31,10 +32,14 @@ export const EntryPreviewView = Marionette.ItemView.extend({
   onMessage(message) {
     if (window.location.href.indexOf(message.origin) === 0 &&
         message.data.type === 'READY') {
-      this.ui.iframe[0].contentWindow.postMessage(
-        {type: 'SET_SCENES', payload: this.model.scenes},
-        window.location.origin
-      );
+
+      watchCollections(this.model, {
+        dispatch: action =>
+          this.ui.iframe[0].contentWindow.postMessage(
+            {type: 'ACTION', payload: action},
+            window.location.origin
+          )
+      });
     }
   }
 });

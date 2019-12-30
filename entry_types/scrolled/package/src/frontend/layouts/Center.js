@@ -9,9 +9,7 @@ export default function Center(props) {
   return (
     <div className={classNames(styles.root)}>
       <div ref={props.contentAreaRef} />
-      <ForegroundItems items={props.items}
-                       availablePositions={['inline', 'left', 'right', 'full']}
-                       onPositionChange={props.onPositionChange}>
+      <ForegroundItems items={props.items}>
         {(item, child) =>
           <div key={item.index} className={classNames(styles.outer, styles[`outer-${item.position}`])}>
             <div className={classNames(styles.item, styles[`item-${item.position}`])}>
