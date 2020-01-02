@@ -118,8 +118,8 @@ export const EntryPreviewView = Marionette.ItemView.extend({
   updateEmulationModeSupport: function(permaId) {
     var model = this.model.pages.getByPermaId(permaId);
 
-    this.model.set('current_page_supports_emulation_mode',
-                       model && model.pageType().supportsPhoneEmulation());
+    this.model.set('emulation_mode_disabled',
+                       !model || !model.pageType().supportsPhoneEmulation());
   },
 
   updateSimulatedMediaQueryClasses: function() {
