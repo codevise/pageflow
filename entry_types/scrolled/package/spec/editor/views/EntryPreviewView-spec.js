@@ -1,12 +1,8 @@
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {EntryPreviewView} from 'editor/views/EntryPreviewView';
-import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView'
-import {
-  postInsertContentElementMessage,
-  postUpdateContentElementMessage
-} from 'frontend/inlineEditing/postMessage';
+import styles from 'editor/views/EntryPreviewView.module.css';
 import {setupGlobals} from 'pageflow/testHelpers';
-import {normalizeSeed, tick, factories} from 'support';
+import {normalizeSeed, factories} from 'support';
 
 describe('EntryPreviewView', () => {
   let view;
@@ -78,5 +74,21 @@ describe('EntryPreviewView', () => {
       });
       window.postMessage({type: 'READY'}, '*');
     })).resolves.toMatchObject({type: 'ACTION'});
+  });
+
+  it('sets CSS class based on emulation mode', () => {
+    document.body.innerHTML = seedBodyFragment;
+    const entry = factories.entry(ScrolledEntry);
+    view = new EntryPreviewView({model: entry});
+
+    view.render();
+    document.body.appendChild(view.el);
+    view.onShow();
+
+    entry.set('emulation_mode', 'phone');
+    expect(view.el.classList).toContain(styles.phoneEmulationMode);
+
+    entry.unset('emulation_mode');
+    expect(view.el.classList).not.toContain(styles.phoneEmulationMode);
   });
 });

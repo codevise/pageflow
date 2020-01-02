@@ -1,9 +1,23 @@
 .root {
   height: 100%;
+  width: 100%;
+  background-color: #222;
 }
 
 .iframe {
   border: none;
   width: 100%;
   height: 100%;
+}
+
+.phoneEmulationMode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.phoneEmulationMode .iframe {
+  width: 400px;
+  height: 700px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 4px 0px;
 }
