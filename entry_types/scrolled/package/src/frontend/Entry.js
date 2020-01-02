@@ -26,7 +26,7 @@ export default function Entry(props) {
   }, [setCurrentSectionIndexState]);
 
   useEffect(() => {
-    if (window.parent) {
+    if (window.parent !== window) {
       window.addEventListener('message', receive)
       window.parent.postMessage({type: 'READY'}, window.location.origin);
     }

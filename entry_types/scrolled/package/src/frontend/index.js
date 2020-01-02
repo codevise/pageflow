@@ -6,6 +6,9 @@ import Entry from './Entry';
 
 import './global.module.css';
 import {EntryStateProvider} from '../entryState';
+import {EditorStateProvider} from './EditorState';
+
+const editMode = window.location.pathname.indexOf('/editor/entries') === 0;
 
 export {api as frontend} from './api';
 
@@ -27,10 +30,12 @@ window.pageflowScrolledRender = function(seed) {
 function Root({seed}) {
   return (
     <>
-      <EntryStateProvider seed={seed}>
-        <AppHeader />
-        <Entry />
-      </EntryStateProvider>
+      <EditorStateProvider active={editMode}>
+        <EntryStateProvider seed={seed}>
+          <AppHeader />
+          <Entry />
+        </EntryStateProvider>
+      </EditorStateProvider>
     </>
   );
 }
