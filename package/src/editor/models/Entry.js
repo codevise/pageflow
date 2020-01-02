@@ -82,6 +82,10 @@ export const Entry = Backbone.Model.extend({
     return this.themes.findByName(this.metadata.get('theme_name'));
   },
 
+  supportsPhoneEmulation() {
+    return true;
+  },
+
   addStoryline: function(attributes) {
     var storyline = this.buildStoryline(attributes);
     storyline.save();
