@@ -13,13 +13,5 @@ module PageflowScrolled
       chapter2 = create(:scrolled_chapter, revision: revision)
       expect(chapter1.storyline).to eq(chapter2.storyline)
     end
-
-    it 'increments position for subsequent chapters' do
-      revision = create(:revision)
-      chapter1 = create(:scrolled_chapter, revision: revision)
-      chapter2 = create(:scrolled_chapter, revision: revision)
-      expect(chapter1.position).to eq(0)
-      expect(chapter2.position).to eq(1)
-    end
   end
 end

@@ -14,7 +14,6 @@ module PageflowScrolled
 
     attr_accessor :revision # used on :create to lazily create storyline
     before_validation :ensure_storyline, on: :create
-    before_create :set_initial_position
 
     private
 
@@ -23,10 +22,6 @@ module PageflowScrolled
         Storyline.create!(revision: revision, configuration: {main: true})
       end
       self.storyline = Storyline.all_for_revision(revision).first
-    end
-
-    def set_initial_position
-      self.position = storyline.chapters.count
     end
   end
 end
