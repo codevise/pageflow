@@ -2,7 +2,7 @@ module Pageflow
   FactoryBot.define do
     factory :published_entry, class: PublishedEntry do
       transient do
-        type_name { nil }
+        type_name { 'paged' }
       end
 
       initialize_with do
