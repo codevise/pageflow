@@ -3,12 +3,9 @@ module PageflowScrolled
     # @api private
     class ChaptersController < ActionController::Base
       include Pageflow::EditorController
-      skip_before_action :verify_edit_lock, only: :show
-      respond_to :json
 
       def create
-        entry = Pageflow::DraftEntry.find(params[:entry_id])
-        chapter = Chapter.create(chapter_params.merge(revision: entry.draft))
+        chapter = Chapter.create(chapter_params.merge(revision: @entry.draft))
 
         render json: chapter, status: :created
       end
@@ -28,8 +25,7 @@ module PageflowScrolled
       end
 
       def order
-        entry = Pageflow::DraftEntry.find(params[:entry_id])
-        storyline = Storyline.all_for_revision(entry.draft).first
+        storyline = Storyline.all_for_revision(@entry.draft).first
 
         params.require(:ids).each_with_index do |id, index|
           storyline.chapters.update(id, position: index)

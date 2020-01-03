@@ -3,8 +3,6 @@ module PageflowScrolled
     # @api private
     class ContentElementsController < ActionController::Base
       include Pageflow::EditorController
-      skip_before_action :verify_edit_lock, only: :show
-      respond_to :json
 
       def create
         section = Section.find(params[:section_id])

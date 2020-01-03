@@ -10,11 +10,11 @@ PageflowScrolled::Engine.routes.draw do
       collection do
         put :order
       end
-    end
 
-    resources :content_elements do
-      collection do
-        put :order
+      resources :content_elements do
+        collection do
+          put :order
+        end
       end
     end
   end

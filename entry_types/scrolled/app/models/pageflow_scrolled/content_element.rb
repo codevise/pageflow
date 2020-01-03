@@ -6,7 +6,7 @@ module PageflowScrolled
     belongs_to :section
 
     def self.all_for_revision(revision)
-      joins(:section).where(pageflow_scrolled_sections: {revision_id: revision})
+      Storyline.all_for_revision(revision).first.content_elements
     end
   end
 end
