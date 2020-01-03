@@ -231,37 +231,23 @@ module Pageflow
         expect(result_other).to be(false)
       end
 
-      it 'yields config to configure blocks, then entry type specific configure blocks, \
-      then after_configure blocks' do
+      it 'yields config to entry type specific configure blocks, then after_configure blocks' do
         pageflow = PageflowModule.new
         entry_type = TestEntryType.new(name: 'skulled')
         entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
-        tester = 'died by carbon monoxide poisoning'
+        calls = []
         pageflow.configure do |config|
-          config.for_entry_type(entry_type) do |c|
-            tester =
-              if c.widget_types.find_by_name!('canary')
-                'canary dead -- better leave the mine'
-              else
-                "we don't need no canary"
-              end
+          config.entry_types.register(entry_type)
+          config.for_entry_type(entry_type) do |_config|
+            calls << 'for_entry_type block'
           end
         end
         pageflow.after_configure do |_config|
-          tester =
-            if tester =~ /leave the mine/
-              'survived'
-            else
-              'still died'
-            end
-        end
-        pageflow.configure do |config|
-          TestEntryType.register(config, name: 'skulled')
-          config.widget_types.register(TestWidgetType.new(name: 'canary'))
+          calls << 'after_configure block'
         end
         pageflow.config_for(entry)
 
-        expect(tester).to eq 'survived'
+        expect(calls).to eq(['for_entry_type block', 'after_configure block'])
       end
 
       it 'returns config with custom attributes for entry type' do
