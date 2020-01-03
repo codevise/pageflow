@@ -9,12 +9,12 @@ module PageflowScrolled
 
     describe '#create' do
       it 'requires authentication' do
-        section = create(:section)
-        entry = section.chapter.entry
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
 
         post(:create,
              params: {
-               entry_id: entry.id,
+               entry_id: entry,
                section_id: section,
                content_element: attributes_for(:content_element, :text_block)
              }, format: 'json')
@@ -23,14 +23,14 @@ module PageflowScrolled
       end
 
       it 'succeeds for authorized user' do
-        section = create(:section)
-        entry = section.chapter.entry
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
-               entry_id: entry.id,
-               section_id: section.id,
+               entry_id: entry,
+               section_id: section,
                content_element: attributes_for(:content_element, :text_block)
              }, format: 'json')
 
@@ -38,14 +38,14 @@ module PageflowScrolled
       end
 
       it 'allows setting the content elements configuration hash' do
-        section = create(:section)
-        entry = section.chapter.entry
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
-               entry_id: entry.id,
-               section_id: section.id,
+               entry_id: entry,
+               section_id: section,
                content_element: {
                  configuration: {children: 'some content'}
                }
@@ -55,14 +55,14 @@ module PageflowScrolled
       end
 
       it 'allows setting the content elements type name' do
-        section = create(:section)
-        entry = section.chapter.entry
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
-               entry_id: entry.id,
-               section_id: section.id,
+               entry_id: entry,
+               section_id: section,
                content_element: {
                  type_name: 'textBlock'
                }
@@ -74,15 +74,15 @@ module PageflowScrolled
 
     describe '#update' do
       it 'allows updating the content elements configuration hash' do
-        content_element = create(:content_element, :text_block)
+        entry = create(:entry)
+        content_element = create(:content_element, :text_block, revision: entry.draft)
         section = content_element.section
-        entry = section.chapter.entry
 
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
-                entry_id: entry.id,
-                section_id: section.id,
+                entry_id: entry,
+                section_id: section,
                 id: content_element,
                 content_element: {
                   configuration: {children: 'some content'}
@@ -91,20 +91,40 @@ module PageflowScrolled
 
         expect(content_element.reload.configuration).to eq('children' => 'some content')
       end
+
+      it 'does not allow updating a content element from a different entry' do
+        entry = create(:entry)
+        content_element = create(:content_element, revision: entry.draft)
+        other_entry = create(:entry)
+        other_content_element = create(:content_element, revision: other_entry.draft)
+
+        authorize_for_editor_controller(entry)
+        expect {
+          patch(:update,
+                params: {
+                  entry_id: entry,
+                  section_id: content_element.section,
+                  id: other_content_element,
+                  content_element: {
+                    configuration: {children: 'some other content'}
+                  }
+                }, format: 'json')
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
 
     describe '#order' do
       it 'updates position of content elements according to given params order' do
-        section = create(:section)
-        entry = section.chapter.entry
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
         content_elements = create_list(:content_element, 2, :text_block, section: section)
 
         authorize_for_editor_controller(entry)
 
         put(:order,
             params: {
-              entry_id: entry.id,
-              section_id: section.id,
+              entry_id: entry,
+              section_id: section,
               ids: [content_elements.first.id, content_elements.last.id]
             }, format: 'json')
 
@@ -115,19 +135,36 @@ module PageflowScrolled
 
     describe '#destroy' do
       it 'deletes the content element' do
-        content_element = create(:content_element, :text_block)
-        section = content_element.section
-        entry = section.chapter.entry
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, :text_block, section: section)
 
         authorize_for_editor_controller(entry)
         delete(:destroy,
                params: {
-                 entry_id: entry.id,
-                 section_id: section.id,
+                 entry_id: entry,
+                 section_id: section,
                  id: content_element
                }, format: 'json')
 
         expect(section).to have(0).content_elements
+      end
+
+      it 'does not allow deleting a content element from a different entry' do
+        entry = create(:entry)
+        content_element = create(:content_element, revision: entry.draft)
+        other_entry = create(:entry)
+        other_content_element = create(:content_element, revision: other_entry.draft)
+
+        authorize_for_editor_controller(entry)
+        expect {
+          delete(:destroy,
+                 params: {
+                   entry_id: entry,
+                   section_id: content_element.section,
+                   id: other_content_element
+                 }, format: 'json')
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

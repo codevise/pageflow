@@ -11,7 +11,11 @@ module PageflowScrolled
       it 'requires authentication' do
         entry = create(:entry)
 
-        post(:create, params: {entry_id: entry.id}, format: 'json')
+        post(:create,
+             params: {
+               entry_id: entry,
+               chapter: attributes_for(:chapter)
+             }, format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -20,7 +24,11 @@ module PageflowScrolled
         entry = create(:entry)
 
         authorize_for_editor_controller(entry)
-        post(:create, params: {entry_id: entry.id}, format: 'json')
+        post(:create,
+             params: {
+               entry_id: entry,
+               chapter: attributes_for(:chapter)
+             }, format: 'json')
 
         expect(response.status).to eq(201)
       end
@@ -31,7 +39,7 @@ module PageflowScrolled
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
-               entry_id: entry.id,
+               entry_id: entry,
                chapter: {
                  configuration: {title: 'A chapter title'}
                }
@@ -50,7 +58,7 @@ module PageflowScrolled
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
-                entry_id: entry.id,
+                entry_id: entry,
                 id: chapter,
                 chapter: {
                   configuration: {title: 'A chapter title'}
@@ -62,22 +70,18 @@ module PageflowScrolled
 
       it 'does not allow updating a chapter from a different entry' do
         entry = create(:entry)
-        create(:scrolled_chapter,
-               revision: entry.draft,
-               configuration: {title: 'chapter title'})
+        create(:scrolled_chapter, revision: entry.draft)
         other_entry = create(:entry)
-        other_chapter = create(:scrolled_chapter,
-                               revision: other_entry.draft,
-                               configuration: {title: 'other chapter title'})
+        other_chapter = create(:scrolled_chapter, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         expect {
           patch(:update,
                 params: {
-                  entry_id: entry.id,
+                  entry_id: entry,
                   id: other_chapter,
                   chapter: {
-                    configuration: {title: 'yet another title'}
+                    configuration: {title: 'another title'}
                   }
                 }, format: 'json')
         }.to raise_error(ActiveRecord::RecordNotFound)
@@ -93,7 +97,7 @@ module PageflowScrolled
 
         put(:order,
             params: {
-              entry_id: entry.id,
+              entry_id: entry,
               ids: [chapters.last.id, chapters.first.id]
             }, format: 'json')
 
@@ -111,12 +115,28 @@ module PageflowScrolled
         authorize_for_editor_controller(entry)
         delete(:destroy,
                params: {
-                 entry_id: entry.id,
+                 entry_id: entry,
                  id: chapter
                }, format: 'json')
 
         main_storyline = Storyline.all_for_revision(revision).first
         expect(main_storyline).to have(0).chapters
+      end
+
+      it 'does not allow deleting a chapter from a different entry' do
+        entry = create(:entry)
+        create(:scrolled_chapter, revision: entry.draft)
+        other_entry = create(:entry)
+        other_chapter = create(:scrolled_chapter, revision: other_entry.draft)
+
+        authorize_for_editor_controller(entry)
+        expect {
+          delete(:destroy,
+                 params: {
+                   entry_id: entry,
+                   id: other_chapter
+                 }, format: 'json')
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
