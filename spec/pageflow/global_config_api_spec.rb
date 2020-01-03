@@ -39,6 +39,104 @@ module Pageflow
 
         expect(pageflow.config(ignore_not_configured: true)).to be_kind_of(Configuration)
       end
+
+      it 'returns all global file types as well as those for entry types' do
+        entry_type = TestEntryType.new(name: 'skulled')
+        entry_type2 = TestEntryType.new(name: 'phaged')
+        pageflow = PageflowModule.new
+        file_type = FileType.new(model: 'Pageflow::ImageFile',
+                                 collection_name: 'image_files')
+        file_type2 = FileType.new(model: 'Pageflow::VideoFile',
+                                  collection_name: 'video_files')
+        file_type3 = FileType.new(model: 'Pageflow::AudioFile',
+                                  collection_name: 'audio_files')
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'phaged')
+          TestEntryType.register(config, name: 'skulled')
+          config.for_entry_type(entry_type) do |c|
+            c.file_types.register(file_type)
+          end
+          config.for_entry_type(entry_type2) do |c|
+            c.file_types.register(file_type2)
+          end
+          config.file_types.register(file_type3)
+        end
+        pageflow.finalize!
+
+        expect(pageflow.config.file_types.count).to eq 3
+      end
+
+      it 'handles duplicate file types' do
+        entry_type = TestEntryType.new(name: 'skulled')
+        entry_type2 = TestEntryType.new(name: 'phaged')
+        pageflow = PageflowModule.new
+        file_type = FileType.new(model: 'Pageflow::ImageFile',
+                                 collection_name: 'image_files')
+        file_type2 = FileType.new(model: 'Pageflow::ImageFile',
+                                  collection_name: 'le_image_files')
+        file_type3 = FileType.new(model: 'Pageflow::AudioFile',
+                                  collection_name: 'audio_files')
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'phaged')
+          TestEntryType.register(config, name: 'skulled')
+          config.for_entry_type(entry_type) do |c|
+            c.file_types.register(file_type)
+          end
+          config.for_entry_type(entry_type2) do |c|
+            c.file_types.register(file_type2)
+          end
+          config.file_types.register(file_type3)
+        end
+        pageflow.finalize!
+
+        expect(pageflow.config.file_types.count).to eq 2
+      end
+
+      it 'returns all global widget types as well as those for entry types' do
+        entry_type = TestEntryType.new(name: 'skulled')
+        entry_type2 = TestEntryType.new(name: 'phaged')
+        pageflow = PageflowModule.new
+        widget_type = TestWidgetType.new(name: 'test_widget')
+        widget_type2 = TestWidgetType.new(name: 'test_fidget')
+        widget_type3 = TestWidgetType.new(name: 'test_midget')
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'phaged')
+          TestEntryType.register(config, name: 'skulled')
+          config.for_entry_type(entry_type) do |c|
+            c.widget_types.register(widget_type)
+          end
+          config.for_entry_type(entry_type2) do |c|
+            c.widget_types.register(widget_type2)
+          end
+          config.widget_types.register(widget_type3)
+        end
+        pageflow.finalize!
+
+        expect(pageflow.config.widget_types.count).to eq 3
+      end
+
+      it 'handles duplicate widget types' do
+        entry_type = TestEntryType.new(name: 'skulled')
+        entry_type2 = TestEntryType.new(name: 'phaged')
+        pageflow = PageflowModule.new
+        widget_type = TestWidgetType.new(name: 'test_widget')
+        widget_type2 = TestWidgetType.new(name: 'test_fidget')
+        widget_type3 = TestWidgetType.new(name: 'test_widget')
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'phaged')
+          TestEntryType.register(config, name: 'skulled')
+          config.for_entry_type(entry_type) do |c|
+            c.widget_types.register(widget_type)
+          end
+          config.for_entry_type(entry_type2) do |c|
+            c.widget_types.register(widget_type2)
+          end
+          config.widget_types.register(widget_type3)
+        end
+        pageflow.finalize!
+
+        expect(pageflow.config.widget_types.count).to eq 2
+      end
     end
 
     describe '#finalize!' do
@@ -131,6 +229,39 @@ module Pageflow
 
         expect(result).to be(true)
         expect(result_other).to be(false)
+      end
+
+      it 'yields config to configure blocks, then entry type specific configure blocks, \
+      then after_configure blocks' do
+        pageflow = PageflowModule.new
+        entry_type = TestEntryType.new(name: 'skulled')
+        entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
+        tester = 'died by carbon monoxide poisoning'
+        pageflow.configure do |config|
+          config.for_entry_type(entry_type) do |c|
+            tester =
+              if c.widget_types.find_by_name!('canary')
+                'canary dead -- better leave the mine'
+              else
+                "we don't need no canary"
+              end
+          end
+        end
+        pageflow.after_configure do |_config|
+          tester =
+            if tester =~ /leave the mine/
+              'survived'
+            else
+              'still died'
+            end
+        end
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'skulled')
+          config.widget_types.register(TestWidgetType.new(name: 'canary'))
+        end
+        pageflow.config_for(entry)
+
+        expect(tester).to eq 'survived'
       end
 
       it 'returns config with custom attributes for entry type' do
@@ -253,6 +384,93 @@ module Pageflow
 
         expect(config_for_target.data).to eq 'full'
         expect(config_for_target.other_data).to eq 'fuller'
+      end
+
+      it "doesn't make available all config options inside for_entry_blocks" do
+        entry_type = TestEntryType.new(name: 'skulled')
+        pageflow = PageflowModule.new
+        entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
+        pageflow.configure do |config|
+          TestEntryType.register(config,
+                                 name: 'skulled')
+          config.for_entry_type(entry_type) do |c|
+            c.mailer_sender = 'spam@b.ot'
+          end
+        end
+
+        expect { pageflow.config_for(entry) }.to raise_error(NoMethodError, /mailer_sender/)
+      end
+
+      it 'allows registering a file type for an entry type' do
+        entry_type = TestEntryType.new(name: 'skulled')
+        pageflow = PageflowModule.new
+        entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
+        file_type = FileType.new(model: 'Pageflow::ImageFile',
+                                 collection_name: 'image_files')
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'skulled')
+          config.for_entry_type(entry_type) do |c|
+            c.file_types.register(file_type)
+          end
+        end
+        config_for_target = pageflow.config_for(entry)
+
+        expect(config_for_target.file_types.find_by_model!(Pageflow::ImageFile)).to_not be nil
+      end
+
+      it "doesn't make file types available to other entry types" do
+        entry_type = TestEntryType.new(name: 'skulled')
+        pageflow = PageflowModule.new
+        entry = double('entry', type_name: 'phaged', enabled_feature_names: [])
+        file_type = FileType.new(model: 'Pageflow::ImageFile',
+                                 collection_name: 'image_files')
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'phaged')
+          TestEntryType.register(config, name: 'skulled')
+          config.for_entry_type(entry_type) do |c|
+            c.file_types.register(file_type)
+          end
+        end
+        config_for_target = pageflow.config_for(entry)
+
+        expect { config_for_target.file_types.find_by_model!(Pageflow::ImageFile) }.to(
+          raise_error FileType::NotFoundError
+        )
+      end
+
+      it 'allows registering a widget type for an entry type' do
+        entry_type = TestEntryType.new(name: 'skulled')
+        pageflow = PageflowModule.new
+        entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
+        widget_type = TestWidgetType.new(name: 'test_widget')
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'skulled')
+          config.for_entry_type(entry_type) do |c|
+            c.widget_types.register(widget_type)
+          end
+        end
+        config_for_target = pageflow.config_for(entry)
+
+        expect(config_for_target.widget_types.find_by_name!('test_widget')).to_not be nil
+      end
+
+      it "doesn't make widget types available to other entry types" do
+        entry_type = TestEntryType.new(name: 'skulled')
+        pageflow = PageflowModule.new
+        entry = double('entry', type_name: 'phaged', enabled_feature_names: [])
+        widget_type = TestWidgetType.new(name: 'test_widget')
+        pageflow.configure do |config|
+          TestEntryType.register(config, name: 'phaged')
+          TestEntryType.register(config, name: 'skulled')
+          config.for_entry_type(entry_type) do |c|
+            c.widget_types.register(widget_type)
+          end
+        end
+        config_for_target = pageflow.config_for(entry)
+
+        expect { config_for_target.widget_types.find_by_name!('test_widget') }.to(
+          raise_error WidgetType::NotFoundError
+        )
       end
     end
   end

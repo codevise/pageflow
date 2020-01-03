@@ -46,12 +46,14 @@ module Pageflow
     def config_for(target)
       config = build_config do |c|
         c.enable_features(target.enabled_feature_names)
+        c.configure_entry_type(target.type_name) if target.respond_to?(:type_name)
       end
+
       if target.respond_to?(:type_name)
-        ConfigDelegator.new(config, target.type_name)
-      else
-        config
+        config = Configuration::ConfigView.new(config, target.type_name)
       end
+
+      config
     end
 
     # Register a block which shall be called after any configuration
@@ -94,6 +96,7 @@ module Pageflow
 
       @config = build_config do |config|
         config.enable_all_features
+        config.configure_all_entry_types
       end
 
       @after_global_configure_blocks ||= []
@@ -118,36 +121,6 @@ module Pageflow
         @after_configure_blocks.each do |block|
           block.call(config)
         end
-      end
-    end
-
-    class ConfigDelegator
-      attr_accessor :config, :type_name
-
-      def initialize(config, type_name)
-        @config = config
-        @type_name = type_name
-      end
-
-      def method_missing(method, *args)
-        if @config.respond_to?(method)
-          config.send(method, *args)
-        elsif type_config.respond_to?(method)
-          type_config.send(method, *args)
-        else
-          super
-        end
-      end
-
-      def respond_to_missing?(method_name, include_private = false)
-        @config.respond_to?(method_name) ||
-          type_config.respond_to?(method_name) ||
-          super
-      end
-
-      def type_config
-        config.entry_type_configs[type_name] ||=
-          config.entry_types.find_by_name!(type_name).configuration.new(config)
       end
     end
   end

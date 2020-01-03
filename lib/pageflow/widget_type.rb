@@ -1,5 +1,8 @@
 module Pageflow
   class WidgetType
+    class NotFoundError < RuntimeError
+    end
+
     # Name to display in editor.
     def translation_key
       "pageflow.#{name}.widget_type_name"
