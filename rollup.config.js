@@ -156,7 +156,8 @@ export default [
       file: pageflowScrolledPackageRoot + '/editor.js',
       format: 'esm',
     },
-    external: externalPageflowEditorGlobalsAndCoreJs,
+    external: id => externalPageflowEditorGlobalsAndCoreJs(id) ||
+                  externalScrolledDependenciesAndCoreJs(id),
     plugins
   },
   {

@@ -9,64 +9,64 @@ module PageflowScrolled
         end
       end
 
-      it 'renders an array of sections' do
+      it 'renders sections with id, perma_id, position and configuration' do
         entry = create(:published_entry)
+        section = create(:section,
+                         revision: entry.revision,
+                         position: 4,
+                         configuration: {transition: 'scroll'})
 
         result = render(helper, entry)
 
-        expect(json_get(result)).to be_a(Array)
+        expect(json_get(result, path: ['sections', 0, 'id'])).to eq(section.id)
+        expect(json_get(result, path: ['sections', 0, 'permaId'])).to eq(section.perma_id)
+        expect(json_get(result, path: ['sections', 0, 'position'])).to eq(4)
+        expect(json_get(result, path: ['sections', 0, 'configuration', 'transition']))
+          .to eq('scroll')
       end
 
-      it 'groups the sections content elements as array under "foreground"-key' do
+      it 'orders sections according to position attribute' do
         entry = create(:published_entry)
-        section = create(:section, revision: entry.revision)
-        create(:content_element, :heading, section: section)
+        section1 = create(:section, revision: entry.revision, position: 4)
+        section2 = create(:section, revision: entry.revision, position: 3)
 
         result = render(helper, entry)
 
-        expect(json_get(result, path: [0, 'foreground'])).to be_a(Array)
+        expect(json_get(result, path: ['sections', '*', 'id'])).to eq([section2.id, section1.id])
       end
 
-      it 'returns the section configuration' do
+      it 'renders content elements with id, perma_id, type_name, position, section id ' \
+         'and configuration' do
         entry = create(:published_entry)
         section = create(:section, revision: entry.revision)
+        content_element = create(:content_element,
+                                 :heading,
+                                 section: section,
+                                 position: 4,
+                                 configuration: {text: 'Heading'})
 
         result = render(helper, entry)
 
-        expect(json_get(result, path: [0])).to include(section.configuration)
+        expect(json_get(result, path: ['contentElements', 0, 'id'])).to eq(content_element.id)
+        expect(json_get(result, path: ['contentElements', 0, 'permaId']))
+          .to eq(content_element.perma_id)
+        expect(json_get(result, path: ['contentElements', 0, 'typeName'])).to eq('heading')
+        expect(json_get(result, path: ['contentElements', 0, 'sectionId'])).to eq(section.id)
+        expect(json_get(result, path: ['contentElements', 0, 'position'])).to eq(4)
+        expect(json_get(result, path: ['contentElements', 0, 'configuration', 'text']))
+          .to eq('Heading')
       end
 
-      it 'specifies the components type from content elements type_name attribute' do
+      it 'orders content elements according to position attribute' do
         entry = create(:published_entry)
         section = create(:section, revision: entry.revision)
-        heading = create(:content_element, :heading, section: section)
+        content_element1 = create(:content_element, section: section, position: 4)
+        content_element2 = create(:content_element, section: section, position: 3)
 
         result = render(helper, entry)
 
-        expect(json_get(result, path: [0, 'foreground', 0, 'type'])).to eql(heading.type_name)
-      end
-
-      it 'specifies the components props from content elements configuration attribute' do
-        entry = create(:published_entry)
-        section = create(:section, revision: entry.revision)
-        heading = create(:content_element, :heading, section: section)
-
-        result = render(helper, entry)
-
-        expect(json_get(result, path: [0, 'foreground', 0, 'props'])).to eql(heading.configuration)
-      end
-
-      it 'converts the "position"-configuration to top-level prop' do
-        entry = create(:published_entry)
-        section = create(:section, revision: entry.revision)
-        create(:content_element,
-               :text_block,
-               section: section,
-               configuration: {position: 'full'})
-
-        result = render(helper, entry)
-
-        expect(json_get(result, path: [0, 'foreground', 0, 'position'])).to eql('full')
+        expect(json_get(result, path: ['contentElements', '*', 'id']))
+          .to eq([content_element2.id, content_element1.id])
       end
 
       it 'also works for draft entry' do
@@ -74,7 +74,7 @@ module PageflowScrolled
 
         result = render(helper, entry)
 
-        expect(json_get(result)).to be_a(Array)
+        expect(json_get(result, path: ['contentElements'])).to be_a(Array)
       end
     end
 
@@ -85,7 +85,7 @@ module PageflowScrolled
 
         result = helper.scrolled_entry_json_seed_script_tag(entry)
 
-        expect(result).to match(%r{<script>.*pageflowScrolledSeed = \[\{.*\}\].*</script>}m)
+        expect(result).to match(%r{<script>.*pageflowScrolledSeed = \{.*\}.*</script>}m)
       end
 
       it 'escapes illegal characters' do

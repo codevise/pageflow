@@ -35,9 +35,7 @@ function renderItemGroup(props, group, position) {
     return (
       <div className={styles[position]}>
         {props.children(
-          <ForegroundItems items={group[position]}
-                           availablePositions={availablePositions}
-                           onPositionChange={props.onPositionChange} />
+          <ForegroundItems items={group[position]} />
         )}
       </div>
     );

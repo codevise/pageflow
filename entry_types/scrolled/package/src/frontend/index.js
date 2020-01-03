@@ -6,17 +6,13 @@ import Entry from './Entry';
 
 import './global.module.css';
 
-const examples = {
-  example: window.pageflowScrolledSeed || []
-}
-
-export default function Example() {
+export default function Root() {
   return (
     <>
       <AppHeader />
-      <Entry examples={examples} defaultExample="example" />
+      <Entry />
     </>
   );
 }
 
-ReactDOM.render(<Example />, document.getElementById('root'));
+ReactDOM.render(<Root />, document.getElementById('root'));

@@ -10,8 +10,6 @@ export default function ForegroundItems(props) {
                         <ForegroundItem key={index}
                                         type={item.type}
                                         position={item.position}
-                                        availablePositions={props.availablePositions}
-                                        onPositionChange={position => props.onPositionChange(item.index, position)}
                                         itemProps={item.props} />)
        )}
     </>

@@ -37,7 +37,7 @@ describe('EntryPreviewView', () => {
     expect(view.ui.iframe[0].contentWindow.document.body.querySelector('div.entry')).toBeTruthy();
   });
 
-  it('responds to READY message sent by iframe with SET_SCENES message', () => {
+  it('responds to READY message sent by iframe with ACTION message', () => {
     const seedHtml = `
       <!DOCTYPE html>
       <html>
@@ -54,7 +54,8 @@ describe('EntryPreviewView', () => {
       </script>
     `;
     const entry = new Backbone.Model();
-    entry.scenes = [];
+    entry.sections = new Backbone.Collection();
+    entry.contentElements = new Backbone.Collection();
     view = new EntryPreviewView({model: entry});
 
     view.render();
@@ -67,6 +68,6 @@ describe('EntryPreviewView', () => {
         resolve(event.data)
       });
       window.postMessage({type: 'READY'}, '*');
-    })).resolves.toEqual({type: 'SET_SCENES', payload: []});
+    })).resolves.toMatchObject({type: 'ACTION'});
   });
 })
