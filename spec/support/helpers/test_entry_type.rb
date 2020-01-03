@@ -14,10 +14,6 @@ module Pageflow
 
     class TestEntryTypeConfiguration
       include Configuration::EntryTypeConfiguration
-
-      def initialize(config)
-        super(config)
-      end
     end
   end
 end

@@ -7,10 +7,6 @@ module PageflowPaged
 
     class PagedConfiguration
       include Pageflow::Configuration::EntryTypeConfiguration
-
-      def initialize(config)
-        super(config)
-      end
     end
   end
 end

@@ -7,10 +7,6 @@ module PageflowScrolled
 
     class ScrolledConfiguration
       include Pageflow::Configuration::EntryTypeConfiguration
-
-      def initialize(config)
-        super(config)
-      end
     end
   end
 end

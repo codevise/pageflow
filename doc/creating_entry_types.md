@@ -301,9 +301,9 @@ class PagedConfiguration
 
   attr_accessor :page_types
 
-  def initialize(config)
+  def initialize(*)
+    super
     @page_types = PageTypes.new
-    super(config)
   end
 end
 ```

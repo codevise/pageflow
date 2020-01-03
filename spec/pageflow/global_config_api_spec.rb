@@ -256,9 +256,9 @@ module Pageflow
 
           attr_accessor :phage_types
 
-          def initialize(config)
+          def initialize(*)
             @phage_types = PageTypes.new
-            super(config)
+            super
           end
         end
         entry_type = TestEntryType.new(name: 'phaged', configuration: phaged_config)
@@ -282,17 +282,13 @@ module Pageflow
 
           attr_accessor :phage_types
 
-          def initialize(config)
+          def initialize(*)
             @phage_types = PageTypes.new
-            super(config)
+            super
           end
         end
         skulled_config = Class.new do
           include Pageflow::Configuration::EntryTypeConfiguration
-
-          def initialize(config)
-            super(config)
-          end
         end
         entry_type = TestEntryType.new(name: 'phaged', configuration: phaged_config)
         entry_type2 = TestEntryType.new(name: 'skulled', configuration: skulled_config)
@@ -317,8 +313,8 @@ module Pageflow
           include Pageflow::Configuration::EntryTypeConfiguration
           attr_accessor :data
 
-          def initialize(config)
-            super(config)
+          def initialize(*)
+            super
             @data = 'empty'
           end
         end
