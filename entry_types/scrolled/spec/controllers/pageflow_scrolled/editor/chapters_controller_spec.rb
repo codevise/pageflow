@@ -44,8 +44,8 @@ module PageflowScrolled
 
     describe '#update' do
       it 'allows updating the chapters configuration hash' do
-        chapter = create(:scrolled_chapter)
-        entry = chapter.entry
+        entry = create(:entry)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         patch(:update,
@@ -58,6 +58,29 @@ module PageflowScrolled
               }, format: 'json')
 
         expect(chapter.reload.configuration).to eq('title' => 'A chapter title')
+      end
+
+      it 'does not allow updating a chapter from a different entry' do
+        entry = create(:entry)
+        create(:scrolled_chapter,
+               revision: entry.draft,
+               configuration: {title: 'chapter title'})
+        other_entry = create(:entry)
+        other_chapter = create(:scrolled_chapter,
+                               revision: other_entry.draft,
+                               configuration: {title: 'other chapter title'})
+
+        authorize_for_editor_controller(entry)
+        expect {
+          patch(:update,
+                params: {
+                  entry_id: entry.id,
+                  id: other_chapter,
+                  chapter: {
+                    configuration: {title: 'yet another title'}
+                  }
+                }, format: 'json')
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 

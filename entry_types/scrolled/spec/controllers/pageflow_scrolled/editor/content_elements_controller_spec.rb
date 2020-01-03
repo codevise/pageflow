@@ -75,12 +75,14 @@ module PageflowScrolled
     describe '#update' do
       it 'allows updating the content elements configuration hash' do
         content_element = create(:content_element, :text_block)
-        entry = content_element.section.chapter.entry
+        section = content_element.section
+        entry = section.chapter.entry
 
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
                 entry_id: entry.id,
+                section_id: section.id,
                 id: content_element,
                 content_element: {
                   configuration: {children: 'some content'}
@@ -121,6 +123,7 @@ module PageflowScrolled
         delete(:destroy,
                params: {
                  entry_id: entry.id,
+                 section_id: section.id,
                  id: content_element
                }, format: 'json')
 

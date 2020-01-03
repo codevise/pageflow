@@ -11,8 +11,9 @@ module PageflowScrolled
 
       it 'renders sections with id, perma_id, position and configuration' do
         entry = create(:published_entry)
+        chapter = create(:scrolled_chapter, revision: entry.revision)
         section = create(:section,
-                         revision: entry.revision,
+                         chapter: chapter,
                          position: 4,
                          configuration: {transition: 'scroll'})
 
@@ -27,8 +28,9 @@ module PageflowScrolled
 
       it 'orders sections according to position attribute' do
         entry = create(:published_entry)
-        section1 = create(:section, revision: entry.revision, position: 4)
-        section2 = create(:section, revision: entry.revision, position: 3)
+        chapter = create(:scrolled_chapter, revision: entry.revision)
+        section1 = create(:section, chapter: chapter, position: 4)
+        section2 = create(:section, chapter: chapter, position: 3)
 
         result = render(helper, entry)
 
@@ -38,7 +40,8 @@ module PageflowScrolled
       it 'renders content elements with id, perma_id, type_name, position, section id ' \
          'and configuration' do
         entry = create(:published_entry)
-        section = create(:section, revision: entry.revision)
+        chapter = create(:scrolled_chapter, revision: entry.revision)
+        section = create(:section, chapter: chapter)
         content_element = create(:content_element,
                                  :heading,
                                  section: section,
@@ -59,7 +62,8 @@ module PageflowScrolled
 
       it 'orders content elements according to position attribute' do
         entry = create(:published_entry)
-        section = create(:section, revision: entry.revision)
+        chapter = create(:scrolled_chapter, revision: entry.revision)
+        section = create(:section, chapter: chapter)
         content_element1 = create(:content_element, section: section, position: 4)
         content_element2 = create(:content_element, section: section, position: 3)
 
@@ -71,6 +75,7 @@ module PageflowScrolled
 
       it 'also works for draft entry' do
         entry = create(:draft_entry)
+        create(:scrolled_chapter, revision: entry.revision)
 
         result = render(helper, entry)
 
@@ -81,7 +86,8 @@ module PageflowScrolled
     describe '#scrolled_entry_json_seed_script_tag' do
       it 'renders script tag which assigns seed global variable' do
         entry = create(:published_entry)
-        create(:section, revision: entry.revision)
+        chapter = create(:scrolled_chapter, revision: entry.revision)
+        create(:section, chapter: chapter)
 
         result = helper.scrolled_entry_json_seed_script_tag(entry)
 
@@ -90,7 +96,8 @@ module PageflowScrolled
 
       it 'escapes illegal characters' do
         entry = create(:published_entry)
-        section = create(:section, revision: entry.revision)
+        chapter = create(:scrolled_chapter, revision: entry.revision)
+        section = create(:section, chapter: chapter)
         create(:content_element,
                :text_block,
                section: section,

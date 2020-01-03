@@ -4,6 +4,10 @@ module PageflowScrolled
     class ChaptersController < ActionController::Base
       include Pageflow::EditorController
 
+      before_action do
+        @storyline = Storyline.all_for_revision(@entry.draft).first
+      end
+
       def create
         chapter = Chapter.create(chapter_params.merge(revision: @entry.draft))
 
@@ -11,24 +15,22 @@ module PageflowScrolled
       end
 
       def update
-        chapter = Chapter.find(params[:id])
+        chapter = @storyline.chapters.find(params[:id])
         chapter.update_attributes(chapter_params)
 
         render json: chapter
       end
 
       def destroy
-        chapter = Chapter.find(params[:id])
+        chapter = @storyline.chapters.find(params[:id])
         chapter.destroy
 
         render json: chapter
       end
 
       def order
-        storyline = Storyline.all_for_revision(@entry.draft).first
-
         params.require(:ids).each_with_index do |id, index|
-          storyline.chapters.update(id, position: index)
+          @storyline.chapters.update(id, position: index)
         end
 
         head :no_content
