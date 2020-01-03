@@ -8,5 +8,10 @@ module PageflowScrolled
              -> { order('pageflow_scrolled_content_elements.position ASC') },
              dependent: :destroy,
              inverse_of: :section
+
+    def self.all_for_revision(revision)
+      joins(chapter: {storyline: :revision})
+        .where(pageflow_scrolled_storylines: {revision_id: revision})
+    end
   end
 end

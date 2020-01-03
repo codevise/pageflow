@@ -11,6 +11,16 @@ module PageflowScrolled
           }
         }
       end
+
+      transient do
+        revision { nil }
+      end
+
+      before(:create) do |section, evaluator|
+        if evaluator.revision
+          section.chapter = create(:scrolled_chapter, revision: evaluator.revision)
+        end
+      end
     end
   end
 end

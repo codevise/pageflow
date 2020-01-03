@@ -10,10 +10,13 @@ module PageflowScrolled
              inverse_of: :chapter
     has_many :content_elements, through: :sections
 
-    delegate :entry, to: :storyline
-
     attr_accessor :revision # used on :create to lazily create storyline
     before_validation :ensure_storyline, on: :create
+
+    def self.all_for_revision(revision)
+      joins(storyline: :revision)
+        .where(pageflow_scrolled_storylines: {revision_id: revision})
+    end
 
     private
 

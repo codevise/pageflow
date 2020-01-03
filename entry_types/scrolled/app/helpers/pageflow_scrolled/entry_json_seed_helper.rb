@@ -16,8 +16,8 @@ module PageflowScrolled
     end
 
     def scrolled_entry_json_seed(json, scrolled_entry)
-      storyline = Storyline.all_for_revision(scrolled_entry.revision).first
-      sections = storyline.sections
+      sections = Section.all_for_revision(scrolled_entry.revision)
+                        .order(position: :asc)
 
       content_elements = ContentElement.all_for_revision(scrolled_entry.revision)
                                        .order(position: :asc)
