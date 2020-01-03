@@ -484,6 +484,91 @@ module Pageflow
         expect(pageflow.config_for(entry_with_feature_of_other_type).widget_types)
           .not_to include(widget_type)
       end
+
+      it 'allows registering feature blocks in for_entry_type blocks' do
+        pageflow = PageflowModule.new
+        widget_type = TestWidgetType.new(name: 'test_widget')
+        entry_type = TestEntryType.new(name: 'skulled')
+        entry_with_feature = double('entry',
+                                    type_name: 'skulled',
+                                    enabled_feature_names: ['some-feature'])
+        entry_without_feature = double('entry',
+                                       type_name: 'skulled',
+                                       enabled_feature_names: [])
+
+        pageflow.configure do |config|
+          config.entry_types.register(entry_type)
+
+          config.for_entry_type(entry_type) do |c|
+            c.features.register 'some-feature' do |f|
+              f.widget_types.register(widget_type)
+            end
+          end
+        end
+
+        expect(pageflow.config_for(entry_with_feature).widget_types)
+          .to include(widget_type)
+        expect(pageflow.config_for(entry_without_feature).widget_types)
+          .not_to include(widget_type)
+      end
+
+      it 'allows using entry type specific config in feature block in for_entry_type blocks' do
+        pageflow = PageflowModule.new
+        skulled_config = Class.new do
+          include Pageflow::Configuration::EntryTypeConfiguration
+          attr_accessor :data
+        end
+        entry_type = TestEntryType.new(name: 'skulled',
+                                       configuration: skulled_config)
+        entry_with_feature = double('entry',
+                                    type_name: 'skulled',
+                                    enabled_feature_names: ['some-feature'])
+        entry_without_feature = double('entry',
+                                       type_name: 'skulled',
+                                       enabled_feature_names: [])
+
+        pageflow.configure do |config|
+          config.entry_types.register(entry_type)
+
+          config.for_entry_type(entry_type) do |c|
+            c.features.register 'some-feature' do |f|
+              f.data = 'value'
+            end
+          end
+        end
+
+        expect(pageflow.config_for(entry_with_feature).data).to eq('value')
+        expect(pageflow.config_for(entry_without_feature).data).to be_nil
+      end
+
+      it 'allows using entry type specific config in feature object registered ' \
+         'in for_entry_type blocks' do
+        pageflow = PageflowModule.new
+        skulled_config = Class.new do
+          include Pageflow::Configuration::EntryTypeConfiguration
+          attr_accessor :data
+        end
+        entry_type = TestEntryType.new(name: 'skulled',
+                                       configuration: skulled_config)
+        entry_with_feature = double('entry',
+                                    type_name: 'skulled',
+                                    enabled_feature_names: ['some-feature'])
+        entry_without_feature = double('entry',
+                                       type_name: 'skulled',
+                                       enabled_feature_names: [])
+
+        pageflow.configure do |config|
+          config.entry_types.register(entry_type)
+          config.for_entry_type(entry_type) do |c|
+            c.features.register(Feature.new('some-feature') do |f|
+                                  f.data = 'value'
+                                end)
+          end
+        end
+
+        expect(pageflow.config_for(entry_with_feature).data).to eq('value')
+        expect(pageflow.config_for(entry_without_feature).data).to be_nil
+      end
     end
   end
 end

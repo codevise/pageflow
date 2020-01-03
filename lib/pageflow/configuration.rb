@@ -95,9 +95,6 @@ module Pageflow
     # @since 15.1
     attr_reader :entry_types
 
-    # @api private
-    attr_reader :entry_type_configs, :entry_type_configure_blocks
-
     # Register new types of pages.
     # @return [PageTypes]
     # @since 0.9
@@ -346,7 +343,9 @@ module Pageflow
     # @since 12.2
     attr_accessor :news
 
-    def initialize
+    def initialize(target_type_name = nil)
+      @target_type_name = target_type_name
+
       @paperclip_attachments_version = 'v1'
       @paperclip_s3_root = 'main'
 
@@ -449,8 +448,15 @@ module Pageflow
       ActiveSupport::Deprecation.warn('Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller)
     end
 
-    def for_entry_type(type, &block)
-      entry_type_configure_blocks[type.name] << block
+    def for_entry_type(type)
+      return if @target_type_name && @target_type_name != type.name
+
+      yield get_entry_type_config(type)
+    end
+
+    # @api private
+    def get_entry_type_config(type)
+      @entry_type_configs[type.name] ||= type.configuration.new(self, type)
     end
 
     # @api private
@@ -474,27 +480,6 @@ module Pageflow
       features.enable_all(FeatureLevelConfiguration.new(self))
     end
 
-    # @api private
-    def configure_entry_type(type_name)
-      type_config = get_entry_type_config_view(type_name)
-      entry_type_configure_blocks[type_name].each do |block|
-        block.call(type_config)
-      end
-    end
-
-    # @api_private
-    def configure_all_entry_types
-      entry_type_configure_blocks.each do |entry_type_name, blocks|
-        type_config = get_entry_type_config_view(entry_type_name)
-        blocks.each { |block| block.call(type_config) }
-      end
-    end
-
-    # @api private
-    def get_entry_type_config_view(type_name)
-      ConfigView.new(self, type_name).type_config
-    end
-
     # Restricts the configuration interface to those parts which can
     # be used from inside features.
     FeatureLevelConfiguration = Struct.new(:config) do
@@ -510,27 +495,40 @@ module Pageflow
     end
 
     module EntryTypeConfiguration
-      def initialize(config)
+      def initialize(config, entry_type)
         @config = config
+        @features = FeaturesDelegator.new(config, entry_type)
       end
+
+      attr_reader :features
 
       delegate :file_types, to: :@config
       delegate :widget_types, to: :@config
+
+      # @api private
+      FeaturesDelegator = Struct.new(:config, :entry_type) do
+        def register(feature, &block)
+          return register(Feature.new(feature, &block)) if feature.is_a?(String)
+
+          config.features.register(feature.name) do |feature_config|
+            feature_config.for_entry_type(entry_type, &feature.method(:enable))
+          end
+        end
+      end
     end
 
+    # @api private
     class ConfigView
-      attr_accessor :config, :type_name
-
-      def initialize(config, type_name)
+      def initialize(config, entry_type)
         @config = config
-        @type_name = type_name
+        @entry_type_config = config.get_entry_type_config(entry_type)
       end
 
       def method_missing(method, *args)
         if @config.respond_to?(method)
-          config.send(method, *args)
-        elsif type_config.respond_to?(method)
-          type_config.send(method, *args)
+          @config.send(method, *args)
+        elsif @entry_type_config.respond_to?(method)
+          @entry_type_config.send(method, *args)
         else
           super
         end
@@ -538,13 +536,8 @@ module Pageflow
 
       def respond_to_missing?(method_name, include_private = false)
         @config.respond_to?(method_name) ||
-          type_config.respond_to?(method_name) ||
+          @entry_type_config.respond_to?(method_name) ||
           super
-      end
-
-      def type_config
-        config.entry_type_configs[type_name] ||=
-          config.entry_types.find_by_name!(type_name).configuration.new(config)
       end
     end
   end

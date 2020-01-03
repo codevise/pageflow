@@ -44,13 +44,13 @@ module Pageflow
     # @return [Configuration]
     # @since 0.9
     def config_for(target)
-      config = build_config do |c|
+      config = build_config(target.respond_to?(:type_name) && target.type_name) do |c|
         c.enable_features(target.enabled_feature_names)
-        c.configure_entry_type(target.type_name) if target.respond_to?(:type_name)
       end
 
       if target.respond_to?(:type_name)
-        config = Configuration::ConfigView.new(config, target.type_name)
+        config = Configuration::ConfigView.new(config,
+                                               config.entry_types.find_by_name!(target.type_name))
       end
 
       config
@@ -96,7 +96,6 @@ module Pageflow
 
       @config = build_config do |config|
         config.enable_all_features
-        config.configure_all_entry_types
       end
 
       @after_global_configure_blocks ||= []
@@ -107,8 +106,8 @@ module Pageflow
 
     private
 
-    def build_config(&block)
-      Configuration.new.tap do |config|
+    def build_config(target_type_name = nil)
+      Configuration.new(target_type_name).tap do |config|
         @configure_blocks ||= []
         @after_configure_blocks ||= []
 
