@@ -450,6 +450,40 @@ module Pageflow
           raise_error WidgetType::NotFoundError
         )
       end
+
+      it 'allows using for_entry_type inside features' do
+        pageflow = PageflowModule.new
+        widget_type = TestWidgetType.new(name: 'test_widget')
+        entry_type = TestEntryType.new(name: 'skulled')
+        other_entry_type = TestEntryType.new(name: 'phaged')
+        entry_with_feature = double('entry',
+                                    type_name: 'skulled',
+                                    enabled_feature_names: ['some-feature'])
+        entry_without_feature = double('entry',
+                                       type_name: 'skulled',
+                                       enabled_feature_names: [])
+        entry_with_feature_of_other_type = double('entry',
+                                                  type_name: 'phaged',
+                                                  enabled_feature_names: ['some-feature'])
+
+        pageflow.configure do |config|
+          config.entry_types.register(entry_type)
+          config.entry_types.register(other_entry_type)
+
+          config.features.register 'some-feature' do |f|
+            f.for_entry_type(entry_type) do |c|
+              c.widget_types.register(widget_type)
+            end
+          end
+        end
+
+        expect(pageflow.config_for(entry_with_feature).widget_types)
+          .to include(widget_type)
+        expect(pageflow.config_for(entry_without_feature).widget_types)
+          .not_to include(widget_type)
+        expect(pageflow.config_for(entry_with_feature_of_other_type).widget_types)
+          .not_to include(widget_type)
+      end
     end
   end
 end
