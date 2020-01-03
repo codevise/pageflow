@@ -41,7 +41,10 @@ module PageflowScrolled
       private
 
       def section_params
-        {configuration: params.dig(:section, :configuration).try(:permit!)}
+        configuration = params.require(:section)[:configuration].try(:permit!) || {}
+        params.require(:section)
+              .permit(:position)
+              .merge(configuration: configuration)
       end
     end
   end

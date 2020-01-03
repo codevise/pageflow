@@ -35,7 +35,10 @@ module PageflowScrolled
       private
 
       def chapter_params
-        {configuration: params.dig(:chapter, :configuration).try(:permit!)}
+        configuration = params.require(:chapter)[:configuration].try(:permit!) || {}
+        params.require(:chapter)
+              .permit(:position)
+              .merge(configuration: configuration)
       end
     end
   end
