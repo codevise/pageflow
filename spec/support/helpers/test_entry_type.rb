@@ -13,7 +13,7 @@ module Pageflow
     end
 
     class TestEntryTypeConfiguration
-      include Configuration::EntryTypeConfiguration
+      include EntryTypeConfiguration
     end
   end
 end

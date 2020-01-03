@@ -13,14 +13,12 @@ Conventionally, new entry types are registered in a plugin class:
 module Rainbow
   class Plugin < Pageflow::Plugin
     def configure(config)
-      config.entry_types.register(entry_type)
+      config.entry_types.register(Rainbow.entry_type)
     end
+  end
 
-    private
-
-    def entry_type
-      Pageflow::EntryType.new(name: 'rainbow', # ... further options)
-    end
+  def self.entry_type
+    Pageflow::EntryType.new(name: 'rainbow', # ... further options)
   end
 end
 ```
@@ -287,23 +285,76 @@ module Rainbow
 end
 ```
 
-## Adding to the Configuration
+## Customizing Configuration
 
-`EntryType` provides a `configuration` option, which accepts a class
-that mixes in `Pageflow::Configuration::EntryTypeConfiguration`.
+### Scoping by Entry Type
 
-For example, this can be used to add `page_types` to a `paged` entry
-type:
+For concepts like widget types or file types that are used across
+entry types it can make sense to register certain types only for
+specific entry types. This can be done using the `for_entry_type`
+method:
 
-``` ruby
-class PagedConfiguration
-  include Pageflow::Configuration::EntryTypeConfiguration
-
-  attr_accessor :page_types
-
-  def initialize(*)
-    super
-    @page_types = PageTypes.new
+```ruby
+module Rainbow
+  class Plugin < Pageflow::Plugin
+    def configure(config)
+      config.for_entry_type(Rainbow.entry_type) do |c|
+        c.widget_type.register(Rainbow.navigation_widget_type)
+      end
+    end
   end
 end
+```
+
+This will make sure the `Rainbow.navigation_widget_type` is only
+available for entries with of type `Rainbow.entry_type`.
+
+### Adding to the Configuration
+
+Entry types can introduce new concepts that can be represented in
+Pageflow's configuration objects by providing a class that mixes in
+`Pageflow::EntryTypeConfiguration`:
+
+``` ruby
+module Rainbow
+  def self.entry_type
+    Pageflow::EntryType.new(name: 'rainbow',
+                            ...
+                            configuration: Rainbow::Configuration)
+  end
+
+  class Configuration
+    include Pageflow::EntryTypeConfiguration
+
+    attr_reader :unicorns
+
+    def initialize(*)
+      super
+      @unicorns = Unicorns.new
+    end
+  end
+end
+```
+
+In plugins or host applications these settings can accessed using the
+`for_entry_type` method:
+
+```ruby
+# host_app/config/initializers/pageflow.rb
+Pageflow.configure do |config|
+  config.for_entry_type(Rainbow.entry_type) do |c|
+    c.unicorns.register # access methods defined by Rainbow::Unicorns
+  end
+end
+```
+
+When calling `Pageflow.config_for` with an entry of the fiven entry
+type, the settings are also available:
+
+```ruby
+# assume
+entry.entry_type # => Rainbow.entry_type
+
+# then
+Pageflow.config_for(entry).unicorns # access methods defined by Rainbow::Unicorns
 ```

@@ -448,6 +448,19 @@ module Pageflow
       ActiveSupport::Deprecation.warn('Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller)
     end
 
+    # Scope configuration to entries of a certain entry type or access
+    # entry type specific configuration. When building a configuration
+    # object for an entry, the passed block is only evaluated when
+    # types match. When building `Pageflow.config`, all
+    # `for_entry_type` blocks are evaluated.
+    #
+    # @param [EntryType] type
+    #
+    # @yieldparam [EntryTypeConfiguration] entry_type_config -
+    #   Instance of configuration class passed as `configuration`
+    #   option during registration of entry type.
+    #
+    # @since edge
     def for_entry_type(type)
       return if @target_type_name && @target_type_name != type.name
 
@@ -492,29 +505,6 @@ module Pageflow
       delegate :file_importers, to: :config
 
       delegate :for_entry_type, to: :config
-    end
-
-    module EntryTypeConfiguration
-      def initialize(config, entry_type)
-        @config = config
-        @features = FeaturesDelegator.new(config, entry_type)
-      end
-
-      attr_reader :features
-
-      delegate :file_types, to: :@config
-      delegate :widget_types, to: :@config
-
-      # @api private
-      FeaturesDelegator = Struct.new(:config, :entry_type) do
-        def register(feature, &block)
-          return register(Feature.new(feature, &block)) if feature.is_a?(String)
-
-          config.features.register(feature.name) do |feature_config|
-            feature_config.for_entry_type(entry_type, &feature.method(:enable))
-          end
-        end
-      end
     end
 
     # @api private

@@ -252,7 +252,7 @@ module Pageflow
 
       it 'returns config with custom attributes for entry type' do
         phaged_config = Class.new do
-          include Pageflow::Configuration::EntryTypeConfiguration
+          include EntryTypeConfiguration
 
           attr_accessor :phage_types
 
@@ -278,7 +278,7 @@ module Pageflow
 
       it "doesn't return config with custom attributes for another entry type" do
         phaged_config = Class.new do
-          include Pageflow::Configuration::EntryTypeConfiguration
+          include EntryTypeConfiguration
 
           attr_accessor :phage_types
 
@@ -288,7 +288,7 @@ module Pageflow
           end
         end
         skulled_config = Class.new do
-          include Pageflow::Configuration::EntryTypeConfiguration
+          include EntryTypeConfiguration
         end
         entry_type = TestEntryType.new(name: 'phaged', configuration: phaged_config)
         entry_type2 = TestEntryType.new(name: 'skulled', configuration: skulled_config)
@@ -310,7 +310,7 @@ module Pageflow
       it 'returns values of constant type independent of for_entry_type calls' do
         entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
         skulled_config = Class.new do
-          include Pageflow::Configuration::EntryTypeConfiguration
+          include EntryTypeConfiguration
           attr_accessor :data
 
           def initialize(*)
@@ -337,7 +337,7 @@ module Pageflow
       it 'returns same config object independent of for_entry_type calls' do
         entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
         skulled_config = Class.new do
-          include Pageflow::Configuration::EntryTypeConfiguration
+          include EntryTypeConfiguration
           attr_accessor :data, :other_data
 
           def initialize(*)
@@ -515,7 +515,7 @@ module Pageflow
       it 'allows using entry type specific config in feature block in for_entry_type blocks' do
         pageflow = PageflowModule.new
         skulled_config = Class.new do
-          include Pageflow::Configuration::EntryTypeConfiguration
+          include EntryTypeConfiguration
           attr_accessor :data
         end
         entry_type = TestEntryType.new(name: 'skulled',
@@ -545,7 +545,7 @@ module Pageflow
          'in for_entry_type blocks' do
         pageflow = PageflowModule.new
         skulled_config = Class.new do
-          include Pageflow::Configuration::EntryTypeConfiguration
+          include EntryTypeConfiguration
           attr_accessor :data
         end
         entry_type = TestEntryType.new(name: 'skulled',
