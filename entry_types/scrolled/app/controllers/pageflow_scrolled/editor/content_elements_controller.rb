@@ -8,21 +8,25 @@ module PageflowScrolled
         section = Section.find(params[:section_id])
         content_element = section.content_elements.create(content_element_params)
 
-        render json: content_element, status: :created
+        render partial: 'pageflow_scrolled/content_elements/content_element',
+               locals: {content_element: content_element},
+               status: :created
       end
 
       def update
         content_element = ContentElement.all_for_revision(@entry.draft).find(params[:id])
         content_element.update_attributes(content_element_params)
 
-        render json: content_element
+        render partial: 'pageflow_scrolled/content_elements/content_element',
+               locals: {content_element: content_element}
       end
 
       def destroy
         content_element = ContentElement.all_for_revision(@entry.draft).find(params[:id])
         content_element.destroy
 
-        render json: content_element
+        render partial: 'pageflow_scrolled/content_elements/content_element',
+               locals: {content_element: content_element}
       end
 
       def order

@@ -8,21 +8,23 @@ module PageflowScrolled
         chapter = Chapter.all_for_revision(@entry.draft).find(params[:chapter_id])
         section = chapter.sections.create(section_params)
 
-        render json: section, status: :created
+        render partial: 'pageflow_scrolled/sections/section',
+               locals: {section: section},
+               status: :created
       end
 
       def update
         section = Section.all_for_revision(@entry.draft).find(params[:id])
         section.update_attributes(section_params)
 
-        render json: section
+        render partial: 'pageflow_scrolled/sections/section', locals: {section: section}
       end
 
       def destroy
         section = Section.all_for_revision(@entry.draft).find(params[:id])
         section.destroy
 
-        render json: section
+        render partial: 'pageflow_scrolled/sections/section', locals: {section: section}
       end
 
       def order
