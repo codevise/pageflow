@@ -627,6 +627,28 @@ module Pageflow
         expect(phaged_help_entry_names).to include('phaged_entry')
         expect(skulled_help_entry_names).not_to include('phaged_entry')
       end
+
+      it 'allows calling plugin method inside for_entry_type block' do
+        pageflow = PageflowModule.new
+        entry_type = TestEntryType.new(name: 'phaged')
+        plugin = Class.new {
+          def configure(config)
+            config.help_entries.register('phaged_entry')
+          end
+        }.new
+        pageflow.configure do |config|
+          config.entry_types.register(entry_type)
+
+          config.for_entry_type(entry_type) do |c|
+            c.plugin(plugin)
+          end
+        end
+        entry = double('entry', type_name: 'phaged', enabled_feature_names: [])
+
+        help_entry_names = pageflow.config_for(entry).help_entries.map(&:name)
+
+        expect(help_entry_names).to include('phaged_entry')
+      end
     end
   end
 end

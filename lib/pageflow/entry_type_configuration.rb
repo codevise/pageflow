@@ -16,6 +16,10 @@ module Pageflow
     delegate :revision_components, to: :@config
     delegate :widget_types, to: :@config
 
+    def plugin(plugin)
+      plugin.configure(self)
+    end
+
     # @api private
     FeaturesDelegator = Struct.new(:config, :entry_type) do
       def register(feature, &block)
