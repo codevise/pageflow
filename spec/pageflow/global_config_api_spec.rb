@@ -154,6 +154,28 @@ module Pageflow
 
         expect(pageflow.config.revision_components.sort).to eq([:for_entry_type, :global])
       end
+
+      it 'returns all global hooks as well as those for entry types' do
+        entry_type = TestEntryType.new
+        pageflow = PageflowModule.new
+        entry_type_subscriber = spy
+        global_subscriber = spy
+        pageflow.configure do |config|
+          config.entry_types.register(entry_type)
+
+          config.for_entry_type(entry_type) do |c|
+            c.hooks.on(:some_event, entry_type_subscriber)
+          end
+
+          config.hooks.on(:some_event, global_subscriber)
+        end
+        pageflow.finalize!
+
+        pageflow.config.hooks.invoke(:some_event)
+
+        expect(entry_type_subscriber).to have_received(:call)
+        expect(global_subscriber).to have_received(:call)
+      end
     end
 
     describe '#finalize!' do

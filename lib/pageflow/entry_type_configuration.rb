@@ -13,6 +13,7 @@ module Pageflow
 
     delegate :file_types, to: :@config
     delegate :help_entries, to: :@config
+    delegate :hooks, to: :@config
     delegate :revision_components, to: :@config
     delegate :widget_types, to: :@config
 
