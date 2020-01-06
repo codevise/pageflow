@@ -4,10 +4,11 @@ module Pageflow
   describe FeatureTarget do
     describe '#enabled_feature_names' do
       it 'returns names of enabled features' do
+        pageflow_configure do |config|
+          config.features.register('sitemap')
+          config.features.register('fancy_page_type')
+        end
         target = build(:feature_target, features_configuration: {'sitemap' => true, 'other' => false})
-
-        Pageflow.config.features.register('sitemap')
-        Pageflow.config.features.register('fancy_page_type')
 
         result = target.enabled_feature_names
 
@@ -15,10 +16,11 @@ module Pageflow
       end
 
       it 'includes features which are enabled by default' do
+        pageflow_configure do |config|
+          config.features.register('fancy_page_type')
+          config.features.enable_by_default('fancy_page_type')
+        end
         target = build(:feature_target, features_configuration: {})
-
-        Pageflow.config.features.register('fancy_page_type')
-        Pageflow.config.features.enable_by_default('fancy_page_type')
 
         result = target.enabled_feature_names
 
@@ -26,10 +28,33 @@ module Pageflow
       end
 
       it 'does not include default features which are disabled for target' do
+        pageflow_configure do |config|
+          config.features.register('fancy_page_type')
+          config.features.enable_by_default('fancy_page_type')
+        end
         target = build(:feature_target, features_configuration: {'fancy_page_type' => false})
 
-        Pageflow.config.features.register('fancy_page_type')
-        Pageflow.config.features.enable_by_default('fancy_page_type')
+        result = target.enabled_feature_names
+
+        expect(result).not_to include('fancy_page_type')
+      end
+
+      it 'does not include default features which are registered for other entry type' do
+        some_entry_type = TestEntryType.new(name: 'some')
+        other_entry_type = TestEntryType.new(name: 'other')
+        pageflow_configure do |config|
+          config.entry_types.register(some_entry_type)
+          config.entry_types.register(other_entry_type)
+
+          config.for_entry_type(some_entry_type) do |entry_type_config|
+            entry_type_config.features.register('fancy_page_type')
+          end
+
+          config.features.enable_by_default('fancy_page_type')
+        end
+        target = build(:entry,
+                       type_name: 'other',
+                       features_configuration: {'fancy_page_type' => true})
 
         result = target.enabled_feature_names
 
@@ -38,7 +63,9 @@ module Pageflow
 
       describe 'overriding inherited_feature_state' do
         it 'includes inherited enabled features' do
-          Pageflow.config.features.register('some_page_type')
+          pageflow_configure do |config|
+            config.features.register('some_page_type')
+          end
           account = build(:account, features_configuration: {'some_page_type' => true})
           entry = build(:entry, account: account)
 
@@ -56,7 +83,9 @@ module Pageflow
         end
 
         it 'allows to disable inherited enabled features' do
-          Pageflow.config.features.register('some')
+          pageflow_configure do |config|
+            config.features.register('some')
+          end
           account = build(:account, features_configuration: {'some' => true})
           entry = build(:entry, account: account, features_configuration: {'some' => false})
 
@@ -74,8 +103,10 @@ module Pageflow
         end
 
         it 'allows parent to disable features enabled by default' do
-          Pageflow.config.features.register('some_page_type')
-          Pageflow.config.features.enable_by_default('some_page_type')
+          pageflow_configure do |config|
+            config.features.register('some_page_type')
+            config.features.enable_by_default('some_page_type')
+          end
           account = build(:account, features_configuration: {'some_page_type' => false})
           entry = build(:entry, account: account)
 

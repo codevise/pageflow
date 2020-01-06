@@ -45,7 +45,7 @@ module Pageflow
     # @since 0.9
     def config_for(target)
       config = build_config(target.respond_to?(:type_name) && target.type_name) do |c|
-        c.enable_features(target.enabled_feature_names)
+        c.enable_features(target.enabled_feature_names(c))
       end
 
       if target.respond_to?(:type_name)

@@ -13,10 +13,10 @@ module Pageflow
       serialize :features_configuration, JSON
     end
 
-    def enabled_feature_names
-      Pageflow.config.features.select do |feature|
+    def enabled_feature_names(config = Pageflow.config_for(self))
+      config.features.select { |feature|
         feature_state(feature.name) == true
-      end.map(&:name)
+      }.map(&:name)
     end
 
     def feature_state(name)
