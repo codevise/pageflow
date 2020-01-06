@@ -137,6 +137,23 @@ module Pageflow
 
         expect(pageflow.config.widget_types.count).to eq 2
       end
+
+      it 'returns all global revision components as well as those for entry types' do
+        entry_type = TestEntryType.new
+        pageflow = PageflowModule.new
+        pageflow.configure do |config|
+          config.entry_types.register(entry_type)
+
+          config.for_entry_type(entry_type) do |c|
+            c.revision_components.register(:for_entry_type)
+          end
+
+          config.revision_components.register(:global)
+        end
+        pageflow.finalize!
+
+        expect(pageflow.config.revision_components.sort).to eq([:for_entry_type, :global])
+      end
     end
 
     describe '#finalize!' do
@@ -587,6 +604,28 @@ module Pageflow
         name_translation_keys = pageflow.config_for(entry).features.map(&:name_translation_key)
 
         expect(name_translation_keys).to include('something_else')
+      end
+
+      it 'allows registering help entries in for_entry_type block' do
+        pageflow = PageflowModule.new
+        phaged_entry_type = TestEntryType.new(name: 'phaged')
+        skulled_entry_type = TestEntryType.new(name: 'skulled')
+        pageflow.configure do |config|
+          config.entry_types.register(phaged_entry_type)
+          config.entry_types.register(skulled_entry_type)
+
+          config.for_entry_type(phaged_entry_type) do |c|
+            c.help_entries.register('phaged_entry')
+          end
+        end
+        phaged_entry = double('entry', type_name: 'phaged', enabled_feature_names: [])
+        skulled_entry = double('entry', type_name: 'skulled', enabled_feature_names: [])
+
+        phaged_help_entry_names = pageflow.config_for(phaged_entry).help_entries.map(&:name)
+        skulled_help_entry_names = pageflow.config_for(skulled_entry).help_entries.map(&:name)
+
+        expect(phaged_help_entry_names).to include('phaged_entry')
+        expect(skulled_help_entry_names).not_to include('phaged_entry')
       end
     end
   end

@@ -12,6 +12,8 @@ module Pageflow
     attr_reader :features
 
     delegate :file_types, to: :@config
+    delegate :help_entries, to: :@config
+    delegate :revision_components, to: :@config
     delegate :widget_types, to: :@config
 
     # @api private
