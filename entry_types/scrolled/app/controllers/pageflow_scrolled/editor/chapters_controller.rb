@@ -25,8 +25,11 @@ module PageflowScrolled
       end
 
       def order
+        storyline = Storyline.all_for_revision(@entry.draft).find(params[:storyline_id])
+        chapters = Chapter.all_for_revision(@entry.draft)
+
         params.require(:ids).each_with_index do |id, index|
-          Chapter.all_for_revision(@entry.draft).update(id, position: index)
+          chapters.update(id, storyline_id: storyline.id, position: index)
         end
 
         head :no_content
