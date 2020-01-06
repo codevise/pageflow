@@ -23,6 +23,10 @@ module Pageflow
           feature_config.for_entry_type(entry_type, &feature.method(:enable))
         end
       end
+
+      def enable_by_default(name)
+        config.features.enable_by_default(name)
+      end
     end
   end
 end

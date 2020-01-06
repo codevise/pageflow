@@ -61,6 +61,23 @@ module Pageflow
         expect(result).not_to include('fancy_page_type')
       end
 
+      it 'allows enabling features by default inside entry type block' do
+        some_entry_type = TestEntryType.new(name: 'some')
+        pageflow_configure do |config|
+          config.entry_types.register(some_entry_type)
+
+          config.for_entry_type(some_entry_type) do |entry_type_config|
+            entry_type_config.features.register('fancy_page_type')
+            entry_type_config.features.enable_by_default('fancy_page_type')
+          end
+        end
+        target = build(:entry, type_name: 'some', features_configuration: {})
+
+        result = target.enabled_feature_names
+
+        expect(result).to include('fancy_page_type')
+      end
+
       describe 'overriding inherited_feature_state' do
         it 'includes inherited enabled features' do
           pageflow_configure do |config|
