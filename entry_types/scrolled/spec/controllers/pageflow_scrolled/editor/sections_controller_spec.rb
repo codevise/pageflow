@@ -3,8 +3,8 @@ require 'pageflow/editor_controller_test_helper'
 
 module PageflowScrolled
   RSpec.describe Editor::SectionsController, type: :controller do
+    render_views
     include Pageflow::EditorControllerTestHelper
-
     routes { PageflowScrolled::Engine.routes }
 
     describe '#create' do
@@ -53,6 +53,20 @@ module PageflowScrolled
 
         expect(chapter.sections.first.configuration).to eq('title' => 'A title')
       end
+
+      it 'renders attributes as camel case' do
+        entry = create(:entry)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               chapter_id: chapter,
+               section: attributes_for(:section)
+             }, format: 'json')
+        expect(json_response(path: [:permaId])).to be_present
+      end
     end
 
     describe '#update' do
@@ -90,6 +104,20 @@ module PageflowScrolled
                   }
                 }, format: 'json')
         }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'renders attributes as camel case' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        patch(:update,
+              params: {
+                entry_id: entry,
+                id: section,
+                section: attributes_for(:section)
+              }, format: 'json')
+        expect(json_response(path: [:permaId])).to be_present
       end
     end
 
@@ -178,6 +206,17 @@ module PageflowScrolled
                    id: section_in_other_entry
                  }, format: 'json')
         }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'renders attributes as camel case' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        delete(:destroy,
+               params: {entry_id: entry, id: section},
+               format: 'json')
+        expect(json_response(path: [:permaId])).to be_present
       end
     end
   end

@@ -7,21 +7,23 @@ module PageflowScrolled
       def create
         chapter = Chapter.create(chapter_params.merge(revision: @entry.draft))
 
-        render json: chapter, status: :created
+        render partial: 'pageflow_scrolled/chapters/chapter',
+               locals: {chapter: chapter},
+               status: :created
       end
 
       def update
         chapter = Chapter.all_for_revision(@entry.draft).find(params[:id])
         chapter.update_attributes(chapter_params)
 
-        render json: chapter
+        render partial: 'pageflow_scrolled/chapters/chapter', locals: {chapter: chapter}
       end
 
       def destroy
         chapter = Chapter.all_for_revision(@entry.draft).find(params[:id])
         chapter.destroy
 
-        render json: chapter
+        render partial: 'pageflow_scrolled/chapters/chapter', locals: {chapter: chapter}
       end
 
       def order

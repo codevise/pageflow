@@ -3,8 +3,8 @@ require 'pageflow/editor_controller_test_helper'
 
 module PageflowScrolled
   RSpec.describe Editor::ContentElementsController, type: :controller do
+    render_views
     include Pageflow::EditorControllerTestHelper
-
     routes { PageflowScrolled::Engine.routes }
 
     describe '#create' do
@@ -70,6 +70,20 @@ module PageflowScrolled
 
         expect(section.content_elements.first.type_name).to eq('textBlock')
       end
+
+      it 'renders attributes as camel case' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               section_id: section,
+               content_element: attributes_for(:content_element, :text_block)
+             }, format: 'json')
+        expect(json_response(path: [:permaId])).to be_present
+      end
     end
 
     describe '#update' do
@@ -110,6 +124,22 @@ module PageflowScrolled
                   }
                 }, format: 'json')
         }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'renders attributes as camel case' do
+        entry = create(:entry)
+        content_element = create(:content_element, :text_block, revision: entry.draft)
+        section = content_element.section
+
+        authorize_for_editor_controller(entry)
+        patch(:update,
+              params: {
+                entry_id: entry,
+                section_id: section,
+                id: content_element,
+                content_element: attributes_for(:content_element, :text_block)
+              }, format: 'json')
+        expect(json_response(path: [:permaId])).to be_present
       end
     end
 
@@ -182,6 +212,18 @@ module PageflowScrolled
                    id: content_element_in_other_entry
                  }, format: 'json')
         }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'renders attributes as camel case' do
+        entry = create(:entry)
+        content_element = create(:content_element, :text_block, revision: entry.draft)
+        section = content_element.section
+
+        authorize_for_editor_controller(entry)
+        delete(:destroy,
+               params: {entry_id: entry, section_id: section, id: content_element},
+               format: 'json')
+        expect(json_response(path: [:permaId])).to be_present
       end
     end
   end
