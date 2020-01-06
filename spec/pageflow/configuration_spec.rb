@@ -44,6 +44,18 @@ module Pageflow
       end
     end
 
+    describe '#page_types' do
+      it 'delegates to pages entry type config' do
+        page_type = TestPageType.new(name: 'test')
+
+        conf = Configuration.new
+        conf.page_types.register(page_type)
+        result = conf.for_entry_type(PageflowPaged.entry_type, &:page_types)
+
+        expect(result).to include(page_type)
+      end
+    end
+
     describe '#file_types' do
       it 'returns all registered FileTypes' do
         file_type1 = FileType.new(model: 'Pageflow::ImageFile',
