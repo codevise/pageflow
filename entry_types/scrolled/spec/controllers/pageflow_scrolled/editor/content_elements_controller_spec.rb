@@ -96,7 +96,7 @@ module PageflowScrolled
         entry = create(:entry)
         content_element = create(:content_element, revision: entry.draft)
         other_entry = create(:entry)
-        other_content_element = create(:content_element, revision: other_entry.draft)
+        content_element_in_other_entry = create(:content_element, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         expect {
@@ -104,7 +104,7 @@ module PageflowScrolled
                 params: {
                   entry_id: entry,
                   section_id: content_element.section,
-                  id: other_content_element,
+                  id: content_element_in_other_entry,
                   content_element: {
                     configuration: {children: 'some other content'}
                   }
@@ -131,6 +131,23 @@ module PageflowScrolled
         expect(content_elements.first.reload.position).to eq(0)
         expect(content_elements.last.reload.position).to eq(1)
       end
+
+      it 'does not allow moving a content element to a section of a different entry' do
+        entry = create(:entry)
+        content_element = create(:content_element, revision: entry.draft)
+        other_entry = create(:entry)
+        section_in_other_entry = create(:section, revision: other_entry.draft)
+
+        authorize_for_editor_controller(entry)
+        expect {
+          put(:order,
+              params: {
+                entry_id: entry,
+                section_id: section_in_other_entry,
+                ids: [content_element.id]
+              }, format: 'json')
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
 
     describe '#destroy' do
@@ -154,7 +171,7 @@ module PageflowScrolled
         entry = create(:entry)
         content_element = create(:content_element, revision: entry.draft)
         other_entry = create(:entry)
-        other_content_element = create(:content_element, revision: other_entry.draft)
+        content_element_in_other_entry = create(:content_element, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         expect {
@@ -162,7 +179,7 @@ module PageflowScrolled
                  params: {
                    entry_id: entry,
                    section_id: content_element.section,
-                   id: other_content_element
+                   id: content_element_in_other_entry
                  }, format: 'json')
         }.to raise_error(ActiveRecord::RecordNotFound)
       end

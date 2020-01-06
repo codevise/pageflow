@@ -14,7 +14,7 @@ module PageflowScrolled
         post(:create,
              params: {
                entry_id: entry,
-               chapter: attributes_for(:chapter)
+               chapter: attributes_for(:scrolled_chapter)
              }, format: 'json')
 
         expect(response.status).to eq(401)
@@ -27,7 +27,7 @@ module PageflowScrolled
         post(:create,
              params: {
                entry_id: entry,
-               chapter: attributes_for(:chapter)
+               chapter: attributes_for(:scrolled_chapter)
              }, format: 'json')
 
         expect(response.status).to eq(201)
@@ -45,8 +45,8 @@ module PageflowScrolled
                }
              }, format: 'json')
 
-        main_storyline = Storyline.all_for_revision(entry.draft).first
-        expect(main_storyline.chapters.first.configuration).to eq('title' => 'A chapter title')
+        chapter = Chapter.all_for_revision(entry.draft).first
+        expect(chapter.configuration).to eq('title' => 'A chapter title')
       end
     end
 
@@ -72,14 +72,14 @@ module PageflowScrolled
         entry = create(:entry)
         create(:scrolled_chapter, revision: entry.draft)
         other_entry = create(:entry)
-        other_chapter = create(:scrolled_chapter, revision: other_entry.draft)
+        chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         expect {
           patch(:update,
                 params: {
                   entry_id: entry,
-                  id: other_chapter,
+                  id: chapter_in_other_entry,
                   chapter: {
                     configuration: {title: 'another title'}
                   }
@@ -92,25 +92,59 @@ module PageflowScrolled
       it 'updates position of chapters according to given params order' do
         entry = create(:entry)
         chapters = create_list(:scrolled_chapter, 2, revision: entry.draft)
+        storyline = chapters.first.storyline
 
         authorize_for_editor_controller(entry)
-
         put(:order,
             params: {
               entry_id: entry,
+              storyline_id: storyline,
               ids: [chapters.last.id, chapters.first.id]
             }, format: 'json')
 
         expect(chapters.last.reload.position).to eq(0)
         expect(chapters.first.reload.position).to eq(1)
       end
+
+      it 'allows moving a chapter from one storyline to another within the same entry' do
+        entry = create(:entry)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        other_storyline = create(:scrolled_storyline, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        put(:order,
+            params: {
+              entry_id: entry,
+              storyline_id: other_storyline,
+              ids: [chapter.id]
+            }, format: 'json')
+
+        expect(chapter.reload.storyline).to eq(other_storyline)
+      end
+
+      it 'does not allow moving a chapter to a storyline of different entry' do
+        entry = create(:entry)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        other_entry = create(:entry)
+        storyline_in_other_entry = create(:scrolled_storyline, revision: other_entry.draft)
+
+        authorize_for_editor_controller(entry)
+        expect {
+          put(:order,
+              params: {
+                entry_id: entry,
+                storyline_id: storyline_in_other_entry,
+                ids: [chapter.id]
+              }, format: 'json')
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
 
     describe '#destroy' do
       it 'deletes the chapter' do
         entry = create(:entry)
-        revision = entry.draft
-        chapter = create(:scrolled_chapter, revision: revision)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        storyline = chapter.storyline
 
         authorize_for_editor_controller(entry)
         delete(:destroy,
@@ -119,22 +153,21 @@ module PageflowScrolled
                  id: chapter
                }, format: 'json')
 
-        main_storyline = Storyline.all_for_revision(revision).first
-        expect(main_storyline).to have(0).chapters
+        expect(storyline).to have(0).chapters
       end
 
       it 'does not allow deleting a chapter from a different entry' do
         entry = create(:entry)
         create(:scrolled_chapter, revision: entry.draft)
         other_entry = create(:entry)
-        other_chapter = create(:scrolled_chapter, revision: other_entry.draft)
+        chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         expect {
           delete(:destroy,
                  params: {
                    entry_id: entry,
-                   id: other_chapter
+                   id: chapter_in_other_entry
                  }, format: 'json')
         }.to raise_error(ActiveRecord::RecordNotFound)
       end

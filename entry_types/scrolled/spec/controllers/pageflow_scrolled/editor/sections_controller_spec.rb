@@ -77,14 +77,14 @@ module PageflowScrolled
         entry = create(:entry)
         create(:section, revision: entry.draft)
         other_entry = create(:entry)
-        other_section = create(:section, revision: other_entry.draft)
+        section_in_other_entry = create(:section, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         expect {
           patch(:update,
                 params: {
                   entry_id: entry,
-                  id: other_section,
+                  id: section_in_other_entry,
                   chapter: {
                     configuration: {title: 'another title'}
                   }
@@ -100,7 +100,6 @@ module PageflowScrolled
         sections = create_list(:section, 2, chapter: chapter)
 
         authorize_for_editor_controller(entry)
-
         put(:order,
             params: {
               entry_id: entry,
@@ -120,7 +119,6 @@ module PageflowScrolled
         other_chapter = create(:scrolled_chapter, revision: revision)
 
         authorize_for_editor_controller(entry)
-
         put(:order,
             params: {
               entry_id: entry,
@@ -129,6 +127,24 @@ module PageflowScrolled
             }, format: 'json')
 
         expect(section.reload.chapter).to eq(other_chapter)
+      end
+
+      it 'does not allow moving a section to a chapter of another entry' do
+        entry = create(:entry)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        section = create(:section, chapter: chapter)
+        other_entry = create(:entry)
+        chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
+
+        authorize_for_editor_controller(entry)
+        expect {
+          put(:order,
+              params: {
+                entry_id: entry,
+                chapter_id: chapter_in_other_entry,
+                ids: [section.id]
+              }, format: 'json')
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -152,14 +168,14 @@ module PageflowScrolled
         entry = create(:entry)
         create(:section, revision: entry.draft)
         other_entry = create(:entry)
-        other_section = create(:section, revision: other_entry.draft)
+        section_in_other_entry = create(:section, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         expect {
           delete(:destroy,
                  params: {
                    entry_id: entry,
-                   id: other_section
+                   id: section_in_other_entry
                  }, format: 'json')
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
