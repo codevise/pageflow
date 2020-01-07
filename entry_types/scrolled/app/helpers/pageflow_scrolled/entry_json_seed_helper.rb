@@ -20,6 +20,7 @@ module PageflowScrolled
       main_storyline ||= Storyline.new
 
       json.partial!('pageflow_scrolled/entry_json_seed/entry',
+                    chapters: main_storyline.chapters,
                     sections: main_storyline.sections,
                     content_elements: main_storyline.content_elements)
     end
