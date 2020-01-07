@@ -17,6 +17,8 @@ module PageflowScrolled
         chapter.update_attributes(chapter_params)
 
         render partial: 'pageflow_scrolled/chapters/chapter', locals: {chapter: chapter}
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
       end
 
       def destroy
@@ -24,6 +26,8 @@ module PageflowScrolled
         chapter.destroy
 
         render partial: 'pageflow_scrolled/chapters/chapter', locals: {chapter: chapter}
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
       end
 
       def order
@@ -35,6 +39,8 @@ module PageflowScrolled
         end
 
         head :no_content
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
       end
 
       private

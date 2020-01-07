@@ -19,6 +19,8 @@ module PageflowScrolled
 
         render partial: 'pageflow_scrolled/content_elements/content_element',
                locals: {content_element: content_element}
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
       end
 
       def destroy
@@ -27,6 +29,8 @@ module PageflowScrolled
 
         render partial: 'pageflow_scrolled/content_elements/content_element',
                locals: {content_element: content_element}
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
       end
 
       def order
@@ -40,6 +44,8 @@ module PageflowScrolled
         end
 
         head :no_content
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
       end
 
       private

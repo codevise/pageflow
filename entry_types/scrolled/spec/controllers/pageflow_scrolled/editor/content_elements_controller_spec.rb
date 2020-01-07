@@ -90,13 +90,11 @@ module PageflowScrolled
       it 'allows updating the content elements configuration hash' do
         entry = create(:entry)
         content_element = create(:content_element, :text_block, revision: entry.draft)
-        section = content_element.section
 
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
                 entry_id: entry,
-                section_id: section,
                 id: content_element,
                 content_element: {
                   configuration: {children: 'some content'}
@@ -108,34 +106,31 @@ module PageflowScrolled
 
       it 'does not allow updating a content element from a different entry' do
         entry = create(:entry)
-        content_element = create(:content_element, revision: entry.draft)
         other_entry = create(:entry)
         content_element_in_other_entry = create(:content_element, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
-        expect {
-          patch(:update,
-                params: {
-                  entry_id: entry,
-                  section_id: content_element.section,
-                  id: content_element_in_other_entry,
-                  content_element: {
-                    configuration: {children: 'some other content'}
-                  }
-                }, format: 'json')
-        }.to raise_error(ActiveRecord::RecordNotFound)
+
+        patch(:update,
+              params: {
+                entry_id: entry,
+                id: content_element_in_other_entry,
+                content_element: {
+                  configuration: {children: 'some other content'}
+                }
+              }, format: 'json')
+
+        expect(response.status).to eq(404)
       end
 
       it 'renders attributes as camel case' do
         entry = create(:entry)
         content_element = create(:content_element, :text_block, revision: entry.draft)
-        section = content_element.section
 
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
                 entry_id: entry,
-                section_id: section,
                 id: content_element,
                 content_element: attributes_for(:content_element, :text_block)
               }, format: 'json')
@@ -169,14 +164,14 @@ module PageflowScrolled
         section_in_other_entry = create(:section, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
-        expect {
-          put(:order,
-              params: {
-                entry_id: entry,
-                section_id: section_in_other_entry,
-                ids: [content_element.id]
-              }, format: 'json')
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        put(:order,
+            params: {
+              entry_id: entry,
+              section_id: section_in_other_entry,
+              ids: [content_element.id]
+            }, format: 'json')
+
+        expect(response.status).to eq(404)
       end
     end
 
@@ -190,7 +185,6 @@ module PageflowScrolled
         delete(:destroy,
                params: {
                  entry_id: entry,
-                 section_id: section,
                  id: content_element
                }, format: 'json')
 
@@ -199,29 +193,26 @@ module PageflowScrolled
 
       it 'does not allow deleting a content element from a different entry' do
         entry = create(:entry)
-        content_element = create(:content_element, revision: entry.draft)
         other_entry = create(:entry)
         content_element_in_other_entry = create(:content_element, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
-        expect {
-          delete(:destroy,
-                 params: {
-                   entry_id: entry,
-                   section_id: content_element.section,
-                   id: content_element_in_other_entry
-                 }, format: 'json')
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        delete(:destroy,
+               params: {
+                 entry_id: entry,
+                 id: content_element_in_other_entry
+               }, format: 'json')
+
+        expect(response.status).to eq(404)
       end
 
       it 'renders attributes as camel case' do
         entry = create(:entry)
         content_element = create(:content_element, :text_block, revision: entry.draft)
-        section = content_element.section
 
         authorize_for_editor_controller(entry)
         delete(:destroy,
-               params: {entry_id: entry, section_id: section, id: content_element},
+               params: {entry_id: entry, id: content_element},
                format: 'json')
         expect(json_response(path: [:permaId])).to be_present
       end

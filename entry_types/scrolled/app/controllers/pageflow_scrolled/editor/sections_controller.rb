@@ -18,6 +18,8 @@ module PageflowScrolled
         section.update_attributes(section_params)
 
         render partial: 'pageflow_scrolled/sections/section', locals: {section: section}
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
       end
 
       def destroy
@@ -25,6 +27,8 @@ module PageflowScrolled
         section.destroy
 
         render partial: 'pageflow_scrolled/sections/section', locals: {section: section}
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
       end
 
       def order
@@ -38,6 +42,8 @@ module PageflowScrolled
         end
 
         head :no_content
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
       end
 
       private

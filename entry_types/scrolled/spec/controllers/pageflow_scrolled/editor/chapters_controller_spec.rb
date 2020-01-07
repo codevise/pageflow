@@ -85,16 +85,16 @@ module PageflowScrolled
         chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
-        expect {
-          patch(:update,
-                params: {
-                  entry_id: entry,
-                  id: chapter_in_other_entry,
-                  chapter: {
-                    configuration: {title: 'another title'}
-                  }
-                }, format: 'json')
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        patch(:update,
+              params: {
+                entry_id: entry,
+                id: chapter_in_other_entry,
+                chapter: {
+                  configuration: {title: 'another title'}
+                }
+              }, format: 'json')
+
+        expect(response.status).to eq(404)
       end
 
       it 'renders attributes as camel case' do
@@ -150,14 +150,14 @@ module PageflowScrolled
         storyline_in_other_entry = create(:scrolled_storyline, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
-        expect {
-          put(:order,
-              params: {
-                entry_id: entry,
-                storyline_id: storyline_in_other_entry,
-                ids: [chapter.id]
-              }, format: 'json')
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        put(:order,
+            params: {
+              entry_id: entry,
+              storyline_id: storyline_in_other_entry,
+              ids: [chapter.id]
+            }, format: 'json')
+
+        expect(response.status).to eq(404)
       end
     end
 
@@ -184,13 +184,13 @@ module PageflowScrolled
         chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
-        expect {
-          delete(:destroy,
-                 params: {
-                   entry_id: entry,
-                   id: chapter_in_other_entry
-                 }, format: 'json')
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        delete(:destroy,
+               params: {
+                 entry_id: entry,
+                 id: chapter_in_other_entry
+               }, format: 'json')
+
+        expect(response.status).to eq(404)
       end
 
       it 'renders attributes as camel case' do
