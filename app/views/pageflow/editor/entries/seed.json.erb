@@ -9,7 +9,7 @@
   "pages": <%= @entry.pages.to_json.html_safe %>,
   "widgets": <%= widgets_json_seeds(@entry) %>,
 
-  "files": <%= files_json_seeds(@entry) %>,
+  "files": <%= editor_files_json_seed(@entry) %>,
 
   "account": <%= render_json_seed(@entry.account) %>,
   "theming": <%= render_json_seed(@entry.theming) %>,
