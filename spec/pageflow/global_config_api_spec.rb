@@ -569,6 +569,25 @@ module Pageflow
         expect(pageflow.config_for(entry_with_feature).data).to eq('value')
         expect(pageflow.config_for(entry_without_feature).data).to be_nil
       end
+
+      it 'preserves name_translation_key for features registered in for_entry_type blocks' do
+        pageflow = PageflowModule.new
+        entry_type = TestEntryType.new(name: 'skulled')
+        entry = double('entry',
+                       type_name: 'skulled',
+                       enabled_feature_names: ['some-feature'])
+        feature = Feature.new('some-feature', name_translation_key: 'something_else')
+        pageflow.configure do |config|
+          config.entry_types.register(entry_type)
+          config.for_entry_type(entry_type) do |c|
+            c.features.register(feature)
+          end
+        end
+
+        name_translation_keys = pageflow.config_for(entry).features.map(&:name_translation_key)
+
+        expect(name_translation_keys).to include('something_else')
+      end
     end
   end
 end

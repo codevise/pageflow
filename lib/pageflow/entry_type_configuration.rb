@@ -19,9 +19,14 @@ module Pageflow
       def register(feature, &block)
         return register(Feature.new(feature, &block)) if feature.is_a?(String)
 
-        config.features.register(feature.name) do |feature_config|
+        entry_type_feature = Feature.new(
+          feature.name,
+          name_translation_key: feature.name_translation_key
+        ) do |feature_config|
           feature_config.for_entry_type(entry_type, &feature.method(:enable))
         end
+
+        config.features.register(entry_type_feature)
       end
 
       def enable_by_default(name)
