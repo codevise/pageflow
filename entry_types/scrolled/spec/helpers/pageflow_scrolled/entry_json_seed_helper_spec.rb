@@ -1,11 +1,14 @@
 require 'spec_helper'
+require 'pageflow/used_file_test_helper'
 
 module PageflowScrolled
   RSpec.describe EntryJsonSeedHelper, type: :helper do
     describe '#scrolled_entry_json_seed' do
-      def render(helper, entry)
+      include UsedFileTestHelper
+
+      def render(helper, entry, options = {})
         helper.render_json do |json|
-          helper.scrolled_entry_json_seed(json, entry)
+          helper.scrolled_entry_json_seed(json, entry, options)
         end
       end
 
@@ -132,6 +135,25 @@ module PageflowScrolled
         result = render(helper, entry)
 
         expect(json_get(result, path: ['contentElements'])).to be_a(Array)
+      end
+
+      it 'renders files' do
+        entry = create(:published_entry)
+        image_file = create_used_file(:image_file, entry: entry)
+
+        result = render(helper, entry)
+
+        expect(json_get(result, path: ['imageFiles', 0, 'permaId']))
+          .to eq(image_file.perma_id)
+      end
+
+      it 'supports skipping files' do
+        entry = create(:published_entry)
+        create_used_file(:image_file, entry: entry)
+
+        result = render(helper, entry, skip_files: true)
+
+        expect(json_get(result)).not_to have_key('files')
       end
     end
 

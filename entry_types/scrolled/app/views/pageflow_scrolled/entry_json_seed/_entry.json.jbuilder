@@ -18,3 +18,5 @@ json.content_elements do
                   content_element: content_element
   end
 end
+
+files_json_seed(json, entry) unless options[:skip_files]
