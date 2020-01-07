@@ -1,5 +1,8 @@
 module Pageflow
+  # Format and generate seed data for files
   module FilesHelper
+    include RenderJsonHelper
+
     def file_format(file)
       file.format.presence || '-'
     end
@@ -22,6 +25,21 @@ module Pageflow
         format("%02d:%02d:%02d", hours, minutes, seconds)
       else
         "-"
+      end
+    end
+
+    # Render seed data for all files of the revision.
+    #
+    # @param [JBuilder] json
+    # @param [PublishedEntry] entry
+    # @since edge
+    def files_json_seed(json, entry)
+      Pageflow.config.file_types.each do |file_type|
+        json.set!(file_type.collection_name) do
+          json.array!(entry.find_files(file_type.model)) do |file|
+            json.partial!('pageflow/files/file', file: file, file_type: file_type)
+          end
+        end
       end
     end
   end

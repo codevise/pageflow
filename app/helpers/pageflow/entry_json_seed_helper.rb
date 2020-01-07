@@ -5,6 +5,7 @@ module Pageflow
   module EntryJsonSeedHelper
     include RenderJsonHelper
     include CommonEntrySeedHelper
+    include FilesHelper
 
     def entry_json_seed(entry)
       sanitize_json(render_json_partial('pageflow/entry_json_seed/entry',

@@ -43,5 +43,65 @@ module Pageflow
         expect(helper.file_duration(audio_file)).to eq('-')
       end
     end
+
+    describe '#files_json_seed' do
+      def render(helper, entry)
+        helper.render_json do |json|
+          helper.files_json_seed(json, entry)
+        end
+      end
+
+      it 'renders ids of files' do
+        entry = create(:published_entry)
+        video_file = create(:video_file, used_in: entry.revision)
+
+        result = render(helper, entry)
+
+        expect(json_get(result, path: %w[video_files * id])).to eq([video_file.id])
+      end
+
+      it 'renders configurations of files' do
+        entry = create(:published_entry)
+        create(:video_file, used_in: entry.revision, with_configuration: {some: 'value'})
+
+        result = render(helper, entry)
+        value = json_get(result, path: ['video_files', 0, 'configuration', 'some'])
+
+        expect(value).to eq('value')
+      end
+
+      it 'renders parent file info of files' do
+        entry = create(:published_entry)
+        video_file = create(:video_file, used_in: entry.revision)
+        create(:text_track_file, used_in: entry.revision, parent_file: video_file)
+
+        result = render(helper, entry)
+        id = json_get(result, path: ['text_track_files', 0, 'parent_file_id'])
+        type = json_get(result, path: ['text_track_files', 0, 'parent_file_model_type'])
+
+        expect(id).to eq(video_file.id)
+        expect(type).to eq(video_file.class.name)
+      end
+
+      it 'renders basenames of files' do
+        entry = create(:published_entry)
+        create(:video_file, used_in: entry.revision, file_name: 'some-video.mp4')
+
+        result = render(helper, entry)
+        value = json_get(result, path: ['video_files', 0, 'basename'])
+
+        expect(value).to eq('some-video')
+      end
+
+      it 'renders file type partial, for example variant property for video file' do
+        entry = create(:published_entry)
+        create(:video_file, used_in: entry.revision, output_presences: {fullhd: true})
+
+        result = render(helper, entry)
+        variants = json_get(result, path: ['video_files', 0, 'variants'])
+
+        expect(variants).to include('fullhd')
+      end
+    end
   end
 end
