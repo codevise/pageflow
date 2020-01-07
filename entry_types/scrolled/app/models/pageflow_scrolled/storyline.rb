@@ -24,7 +24,5 @@ module PageflowScrolled
     has_many :content_elements,
              -> { reorder(CONTENT_ELEMENTS_ORDER) },
              through: :sections
-
-    delegate :entry, to: :revision
   end
 end

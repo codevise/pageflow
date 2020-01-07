@@ -11,7 +11,6 @@ module PageflowScrolled
     describe '#show' do
       it 'renders script tag for frontend js' do
         entry = create(:entry, :published)
-        create(:scrolled_chapter, revision: entry.published_revision)
 
         get_with_entry_env(:show, entry: entry)
 

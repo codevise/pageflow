@@ -26,15 +26,20 @@ module PageflowScrolled
           .to eq('scroll')
       end
 
-      it 'orders sections according to position attribute' do
+      it 'orders sections by chapter position and section position' do
         entry = create(:published_entry)
-        chapter = create(:scrolled_chapter, revision: entry.revision)
-        section1 = create(:section, chapter: chapter, position: 4)
-        section2 = create(:section, chapter: chapter, position: 3)
+        chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
+        section22 = create(:section, chapter: chapter2, position: 2)
+        section21 = create(:section, chapter: chapter2, position: 1)
+
+        chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
+        section12 = create(:section, chapter: chapter1, position: 2)
+        section11 = create(:section, chapter: chapter1, position: 1)
 
         result = render(helper, entry)
 
-        expect(json_get(result, path: ['sections', '*', 'id'])).to eq([section2.id, section1.id])
+        expect(json_get(result, path: ['sections', '*', 'id']))
+          .to eq([section11.id, section12.id, section21.id, section22.id])
       end
 
       it 'renders content elements with id, perma_id, type_name, position, section id ' \
@@ -60,17 +65,33 @@ module PageflowScrolled
           .to eq('Heading')
       end
 
-      it 'orders content elements according to position attribute' do
+      it 'orders content elements by chapter position, section position and ' \
+         'content element position' do
         entry = create(:published_entry)
-        chapter = create(:scrolled_chapter, revision: entry.revision)
-        section = create(:section, chapter: chapter)
-        content_element1 = create(:content_element, section: section, position: 4)
-        content_element2 = create(:content_element, section: section, position: 3)
+
+        chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
+        section22 = create(:section, chapter: chapter2, position: 2)
+        content_element222 = create(:content_element, section: section22, position: 2)
+        content_element221 = create(:content_element, section: section22, position: 1)
+        section21 = create(:section, chapter: chapter2, position: 1)
+        content_element212 = create(:content_element, section: section21, position: 2)
+        content_element211 = create(:content_element, section: section21, position: 1)
+
+        chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
+        section12 = create(:section, chapter: chapter1, position: 2)
+        content_element122 = create(:content_element, section: section12, position: 2)
+        content_element121 = create(:content_element, section: section12, position: 1)
+        section11 = create(:section, chapter: chapter1, position: 1)
+        content_element112 = create(:content_element, section: section11, position: 2)
+        content_element111 = create(:content_element, section: section11, position: 1)
 
         result = render(helper, entry)
 
         expect(json_get(result, path: ['contentElements', '*', 'id']))
-          .to eq([content_element2.id, content_element1.id])
+          .to eq([content_element111.id, content_element112.id,
+                  content_element121.id, content_element122.id,
+                  content_element211.id, content_element212.id,
+                  content_element221.id, content_element222.id])
       end
 
       it 'also works for draft entry' do
