@@ -179,6 +179,14 @@ module PageflowScrolled
         expect(result).to include_json(collections: {contentElements: []})
       end
 
+      it 'supports skipping collections' do
+        entry = create(:published_entry)
+
+        result = render(helper, entry, skip_collections: true)
+
+        expect(JSON.parse(result)).not_to have_key('collections')
+      end
+
       it 'renders files' do
         entry = create(:published_entry)
         image_file = create_used_file(:image_file, entry: entry)
