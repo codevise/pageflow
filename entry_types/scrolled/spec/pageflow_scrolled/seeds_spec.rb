@@ -115,6 +115,149 @@ module PageflowScrolled
           expect(created_content_elements.last.type_name).to eq('textBlock')
           expect(created_content_elements.last.configuration['children']).to eq('Some content')
         end
+
+        context 'file referenced', stub_paperclip: true do
+          before do
+            stub_request(:get, /example.com/)
+              .to_return(status: 200,
+                         body: File.read('spec/fixtures/image.jpg'),
+                         headers: {'Content-Type' => 'image/jpg'})
+          end
+
+          it 'rewrites backdrop image and imageMobile to ids' do
+            entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
+                                                   title: 'Example',
+                                                   image_files: {
+                                                     'some-image' => {
+                                                       'url' => 'https://example.com/some.jpg'
+                                                     }
+                                                   },
+                                                   chapters: [
+                                                     {
+                                                       'sections' => [
+                                                         {
+                                                           'backdrop' => {
+                                                             'image' => 'some-image',
+                                                             'imageMobile' => 'some-image'
+                                                           },
+                                                           'foreground' => []
+                                                         }
+                                                       ]
+                                                     }
+                                                   ])
+
+            image_file = entry.draft.find_files(Pageflow::ImageFile).first
+
+            expect(Section.all_for_revision(entry.draft).first.configuration)
+              .to include('backdrop' => {
+                            'image' => image_file.perma_id,
+                            'imageMobile' => image_file.perma_id
+                          })
+          end
+
+          it 'ignores non image backdrops' do
+            entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
+                                                   title: 'Example',
+                                                   chapters: [
+                                                     {
+                                                       'sections' => [
+                                                         {
+                                                           'backdrop' => {'image' => 'video-123'},
+                                                           'foreground' => []
+                                                         },
+                                                         {
+                                                           'backdrop' => {
+                                                             'image' => 'beforeAfter-123'
+                                                           },
+                                                           'foreground' => []
+                                                         },
+                                                         {
+                                                           'backdrop' => {'image' => '#fff'},
+                                                           'foreground' => []
+                                                         }
+                                                       ]
+                                                     }
+                                                   ])
+            image_values = Section.all_for_revision(entry.draft).map do |element|
+              element.configuration.dig('backdrop', 'image')
+            end
+
+            expect(image_values).to eq(%w[video-123 beforeAfter-123 #fff])
+          end
+
+          it 'rewrites inlineImage and stickyImage content elements' do
+            entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
+                                                   title: 'Example',
+                                                   image_files: {
+                                                     'some-image' => {
+                                                       'url' => 'https://example.com/some.jpg'
+                                                     }
+                                                   },
+                                                   chapters: [
+                                                     {
+                                                       'sections' => [
+                                                         {
+                                                           'foreground' => [
+                                                             {
+                                                               'type' => 'stickyImage',
+                                                               'props' => {
+                                                                 'id' => 'some-image'
+                                                               }
+                                                             }
+                                                           ]
+                                                         }
+                                                       ]
+                                                     }
+                                                   ])
+
+            image_file = entry.draft.find_files(Pageflow::ImageFile).first
+
+            expect(ContentElement.all_for_revision(entry.draft).first.configuration)
+              .to include('id' => image_file.perma_id)
+          end
+        end
+      end
+
+      context 'image files', stub_paperclip: true do
+        before do
+          stub_request(:get, /example.com/)
+            .to_return(status: 200,
+                       body: File.read('spec/fixtures/image.jpg'),
+                       headers: {'Content-Type' => 'image/jpg'})
+        end
+
+        it 'creates image file' do
+          entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
+                                                 title: 'Example',
+                                                 image_files: {
+                                                   'some-image' => {
+                                                     'url' => 'https://example.com/some.jpg'
+                                                   }
+                                                 },
+                                                 chapters: [])
+
+          image_file = entry.draft.find_files(Pageflow::ImageFile).first
+
+          expect(image_file.url).to include('some.JPG')
+        end
+
+        it 'stores configuration' do
+          entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
+                                                 title: 'Example',
+                                                 image_files: {
+                                                   'some-image' => {
+                                                     'url' => 'https://example.com/some.jpg',
+                                                     'configuration' => {
+                                                       'some' => 'value'
+                                                     }
+                                                   }
+                                                 },
+                                                 chapters: [])
+
+          image_file = entry.draft.find_files(Pageflow::ImageFile).first
+
+          expect(image_file.configuration).to eq('some' => 'value')
+        end
       end
 
       it 'allows overriding attributes in block' do

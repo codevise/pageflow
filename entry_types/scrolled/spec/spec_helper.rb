@@ -13,6 +13,8 @@ Dir[File.join(File.dirname(__FILE__), 'support/{config,helpers}/**/*.rb')].each 
 end
 
 require 'pageflow/support/config/capybara'
+require 'pageflow/support/config/paperclip'
+require 'pageflow/support/config/webmock'
 require 'pageflow_scrolled'
 
 RSpec.configure do |config|

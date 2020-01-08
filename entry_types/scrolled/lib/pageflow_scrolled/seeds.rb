@@ -1,3 +1,5 @@
+require 'uri'
+
 module PageflowScrolled
   # Following the DSL for seeding the database with Pageflow
   # models, this adds a method to also seed a PageflowScrolled Entry configuration.
@@ -16,6 +18,8 @@ module PageflowScrolled
     #   under which an array of content_element configurations is stored.
     #   Each content_element configuration must provide a "type"-attribute
     #   to determine the React component used to render this content element.
+    # @option attributes [Hash] :image_files A hash mapping image
+    #   names used in properties like `backdrop.image` to urls.
     # @yield [entry] a block to be called before the entry is saved
     # @return [Entry] newly created entry
     def sample_scrolled_entry(attributes)
@@ -25,15 +29,19 @@ module PageflowScrolled
 
       if entry.nil?
         entry = Pageflow::Entry.create!(type_name: 'scrolled',
-                                        **attributes.except(:chapters)) do |created_entry|
+                                        **attributes.except(:chapters,
+                                                            :image_files)) do |created_entry|
           created_entry.theming = attributes.fetch(:account).default_theming
 
           say_creating_scrolled_entry(created_entry)
           yield(created_entry) if block_given?
         end
 
+        image_files_by_name = create_image_files(Pageflow::DraftEntry.new(entry),
+                                                 attributes.fetch(:image_files, {}))
+
         attributes[:chapters].each_with_index do |chapter_config, i|
-          create_chapter(entry, chapter_config, i)
+          create_chapter(entry, chapter_config, i, image_files_by_name)
         end
       end
 
@@ -50,8 +58,19 @@ module PageflowScrolled
       say("   sample scrolled entry '#{entry.title}'\n")
     end
 
-    def create_chapter(entry, chapter_config, position)
-      sections_config = chapter_config.extract!('sections')
+    def create_image_files(draft_entry, image_file_data_by_name)
+      image_file_data_by_name.transform_values do |data|
+        say("     creating image file from #{data['url']}")
+
+        draft_entry.create_file!(Pageflow::BuiltInFileType.image,
+                                 state: 'processed',
+                                 attachment: URI.parse(data['url']),
+                                 configuration: data['configuration'])
+      end
+    end
+
+    def create_chapter(entry, chapter_config, position, image_files_by_name)
+      section_configs = chapter_config.delete('sections') || []
       chapter = Chapter.create!(
         revision: entry.draft,
         configuration: {
@@ -60,29 +79,55 @@ module PageflowScrolled
         },
         position: position
       )
-      return unless sections_config.present?
-      sections_config['sections'].each_with_index do |section_config, i|
-        create_section(chapter, section_config, i)
+
+      section_configs.each_with_index do |section_config, i|
+        create_section(chapter, section_config, i, image_files_by_name)
       end
     end
 
-    def create_section(chapter, section_config, position)
-      content_elements_config = section_config.extract!('foreground')
+    def create_section(chapter, section_config, position, image_files_by_name)
+      content_element_configs = section_config.delete('foreground') || []
+
+      rewrite_file_references!(section_config['backdrop'],
+                               ['image', 'imageMobile'],
+                               image_files_by_name)
+
       section = Section.create!(chapter: chapter,
                                 configuration: section_config,
                                 position: position)
-      return unless content_elements_config.present?
-      content_elements_config['foreground'].each_with_index do |content_element_config, i|
-        create_content_element(section, content_element_config, i)
+
+      content_element_configs.each_with_index do |content_element_config, i|
+        create_content_element(section, content_element_config, i, image_files_by_name)
       end
     end
 
-    def create_content_element(section, content_element_config, position)
+    def create_content_element(section, content_element_config, position, image_files_by_name)
+      if %w[stickyImage inlineImage].include?(content_element_config['type'])
+        rewrite_file_references!(content_element_config['props'], ['id'], image_files_by_name)
+      end
+
       section.content_elements.create!(
         type_name: content_element_config['type'],
         configuration: content_element_config['props'],
         position: position
       )
+    end
+
+    def rewrite_file_references!(hash, keys, image_files_by_name)
+      return unless hash
+
+      keys.each do |key|
+        next unless hash[key]
+        next if non_image_reference?(hash[key])
+
+        hash[key] = image_files_by_name.fetch(hash[key]).perma_id
+      end
+    end
+
+    def non_image_reference?(value)
+      value.starts_with?('#') ||
+        value.starts_with?('video') ||
+        value.starts_with?('beforeAfter')
     end
   end
 end
