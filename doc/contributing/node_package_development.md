@@ -34,7 +34,7 @@ command from the repository root:
 
     $ yarn start
 
-The Weback built for `pageflow-react` needs to be started separately:
+The Webpack built for `pageflow-react` needs to be started separately:
 
     $ cd packages/pageflow-react
     $ yarn start
@@ -49,7 +49,7 @@ application, first run `yarn link` in the package directory:
 
 and
 
-    $ cd my-projects/entry_types/scrolled/package
+    $ cd my-projects/pageflow/entry_types/scrolled/package
     $ yarn link
 
 In the host application run:

@@ -3,8 +3,6 @@ module Pageflow
     include SerializedConfiguration
     include RevisionComponent
 
-    belongs_to :revision, touch: true
-
     has_many(:chapters,
              -> { order('pageflow_chapters.position ASC') },
              dependent: :destroy,

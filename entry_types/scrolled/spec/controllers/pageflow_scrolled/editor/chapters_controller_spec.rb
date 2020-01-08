@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'pageflow/editor_controller_test_helper'
 
 module PageflowScrolled
-  RSpec.describe Editor::SectionsController, type: :controller do
+  RSpec.describe Editor::ChaptersController, type: :controller do
     render_views
     include Pageflow::EditorControllerTestHelper
     routes { PageflowScrolled::Engine.routes }
@@ -10,13 +10,11 @@ module PageflowScrolled
     describe '#create' do
       it 'requires authentication' do
         entry = create(:entry)
-        chapter = create(:scrolled_chapter, revision: entry.draft)
 
         post(:create,
              params: {
                entry_id: entry,
-               chapter_id: chapter,
-               section: attributes_for(:section)
+               chapter: attributes_for(:scrolled_chapter)
              }, format: 'json')
 
         expect(response.status).to eq(401)
@@ -24,80 +22,73 @@ module PageflowScrolled
 
       it 'succeeds for authorized user' do
         entry = create(:entry)
-        chapter = create(:scrolled_chapter, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
                entry_id: entry,
-               chapter_id: chapter,
-               section: attributes_for(:section)
+               chapter: attributes_for(:scrolled_chapter)
              }, format: 'json')
 
         expect(response.status).to eq(201)
       end
 
-      it 'allows setting the sections configuration hash' do
+      it 'allows setting the chapters configuration hash' do
         entry = create(:entry)
-        chapter = create(:scrolled_chapter, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
              params: {
                entry_id: entry,
-               chapter_id: chapter,
-               section: {
-                 configuration: {title: 'A title'}
+               chapter: {
+                 configuration: {title: 'A chapter title'}
                }
              }, format: 'json')
 
-        expect(chapter.sections.first.configuration).to eq('title' => 'A title')
+        chapter = Chapter.all_for_revision(entry.draft).first
+        expect(chapter.configuration).to eq('title' => 'A chapter title')
       end
 
       it 'renders attributes as camel case' do
         entry = create(:entry)
-        chapter = create(:scrolled_chapter, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         post(:create,
-             params: {
-               entry_id: entry,
-               chapter_id: chapter,
-               section: attributes_for(:section)
-             }, format: 'json')
+             params: {entry_id: entry, chapter: attributes_for(:scrolled_chapter)},
+             format: 'json')
         expect(json_response(path: [:permaId])).to be_present
       end
     end
 
     describe '#update' do
-      it 'allows updating the sections configuration hash' do
+      it 'allows updating the chapters configuration hash' do
         entry = create(:entry)
-        section = create(:section, revision: entry.draft)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
                 entry_id: entry,
-                id: section,
-                section: {
-                  configuration: {title: 'A title'}
+                id: chapter,
+                chapter: {
+                  configuration: {title: 'A chapter title'}
                 }
               }, format: 'json')
 
-        expect(section.reload.configuration).to eq('title' => 'A title')
+        expect(chapter.reload.configuration).to eq('title' => 'A chapter title')
       end
 
-      it 'does not allow updating a section from a different entry' do
+      it 'does not allow updating a chapter from a different entry' do
         entry = create(:entry)
-        create(:section, revision: entry.draft)
+        create(:scrolled_chapter, revision: entry.draft)
         other_entry = create(:entry)
-        section_in_other_entry = create(:section, revision: other_entry.draft)
+        chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         patch(:update,
               params: {
                 entry_id: entry,
-                id: section_in_other_entry,
+                id: chapter_in_other_entry,
                 chapter: {
                   configuration: {title: 'another title'}
                 }
@@ -108,68 +99,62 @@ module PageflowScrolled
 
       it 'renders attributes as camel case' do
         entry = create(:entry)
-        section = create(:section, revision: entry.draft)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         patch(:update,
-              params: {
-                entry_id: entry,
-                id: section,
-                section: attributes_for(:section)
-              }, format: 'json')
+              params: {entry_id: entry, id: chapter, chapter: attributes_for(:scrolled_chapter)},
+              format: 'json')
         expect(json_response(path: [:permaId])).to be_present
       end
     end
 
     describe '#order' do
-      it 'updates position of sections according to given params order' do
+      it 'updates position of chapters according to given params order' do
         entry = create(:entry)
-        chapter = create(:scrolled_chapter, revision: entry.draft)
-        sections = create_list(:section, 2, chapter: chapter)
+        chapters = create_list(:scrolled_chapter, 2, revision: entry.draft)
+        storyline = chapters.first.storyline
 
         authorize_for_editor_controller(entry)
         put(:order,
             params: {
               entry_id: entry,
-              chapter_id: chapter,
-              ids: [sections.first.id, sections.last.id]
+              storyline_id: storyline,
+              ids: [chapters.last.id, chapters.first.id]
             }, format: 'json')
 
-        expect(sections.first.reload.position).to eq(0)
-        expect(sections.last.reload.position).to eq(1)
+        expect(chapters.last.reload.position).to eq(0)
+        expect(chapters.first.reload.position).to eq(1)
       end
 
-      it 'allows moving a section from one chapter to another within the same entry' do
+      it 'allows moving a chapter from one storyline to another within the same entry' do
         entry = create(:entry)
-        revision = entry.draft
-        chapter = create(:scrolled_chapter, revision: revision)
-        section = create(:section, chapter: chapter)
-        other_chapter = create(:scrolled_chapter, revision: revision)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        other_storyline = create(:scrolled_storyline, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
         put(:order,
             params: {
               entry_id: entry,
-              chapter_id: other_chapter,
-              ids: [section.id]
+              storyline_id: other_storyline,
+              ids: [chapter.id]
             }, format: 'json')
 
-        expect(section.reload.chapter).to eq(other_chapter)
+        expect(chapter.reload.storyline).to eq(other_storyline)
       end
 
-      it 'does not allow moving a section to a chapter of another entry' do
+      it 'does not allow moving a chapter to a storyline of different entry' do
         entry = create(:entry)
         chapter = create(:scrolled_chapter, revision: entry.draft)
-        section = create(:section, chapter: chapter)
         other_entry = create(:entry)
-        chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
+        storyline_in_other_entry = create(:scrolled_storyline, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         put(:order,
             params: {
               entry_id: entry,
-              chapter_id: chapter_in_other_entry,
-              ids: [section.id]
+              storyline_id: storyline_in_other_entry,
+              ids: [chapter.id]
             }, format: 'json')
 
         expect(response.status).to eq(404)
@@ -177,32 +162,32 @@ module PageflowScrolled
     end
 
     describe '#destroy' do
-      it 'deletes the section' do
+      it 'deletes the chapter' do
         entry = create(:entry)
-        section = create(:section, revision: entry.draft)
-        chapter = section.chapter
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        storyline = chapter.storyline
 
         authorize_for_editor_controller(entry)
         delete(:destroy,
                params: {
                  entry_id: entry,
-                 id: section
+                 id: chapter
                }, format: 'json')
 
-        expect(chapter).to have(0).sections
+        expect(storyline).to have(0).chapters
       end
 
-      it 'does not allow deleting a section from a different entry' do
+      it 'does not allow deleting a chapter from a different entry' do
         entry = create(:entry)
-        create(:section, revision: entry.draft)
+        create(:scrolled_chapter, revision: entry.draft)
         other_entry = create(:entry)
-        section_in_other_entry = create(:section, revision: other_entry.draft)
+        chapter_in_other_entry = create(:scrolled_chapter, revision: other_entry.draft)
 
         authorize_for_editor_controller(entry)
         delete(:destroy,
                params: {
                  entry_id: entry,
-                 id: section_in_other_entry
+                 id: chapter_in_other_entry
                }, format: 'json')
 
         expect(response.status).to eq(404)
@@ -210,12 +195,10 @@ module PageflowScrolled
 
       it 'renders attributes as camel case' do
         entry = create(:entry)
-        section = create(:section, revision: entry.draft)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
 
         authorize_for_editor_controller(entry)
-        delete(:destroy,
-               params: {entry_id: entry, id: section},
-               format: 'json')
+        delete(:destroy, params: {entry_id: entry, id: chapter}, format: 'json')
         expect(json_response(path: [:permaId])).to be_present
       end
     end

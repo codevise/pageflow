@@ -1,7 +1,7 @@
 module PageflowScrolled
   FactoryBot.define do
     factory :section, class: Section do
-      revision
+      chapter { create(:scrolled_chapter) }
       configuration do
         {
           transition: 'scroll',
@@ -10,6 +10,16 @@ module PageflowScrolled
             image: 'darkPattern'
           }
         }
+      end
+
+      transient do
+        revision { nil }
+      end
+
+      before(:create) do |section, evaluator|
+        if evaluator.revision
+          section.chapter = create(:scrolled_chapter, revision: evaluator.revision)
+        end
       end
     end
   end
