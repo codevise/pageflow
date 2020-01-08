@@ -1,19 +1,11 @@
-import React, {useState, useEffect} from 'react';
-
-import Scene from './Scene';
-import MutedContext from './MutedContext';
-import ScrollToSceneContext from './ScrollToSceneContext';
-import {useEntryState} from '../useEntryState';
+import React, {useEffect} from 'react';
 
 import styles from './Entry.module.css';
+import Chapter from "./Chapter";
 
 export default function Entry(props) {
-  const [{sectionsWithNestedContentElements}, dispatch] = useEntryState(window.pageflowScrolledSeed);
-  const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
-
-  const [scrollTargetSceneIndex, setScrollTargetSceneIndex] = useState(null);
-
-  const [muted, setMuted] = useState(true);
+  const dispatch = props.dispatch;
+  const entryStructure = props.entryStructure;
 
   useEffect(() => {
     if (window.parent) {
@@ -31,51 +23,19 @@ export default function Entry(props) {
     }
   }, [dispatch]);
 
-  function scrollToScene(index) {
-    if (index === 'next') {
-      index = currentSceneIndex + 1;
-    }
-
-    setScrollTargetSceneIndex(index);
-  }
-
   return (
     <div className={styles.Entry}>
-      <MutedContext.Provider value={{muted: muted, setMuted: setMuted}}>
-      <ScrollToSceneContext.Provider value={scrollToScene}>
-        {renderScenes(sectionsWithNestedContentElements,
-                      currentSceneIndex,
-                      setCurrentSceneIndex,
-                      scrollTargetSceneIndex,
-                      setScrollTargetSceneIndex)}
-      </ScrollToSceneContext.Provider>
-      </MutedContext.Provider>
+      {renderChapters(entryStructure)}
     </div>
   );
 }
 
-function renderScenes(scenes,
-                      currentSceneIndex,
-                      setCurrentSceneIndex,
-                      scrollTargetSceneIndex,
-                      setScrollTargetSceneIndex) {
-  function onActivate(index) {
-    setCurrentSceneIndex(index);
-    setScrollTargetSceneIndex(null);
-  }
-
-  return scenes.map((scene, index) => {
-    const previousScene = scenes[index - 1];
-    const nextScene = scenes[index + 1];
-
-    return (
-      <Scene key={index}
-             state={index > currentSceneIndex ? 'below' : index < currentSceneIndex ? 'above' : 'active'}
-             isScrollTarget={index === scrollTargetSceneIndex}
-             onActivate={() => onActivate(index)}
-             {...scene}
-             previousScene={previousScene}
-             nextScene={nextScene} />
+function renderChapters(entryStructure) {
+  return entryStructure.map((chapter, index) => {
+    return(
+      <Chapter key={index}
+               anchor={chapter.title}
+               sections={chapter.sections} />
     );
   });
 }

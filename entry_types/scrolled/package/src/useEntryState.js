@@ -5,23 +5,30 @@ import {useCollections, getItems, watchCollection} from './collections';
 export function useEntryState(seed) {
   const [collections, dispatch] = useCollections(seed);
 
-  const sectionsWithNestedContentElements = useMemo(() => {
-    return getItems(collections, 'sections').map(section => ({
-      ...section.configuration,
-      foreground: getItems(collections, 'contentElements')
+  const entryStructure = useMemo(() => {
+    return getItems(collections, 'chapters').map(chapter => ({
+      ...chapter.configuration,
+      sections: getItems(collections, 'sections')
         .filter(
-          item => item.sectionId === section.id
+          item => item.chapterId === chapter.id
         )
-        .map(item => ({
-          type: item.typeName,
-          position: item.configuration.position,
-          props: item.configuration
+        .map(section => ({
+          ...section.configuration,
+          foreground: getItems(collections, 'contentElements')
+            .filter(
+              item => item.sectionId === section.id
+            )
+            .map(item => ({
+              type: item.typeName,
+              position: item.configuration.position,
+              props: item.configuration
+            }))
         }))
     }));
   }, [collections]);
 
   return [
-    {sectionsWithNestedContentElements},
+    {entryStructure},
     dispatch
   ]
 };
