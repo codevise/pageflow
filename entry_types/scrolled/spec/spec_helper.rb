@@ -6,6 +6,7 @@ Pageflow::Dummy.setup
 
 require 'rspec/rails'
 require 'rspec/collection_matchers'
+require 'rspec/json_expectations'
 
 Dir[File.join(File.dirname(__FILE__), 'support/{config,helpers}/**/*.rb')].each do |file|
   require(file)

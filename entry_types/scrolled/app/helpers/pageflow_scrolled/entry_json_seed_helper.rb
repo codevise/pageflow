@@ -3,6 +3,7 @@ module PageflowScrolled
   #
   # @api private
   module EntryJsonSeedHelper
+    include Pageflow::ConfigHelper
     include Pageflow::RenderJsonHelper
     include Pageflow::FilesHelper
 
@@ -23,6 +24,7 @@ module PageflowScrolled
       json.partial!('pageflow_scrolled/entry_json_seed/entry',
                     chapters: main_storyline.chapters,
                     entry: scrolled_entry,
+                    entry_config: Pageflow.config_for(scrolled_entry),
                     sections: main_storyline.sections,
                     content_elements: main_storyline.content_elements,
                     options: options)

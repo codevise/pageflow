@@ -19,12 +19,20 @@ module PageflowScrolled
 
           result = render(helper, entry)
 
-          expect(json_get(result, path: ['chapters', 0, 'id'])).to eq(chapter.id)
-          expect(json_get(result, path: ['chapters', 0, 'permaId'])).to eq(chapter.perma_id)
-          expect(json_get(result, path: ['chapters', 0, 'storylineId'])).to eq(chapter.storyline_id)
-          expect(json_get(result, path: ['chapters', 0, 'position'])).to eq(3)
-          expect(json_get(result, path: ['chapters', 0, 'configuration', 'title']))
-            .to eq('chapter title')
+          expect(result)
+            .to include_json(collections: {
+                               chapters: [
+                                 {
+                                   id: chapter.id,
+                                   permaId: chapter.perma_id,
+                                   storylineId: chapter.storyline_id,
+                                   position: 3,
+                                   configuration: {
+                                     title: 'chapter title'
+                                   }
+                                 }
+                               ]
+                             })
         end
 
         it 'orders chapters according to position attribute' do
@@ -34,7 +42,13 @@ module PageflowScrolled
 
           result = render(helper, entry)
 
-          expect(json_get(result, path: ['chapters', '*', 'id'])).to eq([chapter2.id, chapter1.id])
+          expect(result)
+            .to include_json(collections: {
+                               chapters: [
+                                 {id: chapter2.id},
+                                 {id: chapter1.id}
+                               ]
+                             })
         end
       end
 
@@ -49,12 +63,20 @@ module PageflowScrolled
 
           result = render(helper, entry)
 
-          expect(json_get(result, path: ['sections', 0, 'id'])).to eq(section.id)
-          expect(json_get(result, path: ['sections', 0, 'permaId'])).to eq(section.perma_id)
-          expect(json_get(result, path: ['sections', 0, 'chapterId'])).to eq(section.chapter_id)
-          expect(json_get(result, path: ['sections', 0, 'position'])).to eq(4)
-          expect(json_get(result, path: ['sections', 0, 'configuration', 'transition']))
-            .to eq('scroll')
+          expect(result)
+            .to include_json(collections: {
+                               sections: [
+                                 {
+                                   id: section.id,
+                                   permaId: section.perma_id,
+                                   chapterId: chapter.id,
+                                   position: 4,
+                                   configuration: {
+                                     transition: 'scroll'
+                                   }
+                                 }
+                               ]
+                             })
         end
 
         it 'orders sections by chapter position and section position' do
@@ -62,15 +84,21 @@ module PageflowScrolled
           chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
           section22 = create(:section, chapter: chapter2, position: 2)
           section21 = create(:section, chapter: chapter2, position: 1)
-
           chapter1 = create(:scrolled_chapter, position: 1, revision: entry.revision)
           section12 = create(:section, chapter: chapter1, position: 2)
           section11 = create(:section, chapter: chapter1, position: 1)
 
           result = render(helper, entry)
 
-          expect(json_get(result, path: ['sections', '*', 'id']))
-            .to eq([section11.id, section12.id, section21.id, section22.id])
+          expect(result)
+            .to include_json(collections: {
+                               sections: [
+                                 {id: section11.id},
+                                 {id: section12.id},
+                                 {id: section21.id},
+                                 {id: section22.id}
+                               ]
+                             })
         end
       end
 
@@ -88,20 +116,26 @@ module PageflowScrolled
 
           result = render(helper, entry)
 
-          expect(json_get(result, path: ['contentElements', 0, 'id'])).to eq(content_element.id)
-          expect(json_get(result, path: ['contentElements', 0, 'permaId']))
-            .to eq(content_element.perma_id)
-          expect(json_get(result, path: ['contentElements', 0, 'typeName'])).to eq('heading')
-          expect(json_get(result, path: ['contentElements', 0, 'sectionId'])).to eq(section.id)
-          expect(json_get(result, path: ['contentElements', 0, 'position'])).to eq(4)
-          expect(json_get(result, path: ['contentElements', 0, 'configuration', 'text']))
-            .to eq('Heading')
+          expect(result)
+            .to include_json(collections: {
+                               contentElements: [
+                                 {
+                                   id: content_element.id,
+                                   permaId: content_element.perma_id,
+                                   typeName: 'heading',
+                                   sectionId: section.id,
+                                   position: 4,
+                                   configuration: {
+                                     text: 'Heading'
+                                   }
+                                 }
+                               ]
+                             })
         end
 
         it 'orders content elements by chapter position, section position and ' \
            'content element position' do
           entry = create(:published_entry)
-
           chapter2 = create(:scrolled_chapter, position: 2, revision: entry.revision)
           section22 = create(:section, chapter: chapter2, position: 2)
           content_element222 = create(:content_element, section: section22, position: 2)
@@ -120,11 +154,19 @@ module PageflowScrolled
 
           result = render(helper, entry)
 
-          expect(json_get(result, path: ['contentElements', '*', 'id']))
-            .to eq([content_element111.id, content_element112.id,
-                    content_element121.id, content_element122.id,
-                    content_element211.id, content_element212.id,
-                    content_element221.id, content_element222.id])
+          expect(result)
+            .to include_json(collections: {
+                               contentElements: [
+                                 {id: content_element111.id},
+                                 {id: content_element112.id},
+                                 {id: content_element121.id},
+                                 {id: content_element122.id},
+                                 {id: content_element211.id},
+                                 {id: content_element212.id},
+                                 {id: content_element221.id},
+                                 {id: content_element222.id}
+                               ]
+                             })
         end
       end
 
@@ -134,7 +176,7 @@ module PageflowScrolled
 
         result = render(helper, entry)
 
-        expect(json_get(result, path: ['contentElements'])).to be_a(Array)
+        expect(result).to include_json(collections: {contentElements: []})
       end
 
       it 'renders files' do
@@ -143,8 +185,12 @@ module PageflowScrolled
 
         result = render(helper, entry)
 
-        expect(json_get(result, path: ['imageFiles', 0, 'permaId']))
-          .to eq(image_file.perma_id)
+        expect(result)
+          .to include_json(collections: {
+                             imageFiles: [
+                               {permaId: image_file.perma_id}
+                             ]
+                           })
       end
 
       it 'supports skipping files' do
@@ -153,7 +199,52 @@ module PageflowScrolled
 
         result = render(helper, entry, skip_files: true)
 
-        expect(json_get(result)).not_to have_key('files')
+        expect(result)
+          .not_to include_json(collections: {
+                                 imageFiles: a_kind_of(Array)
+                               })
+      end
+
+      it 'renders file url templates' do
+        url_template = 'files/:id_partition/video.mp4'
+        pageflow_configure do |config|
+          config
+            .file_types
+            .register(Pageflow::FileType.new(model: 'Pageflow::VideoFile',
+                                             collection_name: 'test_files',
+                                             url_templates: -> { {original: url_template} }))
+        end
+        entry = create(:published_entry)
+
+        result = render(helper, entry)
+
+        expect(result)
+          .to include_json(config: {
+                             fileUrlTemplates: {
+                               testFiles: {
+                                 original: url_template
+                               }
+                             }
+                           })
+      end
+
+      it 'renders file model types' do
+        pageflow_configure do |config|
+          config
+            .file_types
+            .register(Pageflow::FileType.new(model: 'Pageflow::VideoFile',
+                                             collection_name: 'test_files'))
+        end
+        entry = create(:published_entry)
+
+        result = render(helper, entry)
+
+        expect(result)
+          .to include_json(config: {
+                             fileModelTypes: {
+                               testFiles: 'Pageflow::VideoFile'
+                             }
+                           })
       end
     end
 

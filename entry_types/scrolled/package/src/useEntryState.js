@@ -2,8 +2,8 @@ import {useMemo} from 'react';
 
 import {useCollections, getItems, watchCollection} from './collections';
 
-export function useEntryState(seed) {
-  const [collections, dispatch] = useCollections(seed);
+export function useEntryState(seed = {}) {
+  const [collections, dispatch] = useCollections(seed.collections);
 
   const entryStructure = useMemo(() => {
     return getItems(collections, 'chapters').map(chapter => ({
