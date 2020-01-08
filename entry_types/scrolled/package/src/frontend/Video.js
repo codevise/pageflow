@@ -1,7 +1,7 @@
 import React, {useRef, useEffect} from 'react';
 import classNames from 'classnames';
 
-import ScrollToSceneContext from './ScrollToSceneContext';
+import ScrollToSectionContext from './ScrollToSectionContext';
 import MutedContext from './MutedContext';
 
 import styles from './Video.module.css';
@@ -73,19 +73,19 @@ export default function Video(props) {
     <div className={styles.root}>
       <MutedContext.Consumer>
         {mutedSettings =>
-          <ScrollToSceneContext.Consumer>
-            {scrollToScene =>
+          <ScrollToSectionContext.Consumer>
+            {scrollToSection =>
               <video src={videoUrl}
                      ref={videoRef}
                      className={classNames(styles.video, {[styles.backdrop]: !props.interactive})}
                      controls={props.controls}
                      playsInline
-                     onEnded={() => props.nextSceneOnEnd && scrollToScene('next')}
+                     onEnded={() => props.nextSectionOnEnd && scrollToSection('next')}
                      loop={!props.interactive}
                      muted={mutedSettings.muted}
                      poster={posterUrl} />
             }
-          </ScrollToSceneContext.Consumer>
+          </ScrollToSectionContext.Consumer>
         }
       </MutedContext.Consumer>
     </div>

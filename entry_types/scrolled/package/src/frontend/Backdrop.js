@@ -47,7 +47,7 @@ function renderContent(props, containerDimension, containerRef) {
                id={props.image}
                offset={props.offset}
                interactive={props.interactive}
-               nextSceneOnEnd={props.nextSceneOnEnd} />
+               nextSectionOnEnd={props.nextSectionOnEnd} />
         <MotifArea ref={props.motifAreaRef}
                    image={video}
                    containerWidth={containerDimension.width}

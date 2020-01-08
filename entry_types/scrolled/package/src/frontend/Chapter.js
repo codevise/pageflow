@@ -1,60 +1,60 @@
 import React, {useState} from 'react';
 
-import Scene from './Scene';
+import Section from './Section';
 import MutedContext from './MutedContext';
-import ScrollToSceneContext from './ScrollToSceneContext';
+import ScrollToSectionContext from './ScrollToSectionContext';
 
 export default function Chapter(props) {
-  const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
 
-  const [scrollTargetSceneIndex, setScrollTargetSceneIndex] = useState(null);
+  const [scrollTargetSectionIndex, setScrollTargetSectionIndex] = useState(null);
 
   const [muted, setMuted] = useState(true);
 
-  function scrollToScene(index) {
+  function scrollToSection(index) {
     if (index === 'next') {
-      index = currentSceneIndex + 1;
+      index = currentSectionIndex + 1;
     }
 
-    setScrollTargetSceneIndex(index);
+    setScrollTargetSectionIndex(index);
   }
 
   return (
     <div id={props.anchor}>
       <MutedContext.Provider value={{muted: muted, setMuted: setMuted}}>
-        <ScrollToSceneContext.Provider value={scrollToScene}>
-          {renderScenes(props.sections,
-            currentSceneIndex,
-            setCurrentSceneIndex,
-            scrollTargetSceneIndex,
-            setScrollTargetSceneIndex)}
-        </ScrollToSceneContext.Provider>
+        <ScrollToSectionContext.Provider value={scrollToSection}>
+          {renderSections(props.sections,
+            currentSectionIndex,
+            setCurrentSectionIndex,
+            scrollTargetSectionIndex,
+            setScrollTargetSectionIndex)}
+        </ScrollToSectionContext.Provider>
       </MutedContext.Provider>
     </div>
   );
 }
 
-function renderScenes(scenes,
-                      currentSceneIndex,
-                      setCurrentSceneIndex,
-                      scrollTargetSceneIndex,
-                      setScrollTargetSceneIndex) {
+function renderSections(sections,
+                      currentSectionIndex,
+                      setCurrentSectionIndex,
+                      scrollTargetSectionIndex,
+                      setScrollTargetSectionIndex) {
   function onActivate(index) {
-    setCurrentSceneIndex(index);
-    setScrollTargetSceneIndex(null);
+    setCurrentSectionIndex(index);
+    setScrollTargetSectionIndex(null);
   }
 
-  return scenes.map((scene, index) => {
-    const previousScene = scenes[index - 1];
-    const nextScene = scenes[index + 1];
+  return sections.map((section, index) => {
+    const previousSection = sections[index - 1];
+    const nextSection = sections[index + 1];
 
     return (
-      <Scene key={index}
-             state={index > currentSceneIndex ? 'below' : index < currentSceneIndex ? 'above' : 'active'}
-             isScrollTarget={index === scrollTargetSceneIndex}
-             onActivate={() => onActivate(index)}
-             {...scene}
-             previousScene={previousScene}
-             nextScene={nextScene} />
+      <Section key={index}
+               state={index > currentSectionIndex ? 'below' : index < currentSectionIndex ? 'above' : 'active'}
+               isScrollTarget={index === scrollTargetSectionIndex}
+               onActivate={() => onActivate(index)}
+               {...section}
+               previousSection={previousSection}
+               nextSection={nextSection} />
     )});
 }

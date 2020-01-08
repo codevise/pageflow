@@ -10,7 +10,7 @@ export default function GradientBox(props) {
     <div className={classNames(styles.root,
                                {
                                  [styles.gradient]: padding > 0,
-                                 [styles.long]: props.coverInvisibleNextScene
+                                 [styles.long]: props.coverInvisibleNextSection
                                })}
          style={{paddingTop: padding}}>
       <div className={styles.wrapper}>
