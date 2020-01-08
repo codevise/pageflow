@@ -18,7 +18,7 @@ roots. To run the specs from `./spec`:
     $ cd entry_types/paged/packages/pageflow-paged
     $ yarn test
 
-    $ cd packages/scrolled/package
+    $ cd entry_types/scrolled/package
     $ yarn test
 
 The `pageflow-react` contains co-located tests inside

@@ -26,10 +26,16 @@ export function useEntryState(seed) {
   ]
 };
 
-export function watchCollections({sections, contentElements}, {dispatch}) {
+export function watchCollections({chapters, sections, contentElements}, {dispatch}) {
+  watchCollection(chapters, {
+    name: 'chapters',
+    attributes: ['id', 'permaId'],
+    includeConfiguration: true,
+    dispatch
+  });
   watchCollection(sections, {
     name: 'sections',
-    attributes: ['id', 'permaId'],
+    attributes: ['id', 'permaId', 'chapterId'],
     includeConfiguration: true,
     dispatch
   });
