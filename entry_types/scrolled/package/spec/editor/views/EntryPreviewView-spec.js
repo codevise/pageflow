@@ -57,6 +57,7 @@ describe('EntryPreviewView', () => {
     entry.chapters = new Backbone.Collection();
     entry.sections = new Backbone.Collection();
     entry.contentElements = new Backbone.Collection();
+    entry.files = {};
     view = new EntryPreviewView({model: entry});
 
     view.render();
