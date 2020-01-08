@@ -6,6 +6,7 @@ Coveralls.wear!
 require 'rails-controller-testing'
 require 'rspec/rails'
 require 'rspec/collection_matchers'
+require 'rspec/json_expectations'
 require 'domino'
 require 'ammeter/init'
 require 'pundit/matchers'

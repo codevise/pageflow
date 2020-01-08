@@ -2,6 +2,8 @@ require 'spec_helper'
 
 module Pageflow
   describe CommonEntrySeedHelper do
+    before { helper.extend(RenderJsonHelper) }
+
     describe '#common_entry_seed' do
       describe '["page_types"]' do
         it 'includes thumbnail candidates of page types registered for entry' do
@@ -34,10 +36,9 @@ module Pageflow
           entry = create(:entry, published_revision: revision)
           published_entry = PublishedEntry.new(entry)
 
-          result = common_entry_seed(published_entry)
-          candidates = result[:page_types][:test_page_type][:thumbnail_candidates]
+          result = helper.render_json { |json| helper.common_entry_seed(json, published_entry) }
 
-          expect(candidates).to eq([
+          candidates = [
             {
               attribute: 'thumbnail_image_id',
               collection_name: 'image_files',
@@ -64,7 +65,13 @@ module Pageflow
                 negated: true
               }
             }
-          ])
+          ]
+          expect(result)
+            .to include_json(page_types: {
+                               test_page_type: {
+                                 thumbnail_candidates: candidates
+                               }
+                             })
         end
       end
 
@@ -74,9 +81,9 @@ module Pageflow
                                             :published,
                                             published_revision_attributes: {locale: 'fr'}))
 
-          result = common_entry_seed(entry)
+          result = helper.render_json { |json| helper.common_entry_seed(json, entry) }
 
-          expect(result[:locale]).to eq('fr')
+          expect(result).to include_json(locale: 'fr')
         end
       end
 
@@ -96,10 +103,14 @@ module Pageflow
 
           entry = PublishedEntry.new(create(:entry, :published))
 
-          result = common_entry_seed(entry)
-          template = result[:file_url_templates]['test_files'][:original]
+          result = helper.render_json { |json| helper.common_entry_seed(json, entry) }
 
-          expect(template).to eq(url_template)
+          expect(result)
+            .to include_json(file_url_templates: {
+                               test_files: {
+                                 original: url_template
+                               }
+                             })
         end
       end
 
@@ -117,9 +128,12 @@ module Pageflow
 
           entry = PublishedEntry.new(create(:entry, :published))
 
-          result = common_entry_seed(entry)
+          result = helper.render_json { |json| helper.common_entry_seed(json, entry) }
 
-          expect(result[:file_model_types]['test_files']).to eq('Pageflow::VideoFile')
+          expect(result)
+            .to include_json(file_model_types: {
+                               test_files: 'Pageflow::VideoFile'
+                             })
         end
       end
 
@@ -129,9 +143,12 @@ module Pageflow
                            privacy_link_url: 'https://example.com/privacy')
           entry = PublishedEntry.new(create(:entry, :published, theming: theming))
 
-          result = common_entry_seed(entry)
+          result = helper.render_json { |json| helper.common_entry_seed(json, entry) }
 
-          expect(result[:theming]['privacy_link_url']).to eq('https://example.com/privacy')
+          expect(result)
+            .to include_json(theming: {
+                               privacy_link_url: 'https://example.com/privacy'
+                             })
         end
       end
 
@@ -144,10 +161,12 @@ module Pageflow
 
           entry = PublishedEntry.new(create(:entry, :published, with_feature: 'some_feature'))
 
-          result = common_entry_seed(entry)
+          result = helper.render_json { |json| helper.common_entry_seed(json, entry) }
 
-          expect(result[:enabled_feature_names]).to include('some_feature')
-          expect(result[:enabled_feature_names]).not_to include('other_feature')
+          expect(result)
+            .to include_json(enabled_feature_names: including('some_feature'))
+          expect(result)
+            .not_to include_json(enabled_feature_names: including('other_feature'))
         end
       end
     end
