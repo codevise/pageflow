@@ -2,7 +2,7 @@
   <%= hidden_field_tag('tab', params[:tab]) %>
 
   <%= f.inputs do %>
-    <% Pageflow.config.features.each do |feature| %>
+    <% Pageflow.config_for(resource).features.each do |feature| %>
       <li>
         <%= label_tag(feature_state_input_name(resource, feature.name),
                       t(feature.name_translation_key)) %>
