@@ -52,11 +52,11 @@ module Pageflow
     #
     # @example
     #
-    # Make a page type only available if a feature flag is set on the
+    # Make a widget type only available if a feature flag is set on the
     # entry or its account
     #
-    #   config.features.register('some_special_page_type' do |config
-    #     config.page_types.register(Pageflow::SomeSpecial.page_type)
+    #   config.features.register('some_special_widget_type' do |config
+    #     config.widget_types.register(Pageflow::SomeSpecial.widget_type)
     #   end
     #
     # @since 0.9
@@ -94,11 +94,6 @@ module Pageflow
     # @return [EntryTypes]
     # @since 15.1
     attr_reader :entry_types
-
-    # Register new types of pages.
-    # @return [PageTypes]
-    # @since 0.9
-    attr_reader :page_types
 
     # List of {FileType} instances.
     # Can be registered globally or provided by page types.
@@ -377,7 +372,6 @@ module Pageflow
       @entry_types = EntryTypes.new
       @entry_type_configs = {}
       @entry_type_configure_blocks = Hash.new { |h, k| h[k] = [] }
-      @page_types = PageTypes.new
       @file_types = FileTypes.new
       @widget_types = WidgetTypes.new
       @file_importers = FileImporters.new
@@ -430,6 +424,16 @@ module Pageflow
     # @since 0.7
     def plugin(plugin)
       plugin.configure(self)
+    end
+
+    # Provide backwards compatibility as long as paged entry type has
+    # not been extracted completely. Prefer accessing entry type
+    # specific config via {#for_entry_type} for new code.
+    #
+    # @return {PageTypes}
+    # @since 0.7
+    def page_types
+      get_entry_type_config(PageflowPaged.entry_type).page_types
     end
 
     # @deprecated Use `config.page_types.register` instead.

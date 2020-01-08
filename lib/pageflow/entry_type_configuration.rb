@@ -12,7 +12,14 @@ module Pageflow
     attr_reader :features
 
     delegate :file_types, to: :@config
+    delegate :help_entries, to: :@config
+    delegate :hooks, to: :@config
+    delegate :revision_components, to: :@config
     delegate :widget_types, to: :@config
+
+    def plugin(plugin)
+      plugin.configure(self)
+    end
 
     # @api private
     FeaturesDelegator = Struct.new(:config, :entry_type) do
