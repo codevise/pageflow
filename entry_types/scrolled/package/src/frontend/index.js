@@ -5,7 +5,7 @@ import AppHeader from './navigation/AppHeader';
 import Entry from './Entry';
 
 import './global.module.css';
-import {useEntryState} from "../useEntryState";
+import {useEntryState} from '../entryState';
 
 export default function Root() {
   const [{entryStructure}, dispatch] = useEntryState(window.pageflowScrolledSeed);

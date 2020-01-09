@@ -1,4 +1,4 @@
-import {useEntryState, watchCollections} from 'useEntryState';
+import {useEntryState, watchCollections} from 'entryState';
 import {
   ChaptersCollection,
   SectionsCollection,
