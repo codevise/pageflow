@@ -10,7 +10,7 @@ import useBoundingClientRect from './useBoundingClientRect';
 import useDimension from './useDimension';
 import useScrollTarget from './useScrollTarget';
 
-import styles from './Scene.module.css';
+import styles from './Section.module.css';
 import {getTransitionStyles} from './transitions'
 
 // Shadows
@@ -28,7 +28,7 @@ export const OnScreenContext = React.createContext({
   bottom: false
 });
 
-export default function Scene(props) {
+export default function Section(props) {
   const activityProbeRef = useRef();
   useOnScreen(activityProbeRef, '-50% 0px -50% 0px', props.onActivate);
 
@@ -48,7 +48,7 @@ export default function Scene(props) {
 
   const heightOffset = 0; //(props.backdrop.first || props.transition === 'scrollOver') ? 0 : (window.innerHeight / 3);
 
-  const transitionStyles = getTransitionStyles(props, props.previousScene, props.nextScene);
+  const transitionStyles = getTransitionStyles(props, props.previousSection, props.nextSection);
 
   const appearance = {
     shadow: {
@@ -73,8 +73,8 @@ export default function Scene(props) {
   const BoxWrapper = appearance.foregroundWrapper;
 
   return (
-    <section ref={ref} className={classNames(styles.Scene,
-                                             transitionStyles.scene,
+    <section ref={ref} className={classNames(styles.Section,
+                                             transitionStyles.section,
                                              {[styles.invert]: props.invert})}>
       <div ref={activityProbeRef} className={styles.activityProbe} />
       <Backdrop {...props.backdrop}
@@ -83,7 +83,7 @@ export default function Scene(props) {
                 offset={Math.max(0, Math.max(1, -contentAreaRect.top / 200)) }
                 state={props.state}
                 transitionStyles={transitionStyles}
-                nextSceneOnEnd={props.nextSceneOnEnd}
+                nextSectionOnEnd={props.nextSectionOnEnd}
                 interactive={props.interactiveBackdrop}>
         {(children) => props.interactiveBackdrop ?
                      children :
@@ -99,7 +99,7 @@ export default function Scene(props) {
                   state={props.state}
                   heightMode={heightMode(props)}>
         <Box active={intersecting}
-             coverInvisibleNextScene={props.nextScene && props.nextScene.transition.startsWith('fade')}
+             coverInvisibleNextSection={props.nextSection && props.nextSection.transition.startsWith('fade')}
              transitionStyles={transitionStyles}
              state={props.state}
              padding={Math.max(0, motifAreaDimension.top + motifAreaDimension.height - heightOffset)}
@@ -125,7 +125,7 @@ function indexItems(items) {
 function heightMode(props) {
   if (props.fullHeight) {
     if (props.transition.startsWith('fade') ||
-        (props.nextScene && props.nextScene.transition.startsWith('fade'))) {
+        (props.nextSection && props.nextSection.transition.startsWith('fade'))) {
       return 'fullFade';
     }
     else {

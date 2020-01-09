@@ -58,9 +58,9 @@ const exitTransitions = {
   beforeAfter: 'conceal'
 }
 
-export function getTransitionStyles(scene, previousScene, nextScene) {
-  const enterTransition = enterTransitions[scene.transition]
-  const exitTransition = exitTransitions[nextScene ? nextScene.transition : 'scroll']
+export function getTransitionStyles(section, previousSection, nextSection) {
+  const enterTransition = enterTransitions[section.transition]
+  const exitTransition = exitTransitions[nextSection ? nextSection.transition : 'scroll']
 
   const name = `${enterTransition}${capitalize(exitTransition)}`;
 

@@ -1,5 +1,11 @@
 json.key_format!(camelize: :lower)
 
+json.chapters do
+  json.array!(chapters) do |chapter|
+    json.partial! 'pageflow_scrolled/chapters/chapter', chapter: chapter
+  end
+end
+
 json.sections do
   json.array!(sections) do |section|
     json.partial! 'pageflow_scrolled/sections/section', section: section

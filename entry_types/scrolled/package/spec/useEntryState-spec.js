@@ -1,13 +1,36 @@
 import {useEntryState, watchCollections} from 'useEntryState';
-import {SectionsCollection, ContentElementsCollection} from 'editor/collections';
+import {
+  ChaptersCollection,
+  SectionsCollection,
+  ContentElementsCollection
+} from 'editor/collections';
 
 import {renderHook, act} from '@testing-library/react-hooks';
 
 describe('useEntryState', () => {
-  const sectionsSeed = [
+  const chaptersSeed = [
     {
       id: 1,
       permaId: 10,
+      position: 1,
+      configuration: {
+        title: 'Chapter 1'
+      }
+    },
+    {
+      id: 2,
+      permaId: 11,
+      position: 2,
+      configuration: {
+        title: 'Chapter 2'
+      }
+    }
+  ];
+  const sectionsSeed = [
+    {
+      id: 1,
+      permaId: 101,
+      chapterId: 1,
       position: 1,
       configuration: {
         transition: 'scroll'
@@ -15,7 +38,8 @@ describe('useEntryState', () => {
     },
     {
       id: 2,
-      permaId: 20,
+      permaId: 102,
+      chapterId: 2,
       position: 2,
       configuration: {
         transition: 'fade'
@@ -25,7 +49,7 @@ describe('useEntryState', () => {
   const contentElementsSeed = [
     {
       id: 1,
-      permaId: 101,
+      permaId: 1001,
       sectionId: 1,
       typeName: 'heading',
       configuration: {
@@ -34,7 +58,7 @@ describe('useEntryState', () => {
     },
     {
       id: 2,
-      permaId: 102,
+      permaId: 1002,
       sectionId: 1,
       typeName: 'textBlock',
       configuration: {
@@ -43,7 +67,7 @@ describe('useEntryState', () => {
     },
     {
       id: 3,
-      permaId: 103,
+      permaId: 1003,
       sectionId: 2,
       typeName: 'image',
       configuration: {
@@ -53,7 +77,7 @@ describe('useEntryState', () => {
     },
     {
       id: 4,
-      permaId: 104,
+      permaId: 1004,
       sectionId: 2,
       typeName: 'textBlock',
       configuration: {
@@ -62,39 +86,49 @@ describe('useEntryState', () => {
     }
   ];
 
-  const expectedSectionsWithNestedContentElements = [
+  const expectedEntryStructure = [
     {
-      transition: 'scroll',
-      foreground: [
+      title: 'Chapter 1',
+      sections: [
         {
-          type: 'heading',
-          props: {
-            children: 'Heading'
-          }
-        },
-        {
-          type: 'textBlock',
-          props: {
-            children: 'Some text'
-          }
+          transition: 'scroll',
+          foreground: [
+            {
+              type: 'heading',
+              props: {
+                children: 'Heading'
+              }
+            },
+            {
+              type: 'textBlock',
+              props: {
+                children: 'Some text'
+              }
+            }
+          ]
         }
-      ]
+      ],
     },
     {
-      transition: 'fade',
-      foreground: [
+      title: 'Chapter 2',
+      sections: [
         {
-          type: 'image',
-          position: 'sticky',
-          props: {
-            imageId: 4
-          }
-        },
-        {
-          type: 'textBlock',
-          props: {
-            children: 'Some more text'
-          }
+          transition: 'fade',
+          foreground: [
+            {
+              type: 'image',
+              position: 'sticky',
+              props: {
+                imageId: 4
+              }
+            },
+            {
+              type: 'textBlock',
+              props: {
+                children: 'Some more text'
+              }
+            }
+          ]
         }
       ]
     }
@@ -102,26 +136,28 @@ describe('useEntryState', () => {
 
   it('reads data from watched collections', () => {
     const {result} = renderHook(() => useEntryState());
+    const chapters = new ChaptersCollection(chaptersSeed);
     const sections = new SectionsCollection(sectionsSeed);
     const contentElements = new ContentElementsCollection(contentElementsSeed);
 
     act(() => {
       const [, dispatch] = result.current;
-      watchCollections({sections, contentElements}, {dispatch});
+      watchCollections({chapters, sections, contentElements}, {dispatch});
     });
-    const [{sectionsWithNestedContentElements},] = result.current;
+    const [{entryStructure},] = result.current;
 
-    expect(sectionsWithNestedContentElements).toMatchObject(expectedSectionsWithNestedContentElements);
+    expect(entryStructure).toMatchObject(expectedEntryStructure);
   });
 
   it('reads data from seed passed to hook', () => {
     const {result} = renderHook(() => useEntryState({
+      chapters: chaptersSeed,
       sections: sectionsSeed,
       contentElements: contentElementsSeed
     }));
 
-    const [{sectionsWithNestedContentElements},] = result.current;
+    const [{entryStructure},] = result.current;
 
-    expect(sectionsWithNestedContentElements).toMatchObject(expectedSectionsWithNestedContentElements);
+    expect(entryStructure).toMatchObject(expectedEntryStructure);
   });
 });
