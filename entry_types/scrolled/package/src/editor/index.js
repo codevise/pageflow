@@ -4,6 +4,7 @@ import {ScrolledEntry} from './models/ScrolledEntry';
 
 import {EntryOutlineView} from './views/EntryOutlineView';
 import {EntryPreviewView} from './views/EntryPreviewView';
+import {EntryMetaDataAppearanceView} from './views/EntryMetaDataAppearanceView';
 
 import * as globalInterop from 'pageflow/editor';
 
@@ -13,5 +14,6 @@ pageflow.editor.registerEntryType('scrolled', {
   entryModel: ScrolledEntry,
 
   previewView: EntryPreviewView,
-  outlineView: EntryOutlineView
+  outlineView: EntryOutlineView,
+  metaDataAppearanceView: EntryMetaDataAppearanceView
 });

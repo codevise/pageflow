@@ -134,7 +134,8 @@ textarea.short {
   margin: 10px 0;
   padding-bottom: 20px;
 
-  > div {
+  > div,
+  > .entry_meta_data_appearance > div {
     padding: 5px 0;
   }
 }

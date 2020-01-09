@@ -62,25 +62,11 @@ export const EditMetaDataView = Marionette.Layout.extend({
     });
 
     configurationEditor.tab('widgets', function() {
-      var theme = entry.getTheme();
-
-      this.input('manual_start', CheckBoxInputView);
-      this.input('emphasize_chapter_beginning', CheckBoxInputView);
-      this.input('emphasize_new_pages', CheckBoxInputView);
-      this.input('home_button_enabled', CheckBoxInputView, {
-        disabled: !theme.hasHomeButton(),
-        displayUncheckedIfDisabled: true
+      this.view(editor.entryType.metaDataAppearanceView, {
+        configurationEditorTabView: this,
+        entry,
+        theming: state.theming
       });
-      this.input('overview_button_enabled', CheckBoxInputView, {
-        disabled: !theme.hasOverviewButton(),
-        displayUncheckedIfDisabled: true
-      });
-      if (theme.hasHomeButton()) {
-        this.input('home_url', TextInputView, {
-          placeholder: state.theming.get('pretty_url'),
-          visibleBinding: 'home_button_enabled'
-        });
-      }
       this.view(EditWidgetsView, {
         model: entry,
         widgetTypes: editor.widgetTypes
