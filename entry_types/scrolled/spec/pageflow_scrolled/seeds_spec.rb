@@ -11,7 +11,7 @@ module PageflowScrolled
         it 'creates entry for account' do
           entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
                                                  title: 'Example',
-                                                 sections: [])
+                                                 chapters: [])
 
           expect(entry).to be_persisted
         end
@@ -25,62 +25,95 @@ module PageflowScrolled
 
           result = SeedsDsl.sample_scrolled_entry(account: account,
                                                   title: 'Example',
-                                                  sections: [])
+                                                  chapters: [])
 
           expect(result).to eq(entry)
         end
       end
 
-      context 'sections' do
-        let(:content_element_config) do
-          {
-            'type' => 'heading',
-            'props' => {
-              'children' => 'Pageflow Next',
-              'anchor' => 'headline'
-            }
-          }
-        end
-
+      context 'entry structure' do
         it 'creates the main storyline' do
           entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
                                                  title: 'Example',
-                                                 sections: [
-                                                   {
-                                                     'transition' => 'scroll',
-                                                     'foreground' => [content_element_config]
-                                                   }
+                                                 chapters: [
+                                                   {'title' => 'Chapter 1'}
                                                  ])
 
           expect(Storyline.all_for_revision(entry.draft).first).to be_present
         end
 
+        it 'creates chapters as specified' do
+          entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
+                                                 title: 'Example',
+                                                 chapters: [
+                                                   {'title' => 'Chapter 1'},
+                                                   {'title' => 'Chapter 2'}
+                                                 ])
+
+          created_chapters = Chapter.all_for_revision(entry.draft)
+          expect(created_chapters.count).to eq(2)
+          expect(created_chapters.first.configuration['title']).to eq('Chapter 1')
+          expect(created_chapters.last.configuration['title']).to eq('Chapter 2')
+        end
+
         it 'creates sections as specified' do
           entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
                                                  title: 'Example',
-                                                 sections: [
+                                                 chapters: [
                                                    {
-                                                     'transition' => 'scroll',
-                                                     'foreground' => [content_element_config]
+                                                     'title' => 'Chapter 1',
+                                                     'sections' => [
+                                                       {'transition' => 'scroll'},
+                                                       {'transition' => 'fade'}
+                                                     ]
                                                    }
                                                  ])
 
-          main_storyline = Storyline.all_for_revision(entry.draft).first
-          created_section = main_storyline.sections.first
-          expect(created_section.configuration['transition']).to eq('scroll')
+          created_sections = Section.all_for_revision(entry.draft)
+          expect(created_sections.count).to eq(2)
+          expect(created_sections.first.configuration['transition']).to eq('scroll')
+          expect(created_sections.last.configuration['transition']).to eq('fade')
         end
 
         it 'creates the sections content_elements as specified' do
           entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
                                                  title: 'Example',
-                                                 sections: [
-                                                   {'foreground' => [content_element_config]}
+                                                 chapters: [
+                                                   {
+                                                     'title' => 'Chapter 1',
+                                                     'sections' => [
+                                                       {
+                                                         'transition' => 'scroll',
+                                                         'foreground' => [
+                                                           {
+                                                             'type' => 'heading',
+                                                             'props' => {
+                                                               'children' => 'Pageflow Next'
+                                                             }
+                                                           }
+                                                         ]
+                                                       },
+                                                       {
+                                                         'transition' => 'fade',
+                                                         'foreground' => [
+                                                           {
+                                                             'type' => 'textBlock',
+                                                             'props' => {
+                                                               'children' => 'Some content'
+                                                             }
+                                                           }
+                                                         ]
+                                                       }
+                                                     ]
+                                                   }
                                                  ])
 
-          main_storyline = Storyline.all_for_revision(entry.draft).first
-          created_content_element = main_storyline.content_elements.first
-          expect(created_content_element.type_name).to eq('heading')
-          expect(created_content_element.configuration).to eq('children' => 'Pageflow Next')
+          created_content_elements = ContentElement.all_for_revision(entry.draft)
+          expect(created_content_elements.count).to eq(2)
+          expect(created_content_elements.first.type_name).to eq('heading')
+          expect(created_content_elements.first.configuration['children']).to eq('Pageflow Next')
+          expect(created_content_elements.last.type_name).to eq('textBlock')
+          expect(created_content_elements.last.configuration['children']).to eq('Some content')
         end
       end
 
@@ -90,7 +123,7 @@ module PageflowScrolled
 
         entry = SeedsDsl.sample_scrolled_entry(account: account,
                                                title: 'Example',
-                                               sections: []) do |created_entry|
+                                               chapters: []) do |created_entry|
           created_entry.theming = theming
         end
 
