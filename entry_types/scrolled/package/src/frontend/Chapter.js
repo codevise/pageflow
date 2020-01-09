@@ -1,44 +1,24 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import Section from './Section';
-import MutedContext from './MutedContext';
-import ScrollToSectionContext from './ScrollToSectionContext';
 
 export default function Chapter(props) {
-  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-
-  const [scrollTargetSectionIndex, setScrollTargetSectionIndex] = useState(null);
-
-  const [muted, setMuted] = useState(true);
-
-  function scrollToSection(index) {
-    if (index === 'next') {
-      index = currentSectionIndex + 1;
-    }
-
-    setScrollTargetSectionIndex(index);
-  }
-
   return (
-    <div id={props.anchor}>
-      <MutedContext.Provider value={{muted: muted, setMuted: setMuted}}>
-        <ScrollToSectionContext.Provider value={scrollToSection}>
-          {renderSections(props.sections,
-            currentSectionIndex,
-            setCurrentSectionIndex,
-            scrollTargetSectionIndex,
-            setScrollTargetSectionIndex)}
-        </ScrollToSectionContext.Provider>
-      </MutedContext.Provider>
+    <div id={'chapter' + props.permaId}>
+      {renderSections(props.sections,
+                      props.currentSectionIndex,
+                      props.setCurrentSectionIndex,
+                      props.scrollTargetSectionIndex,
+                      props.setScrollTargetSectionIndex)}
     </div>
   );
 }
 
 function renderSections(sections,
-                      currentSectionIndex,
-                      setCurrentSectionIndex,
-                      scrollTargetSectionIndex,
-                      setScrollTargetSectionIndex) {
+                        currentSectionIndex,
+                        setCurrentSectionIndex,
+                        scrollTargetSectionIndex,
+                        setScrollTargetSectionIndex) {
   function onActivate(index) {
     setCurrentSectionIndex(index);
     setScrollTargetSectionIndex(null);
@@ -55,6 +35,7 @@ function renderSections(sections,
                onActivate={() => onActivate(index)}
                {...section}
                previousSection={previousSection}
-               nextSection={nextSection} />
-    )});
+               nextSection={nextSection}/>
+    )
+  });
 }

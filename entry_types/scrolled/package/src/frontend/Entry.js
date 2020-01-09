@@ -1,9 +1,18 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+
+import Chapter from "./Chapter";
+import MutedContext from './MutedContext';
+import ScrollToSectionContext from './ScrollToSectionContext';
 
 import styles from './Entry.module.css';
-import Chapter from "./Chapter";
 
 export default function Entry(props) {
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+
+  const [scrollTargetSectionIndex, setScrollTargetSectionIndex] = useState(null);
+
+  const [muted, setMuted] = useState(true);
+
   const dispatch = props.dispatch;
   const entryStructure = props.entryStructure;
 
@@ -23,19 +32,44 @@ export default function Entry(props) {
     }
   }, [dispatch]);
 
+  function scrollToSection(index) {
+    if (index === 'next') {
+      index = currentSectionIndex + 1;
+    }
+
+    setScrollTargetSectionIndex(index);
+  }
+
   return (
     <div className={styles.Entry}>
-      {renderChapters(entryStructure)}
+      <MutedContext.Provider value={{muted: muted, setMuted: setMuted}}>
+        <ScrollToSectionContext.Provider value={scrollToSection}>
+          {renderChapters(entryStructure,
+                          currentSectionIndex,
+                          setCurrentSectionIndex,
+                          scrollTargetSectionIndex,
+                          setScrollTargetSectionIndex)}
+        </ScrollToSectionContext.Provider>
+      </MutedContext.Provider>
     </div>
   );
 }
 
-function renderChapters(entryStructure) {
+function renderChapters(entryStructure,
+                        currentSectionIndex,
+                        setCurrentSectionIndex,
+                        scrollTargetSectionIndex,
+                        setScrollTargetSectionIndex) {
   return entryStructure.map((chapter, index) => {
     return(
       <Chapter key={index}
-               anchor={chapter.title}
-               sections={chapter.sections} />
+               permaId={chapter.permaId}
+               sections={chapter.sections}
+               currentSectionIndex={currentSectionIndex}
+               setCurrentSectionIndex={setCurrentSectionIndex}
+               scrollTargetSectionIndex={scrollTargetSectionIndex}
+               setScrollTargetSectionIndex={setScrollTargetSectionIndex}
+      />
     );
   });
 }
