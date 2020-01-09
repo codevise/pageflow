@@ -14,7 +14,8 @@ describe('useEntryState', () => {
       permaId: 10,
       position: 1,
       configuration: {
-        title: 'Chapter 1'
+        title: 'Chapter 1',
+        summary: 'An introductory chapter'
       }
     },
     {
@@ -22,7 +23,8 @@ describe('useEntryState', () => {
       permaId: 11,
       position: 2,
       configuration: {
-        title: 'Chapter 2'
+        title: 'Chapter 2',
+        summary: 'A great chapter'
       }
     }
   ];
@@ -89,6 +91,7 @@ describe('useEntryState', () => {
   const expectedEntryStructure = [
     {
       title: 'Chapter 1',
+      summary: 'An introductory chapter',
       sections: [
         {
           transition: 'scroll',
@@ -111,6 +114,7 @@ describe('useEntryState', () => {
     },
     {
       title: 'Chapter 2',
+      summary: 'A great chapter',
       sections: [
         {
           transition: 'fade',

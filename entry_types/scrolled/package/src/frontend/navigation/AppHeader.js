@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import useScrollPosition from '../useScrollPosition';
 import useNativeScrollPrevention from '../useNativeScrollPrevention';
 
-import AppHeaderTooltip from "./AppHeaderTooltip";
 import ChapterLink from "./ChapterLink";
 
 import hamburgerIcons from './hamburgerIcons.module.css'
@@ -13,14 +12,22 @@ import WDRlogo from '../assets/images/navigation/wdr_logo_header.svg';
 import ShareIcon from '../assets/images/navigation/icons/share_icon.svg';
 import InfoIcon from '../assets/images/navigation/icons/information_icon.svg';
 
-export default function AppHeader() {
+export default function AppHeader(props) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
   const [readingProgress, setReadingProgress] = useState(0);
-  const [activeChapter, setActiveChapter] = useState('introduction');
+  const [activeChapterLink, setActiveChapterLink] = useState('chapterLink1');
 
   const ref = useRef();
   useNativeScrollPrevention(ref);
+
+  const chapters = props.entryStructure.map((chapter) => {
+    return ({
+      permaId: chapter.permaId,
+      title: chapter.title,
+      summary: chapter.summary
+    });
+  });
 
   useScrollPosition(
     ({prevPos, currPos}) => {
@@ -51,9 +58,25 @@ export default function AppHeader() {
     setMobileNavHidden(!mobileNavHidden);
   };
 
-  function handleMenuClick(target) {
-    setActiveChapter(target);
+  function handleMenuClick(chapterLinkId) {
+    setActiveChapterLink(chapterLinkId);
     setMobileNavHidden(true);
+  };
+
+  function renderMenuLinks(chapters) {
+    return chapters.map((chapter, index) => {
+      const chapterIndex = index + 1;
+      const chapterLinkId = `chapterLink${chapterIndex}`
+      return (
+        <li key={index} className={styles.chapterListItem}>
+          <ChapterLink {...chapter}
+                       chapterIndex={chapterIndex}
+                       chapterLinkId={chapterLinkId}
+                       active={activeChapterLink === chapterLinkId}
+                       handleMenuClick={handleMenuClick}/>
+        </li>
+      )
+    })
   };
 
   return (
@@ -74,23 +97,7 @@ export default function AppHeader() {
              role="navigation"
              ref={ref}>
           <ul className={styles.chapterList}>
-            <li className={styles.chapterListItem} data-tip data-for="home">
-              <ChapterLink target={'introduction'} title={'Pageflow Next'}
-                           active={activeChapter === 'introduction'} handleMenuClick={handleMenuClick} />
-            </li>
-            <AppHeaderTooltip chapterId={'home'}/>
-
-            <li className={styles.chapterListItem} data-tip data-for="chapter1">
-              <ChapterLink target={'scene-transitions'} title={'Szenenübergänge'}
-                           active={activeChapter === 'scene-transitions'} handleMenuClick={handleMenuClick} />
-            </li>
-            <AppHeaderTooltip chapterId={'chapter1'}/>
-
-            <li className={styles.chapterListItem} data-tip data-for="chapter2">
-              <ChapterLink target={'media'} title={'Einsatz von Medien'}
-                           active={activeChapter === 'media'} handleMenuClick={handleMenuClick} />
-            </li>
-            <AppHeaderTooltip chapterId={'chapter2'}/>
+            {renderMenuLinks(chapters)}
           </ul>
         </nav>
 

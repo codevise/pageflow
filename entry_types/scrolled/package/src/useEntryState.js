@@ -7,6 +7,7 @@ export function useEntryState(seed) {
 
   const entryStructure = useMemo(() => {
     return getItems(collections, 'chapters').map(chapter => ({
+      permaId: chapter.permaId,
       ...chapter.configuration,
       sections: getItems(collections, 'sections')
         .filter(

@@ -4,7 +4,7 @@ import Section from './Section';
 
 export default function Chapter(props) {
   return (
-    <div id={'chapter' + props.permaId}>
+    <div id={`chapter-${props.permaId}`}>
       {renderSections(props.sections,
                       props.currentSectionIndex,
                       props.setCurrentSectionIndex,
