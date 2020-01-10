@@ -12,7 +12,7 @@ export default function Root() {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader entryStructure={entryStructure} />
       <Entry entryStructure={entryStructure}
              dispatch={dispatch} />
     </>
