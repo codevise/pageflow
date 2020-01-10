@@ -9,7 +9,7 @@
   "pages": <%= @entry.pages.to_json.html_safe %>,
   "widgets": <%= widgets_json_seeds(@entry) %>,
 
-  "files": <%= files_json_seeds(@entry) %>,
+  "files": <%= editor_files_json_seed(@entry) %>,
 
   "account": <%= render_json_seed(@entry.account) %>,
   "theming": <%= render_json_seed(@entry.theming) %>,
@@ -17,7 +17,7 @@
   "page_types": <%= page_type_json_seeds(@entry_config) %>,
   "themes": <%= theme_json_seeds(@entry_config) %>,
 
-  "common": <%= common_entry_seed(@entry).to_json.html_safe %>,
+  "common": <%= render_json { |json| common_entry_seed(json, @entry) }.html_safe %>,
 
   "asset_urls": <%= editor_asset_urls %>
 }

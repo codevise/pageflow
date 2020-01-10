@@ -1,8 +1,7 @@
 module Pageflow
+  # Format and generate seed data for files
   module FilesHelper
     include RenderJsonHelper
-    include VideoFilesHelper
-    include AudioFilesHelper
 
     def file_format(file)
       file.format.presence || '-'
@@ -29,17 +28,19 @@ module Pageflow
       end
     end
 
-    def files_json_seeds(entry)
-      inner = Pageflow.config.file_types.map do |file_type|
-        json = render_json_partial(partial: 'pageflow/editor/files/file',
-                                   collection: entry.find_files(file_type.model),
-                                   locals: {file_type: file_type},
-                                   as: :file)
-
-        %'"#{file_type.collection_name}": #{json}'
-      end.join(',')
-
-      "{#{inner}}".html_safe
+    # Render seed data for all files of the revision.
+    #
+    # @param [JBuilder] json
+    # @param [PublishedEntry] entry
+    # @since edge
+    def files_json_seed(json, entry)
+      Pageflow.config.file_types.each do |file_type|
+        json.set!(file_type.collection_name) do
+          json.array!(entry.find_files(file_type.model)) do |file|
+            json.partial!('pageflow/files/file', file: file, file_type: file_type)
+          end
+        end
+      end
     end
   end
 end

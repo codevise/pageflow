@@ -46,6 +46,7 @@ module Pageflow
 
           it 'renders editor json without error' do
             helper.extend(FilesHelper)
+            helper.extend(Editor::FilesHelper)
             helper.render(partial: 'pageflow/editor/files/file',
                           formats: [:json],
                           locals: {

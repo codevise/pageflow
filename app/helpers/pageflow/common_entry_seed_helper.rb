@@ -4,33 +4,18 @@ module Pageflow
   #
   # @api private
   module CommonEntrySeedHelper
-    def common_entry_seed(entry)
+    include ConfigHelper
+
+    def common_entry_seed(json, entry)
       config = Pageflow.config_for(entry)
 
-      {
-        locale: entry.locale,
-        theming: entry.theming.as_json(only: [:privacy_link_url]),
-        enabled_feature_names: entry.enabled_feature_names,
-        page_types: PageTypesSeed.new(config).as_json,
-        file_url_templates: FileUrlTemplatesSeed.new(config).as_json,
-        file_model_types: config.file_types
-                                .index_by(&:collection_name)
-                                .transform_values { |file_type| file_type.model.name }
-      }
-    end
+      json.locale entry.locale
+      json.theming entry.theming.as_json(only: [:privacy_link_url])
+      json.enabled_feature_names entry.enabled_feature_names
+      json.page_types PageTypesSeed.new(config).as_json
 
-    class FileUrlTemplatesSeed
-      attr_reader :config
-
-      def initialize(config)
-        @config = config
-      end
-
-      def as_json
-        config.file_types.each_with_object({}) do |file_type, result|
-          result[file_type.collection_name] = file_type.url_templates.call
-        end
-      end
+      json.file_url_templates { config_file_url_templates_seed(json, config) }
+      json.file_model_types { config_file_model_types_seed(json, config) }
     end
 
     class PageTypesSeed

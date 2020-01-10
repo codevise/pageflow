@@ -155,9 +155,11 @@ describe('useEntryState', () => {
 
   it('reads data from seed passed to hook', () => {
     const {result} = renderHook(() => useEntryState({
-      chapters: chaptersSeed,
-      sections: sectionsSeed,
-      contentElements: contentElementsSeed
+      collections: {
+        chapters: chaptersSeed,
+        sections: sectionsSeed,
+        contentElements: contentElementsSeed
+      }
     }));
 
     const [{entryStructure},] = result.current;
