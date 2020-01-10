@@ -1,4 +1,4 @@
-import {useEntryState, useFile, watchCollections, EntryStateProvider} from 'entryState';
+import {useEntryStructure, useFile, watchCollections} from 'entryState';
 
 import {
   ChaptersCollection,
@@ -6,11 +6,9 @@ import {
   ContentElementsCollection
 } from 'editor/collections';
 
-import React, {useEffect} from 'react';
+import {renderHookInEntry} from 'support';
 
-import {renderHook, act} from '@testing-library/react-hooks';
-
-describe('useEntryState', () => {
+describe('useEntryStructure', () => {
   const chaptersSeed = [
     {
       id: 1,
@@ -143,30 +141,36 @@ describe('useEntryState', () => {
     ];
 
     it('reads data from watched collections', () => {
-      const {result} = renderHook(() => useEntryState());
-      const chapters = new ChaptersCollection(chaptersSeed);
-      const sections = new SectionsCollection(sectionsSeed);
-      const contentElements = new ContentElementsCollection(contentElementsSeed);
+      const {result} = renderHookInEntry(() => useEntryStructure(), {
+        setup: dispatch => {
+          const chapters = new ChaptersCollection(chaptersSeed);
+          const sections = new SectionsCollection(sectionsSeed);
+          const contentElements = new ContentElementsCollection(contentElementsSeed);
 
-      act(() => {
-        const [, dispatch] = result.current;
-        watchCollections({chapters, sections, contentElements, files: {}}, {dispatch});
+          watchCollections(
+            {chapters, sections, contentElements, files: {}},
+            {dispatch}
+          )
+        }
       });
-      const [{entryStructure},] = result.current;
+      const entryStructure = result.current;
 
       expect(entryStructure).toMatchObject(expectedEntryStructure);
     });
 
     it('reads data from seed passed to hook', () => {
-      const {result} = renderHook(() => useEntryState({
-        collections: {
-          chapters: chaptersSeed,
-          sections: sectionsSeed,
-          contentElements: contentElementsSeed
+      const {result} = renderHookInEntry(
+        () => useEntryStructure(),
+        {
+          seed: {
+            chapters: chaptersSeed,
+            sections: sectionsSeed,
+            contentElements: contentElementsSeed
+          }
         }
-      }));
+      );
 
-      const [{entryStructure},] = result.current;
+      const entryStructure = result.current;
 
       expect(entryStructure).toMatchObject(expectedEntryStructure);
     });
@@ -175,12 +179,15 @@ describe('useEntryState', () => {
 
 describe('useFile', () => {
   it('reads data through EntryStateProvider from seed passed to useEntryState', () => {
-    const wrapper = function Wrapper({children}) {
-      const [{entryState}] = useEntryState({
-        collections: {
-          chapters: [],
-          sections: [],
-          contentElements: [],
+    const {result} = renderHookInEntry(
+      () => useFile({collectionName: 'imageFiles', permaId: 1}),
+      {
+        seed: {
+          fileUrlTemplates: {
+            imageFiles: {
+              high: '/image_files/:id_partition/high.jpg'
+            }
+          },
           imageFiles: [
             {
               id: 100,
@@ -192,22 +199,9 @@ describe('useFile', () => {
               }
             }
           ]
-        },
-        config: {
-          fileUrlTemplates: {
-            imageFiles: {
-              high: '/image_files/:id_partition/high.jpg'
-            }
-          }
         }
-      });
-
-      return (
-        <EntryStateProvider state={entryState}>{children}</EntryStateProvider>
-      );
-    };
-    const {result} = renderHook(() => useFile({collectionName: 'imageFiles', permaId: 1}),
-                                {wrapper});
+      }
+    );
 
     const file = result.current;
 
@@ -224,44 +218,38 @@ describe('useFile', () => {
   });
 
   it('reads data through EntryStateProvider from watched collection', () => {
-    const wrapper = function Wrapper({children}) {
-      const [{entryState}, dispatch] = useEntryState({
-        config: {
+    const {result} = renderHookInEntry(
+      () => useFile({collectionName: 'imageFiles', permaId: 1}),
+      {
+        seed: {
           fileUrlTemplates: {
             imageFiles: {
               high: '/image_files/:id_partition/high.jpg'
             }
           }
-        }
-      });
-
-      useEffect(() => {
-        watchCollections({
-          chapters: new ChaptersCollection(),
-          sections: new SectionsCollection(),
-          contentElements: new ContentElementsCollection(),
-          files: {
-            image_files: new SectionsCollection([
-              {
-                id: 100,
-                perma_id: 1,
-                basename: 'image',
-                rights: 'author',
-                configuration: {
-                  some: 'value'
+        },
+        setup: dispatch => {
+          watchCollections({
+            chapters: new ChaptersCollection(),
+            sections: new SectionsCollection(),
+            contentElements: new ContentElementsCollection(),
+            files: {
+              image_files: new SectionsCollection([
+                {
+                  id: 100,
+                  perma_id: 1,
+                  basename: 'image',
+                  rights: 'author',
+                  configuration: {
+                    some: 'value'
+                  }
                 }
-              }
-            ])
-          }
-        }, {dispatch});
-      }, [dispatch]);
-
-      return (
-        <EntryStateProvider state={entryState}>{children}</EntryStateProvider>
-      );
-    };
-    const {result} = renderHook(() => useFile({collectionName: 'imageFiles', permaId: 1}),
-                                {wrapper});
+              ])
+            }
+          }, {dispatch})
+        }
+      }
+    );
 
     const file = result.current;
 

@@ -1,31 +1,64 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {render} from '@testing-library/react'
+import {renderHook} from '@testing-library/react-hooks';
 
-import {EntryStateProvider, useEntryState} from 'entryState';
+import {EntryStateProvider, useEntryStateDispatch} from 'entryState';
 
 export function renderInEntry(ui, {seed, ...options}) {
   return render(ui,
                 {
-                  wrapper: function Wrapper({children}) {
-                    const [{entryState},] = useEntryState(normalizeSeed(seed));
-
-                    return (
-                      <EntryStateProvider state={entryState}>
-                        {children}
-                      </EntryStateProvider>
-                    );
-                  },
+                  wrapper: createWrapper(seed),
                   ...options
                 })
 }
 
-function normalizeSeed({imageFiles, imageFileUrlTemplates} = {}) {
+export function renderHookInEntry(callback, {seed, setup, ...options} = {}) {
+  return renderHook(callback,
+                    {
+                      wrapper: createWrapper(seed, setup),
+                      ...options
+                    })
+}
+
+function createWrapper(seed, setup) {
+  return function Wrapper({children}) {
+    return (
+      <EntryStateProvider seed={normalizeSeed(seed)}>
+        <Dispatcher callback={setup}>
+          {children}
+        </Dispatcher>
+      </EntryStateProvider>
+    );
+  }
+}
+
+function Dispatcher({children, callback}) {
+  const dispatch = useEntryStateDispatch();
+
+  useEffect(() => {
+    if (callback) {
+      callback(dispatch);
+    }
+  }, [dispatch, callback]);
+
+  return children;
+}
+
+function normalizeSeed({
+  imageFileUrlTemplates,
+  fileUrlTemplates,
+  imageFiles,
+  chapters,
+  sections,
+  contentElements
+} = {}) {
   return {
     config: {
       fileUrlTemplates: {
         imageFiles: {
           ...imageFileUrlTemplates
-        }
+        },
+        ...fileUrlTemplates
       }
     },
     collections: {
@@ -34,11 +67,14 @@ function normalizeSeed({imageFiles, imageFileUrlTemplates} = {}) {
         height: 1279,
         configuration: {},
       }),
+      chapters: normalizeCollection(chapters),
+      sections: normalizeCollection(sections),
+      contentElements: normalizeCollection(contentElements),
     }
   }
 }
 
-function normalizeCollection(collection = [], defaults) {
+function normalizeCollection(collection = [], defaults = {}) {
   return collection.map(item => ({
     ...defaults,
     ...item
