@@ -18,7 +18,14 @@ import {getItems, getItem} from '../collections';
  *       summary: 'An introductory chapter',
  *       sections: [
  *         {
+ *           permaId: 101,
+ *           sectionIndex: 0,
  *           transition: 'scroll',
+ *
+ *           // references to adjacent section objects
+ *           previousSection: { ... },
+ *           nextSection: { ... },
+ *
  *           foreground: [
  *             {
  *               type: 'heading',
@@ -42,15 +49,29 @@ export function useEntryStructure() {
   const entryState = useEntryState();
 
   return useMemo(() => {
-    return getItems(entryState.collections, 'chapters').map(chapter => ({
+    const sections = [];
+
+    const chapters = getItems(entryState.collections, 'chapters').map(chapter => ({
       permaId: chapter.permaId,
       ...chapter.configuration,
       sections: getItems(entryState.collections, 'sections')
         .filter(
           item => item.chapterId === chapter.id
         )
-        .map(section => sectionStructure(entryState.collections, section))
+        .map(section => {
+          const result = sectionStructure(entryState.collections, section);
+          sections.push(result);
+          return result;
+        })
     }));
+
+    sections.forEach((section, index) => {
+      section.sectionIndex = index;
+      section.previousSection = sections[index - 1];
+      section.nextSection = sections[index + 1];
+    });
+
+    return chapters;
   }, [entryState]);
 };
 
@@ -67,6 +88,7 @@ export function useEntryStructure() {
  * const section = useSectionStructure({sectionPermaId: 4});
  * section // =>
  *   {
+ *     permaId: 4,
  *     transition: 'scroll',
  *     foreground: [
  *       {
@@ -93,6 +115,7 @@ export function useSectionStructure({sectionPermaId}) {
 
 function sectionStructure(collections, section) {
   return section && {
+    permaId: section.permaId,
     ...section.configuration,
     foreground: getItems(collections, 'contentElements')
       .filter(

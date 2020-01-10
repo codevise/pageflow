@@ -95,6 +95,11 @@ describe('useEntryStructure', () => {
       summary: 'An introductory chapter',
       sections: [
         {
+          permaId: 101,
+          previousSection: undefined,
+          nextSection: {permaId: 102},
+          sectionIndex: 0,
+
           transition: 'scroll',
           foreground: [
             {
@@ -118,6 +123,11 @@ describe('useEntryStructure', () => {
       summary: 'A great chapter',
       sections: [
         {
+          permaId: 102,
+          previousSection: {permaId: 101},
+          nextSection: undefined,
+          sectionIndex: 1,
+
           transition: 'fade',
           foreground: [
             {
