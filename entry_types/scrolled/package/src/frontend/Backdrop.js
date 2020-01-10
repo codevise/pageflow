@@ -1,22 +1,20 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 import Fullscreen from './Fullscreen';
-import Image from './Image';
+import {Image} from './Image';
 import Video from './Video';
 import FillColor from './FillColor';
-import MotifArea from './MotifArea';
+import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
 
-import images from './images';
 import videos from './videos';
 import BeforeAfter from './BeforeAfter';
 
 import styles from './Backdrop.module.css';
 
-export default function Backdrop(props) {
-  const containerRef = useRef();
-  const containerDimension = useDimension(containerRef);
+export function Backdrop(props) {
+  const [containerDimension, setContainerRef] = useDimension();
 
   return (
     <div className={classNames(styles.Backdrop,
@@ -25,24 +23,28 @@ export default function Backdrop(props) {
                                {[styles.offScreen]: props.offScreen})}>
       <div className={props.transitionStyles.backdropInner}>
         <div className={props.transitionStyles.backdropInner2}>
-          {props.children(renderContent(props, containerDimension, containerRef))}
+          {props.children(renderContent(props, containerDimension, setContainerRef))}
         </div>
       </div>
     </div>
   );
 }
 
-function renderContent(props, containerDimension, containerRef) {
-  if (props.image.startsWith('#')) {
+Backdrop.defaultProps = {
+  transitionStyles: {}
+};
+
+function renderContent(props, containerDimension, setContainerRef) {
+  if (props.image.toString().startsWith('#')) {
     return (
       <FillColor color={props.image} />
     );
   }
-  else if (props.image.startsWith('video')) {
+  else if (props.image.toString().startsWith('video')) {
     const video = videos[props.image];
 
     return (
-      <Fullscreen ref={containerRef}>
+      <Fullscreen ref={setContainerRef}>
         <Video state={props.onScreen ? 'active' : 'inactive'}
                id={props.image}
                offset={props.offset}
@@ -55,33 +57,20 @@ function renderContent(props, containerDimension, containerRef) {
       </Fullscreen>
     );
   }
-  else if (props.image.startsWith('beforeAfter')) {
+  else if (props.image.toString().startsWith('beforeAfter')) {
     return (
-      <Fullscreen ref={containerRef}>
+      <Fullscreen ref={setContainerRef}>
         <BeforeAfter state={props.state} leftImageLabel={props.leftImageLabel} rightImageLabel={props.rightImageLabel} startPos={props.startPos} slideMode={props.slideMode} />
       </Fullscreen>
     );
   }
   else {
-    const image = images[props.image];
-    const imageMobile = images[props.imageMobile];
-
-    let backgroundImages;
-
-    if (imageMobile === undefined) {
-      backgroundImages = <Image id={image.id} focusX={image.focusX} focusY={image.focusY}/>;
-    } else {
-      backgroundImages = <>
-        <Image id={image.id} focusX={image.focusX} focusY={image.focusY}/>
-        <Image id={imageMobile.id} focusX={imageMobile.focusX} focusY={imageMobile.focusY}/>
-      </>
-    }
-
     return (
-      <Fullscreen ref={containerRef}>
-        {backgroundImages}
+      <Fullscreen ref={setContainerRef}>
+        <Image id={props.image} />
+        <Image id={props.imageMobile} mobile={true} />
         <MotifArea ref={props.motifAreaRef}
-                   image={image}
+                   imageId={props.image}
                    containerWidth={containerDimension.width}
                    containerHeight={containerDimension.height} />
       </Fullscreen>

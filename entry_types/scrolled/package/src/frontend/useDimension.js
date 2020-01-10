@@ -1,4 +1,4 @@
-import {useState, useLayoutEffect} from 'react'
+import {useState, useCallback, useEffect} from 'react'
 
 function getSize(el) {
   if (!el) {
@@ -18,30 +18,31 @@ function getSize(el) {
   }
 }
 
-export default function useDimension(ref) {
-  var [componentSize, setComponentSize]  = useState(getSize(ref && ref.current));
+export default function useDimension() {
+  const [componentSize, setComponentSize] = useState(getSize(null));
+  const [currentNode, setCurrentNode] = useState(null);
 
-  useLayoutEffect(function() {
-    var node = ref.current;
+  const measuredRef = useCallback(node => {
+    setCurrentNode(node);
+    setComponentSize(getSize(node))
+  }, []);
 
+  useEffect(function() {
     function handleResize() {
-      if (node) {
-        setComponentSize(getSize(node))
-      }
+      setComponentSize(getSize(currentNode))
     }
 
-    if (!node) {
-      return
+    if (!currentNode) {
+      return;
     }
 
-    setTimeout(handleResize, 0);
-
+    handleResize();
     window.addEventListener('resize', handleResize);
 
     return function() {
       window.removeEventListener('resize', handleResize);
     }
-  }, [ref]);
+  }, [currentNode]);
 
-  return componentSize
+  return [componentSize, measuredRef];
 }

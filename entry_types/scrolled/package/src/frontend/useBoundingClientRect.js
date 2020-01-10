@@ -1,4 +1,4 @@
-import {useState, useLayoutEffect} from 'react'
+import {useState, useEffect, useCallback} from 'react'
 
 function getBoundingClientRect(el) {
   if (!el) {
@@ -15,25 +15,23 @@ function getBoundingClientRect(el) {
   return el.getBoundingClientRect();
 }
 
-export default function useBoundingClientRect(ref, dependecy) {
-  var [boundingClientRect, setBoundingClientRect] = useState(getBoundingClientRect(ref && ref.current));
+export default function useBoundingClientRect() {
+  const [boundingClientRect, setBoundingClientRect] = useState(getBoundingClientRect(null));
+  const [currentNode, setCurrentNode] = useState(null);
 
-  const current = ref.current;
-  
-  useLayoutEffect(function() {
-    var node = current;
+  const measureRef = useCallback(node => {
+    setCurrentNode(node);
+    setBoundingClientRect(getBoundingClientRect(node))
+  }, []);
 
+  useEffect(function() {
     function handler() {
-      if (node) {
-        setBoundingClientRect(getBoundingClientRect(node))
-      }
+      setBoundingClientRect(getBoundingClientRect(currentNode))
     }
 
-    if (!node) {
+    if (!currentNode) {
       return
     }
-
-    setTimeout(handler, 0);
 
     window.addEventListener('resize', handler);
     window.addEventListener('scroll', handler);
@@ -42,7 +40,7 @@ export default function useBoundingClientRect(ref, dependecy) {
       window.removeEventListener('resize', handler);
       window.removeEventListener('scroll', handler);
     }
-  }, [current, dependecy]);
+  }, [currentNode]);
 
-  return boundingClientRect
+  return [boundingClientRect, measureRef]
 }

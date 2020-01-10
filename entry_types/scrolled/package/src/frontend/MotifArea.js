@@ -3,11 +3,19 @@ import classNames from 'classnames';
 
 import styles from './MotifArea.module.css';
 
-export default React.forwardRef(function MotifArea(props, ref) {
+import {useFile} from '../entryState';
+
+export const MotifArea = React.forwardRef(function MotifArea(props, ref) {
+  const image = useFile({collectionName: 'imageFiles', permaId: props.imageId});
+
+  if (!image) {
+    return null;
+  }
+
   return (
     <div ref={ref}
          className={classNames(styles.root, {[styles.active]: props.active})}
-         style={position(props)}
+         style={position(props, image)}
          onMouseEnter={props.onMouseEnter}
          onMouseLeave={props.onMouseLeave}>
       <div className={styles.topLeft} />
@@ -18,9 +26,7 @@ export default React.forwardRef(function MotifArea(props, ref) {
   );
 })
 
-function position(props) {
-  const image = props.image;
-
+function position(props, image) {
   const originalRatio = image.width / image.height;
   const containerRatio = props.containerWidth / props.containerHeight;
   const scale = containerRatio > originalRatio ?
@@ -30,16 +36,19 @@ function position(props) {
   const contentWidth = image.width * scale;
   const contentHeight = image.height * scale;
 
-  const focusX = image.focusX === undefined ? 50 : image.focusX;
-  const focusY = image.focusY === undefined ? 50 : image.focusY;
+  const focusX = image.configuration.focusX === undefined ? 50 : image.configuration.focusX;
+  const focusY = image.configuration.focusY === undefined ? 50 : image.configuration.focusY;
 
   const cropLeft = (contentWidth - props.containerWidth) * focusX / 100;
   const cropTop = (contentHeight - props.containerHeight) * focusY / 100;
 
+  const motifArea = image.configuration.motifArea ||
+                     {top: 0, left: 0, width: 0, height: 0};
+
   return {
-    top: contentHeight * image.motiveArea.top / 100 - cropTop,
-    left: contentWidth * image.motiveArea.left / 100  - cropLeft,
-    width: contentWidth * image.motiveArea.width / 100,
-    height: contentHeight * image.motiveArea.height / 100
+    top: contentHeight * motifArea.top / 100 - cropTop,
+    left: contentWidth * motifArea.left / 100  - cropLeft,
+    width: contentWidth * motifArea.width / 100,
+    height: contentHeight * motifArea.height / 100
   };
 }

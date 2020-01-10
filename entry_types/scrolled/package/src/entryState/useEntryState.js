@@ -1,9 +1,9 @@
 import {useMemo} from 'react';
 
-import {useCollections, getItems, watchCollection} from './collections';
+import {useCollections, getItems} from '../collections';
 
 export function useEntryState(seed = {}) {
-  const [collections, dispatch] = useCollections(seed.collections);
+  const [collections, dispatch] = useCollections(seed.collections, {keyAttribute: 'permaId'});
 
   const entryStructure = useMemo(() => {
     return getItems(collections, 'chapters').map(chapter => ({
@@ -28,30 +28,13 @@ export function useEntryState(seed = {}) {
     }));
   }, [collections]);
 
+  const entryState = useMemo(() => ({
+    collections,
+    config: seed.config
+  }), [collections, seed]);
+
   return [
-    {entryStructure},
+    {entryStructure, entryState},
     dispatch
   ]
 };
-
-export function watchCollections({chapters, sections, contentElements}, {dispatch}) {
-  watchCollection(chapters, {
-    name: 'chapters',
-    attributes: ['id', 'permaId'],
-    includeConfiguration: true,
-    dispatch
-  });
-  watchCollection(sections, {
-    name: 'sections',
-    attributes: ['id', 'permaId', 'chapterId'],
-    includeConfiguration: true,
-    dispatch
-  });
-  watchCollection(contentElements, {
-    name: 'contentElements',
-    attributes: ['id', 'permaId', 'typeName', 'sectionId'],
-    keyAttribute: 'permaId',
-    includeConfiguration: true,
-    dispatch
-  });
-}

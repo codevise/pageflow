@@ -7,7 +7,7 @@ module.exports = {
   rootDir: require('path').resolve(__dirname),
 
   testMatch: ["<rootDir>/spec/**/*-spec.js"],
-  modulePaths: ["<rootDir>/src"],
+  modulePaths: ['<rootDir>/src', '<rootDir>/spec'],
 
   moduleNameMapper,
   transform

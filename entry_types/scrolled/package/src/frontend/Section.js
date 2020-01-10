@@ -1,8 +1,8 @@
-import React, {useRef} from 'react';
+import React, {useRef, useCallback} from 'react';
 import classNames from 'classnames';
 
 import useOnScreen from './useOnScreen';
-import Backdrop from './Backdrop';
+import {Backdrop} from './Backdrop';
 import Foreground from './Foreground';
 import {Layout} from './layouts';
 import isIntersectingX from './isIntersectingX';
@@ -37,14 +37,16 @@ export default function Section(props) {
 
   useScrollTarget(ref, props.isScrollTarget);
 
-  const motifAreaRef = useRef();
-  const contentAreaRef = useRef()
-  const motifAreaRect = useBoundingClientRect(motifAreaRef);
-  const motifAreaDimension = useDimension(motifAreaRef);
-  const contentAreaRect = useBoundingClientRect(contentAreaRef, props.layout);
+  const [motifAreaRect, setMotifAreaRectRect] = useBoundingClientRect();
+  const [motifAreaDimension, setMotifAreaDimensionRef] = useDimension();
 
+  const setMotifAreaRefs = useCallback(node => {
+    setMotifAreaRectRect(node);
+    setMotifAreaDimensionRef(node);
+  }, [setMotifAreaRectRect, setMotifAreaDimensionRef]);
+
+  const [contentAreaRect, setContentAreaRef] = useBoundingClientRect(props.layout);
   const intersecting = isIntersectingX(motifAreaRect, contentAreaRect);
-  const contentAreaRect2 = useBoundingClientRect(contentAreaRef, intersecting);
 
   const heightOffset = 0; //(props.backdrop.first || props.transition === 'scrollOver') ? 0 : (window.innerHeight / 3);
 
@@ -78,7 +80,7 @@ export default function Section(props) {
                                              {[styles.invert]: props.invert})}>
       <div ref={activityProbeRef} className={styles.activityProbe} />
       <Backdrop {...props.backdrop}
-                motifAreaRef={motifAreaRef}
+                motifAreaRef={setMotifAreaRefs}
                 onScreen={onScreen}
                 offset={Math.max(0, Math.max(1, -contentAreaRect.top / 200)) }
                 state={props.state}
@@ -91,7 +93,7 @@ export default function Section(props) {
                              intersecting={intersecting}
                              opacity={props.shadowOpacity >= 0 ? props.shadowOpacity / 100 : 0.7}
                              motifAreaRect={motifAreaRect}
-                             contentAreaRect={contentAreaRect2}>{children}</Shadow>}
+                             contentAreaRect={contentAreaRect}>{children}</Shadow>}
       </Backdrop>
       <Foreground transitionStyles={transitionStyles}
                   hidden={props.interactiveBackdrop}
@@ -106,7 +108,7 @@ export default function Section(props) {
              opacity={props.shadowOpacity}>
           <Layout items={indexItems(props.foreground)}
                   appearance={props.appearance}
-                  contentAreaRef={contentAreaRef}
+                  contentAreaRef={setContentAreaRef}
                   layout={props.layout}>
             {(children) => <BoxWrapper>{children}</BoxWrapper>}
           </Layout>

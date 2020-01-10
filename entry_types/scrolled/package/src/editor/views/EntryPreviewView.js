@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import {cssModulesUtils} from 'pageflow/ui';
-import {watchCollections} from '../../useEntryState';
+import {watchCollections} from '../../entryState';
 
 import styles from './EntryPreviewView.module.css'
 
