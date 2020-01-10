@@ -2,19 +2,18 @@ import React, {useRef} from 'react';
 import classNames from 'classnames';
 
 import Fullscreen from './Fullscreen';
-import Image from './Image';
+import {Image} from './Image';
 import Video from './Video';
 import FillColor from './FillColor';
-import MotifArea from './MotifArea';
+import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
 
-import images from './images';
 import videos from './videos';
 import BeforeAfter from './BeforeAfter';
 
 import styles from './Backdrop.module.css';
 
-export default function Backdrop(props) {
+export function Backdrop(props) {
   const containerRef = useRef();
   const containerDimension = useDimension(containerRef);
 
@@ -32,13 +31,17 @@ export default function Backdrop(props) {
   );
 }
 
+Backdrop.defaultProps = {
+  transitionStyles: {}
+};
+
 function renderContent(props, containerDimension, containerRef) {
-  if (props.image.startsWith('#')) {
+  if (props.image.toString().startsWith('#')) {
     return (
       <FillColor color={props.image} />
     );
   }
-  else if (props.image.startsWith('video')) {
+  else if (props.image.toString().startsWith('video')) {
     const video = videos[props.image];
 
     return (
@@ -55,7 +58,7 @@ function renderContent(props, containerDimension, containerRef) {
       </Fullscreen>
     );
   }
-  else if (props.image.startsWith('beforeAfter')) {
+  else if (props.image.toString().startsWith('beforeAfter')) {
     return (
       <Fullscreen ref={containerRef}>
         <BeforeAfter state={props.state} leftImageLabel={props.leftImageLabel} rightImageLabel={props.rightImageLabel} startPos={props.startPos} slideMode={props.slideMode} />
@@ -63,25 +66,12 @@ function renderContent(props, containerDimension, containerRef) {
     );
   }
   else {
-    const image = images[props.image];
-    const imageMobile = images[props.imageMobile];
-
-    let backgroundImages;
-
-    if (imageMobile === undefined) {
-      backgroundImages = <Image id={image.id} focusX={image.focusX} focusY={image.focusY}/>;
-    } else {
-      backgroundImages = <>
-        <Image id={image.id} focusX={image.focusX} focusY={image.focusY}/>
-        <Image id={imageMobile.id} focusX={imageMobile.focusX} focusY={imageMobile.focusY}/>
-      </>
-    }
-
     return (
       <Fullscreen ref={containerRef}>
-        {backgroundImages}
+        <Image id={props.image} />
+        <Image id={props.imageMobile} mobile={true} />
         <MotifArea ref={props.motifAreaRef}
-                   image={image}
+                   imageId={props.image}
                    containerWidth={containerDimension.width}
                    containerHeight={containerDimension.height} />
       </Fullscreen>

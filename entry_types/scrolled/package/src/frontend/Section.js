@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import classNames from 'classnames';
 
 import useOnScreen from './useOnScreen';
-import Backdrop from './Backdrop';
+import {Backdrop} from './Backdrop';
 import Foreground from './Foreground';
 import {Layout} from './layouts';
 import isIntersectingX from './isIntersectingX';

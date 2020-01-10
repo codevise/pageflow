@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import InlineCaption from './InlineCaption';
-import Image from './Image';
+import {Image} from './Image';
 
 import styles from './InlineImage.module.css';
 
