@@ -1,4 +1,4 @@
-import {useEntryStructure, watchCollections} from 'entryState';
+import {useEntryStructure, useSectionStructure, watchCollections} from 'entryState';
 
 import {
   ChaptersCollection,
@@ -172,5 +172,42 @@ describe('useEntryStructure', () => {
     const entryStructure = result.current;
 
     expect(entryStructure).toMatchObject(expectedEntryStructure);
+  });
+});
+
+describe('useSectionStructure', () => {
+  const expectedSectionStructure = {
+    transition: 'scroll',
+    foreground: [
+      {
+        type: 'heading',
+        props: {
+          children: 'Heading'
+        }
+      },
+      {
+        type: 'textBlock',
+        props: {
+          children: 'Some text'
+        }
+      }
+    ]
+  };
+
+  it('returns data for one scene', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionStructure({sectionPermaId: 101}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: contentElementsSeed
+        }
+      }
+    );
+
+    const sectionStructure = result.current;
+
+    expect(sectionStructure).toMatchObject(expectedSectionStructure);
   });
 });

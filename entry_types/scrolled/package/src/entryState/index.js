@@ -1,4 +1,4 @@
-export {useEntryStructure} from './useEntryStructure';
+export {useEntryStructure, useSectionStructure} from './structure';
 export {useFile} from './useFile';
 
 export {EntryStateProvider, useEntryStateDispatch} from './EntryStateProvider';

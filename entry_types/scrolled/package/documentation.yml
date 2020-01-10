@@ -9,3 +9,11 @@ toc:
       React hooks to obtain entry data.
     children:
       - useFile
+      - useEntryStructure
+      - useSectionStructure
+  - name: Spec Support
+    description: |
+      Helper functions to use in specs.
+    children:
+      - renderInEntry
+      - renderHookInEntry
