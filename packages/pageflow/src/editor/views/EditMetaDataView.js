@@ -62,30 +62,14 @@ export const EditMetaDataView = Marionette.Layout.extend({
     });
 
     configurationEditor.tab('widgets', function() {
-      var theme = entry.getTheme();
-
-      this.input('manual_start', CheckBoxInputView);
-      this.input('emphasize_chapter_beginning', CheckBoxInputView);
-      this.input('emphasize_new_pages', CheckBoxInputView);
-      this.input('home_button_enabled', CheckBoxInputView, {
-        disabled: !theme.hasHomeButton(),
-        displayUncheckedIfDisabled: true
-      });
-      this.input('overview_button_enabled', CheckBoxInputView, {
-        disabled: !theme.hasOverviewButton(),
-        displayUncheckedIfDisabled: true
-      });
-      if (theme.hasHomeButton()) {
-        this.input('home_url', TextInputView, {
-          placeholder: state.theming.get('pretty_url'),
-          visibleBinding: 'home_button_enabled'
-        });
-      }
-      this.view(EditWidgetsView, {
+      editor.entryType.appearanceInputs &&
+        editor.entryType.appearanceInputs(this, entry, state.theming);
+      entry.widgets && this.view(EditWidgetsView, {
         model: entry,
         widgetTypes: editor.widgetTypes
       });
-      if (pageflow.features.isEnabled('selectable_themes') &&
+      if (pageflow.features &&
+          pageflow.features.isEnabled('selectable_themes') &&
           state.themes.length > 1) {
         this.view(ThemeInputView, {
           themes: state.themes,
