@@ -9,5 +9,9 @@ module PageflowScrolled
       joins(section: {chapter: {storyline: :revision}})
         .where(pageflow_scrolled_storylines: {revision_id: revision})
     end
+
+    def copy_to(section)
+      section.content_elements << dup
+    end
   end
 end

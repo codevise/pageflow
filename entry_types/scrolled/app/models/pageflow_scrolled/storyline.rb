@@ -16,6 +16,7 @@ module PageflowScrolled
 
     has_many :chapters,
              -> { order('pageflow_scrolled_chapters.position ASC') },
+             class_name: 'PageflowScrolled::Chapter',
              dependent: :destroy,
              inverse_of: :storyline
     has_many :sections,
@@ -24,5 +25,15 @@ module PageflowScrolled
     has_many :content_elements,
              -> { reorder(CONTENT_ELEMENTS_ORDER) },
              through: :sections
+
+    def copy_to(revision)
+      storyline = dup
+      storyline.revision = revision
+      storyline.save!
+
+      chapters.each do |chapter|
+        chapter.copy_to(storyline)
+      end
+    end
   end
 end

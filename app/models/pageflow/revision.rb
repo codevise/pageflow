@@ -156,6 +156,9 @@ module Pageflow
       end
     end
 
+    # Public interface for copying a revision
+    #
+    # @since 15.1
     def copy(&block)
       revision = dup
 
