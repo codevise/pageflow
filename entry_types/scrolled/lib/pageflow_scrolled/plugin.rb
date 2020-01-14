@@ -8,6 +8,8 @@ module PageflowScrolled
         c.file_types.register(Pageflow::BuiltInFileType.image)
         c.file_types.register(Pageflow::BuiltInFileType.video)
         c.file_types.register(Pageflow::BuiltInFileType.audio)
+
+        c.revision_components.register(Storyline)
       end
     end
   end

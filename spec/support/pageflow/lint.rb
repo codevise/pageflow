@@ -17,7 +17,7 @@ module Pageflow
     #
     # @param entry_type [EntryType] Page type to run specs for
     #
-    # @since eddge
+    # @since edge
     #
     # @example
     #

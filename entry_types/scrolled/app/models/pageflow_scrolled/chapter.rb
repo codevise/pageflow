@@ -18,9 +18,19 @@ module PageflowScrolled
         .where(pageflow_scrolled_storylines: {revision_id: revision})
     end
 
+    def copy_to(storyline)
+      chapter = dup
+      storyline.chapters << chapter
+
+      sections.each do |section|
+        section.copy_to(chapter)
+      end
+    end
+
     private
 
     def ensure_storyline
+      return if storyline.present?
       unless Storyline.all_for_revision(revision).exists?
         Storyline.create!(revision: revision, configuration: {main: true})
       end
