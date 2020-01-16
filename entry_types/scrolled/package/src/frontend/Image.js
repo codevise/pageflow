@@ -4,6 +4,12 @@ import styles from './Image.module.css';
 
 import {useFile} from '../entryState';
 
+/**
+ * Render an image file.
+ *
+ * @param {Object} props
+ * @param {number} props.id - Perma id of the image file.
+ */
 export function Image(props) {
   const image = useFile({collectionName: 'imageFiles', permaId: props.id});
 
