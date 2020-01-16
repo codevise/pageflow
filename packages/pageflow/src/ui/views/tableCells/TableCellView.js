@@ -12,6 +12,8 @@ import template from '../../templates/tableCells/tableCell.jst';
  * `this.options.column`. Override the `update` method to populate the
  * element.
  *
+ * @param {Object} [options]
+ *
  * @param {string} [options.className]
  *   Class attribute to apply to the cell element.
  *

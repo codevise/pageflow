@@ -1,6 +1,8 @@
 /**
  * Text based input view that can display a placeholder.
  *
+ * @param {Object} [options]
+ *
  * @param {string|function} [options.placeholder]
  *   Display a placeholder string if the input is blank. Either a
  *   string or a function taking the model as a first parameter and
@@ -16,9 +18,6 @@
  * @param {Backbone.Model} [options.placeholderModel]
  *   Obtain placeholder by looking up the configured `propertyName`
  *   inside a given model.
- *
- * @mixin
- * @memberof module:pageflow/ui
  */
 export const inputWithPlaceholderText = {
   onRender: function() {

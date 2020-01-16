@@ -10,6 +10,9 @@ import template from '../../templates/inputs/selectInput.jst';
 
 /**
  * A drop down with support for grouped items.
+ * See {@link inputView} for further options
+ *
+ * @param {Object} [options]
  *
  * @param {string[]} [options.values]
  *   List of possible values to persist in the attribute.
@@ -23,7 +26,7 @@ import template from '../../templates/inputs/selectInput.jst';
  * @param {string[]} [options.translationKeyPrefix]
  *   Obtain texts for items from translations by appending the item
  *   value to this prefix separated by a dot. By default the
- *   [`attributeTranslationKeyPrefixes` option]{@link module:pageflow/ui:inputView}
+ *   [`attributeTranslationKeyPrefixes` option]{@link inputView}
  *   is used by appending the suffix `.values` to each candidate.
  *
  * @param {string[]} [options.groups]
@@ -77,9 +80,7 @@ import template from '../../templates/inputs/selectInput.jst';
  *   value of the `placeholderModel` occurs whenever the attribute is
  *   blank.
  *
- * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
- * @memberof module:pageflow/ui
  */
 export const SelectInputView = Marionette.ItemView.extend({
   mixins: [inputView],

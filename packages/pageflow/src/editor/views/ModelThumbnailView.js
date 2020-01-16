@@ -8,7 +8,6 @@ import {StaticThumbnailView} from './StaticThumbnailView';
  * Base thumbnail view for models supporting a `thumbnailFile` method.
  *
  * @class
- * @memberof module:pageflow/editor
  */
 export const ModelThumbnailView = Marionette.View.extend({
   className: 'model_thumbnail',

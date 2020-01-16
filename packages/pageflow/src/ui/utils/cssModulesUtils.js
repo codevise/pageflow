@@ -34,6 +34,8 @@
  *         this.ui.container // => JQuery wrapper for container element
  *       }
  *     });
+ *
+ * @memberof cssModulesUtils
  */
 export function ui(styles, ...classNames) {
   return classNames.reduce((result, className) => {

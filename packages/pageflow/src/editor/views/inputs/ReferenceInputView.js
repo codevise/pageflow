@@ -11,10 +11,9 @@ import template from '../../templates/inputs/reference.jst';
  * Base class for input views that reference models.
  *
  * @class
- * @memberof module:pageflow/editor
  */
 export const ReferenceInputView = Marionette.ItemView.extend(
-/** @lends module:pageflow/editor.ReferenceInputView# */{
+/** @lends ReferenceInputView.prototype */{
 
   mixins: [inputView],
 

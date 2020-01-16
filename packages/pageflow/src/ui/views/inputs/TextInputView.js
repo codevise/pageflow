@@ -9,21 +9,21 @@ import template from '../../templates/inputs/textInput.jst';
 /**
  * Input view for a single line of text.
  *
+ * See {@link inputWithPlaceholderText} for placeholder related
+ * further options.  See {@link inputView} for further options.
+ *
+ * @param {Object} [options]
+ *
  * @param {boolean} [options.required=false]
- *   Display an error if the input is blank.
+ * Display an error if the input is blank.
  *
  * @param {number} [options.maxLength=255]
- *   Maximum length of characters for this input.
- *   To support legacy data which consists of more characters than the specified maxLength,
- *   the option will only take effect for data which is shorter than the specified maxLength.
+ *   Maximum length of characters for this input.  To support legacy
+ *   data which consists of more characters than the specified
+ *   maxLength, the option will only take effect for data which is
+ *   shorter than the specified maxLength.
  *
- * @see
- * {@link module:pageflow/ui.inputWithPlaceholderText inputWithPlaceholderText}
- * for placeholder related further options
- *
- * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
- * @memberof module:pageflow/ui
  */
 export const TextInputView = Marionette.ItemView.extend({
   mixins: [inputView, inputWithPlaceholderText],

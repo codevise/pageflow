@@ -1,0 +1,108 @@
+toc:
+  - name: Editor API
+    description: |
+      This section describes the API used by Pageflow plugins to
+      extend and integrate with the Pageflow editor. The {@link
+      editor} object can be imported via:
+
+      ```
+      import {editor} from 'pageflow/editor';
+      ```
+    children:
+      - editor
+      - Failures
+      - Failure
+
+  - name: Editor - Input Views
+    description: |
+      Editor specific Backbone views that can be used together with
+      {@link ConfigurationEditorView}:
+
+      ```
+      import {FileInputView} from 'pageflow/editor';
+      import {ConfigurationEditorView} from 'pageflow/ui';
+
+      // ...
+
+      this.configurationEditor = new ConfigurationEditorView({
+        model: this.model
+      });
+
+      this.configurationEditor.tab('files', function() {
+        this.input('image', FileInputView, {
+          // ...
+        });
+      });
+      ```
+    children:
+      - ReferenceInputView
+      - FileInputView
+
+  - name: Editor - Misc Views
+    description: |
+      General purpose Backbone views exported by `pageflow/editor`.
+    children:
+      - DropDownButtonView
+      - ListView
+      - ModelThumbnailView
+
+  - name: UI - Input Views
+    description: |
+      Backbone views that can be used together with {@link
+      ConfigurationEditorView}. `pageflow/ui`.
+
+      ```
+      import {ConfigurationEditorView, TextInputView} from 'pageflow/ui';
+
+      // ...
+
+      this.configurationEditor = new ConfigurationEditorView({
+        model: this.model
+      });
+
+      this.configurationEditor.tab('general', function() {
+        this.input('text', TextInputView, {
+          // ...
+        });
+      });
+      ```
+
+    children:
+      - inputView
+      - inputWithPlaceholderText
+      - CheckBoxGroupInputView
+      - CheckBoxInputView
+      - ColorInputView
+      - ProxyUrlInputView
+      - SelectInputView
+      - SliderInputView
+      - TextAreaInputView
+      - TextInputView
+      - UrlDisplayView
+      - UrlInputView
+
+  - name: UI - Table Views
+    description: |
+      Backbone views exported by `pageflow/ui` to display tables.
+    children:
+      - DeleteRowTableCellView
+      - EnumTableCellView
+      - IconTableCellView
+      - PresenceTableCellView
+      - TableCellView
+      - TextTableCellView
+
+  - name: UI - Misc Views
+    description: |
+      General purpose Backbone views exported by `pageflow/ui`.
+    children:
+      - ConfigurationEditorView
+      - FileMetaDataItemValueView
+      - TabsView
+
+  - name: UI - Utils
+    description: |
+      Utility functions exported by `pageflow/ui`.
+    children:
+      - i18nUtils
+      - cssModulesUtils

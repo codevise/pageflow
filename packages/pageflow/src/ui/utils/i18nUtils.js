@@ -3,12 +3,6 @@ import I18n from 'i18n-js';
 import _ from 'underscore';
 
 /**
- * Helpers functions for handling translations.
- *
- * @memberof module:pageflow/ui
- */
-
-/**
  * Returns an array of translation keys based on the `prefixes`
  * option and the given `keyName`.
  *
@@ -27,8 +21,9 @@ import _ from 'underscore';
  *   Required if `fallbackPrefix` option is present.
  *
  * @return {string[]}
+ * @memberof i18nUtils
  * @since 12.0
-   */
+ */
 export function attributeTranslationKeys(attributeName, keyName, options) {
   var result = [];
 
@@ -49,11 +44,11 @@ export function attributeTranslationKeys(attributeName, keyName, options) {
 
 /**
  * Takes the same parameters as {@link
- * module:pageflow/ui.attributeTranslationKeys
- * i18nUtils.attributeTranslationKeys}, but returns the first
- * existing translation.
+ * #i18nutilsattributetranslationkeys attributeTranslationKeys}, but returns the first existing
+ * translation.
  *
  * @return {string}
+ * @memberof i18nUtils
  * @since 12.0
  */
 export function attributeTranslation(attributeName, keyName, options) {
@@ -77,6 +72,7 @@ export function attributeTranslation(attributeName, keyName, options) {
  *   If true, also search for keys ending in '_html' and HTML-escape
  *   keys that do not end in 'html'
  *
+ * @memberof i18nUtils
  * @return {string}
  */
 export function findTranslation(keys, options) {
@@ -104,6 +100,7 @@ export function findTranslation(keys, options) {
  * @param {string[]} keys
  * Translation key candidates.
  *
+ * @memberof i18nUtils
  * @return {string}
  */
 export function findKeyWithTranslation(keys) {

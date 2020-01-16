@@ -8,6 +8,9 @@ import template from '../../templates/inputs/textInput.jst';
 
 /**
  * Input view for a color value in hex representation.
+ * See {@link inputView} for further options
+ *
+ * @param {Object} [options]
  *
  * @param {string|function} [options.defaultValue]
  *   Color value to display by default. The corresponding value is not
@@ -26,9 +29,7 @@ import template from '../../templates/inputs/textInput.jst';
  *   down. The default value, if present, is always used as the
  *   first swatch automatically.
  *
- * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
- * @memberof module:pageflow/ui
  */
 export const ColorInputView = Marionette.ItemView.extend({
   mixins: [inputView],

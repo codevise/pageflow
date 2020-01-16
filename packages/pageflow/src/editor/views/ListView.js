@@ -17,6 +17,8 @@ import blankSlateTemplate from '../templates/listBlankSlate.jst';
  *
  * @param {Backbone.Collection} options.collection
  *
+ * @param {Object} options
+ *
  * @param {string} options.label
  *   Text of the label to display above the list.
  *
@@ -37,7 +39,6 @@ import blankSlateTemplate from '../templates/listBlankSlate.jst';
  * @param {function} [options.onRemove]
  *
  * @class
- * @memberof module:pageflow/editor
  */
 export const ListView = Marionette.ItemView.extend({
   template,

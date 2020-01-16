@@ -2,7 +2,6 @@ import Marionette from 'backbone.marionette';
 
 import template from '../templates/dropDownButtonItem.jst';
 
-/** @api private */
 export const DropDownButtonItemView = Marionette.ItemView.extend({
   template,
   tagName: 'li',

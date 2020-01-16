@@ -1,10 +1,17 @@
-/**
- * Reusable Backbone views for the editor and admin interface.
- * @module pageflow/ui
- */
-
 import './renderer';
+
+/**
+ * Helpers functions for handling translations.
+ *
+ * @alias i18nUtils
+ */
 import * as i18nUtils from './utils/i18nUtils';
+
+/**
+ * Helpers functions for working with CSS modules.
+ *
+ * @alias cssModulesUtils
+ */
 import * as cssModulesUtils from './utils/cssModulesUtils';
 
 export { i18nUtils, cssModulesUtils };

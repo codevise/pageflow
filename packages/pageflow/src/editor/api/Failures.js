@@ -17,11 +17,9 @@ import {SavingFailure} from './Failure';
  *
  *     editor.failures.add(new OrderingFailure(model, collection));
  *
- * @alias pageflow.Failures
- * @memberof module:pageflow/editor
+ * @alias Failures
  */
-export const FailuresAPI = Object.extend(
-/** @lends module:pageflow/editor.pageflow.Failures */{
+export const FailuresAPI = Object.extend(/** @lends Failures.prototype */{
   initialize: function() {
     this.failures = {};
     this.length = 0;
@@ -29,8 +27,7 @@ export const FailuresAPI = Object.extend(
 
   /**
    * Listen to the `error` and `sync` events of a collection and
-   * create {@link module:pageflow/editor.SavingFailure
-   * SavingFailure} objects.
+   * create failure objects.
    */
   watch: function(collection) {
     this.listenTo(collection, 'sync', this.remove);

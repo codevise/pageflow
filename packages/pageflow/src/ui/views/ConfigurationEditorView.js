@@ -7,6 +7,8 @@ import {TabsView} from './TabsView';
 /**
  * Render a inputs on multiple tabs.
  *
+ * @param {Object} [options]
+ *
  * @param {string} [options.model]
  *   Backbone model to use for input views.
  *
@@ -26,7 +28,6 @@ import {TabsView} from './TabsView';
  *   Prefixes to append tab name to.
  *
  * @class
- * @memberof module:pageflow/ui
  */
 export const ConfigurationEditorView = Marionette.View.extend({
   className: 'configuration_editor',

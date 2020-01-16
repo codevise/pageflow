@@ -6,14 +6,15 @@ import template from '../../templates/inputs/checkBox.jst';
 
 /**
  * Input view for boolean values.
+ * See {@link inputView} for further options
+ *
+ * @param {Object} [options]
  *
  * @param {boolean} [options.displayUncheckedIfDisabled=false]
  *   Ignore the attribute value if the input is disabled and display
  *   an unchecked check box.
  *
- * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
- * @memberof module:pageflow/ui
  */
 export const CheckBoxInputView = Marionette.ItemView.extend({
   mixins: [inputView],

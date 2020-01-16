@@ -15,6 +15,10 @@ import {UrlInputView} from './UrlInputView';
  * `http://example.com/some/path` but the string `/example/some/path`
  * is persisited to the database.
  *
+ * See {@link inputView} for further options
+ *
+ * @param {Object} options
+ *
  * @param {string} options.displayPropertyName
  *   Attribute name to store the url entered by the user.
  *
@@ -44,12 +48,10 @@ import {UrlInputView} from './UrlInputView';
  *   ]
  * });
  *
- * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
- * @memberof module:pageflow/ui
  */
 export const ProxyUrlInputView = UrlInputView.extend(
-  /** @lends module:pageflow/ui.ProxyUrlInputView# */{
+  /** @lends ProxyUrlInputView.prototype */{
 
   // @override
   validateUrl: function(url) {
@@ -69,12 +71,12 @@ export const ProxyUrlInputView = UrlInputView.extend(
     }).promise();
   },
 
-  // @override
+  // override
   transformPropertyValue: function(url) {
     return this.rewriteUrl(url);
   },
 
-  // @override
+  // override
   supportedHosts: function() {
     return _.pluck(this.options.proxies, 'url');
   },
