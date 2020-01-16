@@ -151,12 +151,14 @@ import {RainbowEntry} from './models/RainbowEntry';
 
 import {EntryOutlineView} from './views/EntryOutlineView';
 import {EntryPreviewView} from './views/EntryPreviewView';
+import {appearanceInputs} from './helpers/appearanceInputs';
 
 editor.registerEntryType('rainbow', {
   entryModel: RainbowEntry,
 
   previewView: EntryPreviewView,
-  outlineView: EntryOutlineView
+  outlineView: EntryOutlineView,
+  appearanceInputs: appearanceInputs
 });
 ```
 
