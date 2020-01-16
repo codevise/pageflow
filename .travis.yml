@@ -44,9 +44,7 @@ jobs:
       <<: *pageflow_ruby_job
       rvm: 2.5.3
       env:
-        - PUBLISH_THEME_DOC=true COVERALLS_PARALLEL=true
-      after_success:
-        - bundle exec publish-pageflow-theme-doc
+        - COVERALLS_PARALLEL=true
 
     - name: RSpec - pageflow-paged
       <<: *ruby_job
