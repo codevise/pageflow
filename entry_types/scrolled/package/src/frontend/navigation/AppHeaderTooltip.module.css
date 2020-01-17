@@ -2,6 +2,7 @@
   opacity: 1 !important;
   border-bottom: 3px solid #e10028;
   box-shadow: 0 0 0.3125rem rgba(0,0,0,.2);
+  width: 200px;
 }
 
 .tooltipHeadline {
