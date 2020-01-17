@@ -12,6 +12,8 @@ import template from '../../templates/tableCells/deleteRowTableCell.jst';
  *
  * - `.cell_title` - Used as title attribute.
  *
+ * @param {Object} [options]
+ *
  * @param {function} [options.toggleDeleteButton]
  *   A function with boolean return value to be called on
  *   this.getModel(). Delete button will be visible only if the

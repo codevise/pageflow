@@ -8,7 +8,6 @@ import {Object} from '$pageflow/ui';
  * Retryable failures should implement `retryAction`.
  *
  * @class
- * @memberof module:pageflow/editor
  */
 export const Failure = Object.extend({
   canRetry: true,
@@ -33,24 +32,10 @@ export const Failure = Object.extend({
   }
 });
 
-/**
- * SavingFailure represents a unsuccessful attempt to save
- * a model on the server.
- *
- * @class
- * @memberof module:pageflow/editor
- */
 export const SavingFailure = Failure.extend({
   type: 'SavingFailure'
 });
 
-/**
- *  OrderingFailure represent a unsuccessful attempt to save
- *  the ordering of a orderedCollection.
- *
- * @class
- * @memberof module:pageflow/editor
- */
 export const OrderingFailure = Failure.extend({
   type: 'OrderingFailure',
 

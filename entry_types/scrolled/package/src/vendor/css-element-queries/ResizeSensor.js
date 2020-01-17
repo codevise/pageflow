@@ -47,12 +47,6 @@
             return globalWindow.setTimeout(fn, 20);
         };
 
-    /**
-     * Iterate over each of the provided element(s).
-     *
-     * @param {HTMLElement|HTMLElement[]} elements
-     * @param {Function}                  callback
-     */
     function forEachElement(elements, callback){
         var elementsType = Object.prototype.toString.call(elements);
         var isCollectionTyped = ('[object Array]' === elementsType
@@ -70,11 +64,6 @@
         }
     }
 
-    /**
-    * Get element size
-    * @param {HTMLElement} element
-    * @returns {Object} {width, height}
-    */
     function getElementSize(element) {
         if (!element.getBoundingClientRect) {
             return {
@@ -90,31 +79,13 @@
         }
     }
 
-    /**
-     * Apply CSS styles to element.
-     *
-     * @param {HTMLElement} element
-     * @param {Object} style
-     */
     function setStyle(element, style) {
         Object.keys(style).forEach(function(key) {
             element.style[key] = style[key];
         });
     }
 
-    /**
-     * Class for dimension change detection.
-     *
-     * @param {Element|Element[]|Elements|jQuery} element
-     * @param {Function} callback
-     *
-     * @constructor
-     */
     var ResizeSensor = function(element, callback) {
-        /**
-         *
-         * @constructor
-         */
         function EventQueue() {
             var q = [];
             this.add = function(ev) {
@@ -141,11 +112,6 @@
             }
         }
 
-        /**
-         *
-         * @param {HTMLElement} element
-         * @param {Function}    resized
-         */
         function attachResizeEvent(element, resized) {
             if (!element) return;
             if (element.resizedAttached) {

@@ -9,8 +9,6 @@ gem 'pageflow-support', path: 'spec/support'
 
 gem 'spring-commands-rspec', group: :development
 
-gem 'pageflow-theme-doc-publisher', git: 'https://github.com/tf/pageflow-theme-doc-publisher'
-
 gem 'coveralls', require: false
 
 # Early failure output

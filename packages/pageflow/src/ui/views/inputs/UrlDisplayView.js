@@ -7,15 +7,15 @@ import template from '../../templates/inputs/urlDisplay.jst';
 
 /**
  * Display view for a link to a URL, to be used like an input view.
+ * See {@link inputView} for further options
+ *
+ * @param {Object} [options]
  *
  * @param {string} [options.propertyName]
  *   Target URL for link
  *
- * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
- * @memberof module:pageflow/ui
  */
-
 export const UrlDisplayView = Marionette.ItemView.extend({
   mixins: [inputView],
 

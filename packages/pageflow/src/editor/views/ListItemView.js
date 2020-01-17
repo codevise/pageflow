@@ -5,7 +5,6 @@ import {ModelThumbnailView} from './ModelThumbnailView';
 
 import template from '../templates/listItem.jst';
 
-/** @api private */
 export const ListItemView = Marionette.ItemView.extend({
   template,
 

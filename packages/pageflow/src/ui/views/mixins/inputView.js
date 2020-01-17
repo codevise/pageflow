@@ -112,7 +112,6 @@ import {attributeTranslationKeys, findTranslation, translationKeysWithSuffix} fr
  *   attribute equals the value of this option.
  *
  * @mixin
- * @memberof module:pageflow/ui
  */
 export const inputView = {
   ui: {
@@ -124,13 +123,12 @@ export const inputView = {
    * Returns an array of translation keys based on the
    * `attributeTranslationKeyPrefixes` option and the given keyName.
    *
-   * Combined with {@link
-   * module:pageflow/ui.findTranslation
+   * Combined with {@link #i18nutils
    * i18nUtils.findTranslation}, this can be used inside input views
    * to obtain additional translations with the same logic as for
    * labels and inline help texts.
    *
-   *      findTranslation(this.attributeTranslationKeys('default_value'));
+   * findTranslation(this.attributeTranslationKeys('default_value'));
    *
    * @param {string} keyName
    * Suffix to append to prefixes.

@@ -1,0 +1,62 @@
+name: docs
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Build pageflow SassDoc
+      uses: codevise/sassdoc-action@v1.2
+      with:
+        input: ./app/assets/stylesheets/pageflow/themes
+        output: ./out/theme/<ref>
+        theme: pageflow
+        themePackage: tf/sassdoc-theme-pageflow#dist
+
+    - name: Build pageflow JSDoc
+      uses: codevise/documentation-js-action@v1.3
+      with:
+        input: "./packages/pageflow/src/editor ./packages/pageflow/src/ui"
+        output: ./out/js/<ref>
+        config: ./packages/pageflow/documentation.yml
+        github: true
+        projectName: pageflow
+        sortOrder: alpha
+        theme: pageflow-documentation-js-theme
+        themePackage: codevise/pageflow-documentation-js-theme#master
+
+    - name: Build pageflow-scrolled JSDoc
+      uses: codevise/documentation-js-action@v1.3
+      with:
+        input: ./entry_types/scrolled/package/
+        output: ./out/scrolled/js/<ref>
+        config: ./entry_types/scrolled/package/documentation.yml
+        github: true
+        projectName: pageflow-scrolled
+        sortOrder: alpha
+        theme: pageflow-documentation-js-theme
+        themePackage: codevise/pageflow-documentation-js-theme#master
+
+    - name: Deploy
+      run: |
+        wget https://raw.githubusercontent.com/peaceiris/actions-gh-pages/v2/entrypoint.sh
+        bash ./entrypoint.sh
+      env:
+        PERSONAL_TOKEN: ${{ secrets.CODEVISE_BOT_PERSONAL_TOKEN }}
+        PUBLISH_BRANCH: master
+        PUBLISH_DIR: ./out
+        EXTERNAL_REPOSITORY: codevise/pageflow-docs
+        INPUT_KEEPFILES: true
+        INPUT_COMMITMESSAGE: "Update docs"
+        INPUT_USERNAME: "codevise-bot"
+        INPUT_USEREMAIL: "bot@codevise.de"

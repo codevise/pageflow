@@ -10,6 +10,8 @@ import {TableCellView} from './TableCellView';
  * - `.cell_title.<attribute_value>` - Used as title attribute.
  * - `.cell_title.blank` - Used as title attribute if attribute is blank.
  *
+ * @param {Object} [options]
+ *
  * @param {string[]} [options.icons]
  *   An array of all possible attribute values to be mapped to HTML
  *   classes of the same name. A global mapping from those classes to

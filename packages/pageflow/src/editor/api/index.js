@@ -16,10 +16,9 @@ export * from './errors';
 /**
  * Interface for engines providing editor extensions.
  * @alias editor
- * @memberof module:pageflow/editor
  */
 export const EditorApi = Object.extend(
-/** @lends module:pageflow/editor.editor */{
+/** @lends editor */{
 
   initialize: function(options) {
     this.router = options && options.router;
@@ -32,45 +31,39 @@ export const EditorApi = Object.extend(
     /**
      * Failures API
      *
-     * @returns {pageflow.Failures}
-     *
-     * @alias failures
-     * @memberof module:pageflow/editor.editor
+     * @returns {Failures}
+     * @memberof editor
      */
     this.failures = new FailuresAPI();
 
     /**
      * Set up editor integration for page types.
-     * @alias pageTypes
-     * @memberof module:pageflow/editor.editor
+     * @memberof editor
      */
     this.pageTypes = new PageTypes();
 
     /**
      * Add tabs to the configuration editor of all pages.
-     * @alias commonPageConfigurationTabs
-     * @memberof module:pageflow/editor.editor
+     * @memberof editor
      */
     this.commonPageConfigurationTabs = new CommonPageConfigurationTabs();
 
     /**
      * Setup editor integration for widget types.
-     * @alias widgetType
-     * @memberof module:pageflow/editor.editor
+     * @memberof editor
      */
     this.widgetTypes = new WidgetTypes();
 
     /**
-     * @alias fileTypes
-     * @memberof module:pageflow/editor.editor
      * Set up editor integration for file types
+     * @memberof editor
      */
     this.fileTypes = new FileTypes();
 
 
     /**
      * List of available file import plugins
-     * @alias fileImporters
+     * @memberof editor
      */
     this.fileImporters = new FileImporters();
   },
@@ -92,7 +85,6 @@ export const EditorApi = Object.extend(
     this.entryType = options;
   },
 
-  /** @api private */
   createEntryModel(seed, options) {
     const entry = new this.entryType.entryModel(seed.entry, options);
 
@@ -207,7 +199,7 @@ export const EditorApi = Object.extend(
    * File selection handlers let editor extensions use the files view
    * to select files for usage in their custom models.
    *
-   * See {@link module:pageflow/editor.editor.selectFile
+   * See {@link #editorselectfile
    * selectFile} method for details how to trigger file selection.
    *
    * Example:
@@ -238,7 +230,7 @@ export const EditorApi = Object.extend(
    *
    * @param {string} handlerName
    *   The name of a handler registered via {@link
-   *   module:pageflow/editor.editor.registerFileSelectionHandler}.
+   *   #editorregisterfileselectionhandler registerFileSelectionHandler}.
    *
    * @param {Object} payload
    *   Options passed to the file selection handler.

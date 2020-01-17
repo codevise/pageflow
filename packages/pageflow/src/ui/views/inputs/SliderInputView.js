@@ -6,10 +6,11 @@ import template from '../../templates/inputs/sliderInput.jst';
 
 /**
  * A slider for numeric inputs.
+ * See {@link inputView} for options
  *
- * @see {@link module:pageflow/ui.inputView inputView} for options
+ * @param {Object} [options]
+ *
  * @class
- * @memberof module:pageflow/ui
  */
 export const SliderInputView = Marionette.ItemView.extend({
   mixins: [inputView],

@@ -11,6 +11,10 @@ import template from '../../templates/inputs/textAreaInput.jst';
 
 /**
  * Input view for multi line text with simple formatting options.
+ * See {@link inputWithPlaceholderText} for placeholder related options.
+ * See {@link inputView} for further options.
+ *
+ * @param {Object} [options]
  *
  * @param {string} [options.size="normal"]
  *   Pass `"short"` to reduce the text area height.
@@ -26,13 +30,7 @@ import template from '../../templates/inputs/textAreaInput.jst';
  *   of a url fragment. Will receive a model with a `linkId`
  *   attribute.
  *
- * @see
- * {@link module:pageflow/ui.inputWithPlaceholderText inputWithPlaceholderText}
- * for placeholder related options
- *
- * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
- * @memberof module:pageflow/ui
  */
 export const TextAreaInputView = Marionette.ItemView.extend({
   mixins: [inputView, inputWithPlaceholderText],

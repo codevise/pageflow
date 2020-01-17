@@ -10,10 +10,11 @@ import template from '../../templates/inputs/checkBoxGroupInput.jst';
 
 /**
  * Input view for attributes storing configuration hashes with boolean values.
+ * See {@link inputView} for further options.
  *
- * @see {@link module:pageflow/ui.inputView inputView} for further options
+ * @param {Object} [options]
+ *
  * @class
- * @memberof module:pageflow/ui
  */
 export const CheckBoxGroupInputView = Marionette.ItemView.extend({
   mixins: [inputView],

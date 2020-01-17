@@ -7,6 +7,8 @@ import {TableCellView} from './TableCellView';
  * text. If attribute value is empty, use most specific default
  * available.
  *
+ * @param {Object} [options]
+ *
  * @param {function|string} [options.column.default]
  *   A function returning a default value for display if attribute
  *   value is empty.

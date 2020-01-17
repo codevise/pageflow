@@ -8,6 +8,8 @@ import template from '../templates/dropDownButton.jst';
 /**
  * A button that displays a drop down menu on hover.
  *
+ * @param {Object} options
+ *
  * @param {String} options.label
  *   Button text.
  *
@@ -29,7 +31,6 @@ import template from '../templates/dropDownButton.jst';
  * when the menu item is clicked.
  *
  * @class
- * @memberof module:pageflow/editor
  */
 export const DropDownButtonView = Marionette.ItemView.extend({
   template,

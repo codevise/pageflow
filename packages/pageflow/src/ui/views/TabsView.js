@@ -12,6 +12,8 @@ import template from '../templates/tabsView.jst';
 /**
  * Switch between different views using tabs.
  *
+ * @param {Object} [options]
+ *
  * @param {string} [options.defaultTab]
  *   Name of the tab to enable by default.
  *
@@ -26,9 +28,8 @@ import template from '../templates/tabsView.jst';
  *   Legacy alias for `fallbackTranslationKeyPrefix`.
  *
  * @class
- * @memberof module:pageflow/ui
  */
-export const TabsView = Marionette.Layout.extend({
+export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
   template,
   className: 'tabs_view',
 

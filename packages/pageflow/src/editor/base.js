@@ -3,11 +3,6 @@ import $ from 'jquery';
 import {EditorApi} from './api';
 import {app} from './app';
 
-/**
- * The Pageflow editor.
- * @module pageflow/editor
- */
-
 export const editor = new EditorApi();
 
 export const startEditor = function(options) {

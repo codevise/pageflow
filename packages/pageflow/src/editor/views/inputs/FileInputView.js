@@ -20,7 +20,6 @@ import template from '../../templates/inputs/fileInput.jst';
  * Input view to reference a file.
  *
  * @class
- * @memberof module:pageflow/editor
  */
 export const FileInputView = Marionette.ItemView.extend({
   mixins: [inputView],

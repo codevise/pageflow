@@ -9,6 +9,8 @@ import template from '../templates/fileMetaDataItemValueView.jst';
  * Base class for views used as `valueView` for file type meta data
  * attributes.
  *
+ * @param {Object} [options]
+ *
  * @param {string} [options.name]
  *   Name of the meta data item used in translation keys.
  *
@@ -19,7 +21,6 @@ import template from '../templates/fileMetaDataItemValueView.jst';
  * @since 12.0
  *
  * @class
- * @memberof module:pageflow/editor
  */
 export const FileMetaDataItemValueView = Marionette.ItemView.extend({
   template,

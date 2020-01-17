@@ -9,6 +9,9 @@ import template from '../../templates/inputs/urlInput.jst';
 
 /**
  * Input view for URLs.
+ * See {@link inputView} for further options
+ *
+ * @param {Object} [options]
  *
  * @param {string[]} options.supportedHosts
  *   List of allowed url prefixes.
@@ -19,12 +22,10 @@ import template from '../../templates/inputs/urlInput.jst';
  * @param {boolean} [options.permitHttps=false]
  *   Allow urls with https protocol.
  *
- * @see {@link module:pageflow/ui.inputView inputView} for further options
  * @class
- * @memberof module:pageflow/ui
  */
 export const UrlInputView = Marionette.Layout.extend(
-  /** @lends module:pageflow/ui.UrlInputView# */{
+  /** @lends UrlInputView.prototype */{
 
   mixins: [inputView],
 
