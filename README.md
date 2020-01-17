@@ -13,9 +13,9 @@ For a high level introduction and example Pageflow stories see
 
 * [Getting Started](https://github.com/codevise/pageflow/wiki/Getting-Started)
 * [Guides](https://github.com/codevise/pageflow/blob/master/doc/index.md)
-* [JavaScript API Reference of `pageflow` package](http://codevise.github.io/pageflow-docs/js/master/)
-* [JavaScript API Reference of `pageflow-scrolled` package](http://codevise.github.io/pageflow-docs/scrolled/js/master/)
-* [Theme API Reference](http://codevise.github.io/pageflow-docs/theme/master/)
+* [JavaScript API Reference of `pageflow` package](http://codevise.github.io/pageflow-docs/js/master/index.html)
+* [JavaScript API Reference of `pageflow-scrolled` package](http://codevise.github.io/pageflow-docs/scrolled/js/master/index.html)
+* [Theme API Reference](http://codevise.github.io/pageflow-docs/theme/master/index.html)
 * [List of Plugins](https://github.com/codevise/pageflow/wiki/List-of-Plugins)
 
 ## Updating
