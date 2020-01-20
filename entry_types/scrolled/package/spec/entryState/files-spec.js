@@ -1,11 +1,8 @@
 import {useFile, watchCollections} from 'entryState';
 
-import {
-  ChaptersCollection,
-  SectionsCollection,
-  ContentElementsCollection
-} from 'editor/collections';
+import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 
+import {factories} from 'pageflow/testHelpers';
 import {renderHookInEntry} from 'support';
 
 describe('useFile', () => {
@@ -59,13 +56,12 @@ describe('useFile', () => {
             }
           }
         },
-        setup: dispatch => {
-          watchCollections({
-            chapters: new ChaptersCollection(),
-            sections: new SectionsCollection(),
-            contentElements: new ContentElementsCollection(),
-            files: {
-              image_files: new SectionsCollection([
+        setup: (dispatch, entryTypeSeed) => {
+          watchCollections(factories.entry(ScrolledEntry, {}, {
+            entryTypeSeed,
+            fileTypes: factories.fileTypesWithImageFileType(),
+            filesAttributes: {
+              image_files: [
                 {
                   id: 100,
                   perma_id: 1,
@@ -75,9 +71,9 @@ describe('useFile', () => {
                     some: 'value'
                   }
                 }
-              ])
+              ]
             }
-          }, {dispatch})
+          }), {dispatch})
         }
       }
     );
