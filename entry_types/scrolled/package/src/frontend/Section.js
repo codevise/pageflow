@@ -75,9 +75,11 @@ export default function Section(props) {
   const BoxWrapper = appearance.foregroundWrapper;
 
   return (
-    <section ref={ref} className={classNames(styles.Section,
-                                             transitionStyles.section,
-                                             {[styles.invert]: props.invert})}>
+    <section id={`section-${props.permaId}`}
+             ref={ref}
+             className={classNames(styles.Section,
+                                   transitionStyles.section,
+                                   {[styles.invert]: props.invert})}>
       <div ref={activityProbeRef} className={styles.activityProbe} />
       <Backdrop {...props.backdrop}
                 motifAreaRef={setMotifAreaRefs}
