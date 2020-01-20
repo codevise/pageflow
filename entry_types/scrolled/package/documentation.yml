@@ -15,5 +15,6 @@ toc:
     description: |
       Helper functions to use in specs.
     children:
+      - normalizeSeed
       - renderInEntry
       - renderHookInEntry
