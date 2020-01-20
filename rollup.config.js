@@ -101,6 +101,15 @@ export default [
     external: externalPageflowUIEditorGlobalsAndCoreJs,
     plugins: pageflowPackagePlugins
   },
+  {
+    input: pageflowPackageRoot + '/src/testHelpers/index.js',
+    output: {
+      file: pageflowPackageRoot + '/testHelpers.js',
+      format: 'esm'
+    },
+    external: externalPageflowEditorGlobalsAndCoreJs,
+    plugins
+  },
 
   {
     input: pageflowPackageRoot + '/src/frontend/index.js',

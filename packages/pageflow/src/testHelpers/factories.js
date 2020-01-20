@@ -1,32 +1,90 @@
 import Backbone from 'backbone';
 import _ from 'underscore';
 
-import {EditorApi, Entry, FilesCollection, ImageFile, SubsetCollection, TextTrackFile, Theme, VideoFile} from 'pageflow/editor';
-import {WidgetTypes} from 'pageflow/editor/api/WidgetTypes';
-import {FileTypes} from 'pageflow/editor/api/FileTypes';
+import {
+  EditorApi,
+  Entry,
+  FilesCollection,
+  ImageFile,
+  SubsetCollection,
+  TextTrackFile,
+  Theme,
+  VideoFile,
+  WidgetTypes,
+  FileTypes
+} from 'pageflow/editor';
 
+/**
+ * Build editor Backbone models for tests.
+ */
 export const factories = {
-  entry: function entry(attributes, options) {
-    var fileTypes = new FileTypes();
-    fileTypes.setup([]);
+  /**
+   * Build an entry model.
+   *
+   * @param {Function} model - Entry type specific entry model
+   * @param {Object} [attributes] - Model attributes
+   * @param {Object} [options]
+   * @param {Object} [options.entryTypeSeed] - Seed data passed to `Entry#setupFromEntryTypeSeed`.
+   * @param {FileTypes} [options.fileTypes] - Use {@link #factoriesfiletypes factories.fileTypes} to construct this object.
+   * @param {Object} [options.filesAttributes] - An object mapping (underscored) file collection names to arrays of file attributes.
+   * @returns {Entry} - An entry Backbone model.
+   *
+   * @example
+   *
+   * import {factories} from 'pageflow/testHelpers';
+   * import {PagedEntry} from 'editor/models/PagedEntry';
+   *
+   * const entry = factories.entry(PagedEntry, {slug: 'some-entry'}, {
+   *   entryTypeSeed: {some: 'data'},
+   *   fileTypes: factories.fileTypes(f => f.withImageFileType()),
+   *   filesAttributes: {
+   *     image_files: [{id: 100, perma_id: 1, basename: 'image'}]
+   *   }
+   * });
+   */
+  entry: function entry(model, attributes, options = {}) {
+    if (typeof model !== 'function') {
+      return factories.entry(Entry, model, attributes);
+    }
 
-    return new Entry(attributes, _.extend({
+    ensureFileTypes(options);
+    ensureFilesCollections(options);
+
+    const entry = new model(attributes, _.extend({
       storylines: new Backbone.Collection(),
       chapters: new Backbone.Collection(),
-      files: {},
-      fileTypes: fileTypes
     }, options));
+
+    if (entry.setupFromEntryTypeSeed && options.entryTypeSeed) {
+      entry.setupFromEntryTypeSeed(options.entryTypeSeed);
+    }
+
+    return entry;
   },
 
   theme: function theme(attributes, options) {
     return new Theme(attributes, options);
   },
 
+  /**
+   * Construct a file type registry that can be passed to {@link
+   * #factoriesentry factories.entry}.
+   *
+   * The passed function receives a builder object with the following
+   * methods that register a corresponding file type:
+   *
+   * - `withImageFileType([options])`: Registers a file type with collection name `image_files`.
+   * - `withVideoFileType([options])`: Registers a file type with collection name `video_files`.
+   * - `withTextTrackFileType([options])`: Registers a file type with collection name `text_track_files`.
+   *
+   * @param {Function} fn - Build function.
+   * @returns {FileTypes} - A file Type registry
+   */
   fileTypes: function(fn) {
     var fileTypes = new FileTypes();
     var fileTypesSetupArray = [];
 
-    fn.call({
+    var builder = {
       withImageFileType: function(options) {
         fileTypes.register('image_files', _.extend({
           model: ImageFile,
@@ -74,12 +132,22 @@ export const factories = {
 
         return this;
       }
-    });
+    };
+
+    fn.call(builder, builder);
 
     fileTypes.setup(fileTypesSetupArray);
     return fileTypes;
   },
 
+  /**
+  * Shorthand for calling {@link #factoriesfiletypes
+  * factories.fileTypes} with a builder function that calls
+  * `withImageFileType`.
+  *
+  * @param {Object} options - File type options passed to withImageFileType,
+  * @returns {FileTypes} - A file Type registry.
+  */
   fileTypesWithImageFileType: function(options) {
     return this.fileTypes(function() {
       this.withImageFileType(options);
@@ -96,7 +164,7 @@ export const factories = {
 
   filesCollection: function(options) {
     return FilesCollection.createForFileType(options.fileType,
-                                                      [{}, {}]);
+                                             [{}, {}]);
   },
 
   nestedFilesCollection: function(options) {
@@ -134,7 +202,7 @@ export const factories = {
 
     var entry = factories.entry({}, {
       files: FilesCollection.createForFileTypes(fileTypes,
-                                                         fileAttributes || {}),
+                                                fileAttributes || {}),
       fileTypes: fileTypes
     });
 
@@ -171,7 +239,7 @@ export const factories = {
 
     var entry = factories.entry({}, {
       files: FilesCollection.createForFileTypes(fileTypes,
-                                                         fileAttributes || {}),
+                                                fileAttributes || {}),
       fileTypes: fileTypes
     });
 
@@ -235,3 +303,17 @@ export const factories = {
     return api;
   }
 };
+
+function ensureFileTypes(options) {
+  if (!options.fileTypes) {
+    options.fileTypes = new FileTypes();
+    options.fileTypes.setup([]);
+  }
+}
+
+function ensureFilesCollections(options) {
+  if (!options.files) {
+    options.files = FilesCollection.createForFileTypes(options.fileTypes,
+                                                       options.filesAttributes);
+  }
+}

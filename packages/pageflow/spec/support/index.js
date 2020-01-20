@@ -1,4 +1,4 @@
-export * from './factories';
+export * from 'pageflow/testHelpers';
 
 export * from './fakeEventEmitter';
 export * from './setupGlobals';

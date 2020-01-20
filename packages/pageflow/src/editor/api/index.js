@@ -12,6 +12,7 @@ import {app} from '../app';
 import {state} from '$state';
 
 export * from './errors';
+export {FileTypes, WidgetTypes};
 
 /**
  * Interface for engines providing editor extensions.
