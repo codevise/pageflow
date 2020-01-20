@@ -169,8 +169,8 @@ module Pageflow
         meta_data = file_importer.files_meta_data(nil, selected_files)
         expect(file_importer).not_to receive(:donwload_file)
         expect {
-          post(:start_import_job, params: {files: meta_data['files'],
-                                           collection: meta_data['collection'],
+          post(:start_import_job, params: {files: meta_data[:files],
+                                           collection: meta_data[:collection],
                                            file_import_name: file_importer.name,
                                            entry_id: entry})
         }.to raise_error(RuntimeError, "Unknown file importer with name '#{file_importer.name}'.")
@@ -198,8 +198,8 @@ module Pageflow
         selected_files = {file1: selected_file}
         meta_data = file_importer.files_meta_data(nil, selected_files)
         expect(file_importer).to receive(:download_file).with(token.auth_token, anything)
-        post(:start_import_job, params: {files: meta_data['files'],
-                                         collection: meta_data['collection'],
+        post(:start_import_job, params: {files: meta_data[:files],
+                                         collection: meta_data[:collection],
                                          file_import_name: file_importer.name,
                                          entry_id: entry})
       end
@@ -221,14 +221,14 @@ module Pageflow
         selected_file = file_importer.search(nil, nil)['photos'].first
         selected_files = {file1: selected_file}
         meta_data = file_importer.files_meta_data(nil, selected_files)
-        post(:start_import_job, params: {files: meta_data['files'],
-                                         collection: meta_data['collection'],
+        post(:start_import_job, params: {files: meta_data[:files],
+                                         collection: meta_data[:collection],
                                          file_import_name: file_importer.name,
                                          entry_id: entry})
         files = JSON.parse(response.body)['data']
-        expect(files.length).to eq(meta_data['files'].length)
+        expect(files.length).to eq(meta_data[:files].length)
         files.each_with_index do |file, index|
-          expect(file['source_url']).to eq(meta_data['files'][index]['url'])
+          expect(file['source_url']).to eq(meta_data[:files][index]['url'])
         end
       end
 
@@ -248,12 +248,12 @@ module Pageflow
 
         selected_files = file_importer.search(nil, nil)['photos']
         meta_data = file_importer.files_meta_data(nil, selected_files)
-        post(:start_import_job, params: {files: meta_data['files'],
-                                         collection: meta_data['collection'],
+        post(:start_import_job, params: {files: meta_data[:files],
+                                         collection: meta_data[:collection],
                                          file_import_name: file_importer.name,
                                          entry_id: entry})
         files = JSON.parse(response.body)['data']
-        expect(files.length).to eq(meta_data['files'].length)
+        expect(files.length).to eq(meta_data[:files].length)
         assert_performed_jobs files.length * 2 # one job for file import and one for upload
       end
     end

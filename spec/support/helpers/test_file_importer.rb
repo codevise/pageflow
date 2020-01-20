@@ -5,7 +5,7 @@ module Pageflow
     end
 
     def authentication_provider
-      'default'
+      :default
     end
 
     def logo_source
@@ -43,12 +43,12 @@ module Pageflow
 
     def files_meta_data(_asd, selected_files)
       meta_data = {
-        'collection' => 'image_files',
-        'files' => []
+        collection: 'image_files',
+        files: []
       }
       selected_files.each do | key, file|
         file = key if file.nil?
-        meta_data['files'].push file_meta_data file
+        meta_data[:files].push file_meta_data file
       end
       meta_data
     end
