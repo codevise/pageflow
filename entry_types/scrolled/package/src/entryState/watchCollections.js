@@ -4,12 +4,14 @@ export function watchCollections({chapters, sections, contentElements, files}, {
   watchCollection(chapters, {
     name: 'chapters',
     attributes: ['id', 'permaId'],
+    keyAttribute: 'permaId',
     includeConfiguration: true,
     dispatch
   });
   watchCollection(sections, {
     name: 'sections',
     attributes: ['id', 'permaId', 'chapterId'],
+    keyAttribute: 'permaId',
     includeConfiguration: true,
     dispatch
   });
