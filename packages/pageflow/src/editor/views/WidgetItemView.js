@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
-import {SelectInputView} from '$pageflow/ui';
+import {SelectInputView} from 'pageflow/ui';
 
 import {editor} from '../base';
 

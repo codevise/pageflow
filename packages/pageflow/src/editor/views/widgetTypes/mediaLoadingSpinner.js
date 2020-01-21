@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
 
-import {CheckBoxInputView, ConfigurationEditorView, SliderInputView} from '$pageflow/ui';
+import {CheckBoxInputView, ConfigurationEditorView, SliderInputView} from 'pageflow/ui';
 
 import {editor} from '../../base';
 

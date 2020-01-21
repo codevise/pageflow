@@ -1,7 +1,7 @@
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {TabsView} from '$pageflow/ui';
+import {TabsView} from 'pageflow/ui';
 
 import {app} from '../app';
 

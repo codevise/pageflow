@@ -1,6 +1,6 @@
 import jQuery from 'jquery';
 
-import '$pageflow/frontend';
+import 'pageflow/frontend';
 
 import sinon from 'sinon';
 

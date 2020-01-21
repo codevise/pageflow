@@ -1,4 +1,4 @@
-import {ConfigurationEditorView} from '$pageflow/ui';
+import {ConfigurationEditorView} from 'pageflow/ui';
 
 export const PageLinkConfigurationEditorView = ConfigurationEditorView.extend({
   configure: function() {

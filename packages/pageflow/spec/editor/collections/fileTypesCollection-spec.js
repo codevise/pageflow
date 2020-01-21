@@ -1,5 +1,5 @@
-import {ImageFile, UnmatchedUploadError, VideoFile} from '$pageflow/editor';
-import {FileTypes} from '$pageflow/editor/api/FileTypes';
+import {ImageFile, UnmatchedUploadError, VideoFile} from 'pageflow/editor';
+import {FileTypes} from 'pageflow/editor/api/FileTypes';
 
 describe('FileTypesCollection', () => {
   describe('#findByUpload', () => {

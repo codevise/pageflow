@@ -1,4 +1,4 @@
-import {Chapter, PagesCollection, Page} from '$pageflow/editor';
+import {Chapter, PagesCollection, Page} from 'pageflow/editor';
 
 describe('ChapterPagesCollection', () => {
   it('filters pages by chapter', () => {

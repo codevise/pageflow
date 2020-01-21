@@ -1,4 +1,4 @@
-import {EditorApi, FileUploader, FilesCollection, ImageFile, InvalidNestedTypeError, NestedTypeError, TextTrackFile} from '$pageflow/editor';
+import {EditorApi, FileUploader, FilesCollection, ImageFile, InvalidNestedTypeError, NestedTypeError, TextTrackFile} from 'pageflow/editor';
 
 import * as support from '$support';
 import sinon from 'sinon';

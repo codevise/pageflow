@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 
-import {TableCellView, TableView, TextTableCellView} from '$pageflow/ui';
+import {TableCellView, TableView, TextTableCellView} from 'pageflow/ui';
 
 import * as support from '$support';
 

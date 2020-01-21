@@ -1,5 +1,5 @@
-import {Page} from '$pageflow/editor';
-import {PageTypes} from '$pageflow/editor/api/PageTypes';
+import {Page} from 'pageflow/editor';
+import {PageTypes} from 'pageflow/editor/api/PageTypes';
 
 
 describe('PageTypes', () => {

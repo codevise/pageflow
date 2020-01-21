@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-import {CollectionView, inputView} from '$pageflow/ui';
+import {CollectionView, inputView} from 'pageflow/ui';
 
 import {editor} from '../../base';
 

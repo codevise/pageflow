@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {FilesCollection, ImageFile, transientReferences} from '$pageflow/editor';
+import {FilesCollection, ImageFile, transientReferences} from 'pageflow/editor';
 
 import * as support from '$support';
 import sinon from 'sinon';

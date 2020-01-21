@@ -1,6 +1,6 @@
 import _ from 'underscore';
 
-import {Object} from '$pageflow/ui';
+import {Object} from 'pageflow/ui';
 
 export const WidgetType = Object.extend({
   initialize: function(serverSideConfig, clientSideConfig) {

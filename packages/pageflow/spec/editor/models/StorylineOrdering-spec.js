@@ -1,4 +1,4 @@
-import {ChaptersCollection, PagesCollection, StorylineOrdering, StorylinesCollection} from '$pageflow/editor';
+import {ChaptersCollection, PagesCollection, StorylineOrdering, StorylinesCollection} from 'pageflow/editor';
 
 describe('pageflow.StorylineOrdering', () => {
   describe('#sort', () => {

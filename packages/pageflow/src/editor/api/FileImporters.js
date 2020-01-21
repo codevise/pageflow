@@ -1,4 +1,4 @@
-import {Object} from '$pageflow/ui';
+import {Object} from 'pageflow/ui';
 
 export const FileImporters = Object.extend({
   initialize: function() {

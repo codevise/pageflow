@@ -1,4 +1,4 @@
-import {cssModulesUtils} from '$pageflow/ui';
+import {cssModulesUtils} from 'pageflow/ui';
 
 describe('uiFromCssModule', () => {
   it('it turns class name mapping into ui mapping', () => {

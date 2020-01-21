@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-import {EditEntryView, editor} from '$pageflow/editor';
+import {EditEntryView, editor} from 'pageflow/editor';
 
 import {factories} from '$support';
 

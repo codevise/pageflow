@@ -1,4 +1,4 @@
-import {Object} from '$pageflow/ui';
+import {Object} from 'pageflow/ui';
 
 var AuthenticationProvider =  Object.extend({
   authenticate: function (parent, provider) {

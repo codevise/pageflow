@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {EnumTableCellView} from '$pageflow/ui';
+import {EnumTableCellView} from 'pageflow/ui';
 
 import * as support from '$support';
 

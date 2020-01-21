@@ -1,4 +1,4 @@
-import {VideoFile} from '$pageflow/editor';
+import {VideoFile} from 'pageflow/editor';
 
 import * as support from '$support';
 

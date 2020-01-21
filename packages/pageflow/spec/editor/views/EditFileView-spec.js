@@ -1,8 +1,8 @@
 import Backbone from 'backbone';
 
-import {TextInputView} from '$pageflow/ui';
+import {TextInputView} from 'pageflow/ui';
 
-import {EditFileView} from '$pageflow/editor';
+import {EditFileView} from 'pageflow/editor';
 
 import * as support from '$support';
 import sinon from 'sinon';

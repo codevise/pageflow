@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 import _ from 'underscore';
 
-import {FilesCollection, ImageFile, ThemesCollection} from '$pageflow/editor';
+import {FilesCollection, ImageFile, ThemesCollection} from 'pageflow/editor';
 
 import * as support from '$support';
 

@@ -1,4 +1,4 @@
-import {Configuration, FileInputView} from '$pageflow/editor';
+import {Configuration, FileInputView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {DropDownButton} from '$support/dominos/editor';

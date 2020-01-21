@@ -45,6 +45,9 @@ const externalEditorGlobalsAndCoreJs = function(id) {
 const externalPageflowEditorGlobalsAndCoreJs = function(id) {
   return id.match(/^pageflow\//) || externalEditorGlobalsAndCoreJs(id);
 };
+const externalPageflowUIEditorGlobalsAndCoreJs = function(id) {
+  return id.match(/^pageflow\/ui/) || externalEditorGlobalsAndCoreJs(id);
+};
 
 const plugins = [
   postcss({
@@ -71,7 +74,6 @@ const plugins = [
 const pageflowPackagePlugins = [
   alias({
     entries: {
-      '$pageflow': __dirname + '/' +  pageflowPackageRoot + '/src',
       '$state': __dirname + '/' + pageflowPackageRoot + '/src/editor/state.js',
     }
   }),
@@ -96,7 +98,7 @@ export default [
       file: pageflowPackageRoot + '/editor.js',
       format: 'esm'
     },
-    external: externalEditorGlobalsAndCoreJs,
+    external: externalPageflowUIEditorGlobalsAndCoreJs,
     plugins: pageflowPackagePlugins
   },
 

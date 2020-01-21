@@ -3,7 +3,7 @@ import Backbone from 'backbone';
 
 import _ from 'underscore';
 
-import '$pageflow/frontend';
+import 'pageflow/frontend';
 
 import sinon from 'sinon';
 

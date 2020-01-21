@@ -1,4 +1,4 @@
-import '$pageflow/frontend';
+import 'pageflow/frontend';
 
 describe('pageflow.EntryData', function() {
   var p = pageflow;

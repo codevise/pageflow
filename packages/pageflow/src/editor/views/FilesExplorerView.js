@@ -2,7 +2,7 @@ import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {CollectionView, TabsView} from '$pageflow/ui';
+import {CollectionView, TabsView} from 'pageflow/ui';
 
 import {app} from '../app';
 import {editor} from '../base';

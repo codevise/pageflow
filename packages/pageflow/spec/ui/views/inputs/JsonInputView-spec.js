@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {JsonInputView} from '$pageflow/ui';
+import {JsonInputView} from 'pageflow/ui';
 
 describe('pageflow.JsonInputView', () => {
   it('displays attribute value as pretty printed JSON', () => {

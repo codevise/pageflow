@@ -1,4 +1,4 @@
-import {Object} from '$pageflow/ui';
+import {Object} from 'pageflow/ui';
 
 /**
  * Failure and subclasses are used in the failures api.

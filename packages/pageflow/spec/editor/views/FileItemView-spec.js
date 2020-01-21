@@ -1,4 +1,4 @@
-import {FileItemView, FileMetaDataItemValueView} from '$pageflow/editor';
+import {FileItemView, FileMetaDataItemValueView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {FileMetaDataTable} from '$support/dominos/editor';

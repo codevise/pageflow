@@ -1,4 +1,4 @@
-import {i18nUtils} from '$pageflow/ui';
+import {i18nUtils} from 'pageflow/ui';
 
 import * as support from '$support';
 

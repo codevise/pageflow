@@ -1,6 +1,6 @@
 import _ from 'underscore';
 
-import {CheckBoxInputView, ColorInputView, ConfigurationEditorView, SelectInputView, TextAreaInputView, TextInputView} from '$pageflow/ui';
+import {CheckBoxInputView, ColorInputView, ConfigurationEditorView, SelectInputView, TextAreaInputView, TextInputView} from 'pageflow/ui';
 
 import {FileInputView} from '../inputs/FileInputView';
 

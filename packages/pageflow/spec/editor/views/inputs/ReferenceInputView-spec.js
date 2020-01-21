@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 
-import {ReferenceInputView} from '$pageflow/editor';
+import {ReferenceInputView} from 'pageflow/editor';
 
 import {ReferenceInput} from '$support/dominos/editor';
 

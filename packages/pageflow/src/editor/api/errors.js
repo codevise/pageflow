@@ -2,7 +2,7 @@ import Cocktail from 'cocktail';
 import I18n from 'i18n-js';
 import _ from 'underscore';
 
-import {Object} from '$pageflow/ui';
+import {Object} from 'pageflow/ui';
 
 export const UploadError = Object.extend({
   setMessage: function(options) {

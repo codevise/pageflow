@@ -1,4 +1,4 @@
-import {ModelThumbnailView} from '$pageflow/editor';
+import {ModelThumbnailView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {FileThumbnail, StaticThumbnail} from '$support/dominos/editor';

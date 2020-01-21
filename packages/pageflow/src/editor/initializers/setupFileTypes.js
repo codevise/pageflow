@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
 
-import {IconTableCellView, SelectInputView, TextInputView, TextTableCellView} from '$pageflow/ui';
+import {IconTableCellView, SelectInputView, TextInputView, TextTableCellView} from 'pageflow/ui';
 
 import {AudioFile} from '../models/AudioFile';
 import {ImageFile} from '../models/ImageFile';

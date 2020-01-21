@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 
-import {SelectInputView} from '$pageflow/ui';
+import {SelectInputView} from 'pageflow/ui';
 
 import * as support from '$support';
 

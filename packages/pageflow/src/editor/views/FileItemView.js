@@ -1,7 +1,7 @@
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {CollectionView} from '$pageflow/ui';
+import {CollectionView} from 'pageflow/ui';
 
 import {editor} from '../base';
 

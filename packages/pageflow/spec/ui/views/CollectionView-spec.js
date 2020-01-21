@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 
-import {CollectionView} from '$pageflow/ui';
+import {CollectionView} from 'pageflow/ui';
 
 describe('pageflow.CollectionView', () => {
   describe('with blankSlateViewConstructor option', () => {

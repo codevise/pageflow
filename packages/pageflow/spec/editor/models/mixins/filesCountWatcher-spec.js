@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {FilesCollection, ReusableFile, filesCountWatcher} from '$pageflow/editor';
+import {FilesCollection, ReusableFile, filesCountWatcher} from 'pageflow/editor';
 
 describe('filesCountWatcher', () => {
   var Model = Backbone.Model.extend({

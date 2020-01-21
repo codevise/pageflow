@@ -1,4 +1,4 @@
-import {ConfigurationEditorTabView, TextInputView} from '$pageflow/ui';
+import {ConfigurationEditorTabView, TextInputView} from 'pageflow/ui';
 
 import {PageLinkInputView} from '../../inputs/PageLinkInputView';
 

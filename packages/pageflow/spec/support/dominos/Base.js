@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import _ from 'underscore';
 
-import {Object} from '$pageflow/ui';
+import {Object} from 'pageflow/ui';
 
 export const Base = Object.extend({
   initialize: function($el) {

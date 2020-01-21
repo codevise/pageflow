@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 
-import {EditorApi} from '$pageflow/editor';
-import {Failure} from '$pageflow/editor/api/Failure';
+import {EditorApi} from 'pageflow/editor';
+import {Failure} from 'pageflow/editor/api/Failure';
 
 describe('Failures API', () => {
   describe('#add', () => {

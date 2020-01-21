@@ -1,4 +1,4 @@
-import {i18nUtils} from '$pageflow/ui';
+import {i18nUtils} from 'pageflow/ui';
 
 describe('pageflow.i18nUtils.translationKeysWithSuffix', () => {
   it('returns array with additional suffixed key for each item', () => {

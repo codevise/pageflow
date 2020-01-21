@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 
-import {DropDownButtonView} from '$pageflow/editor';
+import {DropDownButtonView} from 'pageflow/editor';
 
 import sinon from 'sinon';
 

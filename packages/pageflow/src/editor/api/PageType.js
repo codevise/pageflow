@@ -1,6 +1,6 @@
 import _ from 'underscore';
 
-import {ConfigurationEditorView, Object} from '$pageflow/ui';
+import {ConfigurationEditorView, Object} from 'pageflow/ui';
 
 import {PageLinkConfigurationEditorView} from '../views/PageLinkConfigurationEditorView';
 

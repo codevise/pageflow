@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {SubsetCollection} from '$pageflow/editor';
+import {SubsetCollection} from 'pageflow/editor';
 
 import sinon from 'sinon';
 

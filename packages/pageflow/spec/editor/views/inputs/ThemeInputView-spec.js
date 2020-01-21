@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {ThemesCollection, app, ThemeInputView} from '$pageflow/editor';
+import {ThemesCollection, app, ThemeInputView} from 'pageflow/editor';
 
 import {ReferenceInput, ThemeItem} from '$support/dominos/editor';
 

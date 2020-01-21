@@ -1,4 +1,4 @@
-import {TextTracksFileMetaDataItemValueView} from '$pageflow/editor';
+import {TextTracksFileMetaDataItemValueView} from 'pageflow/editor';
 
 import * as support from '$support';
 

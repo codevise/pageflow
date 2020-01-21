@@ -2,7 +2,7 @@ import './sync';
 
 export * from './api';
 
-export * from '$pageflow/ui';
+export * from 'pageflow/ui';
 
 export * from './state';
 export * from './app';

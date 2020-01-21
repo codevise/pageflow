@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {PresenceTableCellView} from '$pageflow/ui';
+import {PresenceTableCellView} from 'pageflow/ui';
 
 import * as support from '$support';
 
