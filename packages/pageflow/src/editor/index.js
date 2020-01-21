@@ -8,6 +8,7 @@ export * from './state';
 export * from './app';
 export * from './base';
 
+export * from './utils/entryTypeEditorControllerUrls';
 export * from './utils/formDataUtils';
 export * from './utils/stylesheet';
 

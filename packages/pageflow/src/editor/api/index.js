@@ -83,7 +83,7 @@ export const EditorApi = Object.extend(
    *   Backbone view that will be rendered in the side bar.
    */
   registerEntryType(name, options) {
-    this.entryType = options;
+    this.entryType = {name, ...options};
   },
 
   createEntryModel(seed, options) {

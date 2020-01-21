@@ -13,6 +13,13 @@ toc:
       - Failures
       - Failure
 
+  - name: Editor - Models/Collections
+    description: |
+      This section describes mixins and utilities that can be used in
+      Backbone models and collection.
+    children:
+      - entryTypeEditorControllerUrls
+
   - name: Editor - Input Views
     description: |
       Editor specific Backbone views that can be used together with
