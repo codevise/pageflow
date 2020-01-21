@@ -1,7 +1,7 @@
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {DeleteRowTableCellView, TableView} from '$pageflow/ui';
+import {DeleteRowTableCellView, TableView} from 'pageflow/ui';
 
 import template from '../templates/nestedFiles.jst';
 

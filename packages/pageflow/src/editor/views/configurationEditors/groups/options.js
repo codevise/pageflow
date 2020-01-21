@@ -1,4 +1,4 @@
-import {CheckBoxInputView, ConfigurationEditorTabView, SelectInputView, TextAreaInputView} from '$pageflow/ui';
+import {CheckBoxInputView, ConfigurationEditorTabView, SelectInputView, TextAreaInputView} from 'pageflow/ui';
 
 import {Page} from '../../../models/Page';
 

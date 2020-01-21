@@ -15,7 +15,7 @@ module.exports = {
   modulePaths: ["<rootDir>/src"],
   moduleNameMapper: {
     "^\\$support(.*)$": "<rootDir>/spec/support$1",
-    "^\\$pageflow(.*)$": "<rootDir>/src$1",
+    "^\\pageflow/(.*)$": "<rootDir>/src/$1",
     "^\\$state$": "<rootDir>/spec/support/state.js",
 
     ...moduleNameMapper

@@ -1,7 +1,7 @@
 import Marionette from 'backbone.marionette';
 
-import {EditMetaDataView, editor} from '$pageflow/editor';
-import {CheckBoxInputView} from '$pageflow/ui';
+import {EditMetaDataView, editor} from 'pageflow/editor';
+import {CheckBoxInputView} from 'pageflow/ui';
 
 import {factories} from '$support';
 

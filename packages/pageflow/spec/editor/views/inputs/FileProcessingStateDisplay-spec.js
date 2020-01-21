@@ -1,4 +1,4 @@
-import {Configuration, FileProcessingStateDisplayView} from '$pageflow/editor';
+import {Configuration, FileProcessingStateDisplayView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {FileStageItem} from '$support/dominos/editor';

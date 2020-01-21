@@ -1,4 +1,4 @@
-import {TextTrackFile} from '$pageflow/editor';
+import {TextTrackFile} from 'pageflow/editor';
 
 import * as support from '$support';
 

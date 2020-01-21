@@ -1,6 +1,6 @@
 import _ from 'underscore';
 
-import '$pageflow/frontend';
+import 'pageflow/frontend';
 
 import '$support/fakeBrowserFeatures';
 import * as support from '$support';

@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {TextInputView} from '$pageflow/ui';
+import {TextInputView} from 'pageflow/ui';
 
 describe('pageflow.TextInputView', () => {
   it('supports disabled option', () => {

@@ -1,4 +1,4 @@
-import {ChaptersCollection, PagesCollection, StorylineTransitiveChildPages, StorylinesCollection} from '$pageflow/editor';
+import {ChaptersCollection, PagesCollection, StorylineTransitiveChildPages, StorylinesCollection} from 'pageflow/editor';
 
 describe('pageflow.StorylineTransitiveChildPages', () => {
   describe('#contain', () => {

@@ -1,8 +1,8 @@
 import Backbone from 'backbone';
 
-import {TextTableCellView} from '$pageflow/ui';
+import {TextTableCellView} from 'pageflow/ui';
 
-import {NestedFilesView} from '$pageflow/editor';
+import {NestedFilesView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {Table} from '$support/dominos/ui';

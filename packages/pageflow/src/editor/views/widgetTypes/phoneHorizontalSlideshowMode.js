@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
 
-import {ConfigurationEditorView} from '$pageflow/ui';
+import {ConfigurationEditorView} from 'pageflow/ui';
 
 import {editor} from '../../base';
 

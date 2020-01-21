@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {PresenceTableCellView, TableView, TextTableCellView} from '$pageflow/ui';
+import {PresenceTableCellView, TableView, TextTableCellView} from 'pageflow/ui';
 
 import template from '../templates/uploadableFiles.jst';
 

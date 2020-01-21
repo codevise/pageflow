@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {TextTableCellView} from '$pageflow/ui';
+import {TextTableCellView} from 'pageflow/ui';
 
 import * as support from '$support';
 

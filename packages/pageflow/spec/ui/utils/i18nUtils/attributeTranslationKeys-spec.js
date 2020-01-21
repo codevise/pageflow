@@ -1,4 +1,4 @@
-import {i18nUtils} from '$pageflow/ui';
+import {i18nUtils} from 'pageflow/ui';
 
 describe('pageflow.i18nUtils.attributeTranslationKeys', () => {
   var attributeTranslationKeys = i18nUtils.attributeTranslationKeys;

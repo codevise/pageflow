@@ -1,4 +1,4 @@
-import {ConfigurationEditorTabView} from '$pageflow/ui';
+import {ConfigurationEditorTabView} from 'pageflow/ui';
 
 import sinon from 'sinon';
 

@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 
-import {CheckBoxGroupInputView} from '$pageflow/ui';
+import {CheckBoxGroupInputView} from 'pageflow/ui';
 
 import * as support from '$support';
 

@@ -1,4 +1,4 @@
-import {TableHeaderCellView} from '$pageflow/ui';
+import {TableHeaderCellView} from 'pageflow/ui';
 
 import * as support from '$support';
 

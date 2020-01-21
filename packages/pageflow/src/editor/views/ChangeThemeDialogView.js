@@ -2,7 +2,7 @@ import $ from 'jquery';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 
-import {CollectionView} from '$pageflow/ui';
+import {CollectionView} from 'pageflow/ui';
 
 import {app} from '../app';
 

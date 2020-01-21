@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 import sinon from 'sinon';
 
-import {ColorInputView} from '$pageflow/ui';
+import {ColorInputView} from 'pageflow/ui';
 
 import * as support from '$support';
 import {ColorInput} from '$support/dominos/ui'

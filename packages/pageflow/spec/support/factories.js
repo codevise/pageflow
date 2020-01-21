@@ -1,9 +1,9 @@
 import Backbone from 'backbone';
 import _ from 'underscore';
 
-import {EditorApi, Entry, FilesCollection, ImageFile, SubsetCollection, TextTrackFile, Theme, VideoFile} from '$pageflow/editor';
-import {WidgetTypes} from '$pageflow/editor/api/WidgetTypes';
-import {FileTypes} from '$pageflow/editor/api/FileTypes';
+import {EditorApi, Entry, FilesCollection, ImageFile, SubsetCollection, TextTrackFile, Theme, VideoFile} from 'pageflow/editor';
+import {WidgetTypes} from 'pageflow/editor/api/WidgetTypes';
+import {FileTypes} from 'pageflow/editor/api/FileTypes';
 
 export const factories = {
   entry: function entry(attributes, options) {

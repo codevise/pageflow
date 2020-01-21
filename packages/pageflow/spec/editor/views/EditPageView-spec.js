@@ -1,6 +1,6 @@
-import {ConfigurationEditorView, TextInputView} from '$pageflow/ui';
+import {ConfigurationEditorView, TextInputView} from 'pageflow/ui';
 
-import {EditPageView, Page} from '$pageflow/editor';
+import {EditPageView, Page} from 'pageflow/editor';
 
 import * as support from '$support';
 import {ConfigurationEditor} from '$support/dominos/ui';

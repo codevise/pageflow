@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {FileStage} from '$pageflow/editor';
+import {FileStage} from 'pageflow/editor';
 
 import * as support from '$support';
 

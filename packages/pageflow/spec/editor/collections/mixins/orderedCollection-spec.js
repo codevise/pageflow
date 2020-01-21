@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {orderedCollection} from '$pageflow/editor';
+import {orderedCollection} from 'pageflow/editor';
 
 import * as support from '$support';
 

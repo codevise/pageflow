@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {EditorApi} from '$pageflow/editor';
+import {EditorApi} from 'pageflow/editor';
 import {state} from '$state';
 
 import sinon from 'sinon';

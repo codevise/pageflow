@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {stageProvider} from '$pageflow/editor';
+import {stageProvider} from 'pageflow/editor';
 
 describe('stageProvider', () => {
   var Model = Backbone.Model.extend({

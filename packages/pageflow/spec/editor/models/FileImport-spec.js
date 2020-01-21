@@ -4,7 +4,7 @@ import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 import * as support from '$support';
 
-import {app, FileImport, editor, authenticationProvider} from '$pageflow/editor';
+import {app, FileImport, editor, authenticationProvider} from 'pageflow/editor';
 
 describe('FileImport', () => {
   let testContext;

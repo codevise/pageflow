@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 import _ from 'underscore';
 
-import {Object} from '$pageflow/ui';
+import {Object} from 'pageflow/ui';
 
 import {SavingFailure} from './Failure';
 

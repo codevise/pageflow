@@ -1,7 +1,7 @@
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {i18nUtils} from '$pageflow/ui';
+import {i18nUtils} from 'pageflow/ui';
 
 import template from '../templates/fileMetaDataItem.jst';
 

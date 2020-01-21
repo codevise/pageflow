@@ -1,4 +1,4 @@
-import {FilesCollection} from '$pageflow/editor';
+import {FilesCollection} from 'pageflow/editor';
 
 import * as support from '$support';
 

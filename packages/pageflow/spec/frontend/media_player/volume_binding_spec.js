@@ -1,7 +1,7 @@
 import jQuery from 'jquery';
 import Backbone from 'backbone';
 
-import '$pageflow/frontend';
+import 'pageflow/frontend';
 
 import sinon from 'sinon';
 

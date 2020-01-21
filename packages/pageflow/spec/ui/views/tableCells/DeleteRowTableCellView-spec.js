@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 import sinon from 'sinon';
 
-import {DeleteRowTableCellView} from '$pageflow/ui';
+import {DeleteRowTableCellView} from 'pageflow/ui';
 
 import * as support from '$support';
 

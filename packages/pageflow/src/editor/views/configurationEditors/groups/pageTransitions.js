@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import _ from 'underscore';
 
-import {ConfigurationEditorTabView, SelectInputView} from '$pageflow/ui';
+import {ConfigurationEditorTabView, SelectInputView} from 'pageflow/ui';
 
 ConfigurationEditorTabView.groups.define('page_transitions', function(options) {
   var inputOptions = {

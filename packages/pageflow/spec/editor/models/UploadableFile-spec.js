@@ -1,4 +1,4 @@
-import {UploadableFile} from '$pageflow/editor';
+import {UploadableFile} from 'pageflow/editor';
 
 describe('UploadableFile', () => {
   describe('#processingStages', () => {

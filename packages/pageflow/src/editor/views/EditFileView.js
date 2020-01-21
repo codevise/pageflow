@@ -1,7 +1,7 @@
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {ConfigurationEditorTabView, TextInputView, UrlDisplayView} from '$pageflow/ui';
+import {ConfigurationEditorTabView, TextInputView, UrlDisplayView} from 'pageflow/ui';
 
 import {state} from '$state';
 

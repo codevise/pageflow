@@ -1,4 +1,4 @@
-import {NestedFilesCollection} from '$pageflow/editor';
+import {NestedFilesCollection} from 'pageflow/editor';
 
 import * as support from '$support';
 

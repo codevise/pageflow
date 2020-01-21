@@ -1,4 +1,4 @@
-import '$pageflow/frontend';
+import 'pageflow/frontend';
 
 describe('pageflow.browser.Agent', function() {
   var Agent = pageflow.browser.Agent;

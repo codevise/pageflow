@@ -3,7 +3,7 @@ import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {TabsView} from '$pageflow/ui';
+import {TabsView} from 'pageflow/ui';
 
 import {app} from '../app';
 import {editor} from '../base';

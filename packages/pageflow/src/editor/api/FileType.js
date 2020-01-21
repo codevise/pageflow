@@ -1,6 +1,6 @@
 import _ from 'underscore';
 
-import {Object} from '$pageflow/ui';
+import {Object} from 'pageflow/ui';
 
 import {EditFileView} from '../views/EditFileView';
 import {TextFileMetaDataItemValueView} from '../views/TextFileMetaDataItemValueView';

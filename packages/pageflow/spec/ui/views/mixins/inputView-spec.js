@@ -2,7 +2,7 @@ import Backbone from 'backbone';
 import Cocktail from 'cocktail';
 import Marionette from 'backbone.marionette';
 
-import {inputView} from '$pageflow/ui';
+import {inputView} from 'pageflow/ui';
 
 import * as support from '$support';
 

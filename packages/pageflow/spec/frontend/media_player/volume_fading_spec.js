@@ -1,4 +1,4 @@
-import '$pageflow/frontend';
+import 'pageflow/frontend';
 
 import '$support/fakeBrowserFeatures';
 import sinon from 'sinon';

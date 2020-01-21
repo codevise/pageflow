@@ -1,4 +1,4 @@
-import {Widget} from '$pageflow/editor';
+import {Widget} from 'pageflow/editor';
 
 import * as support from '$support';
 

@@ -1,4 +1,4 @@
-import {Widget,WidgetItemView} from '$pageflow/editor';
+import {Widget,WidgetItemView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {SelectInput} from '$support/dominos/ui';

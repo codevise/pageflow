@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import _ from 'underscore';
 
-import {Object} from '$pageflow/ui';
+import {Object} from 'pageflow/ui';
 
 import {InvalidNestedTypeError, NestedTypeError} from '../api/errors';
 import {editor as editorApi} from '../base';

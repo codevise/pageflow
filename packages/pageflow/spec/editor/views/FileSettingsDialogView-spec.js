@@ -1,6 +1,6 @@
-import {TextInputView} from '$pageflow/ui';
+import {TextInputView} from 'pageflow/ui';
 
-import {FileSettingsDialogView} from '$pageflow/editor';
+import {FileSettingsDialogView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {Tabs} from '$support/dominos/ui';

@@ -1,4 +1,4 @@
-import {ConfigurationEditorView} from '$pageflow/ui';
+import {ConfigurationEditorView} from 'pageflow/ui';
 
 import * as support from '$support';
 import {Tabs} from '$support/dominos/ui'

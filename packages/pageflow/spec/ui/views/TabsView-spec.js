@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {TabsView} from '$pageflow/ui';
+import {TabsView} from 'pageflow/ui';
 
 import * as support from '$support';
 import {Tabs} from '$support/dominos/ui'

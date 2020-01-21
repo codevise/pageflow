@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 import _ from 'underscore';
 
-import {formDataUtils} from '$pageflow/editor';
+import {formDataUtils} from 'pageflow/editor';
 
 describe('formDataUtils', () => {
   describe('fromObject', () => {

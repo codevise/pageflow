@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
-import {CheckBoxInputView, ConfigurationEditorView, TextInputView} from '$pageflow/ui';
+import {CheckBoxInputView, ConfigurationEditorView, TextInputView} from 'pageflow/ui';
 
 import {failureIndicatingView} from './mixins/failureIndicatingView';
 

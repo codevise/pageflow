@@ -1,4 +1,4 @@
-import {ConfigurationEditorView} from '$pageflow/ui';
+import {ConfigurationEditorView} from 'pageflow/ui';
 
 import {FileInputView} from '../inputs/FileInputView';
 

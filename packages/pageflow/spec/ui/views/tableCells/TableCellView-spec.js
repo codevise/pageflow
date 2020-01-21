@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-import {TableCellView} from '$pageflow/ui';
+import {TableCellView} from 'pageflow/ui';
 
 import * as support from '$support';
 
