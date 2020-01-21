@@ -18,6 +18,7 @@ toc:
       This section describes mixins and utilities that can be used in
       Backbone models and collection.
     children:
+      - configurationContainer
       - entryTypeEditorControllerUrls
 
   - name: Editor - Input Views

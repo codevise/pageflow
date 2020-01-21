@@ -3,6 +3,7 @@ import Backbone from 'backbone';
 export const delayedDestroying = {
   initialize: function() {
     this._destroying = false;
+    this._destroyed = false;
   },
 
   destroyWithDelay: function() {
@@ -15,6 +16,7 @@ export const delayedDestroying = {
       wait: true,
       success: function() {
         model._destroying = false;
+        model._destroyed = true;
       },
       error: function() {
         model._destroying = false;
@@ -24,5 +26,12 @@ export const delayedDestroying = {
 
   isDestroying: function() {
     return this._destroying;
+  },
+
+  /**
+   * Get whether the model has been destroyed.
+   */
+  isDestroyed: function() {
+    return this._destroyed;
   }
 };

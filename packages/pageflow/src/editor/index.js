@@ -48,6 +48,7 @@ export * from './models/Chapter';
 export * from './models/Storyline';
 export * from './models/PageLink';
 export * from './models/PageLinkFileSelectionHandler';
+export * from './models/mixins/configurationContainer';
 export * from './models/mixins/stageProvider';
 export * from './models/mixins/retryable';
 export * from './models/mixins/persitedPromise';
