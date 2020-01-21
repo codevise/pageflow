@@ -7,7 +7,7 @@ describe('pageflow.PreviewEntryData', () => {
     it('returns option value by name', () => {
       var entry = support.factories.entry(
         {
-          configuration: {theme_name: 'custom'}
+          metadata: {theme_name: 'custom'}
         },
         {
           themes: new ThemesCollection([

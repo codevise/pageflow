@@ -53,7 +53,10 @@ export const SidebarController = Marionette.Controller.extend({
   metaData: function(tab) {
     this.region.show(new EditMetaDataView({
       model: this.entry,
-      tab: tab
+      tab: tab,
+      state: state,
+      features: pageflow.features,
+      editor: editor
     }));
   },
 

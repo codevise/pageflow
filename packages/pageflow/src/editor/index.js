@@ -22,14 +22,14 @@ export * from './models/EncodingConfirmation';
 export * from './models/Theme';
 export * from './models/WidgetConfiguration';
 export * from './models/AudioFile';
-export * from './models/EntryConfiguration';
+export * from './models/EntryMetadata';
 export * from './models/Configuration';
 export * from './models/StorylineConfiguration';
 export * from './models/TextTrackFile';
 export * from './models/StorylineOrdering';
 export * from './models/PageConfigurationFileSelectionHandler';
 export * from './models/ImageFile';
-export * from './models/EntryConfigurationFileSelectionHandler';
+export * from './models/EntryMetadataFileSelectionHandler';
 export * from './models/EntryPublication';
 export * from './models/Scaffold';
 export * from './models/EncodedFile';
@@ -198,4 +198,3 @@ import './initializers/routing'
 import './initializers/errorListener'
 import './initializers/additionalInitializers'
 import './initializers/boot'
-

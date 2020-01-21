@@ -42,7 +42,7 @@ describe('entry', () => {
       const entry = new Backbone.Model({
         entry_title: 'Title from Entry'
       });
-      entry.configuration = new Backbone.Model({
+      entry.metadata = new Backbone.Model({
         title: 'Title from Revision'
       });
       const {select} = setup({entry});
@@ -57,7 +57,7 @@ describe('entry', () => {
       const entry = new Backbone.Model({
         entry_title: 'Some Title'
       });
-      entry.configuration = new Backbone.Model();
+      entry.metadata = new Backbone.Model();
       const {select} = setup({entry});
 
       expect(select(entryAttribute('title'))).toBe('Some Title');
@@ -66,12 +66,12 @@ describe('entry', () => {
 
   it('title selector gets correct value after configuration change', () => {
     const entry = new Backbone.Model();
-    entry.configuration =  new Backbone.Model({
+    entry.metadata =  new Backbone.Model({
       title: 'Some Title'
     });
     const {select} = setup({entry});
 
-    entry.configuration.set('title', 'New Title');
+    entry.metadata.set('title', 'New Title');
 
     expect(select(entryAttribute('title'))).toBe('New Title');
   });

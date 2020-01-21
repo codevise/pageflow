@@ -27,7 +27,7 @@ export default {
 function watchModel({entry, dispatch}) {
   updateFromModel({entry, dispatch});
 
-  entry.configuration.on('change:title', () => {
+  entry.metadata.on('change:title', () => {
     updateFromModel({entry, dispatch});
   });
 }
@@ -36,7 +36,7 @@ function updateFromModel({entry, dispatch}) {
   dispatch(update({
     entry: {
       slug: entry.get('slug'),
-      title: entry.configuration.get('title') || entry.get('entry_title'),
+      title: entry.metadata.get('title') || entry.get('entry_title'),
       publishedAt: null
     }
   }));

@@ -149,7 +149,7 @@ describe('Entry', () => {
       ]);
       var entry = support.factories.entry(
         {
-          configuration: {theme_name: 'custom'}
+          metadata: {theme_name: 'custom'}
         },
         {
           themes: themes

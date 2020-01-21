@@ -13,7 +13,7 @@ app.addInitializer(function(options) {
     pageflow.stylesheet.reload('entry');
   });
 
-  state.entry.configuration.on('change:theme_name', function() {
+  state.entry.metadata.on('change:theme_name', function() {
     var theme = state.entry.getTheme();
     pageflow.stylesheet.update('theme', theme.get('stylesheet_path'));
   });
