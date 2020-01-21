@@ -1,0 +1,10 @@
+en:
+  pageflow:
+    editor:
+      views:
+        edit_configuration:
+          back: "Outline"
+          destroy: "Delete"
+          save_error: "Saving the record failed."
+          retry: "Retry"
+          confirm_destroy: "Really delete this record? This action cannot be undone."

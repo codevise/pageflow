@@ -164,6 +164,7 @@ export * from './views/ChooseImporterView';
 export * from './views/FilesImporterView';
 export * from './views/ConfirmFileImportUploadView';
 
+export * from './views/EditConfigurationView';
 
 import './views/configurationEditors/audio';
 import './views/configurationEditors/backgroundImage';

@@ -19,6 +19,7 @@ toc:
       Backbone models and collection.
     children:
       - configurationContainer
+      - delayedDestroying
       - entryTypeEditorControllerUrls
 
   - name: Editor - Input Views
@@ -43,6 +44,7 @@ toc:
       });
       ```
     children:
+      - EditConfigurationView
       - ReferenceInputView
       - FileInputView
 
