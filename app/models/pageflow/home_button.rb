@@ -8,21 +8,21 @@ module Pageflow
     end
 
     def url
-      revision.home_url.presence || theming_home_button_url
+      revision.configuration['home_url'].presence || theming_home_button_url
     end
 
     def enabled?
-      revision.home_button_enabled? &&
+      revision.configuration['home_button_enabled'] &&
         revision.theme.has_home_button? &&
         url.present?
     end
 
     def url_value
-      revision.home_url
+      revision.configuration['home_url']
     end
 
     def enabled_value
-      revision.home_button_enabled?
+      revision.configuration['home_button_enabled']
     end
 
     private

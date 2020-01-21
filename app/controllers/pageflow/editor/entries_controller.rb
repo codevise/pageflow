@@ -43,13 +43,14 @@ module Pageflow
       private
 
       def entry_params
-        params.require(:entry).permit(:title, :summary, :credits, :manual_start,
-                                      :home_url, :home_button_enabled,
-                                      :overview_button_enabled,
-                                      :emphasize_chapter_beginning, :emphasize_new_pages,
-                                      :share_url, :share_image_id, :share_image_x, :share_image_y,
-                                      :locale, :author, :publisher, :keywords, :theme_name,
-                                      share_providers: {})
+        configuration = params.require(:entry)[:configuration].try(:permit!) || {}
+        params
+          .require(:entry)
+          .permit(:title, :summary, :credits,
+                  :share_url, :share_image_id, :share_image_x, :share_image_y,
+                  :locale, :author, :publisher, :keywords, :theme_name,
+                  share_providers: {})
+          .merge(configuration: configuration)
       end
     end
   end

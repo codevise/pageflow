@@ -30,6 +30,7 @@ module Pageflow
              :author, :publisher, :keywords,
              :theme,
              :published_at,
+             :configuration,
              :to => :draft)
 
     def initialize(entry, draft = nil)

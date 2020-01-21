@@ -14,8 +14,10 @@ feature 'as visitor, reading entry' do
 
   scenario 'sees the configured home button if supported by theme' do
     entry = create(:entry, :published, published_revision_attributes: {
-                     home_url: 'http://example.com',
-                     home_button_enabled: true
+                     configuration: {
+                       home_url: 'http://example.com',
+                       home_button_enabled: true
+                     }
                    })
 
     visit(pageflow.entry_path(entry))

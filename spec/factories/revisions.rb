@@ -34,21 +34,37 @@ module Pageflow
       end
 
       trait :with_home_button do
-        home_button_enabled { true }
-        home_url { 'http://example.com' }
+        configuration do
+          {
+            home_button_enabled: true,
+            home_url: 'http://example.com'
+          }
+        end
       end
 
       trait :without_home_button do
-        home_button_enabled { false }
-        home_url { 'http://example.com' }
+        configuration do
+          {
+            home_button_enabled: false,
+            home_url: 'http://example.com'
+          }
+        end
       end
 
       trait :with_overview_button do
-        overview_button_enabled { true }
+        configuration do
+          {
+            overview_button_enabled: true
+          }
+        end
       end
 
       trait :without_overview_button do
-        overview_button_enabled { false }
+        configuration do
+          {
+            overview_button_enabled: false
+          }
+        end
       end
 
       trait :with_meta_data do

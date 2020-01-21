@@ -1,5 +1,7 @@
 module Pageflow
   class Revision < ApplicationRecord
+    include SerializedConfiguration
+
     PAGE_ORDER = [
       'pageflow_storylines.position ASC',
       'pageflow_chapters.position ASC',
@@ -192,6 +194,18 @@ module Pageflow
 
     def self.depublish_all
       published.update_all(:published_until => Time.now)
+    end
+
+    def configuration
+      {
+        'emphasize_chapter_beginning' => emphasize_chapter_beginning,
+        'emphasize_new_pages' => emphasize_new_pages,
+        'home_url' => home_url,
+        'home_button_enabled' => home_button_enabled,
+        'manual_start' => manual_start,
+        'overview_button_enabled' => overview_button_enabled
+      }.delete_if { |_k, v| v.nil? }
+        .merge(read_attribute(:configuration) || {})
     end
 
     private

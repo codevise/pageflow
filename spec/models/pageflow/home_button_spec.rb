@@ -4,7 +4,7 @@ module Pageflow
   describe HomeButton do
     describe '#url' do
       it 'returns home_url of revision' do
-        revision = build(:revision, home_url: 'http://example.com')
+        revision = build(:revision, configuration: {home_url: 'http://example.com'})
         theming = create(:theming)
         home_button = HomeButton.new(revision, theming)
 
@@ -12,7 +12,7 @@ module Pageflow
       end
 
       it 'falls back to cname of theming if theming has home_url' do
-        revision = build(:revision, home_url: '')
+        revision = build(:revision, configuration: {home_url: ''})
         theming = create(:theming,
                          cname: 'pageflow.example.com',
                          home_url: 'http://example.com')
@@ -28,8 +28,10 @@ module Pageflow
           config.themes.register(:with_home_button)
         end
         revision = build(:revision,
-                         home_url: 'http://example.com',
-                         home_button_enabled: true,
+                         configuration: {
+                           home_url: 'http://example.com',
+                           home_button_enabled: true
+                         },
                          theme_name: 'with_home_button')
         theming = create(:theming)
         home_button = HomeButton.new(revision, theming)
@@ -42,9 +44,11 @@ module Pageflow
           config.themes.register(:with_home_button)
         end
         revision = build(:revision,
-                         home_url: '',
-                         theme_name: 'with_home_button',
-                         home_button_enabled: true)
+                         configuration: {
+                           home_url: '',
+                           home_button_enabled: true
+                         },
+                         theme_name: 'with_home_button')
         theming = create(:theming,
                          home_url: 'http://example.com',
                          cname: 'pageflow.exmaple.com')
@@ -58,9 +62,11 @@ module Pageflow
           config.themes.register(:with_home_button)
         end
         revision = build(:revision,
-                         home_url: 'http://example.com',
                          theme_name: 'with_home_button',
-                         home_button_enabled: false)
+                         configuration: {
+                           home_url: 'http://example.com',
+                           home_button_enabled: false
+                         })
         theming = create(:theming)
         home_button = HomeButton.new(revision, theming)
 
@@ -71,7 +77,7 @@ module Pageflow
         pageflow_configure do |config|
           config.themes.register(:with_home_button)
         end
-        revision = build(:revision, home_button_enabled: true)
+        revision = build(:revision, configuration: {home_button_enabled: true})
         theming = create(:theming, theme_name: 'with_home_button')
         home_button = HomeButton.new(revision, theming)
 
@@ -83,9 +89,11 @@ module Pageflow
           config.themes.register(:no_home_button, no_home_button: true)
         end
         revision = build(:revision,
-                         home_url: 'http://example.com',
                          theme_name: 'no_home_button',
-                         home_button_enabled: true)
+                         configuration: {
+                           home_url: 'http://example.com',
+                           home_button_enabled: true
+                         })
         theming = create(:theming)
         home_button = HomeButton.new(revision, theming)
 
