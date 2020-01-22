@@ -35,23 +35,16 @@
 }
 
 .wdrLogo {
-  position: absolute;
   top: 12px;
   left: 15px;
   width: 80px;
 }
 
 .burgerMenuIcon {
-  display: none;
+  display: none !important;
   top: 12px;
   left: 12px;
   outline: none;
-}
-
-.infoIcon {
-  top: 12px;
-  right: 55px;
-  width: 26px;
 }
 
 .shareIcon {
@@ -77,6 +70,11 @@
   border-right: none;
 }
 
+.navigationTooltip {
+  opacity: 1 !important;
+  box-shadow: 0 0 0.3125rem rgba(0,0,0,.2);
+}
+
 .progressBar {
   background-color: rgba(194,194,194,0.8);
   height: 8px;
@@ -95,7 +93,7 @@
 /* mobile view */
 @media (max-width: 780px) {
   .burgerMenuIcon {
-    display: block;
+    display: block !important;
   }
 
   .wdrLogo {

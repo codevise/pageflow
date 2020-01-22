@@ -4,13 +4,13 @@ import useScrollPosition from '../useScrollPosition';
 import useNativeScrollPrevention from '../useNativeScrollPrevention';
 
 import ChapterLink from "./ChapterLink";
+import ImprintAndPrivacy from "./ImprintAndPrivacy";
 
 import hamburgerIcons from './hamburgerIcons.module.css'
 import styles from './AppHeader.module.css';
 
 import WDRlogo from '../assets/images/navigation/wdr_logo_header.svg';
 import ShareIcon from '../assets/images/navigation/icons/share_icon.svg';
-import InfoIcon from '../assets/images/navigation/icons/information_icon.svg';
 
 export default function AppHeader(props) {
   const [navExpanded, setNavExpanded] = useState(true);
@@ -91,7 +91,7 @@ export default function AppHeader(props) {
           </span>
         </button>
 
-        <WDRlogo className={classNames(styles.wdrLogo)}/>
+        <WDRlogo className={classNames(styles.menuIcon, styles.wdrLogo)}/>
 
         <nav className={classNames(styles.navigationChapters, {[styles.navigationChaptersHidden]: mobileNavHidden})}
              role="navigation"
@@ -101,9 +101,7 @@ export default function AppHeader(props) {
           </ul>
         </nav>
 
-        <a className={classNames(styles.menuIcon, styles.infoIcon)}>
-          <InfoIcon/>
-        </a>
+        <ImprintAndPrivacy />
 
         <a className={classNames(styles.menuIcon, styles.shareIcon)}>
           <ShareIcon/>
