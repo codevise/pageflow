@@ -1,4 +1,4 @@
-<%= cache page do %>
+<%= cache [entry.locale, page] do %>
   <%= content_tag(:section,
                   id: page.perma_id,
                   class: page_css_class(page),
