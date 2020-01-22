@@ -33,3 +33,20 @@ unless options[:skip_collections]
     files_json_seed(json, entry) unless options[:skip_files]
   end
 end
+
+json.imprintAndPrivacy do
+  json.credits raw(entry.credits)
+  json.fileRights entry_file_rights(entry)
+  json.imprint do
+    json.imprintLinkLabel entry.theming.imprint_link_label
+    json.imprintLinkUrl entry.theming.imprint_link_url
+  end
+  json.copyright do
+    json.copyrightLinkLabel raw entry.theming.copyright_link_label
+    json.copyrightLinkUrl entry.theming.copyright_link_url
+  end
+  json.privacy do
+    json.privacyLinkLabel I18n.t('pageflow.public.privacy_notice')
+    json.privacyLinkUrl "#{entry.theming.privacy_link_url}?lang=#{entry.locale}"
+  end
+end
