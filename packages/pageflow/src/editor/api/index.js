@@ -7,6 +7,7 @@ import {FailuresAPI} from './Failures';
 import {FileTypes} from './FileTypes';
 import {FileImporters} from './FileImporters'
 import {PageTypes} from './PageTypes';
+import {SavingRecordsCollection} from './SavingRecordsCollection';
 import {WidgetTypes} from './WidgetTypes';
 import {app} from '../app';
 import {state} from '$state';
@@ -36,6 +37,15 @@ export const EditorApi = Object.extend(
      * @memberof editor
      */
     this.failures = new FailuresAPI();
+
+    /**
+     * Tracking records that are currently being saved.
+     *
+     * @returns {SavingRecordsCollection}
+     * @memberof editor
+     * @since edge
+     */
+    this.savingRecords = new SavingRecordsCollection();
 
     /**
      * Set up editor integration for page types.

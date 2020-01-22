@@ -12,6 +12,7 @@ toc:
       - editor
       - Failures
       - Failure
+      - SavingRecordsCollection
 
   - name: Editor - Models/Collections
     description: |

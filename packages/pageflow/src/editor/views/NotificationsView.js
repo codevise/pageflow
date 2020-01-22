@@ -27,8 +27,8 @@ export const NotificationsView = Marionette.ItemView.extend({
     this.listenTo(state.entry, 'change:uploading_files_count', this.notifyUploadCount);
     this.listenTo(state.entry, 'change:confirmable_files_count', this.notifyConfirmableFilesCount);
 
-    this.listenTo(state.savingRecords, 'add', this.update);
-    this.listenTo(state.savingRecords, 'remove', this.update);
+    this.listenTo(editor.savingRecords, 'add', this.update);
+    this.listenTo(editor.savingRecords, 'remove', this.update);
 
     this.listenTo(editor.failures, 'add', this.update);
     this.listenTo(editor.failures, 'remove', this.update);
@@ -39,7 +39,7 @@ export const NotificationsView = Marionette.ItemView.extend({
 
   update: function() {
     this.$el.toggleClass('failed', !editor.failures.isEmpty());
-    this.$el.toggleClass('saving', !state.savingRecords.isEmpty());
+    this.$el.toggleClass('saving', !editor.savingRecords.isEmpty());
     this.ui.failedCount.text(editor.failures.count());
   },
 

@@ -5,7 +5,6 @@ import {ChaptersCollection} from '../collections/ChaptersCollection';
 import {FilesCollection} from '../collections/FilesCollection';
 import {PagesCollection} from '../collections/PagesCollection';
 import {PreviewEntryData} from '../models/PreviewEntryData';
-import {SavingRecordsCollection} from '../collections/SavingRecordsCollection';
 import {StorylineOrdering} from '../models/StorylineOrdering';
 import {StorylinesCollection} from '../collections/StorylinesCollection';
 import {ThemesCollection} from '../collections/ThemesCollection';
@@ -59,9 +58,8 @@ app.addInitializer(function(options) {
   editor.failures.watch(state.pages);
   editor.failures.watch(state.chapters);
 
-  state.savingRecords = new SavingRecordsCollection();
-  state.savingRecords.watch(state.pages);
-  state.savingRecords.watch(state.chapters);
+  editor.savingRecords.watch(state.pages);
+  editor.savingRecords.watch(state.chapters);
 
   pageflow.events.trigger('seed:loaded');
 });

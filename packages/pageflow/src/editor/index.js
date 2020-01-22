@@ -79,8 +79,6 @@ export * from './collections/ThemesCollection';
 export * from './collections/WidgetsCollection';
 export * from './collections/mixins/orderedCollection';
 export * from './collections/mixins/addAndReturnModel';
-export * from './collections/SavingRecordsCollection';
-export * from './collections/MultiCollection';
 export * from './collections/FilesCollection';
 
 export * from './routers/SidebarRouter';
