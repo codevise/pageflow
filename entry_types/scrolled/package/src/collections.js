@@ -151,7 +151,9 @@ export function watchCollection(collection,
     type: SORT,
     payload: {
       collectionName: name,
-      order: collection.pluck(keyAttribute)
+      order: collection
+        .pluck(keyAttribute)
+        .filter(Boolean)
     }
   }));
 }
