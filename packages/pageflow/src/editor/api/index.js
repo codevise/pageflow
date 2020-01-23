@@ -13,6 +13,7 @@ import {app} from '../app';
 import {state} from '$state';
 
 export * from './errors';
+export {Failure} from './Failure';
 export {FileTypes, WidgetTypes};
 
 /**

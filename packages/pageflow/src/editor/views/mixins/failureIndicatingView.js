@@ -1,23 +1,9 @@
-import {editor} from '../../base';
+import {modelLifecycleTrackingView} from './modelLifecycleTrackingView';
 
-export const failureIndicatingView = {
-  modelEvents: {
-    'change:failed': 'updateFailIndicator'
-  },
-
-  events: {
-    'click .retry': function() {
-      editor.failures.retry();
-      return false;
-    }
-  },
-
-  onRender: function() {
-    this.updateFailIndicator();
-  },
-
-  updateFailIndicator: function() {
-    this.$el.toggleClass('failed', this.model.isFailed());
-    this.$el.find('.failure .message').text(this.model.getFailureMessage());
+export const failureIndicatingView = modelLifecycleTrackingView({
+  classNames: {
+    failed: 'failed',
+    failureMessage: 'failure .message',
+    retryButton: 'retry'
   }
-};
+});

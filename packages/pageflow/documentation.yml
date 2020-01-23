@@ -22,6 +22,7 @@ toc:
       - configurationContainer
       - delayedDestroying
       - entryTypeEditorControllerUrls
+      - failureTracking
 
   - name: Editor - Input Views
     description: |
@@ -51,8 +52,9 @@ toc:
 
   - name: Editor - Misc Views
     description: |
-      General purpose Backbone views exported by `pageflow/editor`.
+      General purpose Backbone views and mixins exported by `pageflow/editor`.
     children:
+      - modelLifecycleTrackingView
       - DropDownButtonView
       - ListView
       - ModelThumbnailView
