@@ -1,0 +1,9 @@
+.iconButton {
+  /* see app/assets/stylesheets/pageflow/editor/composable.scss */
+  composes: icon_button from global;
+}
+
+.addButton {
+  composes: iconButton;
+  composes: plusCircled from './icons.module.css';
+}
