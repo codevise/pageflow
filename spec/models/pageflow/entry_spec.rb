@@ -3,6 +3,12 @@ require 'spec_helper'
 module Pageflow
   describe Entry do
     context 'on create' do
+      before do
+        pageflow_configure do |config|
+          TestEntryType.register(config, name: 'test')
+        end
+      end
+
       it 'creates a draft' do
         entry = create(:entry)
 
@@ -15,17 +21,27 @@ module Pageflow
         expect(entry.draft).to be_blank
       end
 
-      it 'sets draft home_button_enabled to home_button_enabled_by_default of accounts default_theming' do
-        theming = create(:theming, home_button_enabled_by_default: true)
-        entry = create(:entry, theming: theming)
+      it 'sets draft config to config of available entry template' do
+        entry_template = create(:entry_template,
+                                configuration: {color_scheme: 'purple'},
+                                entry_type: 'test')
+        entry = create(:entry,
+                       account: entry_template.account,
+                       type_name: entry_template.entry_type)
 
-        expect(entry.draft.home_button_enabled).to eq(theming.home_button_enabled_by_default)
+        expect(entry.draft.configuration['color_scheme'])
+          .to eq(entry_template.configuration['color_scheme'])
       end
 
-      it 'copies widgets from theming to draft' do
-        theming = create(:theming)
-        create(:widget, subject: theming, role: 'header', type_name: 'theming_header')
-        entry = create(:entry, theming: theming)
+      it 'copies widgets from entry template to draft' do
+        entry_template = create(:entry_template, entry_type: 'test')
+        create(:widget,
+               subject: entry_template,
+               role: 'header',
+               type_name: 'theming_header')
+        entry = create(:entry,
+                       account: entry_template.account,
+                       type_name: entry_template.entry_type)
 
         expect(entry.draft.widgets).to include_record_with(role: 'header', type_name: 'theming_header')
       end
@@ -36,9 +52,15 @@ module Pageflow
         expect(entry.draft.storylines).not_to be_empty
       end
 
-      it 'copies meta defaults from the theming' do
-        theming = create(:theming, default_author: 'Codevise', default_publisher: 'Codevise Solutions', default_keywords: 'codevise, story')
-        entry = create(:entry, theming: theming)
+      it 'copies meta defaults from entry template' do
+        entry_template = create(:entry_template,
+                                default_author: 'Codevise',
+                                default_publisher: 'Codevise Solutions',
+                                default_keywords: 'codevise, story',
+                                entry_type: 'test')
+        entry = create(:entry,
+                       type_name: entry_template.entry_type,
+                       account: entry_template.account)
 
         expect(entry.draft.author).to eq('Codevise')
         expect(entry.draft.publisher).to eq('Codevise Solutions')

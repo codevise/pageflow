@@ -74,11 +74,8 @@ module Pageflow
       end
 
       it 'is false if no home_url is configured' do
-        pageflow_configure do |config|
-          config.themes.register(:with_home_button)
-        end
         revision = build(:revision, configuration: {home_button_enabled: true})
-        theming = create(:theming, theme_name: 'with_home_button')
+        theming = create(:theming, home_url: '')
         home_button = HomeButton.new(revision, theming)
 
         expect(home_button).not_to be_enabled

@@ -214,8 +214,8 @@ module Pageflow
           ThemingPolicy.new(user, theming).edit?
         end
 
-        can :index_widgets_for, Theming do |theming|
-          ThemingPolicy.new(user, theming).index_widgets_for?
+        can :edit, EntryTemplate do |entry_template|
+          EntryTemplatePolicy.new(user, entry_template).edit?
         end
 
         can :create, ::User do |managed_user|
@@ -260,6 +260,7 @@ module Pageflow
         can :manage, Pageflow.config.file_types.map(&:model)
         can :manage, Folder
         can :manage, Theming
+        can :manage, EntryTemplate
         can :manage, ::User
       end
     end

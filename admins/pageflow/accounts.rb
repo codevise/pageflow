@@ -31,7 +31,7 @@ module Pageflow
         end
       end
       column :default_theming do |account|
-        account.default_theming.theme_name if authorized?(:read, account)
+        account.first_paged_entry_template.theme_name if authorized?(:read, account)
       end
     end
 
@@ -63,6 +63,7 @@ module Pageflow
     show :title => :name do |account|
       render 'account_details', :account => account
       render 'theming_details', :account => account
+      render 'entry_template_details', account: account
 
       tabs_view(Pageflow.config.admin_resource_tabs.find_by_resource(account.default_theming),
                 i18n: 'pageflow.admin.resource_tabs',
@@ -80,28 +81,65 @@ module Pageflow
 
       def new
         @account = Account.new
-        @account.build_default_theming(
+        @account.build_default_theming
+        @entry_template = @account.entry_templates.build(
           default_locale: current_user.locale,
-          share_providers: Pageflow.config.default_share_providers
+          share_providers: Pageflow.config.default_share_providers,
+          entry_type: 'paged'
         )
       end
 
       def create
-        @account = Account.new(permitted_params[:account])
-        @account.build_default_theming(permitted_params.fetch(:account, {})[:default_theming_attributes])
+        account_params = (permitted_params[:account] || {})
+                         .except(:paged_entry_template_attributes)
+        @account = Account.new(account_params)
+        @account.build_default_theming(permitted_params.fetch(:account, {})[
+                                         :default_theming_attributes])
+        @entry_template = @account.entry_templates.build({entry_type: 'paged'}
+                                                  .merge(entry_template_params))
+
         super
-        update_widgets
+        update_widgets('paged')
+      end
+
+      def edit
+        @entry_template = resource.first_paged_entry_template
+        super
       end
 
       def update
+        @entry_template = resource.entry_templates.find_or_initialize_by(
+          entry_type: 'paged'
+        )
+        @entry_template.assign_attributes(entry_template_params)
+        @entry_template.save
         update! do |success, failure|
           success.html { redirect_to(admin_account_path(resource, params.permit(:tab))) }
         end
-        update_widgets
+        update_widgets('paged')
       end
 
-      def update_widgets
-        @account.default_theming.widgets.batch_update!(widgets_params) if @account.valid?
+      def entry_template_params
+        current_params = permitted_params_with_entry_template_attributes.fetch(:account, {})[
+          :paged_entry_template_attributes]&.to_hash
+        if current_params
+          config = true_false_strings_to_booleans_or_numbers(
+            current_params['configuration']
+          )
+          share_providers = true_false_strings_to_booleans_or_numbers(
+            current_params['share_providers']
+          )
+          current_params.merge('configuration' => config, 'share_providers' => share_providers)
+        else
+          {}
+        end
+      end
+
+      def update_widgets(entry_type)
+        if @account.valid?
+          EntryTemplate.find_by(account_id: @account.id, entry_type: entry_type)
+            &.widgets&.batch_update!(widgets_params)
+        end
       end
 
       def widgets_params
@@ -113,11 +151,13 @@ module Pageflow
       def permitted_params
         result = params.permit(account: permitted_account_attributes)
 
-        if result[:account]
-          permit_feature_states(result[:account])
-        end
+        with_permitted_feature_states(result)
+      end
 
-        result
+      def permitted_params_with_entry_template_attributes
+        result = params.permit(account: permitted_account_attributes_plus_entry_template)
+
+        with_permitted_feature_states(result)
       end
 
       def scoped_collection
@@ -125,6 +165,31 @@ module Pageflow
       end
 
       private
+
+      def with_permitted_feature_states(result)
+        result[:account] && permit_feature_states(result[:account])
+
+        result
+      end
+
+      def true_false_strings_to_booleans_or_numbers(hash)
+        hash&.map { |k, v| [k, to_boolean_or_number(v)] }&.to_h
+      end
+
+      def to_boolean_or_number(value)
+        case value
+        when 'false'
+          false
+        when 'true'
+          true
+        when '0'
+          0
+        when '1'
+          1
+        else
+          value
+        end
+      end
 
       def permitted_account_attributes
         [
@@ -135,25 +200,35 @@ module Pageflow
           permitted_attributes_for(:account)
       end
 
+      def permitted_account_attributes_plus_entry_template
+        permitted_account_attributes +
+          [paged_entry_template_attributes: permitted_entry_template_attributes]
+      end
+
       def permitted_theming_attributes
         [
           :cname,
           :additional_cnames,
-          :theme_name,
           :imprint_link_url,
           :imprint_link_label,
           :copyright_link_url,
           :copyright_link_label,
           :privacy_link_url,
-          :home_url,
-          :home_button_enabled_by_default,
+          :home_url
+        ] +
+          permitted_attributes_for(:theming)
+      end
+
+      def permitted_entry_template_attributes
+        [
+          :theme_name,
           :default_author,
           :default_publisher,
           :default_keywords,
           :default_locale,
-          share_providers: []
-        ] +
-          permitted_attributes_for(:theming)
+          share_providers: [],
+          configuration: {}
+        ]
       end
 
       def permitted_attributes_for(resource_name)

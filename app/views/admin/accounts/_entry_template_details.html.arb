@@ -1,0 +1,16 @@
+extensible_attributes_table_for(account.first_paged_entry_template,
+                                Pageflow.config_for(account)
+                                  .admin_attributes_table_rows.for(:entry_template)) do
+  row :theme, class: 'theme' do
+    account.first_paged_entry_template.theme_name
+  end
+  row :default_locale, class: 'default_locale' do
+    t('pageflow.public._language', locale: account.first_paged_entry_template.default_locale)
+  end
+  row :default_author, class: 'default_author'
+  row :default_publisher, class: 'default_publisher'
+  row :default_keywords, class: 'default_keywords'
+  row :default_share_providers, class: 'default_share_providers' do
+    account.first_paged_entry_template.default_share_providers.keys.map(&:camelize).join(', ')
+  end
+end

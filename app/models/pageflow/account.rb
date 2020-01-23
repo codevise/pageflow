@@ -10,9 +10,11 @@ module Pageflow
     has_many :entry_memberships, through: :entries, source: :memberships
 
     has_many :themings, dependent: :destroy
+    has_many :entry_templates, dependent: :destroy
     belongs_to :default_theming, :class_name => 'Theming'
 
     validates :default_theming, :presence => true
+    validates_associated :entry_templates
 
     accepts_nested_attributes_for :default_theming, :update_only => true
 
@@ -22,6 +24,10 @@ module Pageflow
       super.tap do |theming|
         theming.account = self
       end
+    end
+
+    def first_paged_entry_template
+      EntryTemplate.find_or_initialize_by(account: self, entry_type: 'paged')
     end
 
     def blacklist_for_serialization

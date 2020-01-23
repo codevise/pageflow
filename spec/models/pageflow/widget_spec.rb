@@ -8,14 +8,14 @@ module Pageflow
 
     describe '.copy_all_to' do
       it 'copies all widgets to given subject' do
-        theming = create(:theming)
+        entry_template = create(:entry_template)
         revision = create(:revision)
         create(:widget,
-               subject: theming,
+               subject: entry_template,
                role: 'header',
                type_name: 'custom_header')
 
-        theming.widgets.copy_all_to(revision)
+        entry_template.widgets.copy_all_to(revision)
 
         expect(revision.widgets).to include_record_with(type_name: 'custom_header',
                                                         role: 'header')

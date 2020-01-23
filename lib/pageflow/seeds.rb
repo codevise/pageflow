@@ -54,8 +54,6 @@ module Pageflow
     # @return [Theming] newly built theming
     def build_default_theming_for(account, attributes = {}, &block)
       default_attributes = {
-        theme_name: Pageflow.config_for(account).themes.names.first,
-
         imprint_link_label: 'Impressum',
         imprint_link_url: 'http://example.com/impressum.html',
         copyright_link_label: '&copy; Pageflow 2014',

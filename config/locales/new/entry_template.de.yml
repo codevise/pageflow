@@ -1,0 +1,21 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/entry_template:
+        configuration:
+          group_label: Konfiguration
+          home_button_enabled: Home-Button in neuen Beiträgen anzeigen
+        default_author: Standard-Autor
+        default_keywords: Standard-Schlüsselwörter
+        default_locale: Standard-Sprache
+        default_publisher: Standard-Herausgeber
+        default_share_providers: Standard-Share-Links
+        theme_name: Theme
+      pageflow/theming:
+        default_author: "DELETED"
+        default_keywords: "DELETED"
+        default_locale: "DELETED"
+        default_publisher: "DELETED"
+        default_share_providers: "DELETED"
+        home_button_enabled_by_default: "DELETED"
+        theme_name: "DELETED"

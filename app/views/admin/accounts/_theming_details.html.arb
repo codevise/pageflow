@@ -2,16 +2,4 @@ extensible_attributes_table_for(account.default_theming,
                                 Pageflow.config_for(account)
                                   .admin_attributes_table_rows.for(:theming)) do
   row :cname, class: 'cname'
-  row :theme, class: 'theme' do
-    account.default_theming.theme.name
-  end
-  row :default_locale, class: 'default_locale' do
-    t('pageflow.public._language', locale: account.default_theming.default_locale)
-  end
-  row :default_author, class: 'default_author'
-  row :default_publisher, class: 'default_publisher'
-  row :default_keywords, class: 'default_keywords'
-  row :default_share_providers, class: 'default_share_providers' do
-    account.default_theming.default_share_providers.keys.map(&:camelize).join(', ')
-  end
 end

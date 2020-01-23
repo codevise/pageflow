@@ -45,7 +45,7 @@ module Pageflow
         if params[:collection_name] == 'entries'
           DraftEntry.find(params[:subject_id])
         else
-          Theming.find(params[:subject_id])
+          EntryTemplate.find(params[:subject_id])
         end
       end
     end
