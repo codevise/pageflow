@@ -14,5 +14,5 @@ add_and_commit \
     app/assets/javascripts/pageflow/dist/{react-*,ui,frontend}.js \
     packages/pageflow/{editor,ui}.js \
     entry_types/paged/app/assets/javascripts/pageflow_paged/dist/editor.js \
-    entry_types/scrolled/package/{editor,frontend,contentElements-frontend}.js \
+    entry_types/scrolled/package/{editor,frontend,contentElements-editor,contentElements-frontend}.js \
 

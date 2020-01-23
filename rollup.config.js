@@ -179,6 +179,17 @@ export default [
     plugins,
     ...ignoreJSXWarning
   },
+
+  {
+    input: pageflowScrolledPackageRoot + '/src/contentElements/editor.js',
+    output: {
+      file: pageflowScrolledPackageRoot + '/contentElements-editor.js',
+      format: 'esm',
+    },
+    external: id => externalPageflowEditorGlobalsAndCoreJs(id) ||
+                  externalScrolledDependenciesAndCoreJs(id),
+    plugins
+  },
   {
     input: pageflowScrolledPackageRoot + '/src/contentElements/frontend.js',
     output: {

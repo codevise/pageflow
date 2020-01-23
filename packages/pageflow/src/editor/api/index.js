@@ -289,7 +289,7 @@ export const EditorApi = Object.extend(
     }
 
     var payloadJson = JSON.parse(decodeURIComponent(encodedPayload));
-    return new this.fileSelectionHandlers[handlerName](payloadJson);
+    return new this.fileSelectionHandlers[handlerName]({...payloadJson, entry: state.entry});
   },
 
   createPageConfigurationEditorView: function(page, options) {

@@ -1,6 +1,7 @@
 /*global pageflow*/
 
 import {ScrolledEntry} from './models/ScrolledEntry';
+import {ContentElementFileSelectionHandler} from './models/ContentElementFileSelectionHandler';
 
 import {EntryOutlineView} from './views/EntryOutlineView';
 import {EntryPreviewView} from './views/EntryPreviewView';
@@ -10,16 +11,27 @@ import {SideBarController} from './controllers/SideBarController';
 
 import * as globalInterop from 'pageflow/editor';
 
+import {editor} from './api';
+
 Object.assign(pageflow, globalInterop);
 
-pageflow.editor.registerEntryType('scrolled', {
+editor.registerEntryType('scrolled', {
   entryModel: ScrolledEntry,
 
-  previewView: EntryPreviewView,
+  previewView(options) {
+    return new EntryPreviewView({
+      ...options,
+      editor
+    });
+  },
   outlineView: EntryOutlineView
 });
 
-pageflow.editor.registerSideBarRouting({
+editor.registerSideBarRouting({
   router: SideBarRouter,
   controller: SideBarController
 });
+
+editor.registerFileSelectionHandler('contentElementConfiguration',
+                                    ContentElementFileSelectionHandler);
+export {editor};
