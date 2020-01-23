@@ -1,11 +1,27 @@
 import Backbone from 'backbone';
 
-export const Section = Backbone.Model.extend({
-  initialize() {
-    this.configuration = new Backbone.Model(this.get('configuration'));
+import {
+  configurationContainer,
+  entryTypeEditorControllerUrls,
+  failureTracking,
+  delayedDestroying
+} from 'pageflow/editor';
 
-    this.listenTo(this.configuration, 'change', function() {
-      this.trigger('change:configuration', this);
-    });
-  }
+import {SectionConfiguration} from './SectionConfiguration';
+
+export const Section = Backbone.Model.extend({
+  mixins: [
+    configurationContainer({
+      autoSave: true,
+      includeAttributesInJSON: ['position'],
+      configurationModel: SectionConfiguration
+    }),
+    delayedDestroying,
+    entryTypeEditorControllerUrls.forModel({resources: 'sections'}),
+    failureTracking
+  ],
+
+  chapterPosition: function() {
+    return this.chapter && this.chapter.has('position') ? this.chapter.get('position') : -1;
+  },
 });
