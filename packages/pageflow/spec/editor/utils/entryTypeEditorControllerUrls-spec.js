@@ -1,4 +1,4 @@
-import {entryTypeEditorControllerUrls} from 'pageflow/editor';
+import {entryTypeEditorControllerUrls, ForeignKeySubsetCollection} from 'pageflow/editor';
 import {editor} from 'editor/base';
 import Backbone from 'backbone';
 import * as support from '$support';
@@ -38,6 +38,25 @@ describe('entryTypeEditorControllerUrls', () => {
       });
 
       expect(new Collection().url()).toBe('/editor/entries/10/test/items')
+    });
+
+    it('constructs url with prefix when used with ForeignKeySubsetCollection', () => {
+      editor.registerEntryType('test', {});
+      const Model = Backbone.Model.extend({
+        mixins: [entryTypeEditorControllerUrls.forModel({resources: 'chapters'})]
+      });
+      const Collection = Backbone.Collection.extend({
+        mixins: [entryTypeEditorControllerUrls.forCollection({resources: 'items'})]
+      });
+      const chapter = new Model({id: 5})
+      const items = new Collection();
+      const chapterItems = new ForeignKeySubsetCollection({
+        parent: items,
+        parentModel: chapter,
+        foreignKeyAttribute: 'chapterId'
+      });
+
+      expect(chapterItems.url()).toBe('/editor/entries/10/test/chapters/5/items')
     });
   });
 });

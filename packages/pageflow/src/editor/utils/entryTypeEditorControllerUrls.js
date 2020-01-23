@@ -31,6 +31,10 @@ export const entryTypeEditorControllerUrls = {
     return {
       url() {
         return entryTypeEditorControllerUrl(resources);
+      },
+
+      urlSuffix() {
+        return `/${resources}`;
       }
     };
   },

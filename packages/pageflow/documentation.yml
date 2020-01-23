@@ -23,6 +23,7 @@ toc:
       - delayedDestroying
       - entryTypeEditorControllerUrls
       - failureTracking
+      - ForeignKeySubsetCollection
 
   - name: Editor - Input Views
     description: |

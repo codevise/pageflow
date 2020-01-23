@@ -65,6 +65,7 @@ export * from './models/authenticationProvider';
 export * from './models/FileImport';
 
 export * from './collections/ChaptersCollection';
+export * from './collections/ForeignKeySubsetCollection';
 export * from './collections/SubsetCollection';
 export * from './collections/StorylineChaptersCollection';
 export * from './collections/PageLinksCollection';
