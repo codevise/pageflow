@@ -19,23 +19,18 @@ function renderSections(sections,
                         setCurrentSectionIndex,
                         scrollTargetSectionIndex,
                         setScrollTargetSectionIndex) {
-  function onActivate(index) {
-    setCurrentSectionIndex(index);
+  function onActivate(sectionIndex) {
+    setCurrentSectionIndex(sectionIndex);
     setScrollTargetSectionIndex(null);
   }
 
-  return sections.map((section, index) => {
-    const previousSection = sections[index - 1];
-    const nextSection = sections[index + 1];
-
+  return sections.map((section) => {
     return (
-      <Section key={index}
-               state={index > currentSectionIndex ? 'below' : index < currentSectionIndex ? 'above' : 'active'}
-               isScrollTarget={index === scrollTargetSectionIndex}
-               onActivate={() => onActivate(index)}
-               {...section}
-               previousSection={previousSection}
-               nextSection={nextSection}/>
+      <Section key={section.permaId}
+               state={section.sectionIndex > currentSectionIndex ? 'below' : section.sectionIndex < currentSectionIndex ? 'above' : 'active'}
+               isScrollTarget={section.sectionIndex === scrollTargetSectionIndex}
+               onActivate={() => onActivate(section.sectionIndex)}
+               {...section} />
     )
   });
 }
