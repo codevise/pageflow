@@ -5,12 +5,12 @@ import useNativeScrollPrevention from '../useNativeScrollPrevention';
 
 import ChapterLink from "./ChapterLink";
 import ImprintAndPrivacy from "./ImprintAndPrivacy";
+import Sharing from "./Sharing";
 
 import hamburgerIcons from './hamburgerIcons.module.css'
 import styles from './AppHeader.module.css';
 
 import WDRlogo from '../assets/images/navigation/wdr_logo_header.svg';
-import ShareIcon from '../assets/images/navigation/icons/share_icon.svg';
 
 export default function AppHeader(props) {
   const [navExpanded, setNavExpanded] = useState(true);
@@ -103,9 +103,7 @@ export default function AppHeader(props) {
 
         <ImprintAndPrivacy />
 
-        <a className={classNames(styles.menuIcon, styles.shareIcon)}>
-          <ShareIcon/>
-        </a>
+        <Sharing />
       </div>
 
       <div className={styles.progressBar} onMouseEnter={handleProgressBarMouseEnter}>
