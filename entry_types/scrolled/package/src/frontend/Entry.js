@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import Chapter from "./Chapter";
 import MutedContext from './MutedContext';
 import ScrollToSectionContext from './ScrollToSectionContext';
+import {useEntryStructure, useEntryStateDispatch} from '../entryState';
 
 import styles from './Entry.module.css';
 
@@ -13,8 +14,8 @@ export default function Entry(props) {
 
   const [muted, setMuted] = useState(true);
 
-  const dispatch = props.dispatch;
-  const entryStructure = props.entryStructure;
+  const dispatch = useEntryStateDispatch();
+  const entryStructure = useEntryStructure();
 
   useEffect(() => {
     if (window.parent) {

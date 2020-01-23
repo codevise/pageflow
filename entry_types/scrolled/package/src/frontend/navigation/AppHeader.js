@@ -12,16 +12,19 @@ import WDRlogo from '../assets/images/navigation/wdr_logo_header.svg';
 import ShareIcon from '../assets/images/navigation/icons/share_icon.svg';
 import InfoIcon from '../assets/images/navigation/icons/information_icon.svg';
 
+import {useEntryStructure} from '../../entryState';
+
 export default function AppHeader(props) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
   const [readingProgress, setReadingProgress] = useState(0);
   const [activeChapterLink, setActiveChapterLink] = useState('chapterLink1');
-
+  const entryStructure = useEntryStructure();
+  
   const ref = useRef();
   useNativeScrollPrevention(ref);
 
-  const chapters = props.entryStructure.map((chapter) => {
+  const chapters = entryStructure.map((chapter) => {
     return ({
       permaId: chapter.permaId,
       title: chapter.title,

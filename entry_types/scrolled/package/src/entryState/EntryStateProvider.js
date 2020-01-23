@@ -1,11 +1,33 @@
-import React from 'react';
+import React, {useContext, useMemo} from 'react';
 
-export const EntryStateContext = React.createContext();
+import {useCollections} from '../collections';
 
-export function EntryStateProvider({state, children}) {
+const Context = React.createContext();
+
+export function EntryStateProvider({seed, children}) {
+  const [collections, dispatch] = useCollections(seed.collections, {keyAttribute: 'permaId'});
+
+  const value = useMemo(() => ({
+    entryState: {
+      collections,
+      config: seed.config
+    },
+    dispatch
+  }), [collections, dispatch, seed]);
+
   return (
-    <EntryStateContext.Provider value={state}>
+    <Context.Provider value={value}>
       {children}
-    </EntryStateContext.Provider>
+    </Context.Provider>
   );
+}
+
+export function useEntryState() {
+  const value = useContext(Context);
+  return value.entryState;
+}
+
+export function useEntryStateDispatch() {
+  const value = useContext(Context);
+  return value.dispatch;
 }
