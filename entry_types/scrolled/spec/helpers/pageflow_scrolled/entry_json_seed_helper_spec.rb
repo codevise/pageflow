@@ -12,6 +12,24 @@ module PageflowScrolled
         end
       end
 
+      context 'entries' do
+        it 'renders single-element entry array with id and configuration' do
+          entry = create(:draft_entry)
+
+          result = render(helper, entry)
+
+          expect(result)
+            .to include_json(collections: {
+                               entries: [
+                                 {
+                                   id: entry.id,
+                                   shareProviders: {}
+                                 }
+                               ]
+                             })
+        end
+      end
+
       context 'chapters' do
         it 'renders chapters with id, perma_id, storyline_id, position and configuration' do
           entry = create(:published_entry)

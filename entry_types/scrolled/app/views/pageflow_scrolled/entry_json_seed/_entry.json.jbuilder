@@ -11,6 +11,12 @@ end
 
 unless options[:skip_collections]
   json.collections do
+    json.entries do
+      json.array!([entry]) do |entry|
+        json.call(entry, :id, :share_providers)
+      end
+    end
+
     json.chapters do
       json.array!(chapters) do |chapter|
         json.partial! 'pageflow_scrolled/chapters/chapter', chapter: chapter
