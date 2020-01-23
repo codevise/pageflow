@@ -1,3 +1,1 @@
-/*global pageflow*/
-
-export const state = pageflow;
+export const state = window.pageflow || {};

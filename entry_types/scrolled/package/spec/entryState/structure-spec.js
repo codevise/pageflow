@@ -1,12 +1,8 @@
 import {useEntryStructure, useSectionStructure, watchCollections} from 'entryState';
+import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 
-import {
-  ChaptersCollection,
-  SectionsCollection,
-  ContentElementsCollection
-} from 'editor/collections';
-
-import {renderHookInEntry} from 'support';
+import {factories} from 'pageflow/testHelpers';
+import {renderHookInEntry, normalizeSeed} from 'support';
 
 const chaptersSeed = [
   {
@@ -151,16 +147,17 @@ describe('useEntryStructure', () => {
 
   it('reads data from watched collections', () => {
     const {result} = renderHookInEntry(() => useEntryStructure(), {
-      setup: dispatch => {
-        const chapters = new ChaptersCollection(chaptersSeed);
-        const sections = new SectionsCollection(sectionsSeed);
-        const contentElements = new ContentElementsCollection(contentElementsSeed);
-
+      setup: dispatch =>
         watchCollections(
-          {chapters, sections, contentElements, files: {}},
+          factories.entry(ScrolledEntry, {}, {
+            entryTypeSeed: normalizeSeed({
+              chapters: chaptersSeed,
+              sections: sectionsSeed,
+              contentElements: contentElementsSeed
+            })
+          }),
           {dispatch}
         )
-      }
     });
     const entryStructure = result.current;
 

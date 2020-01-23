@@ -106,3 +106,9 @@ toc:
     children:
       - i18nUtils
       - cssModulesUtils
+
+  - name: Test Helpers
+    description: |
+      Utility functions exported by `pageflow/testHelpers`.
+    children:
+      - factories
