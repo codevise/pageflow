@@ -10,7 +10,6 @@ export default function ChapterLinkTooltip(props) {
                   type='light'
                   place='bottom'
                   effect='solid'
-                  offset={{bottom: -1}}
                   className={classNames(headerStyles.navigationTooltip,
                                         styles.chapterLinkTooltip)}>
       <div>

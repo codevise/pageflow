@@ -13,7 +13,7 @@ export default function ImprintAndPrivacyTooltip(props) {
                   event={'click'}
                   globalEventOff={'click'}
                   clickable={true}
-                  offset={{bottom: 8, right: -97}}
+                  offset={{bottom: 5, right: -97}}
                   className={classNames(headerStyles.navigationTooltip,
                                         styles.imprintAndPrivacyTooltip)}>
       <div>

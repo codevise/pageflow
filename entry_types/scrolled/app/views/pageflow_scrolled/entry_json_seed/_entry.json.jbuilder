@@ -50,3 +50,12 @@ json.imprintAndPrivacy do
     json.privacyLinkUrl "#{entry.theming.privacy_link_url}?lang=#{entry.locale}"
   end
 end
+
+json.shareLinks do
+  json.array!(entry.share_providers) do |provider, active|
+    next unless active
+    json.partial! 'pageflow_scrolled/entry_json_seed/share_provider_config',
+                  entry: entry,
+                  provider: provider.to_sym
+  end
+end
