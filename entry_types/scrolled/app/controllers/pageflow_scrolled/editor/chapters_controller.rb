@@ -31,7 +31,7 @@ module PageflowScrolled
       end
 
       def order
-        storyline = Storyline.all_for_revision(@entry.draft).find(params[:storyline_id])
+        storyline = find_storyline
         chapters = Chapter.all_for_revision(@entry.draft)
 
         params.require(:ids).each_with_index do |id, index|
@@ -50,6 +50,14 @@ module PageflowScrolled
         params.require(:chapter)
               .permit(:position)
               .merge(configuration: configuration)
+      end
+
+      def find_storyline
+        if params[:storyline_id]
+          Storyline.all_for_revision(@entry.draft).find(params[:storyline_id])
+        else
+          Storyline.all_for_revision(@entry.draft).first
+        end
       end
     end
   end
