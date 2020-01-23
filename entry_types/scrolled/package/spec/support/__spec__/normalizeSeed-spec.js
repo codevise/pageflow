@@ -48,6 +48,7 @@ describe('normalizeSeed', () => {
 
     expect(result).toMatchObject({
       collections: {
+        entries: [],
         imageFiles: [],
         chapters: [],
         sections: [],

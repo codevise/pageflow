@@ -4,6 +4,7 @@
  *
  * @param {Object} [options]
  * @param {Object} [options.imageFileUrlTemplates] - Mapping of url template names to url templates.
+ * @param {Array} [options.entries] - Single-element-Array containing attributes of the entry.
  * @param {Array} [options.imageFiles] - Array of objects with image file attributes of entry.
  * @param {Array} [options.chapters] - Array of objects with chapter attributes of entry.
  * @param {Array} [options.sections] - Array of objects with section attributes of entry.
@@ -13,11 +14,16 @@
 export function normalizeSeed({
   imageFileUrlTemplates,
   fileUrlTemplates,
+  entries,
   imageFiles,
   chapters,
   sections,
   contentElements
 } = {}) {
+  const normalizedEntries = normalizeCollection(entries, {
+    id: 1, configuration: {shareProviders: {facebook: true, twitter: false}}
+  });
+
   const normalizedSections = normalizeCollection(sections, {
     configuration: {transition: 'scroll', backdrop: {image: '#000'}}
   });
@@ -32,6 +38,7 @@ export function normalizeSeed({
       }
     },
     collections: {
+      entries: normalizedEntries,
       imageFiles: normalizeCollection(imageFiles, {
         width: 1920,
         height: 1279,

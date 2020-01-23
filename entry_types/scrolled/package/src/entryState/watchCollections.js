@@ -1,6 +1,12 @@
 import {watchCollection} from '../collections';
 
-export function watchCollections({chapters, sections, contentElements, files}, {dispatch}) {
+export function watchCollections(entry, {dispatch}) {
+  const {chapters, sections, contentElements, files} = entry;
+  watchCollection(new Backbone.Collection([entry.configuration]), {
+    name: 'entries',
+    attributes: ['id', {shareProviders: 'share_providers'}],
+    dispatch
+  });
   watchCollection(chapters, {
     name: 'chapters',
     attributes: ['id', 'permaId'],
