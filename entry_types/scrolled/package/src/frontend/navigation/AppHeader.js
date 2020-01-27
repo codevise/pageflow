@@ -5,7 +5,7 @@ import useNativeScrollPrevention from '../useNativeScrollPrevention';
 
 import ChapterLink from "./ChapterLink";
 import ImprintAndPrivacy from "./ImprintAndPrivacy";
-import Sharing from "./Sharing";
+import {SharingMenu} from "./SharingMenu";
 
 import hamburgerIcons from './hamburgerIcons.module.css'
 import styles from './AppHeader.module.css';
@@ -66,7 +66,7 @@ export default function AppHeader(props) {
     setMobileNavHidden(true);
   };
 
-  function renderMenuLinks(chapters) {
+  function renderChapterLinks(chapters) {
     return chapters.map((chapter, index) => {
       const chapterIndex = index + 1;
       const chapterLinkId = `chapterLink${chapterIndex}`
@@ -100,13 +100,13 @@ export default function AppHeader(props) {
              role="navigation"
              ref={ref}>
           <ul className={styles.chapterList}>
-            {renderMenuLinks(chapters)}
+            {renderChapterLinks(chapters)}
           </ul>
         </nav>
 
         <ImprintAndPrivacy />
 
-        <Sharing />
+        <SharingMenu />
       </div>
 
       <div className={styles.progressBar} onMouseEnter={handleProgressBarMouseEnter}>

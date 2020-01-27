@@ -23,6 +23,7 @@ module PageflowScrolled
                                entries: [
                                  {
                                    id: entry.id,
+                                   permaId: entry.id,
                                    shareProviders: {}
                                  }
                                ]
@@ -271,6 +272,17 @@ module PageflowScrolled
                                testFiles: 'Pageflow::VideoFile'
                              }
                            })
+      end
+
+      it 'renders entry share url' do
+        theming = create(:theming, cname: '')
+        entry = Pageflow::PublishedEntry.new(create(:entry, title: 'test', theming: theming),
+                                             create(:revision))
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {shareUrl: 'http://test.host/test'})
+
       end
     end
 

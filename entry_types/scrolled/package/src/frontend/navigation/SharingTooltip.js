@@ -3,42 +3,85 @@ import classNames from 'classnames';
 import headerStyles from "./AppHeader.module.css";
 import styles from "./SharingTooltip.module.css";
 import ReactTooltip from "react-tooltip";
+import {useEntryMetadata, useEntryState} from '../../entryState';
 
-import EmailIcon from "../assets/images/navigation/icons/shareLinks/email_icon.svg";
-import FacebookIcon from "../assets/images/navigation/icons/shareLinks/facebook_icon.svg";
-import LinkedInIcon from "../assets/images/navigation/icons/shareLinks/linked_in_icon.svg";
-import TelegramIcon from "../assets/images/navigation/icons/shareLinks/telegram_icon.svg";
-import TwitterIcon from "../assets/images/navigation/icons/shareLinks/twitter_icon.svg";
-import WhatsAppIcon from "../assets/images/navigation/icons/shareLinks/whats_app_icon.svg";
+import EmailIcon from "../assets/images/navigation/icons/social/email_icon.svg";
+import FacebookIcon from "../assets/images/navigation/icons/social/facebook_icon.svg";
+import LinkedInIcon from "../assets/images/navigation/icons/social/linked_in_icon.svg";
+import TelegramIcon from "../assets/images/navigation/icons/social/telegram_icon.svg";
+import TwitterIcon from "../assets/images/navigation/icons/social/twitter_icon.svg";
+import WhatsAppIcon from "../assets/images/navigation/icons/social/whats_app_icon.svg";
 
-export default function SharingTooltip(props) {
-  const shareIcons = {
-    email: EmailIcon,
-    facebook: FacebookIcon,
-    linked_in: LinkedInIcon,
-    telegram: TelegramIcon,
-    twitter: TwitterIcon,
-    whats_app: WhatsAppIcon
+export function SharingTooltip() {
+  const entryMetadata = useEntryMetadata();
+  const entryState = useEntryState();
+
+  let shareProviders = [];
+  let shareUrl = '';
+  if(entryMetadata) {
+    shareUrl = entryMetadata.shareUrl ? entryMetadata.shareUrl : entryState.config.shareUrl;
+    shareProviders = Object.entries(entryMetadata.shareProviders)
+      .map(function (providerConfig) {
+        return {
+          provider: providerConfig[0],
+          active: providerConfig[1]
+        };
+      });
   }
 
-  function renderShareLinks(shareLinks) {
-    return shareLinks.map((shareLinkConfiguration, _index) => {
-      const Icon = shareIcons[shareLinkConfiguration.provider];
+  const sharing = {
+    email: {
+      icon: EmailIcon,
+      name: 'Email',
+      url: 'mailto:?body=%{url}'
+    },
+    facebook: {
+      icon: FacebookIcon,
+      name: 'Facebook',
+      url: 'http://www.facebook.com/sharer/sharer.php?u=%{url}'
+    },
+    linked_in: {
+      icon: LinkedInIcon,
+      name: 'LinkedIn',
+      url: 'https://www.linkedin.com/shareArticle?mini=true&url=%{url}'
+    },
+    telegram: {
+      icon: TelegramIcon,
+      name: 'Telegram',
+      url: 'tg://msg?text=%{url}'
+    },
+    twitter: {
+      icon: TwitterIcon,
+      name: 'Twitter',
+      url: 'https://twitter.com/intent/tweet?url=%{url}'
+    },
+    whats_app: {
+      icon: WhatsAppIcon,
+      name: 'WhatsApp',
+      url: 'WhatsApp://send?text=%{url}'
+    }
+  }
+
+  function renderShareLinks(shareProviders) {
+    return shareProviders.map((shareProvider, _index) => {
+      if(!shareProvider.active) {return};
+      const config = sharing[shareProvider.provider];
+      const Icon = config.icon;
       return (
-        <div key={shareLinkConfiguration.provider}
+        <div key={shareProvider.provider}
              className={styles.shareLinkContainer}>
           <a className={classNames('share', styles.shareLink)}
-             href={shareLinkConfiguration.shareLink}
+             href={config.url.replace('%{url}', shareUrl)}
              target={'_blank'}>
             <Icon className={styles.shareIcon}/>
-            {shareLinkConfiguration.providerName}
+            {config.name}
           </a>
         </div>
       )
     })
   };
 
-  return(
+  return (
     <ReactTooltip id={'sharingTooltip'}
                   type={'light'}
                   place={'bottom'}
@@ -50,7 +93,7 @@ export default function SharingTooltip(props) {
                   className={classNames(headerStyles.navigationTooltip,
                                         styles.sharingTooltip)}>
       <div>
-        {renderShareLinks(pageflowScrolledSeed.shareLinks)}
+        {renderShareLinks(shareProviders)}
       </div>
     </ReactTooltip>
   )

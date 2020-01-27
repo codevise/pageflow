@@ -4,7 +4,7 @@ export function watchCollections(entry, {dispatch}) {
   const {chapters, sections, contentElements, files} = entry;
   watchCollection(new Backbone.Collection([entry.configuration]), {
     name: 'entries',
-    attributes: ['id', {shareProviders: 'share_providers'}],
+    attributes: ['id', {shareProviders: 'share_providers'}, {shareUrl: 'share_url'}],
     dispatch
   });
   watchCollection(chapters, {
