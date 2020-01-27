@@ -2,6 +2,7 @@ module PageflowPaged
   # @api private
   class EntriesController < PageflowPaged::ApplicationController
     include Pageflow::EntriesControllerEnvHelper
+    include WithoutControllerNamespacePartialPathPrefix
 
     helper Pageflow::MetaTagsHelper
     helper Pageflow::StructuredDataHelper

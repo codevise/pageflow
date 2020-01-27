@@ -3,9 +3,12 @@ require 'spec_helper'
 require 'pageflow/global_config_api_test_helper'
 require 'pageflow/entries_controller_test_helper'
 require 'pageflow/test_widget_type'
+require 'pageflow/test_page_type'
 
 require 'pageflow/matchers/have_json_ld'
 require 'pageflow/matchers/have_meta_tag'
+
+require 'support/helpers/stub_template_controller_test_helper'
 
 Pageflow::GlobalConfigApiTestHelper.setup
 
@@ -75,6 +78,26 @@ module PageflowPaged
         get_with_entry_env(:show, entry: entry, mode: :published)
 
         expect(response.body).to have_selector('div.test_widget')
+      end
+
+      it 'does not prefix partial paths obtained from models' do
+        pageflow_configure do |config|
+          config.for_entry_type(PageflowPaged.entry_type) do |c|
+            c.page_types.register(Pageflow::TestPageType.new(name: 'test',
+                                                             template_path: 'test/page.html.erb'))
+          end
+        end
+
+        stub_const('Rainbow::Record', Class.new { include ActiveModel::Conversion })
+        stub_template('test/page.html.erb' => '<%= render Rainbow::Record.new %>')
+        stub_template('rainbow/records/_record.html.erb' => '<div class="record"></div>')
+
+        entry = create(:entry, :published)
+        create(:page, revision: entry.published_revision, template: 'test')
+
+        get_with_entry_env(:show, entry: entry, mode: :published)
+
+        expect(response.body).to have_selector('div.record')
       end
 
       context 'in preview mode' do
