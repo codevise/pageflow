@@ -1,6 +1,10 @@
+//since activeadmin 2.5.0 depends on ruby 2.4
+//this is a temporary fix to use activeadmin < 2.5 for supporting ruby 2.3
+$orderable-icon-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAABGCAYAAAAAVo4aAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAH5JREFUeNpi3LhlOwMU1AExGxDXwARYoHQLEFdD2cxAXAliMKFJgEAFEHfBJEHGMKLhMpgkTsAEdch/NNwCk2xCdiEQtML4LEgCf6EubUX3Cgh0oNvJ+P//f7wOGpUclRwYSZb41CyidNbB8giNM+9oXhmVHHm5bJjUSAABBgDKKiwMMUxPwgAAAABJRU5ErkJggg==" !default;
+
 .embedded_index_table {
   .sortable a {
-    background: url("/assets/active_admin/orderable.png") no-repeat 100% 2px;
+    background: url($orderable-icon-url) no-repeat 100% 2px;
     padding-right: 13px;
   }
 

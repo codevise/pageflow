@@ -17,7 +17,7 @@ module Pageflow
         run_generator
         initializer = file('config/initializers/active_admin.rb')
         expect(initializer)
-          .to contain("ActiveAdmin.application.load_paths.unshift(Pageflow.active_admin_load_path)\n\n")
+          .to contain("ActiveAdmin.application.load_paths += [Pageflow.active_admin_load_path]\n\n")
       end
     end
   end
