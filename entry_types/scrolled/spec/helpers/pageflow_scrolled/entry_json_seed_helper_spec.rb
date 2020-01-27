@@ -14,7 +14,10 @@ module PageflowScrolled
 
       context 'entries' do
         it 'renders single-element entry array with id and configuration' do
-          entry = create(:draft_entry)
+          theming = create(:theming, cname: '')
+          revision = create(:revision, share_providers: {facebook: true}, credits: 'Test Credits')
+          entry = Pageflow::DraftEntry.new(create(:entry, theming: theming),
+                                           revision)
 
           result = render(helper, entry)
 
@@ -24,7 +27,8 @@ module PageflowScrolled
                                  {
                                    id: entry.id,
                                    permaId: entry.id,
-                                   shareProviders: {}
+                                   shareProviders: {facebook: true},
+                                   credits: 'Test Credits'
                                  }
                                ]
                              })
@@ -282,7 +286,16 @@ module PageflowScrolled
         result = render(helper, entry)
 
         expect(result).to include_json(config: {shareUrl: 'http://test.host/test'})
+      end
 
+      it 'renders default file rights from account' do
+        account = create(:account, default_file_rights: '@WDR')
+        entry = Pageflow::PublishedEntry.new(create(:entry, title: 'test', account: account),
+                                             create(:revision))
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {defaultFileRights: '@WDR'})
       end
     end
 

@@ -3,8 +3,27 @@ import classNames from 'classnames';
 import headerStyles from "./AppHeader.module.css";
 import styles from "./ImprintAndPrivacyTooltip.module.css";
 import ReactTooltip from "react-tooltip";
+import {useEntryState, useEntryMetadata} from '../../entryState';
+import {getItems} from "../../collections";
 
-export default function ImprintAndPrivacyTooltip(props) {
+export function ImprintAndPrivacyTooltip() {
+  const entryState = useEntryState();
+  const config = entryState.config.imprintAndPrivacy;
+
+  const defaultFileRights = entryState.config.defaultFileRights;
+  const imageFiles = getItems(entryState.collections, 'imageFiles');
+  const imageFileRights = imageFiles.map(function (imageConfig) {
+    return imageConfig.rights ? imageConfig.rights.trim() : undefined;
+  }).filter(Boolean).join(', ');
+  const fileRights = !!imageFileRights ? imageFileRights : defaultFileRights.trim();
+  const fileRightsString = !!fileRights ? ('Bildrechte: ' + fileRights) : '';
+
+  const entryMetadata = useEntryMetadata();
+  let credits = '';
+  if(entryMetadata) {
+    credits = entryMetadata.credits;
+  }
+
   return(
     <ReactTooltip id={'imprintAndPrivacyTooltip'}
                   type={'light'}
@@ -15,32 +34,35 @@ export default function ImprintAndPrivacyTooltip(props) {
                   clickable={true}
                   offset={{bottom: 5, right: -97}}
                   className={classNames(headerStyles.navigationTooltip,
-                                        styles.imprintAndPrivacyTooltip)}>
+                                        styles.imprintAndPrivacyTooltip,
+                                        'imprintAndPrivacyTooltip')}>
       <div>
-        <p dangerouslySetInnerHTML={{__html: pageflowScrolledSeed.imprintAndPrivacy.credits}}></p>
-        <div dangerouslySetInnerHTML={{__html: pageflowScrolledSeed.imprintAndPrivacy.fileRights}}></div>
+        <p dangerouslySetInnerHTML={{__html: credits}}></p>
+        <p>
+          {fileRightsString}
+        </p>
 
         <div>
           <a target="_blank"
-             href={pageflowScrolledSeed.imprintAndPrivacy.imprint.imprintLinkUrl}
+             href={config.imprint.imprintLinkUrl}
              className={classNames(styles.imprintAndPrivacyLink)}>
-            {pageflowScrolledSeed.imprintAndPrivacy.imprint.imprintLinkLabel}
+            {config.imprint.imprintLinkLabel}
           </a>
         </div>
 
         <div>
           <a target="_blank"
-             href={pageflowScrolledSeed.imprintAndPrivacy.copyright.copyrightLinkUrl}
+             href={config.copyright.copyrightLinkUrl}
              className={classNames(styles.imprintAndPrivacyLink)}
-             dangerouslySetInnerHTML={{__html: pageflowScrolledSeed.imprintAndPrivacy.copyright.copyrightLinkLabel}}>
+             dangerouslySetInnerHTML={{__html: config.copyright.copyrightLinkLabel}}>
           </a>
         </div>
 
         <div>
           <a target="_blank"
-             href={pageflowScrolledSeed.imprintAndPrivacy.privacy.privacyLinkUrl}
+             href={config.privacy.privacyLinkUrl}
              className={classNames(styles.imprintAndPrivacyLink)}>
-            {pageflowScrolledSeed.imprintAndPrivacy.privacy.privacyLinkLabel}
+            {config.privacy.privacyLinkLabel}
           </a>
         </div>
       </div>

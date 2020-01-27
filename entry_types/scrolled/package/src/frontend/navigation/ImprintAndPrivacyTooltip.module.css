@@ -14,7 +14,6 @@
   margin: 0 0 0.5em;
 }
 
-.imprintAndPrivacyLink {
+:global(.imprintAndPrivacyTooltip a) {
   color: #e10028;
 }
-

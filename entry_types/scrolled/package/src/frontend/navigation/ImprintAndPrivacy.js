@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import headerStyles from "./AppHeader.module.css";
 import styles from "./ImprintAndPrivacy.module.css";
 import InfoIcon from "../assets/images/navigation/icons/information_icon.svg";
-import ImprintAndPrivacyTooltip from "./ImprintAndPrivacyTooltip";
+import {ImprintAndPrivacyTooltip} from "./ImprintAndPrivacyTooltip";
 
 export default function ImprintAndPrivacy(props) {
   return (
@@ -12,7 +12,7 @@ export default function ImprintAndPrivacy(props) {
          data-tip data-for={'imprintAndPrivacyTooltip'} >
         <InfoIcon/>
       </a>
-      <ImprintAndPrivacyTooltip {...props} />
+      <ImprintAndPrivacyTooltip />
     </div>
   )
 }

@@ -4,7 +4,7 @@ export function watchCollections(entry, {dispatch}) {
   const {chapters, sections, contentElements, files} = entry;
   watchCollection(new Backbone.Collection([entry.configuration]), {
     name: 'entries',
-    attributes: ['id', {shareProviders: 'share_providers'}, {shareUrl: 'share_url'}],
+    attributes: ['id', {shareProviders: 'share_providers'}, {shareUrl: 'share_url'}, 'credits'],
     dispatch
   });
   watchCollection(chapters, {
@@ -30,7 +30,7 @@ export function watchCollections(entry, {dispatch}) {
   Object.keys(files).forEach(collectionName => {
     watchCollection(files[collectionName], {
       name: camelize(collectionName),
-      attributes: ['id', {permaId: 'perma_id'}, 'width', 'height', 'basename'],
+      attributes: ['id', {permaId: 'perma_id'}, 'width', 'height', 'basename', 'rights'],
       keyAttribute: 'permaId',
       includeConfiguration: true,
       dispatch
