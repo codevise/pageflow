@@ -7,21 +7,13 @@ json.config do
   json.file_model_types do
     config_file_model_types_seed(json, entry_config)
   end
-  json.share_url pretty_entry_url(entry)
+
+  config_sharing_data_seed(json, entry)
+
   json.default_file_rights entry.account.default_file_rights
+
   json.imprint_and_privacy do
-    json.imprint do
-      json.imprint_link_label entry.theming.imprint_link_label
-      json.imprint_link_url entry.theming.imprint_link_url
-    end
-    json.copyright do
-      json.copyright_link_label raw(entry.theming.copyright_link_label)
-      json.copyright_link_url entry.theming.copyright_link_url
-    end
-    json.privacy do
-      json.privacy_link_label I18n.t('pageflow.public.privacy_notice')
-      json.privacy_link_url "#{entry.theming.privacy_link_url}?lang=#{entry.locale}"
-    end
+    config_imprint_and_privacy_seed(json, entry)
   end
 end
 

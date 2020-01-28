@@ -16,7 +16,7 @@ module Pageflow
       end
     end
 
-    # Render seed data that can be used map model names in
+    # Render seed data that can be used to map model names in
     # parent_file_model_type attributes to file collection names.
     #
     # @param [JBuilder] json
@@ -25,6 +25,37 @@ module Pageflow
     def config_file_model_types_seed(json, config)
       config.file_types.index_by(&:collection_name).each do |collection_name, file_type|
         json.set!(collection_name, file_type.model.name)
+      end
+    end
+
+    # Render seed data that can be used to build share urls.
+    #
+    # @param [JBuilder] json
+    # @param [Entry] entry
+    # @since edge
+    def config_sharing_data_seed(json, entry)
+      json.share_url pretty_entry_url(entry)
+      json.share_url_templates Pageflow::SocialShareLinksHelper::PROVIDER_URL_TEMPLATES
+    end
+
+    # Render seed data that can be used to display legal information.
+    #
+    # @param [JBuilder] json
+    # @param [Entry] entry
+    # @since edge
+    def config_imprint_and_privacy_seed(json, entry)
+      theming = entry.theming
+      json.imprint do
+        json.imprint_link_label theming.imprint_link_label
+        json.imprint_link_url theming.imprint_link_url
+      end
+      json.copyright do
+        json.copyright_link_label raw(theming.copyright_link_label)
+        json.copyright_link_url theming.copyright_link_url
+      end
+      json.privacy do
+        json.privacy_link_label I18n.t('pageflow.public.privacy_notice')
+        json.privacy_link_url "#{theming.privacy_link_url}?lang=#{entry.locale}"
       end
     end
   end

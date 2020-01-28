@@ -29,38 +29,39 @@ export function SharingTooltip() {
       });
   }
 
+  const urlTemplates = entryState.config.shareUrlTemplates;
   const sharing = {
     email: {
       icon: EmailIcon,
       name: 'Email',
-      url: 'mailto:?body=%{url}'
+      url: urlTemplates.email
     },
     facebook: {
       icon: FacebookIcon,
       name: 'Facebook',
-      url: 'http://www.facebook.com/sharer/sharer.php?u=%{url}'
+      url: urlTemplates.facebook
     },
     linked_in: {
       icon: LinkedInIcon,
       name: 'LinkedIn',
-      url: 'https://www.linkedin.com/shareArticle?mini=true&url=%{url}'
+      url: urlTemplates.linked_in
     },
     telegram: {
       icon: TelegramIcon,
       name: 'Telegram',
-      url: 'tg://msg?text=%{url}'
+      url: urlTemplates.telegram
     },
     twitter: {
       icon: TwitterIcon,
       name: 'Twitter',
-      url: 'https://twitter.com/intent/tweet?url=%{url}'
+      url: urlTemplates.twitter
     },
     whats_app: {
       icon: WhatsAppIcon,
       name: 'WhatsApp',
-      url: 'WhatsApp://send?text=%{url}'
+      url: urlTemplates.whats_app
     }
-  }
+  };
 
   function renderShareLinks(shareProviders) {
     return shareProviders.map((shareProvider, _index) => {
