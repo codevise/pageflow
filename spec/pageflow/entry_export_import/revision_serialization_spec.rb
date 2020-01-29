@@ -37,7 +37,10 @@ module Pageflow
                                      'email' => true
                                    },
                                    created_at: 2.month.ago,
-                                   updated_at: 1.month.ago)
+                                   updated_at: 1.month.ago,
+                                   configuration: {
+                                     grimme_award: true
+                                   })
 
         data = RevisionSerialization.dump(exported_revision)
         imported_revision = RevisionSerialization.import(data,

@@ -17,7 +17,7 @@ editor.widgetTypes.register('title_loading_spinner', {
           text: I18n.t('pageflow.editor.title_loading_spinner.widget_type_info_box_text')
         });
         this.input('title', TextInputView, {
-          placeholder: state.entry.configuration.get('title') ||
+          placeholder: state.entry.metadata.get('title') ||
                        state.entry.get('entry_title'),
         });
         this.input('subtitle', TextInputView);

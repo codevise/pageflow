@@ -30,6 +30,7 @@ module Pageflow
              :theme,
              :password_protected?,
              :published_at,
+             :configuration,
              :to => :revision)
 
     def initialize(entry, revision = nil)

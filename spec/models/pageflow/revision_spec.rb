@@ -645,5 +645,143 @@ module Pageflow
         expect(revision.active_share_providers).to eq(['facebook'])
       end
     end
+
+    describe '#configuration' do
+      it 'returns home_url value from config hash if there is one' do
+        revision = build(:revision, home_url: 'phishing.ru', configuration: {home_url: 'dot.com'})
+
+        expect(revision.configuration['home_url']).to eq('dot.com')
+      end
+
+      it 'returns home_url value from column if there is none in config hash' do
+        revision = build(:revision, home_url: 'dot.net')
+
+        expect(revision.configuration['home_url']).to eq('dot.net')
+      end
+
+      it "returns nil for home_url if config and column don't have value" do
+        revision = build(:revision)
+
+        expect(revision.configuration['home_url']).to be_nil
+      end
+
+      it 'returns home_button_enabled value from config hash if there is one' do
+        revision = build(:revision,
+                         home_button_enabled: false,
+                         configuration: {home_button_enabled: true})
+
+        expect(revision.configuration['home_button_enabled']).to eq(true)
+      end
+
+      it 'returns home_button_enabled value from column if there is none in config hash' do
+        revision = build(:revision, home_button_enabled: true)
+
+        expect(revision.configuration['home_button_enabled']).to eq(true)
+      end
+
+      it "returns nil for home_button_enabled if config and column don't have value" do
+        revision = build(:revision)
+
+        expect(revision.configuration['home_button_enabled']).to be_nil
+      end
+
+      it 'returns manual_start value from config hash if there is one' do
+        revision = build(:revision,
+                         manual_start: false,
+                         configuration: {manual_start: true})
+
+        expect(revision.configuration['manual_start']).to eq(true)
+      end
+
+      it 'returns manual_start value from column if there is none in config hash' do
+        revision = build(:revision, manual_start: true)
+
+        expect(revision.configuration['manual_start']).to eq(true)
+      end
+
+      it "returns nil for manual_start if config and column don't have value" do
+        revision = build(:revision)
+
+        expect(revision.configuration['manual_start']).to be_nil
+      end
+
+      it 'returns emphasize_new_pages value from config hash if there is one' do
+        revision = build(:revision,
+                         emphasize_new_pages: false,
+                         configuration: {emphasize_new_pages: true})
+
+        expect(revision.configuration['emphasize_new_pages']).to eq(true)
+      end
+
+      it 'returns emphasize_new_pages value from column if there is none in config hash' do
+        revision = build(:revision, emphasize_new_pages: true)
+
+        expect(revision.configuration['emphasize_new_pages']).to eq(true)
+      end
+
+      it "returns nil for emphasize_new_pages if config and column don't have value" do
+        revision = build(:revision)
+
+        expect(revision.configuration['emphasize_new_pages']).to be_nil
+      end
+
+      it 'returns emphasize_chapter_beginning value from config hash if there is one' do
+        revision = build(:revision,
+                         emphasize_chapter_beginning: false,
+                         configuration: {emphasize_chapter_beginning: true})
+
+        expect(revision.configuration['emphasize_chapter_beginning']).to eq(true)
+      end
+
+      it 'returns emphasize_chapter_beginning value from column if there is none in config hash' do
+        revision = build(:revision, emphasize_chapter_beginning: true)
+
+        expect(revision.configuration['emphasize_chapter_beginning']).to eq(true)
+      end
+
+      it "returns nil for emphasize_chapter_beginning if config and column don't have value" do
+        revision = build(:revision)
+
+        expect(revision.configuration['emphasize_chapter_beginning']).to be_nil
+      end
+
+      it 'returns overview_button_enabled value from config hash if there is one' do
+        revision = build(:revision,
+                         overview_button_enabled: false,
+                         configuration: {overview_button_enabled: true})
+
+        expect(revision.configuration['overview_button_enabled']).to eq(true)
+      end
+
+      it 'returns overview_button_enabled value from column if there is none in config hash' do
+        revision = build(:revision, overview_button_enabled: true)
+
+        expect(revision.configuration['overview_button_enabled']).to eq(true)
+      end
+
+      it "returns nil for overview_button_enabled if config and column don't have value" do
+        revision = build(:revision)
+
+        expect(revision.configuration['overview_button_enabled']).to be_nil
+      end
+
+      it 'returns item from config hash if it has value' do
+        revision = build(:revision, configuration: {temperature: 'moderate'})
+
+        expect(revision.configuration['temperature']).to eq('moderate')
+      end
+
+      it "returns nil if it doesn't have a value" do
+        revision = build(:revision)
+
+        expect(revision.configuration['not_present']).to eq(nil)
+      end
+
+      it "doesn't fall back to some corresponding column on revision even if that column exists" do
+        revision = build(:revision, title: 'Surprise!')
+
+        expect(revision.configuration['title']).to eq(nil)
+      end
+    end
   end
 end

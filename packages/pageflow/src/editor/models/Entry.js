@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 import _ from 'underscore';
 
-import {EntryConfiguration} from './EntryConfiguration';
+import {EntryMetadata} from './EntryMetadata';
 import {FileReuse} from './FileReuse';
 import {StorylineScaffold} from './StorylineScaffold';
 import {editor} from '../base';
@@ -25,8 +25,8 @@ export const Entry = Backbone.Model.extend({
   initialize: function(attributes, options) {
     options = options || {};
 
-    this.configuration = new EntryConfiguration(this.get('configuration') || {});
-    this.configuration.parent = this;
+    this.metadata = new EntryMetadata(this.get('metadata') || {});
+    this.metadata.parent = this;
 
     this.themes = options.themes || state.themes;
     this.files = options.files || state.files;
@@ -54,12 +54,12 @@ export const Entry = Backbone.Model.extend({
       this.pages.sort();
     });
 
-    this.listenTo(this.configuration, 'change', function() {
-      this.trigger('change:configuration');
+    this.listenTo(this.metadata, 'change', function() {
+      this.trigger('change:metadata');
       this.save();
     });
 
-    this.listenTo(this.configuration, 'change:locale', function() {
+    this.listenTo(this.metadata, 'change:locale', function() {
       this.once('sync', function() {
         // No other way of updating page templates used in
         // EntryPreviewView at the moment.
@@ -69,7 +69,7 @@ export const Entry = Backbone.Model.extend({
   },
 
   getTheme: function() {
-    return this.themes.findByName(this.configuration.get('theme_name'));
+    return this.themes.findByName(this.metadata.get('theme_name'));
   },
 
   addStoryline: function(attributes) {
@@ -160,6 +160,9 @@ export const Entry = Backbone.Model.extend({
   },
 
   toJSON: function() {
-    return this.configuration.toJSON();
+    let metadataJSON = this.metadata.toJSON();
+    let configJSON = this.metadata.configuration.toJSON();
+    metadataJSON.configuration = configJSON;
+    return metadataJSON;
   }
 });

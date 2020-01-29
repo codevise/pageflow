@@ -1,0 +1,17 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/entry:
+        emphasize_chapter_beginning: "DELETED"
+        emphasize_new_pages: "DELETED"
+        home_button_enabled: "DELETED"
+        home_url: "DELETED"
+        manual_start: "DELETED"
+        overview_button_enabled: "DELETED"
+      pageflow/entry_metadata_configuration:
+        emphasize_chapter_beginning: Kapitelanfang hervorheben
+        emphasize_new_pages: Neue Seiten hervorheben
+        home_button_enabled: Home-Button anzeigen
+        home_url: Home-Button-URL
+        manual_start: Multimedia-Hinweis vor dem Start anzeigen
+        overview_button_enabled: Übersicht-Button anzeigen

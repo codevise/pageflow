@@ -43,7 +43,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
     this.update();
 
     this.listenTo(this.model, 'sync:order sync:widgets', this.update);
-    this.listenTo(this.model, 'change:configuration', function() {
+    this.listenTo(this.model, 'change:metadata', function() {
       this.model.once('sync', this.update, this);
     });
     this.listenTo(this.model, 'change:emulation_mode', this.updateEmulationMode);
@@ -138,7 +138,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
   update: function() {
     this.debouncedFetchWidgets();
 
-    this.$el.toggleClass('emphasize_chapter_beginning', !!this.model.configuration.get('emphasize_chapter_beginning'));
+    this.$el.toggleClass('emphasize_chapter_beginning', !!this.model.metadata.get('emphasize_chapter_beginning'));
   },
 
   fetchWidgets: function() {
