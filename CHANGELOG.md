@@ -1,5 +1,15 @@
 # CHANGELOG
 
+### Version 15.1.0.beta5
+
+2020-01-29
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.1.0.beta4...v15.1.0.beta5)
+
+Include `pageflow` and `pageflow-scrolled` packages in gem to allow a
+host application setup where Yarn uses packages from the gem directory
+managed by bundler.
+
 ### Version 15.1.0.beta4
 
 2020-01-29
@@ -18,8 +28,20 @@ Forgot to build assets before doing previous release.
 
 ##### Host Application
 
-- Updated active admin to 2.5.0
+- Updated Active Admin to 2.5.0
   ([#1280](https://github.com/codevise/pageflow/pull/1280))
+
+  Starting with Active Admin 2.0, using `unshift` (or any other
+  mutating method) to add load paths no longer work reliably (see
+  [activeadmin/activeadmin#5995](https://github.com/activeadmin/activeadmin/issues/5995).
+  Apply the following change to your host application's
+  `active_admin.rb` initializer:
+
+  ```diff
+  - ActiveAdmin.application.unshift(Pageflow.active_admin_load_path)
+  + ActiveAdmin.application.load_paths +=[Pageflow.active_admin_load_path]
+  ```
+
 - Improve support for Webpack setup in host appplication
   ([#1276](https://github.com/codevise/pageflow/pull/1276),
    [#1279](https://github.com/codevise/pageflow/pull/1279))

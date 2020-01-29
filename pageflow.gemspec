@@ -14,6 +14,8 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{,entry_types/*/}' \
                 '{admins,app,config,db,lib,vendor,spec/factories,spec/fixtures}/**/*',
+                'packages/pageflow/{config/**/*,editor.js,ui.js,testHelpers.js,package.json}',
+                'entry_types/scrolled/package/{frontend.js,editor.js,package.json}',
                 'MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
 
   s.require_paths = ['lib', 'entry_types/paged/lib', 'entry_types/scrolled/lib']
