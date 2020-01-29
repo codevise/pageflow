@@ -776,6 +776,7 @@ en:
     admin:
       account:
         add: Add Account
+        cannot_add: What you want to do is not possible at the moment.
         none_addable_tooltip: No account available
       accounts:
         no_entries: No Stories
@@ -826,7 +827,9 @@ en:
         title_hint: This field determines the URL for this story.
       entry:
         add: Add Story
+        entry_membership_hint: Invite users to your account to assign them as members of this Story.
         none_addable_tooltip: No story available
+        user_quota_exhausted: Your user quota is exhausted.
       features:
         states:
           default: Default (%{inherited})
@@ -868,6 +871,7 @@ en:
         remove_logo: Remove logo
         show: View
       user:
+        cannot_add: What you want to do is not possible. You need to upgrade.
         none_addable_tooltip: No user available
       users:
         account: Profile

@@ -776,6 +776,7 @@ de:
     admin:
       account:
         add: Konto hinzufügen
+        cannot_add: Was Sie tun möchten, ist nicht möglich.
         none_addable_tooltip: Kein Konto verfügbar
       accounts:
         no_entries: Keine Beiträge
@@ -826,7 +827,9 @@ de:
         title_hint: Dieses Feld bestimmt die URL, unter der der Beitrag öffentlich erreichbar ist.
       entry:
         add: Beitrag hinzufügen
+        entry_membership_hint: Laden Sie Benutzer in Ihr Konto ein, um sie als Mitglieder dieser Story zuzuweisen.
         none_addable_tooltip: Kein Beitrag verfügbar
+        user_quota_exhausted: Ihr Benutzerkontingent ist erschöpft.
       features:
         states:
           default: Standard (%{inherited})
@@ -868,6 +871,7 @@ de:
         remove_logo: Logo entfernen
         show: Anzeigen
       user:
+        cannot_add: Was Sie tun möchten, ist nicht möglich. Sie müssen aktualisieren.
         none_addable_tooltip: Kein Benutzer verfügbar
       users:
         account: Profil
