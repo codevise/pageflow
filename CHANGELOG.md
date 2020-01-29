@@ -39,7 +39,7 @@ Forgot to build assets before doing previous release.
 
   ```diff
   - ActiveAdmin.application.unshift(Pageflow.active_admin_load_path)
-  + ActiveAdmin.application.load_paths +=[Pageflow.active_admin_load_path]
+  + ActiveAdmin.application.load_paths += [Pageflow.active_admin_load_path]
   ```
 
 - Improve support for Webpack setup in host appplication
@@ -129,7 +129,8 @@ Forgot to build assets before doing previous release.
   ([#1248](https://github.com/codevise/pageflow/pull/1248),
    [#1270](https://github.com/codevise/pageflow/pull/1270),
    [#1278](https://github.com/codevise/pageflow/pull/1278),
-   [#1286](https://github.com/codevise/pageflow/pull/1286))
+   [#1286](https://github.com/codevise/pageflow/pull/1286),
+   [#1314](https://github.com/codevise/pageflow/pull/1314))
 - Fix section index and references to adjacent chapters
   ([#1316](https://github.com/codevise/pageflow/pull/1316))
 - Render uploaded images in scrolled entries
@@ -137,6 +138,7 @@ Forgot to build assets before doing previous release.
    [#1303](https://github.com/codevise/pageflow/pull/1303))
 - Use chapters from db in navigaition bar
   ([#1298](https://github.com/codevise/pageflow/pull/1298),
+   [#1300](https://github.com/codevise/pageflow/pull/1300),
    [#1308](https://github.com/codevise/pageflow/pull/1308))
 
 ##### Editor
@@ -144,8 +146,11 @@ Forgot to build assets before doing previous release.
 - Render demo in editor
   ([#1268](https://github.com/codevise/pageflow/pull/1268))
 - Use data from Backbone collections in scrolled editor preview
-  ([#1293](https://github.com/codevise/pageflow/pull/1293),
-   [#1294](https://github.com/codevise/pageflow/pull/1294))
+  ([#1288](https://github.com/codevise/pageflow/pull/1288),
+   [#1293](https://github.com/codevise/pageflow/pull/1293),
+   [#1292](https://github.com/codevise/pageflow/pull/1292),
+   [#1294](https://github.com/codevise/pageflow/pull/1294),
+   [#1305](https://github.com/codevise/pageflow/pull/1305))
 
 ##### Internal
 
