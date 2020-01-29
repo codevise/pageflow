@@ -32,7 +32,7 @@ module Pageflow
     #
     # @param [JBuilder] json
     # @param [PublishedEntry] entry
-    # @since edge
+    # @since 15.1
     def files_json_seed(json, entry)
       Pageflow.config.file_types.each do |file_type|
         json.set!(file_type.collection_name) do

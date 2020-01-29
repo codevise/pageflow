@@ -29,7 +29,7 @@ module Pageflow
     # Yields to given block with JBuilder object and returns rendered
     # JSON as string.
     #
-    # @since edge
+    # @since 15.1
     def render_json(&block)
       render_with_format(:json) do
         JbuilderTemplate.encode(self, &block)

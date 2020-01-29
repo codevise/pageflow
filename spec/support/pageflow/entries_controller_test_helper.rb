@@ -1,7 +1,7 @@
 module Pageflow
   # Helpers to test entry type controllers.
   #
-  # @since edge
+  # @since 15.1
   module EntriesControllerTestHelper
     extend ActiveSupport::Concern
 

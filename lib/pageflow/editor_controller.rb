@@ -3,7 +3,7 @@ module Pageflow
   # that extend the REST interface used by the editor. Handles
   # authentication, entry lookup, authorization and edit locking.
   #
-  # @since edge
+  # @since 15.1
   module EditorController
     extend ActiveSupport::Concern
 

@@ -4,7 +4,7 @@ module Pageflow
   # Helpers to test controllers that include
   # {Pageflow::EditorController}.
   #
-  # @since edge
+  # @since 15.1
   module EditorControllerTestHelper
     extend ActiveSupport::Concern
 

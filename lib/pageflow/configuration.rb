@@ -464,7 +464,7 @@ module Pageflow
     #   Instance of configuration class passed as `configuration`
     #   option during registration of entry type.
     #
-    # @since edge
+    # @since 15.1
     def for_entry_type(type)
       return if @target_type_name && @target_type_name != type.name
 

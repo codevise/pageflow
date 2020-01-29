@@ -2,7 +2,7 @@ module Pageflow
   # Helper class to be used as `editor_fragment_renderer` of
   # {EntryType} objects to render fragments from partials.
   #
-  # @since edge
+  # @since 15.1
   class PartialEditorFragmentRenderer
     # Create object that implements methods required by
     # `editor_fragment_renderer` of {EntryType}.

@@ -2,7 +2,7 @@ module Pageflow
   # A helper module that can be included in an entry type's frontend
   # app to access the {PublishedEntry}.
   #
-  # @since edge
+  # @since 15.1
   module EntriesControllerEnvHelper
     module_function
 

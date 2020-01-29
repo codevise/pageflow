@@ -5,7 +5,7 @@ module Pageflow
     #
     # @param [JBuilder] json
     # @param [Configuration] config
-    # @since edge
+    # @since 15.1
     def config_file_url_templates_seed(json, config)
       config.file_types.each do |file_type|
         json.set!(file_type.collection_name) do
@@ -21,7 +21,7 @@ module Pageflow
     #
     # @param [JBuilder] json
     # @param [Configuration] config
-    # @since edge
+    # @since 15.1
     def config_file_model_types_seed(json, config)
       config.file_types.index_by(&:collection_name).each do |collection_name, file_type|
         json.set!(collection_name, file_type.model.name)

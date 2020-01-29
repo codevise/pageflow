@@ -1,7 +1,7 @@
 module Pageflow
   # Include in entry type specific configuration classes.
   #
-  # @since edge
+  # @since 15.1
   module EntryTypeConfiguration
     # @api private
     def initialize(config, entry_type)
