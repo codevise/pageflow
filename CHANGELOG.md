@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### Version 15.1.0.beta4
+
+2020-01-29
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.1.0.beta3...v15.1.0.beta4)
+
+Forgot to build assets before doing previous release.
+
 ### Version 15.1.0.beta3
 
 2020-01-29
