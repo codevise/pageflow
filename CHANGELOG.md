@@ -1,5 +1,18 @@
 # CHANGELOG
 
+### Version 15.1.0.beta6
+
+2020-01-29
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.1.0.beta5...v15.1.0.beta6)
+
+#### Core
+
+##### Internal
+
+- Add configuration to revisions
+  ([#1306](https://github.com/codevise/pageflow/pull/1306))
+
 ### Version 15.1.0.beta5
 
 2020-01-29
