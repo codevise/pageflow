@@ -4,7 +4,9 @@
  *
  * @param {Object} [options]
  * @param {Object} [options.imageFileUrlTemplates] - Mapping of url template names to url templates.
- * @param {Array} [options.entries] - Single-element-Array containing attributes of the entry.
+ * @param {String} [options.prettyUrl] - The entry's url (Default share url).
+ * @param {Object} [options.shareUrlTemplates] - Mapping of share provider names to sharing urls.
+ * @param {Object} [options.entry] - attributes of entry.
  * @param {Array} [options.imageFiles] - Array of objects with image file attributes of entry.
  * @param {Array} [options.chapters] - Array of objects with chapter attributes of entry.
  * @param {Array} [options.sections] - Array of objects with section attributes of entry.
@@ -14,14 +16,17 @@
 export function normalizeSeed({
   imageFileUrlTemplates,
   fileUrlTemplates,
-  entries,
+  prettyUrl,
+  shareUrlTemplates,
+  entry,
   imageFiles,
   chapters,
   sections,
   contentElements
 } = {}) {
+  const entries = entry ? [entry] : entry;
   const normalizedEntries = normalizeCollection(entries, {
-    id: 1, configuration: {shareProviders: {facebook: true, twitter: false}}
+    shareProviders: {facebook: false, twitter: false}
   });
 
   const normalizedSections = normalizeCollection(sections, {
@@ -35,7 +40,9 @@ export function normalizeSeed({
           ...imageFileUrlTemplates
         },
         ...fileUrlTemplates
-      }
+      },
+      prettyUrl: prettyUrl,
+      shareUrlTemplates: normalizeShareUrlTemplates(shareUrlTemplates)
     },
     collections: {
       entries: normalizedEntries,
@@ -70,6 +77,22 @@ function normalizeChapters(chapters = [], sections) {
   }
 
   return normalizeCollection(chapters, chapterDefaults);
+}
+
+function normalizeShareUrlTemplates(shareUrlTemplates) {
+  if(shareUrlTemplates) {
+    return shareUrlTemplates;
+  } else {
+    return {
+      email: 'mailto:?body=%{url}',
+      facebook: 'http://www.facebook.com/sharer/sharer.php?u=%{url}',
+      google: 'https://plus.google.com/share?url=%{url}',
+      linked_in: 'https://www.linkedin.com/shareArticle?mini=true&url=%{url}',
+      telegram: 'tg://msg?text=%{url}',
+      twitter: 'https://twitter.com/intent/tweet?url=%{url}',
+      whats_app: 'WhatsApp://send?text=%{url}'
+    }
+  }
 }
 
 function normalizeCollection(collection = [], defaults = {}) {

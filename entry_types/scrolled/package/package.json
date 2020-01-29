@@ -33,6 +33,7 @@
     "eslint-plugin-react-hooks": "1.x",
     "jest": "^24.9.0",
     "jest-css-modules-transform": "^3.1.0",
+    "jest-svg-transformer": "^1.0.0",
     "react-test-renderer": "^16.9.0"
   },
   "scripts": {

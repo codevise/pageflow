@@ -13,7 +13,8 @@ import {getItems} from '../collections';
  * metaData // =>
  *   {
  *     id: 5,
- *     shareProviders: entry.share_providers
+ *     shareProviders: {email: false, facebook: true},
+ *     share_url: 'http://test.host/test'
  *   }
  */
 export function useEntryMetadata() {

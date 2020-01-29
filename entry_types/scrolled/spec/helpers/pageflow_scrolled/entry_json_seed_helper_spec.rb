@@ -278,7 +278,7 @@ module PageflowScrolled
                            })
       end
 
-      it 'renders entry share url and provider share url templates' do
+      it 'renders entry pretty url and provider share url templates' do
         theming = create(:theming, cname: '')
         entry = Pageflow::PublishedEntry.new(create(:entry, title: 'test', theming: theming),
                                              create(:revision))
@@ -286,7 +286,7 @@ module PageflowScrolled
         result = render(helper, entry)
 
         expect(result).to include_json(config: {
-                                         shareUrl: 'http://test.host/test',
+                                         prettyUrl: 'http://test.host/test',
                                          shareUrlTemplates: {
                                            email: 'mailto:?body=%{url}',
                                            twitter: 'https://twitter.com/intent/tweet?url=%{url}',

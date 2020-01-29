@@ -4,23 +4,24 @@ import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {factories} from 'pageflow/testHelpers';
 import {renderHookInEntry, normalizeSeed} from 'support';
 
-const entriesSeed = [
-  {
-    id: 1,
-    shareProviders: {
-        facebook: true,
-        twitter: false
-      }
+const entrySeed = {
+  id: 1,
+  permaId: 1,
+  shareProviders: {
+    facebook: true,
+    twitter: false
   },
-];
+  shareUrl: 'http://test.host/test'
+};
 
 describe('useEntryMetadata', () => {
   const expectedEntryMetadata = {
     id: 1,
     shareProviders: {
-        facebook: true,
-        twitter: false
-      }
+      facebook: true,
+      twitter: false
+    },
+    shareUrl: 'http://test.host/test'
   };
 
 
@@ -29,7 +30,7 @@ describe('useEntryMetadata', () => {
       () => useEntryMetadata(),
       {
         seed: {
-          entries: entriesSeed
+          entry: entrySeed
         }
       }
     );
@@ -50,10 +51,11 @@ describe('useEntryMetadata', () => {
                 share_providers: {
                   facebook: true,
                   twitter: false
-                }
+                },
+                share_url: 'http://test.host/test'
               }
             }, {
-              entryTypeSeed: normalizeSeed()
+              entryTypeSeed: normalizeSeed({shareUrl: 'http://test.host/test'})
             }),
             {dispatch}
           )

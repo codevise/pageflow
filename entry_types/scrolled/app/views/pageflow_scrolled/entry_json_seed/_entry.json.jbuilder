@@ -8,7 +8,8 @@ json.config do
     config_file_model_types_seed(json, entry_config)
   end
 
-  config_sharing_data_seed(json, entry)
+  json.pretty_url pretty_entry_url(entry)
+  json.share_url_templates Pageflow::SocialShareLinksHelper::PROVIDER_URL_TEMPLATES
 
   json.default_file_rights entry.account.default_file_rights
 

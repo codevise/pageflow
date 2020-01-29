@@ -57,6 +57,23 @@ describe('normalizeSeed', () => {
     });
   });
 
+  it('ensures required entry properties are present', () => {
+    const result = normalizeSeed({
+      entry: [{}]
+    });
+
+    expect(result).toMatchObject({
+      collections: {
+        entries: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number)
+          }
+        ]
+      }
+    });
+  });
+
   it('ensures required image file properties are present', () => {
     const result = normalizeSeed({
       imageFiles: [{}]

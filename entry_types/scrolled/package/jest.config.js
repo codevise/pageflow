@@ -10,5 +10,8 @@ module.exports = {
   modulePaths: ['<rootDir>/src', '<rootDir>/spec'],
 
   moduleNameMapper,
-  transform
+  transform: {
+    ...transform,
+    '^.+\\.svg$': 'jest-svg-transformer'
+  }
 };

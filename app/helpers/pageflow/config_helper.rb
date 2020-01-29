@@ -28,16 +28,6 @@ module Pageflow
       end
     end
 
-    # Render seed data that can be used to build share urls.
-    #
-    # @param [JBuilder] json
-    # @param [Entry] entry
-    # @since edge
-    def config_sharing_data_seed(json, entry)
-      json.share_url pretty_entry_url(entry)
-      json.share_url_templates Pageflow::SocialShareLinksHelper::PROVIDER_URL_TEMPLATES
-    end
-
     # Render seed data that can be used to display legal information.
     #
     # @param [JBuilder] json

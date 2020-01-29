@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import headerStyles from "./AppHeader.module.css";
-import styles from "./Sharing.module.css";
+import styles from "./SharingMenu.module.css";
 import ShareIcon from "../assets/images/navigation/icons/share_icon.svg";
 import {SharingTooltip} from "./SharingTooltip";
 
