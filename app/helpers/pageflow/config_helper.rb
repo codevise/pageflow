@@ -27,26 +27,5 @@ module Pageflow
         json.set!(collection_name, file_type.model.name)
       end
     end
-
-    # Render seed data that can be used to display legal information.
-    #
-    # @param [JBuilder] json
-    # @param [Entry] entry
-    # @since edge
-    def config_imprint_and_privacy_seed(json, entry)
-      theming = entry.theming
-      json.imprint do
-        json.imprint_link_label theming.imprint_link_label
-        json.imprint_link_url theming.imprint_link_url
-      end
-      json.copyright do
-        json.copyright_link_label raw(theming.copyright_link_label)
-        json.copyright_link_url theming.copyright_link_url
-      end
-      json.privacy do
-        json.privacy_link_label I18n.t('pageflow.public.privacy_notice')
-        json.privacy_link_url "#{theming.privacy_link_url}?lang=#{entry.locale}"
-      end
-    end
   end
 end

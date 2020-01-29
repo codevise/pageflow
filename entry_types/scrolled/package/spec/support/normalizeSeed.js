@@ -6,6 +6,8 @@
  * @param {Object} [options.imageFileUrlTemplates] - Mapping of url template names to url templates.
  * @param {String} [options.prettyUrl] - The entry's url (Default share url).
  * @param {Object} [options.shareUrlTemplates] - Mapping of share provider names to sharing urls.
+ * @param {String} [options.defaultFileRights] - Default file rights of entry's account.
+ * @param {Object} [options.legalInfo] - imprint, copyright and privacy information of entry.
  * @param {Object} [options.entry] - attributes of entry.
  * @param {Array} [options.imageFiles] - Array of objects with image file attributes of entry.
  * @param {Array} [options.chapters] - Array of objects with chapter attributes of entry.
@@ -18,6 +20,8 @@ export function normalizeSeed({
   fileUrlTemplates,
   prettyUrl,
   shareUrlTemplates,
+  defaultFileRights,
+  legalInfo,
   entry,
   imageFiles,
   chapters,
@@ -25,9 +29,7 @@ export function normalizeSeed({
   contentElements
 } = {}) {
   const entries = entry ? [entry] : entry;
-  const normalizedEntries = normalizeCollection(entries, {
-    shareProviders: {facebook: false, twitter: false}
-  });
+  const normalizedEntries = normalizeCollection(entries);
 
   const normalizedSections = normalizeCollection(sections, {
     configuration: {transition: 'scroll', backdrop: {image: '#000'}}
@@ -42,7 +44,9 @@ export function normalizeSeed({
         ...fileUrlTemplates
       },
       prettyUrl: prettyUrl,
-      shareUrlTemplates: normalizeShareUrlTemplates(shareUrlTemplates)
+      shareUrlTemplates: normalizeShareUrlTemplates(shareUrlTemplates),
+      defaultFileRights: defaultFileRights,
+      legalInfo: normalizeLegalInfo(legalInfo)
     },
     collections: {
       entries: normalizedEntries,
@@ -91,6 +95,27 @@ function normalizeShareUrlTemplates(shareUrlTemplates) {
       telegram: 'tg://msg?text=%{url}',
       twitter: 'https://twitter.com/intent/tweet?url=%{url}',
       whats_app: 'WhatsApp://send?text=%{url}'
+    }
+  }
+}
+
+function normalizeLegalInfo(legalInfo) {
+  if (legalInfo) {
+    return legalInfo;
+  } else {
+    return {
+      imprint: {
+        imprintLinkLabel: '',
+        imprintLinkUrl: ''
+      },
+      copyright: {
+        copyrightLinkLabel: '',
+        copyrightLinkUrl: ''
+      },
+      privacy: {
+        privacyLinkLabel: '',
+        privacyLinkUrl: ''
+      }
     }
   }
 }

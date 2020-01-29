@@ -304,6 +304,20 @@ module PageflowScrolled
 
         expect(result).to include_json(config: {defaultFileRights: '@WDR'})
       end
+
+      it 'renders legal info' do
+        entry = create(:published_entry)
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         legalInfo: {
+                                           imprint: {},
+                                           copyright: {},
+                                           privacy: {}
+                                         }
+                                       })
+      end
     end
 
     describe '#scrolled_entry_json_seed_script_tag' do

@@ -10,10 +10,10 @@
   left: 90% !important;
 }
 
-:global(.imprintAndPrivacyTooltip p) {
+.imprintAndPrivacyTooltip p {
   margin: 0 0 0.5em;
 }
 
-:global(.imprintAndPrivacyTooltip a) {
+.imprintAndPrivacyTooltip a {
   color: #e10028;
 }

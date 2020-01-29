@@ -3,26 +3,12 @@ import classNames from 'classnames';
 import headerStyles from "./AppHeader.module.css";
 import styles from "./ImprintAndPrivacyTooltip.module.css";
 import ReactTooltip from "react-tooltip";
-import {useEntryState, useEntryMetadata} from '../../entryState';
-import {getItems} from "../../collections";
+import {useFileRights, useLegalInfo, useCredits} from '../../entryState';
 
 export function ImprintAndPrivacyTooltip() {
-  const entryState = useEntryState();
-  const config = entryState.config.imprintAndPrivacy;
-
-  const defaultFileRights = entryState.config.defaultFileRights;
-  const imageFiles = getItems(entryState.collections, 'imageFiles');
-  const imageFileRights = imageFiles.map(function (imageConfig) {
-    return imageConfig.rights ? imageConfig.rights.trim() : undefined;
-  }).filter(Boolean).join(', ');
-  const fileRights = !!imageFileRights ? imageFileRights : defaultFileRights.trim();
-  const fileRightsString = !!fileRights ? ('Bildrechte: ' + fileRights) : '';
-
-  const entryMetadata = useEntryMetadata();
-  let credits = '';
-  if(entryMetadata) {
-    credits = entryMetadata.credits;
-  }
+  const fileRights = useFileRights();
+  const legalInfo = useLegalInfo();
+  const credits = useCredits();
 
   return(
     <ReactTooltip id={'imprintAndPrivacyTooltip'}
@@ -34,35 +20,34 @@ export function ImprintAndPrivacyTooltip() {
                   clickable={true}
                   offset={{bottom: 5, right: -97}}
                   className={classNames(headerStyles.navigationTooltip,
-                                        styles.imprintAndPrivacyTooltip,
-                                        'imprintAndPrivacyTooltip')}>
+                                        styles.imprintAndPrivacyTooltip)}>
       <div>
         <p dangerouslySetInnerHTML={{__html: credits}}></p>
         <p>
-          {fileRightsString}
+          {fileRights}
         </p>
 
         <div>
           <a target="_blank"
-             href={config.imprint.imprintLinkUrl}
+             href={legalInfo.imprint.imprintLinkUrl}
              className={classNames(styles.imprintAndPrivacyLink)}>
-            {config.imprint.imprintLinkLabel}
+            {legalInfo.imprint.imprintLinkLabel}
           </a>
         </div>
 
         <div>
           <a target="_blank"
-             href={config.copyright.copyrightLinkUrl}
+             href={legalInfo.copyright.copyrightLinkUrl}
              className={classNames(styles.imprintAndPrivacyLink)}
-             dangerouslySetInnerHTML={{__html: config.copyright.copyrightLinkLabel}}>
+             dangerouslySetInnerHTML={{__html: legalInfo.copyright.copyrightLinkLabel}}>
           </a>
         </div>
 
         <div>
           <a target="_blank"
-             href={config.privacy.privacyLinkUrl}
+             href={legalInfo.privacy.privacyLinkUrl}
              className={classNames(styles.imprintAndPrivacyLink)}>
-            {config.privacy.privacyLinkLabel}
+            {legalInfo.privacy.privacyLinkLabel}
           </a>
         </div>
       </div>

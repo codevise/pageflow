@@ -13,8 +13,20 @@ json.config do
 
   json.default_file_rights entry.account.default_file_rights
 
-  json.imprint_and_privacy do
-    config_imprint_and_privacy_seed(json, entry)
+  json.legal_info do
+    theming = entry.theming
+    json.imprint do
+      json.imprint_link_label raw(theming.imprint_link_label) || ''
+      json.imprint_link_url theming.imprint_link_url || ''
+    end
+    json.copyright do
+      json.copyright_link_label raw(theming.copyright_link_label)
+      json.copyright_link_url theming.copyright_link_url || ''
+    end
+    json.privacy do
+      json.privacy_link_label I18n.t('pageflow.public.privacy_notice') || ''
+      json.privacy_link_url privacy_link_url(entry) || ''
+    end
   end
 end
 
