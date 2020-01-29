@@ -1,0 +1,8 @@
+<% if parent.is_a?(Pageflow::Entry) %>
+  <%= render 'pageflow/admin/entries/cannot_add_user', user: user, parent: parent, entity_type: entity_type, quota: quota %>
+<% elsif parent.is_a?(User) %>
+  <%= render "pageflow/admin/users/cannot_add_#{entity_type}", user: user, parent: parent, entity_type: entity_type %>
+<% elsif parent.is_a?(Pageflow::Account) %>
+  <%= t("pageflow.admin.account.cannot_add") %>
+  <%= render "pageflow/admin/accounts/cannot_add_#{entity_type}", user: user, parent: parent, entity_type: entity_type %>
+<%end%>

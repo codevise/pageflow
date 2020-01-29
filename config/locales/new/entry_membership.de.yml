@@ -1,0 +1,10 @@
+de:
+  pageflow:
+    admin:
+      entry:
+        user_quota_exhausted: Ihr Benutzerkontingent ist erschöpft.
+        entry_membership_hint: Laden Sie Benutzer in Ihr Konto ein, um sie als Mitglieder dieser Story zuzuweisen.
+      user:
+        cannot_add: Was Sie tun möchten, ist nicht möglich. Sie müssen aktualisieren.
+      account:
+        cannot_add: Was Sie tun möchten, ist nicht möglich.

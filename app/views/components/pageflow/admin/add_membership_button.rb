@@ -16,6 +16,7 @@ module Pageflow
           path = new_admin_entry_membership_path(
             parent, entity_type: to_class_name(entity_type)
           )
+          quota = Pageflow.config.quotas.get(:users, parent.account)
         else
           path = new_admin_account_membership_path(
             parent, entity_type: to_class_name(entity_type)
@@ -28,7 +29,13 @@ module Pageflow
           rel = 'add_member'
         end
 
-        if membership_possible_for(user, parent, entity_type)
+        if parent.is_a?(Entry) && parent.account.users.length < 2
+          render 'pageflow/admin/entries/cannot_add_user',
+                 user: user,
+                 parent: parent,
+                 entity_type: entity_type,
+                 quota: quota
+        elsif membership_possible_for(user, parent, entity_type)
           para do
             link_to(button_label, path, class: 'button', data: {rel: rel})
           end
@@ -38,6 +45,11 @@ module Pageflow
                            class: 'button disabled',
                            data: {rel: rel}),
                'data-tooltip' => data_tooltip)
+          render 'pageflow/admin/users/cannot_add',
+                 user: user,
+                 parent: parent,
+                 entity_type: entity_type,
+                 quota: quota
         end
       end
 
