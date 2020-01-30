@@ -40,13 +40,6 @@
   width: 80px;
 }
 
-.burgerMenuIcon {
-  display: none !important;
-  top: 12px;
-  left: 12px;
-  outline: none;
-}
-
 .chapterList {
   padding: 0;
   margin: 0;
@@ -86,10 +79,6 @@
 
 /* mobile view */
 @media (max-width: 780px) {
-  .burgerMenuIcon {
-    display: block !important;
-  }
-
   .wdrLogo {
     position: inherit;
   }

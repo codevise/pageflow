@@ -3,11 +3,11 @@ import classNames from 'classnames';
 import useScrollPosition from '../useScrollPosition';
 import useNativeScrollPrevention from '../useNativeScrollPrevention';
 
+import {HamburgerIcon} from './HamburgerIcon'
 import ChapterLink from "./ChapterLink";
 import LegalInfoMenu from "./LegalInfoMenu";
 import {SharingMenu} from "./SharingMenu";
 
-import hamburgerIcons from './hamburgerIcons.module.css'
 import styles from './AppHeader.module.css';
 
 import WDRlogo from '../assets/images/navigation/wdr_logo_header.svg';
@@ -85,14 +85,8 @@ export default function AppHeader(props) {
   return (
     <header className={classNames(styles.navigationBar, {[styles.navigationBarExpanded]: navExpanded})}>
       <div className={styles.navigationBarContentWrapper}>
-        <button className={classNames(styles.menuIcon, styles.burgerMenuIcon,
-                                      hamburgerIcons.hamburger, hamburgerIcons['hamburger--collapse'],
-                                      {[hamburgerIcons['is-active']]: !mobileNavHidden})}
-                type="button" onClick={handleBurgerMenuClick}>
-          <span className={hamburgerIcons['hamburger-box']}>
-            <span className={hamburgerIcons['hamburger-inner']}></span>
-          </span>
-        </button>
+        <HamburgerIcon onClick={handleBurgerMenuClick}
+                       mobileNavHidden={mobileNavHidden}/>
 
         <WDRlogo className={classNames(styles.menuIcon, styles.wdrLogo)}/>
 
