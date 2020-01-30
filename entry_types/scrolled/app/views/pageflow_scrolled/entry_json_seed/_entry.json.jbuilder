@@ -9,7 +9,7 @@ json.config do
   end
 
   json.pretty_url pretty_entry_url(entry)
-  json.share_url_templates Pageflow::SocialShareLinksHelper::PROVIDER_URL_TEMPLATES
+  json.share_url_templates share_provider_url_templates
 
   json.default_file_rights entry.account.default_file_rights
 
