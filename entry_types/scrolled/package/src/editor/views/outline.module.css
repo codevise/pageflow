@@ -1,0 +1,30 @@
+@value indicatorIconColor, errorIconColor from './colors.module.css';
+
+.indicator {
+  display: none;
+  position: absolute;
+  right: 14px;
+  top: 7px;
+  width: 30px;
+  height: 30px;
+  font-size: 19px;
+  color: indicatorIconColor;
+}
+
+.creatingIndicator {
+  composes: indicator;
+  composes: arrowsCcw from './icons.module.css';
+  composes: blink from './animations.module.css';
+}
+
+.destroyingIndicator {
+  composes: indicator;
+  composes: trash from './icons.module.css';
+  composes: blink from './animations.module.css';
+}
+
+.failedIndicator {
+  composes: indicator;
+  composes: attention from './icons.module.css';
+  color: errorIconColor;
+}

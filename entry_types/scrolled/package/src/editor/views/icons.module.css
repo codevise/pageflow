@@ -1,0 +1,31 @@
+.icon::before {
+  font-family: "entypo";
+}
+
+.arrowsCcw,
+.attention,
+.plusCircled,
+.rightOpen,
+.trash {
+  composes: icon;
+}
+
+.arrowsCcw::before {
+  content: "\1f504";
+}
+
+.attention::before {
+  content: "\26a0";
+}
+
+.plusCircled::before {
+  content: "\2795";
+}
+
+.rightOpen::before {
+  content: "\e75e"
+}
+
+.trash::before {
+  content: "\e729";
+}

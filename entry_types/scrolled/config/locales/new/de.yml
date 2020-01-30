@@ -1,0 +1,12 @@
+de:
+  pageflow_scrolled:
+    editor:
+      entry_outline:
+        header: "Giederung"
+        add_chapter: "Neues Kapitel"
+      chapter_item:
+        add_section: "Neuer Abschnitt"
+        save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
+      section_item:
+        edit: "Abschnitt bearbeiten"
+        save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.

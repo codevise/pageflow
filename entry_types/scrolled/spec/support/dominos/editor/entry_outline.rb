@@ -1,7 +1,7 @@
 module Dom
   module Editor
     class EntryOutline < Domino
-      selector 'sidebar .entry_outline'
+      selector 'sidebar nav[class^=EntryOutlineView]'
     end
   end
 end

@@ -1,0 +1,7 @@
+.root {}
+
+.chapters {}
+
+.addChapter {
+  composes: addButton from './buttons.module.css';
+}
