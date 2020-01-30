@@ -44,6 +44,8 @@ import {editor} from '../base';
  * @since edge
  */
 export const EditConfigurationView = Marionette.Layout.extend({
+  className: 'edit_configuration_view',
+
   template: ({t}) => `
     <a class="back">${t('back')}</a>
     <a class="destroy">${t('destroy')}</a>
