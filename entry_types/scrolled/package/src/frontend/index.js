@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import AppHeader from './navigation/AppHeader';
+import {AppHeader} from './navigation/AppHeader';
 import Entry from './Entry';
 
 import './global.module.css';

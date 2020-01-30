@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from "./ChapterLink.module.css";
-import ChapterLinkTooltip from "./ChapterLinkTooltip";
+import {ChapterLinkTooltip} from "./ChapterLinkTooltip";
 
-export default function ChapterLink(props) {
+export function ChapterLink(props) {
   return (
     <div>
       <a className={classNames(styles.chapterLink, {[styles.chapterLinkActive]: props.active})}

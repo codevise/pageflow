@@ -2,25 +2,23 @@ import React, {useState, useRef} from 'react';
 import classNames from 'classnames';
 import useScrollPosition from '../useScrollPosition';
 import useNativeScrollPrevention from '../useNativeScrollPrevention';
+import {useEntryStructure} from '../../entryState';
 
 import {HamburgerIcon} from './HamburgerIcon'
-import ChapterLink from "./ChapterLink";
-import LegalInfoMenu from "./LegalInfoMenu";
+import {ChapterLink} from "./ChapterLink";
+import {LegalInfoMenu} from "./LegalInfoMenu";
 import {SharingMenu} from "./SharingMenu";
 
 import styles from './AppHeader.module.css';
-
 import WDRlogo from '../assets/images/navigation/wdr_logo_header.svg';
 
-import {useEntryStructure} from '../../entryState';
-
-export default function AppHeader(props) {
+export function AppHeader(props) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
   const [readingProgress, setReadingProgress] = useState(0);
   const [activeChapterLink, setActiveChapterLink] = useState('chapterLink1');
   const entryStructure = useEntryStructure();
-  
+
   const ref = useRef();
   useNativeScrollPrevention(ref);
 
@@ -83,7 +81,8 @@ export default function AppHeader(props) {
   };
 
   return (
-    <header className={classNames(styles.navigationBar, {[styles.navigationBarExpanded]: navExpanded})}>
+    <header
+      className={classNames(styles.navigationBar, {[styles.navigationBarExpanded]: navExpanded})}>
       <div className={styles.navigationBarContentWrapper}>
         <HamburgerIcon onClick={handleBurgerMenuClick}
                        mobileNavHidden={mobileNavHidden}/>

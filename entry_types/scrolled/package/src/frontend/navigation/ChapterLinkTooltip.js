@@ -4,7 +4,7 @@ import headerStyles from "./AppHeader.module.css";
 import styles from "./ChapterLinkTooltip.module.css";
 import ReactTooltip from "react-tooltip";
 
-export default function ChapterLinkTooltip(props) {
+export function ChapterLinkTooltip(props) {
   return(
     <ReactTooltip id={props.chapterLinkId}
                   type='light'

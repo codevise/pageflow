@@ -3,7 +3,6 @@ import {useMemo} from 'react';
 import {useEntryState} from './EntryStateProvider';
 import {getItems} from '../collections';
 
-
 /**
  * Returns a nested data structure representing the metadata of the entry.
  *
@@ -14,7 +13,8 @@ import {getItems} from '../collections';
  *   {
  *     id: 5,
  *     shareProviders: {email: false, facebook: true},
- *     share_url: 'http://test.host/test'
+ *     share_url: 'http://test.host/test',
+ *     credits: 'Credits: Pageflow'
  *   }
  */
 export function useEntryMetadata() {

@@ -10,6 +10,27 @@ import TelegramIcon from "../frontend/assets/images/navigation/icons/social/tele
 import TwitterIcon from "../frontend/assets/images/navigation/icons/social/twitter_icon.svg";
 import WhatsAppIcon from "../frontend/assets/images/navigation/icons/social/whats_app_icon.svg";
 
+/**
+ * Returns a list of attributes (icon, name and url) of all configured share providers of the entry.
+ * The url provides a %{url} placeholder where the link can be inserted.
+ *
+ * @example
+ *
+ * const shareProviders = useShareProviders();
+ * shareProviders // =>
+ *   [
+ *     {
+ *       icon: <FacebookSVGIcon />,
+ *       name: 'Facebook',
+ *       url: http://www.facebook.com/sharer/sharer.php?u=%{url}
+ *     },
+ *     {
+ *       icon: <TwitterSVGIcon />,
+ *       name: 'Twitter',
+ *       url: https://twitter.com/intent/tweet?url=%{url}
+ *     }
+ *   ]
+ */
 export function useShareProviders() {
   const entryState = useEntryState();
   const entryMetadata = useEntryMetadata();
@@ -68,6 +89,14 @@ function activeShareProviders(shareProvidersConfig) {
   });
 }
 
+/**
+ * Returns the share url of the entry.
+ *
+ * @example
+ *
+ * const shareUrl = useShareUrl();
+ * shareUrl // => "http://test.host/test"
+ */
 export function useShareUrl() {
   const entryMetadata = useEntryMetadata();
   const entryState = useEntryState();
