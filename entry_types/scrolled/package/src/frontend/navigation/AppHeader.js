@@ -4,7 +4,7 @@ import useScrollPosition from '../useScrollPosition';
 import useNativeScrollPrevention from '../useNativeScrollPrevention';
 
 import ChapterLink from "./ChapterLink";
-import ImprintAndPrivacy from "./ImprintAndPrivacy";
+import LegalInfoMenu from "./LegalInfoMenu";
 import {SharingMenu} from "./SharingMenu";
 
 import hamburgerIcons from './hamburgerIcons.module.css'
@@ -104,7 +104,7 @@ export default function AppHeader(props) {
           </ul>
         </nav>
 
-        <ImprintAndPrivacy />
+        <LegalInfoMenu />
 
         <SharingMenu />
       </div>

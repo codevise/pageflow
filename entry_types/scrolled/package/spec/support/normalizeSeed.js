@@ -104,18 +104,9 @@ function normalizeLegalInfo(legalInfo) {
     return legalInfo;
   } else {
     return {
-      imprint: {
-        imprintLinkLabel: '',
-        imprintLinkUrl: ''
-      },
-      copyright: {
-        copyrightLinkLabel: '',
-        copyrightLinkUrl: ''
-      },
-      privacy: {
-        privacyLinkLabel: '',
-        privacyLinkUrl: ''
-      }
+      imprint: {label: '',url: ''},
+      copyright: {label: '',url: ''},
+      privacy: {label: '',url: ''},
     }
   }
 }

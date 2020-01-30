@@ -1,4 +1,4 @@
-.imprintAndPrivacyTooltip {
+.legalInfoTooltip {
   width: 200px;
   max-width: 200px;
   text-align: left;
@@ -6,14 +6,14 @@
   margin-bottom: 12px !important;
 }
 
-.imprintAndPrivacyTooltip:after {
+.legalInfoTooltip:after {
   left: 90% !important;
 }
 
-.imprintAndPrivacyTooltip p {
+.legalInfoTooltip p {
   margin: 0 0 0.5em;
 }
 
-.imprintAndPrivacyTooltip a {
+.legalInfoTooltip a {
   color: #e10028;
 }

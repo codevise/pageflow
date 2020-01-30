@@ -16,16 +16,16 @@ json.config do
   json.legal_info do
     theming = entry.theming
     json.imprint do
-      json.imprint_link_label raw(theming.imprint_link_label) || ''
-      json.imprint_link_url theming.imprint_link_url || ''
+      json.label raw(theming.imprint_link_label)
+      json.url theming.imprint_link_url
     end
     json.copyright do
-      json.copyright_link_label raw(theming.copyright_link_label)
-      json.copyright_link_url theming.copyright_link_url || ''
+      json.label raw(theming.copyright_link_label)
+      json.url theming.copyright_link_url
     end
     json.privacy do
-      json.privacy_link_label I18n.t('pageflow.public.privacy_notice') || ''
-      json.privacy_link_url privacy_link_url(entry) || ''
+      json.label I18n.t('pageflow.public.privacy_notice')
+      json.url privacy_link_url(entry)
     end
   end
 end
