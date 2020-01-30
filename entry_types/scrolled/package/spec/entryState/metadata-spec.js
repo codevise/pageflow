@@ -45,7 +45,7 @@ describe('useEntryMetadata', () => {
         setup: dispatch =>
           watchCollections(
             factories.entry(ScrolledEntry, {
-              configuration: {
+              metadata: {
                 id: 1,
                 share_providers: {
                   facebook: true,

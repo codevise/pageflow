@@ -39,7 +39,7 @@ describe('useShareProviders', () => {
         setup: dispatch =>
           watchCollections(
             factories.entry(ScrolledEntry, {
-              configuration: {
+              metadata: {
                 share_providers: {
                   facebook: true,
                   twitter: false
@@ -96,7 +96,7 @@ describe('useShareUrl', () => {
         setup: dispatch =>
           watchCollections(
             factories.entry(ScrolledEntry, {
-              configuration: {
+              metadata: {
                 share_url: 'http://test.host/share-url-from-collection'
               }
             }, {

@@ -2,7 +2,7 @@ import {watchCollection} from '../collections';
 
 export function watchCollections(entry, {dispatch}) {
   const {chapters, sections, contentElements, files} = entry;
-  watchCollection(new Backbone.Collection([entry.configuration]), {
+  watchCollection(new Backbone.Collection([entry.metadata]), {
     name: 'entries',
     attributes: ['id', {shareProviders: 'share_providers'}, {shareUrl: 'share_url'}, 'credits'],
     dispatch

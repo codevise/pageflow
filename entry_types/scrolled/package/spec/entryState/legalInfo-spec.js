@@ -7,16 +7,16 @@ import {renderHookInEntry, normalizeSeed} from 'support';
 describe('useLegalInfo', () => {
   const expectedLegalInfo = {
     imprint: {
-      imprintLinkLabel: 'imprintLinkLabel',
-      imprintLinkUrl: 'imprintLinkUrl'
+      label: 'label',
+      url: 'url'
     },
     copyright: {
-      copyrightLinkLabel: 'copyrightLinkLabel',
-      copyrightLinkUrl: 'copyrightLinkUrl'
+      label: 'label',
+      url: 'url'
     },
     privacy: {
-      privacyLinkLabel: 'privacyLinkLabel',
-      privacyLinkUrl: 'privacyLinkUrl'
+      label: 'label',
+      url: 'url'
     }
   };
 
@@ -26,16 +26,16 @@ describe('useLegalInfo', () => {
         seed: {
           legalInfo: {
             imprint: {
-              imprintLinkLabel: 'imprintLinkLabel',
-              imprintLinkUrl: 'imprintLinkUrl'
+              label: 'label',
+              url: 'url'
             },
             copyright: {
-              copyrightLinkLabel: 'copyrightLinkLabel',
-              copyrightLinkUrl: 'copyrightLinkUrl'
+              label: 'label',
+              url: 'url'
             },
             privacy: {
-              privacyLinkLabel: 'privacyLinkLabel',
-              privacyLinkUrl: 'privacyLinkUrl'
+              label: 'label',
+              url: 'url'
             }
           }
         }
@@ -53,16 +53,16 @@ describe('useLegalInfo', () => {
         seed: {
           legalInfo: {
             imprint: {
-              imprintLinkLabel: 'imprintLinkLabel',
-              imprintLinkUrl: 'imprintLinkUrl'
+              label: 'label',
+              url: 'url'
             },
             copyright: {
-              copyrightLinkLabel: 'copyrightLinkLabel',
-              copyrightLinkUrl: 'copyrightLinkUrl'
+              label: 'label',
+              url: 'url'
             },
             privacy: {
-              privacyLinkLabel: 'privacyLinkLabel',
-              privacyLinkUrl: 'privacyLinkUrl'
+              label: 'label',
+              url: 'url'
             }
           }
         }
@@ -95,7 +95,7 @@ describe('useCredits', () => {
         setup: dispatch =>
           watchCollections(
             factories.entry(ScrolledEntry, {
-              configuration: {
+              metadata: {
                 credits: 'Credits'
               }
             }, {
