@@ -37,7 +37,7 @@ export function SharingTooltip() {
                   offset={{right: -64}}
                   className={classNames(headerStyles.navigationTooltip,
                                         styles.sharingTooltip)}>
-      <div>
+      <div onMouseLeave={() => { ReactTooltip.hide() }}>
         {renderShareLinks(shareProviders)}
       </div>
     </ReactTooltip>

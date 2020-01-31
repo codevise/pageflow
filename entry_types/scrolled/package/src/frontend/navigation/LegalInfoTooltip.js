@@ -22,7 +22,7 @@ export function LegalInfoTooltip() {
                   offset={{bottom: 5, right: -97}}
                   className={classNames(headerStyles.navigationTooltip,
                                         styles.legalInfoTooltip)}>
-      <div>
+      <div onMouseLeave={() => { ReactTooltip.hide() }}>
         {credits &&
         <p dangerouslySetInnerHTML={{__html: credits}}></p>
         }
