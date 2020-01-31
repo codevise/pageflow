@@ -14,9 +14,7 @@ export function ChapterLinkTooltip(props) {
                                         styles.chapterLinkTooltip)}>
       <div>
         <h3 className={styles.tooltipHeadline}>Kapitel {props.chapterIndex}</h3>
-        <p>
-          {props.summary}
-        </p>
+        <p dangerouslySetInnerHTML={{__html: props.summary}} />
       </div>
     </ReactTooltip>
   )

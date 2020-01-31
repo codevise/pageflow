@@ -4,8 +4,8 @@ export function LegalInfoLink(props) {
   return (
     <div>
       {props.label && props.url &&
-      <a target="_blank" href={props.url}>
-        {props.label}
+      <a target="_blank" href={props.url}
+         dangerouslySetInnerHTML={{__html: props.label}}>
       </a>
       }
     </div>

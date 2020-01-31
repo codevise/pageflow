@@ -25,7 +25,7 @@ json.config do
     end
     json.privacy do
       json.label I18n.t('pageflow.public.privacy_notice')
-      json.url privacy_link_url(entry)
+      json.url entry_privacy_link_url(entry)
     end
   end
 end

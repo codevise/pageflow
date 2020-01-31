@@ -45,32 +45,6 @@ describe('useLegalInfo', () => {
     const legalInfo = result.current;
     expect(legalInfo).toMatchObject(expectedLegalInfo);
   });
-
-  it('reads data from watched collections', () => {
-    const {result} = renderHookInEntry(
-      () => useLegalInfo(),
-      {
-        seed: {
-          legalInfo: {
-            imprint: {
-              label: 'label',
-              url: 'url'
-            },
-            copyright: {
-              label: 'label',
-              url: 'url'
-            },
-            privacy: {
-              label: 'label',
-              url: 'url'
-            }
-          }
-        }
-      });
-
-    const legalInfo = result.current;
-    expect(legalInfo).toMatchObject(expectedLegalInfo);
-  });
 });
 
 describe('useCredits', () => {

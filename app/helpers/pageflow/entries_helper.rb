@@ -9,7 +9,7 @@ module Pageflow
       pageflow.short_entry_url(entry.to_model, params)
     end
 
-    def privacy_link_url(entry)
+    def entry_privacy_link_url(entry)
       return unless entry.theming.privacy_link_url.present?
       "#{entry.theming.privacy_link_url}?lang=#{entry.locale}"
     end
@@ -51,7 +51,7 @@ module Pageflow
 
       if entry.theming.privacy_link_url.present?
         links << link_to(I18n.t('pageflow.public.privacy_notice'),
-                         privacy_link_url(entry),
+                         entry_privacy_link_url(entry),
                          target: '_blank',
                          tabindex: 2,
                          class: 'privacy')

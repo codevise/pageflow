@@ -68,7 +68,7 @@ module Pageflow
       end
     end
 
-    describe '#privacy_link_url' do
+    describe '#entry_privacy_link_url' do
       it 'uses configured url and locale' do
         theming = create(:theming,
                          privacy_link_url: 'https://example.com/privacy')
@@ -79,7 +79,7 @@ module Pageflow
                                             locale: 'de'
                                           }))
 
-        result = helper.privacy_link_url(entry)
+        result = helper.entry_privacy_link_url(entry)
 
         expect(result).to eq('https://example.com/privacy?lang=de')
       end
@@ -90,7 +90,7 @@ module Pageflow
                                           published_revision_attributes: {
                                             locale: 'de'
                                           }))
-        result = helper.privacy_link_url(entry)
+        result = helper.entry_privacy_link_url(entry)
 
         expect(result).to be_nil
       end

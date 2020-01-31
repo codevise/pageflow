@@ -26,9 +26,7 @@ export function useFileRights() {
   const fileRights = !!imageFileRights ? imageFileRights : defaultFileRights.trim();
   const fileRightsString = !!fileRights ? ('Bildrechte: ' + fileRights) : '';
 
-  return useMemo(() => {
-    return fileRightsString;
-  }, [imageFileRights]);
+  return fileRightsString;
 }
 
 /**

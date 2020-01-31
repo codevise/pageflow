@@ -11,6 +11,12 @@ toc:
       - useFile
       - useEntryStructure
       - useSectionStructure
+      - useEntryMetadata
+      - useFileRights
+      - useLegalInfo
+      - useCredits
+      - useShareProviders
+      - useShareUrl
   - name: Spec Support
     description: |
       Helper functions to use in specs.
