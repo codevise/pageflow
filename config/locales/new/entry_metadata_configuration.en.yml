@@ -8,13 +8,6 @@ en:
         home_url: "DELETED"
         manual_start: "DELETED"
         overview_button_enabled: "DELETED"
-      pageflow/entry_metadata_configuration:
-        emphasize_chapter_beginning: Emphasize chapter beginning
-        emphasize_new_pages: Emphasize new pages
-        home_button_enabled: Show 'Home' button
-        home_url: "'Home' button URL"
-        manual_start: Show instruction overlay
-        overview_button_enabled: Show 'Overview' button
   pageflow:
     ui:
       inline_help:
@@ -28,13 +21,31 @@ en:
           manual_start: "DELETED"
           overview_button_enabled: "DELETED"
           overview_button_enabled_disabled: "DELETED"
-        pageflow/entry_metadata_configuration:
-          emphasize_chapter_beginning: This option emphasizes the title of the first page of a chapter.
-          emphasize_new_pages: At the beginning of a Pageflow an info box shows news pages that were created since the last visit.
-          home_button_enabled: Pageflow can display a button in the navigation that links to an external website, for example back to the website from which you linked the Pageflow.
-          home_button_enabled_disabled: This option is not available for your theme.
-          home_url: URL of your home page. Leave empty to use your account's default setting.
-          home_url_disabled: This option is not available for your theme.
-          manual_start: Decide if tips or advice should be shown at the beginning of your Pageflow.
-          overview_button_enabled: The overview displays chapters and pages of the main storyline.
-          overview_button_enabled_disabled: This option is not available for your theme.
+    entry_types:
+      paged:
+        editor:
+          entry_metadata_configuration_attributes:
+            emphasize_chapter_beginning:
+              inline_help: This option emphasizes the title of the first page of a chapter.
+              label: Emphasize chapter beginning
+            emphasize_new_pages:
+              inline_help: At the beginning of a Pageflow an info box shows news pages that were created since the last visit.
+              label: Emphasize new pages
+            home_button_enabled:
+              inline_help: Pageflow can display a button in the navigation that links to an external website, for example back to the website from which you linked the Pageflow.
+              label: Show 'Home' button
+            home_button_enabled_disabled:
+              inline_help: This option is not available for your theme.
+            home_url:
+              inline_help: URL of your home page. Leave empty to use your account's default setting.
+              label: "'Home' button URL"
+            home_url_disabled:
+              inline_help: This option is not available for your theme.
+            manual_start:
+              inline_help: Decide if tips or advice should be shown at the beginning of your Pageflow.
+              label: Show instruction overlay
+            overview_button_enabled:
+              inline_help: The overview displays chapters and pages of the main storyline.
+              label: Show 'Overview' button
+            overview_button_enabled_disabled:
+              inline_help: This option is not available for your theme.

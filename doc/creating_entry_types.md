@@ -175,8 +175,20 @@ export const RainbowEntry = Entry.extend({
 });
 ```
 
-The preview and outline views need to be Backbone views, that will
-reveive the entry via the `model` option.
+The preview and outline views need to be Backbone views that will
+receive the entry via the `model` option.
+
+Pageflow expects translation keys that are scoped to entry type. For
+example, if we add an input to appearance inputs like this
+
+``` javascript
+const appearanceInputs = (tabView, _options) => {
+  tabView.input('manual_start', CheckBoxInputView);
+};
+```
+
+Pageflow is looking for translation keys of the form
+`pageflow.entry_types.paged.editor.entry_metadata_configuration_attributes.manual_start.{inline_help,label}`.
 
 ### REST Controllers
 

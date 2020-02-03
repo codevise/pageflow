@@ -33,7 +33,11 @@ export const EditMetaDataView = Marionette.Layout.extend({
 
     var configurationEditor = new ConfigurationEditorView({
       model: entry.metadata.configuration,
-      tab: this.options.tab
+      tab: this.options.tab,
+      attributeTranslationKeyPrefixes: [
+        'pageflow.entry_types.' + editor.entryType.name +
+          '.editor.entry_metadata_configuration_attributes'
+      ]
     });
 
     configurationEditor.tab('general', function() {
@@ -69,7 +73,10 @@ export const EditMetaDataView = Marionette.Layout.extend({
 
     configurationEditor.tab('widgets', function() {
       editor.entryType.appearanceInputs &&
-        editor.entryType.appearanceInputs(this, entry, state.theming);
+        editor.entryType.appearanceInputs(this, {
+          entry,
+          theming: state.theming
+        });
       entry.widgets && this.view(EditWidgetsView, {
         model: entry,
         widgetTypes: editor.widgetTypes

@@ -5,17 +5,20 @@ import {EditMetaDataView, editor} from 'pageflow/editor';
 import {CheckBoxInputView} from 'pageflow/ui';
 
 import {factories} from '$support';
+import * as support from '$support';
 import {ConfigurationEditor} from '$support/dominos/ui';
 
 describe('EditMetaDataView', () => {
   it('renders general tab', () => {
-    const entry = factories.entry();
+    editor.registerEntryType('test');
+    const entry = factories.entry({}, {type_name: 'test'});
     const view = new EditMetaDataView({
       model: entry,
       tab: 'general',
       state: {
         config: {}
-      }
+      },
+      editor: editor
     });
 
     view.render();
@@ -30,7 +33,7 @@ describe('EditMetaDataView', () => {
   it('renders entry type specific appearance inputs on widgets tab', () => {
     const entry = factories.entry();
     editor.registerEntryType('test', {
-      appearanceInputs: (the_view, the_entry, theming) => {
+      appearanceInputs: (the_view, _options) => {
         the_view.input('cheese', CheckBoxInputView);
       }
     });
@@ -46,6 +49,35 @@ describe('EditMetaDataView', () => {
     expect(configurationEditor.tabNames()).toEqual(expect.arrayContaining(['widgets']));
     expect(configurationEditor.inputPropertyNames()).toEqual(expect.arrayContaining([
       'cheese'
+    ]));
+  });
+
+  support.useFakeTranslations({
+    'pageflow.entry_types.strange.editor.entry_metadata_configuration_attributes.quark.label': 'Up',
+    'pageflow.entry_types.strange.editor.entry_metadata_configuration_attributes.quark.inline_help': 'Help yourself!'
+  });
+
+  it('uses entry type-specific translation keys if provided', () => {
+    const entry = factories.entry();
+    editor.registerEntryType('strange', {
+      appearanceInputs: (the_view, _options) => {
+        the_view.input('quark', CheckBoxInputView);
+      }
+    });
+    const view = new EditMetaDataView({
+      model: entry,
+      tab: 'widgets',
+      editor: editor
+    });
+
+    view.render();
+    var configurationEditor = ConfigurationEditor.find(view);
+
+    expect(configurationEditor.inputLabels()).toEqual(expect.arrayContaining([
+      'Up'
+    ]));
+    expect(configurationEditor.inlineHelpTexts()).toEqual(expect.arrayContaining([
+      'Help yourself!'
     ]));
   });
 
@@ -89,6 +121,7 @@ describe('EditMetaDataView', () => {
   });
 
   it('renders social tab', () => {
+    editor.registerEntryType('test');
     const entry = factories.entry();
     const view = new EditMetaDataView({
       model: entry,
@@ -99,7 +132,8 @@ describe('EditMetaDataView', () => {
         imageFiles: {
           getByPermaId: () => factories.imageFile()
         }
-      }
+      },
+      editor: editor
     });
 
     view.render();

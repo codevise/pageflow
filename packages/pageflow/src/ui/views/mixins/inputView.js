@@ -157,6 +157,8 @@ export const inputView = {
     this.$el.addClass(this.model.modelName + '_' + this.options.propertyName);
 
     this.$el.data('inputPropertyName', this.options.propertyName);
+    this.$el.data('labelText', this.labelText());
+    this.$el.data('inlineHelpText', this.inlineHelpText());
 
     this.ui.labelText.text(this.labelText());
     this.ui.inlineHelp.html(this.inlineHelpText());
