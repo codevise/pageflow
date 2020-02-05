@@ -2,7 +2,7 @@ import React from 'react';
 
 import templates from './foregroundItemTemplates';
 
-export default function ForegroundItem(props) {
+export function ContentElement(props) {
   const template = templates[props.type]
   const Component = template.component;
 

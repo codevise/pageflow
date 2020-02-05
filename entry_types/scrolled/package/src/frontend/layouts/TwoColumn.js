@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import ForegroundItems from '../ForegroundItems';
+import {ContentElements} from '../ContentElements';
 
 import styles from './TwoColumn.module.css';
 
@@ -35,7 +35,7 @@ function renderItemGroup(props, group, position) {
     return (
       <div className={styles[position]}>
         {props.children(
-          <ForegroundItems items={group[position]} />
+          <ContentElements items={group[position]} />
         )}
       </div>
     );
