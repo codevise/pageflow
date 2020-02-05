@@ -16,7 +16,7 @@ import {orderedCollection} from './mixins/orderedCollection';
  * @param {String} options.parentReferenceAttribute -
  *   Set reference to parent model on models in collection.
  *
- * @since edge
+ * @since 15.1
  */
 export const ForeignKeySubsetCollection = SubsetCollection.extend({
   mixins: [orderedCollection],

@@ -41,7 +41,7 @@ import {editor} from '../base';
  *   Model including the {@link configurationContainer},
  *   {@link failureTracking} and {@link delayedDestroying} mixins.
  *
- * @since edge
+ * @since 15.1
  */
 export const EditConfigurationView = Marionette.Layout.extend({
   className: 'edit_configuration_view',

@@ -1,58 +1,13 @@
 # CHANGELOG
 
-### Version 15.1.0.rc0
+### Version 15.1.0
 
 2020-02-05
 
-[Compare changes](https://github.com/codevise/pageflow/compare/15-0-stable...v15.1.0.rc0)
+[Compare changes](https://github.com/codevise/pageflow/compare/15-0-stable...v15.1.0)
 
-- Changed file importer box size and margins of footer
-  ([#1323](https://github.com/codevise/pageflow/pull/1323))
-- Add meta charset tag in application layout of paged entries
-  ([#1322](https://github.com/codevise/pageflow/pull/1322))
-- Re-add help entries for appearance options
-  ([#1321](https://github.com/codevise/pageflow/pull/1321))
-- Sharing, imprint, privacy in navigation
-  ([#1319](https://github.com/codevise/pageflow/pull/1319))
-- Outline editing for scrolled entries
-  ([#1318](https://github.com/codevise/pageflow/pull/1318))
-
-### Version 15.1.0.beta6
-
-2020-01-29
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v15.1.0.beta5...v15.1.0.beta6)
-
-#### Core
-
-##### Internal
-
-- Add configuration to revisions
-  ([#1306](https://github.com/codevise/pageflow/pull/1306))
-
-### Version 15.1.0.beta5
-
-2020-01-29
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v15.1.0.beta4...v15.1.0.beta5)
-
-Include `pageflow` and `pageflow-scrolled` packages in gem to allow a
-host application setup where Yarn uses packages from the gem directory
-managed by bundler.
-
-### Version 15.1.0.beta4
-
-2020-01-29
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v15.1.0.beta3...v15.1.0.beta4)
-
-Forgot to build assets before doing previous release.
-
-### Version 15.1.0.beta3
-
-2020-01-29
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v15.1.0.beta2...v15.1.0.beta3)
+See
+[changes grouped by pre releases](https://github.com/codevise/pageflow/blob/v15.1.0.rc0/CHANGELOG.md).
 
 #### Core
 
@@ -88,6 +43,8 @@ Forgot to build assets before doing previous release.
 
 ##### Engine Config
 
+- Add entry type concept
+  ([#1249](https://github.com/codevise/pageflow/pull/1249))
 - Render entry type specific editor seed data
   ([#1265](https://github.com/codevise/pageflow/pull/1265))
 - Entry type specific editor views
@@ -107,7 +64,8 @@ Forgot to build assets before doing previous release.
 - Consider feature flags for file types available in editor
   ([#1275](https://github.com/codevise/pageflow/pull/1275))
 - Extract part of appearance options into paged entry type
-  ([#1304](https://github.com/codevise/pageflow/pull/1304))
+  ([#1304](https://github.com/codevise/pageflow/pull/1304),
+   [#1321](https://github.com/codevise/pageflow/pull/1321))
 - Scope existing built ins to paged entry type
   ([#1296](https://github.com/codevise/pageflow/pull/1296))
 - Integrate entry type specific config with feature flags
@@ -116,15 +74,34 @@ Forgot to build assets before doing previous release.
   ([#1284](https://github.com/codevise/pageflow/pull/1284))
 - Let entry types define editor controllers
   ([#1271](https://github.com/codevise/pageflow/pull/1271))
+- Add authentication provider
+  ([#1236](https://github.com/codevise/pageflow/pull/1236))
+- Bug fix: Change revision#locale to always return string
+  ([#1239](https://github.com/codevise/pageflow/pull/1239))
 
 ##### File Importers
 
-- Mentioned that file importer should be registered in a feature flag
-  ([#1266](https://github.com/codevise/pageflow/pull/1266))
-- File import feature flag
-  ([#1258](https://github.com/codevise/pageflow/pull/1258))
-- Bug fix: Minor file import lint change
-  ([#1269](https://github.com/codevise/pageflow/pull/1269))
+- Introduce file importer API
+  ([#1250](https://github.com/codevise/pageflow/pull/1250),
+   [#1266](https://github.com/codevise/pageflow/pull/1266),
+   [#1258](https://github.com/codevise/pageflow/pull/1258),
+   [#1269](https://github.com/codevise/pageflow/pull/1269),
+   [#1323](https://github.com/codevise/pageflow/pull/1323))
+
+##### Internal
+
+- Add configuration to revisions
+  ([#1306](https://github.com/codevise/pageflow/pull/1306))
+- Add entry type engines
+  ([#1247](https://github.com/codevise/pageflow/pull/1247))
+- Migrate legacy JavaScript to Rollup/Jest
+  ([#1241](https://github.com/codevise/pageflow/pull/1241))
+- Update pageflow-react build stack
+  ([#1240](https://github.com/codevise/pageflow/pull/1240))
+- Modernize editor JavaScript build stack
+  ([#1238](https://github.com/codevise/pageflow/pull/1238))
+- Replace chromedriver-helper by webdrivers
+  ([#1251](https://github.com/codevise/pageflow/pull/1251))
 
 #### Paged Entry Type
 
@@ -135,6 +112,13 @@ Forgot to build assets before doing previous release.
 
 ##### Published Entry
 
+- Add width/height to social share images to make Facebook display
+  them faster.
+  ([#1223](https://github.com/codevise/pageflow/pull/1223))
+- Add translations for some text track languages
+  ([#1237](https://github.com/codevise/pageflow/pull/1237))
+- Add meta charset tag in application layout of paged entries
+  ([#1322](https://github.com/codevise/pageflow/pull/1322))
 - Bug fix: Invalidate page partial cache on locale change
   ([#1311](https://github.com/codevise/pageflow/pull/1311))
 - Bug fix: Do not prefix partial paths with pageflow_paged
@@ -160,7 +144,8 @@ Forgot to build assets before doing previous release.
    [#1270](https://github.com/codevise/pageflow/pull/1270),
    [#1278](https://github.com/codevise/pageflow/pull/1278),
    [#1286](https://github.com/codevise/pageflow/pull/1286),
-   [#1314](https://github.com/codevise/pageflow/pull/1314))
+   [#1314](https://github.com/codevise/pageflow/pull/1314),
+   [#1242](https://github.com/codevise/pageflow/pull/1242))
 - Fix section index and references to adjacent chapters
   ([#1316](https://github.com/codevise/pageflow/pull/1316))
 - Render uploaded images in scrolled entries
@@ -170,6 +155,8 @@ Forgot to build assets before doing previous release.
   ([#1298](https://github.com/codevise/pageflow/pull/1298),
    [#1300](https://github.com/codevise/pageflow/pull/1300),
    [#1308](https://github.com/codevise/pageflow/pull/1308))
+- Sharing, imprint, privacy in navigation
+  ([#1319](https://github.com/codevise/pageflow/pull/1319))
 
 ##### Editor
 
@@ -181,6 +168,8 @@ Forgot to build assets before doing previous release.
    [#1292](https://github.com/codevise/pageflow/pull/1292),
    [#1294](https://github.com/codevise/pageflow/pull/1294),
    [#1305](https://github.com/codevise/pageflow/pull/1305))
+- Outline editing for scrolled entries
+  ([#1318](https://github.com/codevise/pageflow/pull/1318))
 
 ##### Internal
 
@@ -204,55 +193,6 @@ Forgot to build assets before doing previous release.
   ([#1290](https://github.com/codevise/pageflow/pull/1290))
 - Improve Capybara Chrome setup
   ([#1291](https://github.com/codevise/pageflow/pull/1291))
-
-### Version 15.1.0.beta2
-
-2019-12-05
-
-[Compare changes](https://github.com/codevise/pageflow/compare/v15.1.0.beta1...v15.1.0.beta2)
-
-- Exclude entry type spec dummy directories from gem which were
-  included by accident and multiplied the gem file size.
-
-### Version 15.1.0.beta1
-
-2019-12-05
-
-[Compare changes](https://github.com/codevise/pageflow/compare/15-0-stable...v15.1.0.beta1)
-
-#### Published Entries
-
-- Add width/height to social share images to make Facebook display
-  them faster.
-  ([#1223](https://github.com/codevise/pageflow/pull/1223))
-- Add translations for some text track languages
-  ([#1237](https://github.com/codevise/pageflow/pull/1237))
-
-#### Rails Engine
-
-- Introduce file importer API
-  ([#1250](https://github.com/codevise/pageflow/pull/1250))
-- Add entry type concept
-  ([#1249](https://github.com/codevise/pageflow/pull/1249))
-- Add authentication provider
-  ([#1236](https://github.com/codevise/pageflow/pull/1236))
-- Bug fix: Index seed entry data files by perma id
-  ([#1242](https://github.com/codevise/pageflow/pull/1242))
-- Bug fix: Change revision#locale to always return string
-  ([#1239](https://github.com/codevise/pageflow/pull/1239))
-
-#### Internal
-
-- Add entry type engines
-  ([#1247](https://github.com/codevise/pageflow/pull/1247))
-- Migrate legacy JavaScript to Rollup/Jest
-  ([#1241](https://github.com/codevise/pageflow/pull/1241))
-- Update pageflow-react build stack
-  ([#1240](https://github.com/codevise/pageflow/pull/1240))
-- Modernize editor JavaScript build stack
-  ([#1238](https://github.com/codevise/pageflow/pull/1238))
-- Replace chromedriver-helper by webdrivers
-  ([#1251](https://github.com/codevise/pageflow/pull/1251))
 
 See
 [15-0-stable branch](https://github.com/codevise/pageflow/blob/15-0-stable/CHANGELOG.md)

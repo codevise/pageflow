@@ -44,7 +44,7 @@ export const EditorApi = Object.extend(
      *
      * @returns {SavingRecordsCollection}
      * @memberof editor
-     * @since edge
+     * @since 15.1
      */
     this.savingRecords = new SavingRecordsCollection();
 
