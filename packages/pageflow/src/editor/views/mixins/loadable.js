@@ -1,25 +1,8 @@
-export const loadable = {
-  modelEvents: {
-    'change:id': function() {
-      this.$el.removeClass('creating');
-    },
+import {modelLifecycleTrackingView} from './modelLifecycleTrackingView';
 
-    destroying: function() {
-      this.$el.addClass('destroying');
-    },
-
-    error: function() {
-      this.$el.removeClass('destroying');
-    }
-  },
-
-  render: function() {
-    if (this.model.isNew()) {
-      this.$el.addClass('creating');
-    }
-
-    if (this.model.isDestroying && this.model.isDestroying()) {
-      this.$el.addClass('destroying');
-    }
+export const loadable = modelLifecycleTrackingView({
+  classNames: {
+    creating: 'creating',
+    destroying: 'destroying'
   }
-};
+});

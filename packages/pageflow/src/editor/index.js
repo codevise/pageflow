@@ -8,6 +8,7 @@ export * from './state';
 export * from './app';
 export * from './base';
 
+export * from './utils/entryTypeEditorControllerUrls';
 export * from './utils/formDataUtils';
 export * from './utils/stylesheet';
 
@@ -47,6 +48,7 @@ export * from './models/Chapter';
 export * from './models/Storyline';
 export * from './models/PageLink';
 export * from './models/PageLinkFileSelectionHandler';
+export * from './models/mixins/configurationContainer';
 export * from './models/mixins/stageProvider';
 export * from './models/mixins/retryable';
 export * from './models/mixins/persitedPromise';
@@ -63,6 +65,7 @@ export * from './models/authenticationProvider';
 export * from './models/FileImport';
 
 export * from './collections/ChaptersCollection';
+export * from './collections/ForeignKeySubsetCollection';
 export * from './collections/SubsetCollection';
 export * from './collections/StorylineChaptersCollection';
 export * from './collections/PageLinksCollection';
@@ -77,8 +80,6 @@ export * from './collections/ThemesCollection';
 export * from './collections/WidgetsCollection';
 export * from './collections/mixins/orderedCollection';
 export * from './collections/mixins/addAndReturnModel';
-export * from './collections/SavingRecordsCollection';
-export * from './collections/MultiCollection';
 export * from './collections/FilesCollection';
 
 export * from './routers/SidebarRouter';
@@ -156,12 +157,14 @@ export * from './views/mixins/selectableView';
 export * from './views/mixins/failureIndicatingView';
 export * from './views/mixins/loadable';
 export * from './views/mixins/dialogView';
+export * from './views/mixins/modelLifecycleTrackingView';
 export * from './views/FileStageItemView';
 export * from './views/ConfirmUploadView';
 export * from './views/ChooseImporterView';
 export * from './views/FilesImporterView';
 export * from './views/ConfirmFileImportUploadView';
 
+export * from './views/EditConfigurationView';
 
 import './views/configurationEditors/audio';
 import './views/configurationEditors/backgroundImage';

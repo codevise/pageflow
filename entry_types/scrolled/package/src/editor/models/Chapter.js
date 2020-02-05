@@ -1,11 +1,38 @@
 import Backbone from 'backbone';
 
-export const Chapter = Backbone.Model.extend({
-  initialize() {
-    this.configuration = new Backbone.Model(this.get('configuration'));
+import {
+  configurationContainer,
+  entryTypeEditorControllerUrls,
+  failureTracking,
+  delayedDestroying,
+  ForeignKeySubsetCollection
+} from 'pageflow/editor';
 
-    this.listenTo(this.configuration, 'change', function() {
-      this.trigger('change:configuration', this);
+export const Chapter = Backbone.Model.extend({
+  mixins: [
+    configurationContainer({
+      autoSave: true,
+      includeAttributesInJSON: ['position']
+    }),
+    delayedDestroying,
+    entryTypeEditorControllerUrls.forModel({resources: 'chapters'}),
+    failureTracking
+  ],
+
+  initialize(attributes, options) {
+    this.sections = new ForeignKeySubsetCollection({
+      parent: options.sections,
+      parentModel: this,
+      foreignKeyAttribute: 'chapterId',
+      parentReferenceAttribute: 'chapter'
+    });
+  },
+
+  addSection(attributes) {
+    this.sections.create({
+      position: this.sections.length,
+      chapterId: this.id,
+      ...attributes
     });
   }
 });

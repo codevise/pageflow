@@ -145,6 +145,33 @@ describe('watch', () => {
     expect(items.map(i => i.title)).toEqual(['B', 'A']);
   });
 
+  it('ignores new models on sort', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection(
+      [
+        {id: 1, title: 'A', position: 1},
+        {title: 'Not saved yet', position: 2},
+        {id: 3, title: 'B', position: 3}
+      ],
+      {comparator: 'position'}
+    );
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id', 'title'],
+        dispatch
+      });
+
+      posts.sort();
+    });
+    const [state,] = result.current;
+    const items = getItems(state, 'posts');
+
+    expect(items.map(i => i.title)).toEqual(['A', 'B']);
+  });
+
   it('ignores not yet persisted items', () => {
     const {result} = renderHook(() => useCollections());
     const posts = new Backbone.Collection();

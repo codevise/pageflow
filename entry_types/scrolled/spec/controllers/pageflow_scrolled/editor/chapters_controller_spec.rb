@@ -127,6 +127,21 @@ module PageflowScrolled
         expect(chapters.first.reload.position).to eq(1)
       end
 
+      it 'uses first storyline by default' do
+        entry = create(:entry)
+        chapters = create_list(:scrolled_chapter, 2, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        put(:order,
+            params: {
+              entry_id: entry,
+              ids: [chapters.last.id, chapters.first.id]
+            }, format: 'json')
+
+        expect(chapters.last.reload.position).to eq(0)
+        expect(chapters.first.reload.position).to eq(1)
+      end
+
       it 'allows moving a chapter from one storyline to another within the same entry' do
         entry = create(:entry)
         chapter = create(:scrolled_chapter, revision: entry.draft)

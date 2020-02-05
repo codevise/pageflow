@@ -1,0 +1,48 @@
+@value indicatorIconColor from './colors.module.css';
+
+.root {
+  background-color: #fff;
+  margin-bottom: 10px;
+  padding: 0 10px 10px 10px;
+}
+
+.link {
+  composes: rightOpen from './icons.module.css';
+  display: block;
+  position: relative;
+  margin: 0 -10px 0 -10px;
+  padding: 10px 10px 10px 30px;
+  background-color: #efefef;
+}
+
+.link::before {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  font-size: 19px;
+  color: indicatorIconColor;
+}
+
+.number {
+  font-weight: bold;
+}
+
+.title {}
+
+.sections {
+  margin: 10px 0 10px 0;
+  min-height: 20px;
+}
+
+.creating .creatingIndicator     { display: block; }
+.destroying .destroyingIndicator { display: block; }
+.failed .failedIndicator         { display: block; }
+
+
+.creatingIndicator   { composes: creatingIndicator from './outline.module.css'; }
+.destroyingIndicator { composes: destroyingIndicator from './outline.module.css';  }
+.failedIndicator     { composes: failedIndicator from './outline.module.css'; }
+
+.addSection {
+  composes: addButton from './buttons.module.css';
+}

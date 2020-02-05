@@ -12,6 +12,18 @@ toc:
       - editor
       - Failures
       - Failure
+      - SavingRecordsCollection
+
+  - name: Editor - Models/Collections
+    description: |
+      This section describes mixins and utilities that can be used in
+      Backbone models and collection.
+    children:
+      - configurationContainer
+      - delayedDestroying
+      - entryTypeEditorControllerUrls
+      - failureTracking
+      - ForeignKeySubsetCollection
 
   - name: Editor - Input Views
     description: |
@@ -35,13 +47,15 @@ toc:
       });
       ```
     children:
+      - EditConfigurationView
       - ReferenceInputView
       - FileInputView
 
   - name: Editor - Misc Views
     description: |
-      General purpose Backbone views exported by `pageflow/editor`.
+      General purpose Backbone views and mixins exported by `pageflow/editor`.
     children:
+      - modelLifecycleTrackingView
       - DropDownButtonView
       - ListView
       - ModelThumbnailView

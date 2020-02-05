@@ -1,5 +1,7 @@
-import Backbone from 'backbone';
+import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {EntryPreviewView} from 'editor/views/EntryPreviewView';
+import {factories} from 'pageflow/testHelpers';
+import {normalizeSeed, tick} from 'support';
 
 describe('EntryPreviewView', () => {
   let view;
@@ -37,8 +39,8 @@ describe('EntryPreviewView', () => {
     expect(view.ui.iframe[0].contentWindow.document.body.querySelector('div.entry')).toBeTruthy();
   });
 
-  it('responds to READY message sent by iframe with ACTION message', () => {
-    const seedHtml = `
+  const seedBodyFragment = `
+    <script type="text/html" data-template="iframe_seed">
       <!DOCTYPE html>
       <html>
         <head>
@@ -47,17 +49,12 @@ describe('EntryPreviewView', () => {
         <body>
         </body>
       </html>
-    `;
-    document.body.innerHTML = `
-      <script type="text/html" data-template="iframe_seed">
-        ${seedHtml}
-      </script>
-    `;
-    const entry = new Backbone.Model();
-    entry.chapters = new Backbone.Collection();
-    entry.sections = new Backbone.Collection();
-    entry.contentElements = new Backbone.Collection();
-    entry.files = {};
+    </script>
+  `;
+
+  it('responds to READY message sent by iframe with ACTION message', () => {
+    document.body.innerHTML = seedBodyFragment;
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
     view = new EntryPreviewView({model: entry});
 
     view.render();
@@ -71,5 +68,47 @@ describe('EntryPreviewView', () => {
       });
       window.postMessage({type: 'READY'}, '*');
     })).resolves.toMatchObject({type: 'ACTION'});
+  });
+
+  it('sets current section index in model on CHANGE_SECTION message', () => {
+    document.body.innerHTML = seedBodyFragment;
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    view = new EntryPreviewView({model: entry});
+
+    view.render();
+    document.body.appendChild(view.el);
+    view.onShow();
+
+    return expect(new Promise(resolve => {
+      entry.once('change:currentSectionIndex', (model, value) => resolve(value));
+      window.postMessage({type: 'CHANGE_SECTION', payload: {index: 4}}, '*');
+    })).resolves.toBe(4);
+  });
+
+  it('sends SCROLL_TO_SECTION message to iframe on scrollToSection event on model', async () => {
+    document.body.innerHTML = seedBodyFragment;
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 1}, {id: 2}, {id: 3}]
+      })
+    });
+    view = new EntryPreviewView({model: entry});
+
+    view.render();
+    document.body.appendChild(view.el);
+    view.onShow();
+
+    window.postMessage({type: 'READY'}, '*');
+    await tick(); // Wait for async processing of message.
+
+    return expect(new Promise(resolve => {
+      const iframeWindow = view.ui.iframe[0].contentWindow;
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SCROLL_TO_SECTION') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('scrollToSection', entry.sections.at(2));
+    })).resolves.toMatchObject({type: 'SCROLL_TO_SECTION', payload: {index: 2}});
   });
 })

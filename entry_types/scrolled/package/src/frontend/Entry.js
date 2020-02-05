@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 
 import Chapter from "./Chapter";
 import MutedContext from './MutedContext';
@@ -8,7 +8,7 @@ import {useEntryStructure, useEntryStateDispatch} from '../entryState';
 import styles from './Entry.module.css';
 
 export default function Entry(props) {
-  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+  const [currentSectionIndex, setCurrentSectionIndexState] = useState(0);
 
   const [scrollTargetSectionIndex, setScrollTargetSectionIndex] = useState(null);
 
@@ -16,6 +16,14 @@ export default function Entry(props) {
 
   const dispatch = useEntryStateDispatch();
   const entryStructure = useEntryStructure();
+
+  const setCurrentSectionIndex = useCallback(index => {
+    if (window.parent) {
+      window.parent.postMessage({type: 'CHANGE_SECTION', payload: {index}}, window.location.origin);
+    }
+
+    setCurrentSectionIndexState(index);
+  }, [setCurrentSectionIndexState]);
 
   useEffect(() => {
     if (window.parent) {
@@ -26,9 +34,13 @@ export default function Entry(props) {
     return () => window.removeEventListener('message', receive);
 
     function receive(message) {
-      if (window.location.href.indexOf(message.origin) === 0 &&
-          message.data.type === 'ACTION') {
-        dispatch(message.data.payload);
+      if (window.location.href.indexOf(message.origin) === 0) {
+        if (message.data.type === 'ACTION') {
+          dispatch(message.data.payload);
+        }
+        else if (message.data.type === 'SCROLL_TO_SECTION') {
+          setScrollTargetSectionIndex(message.data.payload.index)
+        }
       }
     }
   }, [dispatch]);

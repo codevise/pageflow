@@ -1,0 +1,46 @@
+en:
+  pageflow_scrolled:
+    editor:
+      entry_outline:
+        header: "Outline"
+        add_chapter: "New chapter"
+      chapter_item:
+        add_section: "New section"
+        save_error: There was an error while saving this chapter.
+      section_item:
+        edit: "Edit section"
+        save_error: There was an error while saving this section.
+      edit_chapter:
+        tabs:
+          chapter: Chapter
+        attributes:
+          title:
+            label: Title
+          summary:
+            label: Summary
+        confirm_destroy: |-
+          Really delete this chapter including ALL its sections?
+
+          This operation cannot be undone.
+        save_error: There was an error while saving this chapter.
+      edit_section:
+        tabs:
+          section: Section
+        attributes:
+          backdropImage:
+            label: Background
+          backdropType:
+            label: Background-Type
+          invert:
+            label: Invert text
+          layout:
+            label: Text alignment
+            values:
+              left: "Left"
+              right: "Right"
+              center: "Center"
+        confirm_destroy: |-
+          Really delete this section including ALL its elements?
+
+          This operation cannot be undone.
+        save_error: There was an error while saving this section.

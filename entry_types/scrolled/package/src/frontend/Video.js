@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useContext} from 'react';
 import classNames from 'classnames';
 
 import ScrollToSectionContext from './ScrollToSectionContext';
@@ -47,9 +47,12 @@ export default function Video(props) {
   const videoRef = useRef();
   const state = props.state;
 
+  const mutedSettings = useContext(MutedContext);
+  const {mediaOff} = mutedSettings;
+
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
+    if (video && !mediaOff) {
       if (state === 'active') {
         if (video.readyState > 0) {
           video.play();
@@ -67,27 +70,23 @@ export default function Video(props) {
     function play() {
       video.play();
     }
-  }, [state, videoRef]);
+  }, [state, videoRef, mediaOff]);
 
   return (
     <div className={styles.root}>
-      <MutedContext.Consumer>
-        {mutedSettings =>
-          <ScrollToSectionContext.Consumer>
-            {scrollToSection =>
-              <video src={videoUrl}
-                     ref={videoRef}
-                     className={classNames(styles.video, {[styles.backdrop]: !props.interactive})}
-                     controls={props.controls}
-                     playsInline
-                     onEnded={() => props.nextSectionOnEnd && scrollToSection('next')}
-                     loop={!props.interactive}
-                     muted={mutedSettings.muted}
-                     poster={posterUrl} />
-            }
-          </ScrollToSectionContext.Consumer>
+      <ScrollToSectionContext.Consumer>
+        {scrollToSection =>
+          <video src={videoUrl}
+                 ref={videoRef}
+                 className={classNames(styles.video, {[styles.backdrop]: !props.interactive})}
+                 controls={props.controls}
+                 playsInline
+                 onEnded={() => props.nextSectionOnEnd && scrollToSection('next')}
+                 loop={!props.interactive}
+                 muted={mutedSettings.muted}
+                 poster={posterUrl} />
         }
-      </MutedContext.Consumer>
+      </ScrollToSectionContext.Consumer>
     </div>
   )
 }

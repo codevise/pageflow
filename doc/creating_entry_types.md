@@ -217,7 +217,7 @@ end
 
 The editor app will be mounted at
 `/editor/entries/:id/<entry_type_name>/`. So the example above would
-add the route `/editor/entries/:id/test/unicorns`.
+add the route `/editor/entries/:id/rainbow/unicorns`.
 
 Pageflow provides the `Pageflow::EditorController` module to take care
 of common editor controller concerns like:
@@ -285,6 +285,28 @@ module Rainbow
     end
   end
 end
+```
+
+The `pageflow/editor` module provides mixins to build Backbone
+collections and models that use these REST endpoints:
+
+```javascript
+import Backbone from 'backbone';
+import {entryTypeEditorControllerUrl} from 'pageflow/editor';
+
+export const Unicorn = Backbone.Model.extend({
+  mixins: [
+    entryTypeEditorControllerUrl.forModel({ressources: 'unicorns'})
+  ]
+});
+
+export const UnicornsCollection = Backbone.Model.extend({
+  mixins: [
+    entryTypeEditorControllerUrl.forCollection({resources: 'unicorns'})
+  ],
+
+  model: Unicorn
+});
 ```
 
 ## Customizing Configuration

@@ -78,7 +78,8 @@ export const SubsetCollection = Backbone.Collection.extend({
   },
 
   url: function() {
-    return this.parentModel.url() + _.result(this.parent, 'url');
+    return this.parentModel.url() + (_.result(this.parent, 'urlSuffix') ||
+                                     _.result(this.parent, 'url'));
   },
 
   dispose: function() {

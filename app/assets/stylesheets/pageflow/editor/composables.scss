@@ -1,0 +1,9 @@
+// Class names that are reused in entry type CSS module files.  Used
+// for styles that would be hard to re-create without the SCSS mixins
+// available here.
+
+// See entry_type/scrolled/package/src/editor/buttons.module.css
+
+.icon_button {
+  @include icon-button;
+}

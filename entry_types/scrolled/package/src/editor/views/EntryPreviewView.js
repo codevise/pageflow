@@ -15,7 +15,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
   ui: cssModulesUtils.ui(styles, 'iframe'),
 
   initialize() {
-    this.messageListener = this.onMessage.bind(this)
+    this.messageListener = this.onMessage.bind(this);
   },
 
   onShow() {
@@ -30,16 +30,29 @@ export const EntryPreviewView = Marionette.ItemView.extend({
   },
 
   onMessage(message) {
-    if (window.location.href.indexOf(message.origin) === 0 &&
-        message.data.type === 'READY') {
+    if (window.location.href.indexOf(message.origin) === 0) {
+      if (message.data.type === 'READY') {
+        const postMessage = message => {
+          this.ui.iframe[0].contentWindow.postMessage(message, window.location.origin);
+        };
 
-      watchCollections(this.model, {
-        dispatch: action =>
-          this.ui.iframe[0].contentWindow.postMessage(
-            {type: 'ACTION', payload: action},
-            window.location.origin
-          )
-      });
+        watchCollections(this.model, {
+          dispatch: action =>
+            postMessage({type: 'ACTION', payload: action})
+        });
+
+        this.listenTo(this.model, 'scrollToSection', section =>
+          postMessage({
+            type: 'SCROLL_TO_SECTION',
+            payload: {
+              index: this.model.sections.indexOf(section)
+            }
+          })
+        );
+      }
+      else if (message.data.type === 'CHANGE_SECTION') {
+        this.model.set('currentSectionIndex', message.data.payload.index);
+      }
     }
   }
 });

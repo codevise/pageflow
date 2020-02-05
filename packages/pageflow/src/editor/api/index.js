@@ -7,11 +7,13 @@ import {FailuresAPI} from './Failures';
 import {FileTypes} from './FileTypes';
 import {FileImporters} from './FileImporters'
 import {PageTypes} from './PageTypes';
+import {SavingRecordsCollection} from './SavingRecordsCollection';
 import {WidgetTypes} from './WidgetTypes';
 import {app} from '../app';
 import {state} from '$state';
 
 export * from './errors';
+export {Failure} from './Failure';
 export {FileTypes, WidgetTypes};
 
 /**
@@ -36,6 +38,15 @@ export const EditorApi = Object.extend(
      * @memberof editor
      */
     this.failures = new FailuresAPI();
+
+    /**
+     * Tracking records that are currently being saved.
+     *
+     * @returns {SavingRecordsCollection}
+     * @memberof editor
+     * @since edge
+     */
+    this.savingRecords = new SavingRecordsCollection();
 
     /**
      * Set up editor integration for page types.
@@ -83,7 +94,7 @@ export const EditorApi = Object.extend(
    *   Backbone view that will be rendered in the side bar.
    */
   registerEntryType(name, options) {
-    this.entryType = options;
+    this.entryType = {name, ...options};
   },
 
   createEntryModel(seed, options) {

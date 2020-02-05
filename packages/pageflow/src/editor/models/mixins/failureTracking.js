@@ -1,3 +1,7 @@
+/**
+ * Mixin for Backbone models that shall be watched by {@link
+ * modelLifecycleTrackingView} mixin.
+ */
 export const failureTracking = {
   initialize: function() {
     this._saveFailed = false;
