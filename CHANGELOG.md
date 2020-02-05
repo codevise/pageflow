@@ -1,6 +1,10 @@
 # CHANGELOG
 
-### Unreleased Changes
+### Version 15.1.0.rc0
+
+2020-02-05
+
+[Compare changes](https://github.com/codevise/pageflow/compare/15-0-stable...v15.1.0.rc0)
 
 - Changed file importer box size and margins of footer
   ([#1323](https://github.com/codevise/pageflow/pull/1323))
