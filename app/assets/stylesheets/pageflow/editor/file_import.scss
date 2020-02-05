@@ -2,11 +2,11 @@
 .choose_importer_box {
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 10px;
   bottom: 20px;
   right: 20px;
   max-width: 1100px;
-  height: 70vh;
+  height: 75vh;
 
   .content {
     display: table;
@@ -60,11 +60,11 @@
 .file_importer_box {
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 10px;
   bottom: 20px;
   right: 20px;
   max-width: 1100px;
-  height: 70vh;
+  height: 75vh;
 
   .content_panel {
     width: 100%;
@@ -73,9 +73,9 @@
   .footer {
     width: 100%;
     position: absolute;
-    bottom: 10px;
-    right: 15px;
-
+    bottom: 20px;
+    right: 23px;
+    margin-bottom: -15px;
     .import {
       @include icon-button();
     }
@@ -94,7 +94,6 @@
     width: 25px;
     height: 30px;
     overflow: hidden;
-    top: -3px;
     background-color: #a9a9a959;
 
     &:hover {
