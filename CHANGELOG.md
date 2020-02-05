@@ -1,5 +1,18 @@
 # CHANGELOG
 
+### Unreleased Changes
+
+- Changed file importer box size and margins of footer
+  ([#1323](https://github.com/codevise/pageflow/pull/1323))
+- Add meta charset tag in application layout of paged entries
+  ([#1322](https://github.com/codevise/pageflow/pull/1322))
+- Re-add help entries for appearance options
+  ([#1321](https://github.com/codevise/pageflow/pull/1321))
+- Sharing, imprint, privacy in navigation
+  ([#1319](https://github.com/codevise/pageflow/pull/1319))
+- Outline editing for scrolled entries
+  ([#1318](https://github.com/codevise/pageflow/pull/1318))
+
 ### Version 15.1.0.beta6
 
 2020-01-29
