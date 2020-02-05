@@ -1,7 +1,9 @@
 import {CheckBoxInputView, TextInputView} from 'pageflow/ui';
 
-export const appearanceInputs = (tabView, entry, theming) => {
+export const appearanceInputs = (tabView, options) => {
+  var entry = options.entry;
   var theme = entry.getTheme();
+  var theming = options.theming;
 
   tabView.input('manual_start', CheckBoxInputView);
   tabView.input('emphasize_chapter_beginning', CheckBoxInputView);
