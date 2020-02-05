@@ -48,10 +48,28 @@ describe('normalizeSeed', () => {
 
     expect(result).toMatchObject({
       collections: {
+        entries: [],
         imageFiles: [],
         chapters: [],
         sections: [],
         contentElements: [],
+      }
+    });
+  });
+
+  it('ensures required entry properties are present', () => {
+    const result = normalizeSeed({
+      entry: [{}]
+    });
+
+    expect(result).toMatchObject({
+      collections: {
+        entries: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number)
+          }
+        ]
       }
     });
   });

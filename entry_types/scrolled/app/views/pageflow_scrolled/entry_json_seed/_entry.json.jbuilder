@@ -7,10 +7,38 @@ json.config do
   json.file_model_types do
     config_file_model_types_seed(json, entry_config)
   end
+
+  json.pretty_url pretty_entry_url(entry)
+  json.share_url_templates share_provider_url_templates
+
+  json.default_file_rights entry.account.default_file_rights
+
+  json.legal_info do
+    theming = entry.theming
+    json.imprint do
+      json.label raw(theming.imprint_link_label)
+      json.url theming.imprint_link_url
+    end
+    json.copyright do
+      json.label raw(theming.copyright_link_label)
+      json.url theming.copyright_link_url
+    end
+    json.privacy do
+      json.label I18n.t('pageflow.public.privacy_notice')
+      json.url entry_privacy_link_url(entry)
+    end
+  end
 end
 
 unless options[:skip_collections]
   json.collections do
+    json.entries do
+      json.array!([entry]) do |entry|
+        json.call(entry, :id, :share_providers, :share_url, :credits)
+        json.permaId entry.id # required as keyAttribute in EntryStateProvider
+      end
+    end
+
     json.chapters do
       json.array!(chapters) do |chapter|
         json.partial! 'pageflow_scrolled/chapters/chapter', chapter: chapter

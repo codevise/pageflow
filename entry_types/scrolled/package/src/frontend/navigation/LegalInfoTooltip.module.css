@@ -1,0 +1,19 @@
+.legalInfoTooltip {
+  width: 200px;
+  max-width: 200px;
+  text-align: left;
+  margin-top: 12px !important;
+  margin-bottom: 12px !important;
+}
+
+.legalInfoTooltip:after {
+  left: 90% !important;
+}
+
+.legalInfoTooltip p {
+  margin: 0 0 0.5em;
+}
+
+.legalInfoTooltip a {
+  color: #e10028;
+}

@@ -4,6 +4,11 @@
  *
  * @param {Object} [options]
  * @param {Object} [options.imageFileUrlTemplates] - Mapping of url template names to url templates.
+ * @param {String} [options.prettyUrl] - The entry's url (Default share url).
+ * @param {Object} [options.shareUrlTemplates] - Mapping of share provider names to sharing urls.
+ * @param {String} [options.defaultFileRights] - Default file rights of entry's account.
+ * @param {Object} [options.legalInfo] - imprint, copyright and privacy information of entry.
+ * @param {Object} [options.entry] - attributes of entry.
  * @param {Array} [options.imageFiles] - Array of objects with image file attributes of entry.
  * @param {Array} [options.chapters] - Array of objects with chapter attributes of entry.
  * @param {Array} [options.sections] - Array of objects with section attributes of entry.
@@ -13,11 +18,19 @@
 export function normalizeSeed({
   imageFileUrlTemplates,
   fileUrlTemplates,
+  prettyUrl,
+  shareUrlTemplates,
+  defaultFileRights,
+  legalInfo,
+  entry,
   imageFiles,
   chapters,
   sections,
   contentElements
 } = {}) {
+  const entries = entry ? [entry] : entry;
+  const normalizedEntries = normalizeCollection(entries);
+
   const normalizedSections = normalizeCollection(sections, {
     configuration: {transition: 'scroll', backdrop: {image: '#000'}}
   });
@@ -29,9 +42,14 @@ export function normalizeSeed({
           ...imageFileUrlTemplates
         },
         ...fileUrlTemplates
-      }
+      },
+      prettyUrl: prettyUrl,
+      shareUrlTemplates: normalizeShareUrlTemplates(shareUrlTemplates),
+      defaultFileRights: defaultFileRights,
+      legalInfo: normalizeLegalInfo(legalInfo)
     },
     collections: {
+      entries: normalizedEntries,
       imageFiles: normalizeCollection(imageFiles, {
         width: 1920,
         height: 1279,
@@ -63,6 +81,34 @@ function normalizeChapters(chapters = [], sections) {
   }
 
   return normalizeCollection(chapters, chapterDefaults);
+}
+
+function normalizeShareUrlTemplates(shareUrlTemplates) {
+  if(shareUrlTemplates) {
+    return shareUrlTemplates;
+  } else {
+    return {
+      email: 'mailto:?body=%{url}',
+      facebook: 'http://www.facebook.com/sharer/sharer.php?u=%{url}',
+      google: 'https://plus.google.com/share?url=%{url}',
+      linked_in: 'https://www.linkedin.com/shareArticle?mini=true&url=%{url}',
+      telegram: 'tg://msg?text=%{url}',
+      twitter: 'https://twitter.com/intent/tweet?url=%{url}',
+      whats_app: 'WhatsApp://send?text=%{url}'
+    }
+  }
+}
+
+function normalizeLegalInfo(legalInfo) {
+  if (legalInfo) {
+    return legalInfo;
+  } else {
+    return {
+      imprint: {label: '',url: ''},
+      copyright: {label: '',url: ''},
+      privacy: {label: '',url: ''},
+    }
+  }
 }
 
 function normalizeCollection(collection = [], defaults = {}) {

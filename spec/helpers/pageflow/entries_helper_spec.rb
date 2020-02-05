@@ -68,6 +68,34 @@ module Pageflow
       end
     end
 
+    describe '#entry_privacy_link_url' do
+      it 'uses configured url and locale' do
+        theming = create(:theming,
+                         privacy_link_url: 'https://example.com/privacy')
+        entry = PublishedEntry.new(create(:entry,
+                                          :published,
+                                          theming: theming,
+                                          published_revision_attributes: {
+                                            locale: 'de'
+                                          }))
+
+        result = helper.entry_privacy_link_url(entry)
+
+        expect(result).to eq('https://example.com/privacy?lang=de')
+      end
+
+      it 'returns nil if no url is configured' do
+        entry = PublishedEntry.new(create(:entry,
+                                          :published,
+                                          published_revision_attributes: {
+                                            locale: 'de'
+                                          }))
+        result = helper.entry_privacy_link_url(entry)
+
+        expect(result).to be_nil
+      end
+    end
+
     describe '#entry_file_rights' do
       it 'returns comma separated list of file rights' do
         revision = create(:revision)

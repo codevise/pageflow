@@ -25,12 +25,16 @@ module Pageflow
               &block)
     end
 
+    def share_provider_url_templates
+      PROVIDER_URL_TEMPLATES
+    end
+
     private
 
     def social_share_link_url(provider, url)
       return nil if url.blank?
       encoded_url = ERB::Util.url_encode(url)
-      PROVIDER_URL_TEMPLATES[provider] % {url: encoded_url}
+      format(PROVIDER_URL_TEMPLATES[provider], url: encoded_url)
     end
   end
 end

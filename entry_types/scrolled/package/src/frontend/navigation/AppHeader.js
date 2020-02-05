@@ -2,25 +2,23 @@ import React, {useState, useRef} from 'react';
 import classNames from 'classnames';
 import useScrollPosition from '../useScrollPosition';
 import useNativeScrollPrevention from '../useNativeScrollPrevention';
-
-import ChapterLink from "./ChapterLink";
-
-import hamburgerIcons from './hamburgerIcons.module.css'
-import styles from './AppHeader.module.css';
-
-import WDRlogo from '../assets/images/navigation/wdr_logo_header.svg';
-import ShareIcon from '../assets/images/navigation/icons/share_icon.svg';
-import InfoIcon from '../assets/images/navigation/icons/information_icon.svg';
-
 import {useEntryStructure} from '../../entryState';
 
-export default function AppHeader(props) {
+import {HamburgerIcon} from './HamburgerIcon'
+import {ChapterLink} from "./ChapterLink";
+import {LegalInfoMenu} from "./LegalInfoMenu";
+import {SharingMenu} from "./SharingMenu";
+
+import styles from './AppHeader.module.css';
+import WDRlogo from '../assets/images/navigation/wdr_logo_header.svg';
+
+export function AppHeader(props) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
   const [readingProgress, setReadingProgress] = useState(0);
   const [activeChapterLink, setActiveChapterLink] = useState('chapterLink1');
   const entryStructure = useEntryStructure();
-  
+
   const ref = useRef();
   useNativeScrollPrevention(ref);
 
@@ -66,7 +64,7 @@ export default function AppHeader(props) {
     setMobileNavHidden(true);
   };
 
-  function renderMenuLinks(chapters) {
+  function renderChapterLinks(chapters) {
     return chapters.map((chapter, index) => {
       const chapterIndex = index + 1;
       const chapterLinkId = `chapterLink${chapterIndex}`
@@ -83,34 +81,25 @@ export default function AppHeader(props) {
   };
 
   return (
-    <header className={classNames(styles.navigationBar, {[styles.navigationBarExpanded]: navExpanded})}>
+    <header
+      className={classNames(styles.navigationBar, {[styles.navigationBarExpanded]: navExpanded})}>
       <div className={styles.navigationBarContentWrapper}>
-        <button className={classNames(styles.menuIcon, styles.burgerMenuIcon,
-                                      hamburgerIcons.hamburger, hamburgerIcons['hamburger--collapse'],
-                                      {[hamburgerIcons['is-active']]: !mobileNavHidden})}
-                type="button" onClick={handleBurgerMenuClick}>
-          <span className={hamburgerIcons['hamburger-box']}>
-            <span className={hamburgerIcons['hamburger-inner']}></span>
-          </span>
-        </button>
+        <HamburgerIcon onClick={handleBurgerMenuClick}
+                       mobileNavHidden={mobileNavHidden}/>
 
-        <WDRlogo className={classNames(styles.wdrLogo)}/>
+        <WDRlogo className={classNames(styles.menuIcon, styles.wdrLogo)}/>
 
         <nav className={classNames(styles.navigationChapters, {[styles.navigationChaptersHidden]: mobileNavHidden})}
              role="navigation"
              ref={ref}>
           <ul className={styles.chapterList}>
-            {renderMenuLinks(chapters)}
+            {renderChapterLinks(chapters)}
           </ul>
         </nav>
 
-        <a className={classNames(styles.menuIcon, styles.infoIcon)}>
-          <InfoIcon/>
-        </a>
+        <LegalInfoMenu />
 
-        <a className={classNames(styles.menuIcon, styles.shareIcon)}>
-          <ShareIcon/>
-        </a>
+        <SharingMenu />
       </div>
 
       <div className={styles.progressBar} onMouseEnter={handleProgressBarMouseEnter}>

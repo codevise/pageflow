@@ -9,6 +9,11 @@ module Pageflow
       pageflow.short_entry_url(entry.to_model, params)
     end
 
+    def entry_privacy_link_url(entry)
+      return unless entry.theming.privacy_link_url.present?
+      "#{entry.theming.privacy_link_url}?lang=#{entry.locale}"
+    end
+
     def entry_file_rights(entry)
       rights = Pageflow.config.file_types.map do |file_type|
         entry.find_files(file_type.model).map do |file|
@@ -46,7 +51,7 @@ module Pageflow
 
       if entry.theming.privacy_link_url.present?
         links << link_to(I18n.t('pageflow.public.privacy_notice'),
-                         "#{entry.theming.privacy_link_url}?lang=#{entry.locale}",
+                         entry_privacy_link_url(entry),
                          target: '_blank',
                          tabindex: 2,
                          class: 'privacy')

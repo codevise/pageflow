@@ -12,6 +12,29 @@ module PageflowScrolled
         end
       end
 
+      context 'entries' do
+        it 'renders single-element entry array with id and configuration' do
+          theming = create(:theming, cname: '')
+          revision = create(:revision, share_providers: {facebook: true}, credits: 'Test Credits')
+          entry = Pageflow::DraftEntry.new(create(:entry, theming: theming),
+                                           revision)
+
+          result = render(helper, entry)
+
+          expect(result)
+            .to include_json(collections: {
+                               entries: [
+                                 {
+                                   id: entry.id,
+                                   permaId: entry.id,
+                                   shareProviders: {facebook: true},
+                                   credits: 'Test Credits'
+                                 }
+                               ]
+                             })
+        end
+      end
+
       context 'chapters' do
         it 'renders chapters with id, perma_id, storyline_id, position and configuration' do
           entry = create(:published_entry)
@@ -253,6 +276,47 @@ module PageflowScrolled
                                testFiles: 'Pageflow::VideoFile'
                              }
                            })
+      end
+
+      it 'renders entry pretty url and provider share url templates' do
+        theming = create(:theming, cname: '')
+        entry = Pageflow::PublishedEntry.new(create(:entry, title: 'test', theming: theming),
+                                             create(:revision))
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         prettyUrl: 'http://test.host/test',
+                                         shareUrlTemplates: {
+                                           email: 'mailto:?body=%{url}',
+                                           twitter: 'https://twitter.com/intent/tweet?url=%{url}',
+                                           whats_app: 'WhatsApp://send?text=%{url}'
+                                         }
+                                       })
+      end
+
+      it 'renders default file rights from account' do
+        account = create(:account, default_file_rights: '@WDR')
+        entry = Pageflow::PublishedEntry.new(create(:entry, title: 'test', account: account),
+                                             create(:revision))
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {defaultFileRights: '@WDR'})
+      end
+
+      it 'renders legal info' do
+        entry = create(:published_entry)
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         legalInfo: {
+                                           imprint: {},
+                                           copyright: {},
+                                           privacy: {}
+                                         }
+                                       })
       end
     end
 

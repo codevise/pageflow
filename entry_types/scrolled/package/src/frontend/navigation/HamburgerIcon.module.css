@@ -1,0 +1,16 @@
+.burgerMenuIconContainer {
+  display: none;
+}
+
+.burgerMenuIcon {
+  top: 12px;
+  left: 12px;
+  outline: none;
+}
+
+/* mobile view */
+@media (max-width: 780px) {
+  .burgerMenuIconContainer {
+    display: block;
+  }
+}

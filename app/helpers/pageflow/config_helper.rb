@@ -16,7 +16,7 @@ module Pageflow
       end
     end
 
-    # Render seed data that can be used map model names in
+    # Render seed data that can be used to map model names in
     # parent_file_model_type attributes to file collection names.
     #
     # @param [JBuilder] json
