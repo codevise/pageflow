@@ -12,6 +12,8 @@ export * from './Image';
 export * from './Text';
 export * from './Video';
 
+export * from './useOnScreen';
+
 export * from './SectionThumbnail';
 
 window.pageflowScrolledRender = function(seed) {

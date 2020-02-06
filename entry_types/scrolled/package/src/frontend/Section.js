@@ -1,7 +1,7 @@
 import React, {useRef, useCallback} from 'react';
 import classNames from 'classnames';
 
-import useOnScreen from './useOnScreen';
+import {useOnScreen} from './useOnScreen';
 import {Backdrop} from './Backdrop';
 import Foreground from './Foreground';
 import {Layout} from './layouts';
