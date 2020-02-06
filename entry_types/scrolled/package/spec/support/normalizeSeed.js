@@ -31,9 +31,13 @@ export function normalizeSeed({
   const entries = entry ? [entry] : entry;
   const normalizedEntries = normalizeCollection(entries);
 
-  const normalizedSections = normalizeCollection(sections, {
-    configuration: {transition: 'scroll', backdrop: {image: '#000'}}
+  const normalizedContentElements = normalizeCollection(contentElements, {
+    typeName: 'textBlock',
+    configuration: {}
   });
+
+  const normalizedSections = normalizeSections(sections, normalizedContentElements);
+  const normalizedChapters = normalizeChapters(chapters, normalizedSections);
 
   return {
     config: {
@@ -55,13 +59,30 @@ export function normalizeSeed({
         height: 1279,
         configuration: {},
       }),
-      chapters: normalizeChapters(chapters, normalizedSections),
+      chapters: normalizedChapters,
       sections: normalizedSections,
-      contentElements: normalizeCollection(contentElements, {
-        configuration: {}
-      }),
+      contentElements: normalizedContentElements
     }
   }
+}
+
+function normalizeSections(sections = [], contentElements) {
+  const sectionDefaults = {
+    configuration: {transition: 'scroll', backdrop: {image: '#000'}}
+  };
+
+  if (contentElements.length && !sections.length) {
+    contentElements.forEach(contentElement => contentElement.sectionId = 10);
+    return [
+      {
+        id: 10,
+        permaId: 1,
+        ...sectionDefaults
+      }
+    ];
+  }
+
+ return normalizeCollection(sections, sectionDefaults);
 }
 
 function normalizeChapters(chapters = [], sections) {

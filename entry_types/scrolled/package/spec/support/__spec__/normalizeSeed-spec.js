@@ -131,6 +131,33 @@ describe('normalizeSeed', () => {
     expect(result.collections.sections[0].chapterId).toBe(result.collections.chapters[0].id);
   });
 
+  it('ensures a section and a chapter is present if contentElements are present', () => {
+    const result = normalizeSeed({
+      contentElements: [{}]
+    });
+
+    expect(result).toMatchObject({
+      collections: {
+        chapters: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            configuration: {}
+          }
+        ],
+        sections: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            configuration: {}
+          }
+        ]
+      }
+    });
+    expect(result.collections.sections[0].chapterId).toBe(result.collections.chapters[0].id);
+    expect(result.collections.contentElements[0].sectionId).toBe(result.collections.sections[0].id);
+  });
+
   it('ensures required section properties are present', () => {
     const result = normalizeSeed({
       sections: [{}]
@@ -160,6 +187,7 @@ describe('normalizeSeed', () => {
           {
             id: expect.any(Number),
             permaId: expect.any(Number),
+            typeName: 'textBlock',
             configuration: {}
           }
         ]
