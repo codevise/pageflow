@@ -16,6 +16,8 @@
     "pageflow": "15.1.0"
   },
   "devDependencies": {
+    "@percy/storybook": "^3.2.0",
+    "@storybook/react": "^5.3.9",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/react-hooks": "^3.2.1",
@@ -23,6 +25,7 @@
     "@typescript-eslint/parser": "2.x",
     "babel-eslint": "10.x",
     "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
     "eslint": "6.x",
     "eslint-config-react-app": "^5.1.0",
     "eslint-import-resolver-jest": "^3.0.0",
@@ -39,6 +42,9 @@
   },
   "scripts": {
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start-storybook": "start-storybook",
+    "build-storybook": "build-storybook -o .storybook/out",
+    "snapshot": "build-storybook --quiet -o .storybook/out && percy-storybook --widths=320,1280 --build_dir=.storybook/out"
   }
 }
