@@ -9,7 +9,6 @@ import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
 
 import videos from './videos';
-import BeforeAfter from './BeforeAfter';
 
 import styles from './Backdrop.module.css';
 
@@ -54,13 +53,6 @@ function renderContent(props, containerDimension, setContainerRef) {
                    image={video}
                    containerWidth={containerDimension.width}
                    containerHeight={containerDimension.height} />
-      </Fullscreen>
-    );
-  }
-  else if (props.image.toString().startsWith('beforeAfter')) {
-    return (
-      <Fullscreen ref={setContainerRef}>
-        <BeforeAfter state={props.state} leftImageLabel={props.leftImageLabel} rightImageLabel={props.rightImageLabel} startPos={props.startPos} slideMode={props.slideMode} />
       </Fullscreen>
     );
   }
