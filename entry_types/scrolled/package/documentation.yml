@@ -1,4 +1,9 @@
 toc:
+  - name: Frontend API
+    description: |
+      Main entry point of frontend API to register new content element types.
+    children:
+      - contentElementTypes
   - name: Components
     description: |
       React components for building content elements.

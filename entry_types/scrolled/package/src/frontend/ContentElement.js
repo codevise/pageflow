@@ -1,12 +1,11 @@
 import React from 'react';
 
-import templates from './foregroundItemTemplates';
+import {api} from './api';
 
 export function ContentElement(props) {
-  const template = templates[props.type]
-  const Component = template.component;
+  const Component = api.contentElementTypes.getComponent(props.type);
 
   return (
-    <Component {...template.props} {...props.itemProps} />
+    <Component configuration={props.itemProps} />
   );
 }

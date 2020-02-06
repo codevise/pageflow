@@ -7,6 +7,7 @@ import Entry from './Entry';
 import './global.module.css';
 import {EntryStateProvider} from '../entryState';
 
+export {api as frontend} from './api';
 
 export * from './Image';
 export * from './Text';

@@ -1,8 +1,10 @@
 import React from 'react';
 
 import Entry from 'frontend/Entry';
+import {frontend} from 'frontend';
 
 import {act} from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect'
 import {renderInEntry, fakeParentWindow, tick} from 'support';
 import {simulateScrollingIntoView} from 'support/fakeIntersectionObserver';
 
@@ -51,5 +53,28 @@ describe('Entry', () => {
     });
 
     expect(useScrollTarget.lastTarget).toBe(container.querySelector('#section-11'));
+  });
+
+  it('renders registered components of content element type', () => {
+    frontend.contentElementTypes.register('text', {
+      component: function ({configuration}) {
+        return (
+          <div data-testid="test-component">{configuration.text}</div>
+        )
+      }
+    });
+
+    const {getByTestId} =  renderInEntry(<Entry />, {
+      seed: {
+        contentElements: [{
+          typeName: 'text',
+          configuration: {
+            text: 'Some text'
+          }
+        }]
+      }
+    });
+
+    expect(getByTestId('test-component')).toHaveTextContent('Some text');
   });
 });

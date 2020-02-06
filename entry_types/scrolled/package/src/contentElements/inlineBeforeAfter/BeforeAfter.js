@@ -1,13 +1,13 @@
 import React, {useRef, useState, useEffect} from 'react';
-import ReactCompareImage from '../vendor/react-compare-image/ReactCompareImage';
+import ReactCompareImage from '../../vendor/react-compare-image/ReactCompareImage';
 import styles from './BeforeAfter.module.css';
 
-export default ({state,
+export function BeforeAfter({state,
                  leftImageLabel,
                  rightImageLabel,
                  startPos = 0,
                  slideMode = 'both',
-                }) => {
+                }) {
   var [scrollPos, setScrollPos] = useState(
     {
       pos: window.pageYOffset || document.documentElement.scrollTop,
