@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import Fullscreen from './Fullscreen';
 import {Image} from './Image';
-import Video from './Video';
+import {Video} from './Video';
 import FillColor from './FillColor';
 import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
