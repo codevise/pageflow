@@ -13,6 +13,7 @@ export * from './Text';
 export * from './Video';
 
 export * from './useOnScreen';
+export * from './useMediaSettings';
 
 export * from './SectionThumbnail';
 

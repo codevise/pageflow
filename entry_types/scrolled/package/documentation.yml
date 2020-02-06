@@ -18,6 +18,7 @@ toc:
       - useCredits
       - useShareProviders
       - useShareUrl
+      - useMediaSettings
   - name: Spec Support
     description: |
       Helper functions to use in specs.
