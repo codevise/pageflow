@@ -4,6 +4,7 @@ toc:
       React components for building content elements.
     children:
       - Image
+      - Text
   - name: Hooks
     description: |
       React hooks to obtain entry data.

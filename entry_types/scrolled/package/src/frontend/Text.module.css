@@ -1,0 +1,35 @@
+@value text-s: 20px;
+@value text-base: 22px;
+@value text-l: 40px;
+@value text-xl: 66px;
+@value text-2xl: 110px;
+
+.h2 {
+  font-size: text-xl;
+  font-weight: 700;
+}
+
+.h1 {
+  font-size: text-2xl;
+  line-height: 1;
+}
+
+.body {
+  font-size: text-base;
+  line-height: 1.4;
+}
+
+.caption {
+  font-size: text-s;
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .h2 {
+    font-size: text-l;
+  }
+
+  .h1 {
+    font-size: text-xl;
+  }
+}
