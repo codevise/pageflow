@@ -7,15 +7,24 @@ import Entry from './Entry';
 import './global.module.css';
 import {EntryStateProvider} from '../entryState';
 
-export default function Root() {
+
+export * from './Image';
+export * from './Text';
+export * from './Video';
+
+export * from './SectionThumbnail';
+
+window.pageflowScrolledRender = function(seed) {
+  ReactDOM.render(<Root seed={seed} />, document.getElementById('root'));
+}
+
+function Root({seed}) {
   return (
     <>
-      <EntryStateProvider seed={window.pageflowScrolledSeed}>
+      <EntryStateProvider seed={seed}>
         <AppHeader />
         <Entry />
       </EntryStateProvider>
     </>
   );
 }
-
-ReactDOM.render(<Root />, document.getElementById('root'));

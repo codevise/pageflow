@@ -15,8 +15,8 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
-    <%= scrolled_entry_json_seed_script_tag(@entry, @seed_options || {}) %>
-
     <%= javascript_pack_tag 'pageflow-scrolled-frontend' %>
+
+    <%= scrolled_entry_json_seed_script_tag(@entry, @seed_options || {}) %>
   </body>
 </html>

@@ -328,7 +328,7 @@ module PageflowScrolled
 
         result = helper.scrolled_entry_json_seed_script_tag(entry)
 
-        expect(result).to match(%r{<script>.*pageflowScrolledSeed = \{.*\}.*</script>}m)
+        expect(result).to match(%r{<script>.*pageflowScrolledRender\(\{.*\}\).*</script>}m)
       end
 
       it 'escapes illegal characters' do

@@ -6,7 +6,7 @@ import {editor, modelLifecycleTrackingView} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
 
 import {watchCollections} from '../../entryState';
-import {SectionThumbnail} from '../../frontend/SectionThumbnail'
+import {SectionThumbnail} from 'pageflow-scrolled/frontend'
 
 import styles from './SectionItemView.module.css';
 
