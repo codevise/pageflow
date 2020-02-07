@@ -1,3 +1,1 @@
-module.exports = {
-  ResizeSensor: require('./ResizeSensor'),
-};
+export * from './ResizeSensor'
