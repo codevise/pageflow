@@ -1,0 +1,8 @@
+require 'bundler/setup'
+
+require 'pageflow/support'
+APP_RAKEFILE = File.expand_path("../#{Pageflow::Dummy::App.new.directory}/Rakefile", __FILE__)
+
+load 'rails/tasks/engine.rake' if File.exist?(APP_RAKEFILE)
+
+load File.expand_path('lib/tasks/pageflow_scrolled_tasks.rake', File.dirname(__FILE__))
