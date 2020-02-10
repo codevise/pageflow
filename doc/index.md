@@ -35,3 +35,9 @@ for high level guides on common development workflows.
 * [Directory Layout Overview](./contributing/directory_layout_overview.md)
 * [Rails Engine Development](./contributing/rails_engine_development.md)
 * [Node Package Development](./contributing/node_package_development.md)
+
+### Troubleshooting
+
+A catch-all for issues that come up from time to time.
+
+* [Troubleshooting](./troubleshooting.md)
