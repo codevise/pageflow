@@ -34,7 +34,7 @@ const externalCoreJs = function(id) {
   return id.match(/^core-js/);
 };
 const externalScrolledDependenciesAndCoreJs = function(id) {
-  return [
+  return id.match(/^pageflow-scrolled\//) || [
     'react', 'react-dom', 'react-tooltip'
   ].indexOf(id) >= 0 || externalCoreJs(id);
 };
@@ -79,6 +79,15 @@ const pageflowPackagePlugins = [
   }),
   ...plugins
 ];
+
+const ignoreJSXWarning = {
+  onwarn: function(warning, warn) {
+    // Ignore noisy warning
+    // https://github.com/babel/babel/issues/9149
+    if (warning.code === 'THIS_IS_UNDEFINED') { return; }
+    warn(warning);
+  }
+};
 
 export default [
   // pageflow
@@ -179,12 +188,16 @@ export default [
     },
     external: externalScrolledDependenciesAndCoreJs,
     plugins,
-
-    onwarn: function(warning, warn) {
-      // Ignore noisy warning
-      // https://github.com/babel/babel/issues/9149
-      if (warning.code === 'THIS_IS_UNDEFINED') { return; }
-      warn(warning);
-    }
+    ...ignoreJSXWarning
+  },
+  {
+    input: pageflowScrolledPackageRoot + '/src/contentElements/frontend.js',
+    output: {
+      file: pageflowScrolledPackageRoot + '/contentElements-frontend.js',
+      format: 'esm',
+    },
+    external: externalScrolledDependenciesAndCoreJs,
+    plugins,
+    ...ignoreJSXWarning
   }
 ];

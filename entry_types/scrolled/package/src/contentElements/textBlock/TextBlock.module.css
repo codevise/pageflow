@@ -1,9 +1,4 @@
-@value text-base from './typography.module.css';
-
-.TextBlock {
-  font-size: text-base;
-  line-height: 1.4;
-
+.text {
   padding: 1em 0;
   margin-top: 0;
   margin-bottom: 0;
@@ -14,12 +9,12 @@
   opacity: 0.7;
 }
 
-.TextBlock a {
+.text a {
   color: #fff;
   word-wrap: break-word;
 }
 
-.TextBlock ol,
-.TextBlock ul {
+.text ol,
+.text ul {
   padding-left: 20px;
 }

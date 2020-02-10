@@ -1,4 +1,4 @@
-@value font-sans from './typography.module.css';
+@value font-sans: 'Source Sans Pro', sans-serif;
 
 .Entry {
   font-family: font-sans;

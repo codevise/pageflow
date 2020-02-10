@@ -9,7 +9,10 @@ module.exports = {
   testMatch: ["<rootDir>/spec/**/*-spec.js"],
   modulePaths: ['<rootDir>/src', '<rootDir>/spec'],
 
-  moduleNameMapper,
+  moduleNameMapper: {
+    "^pageflow-scrolled/([^/]*)$": "<rootDir>/src/$1",
+    ...moduleNameMapper
+  },
   transform: {
     ...transform,
     '^.+\\.svg$': 'jest-svg-transformer'

@@ -3,6 +3,7 @@ import React from 'react';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {SectionThumbnail} from 'frontend/SectionThumbnail';
 import {watchCollections} from 'entryState';
+import 'contentElements/heading/frontend';
 
 import {normalizeSeed} from 'support';
 import {render} from '@testing-library/react';

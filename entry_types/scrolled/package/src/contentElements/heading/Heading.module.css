@@ -1,0 +1,11 @@
+.root {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  padding-top: 0.5em;
+}
+
+@media (orientation: landscape) {
+  .first {
+    padding-top: 25%;
+  }
+}

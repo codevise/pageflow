@@ -15,7 +15,7 @@ module PageflowScrolled
       end
 
       content_tag(:script, <<-JS.html_safe)
-        var pageflowScrolledSeed = #{sanitize_json(seed_json)};
+        pageflowScrolledRender(#{sanitize_json(seed_json)});
       JS
     end
 

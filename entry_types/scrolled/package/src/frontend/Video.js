@@ -6,7 +6,7 @@ import MutedContext from './MutedContext';
 
 import styles from './Video.module.css';
 
-export default function Video(props) {
+export function Video(props) {
   const awsBucket = '//s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/presentation-videos/';
 
   const videoBoatSunset  = awsBucket+'floodplain-clean.mp4';
@@ -48,11 +48,17 @@ export default function Video(props) {
   const state = props.state;
 
   const mutedSettings = useContext(MutedContext);
-  const {mediaOff} = mutedSettings;
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video && !mediaOff) {
+
+    if (!video) {
+      return;
+    }
+
+    video.muted = mutedSettings.muted
+
+    if (!mutedSettings.mediaOff) {
       if (state === 'active') {
         if (video.readyState > 0) {
           video.play();
@@ -70,20 +76,20 @@ export default function Video(props) {
     function play() {
       video.play();
     }
-  }, [state, videoRef, mediaOff]);
+  }, [state, mutedSettings.mediaOff, mutedSettings.muted]);
 
   return (
     <div className={styles.root}>
       <ScrollToSectionContext.Consumer>
         {scrollToSection =>
-          <video src={videoUrl}
+          <video role="img"
+                 src={videoUrl}
                  ref={videoRef}
                  className={classNames(styles.video, {[styles.backdrop]: !props.interactive})}
                  controls={props.controls}
                  playsInline
                  onEnded={() => props.nextSectionOnEnd && scrollToSection('next')}
                  loop={!props.interactive}
-                 muted={mutedSettings.muted}
                  poster={posterUrl} />
         }
       </ScrollToSectionContext.Consumer>
