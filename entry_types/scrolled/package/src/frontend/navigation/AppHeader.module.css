@@ -34,6 +34,21 @@
   position: absolute;
 }
 
+.contextIcons {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 80px;
+  height: 50px;
+  padding: 0px 12px;
+}
+
+.contextIcon {
+  float: right;
+  width: 40px;
+  height: 50px;
+}
+
 .wdrLogo {
   top: 12px;
   left: 15px;
@@ -114,8 +129,8 @@
     display: table;
     content: " ";
     border-top: 1px solid rgb(100, 100, 100);
-    width: 30%;
-    margin: 0 35%;
+    width: 14%;
+    margin: 0 43%;
     transition: width .15s, margin .15s;
   }
 
@@ -126,9 +141,8 @@
     margin: 0 10%;
   }
 
-  .chapterLink,
-  .chapterLink:hover {
-    padding: 10px 0px;
+  .chapterListItem p {
+    margin-top: 0;
   }
 
   .progressBar {

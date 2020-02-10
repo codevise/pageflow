@@ -12,6 +12,8 @@ export function ChapterLink(props) {
          data-tip data-for={props.chapterLinkId} >
         {props.title}
       </a>
+      <p className={styles.summary}
+         dangerouslySetInnerHTML={{__html: props.summary}} />
       <ChapterLinkTooltip chapterIndex={props.chapterIndex}
                           chapterLinkId={props.chapterLinkId}
                           {...props} />

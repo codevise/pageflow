@@ -9,7 +9,7 @@ import ReactTooltip from "react-tooltip";
 export function SharingMenu() {
   return (
     <div>
-      <a className={classNames(headerStyles.menuIcon, styles.shareIcon)}
+      <a className={classNames(headerStyles.contextIcon, styles.shareIcon)}
          data-tip data-for={'sharingTooltip'}
          onMouseEnter={() => { ReactTooltip.hide()}}>
         <ShareIcon/>

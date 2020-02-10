@@ -97,9 +97,10 @@ export function AppHeader(props) {
           </ul>
         </nav>
 
-        <LegalInfoMenu />
-
-        <SharingMenu />
+        <div className={classNames(styles.contextIcons)}>
+          <SharingMenu />
+          <LegalInfoMenu />
+        </div>
       </div>
 
       <div className={styles.progressBar} onMouseEnter={handleProgressBarMouseEnter}>

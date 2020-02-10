@@ -9,7 +9,7 @@ import ReactTooltip from "react-tooltip";
 export function LegalInfoMenu(props) {
   return (
     <div>
-      <a className={classNames(headerStyles.menuIcon, styles.infoIcon)}
+      <a className={classNames(headerStyles.contextIcon, styles.infoIcon)}
          data-tip data-for={'legalInfoTooltip'}
          onMouseEnter={() => { ReactTooltip.hide()}}>
         <InfoIcon/>
