@@ -31,3 +31,9 @@ toc:
       - normalizeSeed
       - renderInEntry
       - renderHookInEntry
+  - name: Storybook Support
+    description: |
+      Helper functions to use in content element stories.
+    children:
+      - filePermaId
+      - storiesOfContentElement

@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  addons: ['@storybook/addon-viewport/register'],
   stories: ['../src/**/*stories.js'],
 
   webpackFinal: async (config, {configType}) => {

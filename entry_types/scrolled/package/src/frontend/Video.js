@@ -58,7 +58,7 @@ export function Video(props) {
 
     video.muted = mutedSettings.muted
 
-    if (!mutedSettings.mediaOff) {
+    if (!mutedSettings.mediaOff && props.autoplay !== false) {
       if (state === 'active') {
         if (video.readyState > 0) {
           video.play();
@@ -76,7 +76,7 @@ export function Video(props) {
     function play() {
       video.play();
     }
-  }, [state, mutedSettings.mediaOff, mutedSettings.muted]);
+  }, [state, mutedSettings.mediaOff, mutedSettings.muted, props.autoplay]);
 
   return (
     <div className={styles.root}>

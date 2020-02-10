@@ -17,14 +17,15 @@ element. Pageflow Scrolled provides a JavaScript API to register new
 content element types.
 
 The `pageflow-scrolled` contains a number of built in contenent
-elements in directories blow the `src/contentElements` directory. A
+elements in directories below the `src/contentElements` directory. A
 typical directory looks like this:
 
 ```
 inlineImage/
-  frontend.js
   editor.js
+  frontend.js
   InlineImage.js
+  stories.js
 ```
 
 We now look at every part one by one.
@@ -62,6 +63,61 @@ an object containing urls and meta data information of the file. See
 the
 [API reference of `pageflow-scrolled`](https://codevise.github.io/pageflow-docs/scrolled/js/master/index.html)
 for a complete list of available components and hooks.
+
+## Using the Storybook
+
+Pageflow Scrolled uses [Storybook](https://storybook.js.org/) to ease
+content element development. The helper function
+`storiesOfContentElement` generates a default set of stories which
+render the content element in different settings. See the
+[API reference of `pageflow-scrolled`](https://codevise.github.io/pageflow-docs/scrolled/js/master/index.html#storybook-support)
+for more details.
+
+```javascript
+// inlineImage/stories.js
+
+import './frontend';
+import {storiesOfContentElement, filePermaId} from 'pageflow-scrolled/spec/support/stories';
+
+storiesOfContentElement(module, {
+  typeName: 'inlineImage',
+  baseConfiguration: {
+    id: filePermaId('imageFiles', 'turtle')
+  }
+  variants: [
+    {
+      name: 'With Caption',
+      configuration: {caption: 'Some text here'}
+    }
+  ]
+});
+```
+
+The storybook depends on a static JSON file that contains seed for
+example files (e.g. images) that would normally be served by the
+Pageflow server. The easiest to generate the seed file, is to use the
+development setup of a working host application. Run the following
+command in the root directory of you host application:
+
+```bash
+$ bundle exec rake pageflow_scrolled:storybook:seed:setup[./seed.json]
+```
+
+Then move the generated `seed.json` file into the
+`entry_types/scrolled/package/.storybook/` directory of your
+development checkout of the `pageflow` project.
+
+From now on, you can run the following command from the
+`pageflow-scrolled` root directory:
+
+```bash
+$ cd entry_types/scrolled/package
+$ yarn start-storybook
+```
+
+When opening pull requests against `codevise/pageflow` the third party
+service [Percy](https://percy.io/) will be used to make snapshots of
+the stories and generate visual diffs.
 
 ## Editor JavaScript
 

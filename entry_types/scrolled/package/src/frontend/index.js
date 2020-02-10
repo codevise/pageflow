@@ -17,6 +17,8 @@ export * from './useOnScreen';
 export * from './useMediaSettings';
 
 export * from './SectionThumbnail';
+export {default as Entry} from './Entry';
+export {EntryStateProvider} from '../entryState/EntryStateProvider'
 
 window.pageflowScrolledRender = function(seed) {
   ReactDOM.render(<Root seed={seed} />, document.getElementById('root'));
