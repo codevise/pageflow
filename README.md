@@ -168,8 +168,7 @@ is only available for admins.
 
 ## Troubleshooting
 
-If you run into problems during the installation of Pageflow, please refer to the [Troubleshooting](https://github.com/codevise/pageflow/wiki/Troubleshooting) wiki
-page. If that doesn't help, consider [filing an issue](https://github.com/codevise/pageflow/issues?state=open).
+If you run into problems during the installation of Pageflow, please refer to the [Troubleshooting](doc/troubleshooting.md) docs. If that doesn't help, consider [filing an issue](https://github.com/codevise/pageflow/issues?state=open).
 
 ## Security Policy
 
