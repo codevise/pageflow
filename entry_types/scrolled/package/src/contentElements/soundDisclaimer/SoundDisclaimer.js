@@ -3,6 +3,7 @@ import {useMediaSettings} from 'pageflow-scrolled/frontend';
 import classNames from 'classnames';
 
 import styles from './SoundDisclaimer.module.css';
+import I18n from 'i18n-js';
 
 export function SoundDisclaimer() {
   const mediaSettings = useMediaSettings();
@@ -10,10 +11,7 @@ export function SoundDisclaimer() {
   return (
     <div className={classNames(styles.soundDisclaimer)}
          onClick={() => mediaSettings.setMuted(false)}>
-      <p>
-        Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/>
-        Klicken Sie einmal in dieses Feld, um den Ton für die gesamte Geschichte zu aktivieren.
-      </p>
+      <p dangerouslySetInnerHTML={{__html: I18n.t('pageflow_scrolled.public.sound_disclaimer.help_text')}} />
     </div>
   );
 }

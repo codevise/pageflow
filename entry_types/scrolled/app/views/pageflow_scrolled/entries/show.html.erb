@@ -16,7 +16,7 @@
     <div id="root"></div>
 
     <%= javascript_pack_tag 'pageflow-scrolled-frontend' %>
-
+    <script> I18n.locale = "<%= @entry.locale %>"; </script>
     <%= scrolled_entry_json_seed_script_tag(@entry, @seed_options || {}) %>
   </body>
 </html>

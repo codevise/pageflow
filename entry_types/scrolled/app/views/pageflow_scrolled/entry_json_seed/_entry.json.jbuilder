@@ -30,6 +30,8 @@ json.config do
   end
 end
 
+json.translations i18n_translations
+
 unless options[:skip_collections]
   json.collections do
     json.entries do

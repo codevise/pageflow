@@ -5,6 +5,7 @@ module PageflowScrolled
 
     def show
       @entry = get_published_entry_from_env
+      I18n.locale = @entry.locale
     end
   end
 end

@@ -8,6 +8,7 @@ module PageflowScrolled
     include Pageflow::FilesHelper
     include Pageflow::EntriesHelper
     include Pageflow::SocialShareLinksHelper
+    include Pageflow::PublicI18nHelper
 
     def scrolled_entry_json_seed_script_tag(scrolled_entry, options = {})
       seed_json = render_json do |json|
@@ -29,7 +30,8 @@ module PageflowScrolled
                     entry_config: Pageflow.config_for(scrolled_entry),
                     sections: main_storyline.sections,
                     content_elements: main_storyline.content_elements,
-                    options: options)
+                    options: options,
+                    i18n_translations: public_scrolled_i18n_translations(scrolled_entry))
     end
   end
 end

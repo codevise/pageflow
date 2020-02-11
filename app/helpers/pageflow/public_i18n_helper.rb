@@ -6,19 +6,22 @@ module Pageflow
              translations: public_i18n_translations(entry))
     end
 
-    def public_i18n_translations(entry)
+    def public_i18n_translations(entry, parent_key = 'pageflow')
       merge_ignoring_nil = lambda do |_, fallback, value|
         value.presence || fallback
       end
-
-      {
-        pageflow: {
-          public: I18n.t('pageflow.public', locale: I18n.default_locale)
-                      .dup
-                      .deep_merge(I18n.t('pageflow.public', locale: entry.locale),
-                                  &merge_ignoring_nil)
-        }
+      translations = Hash.new
+      translations[parent_key] = {
+        public: I18n.t("#{parent_key}.public", locale: I18n.default_locale)
+                    .dup
+                    .deep_merge(I18n.t("#{parent_key}.public", locale: entry.locale),
+                                &merge_ignoring_nil)
       }
+      translations
+    end
+
+    def public_scrolled_i18n_translations(entry)
+      public_i18n_translations entry, 'pageflow_scrolled'
     end
   end
 end
