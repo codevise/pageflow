@@ -28,6 +28,16 @@ export const Entry = Backbone.Model.extend({
     this.metadata = new EntryMetadata(this.get('metadata') || {});
     this.metadata.parent = this;
 
+    // In 15.1 `entry.configuration` was turned into a new `Metadata`
+    // model. Some of the entry type specific data (like
+    // `home_button_enabled`) was extraced into
+    // `entry.metadata.configuration`. Attributes like `title` or `locale`
+    // which used to live in `entry.configuration` now live in
+    // entry.metadata. Since some plugins (e.g. `pageflow-vr`) depend on
+    // reading the locale from `entry.configuration`, this `configuration`
+    // keeps backwards compatibility.
+    this.configuration = this.metadata;
+
     this.themes = options.themes || state.themes;
     this.files = options.files || state.files;
     this.fileTypes = options.fileTypes || editor.fileTypes;
