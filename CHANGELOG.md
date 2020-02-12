@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 15.1.1
+
+2020-02-12
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.1.0...v15.1.1)
+
+- Re-add entry.configuration in editor for backwards compatibility
+  ([#1332](https://github.com/codevise/pageflow/pull/1332))
+
 ### Version 15.1.0
 
 2020-02-05
