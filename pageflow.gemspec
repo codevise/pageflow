@@ -109,7 +109,7 @@ Gem::Specification.new do |s|
   # WYSIWYG editor
   s.add_dependency 'wysihtml-rails', '0.5.5'
 
-  s.add_dependency 'bourbon', '~> 3.1'
+  s.add_dependency 'bourbon', '~> 3.1.8'
 
   # Pretty URLs
   s.add_dependency 'friendly_id', '~> 5.2'
