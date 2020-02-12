@@ -63,7 +63,9 @@ jobs:
     - name: Jest
       language: node_js
       node_js: 10.17.0
-      install: yarn install
+      install:
+        - yarn install
+        - (cd packages/pageflow-react; yarn install)
       before_script: yarn run build
       script:
         - (cd packages/pageflow; yarn test)

@@ -2,7 +2,6 @@
   "private": true,
   "workspaces": [
     "packages/pageflow",
-    "packages/pageflow-react",
     "entry_types/paged/packages/pageflow-paged",
     "entry_types/scrolled/package"
   ],

@@ -7,6 +7,12 @@ readme. From the repository root run:
 
     $ yarn install
 
+The `pageflow-react` package has a different set of dependencies, which
+need to be installed separately:
+
+    $ cd packages/pageflow-react
+    $ yarn install
+
 ### Running the Test Suites
 
 The Jest test suites need to be run from the respective package
