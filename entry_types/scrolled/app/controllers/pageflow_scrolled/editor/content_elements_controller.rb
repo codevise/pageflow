@@ -53,6 +53,7 @@ module PageflowScrolled
       def content_element_params
         configuration = params.require(:content_element)[:configuration].try(:permit!) || {}
         params.require(:content_element)
+              .transform_keys(&:underscore)
               .permit(:type_name, :position)
               .merge(configuration: configuration)
       end
