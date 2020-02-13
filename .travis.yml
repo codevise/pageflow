@@ -40,9 +40,9 @@ jobs:
       env:
         - COVERALLS_PARALLEL=true
 
-    - name: RSpec - pageflow (Ruby 2.5)
+    - name: RSpec - pageflow (Ruby 2.6)
       <<: *pageflow_ruby_job
-      rvm: 2.5.3
+      rvm: 2.6.5
       env:
         - COVERALLS_PARALLEL=true
 
