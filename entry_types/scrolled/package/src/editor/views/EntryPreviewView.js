@@ -49,6 +49,23 @@ export const EntryPreviewView = Marionette.ItemView.extend({
             }
           })
         );
+
+        this.listenTo(this.model, 'selectContentElement', contentElement =>
+          postMessage({
+            type: 'SELECT',
+            payload: {
+              id: contentElement.id,
+              type: 'contentElement'
+            }
+          })
+        );
+
+        this.listenTo(this.model, 'resetSelection', contentElement =>
+          postMessage({
+            type: 'SELECT',
+            payload: null
+          })
+        );
       }
       else if (message.data.type === 'CHANGE_SECTION') {
         this.model.set('currentSectionIndex', message.data.payload.index);
