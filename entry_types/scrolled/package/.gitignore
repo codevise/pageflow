@@ -2,3 +2,5 @@
 /editor.js
 /frontend.js
 /contentElements-frontend.js
+/.storybook/out/
+/.storybook/seed.json

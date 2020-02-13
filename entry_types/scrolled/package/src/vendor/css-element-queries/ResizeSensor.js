@@ -22,14 +22,7 @@
 // https://github.com/marcj/css-element-queries/tree/1.2.1
 // Some lines removed for compatibility.
 
-(function (root, factory) {
-    if (typeof exports === "object") {
-        module.exports = factory();
-    } else {
-        root.ResizeSensor = factory();
-    }
-}(typeof window !== 'undefined' ? window : this, function () {
-
+export const ResizeSensor = (function () {
     // Make sure it does not throw in a SSR (Server Side Rendering) situation
     if (typeof window === "undefined") {
         return null;
@@ -319,4 +312,4 @@
 
     return ResizeSensor;
 
-}));
+}());

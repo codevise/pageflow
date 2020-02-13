@@ -11,6 +11,9 @@ module.exports = {
 
   moduleNameMapper: {
     "^pageflow-scrolled/([^/]*)$": "<rootDir>/src/$1",
+
+    // Make specs run even if ignored json file is not present
+    ".*\\.storybook/seed\\.json$": "<rootDir>/spec/support/fakeSeed.json",
     ...moduleNameMapper
   },
   transform: {
