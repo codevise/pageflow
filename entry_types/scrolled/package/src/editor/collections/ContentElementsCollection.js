@@ -8,5 +8,7 @@ export const ContentElementsCollection = Backbone.Collection.extend({
 
   mixins: [
     entryTypeEditorControllerUrls.forCollection({resources: 'content_elements'})
-  ]
+  ],
+
+  comparator: 'position'
 });

@@ -4,7 +4,8 @@ import {
   configurationContainer,
   entryTypeEditorControllerUrls,
   failureTracking,
-  delayedDestroying
+  delayedDestroying,
+  ForeignKeySubsetCollection
 } from 'pageflow/editor';
 
 import {SectionConfiguration} from './SectionConfiguration';
@@ -20,6 +21,15 @@ export const Section = Backbone.Model.extend({
     entryTypeEditorControllerUrls.forModel({resources: 'sections'}),
     failureTracking
   ],
+
+  initialize(attributes, options) {
+    this.contentElements = new ForeignKeySubsetCollection({
+      parent: options.contentElements,
+      parentModel: this,
+      foreignKeyAttribute: 'sectionId',
+      parentReferenceAttribute: 'section'
+    });
+  },
 
   chapterPosition: function() {
     return this.chapter && this.chapter.has('position') ? this.chapter.get('position') : -1;
