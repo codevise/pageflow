@@ -1,0 +1,87 @@
+@value selectionColor from '../../editor/views/colors.module.css';
+
+@value backgroundColor: rgba(0, 0, 0, 0.8);
+@value borderColor: rgba(255, 255, 255, 0.2);
+
+.root {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.before {
+  bottom: 100%;
+}
+
+.after {
+  top: 100%;
+}
+
+.root:hover {
+  opacity: 1;
+}
+
+.box svg {
+  vertical-align: middle;
+  oopacity: 0.8;
+}
+
+.bar {
+  background-color: currentColor;
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  oopacity: 0.5;
+  width: calc(50% - 15px);
+}
+
+.left {
+  composes: bar;
+  left: -6px;
+}
+
+.right {
+  composes: bar;
+  right: -6px;
+}
+
+.selected.root {
+  opacity: 0.8;
+}
+
+.selected .right,
+.selected .left {
+  width: 13px;
+  background-color: currentColor;
+  oopacity: 0.8;
+  height: 5px;
+  top: calc(50% - 2px);
+}
+
+.selected .right {
+  right: -6px;
+}
+
+.selected .left {
+  left: -6px;
+}
+
+.middle {
+  composes: bar;
+  opacity: 0;
+  width: 100%;
+  left: 0;
+  top: 50%;
+  height: 1px;
+}
+
+.selected .middle {
+  opacity: 1;
+}
+
+.selected .box {
+  opacity: 0;
+}

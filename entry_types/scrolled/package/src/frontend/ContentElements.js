@@ -10,6 +10,7 @@ export function ContentElements(props) {
                        <ContentElement key={item.id}
                                        id={item.id}
                                        type={item.type}
+                                       first={index === 0}
                                        position={item.position}
                                        itemProps={item.props} />)
        )}
