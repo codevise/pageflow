@@ -3,18 +3,21 @@ de:
     editor:
       content_elements:
         heading:
+          name: "Überschrift"
           tabs:
             general: "Überschrift"
           attributes:
             children:
               label: "Text"
         textBlock:
+          name: "Text-Block"
           tabs:
             general: "Text-Block"
           attributes:
             children:
               label: "Text"
         inlineImage:
+          name: "Inline-Bild"
           tabs:
             general: "Inline-Bild"
           attributes:
@@ -29,12 +32,15 @@ de:
                 sticky: Sticky
                 full: Voll Breite
         soundDisclaimer:
+          name: "Audio-Hinweis"
           tabs:
             general: "Audio-Hinweis"
         inlineVideo:
+          name: "Inline-Video"
           tabs:
             general: "Inline-Video"
         inlineBeforeAfter:
+          name: "Vorher/Nachher"
           tabs:
             general: "Vorher/Nachher"
 
@@ -81,3 +87,5 @@ de:
 
           Dieser Schritt kann nicht rückgängig gemacht werden.
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
+      insert_content_element:
+        header: "Element einfügen"

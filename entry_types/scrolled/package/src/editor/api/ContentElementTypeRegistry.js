@@ -1,3 +1,5 @@
+import I18n from 'i18n-js'
+
 /**
  * Integrate new content types into the editor.
  * @name editor_contentElementTypes
@@ -44,7 +46,8 @@ export class ContentElementTypeRegistry {
 
   toArray() {
     return Object.keys(this.contentElementTypes).map(typeName => ({
-      typeName
+      typeName,
+      displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`)
     }));
   }
 }
