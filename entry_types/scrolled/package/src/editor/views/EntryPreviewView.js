@@ -53,6 +53,17 @@ export const EntryPreviewView = Marionette.ItemView.extend({
       else if (message.data.type === 'CHANGE_SECTION') {
         this.model.set('currentSectionIndex', message.data.payload.index);
       }
+      else if (message.data.type === 'SELECTED') {
+        const {id} = message.data.payload;
+        const editor = this.options.editor;
+
+        if (id) {
+          editor.navigate(`/scrolled/content_elements/${id}`, {trigger: true})
+        }
+        else {
+          editor.navigate('/', {trigger: true})
+        }
+      }
     }
   }
 });

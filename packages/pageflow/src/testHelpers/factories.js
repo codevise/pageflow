@@ -284,7 +284,15 @@ export const factories = {
   },
 
   editorApi: function(beforeSetup) {
-    var api = new EditorApi();
+    var api = new EditorApi({
+      router: {
+        navigate(path, {trigger}) {
+          if (trigger) {
+            api.trigger('navigate', path);
+          }
+        }
+      }
+    });
 
     if (beforeSetup) {
       beforeSetup(api);
