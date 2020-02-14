@@ -3,7 +3,13 @@ toc:
     description: |
       Main entry point of frontend API to register new content element types.
     children:
-      - contentElementTypes
+      - frontend_contentElementTypes
+
+  - name: Editor API
+    description: |
+      Main entry point of editor API to register new content element types.
+    children:
+      - editor_contentElementTypes
   - name: Components
     description: |
       React components for building content elements.

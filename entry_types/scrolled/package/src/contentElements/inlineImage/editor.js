@@ -15,4 +15,4 @@ editor.contentElementTypes.register('inlineImage', {
       });
     });
   }
-})
+});

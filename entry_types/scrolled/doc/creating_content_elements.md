@@ -32,10 +32,10 @@ We now look at every part one by one.
 
 ## Frontend JavaScript
 
-The `frontend.js` file registers the content element type and
-specifies the React component that is supposed to be used to render
-the content element. The same component is used in both the editor
-preview and the published entry.
+The `frontend.js` file registers the content element type with the
+frontend API and specifies the React component that is supposed to be
+used to render the content element. The same component is used in both
+the editor preview and the published entry.
 
 ```javascript
 // frontend.js
@@ -121,4 +121,50 @@ the stories and generate visual diffs.
 
 ## Editor JavaScript
 
-TODO
+The `editor.js` file registers the content element type with the
+editor API. It determines the inputs that will be displayed in the
+side bar when a content element of the type is selected in the
+editor. These inputs define the shape of the JSON data stored in the
+content element's configuration:
+
+```javascript
+import {editor} from 'pageflow-scrolled/editor';
+import {TextInputView, SelectInputView} from 'pageflow/ui';
+import {FileInputView} from 'pageflow/editor';
+
+editor.contentElementTypes.register('inlineImage', {
+  configurationEditor() {
+    this.tab('general', function() {
+      this.input('id', FileInputView, {
+        collection: 'image_files',
+        fileSelectionHandler: 'contentElementConfiguration'
+      });
+      this.input('caption', TextInputView);
+      this.input('position', SelectInputView, {
+        values: ['inline', 'sticky', 'full']
+      });
+    });
+  }
+});
+```
+
+The `configurationEditor` method is called in the context of a
+[`ConfigurationEditorView`](https://codevise.github.io/pageflow-docs/js/master/index.html#configurationeditorview).
+See
+[the API reference of `pageflow`](https://codevise.github.io/pageflow-docs/js/master/index.html)
+for available input views and their options.
+
+For inputs and tabs, Pageflow is looking for translation keys of the form:
+
+```
+pageflow_scrolled:
+  editor:
+    content_elements:
+      inlineImage:
+        tabs:
+          general: "..."
+        attributes:
+          caption:
+            label: "..."
+            inline_help: "..."
+```

@@ -1,6 +1,6 @@
 /**
  * Register new types of content elements.
- * @name contentElementTypes
+ * @name frontend_contentElementTypes
  */
 export class ContentElementTypeRegistry {
   constructor() {
@@ -13,7 +13,7 @@ export class ContentElementTypeRegistry {
    * @param {string} typeName - Name of the content element type.
    * @param {Object} options
    * @param {React.Component} options.component
-   * @memberof contentElementTypes
+   * @memberof frontend_contentElementTypes
    *
    * @example
    *
