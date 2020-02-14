@@ -115,6 +115,7 @@ import {attributeTranslationKeys, findTranslation, translationKeysWithSuffix} fr
  */
 export const inputView = {
   ui: {
+    label: 'label',
     labelText: 'label .name',
     inlineHelp: 'label .inline_help'
   },
@@ -167,6 +168,7 @@ export const inputView = {
       this.ui.inlineHelp.hide();
     }
 
+    this.setLabelFor();
     this.updateDisabled();
     this.setupVisibleBinding();
   },
@@ -202,6 +204,17 @@ export const inputView = {
       findTranslation(keys, {defaultValue: '', html: true}),
       this.options.additionalInlineHelpText
     ]).join(' ');
+  },
+
+  setLabelFor() {
+    if (this.ui.input &&
+        this.ui.label.length === 1 &&
+        !this.ui.input.attr('id')) {
+      const id = 'input_' + this.model.modelName + '_' + this.options.propertyName
+
+      this.ui.input.attr('id', id);
+      this.ui.label.attr('for', id);
+    }
   },
 
   updateDisabled: function() {
