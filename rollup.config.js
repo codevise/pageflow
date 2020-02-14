@@ -142,17 +142,6 @@ export default [
     external: externalEditorGlobals,
     plugins: pageflowPackagePlugins
   },
-  {
-    input: pageflowPackageRoot + '/src/editor/index.js',
-    output: {
-      file: 'app/assets/javascripts/pageflow/dist/editor.js',
-      format: 'iife',
-      name: 'pageflow._editorGlobalInterop',
-      globals: editorGlobals
-    },
-    external: externalEditorGlobals,
-    plugins: pageflowPackagePlugins
-  },
 
   // pageflow-paged
 

@@ -11,7 +11,7 @@ yarn install --frozen-lockfile
 bin/build-packages
 
 add_and_commit \
-    app/assets/javascripts/pageflow/dist/{react-*,editor,ui,frontend}.js \
+    app/assets/javascripts/pageflow/dist/{react-*,ui,frontend}.js \
     packages/pageflow/{editor,ui}.js \
     entry_types/paged/app/assets/javascripts/pageflow_paged/dist/editor.js \
     entry_types/scrolled/package/{editor,frontend,contentElements-frontend}.js \
