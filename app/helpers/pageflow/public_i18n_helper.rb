@@ -11,7 +11,7 @@ module Pageflow
         value.presence || fallback
       end
       translations = Hash.new
-      translations[parent_key] = {
+      translations[parent_key.to_sym] = {
         public: I18n.t("#{parent_key}.public", locale: I18n.default_locale)
                     .dup
                     .deep_merge(I18n.t("#{parent_key}.public", locale: entry.locale),

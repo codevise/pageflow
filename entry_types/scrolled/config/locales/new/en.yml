@@ -1,5 +1,9 @@
 en:
   pageflow_scrolled:
+    public:
+      sound_disclaimer:
+        help_text: This article works best with the sound turned on. <br/>
+           Click once in this field to activate the sound for the entire story.
     editor:
       entry_outline:
         header: "Outline"
