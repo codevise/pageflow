@@ -6,8 +6,12 @@ module Dom
       selector '#entry_preview'
 
       def section_count
+        within_scrolled_entry(&:section_count)
+      end
+
+      def within_scrolled_entry
         within_frame(node.find('iframe')) do
-          Dom::ScrolledEntry.find!.section_count
+          yield Dom::ScrolledEntry.find!
         end
       end
     end
