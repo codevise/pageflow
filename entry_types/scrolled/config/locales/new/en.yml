@@ -48,6 +48,34 @@ en:
           name: "Before/After"
           tabs:
             general: "Before/After"
+        videoEmbed:
+          tabs:
+            general: "Video-Embed"
+          attributes:
+            caption:
+              label: "Caption"
+            videoSource:
+              label: "Video-URL"
+            position:
+              label: Position
+              values:
+                inline: Inline
+                sticky: Sticky
+                full: Full Width
+            hide_controls:
+              label: Hide controls
+            hide_info:
+              label: Hide title in embed
+            vimeo:
+              hide_controls:
+                inline_help: This option is not supported by Vimeo video embeds. Depending on the plan of the video's Vimeo account, controls can be hidden via the video's embed settings in the Vimeo web interface.
+              hide_info:
+                inline_help: Hides the video title and author info inside the embed. The owner of the video can forbid hiding these elements. This option then has no effect.
+            youtube:
+              hide_controls:
+                inline_help: Hides the YouTube player controls. The video can be played and paused via click.
+              hide_info:
+                inline_help: This option is not supported by YouTube video embeds.
 
       entry_outline:
         header: "Outline"
