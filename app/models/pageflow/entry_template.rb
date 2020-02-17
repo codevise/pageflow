@@ -17,12 +17,12 @@ module Pageflow
       copy_attributes_to(revision)
     end
 
-    def share_providers=(share_providers_array)
-      self.default_share_providers = hashify_provider_array(share_providers_array)
+    def share_providers=(share_providers)
+      self.default_share_providers = share_providers
     end
 
     def share_providers
-      default_share_providers.to_a
+      default_share_providers
     end
 
     def default_share_providers

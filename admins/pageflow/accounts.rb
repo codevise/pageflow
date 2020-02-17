@@ -226,7 +226,7 @@ module Pageflow
           :default_publisher,
           :default_keywords,
           :default_locale,
-          share_providers: [],
+          share_providers: {},
           configuration: {}
         ]
       end

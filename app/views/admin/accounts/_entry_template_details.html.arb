@@ -11,6 +11,7 @@ extensible_attributes_table_for(account.first_paged_entry_template,
   row :default_publisher, class: 'default_publisher'
   row :default_keywords, class: 'default_keywords'
   row :default_share_providers, class: 'default_share_providers' do
-    account.first_paged_entry_template.default_share_providers.keys.map(&:camelize).join(', ')
+    account.first_paged_entry_template.default_share_providers
+           .select { |_k, v| v == true }.keys.map(&:camelize).join(', ')
   end
 end

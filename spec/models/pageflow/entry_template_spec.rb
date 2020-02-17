@@ -121,7 +121,7 @@ module Pageflow
           .to eq('facebook' => true, 'linkedin' => false, 'twitter' => true)
       end
 
-      it 'returns the share_providers as array' do
+      it 'returns the share_providers as hash' do
         entry_template = build(
           :entry_template,
           share_providers: {
