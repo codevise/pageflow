@@ -7,6 +7,9 @@ module.exports = {
   rootDir: require('path').resolve(__dirname),
 
   testMatch: ["<rootDir>/spec/**/*-spec.js"],
+  globals: {
+    pageflow: {},
+  },
   modulePaths: ['<rootDir>/src', '<rootDir>/spec'],
 
   moduleNameMapper: {

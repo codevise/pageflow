@@ -58,6 +58,9 @@ jobs:
       before_script:
         - yarn install
         - bin/build-packages
+
+        - (cd entry_types/scrolled; PAGEFLOW_PLUGIN_ENGINE=pageflow_scrolled bundle exec rake pageflow_scrolled:dummy)
+        - (cd entry_types/scrolled; WEBPACKER_PRECOMPILE=false bundle exec rake app:assets:precompile)
       script: (cd entry_types/scrolled; bin/rspec)
 
     - name: Jest

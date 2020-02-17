@@ -7,7 +7,8 @@ export function ContentElements(props) {
     <>
       {props.items.map((item, index) =>
         props.children(item,
-                       <ContentElement key={index}
+                       <ContentElement key={item.id}
+                                       id={item.id}
                                        type={item.type}
                                        position={item.position}
                                        itemProps={item.props} />)

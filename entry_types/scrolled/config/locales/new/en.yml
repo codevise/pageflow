@@ -1,6 +1,44 @@
 en:
   pageflow_scrolled:
     editor:
+      content_elements:
+        heading:
+          tabs:
+            general: "Heading"
+          attributes:
+            children:
+              label: "Text"
+              inline_help: "Foo"
+        textBlock:
+          tabs:
+            general: "Text Block"
+          attributes:
+            children:
+              label: "Text"
+        inlineImage:
+          tabs:
+            general: "Inline Image"
+          attributes:
+            caption:
+              label: "Caption"
+            id:
+              label: "Image"
+            position:
+              label: Position
+              values:
+                inline: Inline
+                sticky: Sticky
+                full: Full Width
+        soundDisclaimer:
+          tabs:
+            general: "Audio Notice"
+        inlineVideo:
+          tabs:
+            general: "Inline Video"
+        inlineBeforeAfter:
+          tabs:
+            general: "Before/After"
+
       entry_outline:
         header: "Outline"
         add_chapter: "New chapter"

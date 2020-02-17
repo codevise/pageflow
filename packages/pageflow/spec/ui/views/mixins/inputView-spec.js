@@ -376,11 +376,101 @@ describe('pageflow.inputView', () => {
     });
   });
 
+  describe('for view with input and label', () => {
+    it('generates for and id attributes', () => {
+      const Model = Backbone.Model.extend({
+        modelName: 'item'
+      });
+      const view = createInputViewWithInput({
+        template: `<label></label>
+                   <input />`,
+        options: {
+          model: new Model(),
+          propertyName: 'text'
+        }
+      });
+
+      view.render();
+
+      expect(view.ui.input).toHaveAttr('id', 'input_item_text');
+      expect(view.ui.label).toHaveAttr('for', 'input_item_text');
+    });
+
+    it('does not override existing id', () => {
+      const Model = Backbone.Model.extend({
+        modelName: 'item'
+      });
+      const view = createInputViewWithInput({
+        template: `<label></label>
+                   <input id="foo" />`,
+        options: {
+          model: new Model(),
+          propertyName: 'text'
+        }
+      });
+
+      view.render();
+
+      expect(view.ui.input).toHaveAttr('id', 'foo');
+    });
+
+    it('does set id if label is not present', () => {
+      const Model = Backbone.Model.extend({
+        modelName: 'item'
+      });
+      const view = createInputViewWithInput({
+        template: `<input />`,
+        options: {
+          model: new Model(),
+          propertyName: 'text'
+        }
+      });
+
+      view.render();
+
+      expect(view.ui.input).not.toHaveAttr('id');
+    });
+
+    it('lets view override label ui reference', () => {
+      const Model = Backbone.Model.extend({
+        modelName: 'item'
+      });
+      const view = createInputViewWithInput({
+        template: `<div></div>
+                   <input />`,
+        ui: {
+          label: 'div'
+        },
+        options: {
+          model: new Model(),
+          propertyName: 'text'
+        }
+      });
+
+      view.render();
+
+      expect(view.$el.find('div')).toHaveAttr('for');
+    });
+
+    function createInputViewWithInput({template, ui, options}) {
+      var View = Marionette.ItemView.extend({
+        template: () => template,
+
+        ui: {
+          input: 'input',
+          ...ui
+        }
+      });
+
+      Cocktail.mixin(View, inputView);
+
+      return new View(options);
+    }
+  });
+
   function createInputView(options) {
     var View = Marionette.ItemView.extend({
-      template: function() {
-        return '';
-      }
+      template: () => ''
     });
 
     Cocktail.mixin(View, inputView);

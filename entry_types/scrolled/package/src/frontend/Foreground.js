@@ -1,11 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {useEditorSelection} from './EditorState';
+
 import styles from './Foreground.module.css';
 
 export default function Foreground(props) {
+  const {resetSelection} = useEditorSelection();
+
   return (
-    <div className={className(props)}>
+    <div className={className(props)} onClick={resetSelection}>
       {props.children}
     </div>
   );

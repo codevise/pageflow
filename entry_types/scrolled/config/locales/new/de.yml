@@ -1,6 +1,43 @@
 de:
   pageflow_scrolled:
     editor:
+      content_elements:
+        heading:
+          tabs:
+            general: "Überschrift"
+          attributes:
+            children:
+              label: "Text"
+        textBlock:
+          tabs:
+            general: "Text-Block"
+          attributes:
+            children:
+              label: "Text"
+        inlineImage:
+          tabs:
+            general: "Inline-Bild"
+          attributes:
+            caption:
+              label: "Beschriftung"
+            id:
+              label: "Bild"
+            position:
+              label: Position
+              values:
+                inline: Im Textfluss
+                sticky: Sticky
+                full: Voll Breite
+        soundDisclaimer:
+          tabs:
+            general: "Audio-Hinweis"
+        inlineVideo:
+          tabs:
+            general: "Inline-Video"
+        inlineBeforeAfter:
+          tabs:
+            general: "Vorher/Nachher"
+
       entry_outline:
         header: "Giederung"
         add_chapter: "Neues Kapitel"

@@ -142,17 +142,6 @@ export default [
     external: externalEditorGlobals,
     plugins: pageflowPackagePlugins
   },
-  {
-    input: pageflowPackageRoot + '/src/editor/index.js',
-    output: {
-      file: 'app/assets/javascripts/pageflow/dist/editor.js',
-      format: 'iife',
-      name: 'pageflow._editorGlobalInterop',
-      globals: editorGlobals
-    },
-    external: externalEditorGlobals,
-    plugins: pageflowPackagePlugins
-  },
 
   // pageflow-paged
 
@@ -189,6 +178,17 @@ export default [
     external: externalScrolledDependenciesAndCoreJs,
     plugins,
     ...ignoreJSXWarning
+  },
+
+  {
+    input: pageflowScrolledPackageRoot + '/src/contentElements/editor.js',
+    output: {
+      file: pageflowScrolledPackageRoot + '/contentElements-editor.js',
+      format: 'esm',
+    },
+    external: id => externalPageflowEditorGlobalsAndCoreJs(id) ||
+                  externalScrolledDependenciesAndCoreJs(id),
+    plugins
   },
   {
     input: pageflowScrolledPackageRoot + '/src/contentElements/frontend.js',

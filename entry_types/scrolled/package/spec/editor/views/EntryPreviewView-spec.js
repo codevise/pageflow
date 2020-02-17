@@ -1,7 +1,6 @@
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {EntryPreviewView} from 'editor/views/EntryPreviewView';
-import {factories} from 'pageflow/testHelpers';
-import {normalizeSeed, tick} from 'support';
+import {normalizeSeed, tick, factories} from 'support';
 
 describe('EntryPreviewView', () => {
   let view;
@@ -110,5 +109,45 @@ describe('EntryPreviewView', () => {
       });
       entry.trigger('scrollToSection', entry.sections.at(2));
     })).resolves.toMatchObject({type: 'SCROLL_TO_SECTION', payload: {index: 2}});
+  });
+
+  it('navigates to edit content element route on SELECTED message with id', () => {
+    document.body.innerHTML = seedBodyFragment;
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    view = new EntryPreviewView({editor, model: entry});
+
+    view.render();
+    document.body.appendChild(view.el);
+    view.onShow();
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 1}}, '*');
+    })).resolves.toBe('/scrolled/content_elements/1');
+  });
+
+  it('navigates to root on SELECTED message without id', () => {
+    document.body.innerHTML = seedBodyFragment;
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    view = new EntryPreviewView({editor, model: entry});
+
+    view.render();
+    document.body.appendChild(view.el);
+    view.onShow();
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {}}, '*');
+    })).resolves.toBe('/');
   });
 })

@@ -1,11 +1,21 @@
 import Backbone from 'backbone';
 
-export const ContentElement = Backbone.Model.extend({
-  initialize() {
-    this.configuration = new Backbone.Model(this.get('configuration'));
+import {
+  editor,
+  configurationContainer,
+  entryTypeEditorControllerUrls,
+  failureTracking,
+  delayedDestroying
+} from 'pageflow/editor';
 
-    this.listenTo(this.configuration, 'change', function() {
-      this.trigger('change:configuration', this);
-    });
-  }
+export const ContentElement = Backbone.Model.extend({
+  mixins: [
+    configurationContainer({
+      autoSave: true,
+      includeAttributesInJSON: ['position']
+    }),
+    delayedDestroying,
+    entryTypeEditorControllerUrls.forModel({resources: 'content_elements'}),
+    failureTracking
+  ]
 });

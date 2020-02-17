@@ -21,6 +21,7 @@ module PageflowScrolled
       def editor_pack
         create_file 'app/javascript/packs/pageflow-scrolled-editor.js', <<-JS
           import 'pageflow-scrolled/editor';
+          import 'pageflow-scrolled/contentElements-editor';
           import 'pageflow-scrolled/contentElements-frontend';
         JS
       end
