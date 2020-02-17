@@ -10,6 +10,18 @@
     />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700&display=swap" rel="stylesheet">
     <title>Pageflow Next Showcase</title>
+
+    <% if Rails.env.development? %>
+      <script>
+        try {
+          if (window.top !== window) {
+            window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.top.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+          }
+        } catch (e) {
+          console.warn('unable to connect to top frame for connecting dev tools');
+        }
+      </script>
+    <% end %>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
