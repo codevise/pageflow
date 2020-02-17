@@ -6,9 +6,13 @@ import {storiesOf} from '@storybook/react';
 
 import seedFixtureFromFile from '../../.storybook/seed.json'
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+import I18n from 'i18n-js';
 
 let seedFixture = seedFixtureFromFile;
 
+I18n.translations = I18n.translations || {};
+I18n.translations[I18n.locale] = seedFixture.translations;
+  
 /**
  * Add default set of stories for content element to render it in
  * different settings (e.g. different section layouts).
