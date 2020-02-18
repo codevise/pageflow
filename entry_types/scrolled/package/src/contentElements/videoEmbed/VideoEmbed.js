@@ -2,7 +2,7 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import styles from './VideoEmbed.module.css';
 import classNames from 'classnames';
-import {InlineCaption} from "../inlineImage/InlineCaption";
+import {InlineCaption} from 'pageflow-scrolled/frontend';
 
 export function VideoEmbed({configuration}) {
   return (

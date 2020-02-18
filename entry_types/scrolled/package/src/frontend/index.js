@@ -14,6 +14,7 @@ const editMode = window.location.pathname.indexOf('/editor/entries') === 0;
 export {api as frontend} from './api';
 
 export * from './Image';
+export * from './InlineCaption';
 export * from './Text';
 export * from './Video';
 
