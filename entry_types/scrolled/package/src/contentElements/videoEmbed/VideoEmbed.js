@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
 import styles from './VideoEmbed.module.css';
+import classNames from 'classnames';
 import {InlineCaption} from "../inlineImage/InlineCaption";
 
 export function VideoEmbed({configuration}) {
   return (
     <div className={styles.VideoEmbed}>
-      <div className={styles.embedWrapper} key={configuration}>
+      <div className={classNames(styles.embedWrapper, styles[configuration.aspectRatio])}>
         <ReactPlayer className={styles.embedPlayer}
                      key={btoa(JSON.stringify(configuration))}
                      url={configuration.videoSource}

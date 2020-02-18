@@ -68,6 +68,13 @@ de:
             hideInfo:
               label: Titel in Embed ausblenden
               inline_help: Blendet Titel und Author Informationen innerhalb des Embeds aus wenn möglich (variiert je nach Anbieter und Konfiguration)
+            aspectRatio:
+              label: Seitenverhältnis des Videos
+              values:
+                wide: "Landscape 16:9"
+                narrow: "Landscape 4:3"
+                square: Quadratisch
+                portrait: Portrait (9:16)
       entry_outline:
         header: "Giederung"
         add_chapter: "Neues Kapitel"

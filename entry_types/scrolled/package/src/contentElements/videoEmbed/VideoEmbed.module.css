@@ -1,12 +1,28 @@
 .VideoEmbed {
-  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .embedWrapper {
   overflow:hidden;
   position:relative;
-  padding-top: 56.25%;
   background: black;
+  padding-top: 56.25%;
+}
+
+.wide {
+  padding-top: 56.25%;
+}
+
+.narrow {
+  padding-top: 75%;
+}
+
+.square {
+  padding-top: 100%;
+}
+
+.portrait {
+  padding-top: 177.77%;
 }
 
 .embedPlayer {

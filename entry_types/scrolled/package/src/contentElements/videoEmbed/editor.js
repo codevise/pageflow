@@ -21,6 +21,9 @@ editor.contentElementTypes.register('videoEmbed', {
       });
       this.input('hideInfo', CheckBoxInputView);
       this.input('hideControls', CheckBoxInputView);
+      this.input('aspectRatio', SelectInputView, {
+        values: ['wide', 'narrow', 'square', 'portrait']
+      });
       this.input('caption', TextInputView);
       this.input('position', SelectInputView, {
         values: ['inline', 'sticky', 'full']

@@ -62,12 +62,19 @@ en:
                 inline: Inline
                 sticky: Sticky
                 full: Full Width
-            hide_controls:
+            hideControls:
               label: Hide controls
               inline_help: Hides the player controls if possible (depends on the videos provider and configuration). The video can be played and paused via click.
-            hide_info:
+            hideInfo:
               label: Hide title in embed
               inline_help: Hides the video title and author info inside the embed if possible (depends on the videos provider and configuration).
+            aspectRatio:
+              label: Aspect ratio of video
+              values:
+                wide: "Landscape 16:9"
+                narrow: "Landscape 4:3"
+                square: Square
+                portrait: Portrait (9:16)
       entry_outline:
         header: "Outline"
         add_chapter: "New chapter"
