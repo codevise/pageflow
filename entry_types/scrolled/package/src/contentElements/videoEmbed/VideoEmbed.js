@@ -11,20 +11,23 @@ export function VideoEmbed({configuration}) {
         <ReactPlayer className={styles.embedPlayer}
                      key={btoa(JSON.stringify(configuration))}
                      url={configuration.videoSource}
+                     playing={true}
+                     light={true}
                      width='100%'
                      height='100%'
                      controls={!configuration.hideControls}
                      config={{
                        youtube: {
                          playerVars: {
-                           showinfo: !configuration.hideInfo}
+                           showinfo: !configuration.hideInfo
+                         }
                        },
                        vimeo: {
                          playerOptions: {
                            byline: !configuration.hideInfo
                          }
                        }
-                     }}/>
+                     }} />
       </div>
       <InlineCaption text={configuration.caption} />
     </div>
