@@ -64,19 +64,10 @@ de:
                 full: Voll Breite
             hideControls:
               label: Steuerelemente ausblenden
+              inline_help: Blendet die Steuerelemente aus wenn möglich (variiert je nach Anbieter und Konfiguration). Das Video kann per Klick gestartet und pausiert werden.
             hideInfo:
               label: Titel in Embed ausblenden
-            vimeo:
-              hideControls:
-                inline_help: Diese Option steht für Vimeo-Videos nicht zur Verfügung. Abhängig vom Plan des Vimeo-Kontos des Videos, können die Controls in den Embed-Einstellungen des Videos in der Vimeo-Oberfläche ausgeschaltet werden.
-              hideInfo:
-                inline_help: Blendet Titel und Author Informationen innerhalb des Embeds aus. Der Besitzer des Vimeo-Videos kann das Ausblenden dieser Informationen verbieten. Die Option ist dann ohne Funktion.
-            youtube:
-              hideControls:
-                inline_help: Blendet die YouTube-Steuerelemente aus. Das Video kann per Klick gestartet und pausiert werden.
-              hideInfo:
-                inline_help: Diese Option steht für YouTube-Videos nicht zur Verfügung.
-
+              inline_help: Blendet Titel und Author Informationen innerhalb des Embeds aus wenn möglich (variiert je nach Anbieter und Konfiguration)
       entry_outline:
         header: "Giederung"
         add_chapter: "Neues Kapitel"

@@ -6,60 +6,25 @@ editor.contentElementTypes.register('videoEmbed', {
     this.tab('general', function() {
       this.input('videoSource', UrlInputView, {
         supportedHosts: [
+          'http://youtu.be',
           'https://youtu.be',
-          'https://www.youtube.com',
           'http://www.youtube.com',
+          'https://www.youtube.com',
           'http://vimeo.com',
-          'https://vimeo.com'
+          'https://vimeo.com',
+          'http://www.facebook.com',
+          'https://www.facebook.com'
         ],
         displayPropertyName: 'videoSource',
         required: true,
         permitHttps: true
       });
-
-      inputForProvider('youtube', this, 'hideInfo', CheckBoxInputView, {
-        disabled: true,
-        displayUncheckedIfDisabled: true
-      });
-      inputForProvider('youtube', this, 'hideControls', CheckBoxInputView);
-
-      inputForProvider('vimeo', this, 'hideInfo', CheckBoxInputView);
-      inputForProvider('vimeo', this, 'hideControls', CheckBoxInputView, {
-        disabled: true,
-        displayUncheckedIfDisabled: true
-      });
-
+      this.input('hideInfo', CheckBoxInputView);
+      this.input('hideControls', CheckBoxInputView);
       this.input('caption', TextInputView);
-
       this.input('position', SelectInputView, {
         values: ['inline', 'sticky', 'full']
       });
     });
   }
 });
-
-function inputForProvider(provider, view, propertyName, inputView, options) {
-  view.input(propertyName, inputView, _.extend({
-    attributeTranslationKeyPrefixes: [
-      'pageflow_scrolled.editor.content_elements.videoEmbed.attributes.' + provider,
-      'pageflow_scrolled.editor.content_elements.videoEmbed.attributes'
-    ],
-    visibleBinding: 'videoSource',
-    visible: function(url) {
-      return providerFromUrl(url) === provider;
-    }
-  }, options));
-};
-
-function providerFromUrl(url) {
-  var domain = new URI(url).domain(true);
-
-  if (['youtu.be', 'youtube.com'].indexOf(domain) >= 0) {
-    return 'youtube';
-  }
-  else if (domain === 'vimeo.com') {
-    return 'vimeo';
-  }
-
-  return '';
-};

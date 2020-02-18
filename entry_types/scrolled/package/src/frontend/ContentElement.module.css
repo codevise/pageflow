@@ -17,7 +17,6 @@
   left: selectionPadding2;
   right: selectionPadding2;
   bottom: selectionPadding2;
-  pointer-events: none;
 }
 
 .bl,
@@ -79,5 +78,6 @@
 .selected:hover:after,
 .selected:after {
   border: solid 1px currentColor;
-  opacity: 0.8
+  opacity: 0.8;
+  pointer-events: none;
 }

@@ -3,12 +3,16 @@
 }
 
 .embedWrapper {
+  overflow:hidden;
+  position:relative;
   padding-top: 56.25%;
-  position: relative;
+  background: black;
 }
 
-.embedWrapper iframe {
+.embedPlayer {
   position: absolute;
   top: 0;
   left: 0;
+  bottom: 0;
+  right: 0;
 }
