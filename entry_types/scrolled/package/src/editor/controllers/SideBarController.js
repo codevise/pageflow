@@ -5,6 +5,7 @@ import {editor} from 'pageflow-scrolled/editor';
 import {EditChapterView} from '../views/EditChapterView';
 import {EditSectionView} from '../views/EditSectionView';
 import {EditContentElementView} from '../views/EditContentElementView';
+import {InsertContentElementView} from '../views/InsertContentElementView';
 
 export const SideBarController = Marionette.Controller.extend({
   initialize: function(options) {
@@ -32,6 +33,17 @@ export const SideBarController = Marionette.Controller.extend({
     this.region.show(new EditContentElementView({
       entry: this.entry,
       model: this.entry.contentElements.get(id),
+      editor
+    }));
+  },
+
+  insertContentElement: function(position, id) {
+    this.region.show(InsertContentElementView.create({
+      entry: this.entry,
+      insertOptions: {
+        position,
+        id
+      },
       editor
     }));
   }

@@ -84,6 +84,7 @@ function init(items, keyAttribute = 'id') {
 
 export function watchCollection(collection,
                                 {name, dispatch, attributes, includeConfiguration, keyAttribute = 'id'}) {
+  const handle = {};
   const options = {
     attributeNames: attributes,
     includeConfiguration
@@ -112,7 +113,7 @@ export function watchCollection(collection,
         }
       });
     }
-  });
+  }, handle);
 
   collection.on('change', model => {
     if (hasChangedAttributes(model, watchedAttributeNames)) {
@@ -125,7 +126,7 @@ export function watchCollection(collection,
         }
       });
     }
-  });
+  }, handle);
 
   if (includeConfiguration) {
     collection.on('change:configuration', model => dispatch({
@@ -135,7 +136,7 @@ export function watchCollection(collection,
         keyAttribute: keyAttribute,
         attributes: getAttributes(model, options)
       }
-    }));
+    }), handle);
   }
 
   collection.on('remove', model => dispatch({
@@ -145,7 +146,7 @@ export function watchCollection(collection,
       order: collection.pluck(keyAttribute),
       key: model.attributes[keyAttribute]
     }
-  }));
+  }), handle);
 
   collection.on('sort', model => dispatch({
     type: SORT,
@@ -155,7 +156,11 @@ export function watchCollection(collection,
         .pluck(keyAttribute)
         .filter(Boolean)
     }
-  }));
+  }), handle);
+
+  return function() {
+    collection.off(null, null, handle);
+  };
 }
 
 function hasChangedAttributes(model, attributeNames) {

@@ -6,7 +6,7 @@ import {watchCollections} from 'entryState';
 import 'contentElements/heading/frontend';
 
 import {normalizeSeed} from 'support';
-import {render} from '@testing-library/react';
+import {render, act} from '@testing-library/react';
 import 'support/fakeIntersectionObserver';
 import {factories} from 'pageflow/testHelpers';
 
@@ -53,5 +53,35 @@ describe('SectionThumbnail', () => {
                                      )}
                                    sectionPermaId={1} />);
     expect(getByText('Some Heading')).toBeDefined();
+  });
+
+  it('unsubscribed on unmount', () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [
+          {id: 3, permaId: 1},
+        ],
+        contentElements: [
+          {
+            sectionId: 3,
+            typeName: 'heading',
+            configuration: {children: 'Some Heading'}
+          }
+        ]
+      })
+    });
+    const consoleError = jest.spyOn(global.console, 'error')
+
+    const {unmount} = render(<SectionThumbnail
+                                 seed={normalizeSeed()}
+                                 subscribe={dispatch => watchCollections(
+                                     entry,
+                                     {dispatch}
+                                   )}
+                                 sectionPermaId={1} />);
+    unmount();
+    act(() => { entry.contentElements.sort() });
+
+    expect(consoleError).not.toHaveBeenCalled();
   });
 });

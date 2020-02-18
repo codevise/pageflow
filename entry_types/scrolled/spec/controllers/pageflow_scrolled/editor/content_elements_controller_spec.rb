@@ -71,6 +71,23 @@ module PageflowScrolled
         expect(section.content_elements.first.type_name).to eq('textBlock')
       end
 
+      it 'can handle camel case attributes' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        post(:create,
+             params: {
+               entry_id: entry,
+               section_id: section,
+               content_element: {
+                 typeName: 'textBlock'
+               }
+             }, format: 'json')
+
+        expect(section.content_elements.first.type_name).to eq('textBlock')
+      end
+
       it 'renders attributes as camel case' do
         entry = create(:entry)
         section = create(:section, revision: entry.draft)

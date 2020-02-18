@@ -21,6 +21,7 @@ export const BackButtonDecoratorView = Marionette.Layout.extend({
   },
 
   goBack: function() {
+    this.options.view.onGoBack && this.options.view.onGoBack();
     editor.navigate('/', {trigger: true});
   }
 });

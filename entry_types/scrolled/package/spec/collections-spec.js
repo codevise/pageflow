@@ -526,6 +526,49 @@ describe('watch', () => {
 
     expect(item.title).toBe('News');
   });
+
+  it('returns teardown function to stop watching', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection();
+
+    act(() => {
+      const [, dispatch] = result.current;
+      const teardown = watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id'],
+        dispatch
+      });
+
+      teardown();
+      posts.add({id: 1, title: 'News'})
+    });
+    const [state,] = result.current;
+    const items = getItems(state, 'posts');
+
+    expect(items.length).toBe(0);
+  });
+
+  it('teardown function does not remove other listener', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection();
+    const listener = jest.fn();
+
+    posts.on('add', listener);
+
+    act(() => {
+      const [, dispatch] = result.current;
+      const teardown = watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id'],
+        dispatch
+      });
+
+      teardown();
+      posts.add({id: 1, title: 'News'})
+    });
+
+    expect(listener).toHaveBeenCalled();
+  });
 });
 
 describe('getItems', () => {

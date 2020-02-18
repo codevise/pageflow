@@ -26,13 +26,25 @@ export const Chapter = Backbone.Model.extend({
       foreignKeyAttribute: 'chapterId',
       parentReferenceAttribute: 'chapter'
     });
+    this.entry = options.entry;
   },
 
   addSection(attributes) {
-    this.sections.create({
+    const section = this.sections.create({
       position: this.sections.length,
       chapterId: this.id,
       ...attributes
+    }, {
+      contentElements: this.entry.contentElements
+    });
+
+    section.once('sync', () => {
+      section.contentElements.create({
+        typeName: 'heading',
+        configuration: {
+          children: 'Neuer Abschnitt'
+        }
+      });
     });
   }
 });

@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import {api} from './api';
 import {useEditorSelection} from './EditorState';
 import styles from './ContentElement.module.css';
+import {InsertContentElementIndicator} from './inlineEditing/InsertContentElementIndicator';
 
 export function ContentElement(props) {
   const Component = api.contentElementTypes.getComponent(props.type);
@@ -12,6 +13,7 @@ export function ContentElement(props) {
   if (select) {
     return (
       <div className={classNames(styles.outer)}>
+        {props.first && <InsertContentElementIndicator position="before" contentElementId={props.id} />}
         <div className={classNames({[styles.selected]: isSelected, [styles.selectable]: isSelectable})}
              onClick={e => { e.stopPropagation(); isSelectable ? select() : resetSelection(); }}>
           <Component configuration={props.itemProps} />
@@ -20,6 +22,7 @@ export function ContentElement(props) {
           <div className={styles.tr} />
           <div className={styles.br} />
         </div>
+        <InsertContentElementIndicator position="after" contentElementId={props.id} />
       </div>
     );
   }

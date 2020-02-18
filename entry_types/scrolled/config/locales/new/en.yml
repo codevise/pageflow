@@ -3,19 +3,21 @@ en:
     editor:
       content_elements:
         heading:
+          name: "Heading"
           tabs:
             general: "Heading"
           attributes:
             children:
               label: "Text"
-              inline_help: "Foo"
         textBlock:
+          name: "Text Block"
           tabs:
             general: "Text Block"
           attributes:
             children:
               label: "Text"
         inlineImage:
+          name: "Inline Image"
           tabs:
             general: "Inline Image"
           attributes:
@@ -30,12 +32,15 @@ en:
                 sticky: Sticky
                 full: Full Width
         soundDisclaimer:
+          name: "Audio Notice"
           tabs:
             general: "Audio Notice"
         inlineVideo:
+          name: "Inline Video"
           tabs:
             general: "Inline Video"
         inlineBeforeAfter:
+          name: "Before/After"
           tabs:
             general: "Before/After"
 
@@ -82,3 +87,5 @@ en:
 
           This operation cannot be undone.
         save_error: There was an error while saving this section.
+      insert_content_element:
+        header: "Insert element"

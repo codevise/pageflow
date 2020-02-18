@@ -4,6 +4,7 @@ import Chapter from "./Chapter";
 import MutedContext from './MutedContext';
 import ScrollToSectionContext from './ScrollToSectionContext';
 import {useEntryStructure, useEntryStateDispatch} from '../entryState';
+import {useEditorSelection} from './EditorState';
 
 import styles from './Entry.module.css';
 
@@ -11,6 +12,7 @@ export default function Entry(props) {
   const [currentSectionIndex, setCurrentSectionIndexState] = useState(0);
 
   const [scrollTargetSectionIndex, setScrollTargetSectionIndex] = useState(null);
+  const {select} = useEditorSelection()
 
   const [muted, setMuted] = useState(true);
 
@@ -41,9 +43,12 @@ export default function Entry(props) {
         else if (message.data.type === 'SCROLL_TO_SECTION') {
           setScrollTargetSectionIndex(message.data.payload.index)
         }
+        else if (message.data.type === 'SELECT') {
+          select(message.data.payload);
+        }
       }
     }
-  }, [dispatch]);
+  }, [dispatch, select]);
 
   function scrollToSection(index) {
     if (index === 'next') {

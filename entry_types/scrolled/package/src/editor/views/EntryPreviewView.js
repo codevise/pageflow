@@ -2,7 +2,6 @@ import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import {cssModulesUtils} from 'pageflow/ui';
 import {watchCollections} from '../../entryState';
-
 import styles from './EntryPreviewView.module.css'
 
 export const EntryPreviewView = Marionette.ItemView.extend({
@@ -49,16 +48,36 @@ export const EntryPreviewView = Marionette.ItemView.extend({
             }
           })
         );
+
+        this.listenTo(this.model, 'selectContentElement', contentElement =>
+          postMessage({
+            type: 'SELECT',
+            payload: {
+              id: contentElement.id,
+              type: 'contentElement'
+            }
+          })
+        );
+
+        this.listenTo(this.model, 'resetSelection', contentElement =>
+          postMessage({
+            type: 'SELECT',
+            payload: null
+          })
+        );
       }
       else if (message.data.type === 'CHANGE_SECTION') {
         this.model.set('currentSectionIndex', message.data.payload.index);
       }
       else if (message.data.type === 'SELECTED') {
-        const {id} = message.data.payload;
+        const {id, type} = message.data.payload;
         const editor = this.options.editor;
 
-        if (id) {
+        if (type === 'contentElement') {
           editor.navigate(`/scrolled/content_elements/${id}`, {trigger: true})
+        }
+        else if (type === 'before' || type === 'after') {
+          editor.navigate(`/scrolled/content_elements/insert?position=${type}&id=${id}`, {trigger: true})
         }
         else {
           editor.navigate('/', {trigger: true})

@@ -111,7 +111,61 @@ describe('EntryPreviewView', () => {
     })).resolves.toMatchObject({type: 'SCROLL_TO_SECTION', payload: {index: 2}});
   });
 
-  it('navigates to edit content element route on SELECTED message with id', () => {
+  it('sends SELECT message to iframe on selectContentElement event on model', async () => {
+    document.body.innerHTML = seedBodyFragment;
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    view = new EntryPreviewView({model: entry});
+
+    view.render();
+    document.body.appendChild(view.el);
+    view.onShow();
+
+    window.postMessage({type: 'READY'}, '*');
+    await tick(); // Wait for async processing of message.
+
+    return expect(new Promise(resolve => {
+      const iframeWindow = view.ui.iframe[0].contentWindow;
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('selectContentElement', entry.contentElements.first());
+    })).resolves.toMatchObject({type: 'SELECT', payload: {id: 1, type: 'contentElement'}});
+  });
+
+  it('sends SELECT message to iframe on resetSelection event on model', async () => {
+    document.body.innerHTML = seedBodyFragment;
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    view = new EntryPreviewView({model: entry});
+
+    view.render();
+    document.body.appendChild(view.el);
+    view.onShow();
+
+    window.postMessage({type: 'READY'}, '*');
+    await tick(); // Wait for async processing of message.
+
+    return expect(new Promise(resolve => {
+      const iframeWindow = view.ui.iframe[0].contentWindow;
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('resetSelection', entry.contentElements.first());
+    })).resolves.toMatchObject({type: 'SELECT', payload: null});
+  });
+
+  it('navigates to edit content element route on SELECTED message with type content element', () => {
     document.body.innerHTML = seedBodyFragment;
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {
@@ -127,11 +181,31 @@ describe('EntryPreviewView', () => {
 
     return expect(new Promise(resolve => {
       editor.on('navigate', resolve);
-      window.postMessage({type: 'SELECTED', payload: {id: 1}}, '*');
+      window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'contentElement'}}, '*');
     })).resolves.toBe('/scrolled/content_elements/1');
   });
 
-  it('navigates to root on SELECTED message without id', () => {
+  it('navigates to edit content element route on SELECTED message with type before', () => {
+    document.body.innerHTML = seedBodyFragment;
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    view = new EntryPreviewView({editor, model: entry});
+
+    view.render();
+    document.body.appendChild(view.el);
+    view.onShow();
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'before'}}, '*');
+    })).resolves.toBe('/scrolled/content_elements/insert?position=before&id=1');
+  });
+
+  it('navigates to root on SELECTED message without type', () => {
     document.body.innerHTML = seedBodyFragment;
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {

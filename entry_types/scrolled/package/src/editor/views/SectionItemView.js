@@ -61,13 +61,20 @@ export const SectionItemView = Marionette.ItemView.extend({
   },
 
   onRender() {
-    ReactDOM.render(React.createElement(SectionThumbnail,
-                                        {
-                                          sectionPermaId: this.model.get('permaId'),
-                                          seed: this.options.entry.scrolledSeed,
-                                          subscribe: dispatch =>
-                                            watchCollections(this.options.entry, {dispatch})
-                                        }),
-                    this.ui.thumbnail[0]);
+    this.timeout = setTimeout(() => {
+      ReactDOM.render(React.createElement(SectionThumbnail,
+                                          {
+                                            sectionPermaId: this.model.get('permaId'),
+                                            seed: this.options.entry.scrolledSeed,
+                                            subscribe: dispatch =>
+                                              watchCollections(this.options.entry, {dispatch})
+                                          }),
+                      this.ui.thumbnail[0]);
+    }, 100);
+  },
+
+  onClose() {
+    clearTimeout(this.timeout);
+    ReactDOM.unmountComponentAtNode(this.ui.thumbnail[0]);
   }
 });
