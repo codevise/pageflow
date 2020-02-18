@@ -49,6 +49,7 @@ en:
           tabs:
             general: "Before/After"
         videoEmbed:
+          name: "Video Embed"
           tabs:
             general: "Video-Embed"
           attributes:
