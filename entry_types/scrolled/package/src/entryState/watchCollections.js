@@ -6,7 +6,13 @@ export function watchCollections(entry, {dispatch}) {
 
   teardownFns.push(watchCollection(new Backbone.Collection([entry.metadata]), {
     name: 'entries',
-    attributes: ['id', {shareProviders: 'share_providers'}, {shareUrl: 'share_url'}, 'credits'],
+    attributes: [
+      {permaId: () => entry.id}, // Make sure key attribute is present
+      {shareProviders: 'share_providers'},
+      {shareUrl: 'share_url'},
+      'credits'
+    ],
+    keyAttribute: 'permaId',
     dispatch
   }));
   teardownFns.push(watchCollection(chapters, {

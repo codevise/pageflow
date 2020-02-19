@@ -73,6 +73,8 @@ function reducer(state, action) {
 }
 
 function init(items, keyAttribute = 'id') {
+  items = items.filter(item => item[keyAttribute]);
+
   return {
     order: items.map(item => item[keyAttribute]),
     items: items.reduce((result, item) => {
@@ -183,7 +185,12 @@ function getAttributes(model, {attributeNames, includeConfiguration}) {
       const key = Object.keys(attributeName)[0];
       const value = attributeName[key];
 
-      result[key] = model.get(value);
+      if (typeof value == 'function') {
+        result[key] = value();
+      }
+      else {
+        result[key] = model.get(value);
+      }
     }
     else {
       result[attributeName] = model.get(attributeName);

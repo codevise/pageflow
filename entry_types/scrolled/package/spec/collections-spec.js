@@ -62,6 +62,26 @@ describe('watch', () => {
     expect(items.map(i => i.text)).toEqual(['News', 'Report']);
   });
 
+  it('supports mapping to constants', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection([
+      {title: 'News'},
+    ]);
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: [{id: () => 1}, 'title'],
+        dispatch
+      });
+    });
+    const [state,] = result.current;
+    const items = getItems(state, 'posts');
+
+    expect(items.map(i => i.title)).toEqual(['News']);
+  });
+
   it('supports watching multiple collections', () => {
     const {result} = renderHook(() => useCollections());
     const posts = new Backbone.Collection([
@@ -215,7 +235,7 @@ describe('watch', () => {
 
   it('supports including configuration attributes', () => {
     const {result} = renderHook(() => useCollections());
-    const model = new Backbone.Model();
+    const model = new Backbone.Model({id: 1});
     model.configuration = new Backbone.Model({title: 'Title from configuration'});
     const posts = new Backbone.Collection([model])
 
@@ -359,7 +379,7 @@ describe('watch', () => {
 
   it('updates useCollections state when included configuration changes', () => {
     const {result} = renderHook(() => useCollections());
-    const model = new Backbone.Model();
+    const model = new Backbone.Model({id: 1});
     model.configuration = new Backbone.Model({title: 'Old title'});
     const posts = new Backbone.Collection([model])
 
@@ -383,7 +403,7 @@ describe('watch', () => {
 
   it('updates useCollections state when attribute with mapped name changes', () => {
     const {result} = renderHook(() => useCollections());
-    const posts = new Backbone.Collection([{title: 'Old title'}]);
+    const posts = new Backbone.Collection([{id: 1, title: 'Old title'}]);
 
     act(() => {
       const [, dispatch] = result.current;

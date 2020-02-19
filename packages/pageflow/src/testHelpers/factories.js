@@ -50,7 +50,11 @@ export const factories = {
     ensureFileTypes(options);
     ensureFilesCollections(options);
 
-    const entry = new model(attributes, _.extend({
+    const entry = new model({
+      id: 1,
+      ...attributes
+    },
+    _.extend({
       storylines: new Backbone.Collection(),
       chapters: new Backbone.Collection(),
     }, options));

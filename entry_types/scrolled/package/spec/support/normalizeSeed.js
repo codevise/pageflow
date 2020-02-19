@@ -134,8 +134,8 @@ function normalizeLegalInfo(legalInfo) {
 
 function normalizeCollection(collection = [], defaults = {}) {
   return collection.map((item, index) => ({
-    id: index,
-    permaId: index,
+    id: index + 1,
+    permaId: index + 1,
     ...defaults,
     ...item
   }));
