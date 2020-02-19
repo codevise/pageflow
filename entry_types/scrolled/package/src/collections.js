@@ -91,6 +91,7 @@ export function watchCollection(collection,
     attributeNames: attributes,
     includeConfiguration
   };
+  let tearingDown = false;
 
   const watchedAttributeNames = getWatchedAttributeNames(attributes);
 
@@ -141,14 +142,18 @@ export function watchCollection(collection,
     }), handle);
   }
 
-  collection.on('remove', model => dispatch({
-    type: REMOVE,
-    payload: {
-      collectionName: name,
-      order: collection.pluck(keyAttribute),
-      key: model.attributes[keyAttribute]
+  collection.on('remove', model => {
+    if (!tearingDown) {
+      dispatch({
+        type: REMOVE,
+        payload: {
+          collectionName: name,
+          order: collection.pluck(keyAttribute),
+          key: model.attributes[keyAttribute]
+        }
+      })
     }
-  }), handle);
+  }, handle);
 
   collection.on('sort', model => dispatch({
     type: SORT,
@@ -161,6 +166,7 @@ export function watchCollection(collection,
   }), handle);
 
   return function() {
+    tearingDown = true;
     collection.off(null, null, handle);
   };
 }
