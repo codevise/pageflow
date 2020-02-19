@@ -44,6 +44,10 @@ export const SectionItemView = Marionette.ItemView.extend({
     }
   },
 
+  modelEvents: {
+    'change:id': 'renderThumbnail'
+  },
+
   initialize() {
     this.listenTo(this.options.entry, 'change:currentSectionIndex', () => {
       const active =
@@ -62,6 +66,17 @@ export const SectionItemView = Marionette.ItemView.extend({
 
   onRender() {
     this.timeout = setTimeout(() => {
+      this.renderThumbnail();
+    }, 100);
+  },
+
+  onClose() {
+    clearTimeout(this.timeout);
+    ReactDOM.unmountComponentAtNode(this.ui.thumbnail[0]);
+  },
+
+  renderThumbnail() {
+    if (!this.model.isNew()) {
       ReactDOM.render(React.createElement(SectionThumbnail,
                                           {
                                             sectionPermaId: this.model.get('permaId'),
@@ -70,11 +85,6 @@ export const SectionItemView = Marionette.ItemView.extend({
                                               watchCollections(this.options.entry, {dispatch})
                                           }),
                       this.ui.thumbnail[0]);
-    }, 100);
-  },
-
-  onClose() {
-    clearTimeout(this.timeout);
-    ReactDOM.unmountComponentAtNode(this.ui.thumbnail[0]);
+    }
   }
 });
