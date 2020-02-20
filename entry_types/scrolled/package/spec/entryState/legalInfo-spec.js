@@ -172,6 +172,7 @@ describe('useFileRights', () => {
             filesAttributes: {
               image_files: [
                 {
+                  perma_id: 1,
                   rights: 'author'
                 }
               ]

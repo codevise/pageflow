@@ -19,7 +19,12 @@
   position: relative;
 }
 
-.thumbnail {}
+.thumbnail {
+  border: solid 1px #888;
+  padding-top: 50%;
+  position: relative;
+  text-align: initial;
+}
 
 .clickMask {
   position: absolute;

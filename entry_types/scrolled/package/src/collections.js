@@ -73,6 +73,8 @@ function reducer(state, action) {
 }
 
 function init(items, keyAttribute = 'id') {
+  items = items.filter(item => item[keyAttribute]);
+
   return {
     order: items.map(item => item[keyAttribute]),
     items: items.reduce((result, item) => {
@@ -89,6 +91,7 @@ export function watchCollection(collection,
     attributeNames: attributes,
     includeConfiguration
   };
+  let tearingDown = false;
 
   const watchedAttributeNames = getWatchedAttributeNames(attributes);
 
@@ -139,14 +142,18 @@ export function watchCollection(collection,
     }), handle);
   }
 
-  collection.on('remove', model => dispatch({
-    type: REMOVE,
-    payload: {
-      collectionName: name,
-      order: collection.pluck(keyAttribute),
-      key: model.attributes[keyAttribute]
+  collection.on('remove', model => {
+    if (!tearingDown) {
+      dispatch({
+        type: REMOVE,
+        payload: {
+          collectionName: name,
+          order: collection.pluck(keyAttribute),
+          key: model.attributes[keyAttribute]
+        }
+      })
     }
-  }), handle);
+  }, handle);
 
   collection.on('sort', model => dispatch({
     type: SORT,
@@ -159,6 +166,7 @@ export function watchCollection(collection,
   }), handle);
 
   return function() {
+    tearingDown = true;
     collection.off(null, null, handle);
   };
 }
@@ -183,7 +191,12 @@ function getAttributes(model, {attributeNames, includeConfiguration}) {
       const key = Object.keys(attributeName)[0];
       const value = attributeName[key];
 
-      result[key] = model.get(value);
+      if (typeof value == 'function') {
+        result[key] = value();
+      }
+      else {
+        result[key] = model.get(value);
+      }
     }
     else {
       result[attributeName] = model.get(attributeName);

@@ -25,12 +25,10 @@ function Inner({sectionPermaId, subscribe}) {
 
   if (section) {
     return (
-      <div className={styles.root}>
-        <div className={styles.crop}>
-          <div className={styles.scale}>
-            <div className={entryStyles.Entry}>
-              <Section state="active" {...section} transition="preview" />
-            </div>
+      <div className={styles.crop}>
+        <div className={styles.scale}>
+          <div className={entryStyles.Entry}>
+            <Section state="active" {...section} transition="preview" />
           </div>
         </div>
       </div>

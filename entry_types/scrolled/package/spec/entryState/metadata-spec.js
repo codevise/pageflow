@@ -6,7 +6,6 @@ import {renderHookInEntry, normalizeSeed} from 'support';
 
 describe('useEntryMetadata', () => {
   const expectedEntryMetadata = {
-    id: 1,
     shareProviders: {
       facebook: true,
       twitter: false
@@ -21,7 +20,6 @@ describe('useEntryMetadata', () => {
       {
         seed: {
           entry: {
-            id: 1,
             permaId: 1,
             shareProviders: {
               facebook: true,
@@ -46,7 +44,6 @@ describe('useEntryMetadata', () => {
           watchCollections(
             factories.entry(ScrolledEntry, {
               metadata: {
-                id: 1,
                 share_providers: {
                   facebook: true,
                   twitter: false
