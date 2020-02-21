@@ -2,8 +2,10 @@ import I18n from 'i18n-js';
 import _ from 'underscore';
 
 export const useFakeTranslations = function(translations) {
+  let originalTranslations;
+
   beforeEach(function() {
-    this._originalTranslations = I18n.translations;
+    originalTranslations = I18n.translations;
 
     var nested = _(translations).reduce(function(result, value, key) {
       var keys = key.split('.');
@@ -22,6 +24,6 @@ export const useFakeTranslations = function(translations) {
   });
 
   afterEach(() => {
-    I18n.translations = this._originalTranslations;
+    I18n.translations = originalTranslations;
   });
 };
