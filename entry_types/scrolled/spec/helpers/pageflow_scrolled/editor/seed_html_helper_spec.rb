@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pageflow/shared_contexts/fake_translations'
 
 module PageflowScrolled
   module Editor
@@ -48,6 +49,22 @@ module PageflowScrolled
           expect(result).not_to have_selector('script',
                                               text: '"collections"',
                                               visible: false)
+        end
+
+        context 'i18n' do
+          include_context 'fake translations'
+
+          it 'includes inline editing translations' do
+            translation(I18n.locale, 'pageflow_scrolled.inline_editing.some', 'EDIT ME')
+            entry = create(:published_entry, type_name: 'scrolled')
+            create(:section, revision: entry.revision)
+
+            result = helper.scrolled_editor_iframe_seed_html_script_tag(entry)
+
+            expect(result).to have_selector('script',
+                                            text: '"EDIT ME"',
+                                            visible: false)
+          end
         end
       end
     end

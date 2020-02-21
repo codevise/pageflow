@@ -30,6 +30,15 @@ json.config do
   end
 end
 
+unless options[:skip_i18n]
+  json.i18n do
+    json.default_locale I18n.default_locale
+    json.locale I18n.locale
+    json.translations scrolled_i18n_translations(entry,
+                                                 **options.fetch(:translations, {}))
+  end
+end
+
 unless options[:skip_collections]
   json.collections do
     json.entries do

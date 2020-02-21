@@ -8,6 +8,7 @@ module PageflowScrolled
     include Pageflow::FilesHelper
     include Pageflow::EntriesHelper
     include Pageflow::SocialShareLinksHelper
+    include PageflowScrolled::I18nHelper
 
     def scrolled_entry_json_seed_script_tag(scrolled_entry, options = {})
       seed_json = render_json do |json|

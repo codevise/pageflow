@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'pageflow/used_file_test_helper'
+require 'pageflow/shared_contexts/fake_translations'
 
 module PageflowScrolled
   RSpec.describe EntryJsonSeedHelper, type: :helper do
@@ -317,6 +318,67 @@ module PageflowScrolled
                                            privacy: {}
                                          }
                                        })
+      end
+
+      context 'i18n' do
+        include_context 'fake translations'
+
+        it 'renders public scrolled translations by default' do
+          translation(:de, 'pageflow_scrolled.public.some', 'text')
+          entry = create(:published_entry, revision_attributes: {locale: 'de'})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(i18n: {
+                                           translations: {
+                                             de: {
+                                               pageflow_scrolled: {
+                                                 public: {
+                                                   some: 'text'
+                                                 }
+                                               }
+                                             }
+                                           }
+                                         })
+        end
+
+        it 'supports including scrolled inline editing translations' do
+          translation(I18n.locale, 'pageflow_scrolled.inline_editing.some', 'text')
+          entry = create(:published_entry)
+
+          result = render(helper, entry, translations: {include_inline_editing: true})
+
+          expect(result).to include_json(i18n: {
+                                           translations: {
+                                             I18n.locale => {
+                                               pageflow_scrolled: {
+                                                 inline_editing: {
+                                                   some: 'text'
+                                                 }
+                                               }
+                                             }
+                                           }
+                                         })
+        end
+
+        it 'includes locale and default locale' do
+          entry = create(:published_entry)
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(i18n: {
+                                           locale: I18n.locale.to_s,
+                                           defaultLocale: I18n.default_locale.to_s
+                                         })
+        end
+
+        it 'supports skipping i18n' do
+          entry = create(:published_entry)
+
+          result = render(helper, entry, skip_i18n: true)
+
+          expect(JSON.parse(result)).not_to have_key('i18n')
+        end
       end
     end
 
