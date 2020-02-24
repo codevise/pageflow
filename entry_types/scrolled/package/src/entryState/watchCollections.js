@@ -7,6 +7,7 @@ export function watchCollections(entry, {dispatch}) {
   teardownFns.push(watchCollection(new Backbone.Collection([entry.metadata]), {
     name: 'entries',
     attributes: [
+      'locale',
       {permaId: () => entry.id}, // Make sure key attribute is present
       {shareProviders: 'share_providers'},
       {shareUrl: 'share_url'},

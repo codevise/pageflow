@@ -43,7 +43,7 @@ unless options[:skip_collections]
   json.collections do
     json.entries do
       json.array!([entry]) do |entry|
-        json.call(entry, :id, :share_providers, :share_url, :credits)
+        json.call(entry, :id, :locale, :share_providers, :share_url, :credits)
         json.permaId entry.id # required as keyAttribute in EntryStateProvider
       end
     end

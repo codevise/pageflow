@@ -6,6 +6,7 @@ import {renderHookInEntry, normalizeSeed} from 'support';
 
 describe('useEntryMetadata', () => {
   const expectedEntryMetadata = {
+    locale: 'fr',
     shareProviders: {
       facebook: true,
       twitter: false
@@ -21,6 +22,7 @@ describe('useEntryMetadata', () => {
         seed: {
           entry: {
             permaId: 1,
+            locale: 'fr',
             shareProviders: {
               facebook: true,
               twitter: false
@@ -44,6 +46,7 @@ describe('useEntryMetadata', () => {
           watchCollections(
             factories.entry(ScrolledEntry, {
               metadata: {
+                locale: 'fr',
                 share_providers: {
                   facebook: true,
                   twitter: false

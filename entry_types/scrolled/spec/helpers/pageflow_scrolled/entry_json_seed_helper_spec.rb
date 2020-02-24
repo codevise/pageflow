@@ -16,7 +16,10 @@ module PageflowScrolled
       context 'entries' do
         it 'renders single-element entry array with id and configuration' do
           theming = create(:theming, cname: '')
-          revision = create(:revision, share_providers: {facebook: true}, credits: 'Test Credits')
+          revision = create(:revision,
+                            locale: 'fr',
+                            share_providers: {facebook: true},
+                            credits: 'Test Credits')
           entry = Pageflow::DraftEntry.new(create(:entry, theming: theming),
                                            revision)
 
@@ -28,6 +31,7 @@ module PageflowScrolled
                                  {
                                    id: entry.id,
                                    permaId: entry.id,
+                                   locale: 'fr',
                                    shareProviders: {facebook: true},
                                    credits: 'Test Credits'
                                  }
