@@ -16,8 +16,8 @@ the editor and which React component is used to render the content
 element. Pageflow Scrolled provides a JavaScript API to register new
 content element types.
 
-The `pageflow-scrolled` contains a number of built in contenent
-elements in directories below the `src/contentElements` directory. A
+`pageflow-scrolled` contains a number of built-in content elements in
+directories below the `package/src/contentElements` directory. A
 typical directory looks like this:
 
 ```
@@ -33,9 +33,9 @@ We now look at every part one by one.
 ## Frontend JavaScript
 
 The `frontend.js` file registers the content element type with the
-frontend API and specifies the React component that is supposed to be
-used to render the content element. The same component is used in both
-the editor preview and the published entry.
+frontend API and specifies the React component that is used to render
+the content element. The same component is used both in the editor
+preview and in the published entry.
 
 ```javascript
 // frontend.js
@@ -52,16 +52,16 @@ The registered component is a standard React component that can use
 hooks and components provided by the `pageflow-scrolled` package. It
 receives a configuration object via the `configuration` prop. The
 properties available in this object are determined by the inputs in
-the content element's configuration editor view (see "Editor
-Javascrip" section below).
+the content element's configuration editor view (see [Editor
+Javascript](#editor-javascript) section below).
 
 `pageflow-scrolled` provides both reusable components (like the
-`Image` component to render responsive images) and so called selector
-hooks that can used to retrieve information about the entry. For
+`Image` component to render responsive images) and so-called selector
+hooks that can be used to retrieve information about the entry. For
 example, the `useFile` hook allows turning a perma id of a file into
 an object containing urls and meta data information of the file. See
-the
-[API reference of `pageflow-scrolled`](https://codevise.github.io/pageflow-docs/scrolled/js/master/index.html)
+the [API reference of
+`pageflow-scrolled`](https://codevise.github.io/pageflow-docs/scrolled/js/master/index.html)
 for a complete list of available components and hooks.
 
 ## Using the Storybook
@@ -95,9 +95,9 @@ storiesOfContentElement(module, {
 
 The storybook depends on a static JSON file that contains seed for
 example files (e.g. images) that would normally be served by the
-Pageflow server. The easiest to generate the seed file, is to use the
-development setup of a working host application. Run the following
-command in the root directory of you host application:
+Pageflow server. The easiest way to generate the seed file is to use
+the development setup of a working host application. Run the following
+command in the root directory of your host application:
 
 ```bash
 $ bundle exec rake pageflow_scrolled:storybook:seed:setup[./seed.json]
