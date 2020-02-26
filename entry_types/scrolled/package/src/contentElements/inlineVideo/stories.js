@@ -1,11 +1,11 @@
 import '../frontend';
-import {storiesOfContentElement} from 'pageflow-scrolled/spec/support/stories';
+import {storiesOfContentElement, filePermaId} from 'pageflow-scrolled/spec/support/stories';
 
 storiesOfContentElement(module, {
   typeName: 'inlineVideo',
   baseConfiguration: {
-    id: 'videoGarzweilerDrohne',
+    id: filePermaId('videoFiles', 'interview_toni'),
     autoplay: false,
-    controls: true
+    controls: false
   }
 });

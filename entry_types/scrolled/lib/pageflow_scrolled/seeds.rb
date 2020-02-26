@@ -30,18 +30,28 @@ module PageflowScrolled
       if entry.nil?
         entry = Pageflow::Entry.create!(type_name: 'scrolled',
                                         **attributes.except(:chapters,
-                                                            :image_files)) do |created_entry|
+                                                            :image_files,
+                                                            :video_files)) do |created_entry|
           created_entry.theming = attributes.fetch(:account).default_theming
 
           say_creating_scrolled_entry(created_entry)
           yield(created_entry) if block_given?
         end
 
-        image_files_by_name = create_image_files(Pageflow::DraftEntry.new(entry),
-                                                 attributes.fetch(:image_files, {}))
+        draft_entry = Pageflow::DraftEntry.new(entry)
+
+        image_files_by_name = create_files(draft_entry,
+                                           :image,
+                                           attributes.fetch(:image_files, {}))
+
+        video_files_by_name = create_files(draft_entry,
+                                           :video,
+                                           attributes.fetch(:video_files, {}))
+
+        files_by_name = image_files_by_name.merge(video_files_by_name)
 
         attributes[:chapters].each_with_index do |chapter_config, i|
-          create_chapter(entry, chapter_config, i, image_files_by_name)
+          create_chapter(entry, chapter_config, i, files_by_name)
         end
       end
 
@@ -58,18 +68,27 @@ module PageflowScrolled
       say("   sample scrolled entry '#{entry.title}'\n")
     end
 
-    def create_image_files(draft_entry, image_file_data_by_name)
-      image_file_data_by_name.transform_values do |data|
-        say("     creating image file from #{data['url']}")
+    def create_files(draft_entry, file_type, file_data_by_name)
+      file_data_by_name.transform_values do |data|
+        say("     creating #{file_type} file from #{data['url']}")
 
-        draft_entry.create_file!(Pageflow::BuiltInFileType.image,
-                                 state: 'processed',
-                                 attachment: URI.parse(data['url']),
-                                 configuration: data['configuration'])
+        file = draft_entry.create_file!(Pageflow::BuiltInFileType.send(file_type),
+                                        state: file_type == :image ? 'processed' : 'uploading',
+                                        attachment: URI.parse(data['url']),
+                                        configuration: data['configuration'])
+        if file_type == :video
+          if draft_entry.entry_title == 'Storybook seed'
+            file.update!(state: 'encoded')
+          else
+            file.publish!
+          end
+        end
+
+        file
       end
     end
 
-    def create_chapter(entry, chapter_config, position, image_files_by_name)
+    def create_chapter(entry, chapter_config, position, files_by_name)
       section_configs = chapter_config.delete('sections') || []
       chapter = Chapter.create!(
         revision: entry.draft,
@@ -81,34 +100,33 @@ module PageflowScrolled
       )
 
       section_configs.each_with_index do |section_config, i|
-        create_section(chapter, section_config, i, image_files_by_name)
+        create_section(chapter, section_config, i, files_by_name)
       end
     end
 
-    def create_section(chapter, section_config, position, image_files_by_name)
+    def create_section(chapter, section_config, position, files_by_name)
       content_element_configs = section_config.delete('foreground') || []
 
       rewrite_file_references!(section_config['backdrop'],
-                               ['image', 'imageMobile'],
-                               image_files_by_name)
+                               ['image', 'imageMobile', 'video'],
+                               files_by_name)
 
       section = Section.create!(chapter: chapter,
                                 configuration: section_config,
                                 position: position)
 
       content_element_configs.each_with_index do |content_element_config, i|
-        create_content_element(section, content_element_config, i, image_files_by_name)
+        create_content_element(section, content_element_config, i, files_by_name)
       end
     end
 
-    def create_content_element(section, content_element_config, position, image_files_by_name)
-      if %w[stickyImage inlineImage inlineBeforeAfter].include?(
-        content_element_config['type']
-      )
+    def create_content_element(section, content_element_config, position, files_by_name)
+      if %w[stickyImage inlineImage inlineBeforeAfter inlineVideo]
+         .include?(content_element_config['type'])
         rewrite_file_references!(
           content_element_config['props'],
           ['id', 'before_id', 'after_id'],
-          image_files_by_name
+          files_by_name
         )
       end
 
@@ -119,20 +137,19 @@ module PageflowScrolled
       )
     end
 
-    def rewrite_file_references!(hash, keys, image_files_by_name)
+    def rewrite_file_references!(hash, keys, files_by_name)
       return unless hash
 
       keys.each do |key|
         next unless hash[key]
-        next if non_image_reference?(hash[key])
+        next if non_file_reference?(hash[key])
 
-        hash[key] = image_files_by_name.fetch(hash[key]).perma_id
+        hash[key] = files_by_name.fetch(hash[key]).perma_id
       end
     end
 
-    def non_image_reference?(value)
-      value.starts_with?('#') ||
-        value.starts_with?('video')
+    def non_file_reference?(value)
+      value.starts_with?('#')
     end
   end
 end

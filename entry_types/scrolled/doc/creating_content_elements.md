@@ -83,7 +83,7 @@ storiesOfContentElement(module, {
   typeName: 'inlineImage',
   baseConfiguration: {
     id: filePermaId('imageFiles', 'turtle')
-  }
+  },
   variants: [
     {
       name: 'With Caption',
