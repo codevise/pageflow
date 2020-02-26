@@ -30,11 +30,20 @@ json.config do
   end
 end
 
+unless options[:skip_i18n]
+  json.i18n do
+    json.default_locale I18n.default_locale
+    json.locale I18n.locale
+    json.translations scrolled_i18n_translations(entry,
+                                                 **options.fetch(:translations, {}))
+  end
+end
+
 unless options[:skip_collections]
   json.collections do
     json.entries do
       json.array!([entry]) do |entry|
-        json.call(entry, :id, :share_providers, :share_url, :credits)
+        json.call(entry, :id, :locale, :share_providers, :share_url, :credits)
         json.permaId entry.id # required as keyAttribute in EntryStateProvider
       end
     end

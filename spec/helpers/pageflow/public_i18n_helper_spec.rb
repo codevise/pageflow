@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'support/shared_contexts/fake_translations'
+require 'pageflow/shared_contexts/fake_translations'
 
 module Pageflow
   describe PublicI18nHelper do

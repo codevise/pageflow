@@ -60,11 +60,15 @@ namespace :pageflow_scrolled do
           exit 1
         end
 
+        draft_entry = Pageflow::DraftEntry.new(entry)
+
         seed =
-          PageflowScrolled::EntriesController
-          .render(inline: 'scrolled_entry_json_seed(json, entry)',
-                  type: :jbuilder,
-                  locals: {entry: Pageflow::DraftEntry.new(entry)})
+          I18n.with_locale(draft_entry.locale) do
+            PageflowScrolled::EntriesController
+              .render(inline: 'scrolled_entry_json_seed(json, entry)',
+                      type: :jbuilder,
+                      locals: {entry: draft_entry})
+          end
 
         if args[:output].blank?
           puts 'Missing argument: Pass output path via '\

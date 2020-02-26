@@ -1,5 +1,10 @@
 de:
   pageflow_scrolled:
+    public:
+      sound_disclaimer:
+        help_text: Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/> Klicken Sie einmal in dieses Feld, um den Ton für die gesamte Geschichte zu aktivieren.
+    inline_editing:
+      insert_content_element: Neues Element einfügen
     editor:
       content_elements:
         heading:

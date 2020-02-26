@@ -59,6 +59,20 @@ RSpec.describe 'storybook:seed' do
 
       expect(File.read(test_output_file_name)).to include('"testReferenceName":"turtle"')
     end
+
+    it 'sets locale to entry locale' do
+      rake 'pageflow_scrolled:storybook:seed:create_entry'
+      Pageflow::Entry.where(title: 'Storybook seed').first.draft.update(locale: 'fr')
+      rake 'pageflow_scrolled:storybook:seed:generate_json', test_output_file_name
+
+      expect(File.read(test_output_file_name))
+        .to include_json(i18n: {
+                           locale: 'fr',
+                           translations: {
+                             fr: {}
+                           }
+                         })
+    end
   end
 
   def rake(task, *args)

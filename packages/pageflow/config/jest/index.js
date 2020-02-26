@@ -10,7 +10,6 @@ module.exports = {
     '^backbone$': resolve('../../src/vendor/backbone'),
     '^underscore$': resolve('../../src/vendor/underscore'),
     '^cocktail$': resolve('../../src/vendor/cocktail'),
-    '^i18n-js$': resolve('../../src/vendor/i18n'),
     '^iscroll$': resolve('../../src/vendor/iscroll'),
     '^wysihtml5': resolve('../../spec/support/wysihtmlStub'),
   },

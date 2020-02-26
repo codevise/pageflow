@@ -21,6 +21,7 @@ toc:
       React hooks to obtain entry data.
     children:
       - useFile
+      - useI18n
       - useEntryStructure
       - useSectionStructure
       - useEntryMetadata

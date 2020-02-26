@@ -8,7 +8,6 @@ module.exports = {
     'jquery.minicolors': 'jQuery',
     'underscore': '_',
     'backbone.marionette': 'Backbone.Marionette',
-    'i18n-js': 'I18n',
     'iscroll': 'IScroll',
     'wysihtml5': 'wysihtml5'
   }

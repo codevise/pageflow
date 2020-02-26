@@ -12,6 +12,7 @@ import {getItems} from '../collections';
  * metaData // =>
  *   {
  *     id: 5,
+ *     locale: 'en',
  *     shareProviders: {email: false, facebook: true},
  *     share_url: 'http://test.host/test',
  *     credits: 'Credits: Pageflow'

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Entry, EntryStateProvider} from 'pageflow-scrolled/frontend';
+import {Entry, EntryStateProvider, setupI18n} from 'pageflow-scrolled/frontend';
 
 import {normalizeSeed} from './normalizeSeed';
 import {storiesOf} from '@storybook/react';
@@ -47,6 +47,10 @@ let seedFixture = seedFixtureFromFile;
  */
 export function storiesOfContentElement(module, options) {
   const stories = storiesOf(`Content Elements/${options.typeName}`, module);
+
+  if (seedFixture.i18n) {
+    setupI18n(seedFixture.i18n);
+  }
 
   exampleStories(options).forEach(({title, seed, parameters = {}}) => {
     stories.add(title,

@@ -126,3 +126,4 @@ toc:
       Utility functions exported by `pageflow/testHelpers`.
     children:
       - factories
+      - useFakeTranslations

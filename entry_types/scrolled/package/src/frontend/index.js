@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import {AppHeader} from './navigation/AppHeader';
 import Entry from './Entry';
+import {setupI18n} from './i18n';
 
 import './global.module.css';
 import {EntryStateProvider} from '../entryState';
@@ -18,12 +19,14 @@ export * from './Video';
 
 export * from './useOnScreen';
 export * from './useMediaSettings';
+export * from './i18n';
 
 export * from './SectionThumbnail';
 export {default as Entry} from './Entry';
 export {EntryStateProvider} from '../entryState/EntryStateProvider'
 
 window.pageflowScrolledRender = function(seed) {
+  setupI18n(seed.i18n);
   ReactDOM.render(<Root seed={seed} />, document.getElementById('root'));
 }
 
