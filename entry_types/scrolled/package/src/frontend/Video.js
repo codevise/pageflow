@@ -6,95 +6,70 @@ import MutedContext from './MutedContext';
 
 import styles from './Video.module.css';
 
+import {useFile} from '../entryState';
+
+/**
+ * Render a video file.
+ *
+ * @param {Object} props
+ * @param {number} props.id - Perma id of the video file.
+ */
 export function Video(props) {
-  const awsBucket = '//s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/presentation-videos/';
+  const videoFile = useFile({collectionName: 'videoFiles', permaId: props.id});
 
-  const videoBoatSunset  = awsBucket+'floodplain-clean.mp4';
-  const poster_videoBoatSunset  = awsBucket+'posterframes/poster_katerchen.jpeg';
-  const videoBoatDark  = awsBucket+'floodplain-dirty.mp4';
-  const poster_videoBoatDark  = awsBucket+'posterframes/poster_katerchen.jpeg';
-  const videoKaterchen  = awsBucket+'katerchen.mp4';
-  const poster_videoKaterchen  = awsBucket+'posterframes/poster_katerchen.jpeg';
-  const videoGarzweilerLoop1  = awsBucket+'braunkohle_loop1.mp4';
-  const poster_videoGarzweilerLoop1  = awsBucket+'posterframes/poster_braunkohle_loop1.jpeg';
-  const videoGarzweilerLoop2  = awsBucket+'braunkohle_loop2.mp4';
-  const poster_videoGarzweilerLoop2  = awsBucket+'posterframes/poster_braunkohle_loop2.jpeg';
-  const videoGarzweilerDrohne  = awsBucket+'braunkohle_drone.mp4';
-  const poster_videoGarzweilerDrohne  = awsBucket+'posterframes/poster_braunkohle_drone.jpeg';
-  const videoInselInterviewToni  = awsBucket+'pageflow_insel_interview_toni02.mp4';
-  const poster_videoInselInterviewToni  = awsBucket+'posterframes/poster_pageflow_insel_interview_toni02.jpg';
+  if (videoFile) {
+    const videoRef = useRef();
+    const state = props.state;
 
-  const videoUrl = {
-    videoBoatSunset,
-    videoBoatDark,
-    videoKaterchen,
-    videoGarzweilerLoop1,
-    videoGarzweilerLoop2,
-    videoGarzweilerDrohne,
-    videoInselInterviewToni
-  }[props.id];
+    const mutedSettings = useContext(MutedContext);
 
-  const posterUrl = {
-    poster_videoBoatSunset,
-    poster_videoBoatDark,
-    poster_videoKaterchen,
-    poster_videoGarzweilerLoop1,
-    poster_videoGarzweilerLoop2,
-    poster_videoGarzweilerDrohne,
-    poster_videoInselInterviewToni
-  }['poster_'+props.id];
+    useEffect(() => {
+      const video = videoRef.current;
 
-  const videoRef = useRef();
-  const state = props.state;
+      if (!video) {
+        return;
+      }
 
-  const mutedSettings = useContext(MutedContext);
+      video.muted = mutedSettings.muted
 
-  useEffect(() => {
-    const video = videoRef.current;
-
-    if (!video) {
-      return;
-    }
-
-    video.muted = mutedSettings.muted
-
-    if (!mutedSettings.mediaOff && props.autoplay !== false) {
-      if (state === 'active') {
-        if (video.readyState > 0) {
-          video.play();
-        }
-        else {
-          video.addEventListener('loadedmetadata', play);
-          return () => video.removeEventListener('loadedmetadata', play);
+      if (!mutedSettings.mediaOff && props.autoplay !== false) {
+        if (state === 'active') {
+          if (video.readyState > 0) {
+            video.play();
+          } else {
+            video.addEventListener('loadedmetadata', play);
+            return () => video.removeEventListener('loadedmetadata', play);
+          }
+        } else {
+          video.pause();
         }
       }
-      else {
-        video.pause();
+
+      function play() {
+        video.play();
       }
-    }
+    }, [state, mutedSettings.mediaOff, mutedSettings.muted, props.autoplay]);
 
-    function play() {
-      video.play();
-    }
-  }, [state, mutedSettings.mediaOff, mutedSettings.muted, props.autoplay]);
+    return (
+      <div className={styles.root}>
+        <ScrollToSectionContext.Consumer>
+          {scrollToSection =>
+            <video role="img"
+                   src={videoFile.urls.high}
+                   ref={videoRef}
+                   className={classNames(styles.video, {[styles.backdrop]: !props.interactive})}
+                   controls={props.controls}
+                   playsInline
+                   onEnded={() => props.nextSectionOnEnd && scrollToSection('next')}
+                   loop={!props.interactive}
+                   poster={videoFile.urls.poster_large}/>
+          }
+        </ScrollToSectionContext.Consumer>
+      </div>
+    )
+  }
 
-  return (
-    <div className={styles.root}>
-      <ScrollToSectionContext.Consumer>
-        {scrollToSection =>
-          <video role="img"
-                 src={videoUrl}
-                 ref={videoRef}
-                 className={classNames(styles.video, {[styles.backdrop]: !props.interactive})}
-                 controls={props.controls}
-                 playsInline
-                 onEnded={() => props.nextSectionOnEnd && scrollToSection('next')}
-                 loop={!props.interactive}
-                 poster={posterUrl} />
-        }
-      </ScrollToSectionContext.Consumer>
-    </div>
-  )
+  return null;
 }
 
 Video.defaultProps = {
