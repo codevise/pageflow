@@ -85,6 +85,9 @@ en:
           name: Inline Video
           tabs:
             general: Inline Video
+          attributes:
+            id:
+              label: "Video"
         inlineBeforeAfter:
           name: Before/After
           tabs:
@@ -204,7 +207,9 @@ en:
           section: Section
         attributes:
           backdropImage:
-            label: Background
+            label: Background-Image
+          backdropVideo:
+            label: Background-Video
           backdropType:
             label: Background-Type
             inline_help: >
