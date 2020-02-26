@@ -86,6 +86,9 @@ de:
           name: Inline-Video
           tabs:
             general: Inline-Video
+          attributes:
+            id:
+              label: "Video"
         inlineBeforeAfter:
           name: Vorher/Nachher
           tabs:
@@ -222,7 +225,9 @@ de:
               solid: Block
               transparent: Keine
           backdropImage:
-            label: Hintergrund
+            label: Hintergrund-Bild
+          backdropVideo:
+            label: Hintergrund-Video
           backdropType:
             label: Hintergrund-Typ
             inline_help: >
