@@ -35,6 +35,16 @@ en:
             links: "External Links"
             general: "External Links"
             edit_link: "Edit Link"
+        dataWrapperChart:
+          name: 'DataWrapper Chart'
+          tabs:
+            general: 'Chart'
+          attributes:
+            create_chart:
+              label: Create new Datawrapper chart
+            url: 
+              label: 'Chart URL'
+              inline_help: URL of a chart published via Datawrapper. Datawrapper offers a special 'Pageflow' layout selectable on the 'Design' tab for optimal display inside Pageflow.
         heading:
           name: "Heading"
           tabs:
