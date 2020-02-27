@@ -37,6 +37,11 @@ export default function Section(props) {
 
   useScrollTarget(ref, props.isScrollTarget);
 
+  const sectionProperties = {
+    layout: props.layout,
+    invert: props.invert
+  }
+
   const [motifAreaRect, setMotifAreaRectRect] = useBoundingClientRect();
   const [motifAreaDimension, setMotifAreaDimensionRef] = useDimension();
 
@@ -111,7 +116,7 @@ export default function Section(props) {
           <Layout items={indexItems(props.foreground)}
                   appearance={props.appearance}
                   contentAreaRef={setContentAreaRef}
-                  layout={props.layout}>
+                  sectionProps={sectionProperties}>
             {(children) => <BoxWrapper>{children}</BoxWrapper>}
           </Layout>
         </Box>

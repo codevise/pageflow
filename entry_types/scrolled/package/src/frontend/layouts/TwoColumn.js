@@ -35,7 +35,7 @@ function renderItemGroup(props, group, position) {
     return (
       <div className={styles[position]}>
         {props.children(
-          <ContentElements items={group[position]} />
+          <ContentElements sectionProps={props.sectionProps} items={group[position]} />
         )}
       </div>
     );

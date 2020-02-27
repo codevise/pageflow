@@ -12,7 +12,8 @@ export function ContentElements(props) {
                                        type={item.type}
                                        first={index === 0}
                                        position={item.position}
-                                       itemProps={item.props} />)
+                                       itemProps={item.props} 
+                                       sectionProps={props.sectionProps}/>)
        )}
     </>
   );

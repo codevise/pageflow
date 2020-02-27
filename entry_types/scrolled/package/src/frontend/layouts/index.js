@@ -4,10 +4,10 @@ import TwoColumn from './TwoColumn';
 import Center from './Center';
 
 export function Layout(props) {
-  if (props.layout === 'center') {
+  if (props.sectionProps.layout === 'center') {
     return (<Center {...props} />);
   }
-  else if (props.layout === 'right') {
+  else if (props.sectionProps.layout === 'right') {
     return (<TwoColumn align="right" {...props} />);
   }
   else {
