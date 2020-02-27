@@ -65,7 +65,9 @@ export function AppHeader(props) {
   };
 
   function renderChapterLinks(chapters) {
-    return chapters.map((chapter, index) => {
+    return chapters.filter(function (chapterConfiguration) {
+      return chapterConfiguration.title && chapterConfiguration.summary;
+    }).map((chapter, index) => {
       const chapterIndex = index + 1;
       const chapterLinkId = `chapterLink${chapterIndex}`
       return (
@@ -97,9 +99,10 @@ export function AppHeader(props) {
           </ul>
         </nav>
 
-        <LegalInfoMenu />
-
-        <SharingMenu />
+        <div className={classNames(styles.contextIcons)}>
+          <SharingMenu />
+          <LegalInfoMenu />
+        </div>
       </div>
 
       <div className={styles.progressBar} onMouseEnter={handleProgressBarMouseEnter}>

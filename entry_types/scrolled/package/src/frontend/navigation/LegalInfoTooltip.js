@@ -19,7 +19,7 @@ export function LegalInfoTooltip() {
                   event={'click'}
                   globalEventOff={'click'}
                   clickable={true}
-                  offset={{bottom: 5, right: -97}}
+                  offset={{right: -97}}
                   className={classNames(headerStyles.navigationTooltip,
                                         styles.legalInfoTooltip)}>
       <div onMouseLeave={() => { ReactTooltip.hide() }}>
