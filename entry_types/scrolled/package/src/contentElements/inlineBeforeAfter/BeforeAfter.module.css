@@ -5,7 +5,7 @@
   justify-content: center;
 }
 
-:global(.wiggle) {
+.container div div:nth-child(3) {
   animation: shake 1.5s cubic-bezier(.36,.07,.19,.97) both;
 }
 

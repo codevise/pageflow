@@ -1,5 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
-import ReactCompareImage from '../../vendor/react-compare-image/ReactCompareImage';
+import ReactCompareImage from 'react-compare-image';
 import styles from './BeforeAfter.module.css';
 
 export function BeforeAfter({state,
@@ -18,7 +18,6 @@ export function BeforeAfter({state,
   var [beforeAfterPos, setBeforeAfterPos] = useState(startPos);
   const beforeAfterRef = useRef();
   const slideOnScroll = slideMode === 'both' || slideMode === 'scroll';
-  const slideClassic = slideMode === 'both' || slideMode === 'classic';
 
   const current = beforeAfterRef.current;
 
@@ -92,7 +91,6 @@ export function BeforeAfter({state,
                          sliderPosition={beforeAfterPos} setSliderPosition={setBeforeAfterPos}
                          isSliding={isSliding} setIsSliding={setIsSliding}
                          leftImageLabel={leftImageLabel} rightImageLabel={rightImageLabel}
-                         classicMode={slideClassic}
                          wiggle={wiggle} />
     </div>
   );
