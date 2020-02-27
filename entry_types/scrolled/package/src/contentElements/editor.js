@@ -5,3 +5,4 @@ import './inlineVideo/editor';
 import './inlineBeforeAfter/editor';
 import './soundDisclaimer/editor';
 import './videoEmbed/editor';
+import './externalLinkList/editor';

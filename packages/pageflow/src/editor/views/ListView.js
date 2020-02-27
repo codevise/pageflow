@@ -65,7 +65,7 @@ export const ListView = Marionette.ItemView.extend({
         typeName: this.options.itemTypeName,
         typeDescription: this.options.itemTypeDescription,
         isInvalid: this.options.itemIsInvalid
-      }, _(this.options).pick('onEdit', 'onDelete', 'highlight')),
+      }, _(this.options).pick('onEdit', 'onRemove', 'highlight')),
 
       blankSlateViewConstructor: Marionette.ItemView.extend({
         tagName: 'li',
