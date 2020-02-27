@@ -16,7 +16,7 @@ RSpec.feature 'as entry editor, editing a content element', js: true do
 
     Dom::Editor::EntryPreview.find!.within_scrolled_entry do |preview|
       expect(preview.heading_content_element).to have_text('Some text')
-      preview.heading_content_element.click
+      preview.heading_content_element_selection_rect.click
     end
 
     edit_configuration_view = Pageflow::Dom::Editor::EditConfigurationView.find!

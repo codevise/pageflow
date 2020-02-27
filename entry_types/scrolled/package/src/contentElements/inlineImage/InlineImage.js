@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {Image} from 'pageflow-scrolled/frontend';
-import {InlineCaption} from './InlineCaption';
+import {Image, InlineCaption} from 'pageflow-scrolled/frontend';
 
 import styles from './InlineImage.module.css';
 

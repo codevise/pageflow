@@ -48,7 +48,34 @@ de:
           name: "Vorher/Nachher"
           tabs:
             general: "Vorher/Nachher"
-
+        videoEmbed:
+          name: "Video Embed"
+          tabs:
+            general: "Video-Embed"
+          attributes:
+            caption:
+              label: "Beschriftung"
+            videoSource:
+              label: "Video-URL"
+            position:
+              label: Position
+              values:
+                inline: Im Textfluss
+                sticky: Sticky
+                full: Voll Breite
+            hideControls:
+              label: Steuerelemente ausblenden
+              inline_help: Blendet die Steuerelemente aus wenn möglich (variiert je nach Anbieter und Konfiguration). Das Video kann per Klick gestartet und pausiert werden.
+            hideInfo:
+              label: Titel in Embed ausblenden
+              inline_help: Blendet Titel und Author Informationen innerhalb des Embeds aus wenn möglich (variiert je nach Anbieter und Konfiguration)
+            aspectRatio:
+              label: Seitenverhältnis des Videos
+              values:
+                wide: "Landscape 16:9"
+                narrow: "Landscape 4:3"
+                square: Quadratisch
+                portrait: Portrait (9:16)
       entry_outline:
         header: "Giederung"
         add_chapter: "Neues Kapitel"

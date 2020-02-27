@@ -4,3 +4,4 @@ import './inlineImage/frontend';
 import './inlineVideo/frontend';
 import './soundDisclaimer/frontend';
 import './textBlock/frontend';
+import './videoEmbed/frontend';
