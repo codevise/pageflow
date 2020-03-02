@@ -46,7 +46,7 @@ en:
           attributes:
             create_chart:
               label: Create new Datawrapper chart
-            url: 
+            url:
               label: Chart URL
               inline_help: >
                 URL of a chart published via Datawrapper. Datawrapper offers a special 'Pageflow'
@@ -88,7 +88,45 @@ en:
         inlineBeforeAfter:
           name: Before/After
           tabs:
-            general: Before/After
+            general: "Before/After"
+          attributes:
+            before_id:
+              label: Before Image
+              inline_help: >
+                Shown to the left of divider.
+            before_label:
+              label: Before Label
+              inline_help: >
+                Set the text of a short label for the Before
+                image. Examples: 'Before', 'January 2000'
+            after_id:
+              label: After Image
+              inline_help: >
+                Shown to the right of divider.
+            after_label:
+              label: After Label
+              inline_help: >
+                Set the text of a short label for the After
+                image. Examples: 'After', 'January 2040'
+            initial_slider_position:
+              label: Divider start position
+              inline_help: >
+                In case the divider shouldn't be in the middle at the
+                start, its start position can be set here.
+            slider:
+              label: Show Slider
+              inline_help: >
+                Shows/hides visible slider at divider line.
+            slider_handle:
+              label: Show Slider Handle
+              inline_help: >
+                Activates/deactivates slider handle.
+            slider_color:
+              label: Slider Color
+              inline_help: >
+                You can configure slider color (incl. slider handle)
+                freely. Make sure that the slider can be seen clearly
+                on every position over the entire Before/After area.
         videoEmbed:
           name: Video Embed
           tabs:
