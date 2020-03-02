@@ -1,8 +1,6 @@
 import {useState, useEffect} from 'react';
 import iObserver from '../vendor/intersection-observer';
 
-
-
 export function useOnScreen(ref, rootMargin = '0px', cb) {
   const [isIntersecting, setIntersecting] = useState(false);
   const Observer = window.IntersectionObserver ? window.IntersectionObserver : iObserver;
@@ -11,7 +9,7 @@ export function useOnScreen(ref, rootMargin = '0px', cb) {
     const observer = new Observer(
       ([entry]) => {
         setIntersecting(entry.isIntersecting);
-        
+
         if (entry.isIntersecting && cb) {
           cb();
         }

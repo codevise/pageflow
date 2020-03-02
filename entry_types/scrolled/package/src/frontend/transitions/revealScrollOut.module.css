@@ -8,6 +8,14 @@
   justify-content: flex-end;
 }
 
+/* To fix the rendering on firefox */
+@-moz-document url-prefix(){
+  .backdrop {
+    display: grid;
+    justify-content: inherit;
+  }
+}
+
 .backdropInner {
   position: sticky;
   bottom: 0;
