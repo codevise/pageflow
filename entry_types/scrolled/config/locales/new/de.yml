@@ -13,7 +13,7 @@ de:
     editor:
       content_elements:
         externalLinkList:
-          name: 'Externe-Verweise'
+          name: 'Externe Verweise'
           outline: Gliederung
           destroy: Löschen
           back: Zurück
