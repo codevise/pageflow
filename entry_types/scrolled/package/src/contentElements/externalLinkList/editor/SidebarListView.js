@@ -1,12 +1,9 @@
-import {ConfigurationEditorView} from 'pageflow/ui'
 import {editor} from 'pageflow-scrolled/editor';
 import {ListView} from 'pageflow/editor';
 import _ from 'underscore';
 import {cssModulesUtils} from 'pageflow/ui';
-
-import styles from './Sidebar.module.css';
+import styles from './SidebarListView.module.css';
 import Marionette from 'backbone.marionette';
-
 
 export const SidebarListView = Marionette.Layout.extend({
   template: (data) => `
