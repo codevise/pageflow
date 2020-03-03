@@ -3,12 +3,38 @@ de:
     public:
       navigation:
         chapter: Kapitel
+      external_link:
+        open_in_new_tab: Seite in neuem Tab ansehen
+        open_in_new_tab_message: Öffnen im selben Tab ist im Editor deaktiviert.
       sound_disclaimer:
         help_text: Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/> Klicken Sie einmal in dieses Feld, um den Ton für die gesamte Geschichte zu aktivieren.
     inline_editing:
       insert_content_element: Neues Element einfügen
     editor:
       content_elements:
+        externalLinkList:
+          name: 'Externe Verweise'
+          outline: Gliederung
+          destroy: Löschen
+          back: Zurück
+          add: Hinzufügen
+          confirm_delete: Möchten Sie dieses Element wirklich löschen?
+          confirm_delete_link: Möchten Sie diesen Link wirklich löschen?
+          attributes:
+            url: 
+              label: 'URL'
+            open_in_new_tab: 
+              label: 'In neuem Tab öffnen'
+            title: 
+              label: 'Titel'
+            description: 
+              label: 'Beschreibung'
+            thumbnail: 
+              label: 'Miniaturansicht'
+          tabs:
+            links: "External Link"
+            general: "External Links"
+            edit_link: "Link bearbeiten"
         heading:
           name: "Überschrift"
           tabs:

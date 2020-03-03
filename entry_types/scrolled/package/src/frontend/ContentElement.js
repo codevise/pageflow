@@ -16,7 +16,8 @@ export function ContentElement(props) {
         {props.first && <InsertContentElementIndicator position="before" contentElementId={props.id} />}
         <div className={classNames({[styles.selected]: isSelected, [styles.selectable]: isSelectable})}
              onClick={e => { e.stopPropagation(); isSelectable ? select() : resetSelection(); }}>
-          <Component configuration={props.itemProps} />
+          <Component sectionProps={props.sectionProps} 
+                     configuration={props.itemProps} />
           <div className={styles.tl} />
           <div className={styles.bl} />
           <div className={styles.tr} />
@@ -28,7 +29,8 @@ export function ContentElement(props) {
   }
   else {
     return (
-      <Component configuration={props.itemProps} />
+      <Component sectionProps={props.sectionProps}
+                 configuration={props.itemProps} />
     );
   }
 }

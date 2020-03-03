@@ -5,3 +5,4 @@ import './inlineVideo/frontend';
 import './soundDisclaimer/frontend';
 import './textBlock/frontend';
 import './videoEmbed/frontend';
+import './externalLinkList/frontend';
