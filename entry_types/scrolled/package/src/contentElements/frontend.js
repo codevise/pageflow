@@ -6,3 +6,4 @@ import './soundDisclaimer/frontend';
 import './textBlock/frontend';
 import './videoEmbed/frontend';
 import './externalLinkList/frontend';
+import './dataWrapperChart/frontend';

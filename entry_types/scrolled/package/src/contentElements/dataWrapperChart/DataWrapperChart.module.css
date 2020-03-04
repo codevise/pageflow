@@ -1,0 +1,11 @@
+.container {
+  min-height: 200px;
+  height: 400px;
+}
+
+.container > iframe {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 0;
+}

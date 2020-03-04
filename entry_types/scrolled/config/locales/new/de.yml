@@ -35,6 +35,16 @@ de:
             links: "External Link"
             general: "External Links"
             edit_link: "Link bearbeiten"
+        dataWrapperChart:
+          name: 'DataWrapper Diagramm'
+          tabs:
+            general: 'Diagramm'
+          attributes:
+            create_chart:
+              label: Neues Datawrapper Diagramm erstellen
+            url: 
+              label: 'Diagramm URL'
+              inline_help: 'URL zu einem bei Datawrapper publiziertem Diagramm. Datawrapper bietet in den Diagramm Optionen ein spezielles ''Pageflow'' Design für eine optimale Darstellung innerhalb des Beitrags. '
         heading:
           name: "Überschrift"
           tabs:
