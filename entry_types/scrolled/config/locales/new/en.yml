@@ -68,12 +68,6 @@ en:
               label: "Caption"
             id:
               label: "Image"
-            position:
-              label: Position
-              values:
-                inline: Inline
-                sticky: Sticky
-                full: Full Width
         soundDisclaimer:
           name: "Audio Notice"
           tabs:
@@ -95,12 +89,6 @@ en:
               label: "Caption"
             videoSource:
               label: "Video-URL"
-            position:
-              label: Position
-              values:
-                inline: Inline
-                sticky: Sticky
-                full: Full Width
             hideControls:
               label: Hide controls
               inline_help: Hides the player controls if possible (depends on the videos provider and configuration). The video can be played and paused via click.
@@ -114,6 +102,13 @@ en:
                 narrow: "Landscape 4:3"
                 square: Square
                 portrait: Portrait (9:16)
+      inputs:
+        position:
+          label: Position
+          values:
+            inline: Inline
+            sticky: Sticky
+            full: Full Width
       entry_outline:
         header: "Outline"
         add_chapter: "New chapter"
