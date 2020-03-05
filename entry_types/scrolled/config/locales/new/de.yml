@@ -68,12 +68,6 @@ de:
               label: "Beschriftung"
             id:
               label: "Bild"
-            position:
-              label: Position
-              values:
-                inline: Im Textfluss
-                sticky: Sticky
-                full: Voll Breite
         soundDisclaimer:
           name: "Audio-Hinweis"
           tabs:
@@ -95,12 +89,6 @@ de:
               label: "Beschriftung"
             videoSource:
               label: "Video-URL"
-            position:
-              label: Position
-              values:
-                inline: Im Textfluss
-                sticky: Sticky
-                full: Voll Breite
             hideControls:
               label: Steuerelemente ausblenden
               inline_help: Blendet die Steuerelemente aus wenn möglich (variiert je nach Anbieter und Konfiguration). Das Video kann per Klick gestartet und pausiert werden.
@@ -117,6 +105,13 @@ de:
       entry_outline:
         header: "Giederung"
         add_chapter: "Neues Kapitel"
+      inputs:
+        position:
+          label: Position
+          values:
+            inline: Im Textfluss
+            sticky: Sticky
+            full: Volle Breite
       chapter_item:
         add_section: "Neuer Abschnitt"
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.

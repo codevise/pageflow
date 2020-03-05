@@ -11,6 +11,7 @@ editor.contentElementTypes.register('inlineImage', {
       });
       this.input('caption', TextInputView);
       this.input('position', SelectInputView, {
+        attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.inputs'],
         values: ['inline', 'sticky', 'full']
       });
     });
