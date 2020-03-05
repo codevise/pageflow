@@ -14,6 +14,8 @@ const editMode = window.location.pathname.indexOf('/editor/entries') === 0;
 export {api as frontend} from './api';
 
 export * from './Image';
+export * from './useImageUrl';
+export * from './useImageAlt';
 export * from './InlineCaption';
 export * from './Text';
 export * from './Video';
@@ -25,6 +27,7 @@ export * from './i18n';
 export * from './SectionThumbnail';
 export {default as Entry} from './Entry';
 export {EntryStateProvider} from '../entryState/EntryStateProvider'
+export {useEditorSelection} from './EditorState';
 
 window.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);
