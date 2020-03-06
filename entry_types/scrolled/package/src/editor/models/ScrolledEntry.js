@@ -35,9 +35,10 @@ export const ScrolledEntry = Entry.extend({
     });
   },
 
-  insertContentElement(attributes, {position, id}) {
+  insertContentElement(attributes, {position, id}, defaultConfig) {
     const sibling = this.contentElements.get(id);
-    const section = sibling.section
+    const section = sibling.section;
+    defaultConfig = defaultConfig || {};
     let delta = 0;
 
     section.contentElements.each(function(contentElement, index) {
@@ -56,7 +57,8 @@ export const ScrolledEntry = Entry.extend({
       position: sibling.get('position') + (position === 'before' ? -1 : 1),
       ...attributes,
       configuration: {
-        position: sibling.configuration.get('position')
+        ...defaultConfig,
+        position: sibling.configuration.get('position'),
       }
     });
 
