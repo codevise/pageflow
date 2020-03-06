@@ -7,13 +7,15 @@ en:
         open_in_new_tab: Open in new tab
         open_in_new_tab_message: Opening in same tab is disabled inside the editor
       sound_disclaimer:
-        help_text: This article works best with the sound turned on. <br/> Click once in this field to activate the sound for the entire story.
+        help_text: >
+          This article works best with the sound turned on. <br/>
+          Click once in this field to activate the sound for the entire story.
     inline_editing:
       insert_content_element: Insert new element
     editor:
       content_elements:
         externalLinkList:
-          name: 'External links'
+          name: External links
           outline: Outline
           destroy: Delete
           add: Add
@@ -22,101 +24,122 @@ en:
           confirm_delete_link: Are you sure you want to delete this link?
           attributes:
             url:
-              label: 'URL'
+              label: URL
+              inline_help: Absolute URL (inkluding http:// oder https://) of Link.
             open_in_new_tab:
-              label: 'Open in new tab'
+              label: Open in new tab
             title:
-              label: 'Title'
+              label: Title
+              inline_help: Link-title for display in entry.
             description:
-              label: 'Description'
+              label: Description
+              inline_help: Link-description for display in entry.
             thumbnail:
-              label: 'Thumbnail'
+              label: Thumbnail
+              inline_help: Link thumbnail image for display in entry.
           tabs:
-            links: "External Links"
-            general: "External Links"
-            edit_link: "Edit Link"
+            edit_link: Edit Link
         dataWrapperChart:
-          name: 'DataWrapper Chart'
+          name: DataWrapper Chart
           tabs:
-            general: 'Chart'
+            general: Chart
           attributes:
             create_chart:
               label: Create new Datawrapper chart
             url: 
-              label: 'Chart URL'
-              inline_help: URL of a chart published via Datawrapper. Datawrapper offers a special 'Pageflow' layout selectable on the 'Design' tab for optimal display inside Pageflow.
+              label: Chart URL
+              inline_help: >
+                URL of a chart published via Datawrapper. Datawrapper offers a special 'Pageflow'
+                layout selectable on the 'Design' tab for optimal display inside Pageflow.
         heading:
-          name: "Heading"
+          name: Heading
           tabs:
-            general: "Heading"
+            general: Heading
           attributes:
             children:
-              label: "Text"
+              label: Text
         textBlock:
-          name: "Text Block"
+          name: Text Block
           tabs:
-            general: "Text Block"
+            general: Text Block
           attributes:
             children:
-              label: "Text"
+              label: Text
+              inline_help: >
+                Continuous block of text for the section. Enrich text with media by inserting
+                media elements between two text blocks within a section. Positioning and appearance
+                of the scrolling foreground layer of the section can be configured in the section
+                settings.
         inlineImage:
-          name: "Inline Image"
+          name: Inline Image
           tabs:
-            general: "Inline Image"
+            general: Inline Image
           attributes:
-            caption:
-              label: "Caption"
             id:
-              label: "Image"
+              label: Image
         soundDisclaimer:
-          name: "Audio Notice"
+          name: Audio Notice
           tabs:
-            general: "Audio Notice"
+            general: Audio Notice
         inlineVideo:
-          name: "Inline Video"
+          name: Inline Video
           tabs:
-            general: "Inline Video"
+            general: Inline Video
         inlineBeforeAfter:
-          name: "Before/After"
+          name: Before/After
           tabs:
-            general: "Before/After"
+            general: Before/After
         videoEmbed:
-          name: "Video Embed"
+          name: Video Embed
           tabs:
-            general: "Video-Embed"
+            general: Video-Embed
           attributes:
-            caption:
-              label: "Caption"
             videoSource:
-              label: "Video-URL"
+              label: Video-URL
             hideControls:
               label: Hide controls
-              inline_help: Hides the player controls if possible (depends on the videos provider and configuration). The video can be played and paused via click.
+              inline_help: >
+                Hides the player controls if possible (depends on the videos provider and
+                configuration). The video can be played and paused via click.
             hideInfo:
               label: Hide title in embed
-              inline_help: Hides the video title and author info inside the embed if possible (depends on the videos provider and configuration).
+              inline_help: >
+                Hides the video title and author info inside the embed if possible (depends on the
+                videos provider and configuration).
             aspectRatio:
               label: Aspect ratio of video
               values:
                 wide: "Landscape 16:9"
                 narrow: "Landscape 4:3"
-                square: Square
-                portrait: Portrait (9:16)
+                square: "Square"
+                portrait: "Portrait (9:16)"
       inputs:
+        caption:
+          label: Caption
+          inline_help: The caption of the element will be displayed directly underneath the element.
         position:
           label: Position
+          inline_help: >
+            This setting allows you to control the position of the element in relation to
+            surrounding text blocks: the element can prominently stand alone ("Full Width"), it can
+            be anchored within the text ("Inline") or it can be positioned adjacent to the text
+            ("Sticky"). Sticky elements remain static in the middle of the viewport alongside the
+            text until either the section is scrolled out of the viewport or until they get pushed
+            upwards by the next sticky element of the section. On mobile devices sticky elements
+            automatically get positioned inline. Sticky elements work particularly well on desktop
+            devices in combination with long texts.
           values:
             inline: Inline
-            sticky: Sticky
             full: Full Width
+            sticky: Sticky
       entry_outline:
-        header: "Outline"
-        add_chapter: "New chapter"
+        header: Outline
+        add_chapter: New chapter
       chapter_item:
-        add_section: "New section"
+        add_section: New section
         save_error: There was an error while saving this chapter.
       section_item:
-        edit: "Edit section"
+        edit: Edit section
         save_error: There was an error while saving this section.
       edit_chapter:
         tabs:
@@ -124,8 +147,15 @@ en:
         attributes:
           title:
             label: Title
+            inline_help: >
+              The chapter title will be displayed in the editor overview and the navigation bar of
+              the entry. Only chapters with both title and summary set will get added as menu items
+              to the navigation.
           summary:
             label: Summary
+            inline_help: >
+              Summary of the chapter for display in the navigation bar. Only chapters with both
+              title and summary set will get added as menu items to the navigation.
         confirm_destroy: |-
           Really delete this chapter including ALL its sections?
 
@@ -139,18 +169,27 @@ en:
             label: Background
           backdropType:
             label: Background-Type
+            inline_help: >
+              The section background can either display an image, a color or a video loop.
+              In case of background images you can specify the main image motif area. This area will
+              then initially be left uncovered by foreground content on mobile as well as desktop
+              devices.
           invert:
             label: Invert text
           layout:
-            label: Text alignment
+            label: Content alignment
+            inline_help: >
+              This setting controls the position of the scrolling foreground layer of the section on
+              desktop devices. On mobile devices the foreground layer will automatically become
+              centered.
             values:
-              left: "Left"
-              right: "Right"
-              center: "Center"
+              left: Left
+              right: Right
+              center: Center
         confirm_destroy: |-
           Really delete this section including ALL its elements?
 
           This operation cannot be undone.
         save_error: There was an error while saving this section.
       insert_content_element:
-        header: "Insert element"
+        header: Insert element

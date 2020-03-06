@@ -7,116 +7,141 @@ de:
         open_in_new_tab: Seite in neuem Tab ansehen
         open_in_new_tab_message: Öffnen im selben Tab ist im Editor deaktiviert.
       sound_disclaimer:
-        help_text: Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/> Klicken Sie einmal in dieses Feld, um den Ton für die gesamte Geschichte zu aktivieren.
+        help_text: >
+          Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/>
+          Klicken Sie einmal in dieses Feld, um den Ton für die gesamte Geschichte zu aktivieren.
     inline_editing:
       insert_content_element: Neues Element einfügen
     editor:
       content_elements:
         externalLinkList:
-          name: 'Externe Verweise'
+          name: Externe Verweise
           outline: Gliederung
           destroy: Löschen
-          back: Zurück
           add: Hinzufügen
+          back: Zurück
           confirm_delete: Möchten Sie dieses Element wirklich löschen?
           confirm_delete_link: Möchten Sie diesen Link wirklich löschen?
           attributes:
             url: 
-              label: 'URL'
-            open_in_new_tab: 
-              label: 'In neuem Tab öffnen'
+              label: URL
+              inline_help: Absolute URL (inklusive http:// oder https://) des Links.
+            open_in_new_tab:
+              label: In neuem Tab öffnen
             title: 
-              label: 'Titel'
+              label: Titel
+              inline_help: Link-Überschrift für die Darstellung im Beitrag.
             description: 
-              label: 'Beschreibung'
+              label: Beschreibung
+              inline_help: Link-Beschreibung für die Darstellung im Beitrag.
             thumbnail: 
-              label: 'Miniaturansicht'
+              label: Miniaturansicht
+              inline_help: Dem Link zugeordnertes Bild für die Darstellung im Beitrag.
           tabs:
-            links: "External Link"
-            general: "External Links"
-            edit_link: "Link bearbeiten"
+            edit_link: Link bearbeiten
         dataWrapperChart:
-          name: 'DataWrapper Diagramm'
+          name: DataWrapper Diagramm
           tabs:
-            general: 'Diagramm'
+            general: Diagramm
           attributes:
             create_chart:
               label: Neues Datawrapper Diagramm erstellen
             url: 
-              label: 'Diagramm URL'
-              inline_help: 'URL zu einem bei Datawrapper publiziertem Diagramm. Datawrapper bietet in den Diagramm Optionen ein spezielles ''Pageflow'' Design für eine optimale Darstellung innerhalb des Beitrags. '
+              label: Diagramm URL
+              inline_help: >
+                URL zu einem bei Datawrapper publizierten Diagramm. Datawrapper bietet in den
+                Diagramm Optionen ein spezielles "Pageflow"-Design für eine optimale Darstellung
+                innerhalb des Beitrags.
         heading:
-          name: "Überschrift"
+          name: Überschrift
           tabs:
-            general: "Überschrift"
+            general: Überschrift
           attributes:
             children:
-              label: "Text"
+              label: Text
         textBlock:
-          name: "Text-Block"
+          name: Text-Block
           tabs:
-            general: "Text-Block"
+            general: Text-Block
           attributes:
             children:
-              label: "Text"
+              label: Text
+              inline_help: >
+                Zusammenhängender Block von Fließtext des Abschnitts. Reichern Sie Fließtext mit
+                Medien an indem Sie die Medien-Elemente zwischen zwei Fließtexten innerhalb eines
+                Abschnitts einfügen. Positionierung und Abblendung von Texten innerhalb eines
+                Abschnitts können über die Einstellungen des Abschnitts konfiguriert werden.
         inlineImage:
-          name: "Inline-Bild"
+          name: Inline-Bild
           tabs:
-            general: "Inline-Bild"
+            general: Inline-Bild
           attributes:
-            caption:
-              label: "Beschriftung"
             id:
-              label: "Bild"
+              label: Bild
         soundDisclaimer:
-          name: "Audio-Hinweis"
+          name: Audio-Hinweis
           tabs:
-            general: "Audio-Hinweis"
+            general: Audio-Hinweis
         inlineVideo:
-          name: "Inline-Video"
+          name: Inline-Video
           tabs:
-            general: "Inline-Video"
+            general: Inline-Video
         inlineBeforeAfter:
-          name: "Vorher/Nachher"
+          name: Vorher/Nachher
           tabs:
-            general: "Vorher/Nachher"
+            general: Vorher/Nachher
         videoEmbed:
-          name: "Video Embed"
+          name: Video Embed
           tabs:
-            general: "Video-Embed"
+            general: Video-Embed
           attributes:
-            caption:
-              label: "Beschriftung"
             videoSource:
-              label: "Video-URL"
+              label: Video-URL
             hideControls:
               label: Steuerelemente ausblenden
-              inline_help: Blendet die Steuerelemente aus wenn möglich (variiert je nach Anbieter und Konfiguration). Das Video kann per Klick gestartet und pausiert werden.
+              inline_help: >
+                Blendet die Steuerelemente aus wenn möglich (variiert je nach Anbieter und
+                Konfiguration). Das Video kann per Klick gestartet und pausiert werden.
             hideInfo:
               label: Titel in Embed ausblenden
-              inline_help: Blendet Titel und Author Informationen innerhalb des Embeds aus wenn möglich (variiert je nach Anbieter und Konfiguration)
+              inline_help: >
+                Blendet Titel und Author Informationen innerhalb des Embeds aus wenn möglich
+                (variiert je nach Anbieter und Konfiguration)
             aspectRatio:
               label: Seitenverhältnis des Videos
               values:
                 wide: "Landscape 16:9"
                 narrow: "Landscape 4:3"
-                square: Quadratisch
-                portrait: Portrait (9:16)
-      entry_outline:
-        header: "Giederung"
-        add_chapter: "Neues Kapitel"
+                square: "Quadratisch"
+                portrait: "Portrait (9:16)"
       inputs:
+        caption:
+          label: Beschriftung
+          inline_help: Die Beschriftung des Elements wird direkt unterhalb des Elements angezeigt.
         position:
           label: Position
+          inline_help: >
+            Mit dieser Einstellung können Sie die Position des Elements im Zusammenspiel mit
+            Fließtext steuern: Das Element kann prominent für sich alleine stehen
+            ("Volle Breite"), im Text verankert werden ("Im Textfluss") oder auch beim Scrollen
+            begleitend neben dem Text stehenbleiben ("Sticky"). Sticky-Elemente bleiben statisch
+            in der Mitte des Viewports neben dem Text stehen, bis entweder der Abschnitt aus dem
+            Viewport gescrollt wird oder sie vom nächsten Sticky-Element des Abschnitts verdrängt
+            werden. In Mobil-Darstellung werden Sticky Elemente automatisch im Text verankert.
+            Sticky-Elemente funktionieren besonders gut bei Desktop-Darstellung in Kombination mit
+            langen Textpassagen.
           values:
             inline: Im Textfluss
-            sticky: Sticky
             full: Volle Breite
+            sticky: Sticky
+      entry_outline:
+        header: Giederung
+        add_chapter: Neues Kapitel
       chapter_item:
-        add_section: "Neuer Abschnitt"
+        add_section: Neuer Abschnitt
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
       section_item:
-        edit: "Abschnitt bearbeiten"
+        edit: Abschnitt bearbeiten
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
       edit_chapter:
         tabs:
@@ -124,8 +149,16 @@ de:
         attributes:
           title:
             label: Titel
+            inline_help: >
+              Wird in der Editor-Übersicht und der Navigationsleiste des Beitrags angezeigt.
+              Nur Kapitel die sowohl Titel als auch Zusammenfassung gesetzt haben werden als
+              Menüpunkt zur Navigation hinzugefügt.
           summary:
             label: Zusammenfassung
+            inline_help: >
+              Zusammenfassung des Kapitels für die Darstellung in der Navigationsleiste. Nur Kapitel
+              die sowohl Titel als auch Zusammenfassung gesetzt haben werden als Menüpunkt zur
+              Navigation hinzugefügt.
         confirm_destroy: |-
           Kapitel einschließlich ALLER enthaltener Abschnitte wirklich löschen?
 
@@ -139,18 +172,27 @@ de:
             label: Hintergrund
           backdropType:
             label: Hintergrund-Typ
+            inline_help: >
+              Im Hintergund des Abschnitts kann entweder ein Bild, eine Farbe oder ein Video-Loop
+              angezeigt werden. Im Fall eines Hintergrund-Bilds kann der wichtige Bildteil markiert
+              werden. Dieser wird dann sowohl in Desktop- als auch in Mobil-Darstellung zunächst
+              nicht vom scrollenden Vordergrund verdeckt.
           invert:
             label: Text invertieren
           layout:
-            label: Text-Ausrichtung
+            label: Vordergrund-Positionierung
+            inline_help: >
+              Mit dieser Einstellung können Sie die Position der scrollenden
+              Vordergrund-Ebene des Abschnitts in Desktop-Darstellung konfigurieren.
+              In Mobil-Darstellung wird die Vordergrund-Ebene automatisch zentriert.
             values:
-              left: "Links"
-              right: "Rechts"
-              center: "Mitte"
+              left: Links
+              right: Rechts
+              center: Mitte
         confirm_destroy: |-
           Abschnitt einschließlich ALLER enthaltener Elemente wirklich löschen?
 
           Dieser Schritt kann nicht rückgängig gemacht werden.
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
       insert_content_element:
-        header: "Element einfügen"
+        header: Element einfügen

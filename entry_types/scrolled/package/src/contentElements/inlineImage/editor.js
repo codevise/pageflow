@@ -9,7 +9,9 @@ editor.contentElementTypes.register('inlineImage', {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration'
       });
-      this.input('caption', TextInputView);
+      this.input('caption', TextInputView, {
+        attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.inputs'],
+      });
       this.input('position', SelectInputView, {
         attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.inputs'],
         values: ['inline', 'sticky', 'full']
