@@ -1,0 +1,10 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/page:
+        hide_logo: Logo ausblenden
+  pageflow:
+    ui:
+      inline_help:
+        pageflow/page:
+          hide_logo: Logo auf dieser Seite ausblenden

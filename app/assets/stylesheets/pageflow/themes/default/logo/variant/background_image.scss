@@ -110,4 +110,8 @@ $logo-background-image-variant-banner-phone-height: null !default;
   .first_page .scroller > div:after {
     opacity: $logo-background-image-variant-first-page-opacity;
   }
+
+  .page.hide_logo .content_and_background .scroller > div:after {
+    display: none;
+  }
 }
