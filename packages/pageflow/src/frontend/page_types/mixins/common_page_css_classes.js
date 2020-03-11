@@ -5,6 +5,7 @@ pageflow.commonPageCssClasses = {
   updateCommonPageCssClasses: function(pageElement, configuration) {
     pageElement.toggleClass('invert', configuration.get('invert'));
     pageElement.toggleClass('hide_title', configuration.get('hide_title'));
+    pageElement.toggleClass('hide_logo', !!configuration.get('hide_logo'));
 
     toggleModeClass(pageflow.Page.textPositions, 'text_position');
     toggleModeClass(pageflow.Page.delayedTextFadeIn, 'delayed_text_fade_in');

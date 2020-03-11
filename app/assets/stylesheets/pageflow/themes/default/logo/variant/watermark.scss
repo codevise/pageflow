@@ -105,6 +105,11 @@ $logo-watermark-mobile-height: null !default;
     opacity: 1;
   }
 
+  .header.hide_logo .header_logo:before,
+  .header.hide_logo .header_logo:after {
+    opacity: 0;
+  }
+
   .header.near_top .header_logo {
     pointer-events: all;
   }
