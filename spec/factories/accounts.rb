@@ -6,6 +6,12 @@ FactoryBot.define do
       account.default_theming ||= build(:theming, account: account)
     end
 
+    trait(:with_first_paged_entry_template) do
+      after(:create) do |account, _|
+        create(:entry_template, account: account, entry_type: 'paged')
+      end
+    end
+
     transient do
       with_member { nil }
       with_previewer { nil }

@@ -8,9 +8,9 @@ module Pageflow
           widget_type = TestWidgetType.new(name: 'test_widget', roles: ['header'])
           config = Configuration.new
           config.widget_types.register(widget_type)
-          theming = create(:theming)
+          entry_template = create(:entry_template)
 
-          result = helper.semantic_form_for(theming, url: '/theming') do |form|
+          result = helper.semantic_form_for(entry_template, url: '/entry_template') do |form|
             helper.admin_widgets_fields(form, config)
           end
 
@@ -21,10 +21,10 @@ module Pageflow
           widget_type = TestWidgetType.new(name: 'test_widget', roles: ['header'])
           config = Configuration.new
           config.widget_types.register(widget_type)
-          theming = create(:theming)
-          create(:widget, subject: theming, type_name: 'test_widget', role: 'header')
+          entry_template = create(:entry_template)
+          create(:widget, subject: entry_template, type_name: 'test_widget', role: 'header')
 
-          result = helper.semantic_form_for(theming, url: '/theming') do |form|
+          result = helper.semantic_form_for(entry_template, url: '/entry_template') do |form|
             helper.admin_widgets_fields(form, config)
           end
 

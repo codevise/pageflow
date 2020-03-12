@@ -5,11 +5,14 @@ module Dom
 
       attribute :name, '.attributes_table.pageflow_account .name td'
       attribute :cname, '.attributes_table.pageflow_theming .cname td'
-      attribute :theme, '.attributes_table.pageflow_theming .theme td'
+      attribute :theme, '.attributes_table.pageflow_entry_template .theme td'
 
-      attribute :default_author,    '.attributes_table.pageflow_theming .default_author td'
-      attribute :default_publisher, '.attributes_table.pageflow_theming .default_publisher td'
-      attribute :default_keywords,  '.attributes_table.pageflow_theming .default_keywords td'
+      attribute :default_author,
+                '.attributes_table.pageflow_entry_template .default_author td'
+      attribute :default_publisher,
+                '.attributes_table.pageflow_entry_template .default_publisher td'
+      attribute :default_keywords,
+                '.attributes_table.pageflow_entry_template .default_keywords td'
 
       def features_tab
         within(node) do

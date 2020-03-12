@@ -9,12 +9,6 @@ module Pageflow
                     to: :edit,
                     topic: -> { create(:theming) }
 
-    it_behaves_like 'an admin permission that',
-                    allows_admins_but_forbids_even_managers: true,
-                    of_account: -> (topic) { topic.account },
-                    to: :index_widgets_for,
-                    topic: -> { create(:theming) }
-
     describe '.themings_allowed_for(accounts)' do
       it 'includes all themings for admins' do
         user = create(:user, :admin)

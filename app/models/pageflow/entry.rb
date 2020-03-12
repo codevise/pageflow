@@ -51,7 +51,14 @@ module Pageflow
     after_create unless: :skip_draft_creation do
       create_draft!
       draft.storylines.create!(configuration: {main: true})
-      theming.copy_defaults_to(draft)
+      entry_template.copy_defaults_to(draft)
+    end
+
+    def entry_template
+      @entry_template ||= EntryTemplate.find_or_initialize_by(
+        account_id: account.id,
+        entry_type: type_name
+      )
     end
 
     def entry_type

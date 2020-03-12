@@ -14,6 +14,7 @@ feature 'as account manager, editing an account' do
 
   scenario 'changing meta fields' do
     account = create(:account, name: 'Codevise')
+    create(:entry_template, account: account, entry_type: 'paged')
 
     Dom::Admin::Page.sign_in_as(:admin)
     visit(admin_account_path(account))
@@ -35,8 +36,8 @@ feature 'as account manager, editing an account' do
       config.themes.register(:bar)
     end
 
-    theming = create(:theming, theme_name: 'foo')
-    account = create(:account, default_theming: theming)
+    account = create(:account)
+    create(:entry_template, account: account, entry_type: 'paged', theme_name: 'foo')
 
     Dom::Admin::Page.sign_in_as(:manager, on: account)
     visit(admin_account_path(account))

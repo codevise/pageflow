@@ -102,7 +102,7 @@ module Pageflow
     end
 
     def share_providers
-      self[:share_providers] || entry.theming.default_share_providers
+      self[:share_providers] || entry.entry_template.default_share_providers
     end
 
     def author

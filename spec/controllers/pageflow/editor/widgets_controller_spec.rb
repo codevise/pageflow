@@ -52,28 +52,30 @@ module Pageflow
           expect(response.status).to eq(403)
         end
 
-        it 'responds with widgets of theming' do
+        it 'responds with widgets of entry template' do
           user = create(:user, :admin)
           account = create(:account)
-          theming = create(:theming, account: account)
-          create(:widget, subject: theming, type_name: 'test_widget')
+          entry_template = create(:entry_template, account: account)
+          create(:widget, subject: entry_template, type_name: 'test_widget')
 
           sign_in(user, scope: :user)
-          get(:index, params: {collection_name: 'themings', subject_id: theming.id}, format: 'json')
+          get(:index, params: {collection_name: 'entry_templates',
+                               subject_id: entry_template.id}, format: 'json')
 
           expect(response.status).to eq(200)
           response_widget = json_response.detect { |w| w['type_name'] == 'test_widget' }
           expect(response_widget).not_to be_nil
         end
 
-        it 'requires permission to index themings' do
+        it 'requires permission to index entry templates' do
           user = create(:user)
           account = create(:account, with_manager: user)
-          theming = create(:theming, account: account)
-          create(:widget, subject: theming, type_name: 'test_widget')
+          entry_template = create(:entry_template, account: account)
+          create(:widget, subject: entry_template, type_name: 'test_widget')
 
           sign_in(user, scope: :user)
-          get(:index, params: {collection_name: 'themings', subject_id: theming.id}, format: 'json')
+          get(:index, params: {collection_name: 'entry_templates',
+                               subject_id: entry_template.id}, format: 'json')
 
           expect(response.status).to eq(403)
         end
@@ -237,16 +239,16 @@ module Pageflow
           expect(response.status).to eq(403)
         end
 
-        it 'allows account publisher to edit theming of own account' do
+        it 'allows account publisher to edit entry template of own account' do
           user = create(:user)
           account = create(:account, with_publisher: user)
-          theming = create(:theming, account: account)
+          entry_template = create(:entry_template, account: account)
 
           sign_in(user, scope: :user)
           patch(:batch,
                 params: {
-                  collection_name: 'themings',
-                  subject_id: theming.id,
+                  collection_name: 'entry_templates',
+                  subject_id: entry_template.id,
                   widgets: [
                     {role: 'navigation', type_name: 'other_test_widget'}
                   ]
@@ -256,17 +258,17 @@ module Pageflow
           expect(response.status).to eq(200)
         end
 
-        it 'does not allow account editor to edit theming' do
+        it 'does not allow account editor to edit entry template' do
           user = create(:user)
           account = create(:account, with_editor: user)
-          theming = create(:theming, account: account)
-          create(:widget, subject: theming, type_name: 'test_widget')
+          entry_template = create(:entry_template, account: account)
+          create(:widget, subject: entry_template, type_name: 'test_widget')
 
           sign_in(user, scope: :user)
           patch(:batch,
                 params: {
-                  collection_name: 'themings',
-                  subject_id: theming.id,
+                  collection_name: 'entry_templates',
+                  subject_id: entry_template.id,
                   widgets: [
                     {role: 'navigation', type_name: 'other_test_widget'}
                   ]
@@ -276,16 +278,16 @@ module Pageflow
           expect(response.status).to eq(403)
         end
 
-        it 'does not allow account manager to edit theming of other account' do
+        it 'does not allow account manager to edit entry template of other account' do
           user = create(:user)
           create(:account, with_manager: user)
-          theming = create(:theming)
+          entry_template = create(:entry_template)
 
           sign_in(user, scope: :user)
           patch(:batch,
                 params: {
-                  collection_name: 'themings',
-                  subject_id: theming.id,
+                  collection_name: 'entry_templates',
+                  subject_id: entry_template.id,
                   widgets: [
                     {role: 'navigation', type_name: 'other_test_widget'}
                   ]
@@ -295,15 +297,15 @@ module Pageflow
           expect(response.status).to eq(403)
         end
 
-        it 'allows admin to edit arbitrary theming' do
+        it 'allows admin to edit arbitrary entry template' do
           user = create(:user, :admin)
-          theming = create(:theming)
+          entry_template = create(:entry_template)
 
           sign_in(user, scope: :user)
           patch(:batch,
                 params: {
-                  collection_name: 'themings',
-                  subject_id: theming.id,
+                  collection_name: 'entry_templates',
+                  subject_id: entry_template.id,
                   widgets: [
                     {role: 'navigation', type_name: 'other_test_widget'}
                   ]

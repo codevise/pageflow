@@ -2,7 +2,7 @@ jQuery(function($) {
   $('.admin_accounts').filter('.new, .edit').find('form.pageflow_account').each(function() {
     var themeSelect = $('#account_default_theming_attributes_theme_name', this);
     var themeOptions = JSON.parse($('script#theme_options', this).text());
-    var homeButtonCheckBox = $('#account_default_theming_attributes_home_button_enabled_by_default', this);
+    var homeButtonCheckBox = $('#account_paged_entry_template_attributes_configuration_home_button_enabled', this);
 
     updateThemeFeatures();
     themeSelect.on('change', updateThemeFeatures);

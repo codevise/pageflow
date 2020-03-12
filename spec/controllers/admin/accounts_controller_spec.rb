@@ -247,6 +247,8 @@ module Admin
     end
 
     describe '#create' do
+      render_views
+
       it 'creates nested default_theming' do
         pageflow_configure do |config|
           config.themes.register(:custom)
@@ -257,16 +259,41 @@ module Admin
              params: {
                account: {
                  default_theming_attributes: {
-                   theme_name: 'custom',
                    imprint_link_url: 'http://example.com/new'
+                 },
+                 paged_entry_template_attributes: {
+                   theme_name: 'custom'
                  }
                }
              })
 
-        expect(Pageflow::Account.last.default_theming.theme_name).to eq('custom')
+        expect(Pageflow::EntryTemplate.last.theme_name).to eq('custom')
       end
 
-      it 'batch updates widgets of default theming' do
+      it 'creates one paged entry template' do
+        pageflow_configure do |config|
+          config.themes.register(:red)
+        end
+
+        sign_in(create(:user, :admin), scope: :user)
+        post(:create,
+             params: {
+               account: {
+                 paged_entry_template_attributes: {
+                   theme_name: 'red'
+                 }
+               }
+             })
+        entry_templates = Pageflow::EntryTemplate.all
+        entry_templates_count = entry_templates.count
+        entry_template = entry_templates.first
+
+        expect(entry_templates_count).to eq(1)
+        expect(entry_template.entry_type).to eq('paged')
+        expect(entry_template.account.id).to eq(Pageflow::Account.last.id)
+      end
+
+      it 'batch updates widgets of first paged entry template' do
         pageflow_configure do |config|
           config.themes.register(:custom)
         end
@@ -275,7 +302,7 @@ module Admin
         post(:create,
              params: {
                account: {
-                 default_theming_attributes: {
+                 paged_entry_template_attributes: {
                    theme_name: 'custom'
                  }
                },
@@ -284,7 +311,7 @@ module Admin
                }
              })
 
-        expect(Pageflow::Account.last.default_theming.widgets)
+        expect(Pageflow::Account.last.first_paged_entry_template.widgets)
           .to include_record_with(role: 'navigation', type_name: 'some_widget')
       end
 
@@ -298,12 +325,59 @@ module Admin
         expect do
           post(:create,
                params: {
-                 account: {},
+                 account: {
+                   paged_entry_template_attributes: {
+                     theme_name: 'unregistered'
+                   }
+                 },
                  widgets: {
                    navigation: 'some_widget'
                  }
                })
         end.not_to change { Pageflow::Widget.count }
+      end
+
+      it 'still displays form after submit attempt if data is invalid' do
+        sign_in(create(:user, :admin), scope: :user)
+
+        post(:create,
+             params: {
+               account: {
+                 paged_entry_template_attributes: {
+                   theme_name: 'unregistered'
+                 }
+               }
+             })
+
+        expect(response.body).to have_selector(
+          '.input.error#account_paged_entry_template_attributes_theme_name_input'
+        )
+      end
+
+      it 'sets share providers' do
+        pageflow_configure do |config|
+          config.themes.register(:custom)
+        end
+
+        sign_in(create(:user, :admin), scope: :user)
+        post(:create,
+             params: {
+               account: {
+                 paged_entry_template_attributes: {
+                   theme_name: 'custom',
+                   share_providers: {
+                     insta: 'true',
+                     tiktok: 'false'
+                   }
+                 }
+               }
+             })
+
+        expect(Pageflow::EntryTemplate.last.share_providers)
+          .to eq(
+            'insta' => true,
+            'tiktok' => false
+          )
       end
     end
 
@@ -339,6 +413,8 @@ module Admin
     end
 
     describe '#update' do
+      render_views
+
       it 'updates nested default_theming' do
         pageflow_configure do |config|
           config.themes.register(:custom)
@@ -349,18 +425,38 @@ module Admin
         sign_in(create(:user, :admin), scope: :user)
         put(:update, params: {id: account.id, account: {
               default_theming_attributes: {
-                theme_name: 'custom',
                 imprint_link_url: 'http://example.com/new'
+              },
+              paged_entry_template_attributes: {
+                theme_name: 'custom'
               }
             }})
 
-        expect(theming.reload.theme_name).to eq('custom')
-        expect(theming.imprint_link_url).to eq('http://example.com/new')
+        expect(theming.reload.imprint_link_url).to eq('http://example.com/new')
       end
 
-      it 'batch updates widgets of default theming' do
-        theming = create(:theming)
-        account = create(:account, default_theming: theming)
+      it 'updates first paged entry template' do
+        pageflow_configure do |config|
+          config.themes.register(:red)
+          config.themes.register(:yellow)
+          config.themes.register(:green)
+          config.themes.register(:blue)
+        end
+        account = create(:account)
+
+        sign_in(create(:user, :admin), scope: :user)
+        put(:update, params: {id: account.id, account: {
+              paged_entry_template_attributes: {
+                theme_name: 'green'
+              }
+            }})
+
+        expect(account.first_paged_entry_template.theme_name).to eq('green')
+      end
+
+      it 'batch updates widgets of first paged entry template' do
+        account = create(:account, :with_first_paged_entry_template)
+        template = account.first_paged_entry_template
 
         sign_in(create(:user, :admin), scope: :user)
         patch(:update,
@@ -371,7 +467,10 @@ module Admin
                 }
               })
 
-        expect(theming.widgets).to include_record_with(role: 'navigation', type_name: 'some_widget')
+        expect(template.widgets).to include_record_with(
+          role: 'navigation',
+          type_name: 'some_widget'
+        )
       end
 
       it 'does not update widgets if theming validation fails' do
@@ -384,7 +483,7 @@ module Admin
                 params: {
                   id: account.id,
                   account: {
-                    default_theming_attributes: {
+                    paged_entry_template_attributes: {
                       theme_name: 'invalid'
                     }
                   },
@@ -565,6 +664,49 @@ module Admin
               })
 
         expect(response).to redirect_to(admin_account_path(tab: 'features'))
+      end
+
+      it 'still displays form after submit attempt if data is invalid' do
+        account = create(:account)
+        sign_in(create(:user, :admin), scope: :user)
+
+        post(:update,
+             params: {
+               id: account.id,
+               account: {
+                 paged_entry_template_attributes: {
+                   theme_name: 'unregistered'
+                 }
+               }
+             })
+
+        expect(response.body).to have_selector(
+          '.input.error#account_paged_entry_template_attributes_theme_name_input'
+        )
+      end
+
+      it 'updates share providers' do
+        account = create(:account)
+
+        sign_in(create(:user, :admin), scope: :user)
+        post(:update,
+             params: {
+               id: account.id,
+               account: {
+                 paged_entry_template_attributes: {
+                   share_providers: {
+                     insta: 'true',
+                     tiktok: 'false'
+                   }
+                 }
+               }
+             })
+
+        expect(account.first_paged_entry_template.share_providers)
+          .to eq(
+            'insta' => true,
+            'tiktok' => false
+          )
       end
     end
 
