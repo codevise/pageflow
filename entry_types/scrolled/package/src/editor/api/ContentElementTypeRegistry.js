@@ -19,6 +19,8 @@ export class ContentElementTypeRegistry {
    *   `ConfigurationEditorView` (see `pageflow/ui`) which will
    *   be used to edit the configuration of content elements of
    *   this type.
+   * @param {Object} options.defaultConfig -
+   *   Object that is set as initial config for the content element.
    * @memberof editor_contentElementTypes
    *
    * @example
@@ -47,7 +49,8 @@ export class ContentElementTypeRegistry {
   toArray() {
     return Object.keys(this.contentElementTypes).map(typeName => ({
       typeName,
-      displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`)
+      displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`),
+      defaultConfig: this.contentElementTypes[typeName].defaultConfig,
     }));
   }
 }
