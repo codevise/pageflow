@@ -23,10 +23,10 @@ export function setupI18n({defaultLocale, locale, translations}) {
  *
  * @example
  * const {t} = useI18n();
- * t('pagelow_scrolled.public.some.key')
+ * t('pageflow_scrolled.public.some.key')
  *
  * const {t} = useI18n({locale: 'ui'});
- * t('pagelow_scrolled.inline_editing.some.key')
+ * t('pageflow_scrolled.inline_editing.some.key')
  */
 export function useI18n({locale: scope} = {}) {
   const {locale} = useEntryMetadata();
