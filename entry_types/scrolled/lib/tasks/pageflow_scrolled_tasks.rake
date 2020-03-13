@@ -47,6 +47,18 @@ namespace :pageflow_scrolled do
                                           focusY: 40,
                                           testReferenceName: 'turtle'
                                         }
+                                      }.stringify_keys,
+                                      churchAfter: {
+                                        url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/images/17_haldern_church_after.jpg',
+                                        configuration: {
+                                          testReferenceName: 'churchAfter'
+                                        }
+                                      }.stringify_keys,
+                                      churchBefore: {
+                                        url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/images/16_haldern_church_before.jpg',
+                                        configuration: {
+                                          testReferenceName: 'churchBefore'
+                                        }
                                       }.stringify_keys
                                     })
       end

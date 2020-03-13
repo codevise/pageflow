@@ -102,8 +102,14 @@ module PageflowScrolled
     end
 
     def create_content_element(section, content_element_config, position, image_files_by_name)
-      if %w[stickyImage inlineImage].include?(content_element_config['type'])
-        rewrite_file_references!(content_element_config['props'], ['id'], image_files_by_name)
+      if %w[stickyImage inlineImage inlineBeforeAfter].include?(
+        content_element_config['type']
+      )
+        rewrite_file_references!(
+          content_element_config['props'],
+          ['id', 'before_id', 'after_id'],
+          image_files_by_name
+        )
       end
 
       section.content_elements.create!(
@@ -126,8 +132,7 @@ module PageflowScrolled
 
     def non_image_reference?(value)
       value.starts_with?('#') ||
-        value.starts_with?('video') ||
-        value.starts_with?('beforeAfter')
+        value.starts_with?('video')
     end
   end
 end
