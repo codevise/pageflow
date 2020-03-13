@@ -20,9 +20,12 @@ export function useFileRights() {
 
   const defaultFileRights = entryState.config.defaultFileRights;
   const imageFiles = getItems(entryState.collections, 'imageFiles');
-  const imageFileRights = imageFiles.map(function (imageConfig) {
-    return imageConfig.rights ? imageConfig.rights.trim() : undefined;
-  }).filter(Boolean).join(', ');
+  const imageFileRights = imageFiles.reduce(function(result, imageConfig) {
+    if(imageConfig && imageConfig.rights) {
+      result.push(imageConfig.rights.trim());
+    }
+    return result;
+  }, []).filter(Boolean).join(', ');
   const fileRights = !!imageFileRights ? imageFileRights : defaultFileRights.trim();
   const fileRightsString = !!fileRights ? ('Bildrechte: ' + fileRights) : '';
 
