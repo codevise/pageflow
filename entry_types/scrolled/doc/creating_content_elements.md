@@ -125,7 +125,8 @@ The `editor.js` file registers the content element type with the
 editor API. It determines the inputs that will be displayed in the
 side bar when a content element of the type is selected in the
 editor. These inputs define the shape of the JSON data stored in the
-content element's configuration:
+content element's configuration. Default values can also be set at
+registration:
 
 ```javascript
 import {editor} from 'pageflow-scrolled/editor';
@@ -144,7 +145,8 @@ editor.contentElementTypes.register('inlineImage', {
         values: ['inline', 'sticky', 'full']
       });
     });
-  }
+  },
+  defaultConfig: {caption: 'Add caption here'},
 });
 ```
 
