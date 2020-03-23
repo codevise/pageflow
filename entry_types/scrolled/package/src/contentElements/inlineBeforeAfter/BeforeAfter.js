@@ -1,99 +1,107 @@
-import React, {useRef, useState, useEffect} from 'react';
-import ReactCompareImage from '../../vendor/react-compare-image/ReactCompareImage';
+import React, {useEffect, useRef, useState} from 'react';
+import ReactCompareImage from 'react-compare-image';
 import styles from './BeforeAfter.module.css';
+import {useImageAlt, useImageUrl} from 'pageflow-scrolled/frontend';
+import cx from 'classnames';
+import {useEditorSelection} from 'pageflow-scrolled/frontend';
 
 export function BeforeAfter({state,
-                 leftImageLabel,
-                 rightImageLabel,
-                 startPos = 0,
-                 slideMode = 'both',
-                }) {
-  var [scrollPos, setScrollPos] = useState(
-    {
-      pos: window.pageYOffset || document.documentElement.scrollTop,
-      dir: 'unknown',
-    }
-  );
-  const [isSliding, setIsSliding] = useState(false);
-  var [beforeAfterPos, setBeforeAfterPos] = useState(startPos);
+                             before_id,
+                             before_label,
+                             after_id,
+                             after_label,
+                             initial_slider_position,
+                             slider,
+                             slider_color,
+                             slider_handle,
+                             contentElementId,
+                            }) {
   const beforeAfterRef = useRef();
-  const slideOnScroll = slideMode === 'both' || slideMode === 'scroll';
-  const slideClassic = slideMode === 'both' || slideMode === 'classic';
-
   const current = beforeAfterRef.current;
 
+  var [wiggled, setWiggled] = useState(false);
   var [wiggle, setWiggle] = useState(false);
+
   useEffect(() => {
     var node = current;
     if (node) {
-      setWiggle(state === 'active')
+      // Only wiggle once per element, when it is active for the first
+      // time
+      let shouldWiggle = !wiggled && (state === 'active');
+      setWiggle(shouldWiggle);
+      // If wiggle was just set, mark this element as one that already
+      // wiggled
+      !wiggled && setWiggled(shouldWiggle);
     }
   }, [state, current]);
 
-  useEffect(function() {
-    var node = current;
+  const {isSelected} = useEditorSelection({id: contentElementId, type: 'contentElement'});
+  const beforeImageUrl = useImageUrl({permaId: before_id, quality: 'large'});
+  const beforeImageAlt = useImageAlt({permaId: before_id});
+  const afterImageUrl = useImageUrl({permaId: after_id, quality: 'large'});
+  const afterImageAlt = useImageAlt({permaId: after_id});
+  const initialSliderPos = initial_slider_position / 100;
 
-    function handler() {
-      if (node) {
-        setScrollPos(prevPos => {
-          const currPos = window.pageYOffset || document.documentElement.scrollTop;
-          if (currPos > prevPos['pos']) {
-            return {
-              pos: currPos,
-              dir: 'down',
-            };
-          }
-          if (currPos < prevPos['pos']) {
-            return {
-              pos: currPos,
-              dir: 'up',
-            };
-          }
-          return prevPos;
-        });
-        if (slideOnScroll) {
-          if (scrollPos['dir'] === 'down' && beforeAfterPos < 1) {
-            setBeforeAfterPos(prev => prev + 0.025);
-            setIsSliding(true);
-            setTimeout(() => setIsSliding(false), 200);
-          } else if (scrollPos['dir'] === 'up' && beforeAfterPos > 0) {
-            setBeforeAfterPos(prev => prev - 0.025);
-            setIsSliding(true);
-            setTimeout(() => setIsSliding(false), 250);
-          } else {
-            setIsSliding(false);
-          }
-        }
-      }
+  let opts = {};
+  // Transform slider-related props into the format that
+  // react-compare-image needs
+  if (!slider) {
+    opts = {...opts, sliderLineWidth: 0, handle: <React.Fragment/>};
+  }
+  if (slider) {
+    if (!slider_handle) {
+      opts = {...opts, handle: <React.Fragment/>};
     }
-
-    if (!node) {
-      return;
+    if (slider_color) {
+      opts = {...opts, sliderLineColor: slider_color};
     }
+  }
 
-    setTimeout(handler, 0);
-
-    if (state === 'active') {
-      window.addEventListener('scroll', handler);
-
-      return function() {
-        window.removeEventListener('scroll', handler);
-      }
-    }
-  }, [current, setBeforeAfterPos, scrollPos, state, setIsSliding]);
-
-  const awsBucket = '//s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/presentation-images/';
-  const beforeImage = awsBucket+'before_after/haldern_church1.jpg';
-  const afterImage = awsBucket+'before_after/haldern_church2.jpg';
+  if (current) {
+    // Size labels according to initial slider position. Unit is %,
+    // left and right spacing is 5%, so we subtract 10. 90 = 100 - 10.
+    const beforeLabelWidth = initial_slider_position - 10;
+    const afterLabelWidth = 90 - initial_slider_position;
+    // Compute initial slider coordinate and pass it as a CSS
+    // variable, so that before/after images can wiggle together with
+    // the slider
+    const containerWidth = current.getBoundingClientRect().width;
+    const initialRectWidth = initialSliderPos * containerWidth;
+    current.style.setProperty('--before-label-max-width', beforeLabelWidth + '%');
+    current.style.setProperty('--after-label-max-width', afterLabelWidth + '%');
+    current.style.setProperty('--initial-rect-width', initialRectWidth + 'px');
+  }
 
   return (
-    <div ref={beforeAfterRef} className={styles.container}>
-      <ReactCompareImage leftImage={beforeImage} rightImage={afterImage}
-                         sliderPosition={beforeAfterPos} setSliderPosition={setBeforeAfterPos}
-                         isSliding={isSliding} setIsSliding={setIsSliding}
-                         leftImageLabel={leftImageLabel} rightImageLabel={rightImageLabel}
-                         classicMode={slideClassic}
-                         wiggle={wiggle} />
+    <div ref={beforeAfterRef}
+      className={cx({[styles.selected]: isSelected, [styles.wiggle]: wiggle},
+      styles.container)}>
+      <InitialSliderPositionIndicator parentSelected={isSelected}
+        position={initial_slider_position}/>
+      {/* onSliderPositionChange: Prevent wiggle if user uses slider */}
+      <ReactCompareImage leftImage={beforeImageUrl} rightImage={afterImageUrl}
+                         leftImageLabel={before_label} rightImageLabel={after_label}
+                         leftImageAlt={beforeImageAlt} rightImageAlt={afterImageAlt}
+                         sliderPositionPercentage={initialSliderPos}
+                         onSliderPositionChange={() => setWiggle(false)}
+                         {...opts} />
     </div>
   );
 };
+
+function InitialSliderPositionIndicator({parentSelected, position}) {
+  const indicatorWidth = '2px';
+  const indicatorStyles = {
+          left: `calc(${position}% - ${indicatorWidth}/2)`,
+          width: `${indicatorWidth}`,
+          height: '100%',
+          borderLeft: '1px solid black',
+          borderRight: '1px solid black',
+  };
+
+  // In case this element is selected, and its initial slider position
+  // is not in the middle, we show InitialSliderPositionIndicator
+  return parentSelected && (position !== 50) ?
+      <div className={styles.sliderStart} style={indicatorStyles}/> :
+        '';
+}

@@ -166,12 +166,6 @@ module PageflowScrolled
                                                            'foreground' => []
                                                          },
                                                          {
-                                                           'backdrop' => {
-                                                             'image' => 'beforeAfter-123'
-                                                           },
-                                                           'foreground' => []
-                                                         },
-                                                         {
                                                            'backdrop' => {'image' => '#fff'},
                                                            'foreground' => []
                                                          }
@@ -182,7 +176,7 @@ module PageflowScrolled
               element.configuration.dig('backdrop', 'image')
             end
 
-            expect(image_values).to eq(%w[video-123 beforeAfter-123 #fff])
+            expect(image_values).to eq(%w[video-123 #fff])
           end
 
           it 'rewrites inlineImage and stickyImage content elements' do

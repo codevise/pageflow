@@ -12,7 +12,8 @@ export function InlineBeforeAfter(props) {
   return (
     <div ref={ref} className={styles.root}>
       <BeforeAfter {...props.configuration}
-                   state={onScreen ? 'active' : 'inactive'} />
+                   state={onScreen ? 'active' : 'inactive'}
+                   contentElementId={props.contentElementId}/>
     </div>
   )
 }

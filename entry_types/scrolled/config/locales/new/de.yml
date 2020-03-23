@@ -23,18 +23,18 @@ de:
           confirm_delete: Möchten Sie dieses Element wirklich löschen?
           confirm_delete_link: Möchten Sie diesen Link wirklich löschen?
           attributes:
-            url: 
+            url:
               label: URL
               inline_help: Absolute URL (inklusive http:// oder https://) des Links.
             open_in_new_tab:
               label: In neuem Tab öffnen
-            title: 
+            title:
               label: Titel
               inline_help: Link-Überschrift für die Darstellung im Beitrag.
-            description: 
+            description:
               label: Beschreibung
               inline_help: Link-Beschreibung für die Darstellung im Beitrag.
-            thumbnail: 
+            thumbnail:
               label: Miniaturansicht
               inline_help: Dem Link zugeordnertes Bild für die Darstellung im Beitrag.
           tabs:
@@ -46,7 +46,7 @@ de:
           attributes:
             create_chart:
               label: Neues Datawrapper Diagramm erstellen
-            url: 
+            url:
               label: Diagramm URL
               inline_help: >
                 URL zu einem bei Datawrapper publizierten Diagramm. Datawrapper bietet in den
@@ -89,7 +89,48 @@ de:
         inlineBeforeAfter:
           name: Vorher/Nachher
           tabs:
-            general: Vorher/Nachher
+            general: "Vorher/Nachher"
+          attributes:
+            before_id:
+              label: Vorher-Bild
+              inline_help: >
+                Wird links von der Trennlinie gezeigt.
+            before_label:
+              label: Vorher-Beschriftung
+              inline_help: >
+                Hier kann ein kurzes Label für das Vorher-Bild mit
+                Text gefüllt werden. Beispiele: 'Vorher', 'Januar
+                2000'
+            after_id:
+              label: Nachher-Bild
+              inline_help: >
+                Wird rechts von der Trennlinie gezeigt.
+            after_label:
+              label: Nachher-Beschriftung
+              inline_help: >
+                Hier kann ein kurzes Label für das Nachher-Bild mit
+                Text gefüllt werden. Beispiele: 'Nachher', 'Januar
+                2040'
+            initial_slider_position:
+              label: Trennlinien-Startposition
+              inline_help: >
+                Falls die Trennlinie zu Beginn nicht in der Mitte des
+                Bildes liegen soll, lässt sich ihre Startposition hier
+                voreinstellen.
+            slider:
+              label: Schieberegler sichtbar
+              inline_help: >
+                Zeigt/versteckt den sichtbaren Schieberegler.
+            slider_handle:
+              label: Schieberegler-Griff sichtbar
+              inline_help: >
+                Aktiviert/deaktiviert den Griff des Schiebereglers.
+            slider_color:
+              label: Schieberegler-Farbe
+              inline_help: >
+                Farbe des Schiebereglers inklusive Griff kann frei
+                konfiguriert werden. Achten Sie auf gute Sichtbarkeit
+                des Reglers über den gesamten Vorher/Nachher-Bereich.
         videoEmbed:
           name: Video Embed
           tabs:
