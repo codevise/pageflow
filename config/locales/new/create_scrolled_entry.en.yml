@@ -1,6 +1,24 @@
 en:
+  activerecord:
+    attributes:
+      pageflow/entry:
+        type_name: Story type
+    errors:
+      models:
+        pageflow/entry:
+          attributes:
+            type_name:
+              must_be_available_for_account: "'%{type_name}' isn't available for this account"
+    values:
+      pageflow/entry:
+        type_names:
+          paged: Page-based / Classic
+          scrolled: Continuously scrolling / Pageflow Next
   pageflow:
+    admin:
+      entries:
+        not_allowed_to_see_entry_types: You are not allowed to access the available story types for this account.
     paged_entry_type:
-      feature_name: Entry type page-based/classic
+      feature_name: Story type page-based/classic
     scrolled_entry_type:
-      feature_name: Entry type scrolling continuously/Pageflow Next
+      feature_name: Story type scrolling continuously/Pageflow Next

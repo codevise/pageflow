@@ -1040,4 +1040,35 @@ describe Admin::EntriesController do
       expect { delete(:destroy, params: {id: entry}) }.to change { Pageflow::Entry.count }
     end
   end
+
+  describe 'get #entry_types' do
+    render_views
+
+    it 'allows to display entry types for account publisher' do
+      account = create(:account)
+
+      sign_in(create(:user, :manager, on: account))
+      get(:entry_types, params: {account_id: account}, format: 'json')
+
+      expect(response.status).to eq(200)
+    end
+
+    it 'does not render layout' do
+      account = create(:account)
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:entry_types, params: {account_id: account}, format: 'json')
+
+      expect(response.body).not_to have_selector('body.active_admin')
+    end
+
+    it 'is forbidden for account editor' do
+      account = create(:account)
+
+      sign_in(create(:user, :editor, on: account))
+      get(:entry_types, params: {account_id: account}, format: 'json')
+
+      expect(response.status).to eq(403)
+    end
+  end
 end

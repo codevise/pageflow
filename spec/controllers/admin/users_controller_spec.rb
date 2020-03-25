@@ -122,8 +122,8 @@ module Pageflow
                                                          component: tab_view_component,
                                                          admin_only: true)
             sign_in(user, scope: :user)
-            get(:show, params: {id: user.id})
 
+            get(:show, params: {id: user.id})
             expect(response.body).not_to have_selector(tab_view_selector)
           end
         end

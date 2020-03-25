@@ -103,6 +103,17 @@ module Pageflow
 
         expect(entry).to have(1).error_on(:folder)
       end
+
+      it 'ensures entry type is available for account' do
+        account = create(:account, features_configuration: {'paged_entry_type' => false})
+        entry = build(
+          :entry,
+          type_name: 'paged',
+          account: account
+        )
+
+        expect(entry).to have(1).error_on(:type_name)
+      end
     end
 
     describe '#publish' do
