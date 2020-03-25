@@ -130,6 +130,14 @@ module Pageflow
                   input_html: {style: 'width: 200px'})
         end
 
+        if f.object.new_record?
+          f.input :type_name,
+                  as: :select,
+                  include_blank: false,
+                  collection: entry_type_collection,
+                  wrapper_html: {style: 'display: none'}
+        end
+
         if authorized?(:configure_folder_for, resource)
           folder_collection = collection_for_folders(resource.account, resource.folder)
           f.input(:folder,
@@ -165,6 +173,18 @@ module Pageflow
                     rel: 'duplicate',
                     confirm: I18n.t('pageflow.admin.entries.confirm_duplicate')
                   })
+      end
+    end
+
+    collection_action :entry_types do
+      account = Pageflow::Account.find(params[:account_id])
+
+      if authorized?(:see_entry_types, account)
+        @entry_types = helpers.entry_type_collection_for_account(account)
+
+        render(layout: false)
+      else
+        render(partial: 'not_allowed_to_see_entry_types', status: 403)
       end
     end
 
@@ -251,7 +271,7 @@ module Pageflow
       end
 
       def permitted_attributes
-        result = [:title]
+        result = [:title, :type_name]
         target = if !params[:id] && current_user.admin?
                    Account.first
                  elsif params[:id]

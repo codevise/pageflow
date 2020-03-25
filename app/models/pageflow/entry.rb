@@ -37,6 +37,7 @@ module Pageflow
 
     validates :account, :theming, :presence => true
     validates :title, presence: true
+    validate :entry_type_is_available_for_account
     validate :folder_belongs_to_same_account
 
     scope :editing, -> { joins(:edit_lock).merge(Pageflow::EditLock.active) }
@@ -62,7 +63,7 @@ module Pageflow
     end
 
     def entry_type
-      Pageflow.config_for(self).entry_types.find_by_name!(type_name)
+      Pageflow.config.entry_types.find_by_name!(type_name)
     end
 
     def edit_lock
@@ -137,6 +138,12 @@ module Pageflow
 
     def folder_belongs_to_same_account
       errors.add(:folder, :must_be_same_account) if folder.present? && folder.account_id != account_id
+    end
+
+    def entry_type_is_available_for_account
+      return if Pageflow.config_for(account).entry_types.map(&:name).include?(type_name)
+
+      errors.add(:type_name, :must_be_available_for_account, type_name: type_name)
     end
 
     def update_password!(options)

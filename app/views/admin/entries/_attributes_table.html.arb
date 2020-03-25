@@ -19,6 +19,11 @@ extensible_attributes_table_for(entry,
       end
     end
   end
+  row :type_name do
+    span do
+      I18n.t("activerecord.values.pageflow/entry.type_names.#{entry.type_name}")
+    end
+  end
   row :created_at
   row :edited_at
   row :published?, :class => 'published' do
