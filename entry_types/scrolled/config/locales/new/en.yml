@@ -203,6 +203,18 @@ en:
         tabs:
           section: Section
         attributes:
+          appearance:
+            label: Text-Background
+            inline_help: >
+              This setting controls how the scrolling foreground should get dimmed to
+              increase contrast from the background. The option "Cards" adds a box with rounded
+              corners to the foreground, with "Shadow" you can add a light or dark shadow to
+              increase readability and "Block" adds an opaque area.
+            values:
+              shadow: Shadow
+              cards: Card
+              solid: Block
+              transparent: Transparent
           backdropImage:
             label: Background
           backdropType:
@@ -212,8 +224,14 @@ en:
               In case of background images you can specify the main image motif area. This area will
               then initially be left uncovered by foreground content on mobile as well as desktop
               devices.
+          fullHeight:
+            label: Use Full Viewport-Height
+            inline_help: >
+              Activate this option if the section should span at least one viewport height.
+              Deactivate this option to create a short section which height is determined by its
+              foreground content.
           invert:
-            label: Invert text
+            label: Invert Text
           layout:
             label: Content alignment
             inline_help: >
@@ -224,6 +242,19 @@ en:
               left: Left
               right: Right
               center: Center
+          transition:
+            label: Transition From Previous Section
+            inline_help: >
+              This setting defines the transition when scrolling from the previous
+              section to the current. The different settings have specific effects concerning the
+              behaviors of background and foreground.
+            values:
+              beforeAfter: Scrolling with static Backgrounds
+              fade: Cross-Fade All
+              fadeBg: Cross-Fade Backgrounds
+              reveal: Reveal
+              scroll: Scroll
+              scrollOver: Scroll Over
         confirm_destroy: |-
           Really delete this section including ALL its elements?
 
