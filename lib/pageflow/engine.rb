@@ -119,6 +119,7 @@ module Pageflow
         pageflow/lt_ie9.js pageflow/lt_ie9.css pageflow/ie9.js pageflow/ie9.css
         pageflow/vendor.js
         pageflow/editor/vendor.js
+        pageflow/videojs
         video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff
       )
 
