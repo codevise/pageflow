@@ -237,7 +237,8 @@ export function exampleHeading({sectionId, text}) {
     sectionId,
     typeName: 'heading',
     configuration: {
-      children: text
+      children: text,
+      level: 1
     }
   }
 }
