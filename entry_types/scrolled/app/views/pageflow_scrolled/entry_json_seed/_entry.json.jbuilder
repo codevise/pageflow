@@ -28,6 +28,14 @@ json.config do
       json.url entry_privacy_link_url(entry)
     end
   end
+
+  json.assetUrls do
+    json.unmuteSound asset_path("pageflow/unmute.mp3")
+    json.largeBandwidthProbe Rails.env.test? ? asset_path("bandwidth_probe_large.png") : "//#{File.join(Pageflow.config.zencoder_options[:s3_host_alias], "bandwidth_probe_large.png")}"
+    json.smallBandwidthProbe Rails.env.test? ? asset_path("bandwidth_probe_small.png") : "//#{File.join(Pageflow.config.zencoder_options[:s3_host_alias], "bandwidth_probe_small.png")}"
+    json.emptyMp4 asset_path "pageflow/empty.mp4"
+    json.emptyWebm asset_path "pageflow/empty.webm"
+  end
 end
 
 unless options[:skip_i18n]

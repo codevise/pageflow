@@ -108,7 +108,6 @@ export default [
     external,
     plugins
   },
-
   {
     input: pageflowPackageRoot + '/src/frontend/index.js',
     output: {
@@ -118,6 +117,15 @@ export default [
       globals: frontendGlobals
     },
     external: Object.keys(frontendGlobals),
+    plugins: pageflowPackagePlugins
+  },
+  {
+    input: pageflowPackageRoot + '/src/sharedFrontend/index.js',
+    output: {
+      file: pageflowPackageRoot + '/sharedFrontend.js',
+      format: 'esm',
+    },
+    external,
     plugins: pageflowPackagePlugins
   },
   {
