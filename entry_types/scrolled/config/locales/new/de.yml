@@ -1,6 +1,13 @@
 de:
   pageflow_scrolled:
     public:
+      media_player:
+        start_audio: Starten Sie jetzt Audio
+        text_tracks:
+          title: Untertitel
+          none: (Keiner)
+          auto: Auto
+          auto_off: Auto (Off)
       navigation:
         chapter: Kapitel
       external_link:
@@ -14,6 +21,26 @@ de:
       insert_content_element: Neues Element einfügen
     editor:
       content_elements:
+        inlineAudio:
+          name: Inline-Audio
+        tabs:
+            general: Inline Audio
+        attributes:
+          player_controls:
+            label: Player Controls Variante
+            inline_help: Die Audio-Element unterstützt alternative Darstellunsvarianten der Player-Controls.
+            values:
+                classic: klassisch
+                slim: Minimalistisch
+                waveform: Waveform
+          source:
+            label: Audio Quelle
+          background_type:
+            label: Hintergrund-Typ
+            inline_help: Im Hintergrund der Element kann ein Bild oder ein Video-Loop aufgenommen werden.
+            values: 
+              background_image: Background Image
+              background_video: Background Video (Loop)
         externalLinkList:
           name: Externe Verweise
           outline: Gliederung
