@@ -27,10 +27,7 @@ editor.contentElementTypes.register('videoEmbed', {
       this.input('caption', TextInputView, {
         attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.inputs'],
       });
-      this.input('position', SelectInputView, {
-        attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.inputs'],
-        values: ['inline', 'sticky', 'full']
-      });
+      this.group('content_element_position');
     });
   }
 });

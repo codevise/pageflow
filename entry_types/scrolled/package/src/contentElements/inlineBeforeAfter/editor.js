@@ -27,10 +27,7 @@ editor.contentElementTypes.register('inlineBeforeAfter', {
       this.input('slider_color', ColorInputView, {
         visibleBinding: 'slider',
       });
-      this.input('position', SelectInputView, {
-        attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.inputs'],
-        values: ['inline', 'sticky', 'full']
-      });
+      this.group('content_element_position');
     });
   },
   defaultConfig: {slider: true, slider_handle: true, initial_slider_position: 50},

@@ -155,6 +155,7 @@ en:
         caption:
           label: Caption
           inline_help: The caption of the element will be displayed directly underneath the element.
+      common_content_element_attributes:
         position:
           label: Position
           inline_help: >

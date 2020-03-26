@@ -159,6 +159,7 @@ de:
         caption:
           label: Beschriftung
           inline_help: Die Beschriftung des Elements wird direkt unterhalb des Elements angezeigt.
+      common_content_element_attributes:
         position:
           label: Position
           inline_help: >
