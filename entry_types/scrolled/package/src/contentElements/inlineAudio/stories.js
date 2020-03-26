@@ -18,7 +18,7 @@ storiesOfContentElement(module, {
       configuration: {player_controls: "slim"}
     },
     {
-      name: 'Classic',
+      name: 'Waveform',
       configuration: {player_controls: "waveform"}
     }
   ]

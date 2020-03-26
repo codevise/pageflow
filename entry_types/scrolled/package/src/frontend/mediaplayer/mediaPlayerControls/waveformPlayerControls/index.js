@@ -8,7 +8,7 @@ import classNames from 'classnames';
 export default function WaveformPlayerControls(props) {
   return (
     <div className={className(props)}>
-      {/* <Container>
+      <Container>
         <Waveform isPlaying={props.isPlaying}
                   inverted={props.inverted}
                   playButtonTitle={props.playButtonTitle}
@@ -25,7 +25,7 @@ export default function WaveformPlayerControls(props) {
                textTracksMenuButtonTitle={props.textTracksMenuButtonTitle}
                textTracksMenuItems={props.textTracksMenuItems}
                hiddenOnPhone={!props.isPlaying}
-               onTextTracksMenuItemClick={props.onTextTracksMenuItemClick} /> */}
+               onTextTracksMenuItemClick={props.onTextTracksMenuItemClick} />
     </div>
   );
 }

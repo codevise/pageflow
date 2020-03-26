@@ -1,8 +1,7 @@
 import React from 'react';
 import MediaPlayer from './mediaPlayer';
 import {useFile, useTextFromMediaFile} from '../entryState';
-import {useMediaSettings} from 'pageflow-scrolled/frontend';
-import {useI18n} from 'pageflow-scrolled/frontend';
+import { useMediaSettings, useI18n } from 'pageflow-scrolled/frontend';
 
 export function AudioPlayer(props) {
   

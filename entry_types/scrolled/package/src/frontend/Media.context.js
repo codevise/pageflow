@@ -35,7 +35,6 @@ export function MediaProvider(props) {
       actions: playerActions(playerComponent)
     };
   }
-  // pageflow.audioContext.get();
   const media = {
     muted: muted,
     setMuted: function (muted) {
@@ -70,11 +69,6 @@ export function MediaProvider(props) {
       player.dispose();
     }
   };
-
-  // useEffect(() => {
-  //   media.muted = muted;
-  //   media.mediaOff = mediaOff;
-  // }, [muted, mediaOff]);
 
   return (
     <MediaContext.Provider 
