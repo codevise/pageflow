@@ -31,7 +31,11 @@ module Pageflow
     #
     # @option options :no_hide_text_on_swipe [Boolean]
     #   Pass true if hiding the text by swiping to left shall be
-    #   deactived on mobile devices.
+    #   deactivated on mobile devices.
+    #
+    # @option options :hide_logo_option [Boolean]
+    #   Pass true if hiding the logo on specific pages should be supported
+    #   as an option in the editor.
     def register(name, options = {})
       @themes[name] = Theme.new(name, options)
     end

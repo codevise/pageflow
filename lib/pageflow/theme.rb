@@ -44,6 +44,10 @@ module Pageflow
       !!@options[:emphasized_pages]
     end
 
+    def supports_hide_logo_on_pages?
+      !!@options[:hide_logo_option]
+    end
+
     def page_change_by_scrolling?
       !@options[:no_page_change_by_scrolling]
     end

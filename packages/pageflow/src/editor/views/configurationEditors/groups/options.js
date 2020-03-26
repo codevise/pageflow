@@ -27,8 +27,9 @@ ConfigurationEditorTabView.groups.define('options', function(options) {
     collection: state.audioFiles
   });
 
-  // TODO: Only show for first page for themes with $logo-variant: "first-page"
-  this.input('hide_logo', CheckBoxInputView);
+  if (theme.supportsHideLogoOnPages()) {
+    this.input('hide_logo', CheckBoxInputView);
+  };
 
   if (options.canPauseAtmo) {
     this.input('atmo_during_playback', SelectInputView, {

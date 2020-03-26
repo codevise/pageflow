@@ -11,3 +11,4 @@ json.hide_text_on_swipe theme.hide_text_on_swipe?
 json.emphasized_pages theme.supports_emphasized_pages?
 json.scroll_indicator_modes theme.supports_scroll_indicator_modes?
 json.change_to_parent_page_at_storyline_boundary theme.change_to_parent_page_at_storyline_boundary?
+json.hide_logo_option theme.supports_hide_logo_on_pages?
