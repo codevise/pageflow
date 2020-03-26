@@ -6,7 +6,7 @@ import {ContentElementFileSelectionHandler} from './models/ContentElementFileSel
 import {EntryOutlineView} from './views/EntryOutlineView';
 import {EntryPreviewView} from './views/EntryPreviewView';
 
-import './views/configurationEditors/groups/common_content_element_attributes';
+import './views/configurationEditors/groups/CommonContentElementAttributes';
 
 import {SideBarRouter} from './routers/SideBarRouter';
 import {SideBarController} from './controllers/SideBarController';

@@ -151,11 +151,10 @@ en:
                 narrow: "Landscape 4:3"
                 square: "Square"
                 portrait: "Portrait (9:16)"
-      inputs:
+      common_content_element_attributes:
         caption:
           label: Caption
           inline_help: The caption of the element will be displayed directly underneath the element.
-      common_content_element_attributes:
         position:
           label: Position
           inline_help: >

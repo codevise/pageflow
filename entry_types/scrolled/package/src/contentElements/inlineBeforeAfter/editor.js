@@ -27,7 +27,7 @@ editor.contentElementTypes.register('inlineBeforeAfter', {
       this.input('slider_color', ColorInputView, {
         visibleBinding: 'slider',
       });
-      this.group('content_element_position');
+      this.group('ContentElementPosition');
     });
   },
   defaultConfig: {slider: true, slider_handle: true, initial_slider_position: 50},

@@ -9,10 +9,8 @@ editor.contentElementTypes.register('inlineImage', {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration'
       });
-      this.input('caption', TextInputView, {
-        attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.inputs'],
-      });
-      this.group('content_element_position');
+      this.group('ContentElementCaption');
+      this.group('ContentElementPosition');
     });
   }
 });
