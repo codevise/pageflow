@@ -2,7 +2,7 @@ import React, {useRef, useEffect, useContext} from 'react';
 import classNames from 'classnames';
 
 import ScrollToSectionContext from './ScrollToSectionContext';
-import MutedContext from './MutedContext';
+import {useMediaSettings} from './useMediaSettings';
 
 import styles from './Video.module.css';
 
@@ -21,7 +21,7 @@ export function Video(props) {
     const videoRef = useRef();
     const state = props.state;
 
-    const mutedSettings = useContext(MutedContext);
+    const mutedSettings = useMediaSettings();
 
     useEffect(() => {
       const video = videoRef.current;

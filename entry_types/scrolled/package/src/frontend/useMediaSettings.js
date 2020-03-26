@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import MutedContext from './MutedContext';
+import {MediaContext} from './Media.context';
 
 /**
  * Read and change media settings of the entry.
@@ -15,5 +15,5 @@ import MutedContext from './MutedContext';
  *   }
  */
 export function useMediaSettings() {
-  return useContext(MutedContext);
+  return useContext(MediaContext);
 }
