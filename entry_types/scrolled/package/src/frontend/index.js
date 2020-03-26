@@ -24,6 +24,10 @@ export * from './useOnScreen';
 export * from './useMediaSettings';
 export * from './i18n';
 
+export * from './mediaPlayer';
+export * from './AudioPlayer';
+export * from './VideoPlayer';
+
 export * from './SectionThumbnail';
 export {default as Entry} from './Entry';
 export {EntryStateProvider} from '../entryState/EntryStateProvider'
@@ -31,7 +35,10 @@ export {useEditorSelection} from './EditorState';
 
 window.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);
-  ReactDOM.render(<Root seed={seed} />, document.getElementById('root'));
+  pageflow.assetUrls = seed.config.assetUrls;
+  pageflow.browser.detectFeatures().then(function () {
+    ReactDOM.render(<Root seed={seed} />, document.getElementById('root'));
+  });
 }
 
 function Root({seed}) {

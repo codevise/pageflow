@@ -1,0 +1,5 @@
+.player_container, .player_container > div, .player_container > div > div[class*="vjs-poster"] {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}

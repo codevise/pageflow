@@ -1,0 +1,244 @@
+.container {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  font-family: SourceSansPro;
+  font-size: 16px;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50px;
+  background-color: rgba(17,17,17,0.9);
+  pointer-events: none;
+}
+
+.play_button {
+  display: inline-block;
+  position: absolute;
+  bottom: -5px;
+  left: 1px;
+}
+
+.play_button_inner {
+  pointer-events: all;
+  background: transparent 0 0 repeat scroll url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
+  color: transparent;
+  font: 0/0 a;
+  text-shadow: none;
+  position: absolute;
+  bottom: 5px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+
+.play_button_inner:active, .play_button_inner:focus, .text_track_button_link:active, .text_track_button_link:focus {
+  outline: 0;
+  border: none;
+}
+
+.control_bar {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  pointer-events: all;
+  text-align: right;
+}
+
+.controls_progress {
+  display: inline-block;
+  width: 89%;
+  position: relative;
+  bottom: 22px;
+  right: 5px;
+}
+
+.current_time_paused, .duration_paused, .time_divider_paused, .progress_control_paused, .control_bar_text_paused, .menu_bar_paused {
+  opacity: 0;
+  visibility: hidden;
+  transition-delay: 0.2s;
+}
+
+.current_time, .duration, .time_divider {
+  position: relative;
+  top: 15px;
+  right: 5px;
+  display: inline-block;
+  color: #fff;
+  font-size: 14px;
+  transition: opacity 0.2s linear, visibility 0.2s linear;
+}
+
+.control_bar_text{
+  position: absolute;
+  left: 60px;
+  bottom: 15px;
+  transition: opacity 0.2s linear, visibility 0.2s linear;
+}
+
+.menu_bar {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  z-index: 10;
+  pointer-events: all;
+  transition: opacity 0.2s linear, visibility 0.2s linear;
+}
+
+.text_track_button {
+  display: inline-block;
+  position: absolute;
+  top: -25px;
+  right: 60px;
+  width: 40px;
+  height: 40px;
+}
+
+.text_track_button_link {
+  display: block;
+  height: 100%;
+}
+
+.text_track_button_submenu {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s, visibility 0.5s;
+  position: absolute;
+  right: 0;
+  bottom: 40px;
+  margin: 0;
+  padding: 5px;
+  background-color: rgba(17,17,17,0.9);
+  border-radius: 2px;
+}
+
+.text_track_submenu_visible .text_track_button_submenu{
+  visibility: visible;
+  opacity: 1;
+  pointer-events: all;
+  transition: none
+}
+
+.text_track_menu_item {
+  position: relative;
+  list-style: none;
+}
+
+.text_track_menu_item_active {
+  position: absolute;
+  left: 0px;
+  fill: #fff;
+}
+
+.text_track_menu_item_link {
+  display: block;
+  padding: 5px 10px 5px 25px;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap
+}
+
+.progress_control {
+  transition: opacity 0.2s linear, visibility 0.2s linear;
+  pointer-events: all;
+  bottom: 0;
+  left: 30px;
+  right: 80px;
+}
+
+.progress_control::before {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  height: 3px;
+  content: "";
+  background-color: rgba(255,255,255,0.2);
+  width: 100%;
+}
+
+.progress_holder {
+  touch-action: none;
+  height: 100%;
+}
+
+.load_progress {
+  background-color: rgba(255,255,255,0.2);
+  position: absolute;
+  left: 0;
+  top: 8px;
+  height: 3px;
+}
+
+.play_progress {
+  background-color: #53adb8;
+  position: absolute;
+  left: 0;
+  top: 8px;
+  height: 3px;
+}
+
+.seek_handle {
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 0;
+  height: 0;
+  transform: scale(0);
+  transition: transform 0.1s ease;
+}
+
+.seek_handle::before {
+    content: "";
+    position: absolute;
+    left: -6px;
+    top: -6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    background-color: #53adb8;
+}
+
+.progress_control:hover .seek_handle {
+  transform: scale(1);
+}
+
+@keyframes rotate_and_blink {
+  0% {
+    transform: rotate(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: rotate(180deg);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
+
+.loading_spinner {
+  animation: rotate_and_blink 0.5s linear infinite;
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  bottom: 2px;
+  left: 2px;
+  pointer-events: none;
+  text-align: right;
+}
+
+
+.play_button_inner > svg, .loading_spinner > svg, .text_track_button_link > svg {
+  fill: #fff;
+}
