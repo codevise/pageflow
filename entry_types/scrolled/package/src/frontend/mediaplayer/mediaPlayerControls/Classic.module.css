@@ -1,0 +1,106 @@
+.container::before {
+  content: none;
+}
+
+
+.control_bar {
+  direction: ltr;
+  left: 50%;
+  bottom: 5px;
+  transform: translate3d(-50%, 0, 0);
+  width: 380px;
+  height: 50px;
+  background-color: #191919;
+  border: 3px solid #505050;
+  pointer-events: all;
+}
+
+.control_bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 60px;
+  width: 0;
+  height: 50px;
+  border-right: 2px solid #505050;
+}
+
+.controls_progress {
+  width: 65%;
+  bottom: 0px;
+  right: 60px;
+}
+
+.progress_control {
+  
+}
+
+.current_time, .duration, .time_divider {
+  top: 26px;
+}
+
+.progress_control::before {
+  content: none;
+}
+
+.progress_holder {
+  height: 10px;
+  border-radius: 4px;
+  background-color: #333333;
+}
+
+.load_progress {
+  background-color: rgba(255,255,255,0.4);
+  border-radius: 4px;
+  position: absolute;
+  top: unset;
+  height: 10px;
+}
+
+.play_progress {
+  background-color: #53adb8;
+  border-radius: 4px;
+  position: absolute;
+  height: 10px;
+  top: unset;
+  cursor: pointer;
+}
+
+.seek_handle {
+  position: relative;
+  background-color: #aaa;
+  border: solid 1px #bbb;
+  border-radius: 6px;
+  box-sizing: border-box;
+  height: 36px;
+  width: 24px;
+  top: -11px;
+}
+
+.seek_handle::before{
+  transform: translate(-50%, -50%) scaleX(0.6);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #333;
+  font-size: 23px;
+  font-family: "FontAwesome";
+  content: "\f0c9";
+  width: 16.625px;
+  height: 25px;
+  background-color: transparent;
+}
+
+.text_track_button {
+  position: absolute;
+  right: 65px;
+  top: -42px;
+}
+
+.loading_spinner {
+  left: 6px;
+}
+
+.play_button {
+  left: 5px;
+}
