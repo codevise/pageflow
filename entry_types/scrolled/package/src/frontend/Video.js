@@ -2,8 +2,8 @@ import React, {useRef, useEffect, useContext} from 'react';
 import classNames from 'classnames';
 import styles from "./Video.module.css";
 
-import ScrollToSectionContext from "./ScrollToSectionContext";
-import MutedContext from "./MutedContext";
+import ScrollToSectionContext from './ScrollToSectionContext';
+import {useMediaSettings} from './useMediaSettings';
 import {useFile} from '../entryState';
 
 /**
@@ -32,7 +32,7 @@ function VideoPlayer(props) {
   const playerRef = useRef();
   const state = props.state;
 
-  const mutedSettings = useContext(MutedContext);
+  const mutedSettings = useMediaSettings();
 
   useEffect(() => {
     const player = playerRef.current;

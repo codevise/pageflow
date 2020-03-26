@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react';
 
 import Chapter from "./Chapter";
-import MutedContext from './MutedContext';
+import {MediaProvider} from './Media.context';
 import ScrollToSectionContext from './ScrollToSectionContext';
 import {useEntryStructure, useEntryStateDispatch} from '../entryState';
 import {useEditorSelection} from './EditorState';
@@ -13,8 +13,6 @@ export default function Entry(props) {
 
   const [scrollTargetSectionIndex, setScrollTargetSectionIndex] = useState(null);
   const {select} = useEditorSelection()
-
-  const [muted, setMuted] = useState(true);
 
   const dispatch = useEntryStateDispatch();
   const entryStructure = useEntryStructure();
@@ -60,7 +58,7 @@ export default function Entry(props) {
 
   return (
     <div className={styles.Entry}>
-      <MutedContext.Provider value={{muted: muted, setMuted: setMuted}}>
+      <MediaProvider>
         <ScrollToSectionContext.Provider value={scrollToSection}>
           {renderChapters(entryStructure,
                           currentSectionIndex,
@@ -68,7 +66,7 @@ export default function Entry(props) {
                           scrollTargetSectionIndex,
                           setScrollTargetSectionIndex)}
         </ScrollToSectionContext.Provider>
-      </MutedContext.Provider>
+      </MediaProvider>
     </div>
   );
 }
