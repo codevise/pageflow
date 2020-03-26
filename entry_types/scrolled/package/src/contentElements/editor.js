@@ -7,3 +7,4 @@ import './soundDisclaimer/editor';
 import './videoEmbed/editor';
 import './externalLinkList/editor';
 import './dataWrapperChart/editor';
+import './inlineAudio/editor';
