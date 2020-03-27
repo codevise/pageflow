@@ -24,5 +24,9 @@ export const Theme = Backbone.Model.extend({
 
   supportsScrollIndicatorModes: function() {
     return this.get('scroll_indicator_modes');
+  },
+
+  supportsHideLogoOnPages: function() {
+    return this.get('hide_logo_option');
   }
 });

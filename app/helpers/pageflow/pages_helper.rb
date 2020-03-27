@@ -19,6 +19,7 @@ module Pageflow
       classes << 'chapter_beginning' if page.position == 0
       classes << 'first_page' if page.is_first
       classes << 'no_text_content' if !page_has_content(page)
+      classes << 'hide_logo' if page.configuration['hide_logo']
       classes.join(' ')
     end
 

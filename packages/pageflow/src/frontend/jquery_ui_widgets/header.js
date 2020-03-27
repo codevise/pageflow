@@ -36,6 +36,7 @@ jQuery(function($) {
       function updateClasses(page) {
         that.element.toggleClass('invert', page.hasClass('invert'));
         that.element.toggleClass('first_page', page.index() === 0);
+        that.element.toggleClass('hide_logo', page.hasClass('hide_logo'));
       }
     }
   });
