@@ -20,9 +20,7 @@ module Pageflow
              :storylines, :main_storyline_chapters, :chapters, :pages,
              :find_files, :find_file, :find_file_by_perma_id,
              :image_files, :video_files, :audio_files,
-             :summary, :credits, :manual_start,
-             :emphasize_chapter_beginning,
-             :emphasize_new_pages,
+             :summary, :credits,
              :share_url, :share_image_id, :share_image_x, :share_image_y,
              :share_providers, :active_share_providers,
              :locale,
@@ -41,6 +39,18 @@ module Pageflow
 
     def title
       revision.title.presence || entry.title
+    end
+
+    def manual_start
+      revision.configuration['manual_start']
+    end
+
+    def emphasize_chapter_beginning
+      revision.configuration['emphasize_chapter_beginning']
+    end
+
+    def emphasize_new_pages
+      revision.configuration['emphasize_new_pages']
     end
 
     def stylesheet_model
