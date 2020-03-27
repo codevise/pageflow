@@ -11,11 +11,11 @@ multiple components in a single place. A plugin looks like this:
 
     class MyPlugin < Pageflow::Plugin
       def configure(config)
-        # Anything that could go in the pageflow iniitializer
+        # Anything that could go in the pageflow initializer
       end
     end
 
-In the main application a plugin is used the following way:
+In the host application a plugin is used the following way:
 
     # config/initializer/pageflow.rb
 
@@ -24,7 +24,7 @@ In the main application a plugin is used the following way:
     end
 
 Plugins help limit duplication and make configuration changes easy
-without having to edit code in the main application.
+without having to edit code in the host application.
 
 ## Defining Features
 
