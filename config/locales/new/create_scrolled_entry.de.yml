@@ -1,0 +1,6 @@
+de:
+  pageflow:
+    paged_entry_type:
+      feature_name: Beitragstyp Seitenbasiert/Klassisch
+    scrolled_entry_type:
+      feature_name: Beitragstyp Kontinuierlich Scrollend/Pageflow Next
