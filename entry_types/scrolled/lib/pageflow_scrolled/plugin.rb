@@ -2,7 +2,9 @@ module PageflowScrolled
   # @api private
   class Plugin < Pageflow::Plugin
     def configure(config)
-      config.entry_types.register(PageflowScrolled.entry_type)
+      config.features.register('scrolled_entry_type') do |feature_config|
+        feature_config.entry_types.register(PageflowScrolled.entry_type)
+      end
 
       config.for_entry_type(PageflowScrolled.entry_type) do |c|
         c.file_types.register(Pageflow::BuiltInFileType.image)

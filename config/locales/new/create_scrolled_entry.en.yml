@@ -1,0 +1,6 @@
+en:
+  pageflow:
+    paged_entry_type:
+      feature_name: Entry type page-based/classic
+    scrolled_entry_type:
+      feature_name: Entry type scrolling continuously/Pageflow Next
