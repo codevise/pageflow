@@ -24,13 +24,8 @@ editor.contentElementTypes.register('videoEmbed', {
       this.input('aspectRatio', SelectInputView, {
         values: ['wide', 'narrow', 'square', 'portrait']
       });
-      this.input('caption', TextInputView, {
-        attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.inputs'],
-      });
-      this.input('position', SelectInputView, {
-        attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.inputs'],
-        values: ['inline', 'sticky', 'full']
-      });
+      this.group('ContentElementCaption');
+      this.group('ContentElementPosition');
     });
   }
 });
