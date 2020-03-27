@@ -17,11 +17,9 @@ module Pageflow
              :type_name,
              :to => :entry)
 
-    delegate(:title, :summary, :credits, :manual_start,
+    delegate(:title, :summary, :credits,
              :widgets,
              :storylines, :main_storyline_chapters, :chapters, :pages,
-             :emphasize_chapter_beginning,
-             :emphasize_new_pages,
              :share_url, :share_image_id, :share_image_x, :share_image_y,
              :share_providers, :active_share_providers,
              :find_files, :find_file, :find_file_by_perma_id,
@@ -114,6 +112,18 @@ module Pageflow
 
     def overview_button
       OverviewButton.new(draft)
+    end
+
+    def manual_start
+      revision.configuration['manual_start']
+    end
+
+    def emphasize_chapter_beginning
+      revision.configuration['emphasize_chapter_beginning']
+    end
+
+    def emphasize_new_pages
+      revision.configuration['emphasize_new_pages']
     end
 
     def resolve_widgets(options = {})
