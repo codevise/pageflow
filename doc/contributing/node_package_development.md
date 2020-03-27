@@ -3,7 +3,8 @@
 ### Installing Dependencies
 
 Ensure the development machine meets the requirements listed in the
-readme. From the repository root run:
+readme. Furthermore, configure your editor to highlight
+[ESLint](https://eslint.org/) warnings. From the repository root run:
 
     $ yarn install
 
