@@ -21,6 +21,9 @@ import {expandUrls} from './expandUrls';
  *     urls: {
  *       large: 'https://...'
  *     },
+ *     configuration: {
+ *       alt: '...'
+ *     }
  *   }
  */
 export function useFile({collectionName, permaId}) {

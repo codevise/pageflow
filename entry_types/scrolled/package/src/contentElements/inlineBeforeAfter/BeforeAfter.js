@@ -1,9 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ReactCompareImage from 'react-compare-image';
 import styles from './BeforeAfter.module.css';
-import {useImageAlt, useImageUrl} from 'pageflow-scrolled/frontend';
 import cx from 'classnames';
-import {useEditorSelection} from 'pageflow-scrolled/frontend';
+import {useFile, useEditorSelection} from 'pageflow-scrolled/frontend';
 
 export function BeforeAfter({state,
                              before_id,
@@ -35,11 +34,14 @@ export function BeforeAfter({state,
     }
   }, [state, current]);
 
+  const beforeImage = useFile({collectionName: 'imageFiles', permaId: before_id});
+  const afterImage = useFile({collectionName: 'imageFiles', permaId: after_id});
+
   const {isSelected} = useEditorSelection({id: contentElementId, type: 'contentElement'});
-  const beforeImageUrl = useImageUrl({permaId: before_id, quality: 'large'});
-  const beforeImageAlt = useImageAlt({permaId: before_id});
-  const afterImageUrl = useImageUrl({permaId: after_id, quality: 'large'});
-  const afterImageAlt = useImageAlt({permaId: after_id});
+  const beforeImageUrl = beforeImage && beforeImage.urls.large;
+  const beforeImageAlt = beforeImage && beforeImage.configuration.alt;
+  const afterImageUrl = afterImage && afterImage.urls.large;
+  const afterImageAlt = afterImage && afterImage.configuration.alt;
   const initialSliderPos = initial_slider_position / 100;
 
   let opts = {};
