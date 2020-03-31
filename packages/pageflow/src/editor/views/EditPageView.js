@@ -43,7 +43,7 @@ export const EditPageView = Marionette.Layout.extend({
 
       pictogramClass: 'type_pictogram',
 
-      helpLinkClicked: function(value) {
+      helpLinkClicked: value => {
         var pageType = this.options.api.pageTypes.findByName(value);
         app.trigger('toggle-help', pageType.seed.help_entry_translation_key);
       }
