@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import classNames from 'classnames';
 
-import {Video, useOnScreen} from 'pageflow-scrolled/frontend';
+import {Video, useOnScreen, InlineCaption} from 'pageflow-scrolled/frontend';
 
 import styles from './InlineVideo.module.css';
 
@@ -18,6 +18,7 @@ export function InlineVideo({configuration}) {
                  interactive={true} />
         </div>
       </div>
+      <InlineCaption text={configuration.caption} />
     </div>
   )
 }
