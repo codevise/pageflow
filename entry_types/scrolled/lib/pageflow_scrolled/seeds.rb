@@ -21,8 +21,11 @@ module PageflowScrolled
     # @option attributes [Hash] :image_files A hash mapping image
     #   names used in properties like `backdrop.image` to urls.
     # @yield [entry] a block to be called before the entry is saved
+    # @param [Hash] options  options for entry and files creation
+    # @option options [Boolean] :skip_encoding
+    #   Flag indicating whether to encode video files on creation or set them directly to encoded
     # @return [Entry] newly created entry
-    def sample_scrolled_entry(attributes)
+    def sample_scrolled_entry(attributes:, options: {})
       entry = Pageflow::Entry.where(type_name: 'scrolled')
                              .where(attributes.slice(:account, :title))
                              .first
@@ -46,7 +49,8 @@ module PageflowScrolled
 
         video_files_by_name = create_files(draft_entry,
                                            :video,
-                                           attributes.fetch(:video_files, {}))
+                                           attributes.fetch(:video_files, {}),
+                                           options.fetch(:skip_encoding, false))
 
         files_by_name = image_files_by_name.merge(video_files_by_name)
 
@@ -68,7 +72,7 @@ module PageflowScrolled
       say("   sample scrolled entry '#{entry.title}'\n")
     end
 
-    def create_files(draft_entry, file_type, file_data_by_name)
+    def create_files(draft_entry, file_type, file_data_by_name, skip_encoding = false)
       file_data_by_name.transform_values do |data|
         say("     creating #{file_type} file from #{data['url']}")
 
@@ -77,7 +81,7 @@ module PageflowScrolled
                                         attachment: URI.parse(data['url']),
                                         configuration: data['configuration'])
         if file_type == :video
-          if draft_entry.entry_title == 'Storybook seed'
+          if skip_encoding
             file.update!(state: 'encoded')
           else
             file.publish!

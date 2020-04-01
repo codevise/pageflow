@@ -9,9 +9,11 @@ module PageflowScrolled
     describe '#sample_scrolled_entry' do
       context 'entry' do
         it 'creates entry for account' do
-          entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                 title: 'Example',
-                                                 chapters: [])
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   chapters: []
+                                                 })
 
           expect(entry).to be_persisted
         end
@@ -23,9 +25,11 @@ module PageflowScrolled
                          account: account,
                          title: 'Example')
 
-          result = SeedsDsl.sample_scrolled_entry(account: account,
-                                                  title: 'Example',
-                                                  chapters: [])
+          result = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                    account: account,
+                                                    title: 'Example',
+                                                    chapters: []
+                                                  })
 
           expect(result).to eq(entry)
         end
@@ -33,22 +37,26 @@ module PageflowScrolled
 
       context 'entry structure' do
         it 'creates the main storyline' do
-          entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                 title: 'Example',
-                                                 chapters: [
-                                                   {'title' => 'Chapter 1'}
-                                                 ])
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   chapters: [
+                                                     {'title' => 'Chapter 1'}
+                                                   ]
+                                                 })
 
           expect(Storyline.all_for_revision(entry.draft).first).to be_present
         end
 
         it 'creates chapters as specified' do
-          entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                 title: 'Example',
-                                                 chapters: [
-                                                   {'title' => 'Chapter 1'},
-                                                   {'title' => 'Chapter 2'}
-                                                 ])
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   chapters: [
+                                                     {'title' => 'Chapter 1'},
+                                                     {'title' => 'Chapter 2'}
+                                                   ]
+                                                 })
 
           created_chapters = Chapter.all_for_revision(entry.draft)
           expect(created_chapters.count).to eq(2)
@@ -57,17 +65,19 @@ module PageflowScrolled
         end
 
         it 'creates sections as specified' do
-          entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                 title: 'Example',
-                                                 chapters: [
-                                                   {
-                                                     'title' => 'Chapter 1',
-                                                     'sections' => [
-                                                       {'transition' => 'scroll'},
-                                                       {'transition' => 'fade'}
-                                                     ]
-                                                   }
-                                                 ])
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   chapters: [
+                                                     {
+                                                       'title' => 'Chapter 1',
+                                                       'sections' => [
+                                                         {'transition' => 'scroll'},
+                                                         {'transition' => 'fade'}
+                                                       ]
+                                                     }
+                                                   ]
+                                                 })
 
           created_sections = Section.all_for_revision(entry.draft)
           expect(created_sections.count).to eq(2)
@@ -76,37 +86,39 @@ module PageflowScrolled
         end
 
         it 'creates the sections content_elements as specified' do
-          entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                 title: 'Example',
-                                                 chapters: [
-                                                   {
-                                                     'title' => 'Chapter 1',
-                                                     'sections' => [
-                                                       {
-                                                         'transition' => 'scroll',
-                                                         'foreground' => [
-                                                           {
-                                                             'type' => 'heading',
-                                                             'props' => {
-                                                               'children' => 'Pageflow Next'
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   chapters: [
+                                                     {
+                                                       'title' => 'Chapter 1',
+                                                       'sections' => [
+                                                         {
+                                                           'transition' => 'scroll',
+                                                           'foreground' => [
+                                                             {
+                                                               'type' => 'heading',
+                                                               'props' => {
+                                                                 'children' => 'Pageflow Next'
+                                                               }
                                                              }
-                                                           }
-                                                         ]
-                                                       },
-                                                       {
-                                                         'transition' => 'fade',
-                                                         'foreground' => [
-                                                           {
-                                                             'type' => 'textBlock',
-                                                             'props' => {
-                                                               'children' => 'Some content'
+                                                           ]
+                                                         },
+                                                         {
+                                                           'transition' => 'fade',
+                                                           'foreground' => [
+                                                             {
+                                                               'type' => 'textBlock',
+                                                               'props' => {
+                                                                 'children' => 'Some content'
+                                                               }
                                                              }
-                                                           }
-                                                         ]
-                                                       }
-                                                     ]
-                                                   }
-                                                 ])
+                                                           ]
+                                                         }
+                                                       ]
+                                                     }
+                                                   ]
+                                                 })
 
           created_content_elements = ContentElement.all_for_revision(entry.draft)
           expect(created_content_elements.count).to eq(2)
@@ -118,18 +130,20 @@ module PageflowScrolled
 
         context 'files referenced', stub_paperclip: true do
           it 'ignores non file backdrops' do
-            entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                   title: 'Example',
-                                                   chapters: [
-                                                     {
-                                                       'sections' => [
-                                                         {
-                                                           'backdrop' => {'image' => '#fff'},
-                                                           'foreground' => []
-                                                         }
-                                                       ]
-                                                     }
-                                                   ])
+            entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                     account: create(:account),
+                                                     title: 'Example',
+                                                     chapters: [
+                                                       {
+                                                         'sections' => [
+                                                           {
+                                                             'backdrop' => {'image' => '#fff'},
+                                                             'foreground' => []
+                                                           }
+                                                         ]
+                                                       }
+                                                     ]
+                                                   })
             image_values = Section.all_for_revision(entry.draft).map do |element|
               element.configuration.dig('backdrop', 'image')
             end
@@ -146,26 +160,28 @@ module PageflowScrolled
             end
 
             it 'rewrites backdrop image and imageMobile to ids' do
-              entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                     title: 'Example',
-                                                     image_files: {
-                                                       'some-image' => {
-                                                         'url' => 'https://example.com/some.jpg'
-                                                       }
-                                                     },
-                                                     chapters: [
-                                                       {
-                                                         'sections' => [
-                                                           {
-                                                             'backdrop' => {
-                                                               'image' => 'some-image',
-                                                               'imageMobile' => 'some-image'
-                                                             },
-                                                             'foreground' => []
-                                                           }
-                                                         ]
-                                                       }
-                                                     ])
+              entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                       account: create(:account),
+                                                       title: 'Example',
+                                                       image_files: {
+                                                         'some-image' => {
+                                                           'url' => 'https://example.com/some.jpg'
+                                                         }
+                                                       },
+                                                       chapters: [
+                                                         {
+                                                           'sections' => [
+                                                             {
+                                                               'backdrop' => {
+                                                                 'image' => 'some-image',
+                                                                 'imageMobile' => 'some-image'
+                                                               },
+                                                               'foreground' => []
+                                                             }
+                                                           ]
+                                                         }
+                                                       ]
+                                                     })
 
               image_file = entry.draft.find_files(Pageflow::ImageFile).first
 
@@ -177,29 +193,31 @@ module PageflowScrolled
             end
 
             it 'rewrites inlineImage and stickyImage content elements' do
-              entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                     title: 'Example',
-                                                     image_files: {
-                                                       'some-image' => {
-                                                         'url' => 'https://example.com/some.jpg'
-                                                       }
-                                                     },
-                                                     chapters: [
-                                                       {
-                                                         'sections' => [
-                                                           {
-                                                             'foreground' => [
-                                                               {
-                                                                 'type' => 'stickyImage',
-                                                                 'props' => {
-                                                                   'id' => 'some-image'
+              entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                       account: create(:account),
+                                                       title: 'Example',
+                                                       image_files: {
+                                                         'some-image' => {
+                                                           'url' => 'https://example.com/some.jpg'
+                                                         }
+                                                       },
+                                                       chapters: [
+                                                         {
+                                                           'sections' => [
+                                                             {
+                                                               'foreground' => [
+                                                                 {
+                                                                   'type' => 'stickyImage',
+                                                                   'props' => {
+                                                                     'id' => 'some-image'
+                                                                   }
                                                                  }
-                                                               }
-                                                             ]
-                                                           }
-                                                         ]
-                                                       }
-                                                     ])
+                                                               ]
+                                                             }
+                                                           ]
+                                                         }
+                                                       ]
+                                                     })
 
               image_file = entry.draft.find_files(Pageflow::ImageFile).first
 
@@ -217,25 +235,27 @@ module PageflowScrolled
             end
 
             it 'rewrites backdrop video to ids' do
-              entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                     title: 'Example',
-                                                     video_files: {
-                                                       'some-video' => {
-                                                         'url' => 'https://example.com/some.mp4'
-                                                       }
-                                                     },
-                                                     chapters: [
-                                                       {
-                                                         'sections' => [
-                                                           {
-                                                             'backdrop' => {
-                                                               'video' => 'some-video'
-                                                             },
-                                                             'foreground' => []
-                                                           }
-                                                         ]
-                                                       }
-                                                     ])
+              entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                       account: create(:account),
+                                                       title: 'Example',
+                                                       video_files: {
+                                                         'some-video' => {
+                                                           'url' => 'https://example.com/some.mp4'
+                                                         }
+                                                       },
+                                                       chapters: [
+                                                         {
+                                                           'sections' => [
+                                                             {
+                                                               'backdrop' => {
+                                                                 'video' => 'some-video'
+                                                               },
+                                                               'foreground' => []
+                                                             }
+                                                           ]
+                                                         }
+                                                       ]
+                                                     })
 
               video_file = entry.draft.find_files(Pageflow::VideoFile).first
 
@@ -246,29 +266,31 @@ module PageflowScrolled
             end
 
             it 'rewrites inlineVideo content elements' do
-              entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                     title: 'Example',
-                                                     video_files: {
-                                                       'some-video' => {
-                                                         'url' => 'https://example.com/some.mp4'
-                                                       }
-                                                     },
-                                                     chapters: [
-                                                       {
-                                                         'sections' => [
-                                                           {
-                                                             'foreground' => [
-                                                               {
-                                                                 'type' => 'inlineVideo',
-                                                                 'props' => {
-                                                                   'id' => 'some-video'
+              entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                       account: create(:account),
+                                                       title: 'Example',
+                                                       video_files: {
+                                                         'some-video' => {
+                                                           'url' => 'https://example.com/some.mp4'
+                                                         }
+                                                       },
+                                                       chapters: [
+                                                         {
+                                                           'sections' => [
+                                                             {
+                                                               'foreground' => [
+                                                                 {
+                                                                   'type' => 'inlineVideo',
+                                                                   'props' => {
+                                                                     'id' => 'some-video'
+                                                                   }
                                                                  }
-                                                               }
-                                                             ]
-                                                           }
-                                                         ]
-                                                       }
-                                                     ])
+                                                               ]
+                                                             }
+                                                           ]
+                                                         }
+                                                       ]
+                                                     })
 
               video_file = entry.draft.find_files(Pageflow::VideoFile).first
 
@@ -288,14 +310,16 @@ module PageflowScrolled
         end
 
         it 'creates image file' do
-          entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                 title: 'Example',
-                                                 image_files: {
-                                                   'some-image' => {
-                                                     'url' => 'https://example.com/some.jpg'
-                                                   }
-                                                 },
-                                                 chapters: [])
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   image_files: {
+                                                     'some-image' => {
+                                                       'url' => 'https://example.com/some.jpg'
+                                                     }
+                                                   },
+                                                   chapters: []
+                                                 })
 
           image_file = entry.draft.find_files(Pageflow::ImageFile).first
 
@@ -303,17 +327,19 @@ module PageflowScrolled
         end
 
         it 'stores configuration' do
-          entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                 title: 'Example',
-                                                 image_files: {
-                                                   'some-image' => {
-                                                     'url' => 'https://example.com/some.jpg',
-                                                     'configuration' => {
-                                                       'some' => 'value'
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   image_files: {
+                                                     'some-image' => {
+                                                       'url' => 'https://example.com/some.jpg',
+                                                       'configuration' => {
+                                                         'some' => 'value'
+                                                       }
                                                      }
-                                                   }
-                                                 },
-                                                 chapters: [])
+                                                   },
+                                                   chapters: []
+                                                 })
 
           image_file = entry.draft.find_files(Pageflow::ImageFile).first
 
@@ -330,18 +356,40 @@ module PageflowScrolled
         end
 
         it 'creates video file' do
-          entry = SeedsDsl.sample_scrolled_entry(account: create(:account),
-                                                 title: 'Example',
-                                                 video_files: {
-                                                   'some-video' => {
-                                                     'url' => 'https://example.com/some.mp4'
-                                                   }
-                                                 },
-                                                 chapters: [])
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   video_files: {
+                                                     'some-video' => {
+                                                       'url' => 'https://example.com/some.mp4'
+                                                     }
+                                                   },
+                                                   chapters: []
+                                                 })
 
           video_file = entry.draft.find_files(Pageflow::VideoFile).first
 
           expect(video_file.url).to include('some.mp4')
+        end
+
+        it 'supports skipping video encoding' do
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   video_files: {
+                                                     'some-video' => {
+                                                       'url' => 'https://example.com/some.mp4'
+                                                     }
+                                                   },
+                                                   chapters: []
+                                                 },
+                                                 options: {
+                                                   skip_encoding: true
+                                                 })
+
+          video_file = entry.draft.find_files(Pageflow::VideoFile).first
+
+          expect(video_file.state).to eq('encoded')
         end
       end
 
@@ -349,9 +397,11 @@ module PageflowScrolled
         account = create(:account)
         theming = create(:theming, account: account)
 
-        entry = SeedsDsl.sample_scrolled_entry(account: account,
-                                               title: 'Example',
-                                               chapters: []) do |created_entry|
+        entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                 account: account,
+                                                 title: 'Example',
+                                                 chapters: []
+                                               }) do |created_entry|
           created_entry.theming = theming
         end
 
