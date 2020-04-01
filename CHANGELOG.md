@@ -1,5 +1,15 @@
 # CHANGELOG
 
+### Version 15.1.2
+
+2020-04-01
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.1.1...v15.1.2)
+
+- Bug fix: Make multimedia alert and new pages box display again for
+  new paged entries
+  ([#1368](https://github.com/codevise/pageflow/pull/1368))
+
 ### Version 15.1.1
 
 2020-02-12
