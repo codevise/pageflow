@@ -209,6 +209,18 @@ de:
         tabs:
           section: Abschnitt
         attributes:
+          appearance:
+            label: Abblendung
+            inline_help: >
+              Diese Einstellung legt fest wie die scrollenden Vordergrund-Ebene vom Hintergrund
+              abgehoben werden soll. Bei der Einstellung "Karte" wird der Vordergrund mit einer
+              Fläche mit abgerundeten Ecken hinterlegt, bei "Schatten" mit einem hellen oder dunklen
+              Farbverlauf und bei "Block" flächendeckend mit einer Farbe.
+            values:
+              cards: Karte
+              shadow: Schatten
+              solid: Block
+              transparent: Keine
           backdropImage:
             label: Hintergrund
           backdropType:
@@ -218,6 +230,12 @@ de:
               angezeigt werden. Im Fall eines Hintergrund-Bilds kann der wichtige Bildteil markiert
               werden. Dieser wird dann sowohl in Desktop- als auch in Mobil-Darstellung zunächst
               nicht vom scrollenden Vordergrund verdeckt.
+          fullHeight:
+            label: Volle Viewport-Höhe
+            inline_help: >
+              Aktivieren sie diese Einstellung wenn der Abschnitt mindestens einen Viewport hoch sein
+              soll. Deaktivieren sie sie um kurze Szenen zu ermöglichen, die vertikal nur von ihrem
+              Inhalt aufgespannt werden
           invert:
             label: Text invertieren
           layout:
@@ -230,6 +248,18 @@ de:
               left: Links
               right: Rechts
               center: Mitte
+          transition:
+            label: Übergang vom vorigen Abschnitt
+            inline_help: >
+              Diese Einstellung definiert den Übergang vom vorigen Abschnitt zu diesem. Der Übergang
+              wirkt sich jeweils auf den Hintergrund und den Vordergrund unterschiedlich aus.
+            values:
+              beforeAfter: Scrollen mit statischen Hintergründen
+              fade: Alles Überblenden
+              fadeBg: Nur Hintergrund überblenden
+              reveal: Freilegen
+              scroll: Aus-/Einscrollen
+              scrollOver: Überlagern
         confirm_destroy: |-
           Abschnitt einschließlich ALLER enthaltener Elemente wirklich löschen?
 
