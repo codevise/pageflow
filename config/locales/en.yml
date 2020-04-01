@@ -198,6 +198,16 @@ en:
         updated_at: Updated at
         url: Permalink
         with_publication_state: Publication state
+      pageflow/entry_template:
+        configuration:
+          group_label: Configuration
+          home_button_enabled: "'Home'-Button enabled by default"
+        default_author: Default author
+        default_keywords: Default keywords
+        default_locale: Default locale
+        default_publisher: Default publisher
+        default_share_providers: Default share links
+        theme_name: Theme
       pageflow/folder:
         account: Account
         name: Name
@@ -226,6 +236,7 @@ en:
         display_in_navigation: Show in navigationbar
         emphasize_in_navigation: Emphasize in navigationbar
         gradient_opacity: Gradient opacity
+        hide_logo: Hide logo
         hide_title: Hide titles
         invert: Invert colors
         linked_page_ids: Link pages
@@ -260,18 +271,11 @@ en:
         cname: CNAME
         copyright_link_label: Copyright link Text
         copyright_link_url: Copyright link URL
-        default_author: Default author
-        default_keywords: Default keywords
-        default_locale: Default locale
-        default_publisher: Default publisher
-        default_share_providers: Default Share Links
-        home_button_enabled_by_default: "'Home'-Button enabled by default"
         home_url: Redirect URL
         imprint_link_label: Legal notice link label
         imprint_link_url: Legal notice link URL
         privacy_link_url: Privacy link URL
         share_providers: Default Share Links
-        theme_name: Theme
       pageflow/video_file:
         dimensions: Dimensions
         duration: Duration
@@ -1854,6 +1858,7 @@ en:
             The opacity of the gradient improves the legibility of the text on background-videos or pictures.
 
             You can use the slider to darken or lighten up the background until the contrast between text and background is optimal.
+          hide_logo: Hide logo on current page
           invert: |-
             If you invert the colors, „bright“ and „dark“ are interchanged. Thus the normally white font changes into black.
 

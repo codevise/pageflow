@@ -198,6 +198,16 @@ de:
         updated_at: Geändert am
         url: Permalink
         with_publication_state: Veröffentlichungsstatus
+      pageflow/entry_template:
+        configuration:
+          group_label: Konfiguration
+          home_button_enabled: Home-Button in neuen Beiträgen anzeigen
+        default_author: Standard-Autor
+        default_keywords: Standard-Schlüsselwörter
+        default_locale: Standard-Sprache
+        default_publisher: Standard-Herausgeber
+        default_share_providers: Standard-Share-Links
+        theme_name: Theme
       pageflow/folder:
         account: Konto
         name: Name
@@ -226,6 +236,7 @@ de:
         display_in_navigation: In Navigationsleiste anzeigen
         emphasize_in_navigation: In Navigationsleiste hervorheben
         gradient_opacity: Intensität der Abblendung
+        hide_logo: Logo ausblenden
         hide_title: Titel ausblenden
         invert: Farben invertieren
         linked_page_ids: Seiten verknüpfen
@@ -260,18 +271,11 @@ de:
         cname: CNAME
         copyright_link_label: Copyright-Link Text
         copyright_link_url: Copyright-Link URL
-        default_author: Standard Autor
-        default_keywords: Standard Schlüsselwörter
-        default_locale: Standard Sprache
-        default_publisher: Standard Herausgeber
-        default_share_providers: Standard Share Links
-        home_button_enabled_by_default: Home-Button in neuen Beiträgen anzeigen
         home_url: Redirect URL
         imprint_link_label: Impressum-Link Text
         imprint_link_url: Impressum-Link URL
         privacy_link_url: Datenschutz-Link URL
         share_providers: Standard Share Links
-        theme_name: Theme
       pageflow/video_file:
         dimensions: Maße
         duration: Länge
@@ -1884,6 +1888,7 @@ de:
             Die Intensität des Farbverlaufs dient der Lesbarkeit von Texten auf Videos oder Bildern.
 
             Durch den Schieberegler kann der Bildhintergrund so stark abgedunkelt bzw. aufgehellt werden, bis der Kontrast zwischen Bild und Text ausreichend ist.
+          hide_logo: Logo auf dieser Seite ausblenden
           invert: "Beim Invertieren werden „hell“ und „dunkel“ vertauscht, die sonst weiße Schrift ändert sich dabei automatisch in schwarz. \n\nGrundsätzlich gilt: Helle Schrift für dunkle Bilder, dunkle Schrift für helle Bilder."
           mobile_poster_image_id: Dieses Bild wird in der Mobilvariante der Seite als Posterbild gezeigt.
           text: |-
