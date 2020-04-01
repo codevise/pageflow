@@ -19,7 +19,7 @@ import {useFile} from '../entryState';
 export function Video(props) {
   const videoFile = useFile({collectionName: 'videoFiles', permaId: props.id});
 
-  if (videoFile) {
+  if (videoFile && videoFile.isReady) {
     return <VideoPlayer videoFile={videoFile} {...props} />;
   }
 

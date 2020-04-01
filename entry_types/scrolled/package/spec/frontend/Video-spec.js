@@ -15,7 +15,7 @@ describe('Video', () => {
             }
           },
           videoFiles: [
-            {id: 1, permaId: 100}
+            {id: 1, permaId: 100, isReady: true}
           ]
         }
       });
