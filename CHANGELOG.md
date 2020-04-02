@@ -1,5 +1,16 @@
 # CHANGELOG
 
+### Version 15.2.1
+
+2020-04-02
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.2.0...v15.2.1)
+
+- Fix disabling home button input in account form based on theme (15.2 Backport)
+  ([#1376](https://github.com/codevise/pageflow/pull/1376))
+- Include scrolled content element js files in gem (15.2 Backport)
+  ([#1374](https://github.com/codevise/pageflow/pull/1374))
+
 ### Version 15.2.0
 
 2020-04-01
