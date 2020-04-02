@@ -7,3 +7,4 @@ export const log = function(text, options) {
 export const debugMode = function() {
   return (window.location.href.indexOf('debug=true') >= 0);
 };
+

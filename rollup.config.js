@@ -108,13 +108,11 @@ export default [
     external,
     plugins
   },
-
   {
     input: pageflowPackageRoot + '/src/frontend/index.js',
     output: {
-      file: 'app/assets/javascripts/pageflow/dist/frontend.js',
-      format: 'iife',
-      name: 'pageflow',
+      file: pageflowPackageRoot + '/frontend.js',
+      format: 'esm',
       globals: frontendGlobals
     },
     external: Object.keys(frontendGlobals),
@@ -143,6 +141,17 @@ export default [
       globals: editorGlobals
     },
     external: Object.keys(editorGlobals),
+    plugins
+  },
+  {
+    input: pageflowPagedPackageRoot + '/src/frontend/index.js',
+    output: {
+      file: pageflowPagedEngineRoot + '/app/assets/javascripts/pageflow_paged/dist/frontend.js',
+      format: 'iife',
+      name: 'pageflow_paged.frontend',
+      globals: frontendGlobals
+    },
+    external: Object.keys(frontendGlobals),
     plugins
   },
 

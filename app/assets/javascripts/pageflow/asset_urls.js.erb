@@ -1,3 +1,4 @@
+var pageflow = window.pageflow || {};
 pageflow.assetUrls = {
   unmuteSound: '<%= asset_path("pageflow/unmute.mp3") %>',
   largeBandwidthProbe: '<%= Rails.env.test? ? asset_path("bandwidth_probe_large.png") : "//#{File.join(Pageflow.config.zencoder_options[:s3_host_alias], "bandwidth_probe_large.png")}" %>',
