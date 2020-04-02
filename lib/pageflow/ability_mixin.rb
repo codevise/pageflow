@@ -23,6 +23,10 @@ module Pageflow
         AccountPolicy.new(user, account).add_member_to?
       end
 
+      can :see_user_quota, Account do |account|
+        AccountPolicy.new(user, account).see_user_quota?
+      end
+
       can :see_badge_belonging_to, Account do |account|
         AccountPolicy.new(user, account).see_badge_belonging_to?
       end
