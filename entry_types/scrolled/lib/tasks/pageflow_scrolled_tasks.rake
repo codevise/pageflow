@@ -36,31 +36,48 @@ namespace :pageflow_scrolled do
         end
 
         account = seeds.account(name: 'Storybook seed')
-        seeds.sample_scrolled_entry(title: 'Storybook seed',
-                                    account: account,
-                                    chapters: [],
-                                    image_files: {
-                                      turtle: {
-                                        url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/images/04_turtle.jpg',
-                                        configuration: {
-                                          focusX: 24,
-                                          focusY: 40,
-                                          testReferenceName: 'turtle'
-                                        }
-                                      }.stringify_keys,
-                                      churchAfter: {
-                                        url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/images/17_haldern_church_after.jpg',
-                                        configuration: {
-                                          testReferenceName: 'churchAfter'
-                                        }
-                                      }.stringify_keys,
-                                      churchBefore: {
-                                        url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/images/16_haldern_church_before.jpg',
-                                        configuration: {
-                                          testReferenceName: 'churchBefore'
-                                        }
-                                      }.stringify_keys
-                                    })
+        seeds.sample_scrolled_entry(
+          attributes: {
+            title: 'Storybook seed',
+            account: account,
+            chapters: [],
+            image_files: {
+              turtle: {
+                url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/images/04_turtle.jpg',
+                configuration: {
+                  focusX: 24,
+                  focusY: 40,
+                  testReferenceName: 'turtle'
+                }
+              }.stringify_keys,
+              churchAfter: {
+                url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/images/17_haldern_church_after.jpg',
+                configuration: {
+                  testReferenceName: 'churchAfter'
+                }
+              }.stringify_keys,
+              churchBefore: {
+                url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/images/16_haldern_church_before.jpg',
+                configuration: {
+                  testReferenceName: 'churchBefore'
+                }
+              }.stringify_keys
+            },
+            video_files: {
+              interview_toni: {
+                url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/videos/08_interview_toni.mp4',
+                configuration: {
+                  width: 1920,
+                  height: 1080,
+                  testReferenceName: 'interview_toni'
+                }
+              }.stringify_keys
+            }
+          },
+          options: {
+            skip_encoding: true
+          }
+        )
       end
 
       desc 'Generate Storybook entry JSON seed'

@@ -50,6 +50,7 @@ describe('normalizeSeed', () => {
       collections: {
         entries: [],
         imageFiles: [],
+        videoFiles: [],
         chapters: [],
         sections: [],
         contentElements: [],
@@ -87,6 +88,24 @@ describe('normalizeSeed', () => {
             permaId: expect.any(Number),
             width: expect.any(Number),
             height: expect.any(Number),
+            configuration: {}
+          }
+        ]
+      }
+    });
+  });
+
+  it('ensures required video file properties are present', () => {
+    const result = normalizeSeed({
+      videoFiles: [{}]
+    });
+
+    expect(result).toMatchObject({
+      collections: {
+        videoFiles: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
             configuration: {}
           }
         ]

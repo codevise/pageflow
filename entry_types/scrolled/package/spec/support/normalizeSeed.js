@@ -10,6 +10,7 @@
  * @param {Object} [options.legalInfo] - imprint, copyright and privacy information of entry.
  * @param {Object} [options.entry] - attributes of entry.
  * @param {Array} [options.imageFiles] - Array of objects with image file attributes of entry.
+ * @param {Array} [options.videoFiles] - Array of objects with video file attributes of entry.
  * @param {Array} [options.chapters] - Array of objects with chapter attributes of entry.
  * @param {Array} [options.sections] - Array of objects with section attributes of entry.
  * @param {Array} [options.contentElements] - Array of objects with content element attributes of entry.
@@ -24,6 +25,7 @@ export function normalizeSeed({
   legalInfo,
   entry,
   imageFiles,
+  videoFiles,
   chapters,
   sections,
   contentElements
@@ -57,7 +59,10 @@ export function normalizeSeed({
       imageFiles: normalizeCollection(imageFiles, {
         width: 1920,
         height: 1279,
-        configuration: {},
+        configuration: {}
+      }),
+      videoFiles: normalizeCollection(videoFiles, {
+        configuration: {}
       }),
       chapters: normalizedChapters,
       sections: normalizedSections,

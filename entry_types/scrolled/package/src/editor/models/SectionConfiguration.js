@@ -16,7 +16,12 @@ export const SectionConfiguration = Configuration.extend({
     if (name === 'backdropType') {
       return Configuration.prototype.get.apply(this, arguments) ||
              (this.attributes.backdrop &&
+              this.attributes.backdrop.image &&
               this.attributes.backdrop.image.toString().startsWith('#') ? 'color' : 'image');
+    }
+    if (name === 'backdropVideo') {
+      return this.attributes.backdrop &&
+        this.attributes.backdrop.video;
     }
     return Configuration.prototype.get.apply(this, arguments);
   },
@@ -24,6 +29,9 @@ export const SectionConfiguration = Configuration.extend({
   set: function(name, value) {
     if (name === 'backdropImage' && value) {
       this.set('backdrop', {image: value});
+    }
+    if (name === 'backdropVideo' && value) {
+      this.set('backdrop', {video: value});
     }
     return Configuration.prototype.set.apply(this, arguments);
   }

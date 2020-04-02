@@ -8,8 +8,6 @@ import FillColor from './FillColor';
 import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
 
-import videos from './videos';
-
 import styles from './Backdrop.module.css';
 
 export function Backdrop(props) {
@@ -34,26 +32,20 @@ Backdrop.defaultProps = {
 };
 
 function renderContent(props, containerDimension, setContainerRef) {
-  if (props.image.toString().startsWith('#')) {
-    return (
-      <FillColor color={props.image} />
-    );
-  }
-  else if (props.image.toString().startsWith('video')) {
-    const video = videos[props.image];
-
+  if (props.video) {
     return (
       <Fullscreen ref={setContainerRef}>
         <Video state={props.onScreen ? 'active' : 'inactive'}
-               id={props.image}
+               id={props.video}
                offset={props.offset}
                interactive={props.interactive}
                nextSectionOnEnd={props.nextSectionOnEnd} />
-        <MotifArea ref={props.motifAreaRef}
-                   image={video}
-                   containerWidth={containerDimension.width}
-                   containerHeight={containerDimension.height} />
       </Fullscreen>
+    );
+  }
+  else if (props.image.toString().startsWith('#')) {
+    return (
+      <FillColor color={props.image} />
     );
   }
   else {

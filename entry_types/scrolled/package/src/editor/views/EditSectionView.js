@@ -16,8 +16,8 @@ export const EditSectionView = EditConfigurationView.extend({
         values: ['shadow', 'cards', 'transparent']
       });
       this.input('backdropType', SelectInputView, {
-        values: ['image', 'color'],
-        texts: ['Bild', 'Farbe']
+        values: ['image', 'color', 'video'],
+        texts: ['Bild', 'Farbe', 'Video']
       });
       this.input('backdropImage', FileInputView, {
         collection: 'image_files',
@@ -29,8 +29,15 @@ export const EditSectionView = EditConfigurationView.extend({
         visibleBinding: 'backdropType',
         visibleBindingValue: 'color'
       });
-      this.input('fullHeight', CheckBoxInputView);
+      this.input('backdropVideo', FileInputView, {
+        collection: 'video_files',
+        fileSelectionHandler: 'sectionConfiguration',
+        visibleBinding: 'backdropType',
+        visibleBindingValue: 'video',
+        positioning: false
+      });
       this.input('invert', CheckBoxInputView);
+      this.input('fullHeight', CheckBoxInputView);
     });
   }
 });
