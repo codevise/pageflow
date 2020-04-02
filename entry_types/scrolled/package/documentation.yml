@@ -17,6 +17,7 @@ toc:
       - Image
       - InlineCaption
       - Text
+      - Video
   - name: Hooks
     description: |
       React hooks to obtain entry data.
