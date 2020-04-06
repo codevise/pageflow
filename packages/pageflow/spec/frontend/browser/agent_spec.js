@@ -1,8 +1,7 @@
-import 'pageflow/frontend';
+import {browser} from 'pageflow/frontend';
 
 describe('pageflow.browser.Agent', function() {
-  var Agent = pageflow.browser.Agent;
-
+  var Agent = browser.Agent;
   describe ('#matchesSafari11AndAbove', function() {
     it('returns false for Safari 10', function() {
       var agent = new Agent(

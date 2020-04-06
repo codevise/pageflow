@@ -1,17 +1,19 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 
-import 'pageflow/frontend';
+import {mediaPlayer} from 'pageflow/frontend';
 
 import sinon from 'sinon';
 
 describe('pageflow.mediaPlayer.handleFailedPlay', function() {
+  var handleFailedPlay = mediaPlayer.handleFailedPlay;
+  
   it('triggers playfailed event when play returns rejected promise', function() {
     var player = fakePlayer();
     player.originalPlay.returns(rejectedAutoplayPromise());
     var playfailedHandler = sinon.spy();
 
-    pageflow.mediaPlayer.handleFailedPlay(player, {
+    handleFailedPlay(player, {
       hasAutoplaySupport: true
     });
     player.on('playfailed', playfailedHandler);
@@ -26,7 +28,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
     player.originalPlay.returns(Promise.resolve());
     var playfailedHandler = sinon.spy();
 
-    pageflow.mediaPlayer.handleFailedPlay(player, {
+    handleFailedPlay(player, {
       hasAutoplaySupport: true
     });
     player.on('playfailed', playfailedHandler);
@@ -40,7 +42,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
     var player = fakePlayer();
     player.originalPlay.returns(rejectedAutoplayPromise());
 
-    pageflow.mediaPlayer.handleFailedPlay(player, {
+    handleFailedPlay(player, {
       hasAutoplaySupport: true
     });
 
@@ -55,7 +57,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       player.originalPlay.returns(rejectedAutoplayPromise());
       var playfailedHandler = sinon.spy();
 
-      pageflow.mediaPlayer.handleFailedPlay(player, {
+      handleFailedPlay(player, {
         hasAutoplaySupport: false
       });
       player.on('playfailed', playfailedHandler);
@@ -72,7 +74,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       player.originalPlay.returns(undefined);
       var playfailedHandler = sinon.spy();
 
-      pageflow.mediaPlayer.handleFailedPlay(player, {
+      handleFailedPlay(player, {
         hasAutoplaySupport: true
       });
       player.on('playfailed', playfailedHandler);
@@ -89,7 +91,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       player.originalPlay.onFirstCall().returns(rejectedAutoplayPromise());
       player.originalPlay.onSecondCall().returns(Promise.resolve());
 
-      pageflow.mediaPlayer.handleFailedPlay(player, {
+      handleFailedPlay(player, {
         hasAutoplaySupport: true,
         fallbackToMutedAutoplay: true
       });
@@ -106,7 +108,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       player.originalPlay.onSecondCall().returns(Promise.resolve());
       var playmutedHandler = sinon.spy();
 
-      pageflow.mediaPlayer.handleFailedPlay(player, {
+      handleFailedPlay(player, {
         hasAutoplaySupport: true,
         fallbackToMutedAutoplay: true
       });
@@ -123,7 +125,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       player.originalPlay.onSecondCall().returns(Promise.resolve());
       var playfailedHandler = sinon.spy();
 
-      pageflow.mediaPlayer.handleFailedPlay(player, {
+      handleFailedPlay(player, {
         hasAutoplaySupport: true,
         fallbackToMutedAutoplay: true
       });
@@ -140,7 +142,7 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       player.originalPlay.onSecondCall().returns(rejectedAutoplayPromise());
       var playfailedHandler = sinon.spy();
 
-      pageflow.mediaPlayer.handleFailedPlay(player, {
+      handleFailedPlay(player, {
         hasAutoplaySupport: true,
         fallbackToMutedAutoplay: true
       });

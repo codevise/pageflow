@@ -1,15 +1,17 @@
 import jQuery from 'jquery';
 
-import 'pageflow/frontend';
+import {Audio, AudioPlayer} from 'pageflow/frontend';
 
 import sinon from 'sinon';
 
-describe('pageflow.Audio.MultiPlayer', function() {
+describe('MultiPlayer', function() {
+  var MultiPlayer = Audio.MultiPlayer;
+  var Null = AudioPlayer.Null;
   describe('#fadeTo', function() {
     it('plays and fades in new player', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {fadeDuration: 1000});
+      var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000});
 
       sinon.spy(player, 'playAndFadeIn');
 
@@ -19,12 +21,12 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('fades and pauses previous player', function() {
-      var previousPlayer = new pageflow.AudioPlayer.Null();
+      var previousPlayer = new Null();
       var pool = fakePlayerPool({
         5: previousPlayer,
-        6: new pageflow.AudioPlayer.Null()
+        6: new Null()
       });
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {fadeDuration: 1000});
+      var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000});
 
       sinon.spy(previousPlayer, 'fadeOutAndPause');
 
@@ -35,9 +37,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('does not interrupt playback when fading to same audio file', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+      var multiPlayer = new MultiPlayer(pool, {
         fadeDuration: 1000
       });
 
@@ -51,9 +53,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('rewinds if playFromBeginning option is true', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+      var multiPlayer = new MultiPlayer(pool, {
         fadeDuration: 1000,
         playFromBeginning: true
       });
@@ -66,9 +68,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('restarts same audio file if playFromBeginning option is true', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+      var multiPlayer = new MultiPlayer(pool, {
         fadeDuration: 1000,
         playFromBeginning: true
       });
@@ -82,9 +84,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('rewinds if rewindOnChange option is true', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+      var multiPlayer = new MultiPlayer(pool, {
         fadeDuration: 1000,
         rewindOnChange: true
       });
@@ -97,9 +99,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('does not interrupt when fading to same audio file when rewindOnChange option is true', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+      var multiPlayer = new MultiPlayer(pool, {
         fadeDuration: 1000,
         rewindOnChange: true
       });
@@ -114,9 +116,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('plays and fades in same audio file if paused', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+      var multiPlayer = new MultiPlayer(pool, {
         fadeDuration: 1000
       });
 
@@ -130,13 +132,13 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('plays and fades in new player directly if crossFade option is true', function() {
-      var previousPlayer = new pageflow.AudioPlayer.Null();
-      var nextPlayer = new pageflow.AudioPlayer.Null();
+      var previousPlayer = new Null();
+      var nextPlayer = new Null();
       var pool = fakePlayerPool({
         5: previousPlayer,
         6: nextPlayer
       });
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {fadeDuration: 1000, crossFade: true});
+      var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000, crossFade: true});
       var pendingPromise = new jQuery.Deferred();
 
       sinon.stub(previousPlayer, 'fadeOutAndPause').returns(pendingPromise);
@@ -151,9 +153,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
 
   describe('#play', function() {
     it('plays new player', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {fadeDuration: 1000});
+      var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000});
 
       sinon.spy(player, 'play');
 
@@ -163,12 +165,12 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('fades and pauses previous player', function() {
-      var previousPlayer = new pageflow.AudioPlayer.Null();
+      var previousPlayer = new Null();
       var pool = fakePlayerPool({
         5: previousPlayer,
-        6: new pageflow.AudioPlayer.Null()
+        6: new Null()
       });
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {fadeDuration: 1000});
+      var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000});
 
       sinon.spy(previousPlayer, 'fadeOutAndPause');
 
@@ -179,9 +181,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('does not interrupt playback when playing  same audio file', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+      var multiPlayer = new MultiPlayer(pool, {
         fadeDuration: 1000
       });
 
@@ -195,9 +197,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('rewinds 0 if playFromBeginning option is true', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+      var multiPlayer = new MultiPlayer(pool, {
         fadeDuration: 1000,
         playFromBeginning: true
       });
@@ -210,9 +212,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('restarts same audio file if playFromBeginning option is true', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+      var multiPlayer = new MultiPlayer(pool, {
         fadeDuration: 1000,
         playFromBeginning: true
       });
@@ -226,9 +228,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('rewinds if rewindOnChange option is true', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+      var multiPlayer = new MultiPlayer(pool, {
         fadeDuration: 1000,
         rewindOnChange: true
       });
@@ -241,9 +243,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
     });
 
     it('does not interrupt when playing same audio file when rewindOnChange option is true', function() {
-      var player = new pageflow.AudioPlayer.Null();
+      var player = new Null();
       var pool = fakePlayerPool({5: player});
-      var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {
+      var multiPlayer = new MultiPlayer(pool, {
         fadeDuration: 1000,
         rewindOnChange: true
       });
@@ -259,9 +261,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
   });
 
   it('emits play event on play', function() {
-    var player = new pageflow.AudioPlayer.Null();
+    var player = new Null();
     var pool = fakePlayerPool({5: player});
-    var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {fadeDuration: 1000});
+    var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000});
     var handler = sinon.spy();
 
     multiPlayer.on('play', handler);
@@ -272,9 +274,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
   });
 
   it('emits ended event when player ends', function() {
-    var player = new pageflow.AudioPlayer.Null();
+    var player = new Null();
     var pool = fakePlayerPool({5: player});
-    var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {fadeDuration: 1000});
+    var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000});
     var handler = sinon.spy();
 
     multiPlayer.on('ended', handler);
@@ -285,12 +287,12 @@ describe('pageflow.Audio.MultiPlayer', function() {
   });
 
   it('does not emit ended event if player is no longer current player', function() {
-    var player = new pageflow.AudioPlayer.Null();
+    var player = new Null();
     var pool = fakePlayerPool({
       5: player,
-      6: new pageflow.AudioPlayer.Null()
+      6: new Null()
     });
-    var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {fadeDuration: 1000});
+    var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000});
     var handler = sinon.spy();
 
     multiPlayer.on('ended', handler);
@@ -302,9 +304,9 @@ describe('pageflow.Audio.MultiPlayer', function() {
   });
 
   it('propagates playfailed event', function() {
-    var player = new pageflow.AudioPlayer.Null();
+    var player = new Null();
     var pool = fakePlayerPool({5: player});
-    var multiPlayer = new pageflow.Audio.MultiPlayer(pool, {fadeDuration: 1000});
+    var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000});
     var handler = sinon.spy();
 
     multiPlayer.on('playfailed', handler);

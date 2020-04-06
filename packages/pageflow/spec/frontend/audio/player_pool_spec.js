@@ -1,12 +1,14 @@
-import 'pageflow/frontend';
+import {Audio} from 'pageflow/frontend';
 
 import sinon from 'sinon';
 
-describe('pageflow.Audio.PlayerPool', function() {
+describe('PlayerPool', function() {
+  var PlayerPool = Audio.PlayerPool;
+  
   describe('#get', function() {
     it('creates player for new audio file id', function() {
       var audio = {createPlayer: sinon.stub()};
-      var pool = new pageflow.Audio.PlayerPool(audio);
+      var pool = new PlayerPool(audio);
       var player = {};
       var audioFileId = 5;
 
@@ -20,7 +22,7 @@ describe('pageflow.Audio.PlayerPool', function() {
     it('passes options when creating player', function() {
       var audio = {createPlayer: sinon.stub()};
       var options = {};
-      var pool = new pageflow.Audio.PlayerPool(audio, options);
+      var pool = new PlayerPool(audio, options);
       var player = {};
       var audioFileId = 5;
 
@@ -33,7 +35,7 @@ describe('pageflow.Audio.PlayerPool', function() {
 
     it('caches player for audio file id', function() {
       var audio = {createPlayer: sinon.stub()};
-      var pool = new pageflow.Audio.PlayerPool(audio);
+      var pool = new PlayerPool(audio);
       var player = {};
       var audioFileId = 5;
 
@@ -48,7 +50,7 @@ describe('pageflow.Audio.PlayerPool', function() {
 
     it('recreates players after dispose', function() {
       var audio = {createPlayer: sinon.stub()};
-      var pool = new pageflow.Audio.PlayerPool(audio);
+      var pool = new PlayerPool(audio);
       var player = {};
       var audioFileId = 5;
 

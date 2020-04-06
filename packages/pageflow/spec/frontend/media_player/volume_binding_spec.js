@@ -1,16 +1,18 @@
 import jQuery from 'jquery';
 import Backbone from 'backbone';
 
-import 'pageflow/frontend';
+import {mediaPlayer}  from 'pageflow/frontend';
 
 import sinon from 'sinon';
 
-describe('pageflow.mediaPlayer.volumeBinding', function() {
+describe('volumeBinding', function() {
+  var volumeBinding = mediaPlayer.volumeBinding;
+  var asyncPlay = mediaPlayer.asyncPlay;
   describe('#play', function() {
     it('sets volume to settings volume', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.play();
 
@@ -20,7 +22,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('starts listenting to settings changes', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.play();
       settings.set('volume', 50);
@@ -31,7 +33,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('calls original play method', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.play();
 
@@ -41,7 +43,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('aborts intent to pause', function() {
       var player = fakePlayer({playing: true});
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.intendToPause();
       player.play();
@@ -53,7 +55,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       it('sets volume to multiplied settings volume', function() {
         var player = fakePlayer();
         var settings = new Backbone.Model({volume: 100});
-        pageflow.mediaPlayer.volumeBinding(player, settings, {volumeFactor: 0.5});
+        volumeBinding(player, settings, {volumeFactor: 0.5});
 
         player.play();
 
@@ -66,7 +68,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('fades from 0 to settings volume', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.playAndFadeIn(500);
 
@@ -78,7 +80,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('starts listenting to settings changes', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.playAndFadeIn(500);
       settings.set('volume', 50);
@@ -91,7 +93,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       var settings = new Backbone.Model({volume: 98});
       var deferred = new jQuery.Deferred();
       player.play = function() { return deferred.promise(); };
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.playAndFadeIn(500);
 
@@ -103,7 +105,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       var settings = new Backbone.Model({volume: 98});
       var deferred = new jQuery.Deferred();
       player.play = function() { return deferred.promise(); };
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.playAndFadeIn(500);
       deferred.resolve();
@@ -115,7 +117,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
       var callback = sinon.spy();
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.playAndFadeIn(500).then(callback);
       player.fadingDeferred.resolve();
@@ -127,7 +129,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
       var callback = sinon.spy();
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.playAndFadeIn(500).then(callback);
       player.fadingDeferred.reject();
@@ -138,7 +140,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('calls original play method', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.playAndFadeIn();
 
@@ -148,7 +150,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('aborts intent to pause', function() {
       var player = fakePlayer({playing: true});
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.intendToPause();
       player.playAndFadeIn(500);
@@ -160,7 +162,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       var player = fakePlayer({playing: true});
       var settings = new Backbone.Model({volume: 98});
       var callback = sinon.spy();
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.playAndFadeIn(500).then(callback);
 
@@ -171,7 +173,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       it('fades to multiplied settings volume', function() {
         var player = fakePlayer();
         var settings = new Backbone.Model({volume: 100});
-        pageflow.mediaPlayer.volumeBinding(player, settings, {volumeFactor: 0.5});
+        volumeBinding(player, settings, {volumeFactor: 0.5});
 
         player.playAndFadeIn(500);
 
@@ -183,7 +185,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       it('uses multiplied volume on settings change', function() {
         var player = fakePlayer();
         var settings = new Backbone.Model({volume: 100});
-        pageflow.mediaPlayer.volumeBinding(player, settings, {volumeFactor: 0.5});
+        volumeBinding(player, settings, {volumeFactor: 0.5});
 
         player.playAndFadeIn(500);
         settings.set('volume', 80);
@@ -197,7 +199,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('stops listenting to settings changes', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.play();
       player.pause();
@@ -209,7 +211,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('calls original play method', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model();
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.pause();
 
@@ -219,7 +221,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('aborts intent to play', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.intendToPlay();
       player.pause();
@@ -232,7 +234,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('fades to 0', function() {
       var player = fakePlayer({playing: true});
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.fadeOutAndPause(500);
 
@@ -243,7 +245,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('stops listenting to settings changes', function() {
       var player = fakePlayer({playing: true});
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.play();
       player.fadeOutAndPause(500);
@@ -255,7 +257,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('calls original pause when fading promise resolves', function() {
       var player = fakePlayer({playing: true});
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.fadeOutAndPause(500);
 
@@ -267,7 +269,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('calls original pause even when fade is canceled', function() {
       var player = fakePlayer({playing: true});
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.fadeOutAndPause(500);
 
@@ -278,7 +280,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('does not calls original pause when played during fade out', function() {
       var player = fakePlayer({playing: true});
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.fadeOutAndPause(500);
       player.play();
@@ -290,7 +292,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('aborts intent to play', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
 
       player.intendToPlay();
       player.fadeOutAndPause(500);
@@ -301,7 +303,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('returns fadeVolume promise', function() {
       var player = fakePlayer({playing: true});
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
       var callback = sinon.spy();
 
       player.fadeOutAndPause(500).then(callback);
@@ -313,7 +315,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('returns resolved promise if not playing', function() {
       var player = fakePlayer({playing: false});
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
       var callback = sinon.spy();
 
       player.fadeOutAndPause(500).then(callback);
@@ -326,7 +328,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('fades to new multiplied volume', function() {
       var player = fakePlayer();
       var settings = new Backbone.Model({volume: 100});
-      pageflow.mediaPlayer.volumeBinding(player, settings, {volumeFactor: 1});
+      volumeBinding(player, settings, {volumeFactor: 1});
 
       player.changeVolumeFactor(0.5, 500);
 
@@ -338,7 +340,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
     it('returns fadeVolume promise', function() {
       var player = fakePlayer({playing: true});
       var settings = new Backbone.Model({volume: 98});
-      pageflow.mediaPlayer.volumeBinding(player, settings);
+      volumeBinding(player, settings);
       var callback = sinon.spy();
 
       player.changeVolumeFactor(0.5, 500).then(callback);
@@ -384,7 +386,7 @@ describe('pageflow.mediaPlayer.volumeBinding', function() {
       off: function() {}
     };
 
-    pageflow.mediaPlayer.asyncPlay(player);
+    asyncPlay(player);
 
     return player;
   }
