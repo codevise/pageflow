@@ -1,11 +1,10 @@
-import 'pageflow/frontend';
+import {SeedEntryData} from 'pageflow-paged/frontend';
 
 describe('pageflow.SeedEntryData', function() {
-  var p = pageflow;
 
   describe('#getThemingOption', function() {
     it('returns option value by name', function() {
-      var entryData = new p.SeedEntryData({
+      var entryData = new SeedEntryData({
         theme: {
           page_change_by_scrolling: true
         }
@@ -19,7 +18,7 @@ describe('pageflow.SeedEntryData', function() {
 
   describe('#getFile', function() {
     it('returns file attributes by collection name and file perma id', function() {
-      var entryData = new p.SeedEntryData({
+      var entryData = new SeedEntryData({
         files: {
           image_files: [
             {
@@ -39,7 +38,7 @@ describe('pageflow.SeedEntryData', function() {
   describe('#getStorylineConfiguration', function() {
     it('returns configruation by chapter id', function() {
       var configuration = {};
-      var entryData = new p.SeedEntryData({
+      var entryData = new SeedEntryData({
         storylines: [
           {
             id: 1,
@@ -57,7 +56,7 @@ describe('pageflow.SeedEntryData', function() {
   describe('#getChapterConfiguration', function() {
     it('returns configruation by chapter id', function() {
       var configuration = {};
-      var entryData = new p.SeedEntryData({
+      var entryData = new SeedEntryData({
         chapters: [{
           id: 1,
           configuration: configuration
@@ -72,7 +71,7 @@ describe('pageflow.SeedEntryData', function() {
 
   describe('#getChapterPagePermaIds', function() {
     it('returns perma ids of pages of chapter by chapter id', function() {
-      var entryData = new p.SeedEntryData({
+      var entryData = new SeedEntryData({
         pages: [
           {perma_id: 100, chapter_id: 1},
           {perma_id: 101, chapter_id: 1},
@@ -89,7 +88,7 @@ describe('pageflow.SeedEntryData', function() {
   describe('#getPageConfiguration', function() {
     it('returns configruation by page perma id', function() {
       var configuration = {};
-      var entryData = new p.SeedEntryData({
+      var entryData = new SeedEntryData({
         pages: [
           {perma_id: 100, configuration: configuration}
         ]
@@ -103,7 +102,7 @@ describe('pageflow.SeedEntryData', function() {
 
   describe('#getPagePosition', function() {
     it('returns index of page in pages list', function() {
-      var entryData = new p.SeedEntryData({
+      var entryData = new SeedEntryData({
         pages: [
           {perma_id: 100},
           {perma_id: 101}
@@ -117,7 +116,7 @@ describe('pageflow.SeedEntryData', function() {
 
   describe('#getChapterIdByPagePermaId', function() {
     it('returns id of page`s parent chapter ', function() {
-      var entryData = new p.SeedEntryData({
+      var entryData = new SeedEntryData({
         pages: [
           {perma_id: 102, chapter_id: 2}
         ]
@@ -131,7 +130,7 @@ describe('pageflow.SeedEntryData', function() {
 
   describe('#getStorylineIdByChapterId', function() {
     it('returns id of chapter`s parent storyline', function() {
-      var entryData = new p.SeedEntryData({
+      var entryData = new SeedEntryData({
         chapters: [
           {id: 102, storyline_id: 2}
         ]

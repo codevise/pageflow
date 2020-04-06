@@ -1,12 +1,11 @@
 import _ from 'underscore';
 
-import 'pageflow/frontend';
+import  {AdjacentPreloader} from 'pageflow-paged/frontend';
 
 import * as support from '$support';
 import sinon from 'sinon';
 
 describe('pageflow.AdjacentPreloader', function() {
-  var p = pageflow;
 
   describe('on page:change event', function() {
     it('calls preload on adjacent pages', function() {
@@ -17,7 +16,7 @@ describe('pageflow.AdjacentPreloader', function() {
         [page, [adjacentPage]]
       );
 
-      new p.AdjacentPreloader(adjacentPages).attach(events);
+      new AdjacentPreloader(adjacentPages).attach(events);
       events.trigger('page:change', page);
 
       expect(adjacentPage.preload).toHaveBeenCalled();

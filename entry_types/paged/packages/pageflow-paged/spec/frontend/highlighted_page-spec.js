@@ -1,12 +1,11 @@
 import 'pageflow/frontend';
+import {HighlightedPage, SeedEntryData} from 'pageflow-paged/frontend';
 
 describe('pageflow.HighlightedPage', function() {
-  var p = pageflow;
-
   describe('#getPagePermaId', function() {
     describe('for storylines with own navigation bar', function() {
       it('returns perma id of same page if page is displayed in navigation', function() {
-        var outline = new p.HighlightedPage(new p.SeedEntryData({
+        var outline = new HighlightedPage(new SeedEntryData({
           storylines: [
             {
               id: 10,
@@ -31,7 +30,7 @@ describe('pageflow.HighlightedPage', function() {
       });
 
       it('returns perma id of previous page if page is not displayed in navigation', function() {
-        var outline = new p.HighlightedPage(new p.SeedEntryData({
+        var outline = new HighlightedPage(new SeedEntryData({
           storylines: [
             {
               id: 10,
@@ -65,7 +64,7 @@ describe('pageflow.HighlightedPage', function() {
 
     describe('for chapter with inherited navigation bar', function() {
       it('returns perma id of parent page', function() {
-        var outline = new p.HighlightedPage(new p.SeedEntryData({
+        var outline = new HighlightedPage(new SeedEntryData({
           storylines: [
             {
               id: 10,
@@ -101,7 +100,7 @@ describe('pageflow.HighlightedPage', function() {
 
     describe('for chapter with inherited navigation bar over multiple levels', function() {
       it('returns perma id of parent page', function() {
-        var outline = new p.HighlightedPage(new p.SeedEntryData({
+        var outline = new HighlightedPage(new SeedEntryData({
           storylines: [
             {
               id: 10,
@@ -138,7 +137,7 @@ describe('pageflow.HighlightedPage', function() {
 
     describe('with customNavigationBarMode option', function() {
       it('uses navigation bar modes returned by option', function() {
-        var entryData = new p.SeedEntryData({
+        var entryData = new SeedEntryData({
           storylines: [
             {
               id: 10,
@@ -170,7 +169,7 @@ describe('pageflow.HighlightedPage', function() {
             {perma_id: 102, chapter_id: 3}
           ]
         });
-        var outline = new p.HighlightedPage(entryData, {
+        var outline = new HighlightedPage(entryData, {
           customNavigationBarMode: function(storylineId, entryData) {
             if (!entryData.getStorylineConfiguration(storylineId).main) {
               return 'inherit_from_parent';

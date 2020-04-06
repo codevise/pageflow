@@ -8,7 +8,7 @@ module.exports = {
 
   testMatch: ["<rootDir>/spec/**/*spec.js"],
   globals: {
-    pageflow: {},
+    pageflow: {}
   },
   setupFiles: ["<rootDir>/spec/support/videojsStub"],
   setupFilesAfterEnv: ["jest-sinon", "<rootDir>/spec/support/jest/jquery-matchers"],

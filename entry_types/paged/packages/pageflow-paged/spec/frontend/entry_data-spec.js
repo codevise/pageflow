@@ -1,10 +1,9 @@
-import 'pageflow/frontend';
+import {SeedEntryData} from 'pageflow-paged/frontend';
 
 describe('pageflow.EntryData', function() {
-  var p = pageflow;
 
   function createEntryData(options) {
-    return new p.SeedEntryData(options);
+    return new SeedEntryData(options);
   }
 
   describe('#getParentPagePermaIdByPagePermaId', function() {

@@ -1,6 +1,6 @@
 import _ from 'underscore';
 
-import 'pageflow/frontend';
+import {Atmo} from 'pageflow-paged/frontend';
 
 import '$support/fakeBrowserFeatures';
 import * as support from '$support';
@@ -182,7 +182,7 @@ describe('pageflow.Slideshow.Atmo', function() {
   });
 
   function buildAtmo(options) {
-    return new pageflow.Atmo(_.extend({
+    return new Atmo(_.extend({
       slideshow: {},
       events: support.fakeEventEmitter(),
       backgroundMedia: { mute: sinon.spy(), muted: false }

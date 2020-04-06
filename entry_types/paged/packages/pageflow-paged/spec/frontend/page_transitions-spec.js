@@ -1,7 +1,6 @@
-import 'pageflow/frontend';
+import {PageTransitions} from 'pageflow-paged/frontend';
 
 describe('pageflow.PageTransitions', function() {
-  var PageTransitions = pageflow.PageTransitions;
 
   it('allows registering with different options per direction', function() {
     var pageTransitions = new PageTransitions(fakeNavigationDirection('v'));

@@ -1,12 +1,11 @@
-import 'pageflow/frontend';
+import {ChapterFilter, SeedEntryData} from 'pageflow-paged/frontend';
 
 describe('pageflow.ChapterFilter', function() {
-  var p = pageflow;
 
   describe('#chapterVisibleFromChapter', function() {
     describe('with default strategy', function() {
       it('return true for chapters of same storyline', function() {
-        var chapterFilter = new p.ChapterFilter(new p.SeedEntryData({
+        var chapterFilter = new ChapterFilter(new SeedEntryData({
           storylines: [
             {
               id: 10,
@@ -37,7 +36,7 @@ describe('pageflow.ChapterFilter', function() {
 
     describe('with inherit_from_parent strategy', function() {
       it('returns true only for chapters visible from parent chapter', function() {
-        var chapterFilter = new p.ChapterFilter(new p.SeedEntryData({
+        var chapterFilter = new ChapterFilter(new SeedEntryData({
           storylines: [
             {
               id: 10,
@@ -74,7 +73,7 @@ describe('pageflow.ChapterFilter', function() {
 
     describe('with non strategy', function() {
       it('returns false', function() {
-        var chapterFilter = new p.ChapterFilter(new p.SeedEntryData({
+        var chapterFilter = new ChapterFilter(new SeedEntryData({
           storylines: [
             {
               id: 10,
