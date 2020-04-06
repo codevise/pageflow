@@ -1,6 +1,8 @@
+import {browser} from './browser';
+
 // See https://developer.mozilla.org/de/docs/Web/CSS/CSS_Animations/Detecting_CSS_animation_support
 
-pageflow.browser.feature('css animations', function() {
+browser.feature('css animations', function() {
   var prefixes = ['Webkit', 'Moz', 'O', 'ms', 'Khtml'],
       elm = document.createElement('div');
 

@@ -1,6 +1,8 @@
 import Backbone from 'backbone';
+import {log} from './base';
 
-pageflow.Settings = Backbone.Model.extend({
+
+var Settings = Backbone.Model.extend({
   defaults: {
     volume: 1
   },
@@ -14,7 +16,7 @@ pageflow.Settings = Backbone.Model.extend({
           this.set(JSON.parse(storage['pageflow.settings']));
         }
         catch(e) {
-          pageflow.log(e);
+          log(e);
         }
       }
 
@@ -36,4 +38,4 @@ pageflow.Settings = Backbone.Model.extend({
   }
 });
 
-pageflow.settings = new pageflow.Settings();
+export const settings = new Settings();

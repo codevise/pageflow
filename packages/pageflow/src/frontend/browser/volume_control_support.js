@@ -1,7 +1,10 @@
-pageflow.browser.feature('volume control support', function(has) {
+import {browser} from './browser';
+import {agent} from './Agent';
+
+browser.feature('volume control support', function(has) {
   return has.not('ios platform');
 });
 
-pageflow.browser.feature('audio context volume fading support', function() {
-  return !pageflow.browser.agent.matchesDesktopSafari();
+browser.feature('audio context volume fading support', function() {
+  return !agent.matchesDesktopSafari();
 });
