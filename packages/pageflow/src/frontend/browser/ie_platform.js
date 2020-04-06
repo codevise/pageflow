@@ -1,4 +1,6 @@
-pageflow.browser.feature('ie', function() {
+import {browser} from './browser';
+
+browser.feature('ie', function() {
   if (navigator.appName == 'Microsoft Internet Explorer')
   {
     return true;

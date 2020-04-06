@@ -1,4 +1,7 @@
-pageflow.browser.feature('autoplay support', function(has) {
-  return !pageflow.browser.agent.matchesSafari11AndAbove() &&
-         !pageflow.browser.agent.matchesMobilePlatform();
+import {browser} from './browser';
+import {agent} from './Agent';
+
+browser.feature('autoplay support', function(has) {
+  return !agent.matchesSafari11AndAbove() &&
+         !agent.matchesMobilePlatform();
 });

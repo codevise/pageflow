@@ -1,5 +1,5 @@
 //  https://developer.mozilla.org/en-US/docs/Web/API/document.cookie
-pageflow.cookies = {
+export const cookies = {
   getItem: function (sKey) {
     if (!sKey) { return null; }
     // eslint-disable-next-line no-useless-escape

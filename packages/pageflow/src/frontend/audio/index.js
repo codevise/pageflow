@@ -1,4 +1,9 @@
-import './audio';
 
-import './player_pool';
-import './multi_player';
+import {Audio} from './Audio';
+import {PlayerPool} from './PlayerPool';
+import {MultiPlayer} from './MultiPlayer';
+
+export * from './Audio';
+
+Audio.PlayerPool = PlayerPool;
+Audio.MultiPlayer = MultiPlayer;

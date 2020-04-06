@@ -1,10 +1,9 @@
 import _ from 'underscore';
-
 /**
  * Detect browser via user agent. Use only if feature detection is not
  * an option.
  */
-pageflow.browser.Agent = function(userAgent) {
+export const Agent = function(userAgent) {
   return {
     matchesSilk: function() {
       return matches(/\bSilk\b/);
@@ -101,4 +100,4 @@ pageflow.browser.Agent = function(userAgent) {
   }
 };
 
-pageflow.browser.agent = new pageflow.browser.Agent(navigator.userAgent);
+export const agent = new Agent(navigator.userAgent);

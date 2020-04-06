@@ -1,12 +1,13 @@
 import $ from 'jquery';
 import _ from 'underscore';
-
+import {log, debugMode} from '../base';
+import {state} from '../state';
 /**
  * Browser feature detection.
  *
  * @since 0.9
  */
-pageflow.browser = (function(){
+export const browser = (function(){
   var tests = {},
       results = {},
       ready = new $.Deferred();
@@ -29,17 +30,17 @@ pageflow.browser = (function(){
 
       this.off[s] = function() {
         window.localStorage['override ' + name] = 'off';
-        pageflow.log('Feature off: ' + name, {force: true});
+        log('Feature off: ' + name, {force: true});
       };
 
       this.on[s] = function() {
         window.localStorage['override ' + name] = 'on';
-        pageflow.log('Feature on: ' + name, {force: true});
+        log('Feature on: ' + name, {force: true});
       };
 
       this.unset[s] = function() {
         window.localStorage.removeItem('override ' + name);
-        pageflow.log('Feature unset: ' + name, {force: true});
+        log('Feature unset: ' + name, {force: true});
       };
 
       tests[name] = test;
@@ -83,16 +84,16 @@ pageflow.browser = (function(){
         var runTest = function() {
           var value, underscoredName = name.replace(/ /g, '_');
 
-          if (pageflow.debugMode() && location.href.indexOf('&has=' + underscoredName) >= 0) {
+          if (debugMode() && location.href.indexOf('&has=' + underscoredName) >= 0) {
             value = location.href.indexOf('&has=' + underscoredName + '_on') >= 0;
-            pageflow.log('FEATURE OVERRIDDEN ' + name + ': ' + value, {force: true});
+            log('FEATURE OVERRIDDEN ' + name + ': ' + value, {force: true});
             return value;
           }
-          else if ((pageflow.debugMode() || pageflow.ALLOW_FEATURE_OVERRIDES) &&
+          else if ((debugMode() || state.ALLOW_FEATURE_OVERRIDES) &&
                    window.localStorage &&
                    typeof window.localStorage['override ' + name] !== 'undefined') {
             value = (window.localStorage['override ' + name] === 'on');
-            pageflow.log('FEATURE OVERRIDDEN ' + name + ': ' + value, {force: true});
+            log('FEATURE OVERRIDDEN ' + name + ': ' + value, {force: true});
             return value;
           }
           else {
