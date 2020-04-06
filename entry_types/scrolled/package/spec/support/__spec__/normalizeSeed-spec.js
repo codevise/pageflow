@@ -28,8 +28,11 @@ describe('normalizeSeed', () => {
   it('supports fileUrlTemplates property', () => {
     const result = normalizeSeed({
       fileUrlTemplates: {
+        audioFiles: {
+          mp3: '/some/audio/url'
+        },
         videoFiles: {
-          high: '/some/url'
+          high: '/some/video/url'
         }
       }
     });
@@ -37,7 +40,8 @@ describe('normalizeSeed', () => {
     expect(result).toMatchObject({
       config: {
         fileUrlTemplates: {
-          videoFiles: {high: '/some/url'}
+          audioFiles: {mp3: '/some/audio/url'},
+          videoFiles: {high: '/some/video/url'}
         }
       }
     });
@@ -50,6 +54,7 @@ describe('normalizeSeed', () => {
       collections: {
         entries: [],
         imageFiles: [],
+        audioFiles: [],
         videoFiles: [],
         chapters: [],
         sections: [],
@@ -88,6 +93,24 @@ describe('normalizeSeed', () => {
             permaId: expect.any(Number),
             width: expect.any(Number),
             height: expect.any(Number),
+            configuration: {}
+          }
+        ]
+      }
+    });
+  });
+
+  it('ensures required audio file properties are present', () => {
+    const result = normalizeSeed({
+      audioFiles: [{}]
+    });
+
+    expect(result).toMatchObject({
+      collections: {
+        audioFiles: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
             configuration: {}
           }
         ]
