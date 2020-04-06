@@ -1,4 +1,6 @@
-pageflow.ALLOW_FEATURE_OVERRIDES = true;
-pageflow.browser.on.high_bandwidth();
+import {browser} from 'pageflow/frontend';
 
-pageflow.browser.detectFeatures();
+pageflow.ALLOW_FEATURE_OVERRIDES = true;
+// browser.on.high_bandwidth();
+
+browser.detectFeatures();

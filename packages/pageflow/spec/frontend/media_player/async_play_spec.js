@@ -1,12 +1,13 @@
-import 'pageflow/frontend';
-
 import sinon from 'sinon';
+import {mediaPlayer} from 'pageflow/frontend';
 
-describe('pageflow.mediaPlayer.asyncPlay', function() {
+describe('mediaPlayer.asyncPlay', function() {
+  
+  var asyncPlay = mediaPlayer.asyncPlay;
   describe('#play', function() {
     it('sets intendingToPlay to true', function() {
       var player = fakePlayer();
-      pageflow.mediaPlayer.asyncPlay(player);
+      asyncPlay(player);
 
       player.play();
 
@@ -15,7 +16,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
 
     it('sets intendingToPause to false', function() {
       var player = fakePlayer();
-      pageflow.mediaPlayer.asyncPlay(player);
+      asyncPlay(player);
 
       player.play();
 
@@ -26,7 +27,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
   describe('#pause', function() {
     it('sets intendingToPause to true', function() {
       var player = fakePlayer();
-      pageflow.mediaPlayer.asyncPlay(player);
+      asyncPlay(player);
 
       player.pause();
 
@@ -35,7 +36,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
 
     it('sets intendingToPlay to false', function() {
       var player = fakePlayer();
-      pageflow.mediaPlayer.asyncPlay(player);
+      asyncPlay(player);
 
       player.pause();
 
@@ -46,7 +47,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
   describe('#ifIntendingToPlay', function() {
     it('resolves if intending to play', function() {
       var player = fakePlayer();
-      pageflow.mediaPlayer.asyncPlay(player);
+      asyncPlay(player);
       var handler = sinon.spy();
 
       player.intendToPlay();
@@ -57,7 +58,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
 
     it('rejects if not intending to play', function() {
       var player = fakePlayer();
-      pageflow.mediaPlayer.asyncPlay(player);
+      asyncPlay(player);
       var handler = sinon.spy();
 
       player.ifIntendingToPlay().fail(handler);
@@ -69,7 +70,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
   describe('#ifIntendingToPause', function() {
     it('resolves if intending to pause', function() {
       var player = fakePlayer();
-      pageflow.mediaPlayer.asyncPlay(player);
+      asyncPlay(player);
       var handler = sinon.spy();
 
       player.intendToPause();
@@ -80,7 +81,7 @@ describe('pageflow.mediaPlayer.asyncPlay', function() {
 
     it('rejects if not intending to pause', function() {
       var player = fakePlayer();
-      pageflow.mediaPlayer.asyncPlay(player);
+      asyncPlay(player);
       var handler = sinon.spy();
 
       player.ifIntendingToPause().fail(handler);

@@ -10,7 +10,7 @@ import {browser} from './browser';
  * @alias pageflow.features
  * @since 0.9
  */
-let Features = Object.extend(
+export const Features = Object.extend(
   /** @lends pageflow.features */{
 
   /** @api private */
