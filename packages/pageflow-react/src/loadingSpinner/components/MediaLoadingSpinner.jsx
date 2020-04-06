@@ -82,13 +82,22 @@ function preventScrollBouncing(e) {
   e.preventDefault();
 }
 
-function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundImage, blurStrength}) {
+function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundImage, blurStrength, backgroundImageX, backgroundImageY}) {
+  
+  var backgroundPosition = {
+    x: backgroundImageX != undefined ? backgroundImageX : 50,
+    y: backgroundImageY != undefined ? backgroundImageY : 50
+  } 
   const url = backgroundImage ? backgroundImage.urls.medium : firstPageBackgroundImageUrl;
   if (url) {
-    return {
+    var style = {
       backgroundImage: `url("${url}")`,
-      filter: 'blur('+blurStrength+'px)'
+      filter: 'blur('+blurStrength+'px)',
     };
+    if (backgroundImage) {
+      style.backgroundPosition = `${backgroundPosition.x}% ${backgroundPosition.y}%`
+    }
+    return style;
   }
 }
 
@@ -125,6 +134,8 @@ export const MediaLoadingSpinner = connect(combineSelectors({
       role: 'loading_spinner'
     })
   }),
+  backgroundImageX: widgetAttribute('customBackgroundImageX', {role: 'loading_spinner'}),
+  backgroundImageY: widgetAttribute('customBackgroundImageY', {role: 'loading_spinner'}),
   invert: widgetAttribute('invert', {role: 'loading_spinner'}),
   removeLogo: widgetAttribute('removeLogo', {role: 'loading_spinner'}),
   blurStrength: widgetAttribute('blurStrength', {role: 'loading_spinner'})
