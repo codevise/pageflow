@@ -1,11 +1,10 @@
 import $ from 'jquery';
 
-import 'pageflow/frontend';
+import {DelayedStart} from 'pageflow-paged/frontend';
 
 import sinon from 'sinon';
 
 describe('pageflow.DelayedStart', function() {
-  var DelayedStart = pageflow.DelayedStart;
 
   it('invokes callbacks registered via #wait on #perform', function() {
     var delayedStart = new DelayedStart();

@@ -1,4 +1,4 @@
-import 'pageflow/frontend';
+import {Visited} from 'pageflow-paged/frontend';
 
 import * as support from '$support';
 
@@ -9,7 +9,7 @@ describe('pageflow.Visited', function() {
     var events = support.fakeEventEmitter();
     var cookies = fakeCookieStore();
 
-    var visited = new pageflow.Visited(entryId, pages, events, cookies);
+    var visited = Visited(entryId, pages, events, cookies);
 
     expect(visited.getUnvisitedPages()).toEqual([]);
   });
@@ -20,7 +20,7 @@ describe('pageflow.Visited', function() {
     var events = support.fakeEventEmitter();
     var cookies = fakeCookieStore();
 
-    var visited = new pageflow.Visited(entryId, pages, events, cookies);
+    var visited = Visited(entryId, pages, events, cookies);
     visited.init();
 
     expect(visited.getUnvisitedPages()).toEqual([]);
@@ -32,9 +32,9 @@ describe('pageflow.Visited', function() {
     var events = support.fakeEventEmitter();
     var cookies = fakeCookieStore();
 
-    new pageflow.Visited(entryId, pages, events, cookies).init();
+    new Visited(entryId, pages, events, cookies).init();
 
-    var visited = new pageflow.Visited(entryId, pages, events, cookies);
+    var visited = new Visited(entryId, pages, events, cookies);
     visited.init();
 
     expect(visited.getUnvisitedPages()).toEqual([]);
@@ -46,10 +46,10 @@ describe('pageflow.Visited', function() {
     var events = support.fakeEventEmitter();
     var cookies = fakeCookieStore();
 
-    new pageflow.Visited(entryId, pages, events, cookies).init();
+    new Visited(entryId, pages, events, cookies).init();
 
     pages = [{perma_id: 100}, {perma_id: 101}, {perma_id: 102}];
-    var visited = new pageflow.Visited(entryId, pages, events, cookies);
+    var visited = new Visited(entryId, pages, events, cookies);
     visited.init();
 
     expect(visited.getUnvisitedPages()).toEqual([102]);
@@ -61,13 +61,13 @@ describe('pageflow.Visited', function() {
     var events = support.fakeEventEmitter();
     var cookies = fakeCookieStore();
 
-    new pageflow.Visited(entryId, pages, support.fakeEventEmitter(), cookies).init();
+    new Visited(entryId, pages, support.fakeEventEmitter(), cookies).init();
 
     pages = [{perma_id: 100}, {perma_id: 101}, {perma_id: 102}];
-    new pageflow.Visited(entryId, pages, events, cookies).init();
+    new Visited(entryId, pages, events, cookies).init();
     events.trigger('page:change', {getPermaId: function() { return 102; }});
 
-    var visited = new pageflow.Visited(entryId, pages, events, cookies);
+    var visited = new Visited(entryId, pages, events, cookies);
     visited.init();
 
     expect(visited.getUnvisitedPages()).toEqual([]);
@@ -79,7 +79,7 @@ describe('pageflow.Visited', function() {
     var events = support.fakeEventEmitter();
     var cookies = fakeCookieStore();
 
-    new pageflow.Visited(entryId, pages, events, cookies).init();
+    new Visited(entryId, pages, events, cookies).init();
     events.trigger('page:change', {getPermaId: function() { return 102; }});
 
     var usedStorageBefore = cookies.usedStorage();
@@ -97,7 +97,7 @@ describe('pageflow.Visited', function() {
     var cookies = fakeCookieStore();
 
     cookies.setItem('_pageflow_5_visited', '100,101');
-    var visited = new pageflow.Visited(entryId, pages, events, cookies);
+    var visited = new Visited(entryId, pages, events, cookies);
     visited.init();
 
     expect(visited.getUnvisitedPages()).toEqual([102]);

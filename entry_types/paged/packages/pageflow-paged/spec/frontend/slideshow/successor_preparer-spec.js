@@ -1,12 +1,11 @@
 import _ from 'underscore';
 
-import 'pageflow/frontend';
+import {SuccessorPreparer} from 'pageflow-paged/frontend';
 
 import * as support from '$support';
 import sinon from 'sinon';
 
 describe('pageflow.SuccessorPreparer', function() {
-  var p = pageflow;
   var clock;
 
   beforeEach(function() {
@@ -26,7 +25,7 @@ describe('pageflow.SuccessorPreparer', function() {
         nextPages: [[page, nextPage]]
       });
 
-      new p.SuccessorPreparer(adjacentPages).attach(events);
+      new SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page);
       clock.tick();
 
@@ -42,7 +41,7 @@ describe('pageflow.SuccessorPreparer', function() {
         nextPages: [[page, nextPage]]
       });
 
-      new p.SuccessorPreparer(adjacentPages).attach(events);
+      new SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page);
       clock.tick(500);
 
@@ -58,7 +57,7 @@ describe('pageflow.SuccessorPreparer', function() {
         nextPages: [[page, nextPage]]
       });
 
-      new p.SuccessorPreparer(adjacentPages).attach(events);
+      new SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page);
       clock.tick(1100);
 
@@ -79,7 +78,7 @@ describe('pageflow.SuccessorPreparer', function() {
         ]
       });
 
-      new p.SuccessorPreparer(adjacentPages).attach(events);
+      new SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page1);
       clock.tick();
       events.trigger('page:change', page2);
@@ -100,7 +99,7 @@ describe('pageflow.SuccessorPreparer', function() {
         ]
       });
 
-      new p.SuccessorPreparer(adjacentPages).attach(events);
+      new SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page1);
       clock.tick();
       events.trigger('page:change', page2);
@@ -122,7 +121,7 @@ describe('pageflow.SuccessorPreparer', function() {
         ]
       });
 
-      new p.SuccessorPreparer(adjacentPages).attach(events);
+      new SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page1);
       clock.tick();
       events.trigger('page:change', page2);
@@ -143,7 +142,7 @@ describe('pageflow.SuccessorPreparer', function() {
         ]
       });
 
-      new p.SuccessorPreparer(adjacentPages).attach(events);
+      new SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page1);
       clock.tick();
       events.trigger('page:change', page2);
@@ -164,7 +163,7 @@ describe('pageflow.SuccessorPreparer', function() {
         ]
       });
 
-      new p.SuccessorPreparer(adjacentPages).attach(events);
+      new SuccessorPreparer(adjacentPages).attach(events);
       events.trigger('page:change', page1);
       clock.tick();
       events.trigger('page:change', page2);
