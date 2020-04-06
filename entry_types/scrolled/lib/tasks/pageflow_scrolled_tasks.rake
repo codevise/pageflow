@@ -80,14 +80,14 @@ namespace :pageflow_scrolled do
                   testReferenceName: 'quicktime_jingle'
                 }
               }.stringify_keys
-            },
+            }.stringify_keys,
             text_track_files: {
               sample: {
                 url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/text_tracks/sample.vtt',
                 parent_file_id: 'quicktime_jingle',
                 parent_file_model_type: 'Pageflow::AudioFile'
-              }
               }.stringify_keys
+            }
           },
           options: {
             skip_encoding: true
