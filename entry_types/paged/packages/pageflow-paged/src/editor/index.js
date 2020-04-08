@@ -1,4 +1,4 @@
-import {editor} from 'pageflow/editor';
+import {editor, app} from 'pageflow/editor';
 
 import {PagedEntry} from './models/PagedEntry';
 import {PreviewEntryData} from './models/PreviewEntryData';
@@ -12,7 +12,6 @@ import {state} from '../frontend/state';
 
 export * from 'pageflow/editor';
 export * from './models/PreviewEntryData';
-
 
 state.createEntryData = function () {
   state.entryData = new PreviewEntryData({
