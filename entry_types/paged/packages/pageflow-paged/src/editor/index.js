@@ -1,7 +1,6 @@
 import {editor, app} from 'pageflow/editor';
 
 import {PagedEntry} from './models/PagedEntry';
-import {PreviewEntryData} from './models/PreviewEntryData';
 
 
 import {EntryOutlineView} from './views/EntryOutlineView';
@@ -12,15 +11,6 @@ import {state} from '../frontend/state';
 
 export * from 'pageflow/editor';
 export * from './models/PreviewEntryData';
-
-state.createEntryData = function () {
-  state.entryData = new PreviewEntryData({
-    entry: state.entry,
-    storylines: state.storylines,
-    chapters: state.chapters,
-    pages: state.pages
-  });
-}
 
 editor.registerEntryType('paged', {
   entryModel: PagedEntry,
