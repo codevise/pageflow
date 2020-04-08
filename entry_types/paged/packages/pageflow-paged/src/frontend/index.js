@@ -29,9 +29,9 @@ export * from './Visited';
 
 export * from './pageType';
 
-export * from './history';
+export * from './History';
 
-export * from './slideshow';
+export * from './Slideshow';
 export * from './jquery_ui_widgets';
 
 export * from './phoneLandscapeFullscreen';
