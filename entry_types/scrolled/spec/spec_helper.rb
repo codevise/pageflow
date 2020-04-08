@@ -17,9 +17,6 @@ require 'pageflow/support/config/paperclip'
 require 'pageflow/support/config/webmock'
 require 'pageflow_scrolled'
 
-# see REDMINE-17430
-Webdrivers::Chromedriver.required_version = '79.0.3945.36'
-
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
