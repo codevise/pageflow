@@ -6,12 +6,12 @@ export * from './cookies';
 export * from './events';
 export * from './browser';
 export * from './features';
-export * from './audio';
-export * from './audioPlayer';
+export * from './Audio';
+export * from './AudioPlayer';
 
 export * from './audioContext';
 export * from './mediaPlayer';
-export * from './videoPlayer';
+export * from './VideoPlayer';
 
 export * from './settings';
 

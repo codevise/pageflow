@@ -1,7 +1,5 @@
 import _ from 'underscore';
 import {EntryData} from '../EntryData';
-import {state} from './state';
-state.EntryData = EntryData;
 
 export const SeedEntryData = EntryData.extend({
   initialize: function(options) {
