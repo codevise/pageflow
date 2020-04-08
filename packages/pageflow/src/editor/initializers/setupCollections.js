@@ -37,8 +37,6 @@ app.addInitializer(function(options) {
 
   widgets.subject = state.entry;
 
-  state.createEntryData();
-
   state.storylineOrdering = new StorylineOrdering(state.storylines, state.pages);
   state.storylineOrdering.sort({silent: true});
   state.storylineOrdering.watch();

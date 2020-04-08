@@ -101,7 +101,7 @@ export const EditorApi = Object.extend(
     const entry = new this.entryType.entryModel(seed.entry, options);
 
     if (entry.setupFromEntryTypeSeed) {
-      entry.setupFromEntryTypeSeed(seed.entry_type, state);
+      entry.setupFromEntryTypeSeed(seed.entry_type, state, entry);
     }
 
     return entry;
