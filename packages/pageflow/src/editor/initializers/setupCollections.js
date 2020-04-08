@@ -4,7 +4,7 @@ import _ from 'underscore';
 import {ChaptersCollection} from '../collections/ChaptersCollection';
 import {FilesCollection} from '../collections/FilesCollection';
 import {PagesCollection} from '../collections/PagesCollection';
-import {PreviewEntryData} from '../models/PreviewEntryData';
+
 import {StorylineOrdering} from '../models/StorylineOrdering';
 import {StorylinesCollection} from '../collections/StorylinesCollection';
 import {ThemesCollection} from '../collections/ThemesCollection';
@@ -37,12 +37,7 @@ app.addInitializer(function(options) {
 
   widgets.subject = state.entry;
 
-  state.entryData = new PreviewEntryData({
-    entry: state.entry,
-    storylines: state.storylines,
-    chapters: state.chapters,
-    pages: state.pages
-  });
+  state.createEntryData();
 
   state.storylineOrdering = new StorylineOrdering(state.storylines, state.pages);
   state.storylineOrdering.sort({silent: true});

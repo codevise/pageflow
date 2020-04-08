@@ -35,7 +35,6 @@ export * from './models/EntryPublication';
 export * from './models/Scaffold';
 export * from './models/EncodedFile';
 export * from './models/ChapterScaffold';
-export * from './models/PreviewEntryData';
 export * from './models/EditLockContainer';
 export * from './models/Theming';
 export * from './models/ChapterConfiguration';

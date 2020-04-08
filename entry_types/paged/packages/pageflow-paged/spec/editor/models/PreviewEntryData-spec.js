@@ -1,5 +1,5 @@
-import {ChaptersCollection, Chapter, FilesCollection, PagesCollection, Page, PreviewEntryData, StorylinesCollection, Storyline, ThemesCollection} from 'pageflow/editor';
-
+import {ChaptersCollection, Chapter, FilesCollection, PagesCollection, Page, StorylinesCollection, Storyline, ThemesCollection} from 'pageflow/editor';
+import {PreviewEntryData} from 'pageflow-paged/editor'
 import * as support from '$support';
 
 describe('pageflow.PreviewEntryData', () => {

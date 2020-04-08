@@ -1,6 +1,6 @@
-import {state} from '$state';
+import {EntryData} from '../../EntryData';
 
-export const PreviewEntryData = state.EntryData.extend({
+export const PreviewEntryData = EntryData.extend({
   initialize: function(options) {
     this.entry = options.entry;
     this.storylines = options.storylines;
