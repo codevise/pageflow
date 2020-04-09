@@ -31,6 +31,9 @@ describe('normalizeSeed', () => {
         audioFiles: {
           mp3: '/some/audio/url'
         },
+        textTrackFiles: {
+          vtt: '/some/texttrack/url'
+        },
         videoFiles: {
           high: '/some/video/url'
         }
@@ -41,6 +44,7 @@ describe('normalizeSeed', () => {
       config: {
         fileUrlTemplates: {
           audioFiles: {mp3: '/some/audio/url'},
+          textTrackFiles: {vtt: '/some/texttrack/url'},
           videoFiles: {high: '/some/video/url'}
         }
       }
@@ -56,6 +60,7 @@ describe('normalizeSeed', () => {
         imageFiles: [],
         audioFiles: [],
         videoFiles: [],
+        textTrackFiles: [],
         chapters: [],
         sections: [],
         contentElements: [],
@@ -111,6 +116,26 @@ describe('normalizeSeed', () => {
           {
             id: expect.any(Number),
             permaId: expect.any(Number),
+            configuration: {}
+          }
+        ]
+      }
+    });
+  });
+
+  it('ensures required text track file properties are present', () => {
+    const result = normalizeSeed({
+      textTrackFiles: [{}]
+    });
+
+    expect(result).toMatchObject({
+      collections: {
+        textTrackFiles: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            parentFileId: null,
+            parentFileType: null,
             configuration: {}
           }
         ]

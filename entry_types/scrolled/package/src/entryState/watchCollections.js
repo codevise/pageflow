@@ -41,7 +41,8 @@ export function watchCollections(entry, {dispatch}) {
   Object.keys(files).forEach(collectionName => {
     teardownFns.push(watchCollection(files[collectionName], {
       name: camelize(collectionName),
-      attributes: ['id', {permaId: 'perma_id'}, 'width', 'height', 'basename', 'rights', {isReady: 'is_ready'}],
+      attributes: ['id', {permaId: 'perma_id'}, 'width', 'height', 'basename', 'rights', {isReady: 'is_ready'},
+                   {parentFileId: 'parent_file_id'}, {parentFileType: 'parent_file_type'}],
       keyAttribute: 'permaId',
       includeConfiguration: true,
       dispatch
