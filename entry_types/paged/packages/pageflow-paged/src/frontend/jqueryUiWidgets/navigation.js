@@ -3,7 +3,7 @@ import IScroll from 'iscroll';
 import {browser} from 'pageflow/frontend';
 import {ready} from '../ready';
 import {state} from '../state';
-import {hideText} from '../slideshow/hideText';
+import {hideText} from '../Slideshow/hideText';
 
 (function($) {
   $.widget('pageflow.navigation', {

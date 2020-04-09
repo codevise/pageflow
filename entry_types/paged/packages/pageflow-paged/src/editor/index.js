@@ -7,7 +7,6 @@ import {EntryOutlineView} from './views/EntryOutlineView';
 import {EntryPreviewView} from './views/EntryPreviewView';
 import {appearanceInputs} from './helpers/appearanceInputs';
 import './views/PageSelectionView';
-import {state} from '../frontend/state';
 
 export * from 'pageflow/editor';
 export * from './models/PreviewEntryData';

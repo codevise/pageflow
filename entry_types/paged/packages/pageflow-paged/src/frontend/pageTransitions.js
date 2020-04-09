@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import {Object} from 'pageflow/frontend';
-import {navigationDirection} from './slideshow/navigationDirection';
+import {navigationDirection} from './Slideshow/navigationDirection';
 
 export const PageTransitions = Object.extend({
   initialize: function(navigationDirection) {

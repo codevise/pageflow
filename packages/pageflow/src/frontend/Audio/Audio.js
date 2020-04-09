@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import {AudioPlayer} from '../audioPlayer';
+import {AudioPlayer} from '../AudioPlayer';
 import {MultiPlayer} from './MultiPlayer';
 import {PlayerPool} from './PlayerPool';
 import {state} from '../state';

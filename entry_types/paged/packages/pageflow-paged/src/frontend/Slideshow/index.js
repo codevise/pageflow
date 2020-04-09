@@ -1,19 +1,19 @@
 export * from './Atmo';
-import './lazy_page_widget';
+import './lazyPageWidget';
 
 export * from './pageSplitLayout';
-import './page_widget';
-import './scroller_widget';
+import './pageWidget';
+import './scrollerWidget';
 export * from './ScrollIndicator';
-import './scroll_indicator_widget';
+import './scrollIndicatorWidget';
 
-import './hidden_text_indicator_widget';
+import './hiddenTextIndicator';
 export * from './AdjacentPreloader';
 export * from './SuccessorPreparer';
-import './swipe_gesture';
+import './swipeGesture';
 
 export * from './hideText';
-import './hide_text_on_swipe';
+import './hideTextOnSwipe';
 
 export * from './DomOrderScrollNavigator';
 export * from './navigationDirection';

@@ -7,7 +7,7 @@ import {DomOrderScrollNavigator} from './DomOrderScrollNavigator';
 import {hideText} from './hideText';
 import {AdjacentPreloader} from './AdjacentPreloader';
 import {SuccessorPreparer} from './SuccessorPreparer';
-import {History} from '../history';
+import {History} from '../History';
 import {backgroundMedia} from '../backgroundMedia';
 import {Atmo} from './Atmo';
 import {state} from '../state';

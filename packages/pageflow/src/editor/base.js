@@ -17,11 +17,11 @@ export const startEditor = function(options) {
 
   $(function() {
     $.when(
-      $.getJSON('/editor/entries/' + options.entryId + '/seed')
+      $.getJSON('/editor/entries/' + options.entryId + '/seed'),
+      pageflow.browser.detectFeatures()
     )
       .done(function(result) {
-        app.start(result);
-        pageflow.browser.detectFeatures()
+        app.start(result[0]);
       })
       .fail(function() {
         alert('Error while starting editor.');

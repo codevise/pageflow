@@ -1,11 +1,11 @@
 import Backbone from 'backbone';
 import _ from 'underscore';
 
-export * from './page_types/mixins/commonPageCssClasses';
-export * from './page_types/mixins/defaultPageContent';
-export * from './page_types/mixins/infoBox';
-export * from './page_types/mixins/videoHelpers';
-export * from './page_types/mixins/volumeFade';
+export * from './pageTypes/mixins/commonPageCssClasses';
+export * from './pageTypes/mixins/defaultPageContent';
+export * from './pageTypes/mixins/infoBox';
+export * from './pageTypes/mixins/videoHelpers';
+export * from './pageTypes/mixins/volumeFade';
 
 export const pageType = (function() {
   var base = {

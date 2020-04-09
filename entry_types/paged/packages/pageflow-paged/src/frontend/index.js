@@ -1,11 +1,11 @@
 import 'jquery-ui';
 
-import './jquery_utils';
+import './jqueryUtils';
 
 export * from './SeedEntryData';
 export * from './backgroundMedia';
 export * from './bandwidth';
-import './high_bandwidth';
+import './highBandwidth';
 
 export * from './preload';
 export * from './ChapterFilter';
@@ -32,7 +32,7 @@ export * from './pageType';
 export * from './History';
 
 export * from './Slideshow';
-export * from './jquery_ui_widgets';
+export * from './jqueryUiWidgets';
 
 export * from './phoneLandscapeFullscreen';
 
@@ -41,11 +41,11 @@ export * from './pageTransitions';
 
 export * from './widgetTypes';
 export * from './widgets';
-import './built_in_widget_types';
+import './builtInWidgetTypes';
 
-
+import './boot';
 export * from './ready';
-import './print_layout';
+import './printLayout';
 
 
 export * from 'pageflow/frontend';

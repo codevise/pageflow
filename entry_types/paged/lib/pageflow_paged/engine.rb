@@ -8,7 +8,6 @@ module PageflowPaged
 
     initializer 'pageflow_paged.assets.precompile' do |app|
       app.config.assets.precompile += %w[
-        pageflow/paged_base.js
         pageflow_paged/editor.js
         pageflow_paged/frontend.js
         pageflow_paged/editor.css

@@ -2,9 +2,9 @@ import {Entry} from 'pageflow/editor';
 import {PreviewEntryData} from './PreviewEntryData';
 
 export const PagedEntry = Entry.extend({
-  setupFromEntryTypeSeed(seed, state, entry){
+  setupFromEntryTypeSeed(seed, state){
     state.entryData = new PreviewEntryData({
-      entry: entry,
+      entry: this,
       storylines: state.storylines,
       chapters: state.chapters,
       pages: state.pages
