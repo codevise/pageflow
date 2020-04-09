@@ -53,7 +53,7 @@ jobs:
         - bin/build-packages
       script: (cd entry_types/paged; bin/rspec)
 
-    - name: RSpec - pageflow-scrolled
+    - name: RSpec - pageflow-scrolled (non-js)
       <<: *ruby_job
       before_script:
         - yarn install
@@ -61,7 +61,22 @@ jobs:
 
         - (cd entry_types/scrolled; PAGEFLOW_PLUGIN_ENGINE=pageflow_scrolled bundle exec rake pageflow_scrolled:dummy)
         - (cd entry_types/scrolled; WEBPACKER_PRECOMPILE=false bundle exec rake app:assets:precompile)
-      script: (cd entry_types/scrolled; bin/rspec)
+      script: (cd entry_types/scrolled; bin/rspec --tag ~js)
+
+    - name: RSpec - pageflow-scrolled (js)
+      <<: *ruby_job
+      before_script:
+        - yarn install
+        - bin/build-packages
+
+        - (cd entry_types/scrolled; PAGEFLOW_PLUGIN_ENGINE=pageflow_scrolled bundle exec rake pageflow_scrolled:dummy)
+        - (cd entry_types/scrolled; WEBPACKER_PRECOMPILE=false bundle exec rake app:assets:precompile)
+
+      # See REDMINE-17430
+      # Running only the js specs should not take more than 20 seconds.
+      # If Chrome Driver hangs, the timeout command will exit with 137.
+      # Retry or else exit with original exit status of rspec command.
+      script: (cd entry_types/scrolled; for i in {1..10}; do timeout --signal=KILL 30 bin/rspec --tag js; e=$?; [[ $e -gt 100 ]] && echo Timeout || exit $e; done; exit 1)
 
     - name: Jest
       language: node_js
