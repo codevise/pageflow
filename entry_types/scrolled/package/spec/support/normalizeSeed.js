@@ -11,6 +11,8 @@
  * @param {Object} [options.entry] - attributes of entry.
  * @param {Array} [options.imageFiles] - Array of objects with image file attributes of entry.
  * @param {Array} [options.videoFiles] - Array of objects with video file attributes of entry.
+ * @param {Array} [options.audioFiles] - Array of objects with audio file attributes of entry.
+ * @param {Array} [options.textTrackFiles] - Array of objects with text track file attributes of entry.
  * @param {Array} [options.chapters] - Array of objects with chapter attributes of entry.
  * @param {Array} [options.sections] - Array of objects with section attributes of entry.
  * @param {Array} [options.contentElements] - Array of objects with content element attributes of entry.
@@ -26,6 +28,8 @@ export function normalizeSeed({
   entry,
   imageFiles,
   videoFiles,
+  audioFiles,
+  textTrackFiles,
   chapters,
   sections,
   contentElements
@@ -62,6 +66,14 @@ export function normalizeSeed({
         configuration: {}
       }),
       videoFiles: normalizeCollection(videoFiles, {
+        configuration: {}
+      }),
+      audioFiles: normalizeCollection(audioFiles, {
+        configuration: {}
+      }),
+      textTrackFiles: normalizeCollection(textTrackFiles, {
+        parentFileId: null,
+        parentFileType: null,
         configuration: {}
       }),
       chapters: normalizedChapters,

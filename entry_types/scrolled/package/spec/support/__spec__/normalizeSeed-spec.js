@@ -28,8 +28,14 @@ describe('normalizeSeed', () => {
   it('supports fileUrlTemplates property', () => {
     const result = normalizeSeed({
       fileUrlTemplates: {
+        audioFiles: {
+          mp3: '/some/audio/url'
+        },
+        textTrackFiles: {
+          vtt: '/some/texttrack/url'
+        },
         videoFiles: {
-          high: '/some/url'
+          high: '/some/video/url'
         }
       }
     });
@@ -37,7 +43,9 @@ describe('normalizeSeed', () => {
     expect(result).toMatchObject({
       config: {
         fileUrlTemplates: {
-          videoFiles: {high: '/some/url'}
+          audioFiles: {mp3: '/some/audio/url'},
+          textTrackFiles: {vtt: '/some/texttrack/url'},
+          videoFiles: {high: '/some/video/url'}
         }
       }
     });
@@ -50,7 +58,9 @@ describe('normalizeSeed', () => {
       collections: {
         entries: [],
         imageFiles: [],
+        audioFiles: [],
         videoFiles: [],
+        textTrackFiles: [],
         chapters: [],
         sections: [],
         contentElements: [],
@@ -88,6 +98,44 @@ describe('normalizeSeed', () => {
             permaId: expect.any(Number),
             width: expect.any(Number),
             height: expect.any(Number),
+            configuration: {}
+          }
+        ]
+      }
+    });
+  });
+
+  it('ensures required audio file properties are present', () => {
+    const result = normalizeSeed({
+      audioFiles: [{}]
+    });
+
+    expect(result).toMatchObject({
+      collections: {
+        audioFiles: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            configuration: {}
+          }
+        ]
+      }
+    });
+  });
+
+  it('ensures required text track file properties are present', () => {
+    const result = normalizeSeed({
+      textTrackFiles: [{}]
+    });
+
+    expect(result).toMatchObject({
+      collections: {
+        textTrackFiles: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            parentFileId: null,
+            parentFileType: null,
             configuration: {}
           }
         ]

@@ -89,6 +89,13 @@ de:
           attributes:
             id:
               label: "Video"
+        inlineAudio:
+          name: Inline-Audio
+          tabs:
+            general: Inline-Audio
+          attributes:
+            id:
+              label: "Audio"
         inlineBeforeAfter:
           name: Vorher/Nachher
           tabs:

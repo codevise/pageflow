@@ -1,16 +1,14 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {FileInputView} from 'pageflow/editor';
 
-editor.contentElementTypes.register('inlineVideo', {
+editor.contentElementTypes.register('inlineAudio', {
   configurationEditor() {
     this.tab('general', function() {
       this.input('id', FileInputView, {
-        collection: 'video_files',
+        collection: 'audio_files',
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false
       });
-      this.group('ContentElementCaption');
-      this.group('ContentElementPosition');
     });
   }
 });
