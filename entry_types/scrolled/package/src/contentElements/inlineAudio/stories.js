@@ -4,7 +4,7 @@ import {storiesOfContentElement, filePermaId} from 'pageflow-scrolled/spec/suppo
 storiesOfContentElement(module, {
   typeName: 'inlineAudio',
   baseConfiguration: {
-    id: filePermaId('audioFiles', 'quicktime_jingle'),
+    id: null,
     autoplay: false,
     controls: false
   }
