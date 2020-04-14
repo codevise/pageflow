@@ -74,10 +74,12 @@ export function storiesOfContentElement(module, options) {
  * examples files are created. This method allows getting the perma id
  * of one of those files from one of the following reference names:
  *
- * * turtle
+ * * "turtle" (image)
+ * * "interview_toni" (video)
+ * * "quicktime_jingle" (audio)
  *
  * @param {string} collectionName - A name of a files collection like `"imageFiles"`.
- * @param {string} testReferenceName - Name of a predefined image from the seed JSON file.
+ * @param {string} testReferenceName - Name of a predefined file from the seed JSON file.
  *
  * @example
  *

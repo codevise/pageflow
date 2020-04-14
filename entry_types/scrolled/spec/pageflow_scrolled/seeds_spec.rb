@@ -298,6 +298,48 @@ module PageflowScrolled
                 .to include('id' => video_file.perma_id)
             end
           end
+
+          context 'audio files referenced' do
+            before do
+              stub_request(:get, /example.com/)
+                .to_return(status: 200,
+                           body: File.read('spec/fixtures/audio.m4a'),
+                           headers: {'Content-Type' => 'audio/m4a'})
+            end
+
+            it 'rewrites inlineAudio content elements' do
+              entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                       account: create(:account),
+                                                       title: 'Example',
+                                                       audio_files: {
+                                                         'some-audio' => {
+                                                           'url' => 'https://example.com/some.m4a'
+                                                         }
+                                                       },
+                                                       chapters: [
+                                                         {
+                                                           'sections' => [
+                                                             {
+                                                               'foreground' => [
+                                                                 {
+                                                                   'type' => 'inlineAudio',
+                                                                   'props' => {
+                                                                     'id' => 'some-audio'
+                                                                   }
+                                                                 }
+                                                               ]
+                                                             }
+                                                           ]
+                                                         }
+                                                       ]
+                                                     })
+
+              audio_file = entry.draft.find_files(Pageflow::AudioFile).first
+
+              expect(ContentElement.all_for_revision(entry.draft).first.configuration)
+                .to include('id' => audio_file.perma_id)
+            end
+          end
         end
       end
 
@@ -390,6 +432,106 @@ module PageflowScrolled
           video_file = entry.draft.find_files(Pageflow::VideoFile).first
 
           expect(video_file.state).to eq('encoded')
+        end
+
+        context 'with text track' do
+          it 'rewrites parent file id' do
+            entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                     account: create(:account),
+                                                     title: 'Example',
+                                                     video_files: {
+                                                       'some-video' => {
+                                                         'url' => 'https://example.com/some.mp4'
+                                                       }
+                                                     },
+                                                     text_track_files: {
+                                                       'sample' => {
+                                                         'url' => 'https://example.com/sample.vtt',
+                                                         'parent_file_id' => 'some-video',
+                                                         'parent_file_model_type' => 'Pageflow::VideoFile'
+                                                       }
+                                                     },
+                                                     chapters: []
+                                                   })
+
+            video_file = entry.draft.find_files(Pageflow::VideoFile).first
+            text_track_file = entry.draft.find_files(Pageflow::TextTrackFile).first
+
+            expect(text_track_file.parent_file_id).to eq(video_file.id)
+          end
+        end
+      end
+
+      context 'audio files', stub_paperclip: true do
+        before do
+          stub_request(:get, /example.com/)
+            .to_return(status: 200,
+                       body: File.read('spec/fixtures/audio.m4a'),
+                       headers: {'Content-Type' => 'audio/m4a'})
+        end
+
+        it 'creates audio file' do
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   audio_files: {
+                                                     'some-audo' => {
+                                                       'url' => 'https://example.com/some.m4a'
+                                                     }
+                                                   },
+                                                   chapters: []
+                                                 })
+
+          audio_file = entry.draft.find_files(Pageflow::AudioFile).first
+
+          expect(audio_file.url).to include('some.m4a')
+        end
+
+        it 'supports skipping audio encoding' do
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   audio_files: {
+                                                     'some-audio' => {
+                                                       'url' => 'https://example.com/some.m4a'
+                                                     }
+                                                   },
+                                                   chapters: []
+                                                 },
+                                                 options: {
+                                                   skip_encoding: true
+                                                 })
+
+          audio_file = entry.draft.find_files(Pageflow::AudioFile).first
+
+          expect(audio_file.state).to eq('encoded')
+        end
+
+        context 'with text track' do
+          it 'rewrites parent file id' do
+            entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                     account: create(:account),
+                                                     title: 'Example',
+                                                     audio_files: {
+                                                       'some-audio' => {
+                                                         'url' => 'https://example.com/some.m4a'
+                                                       }
+                                                     },
+                                                     text_track_files: {
+                                                       'sample' => {
+                                                         'url' => 'https://example.com/sample.vtt',
+                                                         'parent_file_id' => 'some-audio',
+                                                         'parent_file_model_type' => 'Pageflow::AudioFile'
+                                                       }
+                                                     },
+                                                     chapters: []
+                                                   })
+
+            audio_file = entry.draft.find_files(Pageflow::AudioFile).first
+            text_track_file = entry.draft.find_files(Pageflow::TextTrackFile).first
+
+            expect(text_track_file.parent_file_id).to eq(audio_file.id)
+          end
         end
       end
 

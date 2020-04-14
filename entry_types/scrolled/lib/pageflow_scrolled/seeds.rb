@@ -20,10 +20,15 @@ module PageflowScrolled
     #   to determine the React component used to render this content element.
     # @option attributes [Hash] :image_files A hash mapping image
     #   names used in properties like `backdrop.image` to urls.
+    # @option attributes [Hash] :audio_files A hash mapping audio files to urls.
+    # @option attributes [Hash] :video_files A hash mapping video
+    #   names used in properties like `backdrop.video` to urls.
+    # @option attributes [Hash] :text_track_files A hash mapping text track files to urls.
     # @yield [entry] a block to be called before the entry is saved
     # @param [Hash] options  options for entry and files creation
     # @option options [Boolean] :skip_encoding
-    #   Flag indicating whether to encode video files on creation or set them directly to encoded
+    #   Flag indicating whether to encode video and audio files on creation or set them directly to
+    #   encoded
     # @return [Entry] newly created entry
     def sample_scrolled_entry(attributes:, options: {})
       entry = Pageflow::Entry.where(type_name: 'scrolled')
@@ -34,7 +39,9 @@ module PageflowScrolled
         entry = Pageflow::Entry.create!(type_name: 'scrolled',
                                         **attributes.except(:chapters,
                                                             :image_files,
-                                                            :video_files)) do |created_entry|
+                                                            :video_files,
+                                                            :audio_files,
+                                                            :text_track_files)) do |created_entry|
           created_entry.theming = attributes.fetch(:account).default_theming
 
           say_creating_scrolled_entry(created_entry)
@@ -52,7 +59,20 @@ module PageflowScrolled
                                            attributes.fetch(:video_files, {}),
                                            options.fetch(:skip_encoding, false))
 
-        files_by_name = image_files_by_name.merge(video_files_by_name)
+        audio_files_by_name = create_files(draft_entry,
+                                           :audio,
+                                           attributes.fetch(:audio_files, {}),
+                                           options.fetch(:skip_encoding, false))
+
+        files_by_name = image_files_by_name.merge(video_files_by_name).merge(audio_files_by_name)
+
+        # rewrite parent file references to actual ids
+        text_tracks_by_name = attributes.fetch(:text_track_files, {})
+        text_tracks_by_name.each do |_name, text_track_config|
+          parent_file = files_by_name.fetch(text_track_config['parent_file_id'])
+          text_track_config['parent_file_id'] = parent_file.id
+        end
+        create_files(draft_entry, :text_track, text_tracks_by_name)
 
         attributes[:chapters].each_with_index do |chapter_config, i|
           create_chapter(entry, chapter_config, i, files_by_name)
@@ -76,11 +96,14 @@ module PageflowScrolled
       file_data_by_name.transform_values do |data|
         say("     creating #{file_type} file from #{data['url']}")
 
+        file_state = %i[image text_track].include?(file_type) ? 'processed' : 'uploading'
         file = draft_entry.create_file!(Pageflow::BuiltInFileType.send(file_type),
-                                        state: file_type == :image ? 'processed' : 'uploading',
+                                        state: file_state,
                                         attachment: URI.parse(data['url']),
-                                        configuration: data['configuration'])
-        if file_type == :video
+                                        configuration: data['configuration'],
+                                        parent_file_model_type: data['parent_file_model_type'],
+                                        parent_file_id: data['parent_file_id'])
+        if %i[audio video].include?(file_type)
           if skip_encoding
             file.update!(state: 'encoded')
           else
@@ -112,7 +135,7 @@ module PageflowScrolled
       content_element_configs = section_config.delete('foreground') || []
 
       rewrite_file_references!(section_config['backdrop'],
-                               ['image', 'imageMobile', 'video'],
+                               %w[image imageMobile video],
                                files_by_name)
 
       section = Section.create!(chapter: chapter,
@@ -125,11 +148,11 @@ module PageflowScrolled
     end
 
     def create_content_element(section, content_element_config, position, files_by_name)
-      if %w[stickyImage inlineImage inlineBeforeAfter inlineVideo]
+      if %w[inlineAudio inlineBeforeAfter inlineImage inlineVideo stickyImage]
          .include?(content_element_config['type'])
         rewrite_file_references!(
           content_element_config['props'],
-          ['id', 'before_id', 'after_id'],
+          %w[id before_id after_id],
           files_by_name
         )
       end
