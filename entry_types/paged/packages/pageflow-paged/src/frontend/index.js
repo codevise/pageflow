@@ -2,6 +2,7 @@ import 'jquery-ui';
 
 import './jqueryUtils';
 
+export * from './EntryData';
 export * from './SeedEntryData';
 export * from './backgroundMedia';
 export * from './bandwidth';

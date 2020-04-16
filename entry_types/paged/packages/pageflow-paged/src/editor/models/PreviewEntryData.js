@@ -1,4 +1,4 @@
-import {EntryData} from '../../EntryData';
+import {EntryData} from 'pageflow-paged/frontend';
 
 export const PreviewEntryData = EntryData.extend({
   initialize: function(options) {
