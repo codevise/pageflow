@@ -1,6 +1,4 @@
-import {editor} from '../../base';
-
-import {ReferenceInputView} from './ReferenceInputView';
+import {ReferenceInputView, editor} from 'pageflow/editor';
 
 import {state} from '$state';
 

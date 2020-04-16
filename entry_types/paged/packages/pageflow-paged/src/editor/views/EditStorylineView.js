@@ -4,9 +4,8 @@ import Marionette from 'backbone.marionette';
 import {CheckBoxInputView, ConfigurationEditorView, SelectInputView, TextInputView, tooltipContainer} from 'pageflow/ui';
 
 import {PageLinkInputView} from './inputs/PageLinkInputView';
-import {failureIndicatingView} from './mixins/failureIndicatingView';
+import {editor, failureIndicatingView} from 'pageflow/editor';
 
-import {editor} from '../base';
 import {state} from '$state';
 
 import template from '../templates/editStoryline.jst';

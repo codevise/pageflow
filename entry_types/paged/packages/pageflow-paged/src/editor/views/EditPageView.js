@@ -4,10 +4,7 @@ import 'jquery-ui';
 
 import {ExtendedSelectInputView} from 'pageflow/ui';
 
-import {app} from '../app';
-import {editor} from '../base';
-
-import {failureIndicatingView} from './mixins/failureIndicatingView';
+import {app, editor, failureIndicatingView} from 'pageflow/editor';
 
 import template from '../templates/editPage.jst';
 

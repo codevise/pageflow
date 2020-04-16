@@ -1,6 +1,6 @@
 import {ConfigurationEditorTabView, SelectInputView} from 'pageflow/ui';
 
-import {FileInputView} from '../../inputs/FileInputView';
+import {FileInputView} from 'pageflow/editor';
 
 import {state} from '$state';
 

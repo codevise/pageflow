@@ -1,6 +1,7 @@
 import {CheckBoxInputView, ConfigurationEditorView, TextAreaInputView, TextInputView} from 'pageflow/ui';
+import {features} from 'pageflow/frontend';
 
-import {FileInputView} from '../inputs/FileInputView';
+import {FileInputView} from 'pageflow/editor';
 
 import {state} from '$state';
 
@@ -36,7 +37,7 @@ ConfigurationEditorView.register('video', {
     this.tab('options', function() {
       this.input('autoplay', CheckBoxInputView);
 
-      if (pageflow.features.isEnabled('auto_change_page')) {
+      if (features.isEnabled('auto_change_page')) {
         this.input('auto_change_page_on_ended', CheckBoxInputView);
       }
 

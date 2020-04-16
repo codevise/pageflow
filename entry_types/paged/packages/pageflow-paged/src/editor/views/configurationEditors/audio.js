@@ -2,7 +2,7 @@ import _ from 'underscore';
 
 import {CheckBoxInputView, ColorInputView, ConfigurationEditorView, SelectInputView, TextAreaInputView, TextInputView} from 'pageflow/ui';
 
-import {FileInputView} from '../inputs/FileInputView';
+import {FileInputView} from 'pageflow/editor';
 
 import {state} from '$state';
 

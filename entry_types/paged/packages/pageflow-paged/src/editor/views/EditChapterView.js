@@ -3,11 +3,9 @@ import Marionette from 'backbone.marionette';
 
 import {CheckBoxInputView, ConfigurationEditorView, TextInputView} from 'pageflow/ui';
 
-import {failureIndicatingView} from './mixins/failureIndicatingView';
+import {editor, failureIndicatingView} from 'pageflow/editor';
 
 import template from '../templates/editChapter.jst';
-
-import {editor} from '../base';
 
 export const EditChapterView = Marionette.Layout.extend({
   template,
