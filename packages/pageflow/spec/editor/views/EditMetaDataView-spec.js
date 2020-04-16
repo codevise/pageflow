@@ -1,14 +1,14 @@
 import Backbone from 'backbone';
-import Marionette from 'backbone.marionette';
 
 import {EditMetaDataView, editor} from 'pageflow/editor';
 import {CheckBoxInputView} from 'pageflow/ui';
 
-import {factories} from '$support';
 import * as support from '$support';
 import {ConfigurationEditor} from '$support/dominos/ui';
 
 describe('EditMetaDataView', () => {
+  const factories = support.factories;
+
   it('renders general tab', () => {
     editor.registerEntryType('test');
     const entry = factories.entry({}, {type_name: 'test'});

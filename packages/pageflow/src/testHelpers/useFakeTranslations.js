@@ -58,7 +58,7 @@ export function useFakeTranslations(translations, {multiLocale} = {}) {
   afterEach(() => {
     I18n.translations = originalTranslations;
   });
-};
+}
 
 function keysWithDotsToNestedObjects(translations) {
   return _(translations).reduce((result, value, key) => {

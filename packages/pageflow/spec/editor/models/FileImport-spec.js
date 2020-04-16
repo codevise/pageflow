@@ -1,10 +1,9 @@
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 
-import _ from 'underscore';
 import * as support from '$support';
 
-import {app, FileImport, editor, authenticationProvider} from 'pageflow/editor';
+import {FileImport, editor, authenticationProvider} from 'pageflow/editor';
 
 describe('FileImport', () => {
   let testContext;
@@ -12,7 +11,7 @@ describe('FileImport', () => {
   beforeEach(() => {
     testContext = {};
   });
-  
+
   beforeEach(() => {
     editor.fileImporters.register('test_importer', {
       createFileImportDialogView: function(fileImport) {

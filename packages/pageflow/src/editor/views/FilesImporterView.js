@@ -68,7 +68,7 @@ export const FilesImporterView = Marionette.ItemView.extend({
           var file = metaData.files[i];
           var fileType = editor.fileTypes.findByUpload(file);
 
-           var file = new fileType.model({
+          file = new fileType.model({
             state: 'uploadable',
             file_name: file.name,
             content_type: file.type,
@@ -92,7 +92,7 @@ export const FilesImporterView = Marionette.ItemView.extend({
   },
   onRender: function () {
     if (!this.isInitialized) {
-      this.ui.contentPanel.append(this.subview(new LoadingView({tagName: 'div'})).el);  
+      this.ui.contentPanel.append(this.subview(new LoadingView({tagName: 'div'})).el);
     }
   }
 });

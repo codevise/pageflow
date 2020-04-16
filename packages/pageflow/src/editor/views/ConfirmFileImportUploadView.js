@@ -1,8 +1,10 @@
+import _ from 'underscore';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 
 import template from '../templates/confirmUpload.jst';
 import {dialogView} from './mixins/dialogView';
+import {EditFileView} from './EditFileView';
 import {UploadableFilesView} from './UploadableFilesView'
 import {app} from '../app';
 import {state} from '$state';
@@ -31,14 +33,11 @@ export const ConfirmFileImportUploadView = Marionette.Layout.extend({
   },
   getSelectedFiles: function () {
     var files = [];
-    for (var key in state.files) {
-      if (state.files.hasOwnProperty(key)) {
-        var collection = state.files[key];
-        if (collection.length>0) {
-          files = files.concat(collection.toJSON());
-        }
+    _.each(state.files, collection => {
+      if (collection.length > 0) {
+        files = files.concat(collection.toJSON());
       }
-    }
+    });
     return files;
   },
   initialize: function() {
@@ -72,7 +71,7 @@ export const ConfirmFileImportUploadView = Marionette.Layout.extend({
     var file = this.selection.get('file');
 
     if (file) {
-      this.selectedFileRegion.show(new pageflow.EditFileView({
+      this.selectedFileRegion.show(new EditFileView({
         model: file
       }));
     }

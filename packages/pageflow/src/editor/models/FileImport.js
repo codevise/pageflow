@@ -88,7 +88,7 @@ export const FileImport = Backbone.Model.extend({
     selections.each(function (selection) {
       selection.destroy();
     });
-    selections.clear(); 
+    selections.clear();
   },
   startImportJob: function (collectionName) {
     this.action = 'start_import_job';
@@ -111,13 +111,13 @@ export const FileImport = Backbone.Model.extend({
         if (files && files.length>0) {
           files.forEach((file) => {
             var localFile = selections.find(function (cFile) {
-              return cFile.get('attachment_on_s3_file_name') == file.file_name && 
+              return cFile.get('attachment_on_s3_file_name') == file.file_name &&
                 cFile.get('source_url') == file.source_url && cFile.get('state') == 'uploadable'
             });
             if (localFile) {
               state.files[collectionName].remove(localFile)
               var fileType = editor.fileTypes.findByUpload(file);
-              var file = new fileType.model(file, {
+              file = new fileType.model(file, {
                 fileType: fileType
               });
 
@@ -130,5 +130,3 @@ export const FileImport = Backbone.Model.extend({
     });
   }
 });
-
- 

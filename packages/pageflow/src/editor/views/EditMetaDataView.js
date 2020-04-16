@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {CheckBoxGroupInputView, CheckBoxInputView, ConfigurationEditorView, SelectInputView, TextAreaInputView, TextInputView} from 'pageflow/ui';
+import {CheckBoxGroupInputView, ConfigurationEditorView, SelectInputView, TextAreaInputView, TextInputView} from 'pageflow/ui';
 
 import {EditWidgetsView} from './EditWidgetsView';
 import {FileInputView} from './inputs/FileInputView';
@@ -123,6 +123,6 @@ export const EditMetaDataView = Marionette.Layout.extend({
   },
 
   goBack: function() {
-    editor.navigate('/', {trigger: true});
+    this.options.editor.navigate('/', {trigger: true});
   }
 });

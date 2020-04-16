@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import {log, debugMode} from '../base';
-import {state} from '../state';
 /**
  * Browser feature detection.
  *

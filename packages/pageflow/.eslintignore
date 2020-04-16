@@ -1,4 +1,6 @@
 node_modules
 src/vendor
 /editor.js
+/frontend.js
 /ui.js
+/testHelpers.js
