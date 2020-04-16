@@ -15,6 +15,7 @@ module.exports = {
   moduleNameMapper: {
     "^\\$support(.*)$": "<rootDir>/spec/support$1",
     "^\\pageflow-paged/(.*)$": "<rootDir>/src/$1",
+    "^\\$state$": "<rootDir>/spec/support/state.js",
     ...moduleNameMapper
   },
   transform
