@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 import {log} from './base';
 
-
+// TODO: rewrite to vanilla JS
 var Settings = Backbone.Model.extend({
   defaults: {
     volume: 1

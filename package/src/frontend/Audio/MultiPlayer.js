@@ -1,4 +1,4 @@
-import Backbone from 'backbone';
+import BackboneEvents from 'backbone-events-standalone';
 import _ from 'underscore';
 import {AudioPlayer} from '../AudioPlayer';
 
@@ -143,4 +143,4 @@ export const MultiPlayer = function(pool, options) {
   }
 };
 
-_.extend(MultiPlayer.prototype, Backbone.Events);
+_.extend(MultiPlayer.prototype, BackboneEvents);
