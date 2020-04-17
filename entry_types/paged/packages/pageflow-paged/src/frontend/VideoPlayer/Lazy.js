@@ -1,17 +1,13 @@
+import $ from 'jquery';
 import _ from 'underscore';
-import {VideoPlayer} from './VideoPlayer';
-import {browser} from '../browser';
-import {log} from '../base';
-import {assetUrls} from '../assetUrls';
+import {VideoPlayer, browser, log, assetUrls} from 'pageflow/frontend';
 
 // A proxy which lazily initializes the real video player.
 export const Lazy = function(template, options) {
   var placeholder = $('<span class="video_placeholder" />'),
-    that = this,
-
-    // TODO: Replace $.Callbacks
-    readyCallbacks = new $.Callbacks(),
-    disposeTimeout, videoTag, videoPlayer, html;
+      that = this,
+      readyCallbacks = new $.Callbacks(),
+      disposeTimeout, videoTag, videoPlayer, html;
 
   saveHtml(template);
   template.before(placeholder);
@@ -97,10 +93,9 @@ export const Lazy = function(template, options) {
         return;
       }
 
-      return new Promise(function(resolve) {
+      return new $.Deferred(function(deferred) {
         videoPlayer.ready(function() {
-          // TODO: Replace $.when
-          $.when(videoPlayer[method].apply(videoPlayer, args)).then(resolve);
+          $.when(videoPlayer[method].apply(videoPlayer, args)).then(deferred.resolve);
         });
       });
     };
