@@ -1,10 +1,9 @@
-import $ from 'jquery';
-
 export const interval = function(player) {
-  var originalVolume = player.volume;
+  const originalVolume = player.volume;
 
-  var fadeVolumeDeferred;
-  var fadeVolumeInterval;
+  let fadeVolumeResolve;
+  let fadeVolumeReject;
+  let fadeVolumeInterval;
 
   player.volume = function(value) {
     if (typeof value !== 'undefined') {
@@ -17,17 +16,18 @@ export const interval = function(player) {
   player.fadeVolume = function(value, duration) {
     cancelFadeVolume();
 
-    return new $.Deferred(function(deferred) {
-      var resolution = 10;
-      var startValue = volume();
-      var steps = duration / resolution;
-      var leap = (value - startValue) / steps;
+    return new Promise(function(resolve, reject) {
+      fadeVolumeReject = reject;
+      const resolution = 10;
+      const startValue = volume();
+      const steps = duration / resolution;
+      const leap = (value - startValue) / steps;
 
       if (value === startValue) {
-        deferred.resolve();
+        resolve();
       }
       else {
-        fadeVolumeDeferred = deferred;
+        fadeVolumeResolve = resolve;
         fadeVolumeInterval = setInterval(function() {
           volume(volume() + leap);
 
@@ -49,19 +49,21 @@ export const interval = function(player) {
 
   function resolveFadeVolume() {
     clearInterval(fadeVolumeInterval);
-    fadeVolumeDeferred.resolve();
+    fadeVolumeResolve();
 
     fadeVolumeInterval = null;
-    fadeVolumeDeferred = null;
+    fadeVolumeResolve = null;
+    fadeVolumeReject = null;
   }
 
   function cancelFadeVolume() {
     if (fadeVolumeInterval) {
       clearInterval(fadeVolumeInterval);
-      fadeVolumeDeferred.reject();
+      fadeVolumeReject();
 
       fadeVolumeInterval = null;
-      fadeVolumeDeferred = null;
+      fadeVolumeResolve = null;
+      fadeVolumeReject = null;
     }
   }
 };

@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 /**
  * Calling seek before the media tag is ready causes InvalidState
  * exeption. If this happens, we wait for the next progress event and
@@ -19,18 +17,18 @@ export const seekWithInvalidStateHandling = function(player) {
   function retryOnProgress(fn) {
     var tries = 0;
 
-    return new $.Deferred(function(deferred) {
+    return new Promise(function(resolve, reject) {
       function tryOrWaitForProgress() {
         tries += 1;
 
         if (tries >= 50) {
-          deferred.reject();
+          reject();
           return;
         }
 
         try {
           fn();
-          deferred.resolve();
+          resolve();
         }
         catch(e) {
           player.one('progress', tryOrWaitForProgress);
@@ -38,6 +36,6 @@ export const seekWithInvalidStateHandling = function(player) {
       }
 
       tryOrWaitForProgress();
-    }).promise();
+    });
   }
 };

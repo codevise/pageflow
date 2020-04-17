@@ -1,5 +1,3 @@
-import jQuery from 'jquery';
-
 export const volumeBinding = function(player, settings, options) {
   options = options || {};
 
@@ -18,16 +16,16 @@ export const volumeBinding = function(player, settings, options) {
 
   player.playAndFadeIn = function(duration) {
     if (!player.paused() && !player.intendingToPause()) {
-      return new jQuery.Deferred().resolve().promise();
+      return Promise.resolve();
     }
 
     player.intendToPlay();
     player.volume(0);
 
-    return jQuery.when(originalPlay.call(player)).then(function() {
+    return Promise.all([originalPlay.call(player)]).then(function() {
       listenToVolumeSetting();
       return player.fadeVolume(player.targetVolume(), duration).then(null, function() {
-        return new jQuery.Deferred().resolve().promise();
+        return Promise.resolve();
       });
     });
   };
@@ -39,13 +37,13 @@ export const volumeBinding = function(player, settings, options) {
 
   player.fadeOutAndPause = function(duration) {
     if (player.paused() && !player.intendingToPlay()) {
-      return new jQuery.Deferred().resolve().promise();
+      return Promise.resolve();
     }
 
     player.intendToPause();
     stopListeningToVolumeSetting();
 
-    return player.fadeVolume(0, duration).always(function() {
+    return player.fadeVolume(0, duration).finally(function() {
       return player.ifIntendingToPause().then(function() {
         originalPause.call(player);
       });

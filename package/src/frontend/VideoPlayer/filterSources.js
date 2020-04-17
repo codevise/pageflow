@@ -1,6 +1,6 @@
-import $ from 'jquery';
 import {browser} from '../browser';
 
+// TODO: Rewrite to vanilla JS
 export const filterSources = function(playerElement) {
   if (!$(playerElement).is('video')) {
     return playerElement;
