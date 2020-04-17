@@ -6,6 +6,7 @@ import _ from 'underscore';
 import {SelectInputView} from 'pageflow/ui';
 
 import {editor} from 'pageflow/editor';
+import {features} from 'pageflow/frontend';
 
 import {StorylineOutlineView} from './StorylineOutlineView';
 
@@ -55,7 +56,7 @@ export const StorylinePickerView = Marionette.Layout.extend({
 
   onRender: function() {
     this.$el.toggleClass('editable', !!this.options.editable);
-    this.ui.storylines.toggle(!!pageflow.features.isEnabled('storylines'));
+    this.ui.storylines.toggle(!!features.isEnabled('storylines'));
 
     this.updateSelect();
     this.load();

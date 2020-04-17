@@ -5,6 +5,8 @@ import _ from 'underscore';
 import {CollectionView} from 'pageflow/ui';
 
 import {app} from 'pageflow/editor';
+import {events} from 'pageflow/frontend';
+import {delayedStart, Slideshow, widgetTypes} from 'pageflow-paged/frontend';
 
 import {BlankEntryView} from './BlankEntryView';
 import {PagePreviewView} from './PagePreviewView';
@@ -56,7 +58,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
     this.listenTo(this.model.imageFiles, 'sync', this.update);
     this.listenTo(this.model.videoFiles, 'sync', this.update);
 
-    this.listenTo(pageflow.events, 'page:changing', function(event) {
+    this.listenTo(events, 'page:changing', function(event) {
       if (this.model.get('emulation_mode')) {
         this.ui.navigationDisabledHint.css('opacity', 1);
 
@@ -69,19 +71,19 @@ export const EntryPreviewView = Marionette.ItemView.extend({
       }
     });
 
-    this.listenTo(pageflow.events, 'page:change', function(page) {
+    this.listenTo(events, 'page:change', function(page) {
       this.updateEmulationModeSupport(page.getPermaId());
     });
   },
 
   onShow: function() {
-    var slideshow = pageflow.Slideshow.setup({
+    var slideshow = this.slideshow = Slideshow.setup({
       element: this.ui.entry,
       enabledFeatureNames: this.model.get('enabled_feature_names'),
       simulateHistory: true
     });
 
-    pageflow.delayedStart.perform();
+    delayedStart.perform();
 
     this.listenTo(this.pages, 'add', function() {
       slideshow.update();
@@ -154,7 +156,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
       view.updateWidgets(partials);
 
       view.ui.header.header({
-        slideshow: pageflow.slides
+        slideshow: view.slideshow
       });
       view.ui.overview.overview();
     });
@@ -168,7 +170,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
     this.widgets = widgets;
     this.ui.entry.before(this.widgets);
 
-    pageflow.widgetTypes.enhance(this.$el);
+    widgetTypes.enhance(this.$el);
   },
 
   updatePresentWidgetsCssClasses: function(newWidgets) {
@@ -182,7 +184,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
     this.$el.addClass(addedClasses.join(' '));
 
     if (removedClasses.length || addedClasses.length) {
-      pageflow.events.trigger('widgets:update');
+      events.trigger('widgets:update');
     }
   },
 

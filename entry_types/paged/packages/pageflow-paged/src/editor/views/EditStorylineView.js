@@ -5,6 +5,8 @@ import {CheckBoxInputView, ConfigurationEditorView, SelectInputView, TextInputVi
 
 import {PageLinkInputView} from './inputs/PageLinkInputView';
 import {editor, failureIndicatingView} from 'pageflow/editor';
+import {features} from 'pageflow/frontend';
+import {ChapterFilter} from 'pageflow-paged/frontend';
 
 import {state} from '$state';
 
@@ -81,9 +83,9 @@ export const EditStorylineView = Marionette.Layout.extend({
       });
       this.input('scroll_successor_id', PageLinkInputView);
 
-      if (pageflow.features.isEnabled('chapter_hierachy')) {
+      if (features.isEnabled('chapter_hierachy')) {
         this.input('navigation_bar_mode', SelectInputView, {
-          values: pageflow.ChapterFilter.strategies
+          values: ChapterFilter.strategies
         });
       }
     });
