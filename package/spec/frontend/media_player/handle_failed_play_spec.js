@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import Backbone from 'backbone';
+import BackboneEvents from 'backbone-events-standalone';
 
 import {mediaPlayer} from 'pageflow/frontend';
 
@@ -166,6 +166,6 @@ describe('pageflow.mediaPlayer.handleFailedPlay', function() {
       play: originalPlay,
 
       muted: sinon.spy()
-    }, Backbone.Events);
+    }, BackboneEvents);
   }
 });

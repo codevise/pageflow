@@ -1,4 +1,4 @@
-import Backbone from 'backbone';
+import BackboneEvents from 'backbone-events-standalone';
 
 import _ from 'underscore';
 
@@ -150,7 +150,7 @@ describe('hooks', function() {
       originalPlayAndFadeIn: playAndFadeInSpy,
 
       pause: sinon.spy()
-    }, Backbone.Events);
+    }, BackboneEvents);
 
     asyncPlay(player);
 

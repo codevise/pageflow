@@ -1,4 +1,4 @@
-import Backbone from 'backbone';
+import BackboneEvents from 'backbone-events-standalone';
 import _ from 'underscore';
 
 export const Null = function() {
@@ -37,4 +37,4 @@ export const Null = function() {
   };
 };
 
-_.extend(Null.prototype, Backbone.Events);
+_.extend(Null.prototype, BackboneEvents);
