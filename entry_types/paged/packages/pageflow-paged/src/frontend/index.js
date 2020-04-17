@@ -48,5 +48,6 @@ import './boot';
 export * from './ready';
 import './printLayout';
 
+import './VideoPlayer';
 
 export * from 'pageflow/frontend';
