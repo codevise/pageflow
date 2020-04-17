@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
-import {editor} from '../base';
+import {editor} from 'pageflow/editor';
 
 import template from '../templates/editPageLink.jst';
 

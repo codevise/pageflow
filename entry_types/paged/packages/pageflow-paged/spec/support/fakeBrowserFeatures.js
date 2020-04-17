@@ -1,5 +1,5 @@
 import {browser} from 'pageflow/frontend';
-pageflow.ALLOW_FEATURE_OVERRIDES = true;
+window.PAGEFLOW_ALLOW_FEATURE_OVERRIDES = true;
 browser.on.high_bandwidth();
 
 browser.detectFeatures();

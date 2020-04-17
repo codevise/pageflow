@@ -1,6 +1,8 @@
 import Backbone from 'backbone';
 import _ from 'underscore';
 
+import {events} from 'pageflow/frontend';
+
 import {ChaptersCollection} from '../collections/ChaptersCollection';
 import {FilesCollection} from '../collections/FilesCollection';
 import {PagesCollection} from '../collections/PagesCollection';
@@ -54,5 +56,5 @@ app.addInitializer(function(options) {
   editor.savingRecords.watch(state.pages);
   editor.savingRecords.watch(state.chapters);
 
-  pageflow.events.trigger('seed:loaded');
+  events.trigger('seed:loaded');
 });

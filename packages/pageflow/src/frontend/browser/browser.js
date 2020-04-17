@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import {log, debugMode} from '../base';
-import {state} from '../state';
 /**
  * Browser feature detection.
  *
@@ -89,7 +88,7 @@ export const browser = (function(){
             log('FEATURE OVERRIDDEN ' + name + ': ' + value, {force: true});
             return value;
           }
-          else if ((debugMode() || state.ALLOW_FEATURE_OVERRIDES) &&
+          else if ((debugMode() || window.PAGEFLOW_ALLOW_FEATURE_OVERRIDES) &&
                    window.localStorage &&
                    typeof window.localStorage['override ' + name] !== 'undefined') {
             value = (window.localStorage['override ' + name] === 'on');

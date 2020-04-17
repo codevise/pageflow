@@ -44,7 +44,7 @@ module.exports = {
       }
     },
     {
-      "files": ["spec/**/*.js"],
+      "files": ["spec/**/*.js", "src/testHelpers/**/*.js"],
       "extends": ["plugin:jest/recommended"]
     }
   ]

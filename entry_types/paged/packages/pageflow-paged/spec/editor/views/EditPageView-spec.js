@@ -1,9 +1,10 @@
 import {ConfigurationEditorView, TextInputView} from 'pageflow/ui';
 
-import {EditPageView, Page} from 'pageflow/editor';
+import {EditPageView} from 'pageflow-paged/editor/views/EditPageView';
+import {Page} from 'pageflow/editor';
 
 import * as support from '$support';
-import {ConfigurationEditor} from '$support/dominos/ui';
+import {ConfigurationEditor} from 'pageflow/testHelpers';
 
 describe('EditPageView', () => {
   var f = support.factories;

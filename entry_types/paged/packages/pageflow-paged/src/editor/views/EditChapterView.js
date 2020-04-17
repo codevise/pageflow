@@ -3,11 +3,10 @@ import Marionette from 'backbone.marionette';
 
 import {CheckBoxInputView, ConfigurationEditorView, TextInputView} from 'pageflow/ui';
 
-import {failureIndicatingView} from './mixins/failureIndicatingView';
+import {editor, failureIndicatingView} from 'pageflow/editor';
+import {features} from 'pageflow/frontend';
 
 import template from '../templates/editChapter.jst';
-
-import {editor} from '../base';
 
 export const EditChapterView = Marionette.Layout.extend({
   template,
@@ -41,7 +40,7 @@ export const EditChapterView = Marionette.Layout.extend({
         model: view.model
       });
 
-      if (pageflow.features.isEnabled('chapter_hierachy')) {
+      if (features.isEnabled('chapter_hierachy')) {
         this.input('display_parent_page_button', CheckBoxInputView);
       }
     });

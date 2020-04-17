@@ -60,14 +60,13 @@ const plugins = [
   })
 ];
 
-const pageflowPackagePlugins = [
-  alias({
+function stateAlias(path) {
+  return alias({
     entries: {
-      '$state': __dirname + '/' + pageflowPackageRoot + '/src/editor/state.js',
+      '$state': __dirname + '/' + path,
     }
-  }),
-  ...plugins
-];
+  });
+}
 
 const ignoreJSXWarning = {
   onwarn: function(warning, warn) {
@@ -88,7 +87,7 @@ const pageflow = [
       format: 'esm'
     },
     external,
-    plugins: pageflowPackagePlugins
+    plugins
   },
   {
     input: pageflowPackageRoot + '/src/editor/index.js',
@@ -97,7 +96,10 @@ const pageflow = [
       format: 'esm'
     },
     external,
-    plugins: pageflowPackagePlugins
+    plugins: [
+      stateAlias(pageflowPackageRoot + '/src/editor/state.js'),
+      ...plugins
+    ]
   },
   {
     input: pageflowPackageRoot + '/src/testHelpers/index.js',
@@ -116,7 +118,7 @@ const pageflow = [
       globals: frontendGlobals
     },
     external: Object.keys(frontendGlobals),
-    plugins: pageflowPackagePlugins
+    plugins
   },
   {
     input: pageflowPackageRoot + '/src/ui/index.js',
@@ -127,7 +129,7 @@ const pageflow = [
       globals: editorGlobals
     },
     external: Object.keys(editorGlobals),
-    plugins: pageflowPackagePlugins
+    plugins
   }
 ];
 
@@ -153,7 +155,10 @@ const pageflowPaged = [
       globals: pageflowPagedEditorGlobals
     },
     external: Object.keys(pageflowPagedEditorGlobals),
-    plugins
+    plugins: [
+      stateAlias(pageflowPagedPackageRoot + '/src/editor/state.js'),
+      ...plugins
+    ]
   },
   {
     input: pageflowPagedPackageRoot + '/src/frontend/index.js',

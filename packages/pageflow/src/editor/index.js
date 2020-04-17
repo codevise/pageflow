@@ -111,7 +111,6 @@ export * from './views/BackgroundPositioningSlidersView';
 export * from './views/OtherEntriesCollectionView';
 export * from './views/EditFileView';
 export * from './views/PageLinkConfigurationEditorView';
-export * from './views/EditPageView';
 export * from './views/BackButtonDecoratorView';
 export * from './views/FileSettingsDialogView';
 export * from './views/OtherEntryItemView';
@@ -129,8 +128,6 @@ export * from './views/inputs/FileProcessingStateDisplayView';
 export * from './views/inputs/ReferenceInputView';
 export * from './views/inputs/ThemeInputView';
 export * from './views/inputs/FileInputView';
-export * from './views/inputs/PageLinkInputView';
-export * from './views/EditPageLinkView';
 export * from './views/EditEntryView';
 export * from './views/TextTracksView';
 export * from './views/FileThumbnailView';
@@ -140,12 +137,9 @@ export * from './views/HelpButtonView';
 export * from './views/TextTracksFileMetaDataItemValueView';
 export * from './views/EditWidgetView';
 export * from './views/ThemeItemView';
-export * from './views/DisabledAtmoIndicatorView';
 export * from './views/LockedView';
 export * from './views/ChangeThemeDialogView';
 export * from './views/ConfirmEncodingView';
-export * from './views/EditChapterView';
-export * from './views/EditStorylineView';
 export * from './views/FilteredFilesView';
 export * from './views/DropDownButtonItemView';
 export * from './views/EditMetaDataView';
@@ -165,15 +159,6 @@ export * from './views/ConfirmFileImportUploadView';
 
 export * from './views/EditConfigurationView';
 
-import './views/configurationEditors/audio';
-import './views/configurationEditors/backgroundImage';
-import './views/configurationEditors/video';
-import './views/configurationEditors/groups/background';
-import './views/configurationEditors/groups/general';
-import './views/configurationEditors/groups/pageLink';
-import './views/configurationEditors/groups/pageTransitions';
-import './views/configurationEditors/groups/options';
-
 import './views/widgetTypes/classicLoadingSpinner';
 import './views/widgetTypes/cookieNoticeBar';
 import './views/widgetTypes/mediaLoadingSpinner';
@@ -191,11 +176,9 @@ import './initializers/setupWidgetTypes'
 import './initializers/setupCollections'
 import './initializers/setupFileUploader'
 import './initializers/setupPageTypes'
-import './initializers/setupHotkeys'
 import './initializers/setupFileImporters'
 import './initializers/editLock'
 import './initializers/filesPolling'
-import './initializers/stylesheetReloading'
 import './initializers/routing'
 import './initializers/errorListener'
 import './initializers/additionalInitializers'

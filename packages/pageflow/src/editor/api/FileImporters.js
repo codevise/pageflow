@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import {Object} from 'pageflow/ui';
 
 export const FileImporters = Object.extend({
@@ -22,8 +23,8 @@ export const FileImporters = Object.extend({
       regImporter['authenticationProvider'] = importer.authenticationProvider
       regImporter['logoSource'] = importer.logoSource
       importers[importer.importerName] = regImporter
-    });   
-    this.importers = importers; 
+    });
+    this.importers = importers;
   },
   find: function(name) {
     if (!this.importers[name]) {

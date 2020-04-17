@@ -3,6 +3,9 @@ import ChildViewContainer from 'backbone.babysitter';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
+import {events} from 'pageflow/frontend';
+import {pageType} from 'pageflow-paged/frontend';
+
 export const PagePreviewView = Marionette.View.extend({
   tagName: 'section',
   className: 'page',
@@ -69,7 +72,7 @@ export const PagePreviewView = Marionette.View.extend({
   update: function() {
     this.$el.page('update', this.model.configuration);
 
-    pageflow.events.trigger('page:update', this.model);
+    events.trigger('page:update', this.model);
 
     this.refreshScroller();
     this.updatePositionClassNames();
@@ -81,7 +84,7 @@ export const PagePreviewView = Marionette.View.extend({
   },
 
   pageTypeHooks: function() {
-    return pageflow.pageType.get(this.model.get('template'));
+    return pageType.get(this.model.get('template'));
   },
 
   pageTemplate: function() {

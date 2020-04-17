@@ -1,4 +1,4 @@
-const {moduleNameMapper, transform} = require('pageflow/config/jest')
+const {setupFiles, moduleNameMapper, transform} = require('pageflow/config/jest')
 
 module.exports = {
   // Required to make eslint-import-resolver-jest work with absolute
@@ -10,6 +10,7 @@ module.exports = {
   globals: {
     pageflow: {},
   },
+  setupFiles,
   modulePaths: ['<rootDir>/src', '<rootDir>/spec'],
 
   moduleNameMapper: {

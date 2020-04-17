@@ -1,6 +1,6 @@
 import {CheckBoxInputView, ConfigurationEditorTabView, SelectInputView, SliderInputView, TextAreaInputView, TextInputView} from 'pageflow/ui';
 
-import {Page} from '../../../models/Page';
+import {Page} from 'pageflow/editor';
 
 import {PageLinkInputView} from '../../inputs/PageLinkInputView';
 

@@ -1,8 +1,8 @@
 import {CheckBoxInputView, ConfigurationEditorTabView, SelectInputView, TextAreaInputView} from 'pageflow/ui';
 
-import {Page} from '../../../models/Page';
-
-import {FileInputView} from '../../inputs/FileInputView';
+import {FileInputView, Page} from 'pageflow/editor';
+import {features} from 'pageflow/frontend';
+import {Atmo} from 'pageflow-paged/frontend';
 
 import {state} from '$state';
 
@@ -17,7 +17,7 @@ ConfigurationEditorTabView.groups.define('options', function(options) {
 
   this.group('page_transitions', {propertyName: 'transition'});
 
-  if (pageflow.features.isEnabled('delayed_text_fade_in')) {
+  if (features.isEnabled('delayed_text_fade_in')) {
     this.input('delayed_text_fade_in', SelectInputView, {values: Page.delayedTextFadeIn});
   }
 
@@ -29,11 +29,11 @@ ConfigurationEditorTabView.groups.define('options', function(options) {
 
   if (theme.supportsHideLogoOnPages()) {
     this.input('hide_logo', CheckBoxInputView);
-  };
+  }
 
   if (options.canPauseAtmo) {
     this.input('atmo_during_playback', SelectInputView, {
-      values: pageflow.Atmo.duringPlaybackModes
+      values: Atmo.duringPlaybackModes
     });
   }
 

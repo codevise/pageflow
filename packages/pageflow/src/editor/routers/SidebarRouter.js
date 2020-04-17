@@ -2,11 +2,6 @@ import Marionette from 'backbone.marionette';
 
 export const SidebarRouter = Marionette.AppRouter.extend({
   appRoutes: {
-    'page_links/:id': 'pageLink',
-    'pages/:id': 'page',
-    'pages/:id/:tab': 'page',
-    'chapters/:id': 'chapter',
-    'storylines/:id': 'storyline',
     'widgets/:id': 'widget',
 
     'files/:collectionName?handler=:handler&payload=:payload&filter=:filter': 'files',
