@@ -43,7 +43,7 @@ the recommended React-based approach include:
 * [`pageflow-timeline-page`](https://github.com/codevise/pageflow-timeline-page)
 * [`pageflow-vr`](https://github.com/codevise/pageflow-vr)
 * All of the
-  [built in page types](https://github.com/codevise/pageflow/tree/master/packages/pageflow-react/src/builtInPageTypes). Note
+  [built in page types](https://github.com/codevise/pageflow/tree/master/entry_types/paged/packages/pageflow-paged-react/src/builtInPageTypes). Note
   that the Pageflow gem itself internally
   [uses a Webpack-based build process](contributing/directory_layout_overview.md). This
   causes the source code to have a different shape than in the

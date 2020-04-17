@@ -8,10 +8,10 @@ readme. Furthermore, configure your editor to highlight
 
     $ yarn install
 
-The `pageflow-react` package has a different set of dependencies, which
+The `pageflow-paged-react` package has a different set of dependencies, which
 need to be installed separately:
 
-    $ cd packages/pageflow-react
+    $ cd entry_types/paged/packages/pageflow-paged-react
     $ yarn install
 
 ### Running the Test Suites
@@ -28,10 +28,10 @@ roots. To run the specs from `./spec`:
     $ cd entry_types/scrolled/package
     $ yarn test
 
-The `pageflow-react` contains co-located tests inside
-`packages/pageflow-react/src/**/__spec__` directories:
+The `pageflow-paged-react` contains co-located tests inside
+`src/**/__spec__` directories:
 
-    $ cd packages/pageflow-react
+    $ cd entry_types/paged/packages/pageflow-paged-react
     $ yarn test
 
 ### Running Development Watchers
@@ -41,9 +41,9 @@ command from the repository root:
 
     $ yarn start
 
-The Webpack built for `pageflow-react` needs to be started separately:
+The Webpack built for `pageflow-paged-react` needs to be started separately:
 
-    $ cd packages/pageflow-react
+    $ cd entry_types/paged/packages/pageflow-paged-react
     $ yarn start
 
 ### Using Local Packages in a Host Application
