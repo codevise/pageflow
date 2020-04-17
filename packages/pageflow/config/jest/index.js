@@ -18,7 +18,9 @@ module.exports = {
     '^.+\\.jst$': resolve('./transformers/jst'),
     '^.+\\.jsx?$': resolve('./transformers/upwardBabel'),
     '^.+\\.module.css$': resolve('./transformers/cssModules')
-  }
+  },
+
+  setupFiles: [resolve('./videojsStub')]
 }
 
 function resolve(relativePath) {
