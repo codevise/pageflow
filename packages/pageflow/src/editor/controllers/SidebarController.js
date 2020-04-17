@@ -1,5 +1,7 @@
 import Marionette from 'backbone.marionette';
 
+import {features} from 'pageflow/frontend';
+
 import {EncodingConfirmation} from '../models/EncodingConfirmation';
 import {EntryPublication} from '../models/EntryPublication';
 import {editor} from '../base';
@@ -51,7 +53,7 @@ export const SidebarController = Marionette.Controller.extend({
       model: this.entry,
       tab: tab,
       state: state,
-      features: pageflow.features,
+      features: features,
       editor: editor
     }));
   },

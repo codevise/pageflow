@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import {browser} from 'pageflow/frontend';
 
 import {EditorApi} from './api';
 import {app} from './app';
@@ -18,7 +19,7 @@ export const startEditor = function(options) {
   $(function() {
     $.when(
       $.getJSON('/editor/entries/' + options.entryId + '/seed'),
-      pageflow.browser.detectFeatures()
+      browser.detectFeatures()
     )
       .done(function(result) {
         app.start(result[0]);
