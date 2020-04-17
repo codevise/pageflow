@@ -1,6 +1,6 @@
 .backdrop {
+  composes: clip from '../utils.module.css';
   position: absolute;
-  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   top: 0;
   bottom: 0;
   display: flex;
