@@ -86,7 +86,7 @@ jobs:
         - (cd entry_types/paged/packages/pageflow-paged-react; yarn install)
       before_script: yarn run build
       script:
-        - (cd packages/pageflow; yarn test)
+        - (cd package; yarn test)
         - (cd entry_types/paged/packages/pageflow-paged-react; yarn test)
         - (cd entry_types/paged/packages/pageflow-paged; yarn test)
         - (cd entry_types/scrolled/package; yarn test)

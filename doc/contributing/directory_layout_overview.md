@@ -20,9 +20,8 @@ All engines are distributed inside the `pageflow` gem.
 Most JavaScript code is contained in packages, which are grouped with
 the engine they belong to:
 
-* `packages/pageflow` contains Backbone Marionette JavaScript for the
-  editor, ui library and shared frontend code. Built using
-  Yarn/Rollup.
+* `package`contains Backbone Marionette JavaScript for the editor, ui
+  library and shared frontend code. Built using Yarn/Rollup.
 
 * `entry_types/paged/packages/pageflow-paged-react` contains React/Redux
   JavaScript for the frontend. Built using npm/Webpack.

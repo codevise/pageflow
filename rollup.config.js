@@ -6,7 +6,7 @@ import babel from 'rollup-plugin-babel';
 import postcss from 'rollup-plugin-postcss';
 import reactSvg from "rollup-plugin-react-svg";
 
-const pageflowPackageRoot = 'packages/pageflow';
+const pageflowPackageRoot = 'package';
 const pageflowPagedEngineRoot = 'entry_types/paged';
 const pageflowPagedPackageRoot = pageflowPagedEngineRoot + '/packages/pageflow-paged';
 const pageflowScrolledPackageRoot = 'entry_types/scrolled/package';

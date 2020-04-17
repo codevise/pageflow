@@ -19,7 +19,7 @@ need to be installed separately:
 The Jest test suites need to be run from the respective package
 roots. To run the specs from `./spec`:
 
-    $ cd packages/pageflow
+    $ cd package
     $ yarn test
 
     $ cd entry_types/paged/packages/pageflow-paged
@@ -51,7 +51,7 @@ The Webpack built for `pageflow-paged-react` needs to be started separately:
 To temporarily use a your local version of a package in a host
 application, first run `yarn link` in the package directory:
 
-    $ cd my-projects/pageflow/packages/pageflow
+    $ cd my-projects/pageflow/package
     $ yarn link
 
 and
