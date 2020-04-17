@@ -137,7 +137,6 @@ export * from './views/HelpButtonView';
 export * from './views/TextTracksFileMetaDataItemValueView';
 export * from './views/EditWidgetView';
 export * from './views/ThemeItemView';
-export * from './views/DisabledAtmoIndicatorView';
 export * from './views/LockedView';
 export * from './views/ChangeThemeDialogView';
 export * from './views/ConfirmEncodingView';
@@ -177,11 +176,9 @@ import './initializers/setupWidgetTypes'
 import './initializers/setupCollections'
 import './initializers/setupFileUploader'
 import './initializers/setupPageTypes'
-import './initializers/setupHotkeys'
 import './initializers/setupFileImporters'
 import './initializers/editLock'
 import './initializers/filesPolling'
-import './initializers/stylesheetReloading'
 import './initializers/routing'
 import './initializers/errorListener'
 import './initializers/additionalInitializers'

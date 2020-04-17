@@ -4,7 +4,6 @@ import Backbone from 'backbone';
 import {app} from '../app';
 import {editor} from '../base';
 
-import {DisabledAtmoIndicatorView} from '../views/DisabledAtmoIndicatorView';
 import {EditorView} from '../views/EditorView';
 import {NotificationsView} from '../views/NotificationsView';
 import {ScrollingView} from '../views/ScrollingView';
@@ -26,7 +25,6 @@ app.addInitializer(function(options) {
     model: state.entry
   }));
 
-  app.indicatorsRegion.show(new DisabledAtmoIndicatorView());
   app.notificationsRegion.show(new NotificationsView());
   app.sidebarFooterRegion.show(new SidebarFooterView({
     model: state.entry

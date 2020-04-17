@@ -1,25 +1,28 @@
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
+import {events} from 'pageflow/frontend';
+import {state} from '$state';
+
 export const DisabledAtmoIndicatorView = Marionette.View.extend({
   className: 'disabled_atmo_indicator',
 
   events: {
     'click': function() {
-      pageflow.atmo.enable();
+      state.atmo.enable();
     }
   },
 
   initialize: function() {
-    this.listenTo(pageflow.events, 'atmo:disabled', function() {
+    this.listenTo(events, 'atmo:disabled', function() {
       this.$el.show();
     });
 
-    this.listenTo(pageflow.events, 'atmo:enabled', function() {
+    this.listenTo(events, 'atmo:enabled', function() {
       this.$el.hide();
     });
 
-    this.$el.toggle(!!pageflow.atmo && pageflow.atmo.disabled);
+    this.$el.toggle(state.atmo.disabled);
   },
 
   render: function() {
