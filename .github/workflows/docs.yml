@@ -49,15 +49,6 @@ jobs:
         theme: pageflow-documentation-js-theme
         themePackage: codevise/pageflow-documentation-js-theme#master
 
-    - name: Build pageflow-scrolled Storybook
-      run: |
-        (cd entry_types/scrolled/package && yarn install && yarn build-storybook)
-        mkdir out/scrolled/storybook
-        ref="${{ github.ref }}"
-        ref=${ref/'refs/heads/'/}
-        ref=${ref/'refs/tags/'/}
-        mv entry_types/scrolled/package/.storybook/out out/scrolled/storybook/$ref
-
     - name: Deploy
       run: |
         wget https://raw.githubusercontent.com/peaceiris/actions-gh-pages/v2/entrypoint.sh
