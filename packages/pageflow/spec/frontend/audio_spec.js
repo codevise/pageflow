@@ -1,14 +1,13 @@
-import 'pageflow/frontend';
+import {Audio} from 'pageflow/frontend';
 
 import sinon from 'sinon';
 
 describe('pageflow.Audio', function() {
-  var p = pageflow;
 
   describe('#createPlayer', function() {
     it('calls getSources with audio file id', function() {
       var getSources = sinon.stub().returns(null);
-      var audio = new p.Audio({getSources: getSources});
+      var audio = new Audio({getSources: getSources});
 
       audio.createPlayer(5);
 
@@ -17,7 +16,7 @@ describe('pageflow.Audio', function() {
 
     it('removes suffix from audio file id', function() {
       var getSources = sinon.stub().returns(null);
-      var audio = new p.Audio({getSources: getSources});
+      var audio = new Audio({getSources: getSources});
 
       audio.createPlayer('5.suffix');
 
@@ -26,7 +25,7 @@ describe('pageflow.Audio', function() {
 
     it('passes null id to getSources', function() {
       var getSources = sinon.stub().returns(null);
-      var audio = new p.Audio({getSources: getSources});
+      var audio = new Audio({getSources: getSources});
 
       audio.createPlayer(null);
 

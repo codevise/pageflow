@@ -1,13 +1,12 @@
-import 'pageflow/frontend';
+import {Features} from 'pageflow/frontend';
 
 import sinon from 'sinon';
 
 describe('pageflow.Features', function() {
-  var p = pageflow;
 
   describe('#enable', function() {
     it('calls functions registered for one of the given features in this scope', function() {
-      var features = new p.Features();
+      var features = new Features();
       var fn = sinon.spy();
 
       features.register('editor', 'atmo', fn);
@@ -17,7 +16,7 @@ describe('pageflow.Features', function() {
     });
 
     it('does not call functions registered for other scope', function() {
-      var features = new p.Features();
+      var features = new Features();
       var fn = sinon.spy();
 
       features.register('slideshow', 'atmo', fn);
@@ -27,7 +26,7 @@ describe('pageflow.Features', function() {
     });
 
     it('does not call functions for non-enabled features', function() {
-      var features = new p.Features();
+      var features = new Features();
       var fn = sinon.spy();
 
       features.register('editor', 'atmo', fn);
@@ -37,7 +36,7 @@ describe('pageflow.Features', function() {
     });
 
     it('marks features as enabled', function() {
-      var features = new p.Features();
+      var features = new Features();
 
       features.enable('editor', ['atmo']);
 

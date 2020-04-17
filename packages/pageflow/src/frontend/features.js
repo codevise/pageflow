@@ -1,4 +1,6 @@
 import _ from 'underscore';
+import Object from '../Object';
+import {browser} from './browser';
 
 /**
  * Let plugins register functions which extend the editor or
@@ -8,7 +10,7 @@ import _ from 'underscore';
  * @alias pageflow.features
  * @since 0.9
  */
-pageflow.Features = pageflow.Object.extend(
+export const Features = Object.extend(
   /** @lends pageflow.features */{
 
   /** @api private */
@@ -22,7 +24,7 @@ pageflow.Features = pageflow.Object.extend(
    * @deprecated
    */
   has: function(/* arguments */) {
-    return pageflow.browser.has.apply(pageflow.browser, arguments);
+    return browser.has.apply(browser, arguments);
   },
 
   /**
@@ -63,4 +65,4 @@ pageflow.Features = pageflow.Object.extend(
   }
 });
 
-pageflow.features = new pageflow.Features();
+export const features = new Features();

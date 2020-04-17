@@ -3,16 +3,19 @@ import Backbone from 'backbone';
 
 import _ from 'underscore';
 
-import 'pageflow/frontend';
+import {mediaPlayer} from 'pageflow/frontend';
 
 import sinon from 'sinon';
 
-describe('pageflow.mediaPlayer.hooks', function() {
+describe('hooks', function() {
+  var hooks = mediaPlayer.hooks;
+  var asyncPlay = mediaPlayer.asyncPlay;
+
   describe('#play', function() {
     describe('without before option', function() {
       it('calls orginal play method', function() {
         var player = fakePlayer();
-        pageflow.mediaPlayer.hooks(player, {});
+        hooks(player, {});
 
         player.play();
 
@@ -24,7 +27,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
       it('calls passed function', function() {
         var player = fakePlayer();
         var beforeCallback = sinon.spy();
-        pageflow.mediaPlayer.hooks(player, {
+        hooks(player, {
           before: beforeCallback
         });
 
@@ -36,7 +39,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
       it('emits beforeplay event', function() {
         var player = fakePlayer();
         var eventHandler = sinon.spy();
-        pageflow.mediaPlayer.hooks(player, {
+        hooks(player, {
           before: function() {}
         });
 
@@ -49,7 +52,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
       it('aborts intent to pause', function() {
         var player = fakePlayer();
         var deferred = new jQuery.Deferred();
-        pageflow.mediaPlayer.hooks(player, {
+        hooks(player, {
           before: function() {
             return deferred.promise();
           }
@@ -64,7 +67,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
       it('calls original play method when promise returned by before is resolved', function() {
         var player = fakePlayer();
         var deferred = new jQuery.Deferred();
-        pageflow.mediaPlayer.hooks(player, {
+        hooks(player, {
           before: function() {
             return deferred.promise();
           }
@@ -79,7 +82,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
       it('does not call original play method until promise returned by before is resolved', function() {
         var player = fakePlayer();
         var deferred = new jQuery.Deferred();
-        pageflow.mediaPlayer.hooks(player, {
+        hooks(player, {
           before: function() {
             return deferred.promise();
           }
@@ -92,7 +95,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
 
       it('calls original play method if before does not return promise', function() {
         var player = fakePlayer();
-        pageflow.mediaPlayer.hooks(player, {
+        hooks(player, {
           before: function() {}
         });
 
@@ -104,7 +107,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
       it('does not call original play method if player is paused before promise returned by before is resolved', function() {
         var player = fakePlayer();
         var deferred = new jQuery.Deferred();
-        pageflow.mediaPlayer.hooks(player, {
+        hooks(player, {
           before: function() {
             return deferred.promise();
           }
@@ -133,7 +136,7 @@ describe('pageflow.mediaPlayer.hooks', function() {
       pause: sinon.spy()
     }, Backbone.Events);
 
-    pageflow.mediaPlayer.asyncPlay(player);
+    asyncPlay(player);
 
     return player;
   }

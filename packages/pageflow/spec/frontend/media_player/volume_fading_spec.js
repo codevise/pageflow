@@ -1,14 +1,15 @@
-import 'pageflow/frontend';
+import {mediaPlayer} from 'pageflow/frontend';
 
 import '$support/fakeBrowserFeatures';
 import sinon from 'sinon';
 
-describe('pageflow.mediaPlayer.volumeFading', function() {
+describe('mediaPlayer.volumeFading', function() {
+  var volumeFading = mediaPlayer.volumeFading;
   describe('#volume', function() {
     it('rejects promise of running fade', function() {
       var failHandler = sinon.spy();
       var player = fakePlayer({volume: 100});
-      pageflow.mediaPlayer.volumeFading(player);
+      volumeFading(player);
 
       player.fadeVolume(50, 10).fail(failHandler);
       player.volume(90);
@@ -20,7 +21,7 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
   describe('#fadeVolume', function() {
     it('resolves promise after fading down', function() {
       var player = fakePlayer({volume: 100});
-      pageflow.mediaPlayer.volumeFading(player);
+      volumeFading(player);
 
       return player.fadeVolume(50, 10).then(function() {
         expect(player.volume()).toBe(50);
@@ -29,7 +30,7 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
 
     it('resolves promise after fading up', function() {
       var player = fakePlayer({volume: 50});
-      pageflow.mediaPlayer.volumeFading(player);
+      volumeFading(player);
 
       return player.fadeVolume(100, 10).then(function() {
         expect(player.volume()).toBe(100);
@@ -38,7 +39,7 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
 
     it('resolves promise if unchanged', function() {
       var player = fakePlayer({volume: 100});
-      pageflow.mediaPlayer.volumeFading(player);
+      volumeFading(player);
 
       return player.fadeVolume(100, 10).then(function() {
         expect(player.volume()).toBe(100);
@@ -47,7 +48,7 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
 
     it('does not change volume directly', function() {
       var player = fakePlayer({volume: 50});
-      pageflow.mediaPlayer.volumeFading(player);
+      volumeFading(player);
 
       var promise = player.fadeVolume(100, 10);
       expect(player.volume()).toBe(50);
@@ -57,7 +58,7 @@ describe('pageflow.mediaPlayer.volumeFading', function() {
     it('rejects promise if called again before fade is finished', function() {
       var failHandler = sinon.spy();
       var player = fakePlayer({volume: 100});
-      pageflow.mediaPlayer.volumeFading(player);
+      volumeFading(player);
 
       player.fadeVolume(50, 10).fail(failHandler);
       return player.fadeVolume(90, 10).then(function() {

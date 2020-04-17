@@ -78,9 +78,9 @@ const ignoreJSXWarning = {
   }
 };
 
-export default [
-  // pageflow
+// pageflow
 
+const pageflow = [
   {
     input: pageflowPackageRoot + '/src/ui/index.js',
     output: {
@@ -108,13 +108,11 @@ export default [
     external,
     plugins
   },
-
   {
     input: pageflowPackageRoot + '/src/frontend/index.js',
     output: {
-      file: 'app/assets/javascripts/pageflow/dist/frontend.js',
-      format: 'iife',
-      name: 'pageflow',
+      file: pageflowPackageRoot + '/frontend.js',
+      format: 'esm',
       globals: frontendGlobals
     },
     external: Object.keys(frontendGlobals),
@@ -130,24 +128,49 @@ export default [
     },
     external: Object.keys(editorGlobals),
     plugins: pageflowPackagePlugins
-  },
+  }
+];
 
-  // pageflow-paged
+// pageflow-paged
 
+const pageflowPagedEditorGlobals = {
+  ...editorGlobals,
+
+  // Allow importing from pageflow/frontend and
+  // pageflow-paged/frontend without including all of
+  // the frontend code in the editor output.
+  'pageflow/frontend': 'pageflow',
+  'pageflow-paged/frontend': 'pageflow'
+}
+
+const pageflowPaged = [
   {
     input: pageflowPagedPackageRoot + '/src/editor/index.js',
     output: {
       file: pageflowPagedEngineRoot + '/app/assets/javascripts/pageflow_paged/dist/editor.js',
       format: 'iife',
       name: 'pageflow_paged',
-      globals: editorGlobals
+      globals: pageflowPagedEditorGlobals
     },
-    external: Object.keys(editorGlobals),
+    external: Object.keys(pageflowPagedEditorGlobals),
     plugins
   },
+  {
+    input: pageflowPagedPackageRoot + '/src/frontend/index.js',
+    output: {
+      file: pageflowPagedEngineRoot + '/app/assets/javascripts/pageflow_paged/dist/frontend.js',
+      format: 'iife',
+      name: 'pageflow_paged.frontend',
+      globals: frontendGlobals
+    },
+    external: Object.keys(frontendGlobals),
+    plugins
+  }
+];
 
-  // pageflow-scrolled
+// pageflow-scrolled
 
+const pageflowScrolled = [
   {
     input: pageflowScrolledPackageRoot + '/src/editor/index.js',
     output: {
@@ -188,3 +211,9 @@ export default [
     ...ignoreJSXWarning
   }
 ];
+
+export default [
+  ...pageflow,
+  ...pageflowPaged,
+  ...pageflowScrolled
+]

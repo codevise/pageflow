@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import {StorylinePickerView} from './StorylinePickerView';
 
 export const EntryOutlineView = function(options) {
