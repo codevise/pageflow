@@ -4,6 +4,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import postcss from 'rollup-plugin-postcss';
+import autoprefixer from 'autoprefixer';
 import reactSvg from "rollup-plugin-react-svg";
 
 const pageflowPackageRoot = 'package';
@@ -40,7 +41,8 @@ function external(id) {
 
 const plugins = [
   postcss({
-    modules: true
+    modules: true,
+    plugins: [autoprefixer]
   }),
   babel({
     exclude: 'node_modules/**',
