@@ -6,5 +6,5 @@ javascript:
 scss:
   config_file: .scss-lint.yml
 eslint:
-  config_file: packages/pageflow-react/.eslintrc
+  config_file: entry_types/paged/packages/pageflow-paged-react/.eslintrc
   ignore_file: .eslintignore

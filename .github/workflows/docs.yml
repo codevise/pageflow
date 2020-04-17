@@ -28,9 +28,9 @@ jobs:
     - name: Build pageflow JSDoc
       uses: codevise/documentation-js-action@v1.3
       with:
-        input: "./packages/pageflow/src/editor ./packages/pageflow/src/ui ./packages/pageflow/src/testHelpers"
+        input: "./package/src/editor ./package/src/ui ./package/src/testHelpers"
         output: ./out/js/<ref>
-        config: ./packages/pageflow/documentation.yml
+        config: ./package/documentation.yml
         github: true
         projectName: pageflow
         sortOrder: alpha

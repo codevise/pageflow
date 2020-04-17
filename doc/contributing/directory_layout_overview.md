@@ -20,12 +20,11 @@ All engines are distributed inside the `pageflow` gem.
 Most JavaScript code is contained in packages, which are grouped with
 the engine they belong to:
 
-* `packages/pageflow` contains Backbone Marionette JavaScript for the
-  editor and ui library. Built using Yarn/Rollup.
+* `package`contains Backbone Marionette JavaScript for the editor, ui
+  library and shared frontend code. Built using Yarn/Rollup.
 
-* `packages/pageflow-react` contains React/Redux JavaScript for the
-  frontend. Built using npm/Webpack. Will be moved to `paged` entry
-  type.
+* `entry_types/paged/packages/pageflow-paged-react` contains React/Redux
+  JavaScript for the frontend. Built using npm/Webpack.
 
 * `entry_types/paged/packages/pageflow-paged` contains Backbone
   Marionette JavaScript for the editor components of paged entries and
@@ -40,15 +39,15 @@ the engine they belong to:
 Historically, all of the assets (JavaScript, stylesheets and images)
 where contained in the main Rails engine and built using Sprockets. To
 stay backwards compatibile, the built outputs for the paged entry
-types are currently placed in `assets` directories (into
-`app/assets/javascripts/pageflow/dist`) where they are picked up by
-Sprockes and made available via global variables:
+types are placed in `assets` directories (into
+`app/assets/javascripts/pageflow(_paged)/dist`) where they are picked
+up by Sprockes and made available via global variables:
 
-* As part of the `pageflow` global in `pageflow/editor/base.js` and
-  `pageflow/ui.js`.
+* As part of the `pageflow` global in `pageflow_paged/frontend.js`,
+  `pageflow_paged/editor.js` and `pageflow/ui.js`.
 
-* As `pageflow.react` global in `pageflow/application.js`.
+* As `pageflow.react` global in `pageflow_paged/frontend.js`.
 
-The `pageflow-entry-type-scrolled` package will eventually be
+The `pageflow-scrolled` package will eventually be
 published on npm and used directly from the host application using
 Webpacker.
