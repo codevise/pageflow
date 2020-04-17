@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 export const rewindMethod = function(player) {
   /**
    * Seek to beginning of file. If already at the beginning do
@@ -15,7 +13,7 @@ export const rewindMethod = function(player) {
       return result;
     }
     else {
-      return new $.Deferred().resolve().promise();
+      return Promise.resolve();
     }
   };
 };

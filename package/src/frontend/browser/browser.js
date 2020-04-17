@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import _ from 'underscore';
 import {log, debugMode} from '../base';
 /**
@@ -8,8 +7,13 @@ import {log, debugMode} from '../base';
  */
 export const browser = (function(){
   var tests = {},
-      results = {},
-      ready = new $.Deferred();
+      results = {};
+
+  let ready;
+  let readyPromise = new Promise(function(resolve) {
+    ready = resolve;
+  });
+
 
   return {
     off: {},
@@ -68,11 +72,11 @@ export const browser = (function(){
     /**
      * A promise that is resolved once feature detection has finished.
      *
-     * @return [Promise]
+     * @return Promise
      * @memberof pageflow.browser
      */
     ready: function() {
-      return ready.promise();
+      return readyPromise;
     },
 
     /** @api private */
@@ -100,7 +104,7 @@ export const browser = (function(){
           }
         };
 
-        promises[name] = promises[name] || $.when(runTest(name));
+        promises[name] = promises[name] || Promise.all([runTest(name)]);
         return promises[name];
       };
 
@@ -111,21 +115,22 @@ export const browser = (function(){
       };
 
       asyncHas.all = function(/* arguments */) {
-        return $.when.apply(null, arguments).pipe(function(/* arguments */) {
+        return Promise.resolve().apply(null, arguments).pipe(function(/* arguments */) {
           return _.all(arguments);
         });
       };
 
-      $.when.apply(null, _.map(_.keys(tests), function(name) {
+      Promise.resolve().apply(null, _.map(_.keys(tests), function(name) {
         return asyncHas(name).then(function(result) {
           var cssClassName = name.replace(/ /g, '_');
 
+          // TODO: Replace $
           $('body').toggleClass('has_' + cssClassName, !!result);
           $('body').toggleClass('has_no_' + cssClassName, !result);
 
           results[name] = !!result;
         });
-      })).then(ready.resolve);
+      })).then(ready());
 
       return this.ready();
     }

@@ -6,15 +6,14 @@ import sinon from 'sinon';
 describe('mediaPlayer.volumeFading', function() {
   var volumeFading = mediaPlayer.volumeFading;
   describe('#volume', function() {
-    it('rejects promise of running fade', function() {
-      var failHandler = sinon.spy();
-      var player = fakePlayer({volume: 100});
+    it('rejects promise of running fade', async () => {
+      const player = fakePlayer({volume: 100});
       volumeFading(player);
 
-      player.fadeVolume(50, 10).fail(failHandler);
+      const promise = player.fadeVolume(50, 10);
       player.volume(90);
 
-      expect(failHandler).toHaveBeenCalled();
+      await expect(promise).rejects.toBeUndefined();
     });
   });
 
@@ -60,7 +59,7 @@ describe('mediaPlayer.volumeFading', function() {
       var player = fakePlayer({volume: 100});
       volumeFading(player);
 
-      player.fadeVolume(50, 10).fail(failHandler);
+      player.fadeVolume(50, 10).then(null, failHandler);
       return player.fadeVolume(90, 10).then(function() {
         expect(failHandler).toHaveBeenCalled();
       });

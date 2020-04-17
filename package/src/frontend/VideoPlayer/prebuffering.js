@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import {browser} from '../browser';
 import {log} from '../base';
 
@@ -26,21 +25,25 @@ export const prebuffering = function(player) {
   player.prebuffer = function(options) {
     options = options || {};
 
-    var delta = options.secondsToBuffer || 10;
-    var secondsToWait = options.secondsToWait || 3;
-    var interval = 200;
-    var maxCount = secondsToWait * 1000 / interval;
-    var count = 0;
-    var deferred = $.Deferred();
-    var timeout;
+    const delta = options.secondsToBuffer || 10;
+    const secondsToWait = options.secondsToWait || 3;
+    const interval = 200;
+    const maxCount = secondsToWait * 1000 / interval;
+    let count = 0;
+    let timeout;
+
+    let promiseResolve;
+    const promise = new Promise((resolve, reject) => {
+      promiseResolve = resolve;
+    });
 
     if (browser.has('prebuffering support')) {
-      if (!player.isBufferedAhead(delta) && !player.prebufferDeferred) {
+      if (!player.isBufferedAhead(delta) && !player.prebufferPromise) {
         log('prebuffering video ' + player.src());
 
         timeout = function() {
           setTimeout(function() {
-            if (!player.prebufferDeferred) {
+            if (!player.prebufferPromise) {
               return;
             }
 
@@ -48,8 +51,8 @@ export const prebuffering = function(player) {
 
             if (player.isBufferedAhead(delta) || count > maxCount) {
               log('finished prebuffering video ' + player.src());
-              deferred.resolve();
-              player.prebufferDeferred = null;
+              promiseResolve();
+              player.prebufferPromise = null;
             }
             else {
               timeout();
@@ -58,19 +61,19 @@ export const prebuffering = function(player) {
         };
 
         timeout();
-        player.prebufferDeferred = deferred;
+        player.prebufferPromise = promise;
       }
     }
 
-    return player.prebufferDeferred ? player.prebufferDeferred.promise() : deferred.resolve().promise();
+    return player.prebufferPromise ? player.prebufferPromise : promise;
   };
 
   player.abortPrebuffering = function() {
-    if (player.prebufferDeferred) {
+    if (player.prebufferPromise) {
       log('ABORT prebuffering');
 
-      player.prebufferDeferred.reject();
-      player.prebufferDeferred = null;
+      player.prebufferPromise.reject();
+      player.prebufferPromise = null;
     }
   };
 
