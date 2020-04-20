@@ -13,5 +13,7 @@ export * from './audioContext';
 export * from './mediaPlayer';
 export * from './VideoPlayer';
 
+export * from './media';
+
 export * from './settings';
 
