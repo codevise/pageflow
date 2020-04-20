@@ -7,7 +7,8 @@ import {log, debugMode} from '../base';
  */
 export const browser = (function(){
   var tests = {},
-      results = {};
+      results = {},
+      readyPromiseResolved = false;
 
   let ready;
   let readyPromise = new Promise(function(resolve) {
@@ -58,7 +59,7 @@ export const browser = (function(){
      * @memberof pageflow.browser
      */
     has: function(name) {
-      if (this.ready().state() != 'resolved') {
+      if (!this.readyPromiseResolved) {
         throw 'Feature detection has not finished yet.';
       }
 
@@ -77,6 +78,10 @@ export const browser = (function(){
      */
     ready: function() {
       return readyPromise;
+    },
+
+    readyPromiseResolved: function(bool) {
+      readyPromiseResolved = bool;
     },
 
     /** @api private */
@@ -109,28 +114,31 @@ export const browser = (function(){
       };
 
       asyncHas.not = function(name) {
-        return asyncHas(name).pipe(function(result) {
+        return asyncHas(name).then(function(result) {
           return !result;
         });
       };
 
       asyncHas.all = function(/* arguments */) {
-        return Promise.resolve().apply(null, arguments).pipe(function(/* arguments */) {
-          return _.all(arguments);
+        return Promise.all(arguments).then(function(results) {
+          return _.all(results);
         });
       };
 
-      Promise.resolve().apply(null, _.map(_.keys(tests), function(name) {
+      Promise.all(_.map(_.keys(tests), function(name) {
         return asyncHas(name).then(function(result) {
           var cssClassName = name.replace(/ /g, '_');
 
-          // TODO: Replace $
-          $('body').toggleClass('has_' + cssClassName, !!result);
-          $('body').toggleClass('has_no_' + cssClassName, !result);
+          const toggleClass = (el, className) => el.classList.toggle(className);
+          toggleClass(document.querySelector('body'), 'has_' + cssClassName);
+          toggleClass(document.querySelector('body'), 'has_no_' + cssClassName);
 
           results[name] = !!result;
         });
-      })).then(ready());
+      })).then(() => {
+        this.readyPromiseResolved(true);
+        ready();
+      });
 
       return this.ready();
     }
