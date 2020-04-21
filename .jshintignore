@@ -1,4 +1,4 @@
 vendor/assets/javascripts/**
-packages/**
+package/**
 entry_types/**
 *.config.js
