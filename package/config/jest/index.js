@@ -12,6 +12,7 @@ module.exports = {
     '^cocktail$': resolve('../../src/vendor/cocktail'),
     '^iscroll$': resolve('../../src/vendor/iscroll'),
     '^wysihtml5': resolve('../../spec/support/wysihtmlStub'),
+    '^videojs$': resolve('../../../vendor/assets/javascripts/videojs')
   },
 
   transform: {
@@ -21,6 +22,7 @@ module.exports = {
   },
 
   setupFiles: [resolve('./videojsStub')]
+
 }
 
 function resolve(relativePath) {
