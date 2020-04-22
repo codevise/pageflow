@@ -110,7 +110,10 @@ const pageflow = [
       format: 'esm'
     },
     external,
-    plugins
+    plugins: [
+      stateAlias(pageflowPackageRoot + '/src/editor/state.js'),
+      ...plugins
+    ]
   },
   {
     input: pageflowPackageRoot + '/src/frontend/index.js',
