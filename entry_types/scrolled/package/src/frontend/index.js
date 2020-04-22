@@ -22,6 +22,10 @@ export * from './InlineCaption';
 export * from './Text';
 export * from './Video';
 
+export * from './MediaPlayer';
+export * from './VideoPlayer';
+export * from './AudioPlayer';
+
 export * from './useOnScreen';
 export * from './useMediaSettings';
 export * from './i18n';
