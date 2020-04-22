@@ -34,6 +34,16 @@ simply delete the contents of the `spec/dummy` directory. This is
 required everytime new migrations are added or if tests are failing
 after pulling changes into the local working tree.
 
+### Troubleshooting
+
+If after updating your local branch specs start failing, there are two
+things you could try:
+
+- Check whether there are files in the Git working directory that are
+  newly untracked. If this is the case, delete them;
+- also, you can try running `yarn install --force` and then
+  `bin/build-packages` again.
+
 ## Developer console
 
 An IRb console is available with all Pageflow classes loaded.
