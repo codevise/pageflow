@@ -21,6 +21,13 @@ export class ContentElementTypeRegistry {
    *   this type.
    * @param {Object} options.defaultConfig -
    *   Object that is set as initial config for the content element.
+   * @param {Function} [options.split] -
+   *   Function that receives configuration attributes and a split point
+   *   and needs to return a two element array of configuration attributes
+   *   objects representing the content elements that arise from splitting
+   *   a content element with the given configuration at the specified
+   *   split point. Called when inserting content elements at custom split
+   *   points.
    * @memberof editor_contentElementTypes
    *
    * @example

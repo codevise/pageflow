@@ -1,3 +1,4 @@
+import {editor} from 'pageflow-scrolled/editor';
 import {ContentElement} from '../ContentElement';
 import {batch, nullCommand} from './batch';
 
@@ -6,8 +7,9 @@ export function insertContentElement(entry, sibling, attributes, {position, at})
   const insertIndex = reindexPositionsToMakeRoomForInsertion(section, sibling, position);
 
   const commands = [
+    position === 'split' && prepareSplit(section, sibling, at),
     prepareInsertion(entry, section, attributes, insertIndex)
-  ];
+  ].filter(Boolean);
 
   section.contentElements.sort();
 
@@ -31,10 +33,50 @@ function reindexPositionsToMakeRoomForInsertion(section, sibling, position) {
         delta = 1;
         insertIndex = index + 1;
       }
+      else if (position === 'split') {
+        delta = 2;
+        insertIndex = index + 1;
+      }
     }
   });
 
   return insertIndex;
+}
+
+function prepareSplit(section, sibling, at) {
+  const contentElementType = editor.contentElementTypes.findByTypeName(sibling.get('typeName'));
+  const [c1, c2] = contentElementType.split(sibling.configuration.attributes, at);
+
+  const splitOffContentElement = new ContentElement({
+    typeName: sibling.get('typeName'),
+    configuration: c2,
+    position: sibling.get('position') + 2
+  });
+
+  section.contentElements.add(splitOffContentElement);
+
+  return {
+    batchItemFor(contentElement) {
+      if (contentElement === sibling) {
+        return {
+          id: contentElement.id,
+          configuration: c1
+        };
+      }
+    },
+
+    complete() {
+      // Only persisted models are synchronized to React state. The
+      // added content element therefore only becomes visible in the
+      // preview after the batch request completed. Thus, we have to
+      // wait with removing the split off part of the configuration.
+      sibling.configuration.set(c1, {autoSave: false});
+    },
+
+    rollback() {
+      section.contentElements.remove(splitOffContentElement);
+    }
+  }
 }
 
 function prepareInsertion(entry, section, attributes, index) {
