@@ -1,0 +1,41 @@
+.progressIndicatorsContainer {
+  position: relative;
+  width: 100%;
+}
+
+.progressBarsContainer {
+  cursor: pointer;
+  position: relative;
+  margin: 9px 5px;
+  height: 5px;
+  border: 1px solid white;
+  border-radius: 3.5px;
+}
+
+.progressBar {
+  position: absolute;
+  left: 0;
+  height: 5px;
+  border-radius: 2.5px;
+}
+
+.loadingProgressBar {
+  width: 70%;
+  background: lightgrey;
+}
+
+.playProgressBar {
+  width: 45%;
+  background: white;
+}
+
+.sliderHandle {
+  width: 13px;
+  height: 13px;
+  margin-left: -6.5px;
+  border-radius: 6.5px;
+  position: absolute;
+  top: -4px;
+  left: 45%;
+  background: white;
+}

@@ -1,0 +1,66 @@
+.controlBarContainer {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  margin-bottom: 15px;
+  display: table;
+}
+
+.controlBar {
+  display: table-row;
+}
+
+.controlsContainer {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.controls {
+  height: 24px;
+  max-height: 24px;
+  overflow: hidden;
+}
+
+.leftControlsContainer {
+  width: 24px;
+}
+
+.progressDisplayContainer {
+  width: 100%;
+}
+
+.rightControlsContainer {
+  white-space: nowrap;
+}
+
+.controlsIcon {
+  width: 24px;
+  height: 24px;
+  fill: white;
+  cursor: pointer;
+}
+
+.playButton {
+
+}
+
+.pauseButton {
+  display: none;
+}
+
+.settingsButton {
+  width: 20px;
+}
+
+.subtitlesButton {
+  margin: 0 3px 0 2px;
+}
+
+.timeDisplayContainer {
+  padding: 0 5px;
+}
+
+.timeDisplay {
+  line-height: 24px;
+  font-size: 14px;
+  padding: 0 2px;
+}
