@@ -1,8 +1,8 @@
 .controlBarContainer {
   width: 100%;
   background: rgba(0, 0, 0, 0.2);
-  margin-bottom: 15px;
   display: table;
+  position: relative;
 }
 
 .controlBar {
@@ -18,18 +18,11 @@
   height: 24px;
   max-height: 24px;
   overflow: hidden;
-}
-
-.leftControlsContainer {
-  width: 24px;
+  white-space: nowrap;
 }
 
 .progressDisplayContainer {
   width: 100%;
-}
-
-.rightControlsContainer {
-  white-space: nowrap;
 }
 
 .controlsIcon {
@@ -57,10 +50,4 @@
 
 .timeDisplayContainer {
   padding: 0 5px;
-}
-
-.timeDisplay {
-  line-height: 24px;
-  font-size: 14px;
-  padding: 0 2px;
 }
