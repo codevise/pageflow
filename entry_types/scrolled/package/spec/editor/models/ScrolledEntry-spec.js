@@ -285,4 +285,55 @@ describe('ScrolledEntry', () => {
       });
     });
   });
+
+  describe('#deleteContentElement', () => {
+    useFakeXhr(() => testContext);
+
+    describe('for all content elements', () => {
+      beforeEach(() => {
+        testContext.entry = factories.entry(
+          ScrolledEntry,
+          {
+            id: 100
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: [
+                {id: 5, permaId: 50, position: 0},
+                {id: 6, permaId: 60, position: 1}
+              ]
+            })
+          });
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      it('sends item with delete flag to batch endpoint', () => {
+        const {entry, requests} = testContext;
+
+        entry.deleteContentElement(5);
+
+        expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5, _delete: true},
+            {id: 6}
+          ]
+        });
+
+        expect(entry.sections.first().contentElements.pluck('id')).toEqual([5, 6]);
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(entry.sections.first().contentElements.pluck('id')).toEqual([6]);
+      });
+    });
+  });
 });
