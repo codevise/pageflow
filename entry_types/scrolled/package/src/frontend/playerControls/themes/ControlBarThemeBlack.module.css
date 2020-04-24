@@ -1,0 +1,15 @@
+.foreground {
+  color: white;
+}
+
+.background {
+  background: black;
+}
+
+.contextMenu {
+  background: black;
+}
+
+.contextMenu:after {
+  border-top-color: black;
+}

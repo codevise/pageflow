@@ -1,0 +1,15 @@
+.foreground {
+  color: white;
+}
+
+.background {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.contextMenu {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.contextMenu:after {
+  border-top-color: rgba(0, 0, 0, 0.6);
+}

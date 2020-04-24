@@ -8,7 +8,7 @@
   position: relative;
   margin: 9px 5px;
   height: 5px;
-  border: 1px solid white;
+  border: 1px solid currentColor;
   border-radius: 3.5px;
 }
 
@@ -21,12 +21,13 @@
 
 .loadingProgressBar {
   width: 70%;
-  background: lightgrey;
+  background: currentColor;
+  opacity: 0.5;
 }
 
 .playProgressBar {
   width: 45%;
-  background: white;
+  background: currentColor;
 }
 
 .sliderHandle {
@@ -37,5 +38,5 @@
   position: absolute;
   top: -4px;
   left: 45%;
-  background: white;
+  background: currentColor;
 }

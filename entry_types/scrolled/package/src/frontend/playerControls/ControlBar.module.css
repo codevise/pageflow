@@ -1,8 +1,15 @@
+.hidden {
+  display: none;
+}
+
 .controlBarContainer {
   width: 100%;
-  background: rgba(0, 0, 0, 0.2);
   display: table;
   position: relative;
+}
+
+.controlBarContainer.inset {
+  margin-top: -24px;
 }
 
 .controlBar {
@@ -28,26 +35,37 @@
 .controlsIcon {
   width: 24px;
   height: 24px;
-  fill: white;
+  fill: currentColor;
   cursor: pointer;
 }
 
 .playButton {
-
+  composes: controlsIcon;
 }
 
 .pauseButton {
+  composes: controlsIcon;
   display: none;
 }
 
 .settingsButton {
+  composes: controlsIcon;
   width: 20px;
 }
 
 .subtitlesButton {
+  composes: controlsIcon;
   margin: 0 3px 0 2px;
 }
 
 .timeDisplayContainer {
   padding: 0 5px;
+}
+
+.settingsMenu {
+  right: 25px;
+}
+
+.subtitlesMenu {
+  right: 1px;
 }
