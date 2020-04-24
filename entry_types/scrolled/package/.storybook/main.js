@@ -9,7 +9,10 @@ module.exports = {
       ...config,
       module: {
         ...config.module,
-        rules: addModuleOptionToCssLoader(config.module.rules),
+        rules: [
+          ...addModuleOptionToCssLoader(removeSvgFromFileLoader(config.module.rules)),
+          reactSvgLoader(),
+        ]
       },
       resolve: {
         alias: {
@@ -20,6 +23,36 @@ module.exports = {
     };
   }
 };
+
+function reactSvgLoader() {
+  return {
+    test: /\.svg$/,
+    use: [
+      {
+        loader: "babel-loader"
+      },
+      {
+        loader: "react-svg-loader",
+        options: {
+          jsx: false
+        }
+      }
+    ]
+  };
+}
+
+function removeSvgFromFileLoader(rules) {
+  return rules.map(rule => {
+    if (!rule.test.toString().includes('svg|')) {
+      return rule;
+    }
+
+    return {
+      ...rule,
+      test: new RegExp(rule.test.toString().replace('svg|', ''))
+    }
+  });
+}
 
 function addModuleOptionToCssLoader(rules) {
   return rules.map(rule => {
