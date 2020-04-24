@@ -1,4 +1,3 @@
-import {editor} from 'pageflow-scrolled/editor';
 import {ContentElement} from '../ContentElement';
 import {batch, nullCommand} from './batch';
 
@@ -44,8 +43,7 @@ function reindexPositionsToMakeRoomForInsertion(section, sibling, position) {
 }
 
 function prepareSplit(section, sibling, at) {
-  const contentElementType = editor.contentElementTypes.findByTypeName(sibling.get('typeName'));
-  const [c1, c2] = contentElementType.split(sibling.configuration.attributes, at);
+  const [c1, c2] = sibling.getType().split(sibling.configuration.attributes, at);
 
   const splitOffContentElement = new ContentElement({
     typeName: sibling.get('typeName'),

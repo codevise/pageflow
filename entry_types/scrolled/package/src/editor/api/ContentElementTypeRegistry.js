@@ -28,6 +28,11 @@ export class ContentElementTypeRegistry {
    *   a content element with the given configuration at the specified
    *   split point. Called when inserting content elements at custom split
    *   points.
+   * @param {Function} [options.merge] -
+   *   Function that receives two configuration attributes objects and
+   *   needs to return a single merged configuration. If provided, this
+   *   will function will be called whenever two content elements of this
+   *   type become adjacent because a common neighbor has been deleted.
    * @memberof editor_contentElementTypes
    *
    * @example
