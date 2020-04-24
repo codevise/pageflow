@@ -11,25 +11,25 @@ import {TimeDisplay} from './TimeDisplay'
 import {ContextMenu} from './ContextMenu'
 
 import styles from './ControlBar.module.css';
-import themeTransparent from './themes/ControlBarThemeTransparent.module.css';
-import themeWhite from './themes/ControlBarThemeWhite.module.css';
-import themeBlack from './themes/ControlBarThemeBlack.module.css';
+import styleTransparent from './styles/ControlBarTransparent.module.css';
+import styleWhite from './styles/ControlBarWhite.module.css';
+import styleBlack from './styles/ControlBarBlack.module.css';
 
 export function ControlBar(props) {
-  const [settingsMenuHidden, setSettingsMenuHidden] = useState(true);
-  const [subtitlesMenuHidden, setSubtitlesMenuHidden] = useState(true);
+  const [settingsMenuHidden, setSettingsMenuHidden] = useState(props.settingsMenuHidden);
+  const [subtitlesMenuHidden, setSubtitlesMenuHidden] = useState(props.subtitlesMenuHidden);
 
-  const theme = {
-    transparent: themeTransparent,
-    white: themeWhite,
-    black: themeBlack
-  }[props.appearance];
+  const style = {
+    transparent: styleTransparent,
+    white: styleWhite,
+    black: styleBlack
+  }[props.style];
 
   return (
     <div className={classNames(styles.controlBarContainer,
-                               theme.background,
+                               style.background,
                                {[styles.inset]: !!props.fullWidth})}>
-      <div className={classNames(styles.controlBar, theme.foreground)}>
+      <div className={classNames(styles.controlBar, style.foreground)}>
         <div className={styles.controlsContainer}>
           <div className={styles.controls}>
             <PlayIcon className={styles.playButton}/>
@@ -58,11 +58,11 @@ export function ControlBar(props) {
 
         <ContextMenu className={classNames(styles.settingsMenu,
                                            {[styles.hidden]: settingsMenuHidden})}
-                     theme={theme}
+                     theme={style}
                      entries={['Automatisch', '1024p', '720p']} />
         <ContextMenu className={classNames(styles.subtitlesMenu,
                                            {[styles.hidden]: subtitlesMenuHidden})}
-                     theme={theme}
+                     theme={style}
                      entries={['Automatisch', 'Deutsch', 'English']} />
       </div>
     </div>
@@ -71,6 +71,8 @@ export function ControlBar(props) {
 
 ControlBar.defaultProps = {
   type: 'video',
-  appearance: 'transparent',
-  fullWidth: false
+  style: 'transparent',
+  fullWidth: false,
+  settingsMenuHidden: true,
+  subtitlesMenuHidden: true
 };
