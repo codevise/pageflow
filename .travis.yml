@@ -127,6 +127,7 @@ jobs:
           export S3_REGION=eu-west-1
           export S3_HOST_ALIAS=de-codevise-pageflow-storybook-seed.s3-eu-west-1.amazonaws.com
           export S3_PROTOCOL=https
+          export S3_OUTPUT_HOST_ALIAS=de-codevise-pageflow-storybook-seed.s3-eu-west-1.amazonaws.com
           export PT=b55731926f7bcb9344a0b3ff662613954a4137d3c21c1be748e9929823f19b08
         - (cd entry_types/scrolled; bundle exec rake pageflow_scrolled:storybook:seed:setup[package/.storybook/seed.json])
         - (cd entry_types/scrolled/package; yarn run snapshot)
