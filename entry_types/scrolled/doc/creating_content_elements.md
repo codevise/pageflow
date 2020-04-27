@@ -94,10 +94,12 @@ storiesOfContentElement(module, {
 ```
 
 The storybook depends on a static JSON file that contains seed for
-example files (e.g. images) that would normally be served by the
-Pageflow server. The easiest way to generate the seed file is to use
-the development setup of a working host application. Run the following
-command in the root directory of your host application:
+example files (e.g. images, audio and video files) that would normally 
+be served by the Pageflow server. The easiest way to generate the seed 
+file is to use the development setup of a working host application. 
+Run the following command in the root directory of your host application
+(in case of audio and video files, first see 
+[documentation below](#using-transcoded-files-in-storybook-or-percy)):
 
 ```bash
 $ bundle exec rake pageflow_scrolled:storybook:seed:setup[./seed.json]
@@ -118,6 +120,30 @@ $ yarn start-storybook
 When opening pull requests against `codevise/pageflow` the third party
 service [Percy](https://percy.io/) will be used to make snapshots of
 the stories and generate visual diffs.
+
+### Using transcoded files in storybook
+
+In order to use transcoded audio and video files in the local storybook,
+you need to specify a `ENV`-variable named `PAGEFLOW_SKIP_ENCODING_STORYBOOK_FILES`
+and set it to false before running the storybook seed task. 
+This will cause background transcoding jobs for media files to be created, which
+will get processed upon starting the development server. Once these jobs are finished,
+the files are available in your local storybook via their respective
+`testReferenceName`.
+Do not set this ENV variable in CI, though. For that case a different approach is needed:
+
+### Using transcoded files in Percy
+Since in CI there is no transcoding configured, using transcoded files in Percy requires
+some manual work to set up:
+If audio or video files should be included in CI / Percy, you need to manually
+copy the outputs generated for these files to the bucket specified by the 
+"S3_OUTPUT_HOST_ALIAS" `.env`-variable in your `.travis` config after transcoding.
+
+Since the files are processed in sequential order and the data is created on an empty 
+database, the ids of video and audio files always remain the same on each run of CI,
+i.e. the first audio file will have an id of 1, and the first video file will also have 
+an id of 1. Remember to adjust the id part of the files directory structure accordingly
+upon copying manually.  
 
 ## Editor JavaScript
 
