@@ -106,6 +106,21 @@ module PageflowScrolled
         if %i[audio video].include?(file_type)
           if skip_encoding
             file.update!(state: 'encoded')
+            if file_type.eql?(:video)
+              file.update!(output_presences: {
+                "dash-playlist" => true,
+                "hls-playlist" => true,
+                "dash-medium"=> true,
+                "hls-medium" => true,
+                "dash-high" => true,
+                "hls-high" => true,
+                "dash-low" => true,
+                "hls-low" => true,
+                "medium" => true,
+                "high" => true,
+                "low" => true
+              })
+            end
           else
             file.publish!
           end

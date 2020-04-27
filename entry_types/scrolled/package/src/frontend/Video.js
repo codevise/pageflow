@@ -82,5 +82,5 @@ function VideoPlayer(props) {
 
 Video.defaultProps = {
   interactive: false,
-  controls: false
+  controls: true
 };
