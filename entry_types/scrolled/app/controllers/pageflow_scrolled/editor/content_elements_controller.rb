@@ -17,7 +17,7 @@ module PageflowScrolled
         section = Section.all_for_revision(@entry.draft).find(params[:section_id])
 
         items = params.require(:content_elements).map do |item|
-          item.transform_keys(&:underscore).permit(:id, :type_name, configuration: {})
+          item.transform_keys(&:underscore).permit(:id, :type_name, :_delete, configuration: {})
         end
 
         @content_elements = ContentElement::Batch.new(section, items).save!

@@ -25,9 +25,14 @@ module PageflowScrolled
 
       def save!
         ContentElement.transaction do
-          @items.map.with_index do |item, index|
-            create_or_update(item, index)
-          end
+          @items.map.with_index { |item, index|
+            if item[:_delete]
+              @section.content_elements.delete(item[:id])
+              nil
+            else
+              create_or_update(item, index)
+            end
+          }.compact
         end
       end
 

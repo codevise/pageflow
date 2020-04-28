@@ -138,6 +138,25 @@ module PageflowScrolled
                               configuration: {'some' => 'value'})
       end
 
+      it 'deletes content elements marked by _delete flag' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+        content_elements = create_list(:content_element, 2, section: section)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: content_elements.first.id, _delete: true},
+                 {id: content_elements.last.id}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(section.content_elements.map(&:id)).to eq([content_elements.last.id])
+      end
+
       it 'responds with array of objects containging content element ids and perma ids' do
         entry = create(:entry)
         section = create(:section, revision: entry.draft)
@@ -195,11 +214,11 @@ module PageflowScrolled
         expect(section.content_elements.count).to eq(0)
       end
 
-      it 'allows performing a mix of update and create operations' do
+      it 'allows performing a mix of update, create and delete operations' do
         entry = create(:entry)
         section = create(:section, revision: entry.draft)
         content_elements = create_list(:content_element,
-                                       2,
+                                       3,
                                        section: section,
                                        configuration: {some: 'value'})
 
@@ -211,7 +230,8 @@ module PageflowScrolled
                content_elements: [
                  {id: content_elements.first.id, configuration: {new: 'value'}},
                  {typeName: 'textBlock', configuration: {other: 'value'}},
-                 {id: content_elements.last.id}
+                 {id: content_elements.second.id, _delete: true},
+                 {id: content_elements.third.id}
                ]
              }, format: 'json', as: :json)
 
@@ -221,7 +241,7 @@ module PageflowScrolled
                                                   configuration: {'new' => 'value'}),
                       an_object_having_attributes(type_name: 'textBlock',
                                                   configuration: {'other' => 'value'}),
-                      an_object_having_attributes(id: content_elements.last.id,
+                      an_object_having_attributes(id: content_elements.third.id,
                                                   configuration: {'some' => 'value'})
                     ])
         expect(response.body).to include_json([
