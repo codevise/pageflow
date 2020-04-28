@@ -157,7 +157,7 @@ module Pageflow
         sign_in(create(:user, :publisher, on: account))
         get(:quota_state, params: {account_id: account})
 
-        expect(response).to have_http_status(302)
+        expect(response.body).to have_selector('.user_quota_not_allowed')
       end
     end
 

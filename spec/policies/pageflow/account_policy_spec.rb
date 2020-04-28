@@ -119,6 +119,13 @@ module Pageflow
                     to: :edit_role_on,
                     topic: -> { create(:account) }
 
+    it_behaves_like 'a membership-based permission that',
+                    allows: :manager,
+                    but_forbids: :publisher,
+                    of_account: ->(topic) { topic },
+                    to: :see_user_quota,
+                    topic: -> { create(:account) }
+
     it_behaves_like 'an admin permission that',
                     allows_admins_but_forbids_even_managers: true,
                     of_account: -> (topic) { topic },

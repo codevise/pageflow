@@ -38,4 +38,22 @@ module QuotaDouble
       end
     end
   end
+
+  def self.account_exhaustible(exhausted_accounts)
+    Class.new(Pageflow::Quota) do
+      @exhausted_accounts = exhausted_accounts
+
+      def self.exhausted_accounts
+        @exhausted_accounts
+      end
+
+      def state
+        self.class.exhausted_accounts.include?(account) ? 'exhausted' : 'available'
+      end
+
+      def state_description
+        state == 'exhausted' ? EXHAUSTED_DESCRIPTION : AVAILABLE_DESCRIPTION
+      end
+    end
+  end
 end

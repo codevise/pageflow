@@ -122,9 +122,11 @@ module Pageflow
 
     collection_action :quota_state do
       @account = Pageflow::Account.find(params[:account_id])
-      authorize!(:add_member_to, @account)
-
-      render(layout: false)
+      if authorized?(:see_user_quota, @account)
+        render(layout: false)
+      else
+        render(partial: 'not_allowed_to_see_user_quota')
+      end
     end
 
     collection_action 'me', title: I18n.t('pageflow.admin.users.account'), method: [:get, :patch] do

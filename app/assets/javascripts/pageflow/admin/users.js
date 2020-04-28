@@ -8,7 +8,7 @@ jQuery(function($) {
       var selectedAccountId = accountSelect.val();
 
       $.get('/admin/users/quota_state?account_id=' + selectedAccountId)
-        .success(function(html) {
+        .done(function(html) {
           quotaStateContainer.html(html);
           updateForm();
         });

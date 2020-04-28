@@ -1,7 +1,7 @@
 module Dom
   module Admin
     class InvitationForm < Domino
-      selector 'form.pageflow_invitation_form'
+      selector '.invitation'
 
       def submit_with(options)
         within(node) do
@@ -32,6 +32,17 @@ module Dom
 
           find('[name="commit"]').click
         end
+      end
+
+      def select_account(id)
+        within(node) do
+          find('#select2-invitation_form_membership_entity_id-container').click
+          find('.select2-results__option', text: Pageflow::Account.find(id).name).click
+        end
+      end
+
+      def has_quota_exhausted_error?
+        node.has_selector?('.quota_exhausted_fallback')
       end
 
       def has_error_on?(field)
