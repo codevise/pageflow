@@ -6,7 +6,7 @@ export function insertContentElement(entry, sibling, attributes, {position, at})
   const insertIndex = reindexPositionsToMakeRoomForInsertion(section, sibling, position);
 
   const commands = [
-    position === 'split' && prepareSplit(section, sibling, at),
+    position === 'split' && prepareSplit(entry, section, sibling, at),
     prepareInsertion(entry, section, attributes, insertIndex)
   ].filter(Boolean);
 
@@ -42,7 +42,7 @@ function reindexPositionsToMakeRoomForInsertion(section, sibling, position) {
   return insertIndex;
 }
 
-function prepareSplit(section, sibling, at) {
+function prepareSplit(entry, section, sibling, at) {
   const [c1, c2] = sibling.getType().split(sibling.configuration.attributes, at);
 
   const splitOffContentElement = new ContentElement({
@@ -72,7 +72,7 @@ function prepareSplit(section, sibling, at) {
     },
 
     rollback() {
-      section.contentElements.remove(splitOffContentElement);
+      entry.contentElements.remove(splitOffContentElement);
     }
   }
 }
@@ -94,7 +94,7 @@ function prepareInsertion(entry, section, attributes, index) {
     },
 
     rollback() {
-      section.contentElements.remove(contentElement);
+      entry.contentElements.remove(contentElement);
     }
   }
 }

@@ -282,6 +282,7 @@ describe('ScrolledEntry', () => {
         );
 
         expect(section.contentElements.pluck('id')).toEqual([4, 5, 6]);
+        expect(entry.contentElements.pluck('id')).toEqual([4, 5, 6]);
       });
     });
   });
@@ -333,6 +334,7 @@ describe('ScrolledEntry', () => {
         );
 
         expect(entry.sections.first().contentElements.pluck('id')).toEqual([6]);
+        expect(entry.contentElements.pluck('id')).toEqual([6]);
       });
     });
 
@@ -410,6 +412,7 @@ describe('ScrolledEntry', () => {
         );
 
         expect(entry.sections.first().contentElements.pluck('id')).toEqual([4]);
+        expect(entry.contentElements.pluck('id')).toEqual([4]);
         expect(entry.contentElements.get(4).configuration.get('items')).toEqual(['a', 'b', 'c']);
       });
     });

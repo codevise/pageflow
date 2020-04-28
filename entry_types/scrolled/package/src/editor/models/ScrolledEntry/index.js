@@ -46,6 +46,6 @@ export const ScrolledEntry = Entry.extend({
   },
 
   deleteContentElement(id) {
-    deleteContentElement(this.contentElements.get(id));
+    deleteContentElement(this, this.contentElements.get(id));
   }
 });

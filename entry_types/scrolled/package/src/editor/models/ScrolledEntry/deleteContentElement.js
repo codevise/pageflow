@@ -1,15 +1,15 @@
 import {batch, nullCommand} from './batch';
 
-export function deleteContentElement(contentElement) {
+export function deleteContentElement(entry, contentElement) {
   const section = contentElement.section;
 
   batch(section, [
-    prepareMerge(section, contentElement),
-    prepareDeletion(section, contentElement)
+    prepareMerge(entry, section, contentElement),
+    prepareDeletion(entry, section, contentElement)
   ]);
 }
 
-function prepareDeletion(section, deletedContentElement) {
+function prepareDeletion(entry, section, deletedContentElement) {
   return {
     ...nullCommand,
 
@@ -23,12 +23,12 @@ function prepareDeletion(section, deletedContentElement) {
     },
 
     complete() {
-      section.contentElements.remove(deletedContentElement);
+      entry.contentElements.remove(deletedContentElement);
     }
   }
 }
 
-function prepareMerge(section, deletedContentElement) {
+function prepareMerge(entry, section, deletedContentElement) {
   const [before, after] = getAdjacentContentElements(section, deletedContentElement);
 
   if (!before ||
@@ -60,7 +60,7 @@ function prepareMerge(section, deletedContentElement) {
 
     complete() {
       before.configuration.set(mergedConfiguration, {autoSave: false});
-      section.contentElements.remove(after);
+      entry.contentElements.remove(after);
     }
   }
 }
