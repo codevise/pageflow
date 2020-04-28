@@ -36,6 +36,9 @@ import {editor} from '../base';
  * * `<translationKeyPrefix>.retry` (optional): Label of the retry
  *   button of the failure message.
  *
+ * Override the `destroyModel` method to customize destroy behavior.
+ * Calls `destroyWithDelay` by default.
+ *
  * @param {Object} options
  * @param {Backbone.Model} options.model -
  *   Model including the {@link configurationContainer},
@@ -95,9 +98,13 @@ export const EditConfigurationView = Marionette.Layout.extend({
 
   destroy: function() {
     if (window.confirm(this.t('confirm_destroy'))) {
-      this.model.destroyWithDelay();
+      this.destroyModel();
       this.goBack();
     }
+  },
+
+  destroyModel() {
+    this.model.destroyWithDelay();
   },
 
   goBack: function() {

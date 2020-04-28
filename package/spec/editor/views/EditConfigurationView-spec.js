@@ -1,6 +1,7 @@
 import Backbone from 'backbone';
 
 import {
+  editor,
   EditConfigurationView,
   configurationContainer,
   failureTracking
@@ -11,6 +12,10 @@ import {ConfigurationEditor} from '$support/dominos/ui';
 import * as support from '$support';
 
 describe('EditConfigurationView', () => {
+  beforeEach(() => {
+    editor.router = {navigate: jest.fn()};
+  });
+
   it('renders configuration editor with inputs defined in configure method', () => {
     const Model = Backbone.Model.extend({
       mixins: [configurationContainer(), failureTracking]
@@ -84,5 +89,26 @@ describe('EditConfigurationView', () => {
 
       expect(configurationEditor.tabLabels()).toContain('Section');
     });
+  });
+
+  it('allows overriding destroyModel method', () => {
+    const Model = Backbone.Model.extend({
+      mixins: [configurationContainer(), failureTracking]
+    });
+    const customDestroyMethod = jest.fn();
+    const View = EditConfigurationView.extend({
+      configure(configurationEditor) {
+        configurationEditor.tab('general', function() {
+        });
+      },
+
+      destroyModel: customDestroyMethod
+    });
+
+    const view = new View({model: new Model()}).render();
+    window.confirm = () => true;
+    view.$el.find('.destroy').click();
+
+    expect(customDestroyMethod).toHaveBeenCalled();
   });
 });
