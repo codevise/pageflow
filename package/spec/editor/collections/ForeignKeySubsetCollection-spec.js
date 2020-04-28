@@ -150,4 +150,41 @@ describe('ForeignKeySubsetCollection', () => {
 
     expect(comments.first().post).not.toBe(post);
   });
+
+  it('auto consolidates positions on remove by default', () => {
+    const post = new Backbone.Model({id: 5}, {urlRoot: '/posts'});
+    const comments = new Backbone.Collection([
+      {id: 1, postId: 5, position: 0},
+      {id: 2, postId: 5, position: 1}
+    ], {comparator: 'position'});
+    const postComments = new ForeignKeySubsetCollection({
+      parentModel: post,
+      parent: comments,
+      foreignKeyAttribute: 'postId',
+      parentReferenceAttribute: 'post'
+    });
+
+    postComments.remove(1);
+
+    expect(postComments.first().get('position')).toBe(0);
+  });
+
+  it('supports deactivating autoConsolidatePositions', () => {
+    const post = new Backbone.Model({id: 5}, {urlRoot: '/posts'});
+    const comments = new Backbone.Collection([
+      {id: 1, postId: 5, position: 0},
+      {id: 2, postId: 5, position: 1}
+    ], {comparator: 'position'});
+    const postComments = new ForeignKeySubsetCollection({
+      parentModel: post,
+      parent: comments,
+      foreignKeyAttribute: 'postId',
+      parentReferenceAttribute: 'post',
+      autoConsolidatePositions: false
+    });
+
+    postComments.remove(1);
+
+    expect(postComments.first().get('position')).toBe(1);
+  });
 });

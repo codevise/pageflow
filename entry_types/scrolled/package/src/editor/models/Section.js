@@ -27,7 +27,8 @@ export const Section = Backbone.Model.extend({
       parent: options.contentElements,
       parentModel: this,
       foreignKeyAttribute: 'sectionId',
-      parentReferenceAttribute: 'section'
+      parentReferenceAttribute: 'section',
+      autoConsolidatePositions: false
     });
   },
 

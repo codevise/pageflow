@@ -25,6 +25,8 @@ export const ForeignKeySubsetCollection = SubsetCollection.extend({
     var parent = options.parent;
     var parentModel = options.parentModel;
 
+    this.autoConsolidatePositions = options.autoConsolidatePositions;
+
     SubsetCollection.prototype.constructor.call(this, {
       parent,
       parentModel,
