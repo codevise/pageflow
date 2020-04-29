@@ -123,21 +123,42 @@ the stories and generate visual diffs.
 
 ### Using transcoded files in storybook
 
+The Rake-task to setup seeds for storybook described above comprises three separate tasks:
+Deleting the storybook seed entry (if present), creating the storybook seed entry (from data
+specified within the task files source) and serializing the created entry to JSON.
 In order to use transcoded audio and video files in the local storybook,
-you need to specify a `ENV`-variable named `PAGEFLOW_SKIP_ENCODING_STORYBOOK_FILES`
-and set it to false before running the storybook seed task. 
-This will cause background transcoding jobs for media files to be created, which
-will get processed upon starting the development server. Once these jobs are finished,
-the files are available in your local storybook via their respective
-`testReferenceName`.
-Do not set this ENV variable in CI, though. For that case a different approach is needed:
+you need to run these tasks separately while adding a step for transcoding in between:
 
-### Using transcoded files in Percy
+First run `$ bundle exec rake pageflow_scrolled:storybook:seed:destroy_entry` to delete
+an existing "Storybook seed" entry if present.
+
+Then run `$ bundle exec rake pageflow_scrolled:storybook:seed:create_entry` to create the
+storybook seed entry. This will create audio and video files in untranscoded state at first.
+To transcode these files, simply start your development server and give the resque workers 
+some time for the actual transcoding. You can check the route `/resque` to view the progress
+of the transcoding workers, or simply open the newly created "Storybook seed" entry
+in the editor and check the status under the files tab.
+
+Once all audio and video files of the "Storybook seed" entry are transcoded
+successfully, you can stop the server and run the last part of the Rake-task:
+`$ bundle exec rake pageflow_scrolled:storybook:seed:generate_json[./seed.json]`.
+This will serialize the now transcoded files, including their "ready"-state and all
+available variants of the transcoded source files of the entry.
+Afterwards copy the generated `seed.json` file into the pageflow project directory as 
+described above. 
+
+### Using transcoded files in CI/Percy
 Since in CI there is no transcoding configured, using transcoded files in Percy requires
 some manual work to set up:
-If audio or video files should be included in CI / Percy, you need to manually
-copy the outputs generated for these files to the bucket specified by the 
-"S3_OUTPUT_HOST_ALIAS" `.env`-variable in your `.travis` config after transcoding.
+First you need to specify an `ENV`-variable named `PAGEFLOW_SKIP_ENCODING_STORYBOOK_FILES`
+and set it to `true` in your `.travis` config file. This will cause transcoding to be skipped
+and set the `output_presences`, usually assigned during transcoding, explicitly during 
+creation of the file records.
+Furthermore, specify another `ENV`-variable named `S3_OUTPUT_HOST_ALIAS` and set it to the 
+same URL as your `S3_HOST_ALIAS` `ENV`-variable.
+Now audio and video files will expect their transcoded files in the same location as their 
+source files, so you need to manually copy the outputs generated for these files to the 
+bucket specified by `S3_HOST_ALIAS`.
 
 Since the files are processed in sequential order and the data is created on an empty 
 database, the ids of video and audio files always remain the same on each run of CI,
