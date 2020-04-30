@@ -18,6 +18,10 @@
   content: "\26a0";
 }
 
+.cancel::before {
+  content: "\2715";
+}
+
 .plusCircled::before {
   content: "\2795";
 }

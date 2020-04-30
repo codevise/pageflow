@@ -7,3 +7,8 @@
   composes: iconButton;
   composes: plusCircled from './icons.module.css';
 }
+
+.cancelButton {
+  composes: iconButton;
+  composes: cancel from './icons.module.css';
+}
