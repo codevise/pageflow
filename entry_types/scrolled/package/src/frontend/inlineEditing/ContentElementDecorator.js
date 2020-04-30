@@ -6,13 +6,13 @@ import styles from './ContentElementDecorator.module.css';
 import {InsertContentElementIndicator} from './InsertContentElementIndicator';
 
 export function ContentElementDecorator(props) {
-  const {isSelected, isSelectable, select, resetSelection} = useEditorSelection({id: props.id, type: 'contentElement'});
+  const {isSelected, select} = useEditorSelection({id: props.id, type: 'contentElement'});
 
   return (
     <div className={classNames(styles.outer)}>
       {props.first && <InsertContentElementIndicator position="before" contentElementId={props.id} />}
-      <div className={classNames({[styles.selected]: isSelected, [styles.selectable]: isSelectable})}
-           onClick={e => { e.stopPropagation(); isSelectable ? select() : resetSelection(); }}>
+      <div className={classNames(styles.selectable, {[styles.selected]: isSelected})}
+           onClick={e => { e.stopPropagation(); select(); }}>
         {props.children}
         <div className={styles.tl} />
         <div className={styles.bl} />
