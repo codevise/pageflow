@@ -1,9 +1,11 @@
 import React from 'react';
 
+import {importComponents} from './importComponents';
+
 let components = {};
 
 export function loadInlineEditingComponents() {
-  return import('./components').then(importedComponents => {
+  return importComponents().then(importedComponents => {
     components = importedComponents;
   });
 }
