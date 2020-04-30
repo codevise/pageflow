@@ -279,3 +279,4 @@ de:
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
       insert_content_element:
         header: Element einfügen
+        cancel: Abbrechen
