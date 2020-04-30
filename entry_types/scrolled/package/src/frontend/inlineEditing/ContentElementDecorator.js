@@ -1,25 +1,30 @@
 import React from 'react';
-import classNames from 'classnames';
 
 import {useEditorSelection} from '../EditorState';
+import {SelectionRect} from './SelectionRect';
 import styles from './ContentElementDecorator.module.css';
-import {InsertContentElementIndicator} from './InsertContentElementIndicator';
 
 export function ContentElementDecorator(props) {
   const {isSelected, select} = useEditorSelection({id: props.id, type: 'contentElement'});
 
   return (
-    <div className={classNames(styles.outer)}>
-      {props.first && <InsertContentElementIndicator position="before" contentElementId={props.id} />}
-      <div className={classNames(styles.selectable, {[styles.selected]: isSelected})}
-           onClick={e => { e.stopPropagation(); select(); }}>
+    <div className={styles.wrapper}>
+      <SelectionRect selected={isSelected}
+                     onClick={() => select()}
+                     onInsertButtonClick={position =>
+                       postInsertContentElementMessage({id: props.id, position})}>
         {props.children}
-        <div className={styles.tl} />
-        <div className={styles.bl} />
-        <div className={styles.tr} />
-        <div className={styles.br} />
-      </div>
-      <InsertContentElementIndicator position="after" contentElementId={props.id} />
+      </SelectionRect>
     </div>
+  );
+}
+
+function postInsertContentElementMessage({id, position}) {
+  window.parent.postMessage(
+    {
+      type: 'INSERT_CONTENT_ELEMENT',
+      payload: {id, position}
+    },
+    window.location.origin
   );
 }
