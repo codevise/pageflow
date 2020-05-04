@@ -1,5 +1,4 @@
 import _ from 'underscore';
-import Object from '../Object';
 import {browser} from './browser';
 
 /**
@@ -10,22 +9,22 @@ import {browser} from './browser';
  * @alias pageflow.features
  * @since 0.9
  */
-export const Features = Object.extend(
-  /** @lends pageflow.features */{
+export class Features {
+  /** @lends pageflow.features */
 
   /** @api private */
-  initialize: function() {
+  constructor() {
     this.registry = {};
     this.enabledFeatureNames = [];
-  },
+  }
 
   /**
    * `pageflow.features` has been renamed to `pageflow.browser`.
    * @deprecated
    */
-  has: function(/* arguments */) {
+  has(/* arguments */) {
     return browser.has.apply(browser, arguments);
-  },
+  }
 
   /**
    * Register a function to configure a feature when it is active.
@@ -36,11 +35,11 @@ export const Features = Object.extend(
    * @param fn [Function] Function to call when the given feature
    *   is activate.
    */
-  register: function(scope, name, fn) {
+  register(scope, name, fn) {
     this.registry[scope] = this.registry[scope] || {};
     this.registry[scope][name] = this.registry[scope][name] || [];
     this.registry[scope][name].push(fn);
-  },
+  }
 
   /**
    * Check if a feature as been enabled.
@@ -48,12 +47,12 @@ export const Features = Object.extend(
    * @param name [String]
    * @return [Boolean]
    */
-  isEnabled: function(name) {
+  isEnabled(name) {
     return _(this.enabledFeatureNames).contains(name);
-  },
+  }
 
   /** @api private */
-  enable: function(scope, names) {
+  enable(scope, names) {
     var fns = this.registry[scope] || {};
     this.enabledFeatureNames = this.enabledFeatureNames.concat(names);
 
@@ -63,6 +62,6 @@ export const Features = Object.extend(
       });
     });
   }
-});
+}
 
 export const features = new Features();
