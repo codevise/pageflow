@@ -1,6 +1,4 @@
-import Backbone from 'backbone';
-
-import {mediaPlayer}  from 'pageflow/frontend';
+import {mediaPlayer, settings}  from 'pageflow/frontend';
 
 import sinon from 'sinon';
 
@@ -10,7 +8,7 @@ describe('volumeBinding', function() {
   describe('#play', function() {
     it('sets volume to settings volume', async () => {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.play();
@@ -20,7 +18,7 @@ describe('volumeBinding', function() {
 
     it('starts listenting to settings changes', async () => {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.play();
@@ -31,7 +29,7 @@ describe('volumeBinding', function() {
 
     it('calls original play method', function() {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.play();
@@ -41,7 +39,7 @@ describe('volumeBinding', function() {
 
     it('aborts intent to pause', function() {
       var player = fakePlayer({playing: true});
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.intendToPause();
@@ -53,7 +51,7 @@ describe('volumeBinding', function() {
     describe('with volumeFactor option', function() {
       it('sets volume to multiplied settings volume', async () => {
         var player = fakePlayer();
-        var settings = new Backbone.Model({volume: 100});
+        settings.set({volume: 100});
         volumeBinding(player, settings, {volumeFactor: 0.5});
 
         player.play();
@@ -66,7 +64,7 @@ describe('volumeBinding', function() {
   describe('#playAndFadeIn', function() {
     it('fades from 0 to settings volume', async () => {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.playAndFadeIn(500);
@@ -78,7 +76,7 @@ describe('volumeBinding', function() {
 
     it('starts listenting to settings changes', async () => {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.playAndFadeIn(500);
@@ -89,7 +87,7 @@ describe('volumeBinding', function() {
 
     it('does not fade in if promise returned by play is rejected', async () => {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       player.play = function() { return Promise.reject() };
       volumeBinding(player, settings);
 
@@ -100,7 +98,7 @@ describe('volumeBinding', function() {
 
     it('fades in after promise returned by play is resolved', async () => {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       player.play = function() { return Promise.resolve() };
       volumeBinding(player, settings);
 
@@ -111,7 +109,7 @@ describe('volumeBinding', function() {
 
     it('returns promise which resolves after fade', async () => {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       var callback = sinon.spy();
       volumeBinding(player, settings);
 
@@ -124,7 +122,7 @@ describe('volumeBinding', function() {
 
     it('returns promise which resolves even if fade is canceled', async () => {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       var callback = sinon.spy();
       volumeBinding(player, settings);
 
@@ -137,7 +135,7 @@ describe('volumeBinding', function() {
 
     it('calls original play method', function() {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.playAndFadeIn();
@@ -147,7 +145,7 @@ describe('volumeBinding', function() {
 
     it('aborts intent to pause', function() {
       var player = fakePlayer({playing: true});
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.intendToPause();
@@ -158,7 +156,7 @@ describe('volumeBinding', function() {
 
     it('returns resolved promise if alreay playing', async () => {
       var player = fakePlayer({playing: true});
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       var callback = sinon.spy();
       volumeBinding(player, settings);
 
@@ -170,7 +168,7 @@ describe('volumeBinding', function() {
     describe('with volumeFactor option', function() {
       it('fades to multiplied settings volume', async () => {
         var player = fakePlayer();
-        var settings = new Backbone.Model({volume: 100});
+        settings.set({volume: 100});
         volumeBinding(player, settings, {volumeFactor: 0.5});
 
         player.playAndFadeIn(500);
@@ -182,7 +180,7 @@ describe('volumeBinding', function() {
 
       it('uses multiplied volume on settings change', async () => {
         var player = fakePlayer();
-        var settings = new Backbone.Model({volume: 100});
+        settings.set({volume: 100});
         volumeBinding(player, settings, {volumeFactor: 0.5});
 
         player.playAndFadeIn(500);
@@ -196,7 +194,7 @@ describe('volumeBinding', function() {
   describe('#pause', function() {
     it('stops listenting to settings changes', function() {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.play();
@@ -208,7 +206,6 @@ describe('volumeBinding', function() {
 
     it('calls original play method', function() {
       var player = fakePlayer();
-      var settings = new Backbone.Model();
       volumeBinding(player, settings);
 
       player.pause();
@@ -218,7 +215,7 @@ describe('volumeBinding', function() {
 
     it('aborts intent to play', function() {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.intendToPlay();
@@ -231,7 +228,7 @@ describe('volumeBinding', function() {
   describe('#fadeOutAndPause', function() {
     it('fades to 0', async () => {
       var player = fakePlayer({playing: true});
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.fadeOutAndPause(500);
@@ -242,7 +239,7 @@ describe('volumeBinding', function() {
 
     it('stops listenting to settings changes', function() {
       var player = fakePlayer({playing: true});
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.play();
@@ -254,7 +251,7 @@ describe('volumeBinding', function() {
 
     it('calls original pause when fading promise resolves', async () => {
       var player = fakePlayer({playing: true});
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       const promise = player.fadeOutAndPause(500);
@@ -267,7 +264,7 @@ describe('volumeBinding', function() {
 
     it('calls original pause even when fade is canceled', async () => {
       var player = fakePlayer({playing: true});
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       const promise = player.fadeOutAndPause(500);
@@ -278,7 +275,7 @@ describe('volumeBinding', function() {
 
     it('does not call original pause when played during fade out', async () => {
       var player = fakePlayer({playing: true});
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       const fadingPromise = player.fadeOutAndPause(500);
@@ -291,7 +288,7 @@ describe('volumeBinding', function() {
 
     it('aborts intent to play', async () => {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
 
       player.intendToPlay();
@@ -302,7 +299,7 @@ describe('volumeBinding', function() {
 
     it('returns fadeVolume promise', async () => {
       var player = fakePlayer({playing: true});
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
       var callback = sinon.spy();
 
@@ -315,7 +312,7 @@ describe('volumeBinding', function() {
 
     it('returns resolved promise if not playing', async () => {
       var player = fakePlayer({playing: false});
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
       var callback = sinon.spy();
 
@@ -328,7 +325,7 @@ describe('volumeBinding', function() {
   describe('#changeVolumeFactor', function() {
     it('fades to new multiplied volume', async () => {
       var player = fakePlayer();
-      var settings = new Backbone.Model({volume: 100});
+      settings.set({volume: 100});
       volumeBinding(player, settings, {volumeFactor: 1});
 
       player.changeVolumeFactor(0.5, 500);
@@ -340,7 +337,7 @@ describe('volumeBinding', function() {
 
     it('returns fadeVolume promise', async () => {
       var player = fakePlayer({playing: true});
-      var settings = new Backbone.Model({volume: 98});
+      settings.set({volume: 98});
       volumeBinding(player, settings);
       var callback = sinon.spy();
 

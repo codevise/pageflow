@@ -1,14 +1,41 @@
-import Backbone from 'backbone';
 import {log} from './base';
+import BackboneEvents from 'backbone-events-standalone';
+import _ from 'underscore';
 
-// TODO: rewrite to vanilla JS
-var Settings = Backbone.Model.extend({
-  defaults: {
-    volume: 1
-  },
+class Settings {
+  constructor() {
+    this.attributes = {
+      volume: 1
+    };
+    this.initialize();
+  }
 
-  initialize: function() {
-    var storage = this.getLocalStorage();
+  get(attributeName) {
+    return this.attributes[attributeName];
+  }
+
+  set(key, value) {
+    let attrs;
+    if (typeof key === 'object') {
+      attrs = key;
+    } else {
+      (attrs = {})[key] = value;
+    }
+
+    for (const attr in attrs) {
+      this.attributes[attr] = attrs[attr];
+      this.trigger('change:'+attr);
+    }
+
+    this.trigger('change');
+  }
+
+  toJSON() {
+    return _.clone(this.attributes);
+  }
+
+  initialize() {
+    const storage = this.getLocalStorage();
 
     if (storage) {
       if (storage['pageflow.settings']) {
@@ -21,12 +48,12 @@ var Settings = Backbone.Model.extend({
       }
 
       this.on('change', function() {
-        storage['pageflow.settings'] = JSON.stringify(this);
+        storage['pageflow.settings'] = JSON.stringify(this.attributes);
       });
     }
-  },
+  }
 
-  getLocalStorage: function() {
+  getLocalStorage() {
     try {
       return window.localStorage;
     }
@@ -36,6 +63,8 @@ var Settings = Backbone.Model.extend({
       return null;
     }
   }
-});
+}
+
+_.extend(Settings.prototype, BackboneEvents);
 
 export const settings = new Settings();
