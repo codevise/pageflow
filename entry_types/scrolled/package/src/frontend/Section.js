@@ -1,4 +1,4 @@
-import React, {useRef, useCallback} from 'react';
+import React, {useRef, useCallback, useMemo} from 'react';
 import classNames from 'classnames';
 
 import {useOnScreen} from './useOnScreen';
@@ -37,10 +37,10 @@ export default function Section(props) {
 
   useScrollTarget(ref, props.isScrollTarget);
 
-  const sectionProperties = {
+  const sectionProperties = useMemo(() => ({
     layout: props.layout,
     invert: props.invert
-  }
+  }), [props.layout, props.invert]);
 
   const [motifAreaRect, setMotifAreaRectRect] = useBoundingClientRect();
   const [motifAreaDimension, setMotifAreaDimensionRef] = useDimension();
