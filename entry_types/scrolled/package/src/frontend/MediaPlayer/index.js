@@ -1,9 +1,12 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useContext} from 'react';
 import {media} from 'pageflow/frontend';
+
+import ScrollToSectionContext from "../ScrollToSectionContext";
 
 export function MediaPlayer(props){
   const playerWrapperRef = useRef(null);
-  
+  let scrollToSection = useContext(ScrollToSectionContext);
+
   useEffect( () => {
     let playerWrapper = playerWrapperRef.current;
     if (props.sources) {
@@ -11,16 +14,22 @@ export function MediaPlayer(props){
         poster: props.poster,
         tagName: props.type
       });
-      playerWrapper.appendChild(player.el());
+      player.on('ended', function () {
+        props.nextSectionOnEnd && scrollToSection('next');
+      });
+      let playerElement = player.el();      
+      playerWrapper.appendChild(playerElement);
+      
       return () => {
         media.releasePlayer(player);
         playerWrapper.innerHTML = '';
         player.dispose();
       }
     }
-  }, [props.sources, props.poster, props.type]);
+  }, [props.sources, props.poster, props.type, props.nextSectionOnEnd, scrollToSection]);
 
   return (
-    <div ref={playerWrapperRef}></div>
+    <div className={props.className} ref={playerWrapperRef}>
+    </div>
   );
 }
