@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import {editor} from 'pageflow-scrolled/editor';
 
 import {
   configurationContainer,
@@ -18,5 +19,9 @@ export const ContentElement = Backbone.Model.extend({
     delayedDestroying,
     entryTypeEditorControllerUrls.forModel({resources: 'content_elements'}),
     failureTracking
-  ]
+  ],
+
+  getType(contentElement) {
+    return editor.contentElementTypes.findByTypeName(this.get('typeName'));
+  }
 });

@@ -13,6 +13,7 @@ PageflowScrolled::Engine.routes.draw do
 
           resources :content_elements do
             collection do
+              put :batch
               put :order
             end
           end

@@ -39,11 +39,12 @@ export function configurationContainer({configurationModel, autoSave, includeAtt
       this.configuration = new configurationModel(this.get('configuration'));
       this.configuration.parent = this;
 
-      this.listenTo(this.configuration, 'change', function() {
+      this.listenTo(this.configuration, 'change', function(model, options) {
         if (!this.isNew() &&
             (!this.isDestroying || !this.isDestroying()) &&
             (!this.isDestroyed || !this.isDestroyed()) &&
-            autoSave) {
+            autoSave &&
+            options.autoSave !== false) {
           this.save();
         }
 

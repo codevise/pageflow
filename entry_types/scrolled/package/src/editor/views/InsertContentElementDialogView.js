@@ -58,8 +58,7 @@ const ItemView = Marionette.ItemView.extend({
   events: {
     'click button': function() {
       this.options.entry.insertContentElement({typeName: this.model.get('typeName')},
-                                              this.options.insertOptions,
-                                              this.model.get('defaultConfig'));
+                                              this.options.insertOptions);
     }
   }
 });

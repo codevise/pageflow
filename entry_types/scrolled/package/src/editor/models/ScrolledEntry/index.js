@@ -1,6 +1,9 @@
 import {Entry, editor} from 'pageflow/editor';
 
-import {ChaptersCollection, SectionsCollection, ContentElementsCollection} from '../collections';
+import {ChaptersCollection, SectionsCollection, ContentElementsCollection} from '../../collections';
+
+import {insertContentElement} from './insertContentElement';
+import {deleteContentElement} from './deleteContentElement';
 
 export const ScrolledEntry = Entry.extend({
   setupFromEntryTypeSeed(seed) {
@@ -35,38 +38,14 @@ export const ScrolledEntry = Entry.extend({
     });
   },
 
-  insertContentElement(attributes, {position, id}, defaultConfig) {
-    const sibling = this.contentElements.get(id);
-    const section = sibling.section;
-    defaultConfig = defaultConfig || {};
-    let delta = 0;
+  insertContentElement(attributes, {position, id, at}) {
+    insertContentElement(this,
+                         this.contentElements.get(id),
+                         attributes,
+                         {position, id, at});
+  },
 
-    section.contentElements.each(function(contentElement, index) {
-      if (contentElement === sibling && position === 'before') {
-        delta = 1;
-      }
-
-      contentElement.set('position', index + delta);
-
-      if (contentElement === sibling && position === 'after') {
-        delta = 1;
-      }
-    });
-
-    var newContentElement = section.contentElements.create({
-      position: sibling.get('position') + (position === 'before' ? -1 : 1),
-      ...attributes,
-      configuration: {
-        ...defaultConfig,
-        position: sibling.configuration.get('position'),
-      }
-    });
-
-    section.contentElements.sort();
-
-    newContentElement.once('sync', () => {
-      section.contentElements.saveOrder();
-      this.trigger('selectContentElement', newContentElement);
-    });
+  deleteContentElement(id) {
+    deleteContentElement(this, this.contentElements.get(id));
   }
 });

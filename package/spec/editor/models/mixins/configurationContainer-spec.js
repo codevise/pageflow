@@ -100,6 +100,21 @@ describe('configurationContainer', () => {
     expect(model.save).not.toHaveBeenCalled();
   });
 
+  it('supports suppressing auto save for single set call', () => {
+    const Model = Backbone.Model.extend({
+      mixins: [
+        configurationContainer({autoSave: true})
+      ],
+    });
+    const model = new Model({id: 5, configuration: {some: 'value'}});
+    model.save = jest.fn();
+
+    model.configuration.set({some: 'other value'}, {autoSave: false});
+
+    expect(model.save).not.toHaveBeenCalled();
+  });
+
+
   it('does not auto save destroying model', () => {
     const Model = Backbone.Model.extend({
       mixins: [

@@ -7,6 +7,260 @@ module PageflowScrolled
     include Pageflow::EditorControllerTestHelper
     routes { PageflowScrolled::Engine.routes }
 
+    describe '#batch' do
+      it 'requires authentication' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: []
+             }, format: 'json', as: :json)
+
+        expect(response.status).to eq(401)
+      end
+
+      it 'allows ordering content elements referenced by id' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+        content_elements = create_list(:content_element, 2, section: section)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: content_elements.first.id},
+                 {id: content_elements.last.id}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(content_elements.first.reload.position).to eq(0)
+        expect(content_elements.last.reload.position).to eq(1)
+      end
+
+      it 'allows moving content elements to different section' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+        other_section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, :text_block, section: section)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: other_section,
+               content_elements: [
+                 {id: content_element.id}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(content_element.reload.section).to eq(other_section)
+      end
+
+      it 'does not allow moving content elements to different entry' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+        other_entry = create(:entry)
+        other_section = create(:section, revision: other_entry.draft)
+        content_element = create(:content_element, section: section)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: other_section,
+               content_elements: [
+                 {id: content_element.id}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(response.status).to eq(404)
+      end
+
+      it 'allows setting content element configuration hashes' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, section: section)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: content_element.id, configuration: {some: 'value'}}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(content_element.reload.configuration).to eq('some' => 'value')
+      end
+
+      it 'does not change configuration hash if not passed' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element,
+                                 section: section,
+                                 configuration: {some: 'value'})
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: content_element.id}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(content_element.reload.configuration).to eq('some' => 'value')
+      end
+
+      it 'allows creating content elements' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {typeName: 'textBlock', configuration: {some: 'value'}}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(section.content_elements.first)
+          .to have_attributes(type_name: 'textBlock',
+                              configuration: {'some' => 'value'})
+      end
+
+      it 'deletes content elements marked by _delete flag' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+        content_elements = create_list(:content_element, 2, section: section)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: content_elements.first.id, _delete: true},
+                 {id: content_elements.last.id}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(section.content_elements.map(&:id)).to eq([content_elements.last.id])
+      end
+
+      it 'responds with array of objects containging content element ids and perma ids' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {typeName: 'textBlock', configuration: {some: 'value'}}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(response.body).to include_json([
+                                                {
+                                                  id: section.content_elements.first.id,
+                                                  permaId: section.content_elements.first.perma_id
+                                                }
+                                              ])
+      end
+
+      it 'does not create content elements if id is unknown' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: 42, configuration: {some: 'value'}}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(response.status).to eq(404)
+      end
+
+      it 'rolls back other changes if one id is unknown' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {typeName: 'textBlock', configuration: {some: 'value'}},
+                 {id: 42, configuration: {other: 'value'}}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(section.content_elements.count).to eq(0)
+      end
+
+      it 'allows performing a mix of update, create and delete operations' do
+        entry = create(:entry)
+        section = create(:section, revision: entry.draft)
+        content_elements = create_list(:content_element,
+                                       3,
+                                       section: section,
+                                       configuration: {some: 'value'})
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: content_elements.first.id, configuration: {new: 'value'}},
+                 {typeName: 'textBlock', configuration: {other: 'value'}},
+                 {id: content_elements.second.id, _delete: true},
+                 {id: content_elements.third.id}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(section.content_elements)
+          .to match([
+                      an_object_having_attributes(id: content_elements.first.id,
+                                                  configuration: {'new' => 'value'}),
+                      an_object_having_attributes(type_name: 'textBlock',
+                                                  configuration: {'other' => 'value'}),
+                      an_object_having_attributes(id: content_elements.third.id,
+                                                  configuration: {'some' => 'value'})
+                    ])
+        expect(response.body).to include_json([
+                                                {
+                                                  id: section.content_elements.first.id,
+                                                  permaId: section.content_elements.first.perma_id
+                                                },
+                                                {
+                                                  id: section.content_elements.second.id,
+                                                  permaId: section.content_elements.second.perma_id
+                                                },
+                                                {
+                                                  id: section.content_elements.third.id,
+                                                  permaId: section.content_elements.third.perma_id
+                                                }
+                                              ])
+      end
+    end
+
     describe '#create' do
       it 'requires authentication' do
         entry = create(:entry)
