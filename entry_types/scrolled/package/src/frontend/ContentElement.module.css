@@ -1,0 +1,7 @@
+.missing {
+  color: #000;
+  background-color: #fff;
+  border-left: solid 5px #f44336;
+  padding: 0.5em;
+  margin: 1em 0;
+}

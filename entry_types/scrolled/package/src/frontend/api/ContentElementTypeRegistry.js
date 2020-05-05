@@ -31,10 +31,6 @@ export class ContentElementTypeRegistry {
   }
 
   getComponent(typeName) {
-    if (!this.types[typeName]) {
-      throw new Error(`Unknown content element type name "${typeName}"`);
-    }
-
-    return this.types[typeName].component;
+    return this.types[typeName] && this.types[typeName].component;
   }
 }
