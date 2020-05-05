@@ -37,8 +37,9 @@ export const EntryPreviewView = Marionette.ItemView.extend({
         };
 
         watchCollections(this.model, {
-          dispatch: action =>
+          dispatch: action => {
             postMessage({type: 'ACTION', payload: action})
+          }
         });
 
         this.listenTo(this.model, 'scrollToSection', section =>
@@ -82,12 +83,12 @@ export const EntryPreviewView = Marionette.ItemView.extend({
         }
       }
       else if (message.data.type === 'INSERT_CONTENT_ELEMENT') {
-        const {id, position} = message.data.payload;
+        const {id, position, at} = message.data.payload;
         const editor = this.options.editor;
 
         InsertContentElementDialogView.show({
           entry: this.model,
-          insertOptions: {position, id},
+          insertOptions: {position, id, at},
           editor
         });
       }

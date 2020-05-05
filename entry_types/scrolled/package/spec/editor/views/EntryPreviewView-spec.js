@@ -1,6 +1,7 @@
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {EntryPreviewView} from 'editor/views/EntryPreviewView';
 import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView'
+import {postInsertContentElementMessage} from 'frontend/inlineEditing/postMessage';
 import {normalizeSeed, tick, factories} from 'support';
 
 describe('EntryPreviewView', () => {
@@ -202,8 +203,8 @@ describe('EntryPreviewView', () => {
 
     return expect(new Promise(resolve => {
       jest.spyOn(InsertContentElementDialogView, 'show').mockImplementation(resolve);
-      window.postMessage({type: 'INSERT_CONTENT_ELEMENT', payload: {id: 1, position: 'before'}}, '*');
-    })).resolves.toEqual({entry, editor, insertOptions: {id: 1, position: 'before'}});
+      postInsertContentElementMessage({id: 1, position: 'split', at: 3});
+    })).resolves.toEqual({entry, editor, insertOptions: {id: 1, position: 'split', at: 3}});
   });
 
   it('navigates to root on SELECTED message without type', () => {

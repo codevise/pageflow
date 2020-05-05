@@ -2,6 +2,7 @@ import React from 'react';
 
 import {useEditorSelection} from '../EditorState';
 import {SelectionRect} from './SelectionRect';
+import {postInsertContentElementMessage} from './postMessage';
 import styles from './ContentElementDecorator.module.css';
 
 export function ContentElementDecorator(props) {
@@ -16,15 +17,5 @@ export function ContentElementDecorator(props) {
         {props.children}
       </SelectionRect>
     </div>
-  );
-}
-
-function postInsertContentElementMessage({id, position}) {
-  window.parent.postMessage(
-    {
-      type: 'INSERT_CONTENT_ELEMENT',
-      payload: {id, position}
-    },
-    window.location.origin
   );
 }
