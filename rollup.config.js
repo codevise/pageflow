@@ -57,7 +57,11 @@ const plugins = [
   }),
   jst(),
   resolve(),
-  commonjs(),
+  commonjs({
+    namedExports: {
+      'node_modules/esrever/esrever.js': ['reverse']
+    }
+  }),
   reactSvg({
     svgo: {multipass: true}
   })

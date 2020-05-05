@@ -35,6 +35,8 @@ export {EntryStateProvider, useFile} from '../entryState'
 export {useEditorSelection} from './EditorState';
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
 
+export {EditableText} from './EditableText';
+
 window.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);
   browser.detectFeatures().then(function(){
