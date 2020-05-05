@@ -1,0 +1,31 @@
+.root {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video_player {
+  width: 100%;
+  height: 100%;
+  transition: transform ease 0.2s;
+}
+
+.video_player > div {
+  width: 100%;
+  height: 100%;
+}
+
+.video_player video {
+  width: 100%;
+  height: auto;
+  outline: none;
+}
+
+.video_player video:focus {
+  outline: none;
+}
+
+.backdrop {
+  object-fit: cover;
+}
