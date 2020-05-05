@@ -92,6 +92,10 @@ export const EntryPreviewView = Marionette.ItemView.extend({
           editor
         });
       }
+      else if (message.data.type === 'UPDATE_CONTENT_ELEMENT') {
+        const {id, configuration} = message.data.payload;
+        this.model.contentElements.get(id).configuration.set(configuration);
+      }
     }
   }
 });

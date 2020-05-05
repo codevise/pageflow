@@ -1,7 +1,11 @@
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {EntryPreviewView} from 'editor/views/EntryPreviewView';
 import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView'
-import {postInsertContentElementMessage} from 'frontend/inlineEditing/postMessage';
+import {
+  postInsertContentElementMessage,
+  postUpdateContentElementMessage
+} from 'frontend/inlineEditing/postMessage';
+import {setupGlobals} from 'pageflow/testHelpers';
 import {normalizeSeed, tick, factories} from 'support';
 
 describe('EntryPreviewView', () => {
@@ -10,6 +14,11 @@ describe('EntryPreviewView', () => {
   afterEach(() => {
     // Remove post message event listener
     view.onClose();
+  });
+
+  setupGlobals({
+    // Required for url generation of content elements
+    entry: () => factories.entry(ScrolledEntry)
   });
 
   it('renders seed html in iframe', () => {
@@ -225,5 +234,28 @@ describe('EntryPreviewView', () => {
       editor.on('navigate', resolve);
       window.postMessage({type: 'SELECTED', payload: {}}, '*');
     })).resolves.toBe('/');
+  });
+
+  it('updates configuration on UPDATE_CONTENT_ELEMENT message', () => {
+    document.body.innerHTML = seedBodyFragment;
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    view = new EntryPreviewView({editor, model: entry});
+
+    view.render();
+    document.body.appendChild(view.el);
+    view.onShow();
+
+    return expect(new Promise(resolve => {
+      const contentElement = entry.contentElements.get(1);
+      contentElement.on('change:configuration', () => {
+        resolve(contentElement.configuration.get('some'));
+      });
+      postUpdateContentElementMessage({id: 1, configuration: {some: 'value'}});
+    })).resolves.toEqual('value');
   });
 })
