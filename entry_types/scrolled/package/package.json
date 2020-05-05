@@ -8,6 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "core-js": "^3.6.5",
+    "debounce": "^1.2.0",
     "intersection-observer": "^0.7.0",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
