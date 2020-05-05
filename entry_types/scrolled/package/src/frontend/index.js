@@ -10,6 +10,7 @@ import {setupI18n} from './i18n';
 import './global.module.css';
 import {EntryStateProvider} from '../entryState';
 import {EditorStateProvider} from './EditorState';
+import {loadInlineEditingComponents} from './inlineEditing';
 
 const editMode = window.location.pathname.indexOf('/editor/entries') === 0;
 
@@ -32,6 +33,16 @@ export {useEditorSelection} from './EditorState';
 
 window.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);
+
+  if (editMode) {
+    loadInlineEditingComponents().then(() => render(seed));
+  }
+  else {
+    render(seed);
+  }
+}
+
+function render(seed) {
   ReactDOM.render(<Root seed={seed} />, document.getElementById('root'));
 }
 

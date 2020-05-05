@@ -190,7 +190,7 @@ const pageflowScrolled = [
   {
     input: pageflowScrolledPackageRoot + '/src/frontend/index.js',
     output: {
-      file: pageflowScrolledPackageRoot + '/frontend.js',
+      dir: pageflowScrolledPackageRoot + '/frontend',
       format: 'esm',
     },
     external,

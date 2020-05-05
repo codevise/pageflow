@@ -1,6 +1,6 @@
 /node_modules
 /editor.js
-/frontend.js
+/frontend
 /contentElements-editor.js
 /contentElements-frontend.js
 /.storybook/out/
