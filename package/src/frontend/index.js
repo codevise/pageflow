@@ -1,6 +1,5 @@
 
 export {log, debugMode} from './base';
-export {default as Object} from '../Object';
 export * from './assetUrls';
 export * from './cookies';
 export * from './events';

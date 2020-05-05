@@ -1,4 +1,4 @@
-import {Object} from 'pageflow/frontend';
+import Object from './Object'
 
 export const EntryData = Object.extend({
   getThemingOption: function(name) {

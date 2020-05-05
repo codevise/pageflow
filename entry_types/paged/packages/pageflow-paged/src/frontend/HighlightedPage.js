@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import {Object} from 'pageflow/frontend';
+import Object from './Object'
 import {state} from './state';
 
 export const HighlightedPage = Object.extend({

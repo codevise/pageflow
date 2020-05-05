@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import {AdjacentPages} from './AdjacentPages';
-import {Object} from 'pageflow/frontend';
+import Object from '../Object'
 
 
 export const SuccessorPreparer = Object.extend({

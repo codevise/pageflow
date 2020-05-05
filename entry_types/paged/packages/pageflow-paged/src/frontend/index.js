@@ -1,6 +1,7 @@
 import 'jquery-ui';
 
 import './jqueryUtils';
+export {default as Object} from './Object';
 
 export * from './EntryData';
 export * from './SeedEntryData';
