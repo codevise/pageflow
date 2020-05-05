@@ -204,12 +204,98 @@ describe('watch', () => {
         dispatch
       });
 
-      posts.add({title: 'No id yet'})
+      posts.add({title: 'No id yet'});
     });
     const [state,] = result.current;
     const items = getItems(state, 'posts');
 
     expect(items).toEqual([]);
+  });
+
+  it('ignores not yet persisted items already in collection when persisted item is added', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection();
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id', 'title'],
+        dispatch
+      });
+
+      posts.add({title: 'No id yet'});
+      posts.add({id: 5, title: 'Persisted'});
+    });
+    const [state,] = result.current;
+    const items = getItems(state, 'posts');
+
+    expect(items.length).toEqual(1);
+  });
+
+  it('ignores not yet persisted items already in collection when persisted item is removed', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection([{id: 5, title: 'Persisted'}]);
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id', 'title'],
+        dispatch
+      });
+
+      posts.add({title: 'No id yet'});
+      posts.remove({id: 5});
+    });
+    const [state,] = result.current;
+    const items = getItems(state, 'posts');
+
+    expect(items).toEqual([]);
+  });
+
+  it('ignores when not yet persisted items change', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection();
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id', 'title'],
+        dispatch
+      });
+
+      posts.add({title: 'No id yet'});
+      posts.at(0).set({title: 'Updated'})
+    });
+    const [state,] = result.current;
+    const item = getItem(state, 'posts', undefined);
+
+    expect(item).toBeUndefined();
+  });
+
+  it('ignores when not yet persisted item´s configuration changes', () => {
+    const {result} = renderHook(() => useCollections());
+    const model = new Backbone.Model({});
+    model.configuration = new Backbone.Model({title: 'Title from configuration'});
+    const posts = new Backbone.Collection(model);
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id', 'title'],
+        includeConfiguration: true,
+        dispatch
+      });
+
+      model.trigger('change:configuration', model);
+    });
+    const [state,] = result.current;
+    const item = getItem(state, 'posts', undefined);
+
+    expect(item).toBeUndefined();
   });
 
   it('adds items once persisted', () => {

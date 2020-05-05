@@ -111,7 +111,7 @@ export function watchCollection(collection,
         payload: {
           collectionName: name,
           keyAttribute: keyAttribute,
-          order: collection.pluck(keyAttribute),
+          order: collection.pluck(keyAttribute).filter(Boolean),
           attributes: getAttributes(model, options)
         }
       });
@@ -119,7 +119,7 @@ export function watchCollection(collection,
   }, handle);
 
   collection.on('change', model => {
-    if (hasChangedAttributes(model, watchedAttributeNames)) {
+    if (hasChangedAttributes(model, watchedAttributeNames) && !model.isNew()) {
       dispatch({
         type: CHANGE,
         payload: {
@@ -132,23 +132,27 @@ export function watchCollection(collection,
   }, handle);
 
   if (includeConfiguration) {
-    collection.on('change:configuration', model => dispatch({
-      type: CHANGE,
-      payload: {
-        collectionName: name,
-        keyAttribute: keyAttribute,
-        attributes: getAttributes(model, options)
+    collection.on('change:configuration', model => {
+      if (!model.isNew()) {
+        dispatch({
+          type: CHANGE,
+          payload: {
+            collectionName: name,
+            keyAttribute: keyAttribute,
+            attributes: getAttributes(model, options)
+          }
+        })
       }
-    }), handle);
+    }, handle);
   }
 
   collection.on('remove', model => {
-    if (!tearingDown) {
+    if (!tearingDown && !model.isNew()) {
       dispatch({
         type: REMOVE,
         payload: {
           collectionName: name,
-          order: collection.pluck(keyAttribute),
+          order: collection.pluck(keyAttribute).filter(Boolean),
           key: model.attributes[keyAttribute]
         }
       })
