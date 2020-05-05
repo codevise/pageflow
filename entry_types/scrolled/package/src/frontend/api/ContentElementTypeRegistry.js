@@ -33,4 +33,8 @@ export class ContentElementTypeRegistry {
   getComponent(typeName) {
     return this.types[typeName] && this.types[typeName].component;
   }
+
+  getOptions(typeName) {
+    return this.types[typeName];
+  }
 }
