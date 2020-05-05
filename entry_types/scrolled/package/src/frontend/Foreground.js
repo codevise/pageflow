@@ -1,19 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {useEditorSelection} from './EditorState';
+import {withInlineEditingDecorator} from './inlineEditing';
 
 import styles from './Foreground.module.css';
 
-export default function Foreground(props) {
-  const {resetSelection} = useEditorSelection();
-
+export default withInlineEditingDecorator('ForegroundDecorator', function Foreground(props) {
   return (
-    <div className={className(props)} onClick={resetSelection}>
+    <div className={className(props)}>
       {props.children}
     </div>
   );
-}
+})
 
 function className(props) {
   return classNames(

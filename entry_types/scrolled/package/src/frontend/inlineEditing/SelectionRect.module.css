@@ -1,0 +1,91 @@
+@value selectionWidth: 1px;
+@value selectionPadding: -6px;
+@value selectionPadding2: -0.5em;
+
+.main {
+  position: relative;
+}
+
+.main:after {
+  content: '';
+  position: absolute;
+  top: selectionPadding2;
+  left: selectionPadding2;
+  right: selectionPadding2;
+  bottom: selectionPadding2;
+  pointer-events: none;
+  opacity: 0.8
+}
+
+.selected:after {
+  border-left: solid 1px currentColor;
+  border-right: solid 1px currentColor;
+}
+
+.toolbar {
+  position: absolute;
+  top: -40px;
+  right: -15px;
+  z-index: 1;
+}
+
+.insert {
+  display: none;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.insertHovered.insert {
+  opacity: 1;
+}
+
+.start .insert-before,
+.end .insert-after {
+  display: block;
+}
+
+.insert::before,
+.insert::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: calc(50% - 5px);
+  height: 0;
+  border-bottom: solid 1px currentColor;
+}
+
+.insert::before {
+  left: selectionPadding2;
+}
+
+.insert::after {
+  right: selectionPadding2;
+}
+
+.insertButton {
+  pointer-events: all;
+  border: 0;
+  background: none;
+  color: currentColor;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  top: -8px;
+  padding: 2px 10px;
+}
+
+.insert-before,
+.insert-after {
+  composes: insert;
+}
+
+.insert-before {
+  top: -0.5em;
+}
+
+.insert-after {
+  top: calc(100% + 0.5em);
+}
