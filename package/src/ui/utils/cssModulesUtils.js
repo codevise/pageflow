@@ -74,7 +74,7 @@ export function ui(styles, ...classNames) {
  *         <button class=${styles.addButton}></button>
  *       `,
  *
- *       events: cssModulesUtils.ui(styles, {
+ *       events: cssModulesUtils.events(styles, {
  *         'click addButton': () => console.log('clicked add button');
  *       })
  *     });

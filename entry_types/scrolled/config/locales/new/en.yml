@@ -274,3 +274,4 @@ en:
         save_error: There was an error while saving this section.
       insert_content_element:
         header: Insert element
+        cancel: Cancel

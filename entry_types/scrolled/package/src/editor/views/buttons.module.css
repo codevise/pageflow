@@ -3,7 +3,18 @@
   composes: icon_button from global;
 }
 
+.unstyledButton {
+  width: 100%;
+  border: 0;
+  text-align: initial;
+}
+
 .addButton {
   composes: iconButton;
   composes: plusCircled from './icons.module.css';
+}
+
+.cancelButton {
+  composes: iconButton;
+  composes: cancel from './icons.module.css';
 }

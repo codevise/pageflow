@@ -1,5 +1,3 @@
-@value selectionColor from '../../editor/views/colors.module.css';
-
 @value backgroundColor: rgba(0, 0, 0, 0.8);
 @value borderColor: rgba(255, 255, 255, 0.2);
 
@@ -48,27 +46,6 @@
   right: -6px;
 }
 
-.selected.root {
-  opacity: 0.8;
-}
-
-.selected .right,
-.selected .left {
-  width: 13px;
-  background-color: currentColor;
-  oopacity: 0.8;
-  height: 5px;
-  top: calc(50% - 2px);
-}
-
-.selected .right {
-  right: -6px;
-}
-
-.selected .left {
-  left: -6px;
-}
-
 .middle {
   composes: bar;
   opacity: 0;
@@ -76,12 +53,4 @@
   left: 0;
   top: 50%;
   height: 1px;
-}
-
-.selected .middle {
-  opacity: 1;
-}
-
-.selected .box {
-  opacity: 0;
 }
