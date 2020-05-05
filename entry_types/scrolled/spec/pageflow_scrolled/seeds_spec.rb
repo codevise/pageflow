@@ -434,6 +434,26 @@ module PageflowScrolled
           expect(video_file.state).to eq('encoded')
         end
 
+        it 'assigns output_presences when transcoding is skipped' do
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   video_files: {
+                                                     'some-video' => {
+                                                       'url' => 'https://example.com/some.mp4'
+                                                     }
+                                                   },
+                                                   chapters: []
+                                                 },
+                                                 options: {
+                                                   skip_encoding: true
+                                                 })
+
+          video_file = entry.draft.find_files(Pageflow::VideoFile).first
+
+          expect(video_file.output_presences).to include('high' => true)
+        end
+
         context 'with text track' do
           it 'rewrites parent file id' do
             entry = SeedsDsl.sample_scrolled_entry(attributes: {

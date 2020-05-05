@@ -90,7 +90,7 @@ namespace :pageflow_scrolled do
             }
           },
           options: {
-            skip_encoding: true
+            skip_encoding: ENV.fetch('PAGEFLOW_SKIP_ENCODING_STORYBOOK_FILES', false)
           }
         )
       end

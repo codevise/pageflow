@@ -78,5 +78,5 @@ function AudioPlayer(props) {
 
 Audio.defaultProps = {
   interactive: false,
-  controls: false
+  controls: true
 };

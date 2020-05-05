@@ -4,7 +4,7 @@ import {storiesOfContentElement, filePermaId} from 'pageflow-scrolled/spec/suppo
 storiesOfContentElement(module, {
   typeName: 'inlineVideo',
   baseConfiguration: {
-    id: null,
+    id: filePermaId('videoFiles', 'interview_toni'),
     autoplay: false,
     controls: false
   }
