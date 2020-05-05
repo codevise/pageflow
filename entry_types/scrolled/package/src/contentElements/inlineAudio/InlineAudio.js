@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import classNames from 'classnames';
 
-import {Audio, useOnScreen} from 'pageflow-scrolled/frontend';
+import {AudioPlayer, useOnScreen} from 'pageflow-scrolled/frontend';
 
 import styles from './InlineAudio.module.css';
 
@@ -13,9 +13,12 @@ export function InlineAudio({configuration}) {
     <div ref={ref} className={classNames(styles.root)}>
       <div>
         <div className={styles.inner}>
-          <Audio {...configuration}
-                 state={onScreen ? 'active' : 'inactive'}
-                 interactive={true} />
+          <AudioPlayer autoplay={configuration.autoplay}
+                       controls={configuration.controls}
+                       id={configuration.id}
+                       state={onScreen ? 'active' : 'inactive'}
+                       quality={'high'}
+                       interactive={true} />
         </div>
       </div>
     </div>
