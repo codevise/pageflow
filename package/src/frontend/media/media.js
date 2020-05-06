@@ -2,7 +2,9 @@ import {createMediaPlayer} from './createMediaPlayer';
 
 export const media = {
   players: {},
+  muteState: true,
   mute: function (value) {
+    this.muteState = value;
     Object.values(this.players).forEach(function(player){
       player.muted(value);
     });
@@ -10,6 +12,7 @@ export const media = {
   getPlayer: function (fileSource, options) {
     options.playerId = options.playerId || Object.keys(this.players).length;
     let player = createMediaPlayer(options);
+    player.muted(this.muteState);
     player.src(fileSource);
     this.players[options.playerId] = player;
     player.playerId = options.playerId;
