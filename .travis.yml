@@ -130,8 +130,8 @@ jobs:
           export PAGEFLOW_SKIP_ENCODING_STORYBOOK_FILES=true
           export S3_OUTPUT_HOST_ALIAS=de-codevise-pageflow-storybook-seed.s3-eu-west-1.amazonaws.com
           export PT=b55731926f7bcb9344a0b3ff662613954a4137d3c21c1be748e9929823f19b08
-        - (cd entry_types/scrolled; bundle exec rake pageflow_scrolled:storybook:seed:setup[package/.storybook/seed.json])
-        - (cd entry_types/scrolled/package; yarn run snapshot)
+        - (cd entry_types/scrolled; bundle exec rake pageflow_scrolled:storybook:seed:setup[package/.storybook/seed.json]) || travis_terminate 1
+        - (cd entry_types/scrolled/package; yarn run snapshot) || travis_terminate 1
         - |
           # Publish storybook to GitHub pages.
 
