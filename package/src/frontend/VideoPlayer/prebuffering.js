@@ -2,6 +2,8 @@ import {browser} from '../browser';
 import {log} from '../base';
 
 export const prebuffering = function(player) {
+  let prebufferPromiseReject;
+
   player.isBufferedAhead = function(delta, silent) {
     // video.js only gives us one time range starting from 0 here. We
     // still ask for the last time range to be on the safe side.
@@ -35,6 +37,7 @@ export const prebuffering = function(player) {
     let promiseResolve;
     const promise = new Promise((resolve, reject) => {
       promiseResolve = resolve;
+      prebufferPromiseReject = reject;
     });
 
     if (browser.has('prebuffering support')) {
@@ -72,7 +75,7 @@ export const prebuffering = function(player) {
     if (player.prebufferPromise) {
       log('ABORT prebuffering');
 
-      player.prebufferPromise.reject();
+      prebufferPromiseReject();
       player.prebufferPromise = null;
     }
   };
