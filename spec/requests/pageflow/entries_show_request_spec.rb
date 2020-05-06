@@ -34,7 +34,7 @@ module Pageflow
 
     context 'with other known format' do
       it 'responds with not found' do
-        entry = create(:entry, :published, type_name: 'test')
+        entry = create(:entry, :published)
 
         get(short_entry_url(entry), headers: {'HTTP_ACCEPT' => 'image/png'})
 
@@ -44,7 +44,7 @@ module Pageflow
 
     context 'with unknown format' do
       it 'responds with not found' do
-        entry = create(:entry, :published, type_name: 'test')
+        entry = create(:entry, :published)
 
         get(short_entry_url(entry), headers: {'HTTP_ACCEPT' => 'not-known'})
 
@@ -54,7 +54,12 @@ module Pageflow
 
     describe 'with html format' do
       it 'delegates to entry type frontend app for published entry' do
-        entry = create(:entry, :published, type_name: 'test', title: 'some-entry')
+        account = create(:account, features_configuration: {'test_entry_type' => true})
+        entry = create(:entry,
+                       :published,
+                       type_name: 'test',
+                       title: 'some-entry',
+                       account: account)
 
         get(short_entry_url(entry))
 
@@ -63,7 +68,7 @@ module Pageflow
       end
 
       it 'responds with not found for non-published entry' do
-        entry = create(:entry, type_name: 'test')
+        entry = create(:entry)
 
         get(short_entry_url(entry))
 
@@ -73,8 +78,7 @@ module Pageflow
 
       it 'responds with forbidden for entry published with password' do
         entry = create(:entry, :published_with_password,
-                       password: 'abc123abc',
-                       type_name: 'test')
+                       password: 'abc123abc')
 
         get(short_entry_url(entry))
 
@@ -84,7 +88,6 @@ module Pageflow
       it 'responds with success for entry published with password when correct password is '\
          'supplied' do
         entry = create(:entry, :published_with_password,
-                       type_name: 'test',
                        password: 'abc123abc')
 
         authorization =
@@ -105,7 +108,6 @@ module Pageflow
         it 'responds with success for matching entry' do
           account = create(:account, name: 'news')
           entry = create(:entry, :published,
-                         type_name: 'test',
                          account: account)
 
           get(short_entry_url(entry), headers: {'HTTP_HOST' => 'news.example.com'})
@@ -114,8 +116,7 @@ module Pageflow
         end
 
         it 'responds with not found for non-matching entry' do
-          entry = create(:entry, :published,
-                         type_name: 'test')
+          entry = create(:entry, :published)
 
           get(short_entry_url(entry), headers: {'HTTP_HOST' => 'news.example.com'})
 
@@ -125,8 +126,7 @@ module Pageflow
 
       describe 'with configured public_entry_redirect' do
         it 'redirects to returned location' do
-          entry = create(:entry, :published,
-                         type_name: 'test')
+          entry = create(:entry, :published)
 
           Pageflow.config.public_entry_redirect = ->(_, _) { '/some_location' }
 
@@ -136,8 +136,7 @@ module Pageflow
         end
 
         it 'redirects even before https redirect takes place' do
-          entry = create(:entry, :published,
-                         type_name: 'test')
+          entry = create(:entry, :published)
 
           Pageflow.config.public_https_mode = :enforce
           Pageflow.config.public_entry_redirect = ->(_, _) { '/some_location' }
@@ -149,8 +148,7 @@ module Pageflow
 
         it 'passes entry and request' do
           create(:entry, :published,
-                 title: 'some-entry',
-                 type_name: 'test')
+                 title: 'some-entry')
 
           Pageflow.config.public_entry_redirect = lambda do |passed_entry, request|
             "#{request.protocol}#{request.host}/#{passed_entry.slug}"
@@ -162,8 +160,7 @@ module Pageflow
         end
 
         it 'does not redirect if nil is returned' do
-          entry = create(:entry, :published,
-                         type_name: 'test')
+          entry = create(:entry, :published)
 
           Pageflow.config.public_entry_redirect = ->(_, _) { nil }
 
@@ -187,17 +184,8 @@ module Pageflow
           end
         end
 
-        before do
-          pageflow_configure do |config|
-            TestEntryType.register(config,
-                                   name: 'test_with_frame_header',
-                                   frontend_app: entry_type_app_setting_frame_header)
-          end
-        end
-
         it 'is preserved by default' do
-          entry = create(:entry, :published,
-                         type_name: 'test_with_frame_header')
+          entry = create(:entry, :published)
 
           get(short_entry_url(entry))
 
@@ -206,8 +194,7 @@ module Pageflow
 
         context 'with embed parameter' do
           it 'is removed' do
-            entry = create(:entry, :published,
-                           type_name: 'test_with_frame_header')
+            entry = create(:entry, :published)
 
             get(entry_embed_url(entry))
 
@@ -219,7 +206,6 @@ module Pageflow
       context 'https mode' do
         it 'redirects to https when https is enforced' do
           entry = create(:entry, :published,
-                         type_name: 'test',
                          title: 'some-entry')
 
           Pageflow.config.public_https_mode = :enforce
@@ -231,7 +217,6 @@ module Pageflow
 
         it 'redirects to http when https is prevented' do
           entry = create(:entry, :published,
-                         type_name: 'test',
                          title: 'some-entry')
           Pageflow.config.public_https_mode = :prevent
 
@@ -241,8 +226,7 @@ module Pageflow
         end
 
         it 'stays on https when https mode is ignored' do
-          entry = create(:entry, :published,
-                         type_name: 'test')
+          entry = create(:entry, :published)
 
           Pageflow.config.public_https_mode = :ignore
 
@@ -252,8 +236,7 @@ module Pageflow
         end
 
         it 'stays on http when https mode is ignored' do
-          entry = create(:entry, :published,
-                         type_name: 'test')
+          entry = create(:entry, :published)
 
           Pageflow.config.public_https_mode = :ignore
 
