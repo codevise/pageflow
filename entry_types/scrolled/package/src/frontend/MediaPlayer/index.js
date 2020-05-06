@@ -3,6 +3,8 @@ import PlayerContainer from './PlayerContainer';
 import ScrollToSectionContext from "../ScrollToSectionContext";
 import {useMediaSettings} from '../useMediaSettings';
 
+export * from './usePlayerState';
+
 export function MediaPlayer(props){
   let playerRef = useRef();
   let scrollToSection = useContext(ScrollToSectionContext);
