@@ -32,43 +32,38 @@ export const prebuffering = function(player) {
     const interval = 200;
     const maxCount = secondsToWait * 1000 / interval;
     let count = 0;
-    let timeout;
-
-    let promiseResolve;
-    const promise = new Promise((resolve, reject) => {
-      promiseResolve = resolve;
-      prebufferPromiseReject = reject;
-    });
 
     if (browser.has('prebuffering support')) {
       if (!player.isBufferedAhead(delta) && !player.prebufferPromise) {
         log('prebuffering video ' + player.src());
 
-        timeout = function() {
-          setTimeout(function() {
-            if (!player.prebufferPromise) {
-              return;
-            }
+        player.prebufferPromise = new Promise((resolve, reject) => {
+          prebufferPromiseReject = reject;
+          wait();
 
-            count++;
+          function wait() {
+            setTimeout(function() {
+              if (!player.prebufferPromise) {
+                return;
+              }
 
-            if (player.isBufferedAhead(delta) || count > maxCount) {
-              log('finished prebuffering video ' + player.src());
-              promiseResolve();
-              player.prebufferPromise = null;
-            }
-            else {
-              timeout();
-            }
-          }, interval);
-        };
+              count++;
 
-        timeout();
-        player.prebufferPromise = promise;
+              if (player.isBufferedAhead(delta) || count > maxCount) {
+                log('finished prebuffering video ' + player.src());
+                resolve();
+                player.prebufferPromise = null;
+              }
+              else {
+                wait();
+              }
+            }, interval);
+          }
+        });
       }
     }
 
-    return player.prebufferPromise ? player.prebufferPromise : promise;
+    return player.prebufferPromise ? player.prebufferPromise : Promise.resolve();
   };
 
   player.abortPrebuffering = function() {
