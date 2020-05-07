@@ -75,7 +75,7 @@ export const prebuffering = function(player) {
     if (player.prebufferPromise) {
       log('ABORT prebuffering');
 
-      prebufferPromiseReject();
+      prebufferPromiseReject('prebuffering aborted');
       player.prebufferPromise = null;
     }
   };

@@ -3,7 +3,6 @@ import {prebuffering} from 'frontend/VideoPlayer/prebuffering';
 import {createTimeRange} from "$support/timeRanges";
 import sinon from 'sinon';
 
-
 describe('VideoPlayer', function() {
   describe('#prebuffering', function() {
     it('returns promise which resolves after prebuffering desired time', async () => {
@@ -22,16 +21,15 @@ describe('VideoPlayer', function() {
       expect(callback).toHaveBeenCalled();
     });
 
-    it('aborts prebuffering on pause', function() {
+    it('aborts prebuffering on pause', async () => {
       const player = fakePlayer();
-      const callback = sinon.spy();
 
       prebuffering(player);
 
-      player.prebuffer().then(callback);
+      const promise = player.prebuffer();
       player.pause();
 
-      expect(callback).not.toHaveBeenCalled();
+      await expect(promise).rejects.toBe('prebuffering aborted');
     });
   });
 
