@@ -1,3 +1,4 @@
+import './polyfills';
 
 export {log, debugMode} from './base';
 export * from './assetUrls';

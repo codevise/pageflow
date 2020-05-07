@@ -7,8 +7,6 @@
   "author": "Codevise Solutions GmbH <info@codevise.de>",
   "license": "MIT",
   "dependencies": {
-    "classlist-polyfill": "^1.2.0",
-    "core-js": "^3.6.5",
     "pageflow": "15.1.0"
   },
   "devDependencies": {
