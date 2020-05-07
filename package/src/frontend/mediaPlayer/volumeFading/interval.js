@@ -2,7 +2,6 @@ export const interval = function(player) {
   const originalVolume = player.volume;
 
   let fadeVolumeResolve;
-  let fadeVolumeReject;
   let fadeVolumeInterval;
 
   player.volume = function(value) {
@@ -17,7 +16,6 @@ export const interval = function(player) {
     cancelFadeVolume();
 
     return new Promise(function(resolve, reject) {
-      fadeVolumeReject = reject;
       const resolution = 10;
       const startValue = volume();
       const steps = duration / resolution;
@@ -49,22 +47,21 @@ export const interval = function(player) {
 
   function resolveFadeVolume() {
     clearInterval(fadeVolumeInterval);
-    fadeVolumeResolve();
+    fadeVolumeResolve('done');
 
     fadeVolumeInterval = null;
     fadeVolumeResolve = null;
-    fadeVolumeReject = null;
   }
 
   function cancelFadeVolume() {
-    if (fadeVolumeReject) {
-      fadeVolumeReject();
+    if (fadeVolumeResolve) {
+      fadeVolumeResolve('cancelled');
+      fadeVolumeResolve = null;
     }
+
     if (fadeVolumeInterval) {
       clearInterval(fadeVolumeInterval);
       fadeVolumeInterval = null;
-      fadeVolumeResolve = null;
-      fadeVolumeReject = null;
     }
   }
 };

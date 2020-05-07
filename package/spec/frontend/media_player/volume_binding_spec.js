@@ -261,18 +261,6 @@ describe('volumeBinding', function() {
       expect(player.originalPause).toHaveBeenCalled();
     });
 
-
-    it('calls original pause even when fade is canceled', async () => {
-      var player = fakePlayer({playing: true});
-      settings.set({volume: 98});
-      volumeBinding(player, settings);
-
-      const promise = player.fadeOutAndPause(500);
-      player.fadingPromiseReject();
-      await promise;
-      expect(player.originalPause).toHaveBeenCalled();
-    });
-
     it('does not call original pause when played during fade out', async () => {
       var player = fakePlayer({playing: true});
       settings.set({volume: 98});

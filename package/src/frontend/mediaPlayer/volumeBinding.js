@@ -43,7 +43,7 @@ export const volumeBinding = function(player, settings, options) {
     player.intendToPause();
     stopListeningToVolumeSetting();
 
-    return player.fadeVolume(0, duration).catch(() => {}).then(function() {
+    return player.fadeVolume(0, duration).then(function() {
       return player.ifIntendingToPause().then(function() {
         originalPause.call(player);
       });

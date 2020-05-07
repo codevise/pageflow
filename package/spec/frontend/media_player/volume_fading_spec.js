@@ -1,19 +1,18 @@
 import {mediaPlayer} from 'pageflow/frontend';
 
 import '$support/fakeBrowserFeatures';
-import sinon from 'sinon';
 
 describe('mediaPlayer.volumeFading', function() {
   var volumeFading = mediaPlayer.volumeFading;
   describe('#volume', function() {
-    it('rejects promise of running fade', async () => {
+    it('resolves promise of running fade', async () => {
       const player = fakePlayer({volume: 100});
       volumeFading(player);
 
       const promise = player.fadeVolume(50, 10);
       player.volume(90);
 
-      await expect(promise).rejects.toBeUndefined();
+      await expect(promise).resolves.toBe('cancelled');
     });
   });
 
@@ -54,15 +53,14 @@ describe('mediaPlayer.volumeFading', function() {
       return promise;
     });
 
-    it('rejects promise if called again before fade is finished', function() {
-      var failHandler = sinon.spy();
+    it('resolves promise if called again before fade is finished', async () => {
       var player = fakePlayer({volume: 100});
       volumeFading(player);
 
-      player.fadeVolume(50, 10).then(null, failHandler);
-      return player.fadeVolume(90, 10).then(function() {
-        expect(failHandler).toHaveBeenCalled();
-      });
+      const promise = player.fadeVolume(50, 10);
+      player.fadeVolume(90, 10);
+
+      await expect(promise).resolves.toBe('cancelled');
     });
   });
 

@@ -4,7 +4,6 @@ export const webAudio = function(player, audioContext) {
   var gainNode;
 
   var currentResolve;
-  var currentReject;
   var currentTimeout;
 
   var currentValue = 1;
@@ -85,7 +84,6 @@ export const webAudio = function(player, audioContext) {
 
         return new Promise(function(resolve, reject) {
           currentResolve = resolve;
-          currentReject = reject;
           currentTimeout = setTimeout(resolveCurrent, duration);
         });
       },
@@ -111,23 +109,21 @@ export const webAudio = function(player, audioContext) {
 
   function resolveCurrent() {
     clearTimeout(currentTimeout);
-    currentResolve();
+    currentResolve('done');
 
     currentTimeout = null;
     currentResolve = null;
-    currentReject = null;
   }
 
   function cancel() {
-    if (currentReject) {
+    if (currentResolve) {
       gainNode.gain.cancelScheduledValues(audioContext.currentTime);
 
       clearTimeout(currentTimeout);
-      currentReject();
+      currentResolve('cancelled');
 
       currentTimeout = null;
       currentResolve = null;
-      currentReject = null;
 
       updateCurrentValueFromComputedValue();
     }
