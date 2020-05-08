@@ -1,5 +1,3 @@
-import _ from 'underscore';
-
 export const cueSettingsMethods = function(player) {
   /**
    * Specify the display position of text tracks. This method can also
@@ -32,7 +30,7 @@ export const cueSettingsMethods = function(player) {
 
     var changed = false;
 
-    _(player.textTracks()).each(function(textTrack) {
+    Array.from(player.textTracks()).forEach(function(textTrack) {
       if (textTrack.mode == 'showing' && textTrack.cues) {
         for (var i = 0; i < textTrack.cues.length; i++) {
           if (textTrack.cues[i].line != value) {

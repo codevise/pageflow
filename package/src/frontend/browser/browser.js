@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import {log, debugMode} from '../base';
 /**
  * Browser feature detection.
@@ -116,11 +115,11 @@ export const browser = (function(){
 
       asyncHas.all = function(/* arguments */) {
         return Promise.all(arguments).then(function(results) {
-          return _.all(results);
+          return results.every(result => result);
         });
       };
 
-      Promise.all(_.map(_.keys(tests), function(name) {
+      Promise.all(Object.keys(tests).map(function(name) {
         return asyncHas(name).then(function(result) {
           var cssClassName = name.replace(/ /g, '_');
 

@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import {browser} from './browser';
 
 /**
@@ -48,7 +47,7 @@ export class Features {
    * @return [Boolean]
    */
   isEnabled(name) {
-    return _(this.enabledFeatureNames).contains(name);
+    return this.enabledFeatureNames.includes(name);
   }
 
   /** @api private */
@@ -56,8 +55,8 @@ export class Features {
     var fns = this.registry[scope] || {};
     this.enabledFeatureNames = this.enabledFeatureNames.concat(names);
 
-    _(names).each(function(name) {
-      _(fns[name] || []).each(function(fn) {
+    names.forEach(function(name) {
+      (fns[name] || []).forEach(function(fn) {
         fn();
       });
     });

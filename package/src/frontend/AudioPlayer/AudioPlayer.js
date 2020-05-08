@@ -1,6 +1,3 @@
-
-import _ from 'underscore';
-
 import {mediaPlayer} from '../mediaPlayer';
 import {browser} from '../browser';
 import {mediaEvents} from './mediaEvents';
@@ -66,9 +63,10 @@ export const AudioPlayer = function(sources, options) {
     pauseInBackground(audio);
   }
 
-  mediaPlayer.enhance(audio, _.extend({
-    loadWaiting: true
-  }, options || {}));
+  mediaPlayer.enhance(audio, {
+    loadWaiting: true,
+    ...options
+  });
 
   seekWithInvalidStateHandling(audio);
   rewindMethod(audio);
@@ -76,10 +74,8 @@ export const AudioPlayer = function(sources, options) {
 
   audio.src = function(sources) {
     readyPromise.then(function() {
-      var source = _.detect(sources || [], function(source) {
-        if (codecMapping[audio.settings.player.codec] === source.type) {
-          return source.src;
-        }
+      var source = (sources || []).find(function(source) {
+        return (codecMapping[audio.settings.player.codec] === source.type);
       });
 
       audio.load(source ? source.src : '');
@@ -127,7 +123,7 @@ AudioPlayer.fromAudioTag = function(element, options) {
       src: this.getAttribute('src'),
       type: this.getAttribute('type')
     };
-  }).get(), _.extend({tag: element[0]}, options || {}));
+  }).get(), {tag: element[0], ...options});
 };
 
 AudioPlayer.fromScriptTag = function(element, options) {

@@ -1,5 +1,4 @@
 import BackboneEvents from 'backbone-events-standalone';
-import _ from 'underscore';
 
 export const Null = function() {
   this.playAndFadeIn = function() {
@@ -37,4 +36,4 @@ export const Null = function() {
   };
 };
 
-_.extend(Null.prototype, BackboneEvents);
+Object.assign(Null.prototype, BackboneEvents);

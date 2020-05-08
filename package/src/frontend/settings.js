@@ -1,6 +1,5 @@
 import {log} from './base';
 import BackboneEvents from 'backbone-events-standalone';
-import _ from 'underscore';
 
 class Settings {
   constructor() {
@@ -31,7 +30,7 @@ class Settings {
   }
 
   toJSON() {
-    return _.clone(this.attributes);
+    return {...this.attributes};
   }
 
   initialize() {
@@ -65,6 +64,6 @@ class Settings {
   }
 }
 
-_.extend(Settings.prototype, BackboneEvents);
+Object.assign(Settings.prototype, BackboneEvents);
 
 export const settings = new Settings();

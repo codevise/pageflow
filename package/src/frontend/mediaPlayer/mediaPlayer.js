@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import {handleFailedPlay} from './handleFailedPlay';
 import {asyncPlay} from './asyncPlay';
 import {hooks} from './hooks';
@@ -11,9 +10,10 @@ import {browser} from '../browser';
 
 export const mediaPlayer = {
   enhance: function(player, options) {
-    handleFailedPlay(player, _.extend({
-      hasAutoplaySupport: browser.has('autoplay support')
-    }, options));
+    handleFailedPlay(player, {
+      hasAutoplaySupport: browser.has('autoplay support'),
+      ...options
+    });
 
     asyncPlay(player);
 
