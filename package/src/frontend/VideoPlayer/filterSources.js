@@ -1,7 +1,7 @@
 import {browser} from '../browser';
 
 export const filterSources = function(playerElement) {
-  if (playerElement.tagName !== 'Video') {
+  if (playerElement.tagName.toLowerCase() !== 'video') {
     return playerElement;
   }
 
