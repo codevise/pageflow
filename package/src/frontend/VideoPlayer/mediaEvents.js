@@ -1,5 +1,4 @@
 import {events} from '../events';
-import {browser} from '../browser';
 
 export const mediaEvents = function(player, context) {
   function triggerMediaEvent(name) {
@@ -9,7 +8,7 @@ export const mediaEvents = function(player, context) {
       currentTime: player.currentTime(),
       duration: player.duration(),
       volume: player.volume(),
-      bitrate: browser.has('high bandwidth') ? 3500000 : 2000000
+      bitrate: 3500000
     });
   }
 
