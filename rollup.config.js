@@ -120,9 +120,8 @@ const pageflow = [
     output: {
       file: pageflowPackageRoot + '/frontend.js',
       format: 'esm',
-      globals: frontendGlobals
     },
-    external: Object.keys(frontendGlobals),
+    external,
     plugins
   },
   {
