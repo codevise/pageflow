@@ -12,9 +12,10 @@ export const media = {
     let player = createMediaPlayer(options);
     player.src(fileSource);
     this.players[options.playerId] = player;
+    player.playerId = options.playerId;
     return player;
   },
-  releasePlayer: function (playerId) {
-    delete this.players[playerId];
+  releasePlayer: function (player) {
+    delete this.players[player.playerId];
   }
 };

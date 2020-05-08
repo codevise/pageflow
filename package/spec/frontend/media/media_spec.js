@@ -89,10 +89,8 @@ describe('media', function() {
 
     it('should not apply mute on released player', function () {
       let player1 = media.getPlayer(fileSources, {});
-      let player2 = media.getPlayer(fileSources, {
-        playerId: 'test'
-      });
-      media.releasePlayer('test');
+      let player2 = media.getPlayer(fileSources, {});
+      media.releasePlayer(player2);
       media.mute(true);
 
       expect(player1.muted()).toEqual(true);
