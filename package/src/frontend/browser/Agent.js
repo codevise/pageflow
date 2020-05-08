@@ -1,4 +1,3 @@
-import _ from 'underscore';
 /**
  * Detect browser via user agent. Use only if feature detection is not
  * an option.
@@ -56,7 +55,7 @@ export const Agent = function(userAgent) {
     matchesMobileSafari: function() {
       var matchers = [/iPod/i, /iPad/i, /iPhone/i];
 
-      return _.any(matchers, function(matcher) {
+      return matchers.some(function(matcher) {
         return userAgent.match(matcher);
       });
     },
@@ -68,7 +67,7 @@ export const Agent = function(userAgent) {
     matchesMobilePlatform: function() {
       var matchers = [/iPod/i, /iPad/i, /iPhone/i, /Android/i, /Silk/i, /IEMobile/i];
 
-      return _.any(matchers, function(matcher) {
+      return matchers.some(function(matcher) {
         return userAgent.match(matcher);
       });
     },

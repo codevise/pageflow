@@ -1,3 +1,5 @@
 import {browser} from 'pageflow/frontend';
 
-browser.detectFeatures();
+beforeEach(async () => {
+  await browser.detectFeatures();
+});

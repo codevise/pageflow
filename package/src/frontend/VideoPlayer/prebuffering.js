@@ -1,8 +1,9 @@
-import $ from 'jquery';
 import {browser} from '../browser';
 import {log} from '../base';
 
 export const prebuffering = function(player) {
+  let prebufferPromiseReject;
+
   player.isBufferedAhead = function(delta, silent) {
     // video.js only gives us one time range starting from 0 here. We
     // still ask for the last time range to be on the safe side.
@@ -26,51 +27,51 @@ export const prebuffering = function(player) {
   player.prebuffer = function(options) {
     options = options || {};
 
-    var delta = options.secondsToBuffer || 10;
-    var secondsToWait = options.secondsToWait || 3;
-    var interval = 200;
-    var maxCount = secondsToWait * 1000 / interval;
-    var count = 0;
-    var deferred = $.Deferred();
-    var timeout;
+    const delta = options.secondsToBuffer || 10;
+    const secondsToWait = options.secondsToWait || 3;
+    const interval = 200;
+    const maxCount = secondsToWait * 1000 / interval;
+    let count = 0;
 
     if (browser.has('prebuffering support')) {
-      if (!player.isBufferedAhead(delta) && !player.prebufferDeferred) {
+      if (!player.isBufferedAhead(delta) && !player.prebufferPromise) {
         log('prebuffering video ' + player.src());
 
-        timeout = function() {
-          setTimeout(function() {
-            if (!player.prebufferDeferred) {
-              return;
-            }
+        player.prebufferPromise = new Promise((resolve, reject) => {
+          prebufferPromiseReject = reject;
+          wait();
 
-            count++;
+          function wait() {
+            setTimeout(function() {
+              if (!player.prebufferPromise) {
+                return;
+              }
 
-            if (player.isBufferedAhead(delta) || count > maxCount) {
-              log('finished prebuffering video ' + player.src());
-              deferred.resolve();
-              player.prebufferDeferred = null;
-            }
-            else {
-              timeout();
-            }
-          }, interval);
-        };
+              count++;
 
-        timeout();
-        player.prebufferDeferred = deferred;
+              if (player.isBufferedAhead(delta) || count > maxCount) {
+                log('finished prebuffering video ' + player.src());
+                resolve();
+                player.prebufferPromise = null;
+              }
+              else {
+                wait();
+              }
+            }, interval);
+          }
+        });
       }
     }
 
-    return player.prebufferDeferred ? player.prebufferDeferred.promise() : deferred.resolve().promise();
+    return player.prebufferPromise ? player.prebufferPromise : Promise.resolve();
   };
 
   player.abortPrebuffering = function() {
-    if (player.prebufferDeferred) {
+    if (player.prebufferPromise) {
       log('ABORT prebuffering');
 
-      player.prebufferDeferred.reject();
-      player.prebufferDeferred = null;
+      prebufferPromiseReject('prebuffering aborted');
+      player.prebufferPromise = null;
     }
   };
 

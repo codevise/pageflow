@@ -1,6 +1,4 @@
-import $ from 'jquery';
-import Backbone from 'backbone';
-import _ from 'underscore';
+import BackboneEvents from 'backbone-events-standalone';
 import {AudioPlayer} from '../AudioPlayer';
 
 /**
@@ -77,7 +75,7 @@ export const MultiPlayer = function(pool, options) {
 
   function changeCurrent(id, callback) {
     if (!options.playFromBeginning && id === currentId && !current.paused()) {
-      return;
+      return Promise.resolve();
     }
 
     var player = pool.get(id);
@@ -89,19 +87,19 @@ export const MultiPlayer = function(pool, options) {
       stopEventPropagation(current);
     });
 
-    handleCrossFade(fadeOutPromise).then(function() {
+    return handleCrossFade(fadeOutPromise).then(function() {
       current = player;
       startEventPropagation(current, id);
 
-      handlePlayFromBeginning(player).then(function() {
-        callback(player);
+      return handlePlayFromBeginning(player).then(function() {
+        return callback(player);
       });
     });
   }
 
   function handleCrossFade(fadePomise) {
     if (options.crossFade) {
-      return new $.Deferred().resolve().promise();
+      return Promise.resolve();
     }
     else {
       return fadePomise;
@@ -113,7 +111,7 @@ export const MultiPlayer = function(pool, options) {
       return player.rewind();
     }
     else {
-      return new $.Deferred().resolve().promise();
+      return Promise.resolve();
     }
   }
 
@@ -144,4 +142,4 @@ export const MultiPlayer = function(pool, options) {
   }
 };
 
-_.extend(MultiPlayer.prototype, Backbone.Events);
+Object.assign(MultiPlayer.prototype, BackboneEvents);

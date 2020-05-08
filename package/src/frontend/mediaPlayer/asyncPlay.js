@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 export const asyncPlay = function(player) {
   var originalPlay = player.play;
   var originalPause = player.pause;
@@ -44,13 +42,13 @@ export const asyncPlay = function(player) {
   };
 
   function promiseFromBoolean(value) {
-    return new $.Deferred(function(deferred) {
+    return new Promise(function(resolve, reject) {
       if (value) {
-        deferred.resolve();
+        resolve();
       }
       else {
-        deferred.reject('aborted');
+        reject('aborted');
       }
-    }).promise();
+    });
   }
 };

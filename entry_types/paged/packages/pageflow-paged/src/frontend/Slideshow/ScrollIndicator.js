@@ -1,4 +1,5 @@
-import {Object, events} from 'pageflow/frontend';
+import Object from '../Object'
+import {events} from 'pageflow/frontend';
 
 export const ScrollIndicator = Object.extend({
   initialize: function(pageElement) {

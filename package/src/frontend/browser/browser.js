@@ -1,5 +1,3 @@
-import $ from 'jquery';
-import _ from 'underscore';
 import {log, debugMode} from '../base';
 /**
  * Browser feature detection.
@@ -9,7 +7,12 @@ import {log, debugMode} from '../base';
 export const browser = (function(){
   var tests = {},
       results = {},
-      ready = new $.Deferred();
+      featureDetectionComplete = false;
+
+  let readyPromiseResolve;
+  let readyPromise = new Promise(function(resolve, reject) {
+    readyPromiseResolve = resolve;
+  });
 
   return {
     off: {},
@@ -54,7 +57,7 @@ export const browser = (function(){
      * @memberof pageflow.browser
      */
     has: function(name) {
-      if (this.ready().state() != 'resolved') {
+      if (!featureDetectionComplete) {
         throw 'Feature detection has not finished yet.';
       }
 
@@ -68,11 +71,11 @@ export const browser = (function(){
     /**
      * A promise that is resolved once feature detection has finished.
      *
-     * @return [Promise]
+     * @return Promise
      * @memberof pageflow.browser
      */
     ready: function() {
-      return ready.promise();
+      return readyPromise;
     },
 
     /** @api private */
@@ -100,32 +103,35 @@ export const browser = (function(){
           }
         };
 
-        promises[name] = promises[name] || $.when(runTest(name));
+        promises[name] = promises[name] || Promise.all([runTest(name)]).then((a) => {return a[0]});
         return promises[name];
       };
 
       asyncHas.not = function(name) {
-        return asyncHas(name).pipe(function(result) {
+        return asyncHas(name).then(function(result) {
           return !result;
         });
       };
 
       asyncHas.all = function(/* arguments */) {
-        return $.when.apply(null, arguments).pipe(function(/* arguments */) {
-          return _.all(arguments);
+        return Promise.all(arguments).then(function(results) {
+          return results.every(result => result);
         });
       };
 
-      $.when.apply(null, _.map(_.keys(tests), function(name) {
+      Promise.all(Object.keys(tests).map(function(name) {
         return asyncHas(name).then(function(result) {
           var cssClassName = name.replace(/ /g, '_');
 
-          $('body').toggleClass('has_' + cssClassName, !!result);
-          $('body').toggleClass('has_no_' + cssClassName, !result);
+          document.body.classList.toggle('has_' + cssClassName, !!result)
+          document.body.classList.toggle('has_no_' + cssClassName, !result)
 
           results[name] = !!result;
         });
-      })).then(ready.resolve);
+      })).then(() => {
+        featureDetectionComplete = true;
+        readyPromiseResolve();
+      });
 
       return this.ready();
     }

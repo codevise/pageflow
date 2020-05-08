@@ -2,7 +2,6 @@ import sinon from 'sinon';
 import {mediaPlayer} from 'pageflow/frontend';
 
 describe('mediaPlayer.asyncPlay', function() {
-  
   var asyncPlay = mediaPlayer.asyncPlay;
   describe('#play', function() {
     it('sets intendingToPlay to true', function() {
@@ -45,48 +44,44 @@ describe('mediaPlayer.asyncPlay', function() {
   });
 
   describe('#ifIntendingToPlay', function() {
-    it('resolves if intending to play', function() {
-      var player = fakePlayer();
+    it('resolves if intending to play', async () => {
+      const player = fakePlayer();
       asyncPlay(player);
-      var handler = sinon.spy();
 
       player.intendToPlay();
-      player.ifIntendingToPlay().then(handler);
+      const promise = player.ifIntendingToPlay();
 
-      expect(handler).toHaveBeenCalled();
+      await expect(promise).resolves.toBeUndefined();
     });
 
-    it('rejects if not intending to play', function() {
-      var player = fakePlayer();
+    it('rejects if not intending to play', async () => {
+      const player = fakePlayer();
       asyncPlay(player);
-      var handler = sinon.spy();
 
-      player.ifIntendingToPlay().fail(handler);
+      const promise = player.ifIntendingToPlay();
 
-      expect(handler).toHaveBeenCalled();
+      await expect(promise).rejects.toEqual('aborted');
     });
   });
 
   describe('#ifIntendingToPause', function() {
-    it('resolves if intending to pause', function() {
+    it('resolves if intending to pause', async () => {
       var player = fakePlayer();
       asyncPlay(player);
-      var handler = sinon.spy();
 
       player.intendToPause();
-      player.ifIntendingToPause().then(handler);
+      const promise = player.ifIntendingToPause();
 
-      expect(handler).toHaveBeenCalled();
+      await expect(promise).resolves.toBeUndefined();
     });
 
-    it('rejects if not intending to pause', function() {
-      var player = fakePlayer();
+    it('rejects if not intending to pause', async () => {
+      const player = fakePlayer();
       asyncPlay(player);
-      var handler = sinon.spy();
 
-      player.ifIntendingToPause().fail(handler);
+      const promise = player.ifIntendingToPause();
 
-      expect(handler).toHaveBeenCalled();
+      await expect(promise).rejects.toEqual('aborted');
     });
   });
 

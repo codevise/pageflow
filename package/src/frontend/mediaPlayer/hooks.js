@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 export const hooks = function(player, hooks) {
   var originalPlay = player.play;
 
@@ -10,7 +8,7 @@ export const hooks = function(player, hooks) {
       player.trigger('beforeplay');
       player.intendToPlay();
 
-      return $.when(hooks.before()).then(function() {
+      return Promise.all([hooks.before()]).then(function() {
         return player.ifIntendingToPlay().then(function() {
           return originalPlay.apply(player, args);
         });

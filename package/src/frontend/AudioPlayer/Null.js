@@ -1,18 +1,16 @@
-import $ from 'jquery';
-import Backbone from 'backbone';
-import _ from 'underscore';
+import BackboneEvents from 'backbone-events-standalone';
 
 export const Null = function() {
   this.playAndFadeIn = function() {
-    return new $.Deferred().resolve().promise();
+    return Promise.resolve();
   };
 
   this.fadeOutAndPause = function() {
-    return new $.Deferred().resolve().promise();
+    return Promise.resolve();
   };
 
   this.changeVolumeFactor = function() {
-    return new $.Deferred().resolve().promise();
+    return Promise.resolve();
   };
 
   this.play = function() {};
@@ -24,11 +22,11 @@ export const Null = function() {
   };
 
   this.seek = function() {
-    return new $.Deferred().resolve().promise();
+    return Promise.resolve();
   };
 
   this.rewind = function() {
-    return new $.Deferred().resolve().promise();
+    return Promise.resolve();
   };
 
   this.formatTime = function() {};
@@ -38,4 +36,4 @@ export const Null = function() {
   };
 };
 
-_.extend(Null.prototype, Backbone.Events);
+Object.assign(Null.prototype, BackboneEvents);

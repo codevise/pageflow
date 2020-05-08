@@ -1,9 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import {VideoPlayer} from './VideoPlayer';
-import {browser} from '../browser';
-import {log} from '../base';
-import {assetUrls} from '../assetUrls';
+import {VideoPlayer, browser, log, assetUrls} from 'pageflow/frontend';
 
 // A proxy which lazily initializes the real video player.
 export const Lazy = function(template, options) {

@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import {Object} from 'pageflow/frontend';
+import Object from '../Object'
 
 export const AdjacentPages = Object.extend({
   initialize: function(pages, scrollNavigator) {

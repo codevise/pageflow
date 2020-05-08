@@ -1,5 +1,6 @@
 import $ from 'jquery';
-import {Object, browser, events} from 'pageflow/frontend';
+import Object from '../Object'
+import {browser, events} from 'pageflow/frontend';
 
 
 var attributeName = 'atmo_audio_file_id';

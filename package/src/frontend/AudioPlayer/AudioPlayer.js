@@ -1,7 +1,3 @@
-
-import $ from 'jquery';
-import _ from 'underscore';
-
 import {mediaPlayer} from '../mediaPlayer';
 import {browser} from '../browser';
 import {mediaEvents} from './mediaEvents';
@@ -34,8 +30,15 @@ export const AudioPlayer = function(sources, options) {
     mp3: 'audio/mpeg'
   };
 
-  var ready = new $.Deferred();
-  var loaded = new $.Deferred();
+  let readyResolve;
+  let readyPromise = new Promise(function(resolve) {
+    readyResolve = resolve;
+  });
+
+  let loadedResolve;
+  let loadedPromise = new Promise(function(resolve) {
+    loadedResolve = resolve;
+  });
 
   var audio = new Audio5js({
     reusedTag: options.tag,
@@ -43,14 +46,14 @@ export const AudioPlayer = function(sources, options) {
     throw_errors: false,
     format_time: false,
     codecs: options.codecs || ['vorbis', 'mp4', 'mp3'],
-    ready: ready.resolve,
+    ready: readyResolve,
     loop: options.loop
   });
 
-  audio.readyPromise = ready.promise();
-  audio.loadedPromise = loaded.promise();
+  audio.readyPromise = readyPromise;
+  audio.loadedPromise = loadedPromise;
 
-  audio.on('load', loaded.resolve);
+  audio.on('load', loadedResolve);
 
   if (options.mediaEvents) {
     mediaEvents(audio, options.context);
@@ -60,20 +63,19 @@ export const AudioPlayer = function(sources, options) {
     pauseInBackground(audio);
   }
 
-  mediaPlayer.enhance(audio, _.extend({
-    loadWaiting: true
-  }, options || {}));
+  mediaPlayer.enhance(audio, {
+    loadWaiting: true,
+    ...options
+  });
 
   seekWithInvalidStateHandling(audio);
   rewindMethod(audio);
   getMediaElementMethod(audio);
 
   audio.src = function(sources) {
-    ready.then(function() {
-      var source = _.detect(sources || [], function(source) {
-        if (codecMapping[audio.settings.player.codec] === source.type) {
-          return source.src;
-        }
+    readyPromise.then(function() {
+      var source = (sources || []).find(function(source) {
+        return (codecMapping[audio.settings.player.codec] === source.type);
       });
 
       audio.load(source ? source.src : '');
@@ -118,10 +120,10 @@ export const AudioPlayer = function(sources, options) {
 AudioPlayer.fromAudioTag = function(element, options) {
   return new AudioPlayer(element.find('source').map(function() {
     return {
-      src: $(this).attr('src'),
-      type: $(this).attr('type')
+      src: this.getAttribute('src'),
+      type: this.getAttribute('type')
     };
-  }).get(), _.extend({tag: element[0]}, options || {}));
+  }).get(), {tag: element[0], ...options});
 };
 
 AudioPlayer.fromScriptTag = function(element, options) {

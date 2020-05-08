@@ -35,7 +35,7 @@ export const bufferUnderrunWaiting = function(player) {
 
         player.play();
       }
-    });
+    }, () => {});
   }
 
   function cancelWaiting() {

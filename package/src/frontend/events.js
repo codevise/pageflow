@@ -1,4 +1,3 @@
-import Backbone from 'backbone';
-import _ from 'underscore';
+import BackboneEvents from 'backbone-events-standalone';
 
-export const events = _.extend({}, Backbone.Events);
+export const events = Object.assign({}, BackboneEvents);

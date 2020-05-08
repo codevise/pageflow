@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {Object} from 'pageflow/frontend';
+import Object from './Object'
 
 var Fullscreen = Object.extend({
   toggle: function() {

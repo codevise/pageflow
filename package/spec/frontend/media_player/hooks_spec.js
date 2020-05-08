@@ -1,5 +1,4 @@
-import jQuery from 'jquery';
-import Backbone from 'backbone';
+import BackboneEvents from 'backbone-events-standalone';
 
 import _ from 'underscore';
 
@@ -13,30 +12,30 @@ describe('hooks', function() {
 
   describe('#play', function() {
     describe('without before option', function() {
-      it('calls orginal play method', function() {
+      it('calls orginal play method', async () => {
         var player = fakePlayer();
         hooks(player, {});
 
-        player.play();
+        await player.play();
 
         expect(player.originalPlay).toHaveBeenCalled();
       });
     });
 
     describe('with before option', function() {
-      it('calls passed function', function() {
+      it('calls passed function', async () => {
         var player = fakePlayer();
         var beforeCallback = sinon.spy();
         hooks(player, {
           before: beforeCallback
         });
 
-        player.play();
+        await player.play();
 
         expect(beforeCallback).toHaveBeenCalled();
       });
 
-      it('emits beforeplay event', function() {
+      it('emits beforeplay event', async () => {
         var player = fakePlayer();
         var eventHandler = sinon.spy();
         hooks(player, {
@@ -44,80 +43,97 @@ describe('hooks', function() {
         });
 
         player.on('beforeplay', eventHandler);
-        player.play();
+        await player.play();
 
         expect(eventHandler).toHaveBeenCalled();
       });
 
-      it('aborts intent to pause', function() {
+      it('aborts intent to pause', async () => {
         var player = fakePlayer();
-        var deferred = new jQuery.Deferred();
         hooks(player, {
           before: function() {
-            return deferred.promise();
+            return Promise.resolve();
           }
         });
 
         player.intendToPause();
-        player.play();
+        await player.play();
 
         expect(player.intendingToPause()).toBe(false);
       });
 
-      it('calls original play method when promise returned by before is resolved', function() {
+      it('calls original play method when promise returned by before is resolved', async () => {
         var player = fakePlayer();
-        var deferred = new jQuery.Deferred();
+
+        var promiseResolve;
+        var promise = new Promise(function(resolve, reject) {
+          promiseResolve = resolve;
+        });
+
         hooks(player, {
           before: function() {
-            return deferred.promise();
+            return promise;
           }
         });
 
-        player.play();
-        deferred.resolve();
+        const playPromise = player.play();
+        promiseResolve();
+        await playPromise;
 
         expect(player.originalPlay).toHaveBeenCalled();
       });
 
-      it('does not call original play method until promise returned by before is resolved', function() {
+      it('does not call original play method when promise returned by before is rejected', async () => {
         var player = fakePlayer();
-        var deferred = new jQuery.Deferred();
+
+        var promiseReject;
+        var promise = new Promise(function(resolve, reject) {
+          promiseReject = reject;
+        });
+
         hooks(player, {
           before: function() {
-            return deferred.promise();
+            return promise;
           }
         });
 
-        player.play();
+        const playPromise = player.play();
+        promiseReject();
 
+        await expect(playPromise).rejects.toBeUndefined();
         expect(player.originalPlay).not.toHaveBeenCalled();
       });
 
-      it('calls original play method if before does not return promise', function() {
+      it('calls original play method if before does not return promise', async () => {
         var player = fakePlayer();
         hooks(player, {
           before: function() {}
         });
 
-        player.play();
+        await player.play();
 
         expect(player.originalPlay).toHaveBeenCalled();
       });
 
-      it('does not call original play method if player is paused before promise returned by before is resolved', function() {
+      it('does not call original play method if player is paused before promise returned by before is resolved', async () => {
         var player = fakePlayer();
-        var deferred = new jQuery.Deferred();
+
+        var promiseResolve;
+        var promise = new Promise(function(resolve, reject) {
+          promiseResolve = resolve;
+        });
+
         hooks(player, {
           before: function() {
-            return deferred.promise();
+            return promise;
           }
         });
 
-        player.play();
+        const playPromise = player.play();
         player.pause();
-        deferred.resolve();
+        promiseResolve();
 
-        expect(player.originalPlay).not.toHaveBeenCalled();
+        await expect(playPromise).rejects.toBe('aborted');
       });
     });
   });
@@ -134,7 +150,7 @@ describe('hooks', function() {
       originalPlayAndFadeIn: playAndFadeInSpy,
 
       pause: sinon.spy()
-    }, Backbone.Events);
+    }, BackboneEvents);
 
     asyncPlay(player);
 

@@ -8,7 +8,7 @@ export function initPlayer(player, getPlayerState, playerActions, prevFileId, fi
   }
 
   if (playerState.shouldPrebuffer) {
-    player.prebuffer().then(playerActions.prebuffered);
+    player.prebuffer().then(playerActions.prebuffered, () => {});
   }
 
   if (playerState.isPlaying) {

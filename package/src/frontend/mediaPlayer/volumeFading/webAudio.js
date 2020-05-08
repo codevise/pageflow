@@ -1,10 +1,9 @@
-import $ from 'jquery';
 import {events} from '../../events';
 
 export const webAudio = function(player, audioContext) {
   var gainNode;
 
-  var currentDeferred;
+  var currentResolve;
   var currentTimeout;
 
   var currentValue = 1;
@@ -22,30 +21,30 @@ export const webAudio = function(player, audioContext) {
   }
 
   function tryResumeIfSuspended() {
-    return new $.Deferred(function(deferred) {
+    return new Promise(function(resolve, reject) {
       if (audioContext.state === 'suspended') {
         var maybePromise = audioContext.resume();
 
         if (maybePromise && maybePromise.then) {
-          maybePromise.then(handleDeferred);
+          maybePromise.then(handlePromise);
         }
         else {
-          setTimeout(handleDeferred, 0);
+          setTimeout(handlePromise, 0);
         }
       }
       else {
-        deferred.resolve();
+        resolve();
       }
 
-      function handleDeferred() {
+      function handlePromise() {
         if (audioContext.state === 'suspended') {
-          deferred.reject();
+          reject();
         }
         else {
-          deferred.resolve();
+          resolve();
         }
       }
-    }).promise();
+    });
   }
 
   player.volume = function(value) {
@@ -58,7 +57,7 @@ export const webAudio = function(player, audioContext) {
           currentValue = ensureInAllowedRange(value);
 
           gainNode.gain.setValueAtTime(currentValue,
-                                       audioContext.currentTime);
+            audioContext.currentTime);
         },
         function() {
           currentValue = ensureInAllowedRange(value);
@@ -81,16 +80,16 @@ export const webAudio = function(player, audioContext) {
 
         gainNode.gain.setValueAtTime(lastStartValue, audioContext.currentTime);
         gainNode.gain.linearRampToValueAtTime(currentValue,
-                                              audioContext.currentTime + duration / 1000);
+          audioContext.currentTime + duration / 1000);
 
-        return new $.Deferred(function(deferred) {
-          currentTimeout = setTimeout(resolve, duration);
-          currentDeferred = deferred;
-        }).promise();
+        return new Promise(function(resolve, reject) {
+          currentResolve = resolve;
+          currentTimeout = setTimeout(resolveCurrent, duration);
+        });
       },
       function() {
         currentValue = ensureInAllowedRange(value);
-        return new $.Deferred().resolve().promise();
+        return Promise.resolve();
       }
     );
   };
@@ -108,23 +107,23 @@ export const webAudio = function(player, audioContext) {
     }
   }
 
-  function resolve() {
+  function resolveCurrent() {
     clearTimeout(currentTimeout);
-    currentDeferred.resolve();
+    currentResolve('done');
 
     currentTimeout = null;
-    currentDeferred = null;
+    currentResolve = null;
   }
 
   function cancel() {
-    if (currentDeferred) {
+    if (currentResolve) {
       gainNode.gain.cancelScheduledValues(audioContext.currentTime);
 
       clearTimeout(currentTimeout);
-      currentDeferred.reject();
+      currentResolve('cancelled');
 
       currentTimeout = null;
-      currentDeferred = null;
+      currentResolve = null;
 
       updateCurrentValueFromComputedValue();
     }

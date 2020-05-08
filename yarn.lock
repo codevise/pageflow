@@ -3077,6 +3077,11 @@ babel-runtime@^6.26.0:
     core-js "^2.4.0"
     regenerator-runtime "^0.11.0"
 
+backbone-events-standalone@^0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/backbone-events-standalone/-/backbone-events-standalone-0.2.7.tgz#32437d9d11c5cef041034a59c49473b86f0ce196"
+  integrity sha1-MkN9nRHFzvBBA0pZxJRzuG8M4ZY=
+
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
@@ -3603,6 +3608,11 @@ class-utils@^0.3.5:
     define-property "^0.2.5"
     isobject "^3.0.0"
     static-extend "^0.1.1"
+
+classlist-polyfill@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/classlist-polyfill/-/classlist-polyfill-1.2.0.tgz#935bc2dfd9458a876b279617514638bcaa964a2e"
+  integrity sha1-k1vC39lFiodrJ5YXUUY4vKqWSi4=
 
 classnames@^2.2.5:
   version "2.2.6"

@@ -22,6 +22,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "backbone-events-standalone": "^0.2.7",
+    "classlist-polyfill": "^1.2.0",
     "core-js": "^3.4.1",
     "i18n-js": "^3.5.1"
   }

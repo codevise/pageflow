@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import {AudioPlayer} from '../AudioPlayer';
 import {MultiPlayer} from './MultiPlayer';
 import {PlayerPool} from './PlayerPool';
@@ -31,9 +30,10 @@ export const Audio = function(options) {
     var sources = this.getSources(removeSuffix(audioFileId));
 
     if (sources) {
-      return new AudioPlayer(sources, _.extend({
-        volumeFading: true
-      }, options || {}));
+      return new AudioPlayer(sources, {
+        volumeFading: true ,
+        ...options
+      });
     }
     else {
       return new AudioPlayer.Null();

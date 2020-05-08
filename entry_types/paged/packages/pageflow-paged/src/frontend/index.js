@@ -1,6 +1,7 @@
 import 'jquery-ui';
 
 import './jqueryUtils';
+export {default as Object} from './Object';
 
 export * from './EntryData';
 export * from './SeedEntryData';
@@ -48,5 +49,6 @@ import './boot';
 export * from './ready';
 import './printLayout';
 
+import './VideoPlayer';
 
 export * from 'pageflow/frontend';
