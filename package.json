@@ -9,7 +9,7 @@
     "autoprefixer": "^9.7.6",
     "@babel/core": "^7.8.3",
     "@rollup/plugin-alias": "^2.2.0",
-    "babel-preset-react-app": "^9.0.2",
+    "babel-preset-react-app": "^9.1.2",
     "rollup": "^1.26.3",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
