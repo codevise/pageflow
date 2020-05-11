@@ -12,11 +12,12 @@ module Pageflow
         expect(duplicate.title).to include('Some Title')
       end
 
-      it 'creates entry with same account and theming' do
+      it 'creates entry with same type, account and theming' do
         entry = create(:entry)
 
         duplicate = EntryDuplicate.of(entry).create!
 
+        expect(duplicate.type_name).to eq(entry.type_name)
         expect(duplicate.account).to eq(entry.account)
         expect(duplicate.theming).to eq(entry.theming)
       end

@@ -99,6 +99,10 @@ module Pageflow
         Admin::AdminOnlyTabPolicy.new(user, tab).see?
       end
 
+      can :see_entry_types, Account do |account|
+        AccountPolicy.new(user, account).see_entry_types?
+      end
+
       unless user.admin?
         can :configure_folder_on, Account do |account|
           AccountPolicy.new(user, account).configure_folder_on?

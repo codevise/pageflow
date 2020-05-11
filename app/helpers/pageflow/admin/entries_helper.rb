@@ -18,6 +18,22 @@ module Pageflow
           I18n.t(state, scope: 'activerecord.values.pageflow/entry.publication_states')
         end
       end
+
+      def entry_type_collection
+        entry_type_collection_for_config(Pageflow.config)
+      end
+
+      def entry_type_collection_for_account(target)
+        entry_type_collection_for_config(Pageflow.config_for(target))
+      end
+
+      private
+
+      def entry_type_collection_for_config(config)
+        config.entry_types.map(&:name).index_by do |type|
+          I18n.t(type, scope: 'activerecord.values.pageflow/entry.type_names')
+        end
+      end
     end
   end
 end

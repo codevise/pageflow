@@ -35,6 +35,7 @@ module Pageflow
 
     def new_attributes
       {
+        type_name: original_entry.type_name,
         title: new_title,
         account: original_entry.account,
         theming: original_entry.theming,

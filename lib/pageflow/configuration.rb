@@ -500,13 +500,14 @@ module Pageflow
     # Restricts the configuration interface to those parts which can
     # be used from inside features.
     FeatureLevelConfiguration = Struct.new(:config) do
-      delegate :page_types, to: :config
-      delegate :widget_types, to: :config
-      delegate :help_entries, to: :config
-      delegate :admin_form_inputs, to: :config
       delegate :admin_attributes_table_rows, to: :config
-      delegate :themes, to: :config
+      delegate :admin_form_inputs, to: :config
+      delegate :entry_types, to: :config
       delegate :file_importers, to: :config
+      delegate :help_entries, to: :config
+      delegate :page_types, to: :config
+      delegate :themes, to: :config
+      delegate :widget_types, to: :config
 
       delegate :for_entry_type, to: :config
     end
