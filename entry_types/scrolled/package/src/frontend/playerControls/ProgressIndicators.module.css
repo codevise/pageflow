@@ -7,15 +7,15 @@
   cursor: pointer;
   position: relative;
   margin: 9px 5px;
-  height: 5px;
-  border: 1px solid currentColor;
+  height: 6px;
   border-radius: 3.5px;
+  background: #808080;
 }
 
 .progressBar {
   position: absolute;
   left: 0;
-  height: 5px;
+  height: 6px;
   border-radius: 2.5px;
 }
 
@@ -31,8 +31,8 @@
 }
 
 .sliderHandle {
-  width: 13px;
-  height: 13px;
+  width: 14px;
+  height: 14px;
   margin-left: -6.5px;
   border-radius: 6.5px;
   position: absolute;

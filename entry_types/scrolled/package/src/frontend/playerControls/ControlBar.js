@@ -32,8 +32,10 @@ export function ControlBar(props) {
       <div className={classNames(styles.controlBar, style.foreground)}>
         <div className={styles.controlsContainer}>
           <div className={styles.controls}>
-            <PlayIcon className={styles.playButton}/>
-            <PauseIcon className={styles.pauseButton}/>
+            <a>
+              <PlayIcon className={styles.playButton}/>
+              <PauseIcon className={styles.pauseButton}/>
+            </a>
           </div>
         </div>
         <div className={classNames(styles.controlsContainer, styles.progressDisplayContainer)}>
@@ -48,22 +50,25 @@ export function ControlBar(props) {
         </div>
         <div className={styles.controlsContainer}>
           <div className={styles.controls}>
-            <SettingsIcon className={classNames(styles.settingsButton,
-                                                {[styles.hidden]: props.type === 'audio'})}
-                          onClick={() => setSettingsMenuHidden(!settingsMenuHidden)}/>
-            <SubtitlesIcon className={styles.subtitlesButton}
-                           onClick={() => setSubtitlesMenuHidden(!subtitlesMenuHidden)}/>
+            <a>
+              <SettingsIcon className={classNames(styles.settingsButton,
+                                                  {[styles.hidden]: props.type === 'audio'})}
+                            onClick={() => setSettingsMenuHidden(!settingsMenuHidden)}/>
+            </a>
+            <ContextMenu className={classNames(styles.settingsMenu,
+                                               {[styles.hidden]: settingsMenuHidden})}
+                         theme={style}
+                         entries={['Automatisch', '1024p', '720p']} />
+            <a>
+              <SubtitlesIcon className={styles.subtitlesButton}
+                             onClick={() => setSubtitlesMenuHidden(!subtitlesMenuHidden)}/>
+            </a>
+            <ContextMenu className={classNames(styles.subtitlesMenu,
+                                               {[styles.hidden]: subtitlesMenuHidden})}
+                         theme={style}
+                         entries={['Automatisch', 'Deutsch', 'English']} />
           </div>
         </div>
-
-        <ContextMenu className={classNames(styles.settingsMenu,
-                                           {[styles.hidden]: settingsMenuHidden})}
-                     theme={style}
-                     entries={['Automatisch', '1024p', '720p']} />
-        <ContextMenu className={classNames(styles.subtitlesMenu,
-                                           {[styles.hidden]: subtitlesMenuHidden})}
-                     theme={style}
-                     entries={['Automatisch', 'Deutsch', 'English']} />
       </div>
     </div>
   );
