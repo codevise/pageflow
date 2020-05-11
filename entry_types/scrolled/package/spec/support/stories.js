@@ -1,12 +1,13 @@
 import React from 'react';
 import {Entry, EntryStateProvider, setupI18n} from 'pageflow-scrolled/frontend';
+import {browser} from 'pageflow/frontend';
 
 import {normalizeSeed} from './normalizeSeed';
 import {storiesOf} from '@storybook/react';
 
 import seedFixtureFromFile from '../../.storybook/seed.json'
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
-
+browser.detectFeatures();
 let seedFixture = seedFixtureFromFile;
 
 /**

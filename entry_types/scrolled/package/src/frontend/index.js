@@ -12,6 +12,8 @@ import {EntryStateProvider} from '../entryState';
 import {EditorStateProvider} from './EditorState';
 import {loadInlineEditingComponents} from './inlineEditing';
 
+import {browser} from 'pageflow/frontend';
+
 const editMode = window.location.pathname.indexOf('/editor/entries') === 0;
 
 export {api as frontend} from './api';
@@ -35,7 +37,7 @@ export {useEditorSelection} from './EditorState';
 
 window.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);
-
+  browser.detectFeatures();
   if (editMode) {
     loadInlineEditingComponents().then(() => render(seed));
   }
