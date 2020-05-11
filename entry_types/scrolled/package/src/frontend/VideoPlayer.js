@@ -25,6 +25,7 @@ export function VideoPlayer(props) {
       <div className={styles.root}>
         <MediaPlayer className={classNames(styles.video_player, {[styles.backdrop]: !props.interactive})}
                      type={'video'}
+                     state={props.state}
                      playsInline={true}
                      autoplay={props.autoplay}
                      loop={!props.interactive}

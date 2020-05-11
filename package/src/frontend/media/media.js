@@ -3,6 +3,7 @@ import {createMediaPlayer} from './createMediaPlayer';
 export const media = {
   players: {},
   muteState: true,
+  mediaOff: true,
   mute: function (value) {
     this.muteState = value;
     Object.values(this.players).forEach(function(player){

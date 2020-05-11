@@ -27,6 +27,7 @@ export function AudioPlayer(props) {
       <div className={styles.root}>
         <MediaPlayer className={styles.audio_player}
                      type={'audio'}
+                     state={props.state}
                      playsInline={true}
                      autoplay={props.autoplay}
                      loop={!props.interactive}
