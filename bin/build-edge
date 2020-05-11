@@ -1,17 +1,24 @@
 #!/bin/bash
 
+find_ignored_files_from_gemspec() {
+  gemspec_files=$(ruby -e \
+                       'puts Gem::Specification.load("pageflow.gemspec").files.reject { |f| File.directory?(f) }.join(" ")')
+
+  # --no-index includes ignored files even if there already is a build
+  # commit which force added them on this branch.  The `|| true` makes
+  # sure the script does not abort just because there were no matching
+  # files.
+  git check-ignore --no-index $gemspec_files || true
+}
+
 add_and_commit() {
   git add -f $@
   git commit $@ -m "Build"
 }
 
-set -ex
+set -e
 
 yarn install --frozen-lockfile
 bin/build-packages
 
-add_and_commit \
-    app/assets/javascripts/pageflow/dist/ui.js \
-    package/{editor,ui,frontend}.js \
-    entry_types/paged/app/assets/javascripts/pageflow_paged/dist/{editor,frontend,react-*}.js \
-    entry_types/scrolled/package/{editor,frontend,contentElements-editor,contentElements-frontend}.js \
+add_and_commit $(find_ignored_files_from_gemspec)
