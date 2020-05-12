@@ -59,7 +59,7 @@ function processSources(ogg, m4a, mp3){
     sources.push({type: 'audio/mp3', src: `${mp3}?u=1`});
   }
   if (m4a) {
-    sources.push({type: 'audio/mp4', src: `${m4a}?u=1`});
+    sources.push({type: 'audio/m4a', src: `${m4a}?u=1`});
   }
   return sources;
 }

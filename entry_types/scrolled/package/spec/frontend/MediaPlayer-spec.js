@@ -2,9 +2,9 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import 'support/mediaElementStub';
 import {renderInEntry} from 'support';
-import {media} from 'pageflow/frontend';
+import {media, browser} from 'pageflow/frontend';
 import {MediaPlayer} from 'frontend/MediaPlayer';
-
+browser.detectFeatures();
 describe('MediaPlayer', () => {
   let audioSources =[ 
     {type: 'audio/ogg', src: 'http://example.com/example.ogg'},
