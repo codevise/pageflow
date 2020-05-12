@@ -7,12 +7,13 @@ import {getMediaElementMethod} from './getMediaElementMethod';
 import {mediaPlayer} from '../mediaPlayer';
 import {mediaEvents} from './mediaEvents';
 import {bufferUnderrunWaiting} from './bufferUnderrunWaiting';
+import VideoJS from 'videojs';
 
 export const VideoPlayer = function(element, options) {
   options = options || {};
 
   element = filterSources(element);
-  var player = videojs(element, options);
+  var player = VideoJS(element, options);
 
   if (options.useSlimPlayerControlsDuringPhonePlayback) {
     useSlimPlayerControlsDuringPhonePlayback(player);

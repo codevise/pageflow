@@ -1,5 +1,6 @@
 import {media} from 'pageflow/frontend';
 import _ from 'underscore';
+import videojs from 'videojs';
 import '$support/mediaElementStub';
 import '$support/fakeBrowserFeatures';
 
