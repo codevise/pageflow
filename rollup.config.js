@@ -18,7 +18,8 @@ const frontendGlobals = {
   'jquery-ui': 'jQuery',
   'underscore': '_',
   'i18n-js': 'I18n',
-  'iscroll': 'IScroll'
+  'iscroll': 'IScroll',
+  'videojs': 'VideoJS',
 };
 
 const editorGlobals = {
@@ -120,6 +121,7 @@ const pageflow = [
     output: {
       file: pageflowPackageRoot + '/frontend.js',
       format: 'esm',
+      globals: {'videojs': 'VideoJS'}
     },
     external,
     plugins

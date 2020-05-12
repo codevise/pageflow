@@ -17,6 +17,8 @@ module.exports = {
       resolve: {
         alias: {
           ...config.resolve.alias,
+          'videojs': path.resolve(__dirname, '../../../../vendor/assets/javascripts/videojs'),
+          'pageflow/frontend': path.resolve(__dirname, '../../../../package/src/frontend'),
           'pageflow-scrolled/frontend': path.resolve(__dirname, '../src/frontend'),
         }
       }
