@@ -44,6 +44,11 @@ export function BeforeAfter({state,
   const afterImageAlt = afterImage && afterImage.configuration.alt;
   const initialSliderPos = initial_slider_position / 100;
 
+  //If an image is missing give an arbitrary height to element so it can be selected.
+  if ((!before_id || !after_id) && current) {
+    current.children[0].style.setProperty('height', '500px');
+  }
+
   let opts = {};
   // Transform slider-related props into the format that
   // react-compare-image needs
@@ -62,15 +67,15 @@ export function BeforeAfter({state,
   if (current) {
     // Size labels according to initial slider position. Unit is %,
     // left and right spacing is 5%, so we subtract 10. 90 = 100 - 10.
-    const beforeLabelWidth = initial_slider_position - 10;
-    const afterLabelWidth = 90 - initial_slider_position;
+    /*const beforeLabelWidth = initial_slider_position - 10;
+    const afterLabelWidth = 90 - initial_slider_position;*/
     // Compute initial slider coordinate and pass it as a CSS
     // variable, so that before/after images can wiggle together with
     // the slider
     const containerWidth = current.getBoundingClientRect().width;
     const initialRectWidth = initialSliderPos * containerWidth;
-    current.style.setProperty('--before-label-max-width', beforeLabelWidth + '%');
-    current.style.setProperty('--after-label-max-width', afterLabelWidth + '%');
+    /*current.style.setProperty('--before-label-max-width', beforeLabelWidth + '%');
+    current.style.setProperty('--after-label-max-width', afterLabelWidth + '%');*/
     current.style.setProperty('--initial-rect-width', initialRectWidth + 'px');
   }
 
