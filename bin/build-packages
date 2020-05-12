@@ -2,5 +2,8 @@
 
 set -ex
 
+# Clean old chunk outputs
+rm -f ./entry_types/scrolled/package/frontend/*
+
 yarn run build
 (cd ./entry_types/paged/packages/pageflow-paged-react; yarn install --frozen-lockfile; yarn run build)
