@@ -6,13 +6,14 @@ import {Text} from '../../Text';
 import {renderElement, renderLeaf} from '../../EditableText';
 import {useCachedValue} from '../useCachedValue';
 
+import {withCustomInsertBreak} from './withCustomInsertBreak';
 import {HoveringToolbar} from './HoveringToolbar';
 import {Selection} from './Selection';
 
 import styles from './index.module.css';
 
 export const EditableText = React.memo(function EditableText({value, contentElementId, onChange}) {
-  const editor = useMemo(() => withReact(createEditor()), []);
+  const editor = useMemo(() => withCustomInsertBreak(withReact(createEditor())), []);
 
   const [cachedValue, setCachedValue] = useCachedValue(value, {
     defaultValue: [{
