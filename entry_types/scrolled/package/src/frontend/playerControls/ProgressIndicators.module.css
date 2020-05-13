@@ -20,13 +20,11 @@
 }
 
 .loadingProgressBar {
-  width: 70%;
   background: currentColor;
   opacity: 0.5;
 }
 
 .playProgressBar {
-  width: 45%;
   background: currentColor;
 }
 
@@ -37,6 +35,5 @@
   border-radius: 6.5px;
   position: absolute;
   top: -4px;
-  left: 45%;
   background: currentColor;
 }
