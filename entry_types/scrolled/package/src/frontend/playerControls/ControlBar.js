@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import classNames from 'classnames';
 
-import PlayIcon from '../assets/images/playerControls/play_arrow_24px.svg';
-import PauseIcon from '../assets/images/playerControls/pause_24px.svg';
 import SubtitlesIcon from '../assets/images/playerControls/subtitles_24px.svg';
 import SettingsIcon from '../assets/images/playerControls/settings_24px.svg';
 
+import {PlayPauseButton} from './PlayPauseButton'
 import {ProgressIndicators} from './ProgressIndicators'
 import {TimeDisplay} from './TimeDisplay'
 import {ContextMenu} from './ContextMenu'
@@ -32,10 +31,7 @@ export function ControlBar(props) {
       <div className={classNames(styles.controlBar, style.foreground)}>
         <div className={styles.controlsContainer}>
           <div className={styles.controls}>
-            <a>
-              <PlayIcon className={styles.playButton}/>
-              <PauseIcon className={styles.pauseButton}/>
-            </a>
+            <PlayPauseButton />
           </div>
         </div>
         <div className={classNames(styles.controlsContainer, styles.progressDisplayContainer)}>

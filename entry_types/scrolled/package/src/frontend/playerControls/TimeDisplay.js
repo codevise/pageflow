@@ -27,10 +27,10 @@ export function TimeDisplay(props) {
   }
 
   return (
-    <div>
-      <span className={classNames(styles.timeDisplay)}>{format(props.currentTime)}</span>
-      <span className={classNames(styles.timeDisplay)}>/</span>
-      <span className={classNames(styles.timeDisplay)}>{format(props.duration)}</span>
+    <div className={styles.timeDisplayContainer}>
+      <span className={styles.timeDisplay}>{format(props.currentTime)}</span>
+      <span className={styles.timeDisplay}>/</span>
+      <span className={styles.timeDisplay}>{format(props.duration)}</span>
     </div>
   );
 }

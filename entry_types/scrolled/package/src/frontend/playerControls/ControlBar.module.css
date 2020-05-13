@@ -39,12 +39,17 @@
   cursor: pointer;
 }
 
-.playButton {
+.playPauseButton {
   composes: controlsIcon;
+  margin: 0 5px 0 0;
+}
+
+.playButton {
+  composes: playPauseButton;
 }
 
 .pauseButton {
-  composes: controlsIcon;
+  composes: playPauseButton;
   display: none;
 }
 
