@@ -45,7 +45,7 @@ export function ControlBar(props) {
         </div>
         <div className={classNames(styles.controlsContainer, styles.timeDisplayContainer)}>
           <div className={styles.controls}>
-            <TimeDisplay/>
+            <TimeDisplay currentTime={4.8} duration={500} />
           </div>
         </div>
         <div className={styles.controlsContainer}>
