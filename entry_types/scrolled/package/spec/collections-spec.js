@@ -5,9 +5,14 @@ import {
   getItems,
   getItem
 } from 'collections';
+import {configurationContainer} from 'pageflow/editor';
 
 import Backbone from 'backbone';
 import {renderHook, act} from '@testing-library/react-hooks';
+
+const ModelWithConfiguration = Backbone.Model.extend({
+  mixins: [configurationContainer()]
+});
 
 describe('useCollections', () => {
   it('loads initial state from passed object', () => {
@@ -283,20 +288,19 @@ describe('watch', () => {
 
   it('ignores when not yet persisted item´s configuration changes', () => {
     const {result} = renderHook(() => useCollections());
-    const model = new Backbone.Model({});
-    model.configuration = new Backbone.Model({title: 'Title from configuration'});
+    const model = new ModelWithConfiguration({});
     const posts = new Backbone.Collection(model);
 
     act(() => {
       const [, dispatch] = result.current;
       watchCollection(posts, {
         name: 'posts',
-        attributes: ['id', 'title'],
+        attributes: ['id'],
         includeConfiguration: true,
         dispatch
       });
 
-      model.trigger('change:configuration', model);
+      model.configuration.set('title', 'New');
     });
     const [state,] = result.current;
     const item = getItem(state, 'posts', undefined);
@@ -327,15 +331,17 @@ describe('watch', () => {
 
   it('supports including configuration attributes', () => {
     const {result} = renderHook(() => useCollections());
-    const model = new Backbone.Model({id: 1});
-    model.configuration = new Backbone.Model({title: 'Title from configuration'});
+    const model = new ModelWithConfiguration({
+      id: 1,
+      configuration: {title: 'Title from configuration'}
+    });
     const posts = new Backbone.Collection([model])
 
     act(() => {
       const [, dispatch] = result.current;
       watchCollection(posts, {
         name: 'posts',
-        attributes: ['id', 'title'],
+        attributes: ['id'],
         includeConfiguration: true,
         dispatch
       });
@@ -471,21 +477,19 @@ describe('watch', () => {
 
   it('updates useCollections state when included configuration changes', () => {
     const {result} = renderHook(() => useCollections());
-    const model = new Backbone.Model({id: 1});
-    model.configuration = new Backbone.Model({title: 'Old title'});
+    const model = new ModelWithConfiguration({id: 1, configuration: {title: 'Old title'}});
     const posts = new Backbone.Collection([model])
 
     act(() => {
       const [, dispatch] = result.current;
       watchCollection(posts, {
         name: 'posts',
-        attributes: ['id', 'title'],
+        attributes: ['id'],
         includeConfiguration: true,
         dispatch
       });
 
       model.configuration.set('title', 'New title')
-      model.trigger('change:configuration', model);
     });
     const [state,] = result.current;
     const items = getItems(state, 'posts');
