@@ -31,17 +31,25 @@ export function ControlBar(props) {
       <div className={classNames(styles.controlBar, style.foreground)}>
         <div className={styles.controlsContainer}>
           <div className={styles.controls}>
-            <PlayPauseButton />
+            <PlayPauseButton isPlaying={props.isPlaying}
+                             play={props.play}
+                             playing={props.playing}
+                             pause={props.pause}
+                             paused={props.paused}/>
           </div>
         </div>
         <div className={classNames(styles.controlsContainer, styles.progressDisplayContainer)}>
           <div className={styles.controls}>
-            <ProgressIndicators/>
+            <ProgressIndicators currentTime={props.currentTime}
+                                duration={props.duration}
+                                bufferedEnd={props.bufferedEnd}
+                                scrubTo={props.scrubTo}/>
           </div>
         </div>
         <div className={classNames(styles.controlsContainer, styles.timeDisplayContainer)}>
           <div className={styles.controls}>
-            <TimeDisplay currentTime={4.8} duration={500} />
+            <TimeDisplay currentTime={props.currentTime}
+                         duration={props.duration} />
           </div>
         </div>
         <div className={styles.controlsContainer}>
@@ -71,6 +79,17 @@ export function ControlBar(props) {
 }
 
 ControlBar.defaultProps = {
+  currentTime: 200,
+  duration: 600,
+  bufferedEnd: 400,
+  isPlaying: false,
+
+  play: () => {},
+  playing: () => {},
+  pause: () => {},
+  paused: () => {},
+  scrubTo: () => {},
+
   type: 'video',
   style: 'transparent',
   fullWidth: false,

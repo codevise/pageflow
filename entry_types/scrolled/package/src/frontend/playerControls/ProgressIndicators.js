@@ -75,12 +75,6 @@ export class ProgressIndicators extends React.Component {
   }
 }
 
-ProgressIndicators.defaultProps = {
-  duration: 8000,
-  currentTime: 400,
-  bufferedEnd: 500
-};
-
 function toPercent(value) {
   return value > 0 ? (value * 100) + '%' : 0;
 }

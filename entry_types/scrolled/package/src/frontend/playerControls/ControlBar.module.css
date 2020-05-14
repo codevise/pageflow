@@ -3,7 +3,7 @@
 }
 
 .controlBarContainer {
-  width: 100%;
+  width: 50%;
   display: table;
   position: relative;
 }
@@ -39,18 +39,14 @@
   cursor: pointer;
 }
 
+.playControl {
+  text-decoration: none;
+  color: currentColor;
+}
+
 .playPauseButton {
   composes: controlsIcon;
   margin: 0 5px 0 0;
-}
-
-.playButton {
-  composes: playPauseButton;
-}
-
-.pauseButton {
-  composes: playPauseButton;
-  display: none;
 }
 
 .settingsButton {
