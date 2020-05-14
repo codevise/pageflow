@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {useFile} from '../entryState';
 import {MediaPlayer} from './MediaPlayer';
 
@@ -12,28 +12,15 @@ import styles from "./AudioPlayer.module.css";
  */
 export function AudioPlayer(props) {
   const audioFile = useFile({collectionName: 'audioFiles', permaId: props.id});
-  let oggUrl = undefined;
-  let m4aUrl = undefined;
-  let mp3Url = undefined;
+  
   if (audioFile && audioFile.isReady) {
-    oggUrl = audioFile.urls['ogg'];
-    m4aUrl = audioFile.urls['m4a'];
-    mp3Url = audioFile.urls['mp3'];
-  }
-  const processedSources = useMemo(()=>processSources(oggUrl, m4aUrl, mp3Url), [oggUrl, m4aUrl, mp3Url]);
-
-  if (processedSources) {
+    const processedSources = processSources(audioFile);
     return (
       <div className={styles.root}>
         <MediaPlayer className={styles.audio_player}
                      type={'audio'}
-                     state={props.state}
-                     playsInline={true}
-                     autoplay={props.autoplay}
-                     loop={!props.interactive}
-                     controls={props.controls}
-                     interactive={props.interactive}
                      sources={processedSources}
+                     {...props}
                      />
       </div>
     );
@@ -47,19 +34,16 @@ AudioPlayer.defaultProps = {
   controls: true
 };
 
-function processSources(ogg, m4a, mp3){
-  if (ogg===undefined && m4a===undefined && mp3===undefined) {
-    return undefined;
-  }
+function processSources(audioFile){
   var sources = [];
-  if (ogg) {
-    sources.push({type: 'audio/ogg', src: `${ogg}?u=1`});
+  if (audioFile.urls['ogg']) {
+    sources.push({type: 'audio/ogg', src: `${audioFile.urls['ogg']}?u=1`});
   }
-  if (mp3) {
-    sources.push({type: 'audio/mp3', src: `${mp3}?u=1`});
+  if (audioFile.urls['mp3']) {
+    sources.push({type: 'audio/mp3', src: `${audioFile.urls['mp3']}?u=1`});
   }
-  if (m4a) {
-    sources.push({type: 'audio/m4a', src: `${m4a}?u=1`});
+  if (audioFile.urls['m4a']) {
+    sources.push({type: 'audio/m4a', src: `${audioFile.urls['m4a']}?u=1`});
   }
   return sources;
 }

@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {useFile} from '../entryState';
 import {MediaPlayer} from './MediaPlayer';
 
@@ -14,24 +14,15 @@ import styles from "./VideoPlayer.module.css";
  */
 export function VideoPlayer(props) {
   let videoFile = useFile({collectionName: 'videoFiles', permaId: props.id});
-  let fileUrl = undefined;
+
   if (videoFile && videoFile.isReady) {
-    fileUrl = videoFile.urls['high'];
-  }
-  const processedSources = useMemo(()=>processSources(fileUrl), [fileUrl]);
-  
-  if (processedSources) {
+    const processedSources = processSources(videoFile);
     return (
       <div className={styles.root}>
         <MediaPlayer className={classNames(styles.video_player, {[styles.backdrop]: !props.interactive})}
                      type={'video'}
-                     state={props.state}
-                     playsInline={true}
-                     autoplay={props.autoplay}
-                     loop={!props.interactive}
-                     controls={props.controls}
-                     interactive={props.interactive}
                      sources={processedSources}
+                     {...props}
                      />
       </div>
     );
@@ -47,14 +38,11 @@ VideoPlayer.defaultProps = {
 };
 
 
-function processSources(fileUrl) {
-  if (!fileUrl) {
-    return undefined;
-  };
+function processSources(videoFile) {
   return [
     {
       type: 'video/mp4',
-      src: `${fileUrl}?u=1`
+      src: `${videoFile.urls['high']}?u=1`
     }
   ];
 }

@@ -18,7 +18,8 @@ export function InlineAudio({configuration}) {
                        id={configuration.id}
                        state={onScreen ? 'active' : 'inactive'}
                        quality={'high'}
-                       interactive={true} />
+                       interactive={true} 
+                       playsInline={true} />
         </div>
       </div>
     </div>

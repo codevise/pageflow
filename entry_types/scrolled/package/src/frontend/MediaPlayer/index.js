@@ -1,54 +1,45 @@
-import React, {useEffect, useRef, useContext} from 'react';
-import {media} from 'pageflow/frontend';
-
+import React, {useEffect, useContext, useRef} from 'react';
+import PlayerContainer from './PlayerContainer';
 import ScrollToSectionContext from "../ScrollToSectionContext";
 import {useMediaSettings} from '../useMediaSettings';
 
 export function MediaPlayer(props){
-  const playerWrapperRef = useRef(null);
+  let playerRef = useRef();
   let scrollToSection = useContext(ScrollToSectionContext);
   let mediaSettings = useMediaSettings();
 
-  useEffect( () => {
-    let playerWrapper = playerWrapperRef.current;
-    
-    if (props.sources) {
-      let player = media.getPlayer(props.sources, {
-        poster: props.poster,
-        tagName: props.type,
-        playsInline: props.playsInline,
-        loop: props.loop,
-        controls: props.controls
-      });
-      player.on('ended', function () {
-        props.nextSectionOnEnd && scrollToSection('next');
-      });
-      let playerElement = player.el();      
-      playerWrapper.appendChild(playerElement);
-      
-      if (!mediaSettings.mediaOff && props.autoplay !== false) {
-        if (props.state === 'active') {
-          if (player.readyState() > 0) {
-            player.play();
-          } else {
-            player.on('loadedmetadata', player.play);
-          }
-        } else {
-          player.pause();
-        }
-      }
+  let onSetup = (newPlayer)=>{
+    playerRef.current = newPlayer;
+    newPlayer.on('ended', () => props.nextSectionOnEnd && scrollToSection('next'));
+  }
+  let onDispose = ()=>{
+    playerRef.current = undefined;
+  }
 
-      return () => {
-        media.releasePlayer(player);
-        playerWrapper.innerHTML = '';
-        player.dispose();
+  useEffect( () => {
+    let player = playerRef.current
+    if (player && !mediaSettings.mediaOff && props.autoplay === true) {
+      if (props.state === 'active') {
+        if (player.readyState() > 0) {
+          player.play();
+        } else {
+          player.on('loadedmetadata', player.play);
+        }
+      } else {
+        player.pause();
       }
     }
-  }, [scrollToSection, props.autoplay, props.state, props.sources, props.poster, props.type,
-      props.loop, props.controls, props.nextSectionOnEnd, props.playsInline]);
+  }, [mediaSettings.mediaOff, props.autoplay, props.state, playerRef]);
 
   return (
-    <div className={props.className} ref={playerWrapperRef}>
-    </div>
+    <PlayerContainer  className={props.className}
+                      type={props.type}
+                      sources={props.sources}
+                      poster={props.poster}
+                      loop={props.loop}
+                      controls={props.controls}
+                      playsInline={props.playsInline}
+                      onSetup={onSetup}
+                      onDispose={onDispose} />
   );
-}
+};
