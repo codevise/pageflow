@@ -1,4 +1,10 @@
-import {useCollections, watchCollection, getItems, getItem} from 'collections';
+import {
+  useCollections,
+  watchCollection,
+  updateConfiguration,
+  getItems,
+  getItem
+} from 'collections';
 
 import Backbone from 'backbone';
 import {renderHook, act} from '@testing-library/react-hooks';
@@ -685,5 +691,51 @@ describe('getItems', () => {
     const items = getItems(state, 'posts');
 
     expect(items).toEqual([]);
+  });
+});
+
+describe('updateConfiguration', () => {
+  it('updates configuration property', () => {
+    const {result} = renderHook(() => useCollections({
+      posts: [{id: 10, configuration: {}}]
+    }));
+
+    act(() => {
+      const [, dispatch] = result.current;
+
+      updateConfiguration({
+        name: 'posts',
+        key: 10,
+        configuration: {some: 'value'},
+        dispatch
+      });
+    });
+
+    let [state,] = result.current;
+    const item = getItem(state, 'posts', 10);
+
+    expect(item.configuration.some).toBe('value');
+  });
+
+  it('leaves other attributes unchanged', () => {
+    const {result} = renderHook(() => useCollections({
+      posts: [{id: 10, title: 'News', configuration: {}}]
+    }));
+
+    act(() => {
+      const [, dispatch] = result.current;
+
+      updateConfiguration({
+        name: 'posts',
+        key: 10,
+        configuration: {some: 'value'},
+        dispatch
+      });
+    });
+
+    let [state,] = result.current;
+    const item = getItem(state, 'posts', 10);
+
+    expect(item.title).toBe('News');
   });
 });
