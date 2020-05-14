@@ -62,11 +62,14 @@ export class ProgressIndicators extends React.Component {
                          onStop={this.handleStop}>
             <div className={classNames(styles.progressBarsContainer)}>
               <div className={classNames(styles.progressBar, styles.loadingProgressBar)}
-                   style={{width: toPercent(this.loadProgress())}}/>
+                   style={{width: toPercent(this.loadProgress())}}
+                   data-testid="loading-progress-bar"/>
               <div className={classNames(styles.progressBar, styles.playProgressBar)}
-                   style={{width: toPercent(this.playProgress())}}/>
+                   style={{width: toPercent(this.playProgress())}}
+                   data-testid="play-progress-bar"/>
               <div className={classNames(styles.sliderHandle)}
-                   style={{left: this.handlePosition()}}/>
+                   style={{left: this.handlePosition()}}
+                   data-testid="slider-handle"/>
             </div>
           </DraggableCore>
         </Measure>
