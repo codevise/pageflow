@@ -85,6 +85,7 @@ module PageflowScrolled
               }, format: 'json')
 
         expect(section.reload.configuration).to eq('title' => 'A title')
+        expect(response.status).to eq(204)
       end
 
       it 'does not allow updating a section from a different entry' do
@@ -104,20 +105,6 @@ module PageflowScrolled
               }, format: 'json')
 
         expect(response.status).to eq(404)
-      end
-
-      it 'renders attributes as camel case' do
-        entry = create(:entry)
-        section = create(:section, revision: entry.draft)
-
-        authorize_for_editor_controller(entry)
-        patch(:update,
-              params: {
-                entry_id: entry,
-                id: section,
-                section: attributes_for(:section)
-              }, format: 'json')
-        expect(json_response(path: [:permaId])).to be_present
       end
     end
 
@@ -190,6 +177,7 @@ module PageflowScrolled
                }, format: 'json')
 
         expect(chapter).to have(0).sections
+        expect(response.status).to eq(204)
       end
 
       it 'does not allow deleting a section from a different entry' do
@@ -206,17 +194,6 @@ module PageflowScrolled
                }, format: 'json')
 
         expect(response.status).to eq(404)
-      end
-
-      it 'renders attributes as camel case' do
-        entry = create(:entry)
-        section = create(:section, revision: entry.draft)
-
-        authorize_for_editor_controller(entry)
-        delete(:destroy,
-               params: {entry_id: entry, id: section},
-               format: 'json')
-        expect(json_response(path: [:permaId])).to be_present
       end
     end
   end

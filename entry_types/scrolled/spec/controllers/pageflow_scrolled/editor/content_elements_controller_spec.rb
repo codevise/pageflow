@@ -373,6 +373,7 @@ module PageflowScrolled
               }, format: 'json')
 
         expect(content_element.reload.configuration).to eq('children' => 'some content')
+        expect(response.status).to eq(204)
       end
 
       it 'does not allow updating a content element from a different entry' do
@@ -392,20 +393,6 @@ module PageflowScrolled
               }, format: 'json')
 
         expect(response.status).to eq(404)
-      end
-
-      it 'renders attributes as camel case' do
-        entry = create(:entry)
-        content_element = create(:content_element, :text_block, revision: entry.draft)
-
-        authorize_for_editor_controller(entry)
-        patch(:update,
-              params: {
-                entry_id: entry,
-                id: content_element,
-                content_element: attributes_for(:content_element, :text_block)
-              }, format: 'json')
-        expect(json_response(path: [:permaId])).to be_present
       end
     end
 
@@ -460,6 +447,7 @@ module PageflowScrolled
                }, format: 'json')
 
         expect(section).to have(0).content_elements
+        expect(response.status).to eq(204)
       end
 
       it 'does not allow deleting a content element from a different entry' do
@@ -475,17 +463,6 @@ module PageflowScrolled
                }, format: 'json')
 
         expect(response.status).to eq(404)
-      end
-
-      it 'renders attributes as camel case' do
-        entry = create(:entry)
-        content_element = create(:content_element, :text_block, revision: entry.draft)
-
-        authorize_for_editor_controller(entry)
-        delete(:destroy,
-               params: {entry_id: entry, id: content_element},
-               format: 'json')
-        expect(json_response(path: [:permaId])).to be_present
       end
     end
   end
