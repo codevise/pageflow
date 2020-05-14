@@ -13,7 +13,7 @@ export class ProgressIndicators extends React.Component {
       progressBarsContainerWidth: null
     };
 
-    this.measureProgressBarsContainer = ({width}) => {
+    this.measureProgressIndicatorsContainer = ({width}) => {
       this.setState({progressBarsContainerWidth: width});
     };
 
@@ -56,7 +56,7 @@ export class ProgressIndicators extends React.Component {
   render() {
     return (
       <div className={classNames(styles.progressIndicatorsContainer)}>
-        <Measure whitelist={['width']} onMeasure={this.measureProgressBarsContainer}>
+        <Measure whitelist={['width']} onMeasure={this.measureProgressIndicatorsContainer}>
           <DraggableCore onStart={this.handleDrag}
                          onDrag={this.handleDrag}
                          onStop={this.handleStop}>

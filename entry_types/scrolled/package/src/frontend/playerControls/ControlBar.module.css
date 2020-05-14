@@ -44,11 +44,6 @@
   color: currentColor;
 }
 
-.playPauseButton {
-  composes: controlsIcon;
-  margin: 0 5px 0 0;
-}
-
 .settingsButton {
   composes: controlsIcon;
   width: 20px;
@@ -57,10 +52,6 @@
 .subtitlesButton {
   composes: controlsIcon;
   margin: 0 3px 0 2px;
-}
-
-.timeDisplayContainer {
-  padding: 0 5px;
 }
 
 .settingsMenu {

@@ -15,9 +15,9 @@ export function PlayPauseButton(props) {
 
 function pausePlayIcon(props) {
   if (props.isPlaying) {
-    return <PauseIcon className={controlBarStyles.playPauseButton}/>
+    return <PauseIcon className={controlBarStyles.controlsIcon}/>
   } else {
-    return <PlayIcon className={controlBarStyles.playPauseButton}/>
+    return <PlayIcon className={controlBarStyles.controlsIcon}/>
   }
 }
 

@@ -46,7 +46,7 @@ export function ControlBar(props) {
                                 scrubTo={props.scrubTo}/>
           </div>
         </div>
-        <div className={classNames(styles.controlsContainer, styles.timeDisplayContainer)}>
+        <div className={classNames(styles.controlsContainer)}>
           <div className={styles.controls}>
             <TimeDisplay currentTime={props.currentTime}
                          duration={props.duration} />
