@@ -160,8 +160,8 @@ export function watchCollection(collection,
   }, handle);
 
   if (includeConfiguration) {
-    collection.on('change:configuration', model => {
-      if (!model.isNew()) {
+    collection.on('change:configuration', (model, value, {ignoreInWatchCollection} = {}) => {
+      if (!model.isNew() && !ignoreInWatchCollection) {
         dispatch({
           type: CHANGE,
           payload: {
@@ -238,7 +238,7 @@ function getAttributes(model, {attributeNames, includeConfiguration}) {
   }, {});
 
   if (includeConfiguration) {
-    result.configuration = model.configuration.attributes;
+    result.configuration = {...model.configuration.attributes};
   };
 
   return result;

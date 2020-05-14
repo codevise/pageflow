@@ -497,6 +497,28 @@ describe('watch', () => {
     expect(items.map(i => i.configuration.title)).toEqual(['New title']);
   });
 
+  it('supports ignoring a single change of the included configuration', () => {
+    const {result} = renderHook(() => useCollections());
+    const model = new ModelWithConfiguration({id: 1, configuration: {title: 'Old title'}});
+    const posts = new Backbone.Collection([model])
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id'],
+        includeConfiguration: true,
+        dispatch
+      });
+
+      model.configuration.set('title', 'New title', {ignoreInWatchCollection: true})
+    });
+    const [state,] = result.current;
+    const items = getItems(state, 'posts');
+
+    expect(items.map(i => i.configuration.title)).toEqual(['Old title']);
+  });
+
   it('updates useCollections state when attribute with mapped name changes', () => {
     const {result} = renderHook(() => useCollections());
     const posts = new Backbone.Collection([{id: 1, title: 'Old title'}]);

@@ -159,14 +159,13 @@ describe('PreviewMessageController', () => {
   });
 
   it('updates configuration on UPDATE_CONTENT_ELEMENT message', () => {
-    const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
         contentElements: [{id: 1}]
       })
     });
     const iframeWindow = createIframeWindow();
-    controller = new PreviewMessageController({entry, iframeWindow, editor});
+    controller = new PreviewMessageController({entry, iframeWindow});
 
     return expect(new Promise(resolve => {
       const contentElement = entry.contentElements.get(1);
@@ -175,6 +174,57 @@ describe('PreviewMessageController', () => {
       });
       postUpdateContentElementMessage({id: 1, configuration: {some: 'value'}});
     })).resolves.toEqual('value');
+  });
+
+  it('sends ACTION message for content element updates', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(async resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'ACTION') {
+          const action = event.data.payload;
+          resolve(action.payload.collectionName);
+        }
+      });
+
+      entry.contentElements.first().configuration.set({title: 'update'});
+    })).resolves.toEqual('contentElements');
+  });
+
+  it('surpresses ACTION message for change caused by UPDATE_CONTENT_ELEMENT message', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    // First update content element via UPDATE_CONTENT_ELEMENT
+    // message. Then update chapter. Expect the first posted ACTION
+    // message to be about chapters, thus proving that the ACTION for
+    // the content element update has been skipped.
+    return expect(new Promise(async resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'ACTION') {
+          const action = event.data.payload;
+          resolve(action.payload.collectionName);
+        }
+      });
+
+      postUpdateContentElementMessage({id: 1, configuration: {some: 'ignored update'}});
+      entry.chapters.first().configuration.set({title: 'next update'});
+    })).resolves.toEqual('chapters');
   });
 });
 

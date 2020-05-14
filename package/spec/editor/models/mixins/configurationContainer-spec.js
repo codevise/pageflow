@@ -46,9 +46,9 @@ describe('configurationContainer', () => {
     const listener = jest.fn();
 
     model.on('change:configuration', listener);
-    model.configuration.set('some', 'other value');
+    model.configuration.set('some', 'other value', {customOption: true});
 
-    expect(listener).toHaveBeenCalledWith(model);
+    expect(listener).toHaveBeenCalledWith(model, undefined, {customOption: true});
   });
 
   it('triggers change:configuration:<attribute> event when configuration changes', () => {

@@ -48,7 +48,7 @@ export function configurationContainer({configurationModel, autoSave, includeAtt
           this.save();
         }
 
-        this.trigger('change:configuration', this);
+        this.trigger('change:configuration', this, undefined, options);
 
         _.chain(this.configuration.changed).keys().each(function(name) {
           this.trigger('change:configuration:' + name, this, this.configuration.get(name));

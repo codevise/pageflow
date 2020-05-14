@@ -81,7 +81,7 @@ export const PreviewMessageController = Object.extend({
       }
       else if (message.data.type === 'UPDATE_CONTENT_ELEMENT') {
         const {id, configuration} = message.data.payload;
-        this.entry.contentElements.get(id).configuration.set(configuration);
+        this.entry.contentElements.get(id).configuration.set(configuration, {ignoreInWatchCollection: true});
       }
     }
   }
