@@ -6,7 +6,7 @@ import {
   postUpdateContentElementMessage
 } from 'frontend/inlineEditing/postMessage';
 import {setupGlobals} from 'pageflow/testHelpers';
-import {normalizeSeed, tick, factories, createIframeWindow} from 'support';
+import {normalizeSeed, factories, createIframeWindow} from 'support';
 
 describe('PreviewMessageController', () => {
   let controller;
@@ -21,17 +21,19 @@ describe('PreviewMessageController', () => {
     entry: () => factories.entry(ScrolledEntry)
   });
 
-  it('responds to READY message sent by iframe with ACTION message', () => {
+  it('responds to READY message sent by iframe with ACK message', () => {
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
     const iframeWindow = createIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     return expect(new Promise(resolve => {
       iframeWindow.addEventListener('message', event => {
-        resolve(event.data)
+        if (event.data.type === 'ACK') {
+          resolve(event.data)
+        }
       });
       window.postMessage({type: 'READY'}, '*');
-    })).resolves.toMatchObject({type: 'ACTION'});
+    })).resolves.toMatchObject({type: 'ACK'});
   });
 
   it('sets current section index in model on CHANGE_SECTION message', () => {
@@ -54,8 +56,7 @@ describe('PreviewMessageController', () => {
     const iframeWindow = createIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
-    window.postMessage({type: 'READY'}, '*');
-    await tick(); // Wait for async processing of message.
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
 
     return expect(new Promise(resolve => {
       iframeWindow.addEventListener('message', event => {
@@ -76,8 +77,7 @@ describe('PreviewMessageController', () => {
     const iframeWindow = createIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
-    window.postMessage({type: 'READY'}, '*');
-    await tick(); // Wait for async processing of message.
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
 
     return expect(new Promise(resolve => {
       iframeWindow.addEventListener('message', event => {
@@ -98,8 +98,7 @@ describe('PreviewMessageController', () => {
     const iframeWindow = createIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
-    window.postMessage({type: 'READY'}, '*');
-    await tick(); // Wait for async processing of message.
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
 
     return expect(new Promise(resolve => {
       iframeWindow.addEventListener('message', event => {
@@ -178,3 +177,18 @@ describe('PreviewMessageController', () => {
     })).resolves.toEqual('value');
   });
 });
+
+function postReadyMessageAndWaitForAcknowledgement(iframeWindow) {
+  window.postMessage({type: 'READY'}, '*');
+
+  return new Promise(resolve => {
+    function handler(event) {
+      if (event.data.type === 'ACK') {
+        iframeWindow.removeEventListener('message', handler);
+        resolve();
+      }
+    }
+
+    iframeWindow.addEventListener('message', handler);
+  });
+}

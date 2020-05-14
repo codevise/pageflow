@@ -54,6 +54,8 @@ export const PreviewMessageController = Object.extend({
             payload: null
           })
         );
+
+        postMessage({type: 'ACK'})
       }
       else if (message.data.type === 'CHANGE_SECTION') {
         this.entry.set('currentSectionIndex', message.data.payload.index);
