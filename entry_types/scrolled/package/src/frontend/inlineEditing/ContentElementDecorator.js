@@ -5,6 +5,8 @@ import {SelectionRect} from './SelectionRect';
 import {postInsertContentElementMessage} from './postMessage';
 import styles from './ContentElementDecorator.module.css';
 
+import {ContentElementConfigurationUpdateProvider} from './ContentElementConfigurationUpdateProvider';
+
 export function ContentElementDecorator(props) {
   const {isSelected, select} = useEditorSelection({id: props.id, type: 'contentElement'});
 
@@ -14,7 +16,9 @@ export function ContentElementDecorator(props) {
                      onClick={() => select()}
                      onInsertButtonClick={position =>
                        postInsertContentElementMessage({id: props.id, position})}>
-        {props.children}
+        <ContentElementConfigurationUpdateProvider id={props.id} permaId={props.permaId}>
+          {props.children}
+        </ContentElementConfigurationUpdateProvider>
       </SelectionRect>
     </div>
   );

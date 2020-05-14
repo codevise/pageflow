@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import Entry from 'frontend/Entry';
-import {frontend} from 'frontend';
+import {frontend, useContentElementConfigurationUpdate} from 'frontend';
+import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 
 import {act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
@@ -10,6 +11,10 @@ import {simulateScrollingIntoView} from 'support/fakeIntersectionObserver';
 
 import useScrollTarget from 'frontend/useScrollTarget';
 jest.mock('frontend/useScrollTarget');
+
+beforeAll(async () => {
+  await loadInlineEditingComponents()
+});
 
 describe('Entry', () => {
   it('posts CHANGE_SECTION message when section becomes active', () => {
@@ -76,5 +81,58 @@ describe('Entry', () => {
     });
 
     expect(getByTestId('test-component')).toHaveTextContent('Some text');
+  });
+
+  it('lets content elements use hook to update their own configuration', () => {
+    frontend.contentElementTypes.register('text', {
+      component: function Component({configuration}) {
+        const update = useContentElementConfigurationUpdate();
+
+        useEffect(() => update({text: 'New text'}),
+                  [update]);
+
+        return (
+          <div data-testid="test-component">{configuration.text}</div>
+        )
+      }
+    });
+
+    const {getByTestId} =  renderInEntry(<Entry />, {
+      seed: {
+        contentElements: [{
+          typeName: 'text',
+          configuration: {
+            text: 'Some text'
+          }
+        }]
+      }
+    });
+
+    expect(getByTestId('test-component')).toHaveTextContent('New text');
+  });
+
+  it('posts UPDATE_CONTENT_ELEMENT message when content element updates its configuration', () => {
+    window.parent.postMessage = jest.fn();
+    frontend.contentElementTypes.register('text', {
+      component: function Component({configuration}) {
+        const update = useContentElementConfigurationUpdate();
+
+        useEffect(() => update({text: 'New text'}),
+                  [update]);
+
+        return null;
+      }
+    });
+
+    renderInEntry(<Entry />, {
+      seed: {
+        contentElements: [{id: 1, typeName: 'text'}]
+      }
+    });
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'UPDATE_CONTENT_ELEMENT',
+      payload: {id: 1, configuration: {text: 'New text'}}
+    }, expect.anything());
   });
 });

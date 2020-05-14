@@ -9,6 +9,7 @@ export function ContentElements(props) {
         props.children(item,
                        <ContentElement key={item.id}
                                        id={item.id}
+                                       permaId={item.permaId}
                                        type={item.type}
                                        first={index === 0}
                                        position={item.position}
