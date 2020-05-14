@@ -7,3 +7,4 @@ export {useFileRights, useLegalInfo, useCredits} from './legalInfo';
 export {EntryStateProvider, useEntryStateDispatch} from './EntryStateProvider';
 
 export {watchCollections} from './watchCollections';
+export {updateContentElementConfiguration} from './updateContentElementConfiguration';
