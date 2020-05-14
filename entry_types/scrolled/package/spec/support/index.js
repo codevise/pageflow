@@ -1,5 +1,5 @@
 export * from './factories';
-export * from './fakeParentWindow';
+export * from './fakeWindows';
 export * from './normalizeSeed';
 export * from './rendering';
 export * from './tick';
