@@ -72,7 +72,14 @@ function exampleSeed(transition1, transition2) {
         sectionId: 1,
         typeName: 'textBlock',
         configuration: {
-          children: lorem
+          value: [
+            {
+              type: 'paragraph',
+              children: [
+                {text: lorem}
+              ]
+            }
+          ]
         }
       },
       {
@@ -86,7 +93,14 @@ function exampleSeed(transition1, transition2) {
         sectionId: 2,
         typeName: 'textBlock',
         configuration: {
-          children: lorem
+          value: [
+            {
+              type: 'paragraph',
+              children: [
+                {text: lorem}
+              ]
+            }
+          ]
         }
       },
       {
@@ -100,7 +114,14 @@ function exampleSeed(transition1, transition2) {
         sectionId: 3,
         typeName: 'textBlock',
         configuration: {
-          children: lorem
+          value: [
+            {
+              type: 'paragraph',
+              children: [
+                {text: lorem}
+              ]
+            }
+          ]
         }
       }
     ]

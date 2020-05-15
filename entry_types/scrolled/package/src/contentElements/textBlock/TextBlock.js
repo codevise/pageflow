@@ -1,15 +1,16 @@
 import React from 'react';
-import classNames from 'classnames'
-
-import {Text} from 'pageflow-scrolled/frontend';
+import {EditableText, useContentElementConfigurationUpdate} from 'pageflow-scrolled/frontend';
 
 import styles from './TextBlock.module.css';
 
-export function TextBlock({configuration}) {
+export function TextBlock(props) {
+  const updateConfiguration = useContentElementConfigurationUpdate();
+
   return (
-    <Text scaleCategory="body">
-      <div className={classNames(styles.text, {[styles.dummy]: configuration.dummy})}
-           dangerouslySetInnerHTML={{__html: configuration.children}} />
-    </Text>
+    <div className={styles.text}>
+      <EditableText value={props.configuration.value}
+                    contentElementId={props.contentElementId}
+                    onChange={value => updateConfiguration({value})} />
+    </div>
   );
 }
