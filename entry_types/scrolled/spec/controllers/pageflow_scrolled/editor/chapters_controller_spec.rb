@@ -76,6 +76,7 @@ module PageflowScrolled
               }, format: 'json')
 
         expect(chapter.reload.configuration).to eq('title' => 'A chapter title')
+        expect(response.status).to eq(204)
       end
 
       it 'does not allow updating a chapter from a different entry' do
@@ -95,17 +96,6 @@ module PageflowScrolled
               }, format: 'json')
 
         expect(response.status).to eq(404)
-      end
-
-      it 'renders attributes as camel case' do
-        entry = create(:entry)
-        chapter = create(:scrolled_chapter, revision: entry.draft)
-
-        authorize_for_editor_controller(entry)
-        patch(:update,
-              params: {entry_id: entry, id: chapter, chapter: attributes_for(:scrolled_chapter)},
-              format: 'json')
-        expect(json_response(path: [:permaId])).to be_present
       end
     end
 
@@ -190,6 +180,7 @@ module PageflowScrolled
                }, format: 'json')
 
         expect(storyline).to have(0).chapters
+        expect(response.status).to eq(204)
       end
 
       it 'does not allow deleting a chapter from a different entry' do
@@ -206,15 +197,6 @@ module PageflowScrolled
                }, format: 'json')
 
         expect(response.status).to eq(404)
-      end
-
-      it 'renders attributes as camel case' do
-        entry = create(:entry)
-        chapter = create(:scrolled_chapter, revision: entry.draft)
-
-        authorize_for_editor_controller(entry)
-        delete(:destroy, params: {entry_id: entry, id: chapter}, format: 'json')
-        expect(json_response(path: [:permaId])).to be_present
       end
     end
   end

@@ -16,7 +16,7 @@ module PageflowScrolled
         chapter = Chapter.all_for_revision(@entry.draft).find(params[:id])
         chapter.update_attributes(chapter_params)
 
-        render partial: 'pageflow_scrolled/chapters/chapter', locals: {chapter: chapter}
+        head :no_content
       rescue ActiveRecord::RecordNotFound
         head :not_found
       end
@@ -25,7 +25,7 @@ module PageflowScrolled
         chapter = Chapter.all_for_revision(@entry.draft).find(params[:id])
         chapter.destroy
 
-        render partial: 'pageflow_scrolled/chapters/chapter', locals: {chapter: chapter}
+        head :no_content
       rescue ActiveRecord::RecordNotFound
         head :not_found
       end

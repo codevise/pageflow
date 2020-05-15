@@ -17,7 +17,7 @@ module PageflowScrolled
         section = Section.all_for_revision(@entry.draft).find(params[:id])
         section.update_attributes(section_params)
 
-        render partial: 'pageflow_scrolled/sections/section', locals: {section: section}
+        head :no_content
       rescue ActiveRecord::RecordNotFound
         head :not_found
       end
@@ -26,7 +26,7 @@ module PageflowScrolled
         section = Section.all_for_revision(@entry.draft).find(params[:id])
         section.destroy
 
-        render partial: 'pageflow_scrolled/sections/section', locals: {section: section}
+        head :no_content
       rescue ActiveRecord::RecordNotFound
         head :not_found
       end

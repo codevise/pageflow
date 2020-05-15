@@ -29,8 +29,7 @@ module PageflowScrolled
         content_element = ContentElement.all_for_revision(@entry.draft).find(params[:id])
         content_element.update_attributes(content_element_params)
 
-        render partial: 'pageflow_scrolled/content_elements/content_element',
-               locals: {content_element: content_element}
+        head :no_content
       rescue ActiveRecord::RecordNotFound
         head :not_found
       end
@@ -39,8 +38,7 @@ module PageflowScrolled
         content_element = ContentElement.all_for_revision(@entry.draft).find(params[:id])
         content_element.destroy
 
-        render partial: 'pageflow_scrolled/content_elements/content_element',
-               locals: {content_element: content_element}
+        head :no_content
       rescue ActiveRecord::RecordNotFound
         head :not_found
       end
