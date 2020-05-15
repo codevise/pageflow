@@ -1,10 +1,11 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import 'support/mediaElementStub';
+import 'support/fakeBrowserFeatures';
 
 import {renderInEntry} from "../support";
 import {AudioPlayer} from 'frontend/AudioPlayer';
-import {media, browser} from 'pageflow/frontend';
+import {media} from 'pageflow/frontend';
 
 describe('AudioPlayer', () => {
   beforeEach(() => {
@@ -23,13 +24,11 @@ describe('AudioPlayer', () => {
     };
   }
   it('renders audio with provided file id', () => {
-    return browser.detectFeatures().then(()=>{
-      const result =
-        renderInEntry(<AudioPlayer id={100} />, {
-          seed: getAudioSeed()
-        });
-      expect(result.container.querySelector('audio')).toBeDefined();
-    });
+    const result =
+      renderInEntry(<AudioPlayer id={100} />, {
+        seed: getAudioSeed()
+      });
+    expect(result.container.querySelector('audio')).toBeDefined();
   });
 
   it('passes correct mp3 source to media API', () => {

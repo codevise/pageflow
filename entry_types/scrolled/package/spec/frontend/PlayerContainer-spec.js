@@ -1,12 +1,12 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import 'support/mediaElementStub';
+import 'support/fakeBrowserFeatures';
+
 import {render} from '@testing-library/react'
-import {media, browser} from 'pageflow/frontend';
+import {media} from 'pageflow/frontend';
 import PlayerContainer from 'frontend/MediaPlayer/PlayerContainer';
 import videojs from 'videojs';
-
-browser.detectFeatures();
 
 describe('PlayerContainer', () => {
   beforeEach(() => {

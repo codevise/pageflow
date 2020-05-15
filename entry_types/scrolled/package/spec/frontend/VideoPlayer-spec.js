@@ -1,10 +1,11 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import 'support/mediaElementStub';
+import 'support/fakeBrowserFeatures';
 
 import {renderInEntry} from "../support";
 import {VideoPlayer} from 'frontend/VideoPlayer';
-import {media, browser} from 'pageflow/frontend';
+import {media} from 'pageflow/frontend';
 
 describe('VideoPlayer', () => {
   beforeEach(() => {
@@ -24,13 +25,11 @@ describe('VideoPlayer', () => {
     };
   }
   it('renders video with provided file id', () => {
-    return browser.detectFeatures().then(()=>{
-      const result =
-        renderInEntry(<VideoPlayer id={100} />, {
-          seed: getVideoSeed()
-        });
-      expect(result.container.querySelector('video')).toBeDefined();
-    });
+    const result =
+      renderInEntry(<VideoPlayer id={100} />, {
+        seed: getVideoSeed()
+      });
+    expect(result.container.querySelector('video')).toBeDefined();
   });
 
   it('passes correct sources to media API', () => {
