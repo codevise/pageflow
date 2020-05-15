@@ -17,6 +17,7 @@ export const createMediaPlayer = function (options) {
     textTrackSettings: false,
     poster: undefined,
     loop: options.loop,
+    controls: options.controls,
     html5: {
       nativeCaptions: !isAudio && browser.has('iphone platform')
     },

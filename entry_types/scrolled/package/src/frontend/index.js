@@ -12,15 +12,19 @@ import {EntryStateProvider} from '../entryState';
 import {EditorStateProvider} from './EditorState';
 import {loadInlineEditingComponents} from './inlineEditing';
 
+import {browser} from 'pageflow/frontend';
+
 const editMode = window.location.pathname.indexOf('/editor/entries') === 0;
 
 export {api as frontend} from './api';
 
-export * from './Audio';
 export * from './Image';
 export * from './InlineCaption';
 export * from './Text';
-export * from './Video';
+
+export * from './MediaPlayer';
+export * from './VideoPlayer';
+export * from './AudioPlayer';
 
 export * from './useOnScreen';
 export * from './useMediaSettings';
@@ -33,13 +37,14 @@ export {useEditorSelection} from './EditorState';
 
 window.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);
-
-  if (editMode) {
-    loadInlineEditingComponents().then(() => render(seed));
-  }
-  else {
-    render(seed);
-  }
+  browser.detectFeatures().then(function(){
+    if (editMode) {
+      loadInlineEditingComponents().then(() => render(seed));
+    }
+    else {
+      render(seed);
+    }
+  });
 }
 
 function render(seed) {

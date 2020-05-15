@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import Fullscreen from './Fullscreen';
 import {Image} from './Image';
-import {Video} from './Video';
+import {VideoPlayer} from './VideoPlayer';
 import FillColor from './FillColor';
 import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
@@ -35,11 +35,11 @@ function renderContent(props, containerDimension, setContainerRef) {
   if (props.video) {
     return (
       <Fullscreen ref={setContainerRef}>
-        <Video state={props.onScreen ? 'active' : 'inactive'}
-               id={props.video}
-               offset={props.offset}
-               interactive={props.interactive}
-               nextSectionOnEnd={props.nextSectionOnEnd} />
+        <VideoPlayer state={props.onScreen ? 'active' : 'inactive'}
+                     id={props.video}
+                     offset={props.offset}
+                     interactive={props.interactive}
+                     nextSectionOnEnd={props.nextSectionOnEnd} />
       </Fullscreen>
     );
   }

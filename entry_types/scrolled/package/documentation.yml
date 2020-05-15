@@ -14,11 +14,11 @@ toc:
     description: |
       React components for building content elements.
     children:
-      - Audio
+      - AudioPlayer
       - Image
       - InlineCaption
       - Text
-      - Video
+      - VideoPlayer
   - name: Hooks
     description: |
       React hooks to obtain entry data.

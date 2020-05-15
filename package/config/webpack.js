@@ -9,6 +9,7 @@ module.exports = {
     'underscore': '_',
     'backbone.marionette': 'Backbone.Marionette',
     'iscroll': 'IScroll',
-    'wysihtml5': 'wysihtml5'
+    'wysihtml5': 'wysihtml5',
+    'videojs': 'videojs',
   }
 };
