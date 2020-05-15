@@ -36,4 +36,10 @@
   position: absolute;
   top: -4px;
   background: currentColor;
+  opacity: 0;
+  transition: opacity 100ms;
+}
+
+.progressBarsContainer:hover .sliderHandle {
+  opacity: 1;
 }
