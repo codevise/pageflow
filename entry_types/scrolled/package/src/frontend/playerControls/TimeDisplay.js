@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import styles from './TimeDisplay.module.css';
 
 export const unknownTimePlaceholder = '-:--';
@@ -27,7 +26,7 @@ export function TimeDisplay(props) {
   }
 
   return (
-    <div className={styles.timeDisplayContainer}>
+    <div data-testid={'time-display'}>
       <span className={styles.timeDisplay}>{format(props.currentTime)}</span>
       <span className={styles.timeDisplay}>/</span>
       <span className={styles.timeDisplay}>{format(props.duration)}</span>
