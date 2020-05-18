@@ -13,11 +13,11 @@ export function updatePlayerState(player, prevPlayerState, playerState, playerAc
     }
   }
 
-  if (playerState.shouldPrebuffer) {
+  if (!prevPlayerState.shouldPrebuffer && playerState.shouldPrebuffer) {
     player.prebuffer().then(() => setTimeout(playerActions.prebuffered, 0));
   }
 
-  if (playerState.shouldPlay) {
+  if (!prevPlayerState.shouldPlay && playerState.shouldPlay) {
     if (playerState.fadeDuration) {
       player.playAndFadeIn(playerState.fadeDuration);
     }
@@ -25,7 +25,7 @@ export function updatePlayerState(player, prevPlayerState, playerState, playerAc
       player.play();
     }
   }
-  else if (!playerState.shouldPlay && playerState.isPlaying) {
+  else if (prevPlayerState.shouldPlay && !playerState.shouldPlay && playerState.isPlaying) {
     if (playerState.fadeDuration) {
       player.fadeOutAndPause(playerState.fadeDuration);
     }
@@ -34,9 +34,8 @@ export function updatePlayerState(player, prevPlayerState, playerState, playerAc
     }
   }
 
-  if (playerState.shouldSeekTo !== undefined) {
+  if (playerState.shouldSeekTo !== undefined && prevPlayerState.shouldSeekTo !== playerState.shouldSeekTo ) {
     player.currentTime(playerState.shouldSeekTo);
-    playerState.shouldSeekTo = undefined;
   }
 
 }
