@@ -64,6 +64,18 @@ module Pageflow
                               end)
 
     controller do
+      # We put the `belongs_to` call in the controller block to work
+      # around the issue that ActiveAdmin does not yet support
+      # polymorphic nested resources [1]. This works since the
+      # underlying InheritedResources library does support polymorphic
+      # nesting [2]. As mentioned in the ActiveAdmin issue, we need to
+      # set up routes manually then, though. This is done in
+      # `Pageflow.routes` [3].
+      #
+      # [1] activeadmin/activeadmin#221
+      # [2] https://github.com/activeadmin/inherited_resources#polymorphic-belongs-to
+      # [3] https://github.com/codevise/pageflow/blob/023fdb7c5b3b917bb94f4adafa18a31f8bd9c753/lib/pageflow.rb#L10
+
       belongs_to :entry, parent_class: Pageflow::Entry, polymorphic: true
       belongs_to :account, parent_class: Pageflow::Account, polymorphic: true
       belongs_to :user, parent_class: User, polymorphic: true
