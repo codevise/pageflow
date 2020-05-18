@@ -4,6 +4,7 @@ const PREFIX = 'PAGEFLOW_SCROLLED_COLLECTION';
 const RESET = `${PREFIX}_RESET`;
 const ADD = `${PREFIX}_ADD`;
 const CHANGE = `${PREFIX}_CHANGE`;
+const PATCH = `${PREFIX}_PATCH`;
 const REMOVE = `${PREFIX}_REMOVE`;
 const SORT = `${PREFIX}_SORT`;
 
@@ -46,6 +47,22 @@ function reducer(state, action) {
         }
       }
     }
+  case PATCH:
+    const key = action.payload.key;
+
+    return {
+      ...state,
+      [collectionName]: {
+        order: state[collectionName].order,
+        items: {
+          ...state[collectionName].items,
+          [key]: {
+            ...state[collectionName].items[key],
+            ...action.payload.attributes
+          }
+        }
+      }
+    }
   case REMOVE:
     const clonedItems = {
       ...state[collectionName].items
@@ -82,6 +99,17 @@ function init(items, keyAttribute = 'id') {
       return result;
     }, {})
   };
+}
+
+export function updateConfiguration({dispatch, name, key, configuration}) {
+  dispatch({
+    type: PATCH,
+    payload: {
+      collectionName: name,
+      key,
+      attributes: {configuration}
+    }
+  })
 }
 
 export function watchCollection(collection,
@@ -132,8 +160,8 @@ export function watchCollection(collection,
   }, handle);
 
   if (includeConfiguration) {
-    collection.on('change:configuration', model => {
-      if (!model.isNew()) {
+    collection.on('change:configuration', (model, value, {ignoreInWatchCollection} = {}) => {
+      if (!model.isNew() && !ignoreInWatchCollection) {
         dispatch({
           type: CHANGE,
           payload: {
@@ -210,7 +238,7 @@ function getAttributes(model, {attributeNames, includeConfiguration}) {
   }, {});
 
   if (includeConfiguration) {
-    result.configuration = model.configuration.attributes;
+    result.configuration = {...model.configuration.attributes};
   };
 
   return result;

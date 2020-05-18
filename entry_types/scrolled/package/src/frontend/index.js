@@ -34,6 +34,7 @@ export * from './SectionThumbnail';
 export {default as Entry} from './Entry';
 export {EntryStateProvider, useFile} from '../entryState'
 export {useEditorSelection} from './EditorState';
+export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
 
 window.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);

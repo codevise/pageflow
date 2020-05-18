@@ -123,6 +123,7 @@ function sectionStructure(collections, section) {
       )
       .map(item => ({
         id: item.id,
+        permaId: item.permaId,
         type: item.typeName,
         position: item.configuration.position,
         props: item.configuration

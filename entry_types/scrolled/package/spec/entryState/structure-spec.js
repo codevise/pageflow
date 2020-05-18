@@ -99,12 +99,16 @@ describe('useEntryStructure', () => {
           transition: 'scroll',
           foreground: [
             {
+              id: 1,
+              permaId: 1001,
               type: 'heading',
               props: {
                 children: 'Heading'
               }
             },
             {
+              id: 2,
+              permaId: 1002,
               type: 'textBlock',
               props: {
                 children: 'Some text'
@@ -127,6 +131,8 @@ describe('useEntryStructure', () => {
           transition: 'fade',
           foreground: [
             {
+              id: 3,
+              permaId: 1003,
               type: 'image',
               position: 'sticky',
               props: {
@@ -134,6 +140,8 @@ describe('useEntryStructure', () => {
               }
             },
             {
+              id: 4,
+              permaId: 1004,
               type: 'textBlock',
               props: {
                 children: 'Some more text'
