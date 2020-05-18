@@ -9,7 +9,6 @@ import {setupI18n} from './i18n';
 
 import './global.module.css';
 import {EntryStateProvider} from '../entryState';
-import {EditorStateProvider} from './EditorState';
 import {loadInlineEditingComponents} from './inlineEditing';
 
 import {browser} from 'pageflow/frontend';
@@ -55,12 +54,10 @@ function render(seed) {
 function Root({seed}) {
   return (
     <>
-      <EditorStateProvider active={editMode}>
-        <EntryStateProvider seed={seed}>
-          <AppHeader />
-          <Entry />
-        </EntryStateProvider>
-      </EditorStateProvider>
+      <EntryStateProvider seed={seed}>
+        <AppHeader />
+        <Entry />
+      </EntryStateProvider>
     </>
   );
 }

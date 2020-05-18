@@ -5,10 +5,11 @@ import MutedContext from './MutedContext';
 import ScrollToSectionContext from './ScrollToSectionContext';
 import {useEntryStructure, useEntryStateDispatch} from '../entryState';
 import {useEditorSelection} from './EditorState';
+import {withInlineEditingDecorator} from './inlineEditing';
 
 import styles from './Entry.module.css';
 
-export default function Entry(props) {
+export default withInlineEditingDecorator('EntryDecorator', function Entry(props) {
   const [currentSectionIndex, setCurrentSectionIndexState] = useState(0);
 
   const [scrollTargetSectionIndex, setScrollTargetSectionIndex] = useState(null);
@@ -71,7 +72,7 @@ export default function Entry(props) {
       </MutedContext.Provider>
     </div>
   );
-}
+})
 
 function renderChapters(entryStructure,
                         currentSectionIndex,
