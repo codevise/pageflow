@@ -116,6 +116,7 @@ export function useSectionStructure({sectionPermaId}) {
 function sectionStructure(collections, section) {
   return section && {
     permaId: section.permaId,
+    id: section.id,
     ...section.configuration,
     foreground: getItems(collections, 'contentElements')
       .filter(

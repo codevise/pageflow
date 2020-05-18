@@ -12,6 +12,9 @@ en:
           Click once in this field to activate the sound for the entire story.
     inline_editing:
       insert_content_element: Insert new element
+      edit_section_settings: Edit section settings
+      edit_section_transition_before: Edit section transition
+      edit_section_transition_after: Edit section transition
     editor:
       content_elements:
         externalLinkList:

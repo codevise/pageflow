@@ -1,5 +1,5 @@
 export {EntryDecorator} from './EntryDecorator';
+export {SectionDecorator} from './SectionDecorator';
 export {ContentElementDecorator} from './ContentElementDecorator';
-export {ForegroundDecorator} from './ForegroundDecorator';
 
 export {EditableText} from './EditableText';

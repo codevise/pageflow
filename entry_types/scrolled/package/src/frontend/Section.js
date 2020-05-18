@@ -9,6 +9,7 @@ import isIntersectingX from './isIntersectingX';
 import useBoundingClientRect from './useBoundingClientRect';
 import useDimension from './useDimension';
 import useScrollTarget from './useScrollTarget';
+import {withInlineEditingDecorator} from './inlineEditing';
 
 import styles from './Section.module.css';
 import {getTransitionStyles} from './transitions'
@@ -28,7 +29,7 @@ export const OnScreenContext = React.createContext({
   bottom: false
 });
 
-export default function Section(props) {
+export default withInlineEditingDecorator('SectionDecorator', function Section(props) {
   const activityProbeRef = useRef();
   useOnScreen(activityProbeRef, '-50% 0px -50% 0px', props.onActivate);
 
@@ -123,7 +124,7 @@ export default function Section(props) {
       </Foreground>
     </section>
   );
-}
+});
 
 function indexItems(items) {
   return items.map((item, index) =>

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import styles from './Toolbar.module.css';
 
-export function Toolbar({buttons, onButtonClick}) {
+export function Toolbar({buttons, onButtonClick, iconSize}) {
   return (
     <div className={styles.Toolbar} contentEditable={false}>
       {buttons.map(button => {
@@ -14,13 +14,17 @@ export function Toolbar({buttons, onButtonClick}) {
                   title={button.text}
                   className={classNames(styles.button, {[styles.activeButton]: button.active})}
                   onMouseDown={event => {
-                    event.preventDefault();
-                    onButtonClick(button.name)
-                  }}>
-            <Icon width={15} height={15} />
+                      event.preventDefault();
+                      event.stopPropagation();
+
+                      onButtonClick(button.name)
+                    }}>
+            <Icon width={iconSize} height={iconSize} />
           </button>
         );
       })}
     </div>
   );
 }
+
+Toolbar.defaultProps = {iconSize: 15};
