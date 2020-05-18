@@ -24,6 +24,7 @@
 .controls {
   height: 24px;
   max-height: 24px;
+  padding: 4px;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -44,20 +45,20 @@
   color: currentColor;
 }
 
-.settingsButton {
+.settingsIcon {
   composes: controlsIcon;
-  width: 20px;
+  margin: 0 2px;
 }
 
-.subtitlesButton {
+.subtitlesIcon {
   composes: controlsIcon;
   margin: 0 3px 0 2px;
 }
 
 .settingsMenu {
-  right: 25px;
+  right: 34px;
 }
 
 .subtitlesMenu {
-  right: 1px;
+  right: 9px;
 }

@@ -49,28 +49,54 @@ export function ControlBar(props) {
         <div className={classNames(styles.controlsContainer)}>
           <div className={styles.controls}>
             <TimeDisplay currentTime={props.currentTime}
-                         duration={props.duration} />
+                         duration={props.duration}/>
           </div>
         </div>
         <div className={styles.controlsContainer}>
           <div className={styles.controls}>
             <a>
-              <SettingsIcon className={classNames(styles.settingsButton,
+              <SettingsIcon className={classNames(styles.settingsIcon,
                                                   {[styles.hidden]: props.type === 'audio'})}
                             onClick={() => setSettingsMenuHidden(!settingsMenuHidden)}/>
             </a>
             <ContextMenu className={classNames(styles.settingsMenu,
-                                               {[styles.hidden]: settingsMenuHidden})}
+                                    {[styles.hidden]: settingsMenuHidden})}
                          theme={style}
-                         entries={['Automatisch', '1024p', '720p']} />
+                         entries={[
+                           {
+                             label: 'Automatisch',
+                             active: true
+                           },
+                           {
+                             label: '1024p',
+                             active: false
+                           },
+                           {
+                             label: '720p',
+                             active: false
+                           }
+                         ]}/>
             <a>
-              <SubtitlesIcon className={styles.subtitlesButton}
+              <SubtitlesIcon className={styles.subtitlesIcon}
                              onClick={() => setSubtitlesMenuHidden(!subtitlesMenuHidden)}/>
             </a>
             <ContextMenu className={classNames(styles.subtitlesMenu,
-                                               {[styles.hidden]: subtitlesMenuHidden})}
+              {[styles.hidden]: subtitlesMenuHidden})}
                          theme={style}
-                         entries={['Automatisch', 'Deutsch', 'English']} />
+                         entries={[
+                           {
+                             label: 'Automatisch',
+                             active: true
+                           },
+                           {
+                             label: 'Deutsch',
+                             active: false
+                           },
+                           {
+                             label: 'English',
+                             active: false
+                           }
+                         ]}/>
           </div>
         </div>
       </div>
@@ -84,11 +110,16 @@ ControlBar.defaultProps = {
   bufferedEnd: 400,
   isPlaying: false,
 
-  play: () => {},
-  playing: () => {},
-  pause: () => {},
-  paused: () => {},
-  scrubTo: () => {},
+  play: () => {
+  },
+  playing: () => {
+  },
+  pause: () => {
+  },
+  paused: () => {
+  },
+  scrubTo: () => {
+  },
 
   type: 'video',
   style: 'transparent',

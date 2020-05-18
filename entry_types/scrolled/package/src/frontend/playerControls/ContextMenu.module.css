@@ -1,30 +1,35 @@
 .contextMenuContainer {
   position: absolute;
-  bottom: 32px;
+  bottom: 35px;
 }
 
 .contextMenu {
   position: relative;
   padding: 5px 15px;
-  border-radius: 5px;
-}
-
-.contextMenu:after {
-  top: 100%;
-  right: 8px;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-  border-width: 5px;
-  margin-left: -5px;
 }
 
 .contextMenu ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  font-size: 14px;
+  font-size: 15px;
+}
+
+.contextMenuItem {
+  height: 24px;
+  padding: 2px 0;
+}
+
+.contextMenuItem span {
+  vertical-align: super;
+  margin-left: 5px;
+}
+
+.contextMenuItemActiveIndicator {
+  visibility: hidden;
+  fill: currentColor;
+}
+
+.contextMenuItemActiveIndicator.active {
+  visibility: visible;
 }
