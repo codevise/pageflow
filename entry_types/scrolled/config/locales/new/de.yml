@@ -260,8 +260,12 @@ de:
               left: Links
               right: Rechts
               center: Mitte
+      edit_section:
+        tabs:
+          transition: Übergang
+        attributes:
           transition:
-            label: Übergang vom vorigen Abschnitt
+            label: Effekt
             inline_help: >
               Diese Einstellung definiert den Übergang vom vorigen Abschnitt zu diesem. Der Übergang
               wirkt sich jeweils auf den Hintergrund und den Vordergrund unterschiedlich aus.

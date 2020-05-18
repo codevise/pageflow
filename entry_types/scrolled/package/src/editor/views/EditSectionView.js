@@ -6,9 +6,6 @@ export const EditSectionView = EditConfigurationView.extend({
 
   configure: function(configurationEditor) {
     configurationEditor.tab('section', function() {
-      this.input('transition', SelectInputView, {
-        values: ['beforeAfter', 'fade', 'fadeBg', 'reveal', 'scroll', 'scrollOver']
-      });
       this.input('layout', SelectInputView, {
         values: ['left', 'right', 'center']
       });
