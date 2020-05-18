@@ -56,7 +56,6 @@ describe('normalizeSeed', () => {
 
     expect(result).toMatchObject({
       collections: {
-        entries: [],
         imageFiles: [],
         audioFiles: [],
         videoFiles: [],
@@ -68,10 +67,8 @@ describe('normalizeSeed', () => {
     });
   });
 
-  it('ensures required entry properties are present', () => {
-    const result = normalizeSeed({
-      entry: [{}]
-    });
+  it('ensures required entry is present', () => {
+    const result = normalizeSeed({});
 
     expect(result).toMatchObject({
       collections: {
