@@ -8,6 +8,7 @@ import {inputView} from 'pageflow/ui';
 import {editor} from '../../base';
 
 import {BackgroundPositioningView} from '../BackgroundPositioningView';
+import {MotifAreaSelectionView} from '../MotifAreaSelectionView';
 import {DropDownButtonView} from '../DropDownButtonView';
 import {FileSettingsDialogView} from '../FileSettingsDialogView';
 import {FileThumbnailView} from '../FileThumbnailView';
@@ -173,10 +174,19 @@ FileInputView.EditBackgroundPositioningMenuItem = Backbone.Model.extend({
   },
 
   selected: function() {
+    console.log('this.option');
+    console.log(this.options);
+    /*
     BackgroundPositioningView.open({
       model: this.options.inputModel,
       propertyName: this.options.propertyName,
       filesCollection: this.options.filesCollection
+    });
+    */
+    var model = this.options.inputModel;
+    var file =  model.getReference(this.options.propertyName, this.options.filesCollection)
+    MotifAreaSelectionView.open({
+      model: file
     });
   }
 });

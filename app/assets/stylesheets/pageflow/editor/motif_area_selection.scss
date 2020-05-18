@@ -1,0 +1,38 @@
+.motif_area_selection {
+  .box {
+    top: 5%;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 745px;
+    padding-bottom: 20px;
+    overflow: hidden;
+    height: 80%;
+    overflow-y: scroll;
+  }
+
+  label {
+    float: left;
+    margin-right: 10px;
+    top: 12px;
+    position: relative;
+    font-size: 12px;
+  }
+
+  .wrapper {
+    text-align: center;
+    margin: 35px;
+
+    img {
+      width: 500px;
+    }
+  }
+
+  a.save {
+    @include check-icon;
+    @include icon-button;
+  }
+
+  a.close {
+    @include icon-button(#888);
+  }
+}

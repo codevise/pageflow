@@ -1,6 +1,7 @@
 @import "bourbon";
 
 @import "pageflow/jquery_ui";
+@import "pageflow/jquery.imgareaselect/imgareaselect-default";
 @import "pageflow/ui";
 @import "pageflow/animations";
 
@@ -9,6 +10,7 @@
 @import "./colors";
 @import "./entry_preview";
 @import "./background_positioning";
+@import "./motif_area_selection";
 @import "./page_selection";
 @import "./files_explorer";
 @import "./locked";
