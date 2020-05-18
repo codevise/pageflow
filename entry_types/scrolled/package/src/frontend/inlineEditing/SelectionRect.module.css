@@ -27,6 +27,7 @@
   top: -40px;
   right: -15px;
   z-index: 1;
+  pointer-events: all;
 }
 
 .insert {

@@ -8,6 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "core-js": "^3.6.5",
+    "debounce": "^1.2.0",
     "intersection-observer": "^0.7.0",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
@@ -15,6 +16,8 @@
     "react-dom": "^16.9.0",
     "react-player": "^1.15.2",
     "react-tooltip": "^3.11.1",
+    "slate": "^0.57.3",
+    "slate-react": "^0.57.3",
     "whatwg-fetch": "^3.0.0"
   },
   "peerDependencies": {

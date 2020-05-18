@@ -19,9 +19,9 @@ export function EditorStateProvider(props) {
     setSelectionState(selection);
   }, []);
 
-  const value = useMemo(() => props.active ? {
+  const value = useMemo(() => ({
     selection, setSelection
-  } : {}, [props.active, setSelection, selection])
+  }), [setSelection, selection])
 
   return (
     <Context.Provider value={value}>

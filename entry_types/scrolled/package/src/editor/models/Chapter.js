@@ -40,9 +40,8 @@ export const Chapter = Backbone.Model.extend({
 
     section.once('sync', () => {
       section.contentElements.create({
-        typeName: 'heading',
+        typeName: 'editableTextBlock',
         configuration: {
-          children: 'Neuer Abschnitt'
         }
       });
     });

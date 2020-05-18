@@ -9,7 +9,6 @@ import {setupI18n} from './i18n';
 
 import './global.module.css';
 import {EntryStateProvider} from '../entryState';
-import {EditorStateProvider} from './EditorState';
 import {loadInlineEditingComponents} from './inlineEditing';
 
 import {browser} from 'pageflow/frontend';
@@ -36,6 +35,8 @@ export {EntryStateProvider, useFile} from '../entryState'
 export {useEditorSelection} from './EditorState';
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
 
+export {EditableText} from './EditableText';
+
 window.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);
   browser.detectFeatures().then(function(){
@@ -55,12 +56,10 @@ function render(seed) {
 function Root({seed}) {
   return (
     <>
-      <EditorStateProvider active={editMode}>
-        <EntryStateProvider seed={seed}>
-          <AppHeader />
-          <Entry />
-        </EntryStateProvider>
-      </EditorStateProvider>
+      <EntryStateProvider seed={seed}>
+        <AppHeader />
+        <Entry />
+      </EntryStateProvider>
     </>
   );
 }

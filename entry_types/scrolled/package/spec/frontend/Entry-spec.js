@@ -4,7 +4,7 @@ import Entry from 'frontend/Entry';
 import {frontend, useContentElementConfigurationUpdate} from 'frontend';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 
-import {act} from '@testing-library/react';
+import {act, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 import {renderInEntry, fakeParentWindow, tick} from 'support';
 import {simulateScrollingIntoView} from 'support/fakeIntersectionObserver';
@@ -133,6 +133,51 @@ describe('Entry', () => {
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'UPDATE_CONTENT_ELEMENT',
       payload: {id: 1, configuration: {text: 'New text'}}
+    }, expect.anything());
+  });
+
+  it('posts SELECTED message when conten element is clicked', () => {
+    window.parent.postMessage = jest.fn();
+    frontend.contentElementTypes.register('text', {
+      component: function Component() {
+        return 'Content element';
+      }
+    });
+
+    const {getByText} = renderInEntry(<Entry />, {
+      seed: {
+        contentElements: [{id: 1, typeName: 'text'}]
+      }
+    });
+
+    fireEvent.click(getByText('Content element'));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {id: 1, type: 'contentElement'}
+    }, expect.anything());
+  });
+
+  it('does not post SELECTED message on click when conten element uses custom selection rect', () => {
+    window.parent.postMessage = jest.fn();
+    frontend.contentElementTypes.register('text', {
+      component: function Component() {
+        return 'Content element';
+      },
+      customSelectionRect: true
+    });
+
+    const {getByText} = renderInEntry(<Entry />, {
+      seed: {
+        contentElements: [{id: 1, typeName: 'text'}]
+      }
+    });
+
+    fireEvent.click(getByText('Content element'));
+
+    expect(window.parent.postMessage).not.toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {id: 1, type: 'contentElement'}
     }, expect.anything());
   });
 });
