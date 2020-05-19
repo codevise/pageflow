@@ -9,11 +9,9 @@
    react-compare-image: 5% each side, so default label max width
    should be 40%. This is only a fallback. We should receive widths
    from BeforeAfter.js */
-  --default-label-max-width: 40%;
   /* label padding in react-compare-image is set to 20px left and right,
    so we need to subtract the sum from max width */
-  --label-padding: 40px;
-  --wiggle-animation: 1.5s cubic-bezier(.36,.07,.19,.97) both;
+   
   --frame1pos: -8;
   --frame2pos: 16;
   --frame3pos: -32;
@@ -22,10 +20,6 @@
   --frame2px: calc(var(--frame2pos) * 1px);
   --frame3px: calc(var(--frame3pos) * 1px);
   --frame4px: calc(var(--frame4pos) * 1px);
-  --frame1percent: calc(var(--frame1pos) * 2.5%);
-  --frame2percent: calc(var(--frame2pos) * 2.5%);
-  --frame3percent: calc(var(--frame3pos) * 2.5%);
-  --frame4percent: calc(var(--frame4pos) * 2.5%);
   /* in addition to the above variables, we receive --initial-rect-width
    from BeforeAfter.js, which has no sensible default value */
 }
@@ -33,17 +27,43 @@
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
    slider */
 .container.wiggle div div:nth-child(3) {
-  animation: SliderLeftRightShake var(--wiggle-animation);
+  animation: SliderLeftRightShake 1.5s cubic-bezier(.36,.07,.19,.97) both;
 }
 
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
    before image */
 .container.wiggle div img:nth-child(2) {
-  animation: BeforeImageLeftRightShake var(--wiggle-animation);
+  animation: BeforeImageLeftRightShake 1.5s cubic-bezier(.36,.07,.19,.97) both;
 }
 
-.container img {
+/*this selects the parent div of images and apply pillarbox for smaller viewports.*/
+.pillarBox {
+  width : 100vw !important;
+  height : 56.25vw !important;
+  max-height : 100vh;
+  max-width : 177.78vh;
+  position : absolute !important;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+/* For pillarbox, give padding to parent. */
+.containerPadding {
+  padding-top: 56.25%;
+}
+
+.noImageHeight {
+  height: 30px;
+}
+
+.container img:nth-child(1) {
   background-color: #CCCCCC;
+}
+
+.container img:nth-child(2) {
+  background-color: #EBEBEB;
 }
 
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
@@ -57,7 +77,7 @@
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
    after image */
 .container.wiggle div img:nth-child(1) {
-  animation: AfterImageLeftRightShake var(--wiggle-animation);
+  animation: AfterImageLeftRightShake 1.5s cubic-bezier(.36,.07,.19,.97) both;
 }
 
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
@@ -106,18 +126,18 @@
 
 @keyframes SliderLeftRightShake {
   10%, 90% {
-    transform: translate3d(var(--frame1percent), 0, 0);
+    transform: translate3d(-20%, 0, 0);
   }
 
   20%, 80% {
-    transform: translate3d(var(--frame2percent), 0, 0);
+    transform: translate3d(40%, 0, 0);
   }
 
   30%, 50%, 70% {
-    transform: translate3d(var(--frame3percent), 0, 0);
+    transform: translate3d(-80%, 0, 0);
   }
 
   40%, 60% {
-    transform: translate3d(var(--frame4percent), 0, 0);
+    transform: translate3d(80%, 0, 0);
   }
 }
