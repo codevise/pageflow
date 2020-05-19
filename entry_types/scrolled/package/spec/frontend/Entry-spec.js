@@ -8,6 +8,8 @@ import {act, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 import {renderInEntry, fakeParentWindow, tick} from 'support';
 import {simulateScrollingIntoView} from 'support/fakeIntersectionObserver';
+import {useFakeTranslations} from 'pageflow/testHelpers';
+import I18n from 'i18n-js';
 
 import useScrollTarget from 'frontend/useScrollTarget';
 jest.mock('frontend/useScrollTarget');
@@ -17,6 +19,13 @@ beforeAll(async () => {
 });
 
 describe('Entry', () => {
+  useFakeTranslations({
+    'pageflow_scrolled.inline_editing.select_section': 'Select section',
+    'pageflow_scrolled.inline_editing.edit_section_settings': 'Edit section settings',
+    'pageflow_scrolled.inline_editing.edit_section_transition_before': 'Edit section transition before',
+    'pageflow_scrolled.inline_editing.edit_section_transition_after': 'Edit section transition after'
+  });
+
   it('posts CHANGE_SECTION message when section becomes active', () => {
     fakeParentWindow();
     window.parent.postMessage = jest.fn();
@@ -158,7 +167,7 @@ describe('Entry', () => {
     }, expect.anything());
   });
 
-  it('does not post SELECTED message on click when conten element uses custom selection rect', () => {
+  it('does not post SELECTED message on click when content element uses custom selection rect', () => {
     window.parent.postMessage = jest.fn();
     frontend.contentElementTypes.register('text', {
       component: function Component() {
@@ -178,6 +187,76 @@ describe('Entry', () => {
     expect(window.parent.postMessage).not.toHaveBeenCalledWith({
       type: 'SELECTED',
       payload: {id: 1, type: 'contentElement'}
+    }, expect.anything());
+  });
+
+  it('posts SELECTED message when edit button on section selection rect is clicked', () => {
+    window.parent.postMessage = jest.fn();
+    frontend.contentElementTypes.register('text', {
+      component: function Component() {
+        return 'Content element';
+      }
+    });
+
+    const {getByLabelText, getByTitle} = renderInEntry(<Entry />, {
+      seed: {
+        sections: [{id: 1}]
+      }
+    });
+
+    fireEvent.click(getByLabelText(I18n.t('pageflow_scrolled.inline_editing.select_section')));
+    fireEvent.mouseDown(getByTitle(I18n.t('pageflow_scrolled.inline_editing.edit_section_settings')));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {id: 1, type: 'sectionSettings'}
+    }, expect.anything());
+  });
+
+  it('posts SELECTED message when edit transition button before section selection rect is clicked', () => {
+    window.parent.postMessage = jest.fn();
+    frontend.contentElementTypes.register('text', {
+      component: function Component() {
+        return 'Content element';
+      }
+    });
+
+    const {getAllByLabelText, getByTitle} = renderInEntry(<Entry />, {
+      seed: {
+        sections: [{id: 1}, {id: 2}]
+      }
+    });
+
+    fireEvent.click(getAllByLabelText(I18n.t('pageflow_scrolled.inline_editing.select_section'))[1]);
+    fireEvent.mouseDown(getByTitle(I18n.t('pageflow_scrolled.inline_editing.edit_section_transition_before')));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {id: 2, type: 'sectionTransition'}
+    }, expect.anything());
+  });
+
+  it('posts SELECTED message for next section ' +
+     'when edit transition button after section selection rect is clicked', () => {
+    window.parent.postMessage = jest.fn();
+    frontend.contentElementTypes.register('text', {
+      component: function Component() {
+        return 'Content element';
+      }
+    });
+
+    const {getAllByLabelText, getByTitle} = renderInEntry(<Entry />, {
+      seed: {
+        sections: [{id: 1}, {id: 2}]
+      }
+    });
+
+    fireEvent.click(getAllByLabelText(I18n.t('pageflow_scrolled.inline_editing.select_section'))[0]);
+    fireEvent.mouseDown(getByTitle(I18n.t('pageflow_scrolled.inline_editing.edit_section_transition_after')));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {id: 2, type: 'sectionTransition'}
     }, expect.anything());
   });
 });

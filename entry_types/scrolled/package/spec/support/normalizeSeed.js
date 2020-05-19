@@ -34,7 +34,7 @@ export function normalizeSeed({
   sections,
   contentElements
 } = {}) {
-  const entries = entry ? [entry] : entry;
+  const entries = entry ? [entry] : [{}];
   const normalizedEntries = normalizeCollection(entries);
 
   const normalizedContentElements = normalizeCollection(contentElements, {

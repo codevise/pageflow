@@ -21,7 +21,7 @@ export function Selection(props) {
   const outerRef = useRef()
   const innerRef = useRef()
 
-  const boundsRef = useRef({});
+  const boundsRef = useRef();
 
   const {select, isSelected: isContentElementSelected} = useEditorSelection(
     {id: props.contentElementId, type: 'contentElement'}
@@ -35,19 +35,26 @@ export function Selection(props) {
     }
 
     if (!selection) {
+      if (boundsRef.current) {
+        hideRect(ref.current);
+        boundsRef.current = null;
+      }
+
+      return;
+    }
+
+    if (!isContentElementSelected && boundsRef.current) {
       hideRect(ref.current);
       return;
     }
 
-    if (!isContentElementSelected) {
+    if (!isContentElementSelected && !boundsRef.current) {
       select();
     }
 
     const [start, end] = computeBounds();
 
-    boundsRef.current.start = start;
-    boundsRef.current.end = end;
-
+    boundsRef.current = {start, end};
     updateRect(editor, start, end, outerRef.current, ref.current, innerRef.current);
   });
 

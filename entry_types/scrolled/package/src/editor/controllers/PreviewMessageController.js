@@ -61,10 +61,16 @@ export const PreviewMessageController = Object.extend({
         this.entry.set('currentSectionIndex', message.data.payload.index);
       }
       else if (message.data.type === 'SELECTED') {
-        const {id} = message.data.payload;
+        const {type, id} = message.data.payload;
 
-        if (id) {
+        if (type === 'contentElement') {
           this.editor.navigate(`/scrolled/content_elements/${id}`, {trigger: true})
+        }
+        else if (type === 'sectionSettings') {
+          this.editor.navigate(`/scrolled/sections/${id}`, {trigger: true})
+        }
+        else if (type === 'sectionTransition') {
+          this.editor.navigate(`/scrolled/sections/${id}/transition`, {trigger: true})
         }
         else {
           this.editor.navigate('/', {trigger: true})

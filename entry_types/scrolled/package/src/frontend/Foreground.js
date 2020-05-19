@@ -1,17 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {withInlineEditingDecorator} from './inlineEditing';
-
 import styles from './Foreground.module.css';
 
-export default withInlineEditingDecorator('ForegroundDecorator', function Foreground(props) {
+export default function Foreground(props) {
   return (
     <div className={className(props)}>
       {props.children}
     </div>
   );
-})
+}
 
 function className(props) {
   return classNames(

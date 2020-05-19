@@ -12,6 +12,9 @@ en:
           Click once in this field to activate the sound for the entire story.
     inline_editing:
       insert_content_element: Insert new element
+      edit_section_settings: Edit section settings
+      edit_section_transition_before: Edit section transition
+      edit_section_transition_after: Edit section transition
     editor:
       content_elements:
         externalLinkList:
@@ -254,8 +257,12 @@ en:
               left: Left
               right: Right
               center: Center
+      edit_section_transition:
+        tabs:
+          transition: Transition
+        attributes:
           transition:
-            label: Transition From Previous Section
+            label: Effect
             inline_help: >
               This setting defines the transition when scrolling from the previous
               section to the current. The different settings have specific effects concerning the

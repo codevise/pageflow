@@ -110,7 +110,7 @@ describe('PreviewMessageController', () => {
     })).resolves.toMatchObject({type: 'SELECT', payload: null});
   });
 
-  it('navigates to edit content element route on SELECTED message', () => {
+  it('navigates to edit content element route on SELECTED message for content element', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
@@ -122,8 +122,40 @@ describe('PreviewMessageController', () => {
 
     return expect(new Promise(resolve => {
       editor.on('navigate', resolve);
-      window.postMessage({type: 'SELECTED', payload: {id: 1}}, '*');
+      window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'contentElement'}}, '*');
     })).resolves.toBe('/scrolled/content_elements/1');
+  });
+
+  it('navigates to edit section route on SELECTED message for section settings', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'sectionSettings'}}, '*');
+    })).resolves.toBe('/scrolled/sections/1');
+  });
+
+  it('navigates to edit section transition route on SELECTED message for section transition', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'sectionTransition'}}, '*');
+    })).resolves.toBe('/scrolled/sections/1/transition');
   });
 
   it('displays insert dialog on INSERT_CONTENT_ELEMENT message', () => {
