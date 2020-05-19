@@ -3,13 +3,13 @@
 }
 
 .controlBarContainer {
-  width: 50%;
+  width: 100%;
   display: table;
   position: relative;
 }
 
 .controlBarContainer.inset {
-  margin-top: -24px;
+  margin-top: -32px;
 }
 
 .controlBar {

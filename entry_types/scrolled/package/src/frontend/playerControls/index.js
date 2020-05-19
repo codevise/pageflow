@@ -27,7 +27,7 @@ export function ControlBar(props) {
   return (
     <div className={classNames(styles.controlBarContainer,
                                style.background,
-                               {[styles.inset]: !!props.fullWidth})}>
+                               {[styles.inset]: props.inset})}>
       <div className={classNames(styles.controlBar, style.foreground)}>
         <div className={styles.controlsContainer}>
           <div className={styles.controls}>
@@ -123,7 +123,7 @@ ControlBar.defaultProps = {
 
   type: 'video',
   style: 'transparent',
-  fullWidth: false,
+  inset: false,
   settingsMenuHidden: true,
   subtitlesMenuHidden: true
 };

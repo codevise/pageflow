@@ -8,7 +8,7 @@ export function ContextMenu(props) {
   function renderMenuEntries(entries) {
     return entries.map((entry) => {
       return (
-        <li key={entry}>
+        <li>
           <div className={styles.contextMenuItem}>
             <CheckIcon className={classNames(styles.contextMenuItemActiveIndicator,
                                              {[styles.active]: entry.active})}/>

@@ -3,13 +3,13 @@
 }
 
 .background {
-  background: white;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .contextMenu {
-  background: white;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .contextMenu:after {
-  border-top-color: white;
+  border-top-color: rgba(0, 0, 0, 0.6);
 }

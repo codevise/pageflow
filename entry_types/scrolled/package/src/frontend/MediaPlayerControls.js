@@ -1,6 +1,6 @@
 import React from 'react';
 import {usePlayerState} from './MediaPlayer';
-import {ControlBar} from './playerControls/ControlBar'
+import {ControlBar} from './playerControls'
 
 export function MediaPlayerControls(props) {
   const [playerState, playerActions] = usePlayerState();

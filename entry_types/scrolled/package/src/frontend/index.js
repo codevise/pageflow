@@ -26,7 +26,7 @@ export * from './VideoPlayer';
 export * from './AudioPlayer';
 
 export {MediaPlayerControls} from './MediaPlayerControls';
-export {ControlBar} from './playerControls/ControlBar';
+export {ControlBar} from './playerControls';
 
 export * from './useOnScreen';
 export * from './useMediaSettings';
