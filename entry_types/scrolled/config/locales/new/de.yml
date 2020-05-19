@@ -263,7 +263,7 @@ de:
               left: Links
               right: Rechts
               center: Mitte
-      edit_section:
+      edit_section_transition:
         tabs:
           transition: Übergang
         attributes:
