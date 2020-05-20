@@ -23,5 +23,22 @@ export const ContentElement = Backbone.Model.extend({
 
   getType(contentElement) {
     return editor.contentElementTypes.findByTypeName(this.get('typeName'));
+  },
+
+  applyDefaultConfiguration(sibling) {
+    this.configuration.set({
+      ...this.getType().defaultConfig,
+      position: getDefaultPosition(sibling)
+    });
   }
 });
+
+export function getDefaultPosition(sibling) {
+  const position = sibling.configuration.get('position');
+
+  if (position === 'full') {
+    return 'inline';
+  }
+
+  return position;
+}

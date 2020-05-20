@@ -7,7 +7,7 @@ export function insertContentElement(entry, sibling, attributes, {at, splitPoint
 
   const commands = [
     at === 'split' && prepareSplit(entry, section, sibling, splitPoint),
-    prepareInsertion(entry, section, attributes, insertIndex)
+    prepareInsertion(entry, section, sibling, attributes, insertIndex)
   ].filter(Boolean);
 
   section.contentElements.sort();
@@ -77,13 +77,13 @@ function prepareSplit(entry, section, sibling, splitPoint) {
   }
 }
 
-function prepareInsertion(entry, section, attributes, index) {
+function prepareInsertion(entry, section, sibling, attributes, index) {
   const contentElement = new ContentElement({
     ...attributes,
     position: index
   });
 
-  contentElement.configuration.set(contentElement.getType().defaultConfig);
+  contentElement.applyDefaultConfiguration(sibling);
   section.contentElements.add(contentElement);
 
   return {

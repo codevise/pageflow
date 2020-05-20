@@ -160,6 +160,82 @@ describe('ScrolledEntry', () => {
       });
     });
 
+    describe('for sibling with sticky position', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('inlineImage', {});
+
+        testContext.entry = factories.entry(
+          ScrolledEntry,
+          {},
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: [
+                {id: 5, position: 0, configuration: {position: 'sticky'}}
+              ]
+            })
+          }
+        );
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      it('gives inserted content element the same position', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'after', id: 5});
+
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5},
+            {typeName: 'inlineImage', configuration: {position: 'sticky'}},
+          ]
+        });
+
+        expect(entry.contentElements.last().configuration.get('position')).toEqual('sticky');
+      });
+    });
+
+    describe('for sibling with full position', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('inlineImage', {});
+
+        testContext.entry = factories.entry(
+          ScrolledEntry,
+          {},
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: [
+                {id: 5, position: 0, configuration: {position: 'full'}}
+              ]
+            })
+          }
+        );
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      it('gives inserted content element inline position', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'after', id: 5});
+
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5},
+            {typeName: 'inlineImage', configuration: {position: 'inline'}},
+          ]
+        });
+
+        expect(entry.contentElements.last().configuration.get('position')).toEqual('inline');
+      });
+    });
+
     describe('for content elements with custom split function', () => {
       beforeEach(() => {
         editor.contentElementTypes.register('contentElementWithCustomSplit', {
