@@ -29,10 +29,10 @@ export function MediaPlayer(props){
 
   useEffect( () => {
     let player = playerRef.current
-    previousPlayerState.current = props.playerState;
     if (player) {
       updatePlayerState(player, previousPlayerState.current, props.playerState, props.playerActions, props.state, props.autoplay, mediaSettings.mediaOff);
     }
+    previousPlayerState.current = props.playerState;
   }, [mediaSettings.mediaOff, props.autoplay, props.state, props.playerState, props.playerActions, playerRef]);
 
   return (
