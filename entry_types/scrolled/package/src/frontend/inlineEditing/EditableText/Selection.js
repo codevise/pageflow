@@ -62,28 +62,21 @@ export function Selection(props) {
     <div ref={outerRef}>
       <div ref={ref} className={styles.selection}>
         <SelectionRect selected={true}
-                       onInsertButtonClick={position => {
-                           if (boundsRef.current.start === 0 &&
-                               position === 'before') {
+                       onInsertButtonClick={at => {
+                           if ((at === 'before' &&boundsRef.current.start === 0) ||
+                               (at === 'after' && !Node.has(editor, [boundsRef.current.end + 1]))) {
                              postInsertContentElementMessage({
                                id: props.contentElementId,
-                               position: 'before'
-                             });
-                           }
-                           else if (position === 'after' &&
-                                    !Node.has(editor, [boundsRef.current.end + 1])) {
-                             postInsertContentElementMessage({
-                               id: props.contentElementId,
-                               position: 'after'
+                               at
                              });
                            }
                            else {
                              postInsertContentElementMessage({
                                id: props.contentElementId,
-                               position: 'split',
-                               at: position === 'before' ?
-                                   boundsRef.current.start :
-                                   boundsRef.current.end + 1
+                               at: 'split',
+                               splitPoint: at === 'before' ?
+                                           boundsRef.current.start :
+                                           boundsRef.current.end + 1
                              });
                            }
                          }}

@@ -1,8 +1,8 @@
-export function postInsertContentElementMessage({id, position, at}) {
+export function postInsertContentElementMessage({id, at, splitPoint}) {
   window.parent.postMessage(
     {
       type: 'INSERT_CONTENT_ELEMENT',
-      payload: {id, position, at}
+      payload: {id, at, splitPoint}
     },
     window.location.origin
   );

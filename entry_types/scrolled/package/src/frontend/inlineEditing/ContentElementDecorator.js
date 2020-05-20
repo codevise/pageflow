@@ -41,8 +41,8 @@ function DefaultSelectionRect(props) {
   return (
     <SelectionRect selected={isSelected}
                    onClick={() => select()}
-                   onInsertButtonClick={position =>
-                     postInsertContentElementMessage({id: props.id, position})}>
+                   onInsertButtonClick={at =>
+                     postInsertContentElementMessage({id: props.id, at})}>
       {props.children}
     </SelectionRect>
   )

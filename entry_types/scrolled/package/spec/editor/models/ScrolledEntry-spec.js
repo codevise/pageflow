@@ -40,7 +40,7 @@ describe('ScrolledEntry', () => {
         const {entry, requests} = testContext;
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'before', id: 6});
+                                   {at: 'before', id: 6});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
@@ -69,7 +69,7 @@ describe('ScrolledEntry', () => {
         const {entry, requests} = testContext;
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'after', id: 5});
+                                   {at: 'after', id: 5});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
@@ -100,7 +100,7 @@ describe('ScrolledEntry', () => {
         entry.on('selectContentElement', listener);
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'after', id: 5});
+                                   {at: 'after', id: 5});
 
 
         expect(listener).not.toHaveBeenCalled();
@@ -147,7 +147,7 @@ describe('ScrolledEntry', () => {
         const {entry, requests} = testContext;
 
         entry.insertContentElement({typeName: 'contentElementWithDefaults'},
-                                   {position: 'after', id: 5});
+                                   {at: 'after', id: 5});
 
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
           content_elements: [
@@ -213,7 +213,7 @@ describe('ScrolledEntry', () => {
         const section = entry.sections.first();
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'split', id: 5, at: 2});
+                                   {at: 'split', id: 5, splitPoint: 2});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
@@ -249,7 +249,7 @@ describe('ScrolledEntry', () => {
         const splitContentElement = entry.contentElements.get(5);
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'split', id: 5, at: 2});
+                                   {at: 'split', id: 5, splitPoint: 2});
 
         expect(splitContentElement.configuration.get('items')).toEqual(['a', 'b', 'c']);
 
@@ -272,7 +272,7 @@ describe('ScrolledEntry', () => {
         const section = entry.sections.first();
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'split', id: 5, at: 2});
+                                   {at: 'split', id: 5, splitPoint: 2});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
 
