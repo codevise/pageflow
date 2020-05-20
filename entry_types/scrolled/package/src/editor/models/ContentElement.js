@@ -34,7 +34,7 @@ export const ContentElement = Backbone.Model.extend({
 });
 
 export function getDefaultPosition(sibling) {
-  const position = sibling.configuration.get('position');
+  const position = sibling.configuration.get('position') || 'inline';
 
   if (position === 'full') {
     return 'inline';

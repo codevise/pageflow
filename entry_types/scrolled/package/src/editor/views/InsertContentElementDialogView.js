@@ -37,13 +37,21 @@ export const InsertContentElementDialogView = Marionette.ItemView.extend({
   onRender() {
     this.subview(new CollectionView({
       el: this.ui.items,
-      collection: new Backbone.Collection(this.options.editor.contentElementTypes.toArray()),
+      collection: new Backbone.Collection(this.getSupportedTypes()),
       itemViewConstructor: ItemView,
       itemViewOptions: {
         entry: this.options.entry,
         insertOptions: this.options.insertOptions
       }
     }));
+  },
+
+  getSupportedTypes() {
+    const sibling = this.options.entry.contentElements.get(this.options.insertOptions.id);
+
+    return this.options.editor.contentElementTypes.getSupported({
+      position: getDefaultPosition(sibling)
+    })
   }
 });
 

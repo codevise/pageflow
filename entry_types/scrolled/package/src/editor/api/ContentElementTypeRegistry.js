@@ -33,6 +33,12 @@ export class ContentElementTypeRegistry {
    *   needs to return a single merged configuration. If provided, this
    *   will function will be called whenever two content elements of this
    *   type become adjacent because a common neighbor has been deleted.
+   * @param {string[]} [options.supportedPositions] -
+   *   Pass array containing a subset of the positions `left`, `right`,
+   *   `sticky`, `full` and `inline`. When inserting a content element
+   *   next to a `sticky`, `left` or `right` positioned sibling, only
+   *   types supporting this position will be offered in the type
+   *   selection dialog. By default all positions are supported.
    * @memberof editor_contentElementTypes
    *
    * @example
@@ -62,8 +68,15 @@ export class ContentElementTypeRegistry {
     return this.contentElementTypes[typeName];
   }
 
+  getSupported({position}) {
+    return this.toArray().filter(type =>
+      !type.supportedPositions || type.supportedPositions.includes(position)
+    );
+  }
+
   toArray() {
     return Object.keys(this.contentElementTypes).map(typeName => ({
+      ...this.contentElementTypes[typeName],
       typeName,
       displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`)
     }));
