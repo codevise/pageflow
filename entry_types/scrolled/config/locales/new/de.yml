@@ -11,7 +11,11 @@ de:
           Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/>
           Klicken Sie einmal in dieses Feld, um den Ton für die gesamte Geschichte zu aktivieren.
     inline_editing:
-      insert_content_element: Neues Element einfügen
+      select_section: Abschnitt auswählen
+      select_content_element: Element auswählen
+      insert_content_element:
+        before: Neues Element oberhalb einfügen
+        after: Neues Element unterhalb einfügen
       edit_section_settings: Abschnittseinstellungen bearbeiten
       edit_section_transition_before: Übergangseffekt bearbeiten
       edit_section_transition_after: Übergangseffekt bearbeiten

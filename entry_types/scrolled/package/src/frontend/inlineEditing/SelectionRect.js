@@ -8,12 +8,12 @@ import styles from './SelectionRect.module.css';
 import PlusIcon from './images/plus.svg';
 
 export function SelectionRect(props) {
-
   return (
     <div className={classNames(styles.main,
                                {[styles.selected]: props.selected,
                                 [styles.start]: props.selected && props.start,
                                 [styles.end]: props.selected && props.end})}
+         aria-label={props.ariaLabel}
          onClick={props.onClick}>
       {renderToolbar(props)}
 
@@ -34,7 +34,7 @@ function InsertButton(props) {
                                {[styles.insertHovered]: insertHovered})}
          contentEditable={false}>
       <button className={styles.insertButton}
-              title="Element einfügen"
+              title={props.insertButtonTitles && props.insertButtonTitles[props.at]}
               onClick={() => props.onInsertButtonClick(props.at)}
               onMouseEnter={() => setInsertHovered(true)}
               onMouseLeave={() => setInsertHovered(false)}>

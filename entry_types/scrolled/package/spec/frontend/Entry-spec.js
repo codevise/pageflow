@@ -9,7 +9,6 @@ import '@testing-library/jest-dom/extend-expect'
 import {renderInEntry, fakeParentWindow, tick} from 'support';
 import {simulateScrollingIntoView} from 'support/fakeIntersectionObserver';
 import {useFakeTranslations} from 'pageflow/testHelpers';
-import I18n from 'i18n-js';
 
 import useScrollTarget from 'frontend/useScrollTarget';
 jest.mock('frontend/useScrollTarget');
@@ -21,6 +20,8 @@ beforeAll(async () => {
 describe('Entry', () => {
   useFakeTranslations({
     'pageflow_scrolled.inline_editing.select_section': 'Select section',
+    'pageflow_scrolled.inline_editing.select_content_element': 'Select content element',
+    'pageflow_scrolled.inline_editing.insert_content_element.after': 'Insert content element after',
     'pageflow_scrolled.inline_editing.edit_section_settings': 'Edit section settings',
     'pageflow_scrolled.inline_editing.edit_section_transition_before': 'Edit section transition before',
     'pageflow_scrolled.inline_editing.edit_section_transition_after': 'Edit section transition after'
@@ -204,8 +205,8 @@ describe('Entry', () => {
       }
     });
 
-    fireEvent.click(getByLabelText(I18n.t('pageflow_scrolled.inline_editing.select_section')));
-    fireEvent.mouseDown(getByTitle(I18n.t('pageflow_scrolled.inline_editing.edit_section_settings')));
+    fireEvent.click(getByLabelText('Select section'));
+    fireEvent.mouseDown(getByTitle('Edit section settings'));
 
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
@@ -227,8 +228,8 @@ describe('Entry', () => {
       }
     });
 
-    fireEvent.click(getAllByLabelText(I18n.t('pageflow_scrolled.inline_editing.select_section'))[1]);
-    fireEvent.mouseDown(getByTitle(I18n.t('pageflow_scrolled.inline_editing.edit_section_transition_before')));
+    fireEvent.click(getAllByLabelText('Select section')[1]);
+    fireEvent.mouseDown(getByTitle('Edit section transition before'));
 
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
@@ -251,12 +252,29 @@ describe('Entry', () => {
       }
     });
 
-    fireEvent.click(getAllByLabelText(I18n.t('pageflow_scrolled.inline_editing.select_section'))[0]);
-    fireEvent.mouseDown(getByTitle(I18n.t('pageflow_scrolled.inline_editing.edit_section_transition_after')));
+    fireEvent.click(getAllByLabelText('Select section')[0]);
+    fireEvent.mouseDown(getByTitle('Edit section transition after'));
 
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
       payload: {id: 2, type: 'sectionTransition'}
+    }, expect.anything());
+  });
+
+  it('posts INSERT_CONTENT_ELEMENT message when selection rect insert button is clicked', () => {
+    window.parent.postMessage = jest.fn();
+    const {getByLabelText, getByTitle} = renderInEntry(<Entry />, {
+      seed: {
+        contentElements: [{id: 1}]
+      }
+    });
+
+    fireEvent.click(getByLabelText('Select content element'));
+    fireEvent.click(getByTitle('Insert content element after'));
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'INSERT_CONTENT_ELEMENT',
+      payload: {id: 1, at: 'after'}
     }, expect.anything());
   });
 });
