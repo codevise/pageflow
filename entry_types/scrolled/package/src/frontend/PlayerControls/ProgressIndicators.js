@@ -18,11 +18,11 @@ export class ProgressIndicators extends React.Component {
     };
 
     this.handleStop = (mouseEvent, dragEvent) => {
-      console.log('(STOP) seek to: '+ this.positionToTime(dragEvent.x));
+      props.seekTo(this.positionToTime(dragEvent.x));
     };
 
     this.handleDrag = (mouseEvent, dragEvent) => {
-      console.log('(DRAG) seek to: '+ this.positionToTime(dragEvent.x));
+      props.scrubTo(this.positionToTime(dragEvent.x));
     };
   }
 

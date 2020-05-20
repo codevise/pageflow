@@ -25,9 +25,7 @@ export function PlayerControls(props) {
           <div className={styles.controls}>
             <PlayPauseButton isPlaying={props.isPlaying}
                              play={props.play}
-                             playing={props.playing}
-                             pause={props.pause}
-                             paused={props.paused}/>
+                             pause={props.pause}/>
           </div>
         </div>
         <div className={classNames(styles.controlsContainer, styles.progressDisplayContainer)}>
@@ -35,7 +33,8 @@ export function PlayerControls(props) {
             <ProgressIndicators currentTime={props.currentTime}
                                 duration={props.duration}
                                 bufferedEnd={props.bufferedEnd}
-                                scrubTo={props.scrubTo}/>
+                                scrubTo={props.scrubTo}
+                                seekTo={props.seekTo}/>
           </div>
         </div>
         <div className={classNames(styles.controlsContainer)}>
@@ -44,7 +43,7 @@ export function PlayerControls(props) {
                          duration={props.duration}/>
           </div>
         </div>
-        <div className={styles.controlsContainer}>
+        <div className={classNames(styles.controlsContainer, styles.contextMenues)}>
           <div className={styles.controls}>
             <a>
               <SettingsIcon className={classNames(styles.settingsIcon,
@@ -102,13 +101,11 @@ PlayerControls.defaultProps = {
 
   play: () => {
   },
-  playing: () => {
-  },
   pause: () => {
   },
-  paused: () => {
-  },
   scrubTo: () => {
+  },
+  seekTo: () => {
   },
 
   type: 'video',

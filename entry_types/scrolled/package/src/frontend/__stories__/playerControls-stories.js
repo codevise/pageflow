@@ -6,7 +6,6 @@ import {PlayerControls} from 'pageflow-scrolled/frontend';
 const stories = storiesOf('Frontend/Player Controls', module);
 
 function addControlbarStory(name, type, style) {
-  let playerAreaColor = (style === 'white' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)');
   stories.add(
     name,
     () => {

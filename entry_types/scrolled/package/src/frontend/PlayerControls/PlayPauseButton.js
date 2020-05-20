@@ -27,10 +27,8 @@ function clickHandler(props) {
   return event => {
     if (props.isPlaying) {
       props.pause();
-      props.paused();
     } else {
       props.play();
-      props.playing();
     }
 
     event.preventDefault();
