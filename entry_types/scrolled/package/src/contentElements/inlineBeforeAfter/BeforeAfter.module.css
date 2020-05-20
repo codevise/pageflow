@@ -54,10 +54,6 @@
   padding-top: 56.25%;
 }
 
-.noImageHeight {
-  height: 30px;
-}
-
 .container img:nth-child(1) {
   background-color: #CCCCCC;
 }
