@@ -1,3 +1,4 @@
+import 'editor/config';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {PreviewMessageController} from 'editor/controllers/PreviewMessageController';
 import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView'

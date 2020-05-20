@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-import {editor} from 'pageflow-scrolled/editor';
+import {editor} from '../api';
 
 import {
   configurationContainer,
