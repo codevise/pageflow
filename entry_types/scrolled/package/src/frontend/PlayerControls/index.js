@@ -10,25 +10,17 @@ import {TimeDisplay} from './TimeDisplay'
 import {ContextMenu} from './ContextMenu'
 
 import styles from './ControlBar.module.css';
-import styleTransparent from './styles/ControlBarTransparent.module.css';
-import styleWhite from './styles/ControlBarWhite.module.css';
-import styleBlack from './styles/ControlBarBlack.module.css';
 
-export function ControlBar(props) {
+export function PlayerControls(props) {
   const [settingsMenuHidden, setSettingsMenuHidden] = useState(props.settingsMenuHidden);
   const [subtitlesMenuHidden, setSubtitlesMenuHidden] = useState(props.subtitlesMenuHidden);
 
-  const style = {
-    transparent: styleTransparent,
-    white: styleWhite,
-    black: styleBlack
-  }[props.style];
-
   return (
     <div className={classNames(styles.controlBarContainer,
-                               style.background,
+                               styles.backgroundColor,
                                {[styles.inset]: props.inset})}>
-      <div className={classNames(styles.controlBar, style.foreground)}>
+      <div className={classNames(styles.controlBar,
+                                 props.style === 'white' ? styles.foregroundLight : styles.foregroundDark)}>
         <div className={styles.controlsContainer}>
           <div className={styles.controls}>
             <PlayPauseButton isPlaying={props.isPlaying}
@@ -61,7 +53,6 @@ export function ControlBar(props) {
             </a>
             <ContextMenu className={classNames(styles.settingsMenu,
                                     {[styles.hidden]: settingsMenuHidden})}
-                         theme={style}
                          entries={[
                            {
                              label: 'Automatisch',
@@ -81,8 +72,7 @@ export function ControlBar(props) {
                              onClick={() => setSubtitlesMenuHidden(!subtitlesMenuHidden)}/>
             </a>
             <ContextMenu className={classNames(styles.subtitlesMenu,
-              {[styles.hidden]: subtitlesMenuHidden})}
-                         theme={style}
+                                    {[styles.hidden]: subtitlesMenuHidden})}
                          entries={[
                            {
                              label: 'Automatisch',
@@ -104,7 +94,7 @@ export function ControlBar(props) {
   );
 }
 
-ControlBar.defaultProps = {
+PlayerControls.defaultProps = {
   currentTime: 200,
   duration: 600,
   bufferedEnd: 400,
@@ -122,7 +112,7 @@ ControlBar.defaultProps = {
   },
 
   type: 'video',
-  style: 'transparent',
+  style: 'white',
   inset: false,
   settingsMenuHidden: true,
   subtitlesMenuHidden: true

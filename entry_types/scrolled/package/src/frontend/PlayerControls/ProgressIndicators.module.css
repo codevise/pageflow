@@ -9,7 +9,7 @@
   margin: 9px 0px;
   height: 6px;
   border-radius: 3.5px;
-  background: #808080;
+  background: #b4b4b4;
 }
 
 .progressBar {
@@ -21,7 +21,7 @@
 
 .loadingProgressBar {
   background: currentColor;
-  opacity: 0.5;
+  opacity: 0.25;
 }
 
 .playProgressBar {

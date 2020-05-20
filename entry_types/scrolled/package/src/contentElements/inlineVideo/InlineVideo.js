@@ -1,9 +1,7 @@
 import React, {useRef} from 'react';
 
 import {VideoPlayer, useOnScreen, InlineCaption, usePlayerState} from 'pageflow-scrolled/frontend';
-import {ControlBar} from 'pageflow-scrolled/frontend';
-
-import styles from './InlineVideo.module.css';
+import {MediaPlayerControls} from 'pageflow-scrolled/frontend';
 
 export function InlineVideo({sectionProps, configuration}) {
   const ref = useRef();
@@ -23,8 +21,10 @@ export function InlineVideo({sectionProps, configuration}) {
                    interactive={true}
                    playsInline={true}/>
 
-      <ControlBar inset={configuration.position === 'full'}
-                  style={sectionProps.invert ? 'white' : 'black'}/>
+      <MediaPlayerControls playerState={playerState}
+                           playerActions={playerActions}
+                           configuration={configuration}
+                           sectionProps={sectionProps}/>
 
       <InlineCaption text={configuration.caption}/>
     </div>

@@ -1,22 +1,22 @@
 import React from 'react';
-import {usePlayerState} from './MediaPlayer';
-import {ControlBar} from './playerControls'
+import {PlayerControls} from './PlayerControls'
 
 export function MediaPlayerControls(props) {
-  const [playerState, playerActions] = usePlayerState();
+  const playerState = props.playerState;
+  const playerActions = props.playerActions;
 
   return (
-    <ControlBar type={props.type}
-                currentTime={playerState.scrubbingAt !== undefined ?
+    <PlayerControls inset={props.configuration.position === 'full'}
+                    style={props.sectionProps.invert ? 'black' : 'white'}
+                    type={props.type}
+                    currentTime={playerState.scrubbingAt !== undefined ?
                              playerState.scrubbingAt : playerState.currentTime}
-                bufferedEnd={playerState.bufferedEnd}
-                duration={playerState.duration}
-                isPlaying={playerState.isPlaying}
+                    bufferedEnd={playerState.bufferedEnd}
+                    duration={playerState.duration}
+                    isPlaying={playerState.isPlaying}
 
-                play={playerActions.play}
-                playing={playerActions.playing}
-                pause={playerActions.pause}
-                paused={playerActions.paused}
-                scrubTo={playerActions.scrubTo} />
+                    play={playerActions.play}
+                    pause={playerActions.pause}
+                    scrubTo={playerActions.scrubTo} />
   )
 };

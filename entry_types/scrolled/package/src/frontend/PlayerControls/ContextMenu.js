@@ -18,11 +18,9 @@ export function ContextMenu(props) {
     })
   };
 
-  const theme = props.theme;
-
   return (
     <div className={classNames(styles.contextMenuContainer, props.className)}>
-      <div className={classNames(styles.contextMenu, theme.contextMenu)}>
+      <div className={classNames(styles.contextMenu)}>
         <ul>
           {renderMenuEntries(props.entries)}
         </ul>

@@ -2,6 +2,18 @@
   display: none;
 }
 
+.backgroundColor {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.foregroundLight {
+  color: white;
+}
+
+.foregroundDark {
+  color: black;
+}
+
 .controlBarContainer {
   width: 100%;
   display: table;

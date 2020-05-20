@@ -1,11 +1,13 @@
 .contextMenuContainer {
   position: absolute;
   bottom: 35px;
+  color: white;
 }
 
 .contextMenu {
   position: relative;
   padding: 5px 15px;
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .contextMenu ul {
