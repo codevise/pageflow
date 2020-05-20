@@ -37,6 +37,8 @@ export {useContentElementConfigurationUpdate} from './useContentElementConfigura
 
 export {EditableText} from './EditableText';
 
+export {getTransitionNames, getAvailableTransitionNames} from './transitions';
+
 window.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);
   browser.detectFeatures().then(function(){
