@@ -191,6 +191,8 @@ de:
           values:
             inline: Im Textfluss
             full: Volle Breite
+            left: Links eingerückt
+            right: Rechts eingerückt
             sticky: Sticky
       entry_outline:
         header: Gliederung

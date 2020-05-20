@@ -185,6 +185,8 @@ en:
           values:
             inline: Inline
             full: Full Width
+            left: Floated left
+            right: Floated right
             sticky: Sticky
       entry_outline:
         header: Outline

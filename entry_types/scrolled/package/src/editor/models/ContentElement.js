@@ -42,6 +42,12 @@ export const ContentElement = Backbone.Model.extend({
     });
   },
 
+  getAvailablePositions() {
+    return this.section.configuration.get('layout') === 'center' ?
+           ['inline', 'left', 'right', 'full'] :
+           ['inline', 'sticky', 'full'];
+  },
+
   getDefaultSiblingPosition() {
     const position = this.configuration.get('position') || 'inline';
 
