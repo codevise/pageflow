@@ -10,6 +10,32 @@ describe('pageflow.SelectInputView', () => {
     i18nKey: 'page'
   });
 
+  it('loads value', () => {
+    var model = new Model({value: 'second'});
+    var selectInputView = new SelectInputView({
+      model: model,
+      propertyName: 'value',
+      values: ['first', 'second']
+    });
+
+    selectInputView.render();
+
+    expect($('select', selectInputView.el).val()).toEqual('second');
+  });
+
+  it('selects first option if value is not among values', () => {
+    var model = new Model({value: 'not there'});
+    var selectInputView = new SelectInputView({
+      model: model,
+      propertyName: 'value',
+      values: ['first', 'second']
+    });
+
+    selectInputView.render();
+
+    expect($('select', selectInputView.el).val()).toEqual('first');
+  });
+
   describe('without texts option', () => {
     support.useFakeTranslations({
       'activerecord.values.page.modes.one': 'One',
@@ -179,6 +205,38 @@ describe('pageflow.SelectInputView', () => {
       selectInputView.render();
 
       expect(model.get('value')).toBe('one');
+    });
+  });
+
+  describe('with optionDisabled option', () => {
+    it('disables options for which function returns true', () => {
+      var model = new Model();
+      var selectInputView = new SelectInputView({
+        model: model,
+        propertyName: 'value',
+        values: ['one', 'two'],
+        optionDisabled: value => value === 'two'
+      });
+
+      selectInputView.render();
+
+      expect($('option', selectInputView.el).length).toBe(2);
+      expect($('option[disabled]', selectInputView.el).length).toBe(1);
+      expect($('option[disabled]', selectInputView.el)).toHaveAttr('value', 'two');
+    });
+
+    it('selects first non disabled option if value option is disabled', () => {
+      var model = new Model({value: 'disabled'});
+      var selectInputView = new SelectInputView({
+        model: model,
+        propertyName: 'value',
+        values: ['disabled', 'available'],
+        optionDisabled: value => value === 'disabled'
+      });
+
+      selectInputView.render();
+
+      expect($('select', selectInputView.el).val()).toEqual('available');
     });
   });
 

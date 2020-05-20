@@ -64,17 +64,46 @@ const exitTransitions = {
   beforeAfter: 'conceal'
 }
 
-export function getTransitionStyles(section, previousSection, nextSection) {
-  const enterTransition = enterTransitions[section.transition]
-  const exitTransition = exitTransitions[nextSection ? nextSection.transition : 'scroll']
+export function getTransitionNames() {
+  return Object.keys(exitTransitions);
+}
 
-  const name = `${enterTransition}${capitalize(exitTransition)}`;
+export function getAvailableTransitionNames(section, previousSection) {
+  if (!section.fullHeight || !previousSection.fullHeight) {
+    return getTransitionNames().filter(name => !name.startsWith('fade'));
+  }
+
+  return getTransitionNames();
+}
+
+export function getTransitionStyles(section, previousSection, nextSection) {
+  const name = getTransitionStylesName(section, previousSection, nextSection);
 
   if (!styles[name]) {
     throw new Error(`Unknown transition ${name}`);
   }
 
   return styles[name];
+}
+
+export function getTransitionStylesName(section, previousSection, nextSection) {
+  const enterTransition = enterTransitions[getTransitionName(previousSection, section)]
+  const exitTransition = exitTransitions[getTransitionName(section, nextSection)]
+
+  return `${enterTransition}${capitalize(exitTransition)}`;
+}
+
+function getTransitionName(previousSection, section) {
+  if (!section || !previousSection) {
+    return 'scroll';
+  }
+
+  if ((!section.fullHeight || !previousSection.fullHeight) &&
+      section.transition.startsWith('fade')) {
+    return 'scroll';
+  }
+
+  return section.transition;
 }
 
 function capitalize(string) {

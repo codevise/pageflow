@@ -80,6 +80,10 @@ import template from '../../templates/inputs/selectInput.jst';
  *   value of the `placeholderModel` occurs whenever the attribute is
  *   blank.
  *
+ * @param {function} [options.optionDisabled]
+ *   Receives value and has to return boolean indicating whether
+ *   option is disabled.
+ *
  * @class
  */
 export const SelectInputView = Marionette.ItemView.extend({
@@ -197,6 +201,11 @@ export const SelectInputView = Marionette.ItemView.extend({
       option.value = value;
       option.text = this.options.texts[index];
 
+      if (this.options.optionDisabled &&
+          this.options.optionDisabled(value)) {
+        option.setAttribute('disabled', true);
+      }
+
       if (group) {
         option.setAttribute('data-group', group);
         this.findOrCreateOptGroup(group).append(option);
@@ -225,11 +234,12 @@ export const SelectInputView = Marionette.ItemView.extend({
       var value = this.model.get(this.options.propertyName);
 
       if (this.model.has(this.options.propertyName) &&
-          this.ui.select.find('option[value="' + value +'"]').length) {
+          this.ui.select.find('option[value="' + value +'"]:not([disabled])').length) {
         this.ui.select.val(value);
+
       }
       else {
-        this.ui.select.val(this.ui.select.find('option:first').val());
+        this.ui.select.val(this.ui.select.find('option:not([disabled]):first').val());
       }
     }
   }
