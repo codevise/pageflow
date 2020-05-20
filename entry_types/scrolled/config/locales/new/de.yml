@@ -248,9 +248,10 @@ de:
           fullHeight:
             label: Volle Viewport-Höhe
             inline_help: >
-              Aktivieren sie diese Einstellung wenn der Abschnitt mindestens einen Viewport hoch sein
-              soll. Deaktivieren sie sie um kurze Szenen zu ermöglichen, die vertikal nur von ihrem
-              Inhalt aufgespannt werden
+              Aktivieren sie diese Einstellung, wenn der Abschnitt mindestens einen Viewport hoch sein
+              soll. Deaktivieren sie sie, um kurze Szenen zu ermöglichen, die vertikal nur von ihrem
+              Inhalt aufgespannt werden. Um einen Überblendungseffekt zwischen zwei Abschnitten
+              verwenden zu können, muss diese Option für beide Abschnitte aktiviert sein.
           invert:
             label: Text invertieren
           layout:
@@ -272,6 +273,8 @@ de:
             inline_help: >
               Diese Einstellung definiert den Übergang vom vorigen Abschnitt zu diesem. Der Übergang
               wirkt sich jeweils auf den Hintergrund und den Vordergrund unterschiedlich aus.
+              Die Effekte "Alles Überblenden" und "Nur Hintergrund überblenden" stehen nur zur Verfügung,
+              wenn für beide angrenzende Abschnitte die Option "Volle Viewport-Höhe" aktiviert ist.
             values:
               beforeAfter: Scrollen mit statischen Hintergründen
               fade: Alles Überblenden

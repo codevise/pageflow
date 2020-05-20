@@ -244,7 +244,8 @@ en:
             inline_help: >
               Activate this option if the section should span at least one viewport height.
               Deactivate this option to create a short section which height is determined by its
-              foreground content.
+              foreground content. This option needs to be activated for two adjacent sections
+              to be able to use a fade transition between them.
           invert:
             label: Invert Text
           layout:
@@ -266,7 +267,9 @@ en:
             inline_help: >
               This setting defines the transition when scrolling from the previous
               section to the current. The different settings have specific effects concerning the
-              behaviors of background and foreground.
+              behaviors of background and foreground. The effects "Cross-Fade All" and
+              "Cross-Fade Backgrounds" are only available if the "Use Full Viewport-Height" option
+              has been enabled in the settings of both adjacent sections.
             values:
               beforeAfter: Scrolling with static Backgrounds
               fade: Cross-Fade All
