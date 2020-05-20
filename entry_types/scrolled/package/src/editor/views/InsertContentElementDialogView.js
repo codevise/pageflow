@@ -47,11 +47,10 @@ export const InsertContentElementDialogView = Marionette.ItemView.extend({
   },
 
   getSupportedTypes() {
-    const sibling = this.options.entry.contentElements.get(this.options.insertOptions.id);
-
-    return this.options.editor.contentElementTypes.getSupported({
-      position: getDefaultPosition(sibling)
-    })
+    return this.options.editor.contentElementTypes.getSupported(
+      this.options.entry,
+      this.options.insertOptions
+    )
   }
 });
 

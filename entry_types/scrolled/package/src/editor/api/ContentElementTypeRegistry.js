@@ -68,10 +68,21 @@ export class ContentElementTypeRegistry {
     return this.contentElementTypes[typeName];
   }
 
-  getSupported({position}) {
-    return this.toArray().filter(type =>
-      !type.supportedPositions || type.supportedPositions.includes(position)
-    );
+  getSupported(entry, insertOptions) {
+    const [sibling, otherSibling] = getSiblings(entry, insertOptions);
+    const position = sibling.getDefaultSiblingPosition();
+
+    return this.toArray().filter(type => {
+      if (type.supportedPositions && !type.supportedPositions.includes(position)) {
+        return false;
+      }
+
+      if (canBeMerged(type, sibling) || canBeMerged(type, otherSibling)) {
+        return false;
+      }
+
+      return true;
+    });
   }
 
   toArray() {
@@ -80,5 +91,27 @@ export class ContentElementTypeRegistry {
       typeName,
       displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`)
     }));
+  }
+}
+
+function getSiblings(entry, insertOptions) {
+  const sibling = entry.contentElements.get(insertOptions.id);
+  const otherSibling = getOtherSibling(sibling, insertOptions);
+
+  return [sibling, otherSibling];
+}
+
+function canBeMerged(type, sibling) {
+  return type.merge && sibling && sibling.get('typeName') === type.typeName;
+}
+
+function getOtherSibling(sibling, insertOptions) {
+  const [before, after] = sibling.getAdjacentContentElements();
+
+  if (insertOptions.at === 'before') {
+    return before;
+  }
+  else if (insertOptions.at === 'after') {
+    return after;
   }
 }

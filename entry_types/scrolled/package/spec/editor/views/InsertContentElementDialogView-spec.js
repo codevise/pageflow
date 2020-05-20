@@ -56,52 +56,6 @@ describe('InsertContentElementDialogView', () => {
     expect(availableTypeNames(view)).not.toContain('Text block');
   });
 
-  it('supports inserting inline only element next to sibling with position full', () => {
-    const editor = factories.editorApi();
-    editor.contentElementTypes.register('inlineImage');
-    editor.contentElementTypes.register('textBlock', {supportedPositions: ['inline']});
-    const entry = factories.entry(ScrolledEntry, {}, {
-      entryTypeSeed: normalizeSeed({
-        contentElements: [
-          {id: 1, typeName: 'inlineImage', configuration: {position: 'full'}}
-        ]
-      })
-    });
-    const view = new InsertContentElementDialogView({
-      entry,
-      editor,
-      insertOptions: {at: 'after', id: 1}
-    });
-
-    view.render();
-
-    expect(availableTypeNames(view)).toContain('Inline image');
-    expect(availableTypeNames(view)).toContain('Text block');
-  });
-
-  it('supports inserting inline only elements next to sibling without position', () => {
-    const editor = factories.editorApi();
-    editor.contentElementTypes.register('inlineImage');
-    editor.contentElementTypes.register('textBlock', {supportedPositions: ['inline']});
-    const entry = factories.entry(ScrolledEntry, {}, {
-      entryTypeSeed: normalizeSeed({
-        contentElements: [
-          {id: 1, typeName: 'inlineImage'}
-        ]
-      })
-    });
-    const view = new InsertContentElementDialogView({
-      entry,
-      editor,
-      insertOptions: {at: 'after', id: 1}
-    });
-
-    view.render();
-
-    expect(availableTypeNames(view)).toContain('Inline image');
-    expect(availableTypeNames(view)).toContain('Text block');
-  });
-
   function availableTypeNames(view) {
     return view.$el.find('li button').map(function() { return $(this).text() }).get();
   }

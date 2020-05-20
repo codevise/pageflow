@@ -1,15 +1,13 @@
 import {batch, nullCommand} from './batch';
 
 export function deleteContentElement(entry, contentElement) {
-  const section = contentElement.section;
-
-  batch(section, [
-    prepareMerge(entry, section, contentElement),
-    prepareDeletion(entry, section, contentElement)
+  batch(contentElement.section, [
+    prepareMerge(entry, contentElement),
+    prepareDeletion(entry, contentElement)
   ]);
 }
 
-function prepareDeletion(entry, section, deletedContentElement) {
+function prepareDeletion(entry, deletedContentElement) {
   return {
     ...nullCommand,
 
@@ -28,10 +26,11 @@ function prepareDeletion(entry, section, deletedContentElement) {
   }
 }
 
-function prepareMerge(entry, section, deletedContentElement) {
-  const [before, after] = getAdjacentContentElements(section, deletedContentElement);
+function prepareMerge(entry, deletedContentElement) {
+  const [before, after] = deletedContentElement.getAdjacentContentElements();
 
   if (!before ||
+      !after ||
       before.get('typeName') !== after.get('typeName') ||
       !before.getType().merge) {
     return nullCommand;
@@ -63,17 +62,4 @@ function prepareMerge(entry, section, deletedContentElement) {
       entry.contentElements.remove(after);
     }
   }
-}
-
-function getAdjacentContentElements(section, contentElement) {
-  const index = section.contentElements.indexOf(contentElement);
-
-  if (index === 0 || index === section.contentElements.length - 1) {
-    return [];
-  }
-
-  return [
-    section.contentElements.at(index - 1),
-    section.contentElements.at(index + 1)
-  ];
 }
