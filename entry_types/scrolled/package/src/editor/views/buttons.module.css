@@ -1,6 +1,11 @@
-.iconButton {
+.primaryIconButton {
   /* see app/assets/stylesheets/pageflow/editor/composable.scss */
-  composes: icon_button from global;
+  composes: primary_icon_button from global;
+}
+
+.secondaryIconButton {
+  /* see app/assets/stylesheets/pageflow/editor/composable.scss */
+  composes: secondary_icon_button from global;
 }
 
 .unstyledButton {
@@ -10,11 +15,16 @@
 }
 
 .addButton {
-  composes: iconButton;
+  composes: primaryIconButton;
   composes: plusCircled from './icons.module.css';
 }
 
 .cancelButton {
-  composes: iconButton;
+  composes: secondaryIconButton;
   composes: cancel from './icons.module.css';
+}
+
+.saveButton {
+  composes: primaryIconButton;
+  composes: check from './icons.module.css';
 }
