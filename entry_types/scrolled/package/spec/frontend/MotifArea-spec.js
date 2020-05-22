@@ -5,7 +5,8 @@ import {renderInEntry} from 'support';
 
 import {useFile} from 'entryState';
 import {useBackgroundFile} from 'frontend/useBackgroundFile';
-import {MotifArea} from 'frontend/MotifArea';
+import {MotifArea, MotifAreaVisibilityProvider} from 'frontend/MotifArea';
+import styles from 'frontend/MotifArea.module.css';
 
 describe('MotifArea', () => {
   it('positions element based on motif area passed to useBackgroundFile', () => {
@@ -226,5 +227,40 @@ describe('MotifArea', () => {
 
       expect(callback).not.toHaveBeenCalled();
     });
+  });
+
+  it('makes motif area visible if rendered inside MotifAreaVisibilityProvider', () => {
+    const {container} =
+      renderInEntry(
+        () => {
+          const file = useBackgroundFile({
+            file: useFile({collectionName: 'imageFiles', permaId: 100}),
+            motifArea: {top: 10, left: 10, width: 50, height: 50},
+            containerDimension: {width: 2000, height: 1000}
+          });
+
+          return (
+            <MotifArea file={file} />
+          );
+        },
+        {
+          wrapper: ({children}) => (
+            <MotifAreaVisibilityProvider visible={true}>
+              {children}
+            </MotifAreaVisibilityProvider>
+          ),
+          seed: {
+            imageFiles: [
+              {
+                permaId: 100,
+                width: 200,
+                height: 100
+              }
+            ]
+          }
+        }
+      );
+
+    expect(container.firstChild).toHaveClass(styles.visible);
   });
 });
