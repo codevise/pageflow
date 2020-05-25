@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import Fullscreen from '../Fullscreen';
 import styles from './GradientShadow.module.css';
 
 export default function GradientShadow(props) {
@@ -12,7 +13,9 @@ export default function GradientShadow(props) {
     <div className={classNames(styles.root,
                    styles[`align-${props.align}`],
                    {[styles.intersecting]: props.intersecting})}>
-      <div className={styles.shadow} style={{opacity: props.opacity * Math.round(opacityFactor * 10) / 10}} />
+      <div className={styles.shadow} style={{opacity: props.opacity * Math.round(opacityFactor * 10) / 10}}>
+        <Fullscreen />
+      </div>
       {props.children}
     </div>
   );
