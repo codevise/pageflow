@@ -1,14 +1,6 @@
 .root {
   position: relative;
-  max-height: 98vh;
-}
-
-.inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  max-height: 100vh;
 }
 
 /* Timeline in native video controls is hidden in Storybook to prevent

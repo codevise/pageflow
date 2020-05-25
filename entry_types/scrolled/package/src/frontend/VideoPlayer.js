@@ -17,17 +17,21 @@ export function VideoPlayer(props) {
 
   if (videoFile && videoFile.isReady) {
     const processedSources = processSources(videoFile);
+    const css = calculatePadding(videoFile, props.position);
+
     return (
-      <div className={styles.root}>
-        <MediaPlayer className={classNames(styles.video_player, {[styles.backdrop]: !props.interactive})}
-                     type={'video'}
-                     sources={processedSources}
-                     {...props}
-                     />
+      <div style={{paddingTop: css.paddingTop}}>
+        <div className={styles.inner}
+             style={{left: css.leftRight, right: css.leftRight}}>
+          <MediaPlayer className={classNames(styles.video_player, {[styles.backdrop]: !props.interactive})}
+                       type={'video'}
+                       sources={processedSources}
+                       {...props}
+          />
+        </div>
       </div>
     );
-  }
-  else{
+  } else {
     return null;
   }
 }
@@ -37,6 +41,26 @@ VideoPlayer.defaultProps = {
   controls: true
 };
 
+function calculatePadding(videoFile, position) {
+  const videoAR = (videoFile.height / videoFile.width);
+  let baseCss = {
+    paddingTop: (videoAR * 100) + '%',
+    leftRight: 0
+  }
+
+  if (position === 'full') {
+    const viewportHeight = window.innerHeight;
+    const viewportWidth = window.innerWidth;
+    const viewPortAR = (viewportHeight / viewportWidth);
+    if (viewPortAR < videoAR) {
+      const leftRight = (viewportWidth - (viewportHeight / videoAR)) / 2;
+      baseCss.paddingTop = (viewPortAR * 100) + '%';
+      baseCss.leftRight = leftRight + 'px'
+    }
+  }
+
+  return baseCss;
+}
 
 function processSources(videoFile) {
   return [

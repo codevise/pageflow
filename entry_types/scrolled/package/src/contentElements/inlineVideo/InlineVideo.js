@@ -11,20 +11,18 @@ export function InlineVideo({configuration}) {
   const [playerState, playerActions] = usePlayerState();
 
   return (
-    <div ref={ref} className={classNames(styles.root)}>
-      <div style={{paddingTop: configuration.wideFormat ? '41.15%' : '56.25%'}}>
-        <div className={styles.inner}>
-          <VideoPlayer autoplay={configuration.autoplay}
-                       controls={configuration.controls}
-                       playerState={playerState}
-                       playerActions={playerActions}
-                       id={configuration.id}
-                       state={onScreen ? 'active' : 'inactive'}
-                       quality={'high'}
-                       interactive={true} 
-                       playsInline={true} />
-        </div>
-      </div>
+    <div ref={ref}>
+      <VideoPlayer position={configuration.position}
+                   autoplay={configuration.autoplay}
+                   controls={configuration.controls}
+                   playerState={playerState}
+                   playerActions={playerActions}
+                   id={configuration.id}
+                   state={onScreen ? 'active' : 'inactive'}
+                   quality={'high'}
+                   interactive={true}
+                   playsInline={true}/>
+
       <InlineCaption text={configuration.caption} />
     </div>
   )
