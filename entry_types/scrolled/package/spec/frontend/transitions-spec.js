@@ -11,12 +11,6 @@ describe('getTransitionNames', () => {
     expect(result).toContain('scroll');
     expect(result).toContain('fade');
   });
-
-  it('does not include preview transition', () => {
-    const result = getTransitionNames();
-
-    expect(result).not.toContain('preview');
-  });
 });
 
 describe('getAvailableTransitions', () => {
