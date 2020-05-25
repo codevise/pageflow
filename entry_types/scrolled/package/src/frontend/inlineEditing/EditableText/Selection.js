@@ -6,6 +6,7 @@ import styles from './index.module.css';
 
 import {SelectionRect} from '../SelectionRect';
 import {useEditorSelection} from '../../EditorState';
+import {useI18n} from '../../i18n';
 import {postInsertContentElementMessage} from '../postMessage';
 
 import TextIcon from '../images/text.svg';
@@ -16,6 +17,7 @@ import QuoteIcon from '../images/quote.svg';
 
 export function Selection(props) {
   const editor = useSlate();
+  const {t} = useI18n({locale: 'ui'});
 
   const ref = useRef()
   const outerRef = useRef()
@@ -62,28 +64,22 @@ export function Selection(props) {
     <div ref={outerRef}>
       <div ref={ref} className={styles.selection}>
         <SelectionRect selected={true}
-                       onInsertButtonClick={position => {
-                           if (boundsRef.current.start === 0 &&
-                               position === 'before') {
+                       insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
+                       onInsertButtonClick={at => {
+                           if ((at === 'before' &&boundsRef.current.start === 0) ||
+                               (at === 'after' && !Node.has(editor, [boundsRef.current.end + 1]))) {
                              postInsertContentElementMessage({
                                id: props.contentElementId,
-                               position: 'before'
-                             });
-                           }
-                           else if (position === 'after' &&
-                                    !Node.has(editor, [boundsRef.current.end + 1])) {
-                             postInsertContentElementMessage({
-                               id: props.contentElementId,
-                               position: 'after'
+                               at
                              });
                            }
                            else {
                              postInsertContentElementMessage({
                                id: props.contentElementId,
-                               position: 'split',
-                               at: position === 'before' ?
-                                   boundsRef.current.start :
-                                   boundsRef.current.end + 1
+                               at: 'split',
+                               splitPoint: at === 'before' ?
+                                           boundsRef.current.start :
+                                           boundsRef.current.end + 1
                              });
                            }
                          }}

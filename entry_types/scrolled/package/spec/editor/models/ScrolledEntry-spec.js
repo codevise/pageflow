@@ -40,7 +40,7 @@ describe('ScrolledEntry', () => {
         const {entry, requests} = testContext;
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'before', id: 6});
+                                   {at: 'before', id: 6});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
@@ -69,7 +69,7 @@ describe('ScrolledEntry', () => {
         const {entry, requests} = testContext;
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'after', id: 5});
+                                   {at: 'after', id: 5});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
@@ -100,7 +100,7 @@ describe('ScrolledEntry', () => {
         entry.on('selectContentElement', listener);
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'after', id: 5});
+                                   {at: 'after', id: 5});
 
 
         expect(listener).not.toHaveBeenCalled();
@@ -147,7 +147,7 @@ describe('ScrolledEntry', () => {
         const {entry, requests} = testContext;
 
         entry.insertContentElement({typeName: 'contentElementWithDefaults'},
-                                   {position: 'after', id: 5});
+                                   {at: 'after', id: 5});
 
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
           content_elements: [
@@ -157,6 +157,82 @@ describe('ScrolledEntry', () => {
         });
 
         expect(entry.contentElements.last().configuration.get('some')).toEqual('value');
+      });
+    });
+
+    describe('for sibling with sticky position', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('inlineImage', {});
+
+        testContext.entry = factories.entry(
+          ScrolledEntry,
+          {},
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: [
+                {id: 5, position: 0, configuration: {position: 'sticky'}}
+              ]
+            })
+          }
+        );
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      it('gives inserted content element the same position', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'after', id: 5});
+
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5},
+            {typeName: 'inlineImage', configuration: {position: 'sticky'}},
+          ]
+        });
+
+        expect(entry.contentElements.last().configuration.get('position')).toEqual('sticky');
+      });
+    });
+
+    describe('for sibling with full position', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('inlineImage', {});
+
+        testContext.entry = factories.entry(
+          ScrolledEntry,
+          {},
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: [
+                {id: 5, position: 0, configuration: {position: 'full'}}
+              ]
+            })
+          }
+        );
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      it('gives inserted content element inline position', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'after', id: 5});
+
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_elements: [
+            {id: 5},
+            {typeName: 'inlineImage', configuration: {position: 'inline'}},
+          ]
+        });
+
+        expect(entry.contentElements.last().configuration.get('position')).toEqual('inline');
       });
     });
 
@@ -213,7 +289,7 @@ describe('ScrolledEntry', () => {
         const section = entry.sections.first();
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'split', id: 5, at: 2});
+                                   {at: 'split', id: 5, splitPoint: 2});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
@@ -249,7 +325,7 @@ describe('ScrolledEntry', () => {
         const splitContentElement = entry.contentElements.get(5);
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'split', id: 5, at: 2});
+                                   {at: 'split', id: 5, splitPoint: 2});
 
         expect(splitContentElement.configuration.get('items')).toEqual(['a', 'b', 'c']);
 
@@ -272,7 +348,7 @@ describe('ScrolledEntry', () => {
         const section = entry.sections.first();
 
         entry.insertContentElement({typeName: 'inlineImage'},
-                                   {position: 'split', id: 5, at: 2});
+                                   {at: 'split', id: 5, splitPoint: 2});
 
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
 

@@ -1,6 +1,8 @@
 import {editor} from 'pageflow-scrolled/editor';
 
 editor.contentElementTypes.register('textBlock', {
+  supportedPositions: ['inline'],
+
   configurationEditor() {
     this.tab('general', function() {
     });

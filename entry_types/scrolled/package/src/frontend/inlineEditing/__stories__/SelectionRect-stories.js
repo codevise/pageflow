@@ -10,9 +10,16 @@ import QuoteIcon from '../images/quote.svg';
 export default {
   title: 'Inline Editing/SelectionRect',
 }
+
+const insertButtonTitles = {
+  before: 'Insert before',
+  after: 'Insert after'
+};
+
 export const lightBackground = () =>
   <Background>
     <SelectionRect selected={true}
+                   insertButtonTitles={insertButtonTitles}
                    toolbarButtons={toolbarButtons()}>
       <Placeholder />
     </SelectionRect>
@@ -21,6 +28,7 @@ export const lightBackground = () =>
 export const darkBackground = () =>
   <Background dark>
     <SelectionRect selected={true}
+                   insertButtonTitles={insertButtonTitles}
                    toolbarButtons={toolbarButtons()}>
       <Placeholder />
     </SelectionRect>

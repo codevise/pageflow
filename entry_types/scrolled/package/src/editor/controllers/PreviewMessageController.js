@@ -77,11 +77,11 @@ export const PreviewMessageController = Object.extend({
         }
       }
       else if (message.data.type === 'INSERT_CONTENT_ELEMENT') {
-        const {id, position, at} = message.data.payload;
+        const {id, at, splitPoint} = message.data.payload;
 
         InsertContentElementDialogView.show({
           entry: this.entry,
-          insertOptions: {position, id, at},
+          insertOptions: {at, id, splitPoint},
           editor: this.editor
         });
       }

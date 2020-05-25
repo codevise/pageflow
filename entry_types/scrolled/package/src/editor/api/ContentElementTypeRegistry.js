@@ -33,6 +33,12 @@ export class ContentElementTypeRegistry {
    *   needs to return a single merged configuration. If provided, this
    *   will function will be called whenever two content elements of this
    *   type become adjacent because a common neighbor has been deleted.
+   * @param {string[]} [options.supportedPositions] -
+   *   Pass array containing a subset of the positions `left`, `right`,
+   *   `sticky`, `full` and `inline`. When inserting a content element
+   *   next to a `sticky`, `left` or `right` positioned sibling, only
+   *   types supporting this position will be offered in the type
+   *   selection dialog. By default all positions are supported.
    * @memberof editor_contentElementTypes
    *
    * @example
@@ -62,10 +68,50 @@ export class ContentElementTypeRegistry {
     return this.contentElementTypes[typeName];
   }
 
+  getSupported(entry, insertOptions) {
+    const [sibling, otherSibling] = getSiblings(entry, insertOptions);
+    const position = sibling.getDefaultSiblingPosition();
+
+    return this.toArray().filter(type => {
+      if (type.supportedPositions && !type.supportedPositions.includes(position)) {
+        return false;
+      }
+
+      if (canBeMerged(type, sibling) || canBeMerged(type, otherSibling)) {
+        return false;
+      }
+
+      return true;
+    });
+  }
+
   toArray() {
     return Object.keys(this.contentElementTypes).map(typeName => ({
+      ...this.contentElementTypes[typeName],
       typeName,
       displayName: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`)
     }));
+  }
+}
+
+function getSiblings(entry, insertOptions) {
+  const sibling = entry.contentElements.get(insertOptions.id);
+  const otherSibling = getOtherSibling(sibling, insertOptions);
+
+  return [sibling, otherSibling];
+}
+
+function canBeMerged(type, sibling) {
+  return type.merge && sibling && sibling.get('typeName') === type.typeName;
+}
+
+function getOtherSibling(sibling, insertOptions) {
+  const [before, after] = sibling.getAdjacentContentElements();
+
+  if (insertOptions.at === 'before') {
+    return before;
+  }
+  else if (insertOptions.at === 'after') {
+    return after;
   }
 }

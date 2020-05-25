@@ -1,3 +1,4 @@
+import 'editor/config';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {PreviewMessageController} from 'editor/controllers/PreviewMessageController';
 import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView'
@@ -170,8 +171,8 @@ describe('PreviewMessageController', () => {
 
     return expect(new Promise(resolve => {
       jest.spyOn(InsertContentElementDialogView, 'show').mockImplementation(resolve);
-      postInsertContentElementMessage({id: 1, position: 'split', at: 3});
-    })).resolves.toEqual({entry, editor, insertOptions: {id: 1, position: 'split', at: 3}});
+      postInsertContentElementMessage({id: 1, at: 'split', splitPoint: 3});
+    })).resolves.toEqual({entry, editor, insertOptions: {id: 1, at: 'split', splitPoint: 3}});
   });
 
   it('navigates to root on SELECTED message without type', () => {

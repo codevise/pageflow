@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-import {editor} from 'pageflow-scrolled/editor';
+import {editor} from '../api';
 
 import {
   configurationContainer,
@@ -23,5 +23,38 @@ export const ContentElement = Backbone.Model.extend({
 
   getType(contentElement) {
     return editor.contentElementTypes.findByTypeName(this.get('typeName'));
+  },
+
+  getAdjacentContentElements() {
+    const section = this.section;
+    const index = section.contentElements.indexOf(this);
+
+    return [
+      section.contentElements.at(index - 1),
+      section.contentElements.at(index + 1)
+    ];
+  },
+
+  applyDefaultConfiguration(sibling) {
+    this.configuration.set({
+      ...this.getType().defaultConfig,
+      position: sibling.getDefaultSiblingPosition()
+    });
+  },
+
+  getAvailablePositions() {
+    return this.section.configuration.get('layout') === 'center' ?
+           ['inline', 'left', 'right', 'full'] :
+           ['inline', 'sticky', 'full'];
+  },
+
+  getDefaultSiblingPosition() {
+    const position = this.configuration.get('position') || 'inline';
+
+    if (position === 'full') {
+      return 'inline';
+    }
+
+    return position;
   }
 });

@@ -38,11 +38,11 @@ export const ScrolledEntry = Entry.extend({
     });
   },
 
-  insertContentElement(attributes, {position, id, at}) {
+  insertContentElement(attributes, {id, at, splitPoint}) {
     insertContentElement(this,
                          this.contentElements.get(id),
                          attributes,
-                         {position, id, at});
+                         {id, at, splitPoint});
   },
 
   deleteContentElement(id) {

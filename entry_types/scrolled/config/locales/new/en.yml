@@ -11,7 +11,10 @@ en:
           This article works best with the sound turned on. <br/>
           Click once in this field to activate the sound for the entire story.
     inline_editing:
-      insert_content_element: Insert new element
+      select_section: Select section
+      select_content_element: Select element
+      insert_content_element_before: Insert new element above
+      insert_content_element_after: Insert new element below
       edit_section_settings: Edit section settings
       edit_section_transition_before: Edit section transition
       edit_section_transition_after: Edit section transition
@@ -182,6 +185,8 @@ en:
           values:
             inline: Inline
             full: Full Width
+            left: Floated left
+            right: Floated right
             sticky: Sticky
       entry_outline:
         header: Outline

@@ -1,13 +1,13 @@
 import {ContentElement} from '../ContentElement';
 import {batch, nullCommand} from './batch';
 
-export function insertContentElement(entry, sibling, attributes, {position, at}) {
+export function insertContentElement(entry, sibling, attributes, {at, splitPoint}) {
   const section = sibling.section;
-  const insertIndex = reindexPositionsToMakeRoomForInsertion(section, sibling, position);
+  const insertIndex = reindexPositionsToMakeRoomForInsertion(section, sibling, at);
 
   const commands = [
-    position === 'split' && prepareSplit(entry, section, sibling, at),
-    prepareInsertion(entry, section, attributes, insertIndex)
+    at === 'split' && prepareSplit(entry, section, sibling, splitPoint),
+    prepareInsertion(entry, section, sibling, attributes, insertIndex)
   ].filter(Boolean);
 
   section.contentElements.sort();
@@ -15,12 +15,12 @@ export function insertContentElement(entry, sibling, attributes, {position, at})
   batch(section, commands);
 }
 
-function reindexPositionsToMakeRoomForInsertion(section, sibling, position) {
+function reindexPositionsToMakeRoomForInsertion(section, sibling, at) {
   let delta = 0;
   let insertIndex;
 
   section.contentElements.forEach((contentElement, index) => {
-    if (contentElement === sibling && position === 'before') {
+    if (contentElement === sibling && at === 'before') {
       delta = 1;
       insertIndex = index;
     }
@@ -28,11 +28,11 @@ function reindexPositionsToMakeRoomForInsertion(section, sibling, position) {
     contentElement.set('position', index + delta);
 
     if (contentElement === sibling) {
-      if (position === 'after') {
+      if (at === 'after') {
         delta = 1;
         insertIndex = index + 1;
       }
-      else if (position === 'split') {
+      else if (at === 'split') {
         delta = 2;
         insertIndex = index + 1;
       }
@@ -42,8 +42,8 @@ function reindexPositionsToMakeRoomForInsertion(section, sibling, position) {
   return insertIndex;
 }
 
-function prepareSplit(entry, section, sibling, at) {
-  const [c1, c2] = sibling.getType().split(sibling.configuration.attributes, at);
+function prepareSplit(entry, section, sibling, splitPoint) {
+  const [c1, c2] = sibling.getType().split(sibling.configuration.attributes, splitPoint);
 
   const splitOffContentElement = new ContentElement({
     typeName: sibling.get('typeName'),
@@ -77,13 +77,13 @@ function prepareSplit(entry, section, sibling, at) {
   }
 }
 
-function prepareInsertion(entry, section, attributes, index) {
+function prepareInsertion(entry, section, sibling, attributes, index) {
   const contentElement = new ContentElement({
     ...attributes,
     position: index
   });
 
-  contentElement.configuration.set(contentElement.getType().defaultConfig);
+  contentElement.applyDefaultConfiguration(sibling);
   section.contentElements.add(contentElement);
 
   return {

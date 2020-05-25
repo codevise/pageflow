@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {useEditorSelection} from '../EditorState';
+import {useI18n} from '../i18n';
 import {api} from '../api';
 import {SelectionRect} from './SelectionRect';
 import {postInsertContentElementMessage} from './postMessage';
@@ -37,12 +38,15 @@ function OptionalSelectionRect(props) {
 
 function DefaultSelectionRect(props) {
   const {isSelected, select} = useEditorSelection({id: props.id, type: 'contentElement'});
+  const {t} = useI18n({locale: 'ui'});
 
   return (
     <SelectionRect selected={isSelected}
+                   ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
+                   insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
                    onClick={() => select()}
-                   onInsertButtonClick={position =>
-                     postInsertContentElementMessage({id: props.id, position})}>
+                   onInsertButtonClick={at =>
+                     postInsertContentElementMessage({id: props.id, at})}>
       {props.children}
     </SelectionRect>
   )

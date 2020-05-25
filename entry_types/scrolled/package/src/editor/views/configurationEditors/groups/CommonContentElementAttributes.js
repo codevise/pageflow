@@ -1,9 +1,11 @@
 import {ConfigurationEditorTabView, SelectInputView, TextInputView} from 'pageflow/ui';
 
 ConfigurationEditorTabView.groups.define('ContentElementPosition', function() {
+  const contentElement = this.model.parent;
+
   this.input('position', SelectInputView, {
     attributeTranslationKeyPrefixes: ['pageflow_scrolled.editor.common_content_element_attributes'],
-    values: ['inline', 'sticky', 'full']
+    values: contentElement.getAvailablePositions()
   });
 });
 
