@@ -1,5 +1,8 @@
 import {EditConfigurationView, FileInputView, ColorInputView} from 'pageflow/editor';
 import {SelectInputView, CheckBoxInputView} from 'pageflow/ui';
+import I18n from 'i18n-js';
+
+import {EditMotifAreaDialogView} from './EditMotifAreaDialogView';
 
 export const EditSectionView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_section',
@@ -20,7 +23,22 @@ export const EditSectionView = EditConfigurationView.extend({
         collection: 'image_files',
         fileSelectionHandler: 'sectionConfiguration',
         visibleBinding: 'backdropType',
-        visibleBindingValue: 'image'
+        visibleBindingValue: 'image',
+        positioning: false,
+        dropDownMenuItems: [
+          {
+            name: 'editMofifArea',
+            label: I18n.t('pageflow_scrolled.editor.edit_section.edit_motif_area'),
+
+            selected({inputModel, propertyName, file}) {
+              EditMotifAreaDialogView.show({
+                model: inputModel,
+                propertyName,
+                file
+              });
+            }
+          }
+        ]
       });
       this.input('backdropImage', ColorInputView, {
         visibleBinding: 'backdropType',

@@ -1,0 +1,17 @@
+:global .imgareaselect-border1,
+:global .imgareaselect-border2,
+:global .imgareaselect-border3,
+:global .imgareaselect-border4 {
+  opacity: 0.5;
+}
+
+:global .imgareaselect-handle {
+  background-color: #fff;
+  border: solid 1px #000;
+  opacity: 0.5;
+}
+
+:global .imgareaselect-outer {
+  background-color: #000;
+  opacity: 0.5;
+}

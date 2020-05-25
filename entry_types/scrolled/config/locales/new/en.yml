@@ -218,6 +218,7 @@ en:
           This operation cannot be undone.
         save_error: There was an error while saving this chapter.
       edit_section:
+        edit_motif_area: Select motif area...
         tabs:
           section: Section
         attributes:
@@ -290,3 +291,10 @@ en:
       insert_content_element:
         header: Insert element
         cancel: Cancel
+      edit_motif_area:
+        header: Image Motif
+        hint: Select the part of the image that shall not be overlayed by text of other elements.
+        save: Save
+        cancel: Cancel
+        blank_slate: No area selected. All parts of the image may be overlayed by text. Drag with mouse to select an area.
+        reset: Reset

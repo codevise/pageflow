@@ -225,6 +225,7 @@ de:
           Dieser Schritt kann nicht rückgängig gemacht werden.
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
       edit_section:
+        edit_motif_area: Bildmotiv markieren...
         tabs:
           section: Abschnitt
         attributes:
@@ -296,3 +297,10 @@ de:
       insert_content_element:
         header: Element einfügen
         cancel: Abbrechen
+      edit_motif_area:
+        header: Bildmotiv
+        hint: Markieren Sie den Bereich des Bildes, der nicht durch Text oder andere Elemente überlagert werden darf.
+        save: Speichern
+        cancel: Abbrechen
+        blank_slate: Kein Bereich markiert. Alle Teile des Bildes dürfen von Text überlagert werden.<br/> Mit der Maus ziehen, um einen Bereich zu markieren.
+        reset: Zurücksetzen

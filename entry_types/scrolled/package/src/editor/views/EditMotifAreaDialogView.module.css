@@ -1,0 +1,67 @@
+.box {
+  width: min-content;
+  min-height: 310px;
+  min-width: 400px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.thumbnail {
+  position: relative;
+  display: inline-block;
+}
+
+.image {
+  display: block;
+  height: calc(100vh - 200px);
+  max-height: 600px;
+  min-height: 200px;
+}
+
+.blankSlate {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.blank .blankSlate {
+  display: flex;
+}
+
+.reset {
+  composes: unstyledButton from './buttons.module.css';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 10;
+  padding: 5px;
+  background-color: #000;
+  color: #fff;
+  border: solid 1px #fff;
+  border-radius: 3px;
+}
+
+.blank .reset {
+  display: none;
+}
+
+.dragging .reset,
+.dragging .blankSlate {
+  display: none;
+}
+
+.save {
+  composes: saveButton from './buttons.module.css';
+}

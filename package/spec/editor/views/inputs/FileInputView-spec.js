@@ -31,6 +31,39 @@ describe('FileInputView', () => {
     expect(dropDownButton.menuItemNames()).toEqual(expect.arrayContaining(['edit_background_positioning']));
   });
 
+  it('can render additional drop down menu item', () => {
+    const fixture = support.factories.imageFilesFixture({
+      imageFileAttributes: {perma_id: 5}
+    });
+    const model = new Configuration({
+      file_id: 5,
+    });
+    const handler = jest.fn();
+
+    var fileInputView = new FileInputView({
+      collection: fixture.imageFiles,
+      model: model,
+      propertyName: 'file_id',
+      dropDownMenuItems: [
+        {
+          name: 'custom',
+          label: 'Custom Item',
+          selected: handler
+        }
+      ]
+    });
+
+    fileInputView.render();
+    var dropDownButton = DropDownButton.find(fileInputView);
+    dropDownButton.selectMenuItemByLabel('Custom Item');
+
+    expect(handler).toHaveBeenCalledWith({
+      inputModel: model,
+      propertyName: 'file_id',
+      file: fixture.imageFile
+    });
+  });
+
   describe('for selecting a default text track file', () => {
     beforeEach(() => {
       testContext.fixture = support.factories.videoFileWithTextTrackFiles({

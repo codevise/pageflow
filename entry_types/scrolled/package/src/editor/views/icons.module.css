@@ -4,6 +4,8 @@
 
 .arrowsCcw,
 .attention,
+.cancel,
+.check,
 .plusCircled,
 .rightOpen,
 .trash {
@@ -20,6 +22,10 @@
 
 .cancel::before {
   content: "\2715";
+}
+
+.check::before {
+  content: "\2713";
 }
 
 .plusCircled::before {

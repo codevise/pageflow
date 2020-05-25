@@ -124,6 +124,18 @@ export const FileInputView = Marionette.ItemView.extend({
     }
 
     if (file) {
+      _.each(this.options.dropDownMenuItems, item => {
+        items.add(new FileInputView.CustomMenuItem({
+          name: item.name,
+          label: item.label
+        }, {
+          inputModel: this.model,
+          propertyName: this.options.propertyName,
+          file,
+          selected: item.selected
+        }));
+      });
+
       items.add(new FileInputView.EditFileSettingsMenuItem({
         name: 'edit_file_settings',
         label: I18n.t('pageflow.editor.views.inputs.file_input.edit_file_settings')
@@ -177,6 +189,20 @@ FileInputView.EditBackgroundPositioningMenuItem = Backbone.Model.extend({
       model: this.options.inputModel,
       propertyName: this.options.propertyName,
       filesCollection: this.options.filesCollection
+    });
+  }
+});
+
+FileInputView.CustomMenuItem = Backbone.Model.extend({
+  initialize: function(attributes, options) {
+    this.options = options;
+  },
+
+  selected: function() {
+    this.options.selected({
+      inputModel: this.options.inputModel,
+      propertyName: this.options.propertyName,
+      file: this.options.file
     });
   }
 });

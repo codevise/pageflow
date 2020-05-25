@@ -4,6 +4,10 @@
 
 // See entry_type/scrolled/package/src/editor/buttons.module.css
 
-.icon_button {
+.primary_icon_button {
   @include icon-button;
+}
+
+.secondary_icon_button {
+  @include icon-button(#888);
 }
