@@ -20,7 +20,7 @@ export const EmulationModeButtonView = Marionette.ItemView.extend({
     },
 
     'click .emulation_mode_button-phone a': function() {
-      if (!this.model.get('current_page_supports_emulation_mode')) {
+      if (this.model.get('emulation_mode_disabled')) {
         return;
       }
 
@@ -29,7 +29,7 @@ export const EmulationModeButtonView = Marionette.ItemView.extend({
   },
 
   modelEvents: {
-    'change:emulation_mode change:current_page_supports_emulation_mode': 'update'
+    'change:emulation_mode change:emulation_mode_disabled': 'update'
   },
 
   onRender: function() {
@@ -38,7 +38,7 @@ export const EmulationModeButtonView = Marionette.ItemView.extend({
 
   update: function() {
     this.ui.phoneItem.toggleClass('disabled',
-                                  !this.model.get('current_page_supports_emulation_mode'));
+                                  !!this.model.get('emulation_mode_disabled'));
 
     this.ui.phoneItem.toggleClass('active', this.model.has('emulation_mode'));
     this.ui.desktopItem.toggleClass('active', !this.model.has('emulation_mode'));
