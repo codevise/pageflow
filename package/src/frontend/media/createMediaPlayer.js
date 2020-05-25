@@ -27,7 +27,7 @@ export const createMediaPlayer = function (options) {
     fullscreenDuringPhonePlayback: !playsInline && !isAudio,
     fallbackToMutedAutoplay: !isAudio,
 
-    volumeFading: false, //should be turned on later 
+    volumeFading: true, //should be turned on later 
     hooks: undefined,
 
     mediaEvents: true,
@@ -41,6 +41,14 @@ export const createMediaPlayer = function (options) {
   player.textTrackSettings = {
     getValues() {
       return {};
+    }
+  };
+
+  player.playOrPlayOnLoad = function () {
+    if (this.readyState() > 0) {
+      player.play();
+    } else {
+      player.on('loadedmetadata', player.play);
     }
   };
 

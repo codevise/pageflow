@@ -1,12 +1,8 @@
 export function updatePlayerState(player, prevPlayerState, playerState, playerActions, componentState, isAutoplay, isMediaOff){
 
   if (!isMediaOff && isAutoplay) {
-    if (componentState === 'active') {
-      if (player.readyState() > 0) {
-        player.play();
-      } else {
-        player.on('loadedmetadata', player.play);
-      }  
+    if (componentState === 'active') {      
+      player.playOrPlayOnLoad();
     }
     else {
       player.pause();
