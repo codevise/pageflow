@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useEditorSelection} from '../EditorState';
+import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useI18n} from '../i18n';
 import {api} from '../api';
 import {SelectionRect} from './SelectionRect';
@@ -8,15 +8,18 @@ import {postInsertContentElementMessage} from './postMessage';
 import styles from './ContentElementDecorator.module.css';
 
 import {ContentElementConfigurationUpdateProvider} from './ContentElementConfigurationUpdateProvider';
+import {ContentElementEditorStateProvider} from './ContentElementEditorStateProvider';
 
 export function ContentElementDecorator(props) {
   return (
     <div className={styles.wrapper}>
-      <OptionalSelectionRect {...props}>
-        <ContentElementConfigurationUpdateProvider id={props.id} permaId={props.permaId}>
-          {props.children}
-        </ContentElementConfigurationUpdateProvider>
-      </OptionalSelectionRect>
+      <ContentElementEditorStateProvider id={props.id}>
+        <OptionalSelectionRect {...props}>
+          <ContentElementConfigurationUpdateProvider id={props.id} permaId={props.permaId}>
+            {props.children}
+          </ContentElementConfigurationUpdateProvider>
+        </OptionalSelectionRect>
+      </ContentElementEditorStateProvider>
     </div>
   );
 }
@@ -37,7 +40,7 @@ function OptionalSelectionRect(props) {
 }
 
 function DefaultSelectionRect(props) {
-  const {isSelected, select} = useEditorSelection({id: props.id, type: 'contentElement'});
+  const {isSelected, select} = useContentElementEditorState();
   const {t} = useI18n({locale: 'ui'});
 
   return (
