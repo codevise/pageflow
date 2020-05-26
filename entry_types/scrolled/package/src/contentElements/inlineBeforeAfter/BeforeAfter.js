@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import ReactCompareImage from 'react-compare-image';
 import styles from './BeforeAfter.module.css';
 import cx from 'classnames';
-import {useFile, useEditorSelection} from 'pageflow-scrolled/frontend';
+import {useFile, useContentElementEditorState} from 'pageflow-scrolled/frontend';
 
 export function BeforeAfter({state,
                              before_id,
@@ -12,8 +12,7 @@ export function BeforeAfter({state,
                              initial_slider_position,
                              slider,
                              slider_color,
-                             slider_handle,
-                             contentElementId,
+                             slider_handle
                             }) {
   const beforeAfterRef = useRef();
   const current = beforeAfterRef.current;
@@ -37,7 +36,7 @@ export function BeforeAfter({state,
   const beforeImage = useFile({collectionName: 'imageFiles', permaId: before_id});
   const afterImage = useFile({collectionName: 'imageFiles', permaId: after_id});
 
-  const {isSelected} = useEditorSelection({id: contentElementId, type: 'contentElement'});
+  const {isSelected} = useContentElementEditorState();
   const beforeImageUrl = beforeImage && beforeImage.urls.large;
   const beforeImageAlt = beforeImage && beforeImage.configuration.alt;
   const afterImageUrl = afterImage && afterImage.urls.large;
