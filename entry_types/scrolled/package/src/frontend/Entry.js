@@ -6,6 +6,7 @@ import ScrollToSectionContext from './ScrollToSectionContext';
 import {useEntryStructure, useEntryStateDispatch} from '../entryState';
 import {useEditorSelection} from './EditorState';
 import {withInlineEditingDecorator} from './inlineEditing';
+import {usePostMessageListener} from './usePostMessageListener';
 
 import styles from './Entry.module.css';
 
@@ -28,28 +29,25 @@ export default withInlineEditingDecorator('EntryDecorator', function Entry(props
     setCurrentSectionIndexState(index);
   }, [setCurrentSectionIndexState]);
 
-  useEffect(() => {
-    if (window.parent !== window) {
-      window.addEventListener('message', receive)
-      window.parent.postMessage({type: 'READY'}, window.location.origin);
+  const receiveMessage = useCallback(data => {
+    if (data.type === 'ACTION') {
+      dispatch(data.payload);
     }
-
-    return () => window.removeEventListener('message', receive);
-
-    function receive(message) {
-      if (window.location.href.indexOf(message.origin) === 0) {
-        if (message.data.type === 'ACTION') {
-          dispatch(message.data.payload);
-        }
-        else if (message.data.type === 'SCROLL_TO_SECTION') {
-          setScrollTargetSectionIndex(message.data.payload.index)
-        }
-        else if (message.data.type === 'SELECT') {
-          select(message.data.payload);
-        }
-      }
+    else if (data.type === 'SCROLL_TO_SECTION') {
+      setScrollTargetSectionIndex(data.payload.index)
+    }
+    else if (data.type === 'SELECT') {
+      select(data.payload);
     }
   }, [dispatch, select]);
+
+  usePostMessageListener(receiveMessage);
+
+  useEffect(() => {
+    if (window.parent !== window) {
+      window.parent.postMessage({type: 'READY'}, window.location.origin);
+    }
+  }, []);
 
   function scrollToSection(index) {
     if (index === 'next') {
