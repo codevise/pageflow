@@ -2,6 +2,7 @@ import React from 'react';
 
 import {api} from './api';
 import {withInlineEditingDecorator} from './inlineEditing';
+import {ContentElementAttributesProvider} from './useContentElementAttributes';
 
 import styles from './ContentElement.module.css';
 
@@ -12,9 +13,11 @@ export const ContentElement = withInlineEditingDecorator(
 
     if (Component) {
       return (
-        <Component sectionProps={props.sectionProps}
-                   configuration={props.itemProps}
-                   contentElementId={props.id} />
+        <ContentElementAttributesProvider id={props.id}>
+          <Component sectionProps={props.sectionProps}
+                     configuration={props.itemProps}
+                     contentElementId={props.id} />
+        </ContentElementAttributesProvider>
       );
     }
     else {
