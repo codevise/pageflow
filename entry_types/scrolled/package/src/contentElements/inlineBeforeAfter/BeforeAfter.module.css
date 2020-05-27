@@ -45,8 +45,6 @@
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
    before label */
 .container div div:nth-child(4) div {
-  max-width: calc(var(--before-label-max-width, var(--default-label-max-width)) -
-                  var(--label-padding));
 }
 
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
@@ -58,8 +56,6 @@
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
    after label */
 .container div div:nth-child(5) div {
-  max-width: calc(var(--after-label-max-width, var(--default-label-max-width)) -
-                  var(--label-padding));
 }
 
 @keyframes BeforeImageLeftRightShake {

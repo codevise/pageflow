@@ -60,17 +60,11 @@ export function BeforeAfter({state,
   }
 
   if (current) {
-    // Size labels according to initial slider position. Unit is %,
-    // left and right spacing is 5%, so we subtract 10. 90 = 100 - 10.
-    const beforeLabelWidth = initial_slider_position - 10;
-    const afterLabelWidth = 90 - initial_slider_position;
     // Compute initial slider coordinate and pass it as a CSS
     // variable, so that before/after images can wiggle together with
     // the slider
     const containerWidth = current.getBoundingClientRect().width;
     const initialRectWidth = initialSliderPos * containerWidth;
-    current.style.setProperty('--before-label-max-width', beforeLabelWidth + '%');
-    current.style.setProperty('--after-label-max-width', afterLabelWidth + '%');
     current.style.setProperty('--initial-rect-width', initialRectWidth + 'px');
   }
 
