@@ -99,6 +99,10 @@ export const PreviewMessageController = Object.extend({
         const {id, configuration} = message.data.payload;
         this.entry.contentElements.get(id).configuration.set(configuration, {ignoreInWatchCollection: true});
       }
+      else if (message.data.type === 'UPDATE_TRANSIENT_CONTENT_ELEMENT_STATE') {
+        const {id, state} = message.data.payload;
+        this.entry.contentElements.get(id).set('transientState', state);
+      }
     }
   }
 });

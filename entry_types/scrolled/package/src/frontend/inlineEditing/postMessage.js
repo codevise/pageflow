@@ -20,3 +20,16 @@ export function postUpdateContentElementMessage({id, configuration}) {
     window.location.origin
   );
 }
+
+export function postUpdateTransientContentElementStateMessage({id, state}) {
+  window.parent.postMessage(
+    {
+      type: 'UPDATE_TRANSIENT_CONTENT_ELEMENT_STATE',
+      payload: {
+        id,
+        state
+      }
+    },
+    window.location.origin
+  );
+}

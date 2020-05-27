@@ -1,6 +1,10 @@
 import {useContext, createContext} from 'react';
 
-export const ContentElementEditorStateContext = createContext({isSelected: false, isEditable: false});
+export const ContentElementEditorStateContext = createContext({
+  isSelected: false,
+  isEditable: false,
+  setTransientState() {}
+});
 
 /**
  * Use inside a content element component to determine whether the

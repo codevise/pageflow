@@ -4,7 +4,8 @@ import {PreviewMessageController} from 'editor/controllers/PreviewMessageControl
 import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView'
 import {
   postInsertContentElementMessage,
-  postUpdateContentElementMessage
+  postUpdateContentElementMessage,
+  postUpdateTransientContentElementStateMessage
 } from 'frontend/inlineEditing/postMessage';
 import {setupGlobals} from 'pageflow/testHelpers';
 import {normalizeSeed, factories, createIframeWindow} from 'support';
@@ -279,6 +280,24 @@ describe('PreviewMessageController', () => {
       postUpdateContentElementMessage({id: 1, configuration: {some: 'ignored update'}});
       entry.chapters.first().configuration.set({title: 'next update'});
     })).resolves.toEqual('chapters');
+  });
+
+  it('updates transient state on UPDATE_TRANSIENT_CONTENT_ELEMENT_STATE message', () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 5}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    return expect(new Promise(resolve => {
+      const contentElement = entry.contentElements.get(5);
+      contentElement.on('change:transientState', () => {
+        resolve(contentElement.get('transientState'));
+      });
+      postUpdateTransientContentElementStateMessage({id: 5, state: {some: 'state'}});
+    })).resolves.toEqual({some: 'state'});
   });
 });
 
