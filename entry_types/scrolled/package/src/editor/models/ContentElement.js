@@ -25,6 +25,10 @@ export const ContentElement = Backbone.Model.extend({
     return editor.contentElementTypes.findByTypeName(this.get('typeName'));
   },
 
+  postCommand(command) {
+    this.trigger('postCommand', this.id, command);
+  },
+
   getAdjacentContentElements() {
     const section = this.section;
     const index = section.contentElements.indexOf(this);

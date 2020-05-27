@@ -38,6 +38,16 @@ export const PreviewMessageController = Object.extend({
           })
         );
 
+        this.listenTo(this.entry.contentElements, 'postCommand', (contentElementId, command) =>
+          postMessage({
+            type: 'CONTENT_ELEMENT_EDITOR_COMMAND',
+            payload: {
+              contentElementId,
+              command
+            }
+          })
+        );
+
         this.listenTo(this.entry, 'selectContentElement', contentElement =>
           postMessage({
             type: 'SELECT',
