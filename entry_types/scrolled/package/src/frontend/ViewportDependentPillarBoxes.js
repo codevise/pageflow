@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import styles from "./ViewportDependentPillarBoxes.module.css";
 
 export function ViewportDependentPillarBoxes({file, position, children}) {
+  if(!file) return children;
+
   const css = calculatePadding(file, position);
 
   return (

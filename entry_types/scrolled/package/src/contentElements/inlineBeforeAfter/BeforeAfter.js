@@ -2,9 +2,10 @@ import React, {useEffect, useRef, useState} from 'react';
 import ReactCompareImage from 'react-compare-image';
 import styles from './BeforeAfter.module.css';
 import cx from 'classnames';
-import {useFile, useContentElementEditorState} from 'pageflow-scrolled/frontend';
+import {useFile, useContentElementEditorState, ViewportDependentPillarBoxes} from 'pageflow-scrolled/frontend';
 
 export function BeforeAfter({state,
+                             position,
                              before_id,
                              before_label,
                              after_id,
@@ -68,19 +69,20 @@ export function BeforeAfter({state,
   }
 
   return (
-    <div ref={beforeAfterRef}
-      className={cx({[styles.selected]: isSelected, [styles.wiggle]: wiggle},
-      styles.container)}>
-      <InitialSliderPositionIndicator parentSelected={isSelected}
-        position={initial_slider_position}/>
-      {/* onSliderPositionChange: Prevent wiggle if user uses slider */}
-      <ReactCompareImage leftImage={beforeImageUrl} rightImage={afterImageUrl}
-                         leftImageLabel={before_label} rightImageLabel={after_label}
-                         leftImageAlt={beforeImageAlt} rightImageAlt={afterImageAlt}
-                         sliderPositionPercentage={initialSliderPos}
-                         onSliderPositionChange={() => setWiggle(false)}
-                         {...opts} />
-    </div>
+    <ViewportDependentPillarBoxes file={beforeImage} position={position} children={
+      <div ref={beforeAfterRef}
+           className={cx({[styles.selected]: isSelected, [styles.wiggle]: wiggle}, styles.container)}>
+        <InitialSliderPositionIndicator parentSelected={isSelected}
+                                        position={initial_slider_position}/>
+        {/* onSliderPositionChange: Prevent wiggle if user uses slider */}
+        <ReactCompareImage leftImage={beforeImageUrl} rightImage={afterImageUrl}
+                           leftImageLabel={before_label} rightImageLabel={after_label}
+                           leftImageAlt={beforeImageAlt} rightImageAlt={afterImageAlt}
+                           sliderPositionPercentage={initialSliderPos}
+                           onSliderPositionChange={() => setWiggle(false)}
+                           {...opts} />
+      </div>
+    }/>
   );
 };
 
