@@ -42,7 +42,7 @@ rake 'db:create:all'
 # Install pageflow and the tested engine via their generators.
 
 generate 'pageflow:install', '--force'
-generate "#{ENV['PAGEFLOW_PLUGIN_ENGINE']}:install", '--force' if ENV['PAGEFLOW_PLUGIN_ENGINE']
+generate "#{ENV['PAGEFLOW_PLUGIN_ENGINE']}:install", '--force --abort_on_failure' if ENV['PAGEFLOW_PLUGIN_ENGINE']
 
 # Devise needs default_url_options for generating mails.
 
