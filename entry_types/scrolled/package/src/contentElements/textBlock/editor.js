@@ -26,5 +26,14 @@ editor.contentElementTypes.register('textBlock', {
       ...configurationA,
       value: configurationA.value.concat(configurationB.value),
     };
+  },
+
+  handleDestroy(contentElement) {
+    const transientState = contentElement.get('transientState') || {};
+
+    if (!transientState.editableTextIsSingleBlock) {
+      contentElement.postCommand({type: 'REMOVE'});
+      return false;
+    }
   }
 });
