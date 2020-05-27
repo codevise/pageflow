@@ -1,7 +1,9 @@
 import {EditContentElementView} from 'editor/views/EditContentElementView';
-import {ConfigurationEditor} from 'pageflow/testHelpers';
+import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {TextInputView} from 'pageflow/ui';
-import {factories} from 'support';
+
+import {ConfigurationEditor} from 'pageflow/testHelpers';
+import {factories, normalizeSeed} from 'support';
 
 describe('EditContentElementView', () => {
   it('renders configuration editor for content element', () => {
@@ -26,5 +28,69 @@ describe('EditContentElementView', () => {
 
     expect(configurationEditor.tabNames()).toContain('general');
     expect(configurationEditor.inputPropertyNames()).toContain('text');
+  });
+
+  it('lets content element types override detroy button', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [
+          {id: 1, typeName: 'textBlock'}
+        ]
+      })
+    });
+    const contentElement = entry.contentElements.get(1);
+    const view = new EditContentElementView({
+      model: contentElement,
+      editor,
+      entry
+    });
+    const handleDestroy = jest.fn();
+    entry.deleteContentElement = jest.fn();
+
+    editor.contentElementTypes.register('textBlock', {
+      configurationEditor() {
+        this.tab('general', function() {});
+      },
+
+      handleDestroy
+    });
+    view.render();
+
+    view.destroyModel();
+
+    expect(handleDestroy).toHaveBeenCalledWith(contentElement);
+  });
+
+  it('does not call deleteContentElement if handleDestroy returns false', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [
+          {id: 1, typeName: 'textBlock'}
+        ]
+      })
+    });
+    const view = new EditContentElementView({
+      model: entry.contentElements.get(1),
+      editor,
+      entry
+    });
+    entry.deleteContentElement = jest.fn();
+
+    editor.contentElementTypes.register('textBlock', {
+      configurationEditor() {
+        this.tab('general', function() {});
+      },
+
+      handleDestroy() {
+        return false;
+      }
+    });
+    view.render();
+
+    view.destroyModel();
+
+    expect(entry.deleteContentElement).not.toHaveBeenCalled();
   });
 });

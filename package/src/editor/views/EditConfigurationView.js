@@ -98,8 +98,9 @@ export const EditConfigurationView = Marionette.Layout.extend({
 
   destroy: function() {
     if (window.confirm(this.t('confirm_destroy'))) {
-      this.destroyModel();
-      this.goBack();
+      if (this.destroyModel() !== false) {
+        this.goBack();
+      }
     }
   },
 
