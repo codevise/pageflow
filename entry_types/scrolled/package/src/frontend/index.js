@@ -33,6 +33,7 @@ export * from './SectionThumbnail';
 export {default as Entry} from './Entry';
 export {EntryStateProvider, useFile} from '../entryState'
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
+export {useContentElementEditorCommandSubscription} from './useContentElementEditorCommandSubscription';
 export {useContentElementEditorState} from './useContentElementEditorState';
 
 export {EditableText} from './EditableText';
