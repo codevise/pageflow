@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 
 import {ContentElementEditorStateContext} from '../useContentElementEditorState';
-import {useEditorSelection} from '../EditorState';
+import {useEditorSelection} from './EditorState';
 
 export function ContentElementEditorStateProvider({id, children}) {
   const {isSelected, select} = useEditorSelection({id, type: 'contentElement'});

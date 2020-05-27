@@ -4,7 +4,7 @@ import styles from './SectionDecorator.module.css';
 import contentElementStyles from './ContentElementDecorator.module.css';
 
 import {Toolbar} from './Toolbar';
-import {useEditorSelection} from '../EditorState';
+import {useEditorSelection} from './EditorState';
 import {useI18n} from '../i18n';
 
 import editIcon from './images/settings.svg';

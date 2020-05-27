@@ -32,7 +32,6 @@ export * from './i18n';
 export * from './SectionThumbnail';
 export {default as Entry} from './Entry';
 export {EntryStateProvider, useFile} from '../entryState'
-export {useEditorSelection} from './EditorState';
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
 export {useContentElementEditorState} from './useContentElementEditorState';
 
