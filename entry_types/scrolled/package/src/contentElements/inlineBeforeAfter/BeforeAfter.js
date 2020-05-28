@@ -69,7 +69,7 @@ export function BeforeAfter({state,
   }
 
   return (
-    <ViewportDependentPillarBoxes file={beforeImage} position={position} children={
+    <ViewportDependentPillarBoxes file={beforeImage} position={position}>
       <div ref={beforeAfterRef}
            className={cx({[styles.selected]: isSelected, [styles.wiggle]: wiggle}, styles.container)}>
         <InitialSliderPositionIndicator parentSelected={isSelected}
@@ -82,7 +82,7 @@ export function BeforeAfter({state,
                            onSliderPositionChange={() => setWiggle(false)}
                            {...opts} />
       </div>
-    }/>
+    </ViewportDependentPillarBoxes>
   );
 };
 

@@ -19,12 +19,12 @@ export function VideoPlayer(props) {
   if (videoFile && videoFile.isReady) {
     const processedSources = processSources(videoFile);
     return (
-      <ViewportDependentPillarBoxes file={videoFile} position={props.position} children={
+      <ViewportDependentPillarBoxes file={videoFile} position={props.position}>
         <MediaPlayer className={classNames(styles.video_player, {[styles.backdrop]: !props.interactive})}
                      type={'video'}
                      sources={processedSources}
                      {...props}/>
-      }/>
+      </ViewportDependentPillarBoxes>
     );
   } else {
     return null;
