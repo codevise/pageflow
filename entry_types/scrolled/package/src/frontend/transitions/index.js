@@ -18,8 +18,6 @@ import scrollInFadeOut from './scrollInFadeOut.module.css';
 import scrollInFadeOutBg from './scrollInFadeOutBg.module.css';
 import scrollInScrollOut from './scrollInScrollOut.module.css';
 
-import previewScrollOut from './previewScrollOut.module.css';
-
 const styles = {
   fadeInBgConceal,
   fadeInBgFadeOut,
@@ -39,9 +37,7 @@ const styles = {
   scrollInConceal,
   scrollInFadeOut,
   scrollInFadeOutBg,
-  scrollInScrollOut,
-
-  previewScrollOut
+  scrollInScrollOut
 }
 
 const enterTransitions = {
@@ -50,9 +46,7 @@ const enterTransitions = {
   scroll: 'scrollIn',
   scrollOver: 'scrollIn',
   reveal: 'reveal',
-  beforeAfter: 'reveal',
-
-  preview: 'preview'
+  beforeAfter: 'reveal'
 }
 
 const exitTransitions = {
