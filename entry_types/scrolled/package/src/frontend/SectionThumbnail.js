@@ -27,10 +27,11 @@ function Inner({sectionPermaId, subscribe}) {
 
   if (section) {
     return (
-      <Measure whitelist={['height']}>
-        {({height}) =>
-          <FullscreenHeightProvider height={Math.ceil(height) * 5}>
-            <div className={styles.crop}>
+      <Measure client>
+        {({measureRef, contentRect}) =>
+          <FullscreenHeightProvider height={contentRect.client.height &&
+                                            Math.ceil(contentRect.client.height) * 5}>
+            <div ref={measureRef} className={styles.crop}>
               <div className={styles.scale}>
                 <div className={entryStyles.Entry}>
                   <Section state="active" {...section} transition="preview" />
