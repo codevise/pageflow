@@ -2,6 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import 'support/mediaElementStub';
 import 'support/fakeBrowserFeatures';
+import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 
 import {renderInEntry} from "../support";
 import {AudioPlayer} from 'frontend/AudioPlayer';
@@ -24,16 +25,20 @@ describe('AudioPlayer', () => {
     };
   }
   it('renders audio with provided file id', () => {
+    let state = getInitialPlayerState();
+    let actions = getPlayerActions();
     const result =
-      renderInEntry(<AudioPlayer id={100} />, {
+      renderInEntry(<AudioPlayer id={100} playerState={state} playerActions={actions} />, {
         seed: getAudioSeed()
       });
     expect(result.container.querySelector('audio')).toBeDefined();
   });
 
   it('passes correct mp3 source to media API', () => {
+    let state = getInitialPlayerState();
+    let actions = getPlayerActions();
     const spyMedia = jest.spyOn(media, 'getPlayer')
-    renderInEntry(<AudioPlayer id={100} />, {
+    renderInEntry(<AudioPlayer id={100} playerState={state} playerActions={actions} />, {
       seed: getAudioSeed()
     });
     expect(spyMedia).toHaveBeenCalledWith(
@@ -43,10 +48,12 @@ describe('AudioPlayer', () => {
   });
 
   it('passes correct mp3 and m4a source to media API', () => {
+    let state = getInitialPlayerState();
+    let actions = getPlayerActions();
     const spyMedia = jest.spyOn(media, 'getPlayer')
     let audioSeed = getAudioSeed();
     audioSeed.fileUrlTemplates.audioFiles['m4a'] = ':id_partition/audio.m4a'
-    renderInEntry(<AudioPlayer id={100} />, {
+    renderInEntry(<AudioPlayer id={100} playerState={state} playerActions={actions} />, {
       seed: audioSeed
     });
     expect(spyMedia).toHaveBeenCalledWith(
@@ -58,11 +65,13 @@ describe('AudioPlayer', () => {
   });
   
   it('passes correct mp3, m4a and ogg sources to media API', () => {
+    let state = getInitialPlayerState();
+    let actions = getPlayerActions();
     const spyMedia = jest.spyOn(media, 'getPlayer')
     let audioSeed = getAudioSeed();
     audioSeed.fileUrlTemplates.audioFiles['m4a'] = ':id_partition/audio.m4a'
     audioSeed.fileUrlTemplates.audioFiles['ogg'] = ':id_partition/audio.ogg'
-    renderInEntry(<AudioPlayer id={100} />, {
+    renderInEntry(<AudioPlayer id={100} playerState={state} playerActions={actions} />, {
       seed: audioSeed
     });
     expect(spyMedia).toHaveBeenCalledWith(
@@ -76,13 +85,15 @@ describe('AudioPlayer', () => {
   });
 
   it('sources other than  mp3, m4a and ogg are not passed to media API', () => {
+    let state = getInitialPlayerState();
+    let actions = getPlayerActions();
     const spyMedia = jest.spyOn(media, 'getPlayer')
     let audioSeed = getAudioSeed();
     audioSeed.fileUrlTemplates.audioFiles['m4a'] = ':id_partition/audio.m4a'
     audioSeed.fileUrlTemplates.audioFiles['ogg'] = ':id_partition/audio.ogg'
     audioSeed.fileUrlTemplates.audioFiles['avi'] = ':id_partition/audio.avi'
     
-    renderInEntry(<AudioPlayer id={100} />, {
+    renderInEntry(<AudioPlayer id={100} playerState={state} playerActions={actions} />, {
       seed: audioSeed
     });
     expect(spyMedia).toHaveBeenCalledWith(

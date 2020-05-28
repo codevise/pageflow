@@ -2,6 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import 'support/mediaElementStub';
 import 'support/fakeBrowserFeatures';
+import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 
 import {renderInEntry} from "../support";
 import {VideoPlayer} from 'frontend/VideoPlayer';
@@ -25,16 +26,20 @@ describe('VideoPlayer', () => {
     };
   }
   it('renders video with provided file id', () => {
+    let state = getInitialPlayerState();
+    let actions = getPlayerActions();
     const result =
-      renderInEntry(<VideoPlayer id={100} />, {
+      renderInEntry(<VideoPlayer id={100} playerState={state} playerActions={actions} />, {
         seed: getVideoSeed()
       });
     expect(result.container.querySelector('video')).toBeDefined();
   });
 
   it('passes correct sources to media API', () => {
+    let state = getInitialPlayerState();
+    let actions = getPlayerActions();
     const spyMedia = jest.spyOn(media, 'getPlayer');
-    renderInEntry(<VideoPlayer id={100} />, {
+    renderInEntry(<VideoPlayer id={100} playerState={state} playerActions={actions} />, {
       seed: getVideoSeed()
     });
     expect(spyMedia).toHaveBeenCalledWith(
@@ -44,10 +49,12 @@ describe('VideoPlayer', () => {
   });
 
   it('does not accept any source other than "high" ', () => {
+    let state = getInitialPlayerState();
+    let actions = getPlayerActions();
     const spyMedia = jest.spyOn(media, 'getPlayer');
     let videoSeed = getVideoSeed();
     videoSeed.fileUrlTemplates.videoFiles['mp3'] = '000/000/001/video.mp3?u=1'
-    renderInEntry(<VideoPlayer id={100} />, {
+    renderInEntry(<VideoPlayer id={100} playerState={state} playerActions={actions} />, {
       seed: videoSeed
     });
     expect(spyMedia).toHaveBeenCalledWith(
