@@ -32,6 +32,7 @@
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
    before label */
 .container div div:nth-child(4) div {
+  transition: opacity 0.1s ease-out 0.3s !important;
 }
 
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
@@ -43,6 +44,7 @@
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
    after label */
 .container div div:nth-child(5) div {
+  transition: opacity 0.1s ease-out 0.3s !important;
 }
 
 @keyframes BeforeImageLeftRightShake {
