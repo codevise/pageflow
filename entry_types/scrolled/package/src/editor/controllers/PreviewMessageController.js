@@ -38,6 +38,16 @@ export const PreviewMessageController = Object.extend({
           })
         );
 
+        this.listenTo(this.entry.contentElements, 'postCommand', (contentElementId, command) =>
+          postMessage({
+            type: 'CONTENT_ELEMENT_EDITOR_COMMAND',
+            payload: {
+              contentElementId,
+              command
+            }
+          })
+        );
+
         this.listenTo(this.entry, 'selectContentElement', contentElement =>
           postMessage({
             type: 'SELECT',
@@ -88,6 +98,10 @@ export const PreviewMessageController = Object.extend({
       else if (message.data.type === 'UPDATE_CONTENT_ELEMENT') {
         const {id, configuration} = message.data.payload;
         this.entry.contentElements.get(id).configuration.set(configuration, {ignoreInWatchCollection: true});
+      }
+      else if (message.data.type === 'UPDATE_TRANSIENT_CONTENT_ELEMENT_STATE') {
+        const {id, state} = message.data.payload;
+        this.entry.contentElements.get(id).set('transientState', state);
       }
     }
   }

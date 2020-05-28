@@ -5,7 +5,7 @@ import {useSlate, ReactEditor} from 'slate-react';
 import styles from './index.module.css';
 
 import {SelectionRect} from '../SelectionRect';
-import {useEditorSelection} from '../EditorState';
+import {useContentElementEditorState} from '../../useContentElementEditorState';
 import {useI18n} from '../../i18n';
 import {postInsertContentElementMessage} from '../postMessage';
 
@@ -25,9 +25,11 @@ export function Selection(props) {
 
   const boundsRef = useRef();
 
-  const {select, isSelected: isContentElementSelected} = useEditorSelection(
-    {id: props.contentElementId, type: 'contentElement'}
-  );
+  const {
+    setTransientState,
+    select,
+    isSelected: isContentElementSelected
+  } = useContentElementEditorState();
 
   useEffect(() => {
     const {selection} = editor;
@@ -55,6 +57,10 @@ export function Selection(props) {
     }
 
     const [start, end] = computeBounds();
+
+    setTransientState({
+      editableTextIsSingleBlock: editor.children.length <= 1
+    });
 
     boundsRef.current = {start, end};
     updateRect(editor, start, end, outerRef.current, ref.current, innerRef.current);

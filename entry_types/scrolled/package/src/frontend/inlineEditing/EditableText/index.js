@@ -5,6 +5,7 @@ import {Slate, Editable, withReact} from 'slate-react';
 import {Text} from '../../Text';
 import {renderElement, renderLeaf} from '../../EditableText';
 import {useCachedValue} from '../useCachedValue';
+import {useContentElementEditorCommandSubscription} from '../../useContentElementEditorCommandSubscription';
 
 import {withCustomInsertBreak} from './withCustomInsertBreak';
 import {HoveringToolbar} from './HoveringToolbar';
@@ -22,6 +23,12 @@ export const EditableText = React.memo(function EditableText({value, contentElem
     }],
     onDebouncedChange: onChange,
     onReset: nextValue => resetSelectionIfOutsideNextValue(editor, nextValue)
+  });
+
+  useContentElementEditorCommandSubscription(command => {
+    if (command.type === 'REMOVE') {
+      Transforms.removeNodes(editor, {mode: 'highest'});
+    }
   });
 
   return (

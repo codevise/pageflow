@@ -110,5 +110,28 @@ describe('EditConfigurationView', () => {
     view.$el.find('.destroy').click();
 
     expect(customDestroyMethod).toHaveBeenCalled();
+    expect(editor.router.navigate).toHaveBeenCalled();
+  });
+
+  it('does not go back if destroyModel returns false', () => {
+    const Model = Backbone.Model.extend({
+      mixins: [configurationContainer(), failureTracking]
+    });
+    const View = EditConfigurationView.extend({
+      configure(configurationEditor) {
+        configurationEditor.tab('general', function() {
+        });
+      },
+
+      destroyModel() {
+        return false;
+      }
+    });
+
+    const view = new View({model: new Model()}).render();
+    window.confirm = () => true;
+    view.$el.find('.destroy').click();
+
+    expect(editor.router.navigate).not.toHaveBeenCalled();
   });
 });

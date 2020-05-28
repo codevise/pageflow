@@ -12,6 +12,17 @@ export const EditContentElementView = EditConfigurationView.extend({
   },
 
   destroyModel() {
+    const contentElementType =
+      this.options.editor.contentElementTypes.findByTypeName(this.model.get('typeName'));
+
+    if (contentElementType.handleDestroy) {
+      const result = contentElementType.handleDestroy(this.model);
+
+      if (result === false) {
+        return false;
+      }
+    }
+
     this.options.entry.deleteContentElement(this.model);
   }
 });

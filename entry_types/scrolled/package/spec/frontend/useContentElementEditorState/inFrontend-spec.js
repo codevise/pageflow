@@ -1,7 +1,7 @@
 import {frontend, Entry, useContentElementEditorState} from 'pageflow-scrolled/frontend';
 import {renderInEntry} from 'support';
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
@@ -49,5 +49,26 @@ describe('useContentElementEditorState in frontend', () => {
     });
 
     expect(getByTestId('contentElement')).toHaveTextContent('Read only');
+  });
+
+  it('provides noop setTransientState function', () => {
+    frontend.contentElementTypes.register('test', {
+      component: function Test({configuration}) {
+        const {setTransientState} = useContentElementEditorState();
+
+        useEffect(() => setTransientState({some: 'state'}));
+        return null;
+      }
+    });
+
+    expect(() =>
+      renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [
+            {typeName: 'test'}
+          ]
+        }
+      })
+    ).not.toThrow();
   });
 });

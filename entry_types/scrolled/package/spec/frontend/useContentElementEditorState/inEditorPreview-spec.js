@@ -1,7 +1,7 @@
 import {frontend, Entry, useContentElementEditorState} from 'pageflow-scrolled/frontend';
 import {renderInEntry} from 'support';
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
@@ -57,5 +57,57 @@ describe('useContentElementEditorState in editor preview', () => {
     });
 
     expect(getByTestId('contentElement')).toHaveTextContent('Edit me');
+  });
+
+  it('lets content elements publish transient state via post message', () => {
+    window.parent.postMessage = jest.fn();
+    frontend.contentElementTypes.register('test', {
+      component: function Test() {
+        const {setTransientState} = useContentElementEditorState();
+
+        useEffect(() => setTransientState({some: 'state'}));
+        return null;
+      }
+    });
+
+    renderInEntry(<Entry />, {
+      seed: {
+        contentElements: [
+          {id: 5, typeName: 'test'}
+        ]
+      }
+    });
+
+    expect(window.postMessage).toHaveBeenCalledWith({
+      type: 'UPDATE_TRANSIENT_CONTENT_ELEMENT_STATE',
+      payload: {
+        id: 5,
+        state: {some: 'state'}
+      }
+    }, expect.anything());
+  });
+
+  it('does not send message if transient state is shallow equal to previous transient state', () => {
+    window.parent.postMessage = jest.fn();
+    frontend.contentElementTypes.register('test', {
+      component: function Test() {
+        const {setTransientState} = useContentElementEditorState();
+
+        useEffect(() => setTransientState({some: 'state'}));
+        return null;
+      }
+    });
+
+    const {rerender} = renderInEntry(<Entry />, {
+      seed: {
+        contentElements: [
+          {id: 5, typeName: 'test'}
+        ]
+      }
+    });
+
+    rerender(<Entry />);
+
+    expect(window.postMessage).toHaveBeenCalledTimes(1);
   });
 });
