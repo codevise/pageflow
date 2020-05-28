@@ -23,6 +23,7 @@ toc:
     description: |
       React hooks to obtain entry data.
     children:
+      - useContentElementEditorState
       - useFile
       - useI18n
       - useEntryMetadata

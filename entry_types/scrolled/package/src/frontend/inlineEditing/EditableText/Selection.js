@@ -5,7 +5,7 @@ import {useSlate, ReactEditor} from 'slate-react';
 import styles from './index.module.css';
 
 import {SelectionRect} from '../SelectionRect';
-import {useEditorSelection} from '../../EditorState';
+import {useEditorSelection} from '../EditorState';
 import {useI18n} from '../../i18n';
 import {postInsertContentElementMessage} from '../postMessage';
 
