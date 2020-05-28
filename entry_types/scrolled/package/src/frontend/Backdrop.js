@@ -7,6 +7,7 @@ import {VideoPlayer} from './VideoPlayer';
 import FillColor from './FillColor';
 import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
+import {usePlayerState} from './MediaPlayer/usePlayerState';
 
 import styles from './Backdrop.module.css';
 
@@ -35,11 +36,7 @@ function renderContent(props, containerDimension, setContainerRef) {
   if (props.video) {
     return (
       <Fullscreen ref={setContainerRef}>
-        <VideoPlayer state={props.onScreen ? 'active' : 'inactive'}
-                     id={props.video}
-                     offset={props.offset}
-                     interactive={props.interactive}
-                     nextSectionOnEnd={props.nextSectionOnEnd} />
+        <BackgroundVideo {...props} />
       </Fullscreen>
     );
   }
@@ -60,4 +57,19 @@ function renderContent(props, containerDimension, setContainerRef) {
       </Fullscreen>
     );
   }
+}
+
+function BackgroundVideo(props) {
+  const [playerState, playerActions] = usePlayerState();
+
+  return (
+    <VideoPlayer state={props.onScreen ? 'active' : 'inactive'}
+                 autoplay={true}
+                 playerState={playerState}
+                 playerActions={playerActions}
+                 id={props.video}
+                 offset={props.offset}
+                 interactive={props.interactive}
+                 nextSectionOnEnd={props.nextSectionOnEnd} />
+  );
 }
