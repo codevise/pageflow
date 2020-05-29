@@ -113,7 +113,8 @@ namespace :pageflow_scrolled do
         seed =
           I18n.with_locale(draft_entry.locale) do
             PageflowScrolled::EntriesController
-              .render(inline: 'scrolled_entry_json_seed(json, entry)',
+              .render(inline: 'scrolled_entry_json_seed(json, entry, ' \
+                              'translations: {include_inline_editing: true})',
                       type: :jbuilder,
                       locals: {entry: draft_entry})
           end
