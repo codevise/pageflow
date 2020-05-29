@@ -1,7 +1,7 @@
 import {editor} from 'pageflow-scrolled/editor';
 
-import {SidebarRouter} from './editor/SidebarRouter';
-import {SidebarController} from './editor/SidebarController';
+import {SidebarRouter} from './SidebarRouter';
+import {SidebarController} from './SidebarController';
 
 //register sidebar router to handle multiple sidebar views of this content element
 //router defines the URL hash path mapping and controller provides functions for the paths
