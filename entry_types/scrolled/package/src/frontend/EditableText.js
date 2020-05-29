@@ -34,6 +34,8 @@ export function renderElement({attributes, children, element}) {
     return <li {...attributes}>{children}</li>;
   case 'heading':
     return <h2 {...attributes}>{children}</h2>;
+  case 'link':
+    return <a {...attributes} href={element.href}>{children}</a>;
   default:
     return <p {...attributes}>{children}</p>;
   }
