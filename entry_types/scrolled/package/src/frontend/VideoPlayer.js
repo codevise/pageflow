@@ -19,7 +19,7 @@ export function VideoPlayer(props) {
   if (videoFile && videoFile.isReady) {
     const processedSources = processSources(videoFile);
     return (
-      <ViewportDependentPillarBoxes file={videoFile} position={props.position}>
+      <ViewportDependentPillarBoxes file={videoFile}>
         <MediaPlayer className={classNames(styles.video_player, {[styles.backdrop]: !props.interactive})}
                      type={'video'}
                      sources={processedSources}

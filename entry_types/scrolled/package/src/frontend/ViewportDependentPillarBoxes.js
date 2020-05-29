@@ -1,42 +1,32 @@
-import React from 'react';
-import classNames from 'classnames';
+import React, {useContext} from 'react';
 
 import styles from "./ViewportDependentPillarBoxes.module.css";
+import {HeightContext} from "./Fullscreen";
 
-export function ViewportDependentPillarBoxes({file, position, children}) {
+export function ViewportDependentPillarBoxes({file, children}) {
+  const height = useContext(HeightContext);
+
   if(!file) return children;
 
-  const css = calculatePadding(file, position);
+  const videoAR = (file.height / file.width);
+  const arPaddingTop = videoAR * 100;
+
+  let maxWidthCSS = '100vh';
+  if(height) {
+    // thumbnail view/fixed size: calculate absolute width in px
+    maxWidthCSS = (height / videoAR) + 'px';
+  } else {
+    // published view: set max width to specific aspect ratio depending on viewport height
+    maxWidthCSS = ((file.width / file.height) * 100) + 'vh';
+  }
 
   return (
-    <div className={classNames(styles.root)}>
-      <div style={{paddingTop: css.paddingTop}}>
-        <div className={styles.inner}
-             style={{left: css.leftRight, right: css.leftRight}}>
-          {children}
-        </div>
+    <div className={styles.container} style={{maxWidth: maxWidthCSS}}>
+      <div style={{paddingTop: arPaddingTop + '%'}}>
+      </div>
+      <div className={styles.content}>
+        {children}
       </div>
     </div>
   );
-}
-
-function calculatePadding(file, position) {
-  const videoAR = (file.height / file.width);
-  let baseCss = {
-    paddingTop: (videoAR * 100) + '%',
-    leftRight: 0
-  }
-
-  if (position === 'full') {
-    const viewportHeight = window.innerHeight;
-    const viewportWidth = window.innerWidth;
-    const viewPortAR = (viewportHeight / viewportWidth);
-    if (viewPortAR < videoAR) {
-      const leftRight = (viewportWidth - (viewportHeight / videoAR)) / 2;
-      baseCss.paddingTop = (viewPortAR * 100) + '%';
-      baseCss.leftRight = leftRight + 'px'
-    }
-  }
-
-  return baseCss;
 }
