@@ -1,4 +1,4 @@
-import React, {useRef, useContext, useMemo, createContext} from 'react';
+import React, {useRef, useEffect, useContext, useMemo, createContext} from 'react';
 
 import {useOnScreen} from './useOnScreen';
 import {api} from './api';
@@ -48,18 +48,38 @@ function RefBasedLifecycleProvider({children}) {
  * * `isActive` is true if the content element is completely in the
  *   viewport.
  *
+ * @param {Function} onActivate -
+ *   Invoked when content element has entered the viewport.
+ *
+ * @param {Function} onDeactivate -
+ *   Invoked when content element has left the viewport.
+ *
  * @example
  *
  * const {isActive, isPrepared} = useContentElementLifecycle();
  */
-export function useContentElementLifecycle() {
+export function useContentElementLifecycle({onActivate, onDeactivate} = {}) {
   const result = useContext(LifecycleContext);
+  const wasActive = useRef();
 
   if (!result) {
     throw new Error('useContentElementLifecycle is only available in ' +
                     'content elements for which `lifecycle: true` has ' +
                     'been passed to frontend.contentElements.register');
   }
+
+  const {isActive} = result;
+
+  useEffect(() => {
+    if (!wasActive.current && isActive && onActivate) {
+      onActivate();
+    }
+    else if (wasActive.current && !isActive && onDeactivate) {
+      onDeactivate();
+    }
+
+    wasActive.current = isActive
+  });
 
   return result;
 }

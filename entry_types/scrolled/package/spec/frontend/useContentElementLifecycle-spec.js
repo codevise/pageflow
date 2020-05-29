@@ -1,7 +1,7 @@
 import {frontend, Entry, useContentElementLifecycle} from 'pageflow-scrolled/frontend';
 
 import {renderInEntry, ErrorCatching} from 'support';
-import {simulateScrollingIntoView} from 'support/fakeIntersectionObserver';
+import {simulateScrollingIntoView, simulateScrollingOutOfView} from 'support/fakeIntersectionObserver';
 
 import React from 'react';
 import {act} from '@testing-library/react';
@@ -111,6 +111,69 @@ describe('useContentElementLifecycle', () => {
       );
 
       expect(getByTestId('testElement')).toHaveTextContent('loaded');
+    });
+  });
+
+  describe('onActivate option', () => {
+    it('invoked when element enters viewport', async () => {
+      const handler = jest.fn();
+
+      frontend.contentElementTypes.register('test', {
+        lifecycle: true,
+
+        component: function Test() {
+          useContentElementLifecycle({
+            onActivate: handler
+          });
+
+          return (
+            <div data-testid="testElement" />
+          );
+        }
+      });
+
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(getByTestId('testElement'))
+      );
+
+      expect(handler).toHaveBeenCalled();
+    });
+  });
+
+  describe('onDeactivate option', () => {
+    it('invoked when element leaves viewport', async () => {
+      const handler = jest.fn();
+
+      frontend.contentElementTypes.register('test', {
+        lifecycle: true,
+
+        component: function Test() {
+          useContentElementLifecycle({
+            onDeactivate: handler
+          });
+
+          return (
+            <div data-testid="testElement" />
+          );
+        }
+      });
+
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      act(() => simulateScrollingIntoView(getByTestId('testElement')));
+      act(() => simulateScrollingOutOfView(getByTestId('testElement')));
+
+      expect(handler).toHaveBeenCalled();
     });
   });
 });

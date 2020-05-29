@@ -96,6 +96,27 @@ function Component() {
 }
 ```
 
+To make interacting with imperative APIs like player actions easier,
+the `useContentElementLifecycle` hookalso supports callback functions:
+
+```javascript
+function InlineVideo(props) {
+  const [playerState, playerActions] = usePlayerState();
+  const {isPrepared} = useContentElementLifecycle({
+    onActivate: () => playerActions.play(),
+    onDeactivate: () => playerActions.pause()
+  });
+
+  if (!isPrepared) {
+    return null;
+  }
+
+  return (
+    <Video playerState={playerState} playerActions={playerActions} />
+  );
+}
+```
+
 ## Using the Storybook
 
 Pageflow Scrolled uses [Storybook](https://storybook.js.org/) to ease

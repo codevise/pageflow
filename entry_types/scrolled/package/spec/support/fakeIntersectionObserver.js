@@ -7,12 +7,12 @@ global.IntersectionObserver = function(callback) {
 
       const previousInvokeIntersectionCallback =
         el.invokeIntersectionCallback;
-      
-      el.invokeIntersectionCallback = () => {
-        callback([{isIntersecting: true}]);
+
+      el.invokeIntersectionCallback = (isIntersecting) => {
+        callback([{isIntersecting}]);
 
         if (previousInvokeIntersectionCallback) {
-          previousInvokeIntersectionCallback();
+          previousInvokeIntersectionCallback(isIntersecting);
         }
       };
     },
@@ -26,7 +26,15 @@ global.IntersectionObserver = function(callback) {
 export function simulateScrollingIntoView(visibleEl) {
   observedElements.forEach(el => {
     if (visibleEl.contains(el) || el.contains(visibleEl)) {
-      el.invokeIntersectionCallback();
+      el.invokeIntersectionCallback(true);
+    }
+  });
+}
+
+export function simulateScrollingOutOfView(hiddenEl) {
+  observedElements.forEach(el => {
+    if (hiddenEl.contains(el) || el.contains(hiddenEl)) {
+      el.invokeIntersectionCallback(false);
     }
   });
 }
