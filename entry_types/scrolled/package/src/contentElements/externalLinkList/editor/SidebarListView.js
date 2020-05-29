@@ -4,6 +4,7 @@ import _ from 'underscore';
 import {cssModulesUtils} from 'pageflow/ui';
 import styles from './SidebarListView.module.css';
 import Marionette from 'backbone.marionette';
+import I18n from 'i18n-js';
 
 export const SidebarListView = Marionette.Layout.extend({
   template: (data) => `
@@ -47,7 +48,7 @@ export const SidebarListView = Marionette.Layout.extend({
     editor.navigate('', {trigger: true});
   },
   destroyElement: function () {
-    if (confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete'))) {
+    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete'))) {
       this.options.contentElement.destroy();
       this.goBack();
     }
@@ -60,9 +61,8 @@ export const SidebarListView = Marionette.Layout.extend({
     editor.navigate(`/scrolled/external_links/${this.options.contentElement.get('id')}/${linkModel.get('id')}`, {trigger: true});
   },
   onRemove: function (linkModel) {
-    if (confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_link'))) {
+    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_link'))) {
       this.model.remove(linkModel);
     }
-  },
-  
+  }
 });
