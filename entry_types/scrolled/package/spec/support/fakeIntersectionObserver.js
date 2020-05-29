@@ -5,8 +5,15 @@ global.IntersectionObserver = function(callback) {
     observe(el) {
       observedElements.add(el);
 
+      const previousInvokeIntersectionCallback =
+        el.invokeIntersectionCallback;
+      
       el.invokeIntersectionCallback = () => {
         callback([{isIntersecting: true}]);
+
+        if (previousInvokeIntersectionCallback) {
+          previousInvokeIntersectionCallback();
+        }
       };
     },
 

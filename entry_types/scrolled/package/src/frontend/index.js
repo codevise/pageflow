@@ -35,8 +35,9 @@ export {EntryStateProvider, useFile} from '../entryState'
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
 export {useContentElementEditorCommandSubscription} from './useContentElementEditorCommandSubscription';
 export {useContentElementEditorState} from './useContentElementEditorState';
-export {ViewportDependentPillarBoxes} from './ViewportDependentPillarBoxes';
+export {useContentElementLifecycle} from './useContentElementLifecycle';
 
+export {ViewportDependentPillarBoxes} from './ViewportDependentPillarBoxes';
 export {EditableText} from './EditableText';
 
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
