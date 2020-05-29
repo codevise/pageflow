@@ -57,7 +57,15 @@ const exampleValue = [
   {
     type: 'paragraph',
     children: [
-      {text: 'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. '}
+      {text: 'At vero eos et '},
+      {
+        type: 'link',
+        href: 'https://example.com',
+        children: [
+          {text: 'accusam et'}
+        ]
+      },
+      {text: ' justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. '}
     ]
   },
   {

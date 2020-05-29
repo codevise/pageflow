@@ -89,7 +89,7 @@ export function Selection(props) {
                              });
                            }
                          }}
-                       toolbarButtons={toolbarButtons.map(button => ({
+                       toolbarButtons={toolbarButtons(t).map(button => ({
                            ...button,
                            active: isBlockActive(editor, button.name)
                          }))}
@@ -177,30 +177,32 @@ function isBlockActive(editor, format) {
   return !!match
 }
 
-const toolbarButtons = [
-  {
-    name: 'paragraph',
-    text: 'Paragraph',
-    icon: TextIcon
-  },
-  {
-    name: 'heading',
-    text: 'Heading',
-    icon: HeadingIcon
-  },
-  {
-    name: 'numbered-list',
-    text: 'Ordered List',
-    icon: OlIcon
-  },
-  {
-    name: 'bulleted-list',
-    text: 'Bullet Points',
-    icon: UlIcon
-  },
-  {
-    name: 'block-quote',
-    text: 'Block quit',
-    icon: QuoteIcon
-  }
-];
+function toolbarButtons(t) {
+  return [
+    {
+      name: 'paragraph',
+      text: t('pageflow_scrolled.inline_editing.formats.paragraph'),
+      icon: TextIcon
+    },
+    {
+      name: 'heading',
+      text: t('pageflow_scrolled.inline_editing.formats.heading'),
+      icon: HeadingIcon
+    },
+    {
+      name: 'numbered-list',
+      text: t('pageflow_scrolled.inline_editing.formats.ordered_list'),
+      icon: OlIcon
+    },
+    {
+      name: 'bulleted-list',
+      text: t('pageflow_scrolled.inline_editing.formats.bulleted_list'),
+      icon: UlIcon
+    },
+    {
+      name: 'block-quote',
+      text: t('pageflow_scrolled.inline_editing.formats.block_quote'),
+      icon: QuoteIcon
+    }
+  ];
+}
