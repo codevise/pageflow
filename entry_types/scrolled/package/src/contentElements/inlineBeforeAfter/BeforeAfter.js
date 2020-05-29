@@ -64,15 +64,15 @@ export function BeforeAfter({state,
 
   //Since the slider wiggle only the first time, set the variable once for performance purpose.
   useEffect(() => {
-    if (current) {
+    if (beforeAfterRef.current) {
       // Compute initial slider coordinate and pass it as a CSS
       // variable, so that before/after images can wiggle together with
       // the slider
-      const containerWidth = current.getBoundingClientRect().width;
+      const containerWidth = beforeAfterRef.current.getBoundingClientRect().width;
       const initialRectWidth = initialSliderPos * containerWidth;
-      current.style.setProperty('--initial-rect-width', initialRectWidth + 'px');
+      beforeAfterRef.current.style.setProperty('--initial-rect-width', initialRectWidth + 'px');
     }
-  }, [wiggled]);
+  }, [wiggled, initialSliderPos]);
 
   return (
     <ViewportDependentPillarBoxes file={beforeImage} position={position}>
