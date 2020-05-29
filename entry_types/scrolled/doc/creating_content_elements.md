@@ -234,7 +234,7 @@ import {TextInputView, SelectInputView} from 'pageflow/ui';
 import {FileInputView} from 'pageflow/editor';
 
 editor.contentElementTypes.register('inlineImage', {
-  configurationEditor() {
+  configurationEditor({entry}) {
     this.tab('general', function() {
       this.input('id', FileInputView, {
         collection: 'image_files',
