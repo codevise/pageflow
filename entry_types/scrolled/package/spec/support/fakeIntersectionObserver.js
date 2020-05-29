@@ -16,9 +16,9 @@ global.IntersectionObserver = function(callback) {
   };
 };
 
-export function simulateScrollingIntoView(parent) {
+export function simulateScrollingIntoView(visibleEl) {
   observedElements.forEach(el => {
-    if (parent.contains(el)) {
+    if (visibleEl.contains(el) || el.contains(visibleEl)) {
       el.invokeIntersectionCallback();
     }
   });
