@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 
 import styles from './Fullscreen.module.css';
 
-const HeightContext = React.createContext();
+export const HeightContext = React.createContext();
 
 export function FullscreenHeightProvider({height, children}) {
   return (

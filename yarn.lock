@@ -9897,10 +9897,9 @@ react-clientside-effect@^1.2.2:
   dependencies:
     "@babel/runtime" "^7.0.0"
 
-react-compare-image@^2.0.4:
+"react-compare-image@https://github.com/codevise/react-compare-image#offset-width-fix":
   version "2.0.4"
-  resolved "https://registry.yarnpkg.com/react-compare-image/-/react-compare-image-2.0.4.tgz#d1c6d64cc61852404df538792fb1ee138de38919"
-  integrity sha512-kuYtu+qOF07XhY0/cJCqXgM26yqXRKtqZS9YLNi18Cd9tE27sqDe/LZCxoMTDiPA3gfq8uM82Q56nzkZMWBJhg==
+  resolved "https://github.com/codevise/react-compare-image#4542957261c960c946036ba63eed4bd47138bef6"
   dependencies:
     css-element-queries "^1.0.2"
     prop-types "^15.7.2"

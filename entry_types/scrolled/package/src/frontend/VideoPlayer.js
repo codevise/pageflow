@@ -4,6 +4,7 @@ import {MediaPlayer} from './MediaPlayer';
 
 import classNames from 'classnames';
 import styles from "./VideoPlayer.module.css";
+import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
 
 
 /**
@@ -18,16 +19,14 @@ export function VideoPlayer(props) {
   if (videoFile && videoFile.isReady) {
     const processedSources = processSources(videoFile);
     return (
-      <div className={styles.root}>
+      <ViewportDependentPillarBoxes file={videoFile}>
         <MediaPlayer className={classNames(styles.video_player, {[styles.backdrop]: !props.interactive})}
                      type={'video'}
                      sources={processedSources}
-                     {...props}
-                     />
-      </div>
+                     {...props}/>
+      </ViewportDependentPillarBoxes>
     );
-  }
-  else{
+  } else {
     return null;
   }
 }
@@ -36,7 +35,6 @@ VideoPlayer.defaultProps = {
   interactive: false,
   controls: true
 };
-
 
 function processSources(videoFile) {
   return [

@@ -1,16 +1,3 @@
-.root {
-  position: relative;
-  max-height: 98vh;
-}
-
-.inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
 /* Timeline in native video controls is hidden in Storybook to prevent
    Percy from detecting different loading progress as visual
    change. See .storybook/preview-head.html file. */
