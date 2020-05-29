@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useLayoutEffect, useRef} from 'react';
 
 import {useI18n} from '../../i18n';
 
@@ -11,7 +11,8 @@ export function LinkInput({onSubmit, onCancel}) {
   const [href, setHref] = useState('')
   const ref = useRef();
 
-  useEffect(() => {
+  // With useEffect the deselect in HoveringToolbar/handleButtonClick breaks focusing.
+  useLayoutEffect(() => {
     ref.current.focus();
   }, []);
 

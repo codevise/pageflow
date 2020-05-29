@@ -101,7 +101,11 @@ function handleButtonClick(editor, format, setLinkSelection) {
       unwrapLink(editor);
     }
     else {
-      setLinkSelection(editor.selection);
+      const selection = editor.selection;
+      // Required to prevent slate from focusing the editor in Firefox
+      // https://github.com/ianstormtaylor/slate/blob/44675c2080e3f6a2523170430bb92e426b7647e2/packages/slate-react/src/components/editable.tsx#L189
+      Transforms.deselect(editor);
+      setLinkSelection(selection);
     }
   }
   else {
