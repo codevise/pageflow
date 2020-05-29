@@ -1,20 +1,27 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState, useCallback} from 'react';
 import {createEditor, Transforms, Node} from 'slate';
 import {Slate, Editable, withReact} from 'slate-react';
 
 import {Text} from '../../Text';
-import {renderElement, renderLeaf} from '../../EditableText';
 import {useCachedValue} from '../useCachedValue';
 import {useContentElementEditorCommandSubscription} from '../../useContentElementEditorCommandSubscription';
 
 import {withCustomInsertBreak} from './withCustomInsertBreak';
+import {
+  withLinks,
+  renderElementWithLinkPreview,
+  renderLeafWithLinkSelection,
+  decorateLinkSelection
+} from './withLinks';
 import {HoveringToolbar} from './HoveringToolbar';
 import {Selection} from './Selection';
+import {LinkTooltipProvider} from './LinkTooltip';
 
 import styles from './index.module.css';
 
 export const EditableText = React.memo(function EditableText({value, contentElementId, onChange}) {
-  const editor = useMemo(() => withCustomInsertBreak(withReact(createEditor())), []);
+  const editor = useMemo(() => withLinks(withCustomInsertBreak(withReact(createEditor()))), []);
+  const [linkSelection, setLinkSelection] = useState();
 
   const [cachedValue, setCachedValue] = useCachedValue(value, {
     defaultValue: [{
@@ -31,15 +38,28 @@ export const EditableText = React.memo(function EditableText({value, contentElem
     }
   });
 
+  const decorate = useCallback(nodeEntry => {
+    return decorateLinkSelection(nodeEntry, linkSelection)
+  }, [linkSelection]);
+
+  // Ensure Slate rerenders when decorations change
+  // https://github.com/ianstormtaylor/slate/issues/3447
+  const renderLeaf = useCallback(options => {
+    return renderLeafWithLinkSelection(options);
+  }, [linkSelection]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Text scaleCategory="body">
       <div className={styles.container}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
-          <Selection contentElementId={contentElementId} />
-          <HoveringToolbar />
-          <Editable
-              renderElement={renderElement}
-              renderLeaf={renderLeaf} />
+          <LinkTooltipProvider disabled={!!linkSelection}>
+            <Selection contentElementId={contentElementId} />
+            <HoveringToolbar linkSelection={linkSelection} setLinkSelection={setLinkSelection} />
+            <Editable
+                decorate={decorate}
+                renderElement={renderElementWithLinkPreview}
+                renderLeaf={renderLeaf} />
+          </LinkTooltipProvider>
         </Slate>
       </div>
     </Text>

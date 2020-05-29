@@ -80,4 +80,25 @@ describe('EditableText', () => {
 
     expect(getByRole('listitem')).toHaveTextContent('List item')
   });
+
+  it('renders links', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: 'Find more '},
+        {
+          type: 'link',
+          href: 'https://example.com',
+          children: [
+            {text: 'here'}
+          ]
+        },
+        {text: '.'}
+      ]
+    }]
+
+    const {getByRole} = render(<EditableText value={value} />);
+
+    expect(getByRole('link')).toHaveTextContent('here')
+  });
 });

@@ -56,7 +56,7 @@ export function Selection(props) {
       select();
     }
 
-    const [start, end] = computeBounds();
+    const [start, end] = computeBounds(editor);
 
     setTransientState({
       editableTextIsSingleBlock: editor.children.length <= 1
@@ -89,7 +89,7 @@ export function Selection(props) {
                              });
                            }
                          }}
-                       toolbarButtons={toolbarButtons.map(button => ({
+                       toolbarButtons={toolbarButtons(t).map(button => ({
                            ...button,
                            active: isBlockActive(editor, button.name)
                          }))}
@@ -102,13 +102,8 @@ export function Selection(props) {
 }
 
 function computeBounds(editor) {
-  const domSelection = window.getSelection();
-  const domRange = domSelection.getRangeAt(0);
-
-  const range = ReactEditor.toSlateRange(editor, domRange);
-
-  const startPoint = Range.start(range);
-  const endPoint = Range.end(range);
+  const startPoint = Range.start(editor.selection);
+  const endPoint = Range.end(editor.selection);
 
   const startPath = startPoint.path.slice(0, 1);
   let endPath = endPoint.path.slice(0, 1);
@@ -125,19 +120,32 @@ function hideRect(el) {
 }
 
 function updateRect(editor, startIndex, endIndex, outer, el, inner) {
+  const [startDOMNode, endDOMNode] = getDOMNodes(editor, startIndex, endIndex);
+
+  if (startDOMNode && endDOMNode) {
+    const startRect = startDOMNode.getBoundingClientRect()
+    const endRect = endDOMNode.getBoundingClientRect()
+    const outerRect = outer.getBoundingClientRect()
+
+    el.style.display = 'block';
+    el.style.top = `${startRect.top - outerRect.top}px`
+    inner.style.height = `${endRect.bottom - startRect.top}px`
+  }
+}
+
+function getDOMNodes(editor, startIndex, endIndex) {
   const startNode = Node.get(editor, [startIndex]);
   const endNode = Node.get(editor, [endIndex]);
 
-  const startDOMNode = ReactEditor.toDOMNode(editor, startNode);
-  const endDOMNode = ReactEditor.toDOMNode(editor, endNode);
+  try {
+    const startDOMNode = ReactEditor.toDOMNode(editor, startNode);
+    const endDOMNode = ReactEditor.toDOMNode(editor, endNode);
 
-  const startRect = startDOMNode.getBoundingClientRect()
-  const endRect = endDOMNode.getBoundingClientRect()
-  const outerRect = outer.getBoundingClientRect()
-
-  el.style.display = 'block';
-  el.style.top = `${startRect.top - outerRect.top}px`
-  inner.style.height = `${endRect.bottom - startRect.top}px`
+    return [startDOMNode, endDOMNode];
+  }
+  catch(e) {
+    return [];
+  }
 }
 
 const listTypes = ['numbered-list', 'bulleted-list'];
@@ -169,30 +177,32 @@ function isBlockActive(editor, format) {
   return !!match
 }
 
-const toolbarButtons = [
-  {
-    name: 'paragraph',
-    text: 'Paragraph',
-    icon: TextIcon
-  },
-  {
-    name: 'heading',
-    text: 'Heading',
-    icon: HeadingIcon
-  },
-  {
-    name: 'numbered-list',
-    text: 'Ordered List',
-    icon: OlIcon
-  },
-  {
-    name: 'bulleted-list',
-    text: 'Bullet Points',
-    icon: UlIcon
-  },
-  {
-    name: 'block-quote',
-    text: 'Block quit',
-    icon: QuoteIcon
-  }
-];
+function toolbarButtons(t) {
+  return [
+    {
+      name: 'paragraph',
+      text: t('pageflow_scrolled.inline_editing.formats.paragraph'),
+      icon: TextIcon
+    },
+    {
+      name: 'heading',
+      text: t('pageflow_scrolled.inline_editing.formats.heading'),
+      icon: HeadingIcon
+    },
+    {
+      name: 'numbered-list',
+      text: t('pageflow_scrolled.inline_editing.formats.ordered_list'),
+      icon: OlIcon
+    },
+    {
+      name: 'bulleted-list',
+      text: t('pageflow_scrolled.inline_editing.formats.bulleted_list'),
+      icon: UlIcon
+    },
+    {
+      name: 'block-quote',
+      text: t('pageflow_scrolled.inline_editing.formats.block_quote'),
+      icon: QuoteIcon
+    }
+  ];
+}

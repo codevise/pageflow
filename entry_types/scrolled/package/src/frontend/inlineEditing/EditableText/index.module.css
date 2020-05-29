@@ -4,13 +4,12 @@
 
 .hoveringToolbar {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: -10000px;
   left: -10000px;
   margin-top: -6px;
   opacity: 0;
-  background-color: #222;
-  border-radius: 4px;
+  white-space: nowrap;
 }
 
 .selection {
@@ -19,4 +18,48 @@
   z-index: 1;
   width: 100%;
   pointer-events: none;
+}
+
+.linkTooltip {
+  background-color: #222;
+  border-radius: 4px;
+  font-family: Helvetica, "Sans-Serif";
+  font-size: 13px;
+  line-height: 1;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.linkTooltip::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 20px;
+  bottom: 100%;
+  border-top: solid 4px transparent;
+  border-right: solid 4px transparent;
+  border-bottom: solid 4px #222;
+  border-left: solid 4px transparent;
+}
+
+.linkTooltip a,
+.linkTooltip button,
+.linkTooltip input {
+  color: #fff;
+  background-color: transparent;
+  border: 0;
+  display: inline-block;
+  padding: 10px 10px;
+}
+
+.linkTooltip input {
+  outline: none;
+}
+
+.linkTooltip button {
+  border: 0;
+  cursor: pointer;
+}
+
+.linkTooltip svg {
+  padding-left: 7px;
 }
