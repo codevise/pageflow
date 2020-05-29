@@ -56,7 +56,7 @@ export function Selection(props) {
       select();
     }
 
-    const [start, end] = computeBounds();
+    const [start, end] = computeBounds(editor);
 
     setTransientState({
       editableTextIsSingleBlock: editor.children.length <= 1
@@ -102,13 +102,8 @@ export function Selection(props) {
 }
 
 function computeBounds(editor) {
-  const domSelection = window.getSelection();
-  const domRange = domSelection.getRangeAt(0);
-
-  const range = ReactEditor.toSlateRange(editor, domRange);
-
-  const startPoint = Range.start(range);
-  const endPoint = Range.end(range);
+  const startPoint = Range.start(editor.selection);
+  const endPoint = Range.end(editor.selection);
 
   const startPath = startPoint.path.slice(0, 1);
   let endPath = endPoint.path.slice(0, 1);
@@ -125,19 +120,32 @@ function hideRect(el) {
 }
 
 function updateRect(editor, startIndex, endIndex, outer, el, inner) {
+  const [startDOMNode, endDOMNode] = getDOMNodes(editor, startIndex, endIndex);
+
+  if (startDOMNode && endDOMNode) {
+    const startRect = startDOMNode.getBoundingClientRect()
+    const endRect = endDOMNode.getBoundingClientRect()
+    const outerRect = outer.getBoundingClientRect()
+
+    el.style.display = 'block';
+    el.style.top = `${startRect.top - outerRect.top}px`
+    inner.style.height = `${endRect.bottom - startRect.top}px`
+  }
+}
+
+function getDOMNodes(editor, startIndex, endIndex) {
   const startNode = Node.get(editor, [startIndex]);
   const endNode = Node.get(editor, [endIndex]);
 
-  const startDOMNode = ReactEditor.toDOMNode(editor, startNode);
-  const endDOMNode = ReactEditor.toDOMNode(editor, endNode);
+  try {
+    const startDOMNode = ReactEditor.toDOMNode(editor, startNode);
+    const endDOMNode = ReactEditor.toDOMNode(editor, endNode);
 
-  const startRect = startDOMNode.getBoundingClientRect()
-  const endRect = endDOMNode.getBoundingClientRect()
-  const outerRect = outer.getBoundingClientRect()
-
-  el.style.display = 'block';
-  el.style.top = `${startRect.top - outerRect.top}px`
-  inner.style.height = `${endRect.bottom - startRect.top}px`
+    return [startDOMNode, endDOMNode];
+  }
+  catch(e) {
+    return [];
+  }
 }
 
 const listTypes = ['numbered-list', 'bulleted-list'];

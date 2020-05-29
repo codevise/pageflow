@@ -34,8 +34,7 @@ export function HoveringToolbar() {
       return
     }
 
-    const domSelection = window.getSelection()
-    const domRange = domSelection.getRangeAt(0)
+    const domRange = ReactEditor.toDOMRange(editor, editor.selection);
     const rect = domRange.getBoundingClientRect()
     const outerRect = outerRef.current.getBoundingClientRect()
 
