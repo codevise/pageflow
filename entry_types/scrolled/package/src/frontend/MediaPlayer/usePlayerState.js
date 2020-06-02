@@ -39,14 +39,14 @@ export function playerStateReducer(state, action){
         ...state,
         isLoading: true,
         shouldPlay: true,
-        unplayed: false,
         playFailed: false,
       };
     case PLAYING:
       return {
         ...state,
         shouldPlay: true,
-        isPlaying: true
+        isPlaying: true,
+        unplayed: false
       };
     case PLAY_AND_FADE_IN:
       return {

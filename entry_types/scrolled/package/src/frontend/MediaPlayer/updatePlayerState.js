@@ -1,6 +1,6 @@
 export function updatePlayerState(player, prevPlayerState, playerState, playerActions, componentState, isAutoplay, isMediaOff){
 
-  if (!isMediaOff && isAutoplay) {
+  if (!isMediaOff && playerState.unplayed && isAutoplay) {
     if (componentState === 'active') {      
       player.playOrPlayOnLoad();
     }
