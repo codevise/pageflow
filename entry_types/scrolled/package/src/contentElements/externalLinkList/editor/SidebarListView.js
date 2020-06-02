@@ -1,4 +1,4 @@
-import {editor} from 'pageflow-scrolled/editor';
+import {editor, buttonStyles} from 'pageflow-scrolled/editor';
 import {ListView} from 'pageflow/editor';
 import _ from 'underscore';
 import {cssModulesUtils} from 'pageflow/ui';
@@ -9,14 +9,15 @@ import I18n from 'i18n-js';
 export const SidebarListView = Marionette.Layout.extend({
   template: (data) => `
     <div class='${styles.linksContainer}'></div>
-    <a class="${styles.add}" href="">${I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.add')}</a>
+    <button class="${buttonStyles.addButton}">
+      ${I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.add')}
+    </button>
   `,
 
   regions: cssModulesUtils.ui(styles, 'linksContainer'),
-  ui: cssModulesUtils.ui(styles, 'add'),
 
-  events: cssModulesUtils.events(styles, {
-    'click add': 'addElement'
+  events: cssModulesUtils.events(buttonStyles, {
+    'click addButton': 'addElement'
   }),
 
   onRender: function () {
@@ -30,7 +31,6 @@ export const SidebarListView = Marionette.Layout.extend({
   addElement: function () {
     var newModel = this.collection.addNewLink();
     this.onEdit(newModel);
-    return false;
   },
 
   onEdit: function (linkModel) {

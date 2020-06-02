@@ -8,5 +8,7 @@ import './config';
 
 export {editor} from './api';
 
+export {default as buttonStyles} from './views/buttons.module.css';
+
 Object.assign(pageflow, globalInterop);
 
