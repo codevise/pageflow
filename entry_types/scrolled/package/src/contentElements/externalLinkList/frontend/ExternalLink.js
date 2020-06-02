@@ -29,13 +29,17 @@ export function ExternalLink(props) {
   };
 
   return (
-    <a className={classNames(styles.link_item, {[styles.invert]: invert, [styles.layout_center]: layout=='center'})} href={props.url || ''} 
-       onClick={onClick} 
+    <a className={classNames(styles.link_item,
+                             {
+                               [styles.invert]: invert,
+                               [styles.layout_center]: layout === 'center'
+                             })}
+       href={props.url || 'about:blank'}
+       onClick={onClick}
        onMouseLeave={onMouseLeave}
-       target={props.open_in_new_tab == '1' ? '_blank':'_self'}
-       >
+       target={props.open_in_new_tab ? '_blank' : '_self'}>
       <div className={styles.link_thumbnail}>
-          <Image id={props.thumbnail} />
+        <Image id={props.thumbnail} />
       </div>
 
       <div className={styles.link_details}>
