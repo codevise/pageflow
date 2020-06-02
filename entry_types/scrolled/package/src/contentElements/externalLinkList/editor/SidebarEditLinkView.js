@@ -53,7 +53,7 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
     editor.navigate(`/scrolled/content_elements/${this.options.contentElement.get('id')}`, {trigger: true});
   },
   destroyLink: function () {
-    if (confirm('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_link')) {
+    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_link'))) {
       this.options.collection.remove(this.model);
       this.goBack();
     }
