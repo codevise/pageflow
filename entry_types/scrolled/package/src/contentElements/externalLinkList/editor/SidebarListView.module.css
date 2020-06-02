@@ -1,6 +1,3 @@
-.container {
-  margin-top: 30px;
-}
 .add{
   border: 1px solid #1c86fe;
   border-radius: 3px;
@@ -41,11 +38,5 @@
   box-shadow: inset 0 0 8px 4px #0f7efb, inset 0 0 8px 4px #0f7efb, 0 1px 1px 0 #eee
 }
 
-.header{
-  display: 'block';
-}
-
-
-.links_container {
-  margin-top: 10px;
+.linksContainer {
 }

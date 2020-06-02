@@ -59,6 +59,7 @@ de:
               label: Miniaturansicht
               inline_help: Dem Link zugeordnertes Bild für die Darstellung im Beitrag.
           tabs:
+            general: Externe Verweise
             edit_link: Link bearbeiten
         dataWrapperChart:
           name: DataWrapper Diagramm

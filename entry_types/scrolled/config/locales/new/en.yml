@@ -59,6 +59,7 @@ en:
               label: Thumbnail
               inline_help: Link thumbnail image for display in entry.
           tabs:
+            general: External Links
             edit_link: Edit Link
         dataWrapperChart:
           name: DataWrapper Chart

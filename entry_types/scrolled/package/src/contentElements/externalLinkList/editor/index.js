@@ -2,6 +2,8 @@ import {editor} from 'pageflow-scrolled/editor';
 
 import {SidebarRouter} from './SidebarRouter';
 import {SidebarController} from './SidebarController';
+import {SidebarListView} from './SidebarListView';
+import {ExternalLinkCollection} from './models/ExternalLinkCollection';
 
 //register sidebar router to handle multiple sidebar views of this content element
 //router defines the URL hash path mapping and controller provides functions for the paths
@@ -12,11 +14,12 @@ editor.registerSideBarRouting({
 
 // register external link list content element configuration editor for sidebar
 editor.contentElementTypes.register('externalLinkList', {
-  configurationEditor() {
+  configurationEditor({entry}) {
     this.tab('general', function() {
-      var externalListModel = this.model.parent;
-      //redirect to special hash path that is specific to external links only
-      editor.navigate(`/scrolled/external_links/${externalListModel.get('id')}/`, {trigger: true});
+      this.view(SidebarListView, {
+        contentElement: this.model.parent,
+        collection: ExternalLinkCollection.forContentElement(this.model.parent, entry)
+      });
     });
   }
 });
@@ -24,16 +27,14 @@ editor.contentElementTypes.register('externalLinkList', {
 // register file handler for thumbnail of external link
 editor.registerFileSelectionHandler('contentElement.externalLinks.link', function (options) {
   const contentElement = options.entry.contentElements.get(options.contentElementId);
-  const links = contentElement.configuration.get('links');
-  
+  const links = ExternalLinkCollection.forContentElement(contentElement, options.entry)
+
   this.call = function(file) {
-    const link = links.find(link => link.id == options.id);
-    link.thumbnail = file.get('perma_id');
-    contentElement.configuration.set('links', links);
-    contentElement.configuration.trigger('change', contentElement.configuration);
+    const link = links.get(options.id);
+    link.setReference('thumbnail', file);
   };
 
   this.getReferer = function() {
-    return '/scrolled/external_links/' + contentElement.id + '/' + options.id;
+    return '/scrolled/' + contentElement.id + '/' + options.id;
   };
 });
