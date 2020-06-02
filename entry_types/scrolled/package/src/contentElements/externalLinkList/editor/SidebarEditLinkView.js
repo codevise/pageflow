@@ -1,4 +1,4 @@
-import {ConfigurationEditorView, TextInputView, CheckBoxInputView, TextAreaInputView} from 'pageflow/ui';
+import {ConfigurationEditorView, TextInputView, CheckBoxInputView} from 'pageflow/ui';
 import {editor, FileInputView} from 'pageflow/editor';
 import Marionette from 'backbone.marionette';
 import I18n from 'i18n-js';
@@ -42,10 +42,7 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
       this.input('title', TextInputView, {
         required: true
       });
-      this.input('description', TextAreaInputView, {
-        size: 'short',
-        disableLinks: true
-      });
+      this.input('description', TextInputView);
     });
     this.formContainer.show(configurationEditor);
   },

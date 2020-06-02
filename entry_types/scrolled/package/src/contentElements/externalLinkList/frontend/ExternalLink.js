@@ -40,7 +40,7 @@ export function ExternalLink(props) {
 
       <div className={styles.link_details}>
         <p className={styles.link_title}>{props.title}</p>
-        <p className={styles.link_desc} dangerouslySetInnerHTML={{__html: props.description}}></p>
+        <p className={styles.link_desc}>{props.description}</p>
       </div>
 
       <div className={classNames({[styles.hidden]: hideTooltip}, styles.tooltip)} 
