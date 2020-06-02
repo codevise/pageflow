@@ -15,8 +15,8 @@ export function DataWrapperChart({configuration}) {
     srcURL = configuration.url.replace(/http(s|):/, '');
   }
   return (
-    <div ref={ref} className={styles.container}>
-      <iframe 
+    <div ref={ref} className={styles.container} data-percy="hide">
+      <iframe
         src={srcURL}
         scrolling='auto'
         frameBorder='0'

@@ -5,4 +5,22 @@
   video::-webkit-media-controls-timeline {
     visibility: hidden;
   }
+
+  [data-percy=hide] {
+    position: relative;
+  }
+
+  [data-percy=hide]::after {
+    content: "Content hidden to prevent flaky Percy snapshots";
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background: green;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
 </style>
