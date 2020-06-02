@@ -1,16 +1,13 @@
 import React, {useState} from 'react';
 import classNames from 'classnames';
 import styles from './ExternalLink.module.css';
-import {Image, useI18n} from 'pageflow-scrolled/frontend';
+import {Image, useI18n, useContentElementEditorState} from 'pageflow-scrolled/frontend';
 
 export function ExternalLink(props) {
   const [hideTooltip, setHideTooltip] = useState(true);
   var {layout, invert} = props.sectionProps;
   const {t} = useI18n();
-
-  const isInEditor = function () {
-    return window.frameElement != undefined && window.location.pathname.includes('/editor/entries/');
-  };
+  const {isEditable, isSelected} = useContentElementEditorState();
 
   const onTooltipClick = function () {
     window.open(props.url, '_blank');
@@ -18,9 +15,14 @@ export function ExternalLink(props) {
   };
 
   const onClick = function (event) {
-    if (props.open_in_new_tab == false && isInEditor()) {
-      setHideTooltip(false);
-      event.preventDefault();
+    if (isEditable) {
+      if (!props.open_in_new_tab || !isSelected) {
+        event.preventDefault();
+      }
+
+      if (!props.open_in_new_tab && isSelected) {
+        setHideTooltip(false);
+      }
     }
   };
 
