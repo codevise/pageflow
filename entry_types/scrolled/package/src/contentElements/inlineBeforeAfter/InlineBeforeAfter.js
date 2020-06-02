@@ -1,17 +1,13 @@
-import React, {useRef} from 'react';
+import React from 'react';
 
 import {BeforeAfter} from './BeforeAfter';
-import {useOnScreen} from 'pageflow-scrolled/frontend';
+import {useContentElementLifecycle} from 'pageflow-scrolled/frontend';
 
 export function InlineBeforeAfter(props) {
-  const ref = useRef();
-  const onScreen = useOnScreen(ref, '-50% 0px -50% 0px');
+  const {isActive} = useContentElementLifecycle();
 
   return (
-    <div ref={ref}>
-      <BeforeAfter {...props.configuration}
-                   state={onScreen ? 'active' : 'inactive'}
-                   contentElementId={props.contentElementId}/>
-    </div>
+    <BeforeAfter {...props.configuration}
+                 state={isActive ? 'active' : 'inactive'} />
   )
 }
