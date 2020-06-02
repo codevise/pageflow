@@ -4,6 +4,7 @@ import Measure from 'react-measure';
 import {EntryStateProvider, useEntryStateDispatch, useSectionStructure} from '../entryState';
 import Section from './Section';
 import {FullscreenHeightProvider} from './Fullscreen';
+import {StaticPreview} from './useContentElementLifecycle';
 
 import entryStyles from './Entry.module.css';
 import styles from './SectionThumbnail.module.css';
@@ -27,20 +28,22 @@ function Inner({sectionPermaId, subscribe}) {
 
   if (section) {
     return (
-      <Measure client>
-        {({measureRef, contentRect}) =>
-          <FullscreenHeightProvider height={contentRect.client.height &&
-                                            Math.ceil(contentRect.client.height) * 5}>
-            <div ref={measureRef} className={styles.crop}>
-              <div className={styles.scale}>
-                <div className={entryStyles.Entry}>
-                  <Section state="active" {...section} transition="preview" />
+      <StaticPreview>
+        <Measure client>
+          {({measureRef, contentRect}) =>
+            <FullscreenHeightProvider height={contentRect.client.height &&
+                                              Math.ceil(contentRect.client.height) * 5}>
+              <div ref={measureRef} className={styles.crop}>
+                <div className={styles.scale}>
+                  <div className={entryStyles.Entry}>
+                    <Section state="active" {...section} transition="preview" />
+                  </div>
                 </div>
               </div>
-            </div>
-          </FullscreenHeightProvider>
-        }
-      </Measure>
+            </FullscreenHeightProvider>
+          }
+        </Measure>
+      </StaticPreview>
     );
   }
   else {

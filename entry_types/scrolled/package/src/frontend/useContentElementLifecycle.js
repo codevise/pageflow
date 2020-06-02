@@ -4,6 +4,15 @@ import {useOnScreen} from './useOnScreen';
 import {api} from './api';
 
 const LifecycleContext = createContext();
+const StaticPreviewContext = createContext(false);
+
+export function StaticPreview({children}) {
+  return (
+    <StaticPreviewContext.Provider value={true}>
+      {children}
+    </StaticPreviewContext.Provider>
+  );
+}
 
 export function ContentElementLifecycleProvider({type, children}) {
   const {lifecycle} = api.contentElementTypes.getOptions(type);
@@ -22,8 +31,9 @@ export function ContentElementLifecycleProvider({type, children}) {
 
 function RefBasedLifecycleProvider({children}) {
   const ref = useRef();
+  const isStaticPreview = useContext(StaticPreviewContext);
   const isPrepared = useOnScreen(ref, '25% 0px 25% 0px');
-  const isActive = useOnScreen(ref, '-50% 0px -50% 0px');
+  const isActive = useOnScreen(ref, '-50% 0px -50% 0px') && !isStaticPreview;
 
   const value = useMemo(() => ({isPrepared, isActive}),
                         [isPrepared, isActive]);

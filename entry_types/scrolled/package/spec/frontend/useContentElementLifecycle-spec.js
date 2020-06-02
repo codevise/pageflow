@@ -1,5 +1,6 @@
 import {frontend, Entry, useContentElementLifecycle} from 'pageflow-scrolled/frontend';
 
+import {StaticPreview} from 'frontend/useContentElementLifecycle';
 import {renderInEntry, ErrorCatching} from 'support';
 import {simulateScrollingIntoView, simulateScrollingOutOfView} from 'support/fakeIntersectionObserver';
 
@@ -70,6 +71,20 @@ describe('useContentElementLifecycle', () => {
       );
 
       expect(getByTestId('testElement')).toHaveTextContent('playing');
+    });
+
+    it('stays false even inside viewport when rendered inside StaticPreview', async () => {
+      const {getByTestId} = renderInEntry(<StaticPreview><Entry /></StaticPreview>, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(getByTestId('testElement'))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('paused');
     });
   });
 
