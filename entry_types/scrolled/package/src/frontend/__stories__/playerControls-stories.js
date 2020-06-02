@@ -22,6 +22,5 @@ function addControlbarStory(name, type, style) {
   );
 }
 
-addControlbarStory('Video Controls', 'video', 'white');
-addControlbarStory('Audio Controls', 'audio', 'white');
+addControlbarStory('Basic Controls', 'video', 'white');
 addControlbarStory('Inverted Version', 'video', 'black');
