@@ -15,7 +15,6 @@
     "react-compare-image": "https://github.com/codevise/react-compare-image#offset-width-fix",
     "react-dom": "^16.9.0",
     "react-draggable": "^4.4.2",
-    "react-measure": "tf/react-measure#no-clone-on-zero-dimension",
     "react-player": "^1.15.2",
     "react-measure": "^2.3.0",
     "react-tooltip": "^3.11.1",

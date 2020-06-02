@@ -13,7 +13,7 @@ export class ProgressIndicators extends React.Component {
       progressBarsContainerWidth: null
     };
 
-    this.measureProgressIndicatorsContainer = ({width}) => {
+    this.measureProgressIndicatorsContainer = (width) => {
       this.setState({progressBarsContainerWidth: width});
     };
 
@@ -37,8 +37,7 @@ export class ProgressIndicators extends React.Component {
   handlePosition() {
     if (this.state.progressBarsContainerWidth) {
       return ((this.state.progressBarsContainerWidth) * this.playProgress());
-    }
-    else {
+    } else {
       return toPercent(this.playProgress());
     }
   }
@@ -47,8 +46,7 @@ export class ProgressIndicators extends React.Component {
     if (this.props.duration && this.state.progressBarsContainerWidth) {
       const fraction = Math.max(0, Math.min(1, x / this.state.progressBarsContainerWidth));
       return fraction * this.props.duration;
-    }
-    else {
+    } else {
       return 0;
     }
   }
@@ -56,22 +54,27 @@ export class ProgressIndicators extends React.Component {
   render() {
     return (
       <div className={classNames(styles.progressIndicatorsContainer)}>
-        <Measure whitelist={['width']} onMeasure={this.measureProgressIndicatorsContainer}>
-          <DraggableCore onStart={this.handleDrag}
-                         onDrag={this.handleDrag}
-                         onStop={this.handleStop}>
-            <div className={classNames(styles.progressBarsContainer)}>
-              <div className={classNames(styles.progressBar, styles.loadingProgressBar)}
-                   style={{width: toPercent(this.loadProgress())}}
-                   data-testid="loading-progress-bar"/>
-              <div className={classNames(styles.progressBar, styles.playProgressBar)}
-                   style={{width: toPercent(this.playProgress())}}
-                   data-testid="play-progress-bar"/>
-              <div className={classNames(styles.sliderHandle)}
-                   style={{left: this.handlePosition()}}
-                   data-testid="slider-handle"/>
-            </div>
-          </DraggableCore>
+        <Measure client
+                 onResize={contentRect => {
+                   this.measureProgressIndicatorsContainer(contentRect.client.width)
+                 }}>
+          {({measureRef}) =>
+            <DraggableCore onStart={this.handleDrag}
+                           onDrag={this.handleDrag}
+                           onStop={this.handleStop}>
+              <div ref={measureRef} className={classNames(styles.progressBarsContainer)}>
+                <div className={classNames(styles.progressBar, styles.loadingProgressBar)}
+                     style={{width: toPercent(this.loadProgress())}}
+                     data-testid="loading-progress-bar"/>
+                <div className={classNames(styles.progressBar, styles.playProgressBar)}
+                     style={{width: toPercent(this.playProgress())}}
+                     data-testid="play-progress-bar"/>
+                <div className={classNames(styles.sliderHandle)}
+                     style={{left: this.handlePosition()}}
+                     data-testid="slider-handle"/>
+              </div>
+            </DraggableCore>
+          }
         </Measure>
       </div>
     );
