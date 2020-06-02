@@ -6,7 +6,7 @@ import {Image, useI18n, useContentElementEditorState} from 'pageflow-scrolled/fr
 export function ExternalLink(props) {
   const [hideTooltip, setHideTooltip] = useState(true);
   var {layout, invert} = props.sectionProps;
-  const {t} = useI18n();
+  const {t} = useI18n({locale: 'ui'});
   const {isEditable, isSelected} = useContentElementEditorState();
 
   const onTooltipClick = function () {
@@ -49,11 +49,10 @@ export function ExternalLink(props) {
         <p className={styles.link_desc}>{props.description}</p>
       </div>
 
-      <div className={classNames({[styles.hidden]: hideTooltip}, styles.tooltip)} 
-           onClick={onTooltipClick}
-           >
-        {t('pageflow_scrolled.public.external_link.open_in_new_tab_message')}
-        {<span target="_blank">{t('pageflow_scrolled.public.external_link.open_in_new_tab')}</span>}
+      <div className={classNames({[styles.hidden]: hideTooltip}, styles.tooltip)}
+           onClick={onTooltipClick}>
+        {t('pageflow_scrolled.inline_editing.external_links.open_in_new_tab_message')}
+        {<span target="_blank">{t('pageflow_scrolled.inline_editing.external_links.open_in_new_tab')}</span>}
       </div>
     </a>
   );

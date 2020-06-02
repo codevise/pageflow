@@ -3,9 +3,6 @@ en:
     public:
       navigation:
         chapter: Chapter
-      external_link:
-        open_in_new_tab: Open in new tab
-        open_in_new_tab_message: Opening in same tab is disabled inside the editor
       sound_disclaimer:
         help_text: >
           This article works best with the sound turned on. <br/>
@@ -33,6 +30,9 @@ en:
       edit_section_settings: Edit section settings
       edit_section_transition_before: Edit section transition
       edit_section_transition_after: Edit section transition
+      external_link:
+        open_in_new_tab: Open in new tab
+        open_in_new_tab_message: Opening in same tab is disabled inside the editor
     editor:
       content_elements:
         externalLinkList:
