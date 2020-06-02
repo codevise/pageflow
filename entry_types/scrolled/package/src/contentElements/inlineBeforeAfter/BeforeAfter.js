@@ -4,6 +4,14 @@ import styles from './BeforeAfter.module.css';
 import cx from 'classnames';
 import {useFile, useContentElementEditorState, ViewportDependentPillarBoxes} from 'pageflow-scrolled/frontend';
 
+const placeholderForBeforeImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQwMyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KIDwhLS0gQ3JlYXRlZCB3aXRoIE1ldGhvZCBEcmF3IC0gaHR0cDovL2dpdGh1Yi5jb20vZHVvcGl4ZWwvTWV0aG9kLURyYXcvIC0tPgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9IiMzZDVhODAiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDUiIHdpZHRoPSI2NDIiIHk9Ii0xIiB4PSItMSIvPgogIDxnIGRpc3BsYXk9Im5vbmUiIG92ZXJmbG93PSJ2aXNpYmxlIiB5PSIwIiB4PSIwIiBoZWlnaHQ9IjEwMCUiIHdpZHRoPSIxMDAlIiBpZD0iY2FudmFzR3JpZCI+CiAgIDxyZWN0IGZpbGw9InVybCgjZ3JpZHBhdHRlcm4pIiBzdHJva2Utd2lkdGg9IjAiIHk9IjAiIHg9IjAiIGhlaWdodD0iMTAwJSIgd2lkdGg9IjEwMCUiLz4KICA8L2c+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiA8L2c+Cjwvc3ZnPg==';
+const placeholderForAfterImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQwMyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KIDwhLS0gQ3JlYXRlZCB3aXRoIE1ldGhvZCBEcmF3IC0gaHR0cDovL2dpdGh1Yi5jb20vZHVvcGl4ZWwvTWV0aG9kLURyYXcvIC0tPgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9IiM5OGMxZDkiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDUiIHdpZHRoPSI2NDIiIHk9Ii0xIiB4PSItMSIvPgogIDxnIGRpc3BsYXk9Im5vbmUiIG92ZXJmbG93PSJ2aXNpYmxlIiB5PSIwIiB4PSIwIiBoZWlnaHQ9IjEwMCUiIHdpZHRoPSIxMDAlIiBpZD0iY2FudmFzR3JpZCI+CiAgIDxyZWN0IGZpbGw9InVybCgjZ3JpZHBhdHRlcm4pIiBzdHJva2Utd2lkdGg9IjAiIHk9IjAiIHg9IjAiIGhlaWdodD0iMTAwJSIgd2lkdGg9IjEwMCUiLz4KICA8L2c+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiA8L2c+Cjwvc3ZnPg==';
+
+const placeholderFile = {
+  width: 640,
+  height: 403
+};
+
 export function BeforeAfter({state,
                              position,
                              before_id,
@@ -59,23 +67,27 @@ export function BeforeAfter({state,
     }
   }
 
-  if (current) {
-    // Compute initial slider coordinate and pass it as a CSS
-    // variable, so that before/after images can wiggle together with
-    // the slider
-    const containerWidth = current.getBoundingClientRect().width;
-    const initialRectWidth = initialSliderPos * containerWidth;
-    current.style.setProperty('--initial-rect-width', initialRectWidth + 'px');
-  }
+  //Since the slider wiggle only the first time, set the variable once for performance purpose.
+  useEffect(() => {
+    if (beforeAfterRef.current) {
+      // Compute initial slider coordinate and pass it as a CSS
+      // variable, so that before/after images can wiggle together with
+      // the slider
+      const containerWidth = beforeAfterRef.current.getBoundingClientRect().width;
+      const initialRectWidth = initialSliderPos * containerWidth;
+      beforeAfterRef.current.style.setProperty('--initial-rect-width', initialRectWidth + 'px');
+    }
+  }, [wiggled, initialSliderPos]);
 
   return (
-    <ViewportDependentPillarBoxes file={beforeImage} position={position}>
+    <ViewportDependentPillarBoxes file={beforeImage || afterImage || placeholderFile} position={position}>
       <div ref={beforeAfterRef}
            className={cx({[styles.selected]: isSelected, [styles.wiggle]: wiggle}, styles.container)}>
         <InitialSliderPositionIndicator parentSelected={isSelected}
                                         position={initial_slider_position}/>
         {/* onSliderPositionChange: Prevent wiggle if user uses slider */}
-        <ReactCompareImage leftImage={beforeImageUrl} rightImage={afterImageUrl}
+        <ReactCompareImage leftImage={beforeImage? beforeImageUrl : placeholderForBeforeImage}
+                           rightImage={afterImage? afterImageUrl : placeholderForAfterImage}
                            leftImageLabel={before_label} rightImageLabel={after_label}
                            leftImageAlt={beforeImageAlt} rightImageAlt={afterImageAlt}
                            sliderPositionPercentage={initialSliderPos}
