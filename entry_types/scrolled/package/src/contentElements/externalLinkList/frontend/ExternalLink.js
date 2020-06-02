@@ -9,11 +9,6 @@ export function ExternalLink(props) {
   const {t} = useI18n({locale: 'ui'});
   const {isEditable, isSelected} = useContentElementEditorState();
 
-  const onTooltipClick = function () {
-    window.open(props.url, '_blank');
-    setHideTooltip(true);
-  };
-
   const onClick = function (event) {
     if (isEditable) {
       if (!props.open_in_new_tab || !isSelected) {
@@ -29,6 +24,23 @@ export function ExternalLink(props) {
   const onMouseLeave = function () {
     setHideTooltip(true);
   };
+
+  function renderNewTabTooltip() {
+    if (isEditable) {
+      const onTooltipClick = function () {
+        window.open(props.url, '_blank');
+        setHideTooltip(true);
+      };
+
+      return (
+        <div className={classNames({[styles.hidden]: hideTooltip}, styles.tooltip)}
+             onClick={onTooltipClick}>
+          {t('pageflow_scrolled.inline_editing.external_links.open_in_new_tab_message')}
+          {<span>{t('pageflow_scrolled.inline_editing.external_links.open_in_new_tab')}</span>}
+        </div>
+      )
+    }
+  }
 
   return (
     <a className={classNames(styles.link_item,
@@ -49,11 +61,7 @@ export function ExternalLink(props) {
         <p className={styles.link_desc}>{props.description}</p>
       </div>
 
-      <div className={classNames({[styles.hidden]: hideTooltip}, styles.tooltip)}
-           onClick={onTooltipClick}>
-        {t('pageflow_scrolled.inline_editing.external_links.open_in_new_tab_message')}
-        {<span target="_blank">{t('pageflow_scrolled.inline_editing.external_links.open_in_new_tab')}</span>}
-      </div>
+      {renderNewTabTooltip()}
     </a>
   );
 }
