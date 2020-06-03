@@ -19,6 +19,7 @@ toc:
       - InlineCaption
       - Text
       - VideoPlayer
+      - ViewportDependentPillarBoxes
   - name: Hooks
     description: |
       React hooks to obtain entry data.

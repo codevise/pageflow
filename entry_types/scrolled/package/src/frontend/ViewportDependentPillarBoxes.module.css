@@ -1,3 +1,7 @@
+.full {
+  background-color: #000;
+}
+
 .container {
   position: relative;
   width: 100%;

@@ -2,30 +2,8 @@
   margin-bottom: 15px;
 }
 
-.embedWrapper {
-  overflow:hidden;
-  position:relative;
-  background: black;
-  padding-top: 56.25%;
-}
-
-.wide {
-  padding-top: 56.25%;
-}
-
-.narrow {
-  padding-top: 75%;
-}
-
-.square {
-  padding-top: 100%;
-}
-
-.portrait {
-  padding-top: 177.77%;
-}
-
 .embedPlayer {
+  background-color: #000;
   position: absolute;
   top: 0;
   left: 0;

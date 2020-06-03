@@ -5,9 +5,17 @@ import classNames from 'classnames';
 
 import {
   InlineCaption,
+  ViewportDependentPillarBoxes,
   useContentElementLifecycle,
   useContentElementEditorState
 } from 'pageflow-scrolled/frontend';
+
+const aspectRatios = {
+  wide: 0.5625,
+  narrow: 0.75,
+  square: 1,
+  portrait: 1.7777
+};
 
 export function VideoEmbed({configuration}) {
   const {isPrepared} = useContentElementLifecycle();
@@ -49,12 +57,12 @@ export function VideoEmbed({configuration}) {
   }
 
   return (
-    <div className={styles.VideoEmbed}>
-
-      <div className={classNames(styles.embedWrapper, styles[configuration.aspectRatio])}
-           style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
+    <div className={styles.VideoEmbed}
+         style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
+      <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
+                                    position={configuration.position}>
         {renderPlayer()}
-      </div>
+      </ViewportDependentPillarBoxes>
       <InlineCaption text={configuration.caption} />
     </div>
   );
