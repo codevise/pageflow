@@ -68,4 +68,34 @@ describe('VideoPlayer', () => {
     renderInEntry(<VideoPlayer {...requiredProps()} />);
     expect(spyMedia).not.toHaveBeenCalled();
   });
+
+  it('requests media player with given poster', () => {
+    const spyMedia = jest.spyOn(media, 'getPlayer')
+
+    renderInEntry(<VideoPlayer {...requiredProps()} id={100} posterId={200} />, {
+      seed: {
+        fileUrlTemplates: {
+          videoFiles: {
+            high: ':id_partition/video.mp4'
+          },
+          imageFiles: {
+            large: ':id_partition/large.jpg'
+          }
+        },
+        videoFiles: [
+          {id: 1, permaId: 100, isReady: true}
+        ],
+        imageFiles: [
+          {id: 2, permaId: 200, isReady: true}
+        ]
+      }
+    });
+
+    expect(spyMedia).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        poster: '000/000/002/large.jpg'
+      })
+    );
+  });
 });

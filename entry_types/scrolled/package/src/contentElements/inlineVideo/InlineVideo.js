@@ -15,6 +15,7 @@ export function InlineVideo({sectionProps, configuration}) {
                    playerState={playerState}
                    playerActions={playerActions}
                    id={configuration.id}
+                   posterId={configuration.posterId}
                    state={onScreen ? 'active' : 'inactive'}
                    quality={'high'}
                    interactive={true}

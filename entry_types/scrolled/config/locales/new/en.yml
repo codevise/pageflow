@@ -110,6 +110,8 @@ en:
           attributes:
             id:
               label: "Video"
+            posterId:
+              label: "Poster"
         inlineAudio:
           name: Inline Audio
           tabs:

@@ -9,6 +9,13 @@ editor.contentElementTypes.register('inlineVideo', {
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false
       });
+
+      this.input('posterId', FileInputView, {
+        collection: 'image_files',
+        fileSelectionHandler: 'contentElementConfiguration',
+        positioning: false
+      });
+
       this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });
