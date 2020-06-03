@@ -78,4 +78,36 @@ describe('AudioPlayer', () => {
 
     expect(spyMedia).not.toHaveBeenCalled();
   });
+
+  it('requests media player with given poster', () => {
+    const spyMedia = jest.spyOn(media, 'getPlayer')
+
+    renderInEntry(<AudioPlayer {...requiredProps()} id={100} posterId={200} />, {
+      seed: {
+        fileUrlTemplates: {
+          audioFiles: {
+            mp3: ':id_partition/audio.mp3',
+            m4a: ':id_partition/audio.m4a',
+            ogg: ':id_partition/audio.ogg'
+          },
+          imageFiles: {
+            large: ':id_partition/large.jpg'
+          }
+        },
+        audioFiles: [
+          {id: 1, permaId: 100, isReady: true}
+        ],
+        imageFiles: [
+          {id: 2, permaId: 200, isReady: true}
+        ]
+      }
+    });
+
+    expect(spyMedia).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        poster: '000/000/002/large.jpg'
+      })
+    );
+  });
 });

@@ -12,7 +12,7 @@ storiesOfContentElement(module, {
     {
       name: 'with poster image',
       configuration: {
-        posterframe_id: filePermaId('imageFiles', 'turtle')
+        posterId: filePermaId('imageFiles', 'turtle')
       }
     }
   ]

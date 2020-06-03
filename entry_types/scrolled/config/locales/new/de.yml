@@ -118,6 +118,8 @@ de:
           attributes:
             id:
               label: "Audio"
+            posterId:
+              label: "Poster"
         inlineBeforeAfter:
           name: Vorher/Nachher
           tabs:

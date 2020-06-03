@@ -10,7 +10,7 @@ editor.contentElementTypes.register('inlineAudio', {
         positioning: false
       });
 
-      this.input('posterframe_id', FileInputView, {
+      this.input('posterId', FileInputView, {
         collection: 'image_files',
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false
