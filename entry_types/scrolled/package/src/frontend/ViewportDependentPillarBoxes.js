@@ -22,7 +22,7 @@ export function ViewportDependentPillarBoxes({file, children}) {
 
   return (
     <div className={styles.container} style={{maxWidth: maxWidthCSS}}>
-      <div style={{paddingTop: arPaddingTop + '%', outline: 'solid 1px red'}}>
+      <div style={{paddingTop: arPaddingTop + '%', outline: 'solid 1px red', position: 'relative', zIndex: 100}}>
         p: {arPaddingTop} w: {file.width} h: {file.height}
       </div>
       <div className={styles.content}>
