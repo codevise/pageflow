@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import {render} from '@testing-library/react'
 
-import {PlayPauseButton} from 'frontend/playerControls/PlayPauseButton';
+import {PlayPauseButton} from 'frontend/PlayerControls/PlayPauseButton';
 
 describe('PlayPauseButton', () => {
   it('shows pause icon when playing', () => {

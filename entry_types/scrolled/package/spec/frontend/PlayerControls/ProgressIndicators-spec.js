@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import {render} from '@testing-library/react'
 
-import {ProgressIndicators} from 'frontend/playerControls/ProgressIndicators';
+import {ProgressIndicators} from 'frontend/PlayerControls/ProgressIndicators';
 
 describe('ProgressIndicators', () => {
   describe('loading progress bar', () => {
