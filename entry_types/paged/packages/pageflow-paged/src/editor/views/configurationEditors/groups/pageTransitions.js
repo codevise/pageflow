@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import _ from 'underscore';
 
-import {ConfigurationEditorTabView, SelectInputView} from 'pageflow/ui';
+import {ConfigurationEditorTabView, SelectInputView, ThumbnailInputView} from 'pageflow/ui';
 import {pageTransitions, navigationDirection} from 'pageflow-paged/frontend';
 
 ConfigurationEditorTabView.groups.define('page_transitions', function(options) {
@@ -17,6 +17,6 @@ ConfigurationEditorTabView.groups.define('page_transitions', function(options) {
   }
 
   this.input(options.propertyName || 'page_transition',
-             SelectInputView,
+              ThumbnailInputView,
              _.extend(inputOptions, options));
 });
