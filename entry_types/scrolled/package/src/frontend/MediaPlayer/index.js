@@ -39,7 +39,7 @@ export function MediaPlayer(props){
     <PlayerContainer  className={props.className}
                       type={props.type}
                       sources={props.sources}
-                      poster={props.poster}
+                      poster={props.posterImageUrl}
                       loop={props.loop}
                       controls={props.controls}
                       playsInline={props.playsInline}

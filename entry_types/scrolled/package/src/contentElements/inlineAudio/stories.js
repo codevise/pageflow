@@ -7,5 +7,14 @@ storiesOfContentElement(module, {
     id: filePermaId('audioFiles', 'quicktime_jingle'),
     autoplay: false,
     controls: false
-  }
+  },
+  variants: [
+    {
+      name: 'with poster image',
+      configuration: {
+        posterframe_id: filePermaId('imageFiles', 'turtle')
+      }
+    }
+  ]
+
 });

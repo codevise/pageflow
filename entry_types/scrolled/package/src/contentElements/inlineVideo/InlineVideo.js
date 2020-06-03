@@ -1,7 +1,6 @@
 import React, {useRef} from 'react';
 
-import {VideoPlayer, useOnScreen, InlineCaption, usePlayerState} from 'pageflow-scrolled/frontend';
-import {MediaPlayerControls} from 'pageflow-scrolled/frontend';
+import {VideoPlayer, useOnScreen, InlineCaption, usePlayerState, MediaPlayerControls} from 'pageflow-scrolled/frontend';
 
 export function InlineVideo({sectionProps, configuration}) {
   const ref = useRef();

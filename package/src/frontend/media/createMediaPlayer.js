@@ -16,7 +16,7 @@ export const createMediaPlayer = function (options) {
     bigPlayButton: false,
     errorDisplay: false,
     textTrackSettings: false,
-    poster: undefined,
+    poster: options.poster,
     loop: options.loop,
     controls: options.controls,
     html5: {

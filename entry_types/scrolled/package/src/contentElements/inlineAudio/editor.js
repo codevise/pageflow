@@ -9,6 +9,14 @@ editor.contentElementTypes.register('inlineAudio', {
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false
       });
+
+      this.input('posterframe_id', FileInputView, {
+        collection: 'image_files',
+        fileSelectionHandler: 'contentElementConfiguration',
+        positioning: false
+      });
+
+      this.group('ContentElementPosition');
     });
   }
 });
