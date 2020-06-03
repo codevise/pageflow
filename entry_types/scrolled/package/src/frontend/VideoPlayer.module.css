@@ -10,8 +10,6 @@
 }
 
 .video_player video {
-  width: 100%;
-  height: auto;
   outline: none;
 }
 
