@@ -1,0 +1,37 @@
+.contextMenuContainer {
+  position: absolute;
+  bottom: 35px;
+  color: white;
+}
+
+.contextMenu {
+  position: relative;
+  padding: 5px 15px;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.contextMenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 15px;
+}
+
+.contextMenuItem {
+  height: 24px;
+  padding: 2px 0;
+}
+
+.contextMenuItem span {
+  vertical-align: super;
+  margin-left: 5px;
+}
+
+.contextMenuItemActiveIndicator {
+  visibility: hidden;
+  fill: currentColor;
+}
+
+.contextMenuItemActiveIndicator.active {
+  visibility: visible;
+}

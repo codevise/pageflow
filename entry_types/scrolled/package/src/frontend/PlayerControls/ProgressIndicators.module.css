@@ -1,0 +1,45 @@
+.progressIndicatorsContainer {
+  position: relative;
+  margin: 0 10px;
+}
+
+.progressBarsContainer {
+  cursor: pointer;
+  position: relative;
+  margin: 9px 0px;
+  height: 6px;
+  border-radius: 3.5px;
+  background: #b4b4b4;
+}
+
+.progressBar {
+  position: absolute;
+  left: 0;
+  height: 6px;
+  border-radius: 2.5px;
+}
+
+.loadingProgressBar {
+  background: currentColor;
+  opacity: 0.25;
+}
+
+.playProgressBar {
+  background: currentColor;
+}
+
+.sliderHandle {
+  width: 14px;
+  height: 14px;
+  margin-left: -6.5px;
+  border-radius: 6.5px;
+  position: absolute;
+  top: -4px;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 100ms;
+}
+
+.progressBarsContainer:hover .sliderHandle {
+  opacity: 1;
+}

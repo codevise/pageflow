@@ -8,6 +8,7 @@ export const createMediaPlayer = function (options) {
 
   let mediaElementTemplate = document.createElement(options.tagName);
   mediaElementTemplate.setAttribute('id', 'pageflow_media_element_'+options.playerId);
+  mediaElementTemplate.setAttribute('crossorigin', 'anonymous');
 
   const player = new VideoPlayer(mediaElementTemplate, {
     controlBar: false,
