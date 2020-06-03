@@ -68,6 +68,7 @@ function BackgroundVideo(props) {
                  playerState={playerState}
                  playerActions={playerActions}
                  id={props.video}
+                 fit="cover"
                  offset={props.offset}
                  interactive={props.interactive}
                  nextSectionOnEnd={props.nextSectionOnEnd} />
