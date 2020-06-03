@@ -7,7 +7,7 @@ import {EntryStateProvider, AudioPlayer, VideoPlayer, usePlayerState} from 'page
 const stories = storiesOf('Frontend/Media Player', module);
 
 stories.add(
-  'Media Video Player',
+  'Media Video Player - Contain',
   () => {
     const [playerState, playerActions] = usePlayerState()
 
@@ -24,6 +24,26 @@ stories.add(
   }
 );
 
+stories.add(
+  'Media Video Player - Cover',
+  () => {
+    const [playerState, playerActions] = usePlayerState()
+
+    return (
+      <EntryStateProvider seed={normalizeAndMergeFixture({})}>
+        <div style={{height: '100vh'}}>
+          <VideoPlayer id={filePermaId('videoFiles', 'interview_toni')}
+                       fit="cover"
+                       playerState={playerState}
+                       playerActions={playerActions} />
+        </div>
+      </EntryStateProvider>
+    );
+  },
+  {
+    percy: {skip: true}
+  }
+);
 
 stories.add(
   'Media Audio Player',

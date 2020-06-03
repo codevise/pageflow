@@ -1,24 +1,22 @@
-.video_player {
+.videoPlayer {
   width: 100%;
   height: 100%;
   transition: transform ease 0.2s;
 }
 
-.video_player > div {
+.videoPlayer > div {
   width: 100%;
   height: 100%;
 }
 
-.video_player video {
-  width: 100%;
-  height: auto;
+.videoPlayer video {
   outline: none;
 }
 
-.video_player video:focus {
+.videoPlayer video:focus {
   outline: none;
 }
 
-.backdrop {
+.cover video {
   object-fit: cover;
 }

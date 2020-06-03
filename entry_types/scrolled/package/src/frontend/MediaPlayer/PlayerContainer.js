@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {media} from 'pageflow/frontend';
 
+import './videojsBase.module.css';
 
 function PlayerContainer({className, sources, poster, type, playsInline, loop, controls, onSetup, onDispose}){
   

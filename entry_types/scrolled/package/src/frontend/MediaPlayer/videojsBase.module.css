@@ -1,0 +1,162 @@
+:global .video-js {
+  display: block;
+  vertical-align: top;
+  box-sizing: border-box;
+  color: #fff;
+  position: relative;
+  padding: 0;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: normal;
+  font-style: normal;
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+  :global .video-js:-moz-full-screen {
+    position: absolute; }
+  :global .video-js:-webkit-full-screen {
+    width: 100% !important;
+    height: 100% !important; }
+
+:global .video-js *,
+:global .video-js *:before,
+:global .video-js *:after {
+  box-sizing: inherit; }
+
+:global .video-js ul {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  list-style-position: outside;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  margin-bottom: 0; }
+
+:global .video-js .vjs-tech {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
+:global body.vjs-full-window {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  overflow-y: auto; }
+
+:global .vjs-full-window .video-js.vjs-fullscreen {
+  position: fixed;
+  overflow: hidden;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0; }
+
+:global .video-js.vjs-fullscreen {
+  width: 100% !important;
+  height: 100% !important;
+  padding-top: 0 !important; }
+
+:global .video-js.vjs-fullscreen.vjs-user-inactive {
+  cursor: none; }
+
+:global .vjs-hidden {
+  display: none !important; }
+
+:global .vjs-disabled {
+  opacity: 0.5;
+  cursor: default; }
+
+:global .video-js .vjs-offscreen {
+  height: 1px;
+  left: -9999px;
+  position: absolute;
+  top: 0;
+  width: 1px; }
+
+:global .vjs-lock-showing {
+  display: block !important;
+  opacity: 1;
+  visibility: visible; }
+
+:global .vjs-no-js {
+  padding: 20px;
+  color: #fff;
+  background-color: #000;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  width: 300px;
+  height: 150px;
+  margin: 0px auto; }
+
+:global .vjs-no-js a,
+:global .vjs-no-js a:visited {
+  color: #66A8CC; }
+
+:global .vjs-poster {
+  display: inline-block;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+  background-color: #000000;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%; }
+
+:global .vjs-poster img {
+  display: block;
+  vertical-align: middle;
+  margin: 0 auto;
+  max-height: 100%;
+  padding: 0;
+  width: 100%; }
+
+:global .vjs-has-started .vjs-poster {
+  display: none; }
+
+:global .vjs-audio.vjs-has-started .vjs-poster {
+  display: block; }
+
+:global .vjs-using-native-controls .vjs-poster {
+  display: none; }
+
+:global .vjs-text-track-display {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  pointer-events: none; }
+
+:global .video-js .vjs-text-track {
+  font-size: 17px;
+  text-align: center;
+  margin-bottom: 0.1em;
+  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.5); }
+
+:global .vjs-subtitles {
+  color: #fff; }
+
+:global .vjs-captions {
+  color: #fc6; }
+
+:global .vjs-tt-cue {
+  display: block; }
+
+@media print {
+  :global .video-js > *:not(.vjs-tech):not(.vjs-poster) {
+    visibility: hidden; } }
