@@ -403,7 +403,9 @@ module PageflowScrolled
                                                    title: 'Example',
                                                    video_files: {
                                                      'some-video' => {
-                                                       'url' => 'https://example.com/some.mp4'
+                                                       'url' => 'https://example.com/some.mp4',
+                                                       'width' => 1920,
+                                                       'height' => 1080
                                                      }
                                                    },
                                                    chapters: []
@@ -412,6 +414,8 @@ module PageflowScrolled
           video_file = entry.draft.find_files(Pageflow::VideoFile).first
 
           expect(video_file.url).to include('some.mp4')
+          expect(video_file.width).to eq(1920)
+          expect(video_file.height).to eq(1080)
         end
 
         it 'supports skipping video encoding' do

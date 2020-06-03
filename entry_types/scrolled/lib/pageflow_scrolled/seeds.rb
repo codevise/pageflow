@@ -102,7 +102,8 @@ module PageflowScrolled
                                         attachment: URI.parse(data['url']),
                                         configuration: data['configuration'],
                                         parent_file_model_type: data['parent_file_model_type'],
-                                        parent_file_id: data['parent_file_id'])
+                                        parent_file_id: data['parent_file_id'],
+                                        **data.slice('width', 'height').symbolize_keys)
         if %i[audio video].include?(file_type)
           if skip_encoding
             file.update!(state: 'encoded')
