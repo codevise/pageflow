@@ -3,9 +3,6 @@ de:
     public:
       navigation:
         chapter: Kapitel
-      external_link:
-        open_in_new_tab: Seite in neuem Tab ansehen
-        open_in_new_tab_message: Öffnen im selben Tab ist im Editor deaktiviert.
       sound_disclaimer:
         help_text: >
           Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/>
@@ -33,6 +30,9 @@ de:
       edit_section_settings: Abschnittseinstellungen bearbeiten
       edit_section_transition_before: Übergangseffekt bearbeiten
       edit_section_transition_after: Übergangseffekt bearbeiten
+      external_links:
+        open_in_new_tab: Seite in neuem Tab ansehen
+        open_in_new_tab_message: Öffnen im selben Tab ist im Editor deaktiviert.
     editor:
       content_elements:
         externalLinkList:
@@ -59,6 +59,7 @@ de:
               label: Miniaturansicht
               inline_help: Dem Link zugeordnertes Bild für die Darstellung im Beitrag.
           tabs:
+            general: Externe Verweise
             edit_link: Link bearbeiten
         dataWrapperChart:
           name: DataWrapper Diagramm

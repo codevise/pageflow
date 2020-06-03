@@ -18,7 +18,8 @@ export class ContentElementTypeRegistry {
    *   Function that is evaluated in the context of a
    *   `ConfigurationEditorView` (see `pageflow/ui`) which will
    *   be used to edit the configuration of content elements of
-   *   this type.
+   *   this type. Receives an options object with an `entry`
+   *   property containing the entry model.
    * @param {Object} options.defaultConfig -
    *   Object that is set as initial config for the content element.
    * @param {Function} [options.split] -

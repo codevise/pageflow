@@ -8,7 +8,8 @@ export const EditContentElementView = EditConfigurationView.extend({
   configure(configurationEditor) {
     this.options.editor.contentElementTypes
         .setupConfigurationEditor(this.model.get('typeName'),
-                                  configurationEditor);
+                                  configurationEditor,
+                                  {entry: this.options.entry});
   },
 
   destroyModel() {

@@ -15,13 +15,7 @@ export const ExternalLinkCollection = Backbone.Collection.extend({
     return attrs.id;
   },
   updateConfiguration: function () {
-    this.configuration.set('links', this.toJSON(), {silent: true});
-    setTimeout(() => {
-      //triggering change event inside this timeout block because otherwise due to
-      //some unknown reason page navigates to window.location.origin+window.location.pathname
-      //ignoring the hash thus causing the page to refresh.
-      this.configuration.trigger('change');
-    }, 0);
+    this.configuration.set('links', this.toJSON());
   },
   addNewLink: function(){
     var newLink = {
@@ -36,3 +30,10 @@ export const ExternalLinkCollection = Backbone.Collection.extend({
     return this.get(this.length);
   }
 });
+
+ExternalLinkCollection.forContentElement = function(contentElement, entry) {
+  return new ExternalLinkCollection(contentElement.configuration.get('links') || [], {
+    entry: entry,
+    configuration: contentElement.configuration
+  });
+};

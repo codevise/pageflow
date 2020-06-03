@@ -1,8 +1,7 @@
-import {ConfigurationEditorView} from 'pageflow/ui'
-
-import {TextInputView, CheckBoxInputView, TextAreaInputView} from 'pageflow/ui';
-import {FileInputView} from 'pageflow/editor';
+import {ConfigurationEditorView, TextInputView, CheckBoxInputView} from 'pageflow/ui';
+import {editor, FileInputView} from 'pageflow/editor';
 import Marionette from 'backbone.marionette';
+import I18n from 'i18n-js';
 
 export const SidebarEditLinkView = Marionette.Layout.extend({
   template: (data) => `
@@ -43,18 +42,15 @@ export const SidebarEditLinkView = Marionette.Layout.extend({
       this.input('title', TextInputView, {
         required: true
       });
-      this.input('description', TextAreaInputView, {
-        size: 'short',
-        disableLinks: true
-      });
+      this.input('description', TextInputView);
     });
     this.formContainer.show(configurationEditor);
   },
   goBack: function() {
-    editor.navigate(`/scrolled/external_links/${this.options.contentElement.get('id')}/`, {trigger: true});
+    editor.navigate(`/scrolled/content_elements/${this.options.contentElement.get('id')}`, {trigger: true});
   },
   destroyLink: function () {
-    if (confirm('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_link')) {
+    if (window.confirm(I18n.t('pageflow_scrolled.editor.content_elements.externalLinkList.confirm_delete_link'))) {
       this.options.collection.remove(this.model);
       this.goBack();
     }
