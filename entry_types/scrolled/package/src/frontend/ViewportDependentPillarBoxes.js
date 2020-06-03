@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import classNames from 'classnames';
 
 import styles from "./ViewportDependentPillarBoxes.module.css";
 import {HeightContext} from "./Fullscreen";
@@ -9,10 +10,11 @@ import {HeightContext} from "./Fullscreen";
  * make it fit otherwise.
  *
  * @param {Object} props
+ * @param {Object} props.position - Position setting of parent content element.
  * @param {Object} [props.aspectRatio] - Aspect ratio of div.
  * @param {Object} [props.file] - Use width/height of file to calculate aspect ratio.
  */
-export function ViewportDependentPillarBoxes({file, aspectRatio, children}) {
+export function ViewportDependentPillarBoxes({file, aspectRatio, position, children}) {
   const height = useContext(HeightContext);
 
   if (!file && !aspectRatio) return children;
@@ -31,11 +33,13 @@ export function ViewportDependentPillarBoxes({file, aspectRatio, children}) {
   }
 
   return (
-    <div className={styles.container} style={{maxWidth: maxWidthCSS}}>
-      <div style={{paddingTop: arPaddingTop + '%'}}>
-      </div>
-      <div className={styles.content}>
-        {children}
+    <div className={classNames({[styles.full]: position === 'full'})}>
+      <div className={styles.container} style={{maxWidth: maxWidthCSS}}>
+        <div style={{paddingTop: arPaddingTop + '%'}}>
+        </div>
+        <div className={styles.content}>
+          {children}
+        </div>
       </div>
     </div>
   );

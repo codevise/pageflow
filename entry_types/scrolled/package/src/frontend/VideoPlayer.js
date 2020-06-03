@@ -12,6 +12,7 @@ import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
  * @param {Object} props
  * @param {number} props.id - Perma id of the video file.
  * @param {String} [props.fit] - `"contain"` (default) or `"cover"`.
+ * @param {String} [props.position] - Position of parent content element.
  */
 export function VideoPlayer(props) {
   let videoFile = useFile({collectionName: 'videoFiles', permaId: props.id});
@@ -19,7 +20,7 @@ export function VideoPlayer(props) {
   if (videoFile && videoFile.isReady) {
     const processedSources = processSources(videoFile);
     return (
-      <Positioner file={videoFile} fit={props.fit}>
+      <Positioner file={videoFile} fit={props.fit} position={props.position}>
         <MediaPlayer className={classNames(styles.videoPlayer, styles[props.fit])}
                      type={'video'}
                      sources={processedSources}
@@ -46,10 +47,10 @@ function processSources(videoFile) {
   ];
 }
 
-function Positioner({children, fit, file}) {
+function Positioner({children, fit, file, position}) {
   if (fit === 'contain') {
     return (
-      <ViewportDependentPillarBoxes file={file}>
+      <ViewportDependentPillarBoxes file={file} position={position}>
         {children}
       </ViewportDependentPillarBoxes>
     );
