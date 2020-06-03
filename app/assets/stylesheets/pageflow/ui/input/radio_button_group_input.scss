@@ -1,0 +1,25 @@
+.radio_button_group_input {
+    .radio_button{
+      padding: 15px 0;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid grey;
+      &:hover {
+          border: 1px solid #A63603;
+          background-color: #DDDDDD;
+      }
+  
+      input {
+        display: inline;
+        margin: 0 5px 0 0;
+        position: absolute;
+        opacity: 0;
+      }
+  
+      label {
+        display: inline;
+      }
+    }
+  }
+  
