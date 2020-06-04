@@ -12,6 +12,7 @@ import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
  * @param {Object} props
  * @param {number} props.id - Perma id of the video file.
  * @param {number} [props.posterId] - Perma id of the poster image file.
+ * @param {boolean} [props.isPrepared] - Control lazy loading.
  * @param {String} [props.fit] - `"contain"` (default) or `"cover"`.
  * @param {String} [props.position] - Position of parent content element.
  */

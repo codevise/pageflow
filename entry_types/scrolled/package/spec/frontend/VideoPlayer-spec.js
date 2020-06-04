@@ -46,6 +46,16 @@ describe('VideoPlayer', () => {
     expect(result.container.querySelector('video')).toBeDefined();
   });
 
+  it('does not render video element when isPrepared is false', () => {
+    const result =
+      renderInEntry(<VideoPlayer {...requiredProps()}
+                                 id={100}
+                                 isPrepared={false} />,
+                    {seed: getVideoFileSeed()});
+
+    expect(result.container.querySelector('video')).toBeNull();
+  });
+
   it('passes correct sources to media API', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer');
 

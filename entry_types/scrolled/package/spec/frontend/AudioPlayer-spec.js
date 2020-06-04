@@ -50,6 +50,16 @@ describe('AudioPlayer', () => {
     expect(result.container.querySelector('audio')).toBeDefined();
   });
 
+  it('does not render audio element when isPrepared is false', () => {
+    const result =
+      renderInEntry(<AudioPlayer {...requiredProps()}
+                                 id={100}
+                                 isPrepared={false} />,
+                    {seed: getAudioFileSeed()});
+
+    expect(result.container.querySelector('audio')).toBeNull();
+  });
+
   it('passes correct mp3, m4a and ogg sources to media API', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer')
 

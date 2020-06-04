@@ -8,7 +8,21 @@ import { updatePlayerState } from './updatePlayerState';
 
 export * from './usePlayerState';
 
-export function MediaPlayer(props){
+export function MediaPlayer(props) {
+  if (!props.isPrepared) {
+    return null;
+  }
+
+  return (
+    <PreparedMediaPlayer {...props} />
+  );
+}
+
+MediaPlayer.defaultProps = {
+  isPrepared: true
+};
+
+function PreparedMediaPlayer(props){
   let playerRef = useRef();
   let previousPlayerState = useRef(props.playerState);
   let scrollToSection = useContext(ScrollToSectionContext);
@@ -17,7 +31,7 @@ export function MediaPlayer(props){
   let onSetup = (newPlayer)=>{
     playerRef.current = newPlayer;
     newPlayer.on('ended', () => props.nextSectionOnEnd && scrollToSection('next'));
-    
+
     watchPlayer(newPlayer, props.playerActions);
     applyPlayerState(newPlayer, props.playerState, props.playerActions)
   }
