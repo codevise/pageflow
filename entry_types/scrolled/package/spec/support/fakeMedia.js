@@ -3,12 +3,31 @@ import {media} from 'pageflow/frontend';
 import BackboneEvents from 'backbone-events-standalone';
 import {queryHelpers} from '@testing-library/dom';
 
+function queryPlayer(container) {
+  const el = queryHelpers.queryByAttribute('data-fake-player-file-perma-id',
+                                           container,
+                                           () => true);
+  return el && el.fakePlayer;
+}
+
 function queryPlayerByFilePermaId(container, filePermaId) {
   const el = queryHelpers.queryByAttribute('data-fake-player-file-perma-id',
                                            container,
                                            filePermaId.toString());
 
   return el && el.fakePlayer;
+}
+
+function getPlayer(container) {
+  const player = queryPlayer(container);
+
+  if (!player) {
+    throw queryHelpers.getElementError(
+      `Unable to find player.`,
+      container
+    )
+  }
+  return player;
 }
 
 function getPlayerByFilePermaId(container, filePermaId) {
@@ -25,7 +44,9 @@ function getPlayerByFilePermaId(container, filePermaId) {
 }
 
 export const fakeMediaRenderQueries = {
+  queryPlayer,
   queryPlayerByFilePermaId,
+  getPlayer,
   getPlayerByFilePermaId
 };
 
@@ -60,6 +81,7 @@ function createFakePlayer({filePermaId}) {
     prebuffer: jest.fn().mockImplementation(() => new Promise(() => {})),
 
     play: mockFunctionTriggering('play'),
+    playOrPlayOnLoad: mockFunctionTriggering('play'),
     playAndFadeIn: mockFunctionTriggering('play'),
     pause: mockFunctionTriggering('pause'),
     fadeOutAndPause: mockFunctionTriggering('pause'),
