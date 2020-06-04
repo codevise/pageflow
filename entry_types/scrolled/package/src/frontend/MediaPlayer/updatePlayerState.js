@@ -1,7 +1,7 @@
 export function updatePlayerState(player, prevPlayerState, playerState, playerActions, componentState, isAutoplay, isMediaOff){
 
   if (!isMediaOff && playerState.unplayed && isAutoplay) {
-    if (componentState === 'active') {      
+    if (componentState === 'active') {
       player.playOrPlayOnLoad();
     }
     else {
@@ -34,4 +34,7 @@ export function updatePlayerState(player, prevPlayerState, playerState, playerAc
     player.currentTime(playerState.shouldSeekTo);
   }
 
+  if (prevPlayerState.volumeFactor !== playerState.volumeFactor ) {
+    player.changeVolumeFactor(playerState.volumeFactor, playerState.volumeFactorFadeDuration);
+  }
 }

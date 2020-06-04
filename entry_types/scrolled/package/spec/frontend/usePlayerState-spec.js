@@ -106,6 +106,15 @@ describe('usePlayerState', () => {
       expect(nextState.isPlaying).toBe(false);
       expect(nextState.shouldPlay).toBe(false);
     });
-  });
 
+    it('updates volume factor and fade duration on changeVolumeFactor action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [, actions] = result.current;
+      TestRenderer.act(() => actions.changeVolumeFactor(0.2, 500));
+      const [nextState,] = result.current;
+
+      expect(nextState.volumeFactor).toBe(0.2);
+      expect(nextState.volumeFactorFadeDuration).toBe(500);
+    });
+  });
 });

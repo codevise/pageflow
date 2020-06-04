@@ -159,6 +159,40 @@ describe('MediaPlayer', () => {
     expect(player.pause).toHaveBeenCalledTimes(1);
   });
 
+  it('sets initial volume factor accoring to playerState', () => {
+    let state = {
+      ...getInitialPlayerState(),
+      volumeFactor: 0.5
+    };
+    const {getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+    const player = getPlayer();
+
+    expect(player.changeVolumeFactor).toHaveBeenCalledWith(0.5, 0);
+  });
+
+  it('calls changeVolumeFactor on player when volumeFactor changes in playerState', () => {
+    let state = getInitialPlayerState();
+    const {rerender, getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+    const player = getPlayer();
+
+    state = {
+      ...state,
+      volumeFactor: 0.2,
+      volumeFactorFadeDuration: 500
+    };
+    rerender(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+
+    expect(player.changeVolumeFactor).toHaveBeenCalledWith(0.2, 500);
+  });
+
   it('causes player to play when autoplay is set to true and state is active', () => {
     const {rerender, getPlayer} = render(
       <MutedContext.Provider value={{muted: true}}>
