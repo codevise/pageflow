@@ -40,6 +40,27 @@ export const EditSectionView = EditConfigurationView.extend({
           }
         ]
       });
+      this.input('backdropImageMobile', FileInputView, {
+        collection: 'image_files',
+        fileSelectionHandler: 'sectionConfiguration',
+        visibleBinding: 'backdropType',
+        visibleBindingValue: 'image',
+        positioning: false,
+        dropDownMenuItems: [
+          {
+            name: 'editMofifArea',
+            label: I18n.t('pageflow_scrolled.editor.edit_section.edit_motif_area'),
+
+            selected({inputModel, propertyName, file}) {
+              EditMotifAreaDialogView.show({
+                model: inputModel,
+                propertyName,
+                file
+              });
+            }
+          }
+        ]
+      });
       this.input('backdropImage', ColorInputView, {
         visibleBinding: 'backdropType',
         visibleBindingValue: 'color'

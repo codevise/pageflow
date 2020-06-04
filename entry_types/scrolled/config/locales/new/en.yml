@@ -255,7 +255,9 @@ en:
               solid: Block
               transparent: Transparent
           backdropImage:
-            label: Background-Image
+            label: Background-Image (Desktop)
+          backdropImageMobile:
+            label: Background-Image (Phone)
           backdropVideo:
             label: Background-Video
           backdropType:

@@ -43,13 +43,13 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
     invert: props.invert
   }), [props.layout, props.invert]);
 
-  const [motifAreaRect, setMotifAreaRectRect] = useBoundingClientRect();
+  const [motifAreaRect, setMotifAreaRect] = useBoundingClientRect();
   const [motifAreaDimension, setMotifAreaDimensionRef] = useDimension();
 
   const setMotifAreaRefs = useCallback(node => {
-    setMotifAreaRectRect(node);
+    setMotifAreaRect(node);
     setMotifAreaDimensionRef(node);
-  }, [setMotifAreaRectRect, setMotifAreaDimensionRef]);
+  }, [setMotifAreaRect, setMotifAreaDimensionRef]);
 
   const [contentAreaRect, setContentAreaRef] = useBoundingClientRect(props.layout);
   const intersecting = isIntersectingX(motifAreaRect, contentAreaRect);

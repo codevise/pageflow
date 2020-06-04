@@ -261,7 +261,9 @@ de:
               solid: Block
               transparent: Keine
           backdropImage:
-            label: Hintergrund-Bild
+            label: Hintergrund-Bild (Desktop)
+          backdropImageMobile:
+            label: Hintergrund-Bild (Phone)
           backdropVideo:
             label: Hintergrund-Video
           backdropType:

@@ -4,7 +4,8 @@ export const SectionConfiguration = Configuration.extend({
   defaults: {
     transition: 'scroll',
     backdrop: {
-      image: '#fff'
+      image: '#fff',
+      imageMobile: '#fff'
     }
   },
 
@@ -12,6 +13,10 @@ export const SectionConfiguration = Configuration.extend({
     if (name === 'backdropImage') {
       return this.attributes.backdrop &&
              this.attributes.backdrop.image;
+    }
+    if (name === 'backdropImageMobile') {
+      return this.attributes.backdrop &&
+             this.attributes.backdrop.imageMobile;
     }
     if (name === 'backdropType') {
       return Configuration.prototype.get.apply(this, arguments) ||
@@ -28,7 +33,18 @@ export const SectionConfiguration = Configuration.extend({
 
   set: function(name, value) {
     if (name === 'backdropImage' && value) {
-      this.set('backdrop', {image: value});
+      this.set('backdrop', {
+        image: value,
+        imageMobile: this.attributes.backdrop.imageMobile ||
+                     this.defaults.backdrop.imageMobile
+      });
+    }
+    if (name === 'backdropImageMobile' && value) {
+      this.set('backdrop', {
+        imageMobile: value,
+        image: this.attributes.backdrop.image ||
+               this.defaults.backdrop.image
+      });
     }
     if (name === 'backdropVideo' && value) {
       this.set('backdrop', {video: value});
