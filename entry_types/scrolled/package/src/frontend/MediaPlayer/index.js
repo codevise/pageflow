@@ -53,6 +53,7 @@ function PreparedMediaPlayer(props){
     <PlayerContainer  className={props.className}
                       type={props.type}
                       sources={props.sources}
+                      filePermaId={props.filePermaId}
                       poster={props.posterImageUrl}
                       loop={props.loop}
                       controls={props.controls}

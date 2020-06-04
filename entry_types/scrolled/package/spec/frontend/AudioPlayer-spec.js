@@ -81,6 +81,23 @@ describe('AudioPlayer', () => {
     );
   });
 
+  it('passes file perma id to media api', () => {
+    const spyMedia = jest.spyOn(media, 'getPlayer');
+
+    renderInEntry(<AudioPlayer {...requiredProps()} id={100} />, {
+      seed: getAudioFileSeed({
+        id: 1,
+        permaId: 100,
+        basename: 'audio'
+      })
+    });
+
+    expect(spyMedia).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({filePermaId: 100})
+    );
+  });
+
   it('without id no media player is requested', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer');
 
