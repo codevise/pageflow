@@ -12,9 +12,9 @@ describe('PlayerContainer', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  
+
   let getVideoSources = () => {
-    return [ 
+    return [
       {type: 'video/mp4', src: 'http://example.com/example.mp4'},
     ];
   }
@@ -28,7 +28,7 @@ describe('PlayerContainer', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer');
     let sources = getVideoSources();
     const {container} = render(<PlayerContainer type={'video'} sources={sources} />);
-    
+
     expect(spyMedia).toHaveBeenCalledWith(
       expect.objectContaining(sources),
       expect.anything()
@@ -55,12 +55,12 @@ describe('PlayerContainer', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer');
     let sources = getVideoSources();
     const {rerender} = render(<PlayerContainer type={'video'} sources={sources} />);
-    
+
     expect(spyMedia).toHaveBeenCalledWith(
       expect.objectContaining(sources),
       expect.anything()
     );
-    
+
     let newSources = getVideoSources();
     newSources[0].src = 'example.mp4';
     rerender(<PlayerContainer type={'video'} sources={newSources} />);
@@ -76,7 +76,7 @@ describe('PlayerContainer', () => {
     let sources = getVideoSources();
     const {rerender} = render(<PlayerContainer type={'video'} sources={sources} />);
     expect(spyMedia).toHaveBeenCalledTimes(1);
-    
+
     rerender(<PlayerContainer type={'video'} sources={sources} loop={true} />);
     expect(spyMedia).toHaveBeenCalledTimes(2);
     expect(spyMedia).toHaveBeenCalledWith(

@@ -14,14 +14,14 @@ describe('MediaPlayer', () => {
     jest.clearAllMocks();
   });
   let getAudioSources = () => {
-    return [ 
+    return [
       {type: 'audio/ogg', src: 'http://example.com/example.ogg'},
       {type: 'audio/m4a', src: 'http://example.com/example.m4a'},
       {type: 'audio/mp3', src: 'http://example.com/example.ogg'}
     ];
   }
   let getVideoSources = () => {
-    return [ 
+    return [
       {type: 'video/mp4', src: 'http://example.com/example.mp4'},
     ];
   }
@@ -45,14 +45,14 @@ describe('MediaPlayer', () => {
   it('renders audio tag for audio type sources', () => {
     let state = getInitialPlayerState();
     const {container} = render(<MediaPlayer type={'audio'} sources={getAudioSources()} playerState={state} playerActions={getPlayerActions()} />);
-    
+
     expect(container.querySelector('audio')).toBeDefined();
   });
 
   it('renders video tag for video type sources', () => {
     let state = getInitialPlayerState();
     const {container} = render(<MediaPlayer type={'video'} sources={getAudioSources()} playerState={state} playerActions={getPlayerActions()} />);
-    
+
     expect(container.querySelector('video')).toBeDefined();
   });
 
@@ -82,7 +82,7 @@ describe('MediaPlayer', () => {
     let state = getInitialPlayerState();
     let playerActions = getPlayerActions();
     const {rerender} = render(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    
+
     state = getInitialPlayerState();
     state.shouldPlay = true;
 
@@ -95,11 +95,11 @@ describe('MediaPlayer', () => {
     let state = getInitialPlayerState();
     let playerActions = getPlayerActions();
     const {rerender} = render(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    
+
     state = getInitialPlayerState();
     state.fadeDuration = 100;
     state.shouldPlay = true;
-    
+
     let spyPlayAndFadeIn = jest.spyOn(media.players['0'], 'playAndFadeIn');
     rerender(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
     expect(spyPlayAndFadeIn).toHaveBeenCalledTimes(1);
@@ -112,7 +112,7 @@ describe('MediaPlayer', () => {
     state.shouldPlay = true;
     let playerActions = getPlayerActions();
     const {rerender} = render(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    
+
     state = getInitialPlayerState();
     state.isPlaying = true;
     state.shouldPlay = false;
@@ -125,15 +125,15 @@ describe('MediaPlayer', () => {
   it('causes player to play when autoplay is set to true and state is active', () => {
     let state = getInitialPlayerState();
     let playerActions = getPlayerActions();
-    
+
     const {rerender} = render(
       <MutedContext.Provider value={{muted: true}}>
         <MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />
       </MutedContext.Provider>
      );
-    
+
     let spyPlay = jest.spyOn(media.players['0'], 'playOrPlayOnLoad');
-        
+
     rerender(
       <MutedContext.Provider value={{muted: true}}>
         <MediaPlayer type={'video'} sources={getVideoSources()} state={'active'} autoplay={true} playerState={state} playerActions={playerActions} />
