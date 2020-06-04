@@ -21,14 +21,13 @@ export function VideoPlayer(props) {
   const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
 
   if (videoFile && videoFile.isReady) {
-    const processedSources = processSources(videoFile);
     return (
       <Positioner file={videoFile} fit={props.fit} position={props.position}>
         <MediaPlayer className={classNames(styles.videoPlayer, styles[props.fit])}
                      type={'video'}
-                     sources={processedSources}
+                     sources={processSources(videoFile)}
                      posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
-                   {...props}/>
+                     {...props} />
       </Positioner>
     );
   } else {
@@ -38,7 +37,6 @@ export function VideoPlayer(props) {
 
 VideoPlayer.defaultProps = {
   fit: 'contain',
-  interactive: false,
   controls: true
 };
 
