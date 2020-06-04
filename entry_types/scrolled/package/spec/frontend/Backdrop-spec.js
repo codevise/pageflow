@@ -40,6 +40,6 @@ describe('Backdrop', () => {
         }
       )
 
-    expect(queryAllByRole('img').length).toBe(2);
+    expect(queryAllByRole('img').length).toBe(1);
   });
 });

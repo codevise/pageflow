@@ -18,8 +18,7 @@ export function Image(props) {
     const focusY = typeof image.configuration.focusY === 'undefined' ? 50 : image.configuration.focusY;
 
     return (
-      <div className={classNames(styles.root,
-                                 {[styles.portrait]: props.mobile})}
+      <div className={classNames(styles.root)}
            role="img"
            style={{
              backgroundImage: `url(${image.urls.large})`,

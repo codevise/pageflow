@@ -8,11 +8,13 @@ import FillColor from './FillColor';
 import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
 import {usePlayerState} from './MediaPlayer/usePlayerState';
+import useMediaQuery from './useMediaQuery';
 
 import styles from './Backdrop.module.css';
 
 export function Backdrop(props) {
   const [containerDimension, setContainerRef] = useDimension();
+  const mobile = useMediaQuery('(orientation: portrait)');
 
   return (
     <div className={classNames(styles.Backdrop,
@@ -21,7 +23,7 @@ export function Backdrop(props) {
                                {[styles.offScreen]: props.offScreen})}>
       <div className={props.transitionStyles.backdropInner}>
         <div className={props.transitionStyles.backdropInner2}>
-          {props.children(renderContent(props, containerDimension, setContainerRef))}
+          {props.children(renderContent(props, containerDimension, setContainerRef, mobile))}
         </div>
       </div>
     </div>
@@ -32,7 +34,7 @@ Backdrop.defaultProps = {
   transitionStyles: {}
 };
 
-function renderContent(props, containerDimension, setContainerRef) {
+function renderContent(props, containerDimension, setContainerRef, mobile) {
   if (props.video) {
     return (
       <Fullscreen ref={setContainerRef}>
@@ -44,18 +46,38 @@ function renderContent(props, containerDimension, setContainerRef) {
     return (
       <FillColor color={props.image} />
     );
-  }
-  else {
+  } else {
     return (
       <Fullscreen ref={setContainerRef}>
-        <Image id={props.image} />
-        <Image id={props.imageMobile} mobile={true} />
-        <MotifArea ref={props.motifAreaRef}
-                   imageId={props.image}
-                   containerWidth={containerDimension.width}
-                   containerHeight={containerDimension.height} />
+        {renderBackgroundImageWithMotifArea(props, containerDimension, mobile)}
       </Fullscreen>
     );
+  }
+}
+
+function renderBackgroundImageWithMotifArea(props, containerDimension, mobile) {
+  if (mobile && props.imageMobile) {
+    return (
+      <div>
+        <Image id={props.imageMobile}/>
+        <MotifArea key={'motifAreaForImg'+props.imageMobile}
+                   ref={props.motifAreaRef}
+                   imageId={props.imageMobile}
+                   containerWidth={containerDimension.width}
+                   containerHeight={containerDimension.height}/>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <Image id={props.image}/>
+        <MotifArea key={'motifAreaForImg'+props.image}
+                   ref={props.motifAreaRef}
+                   imageId={props.image}
+                   containerWidth={containerDimension.width}
+                   containerHeight={containerDimension.height}/>
+      </div>
+    )
   }
 }
 
