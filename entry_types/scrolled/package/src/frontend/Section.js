@@ -93,19 +93,14 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
                 offset={Math.max(0, Math.max(1, -contentAreaRect.top / 200)) }
                 state={props.state}
                 transitionStyles={transitionStyles}
-                nextSectionOnEnd={props.nextSectionOnEnd}
-                interactive={props.interactiveBackdrop}>
-        {(children) => props.interactiveBackdrop ?
-                     children :
-                     <Shadow align={props.layout}
-                             intersecting={intersecting}
-                             opacity={props.shadowOpacity >= 0 ? props.shadowOpacity / 100 : 0.7}
-                             motifAreaRect={motifAreaRect}
-                             contentAreaRect={contentAreaRect}>{children}</Shadow>}
+                nextSectionOnEnd={props.nextSectionOnEnd}>
+        {(children) => <Shadow align={props.layout}
+                               intersecting={intersecting}
+                               opacity={props.shadowOpacity >= 0 ? props.shadowOpacity / 100 : 0.7}
+                               motifAreaRect={motifAreaRect}
+                               contentAreaRect={contentAreaRect}>{children}</Shadow>}
       </Backdrop>
       <Foreground transitionStyles={transitionStyles}
-                  hidden={props.interactiveBackdrop}
-                  disableEnlarge={props.disableEnlarge}
                   state={props.state}
                   heightMode={heightMode(props)}>
         <Box active={intersecting}

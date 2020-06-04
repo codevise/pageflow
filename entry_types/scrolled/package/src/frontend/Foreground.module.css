@@ -16,12 +16,3 @@
 .fullHeight {
   min-height: 100vh;
 }
-
-.fullFadeHeight.enlarge,
-.fullHeight.enlarge {
-  min-height: 130vh;
-}
-
-.hidden {
-  visibility: hidden;
-}

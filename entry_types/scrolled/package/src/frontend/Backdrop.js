@@ -18,8 +18,7 @@ export function Backdrop(props) {
   return (
     <div className={classNames(styles.Backdrop,
                                props.transitionStyles.backdrop,
-                               props.transitionStyles[`backdrop-${props.state}`],
-                               {[styles.offScreen]: props.offScreen})}>
+                               props.transitionStyles[`backdrop-${props.state}`])}>
       <div className={props.transitionStyles.backdropInner}>
         <div className={props.transitionStyles.backdropInner2}>
           {props.children(renderContent(props, containerDimension, setContainerRef))}
@@ -118,7 +117,6 @@ function BackgroundVideo(props) {
                  id={props.video}
                  fit="cover"
                  offset={props.offset}
-                 interactive={props.interactive}
                  nextSectionOnEnd={props.nextSectionOnEnd} />
   );
 }
