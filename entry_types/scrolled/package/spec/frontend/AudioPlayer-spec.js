@@ -12,103 +12,102 @@ describe('AudioPlayer', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  let getAudioSeed = ()=>{
+
+  function getAudioFileSeed({
+    id = 1,
+    permaId = 100,
+    basename = 'audio'
+  } = {}) {
     return {
       fileUrlTemplates: {
         audioFiles: {
-          mp3: ':id_partition/audio.mp3'
+          mp3: ':id_partition/:basename.mp3',
+          m4a: ':id_partition/:basename.m4a',
+          ogg: ':id_partition/:basename.ogg'
         }
       },
       audioFiles: [
-        {id: 1, permaId: 100, isReady: true}
+        {id, permaId, isReady: true, basename}
       ]
     };
   }
-  it('renders audio with provided file id', () => {
-    let state = getInitialPlayerState();
-    let actions = getPlayerActions();
+
+  function requiredProps() {
+    return {
+      playerState: getInitialPlayerState(),
+      playerActions: getPlayerActions()
+    };
+  }
+
+  it('renders audio tag if file is present', () => {
     const result =
-      renderInEntry(<AudioPlayer id={100} playerState={state} playerActions={actions} />, {
-        seed: getAudioSeed()
+      renderInEntry(<AudioPlayer {...requiredProps()} id={100} />, {
+        seed: getAudioFileSeed({
+          permaId: 100
+        })
       });
+
     expect(result.container.querySelector('audio')).toBeDefined();
   });
 
-  it('passes correct mp3 source to media API', () => {
-    let state = getInitialPlayerState();
-    let actions = getPlayerActions();
-    const spyMedia = jest.spyOn(media, 'getPlayer')
-    renderInEntry(<AudioPlayer id={100} playerState={state} playerActions={actions} />, {
-      seed: getAudioSeed()
-    });
-    expect(spyMedia).toHaveBeenCalledWith(
-      expect.objectContaining([{ type: 'audio/mp3', src: '000/000/001/audio.mp3?u=1'} ]),
-      expect.anything()
-    );
-  });
-
-  it('passes correct mp3 and m4a source to media API', () => {
-    let state = getInitialPlayerState();
-    let actions = getPlayerActions();
-    const spyMedia = jest.spyOn(media, 'getPlayer')
-    let audioSeed = getAudioSeed();
-    audioSeed.fileUrlTemplates.audioFiles['m4a'] = ':id_partition/audio.m4a'
-    renderInEntry(<AudioPlayer id={100} playerState={state} playerActions={actions} />, {
-      seed: audioSeed
-    });
-    expect(spyMedia).toHaveBeenCalledWith(
-      expect.objectContaining([ 
-        { type: 'audio/mp3', src: '000/000/001/audio.mp3?u=1'},
-        { type: 'audio/m4a', src: '000/000/001/audio.m4a?u=1'} ]),
-      expect.anything()
-    );
-  });
-  
   it('passes correct mp3, m4a and ogg sources to media API', () => {
-    let state = getInitialPlayerState();
-    let actions = getPlayerActions();
     const spyMedia = jest.spyOn(media, 'getPlayer')
-    let audioSeed = getAudioSeed();
-    audioSeed.fileUrlTemplates.audioFiles['m4a'] = ':id_partition/audio.m4a'
-    audioSeed.fileUrlTemplates.audioFiles['ogg'] = ':id_partition/audio.ogg'
-    renderInEntry(<AudioPlayer id={100} playerState={state} playerActions={actions} />, {
-      seed: audioSeed
+
+    renderInEntry(<AudioPlayer {...requiredProps()} id={100} />, {
+      seed: getAudioFileSeed({
+        id: 1,
+        permaId: 100,
+        basename: 'audio'
+      })
     });
+
     expect(spyMedia).toHaveBeenCalledWith(
-      expect.objectContaining([ 
+      [
         { type: 'audio/ogg', src: '000/000/001/audio.ogg?u=1'},
         { type: 'audio/mp3', src: '000/000/001/audio.mp3?u=1'},
         { type: 'audio/m4a', src: '000/000/001/audio.m4a?u=1'}
-      ]),
+      ],
       expect.anything()
     );
   });
 
-  it('sources other than  mp3, m4a and ogg are not passed to media API', () => {
-    let state = getInitialPlayerState();
-    let actions = getPlayerActions();
-    const spyMedia = jest.spyOn(media, 'getPlayer')
-    let audioSeed = getAudioSeed();
-    audioSeed.fileUrlTemplates.audioFiles['m4a'] = ':id_partition/audio.m4a'
-    audioSeed.fileUrlTemplates.audioFiles['ogg'] = ':id_partition/audio.ogg'
-    audioSeed.fileUrlTemplates.audioFiles['avi'] = ':id_partition/audio.avi'
-    
-    renderInEntry(<AudioPlayer id={100} playerState={state} playerActions={actions} />, {
-      seed: audioSeed
-    });
-    expect(spyMedia).toHaveBeenCalledWith(
-      expect.not.objectContaining([ 
-        { type: 'audio/avi', src: '000/000/001/audio.avi?u=1'}
-      ]),
-      expect.anything()
-    );
-  });
-
-  it('without sources no media player is requested', () => {
+  it('without id no media player is requested', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer');
-    renderInEntry(<AudioPlayer />);
+
+    renderInEntry(<AudioPlayer {...requiredProps()} />);
+
     expect(spyMedia).not.toHaveBeenCalled();
   });
-  
 
+  it('requests media player with given poster', () => {
+    const spyMedia = jest.spyOn(media, 'getPlayer')
+
+    renderInEntry(<AudioPlayer {...requiredProps()} id={100} posterId={200} />, {
+      seed: {
+        fileUrlTemplates: {
+          audioFiles: {
+            mp3: ':id_partition/audio.mp3',
+            m4a: ':id_partition/audio.m4a',
+            ogg: ':id_partition/audio.ogg'
+          },
+          imageFiles: {
+            large: ':id_partition/large.jpg'
+          }
+        },
+        audioFiles: [
+          {id: 1, permaId: 100, isReady: true}
+        ],
+        imageFiles: [
+          {id: 2, permaId: 200, isReady: true}
+        ]
+      }
+    });
+
+    expect(spyMedia).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        poster: '000/000/002/large.jpg'
+      })
+    );
+  });
 });

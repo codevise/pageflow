@@ -7,5 +7,13 @@ storiesOfContentElement(module, {
     id: filePermaId('videoFiles', 'interview_toni'),
     autoplay: false,
     controls: false
-  }
+  },
+  variants: [
+    {
+      name: 'with poster image',
+      configuration: {
+        posterId: filePermaId('imageFiles', 'turtle')
+      }
+    }
+  ]
 });

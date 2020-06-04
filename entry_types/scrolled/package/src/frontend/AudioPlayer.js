@@ -3,26 +3,30 @@ import {useFile} from '../entryState';
 import {MediaPlayer} from './MediaPlayer';
 
 import styles from "./AudioPlayer.module.css";
+import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
 
 /**
  * Render audio file in MediaPlayer.
  *
  * @param {Object} props
  * @param {number} props.id - Perma id of the audio file.
+ * @param {number} [props.posterId] - Perma id of the poster image file.
+ * @param {String} [props.position] - Position of parent content element.
  */
 export function AudioPlayer(props) {
   const audioFile = useFile({collectionName: 'audioFiles', permaId: props.id});
-  
+  const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
+
   if (audioFile && audioFile.isReady) {
     const processedSources = processSources(audioFile);
     return (
-      <div className={styles.root}>
-        <MediaPlayer className={styles.audio_player}
+      <ViewportDependentPillarBoxes file={posterImage} position={props.position}>
+        <MediaPlayer className={styles.audioPlayer}
                      type={'audio'}
                      sources={processedSources}
-                     {...props}
-                     />
-      </div>
+                     posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
+                     {...props} />
+      </ViewportDependentPillarBoxes>
     );
   }
 

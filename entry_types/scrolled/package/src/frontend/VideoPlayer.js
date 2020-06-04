@@ -11,11 +11,13 @@ import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
  *
  * @param {Object} props
  * @param {number} props.id - Perma id of the video file.
+ * @param {number} [props.posterId] - Perma id of the poster image file.
  * @param {String} [props.fit] - `"contain"` (default) or `"cover"`.
  * @param {String} [props.position] - Position of parent content element.
  */
 export function VideoPlayer(props) {
   let videoFile = useFile({collectionName: 'videoFiles', permaId: props.id});
+  const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
 
   if (videoFile && videoFile.isReady) {
     const processedSources = processSources(videoFile);
@@ -24,7 +26,8 @@ export function VideoPlayer(props) {
         <MediaPlayer className={classNames(styles.videoPlayer, styles[props.fit])}
                      type={'video'}
                      sources={processedSources}
-                     {...props}/>
+                     posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
+                   {...props}/>
       </Positioner>
     );
   } else {

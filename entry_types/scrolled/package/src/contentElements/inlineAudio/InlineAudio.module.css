@@ -1,13 +1,3 @@
 .root {
-  position: relative;
-  height: 55px;
   margin-top: 15px;
-}
-
-.inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
 }

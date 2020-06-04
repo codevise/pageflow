@@ -111,6 +111,8 @@ de:
           attributes:
             id:
               label: "Video"
+            posterId:
+              label: "Poster"
         inlineAudio:
           name: Inline-Audio
           tabs:
@@ -118,6 +120,8 @@ de:
           attributes:
             id:
               label: "Audio"
+            posterId:
+              label: "Poster"
         inlineBeforeAfter:
           name: Vorher/Nachher
           tabs:
