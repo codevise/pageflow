@@ -61,7 +61,7 @@ function renderBackgroundImage(props, containerDimension) {
     return (
       <OrientationAwareBackgroundImage image={props.image}
                                        imageMobile={props.imageMobile}
-                                       motifAreaRef={props.motifAreaRef}
+                                       onMotifAreaUpdate={props.onMotifAreaUpdate}
                                        containerDimension={containerDimension} />
     );
   }
@@ -69,37 +69,37 @@ function renderBackgroundImage(props, containerDimension) {
     return (
       <BackgroundImage
           image={props.image || props.imageMobile}
-          motifAreaRef={props.motifAreaRef}
+          onMotifAreaUpdate={props.onMotifAreaUpdate}
           containerDimension={containerDimension} />
     );
   }
 }
 
-function OrientationAwareBackgroundImage({image, motifAreaRef, imageMobile, containerDimension}) {
+function OrientationAwareBackgroundImage({image, onMotifAreaUpdate, imageMobile, containerDimension}) {
   const mobile = usePortraitOrientation();
 
   if (mobile) {
     return (
       <BackgroundImage image={imageMobile}
-                       motifAreaRef={motifAreaRef}
+                       onMotifAreaUpdate={onMotifAreaUpdate}
                        containerDimension={containerDimension} />
     )
   }
   else {
     return (
       <BackgroundImage image={image}
-                       motifAreaRef={motifAreaRef}
+                       onMotifAreaUpdate={onMotifAreaUpdate}
                        containerDimension={containerDimension} />
     )
   }
 }
 
-function BackgroundImage({image, motifAreaRef, containerDimension}) {
+function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
   return (
     <>
       <Image id={image}/>
       <MotifArea key={image}
-                 ref={motifAreaRef}
+                 onUpdate={onMotifAreaUpdate}
                  imageId={image}
                  containerWidth={containerDimension.width}
                  containerHeight={containerDimension.height}/>
