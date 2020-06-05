@@ -1,25 +1,39 @@
-import React, {useRef} from 'react';
+import React from 'react';
 
-import {VideoPlayer, useOnScreen, InlineCaption, usePlayerState, MediaPlayerControls} from 'pageflow-scrolled/frontend';
+import {
+  VideoPlayer,
+  InlineCaption,
+  MediaPlayerControls,
+  usePlayerState,
+  useContentElementLifecycle
+} from 'pageflow-scrolled/frontend';
 
 export function InlineVideo({sectionProps, configuration}) {
-  const ref = useRef();
-  const onScreen = useOnScreen(ref, '-50% 0px -50% 0px');
   const [playerState, playerActions] = usePlayerState();
 
+  const {isPrepared} = useContentElementLifecycle({
+    onActivate() {
+      if (configuration.autoplay) {
+        playerActions.play();
+      }
+    },
+
+    onDeactivate() {
+      playerActions.pause();
+    }
+  });
+
   return (
-    <div ref={ref}>
-      <VideoPlayer position={configuration.position}
-                   autoplay={configuration.autoplay}
+    <div>
+      <VideoPlayer isPrepared={isPrepared}
+                   position={configuration.position}
                    controls={configuration.controls}
                    playerState={playerState}
                    playerActions={playerActions}
                    id={configuration.id}
                    posterId={configuration.posterId}
-                   state={onScreen ? 'active' : 'inactive'}
                    quality={'high'}
-                   interactive={true}
-                   playsInline={true}/>
+                   playsInline={true} />
 
       <MediaPlayerControls playerState={playerState}
                            playerActions={playerActions}

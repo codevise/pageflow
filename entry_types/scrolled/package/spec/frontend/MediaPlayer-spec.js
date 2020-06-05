@@ -31,6 +31,17 @@ describe('MediaPlayer', () => {
     expect(container.querySelector('audio')).toBeNull();
   });
 
+  it('does not render media tag when isPrepared is false', () => {
+    let state = getInitialPlayerState();
+    const {container} = render(<MediaPlayer type={'audio'}
+                                            isPrepared={false}
+                                            sources={getAudioSources()}
+                                            playerState={state}
+                                            playerActions={getPlayerActions()} />);
+
+    expect(container.querySelector('audio')).toBeNull();
+  });
+
   it('renders audio tag for audio type sources', () => {
     let state = getInitialPlayerState();
     const {container} = render(<MediaPlayer type={'audio'} sources={getAudioSources()} playerState={state} playerActions={getPlayerActions()} />);

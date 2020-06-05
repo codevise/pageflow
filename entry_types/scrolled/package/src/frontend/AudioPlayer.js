@@ -12,18 +12,18 @@ import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
  * @param {number} props.id - Perma id of the audio file.
  * @param {number} [props.posterId] - Perma id of the poster image file.
  * @param {String} [props.position] - Position of parent content element.
+ * @param {boolean} [props.isPrepared] - Control lazy loading.
  */
 export function AudioPlayer(props) {
   const audioFile = useFile({collectionName: 'audioFiles', permaId: props.id});
   const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
 
   if (audioFile && audioFile.isReady) {
-    const processedSources = processSources(audioFile);
     return (
       <ViewportDependentPillarBoxes file={posterImage} position={props.position}>
         <MediaPlayer className={styles.audioPlayer}
                      type={'audio'}
-                     sources={processedSources}
+                     sources={processSources(audioFile)}
                      posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
                      {...props} />
       </ViewportDependentPillarBoxes>
@@ -34,7 +34,6 @@ export function AudioPlayer(props) {
 }
 
 AudioPlayer.defaultProps = {
-  interactive: false,
   controls: true
 };
 
