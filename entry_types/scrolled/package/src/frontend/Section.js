@@ -9,6 +9,7 @@ import isIntersectingX from './isIntersectingX';
 import useBoundingClientRect from './useBoundingClientRect';
 import useDimension from './useDimension';
 import useScrollTarget from './useScrollTarget';
+import {SectionLifecycleProvider} from './useSectionLifecycle'
 import {withInlineEditingDecorator} from './inlineEditing';
 
 import styles from './Section.module.css';
@@ -34,8 +35,6 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
   useOnScreen(activityProbeRef, '-50% 0px -50% 0px', props.onActivate);
 
   const ref = useRef();
-  const onScreen = useOnScreen(ref, '0px 0px 0px 0px');
-
   useScrollTarget(ref, props.isScrollTarget);
 
   const sectionProperties = useMemo(() => ({
@@ -86,37 +85,36 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
              className={classNames(styles.Section,
                                    transitionStyles.section,
                                    {[styles.invert]: props.invert})}>
-      <div ref={activityProbeRef} className={styles.activityProbe} />
-      <Backdrop {...props.backdrop}
-                onMotifAreaUpdate={setMotifAreaRefs}
-                onScreen={onScreen}
-                offset={Math.max(0, Math.max(1, -contentAreaRect.top / 200)) }
-                state={props.state}
-                transitionStyles={transitionStyles}
-                nextSectionOnEnd={props.nextSectionOnEnd}>
-        {(children) => <Shadow align={props.layout}
-                               intersecting={intersecting}
-                               opacity={props.shadowOpacity >= 0 ? props.shadowOpacity / 100 : 0.7}
-                               motifAreaRect={motifAreaRect}
-                               contentAreaRect={contentAreaRect}>{children}</Shadow>}
-      </Backdrop>
-      <Foreground transitionStyles={transitionStyles}
+      <SectionLifecycleProvider>
+        <div ref={activityProbeRef} className={styles.activityProbe} />
+        <Backdrop {...props.backdrop}
+                  onMotifAreaUpdate={setMotifAreaRefs}
                   state={props.state}
-                  heightMode={heightMode(props)}>
-        <Box active={intersecting}
-             coverInvisibleNextSection={props.nextSection && props.nextSection.transition.startsWith('fade')}
-             transitionStyles={transitionStyles}
-             state={props.state}
-             padding={Math.max(0, motifAreaDimension.top + motifAreaDimension.height - heightOffset)}
-             opacity={props.shadowOpacity}>
-          <Layout items={indexItems(props.foreground)}
-                  appearance={props.appearance}
-                  contentAreaRef={setContentAreaRef}
-                  sectionProps={sectionProperties}>
-            {(children) => <BoxWrapper>{children}</BoxWrapper>}
-          </Layout>
-        </Box>
-      </Foreground>
+                  transitionStyles={transitionStyles}>
+          {(children) => <Shadow align={props.layout}
+                                 intersecting={intersecting}
+                                 opacity={props.shadowOpacity >= 0 ? props.shadowOpacity / 100 : 0.7}
+                                 motifAreaRect={motifAreaRect}
+                                 contentAreaRect={contentAreaRect}>{children}</Shadow>}
+        </Backdrop>
+        <Foreground transitionStyles={transitionStyles}
+                    state={props.state}
+                    heightMode={heightMode(props)}>
+          <Box active={intersecting}
+               coverInvisibleNextSection={props.nextSection && props.nextSection.transition.startsWith('fade')}
+               transitionStyles={transitionStyles}
+               state={props.state}
+               padding={Math.max(0, motifAreaDimension.top + motifAreaDimension.height - heightOffset)}
+               opacity={props.shadowOpacity}>
+            <Layout items={indexItems(props.foreground)}
+                    appearance={props.appearance}
+                    contentAreaRef={setContentAreaRef}
+                    sectionProps={sectionProperties}>
+              {(children) => <BoxWrapper>{children}</BoxWrapper>}
+            </Layout>
+          </Box>
+        </Foreground>
+      </SectionLifecycleProvider>
     </section>
   );
 });

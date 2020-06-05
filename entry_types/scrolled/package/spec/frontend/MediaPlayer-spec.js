@@ -112,7 +112,7 @@ describe('MediaPlayer', () => {
                           sources={getVideoSources()}
                           playerState={state} />);
 
-    expect(player.play).toHaveBeenCalledTimes(1);
+    expect(player.playOrPlayOnLoad).toHaveBeenCalledTimes(1);
   });
 
   it('calls playAndFadeIn on player when shouldPlay changes to true and fadeDuration is present', () => {

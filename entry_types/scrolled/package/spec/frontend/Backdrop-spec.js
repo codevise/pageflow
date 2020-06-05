@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 
-import {renderInEntry} from 'support';
+import {renderInEntryWithSectionLifecycle} from 'support';
 import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
 import {Backdrop} from 'frontend/Backdrop';
@@ -14,7 +14,7 @@ describe('Backdrop', () => {
 
   it('supports rendering image given by id', () => {
     const {getByRole} =
-      renderInEntry(
+      renderInEntryWithSectionLifecycle(
         <Backdrop image={100} />,
         {
           seed: {
@@ -37,7 +37,7 @@ describe('Backdrop', () => {
     usePortraitOrientation.mockReturnValue(true);
 
     const {getByRole} =
-      renderInEntry(
+      renderInEntryWithSectionLifecycle(
         <Backdrop image={100} imageMobile={200} />,
         {
           seed: {
@@ -61,7 +61,7 @@ describe('Backdrop', () => {
     usePortraitOrientation.mockReturnValue(false);
 
     const {getByRole} =
-      renderInEntry(
+      renderInEntryWithSectionLifecycle(
         <Backdrop image={100} imageMobile={200} />,
         {
           seed: {
@@ -85,7 +85,7 @@ describe('Backdrop', () => {
     usePortraitOrientation.mockReturnValue(false);
 
     const {getByRole} =
-      renderInEntry(
+      renderInEntryWithSectionLifecycle(
         <Backdrop imageMobile={200} />,
         {
           seed: {
@@ -108,7 +108,7 @@ describe('Backdrop', () => {
     usePortraitOrientation.mockReturnValue(false);
 
     const {container} =
-      renderInEntry(
+      renderInEntryWithSectionLifecycle(
         <Backdrop color="#f00" />
       )
 
@@ -120,7 +120,7 @@ describe('Backdrop', () => {
     usePortraitOrientation.mockReturnValue(false);
 
     const {container} =
-      renderInEntry(
+      renderInEntryWithSectionLifecycle(
         <Backdrop image="#f00" />
       )
 
@@ -128,20 +128,114 @@ describe('Backdrop', () => {
         .toHaveAttribute('style', expect.stringContaining('rgb(255, 0, 0)'));
   });
 
-  it('supports rendering video given by id', () => {
-    const {getPlayerByFilePermaId} =
-      renderInEntry(
-        <Backdrop video={100}>
-          {children => children}
-        </Backdrop>,
-        {
-          queries: fakeMediaRenderQueries,
-          seed: {
-            videoFiles: [{permaId: 100}]
+  describe('with video', () => {
+    it('does not render video when outside viewport', () => {
+      const {queryPlayerByFilePermaId} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop video={100} />,
+          {
+            queries: fakeMediaRenderQueries,
+            seed: {
+              videoFiles: [{permaId: 100}]
+            }
           }
-        }
-      );
+        );
 
-    expect(getPlayerByFilePermaId(100)).toBeDefined();
+      expect(queryPlayerByFilePermaId(100)).toBeNull();
+    });
+
+    it('renders video when near viewport', () => {
+      const {simulateScrollPosition, queryPlayerByFilePermaId} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop video={100} />,
+          {
+            queries: fakeMediaRenderQueries,
+            seed: {
+              videoFiles: [{permaId: 100}]
+            }
+          }
+        );
+
+      simulateScrollPosition('near viewport');
+
+      expect(queryPlayerByFilePermaId(100)).toBeDefined();
+    });
+
+    it('plays without volume when scrolled into viewport', () => {
+      const {simulateScrollPosition, getPlayerByFilePermaId} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop video={100} />,
+          {
+            queries: fakeMediaRenderQueries,
+            seed: {
+              videoFiles: [{permaId: 100}]
+            }
+          }
+        );
+
+      simulateScrollPosition('in viewport');
+      const player = getPlayerByFilePermaId(100);
+
+      expect(player.changeVolumeFactor).toHaveBeenCalledWith(0, 0);
+      expect(player.playOrPlayOnLoad).toHaveBeenCalled();
+    });
+
+    it('fades in volume when section becomes active', () => {
+      const {simulateScrollPosition, getPlayerByFilePermaId} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop video={100} />,
+          {
+            queries: fakeMediaRenderQueries,
+            seed: {
+              videoFiles: [{permaId: 100}]
+            }
+          }
+        );
+
+      simulateScrollPosition('in viewport');
+      const player = getPlayerByFilePermaId(100);
+      simulateScrollPosition('center of viewport');
+
+      expect(player.changeVolumeFactor).toHaveBeenCalledWith(1, 1000);
+    });
+
+    it('fades out volume when section becomes inactive', () => {
+      const {simulateScrollPosition, getPlayerByFilePermaId} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop video={100} />,
+          {
+            queries: fakeMediaRenderQueries,
+            seed: {
+              videoFiles: [{permaId: 100}]
+            }
+          }
+        );
+
+      simulateScrollPosition('in viewport');
+      const player = getPlayerByFilePermaId(100);
+      simulateScrollPosition('center of viewport');
+      simulateScrollPosition('in viewport');
+
+      expect(player.changeVolumeFactor).toHaveBeenCalledWith(0, 1000);
+    });
+
+    it('pauses when scrolled outside viewport', () => {
+      const {simulateScrollPosition, getPlayerByFilePermaId} =
+        renderInEntryWithSectionLifecycle(
+          <Backdrop video={100} />,
+          {
+            queries: fakeMediaRenderQueries,
+            seed: {
+              videoFiles: [{permaId: 100}]
+            }
+          }
+        );
+
+      simulateScrollPosition('in viewport');
+      simulateScrollPosition('near viewport');
+      const player = getPlayerByFilePermaId(100);
+
+      expect(player.pause).toHaveBeenCalled();
+    });
   });
 });

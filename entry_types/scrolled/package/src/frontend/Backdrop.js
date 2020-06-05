@@ -9,6 +9,7 @@ import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
 import {usePlayerState} from './MediaPlayer/usePlayerState';
 import {usePortraitOrientation} from './usePortraitOrientation';
+import {useSectionLifecycle} from './useSectionLifecycle';
 
 import styles from './Backdrop.module.css';
 
@@ -108,15 +109,31 @@ function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
 
 function BackgroundVideo(props) {
   const [playerState, playerActions] = usePlayerState();
+  const {isPrepared} = useSectionLifecycle({
+    onVisible() {
+      playerActions.changeVolumeFactor(0, 0);
+      playerActions.play()
+    },
+
+    onActivate() {
+      playerActions.changeVolumeFactor(1, 1000);
+    },
+
+    onDeactivate() {
+      playerActions.changeVolumeFactor(0, 1000);
+    },
+
+    onInvisible() {
+      playerActions.pause()
+    }
+  });
 
   return (
-    <VideoPlayer state={props.onScreen ? 'active' : 'inactive'}
-                 autoplay={true}
+    <VideoPlayer isPrepared={isPrepared}
                  playerState={playerState}
                  playerActions={playerActions}
                  id={props.video}
                  fit="cover"
-                 offset={props.offset}
-                 nextSectionOnEnd={props.nextSectionOnEnd} />
+                 loop={true} />
   );
 }

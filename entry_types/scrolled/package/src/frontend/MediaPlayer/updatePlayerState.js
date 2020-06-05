@@ -18,7 +18,7 @@ export function updatePlayerState(player, prevPlayerState, playerState, playerAc
       player.playAndFadeIn(playerState.fadeDuration);
     }
     else {
-      player.play();
+      player.playOrPlayOnLoad();
     }
   }
   else if (prevPlayerState.shouldPlay && !playerState.shouldPlay && playerState.isPlaying) {
