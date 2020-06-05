@@ -8,6 +8,7 @@ import FillColor from './FillColor';
 import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
 import {usePlayerState} from './MediaPlayer/usePlayerState';
+import {usePortraitOrientation} from './usePortraitOrientation';
 
 import styles from './Backdrop.module.css';
 
@@ -29,6 +30,7 @@ export function Backdrop(props) {
 }
 
 Backdrop.defaultProps = {
+  children: children => children,
   transitionStyles: {}
 };
 
@@ -40,23 +42,69 @@ function renderContent(props, containerDimension, setContainerRef) {
       </Fullscreen>
     );
   }
-  else if (props.image.toString().startsWith('#')) {
+  else if (props.color ||
+           (props.image && props.image.toString().startsWith('#'))) {
     return (
-      <FillColor color={props.image} />
+      <FillColor color={props.color || props.image} />
+    );
+  } else {
+    return (
+      <Fullscreen ref={setContainerRef}>
+        {renderBackgroundImage(props, containerDimension)}
+      </Fullscreen>
+    );
+  }
+}
+
+function renderBackgroundImage(props, containerDimension) {
+  if (props.image && props.imageMobile) {
+    return (
+      <OrientationAwareBackgroundImage image={props.image}
+                                       imageMobile={props.imageMobile}
+                                       motifAreaRef={props.motifAreaRef}
+                                       containerDimension={containerDimension} />
     );
   }
   else {
     return (
-      <Fullscreen ref={setContainerRef}>
-        <Image id={props.image} />
-        <Image id={props.imageMobile} mobile={true} />
-        <MotifArea ref={props.motifAreaRef}
-                   imageId={props.image}
-                   containerWidth={containerDimension.width}
-                   containerHeight={containerDimension.height} />
-      </Fullscreen>
+      <BackgroundImage
+          image={props.image || props.imageMobile}
+          motifAreaRef={props.motifAreaRef}
+          containerDimension={containerDimension} />
     );
   }
+}
+
+function OrientationAwareBackgroundImage({image, motifAreaRef, imageMobile, containerDimension}) {
+  const mobile = usePortraitOrientation();
+
+  if (mobile) {
+    return (
+      <BackgroundImage image={imageMobile}
+                       motifAreaRef={motifAreaRef}
+                       containerDimension={containerDimension} />
+    )
+  }
+  else {
+    return (
+      <BackgroundImage image={image}
+                       motifAreaRef={motifAreaRef}
+                       containerDimension={containerDimension} />
+    )
+  }
+}
+
+function BackgroundImage({image, motifAreaRef, containerDimension}) {
+  return (
+    <>
+      <Image id={image}/>
+      <MotifArea key={image}
+                 ref={motifAreaRef}
+                 imageId={image}
+                 containerWidth={containerDimension.width}
+                 containerHeight={containerDimension.height}/>
+    </>
+  );
 }
 
 function BackgroundVideo(props) {

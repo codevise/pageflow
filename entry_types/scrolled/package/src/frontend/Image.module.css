@@ -5,15 +5,3 @@
   width: 100%;
   height: 100%;
 }
-
-@media (orientation: landscape) {
-  .portrait {
-    display: none;
-  }
-}
-
-@media (orientation: portrait) {
-  .portrait {
-    display: block;
-  }
-}

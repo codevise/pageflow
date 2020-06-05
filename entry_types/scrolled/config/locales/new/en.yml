@@ -256,6 +256,13 @@ en:
               transparent: Transparent
           backdropImage:
             label: Background-Image
+          backdropImageMobile:
+            label: Background-Image (Portrait)
+            inline_help: >
+              Displayed when the browser viewport is taller than wide, for example
+              on phones or tablets in portrait orientation. Can be used to supply an
+              alternative to a landscape background image that would otherwise have
+              important parts cropped off.
           backdropVideo:
             label: Background-Video
           backdropType:
