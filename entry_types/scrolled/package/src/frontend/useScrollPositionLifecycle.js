@@ -1,5 +1,8 @@
 import React, {useRef, useEffect, useContext, useMemo, createContext} from 'react';
+import classNames from 'classnames';
 import {useOnScreen} from './useOnScreen';
+
+import styles from './useScrollPositionLifecycle.module.css';
 
 const StaticPreviewContext = createContext(false);
 
@@ -12,18 +15,26 @@ export function StaticPreview({children}) {
 }
 
 export function createScrollPositionLifecycleProvider(Context) {
-  return function ScrollPositionLifecycleProvider({children}) {
+  return function ScrollPositionLifecycleProvider({children, onActivate}) {
     const ref = useRef();
+    const isActiveProbeRef = useRef();
+
     const isStaticPreview = useContext(StaticPreviewContext);
-    const isPrepared = useOnScreen(ref, '25% 0px 25% 0px');
+
+    const isPrepared = useOnScreen(ref, {rootMargin: '25% 0px 25% 0px'});
     const isVisible = useOnScreen(ref);
-    const isActive = useOnScreen(ref, '-50% 0px -50% 0px') && !isStaticPreview;
+    const isActive = useOnScreen(isActiveProbeRef, {
+      rootMargin: '-50% 0px -50% 0px',
+      onIntersecting: onActivate
+    }) && !isStaticPreview;
 
     const value = useMemo(() => ({isPrepared, isVisible, isActive}),
                           [isPrepared, isVisible, isActive]);
 
     return (
-      <div ref={ref}>
+      <div ref={ref} className={classNames(styles.wrapper)}>
+        <div ref={isActiveProbeRef} className={styles.isActiveProbe} />
+
         <Context.Provider value={value}>
           {children}
         </Context.Provider>

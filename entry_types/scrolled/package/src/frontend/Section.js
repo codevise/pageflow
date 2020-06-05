@@ -1,7 +1,6 @@
 import React, {useRef, useCallback, useMemo} from 'react';
 import classNames from 'classnames';
 
-import {useOnScreen} from './useOnScreen';
 import {Backdrop} from './Backdrop';
 import Foreground from './Foreground';
 import {Layout} from './layouts';
@@ -31,9 +30,6 @@ export const OnScreenContext = React.createContext({
 });
 
 export default withInlineEditingDecorator('SectionDecorator', function Section(props) {
-  const activityProbeRef = useRef();
-  useOnScreen(activityProbeRef, '-50% 0px -50% 0px', props.onActivate);
-
   const ref = useRef();
   useScrollTarget(ref, props.isScrollTarget);
 
@@ -85,8 +81,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
              className={classNames(styles.Section,
                                    transitionStyles.section,
                                    {[styles.invert]: props.invert})}>
-      <SectionLifecycleProvider>
-        <div ref={activityProbeRef} className={styles.activityProbe} />
+      <SectionLifecycleProvider onActivate={props.onActivate} isLast={!props.nextSection}>
         <Backdrop {...props.backdrop}
                   onMotifAreaUpdate={setMotifAreaRefs}
                   state={props.state}

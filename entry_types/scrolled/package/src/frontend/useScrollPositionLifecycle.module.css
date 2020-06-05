@@ -1,0 +1,11 @@
+.wrapper {
+  position: relative;
+}
+
+.isActiveProbe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 2px;
+  width: 1px;
+}

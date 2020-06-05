@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 
-export function useOnScreen(ref, rootMargin = '0px', cb) {
+export function useOnScreen(ref, {rootMargin, onIntersecting} = {}) {
   const [isIntersecting, setIntersecting] = useState(false);
 
   useEffect(() => {
@@ -9,8 +9,8 @@ export function useOnScreen(ref, rootMargin = '0px', cb) {
       ([entry]) => {
         setIntersecting(entry.isIntersecting);
 
-        if (entry.isIntersecting && cb) {
-          cb();
+        if (entry.isIntersecting && onIntersecting) {
+          onIntersecting();
         }
       },
       {
@@ -25,7 +25,7 @@ export function useOnScreen(ref, rootMargin = '0px', cb) {
     return () => {
       observer.unobserve(current);
     };
-  }, [ref, rootMargin, cb]);
+  }, [ref, rootMargin, onIntersecting]);
 
   return isIntersecting;
 }
