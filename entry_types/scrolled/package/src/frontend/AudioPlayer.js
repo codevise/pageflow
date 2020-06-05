@@ -23,6 +23,7 @@ export function AudioPlayer(props) {
       <ViewportDependentPillarBoxes file={posterImage} position={props.position}>
         <MediaPlayer className={styles.audioPlayer}
                      type={'audio'}
+                     filePermaId={props.id}
                      sources={processSources(audioFile)}
                      posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
                      {...props} />

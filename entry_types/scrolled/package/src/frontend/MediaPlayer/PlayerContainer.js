@@ -3,23 +3,24 @@ import {media} from 'pageflow/frontend';
 
 import './videojsBase.module.css';
 
-function PlayerContainer({className, sources, poster, type, playsInline, loop, controls, onSetup, onDispose}){
-  
+function PlayerContainer({
+  filePermaId, className, sources, poster, type, playsInline, loop, controls, onSetup, onDispose
+}){
   const playerWrapperRef = useRef(null);
 
   useEffect(() => {
-    
     let playerWrapper = playerWrapperRef.current;
-    
+
     if (sources) {
       let player = media.getPlayer(sources, {
+        filePermaId,
         poster: poster,
         tagName: type,
         playsInline: playsInline,
         loop: loop,
         controls: controls
       });
-      
+
       let playerElement = player.el();
       playerWrapper.appendChild(playerElement);
       if (onSetup) {

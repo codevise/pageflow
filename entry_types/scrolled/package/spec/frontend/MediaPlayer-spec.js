@@ -3,143 +3,176 @@ import '@testing-library/jest-dom/extend-expect'
 import 'support/mediaElementStub';
 import 'support/fakeBrowserFeatures';
 import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
+import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
 import MutedContext from 'frontend/MutedContext';
-import {render} from '@testing-library/react'
+import {render as testingLibraryRender} from '@testing-library/react'
 import {media} from 'pageflow/frontend';
 import {MediaPlayer} from 'frontend/MediaPlayer';
 
 describe('MediaPlayer', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-  let getAudioSources = () => {
-    return [ 
+  useFakeMedia();
+
+  function getAudioSources() {
+    return [
       {type: 'audio/ogg', src: 'http://example.com/example.ogg'},
       {type: 'audio/m4a', src: 'http://example.com/example.m4a'},
       {type: 'audio/mp3', src: 'http://example.com/example.ogg'}
     ];
   }
-  let getVideoSources = () => {
-    return [ 
-      {type: 'video/mp4', src: 'http://example.com/example.mp4'},
+
+  function getVideoSources({basename = 'example'} = {}) {
+    return [
+      {type: 'video/mp4', src: `http://example.com/${basename}.mp4`},
     ];
   }
 
-  it('do not renders audio tag without sources', () => {
-    const {container} = render(<MediaPlayer type={'audio'} />);
-    expect(container.querySelector('audio')).toBeNull();
+  function requiredProps() {
+    return {
+      type: 'video',
+      playerState: getInitialPlayerState(),
+      playerActions: getPlayerActions()
+    };
+  }
+
+  function render(ui, options) {
+    return testingLibraryRender(ui, {
+      ...options,
+      queries: fakeMediaRenderQueries
+    });
+  }
+
+  it('does not render player without sources', () => {
+    const {queryPlayer} = render(<MediaPlayer {...requiredProps()} />);
+
+    expect(queryPlayer()).toBeNull();
   });
 
-  it('does not render media tag when isPrepared is false', () => {
-    let state = getInitialPlayerState();
-    const {container} = render(<MediaPlayer type={'audio'}
-                                            isPrepared={false}
-                                            sources={getAudioSources()}
-                                            playerState={state}
-                                            playerActions={getPlayerActions()} />);
+  it('does not render player when isPrepared is false', () => {
+    const {queryPlayer} = render(<MediaPlayer {...requiredProps()}
+                                              isPrepared={false}
+                                              sources={getAudioSources()} />);
 
-    expect(container.querySelector('audio')).toBeNull();
+    expect(queryPlayer()).toBeNull();
   });
 
-  it('renders audio tag for audio type sources', () => {
-    let state = getInitialPlayerState();
-    const {container} = render(<MediaPlayer type={'audio'} sources={getAudioSources()} playerState={state} playerActions={getPlayerActions()} />);
-    
-    expect(container.querySelector('audio')).toBeDefined();
+  it('renders audio player when sources are present', () => {
+    const {queryPlayer} = render(<MediaPlayer {...requiredProps()}
+                                              type={'audio'}
+                                              sources={getAudioSources()} />);
+
+    expect(queryPlayer()).toBeDefined();
+    expect(media.getPlayer).toHaveBeenCalledWith(getAudioSources(),
+                                                 expect.objectContaining({tagName: 'audio'}))
   });
 
-  it('renders video tag for video type sources', () => {
-    let state = getInitialPlayerState();
-    const {container} = render(<MediaPlayer type={'video'} sources={getAudioSources()} playerState={state} playerActions={getPlayerActions()} />);
-    
-    expect(container.querySelector('video')).toBeDefined();
+  it('renders video player when sources are present', () => {
+    const {queryPlayer} = render(<MediaPlayer {...requiredProps()}
+                                              type={'video'}
+                                              sources={getVideoSources()} />);
+
+    expect(queryPlayer()).toBeDefined();
+    expect(media.getPlayer).toHaveBeenCalledWith(getVideoSources(),
+                                                 expect.objectContaining({tagName: 'video'}))
   });
 
-  it('do not requests new Player for same sources', () => {
-    const spyMedia = jest.spyOn(media, 'getPlayer');
-    let state = getInitialPlayerState();
-    let playerActions = getPlayerActions();
-    const {rerender} = render(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    expect(spyMedia).toHaveBeenCalledTimes(1);
-    rerender(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    expect(spyMedia).toHaveBeenCalledTimes(1);
+  it('does not request new Player for same sources', () => {
+    const {rerender} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()} />);
+    rerender(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()} />);
+
+    expect(media.getPlayer).toHaveBeenCalledTimes(1);
   });
 
   it('requests new Player on sources change', () => {
-    const spyMedia = jest.spyOn(media, 'getPlayer');
-    let state = getInitialPlayerState();
-    let playerActions = getPlayerActions();
-    const {rerender} = render(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    expect(spyMedia).toHaveBeenCalledTimes(1);
-    let videoSources = getVideoSources();
-    videoSources[0].src = 'example.mp4';
-    rerender(<MediaPlayer type={'video'} sources={videoSources} playerState={state} playerActions={playerActions} />);
-    expect(spyMedia).toHaveBeenCalledTimes(2);
+    const {rerender} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources({basename: 'example'})} />);
+    rerender(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources({basename: 'other'})} />);
+
+    expect(media.getPlayer).toHaveBeenCalledTimes(2);
   });
 
   it('calls play on player when shouldPlay changes to true in playerState', () => {
     let state = getInitialPlayerState();
-    let playerActions = getPlayerActions();
-    const {rerender} = render(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    
-    state = getInitialPlayerState();
-    state.shouldPlay = true;
+    const {rerender, getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+    const player = getPlayer();
 
-    let spyPlay = jest.spyOn(media.players['0'], 'play');
-    rerender(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    expect(spyPlay).toHaveBeenCalledTimes(1);
+    state = {
+      ...state,
+      shouldPlay: true
+    };
+    rerender(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+
+    expect(player.play).toHaveBeenCalledTimes(1);
   });
 
   it('calls playAndFadeIn on player when shouldPlay changes to true and fadeDuration is present', () => {
     let state = getInitialPlayerState();
-    let playerActions = getPlayerActions();
-    const {rerender} = render(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    
-    state = getInitialPlayerState();
-    state.fadeDuration = 100;
-    state.shouldPlay = true;
-    
-    let spyPlayAndFadeIn = jest.spyOn(media.players['0'], 'playAndFadeIn');
-    rerender(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    expect(spyPlayAndFadeIn).toHaveBeenCalledTimes(1);
-    expect(spyPlayAndFadeIn).toHaveBeenCalledWith(100);
+    const {rerender, getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+    const player = getPlayer();
+
+    state = {
+      ...state,
+      fadeDuration: 100,
+      shouldPlay: true
+    };
+    rerender(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+
+    expect(player.playAndFadeIn).toHaveBeenCalledTimes(1);
+    expect(player.playAndFadeIn).toHaveBeenCalledWith(100);
   });
 
   it('calls pause on player when isPlaying and shouldPlay changes to false in playerState', () => {
-    let state = getInitialPlayerState();
-    state.isPlaying = true;
-    state.shouldPlay = true;
-    let playerActions = getPlayerActions();
-    const {rerender} = render(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    
-    state = getInitialPlayerState();
-    state.isPlaying = true;
-    state.shouldPlay = false;
+    let state = {
+      ...getInitialPlayerState(),
+      isPlaying: true,
+      shouldPlay: true
+    };
+    const {rerender, getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+    const player = getPlayer();
 
-    let spyPause = jest.spyOn(media.players['0'], 'pause');
-    rerender(<MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />);
-    expect(spyPause).toHaveBeenCalledTimes(1);
+    state = {
+      ...state,
+      shouldPlay: false
+    };
+    rerender(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+
+    expect(player.pause).toHaveBeenCalledTimes(1);
   });
 
   it('causes player to play when autoplay is set to true and state is active', () => {
-    let state = getInitialPlayerState();
-    let playerActions = getPlayerActions();
-    
-    const {rerender} = render(
+    const {rerender, getPlayer} = render(
       <MutedContext.Provider value={{muted: true}}>
-        <MediaPlayer type={'video'} sources={getVideoSources()} playerState={state} playerActions={playerActions} />
-      </MutedContext.Provider>
-     );
-    
-    let spyPlay = jest.spyOn(media.players['0'], 'playOrPlayOnLoad');
-        
-    rerender(
-      <MutedContext.Provider value={{muted: true}}>
-        <MediaPlayer type={'video'} sources={getVideoSources()} state={'active'} autoplay={true} playerState={state} playerActions={playerActions} />
+        <MediaPlayer {...requiredProps()} sources={getVideoSources()} />
       </MutedContext.Provider>
     );
-    expect(spyPlay).toHaveBeenCalled();
-  })
+    const player = getPlayer();
 
+    rerender(
+      <MutedContext.Provider value={{muted: true}}>
+        <MediaPlayer {...requiredProps()} sources={getVideoSources()} state={'active'} autoplay={true} />
+      </MutedContext.Provider>
+    );
+
+    expect(player.playOrPlayOnLoad).toHaveBeenCalled();
+  });
 });

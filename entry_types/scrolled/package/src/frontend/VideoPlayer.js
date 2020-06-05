@@ -25,6 +25,7 @@ export function VideoPlayer(props) {
       <Positioner file={videoFile} fit={props.fit} position={props.position}>
         <MediaPlayer className={classNames(styles.videoPlayer, styles[props.fit])}
                      type={'video'}
+                     filePermaId={props.id}
                      sources={processSources(videoFile)}
                      posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
                      {...props} />

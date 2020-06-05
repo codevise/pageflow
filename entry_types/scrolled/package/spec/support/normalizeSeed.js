@@ -51,6 +51,7 @@ export function normalizeSeed({
         imageFiles: {
           ...imageFileUrlTemplates
         },
+        videoFiles: {},
         ...fileUrlTemplates
       },
       prettyUrl: prettyUrl,
@@ -66,6 +67,7 @@ export function normalizeSeed({
         configuration: {}
       }),
       videoFiles: normalizeCollection(videoFiles, {
+        isReady: true,
         configuration: {}
       }),
       audioFiles: normalizeCollection(audioFiles, {
