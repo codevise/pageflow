@@ -29,7 +29,6 @@ export {MediaPlayerControls} from './MediaPlayerControls';
 export {PlayerControls} from './PlayerControls';
 
 export * from './useOnScreen';
-export * from './useMediaSettings';
 export * from './i18n';
 
 export * from './SectionThumbnail';

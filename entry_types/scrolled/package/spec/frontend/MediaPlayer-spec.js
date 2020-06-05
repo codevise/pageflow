@@ -192,21 +192,4 @@ describe('MediaPlayer', () => {
 
     expect(player.changeVolumeFactor).toHaveBeenCalledWith(0.2, 500);
   });
-
-  it('causes player to play when autoplay is set to true and state is active', () => {
-    const {rerender, getPlayer} = render(
-      <MutedContext.Provider value={{muted: true}}>
-        <MediaPlayer {...requiredProps()} sources={getVideoSources()} />
-      </MutedContext.Provider>
-    );
-    const player = getPlayer();
-
-    rerender(
-      <MutedContext.Provider value={{muted: true}}>
-        <MediaPlayer {...requiredProps()} sources={getVideoSources()} state={'active'} autoplay={true} />
-      </MutedContext.Provider>
-    );
-
-    expect(player.playOrPlayOnLoad).toHaveBeenCalled();
-  });
 });

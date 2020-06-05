@@ -1,14 +1,4 @@
-export function updatePlayerState(player, prevPlayerState, playerState, playerActions, componentState, isAutoplay, isMediaOff){
-
-  if (!isMediaOff && playerState.unplayed && isAutoplay) {
-    if (componentState === 'active') {
-      player.playOrPlayOnLoad();
-    }
-    else {
-      player.pause();
-    }
-  }
-
+export function updatePlayerState(player, prevPlayerState, playerState, playerActions){
   if (!prevPlayerState.shouldPrebuffer && playerState.shouldPrebuffer) {
     player.prebuffer().then(() => setTimeout(playerActions.prebuffered, 0));
   }
