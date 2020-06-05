@@ -1,48 +1,23 @@
-import {frontend, Entry, useContentElementLifecycle} from 'pageflow-scrolled/frontend';
+import {useSectionLifecycle} from 'frontend/useSectionLifecycle';
 
+import {Entry, frontend} from 'pageflow-scrolled/frontend';
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
-import {renderInEntry, ErrorCatching} from 'support';
+import {renderInEntry} from 'support';
 import {simulateScrollingIntoView, simulateScrollingOutOfView} from 'support/fakeIntersectionObserver';
 
 import React from 'react';
 import {act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
-describe('useContentElementLifecycle', () => {
-  afterEach(() => jest.restoreAllMocks());
-
-  it('throws descriptive error if content element type is missing flag', () => {
-    frontend.contentElementTypes.register('test', {
-      component: function Test() {
-        useContentElementLifecycle()
-        return null;
-      }
-    });
-    const handler = jest.fn();
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-
-    renderInEntry(
-      <ErrorCatching onError={e => handler(e.message)}>
-        <Entry />
-      </ErrorCatching>,
-      {seed: {contentElements: [{typeName: 'test'}]}}
-    );
-
-    expect(handler).toHaveBeenCalledWith(expect.stringMatching(
-      /only available in content elements for which `lifecycle: true`/
-    ));
-  });
-
+describe('useSectionLifecycle', () => {
   describe('isActive', () => {
     beforeEach(() => {
       frontend.contentElementTypes.register('test', {
-        lifecycle: true,
-
         component: function Test() {
-          const {isActive} = useContentElementLifecycle();
+          const {isActive} = useSectionLifecycle();
           return (
             <div data-testid="testElement">
-              {isActive ? 'playing' : 'paused'}
+              {isActive ? 'active' : 'idle'}
             </div>
           );
         }
@@ -56,7 +31,7 @@ describe('useContentElementLifecycle', () => {
         }
       });
 
-      expect(getByTestId('testElement')).toHaveTextContent('paused');
+      expect(getByTestId('testElement')).toHaveTextContent('idle');
     });
 
     it('is true if element is inside viewport', async () => {
@@ -70,7 +45,7 @@ describe('useContentElementLifecycle', () => {
         simulateScrollingIntoView(getByTestId('testElement'))
       );
 
-      expect(getByTestId('testElement')).toHaveTextContent('playing');
+      expect(getByTestId('testElement')).toHaveTextContent('active');
     });
 
     it('stays false even inside viewport when rendered inside StaticPreview', async () => {
@@ -84,17 +59,15 @@ describe('useContentElementLifecycle', () => {
         simulateScrollingIntoView(getByTestId('testElement'))
       );
 
-      expect(getByTestId('testElement')).toHaveTextContent('paused');
+      expect(getByTestId('testElement')).toHaveTextContent('idle');
     });
   });
 
   describe('isPrepared', () => {
     beforeEach(() => {
       frontend.contentElementTypes.register('test', {
-        lifecycle: true,
-
         component: function Test() {
-          const {isPrepared} = useContentElementLifecycle();
+          const {isPrepared} = useSectionLifecycle();
           return (
             <div data-testid="testElement">
               {isPrepared ? 'loaded' : 'blank'}
@@ -129,15 +102,82 @@ describe('useContentElementLifecycle', () => {
     });
   });
 
+  describe('isVisible', () => {
+    beforeEach(() => {
+      frontend.contentElementTypes.register('test', {
+        component: function Test() {
+          const {isVisible} = useSectionLifecycle();
+          return (
+            <div data-testid="testElement">
+              {isVisible ? 'visible' : 'hidden'}
+            </div>
+          );
+        }
+      });
+    });
+
+    it('is false by default', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      expect(getByTestId('testElement')).toHaveTextContent('hidden');
+    });
+
+    it('is true if element is near viewport', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(getByTestId('testElement'))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('visible');
+    });
+  });
+
+  describe('onVisible option', () => {
+    it('invoked when element enters viewport', async () => {
+      const handler = jest.fn();
+
+      frontend.contentElementTypes.register('test', {
+        component: function Test() {
+          useSectionLifecycle({
+            onVisible: handler
+          });
+
+          return (
+            <div data-testid="testElement" />
+          );
+        }
+      });
+
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(getByTestId('testElement'))
+      );
+
+      expect(handler).toHaveBeenCalled();
+    });
+  });
+
   describe('onActivate option', () => {
     it('invoked when element enters viewport', async () => {
       const handler = jest.fn();
 
       frontend.contentElementTypes.register('test', {
-        lifecycle: true,
-
         component: function Test() {
-          useContentElementLifecycle({
+          useSectionLifecycle({
             onActivate: handler
           });
 
@@ -166,11 +206,38 @@ describe('useContentElementLifecycle', () => {
       const handler = jest.fn();
 
       frontend.contentElementTypes.register('test', {
-        lifecycle: true,
-
         component: function Test() {
-          useContentElementLifecycle({
+          useSectionLifecycle({
             onDeactivate: handler
+          });
+
+          return (
+            <div data-testid="testElement" />
+          );
+        }
+      });
+
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      act(() => simulateScrollingIntoView(getByTestId('testElement')));
+      act(() => simulateScrollingOutOfView(getByTestId('testElement')));
+
+      expect(handler).toHaveBeenCalled();
+    });
+  });
+
+  describe('onInvisible option', () => {
+    it('invoked when element leaves viewport', async () => {
+      const handler = jest.fn();
+
+      frontend.contentElementTypes.register('test', {
+        component: function Test() {
+          useSectionLifecycle({
+            onInvisible: handler
           });
 
           return (

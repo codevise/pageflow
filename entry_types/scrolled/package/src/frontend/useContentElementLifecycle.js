@@ -1,50 +1,35 @@
-import React, {useRef, useEffect, useContext, useMemo, createContext} from 'react';
+import React, {createContext} from 'react';
 
-import {useOnScreen} from './useOnScreen';
+import {
+  createScrollPositionLifecycleProvider,
+  createScrollPositionLifecycleHook,
+} from './useScrollPositionLifecycle';
+
 import {api} from './api';
 
-const LifecycleContext = createContext();
-const StaticPreviewContext = createContext(false);
+const ContentElementLifecycleContext = createContext();
 
-export function StaticPreview({children}) {
-  return (
-    <StaticPreviewContext.Provider value={true}>
-      {children}
-    </StaticPreviewContext.Provider>
-  );
-}
+const LifecycleProvider = createScrollPositionLifecycleProvider(
+  ContentElementLifecycleContext
+);
+
+const useLifecycle = createScrollPositionLifecycleHook(
+  ContentElementLifecycleContext
+);
 
 export function ContentElementLifecycleProvider({type, children}) {
   const {lifecycle} = api.contentElementTypes.getOptions(type);
 
   if (lifecycle) {
     return (
-      <RefBasedLifecycleProvider>
+      <LifecycleProvider>
         {children}
-      </RefBasedLifecycleProvider>
+      </LifecycleProvider>
     );
   }
   else {
     return children;
   }
-}
-
-function RefBasedLifecycleProvider({children}) {
-  const ref = useRef();
-  const isStaticPreview = useContext(StaticPreviewContext);
-  const isPrepared = useOnScreen(ref, '25% 0px 25% 0px');
-  const isActive = useOnScreen(ref, '-50% 0px -50% 0px') && !isStaticPreview;
-
-  const value = useMemo(() => ({isPrepared, isActive}),
-                        [isPrepared, isActive]);
-
-  return (
-    <div ref={ref}>
-      <LifecycleContext.Provider value={value}>
-        {children}
-      </LifecycleContext.Provider>
-    </div>
-  );
 }
 
 /**
@@ -68,28 +53,14 @@ function RefBasedLifecycleProvider({children}) {
  *
  * const {isActive, isPrepared} = useContentElementLifecycle();
  */
-export function useContentElementLifecycle({onActivate, onDeactivate} = {}) {
-  const result = useContext(LifecycleContext);
-  const wasActive = useRef();
+export function useContentElementLifecycle(options) {
+  const result = useLifecycle(options);
 
   if (!result) {
     throw new Error('useContentElementLifecycle is only available in ' +
                     'content elements for which `lifecycle: true` has ' +
                     'been passed to frontend.contentElements.register');
   }
-
-  const {isActive} = result;
-
-  useEffect(() => {
-    if (!wasActive.current && isActive && onActivate) {
-      onActivate();
-    }
-    else if (wasActive.current && !isActive && onDeactivate) {
-      onDeactivate();
-    }
-
-    wasActive.current = isActive
-  });
 
   return result;
 }
