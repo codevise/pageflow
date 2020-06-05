@@ -261,9 +261,15 @@ de:
               solid: Block
               transparent: Keine
           backdropImage:
-            label: Hintergrund-Bild (Desktop)
+            label: Hintergrund-Bild
           backdropImageMobile:
-            label: Hintergrund-Bild (Phone)
+            label: Hintergrund-Bild (Hochkant)
+            inline_help: >
+              Wird geezigt, wenn der Browser-Viewport höher als breit ist - zum Beispiel auf Smartphones
+              oder Tablets in Portrait-Ausrichtung. Kann als Alternative zu einem querformatigen
+              Hintergrund-Bild konfiguriert werden, von dem ansonsten wichtige Teile abgeschnitten würden.
+          backdropColor:
+            label: Hintergrund-Farbe
           backdropVideo:
             label: Hintergrund-Video
           backdropType:

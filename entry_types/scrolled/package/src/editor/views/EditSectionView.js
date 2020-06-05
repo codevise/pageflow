@@ -61,7 +61,7 @@ export const EditSectionView = EditConfigurationView.extend({
           }
         ]
       });
-      this.input('backdropImage', ColorInputView, {
+      this.input('backdropColor', ColorInputView, {
         visibleBinding: 'backdropType',
         visibleBindingValue: 'color'
       });
