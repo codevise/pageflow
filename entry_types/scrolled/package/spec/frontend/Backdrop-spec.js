@@ -78,6 +78,29 @@ describe('Backdrop', () => {
     expect(getByRole('img')).toHaveAttribute('style', expect.stringContaining('landscape.jpg'));
   });
 
+  it('falls back to portrait image if default image is not defined', () => {
+    usePortraitOrientation.mockReturnValue(false);
+
+    const {getByRole} =
+      renderInEntry(
+        <Backdrop imageMobile={200} />,
+        {
+          seed: {
+            fileUrlTemplates: {
+              imageFiles: {
+                large: ':basename.jpg'
+              }
+            },
+            imageFiles: [
+              {permaId: 200, basename: 'portrait'},
+            ]
+          }
+        }
+      )
+
+    expect(getByRole('img')).toHaveAttribute('style', expect.stringContaining('portrait.jpg'));
+  });
+
   it('supports rendering color as background', () => {
     usePortraitOrientation.mockReturnValue(false);
 
