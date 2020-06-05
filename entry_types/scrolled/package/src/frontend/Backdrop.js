@@ -8,13 +8,13 @@ import FillColor from './FillColor';
 import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
 import {usePlayerState} from './MediaPlayer/usePlayerState';
-import useMediaQuery from './useMediaQuery';
+import {usePortraitOrientation} from './usePortraitOrientation';
 
 import styles from './Backdrop.module.css';
 
 export function Backdrop(props) {
   const [containerDimension, setContainerRef] = useDimension();
-  const mobile = useMediaQuery('(orientation: portrait)');
+  const mobile = usePortraitOrientation();
 
   return (
     <div className={classNames(styles.Backdrop,
@@ -31,6 +31,7 @@ export function Backdrop(props) {
 }
 
 Backdrop.defaultProps = {
+  children: children => children,
   transitionStyles: {}
 };
 
@@ -42,9 +43,9 @@ function renderContent(props, containerDimension, setContainerRef, mobile) {
       </Fullscreen>
     );
   }
-  else if (props.image.toString().startsWith('#')) {
+  else if (props.color || props.image.toString().startsWith('#')) {
     return (
-      <FillColor color={props.image} />
+      <FillColor color={props.color || props.image} />
     );
   } else {
     return (
