@@ -130,6 +130,7 @@ export const ThumbnailInputView = Marionette.ItemView.extend({
   appendOptions: function () {
     _.each(this.options.values, function(value, index) {
       var option = '<div class="radio_button">'+
+                   '<div class="'+ value +'_transition"><div class="upper_section">A</div><div class="lower_section">B</div></div>'+
                    '<label><input type="radio" value="'+value+'" name="transitions"/>'+
                    this.options.texts[index]+'</label></div>';
       this.ui.container.append($(option));
