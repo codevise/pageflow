@@ -12,8 +12,8 @@ jest.mock('frontend/usePortraitOrientation')
 describe('Backdrop', () => {
   useFakeMedia();
 
-  it('supports rendering image given by id', () => {
-    const {getByRole} =
+  it('does not render image when outside viewport', () => {
+    const {queryByRole} =
       renderInEntryWithSectionLifecycle(
         <Backdrop image={100} />,
         {
@@ -30,13 +30,36 @@ describe('Backdrop', () => {
         }
       );
 
-    expect(getByRole('img')).toHaveAttribute('style', expect.stringContaining('image.jpg'));
+    expect(queryByRole('img')).toBeNull()
+  });
+
+  it('supports rendering image given by id', () => {
+    const {simulateScrollPosition, getByRole} =
+      renderInEntryWithSectionLifecycle(
+        <Backdrop image={100} />,
+        {
+          seed: {
+            fileUrlTemplates: {
+              imageFiles: {
+                large: ':basename.jpg'
+              }
+            },
+            imageFiles: [
+              {permaId: 100, basename: 'image'}
+            ]
+          }
+        }
+      );
+
+    simulateScrollPosition('near viewport');
+
+    expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('image.jpg'));
   });
 
   it('supports rendering mobile image given by id in portrait orientation', () => {
     usePortraitOrientation.mockReturnValue(true);
 
-    const {getByRole} =
+    const {simulateScrollPosition, getByRole} =
       renderInEntryWithSectionLifecycle(
         <Backdrop image={100} imageMobile={200} />,
         {
@@ -54,13 +77,15 @@ describe('Backdrop', () => {
         }
       )
 
-    expect(getByRole('img')).toHaveAttribute('style', expect.stringContaining('portrait.jpg'));
+    simulateScrollPosition('near viewport');
+
+    expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('portrait.jpg'));
   });
 
   it('uses default image in landscape orientation even if mobile image is configured', () => {
     usePortraitOrientation.mockReturnValue(false);
 
-    const {getByRole} =
+    const {simulateScrollPosition, getByRole} =
       renderInEntryWithSectionLifecycle(
         <Backdrop image={100} imageMobile={200} />,
         {
@@ -78,13 +103,15 @@ describe('Backdrop', () => {
         }
       )
 
-    expect(getByRole('img')).toHaveAttribute('style', expect.stringContaining('landscape.jpg'));
+    simulateScrollPosition('near viewport');
+
+    expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('landscape.jpg'));
   });
 
   it('falls back to portrait image if default image is not defined', () => {
     usePortraitOrientation.mockReturnValue(false);
 
-    const {getByRole} =
+    const {simulateScrollPosition, getByRole} =
       renderInEntryWithSectionLifecycle(
         <Backdrop imageMobile={200} />,
         {
@@ -101,7 +128,9 @@ describe('Backdrop', () => {
         }
       )
 
-    expect(getByRole('img')).toHaveAttribute('style', expect.stringContaining('portrait.jpg'));
+    simulateScrollPosition('near viewport');
+
+    expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('portrait.jpg'));
   });
 
   it('supports rendering color as background', () => {

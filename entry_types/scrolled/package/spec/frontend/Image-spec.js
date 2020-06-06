@@ -28,7 +28,20 @@ describe('Image', () => {
         }
       });
 
-    expect(getByRole('img')).toHaveStyle('background-image: url("000/000/001/image.jpg")');
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/image.jpg');
+  });
+
+  it('does not render image if isPrepared is false', () => {
+    const {queryByRole} =
+      renderInEntry(<Image id={100} isPrepared={false} />, {
+        seed: {
+          imageFiles: [
+            {id: 1, permaId: 100}
+          ]
+        }
+      });
+
+    expect(queryByRole('img')).toBeNull();
   });
 
   it('uses centered background position by default', () => {

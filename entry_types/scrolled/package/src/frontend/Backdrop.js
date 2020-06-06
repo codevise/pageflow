@@ -95,9 +95,11 @@ function OrientationAwareBackgroundImage({image, onMotifAreaUpdate, imageMobile,
 }
 
 function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
+  const {isPrepared} = useSectionLifecycle();
+
   return (
     <>
-      <Image id={image}/>
+      <Image id={image} isPrepared={isPrepared} />
       <MotifArea key={image}
                  onUpdate={onMotifAreaUpdate}
                  imageId={image}

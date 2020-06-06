@@ -13,15 +13,14 @@ import {useFile} from '../entryState';
 export function Image(props) {
   const image = useFile({collectionName: 'imageFiles', permaId: props.id});
 
-  if (image) {
+  if (image && props.isPrepared) {
     const focusX = typeof image.configuration.focusX === 'undefined' ? 50 : image.configuration.focusX;
     const focusY = typeof image.configuration.focusY === 'undefined' ? 50 : image.configuration.focusY;
 
     return (
-      <div className={classNames(styles.root)}
-           role="img"
+      <img className={classNames(styles.root)}
+           src={image.urls.large}
            style={{
-             backgroundImage: `url(${image.urls.large})`,
              backgroundPosition: `${focusX}% ${focusY}%`
            }} />
     );
@@ -29,3 +28,7 @@ export function Image(props) {
 
   return null;
 }
+
+Image.defaultProps = {
+  isPrepared: true
+};
