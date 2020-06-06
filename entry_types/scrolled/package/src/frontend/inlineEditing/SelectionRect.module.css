@@ -17,6 +17,11 @@
   opacity: 0.8
 }
 
+.full:after {
+  left: 0;
+  right: 0;
+}
+
 .selected:after {
   border-left: solid 1px currentColor;
   border-right: solid 1px currentColor;
@@ -64,6 +69,19 @@
 
 .insert::after {
   right: selectionPadding2;
+}
+
+.full .insert::before,
+.full .insert::after {
+  width: calc(50% - 5px + selectionPadding2);
+}
+
+.full .insert::before {
+  left: 0;
+}
+
+.full .insert::after {
+  right: 0;
 }
 
 .insertButton {

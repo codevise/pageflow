@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useI18n} from '../i18n';
@@ -45,6 +46,7 @@ function DefaultSelectionRect(props) {
 
   return (
     <SelectionRect selected={isSelected}
+                   full={props.position === 'full'}
                    ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
                    insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
                    onClick={() => select()}

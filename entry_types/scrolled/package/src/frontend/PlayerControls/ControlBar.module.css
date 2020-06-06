@@ -23,6 +23,7 @@
   width: 100%;
   display: table;
   position: relative;
+  overflow: hidden;
 }
 
 .controlBarContainer.inset {

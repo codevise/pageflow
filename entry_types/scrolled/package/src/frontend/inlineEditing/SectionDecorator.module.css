@@ -30,7 +30,7 @@
 .controls {
   position: absolute;
   top: -33px;
-  right: -2px;
+  right: 0;
   height: 100%;
   padding-left: 20px;
   z-index: 10;
