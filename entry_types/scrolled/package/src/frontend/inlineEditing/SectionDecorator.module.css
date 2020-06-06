@@ -60,12 +60,12 @@
   margin-top: 55px;
 }
 
-.transitionToolbarBefore {
+.transitionToolbar-before {
   composes: toolbar;
   top: 0;
 }
 
-.transitionToolbarAfter {
+.transitionToolbar-after {
   composes: toolbar;
   bottom: -63px;
 }
