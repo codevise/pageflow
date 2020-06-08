@@ -46,22 +46,18 @@ export function SectionDecorator(props) {
          className={className(isSectionSelected, transitionSelection)}
          onMouseDown={selectIfOutsideContentItem}>
       <div className={styles.controls}>
-        <div className={styles.transitionToolbarBefore}>
-          <EditTransitionButton id={props.previousSection && props.id}
-                                selection={transitionSelection}
-                                position="before" />
-        </div>
+        {renderEditTransitionButton({id: props.previousSection && props.id,
+                                     selection: transitionSelection,
+                                     position: 'before'})}
         <div className={styles.editToolbar} >
           <EditSectionButton id={props.id}
                              selection={settingsSelection}
                              text={t('pageflow_scrolled.inline_editing.edit_section_settings')}
                              icon={editIcon} />
         </div>
-        <div className={styles.transitionToolbarAfter}>
-          <EditTransitionButton id={props.nextSection && props.nextSection.id}
-                                selection={nextTransitionSelection}
-                                position="after" />
-        </div>
+        {renderEditTransitionButton({id: props.nextSection && props.nextSection.id,
+                                     selection: nextTransitionSelection,
+                                     position: 'after'})}
       </div>
       {props.children}
     </div>
@@ -75,12 +71,22 @@ function className(isSectionSelected, transitionSelection) {
   });
 }
 
-function EditTransitionButton({id, position, selection}) {
-  const {t} = useI18n({locale: 'ui'});
-
+function renderEditTransitionButton({id, position, selection}) {
   if (!id) {
     return null;
   }
+
+  return (
+    <div className={styles[`transitionToolbar-${position}`]}>
+      <EditTransitionButton id={id}
+                            selection={selection}
+                            position={position} />
+    </div>
+  );
+}
+
+function EditTransitionButton({id, position, selection}) {
+  const {t} = useI18n({locale: 'ui'});
 
   return (
     <EditSectionButton id={id}

@@ -10,7 +10,8 @@ import PlusIcon from './images/plus.svg';
 export function SelectionRect(props) {
   return (
     <div className={classNames(styles.main,
-                               {[styles.selected]: props.selected,
+                               {[styles.full]: props.full,
+                                [styles.selected]: props.selected,
                                 [styles.start]: props.selected && props.start,
                                 [styles.end]: props.selected && props.end})}
          aria-label={props.ariaLabel}

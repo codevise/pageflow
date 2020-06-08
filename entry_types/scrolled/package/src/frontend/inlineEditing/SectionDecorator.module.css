@@ -30,7 +30,7 @@
 .controls {
   position: absolute;
   top: -33px;
-  right: -2px;
+  right: 0;
   height: 100%;
   padding-left: 20px;
   z-index: 10;
@@ -60,12 +60,12 @@
   margin-top: 55px;
 }
 
-.transitionToolbarBefore {
+.transitionToolbar-before {
   composes: toolbar;
   top: 0;
 }
 
-.transitionToolbarAfter {
+.transitionToolbar-after {
   composes: toolbar;
   bottom: -63px;
 }

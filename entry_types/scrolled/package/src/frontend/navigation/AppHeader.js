@@ -43,7 +43,7 @@ export function AppHeader(props) {
       const current = currPos.y * -1;
       // Todo: Memoize and update on window resize
       const total = document.body.clientHeight - window.innerHeight;
-      const progress = Math.abs(current / total) * 100;
+      const progress = Math.min(100, Math.abs(current / total) * 100);
       setReadingProgress(progress);
     },
     [readingProgress],
