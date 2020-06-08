@@ -88,7 +88,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
                                    {[styles.invert]: props.invert})}>
       <div ref={activityProbeRef} className={styles.activityProbe} />
       <Backdrop {...props.backdrop}
-                motifAreaRef={setMotifAreaRefs}
+                onMotifAreaUpdate={setMotifAreaRefs}
                 onScreen={onScreen}
                 offset={Math.max(0, Math.max(1, -contentAreaRect.top / 200)) }
                 state={props.state}
