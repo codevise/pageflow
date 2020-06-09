@@ -136,6 +136,7 @@ function BackgroundVideo(props) {
                  playerActions={playerActions}
                  id={props.video}
                  fit="cover"
-                 loop={true} />
+                 loop={true}
+                 playsInline={true} />
   );
 }
