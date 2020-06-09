@@ -12,7 +12,8 @@ const placeholderFile = {
   height: 403
 };
 
-export function BeforeAfter({state,
+export function BeforeAfter({isActive,
+                             isPrepared,
                              position,
                              before_id,
                              before_label,
@@ -34,13 +35,13 @@ export function BeforeAfter({state,
     if (node) {
       // Only wiggle once per element, when it is active for the first
       // time
-      let shouldWiggle = !wiggled && (state === 'active');
+      let shouldWiggle = !wiggled && isActive;
       setWiggle(shouldWiggle);
       // If wiggle was just set, mark this element as one that already
       // wiggled
       !wiggled && setWiggled(shouldWiggle);
     }
-  }, [state, current]);
+  }, [isActive, current]);
 
   const beforeImage = useFile({collectionName: 'imageFiles', permaId: before_id});
   const afterImage = useFile({collectionName: 'imageFiles', permaId: after_id});
@@ -86,16 +87,26 @@ export function BeforeAfter({state,
         <InitialSliderPositionIndicator parentSelected={isSelected}
                                         position={initial_slider_position}/>
         {/* onSliderPositionChange: Prevent wiggle if user uses slider */}
-        <ReactCompareImage leftImage={beforeImage? beforeImageUrl : placeholderForBeforeImage}
-                           rightImage={afterImage? afterImageUrl : placeholderForAfterImage}
-                           leftImageLabel={before_label} rightImageLabel={after_label}
-                           leftImageAlt={beforeImageAlt} rightImageAlt={afterImageAlt}
-                           sliderPositionPercentage={initialSliderPos}
-                           onSliderPositionChange={() => setWiggle(false)}
-                           {...opts} />
+        {renderCompareImage()}
       </div>
     </ViewportDependentPillarBoxes>
   );
+
+  function renderCompareImage() {
+    if (!isPrepared) {
+      return null;
+    }
+
+    return (
+      <ReactCompareImage leftImage={beforeImage? beforeImageUrl : placeholderForBeforeImage}
+                         rightImage={afterImage? afterImageUrl : placeholderForAfterImage}
+                         leftImageLabel={before_label} rightImageLabel={after_label}
+                         leftImageAlt={beforeImageAlt} rightImageAlt={afterImageAlt}
+                         sliderPositionPercentage={initialSliderPos}
+                         onSliderPositionChange={() => setWiggle(false)}
+                         {...opts} />
+    );
+  }
 };
 
 function InitialSliderPositionIndicator({parentSelected, position}) {
