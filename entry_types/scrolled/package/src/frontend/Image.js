@@ -9,6 +9,7 @@ import {useFile} from '../entryState';
  *
  * @param {Object} props
  * @param {number} props.id - Perma id of the image file.
+ * @param {number} [props.variant] - Paperclip style to use. Defaults to large.
  */
 export function Image(props) {
   const image = useFile({collectionName: 'imageFiles', permaId: props.id});
@@ -19,7 +20,7 @@ export function Image(props) {
 
     return (
       <img className={classNames(styles.root)}
-           src={image.urls.large}
+           src={image.urls[props.variant]}
            style={{
              objectPosition: `${focusX}% ${focusY}%`
            }} />
@@ -30,5 +31,6 @@ export function Image(props) {
 }
 
 Image.defaultProps = {
-  isPrepared: true
+  isPrepared: true,
+  variant: 'large'
 };

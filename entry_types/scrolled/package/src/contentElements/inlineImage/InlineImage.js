@@ -13,7 +13,9 @@ export function InlineImage({configuration}) {
       <div className={styles.container}>
         <div className={styles.spacer}>
           <div className={styles.inner}>
-            <Image {...configuration} isPrepared={isPrepared} />
+            <Image {...configuration}
+                   isPrepared={isPrepared}
+                   variant={configuration.position === 'full' ?  'large' : 'medium'} />
           </div>
         </div>
       </div>
