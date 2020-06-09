@@ -53,7 +53,7 @@ export function ExternalLink(props) {
        onMouseLeave={onMouseLeave}
        target={props.open_in_new_tab ? '_blank' : '_self'}>
       <div className={styles.link_thumbnail}>
-        <Image id={props.thumbnail} />
+        <Image id={props.thumbnail} isPrepared={props.isPrepared} />
       </div>
 
       <div className={styles.link_details}>
