@@ -22,7 +22,7 @@ export function createScrollPositionLifecycleProvider(Context) {
     const isStaticPreview = useContext(StaticPreviewContext);
 
     const isPrepared = useOnScreen(ref, {rootMargin: '25% 0px 25% 0px'});
-    const isVisible = useOnScreen(ref);
+    const isVisible = useOnScreen(ref) && !isStaticPreview;
     const isActive = useOnScreen(isActiveProbeRef, {
       rootMargin: '-50% 0px -50% 0px',
       onIntersecting: onActivate

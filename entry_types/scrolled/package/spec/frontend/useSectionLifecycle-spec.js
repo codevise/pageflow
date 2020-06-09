@@ -140,6 +140,20 @@ describe('useSectionLifecycle', () => {
 
       expect(getByTestId('testElement')).toHaveTextContent('visible');
     });
+
+    it('stays false even with element inside viewport when rendered inside StaticPreview', async () => {
+      const {getByTestId} = renderInEntry(<StaticPreview><Entry /></StaticPreview>, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsActiveProbe(getByTestId('testElement')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('hidden');
+    });
   });
 
   describe('onVisible option', () => {
