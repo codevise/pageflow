@@ -9,6 +9,7 @@ import {MotifArea} from './MotifArea';
 import useDimension from './useDimension';
 import {usePlayerState} from './MediaPlayer/usePlayerState';
 import {usePortraitOrientation} from './usePortraitOrientation';
+import {useSectionLifecycle} from './useSectionLifecycle';
 
 import styles from './Backdrop.module.css';
 
@@ -18,8 +19,7 @@ export function Backdrop(props) {
   return (
     <div className={classNames(styles.Backdrop,
                                props.transitionStyles.backdrop,
-                               props.transitionStyles[`backdrop-${props.state}`],
-                               {[styles.offScreen]: props.offScreen})}>
+                               props.transitionStyles[`backdrop-${props.state}`])}>
       <div className={props.transitionStyles.backdropInner}>
         <div className={props.transitionStyles.backdropInner2}>
           {props.children(renderContent(props, containerDimension, setContainerRef))}
@@ -95,9 +95,11 @@ function OrientationAwareBackgroundImage({image, onMotifAreaUpdate, imageMobile,
 }
 
 function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
+  const {isPrepared} = useSectionLifecycle();
+
   return (
     <>
-      <Image id={image}/>
+      <Image id={image} isPrepared={isPrepared} />
       <MotifArea key={image}
                  onUpdate={onMotifAreaUpdate}
                  imageId={image}
@@ -109,16 +111,32 @@ function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
 
 function BackgroundVideo(props) {
   const [playerState, playerActions] = usePlayerState();
+  const {isPrepared} = useSectionLifecycle({
+    onVisible() {
+      playerActions.changeVolumeFactor(0, 0);
+      playerActions.play()
+    },
+
+    onActivate() {
+      playerActions.changeVolumeFactor(1, 1000);
+    },
+
+    onDeactivate() {
+      playerActions.changeVolumeFactor(0, 1000);
+    },
+
+    onInvisible() {
+      playerActions.pause()
+    }
+  });
 
   return (
-    <VideoPlayer state={props.onScreen ? 'active' : 'inactive'}
-                 autoplay={true}
+    <VideoPlayer isPrepared={isPrepared}
                  playerState={playerState}
                  playerActions={playerActions}
                  id={props.video}
                  fit="cover"
-                 offset={props.offset}
-                 interactive={props.interactive}
-                 nextSectionOnEnd={props.nextSectionOnEnd} />
+                 loop={true}
+                 playsInline={true} />
   );
 }

@@ -24,8 +24,6 @@ export const createMediaPlayer = function (options) {
     },
 
     bufferUnderrunWaiting: true,
-    useSlimPlayerControlsDuringPhonePlayback: !playsInline && !isAudio,
-    fullscreenDuringPhonePlayback: !playsInline && !isAudio,
     fallbackToMutedAutoplay: !isAudio,
 
     volumeFading: true, //should be turned on later 

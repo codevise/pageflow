@@ -1,14 +1,4 @@
-export function updatePlayerState(player, prevPlayerState, playerState, playerActions, componentState, isAutoplay, isMediaOff){
-
-  if (!isMediaOff && playerState.unplayed && isAutoplay) {
-    if (componentState === 'active') {      
-      player.playOrPlayOnLoad();
-    }
-    else {
-      player.pause();
-    }
-  }
-
+export function updatePlayerState(player, prevPlayerState, playerState, playerActions){
   if (!prevPlayerState.shouldPrebuffer && playerState.shouldPrebuffer) {
     player.prebuffer().then(() => setTimeout(playerActions.prebuffered, 0));
   }
@@ -18,7 +8,7 @@ export function updatePlayerState(player, prevPlayerState, playerState, playerAc
       player.playAndFadeIn(playerState.fadeDuration);
     }
     else {
-      player.play();
+      player.playOrPlayOnLoad();
     }
   }
   else if (prevPlayerState.shouldPlay && !playerState.shouldPlay && playerState.isPlaying) {
@@ -34,4 +24,7 @@ export function updatePlayerState(player, prevPlayerState, playerState, playerAc
     player.currentTime(playerState.shouldSeekTo);
   }
 
+  if (prevPlayerState.volumeFactor !== playerState.volumeFactor ) {
+    player.changeVolumeFactor(playerState.volumeFactor, playerState.volumeFactorFadeDuration);
+  }
 }

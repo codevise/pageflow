@@ -25,12 +25,12 @@ import {normalizeSeed} from './normalizeSeed';
  *   function. The normalized seed constructed from the `seed` option
  *   is passed as a second parameter.
  */
-export function renderInEntry(ui, {seed, setup, ...options} = {}) {
+export function renderInEntry(ui, {seed, setup, wrapper, ...options} = {}) {
   return render(ui,
                 {
-                  wrapper: createWrapper(seed, setup),
+                  wrapper: createWrapper(seed, setup, wrapper),
                   ...options
-                })
+                });
 }
 
 /**
@@ -51,19 +51,22 @@ export function renderHookInEntry(callback, {seed, setup, ...options} = {}) {
                     {
                       wrapper: createWrapper(seed, setup),
                       ...options
-                    })
+                    });
 }
 
-function createWrapper(seed, setup) {
+function createWrapper(seed, setup, originalWrapper) {
   const normalizedSeed = normalizeSeed(seed);
+  const OriginalWrapper = originalWrapper || function Noop({children}) { return children; };
 
   return function Wrapper({children}) {
     return (
-      <EntryStateProvider seed={normalizedSeed}>
-        <Dispatcher callback={setup} seed={normalizedSeed}>
-          {children}
-        </Dispatcher>
-      </EntryStateProvider>
+      <OriginalWrapper>
+        <EntryStateProvider seed={normalizedSeed}>
+          <Dispatcher callback={setup} seed={normalizedSeed}>
+            {children}
+          </Dispatcher>
+        </EntryStateProvider>
+      </OriginalWrapper>
     );
   }
 }

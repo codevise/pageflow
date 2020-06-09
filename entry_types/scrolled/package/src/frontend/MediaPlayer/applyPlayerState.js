@@ -1,7 +1,7 @@
 export function applyPlayerState(player, playerState, playerActions){
-
   player.currentTime(playerState.currentTime);
-  
+  player.changeVolumeFactor(playerState.volumeFactor, 0);
+
   if (playerState.shouldPrebuffer) {
     player.prebuffer().then(playerActions.prebuffered);
   }

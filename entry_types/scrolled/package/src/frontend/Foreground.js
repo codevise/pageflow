@@ -16,10 +16,6 @@ function className(props) {
     styles.Foreground,
     props.transitionStyles.foreground,
     props.transitionStyles[`foreground-${props.state}`],
-    styles[`${props.heightMode}Height`],
-    {
-      [styles.hidden]: props.hidden,
-      [styles.enlarge]: props.hidden && !props.disableEnlarge
-    }
+    styles[`${props.heightMode}Height`]
   )
 }

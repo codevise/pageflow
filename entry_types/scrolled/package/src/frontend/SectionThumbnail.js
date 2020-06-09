@@ -4,7 +4,7 @@ import Measure from 'react-measure';
 import {EntryStateProvider, useEntryStateDispatch, useSectionStructure} from '../entryState';
 import Section from './Section';
 import {FullscreenHeightProvider} from './Fullscreen';
-import {StaticPreview} from './useContentElementLifecycle';
+import {StaticPreview} from './useScrollPositionLifecycle';
 
 import entryStyles from './Entry.module.css';
 import styles from './SectionThumbnail.module.css';
