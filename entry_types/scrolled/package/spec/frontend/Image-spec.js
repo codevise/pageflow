@@ -15,7 +15,7 @@ describe('Image', () => {
     expect(queryByRole('img')).toBeNull();
   });
 
-  it('uses large variant of image given by id as background', () => {
+  it('uses large variant of image given by id', () => {
     const {getByRole} =
       renderInEntry(<Image id={100} />, {
         seed: {
@@ -44,7 +44,7 @@ describe('Image', () => {
     expect(queryByRole('img')).toBeNull();
   });
 
-  it('uses centered background position by default', () => {
+  it('uses centered object position by default', () => {
     const {getByRole} =
       renderInEntry(<Image id={100} />, {
         seed: {
@@ -54,10 +54,10 @@ describe('Image', () => {
         }
       });
 
-    expect(getByRole('img')).toHaveStyle('background-position: 50% 50%');
+    expect(getByRole('img')).toHaveStyle('object-position: 50% 50%');
   });
 
-  it('uses focus from image configuration for background position', () => {
+  it('uses focus from image configuration for object position', () => {
     const {getByRole} =
       renderInEntry(<Image id={100} />, {
         seed: {
@@ -67,6 +67,6 @@ describe('Image', () => {
         }
       });
 
-    expect(getByRole('img')).toHaveStyle('background-position: 20% 60%');
+    expect(getByRole('img')).toHaveStyle('object-position: 20% 60%');
   });
 });

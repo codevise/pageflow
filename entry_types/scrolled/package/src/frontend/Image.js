@@ -21,7 +21,7 @@ export function Image(props) {
       <img className={classNames(styles.root)}
            src={image.urls.large}
            style={{
-             backgroundPosition: `${focusX}% ${focusY}%`
+             objectPosition: `${focusX}% ${focusY}%`
            }} />
     );
   }
