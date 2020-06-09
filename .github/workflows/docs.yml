@@ -26,7 +26,7 @@ jobs:
         themePackage: tf/sassdoc-theme-pageflow#dist
 
     - name: Build pageflow JSDoc
-      uses: codevise/documentation-js-action@v1.3
+      uses: codevise/documentation-js-action@v1.3.1
       with:
         input: "./package/src/editor ./package/src/ui ./package/src/testHelpers"
         output: ./out/js/<ref>
