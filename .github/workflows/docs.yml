@@ -38,7 +38,7 @@ jobs:
         themePackage: codevise/pageflow-documentation-js-theme#master
 
     - name: Build pageflow-scrolled JSDoc
-      uses: codevise/documentation-js-action@v1.3
+      uses: codevise/documentation-js-action@v1.3.1
       with:
         input: ./entry_types/scrolled/package/
         output: ./out/scrolled/js/<ref>
