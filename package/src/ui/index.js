@@ -31,6 +31,7 @@ export * from './views/inputs/ColorInputView';
 export * from './views/inputs/ExtendedSelectInputView';
 export * from './views/inputs/TextAreaInputView';
 export * from './views/inputs/SelectInputView';
+export * from './views/inputs/ThumbnailInputView';
 export * from './views/inputs/ProxyUrlInputView';
 export * from './views/inputs/SliderInputView';
 export * from './views/inputs/JsonInputView';
