@@ -3,8 +3,8 @@ import {editor, Configuration} from 'pageflow/editor';
 export const SectionConfiguration = Configuration.extend({
   defaults: {
     transition: 'scroll',
+    fullHeight: true,
     backdrop: {
-      color: '#fff'
     }
   },
 
