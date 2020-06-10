@@ -1,5 +1,8 @@
 .root {
   position: relative;
+}
+
+.box {
   margin-top: 1em;
 }
 
@@ -13,10 +16,13 @@
 }
 
 .inner {
-  border: solid 2px #fff;
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+}
+
+.box .inner {
+  border: solid 2px #fff;
 }
