@@ -14,10 +14,14 @@ export const EditableText = withInlineEditingAlternative('EditableText', functio
 function render(children = []) {
   return children.map((element, index) => {
     if (element.type) {
-      return renderElement({attributes: {key: index}, element, children: render(element.children)})
+      return renderElement({attributes: {key: index}, element, children: render(element.children)});
     }
     else {
-      return renderLeaf({attributes: {key: index}, leaf: element, children: element.text})
+      return renderLeaf({
+        attributes: {key: index},
+        leaf: element,
+        children: element.text.trim() === '' ? '\uFEFF' : element.text
+      });
     }
   });
 }

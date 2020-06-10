@@ -101,4 +101,30 @@ describe('EditableText', () => {
 
     expect(getByRole('link')).toHaveTextContent('here')
   });
+
+  it('renders zero width no break space in empty leafs to prevent empty paragraphs from collapsing', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: ''}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('p')).toHaveTextContent('\uFEFF', {normalizeWhitespace: false})
+  });
+
+  it('renders zero width no break space in blank leafs to prevent empty paragraphs from collapsing', () => {
+    const value = [{
+      type: 'paragraph',
+      children: [
+        {text: '  '}
+      ]
+    }];
+
+    const {container} = render(<EditableText value={value} />);
+
+    expect(container.querySelector('p')).toHaveTextContent('\uFEFF', {normalizeWhitespace: false})
+  });
 });
