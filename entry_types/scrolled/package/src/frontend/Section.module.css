@@ -1,7 +1,9 @@
 .Section {
   position: relative;
+  background-color: #000;
 }
 
 .invert {
+  background-color: #fff;
   color: #222;
 }
