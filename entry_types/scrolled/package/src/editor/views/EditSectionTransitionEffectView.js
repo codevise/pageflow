@@ -63,7 +63,7 @@ export const EditSectionTransitionEffectView = Marionette.ItemView.extend({
                         <div class="${styles.lower_section}">B</div>
                       </div>
                       <label>
-                        <input type="radio" value="${value}" name="transitions"  ${this.options.optionDisabled(value) ? 'disabled' : ''}"/>
+                        <input type="radio" value="${value}" name="transitions"  ${this.options.optionDisabled(value) ? 'disabled' : ''}/>
                         ${this.options.texts[index]}
                       </label>
                     </div>`;
