@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {editor, modelLifecycleTrackingView} from 'pageflow/editor';
+import {modelLifecycleTrackingView} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
 
 import {watchCollections} from '../../entryState';
@@ -25,22 +25,19 @@ export const SectionItemView = Marionette.ItemView.extend({
        <span class="${styles.destroyingIndicator}" />
        <span class="${styles.failedIndicator}"
              title="${I18n.t('pageflow_scrolled.editor.section_item.save_error')}" />
-    <a href="" class="${styles.editLink}" title="${I18n.t('pageflow_scrolled.editor.section_item.edit')}"></a>
   `,
 
   ui: cssModulesUtils.ui(styles, 'thumbnail'),
 
   events: {
     [`click .${styles.clickMask}`]: function() {
+      this.options.entry.trigger('selectSection', this.model);
       this.options.entry.trigger('scrollToSection', this.model);
     },
 
-    [`click .${styles.editLink}`]: function() {
-      if (!this.model.isNew() && !this.model.isDestroying()) {
-        this.options.entry.trigger('scrollToSection', this.model);
-        editor.navigate(`/scrolled/sections/${this.model.id}`, {trigger: true})
-      }
-      return false;
+    [`dblclick .${styles.clickMask}`]: function() {
+      this.options.entry.trigger('selectSectionSettings', this.model);
+      this.options.entry.trigger('scrollToSection', this.model);
     }
   },
 
@@ -50,10 +47,7 @@ export const SectionItemView = Marionette.ItemView.extend({
 
   initialize() {
     this.listenTo(this.options.entry, 'change:currentSectionIndex', () => {
-      const active =
-        this.options.entry.sections.indexOf(this.model) === this.options.entry.get('currentSectionIndex');
-
-      this.$el.toggleClass(styles.active, active);
+      const active = this.updateActive();
 
       if (active) {
         this.$el[0].scrollIntoView({
@@ -65,6 +59,7 @@ export const SectionItemView = Marionette.ItemView.extend({
   },
 
   onRender() {
+    this.updateActive();
     this.timeout = setTimeout(() => {
       this.renderThumbnail();
     }, 100);
@@ -86,5 +81,13 @@ export const SectionItemView = Marionette.ItemView.extend({
                                           }),
                       this.ui.thumbnail[0]);
     }
+  },
+
+  updateActive() {
+    const active =
+      this.options.entry.sections.indexOf(this.model) === this.options.entry.get('currentSectionIndex');
+
+    this.$el.toggleClass(styles.active, active);
+    return active;
   }
 });
