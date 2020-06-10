@@ -39,6 +39,9 @@ export const Chapter = Backbone.Model.extend({
     });
 
     section.once('sync', () => {
+      this.entry.trigger('selectSectionSettings', section);
+      this.entry.trigger('scrollToSection', section);
+
       section.contentElements.create({
         typeName: 'textBlock',
         configuration: {
