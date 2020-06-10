@@ -47,10 +47,7 @@ export const SectionItemView = Marionette.ItemView.extend({
 
   initialize() {
     this.listenTo(this.options.entry, 'change:currentSectionIndex', () => {
-      const active =
-        this.options.entry.sections.indexOf(this.model) === this.options.entry.get('currentSectionIndex');
-
-      this.$el.toggleClass(styles.active, active);
+      const active = this.updateActive();
 
       if (active) {
         this.$el[0].scrollIntoView({
@@ -62,6 +59,7 @@ export const SectionItemView = Marionette.ItemView.extend({
   },
 
   onRender() {
+    this.updateActive();
     this.timeout = setTimeout(() => {
       this.renderThumbnail();
     }, 100);
@@ -83,5 +81,13 @@ export const SectionItemView = Marionette.ItemView.extend({
                                           }),
                       this.ui.thumbnail[0]);
     }
+  },
+
+  updateActive() {
+    const active =
+      this.options.entry.sections.indexOf(this.model) === this.options.entry.get('currentSectionIndex');
+
+    this.$el.toggleClass(styles.active, active);
+    return active;
   }
 });
