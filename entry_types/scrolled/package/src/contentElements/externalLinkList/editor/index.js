@@ -35,6 +35,6 @@ editor.registerFileSelectionHandler('contentElement.externalLinks.link', functio
   };
 
   this.getReferer = function() {
-    return '/scrolled/' + contentElement.id + '/' + options.id;
+    return '/scrolled/external_links/' + contentElement.id + '/' + options.id;
   };
 });
