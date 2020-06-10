@@ -5,7 +5,6 @@ export const SectionConfiguration = Configuration.extend({
     transition: 'scroll',
     fullHeight: true,
     backdrop: {
-      color: '#fff'
     }
   },
 
