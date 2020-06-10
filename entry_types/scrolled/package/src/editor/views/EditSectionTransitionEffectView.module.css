@@ -13,11 +13,14 @@
 .disabled {
     pointer-events: none;
     opacity: 0.3;
-    cursor: not-allowed;
 }
 
 .active {
-    background: #AB3703 !important;
+    background: #6c757d !important;
+}
+
+.active label {
+    color: #ffffff;
 }
 
 .transition {
@@ -56,7 +59,7 @@
 .transition:hover .scroll .lower_section,
 .transition:hover .scrollOver .lower_section {
     animation: Scroll 2s ease infinite;
-} 
+}
 
 /*Reveal*/
 .transition:hover .reveal .upper_section {
