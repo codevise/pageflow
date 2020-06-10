@@ -91,6 +91,27 @@ describe('PreviewMessageController', () => {
     })).resolves.toMatchObject({type: 'SELECT', payload: {id: 1, type: 'contentElement'}});
   });
 
+  it('sends SELECT message to iframe on selectSection event on model', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('selectSection', entry.sections.first());
+    })).resolves.toMatchObject({type: 'SELECT', payload: {id: 1, type: 'section'}});
+  });
+
   it('sends SELECT message to iframe on selectSectionSettings event on model', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({

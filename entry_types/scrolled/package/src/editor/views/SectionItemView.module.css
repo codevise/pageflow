@@ -4,7 +4,7 @@
 .root {
   position: relative;
   border: solid selectionWidth transparent;
-  padding: 3px 3px 0 3px;
+  padding: 3px;
   margin-bottom: 4px;
   text-align: right;
   background-color: #eee;
@@ -32,24 +32,6 @@
   bottom: 0;
   right: 0;
   cursor: pointer;
-}
-
-.editLink {
-  display: inline-block;
-  position: relative;
-  width: 30px;
-  height: 25px;
-}
-
-.editLink::before {
-  font-family: 'entypo';
-  content: "✎";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  color: #555;
-  font-size: 15px;
 }
 
 .creating .creatingIndicator     { display: block; }

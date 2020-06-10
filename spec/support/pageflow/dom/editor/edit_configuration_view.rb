@@ -8,6 +8,10 @@ module Pageflow
           node.find('.destroy')
         end
 
+        def back_button
+          node.find('.back')
+        end
+
         def input_value(label_text)
           node.find_field(label_text).value
         end

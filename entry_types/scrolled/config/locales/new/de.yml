@@ -220,7 +220,6 @@ de:
         add_section: Neuer Abschnitt
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
       section_item:
-        edit: Abschnitt bearbeiten
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
       edit_chapter:
         tabs:

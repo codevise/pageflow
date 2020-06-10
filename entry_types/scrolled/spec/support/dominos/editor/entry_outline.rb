@@ -36,8 +36,8 @@ module Dom
         selector '[class^=SectionItemView-module_root]' \
           ':not([class*=creating]):not([class*=destroying])'
 
-        def edit_link
-          node.find('[class^=SectionItemView-module_editLink]')
+        def thumbnail
+          node.find('[class^=SectionItemView-module_clickMask]')
         end
       end
     end
