@@ -18,7 +18,10 @@ export function PlayerControls(props) {
   return (
     <div className={classNames(styles.controlBarContainer,
                                styles.backgroundColor,
-                               {[styles.inset]: props.inset})}>
+                               {
+                                 [styles.inset]: props.inset,
+                                 [styles.transparent]: props.isPlaying && props.inset && props.userIdle
+                               })}>
       <div className={classNames(styles.controlBar,
                                  props.style === 'white' ? styles.foregroundLight : styles.foregroundDark)}>
         <div className={styles.controlsContainer}>

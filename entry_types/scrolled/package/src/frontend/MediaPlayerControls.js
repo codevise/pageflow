@@ -13,7 +13,9 @@ export function MediaPlayerControls(props) {
                              playerState.scrubbingAt : playerState.currentTime}
                     bufferedEnd={playerState.bufferedEnd}
                     duration={playerState.duration}
+
                     isPlaying={playerState.isPlaying}
+                    userIdle={playerState.userIdle}
 
                     play={playerActions.playBlessed}
                     pause={playerActions.pause}

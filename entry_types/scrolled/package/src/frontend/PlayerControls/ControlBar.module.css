@@ -2,6 +2,10 @@
   display: none;
 }
 
+.transparent {
+  opacity: 0;
+}
+
 .backgroundColor {
   background: rgba(0, 0, 0, 0.2);
 }
@@ -24,6 +28,7 @@
   display: table;
   position: relative;
   overflow: hidden;
+  transition: opacity 0.2s ease;
 }
 
 .controlBarContainer.inset {

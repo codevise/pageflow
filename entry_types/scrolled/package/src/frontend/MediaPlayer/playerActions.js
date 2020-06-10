@@ -33,7 +33,8 @@ export const CONTROLS_ENTERED = 'MEDIA_CONTROLS_ENTERED';
 export const CONTROLS_LEFT = 'MEDIA_CONTROLS_LEFT';
 export const FOCUS_ENTERED_CONTROLS = 'MEDIA_FOCUS_ENTERED_CONTROLS';
 export const FOCUS_LEFT_CONTROLS = 'MEDIA_FOCUS_LEFT_CONTROLS';
-export const CONTROLS_HIDDEN = 'MEDIA_CONTROLS_HIDDEN';
+export const USER_INTERACTION = 'MEDIA_USER_INTERACTION';
+export const USER_IDLE = 'MEDIA_USER_IDLE';
 
 export const SAVE_MEDIA_ELEMENT_ID = 'MEDIA_SAVE_MEDIA_ELEMENT_ID';
 export const DISCARD_MEDIA_ELEMENT_ID = 'MEDIA_DISCARD_MEDIA_ELEMENT_ID';
@@ -133,8 +134,11 @@ export function createActions(dispatch){
     controlsLeft(){
       dispatch({type: CONTROLS_LEFT});
     },
-    controlsHidden(){
-      dispatch({type: CONTROLS_HIDDEN});
+    userInteraction(){
+      dispatch({type: USER_INTERACTION});
+    },
+    userIdle(){
+      dispatch({type: USER_IDLE});
     },
     focusEnteredControls(){
       dispatch({type: FOCUS_ENTERED_CONTROLS});
