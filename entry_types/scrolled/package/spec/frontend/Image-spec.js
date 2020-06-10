@@ -15,7 +15,7 @@ describe('Image', () => {
     expect(queryByRole('img')).toBeNull();
   });
 
-  it('uses large variant of image given by id as background', () => {
+  it('uses large variant of image given by id', () => {
     const {getByRole} =
       renderInEntry(<Image id={100} />, {
         seed: {
@@ -31,6 +31,23 @@ describe('Image', () => {
     expect(getByRole('img')).toHaveAttribute('src', '000/000/001/image.jpg');
   });
 
+  it('supports custom variant of image given by id as background', () => {
+    const {getByRole} =
+      renderInEntry(<Image id={100} variant="medium" />, {
+        seed: {
+          imageFileUrlTemplates: {
+            medium: ':id_partition/medium/image.jpg',
+            large: ':id_partition/large/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100}
+          ]
+        }
+      });
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/medium/image.jpg');
+  });
+
   it('does not render image if isPrepared is false', () => {
     const {queryByRole} =
       renderInEntry(<Image id={100} isPrepared={false} />, {
@@ -44,7 +61,7 @@ describe('Image', () => {
     expect(queryByRole('img')).toBeNull();
   });
 
-  it('uses centered background position by default', () => {
+  it('uses centered object position by default', () => {
     const {getByRole} =
       renderInEntry(<Image id={100} />, {
         seed: {
@@ -54,10 +71,10 @@ describe('Image', () => {
         }
       });
 
-    expect(getByRole('img')).toHaveStyle('background-position: 50% 50%');
+    expect(getByRole('img')).toHaveStyle('object-position: 50% 50%');
   });
 
-  it('uses focus from image configuration for background position', () => {
+  it('uses focus from image configuration for object position', () => {
     const {getByRole} =
       renderInEntry(<Image id={100} />, {
         seed: {
@@ -67,6 +84,6 @@ describe('Image', () => {
         }
       });
 
-    expect(getByRole('img')).toHaveStyle('background-position: 20% 60%');
+    expect(getByRole('img')).toHaveStyle('object-position: 20% 60%');
   });
 });
