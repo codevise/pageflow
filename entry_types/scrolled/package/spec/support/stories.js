@@ -190,7 +190,7 @@ function exampleStoryGroup({name, typeName, examples, parameters}) {
 
   const contentElements = examples.reduce((memo, example, index) => [
     ...memo,
-    {sectionId: index, typeName: 'heading', configuration: {children: `${name} - ${example.name}`}},
+    exampleHeading({sectionId: index, text: `${name} - ${example.name}`}),
     {sectionId: index, typeName, configuration: example.contentElementConfiguration}
   ], []);
 
@@ -230,6 +230,47 @@ export function normalizeAndMergeFixture(options) {
       contentElements: seed.collections.contentElements
     }
   };
+}
+
+export function exampleHeading({sectionId, text}) {
+  return {
+    sectionId,
+    typeName: 'heading',
+    configuration: {
+      children: text
+    }
+  }
+}
+
+const lorem = 'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.';
+
+export function exampleTextBlock({sectionId}) {
+  return {
+    sectionId,
+    typeName: 'textBlock',
+    configuration: {
+      value: [
+        {
+          type: 'paragraph',
+          children: [
+            {text: lorem}
+          ]
+        }
+      ]
+    }
+  };
+}
+
+export function examplePositionedElement({sectionId, position, caption}) {
+  return {
+    sectionId,
+    typeName: 'inlineImage',
+    configuration: {
+      position,
+      id: filePermaId('imageFiles', 'turtle'),
+      caption
+    }
+  }
 }
 
 // This method is only used in specs of this file. I could not find

@@ -2,10 +2,14 @@ import React from 'react';
 
 import {Entry, EntryStateProvider} from 'pageflow-scrolled/frontend';
 
-import {normalizeAndMergeFixture, filePermaId} from 'pageflow-scrolled/spec/support/stories';
-import {storiesOf} from '@storybook/react';
+import {
+  normalizeAndMergeFixture,
+  filePermaId,
+  exampleHeading,
+  exampleTextBlock
+} from 'pageflow-scrolled/spec/support/stories';
 
-const lorem = 'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.';
+import {storiesOf} from '@storybook/react';
 
 const stories = storiesOf('Frontend/Section Transitions', module);
 
@@ -61,69 +65,12 @@ function exampleSeed(transition1, transition2) {
       },
     ],
     contentElements: [
-      {
-        sectionId: 1,
-        typeName: 'heading',
-        configuration: {
-          children: `Transition ${transition1}/${transition2}`
-        }
-      },
-      {
-        sectionId: 1,
-        typeName: 'textBlock',
-        configuration: {
-          value: [
-            {
-              type: 'paragraph',
-              children: [
-                {text: lorem}
-              ]
-            }
-          ]
-        }
-      },
-      {
-        sectionId: 2,
-        typeName: 'heading',
-        configuration: {
-          children: `Transition ${transition1}`
-        }
-      },
-      {
-        sectionId: 2,
-        typeName: 'textBlock',
-        configuration: {
-          value: [
-            {
-              type: 'paragraph',
-              children: [
-                {text: lorem}
-              ]
-            }
-          ]
-        }
-      },
-      {
-        sectionId: 3,
-        typeName: 'heading',
-        configuration: {
-          children: `Transition ${transition2}`
-        }
-      },
-      {
-        sectionId: 3,
-        typeName: 'textBlock',
-        configuration: {
-          value: [
-            {
-              type: 'paragraph',
-              children: [
-                {text: lorem}
-              ]
-            }
-          ]
-        }
-      }
+      exampleHeading({sectionId: 1, text: `Transition ${transition1}/${transition2}`}),
+      exampleTextBlock({sectionId: 1}),
+      exampleHeading({sectionId: 2, text: `Transition ${transition1}`}),
+      exampleTextBlock({sectionId: 2}),
+      exampleHeading({sectionId: 3, text: `Transition ${transition2}`}),
+      exampleTextBlock({sectionId: 3}),
     ]
   })
 }
