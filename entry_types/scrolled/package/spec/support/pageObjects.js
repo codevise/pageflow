@@ -25,6 +25,7 @@ export function useInlineEditingPageObjects() {
   useFakeTranslations({
     'pageflow_scrolled.inline_editing.select_section': 'Select section',
     'pageflow_scrolled.inline_editing.select_content_element': 'Select content element',
+    'pageflow_scrolled.inline_editing.add_content_element': 'Add content element',
     'pageflow_scrolled.inline_editing.insert_content_element.after': 'Insert content element after',
     'pageflow_scrolled.inline_editing.edit_section_settings': 'Edit section settings',
     'pageflow_scrolled.inline_editing.edit_section_transition_before': 'Edit section transition before',
@@ -90,6 +91,11 @@ function createSectionPageObject(el) {
 
     select() {
       fireEvent.mouseDown(selectionRect);
+    },
+
+    clickAddContentElement() {
+      const {getByTitle} = within(selectionRect);
+      fireEvent.click(getByTitle('Add content element'));
     },
 
     clickEditSettings() {

@@ -12,6 +12,7 @@ export default function TwoColumn(props) {
     <div className={classNames(styles.root, styles[props.align])}>
       <div className={styles.inline} ref={props.contentAreaRef} />
       {renderItems(props)}
+      {renderPlaceholder(props.placeholder)}
     </div>
   );
 }
@@ -65,4 +66,18 @@ function groupItemsByPosition(items) {
   }, null);
 
   return groups;
+}
+
+function renderPlaceholder(placeholder) {
+  if (!placeholder) {
+    return null;
+  }
+
+  return (
+    <div className={classNames(styles.group)}>
+      <div className={styles.inline}>
+        {placeholder}
+      </div>
+    </div>
+  )
 }

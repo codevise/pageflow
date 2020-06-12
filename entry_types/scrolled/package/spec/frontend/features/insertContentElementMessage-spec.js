@@ -31,4 +31,20 @@ describe('INSERT_CONTENT_ELEMENT message', () => {
       payload: {id: 1, at: 'after'}
     }, expect.anything());
   });
+
+  it('is posted when section insert button is clicked', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 1, permaId: 11}]
+      }
+    });
+
+    getSectionByPermaId(11).select();
+    getSectionByPermaId(11).clickAddContentElement();
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'INSERT_CONTENT_ELEMENT',
+      payload: {id: 1, at: 'endOfSection'}
+    }, expect.anything());
+  });
 });

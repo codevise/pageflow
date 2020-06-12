@@ -24,6 +24,7 @@ de:
       remove_link: Link entfernen
       select_section: Abschnitt auswählen
       select_content_element: Element auswählen
+      add_content_element: Neues Element hinzufügen
       insert_content_element:
         before: Neues Element oberhalb einfügen
         after: Neues Element unterhalb einfügen

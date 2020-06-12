@@ -3,7 +3,12 @@ import React from 'react';
 import TwoColumn from './TwoColumn';
 import Center from './Center';
 
-export function Layout(props) {
+import {withInlineEditingAlternative} from '../inlineEditing';
+
+export const Layout = withInlineEditingAlternative('LayoutWithPlaceholder',
+                                                   LayoutWithoutInlineEditing);
+
+export function LayoutWithoutInlineEditing(props) {
   if (props.sectionProps.layout === 'center') {
     return (<Center {...props} />);
   }
