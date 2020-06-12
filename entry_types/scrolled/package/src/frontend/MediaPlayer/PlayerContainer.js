@@ -30,7 +30,6 @@ function PlayerContainer({
       return () => {
         media.releasePlayer(player);
         playerWrapper.innerHTML = '';
-        player.dispose();
         if (onDispose) {
           onDispose();
         }
