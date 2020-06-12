@@ -35,8 +35,8 @@ function PreparedMediaPlayer(props){
   }
 
   let onDispose = ()=>{
+    unwatchPlayer(playerRef.current, props.playerActions);
     playerRef.current = undefined;
-    props.playerActions.discardMediaElementId();
   }
 
   useEffect( () => {
