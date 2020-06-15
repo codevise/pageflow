@@ -5,12 +5,6 @@ import '$support/mediaElementStub';
 import '$support/fakeBrowserFeatures';
 
 describe('media', function() {
-  afterEach(() => {
-    _.each(media.players, (player)=>{
-      player.dispose();
-    });
-    media.players = {};
-  });
 
   let fileSources =[ 
     {type: 'audio/ogg', src: 'http://example.com/example.ogg'},
@@ -20,16 +14,10 @@ describe('media', function() {
 
   describe('#getPlayer', function() {
     
-    it('player id has a prefix pageflow_media_element_', function() {
-      let player = media.getPlayer(fileSources, {});
-      
-      expect(player.id()).toMatch(/pageflow_media_element_(.*)/);
-    });
-
     it('returns an instance of videojs.Player', function() {
       let player = media.getPlayer(fileSources, {});
-
-      expect(player).toEqual(videojs.players.pageflow_media_element_0);
+      
+      expect(Object.keys(videojs.players)).toContain(player.id());
     });
 
     it('renders media element with the provided source', function () {
@@ -56,14 +44,13 @@ describe('media', function() {
       expect(element).toHaveDescendant('audio[playsinline]');
     });
     
-    it('renders media element with the loop attribute', function () {
+    it('sets loop attribute to player', function () {
       let player = media.getPlayer(fileSources, {
         tagName: 'audio',
         loop: true
       });
-      let element = player.el();
-
-      expect(element).toHaveDescendant('audio[loop]');
+      
+      expect(player.loop).toBe(true);
     });
 
   });
@@ -88,14 +75,14 @@ describe('media', function() {
       expect(player2.muted()).toEqual(false);
     });
 
-    it('should not apply mute on released player', function () {
+    it('apply mute on released player as well', function () {
       let player1 = media.getPlayer(fileSources, {});
       let player2 = media.getPlayer(fileSources, {});
       media.releasePlayer(player2);
       media.mute(true);
 
       expect(player1.muted()).toEqual(true);
-      expect(player2.muted()).toEqual(false);
+      expect(player2.muted()).toEqual(true);
     });
 
   });

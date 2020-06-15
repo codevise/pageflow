@@ -43,6 +43,8 @@ export class MediaPool {
     player = this.unAllocatedPlayers[playerType].pop();
     if (player) {
       player.pause();
+      player.loop = loop
+      
       if (playsInline) {
         player.playsinline(true); 
       }
