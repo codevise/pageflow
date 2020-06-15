@@ -95,6 +95,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
         </Backdrop>
         <Foreground transitionStyles={transitionStyles}
                     state={props.state}
+                    paddingBottom={!endsWithFullWidthElement(props.foreground)}
                     heightMode={heightMode(props)}>
           <Box active={intersecting}
                coverInvisibleNextSection={props.nextSection && props.nextSection.transition.startsWith('fade')}
@@ -134,4 +135,9 @@ function heightMode(props) {
   }
 
   return 'dynamic';
+}
+
+function endsWithFullWidthElement(elements) {
+  const lastElement = elements[elements.length - 1];
+  return lastElement && lastElement.position === 'full';
 }

@@ -16,6 +16,7 @@ function className(props) {
     styles.Foreground,
     props.transitionStyles.foreground,
     props.transitionStyles[`foreground-${props.state}`],
+    {[styles.paddingBottom]: props.paddingBottom},
     styles[`${props.heightMode}Height`]
   )
 }

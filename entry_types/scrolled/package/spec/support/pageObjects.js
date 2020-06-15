@@ -81,6 +81,7 @@ const pageObjectQueries = {
 
 function createSectionPageObject(el) {
   const selectionRect = el.closest('[aria-label="Select section"]');
+  const foreground = el.querySelector(`.${foregroundStyles.Foreground}`);
 
   return {
     el,
@@ -111,6 +112,10 @@ function createSectionPageObject(el) {
     clickEditTransitionAfter() {
       const {getByTitle} = within(selectionRect);
       fireEvent.mouseDown(getByTitle('Edit section transition after'));
+    },
+
+    hasBottomPadding() {
+      return foreground.classList.contains(foregroundStyles.paddingBottom);
     }
   }
 }
