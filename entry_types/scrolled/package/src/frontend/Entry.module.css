@@ -5,11 +5,3 @@
   background-color: #000;
   color: #fff;
 }
-
-.exampleSelect {
-  position: absolute;
-  top: 5px;
-  left: 50%;
-  z-index: 10;
-  transform: translateX(-50%);
-}
