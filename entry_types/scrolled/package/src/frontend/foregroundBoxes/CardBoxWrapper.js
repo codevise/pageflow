@@ -3,7 +3,7 @@ import styles from "./CardBoxWrapper.module.css";
 
 export default function CardBoxWrapper(props) {
   return(
-    <div className={styles.cardBg}>
+    <div className={props.inverted ? styles.cardBgBlack : styles.cardBgWhite}>
       {props.children}
     </div>
   )

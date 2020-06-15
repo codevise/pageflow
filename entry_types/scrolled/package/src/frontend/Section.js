@@ -105,7 +105,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
                     appearance={props.appearance}
                     contentAreaRef={setContentAreaRef}
                     sectionProps={sectionProperties}>
-              {(children) => <BoxWrapper>{children}</BoxWrapper>}
+              {(children) => <BoxWrapper inverted={sectionProperties.invert}>{children}</BoxWrapper>}
             </Layout>
           </Box>
         </Foreground>

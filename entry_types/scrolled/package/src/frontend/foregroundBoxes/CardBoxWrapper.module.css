@@ -1,8 +1,18 @@
 .cardBg {
-  background: white;
-  color: black;
   padding: 4%;
   margin: 0 -4% 50px 0;
   border-radius: 15px;
   opacity: 1;
+}
+
+.cardBgWhite {
+  composes: cardBg;
+  background: white;
+  color: black;
+}
+
+.cardBgBlack {
+  composes: cardBg;
+  background: black;
+  color: white;
 }
