@@ -15,7 +15,7 @@ export function MediaPlayerControls(props) {
                     duration={playerState.duration}
                     isPlaying={playerState.isPlaying}
 
-                    play={playerActions.play}
+                    play={playerActions.playBlessed}
                     pause={playerActions.pause}
                     scrubTo={playerActions.scrubTo}
                     seekTo={playerActions.seekTo}/>

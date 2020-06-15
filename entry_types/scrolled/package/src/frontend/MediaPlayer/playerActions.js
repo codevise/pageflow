@@ -1,3 +1,4 @@
+import { media } from 'pageflow/frontend';
 
 export const PLAY = 'MEDIA_PLAY';
 export const PLAYING = 'MEDIA_PLAYING';
@@ -37,8 +38,17 @@ export const CONTROLS_HIDDEN = 'MEDIA_CONTROLS_HIDDEN';
 export const SAVE_MEDIA_ELEMENT_ID = 'MEDIA_SAVE_MEDIA_ELEMENT_ID';
 export const DISCARD_MEDIA_ELEMENT_ID = 'MEDIA_DISCARD_MEDIA_ELEMENT_ID';
 
+let isBlessed = false;
+
 export function createActions(dispatch){
   return {
+    playBlessed(){
+      if (!isBlessed) {
+        media.mute(false);
+        isBlessed = true;
+      }
+      dispatch({type: PLAY});
+    },
     play(){
       dispatch({type: PLAY});
     },
