@@ -1,6 +1,6 @@
 import {EditSectionTransitionView} from 'editor/views/EditSectionTransitionView';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
-import {SelectInput} from 'pageflow/testHelpers';
+import {RadioButtonGroupInput} from 'pageflow/testHelpers';
 import {normalizeSeed, factories} from 'support';
 
 describe('EditSectionTransitionView', () => {
@@ -19,7 +19,7 @@ describe('EditSectionTransitionView', () => {
     });
 
     view.render();
-    const transitionsSelectInput = SelectInput.findByPropertyName('transition', {inView: view});
+    const transitionsSelectInput = RadioButtonGroupInput.findByPropertyName('transition', {inView: view});
 
     expect(transitionsSelectInput.enabledValues()).toContain('fade');
     expect(transitionsSelectInput.enabledValues()).toContain('fadeBg');
@@ -40,7 +40,7 @@ describe('EditSectionTransitionView', () => {
     });
 
     view.render();
-    const transitionsSelectInput = SelectInput.findByPropertyName('transition', {inView: view});
+    const transitionsSelectInput = RadioButtonGroupInput.findByPropertyName('transition', {inView: view});
 
     expect(transitionsSelectInput.enabledValues()).toContain('scroll');
     expect(transitionsSelectInput.enabledValues()).not.toContain('fade');
