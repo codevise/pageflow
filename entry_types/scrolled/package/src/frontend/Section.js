@@ -87,6 +87,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
                   state={props.state}
                   transitionStyles={transitionStyles}>
           {(children) => <Shadow align={props.layout}
+                                 inverted={props.invert}
                                  intersecting={intersecting}
                                  opacity={props.shadowOpacity >= 0 ? props.shadowOpacity / 100 : 0.7}
                                  motifAreaRect={motifAreaRect}
@@ -105,7 +106,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
                     appearance={props.appearance}
                     contentAreaRef={setContentAreaRef}
                     sectionProps={sectionProperties}>
-              {(children) => <BoxWrapper inverted={sectionProperties.invert}>{children}</BoxWrapper>}
+              {(children) => <BoxWrapper inverted={props.invert}>{children}</BoxWrapper>}
             </Layout>
           </Box>
         </Foreground>
