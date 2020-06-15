@@ -19,8 +19,10 @@ export const filterSources = function(playerElement) {
   else if (browser.has('mse and native hls support')) {
     // remove dash source to ensure hls is used
     const dashSource = playerElement.querySelector('source[type="application/dash+xml"]');
-    playerElement.removeChild(dashSource);
-    changed = true;
+    if(dashSource) {
+      playerElement.removeChild(dashSource);
+      changed = true;
+    }
   }
 
   if (changed) {
