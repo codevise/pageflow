@@ -4,6 +4,7 @@ import {api} from './api';
 import {withInlineEditingDecorator} from './inlineEditing';
 import {ContentElementAttributesProvider} from './useContentElementAttributes';
 import {ContentElementLifecycleProvider} from './useContentElementLifecycle';
+import {ContentElementMargin} from './ContentElementMargin';
 
 import styles from './ContentElement.module.css';
 
@@ -16,9 +17,11 @@ export const ContentElement = withInlineEditingDecorator(
       return (
         <ContentElementAttributesProvider id={props.id}>
           <ContentElementLifecycleProvider type={props.type}>
-            <Component sectionProps={props.sectionProps}
-                       configuration={props.itemProps}
-                       contentElementId={props.id} />
+            <ContentElementMargin position={props.itemProps.position}>
+              <Component sectionProps={props.sectionProps}
+                         configuration={props.itemProps}
+                         contentElementId={props.id} />
+            </ContentElementMargin>
           </ContentElementLifecycleProvider>
         </ContentElementAttributesProvider>
       );
