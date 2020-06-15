@@ -4,6 +4,7 @@ import styles from './SectionDecorator.module.css';
 import contentElementStyles from './ContentElementDecorator.module.css';
 
 import {Toolbar} from './Toolbar';
+import {ForcePaddingContext} from '../Foreground';
 import {useEditorSelection} from './EditorState';
 import {useI18n} from '../i18n';
 
@@ -33,6 +34,13 @@ export function SectionDecorator(props) {
     type: 'sectionTransition'
   });
 
+  const lastContentElement = props.foreground[props.foreground.length - 1];
+
+  const {isSelected: isLastContentElementSelected} = useEditorSelection({
+    id: lastContentElement && lastContentElement.id,
+    type: 'contentElement'
+  });
+
   const isSectionSelected = isSelected || settingsSelection.isSelected;
 
   function selectIfOutsideContentItem(event) {
@@ -59,7 +67,9 @@ export function SectionDecorator(props) {
                                      selection: nextTransitionSelection,
                                      position: 'after'})}
       </div>
-      {props.children}
+      <ForcePaddingContext.Provider value={isLastContentElementSelected || isSectionSelected}>
+        {props.children}
+      </ForcePaddingContext.Provider>
     </div>
   );
 }

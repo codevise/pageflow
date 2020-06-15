@@ -24,4 +24,35 @@ describe('section padding', () => {
 
     expect(getSectionByPermaId(6).hasBottomPadding()).toBe(false);
   });
+
+  it('adds padding below full width element if section is selected', () => {
+    const {getSectionByPermaId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{sectionId: 5, configuration: {position: 'full'}}]
+      }
+    });
+
+    const section = getSectionByPermaId(6);
+    section.select();
+
+    expect(section.hasBottomPadding()).toBe(true);
+  });
+
+  it('adds padding below full width element if element is selected', () => {
+    const {getSectionByPermaId, getContentElementByTestId} = renderEntry({
+      seed: {
+        sections: [{id: 5, permaId: 6}],
+        contentElements: [{
+          sectionId: 5,
+          typeName: 'withTestId',
+          configuration: {testId: 10, position: 'full'}
+        }]
+      }
+    });
+
+    getContentElementByTestId(10).select();
+
+    expect(getSectionByPermaId(6).hasBottomPadding()).toBe(true);
+  });
 });
