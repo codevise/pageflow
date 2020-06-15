@@ -27,14 +27,22 @@ appearanceOptions.forEach(appearance => {
         <EntryStateProvider seed={exampleSeed(appearance)}>
           <Entry />
         </EntryStateProvider>
-    );
+    )
+    .add(
+      'Inverted',
+      () =>
+        <EntryStateProvider seed={exampleSeed(appearance, true)}>
+          <Entry />
+        </EntryStateProvider>
+    )
 });
 
-function exampleSeed(appearance) {
+function exampleSeed(appearance, invert = false) {
   const sectionBaseConfiguration = {
     appearance,
     transition: 'reveal',
-    fullHeight: true
+    fullHeight: true,
+    invert
   };
 
   return normalizeAndMergeFixture({
