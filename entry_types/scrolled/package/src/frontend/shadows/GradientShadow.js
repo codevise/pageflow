@@ -13,7 +13,8 @@ export default function GradientShadow(props) {
     <div className={classNames(styles.root,
                    styles[`align-${props.align}`],
                    {[styles.intersecting]: props.intersecting})}>
-      <div className={styles.shadow} style={{opacity: props.opacity * Math.round(opacityFactor * 10) / 10}}>
+      <div className={classNames(styles.shadow, props.inverted ? styles.shadowWhite : styles.shadowBlack)}
+           style={{opacity: props.opacity * Math.round(opacityFactor * 10) / 10}}>
         <Fullscreen />
       </div>
       {props.children}

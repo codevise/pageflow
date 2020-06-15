@@ -7,18 +7,36 @@
   transition: opacity 1s ease;
 }
 
-.align-right .shadow,
-.align-left .shadow {
+/* dark shadow */
+.align-right .shadowBlack,
+.align-left .shadowBlack {
   background: linear-gradient(to right, #000 0%,rgba(0, 0, 0, 0) 100%);
 }
 
 @media (min-width: 950px) {
-  .align-right .shadow {
+  .align-right .shadowBlack {
     background: linear-gradient(to left, #000 0%,rgba(0, 0, 0, 0) 100%);
   }
 }
 
-.intersecting .shadow,
-.align-center .shadow {
+.intersecting .shadowBlack,
+.align-center .shadowBlack {
   background: #000;
+}
+
+/* light shadow */
+.align-right .shadowWhite,
+.align-left .shadowWhite {
+  background: linear-gradient(to right, #fff 0%,rgba(255, 255, 255, 0) 100%);
+}
+
+@media (min-width: 950px) {
+  .align-right .shadowWhite {
+    background: linear-gradient(to left, #fff 0%,rgba(255, 255, 255, 0) 100%);
+  }
+}
+
+.intersecting .shadowWhite,
+.align-center .shadowWhite {
+  background: #fff;
 }
