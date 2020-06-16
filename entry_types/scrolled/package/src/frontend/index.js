@@ -8,6 +8,10 @@ import Entry from './Entry';
 import {setupI18n} from './i18n';
 
 import './global.module.css';
+
+import styles from './foregroundBoxes/GradientBox.module.css';
+export const withShadowClassName = styles.withShadow;
+
 import {EntryStateProvider} from '../entryState';
 import {loadInlineEditingComponents} from './inlineEditing';
 

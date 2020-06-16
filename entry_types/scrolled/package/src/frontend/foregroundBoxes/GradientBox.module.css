@@ -16,7 +16,7 @@
   bottom: -100vh;
 }
 
-.gradient {
+.gradient .withShadow {
   text-shadow: 0px 1px 5px black;
 }
 
