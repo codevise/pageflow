@@ -97,6 +97,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
                     state={props.state}
                     heightMode={heightMode(props)}>
           <Box active={intersecting}
+               inverted={props.invert}
                coverInvisibleNextSection={props.nextSection && props.nextSection.transition.startsWith('fade')}
                transitionStyles={transitionStyles}
                state={props.state}

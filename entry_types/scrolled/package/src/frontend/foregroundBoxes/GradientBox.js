@@ -15,6 +15,7 @@ export default function GradientBox(props) {
          style={{paddingTop: padding}}>
       <div className={styles.wrapper}>
         <div className={classNames(styles.shadow,
+                                   props.inverted ? styles.shadowLight : styles.shadowDark,
                                    props.transitionStyles.boxShadow,
                                    props.transitionStyles[`boxShadow-${props.state}`])}
              style={{top: padding, opacity: props.opacity}} />
