@@ -1,4 +1,4 @@
-import {useMemo, useCallback, useState, useRef, useEffect} from 'react';
+import {useCallback, useState, useRef, useEffect} from 'react';
 import debounce from 'debounce';
 
 export function useCachedValue(value, {
@@ -18,13 +18,12 @@ export function useCachedValue(value, {
     previousValue.current = value;
   });
 
-  const debouncedHandler = useMemo(() => onDebouncedChange && debounce(onDebouncedChange, delay),
-                                   [onDebouncedChange, delay]);
+  const debouncedHandler = useDebouncedCallback(onDebouncedChange, delay);
 
   const setValue = useCallback(value => {
     setCachedValue(previousValue => {
       if (previousValue !== value) {
-        debouncedHandler && debouncedHandler(value);
+        debouncedHandler(value);
       }
 
       return value;
@@ -32,4 +31,28 @@ export function useCachedValue(value, {
   }, [debouncedHandler]);
 
   return [cachedValue, setValue];
+}
+
+// Debounce callback even if the callback function changes across renders.
+function useDebouncedCallback(callback, delay) {
+  const mostRecentCallback = useRef(null);
+  const debouncedHandler = useRef(null);
+
+  useEffect(() => {
+    mostRecentCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    debouncedHandler.current = debounce(value => {
+      if (mostRecentCallback.current) {
+        mostRecentCallback.current(value);
+      }
+    }, delay);
+
+    return () => {
+      debouncedHandler.current.flush();
+    }
+  }, [delay]);
+
+  return useCallback((...args) => debouncedHandler.current(...args), []);
 }
