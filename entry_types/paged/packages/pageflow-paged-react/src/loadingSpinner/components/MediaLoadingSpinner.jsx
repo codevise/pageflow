@@ -117,7 +117,8 @@ function inlineStyle(props) {
     width: '100%',
     height: '100%',
     zIndex: 100,
-    backgroundColor: invert ? '#fff':'#000'
+    backgroundColor: invert ? '#fff':'#000',
+    animationDelay: props.animationDelay + 's'
   };
 }
 
@@ -138,8 +139,9 @@ export const MediaLoadingSpinner = connect(combineSelectors({
   backgroundImageY: widgetAttribute('customBackgroundImageY', {role: 'loading_spinner'}),
   invert: widgetAttribute('invert', {role: 'loading_spinner'}),
   removeLogo: widgetAttribute('removeLogo', {role: 'loading_spinner'}),
-  blurStrength: widgetAttribute('blurStrength', {role: 'loading_spinner'})
-}))(MediaLoadingSpinnerComponent)
+  blurStrength: widgetAttribute('blurStrength', {role: 'loading_spinner'}),
+  animationDelay: widgetAttribute('animationDelay', {role: 'loading_spinner'}),
+}))(MediaLoadingSpinnerComponent);
 
 
 export function register() {

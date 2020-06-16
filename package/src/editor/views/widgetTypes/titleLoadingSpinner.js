@@ -28,6 +28,7 @@ editor.widgetTypes.register('title_loading_spinner', {
         this.input('invert', CheckBoxInputView);
         this.input('remove_logo', CheckBoxInputView);
         this.input('blur_strength', SliderInputView);
+        this.input('animation_delay', SliderInputView, {minValue: 1, maxValue: 7, defaultValue: 7, unit: 's'})
       });
     }
   })
