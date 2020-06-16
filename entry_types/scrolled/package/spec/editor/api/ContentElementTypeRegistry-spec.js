@@ -20,6 +20,22 @@ describe('ContentElementTypeRegistry', () => {
       expect(types.map(type => type.typeName)).toContain('textBlock');
     });
 
+    it('supports endOfSection insert options', () => {
+      const registry = new ContentElementTypeRegistry();
+      registry.register('textBlock', {supportedPositions: ['inline']});
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          sections: [
+            {id: 1}
+          ]
+        })
+      });
+
+      const types = registry.getSupported(entry, {at: 'endOfSection', id: 1});
+
+      expect(types.map(type => type.typeName)).toContain('textBlock');
+    });
+
     it('includes inline only elements even if sibling does not have a position', () => {
       const registry = new ContentElementTypeRegistry();
       registry.register('textBlock', {supportedPositions: ['inline']});
@@ -132,6 +148,25 @@ describe('ContentElementTypeRegistry', () => {
       });
 
       const types = registry.getSupported(entry, {at: 'after', id: 1});
+
+      expect(types.map(type => type.typeName)).not.toContain('textBlock');
+    });
+
+    it('excludes types with merge function for endOfSection position if last element has same type', () => {
+      const registry = new ContentElementTypeRegistry();
+      registry.register('textBlock', { merge() {} });
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          sections: [
+            {id: 10}
+          ],
+          contentElements: [
+            {id: 1, sectionId: 10, typeName: 'textBlock'}
+          ]
+        })
+      });
+
+      const types = registry.getSupported(entry, {at: 'endOfSection', id: 10});
 
       expect(types.map(type => type.typeName)).not.toContain('textBlock');
     });

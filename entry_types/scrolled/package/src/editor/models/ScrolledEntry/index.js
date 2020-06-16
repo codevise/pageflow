@@ -39,10 +39,22 @@ export const ScrolledEntry = Entry.extend({
   },
 
   insertContentElement(attributes, {id, at, splitPoint}) {
-    insertContentElement(this,
-                         this.contentElements.get(id),
-                         attributes,
-                         {id, at, splitPoint});
+    if (at === 'endOfSection') {
+      const contentElement = this.sections.get(id).contentElements.create({
+        position: this.contentElements.length,
+        ...attributes
+      });
+
+      contentElement.once('sync', () => {
+        this.trigger('selectContentElement', contentElement);
+      });
+    }
+    else {
+      insertContentElement(this,
+                           this.contentElements.get(id),
+                           attributes,
+                           {id, at, splitPoint});
+    }
   },
 
   deleteContentElement(id) {

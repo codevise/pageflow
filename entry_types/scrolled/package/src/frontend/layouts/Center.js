@@ -21,6 +21,21 @@ export default function Center(props) {
             </div>
           </div>}
       </ContentElements>
+      {renderPlaceholder(props.placeholder)}
     </div>
   );
+}
+
+function renderPlaceholder(placeholder) {
+  if (!placeholder) {
+    return null;
+  }
+
+  return (
+    <div className={classNames(styles.outer)}>
+      <div className={classNames(styles.item)}>
+        {placeholder}
+      </div>
+    </div>
+  )
 }

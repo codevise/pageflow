@@ -16,3 +16,7 @@
 .fullHeight {
   min-height: 100vh;
 }
+
+.paddingBottom {
+  padding-bottom: 3em;
+}

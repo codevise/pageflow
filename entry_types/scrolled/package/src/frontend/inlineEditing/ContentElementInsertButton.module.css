@@ -1,0 +1,36 @@
+.container {
+  height: 0;
+  position: relative;
+  top: 1em;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.hovered {
+  opacity: 1;
+}
+
+.container::before,
+.container::after {
+  content: '';
+  border-top: solid 1px currentColor;
+  width: calc(50% - 20px);
+  position: absolute;
+  top: 0;
+}
+
+.container::before {
+  left: 0;
+}
+
+.container::after {
+  right: 0;
+}
+
+.button {
+  border: 0;
+  background: none;
+  color: currentColor;
+  position: relative;
+  top: -8px;
+}

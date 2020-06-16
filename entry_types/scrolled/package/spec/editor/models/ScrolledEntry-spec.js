@@ -13,6 +13,69 @@ describe('ScrolledEntry', () => {
   describe('#insertContentElement', () => {
     useFakeXhr(() => testContext);
 
+    describe('for sections', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('inlineImage', {});
+
+        testContext.entry = factories.entry(
+          ScrolledEntry,
+          {
+            id: 100
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              sections: [
+                {id: 10}
+              ],
+              contentElements: [
+                {id: 5, sectionId: 10, position: 0},
+                {id: 6, sectionId: 10, position: 1}
+              ]
+            })
+          });
+      });
+
+      setupGlobals({
+        entry: () => testContext.entry
+      });
+
+      it('supports adding content element at end', () => {
+        const {entry, requests} = testContext;
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'endOfSection', id: 10});
+
+        expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements');
+        expect(JSON.parse(requests[0].requestBody)).toMatchObject({
+          content_element: {
+            typeName: 'inlineImage',
+            position: 2
+          }
+        });
+      });
+
+      it('triggers event on entry to select new content element', () => {
+        const {entry} = testContext;
+        const listener = jest.fn();
+        entry.on('selectContentElement', listener);
+
+        entry.insertContentElement({typeName: 'inlineImage'},
+                                   {at: 'endOfSection', id: 10});
+
+
+        expect(listener).not.toHaveBeenCalled();
+
+        testContext.server.respond(
+          'POST', '/editor/entries/100/scrolled/sections/10/content_elements',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify({
+            id: 5, permaId: 50
+          })]
+        );
+
+        expect(listener).toHaveBeenCalledWith(entry.contentElements.get(5));
+      });
+    });
+
     describe('for all content elements', () => {
       beforeEach(() => {
         editor.contentElementTypes.register('inlineImage', {});

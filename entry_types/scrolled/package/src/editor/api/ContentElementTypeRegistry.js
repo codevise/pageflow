@@ -71,7 +71,7 @@ export class ContentElementTypeRegistry {
 
   getSupported(entry, insertOptions) {
     const [sibling, otherSibling] = getSiblings(entry, insertOptions);
-    const position = sibling.getDefaultSiblingPosition();
+    const position = sibling ? sibling.getDefaultSiblingPosition() : 'inline';
 
     return this.toArray().filter(type => {
       if (type.supportedPositions && !type.supportedPositions.includes(position)) {
@@ -96,6 +96,10 @@ export class ContentElementTypeRegistry {
 }
 
 function getSiblings(entry, insertOptions) {
+  if (insertOptions.at === 'endOfSection') {
+    return [undefined, entry.sections.get(insertOptions.id).contentElements.last()];
+  }
+
   const sibling = entry.contentElements.get(insertOptions.id);
   const otherSibling = getOtherSibling(sibling, insertOptions);
 

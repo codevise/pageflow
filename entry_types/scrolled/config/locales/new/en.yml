@@ -24,6 +24,7 @@ en:
       remove_link: Remove link
       select_section: Select section
       select_content_element: Select element
+      add_content_element: Add new element
       insert_content_element:
         before: Insert new element above
         after: Insert new element below
