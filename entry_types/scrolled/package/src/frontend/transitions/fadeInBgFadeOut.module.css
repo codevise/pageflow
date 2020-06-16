@@ -23,7 +23,7 @@
   visibility: hidden;
 }
 
-.bbackdrop::before {
+.backdrop::before {
   content: "";
   position: absolute;
   top: 0;
@@ -33,6 +33,6 @@
   background-color: #000;
 }
 
-.bbackdrop-below::before {
+.backdrop-below::before {
   visibility: hidden;
 }
