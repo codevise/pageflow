@@ -55,6 +55,7 @@ export function useFakeMedia() {
     jest.spyOn(media, 'getPlayer').mockImplementation((sources, {filePermaId}) =>
       createFakePlayer({filePermaId})
     );
+    media.releasePlayer = (player) => {}
   });
 
   afterEach(() => jest.restoreAllMocks());
