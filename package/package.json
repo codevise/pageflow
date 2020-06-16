@@ -13,6 +13,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.0.4",
     "jest": "^24.9.0",
+    "jest-css-modules-processor": "^0.0.9",
     "jest-jquery-matchers": "^2.1.0",
     "jest-sinon": "^1.0.0",
     "sinon": "^7.5.0"
