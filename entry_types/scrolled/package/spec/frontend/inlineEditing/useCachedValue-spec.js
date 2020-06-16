@@ -109,4 +109,21 @@ describe('useCachedValue', () => {
 
     expect(listener).not.toHaveBeenCalled();
   });
+
+  it('debounces onDebouncedChange call even if new function is passed during rerender', () => {
+    const listener = jest.fn();
+    const {result} = renderHook(() => useCachedValue('value', {
+      onDebouncedChange: value => { listener(value) },
+      delay: 1
+    }));
+
+    let [,setValue] = result.current;
+    act(() => setValue('new value'));
+    [,setValue] = result.current;
+    act(() => setValue('newer'));
+    jest.runAllTimers();
+
+    expect(listener).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledWith('newer');
+  });
 });
