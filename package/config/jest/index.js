@@ -18,7 +18,7 @@ module.exports = {
   transform: {
     '^.+\\.jst$': resolve('./transformers/jst'),
     '^.+\\.jsx?$': resolve('./transformers/upwardBabel'),
-    '^.+\\.module.css$': resolve('./transformers/cssModules')
+    '^.+\\.module.css$': 'jest-css-modules-processor'
   }
 }
 
