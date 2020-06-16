@@ -38,7 +38,7 @@ describe('PlayerContainer', () => {
 
   it('calls onSetup with the media player', () => {
     let onSetup = (player) => {
-      expect(player).toEqual(videojs.players.pageflow_media_element_0)
+      expect(Object.keys(videojs.players)).toContain(player.id());
     }
     render(<PlayerContainer type={'video'} onSetup={onSetup} sources={getVideoSources()} />);
   });
