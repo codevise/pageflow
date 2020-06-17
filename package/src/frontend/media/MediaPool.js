@@ -32,7 +32,7 @@ export class MediaPool {
       }
     }
   }
-  allocatePlayer({playerType, playerId, playsInline, loop = false, poster}){      
+  allocatePlayer({playerType, playerId, playsInline, loop = false, controls = false, poster}){      
     let player = undefined;
     if (!this.unAllocatedPlayers[playerType]) {
       this.populateMediaPool_();
@@ -47,6 +47,7 @@ export class MediaPool {
       player.pause();
       player.getMediaElement().loop = loop
       player.poster(poster);
+      player.controls(controls)
       if (playsInline) {
         player.playsinline(true); 
       }
@@ -67,6 +68,7 @@ export class MediaPool {
       let type = this.getMediaTypeFromEl(player.el());    
       this.allocatedPlayers[type] = this.allocatedPlayers[type].filter(p=>p!=player);
       
+      player.controls(false);
       player.getMediaElement().loop = false;
       player.playsinline(false);
       player.getMediaElement().setAttribute('src', blankSources[type]);
