@@ -20,12 +20,12 @@
 }
 
 .loadingProgressBar {
-  background: currentColor;
+  background: white;
   opacity: 0.25;
 }
 
 .playProgressBar {
-  background: currentColor;
+  background: white;
 }
 
 .sliderHandle {
@@ -35,7 +35,7 @@
   border-radius: 6.5px;
   position: absolute;
   top: -4px;
-  background: currentColor;
+  background: white;
   opacity: 0;
   transition: opacity 100ms;
 }

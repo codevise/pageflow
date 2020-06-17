@@ -29,7 +29,7 @@
 
 .contextMenuItemActiveIndicator {
   visibility: hidden;
-  fill: currentColor;
+  fill: white;
 }
 
 .contextMenuItemActiveIndicator.active {

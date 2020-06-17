@@ -3,7 +3,7 @@
 }
 
 .backgroundColor {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .foregroundLight {
@@ -54,13 +54,13 @@
 .controlsIcon {
   width: 24px;
   height: 24px;
-  fill: currentColor;
+  fill: white;
   cursor: pointer;
 }
 
 .playControl {
   text-decoration: none;
-  color: currentColor;
+  color: white;
 }
 
 .settingsIcon {
