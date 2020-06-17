@@ -1,10 +1,27 @@
+import React, {useContext, createContext} from 'react';
 import I18n from 'i18n-js';
 import {useEntryMetadata} from '../entryState';
+
+const LocaleContext = createContext('en');
 
 export function setupI18n({defaultLocale, locale, translations}) {
   I18n.defaultLocale = defaultLocale;
   I18n.locale = locale;
   I18n.translations = translations;
+}
+
+export function LocaleProvider({children}) {
+  const {locale} = useEntryMetadata() || {};
+
+  return (
+    <LocaleContext.Provider value={locale}>
+      {children}
+    </LocaleContext.Provider>
+  );
+}
+
+export function useLocale() {
+  return useContext(LocaleContext);
 }
 
 /**
@@ -29,7 +46,7 @@ export function setupI18n({defaultLocale, locale, translations}) {
  * t('pageflow_scrolled.inline_editing.some.key')
  */
 export function useI18n({locale: scope} = {}) {
-  const {locale} = useEntryMetadata();
+  const locale = useLocale();
 
   return {
     t(key, options) {

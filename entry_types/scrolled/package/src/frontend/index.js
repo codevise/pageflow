@@ -10,14 +10,15 @@ import {setupI18n} from './i18n';
 import './global.module.css';
 
 import styles from './foregroundBoxes/GradientBox.module.css';
-export const withShadowClassName = styles.withShadow;
 
-import {EntryStateProvider} from '../entryState';
+import {RootProviders} from './RootProviders';
 import {loadInlineEditingComponents} from './inlineEditing';
 
 import {browser} from 'pageflow/frontend';
 
 const editMode = window.location.pathname.indexOf('/editor/entries') === 0;
+
+export const withShadowClassName = styles.withShadow;
 
 export {api as frontend} from './api';
 
@@ -37,7 +38,7 @@ export * from './i18n';
 
 export * from './SectionThumbnail';
 export {default as Entry} from './Entry';
-export {EntryStateProvider, useFile} from '../entryState'
+export {useFile} from '../entryState'
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
 export {useContentElementEditorCommandSubscription} from './useContentElementEditorCommandSubscription';
 export {useContentElementEditorState} from './useContentElementEditorState';
@@ -47,6 +48,8 @@ export {ViewportDependentPillarBoxes} from './ViewportDependentPillarBoxes';
 export {EditableText} from './EditableText';
 
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
+
+export {RootProviders};
 
 window.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);
@@ -66,11 +69,9 @@ function render(seed) {
 
 function Root({seed}) {
   return (
-    <>
-      <EntryStateProvider seed={seed}>
-        <AppHeader />
-        <Entry />
-      </EntryStateProvider>
-    </>
+    <RootProviders seed={seed}>
+      <AppHeader />
+      <Entry />
+    </RootProviders>
   );
 }

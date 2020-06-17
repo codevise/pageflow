@@ -1,5 +1,5 @@
 import React from 'react';
-import {Entry, EntryStateProvider, setupI18n} from 'pageflow-scrolled/frontend';
+import {Entry, RootProviders, setupI18n} from 'pageflow-scrolled/frontend';
 import {browser} from 'pageflow/frontend';
 
 import {normalizeSeed} from './normalizeSeed';
@@ -56,9 +56,9 @@ export function storiesOfContentElement(module, options) {
   exampleStories(options).forEach(({title, seed, parameters = {}}) => {
     stories.add(title,
                 () =>
-                  <EntryStateProvider seed={seed}>
+                  <RootProviders seed={seed}>
                     <Entry />
-                  </EntryStateProvider>,
+                  </RootProviders>,
                 {
                   ...parameters,
                   viewport: {
