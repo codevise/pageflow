@@ -1,7 +1,7 @@
 import React, {useEffect, useContext, useRef} from 'react';
 import PlayerContainer from './PlayerContainer';
 import ScrollToSectionContext from "../ScrollToSectionContext";
-import watchPlayer from './watchPlayer';
+import watchPlayer, {unwatchPlayer} from './watchPlayer';
 import { applyPlayerState } from './applyPlayerState';
 import { updatePlayerState } from './updatePlayerState';
 
@@ -35,8 +35,8 @@ function PreparedMediaPlayer(props){
   }
 
   let onDispose = ()=>{
+    unwatchPlayer(playerRef.current, props.playerActions);
     playerRef.current = undefined;
-    props.playerActions.discardMediaElementId();
   }
 
   useEffect( () => {

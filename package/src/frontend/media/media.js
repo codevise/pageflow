@@ -1,24 +1,24 @@
-import {createMediaPlayer} from './createMediaPlayer';
+import {MediaPool, MediaType} from './MediaPool';
 
 export const media = {
-  players: {},
+  playerPool: new MediaPool(),
   muteState: true,
   mute: function (value) {
     this.muteState = value;
-    Object.values(this.players).forEach(function(player){
-      player.muted(value);
-    });
+    this.playerPool.blessAll(value);
   },
   getPlayer: function (fileSource, options) {
-    options.playerId = options.playerId || Object.keys(this.players).length;
-    let player = createMediaPlayer(options);
-    player.muted(this.muteState);
-    player.src(fileSource);
-    this.players[options.playerId] = player;
-    player.playerId = options.playerId;
-    return player;
+    options.playerType = options.tagName || MediaType.VIDEO;
+    let player = this.playerPool.allocatePlayer(options);
+    if (player) {
+      player.muted(this.muteState);
+      player.src(fileSource);
+      return player;
+    }
   },
-  releasePlayer: function (player) {
-    delete this.players[player.playerId];
+  releasePlayer: function (player) {    
+    if (player) {
+      this.playerPool.unAllocatePlayer(player);
+    }
   }
 };

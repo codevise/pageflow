@@ -2,15 +2,10 @@ import {browser} from '../browser';
 import {VideoPlayer} from '../VideoPlayer';
 
 export const createMediaPlayer = function (options) {
-  options.tagName = options.tagName || 'video';
-  let isAudio = options.tagName == 'audio';
-  let playsInline = options.playsInline;
+  let isAudio = options.tagName == 'AUDIO';
+  let playsInline = true;
 
-  let mediaElementTemplate = document.createElement(options.tagName);
-  mediaElementTemplate.setAttribute('id', 'pageflow_media_element_'+options.playerId);
-  mediaElementTemplate.setAttribute('crossorigin', 'anonymous');
-
-  const player = new VideoPlayer(mediaElementTemplate, {
+  const player = new VideoPlayer(options.mediaElement, {
     controlBar: false,
     loadingSpinner: false,
     bigPlayButton: false,
@@ -32,10 +27,6 @@ export const createMediaPlayer = function (options) {
     mediaEvents: true,
     context: options.mediaContext
   });
-
-  if (playsInline) {
-    player.playsinline(true); 
-  }
 
   player.textTrackSettings = {
     getValues() {
