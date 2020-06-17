@@ -152,5 +152,63 @@ describe('usePlayerState', () => {
 
       expect(nextState.userIdle).toBe(false);
     });
+
+    it('sets userIdle to false on FOCUS_ENTERED_CONTROLS action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [, actions] = result.current;
+      TestRenderer.act(() => actions.userIdle());
+      TestRenderer.act(() => actions.focusEnteredControls());
+      const [nextState,] = result.current;
+
+      expect(nextState.userIdle).toBe(false);
+    });
+
+    it('sets userIdle to false on FOCUS_LEFT_CONTROLS action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [, actions] = result.current;
+      TestRenderer.act(() => actions.userIdle());
+      TestRenderer.act(() => actions.focusLeftControls());
+      const [nextState,] = result.current;
+
+      expect(nextState.userIdle).toBe(false);
+    });
+
+    it('sets userHoveringControls to true on CONTROLS_ENTERED action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [, actions] = result.current;
+      TestRenderer.act(() => actions.controlsEntered());
+      const [nextState,] = result.current;
+
+      expect(nextState.userHoveringControls).toBe(true);
+    });
+
+    it('sets userHoveringControls to false on CONTROLS_LEFT action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [, actions] = result.current;
+      TestRenderer.act(() => actions.controlsEntered());
+      TestRenderer.act(() => actions.controlsLeft());
+      const [nextState,] = result.current;
+
+      expect(nextState.userHoveringControls).toBe(false);
+    });
+
+    it('sets focusInsideControls to true on FOCUS_ENTERED_CONTROLS action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [, actions] = result.current;
+      TestRenderer.act(() => actions.focusEnteredControls());
+      const [nextState,] = result.current;
+
+      expect(nextState.focusInsideControls).toBe(true);
+    });
+
+    it('sets focusInsideControls to false on FOCUS_LEFT_CONTROLS action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [, actions] = result.current;
+      TestRenderer.act(() => actions.focusEnteredControls());
+      TestRenderer.act(() => actions.focusLeftControls());
+      const [nextState,] = result.current;
+
+      expect(nextState.focusInsideControls).toBe(false);
+    });
   });
 });

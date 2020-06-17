@@ -181,12 +181,14 @@ export function playerStateReducer(state, action){
     case FOCUS_ENTERED_CONTROLS:
       return {
         ...state,
-        focusInsideControls: true
+        focusInsideControls: true,
+        userIdle: false
       };
     case FOCUS_LEFT_CONTROLS:
       return {
         ...state,
-        focusInsideControls: false
+        focusInsideControls: false,
+        userIdle: false
       };
     case USER_INTERACTION:
       return {

@@ -15,7 +15,14 @@ export function MediaPlayerControls(props) {
                     duration={playerState.duration}
 
                     isPlaying={playerState.isPlaying}
-                    userIdle={playerState.userIdle}
+                    inactive={playerState.userIdle &&
+                              !playerState.focusInsideControls &&
+                              !playerState.userHoveringControls}
+
+                    onFocus={playerActions.focusEnteredControls}
+                    onBlur={playerActions.focusLeftControls}
+                    onMouseEnter={playerActions.controlsEntered}
+                    onMouseLeave={playerActions.controlsLeft}
 
                     play={playerActions.playBlessed}
                     pause={playerActions.pause}

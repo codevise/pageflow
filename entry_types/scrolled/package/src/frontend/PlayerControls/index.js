@@ -16,11 +16,15 @@ export function PlayerControls(props) {
   const [subtitlesMenuHidden, setSubtitlesMenuHidden] = useState(props.subtitlesMenuHidden);
 
   return (
-    <div className={classNames(styles.controlBarContainer,
+    <div onFocus={props.onFocus}
+         onBlur={props.onBlur}
+         onMouseEnter={props.onMouseEnter}
+         onMouseLeave={props.onMouseLeave}
+         className={classNames(styles.controlBarContainer,
                                styles.backgroundColor,
                                {
                                  [styles.inset]: props.inset,
-                                 [styles.transparent]: props.isPlaying && props.inset && props.userIdle
+                                 [styles.transparent]: props.isPlaying && props.inset && props.inactive
                                })}>
       <div className={classNames(styles.controlBar,
                                  props.style === 'white' ? styles.foregroundLight : styles.foregroundDark)}>

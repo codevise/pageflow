@@ -141,4 +141,65 @@ describe('MediaInteractionTracking', () => {
 
     expect(playerActions.userIdle).toHaveBeenCalled();
   });
+
+  it('cancels delay when focus enters controls', () => {
+    let playerState = getInitialPlayerState();
+    const playerActions = {
+      ...getPlayerActions(),
+      userIdle: jest.fn()
+    };
+    const {getByTestId, rerender} = render(
+      <MediaInteractionTracking playerState={playerState}
+                                playerActions={playerActions}
+                                idleDelay={1000}>
+        <div data-testid="child" />
+      </MediaInteractionTracking>
+    );
+
+    fireEvent.click(getByTestId('child'));
+    jest.advanceTimersByTime(700);
+    playerState = {
+      ...playerState,
+      focusInsideControls: true
+    };
+    rerender(
+      <MediaInteractionTracking playerState={playerState}
+                                playerActions={playerActions}
+                                idleDelay={1000} />
+    );
+    jest.advanceTimersByTime(700);
+
+    expect(playerActions.userIdle).not.toHaveBeenCalled();
+  });
+
+  it('dispatches userIdle action with delay after focus left playing', () => {
+    let playerState = {
+      ...getInitialPlayerState(),
+      focusInsideControls: true
+    };
+    const playerActions = {
+      ...getPlayerActions(),
+      userIdle: jest.fn()
+    };
+    const {rerender} = render(
+      <MediaInteractionTracking playerState={playerState}
+                                playerActions={playerActions}
+                                idleDelay={1000}>
+        <div data-testid="child" />
+      </MediaInteractionTracking>
+    );
+
+    playerState = {
+      ...playerState,
+      focusInsideControls: false
+    };
+    rerender(
+      <MediaInteractionTracking playerState={playerState}
+                                playerActions={playerActions}
+                                idleDelay={1000} />
+    );
+    jest.advanceTimersByTime(1000);
+
+    expect(playerActions.userIdle).toHaveBeenCalled();
+  });
 });
