@@ -15,9 +15,11 @@ export class TitleLoadingSpinner extends React.Component {
   render() {
     const {title, subtitle, entryTitle} = this.props;
     var invert = getInvert(this.props);
+    
     return (
         <MediaLoadingSpinner>
-          <div className={classNames('media_loading_spinner-titles', {'media_loading_spinner-invert': invert})}>
+          <div className={classNames('media_loading_spinner-titles', {'media_loading_spinner-invert': invert})}
+               style={{animationDuration: this.props.animationDelay+'s'}}>
             <div className="media_loading_spinner-title">
               {title || entryTitle}
             </div>
