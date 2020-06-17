@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Entry, EntryStateProvider} from 'pageflow-scrolled/frontend';
+import {Entry, RootProviders} from 'pageflow-scrolled/frontend';
 
 import {
   normalizeAndMergeFixture,
@@ -24,16 +24,16 @@ appearanceOptions.forEach(appearance => {
     .add(
       'Layout/Position',
       () =>
-        <EntryStateProvider seed={exampleSeed(appearance)}>
+        <RootProviders seed={exampleSeed(appearance)}>
           <Entry />
-        </EntryStateProvider>
+        </RootProviders>
     )
     .add(
       'Inverted',
       () =>
-        <EntryStateProvider seed={exampleSeed(appearance, true)}>
+        <RootProviders seed={exampleSeed(appearance, true)}>
           <Entry />
-        </EntryStateProvider>
+        </RootProviders>
     )
 });
 

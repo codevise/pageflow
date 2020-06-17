@@ -4,7 +4,7 @@ import {EditableText} from '../EditableText';
 import {EditorStateProvider} from '../EditorState';
 import {ContentElementEditorStateProvider} from '../ContentElementEditorStateProvider';
 import {ContentElementAttributesProvider} from '../../useContentElementAttributes';
-import {EntryStateProvider} from 'pageflow-scrolled/frontend';
+import {RootProviders} from 'pageflow-scrolled/frontend';
 
 import {normalizeAndMergeFixture} from 'pageflow-scrolled/spec/support/stories';
 
@@ -29,7 +29,7 @@ export const darkBackground = () =>
 
 function Background({dark, children}) {
   return (
-    <EntryStateProvider seed={normalizeAndMergeFixture()}>
+    <RootProviders seed={normalizeAndMergeFixture()}>
       <EditorStateProvider>
         <ContentElementAttributesProvider id={1}>
           <ContentElementEditorStateProvider id={1}>
@@ -43,7 +43,7 @@ function Background({dark, children}) {
           </ContentElementEditorStateProvider>
         </ContentElementAttributesProvider>
       </EditorStateProvider>
-    </EntryStateProvider>
+    </RootProviders>
   );
 }
 
