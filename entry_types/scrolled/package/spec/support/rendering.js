@@ -2,7 +2,8 @@ import React, {useEffect} from 'react';
 import {render} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks';
 
-import {EntryStateProvider, useEntryStateDispatch} from 'entryState';
+import {RootProviders} from 'frontend';
+import {useEntryStateDispatch} from 'entryState';
 import {normalizeSeed} from './normalizeSeed';
 
 /**
@@ -61,11 +62,11 @@ function createWrapper(seed, setup, originalWrapper) {
   return function Wrapper({children}) {
     return (
       <OriginalWrapper>
-        <EntryStateProvider seed={normalizedSeed}>
+        <RootProviders seed={normalizedSeed}>
           <Dispatcher callback={setup} seed={normalizedSeed}>
             {children}
           </Dispatcher>
-        </EntryStateProvider>
+        </RootProviders>
       </OriginalWrapper>
     );
   }

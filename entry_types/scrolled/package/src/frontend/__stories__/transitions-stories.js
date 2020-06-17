@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Entry, EntryStateProvider} from 'pageflow-scrolled/frontend';
+import {Entry, RootProviders} from 'pageflow-scrolled/frontend';
 
 import {
   normalizeAndMergeFixture,
@@ -20,9 +20,9 @@ transitions.forEach(transition1 =>
     stories.add(
       `${transition1}/${transition2}`,
       () =>
-        <EntryStateProvider seed={exampleSeed(transition1, transition2)}>
+        <RootProviders seed={exampleSeed(transition1, transition2)}>
           <Entry />
-        </EntryStateProvider>,
+        </RootProviders>,
       {
         percy: {skip: true}
       }

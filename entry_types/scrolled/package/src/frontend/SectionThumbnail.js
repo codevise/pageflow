@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
 import Measure from 'react-measure';
 
-import {EntryStateProvider, useEntryStateDispatch, useSectionStructure} from '../entryState';
+import {RootProviders} from './RootProviders';
+import {useEntryStateDispatch, useSectionStructure} from '../entryState';
 import Section from './Section';
 import {FullscreenHeightProvider} from './Fullscreen';
 import {StaticPreview} from './useScrollPositionLifecycle';
@@ -11,9 +12,9 @@ import styles from './SectionThumbnail.module.css';
 
 export function SectionThumbnail({seed, ...props}) {
   return (
-    <EntryStateProvider seed={seed}>
+    <RootProviders seed={seed}>
       <Inner {...props} />
-    </EntryStateProvider>
+    </RootProviders>
   );
 }
 
