@@ -50,7 +50,8 @@ describe('media', function() {
         loop: true
       });
       
-      expect(player.loop).toBe(true);
+      expect(player.getMediaElement().hasAttribute('loop')).toBe(true);
+      expect(player.getMediaElement().getAttribute('loop')).toBe('');
     });
 
   });

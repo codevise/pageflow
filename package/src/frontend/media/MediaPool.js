@@ -1,4 +1,5 @@
 import {createMediaPlayer} from './createMediaPlayer';
+import {blankSources} from './blankSources';
 
 /** @const @enum {string} */
 export const MediaType = {
@@ -17,7 +18,7 @@ export class MediaPool {
     this.playerCount = options.playerCount;
     this.allocatedPlayers = {};
     this.unAllocatedPlayers = {};
-
+    
     this.mediaFactory_ = {
       [MediaType.AUDIO]: () => {
         const audioEl = document.createElement('audio');
@@ -44,7 +45,7 @@ export class MediaPool {
     if (player) {
       
       player.pause();
-      player.loop = loop
+      player.getMediaElement().loop = loop
       player.poster(poster);
       if (playsInline) {
         player.playsinline(true); 
@@ -66,8 +67,9 @@ export class MediaPool {
       let type = this.getMediaTypeFromEl(player.el());    
       this.allocatedPlayers[type] = this.allocatedPlayers[type].filter(p=>p!=player);
       
+      player.getMediaElement().loop = false;
       player.playsinline(false);
-      player.getMediaElement().removeAttribute('src');
+      player.getMediaElement().setAttribute('src', blankSources[type]);
       player.poster('');
 
       this.unAllocatedPlayers[type].push(player);
@@ -117,6 +119,7 @@ export class MediaPool {
       mediaElement: mediaEl,
       tagName: type
     });
+    mediaEl.setAttribute('src', blankSources[type]);
     this.unAllocatedPlayers[type].push(player);
     return player;
   }

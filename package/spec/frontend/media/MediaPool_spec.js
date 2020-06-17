@@ -1,6 +1,6 @@
 import '$support/mediaElementStub';
 import '$support/fakeBrowserFeatures';
-import {MediaPool, MediaType} from 'pageflow/frontend';
+import {MediaPool, MediaType, blankSources} from 'pageflow/frontend';
 
 describe('MediaPool', function() {
 
@@ -95,14 +95,14 @@ describe('MediaPool', function() {
       expect(pool.unAllocatedPlayers[MediaType.VIDEO].length).toBe(pool.playerCount-1);
     });
 
-    it('removes the player\'s src attribute', function () {
+    it('replace the player\'s src with blank source', function () {
       let pool = new MediaPool();
       let player = pool.allocatePlayer({playerType: MediaType.VIDEO});
       player.getMediaElement().setAttribute('src', 'www.example.com/test.mp4');
       expect(player.getMediaElement().hasAttribute('src')).toBe(true);
 
       pool.unAllocatePlayer(player);
-      expect(player.getMediaElement().hasAttribute('src')).toBe(false);
+      expect(player.getMediaElement().getAttribute('src')).toBe(blankSources[MediaType.VIDEO]);
     });
 
   });
