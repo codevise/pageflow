@@ -35,8 +35,9 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
 
   const sectionProperties = useMemo(() => ({
     layout: props.layout,
-    invert: props.invert
-  }), [props.layout, props.invert]);
+    invert: props.invert,
+    sectionIndex: props.sectionIndex
+  }), [props.layout, props.invert, props.sectionIndex]);
 
   const [motifAreaRect, setMotifAreaRect] = useBoundingClientRect();
   const [motifAreaDimension, setMotifAreaDimensionRef] = useDimension();

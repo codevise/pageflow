@@ -4,13 +4,14 @@ import {storiesOfContentElement} from 'pageflow-scrolled/spec/support/stories';
 storiesOfContentElement(module, {
   typeName: 'heading',
   baseConfiguration: {
-    children: 'Some Text'
+    children: 'Some Text',
+    level: 1
   },
   variants: [
     {
-      name: 'first',
+      name: 'First headline in entry',
       configuration: {
-        first: true
+        level: 0
       }
     }
   ]

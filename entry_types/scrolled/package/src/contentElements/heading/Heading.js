@@ -1,17 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
-import {withShadowClassName} from 'pageflow-scrolled/frontend';
-
-import {Text} from 'pageflow-scrolled/frontend';
+import {withShadowClassName, Text} from 'pageflow-scrolled/frontend';
 
 import styles from './Heading.module.css';
 
-export function Heading({sectionProps, configuration}) {
+export function Heading({configuration, sectionProps}) {
+  const level = configuration.level || sectionProps.sectionIndex;
+  const firstSectionInEntry = level === 0;
+
   return (
     <h1 className={classNames(styles.root,
-                              {[styles.first]: configuration.first},
+                              {[styles.first]: firstSectionInEntry},
                               {[withShadowClassName]: !sectionProps.invert})}>
-      <Text scaleCategory={configuration.first ? 'h1' : 'h2'} inline={true}>
+      <Text scaleCategory={firstSectionInEntry ? 'h1' : 'h2'} inline={true}>
         {configuration.children}
       </Text>
     </h1>
