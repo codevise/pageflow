@@ -3,9 +3,13 @@ import {DraggableCore} from 'react-draggable';
 import Measure from 'react-measure';
 import classNames from 'classnames';
 
+import {useI18n} from '../i18n';
+import {formatTime} from './formatTime';
+
 import styles from './ProgressIndicators.module.css';
 
 export function ProgressIndicators({currentTime, duration, bufferedEnd, scrubTo, seekTo}) {
+  const {t} = useI18n();
   const [dragging, setDragging] = useState();
   const progressBarsContainerWidth = useRef();
 
@@ -28,11 +32,29 @@ export function ProgressIndicators({currentTime, duration, bufferedEnd, scrubTo,
     scrubTo(positionToTime(dragEvent.x));
   }, [scrubTo, positionToTime]);
 
+  const handleKeyDown = useCallback(event => {
+    let destination;
+
+    if (event.key === 'ArrowLeft') {
+      destination = Math.max(0, currentTime - 1);
+    }
+    else if (event.key === 'ArrowRight') {
+      destination = Math.min(currentTime + 1, duration || Infinity);
+    }
+
+    seekTo(destination);
+  }, [seekTo, currentTime, duration]);
+
   const loadProgress = duration > 0 ? (bufferedEnd / duration) : 0;
   const playProgress = duration > 0 ? (currentTime / duration) : 0;
 
   return (
     <div className={classNames(styles.container, {[styles.dragging]: dragging})}
+         aria-label={t('pageflow_scrolled.public.player_controls.progress', {
+             currentTime: formatTime(currentTime),
+             duration: formatTime(duration)
+           })}
+         onKeyDown={handleKeyDown}
          tabIndex="0">
       <div className={styles.wrapper}>
         <Measure client

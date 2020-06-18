@@ -10,6 +10,7 @@ de:
       player_controls:
         play: Wiedergeben
         pause: Pausieren
+        progress: "Zeitachse. Verstrichene Zeit: %{currentTime}. Gesamtzeit: %{duration}"
     inline_editing:
       cancel: Abbrechen
       url_placeholder: URL eingeben oder einfügen
