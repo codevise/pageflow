@@ -1,0 +1,62 @@
+.button {
+  composes: button from './ControlBar.module.css';
+}
+
+.icon {
+  width: 25px;
+  height: 25px;
+  fill: currentColor;
+}
+
+.subMenuItemAnnotation {
+  color: #ff0000;
+  font-size: 70%;
+  vertical-align: 5px;
+  padding-left: 3px;
+}
+
+.subMenu {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s, visibility 0.5s;
+
+  position: absolute;
+  right: 0;
+  bottom: 31px;
+  margin: 0;
+  padding: 5px;
+
+  background-color: rgba(17, 17, 17, 0.9);
+  border-radius: 2px;
+}
+
+.subMenuExpanded .subMenu {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: all;
+  transition: none;
+}
+
+.subMenuItem {
+  position: relative;
+  list-style: none;
+}
+
+.subMenuItemIcon {
+  position: absolute;
+  top: 8px;
+  left: 5px;
+  width: 12px;
+  height: 12px;
+
+  fill: #fff;
+}
+
+.subMenuItemButton {
+  composes: unstyledButton from '../utils.module.css';
+  width: 100%;
+  padding: 5px 10px 5px 25px;
+  color: #fff;
+  white-space: nowrap;
+}
