@@ -15,15 +15,16 @@ export class MediaLoadingSpinnerComponent extends React.Component {
     super(props);
     this.state = {
       hidden: false,
-      animating: true
+      animating: false
     };
   }
 
   componentDidMount() {
     if (PAGEFLOW_EDITOR) {
-      this.setState({hidden: true});
+      this.setState({hidden: true, animating: true});
     }
     else {
+      this.setState({animating: true});
       pageflow.delayedStart.waitFor(resolve => {
         this.resolveDelayedStart = resolve;
       });
