@@ -2,17 +2,17 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import {render} from '@testing-library/react'
 
-import {TimeDisplay, unknownTimePlaceholder} from 'frontend/PlayerControls/TimeDisplay';
+import {TimeDisplay} from 'frontend/PlayerControls/TimeDisplay';
 
 describe('TimeDisplay', () => {
   it('handles NaN', () => {
     const {getByTestId} = render(<TimeDisplay currentTime={NaN} duration={NaN}/>);
-    expect(getByTestId('time-display')).toHaveTextContent(`${unknownTimePlaceholder}/${unknownTimePlaceholder}`);
+    expect(getByTestId('time-display')).toHaveTextContent(`-:--/-:--`);
   });
 
   it('handles undefined', () => {
     const {getByTestId} = render(<TimeDisplay currentTime={undefined} duration={60}/>);
-    expect(getByTestId('time-display')).toHaveTextContent(`${unknownTimePlaceholder}/1:00`);
+    expect(getByTestId('time-display')).toHaveTextContent(`-:--/1:00`);
   });
 
   it('formats props passed as seconds', () => {

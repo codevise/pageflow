@@ -1,10 +1,65 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
-import {render} from '@testing-library/react'
+import {render, fireEvent} from '@testing-library/react'
+import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {ProgressIndicators} from 'frontend/PlayerControls/ProgressIndicators';
 
 describe('ProgressIndicators', () => {
+  useFakeTranslations({
+    'pageflow_scrolled.public.player_controls.progress': 'Progress %{currentTime}/%{duration}'
+  });
+
+  describe('seeking via keyboard', () => {
+    it('supports seeking backwards', () => {
+      const listener = jest.fn()
+      const {getByLabelText} = render(<ProgressIndicators currentTime={45}
+                                                          duration={100}
+                                                          seekTo={listener} />);
+
+      getByLabelText(/Progress/).focus();
+      fireEvent.keyDown(document.activeElement, {key: 'ArrowLeft'});
+
+      expect(listener).toHaveBeenCalledWith(44);
+    });
+
+    it('supports seeking forwards', () => {
+      const listener = jest.fn()
+      const {getByLabelText} = render(<ProgressIndicators currentTime={45}
+                                                          duration={100}
+                                                          seekTo={listener} />);
+
+      getByLabelText(/Progress/).focus();
+      fireEvent.keyDown(document.activeElement, {key: 'ArrowRight'});
+
+      expect(listener).toHaveBeenCalledWith(46);
+    });
+
+    it('does not seek below 0', () => {
+      const listener = jest.fn()
+      const {getByLabelText} = render(<ProgressIndicators currentTime={0}
+                                                          duration={100}
+                                                          seekTo={listener} />);
+
+      getByLabelText(/Progress/).focus();
+      fireEvent.keyDown(document.activeElement, {key: 'ArrowLeft'});
+
+      expect(listener).toHaveBeenCalledWith(0);
+    });
+
+    it('does not seek beyond duration', () => {
+      const listener = jest.fn()
+      const {getByLabelText} = render(<ProgressIndicators currentTime={100}
+                                                          duration={100}
+                                                          seekTo={listener} />);
+
+      getByLabelText(/Progress/).focus();
+      fireEvent.keyDown(document.activeElement, {key: 'ArrowRight'});
+
+      expect(listener).toHaveBeenCalledWith(100);
+    });
+  });
+
   describe('loading progress bar', () => {
     it('sets width based on bufferedEnd', () => {
       const {getByTestId} = render(<ProgressIndicators bufferedEnd={45} duration={100} />);

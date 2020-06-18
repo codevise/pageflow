@@ -1,7 +1,7 @@
 import React from 'react';
 import controlBarStyles from "./ControlBar.module.css";
-import PlayIcon from "../assets/images/playerControls/play_arrow_24px.svg";
-import PauseIcon from "../assets/images/playerControls/pause_24px.svg";
+import PlayIcon from "./images/play.svg";
+import PauseIcon from "./images/pause.svg";
 
 import {useI18n} from '../i18n';
 
@@ -9,13 +9,12 @@ export function PlayPauseButton(props) {
   const {t} = useI18n();
 
   return (
-    <a className={controlBarStyles.playControl}
-       href="#"
-       aria-label={t(props.isPlaying ? 'pause' : 'play',
-                     {scope: 'pageflow_scrolled.public.player_controls'})}
-       onClick={clickHandler(props)}>
+    <button className={controlBarStyles.playControl}
+            aria-label={t(props.isPlaying ? 'pause' : 'play',
+                          {scope: 'pageflow_scrolled.public.player_controls'})}
+            onClick={() => props.isPlaying ? props.pause() : props.play()}>
       {pausePlayIcon(props)}
-    </a>
+    </button>
   );
 }
 
@@ -25,16 +24,4 @@ function pausePlayIcon(props) {
   } else {
     return <PlayIcon className={controlBarStyles.controlsIcon} />
   }
-}
-
-function clickHandler(props) {
-  return event => {
-    if (props.isPlaying) {
-      props.pause();
-    } else {
-      props.play();
-    }
-
-    event.preventDefault();
-  };
 }

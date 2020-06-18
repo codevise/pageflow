@@ -1,84 +1,87 @@
-import React from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 import {DraggableCore} from 'react-draggable';
 import Measure from 'react-measure';
 import classNames from 'classnames';
 
+import {useI18n} from '../i18n';
+import {formatTime} from './formatTime';
+
 import styles from './ProgressIndicators.module.css';
 
-export class ProgressIndicators extends React.Component {
-  constructor(props) {
-    super(props);
+export function ProgressIndicators({currentTime, duration, bufferedEnd, scrubTo, seekTo}) {
+  const {t} = useI18n();
+  const [dragging, setDragging] = useState();
+  const progressBarsContainerWidth = useRef();
 
-    this.state = {
-      progressBarsContainerWidth: null
-    };
-
-    this.measureProgressIndicatorsContainer = (width) => {
-      this.setState({progressBarsContainerWidth: width});
-    };
-
-    this.handleStop = (mouseEvent, dragEvent) => {
-      props.seekTo(this.positionToTime(dragEvent.x));
-    };
-
-    this.handleDrag = (mouseEvent, dragEvent) => {
-      props.scrubTo(this.positionToTime(dragEvent.x));
-    };
-  }
-
-  loadProgress() {
-    return this.props.duration > 0 ? (this.props.bufferedEnd / this.props.duration) : 0;
-  }
-
-  playProgress() {
-    return this.props.duration > 0 ? (this.props.currentTime / this.props.duration) : 0;
-  }
-
-  handlePosition() {
-    if (this.state.progressBarsContainerWidth) {
-      return ((this.state.progressBarsContainerWidth) * this.playProgress());
-    } else {
-      return toPercent(this.playProgress());
-    }
-  }
-
-  positionToTime(x) {
-    if (this.props.duration && this.state.progressBarsContainerWidth) {
-      const fraction = Math.max(0, Math.min(1, x / this.state.progressBarsContainerWidth));
-      return fraction * this.props.duration;
+  const positionToTime = useCallback((x) => {
+    if (duration && progressBarsContainerWidth.current) {
+      const fraction = Math.max(0, Math.min(1, x / progressBarsContainerWidth.current));
+      return fraction * duration;
     } else {
       return 0;
     }
-  }
+  }, [duration]);
 
-  render() {
-    return (
-      <div className={classNames(styles.progressIndicatorsContainer)}>
+  const handleStop = useCallback((mouseEvent, dragEvent) => {
+    setDragging(false);
+    seekTo(positionToTime(dragEvent.x));
+  }, [seekTo, positionToTime]);
+
+  const handleDrag = useCallback((mouseEvent, dragEvent) => {
+    setDragging(true);
+    scrubTo(positionToTime(dragEvent.x));
+  }, [scrubTo, positionToTime]);
+
+  const handleKeyDown = useCallback(event => {
+    let destination;
+
+    if (event.key === 'ArrowLeft') {
+      destination = Math.max(0, currentTime - 1);
+    }
+    else if (event.key === 'ArrowRight') {
+      destination = Math.min(currentTime + 1, duration || Infinity);
+    }
+
+    seekTo(destination);
+  }, [seekTo, currentTime, duration]);
+
+  const loadProgress = duration > 0 ? (bufferedEnd / duration) : 0;
+  const playProgress = duration > 0 ? (currentTime / duration) : 0;
+
+  return (
+    <div className={classNames(styles.container, {[styles.dragging]: dragging})}
+         aria-label={t('pageflow_scrolled.public.player_controls.progress', {
+             currentTime: formatTime(currentTime),
+             duration: formatTime(duration)
+           })}
+         onKeyDown={handleKeyDown}
+         tabIndex="0">
+      <div className={styles.wrapper}>
         <Measure client
-                 onResize={contentRect => {
-                   this.measureProgressIndicatorsContainer(contentRect.client.width)
-                 }}>
+                 onResize={contentRect => progressBarsContainerWidth.current = contentRect.client.width}>
           {({measureRef}) =>
-            <DraggableCore onStart={this.handleDrag}
-                           onDrag={this.handleDrag}
-                           onStop={this.handleStop}>
-              <div ref={measureRef} className={classNames(styles.progressBarsContainer)}>
-                <div className={classNames(styles.progressBar, styles.loadingProgressBar)}
-                     style={{width: toPercent(this.loadProgress())}}
-                     data-testid="loading-progress-bar"/>
-                <div className={classNames(styles.progressBar, styles.playProgressBar)}
-                     style={{width: toPercent(this.playProgress())}}
-                     data-testid="play-progress-bar"/>
-                <div className={classNames(styles.sliderHandle)}
-                     style={{left: this.handlePosition()}}
-                     data-testid="slider-handle"/>
+            <DraggableCore onStart={handleDrag}
+                           onDrag={handleDrag}
+                           onStop={handleStop}>
+              <div className={classNames(styles.draggable)}>
+                <div ref={measureRef} className={styles.bars}>
+                  <div className={styles.loadingProgressBar}
+                       style={{width: toPercent(loadProgress)}}
+                       data-testid="loading-progress-bar"/>
+                  <div className={styles.playProgressBar}
+                       style={{width: toPercent(playProgress)}}
+                       data-testid="play-progress-bar"/>
+                  <div className={styles.sliderHandle}
+                       style={{left: toPercent(playProgress)}}
+                       data-testid="slider-handle"/>
+                </div>
               </div>
             </DraggableCore>
           }
         </Measure>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 function toPercent(value) {

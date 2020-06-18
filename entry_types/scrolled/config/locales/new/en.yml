@@ -10,6 +10,9 @@ en:
       player_controls:
         play: Play
         pause: Pause
+        progress: "Timeline. Current time: %{currentTime}. Duration: %{duration}"
+        quality: Quality
+        text_tracks: Subtitles
     inline_editing:
       cancel: Cancel
       url_placeholder: Type or paste URL

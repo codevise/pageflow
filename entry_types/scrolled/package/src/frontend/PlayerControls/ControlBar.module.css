@@ -1,7 +1,3 @@
-.hidden {
-  display: none;
-}
-
 .transparent {
   opacity: 0;
 }
@@ -18,16 +14,11 @@
   color: black;
 }
 
-.contextMenues {
-  visibility: hidden;
-  max-width: 5px;
-}
-
 .controlBarContainer {
   width: 100%;
-  display: table;
+  display: flex;
+  align-items: center;
   position: relative;
-  overflow: hidden;
   transition: opacity 0.2s ease;
 }
 
@@ -35,53 +26,22 @@
   margin-top: -32px;
 }
 
-.controlBar {
-  display: table-row;
+.button {
+  composes: unstyledButton from '../utils.module.css';
+  width: 32px;
+  height: 32px;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
 }
 
-.controlsContainer {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.controls {
-  height: 24px;
-  max-height: 24px;
-  padding: 4px;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.progressDisplayContainer {
-  width: 100%;
-}
-
-.controlsIcon {
-  width: 24px;
-  height: 24px;
+.button svg {
   fill: currentColor;
   cursor: pointer;
 }
 
 .playControl {
-  text-decoration: none;
-  color: currentColor;
-}
-
-.settingsIcon {
-  composes: controlsIcon;
-  margin: 0 2px;
-}
-
-.subtitlesIcon {
-  composes: controlsIcon;
-  margin: 0 3px 0 2px;
-}
-
-.settingsMenu {
-  right: 34px;
-}
-
-.subtitlesMenu {
-  right: 9px;
+  composes: button;
 }
