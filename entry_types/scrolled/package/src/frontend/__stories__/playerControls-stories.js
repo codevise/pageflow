@@ -5,19 +5,16 @@ import {PlayerControls} from 'pageflow-scrolled/frontend';
 
 const stories = storiesOf('Frontend/Player Controls', module);
 
-function addControlbarStory(name, type, style) {
+function addControlbarStory(name, props) {
   stories.add(
     name,
     () => {
       return (
         <div style={{fontFamily: 'Source Sans Pro, sans-serif'}}>
           <div style={{background: 'rgba(0, 0, 0, 0.6)', width: '100%', height: '150px'}}></div>
-          <PlayerControlsDemo type={type} style={style}/>
+          <PlayerControlsDemo {...props} />
         </div>
       );
-    },
-    {
-      percy: {skip: false}
     }
   );
 }
@@ -36,5 +33,32 @@ function PlayerControlsDemo(props) {
   );
 }
 
-addControlbarStory('Basic Controls', 'video', 'white');
-addControlbarStory('Inverted Version', 'video', 'black');
+addControlbarStory('White', {
+  style: 'white',
+  qualityMenuExpanded: true,
+  qualityMenuItems: [
+    {label: '2160p', annotation: '4k', value: '4k', active: true},
+    {label: '1080p', annotation: 'HD', value: 'fullhd'},
+    {label: '720p', annotation: 'HD', value: 'medium'},
+  ],
+  textTracksMenuItems: [
+    {label: '(Off)', value: 'off', active: true},
+    {label: 'English (CC)', value: 'en'},
+    {label: 'Deutsch', value: 'de'}
+  ]
+});
+
+addControlbarStory('Black', {
+  style: 'black',
+  qualityMenuExpanded: true,
+  qualityMenuItems: [
+    {label: '2160p', annotation: '4k', value: '4k', active: true},
+    {label: '1080p', annotation: 'HD', value: 'fullhd'},
+    {label: '720p', annotation: 'HD', value: 'medium'},
+  ],
+  textTracksMenuItems: [
+    {label: '(Off)', value: 'off', active: true},
+    {label: 'English (CC)', value: 'en'},
+    {label: 'Deutsch', value: 'de'}
+  ]
+});

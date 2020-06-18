@@ -1,7 +1,7 @@
 import React from 'react';
 import controlBarStyles from "./ControlBar.module.css";
-import PlayIcon from "../assets/images/playerControls/play_arrow_24px.svg";
-import PauseIcon from "../assets/images/playerControls/pause_24px.svg";
+import PlayIcon from "./images/play.svg";
+import PauseIcon from "./images/pause.svg";
 
 import {useI18n} from '../i18n';
 

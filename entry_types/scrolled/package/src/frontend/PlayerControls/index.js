@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import {PlayPauseButton} from './PlayPauseButton'
 import {ProgressIndicators} from './ProgressIndicators'
 import {TimeDisplay} from './TimeDisplay'
+import {QualityMenu} from './QualityMenu';
+import {TextTracksMenu} from './TextTracksMenu';
 
 import styles from './ControlBar.module.css';
 
@@ -30,6 +32,13 @@ export function PlayerControls(props) {
                           seekTo={props.seekTo}/>
       <TimeDisplay currentTime={props.currentTime}
                    duration={props.duration}/>
+      <TextTracksMenu buttonTitle={props.textTracksMenuButtonTitle}
+                      items={props.textTracksMenuItems}
+                      onItemClick={props.onTextTracksMenuItemClick} />
+      <QualityMenu buttonTitle={props.qualityMenuButtonTitle}
+                   items={props.qualityMenuItems}
+                   onItemClick={props.onQualityMenuItemClick}
+                   subMenuExpanded={props.qualityMenuExpanded} />
     </div>
   );
 }
@@ -49,7 +58,6 @@ PlayerControls.defaultProps = {
   seekTo: () => {
   },
 
-  type: 'video',
   style: 'white',
   inset: false
 };
