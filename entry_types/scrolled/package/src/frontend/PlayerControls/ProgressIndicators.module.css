@@ -1,11 +1,17 @@
-.progressIndicatorsContainer {
+.container {
   flex-grow: 1;
   position: relative;
-  margin: 0 10px;
 }
 
-.progressBarsContainer {
+.draggable {
+  position: relative;
+  height: 32px;
+  padding: 13px 10px;
+  box-sizing: border-box;
   cursor: pointer;
+}
+
+.bars {
   position: relative;
   height: 6px;
   border-radius: 3.5px;
@@ -20,11 +26,13 @@
 }
 
 .loadingProgressBar {
+  composes: progressBar;
   background: currentColor;
   opacity: 0.25;
 }
 
 .playProgressBar {
+  composes: progressBar;
   background: currentColor;
 }
 
@@ -40,6 +48,7 @@
   transition: opacity 100ms;
 }
 
-.progressBarsContainer:hover .sliderHandle {
+.dragging .sliderHandle,
+.container:hover .sliderHandle {
   opacity: 1;
 }
