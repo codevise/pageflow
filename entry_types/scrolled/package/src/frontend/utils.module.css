@@ -2,3 +2,10 @@
   clip: rect(0, auto, auto, 0); /* IE 11 */
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
 }
+
+.unstyledButton {
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  text-align: initial;
+}

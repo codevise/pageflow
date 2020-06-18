@@ -33,6 +33,7 @@
 }
 
 .playControl {
+  composes: unstyledButton from '../utils.module.css';
   width: 32px;
   height: 32px;
   margin-right: 4px;
