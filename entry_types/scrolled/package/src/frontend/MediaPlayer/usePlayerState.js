@@ -5,7 +5,7 @@ import {createActions,
         PREBUFFER, PREBUFFERED, BUFFER_UNDERRUN, BUFFER_UNDERRUN_CONTINUE,
         WAITING, SEEKING, SEEKED, META_DATA_LOADED, PROGRESS, TIME_UPDATE, ENDED,
         CONTROLS_ENTERED, CONTROLS_LEFT, FOCUS_ENTERED_CONTROLS, FOCUS_LEFT_CONTROLS,
-        CONTROLS_HIDDEN, SAVE_MEDIA_ELEMENT_ID, DISCARD_MEDIA_ELEMENT_ID} from './playerActions';
+        USER_INTERACTION, USER_IDLE, SAVE_MEDIA_ELEMENT_ID, DISCARD_MEDIA_ELEMENT_ID} from './playerActions';
 
 export function getInitialPlayerState(){
   return {
@@ -27,7 +27,7 @@ export function getInitialPlayerState(){
     shouldSeekTo: undefined,
     userHoveringControls: false,
     focusInsideControls: false,
-    controlsHidden: false,
+    userIdle: false,
     volumeFactor: 1,
   };
 }
@@ -39,13 +39,14 @@ export function playerStateReducer(state, action){
         ...state,
         isLoading: true,
         shouldPlay: true,
-        playFailed: false,
+        playFailed: false
       };
     case PLAYING:
       return {
         ...state,
         shouldPlay: true,
         isPlaying: true,
+        userIdle: false,
         unplayed: false
       };
     case PLAY_AND_FADE_IN:
@@ -180,17 +181,24 @@ export function playerStateReducer(state, action){
     case FOCUS_ENTERED_CONTROLS:
       return {
         ...state,
-        focusInsideControls: true
+        focusInsideControls: true,
+        userIdle: false
       };
     case FOCUS_LEFT_CONTROLS:
       return {
         ...state,
-        focusInsideControls: false
+        focusInsideControls: false,
+        userIdle: false
       };
-    case CONTROLS_HIDDEN:
+    case USER_INTERACTION:
       return {
         ...state,
-        controlsHidden: true,
+        userIdle: false,
+      };
+    case USER_IDLE:
+      return {
+        ...state,
+        userIdle: true,
       };
     case SAVE_MEDIA_ELEMENT_ID:
       return {

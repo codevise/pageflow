@@ -7,6 +7,9 @@ en:
         help_text: >
           This article works best with the sound turned on. <br/>
           Click once in this field to activate the sound for the entire story.
+      player_controls:
+        play: Play
+        pause: Pause
     inline_editing:
       cancel: Cancel
       url_placeholder: Type or paste URL

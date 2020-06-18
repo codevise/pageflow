@@ -7,6 +7,9 @@ de:
         help_text: >
           Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/>
           Klicken Sie einmal in dieses Feld, um den Ton für die gesamte Geschichte zu aktivieren.
+      player_controls:
+        play: Wiedergeben
+        pause: Pausieren
     inline_editing:
       cancel: Abbrechen
       url_placeholder: URL eingeben oder einfügen

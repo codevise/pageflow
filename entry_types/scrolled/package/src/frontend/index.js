@@ -30,6 +30,7 @@ export * from './MediaPlayer';
 export * from './VideoPlayer';
 export * from './AudioPlayer';
 
+export {MediaInteractionTracking} from './MediaInteractionTracking';
 export {MediaPlayerControls} from './MediaPlayerControls';
 export {PlayerControls} from './PlayerControls';
 

@@ -3,6 +3,7 @@ import React from 'react';
 import {
   VideoPlayer,
   InlineCaption,
+  MediaInteractionTracking,
   MediaPlayerControls,
   usePlayerState,
   useContentElementLifecycle
@@ -25,20 +26,22 @@ export function InlineVideo({sectionProps, configuration}) {
 
   return (
     <div>
-      <VideoPlayer isPrepared={isPrepared}
-                   position={configuration.position}
-                   controls={configuration.controls}
-                   playerState={playerState}
-                   playerActions={playerActions}
-                   id={configuration.id}
-                   posterId={configuration.posterId}
-                   quality={'high'}
-                   playsInline={true} />
+      <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
+        <VideoPlayer isPrepared={isPrepared}
+                     position={configuration.position}
+                     controls={configuration.controls}
+                     playerState={playerState}
+                     playerActions={playerActions}
+                     id={configuration.id}
+                     posterId={configuration.posterId}
+                     quality={'high'}
+                     playsInline={true} />
 
-      <MediaPlayerControls playerState={playerState}
-                           playerActions={playerActions}
-                           configuration={configuration}
-                           sectionProps={sectionProps}/>
+        <MediaPlayerControls playerState={playerState}
+                             playerActions={playerActions}
+                             configuration={configuration}
+                             sectionProps={sectionProps}/>
+      </MediaInteractionTracking>
 
       <InlineCaption text={configuration.caption}/>
     </div>
