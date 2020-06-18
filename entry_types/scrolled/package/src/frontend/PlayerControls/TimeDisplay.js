@@ -26,10 +26,10 @@ export function TimeDisplay(props) {
   }
 
   return (
-    <div data-testid={'time-display'}>
-      <span className={styles.timeDisplay}>{format(props.currentTime)}</span>
-      <span className={styles.timeDisplay}>/</span>
-      <span className={styles.timeDisplay}>{format(props.duration)}</span>
+    <div data-testid={'time-display'} className={styles.timeDisplay}>
+      <span className={styles.time}>{format(props.currentTime)}</span>
+      /
+      <span className={styles.time}>{format(props.duration)}</span>
     </div>
   );
 }

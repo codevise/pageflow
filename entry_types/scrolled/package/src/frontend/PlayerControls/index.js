@@ -15,34 +15,21 @@ export function PlayerControls(props) {
          onMouseLeave={props.onMouseLeave}
          className={classNames(styles.controlBarContainer,
                                styles.backgroundColor,
+                               props.style === 'white' ? styles.foregroundLight : styles.foregroundDark,
                                {
                                  [styles.inset]: props.inset,
                                  [styles.transparent]: props.isPlaying && props.inset && props.inactive
                                })}>
-      <div className={classNames(styles.controlBar,
-                                 props.style === 'white' ? styles.foregroundLight : styles.foregroundDark)}>
-        <div className={styles.controlsContainer}>
-          <div className={styles.controls}>
-            <PlayPauseButton isPlaying={props.isPlaying}
-                             play={props.play}
-                             pause={props.pause}/>
-          </div>
-        </div>
-        <div className={classNames(styles.controlsContainer, styles.progressDisplayContainer)}>
-          <div className={styles.controls}>
-            <ProgressIndicators currentTime={props.currentTime}
-                                duration={props.duration}
-                                bufferedEnd={props.bufferedEnd}
-                                scrubTo={props.scrubTo}
-                                seekTo={props.seekTo}/>
-          </div>
-        </div>
-        <div className={classNames(styles.controlsContainer)}>
-          <div className={styles.controls}>
-            <TimeDisplay currentTime={props.currentTime}
-                         duration={props.duration}/>
-          </div>
-        </div>
+      <PlayPauseButton isPlaying={props.isPlaying}
+                       play={props.play}
+                       pause={props.pause}/>
+      <ProgressIndicators currentTime={props.currentTime}
+                          duration={props.duration}
+                          bufferedEnd={props.bufferedEnd}
+                          scrubTo={props.scrubTo}
+                          seekTo={props.seekTo}/>
+      <TimeDisplay currentTime={props.currentTime}
+                   duration={props.duration}/>
     </div>
   );
 }
