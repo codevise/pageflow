@@ -15,15 +15,16 @@ export class MediaLoadingSpinnerComponent extends React.Component {
     super(props);
     this.state = {
       hidden: false,
-      animating: true
+      animating: false
     };
   }
 
   componentDidMount() {
     if (PAGEFLOW_EDITOR) {
-      this.setState({hidden: true});
+      this.setState({hidden: true, animating: true});
     }
     else {
+      this.setState({animating: true});
       pageflow.delayedStart.waitFor(resolve => {
         this.resolveDelayedStart = resolve;
       });
@@ -83,11 +84,11 @@ function preventScrollBouncing(e) {
 }
 
 function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundImage, blurStrength, backgroundImageX, backgroundImageY}) {
-  
+
   var backgroundPosition = {
     x: backgroundImageX != undefined ? backgroundImageX : 50,
     y: backgroundImageY != undefined ? backgroundImageY : 50
-  } 
+  }
   const url = backgroundImage ? backgroundImage.urls.medium : firstPageBackgroundImageUrl;
   if (url) {
     var style = {
@@ -109,7 +110,11 @@ export function getInvert(props){
 }
 
 function inlineStyle(props) {
-  var invert = getInvert(props);
+  const invert = getInvert(props);
+  const animationDelay = props.animationDuration !== undefined ?
+                         props.animationDuration + 's' :
+                         undefined;
+
   return {
     position: 'absolute',
     top: 0,
@@ -117,7 +122,8 @@ function inlineStyle(props) {
     width: '100%',
     height: '100%',
     zIndex: 100,
-    backgroundColor: invert ? '#fff':'#000'
+    backgroundColor: invert ? '#fff':'#000',
+    animationDelay
   };
 }
 
@@ -138,8 +144,9 @@ export const MediaLoadingSpinner = connect(combineSelectors({
   backgroundImageY: widgetAttribute('customBackgroundImageY', {role: 'loading_spinner'}),
   invert: widgetAttribute('invert', {role: 'loading_spinner'}),
   removeLogo: widgetAttribute('removeLogo', {role: 'loading_spinner'}),
-  blurStrength: widgetAttribute('blurStrength', {role: 'loading_spinner'})
-}))(MediaLoadingSpinnerComponent)
+  blurStrength: widgetAttribute('blurStrength', {role: 'loading_spinner'}),
+  animationDuration: widgetAttribute('animationDuration', {role: 'loading_spinner'}),
+}))(MediaLoadingSpinnerComponent);
 
 
 export function register() {

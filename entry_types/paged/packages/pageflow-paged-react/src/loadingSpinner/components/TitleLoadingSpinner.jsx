@@ -14,10 +14,15 @@ import {MediaLoadingSpinner, getInvert} from './MediaLoadingSpinner.jsx'
 export class TitleLoadingSpinner extends React.Component {
   render() {
     const {title, subtitle, entryTitle} = this.props;
-    var invert = getInvert(this.props);
+    const invert = getInvert(this.props);
+    const animationDuration = this.props.animationDuration !== undefined ?
+                              this.props.animationDuration + 's' :
+                              undefined;
+
     return (
         <MediaLoadingSpinner>
-          <div className={classNames('media_loading_spinner-titles', {'media_loading_spinner-invert': invert})}>
+          <div className={classNames('media_loading_spinner-titles', {'media_loading_spinner-invert': invert})}
+               style={{animationDuration}}>
             <div className="media_loading_spinner-title">
               {title || entryTitle}
             </div>
@@ -44,6 +49,7 @@ export function register() {
       subtitle: widgetAttribute('subtitle', {role: 'loading_spinner'}),
       removeLogo: widgetAttribute('removeLogo', {role: 'loading_spinner'}),
       invert: widgetAttribute('invert', {role: 'loading_spinner'}),
+      animationDuration: widgetAttribute('animationDuration', {role: 'loading_spinner'}),
     }))(TitleLoadingSpinner)
   });
 }

@@ -1,0 +1,13 @@
+en:
+  pageflow:
+    editor:
+      widgets:
+        attributes:
+          media_loading_spinner:
+            animation_duration:
+              inline_help: Controls the animation duration of loading spinner.
+              label: Animation duration
+          title_loading_spinner:
+            animation_duration:
+              inline_help: Controls the animation duration of loading spinner.
+              label: Animation duration
