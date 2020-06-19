@@ -84,11 +84,11 @@ function preventScrollBouncing(e) {
 }
 
 function backgroundImageInlineStyles({firstPageBackgroundImageUrl, backgroundImage, blurStrength, backgroundImageX, backgroundImageY}) {
-  
+
   var backgroundPosition = {
     x: backgroundImageX != undefined ? backgroundImageX : 50,
     y: backgroundImageY != undefined ? backgroundImageY : 50
-  } 
+  }
   const url = backgroundImage ? backgroundImage.urls.medium : firstPageBackgroundImageUrl;
   if (url) {
     var style = {
@@ -110,7 +110,11 @@ export function getInvert(props){
 }
 
 function inlineStyle(props) {
-  var invert = getInvert(props);
+  const invert = getInvert(props);
+  const animationDelay = props.animationDuration !== undefined ?
+                         props.animationDuration + 's' :
+                         undefined;
+
   return {
     position: 'absolute',
     top: 0,
@@ -119,7 +123,7 @@ function inlineStyle(props) {
     height: '100%',
     zIndex: 100,
     backgroundColor: invert ? '#fff':'#000',
-    animationDelay: props.animationDelay + 's'
+    animationDelay
   };
 }
 
@@ -141,7 +145,7 @@ export const MediaLoadingSpinner = connect(combineSelectors({
   invert: widgetAttribute('invert', {role: 'loading_spinner'}),
   removeLogo: widgetAttribute('removeLogo', {role: 'loading_spinner'}),
   blurStrength: widgetAttribute('blurStrength', {role: 'loading_spinner'}),
-  animationDelay: widgetAttribute('animationDelay', {role: 'loading_spinner'}),
+  animationDuration: widgetAttribute('animationDuration', {role: 'loading_spinner'}),
 }))(MediaLoadingSpinnerComponent);
 
 

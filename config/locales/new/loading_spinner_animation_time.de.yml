@@ -4,10 +4,10 @@ de:
       widgets:
         attributes:
           media_loading_spinner:
-            animation_delay:
+            animation_duration:
               inline_help: Steuert die Animationsdauer beim Laden des Spinners
               label: Animationsdauer
           title_loading_spinner:
-            animation_delay:
+            animation_duration:
               inline_help: Steuert die Animationsdauer beim Laden des Spinners
               label: Animationsdauer
