@@ -2,6 +2,7 @@ export {useShareProviders, useShareUrl} from './sharing';
 export {useEntryMetadata} from './metadata';
 export {useEntryStructure, useSectionStructure} from './structure';
 export {useFile} from './useFile';
+export {useNestedFiles} from './useNestedFiles';
 export {useFileRights, useLegalInfo, useCredits} from './legalInfo';
 export {useAvailableQualities} from './useAvailableQualities';
 

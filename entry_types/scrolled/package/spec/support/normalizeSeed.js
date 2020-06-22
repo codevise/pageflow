@@ -21,6 +21,7 @@
 export function normalizeSeed({
   imageFileUrlTemplates,
   fileUrlTemplates,
+  fileModelTypes,
   prettyUrl,
   shareUrlTemplates,
   defaultFileRights,
@@ -53,6 +54,13 @@ export function normalizeSeed({
         },
         videoFiles: {},
         ...fileUrlTemplates
+      },
+      fileModelTypes: {
+        audioFiles: 'Pageflow::AudioFile',
+        imageFiles: 'Pageflow::ImageFile',
+        textTrackFiles: 'Pageflow::TextTrackFile',
+        videoFiles: 'Pageflow::VideoFile',
+        ...fileModelTypes
       },
       prettyUrl: prettyUrl,
       shareUrlTemplates: normalizeShareUrlTemplates(shareUrlTemplates),

@@ -43,7 +43,7 @@ export function watchCollections(entry, {dispatch}) {
       name: camelize(collectionName),
       attributes: ['id', {permaId: 'perma_id'}, 'width', 'height', 'basename', 'rights', {isReady: 'is_ready'},
                    'variants',
-                   {parentFileId: 'parent_file_id'}, {parentFileType: 'parent_file_type'}],
+                   {parentFileId: 'parent_file_id'}, {parentFileModelType: 'parent_file_model_type'}],
       keyAttribute: 'permaId',
       includeConfiguration: true,
       dispatch
