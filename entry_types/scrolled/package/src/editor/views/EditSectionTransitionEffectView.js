@@ -88,7 +88,7 @@ export const EditSectionTransitionEffectView = Marionette.ItemView.extend({
       var value = this.model.get(this.options.propertyName);
 
       if (this.model.has(this.options.propertyName) &&
-          this.ui.container.find('input[value=' + value +']:not([checked])').length) {
+          this.ui.container.find('input[value="' + value +'"]:not([checked])').length) {
 
         var select = {};
         _.each(this.ui.container.find('div'), function(div) {
