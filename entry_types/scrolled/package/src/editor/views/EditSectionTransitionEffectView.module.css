@@ -1,13 +1,23 @@
+@value selectionColor from './colors.module.css';
+
 .upper_section {
     background: #50514f;
     height: 100%;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: normal;
 }
 
 .lower_section {
     background: #A2A2A2;
     height: 100%;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: normal;
 }
 
 .disabled {
@@ -16,68 +26,52 @@
 }
 
 .active {
-    background: #6c757d !important;
+    background: selectionColor !important;
 }
 
-.active label {
+.active div {
     color: #ffffff;
 }
 
 .transition {
     padding: 15px 0;
     height: 60px;
-    display: flex;
+    display: flex !important;
     align-items: center;
-    border-top: 1px solid #808080;
+    border-top: 1px solid #ffffff;
     background: #e5e5e5;
 }
-.transition:hover,
-.transition input[type="radio"]:checked + label {
+.transition:hover {
      background: #ddd;
 }
 
 
-/*Fade*/
-.transition:hover .fade .upper_section {
-    visibility: hidden;
-    opacity: 0.5;
-}
-
-/*Fade Background Upper*/
+/*Fade AND Fade Background Upper*/
+.transition:hover .fade .upper_section,
 .transition:hover .fadeBg .upper_section {
-    visibility: hidden;
-    transform: translateY(-100%);
+    animation: Fade 2s linear infinite;
 }
 
-/*face Background Lower*/
-.transition:hover .fadeBg .lower_section {
-    transform: translateY(-100%);
-}
-
-/*Scroll and Scroll Over*/
+/*Scroll, Scroll Over, Reveal, AND Fade Background Lower*/
 .transition:hover .scroll .upper_section,
 .transition:hover .scroll .lower_section,
-.transition:hover .scrollOver .lower_section {
-    animation: Scroll 2s ease infinite;
-}
-
-/*Reveal*/
-.transition:hover .reveal .upper_section {
-    animation: Reveal 2s ease infinite;
+.transition:hover .scrollOver .lower_section,
+.transition:hover .reveal .upper_section,
+.transition:hover .fadeBg .lower_section {
+    animation: Translate 2s linear infinite;
 }
 
 /*Before After*/
 .transition:hover .beforeAfter .upper_section {
-    color: transparent;
-    height: 0;
+    animation: BeforeAfter 2s linear infinite;
 }
 
-.transition > div {
+.transition > div:first-child {
     width: 30%;
     height: 100%;
     margin: 2%;
     border-radius: 5%;
-    color: white;
+    color: #ffffff;
     text-align: center;
     font-size: 26px;
     overflow: hidden;
@@ -97,43 +91,13 @@
     position: absolute;
 }
 
-/*fade Upper Section*/
+/*Reveal, fade Upper Section, & Before After Upper Section*/
+.reveal .upper_section,
+.beforeAfter .upper_section,
 .fade .upper_section {
-    transition: all 2s ease-in-out;
     position: absolute;
     z-index: 1;
 }
-
-/*Reveal Upper Section*/
-.reveal .upper_section {
-    position: absolute;
-    z-index: 1;
-}
-
-/*Before After Upper Section*/
-.beforeAfter .upper_section {
-    transition: all 2s ease-in-out;
-    position: absolute;
-    z-index: 1;
-}
-
-/*Fade Background*/
-.fadeBg .upper_section,
-.fadeBg .lower_section {
-    transition: all 2s ease-in-out;
-}
-
-/*Scroll + Scroll Over Upper Sections*/
-.scroll .upper_section,
-.scrollOver .upper_section {
-    height: 50%;
-}
-
-/*Scroll Lower Section*/
-.scroll .lower_section {
-    height: 70%;
-}
-
 
 /*Input*/
 .transition input {
@@ -141,7 +105,7 @@
 }
 
 /*Label*/
-.transition label {
+.transition .input {
     display: block;
     text-align: left;
     height: 100%;
@@ -149,19 +113,20 @@
 }
 
 /*Keyframes*/
-@keyframes Scroll {
-    50% {
-        transform: translateY(-30%);
-   }
-    100% {
-        transform: translateY(0);
-   }
-}
-@keyframes Reveal {
+@keyframes Translate {
     50% {
         transform: translateY(-100%);
    }
-    100% {
-        transform: translateY(0);
+}
+@keyframes BeforeAfter {
+    50% {       
+        color: transparent;
+        height: 0;
+   }
+}
+@keyframes Fade {
+    50% {
+        visibility: hidden;
+        opacity: 0;
    }
 }

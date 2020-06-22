@@ -57,16 +57,18 @@ export const EditSectionTransitionEffectView = Marionette.ItemView.extend({
 
   appendOptions: function () {
     _.each(this.options.values, function(value, index) {
-      var option = `<div class="${styles.transition} ${this.options.optionDisabled(value) ? styles['disabled'] : 'enabled'}">
-                      <div class="${styles[value]}">
-                        <div class="${styles.upper_section}">A</div>
-                        <div class="${styles.lower_section}">B</div>
+      var option = `<label for='${value}'>
+                      <div class='${styles.transition} ${this.options.optionDisabled(value) ? styles['disabled'] : 'enabled'}'>
+                        <div class='${styles[value]}'>
+                          <div class='${styles.upper_section}'>A</div>
+                          <div class='${styles.lower_section}'>B</div>
+                        </div>
+                        <div class='${styles.input}'>
+                          <input type='radio' name='transitions' value='${value}' id='${value}' ${this.options.optionDisabled(value) ? 'disabled' : ''}/>
+                          ${this.options.texts[index]}
+                        </div>
                       </div>
-                      <label>
-                        <input type="radio" value="${value}" name="transitions"  ${this.options.optionDisabled(value) ? 'disabled' : ''}/>
-                        ${this.options.texts[index]}
-                      </label>
-                    </div>`;
+                    </label>`;
       this.ui.container.append($(option));
     }, this);
   },
@@ -86,7 +88,7 @@ export const EditSectionTransitionEffectView = Marionette.ItemView.extend({
       var value = this.model.get(this.options.propertyName);
 
       if (this.model.has(this.options.propertyName) &&
-          this.ui.container.find('input[value="' + value +'"]:not([checked])').length) {
+          this.ui.container.find('input[value=' + value +']:not([checked])').length) {
 
         var select = {};
         _.each(this.ui.container.find('div'), function(div) {
