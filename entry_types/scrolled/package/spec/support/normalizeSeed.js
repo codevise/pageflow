@@ -53,6 +53,7 @@ export function normalizeSeed({
           ...imageFileUrlTemplates
         },
         videoFiles: {},
+        textTrackFiles: {},
         ...fileUrlTemplates
       },
       fileModelTypes: {
