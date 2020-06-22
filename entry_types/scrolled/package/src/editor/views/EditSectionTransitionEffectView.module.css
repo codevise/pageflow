@@ -46,7 +46,7 @@
 /*Fade Background Upper*/
 .transition:hover .fadeBg .upper_section {
     visibility: hidden;
-    transform: translateY(-100%);
+    opacity: 0.2;
 }
 
 /*face Background Lower*/
