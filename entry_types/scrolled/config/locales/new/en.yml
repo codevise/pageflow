@@ -13,6 +13,16 @@ en:
         progress: "Timeline. Current time: %{currentTime}. Duration: %{duration}"
         quality: Quality
         text_tracks: Subtitles
+      video_qualities:
+        annotations:
+          4k: 4K
+          fullhd: HD
+          medium: HD
+        labels:
+          4k: 2160p
+          auto: Auto
+          fullhd: 1080p
+          medium: 720p
     inline_editing:
       cancel: Cancel
       url_placeholder: Type or paste URL

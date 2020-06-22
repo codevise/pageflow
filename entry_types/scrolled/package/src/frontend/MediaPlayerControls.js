@@ -27,6 +27,14 @@ export function MediaPlayerControls(props) {
                     play={playerActions.playBlessed}
                     pause={playerActions.pause}
                     scrubTo={playerActions.scrubTo}
-                    seekTo={playerActions.seekTo}/>
+                    seekTo={playerActions.seekTo}
+
+                    qualityMenuItems={props.qualityMenuItems}
+                    onQualityMenuItemClick={props.onQualityMenuItemClick} />
   )
 };
+
+MediaPlayerControls.defaultProps = {
+  configuration: {},
+  sectionProps: {}
+}

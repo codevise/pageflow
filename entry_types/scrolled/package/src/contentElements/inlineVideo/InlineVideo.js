@@ -4,7 +4,7 @@ import {
   VideoPlayer,
   InlineCaption,
   MediaInteractionTracking,
-  MediaPlayerControls,
+  VideoPlayerControls,
   usePlayerState,
   useContentElementLifecycle
 } from 'pageflow-scrolled/frontend';
@@ -37,7 +37,8 @@ export function InlineVideo({sectionProps, configuration}) {
                      quality={'high'}
                      playsInline={true} />
 
-        <MediaPlayerControls playerState={playerState}
+        <VideoPlayerControls videoFilePermaId={configuration.id}
+                             playerState={playerState}
                              playerActions={playerActions}
                              configuration={configuration}
                              sectionProps={sectionProps}/>

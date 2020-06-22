@@ -32,6 +32,7 @@ export * from './AudioPlayer';
 
 export {MediaInteractionTracking} from './MediaInteractionTracking';
 export {MediaPlayerControls} from './MediaPlayerControls';
+export {VideoPlayerControls} from './VideoPlayerControls';
 export {PlayerControls} from './PlayerControls';
 
 export * from './useOnScreen';
