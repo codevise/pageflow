@@ -122,6 +122,7 @@ export function watchCollection(collection,
   let tearingDown = false;
 
   const watchedAttributeNames = getWatchedAttributeNames(attributes);
+  const sourceKeyAttribute = findSourceAttributeName(attributes, keyAttribute);
 
   dispatch({
     type: RESET,
@@ -139,7 +140,7 @@ export function watchCollection(collection,
         payload: {
           collectionName: name,
           keyAttribute: keyAttribute,
-          order: collection.pluck(keyAttribute).filter(Boolean),
+          order: collection.pluck(sourceKeyAttribute).filter(Boolean),
           attributes: getAttributes(model, options)
         }
       });
@@ -180,8 +181,8 @@ export function watchCollection(collection,
         type: REMOVE,
         payload: {
           collectionName: name,
-          order: collection.pluck(keyAttribute).filter(Boolean),
-          key: model.attributes[keyAttribute]
+          order: collection.pluck(sourceKeyAttribute).filter(Boolean),
+          key: model.attributes[sourceKeyAttribute]
         }
       })
     }
@@ -192,7 +193,7 @@ export function watchCollection(collection,
     payload: {
       collectionName: name,
       order: collection
-        .pluck(keyAttribute)
+        .pluck(sourceKeyAttribute)
         .filter(Boolean)
     }
   }), handle);
@@ -201,6 +202,14 @@ export function watchCollection(collection,
     tearingDown = true;
     collection.off(null, null, handle);
   };
+}
+
+function findSourceAttributeName(attributeNames, targetAttributeName) {
+  const mapping = attributeNames.find(attributeName =>
+    typeof attributeName === 'object' && mappedAttributeTarget(attributeName) === targetAttributeName
+  );
+
+  return mapping ? mappedAttributeSource(mapping) : targetAttributeName;
 }
 
 function hasChangedAttributes(model, attributeNames) {
@@ -215,6 +224,10 @@ function getWatchedAttributeNames(attributeNames) {
 
 function mappedAttributeSource(attributeName) {
   return attributeName[Object.keys(attributeName)[0]];
+}
+
+function mappedAttributeTarget(attributeName) {
+  return Object.keys(attributeName)[0];
 }
 
 function getAttributes(model, {attributeNames, includeConfiguration}) {
