@@ -23,6 +23,39 @@ en:
           auto: Auto
           fullhd: 1080p
           medium: 720p
+      text_track_modes:
+        auto: Auto (%{label})
+        auto_off: Auto (Off)
+        none: Off
+      languages:
+        ar: Arabic
+        cs: Czech
+        de: German
+        dk: Danish
+        el: Greek
+        en: English
+        es: Spanish
+        fi: Finnish
+        fr: French
+        fy: Frisian
+        hi: Hindi
+        it: Italian
+        ja: Japanese
+        lb: Letzeburgesch
+        nb: Norsk Bokmål
+        nl: Dutch
+        nn: Norsk Nynorsk
+        'no': Norsk
+        pl: Polish
+        pt: Portuguese
+        rm: Romansh
+        ru: Russian
+        se: Northern Sami
+        sr: Serbian
+        sv: Swedish
+        tr: Turkish
+        unknown: "(Unknown)"
+        zh: Chinese
     inline_editing:
       cancel: Cancel
       url_placeholder: Type or paste URL

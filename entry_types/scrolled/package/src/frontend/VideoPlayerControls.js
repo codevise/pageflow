@@ -7,12 +7,13 @@ import {useI18n} from './i18n';
 
 export function VideoPlayerControls(props) {
   const [activeQuality, setActiveQuality] = useVideoQualitySetting();
-  const availableQualities = useAvailableQualities(useFile({collectionName: 'videoFiles',
-                                                            permaId: props.videoFilePermaId}));
+  const file = useFile({collectionName: 'videoFiles', permaId: props.videoFilePermaId})
+  const availableQualities = useAvailableQualities(file);
   const {t} = useI18n();
 
   return (
     <MediaPlayerControls {...props}
+                         file={file}
                          qualityMenuItems={getQualityMenuItems(availableQualities, activeQuality, t)}
                          onQualityMenuItemClick={setActiveQuality}/>
   );
