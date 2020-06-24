@@ -2,6 +2,7 @@ import React from 'react';
 import {useFile} from '../entryState';
 import {MediaPlayer} from './MediaPlayer';
 import {useTextTracks} from './useTextTracks';
+import {useMediaMuted} from './useMediaMuted';
 
 import classNames from 'classnames';
 import styles from "./VideoPlayer.module.css";
@@ -23,7 +24,8 @@ export function VideoPlayer(props) {
   const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
   const textTracks = useTextTracks({
     file: videoFile,
-    defaultTextTrackFilePermaId: props.defaultTextTrackFilePermaId
+    defaultTextTrackFilePermaId: props.defaultTextTrackFilePermaId,
+    captionsByDefault: useMediaMuted()
   });
 
   if (videoFile && videoFile.isReady) {

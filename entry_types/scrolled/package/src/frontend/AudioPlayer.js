@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import {useFile} from '../entryState';
 import {MediaPlayer} from './MediaPlayer';
 import {useTextTracks} from './useTextTracks';
+import {useMediaMuted} from './useMediaMuted';
 
 import styles from "./AudioPlayer.module.css";
 import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
@@ -22,7 +23,8 @@ export function AudioPlayer(props) {
   const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
   const textTracks = useTextTracks({
     file: audioFile,
-    defaultTextTrackFilePermaId: props.defaultTextTrackFilePermaId
+    defaultTextTrackFilePermaId: props.defaultTextTrackFilePermaId,
+    captionsByDefault: useMediaMuted()
   });
 
   if (audioFile && audioFile.isReady) {
