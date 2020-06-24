@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import {useFile} from '../entryState';
 import {MediaPlayer} from './MediaPlayer';
 import {useTextTracks} from './useTextTracks';
@@ -23,14 +24,18 @@ export function AudioPlayer(props) {
   if (audioFile && audioFile.isReady) {
     return (
       <ViewportDependentPillarBoxes file={posterImage} position={props.position}>
-        <MediaPlayer className={styles.audioPlayer}
-                     type={'audio'}
-                     textTracks={textTracks}
-                     filePermaId={props.id}
-                     sources={processSources(audioFile)}
-                     textTracksInset={props.position === 'full'}
-                     posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
-                     {...props} />
+        <div className={classNames(styles.spaceForTextTracks,
+                                   {[styles.spaceForTextTracksActive]: !posterImage &&
+                                     textTracks.files.length})}>
+          <MediaPlayer className={styles.audioPlayer}
+                       type={'audio'}
+                       textTracks={textTracks}
+                       filePermaId={props.id}
+                       sources={processSources(audioFile)}
+                       textTracksInset={props.position === 'full'}
+                       posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
+                       {...props} />
+        </div>
       </ViewportDependentPillarBoxes>
     );
   }
