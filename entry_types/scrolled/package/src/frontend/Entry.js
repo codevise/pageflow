@@ -1,7 +1,7 @@
 import React, {useState, useCallback} from 'react';
 
 import Chapter from "./Chapter";
-import MutedContext from './MutedContext';
+import {MediaMutedProvider} from './useMediaMuted';
 import ScrollToSectionContext from './ScrollToSectionContext';
 import {useEntryStructure} from '../entryState';
 import {withInlineEditingDecorator} from './inlineEditing';
@@ -13,8 +13,6 @@ export default withInlineEditingDecorator('EntryDecorator', function Entry(props
   const [currentSectionIndex, setCurrentSectionIndexState] = useState(0);
 
   const [scrollTargetSectionIndex, setScrollTargetSectionIndex] = useState(null);
-
-  const [muted, setMuted] = useState(true);
 
   const entryStructure = useEntryStructure();
 
@@ -44,7 +42,7 @@ export default withInlineEditingDecorator('EntryDecorator', function Entry(props
 
   return (
     <div className={styles.Entry}>
-      <MutedContext.Provider value={{muted: muted, setMuted: setMuted}}>
+      <MediaMutedProvider>
         <ScrollToSectionContext.Provider value={scrollToSection}>
           {renderChapters(entryStructure,
                           currentSectionIndex,
@@ -52,7 +50,7 @@ export default withInlineEditingDecorator('EntryDecorator', function Entry(props
                           scrollTargetSectionIndex,
                           setScrollTargetSectionIndex)}
         </ScrollToSectionContext.Provider>
-      </MutedContext.Provider>
+      </MediaMutedProvider>
     </div>
   );
 })

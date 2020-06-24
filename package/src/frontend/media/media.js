@@ -1,11 +1,18 @@
 import {MediaPool, MediaType} from './MediaPool';
+import BackboneEvents from 'backbone-events-standalone';
 
 export const media = {
   playerPool: new MediaPool(),
   muteState: true,
+
+  muted() {
+    return this.muteState;
+  },
   mute: function (value) {
     this.muteState = value;
     this.playerPool.blessAll(value);
+
+    this.trigger('change:muted', value);
   },
   getPlayer: function (fileSource, options) {
     options.playerType = options.tagName || MediaType.VIDEO;
@@ -27,3 +34,5 @@ export const media = {
     }
   }
 };
+
+Object.assign(media, BackboneEvents);

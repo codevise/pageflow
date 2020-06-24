@@ -91,5 +91,25 @@ describe('media', function() {
       expect(player1.muted()).toEqual(true);
       expect(player2.muted()).toEqual(true);
     });
+
+    it('triggers change:muted event', () => {
+      const listener = jest.fn();
+
+      media.mute(true);
+      media.on('change:muted', listener);
+      media.mute(false);
+
+      expect(listener).toHaveBeenCalledWith(false);
+    });
+  });
+
+  describe('#muted', function() {
+    it('returns state', function() {
+      media.mute(true);
+      expect(media.muted()).toBe(true);
+
+      media.mute(false);
+      expect(media.muted()).toBe(false);
+    });
   });
 });
