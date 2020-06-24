@@ -4,7 +4,7 @@ import {media} from 'pageflow/frontend';
 import './videojsBase.module.css';
 
 function PlayerContainer({
-  filePermaId, className, sources, poster, type, playsInline, loop, controls, onSetup, onDispose
+  filePermaId, className, sources, textTrackSources, poster, type, playsInline, loop, controls, onSetup, onDispose
 }){
   const playerWrapperRef = useRef(null);
 
@@ -13,6 +13,7 @@ function PlayerContainer({
 
     if (sources) {
       let player = media.getPlayer(sources, {
+        textTrackSources,
         filePermaId,
         poster: poster,
         tagName: type,
@@ -42,6 +43,10 @@ function PlayerContainer({
     </div>
   );
 }
+
+PlayerContainer.defaultProps = {
+  textTrackSources: []
+};
 
 // This function assumes that that the parameters are arrays of
 // objects containing only skalar values. It is not a full deep
@@ -76,7 +81,8 @@ function areEqual(prevProps, nextProps) {
          prevProps.poster === nextProps.poster &&
          prevProps.loop === nextProps.loop &&
          prevProps.controls === nextProps.controls &&
-         deepEqual(prevProps.sources, nextProps.sources)
+         deepEqual(prevProps.sources, nextProps.sources) &&
+         deepEqual(prevProps.textTrackSources, nextProps.textTrackSources);
 }
 
 export default React.memo(PlayerContainer, areEqual);

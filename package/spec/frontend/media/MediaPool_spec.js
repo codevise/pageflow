@@ -3,19 +3,16 @@ import '$support/fakeBrowserFeatures';
 import {MediaPool, MediaType, blankSources} from 'pageflow/frontend';
 
 describe('MediaPool', function() {
-
   it('create an empty pool of audio and video players', function () {
     let pool = new MediaPool();
-    
+
     expect(pool).toBeDefined();
     expect(pool.playerCount).toBeGreaterThan(1);
     expect(pool.allPlayersForType(MediaType.AUDIO).length).toBe(0);
     expect(pool.allPlayersForType(MediaType.VIDEO).length).toBe(0);
   });
-  
 
   describe('#allocatePlayer', function() {
-
     it('triggers call to populate pool with players', function () {
       let pool = new MediaPool();
       pool.allocatePlayer({
@@ -55,24 +52,36 @@ describe('MediaPool', function() {
           playerType: MediaType.VIDEO
         });
       }
-      
+
       expect(pool.unAllocatedPlayers[MediaType.VIDEO].length).toBe(0);
-      
+
       let firstPlayer = pool.allocatedPlayers[MediaType.VIDEO][0];
       let player = pool.allocatePlayer({
         playerType: MediaType.VIDEO
       });
-      
+
       expect(pool.unAllocatedPlayers[MediaType.VIDEO].length).toBe(0);
-      
+
       expect(player).toBeDefined();
       expect(player).toBe(firstPlayer);
     });
 
+    it('resets text tracks when player is reused', () => {
+      const pool = new MediaPool({playerCount: 1});
+
+      const player = pool.allocatePlayer({playerType: MediaType.AUDIO});
+      player.addRemoteTextTrack({srclang: 'en', src: 'sample.vtt'}, false);
+      expect(player.textTracks().length).toEqual(1);
+
+      pool.unAllocatePlayer(player);
+      const reusedPlayer = pool.allocatePlayer({playerType: MediaType.AUDIO});
+
+      expect(reusedPlayer).toBe(player);
+      expect(player.textTracks().length).toEqual(0);
+    });
   });
 
   describe('#unallocatePlayer', function() {
-
     it('unAllocates the given player', function () {
       let pool = new MediaPool();
       let player = pool.allocatePlayer({playerType: MediaType.VIDEO});
@@ -108,7 +117,6 @@ describe('MediaPool', function() {
   });
 
   describe('#blessAll', function() {
-    
     it('triggers call to populate pool with players', function () {
       let pool = new MediaPool();
       pool.blessAll(true);
@@ -124,14 +132,14 @@ describe('MediaPool', function() {
     it('blesses all the players with the given mute value', done => {
       let pool = new MediaPool();
       pool.blessAll(false);
-      
+
       pool.forEachMediaType((key) => {
         let type = MediaType[key];
         pool.allPlayersForType(type).forEach((player) => {
           expect(player.muted()).toBe(false);
         });
       });
-      
+
       pool.blessAll(true);
 
       pool.forEachMediaType((key) => {

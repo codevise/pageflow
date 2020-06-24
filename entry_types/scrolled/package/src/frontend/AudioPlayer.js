@@ -1,6 +1,7 @@
 import React from 'react';
 import {useFile} from '../entryState';
 import {MediaPlayer} from './MediaPlayer';
+import {useTextTracks} from './useTextTracks';
 
 import styles from "./AudioPlayer.module.css";
 import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
@@ -17,12 +18,14 @@ import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
 export function AudioPlayer(props) {
   const audioFile = useFile({collectionName: 'audioFiles', permaId: props.id});
   const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
+  const textTracks = useTextTracks({file: audioFile});
 
   if (audioFile && audioFile.isReady) {
     return (
       <ViewportDependentPillarBoxes file={posterImage} position={props.position}>
         <MediaPlayer className={styles.audioPlayer}
                      type={'audio'}
+                     textTracks={textTracks}
                      filePermaId={props.id}
                      sources={processSources(audioFile)}
                      posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}

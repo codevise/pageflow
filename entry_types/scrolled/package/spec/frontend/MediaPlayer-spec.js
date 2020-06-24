@@ -1,11 +1,7 @@
 import React from 'react';
-import '@testing-library/jest-dom/extend-expect'
-import 'support/mediaElementStub';
-import 'support/fakeBrowserFeatures';
 import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
-import MutedContext from 'frontend/MutedContext';
 import {render as testingLibraryRender} from '@testing-library/react'
 import {media} from 'pageflow/frontend';
 import {MediaPlayer} from 'frontend/MediaPlayer';

@@ -13,10 +13,15 @@ export const media = {
     if (player) {
       player.muted(this.muteState);
       player.src(fileSource);
+
+      if (options.textTrackSources) {
+        options.textTrackSources.forEach(track => player.addRemoteTextTrack(track, true));
+      }
+
       return player;
     }
   },
-  releasePlayer: function (player) {    
+  releasePlayer: function (player) {
     if (player) {
       this.playerPool.unAllocatePlayer(player);
     }

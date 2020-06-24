@@ -74,6 +74,8 @@ export class MediaPool {
       player.getMediaElement().setAttribute('src', blankSources[type]);
       player.poster('');
 
+      clearTextTracks(player);
+
       this.unAllocatedPlayers[type].push(player);
     }
   }
@@ -136,5 +138,14 @@ export class MediaPool {
       let mediaEl = this.mediaFactory_[type].call(this);
       this.initializeMediaPool_(type, mediaEl);
     });
+  }
+}
+
+function clearTextTracks(player) {
+  const tracks = player.textTracks();
+  let i = tracks.length;
+
+  while (i--) {
+    player.removeRemoteTextTrack(tracks[i]);
   }
 }

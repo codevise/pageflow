@@ -1,6 +1,7 @@
 import React from 'react';
 import {useFile} from '../entryState';
 import {MediaPlayer} from './MediaPlayer';
+import {useTextTracks} from './useTextTracks';
 
 import classNames from 'classnames';
 import styles from "./VideoPlayer.module.css";
@@ -17,14 +18,16 @@ import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
  * @param {String} [props.position] - Position of parent content element.
  */
 export function VideoPlayer(props) {
-  let videoFile = useFile({collectionName: 'videoFiles', permaId: props.id});
+  const videoFile = useFile({collectionName: 'videoFiles', permaId: props.id});
   const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
+  const textTracks = useTextTracks({file: videoFile});
 
   if (videoFile && videoFile.isReady) {
     return (
       <Positioner file={videoFile} fit={props.fit} position={props.position}>
         <MediaPlayer className={classNames(styles.videoPlayer, styles[props.fit])}
                      type={'video'}
+                     textTracks={textTracks}
                      filePermaId={props.id}
                      sources={processSources(videoFile)}
                      posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
