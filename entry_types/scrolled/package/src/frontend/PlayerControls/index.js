@@ -32,11 +32,9 @@ export function PlayerControls(props) {
                           seekTo={props.seekTo}/>
       <TimeDisplay currentTime={props.currentTime}
                    duration={props.duration}/>
-      <TextTracksMenu buttonTitle={props.textTracksMenuButtonTitle}
-                      items={props.textTracksMenuItems}
+      <TextTracksMenu items={props.textTracksMenuItems}
                       onItemClick={props.onTextTracksMenuItemClick} />
-      <QualityMenu buttonTitle={props.qualityMenuButtonTitle}
-                   items={props.qualityMenuItems}
+      <QualityMenu items={props.qualityMenuItems}
                    onItemClick={props.onQualityMenuItemClick}
                    subMenuExpanded={props.qualityMenuExpanded} />
     </div>

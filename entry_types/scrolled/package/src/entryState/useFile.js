@@ -1,7 +1,7 @@
 import {getItem} from '../collections';
 
 import {useEntryState} from './EntryStateProvider';
-import {expandUrls} from './expandUrls';
+import {extendFile} from './extendFile';
 
 /**
  * Look up a file by its collection and perma id.
@@ -29,9 +29,9 @@ import {expandUrls} from './expandUrls';
 export function useFile({collectionName, permaId}) {
   const entryState = useEntryState();
 
-  return expandUrls(
+  return extendFile(
     collectionName,
     getItem(entryState.collections, collectionName, permaId),
-    entryState.config.fileUrlTemplates
+    entryState
   );
 }

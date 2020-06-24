@@ -2,7 +2,7 @@ import React from 'react';
 
 import {
   AudioPlayer,
-  MediaPlayerControls,
+  AudioPlayerControls,
   usePlayerState,
   useContentElementLifecycle
 } from 'pageflow-scrolled/frontend';
@@ -36,7 +36,8 @@ export function InlineAudio({sectionProps, configuration}) {
                    quality={'high'}
                    playsInline={true} />
 
-      <MediaPlayerControls playerState={playerState}
+      <AudioPlayerControls audioFilePermaId={configuration.id}
+                           playerState={playerState}
                            playerActions={playerActions}
                            configuration={configuration}
                            sectionProps={sectionProps}/>

@@ -1,4 +1,31 @@
-export function expandUrls(collectionName, file, urlTemplates) {
+export function extendFile(collectionName, file, entryState) {
+  return addModelType(
+    collectionName,
+    expandUrls(
+      collectionName,
+      file,
+      entryState.config.fileUrlTemplates
+    ),
+    entryState.config.fileModelTypes
+  );
+}
+
+function addModelType(collectionName, file, modelTypes) {
+  if (!file) {
+    return null;
+  }
+
+  if (!modelTypes[collectionName]) {
+    throw new Error(`Could not find model type for collection name ${collectionName}`);
+  }
+
+  return {
+    ...file,
+    modelType: modelTypes[collectionName]
+  };
+}
+
+function expandUrls(collectionName, file, urlTemplates) {
   if (!file) {
     return null;
   }

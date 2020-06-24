@@ -16,6 +16,9 @@ describe('useFile', () => {
               high: '/image_files/:id_partition/high.jpg'
             }
           },
+          fileModelTypes: {
+            imageFiles: 'Pageflow::ImageFile'
+          },
           imageFiles: [
             {
               id: 100,
@@ -36,6 +39,7 @@ describe('useFile', () => {
     expect(file).toMatchObject({
       id: 100,
       permaId: 1,
+      modelType: 'Pageflow::ImageFile',
       configuration: {
         some: 'value'
       },
@@ -54,6 +58,9 @@ describe('useFile', () => {
             imageFiles: {
               high: '/image_files/:id_partition/high.jpg'
             }
+          },
+          fileModelTypes: {
+            imageFiles: 'Pageflow::ImageFile'
           }
         },
         setup: (dispatch, entryTypeSeed) => {
@@ -83,6 +90,7 @@ describe('useFile', () => {
     expect(file).toMatchObject({
       id: 100,
       permaId: 1,
+      modelType: 'Pageflow::ImageFile',
       configuration: {
         some: 'value'
       },

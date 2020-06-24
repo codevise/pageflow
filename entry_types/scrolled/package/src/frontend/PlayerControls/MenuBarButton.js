@@ -90,7 +90,7 @@ MenuBarButton.defaultProps = {
 function renderSubMenu(props, closeMenu) {
   if (props.subMenuItems.length > 0) {
     return (
-      <ul className={styles.subMenu}>
+      <ul className={styles.subMenu} role="menu">
         {renderSubMenuItems(props, closeMenu)}
       </ul>
     );
@@ -102,6 +102,8 @@ function renderSubMenuItems(props, closeMenu) {
     return (
       <li className={styles.subMenuItem} key={item.value}>
         <button className={styles.subMenuItemButton}
+                role="menuitemradio"
+                aria-checked={item.active}
                 onClick={subMenuItemClickHandler(props, item.value, closeMenu)} >
 
           {renderSubMenuItemIcon(item)}
