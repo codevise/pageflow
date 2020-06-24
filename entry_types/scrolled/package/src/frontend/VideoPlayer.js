@@ -30,6 +30,7 @@ export function VideoPlayer(props) {
                      textTracks={textTracks}
                      filePermaId={props.id}
                      sources={processSources(videoFile)}
+                     textTracksInset={props.position === 'full'}
                      posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
                      {...props} />
       </Positioner>

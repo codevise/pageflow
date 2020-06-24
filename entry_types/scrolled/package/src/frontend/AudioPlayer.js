@@ -28,6 +28,7 @@ export function AudioPlayer(props) {
                      textTracks={textTracks}
                      filePermaId={props.id}
                      sources={processSources(audioFile)}
+                     textTracksInset={props.position === 'full'}
                      posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
                      {...props} />
       </ViewportDependentPillarBoxes>
