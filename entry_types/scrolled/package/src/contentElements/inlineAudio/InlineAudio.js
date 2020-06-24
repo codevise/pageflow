@@ -33,10 +33,12 @@ export function InlineAudio({sectionProps, configuration}) {
                    playerActions={playerActions}
                    id={configuration.id}
                    posterId={configuration.posterId}
+                   defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                    quality={'high'}
                    playsInline={true} />
 
       <AudioPlayerControls audioFilePermaId={configuration.id}
+                           defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                            playerState={playerState}
                            playerActions={playerActions}
                            configuration={configuration}

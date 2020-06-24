@@ -13,13 +13,17 @@ import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
  * @param {Object} props
  * @param {number} props.id - Perma id of the audio file.
  * @param {number} [props.posterId] - Perma id of the poster image file.
+ * @param {number} [props.defaultTextTrackFileId] - Perma id of default text track file.
  * @param {String} [props.position] - Position of parent content element.
  * @param {boolean} [props.isPrepared] - Control lazy loading.
  */
 export function AudioPlayer(props) {
   const audioFile = useFile({collectionName: 'audioFiles', permaId: props.id});
   const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
-  const textTracks = useTextTracks({file: audioFile});
+  const textTracks = useTextTracks({
+    file: audioFile,
+    defaultTextTrackFilePermaId: props.defaultTextTrackFilePermaId
+  });
 
   if (audioFile && audioFile.isReady) {
     return (

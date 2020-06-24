@@ -8,7 +8,10 @@ export function MediaPlayerControls(props) {
   const playerActions = props.playerActions;
 
   const {t} = useI18n();
-  const textTracks = useTextTracks({file: props.file});
+  const textTracks = useTextTracks({
+    file: props.file,
+    defaultTextTrackFilePermaId: props.defaultTextTrackFilePermaId
+  });
 
   return (
     <PlayerControls inset={props.configuration.position === 'full'}
