@@ -17,7 +17,6 @@ export function MediaPlayerControls(props) {
 
   return (
     <PlayerControls inset={props.configuration.position === 'full'}
-                    style={props.sectionProps.invert ? 'black' : 'white'}
                     type={props.type}
                     currentTime={playerState.scrubbingAt !== undefined ?
                              playerState.scrubbingAt : playerState.currentTime}
