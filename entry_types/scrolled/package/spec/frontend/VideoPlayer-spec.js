@@ -6,7 +6,7 @@ import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 
 import {renderInEntry} from "../support";
 import {VideoPlayer} from 'frontend/VideoPlayer';
-import {media} from 'pageflow/frontend';
+import {media, settings} from 'pageflow/frontend';
 
 describe('VideoPlayer', () => {
   beforeEach(() => {
@@ -21,7 +21,8 @@ describe('VideoPlayer', () => {
     return {
       fileUrlTemplates: {
         videoFiles: {
-          high: ':id_partition/:basename.mp4'
+          medium: ':id_partition/medium/:basename.mp4',
+          high: ':id_partition/high/:basename.mp4'
         }
       },
       videoFiles: [
@@ -56,8 +57,9 @@ describe('VideoPlayer', () => {
     expect(result.container.querySelector('video')).toBeNull();
   });
 
-  it('passes correct sources to media API', () => {
+  it('passes sources according to setting to media API', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer');
+    settings.set('videoQuality', 'medium');
 
     renderInEntry(<VideoPlayer {...requiredProps()} id={100} />, {
       seed: getVideoFileSeed({
@@ -68,7 +70,7 @@ describe('VideoPlayer', () => {
     });
 
     expect(spyMedia).toHaveBeenCalledWith(
-      [{type: 'video/mp4', src: '000/000/001/video.mp4?u=1'}],
+      [{type: 'video/mp4', src: '000/000/001/medium/video.mp4'}],
       expect.anything()
     );
   });
