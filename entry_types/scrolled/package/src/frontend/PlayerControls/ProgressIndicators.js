@@ -65,6 +65,7 @@ export function ProgressIndicators({currentTime, duration, bufferedEnd, scrubTo,
                            onStop={handleStop}>
               <div className={classNames(styles.draggable)}>
                 <div ref={measureRef} className={styles.bars}>
+                  <div className={styles.background} />
                   <div className={styles.loadingProgressBar}
                        style={{width: toPercent(loadProgress)}}
                        data-testid="loading-progress-bar"/>
