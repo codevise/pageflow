@@ -52,8 +52,8 @@ export const fakeMediaRenderQueries = {
 
 export function useFakeMedia() {
   beforeEach(() => {
-    jest.spyOn(media, 'getPlayer').mockImplementation((sources, {filePermaId}) =>
-      createFakePlayer({filePermaId})
+    jest.spyOn(media, 'getPlayer').mockImplementation((sources, {filePermaId, textTrackSources}) =>
+      createFakePlayer({filePermaId, textTrackSources})
     );
     media.releasePlayer = (player) => {}
   });
@@ -61,9 +61,11 @@ export function useFakeMedia() {
   afterEach(() => jest.restoreAllMocks());
 }
 
-function createFakePlayer({filePermaId}) {
+function createFakePlayer({filePermaId, textTrackSources}) {
   const el = document.createElement('div');
   el.setAttribute('data-fake-player-file-perma-id', filePermaId);
+
+  const textTracks = createFakeTextTracks(textTrackSources);
 
   el.fakePlayer = {
     el() {
@@ -90,11 +92,47 @@ function createFakePlayer({filePermaId}) {
     changeVolumeFactor: jest.fn(),
     dispose: jest.fn(),
 
+    textTracks() { return textTracks; },
+
     ...BackboneEvents,
     one(...args) { this.once(...args); }
   };
 
   return el.fakePlayer;
+}
+
+function createFakeTextTracks(textTrackSources) {
+  const list = (textTrackSources || []).map(source => {
+    const fakeTrack = {};
+    source = {...source};
+
+    ['id', 'label', 'mode', 'kind', 'src'].forEach(property =>
+      Object.defineProperty(fakeTrack, property, {
+        get() {
+          return source[property];
+        },
+
+        set(value) {
+          source[property] = value;
+        }
+      })
+    );
+
+    Object.defineProperty(fakeTrack, 'language', {
+      get() {
+        return source.srclang;
+      },
+
+      set(value) {
+        source.srclang = value;
+      }
+    });
+
+    return fakeTrack;
+  });
+
+  list.on = jest.fn();
+  return list;
 }
 
 function mockFunctionTriggering(event) {

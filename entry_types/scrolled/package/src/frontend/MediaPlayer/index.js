@@ -1,9 +1,14 @@
 import React, {useEffect, useContext, useRef} from 'react';
+import classNames from 'classnames';
+
 import PlayerContainer from './PlayerContainer';
 import ScrollToSectionContext from "../ScrollToSectionContext";
 import watchPlayer, {unwatchPlayer} from './watchPlayer';
-import { applyPlayerState } from './applyPlayerState';
-import { updatePlayerState } from './updatePlayerState';
+import {applyPlayerState} from './applyPlayerState';
+import {updatePlayerState} from './updatePlayerState';
+
+import {getTextTrackSources, updateTextTracksMode} from './textTracks';
+import textTrackStyles from './textTracks.module.css';
 
 export * from './usePlayerState';
 
@@ -39,24 +44,38 @@ function PreparedMediaPlayer(props){
     playerRef.current = undefined;
   }
 
-  useEffect( () => {
+  useEffect(() => {
     let player = playerRef.current
     if (player) {
       updatePlayerState(player, previousPlayerState.current, props.playerState, props.playerActions);
     }
     previousPlayerState.current = props.playerState;
-  }, [props.playerState, props.playerActions, playerRef]);
+  }, [props.playerState, props.playerActions]);
+
+  useEffect(() => {
+    let player = playerRef.current
+    if (player) {
+      updateTextTracksMode(player, props.textTracks.activeFileId);
+    }
+  }, [props.textTracks.activeFileId]);
 
   return (
-    <PlayerContainer  className={props.className}
-                      type={props.type}
-                      sources={props.sources}
-                      filePermaId={props.filePermaId}
-                      poster={props.posterImageUrl}
-                      loop={props.loop}
-                      controls={props.controls}
-                      playsInline={props.playsInline}
-                      onSetup={onSetup}
-                      onDispose={onDispose} />
+    <PlayerContainer className={classNames(props.className, {[textTrackStyles.inset]: props.textTracksInset})}
+                     type={props.type}
+                     sources={props.sources}
+                     textTrackSources={getTextTrackSources(props.textTracks.files)}
+                     filePermaId={props.filePermaId}
+                     poster={props.posterImageUrl}
+                     loop={props.loop}
+                     controls={props.controls}
+                     playsInline={props.playsInline}
+                     onSetup={onSetup}
+                     onDispose={onDispose} />
   );
 };
+
+PreparedMediaPlayer.defaultProps = {
+  textTracks: {
+    files: []
+  }
+}

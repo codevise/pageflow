@@ -2,13 +2,18 @@ import React from 'react';
 import {PlayerControls} from './PlayerControls'
 import {useTextTracks} from './useTextTracks';
 import {useI18n} from './i18n';
+import {useMediaMuted} from './useMediaMuted';
 
 export function MediaPlayerControls(props) {
   const playerState = props.playerState;
   const playerActions = props.playerActions;
 
   const {t} = useI18n();
-  const textTracks = useTextTracks({file: props.file});
+  const textTracks = useTextTracks({
+    file: props.file,
+    defaultTextTrackFilePermaId: props.defaultTextTrackFilePermaId,
+    captionsByDefault: useMediaMuted()
+  });
 
   return (
     <PlayerControls inset={props.configuration.position === 'full'}

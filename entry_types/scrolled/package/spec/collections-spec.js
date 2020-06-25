@@ -30,7 +30,7 @@ describe('useCollections', () => {
   });
 });
 
-describe('watch', () => {
+describe('watchCollection', () => {
   it('initializes useCollections state', () => {
     const {result} = renderHook(() => useCollections());
     const posts = new Backbone.Collection([
@@ -663,6 +663,42 @@ describe('watch', () => {
     const item = getItem(state, 'posts', 4);
 
     expect(item.title).toBe('News');
+  });
+
+  it('supports indexing by mapped attribute', () => {
+    const {result} = renderHook(() => useCollections(undefined, {keyAttribute: 'permaId'}));
+    const posts = new Backbone.Collection([], {comparator: 'id'});
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: [{permaId: 'perma_id'}, 'title'],
+        keyAttribute: 'permaId',
+        dispatch
+      });
+      posts.add([
+        {id: 2, perma_id: 4, title: 'News'},
+        {id: 3, perma_id: 5, title: 'Other'}
+      ]);
+    });
+
+    let [state,] = result.current;
+    let items = getItems(state, 'posts');
+
+    expect(items.map(i => i.title)).toEqual(['News', 'Other']);
+
+    act(() => { posts.sort(); });
+    [state,] = result.current;
+    items = getItems(state, 'posts');
+
+    expect(items.map(i => i.title)).toEqual(['News', 'Other']);
+
+    act(() => { posts.remove({id: 3}); });
+    [state,] = result.current;
+    items = getItems(state, 'posts');
+
+    expect(items.map(i => i.title)).toEqual(['News']);
   });
 
   it('returns teardown function to stop watching', () => {

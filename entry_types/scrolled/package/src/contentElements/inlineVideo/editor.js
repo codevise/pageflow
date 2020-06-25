@@ -7,7 +7,8 @@ editor.contentElementTypes.register('inlineVideo', {
       this.input('id', FileInputView, {
         collection: 'video_files',
         fileSelectionHandler: 'contentElementConfiguration',
-        positioning: false
+        positioning: false,
+        defaultTextTrackFilePropertyName: 'defaultTextTrackFileId'
       });
 
       this.input('posterId', FileInputView, {

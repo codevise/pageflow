@@ -34,10 +34,12 @@ export function InlineVideo({sectionProps, configuration}) {
                      playerActions={playerActions}
                      id={configuration.id}
                      posterId={configuration.posterId}
+                     defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                      quality={'high'}
                      playsInline={true} />
 
         <VideoPlayerControls videoFilePermaId={configuration.id}
+                             defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                              playerState={playerState}
                              playerActions={playerActions}
                              configuration={configuration}

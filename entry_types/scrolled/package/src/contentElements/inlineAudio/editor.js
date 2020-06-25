@@ -7,7 +7,8 @@ editor.contentElementTypes.register('inlineAudio', {
       this.input('id', FileInputView, {
         collection: 'audio_files',
         fileSelectionHandler: 'contentElementConfiguration',
-        positioning: false
+        positioning: false,
+        defaultTextTrackFilePropertyName: 'defaultTextTrackFileId'
       });
 
       this.input('posterId', FileInputView, {

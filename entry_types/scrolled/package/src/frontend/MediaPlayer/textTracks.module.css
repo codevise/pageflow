@@ -1,0 +1,22 @@
+:global .video-js {
+  font-family: inherit !important;
+}
+
+.inset :global .vjs-text-track-display {
+  bottom: 20px;
+}
+
+:global .vjs-text-track-display div {
+  font-family: inherit !important;
+  font-size: 20px !important;
+}
+
+:global .vjs-text-track-display > div > div > div {
+  padding: 0 4px 2px 4px;
+}
+
+:global .vjs-paused .vjs-text-track-display div {
+  transition: opacity 0.2s, visibility 0.2s;
+  opacity: 0;
+  visibility: hidden !important;
+}
