@@ -321,8 +321,8 @@ en:
               has been enabled in the settings of both adjacent sections.
             values:
               beforeAfter: Scrolling with static Backgrounds
-              fade: Cross-Fade All
-              fadeBg: Cross-Fade Backgrounds
+              fade: Also fade section content
+              fadeBg: Cross Fade
               reveal: Reveal
               scroll: Scroll
               scrollOver: Scroll Over

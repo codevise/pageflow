@@ -327,8 +327,8 @@ de:
               wenn für beide angrenzende Abschnitte die Option "Volle Viewport-Höhe" aktiviert ist.
             values:
               beforeAfter: Scrollen mit statischen Hintergründen
-              fade: Alles Überblenden
-              fadeBg: Nur Hintergrund überblenden
+              fade: Inhalt des Abschnitts ebenfalls überblenden
+              fadeBg: Überblenden
               reveal: Freilegen
               scroll: Aus-/Einscrollen
               scrollOver: Überlagern

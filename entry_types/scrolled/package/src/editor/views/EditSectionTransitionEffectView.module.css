@@ -29,11 +29,59 @@
     background: selectionColor !important;
 }
 
-.active div {
+.active div,
+.active.extended_option {
     color: #ffffff;
 }
 
-.transition {
+.extended_option {
+    display: none !important;
+}
+
+.active .extended_option {
+    display: flex !important;
+    height: 30px;
+    width: 70%;
+    align-items: center;
+    padding: 10px 15%;
+}
+
+.extended_option input {
+    opacity: 1 !important;
+    visibility: hidden;
+    position: absolute;
+    left: -15px;
+    top: 8px;
+    width: auto;
+}
+
+.active .extended_option input:before {
+    visibility: visible;
+    display: block;
+    content: ' ';
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjNDQ0Ij48cGF0aCBkPSJNMjIgMnYyMGgtMjB2LTIwaDIwem0yLTJoLTI0djI0aDI0di0yNHoiLz48L3N2Zz4=);
+    background-size: 15px 15px;
+    height: 15px;
+    width: 15px;
+    position: absolute;
+    left: 30px;
+    top: 1.3px;
+}
+
+.active .extended_option.active input:before {
+    visibility: visible;
+    display: block;
+    content: ' ';
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+PHBhdGggZD0iTTIyIDJ2MjBoLTIwdi0yMGgyMHptMi0yaC0yNHYyNGgyNHYtMjR6bS01LjU0MSA4LjQwOWwtMS40MjItMS40MDktNy4wMjEgNy4xODMtMy4wOC0yLjkzNy0xLjM5NSAxLjQzNSA0LjUgNC4zMTkgOC40MTgtOC41OTF6Ii8+PC9zdmc+);
+    background-size: 15px 15px;
+    height: 15px;
+    width: 15px;
+    position: absolute;
+    left: 30px;
+    top: 1.3px;
+}
+
+.container {
     padding: 15px 0;
     height: 60px;
     display: flex !important;
@@ -41,35 +89,49 @@
     border-top: 1px solid #ffffff;
     background: #e5e5e5;
 }
-.transition:hover {
+.container:hover {
      background: #ddd;
+}
+
+.container label:first-child {
+    height: 60px;
+    width: 100%;
+}
+
+.container_with_option.active {
+    height: 90px;
+    flex-direction: column;
+}
+
+.transition {
+    height: 100%;
+    width: 100%;
+    display: flex;
 }
 
 
 /*Fade AND Fade Background Upper*/
-.transition:hover .fade .upper_section,
-.transition:hover .fadeBg .upper_section {
+.container:hover .fadeBg .upper_section {
     animation: Fade 2s linear infinite;
 }
 
 /*Scroll, Scroll Over, Reveal, AND Fade Background Lower*/
-.transition:hover .scroll .upper_section,
-.transition:hover .scroll .lower_section,
-.transition:hover .scrollOver .lower_section,
-.transition:hover .reveal .upper_section,
-.transition:hover .fadeBg .lower_section {
+.container:hover .scroll .upper_section,
+.container:hover .scroll .lower_section,
+.container:hover .scrollOver .lower_section,
+.container:hover .reveal .upper_section{
     animation: Translate 2s linear infinite;
 }
 
 /*Before After*/
-.transition:hover .beforeAfter .upper_section {
+.container:hover .beforeAfter .upper_section {
     animation: BeforeAfter 2s linear infinite;
 }
 
-.transition > div:first-child {
+.animation {
     width: 30%;
     height: 100%;
-    margin: 2%;
+    margin: 0 2%;
     border-radius: 5%;
     color: #ffffff;
     text-align: center;
@@ -78,14 +140,14 @@
 }
 
 /*Fade + Reveal + Before After*/
-.fade,
-.reveal,
-.beforeAfter {
+.fadeBg .animation,
+.reveal .animation,
+.beforeAfter .animation {
     position: relative;
 }
 
 /*Fade + Reveal + Before After Lower Sections*/
-.fade .lower_section,
+.fadeBg .lower_section,
 .reveal .lower_section,
 .beforeAfter .lower_section {
     position: absolute;
@@ -94,18 +156,18 @@
 /*Reveal, fade Upper Section, & Before After Upper Section*/
 .reveal .upper_section,
 .beforeAfter .upper_section,
-.fade .upper_section {
+.fadeBg .upper_section {
     position: absolute;
     z-index: 1;
 }
 
 /*Input*/
-.transition input {
+.container input {
     opacity: 0;
 }
 
 /*Label*/
-.transition .input {
+.container .input {
     display: block;
     text-align: left;
     height: 100%;
