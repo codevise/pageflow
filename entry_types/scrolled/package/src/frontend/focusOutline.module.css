@@ -1,0 +1,11 @@
+a:focus,
+button:focus,
+[tabindex]:focus {
+  outline: 3px solid #518ad2;
+}
+
+.focusOutlineDisabled [tabindex]:focus,
+.focusOutlineDisabled button:focus,
+.focusOutlineDisabled a:focus {
+  outline: none;
+}
