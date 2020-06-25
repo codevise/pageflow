@@ -10,11 +10,14 @@ import {HeightContext} from "./Fullscreen";
  * make it fit otherwise.
  *
  * @param {Object} props
- * @param {Object} props.position - Position setting of parent content element.
- * @param {Object} [props.aspectRatio] - Aspect ratio of div.
+ * @param {string} props.position -
+ * Position setting of parent content element to automatically
+ *   determine whether to use opaque background.
+ * @param {boolean} [props.opaque] - Force using opaque background.
+ * @param {number} [props.aspectRatio] - Aspect ratio of div.
  * @param {Object} [props.file] - Use width/height of file to calculate aspect ratio.
  */
-export function ViewportDependentPillarBoxes({file, aspectRatio, position, children}) {
+export function ViewportDependentPillarBoxes({file, aspectRatio, position, opaque, children}) {
   const height = useContext(HeightContext);
 
   if (!file && !aspectRatio) return children;
@@ -33,7 +36,7 @@ export function ViewportDependentPillarBoxes({file, aspectRatio, position, child
   }
 
   return (
-    <div className={classNames({[styles.full]: position === 'full'})}>
+    <div className={classNames({[styles.opaque]: position === 'full' || opaque})}>
       <div className={styles.container} style={{maxWidth: maxWidthCSS}}>
         <div style={{paddingTop: arPaddingTop + '%'}}>
         </div>
