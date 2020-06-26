@@ -1,5 +1,6 @@
 import {ViewportDependentPillarBoxes} from 'pageflow-scrolled/frontend';
 import {HeightContext} from 'frontend/Fullscreen';
+import styles from 'frontend/ViewportDependentPillarBoxes.module.css';
 
 import React from 'react';
 import {render} from '@testing-library/react';
@@ -39,6 +40,42 @@ describe('ViewportDependentPillarBoxes', () => {
     expect(getInner(container)).toHaveAttribute('style', 'padding-top: 50%;');
     expect(getOuter(container)).toHaveAttribute('style', 'max-width: 200vh;');
   });
+
+  it('is transparent by default', () => {
+    const {container} = render(
+      <ViewportDependentPillarBoxes aspectRatio={0.5} />
+    );
+
+    expect(getWrapper(container)).not.toHaveClass(styles.opaque);
+  });
+
+  it('is opaque if position is full', () => {
+    const {container} = render(
+      <ViewportDependentPillarBoxes aspectRatio={0.5} position="full" />
+    );
+
+    expect(getWrapper(container)).toHaveClass(styles.opaque);
+  });
+
+  it('is transparent if position is not full', () => {
+    const {container} = render(
+      <ViewportDependentPillarBoxes aspectRatio={0.5} position="inline" />
+    );
+
+    expect(getWrapper(container)).not.toHaveClass(styles.opaque);
+  });
+
+  it('can be made opaque explicitly', () => {
+    const {container} = render(
+      <ViewportDependentPillarBoxes aspectRatio={0.5} opaque />
+    );
+
+    expect(getWrapper(container)).toHaveClass(styles.opaque);
+  });
+
+  function getWrapper(container) {
+    return container.firstChild
+  }
 
   function getOuter(container) {
     return container.querySelector('div[style]');

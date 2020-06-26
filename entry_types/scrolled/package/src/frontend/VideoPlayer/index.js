@@ -31,9 +31,9 @@ export function VideoPlayer(props) {
     captionsByDefault: useMediaMuted()
   });
 
-  if (videoFile && videoFile.isReady) {
-    return (
-      <Positioner file={videoFile} fit={props.fit} position={props.position}>
+  function renderPlayer() {
+    if (videoFile && videoFile.isReady) {
+      return (
         <MediaPlayer className={classNames(styles.videoPlayer, styles[props.fit])}
                      type={'video'}
                      textTracks={textTracks}
@@ -42,11 +42,15 @@ export function VideoPlayer(props) {
                      textTracksInset={props.position === 'full'}
                      posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
                      {...props} />
-      </Positioner>
-    );
-  } else {
-    return null;
+      );
+    }
   }
+
+  return (
+    <Positioner file={videoFile} fit={props.fit} position={props.position}>
+      {renderPlayer()}
+    </Positioner>
+  );
 }
 
 VideoPlayer.defaultProps = {
@@ -54,10 +58,15 @@ VideoPlayer.defaultProps = {
   controls: true
 };
 
+const fallbackAspectRatio = 0.5625;
+
 function Positioner({children, fit, file, position}) {
   if (fit === 'contain') {
     return (
-      <ViewportDependentPillarBoxes file={file} position={position}>
+      <ViewportDependentPillarBoxes file={file}
+                                    aspectRatio={file ? undefined : fallbackAspectRatio}
+                                    position={position}
+                                    opaque>
         {children}
       </ViewportDependentPillarBoxes>
     );
