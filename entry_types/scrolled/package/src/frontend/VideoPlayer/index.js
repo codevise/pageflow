@@ -44,6 +44,9 @@ export function VideoPlayer(props) {
                      {...props} />
       );
     }
+    else {
+      return null;
+    }
   }
 
   return (

@@ -57,6 +57,15 @@ describe('VideoPlayer', () => {
     expect(result.container.querySelector('video')).toBeNull();
   });
 
+  it('renders null when file is undefined and fit is cover', () => {
+    const result =
+      renderInEntry(<VideoPlayer {...requiredProps()}
+                                 fit="cover" />,
+                    {seed: getVideoFileSeed()});
+
+    expect(result.container.querySelector('video')).toBeNull();
+  });
+
   it('passes sources according to setting to media API', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer');
     settings.set('videoQuality', 'medium');
