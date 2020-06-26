@@ -61,9 +61,9 @@ export const EditSectionTransitionEffectView = Marionette.ItemView.extend({
     _.each(this.options.values, function(value, index) {
       if (value === 'fade') {
           extendedOption = `<label class=${styles.extended_option} for=${value}>
-                        <input type='checkbox' name='transitions' value='${value}' id='${value}' ${this.options.optionDisabled(value) ? 'disabled' : ''}/>
-                        ${this.options.texts[index]}
-                      </label>`;
+                              <input type='checkbox' name='transitions' value='${value}' id='${value}' ${this.options.optionDisabled(value) ? 'disabled' : ''}/>
+                              ${this.options.texts[index]}
+                            </label>`;
       }
       else {
         var option = `<div class='${styles.container}
@@ -72,8 +72,12 @@ export const EditSectionTransitionEffectView = Marionette.ItemView.extend({
                         <label for='${value}'>
                           <div class='${styles.transition} ${styles[value]}'>
                             <div class='${styles.animation}'>
-                              <div class='${styles.upper_section}'>A</div>
-                              <div class='${styles.lower_section}'>B</div>
+                              <div class='${styles.upper_section}'>
+                                <div class='${styles.upper_background}'>A</div>
+                              </div>
+                              <div class='${styles.lower_section}'>
+                                <div class='${styles.lower_background}'>B</div>
+                              </div>
                             </div>
                             <div class='${styles.input}'>
                               <input type='radio' name='transitions' value='${value}' id='${value}' ${this.options.optionDisabled(value) ? 'disabled' : ''}/>

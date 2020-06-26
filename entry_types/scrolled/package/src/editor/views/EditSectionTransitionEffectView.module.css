@@ -20,6 +20,14 @@
     font-weight: normal;
 }
 
+.upper_background, .lower_background {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .disabled {
     pointer-events: none;
     opacity: 0.3;
@@ -125,7 +133,10 @@
 
 /*Before After*/
 .container:hover .beforeAfter .upper_section {
-    animation: BeforeAfter 2s linear infinite;
+    animation: Translate 2s linear infinite;
+}
+.container:hover .beforeAfter .upper_section div {
+    animation: TranslateYPositive 2s linear infinite;
 }
 
 .animation {
@@ -161,6 +172,10 @@
     z-index: 1;
 }
 
+.beforeAfter .upper_section {
+    overflow: hidden;
+}
+
 /*Input*/
 .container input {
     opacity: 0;
@@ -180,10 +195,9 @@
         transform: translateY(-100%);
    }
 }
-@keyframes BeforeAfter {
-    50% {       
-        color: transparent;
-        height: 0;
+@keyframes TranslateYPositive {
+    50% {
+        transform: translateY(100%);
    }
 }
 @keyframes Fade {
