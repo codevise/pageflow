@@ -38,7 +38,7 @@
 }
 
 .active div,
-.active.extended_option {
+.active .extended_option {
     color: #ffffff;
 }
 
@@ -67,7 +67,7 @@
     visibility: visible;
     display: block;
     content: ' ';
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjNDQ0Ij48cGF0aCBkPSJNMjIgMnYyMGgtMjB2LTIwaDIwem0yLTJoLTI0djI0aDI0di0yNHoiLz48L3N2Zz4=);
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMjIgMnYyMGgtMjB2LTIwaDIwem0yLTJoLTI0djI0aDI0di0yNHoiLz48L3N2Zz4=);
     background-size: 15px 15px;
     height: 15px;
     width: 15px;
