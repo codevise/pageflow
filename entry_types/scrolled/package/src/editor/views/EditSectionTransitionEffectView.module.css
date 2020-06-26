@@ -124,7 +124,10 @@
 
 /*Fade AND Fade Background Upper*/
 .container:hover .fadeBg .upper_section {
-    animation: Fade 2s linear infinite;
+    animation: FadeA 4s linear infinite;
+}
+.container:hover .fadeBg .lower_section {
+    animation: FadeB 4s linear infinite;
 }
 
 /*Scroll, Scroll Over, Reveal, AND Fade Background Lower*/
@@ -204,8 +207,20 @@
         transform: translateY(100%);
    }
 }
-@keyframes Fade {
-    50% {
+@keyframes FadeA {
+    25%,50% {
+        opacity: 0;
+        visibility: hidden;
+    }
+    10%, 80% {
+        visibility: visible;
+   }
+}
+@keyframes FadeB {
+    25%, 50% {
+        opacity: 1;
+    }
+    90% {
         visibility: hidden;
         opacity: 0;
    }
