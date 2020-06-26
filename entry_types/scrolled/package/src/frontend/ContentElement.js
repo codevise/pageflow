@@ -31,3 +31,7 @@ export const ContentElement = withInlineEditingDecorator(
     }
   }
 );
+
+ContentElement.defaultProps = {
+  itemProps: {}
+};

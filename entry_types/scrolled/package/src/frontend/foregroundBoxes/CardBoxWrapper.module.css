@@ -1,18 +1,51 @@
-.cardBg {
-  padding: 4%;
-  margin: 0 -4% 0 0;
-  border-radius: 15px;
-  opacity: 1;
+.card {
+  position: relative;
+  padding: 0 1.5em;
+  margin-top: -1px;
+  padding-top: 1px;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.cardStart {
+  margin-top: 3em;
+}
+
+.cardEnd {
+  margin-bottom: 3em;
+  padding-bottom: 1.5em;
+}
+
+.cardStart::before {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.cardEnd::before {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.cardBgWhite::before {
+  background: white;
+}
+
+.cardBgBlack::before {
+  background: black;
 }
 
 .cardBgWhite {
-  composes: cardBg;
-  background: white;
   color: black;
 }
 
 .cardBgBlack {
-  composes: cardBg;
-  background: black;
   color: white;
 }

@@ -5,18 +5,19 @@ import {ContentElements} from '../ContentElements';
 
 import styles from './Center.module.css';
 
-export default function Center(props) {
+export function Center(props) {
   return (
     <div className={classNames(styles.root)}>
       <div ref={props.contentAreaRef} />
       <ContentElements sectionProps={props.sectionProps} items={props.items}>
-        {(item, child) =>
-          <div key={item.index} className={classNames(styles.outer, styles[`outer-${item.position}`])}>
+        {(item, child, index) =>
+          <div key={item.id} className={classNames(styles.outer, styles[`outer-${item.position}`])}>
             <div className={classNames(styles.item, styles[`item-${item.position}`])}>
               {props.children(
                  <div className={styles[`inner-${item.position}`]}>
                   {child}
-                 </div>
+                 </div>,
+                 boxProps(props.items, item, index)
                )}
             </div>
           </div>}
@@ -26,6 +27,16 @@ export default function Center(props) {
   );
 }
 
+function boxProps(items, item, index) {
+  const previous = items[index - 1];
+  const next = items[index + 1];
+
+  return {
+    position: item.position,
+    openStart: previous && item.position !== 'full' && previous.position !== 'full',
+    openEnd: next && item.position !== 'full' && next.position !== 'full',
+  }
+}
 function renderPlaceholder(placeholder) {
   if (!placeholder) {
     return null;

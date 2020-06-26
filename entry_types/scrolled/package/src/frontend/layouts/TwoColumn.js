@@ -7,7 +7,7 @@ import styles from './TwoColumn.module.css';
 
 const availablePositions = ['inline', 'sticky', 'full'];
 
-export default function TwoColumn(props) {
+export function TwoColumn(props) {
   return (
     <div className={classNames(styles.root, styles[props.align])}>
       <div className={styles.inline} ref={props.contentAreaRef} />
@@ -36,7 +36,12 @@ function renderItemGroup(props, group, position) {
     return (
       <div className={styles[position]}>
         {props.children(
-          <ContentElements sectionProps={props.sectionProps} items={group[position]} />
+          <ContentElements sectionProps={props.sectionProps} items={group[position]} />,
+          {
+            position,
+            openStart: position === 'inline' && group.openStart,
+            openEnd: position === 'inline' &&  group.openEnd
+          }
         )}
       </div>
     );
@@ -51,7 +56,7 @@ function groupItemsByPosition(items) {
     const position = availablePositions.indexOf(item.position) >= 0 ? item.position : 'inline';
 
     if (!previousItemPosition || (previousItemPosition !== position &&
-                                  (previousItemPosition !== 'sticky' || position !== 'inline'))) {
+                                  !(previousItemPosition === 'sticky' && position === 'inline'))) {
       currentGroup = {
         position,
         sticky: [],
@@ -64,6 +69,14 @@ function groupItemsByPosition(items) {
     currentGroup[position].push(item);
     return position;
   }, null);
+
+  groups.forEach((group, index) => {
+    const previous = groups[index - 1];
+    const next = groups[index + 1];
+
+    group.openStart = previous && !previous.full.length;
+    group.openEnd = next && next.inline.length > 0;
+  })
 
   return groups;
 }

@@ -21,6 +21,11 @@
 }
 
 @media (min-width: 950px) {
+  .inner-left,
+  .inner-right {
+    margin-top: 0.375em;
+  }
+
   .inner-left {
     float: left;
     width: 60%;

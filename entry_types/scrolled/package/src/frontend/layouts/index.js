@@ -1,7 +1,7 @@
 import React from 'react';
 
-import TwoColumn from './TwoColumn';
-import Center from './Center';
+import {TwoColumn} from './TwoColumn';
+import {Center} from './Center';
 
 import {withInlineEditingAlternative} from '../inlineEditing';
 
