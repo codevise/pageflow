@@ -5,7 +5,12 @@ import {frontend} from 'pageflow-scrolled/frontend';
 
 import {render} from '@testing-library/react';
 
+import {useNarrowViewport} from 'frontend/useNarrowViewport';
+jest.mock('frontend/useNarrowViewport');
+
 describe('Layout', () => {
+  beforeEach(() => useNarrowViewport.mockReturnValue(false));
+
   describe('placeholder', () => {
     it('renders in two column variant', () => {
       const {getByTestId} = render(
@@ -52,7 +57,7 @@ describe('Layout', () => {
     }
 
     describe('in two column variant', () => {
-      it('calls children for each group of consecutive items with same position passing position', () => {
+      it('is called for each group of consecutive items with same position passing position', () => {
         const items = [
           {id: 1, type: 'probe', position: 'inline'},
           {id: 2, type: 'probe', position: 'inline'},
@@ -134,6 +139,23 @@ describe('Layout', () => {
         );
 
         expect(container.textContent).toEqual('( 1 )( 2 )( 3 )( 4 )');
+      });
+
+      it('inlines sticky element for narrow viewport', () => {
+        useNarrowViewport.mockReturnValue(true);
+
+        const items = [
+          {id: 1, type: 'probe', position: 'inline'},
+          {id: 2, type: 'probe', position: 'sticky'},
+          {id: 3, type: 'probe', position: 'inline'},
+        ];
+        const {container} = render(
+          <Layout sectionProps={{layout: 'left'}} items={items}>
+            {(children, boxProps) => <Box {...boxProps}>{children}</Box>}
+          </Layout>
+        );
+
+        expect(container.textContent).toEqual('( 1 2 3 )');
       });
     });
 

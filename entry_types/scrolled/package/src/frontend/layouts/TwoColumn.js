@@ -2,16 +2,26 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {ContentElements} from '../ContentElements';
+import {useNarrowViewport} from '../useNarrowViewport';
 
 import styles from './TwoColumn.module.css';
 
-const availablePositions = ['inline', 'sticky', 'full'];
+function availablePositions(narrow) {
+  if (narrow) {
+    return ['inline', 'full'];
+  }
+  else {
+    return ['inline', 'sticky', 'full'];
+  }
+}
 
 export function TwoColumn(props) {
+  const narrow = useNarrowViewport();
+
   return (
-    <div className={classNames(styles.root, styles[props.align])}>
+    <div className={classNames(styles.root, styles[props.align], narrow ? styles.narrow : styles.wide)}>
       <div className={styles.inline} ref={props.contentAreaRef} />
-      {renderItems(props)}
+      {renderItems(props, narrow)}
       {renderPlaceholder(props.placeholder)}
     </div>
   );
@@ -21,8 +31,8 @@ TwoColumn.defaultProps = {
   align: 'left'
 }
 
-function renderItems(props) {
-  return groupItemsByPosition(props.items).map((group, index) =>
+function renderItems(props, narrow) {
+  return groupItemsByPosition(props.items, availablePositions(narrow)).map((group, index) =>
     <div key={index} className={classNames(styles.group, styles[`group-${group.position}`])}>
       {renderItemGroup(props, group, 'sticky')}
       {renderItemGroup(props, group, 'inline')}
@@ -48,7 +58,7 @@ function renderItemGroup(props, group, position) {
   }
 }
 
-function groupItemsByPosition(items) {
+function groupItemsByPosition(items, availablePositions) {
   let groups = [];
   let currentGroup;
 

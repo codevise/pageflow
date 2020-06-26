@@ -2,7 +2,6 @@
 }
 
 .group {
-  clear: right;
   margin-left: 8%;
   margin-right: 8%;
 }
@@ -21,22 +20,19 @@
   margin-left: auto;
 }
 
-@media (max-width: 949px) {
-  .right .sticky {
-    margin-left: auto;
-  }
+.narrow.right .sticky {
+  margin-left: auto;
 }
 
-@media (min-width: 950px) {
-  .sticky {
-    position: sticky;
-    float: right;
-    top: 33%;
-    width: 30%;
-    max-width: 600px;
-  }
+.wide .sticky {
+  position: sticky;
+  float: right;
+  clear: right;
+  top: 33%;
+  width: 30%;
+  max-width: 600px;
+}
 
-  .right .sticky {
-    float: left;
-  }
+.wide.right .sticky {
+  float: left;
 }
