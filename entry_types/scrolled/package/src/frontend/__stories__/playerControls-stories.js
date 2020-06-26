@@ -5,12 +5,12 @@ import {PlayerControls} from 'pageflow-scrolled/frontend';
 
 const stories = storiesOf('Frontend/Player Controls', module);
 
-function addControlbarStory(name, props) {
+function addControlbarStory(name, wrapperStyle, props) {
   stories.add(
     name,
     () => {
       return (
-        <div style={{fontFamily: 'Source Sans Pro, sans-serif'}}>
+        <div style={{fontFamily: 'Source Sans Pro, sans-serif', ...wrapperStyle}}>
           <div style={{background: 'rgba(0, 0, 0, 0.6)', width: '100%', height: '150px'}}></div>
           <PlayerControlsDemo {...props} />
         </div>
@@ -33,8 +33,7 @@ function PlayerControlsDemo(props) {
   );
 }
 
-addControlbarStory('White', {
-  style: 'white',
+addControlbarStory('White', {color: '#fff', background: '#333'}, {
   qualityMenuExpanded: true,
   qualityMenuItems: [
     {label: '2160p', annotation: '4k', value: '4k', active: true},
@@ -48,8 +47,7 @@ addControlbarStory('White', {
   ]
 });
 
-addControlbarStory('Black', {
-  style: 'black',
+addControlbarStory('Black', {color: '#000'}, {
   qualityMenuExpanded: true,
   qualityMenuItems: [
     {label: '2160p', annotation: '4k', value: '4k', active: true},

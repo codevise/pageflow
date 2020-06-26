@@ -18,7 +18,6 @@
   position: relative;
   height: 6px;
   border-radius: 3.5px;
-  background: #b4b4b4;
 }
 
 .progressBar {
@@ -26,17 +25,22 @@
   left: 0;
   height: 6px;
   border-radius: 2.5px;
+  background: currentColor;
+}
+
+.background {
+  composes: progressBar;
+  opacity: 0.1;
+  width: 100%;
 }
 
 .loadingProgressBar {
   composes: progressBar;
-  background: currentColor;
-  opacity: 0.25;
+  opacity: 0.1;
 }
 
 .playProgressBar {
   composes: progressBar;
-  background: currentColor;
 }
 
 .sliderHandle {

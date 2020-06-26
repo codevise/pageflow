@@ -17,7 +17,6 @@ export function PlayerControls(props) {
          onMouseLeave={props.onMouseLeave}
          className={classNames(styles.controlBarContainer,
                                styles.backgroundColor,
-                               props.style === 'white' ? styles.foregroundLight : styles.foregroundDark,
                                {
                                  [styles.inset]: props.inset,
                                  [styles.transparent]: props.isPlaying && props.inset && props.inactive
@@ -56,6 +55,5 @@ PlayerControls.defaultProps = {
   seekTo: () => {
   },
 
-  style: 'white',
   inset: false
 };

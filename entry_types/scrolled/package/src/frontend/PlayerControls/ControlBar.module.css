@@ -6,15 +6,8 @@
   background: rgba(0, 0, 0, 0.2);
 }
 
-.foregroundLight {
-  color: white;
-}
-
-.foregroundDark {
-  color: black;
-}
-
 .controlBarContainer {
+  color: currentColor;
   width: 100%;
   display: flex;
   align-items: center;
@@ -24,6 +17,7 @@
 
 .controlBarContainer.inset {
   margin-top: -32px;
+  color: #fff;
 }
 
 .button {
