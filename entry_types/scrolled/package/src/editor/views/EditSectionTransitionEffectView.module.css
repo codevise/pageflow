@@ -63,6 +63,10 @@
     width: auto;
 }
 
+.container.container_with_option label:first-child {
+    padding-bottom: 10px;
+}
+
 .active .extended_option input:before {
     visibility: visible;
     display: block;
@@ -90,8 +94,7 @@
 }
 
 .container {
-    padding: 15px 0;
-    height: 60px;
+    height: 90px;
     display: flex !important;
     align-items: center;
     border-top: 1px solid #ffffff;
@@ -104,10 +107,11 @@
 .container label:first-child {
     height: 60px;
     width: 100%;
+    padding: 15px 0;
 }
 
 .container_with_option.active {
-    height: 90px;
+    height: 120px;
     flex-direction: column;
 }
 
