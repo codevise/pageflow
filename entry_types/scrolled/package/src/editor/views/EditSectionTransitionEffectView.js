@@ -53,21 +53,47 @@ export const EditSectionTransitionEffectView = Marionette.ItemView.extend({
     this.appendOptions();
     this.load();
     this.listenTo(this.model, 'change:' + this.options.propertyName, this.load);
+    this.loadCheckbox();
   },
 
   appendOptions: function () {
+    var extendedOption = {};
     _.each(this.options.values, function(value, index) {
-      var option = `<div class="${styles.transition} ${this.options.optionDisabled(value) ? styles['disabled'] : 'enabled'}">
-                      <div class="${styles[value]}">
-                        <div class="${styles.upper_section}">A</div>
-                        <div class="${styles.lower_section}">B</div>
-                      </div>
-                      <label>
-                        <input type="radio" value="${value}" name="transitions"  ${this.options.optionDisabled(value) ? 'disabled' : ''}/>
-                        ${this.options.texts[index]}
-                      </label>
-                    </div>`;
-      this.ui.container.append($(option));
+      if (value === 'fade') {
+          extendedOption = `<label class=${styles.extended_option} for=${value}>
+                              <input type='checkbox' name='transitions' value='${value}' id='${value}' ${this.options.optionDisabled(value) ? 'disabled' : ''}/>
+                              ${this.options.texts[index]}
+                            </label>`;
+      }
+      else {
+        var option = `<div class='${styles.container}
+                      ${this.options.optionDisabled(value) ? styles['disabled'] : 'enabled'}
+                      ${value === 'fadeBg' ? styles.container_with_option : ''}'>
+                        <label for='${value}'>
+                          <div class='${styles.transition} ${styles[value]}'>
+                            <div class='${styles.animation}'>
+                              <div class='${styles.upper_section}'>
+                                <div class='${styles.upper_background}'>A</div>
+                              </div>
+                              <div class='${styles.lower_section}'>
+                                <div class='${styles.lower_background}'>B</div>
+                              </div>
+                            </div>
+                            <div class='${styles.input}'>
+                              <input type='radio' name='transitions' value='${value}' id='${value}' ${this.options.optionDisabled(value) ? 'disabled' : ''}/>
+                              ${this.options.texts[index]}
+                            </div>
+                          </div>
+                        </label>
+                      </div>`;
+          
+        this.ui.container.append($(option));
+      }
+
+      if (value === 'fadeBg') {
+          this.ui.container.find(`div.${styles.container_with_option}`).append($(extendedOption));
+      }
+
     }, this);
   },
 
@@ -78,6 +104,19 @@ export const EditSectionTransitionEffectView = Marionette.ItemView.extend({
             configured = $(input);
         }
     });
+    
+    //This is the case, if a user unchecks the checkbox, then there is no checked item.
+    //So the parent 'fade' transition will be selected.
+    _.each(this.ui.container.find('input'), function(input) {
+      if (!configured.length && $(input).context.id === 'fadeBg') {
+        configured = $(input) 
+      } 
+      
+      else if ($(input).context.id !== configured.context.id) {
+          $(input).context.checked = false;
+        }
+    });
+ 
     this.model.set(this.options.propertyName, configured.attr('value'));
   },
 
@@ -89,16 +128,34 @@ export const EditSectionTransitionEffectView = Marionette.ItemView.extend({
           this.ui.container.find('input[value="' + value +'"]:not([checked])').length) {
 
         var select = {};
-        _.each(this.ui.container.find('div'), function(div) {
-                if (div.classList.contains(styles[value])) {
-                    select = $(div);
+        _.each(this.ui.container.find('label'), function(label) {
+                if ($(label).context.htmlFor === value) {
+                    select = $(label);
                 }
                 else {
-                    $(div).context.parentElement.classList.remove(styles.active);
+                    if ($(label).context.htmlFor === 'fade') {
+                      $(label).context.classList.remove(styles.active);
+                    }
+                    $(label).context.parentElement.classList.remove(styles.active);
                 }
             });
         select.context.parentElement.classList.add(styles.active);
+
+        if (select.context.htmlFor === 'fade') {
+          select.context.classList.add(styles.active);
+        }
+        else {
+          select.context.classList.remove(styles.active);
+        }
       }
+    }
+  },
+  //Checkbox doesn't retain it's state after a reload, so this will make sure if it was selected it retain it's value.
+  loadCheckbox: function() {
+    var value = this.model.get(this.options.propertyName);
+    if (value === 'fade') {
+        var input = this.ui.container.find('input[value="' + value +'"]');
+        $(input).prop('checked', true);
     }
   }
 });

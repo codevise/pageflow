@@ -1,13 +1,31 @@
+@value selectionColor from './colors.module.css';
+
 .upper_section {
     background: #50514f;
     height: 100%;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: normal;
 }
 
 .lower_section {
     background: #A2A2A2;
     height: 100%;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: normal;
+}
+
+.upper_background, .lower_background {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .disabled {
@@ -16,132 +34,163 @@
 }
 
 .active {
-    background: #6c757d !important;
+    background: selectionColor !important;
 }
 
-.active label {
+.active div,
+.active .extended_option {
     color: #ffffff;
 }
 
-.transition {
-    padding: 15px 0;
-    height: 60px;
-    display: flex;
+.extended_option {
+    display: none !important;
+}
+
+.active .extended_option {
+    display: flex !important;
+    height: auto;
+    width: 82.5%;
     align-items: center;
-    border-top: 1px solid #808080;
+    padding: 5% 2.5%;
+    padding-left: 15%;
+}
+
+.extended_option input {
+    opacity: 1 !important;
+    visibility: hidden;
+    position: absolute;
+    left: -15px;
+    top: 8px;
+    width: auto;
+}
+
+.container.container_with_option label:first-child {
+    padding-bottom: 10px;
+}
+
+.active .extended_option input:before {
+    visibility: visible;
+    display: block;
+    content: ' ';
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMjIgMnYyMGgtMjB2LTIwaDIwem0yLTJoLTI0djI0aDI0di0yNHoiLz48L3N2Zz4=);
+    background-size: 15px 15px;
+    height: 15px;
+    width: 15px;
+    position: absolute;
+    left: 30px;
+    top: 4px;
+}
+
+.active .extended_option.active input:before {
+    visibility: visible;
+    display: block;
+    content: ' ';
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+PHBhdGggZD0iTTIyIDJ2MjBoLTIwdi0yMGgyMHptMi0yaC0yNHYyNGgyNHYtMjR6bS01LjU0MSA4LjQwOWwtMS40MjItMS40MDktNy4wMjEgNy4xODMtMy4wOC0yLjkzNy0xLjM5NSAxLjQzNSA0LjUgNC4zMTkgOC40MTgtOC41OTF6Ii8+PC9zdmc+);
+    background-size: 15px 15px;
+    height: 15px;
+    width: 15px;
+    position: absolute;
+    left: 30px;
+    top: 4px;
+}
+
+.container {
+    height: 90px;
+    display: flex !important;
+    align-items: center;
+    border-top: 1px solid #ffffff;
     background: #e5e5e5;
 }
-.transition:hover,
-.transition input[type="radio"]:checked + label {
+.container:hover {
      background: #ddd;
 }
 
-
-/*Fade*/
-.transition:hover .fade .upper_section {
-    visibility: hidden;
-    opacity: 0.5;
+.container label:first-child {
+    height: 60px;
+    width: 100%;
+    padding: 15px 0;
 }
 
-/*Fade Background Upper*/
-.transition:hover .fadeBg .upper_section {
-    visibility: hidden;
-    transform: translateY(-100%);
+.container_with_option.active {
+    height: auto;
+    flex-direction: column;
 }
 
-/*face Background Lower*/
-.transition:hover .fadeBg .lower_section {
-    transform: translateY(-100%);
+.transition {
+    height: 100%;
+    width: 100%;
+    display: flex;
 }
 
-/*Scroll and Scroll Over*/
-.transition:hover .scroll .upper_section,
-.transition:hover .scroll .lower_section,
-.transition:hover .scrollOver .lower_section {
-    animation: Scroll 2s ease infinite;
+
+/*Fade AND Fade Background Upper*/
+.container:hover .fadeBg .upper_section {
+    animation: FadeA 4s linear infinite;
+}
+.container:hover .fadeBg .lower_section {
+    animation: FadeB 4s linear infinite;
 }
 
-/*Reveal*/
-.transition:hover .reveal .upper_section {
-    animation: Reveal 2s ease infinite;
+/*Scroll, Scroll Over, Reveal, AND Fade Background Lower*/
+.container:hover .scroll .upper_section,
+.container:hover .scroll .lower_section,
+.container:hover .scrollOver .lower_section,
+.container:hover .reveal .upper_section{
+    animation: Translate 2s linear infinite;
 }
 
 /*Before After*/
-.transition:hover .beforeAfter .upper_section {
-    color: transparent;
-    height: 0;
+.container:hover .beforeAfter .upper_section {
+    animation: Translate 2s linear infinite;
+}
+.container:hover .beforeAfter .upper_section div {
+    animation: TranslateYPositive 2s linear infinite;
 }
 
-.transition > div {
+.animation {
     width: 30%;
     height: 100%;
-    margin: 2%;
+    margin: 0 2%;
     border-radius: 5%;
-    color: white;
+    color: #ffffff;
     text-align: center;
     font-size: 26px;
     overflow: hidden;
 }
 
 /*Fade + Reveal + Before After*/
-.fade,
-.reveal,
-.beforeAfter {
+.fadeBg .animation,
+.reveal .animation,
+.beforeAfter .animation {
     position: relative;
 }
 
 /*Fade + Reveal + Before After Lower Sections*/
-.fade .lower_section,
+.fadeBg .lower_section,
 .reveal .lower_section,
 .beforeAfter .lower_section {
     position: absolute;
 }
 
-/*fade Upper Section*/
-.fade .upper_section {
-    transition: all 2s ease-in-out;
+/*Reveal, fade Upper Section, & Before After Upper Section*/
+.reveal .upper_section,
+.beforeAfter .upper_section,
+.fadeBg .upper_section {
     position: absolute;
     z-index: 1;
 }
 
-/*Reveal Upper Section*/
-.reveal .upper_section {
-    position: absolute;
-    z-index: 1;
-}
-
-/*Before After Upper Section*/
 .beforeAfter .upper_section {
-    transition: all 2s ease-in-out;
-    position: absolute;
-    z-index: 1;
+    overflow: hidden;
 }
-
-/*Fade Background*/
-.fadeBg .upper_section,
-.fadeBg .lower_section {
-    transition: all 2s ease-in-out;
-}
-
-/*Scroll + Scroll Over Upper Sections*/
-.scroll .upper_section,
-.scrollOver .upper_section {
-    height: 50%;
-}
-
-/*Scroll Lower Section*/
-.scroll .lower_section {
-    height: 70%;
-}
-
 
 /*Input*/
-.transition input {
+.container input {
     opacity: 0;
 }
 
 /*Label*/
-.transition label {
+.container .input {
     display: block;
     text-align: left;
     height: 100%;
@@ -149,19 +198,31 @@
 }
 
 /*Keyframes*/
-@keyframes Scroll {
-    50% {
-        transform: translateY(-30%);
-   }
-    100% {
-        transform: translateY(0);
-   }
-}
-@keyframes Reveal {
+@keyframes Translate {
     50% {
         transform: translateY(-100%);
    }
-    100% {
-        transform: translateY(0);
+}
+@keyframes TranslateYPositive {
+    50% {
+        transform: translateY(100%);
+   }
+}
+@keyframes FadeA {
+    25%,50% {
+        opacity: 0;
+        visibility: hidden;
+    }
+    10%, 80% {
+        visibility: visible;
+   }
+}
+@keyframes FadeB {
+    25%, 50% {
+        opacity: 1;
+    }
+    90% {
+        visibility: hidden;
+        opacity: 0;
    }
 }
