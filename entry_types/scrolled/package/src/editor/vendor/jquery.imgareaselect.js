@@ -1,47 +1,44 @@
 import './jquery.imgareaselect.module.css';
 import jQuery from 'jquery';
 
-/*
- * imgAreaSelect jQuery plugin
- * version 0.9.10
- *
- * Copyright (c) 2008-2013 Michal Wojciechowski (odyniec.net)
- *
- * Dual licensed under the MIT (MIT-LICENSE.txt)
- * and GPL (GPL-LICENSE.txt) licenses.
- *
- * http://odyniec.net/projects/imgareaselect/
- *
- */
+// imgAreaSelect jQuery plugin
+// version 0.9.10
+//
+// Copyright (c) 2008-2013 Michal Wojciechowski (odyniec.net)
+//
+// Dual licensed under the MIT (MIT-LICENSE.txt)
+// and GPL (GPL-LICENSE.txt) licenses.
+//
+// http://odyniec.net/projects/imgareaselect/
 
 (function($) {
 
-/*
- * Math functions will be used extensively, so it's convenient to make a few
- * shortcuts
- */
+//
+// Math functions will be used extensively, so it's convenient to make a few
+// shortcuts
+//
 var abs = Math.abs,
     max = Math.max,
     min = Math.min,
     round = Math.round;
 
-/**
- * Create a new HTML div element
- *
- * @return A jQuery object representing the new element
- */
+//
+// Create a new HTML div element
+//
+// @return A jQuery object representing the new element
+//
 function div() {
     return $('<div/>');
 }
 
-/**
- * imgAreaSelect initialization
- *
- * @param img
- *            A HTML image element to attach the plugin to
- * @param options
- *            An options object
- */
+//
+// imgAreaSelect initialization
+//
+// @param img
+//            A HTML image element to attach the plugin to
+// @param options
+//            An options object
+//
 $.imgAreaSelect = function (img, options) {
     var
         /* jQuery object representing the image */
@@ -131,24 +128,24 @@ $.imgAreaSelect = function (img, options) {
      * coordinates (relative to parent element)
      */
 
-    /**
-     * Translate selection X to viewport X
-     *
-     * @param x
-     *            Selection X
-     * @return Viewport X
-     */
+    //
+    // Translate selection X to viewport X
+    //
+    // @param x
+    //            Selection X
+    // @return Viewport X
+    //
     function viewX(x) {
         return x + imgOfs.left - parOfs.left;
     }
 
-    /**
-     * Translate selection Y to viewport Y
-     *
-     * @param y
-     *            Selection Y
-     * @return Viewport Y
-     */
+    //
+    // Translate selection Y to viewport Y
+    //
+    // @param y
+    //            Selection Y
+    // @return Viewport Y
+    //
     function viewY(y) {
         return y + imgOfs.top - parOfs.top;
     }
@@ -157,24 +154,24 @@ $.imgAreaSelect = function (img, options) {
      * Translate viewport coordinates to selection coordinates
      */
 
-    /**
-     * Translate viewport X to selection X
-     *
-     * @param x
-     *            Viewport X
-     * @return Selection X
-     */
+    //
+    // Translate viewport X to selection X
+    //
+    // @param x
+    //            Viewport X
+    // @return Selection X
+    //
     function selX(x) {
         return x - imgOfs.left + parOfs.left;
     }
 
-    /**
-     * Translate viewport Y to selection Y
-     *
-     * @param y
-     *            Viewport Y
-     * @return Selection Y
-     */
+    //
+    // Translate viewport Y to selection Y
+    //
+    // @param y
+    //            Viewport Y
+    // @return Selection Y
+    //
     function selY(y) {
         return y - imgOfs.top + parOfs.top;
     }
@@ -184,36 +181,36 @@ $.imgAreaSelect = function (img, options) {
      * coordinates
      */
 
-    /**
-     * Get event X and translate it to viewport X
-     *
-     * @param event
-     *            The event object
-     * @return Viewport X
-     */
+    //
+    // Get event X and translate it to viewport X
+    //
+    // @param event
+    //            The event object
+    // @return Viewport X
+    //
     function evX(event) {
         return event.pageX - parOfs.left;
     }
 
-    /**
-     * Get event Y and translate it to viewport Y
-     *
-     * @param event
-     *            The event object
-     * @return Viewport Y
-     */
+    //
+    // Get event Y and translate it to viewport Y
+    //
+    // @param event
+    //            The event object
+    // @return Viewport Y
+    //
     function evY(event) {
         return event.pageY - parOfs.top;
     }
 
-    /**
-     * Get the current selection
-     *
-     * @param noScale
-     *            If set to <code>true</code>, scaling is not applied to the
-     *            returned selection
-     * @return Selection object
-     */
+    //
+    // Get the current selection
+    //
+    // @param noScale
+    //            If set to <code>true</code>, scaling is not applied to the
+    //            returned selection
+    // @return Selection object
+    //
     function getSelection(noScale) {
         var sx = noScale || scaleX, sy = noScale || scaleY;
 
@@ -225,21 +222,21 @@ $.imgAreaSelect = function (img, options) {
             height: round(selection.y2 * sy) - round(selection.y1 * sy) };
     }
 
-    /**
-     * Set the current selection
-     *
-     * @param x1
-     *            X coordinate of the upper left corner of the selection area
-     * @param y1
-     *            Y coordinate of the upper left corner of the selection area
-     * @param x2
-     *            X coordinate of the lower right corner of the selection area
-     * @param y2
-     *            Y coordinate of the lower right corner of the selection area
-     * @param noScale
-     *            If set to <code>true</code>, scaling is not applied to the
-     *            new selection
-     */
+    //
+    // Set the current selection
+    //
+    // @param x1
+    //            X coordinate of the upper left corner of the selection area
+    // @param y1
+    //            Y coordinate of the upper left corner of the selection area
+    // @param x2
+    //            X coordinate of the lower right corner of the selection area
+    // @param y2
+    //            Y coordinate of the lower right corner of the selection area
+    // @param noScale
+    //            If set to <code>true</code>, scaling is not applied to the
+    //            new selection
+    //
     function setSelection(x1, y1, x2, y2, noScale) {
         var sx = noScale || scaleX, sy = noScale || scaleY;
 
@@ -254,9 +251,9 @@ $.imgAreaSelect = function (img, options) {
         selection.height = selection.y2 - selection.y1;
     }
 
-    /**
-     * Recalculate image and parent offsets
-     */
+    //
+    // Recalculate image and parent offsets
+    //
     function adjust() {
         /*
          * Do not adjust if image has not yet loaded or if width is not a
@@ -315,13 +312,13 @@ $.imgAreaSelect = function (img, options) {
             doResize();
     }
 
-    /**
-     * Update plugin elements
-     *
-     * @param resetKeyPress
-     *            If set to <code>false</code>, this instance's keypress
-     *            event handler is not activated
-     */
+    //
+    // Update plugin elements
+    //
+    // @param resetKeyPress
+    //            If set to <code>false</code>, this instance's keypress
+    //            event handler is not activated
+    //
     function update(resetKeyPress) {
         /* If plugin elements are hidden, do nothing */
         if (!shown) return;
@@ -405,14 +402,14 @@ $.imgAreaSelect = function (img, options) {
         }
     }
 
-    /**
-     * Do the complete update sequence: recalculate offsets, update the
-     * elements, and set the correct values of x1, y1, x2, and y2.
-     *
-     * @param resetKeyPress
-     *            If set to <code>false</code>, this instance's keypress
-     *            event handler is not activated
-     */
+    //
+    // Do the complete update sequence: recalculate offsets, update the
+    // elements, and set the correct values of x1, y1, x2, and y2.
+    //
+    // @param resetKeyPress
+    //            If set to <code>false</code>, this instance's keypress
+    //            event handler is not activated
+    //
     function doUpdate(resetKeyPress) {
         adjust();
         update(resetKeyPress);
@@ -420,24 +417,24 @@ $.imgAreaSelect = function (img, options) {
         x2 = viewX(selection.x2); y2 = viewY(selection.y2);
     }
 
-    /**
-     * Hide or fade out an element (or multiple elements)
-     *
-     * @param $elem
-     *            A jQuery object containing the element(s) to hide/fade out
-     * @param fn
-     *            Callback function to be called when fadeOut() completes
-     */
+    //
+    // Hide or fade out an element (or multiple elements)
+    //
+    // @param $elem
+    //            A jQuery object containing the element(s) to hide/fade out
+    // @param fn
+    //            Callback function to be called when fadeOut() completes
+    //
     function hide($elem, fn) {
         options.fadeSpeed ? $elem.fadeOut(options.fadeSpeed, fn) : $elem.hide();
     }
 
-    /**
-     * Selection area mousemove event handler
-     *
-     * @param event
-     *            The event object
-     */
+    //
+    // Selection area mousemove event handler
+    //
+    // @param event
+    //            The event object
+    //
     function areaMouseMove(event) {
         var x = selX(evX(event)) - selection.x1,
             y = selY(evY(event)) - selection.y1;
@@ -473,12 +470,12 @@ $.imgAreaSelect = function (img, options) {
             $areaOpera.toggle();
     }
 
-    /**
-     * Document mouseup event handler
-     *
-     * @param event
-     *            The event object
-     */
+    //
+    // Document mouseup event handler
+    //
+    // @param event
+    //            The event object
+    //
     function docMouseUp(event) {
         /* Set back the default cursor */
         $('body').css('cursor', '');
@@ -495,13 +492,13 @@ $.imgAreaSelect = function (img, options) {
         options.onSelectEnd(img, getSelection());
     }
 
-    /**
-     * Selection area mousedown event handler
-     *
-     * @param event
-     *            The event object
-     * @return false
-     */
+    //
+    // Selection area mousedown event handler
+    //
+    // @param event
+    //            The event object
+    // @return false
+    //
     function areaMouseDown(event) {
         if (event.which != 1) return false;
 
@@ -538,13 +535,13 @@ $.imgAreaSelect = function (img, options) {
         return false;
     }
 
-    /**
-     * Adjust the x2/y2 coordinates to maintain aspect ratio (if defined)
-     *
-     * @param xFirst
-     *            If set to <code>true</code>, calculate x2 first. Otherwise,
-     *            calculate y2 first.
-     */
+    //
+    // Adjust the x2/y2 coordinates to maintain aspect ratio (if defined)
+    //
+    // @param xFirst
+    //            If set to <code>true</code>, calculate x2 first. Otherwise,
+    //            calculate y2 first.
+    //
     function fixAspectRatio(xFirst) {
         if (aspectRatio)
             if (xFirst) {
@@ -563,10 +560,10 @@ $.imgAreaSelect = function (img, options) {
             }
     }
 
-    /**
-     * Resize the selection area respecting the minimum/maximum dimensions and
-     * aspect ratio
-     */
+    //
+    // Resize the selection area respecting the minimum/maximum dimensions and
+    // aspect ratio
+    //
     function doResize() {
         /*
          * Make sure the top left corner of the selection area stays within
@@ -622,13 +619,13 @@ $.imgAreaSelect = function (img, options) {
         options.onSelectChange(img, getSelection());
     }
 
-    /**
-     * Mousemove event handler triggered when the user is selecting an area
-     *
-     * @param event
-     *            The event object
-     * @return false
-     */
+    //
+    // Mousemove event handler triggered when the user is selecting an area
+    //
+    // @param event
+    //            The event object
+    // @return false
+    //
     function selectingMouseMove(event) {
         x2 = /w|e|^$/.test(resize) || aspectRatio ? evX(event) : viewX(selection.x2);
         y2 = /n|s|^$/.test(resize) || aspectRatio ? evY(event) : viewY(selection.y2);
@@ -638,14 +635,14 @@ $.imgAreaSelect = function (img, options) {
         return false;
     }
 
-    /**
-     * Move the selection area
-     *
-     * @param newX1
-     *            New viewport X1
-     * @param newY1
-     *            New viewport Y1
-     */
+    //
+    // Move the selection area
+    //
+    // @param newX1
+    //            New viewport X1
+    // @param newY1
+    //            New viewport Y1
+    //
     function doMove(newX1, newY1) {
         x2 = (x1 = newX1) + selection.width;
         y2 = (y1 = newY1) + selection.height;
@@ -658,13 +655,13 @@ $.imgAreaSelect = function (img, options) {
         options.onSelectChange(img, getSelection());
     }
 
-    /**
-     * Mousemove event handler triggered when the selection area is being moved
-     *
-     * @param event
-     *            The event object
-     * @return false
-     */
+    //
+    // Mousemove event handler triggered when the selection area is being moved
+    //
+    // @param event
+    //            The event object
+    // @return false
+    //
     function movingMouseMove(event) {
         x1 = max(left, min(startX + evX(event), left + imgWidth - selection.width));
         y1 = max(top, min(startY + evY(event), top + imgHeight - selection.height));
@@ -675,9 +672,9 @@ $.imgAreaSelect = function (img, options) {
         return false;
     }
 
-    /**
-     * Start selection
-     */
+    //
+    // Start selection
+    //
     function startSelection() {
         $(document).unbind('mousemove', startSelection);
         adjust();
@@ -701,9 +698,9 @@ $.imgAreaSelect = function (img, options) {
         options.onSelectStart(img, getSelection());
     }
 
-    /**
-     * Cancel selection
-     */
+    //
+    // Cancel selection
+    //
     function cancelSelection() {
         $(document).unbind('mousemove', startSelection)
             .unbind('mouseup', cancelSelection);
@@ -718,13 +715,13 @@ $.imgAreaSelect = function (img, options) {
         }
     }
 
-    /**
-     * Image mousedown event handler
-     *
-     * @param event
-     *            The event object
-     * @return false
-     */
+    //
+    // Image mousedown event handler
+    //
+    // @param event
+    //            The event object
+    // @return false
+    //
     function imgMouseDown(event) {
         /* Ignore the event if animation is in progress */
         if (event.which != 1 || $outer.is(':animated')) return false;
@@ -739,17 +736,17 @@ $.imgAreaSelect = function (img, options) {
         return false;
     }
 
-    /**
-     * Window resize event handler
-     */
+    //
+    // Window resize event handler
+    //
     function windowResize() {
         doUpdate(false);
     }
 
-    /**
-     * Image load event handler. This is the final part of the initialization
-     * process.
-     */
+    //
+    // Image load event handler. This is the final part of the initialization
+    // process.
+    //
     function imgLoad() {
         imgLoaded = true;
 
@@ -783,13 +780,13 @@ $.imgAreaSelect = function (img, options) {
         setTimeout(function () { options.onInit(img, getSelection()); }, 0);
     }
 
-    /**
-     * Document keypress event handler
-     *
-     * @param event
-     *            The event object
-     * @return false
-     */
+    //
+    // Document keypress event handler
+    //
+    // @param event
+    //            The event object
+    // @return false
+    //
     var docKeyPress = function(event) {
         var k = options.keys, d, t, key = event.keyCode;
 
@@ -862,27 +859,27 @@ $.imgAreaSelect = function (img, options) {
         return false;
     };
 
-    /**
-     * Apply style options to plugin element (or multiple elements)
-     *
-     * @param $elem
-     *            A jQuery object representing the element(s) to style
-     * @param props
-     *            An object that maps option names to corresponding CSS
-     *            properties
-     */
+    //
+    // Apply style options to plugin element (or multiple elements)
+    //
+    // @param $elem
+    //            A jQuery object representing the element(s) to style
+    // @param props
+    //            An object that maps option names to corresponding CSS
+    //            properties
+    //
     function styleOptions($elem, props) {
         for (var option in props)
             if (options[option] !== undefined)
                 $elem.css(props[option], options[option]);
     }
 
-    /**
-     * Set plugin options
-     *
-     * @param newOptions
-     *            The new options object
-     */
+    //
+    // Set plugin options
+    //
+    // @param newOptions
+    //            The new options object
+    //
     function setOptions(newOptions) {
         if (newOptions.parent)
             ($parent = $(newOptions.parent)).append($box.add($outer));
@@ -1011,9 +1008,9 @@ $.imgAreaSelect = function (img, options) {
         options.enable = options.disable = undefined;
     }
 
-    /**
-     * Remove plugin completely
-     */
+    //
+    // Remove plugin completely
+    //
     this.remove = function () {
         /*
          * Call setOptions with { disable: true } to unbind the event handlers
@@ -1026,60 +1023,60 @@ $.imgAreaSelect = function (img, options) {
      * Public API
      */
 
-    /**
-     * Get current options
-     *
-     * @return An object containing the set of options currently in use
-     */
+    //
+    // Get current options
+    //
+    // @return An object containing the set of options currently in use
+    //
     this.getOptions = function () { return options; };
 
-    /**
-     * Set plugin options
-     *
-     * @param newOptions
-     *            The new options object
-     */
+    //
+    // Set plugin options
+    //
+    // @param newOptions
+    //            The new options object
+    //
     this.setOptions = setOptions;
 
-    /**
-     * Get the current selection
-     *
-     * @param noScale
-     *            If set to <code>true</code>, scaling is not applied to the
-     *            returned selection
-     * @return Selection object
-     */
+    //
+    // Get the current selection
+    //
+    // @param noScale
+    //            If set to <code>true</code>, scaling is not applied to the
+    //            returned selection
+    // @return Selection object
+    //
     this.getSelection = getSelection;
 
-    /**
-     * Set the current selection
-     *
-     * @param x1
-     *            X coordinate of the upper left corner of the selection area
-     * @param y1
-     *            Y coordinate of the upper left corner of the selection area
-     * @param x2
-     *            X coordinate of the lower right corner of the selection area
-     * @param y2
-     *            Y coordinate of the lower right corner of the selection area
-     * @param noScale
-     *            If set to <code>true</code>, scaling is not applied to the
-     *            new selection
-     */
+    //
+    // Set the current selection
+    //
+    // @param x1
+    //            X coordinate of the upper left corner of the selection area
+    // @param y1
+    //            Y coordinate of the upper left corner of the selection area
+    // @param x2
+    //            X coordinate of the lower right corner of the selection area
+    // @param y2
+    //            Y coordinate of the lower right corner of the selection area
+    // @param noScale
+    //            If set to <code>true</code>, scaling is not applied to the
+    //            new selection
+    //
     this.setSelection = setSelection;
 
-    /**
-     * Cancel selection
-     */
+    //
+    // Cancel selection
+    //
     this.cancelSelection = cancelSelection;
 
-    /**
-     * Update plugin elements
-     *
-     * @param resetKeyPress
-     *            If set to <code>false</code>, this instance's keypress
-     *            event handler is not activated
-     */
+    //
+    // Update plugin elements
+    //
+    // @param resetKeyPress
+    //            If set to <code>false</code>, this instance's keypress
+    //            event handler is not activated
+    //
     this.update = doUpdate;
 
     /* Do the dreaded browser detection */
@@ -1157,14 +1154,14 @@ $.imgAreaSelect = function (img, options) {
         img.src = img.src;
 };
 
-/**
- * Invoke imgAreaSelect on a jQuery object containing the image(s)
- *
- * @param options
- *            Options object
- * @return The jQuery object or a reference to imgAreaSelect instance (if the
- *         <code>instance</code> option was specified)
- */
+//
+// Invoke imgAreaSelect on a jQuery object containing the image(s)
+//
+// @param options
+//            Options object
+// @return The jQuery object or a reference to imgAreaSelect instance (if the
+//         <code>instance</code> option was specified)
+//
 $.fn.imgAreaSelect = function (options) {
     options = options || {};
 
