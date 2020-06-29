@@ -3,6 +3,7 @@ import {PlayerControls} from './PlayerControls'
 import {useTextTracks} from './useTextTracks';
 import {useI18n} from './i18n';
 import {useMediaMuted} from './useMediaMuted';
+import {useFocusOutlineVisible} from './focusOutline';
 
 export function MediaPlayerControls(props) {
   const playerState = props.playerState;
@@ -14,6 +15,7 @@ export function MediaPlayerControls(props) {
     defaultTextTrackFilePermaId: props.defaultTextTrackFilePermaId,
     captionsByDefault: useMediaMuted()
   });
+  const focusOutlineVisible = useFocusOutlineVisible();
 
   return (
     <PlayerControls inset={props.configuration.position === 'full'}
@@ -25,7 +27,7 @@ export function MediaPlayerControls(props) {
 
                     isPlaying={playerState.isPlaying}
                     inactive={playerState.userIdle &&
-                              !playerState.focusInsideControls &&
+                              (!focusOutlineVisible || !playerState.focusInsideControls) &&
                               !playerState.userHoveringControls}
 
                     onFocus={playerActions.focusEnteredControls}
