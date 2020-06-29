@@ -48,10 +48,11 @@
 
 .active .extended_option {
     display: flex !important;
-    height: 30px;
-    width: 70%;
+    height: auto;
+    width: 82.5%;
     align-items: center;
-    padding: 10px 15%;
+    padding: 5% 2.5%;
+    padding-left: 15%;
 }
 
 .extended_option input {
@@ -77,7 +78,7 @@
     width: 15px;
     position: absolute;
     left: 30px;
-    top: 1.3px;
+    top: 4px;
 }
 
 .active .extended_option.active input:before {
@@ -90,7 +91,7 @@
     width: 15px;
     position: absolute;
     left: 30px;
-    top: 1.3px;
+    top: 4px;
 }
 
 .container {
@@ -111,7 +112,7 @@
 }
 
 .container_with_option.active {
-    height: 120px;
+    height: auto;
     flex-direction: column;
 }
 
