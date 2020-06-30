@@ -10,6 +10,7 @@ import useDimension from './useDimension';
 import useScrollTarget from './useScrollTarget';
 import {SectionLifecycleProvider} from './useSectionLifecycle'
 import {withInlineEditingDecorator} from './inlineEditing';
+import {BackgroundColorProvider} from './backgroundColor';
 
 import styles from './Section.module.css';
 import {getTransitionStyles} from './transitions'
@@ -105,13 +106,15 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
                state={props.state}
                padding={Math.max(0, motifAreaDimension.top + motifAreaDimension.height - heightOffset)}
                opacity={props.shadowOpacity}>
-            <Layout sectionId={props.id}
-                    items={indexItems(props.foreground)}
-                    appearance={props.appearance}
-                    contentAreaRef={setContentAreaRef}
-                    sectionProps={sectionProperties}>
-              {(children, boxProps) => <BoxWrapper {...boxProps} inverted={props.invert}>{children}</BoxWrapper>}
-            </Layout>
+            <BackgroundColorProvider dark={!props.invert}>
+              <Layout sectionId={props.id}
+                      items={indexItems(props.foreground)}
+                      appearance={props.appearance}
+                      contentAreaRef={setContentAreaRef}
+                      sectionProps={sectionProperties}>
+                {(children, boxProps) => <BoxWrapper {...boxProps} inverted={props.invert}>{children}</BoxWrapper>}
+              </Layout>
+            </BackgroundColorProvider>
           </Box>
         </Foreground>
       </SectionLifecycleProvider>

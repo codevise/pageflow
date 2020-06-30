@@ -1,12 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {BackgroundColorProvider} from '../backgroundColor';
+
 import styles from "./CardBoxWrapper.module.css";
 
 export default function CardBoxWrapper(props) {
   return(
     <div className={className(props)}>
-      {props.children}
+      <BackgroundColorProvider invert={props.position !== 'sticky' && props.position !== 'full'}>
+        {props.children}
+      </BackgroundColorProvider>
     </div>
   )
 }
