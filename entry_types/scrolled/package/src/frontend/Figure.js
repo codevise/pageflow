@@ -1,7 +1,10 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import {Text} from './Text';
+import {useDarkBackground} from './backgroundColor';
+
 import styles from './Figure.module.css';
 
 /**
@@ -12,9 +15,11 @@ import styles from './Figure.module.css';
  * @param {string} props.text - The text to be displayed.
  */
 export function Figure({children, caption}) {
+  const darkBackground = useDarkBackground();
+
   if (caption) {
     return (
-      <figure className={styles.root}>
+      <figure className={classNames(styles.root, {[styles.invert]: !darkBackground})}>
         {children}
         <figcaption>
           <Text scaleCategory="caption">
