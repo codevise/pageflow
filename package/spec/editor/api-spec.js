@@ -124,4 +124,44 @@ describe('pageflow.EditorApi', () => {
       expect(entry.setupFromEntryTypeSeed).toHaveBeenCalledWith(undefined, state);
     });
   });
+
+  describe('#ensureBrowserSupport', () => {
+    it('expects to start the editor for only latest browsers', () => {
+      var api = new EditorApi();
+      var EntryModel = Backbone.Model.extend();
+      var BrowserNotSupportedView = Backbone.View.extend();
+      var start = jest.fn();
+
+      api.registerEntryType('test', {
+        entryMode: EntryModel,
+        isBrowserSupported() {
+            return true
+        },
+        browserNotSupportedView: BrowserNotSupportedView
+      });
+
+      var entry = api.ensureBrowserSupport(start);
+
+      expect(start).toBeCalled();
+    });
+
+    it('expects to block the editor for old browsers and mobile devices', () => {
+      var api = new EditorApi();
+      var EntryModel = Backbone.Model.extend();
+      var BrowserNotSupportedView = Backbone.View.extend();
+      var start = jest.fn();
+
+      api.registerEntryType('test', {
+        entryMode: EntryModel,
+        isBrowserSupported() {
+            return false
+        },
+        browserNotSupportedView: BrowserNotSupportedView
+      });
+
+      var entry = api.ensureBrowserSupport(start);
+
+      expect(start).not.toBeCalled();
+    });
+  });
 });

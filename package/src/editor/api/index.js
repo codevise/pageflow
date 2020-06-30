@@ -92,6 +92,10 @@ export const EditorApi = Object.extend(
    *   Backbone view that will render the live preview of the entry.
    * @param {function} options.EntryOutlineView
    *   Backbone view that will be rendered in the side bar.
+   * @param {function} options.isBrowserSupported
+   *  Checks to see if the browser is supported.
+   * @param {function} options.browserNotSupportedView
+   *  Backbone view that will be rendered if the browser is not supported.
    */
   registerEntryType(name, options) {
     this.entryType = {name, ...options};
@@ -301,5 +305,23 @@ export const EditorApi = Object.extend(
 
     this.commonPageConfigurationTabs.apply(view);
     return view;
+  },
+
+  ensureBrowserSupport: function(start) {
+    if (this.entryType.isBrowserSupported) {
+      const isBrowserSupported = this.entryType.isBrowserSupported();
+  
+      if (isBrowserSupported) {
+          start();
+      }
+      else {
+          const browserNotSupportedView = new this.entryType.browserNotSupportedView();
+          app.mainRegion.show(browserNotSupportedView);
+      }
+    }
+    else {
+      start();
+    }
+
   }
 });

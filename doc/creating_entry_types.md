@@ -190,6 +190,24 @@ const appearanceInputs = (tabView, _options) => {
 Pageflow is looking for translation keys of the form
 `pageflow.entry_types.paged.editor.entry_metadata_configuration_attributes.manual_start.{inline_help,label}`.
 
+The `browserNotSupportedView` is a Backbone view that will be displayed if the access to editor needs to be blocked due to browser compatibility issues.
+```javascript
+import {editor} from 'pageflow/editor;
+import {browser} from 'pageflow/frontend';
+
+import {BrowserNotSupportedView} from './views/BrowserNotSupportedView';
+
+editor.registerEntryType('rainbow', {
+  // ...
+
+  isBrowserSupported() {
+    return browser.has('some feature required to use the editor');
+  },
+
+  browserNotSupportedView: BrowserNotSupportedView
+});
+``` 
+
 ### REST Controllers
 
 Entry types can define new editor controllers, which can then be used
