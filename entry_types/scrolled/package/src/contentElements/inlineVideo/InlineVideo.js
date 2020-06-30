@@ -2,7 +2,7 @@ import React from 'react';
 
 import {
   VideoPlayer,
-  InlineCaption,
+  Figure,
   MediaInteractionTracking,
   VideoPlayerControls,
   usePlayerState,
@@ -25,7 +25,7 @@ export function InlineVideo({sectionProps, configuration}) {
   });
 
   return (
-    <div>
+    <Figure caption={configuration.caption}>
       <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
         <VideoPlayer isPrepared={isPrepared}
                      position={configuration.position}
@@ -45,8 +45,6 @@ export function InlineVideo({sectionProps, configuration}) {
                              configuration={configuration}
                              sectionProps={sectionProps}/>
       </MediaInteractionTracking>
-
-      <InlineCaption text={configuration.caption}/>
-    </div>
+    </Figure>
   )
 }

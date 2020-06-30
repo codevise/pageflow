@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import {
   Image,
-  InlineCaption,
+  Figure,
   ViewportDependentPillarBoxes,
   useContentElementLifecycle
 } from 'pageflow-scrolled/frontend';
@@ -15,8 +15,9 @@ export function InlineImage({configuration}) {
 
   return (
     <div className={classNames(styles.root, {[styles.box]: configuration.position !== 'full'})}>
-      <ViewportDependentPillarBoxes aspectRatio={0.75}
-                                    position={configuration.position}>
+      <Figure caption={configuration.caption}>
+        <ViewportDependentPillarBoxes aspectRatio={0.75}
+                                      position={configuration.position}>
           <div className={styles.spacer}>
             <div className={styles.inner}>
               <Image {...configuration}
@@ -24,8 +25,8 @@ export function InlineImage({configuration}) {
                      variant={configuration.position === 'full' ?  'large' : 'medium'} />
             </div>
           </div>
-      </ViewportDependentPillarBoxes>
-      <InlineCaption text={configuration.caption} />
+        </ViewportDependentPillarBoxes>
+      </Figure>
     </div>
   )
 }

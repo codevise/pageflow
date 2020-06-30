@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
 import styles from './VideoEmbed.module.css';
-import classNames from 'classnames';
 
 import {
-  InlineCaption,
+  Figure,
   ViewportDependentPillarBoxes,
   useContentElementLifecycle,
   useContentElementEditorState
@@ -59,11 +58,12 @@ export function VideoEmbed({configuration}) {
   return (
     <div className={styles.VideoEmbed}
          style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
-      <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
-                                    position={configuration.position}>
-        {renderPlayer()}
-      </ViewportDependentPillarBoxes>
-      <InlineCaption text={configuration.caption} />
+      <Figure caption={configuration.caption}>
+        <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
+                                      position={configuration.position}>
+          {renderPlayer()}
+        </ViewportDependentPillarBoxes>
+      </Figure>
     </div>
   );
 }

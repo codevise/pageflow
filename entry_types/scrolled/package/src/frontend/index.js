@@ -23,7 +23,7 @@ export const withShadowClassName = styles.withShadow;
 export {api as frontend} from './api';
 
 export * from './Image';
-export * from './InlineCaption';
+export * from './Figure';
 export * from './Text';
 
 export * from './MediaPlayer';

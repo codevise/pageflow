@@ -16,7 +16,7 @@ toc:
     children:
       - AudioPlayer
       - Image
-      - InlineCaption
+      - Figure
       - Text
       - VideoPlayer
       - ViewportDependentPillarBoxes
