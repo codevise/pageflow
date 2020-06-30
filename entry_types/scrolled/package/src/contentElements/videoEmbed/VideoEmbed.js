@@ -60,7 +60,8 @@ export function VideoEmbed({configuration}) {
          style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <Figure caption={configuration.caption}>
         <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
-                                      position={configuration.position}>
+                                      position={configuration.position}
+                                      opaque={!!configuration.caption}>
           {renderPlayer()}
         </ViewportDependentPillarBoxes>
       </Figure>
