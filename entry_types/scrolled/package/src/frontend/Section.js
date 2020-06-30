@@ -18,7 +18,7 @@ import {getTransitionStyles} from './transitions'
 import NoOpShadow from './shadows/NoOpShadow';
 import GradientShadow from './shadows/GradientShadow';
 // Boxes
-import NoOpBoxWrapper from "./foregroundBoxes/NoOpBoxWrapper";
+import {InvisibleBoxWrapper} from './foregroundBoxes/InvisibleBoxWrapper';
 import GradientBox from './foregroundBoxes/GradientBox';
 import CardBox from "./foregroundBoxes/CardBox";
 import CardBoxWrapper from "./foregroundBoxes/CardBoxWrapper";
@@ -58,12 +58,12 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
     shadow: {
       background: GradientShadow,
       foreground: GradientBox,
-      foregroundWrapper: NoOpBoxWrapper
+      foregroundWrapper: InvisibleBoxWrapper
     },
     transparent: {
       background: NoOpShadow,
       foreground: CardBox,
-      foregroundWrapper: NoOpBoxWrapper
+      foregroundWrapper: InvisibleBoxWrapper
     },
     cards: {
       background: NoOpShadow,
@@ -110,7 +110,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
                     appearance={props.appearance}
                     contentAreaRef={setContentAreaRef}
                     sectionProps={sectionProperties}>
-              {(children) => <BoxWrapper inverted={props.invert}>{children}</BoxWrapper>}
+              {(children, boxProps) => <BoxWrapper {...boxProps} inverted={props.invert}>{children}</BoxWrapper>}
             </Layout>
           </Box>
         </Foreground>

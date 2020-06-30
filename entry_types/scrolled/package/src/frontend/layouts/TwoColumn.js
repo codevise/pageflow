@@ -2,16 +2,26 @@ import React from 'react';
 import classNames from 'classnames';
 
 import {ContentElements} from '../ContentElements';
+import {useNarrowViewport} from '../useNarrowViewport';
 
 import styles from './TwoColumn.module.css';
 
-const availablePositions = ['inline', 'sticky', 'full'];
+function availablePositions(narrow) {
+  if (narrow) {
+    return ['inline', 'full'];
+  }
+  else {
+    return ['inline', 'sticky', 'full'];
+  }
+}
 
-export default function TwoColumn(props) {
+export function TwoColumn(props) {
+  const narrow = useNarrowViewport();
+
   return (
-    <div className={classNames(styles.root, styles[props.align])}>
+    <div className={classNames(styles.root, styles[props.align], narrow ? styles.narrow : styles.wide)}>
       <div className={styles.inline} ref={props.contentAreaRef} />
-      {renderItems(props)}
+      {renderItems(props, narrow)}
       {renderPlaceholder(props.placeholder)}
     </div>
   );
@@ -21,8 +31,8 @@ TwoColumn.defaultProps = {
   align: 'left'
 }
 
-function renderItems(props) {
-  return groupItemsByPosition(props.items).map((group, index) =>
+function renderItems(props, narrow) {
+  return groupItemsByPosition(props.items, availablePositions(narrow)).map((group, index) =>
     <div key={index} className={classNames(styles.group, styles[`group-${group.position}`])}>
       {renderItemGroup(props, group, 'sticky')}
       {renderItemGroup(props, group, 'inline')}
@@ -36,14 +46,19 @@ function renderItemGroup(props, group, position) {
     return (
       <div className={styles[position]}>
         {props.children(
-          <ContentElements sectionProps={props.sectionProps} items={group[position]} />
+          <ContentElements sectionProps={props.sectionProps} items={group[position]} />,
+          {
+            position,
+            openStart: position === 'inline' && group.openStart,
+            openEnd: position === 'inline' &&  group.openEnd
+          }
         )}
       </div>
     );
   }
 }
 
-function groupItemsByPosition(items) {
+function groupItemsByPosition(items, availablePositions) {
   let groups = [];
   let currentGroup;
 
@@ -51,7 +66,7 @@ function groupItemsByPosition(items) {
     const position = availablePositions.indexOf(item.position) >= 0 ? item.position : 'inline';
 
     if (!previousItemPosition || (previousItemPosition !== position &&
-                                  (previousItemPosition !== 'sticky' || position !== 'inline'))) {
+                                  !(previousItemPosition === 'sticky' && position === 'inline'))) {
       currentGroup = {
         position,
         sticky: [],
@@ -64,6 +79,14 @@ function groupItemsByPosition(items) {
     currentGroup[position].push(item);
     return position;
   }, null);
+
+  groups.forEach((group, index) => {
+    const previous = groups[index - 1];
+    const next = groups[index + 1];
+
+    group.openStart = previous && !previous.full.length;
+    group.openEnd = next && next.inline.length > 0;
+  })
 
   return groups;
 }
