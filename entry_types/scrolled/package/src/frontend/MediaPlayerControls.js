@@ -18,7 +18,7 @@ export function MediaPlayerControls(props) {
   const focusOutlineVisible = useFocusOutlineVisible();
 
   return (
-    <PlayerControls inset={props.configuration.position === 'full'}
+    <PlayerControls inset={props.configuration.position === 'full' || props.configuration.caption}
                     type={props.type}
                     currentTime={playerState.scrubbingAt !== undefined ?
                              playerState.scrubbingAt : playerState.currentTime}

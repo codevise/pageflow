@@ -3,11 +3,10 @@ import React from 'react';
 import {
   AudioPlayer,
   AudioPlayerControls,
+  Figure,
   usePlayerState,
   useContentElementLifecycle
 } from 'pageflow-scrolled/frontend';
-
-import styles from './InlineAudio.module.css';
 
 export function InlineAudio({sectionProps, configuration}) {
   const [playerState, playerActions] = usePlayerState();
@@ -25,7 +24,7 @@ export function InlineAudio({sectionProps, configuration}) {
   });
 
   return (
-    <div className={styles.root}>
+    <Figure caption={configuration.caption}>
       <AudioPlayer isPrepared={isPrepared}
                    position={configuration.position}
                    controls={configuration.controls}
@@ -43,6 +42,6 @@ export function InlineAudio({sectionProps, configuration}) {
                            playerActions={playerActions}
                            configuration={configuration}
                            sectionProps={sectionProps}/>
-    </div>
+    </Figure>
   )
 }

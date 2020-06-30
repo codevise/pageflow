@@ -2,7 +2,11 @@
   opacity: 0;
 }
 
-.backgroundColor {
+.lightBackground {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.darkBackground {
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -18,6 +22,7 @@
 .controlBarContainer.inset {
   margin-top: -32px;
   color: #fff;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), transparent);
 }
 
 .button {

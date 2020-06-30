@@ -6,17 +6,20 @@ import {ProgressIndicators} from './ProgressIndicators'
 import {TimeDisplay} from './TimeDisplay'
 import {QualityMenu} from './QualityMenu';
 import {TextTracksMenu} from './TextTracksMenu';
+import {useDarkBackground} from '../backgroundColor';
 
 import styles from './ControlBar.module.css';
 
 export function PlayerControls(props) {
+  const darkBackground = useDarkBackground();
+
   return (
     <div onFocus={props.onFocus}
          onBlur={props.onBlur}
          onMouseEnter={props.onMouseEnter}
          onMouseLeave={props.onMouseLeave}
          className={classNames(styles.controlBarContainer,
-                               styles.backgroundColor,
+                               darkBackground ? styles.darkBackground : styles.lightBackground,
                                {
                                  [styles.inset]: props.inset,
                                  [styles.transparent]: props.isPlaying && props.inset && props.inactive

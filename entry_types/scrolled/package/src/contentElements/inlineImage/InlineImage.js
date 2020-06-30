@@ -1,31 +1,27 @@
 import React from 'react';
-import classNames from 'classnames';
 
 import {
   Image,
-  InlineCaption,
+  Figure,
   ViewportDependentPillarBoxes,
-  useContentElementLifecycle
+  useContentElementLifecycle,
+  useFile
 } from 'pageflow-scrolled/frontend';
-
-import styles from './InlineImage.module.css';
 
 export function InlineImage({configuration}) {
   const {isPrepared} = useContentElementLifecycle();
+  const imageFile = useFile({collectionName: 'imageFiles', permaId: configuration.id});
 
   return (
-    <div className={classNames(styles.root, {[styles.box]: configuration.position !== 'full'})}>
-      <ViewportDependentPillarBoxes aspectRatio={0.75}
-                                    position={configuration.position}>
-          <div className={styles.spacer}>
-            <div className={styles.inner}>
-              <Image {...configuration}
-                     isPrepared={isPrepared}
-                     variant={configuration.position === 'full' ?  'large' : 'medium'} />
-            </div>
-          </div>
+    <Figure caption={configuration.caption}>
+      <ViewportDependentPillarBoxes file={imageFile}
+                                    aspectRatio={imageFile ? undefined : 0.75}
+                                    position={configuration.position}
+                                    opaque={!!configuration.caption}>
+        <Image {...configuration}
+               isPrepared={isPrepared}
+               variant={configuration.position === 'full' ?  'large' : 'medium'} />
       </ViewportDependentPillarBoxes>
-      <InlineCaption text={configuration.caption} />
-    </div>
+    </Figure>
   )
 }

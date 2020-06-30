@@ -1,3 +1,5 @@
+@value darkBackground, lightBackground from "../colors.module.css";
+
 .card {
   position: relative;
   padding: 0 1.5em;
@@ -35,11 +37,11 @@
 }
 
 .cardBgWhite::before {
-  background: white;
+  background-color: lightBackground;
 }
 
 .cardBgBlack::before {
-  background: black;
+  background-color: darkBackground;
 }
 
 .cardBgWhite {

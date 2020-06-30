@@ -16,7 +16,7 @@ toc:
     children:
       - AudioPlayer
       - Image
-      - InlineCaption
+      - Figure
       - Text
       - VideoPlayer
       - ViewportDependentPillarBoxes
@@ -26,6 +26,7 @@ toc:
     children:
       - useContentElementEditorState
       - useContentElementLifecycle
+      - useDarkBackground
       - useFile
       - useI18n
       - useEntryMetadata

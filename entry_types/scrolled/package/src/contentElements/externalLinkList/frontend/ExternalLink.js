@@ -5,7 +5,7 @@ import {Image, useI18n, useContentElementEditorState} from 'pageflow-scrolled/fr
 
 export function ExternalLink(props) {
   const [hideTooltip, setHideTooltip] = useState(true);
-  var {layout, invert} = props.sectionProps;
+  var {layout} = props.sectionProps;
   const {t} = useI18n({locale: 'ui'});
   const {isEditable, isSelected} = useContentElementEditorState();
 
@@ -45,7 +45,7 @@ export function ExternalLink(props) {
   return (
     <a className={classNames(styles.link_item,
                              {
-                               [styles.invert]: invert,
+                               [styles.invert]: props.invert,
                                [styles.layout_center]: layout === 'center'
                              })}
        href={props.url || 'about:blank'}

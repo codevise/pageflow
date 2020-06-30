@@ -1,0 +1,16 @@
+@value darkBackground, lightBackground from "./colors.module.css";
+
+.root {
+  margin: 0;
+}
+
+.root > figcaption {
+  padding: 3px 10px 5px;
+  background-color: lightBackground;
+  color: #222;
+}
+
+.invert > figcaption {
+  background-color: darkBackground;
+  color: #fff;
+}

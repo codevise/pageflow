@@ -19,6 +19,7 @@ editor.contentElementTypes.register('inlineAudio', {
 
       this.input('autoplay', CheckBoxInputView);
 
+      this.group('ContentElementCaption');
       this.group('ContentElementPosition');
     });
   }
