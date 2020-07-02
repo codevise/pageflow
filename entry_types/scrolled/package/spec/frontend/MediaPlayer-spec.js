@@ -188,4 +188,50 @@ describe('MediaPlayer', () => {
 
     expect(player.changeVolumeFactor).toHaveBeenCalledWith(0.2, 500);
   });
+
+  it('sets initial current time on loadedmetadata event according to playerState', () => {
+    let state = {
+      ...getInitialPlayerState(),
+      currentTime: 5
+    };
+    const {getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+    const player = getPlayer();
+
+    player.trigger('loadedmetadata');
+
+    expect(player.currentTime).toHaveBeenCalledWith(5);
+  });
+
+  it('does not set current time before loadedmetadata event', () => {
+    let state = {
+      ...getInitialPlayerState(),
+      currentTime: 5
+    };
+    const {getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+    const player = getPlayer();
+
+    expect(player.currentTime).not.toHaveBeenCalledWith(expect.anything());
+  });
+
+  it('does not set current time on loadedmetadata event after component unmounted', () => {
+    let state = {
+      ...getInitialPlayerState(),
+      currentTime: 5
+    };
+    const {getPlayer, unmount} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+    const player = getPlayer();
+    unmount();
+    player.trigger('loadedmetadata');
+
+    expect(player.currentTime).not.toHaveBeenCalledWith(expect.anything());
+  });
 });

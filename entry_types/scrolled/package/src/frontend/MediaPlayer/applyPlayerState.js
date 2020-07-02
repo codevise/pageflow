@@ -1,5 +1,5 @@
 export function applyPlayerState(player, playerState, playerActions){
-  player.currentTime(playerState.currentTime);
+  player.one('loadedmetadata', () => player.currentTime(playerState.currentTime));
   player.changeVolumeFactor(playerState.volumeFactor, 0);
 
   if (playerState.shouldPrebuffer) {
