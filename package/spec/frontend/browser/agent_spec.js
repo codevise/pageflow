@@ -76,4 +76,91 @@ describe('pageflow.browser.Agent', function() {
       expect(agent.matchesDesktopSafari()).toBe(false);
     });
   });
+
+  describe('#matchesDesktopEdge', function() {
+    it('returns true for Edge', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ' +
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'
+      );
+
+      expect(agent.matchesDesktopEdge()).toBe(true);
+    });
+
+    it('returns false for Edge on Windows 10 mobile', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Windows Mobile 10; Android 10.0; Microsoft; Lumia 950XL) '+
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Mobile Safari/537.36 Edge/40.15254.603'
+      );
+
+      expect(agent.matchesDesktopEdge()).toBe(false);
+    });
+  });
+
+  describe('#matchesDesktopFirefox', function() {
+    it('returns true for Firefox', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) ' +
+        'Gecko/20100101 Firefox/15.0.1'
+      );
+
+      expect(agent.matchesDesktopFirefox()).toBe(true);
+    });
+
+    it('returns false for SeaMonkey', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (X11; Linux x86_64; rv:29.0) ' +
+        'Gecko/20100101 Firefox/29.0 SeaMonkey/2.26'
+      );
+
+      expect(agent.matchesDesktopFirefox()).toBe(false);
+    });
+
+    it('returns false for Firefox on android', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Android 10; Mobile; rv:68.0) '+
+        'Gecko/68.0 Firefox/68.0'
+      );
+
+      expect(agent.matchesDesktopFirefox()).toBe(false);
+    });
+  });
+
+  describe('#matchesDesktopChrome', function() {
+    it('returns true for Chrome', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ' +
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
+      );
+
+      expect(agent.matchesDesktopChrome()).toBe(true);
+    });
+
+    it('returns false for Chromium', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.30 (KHTML, like Gecko) ' +
+        'Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30'
+      );
+
+      expect(agent.matchesDesktopChrome()).toBe(false);
+    });
+
+    it('returns false for Chrome on android', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Linux; Android 10) '+
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Mobile Safari/537.36'
+      );
+
+      expect(agent.matchesDesktopChrome()).toBe(false);
+    });
+
+    it('returns false for Chrome on iphone', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 13_5 like Mac OS X) '+
+        'AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/83.0.4103.88 Mobile/15E148 Safari/604.1'
+      );
+
+      expect(agent.matchesDesktopChrome()).toBe(false);
+    });
+  });
 });

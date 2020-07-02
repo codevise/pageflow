@@ -86,6 +86,44 @@ export const Agent = function(userAgent) {
      */
     matchesFacebookInAppBrowser: function() {
       return userAgent.match(/FBAN/) && userAgent.match(/FBAV/);
+    },
+
+    matchesDesktopChrome: function() {
+      return this.matchesChrome() && !this.matchesMobilePlatform();
+    },
+
+    matchesDesktopFirefox: function() {
+      return this.matchesFirefox() && !this.matchesMobilePlatform();
+    },
+    
+    matchesDesktopEdge: function() {
+      return this.matchesEdge() && !this.matchesMobilePlatform();
+    },
+    
+    /**
+   * Returns true on Google Chrome.
+   * @return {boolean}
+   */
+    matchesChrome: function() {
+      return matches(/Chrome\//i) &&
+             !matches(/Chromium/i);
+    },
+    
+    /**
+   * Returns true on Firefox.
+   * @return {boolean}
+   */
+    matchesFirefox: function() {
+      return matches(/Firefox\//i) &&
+            !matches(/Seamonkey/i);
+    },
+    
+    /**
+   * Returns true on Microsoft Edge.
+   * @return {boolean}
+   */
+    matchesEdge: function() {
+      return matches(/Edge\//i);
     }
   };
 
