@@ -1,5 +1,5 @@
 .main {
-    height: 100vh;
+    height: 97vh;
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -10,9 +10,61 @@
     color: #000000;
     opacity: 0.5;
     height: auto;
-    width: 100%;
+    width: 80%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.texts {
+    display: flex;
+    height: auto;
+    flex-direction: column;
+    width: 80%;
+    align-items: center;
+    padding: 2%;
+}
+
+.texts h2 {
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.texts p {
+    margin-top: 0;
+    text-align: center;
+}
+
+.icons {
+    display: flex;
+    width: 80%;
+    height: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1%;
+    background-color: #FAF9ED;
+}
+
+.child {
+    height: 100px;
+    width: 100px;
+    margin-left: 1%;
+}
+
+
+.chrome {
+    composes: chrome from './icons.module.css';    
+}
+
+.edge {
+    composes: edge from './icons.module.css';
+}
+
+.firefox {
+    composes: firefox from './icons.module.css';
+}
+
+.safari {
+    composes: safari from './icons.module.css';
 }
