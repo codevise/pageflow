@@ -9,6 +9,9 @@ import {EntryPreviewView} from './views/EntryPreviewView';
 import {SideBarRouter} from './routers/SideBarRouter';
 import {SideBarController} from './controllers/SideBarController';
 
+import {browser} from 'pageflow/frontend';
+import {BrowserNotSupportedView} from './views/BrowserNotSupportedView';
+
 editor.registerEntryType('scrolled', {
   entryModel: ScrolledEntry,
 
@@ -18,7 +21,12 @@ editor.registerEntryType('scrolled', {
       editor
     });
   },
-  outlineView: EntryOutlineView
+  outlineView: EntryOutlineView,
+
+  isBrowserSupported() {
+    return (!browser.agent.matchesMobilePlatform());
+  },
+  browserNotSupportedView: BrowserNotSupportedView
 });
 
 editor.registerSideBarRouting({

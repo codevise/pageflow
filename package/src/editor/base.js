@@ -17,15 +17,18 @@ export const startEditor = function(options) {
   I18n.translations = window.I18n.translations;
 
   $(function() {
-    $.when(
-      $.getJSON('/editor/entries/' + options.entryId + '/seed'),
-      browser.detectFeatures()
-    )
-      .done(function(result) {
-        app.start(result[0]);
-      })
-      .fail(function() {
-        alert('Error while starting editor.');
-      });
+    editor.ensureBrowserSupport(() => { 
+      $.when(
+        $.getJSON('/editor/entries/' + options.entryId + '/seed'),
+        browser.detectFeatures()
+      )
+        .done(function(result) {
+          app.start(result[0]);
+        })
+        .fail(function() {
+          alert('Error while starting editor.');
+        });
+    });
   });
+  
 };
