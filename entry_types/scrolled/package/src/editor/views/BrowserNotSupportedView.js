@@ -27,9 +27,9 @@ export const BrowserNotSupportedView = Marionette.ItemView.extend({
                         </div>
                         <div class='${styles.icons}'>
                           <span class='${styles.chrome} ${styles.child}'></span>
-                          <div class='${styles.edge} ${styles.child}'></div>
                           <div class='${styles.firefox} ${styles.child}'></div>
                           <div class='${styles.safari} ${styles.child}'></div>
+                          <div class='${styles.edge} ${styles.child}'></div>
                         </div>
                     </div>`;
           
