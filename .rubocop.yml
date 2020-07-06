@@ -38,9 +38,10 @@ Metrics/AbcSize:
   Exclude:
     - '**/spec/**/*'
 
-# Ignore long RSpec describe blocks
+# Ignore long RSpec and ActiveAdmin blocks
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context', 'feature', 'it', 'namespace']
+  ExcludedMethods: ['describe', 'context', 'feature', 'it', 'namespace',
+    'Pageflow::ActiveAdmin.register', 'controller']
   Exclude:
     - '**/spec/factories/*.rb'
 

@@ -1,0 +1,55 @@
+<%= admin_form_for [:admin, parent, resource], html: {class: 'entry_template'}  do |f| %>
+  <% account_config = Pageflow.config_for(resource.account) %>
+  <% entry_type = resource.entry_type || params[:entry_type] %>
+  <%= f.inputs do %>
+      <%= f.hidden_field :entry_type, value: entry_type %>
+      <%= f.input :default_locale,
+                        as: :select,
+                        include_blank: false,
+                        collection: Pageflow.config.available_public_locales.map{ |locale|
+                          [t('pageflow.public._language', locale: locale), locale.to_s]
+                        },
+                        hint: t('pageflow.admin.themings.default_locale_hint') %>
+      <%= f.input :default_author,
+        hint: t('pageflow.admin.themings.default_author_hint'),
+        placeholder: Pageflow.config.default_author_meta_tag %>
+      <%= f.input :default_publisher,
+        hint: t('pageflow.admin.themings.default_publisher_hint'),
+        placeholder: Pageflow.config.default_publisher_meta_tag %>
+      <%= f.input :default_keywords,
+        hint: t('pageflow.admin.themings.default_keywords_hint'),
+        placeholder: Pageflow.config.default_keywords_meta_tag %>
+      <%= render('admin/accounts/share_providers_label') %>
+      <%= f.semantic_fields_for :share_providers,
+         OpenStruct.new(
+           resource.default_share_providers
+         ) do |providers| %>
+           <% Pageflow.config.available_share_providers.each do |provider| %>
+               <%= providers.input provider,
+                      as: :boolean,
+                       label: provider.to_s.camelize,
+                   checked_value: 'true',
+                   unchecked_value: 'false' %>
+           <% end %>
+      <% end %>
+      <%= render('admin/accounts/theming_defaults_inline_help') %>
+      <%= f.input :theme_name, include_blank: false, collection: account_config.themes.names %>
+      <% if entry_type == 'paged' %>
+        <%= render('admin/accounts/configuration_label') %>
+        <%= f.semantic_fields_for :configuration,
+          OpenStruct.new(
+              resource.configuration
+          ) do |config| %>
+            <%= config.input :home_button_enabled,
+                   as: :boolean,
+                    label: I18n.t('activerecord.attributes.pageflow/entry_template.'\
+                                  'configuration.home_button_enabled') %>
+        <% end %>
+        <%= admin_widgets_fields(f, account_config) %>
+      <% end %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action(:submit) %>
+    <%= f.action(:cancel, :wrapper_html => {:class => 'cancel'}) %>
+  <% end %>
+<% end %>

@@ -16,6 +16,10 @@ module Pageflow
                 )
               }
 
+    def translated_entry_type
+      I18n.t("activerecord.values.pageflow/entry.type_names.#{entry_type}")
+    end
+
     def resolve_widgets(options = {})
       widgets.resolve(Pageflow.config_for(account), options)
     end

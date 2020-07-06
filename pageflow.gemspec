@@ -196,7 +196,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'ammeter', '~> 1.1'
 
   # Ruby code linter
-  s.add_development_dependency 'rubocop', '~> 0.54.0'
+  s.add_development_dependency 'rubocop', '~> 0.59.2'
 
   # Scss code linter
   s.add_development_dependency 'scss_lint', '~> 0.50.0'

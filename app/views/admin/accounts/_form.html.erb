@@ -30,55 +30,9 @@
     <% end %>
   <% end %>
 
-  <%= f.semantic_fields_for 'paged_entry_template_attributes', @entry_template do |et| %>
-    <%= f.inputs do %>
-      <%= et.input :default_locale,
-                        as: :select,
-                        include_blank: false,
-                        collection: Pageflow.config.available_public_locales.map{ |locale|
-                          [t('pageflow.public._language', locale: locale), locale.to_s]
-                        },
-                        hint: t('pageflow.admin.themings.default_locale_hint') %>
-      <%= et.input :default_author,
-        hint: t('pageflow.admin.themings.default_author_hint'),
-        placeholder: Pageflow.config.default_author_meta_tag %>
-      <%= et.input :default_publisher,
-        hint: t('pageflow.admin.themings.default_publisher_hint'),
-        placeholder: Pageflow.config.default_publisher_meta_tag %>
-      <%= et.input :default_keywords,
-        hint: t('pageflow.admin.themings.default_keywords_hint'),
-        placeholder: Pageflow.config.default_keywords_meta_tag %>
-      <%= render('admin/accounts/share_providers_label') %>
-      <%= et.semantic_fields_for :share_providers,
-         OpenStruct.new(
-           @account.first_paged_entry_template.default_share_providers
-         ) do |providers| %>
-           <% Pageflow.config.available_share_providers.each do |provider| %>
-               <%= providers.input provider,
-                      as: :boolean,
-                       label: provider.to_s.camelize,
-                   checked_value: 'true',
-                   unchecked_value: 'false' %>
-           <% end %>
-      <% end %>
-    <% end %>
-
-    <%= f.inputs do %>
-      <%= render('admin/accounts/theming_defaults_inline_help') %>
-        <%= et.input :theme_name, include_blank: false, collection: account_config.themes.names %>
-        <%= render('admin/accounts/configuration_label') %>
-        <%= et.semantic_fields_for :configuration,
-          OpenStruct.new(
-              @account.first_paged_entry_template.configuration
-          ) do |config| %>
-            <%= config.input :home_button_enabled,
-                   as: :boolean,
-                    label: I18n.t('activerecord.attributes.pageflow/entry_template.'\
-                                  'configuration.home_button_enabled') %>
-        <% end %>
-      <%= admin_widgets_fields(et, account_config) %>
-    <% end %>
-  <% end %>
+  <p>
+      <%= t('pageflow.admin.accounts.entry_template_hint') %>
+  </p>
 
   <%= f.actions do %>
     <%= f.action(:submit) %>

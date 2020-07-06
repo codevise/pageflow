@@ -30,6 +30,26 @@ module Pageflow
       EntryTemplate.find_or_initialize_by(account: self, entry_type: 'paged')
     end
 
+    def existing_and_potential_entry_templates
+      entry_type_names = Pageflow.config_for(self).entry_types.map(&:name)
+      existing_entry_templates = EntryTemplate.where(account_id: id).load
+      allowed_existing_entry_templates =
+        existing_entry_templates.select do |template|
+          entry_type_names.include?(template.entry_type)
+        end
+      free_type_names =
+        entry_type_names - allowed_existing_entry_templates.map(&:entry_type)
+
+      potential_entry_templates = free_type_names.map do |type_name|
+        EntryTemplate.new(
+          account_id: id,
+          entry_type: type_name
+        )
+      end
+
+      allowed_existing_entry_templates + potential_entry_templates
+    end
+
     def blacklist_for_serialization
       [:features_configuration]
     end
