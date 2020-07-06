@@ -61,6 +61,19 @@ describe('Image', () => {
     expect(queryByRole('img')).toBeNull();
   });
 
+  it('does not render image if image is not ready', () => {
+    const {queryByRole} =
+      renderInEntry(<Image id={100} />, {
+        seed: {
+          imageFiles: [
+            {id: 1, permaId: 100, isReady: false}
+          ]
+        }
+      });
+
+    expect(queryByRole('img')).toBeNull();
+  });
+
   it('uses centered object position by default', () => {
     const {getByRole} =
       renderInEntry(<Image id={100} />, {

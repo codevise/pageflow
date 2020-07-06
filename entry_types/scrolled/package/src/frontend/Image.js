@@ -14,7 +14,7 @@ import {useFile} from '../entryState';
 export function Image(props) {
   const image = useFile({collectionName: 'imageFiles', permaId: props.id});
 
-  if (image && props.isPrepared) {
+  if (image && image.isReady && props.isPrepared) {
     const focusX = typeof image.configuration.focusX === 'undefined' ? 50 : image.configuration.focusX;
     const focusY = typeof image.configuration.focusY === 'undefined' ? 50 : image.configuration.focusY;
 

@@ -72,6 +72,7 @@ export function normalizeSeed({
     collections: {
       entries: normalizedEntries,
       imageFiles: normalizeCollection(imageFiles, {
+        isReady: true,
         width: 1920,
         height: 1279,
         configuration: {}
