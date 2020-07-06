@@ -1,0 +1,21 @@
+de:
+  active_admin:
+    new: Neu erstellen
+  activerecord:
+    attributes:
+      pageflow/entry_template:
+        translated_entry_type: Beitrags-Typ
+    models:
+      pageflow/entry_template:
+        one: Beitragsvorlage
+        unique_account_entry_type: Es existiert bereits eine Beitragsvorlage für diesen Beitrags-Typ für dieses Konto.
+  pageflow:
+    admin:
+      accounts:
+        entry_template_hint: Einige Formularfelder sind ab sofort im Beitragsvorlagen-Tab auf der Informations-Seite dieses Kontos zu finden.
+      entry_templates:
+        page_title:
+          edit: Beitragsvorlage bearbeiten für Beitrags-Typ
+          new: Beitragsvorlage erstellen für Beitrags-Typ
+      resource_tabs:
+        entry_templates: Beitragsvorlagen

@@ -1,17 +1,19 @@
-extensible_attributes_table_for(account.first_paged_entry_template,
-                                Pageflow.config_for(account)
+h5(entry_template.translated_entry_type)
+
+extensible_attributes_table_for(entry_template,
+                                Pageflow.config_for(entry_template.account)
                                   .admin_attributes_table_rows.for(:entry_template)) do
   row :theme, class: 'theme' do
-    account.first_paged_entry_template.theme_name
+    entry_template.theme_name
   end
   row :default_locale, class: 'default_locale' do
-    t('pageflow.public._language', locale: account.first_paged_entry_template.default_locale)
+    t('pageflow.public._language', locale: entry_template.default_locale)
   end
   row :default_author, class: 'default_author'
   row :default_publisher, class: 'default_publisher'
   row :default_keywords, class: 'default_keywords'
   row :default_share_providers, class: 'default_share_providers' do
-    account.first_paged_entry_template.default_share_providers
+    entry_template.default_share_providers
            .select { |_k, v| v == true }.keys.map(&:camelize).join(', ')
   end
 end

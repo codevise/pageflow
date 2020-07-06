@@ -222,8 +222,12 @@ module Pageflow
           ThemingPolicy.new(user, theming).edit?
         end
 
-        can :edit, EntryTemplate do |entry_template|
-          EntryTemplatePolicy.new(user, entry_template).edit?
+        can :create, EntryTemplate do |entry_template|
+          EntryTemplatePolicy.new(user, entry_template).create?
+        end
+
+        can :update, EntryTemplate do |entry_template|
+          EntryTemplatePolicy.new(user, entry_template).update?
         end
 
         can :create, ::User do |managed_user|
