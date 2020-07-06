@@ -8,7 +8,6 @@
 
 .container {
     color: #000000;
-    opacity: 0.5;
     height: auto;
     width: 80%;
     display: flex;
@@ -27,7 +26,6 @@
 }
 
 .texts h2 {
-    margin-bottom: 0;
     text-align: center;
 }
 
@@ -38,6 +36,7 @@
 
 .icons {
     display: flex;
+    opacity: 0.65;
     width: 80%;
     height: auto;
     flex-wrap: wrap;
