@@ -68,3 +68,14 @@
 .safari {
     composes: safari from './icons.module.css';
 }
+
+/*Media Queries*/
+/*Small mobile devices in landscape.*/
+@media (max-width: 767px) and (orientation: landscape){
+    .texts p {
+        font-size: 14px;
+    }
+    .icons, .texts {
+        width: 100%;
+    }     
+}
