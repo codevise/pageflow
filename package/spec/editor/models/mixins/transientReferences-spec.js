@@ -64,15 +64,16 @@ describe('transientReferences', () => {
     );
 
     it('triggers change event once the file is ready', () => {
-      var record = new Model(),
-          imageFile = new ImageFile(),
-          changeListener = sinon.spy();
+      const record = new Model();
+      const imageFile = new ImageFile();
+      const changeListener = sinon.spy();
+      const options = {someOption: true};
 
       record.setReference('image_file_id', imageFile);
       record.on('change', changeListener);
-      imageFile.set('state', 'processed');
+      imageFile.set('state', 'processed', options);
 
-      expect(changeListener.called).toBeTruthy();
+      expect(changeListener).toHaveBeenCalledWith(record, options);
     });
 
     it(
