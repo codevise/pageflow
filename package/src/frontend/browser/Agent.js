@@ -39,7 +39,7 @@ export const Agent = function(userAgent) {
 
     matchesSafari11AndAbove: function() {
       return this.matchesSafari() &&
-             captureGroupGreaterOrEqual(/Version\/(\d+)/i, 11);
+             matchesMinVersion(/Version\/(\d+)/i, 11);
     },
 
     matchesSafari: function() {
@@ -113,7 +113,9 @@ export const Agent = function(userAgent) {
    * @return {boolean}
    */
     matchesChrome: function() {
-      return matches(/Chrome\//i);
+      // - Edge also reports to be a Chrome
+      return matches(/Chrome\//i) &&
+              !matches(/Edg/i);
     },
     
     /**
@@ -138,29 +140,9 @@ export const Agent = function(userAgent) {
     return !!userAgent.match(exp);
   }
 
-  function captureGroupGreaterOrEqual(exp, version) {
-    var match = userAgent.match(exp);
-    return match && match[1] && parseInt(match[1], 10) >= version;
-  }
-
   function matchesMinVersion(exp, version) {
     var match = userAgent.match(exp);
-    //Chrome
-    if (match[0].includes('Chrome')) {
-      return match && match[1] && parseInt(match[1], 10) >= version;
-    }
-    //Edge
-    if (match[0].includes('Edg')) {
-      return match && match[1] && parseInt(match[1], 10) >= version;
-    }
-    //Safari
-    if (match[0].includes('Version')) {
-      return match && match[1] && parseInt(match[1], 10) >= version;
-    }
-    //Firefox
-    if (match[0].includes('Firefox')) {
-      return match && match[1] && parseInt(match[1], 10) >= version;
-    }    
+    return match && match[1] && parseInt(match[1], 10) >= version;   
   }
 };
 
