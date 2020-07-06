@@ -81,7 +81,7 @@ describe('pageflow.browser.Agent', function() {
     it('returns true for Edge', function() {
       var agent = new Agent(
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ' +
-        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.58'
       );
 
       expect(agent.matchesDesktopEdge()).toBe(true);
@@ -100,8 +100,8 @@ describe('pageflow.browser.Agent', function() {
   describe('#matchesDesktopFirefox', function() {
     it('returns true for Firefox', function() {
       var agent = new Agent(
-        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) ' +
-        'Gecko/20100101 Firefox/15.0.1'
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) ' +
+        'Gecko/20100101 Firefox/78.0'
       );
 
       expect(agent.matchesDesktopFirefox()).toBe(true);
@@ -136,15 +136,6 @@ describe('pageflow.browser.Agent', function() {
       expect(agent.matchesDesktopChrome()).toBe(true);
     });
 
-    it('returns false for Chromium', function() {
-      var agent = new Agent(
-        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.30 (KHTML, like Gecko) ' +
-        'Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30'
-      );
-
-      expect(agent.matchesDesktopChrome()).toBe(false);
-    });
-
     it('returns false for Chrome on android', function() {
       var agent = new Agent(
         'Mozilla/5.0 (Linux; Android 10) '+
@@ -161,6 +152,44 @@ describe('pageflow.browser.Agent', function() {
       );
 
       expect(agent.matchesDesktopChrome()).toBe(false);
+    });
+  });
+
+  describe('#minVersion', function() {
+    it('returns true for Chrome 83', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ' +
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
+      );
+
+      expect(agent.matchesDesktopChrome()).toBe(true);
+    });
+
+    it('returns false for Firefox 17', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) ' +
+        'Gecko/20100101 Firefox/17.0'
+      );
+
+      expect(agent.matchesDesktopFirefox()).toBe(false);
+    });
+
+    it('returns true for Edge 83', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '+
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.58'
+      );
+
+      expect(agent.matchesDesktopEdge()).toBe(true);
+    });
+
+    it('returns false for Safari 3.2', function() {
+      var agent = new Agent(
+        'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_6; en-us) '+
+        'AppleWebKit/525.27.1 (KHTML, like Gecko) Version/3.2.1 Safari/525.27.1'
+      );
+
+      expect(agent.matchesDesktopSafari()).toBe(false);
     });
   });
 });

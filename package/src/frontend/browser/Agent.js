@@ -9,7 +9,7 @@ export const Agent = function(userAgent) {
     },
 
     matchesDesktopSafari: function() {
-      return this.matchesSafari() && !this.matchesMobilePlatform();
+      return this.matchesSafari() && !this.matchesMobilePlatform() && minVersion(/Version\/(\d+)/i, 4);
     },
 
     matchesDesktopSafari9: function() {
@@ -89,15 +89,15 @@ export const Agent = function(userAgent) {
     },
 
     matchesDesktopChrome: function() {
-      return this.matchesChrome() && !this.matchesMobilePlatform();
+      return this.matchesChrome() && !this.matchesMobilePlatform() && minVersion(/Chrome\/(\d+)/i, 25);
     },
 
     matchesDesktopFirefox: function() {
-      return this.matchesFirefox() && !this.matchesMobilePlatform();
+      return this.matchesFirefox() && !this.matchesMobilePlatform() && minVersion(/Firefox\/(\d+)/i, 20);
     },
     
     matchesDesktopEdge: function() {
-      return this.matchesEdge() && !this.matchesMobilePlatform();
+      return this.matchesEdge() && !this.matchesMobilePlatform() && minVersion(/Edg\/(\d+)/i, 20);
     },
     
     /**
@@ -105,8 +105,7 @@ export const Agent = function(userAgent) {
    * @return {boolean}
    */
     matchesChrome: function() {
-      return matches(/Chrome\//i) &&
-             !matches(/Chromium/i);
+      return matches(/Chrome\//i);
     },
     
     /**
@@ -123,7 +122,7 @@ export const Agent = function(userAgent) {
    * @return {boolean}
    */
     matchesEdge: function() {
-      return matches(/Edge\//i);
+      return matches(/Edg\//i);
     }
   };
 
@@ -134,6 +133,26 @@ export const Agent = function(userAgent) {
   function captureGroupGreaterOrEqual(exp, version) {
     var match = userAgent.match(exp);
     return match && match[1] && parseInt(match[1], 10) >= version;
+  }
+
+  function minVersion(exp, version) {
+    var match = userAgent.match(exp);
+    //Chrome
+    if (match[0].includes('Chrome')) {
+      return match && match[1] && parseInt(match[1], 10) >= version;
+    }
+    //Edge
+    if (match[0].includes('Edg')) {
+      return match && match[1] && parseInt(match[1], 10) >= version;
+    }
+    //Safari
+    if (match[0].includes('Version')) {
+      return match && match[1] && parseInt(match[1], 10) >= version;
+    }
+    //Firefox
+    if (match[0].includes('Firefox')) {
+      return match && match[1] && parseInt(match[1], 10) >= version;
+    }    
   }
 };
 
