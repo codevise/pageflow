@@ -8,8 +8,10 @@ export const Agent = function(userAgent) {
       return matches(/\bSilk\b/);
     },
 
-    matchesDesktopSafari: function() {
-      return this.matchesSafari() && !this.matchesMobilePlatform() && minVersion(/Version\/(\d+)/i, 4);
+    matchesDesktopSafari: function(options) {
+      return this.matchesSafari() &&
+             !this.matchesMobilePlatform() &&
+             matchesMinVersion(/Version\/(\d+)/i, options.minVersion);
     },
 
     matchesDesktopSafari9: function() {
@@ -88,16 +90,22 @@ export const Agent = function(userAgent) {
       return userAgent.match(/FBAN/) && userAgent.match(/FBAV/);
     },
 
-    matchesDesktopChrome: function() {
-      return this.matchesChrome() && !this.matchesMobilePlatform() && minVersion(/Chrome\/(\d+)/i, 25);
+    matchesDesktopChrome: function(options) {
+      return this.matchesChrome() &&
+             !this.matchesMobilePlatform() &&
+             matchesMinVersion(/Chrome\/(\d+)/i, options.minVersion);
     },
 
-    matchesDesktopFirefox: function() {
-      return this.matchesFirefox() && !this.matchesMobilePlatform() && minVersion(/Firefox\/(\d+)/i, 20);
+    matchesDesktopFirefox: function(options) {
+      return this.matchesFirefox() &&
+             !this.matchesMobilePlatform() &&
+             matchesMinVersion(/Firefox\/(\d+)/i, options.minVersion);
     },
     
-    matchesDesktopEdge: function() {
-      return this.matchesEdge() && !this.matchesMobilePlatform() && minVersion(/Edg\/(\d+)/i, 20);
+    matchesDesktopEdge: function(options) {
+      return this.matchesEdge() &&
+             !this.matchesMobilePlatform() &&
+             matchesMinVersion(/Edg\/(\d+)/i, options.minVersion);
     },
     
     /**
@@ -135,7 +143,7 @@ export const Agent = function(userAgent) {
     return match && match[1] && parseInt(match[1], 10) >= version;
   }
 
-  function minVersion(exp, version) {
+  function matchesMinVersion(exp, version) {
     var match = userAgent.match(exp);
     //Chrome
     if (match[0].includes('Chrome')) {

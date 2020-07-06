@@ -64,7 +64,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Safari/605.1.15'
       );
 
-      expect(agent.matchesDesktopSafari()).toBe(true);
+      expect(agent.matchesDesktopSafari({minVersion: 3})).toBe(true);
     });
 
     it('returns false for Safari on iPhone', function() {
@@ -73,7 +73,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Mobile/14A403 Safari/602.1'
       );
 
-      expect(agent.matchesDesktopSafari()).toBe(false);
+      expect(agent.matchesDesktopSafari({minVersion: 3})).toBe(false);
     });
   });
 
@@ -84,7 +84,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.58'
       );
 
-      expect(agent.matchesDesktopEdge()).toBe(true);
+      expect(agent.matchesDesktopEdge({minVersion: 20})).toBe(true);
     });
 
     it('returns false for Edge on Windows 10 mobile', function() {
@@ -93,7 +93,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Mobile Safari/537.36 Edge/40.15254.603'
       );
 
-      expect(agent.matchesDesktopEdge()).toBe(false);
+      expect(agent.matchesDesktopEdge({minVersion: 20})).toBe(false);
     });
   });
 
@@ -104,7 +104,7 @@ describe('pageflow.browser.Agent', function() {
         'Gecko/20100101 Firefox/78.0'
       );
 
-      expect(agent.matchesDesktopFirefox()).toBe(true);
+      expect(agent.matchesDesktopFirefox({minVersion: 20})).toBe(true);
     });
 
     it('returns false for SeaMonkey', function() {
@@ -113,7 +113,7 @@ describe('pageflow.browser.Agent', function() {
         'Gecko/20100101 Firefox/29.0 SeaMonkey/2.26'
       );
 
-      expect(agent.matchesDesktopFirefox()).toBe(false);
+      expect(agent.matchesDesktopFirefox({minVersion: 20})).toBe(false);
     });
 
     it('returns false for Firefox on android', function() {
@@ -122,7 +122,7 @@ describe('pageflow.browser.Agent', function() {
         'Gecko/68.0 Firefox/68.0'
       );
 
-      expect(agent.matchesDesktopFirefox()).toBe(false);
+      expect(agent.matchesDesktopFirefox({minVersion: 20})).toBe(false);
     });
   });
 
@@ -133,7 +133,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
       );
 
-      expect(agent.matchesDesktopChrome()).toBe(true);
+      expect(agent.matchesDesktopChrome({minVersion: 20})).toBe(true);
     });
 
     it('returns false for Chrome on android', function() {
@@ -142,7 +142,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Mobile Safari/537.36'
       );
 
-      expect(agent.matchesDesktopChrome()).toBe(false);
+      expect(agent.matchesDesktopChrome({minVersion: 20})).toBe(false);
     });
 
     it('returns false for Chrome on iphone', function() {
@@ -151,7 +151,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/83.0.4103.88 Mobile/15E148 Safari/604.1'
       );
 
-      expect(agent.matchesDesktopChrome()).toBe(false);
+      expect(agent.matchesDesktopChrome({minVersion: 20})).toBe(false);
     });
   });
 
@@ -162,7 +162,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
       );
 
-      expect(agent.matchesDesktopChrome()).toBe(true);
+      expect(agent.matchesDesktopChrome({minVersion: 20})).toBe(true);
     });
 
     it('returns false for Firefox 17', function() {
@@ -171,7 +171,7 @@ describe('pageflow.browser.Agent', function() {
         'Gecko/20100101 Firefox/17.0'
       );
 
-      expect(agent.matchesDesktopFirefox()).toBe(false);
+      expect(agent.matchesDesktopFirefox({minVersion: 20})).toBe(false);
     });
 
     it('returns true for Edge 83', function() {
@@ -180,7 +180,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.58'
       );
 
-      expect(agent.matchesDesktopEdge()).toBe(true);
+      expect(agent.matchesDesktopEdge({minVersion: 20})).toBe(true);
     });
 
     it('returns false for Safari 3.2', function() {
@@ -189,7 +189,7 @@ describe('pageflow.browser.Agent', function() {
         'AppleWebKit/525.27.1 (KHTML, like Gecko) Version/3.2.1 Safari/525.27.1'
       );
 
-      expect(agent.matchesDesktopSafari()).toBe(false);
+      expect(agent.matchesDesktopSafari({minVersion: 20})).toBe(false);
     });
   });
 });
