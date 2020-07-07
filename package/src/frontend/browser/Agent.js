@@ -9,9 +9,15 @@ export const Agent = function(userAgent) {
     },
 
     matchesDesktopSafari: function(options) {
-      return this.matchesSafari() &&
-             !this.matchesMobilePlatform() &&
-             matchesMinVersion(/Version\/(\d+)/i, options.minVersion);
+      if (options) {
+        return this.matchesSafari() &&
+               !this.matchesMobilePlatform() &&
+               matchesMinVersion(/Version\/(\d+)/i, options.minVersion);
+      }
+      else {
+        return this.matchesSafari() &&
+               !this.matchesMobilePlatform()
+      }     
     },
 
     matchesDesktopSafari9: function() {
@@ -91,21 +97,39 @@ export const Agent = function(userAgent) {
     },
 
     matchesDesktopChrome: function(options) {
-      return this.matchesChrome() &&
-             !this.matchesMobilePlatform() &&
-             matchesMinVersion(/Chrome\/(\d+)/i, options.minVersion);
+      if (options) {
+        return this.matchesChrome() &&
+               !this.matchesMobilePlatform() &&
+               matchesMinVersion(/Chrome\/(\d+)/i, options.minVersion);
+      }
+      else {
+        return this.matchesChrome() &&
+               !this.matchesMobilePlatform()
+      }     
     },
 
     matchesDesktopFirefox: function(options) {
-      return this.matchesFirefox() &&
-             !this.matchesMobilePlatform() &&
-             matchesMinVersion(/Firefox\/(\d+)/i, options.minVersion);
+      if (options) {
+        return this.matchesFirefox() &&
+               !this.matchesMobilePlatform() &&
+               matchesMinVersion(/Firefox\/(\d+)/i, options.minVersion);
+      }
+      else {
+        return this.matchesFirefox() &&
+               !this.matchesMobilePlatform();
+      }      
     },
     
     matchesDesktopEdge: function(options) {
-      return this.matchesEdge() &&
-             !this.matchesMobilePlatform() &&
-             matchesMinVersion(/Edg\/(\d+)/i, options.minVersion);
+      if (options) {
+        return this.matchesEdge() &&
+               !this.matchesMobilePlatform() &&
+               matchesMinVersion(/Edg\/(\d+)/i, options.minVersion);
+      }
+      else {
+        return this.matchesEdge() &&
+               !this.matchesMobilePlatform();
+      }     
     },
     
     /**
