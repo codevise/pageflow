@@ -45,8 +45,8 @@ export function ProgressIndicators({currentTime, duration, bufferedEnd, scrubTo,
     seekTo(destination);
   }, [seekTo, currentTime, duration]);
 
-  const loadProgress = duration > 0 ? (bufferedEnd / duration) : 0;
-  const playProgress = duration > 0 ? (currentTime / duration) : 0;
+  const loadProgress = duration > 0 ? Math.min(1, bufferedEnd / duration) : 0;
+  const playProgress = duration > 0 ? Math.min(1, currentTime / duration) : 0;
 
   return (
     <div className={classNames(styles.container, {[styles.dragging]: dragging})}
