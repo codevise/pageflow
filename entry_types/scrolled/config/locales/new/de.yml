@@ -380,3 +380,6 @@ de:
         cancel: Abbrechen
         blank_slate: Kein Bereich markiert. Alle Teile des Bildes dürfen von Text überlagert werden.<br/> Mit der Maus ziehen, um einen Bereich zu markieren.
         reset: Zurücksetzen
+      browser_not_supported:
+        heading: Der Browser oder das Gerät, das du verwendest, wird nicht unterstützt
+        text: Während Pageflow stories auf allen modernen Browsern und Geräten funktionieren, benötigt der Pageflow Editor einen Desktop-Computer mit einer aktuellen Version von Chrome, Firefox, Safari oder Edge.

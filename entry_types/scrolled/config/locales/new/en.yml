@@ -374,3 +374,6 @@ en:
         cancel: Cancel
         blank_slate: No area selected. All parts of the image may be overlayed by text. Drag with mouse to select an area.
         reset: Reset
+      browser_not_supported:
+        heading: The browser or device you are using is not supported
+        text: While Pageflow stories work on all modern browsers and devices, the Pageflow editor requires a desktop computer running a recent version of Chrome, Firefox, Safari or Edge.
