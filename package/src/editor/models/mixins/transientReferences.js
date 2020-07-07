@@ -62,10 +62,10 @@ export const transientReferences = {
     if (!record.isReady()) {
       this.pendingReferences[attribute] = record;
 
-      this.listenTo(record, 'change:state', function() {
+      this.listenTo(record, 'change:state', function(model, value, options) {
         if (record.isReady()) {
           this._cleanUpReadyListener(attribute);
-          this.trigger('change');
+          this.trigger('change', this, options);
           this.trigger('change:' + attribute + ':ready');
         }
       });
