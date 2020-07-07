@@ -3,7 +3,7 @@
 }
 
 .text a {
-  color: #fff;
+  color: currentColor;
   word-wrap: break-word;
 }
 
