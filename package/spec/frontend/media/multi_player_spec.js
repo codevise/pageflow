@@ -1,9 +1,8 @@
-import {Audio, AudioPlayer} from 'pageflow/frontend';
+import {AudioPlayer, MultiPlayer} from 'pageflow/frontend';
 
 import sinon from 'sinon';
 
 describe('MultiPlayer', function() {
-  var MultiPlayer = Audio.MultiPlayer;
   var Null = AudioPlayer.Null;
   describe('#fadeTo', function() {
     it('plays and fades in new player', async () => {

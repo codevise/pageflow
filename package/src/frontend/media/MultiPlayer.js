@@ -12,9 +12,25 @@ export const MultiPlayer = function(pool, options) {
   }
 
   var current = new AudioPlayer.Null();
+  
   var currentId = null;
   var that = this;
-
+  
+  let playCallback = function() {
+    that.trigger('play', {audioFileId: currentId});
+  }
+  let pauseCallback = function() {
+    that.trigger('pause', {audioFileId: currentId});
+  }
+  let timeUpdateCallback = function() {
+    that.trigger('timeupdate', {audioFileId: currentId});
+  }
+  let endedCallback = function() {
+    that.trigger('ended', {audioFileId: currentId});
+  }
+  let playFailedCallback = function() {
+    that.trigger('playfailed', {audioFileId: currentId});
+  }
   /**
    * Continue playback.
    */
@@ -78,16 +94,15 @@ export const MultiPlayer = function(pool, options) {
       return Promise.resolve();
     }
 
-    var player = pool.get(id);
-    currentId = id;
-
     var fadeOutPromise = current.fadeOutAndPause(options.fadeDuration);
 
     fadeOutPromise.then(function() {
       stopEventPropagation(current);
     });
-
+    
     return handleCrossFade(fadeOutPromise).then(function() {
+      var player = pool.get(id, options);
+      currentId = id;
       current = player;
       startEventPropagation(current, id);
 
@@ -115,30 +130,20 @@ export const MultiPlayer = function(pool, options) {
     }
   }
 
-  function startEventPropagation(player, id) {
-    that.listenTo(player, 'play', function() {
-      that.trigger('play', {audioFileId: id});
-    });
-
-    that.listenTo(player, 'pause', function() {
-      that.trigger('pause', {audioFileId: id});
-    });
-
-    that.listenTo(player, 'timeupdate', function() {
-      that.trigger('timeupdate', {audioFileId: id});
-    });
-
-    that.listenTo(player, 'ended', function() {
-      that.trigger('ended', {audioFileId: id});
-    });
-
-    that.listenTo(player, 'playfailed', function() {
-      that.trigger('playfailed', {audioFileId: id});
-    });
+  function startEventPropagation(player) {
+    player.on('play', playCallback);
+    player.on('pause', pauseCallback);
+    player.on('timeupdate', timeUpdateCallback);
+    player.on('ended', endedCallback);
+    player.on('playfailed', playFailedCallback);
   }
 
   function stopEventPropagation(player) {
-    that.stopListening(player);
+    player.off('play', playCallback);
+    player.off('pause', pauseCallback);
+    player.off('timeupdate', timeUpdateCallback);
+    player.off('ended', endedCallback);
+    player.off('playfailed', playFailedCallback);
   }
 };
 

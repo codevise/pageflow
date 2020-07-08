@@ -1,5 +1,5 @@
 import {AudioPlayer} from '../AudioPlayer';
-import {MultiPlayer} from './MultiPlayer';
+import {MultiPlayer} from '../media';
 import {PlayerPool} from './PlayerPool';
 import {state} from '../state';
 
