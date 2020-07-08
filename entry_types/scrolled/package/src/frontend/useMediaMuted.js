@@ -4,7 +4,7 @@ import {media} from 'pageflow/frontend';
 const MediaMutedContext = createContext(false);
 
 export function MediaMutedProvider({children}) {
-  const [value, setValue] = useState(media.muted());
+  const [value, setValue] = useState(media.muted);
 
   useEffect(() => {
     media.on('change:muted', setValue);
