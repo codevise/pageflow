@@ -7,6 +7,8 @@ import {useEntryStructure} from '../entryState';
 import {withInlineEditingDecorator} from './inlineEditing';
 import {usePostMessageListener} from './usePostMessageListener';
 
+import { AtmoProvider } from './useAtmo';
+
 import styles from './Entry.module.css';
 
 export default withInlineEditingDecorator('EntryDecorator', function Entry(props) {
@@ -43,13 +45,15 @@ export default withInlineEditingDecorator('EntryDecorator', function Entry(props
   return (
     <div className={styles.Entry}>
       <MediaMutedProvider>
-        <ScrollToSectionContext.Provider value={scrollToSection}>
-          {renderChapters(entryStructure,
-                          currentSectionIndex,
-                          setCurrentSectionIndex,
-                          scrollTargetSectionIndex,
-                          setScrollTargetSectionIndex)}
-        </ScrollToSectionContext.Provider>
+        <AtmoProvider>
+          <ScrollToSectionContext.Provider value={scrollToSection}>
+            {renderChapters(entryStructure,
+                            currentSectionIndex,
+                            setCurrentSectionIndex,
+                            scrollTargetSectionIndex,
+                            setScrollTargetSectionIndex)}
+          </ScrollToSectionContext.Provider>
+        </AtmoProvider>
       </MediaMutedProvider>
     </div>
   );

@@ -1,12 +1,15 @@
 import React, {useEffect, useRef} from 'react';
 import {media} from 'pageflow/frontend';
+import { useAtmo } from '../useAtmo';
 
 import './videojsBase.module.css';
 
 function PlayerContainer({
-  filePermaId, className, sources, textTrackSources, poster, type, playsInline, loop, controls, onSetup, onDispose
+  filePermaId, className, sources, textTrackSources, poster, type, playsInline, loop, controls, atmoDuringPlayback, onSetup, onDispose
 }){
   const playerWrapperRef = useRef(null);
+  
+  let atmo = useAtmo();
 
   useEffect(() => {
     let playerWrapper = playerWrapperRef.current;
@@ -19,9 +22,10 @@ function PlayerContainer({
         tagName: type,
         playsInline: playsInline,
         loop: loop,
-        controls: controls
+        controls: controls,
+        hooks: atmo.createMediaPlayerHooks(atmoDuringPlayback)
       });
-
+      
       let playerElement = player.el();
       playerWrapper.appendChild(playerElement);
       if (onSetup) {
@@ -81,6 +85,7 @@ function areEqual(prevProps, nextProps) {
          prevProps.poster === nextProps.poster &&
          prevProps.loop === nextProps.loop &&
          prevProps.controls === nextProps.controls &&
+         prevProps.atmoDuringPlayback === nextProps.atmoDuringPlayback &&
          deepEqual(prevProps.sources, nextProps.sources) &&
          deepEqual(prevProps.textTrackSources, nextProps.textTrackSources);
 }

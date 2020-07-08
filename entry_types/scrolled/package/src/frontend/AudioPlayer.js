@@ -53,7 +53,7 @@ AudioPlayer.defaultProps = {
   controls: true
 };
 
-function processSources(audioFile){
+export function processSources(audioFile){
   var sources = [];
   if (audioFile.urls['ogg']) {
     sources.push({type: 'audio/ogg', src: `${audioFile.urls['ogg']}?u=1`});
