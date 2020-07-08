@@ -7,6 +7,8 @@ import {getMediaElementMethod} from './getMediaElementMethod';
 import {mediaPlayer} from '../mediaPlayer';
 import {mediaEvents} from './mediaEvents';
 import {bufferUnderrunWaiting} from './bufferUnderrunWaiting';
+import {rewindMethod} from './rewindMethod';
+
 import VideoJS from 'videojs';
 
 export const VideoPlayer = function(element, options) {
@@ -22,6 +24,7 @@ export const VideoPlayer = function(element, options) {
   prebuffering(player);
   cueSettingsMethods(player);
   getMediaElementMethod(player);
+  rewindMethod(player);
 
   if (options.mediaEvents) {
     mediaEvents(player, options.context);
