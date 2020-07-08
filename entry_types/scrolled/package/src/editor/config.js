@@ -24,7 +24,10 @@ editor.registerEntryType('scrolled', {
   outlineView: EntryOutlineView,
 
   isBrowserSupported() {
-    return (!browser.agent.matchesMobilePlatform());
+    return (browser.agent.matchesDesktopChrome({minVersion: 20}) ||
+            browser.agent.matchesDesktopFirefox({minVersion: 20}) ||
+            browser.agent.matchesDesktopSafari({minVersion: 3}) ||
+            browser.agent.matchesDesktopEdge({minVersion: 20}));
   },
   browserNotSupportedView: BrowserNotSupportedView
 });

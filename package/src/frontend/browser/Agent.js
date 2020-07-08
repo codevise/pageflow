@@ -8,8 +8,16 @@ export const Agent = function(userAgent) {
       return matches(/\bSilk\b/);
     },
 
-    matchesDesktopSafari: function() {
-      return this.matchesSafari() && !this.matchesMobilePlatform();
+    matchesDesktopSafari: function(options) {
+      if (options) {
+        return this.matchesSafari() &&
+               !this.matchesMobilePlatform() &&
+               matchesMinVersion(/Version\/(\d+)/i, options.minVersion);
+      }
+      else {
+        return this.matchesSafari() &&
+               !this.matchesMobilePlatform()
+      }     
     },
 
     matchesDesktopSafari9: function() {
@@ -37,7 +45,7 @@ export const Agent = function(userAgent) {
 
     matchesSafari11AndAbove: function() {
       return this.matchesSafari() &&
-             captureGroupGreaterOrEqual(/Version\/(\d+)/i, 11);
+             matchesMinVersion(/Version\/(\d+)/i, 11);
     },
 
     matchesSafari: function() {
@@ -86,6 +94,69 @@ export const Agent = function(userAgent) {
      */
     matchesFacebookInAppBrowser: function() {
       return userAgent.match(/FBAN/) && userAgent.match(/FBAV/);
+    },
+
+    matchesDesktopChrome: function(options) {
+      if (options) {
+        return this.matchesChrome() &&
+               !this.matchesMobilePlatform() &&
+               matchesMinVersion(/Chrome\/(\d+)/i, options.minVersion);
+      }
+      else {
+        return this.matchesChrome() &&
+               !this.matchesMobilePlatform()
+      }     
+    },
+
+    matchesDesktopFirefox: function(options) {
+      if (options) {
+        return this.matchesFirefox() &&
+               !this.matchesMobilePlatform() &&
+               matchesMinVersion(/Firefox\/(\d+)/i, options.minVersion);
+      }
+      else {
+        return this.matchesFirefox() &&
+               !this.matchesMobilePlatform();
+      }      
+    },
+    
+    matchesDesktopEdge: function(options) {
+      if (options) {
+        return this.matchesEdge() &&
+               !this.matchesMobilePlatform() &&
+               matchesMinVersion(/Edg\/(\d+)/i, options.minVersion);
+      }
+      else {
+        return this.matchesEdge() &&
+               !this.matchesMobilePlatform();
+      }     
+    },
+    
+    /**
+   * Returns true on Google Chrome.
+   * @return {boolean}
+   */
+    matchesChrome: function() {
+      // - Edge also reports to be a Chrome
+      return matches(/Chrome\//i) &&
+              !matches(/Edg/i);
+    },
+    
+    /**
+   * Returns true on Firefox.
+   * @return {boolean}
+   */
+    matchesFirefox: function() {
+      return matches(/Firefox\//i) &&
+            !matches(/Seamonkey/i);
+    },
+    
+    /**
+   * Returns true on Microsoft Edge.
+   * @return {boolean}
+   */
+    matchesEdge: function() {
+      return matches(/Edg\//i);
     }
   };
 
@@ -93,9 +164,9 @@ export const Agent = function(userAgent) {
     return !!userAgent.match(exp);
   }
 
-  function captureGroupGreaterOrEqual(exp, version) {
+  function matchesMinVersion(exp, version) {
     var match = userAgent.match(exp);
-    return match && match[1] && parseInt(match[1], 10) >= version;
+    return match && match[1] && parseInt(match[1], 10) >= version;   
   }
 };
 
