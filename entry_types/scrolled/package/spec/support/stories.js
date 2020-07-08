@@ -268,7 +268,7 @@ export function examplePositionedElement({sectionId, position, caption}) {
     typeName: 'inlineImage',
     configuration: {
       position,
-      id: filePermaId('imageFiles', 'turtle'),
+      id: null,
       caption
     }
   }
