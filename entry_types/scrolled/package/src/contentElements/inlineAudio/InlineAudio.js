@@ -34,7 +34,8 @@ export function InlineAudio({sectionProps, configuration}) {
                    posterId={configuration.posterId}
                    defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                    quality={'high'}
-                   playsInline={true} />
+                   playsInline={true} 
+                   atmoDuringPlayback={configuration.atmoDuringPlayback}/>
 
       <AudioPlayerControls audioFilePermaId={configuration.id}
                            defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}

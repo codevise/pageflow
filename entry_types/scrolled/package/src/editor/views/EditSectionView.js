@@ -74,6 +74,12 @@ export const EditSectionView = EditConfigurationView.extend({
       });
       this.input('invert', CheckBoxInputView);
       this.input('fullHeight', CheckBoxInputView);
+      
+      this.input('atmoAudioFileId', FileInputView, {
+        collection: 'audio_files',
+        fileSelectionHandler: 'sectionConfiguration',
+        positioning: false
+      });
     });
   }
 });
