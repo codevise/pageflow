@@ -17,19 +17,19 @@ export const MultiPlayer = function(pool, options) {
   var that = this;
   
   let playCallback = function() {
-    that.trigger('play', {audioFileId: currentId});
+    that.trigger('play', {audioFileId: this.currentMultiplayerId});
   }
   let pauseCallback = function() {
-    that.trigger('pause', {audioFileId: currentId});
+    that.trigger('pause', {audioFileId: this.currentMultiplayerId});
   }
   let timeUpdateCallback = function() {
-    that.trigger('timeupdate', {audioFileId: currentId});
+    that.trigger('timeupdate', {audioFileId: this.currentMultiplayerId});
   }
   let endedCallback = function() {
-    that.trigger('ended', {audioFileId: currentId});
+    that.trigger('ended', {audioFileId: this.currentMultiplayerId});
   }
   let playFailedCallback = function() {
-    that.trigger('playfailed', {audioFileId: currentId});
+    that.trigger('playfailed', {audioFileId: this.currentMultiplayerId});
   }
   /**
    * Continue playback.
@@ -102,6 +102,7 @@ export const MultiPlayer = function(pool, options) {
     
     return handleCrossFade(fadeOutPromise).then(function() {
       var player = pool.get(id, options);
+      player.currentMultiplayerId = id;
       currentId = id;
       current = player;
       startEventPropagation(current, id);
