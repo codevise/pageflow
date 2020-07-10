@@ -32,7 +32,8 @@ export function SectionAtmo(props) {
   });
 
   useEffect(() => {
-    if (lastAudioFile && audioFile && lastAudioFile.permaId !== audioFile.permaId) {
+    if (lastAudioFile !== undefined &&
+        (lastAudioFile && lastAudioFile.permaId) !== (audioFile && audioFile.permaId)) {
       processAtmo();
     }
   }, [processAtmo, lastAudioFile, audioFile])

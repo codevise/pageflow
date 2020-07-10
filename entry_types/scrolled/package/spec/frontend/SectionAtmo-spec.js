@@ -15,6 +15,17 @@ describe('SectionAtmo', () => {
     }
   });
 
+  it('updates atmo when audio file is selected', () => {
+    const seed = {
+      audioFiles: [{permaId: 5}]
+    };
+
+    const {rerender} = renderInEntry(<SectionAtmo audioFilePermaId={undefined} />, {seed, wrapper});
+    rerender(<SectionAtmo audioFilePermaId={5} />, {seed, wrapper});
+
+    expect(updateAtmo).toHaveBeenCalledWith(expect.objectContaining({audioFilePermaId: 5}));
+  });
+
   it('updates atmo when audio file is changed', () => {
     const seed = {
       audioFiles: [{permaId: 5}, {permaId: 6}]
@@ -24,6 +35,17 @@ describe('SectionAtmo', () => {
     rerender(<SectionAtmo audioFilePermaId={6} />, {seed, wrapper});
 
     expect(updateAtmo).toHaveBeenCalledWith(expect.objectContaining({audioFilePermaId: 6}));
+  });
+
+  it('updates atmo when audio file is unset', () => {
+    const seed = {
+      audioFiles: [{permaId: 5}]
+    };
+
+    const {rerender} = renderInEntry(<SectionAtmo audioFilePermaId={5} />, {seed, wrapper});
+    rerender(<SectionAtmo audioFilePermaId={undefined} />, {seed, wrapper});
+
+    expect(updateAtmo).toHaveBeenCalledWith(expect.objectContaining({audioFilePermaId: undefined}));
   });
 
   it('does not update atmo on first render', () => {
