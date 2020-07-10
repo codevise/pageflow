@@ -1,7 +1,7 @@
 import React, {useRef, useCallback, useMemo} from 'react';
 import classNames from 'classnames';
 
-import { AtmoAudio } from './AtmoAudio';
+import { SectionAtmo } from './SectionAtmo';
 
 import {Backdrop} from './Backdrop';
 import Foreground from './Foreground';
@@ -86,7 +86,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
                                    transitionStyles.section,
                                    {[styles.invert]: props.invert})}>
       <SectionLifecycleProvider onActivate={props.onActivate} isLast={!props.nextSection}>
-        <AtmoAudio {...props} />
+        <SectionAtmo audioFilePermaId={props.atmoAudioFileId} />
         <Backdrop {...props.backdrop}
                   onMotifAreaUpdate={setMotifAreaRefs}
                   state={props.state}

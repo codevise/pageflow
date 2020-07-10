@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import {useEffect, useCallback} from 'react';
 
 import { useSectionLifecycle } from './useSectionLifecycle';
 import {useFile} from '../entryState';
@@ -6,11 +6,11 @@ import {processSources} from './AudioPlayer';
 import { useAtmo } from './useAtmo';
 import { usePrevious } from './usePrevious';
 
-export function AtmoAudio(props) {
-  const audioFile = useFile({collectionName: 'audioFiles', permaId: props.atmoAudioFileId});
+export function SectionAtmo(props) {
+  const audioFile = useFile({collectionName: 'audioFiles', permaId: props.audioFilePermaId});
   const lastAudioFile = usePrevious(audioFile);
   let atmo = useAtmo();
-  
+
   let processAtmo = useCallback(()=>{
     let sources = undefined;
     if (audioFile && audioFile.isReady) {
@@ -19,10 +19,10 @@ export function AtmoAudio(props) {
     if (atmo) {
       atmo.updateAtmo({
         sources: sources,
-        atmoAudioFileId: props.atmoAudioFileId
+        audioFilePermaId: props.audioFilePermaId
       });
     }
-  }, [atmo, audioFile, props.atmoAudioFileId]);
+  }, [atmo, audioFile, props.audioFilePermaId]);
 
 
   useSectionLifecycle({
@@ -31,11 +31,11 @@ export function AtmoAudio(props) {
     }
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     if (lastAudioFile && audioFile && lastAudioFile.permaId !== audioFile.permaId) {
       processAtmo();
     }
-  },[processAtmo, lastAudioFile, audioFile])
-  
+  }, [processAtmo, lastAudioFile, audioFile])
+
   return null;
 }

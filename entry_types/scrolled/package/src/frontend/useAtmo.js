@@ -10,7 +10,7 @@ function getContextValue(updateAtmo, createMediaPlayerHooks){
   }
 }
 
-const AtmoContext = createContext(getContextValue());
+export const AtmoContext = createContext(getContextValue());
 
 export function AtmoProvider({children}){
   let atmoConfig = useRef({});
@@ -34,14 +34,14 @@ export function AtmoProvider({children}){
     });
   }, []);
 
-  let updateAtmo = function (config) {
+  let updateAtmo = function ({audioFilePermaId, sources}) {
     let currentAtmo = atmoConfig.current;
     if (currentAtmo.atmo) {
-      if (config.sources) {
-        currentAtmo.pool.mapSources(config.atmoAudioFileId, config.sources);
+      if (sources) {
+        currentAtmo.pool.mapSources(audioFilePermaId, sources);
       }
-      
-      currentAtmo.atmo.atmoSourceId = config.atmoAudioFileId;
+
+      currentAtmo.atmo.atmoSourceId = audioFilePermaId;
       currentAtmo.atmo.update();
     }
   };
