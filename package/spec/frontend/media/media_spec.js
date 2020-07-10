@@ -106,10 +106,10 @@ describe('media', function() {
   describe('#muted', function() {
     it('returns state', function() {
       media.mute(true);
-      expect(media.muted()).toBe(true);
+      expect(media.muted).toBe(true);
 
       media.mute(false);
-      expect(media.muted()).toBe(false);
+      expect(media.muted).toBe(false);
     });
   });
 });

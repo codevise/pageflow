@@ -36,7 +36,8 @@ export function InlineVideo({sectionProps, configuration}) {
                      posterId={configuration.posterId}
                      defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                      quality={'high'}
-                     playsInline={true} />
+                     playsInline={true} 
+                     atmoDuringPlayback={configuration.atmoDuringPlayback} />
 
         <VideoPlayerControls videoFilePermaId={configuration.id}
                              defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}

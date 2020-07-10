@@ -69,6 +69,7 @@ function PreparedMediaPlayer(props){
                      loop={props.loop}
                      controls={props.controls}
                      playsInline={props.playsInline}
+                     atmoDuringPlayback={props.atmoDuringPlayback}
                      onSetup={onSetup}
                      onDispose={onDispose} />
   );

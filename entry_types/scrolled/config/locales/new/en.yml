@@ -162,6 +162,14 @@ en:
               label: "Video"
             posterId:
               label: "Poster"
+            atmoDuringPlayback:
+              label: Atmo During Playback
+              inline_help: >
+                Choose which way the atmo shall behave during playback of this media element.
+              values:
+                mute: Mute
+                play: Keep playing
+                turnDown: Keep playing at lower volume
         inlineAudio:
           name: Inline Audio
           tabs:
@@ -171,6 +179,14 @@ en:
               label: "Audio"
             posterId:
               label: "Poster"
+            atmoDuringPlayback:
+              label: Atmo During Playback
+              inline_help: >
+                Choose which way the atmo shall behave during playback of this page's main media.
+              values:
+                mute: Mute
+                play: Keep playing
+                turnDown: Keep playing at lower volume
         inlineBeforeAfter:
           name: Before/After
           tabs:
@@ -328,6 +344,10 @@ en:
               Deactivate this option to create a short section which height is determined by its
               foreground content. This option needs to be activated for two adjacent sections
               to be able to use a fade transition between them.
+          atmoAudioFileId:
+            label: Atmo Audio
+            inline_help: >
+              Choose an audio file, that shall be played in the background. If you want this audio to continue playing on following sections, just choose the same file again there.
           invert:
             label: Invert Text
           layout:

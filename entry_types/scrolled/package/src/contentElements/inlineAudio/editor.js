@@ -1,5 +1,6 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
+import {SelectInputView} from 'pageflow/ui';
 
 editor.contentElementTypes.register('inlineAudio', {
   configurationEditor() {
@@ -18,6 +19,10 @@ editor.contentElementTypes.register('inlineAudio', {
       });
 
       this.input('autoplay', CheckBoxInputView);
+      
+      this.input('atmoDuringPlayback', SelectInputView, {
+        values: ['play', 'mute', 'turnDown']
+      });
 
       this.group('ContentElementCaption');
       this.group('ContentElementPosition');

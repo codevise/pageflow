@@ -163,6 +163,14 @@ de:
               label: "Video"
             posterId:
               label: "Poster"
+            atmoDuringPlayback:
+              label: Atmo während Medien-Wiedergabe
+              inline_help: >
+                Wähle wie sich die Atmo während der Wiedergabe des Hauptmediums dieses Medienelement verhalten soll.
+              values:
+                mute: Ausblenden
+                play: Weiterspielen
+                turnDown: Leiser weiterspielen
         inlineAudio:
           name: Inline-Audio
           tabs:
@@ -172,6 +180,14 @@ de:
               label: "Audio"
             posterId:
               label: "Poster"
+            atmoDuringPlayback:
+              label: Atmo während Medien-Wiedergabe
+              inline_help: >
+                Wähle wie sich die Atmo während der Wiedergabe des Hauptmediums dieser Seite verhalten soll.
+              values:
+                mute: Ausblenden
+                play: Weiterspielen
+                turnDown: Leiser weiterspielen
         inlineBeforeAfter:
           name: Vorher/Nachher
           tabs:
@@ -335,6 +351,10 @@ de:
               soll. Deaktivieren sie sie, um kurze Szenen zu ermöglichen, die vertikal nur von ihrem
               Inhalt aufgespannt werden. Um einen Überblendungseffekt zwischen zwei Abschnitten
               verwenden zu können, muss diese Option für beide Abschnitte aktiviert sein.
+          atmoAudioFileId:
+            label: Atmo-Audio
+            inline_help: >
+              Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch auf Folgeseiten nahtlos weiterspielen soll, wähle auf diesen Seiten die selbe Datei aus. Diese Funktionalität steht im Moment nicht auf mobilen Geräten zur Verfügung.
           invert:
             label: Text invertieren
           layout:

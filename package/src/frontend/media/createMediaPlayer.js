@@ -21,8 +21,8 @@ export const createMediaPlayer = function (options) {
     bufferUnderrunWaiting: true,
     fallbackToMutedAutoplay: !isAudio,
 
-    volumeFading: true, //should be turned on later 
-    hooks: undefined,
+    volumeFading: true,
+    hooks: {},
 
     mediaEvents: true,
     context: options.mediaContext

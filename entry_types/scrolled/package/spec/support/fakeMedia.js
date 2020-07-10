@@ -91,7 +91,7 @@ function createFakePlayer({filePermaId, textTrackSources}) {
     muted: jest.fn(),
     changeVolumeFactor: jest.fn(),
     dispose: jest.fn(),
-
+    rewind: jest.fn().mockResolvedValue(),
     textTracks() { return textTracks; },
 
     ...BackboneEvents,

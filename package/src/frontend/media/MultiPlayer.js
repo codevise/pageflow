@@ -12,8 +12,10 @@ export const MultiPlayer = function(pool, options) {
   }
 
   var current = new AudioPlayer.Null();
+
   var currentId = null;
   var that = this;
+
 
   /**
    * Continue playback.
@@ -83,9 +85,9 @@ export const MultiPlayer = function(pool, options) {
 
     var fadeOutPromise = current.fadeOutAndPause(options.fadeDuration);
 
-    fadeOutPromise.then(function() {
-      stopEventPropagation(current);
-    });
+    if (current._stopMultiPlayerEventPropagation && current.paused()) {
+      current._stopMultiPlayerEventPropagation();
+    }
 
     return handleCrossFade(fadeOutPromise).then(function() {
       current = player;
@@ -116,29 +118,39 @@ export const MultiPlayer = function(pool, options) {
   }
 
   function startEventPropagation(player, id) {
-    that.listenTo(player, 'play', function() {
+    let playCallback = function() {
       that.trigger('play', {audioFileId: id});
-    });
-
-    that.listenTo(player, 'pause', function() {
+    }
+    let pauseCallback = function() {
       that.trigger('pause', {audioFileId: id});
-    });
 
-    that.listenTo(player, 'timeupdate', function() {
+      if (currentId !== id) {
+        player._stopMultiPlayerEventPropagation();
+      }
+    }
+    let timeUpdateCallback = function() {
       that.trigger('timeupdate', {audioFileId: id});
-    });
-
-    that.listenTo(player, 'ended', function() {
+    }
+    let endedCallback = function() {
       that.trigger('ended', {audioFileId: id});
-    });
-
-    that.listenTo(player, 'playfailed', function() {
+    }
+    let playFailedCallback = function() {
       that.trigger('playfailed', {audioFileId: id});
-    });
-  }
+    }
 
-  function stopEventPropagation(player) {
-    that.stopListening(player);
+    player.on('play', playCallback);
+    player.on('pause', pauseCallback);
+    player.on('timeupdate', timeUpdateCallback);
+    player.on('ended', endedCallback);
+    player.on('playfailed', playFailedCallback);
+
+    player._stopMultiPlayerEventPropagation = function() {
+      player.off('play', playCallback);
+      player.off('pause', pauseCallback);
+      player.off('timeupdate', timeUpdateCallback);
+      player.off('ended', endedCallback);
+      player.off('playfailed', playFailedCallback);
+    }
   }
 };
 

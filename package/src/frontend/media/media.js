@@ -4,10 +4,7 @@ import BackboneEvents from 'backbone-events-standalone';
 export const media = {
   playerPool: new MediaPool(),
   muteState: true,
-
-  muted() {
-    return this.muteState;
-  },
+  get muted(){ return this.muteState; },
   mute: function (value) {
     this.muteState = value;
     this.playerPool.blessAll(value);

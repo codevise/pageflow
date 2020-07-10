@@ -82,6 +82,7 @@ export function normalizeSeed({
         configuration: {}
       }),
       audioFiles: normalizeCollection(audioFiles, {
+        isReady: true,
         configuration: {}
       }),
       textTrackFiles: normalizeCollection(textTrackFiles, {
