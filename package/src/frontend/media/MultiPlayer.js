@@ -80,7 +80,7 @@ export const MultiPlayer = function(pool, options) {
       return Promise.resolve();
     }
 
-    var player = pool.get(id, options);
+    var player = pool.get(id);
     currentId = id;
 
     var fadeOutPromise = current.fadeOutAndPause(options.fadeDuration);

@@ -17,7 +17,9 @@ export function AtmoProvider({children}){
 
   useEffect(()=>{
     let currentAtmo = atmoConfig.current;
-    currentAtmo.pool = PlayerSourceIDMap(media);
+    currentAtmo.pool = PlayerSourceIDMap(media, {
+      playerOptions: {tagName: 'audio'}
+    });
     currentAtmo.multiPlayer = new MultiPlayer(currentAtmo.pool, {
       loop: true,
       fadeDuration: 500,

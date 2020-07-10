@@ -37,7 +37,6 @@ describe('section AtmoAudio', () => {
     };
   }
 
-
   it('is played when section becomes active', async () => {
     const {getSectionByPermaId} = renderEntry({
       seed: {
@@ -55,9 +54,13 @@ describe('section AtmoAudio', () => {
 
     await act(async () => {
       media.mute(false);
-      getSectionByPermaId(11).simulateScrollingIntoView();  
+      getSectionByPermaId(11).simulateScrollingIntoView();
     });
 
-    expect(media.getPlayer).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({filePermaId: 100}))
+    expect(media.getPlayer).toHaveBeenCalledWith(expect.anything(),
+                                                 expect.objectContaining({
+                                                   filePermaId: 100,
+                                                   tagName: 'audio'
+                                                 }));
   });
 });
