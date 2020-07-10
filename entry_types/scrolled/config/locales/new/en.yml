@@ -69,6 +69,8 @@ en:
         italic: Italic
         underline: Underline
         strikethrough: Strikethrough
+      type_text: Type some text
+      type_heading: Heading
       insert_link: Insert link
       remove_link: Remove link
       select_section: Select section

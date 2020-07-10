@@ -51,6 +51,7 @@ export {useContentElementLifecycle} from './useContentElementLifecycle';
 
 export {ViewportDependentPillarBoxes} from './ViewportDependentPillarBoxes';
 export {EditableText} from './EditableText';
+export {EditableInlineText} from './EditableInlineText';
 
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 

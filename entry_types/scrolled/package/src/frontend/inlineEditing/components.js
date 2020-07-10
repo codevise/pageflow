@@ -5,3 +5,4 @@ export {ContentElementDecorator} from './ContentElementDecorator';
 export {LayoutWithPlaceholder} from './LayoutWithPlaceholder';
 
 export {EditableText} from './EditableText';
+export {EditableInlineText} from './EditableInlineText';

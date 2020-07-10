@@ -5,6 +5,7 @@ import {Slate, Editable, withReact} from 'slate-react';
 import {Text} from '../../Text';
 import {useCachedValue} from '../useCachedValue';
 import {useContentElementEditorCommandSubscription} from '../../useContentElementEditorCommandSubscription';
+import {TextPlaceholder} from '../TextPlaceholder';
 
 import {withCustomInsertBreak} from './withCustomInsertBreak';
 import {
@@ -19,14 +20,16 @@ import {LinkTooltipProvider} from './LinkTooltip';
 
 import styles from './index.module.css';
 
-export const EditableText = React.memo(function EditableText({value, contentElementId, onChange}) {
+export const EditableText = React.memo(function EditableText({
+  value, contentElementId, placeholder, onChange
+}) {
   const editor = useMemo(() => withLinks(withCustomInsertBreak(withReact(createEditor()))), []);
   const [linkSelection, setLinkSelection] = useState();
 
   const [cachedValue, setCachedValue] = useCachedValue(value, {
     defaultValue: [{
       type: 'paragraph',
-      children: [{ text: 'Your Text here...' }],
+      children: [{ text: '' }],
     }],
     onDebouncedChange: onChange,
     onReset: nextValue => resetSelectionIfOutsideNextValue(editor, nextValue)
@@ -61,10 +64,19 @@ export const EditableText = React.memo(function EditableText({value, contentElem
                 renderLeaf={renderLeaf} />
           </LinkTooltipProvider>
         </Slate>
+        <TextPlaceholder text={placeholder}
+                         visible={isBlank(cachedValue)} />
       </div>
     </Text>
   );
 });
+
+function isBlank(value) {
+  return value.length <= 1 &&
+         value[0]?.children.length <= 1 &&
+         value[0].type === 'paragraph' &&
+         !value[0]?.children[0]?.text;
+}
 
 function resetSelectionIfOutsideNextValue(editor, nextValue) {
   const nextEditor = {children: nextValue};
