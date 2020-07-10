@@ -55,6 +55,7 @@ export {EditableText} from './EditableText';
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 
 export {RootProviders};
+export {default as registerTemplateWidgetType} from './registerTemplateWidgetType';
 
 window.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);

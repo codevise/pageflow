@@ -10,8 +10,10 @@
     />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700&display=swap" rel="stylesheet">
     <title>Pageflow Next Showcase</title>
-    
+
     <%= javascript_include_tag 'pageflow/videojs' %>
+    <%= javascript_include_tag 'pageflow_scrolled/legacy' %>
+    <%= render_widget_head_fragments(@entry) %>
 
     <% if Rails.env.development? %>
       <script>
@@ -28,6 +30,10 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <div id='template-widget-container'>
+      <%= render_widgets(@entry, scope: @widget_scope, insert_point: :bottom_of_entry) %>
+    </div>
 
     <%= javascript_pack_tag 'pageflow-scrolled-frontend' %>
 

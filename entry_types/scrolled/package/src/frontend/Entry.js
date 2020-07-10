@@ -6,6 +6,8 @@ import ScrollToSectionContext from './ScrollToSectionContext';
 import {useEntryStructure} from '../entryState';
 import {withInlineEditingDecorator} from './inlineEditing';
 import {usePostMessageListener} from './usePostMessageListener';
+import {useSectionChangeEvents} from './useSectionChangeEvents';
+import {sectionChangeMessagePoster} from './sectionChangeMessagePoster';
 
 import { AtmoProvider } from './useAtmo';
 
@@ -18,11 +20,10 @@ export default withInlineEditingDecorator('EntryDecorator', function Entry(props
 
   const entryStructure = useEntryStructure();
 
-  const setCurrentSectionIndex = useCallback(index => {
-    if (window.parent !== window) {
-      window.parent.postMessage({type: 'CHANGE_SECTION', payload: {index}}, window.location.origin);
-    }
+  useSectionChangeEvents(entryStructure, currentSectionIndex);
 
+  const setCurrentSectionIndex = useCallback(index => {
+    sectionChangeMessagePoster(index);
     setCurrentSectionIndexState(index);
   }, [setCurrentSectionIndexState]);
 
