@@ -261,17 +261,21 @@ describe('MultiPlayer', function() {
     });
   });
 
-  it('emits play event on play', async () => {
+  it('emits play and pause events', async () => {
     var player = new Null();
     var pool = fakePlayerPool({5: player});
     var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000});
-    var handler = sinon.spy();
+    var playHandler = sinon.spy();
+    var pauseHandler = sinon.spy();
 
-    multiPlayer.on('play', handler);
+    multiPlayer.on('play', playHandler);
+    multiPlayer.on('pause', pauseHandler);
     await multiPlayer.play(5);
+    player.trigger('pause');
     player.trigger('play');
 
-    expect(handler).toHaveBeenCalledWith({audioFileId: 5});
+    expect(playHandler).toHaveBeenCalledWith({audioFileId: 5});
+    expect(pauseHandler).toHaveBeenCalledWith({audioFileId: 5});
   });
 
   it('emits ended event when player ends', async () => {
@@ -300,6 +304,54 @@ describe('MultiPlayer', function() {
     await multiPlayer.play(5);
     await multiPlayer.play(6);
     player.trigger('ended');
+
+    expect(handler).not.toHaveBeenCalled();
+  });
+
+  it('propagates pause event if previous player fades out and pauses', async () => {
+    var player1 = new Null();
+    var player2 = new Null();
+    var pool = fakePlayerPool({
+      5: player1,
+      6: player2
+    });
+    player1.fadeOutAndPause = function() { return new Promise(resolve =>
+      setTimeout(() => {
+        resolve();
+        player1.trigger('pause');
+      }, 10)
+    ); };
+
+    var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000});
+    var handler = jest.fn();
+
+    multiPlayer.on('pause', handler);
+    await multiPlayer.fadeTo(5);
+    jest.spyOn(player1, 'paused').mockReturnValue(false);
+    await multiPlayer.fadeTo(6);
+
+    expect(handler).toHaveBeenCalledWith({audioFileId: 5});
+  });
+
+  it('stops event propagation immediately if previous player is paused', async () => {
+    var player1 = new Null();
+    var player2 = new Null();
+    var pool = fakePlayerPool({
+      5: player1,
+      6: player2
+    });
+    player1.fadeOutAndPause = function() { return new Promise(resolve =>
+      setTimeout(resolve, 10)
+    ); };
+
+    var multiPlayer = new MultiPlayer(pool, {fadeDuration: 1000});
+    var handler = jest.fn();
+
+    multiPlayer.on('pause', handler);
+    await multiPlayer.fadeTo(5);
+    jest.spyOn(player1, 'paused').mockReturnValue(true);
+    multiPlayer.fadeTo(6);
+    player1.trigger('pause');
 
     expect(handler).not.toHaveBeenCalled();
   });

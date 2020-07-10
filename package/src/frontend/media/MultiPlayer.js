@@ -12,25 +12,11 @@ export const MultiPlayer = function(pool, options) {
   }
 
   var current = new AudioPlayer.Null();
-  
+
   var currentId = null;
   var that = this;
-  
-  let playCallback = function() {
-    that.trigger('play', {audioFileId: this.currentMultiplayerId});
-  }
-  let pauseCallback = function() {
-    that.trigger('pause', {audioFileId: this.currentMultiplayerId});
-  }
-  let timeUpdateCallback = function() {
-    that.trigger('timeupdate', {audioFileId: this.currentMultiplayerId});
-  }
-  let endedCallback = function() {
-    that.trigger('ended', {audioFileId: this.currentMultiplayerId});
-  }
-  let playFailedCallback = function() {
-    that.trigger('playfailed', {audioFileId: this.currentMultiplayerId});
-  }
+
+
   /**
    * Continue playback.
    */
@@ -94,16 +80,16 @@ export const MultiPlayer = function(pool, options) {
       return Promise.resolve();
     }
 
+    var player = pool.get(id, options);
+    currentId = id;
+
     var fadeOutPromise = current.fadeOutAndPause(options.fadeDuration);
 
-    fadeOutPromise.then(function() {
-      stopEventPropagation(current);
-    });
-    
+    if (current._stopMultiPlayerEventPropagation && current.paused()) {
+      current._stopMultiPlayerEventPropagation();
+    }
+
     return handleCrossFade(fadeOutPromise).then(function() {
-      var player = pool.get(id, options);
-      player.currentMultiplayerId = id;
-      currentId = id;
       current = player;
       startEventPropagation(current, id);
 
@@ -131,20 +117,40 @@ export const MultiPlayer = function(pool, options) {
     }
   }
 
-  function startEventPropagation(player) {
+  function startEventPropagation(player, id) {
+    let playCallback = function() {
+      that.trigger('play', {audioFileId: id});
+    }
+    let pauseCallback = function() {
+      that.trigger('pause', {audioFileId: id});
+
+      if (currentId !== id) {
+        player._stopMultiPlayerEventPropagation();
+      }
+    }
+    let timeUpdateCallback = function() {
+      that.trigger('timeupdate', {audioFileId: id});
+    }
+    let endedCallback = function() {
+      that.trigger('ended', {audioFileId: id});
+    }
+    let playFailedCallback = function() {
+      that.trigger('playfailed', {audioFileId: id});
+    }
+
     player.on('play', playCallback);
     player.on('pause', pauseCallback);
     player.on('timeupdate', timeUpdateCallback);
     player.on('ended', endedCallback);
     player.on('playfailed', playFailedCallback);
-  }
 
-  function stopEventPropagation(player) {
-    player.off('play', playCallback);
-    player.off('pause', pauseCallback);
-    player.off('timeupdate', timeUpdateCallback);
-    player.off('ended', endedCallback);
-    player.off('playfailed', playFailedCallback);
+    player._stopMultiPlayerEventPropagation = function() {
+      player.off('play', playCallback);
+      player.off('pause', pauseCallback);
+      player.off('timeupdate', timeUpdateCallback);
+      player.off('ended', endedCallback);
+      player.off('playfailed', playFailedCallback);
+    }
   }
 };
 
