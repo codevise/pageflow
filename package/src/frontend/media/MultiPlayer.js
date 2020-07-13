@@ -47,6 +47,15 @@ export const MultiPlayer = function(pool, options) {
     return current.fadeOutAndPause(options.fadeDuration);
   };
 
+  this.fadeOutIfPlaying = function () {
+    if (current.paused()) {
+      return Promise.resolve();
+    }
+    else{
+      return current.fadeOutAndPause(options.fadeDuration);
+    }
+  }
+
   this.position = function() {
     return current.position;
   };

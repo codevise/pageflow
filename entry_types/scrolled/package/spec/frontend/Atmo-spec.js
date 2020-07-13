@@ -63,6 +63,35 @@ describe('Atmo', function() {
       
       expect(multiPlayerSpy).toHaveBeenCalled();
     });
+
+    it('pauses multiPlayer on documment hidden state', function() {
+      let {pool, atmo, multiPlayer} = buildAtmo({});
+      let multiPlayerSpy = jest.spyOn(multiPlayer, 'fadeOutIfPlaying');
+
+      updateAtmo({
+        sources: fileSources,
+        atmoAudioFileId: 5
+      }, pool, atmo);
+      Object.defineProperty(global.document, 'visibilityState', { value: 'hidden', writable: true });
+      document.dispatchEvent(new Event('visibilitychange'));
+
+      expect(multiPlayerSpy).toHaveBeenCalled();
+    });
+
+    it('updates atmo on documment visible state', function() {
+      let {pool, atmo, multiPlayer} = buildAtmo({});
+      let atmoSpy = jest.spyOn(atmo, 'update');
+
+      updateAtmo({
+        sources: fileSources,
+        atmoAudioFileId: 5
+      }, pool, atmo);
+      document.visibilityState = 'visible';
+      document.dispatchEvent(new Event('visibilitychange'));
+
+      expect(atmoSpy).toHaveBeenCalled();
+    });
+
   });
 
 
