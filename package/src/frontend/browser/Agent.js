@@ -178,8 +178,9 @@ export const Agent = function(userAgent) {
   //with multi-touch support other than IOS/iPadOS
   //See: https://stackoverflow.com/a/58064481
   function matchesiPadSafari13AndAbove() {
-    return navigator.maxTouchPoints > 1 &&
-            navigator.platform === 'MacIntel';       
+    return agent.matchesSafari() &&
+           navigator.maxTouchPoints > 1 &&
+           navigator.platform === 'MacIntel';       
   }
 };
 
