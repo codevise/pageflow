@@ -35,8 +35,7 @@ gsub_file('app/assets/javascripts/application.js', %r'//=.*', '')
 
 # Recreate db. Ignore if it does not exist.
 
-log :rake, 'db:drop:all'
-in_root { run('rake db:environment:set db:drop:all 2> /dev/null', verbose: false) }
+in_root { run('rake db:environment:set db:drop:all', capture: true, abort_on_failure: false) }
 rake 'db:create:all'
 
 # Install pageflow and the tested engine via their generators.
