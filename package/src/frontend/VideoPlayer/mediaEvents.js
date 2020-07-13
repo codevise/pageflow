@@ -1,15 +1,22 @@
 import {events} from '../events';
 
 export const mediaEvents = function(player, context) {
+  
+  player.updateMediaEventsContext = function (newContext) {
+    context = newContext;
+  }  
+
   function triggerMediaEvent(name) {
-    events.trigger('media:' + name, {
-      fileName: player.currentSrc(),
-      context: context,
-      currentTime: player.currentTime(),
-      duration: player.duration(),
-      volume: player.volume(),
-      bitrate: 3500000
-    });
+    if (context) {
+      events.trigger('media:' + name, {
+        fileName: player.currentSrc(),
+        context: context,
+        currentTime: player.currentTime(),
+        duration: player.duration(),
+        volume: player.volume(),
+        bitrate: 3500000
+      });
+    }
   }
 
   player.on('play', function() {
@@ -27,4 +34,5 @@ export const mediaEvents = function(player, context) {
   player.on('ended', function() {
     triggerMediaEvent('ended');
   });
+
 };

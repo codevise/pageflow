@@ -21,12 +21,10 @@ export function AtmoProvider({children}){
       playerOptions: {tagName: 'audio', loop: true}
     });
     currentAtmo.multiPlayer = new MultiPlayer(currentAtmo.pool, {
-      loop: true,
       fadeDuration: 500,
       crossFade: true,
       playFromBeginning: false,
-      rewindOnChange: true,
-      pauseInBackground: true
+      rewindOnChange: true
     });
     currentAtmo.atmo = new Atmo({
       multiPlayer: currentAtmo.multiPlayer,

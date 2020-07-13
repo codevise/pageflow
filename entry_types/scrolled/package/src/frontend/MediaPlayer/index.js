@@ -7,6 +7,8 @@ import watchPlayer, {unwatchPlayer} from './watchPlayer';
 import {applyPlayerState} from './applyPlayerState';
 import {updatePlayerState} from './updatePlayerState';
 
+import {useEventContextData} from '../useEventContextData';
+
 import {getTextTrackSources, updateTextTracksMode} from './textTracks';
 import textTrackStyles from './textTracks.module.css';
 import styles from '../MediaPlayer.module.css';
@@ -31,6 +33,7 @@ function PreparedMediaPlayer(props){
   let playerRef = useRef();
   let previousPlayerState = useRef(props.playerState);
   let scrollToSection = useContext(ScrollToSectionContext);
+  let eventContextData = useEventContextData();
 
   let onSetup = (newPlayer)=>{
     playerRef.current = newPlayer;
@@ -71,6 +74,7 @@ function PreparedMediaPlayer(props){
                        loop={props.loop}
                        controls={props.controls}
                        playsInline={props.playsInline}
+                       mediaEventsContext={eventContextData}
                        atmoDuringPlayback={props.atmoDuringPlayback}
                        onSetup={onSetup}
                        onDispose={onDispose} />

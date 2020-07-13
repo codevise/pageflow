@@ -84,6 +84,26 @@ describe('MediaPlayer', () => {
       expect.anything()
     );
   });
+  
+  it('it passes correct context data to getPlayer options ', () => {
+    render(<MediaPlayer {...requiredProps()}
+                        type={'video'}
+                        sources={getVideoSources()} />);
+
+    expect(media.getPlayer).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        mediaEventsContextData: {
+          page: {
+            configuration: {
+              title: undefined
+            },
+            index: -1,
+          }
+        }
+      }
+    ));
+  });
 
   it('does not request new Player for same sources', () => {
     const {rerender} =

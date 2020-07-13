@@ -1,6 +1,8 @@
 import React from 'react';
 
 import Section from './Section';
+import {EventContextDataProvider} from './useEventContextData';
+
 
 export default function Chapter(props) {
   return (
@@ -9,7 +11,8 @@ export default function Chapter(props) {
                       props.currentSectionIndex,
                       props.setCurrentSectionIndex,
                       props.scrollTargetSectionIndex,
-                      props.setScrollTargetSectionIndex)}
+                      props.setScrollTargetSectionIndex,
+                      props.permaId)}
     </div>
   );
 }
@@ -18,19 +21,23 @@ function renderSections(sections,
                         currentSectionIndex,
                         setCurrentSectionIndex,
                         scrollTargetSectionIndex,
-                        setScrollTargetSectionIndex) {
+                        setScrollTargetSectionIndex,
+                        chapterIndex) {
   function onActivate(sectionIndex) {
     setCurrentSectionIndex(sectionIndex);
     setScrollTargetSectionIndex(null);
   }
-
+  
   return sections.map((section) => {
     return (
-      <Section key={section.permaId}
-               state={section.sectionIndex > currentSectionIndex ? 'below' : section.sectionIndex < currentSectionIndex ? 'above' : 'active'}
-               isScrollTarget={section.sectionIndex === scrollTargetSectionIndex}
-               onActivate={() => onActivate(section.sectionIndex)}
-               {...section} />
+      <EventContextDataProvider key={section.permaId} sectionIndex={currentSectionIndex}>
+        <Section key={section.permaId}
+                state={section.sectionIndex > currentSectionIndex ? 'below' : section.sectionIndex < currentSectionIndex ? 'above' : 'active'}
+                isScrollTarget={section.sectionIndex === scrollTargetSectionIndex}
+                onActivate={() => onActivate(section.sectionIndex)}
+                {...section}>
+        </Section>
+      </EventContextDataProvider>
     )
   });
 }

@@ -1,4 +1,4 @@
-import {media} from 'pageflow/frontend';
+import {media, events} from 'pageflow/frontend';
 import videojs from 'videojs';
 import '$support/mediaElementStub';
 import '$support/fakeBrowserFeatures';
@@ -49,6 +49,41 @@ describe('media', function() {
 
       expect(player.getMediaElement().hasAttribute('loop')).toBe(true);
       expect(player.getMediaElement().getAttribute('loop')).toBe('');
+    });
+
+    it('updates player\'s context data', () => {
+      let context = {
+        page: {
+          configuration: {
+            title: 'chapter title'
+          },
+          index: 1,
+        }
+      };
+      events.trigger = jest.fn();
+      let player = media.getPlayer(fileSources, {
+        tagName: 'audio',
+        mediaEventsContextData:  context
+      });      
+      player.trigger('play');
+
+      expect(events.trigger).toHaveBeenCalledWith(
+        expect.stringContaining('media:'),
+        expect.objectContaining({
+          context: context
+        })
+      );
+    });
+
+    it('do not trigger media event when context is undefined', () => {
+      events.trigger = jest.fn();
+      let player = media.getPlayer(fileSources, {
+        tagName: 'audio',
+        mediaEventsContextData:  undefined
+      });      
+      player.trigger('play');
+
+      expect(events.trigger).not.toHaveBeenCalled();
     });
 
     it('adds text tracks passed via textTracksSources option', () => {
