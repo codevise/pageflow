@@ -6,12 +6,14 @@ import {
   AudioPlayer,
   AudioPlayerControls,
   Figure,
+  useContentElementEditorState,
   usePlayerState,
   useContentElementLifecycle
 } from 'pageflow-scrolled/frontend';
 
 export function InlineAudio({sectionProps, configuration}) {
   const [playerState, playerActions] = usePlayerState();
+  const {isEditable, isSelected} = useContentElementEditorState();
 
   const {isPrepared} = useContentElementLifecycle({
     onActivate() {
@@ -25,6 +27,19 @@ export function InlineAudio({sectionProps, configuration}) {
     }
   });
 
+  const onPlayerClick = () => {
+    if (isEditable && !isSelected) {
+      return;
+    }
+
+    if (playerState.shouldPlay) {
+      playerActions.pause();
+    }
+    else {
+      playerActions.playBlessed();
+    }
+  };
+
   return (
     <Figure caption={configuration.caption}>
       <AudioPlayer isPrepared={isPrepared}
@@ -36,8 +51,9 @@ export function InlineAudio({sectionProps, configuration}) {
                    posterId={configuration.posterId}
                    defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                    quality={'high'}
-                   playsInline={true} 
-                   atmoDuringPlayback={configuration.atmoDuringPlayback}/>
+                   playsInline={true}
+                   atmoDuringPlayback={configuration.atmoDuringPlayback}
+                   onClick={onPlayerClick} />
 
       <AudioPlayerControls audioFilePermaId={configuration.id}
                            defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}

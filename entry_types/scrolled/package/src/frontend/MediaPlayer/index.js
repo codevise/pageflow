@@ -9,6 +9,7 @@ import {updatePlayerState} from './updatePlayerState';
 
 import {getTextTrackSources, updateTextTracksMode} from './textTracks';
 import textTrackStyles from './textTracks.module.css';
+import styles from '../MediaPlayer.module.css';
 
 export * from './usePlayerState';
 
@@ -60,18 +61,21 @@ function PreparedMediaPlayer(props){
   }, [props.textTracks.activeFileId]);
 
   return (
-    <PlayerContainer className={classNames(props.className, {[textTrackStyles.inset]: props.textTracksInset})}
-                     type={props.type}
-                     sources={props.sources}
-                     textTrackSources={getTextTrackSources(props.textTracks.files)}
-                     filePermaId={props.filePermaId}
-                     poster={props.posterImageUrl}
-                     loop={props.loop}
-                     controls={props.controls}
-                     playsInline={props.playsInline}
-                     atmoDuringPlayback={props.atmoDuringPlayback}
-                     onSetup={onSetup}
-                     onDispose={onDispose} />
+    <>
+      <PlayerContainer className={classNames(props.className, {[textTrackStyles.inset]: props.textTracksInset})}
+                       type={props.type}
+                       sources={props.sources}
+                       textTrackSources={getTextTrackSources(props.textTracks.files)}
+                       filePermaId={props.filePermaId}
+                       poster={props.posterImageUrl}
+                       loop={props.loop}
+                       controls={props.controls}
+                       playsInline={props.playsInline}
+                       atmoDuringPlayback={props.atmoDuringPlayback}
+                       onSetup={onSetup}
+                       onDispose={onDispose} />
+      <div className={styles.mask} onClick={props.onClick} />
+    </>
   );
 };
 
