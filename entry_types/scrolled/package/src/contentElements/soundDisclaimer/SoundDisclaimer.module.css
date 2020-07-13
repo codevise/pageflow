@@ -1,6 +1,6 @@
 .soundDisclaimer {
   text-align: center;
-  border: 1px solid white;
+  border: 1px solid currentColor;
   border-radius: 4px;
   cursor: pointer;
   font-size: inherit;
