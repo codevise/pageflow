@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {media} from 'pageflow/frontend';
+
 import {
   AudioPlayer,
   AudioPlayerControls,
@@ -13,7 +15,7 @@ export function InlineAudio({sectionProps, configuration}) {
 
   const {isPrepared} = useContentElementLifecycle({
     onActivate() {
-      if (configuration.autoplay) {
+      if (configuration.autoplay && !media.muted) {
         playerActions.play();
       }
     },
