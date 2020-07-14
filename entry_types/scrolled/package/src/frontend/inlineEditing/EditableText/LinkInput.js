@@ -19,7 +19,7 @@ export function LinkInput({onSubmit, onCancel}) {
   function handleKey(event) {
     if (event.key === 'Enter') {
       event.preventDefault();
-      submit();
+      ref.current.blur();
     }
     else if (event.key === 'Escape') {
       event.preventDefault();
