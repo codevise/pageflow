@@ -13,7 +13,7 @@ describe('MediaPlayer', () => {
     return [
       {type: 'audio/ogg', src: 'http://example.com/example.ogg'},
       {type: 'audio/m4a', src: 'http://example.com/example.m4a'},
-      {type: 'audio/mp3', src: 'http://example.com/example.ogg'}
+      {type: 'audio/mp3', src: 'http://example.com/example.mp3'}
     ];
   }
 
@@ -70,6 +70,19 @@ describe('MediaPlayer', () => {
     expect(queryPlayer()).toBeDefined();
     expect(media.getPlayer).toHaveBeenCalledWith(getVideoSources(),
                                                  expect.objectContaining({tagName: 'video'}))
+  });
+
+  it('supports appending a suffix to source urls', () => {
+    render(<MediaPlayer {...requiredProps()}
+                        sourceUrlSuffix="?test"
+                        sources={getVideoSources()} />);
+
+    expect(media.getPlayer).toHaveBeenCalledWith(
+      [
+        expect.objectContaining({src: expect.stringMatching(/example.mp4\?test$/)}),
+      ],
+      expect.anything()
+    );
   });
 
   it('does not request new Player for same sources', () => {
