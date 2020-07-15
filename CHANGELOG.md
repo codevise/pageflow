@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### Version 15.2.2
+
+2020-07-15
+
+[Compare changes](https://github.com/codevise/pageflow/compare/v15.2.1.0...v15.2.2)
+
+- Fix dummy app generation with Thor 1.0
+  ([#1526](https://github.com/codevise/pageflow/pull/1526))
+
 ### Version 15.2.1
 
 2020-04-02
