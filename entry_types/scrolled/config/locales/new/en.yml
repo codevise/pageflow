@@ -1,5 +1,51 @@
 en:
   pageflow_scrolled:
+    help_entries:
+      overview:
+        menu_item: Overview
+        text: |
+          # Overview
+
+          TODO
+      meta_data:
+        menu_item: Title and Options
+        text: |
+          # Title and Options
+
+          General settings for the entry. Please select a sub item on the left.
+      outline:
+        menu_item: Chapter, Sections, Content Elements
+        text: |
+          # Chapter, Sections, Content Elements
+
+          TODO
+
+      sections:
+        menu_item: Section Options
+        text: |
+          # Section Options
+
+          ## Layout
+
+          TODO
+
+          ## Background
+
+          TODO
+
+          ## Atmo Audio
+
+          TODO
+
+          ## Transitions
+
+          TODO
+      content_elements:
+        menu_item: Content Elements
+        text: |
+          # Content Elements
+
+          TODO
     public:
       navigation:
         chapter: Chapter

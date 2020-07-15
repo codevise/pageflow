@@ -1,5 +1,137 @@
 de:
   pageflow_scrolled:
+    help_entries:
+      overview:
+        menu_item: Übersicht
+        text: |
+          # Übersicht
+
+          Dies ist der Editor zum Bearbeiten Pageflows. Mit
+          seiner Zweiteilung ermöglicht er die direkte Vorschau
+          während der Bearbeitung, zeigt Änderungen am Text oder neu
+          ausgewählte Dateien unmittelbar an und speichert diese
+          automatisch.
+
+          ## Titel und Optionen
+
+          Unter „Titel und Optionen“ kannst Du grundsätzliche
+          Parameter des Erscheinungsbildes, sowie Titel, Sprache,
+          Impressum etc. einstellen. Dazu können Texte festgelegt
+          werden, die beim Teilen des Beitrags über Social Media
+          Dienste angezeigt werden sollen.
+
+          Details findest Du unter: [Titel und Optionen](#pageflow_scrolled.help_entries.meta_data)
+
+          ## Dateien verwalten
+
+          Unter „Dateien verwalten“ lädst Du die Mediendateien hoch,
+          die im Pageflow verwendet werden sollen. Du kannst hier auch
+          bereits hochgeladene Videos, Fotos und Audios
+          wiederverwenden.
+
+          Details findest Du unter: [Dateien verwalten](#pageflow.help_entries.files)
+
+          ## Gliederung
+
+          Über die „Gliederung“ kannst Du Kapitel und Abschnitte
+          hinzufügen, also die eigentlichen Inhalte bearbeiten. Per
+          Drag&Drop lassen sich Abschnitte und Kapitel auch jederzeit
+          umsortieren.
+
+          Details findest Du unter: [Kapitel und Abschnitte](#pageflow_scrolled.help_entries.outline)
+
+          ## Phone Vorschau
+
+          Über den Umschalter unten in der Seitenleiste neben dem
+          Hilfe-Button, kann in die Phone-Vorschau umgeschaltet
+          werden. Damit kannst Du testen wie Dein Beitrag im
+          Hochkant-Format aussieht und funktioniert.
+
+      meta_data:
+        menu_item: Titel und Optionen
+        text: |
+          # Titel und Optionen
+
+          Allgemeine Einstellungen für den Beitrag. Bitte einen
+          Unterpunkt auf der linken Seite auswählen.
+
+      outline:
+        menu_item: Kapitel, Abschnitte, Inhaltselemente
+        text: |
+          # Kapitel, Abschnitte, Inhaltselemente
+
+          Ein Pageflow besteht aus einem oder mehreren **Kapiteln**, die
+          jeweils mehere **Abschnitte** enthalten können. Je Abschnitt
+          kann ein Hintegrund (z.B. ein Bild oder ein Video-Loop)
+          festgelegt werden, der angezeigt wird, während sich der
+          Leser innerhalb des Abschnitts befindet.
+
+          Abschnitte beinhalten **Inhaltselemente**. Diese
+          können unterschiedlichen Typs sein (z.B. Text, Bilder,
+          Videos, Diagramme). Sie machen den eigentlichen
+          Inhalt des Beitrags aus, durch den der Leser scrollt.
+
+          Um Inhalte zu erstellen, klicke zunächst auf **„Neues
+          Kapitel"**, um ein erstes Kapitel zu erstellen. Wenn Du auf
+          die Kopfzeile des Kapitels klickst, kannst Du den Titel und
+          eine Beschreibung angegeben. Sobald beides eingetragen ist,
+          erscheint das Kapitel in der Navigationsleiste.
+
+          Klicke als nächstes auf **„Neuer Abschnitt"**, um dem Kapitel
+          einen Abschnitt hinzuzufügen. In der Vorschau auf der linken
+          Seite wird nun ein Auswahlrechteck um den neuen Abschnitt
+          gezeigt. In der Seitenleiste kannst du die Optionen des
+          Abschnitts bearbeiten. Hier kannst Du z.B. ein Bild oder
+          eine Farbe als Hintergrund fpr den Abschnitts
+          festlegen. Details findest Du unter:
+          [Abschnittsoptionen](#pageflow_scrolled.help_entries.sections)
+
+          Der Abschnitt enthält bereits einen Text-Block. Klicke auf
+          den Text, um diesen zu bearbeiten. Mit einem Klick in den
+          leeren Bereich neben dem Text, kannst Du wieder den
+          Abschnitt auswählen.
+
+          Wenn der Abschnitt ausgewählt ist, wird unterhalb des
+          letzten Elements ein Plus-Button mit der Beschriftung
+          **„Neues Element hinzufügen"** angezeigt. Wenn Du darauf
+          klickst, kannst Du auswählen was für einen Typ von
+          Inhaltselement du einfügen möchtest. Wenn ein Inhaltselement
+          per Klick auswählt wird, können in der Seitenleiste seine
+          Einstellungen bearbeitet werden. Details zu den verfügbaren
+          Inhaltselementen findest Du unter:
+          [Inhaltselemente](#pageflow_scrolled.help_entries.content_elements)
+
+          Oben und unten am Auswahlrechteck um ein Inhaltselement
+          befinden sich ebenfalls Plus-Buttons, über die weitere
+          Elemente vor oder nach dem ausgewählten Element eingefügt
+          werden können.
+
+      sections:
+        menu_item: Abschnittsoptionen
+        text: |
+          # Abschnittsoptionen
+
+          ## Layout
+
+          TODO
+
+          ## Hintergrund
+
+          TODO
+
+          ## Atmo
+
+          TODO
+
+          ## Transitionen
+
+          TODO
+      content_elements:
+        menu_item: Inhaltselemente
+        text: |
+          # Inhaltselemente
+
+          TODO
     public:
       navigation:
         chapter: Kapitel

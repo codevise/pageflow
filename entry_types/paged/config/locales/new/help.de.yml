@@ -1,0 +1,162 @@
+de:
+  pageflow_paged:
+    help_entries:
+      overview:
+        menu_item: Übersicht
+        text: |
+          # Übersicht
+
+          Dies ist der Editor zum Bearbeiten eines Pageflows. Mit
+          seiner Zweiteilung ermöglicht er die direkte Vorschau
+          während der Bearbeitung, zeigt Änderungen am Text oder neu
+          ausgewählte Dateien unmittelbar an und speichert diese
+          automatisch.
+
+          Die Seitenleiste kann durch einen Klick auf den Anfasser zur
+          Größenänderung ein- und ausgeblendet werden. Mit einem
+          Verschieben der Seitenleiste nach links und rechts kannst Du
+          die Größe des Vorschaufensters verändern. Wird das
+          Vorschaufenster schmal, und somit eher zu einem hochkantigen
+          Mobiltelefon-Format gestaucht, wird aus Platzgründen statt
+          der Navigationsleiste nur das Icon „Übersicht“ angezeigt.
+
+          Die Navigation des Editors ist unterteilt in die vier
+          Bereiche:
+
+          ## Titel und Optionen
+
+          Unter „Titel und Optionen“ kannst Du grundsätzliche
+          Parameter des Erscheinungsbildes, sowie Titel, Sprache,
+          Impressum etc. einstellen. Dazu können Texte festgelegt
+          werden, die beim Teilen des Beitrags über Social Media
+          Dienste angezeigt werden sollen.
+
+          Details findest Du unter: [Titel und Optionen](#pageflow_paged.help_entries.meta_data)
+
+          ## Dateien verwalten
+
+          Unter „Dateien verwalten“ lädst Du die Mediendateien hoch,
+          die im Pageflow verwendet werden sollen. Du kannst hier auch
+          bereits hochgeladene Videos, Fotos und Audios
+          wiederverwenden.
+
+          Details findest Du unter: [Dateien verwalten](#pageflow.help_entries.files)
+
+          ## Gliederung
+
+          Über die „Gliederung“ kannst Du Kapitel und Seiten
+          hinzufügen, also die eigentlichen Inhalte bearbeiten. Per
+          Drag&Drop lassen sich Seiten und Kapitel auch jederzeit
+          umsortieren.
+
+          Details findest Du unter: [Kapitel und Seiten](#pageflow_paged.help_entries.outline)
+      meta_data:
+        menu_item: Titel und Optionen
+        text: |
+          # Titel und Optionen
+
+          Allgemeine Einstellungen für den Beitrag. Bitte einen
+          Unterpunkt auf der linken Seite auswählen.
+        appearance:
+          menu_item: Erscheinungsbild
+          text: |
+            # Erscheinungsbild
+
+            ## Multimedia Hinweis vor dem Start
+
+            Entscheide, ob zu Beginn Deines Pageflows ein Hinweis angezeigt wird.
+
+            ## Kapitelanfang hervorheben
+
+            Mit dieser Option wird der Titel der jeweils ersten Seite
+            eines Kapitels größer dargestellt.
+
+            ## Neue Seiten hervorheben
+
+            Zeigt zum Start des Pageflows in einer Info-Box die seit dem letzten Besuch neu erstellen Seiten an. Da für dieses Features Cookies verwendet werden, erscheint bei Aktivierung - gemäss der DSGVO - automatisch ein Cookie-Hinweis am unteren Bildrand.
+
+            ## Home-Button anzeigen
+
+            Es gibt die Möglichkeit, in der Navigation einen Button
+            anzuzeigen, der auf eine externe Seite verlinkt, z.B. zurück
+            auf die Homepage, von der aus Du den Pageflow verlinkt hast.
+
+            ## Übersicht-Button anzeigen
+
+            Der Übersichts-Button in der Navigationsleiste kann ausgeblendet werden.
+
+            ## Home-Button-URL
+
+            Gib hier den Link ein, auf den ein Klick auf den Home-Button führen soll. Falls die Ziel-URL für alle Beiträge Deines Kontos identisch ist, kann über „Einstellungen“ auch eine allgemeine „Redirect-URL“ festgelegt werden, die sich auf alle Beiträge auswirkt.
+
+            ## Steuerungsgesten
+
+            Mit dieser Option kann die Steuerung für mobile Endgeräte auf horizontales Scrollen umgestellt werden.
+
+            ## Lade-Ansicht
+
+            Wähle die Art der Lade-Ansicht Deines Beitrags. Alternativ zur klassischen Ansicht kann hier ein individueller Lade-Indikator mit eigenem Hintergrund-Bild, animierter Titel- und Untertitel-Zeile und skalierbarer Unschärfe konfiguriert werden.
+
+            ## Player Controls
+
+            Wähle das Erscheinungsbild der Steuerungs-Elemente für Audio- und Video-Player, 360° Panorama- und Vorher/Nachher-Seiten aus.
+
+            ## Navigationsleiste
+
+            Wähle zwischen unterschiedlichen Navigationsleisten. Beachte, dass bei mobilen Endgeräten statt der Navigationsleiste aus Platzgründen in lediglich das Icon „Übersicht“ angezeigt wird.
+
+            ## Cookie Hinweis
+
+            Sobald Google Analytics oder das Feature „Neue Seiten hervorheben“ aktiviert ist, wird beim ersten Besuch des Beitrags automatisch ein Datenschutz-Hinweis angezeigt. Falls ein Beitrag in eine eigene Webseite mit eigenem Datenschutz-Hinweis eingebettet wird, kann dieser Hinweis optional ausgeblendet werden.
+
+            ## Theme
+            Lege ein Font-Template für den Beitrag fest.
+      outline:
+        menu_item: Kapitel und Seiten
+        text: |
+          # Kapitel und Seiten
+
+          Ein Pageflow besteht aus mindestens einem Kapitel mit
+          mindestens einer Seite. Es können beliebig viele Kapitel mit
+          beliebig vielen Seiten erstellt werden. Um Inhalte zu
+          erstellen, klicke
+
+          1. auf Neues Kaptitel, um ein erstes Kapitel zu erstellen
+          2. auf Neue Seite, um dem Kapitel eine Seite hinzuzufügen, und
+          3. auf diese Seite, um den Inhalt zu bearbeiten.
+
+          ## Aufbau eines Kapitels
+
+          Mit den „Kapiteln" strukturierst Du den Aufbau Deiner
+          Reportage - beispielsweise nach Themenschwerpunkten oder
+          Zeiträumen. Die Kapitel werden in der „Übersicht“ angezeigt
+          und dienen dem User als Orientierungshilfe. Deshalb ist es
+          ratsam die jeweiligen Kapitel mit Titeln zu versehen.
+
+          Wenn nur ein unbenanntes Kapitel angelegt wird, so verhält
+          sich Pageflow, als ob keine Kapitelstruktur vorhanden
+          ist. (Kapitel und Kapiteltitel werden in diesem Falle nicht
+          in der Übersicht bzw. Navigation dargestellt).
+
+      storylines:
+        menu_item: Erzählstränge
+        text: "# Erzählstränge\n\nErgänzend zur linearen Erzählung von „oben nach unten“, können auch weitere (non-lineare) Erzählstränge als Exkurse zu vertiefenden Inhalten genutzt werden. \n\nIn diesem [Blogartikel](https://www.pageflow.io/neues-pageflow-update) findest Du ein Beispiel.\n\nMit „Erzählstrang“ ist hier die zusammenhängende Kapitel- und Seitenabfolge gemeint, durch die ein User hindurch scrollt. Zu unterscheiden ist zwischen dem sogenannten Haupterzählstrang, in dem ein User zu Beginn eines Pageflows einsteigt, und weiteren untergeordneten Erzählsträngen. \n\nUm vom Haupterzählstrang einen Abzweig zu erstellen, benutze eine „Verweise“-Seite (Mosaik, Collage oder Hotspot) und lege auf der jeweiligen Seite unter „Verweise“ die entsprechenden Verknüpfungen an. \n\nDabei kann durch das Festlegen einer „übergeordneten Seite“ bestimmt werden, zu welcher Seite der User am Ende des Erzählstrangs  gelangt.\n\nOptisch unterstützt werden diese Exkurse in untergeordnete Erzählstränge durch einen horizontalen Seitenübergangseffekt, der beim Eintreten und Verlassen dieser Stränge automatisch eingestellt ist. \n\nErstellt werden diese Erzählstränge in der Gliederung über ein Klick auf die Plus-Schaltfläche neben der Erzählstrang-Auswahl. Dabei öffnet sich automatisch ein neues Kapitel, in dem dann weitere Seiten angelegt werden können.\n\n\n### Übergeordnete Seiten\n\nIn jedem Untererzählstrang muss eine „Übergeordnete Seite“ festgelegt werden, die bestimmt, wohin ein User beim zurück-scrollen gelangt. Mit einem Klick auf das Stift-Symbol neben der Erzählstrang-Auswahl kann diese Zielseite ausgewählt werden. Durch die Auswahl einer übergeordneten Seite erscheint auf allen Seiten eines untergeordneten Erzählstrangs zudem automatisch ein „Zurück“-Button, der zu der übergeordneten Seite führt. \n\n\n### Kapitel-Hierarchie\n\nDurch die Verwendung mehrerer „untergeordneter“ Erzählstränge und der Festlegung von übergeordneten Seiten ergibt sich eine Kapitelhierarchie, wie man sie auch von Buch-Gliederungen kennt:\n\n1. (Hauptstrang), 1.1 (Übergeordneter Unterstrang), 1.1.1 (vertiefende Seite im übergeordneten Unterstrang) und so weiter.\n\nDiese Hierarchie kann nachträglich in der Erzählstrang-Auswahl über ein Klick auf Stift-Symbol geändert werden. Ein untergeordneter Erzählstrang kann an dieser Stelle zudem auch nachträglich zum Haupt-Erzählstrang umsortiert werden.\n\n\n### Scroll-Nachfolger\n\nFalls der User von der letzten Seite eines Unterkapitels (1.1.1) auf eine andere Stelle im Beitrag geleitet werden soll (z.B. 2.1), kann hierzu ebenfalls über das Stiftsymbol in den Erzählstrang-Einstellungen der sogenannte „Scroll-Nachfolger“ festgelegt werden. Um in dem Beispiel zu bleiben wäre der folgende Ablauf denkbar: 1 -> 1.1 -> 1.1.1 -> 2.1\n\nAchtung: Während des Editierens wird immer nur das aktuell ausgewählte Kapitel angezeigt. Um zu den anderen Erzählsträngen zu gelangen klicke auf das Auswahlmenü „Erzählstrang“."
+      page_options:
+        menu_item: Allgemeine Seitenoptionen
+        text: "# Allgemeine Seitenoptionen\n\n### Titel\n\nHier gibst Du den Titel der jeweiligen Seite ein. Dieser\nwird nicht nur als Überschrift des Fliesstextes der Seite\nausgespielt, sondern dient zudem als Titel innerhalb der\nNavigation und der Übersicht. Wird eine einzelne Seite in\nsozialen Netzwerken geteilt, ist dieser Titel zugleich auch\nder Titel des Social Media-Beitrages.\n\n### Titel ausblenden\n\nOptional lässt sich der Titel auch ausblenden. Das heisst:\nEr wird nicht mehr als Überschrift im Fliesstext\nangezeigt. Er bleibt zur Identifikation einer Seite\nallerdings in Navigation, Übersicht und geteilten Beträgen\nerhalten.\n\n### Tagline und Untertitel\n\nHier kann wahlweise eine Tagline und/oder ein Untertitel\neingegeben werden. Falls Du ein Häkchen bei „Titel\nausblenden“ gesetzt hast, sind Tagline und Untertitel über\ndem Fliesstext ebenfalls nicht zu sehen.\n\n### Text\n\nDer Textblock kann mit den Buttons unterhalb des\nEingabefeldes formatiert werden. [ B=Fett / I=kursiv /\nU=unterstrichen „gekippte acht“=Link/URL auf fremde Seite\neinfügen].\n\nAlle Änderungen sind in der linken Frontend-Ansicht\nsichtbar, sobald das entsprechende Texteingabefeld im\nEditierbereich verlassen wurde.\n\n### Textposition\n\nWähle hier, ob der Text auf der linken oder rechten Seite\nangezeigt wird.\n\n### Intensität der Abblendung\n\nDie Intensität des Farbverlaufs dient der Lesbarkeit von\nTexten auf Videos oder Bildern.\n\nDurch den Schieberegler kann der Bildhintergrund so stark\nabgedunkelt bzw. aufgehellt werden, bis der Kontrast\nzwischen Bild und Text ausreichend ist.\n\n### Farben invertieren\n\nBeim Invertieren werden „hell“ und „dunkel“ vertauscht, die\nsonst weiße Schrift ändert sich dabei automatisch in\nschwarz.\n\nGrundsätzlich gilt: Helle Schrift für dunkle Bilder, dunkle\nSchrift für helle Bilder.\n\n### Thumbnail\n\nDas Thumbnail ersetzt das ansonsten automatisch generierte\nVorschaubild in der Navigation und in der Übersicht.\n\n### In Navigationsleiste anzeigen\n\nIst diese Option nicht gesetzt, wird die jeweilige Seite\nnicht in der Navigation repräsentiert, kann also nicht\ndirekt über die Navigation erreicht werden.\n\nDies bietet sich vor allem für Seiten an, die inhaltlich als\n„Unterseiten“ einer anderen Seite anzusehen sind.\n\n### Übergangseffekt\n\nEs gibt verschiedene Effekte, die sichtbar sind, wenn von einer Kapitelseite zur nächsten gescrollt oder geklickt wird. Zur Auswahl stehen Seitenübergänge, wie „Überblendung“, „Schwarzblende“ oder „Harter Schnitt“ die sich vertikal auswirken, zudem kann auch „Horizontal Scrollen“ von rechts oder links ausgewählt werden. \n\nWelcher Effekt verwendet wird, kann unter „Optionen“ individuell für jede Seite festgelegt werden.\n\n### Text verzögert einblenden\n\nBestimme mit dieser Option, ob Text und Abblendung mit zeitlicher Verzögerung angezeigt werden.\nHierbei sehen User zunächst nur den Hintergrund, dann erscheinen Titel, Tagline und Untertitel und mit minimaler Verzögerung schließlich der Fließtext.\n\nInsgesamt stehen drei Verzögerungslängen zur Verfügung: kurz = 1 Sekunde, mittel = 3 Sekunde, lang = 5 Sekunde.\n\nDieses Feature eignet sich zum Beispiel für Intros oder Kapitelanfänge.\n\n### Beschreibung für Übersicht\n\nHier kann der Text eingegeben werden, der angezeigt wird,\nwenn der User in der Übersicht mit der Mouse über die\njeweilige Seite fährt. Außerdem entspricht der hier\neingegebene Text"
+      atmo:
+        menu_item: Atmo Audio
+        text: |-
+          # Atmo Audio
+
+          Mit der „Atmo“ kann jede Seite, unabhängig vom Seitentyp, im Hintergrund Sound abspielen. Dabei kannst Du bestimmen, ob ein Sound nur auf einer Seite zu hören ist oder über mehrere Seiten ohne Unterbrechung läuft. Wähle dazu einfach für die benachbarten Seiten die selbe Audiodatei als Atmo aus.
+
+          Auf diese Weise lassen sich Kapitel akustisch voneinander absetzen und zusammenhängende Seiten stärker verweben.
+
+          Beim Seitentyp Video kann zusätzlich ausgwählt werden, ob der Hintergrundsound während der Video-Wiedergabe normal oder leiser weitergespielt oder ganz ausgeblendet werden soll.
+
+          Die Einstellung der Atmo-Sounds erreichst du bei jeder Seite über den Reiter „Optionen“.
+
+          Sollte Dich die Atmo während der Bearbeitung Deines Beitrags im Editor einmal stören, kannst Du sie mit der Tastenkombination „Alt + a“ vorübergehend stumm schalten. Um die Atmo wieder zu aktivieren, drücke einfach erneut „Alt + a“.
+
+          **ACHTUNG:** Atmo-Audios können aufgrund technischer Einschränkungen der Browserhersteller auf mobilen Geräten und mit Safari auf Desktop nicht wiedergegeben werden.
