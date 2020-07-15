@@ -24,8 +24,10 @@ export const volumeBinding = function(player, settings, options) {
 
     return Promise.all([originalPlay.call(player)]).then(function() {
       listenToVolumeSetting();
-      return player.fadeVolume(player.targetVolume(), duration).then(null, function() {
-        return Promise.resolve();
+      return player.ifIntendingToPlay().then(function() {
+        return player.fadeVolume(player.targetVolume(), duration).then(null, function() {
+          return Promise.resolve();
+        });
       });
     });
   };
