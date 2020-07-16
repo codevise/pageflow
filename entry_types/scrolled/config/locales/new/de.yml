@@ -300,7 +300,7 @@ de:
             atmoDuringPlayback:
               label: Atmo während Medien-Wiedergabe
               inline_help: >
-                Wähle wie sich die Atmo während der Wiedergabe des Hauptmediums dieses Medienelement verhalten soll.
+                Wähle wie sich die Atmo während der Wiedergabe dieses Videos verhalten soll.
               values:
                 mute: Ausblenden
                 play: Weiterspielen
@@ -317,7 +317,7 @@ de:
             atmoDuringPlayback:
               label: Atmo während Medien-Wiedergabe
               inline_help: >
-                Wähle wie sich die Atmo während der Wiedergabe des Hauptmediums dieser Seite verhalten soll.
+                Wähle wie sich die Atmo während der Wiedergabe dieses Audio-Elements verhalten soll.
               values:
                 mute: Ausblenden
                 play: Weiterspielen
@@ -488,7 +488,7 @@ de:
           atmoAudioFileId:
             label: Atmo-Audio
             inline_help: >
-              Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch auf Folgeseiten nahtlos weiterspielen soll, wähle auf diesen Seiten die selbe Datei aus. Diese Funktionalität steht im Moment nicht auf mobilen Geräten zur Verfügung.
+              Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch in nachfolgenden Abschnitten nahtlos weiterspielen soll, wähle für diese Abschnitte die selbe Atmo aus.
           invert:
             label: Text invertieren
           layout:

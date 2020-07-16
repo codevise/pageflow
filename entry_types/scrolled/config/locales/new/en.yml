@@ -213,7 +213,7 @@ en:
             atmoDuringPlayback:
               label: Atmo During Playback
               inline_help: >
-                Choose which way the atmo shall behave during playback of this media element.
+                Choose which way the atmo shall behave during playback of this video element.
               values:
                 mute: Mute
                 play: Keep playing
@@ -230,7 +230,7 @@ en:
             atmoDuringPlayback:
               label: Atmo During Playback
               inline_help: >
-                Choose which way the atmo shall behave during playback of this page's main media.
+                Choose which way the atmo shall behave during playback of this audio element.
               values:
                 mute: Mute
                 play: Keep playing
