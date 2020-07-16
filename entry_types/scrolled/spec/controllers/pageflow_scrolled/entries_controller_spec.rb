@@ -53,6 +53,26 @@ module PageflowScrolled
 
         expect(response.body).to have_selector('div.test_widget')
       end
+
+      it 'lets widget types opt out if being rendered in preview' do
+        widget_type = Pageflow::TestWidgetType
+                      .new(name: 'test_widget',
+                           enabled_in_preview: false,
+                           rendered_head_fragment: '<meta name="some_test" content="value">',
+                           rendered: '<div class="test_widget"></div>')
+
+        pageflow_configure do |config|
+          config.widget_types.register(widget_type)
+        end
+
+        entry = create(:entry, :published, type_name: 'scrolled')
+        create(:widget, subject: entry.draft, type_name: 'test_widget')
+
+        get_with_entry_env(:show, entry: entry, mode: :preview)
+
+        expect(response.body).not_to have_selector('div.test_widget')
+        expect(response.body).not_to have_meta_tag.with_name('some_test')
+      end
     end
   end
 end
