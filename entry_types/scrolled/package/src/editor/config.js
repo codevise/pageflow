@@ -5,6 +5,7 @@ import {ContentElementFileSelectionHandler} from './models/ContentElementFileSel
 
 import {EntryOutlineView} from './views/EntryOutlineView';
 import {EntryPreviewView} from './views/EntryPreviewView';
+import {NoOptionsHintView} from './views/NoOptionsHintView';
 
 import {SideBarRouter} from './routers/SideBarRouter';
 import {SideBarController} from './controllers/SideBarController';
@@ -22,6 +23,10 @@ editor.registerEntryType('scrolled', {
     });
   },
   outlineView: EntryOutlineView,
+
+  appearanceInputs(tabView) {
+    tabView.view(NoOptionsHintView);
+  },
 
   isBrowserSupported() {
     return (browser.agent.matchesDesktopChrome({minVersion: 20}) ||
