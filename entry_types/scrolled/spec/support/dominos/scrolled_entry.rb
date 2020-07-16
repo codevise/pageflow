@@ -6,12 +6,12 @@ module Dom
       all('section').count
     end
 
-    def heading_content_element
-      find('section h1')
+    def inline_image_content_element_caption
+      find('section figcaption')
     end
 
-    def heading_content_element_selection_rect
-      find('section h1').find(:xpath, '..')
+    def inline_image_content_element_selection_rect
+      find('section figure').find(:xpath, '..')
     end
   end
 end

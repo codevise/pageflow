@@ -1,12 +1,11 @@
-import {editor} from 'pageflow-scrolled/editor';
-import {TextInputView} from 'pageflow/ui';
+import {editor, NoOptionsHintView} from 'pageflow-scrolled/editor';
 
 editor.contentElementTypes.register('heading', {
   supportedPositions: ['inline'],
 
   configurationEditor() {
     this.tab('general', function() {
-      this.input('children', TextInputView);
+      this.view(NoOptionsHintView);
     });
   }
 });

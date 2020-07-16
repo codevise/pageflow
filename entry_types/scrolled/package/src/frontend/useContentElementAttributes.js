@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useMemo} from 'react';
 
-const ContentElementAttributesContext = createContext();
+const ContentElementAttributesContext = createContext({});
 
 export function ContentElementAttributesProvider({id, children}) {
   const attributes = useMemo(() => ({contentElementId: id}), [id]);
