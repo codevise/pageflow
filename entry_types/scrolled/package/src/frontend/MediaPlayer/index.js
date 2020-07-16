@@ -64,7 +64,7 @@ function PreparedMediaPlayer(props){
     <>
       <PlayerContainer className={classNames(props.className, {[textTrackStyles.inset]: props.textTracksInset})}
                        type={props.type}
-                       sources={props.sources}
+                       sources={appendSuffix(props.sources, props.sourceUrlSuffix)}
                        textTrackSources={getTextTrackSources(props.textTracks.files)}
                        filePermaId={props.filePermaId}
                        poster={props.posterImageUrl}
@@ -83,4 +83,15 @@ PreparedMediaPlayer.defaultProps = {
   textTracks: {
     files: []
   }
+}
+
+function appendSuffix(sources, suffix) {
+  if (!suffix) {
+    return sources;
+  }
+
+  return sources.map(source => ({
+    ...source,
+    src: `${source.src}${suffix}`
+  }));
 }
