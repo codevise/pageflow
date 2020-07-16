@@ -17,5 +17,10 @@ export const EntryMetadata = Configuration.extend({
       this.trigger('change');
       this.parent.save();
     });
+  },
+
+  // Pageflow Scrolled only synchronizes saved records to entry state.
+  isNew() {
+    return false;
   }
 });
