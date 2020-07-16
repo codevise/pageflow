@@ -484,7 +484,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    -
+    - 
     - Jan
     - Feb
     - Mar
@@ -510,7 +510,7 @@ en:
       long: "%B %d, %Y"
       short: "%b %d"
     month_names:
-    -
+    - 
     - January
     - February
     - March
@@ -948,7 +948,7 @@ en:
       help_entries:
         page_type:
           menu_item: Audio
-          text: "# Audio\n\n*Playing audio-files with controls*\n    \nHere you can combine audio-files with pictures or background videos and\ntext-content. Controls similar to the page type „Video“\nare shown.  In addition to that you can write a\ndescription into an „Infobox“.\n\nExamples of application: interviews, direct quotes, music"
+          text: "# Audio\n\n*Playing audio-files with controls*\n    \nHere you can combine audio-files with pictures or background videos and\ntext-content. Controls similar to the page type \"Video“\nare shown.  In addition to that you can write a\ndescription into an „Infobox“.\n\nVia \"Options\" the appearance of the player can be changed to the visualization of the waveform of an audio file.\n\nExamples of application: interviews, direct quotes, music"
       open: Play audio
       page_attributes:
         audio_player_controls_variant:
@@ -969,25 +969,7 @@ en:
       help_entries:
         page_type:
           menu_item: Background Image/Video
-          text: |-
-            # Background Image/Video
-
-            Full-screen image or video loop and text
-
-            By using the page type „Background-Image/Video“, large pictures
-            or video loops are the background for the text and are paired with a
-            manually adjustable color gradient for an optimal
-            legibility. In order to have an optimal presentation on
-            mobile devices you can adjust the image detail to the
-            display. Optionally the text color can be inverted. This
-            is especially useful for bright background-images.
-
-            Users are able to hide the color-gradient and text in
-            the front-end, if they want to have a view of the
-            background image or video.
-
-            Examples: Presentation, part of a picture gallery,
-            portrait
+          text: "# Background Image/Video\n\n*Full-screen image or video loop and text*\n\nBy using the page type „Background-Image/Video“, large pictures\nor video loops are the background for the text and are paired with a\nmanually adjustable color gradient for an optimal\nlegibility. By adjusting the image section, you can ensure that your picture also shows the relevant section of your subject on mobile devices in portrait mode. \n\nOptionally the text color can be inverted. This\nis especially useful for bright background-images.\n\nUsers are able to hide the color-gradient and text in\nthe front-end, if they want to have a view of the\nbackground image or video.\n\nExamples: Presentation, part of a picture gallery,\nportrait\n\n**Note on sound for background video**: Due to technical restrictions based on the \"Autoplay Policy\" of the browser manufacturers, videos with sound cannot be played automatically on all devices/browsers. \n\nTo enable playback of video loops on mobile devices and in Safari on desktop and tablets, the sound is therefore suppressed. With Chrome this restriction is circumvented by a Unmute button, with Firefox users decide for themselves whether to allow automatic playback of audio."
       page_type_category_name: Basic
       page_type_description: Fullscreen image or video loop with text
       page_type_name: Background image/video
@@ -1484,10 +1466,10 @@ en:
 
           Should you ever feel distracted by the atmo audio while working on your story, you can use the hot key „Alt + a“ to temporarily mute it. Simply press „Alt + a“ again to reactivate atmo audio.
 
-          CAUTION: Atmo audio does not play on mobile devices.
+          **CAUTION:** Due to technical restrictions imposed by the browser manufacturers, ambient audio cannot be played on mobile devices and with Safari on the desktop.
       files:
         menu_item: Manage Files
-        text: |
+        text: |-
           # Manage Files
 
           Pageflow processes all major media formats (photo, audio,
@@ -1518,13 +1500,6 @@ en:
           finished. You can therefore continue your work during the
           loading process.
 
-          ## Copyrights of Files
-
-          If you click on the thumbnail of a media file (picture,
-          video, audio), you can add information with regards to its
-          copyright. This information is shown automatically in the
-          legal notice.
-
           ## Reuse Files
 
           Videos, audio files and pictures can be used in more than
@@ -1532,68 +1507,16 @@ en:
           uploaded several times. Click on „Manage Files“ and on
           „Add“/„Reuse“, to search for files in other articles and add
           them to a new one.
+
+          ## Edit File Settings and Copyright
+
+          If you click on the thumbnail of a media file (picture,
+          video, audio), you can add information with regards to its
+          copyright. This information is shown automatically in the
+          legal notice.
       meta_data:
         menu_item: Title and Options
-        text: |
-          # Title and Options
-
-          ## General
-
-          ### Title of the Pageflow
-
-          Here you can choose a title for your Pageflow. It will be
-          shown on the title bar of the browser window. It also acts
-          as an indicator for search engines once the report is
-          published.
-
-          ### Language
-
-          Decide in which language your Pageflow should be
-          displayed. This refers to text which cannot be edited - like
-          multimedia tips, scroll-indicators, the overview and the
-          legal notice.
-
-          ## Appearance
-
-          ### Multimedia tips before the start
-
-          Decide if tips or advice should be shown at the beginning of
-          your Pageflow.
-
-          ### Highlighting chapter beginnings
-
-          This option lets the title of the first page of a chapter
-          appear in a bigger font.
-
-          ### Highlighting new pages
-
-          At the beginning of a Pageflow an info-box shows new pages
-          that were created since the last visit.
-
-          ### Display Home-Button
-
-          You can have a button in the navigation, which hyperlinks to
-          an external website, for example back to the website from
-          which you hyperlinked to the Pageflow.
-
-          ### Navigation
-
-          Choose between two forms of navigation: The navigation with
-          a progress bar or the navigation with thumbnails. Please
-          note, that due to the lack of space on mobile devices only
-          the icon „Overview“ is shown.
-
-          ## Social
-
-          ### Social Sharing Picture
-
-          Choose a picture, which should be shown, if your Pageflow is
-          shared in social networks.
-
-          ### Summary
-
-          Here you can write a description, which is shown, when your
-          Pageflow is shared in social networks.
+        text: "# Title and Options\n\n## General\n\n### Title of the Pageflow\n\nHere you can choose a title for your Pageflow. It will be\nshown on the title bar of the browser window. It also acts\nas an indicator for search engines once the report is\npublished.\n\n### Language\n\nDecide in which language your Pageflow should be displayed. This refers to the frontend text such as multimedia tips, scroll-indicators, the overview and the legal notice.\n\n\n### Credits\nHere you can enter your imprint information in free text. In addition, image rights can be assigned for all files under \"Manage files\", which are then automatically displayed in the imprint.\n\n\n## Appearance\n\n### Multimedia tips before the start\n\nDecide if tips or advice should be shown at the beginning of\nyour Pageflow.\n\n### Highlighting chapter beginnings\n\nThis option lets the title of the first page of a chapter\nappear in a bigger font.\n\n### Highlighting new pages\n\nAt the beginning of a Pageflow an info-box shows new pages that were created since the last visit. Since cookies are used for this feature, a cookie notice appears automatically at the bottom of the screen when activated - in accordance with the GDPR.\n\n### Display Home-Button\n\nYou can have a button in the navigation, which hyperlinks to an external website, for example back to the website from which you hyperlinked to the Pageflow.\n\n\n### Show overview button\n\nThe overview button in the navigation bar can be hidden.\n\n### Home button URL\n\nEnter the link here to which a click on the Home button should lead. If the target URL is the same for all entries in your account, you can also set a general \"redirect URL\" via \"Settings\", which will affect all entries.\n\n### Control gestures\n\nWith this option the control for mobile devices can be switched to horizontal scrolling.\n\n### Loading view\n\nSelect the type of loading view of your entry. As an alternative to the classic view, an individual load indicator with its own background image, animated title and subtitle line and scalable blur can be configured here.\n\n### Player Controls\n\nSelect the appearance of the control elements for audio and video players, 360° panorama and before/after pages.\n\n### Navigation bar\n\nChoose between navigation bars. Please note, that due to the lack of space on mobile devices only the icon „Overview“ is shown.\n\n### Cookie notice\nAs soon as Google Analytics or the \"Highlight new pages\" feature is activated, a privacy notice is automatically displayed the first time the entry is visited. If an entry is embedded in a separate website with its own privacy notice, this notice can be optionally hidden.  \n\n\n### Theme\n\nSpecify a font template for the entry. \n\n\n## Social\n\n### Social Sharing Picture\n\nChoose a picture, which should be shown, if your Pageflow is\nshared in social networks.\n\n### Summary\n\nHere you can write a description, which is shown, when your\nPageflow is shared in social networks.\n\n### Social Sharing URL\n\nIf contributions are embedded in your own web pages (with a different URL), you can specify an individual URL here that is to be used when sharing the contribution. \n\n### Social Share Links\n\nDetermine which share buttons should be displayed when clicking on the \"Share function\". "
       outline:
         menu_item: Chapters and Pages
         text: |-
@@ -1676,10 +1599,10 @@ en:
           click on a page type on the left column.
       publishing:
         menu_item: Publishing
-        text: "# Publishing\n\nClick on the „Publish“ button to publish your Pageflow. A\nPageflow can be published at any point in time. \n\nBesides this, there is the possibility to publish Pageflows with \na password protection. Just activate „Protect with password“. \nPageflow uses the name of the account as user name and \nautomatically generates a password, which can be changed afterwords. \n\nAlready published stories can also be protected with a password by \npublishing another version - the other way round works as well. \nFor this please just click on the „Publishing“ button. The following \nsteps will then be shown and explained within the dialog window.\n\nPublished\nPageflows can also be depublished manually at any time. If a\nPageflow has already been published, changes will not be\nshown until you publish your report again.  A Pageflow can\nonly be edited by one author at one time.\n\nThumbnail for embedding the Pageflow on external websites\nAfter publishing your Pageflow, the system generates a\nthumbnail, which can be embedded as an iframe to the\nhyperlink of another website. By means of the code, the size\nof the iframe can be adjusted. The minimum size is a height\n150px and a width of 220px."
+        text: "# Publishing\n\nClick on the „Publish“ button to publish your Pageflow. An entry can either be published for an unlimited period of time or until a specific deadline.\n\nBesides this, there is the possibility to publish Pageflows with \na password protection. Just activate „Protect with password“. \nPageflow uses the name of the account as user name and \nautomatically generates a password, which can be changed afterwords. \n\nAlready published stories can also be protected with a password by \npublishing another version - the other way round works as well. \nFor this please just click on the „Publishing“ button. The following \nsteps will then be shown and explained within the dialog window.\n\n### Changes After Publishing\nPublished Pageflows can also be depublished manually at any time. If a\nPageflow has already been published, changes will not be\nshown until you publish your report again.  A Pageflow can\nonly be edited by one author at one time.\n\n### Embedding as iframe\nPublished articles can also be embedded in your own website. You can find more information in this [article](https://pageflow.freshdesk.com/support/solutions/articles/11000002744)  \n\n### Embedding iframe Teaser\nThumbnail for embedding the Pageflow on external websites\nAfter publishing your Pageflow, the system generates a\nthumbnail, which can be embedded as an iframe to the\nhyperlink of another website. By means of the code, the size of the iframe can be adjusted. The minimum size is a height 150px and a width of 220px."
       storylines:
         menu_item: Storylines
-        text: "# Storylines\n\nIn addition to linear narrations from top to bottom, further storylines can be used as non linear excursions to enlarge upon parts of a story. A „Storyline“ consists of chapters and pages, which users scroll through. Distinguishable is the so called main storyline from further subordinate ones. The user starts off in the main storyline and can then navigate to different excursions.\n\nTo create such an excursion from the main storyline use one of the „Link“ pages (Mosaic, Collage, Hotspot) and create the desired connections via „Links“.\n\nBy choosing a „Parent page“ you can determine to which page users return after scrolling the storyline´s last page.\n\nTransitions to subordinate storylines are visually supported by a horizontal animation as the default setting for entering and leaving. \n\nStorylines are created by clicking onto the plus button next to the storyline menu. Thereby a new chapter opens automatically in which further pages can be added. \n\n\n### Parent pages\n\nIn every subordinate  storyline a „Parent page“ must be determined to define where users land when scrolling back.\n\nThis target page can be chosen by clicking on the pen symbol next to the storyline menu. When a „Parent page“ is defined, a back button will be shown automatically in the subordinate storyline that will always lead users back to the „Parent page“.\n\n\n### Chapter hierarchy\n\nThe use of more than one „subordinary“ storylines and the definition of „Parent pages“ leads to a chapter hierarchy as known from books:\n\n1. (Main storyline), 1.1. (Superior sub storyline), 1.1.1. (Subordinate sub storyline) and so on.\n\nThis hierarchy can be edited afterwards by clicking on the pen symbol next to the storyline menu. A subordinate storyline can be turned into the main storyline as well.\n\n\n### Scroll successors\n\nIf you want to lead users from a last page of a subordinate chapter (1.1.1) to another position than\nthe „Parent page“ (e.g. to 2.1) you can define a „Scroll successor“. Therefore click on the blue pen symbol within the storyline settings. As an example the following sequence might be imaginable: 1 -> 1.1 -> 1.1.1 -> 2.1\n\nAttention: While editing only the selected chapter will be shown in the sidebar. To switch to the other chapters click onto the storyline menu."
+        text: "# Storylines\n\nIn addition to linear narrations from top to bottom, further storylines can be used as non linear excursions to enlarge upon parts of an  entry.\n\nPlease find a blog article and example [here](https://www.pageflow.io/en/update-storylines)\n\nA „Storyline“ consists of chapters and pages, which users scroll through. Distinguishable is the so called main storyline from further subordinate ones. The user starts off in the main storyline and can then navigate to different excursions.\n\nTo create such an excursion from the main storyline use one of the „Link“ pages (Mosaic, Collage, Hotspot) and create the desired connections via „Links“.\n\nBy choosing a „Parent page“ you can determine to which page users return after scrolling the storyline´s last page.\n\nTransitions to subordinate storylines are visually supported by a horizontal animation as the default setting for entering and leaving. \n\nStorylines are created by clicking onto the plus button next to the storyline menu. Thereby a new chapter opens automatically in which further pages can be added. \n\n\n### Parent pages\n\nIn every subordinate  storyline a „Parent page“ must be determined to define where users land when scrolling back.\n\nThis target page can be chosen by clicking on the pen symbol next to the storyline menu. When a „Parent page“ is defined, a back button will be shown automatically in the subordinate storyline that will always lead users back to the „Parent page“.\n\n\n### Chapter hierarchy\n\nThe use of more than one „subordinary“ storylines and the definition of „Parent pages“ leads to a chapter hierarchy as known from books:\n\n1. (Main storyline), 1.1. (Superior sub storyline), 1.1.1. (Subordinate sub storyline) and so on.\n\nThis hierarchy can be edited afterwards by clicking on the pen symbol next to the storyline menu. A subordinate storyline can be turned into the main storyline as well.\n\n\n### Scroll successors\n\nIf you want to lead users from a last page of a subordinate chapter (1.1.1) to another position than\nthe „Parent page“ (e.g. to 2.1) you can define a „Scroll successor“. Therefore click on the blue pen symbol within the storyline settings. As an example the following sequence might be imaginable: 1 -> 1.1 -> 1.1.1 -> 2.1\n\nAttention: While editing only the selected chapter will be shown in the sidebar. To switch to the other chapters click onto the storyline menu."
       text_tracks:
         menu_item: Text tracks
         text: |-
@@ -1936,7 +1859,7 @@ en:
       help_entries:
         page_type:
           menu_item: Video
-          text: "# Video\n\n*Playing a video with control*\n    \nIn contrast to „Background-Videos“ the text elements fade\nout after a few seconds, in order to draw attention to the\nvideo. With controls the user can start and pause the\nvideo or even fast-forward and rewind it. You can choose\nwhether the video should start automatically as soon as\nthe page is opened.\n\nAs an alternative to the normal text input, you can write\na description into an „Infobox“ with text.\n\nOn the „Options“ tab you can activate auto-scrolling to the next page at the end of a video. \nThis can be useful to create a seamless transition.\n\nExamples of application: Videos of all kinds, interviews,\nportraits"
+          text: "# Video\n\n*Playing a video with control*\n    \nIn contrast to „Background-Videos“ the text elements fade\nout after a few seconds, in order to draw attention to the\nvideo. With controls the user can start and pause the\nvideo or even fast-forward and rewind it. You can choose\nwhether the video should start automatically as soon as\nthe page is opened.\n\nAs an alternative to the normal text input, you can write\na description into an „Infobox“ with text.\n\nOn the „Options“ tab you can activate auto-scrolling to the next page at the end of a video. \nThis can be useful to create a seamless transition.\n\nExamples of application: Videos of all kinds, interviews, portraits\n\n*Note on autoplay for videos: Due to technical restrictions, based on the \"Autoplay Policy\" of the browser manufacturers, videos with sound cannot be played automatically on all devices/browsers. On Safari and mobile devices, videos can only be started manually."
       page_attributes:
         mobile_poster_image_id:
           inline_help: Displayed on mobile devices before the video starts.

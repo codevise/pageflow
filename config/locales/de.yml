@@ -484,7 +484,7 @@ de:
     - Fr
     - Sa
     abbr_month_names:
-    -
+    - 
     - Jan
     - Feb
     - Mär
@@ -510,7 +510,7 @@ de:
       long: "%e. %B %Y"
       short: "%e. %b"
     month_names:
-    -
+    - 
     - Januar
     - Februar
     - März
@@ -948,7 +948,7 @@ de:
       help_entries:
         page_type:
           menu_item: Audio
-          text: "# Audio\n\n*Wiedergabe von Audiodatei mit Steuerelementen* \n    \nHiermit kannst Du Audiodateien mit Hintergrund-Bild oder Hintergrund-Video und Textinhalten\nkombinieren. Wie beim Seitentyp „Video“ werden\nSteuerelemente angezeigt, und ebenso kann eine zusätzliche\nInfobox mit Text befüllt werden.\n\nTypische Anwendungsbeispiele: Interview, O-Töne,\nMusikstücke"
+          text: "# Audio\n\n*Wiedergabe von Audiodatei mit Steuerelementen* \n    \nHiermit kannst Du Audiodateien mit Hintergrund-Bild oder Hintergrund-Video und Textinhalten\nkombinieren. Wie beim Seitentyp „Video“ werden\nSteuerelemente angezeigt, und ebenso kann eine zusätzliche\nInfobox mit Text befüllt werden.\n\nUnter „Optionen“ kann das Erscheinungsbild des Players auf die Visualisierung der Waveform eines Audio-Files gewechselt werden.\n\nTypische Anwendungsbeispiele: Interview, O-Töne,\nMusikstücke"
       open: Audio anhören
       page_attributes:
         audio_player_controls_variant:
@@ -969,27 +969,7 @@ de:
       help_entries:
         page_type:
           menu_item: Hintergrund-Bild/-Video
-          text: |-
-            # Hintergrund-Bild/-Video
-
-            Bildschirmfüllendes Bild und Text
-
-            Mit dem Seitentyp „Hintergrund-Bild/-Video“ werden großformatige
-            Bilder oder Videos mit Text überlagert und zur optimalen Lesbarkeit
-            mit einem manuell einstellbaren Farbverlauf gepaart. über
-            die Auswahl des Bildausschnitts stellst Du sicher, dass
-            Dein Bild auch auf mobilen Endgeräten optimal dargestellt
-            wird. Wahlweise kann der Text für einen ausreichenden
-            Kontrast auch invertiert - also von hell in dunkel -
-            vertauscht werden. Das bietet sich bei hellen
-            Hintergrund-Bildern an.
-
-            User haben übrigens die Möglichkeit Farbverlauf und Text
-            im Front-End auszublenden, sofern Sie sich speziell für
-            das Hintergrund-Bild oder - Video interessieren.
-
-            Typische Anwendungsbeispiele: Präsentation, Teil einer
-            Bildergalerie, Portrait
+          text: "# Hintergrund-Bild/-Video\n\n*Bildschirmfüllendes Bild und Text*\n\nMit dem Seitentyp „Hintergrund-Bild/-Video“ werden großformatige Bilder oder Videos mit Text überlagert und zur optimalen Lesbarkeit mit einem manuell einstellbaren Farbverlauf gepaart. Über die Auswahl des Bildausschnitts stellst Du sicher, dass Dein Bild auch auf mobilen Endgeräten im Portrait-Modus den relevanten Ausschnitt deines Motivs zeigt. \n\nWahlweise kann der Text für einen ausreichenden\nKontrast auch invertiert - also von hell in dunkel -\nvertauscht werden. Das bietet sich bei hellen\nHintergrund-Bildern an.\n\nUser haben übrigens die Möglichkeit Farbverlauf und Text\nim Front-End auszublenden, sofern Sie sich speziell für\ndas Hintergrund-Bild oder - Video interessieren.\n\nTypische Anwendungsbeispiele: Präsentation, Teil einer\nBildergalerie, Portrait\n\n**Hinweis zum Ton bei Hintergrund-Videos:** Aufgrund technischer Einschränkungen, basierend auf der „Autoplay Policy“ der Browser-Hersteller, können Videos mit Ton nicht auf allen Geräten/Browsern automatisch abgespielt werden. \n\nUm die Wiedergabe von Videoloops auf mobilen Geräten und bei Safari auf Desktop und Tablets zu ermöglichen wird der Ton daher unterdrückt. Bei Chrome wird diese Einschränkung durch einen Unmute-Button umgangen, bei Firefox entscheiden Nutzer selbst, ob die automatische Wiedergabe von Audios zugelassen wird."
       page_type_category_name: Basic
       page_type_description: Bildschirmfüllendes Bild oder Video-Loop mit Text
       page_type_name: Hintergrund Bild/Video
@@ -1469,22 +1449,6 @@ de:
             overview_button_enabled_disabled:
               inline_help: Diese Funktion steht in diesem Theme nicht zur Verfügung.
     help_entries:
-      atmo:
-        menu_item: Atmo Audio
-        text: |-
-          # Atmo Audio
-
-          Mit der „Atmo“ kann jede Seite, unabhängig vom Seitentyp, im Hintergrund Sound abspielen. Dabei kannst Du bestimmen, ob ein Sound nur auf einer Seite zu hören ist oder über mehrere Seiten ohne Unterbrechung läuft. Wähle dazu einfach für die benachbarten Seiten die selbe Audiodatei als Atmo aus.
-
-          Auf diese Weise lassen sich Kapitel akustisch voneinander absetzen und zusammenhängende Seiten stärker verweben.
-
-          Beim Seitentyp Video kann zusätzlich ausgwählt werden, ob der Hintergrundsound während der Video-Wiedergabe normal oder leiser weitergespielt oder ganz ausgeblendet werden soll.
-
-          Die Einstellung der Atmo-Sounds erreichst du bei jeder Seite über den Reiter „Optionen“.
-
-          Sollte Dich die Atmo während der Bearbeitung Deines Beitrags im Editor einmal stören, kannst Du sie mit der Tastenkombination „Alt + a“ vorübergehend stumm schalten. Um die Atmo wieder zu aktivieren, drücke einfach erneut „Alt + a“.
-
-          ACHTUNG: Atmo-Audios werden auf mobilen Geräten nicht wiedergegeben.
       files:
         menu_item: Dateien verwalten
         text: |-
@@ -1530,13 +1494,6 @@ de:
           die Verarbeitung noch nicht abgeschlossen ist. Während des
           Ladevorgangs kann also problemlos weiter gearbeitet werden.
 
-          ## Datei-Einstellungen bearbeiten
-
-          Für jede Datei kann über die Schaltfläche "Einstellungen
-          bearbeiten" ein Dialog mit weiteren Optionen angezeigt
-          werden. Hier können z.B. die beim Upload eingegebenen
-          Metadaten (wie die Angaben zum Urheberrecht) noch einmal
-          bearbeiten werden.
 
           ## Dateien wiederverwenden
 
@@ -1546,151 +1503,14 @@ de:
           "Dateien verwalten“ auf "Hinzufügen -> Wiederverwenden", um
           andere Beiträge nach Dateien zu durchsuchen und sie in den
           bearbeiteten Beitrag zu übernehmen.
-      meta_data:
-        menu_item: Titel und Optionen
-        text: |
-          # Titel und Optionen
 
-          ## Allgemein
+          ## Datei-Einstellungen bearbeiten
 
-          ### Titel des Pageflows
-
-          Hier kannst Du Deinem Pageflow einen Titel geben, der in der
-          Titelleiste des Browserfensters angezeigt wird. Unter diesem
-          Titel wird Dein Pageflow nach der Veröffentlichung auch in
-          Suchmaschinen indiziert werden.
-
-          ### Sprache
-
-          Wähle hier, in welcher Sprache Dein Pageflow ausgespielt
-          wird. Hierbei geht es um nicht editierbare Texte, wie
-          z.B. den Multimedia-Hinweis, Scroll-Hinweis, die Übersicht
-          und Impressum.
-
-          ### Impressum
-
-          Hier kannst Du Deine Impressums-Information im Freitext
-          eingeben.
-
-          ## Erscheinungsbild
-
-          ### Multimedia Hinweis vor dem Start
-
-          Entscheide, ob zu Beginn Deines Pageflows ein Hinweis angezeigt wird.
-
-          ### Kapitelanfang hervorheben
-
-          Mit dieser Option wird der Titel der jeweils ersten Seite
-          eines Kapitels größer dargestellt.
-
-          ## Neue Seiten hervorheben
-
-          Zeigt zum Start des Pageflows in einer Info-Box die seit dem
-          letzten Besuch neu erstellen Seiten an.
-
-          ### Home-Button anzeigen
-
-          Es gibt die Möglichkeit, in der Navigation einen Button
-          anzuzeigen, der auf eine externe Seite verlinkt, z.B. zurück
-          auf die Homepage, von der aus Du den Pageflow verlinkt hast.
-
-          ### Navigationsleiste
-
-          Wähle zwischen "Navigationsleiste mit Fortschrittsbalken“
-          oder "Navigationsleiste mit Thumbnails“. Beachte, dass bei
-          mobilen Endgeräten statt der Navigationsleiste aus
-          Platzgründen in beiden Fällen lediglich das Icon „Übersicht“
-          angezeigt wird.
-
-          ## Social
-
-          ### Social Sharing Bild
-
-          Wähle hier das Bild aus, das beim Teilen des Pageflows in
-          sozialen Netzwerken erscheinen soll.
-
-          ### Zusammenfassung
-
-          Trage hier ein, welcher Beschreibungstext beim Teilen in
-          sozialen Netzwerken angezeigt wird.
-      outline:
-        menu_item: Kapitel und Seiten
-        text: |
-          # Kapitel und Seiten
-
-          Ein Pageflow besteht aus mindestens einem Kapitel mit
-          mindestens einer Seite. Es können beliebig viele Kapitel mit
-          beliebig vielen Seiten erstellt werden. Um Inhalte zu
-          erstellen, klicke
-
-          1. auf Neues Kaptitel, um eine erstes Kapitel zu erstellen
-          2. auf Neue Seite, um dem Kapitel eine Seite hinzuzufügen, und
-          3. auf diese Seite, um den Inhalt zu bearbeiten.
-
-          ## Aufbau eines Kapitels
-
-          Mit den „Kapiteln" strukturierst Du den Aufbau Deiner
-          Reportage - beispielsweise nach Themenschwerpunkten oder
-          Zeiträumen. Die Kapitel werden in der „Übersicht“ angezeigt
-          und dienen dem User als Orientierungshilfe. Deshalb ist es
-          ratsam die jeweiligen Kapitel mit Titeln zu versehen.
-
-          Wenn nur ein unbenanntes Kapitel angelegt wird, so verhält
-          sich Pageflow, als ob keine Kapitelstruktur vorhanden
-          ist. (Kapitel und Kapiteltitel werden in diesem Falle nicht
-          in der Übersicht bzw. Navigation dargestellt).
-      overview:
-        menu_item: Übersicht
-        text: |
-          # Übersicht
-
-          Dies ist der Editor zum Bearbeiten eines Pageflows. Mit
-          seiner Zweiteilung ermöglicht er die direkte Vorschau
-          während der Bearbeitung, zeigt Änderungen am Text oder neu
-          ausgewählte Dateien unmittelbar an und speichert diese
-          automatisch.
-
-          Die Seitenleiste kann durch einen Klick auf den Anfasser zur
-          Größenänderung ein- und ausgeblendet werden. Mit einem
-          Verschieben der Seitenleiste nach links und rechts kannst Du
-          die Größe des Vorschaufensters verändern. Wird das
-          Vorschaufenster schmal, und somit eher zu einem hochkantigen
-          Mobiltelefon-Format gestaucht, wird aus Platzgründen statt
-          der Navigationsleiste nur das Icon „Übersicht“ angezeigt.
-
-          Die Navigation des Editors ist unterteilt in die vier
-          Bereiche:
-
-          ## Titel und Optionen
-
-          Unter „Titel und Optionen“ kannst Du grundsätzliche
-          Parameter des Erscheinungsbildes, sowie Titel, Sprache,
-          Impressum etc. einstellen. Dazu können Texte festgelegt
-          werden, die beim Teilen des Beitrags über Social Media
-          Dienste angezeigt werden sollen.
-
-          Details findest Du unter: [Titel und Optionen](#pageflow.help_entries.meta_data)
-
-          ## Dateien verwalten
-
-          Unter „Dateien verwalten“ lädst Du die Mediendateien hoch,
-          die im Pageflow verwendet werden sollen. Du kannst hier auch
-          bereits hochgeladene Videos, Fotos und Audios
-          wiederverwenden.
-
-          Details findest Du unter: [Dateien verwalten](#pageflow.help_entries.files)
-
-          ## Gliederung
-
-          Über die „Gliederung“ kannst Du Kapitel und Seiten
-          hinzufügen, also die eigentlichen Inhalte bearbeiten. Per
-          Drag&Drop lassen sich Seiten und Kapitel auch jederzeit
-          umsortieren.
-
-          Details findest Du unter: [Kapitel und Seiten](#pageflow.help_entries.outline)
-      page_options:
-        menu_item: Allgemeine Seitenoptionen
-        text: "# Allgemeine Seitenoptionen\n\n### Titel\n\nHier gibst Du den Titel der jeweiligen Seite ein. Dieser\nwird nicht nur als Überschrift des Fliesstextes der Seite\nausgespielt, sondern dient zudem als Titel innerhalb der\nNavigation und der Übersicht. Wird eine einzelne Seite in\nsozialen Netzwerken geteilt, ist dieser Titel zugleich auch\nder Titel des Social Media-Beitrages.\n\n### Titel ausblenden\n\nOptional lässt sich der Titel auch ausblenden. Das heisst:\nEr wird nicht mehr als Überschrift im Fliesstext\nangezeigt. Er bleibt zur Identifikation einer Seite\nallerdings in Navigation, Übersicht und geteilten Beträgen\nerhalten.\n\n### Tagline und Untertitel\n\nHier kann wahlweise eine Tagline und/oder ein Untertitel\neingegeben werden. Falls Du ein Häkchen bei „Titel\nausblenden“ gesetzt hast, sind Tagline und Untertitel über\ndem Fliesstext ebenfalls nicht zu sehen.\n\n### Text\n\nDer Textblock kann mit den Buttons unterhalb des\nEingabefeldes formatiert werden. [ B=Fett / I=kursiv /\nU=unterstrichen „gekippte acht“=Link/URL auf fremde Seite\neinfügen].\n\nAlle Änderungen sind in der linken Frontend-Ansicht\nsichtbar, sobald das entsprechende Texteingabefeld im\nEditierbereich verlassen wurde.\n\n### Textposition\n\nWähle hier, ob der Text auf der linken oder rechten Seite\nangezeigt wird.\n\n### Intensität der Abblendung\n\nDie Intensität des Farbverlaufs dient der Lesbarkeit von\nTexten auf Videos oder Bildern.\n\nDurch den Schieberegler kann der Bildhintergrund so stark\nabgedunkelt bzw. aufgehellt werden, bis der Kontrast\nzwischen Bild und Text ausreichend ist.\n\n### Farben invertieren\n\nBeim Invertieren werden „hell“ und „dunkel“ vertauscht, die\nsonst weiße Schrift ändert sich dabei automatisch in\nschwarz.\n\nGrundsätzlich gilt: Helle Schrift für dunkle Bilder, dunkle\nSchrift für helle Bilder.\n\n### Thumbnail\n\nDas Thumbnail ersetzt das ansonsten automatisch generierte\nVorschaubild in der Navigation und in der Übersicht.\n\n### In Navigationsleiste anzeigen\n\nIst diese Option nicht gesetzt, wird die jeweilige Seite\nnicht in der Navigation repräsentiert, kann also nicht\ndirekt über die Navigation erreicht werden.\n\nDies bietet sich vor allem für Seiten an, die inhaltlich als\n„Unterseiten“ einer anderen Seite anzusehen sind.\n\n### Übergangseffekt\n\nEs gibt verschiedene Effekte, die sichtbar sind, wenn von einer Kapitelseite zur nächsten gescrollt oder geklickt wird. Zur Auswahl stehen Seitenübergänge, wie „Überblendung“, „Schwarzblende“ oder „Harter Schnitt“ die sich vertikal auswirken, zudem kann auch „Horizontal Scrollen“ von rechts oder links ausgewählt werden. \n\nWelcher Effekt verwendet wird, kann unter „Optionen“ individuell für jede Seite festgelegt werden.\n\n### Text verzögert einblenden\n\nBestimme mit dieser Option, ob Text und Abblendung mit zeitlicher Verzögerung angezeigt werden.\nHierbei sehen User zunächst nur den Hintergrund, dann erscheinen Titel, Tagline und Untertitel und mit minimaler Verzögerung schließlich der Fließtext.\n\nInsgesamt stehen drei Verzögerungslängen zur Verfügung: kurz = 1 Sekunde, mittel = 3 Sekunde, lang = 5 Sekunde.\n\nDieses Feature eignet sich zum Beispiel für Intros oder Kapitelanfänge.\n\n### Beschreibung für Übersicht\n\nHier kann der Text eingegeben werden, der angezeigt wird,\nwenn der User in der Übersicht mit der Mouse über die\njeweilige Seite fährt. Außerdem entspricht der hier\neingegebene Text"
+          Für jede Datei kann über die Schaltfläche "Einstellungen
+          bearbeiten" ein Dialog mit weiteren Optionen angezeigt
+          werden. Hier können z.B. die beim Upload eingegebenen
+          Metadaten (wie die Angaben zum Urheberrecht) noch einmal
+          bearbeiten werden.
       page_types:
         menu_item: Seitentypen
         text: |
@@ -1703,10 +1523,7 @@ de:
           in der linken Spalte.
       publishing:
         menu_item: Veröffentlichen
-        text: "# Veröffentlichen\n\nKlicke in der Gliederung auf die Schaltfläche\n„Veröffentlichen“ um Deinen Pageflow zu publizieren. Eine\nReportage kann entweder zeitlich unbegrenzt oder bis zu\neinem bestimmten Stichtag veröffentlicht\nwerden. \n\nAußerdem gibt es die Möglichkeit, Pageflows mit einem Passwort zu schützen. \nHierzu muss einfach das entsprechende Häkchen bei „Mit Passwort schützen\" gesetzt werden. \nDas System verwendet als Benutzernamen den Namen des Kontos und generiert ein Passwort, \nwelches auch manuell geändert werden kann. \n\nBeiträge, die bereits veröffentlicht sind, können nachträglich mit einem Passwort geschützt werden - \nund andersherum können auch geschützte Beiträge anschließend mit erneutem Klick auf „Veröffentlichen“ vom Passwortschutz befreit werden. \nBei der Veröffentlichung werden die auszuführenden Schritte im Dialogfenster angezeigt und erklärt.\n\nVeröffentlichte Pageflows können jederzeit manuell\ndepubliziert werden. Sollte eine Reportage bereits\nveröffentlicht sein, bleiben Änderungen solange öffentlich\nunsichtbar, bis die Reportage erneut veröffentlicht wird.\nEine Reportage kann stets nur von einem Redakteur zur\ngleichen Zeit bearbeitet werden.\n\nVorschaubild zum Einbetten in Externe Webseiten Nach der\nVeröffentlichung erstellt das System ein Vorschaubild, das\nals iframe zur Verlinkung in eine externe Seite eingebunden\nwerden kann.  Anhand des ausgespielten Codes lässt sich die\nGröße des iframes frei einstellen. Hierbei ist jedoch eine\nMindesthöhe von 150px und und eine Mindestbreite von 220px\nzu beachten."
-      storylines:
-        menu_item: Erzählstränge
-        text: "# Erzählstränge\n\nErgänzend zur linearen Erzählung von „oben nach unten“, können auch weitere (non-lineare) Erzählstränge als Exkurse zu vertiefenden Inhalten genutzt werden. Mit „Erzählstrang“ ist hier die zusammenhängende Kapitel- und Seitenabfolge gemeint, durch die ein User hindurch scrollt. Zu unterscheiden ist zwischen dem sogenannten Haupterzählstrang, in dem ein User zu Beginn eines Pageflows einsteigt, und weiteren untergeordneten Erzählsträngen. \n\nUm vom Haupterzählstrang einen Abzweig zu erstellen, benutze eine „Verweise“-Seite (Mosaik, Collage oder Hotspot) und lege auf der jeweiligen Seite unter „Verweise“ die entsprechenden Verknüpfungen an. \n\nDabei kann durch das Festlegen einer „übergeordneten Seite“ bestimmt werden, zu welcher Seite der User am Ende des Erzählstrangs  gelangt.\n\nOptisch unterstützt werden diese Exkurse in untergeordnete Erzählstränge durch einen horizontalen Seitenübergangseffekt, der beim Eintreten und Verlassen dieser Stränge automatisch eingestellt ist. \n\nErstellt werden diese Erzählstränge in der Gliederung über ein Klick auf die Plus-Schaltfläche neben der Erzählstrang-Auswahl. Dabei öffnet sich automatisch ein neues Kapitel, in dem dann weitere Seiten angelegt werden können.\n\n\n### Übergeordnete Seiten\n\nIn jedem Untererzählstrang muss eine „Übergeordnete Seite“ festgelegt werden, die bestimmt, wohin ein User beim zurück-scrollen gelangt. Mit einem Klick auf das Stift-Symbol neben der Erzählstrang-Auswahl kann diese Zielseite ausgewählt werden. Durch die Auswahl einer übergeordneten Seite erscheint auf allen Seiten eines untergeordneten Erzählstrangs zudem automatisch ein „Zurück“-Button, der zu der übergeordneten Seite führt. \n\n\n### Kapitel-Hierarchie\n\nDurch die Verwendung mehrerer „untergeordneter“ Erzählstränge und der Festlegung von übergeordneten Seiten ergibt sich eine Kapitelhierarchie, wie man sie auch von Buch-Gliederungen kennt:\n\n1. (Hauptstrang), 1.1 (Übergeordneter Unterstrang), 1.1.1 (vertiefende Seite im übergeordneten Unterstrang) und so weiter.\n\nDiese Hierarchie kann nachträglich in der Erzählstrang-Auswahl über ein Klick auf Stift-Symbol geändert werden. Ein untergeordneter Erzählstrang kann an dieser Stelle zudem auch nachträglich zum Haupt-Erzählstrang umsortiert werden.\n\n\n### Scroll-Nachfolger\n\nFalls der User von der letzten Seite eines Unterkapitels (1.1.1) auf eine andere Stelle im Beitrag geleitet werden soll (z.B. 2.1), kann hierzu ebenfalls über das Stiftsymbol in den Erzählstrang-Einstellungen der sogenannte „Scroll-Nachfolger“ festgelegt werden. Um in dem Beispiel zu bleiben wäre der folgende Ablauf denkbar: 1 -> 1.1 -> 1.1.1 -> 2.1\n\nAchtung: Während des Editierens wird immer nur das aktuell ausgewählte Kapitel angezeigt. Um zu den anderen Erzählsträngen zu gelangen klicke auf das Auswahlmenü „Erzählstrang“."
+        text: "# Veröffentlichen\n\nKlicke in der Gliederung auf die Schaltfläche\n„Veröffentlichen“ um Deinen Pageflow zu publizieren. Eine\nReportage kann entweder zeitlich unbegrenzt oder bis zu\neinem bestimmten Stichtag veröffentlicht\nwerden. \n\n### Passwortschutz\n\nAußerdem gibt es die Möglichkeit, Pageflows mit einem Passwort zu schützen. \nHierzu muss einfach das entsprechende Häkchen bei „Mit Passwort schützen\" gesetzt werden. \nDas System verwendet als Benutzernamen den Namen des Kontos und generiert ein Passwort, \nwelches auch manuell geändert werden kann. \n\nBeiträge, die bereits veröffentlicht sind, können nachträglich mit einem Passwort geschützt werden - und andersherum können auch geschützte Beiträge anschließend mit erneutem Klick auf „Veröffentlichen“ vom Passwortschutz befreit werden. Bei der Veröffentlichung werden die auszuführenden Schritte im Dialogfenster angezeigt und erklärt.\n\n### Änderungen nach der Veröffentlichung\n\nVeröffentlichte Pageflows können jederzeit manuell depubliziert werden. Sollte eine Reportage bereits veröffentlicht sein, werden nachträgliche Änderungen erst öffentlich sichtbar, sobald die Reportage erneut veröffentlicht wird. \n\n\n### Einbettung als iframe\n\nVeröffentlichte Beiträge können auch in die eigene Webseite eingebettet werden. Weitere Informationen findest Du in diesem [Artikel](https://pageflow.freshdesk.com/support/solutions/articles/11000002742-wie-kann-ich-einen-beitrag-in-eine-webseite-einbetten)\n\n### Einbettung iframe-Teaser \n\nVorschaubild zum Einbetten in Externe Webseiten Nach der Veröffentlichung erstellt das System ein Vorschaubild, das als iframe zur Verlinkung in eine externe Seite eingebunden werden kann.  Anhand des ausgespielten Codes lässt sich die\nGröße des iframes frei einstellen. Hierbei ist jedoch eine Mindesthöhe von 150px und und eine Mindestbreite von 220px zu beachten."
       text_tracks:
         menu_item: Textspuren
         text: |-
@@ -1961,7 +1778,7 @@ de:
       help_entries:
         page_type:
           menu_item: Video
-          text: "# Video\n\n*Wiedergabe einer Videodatei mit Steuerelementen* \n   \nAnders als bei „Hintergrund-Videos“ werden hier Textelemente nach ein\npaar Sekunden automatisch ausgeblendet, um die\nAufmerksamkeit auf das Bewegtbild zu lenken. Mit\nSteuerelementen kann der Nutzer das Video jederzeit\nstarten und pausieren, vor- oder zurückspulen. Ein\nweiterer Unterschied ist, dass Du wählen kannst, ob ein\nVideo automatisch gestartet wird, sobald die Seite\nangezeigt wird.  Als dezente Alternative oder Ergänzung zu\nden normalen Texteingabemöglichkeiten, kann eine\nsogenannte „Infobox“ mit Text befüllt werden.\n\nUnter Optionen lässt sich ein automatisches weiterscrollen am Ende des Videos aktivieren. \nDas kann nützlich sein, um einen nahtlosen Übergang zur nächsten Seite herzustellen.\n\nTypische Anwendungsbeispiele: Filme aller Art, Interviews,\nPortrait"
+          text: "# Video\n\n*Wiedergabe einer Videodatei mit Steuerelementen* \n   \nAnders als bei „Hintergrund-Videos“ werden hier Textelemente nach ein\npaar Sekunden automatisch ausgeblendet, um die\nAufmerksamkeit auf das Bewegtbild zu lenken. Mit\nSteuerelementen kann der Nutzer das Video jederzeit\nstarten und pausieren, vor- oder zurückspulen. Ein\nweiterer Unterschied ist, dass Du wählen kannst, ob ein\nVideo automatisch* gestartet wird, sobald die Seite\nangezeigt wird.  Als dezente Alternative oder Ergänzung zu\nden normalen Texteingabemöglichkeiten, kann eine\nsogenannte „Infobox“ mit Text befüllt werden.\n\nUnter Optionen lässt sich ein automatisches Weiterscrollen am Ende des Videos aktivieren. \nDas kann nützlich sein, um einen nahtlosen Übergang zur nächsten Seite herzustellen.\n\nTypische Anwendungsbeispiele: Filme aller Art, Interviews,\nPortrait\n\n*Hinweis zum Autoplay bei Videos: Aufgrund technischer Einschränkungen, basierend auf der „Autoplay Policy“ der Browser-Hersteller, können Videos mit Ton nicht auf allem Geräten/Browsern automatisch abgespielt werden. Bei Safari  und auf mobilen Geräten können Videos nur manuell gestartet werden. "
       page_attributes:
         mobile_poster_image_id:
           inline_help: Wird in der Mobilvariante gezeigt, bevor das Video startet.

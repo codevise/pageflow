@@ -4,7 +4,7 @@ Pageflow.configure do |config|
     entry_type_config.features.register('delayed_text_fade_in')
 
     entry_type_config.features.register('storylines') do |feature_config|
-      feature_config.help_entries.register('pageflow.help_entries.storylines', priority: 7)
+      feature_config.help_entries.register('pageflow_paged.help_entries.storylines', priority: 7)
     end
 
     entry_type_config.features.register('editor_emulation_mode')
