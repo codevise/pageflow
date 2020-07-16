@@ -9,6 +9,7 @@ module PageflowScrolled
         html = render(template: 'pageflow_scrolled/entries/show',
                       locals: {
                         :@entry => entry,
+                        :@widget_scope => :editor,
                         :@seed_options => {
                           skip_collections: true,
                           translations: {include_inline_editing: true}
