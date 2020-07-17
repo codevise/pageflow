@@ -7,6 +7,18 @@ module Pageflow
     has_many :widgets, as: :subject, dependent: :destroy
 
     validates :account, presence: true
+    validates :entry_type, presence: true
+    validates :entry_type,
+              uniqueness: {
+                scope: :account,
+                message: I18n.t(
+                  'activerecord.models.pageflow/entry_template.unique_account_entry_type'
+                )
+              }
+
+    def translated_entry_type
+      I18n.t("activerecord.values.pageflow/entry.type_names.#{entry_type}")
+    end
 
     def resolve_widgets(options = {})
       widgets.resolve(Pageflow.config_for(account), options)

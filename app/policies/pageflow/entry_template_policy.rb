@@ -5,7 +5,11 @@ module Pageflow
       @entry_template = entry_template
     end
 
-    def edit?
+    def create?
+      update?
+    end
+
+    def update?
       allows?(%w(publisher manager))
     end
 

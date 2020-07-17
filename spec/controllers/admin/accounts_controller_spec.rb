@@ -250,27 +250,21 @@ module Admin
       render_views
 
       it 'creates nested default_theming' do
-        pageflow_configure do |config|
-          config.themes.register(:custom)
-        end
-
         sign_in(create(:user, :admin), scope: :user)
         post(:create,
              params: {
                account: {
                  default_theming_attributes: {
                    imprint_link_url: 'http://example.com/new'
-                 },
-                 paged_entry_template_attributes: {
-                   theme_name: 'custom'
                  }
                }
              })
 
-        expect(Pageflow::EntryTemplate.last.theme_name).to eq('custom')
+        expect(Pageflow::Theming.last.imprint_link_url)
+          .to eq('http://example.com/new')
       end
 
-      it 'creates one paged entry template' do
+      it 'creates no paged entry template' do
         pageflow_configure do |config|
           config.themes.register(:red)
         end
@@ -284,100 +278,9 @@ module Admin
                  }
                }
              })
-        entry_templates = Pageflow::EntryTemplate.all
-        entry_templates_count = entry_templates.count
-        entry_template = entry_templates.first
+        entry_templates_count = Pageflow::EntryTemplate.all.count
 
-        expect(entry_templates_count).to eq(1)
-        expect(entry_template.entry_type).to eq('paged')
-        expect(entry_template.account.id).to eq(Pageflow::Account.last.id)
-      end
-
-      it 'batch updates widgets of first paged entry template' do
-        pageflow_configure do |config|
-          config.themes.register(:custom)
-        end
-
-        sign_in(create(:user, :admin), scope: :user)
-        post(:create,
-             params: {
-               account: {
-                 paged_entry_template_attributes: {
-                   theme_name: 'custom'
-                 }
-               },
-               widgets: {
-                 navigation: 'some_widget'
-               }
-             })
-
-        expect(Pageflow::Account.last.first_paged_entry_template.widgets)
-          .to include_record_with(role: 'navigation', type_name: 'some_widget')
-      end
-
-      it 'does not create widgets if account cannot be saved' do
-        pageflow_configure do |config|
-          config.themes.register(:custom)
-        end
-
-        sign_in(create(:user, :admin), scope: :user)
-
-        expect do
-          post(:create,
-               params: {
-                 account: {
-                   paged_entry_template_attributes: {
-                     theme_name: 'unregistered'
-                   }
-                 },
-                 widgets: {
-                   navigation: 'some_widget'
-                 }
-               })
-        end.not_to change { Pageflow::Widget.count }
-      end
-
-      it 'still displays form after submit attempt if data is invalid' do
-        sign_in(create(:user, :admin), scope: :user)
-
-        post(:create,
-             params: {
-               account: {
-                 paged_entry_template_attributes: {
-                   theme_name: 'unregistered'
-                 }
-               }
-             })
-
-        expect(response.body).to have_selector(
-          '.input.error#account_paged_entry_template_attributes_theme_name_input'
-        )
-      end
-
-      it 'sets share providers' do
-        pageflow_configure do |config|
-          config.themes.register(:custom)
-        end
-
-        sign_in(create(:user, :admin), scope: :user)
-        post(:create,
-             params: {
-               account: {
-                 paged_entry_template_attributes: {
-                   theme_name: 'custom',
-                   share_providers: {
-                     insta: 'true',
-                     tiktok: 'false'
-                   }
-                 }
-               }
-             })
-
-        expect(Pageflow::EntryTemplate.last.share_providers)
-          .to eq(
-            'insta' => true,
-            'tiktok' => false
-          )
+        expect(entry_templates_count).to eq(0)
       end
     end
 
@@ -433,65 +336,6 @@ module Admin
             }})
 
         expect(theming.reload.imprint_link_url).to eq('http://example.com/new')
-      end
-
-      it 'updates first paged entry template' do
-        pageflow_configure do |config|
-          config.themes.register(:red)
-          config.themes.register(:yellow)
-          config.themes.register(:green)
-          config.themes.register(:blue)
-        end
-        account = create(:account)
-
-        sign_in(create(:user, :admin), scope: :user)
-        put(:update, params: {id: account.id, account: {
-              paged_entry_template_attributes: {
-                theme_name: 'green'
-              }
-            }})
-
-        expect(account.first_paged_entry_template.theme_name).to eq('green')
-      end
-
-      it 'batch updates widgets of first paged entry template' do
-        account = create(:account, :with_first_paged_entry_template)
-        template = account.first_paged_entry_template
-
-        sign_in(create(:user, :admin), scope: :user)
-        patch(:update,
-              params: {
-                id: account.id,
-                widgets: {
-                  navigation: 'some_widget'
-                }
-              })
-
-        expect(template.widgets).to include_record_with(
-          role: 'navigation',
-          type_name: 'some_widget'
-        )
-      end
-
-      it 'does not update widgets if theming validation fails' do
-        theming = create(:theming)
-        account = create(:account, default_theming: theming)
-
-        sign_in(create(:user, :admin), scope: :user)
-        expect do
-          patch(:update,
-                params: {
-                  id: account.id,
-                  account: {
-                    paged_entry_template_attributes: {
-                      theme_name: 'invalid'
-                    }
-                  },
-                  widgets: {
-                    navigation: 'some_widget'
-                  }
-                })
-        end.not_to change { Pageflow::Widget.count }
       end
 
       it 'allows admin to update feature_configuration through feature_states param' do
@@ -664,49 +508,6 @@ module Admin
               })
 
         expect(response).to redirect_to(admin_account_path(tab: 'features'))
-      end
-
-      it 'still displays form after submit attempt if data is invalid' do
-        account = create(:account)
-        sign_in(create(:user, :admin), scope: :user)
-
-        post(:update,
-             params: {
-               id: account.id,
-               account: {
-                 paged_entry_template_attributes: {
-                   theme_name: 'unregistered'
-                 }
-               }
-             })
-
-        expect(response.body).to have_selector(
-          '.input.error#account_paged_entry_template_attributes_theme_name_input'
-        )
-      end
-
-      it 'updates share providers' do
-        account = create(:account)
-
-        sign_in(create(:user, :admin), scope: :user)
-        post(:update,
-             params: {
-               id: account.id,
-               account: {
-                 paged_entry_template_attributes: {
-                   share_providers: {
-                     insta: 'true',
-                     tiktok: 'false'
-                   }
-                 }
-               }
-             })
-
-        expect(account.first_paged_entry_template.share_providers)
-          .to eq(
-            'insta' => true,
-            'tiktok' => false
-          )
       end
     end
 

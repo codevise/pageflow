@@ -38,11 +38,12 @@ Metrics/AbcSize:
   Exclude:
     - '**/spec/**/*'
 
-# Ignore long RSpec describe blocks
+# Ignore long RSpec and ActiveAdmin blocks
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'feature', 'it', 'namespace']
   Exclude:
     - '**/spec/factories/*.rb'
+    - '**/admins/pageflow/*.rb'
 
 # In specs methods using RSpec DSL often become long
 Metrics/MethodLength:

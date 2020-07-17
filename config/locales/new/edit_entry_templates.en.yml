@@ -1,0 +1,21 @@
+en:
+  active_admin:
+    new: Create new
+  activerecord:
+    attributes:
+      pageflow/entry_template:
+        translated_entry_type: Story type
+    models:
+      pageflow/entry_template:
+        one: Story template
+        unique_account_entry_type: A story template already exists for this story type for this account.
+  pageflow:
+    admin:
+      accounts:
+        entry_template_hint: Some of the form fields can now be found in the story template tab on the info page for this account
+      entry_templates:
+        page_title:
+          edit: Edit story template for story type
+          new: Create new story template for story type
+      resource_tabs:
+        entry_templates: Story templates
