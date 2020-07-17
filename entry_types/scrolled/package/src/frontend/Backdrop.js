@@ -135,6 +135,7 @@ function BackgroundVideo(props) {
                  playerState={playerState}
                  playerActions={playerActions}
                  id={props.video}
+                 textTracksDisabled={true}
                  fit="cover"
                  loop={true}
                  playsInline={true} />
