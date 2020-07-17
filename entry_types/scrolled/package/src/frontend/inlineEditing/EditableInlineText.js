@@ -5,12 +5,14 @@ import {Slate, Editable, withReact} from 'slate-react';
 import {TextPlaceholder} from './TextPlaceholder';
 import {useCachedValue} from './useCachedValue';
 
-export const EditableInlineText = memo(function EditableInlineText({value, placeholder, onChange}) {
+export const EditableInlineText = memo(function EditableInlineText({
+  value, defaultValue = '', placeholder, onChange
+}) {
   const editor = useMemo(() => withSingleLine(withReact(createEditor())), []);
   const [cachedValue, setCachedValue] = useCachedValue(value, {
     defaultValue: [{
       type: 'heading',
-      children: [{ text: '' }],
+      children: [{ text: defaultValue }],
     }],
     onDebouncedChange: onChange
   });

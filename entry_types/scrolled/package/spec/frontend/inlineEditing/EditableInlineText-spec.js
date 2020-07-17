@@ -57,4 +57,23 @@ describe('EditableInlineText', () => {
 
     expect(queryByText('Some placeholder')).not.toBeInTheDocument()
   });
+
+  it('supports default value', () => {
+    const {queryByText} = render(<EditableInlineText defaultValue="Some default" />);
+
+    expect(queryByText('Some default')).toBeInTheDocument()
+  });
+
+  it('prefers value over defaultValue', () => {
+    const value = [{
+      type: 'heading',
+      children: [
+        {text: 'Some text'}
+      ]
+    }];
+
+    const {queryByText} = render(<EditableInlineText value={value} defaultValue="Some default" />);
+
+    expect(queryByText('Some text')).toBeInTheDocument()
+  });
 });
