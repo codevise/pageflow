@@ -1,7 +1,7 @@
 import {frontend, Entry, useContentElementLifecycle} from 'pageflow-scrolled/frontend';
 
 import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
-import {renderInEntry, ErrorCatching} from 'support';
+import {renderInEntry} from 'support';
 import {simulateScrollingIntoView, simulateScrollingOutOfView} from 'support/fakeIntersectionObserver';
 import {findIsActiveProbe, findIsPreparedProbe} from 'support/scrollPositionLifecycle';
 
@@ -19,19 +19,16 @@ describe('useContentElementLifecycle', () => {
         return null;
       }
     });
-    const handler = jest.fn();
     jest.spyOn(console, 'error').mockImplementation(() => {});
 
     renderInEntry(
-      <ErrorCatching onError={e => handler(e.message)}>
-        <Entry />
-      </ErrorCatching>,
+      <Entry />,
       {seed: {contentElements: [{typeName: 'test'}]}}
     );
 
-    expect(handler).toHaveBeenCalledWith(expect.stringMatching(
+    expect(console.error).toHaveBeenCalledWith(expect.stringMatching(
       /only available in content elements for which `lifecycle: true`/
-    ));
+    ), expect.anything());
   });
 
   describe('isActive', () => {
