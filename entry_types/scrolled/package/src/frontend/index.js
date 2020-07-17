@@ -38,6 +38,7 @@ export {AudioPlayerControls} from './AudioPlayerControls';
 export {PlayerControls} from './PlayerControls';
 
 export * from './useOnScreen';
+export * from './useIframeHeight';
 export * from './i18n';
 
 export * from './SectionThumbnail';
