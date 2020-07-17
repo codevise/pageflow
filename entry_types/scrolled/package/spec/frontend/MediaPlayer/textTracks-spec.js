@@ -89,6 +89,25 @@ describe('MediaPlayer', () => {
     );
   });
 
+  it('does not passes text tracks if text tracks are disabled', () => {
+    const textTracks = getTextTracks({
+      sampleTextTrack: {
+        id: 1
+      }
+    });
+    render(<MediaPlayer {...requiredProps()}
+                        textTracksDisabled={true}
+                        sources={getAudioSources()}
+                        textTracks={textTracks} />);
+
+    expect(media.getPlayer).toHaveBeenCalledWith(
+      getAudioSources(),
+      expect.objectContaining({
+        textTrackSources: []
+      })
+    );
+  });
+
   it('does not request new player when rerendered with deeply equal text tracks', () => {
     const {rerender} =
       render(<MediaPlayer {...requiredProps()}

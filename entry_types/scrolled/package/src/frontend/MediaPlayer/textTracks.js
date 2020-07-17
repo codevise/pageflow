@@ -9,7 +9,11 @@ export function updateTextTracksMode(player, activeTextTrackFileId) {
   });
 }
 
-export function getTextTrackSources(textTrackFiles, textTracksEnabled) {
+export function getTextTrackSources(textTrackFiles, textTracksDisabled) {
+  if (textTracksDisabled) {
+    return [];
+  }
+
   return textTrackFiles
     .filter(textTrackFile => textTrackFile.isReady)
     .map(textTrackFile => ({

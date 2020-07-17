@@ -65,7 +65,7 @@ function PreparedMediaPlayer(props){
       <PlayerContainer className={classNames(props.className, {[textTrackStyles.inset]: props.textTracksInset})}
                        type={props.type}
                        sources={appendSuffix(props.sources, props.sourceUrlSuffix)}
-                       textTrackSources={getTextTrackSources(props.textTracks.files)}
+                       textTrackSources={getTextTrackSources(props.textTracks.files, props.textTracksDisabled)}
                        filePermaId={props.filePermaId}
                        poster={props.posterImageUrl}
                        loop={props.loop}
