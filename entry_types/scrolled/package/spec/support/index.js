@@ -1,4 +1,3 @@
-export * from './ErrorCatching';
 export * from './factories';
 export * from './fakeWindows';
 export * from './normalizeSeed';
