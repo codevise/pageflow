@@ -1451,22 +1451,6 @@ en:
             overview_button_enabled_disabled:
               inline_help: This option is not available for your theme.
     help_entries:
-      atmo:
-        menu_item: Atmo Audio
-        text: |-
-          # Atmo Audio
-
-          This feature lets you add background audio to every page regardless of its page type. You can define if a sound should play only for one page or continue playing for more pages without interruption. Simply select the same atmo audio file for some adjacent pages.
-
-          That way chapters can be seperated acoustically and pages that belong together can be weaved to a stronger unit.
-
-          For the page type „Video“ there is a special option to pause background audio or continue at lower volume while the video is playing.
-
-          You find the atmo settings on the „Options“ tab of each page.
-
-          Should you ever feel distracted by the atmo audio while working on your story, you can use the hot key „Alt + a“ to temporarily mute it. Simply press „Alt + a“ again to reactivate atmo audio.
-
-          **CAUTION:** Due to technical restrictions imposed by the browser manufacturers, ambient audio cannot be played on mobile devices and with Safari on the desktop.
       files:
         menu_item: Manage Files
         text: |-
@@ -1514,80 +1498,6 @@ en:
           video, audio), you can add information with regards to its
           copyright. This information is shown automatically in the
           legal notice.
-      meta_data:
-        menu_item: Title and Options
-        text: "# Title and Options\n\n## General\n\n### Title of the Pageflow\n\nHere you can choose a title for your Pageflow. It will be\nshown on the title bar of the browser window. It also acts\nas an indicator for search engines once the report is\npublished.\n\n### Language\n\nDecide in which language your Pageflow should be displayed. This refers to the frontend text such as multimedia tips, scroll-indicators, the overview and the legal notice.\n\n\n### Credits\nHere you can enter your imprint information in free text. In addition, image rights can be assigned for all files under \"Manage files\", which are then automatically displayed in the imprint.\n\n\n## Appearance\n\n### Multimedia tips before the start\n\nDecide if tips or advice should be shown at the beginning of\nyour Pageflow.\n\n### Highlighting chapter beginnings\n\nThis option lets the title of the first page of a chapter\nappear in a bigger font.\n\n### Highlighting new pages\n\nAt the beginning of a Pageflow an info-box shows new pages that were created since the last visit. Since cookies are used for this feature, a cookie notice appears automatically at the bottom of the screen when activated - in accordance with the GDPR.\n\n### Display Home-Button\n\nYou can have a button in the navigation, which hyperlinks to an external website, for example back to the website from which you hyperlinked to the Pageflow.\n\n\n### Show overview button\n\nThe overview button in the navigation bar can be hidden.\n\n### Home button URL\n\nEnter the link here to which a click on the Home button should lead. If the target URL is the same for all entries in your account, you can also set a general \"redirect URL\" via \"Settings\", which will affect all entries.\n\n### Control gestures\n\nWith this option the control for mobile devices can be switched to horizontal scrolling.\n\n### Loading view\n\nSelect the type of loading view of your entry. As an alternative to the classic view, an individual load indicator with its own background image, animated title and subtitle line and scalable blur can be configured here.\n\n### Player Controls\n\nSelect the appearance of the control elements for audio and video players, 360° panorama and before/after pages.\n\n### Navigation bar\n\nChoose between navigation bars. Please note, that due to the lack of space on mobile devices only the icon „Overview“ is shown.\n\n### Cookie notice\nAs soon as Google Analytics or the \"Highlight new pages\" feature is activated, a privacy notice is automatically displayed the first time the entry is visited. If an entry is embedded in a separate website with its own privacy notice, this notice can be optionally hidden.  \n\n\n### Theme\n\nSpecify a font template for the entry. \n\n\n## Social\n\n### Social Sharing Picture\n\nChoose a picture, which should be shown, if your Pageflow is\nshared in social networks.\n\n### Summary\n\nHere you can write a description, which is shown, when your\nPageflow is shared in social networks.\n\n### Social Sharing URL\n\nIf contributions are embedded in your own web pages (with a different URL), you can specify an individual URL here that is to be used when sharing the contribution. \n\n### Social Share Links\n\nDetermine which share buttons should be displayed when clicking on the \"Share function\". "
-      outline:
-        menu_item: Chapters and Pages
-        text: |-
-          # Chapters and Pages
-
-          A Pageflow consists of at least one chapter with at least
-          one page. You can create as many chapters and pages as you
-          want. In order to create content, click:
-
-          1. „New Chapter“ to create a new chapter,
-          2. „New Page“ to add a page,
-          3. onto the new page, in order to edit the content.
-
-          ## Structuring Chapters
-
-          You can structure the composition of your Pageflow with
-          chapters - e.g. thematically or chronologically . The
-          chapters are shown in the overview and help the users find
-          their way around. It is therefore advisable to give each
-          chapter a title.
-
-          If you create an unnamed chapter, Pageflow acts as if there
-          is no structure of chapters. The chapter and the title of
-          this chapter are consequently not shown in the
-          overview/navigation.
-      overview:
-        menu_item: Overview
-        text: |-
-          # Overview
-
-          This is Pageflow’s editing platform. The division of the
-          screen into two allows you to edit your Pageflow and see a
-          preview at the same time. The editor shows modifications and
-          newly selected files directly and saves them automatically.
-
-          The sidebar can be hidden or shown. You can change the size
-          of the preview-window by pulling the sidebar to the right or
-          the left. If the preview-window is long and narrow like ´ a
-          smartphone, you will only be able to see the „overview“ icon
-          and not the entire navigation. This is due to lack of space.
-
-          The navigation is divided into four parts:
-
-          ## Title and Options
-
-          Under „Title and Options“ you can set up basic appearance
-          parameters as well as the title, language and legal
-          notice. You can also decide which content should be
-          displayed when sharing the report on social media platforms.
-
-          For more details see: [Title and Options](#pageflow.help_entries.meta_data)
-
-          ## Manage Files
-
-          Under „Manage Files“ you can upload your media files, which
-          you want to use in Pageflow. Furthermore you can reuse
-          videos, photos and audio-files that have already been
-          uploaded.
-
-          For more details see: [Manage Files](#pageflow.help_entries.files)
-
-          ## Outline
-
-          Via the „Outline“ you can add chapters and pages - the
-          actual content. Per Drag and Drop you can resort the pages
-          and chapters any time.
-
-          For more details see: [Chapter and Pages](#pageflow.help_entries.outline)
-      page_options:
-        menu_item: General Page Options
-        text: "# General Page Options\n\n### Title\n\nHere you can add the title of a particular page. This\ntitle is not only the headline of the text on the page, it\nalso functions as the title in the navigation and\noverview. If a single page is shared in social networks,\nthis title is also the title of the social media post.\n\n### Hide the title\n\nOptionally you can hide the title. Thus the title is not shown as the\nheading of the text body. For the identification of the page it\nremains visible in the navigation, overview and on social media posts.\n\n### Tagline and Subtitle\n\nHere you can optionally enter a tagline and/or a\nsubtitle. If you click on „Hide title“ the tagline and\nsubtitle are not shown either.\n\n### Text\n\nThe text-block can be formatted with the buttons underneath\nthe input field. [B= bold / I=italic / U=underlined /\ninfinity symbol= Link/URL to an external website]\n\nAll changes are visible in the left front-end-view as soon\nas you leave the appropriate input field in the editor.\n\n### Textposition\n\nDecide if the text should be shown on the left or right side.\n\n### Opacity of the gradient\n\nThe opacity of the gradient improves the legibility of\nthe text on background-videos or pictures.\n\nYou can use the slider to darken or lighten up the\nbackground until the contrast between text and background is\noptimal.\n\n### Invert colors\n\nIf you invert the colors, „bright“ and „dark“ are\ninterchanged. Thus the normally white font changes into\nblack.\n\nA general rule: Bright font for dark pictures, dark font for\nbright pictures.\n\n### Thumbnail\n\nThe thumbnail replaces the automatically generated\npreview-picture in the navigation and overview.\n\n### Display in navigation\n\nIf this option is not taken, the particular page is not\nrepresented in the navigation and therefore cannot be\nreached through it.  You can use this option if a page is\nsupposed to read more like a subpage of another page.\n\n### Transition effect\n\nThere are different scroll effects, which are visible when users enter or leave pages. You can use vertical transitions like „crossfade“ or „cut“ or „Fade to black“. Besides this you also can choose horizontal scrolling from right or left. You can determine which effect should be used for each individual page.\n\n### Fade in text after delay\n\nDefine whether text and gradient of a page should appear with a delay. \nUsers will first see the background image, then title, tagline and subtitle until finally the content text will be displayed.\n\nThere are three different durations of delay: short = 1 second, medium = 3 seconds, long = 5 seconds.\n\nThis feature fits best for intros or beginnings of chapters.\n\n### Description for the overview\n\nYou can enter a text, which appears when the user navigates\nwith the mouse over the particular page. This text matches\nwith the mouse-over-text for the page-type „Page References“\nas well as with the text, which appears when you share the\nPageflow in social networks."
       page_types:
         menu_item: Page Types
         text: |
@@ -1600,9 +1510,6 @@ en:
       publishing:
         menu_item: Publishing
         text: "# Publishing\n\nClick on the „Publish“ button to publish your Pageflow. An entry can either be published for an unlimited period of time or until a specific deadline.\n\nBesides this, there is the possibility to publish Pageflows with \na password protection. Just activate „Protect with password“. \nPageflow uses the name of the account as user name and \nautomatically generates a password, which can be changed afterwords. \n\nAlready published stories can also be protected with a password by \npublishing another version - the other way round works as well. \nFor this please just click on the „Publishing“ button. The following \nsteps will then be shown and explained within the dialog window.\n\n### Changes After Publishing\nPublished Pageflows can also be depublished manually at any time. If a\nPageflow has already been published, changes will not be\nshown until you publish your report again.  A Pageflow can\nonly be edited by one author at one time.\n\n### Embedding as iframe\nPublished articles can also be embedded in your own website. You can find more information in this [article](https://pageflow.freshdesk.com/support/solutions/articles/11000002744)  \n\n### Embedding iframe Teaser\nThumbnail for embedding the Pageflow on external websites\nAfter publishing your Pageflow, the system generates a\nthumbnail, which can be embedded as an iframe to the\nhyperlink of another website. By means of the code, the size of the iframe can be adjusted. The minimum size is a height 150px and a width of 220px."
-      storylines:
-        menu_item: Storylines
-        text: "# Storylines\n\nIn addition to linear narrations from top to bottom, further storylines can be used as non linear excursions to enlarge upon parts of an  entry.\n\nPlease find a blog article and example [here](https://www.pageflow.io/en/update-storylines)\n\nA „Storyline“ consists of chapters and pages, which users scroll through. Distinguishable is the so called main storyline from further subordinate ones. The user starts off in the main storyline and can then navigate to different excursions.\n\nTo create such an excursion from the main storyline use one of the „Link“ pages (Mosaic, Collage, Hotspot) and create the desired connections via „Links“.\n\nBy choosing a „Parent page“ you can determine to which page users return after scrolling the storyline´s last page.\n\nTransitions to subordinate storylines are visually supported by a horizontal animation as the default setting for entering and leaving. \n\nStorylines are created by clicking onto the plus button next to the storyline menu. Thereby a new chapter opens automatically in which further pages can be added. \n\n\n### Parent pages\n\nIn every subordinate  storyline a „Parent page“ must be determined to define where users land when scrolling back.\n\nThis target page can be chosen by clicking on the pen symbol next to the storyline menu. When a „Parent page“ is defined, a back button will be shown automatically in the subordinate storyline that will always lead users back to the „Parent page“.\n\n\n### Chapter hierarchy\n\nThe use of more than one „subordinary“ storylines and the definition of „Parent pages“ leads to a chapter hierarchy as known from books:\n\n1. (Main storyline), 1.1. (Superior sub storyline), 1.1.1. (Subordinate sub storyline) and so on.\n\nThis hierarchy can be edited afterwards by clicking on the pen symbol next to the storyline menu. A subordinate storyline can be turned into the main storyline as well.\n\n\n### Scroll successors\n\nIf you want to lead users from a last page of a subordinate chapter (1.1.1) to another position than\nthe „Parent page“ (e.g. to 2.1) you can define a „Scroll successor“. Therefore click on the blue pen symbol within the storyline settings. As an example the following sequence might be imaginable: 1 -> 1.1 -> 1.1.1 -> 2.1\n\nAttention: While editing only the selected chapter will be shown in the sidebar. To switch to the other chapters click onto the storyline menu."
       text_tracks:
         menu_item: Text tracks
         text: |-
