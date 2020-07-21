@@ -2,9 +2,9 @@ import React from 'react';
 
 import {
   useContentElementLifecycle,
-  useContentElementEditorState,
-  useIframeHeight
+  useContentElementEditorState
 } from 'pageflow-scrolled/frontend';
+import {useIframeHeight} from './useIframeHeight';
 
 import styles from './DataWrapperChart.module.css';
 
