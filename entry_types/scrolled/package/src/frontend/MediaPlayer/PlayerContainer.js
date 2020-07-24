@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {media} from 'pageflow/frontend';
-import { useAtmo } from '../useAtmo';
+import {useAtmo} from '../useAtmo';
 
 import './videojsBase.module.css';
 
@@ -23,7 +23,7 @@ function PlayerContainer({
         playsInline: playsInline,
         loop: loop,
         controls: controls,
-        hooks: atmo.createMediaPlayerHooks(atmoDuringPlayback)
+        hooks: atmoDuringPlayback ? atmo.createMediaPlayerHooks(atmoDuringPlayback) : {} //create hooks only for inline media players
       });
       
       let playerElement = player.el();

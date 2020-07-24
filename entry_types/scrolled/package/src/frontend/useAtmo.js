@@ -18,7 +18,7 @@ export function AtmoProvider({children}){
   useEffect(()=>{
     let currentAtmo = atmoConfig.current;
     currentAtmo.pool = PlayerSourceIDMap(media, {
-      playerOptions: {tagName: 'audio'}
+      playerOptions: {tagName: 'audio', loop: true}
     });
     currentAtmo.multiPlayer = new MultiPlayer(currentAtmo.pool, {
       loop: true,
@@ -47,7 +47,9 @@ export function AtmoProvider({children}){
   };
 
   let createMediaPlayerHooks = function (options) {
-    return atmoConfig.current.atmo.createMediaPlayerHooks(options);
+    if (atmoConfig.current.atmo) {
+      return atmoConfig.current.atmo.createMediaPlayerHooks(options);
+    }
   }
 
   let contextValue = useMemo(()=>{

@@ -1,6 +1,5 @@
 import BackboneEvents from 'backbone-events-standalone';
-
-import {browser, events} from 'pageflow/frontend';
+import {browser, events, documentHiddenState} from 'pageflow/frontend';
 
 export class Atmo {
   constructor({atmoSourceId, multiPlayer, backgroundMedia}){
@@ -10,6 +9,15 @@ export class Atmo {
 
     this.backgroundMedia.on('change:muted', () => {
       this.update();
+    });
+
+    documentHiddenState((hiddenState)=>{
+      if (hiddenState === 'hidden') {
+        this.multiPlayer.fadeOutIfPlaying();
+      }
+      else{
+        this.update();
+      }
     });
 
     this.listenTo(this.multiPlayer, 'playfailed', () => {

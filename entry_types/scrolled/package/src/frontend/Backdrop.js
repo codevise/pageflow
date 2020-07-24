@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 
 import Fullscreen from './Fullscreen';
@@ -10,6 +10,7 @@ import useDimension from './useDimension';
 import {usePlayerState} from './MediaPlayer/usePlayerState';
 import {usePortraitOrientation} from './usePortraitOrientation';
 import {useSectionLifecycle} from './useSectionLifecycle';
+import {documentHiddenState} from 'pageflow/frontend';
 
 import styles from './Backdrop.module.css';
 
@@ -129,6 +130,20 @@ function BackgroundVideo(props) {
       playerActions.pause()
     }
   });
+  
+  useEffect(() => {
+    let documentState = documentHiddenState((visibilityState) => {
+      if (visibilityState === 'hidden') {
+        playerActions.pause();
+      }
+      else{
+        playerActions.play();
+      }
+    });
+    return () => {
+      documentState.removeCallback();
+    }
+  }, [playerActions])
 
   return (
     <VideoPlayer isPrepared={isPrepared}

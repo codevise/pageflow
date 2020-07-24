@@ -30,6 +30,7 @@ export * from './MediaPlayer';
 export * from './VideoPlayer';
 export * from './AudioPlayer';
 export * from './Atmo';
+export * from './useAtmo';
 
 export {MediaInteractionTracking} from './MediaInteractionTracking';
 export {MediaPlayerControls} from './MediaPlayerControls';
