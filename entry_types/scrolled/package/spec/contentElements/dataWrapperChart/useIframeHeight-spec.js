@@ -1,6 +1,6 @@
 import {useIframeHeight} from 'contentElements/dataWrapperChart/useIframeHeight';
 
-import {renderHook} from '@testing-library/react-hooks';
+import {renderHook, act} from '@testing-library/react-hooks';
 import {fakeParentWindow, tick} from 'support';
 
 describe('useIframeHeight', () => {
@@ -14,6 +14,22 @@ describe('useIframeHeight', () => {
     await tick();
 
     expect(result.current).toEqual('400px');
+  });
+
+  it('sets the height', async () => {
+    const testURL = 'https://datawrapper.dwcdn.net/CXXQo/1/';
+    fakeParentWindow();
+    const {result, rerender} = renderHook(() => useIframeHeight(testURL));
+    expect(result.current).toEqual('400px');
+    
+    window.postMessage({'datawrapper-height': {
+      id : 'CXXQo/1/',
+      height: 350
+    }}, '*');
+    await tick();
+    rerender();
+    
+    expect(result.current).toEqual('350px');
   });
 
   it('removes listener on cleanup', async () => {
