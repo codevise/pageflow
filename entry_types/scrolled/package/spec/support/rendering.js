@@ -59,15 +59,15 @@ function createWrapper(seed, setup, originalWrapper) {
   const normalizedSeed = normalizeSeed(seed);
   const OriginalWrapper = originalWrapper || function Noop({children}) { return children; };
 
-  return function ({children}) {
+  return function Wrapper({children}) {
     return (
-      <OriginalWrapper>
-        <RootProviders seed={normalizedSeed}>
-          <Dispatcher callback={setup} seed={normalizedSeed}>
+      <RootProviders seed={normalizedSeed}>
+        <Dispatcher callback={setup} seed={normalizedSeed}>
+          <OriginalWrapper>
             {children}
-          </Dispatcher>
-        </RootProviders>
-      </OriginalWrapper>
+          </OriginalWrapper>
+        </Dispatcher>
+      </RootProviders>
     );
   }
 }
