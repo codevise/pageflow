@@ -6,7 +6,6 @@ import 'support/fakeBrowserFeatures';
 import {renderHookInEntry} from 'support';
 
 describe('useEventContextData', () => {
-
   it('returns an object with current section and chapter index', () => {
     const {result} = renderHookInEntry((props) => useEventContextData(), {
       seed: {
@@ -41,10 +40,12 @@ describe('useEventContextData', () => {
     });
 
     expect(result.current).toMatchObject({
-      configuration: {
-        title: 'Chapter 1, Section 0'
-      },
-      index: 0,
+      page: {
+        configuration: {
+          title: 'Chapter 1, Section 0'
+        },
+        index: 0
+      }
     });
   });
 });

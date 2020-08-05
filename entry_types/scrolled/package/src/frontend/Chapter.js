@@ -27,7 +27,7 @@ function renderSections(sections,
     setCurrentSectionIndex(sectionIndex);
     setScrollTargetSectionIndex(null);
   }
-  
+
   return sections.map((section) => {
     return (
       <EventContextDataProvider key={section.permaId} sectionIndex={currentSectionIndex}>

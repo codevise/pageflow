@@ -12,7 +12,7 @@ export function getEventObject(sectionIndex, entryStructure){
     },
     index: sectionIndex === null ? -1 : sectionIndex,
   }
-  
+
   return page;
 }
 
@@ -22,7 +22,7 @@ export function EventContextDataProvider(props){
   const entryStructure = useEntryStructure();
 
   let contextValue = useMemo(()=>{
-    return getEventObject(props.sectionIndex, entryStructure);
+    return {page: getEventObject(props.sectionIndex, entryStructure)};
   }, [props.sectionIndex, entryStructure]);
 
   return (
