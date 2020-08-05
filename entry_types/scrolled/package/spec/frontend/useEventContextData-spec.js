@@ -8,7 +8,6 @@ import {renderHookInEntry} from 'support';
 describe('useEventContextData', () => {
 
   it('returns an object with current section and chapter index', () => {
-    
     const {result} = renderHookInEntry((props) => useEventContextData(), {
       seed: {
         entry: {
@@ -37,16 +36,15 @@ describe('useEventContextData', () => {
           },
         ]
       },
-      wrapper: ({children}) => ( <EventContextDataProvider sectionIndex={1}>{children}</EventContextDataProvider> )
+      wrapper: ({children}) =>
+        <EventContextDataProvider sectionIndex={0}>{children}</EventContextDataProvider>
     });
-    
+
     expect(result.current).toMatchObject({
       configuration: {
-        title: null
+        title: 'Chapter 1, Section 0'
       },
-      index: 1,
+      index: 0,
     });
-    
   });
-
 });
