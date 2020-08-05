@@ -63,9 +63,11 @@ export const Agent = function(userAgent) {
     matchesMobileSafari: function() {
       var matchers = [/iPod/i, /iPad/i, /iPhone/i];
 
-      return matchers.some(function(matcher) {
-        return userAgent.match(matcher);
-      });
+      return (matchers.some(function(matcher) {
+              return userAgent.match(matcher);
+             }) &&
+             !window.MSStream) || //IE exclusion from being detected as an iOS device;
+             matchesiPadSafari13AndAbove();
     },
 
     /**
@@ -76,8 +78,9 @@ export const Agent = function(userAgent) {
       var matchers = [/iPod/i, /iPad/i, /iPhone/i, /Android/i, /Silk/i, /IEMobile/i];
 
       return matchers.some(function(matcher) {
-        return userAgent.match(matcher);
-      });
+              return userAgent.match(matcher);
+             }) ||
+             matchesiPadSafari13AndAbove();
     },
 
     /**
@@ -167,6 +170,17 @@ export const Agent = function(userAgent) {
   function matchesMinVersion(exp, version) {
     var match = userAgent.match(exp);
     return match && match[1] && parseInt(match[1], 10) >= version;   
+  }
+
+  //After ios13 update, iPad reports the same user string
+  //as Safari on Dekstop MacOS.
+  //At the time of this writing there are no other devices
+  //with multi-touch support other than IOS/iPadOS
+  //See: https://stackoverflow.com/a/58064481
+  function matchesiPadSafari13AndAbove() {
+    return agent.matchesSafari() &&
+           navigator.maxTouchPoints > 1 &&
+           navigator.platform === 'MacIntel';       
   }
 };
 
