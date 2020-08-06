@@ -36,7 +36,8 @@ describe('EntryPreviewView', () => {
         ${escapedSeedHtml}
       </script>
     `;
-    view = new EntryPreviewView();
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    view = new EntryPreviewView({model: entry});
 
     view.render();
     document.body.appendChild(view.el);
@@ -78,7 +79,7 @@ describe('EntryPreviewView', () => {
 
   it('sets CSS class based on emulation mode', () => {
     document.body.innerHTML = seedBodyFragment;
-    const entry = factories.entry(ScrolledEntry);
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
     view = new EntryPreviewView({model: entry});
 
     view.render();

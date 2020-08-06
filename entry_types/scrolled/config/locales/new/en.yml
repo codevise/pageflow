@@ -446,3 +446,12 @@ en:
         heading: The browser or device you are using is not supported
         text: While Pageflow stories work on all modern browsers and devices, the Pageflow editor requires a desktop computer running a recent version of Chrome, Firefox, Safari or Edge.
       no_options: No options available
+      blank_entry:
+        create_chapter: Click <em>New chapter</em> to create your first chapter.
+        create_section: Click <em>New section</em> within the chapter to add a section.
+        create_content_element: Use the <em>Plus buttons</em> inside the preview to add text blocks and other elements.
+        edit_content_element: Click on elements in the preview and edit their settings in the sidebar.
+        edit_section: Click an empty space to select a section.
+        header: This is an empty Pageflow.
+        intro: Pageflows consist of chapters and sections. The sidebar on the right shows the outline of your story.
+        outro: In this area, a live preview will be shown.
