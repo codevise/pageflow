@@ -3,9 +3,10 @@ import classNames from 'classnames';
 
 import styles from './Toolbar.module.css';
 
-export function Toolbar({buttons, onButtonClick, iconSize}) {
+export function Toolbar({buttons, onButtonClick, iconSize, collapsible}) {
   return (
-    <div className={styles.Toolbar} contentEditable={false}>
+    <div className={classNames(styles.Toolbar, {[styles.collapsible]: collapsible})}
+         contentEditable={false}>
       {buttons.map(button => {
         const Icon = button.icon
 
