@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Section from './Section';
+import {EventContextDataProvider} from './useEventContextData';
 
 export default function Chapter(props) {
   return (
@@ -26,11 +27,12 @@ function renderSections(sections,
 
   return sections.map((section) => {
     return (
-      <Section key={section.permaId}
-               state={section.sectionIndex > currentSectionIndex ? 'below' : section.sectionIndex < currentSectionIndex ? 'above' : 'active'}
-               isScrollTarget={section.sectionIndex === scrollTargetSectionIndex}
-               onActivate={() => onActivate(section.sectionIndex)}
-               {...section} />
+      <EventContextDataProvider key={section.permaId} sectionIndex={section.sectionIndex}>
+        <Section state={section.sectionIndex > currentSectionIndex ? 'below' : section.sectionIndex < currentSectionIndex ? 'above' : 'active'}
+                 isScrollTarget={section.sectionIndex === scrollTargetSectionIndex}
+                 onActivate={() => onActivate(section.sectionIndex)}
+                 {...section} />
+      </EventContextDataProvider>
     )
   });
 }

@@ -5,6 +5,7 @@ import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 import {render as testingLibraryRender} from '@testing-library/react'
 import {media} from 'pageflow/frontend';
 import {MediaPlayer} from 'frontend/MediaPlayer';
+import {EventContext} from 'frontend/useEventContextData';
 
 describe('MediaPlayer', () => {
   useFakeMedia();
@@ -83,6 +84,25 @@ describe('MediaPlayer', () => {
       ],
       expect.anything()
     );
+  });
+
+  it('it passes data from EventContext to getPlayer as media events context data', () => {
+    const eventContextData = {some: 'data'};
+
+    render(<MediaPlayer {...requiredProps()}
+                        type={'video'}
+                        sources={getVideoSources()} />,
+           {
+             wrapper: ({children}) =>
+               <EventContext.Provider value={eventContextData}>{children}</EventContext.Provider>
+           });
+
+    expect(media.getPlayer).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        mediaEventsContextData: eventContextData
+      }
+    ));
   });
 
   it('does not request new Player for same sources', () => {

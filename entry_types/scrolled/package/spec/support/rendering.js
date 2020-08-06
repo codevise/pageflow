@@ -47,10 +47,10 @@ export function renderInEntry(ui, {seed, setup, wrapper, ...options} = {}) {
  * @param {Object} [options.seed] - Seed data for entry state. Passed through {@link normalizeSeed}.
  * @param {Function} [options.setup] - See {@link renderInEntry}.
  */
-export function renderHookInEntry(callback, {seed, setup, ...options} = {}) {
+export function renderHookInEntry(callback, {seed, setup, wrapper, ...options} = {}) {
   return renderHook(callback,
                     {
-                      wrapper: createWrapper(seed, setup),
+                      wrapper: createWrapper(seed, setup, wrapper),
                       ...options
                     });
 }
@@ -61,13 +61,13 @@ function createWrapper(seed, setup, originalWrapper) {
 
   return function Wrapper({children}) {
     return (
-      <OriginalWrapper>
-        <RootProviders seed={normalizedSeed}>
-          <Dispatcher callback={setup} seed={normalizedSeed}>
+      <RootProviders seed={normalizedSeed}>
+        <Dispatcher callback={setup} seed={normalizedSeed}>
+          <OriginalWrapper>
             {children}
-          </Dispatcher>
-        </RootProviders>
-      </OriginalWrapper>
+          </OriginalWrapper>
+        </Dispatcher>
+      </RootProviders>
     );
   }
 }

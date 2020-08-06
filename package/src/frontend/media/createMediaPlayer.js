@@ -3,7 +3,6 @@ import {VideoPlayer} from '../VideoPlayer';
 
 export const createMediaPlayer = function (options) {
   let isAudio = options.tagName == 'AUDIO';
-  let playsInline = true;
 
   const player = new VideoPlayer(options.mediaElement, {
     controlBar: false,
@@ -25,7 +24,7 @@ export const createMediaPlayer = function (options) {
     hooks: {},
 
     mediaEvents: true,
-    context: options.mediaContext
+    context: null
   });
 
   player.textTrackSettings = {

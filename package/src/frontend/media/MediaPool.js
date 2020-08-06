@@ -32,7 +32,8 @@ export class MediaPool {
       }
     }
   }
-  allocatePlayer({playerType, playerId, playsInline, loop = false, controls = false, hooks, poster}){      
+  allocatePlayer({playerType, playerId, playsInline, mediaEventsContextData,
+                  hooks, poster, loop = false, controls = false}){
     let player = undefined;
     if (!this.unAllocatedPlayers[playerType]) {
       this.populateMediaPool_();
@@ -52,6 +53,7 @@ export class MediaPool {
         player.playsinline(true); 
       }
       player.updateHooks(hooks || {});
+      player.updateMediaEventsContext(mediaEventsContextData);
       
       this.allocatedPlayers[playerType].push(player);
       player.playerId = playerId || this.allocatedPlayers[playerType].length
