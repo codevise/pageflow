@@ -1,44 +1,56 @@
 import {useIframeHeight} from 'contentElements/dataWrapperChart/useIframeHeight';
+import {tick} from 'support';
 
-import {renderHook} from '@testing-library/react-hooks';
-import {fakeParentWindow, tick} from 'support';
+import {renderHook, act} from '@testing-library/react-hooks';
 
 describe('useIframeHeight', () => {
-  it('Confirms the default height', async () => {
-    const testURL = 'testUrl/id/1/';
-    fakeParentWindow();
+  it('sets default height', async () => {
+    const {result} = renderHook(() => useIframeHeight('testUrl/id/1/'));
 
-    const {result} = renderHook(() => useIframeHeight(testURL));
-
-    window.postMessage('SOME_MESSAGE', '*');
-    await tick();
+    await asyncHandlingOfMessage(() => {
+      window.postMessage('SOME_MESSAGE', '*');
+    });
 
     expect(result.current).toEqual('400px');
   });
 
   it('removes listener on cleanup', async () => {
-    const testURL = 'testUrl/id/1/';
-    fakeParentWindow();
-    const {unmount} = renderHook(() => useIframeHeight(testURL));
-    const spy = jest.spyOn(window.document, 'removeEventListener');
+    const {result, unmount} = renderHook(() => useIframeHeight('testUrl/id/1001/'));
 
     unmount();
-    window.postMessage('SOME_MESSAGE', '*');
-    await tick();
+    await asyncHandlingOfMessage(() => {
+      window.postMessage({'datawrapper-height': {'1001': 350}}, '*');
+    });
 
-    expect(spy).toBeCalledWith('message', expect.any(Function));
+    expect(result.current).toEqual('400px');
   });
 
-  it('sets the given height', async () => {
-    const testURL = 'testUrl/id/1/';
-    fakeParentWindow();
-    const {result, rerender} = renderHook(() => useIframeHeight(testURL));
-    expect(result.current).toEqual('400px');
+  it('sets height from message matching chart id', async () => {
+    const {result} = renderHook(() => useIframeHeight('testUrl/id/1002/'));
 
-    window.postMessage({'datawrapper-height': {id : 350}}, '*');
-    await tick();
-    rerender();
+    await asyncHandlingOfMessage(() => {
+      window.postMessage({'datawrapper-height': {'1002': 350}}, '*');
+    });
 
     expect(result.current).toEqual('350px');
   });
+
+  it('ignores messages for other chart id', async () => {
+    const {result} = renderHook(() => useIframeHeight('testUrl/id/1002/'));
+
+    await asyncHandlingOfMessage(() => {
+      window.postMessage({'datawrapper-height': {'999': 350}}, '*');
+    });
+
+    expect(result.current).toEqual('400px');
+  });
+
+  async function asyncHandlingOfMessage(callback) {
+    await act(async () => {
+      callback();
+      // Ensure React update triggered by async handling of message is
+      // wrapped in act
+      await tick();
+    });
+  }
 });
