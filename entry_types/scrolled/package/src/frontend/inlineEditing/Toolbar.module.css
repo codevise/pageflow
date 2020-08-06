@@ -1,18 +1,15 @@
 .Toolbar {
   background: #fff;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  display: flex;
+  gap: 2px;
 }
 
 .button {
   border: 0;
   background: #fff;
   padding: 10px;
-  margin-right: 2px;
   opacity: 0.6;
-}
-
-.button:last-child {
-  margin-right: 0;
 }
 
 .button:hover {
@@ -22,4 +19,16 @@
 .activeButton {
   background: #ddd;
   opacity: 1;
+}
+
+@media (max-width: 460px) {
+  .collapsible .button {
+    display: none;
+  }
+
+  .collapsible:hover .button,
+  .collapsible:focus-within .button,
+  .collapsible .activeButton {
+    display: inline-block;
+  }
 }

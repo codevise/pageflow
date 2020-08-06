@@ -50,6 +50,7 @@ function renderToolbar({toolbarButtons, onToolbarButtonClick, start}) {
     return (
       <div className={styles.toolbar}>
         <Toolbar buttons={toolbarButtons}
+                 collapsible={true}
                  onButtonClick={onToolbarButtonClick} />
       </div>
     );
