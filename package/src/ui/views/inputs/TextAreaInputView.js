@@ -146,7 +146,7 @@ export const TextAreaInputView = Marionette.ItemView.extend({
       var currentUrl = this.ui.urlInput.val();
 
       if (currentUrl.startsWith('#')) {
-        this.ui.displayUrlInput.val('http://');
+        this.ui.displayUrlInput.val('');
         this.ui.openInNewTabCheckBox.prop('checked', true);
       }
       else {
