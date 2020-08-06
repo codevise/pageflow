@@ -77,6 +77,25 @@ You can return to using the version specified in the `package.json`
 file, by running `yarn unlink pageflow`/`yarn unlink
 pageflow-scrolled` and `yarn install --force`.
 
+If you see errors of the form "hooks can only be called inside the
+body of a function component", you need to make sure that only one
+copy of React is loaded. In the above setup, there is a copy of React
+in `my-projects/pageflow/node_modules/react` and in
+`my-projects/pageflow-host-app/node_modules/react`. When
+`pageflow-scrolled` is linked, imports of `react` inside
+`pageflow-scrolled` will load the module from
+`my-projects/pageflow/node_modules`. If there are other packages in
+the host application which import `react`, they will load the module
+from the host application's `node_modules` directory. To fix this, we
+need to link the `react` package so that only the copy from the host
+application is used:
+
+    $ cd my-projects/pageflow-host-app/node_modules/react
+    $ yarn link
+
+    $ cd my-projects/pageflow/
+    $ yarn link react
+
 ### Building for Release
 
 To output a production ready build, run from the repository run:
