@@ -9,7 +9,7 @@ export const MotifArea = function MotifArea(props) {
   const image = useFile({collectionName: 'imageFiles', permaId: props.imageId});
 
   const lastPosition = useRef();
-  const position = image && getPosition(props, image);
+  const position = image?.isReady && getPosition(props, image);
 
   const elementRef = useRef();
   const onUpdate = props.onUpdate;
@@ -32,7 +32,7 @@ export const MotifArea = function MotifArea(props) {
     lastPosition.current = position;
   });
 
-  if (!image) {
+  if (!position) {
     return null;
   }
 
