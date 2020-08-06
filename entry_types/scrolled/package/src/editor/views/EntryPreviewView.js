@@ -2,6 +2,8 @@ import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import {cssModulesUtils} from 'pageflow/ui';
 import {PreviewMessageController} from '../controllers/PreviewMessageController'
+import {BlankEntryView} from './BlankEntryView';
+
 import styles from './EntryPreviewView.module.css'
 
 export const EntryPreviewView = Marionette.ItemView.extend({
@@ -15,6 +17,10 @@ export const EntryPreviewView = Marionette.ItemView.extend({
 
   modelEvents: {
     'change:emulation_mode': 'updateEmulationMode'
+  },
+
+  onRender() {
+    this.appendSubview(new BlankEntryView({model: this.model}));
   },
 
   onShow() {
