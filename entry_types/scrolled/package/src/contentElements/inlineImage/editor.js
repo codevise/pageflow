@@ -1,5 +1,4 @@
 import {editor} from 'pageflow-scrolled/editor';
-import {TextInputView, SelectInputView} from 'pageflow/ui';
 import {FileInputView} from 'pageflow/editor';
 
 editor.contentElementTypes.register('inlineImage', {
@@ -7,7 +6,8 @@ editor.contentElementTypes.register('inlineImage', {
     this.tab('general', function() {
       this.input('id', FileInputView, {
         collection: 'image_files',
-        fileSelectionHandler: 'contentElementConfiguration'
+        fileSelectionHandler: 'contentElementConfiguration',
+        positioning: false
       });
       this.group('ContentElementCaption');
       this.group('ContentElementPosition');
