@@ -4,7 +4,6 @@ module PageflowScrolled
     include Pageflow::EntriesControllerEnvHelper
 
     helper Pageflow::WidgetsHelper
-    helper Pageflow::PublicI18nHelper
     helper Pageflow::SocialShareHelper
     helper Pageflow::MetaTagsHelper
 
