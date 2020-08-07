@@ -1,4 +1,4 @@
-module Pageflow
+module PageflowPaged
   module React
     class WidgetType < Pageflow::WidgetType
       attr_reader :name, :role, :options
@@ -18,7 +18,7 @@ module Pageflow
       end
 
       def render(template, entry)
-        template.render(File.join('pageflow', 'react', 'widget'),
+        template.render(File.join('pageflow_paged', 'react', 'widget'),
                         entry: entry,
                         name: name,
                         server_rendering: options[:server_rendering])

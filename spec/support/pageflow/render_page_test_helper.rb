@@ -18,7 +18,7 @@ module Pageflow
       helper.extend(InfoBoxHelper)
       helper.extend(BackgroundImageHelper)
       helper.extend(EntryJsonSeedHelper)
-      helper.extend(PageBackgroundAssetHelper)
+      helper.extend(PageflowPaged::PageBackgroundAssetHelper)
       helper.extend(PagesHelper)
       helper.extend(VideoFilesHelper)
 
