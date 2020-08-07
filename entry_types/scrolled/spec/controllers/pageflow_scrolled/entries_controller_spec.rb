@@ -73,6 +73,14 @@ module PageflowScrolled
         expect(response.body).not_to have_selector('div.test_widget')
         expect(response.body).not_to have_meta_tag.with_name('some_test')
       end
+
+      it 'uses locale of entry' do
+        entry = create(:entry, :published, type_name: 'scrolled', published_revision_attributes: {locale: 'de'})
+
+        get_with_entry_env(:show, entry: entry)
+
+        expect(response.body).to have_selector('html[lang=de]')
+      end
     end
   end
 end

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<%= content_tag(:html, lang: I18n.locale) do %>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,8 +8,11 @@
       name="description"
       content="Pageflow Next Showcase"
     />
+
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700&display=swap" rel="stylesheet">
     <title>Pageflow Next Showcase</title>
+    <%= social_share_meta_tags_for(@entry) %>
+    <%= meta_tags_for_entry(@entry) %>
 
     <%= javascript_include_tag 'pageflow/videojs' %>
     <%= javascript_include_tag 'pageflow_scrolled/legacy' %>
@@ -39,4 +42,4 @@
 
     <%= scrolled_entry_json_seed_script_tag(@entry, @seed_options || {}) %>
   </body>
-</html>
+<% end %>
