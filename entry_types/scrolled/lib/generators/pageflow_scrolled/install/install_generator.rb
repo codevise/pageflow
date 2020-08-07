@@ -18,6 +18,12 @@ module PageflowScrolled
         end
       end
 
+      def webpacker_yml
+        gsub_file('config/webpacker.yml',
+                  'extract_css: false',
+                  'extract_css: true')
+      end
+
       def editor_pack
         create_file 'app/javascript/packs/pageflow-scrolled-editor.js', <<-JS
           import 'pageflow-scrolled/editor';
@@ -37,6 +43,13 @@ module PageflowScrolled
         create_file 'app/javascript/packs/pageflow-scrolled-server.js', <<-JS
           import 'pageflow-scrolled/frontend-server';
           import 'pageflow-scrolled/contentElements-frontend';
+        JS
+      end
+
+      def theme_pack
+        create_file 'app/javascript/packs/pageflow-scrolled-theme.css', <<-JS
+          @import "pageflow-scrolled/frontend/index.css";
+          @import "pageflow-scrolled/contentElements-frontend.css";
         JS
       end
     end

@@ -40,9 +40,10 @@ function external(id) {
   return !['.', '/', '$'].includes(id[0]);
 }
 
-const plugins = [
+const plugins = ({extractCss} = {}) => [
   postcss({
     modules: true,
+    extract: extractCss,
     plugins: [autoprefixer]
   }),
   babel({
@@ -94,7 +95,7 @@ const pageflow = [
       format: 'esm'
     },
     external,
-    plugins
+    plugins: plugins()
   },
   {
     input: pageflowPackageRoot + '/src/editor/index.js',
@@ -105,7 +106,7 @@ const pageflow = [
     external,
     plugins: [
       stateAlias(pageflowPackageRoot + '/src/editor/state.js'),
-      ...plugins
+      ...plugins()
     ]
   },
   {
@@ -117,7 +118,7 @@ const pageflow = [
     external,
     plugins: [
       stateAlias(pageflowPackageRoot + '/src/editor/state.js'),
-      ...plugins
+      ...plugins()
     ]
   },
   {
@@ -127,7 +128,7 @@ const pageflow = [
       format: 'esm'
     },
     external,
-    plugins
+    plugins: plugins()
   },
   {
     input: pageflowPackageRoot + '/src/ui/index.js',
@@ -138,7 +139,7 @@ const pageflow = [
       globals: editorGlobals
     },
     external: Object.keys(editorGlobals),
-    plugins
+    plugins: plugins()
   }
 ];
 
@@ -166,7 +167,7 @@ const pageflowPaged = [
     external: Object.keys(pageflowPagedEditorGlobals),
     plugins: [
       stateAlias(pageflowPagedPackageRoot + '/src/editor/state.js'),
-      ...plugins
+      ...plugins()
     ]
   },
   {
@@ -178,7 +179,7 @@ const pageflowPaged = [
       globals: frontendGlobals
     },
     external: Object.keys(frontendGlobals),
-    plugins
+    plugins: plugins()
   }
 ];
 
@@ -192,7 +193,7 @@ const pageflowScrolled = [
       format: 'esm',
     },
     external,
-    plugins
+    plugins: plugins()
   },
   {
     input: pageflowScrolledPackageRoot + '/src/frontend/index.js',
@@ -201,7 +202,7 @@ const pageflowScrolled = [
       format: 'esm',
     },
     external,
-    plugins,
+    plugins: plugins({extractCss: true}),
     ...ignoreJSXWarning
   },
   {
@@ -211,7 +212,7 @@ const pageflowScrolled = [
       format: 'esm',
     },
     external,
-    plugins,
+    plugins: plugins(),
     ...ignoreJSXWarning
   },
 
@@ -222,7 +223,7 @@ const pageflowScrolled = [
       format: 'esm',
     },
     external,
-    plugins
+    plugins: plugins()
   },
   {
     input: pageflowScrolledPackageRoot + '/src/contentElements/frontend.js',
@@ -231,7 +232,7 @@ const pageflowScrolled = [
       format: 'esm',
     },
     external,
-    plugins,
+    plugins: plugins({extractCss: true}),
     ...ignoreJSXWarning
   }
 ];

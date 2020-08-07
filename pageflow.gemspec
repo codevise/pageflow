@@ -15,8 +15,9 @@ Gem::Specification.new do |s|
   s.files = Dir['{,entry_types/*/}' \
                 '{admins,app,config,db,lib,vendor,spec/factories,spec/fixtures}/**/*',
                 'package/{config/**/*,editor.js,frontend.js,ui.js,testHelpers.js,package.json}',
-                'entry_types/scrolled/package/{contentElements-frontend.js,frontend-server.js,' \
-                'contentElements-editor.js,frontend/*.js,editor.js,package.json}',
+                'entry_types/scrolled/package/' \
+                '{contentElements-frontend.{js,css},frontend-server.js,' \
+                'contentElements-editor.js,frontend/*.{js,css},editor.js,package.json}',
                 'MIT-LICENSE', 'Rakefile', 'README.md', 'CHANGELOG.md']
 
   s.require_paths = ['lib', 'entry_types/paged/lib', 'entry_types/scrolled/lib']
