@@ -10,7 +10,7 @@ module Pageflow
             if entry_template.id
               render 'admin/accounts/entry_template_details', entry_template: entry_template
             else
-              h5(entry_template.translated_entry_type)
+              h5(entry_template.translated_entry_type_name)
             end
           end
           column do |entry_template|
@@ -29,7 +29,7 @@ module Pageflow
           new_admin_account_entry_template_path(
             account,
             entry_template,
-            entry_type: entry_template.entry_type
+            entry_type_name: entry_template.entry_type_name
           )
         )
       end

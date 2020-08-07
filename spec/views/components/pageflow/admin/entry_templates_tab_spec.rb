@@ -66,8 +66,8 @@ module Pageflow
       account = create(:account, features_configuration: {
                          'rainbows_entry_type' => false
                        })
-      create(:entry_template, account: account, entry_type: 'rainbows')
-      create(:entry_template, account: account, entry_type: 'ponies')
+      create(:entry_template, account: account, entry_type_name: 'rainbows')
+      create(:entry_template, account: account, entry_type_name: 'ponies')
 
       render(account.themings.first)
 

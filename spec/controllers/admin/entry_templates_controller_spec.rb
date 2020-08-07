@@ -13,7 +13,7 @@ module Admin
              params: {
                account_id: admin.accounts.first.id,
                entry_template: {
-                 entry_type: 'paged',
+                 entry_type_name: 'paged',
                  theme_name: 'unregistered'
                }
              })
@@ -35,7 +35,7 @@ module Admin
              params: {
                account_id: admin.accounts.first.id,
                entry_template: {
-                 entry_type: 'paged',
+                 entry_type_name: 'paged',
                  theme_name: 'custom'
                }
              })
@@ -51,7 +51,7 @@ module Admin
              params: {
                account_id: admin.accounts.first.id,
                entry_template: {
-                 entry_type: 'paged'
+                 entry_type_name: 'paged'
                },
                widgets: {
                  navigation: 'some_widget'
@@ -63,7 +63,7 @@ module Admin
       end
 
       it 'does not create widgets if entry template is invalid' do
-        existing_entry_template = create(:entry_template, entry_type: 'scrolled')
+        existing_entry_template = create(:entry_template, entry_type_name: 'scrolled')
         admin = create(:user, :admin)
         sign_in(admin, scope: :user)
 
@@ -72,7 +72,7 @@ module Admin
                params: {
                  account_id: existing_entry_template.account.id,
                  entry_template: {
-                   entry_type: 'scrolled'
+                   entry_type_name: 'scrolled'
                  },
                  widgets: {
                    navigation: 'some_widget'
@@ -89,7 +89,7 @@ module Admin
              params: {
                account_id: admin.accounts.first.id,
                entry_template: {
-                 entry_type: 'paged',
+                 entry_type_name: 'paged',
                  share_providers: {
                    insta: 'true',
                    tiktok: 'false'
@@ -112,7 +112,7 @@ module Admin
              params: {
                account_id: admin.accounts.first.id,
                entry_template: {
-                 entry_type: 'paged',
+                 entry_type_name: 'paged',
                  configuration: {
                    number: '1'
                  }
@@ -135,7 +135,7 @@ module Admin
                params: {
                  account_id: editor.accounts.first.id,
                  entry_template: {
-                   entry_type: 'paged'
+                   entry_type_name: 'paged'
                  }
                })
         }.not_to(change { Pageflow::EntryTemplate.count })
@@ -176,7 +176,7 @@ module Admin
             id: entry_template.id,
             account_id: entry_template.account.id,
             entry_template: {
-              entry_type: 'paged',
+              entry_type_name: 'paged',
               theme_name: 'green'
             }
           }
@@ -186,8 +186,8 @@ module Admin
       end
 
       it 'does not update widgets if entry template validation fails' do
-        entry_template = create(:entry_template, entry_type: 'paged')
-        create(:entry_template, entry_type: 'scrolled', account: entry_template.account)
+        entry_template = create(:entry_template, entry_type_name: 'paged')
+        create(:entry_template, entry_type_name: 'scrolled', account: entry_template.account)
 
         admin = create(:user, :admin)
         sign_in(admin, scope: :user)
@@ -198,7 +198,7 @@ module Admin
                   id: entry_template.id,
                   account_id: entry_template.account.id,
                   entry_template: {
-                    entry_type: 'scrolled'
+                    entry_type_name: 'scrolled'
                   },
                   widgets: {
                     navigation: 'some_widget'
@@ -216,7 +216,7 @@ module Admin
                 id: entry_template.id,
                 account_id: entry_template.account.id,
                 entry_template: {
-                  entry_type: 'paged'
+                  entry_type_name: 'paged'
                 },
                 widgets: {
                   navigation: 'some_widget'
@@ -238,7 +238,7 @@ module Admin
                 id: entry_template.id,
                 account_id: entry_template.account.id,
                 entry_template: {
-                  entry_type: 'paged',
+                  entry_type_name: 'paged',
                   share_providers: {
                     insta: 'true',
                     tiktok: 'false'
@@ -262,7 +262,7 @@ module Admin
                 id: entry_template.id,
                 account_id: entry_template.account.id,
                 entry_template: {
-                  entry_type: 'paged',
+                  entry_type_name: 'paged',
                   configuration: {
                     project: '0'
                   }
@@ -292,7 +292,7 @@ module Admin
                 id: entry_template.id,
                 account_id: entry_template.account.id,
                 entry_template: {
-                  entry_type: 'paged',
+                  entry_type_name: 'paged',
                   share_providers: {
                     insta: 'true',
                     tiktok: 'false'

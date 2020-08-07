@@ -7,14 +7,18 @@ module Pageflow
     has_many :widgets, as: :subject, dependent: :destroy
 
     validates :account, presence: true
-    validates :entry_type, presence: true
-    validates :entry_type,
+    validates :entry_type_name, presence: true
+    validates :entry_type_name,
               uniqueness: {
                 scope: :account
               }
 
-    def translated_entry_type
-      I18n.t("activerecord.values.pageflow/entry.type_names.#{entry_type}")
+    def entry_type
+      Pageflow.config.entry_types.find_by_name!(entry_type_name)
+    end
+
+    def translated_entry_type_name
+      I18n.t("activerecord.values.pageflow/entry.type_names.#{entry_type_name}")
     end
 
     def resolve_widgets(options = {})

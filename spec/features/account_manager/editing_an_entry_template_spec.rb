@@ -3,7 +3,7 @@ require 'spec_helper'
 feature 'as account manager, editing an entry template' do
   scenario 'changing meta fields' do
     account = create(:account, name: 'Codevise')
-    create(:entry_template, account: account, entry_type: 'paged')
+    create(:entry_template, account: account, entry_type_name: 'paged')
 
     Dom::Admin::Page.sign_in_as(:manager, on: account)
     visit(admin_account_path(account))
@@ -27,7 +27,7 @@ feature 'as account manager, editing an entry template' do
     end
 
     account = create(:account)
-    create(:entry_template, account: account, entry_type: 'paged', theme_name: 'foo')
+    create(:entry_template, account: account, entry_type_name: 'paged', theme_name: 'foo')
 
     Dom::Admin::Page.sign_in_as(:manager, on: account)
     visit(admin_account_path(account))

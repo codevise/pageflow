@@ -24,7 +24,7 @@ module Pageflow
         @entry_template = EntryTemplate.new(
           entry_template_params.merge(account_id: permitted_params[:account_id])
         )
-        @page_title = page_title('new', @entry_template.entry_type)
+        @page_title = page_title('new', @entry_template.entry_type_name)
         authorize!(:create, @entry_template)
         create! { redirect_path }
         update_widgets if @entry_template.errors.empty?
@@ -38,7 +38,7 @@ module Pageflow
       def update
         @entry_template = EntryTemplate.find(params[:id])
         @entry_template.assign_attributes(entry_template_params)
-        @page_title = page_title('edit', @entry_template.entry_type)
+        @page_title = page_title('edit', @entry_template.entry_type_name)
         params[:entry_template].delete('share_providers')
         params[:entry_template].delete('configuration')
         authorize!(:update, @entry_template)

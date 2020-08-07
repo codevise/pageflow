@@ -1,0 +1,14 @@
+de:
+  activerecord:
+    attributes:
+      pageflow/entry_template:
+        entry_type: DELETED
+        entry_type_name: Beitrags-Typ
+    errors:
+      models:
+        pageflow/entry_template:
+          attributes:
+            entry_type:
+              taken: DELETED
+            entry_type_name:
+              taken: bereits konfiguriert. Es existiert bereits eine Beitragsvorlage für den Beitrags-Typ in diesem Konto. Kehre zum Beitragsvorlagen-Tab zurück und bearbeite die existierende Beitragsvorlage anstatt eine neue anzulegen.

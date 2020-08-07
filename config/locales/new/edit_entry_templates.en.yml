@@ -1,0 +1,14 @@
+en:
+  activerecord:
+    attributes:
+      pageflow/entry_template:
+        entry_type: DELETED
+        entry_type_name: Story type
+    errors:
+      models:
+        pageflow/entry_template:
+          attributes:
+            entry_type:
+              taken: DELETED
+            entry_type_name:
+              taken: already configured. A story template for the story type already exists in this account. Return to the story templates tab and edit the existing story template instead of creating a new one.
