@@ -4,6 +4,93 @@ module Admin
   describe EntryTemplatesController do
     render_views
 
+    describe '#new' do
+      it 'displays only themes that are registered for the entry type' do
+        pageflow_configure do |config|
+          ironed = Pageflow::TestEntryType.register(config, name: 'ironed')
+          steeled = Pageflow::TestEntryType.register(config, name: 'steeled')
+          config.for_entry_type(ironed) do |entry_type_config|
+            entry_type_config.themes.register(:iron_ore)
+          end
+          config.for_entry_type(steeled) do |entry_type_config|
+            entry_type_config.themes.register(:iron_ore)
+            entry_type_config.themes.register(:carbon)
+          end
+        end
+        admin = create(:user, :admin)
+        sign_in(admin, scope: :user)
+
+        get(:new,
+            params: {
+              account_id: admin.accounts.first.id,
+              entry_type_name: 'ironed'
+            })
+
+        expect(response.body).to have_text('iron_ore')
+        expect(response.body).not_to have_text('carbon')
+      end
+
+      it 'displays only widget types that are registered for the entry type' do
+        pageflow_configure do |config|
+          ironed = Pageflow::TestEntryType.register(config, name: 'ironed')
+          steeled = Pageflow::TestEntryType.register(config, name: 'steeled')
+          iron_ore = Pageflow::TestWidgetType.new(name: 'iron_ore', roles: ['stuff'])
+          carbon = Pageflow::TestWidgetType.new(name: 'carbon', roles: ['stuff'])
+          config.for_entry_type(ironed) do |entry_type_config|
+            entry_type_config.widget_types.register(iron_ore)
+          end
+          config.for_entry_type(steeled) do |entry_type_config|
+            entry_type_config.widget_types.register(iron_ore)
+            entry_type_config.widget_types.register(carbon)
+          end
+        end
+        admin = create(:user, :admin)
+        sign_in(admin, scope: :user)
+
+        get(:new,
+            params: {
+              account_id: admin.accounts.first.id,
+              entry_type_name: 'ironed'
+            })
+
+        expect(response.body).to have_text('iron_ore')
+        expect(response.body).not_to have_text('carbon')
+      end
+
+      it 'displays only themes/widget_types whose features are enabled for account' do
+        pageflow_configure do |config|
+          ore_mine = Pageflow::TestWidgetType.new(name: 'ore_mine', roles: ['stuff'])
+          hay_stack = Pageflow::TestWidgetType.new(name: 'hay_stack', roles: ['stuff'])
+          config.features.register 'iron_combo' do |feature_config|
+            feature_config.themes.register(:iron_ore)
+            feature_config.widget_types.register(ore_mine)
+          end
+          config.features.register 'carbon_combo' do |feature_config|
+            feature_config.themes.register(:carbon)
+            feature_config.widget_types.register(hay_stack)
+          end
+        end
+        account = create(
+          :account,
+          with_feature: 'iron_combo',
+          without_feature: 'carbon_combo'
+        )
+        admin = create(:user, :admin)
+        sign_in(admin, scope: :user)
+
+        get(:new,
+            params: {
+              account_id: account.id,
+              entry_type_name: 'paged'
+            })
+
+        expect(response.body).to have_text('iron_ore')
+        expect(response.body).to have_text('ore_mine')
+        expect(response.body).not_to have_text('carbon')
+        expect(response.body).not_to have_text('hay_stack')
+      end
+    end
+
     describe '#create' do
       it 'still displays form after submit attempt if data is invalid' do
         admin = create(:user, :admin)

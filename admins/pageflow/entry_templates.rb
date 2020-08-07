@@ -16,7 +16,14 @@ module Pageflow
       helper Pageflow::Admin::WidgetsHelper
 
       def new
-        @page_title = page_title('new', params[:entry_type])
+        account = Account.find(params[:account_id])
+        @entry_template = EntryTemplate.new(
+          account: account,
+          entry_type_name: params[:entry_type_name]
+        )
+
+        @page_title = page_title('new', params[:entry_type_name])
+
         super
       end
 
@@ -31,7 +38,7 @@ module Pageflow
       end
 
       def edit
-        @page_title = page_title('edit', resource.entry_type)
+        @page_title = page_title('edit', resource.entry_type_name)
         super
       end
 
@@ -64,7 +71,7 @@ module Pageflow
         [
           :id,
           :account_id,
-          :entry_type,
+          :entry_type_name,
           :theme_name,
           :default_author,
           :default_publisher,

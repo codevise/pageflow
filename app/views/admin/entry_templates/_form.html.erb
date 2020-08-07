@@ -1,10 +1,11 @@
 <%= admin_form_for [:admin, parent, resource], html: {class: 'entry_template'}  do |f| %>
-  <% account_config = Pageflow.config_for(resource.account) %>
-  <% entry_type = resource.entry_type || params[:entry_type] %>
+  <% entry_template_config = Pageflow.config_for(resource) %>
+  <% entry_type_name = resource.entry_type_name || params[:entry_type_name] %>
+
   <%= f.inputs do %>
       <%= f.semantic_errors :entry_type_name %>
       <%= render('admin/accounts/theming_defaults_inline_help') %>
-      <%= f.hidden_field :entry_type, value: entry_type %>
+      <%= f.hidden_field :entry_type_name, value: entry_type_name %>
       <%= f.input :default_locale,
                         as: :select,
                         include_blank: false,
@@ -34,8 +35,9 @@
                    unchecked_value: 'false' %>
            <% end %>
       <% end %>
-      <% if entry_type == 'paged' %>
-        <%= f.input :theme_name, include_blank: false, collection: account_config.themes.names %>
+
+      <%= f.input :theme_name, include_blank: false, collection: entry_template_config.themes.names %>
+      <% if entry_type_name == 'paged' %>
         <%= render('admin/accounts/configuration_label') %>
         <%= f.semantic_fields_for :configuration,
           OpenStruct.new(
@@ -46,8 +48,8 @@
                     label: I18n.t('activerecord.attributes.pageflow/entry_template.'\
                                   'configuration.home_button_enabled') %>
         <% end %>
-        <%= admin_widgets_fields(f, account_config) %>
       <% end %>
+      <%= admin_widgets_fields(f, entry_template_config) %>
   <% end %>
   <%= f.actions do %>
     <%= f.action(:submit) %>

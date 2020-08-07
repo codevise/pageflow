@@ -20,6 +20,7 @@ FactoryBot.define do
       with_manager { nil }
 
       with_feature { nil }
+      without_feature { nil }
     end
 
     after(:create) do |account, evaluator|
@@ -47,7 +48,8 @@ FactoryBot.define do
 
     after(:build) do |entry, evaluator|
       entry.features_configuration =
-        entry.features_configuration.merge(evaluator.with_feature => true)
+        entry.features_configuration.merge(evaluator.with_feature => true,
+                                           evaluator.without_feature => false)
     end
   end
 end

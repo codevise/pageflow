@@ -7,13 +7,10 @@ module Pageflow
     end
 
     it "has entries even if corresponding entry templates aren't created yet" do
-      ponies = TestEntryType.new(name: 'ponies')
-      rainbows = TestEntryType.new(name: 'rainbows')
-      glitter = TestEntryType.new(name: 'glitter')
       pageflow_configure do |config|
-        config.entry_types.register(ponies)
-        config.entry_types.register(rainbows)
-        config.entry_types.register(glitter)
+        TestEntryType.register(config, name: 'ponies')
+        TestEntryType.register(config, name: 'rainbows')
+        TestEntryType.register(config, name: 'glitter')
       end
 
       account = create(:account)
@@ -26,14 +23,12 @@ module Pageflow
     end
 
     it 'only has entries if entry type feature is enabled for account' do
-      ponies = TestEntryType.new(name: 'ponies')
-      rainbows = TestEntryType.new(name: 'rainbows')
       pageflow_configure do |config|
         config.features.register('ponies_entry_type') do |feature_config|
-          feature_config.entry_types.register(ponies)
+          TestEntryType.register(feature_config, name: 'ponies')
         end
         config.features.register('rainbows_entry_type') do |feature_config|
-          feature_config.entry_types.register(rainbows)
+          TestEntryType.register(feature_config, name: 'rainbows')
         end
         config.features.enable_by_default('ponies_entry_type')
         config.features.enable_by_default('rainbows_entry_type')
@@ -50,23 +45,22 @@ module Pageflow
     end
 
     it "hides existing entry template if feature isn't active" do
-      rainbows = TestEntryType.new(name: 'rainbows')
-      ponies = TestEntryType.new(name: 'ponies')
       pageflow_configure do |config|
         config.features.register('rainbows_entry_type') do |feature_config|
-          feature_config.entry_types.register(rainbows)
+          TestEntryType.register(feature_config, name: 'rainbows')
         end
         config.features.register('ponies_entry_type') do |feature_config|
-          feature_config.entry_types.register(ponies)
+          TestEntryType.register(feature_config, name: 'ponies')
         end
         config.features.enable_by_default('rainbows_entry_type')
         config.features.enable_by_default('ponies_entry_type')
       end
 
-      account = create(:account, features_configuration: {
-                         'rainbows_entry_type' => false
-                       })
+      account = create(:account)
       create(:entry_template, account: account, entry_type_name: 'rainbows')
+      account.update(features_configuration: {
+                       'rainbows_entry_type' => false
+                     })
       create(:entry_template, account: account, entry_type_name: 'ponies')
 
       render(account.themings.first)

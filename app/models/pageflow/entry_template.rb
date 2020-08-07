@@ -4,6 +4,7 @@ module Pageflow
     include SerializedConfiguration
     serialize :default_share_providers, JSON
     belongs_to :account
+    delegate :enabled_feature_names, to: :account
     has_many :widgets, as: :subject, dependent: :destroy
 
     validates :account, presence: true
@@ -22,7 +23,7 @@ module Pageflow
     end
 
     def resolve_widgets(options = {})
-      widgets.resolve(Pageflow.config_for(account), options)
+      widgets.resolve(Pageflow.config_for(self), options)
     end
 
     def copy_defaults_to(revision)
@@ -58,7 +59,7 @@ module Pageflow
     end
 
     def available_themes
-      Pageflow.config_for(account).themes
+      Pageflow.config_for(self).themes
     end
 
     def hashify_provider_array(arr)
