@@ -16,7 +16,7 @@ import {loadInlineEditingComponents} from './inlineEditing';
 
 import {browser} from 'pageflow/frontend';
 
-const editMode = window.location.pathname.indexOf('/editor/entries') === 0;
+const editMode = (typeof window !== 'undefined') && window.location.pathname.indexOf('/editor/entries') === 0;
 
 export const withShadowClassName = styles.withShadow;
 
@@ -59,7 +59,7 @@ export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 export {RootProviders};
 export {default as registerTemplateWidgetType} from './registerTemplateWidgetType';
 
-window.pageflowScrolledRender = function(seed) {
+global.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);
   browser.detectFeatures().then(function(){
     if (editMode) {

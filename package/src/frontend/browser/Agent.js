@@ -184,4 +184,4 @@ export const Agent = function(userAgent) {
   }
 };
 
-export const agent = new Agent(navigator.userAgent);
+export const agent = new Agent(typeof navigator !== 'undefined' ? navigator.userAgent : 'ssr');
