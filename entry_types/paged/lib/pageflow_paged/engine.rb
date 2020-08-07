@@ -21,6 +21,7 @@ module PageflowPaged
         pageflow_paged/vendor.js
         pageflow_paged/editor.js
         pageflow_paged/frontend.js
+        pageflow_paged/server_rendering.js
         pageflow_paged/editor.css
       ]
     end
