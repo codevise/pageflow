@@ -13,9 +13,10 @@
     "prop-types": "^15.7.2",
     "react-compare-image": "https://github.com/codevise/react-compare-image#offset-width-fix",
     "react-draggable": "^4.4.2",
-    "react-player": "^1.15.2",
     "react-measure": "^2.3.0",
+    "react-player": "^1.15.2",
     "react-tooltip": "^3.11.1",
+    "react_ujs": "^2.6.1",
     "slate": "^0.57.3",
     "slate-react": "^0.57.3",
     "whatwg-fetch": "^3.0.0"

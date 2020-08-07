@@ -21,6 +21,21 @@ module PageflowScrolled
                                                visible: false)
       end
 
+      it 'server side renders entry' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.published_revision)
+        section = create(:section, chapter: chapter)
+        create(:content_element,
+               section: section,
+               position: 4,
+               type_name: 'inlineImage',
+               configuration: {caption: 'Some caption'})
+
+        get_with_entry_env(:show, entry: entry)
+
+        expect(response.body).to have_selector('figcaption', text: 'Some caption')
+      end
+
       it 'renders widget head fragments' do
         widget_type = Pageflow::TestWidgetType
                       .new(name: 'test_widget',

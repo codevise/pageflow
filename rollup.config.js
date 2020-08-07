@@ -204,6 +204,16 @@ const pageflowScrolled = [
     plugins,
     ...ignoreJSXWarning
   },
+  {
+    input: pageflowScrolledPackageRoot + '/src/frontend/server.js',
+    output: {
+      file: pageflowScrolledPackageRoot + '/frontend-server.js',
+      format: 'esm',
+    },
+    external,
+    plugins,
+    ...ignoreJSXWarning
+  },
 
   {
     input: pageflowScrolledPackageRoot + '/src/contentElements/editor.js',

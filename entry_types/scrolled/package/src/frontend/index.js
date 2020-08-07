@@ -72,10 +72,15 @@ global.pageflowScrolledRender = function(seed) {
 }
 
 function render(seed) {
-  ReactDOM.render(<Root seed={seed} />, document.getElementById('root'));
+  if (editMode) {
+    ReactDOM.render(<Root seed={seed} />, document.getElementById('root'));
+  }
+  else {
+    ReactDOM.hydrate(<Root seed={seed} />, document.getElementById('root'));
+  }
 }
 
-function Root({seed}) {
+export function Root({seed}) {
   return (
     <RootProviders seed={seed}>
       <AppHeader />
