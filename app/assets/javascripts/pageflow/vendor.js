@@ -16,5 +16,4 @@
 // = require iscroll
 // = require audio5.min
 
-// = require react
 // = require backbone-rails
