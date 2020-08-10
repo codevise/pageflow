@@ -33,10 +33,8 @@ module Pageflow
     end
 
     it 'displays fields for features registed for entry type of passed entry' do
-      some_entry_type = TestEntryType.new(name: 'some')
-
       pageflow_configure do |config|
-        config.entry_types.register(some_entry_type)
+        some_entry_type = TestEntryType.register(config, name: 'some')
 
         config.for_entry_type(some_entry_type) do |entry_type_config|
           entry_type_config.features.register('some_feature')
@@ -51,12 +49,9 @@ module Pageflow
     end
 
     it 'does not display fields for features registered for other entry type' do
-      some_entry_type = TestEntryType.new(name: 'some')
-      other_entry_type = TestEntryType.new(name: 'other')
-
       pageflow_configure do |config|
-        config.entry_types.register(some_entry_type)
-        config.entry_types.register(other_entry_type)
+        TestEntryType.register(config, name: 'some')
+        other_entry_type = TestEntryType.register(config, name: 'other')
 
         config.for_entry_type(other_entry_type) do |entry_type_config|
           entry_type_config.features.register('some_feature')

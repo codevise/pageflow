@@ -15,6 +15,7 @@ module Pageflow
     delegate :help_entries, to: :@config
     delegate :hooks, to: :@config
     delegate :revision_components, to: :@config
+    delegate :themes, to: :@config
     delegate :widget_types, to: :@config
 
     def plugin(plugin)
