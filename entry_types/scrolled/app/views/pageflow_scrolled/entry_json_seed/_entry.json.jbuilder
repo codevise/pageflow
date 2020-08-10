@@ -28,6 +28,8 @@ json.config do
       json.url entry_privacy_link_url(entry)
     end
   end
+
+  json.partial! 'pageflow_scrolled/entry_json_seed/theme', theme: entry.theme
 end
 
 unless options[:skip_i18n]

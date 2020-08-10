@@ -113,7 +113,7 @@ jobs:
             }
           fi
         - yarn install
-        - (cd entry_types/scrolled; bundle exec rake pageflow_scrolled:dummy)
+        - (cd entry_types/scrolled; PAGEFLOW_PLUGIN_ENGINE=pageflow_scrolled bundle exec rake pageflow_scrolled:dummy)
       script:
         - |
           export PAGEFLOW_PAPERCLIP_S3_ROOT=$([[ $ON_UPSTREAM == "true" ]] &&
