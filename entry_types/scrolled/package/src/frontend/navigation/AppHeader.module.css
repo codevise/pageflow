@@ -49,10 +49,10 @@
   height: 50px;
 }
 
-.wdrLogo {
-  top: 12px;
+.logo {
+  top: 0;
   left: 15px;
-  width: 80px;
+  height: 100%;
 }
 
 .chapterList {
@@ -94,7 +94,7 @@
 
 /* mobile view */
 @media (max-width: 780px) {
-  .wdrLogo {
+  .logo {
     position: inherit;
   }
 
