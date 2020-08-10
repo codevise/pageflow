@@ -8,6 +8,7 @@
  * @param {Object} [options.shareUrlTemplates] - Mapping of share provider names to sharing urls.
  * @param {String} [options.defaultFileRights] - Default file rights of entry's account.
  * @param {Object} [options.legalInfo] - imprint, copyright and privacy information of entry.
+ * @param {Object} [options.themeOptions] - Options set via theme registration.
  * @param {Object} [options.entry] - attributes of entry.
  * @param {Array} [options.imageFiles] - Array of objects with image file attributes of entry.
  * @param {Array} [options.videoFiles] - Array of objects with video file attributes of entry.
@@ -26,6 +27,7 @@ export function normalizeSeed({
   shareUrlTemplates,
   defaultFileRights,
   legalInfo,
+  themeOptions,
   entry,
   imageFiles,
   videoFiles,
@@ -67,7 +69,8 @@ export function normalizeSeed({
       prettyUrl: prettyUrl,
       shareUrlTemplates: normalizeShareUrlTemplates(shareUrlTemplates),
       defaultFileRights: defaultFileRights,
-      legalInfo: normalizeLegalInfo(legalInfo)
+      legalInfo: normalizeLegalInfo(legalInfo),
+      theme: normalizeTheme(themeOptions)
     },
     collections: {
       entries: normalizedEntries,
@@ -160,6 +163,13 @@ function normalizeLegalInfo(legalInfo) {
       copyright: {label: '',url: ''},
       privacy: {label: '',url: ''},
     }
+  }
+}
+
+function normalizeTheme(options = {}) {
+  return {
+    assets: {},
+    options
   }
 }
 
