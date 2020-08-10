@@ -1,14 +1,15 @@
 require 'spec_helper'
 
 require 'pageflow/matchers/have_json_ld'
+require 'pageflow/used_file_test_helper'
 
-module Pageflow
-  describe PageBackgroundAssetHelper do
+module PageflowPaged
+  RSpec.describe PageBackgroundAssetHelper, type: :helper do
     include UsedFileTestHelper
 
     describe '#page_background_asset' do
       it 'renders background image div' do
-        entry = PublishedEntry.new(create(:entry, :published))
+        entry = create(:published_entry)
         image_file = create_used_file(:image_file, entry: entry)
         page = create(:page,
                       revision: entry.revision,
@@ -20,7 +21,7 @@ module Pageflow
       end
 
       it 'renders structured data for background image' do
-        entry = PublishedEntry.new(create(:entry, :published))
+        entry = create(:published_entry)
         image_file = create_used_file(:image_file, entry: entry)
         page = create(:page,
                       revision: entry.revision,
@@ -32,7 +33,7 @@ module Pageflow
       end
 
       it 'renders structured data for background vodep' do
-        entry = PublishedEntry.new(create(:entry, :published))
+        entry = create(:published_entry)
         video_file = create_used_file(:video_file, entry: entry)
         page = create(:page,
                       revision: entry.revision,
@@ -47,7 +48,7 @@ module Pageflow
       end
 
       it 'does not render structured data if feature is disabled' do
-        entry = PublishedEntry.new(create(:entry, :published, without_feature: 'structured_data'))
+        entry = create(:published_entry, without_feature: 'structured_data')
         image_file = create_used_file(:image_file, entry: entry)
         page = create(:page,
                       revision: entry.revision,

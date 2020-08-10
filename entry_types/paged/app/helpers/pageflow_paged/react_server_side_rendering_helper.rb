@@ -1,4 +1,4 @@
-module Pageflow
+module PageflowPaged
   # @api private
   module ReactServerSideRenderingHelper
     def render_page_react_component(entry, page, component_name)

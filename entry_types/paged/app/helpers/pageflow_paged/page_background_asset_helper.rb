@@ -1,10 +1,11 @@
-module Pageflow
+module PageflowPaged
+  # Render image or video loop page backgrounds
   module PageBackgroundAssetHelper
-    include EntryJsonSeedHelper
+    include Pageflow::EntryJsonSeedHelper
     include ReactServerSideRenderingHelper
 
     def page_background_asset(page)
-      render('pageflow/page_background_asset/element',
+      render('pageflow_paged/page_background_asset/element',
              entry: @entry,
              page: page)
     end

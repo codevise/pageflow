@@ -11,10 +11,10 @@ module PageflowPaged
     helper Pageflow::InfoBoxHelper
     helper Pageflow::NavigationBarHelper
     helper Pageflow::OverviewHelper
-    helper Pageflow::PageBackgroundAssetHelper
+    helper PageBackgroundAssetHelper
     helper Pageflow::PagesHelper
     helper Pageflow::PageTypesHelper
-    helper Pageflow::ReactServerSideRenderingHelper
+    helper ReactServerSideRenderingHelper
     helper Pageflow::RevisionFileHelper
     helper Pageflow::SocialShareHelper
     helper Pageflow::SocialShareLinksHelper

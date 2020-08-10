@@ -1,4 +1,4 @@
-module Pageflow
+module PageflowPaged
   module React
     class PageType < Pageflow::PageType
       attr_reader :name, :component_name, :file_types
@@ -13,7 +13,7 @@ module Pageflow
       end
 
       def template_path
-        'pageflow/react/page'
+        'pageflow_paged/react/page'
       end
 
       def thumbnail_candidates
