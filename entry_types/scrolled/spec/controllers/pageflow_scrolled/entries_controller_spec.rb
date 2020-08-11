@@ -4,6 +4,7 @@ require 'pageflow/entries_controller_test_helper'
 require 'pageflow/test_widget_type'
 
 require 'pageflow/matchers/have_meta_tag'
+require 'pageflow/matchers/have_json_ld'
 
 module PageflowScrolled
   RSpec.describe EntriesController, type: :controller do
@@ -90,11 +91,22 @@ module PageflowScrolled
       end
 
       it 'uses locale of entry' do
-        entry = create(:entry, :published, type_name: 'scrolled', published_revision_attributes: {locale: 'de'})
+        entry = create(:entry,
+                       :published,
+                       type_name: 'scrolled',
+                       published_revision_attributes: {locale: 'de'})
 
         get_with_entry_env(:show, entry: entry)
 
         expect(response.body).to have_selector('html[lang=de]')
+      end
+
+      it 'renders structured data' do
+        entry = create(:entry, :published, type_name: 'scrolled')
+
+        get_with_entry_env(:show, entry: entry)
+
+        expect(response.body).to have_json_ld('@type' => 'Article')
       end
     end
   end
