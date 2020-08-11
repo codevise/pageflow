@@ -10,6 +10,13 @@ storiesOfContentElement(module, {
   },
   variants: [
     {
+      name: 'with waveform player controls',
+      configuration: {
+        playerControlVariant: 'waveform',
+        waveformColor: '#1963ad'
+      }
+    },
+    {
       name: 'with poster image',
       configuration: {
         posterId: filePermaId('imageFiles', 'turtle')

@@ -314,6 +314,16 @@ de:
               label: "Audio"
             posterId:
               label: "Poster"
+            playerControlVariant:
+              label: Player Controls
+              inline_help: >
+                Wählen Sie den Stil der Player-Steuerelemente.
+              values:
+                classic: Klassisch
+                waveform: Waveform
+            waveformColor:
+              inline_help: Farbe des Bereichs der Waveform, der den bereits abgespielten Teil der Audio-Datei repräsentiert.
+              label: Waveform Farbe
             atmoDuringPlayback:
               label: Atmo während Medien-Wiedergabe
               inline_help: >
