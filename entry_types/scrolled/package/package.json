@@ -9,6 +9,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "debounce": "^1.2.0",
+    "deep-assign": "^3.0.0",
     "intersection-observer": "^0.7.0",
     "prop-types": "^15.7.2",
     "react-compare-image": "https://github.com/codevise/react-compare-image#offset-width-fix",
@@ -19,6 +20,7 @@
     "react_ujs": "^2.6.1",
     "slate": "^0.57.3",
     "slate-react": "^0.57.3",
+    "wavesurfer.js": "https://github.com/tf/wavesurfer.js#patches",
     "whatwg-fetch": "^3.0.0"
   },
   "peerDependencies": {
