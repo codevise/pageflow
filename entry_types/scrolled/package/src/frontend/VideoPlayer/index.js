@@ -9,6 +9,7 @@ import {useVideoQualitySetting} from '../useVideoQualitySetting';
 import {sources} from './sources'
 import styles from '../VideoPlayer.module.css';
 import {ViewportDependentPillarBoxes} from '../ViewportDependentPillarBoxes';
+import {VideoStructuredData} from './VideoStructuredData';
 
 /**
  * Render video file in MediaPlayer.
@@ -34,14 +35,17 @@ export function VideoPlayer(props) {
   function renderPlayer() {
     if (videoFile && videoFile.isReady) {
       return (
-        <MediaPlayer className={classNames(styles.videoPlayer, styles[props.fit])}
-                     type={'video'}
-                     textTracks={textTracks}
-                     filePermaId={props.id}
-                     sources={sources(videoFile, activeQuality)}
-                     textTracksInset={props.position === 'full'}
-                     posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
-                     {...props} />
+        <>
+          <MediaPlayer className={classNames(styles.videoPlayer, styles[props.fit])}
+                       type={'video'}
+                       textTracks={textTracks}
+                       filePermaId={props.id}
+                       sources={sources(videoFile, activeQuality)}
+                       textTracksInset={props.position === 'full'}
+                       posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
+                       {...props} />
+          <VideoStructuredData file={videoFile} />
+        </>
       );
     }
     else {
