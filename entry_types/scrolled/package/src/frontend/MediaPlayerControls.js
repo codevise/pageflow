@@ -1,5 +1,5 @@
 import React from 'react';
-import {PlayerControls} from './PlayerControls'
+import {ClassicPlayerControls, WaveformPlayerControls} from './PlayerControls'
 import {useTextTracks} from './useTextTracks';
 import {useI18n} from './i18n';
 import {useMediaMuted} from './useMediaMuted';
@@ -16,36 +16,61 @@ export function MediaPlayerControls(props) {
     captionsByDefault: useMediaMuted()
   });
   const focusOutlineVisible = useFocusOutlineVisible();
+  if (props.configuration.playerControlVariant === 'waveform') {
+    return (
+      <WaveformPlayerControls waveformColor={props.configuration.waveformColor}
+                              isPlaying={playerState.isPlaying}
+                              currentTime={playerState.scrubbingAt !== undefined ?
+                                           playerState.scrubbingAt : playerState.currentTime}
+                              bufferedEnd={playerState.bufferedEnd}
+                              duration={playerState.duration}
+                              mediaElementId={playerState.mediaElementId}
 
-  return (
-    <PlayerControls inset={props.configuration.position === 'full' || props.configuration.caption}
-                    type={props.type}
-                    currentTime={playerState.scrubbingAt !== undefined ?
-                             playerState.scrubbingAt : playerState.currentTime}
-                    bufferedEnd={playerState.bufferedEnd}
-                    duration={playerState.duration}
+                              onFocus={playerActions.focusEnteredControls}
+                              onBlur={playerActions.focusLeftControls}
+                              onMouseEnter={playerActions.controlsEntered}
+                              onMouseLeave={playerActions.controlsLeft}
 
-                    isPlaying={playerState.isPlaying}
-                    inactive={playerState.userIdle &&
-                              (!focusOutlineVisible || !playerState.focusInsideControls) &&
-                              !playerState.userHoveringControls}
+                              onPlayButtonClick={playerActions.playBlessed}
+                              onPauseButtonClick={playerActions.pause}
+                              scrubTo={playerActions.scrubTo}
+                              seekTo={playerActions.seekTo}
+                              
+                              textTracksMenuItems={getTextTracksMenuItems(textTracks, t)}
+                              onTextTracksMenuItemClick={textTracks.select} />
+    );
+  }
+  else {
+    return (
+      <ClassicPlayerControls inset={props.configuration.position === 'full' || props.configuration.caption}
+                      type={props.type}
+                      currentTime={playerState.scrubbingAt !== undefined ?
+                              playerState.scrubbingAt : playerState.currentTime}
+                      bufferedEnd={playerState.bufferedEnd}
+                      duration={playerState.duration}
 
-                    onFocus={playerActions.focusEnteredControls}
-                    onBlur={playerActions.focusLeftControls}
-                    onMouseEnter={playerActions.controlsEntered}
-                    onMouseLeave={playerActions.controlsLeft}
+                      isPlaying={playerState.isPlaying}
+                      inactive={playerState.userIdle &&
+                                (!focusOutlineVisible || !playerState.focusInsideControls) &&
+                                !playerState.userHoveringControls}
 
-                    play={playerActions.playBlessed}
-                    pause={playerActions.pause}
-                    scrubTo={playerActions.scrubTo}
-                    seekTo={playerActions.seekTo}
+                      onFocus={playerActions.focusEnteredControls}
+                      onBlur={playerActions.focusLeftControls}
+                      onMouseEnter={playerActions.controlsEntered}
+                      onMouseLeave={playerActions.controlsLeft}
 
-                    textTracksMenuItems={getTextTracksMenuItems(textTracks, t)}
-                    onTextTracksMenuItemClick={textTracks.select}
+                      play={playerActions.playBlessed}
+                      pause={playerActions.pause}
+                      scrubTo={playerActions.scrubTo}
+                      seekTo={playerActions.seekTo}
 
-                    qualityMenuItems={props.qualityMenuItems}
-                    onQualityMenuItemClick={props.onQualityMenuItemClick} />
-  )
+                      textTracksMenuItems={getTextTracksMenuItems(textTracks, t)}
+                      onTextTracksMenuItemClick={textTracks.select}
+
+                      qualityMenuItems={props.qualityMenuItems}
+                      onQualityMenuItemClick={props.onQualityMenuItemClick} />
+    )
+  }
 };
 
 MediaPlayerControls.defaultProps = {

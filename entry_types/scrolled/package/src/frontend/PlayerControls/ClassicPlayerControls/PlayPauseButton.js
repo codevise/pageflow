@@ -3,11 +3,10 @@ import controlBarStyles from "./ControlBar.module.css";
 import PlayIcon from "./images/play.svg";
 import PauseIcon from "./images/pause.svg";
 
-import {useI18n} from '../i18n';
+import {useI18n} from '../../i18n';
 
 export function PlayPauseButton(props) {
   const {t} = useI18n();
-
   return (
     <button className={controlBarStyles.playControl}
             aria-label={t(props.isPlaying ? 'pause' : 'play',

@@ -36,7 +36,7 @@ export {MediaInteractionTracking} from './MediaInteractionTracking';
 export {MediaPlayerControls} from './MediaPlayerControls';
 export {VideoPlayerControls} from './VideoPlayerControls';
 export {AudioPlayerControls} from './AudioPlayerControls';
-export {PlayerControls} from './PlayerControls';
+export {ClassicPlayerControls, WaveformPlayerControls} from './PlayerControls';
 
 export * from './useOnScreen';
 export * from './i18n';

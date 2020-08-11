@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import {render} from '@testing-library/react'
 
-import {PlayPauseButton} from 'frontend/PlayerControls/PlayPauseButton';
+import {PlayPauseButton} from 'frontend/PlayerControls/ClassicPlayerControls/PlayPauseButton';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 describe('PlayPauseButton', () => {

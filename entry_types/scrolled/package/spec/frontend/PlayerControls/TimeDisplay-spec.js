@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import {render} from '@testing-library/react'
 
-import {TimeDisplay} from 'frontend/PlayerControls/TimeDisplay';
+import {TimeDisplay} from 'frontend/PlayerControls/ClassicPlayerControls/TimeDisplay';
 
 describe('TimeDisplay', () => {
   it('handles NaN', () => {

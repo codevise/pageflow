@@ -93,7 +93,7 @@ function createFakePlayer({filePermaId, textTrackSources}) {
     dispose: jest.fn(),
     rewind: jest.fn().mockResolvedValue(),
     textTracks() { return textTracks; },
-
+    getMediaElement() { return el; },
     ...BackboneEvents,
     one(...args) { this.once(...args); }
   };
