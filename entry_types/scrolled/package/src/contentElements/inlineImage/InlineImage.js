@@ -20,6 +20,7 @@ export function InlineImage({configuration}) {
                                     opaque={!!configuration.caption}>
         <Image {...configuration}
                isPrepared={isPrepared}
+               structuredData={true}
                variant={configuration.position === 'full' ?  'large' : 'medium'} />
       </ViewportDependentPillarBoxes>
     </Figure>

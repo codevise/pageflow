@@ -100,7 +100,7 @@ function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
 
   return (
     <>
-      <Image id={image} isPrepared={isPrepared} />
+      <Image id={image} isPrepared={isPrepared} structuredData={true}/>
       <MotifArea key={image}
                  onUpdate={onMotifAreaUpdate}
                  imageId={image}
