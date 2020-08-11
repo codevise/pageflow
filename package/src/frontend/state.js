@@ -1,1 +1,1 @@
-export const state = window.pageflow || {};
+export const state = ((typeof window !== 'undefined') && window.pageflow) || {};

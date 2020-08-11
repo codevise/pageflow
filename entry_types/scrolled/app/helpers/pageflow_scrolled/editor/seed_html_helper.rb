@@ -3,6 +3,7 @@ module PageflowScrolled
     # @api private
     module SeedHtmlHelper
       include EntryJsonSeedHelper
+      include ReactServerSideRenderingHelper
       include Pageflow::WidgetsHelper
 
       def scrolled_editor_iframe_seed_html_script_tag(entry)
@@ -10,6 +11,7 @@ module PageflowScrolled
                       locals: {
                         :@entry => entry,
                         :@widget_scope => :editor,
+                        :@skip_ssr => true,
                         :@seed_options => {
                           skip_collections: true,
                           translations: {include_inline_editing: true}

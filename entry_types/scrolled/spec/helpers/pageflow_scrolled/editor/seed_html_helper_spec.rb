@@ -41,6 +41,16 @@ module PageflowScrolled
                                           visible: false)
         end
 
+        it 'does not server side render entry' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = helper.scrolled_editor_iframe_seed_html_script_tag(entry)
+
+          expect(result).to have_selector('script',
+                                          text: '<div id="root"><\\/div>',
+                                          visible: false)
+        end
+
         it 'does not render collections seed data' do
           entry = create(:published_entry, type_name: 'scrolled')
           create(:section, revision: entry.revision)

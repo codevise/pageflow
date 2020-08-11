@@ -1,7 +1,9 @@
 /node_modules
 /editor.js
 /frontend
+/frontend-server.js
 /contentElements-editor.js
 /contentElements-frontend.js
+/contentElements-frontend.css
 /.storybook/out/
 /.storybook/seed.json

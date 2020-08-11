@@ -18,13 +18,6 @@ body {
   -ms-touch-action: none;
 }
 
-.ios7.ipad body {
-  @media screen and (orientation: landscape) {
-    position: fixed;
-    margin-top: 0px;
-  }
-}
-
 body.js, .js #outer_wrapper {
   overflow: hidden;
 }

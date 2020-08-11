@@ -16,7 +16,7 @@ import {loadInlineEditingComponents} from './inlineEditing';
 
 import {browser} from 'pageflow/frontend';
 
-const editMode = window.location.pathname.indexOf('/editor/entries') === 0;
+const editMode = (typeof window !== 'undefined') && window.location.pathname.indexOf('/editor/entries') === 0;
 
 export const withShadowClassName = styles.withShadow;
 
@@ -59,7 +59,7 @@ export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 export {RootProviders};
 export {default as registerTemplateWidgetType} from './registerTemplateWidgetType';
 
-window.pageflowScrolledRender = function(seed) {
+global.pageflowScrolledRender = function(seed) {
   setupI18n(seed.i18n);
   browser.detectFeatures().then(function(){
     if (editMode) {
@@ -72,10 +72,15 @@ window.pageflowScrolledRender = function(seed) {
 }
 
 function render(seed) {
-  ReactDOM.render(<Root seed={seed} />, document.getElementById('root'));
+  if (editMode) {
+    ReactDOM.render(<Root seed={seed} />, document.getElementById('root'));
+  }
+  else {
+    ReactDOM.hydrate(<Root seed={seed} />, document.getElementById('root'));
+  }
 }
 
-function Root({seed}) {
+export function Root({seed}) {
   return (
     <RootProviders seed={seed}>
       <AppHeader />
