@@ -249,7 +249,7 @@ module PageflowScrolled
             .file_types
             .register(Pageflow::FileType.new(model: 'Pageflow::VideoFile',
                                              collection_name: 'test_files',
-                                             url_templates: -> { {original: url_template} }))
+                                             url_templates: -> { {poster_medium: url_template} }))
         end
         entry = create(:published_entry)
 
@@ -259,7 +259,7 @@ module PageflowScrolled
           .to include_json(config: {
                              fileUrlTemplates: {
                                testFiles: {
-                                 original: url_template
+                                 posterMedium: url_template
                                }
                              }
                            })
