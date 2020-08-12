@@ -3,7 +3,11 @@ Pageflow.configure do |config|
   # users.
   config.mailer_sender = 'change-me-at-config-initializers-pageflow@example.com'
 
-  # Plugins provide page types and widget types.
+  # Entry type plugins
+  config.plugin(PageflowPaged.plugin)
+  config.plugin(PageflowScrolled.plugin)
+
+  # Plugins that provide page types and widget types.
   config.plugin(Pageflow.built_in_page_types_plugin)
   config.plugin(Pageflow.built_in_widget_types_plugin)
   # config.plugin(Pageflow::Rainbow.plugin)
