@@ -1,7 +1,6 @@
-import React, {useRef} from 'react';
+import React, {useState, Suspense} from 'react';
 import { blankSources } from "pageflow/frontend";
 import Measure from 'react-measure';
-import Wavesurfer from './Wavesurfer';
 
 import styles from './Waveform.module.css';
 
@@ -11,10 +10,12 @@ const waveColorInverted = 'rgba(0, 0, 0, 0.5)';
 const cursorColor = '#fff';
 const cursorColorInverted = '#888';
 
+const Wavesurfer = React.lazy(() => import('./Wavesurfer'));
+
 export function Waveform(props) {
   let isReady = false;
   let mediaElementId = null;
-  let measureRect = useRef();
+  const [height, setHeight] = useState(90);
 
   if (props.mediaElementId) {
     mediaElementId = `#${props.mediaElementId}`;
@@ -27,28 +28,25 @@ export function Waveform(props) {
 
   if (isReady) {
     return (
-      <Measure client
-               onResize={(contentRect) => {
-                if (measureRect.current === undefined) {
-                  measureRect.current = contentRect.client;
-                }
-               }}>
-        { ({measureRef}) =>
-          <div ref={measureRef} className={styles.waveWrapper}>
-            <Wavesurfer mediaElt={mediaElementId}
-                        playing={props.isPlaying}
-                        options={{
-                          normalize: true,
-                          removeMediaElementOnDestroy: false,
-                          hideScrollbar: true,
-                          progressColor: props.waveformColor || props.mainColor,
-                          waveColor: props.inverted ? waveColorInverted : waveColor,
-                          cursorColor: props.inverted ? cursorColorInverted : cursorColor,
-                          height: measureRect.current? measureRect.current.height : 90,
-                        }} />
-          </div>
-        }
-      </Measure>
+      <Suspense fallback={<div />}>
+        <Measure client onResize={contentRect => setHeight(contentRect.client.height)}>
+          {({measureRef}) =>
+            <div ref={measureRef} className={styles.waveWrapper}>
+              <Wavesurfer mediaElt={`#${props.mediaElementId}`}
+                          playing={props.isPlaying}
+                          options={{
+                            normalize: true,
+                            removeMediaElementOnDestroy: false,
+                            hideScrollbar: true,
+                            progressColor: props.waveformColor || props.mainColor,
+                            waveColor: props.inverted ? waveColorInverted : waveColor,
+                            cursorColor: props.inverted ? cursorColorInverted : cursorColor,
+                            height,
+                          }} />
+            </div>
+          }
+        </Measure>
+      </Suspense>
     );
   }
   else {

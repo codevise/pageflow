@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import assign from 'deep-assign';
 import Measure from 'react-measure';
 
-const WaveSurfer = require('wavesurfer.js');
+import WaveSurfer from 'wavesurfer.js';
 
 const EVENTS = [
   'audioprocess',
