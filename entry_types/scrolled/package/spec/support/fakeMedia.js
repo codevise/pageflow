@@ -64,6 +64,7 @@ export function useFakeMedia() {
 function createFakePlayer({filePermaId, textTrackSources}) {
   const el = document.createElement('div');
   el.setAttribute('data-fake-player-file-perma-id', filePermaId);
+  el.setAttribute('id', `fake-player-${filePermaId}`);
 
   const textTracks = createFakeTextTracks(textTrackSources);
 

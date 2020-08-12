@@ -1,5 +1,4 @@
 import React, {useState, Suspense} from 'react';
-import { blankSources } from "pageflow/frontend";
 import Measure from 'react-measure';
 
 import styles from './Waveform.module.css';
@@ -13,20 +12,9 @@ const cursorColorInverted = '#888';
 const Wavesurfer = React.lazy(() => import('./Wavesurfer'));
 
 export function Waveform(props) {
-  let isReady = false;
-  let mediaElementId = null;
   const [height, setHeight] = useState(90);
 
   if (props.mediaElementId) {
-    mediaElementId = `#${props.mediaElementId}`;
-    let mediaElement = global.document.querySelector(mediaElementId);
-    if (mediaElement) {
-      if(mediaElement.src !== blankSources['audio'])
-        isReady = true;
-    }
-  }
-
-  if (isReady) {
     return (
       <Suspense fallback={<div />}>
         <Measure client onResize={contentRect => setHeight(contentRect.client.height)}>
