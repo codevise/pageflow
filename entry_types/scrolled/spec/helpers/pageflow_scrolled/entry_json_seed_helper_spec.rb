@@ -324,6 +324,37 @@ module PageflowScrolled
                                        })
       end
 
+      it 'renders theme assets' do
+        entry = create(:published_entry)
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         theme: {
+                                           assets: {
+                                             logoDesktop: %r{themes/default/logoDesktop.*svg$}
+                                           }
+                                         }
+                                       })
+      end
+
+      it 'renders theme camelized options' do
+        pageflow_configure do |config|
+          config.themes.register(:default, some_option: 'value')
+        end
+        entry = create(:published_entry)
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         theme: {
+                                           options: {
+                                             someOption: 'value'
+                                           }
+                                         }
+                                       })
+      end
+
       context 'i18n' do
         include_context 'fake translations'
 

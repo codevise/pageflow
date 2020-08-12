@@ -650,6 +650,28 @@ module Pageflow
         expect(skulled_help_entry_names).not_to include('phaged_entry')
       end
 
+      it 'allows registering themes in for_entry_type block' do
+        pageflow = PageflowModule.new
+        phaged_entry_type = TestEntryType.new(name: 'phaged')
+        skulled_entry_type = TestEntryType.new(name: 'skulled')
+        pageflow.configure do |config|
+          config.entry_types.register(phaged_entry_type)
+          config.entry_types.register(skulled_entry_type)
+
+          config.for_entry_type(phaged_entry_type) do |c|
+            c.themes.register(:phaged_theme)
+          end
+        end
+        phaged_entry = double('entry', entry_type: phaged_entry_type, enabled_feature_names: [])
+        skulled_entry = double('entry', entry_type: skulled_entry_type, enabled_feature_names: [])
+
+        phaged_help_entry_names = pageflow.config_for(phaged_entry).themes.map(&:name)
+        skulled_help_entry_names = pageflow.config_for(skulled_entry).themes.map(&:name)
+
+        expect(phaged_help_entry_names).to include('phaged_theme')
+        expect(skulled_help_entry_names).not_to include('phaged_theme')
+      end
+
       it 'allows calling plugin method inside for_entry_type block' do
         pageflow = PageflowModule.new
         entry_type = TestEntryType.new(name: 'phaged')

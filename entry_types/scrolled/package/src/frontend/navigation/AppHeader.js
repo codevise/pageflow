@@ -8,9 +8,9 @@ import {HamburgerIcon} from './HamburgerIcon'
 import {ChapterLink} from "./ChapterLink";
 import {LegalInfoMenu} from "./LegalInfoMenu";
 import {SharingMenu} from "./SharingMenu";
+import {Logo} from './Logo';
 
 import styles from './AppHeader.module.css';
-import WDRlogo from '../assets/images/navigation/wdr_logo_header.svg';
 
 export function AppHeader(props) {
   const [navExpanded, setNavExpanded] = useState(true);
@@ -89,7 +89,7 @@ export function AppHeader(props) {
         <HamburgerIcon onClick={handleBurgerMenuClick}
                        mobileNavHidden={mobileNavHidden}/>
 
-        <WDRlogo className={classNames(styles.menuIcon, styles.wdrLogo)}/>
+        <Logo />
 
         <nav className={classNames(styles.navigationChapters, {[styles.navigationChaptersHidden]: mobileNavHidden})}
              role="navigation"

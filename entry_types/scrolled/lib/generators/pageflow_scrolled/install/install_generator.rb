@@ -4,6 +4,8 @@ module PageflowScrolled
     class InstallGenerator < Rails::Generators::Base
       desc 'Installs Pageflow Scrolled entry type.'
 
+      source_root File.expand_path('templates', __dir__)
+
       def install_webpacker
         require 'webpacker'
         gemfile = File.expand_path('../../../../../../Gemfile', __dir__)
@@ -36,6 +38,8 @@ module PageflowScrolled
         create_file 'app/javascript/packs/pageflow-scrolled-frontend.js', <<-JS
           import 'pageflow-scrolled/frontend';
           import 'pageflow-scrolled/contentElements-frontend';
+
+          require.context('../pageflow-scrolled/themes', true);
         JS
       end
 
@@ -51,6 +55,10 @@ module PageflowScrolled
           @import "pageflow-scrolled/frontend/index.css";
           @import "pageflow-scrolled/contentElements-frontend.css";
         JS
+      end
+
+      def default_theme
+        directory 'theme', 'app/javascript/pageflow-scrolled/themes/default'
       end
     end
   end
