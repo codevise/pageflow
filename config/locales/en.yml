@@ -112,6 +112,7 @@ en:
     less_than: Less than
     logout: Logout
     main_content: Please implement %{model}#main_content to display content.
+    new: Create new
     new_model: New %{model}
     next: Next
     pagination:
@@ -195,6 +196,7 @@ en:
         summary: Summary
         theme_name: Theme
         title: Title
+        type_name: Story type
         updated_at: Updated at
         url: Permalink
         with_publication_state: Publication state
@@ -207,6 +209,7 @@ en:
         default_locale: Default locale
         default_publisher: Default publisher
         default_share_providers: Default share links
+        entry_type: Story type
         theme_name: Theme
       pageflow/folder:
         account: Account
@@ -353,6 +356,12 @@ en:
           attributes:
             folder:
               must_be_same_account: Folder must belong to same account as story
+            type_name:
+              must_be_available_for_account: "'%{type_name}' isn't available for this account"
+        pageflow/entry_template:
+          attributes:
+            entry_type:
+              taken: already configured. A story template for the story type already exists in this account. Return to the story templates tab and edit the existing story template instead of creating a new one.
         pageflow/membership:
           attributes:
             user:
@@ -382,6 +391,9 @@ en:
       pageflow/entry:
         one: Story
         other: Stories
+      pageflow/entry_template:
+        one: Story template
+        other: Story templates
       pageflow/folder:
         one: Folder
         other: Folders
@@ -433,6 +445,9 @@ en:
           telegram: Telegram (only mobile)
           twitter: Twitter
           whats_app: WhatsApp (only mobile)
+        type_names:
+          paged: Page-based / Classic
+          scrolled: Continuously scrolling / Pageflow Next
       pageflow/membership:
         role:
           editor: Editor
@@ -777,6 +792,7 @@ en:
         cannot_add: What you want to do is not possible at the moment.
         none_addable_tooltip: No account available
       accounts:
+        entry_template_hint: Some of the form fields can now be found in the story template tab on the info page for this account
         no_entries: No Stories
         no_members: No members
         theming_defaults_inline_help: The following settings will be used as defaults for new stories in this account. Changes do not affect existing stories.
@@ -798,6 +814,7 @@ en:
         members: Members
         no_members: No members assigned
         no_revisions: No versions yet
+        not_allowed_to_see_entry_types: You are not allowed to access the available story types for this account.
         not_published: Not yet published
         password_protected: Password protected
         preview: Preview
@@ -828,6 +845,10 @@ en:
         entry_membership_hint: Invite users to your account to assign them as members of this Story.
         none_addable_tooltip: No story available
         user_quota_exhausted: Your user quota is exhausted.
+      entry_templates:
+        page_title:
+          edit: Edit story template for story type
+          new: Create new story template for story type
       features:
         states:
           default: Default (%{inherited})
@@ -850,6 +871,7 @@ en:
         account_editor_hint: Users who are assigned on an account level are not listed here
         accounts: Accounts
         entries: Stories
+        entry_templates: Story templates
         features: Features
         members: Members
         revisions: Versions
@@ -904,6 +926,7 @@ en:
         no_accounts: No members
         no_entries: No stories
         none: There are no stories.
+        not_allowed_to_see_user_quota: You are not allowed to access the user quota for this account.
         resend_invitation: Resend invitation email
         resent_invitation: The invitation email has been resent.
         roles:
@@ -1397,6 +1420,9 @@ en:
       widgets:
         attributes:
           media_loading_spinner:
+            animation_duration:
+              inline_help: Controls the animation duration of loading spinner.
+              label: Animation duration
             blur_strength:
               inline_help: Control the bluriness of background image.
               label: Blur Strength
@@ -1406,6 +1432,9 @@ en:
             remove_logo:
               label: Remove logo
           title_loading_spinner:
+            animation_duration:
+              inline_help: Controls the animation duration of loading spinner.
+              label: Animation duration
             blur_strength:
               inline_help: Control the bluriness of background image.
               label: Blur Strength
@@ -1498,6 +1527,80 @@ en:
           video, audio), you can add information with regards to its
           copyright. This information is shown automatically in the
           legal notice.
+      meta_data:
+        general:
+          menu_item: General
+          text: |
+            # General
+
+            ## Title of the Pageflow
+
+            Here you can choose a title for your Pageflow. It will be
+            shown on the title bar of the browser window. It also acts
+            as an indicator for search engines once the report is
+            published.
+
+            ## Language
+
+            Decide in which language your Pageflow should be displayed. This refers to the frontend text such as multimedia tips, scroll-indicators, the overview and the legal notice.
+
+            ## Credits
+            Here you can enter your imprint information in free text. In addition, image rights can be assigned for all files under "Manage files", which are then automatically displayed in the imprint.
+        menu_item: Titel and Optionen
+        social:
+          menu_item: Social
+          text: |
+            # Social
+
+            ## Social Sharing Picture
+
+            Choose a picture, which should be shown, if your Pageflow is
+            shared in social networks.
+
+            ## Summary
+
+            Here you can write a description, which is shown, when your
+            Pageflow is shared in social networks.
+
+            ## Social Sharing URL
+
+            If contributions are embedded in your own web pages (with
+            a different URL), you can specify an individual URL here
+            that is to be used when sharing the contribution.
+
+            ## Social Share Links
+
+            Determine which share buttons should be displayed when
+            clicking on the "Share function".
+        text: |
+          # Title and Options
+
+          General settings for the entry. Please select a sub item on the left.
+      outline:
+        menu_item: Chapters and Pages
+        text: |-
+          # Chapters and Pages
+
+          A Pageflow consists of at least one chapter with at least
+          one page. You can create as many chapters and pages as you
+          want. In order to create content, click:
+
+          1. „New Chapter“ to create a new chapter,
+          2. „New Page“ to add a page,
+          3. onto the new page, in order to edit the content.
+
+          ## Structuring Chapters
+
+          You can structure the composition of your Pageflow with
+          chapters - e.g. thematically or chronologically . The
+          chapters are shown in the overview and help the users find
+          their way around. It is therefore advisable to give each
+          chapter a title.
+
+          If you create an unnamed chapter, Pageflow acts as if there
+          is no structure of chapters. The chapter and the title of
+          this chapter are consequently not shown in the
+          overview/navigation.
       page_types:
         menu_item: Page Types
         text: |
@@ -1617,10 +1720,14 @@ en:
       scroll_over_from_left: Scroll over from left
       scroll_over_from_right: Scroll over from right
       scroll_right: Scroll right
+    paged_entry_type:
+      feature_name: Story type page-based/classic
     phone_horizontal_slideshow_mode:
       feature_name: Horizontal swipe on phone
     quotas:
       exhausted: Quota exhausted
+    scrolled_entry_type:
+      feature_name: Story type scrolling continuously/Pageflow Next
     selectable_themes:
       feature_name: Editor theme selection
     storyline_attributes:

@@ -112,6 +112,7 @@ de:
     less_than: Kleiner als
     logout: Abmelden
     main_content: Bitte implementieren Sie %{model}#main_content, um Inhalte anzuzeigen.
+    new: Neu erstellen
     new_model: "%{model} erstellen"
     next: Weiter
     pagination:
@@ -195,6 +196,7 @@ de:
         summary: Zusammenfassung
         theme_name: Theme
         title: Titel
+        type_name: Beitrags-Typ
         updated_at: Geändert am
         url: Permalink
         with_publication_state: Veröffentlichungsstatus
@@ -207,6 +209,7 @@ de:
         default_locale: Standard-Sprache
         default_publisher: Standard-Herausgeber
         default_share_providers: Standard-Share-Links
+        entry_type: Beitrags-Typ
         theme_name: Theme
       pageflow/folder:
         account: Konto
@@ -353,6 +356,12 @@ de:
           attributes:
             folder:
               must_be_same_account: Ordner muss zu gleichem Konto gehören wie Beitrag
+            type_name:
+              must_be_available_for_account: "'%{type_name}' ist für dieses Konto nicht verfügbar"
+        pageflow/entry_template:
+          attributes:
+            entry_type:
+              taken: bereits konfiguriert. Es existiert bereits eine Beitragsvorlage für den Beitrags-Typ in diesem Konto. Kehre zum Beitragsvorlagen-Tab zurück und bearbeite die existierende Beitragsvorlage anstatt eine neue anzulegen.
         pageflow/membership:
           attributes:
             user:
@@ -382,6 +391,9 @@ de:
       pageflow/entry:
         one: Beitrag
         other: Beiträge
+      pageflow/entry_template:
+        one: Beitragsvorlage
+        other: Beitragsvorlagen
       pageflow/folder:
         one: Ordner
         other: Ordner
@@ -433,6 +445,9 @@ de:
           telegram: Telegram (nur Mobilgeräte)
           twitter: Twitter
           whats_app: WhatsApp (nur Mobilgeräte)
+        type_names:
+          paged: Seitenbasiert / klassisch
+          scrolled: Kontinuierlich scrollend / Pageflow Next
       pageflow/membership:
         role:
           editor: Redakteur
@@ -777,6 +792,7 @@ de:
         cannot_add: Was Sie tun möchten, ist nicht möglich.
         none_addable_tooltip: Kein Konto verfügbar
       accounts:
+        entry_template_hint: Einige Formularfelder sind ab sofort im Beitragsvorlagen-Tab auf der Informations-Seite dieses Kontos zu finden.
         no_entries: Keine Beiträge
         no_members: Keine Benutzer
         theming_defaults_inline_help: Die folgenden Einstellungen werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus.
@@ -798,6 +814,7 @@ de:
         members: Mitglieder
         no_members: Es sind keine Redakteure zugeordnet.
         no_revisions: Bisher keine Revisionen
+        not_allowed_to_see_entry_types: Sie sind nicht berechtigt, die verfügbaren Beitrags-Typen für dieses Konto abzurufen
         not_published: Nicht veröffentlicht
         password_protected: Mit Passwortschutz
         preview: Vorschau
@@ -828,6 +845,10 @@ de:
         entry_membership_hint: Laden Sie Benutzer in Ihr Konto ein, um sie als Mitglieder dieser Story zuzuweisen.
         none_addable_tooltip: Kein Beitrag verfügbar
         user_quota_exhausted: Ihr Benutzerkontingent ist erschöpft.
+      entry_templates:
+        page_title:
+          edit: Beitragsvorlage bearbeiten für Beitrags-Typ
+          new: Beitragsvorlage erstellen für Beitrags-Typ
       features:
         states:
           default: Standard (%{inherited})
@@ -850,6 +871,7 @@ de:
         account_editor_hint: Auf Kontoebene zugeordnete Benutzer sind hier nicht aufgeführt
         accounts: Konten
         entries: Beiträge
+        entry_templates: Beitragsvorlagen
         features: Features
         members: Mitglieder
         revisions: Revisionen
@@ -904,6 +926,7 @@ de:
         no_accounts: Keine Konten
         no_entries: Keine Beiträge
         none: Sie haben keine Beiträge.
+        not_allowed_to_see_user_quota: Sie sind nicht berechtigt, die Nutzer-Quota für dieses Konto abzurufen.
         resend_invitation: Einladung erneut verschicken
         resent_invitation: Der Benutzer wurde erneut per E-Mail eingeladen.
         roles:
@@ -1395,6 +1418,9 @@ de:
       widgets:
         attributes:
           media_loading_spinner:
+            animation_duration:
+              inline_help: Steuert die Animationsdauer beim Laden des Spinners
+              label: Animationsdauer
             blur_strength:
               inline_help: Steuern Sie die Unschärfe des Hintergrundbilds.
               label: Unschärfe
@@ -1404,6 +1430,9 @@ de:
             remove_logo:
               label: Logo entfernen
           title_loading_spinner:
+            animation_duration:
+              inline_help: Steuert die Animationsdauer beim Laden des Spinners
+              label: Animationsdauer
             blur_strength:
               inline_help: Steuern Sie die Unschärfe des Hintergrundbilds.
               label: Unschärfe
@@ -1511,6 +1540,90 @@ de:
           werden. Hier können z.B. die beim Upload eingegebenen
           Metadaten (wie die Angaben zum Urheberrecht) noch einmal
           bearbeiten werden.
+      meta_data:
+        general:
+          menu_item: Allgemein
+          text: |
+            # Allgemein
+
+            ## Titel des Pageflows
+
+            Hier kannst Du Deinem Pageflow einen Titel geben, der in der
+            Titelleiste des Browserfensters angezeigt wird. Unter diesem
+            Titel wird Dein Pageflow nach der Veröffentlichung auch in
+            Suchmaschinen indiziert werden.
+
+            ## Sprache
+
+            Wähle hier, in welcher Sprache Dein Pageflow ausgespielt
+            wird. Hierbei geht es um die Frontend-Elemente wie
+            z.B. Scroll-Hinweise, die Mouse-over-Texte der Navigation
+            und das Impressum.
+
+            ## Credits
+
+            Hier kannst Du Deine Impressums-Information im Freitext
+            eingeben. Zudem können für alle Dateien unter „Dateien
+            verwalten“ auch Bildrechte vergeben werden, die dann
+            automatisch im Impressum angezeigt werden.
+        menu_item: Titel und Optionen
+        social:
+          menu_item: Social
+          text: |
+            # Social
+
+            ## Social Sharing Bild
+
+            Wähle hier das Bild aus, das beim Teilen des Pageflows in
+            sozialen Netzwerken erscheinen soll.
+
+            ## Zusammenfassung
+
+            Trage hier ein, welcher Beschreibungstext beim Teilen in
+            sozialen Netzwerken angezeigt wird.
+
+            ## Social Sharing URL
+
+            Wenn Beiträge in eigene Webseiten (mit abweichender URL)
+            eingebettet werden kann hier eine individuelle URL
+            festgelegt werden, die beim Teilen des Beitrags verwendet
+            werden soll.
+
+            ## Social Share Links
+
+            Bestimme, welche Share-Buttons beim Klick auf die
+            „Share-Funktion“ angezeigt werden soll.
+        text: |
+          # Titel und Optionen
+
+          Allgemeine Einstellungen für den Beitrag. Bitte einen
+          Unterpunkt auf der linken Seite auswählen.
+      outline:
+        menu_item: Kapitel und Seiten
+        text: |
+          # Kapitel und Seiten
+
+          Ein Pageflow besteht aus mindestens einem Kapitel mit
+          mindestens einer Seite. Es können beliebig viele Kapitel mit
+          beliebig vielen Seiten erstellt werden. Um Inhalte zu
+          erstellen, klicke
+
+          1. auf Neues Kaptitel, um eine erstes Kapitel zu erstellen
+          2. auf Neue Seite, um dem Kapitel eine Seite hinzuzufügen, und
+          3. auf diese Seite, um den Inhalt zu bearbeiten.
+
+          ## Aufbau eines Kapitels
+
+          Mit den „Kapiteln" strukturierst Du den Aufbau Deiner
+          Reportage - beispielsweise nach Themenschwerpunkten oder
+          Zeiträumen. Die Kapitel werden in der „Übersicht“ angezeigt
+          und dienen dem User als Orientierungshilfe. Deshalb ist es
+          ratsam die jeweiligen Kapitel mit Titeln zu versehen.
+
+          Wenn nur ein unbenanntes Kapitel angelegt wird, so verhält
+          sich Pageflow, als ob keine Kapitelstruktur vorhanden
+          ist. (Kapitel und Kapiteltitel werden in diesem Falle nicht
+          in der Übersicht bzw. Navigation dargestellt).
       page_types:
         menu_item: Seitentypen
         text: |
@@ -1632,10 +1745,14 @@ de:
       scroll_over_from_left: Überlagern (von links)
       scroll_over_from_right: Überlagern (von rechts)
       scroll_right: Scrollen (von rechts)
+    paged_entry_type:
+      feature_name: Beitragstyp Seitenbasiert/Klassisch
     phone_horizontal_slideshow_mode:
       feature_name: Horizontales Wischen auf Phones
     quotas:
       exhausted: Quota verbraucht.
+    scrolled_entry_type:
+      feature_name: Beitragstyp Kontinuierlich Scrollend/Pageflow Next
     selectable_themes:
       feature_name: Editor-Theme-Auswahl
     storyline_attributes:

@@ -1,5 +1,0 @@
-de:
-  pageflow:
-    admin:
-      users:
-        not_allowed_to_see_user_quota: Sie sind nicht berechtigt, die Nutzer-Quota für dieses Konto abzurufen.
