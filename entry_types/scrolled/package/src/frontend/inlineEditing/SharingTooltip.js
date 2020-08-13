@@ -1,19 +1,32 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import classNames from 'classnames';
-import headerStyles from "./AppHeader.module.css";
-import styles from "./SharingTooltip.module.css";
+import headerStyles from "../navigation/AppHeader.module.css";
+import styles from "../navigation/SharingTooltip.module.css";
 import ReactTooltip from "react-tooltip";
 import {useShareProviders, useShareUrl} from '../../entryState';
 
-import PhonePlatformContext from './PhonePlatformContext';
-import {withInlineEditingAlternative} from '../inlineEditing';
+export function SharingTooltip() {
 
-export const SharingTooltip = withInlineEditingAlternative('SharingTooltip', function SharingTooltip() {
-
-  const useIsPhonePlatform = React.useContext(PhonePlatformContext);
-
+  const [phoneEmulationMode, setPhoneEmulationMode] = useState(false);
   const shareUrl = useShareUrl();
-  const shareProviders = useShareProviders(useIsPhonePlatform);
+
+  useEffect(() => {
+    window.addEventListener('message', receive);
+
+    function receive(event) {
+      if (event.data.type === 'CHANGE') {
+        if(event.data['payload'] === 'phone') {
+          setPhoneEmulationMode(true);
+        }
+        else {
+          setPhoneEmulationMode(false);
+        }
+      }
+    }
+    return () => document.removeEventListener('message', receive);
+  });
+
+  const shareProviders = useShareProviders(phoneEmulationMode);
 
   function renderShareLinks(shareProviders) {
     return shareProviders.map((shareProvider) => {
@@ -48,4 +61,4 @@ export const SharingTooltip = withInlineEditingAlternative('SharingTooltip', fun
       </div>
     </ReactTooltip>
   )
-});
+}

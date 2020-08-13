@@ -31,7 +31,7 @@ import WhatsAppIcon from "../frontend/assets/images/navigation/icons/social/what
  *     }
  *   ]
  */
-export function useShareProviders() {
+export function useShareProviders(isPhone) {
   const entryState = useEntryState();
   const entryMetadata = useEntryMetadata();
 
@@ -72,7 +72,7 @@ export function useShareProviders() {
   };
 
   return useMemo(() => {
-    return activeShareProviders(shareProviders).map((provider) => {
+    return activeShareProviders(shareProviders, isPhone).map((provider) => {
       const config = sharing[provider];
       return ({
         name: config.name,
@@ -80,13 +80,24 @@ export function useShareProviders() {
         url: config.url
       })
     })
-  }, [shareProviders]);
+  }, [shareProviders, isPhone]);
 }
 
-function activeShareProviders(shareProvidersConfig) {
-  return Object.keys(shareProvidersConfig).filter(function (provider) {
+function activeShareProviders(shareProvidersConfig, isPhone) {
+  const providers = filterShareProviders(shareProvidersConfig, isPhone);
+  return providers.filter(function (provider) {
     return shareProvidersConfig[provider] !== false;
   });
+}
+
+function filterShareProviders(shareProvidersConfig, isPhone) {
+  if (!isPhone) {
+    return Object.keys(shareProvidersConfig).filter(function (provider) {
+      return (provider !== 'telegram' && provider !== 'whats_app');
+    });
+  }
+
+  return Object.keys(shareProvidersConfig);
 }
 
 /**

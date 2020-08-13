@@ -12,6 +12,9 @@ import {Logo} from './Logo';
 
 import styles from './AppHeader.module.css';
 
+import PhonePlatformContext from './PhonePlatformContext';
+import {browser} from 'pageflow/frontend';
+
 export function AppHeader(props) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
@@ -21,6 +24,11 @@ export function AppHeader(props) {
 
   const ref = useRef();
   useNativeScrollPrevention(ref);
+
+  var isPhonePlatform = false;
+  if (browser.has('phone platform')) {
+    isPhonePlatform = true;
+  }
 
   const chapters = entryStructure.map((chapter) => {
     return ({
@@ -100,7 +108,9 @@ export function AppHeader(props) {
         </nav>
 
         <div className={classNames(styles.contextIcons)}>
-          <SharingMenu />
+          <PhonePlatformContext.Provider value={isPhonePlatform} >
+            <SharingMenu />
+          </PhonePlatformContext.Provider>
           <LegalInfoMenu />
         </div>
       </div>

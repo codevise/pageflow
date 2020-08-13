@@ -6,3 +6,5 @@ export {LayoutWithPlaceholder} from './LayoutWithPlaceholder';
 
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
+
+export {SharingTooltip} from './SharingTooltip';

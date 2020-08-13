@@ -85,6 +85,13 @@ export const PreviewMessageController = Object.extend({
           })
         );
 
+        this.listenTo(this.entry, 'change:emulation_mode', entry =>
+          postMessage({
+            type: 'CHANGE',
+            payload: this.entry.get('emulation_mode')
+          })
+        );
+
         postMessage({type: 'ACK'})
       }
       else if (message.data.type === 'CHANGE_SECTION') {

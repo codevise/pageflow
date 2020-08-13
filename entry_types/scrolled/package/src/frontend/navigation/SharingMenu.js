@@ -3,12 +3,15 @@ import classNames from 'classnames';
 import headerStyles from "./AppHeader.module.css";
 import styles from "./SharingMenu.module.css";
 import ShareIcon from "../assets/images/navigation/icons/share_icon.svg";
-import {SharingTooltip} from "./SharingTooltip";
+import {SharingTooltip} from "../navigation/SharingTooltip";
 import ReactTooltip from "react-tooltip";
 import {useShareProviders} from "../../entryState";
 
+import PhonePlatformContext from './PhonePlatformContext';
+
 export function SharingMenu() {
-  const shareProviders = useShareProviders();
+  const useIsPhonePlatform = React.useContext(PhonePlatformContext);
+  const shareProviders = useShareProviders(useIsPhonePlatform);
 
   if(shareProviders.length > 0) {
     return (
