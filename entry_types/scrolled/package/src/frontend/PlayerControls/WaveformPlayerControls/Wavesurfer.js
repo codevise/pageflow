@@ -154,37 +154,37 @@ class Wavesurfer extends Component {
   }
 
   // update wavesurfer rendering manually
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     // update audioFile
-    if (this.props.audioFile !== nextProps.audioFile) {
-      this._loadAudio(nextProps.audioFile, nextProps.audioPeaks);
+    if (this.props.audioFile !== this.props.audioFile) {
+      this._loadAudio(this.props.audioFile, this.props.audioPeaks);
     }
 
     // update mediaElt
-    if (this.props.mediaElt !== nextProps.mediaElt) {
-      this._loadMediaElt(nextProps.mediaElt, nextProps.audioPeaks);
+    if (prevProps.mediaElt !== this.props.mediaElt) {
+      this._loadMediaElt(this.props.mediaElt, this.props.audioPeaks);
     }
 
     // update peaks
-    if (this.props.audioPeaks !== nextProps.audioPeaks) {
-      if (nextProps.mediaElt) {
-        this._loadMediaElt(nextProps.mediaElt, nextProps.audioPeaks);
+    if (prevProps.audioPeaks !== this.props.audioPeaks) {
+      if (this.props.mediaElt) {
+        this._loadMediaElt(prevProps.mediaElt, this.props.audioPeaks);
       } else {
-        this._loadAudio(nextProps.audioFile, nextProps.audioPeaks);
+        this._loadAudio(this.props.audioFile, this.props.audioPeaks);
       }
     }
 
     // update position
-    if (nextProps.pos &&
+    if (this.props.pos &&
         this.state.isReady &&
-        nextProps.pos !== this.props.pos &&
-        nextProps.pos !== this.state.pos) {
-      this._seekTo(nextProps.pos);
+        prevProps.pos !== this.props.pos &&
+        this.props.pos !== this.state.pos) {
+      this._seekTo(this.props.pos);
     }
 
     // update playing state
-    if (this.props.playing !== nextProps.playing) {
-      if (nextProps.playing) {
+    if (this.props.playing !== prevProps.playing) {
+      if (this.props.playing) {
         this._wavesurfer.play();
       } else {
         this._wavesurfer.pause();
@@ -192,39 +192,35 @@ class Wavesurfer extends Component {
     }
 
     // update volume
-    if (this.props.volume !== nextProps.volume) {
-      this._wavesurfer.setVolume(nextProps.volume);
+    if (this.props.volume !== prevProps.volume) {
+      this._wavesurfer.setVolume(this.props.volume);
     }
 
     // update volume
-    if (this.props.zoom !== nextProps.zoom) {
-      this._wavesurfer.zoom(nextProps.zoom);
+    if (this.props.zoom !== prevProps.zoom) {
+      this._wavesurfer.zoom(this.props.zoom);
     }
 
     // update audioRate
-    if (this.props.options.audioRate !== nextProps.options.audioRate) {
-      this._wavesurfer.setPlaybackRate(nextProps.options.audioRate);
+    if (this.props.options.audioRate !== prevProps.options.audioRate) {
+      this._wavesurfer.setPlaybackRate(this.props.options.audioRate);
     }
 
-    if (nextProps.options.waveColor !== this.props.options.waveColor) {
-      this._wavesurfer.setWaveColor(nextProps.options.waveColor);
+    if (prevProps.options.waveColor !== this.props.options.waveColor) {
+      this._wavesurfer.setWaveColor(this.props.options.waveColor);
     }
 
-    if (nextProps.options.progressColor !== this.props.options.progressColor) {
-      this._wavesurfer.setProgressColor(nextProps.options.progressColor);
+    if (prevProps.options.progressColor !== this.props.options.progressColor) {
+      this._wavesurfer.setProgressColor(this.props.options.progressColor);
     }
 
-    if (nextProps.options.cursorColor !== this.props.options.cursorColor) {
-      this._wavesurfer.setCursorColor(nextProps.options.cursorColor);
+    if (prevProps.options.cursorColor !== this.props.options.cursorColor) {
+      this._wavesurfer.setCursorColor(this.props.options.cursorColor);
     }
 
-    if (nextProps.options.height !== this.props.options.height) {
-      this._wavesurfer.setHeight(nextProps.options.height);
+    if (prevProps.options.height !== this.props.options.height) {
+      this._wavesurfer.setHeight(this.props.options.height);
     }
-  }
-
-  shouldComponentUpdate() {
-    return false;
   }
 
   componentWillUnmount() {
