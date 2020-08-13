@@ -87,7 +87,7 @@ export const PreviewMessageController = Object.extend({
 
         this.listenTo(this.entry, 'change:emulation_mode', entry =>
           postMessage({
-            type: 'CHANGE',
+            type: 'CHANGE_EMULATION_MODE',
             payload: this.entry.get('emulation_mode')
           })
         );

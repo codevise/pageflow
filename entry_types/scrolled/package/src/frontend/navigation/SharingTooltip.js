@@ -5,15 +5,14 @@ import styles from "./SharingTooltip.module.css";
 import ReactTooltip from "react-tooltip";
 import {useShareProviders, useShareUrl} from '../../entryState';
 
-import PhonePlatformContext from './PhonePlatformContext';
-import {withInlineEditingAlternative} from '../inlineEditing';
+import {usePhonePlatform} from '../usePhonePlatform';
 
-export const SharingTooltip = withInlineEditingAlternative('SharingTooltip', function SharingTooltip() {
+export function SharingTooltip() {
 
-  const useIsPhonePlatform = React.useContext(PhonePlatformContext);
+  const IsPhonePlatform = usePhonePlatform();
 
   const shareUrl = useShareUrl();
-  const shareProviders = useShareProviders(useIsPhonePlatform);
+  const shareProviders = useShareProviders(IsPhonePlatform);
 
   function renderShareLinks(shareProviders) {
     return shareProviders.map((shareProvider) => {
@@ -48,4 +47,4 @@ export const SharingTooltip = withInlineEditingAlternative('SharingTooltip', fun
       </div>
     </ReactTooltip>
   )
-});
+}
