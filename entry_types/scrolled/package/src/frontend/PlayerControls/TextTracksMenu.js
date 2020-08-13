@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {MenuBarButton} from './MenuBarButton';
-import {useI18n} from '../../i18n';
+import {useI18n} from '../i18n';
 
 import TextTracksIcon from './images/textTracks.svg';
 

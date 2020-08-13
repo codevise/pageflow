@@ -1,14 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {PlayPauseButton} from './PlayPauseButton'
+import {PlayPauseButton} from '../PlayPauseButton'
 import {ProgressIndicators} from './ProgressIndicators'
-import {TimeDisplay} from './TimeDisplay'
+import {TimeDisplay} from '../TimeDisplay'
 import {QualityMenu} from './QualityMenu';
-import {TextTracksMenu} from './TextTracksMenu';
+import {TextTracksMenu} from '../TextTracksMenu';
 import {useDarkBackground} from '../../backgroundColor';
 
-import styles from './ControlBar.module.css';
+import styles from '../ControlBar.module.css';
 
 export function ClassicPlayerControls(props) {
   const darkBackground = useDarkBackground();

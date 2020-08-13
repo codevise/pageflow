@@ -3,11 +3,12 @@ import classNames from 'classnames';
 
 import {useDarkBackground} from '../../backgroundColor';
 import {Waveform} from './Waveform';
-import {TimeDisplay} from '../ClassicPlayerControls/TimeDisplay';
-import {TextTracksMenu} from '../ClassicPlayerControls/TextTracksMenu';
-import {PlayPauseButton} from '../ClassicPlayerControls/PlayPauseButton'
+import {TimeDisplay} from '../TimeDisplay';
+import {TextTracksMenu} from '../TextTracksMenu';
+import {PlayPauseButton} from '../PlayPauseButton'
 
 import styles from './Waveform.module.css';
+import controlBarStyles from '../ControlBar.module.css';
 
 export function WaveformPlayerControls(props) {
   const darkBackground = useDarkBackground();
@@ -19,7 +20,7 @@ export function WaveformPlayerControls(props) {
            onMouseLeave={props.onMouseLeave}
            data-testid="waveform-controls" 
            className={classNames(styles.container,
-                                 darkBackground ? styles.darkBackground : styles.lightBackground)} >
+                                 darkBackground ? controlBarStyles.darkBackground : controlBarStyles.lightBackground)} >
         <div className={styles.playControl}>
           <PlayPauseButton isPlaying={props.isPlaying}
                            play={props.onPlayButtonClick}

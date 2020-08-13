@@ -4,7 +4,7 @@ import Measure from 'react-measure';
 import classNames from 'classnames';
 
 import {useI18n} from '../../i18n';
-import {formatTime} from './formatTime';
+import {formatTime} from '../formatTime';
 
 import styles from './ProgressIndicators.module.css';
 

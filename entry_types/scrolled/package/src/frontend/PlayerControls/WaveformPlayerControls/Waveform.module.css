@@ -6,14 +6,6 @@
   bottom: 1px;
 }
 
-.lightBackground {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.darkBackground {
-  background: rgba(0, 0, 0, 0.2);
-}
-
 .menus {
   position: absolute;
   bottom: -5px;
