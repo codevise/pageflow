@@ -107,6 +107,21 @@ describe('volumeBinding', function() {
       await expect(player.nextFadeVolume).resolves.toBe(98);
     });
 
+    it('does not fade in when paused while waiting for play promise', async () => {
+      const player = fakePlayer({resolveFadingPromiseOnFade: true});
+      settings.set({volume: 98});
+      const playPromise = resolvablePromise();
+      player.play = function() { return playPromise; };
+      volumeBinding(player, settings);
+
+      const promise = player.playAndFadeIn(500).catch(() => {});
+      player.pause();
+      playPromise.resolve();
+      await promise;
+
+      expect(player.fadingVolume).toBe(undefined);
+    });
+
     it('returns promise which resolves after fade', async () => {
       var player = fakePlayer();
       settings.set({volume: 98});
@@ -373,6 +388,10 @@ describe('volumeBinding', function() {
         // async check
         this.nextFadeVolume.resolve(value);
         this.nextFadeDuration.resolve(duration);
+
+        if (options.resolveFadingPromiseOnFade) {
+          this.fadingPromiseResolve();
+        }
 
         return this.fadingPromise;
       },
