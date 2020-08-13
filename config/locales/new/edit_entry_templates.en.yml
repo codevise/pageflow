@@ -4,11 +4,17 @@ en:
   activerecord:
     attributes:
       pageflow/entry_template:
-        translated_entry_type: Story type
+        entry_type: Story type
     models:
       pageflow/entry_template:
         one: Story template
-        unique_account_entry_type: A story template already exists for this story type for this account.
+        other: Story templates
+    errors:
+      models:
+        pageflow/entry_template:
+          attributes:
+            entry_type:
+              taken: already configured. A story template for the story type already exists in this account. Return to the story templates tab and edit the existing story template instead of creating a new one.
   pageflow:
     admin:
       accounts:

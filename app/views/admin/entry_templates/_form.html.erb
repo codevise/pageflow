@@ -2,6 +2,7 @@
   <% account_config = Pageflow.config_for(resource.account) %>
   <% entry_type = resource.entry_type || params[:entry_type] %>
   <%= f.inputs do %>
+      <%= f.semantic_errors :entry_type %>
       <%= render('admin/accounts/theming_defaults_inline_help') %>
       <%= f.hidden_field :entry_type, value: entry_type %>
       <%= f.input :default_locale,

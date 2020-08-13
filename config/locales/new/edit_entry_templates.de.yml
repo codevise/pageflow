@@ -4,11 +4,17 @@ de:
   activerecord:
     attributes:
       pageflow/entry_template:
-        translated_entry_type: Beitrags-Typ
+        entry_type: Beitrags-Typ
     models:
       pageflow/entry_template:
         one: Beitragsvorlage
-        unique_account_entry_type: Es existiert bereits eine Beitragsvorlage für diesen Beitrags-Typ für dieses Konto.
+        other: Beitragsvorlagen
+    errors:
+      models:
+        pageflow/entry_template:
+          attributes:
+            entry_type:
+              taken: bereits konfiguriert. Es existiert bereits eine Beitragsvorlage für den Beitrags-Typ in diesem Konto. Kehre zum Beitragsvorlagen-Tab zurück und bearbeite die existierende Beitragsvorlage anstatt eine neue anzulegen.
   pageflow:
     admin:
       accounts:

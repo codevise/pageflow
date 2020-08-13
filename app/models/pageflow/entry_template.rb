@@ -10,10 +10,7 @@ module Pageflow
     validates :entry_type, presence: true
     validates :entry_type,
               uniqueness: {
-                scope: :account,
-                message: I18n.t(
-                  'activerecord.models.pageflow/entry_template.unique_account_entry_type'
-                )
+                scope: :account
               }
 
     def translated_entry_type
