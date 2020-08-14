@@ -341,6 +341,27 @@ describe('PreviewMessageController', () => {
       postUpdateTransientContentElementStateMessage({id: 5, state: {some: 'state'}});
     })).resolves.toEqual({some: 'state'});
   });
+
+  it('sends CHANGE_EMULATION_MODE message to iframe on change:emulation_mode event on model', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'CHANGE_EMULATION_MODE') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('change:emulation_mode', entry.sections.first());
+    })).resolves.toMatchObject({type: 'CHANGE_EMULATION_MODE', payload: undefined});
+  });
 });
 
 function postReadyMessageAndWaitForAcknowledgement(iframeWindow) {
