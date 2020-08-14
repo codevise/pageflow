@@ -2,7 +2,7 @@ module Pageflow
   ActiveAdmin.register EntryTemplate, as: 'EntryTemplate' do
     menu false
     config.batch_actions = false
-    actions :new, :create, :edit, :update
+    actions :index, :new, :create, :edit, :update
     form partial: 'form'
 
     belongs_to :account, parent_class: Pageflow::Account
@@ -14,6 +14,10 @@ module Pageflow
     controller do
       helper Pageflow::Admin::FormHelper
       helper Pageflow::Admin::WidgetsHelper
+
+      def index
+        redirect_to redirect_path
+      end
 
       def new
         account = Account.find(params[:account_id])

@@ -391,5 +391,22 @@ module Admin
           .to eq('signal' => true)
       end
     end
+
+    describe '#index' do
+      it 'redirects to account page' do
+        admin = create(:user, :admin)
+        sign_in(admin, scope: :user)
+        account_id = admin.accounts.first.id
+
+        get(:index,
+            params: {
+              account_id: account_id
+            })
+
+        expect(response).to redirect_to admin_account_path(
+          id: account_id, tab: 'entry_templates'
+        )
+      end
+    end
   end
 end
