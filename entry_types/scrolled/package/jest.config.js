@@ -11,6 +11,7 @@ module.exports = {
     pageflow: {},
   },
   setupFiles: ['<rootDir>/spec/support/matchMediaStub.js'],
+  setupFilesAfterEnv: ['<rootDir>/spec/support/fakeBrowserFeatures.js'],
   modulePaths: ['<rootDir>/src', '<rootDir>/spec'],
 
   moduleNameMapper: {

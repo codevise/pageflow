@@ -1,7 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import 'support/mediaElementStub';
-import 'support/fakeBrowserFeatures';
 import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 
 import {renderInEntry} from "../support";

@@ -12,8 +12,6 @@ import {Logo} from './Logo';
 
 import styles from './AppHeader.module.css';
 
-import {PhonePlatformProvider} from '../PhonePlatformProvider';
-
 export function AppHeader(props) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
@@ -102,9 +100,7 @@ export function AppHeader(props) {
         </nav>
 
         <div className={classNames(styles.contextIcons)}>
-          <PhonePlatformProvider>
-            <SharingMenu />
-          </PhonePlatformProvider>
+          <SharingMenu />
           <LegalInfoMenu />
         </div>
       </div>

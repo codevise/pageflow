@@ -5,7 +5,6 @@ import {act} from '@testing-library/react';
 import {media} from 'pageflow/frontend';
 
 import {renderEntry, usePageObjects} from 'support/pageObjects';
-import 'support/fakeBrowserFeatures';
 import {useFakeMedia} from 'support/fakeMedia';
 import {fakeParentWindow} from 'support';
 

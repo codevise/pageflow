@@ -3,7 +3,6 @@ import {media, PlayerSourceIDMap, MultiPlayer} from 'pageflow/frontend';
 import {Atmo} from 'frontend/Atmo';
 
 import 'support/mediaElementStub';
-import 'support/fakeBrowserFeatures';
 
 describe('Atmo', function() {
 
