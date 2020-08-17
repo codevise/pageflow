@@ -23,12 +23,14 @@ export function WaveformPlayerControls(props) {
                                  darkBackground ? controlBarStyles.darkBackground : controlBarStyles.lightBackground)} >
         <div className={styles.playControl}>
           <PlayPauseButton isPlaying={props.isPlaying}
-                           play={props.onPlayButtonClick}
-                           pause={props.onPauseButtonClick} />
+                           play={props.play}
+                           pause={props.pause} />
         </div>
         <Waveform isPlaying={props.isPlaying}
                   inverted={!darkBackground}
                   waveformColor={props.waveformColor}
+                  play={props.play}
+                  pause={props.pause}
                   mediaElementId={props.mediaElementId} />
         <div className={styles.timeDisplay}>
           <TimeDisplay currentTime={props.currentTime}

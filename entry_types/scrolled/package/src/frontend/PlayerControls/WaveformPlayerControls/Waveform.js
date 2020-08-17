@@ -21,7 +21,6 @@ export function Waveform(props) {
           {({measureRef}) =>
             <div ref={measureRef} className={styles.waveWrapper}>
               <Wavesurfer mediaElt={`#${props.mediaElementId}`}
-                          playing={props.isPlaying}
                           options={{
                             normalize: true,
                             removeMediaElementOnDestroy: false,

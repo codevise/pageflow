@@ -42,21 +42,3 @@ export function ClassicPlayerControls(props) {
     </div>
   );
 }
-
-ClassicPlayerControls.defaultProps = {
-  currentTime: 200,
-  duration: 600,
-  bufferedEnd: 400,
-  isPlaying: false,
-
-  play: () => {
-  },
-  pause: () => {
-  },
-  scrubTo: () => {
-  },
-  seekTo: () => {
-  },
-
-  inset: false
-};
