@@ -3,7 +3,10 @@
 .backdrop {
   composes: clip from '../utils.module.css';
   position: absolute;
-  height: 200%;
+  /* We only want to clip the backdrop at the top. Extend it by the
+     height of one viewport to ensure it is still visible when the fade
+     is happening. */
+  height: calc(100% + 100vh);
 }
 
 .backdropInner {
