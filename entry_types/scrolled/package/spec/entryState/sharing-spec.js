@@ -17,7 +17,7 @@ describe('useShareProviders', () => {
 
   it('reads data from seed', () => {
     const {result} = renderHookInEntry(
-      () => useShareProviders(),
+      () => useShareProviders({isPhonePlatform: false}),
       {
         seed: {
           entry: {
@@ -37,7 +37,7 @@ describe('useShareProviders', () => {
 
   it('reads data from watched collections', () => {
     const {result} = renderHookInEntry(
-      () => useShareProviders(), {
+      () => useShareProviders({isPhonePlatform: false}), {
         setup: dispatch =>
           watchCollections(
             factories.entry(ScrolledEntry, {
@@ -71,7 +71,7 @@ describe('useShareProviders', () => {
       }
     ];
     const {result} = renderHookInEntry(
-      () => useShareProviders(false),
+      () => useShareProviders({isPhonePlatform: false}),
       {
         seed: {
           entry: {
@@ -108,7 +108,7 @@ describe('useShareProviders', () => {
       }
     ];
     const {result} = renderHookInEntry(
-      () => useShareProviders(true),
+      () => useShareProviders({isPhonePlatform: true}),
       {
         seed: {
           entry: {

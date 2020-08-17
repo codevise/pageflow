@@ -16,7 +16,7 @@ import WhatsAppIcon from "../frontend/assets/images/navigation/icons/social/what
  *
  * @example
  *
- * const shareProviders = useShareProviders();
+ * const shareProviders = useShareProviders(options);
  * shareProviders // =>
  *   [
  *     {
@@ -31,7 +31,7 @@ import WhatsAppIcon from "../frontend/assets/images/navigation/icons/social/what
  *     }
  *   ]
  */
-export function useShareProviders(isPhone) {
+export function useShareProviders({isPhonePlatform}) {
   const entryState = useEntryState();
   const entryMetadata = useEntryMetadata();
 
@@ -72,7 +72,7 @@ export function useShareProviders(isPhone) {
   };
 
   return useMemo(() => {
-    return activeShareProviders(shareProviders, isPhone).map((provider) => {
+    return activeShareProviders(shareProviders, isPhonePlatform).map((provider) => {
       const config = sharing[provider];
       return ({
         name: config.name,
@@ -80,18 +80,18 @@ export function useShareProviders(isPhone) {
         url: config.url
       })
     })
-  }, [shareProviders, isPhone]);
+  }, [shareProviders, isPhonePlatform]);
 }
 
-function activeShareProviders(shareProvidersConfig, isPhone) {
-  const providers = filterShareProviders(shareProvidersConfig, isPhone);
+function activeShareProviders(shareProvidersConfig, isPhonePlatform) {
+  const providers = filterShareProviders(shareProvidersConfig, isPhonePlatform);
   return providers.filter(function (provider) {
     return shareProvidersConfig[provider] !== false;
   });
 }
 
-function filterShareProviders(shareProvidersConfig, isPhone) {
-  if (!isPhone) {
+function filterShareProviders(shareProvidersConfig, isPhonePlatform) {
+  if (!isPhonePlatform) {
     return Object.keys(shareProvidersConfig).filter(function (provider) {
       return (provider !== 'telegram' && provider !== 'whats_app');
     });

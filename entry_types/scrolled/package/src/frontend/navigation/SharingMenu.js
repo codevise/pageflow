@@ -10,8 +10,8 @@ import {useShareProviders} from "../../entryState";
 import {usePhonePlatform} from '../usePhonePlatform';
 
 export function SharingMenu() {
-  const IsPhonePlatform = usePhonePlatform();
-  const shareProviders = useShareProviders(IsPhonePlatform);
+  const isPhonePlatform = usePhonePlatform();
+  const shareProviders = useShareProviders({isPhonePlatform : isPhonePlatform});
 
   if(shareProviders.length > 0) {
     return (

@@ -12,7 +12,7 @@ export function SharingTooltip() {
   const isPhonePlatform = usePhonePlatform();
 
   const shareUrl = useShareUrl();
-  const shareProviders = useShareProviders(isPhonePlatform);
+  const shareProviders = useShareProviders({isPhonePlatform: isPhonePlatform});
 
   function renderShareLinks(shareProviders) {
     return shareProviders.map((shareProvider) => {

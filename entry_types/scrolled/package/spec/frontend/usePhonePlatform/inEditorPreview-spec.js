@@ -4,7 +4,7 @@ import {usePhonePlatform} from 'frontend/usePhonePlatform';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 
 import {renderHook} from '@testing-library/react-hooks';
-import {asyncHandlingOf} from 'support/asyncHandlingOf';
+import {asyncHandlingOf} from 'support/asyncHandlingOf/forHooks';
 
 import '@testing-library/jest-dom/extend-expect'
 

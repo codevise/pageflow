@@ -1,7 +1,7 @@
 import {useIframeHeight} from 'contentElements/dataWrapperChart/useIframeHeight';
 
 import {renderHook} from '@testing-library/react-hooks';
-import {asyncHandlingOf} from 'support/asyncHandlingOf';
+import {asyncHandlingOf} from 'support/asyncHandlingOf/forHooks';
 
 describe('useIframeHeight', () => {
   it('sets default height', async () => {
