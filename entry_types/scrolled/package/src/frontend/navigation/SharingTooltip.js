@@ -9,10 +9,10 @@ import {usePhonePlatform} from '../usePhonePlatform';
 
 export function SharingTooltip() {
 
-  const IsPhonePlatform = usePhonePlatform();
+  const isPhonePlatform = usePhonePlatform();
 
   const shareUrl = useShareUrl();
-  const shareProviders = useShareProviders(IsPhonePlatform);
+  const shareProviders = useShareProviders(isPhonePlatform);
 
   function renderShareLinks(shareProviders) {
     return shareProviders.map((shareProvider) => {

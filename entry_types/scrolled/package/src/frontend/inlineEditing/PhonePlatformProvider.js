@@ -19,7 +19,7 @@ export function PhonePlatformProvider({children}) {
         }
       }
     }
-    return () => document.removeEventListener('message', receive);
+    return () => window.removeEventListener('message', receive);
   });
 
   return (

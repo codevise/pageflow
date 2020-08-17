@@ -348,6 +348,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 1}]
       })
     });
+
     const iframeWindow = createIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
@@ -359,8 +360,8 @@ describe('PreviewMessageController', () => {
           resolve(event.data);
         }
       });
-      entry.trigger('change:emulation_mode', entry.sections.first());
-    })).resolves.toMatchObject({type: 'CHANGE_EMULATION_MODE', payload: undefined});
+      entry.set('emulation_mode', 'phone');
+    })).resolves.toMatchObject({type: 'CHANGE_EMULATION_MODE', payload: 'phone'});
   });
 });
 

@@ -19,4 +19,13 @@ describe('usePhonePlatform', () => {
     expect(result.current).toEqual(true);
   });
 
+  it('returns false on Desktop', () => {
+
+    jest.spyOn(browser, 'has').mockReturnValue(false);
+
+    const {result} = renderHook(() => usePhonePlatform(), {wrapper: PhonePlatformProvider});
+
+    expect(result.current).toEqual(false);
+  });
+
 });

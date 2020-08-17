@@ -7,10 +7,7 @@ import {withInlineEditingAlternative} from './inlineEditing';
 
 export const PhonePlatformProvider = withInlineEditingAlternative('PhonePlatformProvider', function PhonePlatformProvider({children}) {
 
-  var isPhonePlatform = false;
-  if (browser.has('phone platform')) {
-    isPhonePlatform = true;
-  }
+  const isPhonePlatform = browser.has('phone platform')
 
   return (
     <PhonePlatformContext.Provider value={isPhonePlatform} >

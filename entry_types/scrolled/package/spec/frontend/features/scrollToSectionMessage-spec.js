@@ -24,7 +24,7 @@ describe('SCROLL_TO_SECTION message', () => {
     });
 
     await act(async () => {
-      window.postMessage({type: 'SCROLL_TO_SECTION', payload: {index: 1}}, '*')
+      window.postMessage({type: 'SCROLL_TO_SECTION', payload: {index: 1}}, '*');
       await tick(); // Make sure async handling of message is wrapped in act
     });
 

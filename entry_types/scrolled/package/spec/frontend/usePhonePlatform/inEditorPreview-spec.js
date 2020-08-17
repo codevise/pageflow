@@ -3,19 +3,19 @@ import {PhonePlatformProvider} from 'frontend';
 import {usePhonePlatform} from 'frontend/usePhonePlatform';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
 
-import {renderHook, act} from '@testing-library/react-hooks';
+import {renderHook} from '@testing-library/react-hooks';
+import {asyncHandlingOf} from 'support/asyncHandlingOf';
 
 import '@testing-library/jest-dom/extend-expect'
-import {tick} from "support";
 
 
 describe('usePhonePlatform', () => {
   beforeAll(loadInlineEditingComponents);
 
-  it('sets value when emulation mode changes', async () => {
+  it('sets value when emulation mode is mobile', async () => {
     const {result} = renderHook(() => usePhonePlatform(), {wrapper: PhonePlatformProvider});
 
-    await asyncHandlingOfMessage(() => {
+    await asyncHandlingOf(() => {
       window.postMessage({
         type: 'CHANGE_EMULATION_MODE',
         payload: 'phone'
@@ -24,13 +24,18 @@ describe('usePhonePlatform', () => {
 
     expect(result.current).toEqual(true);
   });
-  
-  async function asyncHandlingOfMessage(callback) {
-    await act(async () => {
-      callback();
-      // Ensure React update triggered by async handling of message is
-      // wrapped in act
-      await tick();
+
+  it('sets value when emulation mode is desktop', async () => {
+    const {result} = renderHook(() => usePhonePlatform(), {wrapper: PhonePlatformProvider});
+
+    await asyncHandlingOf(() => {
+      window.postMessage({
+        type: 'CHANGE_EMULATION_MODE',
+        payload: undefined
+      }, '*');
     });
-  }
+
+    expect(result.current).toEqual(false);
+  });
+
 });
