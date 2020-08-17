@@ -24,24 +24,24 @@ module Pageflow
       it 'sets draft config to config of available entry template' do
         entry_template = create(:entry_template,
                                 configuration: {color_scheme: 'purple'},
-                                entry_type: 'test')
+                                entry_type_name: 'test')
         entry = create(:entry,
                        account: entry_template.account,
-                       type_name: entry_template.entry_type)
+                       type_name: entry_template.entry_type_name)
 
         expect(entry.draft.configuration['color_scheme'])
           .to eq(entry_template.configuration['color_scheme'])
       end
 
       it 'copies widgets from entry template to draft' do
-        entry_template = create(:entry_template, entry_type: 'test')
+        entry_template = create(:entry_template, entry_type_name: 'test')
         create(:widget,
                subject: entry_template,
                role: 'header',
                type_name: 'theming_header')
         entry = create(:entry,
                        account: entry_template.account,
-                       type_name: entry_template.entry_type)
+                       type_name: entry_template.entry_type_name)
 
         expect(entry.draft.widgets).to include_record_with(role: 'header', type_name: 'theming_header')
       end
@@ -57,9 +57,9 @@ module Pageflow
                                 default_author: 'Codevise',
                                 default_publisher: 'Codevise Solutions',
                                 default_keywords: 'codevise, story',
-                                entry_type: 'test')
+                                entry_type_name: 'test')
         entry = create(:entry,
-                       type_name: entry_template.entry_type,
+                       type_name: entry_template.entry_type_name,
                        account: entry_template.account)
 
         expect(entry.draft.author).to eq('Codevise')

@@ -2,7 +2,7 @@ module Pageflow
   ActiveAdmin.register EntryTemplate, as: 'EntryTemplate' do
     menu false
     config.batch_actions = false
-    actions :new, :create, :edit, :update
+    actions :index, :new, :create, :edit, :update
     form partial: 'form'
 
     belongs_to :account, parent_class: Pageflow::Account
@@ -15,8 +15,19 @@ module Pageflow
       helper Pageflow::Admin::FormHelper
       helper Pageflow::Admin::WidgetsHelper
 
+      def index
+        redirect_to redirect_path
+      end
+
       def new
-        @page_title = page_title('new', params[:entry_type])
+        account = Account.find(params[:account_id])
+        @entry_template = EntryTemplate.new(
+          account: account,
+          entry_type_name: params[:entry_type_name]
+        )
+
+        @page_title = page_title('new', params[:entry_type_name])
+
         super
       end
 
@@ -24,21 +35,21 @@ module Pageflow
         @entry_template = EntryTemplate.new(
           entry_template_params.merge(account_id: permitted_params[:account_id])
         )
-        @page_title = page_title('new', @entry_template.entry_type)
+        @page_title = page_title('new', @entry_template.entry_type_name)
         authorize!(:create, @entry_template)
         create! { redirect_path }
         update_widgets if @entry_template.errors.empty?
       end
 
       def edit
-        @page_title = page_title('edit', resource.entry_type)
+        @page_title = page_title('edit', resource.entry_type_name)
         super
       end
 
       def update
         @entry_template = EntryTemplate.find(params[:id])
         @entry_template.assign_attributes(entry_template_params)
-        @page_title = page_title('edit', @entry_template.entry_type)
+        @page_title = page_title('edit', @entry_template.entry_type_name)
         params[:entry_template].delete('share_providers')
         params[:entry_template].delete('configuration')
         authorize!(:update, @entry_template)
@@ -64,7 +75,7 @@ module Pageflow
         [
           :id,
           :account_id,
-          :entry_type,
+          :entry_type_name,
           :theme_name,
           :default_author,
           :default_publisher,

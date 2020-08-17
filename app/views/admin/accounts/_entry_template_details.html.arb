@@ -1,4 +1,4 @@
-h5(entry_template.translated_entry_type)
+h5(entry_template.translated_entry_type_name)
 
 extensible_attributes_table_for(entry_template,
                                 Pageflow.config_for(entry_template.account)

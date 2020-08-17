@@ -4,21 +4,26 @@ module Pageflow
     include SerializedConfiguration
     serialize :default_share_providers, JSON
     belongs_to :account
+    delegate :enabled_feature_names, to: :account
     has_many :widgets, as: :subject, dependent: :destroy
 
     validates :account, presence: true
-    validates :entry_type, presence: true
-    validates :entry_type,
+    validates :entry_type_name, presence: true
+    validates :entry_type_name,
               uniqueness: {
                 scope: :account
               }
 
-    def translated_entry_type
-      I18n.t("activerecord.values.pageflow/entry.type_names.#{entry_type}")
+    def entry_type
+      Pageflow.config.entry_types.find_by_name!(entry_type_name)
+    end
+
+    def translated_entry_type_name
+      I18n.t("activerecord.values.pageflow/entry.type_names.#{entry_type_name}")
     end
 
     def resolve_widgets(options = {})
-      widgets.resolve(Pageflow.config_for(account), options)
+      widgets.resolve(Pageflow.config_for(self), options)
     end
 
     def copy_defaults_to(revision)
@@ -54,7 +59,7 @@ module Pageflow
     end
 
     def available_themes
-      Pageflow.config_for(account).themes
+      Pageflow.config_for(self).themes
     end
 
     def hashify_provider_array(arr)
