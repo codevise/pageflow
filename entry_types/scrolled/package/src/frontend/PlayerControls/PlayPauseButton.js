@@ -7,7 +7,6 @@ import {useI18n} from '../i18n';
 
 export function PlayPauseButton(props) {
   const {t} = useI18n();
-
   return (
     <button className={controlBarStyles.playControl}
             aria-label={t(props.isPlaying ? 'pause' : 'play',

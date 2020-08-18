@@ -34,6 +34,23 @@ describe('AudioPlayerControls', () => {
     expect(getByRole('menuitemradio', {name: 'English (CC)'})).not.toBeNull();
   });
 
+  it('renders waveform player controls', () => {
+    const {getByTestId} = renderInEntry(<AudioPlayerControls audioFilePermaId={10}
+                                                             playerState={getInitialPlayerState()}
+                                                             playerActions={getPlayerActions()}
+                                                             configuration={{
+                                                               playerControlVariant: 'waveform'
+                                                             }}/>, {
+      seed: {
+        audioFiles: [{
+          id: 100,
+          permaId: 10
+        }]
+      }
+    });
+    expect(getByTestId('waveform-controls')).not.toBeNull();
+  });
+
   it('handles missing file', () => {
     expect(() =>
       renderInEntry(<AudioPlayerControls playerState={getInitialPlayerState()}

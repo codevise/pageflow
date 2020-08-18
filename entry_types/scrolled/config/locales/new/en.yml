@@ -227,6 +227,16 @@ en:
               label: "Audio"
             posterId:
               label: "Poster"
+            playerControlVariant:
+              label: Player Controls
+              inline_help: >
+                Choose the style of player controls.
+              values:
+                classic: Classic
+                waveform: Waveform
+            waveformColor:
+              inline_help: Color of the waveform's parts that represents the already played part of the audio.
+              label: Waveform Color
             atmoDuringPlayback:
               label: Atmo During Playback
               inline_help: >

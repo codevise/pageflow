@@ -1,6 +1,6 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {FileInputView, CheckBoxInputView} from 'pageflow/editor';
-import {SelectInputView} from 'pageflow/ui';
+import {SelectInputView, ColorInputView} from 'pageflow/ui';
 
 editor.contentElementTypes.register('inlineAudio', {
   configurationEditor() {
@@ -20,6 +20,18 @@ editor.contentElementTypes.register('inlineAudio', {
 
       this.input('autoplay', CheckBoxInputView);
       
+      this.input('playerControlVariant', SelectInputView, {
+        values: ['classic', 'waveform'],
+        ensureValueDefined: true
+      });
+
+      this.input('waveformColor', ColorInputView, {
+        visibleBinding: 'playerControlVariant',
+        visibleBindingValue: 'waveform',
+        defaultValue: '#e10028'
+      });
+
+
       this.input('atmoDuringPlayback', SelectInputView, {
         values: ['play', 'mute', 'turnDown']
       });

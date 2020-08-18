@@ -64,6 +64,7 @@ export function useFakeMedia() {
 function createFakePlayer({filePermaId, textTrackSources}) {
   const el = document.createElement('div');
   el.setAttribute('data-fake-player-file-perma-id', filePermaId);
+  el.setAttribute('id', `fake-player-${filePermaId}`);
 
   const textTracks = createFakeTextTracks(textTrackSources);
 
@@ -93,7 +94,7 @@ function createFakePlayer({filePermaId, textTrackSources}) {
     dispose: jest.fn(),
     rewind: jest.fn().mockResolvedValue(),
     textTracks() { return textTracks; },
-
+    getMediaElement() { return el; },
     ...BackboneEvents,
     one(...args) { this.once(...args); }
   };

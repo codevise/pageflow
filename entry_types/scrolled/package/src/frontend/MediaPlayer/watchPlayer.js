@@ -16,7 +16,7 @@ export default function(player, actions) {
 
   player.on('ended', actions.ended);
 
-  actions.saveMediaElementId(player.id);
+  player.one('loadedmetadata', () => actions.saveMediaElementId(player.getMediaElement().id));
 }
 
 export function unwatchPlayer(player, actions) {

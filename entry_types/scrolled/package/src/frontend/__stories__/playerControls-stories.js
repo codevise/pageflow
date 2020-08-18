@@ -60,3 +60,12 @@ addControlbarStory('Black', {color: '#000'}, {
     {label: 'Deutsch', value: 'de'}
   ]
 });
+
+addControlbarStory('Waveform', {color: '#000'}, {
+  variant: 'waveform',
+  textTracksMenuItems: [
+    {label: '(Off)', value: 'off', active: true},
+    {label: 'English (CC)', value: 'en'},
+    {label: 'Deutsch', value: 'de'}
+  ]
+});

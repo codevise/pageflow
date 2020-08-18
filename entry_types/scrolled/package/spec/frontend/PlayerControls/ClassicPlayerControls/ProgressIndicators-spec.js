@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 import {render, fireEvent} from '@testing-library/react'
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
-import {ProgressIndicators} from 'frontend/PlayerControls/ProgressIndicators';
+import {ProgressIndicators} from 'frontend/PlayerControls/ClassicPlayerControls/ProgressIndicators';
 
 describe('ProgressIndicators', () => {
   useFakeTranslations({

@@ -267,4 +267,57 @@ describe('MediaPlayer', () => {
 
     expect(player.currentTime).not.toHaveBeenCalledWith(expect.anything());
   });
+
+  it('saves media element id on loadedmetadata event', () => {
+    const saveMediaElementIdAction = jest.fn();
+    const actions = {
+      ...getPlayerActions(),
+      saveMediaElementId: saveMediaElementIdAction
+    };
+
+    const {getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          filePermaId={5}
+                          playerActions={actions} />);
+    const player = getPlayer();
+
+    player.trigger('loadedmetadata');
+
+    expect(saveMediaElementIdAction).toHaveBeenCalledWith('fake-player-5');
+  });
+
+  it('does save media element id before loadedmetadata event', () => {
+    const saveMediaElementIdAction = jest.fn();
+    const actions = {
+      ...getPlayerActions(),
+      saveMediaElementId: saveMediaElementIdAction
+    };
+
+    render(<MediaPlayer {...requiredProps()}
+                        sources={getVideoSources()}
+                        filePermaId={5}
+                        playerActions={actions} />);
+
+    expect(saveMediaElementIdAction).not.toHaveBeenCalled();
+  });
+
+  it('does save media element id on loadedmetadata event after component unmounted', () => {
+    const saveMediaElementIdAction = jest.fn();
+    const actions = {
+      ...getPlayerActions(),
+      saveMediaElementId: saveMediaElementIdAction
+    };
+
+    const {getPlayer, unmount} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          filePermaId={5}
+                          playerActions={actions} />);
+    const player = getPlayer();
+    unmount();
+    player.trigger('loadedmetadata');
+
+    expect(saveMediaElementIdAction).not.toHaveBeenCalled();
+  });
 });

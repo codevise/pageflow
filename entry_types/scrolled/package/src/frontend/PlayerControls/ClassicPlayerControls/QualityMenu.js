@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {MenuBarButton} from './MenuBarButton';
-import {useI18n} from '../i18n';
+import {MenuBarButton} from '../MenuBarButton';
+import {useI18n} from '../../i18n';
 
-import QualityIcon from './images/quality.svg';
+import QualityIcon from '../images/quality.svg';
 
 export function QualityMenu(props) {
   const {t} = useI18n();
