@@ -5,9 +5,14 @@ import styles from "./SharingTooltip.module.css";
 import ReactTooltip from "react-tooltip";
 import {useShareProviders, useShareUrl} from '../../entryState';
 
+import {usePhonePlatform} from '../usePhonePlatform';
+
 export function SharingTooltip() {
+
+  const isPhonePlatform = usePhonePlatform();
+
   const shareUrl = useShareUrl();
-  const shareProviders = useShareProviders();
+  const shareProviders = useShareProviders({isPhonePlatform: isPhonePlatform});
 
   function renderShareLinks(shareProviders) {
     return shareProviders.map((shareProvider) => {

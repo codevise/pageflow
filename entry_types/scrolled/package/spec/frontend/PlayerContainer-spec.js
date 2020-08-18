@@ -1,7 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
 import 'support/mediaElementStub';
-import 'support/fakeBrowserFeatures';
 
 import {render} from '@testing-library/react'
 import {media} from 'pageflow/frontend';

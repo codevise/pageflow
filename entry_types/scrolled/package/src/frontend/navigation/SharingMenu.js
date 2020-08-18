@@ -7,8 +7,11 @@ import {SharingTooltip} from "./SharingTooltip";
 import ReactTooltip from "react-tooltip";
 import {useShareProviders} from "../../entryState";
 
+import {usePhonePlatform} from '../usePhonePlatform';
+
 export function SharingMenu() {
-  const shareProviders = useShareProviders();
+  const isPhonePlatform = usePhonePlatform();
+  const shareProviders = useShareProviders({isPhonePlatform : isPhonePlatform});
 
   if(shareProviders.length > 0) {
     return (

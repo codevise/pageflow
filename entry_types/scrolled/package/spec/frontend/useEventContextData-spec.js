@@ -2,7 +2,6 @@ import React from 'react';
 
 import {useEventContextData, EventContextDataProvider} from 'frontend/useEventContextData';
 
-import 'support/fakeBrowserFeatures';
 import {renderHookInEntry} from 'support';
 
 describe('useEventContextData', () => {

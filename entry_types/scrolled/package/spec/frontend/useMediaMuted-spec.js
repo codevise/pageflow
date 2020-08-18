@@ -1,7 +1,6 @@
 import {useMediaMuted, MediaMutedProvider} from 'frontend/useMediaMuted';
 import {media} from 'pageflow/frontend';
 
-import 'support/fakeBrowserFeatures';
 import {renderHook, act} from '@testing-library/react-hooks';
 
 describe('useMediaMuted', () => {
