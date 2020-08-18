@@ -29,6 +29,7 @@ export function WaveformPlayerControls(props) {
         <Waveform isPlaying={props.isPlaying}
                   inverted={!darkBackground}
                   waveformColor={props.waveformColor}
+                  mainColor={'#e10028'}
                   play={props.play}
                   pause={props.pause}
                   mediaElementId={props.mediaElementId} />

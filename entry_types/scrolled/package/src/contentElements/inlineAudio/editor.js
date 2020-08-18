@@ -27,7 +27,8 @@ editor.contentElementTypes.register('inlineAudio', {
 
       this.input('waveformColor', ColorInputView, {
         visibleBinding: 'playerControlVariant',
-        visibleBindingValue: 'waveform'
+        visibleBindingValue: 'waveform',
+        defaultValue: '#e10028'
       });
 
 
