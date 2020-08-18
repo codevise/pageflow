@@ -46,6 +46,7 @@ unless options[:skip_collections]
     json.entries do
       json.array!([entry]) do |entry|
         json.call(entry, :id, :locale, :share_providers, :share_url, :credits)
+        json.published_at entry.published_at.try(:iso8601, 0)
         json.permaId entry.id # required as keyAttribute in EntryStateProvider
       end
     end

@@ -2,7 +2,7 @@
                 id: 'outer_wrapper',
                 data: {theme: entry.theme.name},
                 class: entry_css_class(entry)) do %>
-  <%= structured_data_for_entry(entry) %>
+  <%= structured_data_for_entry(entry) if Pageflow.config_for(entry).features.enabled?('structured_data') %>
 
   <%= render 'pageflow_paged/entries/skip_links' %>
 

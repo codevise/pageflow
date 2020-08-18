@@ -14,14 +14,14 @@ module PageflowScrolled
       end
 
       context 'entries' do
-        it 'renders single-element entry array with id and configuration' do
-          theming = create(:theming, cname: '')
-          revision = create(:revision,
-                            locale: 'fr',
-                            share_providers: {facebook: true},
-                            credits: 'Test Credits')
-          entry = Pageflow::DraftEntry.new(create(:entry, theming: theming),
-                                           revision)
+        it 'renders single-element entry array' do
+          entry = create(:published_entry,
+                         revision_attributes: {
+                           published_at: '2020-08-11 10:00'.in_time_zone('UTC'),
+                           locale: 'fr',
+                           share_providers: {facebook: true},
+                           credits: 'Test Credits'
+                         })
 
           result = render(helper, entry)
 
@@ -31,6 +31,7 @@ module PageflowScrolled
                                  {
                                    id: entry.id,
                                    permaId: entry.id,
+                                   publishedAt: '2020-08-11T10:00:00Z',
                                    locale: 'fr',
                                    shareProviders: {facebook: true},
                                    credits: 'Test Credits'
@@ -248,7 +249,7 @@ module PageflowScrolled
             .file_types
             .register(Pageflow::FileType.new(model: 'Pageflow::VideoFile',
                                              collection_name: 'test_files',
-                                             url_templates: -> { {original: url_template} }))
+                                             url_templates: -> { {poster_medium: url_template} }))
         end
         entry = create(:published_entry)
 
@@ -258,7 +259,7 @@ module PageflowScrolled
           .to include_json(config: {
                              fileUrlTemplates: {
                                testFiles: {
-                                 original: url_template
+                                 posterMedium: url_template
                                }
                              }
                            })

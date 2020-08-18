@@ -124,13 +124,5 @@ module Pageflow
 
       expect(html).not_to have_json_ld('thumbnailUrl' => a_string_including('image_files'))
     end
-
-    it 'renders nothing if feature is disabled' do
-      entry = create(:entry, :published, without_feature: 'structured_data')
-
-      html = helper.structured_data_for_entry(PublishedEntry.new(entry))
-
-      expect(html).not_to have_json_ld('@type' => 'Article')
-    end
   end
 end

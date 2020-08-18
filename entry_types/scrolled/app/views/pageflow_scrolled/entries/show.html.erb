@@ -34,6 +34,8 @@
     <% end %>
   </head>
   <body>
+    <%= structured_data_for_entry(@entry) unless @skip_structured_data %>
+
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"><%= render_scrolled_entry(@entry) unless @skip_ssr %></div>
 

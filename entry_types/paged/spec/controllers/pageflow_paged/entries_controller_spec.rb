@@ -166,6 +166,14 @@ module PageflowPaged
         expect(response.body).to have_json_ld('@type' => 'Article')
       end
 
+      it 'does not render structured data if feature is disabled' do
+        entry = create(:entry, :published, without_feature: 'structured_data')
+
+        get_with_entry_env(:show, entry: entry)
+
+        expect(response.body).not_to have_json_ld('@type' => 'Article')
+      end
+
       it 'uses locale of entry' do
         entry = create(:entry, :published, published_revision_attributes: {locale: 'de'})
 

@@ -1,12 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import {useFile} from '../entryState';
-import {MediaPlayer} from './MediaPlayer';
-import {useTextTracks} from './useTextTracks';
-import {useMediaMuted} from './useMediaMuted';
 
-import styles from "./AudioPlayer.module.css";
-import {ViewportDependentPillarBoxes} from "./ViewportDependentPillarBoxes";
+import {useFile} from '../../entryState';
+import {MediaPlayer} from '../MediaPlayer';
+import {useTextTracks} from '../useTextTracks';
+import {useMediaMuted} from '../useMediaMuted';
+import {ViewportDependentPillarBoxes} from '../ViewportDependentPillarBoxes';
+import {AudioStructuredData} from './AudioStructuredData';
+
+import styles from '../AudioPlayer.module.css';
 
 /**
  * Render audio file in MediaPlayer.
@@ -41,6 +43,7 @@ export function AudioPlayer(props) {
                        textTracksInset={props.position === 'full'}
                        posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
                        {...props} />
+          <AudioStructuredData file={audioFile} />
         </div>
       </ViewportDependentPillarBoxes>
     );
