@@ -44,6 +44,7 @@ const plugins = ({extractCss} = {}) => [
   postcss({
     modules: true,
     extract: extractCss,
+    minimize: extractCss,
     plugins: [autoprefixer]
   }),
   babel({
