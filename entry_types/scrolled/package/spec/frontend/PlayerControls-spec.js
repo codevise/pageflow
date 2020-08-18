@@ -13,10 +13,10 @@ describe('PlayerControls', () => {
     'pageflow_scrolled.public.player_controls.text_tracks': 'Text Tracks'
   });
 
-  describe('ClassicPlayerControls', () => {
+  [ClassicPlayerControls, WaveformPlayerControls].forEach((PlayerControlComponent)=>{
     it('supports onFocus prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = render(<ClassicPlayerControls onFocus={listener} />);
+      const {getByLabelText} = render(<PlayerControlComponent onFocus={listener} />);
 
       getByLabelText('Play').focus();
 
@@ -25,7 +25,7 @@ describe('PlayerControls', () => {
 
     it('supports onBlur prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = render(<ClassicPlayerControls onBlur={listener} />);
+      const {getByLabelText} = render(<PlayerControlComponent onBlur={listener} />);
 
       getByLabelText('Play').focus();
       getByLabelText('Play').blur();
@@ -35,7 +35,7 @@ describe('PlayerControls', () => {
 
     it('supports onMouseEnter prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = render(<ClassicPlayerControls onMouseEnter={listener} />);
+      const {getByLabelText} = render(<PlayerControlComponent onMouseEnter={listener} />);
 
       fireEvent.mouseEnter(getByLabelText('Play'));
 
@@ -44,31 +44,17 @@ describe('PlayerControls', () => {
 
     it('supports onMouseLeave prop', () => {
       const listener = jest.fn();
-      const {getByLabelText} = render(<ClassicPlayerControls onMouseLeave={listener} />);
+      const {getByLabelText} = render(<PlayerControlComponent onMouseLeave={listener} />);
 
       fireEvent.mouseLeave(getByLabelText('Play'));
 
       expect(listener).toHaveBeenCalled();
-    });
 
-    it('supports rendering and handling events for quality menu items', () => {
-      const listener = jest.fn();
-      const {getByTitle, getByText} = render(<ClassicPlayerControls
-                                                qualityMenuItems={[
-                                                  {label: '1080p', value: 'fullhd'},
-                                                  {label: '720p', value: 'medium'},
-                                                ]}
-                                                onQualityMenuItemClick={listener} />);
-
-      fireEvent.click(getByTitle('Quality'));
-      fireEvent.click(getByText('1080p'));
-
-      expect(listener).toHaveBeenCalledWith('fullhd');
     });
 
     it('supports rendering and handling events for text track menu items', () => {
       const listener = jest.fn();
-      const {getByTitle, getByText} = render(<ClassicPlayerControls
+      const {getByTitle, getByText} = render(<PlayerControlComponent
                                                 textTracksMenuItems={[
                                                   {label: 'German', value: 'de'},
                                                   {label: 'English', value: 'en'},
@@ -82,58 +68,19 @@ describe('PlayerControls', () => {
     });
   });
 
-  describe('WaveformPlayerControls', () => {
-    it('supports onFocus prop', () => {
-      const listener = jest.fn();
-      const {getByLabelText} = render(<WaveformPlayerControls onFocus={listener} />);
+  it('Classic player controls supports rendering and handling events for quality menu items', () => {
+    const listener = jest.fn();
+    const {getByTitle, getByText} = render(<ClassicPlayerControls
+                                              qualityMenuItems={[
+                                                {label: '1080p', value: 'fullhd'},
+                                                {label: '720p', value: 'medium'},
+                                              ]}
+                                              onQualityMenuItemClick={listener} />);
 
-      getByLabelText('Play').focus();
+    fireEvent.click(getByTitle('Quality'));
+    fireEvent.click(getByText('1080p'));
 
-      expect(listener).toHaveBeenCalled();
-    });
+    expect(listener).toHaveBeenCalledWith('fullhd');
+  });
 
-    it('supports onBlur prop', () => {
-      const listener = jest.fn();
-      const {getByLabelText} = render(<WaveformPlayerControls onBlur={listener} />);
-
-      getByLabelText('Play').focus();
-      getByLabelText('Play').blur();
-
-      expect(listener).toHaveBeenCalled();
-    });
-
-    it('supports onMouseEnter prop', () => {
-      const listener = jest.fn();
-      const {getByLabelText} = render(<WaveformPlayerControls onMouseEnter={listener} />);
-
-      fireEvent.mouseEnter(getByLabelText('Play'));
-
-      expect(listener).toHaveBeenCalled();
-    });
-
-    it('supports onMouseLeave prop', () => {
-      const listener = jest.fn();
-      const {getByLabelText} = render(<WaveformPlayerControls onMouseLeave={listener} />);
-
-      fireEvent.mouseLeave(getByLabelText('Play'));
-
-      expect(listener).toHaveBeenCalled();
-    });
-
-    it('supports rendering and handling events for text track menu items', () => {
-      const listener = jest.fn();
-      const {getByTitle, getByText} = render(<WaveformPlayerControls
-                                                textTracksMenuItems={[
-                                                  {label: 'German', value: 'de'},
-                                                  {label: 'English', value: 'en'},
-                                                ]}
-                                                onTextTracksMenuItemClick={listener} />);
-
-      fireEvent.click(getByTitle('Text Tracks'));
-      fireEvent.click(getByText('English'));
-
-      expect(listener).toHaveBeenCalledWith('en');
-    });
-
-  })
 });
