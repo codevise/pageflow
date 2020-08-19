@@ -1,78 +1,67 @@
 .emulation_mode_button {
-  @include background-icon-right($color: #444, $font-size: 16px, $top: 4px);
-  @include up-open-icon;
+  position: relative;
   float: left;
-  height: 25px;
-  width: 100px;
+  cursor: pointer;
 
-  &-menu {
-    background-color: #fff;
-    border: solid 1px #aaa;
-    padding: 1px;
-    position: absolute;
-    bottom: 1px;
-    left: 1px;
-    visibility: hidden;
-    width: 200px;
-    z-index: 1;
+  &-wrapper {
+    width: 110px;
+    height: 30px;
   }
 
-  &-menu_header {
-    margin: 3px 6px;
+  &-desktop_icon,
+  &-phone_icon {
+    @include background-icon-center($color: #444, $font-size: 16px);
+    width: 40px;
+    height: 100%;
   }
 
-  &:hover .emulation_mode_button-menu {
-    visibility: visible;
-  }
-
-  &-display {
-    @include background-icon-center($color: #444, $font-size: 16px, $left: 15px);
-    display: none;
-    padding: 5px 10px 5px 30px;
-
-    &.active {
-      display: block;
-    }
-  }
-
-  &-menu_item {
-    @include background-icon-center($color: #444, $font-size: 16px, $left: 15px, $top: 15px);
-  }
-
-  &-menu_link {
-    padding: 7px 35px 7px 35px;
-    display: block;
-
-    &:hover {
-      background-color: #eee;
-    }
-  }
-
-  .active .emulation_mode_button-menu_link {
-    @include background-icon-right($color: #444, $font-size: 12px, $right: 15px, $top: 9px);
-    @include fa-check-icon;
-    pointer-events: none;
-  }
-
-  &-disabled_hint {
-    display: none;
-    font-size: 10px;
-  }
-
-  .disabled {
-    pointer-events: none;
-    opacity: 0.3;
-
-    .emulation_mode_button-disabled_hint {
-      display: block;
-    }
-  }
-
-  &-phone {
-    @include mobile-icon;
-  }
-
-  &-desktop {
+  &-desktop_icon {
     @include monitor-icon;
+    float: left;
+  }
+
+  &-phone_icon {
+    @include mobile-icon;
+    float: right;
+  }
+
+  &-track,
+  &-thumb {
+    position: absolute;
+    background-color: #1976d2;
+  }
+
+  &-track {
+    top: 8px;
+    left: 40px;
+    border-radius: 7px;
+    opacity: 0.5;
+    width: 34px;
+    height: 14px;
+  }
+
+  &-thumb {
+    top: 5px;
+    left: 37px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  }
+
+  &.active .emulation_mode_button-thumb {
+    transform: translateX(20px);
+  }
+
+  &.disabled {
+    .emulation_mode_button-wrapper {
+      opacity: 0.4;
+    }
+
+    .emulation_mode_button-track,
+    .emulation_mode_button-thumb {
+      background-color: #000;
+    }
   }
 }

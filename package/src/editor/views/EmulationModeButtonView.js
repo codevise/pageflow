@@ -1,4 +1,5 @@
 import Marionette from 'backbone.marionette';
+import {tooltipContainer} from 'pageflow/ui';
 
 import template from '../templates/emulationModeButton.jst';
 
@@ -6,25 +7,26 @@ export const EmulationModeButtonView = Marionette.ItemView.extend({
   template,
   className: 'emulation_mode_button',
 
-  ui: {
-    phoneItem: '.emulation_mode_button-phone',
-    desktopItem: '.emulation_mode_button-desktop',
+  mixins: [tooltipContainer],
 
-    phoneDisplay: '.emulation_mode_button-display.emulation_mode_button-phone',
-    desktopDisplay: '.emulation_mode_button-display.emulation_mode_button-desktop'
+  ui: {
+    wrapper: '.emulation_mode_button-wrapper',
+    desktopIcon: '.emulation_mode_button-desktop_icon',
+    phoneIcon: '.emulation_mode_button-phone_icon'
   },
 
   events: {
-    'click .emulation_mode_button-desktop a': function() {
-      this.model.unset('emulation_mode');
-    },
-
-    'click .emulation_mode_button-phone a': function() {
+    'click': function() {
       if (this.model.get('emulation_mode_disabled')) {
         return;
       }
 
-      this.model.set('emulation_mode', 'phone');
+      if (this.model.has('emulation_mode')) {
+        this.model.unset('emulation_mode');
+      }
+      else {
+        this.model.set('emulation_mode', 'phone');
+      }
     }
   },
 
@@ -37,13 +39,13 @@ export const EmulationModeButtonView = Marionette.ItemView.extend({
   },
 
   update: function() {
-    this.ui.phoneItem.toggleClass('disabled',
-                                  !!this.model.get('emulation_mode_disabled'));
+    this.$el.toggleClass('disabled',
+                         !!this.model.get('emulation_mode_disabled'));
+    this.$el.toggleClass('active', this.model.has('emulation_mode'));
 
-    this.ui.phoneItem.toggleClass('active', this.model.has('emulation_mode'));
-    this.ui.desktopItem.toggleClass('active', !this.model.has('emulation_mode'));
-
-    this.ui.phoneDisplay.toggleClass('active', this.model.has('emulation_mode'));
-    this.ui.desktopDisplay.toggleClass('active', !this.model.has('emulation_mode'));
+    this.ui.wrapper.attr('data-tooltip',
+                         this.model.get('emulation_mode_disabled') ?
+                         'pageflow.editor.templates.emulation_mode_button.disabled_hint' :
+                         'pageflow.editor.templates.emulation_mode_button.tooltip')
   }
 });
