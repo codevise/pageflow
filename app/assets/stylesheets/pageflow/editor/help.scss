@@ -158,10 +158,10 @@
 }
 
 .editor .help_button {
-  @include background-icon-right($color: #a0c4e0, $font-size: 16px, $right: 5px, $top: 5px);
+  @include background-icon-right($color: #a0c4e0, $font-size: 16px, $right: 5px, $top: 7px);
   @include help-circled-icon;
 
-  padding: 5px 30px 0 5px;
+  padding: 7px 30px 0 5px;
   float: right;
   height: 20px;
   cursor: pointer;

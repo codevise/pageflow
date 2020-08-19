@@ -1,26 +1,7 @@
-<div class="emulation_mode_button-menu">
-  <div class="emulation_mode_button-menu_header">
-    <%= I18n.t('pageflow.editor.templates.emulation_mode_button.header') %>
-  </div>
-  <ul>
-    <li class="emulation_mode_button-menu_item emulation_mode_button-desktop">
-      <a class="emulation_mode_button-menu_link">
-        <%= I18n.t('pageflow.editor.templates.emulation_mode_button.desktop') %>
-      </a>
-    </li>
-    <li class="emulation_mode_button-menu_item emulation_mode_button-phone">
-      <a class="emulation_mode_button-menu_link">
-        <%= I18n.t('pageflow.editor.templates.emulation_mode_button.phone') %>
-        <div class="emulation_mode_button-disabled_hint">
-          <%= I18n.t('pageflow.editor.templates.emulation_mode_button.disabled_hint') %>
-        </div>
-      </a>
-    </li>
-  </ul>
-</div>
-<div class="emulation_mode_button-display emulation_mode_button-desktop">
-  <%= I18n.t('pageflow.editor.templates.emulation_mode_button.desktop') %>
-</div>
-<div class="emulation_mode_button-display emulation_mode_button-phone">
-  <%= I18n.t('pageflow.editor.templates.emulation_mode_button.phone') %>
+<div class="emulation_mode_button-wrapper"
+     data-tooltip-align="top center">
+  <div class="emulation_mode_button-desktop_icon"/>
+  <div class="emulation_mode_button-phone_icon"/>
+  <div class="emulation_mode_button-track" />
+  <div class="emulation_mode_button-thumb" />
 </div>

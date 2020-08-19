@@ -7,8 +7,8 @@ export const tooltipContainer = {
   events: {
     'mouseover [data-tooltip]': function(event) {
       if (!this.tooltip.visible) {
-        var target = $(event.target);
-        var key = target.data('tooltip');
+        var target = $(event.currentTarget);
+        var key = target.attr('data-tooltip');
         var position;
 
         if (target.data('tooltipAlign') === 'bottom left') {
@@ -21,6 +21,12 @@ export const tooltipContainer = {
           position = {
             left: target.position().left + target.outerWidth(),
             top: target.position().top + target.outerHeight()
+          };
+        }
+        else if (target.data('tooltipAlign') === 'top center') {
+          position = {
+            left: target.position().left + target.outerWidth() / 2,
+            top: target.position().top + 2
           };
         }
         else {
@@ -36,7 +42,7 @@ export const tooltipContainer = {
       }
     },
 
-    'mouseout [data-tooltip]': function() {
+    'mouseleave [data-tooltip]': function() {
       this.tooltip.hide();
     }
   },

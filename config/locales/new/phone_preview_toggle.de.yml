@@ -1,0 +1,9 @@
+de:
+  pageflow:
+    editor:
+      templates:
+        emulation_mode_button:
+          tooltip: Desktop/ Phone Vorschau
+          desktop: DELETED
+          header: DELETED
+          phone: DELETED
