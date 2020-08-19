@@ -491,16 +491,20 @@ de:
           fullHeight:
             label: Volle Viewport-Höhe
             inline_help: >
-              Aktivieren sie diese Einstellung, wenn der Abschnitt mindestens einen Viewport hoch sein
-              soll. Deaktivieren sie sie, um kurze Szenen zu ermöglichen, die vertikal nur von ihrem
-              Inhalt aufgespannt werden. Um einen Überblendungseffekt zwischen zwei Abschnitten
-              verwenden zu können, muss diese Option für beide Abschnitte aktiviert sein.
+              Aktiviere diese Einstellung, wenn der Hintergrund des Abschnitts (z.B. Bild, Farbfläche oder
+              Hintergrundvideo) so groß angezeigt werden soll, dass das gesamte Browserfenster (der sogenannte
+              Viewport) gefüllt ist. Wenn du mit kurzen Abschnitten arbeiten möchtest, musst du diese Option
+              deaktivieren. Dann nimmt der Abschnitt und sein Hintergrund vertikal nur so viel Platz ein, wie
+              für den Inhalt des Abschnitts unbedingt nötig ist. Es können dann mehrere Abschnitte mit
+              verschiedenen Hintergründen gleichzeitig auf dem Bildschirm des Nutzers sichtbar sein. Um einen
+              Überblendeffekt zwischen den Hintergründen zweier Abschnitte verwenden zu können, muss diese
+              Option für beide Abschnitte aktiviert sein.
           atmoAudioFileId:
             label: Atmo-Audio
             inline_help: >
               Wähle eine Audio-Datei, die im Hintergrund abgespielt werden soll. Wenn diese Atmo auch in nachfolgenden Abschnitten nahtlos weiterspielen soll, wähle für diese Abschnitte die selbe Atmo aus.
           invert:
-            label: Text invertieren
+            label: Textfarben invertieren
           layout:
             label: Vordergrund-Positionierung
             inline_help: >

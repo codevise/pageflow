@@ -1,0 +1,6 @@
+de:
+  pageflow:
+    ui:
+      inline_help:
+        pageflow/entry:
+          locale: "Sprache der Beschriftungen in Navigationsleisten und Steuerelementen des Beitrags."
