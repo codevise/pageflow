@@ -552,8 +552,6 @@ de:
         create_chapter: Klicke jetzt auf <em>Neues Kapitel</em>, um ein erstes Kapitel zu erstellen.
         create_section: Klicke dann auf <em>Neuer Abschnitt</em>, um dem Kapitel einen ersten Abschnitt hinzuzufügen.
         create_content_element: Über die <em>Plus-Buttons</em> in der Vorschau kannst Du Elemente hinzufügen.
-        edit_content_element: Klicke auf Elemente in der Vorschau, um ihre Einstellungen in der Seitenleiste zu bearbeiten.
-        edit_section: Klicke auf eine freie Fläche, um den Abschnitt zu markieren.
         header: Dies ist ein leerer Pageflow.
         intro: Pageflows bestehen aus Kapiteln und Abschnitten. In der Seitenleiste rechts findest Du die Gliederung.
         outro: Hier siehst Du dann die Vorschau deines Pageflows.
