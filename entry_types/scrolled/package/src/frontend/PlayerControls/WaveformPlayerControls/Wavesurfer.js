@@ -260,11 +260,13 @@ class Wavesurfer extends Component {
     if (selectorOrElt instanceof global.HTMLElement) {
       this._loadAudio(selectorOrElt, audioPeaks);
     } else {
-      if (!global.document.querySelector(selectorOrElt)) {
-        throw new Error('Media Element not found!');
+      // Ignore if media element cannot be found. There are edge cases
+      // where React already unmounted the corresponding media element,
+      // but the parent Waveform component still holds the old media
+      // element id.
+      if (global.document.querySelector(selectorOrElt)) {
+        this._loadAudio(global.document.querySelector(selectorOrElt), audioPeaks);
       }
-
-      this._loadAudio(global.document.querySelector(selectorOrElt), audioPeaks);
     }
   }
 
