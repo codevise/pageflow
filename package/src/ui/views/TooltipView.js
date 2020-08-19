@@ -31,11 +31,16 @@ export const TooltipView = Marionette.ItemView.extend({
 
       this.$el.toggleClass('align_bottom_right', options.align === 'bottom right');
       this.$el.toggleClass('align_bottom_left', options.align === 'bottom left');
+      this.$el.toggleClass('align_top_center', options.align === 'top center');
 
       if (options.align === 'bottom right' ||
           options.align === 'bottom left' ) {
 
         offsetTop = 10;
+        offsetLeft = 0;
+      }
+      else if (options.align === 'top center') {
+        offsetTop = -10;
         offsetLeft = 0;
       }
       else {
