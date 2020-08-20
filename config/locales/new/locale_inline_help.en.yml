@@ -1,0 +1,6 @@
+en:
+  pageflow:
+    ui:
+      inline_help:
+        pageflow/entry:
+          locale: "Language to use for labels in the entry's navigation bars and player controls."

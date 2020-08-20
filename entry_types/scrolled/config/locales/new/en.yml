@@ -398,16 +398,18 @@ en:
           fullHeight:
             label: Use Full Viewport-Height
             inline_help: >
-              Activate this option if the section should span at least one viewport height.
-              Deactivate this option to create a short section which height is determined by its
-              foreground content. This option needs to be activated for two adjacent sections
-              to be able to use a fade transition between them.
+              Activate this option if the background of this section (e.g. image, color or video) is supposed
+              to be enlarged such that the whole browser window (the so called viewport) is covered.
+              Deactivate this option to create a short section. The height of the section and its background
+              is then determined only by the content of the section.  Multiple sections with different
+              backgrounds can then be visible at once on the user's screen. This option needs to be activated
+              for two adjacent sections to be able to use a fade transition between them.
           atmoAudioFileId:
             label: Atmo Audio
             inline_help: >
               Choose an audio file, that shall be played in the background. If you want this audio to continue playing on following sections, just choose the same file again there.
           invert:
-            label: Invert Text
+            label: Invert Text Colors
           layout:
             label: Content alignment
             inline_help: >
