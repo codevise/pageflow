@@ -28,3 +28,16 @@
   composes: attention from './icons.module.css';
   color: errorIconColor;
 }
+
+.dragHandle {
+  composes: drag from './icons.module.css';
+  opacity: 0;
+  cursor: move;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 30px;
+  transition: opacity 0.1s ease;
+  transition-delay: 0.2s;
+}

@@ -1,4 +1,5 @@
-.icon::before {
+.icon::before,
+.icon::after {
   font-family: "entypo";
 }
 
@@ -6,6 +7,7 @@
 .attention,
 .cancel,
 .check,
+.drag,
 .plusCircled,
 .rightOpen,
 .trash {
@@ -26,6 +28,22 @@
 
 .check::before {
   content: "\2713";
+}
+
+.drag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 10px;
+}
+
+.drag::before {
+  content: "\e75f";
+}
+
+.drag::after {
+  content: "\e75c";
 }
 
 .plusCircled::before {
