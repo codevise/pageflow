@@ -209,7 +209,7 @@ en:
         default_locale: Default locale
         default_publisher: Default publisher
         default_share_providers: Default share links
-        entry_type: Story type
+        entry_type_name: Story type
         theme_name: Theme
       pageflow/folder:
         account: Account
@@ -360,7 +360,7 @@ en:
               must_be_available_for_account: "'%{type_name}' isn't available for this account"
         pageflow/entry_template:
           attributes:
-            entry_type:
+            entry_type_name:
               taken: already configured. A story template for the story type already exists in this account. Return to the story templates tab and edit the existing story template instead of creating a new one.
         pageflow/membership:
           attributes:
@@ -1242,10 +1242,8 @@ en:
           page_link:
             reset: Reset
         emulation_mode_button:
-          desktop: Desktop
           disabled_hint: Not supported by this page type
-          header: 'Preview mode:'
-          phone: Phone
+          tooltip: Desktop/ Phone Preview
         entry_preview:
           navigation_disabled_hint: Page changes not possible in phone preview.
         file_item:
@@ -1780,6 +1778,7 @@ en:
           author: The author's name.
           credits: Will be shown in the info box.
           keywords: Keywords as a suggestion for search engines.
+          locale: Language to use for labels in the entry's navigation bars and player controls.
           publisher: The publisher's name or company name.
           share_providers: Social media platforms to be listed in the "Share"-dialog of the entry
           share_url: URL to share via social media buttons. Leave blank to use URL of published story.

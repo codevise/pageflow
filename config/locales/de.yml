@@ -209,7 +209,7 @@ de:
         default_locale: Standard-Sprache
         default_publisher: Standard-Herausgeber
         default_share_providers: Standard-Share-Links
-        entry_type: Beitrags-Typ
+        entry_type_name: Beitrags-Typ
         theme_name: Theme
       pageflow/folder:
         account: Konto
@@ -360,7 +360,7 @@ de:
               must_be_available_for_account: "'%{type_name}' ist für dieses Konto nicht verfügbar"
         pageflow/entry_template:
           attributes:
-            entry_type:
+            entry_type_name:
               taken: bereits konfiguriert. Es existiert bereits eine Beitragsvorlage für den Beitrags-Typ in diesem Konto. Kehre zum Beitragsvorlagen-Tab zurück und bearbeite die existierende Beitragsvorlage anstatt eine neue anzulegen.
         pageflow/membership:
           attributes:
@@ -1240,10 +1240,8 @@ de:
           page_link:
             reset: Zurücksetzen
         emulation_mode_button:
-          desktop: Desktop
           disabled_hint: Von diesem Seitentyp nicht unterstützt
-          header: 'Vorschau Modus:'
-          phone: Phone
+          tooltip: Desktop/ Phone Vorschau
         entry_preview:
           navigation_disabled_hint: Seitenwechsel sind innerhalb der Phone Vorschau nicht möglich.
         file_item:
@@ -1805,6 +1803,7 @@ de:
           author: Name des Autors.
           credits: Text wird zusammen mit dem Impressumsverweis angezeigt.
           keywords: Schlüsselwörter als Vorschlag für Suchmaschinen.
+          locale: Sprache der Beschriftungen in Navigationsleisten und Steuerelementen des Beitrags.
           publisher: Name oder Firmenname des Herausgeber.
           share_providers: Social Media Plattformen, die unter dem Menüpunkt "Teilen" des Beitrags angezeigt werden sollen
           share_url: URL, die geteilt werden soll, wenn der Benutzer auf einen der Social Media Buttons klickt. Feld frei lassen, um URL des veröffentlichten Beitrags zu verwenden.
