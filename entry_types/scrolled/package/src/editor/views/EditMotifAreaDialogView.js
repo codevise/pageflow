@@ -33,6 +33,9 @@ export const EditMotifAreaDialogView = Marionette.ItemView.extend({
         </div>
 
         <div class="${dialogViewStyles.footer}">
+          <button class="${styles.helpLink}">
+            ${I18n.t('pageflow_scrolled.editor.edit_motif_area.help_link')}
+          </button>
           <button class="${styles.save}">
             ${I18n.t('pageflow_scrolled.editor.edit_motif_area.save')}
           </button>
@@ -49,6 +52,10 @@ export const EditMotifAreaDialogView = Marionette.ItemView.extend({
   ui: cssModulesUtils.ui(styles, 'image', 'thumbnail'),
 
   events: cssModulesUtils.events(styles, {
+    'click helpLink': function() {
+      app.trigger('toggle-help', 'pageflow_scrolled.help_entries.motif_area');
+    },
+
     'click reset': function() {
       this.motifArea = null;
       this.updateAreaSelect();

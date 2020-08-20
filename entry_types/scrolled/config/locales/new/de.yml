@@ -126,6 +126,43 @@ de:
           ## Transitionen
 
           TODO
+      motif_area:
+        menu_item: Motivbereiche
+        text: |
+          # Motivbereiche
+
+          Durch das Markieren des Motivbereich eines Bildes teilst Du
+          Pageflow mit, welcher Teil des Bildes der wichtigste
+          ist. Bei einem Portrait kann dies zum Beispiel das Gesicht
+          der abgebildeten Person sein.
+
+          Wird das Bild dann als Hintergrund eines Abschnitts
+          verwendet, versucht Pageflow sicherzustellen, dass der Leser
+          diesen Teil des Bildes möglichst ungestört betrachten kann.
+
+          1. Falls nicht das gesamte Bild dargestellt werden kann
+             (weil das Bild z.B. Querformat besitzt, der Beitrag aber
+             gerade auf einem Telefon in Portrait-Orientierung
+             angesehen wird), wird der Hintergrund so positioniert,
+             dass der Motivbereich zentriert wird.
+
+          2. Falls der Abschnitt Text oder andere Inhaltselemente
+             enthält, wird am Anfang des Abschnitts so viel Freiraum
+             eingefügt, dass der Motivbereich beim Erreichen des
+             Abschnitts initial nicht durch diese Elemente überdeckt
+             wird. Erst beim Weiterscrollen überlagert der Inhalt des
+             Abschnitts dann das Motiv.
+
+             Das Layout passt sich hierbei intelligent an: Ist der
+             Text des Abschnitts zum Beispiel links ausgerichtet, so
+             dass der Motivbereich des Hintergrundbilds vollständig
+             rechts neben dem Text dargestellt werden kann, so wird
+             kein zusätzlicher Abstand oberhalb des Texts eingefügt.
+
+          Der Motivbereich kann über den Menüpunkt "Bildmotiv
+          markieren" des "Hintergrund-Bild"-Feldes in den
+          Einstellungen eines Abschnitts bearbeiten werden.
+
       content_elements:
         menu_item: Inhaltselemente
         text: |
@@ -545,10 +582,11 @@ de:
         cancel: Abbrechen
       edit_motif_area:
         header: Bildmotiv
-        hint: Markieren Sie den Bereich des Bildes, der nicht durch Text oder andere Elemente überlagert werden darf.
+        hint: Ziehe ein Rechteck, um den wichtigsten Bereich des Bildes zu markieren.
+        help_link: Wo wird dies verwendet?
         save: Speichern
         cancel: Abbrechen
-        blank_slate: Kein Bereich markiert. Alle Teile des Bildes dürfen von Text überlagert werden.<br/> Mit der Maus ziehen, um einen Bereich zu markieren.
+        blank_slate: Kein Bereich markiert.
         reset: Zurücksetzen
       browser_not_supported:
         heading: Der Browser oder das Gerät, das du verwendest, wird nicht unterstützt

@@ -1,3 +1,5 @@
+@value linkColor, helpIconColor from './colors.module.css';
+
 .box {
   width: min-content;
   min-height: 310px;
@@ -7,6 +9,18 @@
 .wrapper {
   display: flex;
   justify-content: center;
+}
+
+.helpLink {
+  composes: unstyledButton from './buttons.module.css';
+  composes: helpCircled from './icons.module.css';
+  color: linkColor;
+  float: left;
+  padding: 7px 0;
+}
+
+.helpLink::before {
+  color: helpIconColor;
 }
 
 .thumbnail {

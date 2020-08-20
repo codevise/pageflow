@@ -10,6 +10,7 @@ Pageflow.configure do |c|
 
     config.help_entries.register('pageflow_scrolled.help_entries.outline', priority: 30)
     config.help_entries.register('pageflow_scrolled.help_entries.sections', priority: 20)
+    config.help_entries.register('pageflow_scrolled.help_entries.motif_area', priority: 15)
     config.help_entries.register('pageflow_scrolled.help_entries.content_elements', priority: 10)
   end
 end
