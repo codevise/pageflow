@@ -19,3 +19,7 @@ Register the theme in the Pageflow initializer:
     end
 
 Copy all options from the default theme and make the desired changes.
+
+Place the favicons next to logos in the theme. Please create favicons
+according to the devices for performance reasons and replace them with
+the default favicons.

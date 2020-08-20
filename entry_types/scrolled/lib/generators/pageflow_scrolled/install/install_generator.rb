@@ -24,6 +24,11 @@ module PageflowScrolled
         gsub_file('config/webpacker.yml',
                   'extract_css: false',
                   'extract_css: true')
+
+        inject_into_file('config/webpacker.yml',
+                         after: "- .woff2\n") do
+          "    - .webmanifest\n\n"
+        end
       end
 
       def editor_pack
