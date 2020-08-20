@@ -46,6 +46,43 @@ en:
           # Content Elements
 
           TODO
+      motif_area:
+        menu_item: Motif areas
+        text: |
+          # Motif areas
+
+          By specifying a motif area of an image, you can tell
+          Pageflow which part of the image is most important. For
+          example, for a portrait this could be the face of the
+          depicted person.
+
+          When the image is then used as the background of a section,
+          Pageflow tries to make sure the reader has an undisturbed view  can actually see this
+          part of the image.
+
+          1. If the image cannot be displayed uncropped (e.g. because
+             it has landscape format while the entry is being viewed
+             on a phone in portrait orientation), the background is
+             positioned in a way to center the motif area in the
+             available space.
+
+          2. If the section contains text or other content elements,
+             empty space is inserted at the beginning of the section
+             to make sure the motif area is not covered by other
+             content when first reaching the section. The content
+             starts intersecting with the motif area only when the
+             reader continues scrolling.
+
+             Layout responds intelligently in such cases: If, for
+             example, the text of the section is positioned on the
+             left such that the motif area of the image can be
+             displayed completely on the right, no additional space
+             will be inserted at the beginning of the section.
+
+          You can edit the motif area of a background image via the
+          "Select motif area" menu item of the "Background image"
+          field in the section settings.
+
     public:
       navigation:
         chapter: Chapter
@@ -451,10 +488,11 @@ en:
         cancel: Cancel
       edit_motif_area:
         header: Image Motif
-        hint: Select the part of the image that shall not be overlayed by text of other elements.
+        hint: Drag to select the most important part of the image.
+        help_link: What is this used for?
         save: Save
         cancel: Cancel
-        blank_slate: No area selected. All parts of the image may be overlayed by text. Drag with mouse to select an area.
+        blank_slate: No area selected.
         reset: Reset
       browser_not_supported:
         heading: The browser or device you are using is not supported

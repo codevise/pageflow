@@ -8,6 +8,7 @@
 .cancel,
 .check,
 .drag,
+.helpCircled,
 .plusCircled,
 .rightOpen,
 .trash {
@@ -44,6 +45,10 @@
 
 .drag::after {
   content: "\e75c";
+}
+
+.helpCircled::before {
+  content: "\e704";
 }
 
 .plusCircled::before {
