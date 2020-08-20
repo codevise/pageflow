@@ -336,9 +336,11 @@ en:
         header: Outline
         add_chapter: New chapter
       chapter_item:
+        drag_hint: Drag to move chapter
         add_section: New section
         save_error: There was an error while saving this chapter.
       section_item:
+        drag_hint: Drag to move section
         save_error: There was an error while saving this section.
       edit_chapter:
         tabs:

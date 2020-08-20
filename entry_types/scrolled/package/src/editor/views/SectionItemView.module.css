@@ -34,6 +34,21 @@
   cursor: pointer;
 }
 
+.dragHandle {
+  composes: dragHandle from './outline.module.css';
+  color: #fff;
+  text-shadow: 0 0 2px #000;
+}
+
+.invert .dragHandle {
+  color: #000;
+  text-shadow: 0 0 2px #fff;
+}
+
+.root:hover .dragHandle {
+  opacity: 1;
+}
+
 .creating .creatingIndicator     { display: block; }
 .destroying .destroyingIndicator { display: block; }
 .failed .failedIndicator         { display: block; }

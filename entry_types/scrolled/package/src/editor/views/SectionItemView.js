@@ -19,12 +19,15 @@ export const SectionItemView = Marionette.ItemView.extend({
   template: (data) => `
     <div class="${styles.thumbnailContainer}">
       <div class="${styles.thumbnail}"></div>
-      <div class="${styles.clickMask}"></div>
+      <div class="${styles.clickMask}">
+        <div class="${styles.dragHandle}"
+             title="${I18n.t('pageflow_scrolled.editor.section_item.drag_hint')}"></div>
+      </div>
     </div>
-       <span class="${styles.creatingIndicator}" />
-       <span class="${styles.destroyingIndicator}" />
-       <span class="${styles.failedIndicator}"
-             title="${I18n.t('pageflow_scrolled.editor.section_item.save_error')}" />
+    <span class="${styles.creatingIndicator}" />
+    <span class="${styles.destroyingIndicator}" />
+    <span class="${styles.failedIndicator}"
+          title="${I18n.t('pageflow_scrolled.editor.section_item.save_error')}" />
   `,
 
   ui: cssModulesUtils.ui(styles, 'thumbnail'),
@@ -60,6 +63,8 @@ export const SectionItemView = Marionette.ItemView.extend({
 
   onRender() {
     this.updateActive();
+    this.$el.toggleClass(styles.invert, !!this.model.configuration.get('invert'));
+
     this.timeout = setTimeout(() => {
       this.renderThumbnail();
     }, 100);

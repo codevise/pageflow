@@ -16,6 +16,8 @@ export const ChapterItemView = Marionette.Layout.extend({
 
   template: () => `
      <a class="${styles.link}" href="">
+       <span class="${styles.dragHandle}"
+             title="${I18n.t('pageflow_scrolled.editor.chapter_item.drag_hint')}"></span>
        <span class="${styles.number}"></span>
        <span class="${styles.title}"></span>
        <span class="${styles.creatingIndicator}" />

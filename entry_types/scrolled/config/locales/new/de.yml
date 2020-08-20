@@ -427,9 +427,11 @@ de:
         header: Gliederung
         add_chapter: Neues Kapitel
       chapter_item:
+        drag_hint: Ziehen, um das Kapitel zu verschieben
         add_section: Neuer Abschnitt
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
       section_item:
+        drag_hint: Ziehen, um den Abschnitt zu verschieben
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
       edit_chapter:
         tabs:

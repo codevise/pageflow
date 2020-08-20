@@ -23,6 +23,15 @@
   color: indicatorIconColor;
 }
 
+.dragHandle {
+  composes: dragHandle from './outline.module.css';
+  color: #444;
+}
+
+.link:hover .dragHandle {
+  opacity: 1;
+}
+
 .number {
   font-weight: bold;
 }
