@@ -29,7 +29,9 @@
 ##### Admin
 
 - Make entry templates editable
-  ([#1420](https://github.com/codevise/pageflow/pull/1420))
+  ([#1420](https://github.com/codevise/pageflow/pull/1420),
+   [#1558](https://github.com/codevise/pageflow/pull/1558),
+   [#1553](https://github.com/codevise/pageflow/pull/1553))
 - Bug fix: Repair user invite form for admin users
   ([#1399](https://github.com/codevise/pageflow/pull/1399))
 - Bug fix: Fix disabling home button input in account form based on theme
@@ -39,6 +41,8 @@
 
 - Default to empty link url in text area input view
   ([#1549](https://github.com/codevise/pageflow/pull/1549))
+- Turn emulation menu into toggle
+  ([#1563](https://github.com/codevise/pageflow/pull/1563))
 - Bug fix: Hide vertical scroll bar in editor sidebar
   ([#1479](https://github.com/codevise/pageflow/pull/1479))
 
@@ -60,9 +64,10 @@
 
 ##### Internal
 
-- Decouple frontend from jquery and backbone
+- Decouple shared frontend code from jQuery and Backbone
   ([#1396](https://github.com/codevise/pageflow/pull/1396),
-   [#1480](https://github.com/codevise/pageflow/pull/1480))
+   [#1480](https://github.com/codevise/pageflow/pull/1480),
+   [#1560](https://github.com/codevise/pageflow/pull/1560))
 - Update edge script
   ([#1402](https://github.com/codevise/pageflow/pull/1402))
 - Fix dummy app generation with Thor 1.0
@@ -111,6 +116,15 @@
 - Atmo for scrolled entries
   ([#1500](https://github.com/codevise/pageflow/pull/1500),
    [#1531](https://github.com/codevise/pageflow/pull/1531))
+- Structured data for scrolled entries
+  ([#1555](https://github.com/codevise/pageflow/pull/1555))
+- Waveform Player Controls
+  ([#1541](https://github.com/codevise/pageflow/pull/1541),
+   [#1564](https://github.com/codevise/pageflow/pull/1564))
+- Hide mobile sharing icons on desktop
+  ([#1559](https://github.com/codevise/pageflow/pull/1559))
+- Let first chapter begin at the very top
+  ([#1568](https://github.com/codevise/pageflow/pull/1568))
 - Only show focus outline after keyboard input
   ([#1503](https://github.com/codevise/pageflow/pull/1503),
    [#1508](https://github.com/codevise/pageflow/pull/1508))
@@ -142,8 +156,12 @@
   ([#1391](https://github.com/codevise/pageflow/pull/1391))
 - Install polyfills to make scrolled frontend work in IE 11
   ([#1389](https://github.com/codevise/pageflow/pull/1389))
+- Bug fix: Prevent empty space below entry
+  ([#1561](https://github.com/codevise/pageflow/pull/1561))
 - Bug fix: Prevent display of horizontal scroll bar
   ([#1464](https://github.com/codevise/pageflow/pull/1464))
+- Bug fix: Deal with duplicated rules in extracted CSS
+  ([#1562](https://github.com/codevise/pageflow/pull/1562))
 
 ##### Content Elements
 
@@ -210,7 +228,8 @@
 ##### Editor
 
 - Add blank slate for scrolled entries
-  ([#1550](https://github.com/codevise/pageflow/pull/1550))
+  ([#1550](https://github.com/codevise/pageflow/pull/1550),
+   [#1565](https://github.com/codevise/pageflow/pull/1565))
 - Add phone emulation mode to scrolled editor
   ([#1340](https://github.com/codevise/pageflow/pull/1340))
 - Preview thumbnails for section transitions
@@ -257,11 +276,16 @@
 - Allow editing motif areas in scrolled editor
   ([#1430](https://github.com/codevise/pageflow/pull/1430),
    [#1463](https://github.com/codevise/pageflow/pull/1463),
-   [#1544](https://github.com/codevise/pageflow/pull/1544))
+   [#1544](https://github.com/codevise/pageflow/pull/1544),
+   [#1570](https://github.com/codevise/pageflow/pull/1570))
 - Handle available section transitions
   ([#1428](https://github.com/codevise/pageflow/pull/1428))
 - Inline editing for section and transtions
   ([#1427](https://github.com/codevise/pageflow/pull/1427))
+- Drag handles for chapter and section outline items
+  ([#1567](https://github.com/codevise/pageflow/pull/1567))
+- Improve editor inline help and labels
+  ([#1566](https://github.com/codevise/pageflow/pull/1566))
 
 ##### Engine Config
 
