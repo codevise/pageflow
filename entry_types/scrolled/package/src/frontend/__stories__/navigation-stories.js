@@ -50,7 +50,7 @@ stories.add(
       <Entry />
     </RootProviders>,
   {
-    percy: {skip: true}
+    percy: {skip: false}
   }
 );
 
