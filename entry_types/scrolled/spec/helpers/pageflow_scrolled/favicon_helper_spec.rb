@@ -7,7 +7,7 @@ module PageflowScrolled
     let(:published_entry) { Pageflow::PublishedEntry.new(entry) }
 
     def html
-      helper.favicons_for_entry(published_entry.theme)
+      helper.scrolled_favicons_for_entry(published_entry.theme)
     end
 
     describe 'types' do
