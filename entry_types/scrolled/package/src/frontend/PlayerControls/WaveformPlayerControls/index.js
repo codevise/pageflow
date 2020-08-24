@@ -14,33 +14,40 @@ export function WaveformPlayerControls(props) {
   const darkBackground = useDarkBackground();
 
   return (
-      <div onFocus={props.onFocus}
-           onBlur={props.onBlur}
-           onMouseEnter={props.onMouseEnter}
-           onMouseLeave={props.onMouseLeave}
-           data-testid="waveform-controls" 
-           className={classNames(styles.container,
-                                 darkBackground ? controlBarStyles.darkBackground : controlBarStyles.lightBackground)} >
-        <div className={styles.playControl}>
-          <PlayPauseButton isPlaying={props.isPlaying}
-                           play={props.play}
-                           pause={props.pause} />
+      <div>
+        <div onFocus={props.onFocus}
+             onBlur={props.onBlur}
+             onMouseEnter={props.onMouseEnter}
+             onMouseLeave={props.onMouseLeave}
+             data-testid="waveform-controls" 
+             className={classNames(styles.container, { [styles.posterContainer]: props.configuration.posterId} )} >
+           <Waveform isPlaying={props.isPlaying}
+                     inverted={!darkBackground}
+                     waveformColor={props.waveformColor}
+                     mainColor={'#e10028'}
+                     play={props.play}
+                     pause={props.pause}
+                     mediaElementId={props.mediaElementId} />
+
+           <div className={classNames(controlBarStyles.controlBarContainer,
+                                   darkBackground ? controlBarStyles.darkBackground : controlBarStyles.lightBackground)}>
+           <div className={styles.playControl}>
+               <PlayPauseButton  isPlaying={props.isPlaying}
+                                 play={props.play}
+                                 pause={props.pause} />
+             </div>
+             <div className={styles.timeDisplay}>
+               <TimeDisplay currentTime={props.currentTime}
+                            duration={props.duration} />
+             </div>
+            <div className={styles.menus}>
+              <TextTracksMenu items={props.textTracksMenuItems}
+                              onItemClick={props.onTextTracksMenuItemClick} />
+            </div>
+          </div>
         </div>
-        <Waveform isPlaying={props.isPlaying}
-                  inverted={!darkBackground}
-                  waveformColor={props.waveformColor}
-                  mainColor={'#e10028'}
-                  play={props.play}
-                  pause={props.pause}
-                  mediaElementId={props.mediaElementId} />
-        <div className={styles.timeDisplay}>
-          <TimeDisplay currentTime={props.currentTime}
-                    duration={props.duration} />
-        </div>
-        <div className={styles.menus}>
-          <TextTracksMenu items={props.textTracksMenuItems}
-                          onItemClick={props.onTextTracksMenuItemClick} />
-        </div>
+        <div className={classNames({ [styles.posterPlaceholder]: props.configuration.posterId})} ></div>
       </div>
+
   );
 }

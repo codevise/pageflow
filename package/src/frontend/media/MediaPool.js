@@ -54,6 +54,10 @@ export class MediaPool {
       }
       player.updateHooks(hooks || {});
       player.updateMediaEventsContext(mediaEventsContextData);
+
+      if (poster) {
+        player.el().querySelector('.vjs-text-track-display').className += ' vjs-text-track-with-poster'
+      }
       
       this.allocatedPlayers[playerType].push(player);
       player.playerId = playerId || this.allocatedPlayers[playerType].length

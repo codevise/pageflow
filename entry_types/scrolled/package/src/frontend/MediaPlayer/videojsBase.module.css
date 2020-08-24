@@ -139,7 +139,11 @@
   left: 0;
   right: 0;
   top: 0;
-  pointer-events: none; }
+  pointer-events: none;}
+
+:global .vjs-text-track-with-poster {
+  z-index:3
+}
 
 :global .video-js .vjs-text-track {
   font-size: 17px;
