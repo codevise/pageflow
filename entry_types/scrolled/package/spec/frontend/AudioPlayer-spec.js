@@ -136,4 +136,45 @@ describe('AudioPlayer', () => {
       })
     );
   });
+
+  it('renders alt text', () => {
+    function getAudioFileSeedWithConfiguration({
+      id = 1,
+      permaId = 100,
+      basename = 'audio'
+    } = {}) {
+      return {
+        fileUrlTemplates: {
+          audioFiles: {
+            mp3: ':id_partition/:basename.mp3',
+            m4a: ':id_partition/:basename.m4a',
+            ogg: ':id_partition/:basename.ogg'
+          }
+        },
+        audioFiles: [
+          {id, permaId, isReady: true, basename, configuration: {alt: 'jingle'}}
+        ]
+      };
+    }
+
+    const result =
+      renderInEntry(<AudioPlayer {...requiredProps()} id={100} />, {
+        seed: getAudioFileSeedWithConfiguration({
+          permaId: 100
+        })
+      });
+
+    expect(result.container.querySelector('audio')).toHaveAttribute('alt', 'jingle');
+  });
+
+  it('renders empty alt attr', () => {
+    const result =
+      renderInEntry(<AudioPlayer {...requiredProps()} id={100} />, {
+        seed: getAudioFileSeed({
+          permaId: 100
+        })
+      });
+
+    expect(result.container.querySelector('audio')).toHaveAttribute('alt', ' ');
+  });
 });

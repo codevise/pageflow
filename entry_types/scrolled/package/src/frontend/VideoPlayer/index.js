@@ -43,6 +43,7 @@ export function VideoPlayer(props) {
                        sources={sources(videoFile, activeQuality)}
                        textTracksInset={props.position === 'full'}
                        posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
+                       altText={videoFile.configuration.alt ? videoFile.configuration.alt : ' '}
                        {...props} />
           <VideoStructuredData file={videoFile} />
         </>

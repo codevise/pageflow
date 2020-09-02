@@ -35,6 +35,7 @@ function renderImageTag(props, image) {
   return (
     <img className={classNames(styles.root)}
          src={image.urls[props.variant]}
+         alt={image.configuration.alt ? image.configuration.alt : ' '}
          style={{
            objectPosition: `${focusX}% ${focusY}%`
          }} />
