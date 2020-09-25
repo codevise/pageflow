@@ -158,6 +158,12 @@ Run the following command in the root directory of your host application
 $ bundle exec rake pageflow_scrolled:storybook:seed:setup[./seed.json]
 ```
 
+Note that brackets need to be escaped in `zsh`, so that the latter becomes
+
+```bash
+$ bundle exec rake pageflow_scrolled:storybook:seed:setup\[./seed.json\]
+```
+
 Then move the generated `seed.json` file into the
 `entry_types/scrolled/package/.storybook/` directory of your
 development checkout of the `pageflow` project.
