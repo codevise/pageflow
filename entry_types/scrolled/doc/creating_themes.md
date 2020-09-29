@@ -14,8 +14,15 @@ Register the theme in the Pageflow initializer:
         # ...
 
         entry_type_config.themes.register(:my_custom_theme,
-                                          logo_alt_text: '...')
+                                          logo_alt_text: '...',
+                                          theme_color: '#..')
       end
     end
 
 Copy all options from the default theme and make the desired changes.
+
+Place the favicons next to logos in the theme. Please create favicons
+according to the devices for performance reasons and replace them with
+the default favicons. 
+This [tool](https://realfavicongenerator.net/) is an example which creates favicons
+for all the latest devices.
