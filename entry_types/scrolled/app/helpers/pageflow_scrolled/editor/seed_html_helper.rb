@@ -6,6 +6,7 @@ module PageflowScrolled
       include ReactServerSideRenderingHelper
       include Pageflow::WidgetsHelper
       include Pageflow::StructuredDataHelper
+      include FaviconHelper
 
       def scrolled_editor_iframe_seed_html_script_tag(entry)
         html = render(template: 'pageflow_scrolled/entries/show',
