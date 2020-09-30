@@ -26,6 +26,7 @@
 .thumbnail {
   position: relative;
   display: inline-block;
+  overflow: hidden;
 }
 
 .image {
