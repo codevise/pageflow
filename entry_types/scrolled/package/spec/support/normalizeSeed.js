@@ -82,6 +82,8 @@ export function normalizeSeed({
       }),
       videoFiles: normalizeCollection(videoFiles, {
         isReady: true,
+        width: 1920,
+        height: 1279,
         configuration: {}
       }),
       audioFiles: normalizeCollection(audioFiles, {

@@ -157,6 +157,7 @@ function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) {
   }, [playerActions])
 
   return (
+    <>
       <VideoPlayer isPrepared={isPrepared}
                    playerState={playerState}
                    playerActions={playerActions}
@@ -165,5 +166,11 @@ function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) {
                    fit="cover"
                    loop={true}
                    playsInline={true} />
+      <MotifArea key={video.permaId}
+                 onUpdate={onMotifAreaUpdate}
+                 file={video}
+                 containerWidth={containerDimension.width}
+                 containerHeight={containerDimension.height}/>
+    </>
   );
 }
