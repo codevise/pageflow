@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import classNames from 'classnames';
 import styles from './ExternalLink.module.css';
-import {Image, useI18n, useContentElementEditorState} from 'pageflow-scrolled/frontend';
+import {Image, useFile, useI18n, useContentElementEditorState} from 'pageflow-scrolled/frontend';
 
 export function ExternalLink(props) {
   const [hideTooltip, setHideTooltip] = useState(true);
   var {layout} = props.sectionProps;
   const {t} = useI18n({locale: 'ui'});
   const {isEditable, isSelected} = useContentElementEditorState();
+  const thumbnailImageFile = useFile({collectionName: 'imageFiles', permaId: props.thumbnail});
 
   const onClick = function (event) {
     if (isEditable) {
@@ -53,7 +54,7 @@ export function ExternalLink(props) {
        onMouseLeave={onMouseLeave}
        target={props.open_in_new_tab ? '_blank' : '_self'}>
       <div className={styles.link_thumbnail}>
-        <Image id={props.thumbnail}
+        <Image imageFile={thumbnailImageFile}
                isPrepared={props.isPrepared}
                variant="linkThumbnailLarge" />
       </div>

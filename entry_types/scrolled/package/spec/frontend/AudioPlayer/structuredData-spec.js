@@ -6,6 +6,7 @@ import {useFakeMedia} from 'support/fakeMedia';
 import * as jsonLdQueries from 'support/jsonLdQueries';
 
 import {AudioPlayer} from 'frontend/AudioPlayer';
+import {useFile} from 'entryState';
 
 describe('AudioPlayer structured data', () => {
   useFakeMedia();
@@ -18,8 +19,10 @@ describe('AudioPlayer structured data', () => {
   }
 
   it('is rendered by default', () => {
-    const {getJsonLd} =
-      renderInEntry(<AudioPlayer {...requiredProps()} id={100} />, {
+    const {getJsonLd} = renderInEntry(
+      () => <AudioPlayer {...requiredProps()}
+                         audioFile={useFile({collectionName: 'audioFiles', permaId: 100})} />,
+      {
         seed: {
           fileUrlTemplates: {
             audioFiles: {

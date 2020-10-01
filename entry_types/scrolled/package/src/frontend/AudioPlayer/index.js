@@ -14,14 +14,13 @@ import styles from '../AudioPlayer.module.css';
  * Render audio file in MediaPlayer.
  *
  * @param {Object} props
- * @param {number} props.id - Perma id of the audio file.
+ * @param {Object} props.audioFile - Audio file obtained via `useFile`.
  * @param {number} [props.posterId] - Perma id of the poster image file.
  * @param {number} [props.defaultTextTrackFileId] - Perma id of default text track file.
  * @param {String} [props.position] - Position of parent content element.
  * @param {boolean} [props.isPrepared] - Control lazy loading.
  */
-export function AudioPlayer(props) {
-  const audioFile = useFile({collectionName: 'audioFiles', permaId: props.id});
+export function AudioPlayer({audioFile, ...props}) {
   const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
   const textTracks = useTextTracks({
     file: audioFile,
@@ -38,7 +37,7 @@ export function AudioPlayer(props) {
           <MediaPlayer className={styles.audioPlayer}
                        type={'audio'}
                        textTracks={textTracks}
-                       filePermaId={props.id}
+                       filePermaId={audioFile.permaId}
                        sources={processSources(audioFile)}
                        textTracksInset={props.position === 'full'}
                        posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}

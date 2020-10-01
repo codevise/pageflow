@@ -5,11 +5,12 @@ import {renderInEntry} from 'support';
 import * as jsonLdQueries from 'support/jsonLdQueries';
 
 import {Image} from 'frontend/Image';
+import {useFile} from 'entryState';
 
 describe('Image', () => {
   it('renders nothing by default', () => {
     const {queryByRole} =
-      renderInEntry(<Image id={100} />, {
+      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
         seed: {}
       });
 
@@ -18,7 +19,7 @@ describe('Image', () => {
 
   it('uses large variant of image given by id', () => {
     const {getByRole} =
-      renderInEntry(<Image id={100} />, {
+      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
         seed: {
           imageFileUrlTemplates: {
             large: ':id_partition/image.jpg'
@@ -33,8 +34,10 @@ describe('Image', () => {
   });
 
   it('supports custom variant of image given by id as background', () => {
-    const {getByRole} =
-      renderInEntry(<Image id={100} variant="medium" />, {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   variant="medium" />,
+      {
         seed: {
           imageFileUrlTemplates: {
             medium: ':id_partition/medium/image.jpg',
@@ -44,27 +47,31 @@ describe('Image', () => {
             {id: 1, permaId: 100}
           ]
         }
-      });
+      }
+    );
 
     expect(getByRole('img')).toHaveAttribute('src', '000/000/001/medium/image.jpg');
   });
 
   it('does not render image if isPrepared is false', () => {
-    const {queryByRole} =
-      renderInEntry(<Image id={100} isPrepared={false} />, {
+    const {queryByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   isPrepared={false} />,
+      {
         seed: {
           imageFiles: [
             {id: 1, permaId: 100}
           ]
         }
-      });
+      }
+    );
 
     expect(queryByRole('img')).toBeNull();
   });
 
   it('does not render image if image is not ready', () => {
     const {queryByRole} =
-      renderInEntry(<Image id={100} />, {
+      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
         seed: {
           imageFiles: [
             {id: 1, permaId: 100, isReady: false}
@@ -77,7 +84,7 @@ describe('Image', () => {
 
   it('uses centered object position by default', () => {
     const {getByRole} =
-      renderInEntry(<Image id={100} />, {
+      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
         seed: {
           imageFiles: [
             {permaId: 100}
@@ -90,7 +97,7 @@ describe('Image', () => {
 
   it('uses focus from image configuration for object position', () => {
     const {getByRole} =
-      renderInEntry(<Image id={100} />, {
+      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
         seed: {
           imageFiles: [
             {permaId: 100, configuration: {focusX: 20, focusY: 60}}
@@ -103,7 +110,7 @@ describe('Image', () => {
 
   it('does not render structured data by default', () => {
     const {queryJsonLd} =
-      renderInEntry(<Image id={100} />, {
+      renderInEntry(() => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />, {
         seed: {
           imageFiles: [
             {permaId: 100}
@@ -116,8 +123,10 @@ describe('Image', () => {
   });
 
   it('supports rendering structured data', () => {
-    const {getJsonLd} =
-      renderInEntry(<Image id={100} structuredData={true} />, {
+    const {getJsonLd} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   structuredData={true} />,
+      {
         seed: {
           imageFileUrlTemplates: {
             large: '//cdn/images/:id_partition/large.jpg'
@@ -139,7 +148,8 @@ describe('Image', () => {
           ]
         },
         queries: jsonLdQueries
-      });
+      }
+    );
 
     expect(getJsonLd()).toMatchObject({'@context': 'http://schema.org',
                                        '@type': 'ImageObject',

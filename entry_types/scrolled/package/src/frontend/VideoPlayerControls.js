@@ -2,18 +2,17 @@ import React from 'react';
 
 import {MediaPlayerControls} from './MediaPlayerControls';
 import {useVideoQualitySetting} from './useVideoQualitySetting';
-import {useFile, useAvailableQualities} from '../entryState';
+import {useAvailableQualities} from '../entryState';
 import {useI18n} from './i18n';
 
-export function VideoPlayerControls(props) {
+export function VideoPlayerControls({videoFile, ...props}) {
   const [activeQuality, setActiveQuality] = useVideoQualitySetting();
-  const file = useFile({collectionName: 'videoFiles', permaId: props.videoFilePermaId})
-  const availableQualities = useAvailableQualities(file);
+  const availableQualities = useAvailableQualities(videoFile);
   const {t} = useI18n();
 
   return (
     <MediaPlayerControls {...props}
-                         file={file}
+                         file={videoFile}
                          qualityMenuItems={getQualityMenuItems(availableQualities, activeQuality, t)}
                          onQualityMenuItemClick={setActiveQuality}/>
   );

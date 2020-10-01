@@ -111,7 +111,7 @@ function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
 
   return (
     <>
-      <Image id={image?.permaId} isPrepared={isPrepared} structuredData={true}/>
+      <Image imageFile={image} isPrepared={isPrepared} structuredData={true}/>
       <MotifArea key={image?.permaId}
                  onUpdate={onMotifAreaUpdate}
                  file={image}
@@ -161,7 +161,7 @@ function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) {
       <VideoPlayer isPrepared={isPrepared}
                    playerState={playerState}
                    playerActions={playerActions}
-                   id={video.permaId}
+                   videoFile={video}
                    textTracksDisabled={true}
                    fit="cover"
                    loop={true}

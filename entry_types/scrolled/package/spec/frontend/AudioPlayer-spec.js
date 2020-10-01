@@ -5,6 +5,7 @@ import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 
 import {renderInEntry} from "../support";
 import {AudioPlayer} from 'frontend/AudioPlayer';
+import {useFile} from 'entryState';
 import {media} from 'pageflow/frontend';
 
 describe('AudioPlayer', () => {
@@ -39,21 +40,24 @@ describe('AudioPlayer', () => {
   }
 
   it('renders audio tag if file is present', () => {
-    const result =
-      renderInEntry(<AudioPlayer {...requiredProps()} id={100} />, {
+    const result = renderInEntry(
+      () => <AudioPlayer {...requiredProps()}
+                         audioFile={useFile({collectionName: 'audioFiles', permaId: 100})} />,
+      {
         seed: getAudioFileSeed({
           permaId: 100
         })
-      });
+      }
+    );
 
     expect(result.container.querySelector('audio')).toBeDefined();
   });
 
   it('does not render audio element when isPrepared is false', () => {
     const result =
-      renderInEntry(<AudioPlayer {...requiredProps()}
-                                 id={100}
-                                 isPrepared={false} />,
+      renderInEntry(() => <AudioPlayer {...requiredProps()}
+                                       audioFile={useFile({collectionName: 'audioFiles', permaId: 100})}
+                                       isPrepared={false} />,
                     {seed: getAudioFileSeed()});
 
     expect(result.container.querySelector('audio')).toBeNull();
@@ -62,13 +66,17 @@ describe('AudioPlayer', () => {
   it('passes correct mp3, m4a and ogg sources to media API', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer')
 
-    renderInEntry(<AudioPlayer {...requiredProps()} id={100} />, {
-      seed: getAudioFileSeed({
-        id: 1,
-        permaId: 100,
-        basename: 'audio'
-      })
-    });
+    renderInEntry(
+      () => <AudioPlayer {...requiredProps()}
+                         audioFile={useFile({collectionName: 'audioFiles', permaId: 100})} />,
+      {
+        seed: getAudioFileSeed({
+          id: 1,
+          permaId: 100,
+          basename: 'audio'
+        })
+      }
+    );
 
     expect(spyMedia).toHaveBeenCalledWith(
       [
@@ -83,13 +91,17 @@ describe('AudioPlayer', () => {
   it('passes file perma id to media api', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer');
 
-    renderInEntry(<AudioPlayer {...requiredProps()} id={100} />, {
-      seed: getAudioFileSeed({
-        id: 1,
-        permaId: 100,
-        basename: 'audio'
-      })
-    });
+    renderInEntry(
+      () => <AudioPlayer {...requiredProps()}
+                         audioFile={useFile({collectionName: 'audioFiles', permaId: 100})} />,
+      {
+        seed: getAudioFileSeed({
+          id: 1,
+          permaId: 100,
+          basename: 'audio'
+        })
+      }
+    );
 
     expect(spyMedia).toHaveBeenCalledWith(
       expect.anything(),
@@ -108,26 +120,31 @@ describe('AudioPlayer', () => {
   it('requests media player with given poster', () => {
     const spyMedia = jest.spyOn(media, 'getPlayer')
 
-    renderInEntry(<AudioPlayer {...requiredProps()} id={100} posterId={200} />, {
-      seed: {
-        fileUrlTemplates: {
-          audioFiles: {
-            mp3: ':id_partition/audio.mp3',
-            m4a: ':id_partition/audio.m4a',
-            ogg: ':id_partition/audio.ogg'
+    renderInEntry(
+      () => <AudioPlayer {...requiredProps()}
+                         audioFile={useFile({collectionName: 'audioFiles', permaId: 100})}
+                         posterId={200} />,
+      {
+        seed: {
+          fileUrlTemplates: {
+            audioFiles: {
+              mp3: ':id_partition/audio.mp3',
+              m4a: ':id_partition/audio.m4a',
+              ogg: ':id_partition/audio.ogg'
+            },
+            imageFiles: {
+              large: ':id_partition/large.jpg'
+            }
           },
-          imageFiles: {
-            large: ':id_partition/large.jpg'
-          }
-        },
-        audioFiles: [
-          {id: 1, permaId: 100, isReady: true}
-        ],
-        imageFiles: [
-          {id: 2, permaId: 200, isReady: true}
-        ]
+          audioFiles: [
+            {id: 1, permaId: 100, isReady: true}
+          ],
+          imageFiles: [
+            {id: 2, permaId: 200, isReady: true}
+          ]
+        }
       }
-    });
+    );
 
     expect(spyMedia).toHaveBeenCalledWith(
       expect.anything(),
