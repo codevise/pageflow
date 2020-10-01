@@ -3,24 +3,21 @@ import classNames from 'classnames';
 import styles from './Image.module.css';
 
 import {ImageStructuredData} from './ImageStructuredData';
-import {useFile} from '../entryState';
 
 /**
  * Render an image file.
  *
  * @param {Object} props
- * @param {number} props.id - Perma id of the image file.
- * @param {number} [props.variant] - Paperclip style to use. Defaults to large.
+ * @param {Object} props.imageFile - Image file obtained via `useFile`.
+ * @param {string} [props.variant] - Paperclip style to use. Defaults to large.
  * @param {boolean} [props.structuredData] - Whether to render a JSON+LD script tag.
  */
-export function Image(props) {
-  const image = useFile({collectionName: 'imageFiles', permaId: props.id});
-
-  if (image && image.isReady && props.isPrepared) {
+export function Image({imageFile, ...props}) {
+  if (imageFile && imageFile.isReady && props.isPrepared) {
     return (
       <>
-        {renderImageTag(props, image)}
-        {renderStructuredData(props, image)}
+        {renderImageTag(props, imageFile)}
+        {renderStructuredData(props, imageFile)}
       </>
     );
   }
@@ -28,14 +25,14 @@ export function Image(props) {
   return null;
 }
 
-function renderImageTag(props, image) {
-  const focusX = typeof image.configuration.focusX === 'undefined' ? 50 : image.configuration.focusX;
-  const focusY = typeof image.configuration.focusY === 'undefined' ? 50 : image.configuration.focusY;
+function renderImageTag(props, imageFile) {
+  const focusX = typeof imageFile.configuration.focusX === 'undefined' ? 50 : imageFile.configuration.focusX;
+  const focusY = typeof imageFile.configuration.focusY === 'undefined' ? 50 : imageFile.configuration.focusY;
 
   return (
     <img className={classNames(styles.root)}
-         src={image.urls[props.variant]}
-         alt={image.configuration.alt? image.configuration.alt : ''}
+         src={imageFile.urls[props.variant]}
+         alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''}
          style={{
            objectPosition: `${focusX}% ${focusY}%`
          }} />
