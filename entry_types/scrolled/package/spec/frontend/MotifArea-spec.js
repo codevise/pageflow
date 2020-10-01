@@ -3,15 +3,16 @@ import '@testing-library/jest-dom/extend-expect'
 
 import {renderInEntry} from 'support';
 
+import {useFile} from 'entryState';
 import {MotifArea} from 'frontend/MotifArea';
 
 describe('MotifArea', () => {
   it('positions element over image file motif area', () => {
     const {container} =
       renderInEntry(
-        <MotifArea imageId={100}
-                   containerWidth={2000}
-                   containerHeight={1000}/>,
+        () => <MotifArea file={useFile({collectionName: 'imageFiles', permaId: 100})}
+                         containerWidth={2000}
+                         containerHeight={1000}/>,
         {
           seed: {
             imageFiles: [
@@ -42,7 +43,7 @@ describe('MotifArea', () => {
   it('renders nothing when image is not set', () => {
     const {container} =
       renderInEntry(
-        <MotifArea imageId={null}
+        <MotifArea file={null}
                    containerWidth={2000}
                    containerHeight={1000}/>
       );
@@ -53,9 +54,9 @@ describe('MotifArea', () => {
   it('renders nothing when image is not ready', () => {
     const {container} =
       renderInEntry(
-        <MotifArea imageId={100}
-                   containerWidth={2000}
-                   containerHeight={1000 }/>,
+        () => <MotifArea file={useFile({collectionName: 'imageFiles', permaId: 100})}
+                         containerWidth={2000}
+                         containerHeight={1000 }/>,
         {
           seed: {
             imageFiles: [
@@ -74,9 +75,9 @@ describe('MotifArea', () => {
   it('renders zero size element when image does not have motif area', () => {
     const {container} =
       renderInEntry(
-        <MotifArea imageId={100}
-                   containerWidth={2000}
-                   containerHeight={1000}/>,
+        () => <MotifArea file={useFile({collectionName: 'imageFiles', permaId: 100})}
+                         containerWidth={2000}
+                         containerHeight={1000}/>,
         {
           seed: {
             imageFiles: [
@@ -128,17 +129,17 @@ describe('MotifArea', () => {
       ]
     };
 
-    const requiredProps = {
-      imageId: 100,
+    const useRequiredProps = () => ({
+      file: useFile({collectionName: 'imageFiles', permaId: 100}),
       containerWidth: 2000,
       containerHeight: 1000
-    };
+    });
 
     it('is called with element on render', () => {
       const callback = jest.fn();
       const {container} =
         renderInEntry(
-          <MotifArea {...requiredProps} onUpdate={callback} />,
+          () => <MotifArea {...useRequiredProps()} onUpdate={callback} />,
           {seed}
         );
 
@@ -149,13 +150,12 @@ describe('MotifArea', () => {
       const callback = jest.fn();
       const {rerender} =
         renderInEntry(
-          <MotifArea {...requiredProps} onUpdate={callback} />,
+          () => <MotifArea {...useRequiredProps()} onUpdate={callback} />,
           {seed}
         );
 
       rerender(
-        <MotifArea {...requiredProps} onUpdate={callback} />,
-        {seed}
+        () => <MotifArea {...useRequiredProps()} onUpdate={callback} />
       );
 
       expect(callback).toHaveBeenCalledTimes(1);
@@ -165,14 +165,17 @@ describe('MotifArea', () => {
       const callback = jest.fn();
       const {container, rerender} =
         renderInEntry(
-          <MotifArea {...requiredProps} imageId={100} onUpdate={callback} />,
+          () => <MotifArea {...useRequiredProps()}
+                           file={useFile({collectionName: 'imageFiles', permaId: 100})}
+                           onUpdate={callback} />,
           {seed}
         );
 
       callback.mockReset();
       rerender(
-        <MotifArea {...requiredProps} imageId={101} onUpdate={callback} />,
-        {seed}
+        () => <MotifArea {...useRequiredProps()}
+                         file={useFile({collectionName: 'imageFiles', permaId: 101})}
+                         onUpdate={callback} />
       );
 
       expect(callback).toHaveBeenCalledWith(container.firstChild);
@@ -181,7 +184,7 @@ describe('MotifArea', () => {
     it('is not called when image is not set', () => {
       const callback = jest.fn();
       renderInEntry(
-        <MotifArea {...requiredProps} imageId={null} onUpdate={callback} />,
+        () => <MotifArea {...useRequiredProps()} file={null} onUpdate={callback} />,
         {seed}
       );
 
