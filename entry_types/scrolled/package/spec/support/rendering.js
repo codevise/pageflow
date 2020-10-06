@@ -18,7 +18,23 @@ import {normalizeSeed} from './normalizeSeed';
  * The `setup` option can be used to simulate rendering the component
  * in the editor where data is synchronized from Backbone models.
  *
- * @param {React.Component} ui - React component
+ * To be able to render components that expect the result of certain
+ * hooks as part of their props, instead of a React component, you can
+ * pass a function returning a React component as first parameter. The
+ * function will be evaluated in a context of a React component and
+ * can thus make use of hooks
+ *
+ *     // DOES NOT WORK
+ *     renderInEntry(<Image file={useFile({collectionName: 'imageFiles', permaId: 4})} />, {seed});
+ *
+ *     // WORKS
+ *     renderInEntry(() => <Image file={useFile({collectionName: 'imageFiles', permaId: 4})} />, {seed});
+ *
+ * When using the `rerender` function from the result, you again need
+ * to use the same type of parameter you passed to the original
+ * `renderInEntry` call.
+ *
+ * @param {React.Component|Function} ui - React component or function returning a React component
  * @param {Object} [options]
  * @param {Object} [options.seed] - Seed data for entry state. Passed through {@link normalizeSeed}.
  * @param {Function} [options.setup] -
@@ -27,11 +43,41 @@ import {normalizeSeed} from './normalizeSeed';
  *   is passed as a second parameter.
  */
 export function renderInEntry(ui, {seed, setup, wrapper, ...options} = {}) {
-  return render(ui,
-                {
-                  wrapper: createWrapper(seed, setup, wrapper),
-                  ...options
-                });
+  options = {
+    wrapper: createWrapper(seed, setup, wrapper),
+    ...options
+  }
+
+  if (typeof ui === 'function') {
+    // Evaluate `ui` inside a React component to allow using hooks in
+    // the test. We also could have used `ui` as a React component
+    // directly (e.g. `React.createElement(ui)`). But when calling
+    // `rerender` with a different function than the one passed to the
+    // original `renderInEntry` call, e.g.
+    //
+    //   const {rerender} = renderInEntry(() => <MyComponent someProp={1} />);
+    //   rerender(() => <MyComponent someProp={2} />);
+    //
+    // React would unmount the `MyComponent` component from the first
+    // render call and mount a new one. We therefore define a single
+    // component that is reused across rerenders to ensure
+    // `MyComponent` stays mounted and just receives new props.
+    function HooksWrapper({ui}) {
+      return ui();
+    }
+
+    const result = render(<HooksWrapper ui={ui} />, options)
+
+    return {
+      ...result,
+      rerender(ui) {
+        result.rerender(<HooksWrapper ui={ui} />)
+      }
+    };
+  }
+  else {
+    return render(ui, options);
+  }
 }
 
 /**

@@ -5,7 +5,7 @@ import React from 'react';
 
 import {fireEvent} from '@testing-library/react';
 import {useFakeTranslations} from 'pageflow/testHelpers';
-import {renderInEntry, renderHookInEntry} from 'support';
+import {renderInEntry} from 'support';
 import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -33,11 +33,10 @@ describe('MediaPlayerControls', () => {
   };
 
   it('checks auto text track menu item by default', () => {
-    const {result} = renderHookInEntry(() => useFile({collectionName: 'audioFiles', permaId: 10}), {seed});
     const {getByRole} = renderInEntry(
-      <MediaPlayerControls file={result.current}
-                           playerState={getInitialPlayerState()}
-                           playerActions={getPlayerActions()} />,
+      () => <MediaPlayerControls file={useFile({collectionName: 'audioFiles', permaId: 10})}
+                                 playerState={getInitialPlayerState()}
+                                 playerActions={getPlayerActions()} />,
       {seed}
     );
 
@@ -45,11 +44,10 @@ describe('MediaPlayerControls', () => {
   });
 
   it('supports activating text tracks', () => {
-    const {result} = renderHookInEntry(() => useFile({collectionName: 'audioFiles', permaId: 10}), {seed});
     const {getByRole} = renderInEntry(
-      <MediaPlayerControls file={result.current}
-                           playerState={getInitialPlayerState()}
-                           playerActions={getPlayerActions()} />,
+      () => <MediaPlayerControls file={useFile({collectionName: 'audioFiles', permaId: 10})}
+                                 playerState={getInitialPlayerState()}
+                                 playerActions={getPlayerActions()} />,
       {seed}
     );
 
@@ -59,11 +57,10 @@ describe('MediaPlayerControls', () => {
   });
 
   it('supports turning text tracks off', () => {
-    const {result} = renderHookInEntry(() => useFile({collectionName: 'audioFiles', permaId: 10}), {seed});
     const {getByRole} = renderInEntry(
-      <MediaPlayerControls file={result.current}
-                           playerState={getInitialPlayerState()}
-                           playerActions={getPlayerActions()} />,
+      () => <MediaPlayerControls file={useFile({collectionName: 'audioFiles', permaId: 10})}
+                                 playerState={getInitialPlayerState()}
+                                 playerActions={getPlayerActions()} />,
       {seed}
     );
 
@@ -73,11 +70,10 @@ describe('MediaPlayerControls', () => {
   });
 
   it('supports activating auto text tracks again', () => {
-    const {result} = renderHookInEntry(() => useFile({collectionName: 'audioFiles', permaId: 10}), {seed});
     const {getByRole} = renderInEntry(
-      <MediaPlayerControls file={result.current}
-                           playerState={getInitialPlayerState()}
-                           playerActions={getPlayerActions()} />,
+      () => <MediaPlayerControls file={useFile({collectionName: 'audioFiles', permaId: 10})}
+                                 playerState={getInitialPlayerState()}
+                                 playerActions={getPlayerActions()} />,
       {seed}
     );
 
