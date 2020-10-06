@@ -26,15 +26,15 @@ export function Image({imageFile, ...props}) {
 }
 
 function renderImageTag(props, imageFile) {
-  const focusX = typeof imageFile.configuration.focusX === 'undefined' ? 50 : imageFile.configuration.focusX;
-  const focusY = typeof imageFile.configuration.focusY === 'undefined' ? 50 : imageFile.configuration.focusY;
+  const cropPositionX = imageFile.cropPosition ? imageFile.cropPosition.x : 50;
+  const cropPositionY = imageFile.cropPosition ? imageFile.cropPosition.y : 50;
 
   return (
     <img className={classNames(styles.root)}
          src={imageFile.urls[props.variant]}
          alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''}
          style={{
-           objectPosition: `${focusX}% ${focusY}%`
+           objectPosition: `${cropPositionX}% ${cropPositionY}%`
          }} />
   );
 }
