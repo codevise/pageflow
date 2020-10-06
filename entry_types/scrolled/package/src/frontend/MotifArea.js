@@ -51,29 +51,5 @@ MotifArea.defaultProps = {
 };
 
 function getPosition(props) {
-  const file = props.file;
-  const originalRatio = file.width / file.height;
-  const containerRatio = props.containerWidth / props.containerHeight;
-  const scale = containerRatio > originalRatio ?
-                props.containerWidth / file.width :
-                props.containerHeight / file.height;
-
-  const contentWidth = file.width * scale;
-  const contentHeight = file.height * scale;
-
-  const focusX = file.configuration.focusX === undefined ? 50 : file.configuration.focusX;
-  const focusY = file.configuration.focusY === undefined ? 50 : file.configuration.focusY;
-
-  const cropLeft = (contentWidth - props.containerWidth) * focusX / 100;
-  const cropTop = (contentHeight - props.containerHeight) * focusY / 100;
-
-  const motifArea = file.configuration.motifArea ||
-                     {top: 0, left: 0, width: 0, height: 0};
-
-  return {
-    top: Math.round(contentHeight * motifArea.top / 100 - cropTop),
-    left: Math.round(contentWidth * motifArea.left / 100  - cropLeft),
-    width: Math.round(contentWidth * motifArea.width / 100),
-    height: Math.round(contentHeight * motifArea.height / 100)
-  };
+  return props.file.motifAreaOffsetRect || {top: 0, left: 0, width: 0, height: 0};
 }
