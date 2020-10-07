@@ -3,6 +3,8 @@ import videojs from 'videojs';
 import '$support/mediaElementStub';
 import '$support/fakeBrowserFeatures';
 
+import '@testing-library/jest-dom/extend-expect'
+
 describe('media', function() {
   let fileSources = [
     {type: 'audio/ogg', src: 'http://example.com/example.ogg'},
@@ -59,6 +61,23 @@ describe('media', function() {
 
       expect(player.getMediaElement().hasAttribute('alt')).toBe(true);
       expect(player.getMediaElement().getAttribute('alt')).toBe('audio file');
+    });
+
+    it('sets passed object position style on media element', function () {
+      let player = media.getPlayer(fileSources, {
+        tagName: 'video',
+        objectPosition: {x: 100, y: 40}
+      });
+
+      expect(player.getMediaElement()).toHaveStyle('object-position: 100% 40%');
+    });
+
+    it('defaults to centered object position', function () {
+      let player = media.getPlayer(fileSources, {
+        tagName: 'video'
+      });
+
+      expect(player.getMediaElement()).toHaveStyle('object-position: 50% 50%');
     });
 
     it('updates player\'s context data', () => {

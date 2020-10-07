@@ -33,7 +33,8 @@ export class MediaPool {
     }
   }
   allocatePlayer({playerType, playerId, playsInline, mediaEventsContextData,
-                  hooks, poster, loop = false, controls = false, altText}){
+                  hooks, poster, loop = false, controls = false, altText,
+                  objectPosition = {x: 50, y: 50}}){
     let player = undefined;
     if (!this.unAllocatedPlayers[playerType]) {
       this.populateMediaPool_();
@@ -45,15 +46,16 @@ export class MediaPool {
     player = this.unAllocatedPlayers[playerType].pop();
     if (player) {
 
-      player.getMediaElement().setAttribute('alt', altText);
       player.pause();
-      player.getMediaElement().loop = loop
+      player.getMediaElement().loop = loop;
+      player.getMediaElement().style.objectPosition = `${objectPosition.x}% ${objectPosition.y}%`;
+      player.getMediaElement().setAttribute('alt', altText);
       player.poster(poster);
       player.controls(controls)
       if (playsInline) {
         player.playsinline(true); 
       }
-      player.updateHooks(hooks || {});
+      player.updateHooks(hooks || {});
       player.updateMediaEventsContext(mediaEventsContextData);
       
       this.allocatedPlayers[playerType].push(player);
