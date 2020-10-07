@@ -16,15 +16,7 @@ import {BackgroundColorProvider} from './backgroundColor';
 
 import styles from './Section.module.css';
 import {getTransitionStyles} from './transitions'
-
-// Shadows
-import NoOpShadow from './shadows/NoOpShadow';
-import GradientShadow from './shadows/GradientShadow';
-// Boxes
-import {InvisibleBoxWrapper} from './foregroundBoxes/InvisibleBoxWrapper';
-import GradientBox from './foregroundBoxes/GradientBox';
-import CardBox from "./foregroundBoxes/CardBox";
-import CardBoxWrapper from "./foregroundBoxes/CardBoxWrapper";
+import {getAppearanceComponents} from './appearance';
 
 export const OnScreenContext = React.createContext({
   center: false,
@@ -56,28 +48,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
   const heightOffset = 0; //(props.backdrop.first || props.transition === 'scrollOver') ? 0 : (window.innerHeight / 3);
 
   const transitionStyles = getTransitionStyles(props, props.previousSection, props.nextSection);
-
-  const appearance = {
-    shadow: {
-      background: GradientShadow,
-      foreground: GradientBox,
-      foregroundWrapper: InvisibleBoxWrapper
-    },
-    transparent: {
-      background: NoOpShadow,
-      foreground: CardBox,
-      foregroundWrapper: InvisibleBoxWrapper
-    },
-    cards: {
-      background: NoOpShadow,
-      foreground: CardBox,
-      foregroundWrapper: CardBoxWrapper
-    }
-  }[props.appearance || 'shadow'];
-
-  const Shadow = appearance.background;
-  const Box = appearance.foreground;
-  const BoxWrapper = appearance.foregroundWrapper;
+  const {Shadow, Box, BoxWrapper} = getAppearanceComponents(props.appearance)
 
   return (
     <section id={`section-${props.permaId}`}
