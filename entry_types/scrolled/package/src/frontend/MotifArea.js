@@ -3,13 +3,9 @@ import classNames from 'classnames';
 
 import styles from './MotifArea.module.css';
 
-import {useFile} from '../entryState';
-
 export const MotifArea = function MotifArea(props) {
-  const image = useFile({collectionName: 'imageFiles', permaId: props.imageId});
-
   const lastPosition = useRef();
-  const position = image?.isReady && getPosition(props, image);
+  const position = props.file?.isReady && getPosition(props);
 
   const elementRef = useRef();
   const onUpdate = props.onUpdate;
@@ -54,23 +50,24 @@ MotifArea.defaultProps = {
   onUpdate: () => {}
 };
 
-function getPosition(props, image) {
-  const originalRatio = image.width / image.height;
+function getPosition(props) {
+  const file = props.file;
+  const originalRatio = file.width / file.height;
   const containerRatio = props.containerWidth / props.containerHeight;
   const scale = containerRatio > originalRatio ?
-                props.containerWidth / image.width :
-                props.containerHeight / image.height;
+                props.containerWidth / file.width :
+                props.containerHeight / file.height;
 
-  const contentWidth = image.width * scale;
-  const contentHeight = image.height * scale;
+  const contentWidth = file.width * scale;
+  const contentHeight = file.height * scale;
 
-  const focusX = image.configuration.focusX === undefined ? 50 : image.configuration.focusX;
-  const focusY = image.configuration.focusY === undefined ? 50 : image.configuration.focusY;
+  const focusX = file.configuration.focusX === undefined ? 50 : file.configuration.focusX;
+  const focusY = file.configuration.focusY === undefined ? 50 : file.configuration.focusY;
 
   const cropLeft = (contentWidth - props.containerWidth) * focusX / 100;
   const cropTop = (contentHeight - props.containerHeight) * focusY / 100;
 
-  const motifArea = image.configuration.motifArea ||
+  const motifArea = file.configuration.motifArea ||
                      {top: 0, left: 0, width: 0, height: 0};
 
   return {
