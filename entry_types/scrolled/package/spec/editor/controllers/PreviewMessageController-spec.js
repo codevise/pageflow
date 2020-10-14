@@ -8,10 +8,13 @@ import {
   postUpdateTransientContentElementStateMessage
 } from 'frontend/inlineEditing/postMessage';
 import {setupGlobals} from 'pageflow/testHelpers';
-import {normalizeSeed, factories, createIframeWindow} from 'support';
+import {useFakeXhr, normalizeSeed, factories, createIframeWindow} from 'support';
 
 describe('PreviewMessageController', () => {
-  let controller;
+  let controller, testContext;
+
+  beforeEach(() => testContext = {});
+  useFakeXhr(() => testContext);
 
   afterEach(() => {
     // Remove post message event listener
