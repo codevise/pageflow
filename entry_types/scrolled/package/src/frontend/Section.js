@@ -1,4 +1,4 @@
-import React, {useRef, useCallback, useMemo} from 'react';
+import React, {useRef, useMemo} from 'react';
 import classNames from 'classnames';
 
 import { SectionAtmo } from './SectionAtmo';
@@ -6,16 +6,14 @@ import { SectionAtmo } from './SectionAtmo';
 import {Backdrop} from './Backdrop';
 import Foreground from './Foreground';
 import {Layout} from './layouts';
-import isIntersectingX from './isIntersectingX';
-import useBoundingClientRect from './useBoundingClientRect';
-import useDimension from './useDimension';
+import {useMotifAreaState} from './useMotifAreaState';
 import useScrollTarget from './useScrollTarget';
 import {SectionLifecycleProvider} from './useSectionLifecycle'
 import {withInlineEditingDecorator} from './inlineEditing';
 import {BackgroundColorProvider} from './backgroundColor';
 
 import styles from './Section.module.css';
-import {getTransitionStyles} from './transitions'
+import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
 import {getAppearanceComponents} from './appearance';
 
 export const OnScreenContext = React.createContext({
@@ -34,18 +32,12 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
     sectionIndex: props.sectionIndex
   }), [props.layout, props.invert, props.sectionIndex]);
 
-  const [motifAreaRect, setMotifAreaRect] = useBoundingClientRect();
-  const [motifAreaDimension, setMotifAreaDimensionRef] = useDimension();
-
-  const setMotifAreaRefs = useCallback(node => {
-    setMotifAreaRect(node);
-    setMotifAreaDimensionRef(node);
-  }, [setMotifAreaRect, setMotifAreaDimensionRef]);
-
-  const [contentAreaRect, setContentAreaRef] = useBoundingClientRect(props.layout);
-  const intersecting = isIntersectingX(motifAreaRect, contentAreaRect);
-
-  const heightOffset = 0; //(props.backdrop.first || props.transition === 'scrollOver') ? 0 : (window.innerHeight / 3);
+  const [motifAreaState, setMotifAreaRef, setContentAreaRef, setForegroundContentRef] = useMotifAreaState({
+    transitions: getEnterAndExitTransitions(props, props.previousSection, props.nextSection),
+    empty: !props.foreground.length,
+    sectionTransition: props.transition,
+    fullHeight: props.fullHeight
+  });
 
   const transitionStyles = getTransitionStyles(props, props.previousSection, props.nextSection);
   const {Shadow, Box, BoxWrapper} = getAppearanceComponents(props.appearance)
@@ -58,27 +50,31 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
                                    {[styles.invert]: props.invert})}>
       <SectionLifecycleProvider onActivate={props.onActivate} isLast={!props.nextSection}>
         <SectionAtmo audioFilePermaId={props.atmoAudioFileId} />
+
         <Backdrop {...props.backdrop}
-                  onMotifAreaUpdate={setMotifAreaRefs}
+                  onMotifAreaUpdate={setMotifAreaRef}
                   state={props.state}
                   transitionStyles={transitionStyles}>
-          {(children) => <Shadow align={props.layout}
-                                 inverted={props.invert}
-                                 intersecting={intersecting}
-                                 opacity={props.shadowOpacity >= 0 ? props.shadowOpacity / 100 : 0.7}
-                                 motifAreaRect={motifAreaRect}
-                                 contentAreaRect={contentAreaRect}>{children}</Shadow>}
+          {(children) =>
+            <Shadow align={props.layout}
+                    inverted={props.invert}
+                    motifAreaState={motifAreaState}
+                    opacity={props.shadowOpacity >= 0 ? props.shadowOpacity / 100 : 0.7}>
+              {children}
+            </Shadow>}
         </Backdrop>
+
         <Foreground transitionStyles={transitionStyles}
                     state={props.state}
+                    minHeight={motifAreaState.minHeight}
                     paddingBottom={!endsWithFullWidthElement(props.foreground)}
+                    contentRef={setForegroundContentRef}
                     heightMode={heightMode(props)}>
-          <Box active={intersecting}
-               inverted={props.invert}
+          <Box inverted={props.invert}
                coverInvisibleNextSection={props.nextSection && props.nextSection.transition.startsWith('fade')}
                transitionStyles={transitionStyles}
                state={props.state}
-               padding={Math.max(0, motifAreaDimension.top + motifAreaDimension.height - heightOffset)}
+               motifAreaState={motifAreaState}
                opacity={props.shadowOpacity}>
             <BackgroundColorProvider dark={!props.invert}>
               <Layout sectionId={props.id}

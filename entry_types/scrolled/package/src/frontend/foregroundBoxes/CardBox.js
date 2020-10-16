@@ -2,10 +2,8 @@ import React from 'react';
 import styles from './CardBox.module.css';
 
 export default function CardBox(props) {
-  const padding = props.active ? props.padding : 0;
-
   return (
-    <div style={{paddingTop: padding}}>
+    <div style={{paddingTop: props.motifAreaState.paddingTop}}>
       <div className={styles.wrapper}>
         <div className={styles.content}>
           {props.children}
