@@ -7,7 +7,6 @@ export default function CardBox(props) {
   return (
     <div style={{paddingTop: padding}}>
       <div className={styles.wrapper}>
-        <div style={{top: padding}} />
         <div className={styles.content}>
           {props.children}
         </div>
