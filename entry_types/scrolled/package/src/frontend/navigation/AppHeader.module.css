@@ -151,3 +151,11 @@
     height: 10px;
   }
 }
+
+@media (min-width: 1025px) {
+    .chapterList {
+      width: 55%;
+      position: absolute;
+      left: 23%;
+    }
+}

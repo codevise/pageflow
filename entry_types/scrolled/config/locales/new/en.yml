@@ -139,6 +139,8 @@ en:
         tr: Turkish
         unknown: "(Unknown)"
         zh: Chinese
+      navigation_skip_links:
+        content: To the content
     inline_editing:
       cancel: Cancel
       url_placeholder: Type or paste URL

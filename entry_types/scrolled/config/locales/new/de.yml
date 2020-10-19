@@ -225,6 +225,8 @@ de:
         tr: Türkisch
         unknown: "(Unbekannt)"
         zh: Chinesisch
+      navigation_skip_links:
+        content: Zum Inhalt
     inline_editing:
       cancel: Abbrechen
       url_placeholder: URL eingeben oder einfügen
