@@ -9,7 +9,7 @@ import {useFocusOutlineVisible} from './focusOutline';
 export function MediaPlayerControls(props) {
   const playerState = props.playerState;
   const playerActions = props.playerActions;
- 
+
   const {t} = useI18n();
   const textTracks = useTextTracks({
     file: props.file,
@@ -19,8 +19,7 @@ export function MediaPlayerControls(props) {
   const focusOutlineVisible = useFocusOutlineVisible();
 
   return (
-    <PlayerControls inset={props.configuration.position === 'full' || props.configuration.caption}
-                    type={props.type}
+    <PlayerControls type={props.type}
 
                     variant={props.configuration.playerControlVariant}
                     waveformColor={props.configuration.waveformColor}

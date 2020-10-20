@@ -62,6 +62,7 @@ export function InlineAudio({sectionProps, configuration}) {
                            defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                            playerState={playerState}
                            playerActions={playerActions}
+                           standAlone={!configuration.posterId}
                            configuration={configuration}
                            sectionProps={sectionProps}/>
     </Figure>

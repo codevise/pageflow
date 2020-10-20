@@ -39,7 +39,7 @@ export function AudioPlayer({audioFile, ...props}) {
                        textTracks={textTracks}
                        filePermaId={audioFile.permaId}
                        sources={processSources(audioFile)}
-                       textTracksInset={props.position === 'full'}
+                       textTracksInset={!!posterImage}
                        posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
                        altText={audioFile.configuration.alt}
                        {...props} />

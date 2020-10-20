@@ -3,7 +3,7 @@
 }
 
 .inset :global .vjs-text-track-display {
-  bottom: 20px;
+  bottom: 30px;
 }
 
 :global .vjs-text-track-display div {
