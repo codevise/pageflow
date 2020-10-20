@@ -45,26 +45,26 @@ export function InlineAudio({sectionProps, configuration}) {
 
   return (
     <Figure caption={configuration.caption}>
-      <AudioPlayer isPrepared={isPrepared}
-                   position={configuration.position}
-                   controls={configuration.controls}
-                   playerState={playerState}
-                   playerActions={playerActions}
-                   audioFile={audioFile}
-                   posterId={configuration.posterId}
-                   defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
-                   quality={'high'}
-                   playsInline={true}
-                   atmoDuringPlayback={configuration.atmoDuringPlayback}
-                   onClick={onPlayerClick} />
-
       <AudioPlayerControls audioFile={audioFile}
                            defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                            playerState={playerState}
                            playerActions={playerActions}
                            standAlone={!configuration.posterId}
                            configuration={configuration}
-                           sectionProps={sectionProps}/>
+                           sectionProps={sectionProps}
+                           onPlayerClick={onPlayerClick}>
+        <AudioPlayer isPrepared={isPrepared}
+                     position={configuration.position}
+                     controls={configuration.controls}
+                     playerState={playerState}
+                     playerActions={playerActions}
+                     audioFile={audioFile}
+                     posterId={configuration.posterId}
+                     defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
+                     quality={'high'}
+                     playsInline={true}
+                     atmoDuringPlayback={configuration.atmoDuringPlayback} />
+      </AudioPlayerControls>
     </Figure>
   )
 }

@@ -43,15 +43,15 @@ let isBlessed = false;
 
 export function createActions(dispatch){
   return {
-    playBlessed(){
+    playBlessed({via} = {}){
       if (!isBlessed) {
         media.mute(false);
         isBlessed = true;
       }
-      dispatch({type: PLAY});
+      dispatch({type: PLAY, payload: {via}});
     },
-    play(){
-      dispatch({type: PLAY});
+    play({via} = {}){
+      dispatch({type: PLAY, payload: {via}});
     },
     playing(){
       dispatch({type: PLAYING});
@@ -59,8 +59,8 @@ export function createActions(dispatch){
     playFailed(){
       dispatch({type: PLAY_FAILED});
     },
-    pause(){
-      dispatch({type: PAUSE});
+    pause({via} = {}){
+      dispatch({type: PAUSE, payload: {via}});
     },
     paused(){
       dispatch({type: PAUSED})
