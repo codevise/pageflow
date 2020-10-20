@@ -21,7 +21,7 @@ export function ClassicPlayerControls(props) {
          className={classNames(styles.controlBarContainer,
                                darkBackground ? styles.darkBackground : styles.lightBackground,
                                {
-                                 [styles.inset]: props.inset,
+                                 [styles.inset]: !props.standAlone,
                                  [styles.transparent]: props.isPlaying && props.inset && props.inactive
                                })}>
       <PlayPauseButton isPlaying={props.isPlaying}

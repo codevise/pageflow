@@ -40,7 +40,7 @@ export function VideoPlayer({videoFile, ...props}) {
                        textTracks={textTracks}
                        filePermaId={videoFile.permaId}
                        sources={sources(videoFile, activeQuality)}
-                       textTracksInset={props.position === 'full'}
+                       textTracksInset={true}
                        posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
                        altText={videoFile.configuration.alt}
                        objectPosition={props.fit === 'cover' ? videoFile.cropPosition : undefined}
