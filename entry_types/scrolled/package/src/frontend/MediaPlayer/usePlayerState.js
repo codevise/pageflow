@@ -39,15 +39,16 @@ export function playerStateReducer(state, action){
         ...state,
         isLoading: true,
         shouldPlay: true,
-        playFailed: false
+        playFailed: false,
+        unplayed: false,
+        lastControlledVia: action.payload.via
       };
     case PLAYING:
       return {
         ...state,
         shouldPlay: true,
         isPlaying: true,
-        userIdle: false,
-        unplayed: false
+        userIdle: false
       };
     case PLAY_AND_FADE_IN:
       return {
@@ -78,7 +79,8 @@ export function playerStateReducer(state, action){
         shouldPlay: false,
         isLoading: false,
         fadeDuration: null,
-        shouldPause: true
+        shouldPause: true,
+        lastControlledVia: action.payload.via
       };
     case PAUSED:
       state.shouldPause = false;
@@ -141,7 +143,9 @@ export function playerStateReducer(state, action){
       return {
         ...state,
         shouldPlay: false,
-        isPlaying: false
+        isPlaying: false,
+        unplayed: true,
+        lastControlledVia: null
       };
     case WAITING:
       return {
