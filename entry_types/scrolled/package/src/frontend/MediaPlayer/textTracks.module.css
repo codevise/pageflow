@@ -8,7 +8,7 @@
 }
 
 .inset :global .vjs-text-track-display {
-  bottom: 30px;
+  bottom: 40px;
 }
 
 :global .vjs-text-track-display div {
