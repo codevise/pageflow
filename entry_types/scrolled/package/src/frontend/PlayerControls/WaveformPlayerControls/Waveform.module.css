@@ -1,16 +1,29 @@
-
 .container {
   position: relative;
+  z-index: 1;
   width: 100%;
-  height: 90px;
-  bottom: 1px;
+  min-height: 132px;
 }
 
-.menus {
+.clickMask {
   position: absolute;
-  bottom: -5px;
-  right: 0px;
-  z-index: 5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.menuBar {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 32px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .timeDisplay {
@@ -19,15 +32,22 @@
 }
 
 .playControl {
-  z-index: 5;
+  color: #fff;
+  z-index: 1;
   position: absolute;
-  top: 32.5%;
+  bottom: 70px;
+  left: 30px;
+}
+
+.playControl svg {
   transform: scale(2);
 }
 
 .waveWrapper {
-  position: relative;
-  pointer-events: all;
-  height: 100%;
+  position: absolute;
+  bottom: 40px;
+  width: 98%;
+  margin: 0 1%;
+  height: 90px;
+  z-index: 1;
 }
-

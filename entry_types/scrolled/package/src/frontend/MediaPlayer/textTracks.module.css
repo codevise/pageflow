@@ -2,6 +2,11 @@
   font-family: inherit !important;
 }
 
+/* Ensure text tracks are displayed on top of waveform */
+:global .vjs-text-track-display {
+  z-index: 2;
+}
+
 .inset :global .vjs-text-track-display {
   bottom: 30px;
 }
