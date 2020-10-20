@@ -9,7 +9,7 @@ export function useIframeHeight(url) {
     function receive(event) {
       if (typeof event.data['datawrapper-height'] !== 'undefined') {
         for (var chartId in event.data['datawrapper-height']) {
-          if (url.indexOf(chartId) > -1) {
+          if (url?.indexOf(chartId) > -1) {
             setHeight(event.data['datawrapper-height'][chartId] + 'px');
           }
         }
