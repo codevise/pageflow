@@ -20,6 +20,10 @@
   max-width: none;
 }
 
+.clear {
+  clear: both;
+}
+
 @media (min-width: 950px) {
   .inner-left,
   .inner-right {

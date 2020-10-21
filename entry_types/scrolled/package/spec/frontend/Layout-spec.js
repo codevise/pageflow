@@ -3,6 +3,8 @@ import React from 'react';
 import {Layout} from 'frontend/layouts';
 import {frontend} from 'pageflow-scrolled/frontend';
 
+import centerStyles from 'frontend/layouts/Center.module.css';
+
 import {render} from '@testing-library/react';
 
 import {useNarrowViewport} from 'frontend/useNarrowViewport';
@@ -220,5 +222,61 @@ describe('Layout', () => {
         expect(container.textContent).toEqual('( 1 )( 2 )( 3 )');
       });
     });
+  });
+
+  describe('floating items in centered variant', () => {
+    beforeAll(() => {
+      frontend.contentElementTypes.register('probe', {
+        component: function Probe() {
+          return <div data-testid="probe" />;
+        }
+      });
+
+      frontend.contentElementTypes.register('wrappingProbe', {
+        supportsWrappingAroundFloats: true,
+
+        component: function WrappingProbe() {
+          return <div data-testid="probe" />;
+        }
+      });
+    });
+
+    it('clears all items by default', () => {
+      const items = [
+        {id: 1, type: 'probe', position: 'inline'}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles.clear)).not.toBeNull();
+    });
+
+    it('does not clear items that support wrapping floated items', () => {
+      const items = [
+        {id: 1, type: 'wrappingProbe', position: 'inline'}
+      ];
+      const {getByTestId} = render(
+        <Layout sectionProps={{layout: 'center'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(findParentWithClass(getByTestId('probe'), centerStyles.clear)).toBeNull();
+    });
+
+    function findParentWithClass(element, className) {
+      let currentElement = element;
+
+      while ((currentElement = currentElement.parentElement)) {
+        if (currentElement.classList.contains(className)) {
+          return currentElement;
+        }
+      }
+
+      return null;
+    }
   });
 });
