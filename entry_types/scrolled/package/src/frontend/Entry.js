@@ -45,17 +45,15 @@ export default withInlineEditingDecorator('EntryDecorator', function Entry(props
 
   return (
     <div className={styles.Entry} id='goToContent'>
-      <MediaMutedProvider>
-        <AtmoProvider>
-          <ScrollToSectionContext.Provider value={scrollToSection}>
-            {renderChapters(entryStructure,
-                            currentSectionIndex,
-                            setCurrentSectionIndex,
-                            scrollTargetSectionIndex,
-                            setScrollTargetSectionIndex)}
-          </ScrollToSectionContext.Provider>
-        </AtmoProvider>
-      </MediaMutedProvider>
+      <AtmoProvider>
+        <ScrollToSectionContext.Provider value={scrollToSection}>
+          {renderChapters(entryStructure,
+                          currentSectionIndex,
+                          setCurrentSectionIndex,
+                          scrollTargetSectionIndex,
+                          setScrollTargetSectionIndex)}
+        </ScrollToSectionContext.Provider>
+      </AtmoProvider>
     </div>
   );
 })
