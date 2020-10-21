@@ -16,11 +16,11 @@ export function SharingMenu() {
   if(shareProviders.length > 0) {
     return (
       <div>
-        <a className={classNames(headerStyles.contextIcon, styles.shareIcon)}
-           data-tip data-for={'sharingTooltip'}
-           onMouseEnter={() => { ReactTooltip.hide()}}>
+        <button className={classNames(headerStyles.contextIcon, styles.shareIcon)}
+                data-tip data-for={'sharingTooltip'}
+                onMouseEnter={() => { ReactTooltip.hide()}}>
           <ShareIcon/>
-        </a>
+        </button>
         <SharingTooltip />
       </div>
     )

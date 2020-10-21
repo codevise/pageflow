@@ -25,7 +25,7 @@ describe('MediaPlayerControls', () => {
       parentFileId: 100,
       parentFileModelType: 'Pageflow::AudioFile',
       configuration: {
-        kind: 'captions',
+        kind: 'subtitles',
         srclang: 'en',
         label: 'English'
       }
