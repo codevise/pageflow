@@ -2,7 +2,8 @@ import React from 'react';
 
 import {
   useContentElementLifecycle,
-  useContentElementEditorState
+  useContentElementEditorState,
+  Figure
 } from 'pageflow-scrolled/frontend';
 import {useIframeHeight} from './useIframeHeight';
 
@@ -20,12 +21,14 @@ export function DataWrapperChart({configuration}) {
   }
 
   return (
-    <div className={styles.container}
-         style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined,
-                 height: height}}
-         data-percy="hide">
-      {renderIframe(srcURL)}
-    </div>
+    <Figure caption={configuration.caption}>
+      <div className={styles.container}
+           style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined,
+                   height: height}}
+           data-percy="hide">
+        {renderIframe(srcURL)}
+      </div>
+    </Figure>
   );
 }
 

@@ -21,6 +21,9 @@ editor.contentElementTypes.register('dataWrapperChart', {
         permitHttps: true
       });
       this.view(DatawrapperAdView);
+
+      this.group('ContentElementCaption');
+      this.group('ContentElementPosition');
     });
   }
 });
