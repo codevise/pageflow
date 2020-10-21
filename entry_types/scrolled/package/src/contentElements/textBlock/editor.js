@@ -23,9 +23,15 @@ editor.contentElementTypes.register('textBlock', {
   },
 
   merge(configurationA, configurationB) {
+    // Value might still be empty if text block has not been edited
+    const value = (configurationA.value || []).concat(configurationB.value || []);
+
     return {
       ...configurationA,
-      value: configurationA.value.concat(configurationB.value),
+      // Slate.js does not like empty arrays as value.
+      // `inlineEditing/EditableText` sets default value, but only if
+      // `value` is falsy.
+      value: value.length ? value : undefined,
     };
   },
 
