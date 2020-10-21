@@ -1,31 +1,20 @@
-.skipLinks {
+.link {
   position: absolute;
-  left: 12%;
-  top: 8%;
-  height: 60%;
-  width: auto;
   z-index: 10000;
-}
-
-.hidden {
-  position: absolute;
   top: -1000em;
   left: -1000em;
-}
 
-.link {
   display: block;
-  height: 100%;
-  width: 100%;
   border: 1px solid #eeeeee;
   border-radius: 5px;
   padding: 5px 10px;
   background: #00375a;
   text-align: center;
   line-height: 25px;
-  z-index: 10000;
+  color: #ffffff;
 }
 
-.link:visited {
-  color: #ffffff;
+.link:focus {
+  left: 12%;
+  top: 8%;
 }

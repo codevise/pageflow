@@ -44,7 +44,7 @@ export default withInlineEditingDecorator('EntryDecorator', function Entry(props
   }
 
   return (
-    <div className={styles.Entry}>
+    <div className={styles.Entry} id='goToContent'>
       <MediaMutedProvider>
         <AtmoProvider>
           <ScrollToSectionContext.Provider value={scrollToSection}>
