@@ -1,45 +1,17 @@
 .root {
   position: absolute;
-  background: hsla(0, 0%, 100%, 0.2);
+  background: radial-gradient(transparent, currentColor);
   z-index: 2;
   opacity: 0;
-  transition: opacity 0.2s ease;
+
+  /*
+    Fix Chrome z-index bug. Elements can not placed in front of video
+    elements using z-index inside position fixed container.  See also
+    https://stackoverflow.com/questions/24685491/position-fixed-z-index-bug-with-html5-video-tag
+  */
+  -webkit-transform: translateZ(0);
 }
 
-.active {
-  opacity: 1;
-}
-
-.corner {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-}
-
-.topLeft {
-  composes: corner;
-  border-top: solid 2px #fff;
-  border-left: solid 2px #fff;
-}
-
-.topRight {
-  composes: corner;
-  right: 0;
-  border-top: solid 2px #fff;
-  border-right: solid 2px #fff;
-}
-
-.bottomLeft {
-  composes: corner;
-  bottom: 0;
-  border-bottom: solid 2px #fff;
-  border-left: solid 2px #fff;
-}
-
-.bottomRight {
-  composes: corner;
-  right: 0;
-  bottom: 0;
-  border-bottom: solid 2px #fff;
-  border-right: solid 2px #fff;
+.visible {
+  opacity: 0.2;
 }

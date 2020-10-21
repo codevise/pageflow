@@ -10,6 +10,7 @@ import useDimension from './useDimension';
 import {usePlayerState} from './MediaPlayer/usePlayerState';
 import {usePortraitOrientation} from './usePortraitOrientation';
 import {useSectionLifecycle} from './useSectionLifecycle';
+import {useBackgroundFile} from './useBackgroundFile';
 import {documentHiddenState} from 'pageflow/frontend';
 import {useFile} from '../entryState';
 
@@ -41,9 +42,21 @@ Backdrop.defaultProps = {
 };
 
 function BackgroundAsset(props) {
-  const video = useFile({collectionName: 'videoFiles', permaId: props.video});
-  const image = useFile({collectionName: 'imageFiles', permaId: props.image});
-  const imageMobile = useFile({collectionName: 'imageFiles', permaId: props.imageMobile});
+  const video = useBackgroundFile({
+    file: useFile({collectionName: 'videoFiles', permaId: props.video}),
+    motifArea: props.videoMotifArea,
+    containerDimension: props.containerDimension
+  });
+  const image = useBackgroundFile({
+    file: useFile({collectionName: 'imageFiles', permaId: props.image}),
+    motifArea: props.imageMotifArea,
+    containerDimension: props.containerDimension
+  });
+  const imageMobile = useBackgroundFile({
+    file: useFile({collectionName: 'imageFiles', permaId: props.imageMobile}),
+    motifArea: props.imageMobileMotifArea,
+    containerDimension: props.containerDimension
+  });
 
   if (video) {
     return (
@@ -111,7 +124,7 @@ function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
 
   return (
     <>
-      <Image id={image?.permaId} isPrepared={isPrepared} structuredData={true}/>
+      <Image imageFile={image} isPrepared={isPrepared} structuredData={true}/>
       <MotifArea key={image?.permaId}
                  onUpdate={onMotifAreaUpdate}
                  file={image}
@@ -161,7 +174,7 @@ function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) {
       <VideoPlayer isPrepared={isPrepared}
                    playerState={playerState}
                    playerActions={playerActions}
-                   id={video.permaId}
+                   videoFile={video}
                    textTracksDisabled={true}
                    fit="cover"
                    loop={true}

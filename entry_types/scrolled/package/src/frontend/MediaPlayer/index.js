@@ -74,6 +74,7 @@ function PreparedMediaPlayer(props){
                        loop={props.loop}
                        controls={props.controls}
                        playsInline={props.playsInline}
+                       objectPosition={props.objectPosition}
                        mediaEventsContextData={eventContextData}
                        atmoDuringPlayback={props.atmoDuringPlayback}
                        onSetup={onSetup}

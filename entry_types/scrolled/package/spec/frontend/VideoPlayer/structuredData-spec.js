@@ -5,21 +5,18 @@ import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 import {useFakeMedia} from 'support/fakeMedia';
 import * as jsonLdQueries from 'support/jsonLdQueries';
 
+import {useFile} from 'entryState';
 import {VideoPlayer} from 'frontend/VideoPlayer';
 
 describe('VideoPlayer structured data', () => {
   useFakeMedia();
 
-  function requiredProps() {
-    return {
-      playerState: getInitialPlayerState(),
-      playerActions: getPlayerActions()
-    };
-  }
-
   it('is rendered by default', () => {
-    const {getJsonLd} =
-      renderInEntry(<VideoPlayer {...requiredProps()} id={100} />, {
+    const {getJsonLd} = renderInEntry(
+      () => <VideoPlayer videoFile={useFile({collectionName: 'videoFiles', permaId: 100})}
+                         playerState={getInitialPlayerState()}
+                         playerActions={getPlayerActions()} />,
+      {
         seed: {
           fileUrlTemplates: {
             videoFiles: {

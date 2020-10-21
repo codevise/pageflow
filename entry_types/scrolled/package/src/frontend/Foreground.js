@@ -9,7 +9,8 @@ export default function Foreground(props) {
   const forcePadding = useContext(ForcePaddingContext);
 
   return (
-    <div className={className(props, forcePadding)}>
+    <div className={className(props, forcePadding)}
+         style={{minHeight: props.minHeight}}>
       {props.children}
     </div>
   );

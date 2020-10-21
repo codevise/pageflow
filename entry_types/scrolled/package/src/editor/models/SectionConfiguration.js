@@ -65,26 +65,31 @@ export const SectionConfiguration = Configuration.extend({
       });
     case 'video':
       return this.set('backdrop', {
-        video: this.get('backdropVideo')
+        video: this.get('backdropVideo'),
+        videoMotifArea: this.get('backdropVideoMotifArea')
       });
     default:
       return this.set('backdrop', {
         image: this.get('backdropImage'),
-        imageMobile: this.get('backdropImageMobile')
+        imageMotifArea: this.get('backdropImageMotifArea'),
+        imageMobile: this.get('backdropImageMobile'),
+        imageMobileMotifArea: this.get('backdropImageMobileMotifArea')
       });
     }
   }
 });
 
 export const FileSelectionHandler = function(options) {
-  const contentElement = options.entry.sections.get(options.id);
+  const section = options.entry.sections.get(options.id);
 
   this.call = function(file) {
-    contentElement.configuration.setReference(options.attributeName, file);
+    section.configuration.setReference(options.attributeName, file);
+    section.configuration.set(`${options.attributeName}MotifArea`,
+                              file.configuration.get('motifArea'));
   };
 
   this.getReferer = function() {
-    return '/scrolled/sections/' + contentElement.id;
+    return '/scrolled/sections/' + section.id;
   };
 };
 

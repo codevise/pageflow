@@ -80,11 +80,16 @@ export function getTransitionStyles(section, previousSection, nextSection) {
   return styles[name];
 }
 
-export function getTransitionStylesName(section, previousSection, nextSection) {
-  const enterTransition = enterTransitions[getTransitionName(previousSection, section)]
-  const exitTransition = exitTransitions[getTransitionName(section, nextSection)]
+export function getEnterAndExitTransitions(section, previousSection, nextSection) {
+  return [
+    enterTransitions[getTransitionName(previousSection, section)],
+    exitTransitions[getTransitionName(section, nextSection)]
+  ];
+}
 
-  return `${enterTransition}${capitalize(exitTransition)}`;
+export function getTransitionStylesName(section, previousSection, nextSection) {
+  const [enter, exit] = getEnterAndExitTransitions(section, previousSection, nextSection);
+  return `${enter}${capitalize(exit)}`;
 }
 
 function getTransitionName(previousSection, section) {

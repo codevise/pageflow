@@ -6,7 +6,8 @@ function getSize(el) {
       left: 0,
       top: 0,
       width: 0,
-      height: 0
+      height: 0,
+      bottom: 0
     }
   }
 
@@ -14,7 +15,8 @@ function getSize(el) {
     left: el.offsetLeft,
     top: el.offsetTop,
     width: el.offsetWidth,
-    height: el.offsetHeight
+    height: el.offsetHeight,
+    bottom: el.offsetParent ? el.offsetParent.offsetHeight - el.offsetTop - el.offsetHeight : 0
   }
 }
 

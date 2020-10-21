@@ -2,9 +2,20 @@ import React, {useState} from 'react';
 import {storiesOf} from '@storybook/react';
 import {normalizeAndMergeFixture, filePermaId} from 'pageflow-scrolled/spec/support/stories';
 
-import {RootProviders, AudioPlayer, VideoPlayer, usePlayerState} from 'pageflow-scrolled/frontend';
+import {RootProviders, AudioPlayer, VideoPlayer, useFile, usePlayerState} from 'pageflow-scrolled/frontend';
 
-const stories = storiesOf('Frontend/Media Player', module);
+const stories = storiesOf('Frontend/Media Player', module)
+  .addDecorator((Story) =>
+    <RootProviders seed={normalizeAndMergeFixture({})}>
+      <Story />
+    </RootProviders>);
+
+function useSampleFile(collectionName, referenceName) {
+  return useFile({
+    collectionName,
+    permaId: filePermaId(collectionName, referenceName)
+  });
+}
 
 stories.add(
   'Media Video Player - Contain',
@@ -12,11 +23,9 @@ stories.add(
     const [playerState, playerActions] = usePlayerState()
 
     return (
-        <RootProviders seed={normalizeAndMergeFixture({})}>
-          <VideoPlayer id={filePermaId('videoFiles', 'interview_toni')}
-                       playerState={playerState}
-                       playerActions={playerActions} />
-        </RootProviders>
+      <VideoPlayer videoFile={useSampleFile('videoFiles', 'interview_toni')}
+                   playerState={playerState}
+                   playerActions={playerActions} />
     );
   },
   {
@@ -30,14 +39,12 @@ stories.add(
     const [playerState, playerActions] = usePlayerState()
 
     return (
-      <RootProviders seed={normalizeAndMergeFixture({})}>
-        <div style={{height: '100vh'}}>
-          <VideoPlayer id={filePermaId('videoFiles', 'interview_toni')}
-                       fit="cover"
-                       playerState={playerState}
-                       playerActions={playerActions} />
-        </div>
-      </RootProviders>
+      <div style={{height: '100vh'}}>
+        <VideoPlayer videoFile={useSampleFile('videoFiles', 'interview_toni')}
+                     fit="cover"
+                     playerState={playerState}
+                     playerActions={playerActions} />
+      </div>
     );
   },
   {
@@ -51,11 +58,9 @@ stories.add(
     const [playerState, playerActions] = usePlayerState()
 
     return (
-      <RootProviders seed={normalizeAndMergeFixture({})}>
-        <AudioPlayer id={filePermaId('audioFiles', 'quicktime_jingle')}
-                     playerState={playerState}
-                     playerActions={playerActions} />
-      </RootProviders>
+      <AudioPlayer audioFile={useSampleFile('audioFiles', 'quicktime_jingle')}
+                   playerState={playerState}
+                   playerActions={playerActions} />
     );
   },
   {
@@ -69,15 +74,13 @@ stories.add(
     const [playerState, playerActions] = usePlayerState()
 
     return (
-      <RootProviders seed={normalizeAndMergeFixture({})}>
         <StressTest playerState={playerState} playerActions={playerActions} >
           {isPrepared =>
-            <AudioPlayer id={filePermaId('audioFiles', 'quicktime_jingle')}
+            <AudioPlayer audioFile={useSampleFile('audioFiles', 'quicktime_jingle')}
                          isPrepared={isPrepared}
                          playerState={playerState}
                          playerActions={playerActions} />}
         </StressTest>
-      </RootProviders>
     );
   },
   {
@@ -91,15 +94,13 @@ stories.add(
     const [playerState, playerActions] = usePlayerState()
 
     return (
-      <RootProviders seed={normalizeAndMergeFixture({})}>
-        <StressTest playerState={playerState} playerActions={playerActions} >
-          {isPrepared =>
-            <VideoPlayer id={filePermaId('videoFiles', 'interview_toni')}
-                         isPrepared={isPrepared}
-                         playerState={playerState}
-                         playerActions={playerActions} />}
-        </StressTest>
-      </RootProviders>
+      <StressTest playerState={playerState} playerActions={playerActions} >
+        {isPrepared =>
+          <VideoPlayer videoFile={useSampleFile('videoFiles', 'interview_toni')}
+                       isPrepared={isPrepared}
+                       playerState={playerState}
+                       playerActions={playerActions} />}
+      </StressTest>
     );
   },
   {
