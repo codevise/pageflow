@@ -1,7 +1,6 @@
 import React, {useState, useCallback} from 'react';
 
 import Chapter from "./Chapter";
-import {MediaMutedProvider} from './useMediaMuted';
 import ScrollToSectionContext from './ScrollToSectionContext';
 import {useEntryStructure} from '../entryState';
 import {withInlineEditingDecorator} from './inlineEditing';

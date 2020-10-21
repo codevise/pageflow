@@ -15,16 +15,15 @@ import {VideoStructuredData} from './VideoStructuredData';
  * Render video file in MediaPlayer.
  *
  * @param {Object} props
- * @param {number} props.id - Perma id of the video file.
+ * @param {Object} props.videoFile - Video file obtained via `useFile`.
  * @param {number} [props.posterId] - Perma id of the poster image file.
  * @param {number} [props.defaultTextTrackFileId] - Perma id of default text track file.
  * @param {boolean} [props.isPrepared] - Control lazy loading.
  * @param {String} [props.fit] - `"contain"` (default) or `"cover"`.
  * @param {String} [props.position] - Position of parent content element.
  */
-export function VideoPlayer(props) {
+export function VideoPlayer({videoFile, ...props}) {
   const [activeQuality] = useVideoQualitySetting();
-  const videoFile = useFile({collectionName: 'videoFiles', permaId: props.id});
   const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
   const textTracks = useTextTracks({
     file: videoFile,
@@ -39,10 +38,12 @@ export function VideoPlayer(props) {
           <MediaPlayer className={classNames(styles.videoPlayer, styles[props.fit])}
                        type={'video'}
                        textTracks={textTracks}
-                       filePermaId={props.id}
+                       filePermaId={videoFile.permaId}
                        sources={sources(videoFile, activeQuality)}
                        textTracksInset={props.position === 'full'}
                        posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
+                       altText={videoFile.configuration.alt}
+                       objectPosition={props.fit === 'cover' ? videoFile.cropPosition : undefined}
                        {...props} />
           <VideoStructuredData file={videoFile} />
         </>

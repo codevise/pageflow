@@ -57,8 +57,8 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint .",
-    "start-storybook": "start-storybook",
-    "build-storybook": "build-storybook -o .storybook/out",
-    "snapshot": "STORYBOOK_SPLIT=true build-storybook --quiet -o .storybook/out && PERCY_TOKEN=${PERCY_TOKEN:-$PT} percy-storybook --widths=1280 --build_dir=.storybook/out"
+    "start-storybook": "start-storybook -s .storybook/static",
+    "build-storybook": "build-storybook -s .storybook/static -o .storybook/out",
+    "snapshot": "STORYBOOK_SPLIT=true build-storybook --quiet -s .storybook/static -o .storybook/out && PERCY_TOKEN=${PERCY_TOKEN:-$PT} percy-storybook --widths=1280 --build_dir=.storybook/out"
   }
 }

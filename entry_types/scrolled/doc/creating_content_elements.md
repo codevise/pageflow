@@ -158,6 +158,12 @@ Run the following command in the root directory of your host application
 $ bundle exec rake pageflow_scrolled:storybook:seed:setup[./seed.json]
 ```
 
+Note that brackets need to be escaped in `zsh`, so that the latter becomes
+
+```bash
+$ bundle exec rake pageflow_scrolled:storybook:seed:setup\[./seed.json\]
+```
+
 Then move the generated `seed.json` file into the
 `entry_types/scrolled/package/.storybook/` directory of your
 development checkout of the `pageflow` project.
@@ -218,6 +224,14 @@ database, the ids of video and audio files always remain the same on each run of
 i.e. the first audio file will have an id of 1, and the first video file will also have
 an id of 1. Remember to adjust the id part of the files directory structure accordingly
 upon copying manually.
+
+### Using host application assets
+While working with storybook a scenario can occur where there is a dependency on an asset
+which is part of the host application. In that case, First compile those assets in the host
+application by using this command `bin/webpack` and then copy the generated assets from
+`public/packs/media` directory to storybook asset directory i.e. `entry_types/scrolled/package/.storybook/static/`.
+
+
 
 ## Editor JavaScript
 

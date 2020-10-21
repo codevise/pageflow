@@ -69,10 +69,10 @@ export const EditMotifAreaDialogView = Marionette.ItemView.extend({
   }),
 
   save() {
-    this.options.file.configuration.set(
-      'motifArea',
-      this.getMotifAreaWithRoundedValues()
-    );
+    const motifArea = this.getMotifAreaWithRoundedValues();
+
+    this.model.set(this.getPropertyName(), motifArea);
+    this.options.file.configuration.set('motifArea', motifArea);
   },
 
   onRender() {
@@ -80,13 +80,17 @@ export const EditMotifAreaDialogView = Marionette.ItemView.extend({
   },
 
   onShow() {
-    this.motifArea = this.options.file.configuration.get('motifArea');
+    this.motifArea = this.model.get(this.getPropertyName());
 
     this.updateAreaSelect();
     this.updateBlankSlate();
 
     this.resizeListener = () => this.updateAreaSelect()
     $(window).on('resize', this.resizeListener);
+  },
+
+  getPropertyName() {
+    return `${this.options.propertyName}MotifArea`;
   },
 
   getMotifAreaWithRoundedValues() {

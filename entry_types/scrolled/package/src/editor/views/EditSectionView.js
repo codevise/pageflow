@@ -8,6 +8,19 @@ export const EditSectionView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.edit_section',
 
   configure: function(configurationEditor) {
+    const editMotifAreaMenuItem = {
+      name: 'editMotifArea',
+      label: I18n.t('pageflow_scrolled.editor.edit_section.edit_motif_area'),
+
+      selected({inputModel, propertyName, file}) {
+        EditMotifAreaDialogView.show({
+          model: inputModel,
+          propertyName,
+          file
+        });
+      }
+    };
+
     configurationEditor.tab('section', function() {
       this.input('layout', SelectInputView, {
         values: ['left', 'right', 'center']
@@ -25,20 +38,7 @@ export const EditSectionView = EditConfigurationView.extend({
         visibleBinding: 'backdropType',
         visibleBindingValue: 'image',
         positioning: false,
-        dropDownMenuItems: [
-          {
-            name: 'editMofifArea',
-            label: I18n.t('pageflow_scrolled.editor.edit_section.edit_motif_area'),
-
-            selected({inputModel, propertyName, file}) {
-              EditMotifAreaDialogView.show({
-                model: inputModel,
-                propertyName,
-                file
-              });
-            }
-          }
-        ]
+        dropDownMenuItems: [editMotifAreaMenuItem]
       });
       this.input('backdropImageMobile', FileInputView, {
         collection: 'image_files',
@@ -46,20 +46,7 @@ export const EditSectionView = EditConfigurationView.extend({
         visibleBinding: 'backdropType',
         visibleBindingValue: 'image',
         positioning: false,
-        dropDownMenuItems: [
-          {
-            name: 'editMofifArea',
-            label: I18n.t('pageflow_scrolled.editor.edit_section.edit_motif_area'),
-
-            selected({inputModel, propertyName, file}) {
-              EditMotifAreaDialogView.show({
-                model: inputModel,
-                propertyName,
-                file
-              });
-            }
-          }
-        ]
+        dropDownMenuItems: [editMotifAreaMenuItem]
       });
       this.input('backdropColor', ColorInputView, {
         visibleBinding: 'backdropType',
@@ -70,11 +57,12 @@ export const EditSectionView = EditConfigurationView.extend({
         fileSelectionHandler: 'sectionConfiguration',
         visibleBinding: 'backdropType',
         visibleBindingValue: 'video',
-        positioning: false
+        positioning: false,
+        dropDownMenuItems: [editMotifAreaMenuItem]
       });
       this.input('invert', CheckBoxInputView);
       this.input('fullHeight', CheckBoxInputView);
-      
+
       this.input('atmoAudioFileId', FileInputView, {
         collection: 'audio_files',
         fileSelectionHandler: 'sectionConfiguration',

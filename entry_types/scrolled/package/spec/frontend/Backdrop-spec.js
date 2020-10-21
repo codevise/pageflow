@@ -133,6 +133,22 @@ describe('Backdrop', () => {
     expect(getByRole('img')).toHaveAttribute('src', expect.stringContaining('portrait.jpg'));
   });
 
+  it('invokes onMotifAreaUpdate callback', () => {
+    const callback = jest.fn();
+    renderInEntryWithSectionLifecycle(
+      <Backdrop image={100} onMotifAreaUpdate={callback} />,
+      {
+        seed: {
+          imageFiles: [
+            {permaId: 100, basename: 'image'}
+          ]
+        }
+      }
+    );
+
+    expect(callback).toHaveBeenCalled()
+  });
+
   it('supports rendering color as background', () => {
     usePortraitOrientation.mockReturnValue(false);
 
@@ -265,6 +281,20 @@ describe('Backdrop', () => {
       const player = getPlayerByFilePermaId(100);
 
       expect(player.pause).toHaveBeenCalled();
+    });
+
+    it('invokes onMotifAreaUpdate callback', () => {
+      const callback = jest.fn();
+      renderInEntryWithSectionLifecycle(
+          <Backdrop video={100} onMotifAreaUpdate={callback} />,
+          {
+            seed: {
+              videoFiles: [{permaId: 100}]
+            }
+          }
+        );
+
+      expect(callback).toHaveBeenCalled();
     });
   });
 });

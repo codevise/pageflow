@@ -45,4 +45,13 @@ describe('useIframeHeight', () => {
     expect(result.current).toEqual('400px');
   });
 
+  it('does not fail if url is missing', async () => {
+    const {result} = renderHook(() => useIframeHeight(null));
+
+    await asyncHandlingOf(() => {
+      window.postMessage({'datawrapper-height': {'1002': 350}}, '*');
+    });
+
+    expect(result.current).toEqual('400px');
+  });
 });

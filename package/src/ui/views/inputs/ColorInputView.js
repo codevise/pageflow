@@ -68,12 +68,24 @@ export const ColorInputView = Marionette.ItemView.extend({
   },
 
   updateSettings: function() {
+    this.resetSwatchesInStoredSettings();
+
     this.ui.input.minicolors('settings', {
       defaultValue: this.defaultValue(),
       swatches: this.getSwatches()
     });
 
     this.load();
+  },
+
+  // see https://github.com/claviska/jquery-minicolors/issues/287
+  resetSwatchesInStoredSettings: function() {
+    const settings = this.ui.input.data('minicolors-settings');
+
+    if (settings) {
+      delete settings.swatches;
+      this.ui.input.data('minicolors-settings', settings);
+    }
   },
 
   load: function() {

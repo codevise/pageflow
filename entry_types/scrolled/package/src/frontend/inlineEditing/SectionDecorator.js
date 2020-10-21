@@ -6,6 +6,7 @@ import contentElementStyles from './ContentElementDecorator.module.css';
 import {Toolbar} from './Toolbar';
 import {ForcePaddingContext} from '../Foreground';
 import {useEditorSelection} from './EditorState';
+import {MotifAreaVisibilityProvider} from '../MotifArea';
 import {useI18n} from '../i18n';
 
 import editIcon from './images/settings.svg';
@@ -67,9 +68,11 @@ export function SectionDecorator(props) {
                                      selection: nextTransitionSelection,
                                      position: 'after'})}
       </div>
-      <ForcePaddingContext.Provider value={isLastContentElementSelected || isSectionSelected}>
-        {props.children}
-      </ForcePaddingContext.Provider>
+      <MotifAreaVisibilityProvider visible={isSectionSelected}>
+        <ForcePaddingContext.Provider value={isLastContentElementSelected || isSectionSelected}>
+          {props.children}
+        </ForcePaddingContext.Provider>
+      </MotifAreaVisibilityProvider>
     </div>
   );
 }

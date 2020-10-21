@@ -7,6 +7,7 @@ namespace :pageflow_scrolled do
 
   namespace :storybook do
     namespace :seed do
+      desc 'Recreate storybook entry and set up storybook JSON seed from it'
       task :setup, [:output] => [:destroy_entry, :create_entry, :generate_json]
 
       desc 'Destroy entry to generate Storybook entry JSON seed from'

@@ -1,4 +1,5 @@
 import {VideoPlayerControls} from 'frontend/VideoPlayerControls';
+import {useFile} from 'entryState';
 
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect'
@@ -14,39 +15,45 @@ describe('VideoPlayerControls', () => {
   });
 
   it('renders quality selection menu', () => {
-    const {getByRole} = renderInEntry(<VideoPlayerControls videoFilePermaId={10}
-                                                           playerState={getInitialPlayerState()}
-                                                           playerActions={getPlayerActions()} />, {
-      seed: {
-        videoFiles: [{
-          permaId: 10,
-          variants: ['fullhd']
-        }]
+    const {getByRole} = renderInEntry(
+      () => <VideoPlayerControls videoFile={useFile({collectionName: 'videoFiles', permaId: 10})}
+                                 playerState={getInitialPlayerState()}
+                                 playerActions={getPlayerActions()} />,
+      {
+        seed: {
+          videoFiles: [{
+            permaId: 10,
+            variants: ['fullhd']
+          }]
+        }
       }
-    });
+    );
 
     expect(getByRole('menuitemradio', {name: '1080p HD'})).not.toBeNull();
   });
 
   it('renders text tracks menu', () => {
-    const {getByRole} = renderInEntry(<VideoPlayerControls videoFilePermaId={10}
-                                                           playerState={getInitialPlayerState()}
-                                                           playerActions={getPlayerActions()} />, {
-      seed: {
-        videoFiles: [{
-          id: 100,
-          permaId: 10,
-          variants: ['fullhd']
-        }],
-        textTrackFiles: [{
-          parentFileId: 100,
-          parentFileModelType: 'Pageflow::VideoFile',
-          configuration: {
-            label: 'English (CC)'
-          }
-        }]
+    const {getByRole} = renderInEntry(
+      () => <VideoPlayerControls videoFile={useFile({collectionName: 'videoFiles', permaId: 10})}
+                                 playerState={getInitialPlayerState()}
+                                 playerActions={getPlayerActions()} />,
+      {
+        seed: {
+          videoFiles: [{
+            id: 100,
+            permaId: 10,
+            variants: ['fullhd']
+          }],
+          textTrackFiles: [{
+            parentFileId: 100,
+            parentFileModelType: 'Pageflow::VideoFile',
+            configuration: {
+              label: 'English (CC)'
+            }
+          }]
+        }
       }
-    });
+    );
 
     expect(getByRole('menuitemradio', {name: 'English (CC)'})).not.toBeNull();
   });

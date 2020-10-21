@@ -172,6 +172,8 @@ de:
     public:
       navigation:
         chapter: Kapitel
+        mute: Ton stummschalten
+        unmute: Ton aktivieren
       sound_disclaimer:
         help_text: >
           Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/>
@@ -494,7 +496,7 @@ de:
           Dieser Schritt kann nicht rückgängig gemacht werden.
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
       edit_section:
-        edit_motif_area: Bildmotiv markieren...
+        edit_motif_area: Motivbereich markieren...
         tabs:
           section: Abschnitt
         attributes:
@@ -583,7 +585,7 @@ de:
         header: Element einfügen
         cancel: Abbrechen
       edit_motif_area:
-        header: Bildmotiv
+        header: Motivbereich
         hint: Ziehe ein Rechteck, um den wichtigsten Bereich des Bildes zu markieren.
         help_link: Wo wird dies verwendet?
         save: Speichern

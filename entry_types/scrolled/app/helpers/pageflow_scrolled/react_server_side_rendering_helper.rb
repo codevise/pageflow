@@ -13,11 +13,11 @@ module PageflowScrolled
     end
 
     def self.renderer
-      @renderer ||=
-        ReactRenderer
-        .new(files: ['pageflow-scrolled-server.js'],
-             # Define required external globals.
-             code: 'function videojs() {};')
+      if Rails.env.development?
+        ReactServerSideRenderingHelper.new_renderer
+      else
+        @renderer ||= ReactServerSideRenderingHelper.new_renderer
+      end
     end
 
     # Normally react-rails either tries to auto detect which asset
@@ -28,6 +28,13 @@ module PageflowScrolled
       def asset_container_class
         ::React::ServerRendering::WebpackerManifestContainer
       end
+    end
+
+    def self.new_renderer
+      ReactRenderer
+        .new(files: ['pageflow-scrolled-server.js'],
+             # Define required external globals.
+             code: 'function videojs() {};')
     end
   end
 end

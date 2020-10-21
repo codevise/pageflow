@@ -10,7 +10,9 @@ import useDimension from './useDimension';
 import {usePlayerState} from './MediaPlayer/usePlayerState';
 import {usePortraitOrientation} from './usePortraitOrientation';
 import {useSectionLifecycle} from './useSectionLifecycle';
+import {useBackgroundFile} from './useBackgroundFile';
 import {documentHiddenState} from 'pageflow/frontend';
+import {useFile} from '../entryState';
 
 import styles from './Backdrop.module.css';
 
@@ -23,7 +25,11 @@ export function Backdrop(props) {
                                props.transitionStyles[`backdrop-${props.state}`])}>
       <div className={props.transitionStyles.backdropInner}>
         <div className={props.transitionStyles.backdropInner2}>
-          {props.children(renderContent(props, containerDimension, setContainerRef))}
+          {props.children(
+             <BackgroundAsset {...props}
+                              containerDimension={containerDimension}
+                              setContainerRef={setContainerRef} />
+           )}
         </div>
       </div>
     </div>
@@ -35,11 +41,29 @@ Backdrop.defaultProps = {
   transitionStyles: {}
 };
 
-function renderContent(props, containerDimension, setContainerRef) {
-  if (props.video) {
+function BackgroundAsset(props) {
+  const video = useBackgroundFile({
+    file: useFile({collectionName: 'videoFiles', permaId: props.video}),
+    motifArea: props.videoMotifArea,
+    containerDimension: props.containerDimension
+  });
+  const image = useBackgroundFile({
+    file: useFile({collectionName: 'imageFiles', permaId: props.image}),
+    motifArea: props.imageMotifArea,
+    containerDimension: props.containerDimension
+  });
+  const imageMobile = useBackgroundFile({
+    file: useFile({collectionName: 'imageFiles', permaId: props.imageMobile}),
+    motifArea: props.imageMobileMotifArea,
+    containerDimension: props.containerDimension
+  });
+
+  if (video) {
     return (
-      <Fullscreen ref={setContainerRef}>
-        <BackgroundVideo {...props} />
+      <Fullscreen ref={props.setContainerRef}>
+        <BackgroundVideo video={video}
+                         onMotifAreaUpdate={props.onMotifAreaUpdate}
+                         containerDimension={props.containerDimension} />
       </Fullscreen>
     );
   }
@@ -50,27 +74,27 @@ function renderContent(props, containerDimension, setContainerRef) {
     );
   } else {
     return (
-      <Fullscreen ref={setContainerRef}>
-        {renderBackgroundImage(props, containerDimension)}
+      <Fullscreen ref={props.setContainerRef}>
+        {renderBackgroundImage({image, imageMobile, onMotifAreaUpdate: props.onMotifAreaUpdate, containerDimension: props.containerDimension})}
       </Fullscreen>
     );
   }
 }
 
-function renderBackgroundImage(props, containerDimension) {
-  if (props.image && props.imageMobile) {
+function renderBackgroundImage({image, imageMobile, onMotifAreaUpdate, containerDimension}) {
+  if (image && imageMobile) {
     return (
-      <OrientationAwareBackgroundImage image={props.image}
-                                       imageMobile={props.imageMobile}
-                                       onMotifAreaUpdate={props.onMotifAreaUpdate}
+      <OrientationAwareBackgroundImage image={image}
+                                       imageMobile={imageMobile}
+                                       onMotifAreaUpdate={onMotifAreaUpdate}
                                        containerDimension={containerDimension} />
     );
   }
   else {
     return (
       <BackgroundImage
-          image={props.image || props.imageMobile}
-          onMotifAreaUpdate={props.onMotifAreaUpdate}
+          image={image || imageMobile}
+          onMotifAreaUpdate={onMotifAreaUpdate}
           containerDimension={containerDimension} />
     );
   }
@@ -100,17 +124,17 @@ function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
 
   return (
     <>
-      <Image id={image} isPrepared={isPrepared} structuredData={true}/>
-      <MotifArea key={image}
+      <Image imageFile={image} isPrepared={isPrepared} structuredData={true}/>
+      <MotifArea key={image?.permaId}
                  onUpdate={onMotifAreaUpdate}
-                 imageId={image}
+                 file={image}
                  containerWidth={containerDimension.width}
                  containerHeight={containerDimension.height}/>
     </>
   );
 }
 
-function BackgroundVideo(props) {
+function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) {
   const [playerState, playerActions] = usePlayerState();
   const {isPrepared} = useSectionLifecycle({
     onVisible() {
@@ -130,7 +154,7 @@ function BackgroundVideo(props) {
       playerActions.pause()
     }
   });
-  
+
   useEffect(() => {
     let documentState = documentHiddenState((visibilityState) => {
       if (visibilityState === 'hidden') {
@@ -146,13 +170,20 @@ function BackgroundVideo(props) {
   }, [playerActions])
 
   return (
-    <VideoPlayer isPrepared={isPrepared}
-                 playerState={playerState}
-                 playerActions={playerActions}
-                 id={props.video}
-                 textTracksDisabled={true}
-                 fit="cover"
-                 loop={true}
-                 playsInline={true} />
+    <>
+      <VideoPlayer isPrepared={isPrepared}
+                   playerState={playerState}
+                   playerActions={playerActions}
+                   videoFile={video}
+                   textTracksDisabled={true}
+                   fit="cover"
+                   loop={true}
+                   playsInline={true} />
+      <MotifArea key={video.permaId}
+                 onUpdate={onMotifAreaUpdate}
+                 file={video}
+                 containerWidth={containerDimension.width}
+                 containerHeight={containerDimension.height}/>
+    </>
   );
 }

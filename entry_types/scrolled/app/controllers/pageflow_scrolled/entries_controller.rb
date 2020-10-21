@@ -7,6 +7,7 @@ module PageflowScrolled
     helper Pageflow::SocialShareHelper
     helper Pageflow::MetaTagsHelper
     helper Pageflow::StructuredDataHelper
+    helper FaviconHelper
 
     def show
       @entry = get_published_entry_from_env

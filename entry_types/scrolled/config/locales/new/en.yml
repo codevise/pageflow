@@ -86,6 +86,8 @@ en:
     public:
       navigation:
         chapter: Chapter
+        mute: Mute sound
+        unmute: Unmute sound
       sound_disclaimer:
         help_text: >
           This article works best with the sound turned on. <br/>
@@ -489,7 +491,7 @@ en:
         header: Insert element
         cancel: Cancel
       edit_motif_area:
-        header: Image Motif
+        header: Motif area
         hint: Drag to select the most important part of the image.
         help_link: What is this used for?
         save: Save

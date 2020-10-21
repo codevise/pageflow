@@ -18,7 +18,7 @@ export function InlineImage({configuration}) {
                                     aspectRatio={imageFile ? undefined : 0.75}
                                     position={configuration.position}
                                     opaque={!!configuration.caption}>
-        <Image {...configuration}
+        <Image imageFile={imageFile}
                isPrepared={isPrepared}
                structuredData={true}
                variant={configuration.position === 'full' ?  'large' : 'medium'} />

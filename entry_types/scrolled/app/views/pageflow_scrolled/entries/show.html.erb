@@ -14,6 +14,8 @@
     <%= social_share_meta_tags_for(@entry) %>
     <%= meta_tags_for_entry(@entry) %>
 
+    <%= scrolled_favicons_for_entry(@entry.theme) %>
+
     <%= javascript_include_tag 'pageflow/videojs' %>
     <%= javascript_include_tag 'pageflow_scrolled/legacy' %>
 

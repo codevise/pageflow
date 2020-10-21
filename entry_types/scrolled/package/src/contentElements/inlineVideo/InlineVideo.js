@@ -7,11 +7,14 @@ import {
   MediaInteractionTracking,
   VideoPlayerControls,
   useContentElementEditorState,
+  useFile,
   usePlayerState,
   useContentElementLifecycle
 } from 'pageflow-scrolled/frontend';
 
 export function InlineVideo({sectionProps, configuration}) {
+  const videoFile = useFile({collectionName: 'videoFiles', permaId: configuration.id});
+
   const [playerState, playerActions] = usePlayerState();
   const {isEditable, isSelected} = useContentElementEditorState();
 
@@ -48,7 +51,7 @@ export function InlineVideo({sectionProps, configuration}) {
                      controls={configuration.controls}
                      playerState={playerState}
                      playerActions={playerActions}
-                     id={configuration.id}
+                     videoFile={videoFile}
                      posterId={configuration.posterId}
                      defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                      quality={'high'}
@@ -56,7 +59,7 @@ export function InlineVideo({sectionProps, configuration}) {
                      atmoDuringPlayback={configuration.atmoDuringPlayback}
                      onClick={onPlayerClick} />
 
-        <VideoPlayerControls videoFilePermaId={configuration.id}
+        <VideoPlayerControls videoFile={videoFile}
                              defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                              playerState={playerState}
                              playerActions={playerActions}

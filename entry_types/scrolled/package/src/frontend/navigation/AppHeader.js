@@ -8,6 +8,7 @@ import {HamburgerIcon} from './HamburgerIcon'
 import {ChapterLink} from "./ChapterLink";
 import {LegalInfoMenu} from "./LegalInfoMenu";
 import {SharingMenu} from "./SharingMenu";
+import {ToggleMuteButton} from './ToggleMuteButton';
 import {Logo} from './Logo';
 import {SkipLinks} from './SkipLinks';
 
@@ -102,8 +103,9 @@ export function AppHeader(props) {
         </nav>
 
         <div className={classNames(styles.contextIcons)}>
-          <SharingMenu />
+          <ToggleMuteButton />
           <LegalInfoMenu />
+          <SharingMenu />
         </div>
       </div>
 

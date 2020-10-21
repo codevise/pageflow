@@ -75,6 +75,8 @@ $.imgAreaSelect = function (img, options) {
         /* Image dimensions (as returned by .width() and .height()) */
         imgWidth, imgHeight,
 
+        gridX, gridY, gridSteps = 20,
+
         /*
          * jQuery object representing the parent element that the plugin
          * elements are appended to
@@ -281,6 +283,19 @@ $.imgAreaSelect = function (img, options) {
         minHeight = round(options.minHeight / scaleY) || 0;
         maxWidth = round(min(options.maxWidth / scaleX || 1<<24, imgWidth));
         maxHeight = round(min(options.maxHeight / scaleY || 1<<24, imgHeight));
+
+        if (imgWidth > imgHeight) {
+            gridX = imgWidth / gridSteps;
+            gridY = imgHeight < gridX ?
+                    imgHeight :
+                    gridX + (imgHeight % gridX) / Math.floor(imgHeight / gridX);
+        }
+        else {
+            gridY = imgHeight / gridSteps;
+            gridX = imgWidth < gridY ?
+                    imgWidth :
+                    gridY + (imgWidth % gridY) / Math.floor(imgWidth / gridY);
+        }
 
         /*
          * Workaround for jQuery 1.3.2 incorrect offset calculation, originally
@@ -610,6 +625,8 @@ $.imgAreaSelect = function (img, options) {
             fixAspectRatio(true);
         }
 
+        snapToGrid();
+
         selection = { x1: selX(min(x1, x2)), x2: selX(max(x1, x2)),
             y1: selY(min(y1, y2)), y2: selY(max(y1, y2)),
             width: abs(x2 - x1), height: abs(y2 - y1) };
@@ -644,8 +661,13 @@ $.imgAreaSelect = function (img, options) {
     //            New viewport Y1
     //
     function doMove(newX1, newY1) {
-        x2 = (x1 = newX1) + selection.width;
-        y2 = (y1 = newY1) + selection.height;
+        x1 = newX1;
+        y1 = newY1;
+
+        snapToGrid();
+
+        x2 = x1 + selection.width;
+        y2 = y1 + selection.height;
 
         $.extend(selection, { x1: selX(x1), y1: selY(y1), x2: selX(x2),
             y2: selY(y2) });
@@ -653,6 +675,13 @@ $.imgAreaSelect = function (img, options) {
         update();
 
         options.onSelectChange(img, getSelection());
+    }
+
+    function snapToGrid() {
+        x1 = Math.round(x1 / gridX) * gridX;
+        x2 = Math.round(x2 / gridX) * gridX;
+        y1 = Math.round(y1 / gridY) * gridY;
+        y2 = Math.round(y2 / gridY) * gridY;
     }
 
     //
