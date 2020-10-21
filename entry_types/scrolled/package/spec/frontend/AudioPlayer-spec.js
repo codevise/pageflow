@@ -175,6 +175,6 @@ describe('AudioPlayer', () => {
         })
       });
 
-    expect(result.container.querySelector('audio')).toHaveAttribute('alt', ' ');
+    expect(result.container.querySelector('audio').hasAttribute('alt')).toBe(true);
   });
 });

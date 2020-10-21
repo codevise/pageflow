@@ -42,7 +42,7 @@ export function AudioPlayer(props) {
                        sources={processSources(audioFile)}
                        textTracksInset={props.position === 'full'}
                        posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
-                       altText={audioFile.configuration.alt ? audioFile.configuration.alt : ' '}
+                       altText={audioFile.configuration.alt}
                        {...props} />
           <AudioStructuredData file={audioFile} />
         </div>

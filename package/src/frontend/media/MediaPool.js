@@ -45,7 +45,7 @@ export class MediaPool {
     player = this.unAllocatedPlayers[playerType].pop();
     if (player) {
 
-      player.el().children[0].setAttribute('alt', altText); //add alt texts;
+      player.getMediaElement().setAttribute('alt', altText);
       player.pause();
       player.getMediaElement().loop = loop
       player.poster(poster);

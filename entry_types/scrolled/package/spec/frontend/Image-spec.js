@@ -185,6 +185,6 @@ describe('Image', () => {
         }
       });
 
-    expect(getByRole('img')).toHaveAttribute('alt', ' ');
+    expect(getByRole('img').hasAttribute('alt')).toBe(true);
   });
 });

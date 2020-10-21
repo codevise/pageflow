@@ -51,6 +51,16 @@ describe('media', function() {
       expect(player.getMediaElement().getAttribute('loop')).toBe('');
     });
 
+    it('sets alt attribute to player', function () {
+      let player = media.getPlayer(fileSources, {
+        tagName: 'audio',
+        altText: 'audio file'
+      });
+
+      expect(player.getMediaElement().hasAttribute('alt')).toBe(true);
+      expect(player.getMediaElement().getAttribute('alt')).toBe('audio file');
+    });
+
     it('updates player\'s context data', () => {
       let context = {
         page: {

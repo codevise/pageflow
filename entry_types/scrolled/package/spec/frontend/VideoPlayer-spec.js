@@ -169,6 +169,6 @@ describe('VideoPlayer', () => {
         seed: getVideoFileSeed({permaId: 100})
       });
 
-    expect(result.container.querySelector('video')).toHaveAttribute('alt', ' ');
+    expect(result.container.querySelector('video').hasAttribute('alt')).toBe(true);
   });
 });
