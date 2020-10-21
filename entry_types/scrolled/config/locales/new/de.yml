@@ -172,6 +172,8 @@ de:
     public:
       navigation:
         chapter: Kapitel
+        mute: Ton stummschalten
+        unmute: Ton aktivieren
       sound_disclaimer:
         help_text: >
           Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/>

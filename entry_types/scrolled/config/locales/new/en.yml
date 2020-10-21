@@ -86,6 +86,8 @@ en:
     public:
       navigation:
         chapter: Chapter
+        mute: Mute sound
+        unmute: Unmute sound
       sound_disclaimer:
         help_text: >
           This article works best with the sound turned on. <br/>
