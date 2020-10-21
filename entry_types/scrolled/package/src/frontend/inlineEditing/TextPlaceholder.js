@@ -9,7 +9,7 @@ export function TextPlaceholder({text, visible}) {
 
   return (
     <div className={styles.placeholder}>
-      {text}
+      <div>{text}</div>
     </div>
   );
 }
