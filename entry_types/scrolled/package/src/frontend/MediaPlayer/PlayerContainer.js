@@ -5,7 +5,7 @@ import {useAtmo} from '../useAtmo';
 import './videojsBase.module.css';
 
 function PlayerContainer({
-  filePermaId, className, sources, textTrackSources, poster, type, playsInline, loop, controls, mediaEventsContextData, atmoDuringPlayback, onSetup, onDispose
+  filePermaId, className, sources, textTrackSources, poster, type, playsInline, loop, controls, mediaEventsContextData, atmoDuringPlayback, onSetup, onDispose, altText
 }){
   const playerWrapperRef = useRef(null);
   let atmo = useAtmo();
@@ -23,7 +23,8 @@ function PlayerContainer({
         loop: loop,
         controls: controls,
         hooks: atmoDuringPlayback ? atmo.createMediaPlayerHooks(atmoDuringPlayback) : {}, //create hooks only for inline media players
-        mediaEventsContextData
+        mediaEventsContextData,
+        altText
       });
 
       let playerElement = player.el();

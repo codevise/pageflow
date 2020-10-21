@@ -77,7 +77,8 @@ function PreparedMediaPlayer(props){
                        mediaEventsContextData={eventContextData}
                        atmoDuringPlayback={props.atmoDuringPlayback}
                        onSetup={onSetup}
-                       onDispose={onDispose} />
+                       onDispose={onDispose}
+                       altText={props.altText} />
       <div className={styles.mask} onClick={props.onClick} />
     </>
   );

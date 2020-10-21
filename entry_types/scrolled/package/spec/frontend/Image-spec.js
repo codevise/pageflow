@@ -155,4 +155,36 @@ describe('Image', () => {
                                          'name': 'some author'
                                        }});
   });
+
+  it('render alt text', () => {
+    const {getByRole} =
+      renderInEntry(<Image id={100} />, {
+        seed: {
+          imageFileUrlTemplates: {
+            large: ':id_partition/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100, configuration: {alt: 'water'}}
+          ]
+        }
+      });
+
+    expect(getByRole('img')).toHaveAttribute('alt', 'water');
+  });
+
+  it('render empty alt attr', () => {
+    const {getByRole} =
+      renderInEntry(<Image id={100} />, {
+        seed: {
+          imageFileUrlTemplates: {
+            large: ':id_partition/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100}
+          ]
+        }
+      });
+
+    expect(getByRole('img').hasAttribute('alt')).toBe(true);
+  });
 });

@@ -135,4 +135,40 @@ describe('VideoPlayer', () => {
       })
     );
   });
+
+  it('renders alt text', () => {
+    function getVideoFileSeedWithConfiguration({
+      id = 1,
+      permaId = 100,
+      basename = 'video'
+    } = {}) {
+      return {
+        fileUrlTemplates: {
+          videoFiles: {
+            medium: ':id_partition/medium/:basename.mp4',
+            high: ':id_partition/high/:basename.mp4'
+          }
+        },
+        videoFiles: [
+          {id, permaId, isReady: true, basename, configuration: {alt: 'interview'}}
+        ]
+      };
+    }
+
+    const result =
+      renderInEntry(<VideoPlayer {...requiredProps()} id={100} />, {
+        seed: getVideoFileSeedWithConfiguration({permaId: 100})
+      });
+
+    expect(result.container.querySelector('video')).toHaveAttribute('alt', 'interview');
+  });
+
+  it('renders empty alt attr', () => {
+    const result =
+      renderInEntry(<VideoPlayer {...requiredProps()} id={100} />, {
+        seed: getVideoFileSeed({permaId: 100})
+      });
+
+    expect(result.container.querySelector('video').hasAttribute('alt')).toBe(true);
+  });
 });

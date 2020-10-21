@@ -33,7 +33,7 @@ export class MediaPool {
     }
   }
   allocatePlayer({playerType, playerId, playsInline, mediaEventsContextData,
-                  hooks, poster, loop = false, controls = false}){
+                  hooks, poster, loop = false, controls = false, altText}){
     let player = undefined;
     if (!this.unAllocatedPlayers[playerType]) {
       this.populateMediaPool_();
@@ -44,7 +44,8 @@ export class MediaPool {
 
     player = this.unAllocatedPlayers[playerType].pop();
     if (player) {
-      
+
+      player.getMediaElement().setAttribute('alt', altText);
       player.pause();
       player.getMediaElement().loop = loop
       player.poster(poster);
