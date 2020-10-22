@@ -124,7 +124,7 @@ describe('AudioPlayer', () => {
     renderInEntry(
       () => <AudioPlayer {...requiredProps()}
                          audioFile={useFile({collectionName: 'audioFiles', permaId: 100})}
-                         posterId={200} />,
+                         posterImageFile={useFile({collectionName: 'imageFiles', permaId: 200})} />,
       {
         seed: {
           fileUrlTemplates: {

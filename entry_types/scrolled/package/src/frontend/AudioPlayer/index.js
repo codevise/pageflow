@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {useFile} from '../../entryState';
 import {MediaPlayer} from '../MediaPlayer';
 import {useTextTracks} from '../useTextTracks';
 import {useMediaMuted} from '../useMediaMuted';
@@ -15,13 +14,12 @@ import styles from '../AudioPlayer.module.css';
  *
  * @param {Object} props
  * @param {Object} props.audioFile - Audio file obtained via `useFile`.
- * @param {number} [props.posterId] - Perma id of the poster image file.
+ * @param {number} [props.posterImageFile] - Poster image file obtained via `useFile`.
  * @param {number} [props.defaultTextTrackFileId] - Perma id of default text track file.
  * @param {String} [props.position] - Position of parent content element.
  * @param {boolean} [props.isPrepared] - Control lazy loading.
  */
-export function AudioPlayer({audioFile, ...props}) {
-  const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
+export function AudioPlayer({audioFile, posterImageFile, ...props}) {
   const textTracks = useTextTracks({
     file: audioFile,
     defaultTextTrackFilePermaId: props.defaultTextTrackFilePermaId,
@@ -30,17 +28,18 @@ export function AudioPlayer({audioFile, ...props}) {
 
   if (audioFile && audioFile.isReady) {
     return (
-      <ViewportDependentPillarBoxes file={posterImage} position={props.position}>
+      <ViewportDependentPillarBoxes file={posterImageFile} position={props.position}>
         <div className={classNames(styles.spaceForTextTracks,
-                                   {[styles.spaceForTextTracksActive]: !posterImage &&
+                                   {[styles.spaceForTextTracksActive]: !posterImageFile &&
                                      textTracks.files.length})}>
           <MediaPlayer className={styles.audioPlayer}
                        type={'audio'}
                        textTracks={textTracks}
                        filePermaId={audioFile.permaId}
                        sources={processSources(audioFile)}
-                       textTracksInset={!!posterImage}
-                       posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
+                       textTracksInset={!!posterImageFile}
+                       posterImageUrl={posterImageFile && posterImageFile.isReady ?
+                                       posterImageFile.urls.large : undefined}
                        altText={audioFile.configuration.alt}
                        {...props} />
           <AudioStructuredData file={audioFile} />
