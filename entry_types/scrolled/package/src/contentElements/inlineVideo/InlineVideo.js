@@ -14,6 +14,7 @@ import {
 
 export function InlineVideo({sectionProps, configuration}) {
   const videoFile = useFile({collectionName: 'videoFiles', permaId: configuration.id});
+  const posterImageFile = useFile({collectionName: 'imageFiles', permaId: configuration.posterId});
 
   const [playerState, playerActions] = usePlayerState();
   const {isEditable, isSelected} = useContentElementEditorState();
@@ -59,7 +60,7 @@ export function InlineVideo({sectionProps, configuration}) {
                        playerState={playerState}
                        playerActions={playerActions}
                        videoFile={videoFile}
-                       posterId={configuration.posterId}
+                       posterImageFile={posterImageFile}
                        defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                        quality={'high'}
                        playsInline={true}

@@ -14,6 +14,7 @@ import {
 
 export function InlineAudio({sectionProps, configuration}) {
   const audioFile = useFile({collectionName: 'audioFiles', permaId: configuration.id});
+  const posterImageFile = useFile({collectionName: 'imageFiles', permaId: configuration.posterId});
 
   const [playerState, playerActions] = usePlayerState();
   const {isEditable, isSelected} = useContentElementEditorState();
@@ -49,7 +50,7 @@ export function InlineAudio({sectionProps, configuration}) {
                            defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                            playerState={playerState}
                            playerActions={playerActions}
-                           standAlone={!configuration.posterId}
+                           standAlone={!posterImageFile}
                            configuration={configuration}
                            sectionProps={sectionProps}
                            onPlayerClick={onPlayerClick}>
@@ -59,7 +60,7 @@ export function InlineAudio({sectionProps, configuration}) {
                      playerState={playerState}
                      playerActions={playerActions}
                      audioFile={audioFile}
-                     posterId={configuration.posterId}
+                     posterImageFile={posterImageFile}
                      defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                      quality={'high'}
                      playsInline={true}

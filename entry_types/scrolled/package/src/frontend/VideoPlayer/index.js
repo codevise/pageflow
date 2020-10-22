@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {useFile} from '../../entryState';
 import {MediaPlayer} from '../MediaPlayer';
 import {useTextTracks} from '../useTextTracks';
 import {useMediaMuted} from '../useMediaMuted';
@@ -16,15 +15,14 @@ import {VideoStructuredData} from './VideoStructuredData';
  *
  * @param {Object} props
  * @param {Object} props.videoFile - Video file obtained via `useFile`.
- * @param {number} [props.posterId] - Perma id of the poster image file.
+ * @param {number} [props.posterImageFile] - Poster image file obtained via `useFile`.
  * @param {number} [props.defaultTextTrackFileId] - Perma id of default text track file.
  * @param {boolean} [props.isPrepared] - Control lazy loading.
  * @param {String} [props.fit] - `"contain"` (default) or `"cover"`.
  * @param {String} [props.position] - Position of parent content element.
  */
-export function VideoPlayer({videoFile, ...props}) {
+export function VideoPlayer({videoFile, posterImageFile, ...props}) {
   const [activeQuality] = useVideoQualitySetting();
-  const posterImage = useFile({collectionName: 'imageFiles', permaId: props.posterId});
   const textTracks = useTextTracks({
     file: videoFile,
     defaultTextTrackFilePermaId: props.defaultTextTrackFilePermaId,
@@ -41,7 +39,8 @@ export function VideoPlayer({videoFile, ...props}) {
                        filePermaId={videoFile.permaId}
                        sources={sources(videoFile, activeQuality)}
                        textTracksInset={true}
-                       posterImageUrl={posterImage && posterImage.isReady ? posterImage.urls.large : undefined}
+                       posterImageUrl={posterImageFile && posterImageFile.isReady ?
+                                       posterImageFile.urls.large : undefined}
                        altText={videoFile.configuration.alt}
                        objectPosition={props.fit === 'cover' ? videoFile.cropPosition : undefined}
                        {...props} />

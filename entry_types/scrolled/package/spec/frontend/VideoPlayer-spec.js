@@ -124,7 +124,7 @@ describe('VideoPlayer', () => {
     renderInEntry(
       () => <VideoPlayer {...requiredProps()}
                          videoFile={useFile({collectionName: 'videoFiles', permaId: 100})}
-                         posterId={200} />,
+                         posterImageFile={useFile({collectionName: 'imageFiles', permaId: 200})} />,
       {
         seed: {
           fileUrlTemplates: {
