@@ -10,6 +10,7 @@ import {LegalInfoMenu} from "./LegalInfoMenu";
 import {SharingMenu} from "./SharingMenu";
 import {ToggleMuteButton} from './ToggleMuteButton';
 import {Logo} from './Logo';
+import {SkipLinks} from './SkipLinks';
 
 import styles from './AppHeader.module.css';
 
@@ -90,6 +91,7 @@ export function AppHeader(props) {
         <HamburgerIcon onClick={handleBurgerMenuClick}
                        mobileNavHidden={mobileNavHidden}/>
 
+        <SkipLinks />
         <Logo />
 
         <nav className={classNames(styles.navigationChapters, {[styles.navigationChaptersHidden]: mobileNavHidden})}

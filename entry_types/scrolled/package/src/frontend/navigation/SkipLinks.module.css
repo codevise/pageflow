@@ -1,0 +1,20 @@
+.link {
+  position: absolute;
+  z-index: 10000;
+  top: -1000em;
+  left: -1000em;
+
+  display: block;
+  border: 1px solid #eeeeee;
+  border-radius: 5px;
+  padding: 5px 5px;
+  background: #00375a;
+  text-align: center;
+  line-height: 25px;
+  color: #ffffff;
+}
+
+.link:focus {
+  left: 13.8%;
+  top: 13%;
+}
