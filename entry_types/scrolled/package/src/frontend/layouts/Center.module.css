@@ -20,10 +20,19 @@
   max-width: none;
 }
 
+.clear {
+  clear: both;
+}
+
 @media (min-width: 950px) {
   .inner-left,
   .inner-right {
     margin-top: 0.375em;
+
+    /* Ensure element is positioned in front of text block wrapping around
+       element and can be selected in editor. */
+    position: relative;
+    z-index: 1;
   }
 
   .inner-left {

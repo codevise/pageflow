@@ -3,5 +3,6 @@ import {TextBlock} from './TextBlock';
 
 frontend.contentElementTypes.register('textBlock', {
   component: TextBlock,
-  customSelectionRect: true
+  customSelectionRect: true,
+  supportsWrappingAroundFloats: true
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import {api} from '../api';
 import {ContentElements} from '../ContentElements';
 
 import styles from './Center.module.css';
@@ -11,7 +12,7 @@ export function Center(props) {
       <div ref={props.contentAreaRef} />
       <ContentElements sectionProps={props.sectionProps} items={props.items}>
         {(item, child, index) =>
-          <div key={item.id} className={classNames(styles.outer, styles[`outer-${item.position}`])}>
+          <div key={item.id} className={outerClassName(item)}>
             <div className={classNames(styles.item, styles[`item-${item.position}`])}>
               {props.children(
                  <div className={styles[`inner-${item.position}`]}>
@@ -25,6 +26,14 @@ export function Center(props) {
       {renderPlaceholder(props.placeholder)}
     </div>
   );
+}
+
+function outerClassName(item) {
+  const {supportsWrappingAroundFloats} = api.contentElementTypes.getOptions(item.type);
+
+  return classNames(styles.outer,
+                    styles[`outer-${item.position}`],
+                    {[styles.clear]: !supportsWrappingAroundFloats})
 }
 
 function boxProps(items, item, index) {

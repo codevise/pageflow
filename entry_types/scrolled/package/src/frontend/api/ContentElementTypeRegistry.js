@@ -13,6 +13,13 @@ export class ContentElementTypeRegistry {
    * @param {string} typeName - Name of the content element type.
    * @param {Object} options
    * @param {React.Component} options.component
+   * @param {boolean} [options.supportsWrappingAroundFloats] -
+   *   In sections with centered layout, content elements can be
+   *   floated to the left or right. By default all content
+   *   elements are cleared to position them below floating
+   *   elements. If a content element renders mainly text that
+   *   can wrap around floating elements, clearing can be
+   *   disabled via this option.
    * @memberof frontend_contentElementTypes
    *
    * @example

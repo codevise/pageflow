@@ -13,12 +13,16 @@
 .text ul {
   margin: 0;
   padding-left: 20px;
+  /* Prevent list markers from overlapping with floated elements. */
+  clear: both;
 }
 
 .text blockquote {
   padding: 0.5em 1em 0.5em 2em;
   margin: 1em 0 0 0.5em;
   position: relative;
+  /* Prevent block quote symbol from overlapping with floated elements. */
+  overflow: hidden;
 }
 
 .text blockquote::before {

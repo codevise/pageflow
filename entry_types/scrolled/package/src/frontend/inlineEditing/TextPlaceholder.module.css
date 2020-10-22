@@ -1,6 +1,9 @@
 .placeholder {
-  position: absolute;
-  transform: translateY(-100%);
   pointer-events: none;
   opacity: 0.5;
+  height: 0;
+}
+
+.placeholder > div {
+  transform: translateY(-100%);
 }
