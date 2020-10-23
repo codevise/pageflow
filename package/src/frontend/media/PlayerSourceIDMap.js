@@ -1,3 +1,5 @@
+import {AudioPlayer} from '../AudioPlayer';
+
 export const PlayerSourceIDMap = function (media, {playerOptions} = {}) {
   return {
     current: undefined,
@@ -6,6 +8,13 @@ export const PlayerSourceIDMap = function (media, {playerOptions} = {}) {
       this[id] = sources;
     },
     get: function (sourceID) {
+      if (!this[sourceID]) {
+        return new AudioPlayer.Null();
+      }
+
+      if (this.current && this.current.playerId === sourceID) {
+        return this.current;
+      }
       if (this.previous && this.previous.playerId === sourceID) {
         let holder = this.current;
         this.current = this.previous;

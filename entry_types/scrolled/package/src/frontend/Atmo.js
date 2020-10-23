@@ -66,9 +66,9 @@ export class Atmo {
       return this.multiPlayer.changeVolumeFactor(1);
     }
   }
-  update() {    
+  update() {
     if (!this.disabled) {
-      if (this.backgroundMedia.muted || this.atmoSourceId == undefined) {
+      if (this.backgroundMedia.muted) {
         this.multiPlayer.fadeOutAndPause();
       }
       else {

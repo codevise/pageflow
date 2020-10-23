@@ -34,11 +34,9 @@ export function AtmoProvider({children}){
 
   let updateAtmo = function ({audioFilePermaId, sources}) {
     let currentAtmo = atmoConfig.current;
-    if (currentAtmo.atmo) {
-      if (sources) {
-        currentAtmo.pool.mapSources(audioFilePermaId, sources);
-      }
 
+    if (currentAtmo.atmo) {
+      currentAtmo.pool.mapSources(audioFilePermaId, sources);
       currentAtmo.atmo.atmoSourceId = audioFilePermaId;
       currentAtmo.atmo.update();
     }
