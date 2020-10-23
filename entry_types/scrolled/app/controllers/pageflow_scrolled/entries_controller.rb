@@ -3,6 +3,7 @@ module PageflowScrolled
   class EntriesController < ActionController::Base
     include Pageflow::EntriesControllerEnvHelper
 
+    helper Pageflow::EntriesHelper
     helper Pageflow::WidgetsHelper
     helper Pageflow::SocialShareHelper
     helper Pageflow::MetaTagsHelper
