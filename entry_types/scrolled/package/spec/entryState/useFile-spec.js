@@ -13,7 +13,7 @@ describe('useFile', () => {
         seed: {
           fileUrlTemplates: {
             imageFiles: {
-              high: '/image_files/:id_partition/high.jpg'
+              large: '/image_files/:id_partition/large.jpg'
             }
           },
           fileModelTypes: {
@@ -44,19 +44,19 @@ describe('useFile', () => {
         some: 'value'
       },
       urls: {
-        high: '/image_files/000/000/100/high.jpg'
+        large: '/image_files/000/000/100/large.jpg'
       }
     });
   });
 
-  it('reads data from watched collection', () => {
+  it('reads image file data from watched collection', () => {
     const {result} = renderHookInEntry(
       () => useFile({collectionName: 'imageFiles', permaId: 1}),
       {
         seed: {
           fileUrlTemplates: {
             imageFiles: {
-              high: '/image_files/:id_partition/high.jpg'
+              large: '/image_files/:id_partition/large.jpg'
             }
           },
           fileModelTypes: {
@@ -77,7 +77,7 @@ describe('useFile', () => {
                   configuration: {
                     some: 'value'
                   }
-                }
+                },
               ]
             }
           }), {dispatch})
@@ -95,7 +95,64 @@ describe('useFile', () => {
         some: 'value'
       },
       urls: {
-        high: '/image_files/000/000/100/high.jpg'
+        large: '/image_files/000/000/100/large.jpg'
+      }
+    });
+  });
+
+  it('reads video file data from watched collection', () => {
+    const {result} = renderHookInEntry(
+      () => useFile({collectionName: 'videoFiles', permaId: 1}),
+      {
+        seed: {
+          fileUrlTemplates: {
+            videoFiles: {
+              high: '/video_files/:id_partition/high.mp4',
+              posterLarge: '/video_files/:id_partition/posterLarge.jpg',
+            },
+          },
+          fileModelTypes: {
+            videoFiles: 'Pageflow::VideoFile'
+          }
+        },
+        setup: (dispatch, entryTypeSeed) => {
+          watchCollections(factories.entry(ScrolledEntry, {}, {
+            entryTypeSeed,
+            fileTypes: factories.fileTypes(function() {
+              this.withVideoFileType();
+              this.withTextTrackFileType();
+            }),
+            filesAttributes: {
+              video_files: [
+                {
+                  id: 100,
+                  perma_id: 1,
+                  basename: 'video',
+                  rights: 'author',
+                  variants: ['high', 'poster_large'],
+                  configuration: {
+                    some: 'value'
+                  }
+                }
+              ]
+            }
+          }), {dispatch})
+        }
+      }
+    );
+
+    const file = result.current;
+
+    expect(file).toMatchObject({
+      id: 100,
+      permaId: 1,
+      modelType: 'Pageflow::VideoFile',
+      configuration: {
+        some: 'value'
+      },
+      urls: {
+        high: '/video_files/000/000/100/high.mp4',
+        posterLarge: '/video_files/000/000/100/posterLarge.jpg'
       }
     });
   });

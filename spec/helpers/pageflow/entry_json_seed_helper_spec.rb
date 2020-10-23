@@ -57,6 +57,8 @@ module Pageflow
         result = helper.entry_json_seed(entry)
 
         expect(json_get(result, path: %w[files video_files * id])).to eq([video_file.id])
+        expect(json_get(result, path: %w[files video_files * variants]))
+          .to match([include('poster_large')])
       end
     end
 

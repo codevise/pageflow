@@ -218,14 +218,17 @@ module PageflowScrolled
 
       it 'renders files' do
         entry = create(:published_entry)
-        image_file = create_used_file(:image_file, entry: entry)
+        image_file = create_used_file(:video_file, entry: entry, output_presences: {'high': true})
 
         result = render(helper, entry)
 
         expect(result)
           .to include_json(collections: {
-                             imageFiles: [
-                               {permaId: image_file.perma_id}
+                             videoFiles: [
+                               {
+                                 permaId: image_file.perma_id,
+                                 variants: including('high', 'posterLarge')
+                               }
                              ]
                            })
       end
