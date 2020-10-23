@@ -2,3 +2,7 @@
   width: 100%;
   z-index: 2;
 }
+
+.defaultBackground {
+  background-color: #333;
+}

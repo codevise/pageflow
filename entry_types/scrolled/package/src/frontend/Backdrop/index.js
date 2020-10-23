@@ -15,7 +15,8 @@ export function Backdrop(props) {
                                props.transitionStyles.backdrop,
                                props.transitionStyles[`backdrop-${props.state}`])}>
       <div className={props.transitionStyles.backdropInner}>
-        <div className={props.transitionStyles.backdropInner2}>
+        <div className={classNames(styles.defaultBackground,
+                                   props.transitionStyles.backdropInner2)}>
           {props.children(
              <BackgroundAsset {...props}
                               containerDimension={containerDimension}
