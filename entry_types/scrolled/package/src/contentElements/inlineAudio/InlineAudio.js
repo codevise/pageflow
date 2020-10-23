@@ -26,7 +26,7 @@ export function InlineAudio({sectionProps, configuration}) {
     },
 
     onDeactivate() {
-      playerActions.pause();
+      playerActions.fadeOutAndPause(400);
     }
   });
 
