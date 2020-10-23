@@ -44,6 +44,19 @@ describe('PlayerSourceIDMap', () => {
     expect(media.releasePlayer).toHaveBeenCalledWith(firstPlayer);
   });
 
+  it('does not request same player again', () => {
+    const media = fakeMedia();
+    const map = new PlayerSourceIDMap(media)
+    const sources = [{src: 'some/audio.mp3'}];
+
+    map.mapSources(5, sources);
+    map.get(5);
+    map.get(5);
+
+    expect(media.releasePlayer).not.toHaveBeenCalled();
+    expect(media.getPlayer).toHaveBeenCalledTimes(1);
+  });
+
   it('reuses previous player if it is requested again', () => {
     const media = fakeMedia();
     const map = new PlayerSourceIDMap(media, {playerOptions: {some: 'option'}})
@@ -57,6 +70,27 @@ describe('PlayerSourceIDMap', () => {
 
     expect(media.releasePlayer).not.toHaveBeenCalled();
     expect(media.getPlayer).toHaveBeenCalledTimes(2);
+  });
+
+  it('returns null players for undefined id', () => {
+    const media = fakeMedia();
+    const map = new PlayerSourceIDMap(media)
+
+    const player = map.get(undefined);
+
+    expect(player.play).toBeDefined();
+    expect(media.getPlayer).not.toHaveBeenCalled();
+  });
+
+  it('returns null players if undefined sources have been stored', () => {
+    const media = fakeMedia();
+    const map = new PlayerSourceIDMap(media)
+
+    map.mapSources(5, undefined);
+    const player = map.get(5);
+
+    expect(player.play).toBeDefined();
+    expect(media.getPlayer).not.toHaveBeenCalled();
   });
 
   function fakeMedia() {
