@@ -237,7 +237,7 @@ function getAttributes(model, {attributeNames, includeConfiguration}) {
       const value = attributeName[key];
 
       if (typeof value == 'function') {
-        result[key] = value();
+        result[key] = value(model.get(key));
       }
       else {
         result[key] = model.get(value);

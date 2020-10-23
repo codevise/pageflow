@@ -42,7 +42,8 @@ export function watchCollections(entry, {dispatch}) {
     teardownFns.push(watchCollection(files[collectionName], {
       name: camelize(collectionName),
       attributes: ['id', {permaId: 'perma_id'}, 'width', 'height', 'basename', 'rights', {isReady: 'is_ready'},
-                   'variants', {durationInMs: 'duration_in_ms'},
+                   {variants: variants => variants && variants.map(variant => camelize(variant))},
+                   {durationInMs: 'duration_in_ms'},
                    {parentFileId: 'parent_file_id'}, {parentFileModelType: 'parent_file_model_type'}],
       keyAttribute: 'permaId',
       includeConfiguration: true,
