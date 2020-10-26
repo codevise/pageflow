@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <%= content_tag(:html, lang: I18n.locale) do %>
   <head>
+    <title><%= pretty_entry_title(@entry) %></title>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Pageflow Next Showcase"
-    />
 
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700&display=swap" rel="stylesheet">
-    <title>Pageflow Next Showcase</title>
+
     <%= social_share_meta_tags_for(@entry) %>
     <%= meta_tags_for_entry(@entry) %>
 
