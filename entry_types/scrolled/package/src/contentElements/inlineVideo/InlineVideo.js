@@ -14,6 +14,7 @@ import {
 
 export function InlineVideo({sectionProps, configuration}) {
   const videoFile = useFile({collectionName: 'videoFiles', permaId: configuration.id});
+  const posterImageFile = useFile({collectionName: 'imageFiles', permaId: configuration.posterId});
 
   const [playerState, playerActions] = usePlayerState();
   const {isEditable, isSelected} = useContentElementEditorState();
@@ -46,25 +47,25 @@ export function InlineVideo({sectionProps, configuration}) {
   return (
     <Figure caption={configuration.caption}>
       <MediaInteractionTracking playerState={playerState} playerActions={playerActions}>
-        <VideoPlayer isPrepared={isPrepared}
-                     position={configuration.position}
-                     controls={configuration.controls}
-                     playerState={playerState}
-                     playerActions={playerActions}
-                     videoFile={videoFile}
-                     posterId={configuration.posterId}
-                     defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
-                     quality={'high'}
-                     playsInline={true}
-                     atmoDuringPlayback={configuration.atmoDuringPlayback}
-                     onClick={onPlayerClick} />
-
         <VideoPlayerControls videoFile={videoFile}
                              defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
                              playerState={playerState}
                              playerActions={playerActions}
                              configuration={configuration}
-                             sectionProps={sectionProps}/>
+                             sectionProps={sectionProps}
+                             onPlayerClick={onPlayerClick}>
+          <VideoPlayer isPrepared={isPrepared}
+                       position={configuration.position}
+                       controls={configuration.controls}
+                       playerState={playerState}
+                       playerActions={playerActions}
+                       videoFile={videoFile}
+                       posterImageFile={posterImageFile}
+                       defaultTextTrackFilePermaId={configuration.defaultTextTrackFileId}
+                       quality={'high'}
+                       playsInline={true}
+                       atmoDuringPlayback={configuration.atmoDuringPlayback} />
+        </VideoPlayerControls>
       </MediaInteractionTracking>
     </Figure>
   )

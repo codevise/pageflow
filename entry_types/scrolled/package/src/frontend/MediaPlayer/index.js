@@ -11,7 +11,6 @@ import {useEventContextData} from '../useEventContextData';
 
 import {getTextTrackSources, updateTextTracksMode} from './textTracks';
 import textTrackStyles from './textTracks.module.css';
-import styles from '../MediaPlayer.module.css';
 
 export * from './usePlayerState';
 
@@ -64,24 +63,21 @@ function PreparedMediaPlayer(props){
   }, [props.textTracks.activeFileId]);
 
   return (
-    <>
-      <PlayerContainer className={classNames(props.className, {[textTrackStyles.inset]: props.textTracksInset})}
-                       type={props.type}
-                       sources={appendSuffix(props.sources, props.sourceUrlSuffix)}
-                       textTrackSources={getTextTrackSources(props.textTracks.files, props.textTracksDisabled)}
-                       filePermaId={props.filePermaId}
-                       poster={props.posterImageUrl}
-                       loop={props.loop}
-                       controls={props.controls}
-                       playsInline={props.playsInline}
-                       objectPosition={props.objectPosition}
-                       mediaEventsContextData={eventContextData}
-                       atmoDuringPlayback={props.atmoDuringPlayback}
-                       onSetup={onSetup}
-                       onDispose={onDispose}
-                       altText={props.altText} />
-      <div className={styles.mask} onClick={props.onClick} />
-    </>
+    <PlayerContainer className={classNames(props.className, {[textTrackStyles.inset]: props.textTracksInset})}
+                     type={props.type}
+                     sources={appendSuffix(props.sources, props.sourceUrlSuffix)}
+                     textTrackSources={getTextTrackSources(props.textTracks.files, props.textTracksDisabled)}
+                     filePermaId={props.filePermaId}
+                     poster={props.posterImageUrl}
+                     loop={props.loop}
+                     controls={props.controls}
+                     playsInline={props.playsInline}
+                     objectPosition={props.objectPosition}
+                     mediaEventsContextData={eventContextData}
+                     atmoDuringPlayback={props.atmoDuringPlayback}
+                     onSetup={onSetup}
+                     onDispose={onDispose}
+                     altText={props.altText} />
   );
 };
 

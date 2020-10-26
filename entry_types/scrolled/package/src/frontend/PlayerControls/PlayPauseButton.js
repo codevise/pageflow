@@ -11,7 +11,9 @@ export function PlayPauseButton(props) {
     <button className={controlBarStyles.playControl}
             aria-label={t(props.isPlaying ? 'pause' : 'play',
                           {scope: 'pageflow_scrolled.public.player_controls'})}
-            onClick={() => props.isPlaying ? props.pause() : props.play()}>
+            onClick={() => props.isPlaying ?
+                         props.pause({via: 'playPauseButton'}) :
+                         props.play({via: 'playPauseButton'})}>
       {pausePlayIcon(props)}
     </button>
   );

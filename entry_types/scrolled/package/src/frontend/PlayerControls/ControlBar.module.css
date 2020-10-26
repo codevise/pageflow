@@ -1,3 +1,7 @@
+.container {
+  position: relative;
+}
+
 .transparent {
   opacity: 0;
 }
@@ -11,25 +15,24 @@
 }
 
 .controlBarContainer {
-  color: currentColor;
   width: 100%;
   display: flex;
   align-items: center;
-  position: relative;
   transition: opacity 0.2s ease;
 }
 
-.controlBarContainer.inset {
-  margin-top: -32px;
+.inset {
+  position: absolute;
+  bottom: 0;
   color: #fff;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), transparent);
 }
 
 .button {
   composes: unstyledButton from '../utils.module.css';
-  width: 32px;
-  height: 32px;
-  margin-right: 4px;
+  width: 40px;
+  height: 40px;
+  margin: 0 2px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,6 +42,8 @@
 .button svg {
   fill: currentColor;
   cursor: pointer;
+  width: 30px;
+  height: 30px;
 }
 
 .playControl {

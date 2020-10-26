@@ -9,7 +9,7 @@ import {useFocusOutlineVisible} from './focusOutline';
 export function MediaPlayerControls(props) {
   const playerState = props.playerState;
   const playerActions = props.playerActions;
- 
+
   const {t} = useI18n();
   const textTracks = useTextTracks({
     file: props.file,
@@ -19,8 +19,7 @@ export function MediaPlayerControls(props) {
   const focusOutlineVisible = useFocusOutlineVisible();
 
   return (
-    <PlayerControls inset={props.configuration.position === 'full' || props.configuration.caption}
-                    type={props.type}
+    <PlayerControls type={props.type}
 
                     variant={props.configuration.playerControlVariant}
                     waveformColor={props.configuration.waveformColor}
@@ -31,11 +30,13 @@ export function MediaPlayerControls(props) {
                     bufferedEnd={playerState.bufferedEnd}
                     duration={playerState.duration}
 
-                    isPlaying={playerState.isPlaying}
+                    isPlaying={playerState.shouldPlay}
+                    unplayed={playerState.unplayed}
+                    lastControlledVia={playerState.lastControlledVia}
                     inactive={playerState.userIdle &&
                             (!focusOutlineVisible || !playerState.focusInsideControls) &&
                             !playerState.userHoveringControls}
-                    
+
                     onFocus={playerActions.focusEnteredControls}
                     onBlur={playerActions.focusLeftControls}
                     onMouseEnter={playerActions.controlsEntered}
@@ -48,7 +49,7 @@ export function MediaPlayerControls(props) {
 
                     textTracksMenuItems={getTextTracksMenuItems(textTracks, t)}
                     onTextTracksMenuItemClick={textTracks.select}
-                    
+
                     qualityMenuItems={props.qualityMenuItems}
                     onQualityMenuItemClick={props.onQualityMenuItemClick}
                     {...props} />

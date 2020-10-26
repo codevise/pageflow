@@ -18,14 +18,10 @@ export function WaveformPlayerControls(props) {
            onBlur={props.onBlur}
            onMouseEnter={props.onMouseEnter}
            onMouseLeave={props.onMouseLeave}
-           data-testid="waveform-controls" 
-           className={classNames(styles.container,
-                                 darkBackground ? controlBarStyles.darkBackground : controlBarStyles.lightBackground)} >
-        <div className={styles.playControl}>
-          <PlayPauseButton isPlaying={props.isPlaying}
-                           play={props.play}
-                           pause={props.pause} />
-        </div>
+           data-testid="waveform-controls"
+           className={classNames(styles.container)} >
+        {props.children}
+        <div className={styles.clickMask} onClick={props.onPlayerClick} />
         <Waveform isPlaying={props.isPlaying}
                   inverted={!darkBackground}
                   waveformColor={props.waveformColor}
@@ -33,11 +29,16 @@ export function WaveformPlayerControls(props) {
                   play={props.play}
                   pause={props.pause}
                   mediaElementId={props.mediaElementId} />
-        <div className={styles.timeDisplay}>
+        <div className={styles.playControl}>
+          <PlayPauseButton isPlaying={props.isPlaying}
+                           play={props.play}
+                           pause={props.pause} />
+        </div>
+        <div className={classNames(styles.menuBar,
+                                   darkBackground ? controlBarStyles.darkBackground : controlBarStyles.lightBackground,
+                                   {[controlBarStyles.inset]: !props.standAlone})}>
           <TimeDisplay currentTime={props.currentTime}
                     duration={props.duration} />
-        </div>
-        <div className={styles.menus}>
           <TextTracksMenu items={props.textTracksMenuItems}
                           onItemClick={props.onTextTracksMenuItemClick} />
         </div>

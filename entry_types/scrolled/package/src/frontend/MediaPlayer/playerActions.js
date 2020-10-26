@@ -39,19 +39,14 @@ export const USER_IDLE = 'MEDIA_USER_IDLE';
 export const SAVE_MEDIA_ELEMENT_ID = 'MEDIA_SAVE_MEDIA_ELEMENT_ID';
 export const DISCARD_MEDIA_ELEMENT_ID = 'MEDIA_DISCARD_MEDIA_ELEMENT_ID';
 
-let isBlessed = false;
-
 export function createActions(dispatch){
   return {
-    playBlessed(){
-      if (!isBlessed) {
-        media.mute(false);
-        isBlessed = true;
-      }
-      dispatch({type: PLAY});
+    playBlessed({via} = {}){
+      media.mute(false);
+      dispatch({type: PLAY, payload: {via}});
     },
-    play(){
-      dispatch({type: PLAY});
+    play({via} = {}){
+      dispatch({type: PLAY, payload: {via}});
     },
     playing(){
       dispatch({type: PLAYING});
@@ -59,8 +54,8 @@ export function createActions(dispatch){
     playFailed(){
       dispatch({type: PLAY_FAILED});
     },
-    pause(){
-      dispatch({type: PAUSE});
+    pause({via} = {}){
+      dispatch({type: PAUSE, payload: {via}});
     },
     paused(){
       dispatch({type: PAUSED})
