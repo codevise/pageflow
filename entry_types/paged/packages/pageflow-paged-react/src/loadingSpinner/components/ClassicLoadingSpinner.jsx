@@ -27,25 +27,31 @@ class ClassicLoadingSpinner extends React.Component {
 
   componentDidMount() {
     if (PAGEFLOW_EDITOR) {
-      this.setState({hidden: true});
-      return;
+      this.setState({hidden: true, fading: true});
     }
-
-    this.fadeTimeout = setTimeout(() => {
-      pageflow.ready.then(() => {
-        this.setState({fading: true});
-
-        this.hiddenTimeout = setTimeout(() => {
-          this.setState({hidden: true});
-        }, 1000);
+    else {
+      this.setState({fading: true});
+      pageflow.delayedStart.waitFor(resolve => {
+        this.resolveDelayedStart = resolve;
       });
-    }, 1000);
+    }
+  }
+  hideOrLoop(el) {
+    if (el.target === el.currentTarget) {
+      if (PAGEFLOW_EDITOR) {
+        this.setState({fading: false});
+
+        setTimeout(() => {
+          this.setState({fading: true});
+        }, 1500);
+      }
+      else {
+        this.setState({hidden: true});
+        this.resolveDelayedStart();
+      }
+    }
   }
 
-  componentWillUnmount() {
-    clearTimeout(this.fadeTimeout);
-    clearTimeout(this.hiddenTimeout);
-  }
 
   render() {
     const {editing} = this.props;
@@ -53,7 +59,8 @@ class ClassicLoadingSpinner extends React.Component {
 
     if (editing || !hidden) {
       return (
-        <div className={classNames('loading_spinner', {fade: !editing && fading})}
+        <div className={classNames('loading_spinner', {'fade': fading})}
+             onAnimationEnd={(event) => this.hideOrLoop(event)}
              onTouchMove={preventScrollBouncing}
              style={inlineStyle}>
           <div className="loading_inner">

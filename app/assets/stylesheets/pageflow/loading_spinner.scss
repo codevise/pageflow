@@ -1,6 +1,4 @@
 .loading_spinner {
-  display: none;
-
   position: absolute;
   width: 100%;
   height: 100%;
@@ -15,6 +13,7 @@
 
   &.fade {
     @include transition(opacity 0.5s linear);
+    @include animation(fade_out 1.5s ease 1);
     opacity: 0;
   }
 }
