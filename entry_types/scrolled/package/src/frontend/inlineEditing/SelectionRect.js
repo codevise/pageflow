@@ -6,17 +6,20 @@ import {Toolbar} from './Toolbar';
 import styles from './SelectionRect.module.css';
 
 import PlusIcon from './images/plus.svg';
+import MoveIcon from './images/move.svg';
 
 export function SelectionRect(props) {
   return (
     <div className={classNames(styles.main,
                                {[styles.full]: props.full,
                                 [styles.selected]: props.selected,
+                                [styles.draggable]: props.drag,
                                 [styles.start]: props.selected && props.start,
                                 [styles.end]: props.selected && props.end})}
          aria-label={props.ariaLabel}
          data-scrollpoint={props.scrollPoint ? 'selection' : undefined}
          onClick={props.onClick}>
+      {renderDragHandle(props)}
       {renderToolbar(props)}
 
       <InsertButton {...props} at="before" />
@@ -46,7 +49,20 @@ function InsertButton(props) {
   );
 }
 
+function renderDragHandle({drag, dragHandleTitle}) {
+  if (!drag) {
+    return null;
+  }
+
+  return (
+    <div ref={drag} className={styles.dragHandle} title={dragHandleTitle}>
+      <MoveIcon />
+    </div>
+  );
+}
+
 function renderToolbar({toolbarButtons, onToolbarButtonClick, start}) {
+
   if (toolbarButtons && start) {
     return (
       <div className={styles.toolbar}>
