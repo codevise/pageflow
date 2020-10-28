@@ -1,0 +1,39 @@
+.target {
+  position: absolute;
+  height: 50%;
+  width: 100%;
+  left: -50px;
+  padding-left: 50px;
+  padding-bottom: 0.5em;
+  opacity: 0.8;
+}
+
+.target::before {
+  content: "";
+  position: absolute;
+  display: block;
+  left: 50px;
+  right: 0;
+}
+
+.target.isOver::before {
+  border-top: solid 2px currentColor;
+}
+
+.before {
+  composes: target;
+  top: -0.5em;
+}
+
+.before::before {
+  top: -1px;
+}
+
+.after {
+  composes: target;
+  top: 50%;
+}
+
+.after::before {
+  top: calc(100% - 1px);
+}

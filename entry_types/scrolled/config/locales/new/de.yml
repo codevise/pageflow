@@ -258,6 +258,7 @@ de:
       insert_content_element:
         before: Neues Element oberhalb einfügen
         after: Neues Element unterhalb einfügen
+      drag_content_element: Ziehen, um Element zu verschieben
       edit_section_settings: Abschnittseinstellungen bearbeiten
       edit_section_transition_before: Übergangseffekt bearbeiten
       edit_section_transition_after: Übergangseffekt bearbeiten
