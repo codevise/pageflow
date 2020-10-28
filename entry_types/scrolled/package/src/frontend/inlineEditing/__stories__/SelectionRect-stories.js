@@ -34,6 +34,62 @@ export const darkBackground = () =>
     </SelectionRect>
   </Background>;
 
+export const withDragHandleAndLightBackground = () =>
+  <Background>
+    <SelectionRect selected={true}
+                   drag={() => {}}
+                   dragHandleTitle="Drag me"
+                   insertButtonTitles={insertButtonTitles}
+                   toolbarButtons={toolbarButtons()}>
+      <Placeholder />
+    </SelectionRect>
+  </Background>;
+
+export const withDragHandleAndDarkBackground = () =>
+  <Background dark>
+    <SelectionRect selected={true}
+                   drag={() => {}}
+                   dragHandleTitle="Drag me"
+                   insertButtonTitles={insertButtonTitles}
+                   toolbarButtons={toolbarButtons()}>
+      <Placeholder />
+    </SelectionRect>
+  </Background>;
+
+export const full = () =>
+  <Background>
+    <SelectionRect selected={true}
+                   full={true}
+                   insertButtonTitles={insertButtonTitles}
+                   toolbarButtons={toolbarButtons()}>
+      <Placeholder />
+    </SelectionRect>
+  </Background>;
+
+export const fullWithDragHandle = () =>
+  <Background>
+    <SelectionRect selected={true}
+                   full={true}
+                   drag={() => {}}
+                   insertButtonTitles={insertButtonTitles}
+                   toolbarButtons={toolbarButtons()}>
+      <Placeholder />
+    </SelectionRect>
+  </Background>;
+
+export const fullWithDragHandleAndDarkBackground = () =>
+  <Background dark>
+    <SelectionRect selected={true}
+                   full={true}
+                   drag={() => {}}
+                   dragHandleTitle="Drag me"
+                   insertButtonTitles={insertButtonTitles}
+                   toolbarButtons={toolbarButtons()}>
+      <Placeholder />
+    </SelectionRect>
+  </Background>;
+
+
 function toolbarButtons() {
   return [
     {
@@ -69,7 +125,7 @@ function Background({dark, children}) {
   return (
     <div style={{
       width: 500,
-      padding: '50px 20px',
+      padding: '50px',
       color: dark ? '#fff' : '#000',
       background: dark ? '#000' : '#fff'}}>
       {children}

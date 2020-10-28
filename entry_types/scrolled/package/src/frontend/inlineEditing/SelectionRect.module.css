@@ -6,6 +6,7 @@
   position: relative;
 }
 
+.main:before,
 .main:after {
   content: '';
   position: absolute;
@@ -17,13 +18,21 @@
   opacity: 0.8
 }
 
+.draggable:not(.full):before {
+  top: 5px;
+}
+
+.full:before,
 .full:after {
   left: 0;
   right: 0;
 }
 
-.selected:after {
+.selected:before {
   border-left: solid 1px currentColor;
+}
+
+.selected:after {
   border-right: solid 1px currentColor;
 }
 
@@ -71,6 +80,11 @@
   right: selectionPadding2;
 }
 
+.draggable:not(.full) .insert-before::before {
+  left: 5px;
+  width: calc(50% - 10px - 0.5em);
+}
+
 .full .insert::before,
 .full .insert::after {
   width: calc(50% - 5px + selectionPadding2);
@@ -107,4 +121,42 @@
 
 .insert-after {
   top: calc(100% + 0.5em);
+}
+
+.dragHandle {
+  position: absolute;
+  top: -7px;
+  left: 10px;
+  transform: translate(-100%, -50%);
+  z-index: 1;
+  visibility: hidden;
+  padding: 10px;
+  cursor: move;
+}
+
+.selected .dragHandle {
+  visibility: visible;
+}
+
+.full .dragHandle {
+  left: 0;
+  top: 0;
+  transform: translate(0, 0);
+  background: radial-gradient(#000000b8, transparent 50%)
+}
+
+.dragHandle svg {
+  display: block;
+  color: currentColor;
+  width: 15px;
+  height: 15px;
+  opacity: 0.8;
+}
+
+.dragHandle:hover svg {
+  opacity: 1;
+}
+
+.full .dragHandle svg {
+  color: #fff;
 }
