@@ -27,6 +27,7 @@ export function useInlineEditingPageObjects() {
     'pageflow_scrolled.inline_editing.select_content_element': 'Select content element',
     'pageflow_scrolled.inline_editing.add_content_element': 'Add content element',
     'pageflow_scrolled.inline_editing.insert_content_element.after': 'Insert content element after',
+    'pageflow_scrolled.inline_editing.drag_content_element': 'Drag to move',
     'pageflow_scrolled.inline_editing.edit_section_settings': 'Edit section settings',
     'pageflow_scrolled.inline_editing.edit_section_transition_before': 'Edit section transition before',
     'pageflow_scrolled.inline_editing.edit_section_transition_after': 'Edit section transition after'
@@ -150,6 +151,18 @@ function createContentElementPageObject(el) {
     clickInsertAfterButton() {
       const {getByTitle} = within(selectionRect);
       fireEvent.click(getByTitle('Insert content element after'));
+    },
+
+    drag(at, otherContentElement) {
+      const {getByTitle} = within(selectionRect);
+      fireEvent.dragStart(getByTitle('Drag to move'));
+      otherContentElement._drop(at);
+    },
+
+    _drop(at) {
+      const {getByTestId} = within(selectionRect);
+      const target = getByTestId(`drop-${at}`);
+      fireEvent.drop(target);
     }
   }
 }

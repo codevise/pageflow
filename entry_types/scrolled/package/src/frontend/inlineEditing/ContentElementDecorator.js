@@ -1,11 +1,15 @@
 import React from 'react';
-import classNames from 'classnames';
+import {useDrag} from 'react-dnd';
 
 import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useI18n} from '../i18n';
 import {api} from '../api';
 import {SelectionRect} from './SelectionRect';
-import {postInsertContentElementMessage} from './postMessage';
+import {DropTargets} from './DropTargets';
+import {
+  postInsertContentElementMessage,
+  postMoveContentElementMessage
+} from './postMessage';
 import styles from './ContentElementDecorator.module.css';
 
 import {ContentElementConfigurationUpdateProvider} from './ContentElementConfigurationUpdateProvider';
@@ -44,16 +48,28 @@ function DefaultSelectionRect(props) {
   const {isSelected, select} = useContentElementEditorState();
   const {t} = useI18n({locale: 'ui'});
 
+  const [, drag, preview] = useDrag({
+    item: { type: 'contentElement', id: props.id }
+  });
+
   return (
     <SelectionRect selected={isSelected}
                    scrollPoint={isSelected}
+                   drag={drag}
+                   dragHandleTitle={t('pageflow_scrolled.inline_editing.drag_content_element')}
                    full={props.position === 'full'}
                    ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
                    insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
                    onClick={() => select()}
                    onInsertButtonClick={at =>
                      postInsertContentElementMessage({id: props.id, at})}>
-      {props.children}
+      <div ref={preview}>
+        {props.children}
+      </div>
+      <DropTargets accept="contentElement"
+                   canDrop={({id}) => id !== props.id}
+                   onDrop={({id, at}) =>
+                     postMoveContentElementMessage({id, to: {id: props.id, at}})}/>
     </SelectionRect>
   )
 }

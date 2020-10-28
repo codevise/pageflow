@@ -171,6 +171,7 @@ en:
       insert_content_element:
         before: Insert new element above
         after: Insert new element below
+      drag_content_element: Drag to move element
       edit_section_settings: Edit section settings
       edit_section_transition_before: Edit section transition
       edit_section_transition_after: Edit section transition
