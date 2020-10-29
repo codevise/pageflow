@@ -1,6 +1,7 @@
 import React, {useMemo, useState, useCallback} from 'react';
 import {createEditor, Transforms, Node} from 'slate';
 import {Slate, Editable, withReact} from 'slate-react';
+import {useDrop} from 'react-dnd';
 
 import {Text} from '../../Text';
 import {useCachedValue} from '../useCachedValue';
@@ -16,6 +17,7 @@ import {
 } from './withLinks';
 import {HoveringToolbar} from './HoveringToolbar';
 import {Selection} from './Selection';
+import {DropTargets} from './DropTargets';
 import {LinkTooltipProvider} from './LinkTooltip';
 
 import styles from './index.module.css';
@@ -41,6 +43,13 @@ export const EditableText = React.memo(function EditableText({
     }
   });
 
+  const [{canDrop}] = useDrop({
+    accept: 'contentElement',
+    collect: monitor => ({
+      canDrop: monitor.canDrop()
+    })
+  });
+
   const decorate = useCallback(nodeEntry => {
     return decorateLinkSelection(nodeEntry, linkSelection)
   }, [linkSelection]);
@@ -57,6 +66,7 @@ export const EditableText = React.memo(function EditableText({
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
           <LinkTooltipProvider disabled={!!linkSelection}>
             <Selection contentElementId={contentElementId} />
+            {canDrop && <DropTargets contentElementId={contentElementId} />}
             <HoveringToolbar linkSelection={linkSelection} setLinkSelection={setLinkSelection} />
             <Editable
                 decorate={decorate}
