@@ -3,6 +3,7 @@ import {Entry, editor} from 'pageflow/editor';
 import {ChaptersCollection, SectionsCollection, ContentElementsCollection} from '../../collections';
 
 import {insertContentElement} from './insertContentElement';
+import {moveContentElement} from './moveContentElement';
 import {deleteContentElement} from './deleteContentElement';
 
 export const ScrolledEntry = Entry.extend({
@@ -55,6 +56,14 @@ export const ScrolledEntry = Entry.extend({
                            attributes,
                            {id, at, splitPoint});
     }
+  },
+
+  moveContentElement(movedContentElementId, {id, at, splitPoint}) {
+    moveContentElement(this,
+                       this.contentElements.get(movedContentElementId),
+                       this.contentElements.get(id),
+                       at,
+                       splitPoint);
   },
 
   deleteContentElement(id) {
