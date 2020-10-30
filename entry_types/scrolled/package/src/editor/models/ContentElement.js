@@ -46,14 +46,27 @@ export const ContentElement = Backbone.Model.extend({
     });
   },
 
+  getPosition() {
+    return this.configuration.get('position') || 'inline';
+  },
+
   getAvailablePositions() {
-    return this.section.configuration.get('layout') === 'center' ?
-           ['inline', 'left', 'right', 'full'] :
-           ['inline', 'sticky', 'full'];
+    const supportedByLayout =
+      this.section.configuration.get('layout') === 'center' ?
+      ['inline', 'left', 'right', 'full'] :
+      ['inline', 'sticky', 'full'];
+    const supportedByType = this.getType().supportedPositions;
+
+    if (supportedByType) {
+      return supportedByLayout.filter(position => supportedByType.includes(position));
+    }
+    else {
+      return supportedByLayout;
+    }
   },
 
   getDefaultSiblingPosition() {
-    const position = this.configuration.get('position') || 'inline';
+    const position = this.getPosition();
 
     if (position === 'full') {
       return 'inline';
