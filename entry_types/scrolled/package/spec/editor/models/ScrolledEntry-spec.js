@@ -114,9 +114,6 @@ describe('ScrolledEntry', () => {
           ]
         });
 
-        expect(entry.sections.first().contentElements.pluck('id')).toEqual([5, undefined, 6]);
-        expect(entry.sections.first().contentElements.pluck('position')).toEqual([0, 1, 2]);
-
         testContext.server.respond(
           'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
           [200, {'Content-Type': 'application/json'}, JSON.stringify([
@@ -142,9 +139,6 @@ describe('ScrolledEntry', () => {
             {id: 6}
           ]
         });
-
-        expect(entry.sections.first().contentElements.pluck('id')).toEqual([5, undefined, 6]);
-        expect(entry.sections.first().contentElements.pluck('position')).toEqual([0, 1, 2]);
 
         testContext.server.respond(
           'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
@@ -219,7 +213,14 @@ describe('ScrolledEntry', () => {
           ]
         });
 
-        expect(entry.contentElements.last().configuration.get('some')).toEqual('value');
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(entry.contentElements.get(6).configuration.get('some')).toEqual('value');
       });
     });
 
@@ -229,7 +230,9 @@ describe('ScrolledEntry', () => {
 
         testContext.entry = factories.entry(
           ScrolledEntry,
-          {},
+          {
+            id: 100
+          },
           {
             entryTypeSeed: normalizeSeed({
               contentElements: [
@@ -257,7 +260,14 @@ describe('ScrolledEntry', () => {
           ]
         });
 
-        expect(entry.contentElements.last().configuration.get('position')).toEqual('sticky');
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
+
+        expect(entry.contentElements.get(6).configuration.get('position')).toEqual('sticky');
       });
     });
 
@@ -267,7 +277,9 @@ describe('ScrolledEntry', () => {
 
         testContext.entry = factories.entry(
           ScrolledEntry,
-          {},
+          {
+            id: 100
+          },
           {
             entryTypeSeed: normalizeSeed({
               contentElements: [
@@ -294,6 +306,13 @@ describe('ScrolledEntry', () => {
             {typeName: 'inlineImage', configuration: {position: 'inline'}},
           ]
         });
+
+        testContext.server.respond(
+          'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
+          [200, {'Content-Type': 'application/json'}, JSON.stringify([
+            {id: 5, permaId: 50}, {id: 6, permaId: 60}
+          ])]
+        );
 
         expect(entry.contentElements.last().configuration.get('position')).toEqual('inline');
       });
@@ -365,9 +384,6 @@ describe('ScrolledEntry', () => {
           ]
         });
 
-        expect(section.contentElements.pluck('id')).toEqual([4, 5, undefined, undefined, 6]);
-        expect(section.contentElements.pluck('position')).toEqual([0, 1, 2, 3, 4]);
-
         testContext.server.respond(
           'PUT', '/editor/entries/100/scrolled/sections/10/content_elements/batch',
           [200, {'Content-Type': 'application/json'}, JSON.stringify([
@@ -406,7 +422,7 @@ describe('ScrolledEntry', () => {
         expect(splitContentElement.configuration.get('items')).toEqual(['a', 'b']);
       });
 
-      it('removes added content elements if request fails', () => {
+      it('does not add content elements if request fails', () => {
         const {entry, requests} = testContext;
         const section = entry.sections.first();
 
@@ -458,8 +474,8 @@ describe('ScrolledEntry', () => {
         expect(requests[0].url).toBe('/editor/entries/100/scrolled/sections/10/content_elements/batch');
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
           content_elements: [
-            {id: 5, _delete: true},
-            {id: 6}
+            {id: 6},
+            {id: 5, _delete: true}
           ]
         });
 
@@ -614,8 +630,8 @@ describe('ScrolledEntry', () => {
         expect(JSON.parse(requests[0].requestBody)).toEqual({
           content_elements: [
             {id: 4},
-            {id: 5, _delete: true},
-            {id: 6}
+            {id: 6},
+            {id: 5, _delete: true}
           ]
         });
       });
