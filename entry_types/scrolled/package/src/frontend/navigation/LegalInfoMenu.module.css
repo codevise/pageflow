@@ -3,3 +3,21 @@
   height: 26px;
   margin: 12px 7px;
 }
+
+.legalInfoTooltip {
+  width: 150px;
+  max-width: 200px;
+  text-align: left;
+}
+
+.legalInfoTooltip:after {
+  left: 90% !important;
+}
+
+.legalInfoTooltip p {
+  margin: 0 0 0.5em;
+}
+
+.legalInfoTooltip a {
+  color: #e10028;
+}
