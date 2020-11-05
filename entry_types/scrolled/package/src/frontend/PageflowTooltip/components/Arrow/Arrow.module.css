@@ -1,0 +1,38 @@
+.base {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: white;
+}
+
+.up {
+  transform: translateX(-50%) translateY(50%) rotateZ(45deg);
+  bottom: 100%;
+  left: 50%;
+  border-left: 1px solid white;
+  border-top: 1px solid white;
+}
+
+.down {
+  transform: translateX(-50%) translateY(-50%) rotateZ(45deg);
+  top: 100%;
+  left: 50%;
+  border-right: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+.left {
+  transform: translateX(50%) translateY(-50%) rotateZ(45deg);
+  right: 100%;
+  top: 50%;
+  border-left: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+.right {
+  transform: translateX(-50%) translateY(-50%) rotateZ(45deg);
+  left: 100%;
+  top: 50%;
+  border-right: 1px solid white;
+  border-top: 1px solid white;
+}
