@@ -3,19 +3,38 @@ import classNames from 'classnames';
 import headerStyles from "./AppHeader.module.css";
 import styles from "./LegalInfoMenu.module.css";
 import InfoIcon from "../assets/images/navigation/icons/information_icon.svg";
-import {LegalInfoTooltip} from "./LegalInfoTooltip";
-import ReactTooltip from "react-tooltip";
+
+import {PageflowTooltip} from '../PageflowTooltip';
+import {useFileRights, useLegalInfo, useCredits} from '../../entryState';
+import {LegalInfoLink} from "./LegalInfoLink";
+
 
 export function LegalInfoMenu(props) {
+  const fileRights = useFileRights();
+  const legalInfo = useLegalInfo();
+  const credits = useCredits();
+
   return (
-    <div>
-      <button className={classNames(headerStyles.contextIcon, styles.infoIcon)}
-              data-tip data-for={'legalInfoTooltip'}
-              onMouseEnter={() => { ReactTooltip.hide()}}>
+    <PageflowTooltip padding={12} hover={false} placement={'bottom'} horizontalOffset={-20} arrowPos={'60%'}
+      content={
+              <div className={styles.legalInfoTooltip}>
+                {credits &&
+                <p dangerouslySetInnerHTML={{__html: credits}}></p>
+                }
+
+                {fileRights &&
+                <p>{fileRights}</p>
+                }
+
+                <LegalInfoLink {...legalInfo.imprint}/>
+                <LegalInfoLink {...legalInfo.copyright}/>
+                <LegalInfoLink {...legalInfo.privacy}/>
+              </div>
+      }>
+      <a className={classNames(headerStyles.contextIcon, styles.infoIcon)}>
         <InfoIcon/>
-      </button>
-      <LegalInfoTooltip />
-    </div>
+      </a>
+    </PageflowTooltip>      
   )
 }
 
