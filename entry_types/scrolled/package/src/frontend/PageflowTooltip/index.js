@@ -120,7 +120,8 @@ class Wrapper extends React.Component {
     )
     let newChildren = children;
     if (open && classWhenOpen) {
-       newChildren = React.cloneElement(children, { className: children.props.className + ' ' + classWhenOpen})
+      let existingClasses = children.props.className ? children.props.className+' ' : '';
+      newChildren = React.cloneElement(children, { className: existingClasses + classWhenOpen})
     }
     return hasTrigger ? (
       <div
