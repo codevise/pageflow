@@ -4,7 +4,6 @@
 
 .link_item {
   width: 45%;
-  max-width: 45%;
   vertical-align: top;
   margin: 2% auto;
   background-color: #fff;
@@ -21,7 +20,6 @@
 
 .link_item.layout_center {
   width: 29%;
-  max-width: 29%;
 }
 
 .link_item:hover {
@@ -90,6 +88,14 @@
 @media only screen and (max-width: 600px) {
   .link_item.layout_center {
     width: 45%;
-    max-width: 45%;
+  }  
+}
+
+@media only screen and (max-width: 350px) {
+  .link_item {
+    width: 85%;
+  }
+  .link_item.layout_center {
+    width: 85%;
   }  
 }
