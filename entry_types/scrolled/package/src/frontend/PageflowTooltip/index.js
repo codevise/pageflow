@@ -7,6 +7,24 @@ import Bubble from "./components/Bubble"
 
 import styles from './PageflowTooltip.module.css'
 
+class TooltipContent extends React.Component {
+  
+  componentDidMount() {
+    if (this.contentElement) {
+      this.contentElement.focus();
+    }
+  }
+  render() {
+    const content = this.props.content;
+    return (
+      <div ref={(elem) => { this.contentElement = elem; }}>
+        {content}
+      </div>
+    )
+  }
+
+}
+
 class Wrapper extends React.Component {
   constructor() {
     super()
@@ -28,9 +46,15 @@ class Wrapper extends React.Component {
     this.setState({open: false})
   }
 
-  handleTouch() {
-    const isOpen = this.state.open
-    this.setState({open: !isOpen})
+  handleTouch(event) {
+    const isOpen = this.state.open;
+    this.setState({open: !isOpen});
+    if (!isOpen && this.props.closeOther) {
+      let tooltips = document.getElementsByClassName(styles.tooltipOpen);
+      for (const tp of tooltips) {
+        tp.click();
+      }
+    }
   }
 
   render() {
@@ -56,6 +80,7 @@ class Wrapper extends React.Component {
       placement,
       radius,
       zIndex,
+      classWhenOpen,
       ...props
     } = this.props
     const hasTrigger = children !== undefined && children !== null
@@ -87,21 +112,24 @@ class Wrapper extends React.Component {
             color={color}
             placement={placement}
           />
-          {content}
+          <TooltipContent content={content} />
         </Bubble>
       </Tooltip>
     )
+    let newChildren = children;
+    if (open && classWhenOpen) {
+       newChildren = React.cloneElement(children, { className: children.props.className + ' ' + classWhenOpen})
+    }
     return hasTrigger ? (
       <div
         className={styles.container}
         onMouseEnter={!fixed && hover ? this.handleMouseEnter : undefined}
         onMouseLeave={!fixed && hover ? this.handleMouseLeave : undefined}
-        onTouchEnd={!fixed ? this.handleTouch : undefined}
-        onClick={this.handleTouch}
+        onClick={!fixed ? this.handleTouch : undefined}
         style={customCss}
         {...props}
       >
-        {children}
+        {newChildren}
         {tooltipElement}
       </div>
     ) : (
@@ -137,6 +165,7 @@ Wrapper.propTypes = {
   placement: PropTypes.oneOf(["left", "top", "right", "bottom"]),
   radius: PropTypes.number,
   zIndex: PropTypes.number,
+  classWhenOpen: PropTypes.string
 }
 
 Wrapper.defaultProps = {
@@ -159,6 +188,7 @@ Wrapper.defaultProps = {
   radius: 5,
   zIndex: 1,
   customCss: {},
+  classWhenOpen: null
 }
 
 Wrapper.displayName = "Tooltip.Wrapper"
