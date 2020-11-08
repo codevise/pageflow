@@ -55,7 +55,11 @@
   fill: #c2c2c2;
 }
 
-.contextIcon:hover {
+.contextIcon:hover, .contextIcon:focus {
+  fill: rgb(0, 55, 90);
+}
+
+.contextIconExpanded {
   fill: rgb(0, 55, 90);
 }
 

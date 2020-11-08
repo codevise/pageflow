@@ -4,7 +4,6 @@ import headerStyles from "./AppHeader.module.css";
 import styles from "./SharingMenu.module.css";
 import ShareIcon from "../assets/images/navigation/icons/share_icon.svg";
 
-import ReactTooltip from "react-tooltip";
 import {useShareProviders, useShareUrl} from "../../entryState";
 
 import {PageflowTooltip} from '../PageflowTooltip';
@@ -36,13 +35,12 @@ export function SharingMenu() {
 
   if(shareProviders.length > 0) {
     return (
-      <PageflowTooltip hover={false} placement={'bottom'} arrowPos={'82%'} horizontalOffset={-80}
+      <PageflowTooltip hover={false} placement={'bottom'} arrowPos={'89%'}
+        classWhenOpen={headerStyles.contextIconExpanded} horizontalOffset={-90}
         content={<div style={{width: '200px'}}>{renderShareLinks(shareProviders)}</div>}>
-        <div>
-        <a className={classNames(headerStyles.contextIcon, styles.shareIcon)}>
+        <button className={classNames(headerStyles.contextIcon)}>
           <ShareIcon/>
-        </a>
-      </div>
+        </button>
       </PageflowTooltip>
     )
   } else {

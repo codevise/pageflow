@@ -15,7 +15,8 @@ export function LegalInfoMenu(props) {
   const credits = useCredits();
 
   return (
-    <PageflowTooltip padding={12} hover={false} placement={'bottom'} horizontalOffset={-20} arrowPos={'60%'}
+    <PageflowTooltip padding={12} hover={false} placement={'bottom'}
+      horizontalOffset={-20} arrowPos={'60%'} classWhenOpen={headerStyles.contextIconExpanded}
       content={
               <div className={styles.legalInfoTooltip}>
                 {credits &&
@@ -31,9 +32,9 @@ export function LegalInfoMenu(props) {
                 <LegalInfoLink {...legalInfo.privacy}/>
               </div>
       }>
-      <a className={classNames(headerStyles.contextIcon, styles.infoIcon)}>
+      <button className={classNames(headerStyles.contextIcon, styles.infoIcon)} aria-haspopup="true">
         <InfoIcon/>
-      </a>
+      </button>
     </PageflowTooltip>      
   )
 }
