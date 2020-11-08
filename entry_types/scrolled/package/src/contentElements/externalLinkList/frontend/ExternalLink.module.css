@@ -86,3 +86,10 @@
   color: #fff;
   text-decoration: underline;
 }
+
+@media only screen and (max-width: 600px) {
+  .link_item.layout_center {
+    width: 45%;
+    max-width: 45%;
+  }  
+}
