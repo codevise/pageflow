@@ -57,14 +57,16 @@ export function playerStateReducer(state, action){
         ...state,
         shouldPlay: true,
         fadeDuration: action.payload.fadeDuration,
-        isLoading: true
+        isLoading: true,
+        lastControlledVia: action.payload.via
       };
     case FADE_OUT_AND_PAUSE:
       return {
         ...state,
         shouldPlay: false,
         fadeDuration: action.payload.fadeDuration,
-        isLoading: false
+        isLoading: false,
+        lastControlledVia: action.payload.via
       };
     case PLAY_FAILED:
       return {

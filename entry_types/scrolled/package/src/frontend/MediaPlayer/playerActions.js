@@ -62,11 +62,11 @@ export function createActions(dispatch){
     paused(){
       dispatch({type: PAUSED})
     },
-    playAndFadeIn(fadeDuration){
-      dispatch({type: PLAY_AND_FADE_IN, payload: {fadeDuration: fadeDuration}});
+    playAndFadeIn(fadeDuration, {via} = {}){
+      dispatch({type: PLAY_AND_FADE_IN, payload: {fadeDuration: fadeDuration, via}});
     },
-    fadeOutAndPause(fadeDuration){
-      dispatch({type: FADE_OUT_AND_PAUSE, payload: {fadeDuration: fadeDuration}});
+    fadeOutAndPause(fadeDuration, {via} = {}){
+      dispatch({type: FADE_OUT_AND_PAUSE, payload: {fadeDuration: fadeDuration, via}});
     },
     changeVolumeFactor(volumeFactor, fadeDuration){
       dispatch({type: CHANGE_VOLUME_FACTOR, payload: {
