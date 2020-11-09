@@ -53,10 +53,12 @@ export {useContentElementLifecycle} from './useContentElementLifecycle';
 export {useIsStaticPreview} from './useScrollPositionLifecycle';
 export {useMediaMuted} from './useMediaMuted';
 
-export {ViewportDependentPillarBoxes} from './ViewportDependentPillarBoxes';
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
 export {PhonePlatformProvider} from './PhonePlatformProvider';
+export {ThirdPartyConsent} from './ThirdPartyConsent';
+export {ThirdPartyConsentProvider} from './ThirdPartyConsentProvider';
+export {ViewportDependentPillarBoxes} from './ViewportDependentPillarBoxes';
 
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
 
