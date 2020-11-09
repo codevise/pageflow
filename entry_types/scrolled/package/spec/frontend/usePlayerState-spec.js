@@ -21,7 +21,6 @@ describe('usePlayerState', () => {
   });
 
   describe('actions updates the player state', () => {
-
     it('play action sets state shouldPlay to true', () => {
       const {result} = renderHookInEntry(() => usePlayerState());
       const [,actions] = result.current;
@@ -218,6 +217,54 @@ describe('usePlayerState', () => {
       const [nextState,] = result.current;
 
       expect(nextState.userHovering).toBe(false);
+    });
+  });
+
+  describe('tracking how media was last controlled', () => {
+    it('supports via option for play action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.play({via: 'playPauseButton'}));
+      const [nextState,] = result.current;
+
+      expect(nextState.lastControlledVia).toBe('playPauseButton');
+    });
+
+    it('supports via option for playAndFadeIn action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.playAndFadeIn(1000, {via: 'playPauseButton'}));
+      const [nextState,] = result.current;
+
+      expect(nextState.lastControlledVia).toBe('playPauseButton');
+    });
+
+    it('supports via option for pause action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.pause({via: 'playPauseButton'}));
+      const [nextState,] = result.current;
+
+      expect(nextState.lastControlledVia).toBe('playPauseButton');
+    });
+
+    it('supports via option for fadeOutAndPause action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.fadeOutAndPause(1000, {via: 'playPauseButton'}));
+      const [nextState,] = result.current;
+
+      expect(nextState.lastControlledVia).toBe('playPauseButton');
+    });
+
+    it('resets lastControlledVia on ended action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.play({via: 'playPauseButton'}));
+      act(() => actions.ended());
+      const [nextState,] = result.current;
+
+      expect(nextState.lastControlledVia).toBeNull();
     });
   });
 });
