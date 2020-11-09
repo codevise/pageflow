@@ -43,6 +43,7 @@ export * from './i18n';
 
 export * from './SectionThumbnail';
 export {default as Entry} from './Entry';
+export {useAudioFocus} from './useAudioFocus';
 export {useDarkBackground} from './backgroundColor';
 export {useFile} from '../entryState'
 export {useContentElementConfigurationUpdate} from './useContentElementConfigurationUpdate';
