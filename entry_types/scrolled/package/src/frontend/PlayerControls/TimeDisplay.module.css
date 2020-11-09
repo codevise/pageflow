@@ -1,5 +1,6 @@
 .timeDisplay {
   margin: 0 2px;
+  user-select: none;
 }
 
 .time {

@@ -37,11 +37,11 @@
   align-items: center;
   justify-content: center;
   color: currentColor;
+  cursor: pointer;
 }
 
 .button svg {
   fill: currentColor;
-  cursor: pointer;
   width: 30px;
   height: 30px;
 }

@@ -57,6 +57,7 @@
   composes: unstyledButton from '../utils.module.css';
   width: 100%;
   color: #fff;
+  cursor: pointer;
   white-space: nowrap;
 }
 
