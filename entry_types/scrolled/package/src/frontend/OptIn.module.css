@@ -1,0 +1,23 @@
+.optIn {
+  color: black;
+  background-color: #e9e9e9;
+  opacity: 0.7;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: space-evenly;
+  box-sizing: border-box;
+}
+
+.optInIcon {
+  fill: rgb(0, 55, 90);
+}
+
+button.optInButton {
+  background-color: rgb(0, 55, 90);
+  padding: 10px;
+  color: white;
+}

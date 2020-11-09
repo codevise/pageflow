@@ -1,0 +1,12 @@
+de:
+  pageflow_scrolled:
+    public:
+      embed_opt_in:
+        opt_in_prompt:
+          datawrapper: "Ich bin damit einverstanden, dass mir Diagramme von Datawrapper angezeigt werden."
+          video: "Ich bin damit einverstanden, dass mir Videos von externen Anbietern gezeigt werden."
+        confirm: "Einverstanden"
+        opt_out:
+          prompt: "Um externe Dienste auszuschalten, "
+          link_title: "hier"
+          prompt_2: " klicken."
