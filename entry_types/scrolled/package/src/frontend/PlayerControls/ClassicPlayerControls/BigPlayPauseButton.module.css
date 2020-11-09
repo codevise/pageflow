@@ -10,6 +10,10 @@
   cursor: pointer;
 }
 
+.hideCursor {
+  cursor: none;
+}
+
 .button {
   composes: unstyledButton from '../../utils.module.css';
   background: radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 60%);
