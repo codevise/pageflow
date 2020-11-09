@@ -220,6 +220,34 @@ describe('usePlayerState', () => {
     });
   });
 
+  describe('tracking unplayed state', () => {
+    it('is unplayed initially', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [nextState,] = result.current;
+
+      expect(nextState.unplayed).toBe(true);
+    });
+
+    it('is no longer unplayed after play action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.play());
+      const [nextState,] = result.current;
+
+      expect(nextState.unplayed).toBe(false);
+    });
+
+    it('becomes unplayed again when video ends to make it return to its initial look', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.play());
+      act(() => actions.ended());
+      const [nextState,] = result.current;
+
+      expect(nextState.unplayed).toBe(true);
+    });
+  });
+
   describe('tracking how media was last controlled', () => {
     it('supports via option for play action', () => {
       const {result} = renderHookInEntry(() => usePlayerState());
