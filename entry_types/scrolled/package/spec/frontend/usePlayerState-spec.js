@@ -63,16 +63,6 @@ describe('usePlayerState', () => {
       expect(newState.playFailed).toBe(false);
     });
 
-    it('pause action sets state shouldPause to true and shouldPlay to false', () => {
-      const {result} = renderHookInEntry(() => usePlayerState());
-      const [,actions] = result.current;
-      TestRenderer.act(()=>actions.pause());
-      const [nextState,] = result.current;
-
-      expect(nextState.shouldPause).toBe(true);
-      expect(nextState.shouldPlay).toBe(false);
-    });
-
     it('leaves shouldPlay true on paused action during buffer underuns', () => {
       const {result} = renderHookInEntry(() => usePlayerState());
       const [,actions] = result.current;
