@@ -210,5 +210,24 @@ describe('usePlayerState', () => {
 
       expect(nextState.focusInsideControls).toBe(false);
     });
+
+    it('sets userHovering to true on MOUSE_ENTERED action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [, actions] = result.current;
+      TestRenderer.act(() => actions.mouseEntered());
+      const [nextState,] = result.current;
+
+      expect(nextState.userHovering).toBe(true);
+    });
+
+    it('sets userHovering to false on MOUSE_LEFT action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [, actions] = result.current;
+      TestRenderer.act(() => actions.mouseEntered());
+      TestRenderer.act(() => actions.mouseLeft());
+      const [nextState,] = result.current;
+
+      expect(nextState.userHovering).toBe(false);
+    });
   });
 });
