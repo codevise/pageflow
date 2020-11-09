@@ -6,6 +6,7 @@ import {LocaleProvider} from './i18n';
 import {FocusOutlineProvider} from './focusOutline';
 import {PhonePlatformProvider} from './PhonePlatformProvider';
 import {MediaMutedProvider} from './useMediaMuted';
+import {AudioFocusProvider} from './useAudioFocus';
 
 export function RootProviders({seed, children}) {
   return (
@@ -13,11 +14,13 @@ export function RootProviders({seed, children}) {
       <BrowserFeaturesProvider>
         <PhonePlatformProvider>
           <MediaMutedProvider>
-            <EntryStateProvider seed={seed}>
-              <LocaleProvider>
-                {children}
-              </LocaleProvider>
-            </EntryStateProvider>
+            <AudioFocusProvider>
+              <EntryStateProvider seed={seed}>
+                <LocaleProvider>
+                  {children}
+                </LocaleProvider>
+              </EntryStateProvider>
+            </AudioFocusProvider>
           </MediaMutedProvider>
         </PhonePlatformProvider>
       </BrowserFeaturesProvider>

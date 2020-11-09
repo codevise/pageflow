@@ -24,6 +24,7 @@ toc:
     description: |
       React hooks to obtain entry data.
     children:
+      - useAudioFocus
       - useContentElementEditorState
       - useContentElementLifecycle
       - useCredits
