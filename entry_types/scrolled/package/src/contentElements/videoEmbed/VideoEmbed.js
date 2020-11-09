@@ -4,6 +4,7 @@ import styles from './VideoEmbed.module.css';
 
 import {
   Figure,
+  ThirdPartyConsent,
   ViewportDependentPillarBoxes,
   useContentElementLifecycle,
   useContentElementEditorState,
@@ -55,28 +56,34 @@ function PreparedPlayer({contentElementId, configuration}) {
   }
 
   return (
-    <ReactPlayer className={styles.embedPlayer}
-                 key={keyFromConfiguration(configuration)}
-                 url={configuration.videoSource}
-                 playing={playerState !== 'paused'}
-                 onPlay={() => setPlayerState('playing')}
-                 onPause={() => setPlayerState('paused')}
-                 onEnded={() => setPlayerState('paused')}
-                 light={true}
-                 width='100%'
-                 height='100%'
-                 controls={!configuration.hideControls}
-                 config={{
-                   youtube: {
-                     playerVars: {
-                       showinfo: !configuration.hideInfo
-                     }
-                   },
-                   vimeo: {
-                     playerOptions: {
-                       byline: !configuration.hideInfo
-                     }
-                   }
-                 }} />
+    <ThirdPartyConsent providerName='video'
+                       hideTooltip={playerState === 'playing'}
+                       optOutPlacement='bottom-25'>
+      {(consentedHere) => (
+        <ReactPlayer className={styles.embedPlayer}
+                     key={keyFromConfiguration(configuration)}
+                     url={configuration.videoSource}
+                     playing={playerState !== 'paused'}
+                     onPlay={() => setPlayerState('playing')}
+                     onPause={() => setPlayerState('paused')}
+                     onEnded={() => setPlayerState('paused')}
+                     light={!consentedHere}
+                     width='100%'
+                     height='100%'
+                     controls={!configuration.hideControls}
+                     config={{
+                       youtube: {
+                         playerVars: {
+                           showinfo: !configuration.hideInfo
+                         }
+                       },
+                       vimeo: {
+                         playerOptions: {
+                           byline: !configuration.hideInfo
+                         }
+                       }
+                     }} />
+      )}
+    </ThirdPartyConsent>
   );
 }
