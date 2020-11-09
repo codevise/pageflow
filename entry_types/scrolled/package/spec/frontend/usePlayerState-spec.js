@@ -173,20 +173,20 @@ describe('usePlayerState', () => {
       expect(nextState.userIdle).toBe(false);
     });
 
-    it('sets userHoveringControls to true on CONTROLS_ENTERED action', () => {
+    it('sets userHoveringControls to true on MOUSE_ENTERED_CONTROLS action', () => {
       const {result} = renderHookInEntry(() => usePlayerState());
       const [, actions] = result.current;
-      TestRenderer.act(() => actions.controlsEntered());
+      TestRenderer.act(() => actions.mouseEnteredControls());
       const [nextState,] = result.current;
 
       expect(nextState.userHoveringControls).toBe(true);
     });
 
-    it('sets userHoveringControls to false on CONTROLS_LEFT action', () => {
+    it('sets userHoveringControls to false on MOUSE_LEFT_CONTROLS action', () => {
       const {result} = renderHookInEntry(() => usePlayerState());
       const [, actions] = result.current;
-      TestRenderer.act(() => actions.controlsEntered());
-      TestRenderer.act(() => actions.controlsLeft());
+      TestRenderer.act(() => actions.mouseEnteredControls());
+      TestRenderer.act(() => actions.mouseLeftControls());
       const [nextState,] = result.current;
 
       expect(nextState.userHoveringControls).toBe(false);

@@ -39,8 +39,8 @@ export function MediaPlayerControls(props) {
 
                     onFocus={playerActions.focusEnteredControls}
                     onBlur={playerActions.focusLeftControls}
-                    onMouseEnter={playerActions.controlsEntered}
-                    onMouseLeave={playerActions.controlsLeft}
+                    onMouseEnter={playerActions.mouseEnteredControls}
+                    onMouseLeave={playerActions.mouseLeftControls}
 
                     play={playerActions.playBlessed}
                     pause={playerActions.pause}
