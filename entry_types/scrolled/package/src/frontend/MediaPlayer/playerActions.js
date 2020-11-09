@@ -29,8 +29,8 @@ export const PREBUFFERED = 'MEDIA_PREBUFFERED';
 export const BUFFER_UNDERRUN = 'MEDIA_BUFFER_UNDERRUN';
 export const BUFFER_UNDERRUN_CONTINUE = 'MEDIA_BUFFER_UNDERRUN_CONTINUE';
 
-export const CONTROLS_ENTERED = 'MEDIA_CONTROLS_ENTERED';
-export const CONTROLS_LEFT = 'MEDIA_CONTROLS_LEFT';
+export const MOUSE_ENTERED_CONTROLS = 'MEDIA_MOUSE_ENTERED_CONTROLS';
+export const MOUSE_LEFT_CONTROLS = 'MEDIA_MOUSE_LEFT_CONTROLS';
 export const FOCUS_ENTERED_CONTROLS = 'MEDIA_FOCUS_ENTERED_CONTROLS';
 export const FOCUS_LEFT_CONTROLS = 'MEDIA_FOCUS_LEFT_CONTROLS';
 export const USER_INTERACTION = 'MEDIA_USER_INTERACTION';
@@ -123,11 +123,11 @@ export function createActions(dispatch){
     bufferUnderrunContinue(){
       dispatch({type: BUFFER_UNDERRUN_CONTINUE});
     },
-    controlsEntered(){
-      dispatch({type: CONTROLS_ENTERED});
+    mouseEnteredControls(){
+      dispatch({type: MOUSE_ENTERED_CONTROLS});
     },
-    controlsLeft(){
-      dispatch({type: CONTROLS_LEFT});
+    mouseLeftControls(){
+      dispatch({type: MOUSE_LEFT_CONTROLS});
     },
     userInteraction(){
       dispatch({type: USER_INTERACTION});

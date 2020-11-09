@@ -4,7 +4,8 @@ import {createActions,
         FADE_OUT_AND_PAUSE, PLAY_AND_FADE_IN, CHANGE_VOLUME_FACTOR,
         PREBUFFER, PREBUFFERED, BUFFER_UNDERRUN, BUFFER_UNDERRUN_CONTINUE,
         WAITING, SEEKING, SEEKED, META_DATA_LOADED, PROGRESS, TIME_UPDATE, ENDED,
-        CONTROLS_ENTERED, CONTROLS_LEFT, FOCUS_ENTERED_CONTROLS, FOCUS_LEFT_CONTROLS,
+        MOUSE_ENTERED_CONTROLS, MOUSE_LEFT_CONTROLS,
+        FOCUS_ENTERED_CONTROLS, FOCUS_LEFT_CONTROLS,
         USER_INTERACTION, USER_IDLE, SAVE_MEDIA_ELEMENT_ID, DISCARD_MEDIA_ELEMENT_ID} from './playerActions';
 
 export function getInitialPlayerState(){
@@ -172,12 +173,12 @@ export function playerStateReducer(state, action){
         ...state,
         bufferUnderrun: false
       };
-    case CONTROLS_ENTERED:
+    case MOUSE_ENTERED_CONTROLS:
       return {
         ...state,
         userHoveringControls: true
       };
-    case CONTROLS_LEFT:
+    case MOUSE_LEFT_CONTROLS:
       return {
         ...state,
         userHoveringControls: false
