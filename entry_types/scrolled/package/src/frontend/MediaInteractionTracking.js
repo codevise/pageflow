@@ -16,7 +16,8 @@ export function MediaInteractionTracking({playerState, playerActions, idleDelay,
         (focusWasInside !== playerState.focusInsideControls)) {
       setHideControlsTimeout();
     }
-  }, [wasPlaying, playerState.isPlaying, setHideControlsTimeout, playerState.focusInsideControls, focusWasInside]);
+  }, [wasPlaying, playerState.isPlaying, setHideControlsTimeout,
+      playerState.focusInsideControls, focusWasInside]);
 
   const handleInteraction = function () {
     playerActions.userInteraction();
@@ -24,7 +25,10 @@ export function MediaInteractionTracking({playerState, playerActions, idleDelay,
   }
 
   return (
-    <div onClick={handleInteraction} onMouseMove={handleInteraction}>
+    <div onClick={handleInteraction}
+         onMouseMove={handleInteraction}
+         onMouseEnter={playerActions.mouseEntered}
+         onMouseLeave={playerActions.mouseLeft}>
       {children}
     </div>
   );

@@ -29,6 +29,8 @@ export const getPlayerActions = () => {
     prebuffered(){},
     bufferUnderrun(){},
     bufferUnderrunContinue(){},
+    mouseEntered(){},
+    mouseLeft(){},
     mouseEnteredControls(){},
     mouseLeftControls(){},
     userInteraction(){},
