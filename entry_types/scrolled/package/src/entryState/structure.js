@@ -7,6 +7,8 @@ import {getItems, getItem} from '../collections';
  * Returns a nested data structure representing the chapters, sections
  * and content elements of the entry.
  *
+ * @private
+ *
  * @example
  *
  * const structure = useEntryStructure();
@@ -82,6 +84,8 @@ export function useEntryStructure() {
  *
  * @param {Object} options
  * @param {number} options.sectionPermaId
+ *
+ * @private
  *
  * @example
  *
