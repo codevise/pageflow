@@ -33,9 +33,9 @@ export function MediaPlayerControls(props) {
                     isPlaying={playerState.shouldPlay}
                     unplayed={playerState.unplayed}
                     lastControlledVia={playerState.lastControlledVia}
-                    inactive={playerState.userIdle &&
-                            (!focusOutlineVisible || !playerState.focusInsideControls) &&
-                            !playerState.userHoveringControls}
+                    inactive={(playerState.userIdle || !playerState.userHovering) &&
+                              (!focusOutlineVisible || !playerState.focusInsideControls) &&
+                              !playerState.userHoveringControls}
 
                     onFocus={playerActions.focusEnteredControls}
                     onBlur={playerActions.focusLeftControls}
