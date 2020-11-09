@@ -41,7 +41,7 @@ export function useShareProviders({isPhonePlatform}) {
   const sharing = {
     email: {
       icon: EmailIcon,
-      name: 'Email',
+      name: 'Mail',
       url: urlTemplates.email
     },
     facebook: {
