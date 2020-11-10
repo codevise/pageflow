@@ -15,6 +15,7 @@ Register the theme in the Pageflow initializer:
 
         entry_type_config.themes.register(:my_custom_theme,
                                           logo_alt_text: '...',
+                                          logo_url: '...'
                                           theme_color: '#..')
       end
     end
