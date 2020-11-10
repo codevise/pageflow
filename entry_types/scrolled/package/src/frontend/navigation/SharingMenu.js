@@ -35,7 +35,7 @@ export function SharingMenu() {
 
   if(shareProviders.length > 0) {
     return (
-      <PageflowTooltip hover={false} placement={'bottom'} arrowPos={'89%'}
+      <PageflowTooltip hover={false} placement={'bottom'} arrowPos={'89%'} closeOther={true}
         classWhenOpen={headerStyles.contextIconExpanded} horizontalOffset={-90}
         content={<div style={{width: '200px'}}>{renderShareLinks(shareProviders)}</div>}>
         <button className={classNames(headerStyles.contextIcon)}>

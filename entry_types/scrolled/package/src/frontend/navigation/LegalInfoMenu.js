@@ -15,7 +15,7 @@ export function LegalInfoMenu(props) {
   const credits = useCredits();
 
   return (
-    <PageflowTooltip padding={12} hover={false} placement={'bottom'}
+    <PageflowTooltip padding={12} hover={false} placement={'bottom'} closeOther={true}
       horizontalOffset={-20} arrowPos={'60%'} classWhenOpen={headerStyles.contextIconExpanded}
       content={
               <div className={styles.legalInfoTooltip}>
