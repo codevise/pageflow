@@ -1,4 +1,5 @@
 require 'pageflow/version'
+require 'pageflow/dummy/exit_on_failure_patch'
 
 module Pageflow
   module Dummy
@@ -10,7 +11,8 @@ module Pageflow
           puts("Dummy directory #{directory} exists.")
         else
           system("bundle exec rails new #{directory} " \
-                 "--template #{template_path} #{rails_new_options}")
+                 "--template #{template_path} #{rails_new_options}") ||
+            raise('Error generating dummy app.')
         end
 
         require(File.join(ENV['RAILS_ROOT'], 'config', 'environment'))
