@@ -202,4 +202,40 @@ describe('MediaInteractionTracking', () => {
 
     expect(playerActions.userIdle).toHaveBeenCalled();
   });
+
+  it('dispatches mouseEntered action when mouse enters', () => {
+    const playerState = getInitialPlayerState();
+    const playerActions = {
+      ...getPlayerActions(),
+      mouseEntered: jest.fn()
+    };
+    const {getByTestId} = render(
+      <MediaInteractionTracking playerState={playerState}
+                                playerActions={playerActions}>
+        <div data-testid="child" />
+      </MediaInteractionTracking>
+    );
+
+    fireEvent.mouseEnter(getByTestId('child'));
+
+    expect(playerActions.mouseEntered).toHaveBeenCalled();
+  });
+
+  it('dispatches mouseLeft action when mouse leaves', () => {
+    const playerState = getInitialPlayerState();
+    const playerActions = {
+      ...getPlayerActions(),
+      mouseLeft: jest.fn()
+    };
+    const {getByTestId} = render(
+      <MediaInteractionTracking playerState={playerState}
+                                playerActions={playerActions}>
+        <div data-testid="child" />
+      </MediaInteractionTracking>
+    );
+
+    fireEvent.mouseLeave(getByTestId('child'));
+
+    expect(playerActions.mouseLeft).toHaveBeenCalled();
+  });
 });

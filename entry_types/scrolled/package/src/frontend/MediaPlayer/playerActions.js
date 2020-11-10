@@ -29,8 +29,10 @@ export const PREBUFFERED = 'MEDIA_PREBUFFERED';
 export const BUFFER_UNDERRUN = 'MEDIA_BUFFER_UNDERRUN';
 export const BUFFER_UNDERRUN_CONTINUE = 'MEDIA_BUFFER_UNDERRUN_CONTINUE';
 
-export const CONTROLS_ENTERED = 'MEDIA_CONTROLS_ENTERED';
-export const CONTROLS_LEFT = 'MEDIA_CONTROLS_LEFT';
+export const MOUSE_ENTERED = 'MEDIA_MOUSE_ENTERED';
+export const MOUSE_LEFT = 'MEDIA_MOUSE_LEFT';
+export const MOUSE_ENTERED_CONTROLS = 'MEDIA_MOUSE_ENTERED_CONTROLS';
+export const MOUSE_LEFT_CONTROLS = 'MEDIA_MOUSE_LEFT_CONTROLS';
 export const FOCUS_ENTERED_CONTROLS = 'MEDIA_FOCUS_ENTERED_CONTROLS';
 export const FOCUS_LEFT_CONTROLS = 'MEDIA_FOCUS_LEFT_CONTROLS';
 export const USER_INTERACTION = 'MEDIA_USER_INTERACTION';
@@ -60,11 +62,11 @@ export function createActions(dispatch){
     paused(){
       dispatch({type: PAUSED})
     },
-    playAndFadeIn(fadeDuration){
-      dispatch({type: PLAY_AND_FADE_IN, payload: {fadeDuration: fadeDuration}});
+    playAndFadeIn(fadeDuration, {via} = {}){
+      dispatch({type: PLAY_AND_FADE_IN, payload: {fadeDuration: fadeDuration, via}});
     },
-    fadeOutAndPause(fadeDuration){
-      dispatch({type: FADE_OUT_AND_PAUSE, payload: {fadeDuration: fadeDuration}});
+    fadeOutAndPause(fadeDuration, {via} = {}){
+      dispatch({type: FADE_OUT_AND_PAUSE, payload: {fadeDuration: fadeDuration, via}});
     },
     changeVolumeFactor(volumeFactor, fadeDuration){
       dispatch({type: CHANGE_VOLUME_FACTOR, payload: {
@@ -123,11 +125,17 @@ export function createActions(dispatch){
     bufferUnderrunContinue(){
       dispatch({type: BUFFER_UNDERRUN_CONTINUE});
     },
-    controlsEntered(){
-      dispatch({type: CONTROLS_ENTERED});
+    mouseEntered(){
+      dispatch({type: MOUSE_ENTERED});
     },
-    controlsLeft(){
-      dispatch({type: CONTROLS_LEFT});
+    mouseLeft(){
+      dispatch({type: MOUSE_LEFT});
+    },
+    mouseEnteredControls(){
+      dispatch({type: MOUSE_ENTERED_CONTROLS});
+    },
+    mouseLeftControls(){
+      dispatch({type: MOUSE_LEFT_CONTROLS});
     },
     userInteraction(){
       dispatch({type: USER_INTERACTION});
