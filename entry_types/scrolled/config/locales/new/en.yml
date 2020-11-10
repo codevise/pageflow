@@ -429,6 +429,8 @@ en:
               on phones or tablets in portrait orientation. Can be used to supply an
               alternative to a landscape background image that would otherwise have
               important parts cropped off.
+          backdropColor:
+            label: Background-Color
           backdropVideo:
             label: Background-Video
           backdropType:
