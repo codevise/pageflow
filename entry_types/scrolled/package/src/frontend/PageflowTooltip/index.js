@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import classNames from 'classnames';
 
 import Arrow from "./components/Arrow"
 import Tooltip from "./components/Tooltip"
@@ -81,6 +82,7 @@ class Wrapper extends React.Component {
       radius,
       zIndex,
       classWhenOpen,
+      closeOther,
       ...props
     } = this.props
     const hasTrigger = children !== undefined && children !== null
@@ -122,7 +124,7 @@ class Wrapper extends React.Component {
     }
     return hasTrigger ? (
       <div
-        className={styles.container}
+        className={classNames(styles.container, {[styles.tooltipOpen]: open})}
         onMouseEnter={!fixed && hover ? this.handleMouseEnter : undefined}
         onMouseLeave={!fixed && hover ? this.handleMouseLeave : undefined}
         onClick={!fixed ? this.handleTouch : undefined}
@@ -136,6 +138,7 @@ class Wrapper extends React.Component {
       <div
         className={styles.container}
         style={props.customCss}
+        data-open={open}
         {...props}
       >
         {tooltipElement}
@@ -165,7 +168,8 @@ Wrapper.propTypes = {
   placement: PropTypes.oneOf(["left", "top", "right", "bottom"]),
   radius: PropTypes.number,
   zIndex: PropTypes.number,
-  classWhenOpen: PropTypes.string
+  classWhenOpen: PropTypes.string,
+  closeOther: PropTypes.bool
 }
 
 Wrapper.defaultProps = {
@@ -188,7 +192,8 @@ Wrapper.defaultProps = {
   radius: 5,
   zIndex: 1,
   customCss: {},
-  classWhenOpen: null
+  classWhenOpen: null,
+  closeOther: false,
 }
 
 Wrapper.displayName = "Tooltip.Wrapper"
