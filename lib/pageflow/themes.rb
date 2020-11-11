@@ -36,6 +36,10 @@ module Pageflow
     # @option options :hide_logo_option [Boolean]
     #   Pass true if hiding the logo on specific pages should be supported
     #   as an option in the editor.
+    #
+    # @option options :logo_url [String]
+    #   Pass logo url as string to turn the logo in navigation bar into a link.
+    #
     def register(name, options = {})
       @themes[name] = Theme.new(name, options)
     end
