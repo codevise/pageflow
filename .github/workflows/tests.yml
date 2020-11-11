@@ -19,7 +19,7 @@ jobs:
 
           - engine-name: pageflow
             engine-directory: .
-            rspec-command: bin/rspec --tag js
+            rspec-command: bin/rspec-with-retry --tag js
 
           - engine-name: pageflow_paged
             engine-directory: entry_types/paged
