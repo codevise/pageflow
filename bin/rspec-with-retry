@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Used to run flaky js specs multiple times
+
+for i in {1..3}; do
+  bin/rspec $@
+  e=$?
+  [[ $e -gt 0 ]] && echo Retry || exit $e;
+done;
+
+exit 1
