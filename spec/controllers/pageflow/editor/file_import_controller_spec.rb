@@ -137,7 +137,7 @@ module Pageflow
       end
     end
 
-    describe '#start_import_job', perform_jobs: true, stub_paperclip: true do
+    describe '#start_import_job', perform_jobs: true do
       include ActiveJob::TestHelper
 
       let(:zencoder_options) do

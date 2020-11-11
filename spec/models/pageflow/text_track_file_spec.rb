@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Pageflow
-  describe TextTrackFile, perform_jobs: true do
+  describe TextTrackFile, perform_jobs: true, unstub_paperclip: true do
     describe '#process' do
       it 'sets state to processed' do
         text_track_file = create(:text_track_file, :uploaded)
