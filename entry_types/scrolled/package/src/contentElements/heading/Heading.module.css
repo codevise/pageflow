@@ -1,4 +1,6 @@
 .root {
+  hyphens: auto;
+  word-wrap: break-word;
   margin-top: 0.2em;
   margin-bottom: 0;
   padding-top: 0.3em;
