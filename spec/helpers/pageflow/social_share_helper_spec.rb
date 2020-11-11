@@ -130,7 +130,7 @@ module Pageflow
       end
     end
 
-    describe '#social_share_entry_image_tags', stub_paperclip: true do
+    describe '#social_share_entry_image_tags' do
       include UsedFileTestHelper
 
       it 'renders share image meta tags if share image was chosen' do

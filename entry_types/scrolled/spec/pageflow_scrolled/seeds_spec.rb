@@ -128,7 +128,7 @@ module PageflowScrolled
           expect(created_content_elements.last.configuration['children']).to eq('Some content')
         end
 
-        context 'files referenced', stub_paperclip: true do
+        context 'files referenced' do
           it 'ignores non file backdrops' do
             entry = SeedsDsl.sample_scrolled_entry(attributes: {
                                                      account: create(:account),
@@ -343,7 +343,7 @@ module PageflowScrolled
         end
       end
 
-      context 'image files', stub_paperclip: true do
+      context 'image files' do
         before do
           stub_request(:get, /example.com/)
             .to_return(status: 200,
@@ -389,7 +389,7 @@ module PageflowScrolled
         end
       end
 
-      context 'video files', stub_paperclip: true do
+      context 'video files' do
         before do
           stub_request(:get, /example.com/)
             .to_return(status: 200,
@@ -486,7 +486,7 @@ module PageflowScrolled
         end
       end
 
-      context 'audio files', stub_paperclip: true do
+      context 'audio files' do
         before do
           stub_request(:get, /example.com/)
             .to_return(status: 200,
