@@ -5,7 +5,7 @@ shared_examples 'media encoding state machine' do |model|
     Pageflow.config.zencoder_options
   end
 
-  describe '#publish event', perform_jobs: true, stub_paperclip: true do
+  describe '#publish event', perform_jobs: true do
     context 'with disabled confirm_encoding_jobs option' do
       before do
         stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
@@ -106,7 +106,7 @@ shared_examples 'media encoding state machine' do |model|
     end
   end
 
-  describe '#confirm_encoding event', perform_jobs: true, stub_paperclip: true do
+  describe '#confirm_encoding event', perform_jobs: true do
     before do
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
@@ -138,7 +138,7 @@ shared_examples 'media encoding state machine' do |model|
     end
   end
 
-  describe '#retry_encoding event', perform_jobs: true, stub_paperclip: true do
+  describe '#retry_encoding event', perform_jobs: true do
     before do
       stub_request(:get, /#{zencoder_options[:s3_host_alias]}/)
         .to_return(:status => 200, :body => File.read('spec/fixtures/image.jpg'))
