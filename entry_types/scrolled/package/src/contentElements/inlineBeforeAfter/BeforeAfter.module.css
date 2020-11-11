@@ -5,6 +5,7 @@
 }
 
 .container {
+  height: 100%;
   --frame1pos: -8;
   --frame2pos: 16;
   --frame3pos: -32;
@@ -15,6 +16,11 @@
   --frame4px: calc(var(--frame4pos) * 1px);
   /* in addition to the above variables, we receive --initial-rect-width
    from BeforeAfter.js, which has no sensible default value */
+}
+
+/* Selects react-compare-image container div */
+.container > div {
+  height: 100% !important;
 }
 
 /* With react-compare-image 2.0.4 (commit 7410d14), this selects the
