@@ -1,0 +1,162 @@
+name: storybook
+on:
+  pull_request:
+    # Skip if PR does not change scrolled package to reduce Percy usage
+    paths:
+      - entry_types/scrolled/package/src/**
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+
+env:
+  RAILS_ENV: test
+  PAGEFLOW_DB_HOST: 127.0.0.1
+  PT: b55731926f7bcb9344a0b3ff662613954a4137d3c21c1be748e9929823f19b08
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        ports:
+          - 3306:3306
+        # Set health checks to wait until mysql has started
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Shared variables
+
+    - name: Check current repository and branch
+      id: shared-vars
+      run: |
+        ON_UPSTREAM=$([[ "$GITHUB_EVENT_NAME" == "push" && \
+                         "$GITHUB_REPOSITORY" == "codevise/pageflow" ]] &&
+                      echo "true" || echo "false")
+
+        # Remove refs/heads/ and refs/tags/ prefixes from ref to get branch name
+        BRANCH=${GITHUB_REF/refs\/heads\//}
+        BRANCH=${BRANCH/refs\/tags\//}
+
+        echo "::set-output name=on-upstream::$ON_UPSTREAM"
+        echo "::set-output name=branch::$BRANCH"
+
+    # Caching
+
+    - name: Set up cache for Bundler
+      uses: actions/cache@v2
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - name: Set up cache for Yarn
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    # Ruby/Node
+
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6
+
+    - name: Set up Node.js 10.23
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.23
+
+    # Dependencies
+
+    - name: Bundle install
+      run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+
+    - name: Yarn install
+      run: |
+        yarn install
+
+    # Build
+
+    - name: Generate dummy app
+      working-directory: entry_types/scrolled
+      env:
+        PAGEFLOW_PLUGIN_ENGINE: pageflow_scrolled
+      run: |
+        bin/rake pageflow_scrolled:dummy
+
+    # Snapshot
+
+    - name: Set up seed
+      env:
+        BRANCH: ${{ steps.shared-vars.outputs.branch }}
+        ON_UPSTREAM: ${{ steps.shared-vars.outputs.on-upstream }}
+        S3_BUCKET: de-codevise-pageflow-storybook-seed
+        S3_ACCESS_KEY: ${{ secrets.STORYBOOK_SEED_S3_ACCESS_KEY }}
+        S3_SECRET_KEY: ${{ secrets.STORYBOOK_SEED_S3_SECRET_KEY }}
+        S3_HOST_NAME: s3-eu-west-1.amazonaws.com
+        S3_REGION: eu-west-1
+        S3_HOST_ALIAS: de-codevise-pageflow-storybook-seed.s3-eu-west-1.amazonaws.com
+        S3_PROTOCOL: https
+        PAGEFLOW_SKIP_ENCODING_STORYBOOK_FILES: true
+        S3_OUTPUT_HOST_ALIAS: de-codevise-pageflow-storybook-seed.s3-eu-west-1.amazonaws.com
+      working-directory: entry_types/scrolled
+      run: |
+        export PAGEFLOW_PAPERCLIP_S3_ROOT=$([[ $ON_UPSTREAM == "true" ]] &&
+                                              echo "$BRANCH" || echo "master")
+
+        export PAGEFLOW_SCROLLED_DB_SEED_SKIP_FILES=$([[ $ON_UPSTREAM == "true" ]] &&
+                                                      echo "false" || echo "true")
+
+        bundle exec rake pageflow_scrolled:storybook:seed:setup[package/.storybook/seed.json]
+
+    - name: Snapshot
+      uses: percy/storybook-action@v0.1.6
+      with:
+        working-directory: entry_types/scrolled/package
+        custom-command: yarn run snapshot
+
+    - name: Publish
+      working-directory: entry_types/scrolled/package
+      env:
+        BRANCH: ${{ steps.shared-vars.outputs.branch }}
+      run: |
+        cp -r .storybook/out $HOME/dist
+
+        git config --global user.email "bot@codevise.de"
+        git config --global user.name "codevise-bot"
+
+        git clone --quiet https://${{ secrets.CODEVISE_BOT_PERSONAL_TOKEN }}@github.com/codevise/pageflow-scrolled-storybook.git gh-pages > /dev/null
+        cd gh-pages
+
+        # Create directory for branch or tag. Remove old files if
+        # there already was a published storybook for this branch.
+        rm -rf $BRANCH
+        mkdir $BRANCH
+        cp -r $HOME/dist/* $BRANCH
+
+        git add -f .
+        git commit -m "Run $GITHUB_RUN_ID"
+        git push -fq origin master > /dev/null
+      if: steps.shared-vars.outputs.on-upstream == 'true'
