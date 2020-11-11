@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# See REDMINE-17430
+# Running only the js specs should not take more than 20 seconds.
+# If Chrome Driver hangs, the timeout command will exit with 137.
+# Retry or else exit with original exit status of rspec command.
+
+cd entry_types/scrolled
+
+for i in {1..10}; do
+  timeout --signal=KILL 30 bin/rspec $@
+  e=$?
+  [[ $e -gt 100 ]] && echo Timeout || exit $e;
+done;
+
+exit 1

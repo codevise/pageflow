@@ -210,7 +210,7 @@ described above.
 Since in CI there is no transcoding configured, using transcoded files in Percy requires
 some manual work to set up:
 First you need to specify an `ENV`-variable named `PAGEFLOW_SKIP_ENCODING_STORYBOOK_FILES`
-and set it to `true` in your `.travis` config file. This will cause transcoding to be skipped
+and set it to `true` in your CI config file. This will cause transcoding to be skipped
 and set the `output_presences`, usually assigned during transcoding, explicitly during
 creation of the file records.
 Furthermore, specify another `ENV`-variable named `S3_OUTPUT_HOST_ALIAS` and set it to the
