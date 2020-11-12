@@ -10,9 +10,14 @@ const BaseToolTop = ({type, children, ...props}) => {
     marginTop: props.verticalOffset+'px',
     animationTimingFunction: props.fadeEasing
   }
-  
+
+  // Negative tabIndex ensures element can take focus but does not
+  // come up in tab order. This ensures the tooltip stays expanded
+  // when text in the legal info menu is selected.
   return (
-     <div style={style} className={classNames(styles.base, styles[type])}>{children}</div>
+    <div style={style}
+         tabIndex="-1"
+         className={classNames(styles.base, styles[type], props.className)}>{children}</div>
   );
 }
 
@@ -35,6 +40,7 @@ const tooltips = {
 }
 
 const Tooltip = ({
+  className,
   children,
   verticalOffset,
   horizontalOffset,
@@ -46,17 +52,16 @@ const Tooltip = ({
 }) => {
   const Component = tooltips[placement] || tooltips.top
   return (
-    open && (
-      <Component
-        verticalOffset={verticalOffset}
-        horizontalOffset={horizontalOffset}
-        zIndex={zIndex}
-        fadeDuration={fadeDuration}
-        fadeEasing={fadeEasing}
-      >
-        {children}
-      </Component>
-    )
+    <Component
+      className={className}
+      verticalOffset={verticalOffset}
+      horizontalOffset={horizontalOffset}
+      zIndex={zIndex}
+      fadeDuration={fadeDuration}
+      fadeEasing={fadeEasing}
+    >
+      {children}
+    </Component>
   )
 }
 

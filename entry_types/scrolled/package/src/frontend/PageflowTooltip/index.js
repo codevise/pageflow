@@ -8,58 +8,8 @@ import Bubble from "./components/Bubble"
 
 import styles from './PageflowTooltip.module.css'
 
-class TooltipContent extends React.Component {
-  
-  componentDidMount() {
-    if (this.contentElement) {
-      this.contentElement.focus();
-    }
-  }
-  render() {
-    const content = this.props.content;
-    return (
-      <div ref={(elem) => { this.contentElement = elem; }}>
-        {content}
-      </div>
-    )
-  }
-
-}
-
 class Wrapper extends React.Component {
-  constructor() {
-    super()
-
-    this.state = {
-      open: false,
-    }
-
-    this.handleMouseEnter = this.handleMouseEnter.bind(this)
-    this.handleMouseLeave = this.handleMouseLeave.bind(this)
-    this.handleTouch = this.handleTouch.bind(this)
-  }
-
-  handleMouseEnter() {
-    this.setState({open: true})
-  }
-
-  handleMouseLeave() {
-    this.setState({open: false})
-  }
-
-  handleTouch(event) {
-    const isOpen = this.state.open;
-    this.setState({open: !isOpen});
-    if (!isOpen && this.props.closeOther) {
-      let tooltips = document.getElementsByClassName(styles.tooltipOpen);
-      for (const tp of tooltips) {
-        tp.click();
-      }
-    }
-  }
-
   render() {
-    const {open} = this.state
     const {
       arrow,
       arrowPos,
@@ -85,10 +35,9 @@ class Wrapper extends React.Component {
       closeOther,
       ...props
     } = this.props
-    const hasTrigger = children !== undefined && children !== null
     const tooltipElement = (
       <Tooltip
-        open={!hasTrigger || fixed ? true : open}
+        className={styles.tooltip}
         placement={placement}
         verticalOffset={verticalOffset}
         horizontalOffset={horizontalOffset}
@@ -114,37 +63,38 @@ class Wrapper extends React.Component {
             color={color}
             placement={placement}
           />
-          <TooltipContent content={content} />
+          {content}
         </Bubble>
       </Tooltip>
     )
-    let newChildren = children;
-    if (open && classWhenOpen) {
-      let existingClasses = children.props.className ? children.props.className+' ' : '';
-      newChildren = React.cloneElement(children, { className: existingClasses + classWhenOpen})
-    }
-    return hasTrigger ? (
-      <div
-        className={classNames(styles.container, {[styles.tooltipOpen]: open})}
-        onMouseEnter={!fixed && hover ? this.handleMouseEnter : undefined}
-        onMouseLeave={!fixed && hover ? this.handleMouseLeave : undefined}
-        onClick={!fixed ? this.handleTouch : undefined}
-        style={customCss}
-        {...props}
-      >
-        {newChildren}
+
+    return (
+      <div className={classNames(styles.container, {[styles.openOnHover]: hover, [styles.fixed]: fixed})}
+           style={customCss}
+           onClick={fixFocusHandlingSafari}
+           {...props}>
+        {children}
         {tooltipElement}
       </div>
-    ) : (
-      <div
-        className={styles.container}
-        style={props.customCss}
-        data-open={open}
-        {...props}
-      >
-        {tooltipElement}
-      </div>
-    )
+    );
+  }
+}
+
+// Safari does not focus buttons after they are clicked [1]. Focus
+// manually to ensure `focus-within` selector that opens the tooltip
+// applies.
+//
+// [1] https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Clicking_and_focus
+function fixFocusHandlingSafari(event) {
+  if (!event.target.closest) {
+    // IE does not support closest, but also does not need this fix.
+    return
+  }
+
+  const button = event.target.closest('button');
+
+  if (button) {
+    button.focus();
   }
 }
 
