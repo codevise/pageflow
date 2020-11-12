@@ -19,16 +19,10 @@ const EVENTS = [
   'zoom'
 ];
 
-/**
- * @description Capitalise the first letter of a string
- */
 function capitaliseFirstLetter(string) {
   return string.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('');
 }
 
-/**
- * @description Throws an error if the prop is defined and not an integer or not positive
- */
 function positiveIntegerProptype(props, propName, componentName) {
   const n = props[propName];
   if (n !== undefined && (typeof n !== 'number' || n !== parseInt(n, 10) || n < 0)) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactPlayer from 'react-player';
 import styles from './VideoEmbed.module.css';
 
@@ -6,7 +6,8 @@ import {
   Figure,
   ViewportDependentPillarBoxes,
   useContentElementLifecycle,
-  useContentElementEditorState
+  useContentElementEditorState,
+  useAudioFocus
 } from 'pageflow-scrolled/frontend';
 
 const aspectRatios = {
@@ -16,44 +17,9 @@ const aspectRatios = {
   portrait: 1.7777
 };
 
-export function VideoEmbed({configuration}) {
-  const {isPrepared} = useContentElementLifecycle();
+export function VideoEmbed({contentElementId, configuration}) {
   const {isEditable, isSelected} = useContentElementEditorState();
-
-  // base64-encoded configuration
-  // => make component re-render on configuration changes
-  function keyFromConfiguration(config) {
-    return btoa(JSON.stringify(config))
-  }
-
-  function renderPlayer() {
-    if (!isPrepared) {
-      return null;
-    }
-
-    return (
-      <ReactPlayer className={styles.embedPlayer}
-                   key={keyFromConfiguration(configuration)}
-                   url={configuration.videoSource}
-                   playing={true}
-                   light={true}
-                   width='100%'
-                   height='100%'
-                   controls={!configuration.hideControls}
-                   config={{
-                     youtube: {
-                       playerVars: {
-                         showinfo: !configuration.hideInfo
-                       }
-                     },
-                     vimeo: {
-                       playerOptions: {
-                         byline: !configuration.hideInfo
-                       }
-                     }
-                   }} />
-    );
-  }
+  const {isPrepared} = useContentElementLifecycle();
 
   return (
     <div className={styles.VideoEmbed}
@@ -62,9 +28,55 @@ export function VideoEmbed({configuration}) {
         <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
                                       position={configuration.position}
                                       opaque={!!configuration.caption}>
-          {renderPlayer()}
+          {isPrepared && <PreparedPlayer contentElementId={contentElementId}
+                                         configuration={configuration} />}
         </ViewportDependentPillarBoxes>
       </Figure>
     </div>
+  );
+}
+
+function PreparedPlayer({contentElementId, configuration}) {
+  const [playerState, setPlayerState] = useState('unplayed');
+
+  useAudioFocus({
+    key: contentElementId,
+    request: playerState === 'playing',
+
+    onLost() {
+      setPlayerState('paused');
+    }
+  });
+
+  // base64-encoded configuration
+  // => make component re-render on configuration changes
+  function keyFromConfiguration(config) {
+    return btoa(JSON.stringify(config))
+  }
+
+  return (
+    <ReactPlayer className={styles.embedPlayer}
+                 key={keyFromConfiguration(configuration)}
+                 url={configuration.videoSource}
+                 playing={playerState !== 'paused'}
+                 onPlay={() => setPlayerState('playing')}
+                 onPause={() => setPlayerState('paused')}
+                 onEnded={() => setPlayerState('paused')}
+                 light={true}
+                 width='100%'
+                 height='100%'
+                 controls={!configuration.hideControls}
+                 config={{
+                   youtube: {
+                     playerVars: {
+                       showinfo: !configuration.hideInfo
+                     }
+                   },
+                   vimeo: {
+                     playerOptions: {
+                       byline: !configuration.hideInfo
+                     }
+                   }
+                 }} />
   );
 }

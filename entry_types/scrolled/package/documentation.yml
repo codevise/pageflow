@@ -24,18 +24,19 @@ toc:
     description: |
       React hooks to obtain entry data.
     children:
+      - useAudioFocus
       - useContentElementEditorState
       - useContentElementLifecycle
-      - useDarkBackground
-      - useFile
-      - useI18n
-      - useEntryMetadata
-      - useFileRights
-      - useLegalInfo
       - useCredits
+      - useDarkBackground
+      - useEntryMetadata
+      - useFile
+      - useFileRights
+      - useI18n
+      - useLegalInfo
       - useShareProviders
       - useShareUrl
-      - useMediaSettings
+      - useTheme
   - name: Spec Support
     description: |
       Helper functions to use in specs.

@@ -9,10 +9,11 @@ import {
   useContentElementEditorState,
   useFile,
   usePlayerState,
-  useContentElementLifecycle
+  useContentElementLifecycle,
+  useAudioFocus
 } from 'pageflow-scrolled/frontend';
 
-export function InlineAudio({sectionProps, configuration}) {
+export function InlineAudio({contentElementId, sectionProps, configuration}) {
   const audioFile = useFile({collectionName: 'audioFiles', permaId: configuration.id});
   const posterImageFile = useFile({collectionName: 'imageFiles', permaId: configuration.posterId});
 
@@ -27,6 +28,15 @@ export function InlineAudio({sectionProps, configuration}) {
     },
 
     onDeactivate() {
+      playerActions.fadeOutAndPause(400);
+    }
+  });
+
+  useAudioFocus({
+    key: contentElementId,
+    request: playerState.shouldPlay,
+
+    onLost() {
       playerActions.fadeOutAndPause(400);
     }
   });
