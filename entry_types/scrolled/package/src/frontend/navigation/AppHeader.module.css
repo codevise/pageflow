@@ -52,6 +52,10 @@
   height: 100%;
 }
 
+.logo img {
+  height: 100%;
+}
+
 .chapterList {
   padding: 0;
   margin: 0;
