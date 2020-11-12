@@ -3,5 +3,17 @@
   display: inline-block;
 }
 
+.tooltip {
+  display: none;
+}
 
-.tooltipOpen {}
+.container:focus-within .tooltip,
+.fixed .tooltip,
+.openOnHover:hover .tooltip {
+  display: block;
+}
+
+/* Do not keep tooltip open when bubble is hovered */
+.openOnHover .tooltip {
+  pointer-events: none;
+}
