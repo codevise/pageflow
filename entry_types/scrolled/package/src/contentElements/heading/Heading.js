@@ -25,7 +25,9 @@ export function Heading({configuration, sectionProps}) {
       <Text scaleCategory={firstSectionInEntry ? 'h1' : 'h2'} inline={true}>
         <EditableInlineText value={configuration.value}
                             defaultValue={legacyValue}
-                            placeholder={t('pageflow_scrolled.inline_editing.type_heading')}
+                            placeholder={firstSectionInEntry ?
+                                         t('pageflow_scrolled.inline_editing.type_title') :
+                                         t('pageflow_scrolled.inline_editing.type_heading')}
                             onChange={value => updateConfiguration({value})} />
       </Text>
     </h1>

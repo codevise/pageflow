@@ -244,6 +244,7 @@ de:
         strikethrough: Durchgestrichen
       type_text: Text eingeben
       type_heading: Überschrift
+      type_title: Titel
       insert_link: Link einfügen
       remove_link: Link entfernen
       select_section: Abschnitt auswählen
