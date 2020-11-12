@@ -1,5 +1,6 @@
+import I18n from 'i18n-js';
 import {editor} from 'pageflow-scrolled/editor';
-import {UrlInputView} from 'pageflow/ui';
+import {UrlInputView, TextInputView, ColorInputView} from 'pageflow/ui';
 import {DatawrapperAdView} from './editor/DataWrapperAdView';
 
 editor.contentElementTypes.register('dataWrapperChart', {
@@ -21,6 +22,12 @@ editor.contentElementTypes.register('dataWrapperChart', {
         permitHttps: true
       });
       this.view(DatawrapperAdView);
+      this.input('title', TextInputView, {
+        placeholder: I18n.t('pageflow_scrolled.public.chart.default_title')
+      });
+      this.input('backgroundColor', ColorInputView,{
+        defaultValue: '#323d4d'
+      });
 
       this.group('ContentElementCaption');
       this.group('ContentElementPosition');
