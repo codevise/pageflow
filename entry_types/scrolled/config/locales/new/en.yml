@@ -92,6 +92,8 @@ en:
         help_text: >
           This article works best with the sound turned on. <br/>
           Click once in this field to activate the sound for the entire story.
+      chart:
+        default_title: Interactive chart
       player_controls:
         play: Play
         pause: Pause
@@ -213,6 +215,15 @@ en:
               inline_help: >
                 URL of a chart published via Datawrapper. Datawrapper offers a special 'Pageflow'
                 layout selectable on the 'Design' tab for optimal display inside Pageflow.
+            title:
+              label: Title
+              inline_help: >
+                Used by screen readers to describe the chart as a whole.
+            backgroundColor:
+              label: Background Color
+              inline_help: >
+                Color of box containing the diagram. Especially for charts with transparent background,
+                readability can be improved by choosing an appropriate background.
         heading:
           name: Heading
           tabs:
