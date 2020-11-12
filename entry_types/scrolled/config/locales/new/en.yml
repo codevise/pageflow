@@ -158,6 +158,7 @@ en:
         strikethrough: Strikethrough
       type_text: Type some text
       type_heading: Heading
+      type_title: Title
       insert_link: Insert link
       remove_link: Remove link
       select_section: Select section
