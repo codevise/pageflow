@@ -2,14 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import styles from "./ChapterLink.module.css";
 
-import {PageflowTooltip} from '../PageflowTooltip';
+import {Tooltip} from '../Tooltip';
 import {useI18n} from '../i18n';
 
 export function ChapterLink(props) {
   const {t} = useI18n();
 
   return (
-    <PageflowTooltip placement={'bottom'} 
+    <Tooltip placement={'bottom'} 
       content={
         <div style={{width: '200px'}}>
           <h3 className={styles.tooltipHeadline}>
@@ -27,7 +27,7 @@ export function ChapterLink(props) {
         <p className={styles.summary}
           dangerouslySetInnerHTML={{__html: props.summary}} />
       </div>
-    </PageflowTooltip>
+    </Tooltip>
   )
 }
 

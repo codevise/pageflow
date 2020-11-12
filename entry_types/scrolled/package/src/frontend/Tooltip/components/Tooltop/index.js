@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types"
 import classNames from 'classnames';
 
-import styles from './Tooltip.module.css';
+import styles from './Tooltop.module.css';
 
 const BaseToolTop = ({type, children, ...props}) => {
   let  style = {
@@ -32,14 +32,14 @@ BaseToolTop.propTypes = {
   fadeDuration: PropTypes.number,
 }
 
-const tooltips = {
+const tooltops = {
   left: ({children, ...props}) => BaseToolTop({type: 'left', children, ...props}),
   top: ({children, ...props}) => BaseToolTop({type: 'top', children, ...props}),
   right: ({children, ...props}) => BaseToolTop({type: 'right', children, ...props}),
   bottom: ({children, ...props}) => BaseToolTop({type: 'bottom', children, ...props}),
 }
 
-const Tooltip = ({
+const Tooltop = ({
   className,
   children,
   verticalOffset,
@@ -50,7 +50,7 @@ const Tooltip = ({
   fadeDuration,
   fadeEasing,
 }) => {
-  const Component = tooltips[placement] || tooltips.top
+  const Component = tooltops[placement] || tooltops.top
   return (
     <Component
       className={className}
@@ -65,7 +65,7 @@ const Tooltip = ({
   )
 }
 
-Tooltip.propTypes = {
+Tooltop.propTypes = {
   children: PropTypes.any.isRequired,
   verticalOffset: PropTypes.number,
   horizontalOffset: PropTypes.number,
@@ -76,4 +76,4 @@ Tooltip.propTypes = {
   fadeDuration: PropTypes.number,
 }
 
-export default Tooltip
+export default Tooltop

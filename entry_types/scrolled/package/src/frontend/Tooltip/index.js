@@ -3,10 +3,10 @@ import PropTypes from "prop-types"
 import classNames from 'classnames';
 
 import Arrow from "./components/Arrow"
-import Tooltip from "./components/Tooltip"
+import Tooltop from "./components/Tooltop"
 import Bubble from "./components/Bubble"
 
-import styles from './PageflowTooltip.module.css'
+import styles from './Tooltip.module.css'
 
 class Wrapper extends React.Component {
   render() {
@@ -36,7 +36,7 @@ class Wrapper extends React.Component {
       ...props
     } = this.props
     const tooltipElement = (
-      <Tooltip
+      <Tooltop
         className={styles.tooltip}
         placement={placement}
         verticalOffset={verticalOffset}
@@ -65,7 +65,7 @@ class Wrapper extends React.Component {
           />
           {content}
         </Bubble>
-      </Tooltip>
+      </Tooltop>
     )
 
     return (
@@ -148,8 +148,8 @@ Wrapper.defaultProps = {
 }
 
 Wrapper.displayName = "Tooltip.Wrapper"
-Tooltip.displayName = "Tooltip"
+Tooltop.displayName = "Tooltop"
 Bubble.displayName = "Tooltip.Bubble"
 Arrow.displayName = "Tooltip.Arrow"
 
-export {Wrapper as PageflowTooltip};
+export {Wrapper as Tooltip};
