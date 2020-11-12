@@ -8,7 +8,7 @@ import styles from './AppHeader.module.css';
 export function Logo() {
   const theme = useTheme();
   return (
-    <a href={theme.options.logoUrl}>
+    <a target="_blank" rel="noopener noreferrer" href={theme.options.logoUrl}>
       <picture>
         <source media="(max-width: 780px)" srcSet={theme.assets.logoMobile} />
         <source media="(min-width: 781px)" srcSet={theme.assets.logoDesktop} />
