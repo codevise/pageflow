@@ -22,7 +22,7 @@ export const withShadowClassName = styles.withShadow;
 
 export {api as frontend} from './api';
 
-export * from './PageflowTooltip';
+export * from './Tooltip';
 
 export * from './Image';
 export * from './Figure';

@@ -4,7 +4,7 @@ import headerStyles from "./AppHeader.module.css";
 import styles from "./LegalInfoMenu.module.css";
 import InfoIcon from "../assets/images/navigation/icons/information_icon.svg";
 
-import {PageflowTooltip} from '../PageflowTooltip';
+import {Tooltip} from '../Tooltip';
 import {useFileRights, useLegalInfo, useCredits} from '../../entryState';
 import {LegalInfoLink} from "./LegalInfoLink";
 
@@ -15,7 +15,7 @@ export function LegalInfoMenu(props) {
   const credits = useCredits();
 
   return (
-    <PageflowTooltip padding={12} hover={false} placement={'bottom'} closeOther={true}
+    <Tooltip padding={12} hover={false} placement={'bottom'} closeOther={true}
       horizontalOffset={-20} arrowPos={'60%'} classWhenOpen={headerStyles.contextIconExpanded}
       content={
               <div className={styles.legalInfoTooltip}>
@@ -35,7 +35,7 @@ export function LegalInfoMenu(props) {
       <button className={classNames(headerStyles.contextIcon, styles.infoIcon)} aria-haspopup="true">
         <InfoIcon/>
       </button>
-    </PageflowTooltip>      
+    </Tooltip>
   )
 }
 

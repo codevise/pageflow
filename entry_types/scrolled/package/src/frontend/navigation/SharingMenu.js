@@ -6,7 +6,7 @@ import ShareIcon from "../assets/images/navigation/icons/share_icon.svg";
 
 import {useShareProviders, useShareUrl} from "../../entryState";
 
-import {PageflowTooltip} from '../PageflowTooltip';
+import {Tooltip} from '../Tooltip';
 
 import {usePhonePlatform} from '../usePhonePlatform';
 
@@ -35,13 +35,13 @@ export function SharingMenu() {
 
   if(shareProviders.length > 0) {
     return (
-      <PageflowTooltip hover={false} placement={'bottom'} arrowPos={'89%'} closeOther={true}
+      <Tooltip hover={false} placement={'bottom'} arrowPos={'89%'} closeOther={true}
         classWhenOpen={headerStyles.contextIconExpanded} horizontalOffset={-90}
         content={<div style={{width: '200px'}}>{renderShareLinks(shareProviders)}</div>}>
         <button className={classNames(headerStyles.contextIcon)}>
           <ShareIcon/>
         </button>
-      </PageflowTooltip>
+      </Tooltip>
     )
   } else {
     return (null);
