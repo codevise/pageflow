@@ -1,6 +1,6 @@
 .container {
   min-height: 200px;
-  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px 5%;
 }
 
 .container > iframe {
@@ -8,4 +8,6 @@
   height: 100%;
   position: relative;
   top: 0;
+  border: 0;
+  overflow: hidden;
 }

@@ -178,6 +178,8 @@ de:
         help_text: >
           Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/>
           Klicken Sie einmal in dieses Feld, um den Ton für die gesamte Geschichte zu aktivieren.
+      chart:
+        default_title: Interaktives Diagramm
       player_controls:
         play: Wiedergeben
         pause: Pausieren
@@ -300,6 +302,16 @@ de:
                 URL zu einem bei Datawrapper publizierten Diagramm. Datawrapper bietet in den
                 Diagramm Optionen ein spezielles "Pageflow"-Design für eine optimale Darstellung
                 innerhalb des Beitrags.
+            title:
+              label: Titel
+              inline_help: >
+                Dieser Titel wird von Screenreadern verwendet, um das Diagramm als Ganzes zu beschreiben.
+            backgroundColor:
+              label: Hintegrund-Farbe
+              inline_help: >
+                Farbe der Box, die das Diagramm enthält. Insbesondere für Diagramme mit transparentem
+                Hintergrund kann über die Lesbarkeit durch Wahl einer passenden Hintergrundfarbe
+                verbessert werden.
         heading:
           name: Überschrift
           tabs:
