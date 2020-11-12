@@ -44,6 +44,7 @@ function renderIframe(url, title) {
   return (
     <iframe src={url}
             title={title}
+            scrolling="no"
             allowFullScreen={true}
             mozallowfullscreen='true'
             webkitallowfullscreen='true' />
