@@ -35,9 +35,9 @@ export function SharingMenu() {
 
   if(shareProviders.length > 0) {
     return (
-      <Tooltip hover={false} placement={'bottom'} arrowPos={'89%'} closeOther={true}
-        classWhenOpen={headerStyles.contextIconExpanded} horizontalOffset={-90}
-        content={<div style={{width: '200px'}}>{renderShareLinks(shareProviders)}</div>}>
+      <Tooltip horizontalOffset={-70}
+               arrowPos={160}
+               content={renderShareLinks(shareProviders)}>
         <button className={classNames(headerStyles.contextIcon)}>
           <ShareIcon/>
         </button>
@@ -47,4 +47,3 @@ export function SharingMenu() {
     return (null);
   }
 }
-
