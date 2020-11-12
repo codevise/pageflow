@@ -1,20 +1,23 @@
-import React from "react"
-import {render as testingLibraryRenderer} from '@testing-library/react'
+import React from 'react'
+import {render} from '@testing-library/react'
 
-import {Tooltip} from "frontend/Tooltip";
+import {Tooltip} from 'frontend/Tooltip';
 
-describe("Tooltip", () => {
-  const render = props =>
-    testingLibraryRenderer(
-      <Tooltip fixed={props.fixed} content={props.content} closeOther={props.closeOther} classWhenOpen={props.classWhenOpen}>
-        <button data-testid={props.triggerId || 'tooltip_trigger'} >Tooltip trigger</button>
+describe('Tooltip', () => {
+  it('renders trigger', () => {
+    const {getByTestId} = render(
+      <Tooltip>
+        <button data-testid={'trigger'} >trigger</button>
       </Tooltip>
-    )
+    );
+    expect(getByTestId('trigger')).toBeDefined();
+  });
 
-  it("should render the content", () => {
-    const wrapper = render({
-      content: <p data-testid='tooltip_content'>tooltip content</p>
-    })
-    expect(wrapper.getByTestId('tooltip_content')).toBeDefined();
+  it('renders content', () => {
+    const {getByTestId} = render(
+      <Tooltip content={<div data-testid={'content'}>content</div>}>
+      </Tooltip>
+    );
+    expect(getByTestId('content')).toBeDefined();
   });
 });

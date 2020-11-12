@@ -14,28 +14,29 @@ export function LegalInfoMenu(props) {
   const legalInfo = useLegalInfo();
   const credits = useCredits();
 
+  const content = (
+    <div className={styles.legalInfoTooltip}>
+      {credits &&
+       <p dangerouslySetInnerHTML={{__html: credits}}></p>
+      }
+
+      {fileRights &&
+       <p>{fileRights}</p>
+      }
+
+      <LegalInfoLink {...legalInfo.imprint}/>
+      <LegalInfoLink {...legalInfo.copyright}/>
+      <LegalInfoLink {...legalInfo.privacy}/>
+    </div>
+  );
+
   return (
-    <Tooltip padding={12} hover={false} placement={'bottom'} closeOther={true} fontSize={'13px'}
-      horizontalOffset={-20} arrowPos={'60%'} classWhenOpen={headerStyles.contextIconExpanded}
-      content={
-              <div className={styles.legalInfoTooltip}>
-                {credits &&
-                <p dangerouslySetInnerHTML={{__html: credits}}></p>
-                }
-
-                {fileRights &&
-                <p>{fileRights}</p>
-                }
-
-                <LegalInfoLink {...legalInfo.imprint}/>
-                <LegalInfoLink {...legalInfo.copyright}/>
-                <LegalInfoLink {...legalInfo.privacy}/>
-              </div>
-      }>
+    <Tooltip horizontalOffset={-30}
+             arrowPos={120}
+             content={content}>
       <button className={classNames(headerStyles.contextIcon, styles.infoIcon)} aria-haspopup="true">
         <InfoIcon/>
       </button>
     </Tooltip>
   )
 }
-

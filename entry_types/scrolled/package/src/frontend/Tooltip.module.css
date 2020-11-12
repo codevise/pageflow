@@ -1,0 +1,68 @@
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+.bubble {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
+  font-size: 13px;
+  width: 180px;
+  transform-origin: 50% 0%;
+  transform: translateX(-50%);
+  transition: visibility 0.1s linear, opacity 0.1s linear;
+}
+
+.container:focus-within .bubble,
+.fixed .bubble,
+.openOnHover:hover .bubble {
+  animation: fadeIn 0.1s ease-out 0s 1 alternate;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Do not keep tooltip open when bubble is hovered */
+.openOnHover .bubble {
+  pointer-events: none;
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: translateX(-50%) scale(0.9);
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+.inner {
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.highlight .inner {
+  border-bottom: 3px solid #e10028;
+}
+
+.arrow {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  box-shadow: 1px 1px 3px 0px rgba(0,0,0,0.2), 1px 1px 4px 0px rgba(0,0,0,0.14), 0px 0px 8px 0px rgba(0,0,0,0.12);
+  border: solid 4px transparent;
+  z-index: 1;
+  transform: translateX(-50%) translateY(50%) rotateZ(45deg);
+  bottom: 100%;
+  left: 50%;
+}

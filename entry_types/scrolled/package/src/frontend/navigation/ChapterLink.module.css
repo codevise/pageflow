@@ -26,18 +26,13 @@
   }
 }
 
-.chapterLinkTooltip {
-  border-bottom: 3px solid #e10028;
-  width: 200px;
-}
-
 .tooltipHeadline {
   margin: 5px 0 0px;
   color: #e10028;
 }
 
 @media (max-width: 780px) {
-  .chapterLinkTooltip {
+  .tooltipBubble {
     display: none !important;
   }
 }

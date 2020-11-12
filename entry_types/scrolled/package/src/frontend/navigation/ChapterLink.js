@@ -8,16 +8,17 @@ import {useI18n} from '../i18n';
 export function ChapterLink(props) {
   const {t} = useI18n();
 
+  const content = (
+    <>
+      <h3 className={styles.tooltipHeadline}>
+        {t('pageflow_scrolled.public.navigation.chapter')} {props.chapterIndex}
+      </h3>
+      <p dangerouslySetInnerHTML={{__html: props.summary}} />
+    </>
+  );
+
   return (
-    <Tooltip placement={'bottom'} 
-      content={
-        <div style={{width: '200px'}}>
-          <h3 className={styles.tooltipHeadline}>
-            {t('pageflow_scrolled.public.navigation.chapter')} {props.chapterIndex}
-          </h3>
-          <p dangerouslySetInnerHTML={{__html: props.summary}} />
-        </div>
-      }>
+    <Tooltip content={content} openOnHover={true} highlight={true} bubbleClassName={styles.tooltipBubble}>
       <div>
         <a className={classNames(styles.chapterLink, {[styles.chapterLinkActive]: props.active})}
           href={`#chapter-${props.permaId}`}
@@ -30,4 +31,3 @@ export function ChapterLink(props) {
     </Tooltip>
   )
 }
-
