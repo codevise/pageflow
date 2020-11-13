@@ -10,7 +10,7 @@ import {act, fireEvent, queryHelpers, queries, within} from '@testing-library/re
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {simulateScrollingIntoView} from './fakeIntersectionObserver';
 
-export function renderEntry({seed}) {
+export function renderEntry({seed} = {}) {
   return renderInEntry(<Entry />, {
     seed,
     queries: {...queries, ...pageObjectQueries}
@@ -37,6 +37,8 @@ export function useInlineEditingPageObjects() {
 
 export function usePageObjects() {
   beforeEach(() => {
+    jest.restoreAllMocks();
+
     api.contentElementTypes.register('withTestId', {
       component: function WithTestId({configuration}) {
         return (
@@ -76,6 +78,23 @@ const pageObjectQueries = {
     }
 
     return createContentElementPageObject(el);
+  },
+
+  fakeContentElementBoundingClientRectsByTestId(container, rectsByTestId) {
+    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function() {
+      const testIdAttribute = this.querySelector('[data-testid]')?.getAttribute('data-testid');
+      const testId = testIdAttribute?.split('-')[1];
+
+      return {
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0,
+        bottom: 0,
+        right: 0,
+        ...(testId ? rectsByTestId[testId] : {})
+      };
+    });
   }
 }
 

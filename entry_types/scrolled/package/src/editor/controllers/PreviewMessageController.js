@@ -17,12 +17,12 @@ export const PreviewMessageController = Object.extend({
   },
 
   handleMessage(message) {
+    const postMessage = message => {
+      this.iframeWindow.postMessage(message, window.location.origin);
+    };
+
     if (window.location.href.indexOf(message.origin) === 0) {
       if (message.data.type === 'READY') {
-        const postMessage = message => {
-          this.iframeWindow.postMessage(message, window.location.origin);
-        };
-
         watchCollections(this.entry, {
           dispatch: action => {
             postMessage({type: 'ACTION', payload: action})
@@ -130,6 +130,17 @@ export const PreviewMessageController = Object.extend({
         const {id, state} = message.data.payload;
         this.entry.contentElements.get(id).set('transientState', state);
       }
+      else if (message.data.type === 'SAVED_SCROLL_POINT' && this.currentScrollPointCallback) {
+        this.currentScrollPointCallback();
+        this.currentScrollPointCallback = null;
+
+        setTimeout(() => postMessage({type: 'RESTORE_SCROLL_POINT'}), 100);
+      }
     }
+  },
+
+  preserveScrollPoint(callback) {
+    this.currentScrollPointCallback = callback;
+    this.iframeWindow.postMessage({type: 'SAVE_SCROLL_POINT'}, window.location.origin);
   }
 });
