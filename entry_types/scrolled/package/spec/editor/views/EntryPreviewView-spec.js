@@ -10,6 +10,8 @@ describe('EntryPreviewView', () => {
   afterEach(() => {
     // Remove post message event listener
     view.onClose();
+
+    jest.restoreAllMocks();
   });
 
   setupGlobals({
@@ -85,6 +87,9 @@ describe('EntryPreviewView', () => {
     view.render();
     document.body.appendChild(view.el);
     view.onShow();
+
+    jest.spyOn(view.messageController, 'preserveScrollPoint')
+        .mockImplementation(callback => callback());
 
     entry.set('emulation_mode', 'phone');
     expect(view.el.classList).toContain(styles.phoneEmulationMode);

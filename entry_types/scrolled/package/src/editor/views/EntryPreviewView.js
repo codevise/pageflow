@@ -39,13 +39,15 @@ export const EntryPreviewView = Marionette.ItemView.extend({
   },
 
   updateEmulationMode: function() {
-    if (this.model.previous('emulation_mode')) {
-      this.$el.removeClass(styles[this.emulationModeClassName(this.model.previous('emulation_mode'))]);
-    }
+    this.messageController.preserveScrollPoint(() => {
+      if (this.model.previous('emulation_mode')) {
+        this.$el.removeClass(styles[this.emulationModeClassName(this.model.previous('emulation_mode'))]);
+      }
 
-    if (this.model.get('emulation_mode')) {
-      this.$el.addClass(styles[this.emulationModeClassName(this.model.get('emulation_mode'))]);
-    }
+      if (this.model.get('emulation_mode')) {
+        this.$el.addClass(styles[this.emulationModeClassName(this.model.get('emulation_mode'))]);
+      }
+    });
   },
 
   emulationModeClassName: function(mode) {
