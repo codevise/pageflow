@@ -1,11 +1,47 @@
 .soundDisclaimer {
-  text-align: center;
+  display: grid;
   border: 1px solid currentColor;
   border-radius: 4px;
-  cursor: pointer;
-  font-size: inherit;
+  position: relative;
+  user-select: none;
 }
 
-.soundDisclaimer:hover {
-  background: rgba(255, 255, 255, 0.25);
+.unmute,
+.unmuted {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  transition-property: opacity, visibility;
+  transition-duration: 0.09s;
+  transition-timing-function: ease-out;
+  opacity: 0;
+  visibility: hidden;
+  padding: 0 15px;
+}
+
+.unmute {
+  position: relative;
+  border: 0;
+  background-color: transparent;
+  font: inherit;
+  color: currentColor;
+  text-align: initial;
+  width: 100%;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.active {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.09s;
+  transition-duration: 0.21s;
+  transition-timing-function: ease-in;
+}
+
+.soundDisclaimer svg {
+  flex: 0 0 25px;
+  fill: currentColor;
+  margin-right: 15px;
 }

@@ -89,9 +89,11 @@ en:
         mute: Mute sound
         unmute: Unmute sound
       sound_disclaimer:
-        help_text: >
-          This article works best with the sound turned on. <br/>
-          Click once in this field to activate the sound for the entire story.
+        help_muted: >
+          This site works best with sound turned on.
+          Click here to activate sound.
+        help_unmuted: >
+          Sound can be muted again using the speaker icon in the navigation.
       chart:
         default_title: Interactive chart
       player_controls:
