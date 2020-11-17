@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useRef, useEffect, useCallback} from 'react';
 import classNames from 'classnames';
 
 import {media} from 'pageflow/frontend';
-import {useMediaMuted} from '../useMediaMuted';
+import {useMediaMuted, useOnUnmuteMedia} from '../useMediaMuted';
 import {useI18n} from '../i18n';
+import {useTheme} from '../../entryState';
 
 import headerStyles from './AppHeader.module.css';
 import styles from './ToggleMuteButton.module.css';
@@ -15,13 +16,28 @@ export function ToggleMuteButton() {
   const muted = useMediaMuted();
   const {t} = useI18n();
 
+  useUnmuteSound();
+
   return (
-    <button className={classNames(headerStyles.contextIcon, styles.button)}
-            title={muted ?
-                   t('pageflow_scrolled.public.navigation.unmute') :
-                   t('pageflow_scrolled.public.navigation.mute')}
-            onClick={() => media.mute(!muted)}>
-      {muted ? <MutedIcon /> : <UnmutedIcon />}
-    </button>
+    <div className={classNames({[styles.animate]: !muted})}>
+      <button className={classNames(headerStyles.contextIcon, styles.button)}
+              title={muted ?
+                     t('pageflow_scrolled.public.navigation.unmute') :
+                     t('pageflow_scrolled.public.navigation.mute')}
+              onClick={() => media.mute(!muted)}>
+        {muted ? <MutedIcon /> : <UnmutedIcon />}
+      </button>
+    </div>
   )
+}
+
+function useUnmuteSound() {
+  const theme = useTheme();
+  const audio = useRef();
+
+  useEffect(() => {
+    audio.current = new Audio(theme.assets.unmute)
+  }, [theme.assets.unmute]);
+
+  useOnUnmuteMedia(useCallback(() => audio.current.play(), []));
 }
