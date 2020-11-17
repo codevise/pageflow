@@ -1,8 +1,9 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useCallback} from 'react';
 import classNames from 'classnames';
 import useScrollPosition from '../useScrollPosition';
 import useNativeScrollPrevention from '../useNativeScrollPrevention';
 import {useEntryStructure} from '../../entryState';
+import {useOnUnmuteMedia} from '../useMediaMuted';
 
 import {HamburgerIcon} from './HamburgerIcon'
 import {ChapterLink} from "./ChapterLink";
@@ -52,6 +53,8 @@ export function AppHeader(props) {
     null,
     false,
     1);
+
+  useOnUnmuteMedia(useCallback(() => setNavExpanded(true), []));
 
   function handleProgressBarMouseEnter() {
     setNavExpanded(true);

@@ -30,8 +30,21 @@
   position: absolute;
   top: 0px;
   right: 0px;
-  padding: 0px 12px;
   display: flex;
+  /*
+    Hide overflow to prevent animated circle of
+    ToggleMuteButton.module.css from causing horizontal scroll bars
+    from appearing. Add extra padding to make sure circle is visible
+    outside of navigation bar. Disable pointer events to ensure other
+    elements below are still clickable.
+  */
+  overflow: hidden;
+  padding: 0px 12px 100% 300px;
+  pointer-events: none;
+}
+
+.contextIcons > * {
+  pointer-events: all;
 }
 
 .contextIcon {
