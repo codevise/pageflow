@@ -25,3 +25,14 @@
     display: block;
   }
 }
+
+.tooltipHeadline {
+  margin: 5px 0 0px;
+  color: #e10028;
+}
+
+@media (max-width: 780px) {
+  .tooltipBubble {
+    display: none !important;
+  }
+}
