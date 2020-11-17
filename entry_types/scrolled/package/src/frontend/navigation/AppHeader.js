@@ -4,6 +4,7 @@ import useScrollPosition from '../useScrollPosition';
 import useNativeScrollPrevention from '../useNativeScrollPrevention';
 import {useEntryStructure} from '../../entryState';
 import {useOnUnmuteMedia} from '../useMediaMuted';
+import {isBlank} from '../utils/blank';
 
 import {HamburgerIcon} from './HamburgerIcon'
 import {ChapterLink} from "./ChapterLink";
@@ -56,6 +57,10 @@ export function AppHeader(props) {
 
   useOnUnmuteMedia(useCallback(() => setNavExpanded(true), []));
 
+  const hasChapters = chapters.length > 1 ||
+                      !isBlank(chapters[0]?.title) ||
+                      !isBlank(chapters[0]?.summary);
+
   function handleProgressBarMouseEnter() {
     setNavExpanded(true);
   };
@@ -70,9 +75,7 @@ export function AppHeader(props) {
   };
 
   function renderChapterLinks(chapters) {
-    return chapters.filter(function (chapterConfiguration) {
-      return chapterConfiguration.title && chapterConfiguration.summary;
-    }).map((chapter, index) => {
+    return chapters.map((chapter, index) => {
       const chapterIndex = index + 1;
       const chapterLinkId = `chapterLink${chapterIndex}`
       return (
@@ -83,27 +86,39 @@ export function AppHeader(props) {
                        active={activeChapterLink === chapterLinkId}
                        handleMenuClick={handleMenuClick}/>
         </li>
-      )
-    })
+      );
+    });
   };
 
+  function renderNav() {
+    if (!hasChapters) {
+      return null;
+    }
+
+    return (
+      <nav className={classNames(styles.navigationChapters, {[styles.navigationChaptersHidden]: mobileNavHidden})}
+           role="navigation"
+           ref={ref}>
+        <ul className={styles.chapterList}>
+          {renderChapterLinks(chapters)}
+        </ul>
+      </nav>
+    );
+  }
+
   return (
-    <header
-      className={classNames(styles.navigationBar, {[styles.navigationBarExpanded]: navExpanded})}>
+    <header className={classNames(styles.navigationBar, {
+        [styles.navigationBarExpanded]: navExpanded,
+        [styles.hasChapters]: hasChapters
+      })}>
       <div className={styles.navigationBarContentWrapper}>
-        <HamburgerIcon onClick={handleBurgerMenuClick}
-                       mobileNavHidden={mobileNavHidden}/>
+        {hasChapters && <HamburgerIcon onClick={handleBurgerMenuClick}
+                                       mobileNavHidden={mobileNavHidden}/>}
 
         <SkipLinks />
         <Logo />
 
-        <nav className={classNames(styles.navigationChapters, {[styles.navigationChaptersHidden]: mobileNavHidden})}
-             role="navigation"
-             ref={ref}>
-          <ul className={styles.chapterList}>
-            {renderChapterLinks(chapters)}
-          </ul>
-        </nav>
+        {renderNav()}
 
         <div className={classNames(styles.contextIcons)}>
           <ToggleMuteButton />
