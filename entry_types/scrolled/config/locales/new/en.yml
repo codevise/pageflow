@@ -85,7 +85,7 @@ en:
 
     public:
       navigation:
-        chapter: Chapter
+        chapter: Chapter %{number}
         mute: Mute sound
         unmute: Unmute sound
       sound_disclaimer:
