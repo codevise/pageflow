@@ -20,6 +20,9 @@ export function MediaMutedProvider({children}) {
   )
 }
 
+/**
+ * Returns boolean indicating whether the entry is currently muted.
+ */
 export function useMediaMuted() {
   return useContext(MediaMutedContext);
 }

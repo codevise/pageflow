@@ -50,6 +50,7 @@ export {useContentElementConfigurationUpdate} from './useContentElementConfigura
 export {useContentElementEditorCommandSubscription} from './useContentElementEditorCommandSubscription';
 export {useContentElementEditorState} from './useContentElementEditorState';
 export {useContentElementLifecycle} from './useContentElementLifecycle';
+export {useMediaMuted} from './useMediaMuted';
 
 export {ViewportDependentPillarBoxes} from './ViewportDependentPillarBoxes';
 export {EditableText} from './EditableText';
