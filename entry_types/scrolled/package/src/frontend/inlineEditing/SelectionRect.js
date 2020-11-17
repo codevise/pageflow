@@ -15,6 +15,7 @@ export function SelectionRect(props) {
                                 [styles.start]: props.selected && props.start,
                                 [styles.end]: props.selected && props.end})}
          aria-label={props.ariaLabel}
+         data-scrollpoint={props.scrollPoint ? 'selection' : undefined}
          onClick={props.onClick}>
       {renderToolbar(props)}
 

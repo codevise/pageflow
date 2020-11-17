@@ -366,6 +366,63 @@ describe('PreviewMessageController', () => {
       entry.set('emulation_mode', 'phone');
     })).resolves.toMatchObject({type: 'CHANGE_EMULATION_MODE', payload: 'phone'});
   });
+
+  it('sends SAVE_SCROLL_POINT message on preserveScrollPoint', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed()
+    });
+
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SAVE_SCROLL_POINT') {
+          resolve('received');
+        }
+      });
+      controller.preserveScrollPoint(() => {});
+    })).resolves.toEqual('received');
+  });
+
+  it('invokes preserveScrollPoint callback on SAVED_SCROLL_POINT message', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed()
+    });
+
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      controller.preserveScrollPoint(() => resolve('called'));
+      window.postMessage({type: 'SAVED_SCROLL_POINT'}, '*');
+    })).resolves.toEqual('called');
+  });
+
+  it('responds to SAVED_SCROLL_POINT with RESTORE_SCROLL_POINT message', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed()
+    });
+
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'RESTORE_SCROLL_POINT') {
+          resolve('received');
+        }
+      });
+      controller.preserveScrollPoint(() => {});
+      window.postMessage({type: 'SAVED_SCROLL_POINT'}, '*');
+    })).resolves.toEqual('received');
+  });
 });
 
 function postReadyMessageAndWaitForAcknowledgement(iframeWindow) {

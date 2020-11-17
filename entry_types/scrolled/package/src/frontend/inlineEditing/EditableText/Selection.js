@@ -70,6 +70,7 @@ export function Selection(props) {
     <div ref={outerRef}>
       <div ref={ref} className={styles.selection}>
         <SelectionRect selected={true}
+                       scrollPoint={isContentElementSelected}
                        insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
                        onInsertButtonClick={at => {
                            if ((at === 'before' &&boundsRef.current.start === 0) ||

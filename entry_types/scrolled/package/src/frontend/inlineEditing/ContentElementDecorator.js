@@ -13,7 +13,7 @@ import {ContentElementEditorStateProvider} from './ContentElementEditorStateProv
 
 export function ContentElementDecorator(props) {
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} data-scrollpoint={props.id}>
       <ContentElementEditorStateProvider id={props.id}>
         <OptionalSelectionRect {...props}>
           <ContentElementConfigurationUpdateProvider id={props.id} permaId={props.permaId}>
@@ -46,6 +46,7 @@ function DefaultSelectionRect(props) {
 
   return (
     <SelectionRect selected={isSelected}
+                   scrollPoint={isSelected}
                    full={props.position === 'full'}
                    ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
                    insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
