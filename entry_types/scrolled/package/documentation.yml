@@ -34,6 +34,7 @@ toc:
       - useFileRights
       - useI18n
       - useLegalInfo
+      - useMediaMuted
       - useShareProviders
       - useShareUrl
       - useTheme
