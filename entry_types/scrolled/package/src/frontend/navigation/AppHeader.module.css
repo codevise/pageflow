@@ -111,7 +111,7 @@ div:focus-within > .contextIcon,
 
 /* mobile view */
 @media (max-width: 780px) {
-  .logo {
+  .hasChapters .logo {
     left: 65px;
   }
 
