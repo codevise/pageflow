@@ -13,6 +13,7 @@ export function VideoPlayerControls({videoFile, ...props}) {
   return (
     <MediaPlayerControls {...props}
                          file={videoFile}
+                         autoHide={true}
                          qualityMenuItems={getQualityMenuItems(availableQualities, activeQuality, t)}
                          onQualityMenuItemClick={setActiveQuality}/>
   );
