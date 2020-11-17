@@ -27,7 +27,7 @@ module PageflowScrolled
 
         inject_into_file('config/webpacker.yml',
                          after: "- .woff2\n") do
-          "    - .webmanifest\n    - .xml\n"
+          "    - .mp3\n    - .webmanifest\n    - .xml\n"
         end
       end
 

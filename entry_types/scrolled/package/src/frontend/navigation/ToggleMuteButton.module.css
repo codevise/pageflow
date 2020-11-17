@@ -4,3 +4,39 @@
   height: 35px;
   margin: 7px 2px;
 }
+
+/*
+  Animation below depends on overflow being hidden in
+  AppHeader.module.css to prevent horizontal overflow/scroll bars.
+*/
+
+.animate {
+  position: relative;
+}
+
+.animate::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -5px -5px;
+  z-index: -1;
+  width: 10px;
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 5px;
+  animation: pulse 0.5s ease 0.2s 1;
+  animation-fill-mode: forwards;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(40);
+    opacity: 0;
+  }
+}

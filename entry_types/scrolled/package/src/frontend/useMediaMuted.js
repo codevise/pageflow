@@ -1,6 +1,8 @@
 import React, {createContext, useContext, useState, useEffect} from 'react';
 import {media} from 'pageflow/frontend';
 
+import {usePrevious} from './usePrevious';
+
 const MediaMutedContext = createContext(false);
 
 export function MediaMutedProvider({children}) {
@@ -18,6 +20,20 @@ export function MediaMutedProvider({children}) {
   )
 }
 
+/**
+ * Returns boolean indicating whether the entry is currently muted.
+ */
 export function useMediaMuted() {
   return useContext(MediaMutedContext);
+}
+
+export function useOnUnmuteMedia(callback) {
+  const muted = useMediaMuted();
+  const wasMuted = usePrevious(muted);
+
+  useEffect(() => {
+    if (wasMuted && !muted) {
+      callback();
+    }
+  }, [wasMuted, muted, callback]);
 }

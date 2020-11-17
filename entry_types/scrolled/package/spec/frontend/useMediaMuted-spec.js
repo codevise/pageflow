@@ -1,4 +1,4 @@
-import {useMediaMuted, MediaMutedProvider} from 'frontend/useMediaMuted';
+import {useMediaMuted, useOnUnmuteMedia, MediaMutedProvider} from 'frontend/useMediaMuted';
 import {media} from 'pageflow/frontend';
 
 import {renderHook, act} from '@testing-library/react-hooks';
@@ -24,5 +24,26 @@ describe('useMediaMuted', () => {
     act(() => media.mute(false));
 
     expect(result.current).toEqual(false);
+  });
+});
+
+describe('useOnUnmuteMedia', () => {
+  it('does not invoke callback initially', () => {
+    const callback = jest.fn()
+
+    media.mute(true);
+    renderHook(() => useOnUnmuteMedia(callback), {wrapper: MediaMutedProvider});
+
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it('invokes callback when media is unmuted', () => {
+    const callback = jest.fn()
+
+    media.mute(true);
+    renderHook(() => useOnUnmuteMedia(callback), {wrapper: MediaMutedProvider});
+    act(() => media.mute(false));
+
+    expect(callback).toHaveBeenCalled();
   });
 });
