@@ -175,9 +175,12 @@ de:
         mute: Ton stummschalten
         unmute: Ton aktivieren
       sound_disclaimer:
-        help_text: >
-          Dieser Artikel wirkt am besten mit eingeschaltetem Ton.<br/>
-          Klicken Sie einmal in dieses Feld, um den Ton für die gesamte Geschichte zu aktivieren.
+        help_muted: >
+          Diese Seite wirkt am besten mit eingeschaltetem Ton.
+          Klicken Sie hier, um den Ton zu aktivieren.
+        help_unmuted: >
+          Der Ton kann über das Lautsprecher-Symbol
+          in der Navigationsleiste wieder deaktiviert werden.
       chart:
         default_title: Interaktives Diagramm
       player_controls:
