@@ -6,7 +6,17 @@ export function useOnScreen(ref, {rootMargin, onIntersecting, skipIframeFix} = {
   useEffect(() => {
     const current = ref.current;
     const observer = createIntersectionObserver(
-      ([entry]) => {
+      (entries) => {
+        // Even when observing only a single element, multiple entries
+        // may have queued up. In Chrome this can be observed when
+        // moving an observed element in the DOM: The callback is
+        // invoked once with two entries for the same target, one
+        // claiming the element no longer intersects and one - with a
+        // later timestamp - saying that is does intersect. Assuming
+        // entries are ordered according to time, we only consider the
+        // last entry.
+        const entry = entries[entries.length - 1];
+
         setIntersecting(entry.isIntersecting);
 
         if (entry.isIntersecting && onIntersecting) {
