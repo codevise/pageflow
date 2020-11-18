@@ -1,26 +1,7 @@
-.audioPlayer {
-  width: 100%;
-  height: 100%;
-  transition: transform ease 0.2s;
-}
-
 .spaceForTextTracks {
   height: 100%;
 }
 
 .spaceForTextTracksActive {
   height: 90px;
-}
-
-.audioPlayer > div {
-  width: 100%;
-  height: 100%;
-}
-
-.audioPlayer audio {
-  outline: none;
-}
-
-.audioPlayer audio:focus {
-  outline: none;
 }

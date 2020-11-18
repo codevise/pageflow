@@ -77,7 +77,7 @@ stories.add(
         <StressTest playerState={playerState} playerActions={playerActions} >
           {isPrepared =>
             <AudioPlayer audioFile={useSampleFile('audioFiles', 'quicktime_jingle')}
-                         isPrepared={isPrepared}
+                         load={isPrepared ? 'auto' : 'none'}
                          playerState={playerState}
                          playerActions={playerActions} />}
         </StressTest>
@@ -97,7 +97,7 @@ stories.add(
       <StressTest playerState={playerState} playerActions={playerActions} >
         {isPrepared =>
           <VideoPlayer videoFile={useSampleFile('videoFiles', 'interview_toni')}
-                       isPrepared={isPrepared}
+                       load={isPrepared ? 'auto' : 'none'}
                        playerState={playerState}
                        playerActions={playerActions} />}
       </StressTest>

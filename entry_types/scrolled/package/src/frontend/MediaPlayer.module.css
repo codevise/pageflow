@@ -1,0 +1,26 @@
+.wrapper,
+.wrapper div,
+.wrapper img {
+  width: 100%;
+  height: 100%;
+}
+
+.wrapper audio,
+.wrapper audio:focus,
+.wrapper video,
+.wrapper video:focus {
+  outline: none;
+}
+
+.wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: contain;
+  background: #000;
+}
+
+.cover img,
+.cover video {
+  object-fit: cover;
+}

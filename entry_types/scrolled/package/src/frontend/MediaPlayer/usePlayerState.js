@@ -13,7 +13,6 @@ export function getInitialPlayerState(){
   return {
     isPlaying: false,
     shouldPlay: false,
-    hasPlayed: false,
     unplayed: true,
     isLoading: true,
     playFailed: false,
@@ -89,8 +88,7 @@ export function playerStateReducer(state, action){
       if (state.bufferUnderrun) {
         return {
           ...state,
-          isPlaying: false,
-          hasPlayed: true
+          isPlaying: false
         };
       }
       else{

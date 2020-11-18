@@ -54,11 +54,11 @@ describe('AudioPlayer', () => {
     expect(result.container.querySelector('audio')).toBeDefined();
   });
 
-  it('does not render audio element when isPrepared is false', () => {
+  it('does not render audio element when load is "none"', () => {
     const result =
       renderInEntry(() => <AudioPlayer {...requiredProps()}
                                        audioFile={useFile({collectionName: 'audioFiles', permaId: 100})}
-                                       isPrepared={false} />,
+                                       load="none" />,
                     {seed: getAudioFileSeed()});
 
     expect(result.container.querySelector('audio')).toBeNull();
@@ -118,10 +118,8 @@ describe('AudioPlayer', () => {
     expect(spyMedia).not.toHaveBeenCalled();
   });
 
-  it('requests media player with given poster', () => {
-    const spyMedia = jest.spyOn(media, 'getPlayer')
-
-    renderInEntry(
+  it('renders given poster image', () => {
+    const {getByRole} = renderInEntry(
       () => <AudioPlayer {...requiredProps()}
                          audioFile={useFile({collectionName: 'audioFiles', permaId: 100})}
                          posterImageFile={useFile({collectionName: 'imageFiles', permaId: 200})} />,
@@ -147,12 +145,7 @@ describe('AudioPlayer', () => {
       }
     );
 
-    expect(spyMedia).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.objectContaining({
-        poster: '000/000/002/large.jpg'
-      })
-    );
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/002/large.jpg');
   });
 
   it('renders alt text', () => {

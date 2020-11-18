@@ -43,7 +43,7 @@ export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) 
 
   return (
     <>
-      <VideoPlayer isPrepared={isPrepared}
+      <VideoPlayer load={isPrepared ? 'auto' : 'none'}
                    playerState={playerState}
                    playerActions={playerActions}
                    videoFile={video}

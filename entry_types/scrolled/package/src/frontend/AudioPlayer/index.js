@@ -17,7 +17,7 @@ import styles from '../AudioPlayer.module.css';
  * @param {number} [props.posterImageFile] - Poster image file obtained via `useFile`.
  * @param {number} [props.defaultTextTrackFileId] - Perma id of default text track file.
  * @param {String} [props.position] - Position of parent content element.
- * @param {boolean} [props.isPrepared] - Control lazy loading.
+ * @param {string} [props.load] - Control lazy loading. `"auto"` (default), `"poster"` or `"none"`.
  */
 export function AudioPlayer({audioFile, posterImageFile, ...props}) {
   const textTracks = useTextTracks({
@@ -32,8 +32,7 @@ export function AudioPlayer({audioFile, posterImageFile, ...props}) {
         <div className={classNames(styles.spaceForTextTracks,
                                    {[styles.spaceForTextTracksActive]: !posterImageFile &&
                                      textTracks.files.length})}>
-          <MediaPlayer className={styles.audioPlayer}
-                       type={'audio'}
+          <MediaPlayer type={'audio'}
                        textTracks={textTracks}
                        filePermaId={audioFile.permaId}
                        sources={processSources(audioFile)}
