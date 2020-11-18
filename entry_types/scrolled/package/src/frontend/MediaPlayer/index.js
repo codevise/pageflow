@@ -11,22 +11,41 @@ import {useEventContextData} from '../useEventContextData';
 
 import {getTextTrackSources, updateTextTracksMode} from './textTracks';
 import textTrackStyles from './textTracks.module.css';
+import styles from '../MediaPlayer.module.css';
 
 export * from './usePlayerState';
 
 export function MediaPlayer(props) {
-  if (!props.isPrepared) {
-    return null;
-  }
-
   return (
-    <PreparedMediaPlayer {...props} />
+    <div className={classNames(styles.wrapper, styles[props.fit], {[textTrackStyles.inset]: props.textTracksInset})}>
+      {props.load === 'auto' && <PreparedMediaPlayer {...props} />}
+      {props.load !== 'none' && <Poster imageUrl={props.posterImageUrl}
+                                        objectPosition={props.objectPosition}
+                                        hide={props.type === 'video' &&
+                                              props.load !== 'poster' &&
+                                              !props.playerState.unplayed} />}
+    </div>
   );
 }
 
 MediaPlayer.defaultProps = {
-  isPrepared: true
+  load: 'auto'
 };
+
+function Poster({imageUrl, objectPosition, hide}) {
+  if (!imageUrl) {
+    return null;
+  }
+
+  return (
+    <img src={imageUrl}
+         alt=""
+         style={{
+           display: hide ? 'none' : undefined,
+           objectPosition: objectPosition && `${objectPosition.x}% ${objectPosition.y}%`
+         }} />
+  );
+}
 
 function PreparedMediaPlayer(props){
   let playerRef = useRef();
@@ -63,12 +82,10 @@ function PreparedMediaPlayer(props){
   }, [props.textTracks.activeFileId]);
 
   return (
-    <PlayerContainer className={classNames(props.className, {[textTrackStyles.inset]: props.textTracksInset})}
-                     type={props.type}
+    <PlayerContainer type={props.type}
                      sources={appendSuffix(props.sources, props.sourceUrlSuffix)}
                      textTrackSources={getTextTrackSources(props.textTracks.files, props.textTracksDisabled)}
                      filePermaId={props.filePermaId}
-                     poster={props.posterImageUrl}
                      loop={props.loop}
                      controls={props.controls}
                      playsInline={props.playsInline}

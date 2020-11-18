@@ -5,7 +5,7 @@ import {useAtmo} from '../useAtmo';
 import './videojsBase.module.css';
 
 function PlayerContainer({
-  filePermaId, className, sources, textTrackSources, poster, type,
+  filePermaId, sources, textTrackSources, type,
   playsInline, loop, controls, objectPosition, altText,
   mediaEventsContextData, atmoDuringPlayback, onSetup, onDispose
 }){
@@ -19,7 +19,6 @@ function PlayerContainer({
       let player = media.getPlayer(sources, {
         textTrackSources,
         filePermaId,
-        poster: poster,
         tagName: type,
         playsInline: playsInline,
         loop: loop,
@@ -47,7 +46,7 @@ function PlayerContainer({
   });
 
   return (
-    <div className={className} ref={playerWrapperRef}>
+    <div ref={playerWrapperRef}>
     </div>
   );
 }
@@ -86,7 +85,6 @@ function deepEqual(a, b) {
 function areEqual(prevProps, nextProps) {
   return prevProps.type === nextProps.type &&
          prevProps.playsInline === nextProps.playsInline &&
-         prevProps.poster === nextProps.poster &&
          prevProps.loop === nextProps.loop &&
          prevProps.controls === nextProps.controls &&
          prevProps.objectPosition?.x === nextProps.objectPosition?.x &&

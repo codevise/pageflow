@@ -2,7 +2,9 @@ import React from 'react';
 import {getInitialPlayerState, getPlayerActions} from 'support/fakePlayerState';
 import {useFakeMedia, fakeMediaRenderQueries} from 'support/fakeMedia';
 
-import {render as testingLibraryRender} from '@testing-library/react'
+import {render as testingLibraryRender, queries} from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+
 import {media} from 'pageflow/frontend';
 import {MediaPlayer} from 'frontend/MediaPlayer';
 import {EventContext} from 'frontend/useEventContextData';
@@ -35,7 +37,10 @@ describe('MediaPlayer', () => {
   function render(ui, options) {
     return testingLibraryRender(ui, {
       ...options,
-      queries: fakeMediaRenderQueries
+      queries: {
+        ...queries,
+        ...fakeMediaRenderQueries
+      }
     });
   }
 
@@ -45,12 +50,57 @@ describe('MediaPlayer', () => {
     expect(queryPlayer()).toBeNull();
   });
 
-  it('does not render player when isPrepared is false', () => {
+  it('does not render player when load prop is "none"', () => {
     const {queryPlayer} = render(<MediaPlayer {...requiredProps()}
-                                              isPrepared={false}
+                                              load="none"
                                               sources={getAudioSources()} />);
 
     expect(queryPlayer()).toBeNull();
+  });
+
+  it('does not render player when load prop is "poster"', () => {
+    const {queryPlayer} = render(<MediaPlayer {...requiredProps()}
+                                              load="poster"
+                                              sources={getVideoSources()} />);
+
+    expect(queryPlayer()).toBeNull();
+  });
+
+  it('renders poster image when load prop is "auto"', () => {
+    const {getByRole} = render(<MediaPlayer {...requiredProps()}
+                                            load="auto"
+                                            posterImageUrl="poster.jpg"
+                                            sources={getVideoSources()} />);
+
+    expect(getByRole('img')).toHaveAttribute('src', 'poster.jpg');
+  });
+
+  it('renders poster image when load prop is "poster"', () => {
+    const {getByRole} = render(<MediaPlayer {...requiredProps()}
+                                            load="poster"
+                                            posterImageUrl="poster.jpg"
+                                            sources={getVideoSources()} />);
+
+    expect(getByRole('img')).toHaveAttribute('src', 'poster.jpg');
+  });
+
+  it('does not render poster image when load prop is "none"', () => {
+    const {queryByRole} = render(<MediaPlayer {...requiredProps()}
+                                              load="none"
+                                              posterImageUrl="poster.jpg"
+                                              sources={getVideoSources()} />);
+
+    expect(queryByRole('img')).toBeNull();
+  });
+
+  it('applies object position to poster image', () => {
+    const {getByRole} = render(<MediaPlayer {...requiredProps()}
+                                            load="poster"
+                                            posterImageUrl="poster.jpg"
+                                            objectPosition={{x: 50, y: 0}}
+                                            sources={getVideoSources()} />);
+
+    expect(getByRole('img')).toHaveStyle('object-position: 50% 0%');
   });
 
   it('renders audio player when sources are present', () => {

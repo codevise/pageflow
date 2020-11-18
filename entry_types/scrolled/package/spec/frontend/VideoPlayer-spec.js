@@ -50,11 +50,11 @@ describe('VideoPlayer', () => {
     expect(result.container.querySelector('video')).toBeDefined();
   });
 
-  it('does not render video element when isPrepared is false', () => {
+  it('does not render video element when load is "none"', () => {
     const result = renderInEntry(
       () => <VideoPlayer {...requiredProps()}
                          videoFile={useFile({collectionName: 'videoFiles', permaId: 100})}
-                         isPrepared={false} />,
+                         load="none" />,
       {seed: getVideoFileSeed()}
     );
 
@@ -118,10 +118,8 @@ describe('VideoPlayer', () => {
     expect(spyMedia).not.toHaveBeenCalled();
   });
 
-  it('requests media player with given poster', () => {
-    const spyMedia = jest.spyOn(media, 'getPlayer')
-
-    renderInEntry(
+  it('renders given poster image', () => {
+    const {getByRole} = renderInEntry(
       () => <VideoPlayer {...requiredProps()}
                          videoFile={useFile({collectionName: 'videoFiles', permaId: 100})}
                          posterImageFile={useFile({collectionName: 'imageFiles', permaId: 200})} />,
@@ -145,12 +143,29 @@ describe('VideoPlayer', () => {
       }
     );
 
-    expect(spyMedia).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.objectContaining({
-        poster: '000/000/002/large.jpg'
-      })
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/002/large.jpg');
+  });
+
+  it('falls back to video poster', () => {
+    const {getByRole} = renderInEntry(
+      () => <VideoPlayer {...requiredProps()}
+                         videoFile={useFile({collectionName: 'videoFiles', permaId: 100})} />,
+      {
+        seed: {
+          fileUrlTemplates: {
+            videoFiles: {
+              high: ':id_partition/video.mp4',
+              posterLarge: ':id_partition/poster.jpg'
+            }
+          },
+          videoFiles: [
+            {id: 1, permaId: 100, isReady: true}
+          ]
+        }
+      }
     );
+
+    expect(getByRole('img')).toHaveAttribute('src', '000/000/001/poster.jpg');
   });
 
   it('renders alt text', () => {
