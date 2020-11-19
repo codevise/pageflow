@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import { SectionAtmo } from './SectionAtmo';
 
+import {useSectionContentElements} from '../entryState';
 import {Backdrop} from './Backdrop';
 import Foreground from './Foreground';
 import {Layout} from './layouts';
@@ -16,13 +17,7 @@ import styles from './Section.module.css';
 import {getTransitionStyles, getEnterAndExitTransitions} from './transitions'
 import {getAppearanceComponents} from './appearance';
 
-export const OnScreenContext = React.createContext({
-  center: false,
-  top: false,
-  bottom: false
-});
-
-export default withInlineEditingDecorator('SectionDecorator', function Section(props) {
+const Section = withInlineEditingDecorator('SectionDecorator', function Section(props) {
   const ref = useRef();
   useScrollTarget(ref, props.isScrollTarget);
 
@@ -34,7 +29,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
 
   const [motifAreaState, setMotifAreaRef, setContentAreaRef, setForegroundContentRef] = useMotifAreaState({
     transitions: getEnterAndExitTransitions(props, props.previousSection, props.nextSection),
-    empty: !props.foreground.length,
+    empty: !props.contentElements.length,
     sectionTransition: props.transition,
     fullHeight: props.fullHeight
   });
@@ -67,7 +62,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
         <Foreground transitionStyles={transitionStyles}
                     state={props.state}
                     minHeight={motifAreaState.minHeight}
-                    paddingBottom={!endsWithFullWidthElement(props.foreground)}
+                    paddingBottom={!endsWithFullWidthElement(props.contentElements)}
                     contentRef={setForegroundContentRef}
                     heightMode={heightMode(props)}>
           <Box inverted={props.invert}
@@ -78,7 +73,7 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
                opacity={props.shadowOpacity}>
             <BackgroundColorProvider dark={!props.invert}>
               <Layout sectionId={props.id}
-                      items={indexItems(props.foreground)}
+                      items={indexItems(props.contentElements)}
                       appearance={props.appearance}
                       contentAreaRef={setContentAreaRef}
                       sectionProps={sectionProperties}>
@@ -91,6 +86,14 @@ export default withInlineEditingDecorator('SectionDecorator', function Section(p
     </section>
   );
 });
+
+function ConnectedSection(props) {
+  const contentElements = useSectionContentElements({sectionId: props.id});
+
+  return <Section {...props} contentElements={contentElements} />
+}
+
+export { ConnectedSection as Section };
 
 function indexItems(items) {
   return items.map((item, index) =>

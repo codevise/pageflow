@@ -1,7 +1,5 @@
-import {useMemo} from 'react';
-
-import {useEntryState} from './EntryStateProvider';
-import {getItems, getItem} from '../collections';
+import {useMemo, useCallback} from 'react';
+import {useEntryStateCollectionItems, useEntryStateCollectionItem} from './EntryStateProvider';
 
 /**
  * Returns a nested data structure representing the chapters, sections
@@ -20,63 +18,42 @@ import {getItems, getItem} from '../collections';
  *       summary: 'An introductory chapter',
  *       sections: [
  *         {
+ *           id: 1,
  *           permaId: 101,
+ *           chapterId: 3,
  *           sectionIndex: 0,
  *           transition: 'scroll',
  *
  *           // references to adjacent section objects
  *           previousSection: { ... },
  *           nextSection: { ... },
- *
- *           foreground: [
- *             {
- *               type: 'heading',
- *               props: {
- *                 children: 'Heading'
- *               }
- *             },
- *             {
- *               type: 'textBlock',
- *               props: {
- *                 children: 'Some text'
- *               }
- *             }
- *           ]
  *         }
  *       ],
  *     }
  *   ]
  */
 export function useEntryStructure() {
-  const entryState = useEntryState();
+  const chapters = useEntryStateCollectionItems('chapters');
+  const sections = useEntryStateCollectionItems('sections');
 
   return useMemo(() => {
-    const sections = [];
+    const linkedSections = sections.map(section => sectionData(section));
 
-    const chapters = getItems(entryState.collections, 'chapters').map(chapter => ({
-      permaId: chapter.permaId,
-      ...chapter.configuration,
-      sections: getItems(entryState.collections, 'sections')
-        .filter(
-          item => item.chapterId === chapter.id
-        )
-        .map(section => {
-          const result = sectionStructure(entryState.collections, section);
-          sections.push(result);
-          return result;
-        })
-    }));
-
-    sections.forEach((section, index) => {
+    linkedSections.forEach((section, index) => {
       section.sectionIndex = index;
-      section.previousSection = sections[index - 1];
-      section.nextSection = sections[index + 1];
+      section.previousSection = linkedSections[index - 1];
+      section.nextSection = linkedSections[index + 1];
     });
 
-    return chapters;
-  }, [entryState]);
+    return chapters.map(chapter => ({
+      permaId: chapter.permaId,
+      ...chapter.configuration,
+      sections: linkedSections.filter(
+        item => item.chapterId === chapter.id
+      )
+    }));
+  }, [chapters, sections]);
 };
-
 
 /**
  * Returns a nested data structure representing the content elements
@@ -89,49 +66,51 @@ export function useEntryStructure() {
  *
  * @example
  *
- * const section = useSectionStructure({sectionPermaId: 4});
+ * const section = useSection({sectionPermaId: 4});
  * section // =>
  *   {
+ *     id: 100,
  *     permaId: 4,
- *     transition: 'scroll',
- *     foreground: [
- *       {
- *         type: 'heading',
- *         props: {
- *           children: 'Heading'
- *         }
- *       },
- *       {
- *         type: 'textBlock',
- *         props: {
- *           children: 'Some text'
- *         }
- *       }
- *     ]
+ *     chapterId: 1,
+ *     transition: 'scroll'
  *   }
  */
-export function useSectionStructure({sectionPermaId}) {
-  const entryState = useEntryState();
-  const section = getItem(entryState.collections, 'sections', sectionPermaId)
-
-  return sectionStructure(entryState.collections, section);
+export function useSection({sectionPermaId}) {
+  const section = useEntryStateCollectionItem('sections', sectionPermaId);
+  return sectionData(section);
 };
 
-function sectionStructure(collections, section) {
+function sectionData(section) {
   return section && {
     permaId: section.permaId,
     id: section.id,
-    ...section.configuration,
-    foreground: getItems(collections, 'contentElements')
-      .filter(
-        item => item.sectionId === section.id
-      )
-      .map(item => ({
-        id: item.id,
-        permaId: item.permaId,
-        type: item.typeName,
-        position: item.configuration.position,
-        props: item.configuration
-      }))
+    chapterId: section.chapterId,
+    ...section.configuration
   };
+}
+
+export function useSectionContentElements({sectionId}) {
+  const filterBySectionId = useCallback(contentElement => contentElement.sectionId === sectionId,
+                                        [sectionId])
+  const contentElements = useEntryStateCollectionItems('contentElements', filterBySectionId);
+
+  return contentElements.map(item => ({
+    id: item.id,
+    permaId: item.permaId,
+    type: item.typeName,
+    position: item.configuration.position,
+    props: item.configuration
+  }));
+}
+
+export function useChapters() {
+  const chapters = useEntryStateCollectionItems('chapters');
+
+  return chapters.map(chapter => {
+    return ({
+      permaId: chapter.permaId,
+      title: chapter.configuration.title,
+      summary: chapter.configuration.summary
+    });
+  });
 }

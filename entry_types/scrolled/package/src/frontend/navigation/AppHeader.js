@@ -2,7 +2,7 @@ import React, {useState, useRef, useCallback} from 'react';
 import classNames from 'classnames';
 import useScrollPosition from '../useScrollPosition';
 import useNativeScrollPrevention from '../useNativeScrollPrevention';
-import {useEntryStructure} from '../../entryState';
+import {useChapters} from '../../entryState';
 import {useOnUnmuteMedia} from '../useMediaMuted';
 import {isBlank} from '../utils/blank';
 
@@ -21,18 +21,11 @@ export function AppHeader(props) {
   const [mobileNavHidden, setMobileNavHidden] = useState(true);
   const [readingProgress, setReadingProgress] = useState(0);
   const [activeChapterLink, setActiveChapterLink] = useState('chapterLink1');
-  const entryStructure = useEntryStructure();
+  const chapters = useChapters();
 
   const ref = useRef();
   useNativeScrollPrevention(ref);
 
-  const chapters = entryStructure.map((chapter) => {
-    return ({
-      permaId: chapter.permaId,
-      title: chapter.title,
-      summary: chapter.summary
-    });
-  });
 
   useScrollPosition(
     ({prevPos, currPos}) => {

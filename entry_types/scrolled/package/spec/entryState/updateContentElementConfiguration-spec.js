@@ -1,11 +1,11 @@
-import {useSectionStructure, updateContentElementConfiguration} from 'entryState';
+import {useSectionContentElements, updateContentElementConfiguration} from 'entryState';
 
 import {renderHookInEntry} from 'support';
 
 describe('updateContentElementConfiguration', () => {
   it('updates the configuration of a content element preserving object identity', () => {
     const newConfiguration = {some: 'update'};
-    const {result} = renderHookInEntry(() => useSectionStructure({sectionPermaId: 10}), {
+    const {result} = renderHookInEntry(() => useSectionContentElements({sectionId: 1}), {
       seed: {
         sections: [{id: 1, permaId: 10}],
         contentElements: [{sectionId: 1, permaId: 50}]
@@ -18,8 +18,8 @@ describe('updateContentElementConfiguration', () => {
         });
       }
     });
-    const sectionStructure = result.current;
+    const contentElements = result.current;
 
-    expect(sectionStructure.foreground[0].props).toBe(newConfiguration);
+    expect(contentElements[0].props).toBe(newConfiguration);
   });
 });

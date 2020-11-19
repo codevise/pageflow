@@ -1,7 +1,6 @@
 import {useMemo} from 'react';
 
-import {useEntryState} from './EntryStateProvider';
-import {getItems} from '../collections';
+import {useEntryStateCollectionItems} from './EntryStateProvider';
 
 /**
  * Returns a nested data structure representing the metadata of the entry.
@@ -19,9 +18,9 @@ import {getItems} from '../collections';
  *   }
  */
 export function useEntryMetadata() {
-  const entryState = useEntryState();
+  const entries = useEntryStateCollectionItems('entries');
 
   return useMemo(() => {
-    return getItems(entryState.collections, 'entries')[0];
-  }, [entryState]);
+    return entries[0];
+  }, [entries]);
 }

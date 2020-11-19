@@ -1,12 +1,12 @@
-export function extendFile(collectionName, file, entryState) {
+export function extendFile(collectionName, file, config) {
   return addModelType(
     collectionName,
     expandUrls(
       collectionName,
       file,
-      entryState.config.fileUrlTemplates
+      config.fileUrlTemplates
     ),
-    entryState.config.fileModelTypes
+    config.fileModelTypes
   );
 }
 

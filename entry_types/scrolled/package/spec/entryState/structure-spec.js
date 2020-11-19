@@ -1,4 +1,11 @@
-import {useEntryStructure, useSectionStructure, watchCollections} from 'entryState';
+import {
+  useEntryStructure,
+  useChapters,
+  useSection,
+  useSectionContentElements,
+  watchCollections
+} from 'entryState';
+
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 
 import {factories} from 'pageflow/testHelpers';
@@ -96,25 +103,7 @@ describe('useEntryStructure', () => {
           nextSection: {permaId: 102},
           sectionIndex: 0,
 
-          transition: 'scroll',
-          foreground: [
-            {
-              id: 1,
-              permaId: 1001,
-              type: 'heading',
-              props: {
-                children: 'Heading'
-              }
-            },
-            {
-              id: 2,
-              permaId: 1002,
-              type: 'textBlock',
-              props: {
-                children: 'Some text'
-              }
-            }
-          ]
+          transition: 'scroll'
         }
       ],
     },
@@ -128,26 +117,7 @@ describe('useEntryStructure', () => {
           nextSection: undefined,
           sectionIndex: 1,
 
-          transition: 'fade',
-          foreground: [
-            {
-              id: 3,
-              permaId: 1003,
-              type: 'image',
-              position: 'sticky',
-              props: {
-                imageId: 4
-              }
-            },
-            {
-              id: 4,
-              permaId: 1004,
-              type: 'textBlock',
-              props: {
-                children: 'Some more text'
-              }
-            }
-          ]
+          transition: 'fade'
         }
       ]
     }
@@ -190,28 +160,14 @@ describe('useEntryStructure', () => {
   });
 });
 
-describe('useSectionStructure', () => {
-  const expectedSectionStructure = {
-    transition: 'scroll',
-    foreground: [
-      {
-        type: 'heading',
-        props: {
-          children: 'Heading'
-        }
-      },
-      {
-        type: 'textBlock',
-        props: {
-          children: 'Some text'
-        }
-      }
-    ]
+describe('useSection', () => {
+  const expectedSection = {
+    transition: 'scroll'
   };
 
   it('returns data for one scene', () => {
     const {result} = renderHookInEntry(
-      () => useSectionStructure({sectionPermaId: 101}),
+      () => useSection({sectionPermaId: 101}),
       {
         seed: {
           chapters: chaptersSeed,
@@ -221,8 +177,75 @@ describe('useSectionStructure', () => {
       }
     );
 
-    const sectionStructure = result.current;
+    const section = result.current;
 
-    expect(sectionStructure).toMatchObject(expectedSectionStructure);
+    expect(section).toMatchObject(expectedSection);
+  });
+});
+
+describe('useChapters', () => {
+  it('returns data for all chapters', () => {
+    const {result} = renderHookInEntry(
+      () => useChapters(),
+      {
+        seed: {
+          chapters: chaptersSeed
+        }
+      }
+    );
+
+    const chapters = result.current;
+
+    expect(chapters).toMatchObject([
+      {
+        permaId: 10,
+        title: 'Chapter 1',
+        summary: 'An introductory chapter'
+      },
+      {
+        permaId: 11,
+        title: 'Chapter 2',
+        summary: 'A great chapter'
+      }
+    ]);
+  });
+});
+
+describe('useSectionContentElements', () => {
+  const expectedContentElements = [
+    {
+      id: 3,
+      permaId: 1003,
+      type: 'image',
+      position: 'sticky',
+      props: {
+        imageId: 4
+      }
+    },
+    {
+      id: 4,
+      permaId: 1004,
+      type: 'textBlock',
+      props: {
+        children: 'Some more text'
+      }
+    }
+  ];
+
+  it('returns list of content elements of section', () => {
+    const {result} = renderHookInEntry(
+      () => useSectionContentElements({sectionId: 2}),
+      {
+        seed: {
+          chapters: chaptersSeed,
+          sections: sectionsSeed,
+          contentElements: contentElementsSeed
+        }
+      }
+    );
+
+    const contentElements = result.current;
+
+    expect(contentElements).toMatchObject(expectedContentElements);
   });
 });
