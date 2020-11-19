@@ -64,14 +64,14 @@ describe('useSectionLifecycle', () => {
     });
   });
 
-  describe('isPrepared', () => {
+  describe('shouldPrepare', () => {
     beforeEach(() => {
       frontend.contentElementTypes.register('test', {
         component: function Test() {
-          const {isPrepared} = useSectionLifecycle();
+          const {shouldPrepare} = useSectionLifecycle();
           return (
             <div data-testid="testElement">
-              {isPrepared ? 'loaded' : 'blank'}
+              {shouldPrepare ? 'prepared' : 'blank'}
             </div>
           );
         }
@@ -99,7 +99,7 @@ describe('useSectionLifecycle', () => {
         simulateScrollingIntoView(findIsPreparedProbe(getByTestId('testElement')))
       );
 
-      expect(getByTestId('testElement')).toHaveTextContent('loaded');
+      expect(getByTestId('testElement')).toHaveTextContent('prepared');
     });
   });
 

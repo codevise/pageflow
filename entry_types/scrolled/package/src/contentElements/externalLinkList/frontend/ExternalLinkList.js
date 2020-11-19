@@ -5,7 +5,7 @@ import styles from './ExternalLinkList.module.css';
 
 export function ExternalLinkList(props) {
   const linkList = props.configuration.links || [];
-  const {isPrepared} = useContentElementLifecycle();
+  const {shouldLoad} = useContentElementLifecycle();
   const darkBackground = useDarkBackground();
 
   return (
@@ -14,7 +14,7 @@ export function ExternalLinkList(props) {
         <ExternalLink {...link} key={link.id}
                       invert={!darkBackground}
                       sectionProps={props.sectionProps}
-                      isPrepared={isPrepared} />
+                      loadImages={shouldLoad} />
       )}
     </div>
   );

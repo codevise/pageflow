@@ -43,22 +43,22 @@ export function renderInEntryWithSectionLifecycle(ui, options = {}) {
 
 function createScrollPositionProvider(Context, emitter) {
   return function ScrollPositionProvider({children}) {
-    const [value, setValue] = useState({isPrepared: false, isVisible: false, isActive: false});
+    const [value, setValue] = useState({shouldLoad: false, shouldPrepare: false, isVisible: false, isActive: false});
 
     useEffect(() => {
       function handle(scrollPosition) {
         switch (scrollPosition) {
         case 'near viewport':
-          setValue({isPrepared: true, isVisible: false, isActive: false});
+          setValue({shouldLoad: true, shouldPrepare: true, isVisible: false, isActive: false});
           break;
         case 'in viewport':
-          setValue({isPrepared: true, isVisible: true, isActive: false});
+          setValue({shouldLoad: true, shouldPrepare: true, isVisible: true, isActive: false});
           break;
         case 'center of viewport':
-          setValue({isPrepared: true, isVisible: true, isActive: true});
+          setValue({shouldLoad: true, shouldPrepare: true, isVisible: true, isActive: true});
           break;
         default:
-          setValue({isPrepared: false, isVisible: false, isActive: false});
+          setValue({isVisible: false, isActive: false});
           break;
         }
       }

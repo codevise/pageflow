@@ -9,7 +9,7 @@ import {
 } from 'pageflow-scrolled/frontend';
 
 export function InlineImage({configuration}) {
-  const {isPrepared} = useContentElementLifecycle();
+  const {shouldLoad} = useContentElementLifecycle();
   const imageFile = useFile({collectionName: 'imageFiles', permaId: configuration.id});
 
   return (
@@ -19,7 +19,7 @@ export function InlineImage({configuration}) {
                                     position={configuration.position}
                                     opaque={!!configuration.caption}>
         <Image imageFile={imageFile}
-               isPrepared={isPrepared}
+               load={shouldLoad}
                structuredData={true}
                variant={configuration.position === 'full' ?  'large' : 'medium'} />
       </ViewportDependentPillarBoxes>

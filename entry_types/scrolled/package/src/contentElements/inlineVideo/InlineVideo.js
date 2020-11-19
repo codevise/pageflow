@@ -20,7 +20,7 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
   const [playerState, playerActions] = usePlayerState();
   const {isEditable, isSelected} = useContentElementEditorState();
 
-  const {isPrepared} = useContentElementLifecycle({
+  const {shouldLoad, shouldPrepare} = useContentElementLifecycle({
     onActivate() {
       if (configuration.autoplay) {
         playerActions.play();
@@ -64,7 +64,9 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
                              configuration={configuration}
                              sectionProps={sectionProps}
                              onPlayerClick={onPlayerClick}>
-          <VideoPlayer load={isPrepared ? 'auto' : 'none'}
+          <VideoPlayer load={shouldPrepare ? 'auto' :
+                             shouldLoad ? 'poster' :
+                             'none'}
                        position={configuration.position}
                        controls={configuration.controls}
                        playerState={playerState}

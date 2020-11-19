@@ -70,8 +70,12 @@ The `useContentElementLifecycle` hook allows implementing scroll
 position based behavior. Requires the `lifecycle` option to be set to true when
 registering the content element type.
 
-* `isPrepared` is true if the content element is near the
-  viewport. Use it to lazy load content.
+* `shouldLoad` if the content element should trigger lazy loading of
+  its content. Use it to load images or posters.
+
+* `shouldPrepare` is true if the content element is about to enter the
+  viewport. Use it to start prebuffering media or trigger other
+  expensive actions.
 
 * `isActive` is true if the content element is completely in the
   viewport. Use it to activate some interactive behavior like an
@@ -88,7 +92,7 @@ frontend.contentElementTypes.register('inlineImage', {
 });
 
 function Component() {
-  const {isActive, isPrepared} = useContentElementLifecycle();
+  const {isActive, shouldLoad} = useContentElementLifecycle();
 
   return (
     <div>{isActive ? 'visible' : 'hidden'}</div>
@@ -97,17 +101,17 @@ function Component() {
 ```
 
 To make interacting with imperative APIs like player actions easier,
-the `useContentElementLifecycle` hookalso supports callback functions:
+the `useContentElementLifecycle` hook also supports callback functions:
 
 ```javascript
 function InlineVideo(props) {
   const [playerState, playerActions] = usePlayerState();
-  const {isPrepared} = useContentElementLifecycle({
+  const {shouldPrepare} = useContentElementLifecycle({
     onActivate: () => playerActions.play(),
     onDeactivate: () => playerActions.pause()
   });
 
-  if (!isPrepared) {
+  if (!shouldPrepare) {
     return null;
   }
 

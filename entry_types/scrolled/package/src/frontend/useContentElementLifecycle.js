@@ -38,7 +38,11 @@ export function ContentElementLifecycleProvider({type, children}) {
  * option to be set to true in the `frontend.contentElements.register`
  * call for the content element's type.
  *
- * * `isPrepared is true if the content element is near the viewport.
+ * * `shouldLoad` is true if the content element should start lazy
+ *   load. Becomes true before `shouldPrepare`.
+ *
+ * * `shouldPrepare` is true if the content element is about to enter
+ *   the viewport.
  *
  * * `isActive` is true if the content element is completely in the
  *   viewport.
@@ -51,7 +55,7 @@ export function ContentElementLifecycleProvider({type, children}) {
  *
  * @example
  *
- * const {isActive, isPrepared} = useContentElementLifecycle();
+ * const {isActive, shouldPrepare} = useContentElementLifecycle();
  */
 export function useContentElementLifecycle(options) {
   const result = useLifecycle(options);
