@@ -75,9 +75,9 @@ stories.add(
 
     return (
         <StressTest playerState={playerState} playerActions={playerActions} >
-          {isPrepared =>
+          {shouldLoad =>
             <AudioPlayer audioFile={useSampleFile('audioFiles', 'quicktime_jingle')}
-                         load={isPrepared ? 'auto' : 'none'}
+                         load={shouldLoad ? 'auto' : 'none'}
                          playerState={playerState}
                          playerActions={playerActions} />}
         </StressTest>
@@ -95,9 +95,9 @@ stories.add(
 
     return (
       <StressTest playerState={playerState} playerActions={playerActions} >
-        {isPrepared =>
+        {shouldLoad =>
           <VideoPlayer videoFile={useSampleFile('videoFiles', 'interview_toni')}
-                       load={isPrepared ? 'auto' : 'none'}
+                       load={shouldLoad ? 'auto' : 'none'}
                        playerState={playerState}
                        playerActions={playerActions} />}
       </StressTest>
@@ -109,11 +109,11 @@ stories.add(
 );
 
 function StressTest({playerState, playerActions, children}) {
-  const [isPrepared, setIsPrepared] = useState(false);
+  const [shouldLoad, setShoudLoad] = useState(false);
 
   function* toggleForever() {
     while (true) {
-      setIsPrepared(state => !state);
+      setShoudLoad(state => !state);
       yield delay(100);
       playerActions.play();
       yield delay(100);
@@ -126,9 +126,9 @@ function StressTest({playerState, playerActions, children}) {
     <div>
       <button onClick={() => run(toggleForever())}>Start</button>
       <br />
-      {isPrepared ? 'Prepared' : 'Not Prepated'}/
+      {shouldLoad ? 'Loaded' : 'Not Loaded'}/
       {playerState.isPlaying ? 'Playing' : 'Not Playing'}
-      {children(isPrepared)}
+      {children(shouldLoad)}
     </div>
   )
 }

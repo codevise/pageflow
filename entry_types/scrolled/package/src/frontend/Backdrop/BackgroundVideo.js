@@ -8,7 +8,7 @@ import {documentHiddenState} from 'pageflow/frontend';
 
 export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) {
   const [playerState, playerActions] = usePlayerState();
-  const {isPrepared} = useSectionLifecycle({
+  const {shouldLoad, shouldPrepare} = useSectionLifecycle({
     onVisible() {
       playerActions.changeVolumeFactor(0, 0);
       playerActions.play()
@@ -43,7 +43,9 @@ export function BackgroundVideo({video, onMotifAreaUpdate, containerDimension}) 
 
   return (
     <>
-      <VideoPlayer load={isPrepared ? 'auto' : 'none'}
+      <VideoPlayer load={shouldPrepare ? 'auto' :
+                         shouldLoad ? 'poster' :
+                         'none'}
                    playerState={playerState}
                    playerActions={playerActions}
                    videoFile={video}

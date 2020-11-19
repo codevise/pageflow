@@ -5,11 +5,11 @@ import {MotifArea} from './../MotifArea';
 import {useSectionLifecycle} from './../useSectionLifecycle';
 
 export function BackgroundImage({image, onMotifAreaUpdate, containerDimension}) {
-  const {isPrepared} = useSectionLifecycle();
+  const {shouldLoad} = useSectionLifecycle();
 
   return (
     <>
-      <Image imageFile={image} isPrepared={isPrepared} structuredData={true}/>
+      <Image imageFile={image} load={shouldLoad} structuredData={true}/>
       <MotifArea key={image?.permaId}
                  onUpdate={onMotifAreaUpdate}
                  file={image}

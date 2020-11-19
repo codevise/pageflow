@@ -54,10 +54,10 @@ describe('Image', () => {
     expect(getByRole('img')).toHaveAttribute('src', '000/000/001/medium/image.jpg');
   });
 
-  it('does not render image if isPrepared is false', () => {
+  it('does not render image if load is false', () => {
     const {queryByRole} = renderInEntry(
       () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
-                   isPrepared={false} />,
+                   load={false} />,
       {
         seed: {
           imageFiles: [

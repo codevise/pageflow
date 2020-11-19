@@ -55,7 +55,7 @@ export function ExternalLink(props) {
        target={props.open_in_new_tab ? '_blank' : '_self'}>
       <div className={styles.link_thumbnail}>
         <Image imageFile={thumbnailImageFile}
-               isPrepared={props.isPrepared}
+               load={props.loadImages}
                variant="linkThumbnailLarge" />
       </div>
 

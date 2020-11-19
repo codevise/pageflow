@@ -20,7 +20,7 @@ export function InlineAudio({contentElementId, sectionProps, configuration}) {
   const [playerState, playerActions] = usePlayerState();
   const {isEditable, isSelected} = useContentElementEditorState();
 
-  const {isPrepared} = useContentElementLifecycle({
+  const {shouldLoad, shouldPrepare} = useContentElementLifecycle({
     onActivate() {
       if (configuration.autoplay && !media.muted) {
         playerActions.play();
@@ -64,7 +64,9 @@ export function InlineAudio({contentElementId, sectionProps, configuration}) {
                            configuration={configuration}
                            sectionProps={sectionProps}
                            onPlayerClick={onPlayerClick}>
-        <AudioPlayer load={isPrepared ? 'auto' : 'none'}
+        <AudioPlayer load={shouldPrepare ? 'auto' :
+                           shouldLoad ? 'poster' :
+                           'none'}
                      position={configuration.position}
                      controls={configuration.controls}
                      playerState={playerState}

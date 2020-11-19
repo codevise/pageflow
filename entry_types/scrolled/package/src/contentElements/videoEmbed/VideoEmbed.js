@@ -19,7 +19,7 @@ const aspectRatios = {
 
 export function VideoEmbed({contentElementId, configuration}) {
   const {isEditable, isSelected} = useContentElementEditorState();
-  const {isPrepared} = useContentElementLifecycle();
+  const {shouldLoad} = useContentElementLifecycle();
 
   return (
     <div className={styles.VideoEmbed}
@@ -28,7 +28,7 @@ export function VideoEmbed({contentElementId, configuration}) {
         <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
                                       position={configuration.position}
                                       opaque={!!configuration.caption}>
-          {isPrepared && <PreparedPlayer contentElementId={contentElementId}
+          {shouldLoad && <PreparedPlayer contentElementId={contentElementId}
                                          configuration={configuration} />}
         </ViewportDependentPillarBoxes>
       </Figure>
