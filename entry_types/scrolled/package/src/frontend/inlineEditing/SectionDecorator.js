@@ -35,7 +35,7 @@ export function SectionDecorator(props) {
     type: 'sectionTransition'
   });
 
-  const lastContentElement = props.foreground[props.foreground.length - 1];
+  const lastContentElement = props.contentElements[props.contentElements.length - 1];
 
   const {isSelected: isLastContentElementSelected} = useEditorSelection({
     id: lastContentElement && lastContentElement.id,

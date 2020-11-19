@@ -1,17 +1,16 @@
-import {getItems} from '../collections';
-
-import {useEntryState} from './EntryStateProvider';
+import {useEntryStateCollectionItems, useEntryStateConfig} from './EntryStateProvider';
 import {extendFile} from './extendFile';
 
 export function useNestedFiles({collectionName, parent}) {
-  const entryState = useEntryState();
+  const config = useEntryStateConfig()
+  const files = useEntryStateCollectionItems(
+    collectionName,
+    file => {
+      return parent &&
+             file.parentFileId === parent.id &&
+             file.parentFileModelType === parent.modelType;
+    }
+  );
 
-  if (!parent) {
-    return [];
-  }
-
-  return getItems(entryState.collections, collectionName).filter(file => {
-    return file.parentFileId === parent.id &&
-           file.parentFileModelType === parent.modelType;
-  }).map(file => extendFile(collectionName, file, entryState));
+  return files.map(file => extendFile(collectionName, file, config));
 }

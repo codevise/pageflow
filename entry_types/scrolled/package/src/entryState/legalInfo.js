@@ -1,7 +1,5 @@
 import {useEntryMetadata} from "./metadata";
-import {useEntryState} from "./EntryStateProvider";
-import {getItems} from "../collections";
-import {useMemo} from "react";
+import {useEntryStateConfig, useEntryStateCollectionItems} from "./EntryStateProvider";
 
 /**
  * Returns a string (comma-separated list) of copyrights of
@@ -16,10 +14,10 @@ import {useMemo} from "react";
  * fileRights // => "author of image 1, author of image 2"
  */
 export function useFileRights() {
-  const entryState = useEntryState();
+  const config = useEntryStateConfig();
+  const imageFiles = useEntryStateCollectionItems('imageFiles');
 
-  const defaultFileRights = entryState.config.defaultFileRights;
-  const imageFiles = getItems(entryState.collections, 'imageFiles');
+  const defaultFileRights = config.defaultFileRights;
   const imageFileRights = imageFiles.reduce(function(result, imageConfig) {
     if(imageConfig && imageConfig.rights) {
       result.push(imageConfig.rights.trim());
@@ -57,9 +55,9 @@ export function useFileRights() {
  *   }
  */
 export function useLegalInfo() {
-  const entryState = useEntryState();
+  const config = useEntryStateConfig();
 
-  return entryState.config.legalInfo;
+  return config.legalInfo;
 }
 
 /**
