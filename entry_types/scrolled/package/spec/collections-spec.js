@@ -2,6 +2,7 @@ import {
   useCollections,
   watchCollection,
   updateConfiguration,
+  createItemsSelector,
   getItems,
   getItem
 } from 'collections';
@@ -819,5 +820,142 @@ describe('updateConfiguration', () => {
     const item = getItem(state, 'posts', 10);
 
     expect(item.title).toBe('News');
+  });
+});
+
+describe('createItemsSelector', () => {
+  it('returns function that returns items in order', () => {
+    const {result} = renderHook(() => useCollections({
+      posts: [{id: 10}, {id: 11}, {id: 12}]
+    }));
+
+    const [state,] = result.current;
+    const items = createItemsSelector('posts')(state);
+
+    expect(items).toEqual([{id: 10}, {id: 11}, {id: 12}]);
+  });
+
+  it('returns referentially equal array if state is unchanged', () => {
+    const {result} = renderHook(() => useCollections({
+      posts: [{id: 10}, {id: 11}, {id: 12}]
+    }));
+
+    const [state,] = result.current;
+    const selector = createItemsSelector('posts')
+    const items1 = selector(state);
+    const items2 = selector(state);
+
+    expect(items1).toBe(items2);
+  });
+
+  it('supports filtering', () => {
+    const {result} = renderHook(() => useCollections({
+      posts: [{id: 10, categoryId: 1}, {id: 11, categoryId: 2}, {id: 12, categoryId: 1}]
+    }));
+
+    const [state,] = result.current;
+    const items = createItemsSelector('posts', post => post.categoryId === 1)(state);
+
+    expect(items).toEqual([{id: 10, categoryId: 1}, {id: 12, categoryId: 1}]);
+  });
+
+  it('returns referentially equal filtered array if state is unchanged', () => {
+    const {result} = renderHook(() => useCollections({
+      posts: [{id: 10, categoryId: 1}, {id: 11, categoryId: 2}, {id: 12, categoryId: 1}]
+    }));
+
+    const selector = createItemsSelector('posts', post => post.categoryId === 1);
+    const [state,] = result.current;
+    const items1 = selector(state);
+    const items2 = selector(state);
+
+    expect(items1).toBe(items2);
+  });
+
+  it('returns referentially equal array if filtered items did not change', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection(
+      [{id: 10, categoryId: 1}, {id: 11, categoryId: 2}, {id: 12, categoryId: 1}]
+    );
+    const selector = createItemsSelector('posts', post => post.categoryId === 1);
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id', 'categoryId'],
+        dispatch
+      });
+    });
+
+    let [state,] = result.current;
+    const items1 = selector(state);
+
+    act(() => {
+      posts.get(11).set('categoryId', 3);
+    });
+
+    [state,] = result.current;
+    const items2 = selector(state);
+
+    expect(items1).toBe(items2);
+  });
+
+  it('returns new array if filtered items changed', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection(
+      [{id: 10, categoryId: 1}, {id: 11, categoryId: 2}, {id: 12, categoryId: 1}]
+    );
+    const selector = createItemsSelector('posts', post => post.categoryId === 1);
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id', 'categoryId', 'title'],
+        dispatch
+      });
+    });
+
+    let [state,] = result.current;
+    const items1 = selector(state);
+
+    act(() => {
+      posts.get(10).set('title', 'some');
+    });
+
+    [state,] = result.current;
+    const items2 = selector(state);
+
+    expect(items1).not.toBe(items2);
+  });
+
+  it('returns new array if matching item is added', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection(
+      [{id: 10, categoryId: 1}, {id: 11, categoryId: 2}]
+    );
+    const selector = createItemsSelector('posts', post => post.categoryId === 1);
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id', 'categoryId', 'title'],
+        dispatch
+      });
+    });
+
+    let [state,] = result.current;
+    const items1 = selector(state);
+
+    act(() => {
+      posts.add({id: 12, categoryId: 1});
+    });
+
+    [state,] = result.current;
+    const items2 = selector(state);
+
+    expect(items1).not.toBe(items2);
   });
 });

@@ -1,4 +1,5 @@
 import {useReducer} from 'react';
+import {createSelector, createSelectorCreator, defaultMemoize} from 'reselect';
 
 const PREFIX = 'PAGEFLOW_SCROLLED_COLLECTION';
 const RESET = `${PREFIX}_RESET`;
@@ -271,4 +272,37 @@ export function getItem(state, collectionName, key) {
   if (state[collectionName]) {
     return state[collectionName].items[key];
   }
+}
+
+export function createItemsSelector(collectionName, filter) {
+  if (filter) {
+    const itemsSelector = createItemsSelector(collectionName)
+
+    return createShallowEqualArraysSelector(
+      collections => itemsSelector(collections).filter(filter),
+      items => items
+    );
+  }
+
+  return createSelector(
+    collections => collections[collectionName],
+    collection => {
+      if (collection) {
+        const items = collection.items;
+        return collection.order.map(key => items[key]);
+      }
+      else {
+        return [];
+      }
+    }
+  );
+}
+
+const createShallowEqualArraysSelector = createSelectorCreator(
+  defaultMemoize,
+  shallowEqualArrays
+)
+
+function shallowEqualArrays(a, b) {
+  return a.length === b.length && a.every((item, index) => item === b[index]);
 }
