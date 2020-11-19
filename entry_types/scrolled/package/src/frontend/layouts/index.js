@@ -5,8 +5,16 @@ import {Center} from './Center';
 
 import {withInlineEditingAlternative} from '../inlineEditing';
 
-export const Layout = withInlineEditingAlternative('LayoutWithPlaceholder',
-                                                   LayoutWithoutInlineEditing);
+export const Layout = React.memo(
+  withInlineEditingAlternative('LayoutWithPlaceholder', LayoutWithoutInlineEditing),
+  (prevProps, nextProps) => (
+    prevProps.sectionId === nextProps.sectionId &&
+    prevProps.items === nextProps.items &&
+    prevProps.appearance === nextProps.appearance &&
+    prevProps.contentAreaRef === nextProps.contentAreaRef &&
+    prevProps.sectionProps === nextProps.sectionProps
+  )
+);
 
 export function LayoutWithoutInlineEditing(props) {
   if (props.sectionProps.layout === 'center') {
