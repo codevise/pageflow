@@ -33,6 +33,7 @@ toc:
       - useFile
       - useFileRights
       - useI18n
+      - useIsStaticPreview
       - useLegalInfo
       - useMediaMuted
       - useShareProviders
