@@ -8,6 +8,7 @@ import {applyPlayerState} from './applyPlayerState';
 import {updatePlayerState} from './updatePlayerState';
 
 import {useEventContextData} from '../useEventContextData';
+import {useIsStaticPreview} from '../useScrollPositionLifecycle';
 
 import {getTextTrackSources, updateTextTracksMode} from './textTracks';
 import textTrackStyles from './textTracks.module.css';
@@ -16,13 +17,18 @@ import styles from '../MediaPlayer.module.css';
 export * from './usePlayerState';
 
 export function MediaPlayer(props) {
+  const isStaticPreview = useIsStaticPreview();
+  const load = props.load === 'auto' && isStaticPreview ? 'poster' : props.load;
+
   return (
-    <div className={classNames(styles.wrapper, styles[props.fit], {[textTrackStyles.inset]: props.textTracksInset})}>
-      {props.load === 'auto' && <PreparedMediaPlayer {...props} />}
-      {props.load !== 'none' && <Poster imageUrl={props.posterImageUrl}
+    <div className={classNames(styles.wrapper,
+                               styles[props.fit],
+                               {[textTrackStyles.inset]: props.textTracksInset})}>
+      {load === 'auto' && <PreparedMediaPlayer {...props} />}
+      {load !== 'none' && <Poster imageUrl={props.posterImageUrl}
                                         objectPosition={props.objectPosition}
                                         hide={props.type === 'video' &&
-                                              props.load !== 'poster' &&
+                                              load !== 'poster' &&
                                               !props.playerState.unplayed} />}
     </div>
   );

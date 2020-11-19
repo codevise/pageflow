@@ -8,6 +8,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {media} from 'pageflow/frontend';
 import {MediaPlayer} from 'frontend/MediaPlayer';
 import {EventContext} from 'frontend/useEventContextData';
+import {StaticPreview} from 'frontend/useScrollPositionLifecycle';
 
 describe('MediaPlayer', () => {
   useFakeMedia();
@@ -101,6 +102,18 @@ describe('MediaPlayer', () => {
                                             sources={getVideoSources()} />);
 
     expect(getByRole('img')).toHaveStyle('object-position: 50% 0%');
+  });
+
+  it('renders only poster image in static preview event when load prop is "auto"', () => {
+    const {getByRole, queryPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          load="auto"
+                          posterImageUrl="poster.jpg"
+                          sources={getVideoSources()} />,
+             {wrapper: StaticPreview});
+
+    expect(queryPlayer()).toBeNull();
+    expect(getByRole('img')).toHaveAttribute('src', 'poster.jpg');
   });
 
   it('renders audio player when sources are present', () => {
