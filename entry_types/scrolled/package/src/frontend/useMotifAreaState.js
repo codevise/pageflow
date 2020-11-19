@@ -1,4 +1,4 @@
-import {useCallback} from 'react';
+import {useCallback, useState, useEffect} from 'react';
 
 import isIntersectingX from './isIntersectingX';
 import useBoundingClientRect from './useBoundingClientRect';
@@ -44,21 +44,34 @@ import useDimension from './useDimension';
 export function useMotifAreaState({transitions, fullHeight, empty} = {}) {
   const [motifAreaRect, setMotifAreaRectRef] = useBoundingClientRect();
   const [motifAreaDimension, setMotifAreaDimensionRef] = useDimension();
+  const [isPadded, setIsPadded] = useState(false);
 
   const setMotifAreaRef = useCallback(node => {
     setMotifAreaRectRef(node);
     setMotifAreaDimensionRef(node);
   }, [setMotifAreaRectRef, setMotifAreaDimensionRef]);
 
-  const [contentAreaRect, setContentAreaRef] = useBoundingClientRect();
+  const [contentAreaRect, setContentAreaRef] = useBoundingClientRect({
+    dependencies: [isPadded]
+  });
 
   const intersectingX = isIntersectingX(motifAreaRect, contentAreaRect) &&
                         motifAreaRect.height > 0 &&
                         !empty;
 
+  const paddingTop = getMotifAreaPadding(intersectingX, transitions, motifAreaDimension);
+
+  // Force measuring content area again since applying the padding
+  // changes the intersection ratio.
+  const willBePadded = paddingTop > 0;
+
+  useEffect(() => {
+    setIsPadded(willBePadded);
+  }, [willBePadded]);
+
   return [
     {
-      paddingTop: getMotifAreaPadding(intersectingX, transitions, motifAreaDimension),
+      paddingTop,
       minHeight: getMotifAreaMinHeight(fullHeight, transitions, motifAreaDimension),
       intersectionRatioY: getIntersectionRatioY(intersectingX, motifAreaRect, contentAreaRect),
       isIntersectingX: intersectingX
