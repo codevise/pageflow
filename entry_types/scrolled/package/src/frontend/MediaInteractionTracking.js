@@ -19,6 +19,10 @@ export function MediaInteractionTracking({playerState, playerActions, idleDelay,
   }, [wasPlaying, playerState.isPlaying, setHideControlsTimeout,
       playerState.focusInsideControls, focusWasInside]);
 
+  useEffect(() => {
+    return () => clearTimeout(hideControlsTimeout.current);
+  }, []);
+
   const handleInteraction = function () {
     playerActions.userInteraction();
     setHideControlsTimeout();
