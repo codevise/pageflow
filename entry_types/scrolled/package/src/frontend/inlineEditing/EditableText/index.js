@@ -14,8 +14,10 @@ import {
   renderLeafWithLinkSelection,
   decorateLinkSelection
 } from './withLinks';
+import {useDropTargetsActive} from './useDropTargetsActive';
 import {HoveringToolbar} from './HoveringToolbar';
 import {Selection} from './Selection';
+import {DropTargets} from './DropTargets';
 import {LinkTooltipProvider} from './LinkTooltip';
 
 import styles from './index.module.css';
@@ -41,6 +43,8 @@ export const EditableText = React.memo(function EditableText({
     }
   });
 
+  const [dropTargetsActive, ref] = useDropTargetsActive();
+
   const decorate = useCallback(nodeEntry => {
     return decorateLinkSelection(nodeEntry, linkSelection)
   }, [linkSelection]);
@@ -53,10 +57,11 @@ export const EditableText = React.memo(function EditableText({
 
   return (
     <Text scaleCategory="body">
-      <div className={styles.container}>
+      <div className={styles.container} ref={ref}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
           <LinkTooltipProvider disabled={!!linkSelection}>
             <Selection contentElementId={contentElementId} />
+            {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
             <HoveringToolbar linkSelection={linkSelection} setLinkSelection={setLinkSelection} />
             <Editable
                 decorate={decorate}

@@ -8,6 +8,16 @@ export function postInsertContentElementMessage({id, at, splitPoint}) {
   );
 }
 
+export function postMoveContentElementMessage({id, to}) {
+  window.parent.postMessage(
+    {
+      type: 'MOVE_CONTENT_ELEMENT',
+      payload: {id, to}
+    },
+    window.location.origin
+  );
+}
+
 export function postUpdateContentElementMessage({id, configuration}) {
   window.parent.postMessage(
     {

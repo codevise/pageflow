@@ -122,6 +122,10 @@ export const PreviewMessageController = Object.extend({
           editor: this.editor
         });
       }
+      else if (message.data.type === 'MOVE_CONTENT_ELEMENT') {
+        const {id, to} = message.data.payload;
+        this.entry.moveContentElement(id, to);
+      }
       else if (message.data.type === 'UPDATE_CONTENT_ELEMENT') {
         const {id, configuration} = message.data.payload;
         this.entry.contentElements.get(id).configuration.set(configuration, {ignoreInWatchCollection: true});

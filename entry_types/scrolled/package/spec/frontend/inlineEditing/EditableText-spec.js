@@ -1,4 +1,6 @@
 import React from 'react';
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
 
 import {EditableText} from 'frontend';
 import {loadInlineEditingComponents} from 'frontend/inlineEditing';
@@ -11,6 +13,8 @@ describe('EditableText', () => {
 
   beforeAll(() => window.getSelection = function() {});
 
+  const wrapper = ({children}) => <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
+
   it('renders text from value', () => {
     const value = [{
       type: 'heading',
@@ -19,13 +23,13 @@ describe('EditableText', () => {
       ]
     }];
 
-    const {queryByText} = render(<EditableText value={value} />);
+    const {queryByText} = render(<EditableText value={value} />, {wrapper});
 
     expect(queryByText('Some text')).toBeInTheDocument()
   });
 
   it('renders placeholder if value is undefined', () => {
-    const {queryByText} = render(<EditableText placeholder="Some placeholder" />);
+    const {queryByText} = render(<EditableText placeholder="Some placeholder" />, {wrapper});
 
     expect(queryByText('Some placeholder')).toBeInTheDocument()
   });
@@ -39,7 +43,8 @@ describe('EditableText', () => {
     }];
 
     const {queryByText} = render(<EditableText value={value}
-                                               placeholder="Some placeholder" />);
+                                               placeholder="Some placeholder" />,
+                                 {wrapper});
 
     expect(queryByText('Some placeholder')).toBeInTheDocument()
   });
@@ -53,7 +58,8 @@ describe('EditableText', () => {
     }];
 
     const {queryByText} = render(<EditableText value={value}
-                                               placeholder="Some placeholder" />);
+                                               placeholder="Some placeholder" />,
+                                {wrapper});
 
     expect(queryByText('Some placeholder')).not.toBeInTheDocument()
   });

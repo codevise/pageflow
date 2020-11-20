@@ -1,65 +1,15 @@
-import {batch, nullCommand} from './batch';
+import {Batch} from './Batch';
 
+// Delete element and merge its adjacent siblings if possible
+// (e.g. two text blocks surrounding a deleted image).
 export function deleteContentElement(entry, contentElement) {
-  batch(contentElement.section, [
-    prepareMerge(entry, contentElement),
-    prepareDeletion(entry, contentElement)
-  ]);
-}
+  const batch = new Batch(entry, contentElement.section);
 
-function prepareDeletion(entry, deletedContentElement) {
-  return {
-    ...nullCommand,
+  const [before, after] = batch.getAdjacent(contentElement);
 
-    batchItemFor(contentElement) {
-      if (contentElement === deletedContentElement) {
-        return {
-          id: contentElement.id,
-          _delete: true
-        };
-      }
-    },
+  batch.remove(contentElement);
+  batch.markForDeletion(contentElement);
+  batch.maybeMerge(before, after);
 
-    complete() {
-      entry.contentElements.remove(deletedContentElement);
-    }
-  }
-}
-
-function prepareMerge(entry, deletedContentElement) {
-  const [before, after] = deletedContentElement.getAdjacentContentElements();
-
-  if (!before ||
-      !after ||
-      before.get('typeName') !== after.get('typeName') ||
-      !before.getType().merge) {
-    return nullCommand;
-  }
-
-  const mergedConfiguration = before.getType().merge(before.configuration.attributes,
-                                                     after.configuration.attributes);
-
-  return {
-    ...nullCommand,
-
-    batchItemFor(contentElement) {
-      if (contentElement === before) {
-        return {
-          id: contentElement.id,
-          configuration: mergedConfiguration
-        };
-      }
-      else if (contentElement === after) {
-        return {
-          id: contentElement.id,
-          _delete: true
-        };
-      }
-    },
-
-    complete() {
-      before.configuration.set(mergedConfiguration, {autoSave: false});
-      entry.contentElements.remove(after);
-    }
-  }
+  batch.save();
 }
