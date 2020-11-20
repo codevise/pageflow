@@ -29,6 +29,7 @@ export function MediaPlayer(props) {
                                         objectPosition={props.objectPosition}
                                         hide={props.type === 'video' &&
                                               load !== 'poster' &&
+                                              props.playerState.dataLoaded &&
                                               !props.playerState.unplayed} />}
     </div>
   );

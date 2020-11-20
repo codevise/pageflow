@@ -397,4 +397,23 @@ describe('MediaPlayer', () => {
 
     expect(saveMediaElementIdAction).not.toHaveBeenCalled();
   });
+
+  it('invoked dataLoaded action on loadeddata event', () => {
+    const dataLoadedAction = jest.fn();
+    const actions = {
+      ...getPlayerActions(),
+      dataLoaded: dataLoadedAction
+    };
+
+    const {getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          filePermaId={5}
+                          playerActions={actions} />);
+    const player = getPlayer();
+
+    player.trigger('loadeddata');
+
+    expect(dataLoadedAction).toHaveBeenCalled();
+  });
 });
