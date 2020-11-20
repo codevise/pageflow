@@ -258,6 +258,34 @@ describe('usePlayerState', () => {
     });
   });
 
+  describe('tracking dataLoaded state', () => {
+    it('is false initially', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [nextState,] = result.current;
+
+      expect(nextState.dataLoaded).toBe(false);
+    });
+
+    it('becomed true on dataLoaded action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.dataLoaded());
+      const [nextState,] = result.current;
+
+      expect(nextState.dataLoaded).toBe(true);
+    });
+
+    it('becomes false again when player is disposed', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.dataLoaded());
+      act(() => actions.discardMediaElementId());
+      const [nextState,] = result.current;
+
+      expect(nextState.dataLoaded).toBe(false);
+    });
+  });
+
   describe('tracking how media was last controlled', () => {
     it('supports via option for play action', () => {
       const {result} = renderHookInEntry(() => usePlayerState());

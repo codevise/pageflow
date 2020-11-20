@@ -3,7 +3,7 @@ import {createActions,
         PLAY, PLAYING, PLAY_FAILED, PAUSE, PAUSED, SCRUB_TO, SEEK_TO,
         FADE_OUT_AND_PAUSE, PLAY_AND_FADE_IN, CHANGE_VOLUME_FACTOR,
         PREBUFFER, PREBUFFERED, BUFFER_UNDERRUN, BUFFER_UNDERRUN_CONTINUE,
-        WAITING, SEEKING, SEEKED, META_DATA_LOADED, PROGRESS, TIME_UPDATE, ENDED,
+        WAITING, SEEKING, SEEKED, META_DATA_LOADED, DATA_LOADED, PROGRESS, TIME_UPDATE, ENDED,
         MOUSE_ENTERED, MOUSE_LEFT,
         MOUSE_ENTERED_CONTROLS, MOUSE_LEFT_CONTROLS,
         FOCUS_ENTERED_CONTROLS, FOCUS_LEFT_CONTROLS,
@@ -14,6 +14,7 @@ export function getInitialPlayerState(){
     isPlaying: false,
     shouldPlay: false,
     unplayed: true,
+    dataLoaded: false,
     isLoading: true,
     playFailed: false,
     duration: 0,
@@ -127,6 +128,11 @@ export function playerStateReducer(state, action){
         currentTime: action.payload.currentTime,
         duration: action.payload.duration
       };
+    case DATA_LOADED:
+      return {
+        ...state,
+        dataLoaded: true
+      };
     case PROGRESS:
       return {
         ...state,
@@ -222,6 +228,7 @@ export function playerStateReducer(state, action){
     case DISCARD_MEDIA_ELEMENT_ID:
       return {
         ...state,
+        dataLoaded: false,
         isPlaying: false,
         mediaElementId: null
       };

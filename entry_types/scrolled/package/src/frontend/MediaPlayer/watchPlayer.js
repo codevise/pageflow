@@ -1,5 +1,6 @@
 export default function(player, actions) {
   player.on('loadedmetadata', () => actions.metaDataLoaded(player.currentTime(), player.duration()));
+  player.on('loadeddata', () => actions.dataLoaded());
 
   player.on('progress', () => actions.progress(player.bufferedEnd()));
 
@@ -21,6 +22,7 @@ export default function(player, actions) {
 
 export function unwatchPlayer(player, actions) {
   player.off('loadedmetadata');
+  player.off('loadeddata');
 
   player.off('progress');
 

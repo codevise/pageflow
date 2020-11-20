@@ -12,6 +12,7 @@ export const FADE_OUT_AND_PAUSE = 'MEDIA_FADE_OUT_AND_PAUSE';
 export const CHANGE_VOLUME_FACTOR = 'CHANGE_VOLUME_FACTOR';
 
 export const META_DATA_LOADED = 'MEDIA_META_DATA_LOADED';
+export const DATA_LOADED = 'MEDIA_DATA_LOADED';
 export const PROGRESS = 'MEDIA_PROGRESS';
 export const TIME_UPDATE = 'MEDIA_TIME_UPDATE';
 export const ENDED = 'MEDIA_ENDED';
@@ -79,6 +80,9 @@ export function createActions(dispatch){
         currentTime: currentTime,
         duration: duration
       }});
+    },
+    dataLoaded(){
+      dispatch({type: DATA_LOADED});
     },
     progress(bufferedEnd){
       dispatch({type: PROGRESS, payload: {
