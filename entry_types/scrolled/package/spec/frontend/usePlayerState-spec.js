@@ -103,6 +103,16 @@ describe('usePlayerState', () => {
       expect(nextState.shouldPlay).toBe(false);
     });
 
+    it('resets isPlaying to false when player is discareded', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.playing());
+      act(() => actions.discardMediaElementId());
+      const [nextState,] = result.current;
+
+      expect(nextState.isPlaying).toBe(false);
+    });
+
     it('updates volume factor and fade duration on changeVolumeFactor action', () => {
       const {result} = renderHookInEntry(() => usePlayerState());
       const [, actions] = result.current;

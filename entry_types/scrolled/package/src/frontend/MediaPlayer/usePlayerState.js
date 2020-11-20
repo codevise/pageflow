@@ -222,6 +222,7 @@ export function playerStateReducer(state, action){
     case DISCARD_MEDIA_ELEMENT_ID:
       return {
         ...state,
+        isPlaying: false,
         mediaElementId: null
       };
      case CHANGE_VOLUME_FACTOR:

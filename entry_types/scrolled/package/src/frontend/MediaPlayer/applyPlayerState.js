@@ -6,7 +6,7 @@ export function applyPlayerState(player, playerState, playerActions){
     player.prebuffer().then(playerActions.prebuffered);
   }
 
-  if (playerState.isPlaying) {
+  if (playerState.shouldPlay) {
     player.play();
   }
 

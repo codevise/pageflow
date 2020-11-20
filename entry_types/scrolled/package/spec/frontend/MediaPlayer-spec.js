@@ -188,6 +188,20 @@ describe('MediaPlayer', () => {
     expect(media.getPlayer).toHaveBeenCalledTimes(2);
   });
 
+  it('calls play on player when shouldPlay is true in initial playerState', () => {
+    let state = {
+      ...getInitialPlayerState(),
+      shouldPlay: true
+    };
+    const {getPlayer} =
+      render(<MediaPlayer {...requiredProps()}
+                          sources={getVideoSources()}
+                          playerState={state} />);
+    const player = getPlayer();
+
+    expect(player.play).toHaveBeenCalledTimes(1);
+  });
+
   it('calls play on player when shouldPlay changes to true in playerState', () => {
     let state = getInitialPlayerState();
     const {rerender, getPlayer} =
