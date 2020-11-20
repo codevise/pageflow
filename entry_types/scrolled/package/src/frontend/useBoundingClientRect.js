@@ -1,4 +1,5 @@
 import {useState, useEffect, useCallback} from 'react'
+import {useIsomorphicLayoutEffect} from './useIsomorphicLayoutEffect';
 
 function getBoundingClientRect(el) {
   if (!el) {
@@ -15,7 +16,7 @@ function getBoundingClientRect(el) {
   return el.getBoundingClientRect();
 }
 
-export default function useBoundingClientRect() {
+export default function useBoundingClientRect({dependencies = []} = {}) {
   const [boundingClientRect, setBoundingClientRect] = useState(getBoundingClientRect(null));
   const [currentNode, setCurrentNode] = useState(null);
 
@@ -23,6 +24,12 @@ export default function useBoundingClientRect() {
     setCurrentNode(node);
     setBoundingClientRect(getBoundingClientRect(node))
   }, []);
+
+  useIsomorphicLayoutEffect(() => {
+    if (dependencies.length && currentNode) {
+      setBoundingClientRect(getBoundingClientRect(currentNode));
+    }
+  }, dependencies);
 
   useEffect(function() {
     function handler() {
