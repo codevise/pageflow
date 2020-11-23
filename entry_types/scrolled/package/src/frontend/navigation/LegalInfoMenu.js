@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import headerStyles from "./AppHeader.module.css";
 import styles from "./LegalInfoMenu.module.css";
-import InfoIcon from "../assets/images/navigation/icons/information_icon.svg";
+import InfoIcon from '../icons/information.svg';
 
 import {Tooltip} from '../Tooltip';
 import {useFileRights, useLegalInfo, useCredits} from '../../entryState';
