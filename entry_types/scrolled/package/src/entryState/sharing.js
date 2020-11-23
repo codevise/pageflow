@@ -3,12 +3,12 @@ import {useMemo} from 'react';
 import {useEntryStateConfig} from "./EntryStateProvider";
 import {useEntryMetadata} from "./metadata";
 
-import EmailIcon from "../frontend/assets/images/navigation/icons/social/email_icon.svg";
-import FacebookIcon from "../frontend/assets/images/navigation/icons/social/facebook_icon.svg";
-import LinkedInIcon from "../frontend/assets/images/navigation/icons/social/linked_in_icon.svg";
-import TelegramIcon from "../frontend/assets/images/navigation/icons/social/telegram_icon.svg";
-import TwitterIcon from "../frontend/assets/images/navigation/icons/social/twitter_icon.svg";
-import WhatsAppIcon from "../frontend/assets/images/navigation/icons/social/whats_app_icon.svg";
+import EmailIcon from '../frontend/icons/social/email.svg';
+import FacebookIcon from '../frontend/icons/social/facebook.svg';
+import LinkedInIcon from '../frontend/icons/social/linkedIn.svg';
+import TelegramIcon from '../frontend/icons/social/telegram.svg';
+import TwitterIcon from '../frontend/icons/social/twitter.svg';
+import WhatsAppIcon from '../frontend/icons/social/whatsApp.svg';
 
 /**
  * Returns a list of attributes (icon, name and url) of all configured share providers of the entry.

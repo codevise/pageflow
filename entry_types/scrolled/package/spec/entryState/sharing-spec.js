@@ -4,9 +4,9 @@ import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {factories} from 'pageflow/testHelpers';
 import {renderHookInEntry, normalizeSeed} from 'support';
 
-import FacebookIcon from 'frontend/assets/images/navigation/icons/social/facebook_icon.svg';
-import TwitterIcon from 'frontend/assets/images/navigation/icons/social/twitter_icon.svg';
-import WhatsappIcon from 'frontend/assets/images/navigation/icons/social/whats_app_icon.svg';
+import FacebookIcon from 'frontend/icons/social/facebook.svg';
+import TwitterIcon from 'frontend/icons/social/twitter.svg';
+import WhatsappIcon from 'frontend/icons/social/whatsApp.svg';
 
 describe('useShareProviders', () => {
   const expectedShareProviders = [{

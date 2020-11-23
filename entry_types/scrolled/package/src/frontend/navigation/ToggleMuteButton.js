@@ -9,8 +9,8 @@ import {useTheme} from '../../entryState';
 import headerStyles from './AppHeader.module.css';
 import styles from './ToggleMuteButton.module.css';
 
-import MutedIcon from '../assets/images/navigation/icons/muted.svg';
-import UnmutedIcon from '../assets/images/navigation/icons/unmuted.svg';
+import MutedIcon from '../icons/muted.svg';
+import UnmutedIcon from '../icons/unmuted.svg';
 
 export function ToggleMuteButton() {
   const muted = useMediaMuted();
