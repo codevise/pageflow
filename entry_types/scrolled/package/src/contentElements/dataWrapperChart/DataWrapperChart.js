@@ -25,21 +25,18 @@ export function DataWrapperChart({configuration}) {
 
   return (
     <Figure caption={configuration.caption}>
-      <ThirdPartyConsent
-        height={height}
-        providerName='datawrapper'
-        optOutPlacement='bottom'
-        noop={!shouldLoad}
-      >
-        <div className={styles.container}
-             style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined,
-                     backgroundColor: configuration.backgroundColor || '#323d4d',
-                     height: height}}
-             data-percy="hide">
-          {renderIframe(srcURL,
-                        configuration.title || t('pageflow_scrolled.public.chart.default_title'))}
-        </div>
-      </ThirdPartyConsent>
+      <div className={styles.container}
+           style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined,
+                   backgroundColor: configuration.backgroundColor || '#323d4d',
+                   height: height}}
+           data-percy="hide">
+        <ThirdPartyConsent providerName='datawrapper'
+                           optOutPlacement='bottom'>
+          {shouldLoad && renderIframe(srcURL,
+                                      configuration.title ||
+                                      t('pageflow_scrolled.public.chart.default_title'))}
+        </ThirdPartyConsent>
+      </div>
     </Figure>
   );
 }

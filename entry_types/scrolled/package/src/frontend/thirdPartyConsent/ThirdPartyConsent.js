@@ -11,10 +11,7 @@ export function ThirdPartyConsent({
   children,
   providerName,
   hideTooltip,
-  activateEmbed,
-  height,
-  optOutPlacement='bottom',
-  noop
+  optOutPlacement='bottom'
 }) {
   const {t} = useI18n();
   const cookieMessage =
@@ -31,17 +28,12 @@ export function ThirdPartyConsent({
           if (theme.options.privacyCookieName &&
               !value.consents[providerName] &&
               !isEditable &&
-              !isStaticPreview &&
-              !noop) {
+              !isStaticPreview) {
             return (<OptIn
                       cookieMessage={cookieMessage}
-                      height={height || '100%'}
                       consent={() => {
                         value.giveConsent(providerName);
                         setConsentedHere(true);
-                        if (typeof activateEmbed === 'function') {
-                          activateEmbed();
-                        }
                       }}/>);
           }
 
@@ -49,8 +41,7 @@ export function ThirdPartyConsent({
 
           if (value.consents[providerName] &&
               theme.options.privacyOptOutLink &&
-              !isEditable &&
-              !noop) {
+              !isEditable) {
             optOutForRender =
               <OptOut
                 optOutLink={theme.options.privacyOptOutLink}
@@ -60,9 +51,7 @@ export function ThirdPartyConsent({
 
           return (
             <>
-              <div>
-                {typeof children === 'function' ? children(consentedHere) : children}
-              </div>
+              {typeof children === 'function' ? children(consentedHere) : children}
               {optOutForRender}
             </>
           );
