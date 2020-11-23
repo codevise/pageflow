@@ -17,8 +17,8 @@ export function ThirdPartyConsent({
   noop
 }) {
   const {t} = useI18n();
-  let cookieMessage =
-      t(`pageflow_scrolled.public.embed_opt_in.opt_in_prompt.${providerName}`);
+  const cookieMessage =
+      t(`pageflow_scrolled.public.third_party_consent.opt_in_prompt.${providerName}`);
   const theme = useTheme();
   const {isEditable} = useContentElementEditorState();
   const isStaticPreview = useIsStaticPreview();
