@@ -1,8 +1,8 @@
 import React from 'react';
-import {useI18n} from './i18n';
+import {useI18n} from '../i18n';
 import styles from './OptOut.module.css';
 import cx from 'classnames';
-import InfoIcon from './icons/information.svg'
+import InfoIcon from '../icons/information.svg'
 
 export const OptOut = ({optOutLink, hideTooltip, optOutPlacement}) => {
   const containerStyle = hideTooltip ? {display: 'none'} : {};

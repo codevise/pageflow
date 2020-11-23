@@ -7,7 +7,7 @@ import {LocaleProvider} from './i18n';
 import {PhonePlatformProvider} from './PhonePlatformProvider';
 import {MediaMutedProvider} from './useMediaMuted';
 import {AudioFocusProvider} from './useAudioFocus';
-import {ThirdPartyConsentProvider} from './ThirdPartyConsentProvider';
+import {ThirdPartyConsentProvider} from './thirdPartyConsent';
 
 export function RootProviders({seed, children}) {
   return (

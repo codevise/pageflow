@@ -1,6 +1,6 @@
 import React, {createContext, useState} from 'react';
 import {cookies} from 'pageflow/frontend';
-import {useTheme} from '../entryState';
+import {useTheme} from '../../entryState';
 
 export const ThirdPartyConsentContext = createContext();
 

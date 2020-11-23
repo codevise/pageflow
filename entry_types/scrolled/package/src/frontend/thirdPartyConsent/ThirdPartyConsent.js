@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {ThirdPartyConsentContext} from './ThirdPartyConsentProvider';
 import {OptIn} from './OptIn';
 import {OptOut} from './OptOut';
-import {useIsStaticPreview} from './useScrollPositionLifecycle';
-import {useTheme} from '../entryState';
-import {useI18n} from './i18n';
+import {useIsStaticPreview} from '../useScrollPositionLifecycle';
+import {useTheme} from '../../entryState';
+import {useI18n} from '../i18n';
 import {useContentElementEditorState} from 'pageflow-scrolled/frontend';
 
 export function ThirdPartyConsent({
