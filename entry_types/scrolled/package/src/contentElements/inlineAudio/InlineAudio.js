@@ -64,7 +64,7 @@ export function InlineAudio({contentElementId, sectionProps, configuration}) {
                            configuration={configuration}
                            sectionProps={sectionProps}
                            onPlayerClick={onPlayerClick}>
-        <AudioPlayer isPrepared={isPrepared}
+        <AudioPlayer load={isPrepared ? 'auto' : 'none'}
                      position={configuration.position}
                      controls={configuration.controls}
                      playerState={playerState}

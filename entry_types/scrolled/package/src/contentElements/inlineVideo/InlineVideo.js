@@ -64,7 +64,7 @@ export function InlineVideo({contentElementId, sectionProps, configuration}) {
                              configuration={configuration}
                              sectionProps={sectionProps}
                              onPlayerClick={onPlayerClick}>
-          <VideoPlayer isPrepared={isPrepared}
+          <VideoPlayer load={isPrepared ? 'auto' : 'none'}
                        position={configuration.position}
                        controls={configuration.controls}
                        playerState={playerState}

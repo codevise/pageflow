@@ -96,13 +96,6 @@ describe('PlayerContainer', () => {
       expect.objectContaining(sources),
       expect.objectContaining({loop: true, controls: true, playsInline: true})
     );
-
-    rerender(<PlayerContainer type={'audio'} sources={sources} loop={true} controls={true} playsInline={true} poster={'1'} />);
-    expect(spyMedia).toHaveBeenCalledTimes(5);
-    expect(spyMedia).toHaveBeenCalledWith(
-      expect.objectContaining(sources),
-      expect.objectContaining({tagName: 'audio', loop: true, controls: true, playsInline: true, poster: '1'})
-    );
   });
 
   it('calls media.getPlayer again, when object position changes', () => {

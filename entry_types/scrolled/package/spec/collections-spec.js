@@ -94,6 +94,26 @@ describe('watchCollection', () => {
     expect(items.map(i => i.title)).toEqual(['News']);
   });
 
+  it('supports mapping via custom function', () => {
+    const {result} = renderHook(() => useCollections());
+    const posts = new Backbone.Collection([
+      {id: 1, title: 'News'},
+    ]);
+
+    act(() => {
+      const [, dispatch] = result.current;
+      watchCollection(posts, {
+        name: 'posts',
+        attributes: ['id', {title: value => value.toUpperCase()}],
+        dispatch
+      });
+    });
+    const [state,] = result.current;
+    const items = getItems(state, 'posts');
+
+    expect(items.map(i => i.title)).toEqual(['NEWS']);
+  });
+
   it('supports watching multiple collections', () => {
     const {result} = renderHook(() => useCollections());
     const posts = new Backbone.Collection([

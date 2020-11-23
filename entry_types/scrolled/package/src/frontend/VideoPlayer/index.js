@@ -1,12 +1,10 @@
 import React from 'react';
-import classNames from 'classnames';
 
 import {MediaPlayer} from '../MediaPlayer';
 import {useTextTracks} from '../useTextTracks';
 import {useMediaMuted} from '../useMediaMuted';
 import {useVideoQualitySetting} from '../useVideoQualitySetting';
 import {sources} from './sources'
-import styles from '../VideoPlayer.module.css';
 import {ViewportDependentPillarBoxes} from '../ViewportDependentPillarBoxes';
 import {VideoStructuredData} from './VideoStructuredData';
 
@@ -17,7 +15,7 @@ import {VideoStructuredData} from './VideoStructuredData';
  * @param {Object} props.videoFile - Video file obtained via `useFile`.
  * @param {number} [props.posterImageFile] - Poster image file obtained via `useFile`.
  * @param {number} [props.defaultTextTrackFileId] - Perma id of default text track file.
- * @param {boolean} [props.isPrepared] - Control lazy loading.
+ * @param {string} [props.load] - Control lazy loading. `"auto"` (default), `"poster"` or `"none"`.
  * @param {String} [props.fit] - `"contain"` (default) or `"cover"`.
  * @param {String} [props.position] - Position of parent content element.
  */
@@ -33,14 +31,14 @@ export function VideoPlayer({videoFile, posterImageFile, ...props}) {
     if (videoFile && videoFile.isReady) {
       return (
         <>
-          <MediaPlayer className={classNames(styles.videoPlayer, styles[props.fit])}
-                       type={'video'}
+          <MediaPlayer type={'video'}
+                       fit={props.fit}
                        textTracks={textTracks}
                        filePermaId={videoFile.permaId}
                        sources={sources(videoFile, activeQuality)}
                        textTracksInset={true}
                        posterImageUrl={posterImageFile && posterImageFile.isReady ?
-                                       posterImageFile.urls.large : undefined}
+                                       posterImageFile.urls.large : videoFile.urls.posterLarge}
                        altText={videoFile.configuration.alt}
                        objectPosition={props.fit === 'cover' ? videoFile.cropPosition : undefined}
                        {...props} />

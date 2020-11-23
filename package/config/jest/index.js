@@ -1,6 +1,12 @@
 const path = require('path');
 
 module.exports = {
+  globals: {
+    pageflow: {
+      config: {}
+    }
+  },
+
   moduleNameMapper: {
     '^jquery$': resolve('../../src/vendor/jquery'),
     '^jquery-ui$': resolve('../../src/vendor/jquery-ui'),

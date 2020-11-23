@@ -103,6 +103,16 @@ describe('usePlayerState', () => {
       expect(nextState.shouldPlay).toBe(false);
     });
 
+    it('resets isPlaying to false when player is discareded', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.playing());
+      act(() => actions.discardMediaElementId());
+      const [nextState,] = result.current;
+
+      expect(nextState.isPlaying).toBe(false);
+    });
+
     it('updates volume factor and fade duration on changeVolumeFactor action', () => {
       const {result} = renderHookInEntry(() => usePlayerState());
       const [, actions] = result.current;
@@ -245,6 +255,34 @@ describe('usePlayerState', () => {
       const [nextState,] = result.current;
 
       expect(nextState.unplayed).toBe(true);
+    });
+  });
+
+  describe('tracking dataLoaded state', () => {
+    it('is false initially', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [nextState,] = result.current;
+
+      expect(nextState.dataLoaded).toBe(false);
+    });
+
+    it('becomed true on dataLoaded action', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.dataLoaded());
+      const [nextState,] = result.current;
+
+      expect(nextState.dataLoaded).toBe(true);
+    });
+
+    it('becomes false again when player is disposed', () => {
+      const {result} = renderHookInEntry(() => usePlayerState());
+      const [,actions] = result.current;
+      act(() => actions.dataLoaded());
+      act(() => actions.discardMediaElementId());
+      const [nextState,] = result.current;
+
+      expect(nextState.dataLoaded).toBe(false);
     });
   });
 

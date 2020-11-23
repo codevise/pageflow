@@ -14,6 +14,18 @@ export function StaticPreview({children}) {
   );
 }
 
+/**
+ * Use inside a content element component to determine whether the
+ * component is being rendered in a static preview, e.g. editor
+ * thumbnails.
+ *
+ * @example
+ * const isStaticPreview = useIsStaticPreview();
+ */
+export function useIsStaticPreview() {
+  return useContext(StaticPreviewContext);
+}
+
 export function createScrollPositionLifecycleProvider(Context) {
   return function ScrollPositionLifecycleProvider({children, onActivate}) {
     const ref = useRef();

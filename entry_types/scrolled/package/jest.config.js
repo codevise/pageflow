@@ -1,4 +1,4 @@
-const {moduleNameMapper, transform} = require('pageflow/config/jest')
+const {moduleNameMapper, transform, globals} = require('pageflow/config/jest')
 
 module.exports = {
   // Required to make eslint-import-resolver-jest work with absolute
@@ -7,9 +7,7 @@ module.exports = {
   rootDir: require('path').resolve(__dirname),
 
   testMatch: ["<rootDir>/spec/**/*-spec.js"],
-  globals: {
-    pageflow: {},
-  },
+  globals,
   setupFiles: ['<rootDir>/spec/support/matchMediaStub.js'],
   setupFilesAfterEnv: ['<rootDir>/spec/support/fakeBrowserFeatures.js'],
   modulePaths: ['<rootDir>/src', '<rootDir>/spec'],
