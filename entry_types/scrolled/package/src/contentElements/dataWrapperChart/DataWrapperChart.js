@@ -5,7 +5,8 @@ import {
   useContentElementLifecycle,
   useContentElementEditorState,
   useI18n,
-  Figure
+  Figure,
+  textColorForBackgroundColor
 } from 'pageflow-scrolled/frontend';
 import {useIframeHeight} from './useIframeHeight';
 
@@ -23,11 +24,14 @@ export function DataWrapperChart({configuration}) {
     srcURL = configuration.url.replace(/http(s|):/, '');
   }
 
+  const backgroundColor = configuration.backgroundColor || '#323d4d';
+
   return (
     <Figure caption={configuration.caption}>
       <div className={styles.container}
            style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined,
-                   backgroundColor: configuration.backgroundColor || '#323d4d',
+                   backgroundColor,
+                   color: textColorForBackgroundColor(backgroundColor),
                    height: height}}
            data-percy="hide">
         <ThirdPartyConsent providerName='datawrapper'
