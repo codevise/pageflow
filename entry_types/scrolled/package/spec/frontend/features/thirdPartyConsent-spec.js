@@ -196,7 +196,7 @@ describe('ThirdPartyConsent', () => {
       frontend.contentElementTypes.register('test', {
         component: function Component() {
           const [hideOptOutInfo, setHideOptOutInfo] = useState(false);
-          
+
           return (
             <div data-testid="test-content-element">
               <ThirdPartyConsent providerName="someService" hideTooltip={hideOptOutInfo}>
@@ -228,6 +228,85 @@ describe('ThirdPartyConsent', () => {
 
       fireEvent.click(getByText('Toggle'));
       expect(getByText('to opt out', {exact: false})).not.toBeVisible();
+    });
+  });
+
+  describe('provider name mapping', () => {
+    beforeEach(() => {
+      frontend.contentElementTypes.register('test', {
+        component: function Component() {
+          return (
+            <div data-testid="test-content-element">
+              <ThirdPartyConsent providerName="someService">
+                <div>Data from SomeService</div>
+              </ThirdPartyConsent>
+            </div>
+          );
+        }
+      });
+    });
+
+    it('is used when reading from the cookie', () => {
+      cookies.setItem('optIn', '{"some-service": true}')
+
+      const {getByTestId} = renderEntry({
+        seed: {
+          themeOptions: {
+            privacyCookieName: 'optIn',
+            privacyCookieProviderNameMapping: {
+              someService: 'some-service'
+            }
+          },
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      expect(getByTestId('test-content-element')).toHaveTextContent('Data from SomeService');
+    });
+
+    it('is used when writing cookie', () => {
+      const {getByTestId} = renderEntry({
+        seed: {
+          themeOptions: {
+            privacyCookieName: 'optIn',
+            privacyCookieProviderNameMapping: {
+              someService: 'some-service'
+            }
+          },
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      const {getByText} = within(getByTestId('test-content-element'));
+      fireEvent.click(getByText('Confirm'));
+
+      expect(JSON.parse(cookies.getItem('optIn'))).toMatchObject({'some-service': true});
+    });
+
+    it('preserves other provider flags in cookie', () => {
+      cookies.setItem('optIn', '{"something-else": true, "evil-corp": false}')
+
+      const {getByTestId} = renderEntry({
+        seed: {
+          themeOptions: {
+            privacyCookieName: 'optIn',
+            privacyCookieProviderNameMapping: {
+              someService: 'some-service'
+            }
+          },
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      const {getByText} = within(getByTestId('test-content-element'));
+      fireEvent.click(getByText('Confirm'));
+
+      expect(JSON.parse(cookies.getItem('optIn')))
+        .toMatchObject({
+          'something-else': true,
+          'evil-corp': false,
+          'some-service': true
+        });
     });
   });
 });

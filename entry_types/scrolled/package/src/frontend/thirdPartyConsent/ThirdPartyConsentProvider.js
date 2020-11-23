@@ -6,23 +6,9 @@ export const ThirdPartyConsentContext = createContext();
 
 export function ThirdPartyConsentProvider({children}) {
   const theme = useTheme();
+
   const cookieName = theme.options.privacyCookieName || 'privacyOptIn';
-
-  const getProviderCookieKey = (provider) => {
-    if (provider === 'video' && theme.options.privacyCookieVideoEmbedKey) {
-      return theme.options.privacyCookieVideoEmbedKey;
-    }
-
-    return provider;
-  };
-
-  const getProviderPageflowKey = (provider) => {
-    if (provider === theme.options.privacyCookieVideoEmbedKey) {
-      return 'video';
-    }
-
-    return provider;
-  };
+  const providerNameMapping = theme.options.privacyCookieProviderNameMapping || {};
 
   const getCookieContent = () => {
     // Server-side rendering
@@ -30,16 +16,14 @@ export function ThirdPartyConsentProvider({children}) {
       return {};
     }
 
-    const cookie = JSON.parse(cookies.getItem(cookieName)) || {};
+    return JSON.parse(cookies.getItem(cookieName)) || {};
+  }
 
-    if (!theme.options.privacyCookieVideoEmbedKey) {
-      return cookie;
-    }
+  function getConsentsFromCookie() {
+    const result = getCookieContent();
 
-    const result = {};
-
-    Object.keys(cookie).forEach(key => {
-      result[getProviderPageflowKey(key)] = cookie[key];
+    Object.keys(providerNameMapping).forEach(key => {
+      result[key] = result[providerNameMapping[key]];
     });
 
     return result;
@@ -47,8 +31,7 @@ export function ThirdPartyConsentProvider({children}) {
 
   const setConsentCookie = (provider) => {
     const newCookieContent = getCookieContent();
-    const providerCookieKey = getProviderCookieKey(provider);
-    newCookieContent[providerCookieKey] = true;
+    newCookieContent[providerNameMapping[provider] || provider] = true;
     cookies.setItem(cookieName, JSON.stringify(newCookieContent));
   };
 
@@ -58,7 +41,7 @@ export function ThirdPartyConsentProvider({children}) {
   };
 
   const [context, setContext] = useState({
-    consents: getCookieContent(),
+    consents: getConsentsFromCookie(),
     giveConsent
   });
 
