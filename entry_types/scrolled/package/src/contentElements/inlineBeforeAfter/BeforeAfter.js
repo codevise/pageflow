@@ -13,7 +13,7 @@ const placeholderFile = {
 };
 
 export function BeforeAfter({isActive,
-                             isPrepared,
+                             load,
                              position,
                              before_id,
                              before_label,
@@ -93,7 +93,7 @@ export function BeforeAfter({isActive,
   );
 
   function renderCompareImage() {
-    if (!isPrepared) {
+    if (!load) {
       return null;
     }
 

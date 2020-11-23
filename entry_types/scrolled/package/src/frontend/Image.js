@@ -10,10 +10,11 @@ import {ImageStructuredData} from './ImageStructuredData';
  * @param {Object} props
  * @param {Object} props.imageFile - Image file obtained via `useFile`.
  * @param {string} [props.variant] - Paperclip style to use. Defaults to large.
+ * @param {boolean} [props.load] - Whether to load the image. Can be used for lazy loading.
  * @param {boolean} [props.structuredData] - Whether to render a JSON+LD script tag.
  */
 export function Image({imageFile, ...props}) {
-  if (imageFile && imageFile.isReady && props.isPrepared) {
+  if (imageFile && imageFile.isReady && props.load) {
     return (
       <>
         {renderImageTag(props, imageFile)}
@@ -46,6 +47,6 @@ function renderStructuredData(props, file) {
 }
 
 Image.defaultProps = {
-  isPrepared: true,
+  load: true,
   variant: 'large'
 };

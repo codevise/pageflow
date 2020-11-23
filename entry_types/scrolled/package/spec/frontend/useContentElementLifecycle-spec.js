@@ -86,16 +86,16 @@ describe('useContentElementLifecycle', () => {
     });
   });
 
-  describe('isPrepared', () => {
+  describe('shouldLoad', () => {
     beforeEach(() => {
       frontend.contentElementTypes.register('test', {
         lifecycle: true,
 
         component: function Test() {
-          const {isPrepared} = useContentElementLifecycle();
+          const {shouldLoad} = useContentElementLifecycle();
           return (
             <div data-testid="testElement">
-              {isPrepared ? 'loaded' : 'blank'}
+              {shouldLoad ? 'loaded' : 'blank'}
             </div>
           );
         }
@@ -124,6 +124,47 @@ describe('useContentElementLifecycle', () => {
       );
 
       expect(getByTestId('testElement')).toHaveTextContent('loaded');
+    });
+  });
+
+  describe('shouldPrepare', () => {
+    beforeEach(() => {
+      frontend.contentElementTypes.register('test', {
+        lifecycle: true,
+
+        component: function Test() {
+          const {shouldPrepare} = useContentElementLifecycle();
+          return (
+            <div data-testid="testElement">
+              {shouldPrepare ? 'prepared' : 'blank'}
+            </div>
+          );
+        }
+      });
+    });
+
+    it('is false by default', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      expect(getByTestId('testElement')).toHaveTextContent('blank');
+    });
+
+    it('is true if probe is in viewport', async () => {
+      const {getByTestId} = renderInEntry(<Entry />, {
+        seed: {
+          contentElements: [{typeName: 'test'}]
+        }
+      });
+
+      act(() =>
+        simulateScrollingIntoView(findIsPreparedProbe(getByTestId('testElement')))
+      );
+
+      expect(getByTestId('testElement')).toHaveTextContent('prepared');
     });
   });
 

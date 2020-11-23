@@ -33,15 +33,17 @@ export function createScrollPositionLifecycleProvider(Context) {
 
     const isStaticPreview = useContext(StaticPreviewContext);
 
-    const isPrepared = useOnScreen(ref, {rootMargin: '25% 0px 25% 0px'});
+    const shouldLoad = useOnScreen(ref, {rootMargin: '200% 0px 200% 0px'});
+    const shouldPrepare = useOnScreen(ref, {rootMargin: '25% 0px 25% 0px'}) && !isStaticPreview;
     const isVisible = useOnScreen(ref) && !isStaticPreview;
     const isActive = useOnScreen(isActiveProbeRef, {
       rootMargin: '-50% 0px -50% 0px',
       onIntersecting: onActivate
     }) && !isStaticPreview;
 
-    const value = useMemo(() => ({isPrepared, isVisible, isActive}),
-                          [isPrepared, isVisible, isActive]);
+    const value = useMemo(() => ({
+      shouldLoad, shouldPrepare, isVisible, isActive}
+    ), [shouldLoad, shouldPrepare, isVisible, isActive]);
 
     return (
       <div ref={ref} className={classNames(styles.wrapper)}>

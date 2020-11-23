@@ -12,13 +12,13 @@ import styles from './DataWrapperChart.module.css';
 
 export function DataWrapperChart({configuration}) {
   const {t} = useI18n();
-  const {isPrepared} = useContentElementLifecycle();
+  const {shouldLoad} = useContentElementLifecycle();
   const {isEditable, isSelected} = useContentElementEditorState();
   const height = useIframeHeight(configuration.url);
 
   // remove url protocol, so that it is selected by the browser itself
   var srcURL = '';
-  if (configuration.url && isPrepared) {
+  if (configuration.url && shouldLoad) {
     srcURL = configuration.url.replace(/http(s|):/, '');
   }
 
