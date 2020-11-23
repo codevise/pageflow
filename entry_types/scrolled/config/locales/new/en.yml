@@ -84,6 +84,14 @@ en:
           field in the section settings.
 
     public:
+      third_party_consent:
+        opt_in_prompt:
+          datawrapper: "I agree with being shown Datawrapper graphs."
+          video: "I agree with being shown videos from external providers."
+        confirm: "Okay"
+        opt_out:
+          prompt: "To opt out of displaying external embeds, change your settings %{link}."
+          prompt_link: "here"
       navigation:
         chapter: Chapter %{number}
         mute: Mute sound

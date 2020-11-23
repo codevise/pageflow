@@ -22,7 +22,7 @@ export const OptIn = ({consent, cookieMessage, height}) => {
             className={cx(styles.optInButton, utilStyles.unstyledButton)}
             onClick={() => consent()}
           >
-            {t('pageflow_scrolled.public.embed_opt_in.confirm')}
+            {t('pageflow_scrolled.public.third_party_consent.confirm')}
           </button>
         </div>
       </div>
