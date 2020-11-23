@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './OptIn.module.css';
-import utilStyles from './utils.module.css';
-import OptInIcon from './icons/media.svg';
-import {useI18n} from './i18n';
+import utilStyles from '../utils.module.css';
+import OptInIcon from '../icons/media.svg';
+import {useI18n} from '../i18n';
 import cx from 'classnames';
 
 export const OptIn = ({consent, cookieMessage, height}) => {

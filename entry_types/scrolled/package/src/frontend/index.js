@@ -56,8 +56,7 @@ export {useMediaMuted} from './useMediaMuted';
 export {EditableText} from './EditableText';
 export {EditableInlineText} from './EditableInlineText';
 export {PhonePlatformProvider} from './PhonePlatformProvider';
-export {ThirdPartyConsent} from './ThirdPartyConsent';
-export {ThirdPartyConsentProvider} from './ThirdPartyConsentProvider';
+export {ThirdPartyConsent} from './thirdPartyConsent';
 export {ViewportDependentPillarBoxes} from './ViewportDependentPillarBoxes';
 
 export {getTransitionNames, getAvailableTransitionNames} from './transitions';
