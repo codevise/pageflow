@@ -1,8 +1,9 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useMemo} from 'react';
+import {createContext, useContextSelector} from 'use-context-selector';
 
-import {useCollections} from '../collections';
+import {useCollections, getItem, createItemsSelector} from '../collections';
 
-const Context = React.createContext();
+const Context = createContext();
 
 export function EntryStateProvider({seed, children}) {
   const [collections, dispatch] = useCollections(seed.collections, {keyAttribute: 'permaId'});
@@ -22,12 +23,23 @@ export function EntryStateProvider({seed, children}) {
   );
 }
 
-export function useEntryState() {
-  const value = useContext(Context);
-  return value.entryState;
+function useEntryState(selector = entryState => entryState) {
+  return useContextSelector(Context, value => selector(value.entryState));
 }
 
 export function useEntryStateDispatch() {
-  const value = useContext(Context);
-  return value.dispatch;
+  return useContextSelector(Context, value => value.dispatch);
+}
+
+export function useEntryStateConfig() {
+  return useEntryState(entryState => entryState.config);
+}
+
+export function useEntryStateCollectionItem(collectionName, key) {
+  return useEntryState(entryState => getItem(entryState.collections, collectionName, key));
+}
+
+export function useEntryStateCollectionItems(collectionName, filter) {
+  const itemsSelector = useMemo(() => createItemsSelector(collectionName, filter), [collectionName, filter]);
+  return useEntryState(entryState => itemsSelector(entryState.collections));
 }

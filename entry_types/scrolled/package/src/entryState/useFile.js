@@ -1,6 +1,4 @@
-import {getItem} from '../collections';
-
-import {useEntryState} from './EntryStateProvider';
+import {useEntryStateCollectionItem, useEntryStateConfig} from './EntryStateProvider';
 import {extendFile} from './extendFile';
 
 /**
@@ -27,11 +25,11 @@ import {extendFile} from './extendFile';
  *   }
  */
 export function useFile({collectionName, permaId}) {
-  const entryState = useEntryState();
+  const file = useEntryStateCollectionItem(collectionName, permaId);
 
   return extendFile(
     collectionName,
-    getItem(entryState.collections, collectionName, permaId),
-    entryState
+    file,
+    useEntryStateConfig()
   );
 }

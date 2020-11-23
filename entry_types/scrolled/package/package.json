@@ -20,9 +20,11 @@
     "react-player": "^1.15.2",
     "react-tooltip": "^3.11.1",
     "react_ujs": "^2.6.1",
+    "reselect": "^4.0.0",
     "slate": "^0.57.3",
     "slate-react": "^0.57.3",
     "striptags": "^3.1.1",
+    "use-context-selector": "^1.2.11",
     "wavesurfer.js": "https://github.com/tf/wavesurfer.js#patches",
     "whatwg-fetch": "^3.0.0"
   },

@@ -41,8 +41,8 @@ import useDimension from './useDimension';
  *
  * @private
  */
-export function useMotifAreaState({transitions, fullHeight, empty} = {}) {
-  const [motifAreaRect, setMotifAreaRectRef] = useBoundingClientRect();
+export function useMotifAreaState({transitions, fullHeight, empty, isActive = true} = {}) {
+  const [motifAreaRect, setMotifAreaRectRef] = useBoundingClientRect({isActive});
   const [motifAreaDimension, setMotifAreaDimensionRef] = useDimension();
   const [isPadded, setIsPadded] = useState(false);
 
@@ -52,6 +52,7 @@ export function useMotifAreaState({transitions, fullHeight, empty} = {}) {
   }, [setMotifAreaRectRef, setMotifAreaDimensionRef]);
 
   const [contentAreaRect, setContentAreaRef] = useBoundingClientRect({
+    isActive,
     dependencies: [isPadded]
   });
 

@@ -1,6 +1,6 @@
 import {useMemo} from 'react';
 
-import {useEntryState} from "./EntryStateProvider";
+import {useEntryStateConfig} from "./EntryStateProvider";
 import {useEntryMetadata} from "./metadata";
 
 import EmailIcon from "../frontend/assets/images/navigation/icons/social/email_icon.svg";
@@ -32,12 +32,12 @@ import WhatsAppIcon from "../frontend/assets/images/navigation/icons/social/what
  *   ]
  */
 export function useShareProviders({isPhonePlatform}) {
-  const entryState = useEntryState();
+  const config = useEntryStateConfig();
   const entryMetadata = useEntryMetadata();
 
   const shareProviders = entryMetadata ? entryMetadata.shareProviders : {};
 
-  const urlTemplates = entryState.config.shareUrlTemplates;
+  const urlTemplates = config.shareUrlTemplates;
   const sharing = {
     email: {
       icon: EmailIcon,
@@ -110,11 +110,11 @@ function filterShareProviders(shareProvidersConfig, isPhonePlatform) {
  */
 export function useShareUrl() {
   const entryMetadata = useEntryMetadata();
-  const entryState = useEntryState();
+  const config = useEntryStateConfig();
 
   if (entryMetadata) {
-    return entryMetadata.shareUrl ? entryMetadata.shareUrl : entryState.config.prettyUrl;
+    return entryMetadata.shareUrl ? entryMetadata.shareUrl : config.prettyUrl;
   } else {
-    return entryState.config.shareUrl;
+    return config.shareUrl;
   }
 }

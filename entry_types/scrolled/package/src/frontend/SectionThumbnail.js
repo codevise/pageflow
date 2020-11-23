@@ -2,8 +2,8 @@ import React, {useEffect} from 'react';
 import Measure from 'react-measure';
 
 import {RootProviders} from './RootProviders';
-import {useEntryStateDispatch, useSectionStructure} from '../entryState';
-import Section from './Section';
+import {useEntryStateDispatch, useSection} from '../entryState';
+import {Section} from './Section';
 import {FullscreenHeightProvider} from './Fullscreen';
 import {StaticPreview} from './useScrollPositionLifecycle';
 
@@ -25,7 +25,7 @@ function Inner({sectionPermaId, subscribe}) {
     return subscribe(dispatch);
   }, [subscribe, dispatch])
 
-  const section = useSectionStructure({sectionPermaId});
+  const section = useSection({sectionPermaId});
 
   if (section) {
     return (

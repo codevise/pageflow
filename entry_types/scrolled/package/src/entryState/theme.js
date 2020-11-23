@@ -1,4 +1,4 @@
-import {useEntryState} from "./EntryStateProvider";
+import {useEntryStateConfig} from "./EntryStateProvider";
 
 /**
  * Returns an object containing theme asset paths.
@@ -19,7 +19,7 @@ import {useEntryState} from "./EntryStateProvider";
  *   }
  */
 export function useTheme() {
-  const entryState = useEntryState();
+  const config = useEntryStateConfig();
 
-  return entryState.config.theme;
+  return config.theme;
 }
