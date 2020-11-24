@@ -28,18 +28,17 @@ export function VideoEmbed({contentElementId, configuration}) {
     <div className={styles.VideoEmbed}
          style={{pointerEvents: isEditable && !isSelected ? 'none' : undefined}}>
       <Figure caption={configuration.caption}>
+        <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
+                                      position={configuration.position}
+                                      opaque={!!configuration.caption}>
+          {shouldLoad && <PreparedPlayer playerState={playerState}
+                                         setPlayerState={setPlayerState}
+                                         contentElementId={contentElementId}
+                                         configuration={configuration} />}
+        </ViewportDependentPillarBoxes>
         <ThirdPartyOptOutInfo providerName="video"
                               hide={playerState === 'playing'}
-                              contentElementPosition={configuration.position}>
-          <ViewportDependentPillarBoxes aspectRatio={aspectRatios[configuration.aspectRatio || 'wide']}
-                                        position={configuration.position}
-                                        opaque={!!configuration.caption}>
-            {shouldLoad && <PreparedPlayer playerState={playerState}
-                                           setPlayerState={setPlayerState}
-                                           contentElementId={contentElementId}
-                                           configuration={configuration} />}
-          </ViewportDependentPillarBoxes>
-        </ThirdPartyOptOutInfo>
+                              contentElementPosition={configuration.position} />
       </Figure>
     </div>
   );

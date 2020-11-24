@@ -36,12 +36,11 @@ export function DataWrapperChart({configuration}) {
                    height: height}}
            data-percy="hide">
         <ThirdPartyOptIn providerName="datawrapper">
+          {shouldLoad && renderIframe(srcURL,
+                                      configuration.title ||
+                                      t('pageflow_scrolled.public.chart.default_title'))}
           <ThirdPartyOptOutInfo providerName="datawrapper"
-                                contentElementPosition={configuration.position}>
-            {shouldLoad && renderIframe(srcURL,
-                                        configuration.title ||
-                                        t('pageflow_scrolled.public.chart.default_title'))}
-          </ThirdPartyOptOutInfo>
+                                contentElementPosition={configuration.position} />
         </ThirdPartyOptIn>
       </div>
     </Figure>

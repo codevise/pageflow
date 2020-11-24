@@ -154,9 +154,8 @@ describe('Third party consent', () => {
           return (
             <div data-testid="test-content-element">
               <ThirdPartyOptIn providerName="someService">
-                <ThirdPartyOptOutInfo providerName="someService">
-                  <div>Data from SomeService</div>
-                </ThirdPartyOptOutInfo>
+                <ThirdPartyOptOutInfo providerName="someService" />
+                <div>Data from SomeService</div>
               </ThirdPartyOptIn>
             </div>
           );
@@ -210,12 +209,11 @@ describe('Third party consent', () => {
           return (
             <div data-testid="test-content-element">
               <ThirdPartyOptIn providerName="someService">
-                <ThirdPartyOptOutInfo providerName="someService" hide={hideOptOutInfo}>
-                  <div>Data from SomeService</div>
-                  <button onClick={() => setHideOptOutInfo(!hideOptOutInfo)}>
-                    Toggle
-                  </button>
-                </ThirdPartyOptOutInfo>
+                <ThirdPartyOptOutInfo providerName="someService" hide={hideOptOutInfo} />
+                <div>Data from SomeService</div>
+                <button onClick={() => setHideOptOutInfo(!hideOptOutInfo)}>
+                  Toggle
+                </button>
               </ThirdPartyOptIn>
             </div>
           );

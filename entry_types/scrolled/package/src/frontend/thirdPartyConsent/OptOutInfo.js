@@ -25,7 +25,6 @@ import InfoIcon from '../icons/information.svg'
  * @name ThirdPartyOptOutInfo
  */
 export function OptOutInfo({
-  children,
   providerName,
   hide,
   contentElementPosition
@@ -40,7 +39,7 @@ export function OptOutInfo({
       !consents[providerName] ||
       !optOutLink ||
       isEditable) {
-    return children;
+    return null;
   }
 
   const linkText = t('pageflow_scrolled.public.third_party_consent.opt_out.prompt_link');
@@ -48,17 +47,14 @@ export function OptOutInfo({
   const html = t('pageflow_scrolled.public.third_party_consent.opt_out.prompt', {link: linkHtml});
 
   return (
-    <>
-      {children}
-      <div className={classNames(styles.optOut, styles[contentElementPosition])}
-           style={hide ? {opacity: 0, visibility: 'hidden'} : undefined}>
-        <button className={styles.icon}>
-          <InfoIcon/>
-        </button>
-        <div className={styles.tooltip}>
-          <div dangerouslySetInnerHTML={{__html: html}} />
-        </div>
+    <div className={classNames(styles.optOut, styles[contentElementPosition])}
+         style={hide ? {opacity: 0, visibility: 'hidden'} : undefined}>
+      <button className={styles.icon}>
+        <InfoIcon/>
+      </button>
+      <div className={styles.tooltip}>
+        <div dangerouslySetInnerHTML={{__html: html}} />
       </div>
-    </>
+    </div>
   );
 };
