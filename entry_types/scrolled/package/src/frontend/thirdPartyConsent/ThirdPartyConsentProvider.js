@@ -11,7 +11,7 @@ export function ThirdPartyConsentProvider({children}) {
   const providerNameMapping = useMemo(() => theme.options.privacyCookieProviderNameMapping || {},
                                       [theme]);
 
-  const [consents, setConsents] = useState({});
+  const [consents, setConsents] = useState(null);
 
   useEffect(() => {
     setConsents(getConsentsFromCookie(cookieName, providerNameMapping));

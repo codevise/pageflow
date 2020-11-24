@@ -21,7 +21,8 @@ export function OptOutInfo({
   const theme = useTheme();
   const optOutLink = theme.options.privacyOptOutLink;
 
-  if (!consents[providerName] ||
+  if (!consents ||
+      !consents[providerName] ||
       !optOutLink ||
       isEditable) {
     return children;
