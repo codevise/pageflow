@@ -40,7 +40,7 @@ describe('Third party consent', () => {
     it('renders prompt when privacy cookie configured in theme options is not set', () => {
       const {getByTestId} = renderEntry({
         seed: {
-          themeOptions: {privacyCookieName: 'optIn'},
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
           contentElements: [{typeName: 'test'}]
         }
       });
@@ -53,7 +53,7 @@ describe('Third party consent', () => {
 
       const {getByTestId} = renderEntry({
         seed: {
-          themeOptions: {privacyCookieName: 'optIn'},
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
           contentElements: [{typeName: 'test'}]
         }
       });
@@ -66,7 +66,7 @@ describe('Third party consent', () => {
 
       const {getByTestId} = renderEntry({
         seed: {
-          themeOptions: {privacyCookieName: 'optIn'},
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
           contentElements: [{typeName: 'test'}]
         }
       });
@@ -87,7 +87,7 @@ describe('Third party consent', () => {
     it('is skipped after consent has been given', () => {
       const {getByTestId} = renderEntry({
         seed: {
-          themeOptions: {privacyCookieName: 'optIn'},
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
           contentElements: [{typeName: 'test'}]
         }
       });
@@ -101,7 +101,7 @@ describe('Third party consent', () => {
     it('sets flag for provider in privacy cookie when consent is given', () => {
       const {getByTestId} = renderEntry({
         seed: {
-          themeOptions: {privacyCookieName: 'optIn'},
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
           contentElements: [{typeName: 'test'}]
         }
       });
@@ -131,7 +131,7 @@ describe('Third party consent', () => {
     it('passes flag which is true if consent was just given in current component', () => {
       const {getByTestId} = renderEntry({
         seed: {
-          themeOptions: {privacyCookieName: 'optIn'},
+          themeOptions: {thirdPartyConsent: {cookieName: 'optIn'}},
           contentElements: [
             {typeName: 'test', configuration: {testId: 'content-element-a'}},
             {typeName: 'test', configuration: {testId: 'content-element-b'}}
@@ -168,8 +168,10 @@ describe('Third party consent', () => {
       const {getByTestId} = renderEntry({
         seed: {
           themeOptions: {
-            privacyCookieName: 'optIn',
-            privacyOptOutLink: 'https://example.com/privacy'
+            thirdPartyConsent: {
+              cookieName: 'optIn',
+              optOutLink: 'https://example.com/privacy'
+            }
           },
           contentElements: [{typeName: 'test'}]
         }
@@ -186,8 +188,10 @@ describe('Third party consent', () => {
       const {getByTestId} = renderEntry({
         seed: {
           themeOptions: {
-            privacyCookieName: 'optIn',
-            privacyOptOutLink: 'https://example.com/privacy'
+            thirdPartyConsent: {
+              cookieName: 'optIn',
+              optOutLink: 'https://example.com/privacy'
+            }
           },
           contentElements: [{typeName: 'test'}]
         }
@@ -223,8 +227,10 @@ describe('Third party consent', () => {
       const {getByTestId} = renderEntry({
         seed: {
           themeOptions: {
-            privacyCookieName: 'optIn',
-            privacyOptOutLink: 'https://example.com/privacy'
+            thirdPartyConsent: {
+              cookieName: 'optIn',
+              optOutLink: 'https://example.com/privacy'
+            }
           },
           contentElements: [{typeName: 'test'}]
         }
@@ -260,9 +266,11 @@ describe('Third party consent', () => {
       const {getByTestId} = renderEntry({
         seed: {
           themeOptions: {
-            privacyCookieName: 'optIn',
-            privacyCookieProviderNameMapping: {
-              someService: 'some-service'
+            thirdPartyConsent: {
+              cookieName: 'optIn',
+              cookieProviderNameMapping: {
+                someService: 'some-service'
+              }
             }
           },
           contentElements: [{typeName: 'test'}]
@@ -276,9 +284,11 @@ describe('Third party consent', () => {
       const {getByTestId} = renderEntry({
         seed: {
           themeOptions: {
-            privacyCookieName: 'optIn',
-            privacyCookieProviderNameMapping: {
-              someService: 'some-service'
+            thirdPartyConsent: {
+              cookieName: 'optIn',
+              cookieProviderNameMapping: {
+                someService: 'some-service'
+              }
             }
           },
           contentElements: [{typeName: 'test'}]
@@ -297,9 +307,11 @@ describe('Third party consent', () => {
       const {getByTestId} = renderEntry({
         seed: {
           themeOptions: {
-            privacyCookieName: 'optIn',
-            privacyCookieProviderNameMapping: {
-              someService: 'some-service'
+            thirdPartyConsent: {
+              cookieName: 'optIn',
+              cookieProviderNameMapping: {
+                someService: 'some-service'
+              }
             }
           },
           contentElements: [{typeName: 'test'}]
